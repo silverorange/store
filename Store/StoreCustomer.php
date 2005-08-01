@@ -24,9 +24,15 @@ require_once 'SwatDB/SwatDBDataObject.php';
  *    for the object instance. Modify some properties and call the saveToDB()
  *    method. The modified properties are updated in the database.
  *
+ *    Example usage as an MDB wrapper:
+ *    <code>
+ *    $customer = $db->query($sql, null, true, 'StoreCustomer');
+ *    </code>
+ *
  * @package   Store
  * @copyright 2005 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ * @see       StoreCustomerWrapper
  */
 class StoreCustomer extends SwatDBDataObject
 {
