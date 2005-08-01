@@ -41,9 +41,8 @@ class StoreItemWrapper extends SwatDBRecordsetWrapper
 	public function __construct($rs)
 	{
 		$this->row_wrapper_class = 'StoreItem';
-		parent:__constuct($rs);
+		parent::__constuct($rs);
 	}
-
 }
 
 ?>
