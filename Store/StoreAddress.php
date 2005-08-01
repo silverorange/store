@@ -1,16 +1,29 @@
 <?php
 
 /**
- * Belongs to a customer.
+ * An address for an e-commerce web application
+ *
+ * Addresses usually belongs to customers but can be used in other instances.
+ *
+ * @package   Store
+ * @copyright 2005 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreAddress {
-	public var $country;
-	public var $provstate;
-	public var $zipcode;
+class StoreAddress
+{
+	public $country;
+	public $provstate;
+	public $zipcode;
 }
 
-class StoreAddressView {
+/*
+ * Implementation note:
+ *  use same pattern as for customer to load addresses and then use the load
+ *  methods in the customer methods
+ */
 
+class StoreAddressView
+{
 	private var $address;
 
 	public function __construct($address);
@@ -19,19 +32,6 @@ class StoreAddressView {
 
 	public function getAddress();
 	public function setAddress($address);
-}
-
-/* 
- * use same pattern as for customer to load addresses and then use the load
- * methods in the customer methods
- */
- 
-class StoreShipMethod {
-
-	/**
-	 * An approximation of how long it takes to ship items with this method.
-	 */
-	public function getTimeToDeliver($address);
 }
 
 ?>
