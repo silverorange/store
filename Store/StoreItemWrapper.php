@@ -8,14 +8,17 @@
  *
  * The typical usage of this object is:
  *
- *  $item_wrapper = new StoreItemWrapper($rs);
- *  while ($item = $item_wrapper->getNextItem()) {
- *      // do something with each item object here ...
- *  }
+ * <code>
+ * $item_wrapper = new StoreItemWrapper($rs);
+ * while ($item = $item_wrapper->getNextItem()) {
+ *     // do something with each item object here ...
+ * }
+ * </code>
  *
  * @package   Store
  * @copyright 2005 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ * @see       StoreItem
  */
 class StoreItemWrapper extends DBWrapper
 {
