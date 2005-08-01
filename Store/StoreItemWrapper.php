@@ -29,10 +29,10 @@ class StoreItemWrapper extends SwatDBRecordsetWrapper
 	/**
 	 * Creates a new wrapper object
 	 *
-	 * The constructor takes the result set of a MDB2 query and translates
-	 * it into an array of objects.
+	 * The constructor takes the record set of a MDB2 query and translates
+	 * it into a a collection of objects.
 	 *
-	 * @param resource $rs the record set of the MDB2 query to get the items.
+	 * @param mixed $rs the record set of the MDB2 query to get the items.
 	 *
 	 * @access public
 	 */
