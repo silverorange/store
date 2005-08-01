@@ -7,11 +7,13 @@
  * several items. For example, you could have a tee-shirt product and several
  * items under the product describing different sizes or colours.
  *
- *  Category
- *  |
- *  +- Product
- *     |
- *     +- Item
+ * <pre>
+ * Category
+ * |
+ * -- Product
+ *    |
+ *    -- Item
+ * </pre>
  *
  * Creating StoreItem objects is necessary when the items are on the current
  * page and must be displayed. Some StoreItem objects are stored in the
