@@ -1,75 +1,82 @@
 <?php
 
 /**
- * This class represents an entry in the customer's shopping cart.
+ * An entry in a shopping cart for an e-commerce web application
  *
  * All cart specific item information is stored in this object. This includes
  * things like special finishes or engraving information that is not specific
  * to an item, but is specific to an item in a customer's shopping cart.
  *
  * For specific sites, this class will be subclassed to provide specific
- * features. For example, on the Hampshire Pewter webstore, this class would 
- * have a getEngravingCost() method.
+ * features. For example, on a site supporting the engraving of items, a
+ * subclass of this class could have a getEngravingCost() method.
  *
  * The StoreCart*View classes handle all the displaying of StoreCartEntry
  * objects. StoreCartEntry must provide sufficient toString() methods to allow
  * the StoreCart*View classes to display cart entries. Remember when
- * subclassing to add these toString() methods.
+ * subclassing this class to add these toString() methods.
+ *
+ * @package   Store
+ * @copyright 2005 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ * @see       StoreCart
  */
-class StoreCartEntry {
-
+class StoreCartEntry
+{
 	/**
 	 * A reference to a StoreItem object
 	 *
 	 * @var StoreItem
-	 * @access private
 	 */
-	private var $item;
+	private $item;
 
 	/**
-	 * Number of individual StoreItems in this cart entry
+	 * Number of individual items in this cart entry
 	 *
-	 * @var int
-	 * @access private
+	 * This does not represent the number of StoreItem objects in this cart
+	 * entry -- that number is always one. This number instead represents the
+	 * quantity of the StoreItem that the customer has added to their cart.
+	 *
+	 * @var integer
 	 */
-	private var $quantity;
+	private $quantity;
 
 	/**
 	 * Creates a new StoreCartItem
 	 *
-	 * @param StoreItem $item a reference to the item that this entry holds
-	 * @param int $quantity the number of individual items in this entry
-	 *
-	 * @access public
+	 * @param StoreItem $item a reference to the item that this entry holds.
+	 * @param int $quantity the number of individual items in this entry.
 	 */
-	public function __construct($item, $quantity);
+	public function __construct($item, $quantity)
+	{
+	}
 
 	/**
-	 * Gets the number of StoreItems this cart entry represents
+	 * Gets the number of items this cart entry represents
 	 *
-	 * @return int
-	 *
-	 * @access public
+	 * @return integer
 	 */
-	public function getQuantity();
+	public function getQuantity()
+	{
+	}
 
 	/**
-	 * Sets the number of StoreItems this cart entry represents
+	 * Sets the number of items this cart entry represents
 	 *
-	 * @param int $quantity the new number
-	 *
-	 * @access public
+	 * @param integer $quantity the new quantity of this entry's item.
 	 */
-	public function setQuantity($quantity);
+	public function setQuantity($quantity)
+	{
+	}
 
 	/**
 	 * Gets the unit cost of the StoreItem for this cart entry
 	 *
 	 * @return double the unit cost of the StoreItem for this cart entry.
-	 *
-	 * @access public
 	 */
-	public function getItemCost();
+	public function getItemCost()
+	{
+	}
 	
 	/**
 	 * Gets the extension cost of this cart entry
@@ -78,12 +85,10 @@ class StoreCartEntry {
 	 * by this cart entry's quantity. This value is called the extension.
 	 *
 	 * @return double the extension cost of this cart entry.
-	 *
-	 * @access public
 	 */
-	public function getExtensionCost();
-
+	public function getExtensionCost()
+	{
+	}
 }
-
 
 ?>
