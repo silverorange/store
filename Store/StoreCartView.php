@@ -1,5 +1,7 @@
 <?php
 
+require_once 'Store/StoreCart.php';
+
 /**
  * A viewer for shopping carts for an e-commerce web application
  *
@@ -41,7 +43,7 @@ abstract class StoreCartView
 	 */
 	public function __construct(StoreCart $cart)
 	{
-		$this->cart = $cart;
+		$this->setCart($cart);
 	}
 
 	/**
