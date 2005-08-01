@@ -1,35 +1,52 @@
 <?php
 
 /**
- * Creating StoreItem objects is necessary when the items are on the
- * current page and must be displayed. Some StoreItems are saved in the session
- * because they are in the customer's cart.
+ * An item for an e-commerce web application
  *
- * Pages of StoreItem objects are loaded using a MDB2 wrapper class called
- * StoreItemWrapper.
+ * Items are the lowest level in the product structure. Each product can have
+ * several items. For example, you could have a tee-shirt product and several
+ * items under the product describing different sizes or colours.
+ *
+ *  Category
+ *  |
+ *  +- Product
+ *     |
+ *     +- Item
+ *
+ * Creating StoreItem objects is necessary when the items are on the current
+ * page and must be displayed. Some StoreItem objects are stored in the
+ * customer's session because they are in the customer's cart.
+ *
+ * If there are many StoreItem objects that must be loaded for a page request,
+ * the MDB2 wrapper class called StoreItemWrapper should be used to load the
+ * objects.
  *
  * This class contains mostly data.
+ *
+ * @package   Store
+ * @copyright 2005 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreItem {
-
+class StoreItem
+{
 	/**
 	 * The id in the database
 	 */
-	public var $id;
-	public var $title;
-	public var $description;
-	public var $show;
-	public var $unit;
-	public var $tag;
-	public var $status
-	public var $price;
-	public var $weight
-	public var $hidePriceRange;
+	public $id;
+	public $title;
+	public $description;
+	public $show;
+	public $unit;
+	public $tag;
+	public $status
+	public $price;
+	public $weight
+	public $hidePriceRange;
 }
 
-class StoreItemView {
-
-	private var $item;
+class StoreItemView
+{
+	private $item;
 
 	public function __construct($item);
 
