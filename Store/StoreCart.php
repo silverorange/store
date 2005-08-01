@@ -93,8 +93,8 @@ abstract class StoreCart
 	/**
 	 * Removes all entries from this cart
 	 *
-	 * @return the array of StoreCartEntry objects that were removed from this
-	 *          cart.
+	 * @return array the array of StoreCartEntry objects that were removed from
+	 *                this cart.
 	 */
 	public function removeAllEntries()
 	{
