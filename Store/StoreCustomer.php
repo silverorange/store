@@ -67,8 +67,8 @@ class StoreCustomer extends SwatDBDataObject
 	public function loadFromDB($id)
 	{
 		$fields = array_diff(array_keys($this->getProperties()), $this->db_field_blacklist);
-		$values = SwatDB::queryRow($this->app->db, 'customers', $fields, 'customer_id', $id);
-		$this->setValues($values);
+		$row = SwatDB::queryRow($this->app->db, 'customers', $fields, 'customer_id', $id);
+		$this->initFromRow($row);
 		$this->generatePropertyHashes();
 
 		// TODO: load complex properties here (like $addresses)
