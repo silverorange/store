@@ -45,19 +45,22 @@ class StoreCartEntry
 	 * Creates a new StoreCartItem
 	 *
 	 * @param StoreItem $item a reference to the item that this entry holds.
-	 * @param int $quantity the number of individual items in this entry.
+	 * @param integer $quantity the number of individual items in this entry.
 	 */
-	public function __construct($item, $quantity)
+	public function __construct(StoreItem $item, $quantity)
 	{
+		$this->item = $item;
+		$this->quantity = (int)$quantity;
 	}
 
 	/**
 	 * Gets the number of items this cart entry represents
 	 *
-	 * @return integer
+	 * @return integer the number of items this cart entry represents.
 	 */
 	public function getQuantity()
 	{
+		return $this->quantity;
 	}
 
 	/**
@@ -67,6 +70,7 @@ class StoreCartEntry
 	 */
 	public function setQuantity($quantity)
 	{
+		$this->quantity = (int)$quantity;
 	}
 
 	/**
@@ -88,6 +92,35 @@ class StoreCartEntry
 	 */
 	public function getExtensionCost()
 	{
+	}
+
+	/**
+	 * Compares this entry with another entry
+	 *
+	 * @param StoreCartEntry $entry the entry to compare this entry to.
+	 *
+	 * @return integer a tri-value indicating how this entry compares to the
+	 *                  given entry. The value is negative is this entry is
+	 *                  less than the given entry, zero if this entry is equal
+	 *                  to the given entry and positive it this entry is
+	 *                  greater than the given entry.
+	 */
+	public function compare(StoreCartEntry $entry)
+	{
+	}
+
+	/**
+	 * Combines an entry with this entry
+	 *
+	 * The quantity is updated to the sum of quantities of the two entries.
+	 * This is useful if you want to add entries to this cart that already
+	 * exist in this cart.
+	 *
+	 * @param StoreCartEntry $entry the entry to combine with this entry.
+	 */
+	public function combine(StoreCartEntry $entry)
+	{
+		$this->quantity += $entry->getQuantity();
 	}
 }
 

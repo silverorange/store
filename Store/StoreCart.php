@@ -46,10 +46,19 @@ abstract class StoreCart
 	 * @param integer $cartEntryId the index value of the StoreCartEntry
 	 *                              to remove.
 	 *
+	 * @return StoreCartEntry the entry that was removed.
+	 *
 	 * @throws StoreCartEntryNotFoundException
 	 */
 	public function removeEntryById($cartEntryId)
 	{
+		if (isset($this->entries[$cartEntryId])) {
+			$entry = $this->entries[$cartEntryId];
+			unset($this->entries[$cartEntryId]);
+			return $entry;
+		} else {
+			throw new SwatCartEntryNotFoundException();
+		}
 	}
 
 	/**
@@ -57,8 +66,9 @@ abstract class StoreCart
 	 *
 	 * @return array an array of StoreCartEntry objects.
 	 */
-	public function getEntries()
+	public function &getEntries()
 	{
+		return $this->entries;
 	}
 
 	/**
@@ -73,6 +83,10 @@ abstract class StoreCart
 	 */
 	public function getEntryById($cartEntryId)
 	{
+		if (isset($this->entries[$cartEntryId]))
+			return $this->entries[$cartEntryId];
+		else
+			throw new SwatCartEntryNotFoundException();
 	}
 
 	/**
@@ -86,8 +100,14 @@ abstract class StoreCart
 	 *
 	 * @return array an array of StoreCartEntry objects.
 	 */
-	public function getEntriesByItemId($itemId)
+	public function &getEntriesByItemId($itemId)
 	{
+		$entries = array();
+		foreach ($this->entries as $entry) {
+			if ($entry->id == $itemId)
+				$entries[] = $entry;
+		}
+		return $entries;
 	}
 
 	/**
@@ -96,8 +116,11 @@ abstract class StoreCart
 	 * @return array the array of StoreCartEntry objects that were removed from
 	 *                this cart.
 	 */
-	public function removeAllEntries()
+	public function &removeAllEntries()
 	{
+		$entries =& $this->entries;
+		$this->entries = array();
+		return $entries;
 	}
 	
 	/**
@@ -107,6 +130,7 @@ abstract class StoreCart
 	 */
 	public function isEmpty()
 	{
+		return count($this->entries) ? true : false;
 	}
 	
 	/**
@@ -116,6 +140,7 @@ abstract class StoreCart
 	 */
 	public function getEntryCount()
 	{
+		return count($this->entries);
 	}
 
 	/**
