@@ -1,16 +1,21 @@
 <?php
 
+require_once 'SwatDB/SwatDB.php';
+require_once 'SwatDB/SwatDBRecordsetWrapper.php';
+require_once 'Store/StoreItem.php';
+
 /**
- * A utility class that loads StoreItem objects from the database
+ * A wrapper class for loading StoreItem objects from the database
  *
  * If there are many StoreItem objects that must be loaded for a page request,
- * this class should be used to load the objects.
+ * this class should be used to load the objects from a single query.
  *
  * The typical usage of this object is:
  *
  * <code>
- * $item_wrapper = new StoreItemWrapper($rs);
- * while ($item = $item_wrapper->getNextItem()) {
+ * $sql = 'select a bunch of items';
+ * $items = $db->query($sql, null, true, 'StoreItemWrapper');
+ * foreach ($items as $item) {
  *     // do something with each item object here ...
  * }
  * </code>
@@ -20,21 +25,8 @@
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreItem
  */
-class StoreItemWrapper extends DBWrapper
+class StoreItemWrapper extends SwatDBRecordsetWrapper
 {
-	/**
-	 * An array of StoreItem objects this wrapper returns
-	 *
-	 * @var array
-	 */
-	private $items;
-
-	/**
-	 * An internal array pointer pointing to the current array element
-	 *
-	 * @var integer
-	 */
-	private $current_item = 0;
 
 	/**
 	 * Creates a new wrapper object
@@ -48,34 +40,10 @@ class StoreItemWrapper extends DBWrapper
 	 */
 	public function __construct($rs)
 	{
+		$this->row_wrapper_class = 'StoreItem';
+		parent:__constuct($rs);
 	}
 
-	/**
-	 * Gets the next item from the items array
-	 *
-	 * @return the next item in the array, or null if there are no more items.
-	 */
-	public function getNextItem()
-	{
-	}
-	
-	/**
-	 * Returns whether or not this wrapper contains any items
-	 *
-	 * @return boolean
-	 */
-	public function isEmpty()
-	{
-	}
-
-	/**
-	 * Gets the number of items this wrapper contains
-	 *
-	 * @return integer the number of items this wrapper contains.
-	 */
-	public function getItemCount()
-	{
-	}
 }
 
 ?>
