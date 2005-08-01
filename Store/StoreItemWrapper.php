@@ -12,7 +12,7 @@ require_once 'Store/StoreItem.php';
  * The typical usage of this object is:
  *
  * <code>
- * $sql = 'select a bunch of items';
+ * $sql = '-- select a bunch of items here';
  * $items = $db->query($sql, null, true, 'StoreItemWrapper');
  * foreach ($items as $item) {
  *     // do something with each item object here ...

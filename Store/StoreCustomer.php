@@ -15,19 +15,41 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * 1. Create a new StoreCustomer object with a blank constructor. Modify some
  *    properties of the customer object and call the saveToDB() method. A new
  *    row is inserted into the database.
+ *
+ * <code>
+ * $new_customer = new StoreCustomer();
+ * $new_cusotmer->email = 'customer@example.com';
+ * $new_customer->fullname = 'Example Customer';
+ * $new_customer->saveToDB();
+ * </code>
+ *
  * 2. Create a new StoreCustomer object with a blank constructor. Call the
  *    loadFromDB() method on the object instance passing in a database id.
  *    Modify some properties and call the saveToDB() method. The modified 
  *    properties are updated in the database.
+ *
+ * <code>
+ * $customer = new StoreCustomer();
+ * $customer->loadFromDB(123);
+ * echo 'Hello ' . $customer->fullname;
+ * $customer->email = 'new_address@example.com;
+ * $customer->saveToDB();
+ * </code>
+ *
  * 3. Create a new StoreCustomer object passing a record set into the
  *    constructor. The first row of the record set will be loaded as the data
  *    for the object instance. Modify some properties and call the saveToDB()
  *    method. The modified properties are updated in the database.
  *
- *    Example usage as an MDB wrapper:
- *    <code>
- *    $customer = $db->query($sql, null, true, 'StoreCustomer');
- *    </code>
+ * Example usage as an MDB wrapper:
+ *
+ * <code>
+ * $sql = '-- select a customer here';
+ * $customer = $db->query($sql, null, true, 'StoreCustomer');
+ * echo 'Hello ' . $customer->fullname;
+ * $customer->email = 'new_address@example.com;
+ * $customer->saveToDB();
+ * </code>
  *
  * @package   Store
  * @copyright 2005 silverorange
