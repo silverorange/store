@@ -113,8 +113,8 @@ class StoreCartEntry
 	 * Combines an entry with this entry
 	 *
 	 * The quantity is updated to the sum of quantities of the two entries.
-	 * This is useful if you want to add entries to this cart that already
-	 * exist in this cart.
+	 * This is useful if you want to add entries to a cart that already has
+	 * an equivalent entry.
 	 *
 	 * @param StoreCartEntry $entry the entry to combine with this entry.
 	 */
