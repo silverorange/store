@@ -1,68 +1,77 @@
 <?php
 
 /**
- * Shopping-cart class for silverorange Store package
+ * A shopping-cart for an e-commerce web application
  *
  * This class contains cart functionality common to all sites. It is typically
- * extended on a per-site basis. For example, HortonCart.
+ * extended on a per-site basis. For example:
  *
- * StoreCart objects are created per-user and stored in the session.
- * A StoreCart contains a set of CartEntries.
+ * class HortonCart extends StoreCart
+ * {
+ * }
+ *
+ * StoreCart objects are created per-user and are stored in the session.
+ * StoreCart objects contain a collection of StoreCartEntry objects.
+ *
+ * @package   Store
+ * @copyright 2005 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreCart {
-
+abstract class StoreCart
+{
 	/**
 	 * The entries in this cart
 	 *
-	 * The entries are indexed from 0 to infinity. Most CartEntry lookup methods
-	 * use the array index to find entries.
+	 * The entries are indexed from 0 to infinity. Most CartEntry lookup
+	 * methods use the array index to find entries.
 	 *
 	 * @var array
-	 * @access private
 	 */
-	private var $entries;
+	private $entries;
 
 	/**
 	 * Adds a StoreCartEntry to this cart
 	 *
 	 * @param StoreCartEntry $cartEntry a reference to a StoreCartEntry to add.
-	 *
-	 * @access public
 	 */
-	public function addEntry($cartEntry);
+	public function addEntry($cartEntry)
+	{
+	}
 
 	/**
 	 * Removes a StoreCartEntry from this cart
 	 *
-	 * @param int $cartEntryId the index value of the StoreCartEntry to remove.
+	 * @param integer $cartEntryId the index value of the StoreCartEntry
+	 *                              to remove.
 	 *
 	 * @throws StoreCartEntryNotFoundException
-	 *
-	 * @access public
 	 */
-	public function removeEntryById($cartEntryId);
+	public function removeEntryById($cartEntryId)
+	{
+	}
 
 	/**
-	 * Gets the internal array of StoreCartEntries
+	 * Gets the internal array of StoreCartEntry objects.
 	 *
 	 * @return array an array of StoreCartEntry objects.
-	 *
-	 * @access public
 	 */
-	public function getEntries();
+	public function getEntries()
+	{
+	}
 
 	/**
-	 * Get a reference to a specific StoreCartEntry in this cart
+	 * Get a reference to a specific StoreCartEntry object in this cart
 	 *
-	 * @param int $cartEntryId the index value of the StoreCartEntry to get.
+	 * @param integer $cartEntryId the index value of the StoreCartEntry object
+	 *                              to get.
 	 *
 	 * @return StoreCartEntry
 	 *
 	 * @throws StoreCartEntryNotFoundException
-	 *
-	 * @access public
 	 */
-	public function getEntryById($cartEntryId);
+	public function getEntryById($cartEntryId)
+	{
+	}
 
 	/**
 	 * Returns an array of entries in the cart based on the database item id
@@ -70,53 +79,53 @@ class StoreCart {
 	 * An array is returned because database ids are not required to be unique
 	 * across StoreCartItems in a single cart.
 	 *
-	 * @param int $itemId the database id of the StoreItem in the cart to be
-	 *                     returned.
+	 * @param integer $itemId the database id of the StoreItem in the cart to
+	 *                         be returned.
 	 *
-	 * @return array and array of StoreCartEntries
-	 *
-	 * @access public
+	 * @return array an array of StoreCartEntry objects.
 	 */
-	public function getEntriesByItemId($itemId);
+	public function getEntriesByItemId($itemId)
+	{
+	}
 
 	/**
 	 * Removes all entries from this cart
 	 *
 	 * @return the array of StoreCartEntry objects that were removed from this
 	 *          cart.
-	 *
-	 * @access public
 	 */
-	public function removeAllEntries();
+	public function removeAllEntries()
+	{
+	}
 	
 	/**
 	 * Checks if this cart is empty
 	 *
 	 * @return boolean whether this cart is empty or not.
-	 *
-	 * @access public
 	 */
-	public function isEmpty();
+	public function isEmpty()
+	{
+	}
 	
 	/**
-	 * Gets the number of StoreCartEntry items in this cart
+	 * Gets the number of StoreCartEntry objects in this cart
 	 *
-	 * @return int the number of StoreCartEntry objects in this cart
-	 *
-	 * @access public
+	 * @return integer the number of StoreCartEntry objects in this cart
 	 */
-	public function getEntryCount();
+	public function getEntryCount()
+	{
+	}
 
 	/**
 	 * Returns the number of StoreItems in this cart
 	 *
 	 * The number is calculated based based on StoreCartEntry quantities.
 	 *
-	 * @return int the number of StoreItems in this cart.
-	 *
-	 * @access public
+	 * @return integer the number of StoreItems in this cart.
 	 */
-	public function getTotalQuantity();
+	public function getTotalQuantity()
+	{
+	}
 
 	/*
 	 * Implementation note:
@@ -135,21 +144,21 @@ class StoreCart {
 	 *                               from.
 	 *
 	 * @return double the value of tax for this cart.
-	 *
-	 * @access public
 	 */
-	public function getTaxCost($address);
+	public function getTaxCost($address)
+	{
+	}
 
 	/**
 	 * Gets the total cost for an order of the contents of this cart
 	 *
-	 * The total is calculated as subtotal + tax + shipping
+	 * The total is calculated as subtotal + tax + shipping.
 	 *
-	 * @return double the cost of this cart's contents
-	 *
-	 * @access public
+	 * @return double the cost of this cart's contents.
 	 */
-	public function getTotalCost();
+	public function getTotalCost()
+	{
+	}
 
 	/**
 	 * Gets the cost of shipping the contents of this cart to a location
@@ -161,21 +170,21 @@ class StoreCart {
 	 * @param StoreShipmentMethod $method the method the cart contents will be
 	 *                                     shipped via.
 	 *
-	 * @return double the cost of shipping this order
-	 *
-	 * @access public
+	 * @return double the cost of shipping this order.
 	 */
-	public function getShippingCost($address, $method);
+	public function getShippingCost($address, $method)
+	{
+	}
 
 	/**
-	 * Gets the cost of the StoreCartEntries in this cart
+	 * Gets the cost of the StoreCartEntry objects in this cart
 	 *
 	 * @return double the sum of the extensions of all StoreCartEntry objects
 	 *                 in this cart.
-	 *
-	 * @access public
 	 */
-	public function getSubtotalCost();
+	public function getSubtotalCost()
+	{
+	}
 }
 
 ?>
