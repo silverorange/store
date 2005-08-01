@@ -1,5 +1,7 @@
 <?php
 
+require_once 'SwatDB/SwatDBDataObject.php';
+
 /**
  * An item for an e-commerce web application
  *
@@ -30,7 +32,7 @@
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreItemWrapper
  */
-class StoreItem
+class StoreItem extends SwatDBDataObject
 {
 	/**
 	 * The id in the database
