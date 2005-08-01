@@ -12,9 +12,9 @@ require_once 'SwatDB/SwatDBDataObject.php';
  *
  * There are three typical ways to use a StoreCustomer object:
  *
- * 1. Create a new StoreCustomer object with a blank constructor. Modify some
- *    properties of the customer object and call the saveToDB() method. A new
- *    row is inserted into the database.
+ * - Create a new StoreCustomer object with a blank constructor. Modify some
+ *   properties of the customer object and call the saveToDB() method. A new
+ *   row is inserted into the database.
  *
  * <code>
  * $new_customer = new StoreCustomer();
@@ -23,10 +23,10 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * $new_customer->saveToDB();
  * </code>
  *
- * 2. Create a new StoreCustomer object with a blank constructor. Call the
- *    loadFromDB() method on the object instance passing in a database id.
- *    Modify some properties and call the saveToDB() method. The modified 
- *    properties are updated in the database.
+ * - Create a new StoreCustomer object with a blank constructor. Call the
+ *   loadFromDB() method on the object instance passing in a database id.
+ *   Modify some properties and call the saveToDB() method. The modified 
+ *   properties are updated in the database.
  *
  * <code>
  * $customer = new StoreCustomer();
@@ -36,10 +36,10 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * $customer->saveToDB();
  * </code>
  *
- * 3. Create a new StoreCustomer object passing a record set into the
- *    constructor. The first row of the record set will be loaded as the data
- *    for the object instance. Modify some properties and call the saveToDB()
- *    method. The modified properties are updated in the database.
+ * - Create a new StoreCustomer object passing a record set into the
+ *   constructor. The first row of the record set will be loaded as the data
+ *   for the object instance. Modify some properties and call the saveToDB()
+ *   method. The modified properties are updated in the database.
  *
  * Example usage as an MDB wrapper:
  *
