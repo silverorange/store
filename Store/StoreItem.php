@@ -46,7 +46,29 @@ class StoreItem extends SwatDBDataObject
 	public $status
 	public $price;
 	public $weight
-	public $hidePriceRange;
+	public $hide_price_range;
+
+	private $db_field_blacklist = array('addresses');
+
+	/**
+	 * Loads an item from the database into this object
+	 *
+	 * @param integer $id the database id of the item to load.
+	 *
+	 * @return boolean true if the item was found in the database and false
+	 *                  if the item was not found in the database.
+	 */
+	public function loadFromDB($id)
+	{
+		$fields = array_diff(array_keys($this->getProperties()), $this->db_field_blacklist);
+		$row = SwatDB::queryRow($this->app->db, 'items', $fields, 'item_id', $id);
+		$this->initFromRow($row);
+		$this->generatePropertyHashes();
+	}
+
+	public function saveToDB()
+	{
+	}
 }
 
 class StoreItemView
