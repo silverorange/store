@@ -1,6 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDB.php';
 require_once 'SwatDB/SwatDBRecordsetWrapper.php';
 require_once 'Store/StoreItem.php';
 
@@ -27,7 +26,6 @@ require_once 'Store/StoreItem.php';
  */
 class StoreItemWrapper extends SwatDBRecordsetWrapper
 {
-
 	/**
 	 * Creates a new wrapper object
 	 *
