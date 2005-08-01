@@ -6,9 +6,11 @@
  * This class contains cart functionality common to all sites. It is typically
  * extended on a per-site basis. For example:
  *
+ * <code>
  * class HortonCart extends StoreCart
  * {
  * }
+ * </code>
  *
  * StoreCart objects are created per-user and are stored in the session.
  * StoreCart objects contain a collection of StoreCartEntry objects.
