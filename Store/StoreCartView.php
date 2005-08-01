@@ -34,8 +34,14 @@ abstract class StoreCartView
 	 */
 	private $cart;
 
-	public function __construct($cart)
+	/**
+	 * Creates a new cart viewer
+	 *
+	 * @param StoreCart $cart a reference to the cart to view.
+	 */
+	public function __construct(StoreCart $cart)
 	{
+		$this->cart = $cart;
 	}
 
 	/**
@@ -52,6 +58,7 @@ abstract class StoreCartView
 	 */
 	public function getCart()
 	{
+		return $this->cart;
 	}
 
 	/**
@@ -59,8 +66,9 @@ abstract class StoreCartView
 	 *
 	 * @param StoreCart $cart a reference to the cart to view.
 	 */
-	public function setCart($cart)
+	public function setCart(StoreCart $cart)
 	{
+		$this->cart = $cart;
 	}
 }
 

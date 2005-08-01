@@ -1,6 +1,7 @@
 <?php
 
-class StoreProduct {
+class StoreProduct
+{
 }
 
 ?>
