@@ -14,8 +14,27 @@ require_once 'SwatDB/SwatDBDataObject.php';
  */
 class StoreAddress extends SwatDBDataObject
 {
+	/**
+	 * The country code of this address
+	 *
+	 * Examples: CA, US, GB
+	 *
+	 * @var string
+	 */
 	public $country;
+
+	/**
+	 * The province or state of this address
+	 *
+	 * @var string
+	 */
 	public $provstate;
+
+	/**
+	 * The zip or postal code of this address
+	 *
+	 * @var string
+	 */
 	public $zipcode;
 
 	/**
@@ -28,16 +47,19 @@ class StoreAddress extends SwatDBDataObject
 	 */
 	public function loadFromDB($id)
 	{
-		$fields = array_diff(array_keys($this->getProperties()), $this->db_field_blacklist);
-		$values = SwatDB::queryRow($this->app->db, 'addresses', $fields, 'addressid', $id);
+		$fields = array_diff(array_keys($this->getProperties()),
+			$this->db_field_blacklist);
+		
+		$values = SwatDB::queryRow($this->app->db, 'addresses',
+			$fields, 'addressid', $id);
+		
 		$this->setValues($values);
 		$this->generatePropertyHashes();
 	}
+
+	public function saveToDB()
+	{
+	}
 }
 
-/*
- * Implementation note:
- *  use same pattern as for customer to load addresses and then use the load
- *  methods in the customer methods
- */
-
+?>
