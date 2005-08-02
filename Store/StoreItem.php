@@ -70,12 +70,12 @@ class StoreItem extends SwatDBDataObject
 	public $unit;
 
 	/**
-	 * @var
+	 * @var ???
 	 */
 	public $tag;
 
 	/**
-	 * @var
+	 * @var ???
 	 */
 	public $status
 
