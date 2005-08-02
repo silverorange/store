@@ -36,18 +36,75 @@ class StoreItem extends SwatDBDataObject
 {
 	/**
 	 * The id in the database
+	 *
+	 * @var integer
 	 */
 	public $id;
-	public $title;
-	public $description;
-	public $show;
-	public $unit;
-	public $tag;
-	public $status
-	public $price;
-	public $weight
-	public $hide_price_range;
 
+	/**
+	 * The visible title of this item
+	 *
+	 * @var string
+	 */
+	public $title;
+
+	/**
+	 * A short description of this item
+	 *
+	 * @var string
+	 */
+	public $description;
+
+	/**
+	 * Whether or not this item is to be shown on the site
+	 *
+	 * @var boolean
+	 */
+	public $show;
+
+	/**
+	 * The unit of measurement of this item
+	 *
+	 * @var ???
+	 */
+	public $unit;
+
+	/**
+	 * @var
+	 */
+	public $tag;
+
+	/**
+	 * @var
+	 */
+	public $status
+
+	/**
+	 * The unit cost of this item
+	 *
+	 * @var double
+	 */
+	public $price;
+
+	/**
+	 * The unit weight of this item (in kg)
+	 *
+	 * @var double
+	 */
+	public $weight
+
+	/**
+	 * Whether or not to show the price range of this item on the site
+	 *
+	 * @var boolean
+	 */
+	public $show_price_range;
+
+	/**
+	 * An array of property names of this object that are not database fields
+	 *
+	 * @var array
+	 */
 	private $db_field_blacklist = array('addresses');
 
 	/**
@@ -60,27 +117,28 @@ class StoreItem extends SwatDBDataObject
 	 */
 	public function loadFromDB($id)
 	{
-		$fields = array_diff(array_keys($this->getProperties()), $this->db_field_blacklist);
-		$row = SwatDB::queryRow($this->app->db, 'items', $fields, 'item_id', $id);
+		$fields = array_diff(array_keys($this->getProperties()),
+			$this->db_field_blacklist);
+
+		$row = SwatDB::queryRow($this->app->db, 'items',
+			$fields, 'item_id', $id);
+
 		$this->initFromRow($row);
 		$this->generatePropertyHashes();
 	}
 
+	/**
+	 * Saves this item object to the database
+	 *
+	 * Only modified properties are updated and if this item does not have
+	 * an id set or the id is 0 then it is inserted instead of updated.
+	 *
+	 * @return boolean true on successfully saving and false on failure
+	 *                  to save.
+	 */
 	public function saveToDB()
 	{
 	}
-}
-
-class StoreItemView
-{
-	private $item;
-
-	public function __construct($item);
-
-	public function display();
-
-	public function getItem();
-	public function setItem($item);
 }
 
 ?>
