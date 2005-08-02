@@ -6,8 +6,8 @@ require_once 'Store/StoreCustomer.php';
 /**
  * A wrapper class for loading StoreCustomer objects from the database
  *
- * If there are many StoreCustomer objects that must be loaded for a page request,
- * this class should be used to load the objects from a single query.
+ * If there are many StoreCustomer objects that must be loaded for a page
+ * request, this class should be used to load the objects from a single query.
  *
  * The typical usage of this object is:
  *
@@ -32,7 +32,7 @@ class StoreCustomerWrapper extends SwatDBRecordsetWrapper
 	 * The constructor takes the result set of a MDB2 query and translates
 	 * it into an array of objects.
 	 *
-	 * @param resource $rs the record set of the MDB2 query to get the customers.
+	 * @param mixed $rs the record set of the MDB2 query to get the customers.
 	 *
 	 * @access public
 	 */
