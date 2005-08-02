@@ -24,7 +24,7 @@ abstract class StoreCart
 	/**
 	 * The entries in this cart
 	 *
-	 * The entries are indexed from 0 to infinity. Most CartEntry lookup
+	 * The entries are indexed from 0 to infinity. Most StoreCartEntry lookup
 	 * methods use the array index to find entries.
 	 *
 	 * @var array
@@ -34,10 +34,25 @@ abstract class StoreCart
 	/**
 	 * Adds a StoreCartEntry to this cart
 	 *
-	 * @param StoreCartEntry $cartEntry a reference to a StoreCartEntry to add.
+	 * If an equivalent entry already exists in the cart, the two entries are
+	 * combined.
+	 *
+	 * @param StoreCartEntry $cartEntry the StoreCartEntry to add.
 	 */
-	public function addEntry($cartEntry)
+	public function addEntry(StoreCartEntry $cartEntry)
 	{
+		$already_in_cart = false;
+		foreach ($this->entries as $entry) {
+			if ($entry->compare($cartEntry) == 0) {
+				$already_in_cart = true;
+				$entry->combine($cartEntry);
+				break;
+			}
+		}
+
+		if (!$already_in_cart) {
+			$this->entries[] = $cartEntry;
+		}
 	}
 
 	/**
@@ -53,8 +68,8 @@ abstract class StoreCart
 	public function removeEntryById($cartEntryId)
 	{
 		if (isset($this->entries[$cartEntryId])) {
-			$entry = $this->entries[$cartEntryId];
-			unset($this->entries[$cartEntryId]);
+			$removed_entries = array_splice($this->entries, $cartEntryId, 1);
+			$entry = reset($removed_entries);
 			return $entry;
 		} else {
 			throw new SwatCartEntryNotFoundException();
@@ -104,7 +119,7 @@ abstract class StoreCart
 	{
 		$entries = array();
 		foreach ($this->entries as $entry) {
-			if ($entry->id == $itemId)
+			if ($entry->getItemId() == $itemId)
 				$entries[] = $entry;
 		}
 		return $entries;

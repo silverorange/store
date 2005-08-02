@@ -74,6 +74,16 @@ class StoreCartEntry
 	}
 
 	/**
+	 * Gets the id of hte item in this cart entry
+	 *
+	 * @return integer the id of the item of this cart entry.
+	 */
+	public function getItemId()
+	{
+		return $this->item->id;
+	}
+
+	/**
 	 * Gets the unit cost of the StoreItem for this cart entry
 	 *
 	 * @return double the unit cost of the StoreItem for this cart entry.
