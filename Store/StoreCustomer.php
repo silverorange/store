@@ -61,7 +61,7 @@ class StoreCustomer extends SwatDBDataObject
 	/**
 	 * The database id of this customer
 	 *
-	 * If this property is null or 0 when StoreCustoemr::saveToDB() method is
+	 * If this property is null or 0 when StoreCustomer::saveToDB() method is
 	 * called, a new customer is inserted in the database.
 	 *
 	 * @var string
