@@ -58,21 +58,63 @@ require_once 'SwatDB/SwatDBDataObject.php';
  */
 class StoreCustomer extends SwatDBDataObject
 {
+	/**
+	 * The database id of this customer
+	 *
+	 * If this property is null or 0 when StoreCustoemr::saveToDB() method is
+	 * called, a new customer is inserted in the database.
+	 *
+	 * @var string
+	 */
 	public $id;
+
+	/**
+	 * The full name of this customer
+	 *
+	 * @var string
+	 */
 	public $fullname;
+
+	/**
+	 * The email address of this customer
+	 *
+	 * @var string
+	 */
 	public $email;
+
+	/**
+	 * The phone number of this customer
+	 *
+	 * @var string
+	 */
 	public $phone;
+
+	/**
+	 * Whether or not this customer should receive email updates
+	 *
+	 * @var boolean
+	 */
 	public $emailupdate;
 
 	/**
+	 * The date this customer was created on
+	 *
 	 * @var Date
 	 */
 	public $createdate;
 	
 	/**
+	 * The time this customer last logged in
+	 *
 	 * @var Date
 	 */
 	public $lastlogin;
+
+	/**
+	 * Whether or not this is a simple account
+	 *
+	 * @var boolean
+	 */
 	public $simple;
 
 	/**
@@ -82,6 +124,12 @@ class StoreCustomer extends SwatDBDataObject
 	 * @var arrray
 	 */
 	private $addresses;
+
+	/**
+	 * An array of property names of this object that are not database fields
+	 *
+	 * @var array
+	 */
 	private $db_field_blacklist = array('addresses');
 
 	/**
@@ -102,6 +150,15 @@ class StoreCustomer extends SwatDBDataObject
 		// TODO: load complex properties here (like $addresses)
 	}
 
+	/**
+	 * Saves this customer object to the database
+	 *
+	 * Only modified properties are updated and if this customer does not have
+	 * an id set or the id is 0 then it is inserted instead of updated.
+	 *
+	 * @return boolean true on successfully saving and false on failure
+	 *                  to save.
+	 */
 	public function saveToDB()
 	{
 	}
