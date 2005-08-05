@@ -32,7 +32,7 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * $customer = new StoreCustomer();
  * $customer->loadFromDB(123);
  * echo 'Hello ' . $customer->fullname;
- * $customer->email = 'new_address@example.com;
+ * $customer->email = 'new_address@example.com';
  * $customer->saveToDB();
  * </code>
  *
@@ -48,7 +48,7 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * $sql = '-- select a customer here';
  * $customer = $db->query($sql, null, true, 'StoreCustomer');
  * echo 'Hello ' . $customer->fullname;
- * $customer->email = 'new_address@example.com;
+ * $customer->email = 'new_address@example.com';
  * $customer->saveToDB();
  * </code>
  *
