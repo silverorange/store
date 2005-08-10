@@ -27,13 +27,15 @@ abstract class StoreApplication extends SwatApplication {
 		$page = $this->instantiatePage($source);
 		$source_exp = explode('/', $source);
 
-		$page->app = $this;
-		$page->setSource($source_exp);
-		$page->build();
+		if ($page !== null) {
+			$page->app = $this;
+			$page->setSource($source_exp);
+			$page->build();
+		}
 		
-		if (!$page->found) {
+		if ($page === null || !$page->found) {
 			require_once('../include/pages/NotFoundPage.php');
-			$page =  new NotFoundPage();
+			$page = new NotFoundPage();
 			$page->app = $this;
 			$page->setSource($source_exp);
 			$page->build();
