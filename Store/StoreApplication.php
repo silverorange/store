@@ -105,7 +105,7 @@ abstract class StoreApplication extends SwatApplication
 		require_once('../include/pages/NotFoundPage.php');
 		$page = new NotFoundPage($this);
 		$this->setPage($page);
-		$page->build();
+		$page->buildPage();
 	}
 
     // }}}

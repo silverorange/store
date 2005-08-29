@@ -5,7 +5,8 @@
  */
 require_once('Swat/SwatPage.php');
 
-abstract class StorePage extends SwatPage {
+abstract class StorePage extends SwatPage
+{
 
 	public $found = false;
 
@@ -16,12 +17,23 @@ abstract class StorePage extends SwatPage {
 		$this->source = $source;
 	}
 
-	public function process() {
+	public function process()
+	{
 
 	}
 
-	public function build() {
+	public function buildPage()
+	{
+		$this->build();
+		$this->buildLast();
+	}
 
+	public function build()
+	{
+	}
+
+	public function buildLast()
+	{
 	}
 }
 
