@@ -17,22 +17,30 @@ abstract class StorePage extends SwatPage
 		$this->source = $source;
 	}
 
-	public function process()
+	public function init()
 	{
-
+		$this->initInternal();
 	}
 
-	public function buildPage()
+	public function process()
 	{
-		$this->build();
-		$this->buildLast();
+		$this->processInternal();
 	}
 
 	public function build()
 	{
+		$this->buildInternal();
 	}
 
-	public function buildLast()
+	protected function initInternal()
+	{
+	}
+
+	protected function processInternal()
+	{
+	}
+
+	protected function buildInternal()
 	{
 	}
 }
