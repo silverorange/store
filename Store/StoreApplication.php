@@ -2,6 +2,12 @@
 require_once('Swat/SwatApplication.php');
 require_once('MDB2.php');
 
+/**
+ * Web application class for a store
+ *
+ * @package Store
+ * @copyright silverorange 2004
+ */
 abstract class StoreApplication extends SwatApplication
 {
     // {{{ public properties
