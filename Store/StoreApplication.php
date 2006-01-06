@@ -10,12 +10,12 @@ require_once('MDB2.php');
  */
 abstract class StoreApplication extends SwatApplication
 {
-    // {{{ public properties
+	// {{{ public properties
 
 	public $db;
 
 	// }}}
-    // {{{ public function init()
+	// {{{ public function init()
 
 	/**
 	 * Initialize the application.
@@ -33,7 +33,7 @@ abstract class StoreApplication extends SwatApplication
 	abstract protected function getDSN();
 
 	// }}}
-    // {{{ public function resolvePage()
+	// {{{ public function resolvePage()
 
 	/**
 	 * Get the page object.
@@ -62,7 +62,7 @@ abstract class StoreApplication extends SwatApplication
 	}
 
 	// }}}
-    // {{{ abstract protected function instantiatePage()
+	// {{{ abstract protected function instantiatePage()
 
 	/**
 	 * Instantiates a page object.
@@ -71,7 +71,7 @@ abstract class StoreApplication extends SwatApplication
 	abstract protected function instantiatePage($source);
 
 	// }}}
-    // {{{ private function initDatabase()
+	// {{{ private function initDatabase()
 
 	private function initDatabase()
 	{
@@ -85,7 +85,7 @@ abstract class StoreApplication extends SwatApplication
 	}
 
 	// }}}
-    // {{{ public function replacePage()
+	// {{{ public function replacePage()
 
 	/**
 	 * Replace the page object
@@ -96,24 +96,24 @@ abstract class StoreApplication extends SwatApplication
 	 */
 	public function replacePage($source)
 	{
-		$newpage = $this->instantiatePage($source);
-		$this->setPage($newpage);
+		$new_page = $this->instantiatePage($source);
+		$this->setPage($new_page);
 	}
 
-    // }}}
-    // {{{ public function replacePageNotFound()
+	// }}}
+	// {{{ public function replacePageNotFound()
 
 	/**
 	 * Replace the page with the Not Found page
 	 */
-	public function replacePageNotFound()
+	public function replacePageNotFound($msg = null)
 	{
-		require_once('../include/pages/NotFoundPage.php');
-		$page = new NotFoundPage($this);
-		$this->setPage($page);
-		$page->buildPage();
+		$new_page = new NotFoundPage($this);
+		$this->setPage($new_page);
+		$this->page->setMessage($msg);
+		$this->page->build();
 	}
 
-    // }}}
+	// }}}
 }
 ?>
