@@ -49,11 +49,11 @@
 class StoreProduct extends SwatDBDataObject
 {
 	/**
-	 * The items associated with this product
+	 * Unique identifier
 	 *
-	 * @var array
+	 * @var integer
 	 */
-	private $items = array();
+	public $id;
 }
 
 ?>
