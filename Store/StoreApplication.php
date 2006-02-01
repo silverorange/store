@@ -1,5 +1,6 @@
 <?
 require_once('Swat/SwatApplication.php');
+require_once('Store/exceptions/StoreNotFoundException.php');
 require_once('MDB2.php');
 
 /**
@@ -14,6 +15,7 @@ abstract class StoreApplication extends SwatApplication
 
 	public $db;
 
+	public $exception_page_source = 'exception';
 	// }}}
 	// {{{ public function init()
 
@@ -24,7 +26,36 @@ abstract class StoreApplication extends SwatApplication
 	{
 		$this->initBaseHref(3);
 		$this->initDatabase();
-		$this->initPage();
+
+		try {
+			$this->initPage();
+		}
+		catch (StoreException $e) {
+			$this->replacePage($this->exception_page_source);
+			$this->page->setException($e);
+			$this->initPage();
+		}
+	}
+
+	// }}}
+	// {{{ public function run()
+
+	/**
+	 * Run the application.
+	 */
+	public function run()
+	{
+		try {
+			$this->getPage()->process();
+			$this->getPage()->build();
+		}
+		catch (StoreException $e) {
+			$this->replacePage($this->exception_page_source);
+			$this->page->setException($e);
+			$this->page->build();
+		}
+
+		$this->getPage()->layout->display();
 	}
 
 	// }}}
@@ -46,18 +77,8 @@ abstract class StoreApplication extends SwatApplication
 		
 		$page = $this->instantiatePage($source);
 		$source_exp = explode('/', $source);
+		$page->setSource($source_exp);
 
-		if ($page !== null) {
-			$page->setSource($source_exp);
-		}
-		
-		//if ($page === null || !$page->found) {
-		if ($page === null) {
-			require_once('../include/pages/NotFoundPage.php');
-			$page = new NotFoundPage($this);
-			$page->setSource($source_exp);
-		}
-		
 		return $page;
 	}
 
@@ -98,20 +119,6 @@ abstract class StoreApplication extends SwatApplication
 	{
 		$new_page = $this->instantiatePage($source);
 		$this->setPage($new_page);
-	}
-
-	// }}}
-	// {{{ public function replacePageNotFound()
-
-	/**
-	 * Replace the page with the Not Found page
-	 */
-	public function replacePageNotFound($msg = null)
-	{
-		$new_page = new NotFoundPage($this);
-		$this->setPage($new_page);
-		$this->page->setMessage($msg);
-		$this->page->build();
 	}
 
 	// }}}
