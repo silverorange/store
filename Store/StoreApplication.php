@@ -1,5 +1,7 @@
 <?
 require_once('Swat/SwatApplication.php');
+require_once('Store/StoreApplicationDatabaseModule.php');
+require_once('Store/StoreApplicationSessionModule.php');
 require_once('Store/exceptions/StoreNotFoundException.php');
 require_once('MDB2.php');
 
@@ -17,6 +19,26 @@ abstract class StoreApplication extends SwatApplication
 
 	public $exception_page_source = 'exception';
 	// }}}
+    // {{{ public function __construct()
+
+    /**
+     * Creates a new application object
+     *
+     * @param string $id a unique identifier for this application.
+     */
+    public function __construct($id)
+    {
+		parent::__construct($id);
+
+		$this->addModule(new StoreApplicationSessionModule($this));
+		$this->addModule(new StoreApplicationDatabaseModule($this));
+
+		// set up convenience references
+		$this->session = $this->modules['StoreApplicationSessionModule'];
+		$this->database = $this->modules['StoreApplicationDatabaseModule'];
+	}
+
+    // }}}
 	// {{{ public function init()
 
 	/**
@@ -25,7 +47,10 @@ abstract class StoreApplication extends SwatApplication
 	public function init()
 	{
 		$this->initBaseHref(3);
-		$this->initDatabase();
+		$this->initModules();
+
+		// set up convenience references
+		$this->db = $this->database->mdb2;
 
 		try {
 			$this->initPage();
@@ -59,11 +84,6 @@ abstract class StoreApplication extends SwatApplication
 	}
 
 	// }}}
-    // {{{ abstract protected function getDSN()
-
-	abstract protected function getDSN();
-
-	// }}}
 	// {{{ public function resolvePage()
 
 	/**
@@ -83,27 +103,6 @@ abstract class StoreApplication extends SwatApplication
 	}
 
 	// }}}
-	// {{{ abstract protected function instantiatePage()
-
-	/**
-	 * Instantiates a page object.
-	 * @return SwatPage A subclass of SwatPage is returned.
-	 */
-	abstract protected function instantiatePage($source);
-
-	// }}}
-	// {{{ private function initDatabase()
-
-	private function initDatabase()
-	{
-		// TODO: change to array /form of DSN and move parts to a secure include file.
-		$dsn = $this->getDSN();
-		$this->db = MDB2::connect($dsn);
-		$this->db->options['debug'] = true;
-
-		if (MDB2::isError($this->db))
-			throw new Exception('Unable to connect to database.');
-	}
 
 	// }}}
 	// {{{ public function replacePage()
