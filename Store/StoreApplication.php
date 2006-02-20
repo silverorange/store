@@ -1,7 +1,7 @@
 <?
 require_once('Swat/SwatApplication.php');
-require_once('Store/StoreApplicationDatabaseModule.php');
-require_once('Store/StoreApplicationSessionModule.php');
+require_once('Store/StoreDatabaseModule.php');
+require_once('Store/StoreSessionModule.php');
 require_once('Store/exceptions/StoreNotFoundException.php');
 require_once('MDB2.php');
 
@@ -30,12 +30,12 @@ abstract class StoreApplication extends SwatApplication
     {
 		parent::__construct($id);
 
-		$this->addModule(new StoreApplicationSessionModule($this));
-		$this->addModule(new StoreApplicationDatabaseModule($this));
+		$this->addModule(new StoreSessionModule($this));
+		$this->addModule(new StoreDatabaseModule($this));
 
 		// set up convenience references
-		$this->session = $this->modules['StoreApplicationSessionModule'];
-		$this->database = $this->modules['StoreApplicationDatabaseModule'];
+		$this->session = $this->modules['StoreSessionModule'];
+		$this->database = $this->modules['StoreDatabaseModule'];
 	}
 
     // }}}
