@@ -125,7 +125,11 @@ class StorePostalCodeEntry extends SwatEntry
 			return;
 
 		// taken from Wikipedia (http://en.wikipedia.org/wiki/UK_postcodes)
-		$regex = '/^([A-PR-UWYZ]\d\d?\d[ABD-HJLNP-UW-Z]{2}|[A-PR-UWYZ][A-HK-Y]\d\d?\d[ABD-HJLNP-UW-Z]{2}|[A-PR-UWYZ]\d[A-HJKSTUW]\d[ABD-HJLNP-UW-Z]{2}|[A-PR-UWYZ][A-HK-Y]\d[A-HJKRSTUW]\d[ABD-HJLNP-UW-Z]{2}|GIR0AA)$/u';
+		$regex = '/^[A-PR-UWYZ]\d\d?\d[ABD-HJLNP-UW-Z]{2}|'.
+			'[A-PR-UWYZ][A-HK-Y]\d\d?\d[ABD-HJLNP-UW-Z]{2}|'.
+			'[A-PR-UWYZ]\d[A-HJKSTUW]\d[ABD-HJLNP-UW-Z]{2}|'.
+			'[A-PR-UWYZ][A-HK-Y]\d[A-HJKRSTUW]\d[ABD-HJLNP-UW-Z]{2}|'.
+			'GIR0AA$/u';
 
 		if (preg_match($regex, $value) == 0) {
 			$message = new SwatMessage('The <strong>%s</strong> field must '.
