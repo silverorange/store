@@ -109,6 +109,9 @@ class StorePostalCodeEntry extends SwatEntry
 
 			$message->content_type = 'text/xml';
 			$this->addMessage($message);
+		} else {
+			// correctly formatted. make sure ZIP+4 is separated by a dash.
+			$value = str_replace(' ', '-', $value);
 		}
 
 		$this->value = $value;
