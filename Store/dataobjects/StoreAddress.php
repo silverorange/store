@@ -60,38 +60,6 @@ class StoreAddress extends SwatDBDataObject
 	public function saveToDB()
 	{
 	}
-	
-	/**
-	 * 
-	 *
-	 * @param MDB2_Driver $db
-	 * @param string $postal_code
-	 * @param integer $provstate
-	 *
-	 * @return boolean
-	 */
-	public static function validatePostalCode($db, $postal_code, $provstate)
-	{
-		$sql = sprintf('select country, pcode from provstates where id = %s',
-			$db->quote($provstate, 'integer'));
-
-		$row = SwatDB::queryRow($db, $sql);
-
-		if (strpos($postal_code, $row->pcode) !== 0)
-			return false;
-
-		switch ($row->country) {
-		case 'CA':
-			// translate commonly mis-written letters and numbers
-			$regexp = '/^[a-z]\d[a-z](\s)?\d[a-z]\d$/ui';
-			break;
-		case 'US':
-			$regexp = '/^\d{5}[- 0-9]*$/ui';
-			break;
-		}
-
-		return true;
-	}
 }
 
 ?>
