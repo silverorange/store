@@ -98,60 +98,14 @@ class StorePostalCodeEntry extends SwatEntry
 			$this->addMessage($message);
 		}
 
-		if ($province !== null) {
-			switch ($province) {
-				case 'NU':
-					$districts = array('X');
-					break;
-				case 'YT':
-					$districts = array('Y');
-					break;
-				case 'SK':
-					$districts = array('S');
-					break;
-				case 'QC':
-					$districts = array('G', 'H', 'J');
-					break;
-				case 'PE':
-					$districts = array('C');
-					break;
-				case 'ON':
-					$districts = array('M', 'K', 'N', 'L', 'P');
-					break;
-				case 'NS':
-					$districts = array('B');
-					break;
-				case 'NT':
-					$districts = array('X');
-					break;
-				case 'NL':
-					$districts = array('A');
-					break;
-				case 'NB':
-					$districts = array('E');
-					break;
-				case 'MB':
-					$districts = array('R');
-					break;
-				case 'AB':
-					$districts = array('T');
-					break;
-				case 'BC':
-					$districts = array('V');
-					break;
-				default:
-					$districts = array();
-					break;
-			}
+		if ($province !== null &&
+			!$this->validateByProvince($value, $province)) {
+			$message = new SwatMessage('The <strong>%s</strong> field '.
+				'must be a valid for the selected province.',
+				SwatMessage::ERROR);
 
-			if (!in_array($value{0}, $districts)) {
-				$message = new SwatMessage('The <strong>%s</strong> field '.
-					'must be a valid for the selected province.',
-					SwatMessage::ERROR);
-
-				$message->content_type = 'text/xml';
-				$this->addMessage($message);
-			}
+			$message->content_type = 'text/xml';
+			$this->addMessage($message);
 		}
 
 		if (strlen($value) > 3)
@@ -180,6 +134,14 @@ class StorePostalCodeEntry extends SwatEntry
 		} else {
 			// correctly formatted. make sure ZIP+4 is separated by a dash.
 			$value = str_replace(' ', '-', $value);
+		}
+
+		if ($state !== null && !$this->validateByState($value, $state)) {
+			$message = new SwatMessage('The <strong>%s</strong> field must '.
+				'valid for the selected state.', SwatMessage::ERROR);
+
+			$message->content_type = 'text/xml';
+			$this->addMessage($message);
 		}
 
 		$this->value = $value;
@@ -212,6 +174,295 @@ class StorePostalCodeEntry extends SwatEntry
 
 		$this->value = $value;
 	}
+
+	// {{{ public function validateByProvince()
+
+	/**
+	 * Validates a Canadian postal code by a province code
+	 *
+	 * @param string $code the postal code to validate.
+	 * @param string $province the two letter abbreviation of the Canadian
+	 *                          province to validate the postal code for.
+	 *
+	 * @return boolean true if the postal code is valid for the given province
+	 *                  and false if it is not.
+	 */
+	public function validateByProvince($code, $province)
+	{
+		switch ($province) {
+		case 'NU': // Nunavut
+			$districts = array('X');
+			break;
+		case 'YT': // Yukon Territory
+			$districts = array('Y');
+			break;
+		case 'SK': // Saskatchewan
+			$districts = array('S');
+			break;
+		case 'QC': // Quebec
+			$districts = array('G', 'H', 'J');
+			break;
+		case 'PE': // Prince Edward Island
+			$districts = array('C');
+			break;
+		case 'ON': // Ontario
+			$districts = array('M', 'K', 'N', 'L', 'P');
+			break;
+		case 'NS': // Nova Scotia
+			$districts = array('B');
+			break;
+		case 'NT': // Northwest Territories
+			$districts = array('X');
+			break;
+		case 'NL': // Newfoundland nad Labrador
+			$districts = array('A');
+			break;
+		case 'NB': // New Brunswick
+			$districts = array('E');
+			break;
+		case 'MB': // Manatoba
+			$districts = array('R');
+			break;
+		case 'AB': // Alberta
+			$districts = array('T');
+			break;
+		case 'BC': // British Columbia
+			$districts = array('V');
+			break;
+		default: // Not Found
+			$districts = array();
+			break;
+		}
+
+		return in_array($code{0}, $districts);
+	}
+
+	// }}}
+	// {{{ public function validateByState()
+
+	/**
+	 * Validates a United States ZIP Code by a state code
+	 *
+	 * @param string $code the ZIP Code to validate.
+	 * @param string $province the two letter FIPS 5-2 code of the American
+	 *                          state to validate the ZIP Code for. {@link
+	 *                          http://en.wikipedia.org/wiki/FIPS_state_code
+	 *                          FIPS codes may be found on Wikipedia}.
+	 *
+	 * @return boolean true if the ZIP Code is valid for the given state and
+	 *                  false if it is not.
+	 */
+	public function validateByState($code, $state)
+	{
+		/* 
+		 * Start and end ZIP codes by state taken from Wikipedia:
+		 * http://en.wikipedia.org/wiki/Image:ZIP_code_zones.png
+		 *  and
+		 * http://en.wikipedia.org/wiki/List_of_ZIP_Codes_in_the_United_States
+		 *
+		 * NOTE: Some codes overlap. Do not use this for reverse lookup of
+		 *       states.
+		 */
+		switch ($state) {
+		case 'PW': // Palau
+		case 'FM': // Micronesia
+		case 'MH': // Marshall Islands
+		case 'MP': // North Marina Islands
+		case 'GU': // Guam
+			$ranges = array('969' => '969');
+			break;
+		case 'AS': // American Samoa
+			$ranges = array('96799' => '96799');
+			break;
+		case 'AP': // American Forces (Pacific)
+			$ranges = array('962' => '966');
+			break;
+		case 'WA': // Washington
+			$ranges = array('980' => '994');
+			break;
+		case 'OR': // Oregon
+			$ranges = array('97' => '97');
+			break;
+		case 'HI': // Hawii
+			$ranges = array('967' => '968');
+			break;
+		case 'CA': // California
+			$ranges = array('900' => '961');
+			break;
+		case 'AK': // Alaska
+			$ranges = array('995' => '999');
+			break;
+		case 'WY': // Wyoming
+			$ranges = array('820' => '831');
+			break;
+		case 'UT': // Utah
+			$ranges = array('84' => '84');
+			break;
+		case 'NM': // New Mexico
+			$ranges = array('870' => '884');
+			break;
+		case 'NV': // Nevada
+			$ranges = array('889' => '899');
+			break;
+		case 'ID': // Idaho
+			$ranges = array('832' => '839');
+			break;
+		case 'CO': // Colorado
+			$ranges = array('80' => '81');
+			break;
+		case 'AZ': // Arizona
+			$ranges = array('85' => '86');
+			break;
+		case 'TX': // Texas
+			$ranges = array('75' => '79', '885' => '885');
+			break;
+		case 'OK': // Oklahoma
+			$ranges = array('73' => '74');
+			break;
+		case 'LA': // Louisiana
+			$ranges = array('700' => '715');
+			break;
+		case 'AR': // Arkansas
+			$ranges = array('716' => '729');
+			break;
+		case 'NE': // Nebraska
+			$ranges = array('68' => '69');
+			break;
+		case 'MO': // Missouri
+			$ranges = array('63' => '65');
+			break;
+		case 'KS': // Kansas
+			$ranges = array('66' => '67');
+			break;
+		case 'IL': // Illinois
+			$ranges = array('60' => '62');
+			break;
+		case 'WI': // Wisconsis
+			$ranges = array('53' => '54');
+			break;
+		case 'SD': // South Dakota
+			$ranges = array('57' => '57');
+			break;
+		case 'ND': // North Dakota
+			$ranges = array('58' => '58');
+			break;
+		case 'MT': // Montana
+			$ranges = array('59' => '59');
+			break;
+		case 'MN': // Minnesota
+			$ranges = array('550' => '567');
+			break;
+		case 'IA': // Iowa
+			$ranges = array('50' => '52');
+			break;
+		case 'OH': // Ohio
+			$ranges = array('43' => '45');
+			break;
+		case 'MI': // Michigan
+			$ranges = array('48' => '49');
+			break;
+		case 'KY': // Kentucky
+			$ranges = array('40' => '42');
+			break;
+		case 'IN': // Indiana
+			$ranges = array('46' => '47');
+			break;
+		case 'AA': // American Forces (America)
+			$ranges = array('340' => '340');
+			break;
+		case 'TN': // Tennessee
+			$ranges = array('370' => '385');
+			break;
+		case 'MS': // Mississippi
+			$ranges = array('386' => '399');
+			break;
+		case 'GA': // Georgia
+			$ranges = array('30' => '31', '39901' => '39901');
+			break;
+		case 'FL': // Flordia
+			$ranges = array('32' => '34');
+			break;
+		case 'AL': // Alabama
+			$ranges = array('35' => '36');
+			break;
+		case 'WV': // West Virginia
+			$ranges = array('247' => '269');
+			break;
+		case 'VA': // Virginia (partially overlaps with DC)
+			$ranges = array('220' => '246', '200' => '200');
+			break;
+		case 'SC': // South Carolina
+			$ranges = array('29' => '29');
+			break;
+		case 'NC': // North Carolina
+			$ranges = array('27' => '28');
+			break;
+		case 'MD': // Maryland
+			$ranges = array('206' => '219');
+			break;
+		case 'DC': // District of Columbia
+			$ranges = array('200' => '200', '202' => '205', '569' => '569');
+			break;
+		case 'PA': // Pennsylvania
+			$ranges = array('150' => '196');
+			break;
+		case 'NY': // New York
+			$ranges = array('10' => '14', '06390' => '06390',
+				'00501' => '00501', '00544' => '00544');
+
+			break;
+		case 'DE': // Delaware
+			$ranges = array('197' => '199');
+			break;
+		case 'VI': // Virgin Islands
+		case 'PR': // Puerto Rico
+			$ranges = array('006' => '007', '009' => '009');
+			break;
+		case 'AE': // American Forces (E)
+			$ranges = array('09' => '09');
+			break;
+		case 'VT': // Vermont
+			$ranges = array('05' => '05');
+			break;
+		case 'RI': // Rhode Island
+			$ranges = array('028' => '029');
+			break;
+		case 'NJ': // New Jersey
+			$ranges = array('07' => '08');
+			break;
+		case 'NH': // New Hampshire
+			$ranges = array('030' => '038');
+			break;
+		case 'MA': // Massachusetts
+			$ranges = array('010' => '027');
+			break;
+		case 'ME': // Maine
+			$ranges = array('039' => '049');
+			break;
+		case 'CT': // Connecticut
+			$ranges = array('06' => '06');
+			break;
+		case 'UM': // U.S. Minor Outlying Islands
+		default: // Not Found
+			$ranges = array('' => '');
+			break;
+		}
+
+		// is code between some start and end range?
+		$valid = false;
+		foreach ($ranges as $start => $end) {
+			$zip_start = substr($code, 0, strlen($start));
+			if ((integer)$zip_start >= (integer)$start &&
+				(integer)$zip_start <= (integer)$end) {
+				$valid = true;
+				break;
+			}
+		}
+
+		return $valid;
+	}
+
+	// }}}
 }
 
 ?>
