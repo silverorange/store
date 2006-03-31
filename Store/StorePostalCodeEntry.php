@@ -25,6 +25,18 @@ class StorePostalCodeEntry extends SwatEntry
 	public $country;
 
 	/**
+	 * An optional province or state to validate the postal code in
+	 *
+	 * This is a two letter abbreviation of the province or state. If the
+	 * province or state is specified, postal codes will be validated in the
+	 * province or state. Otherwise the postal code will just be validated
+	 * by country.
+	 *
+	 * @var string
+	 */
+	public $provstate;
+
+	/**
 	 * Processes this postal code entry widget
 	 *
 	 * The postal code is validated and formatted correctly.
@@ -35,13 +47,13 @@ class StorePostalCodeEntry extends SwatEntry
 
 		switch ($this->country) {
 		case 'CA':
-			$this->validateCA();
+			$this->validateCA($this->provstate);
 			break;
 		case 'US':
-			$this->validateUS();
+			$this->validateUS($this->provstate);
 			break;
 		case 'UK':
-			$this->validateUK();
+			$this->validateUK($this->provstate);
 			break;
 		}
 	}
@@ -49,7 +61,7 @@ class StorePostalCodeEntry extends SwatEntry
 	/**
 	 * Validates a Canadian postal code
 	 */
-	private function validateCA()
+	private function validateCA($province = null)
 	{
 		$value = trim($this->value);
 
@@ -86,6 +98,62 @@ class StorePostalCodeEntry extends SwatEntry
 			$this->addMessage($message);
 		}
 
+		if ($province !== null) {
+			switch ($province) {
+				case 'NU':
+					$districts = array('X');
+					break;
+				case 'YT':
+					$districts = array('Y');
+					break;
+				case 'SK':
+					$districts = array('S');
+					break;
+				case 'QC':
+					$districts = array('G', 'H', 'J');
+					break;
+				case 'PE':
+					$districts = array('C');
+					break;
+				case 'ON':
+					$districts = array('M', 'K', 'N', 'L', 'P');
+					break;
+				case 'NS':
+					$districts = array('B');
+					break;
+				case 'NT':
+					$districts = array('X');
+					break;
+				case 'NL':
+					$districts = array('A');
+					break;
+				case 'NB':
+					$districts = array('E');
+					break;
+				case 'MB':
+					$districts = array('R');
+					break;
+				case 'AB':
+					$districts = array('T');
+					break;
+				case 'BC':
+					$districts = array('V');
+					break;
+				default:
+					$districts = array();
+					break;
+			}
+
+			if (!in_array($value{0}, $districts)) {
+				$message = new SwatMessage('The <strong>%s</strong> field '.
+					'must be a valid for the selected province.',
+					SwatMessage::ERROR);
+
+				$message->content_type = 'text/xml';
+				$this->addMessage($message);
+			}
+		}
+
 		if (strlen($value) > 3)
 			$value = substr($value, 0, 3).' '.substr($value, 3, 3);
 
@@ -95,7 +163,7 @@ class StorePostalCodeEntry extends SwatEntry
 	/**
 	 * Validates a United States ZIP Code
 	 */
-	private function validateUS()
+	private function validateUS($state = null)
 	{
 		$value = trim($this->value);
 
@@ -120,7 +188,7 @@ class StorePostalCodeEntry extends SwatEntry
 	/**
 	 * Validates a United Kingdom postcode
 	 */
-	private function validateUK()
+	private function validateUK($county = null)
 	{
 		$value = trim($this->value);
 
