@@ -101,6 +101,9 @@ class StoreAddress extends SwatDBDataObject
 	{
 	}
 
+	/**
+	 * Displays this address in postal format
+	 */
 	public function display()
 	{
 		$br_tag = new SwatHtmlTag('br');
@@ -135,8 +138,31 @@ class StoreAddress extends SwatDBDataObject
 		$address_tag->close();
 	}
 
+	/**
+	 * Displays this address in a two-line condensed form
+	 *
+	 * This display is ideal for cell renderers.
+	 */
 	public function displayCondensed()
 	{
+		$br_tag = new SwatHtmlTag('br');
+		$address_tag = new SwatHtmlTag('address');
+		$address_tag->open();
+
+		echo SwatString::minimizeEntities($this->fullname), ', ';
+		echo SwatString::minimizeEntities($this->line1);
+		if ($this->line2 !== null)
+			echo ', ', SwatString::minimizeEntities($this->line2);
+
+		$br_tag->display();
+
+		echo SwatString::minimizeEntities($this->city), ', ';
+		echo SwatString::minimizeEntities($this->provstate->title), ', ';
+		echo SwatString::minimizeEntities($this->country->title);
+		if ($this->postalcode !== null)
+			echo ', ', SwatString::minimizeEntities($this->postalcode);
+
+		$address_tag->close();
 	}
 }
 
