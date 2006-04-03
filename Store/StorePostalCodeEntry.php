@@ -55,6 +55,8 @@ class StorePostalCodeEntry extends SwatEntry
 		case 'UK':
 			$this->validateUK($this->provstate);
 			break;
+		default: // No validation
+			break;
 		}
 	}
 
