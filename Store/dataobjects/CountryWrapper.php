@@ -1,22 +1,23 @@
 <?php
 
+require_once 'Store/dataobjects/StoreCountry.php';
+
 require_once 'SwatDB/SwatDBRecordsetWrapper.php';
-require_once 'Country.php';
 
 /**
- * A recordset wrapper class for Country objects
+ * A recordset wrapper class for StoreCountry objects
  *
- * @package   vesey2
+ * @package   Store
  * @copyright 2006 silverorange
- * @see       Country
+ * @see       StoreCountry
  */
-class CountryWrapper extends SwatDBRecordsetWrapper
+class StoreCountryWrapper extends SwatDBRecordsetWrapper
 {
 	// {{{ public function __construct()
 
 	public function __construct($rs)
 	{
-		$this->row_wrapper_class = 'Country';
+		$this->row_wrapper_class = 'StoreCountry';
 		parent::__construct($rs);
 	}
 
@@ -26,9 +27,9 @@ class CountryWrapper extends SwatDBRecordsetWrapper
 	public static function loadSetFromDB($db, $id_set)
 	{
 		$sql = 'select * from countries where id in (%s)';
-
 		$sql = sprintf($sql, $id_set);
-		return SwatDB::query($db, $sql, 'CountryWrapper');
+
+		return SwatDB::query($db, $sql, 'StoreCountryWrapper');
 	}
 
 	// }}}
