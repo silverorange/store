@@ -1,13 +1,13 @@
 <?php
 
 require_once 'SwatDB/SwatDBDataObject.php';
-require_once 'Country.php';
+require_once 'Store/dataobjects/StoreCountry.php';
 
 /**
+ * A province/state data object
  *
- *
- * @package   veseys2
- * @copyright silverorange 2006
+ * @package   Store
+ * @copyright 2006 silverorange
  */
 class ProvState extends SwatDBDataObject
 {
@@ -77,7 +77,7 @@ class ProvState extends SwatDBDataObject
 		$this->table = 'provstates';
 		$this->id_field = 'integer:id';
 
-		$this->registerInternalField('country', 'Country');
+		$this->registerInternalField('country', 'StoreCountry');
 	}
 
 	// }}}

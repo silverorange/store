@@ -3,10 +3,10 @@
 require_once 'SwatDB/SwatDBDataObject.php';
 
 /**
+ * A country data object
  *
- *
- * @package   veseys2
- * @copyright silverorange 2006
+ * @package   Store
+ * @copyright 2006 silverorange
  */
 class Country extends SwatDBDataObject
 {
@@ -15,7 +15,7 @@ class Country extends SwatDBDataObject
 	/**
 	 * 
 	 *
-	 * @var integer
+	 * @var string 
 	 */
 	public $id;
 
