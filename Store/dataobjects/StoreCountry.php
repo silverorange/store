@@ -8,7 +8,7 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * @package   Store
  * @copyright 2006 silverorange
  */
-class Country extends SwatDBDataObject
+class StoreCountry extends SwatDBDataObject
 {
 	// {{{ public properties
 
