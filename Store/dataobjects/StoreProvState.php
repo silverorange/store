@@ -9,7 +9,7 @@ require_once 'Store/dataobjects/StoreCountry.php';
  * @package   Store
  * @copyright 2006 silverorange
  */
-class ProvState extends SwatDBDataObject
+class StoreProvState extends SwatDBDataObject
 {
 	// {{{ public properties
 
