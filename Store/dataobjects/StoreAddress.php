@@ -1,7 +1,7 @@
 <?php
 
-require_once 'Store/StoreCountry.php';
-require_once 'Store/StoreProvState.php';
+require_once 'Store/dataobjects/StoreCountry.php';
+require_once 'Store/dataobjects/StoreProvState.php';
 
 require_once 'Swat/SwatHtmlTag.php';
 require_once 'Swat/SwatString.php';
