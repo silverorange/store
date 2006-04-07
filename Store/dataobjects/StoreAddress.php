@@ -23,6 +23,13 @@ require_once 'SwatDB/SwatDBDataObject.php';
 class StoreAddress extends SwatDBDataObject
 {
 	/**
+	 * Address identifier
+	 *
+	 * @var integer
+	 */
+	public $id;
+
+	/**
 	 * The full name of the address holder
 	 *
 	 * @var string
@@ -70,8 +77,10 @@ class StoreAddress extends SwatDBDataObject
 	 */
 	public $createdate;
 
-	public function init()
+	protected function init()
 	{
+		$this->id_field = 'integer:id';
+
 		$this->registerInternalField('provstate', 'StoreProvState');
 		$this->registerInternalField('country', 'StoreCountry');
 		$this->registerDateField('createdate');
