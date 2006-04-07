@@ -26,11 +26,14 @@ class StoreCartEntryWrapper extends SwatDBRecordsetWrapper
 	// }}}
 	// {{{ public static function loadSetFromDB()
 
+	/**
+	 * This should be re-implemented in site-level code.
+	 */
 	public static function loadSetFromDB($db, $id_set, $fields = '*')
 	{
 		$sql = 'select %s from cartentries where id in (%s)';
 		$sql = sprintf($sql, $fields, $id_set);
-		return SwatDB::query($db, $sql, 'StoreCartWrapper');
+		return SwatDB::query($db, $sql, __CLASS__);
 	}
 
 	// }}}
