@@ -2,6 +2,7 @@
 require_once('Swat/SwatApplication.php');
 require_once('Store/StoreDatabaseModule.php');
 require_once('Store/StoreSessionModule.php');
+require_once('Store/StoreCartModule.php');
 require_once('Store/exceptions/StoreNotFoundException.php');
 require_once('MDB2.php');
 
@@ -18,6 +19,13 @@ abstract class StoreApplication extends SwatApplication
 	public $db;
 
 	public $exception_page_source = 'exception';
+
+	protected $module_list = array(
+		'session'  => 'StoreSessionModule',
+		'database' => 'StoreDatabaseModule',
+		'cart'     => 'StoreCartModule'
+	);
+
 	// }}}
     // {{{ public function __construct()
 
@@ -30,12 +38,11 @@ abstract class StoreApplication extends SwatApplication
     {
 		parent::__construct($id);
 
-		$this->addModule(new StoreSessionModule($this));
-		$this->addModule(new StoreDatabaseModule($this));
-
-		// set up convenience references
-		$this->session = $this->modules['StoreSessionModule'];
-		$this->database = $this->modules['StoreDatabaseModule'];
+		foreach ($this->module_list as $name => $class) {
+			$this->addModule(new $class($this));
+			// set up convenience reference
+			$this->$name = $this->modules[$class];
+		}
 	}
 
     // }}}
