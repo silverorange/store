@@ -15,6 +15,14 @@ require_once 'Store/dataobjects/StoreCartEntryWrapper.php';
  */
 class StoreCartModule extends SwatApplicationModule
 {
+    // {{{ public function init()
+
+	public function init()
+	{
+	}
+
+    // }}}
+
 	/**
 	 * The entries in this cart
 	 *
