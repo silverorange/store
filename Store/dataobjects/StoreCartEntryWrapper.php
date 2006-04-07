@@ -15,25 +15,12 @@ require_once 'Store/dataobjects/StoreCartEntry.php';
  */
 class StoreCartEntryWrapper extends SwatDBRecordsetWrapper
 {
-	// {{{ public function __construct()
+	// {{{ protected function init()
 
-	public function __construct($rs)
+	protected function init()
 	{
+		parent::init();
 		$this->row_wrapper_class = 'StoreCartEntry';
-		parent::__construct($rs);
-	}
-
-	// }}}
-	// {{{ public static function loadSetFromDB()
-
-	/**
-	 * This should be re-implemented in site-level code.
-	 */
-	public static function loadSetFromDB($db, $id_set, $fields = '*')
-	{
-		$sql = 'select %s from cartentries where id in (%s)';
-		$sql = sprintf($sql, $fields, $id_set);
-		return SwatDB::query($db, $sql, __CLASS__);
 	}
 
 	// }}}

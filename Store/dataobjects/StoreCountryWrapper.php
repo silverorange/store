@@ -13,15 +13,6 @@ require_once 'SwatDB/SwatDBRecordsetWrapper.php';
  */
 class StoreCountryWrapper extends SwatDBRecordsetWrapper
 {
-	// {{{ public function __construct()
-
-	public function __construct($rs)
-	{
-		$this->row_wrapper_class = 'StoreCountry';
-		parent::__construct($rs);
-	}
-
-	// }}}
 	// {{{ public static function loadSetFromDB()
 
 	public static function loadSetFromDB($db, $id_set)
@@ -30,6 +21,15 @@ class StoreCountryWrapper extends SwatDBRecordsetWrapper
 		$sql = sprintf($sql, $id_set);
 
 		return SwatDB::query($db, $sql, 'StoreCountryWrapper');
+	}
+
+	// }}}
+	// {{{ protected function init()
+
+	protected function init()
+	{
+		parent::init();
+		$this->row_wrapper_class = 'StoreCountry';
 	}
 
 	// }}}
