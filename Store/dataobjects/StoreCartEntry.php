@@ -1,5 +1,10 @@
 <?php
 
+require_once 'Store/dataobjects/StoreItem.php';
+require_once 'Store/dataobjects/StoreAccount.php';
+
+require_once 'SwatDB/SwatDBDataObject.php';
+
 /**
  * An entry in a shopping cart for an e-commerce web application
  *
@@ -7,7 +12,7 @@
  * things like special finishes or engraving information that is not specific
  * to an item, but is specific to an item in a customer's shopping cart.
  *
- * For specific sites, this class will be subclassed to provide specific
+ * For specific sites, this class must be subclassed to provide specific
  * features. For example, on a site supporting the engraving of items, a
  * subclass of this class could have a getEngravingCost() method.
  *
@@ -17,18 +22,27 @@
  * subclassing this class to add these toString() methods.
  *
  * @package   Store
- * @copyright 2005 silverorange
+ * @copyright 2005-2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreCart
  */
-class StoreCartEntry
+abstract class StoreCartEntry extends SwatDBDataObject
 {
 	/**
-	 * A reference to a StoreItem object
+	 * The id of this cart entry
 	 *
-	 * @var StoreItem
+	 * @var string
 	 */
-	private $item;
+	public $id;
+
+	/**
+	 * The session this cart belongs to
+	 *
+	 * If this cart does not belong to an account, it must belong to a session.
+	 *
+	 * @var string
+	 */
+	public $sessionid;
 
 	/**
 	 * Number of individual items in this cart entry
@@ -39,18 +53,18 @@ class StoreCartEntry
 	 *
 	 * @var integer
 	 */
-	private $quantity;
+	public $quantity;
 
 	/**
-	 * Creates a new StoreCartItem
+	 * Sets up this cart entry data object
 	 *
-	 * @param StoreItem $item a reference to the item that this entry holds.
-	 * @param integer $quantity the number of individual items in this entry.
+	 * IMPORTANT:
+	 * You better override this in your subclass or you'll get weird errors.
 	 */
-	public function __construct(StoreItem $item, $quantity)
+	protected function init()
 	{
-		$this->item = $item;
-		$this->quantity = (int)$quantity;
+		$this->registerInternalField('item', 'StoreItem');
+		$this->registerInternalField('account', 'StoreAccount');
 	}
 
 	/**
@@ -70,15 +84,15 @@ class StoreCartEntry
 	 */
 	public function setQuantity($quantity)
 	{
-		$this->quantity = (int)$quantity;
+		$this->quantity = (integer)$quantity;
 	}
 
 	/**
-	 * Gets the id of hte item in this cart entry
+	 * Gets the SKU of the item in this cart entry
 	 *
-	 * @return integer the id of the item of this cart entry.
+	 * @return integer the SKU of the item of this cart entry.
 	 */
-	public function getItemId()
+	public function getItemSKU()
 	{
 		return $this->item->id;
 	}
@@ -90,6 +104,7 @@ class StoreCartEntry
 	 */
 	public function getItemCost()
 	{
+		return $this->item->price;
 	}
 	
 	/**
@@ -102,6 +117,7 @@ class StoreCartEntry
 	 */
 	public function getExtensionCost()
 	{
+		return ($this->item->price * $this->quantity);
 	}
 
 	/**
@@ -117,6 +133,16 @@ class StoreCartEntry
 	 */
 	public function compare(StoreCartEntry $entry)
 	{
+		$comp = strcmp($this->getItemSKU(), $entry->getItemSKU());
+
+		if ($comp == 0) {
+			if ($this->getQuantity() < $entry->getQuantity()) {
+				$comp = -1;
+			elseif ($this->getQuantity() > $entry->getQuantity())
+				$comp = 1;
+		}
+
+		return $comp;
 	}
 
 	/**
@@ -130,7 +156,8 @@ class StoreCartEntry
 	 */
 	public function combine(StoreCartEntry $entry)
 	{
-		$this->quantity += $entry->getQuantity();
+		if (strcmp($this->getItemSKU(), $entry->getItemSKU()) == 0)
+			$this->quantity += $entry->getQuantity();
 	}
 }
 
