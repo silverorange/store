@@ -121,7 +121,7 @@ abstract class StoreCartEntry extends SwatDBDataObject
 	}
 
 	/**
-	 * Compares this entry with another entry
+	 * Compares this entry with another entry by item
 	 *
 	 * @param StoreCartEntry $entry the entry to compare this entry to.
 	 *
@@ -133,16 +133,7 @@ abstract class StoreCartEntry extends SwatDBDataObject
 	 */
 	public function compare(StoreCartEntry $entry)
 	{
-		$comp = strcmp($this->getItemSKU(), $entry->getItemSKU());
-
-		if ($comp == 0) {
-			if ($this->getQuantity() < $entry->getQuantity())
-				$comp = -1;
-			elseif ($this->getQuantity() > $entry->getQuantity())
-				$comp = 1;
-		}
-
-		return $comp;
+		return strcmp($this->getItemSKU(), $entry->getItemSKU());
 	}
 
 	/**
