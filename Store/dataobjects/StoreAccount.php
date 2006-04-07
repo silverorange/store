@@ -57,7 +57,7 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreCustomerWrapper
  */
-class StoreCustomer extends SwatDBDataObject
+class StoreAccount extends SwatDBDataObject
 {
 	/**
 	 * The database id of this customer
