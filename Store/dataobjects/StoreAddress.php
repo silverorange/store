@@ -78,30 +78,6 @@ class StoreAddress extends SwatDBDataObject
 	}
 
 	/**
-	 * Loads an address from the database into this object
-	 *
-	 * @param integer $id the database id of the address to load.
-	 *
-	 * @return boolean true if the address was found in the database and false
-	 *                  if the address was not found in the database.
-	 */
-	public function loadFromDB($id)
-	{
-		$fields = array_diff(array_keys($this->getProperties()),
-			$this->db_field_blacklist);
-		
-		$values = SwatDB::queryRow($this->app->db, 'addresses',
-			$fields, 'addressid', $id);
-		
-		$this->setValues($values);
-		$this->generatePropertyHashes();
-	}
-
-	public function saveToDB()
-	{
-	}
-
-	/**
 	 * Displays this address in postal format
 	 */
 	public function display()
