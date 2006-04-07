@@ -88,6 +88,9 @@ class StoreAddress extends SwatDBDataObject
 
 	/**
 	 * Displays this address in postal format
+	 *
+	 * Address format rules are taken from {@link Canada Post
+	 * http://canadapost.ca/personal/tools/pg/manual/b03-e.asp}
 	 */
 	public function display()
 	{
@@ -107,18 +110,15 @@ class StoreAddress extends SwatDBDataObject
 		}
 
 		echo SwatString::minimizeEntities($this->city);
-		$br_tag->display();
-
-		echo SwatString::minimizeEntities($this->provstate->title);
+		echo SwatString::minimizeEntities($this->provstate->abbrev);
+		if ($this->postalcode !== null) {
+			echo '&nbsp;&nbsp;';
+			echo SwatString::minimizeEntities($this->postalcode);
+		}
 		$br_tag->display();
 
 		echo SwatString::minimizeEntities($this->country->title);
 		$br_tag->display();
-
-		if ($this->postalcode !== null) {
-			echo SwatString::minimizeEntities($this->postalcode);
-			$br_tag->display();
-		}
 
 		$address_tag->close();
 	}
@@ -141,11 +141,16 @@ class StoreAddress extends SwatDBDataObject
 
 		$br_tag->display();
 
-		echo SwatString::minimizeEntities($this->city), ', ';
-		echo SwatString::minimizeEntities($this->provstate->title), ', ';
+		echo SwatString::minimizeEntities($this->city), ' ';
+		echo SwatString::minimizeEntities($this->provstate->abbrev);
+
+		if ($this->postalcode !== null) {
+			echo '&nbsp;&nbsp;';
+			echo SwatString::minimizeEntities($this->postalcode);
+		}
+		echo ', ';
+
 		echo SwatString::minimizeEntities($this->country->title);
-		if ($this->postalcode !== null)
-			echo ', ', SwatString::minimizeEntities($this->postalcode);
 
 		$address_tag->close();
 	}
