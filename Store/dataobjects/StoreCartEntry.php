@@ -136,7 +136,7 @@ abstract class StoreCartEntry extends SwatDBDataObject
 		$comp = strcmp($this->getItemSKU(), $entry->getItemSKU());
 
 		if ($comp == 0) {
-			if ($this->getQuantity() < $entry->getQuantity()) {
+			if ($this->getQuantity() < $entry->getQuantity())
 				$comp = -1;
 			elseif ($this->getQuantity() > $entry->getQuantity())
 				$comp = 1;
