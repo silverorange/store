@@ -73,6 +73,8 @@ abstract class StoreCartModule extends SwatApplicationModule
 	 */
 	public function addEntry(StoreCartEntry $cart_entry)
 	{
+		$cart_entry->setDatabase($this->app->db);
+
 		$already_in_cart = false;
 
 		// check for item
@@ -84,10 +86,8 @@ abstract class StoreCartModule extends SwatApplicationModule
 			}
 		}
 
-		if (!$already_in_cart) {
-			$cart_entry->setDatabase($this->app->db);
+		if (!$already_in_cart)
 			$this->entries[] = $cart_entry;
-		}
 	}
 
 	/**
