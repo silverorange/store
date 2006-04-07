@@ -19,6 +19,7 @@ class StoreCartModule extends SwatApplicationModule
 
 	public function init()
 	{
+		$this->load();
 	}
 
     // }}}
@@ -26,12 +27,42 @@ class StoreCartModule extends SwatApplicationModule
 	/**
 	 * The entries in this cart
 	 *
-	 * The entries are indexed from 0 to infinity. Most StoreCartEntry lookup
+	 * This is an array of StoreCartEntry data objects.
+	 *
+	 * The array is indexed by entry ids. Most StoreCartEntry lookup
 	 * methods use the array index to find entries.
 	 *
 	 * @var array
 	 */
-	//private $entries;
+	protected $entries;
+
+	/**
+	 * An array of cart entries that were removed from the cart
+	 *
+	 * After the cart is loaded and before it is saved, this array keeps track
+	 * of entries there were removed from the cart. The array is unindexed.
+	 *
+	 * @var array
+	 */
+	protected $removed_entries;
+
+	/**
+	 * Loads this cart
+	 *
+	 * Subclasses may load this cart from the database, a session or using some
+	 * other method.
+	 */
+	public abstract function load();
+
+	/**
+	 * Saves this cart
+	 *
+	 * Subclasses may save this cart to the database, a session or some other
+	 * storage medium.
+	 *
+	 * @see StoreCartModule::load()
+	 */
+	public abstract function save();
 
 	/**
 	 * Adds a StoreCartEntry to this cart
@@ -41,45 +72,47 @@ class StoreCartModule extends SwatApplicationModule
 	 *
 	 * @param StoreCartEntry $cartEntry the StoreCartEntry to add.
 	 */
-	public function addEntry(StoreCartEntry $cartEntry)
+	public function addEntry(StoreCartEntry $cart_entry)
 	{
 		$already_in_cart = false;
+
+		// check for item
 		foreach ($this->entries as $entry) {
-			if ($entry->compare($cartEntry) == 0) {
+			if ($entry->compare($cart_entry) == 0) {
 				$already_in_cart = true;
-				$entry->combine($cartEntry);
+				$entry->combine($cart_entry);
 				break;
 			}
 		}
 
-		if (!$already_in_cart) {
+		if (!$already_in_cart)
 			$this->entries[] = $cartEntry;
-		}
 	}
 
 	/**
 	 * Removes a StoreCartEntry from this cart
 	 *
-	 * @param integer $cartEntryId the index value of the StoreCartEntry
-	 *                              to remove.
+	 * @param integer $entry_id the index value of the StoreCartEntry object
+	 *                           to remove.
 	 *
-	 * @return StoreCartEntry the entry that was removed.
-	 *
-	 * @throws StoreCartEntryNotFoundException
+	 * @return StoreCartEntry the entry that was removed or null if no entry
+	 *                         was removed.
 	 */
-	public function removeEntryById($cartEntryId)
+	public function removeEntryById($entry_id)
 	{
-		if (isset($this->entries[$cartEntryId])) {
-			$removed_entries = array_splice($this->entries, $cartEntryId, 1);
-			$entry = reset($removed_entries);
-			return $entry;
+		if (isset($this->entries[$entry_id])) {
+			$old_entry = $this->entries[$entry_id];
+			unset($this->entries[$entry_id]);
+			$this->removed_entries[] = $old_entry;
 		} else {
-			throw new SwatCartEntryNotFoundException();
+			$old_entry = null;
 		}
+
+		return $old_entry;
 	}
 
 	/**
-	 * Gets the internal array of StoreCartEntry objects.
+	 * Gets a reference to the internal array of StoreCartEntry objects.
 	 *
 	 * @return array an array of StoreCartEntry objects.
 	 */
@@ -91,19 +124,20 @@ class StoreCartModule extends SwatApplicationModule
 	/**
 	 * Get a reference to a specific StoreCartEntry object in this cart
 	 *
-	 * @param integer $cartEntryId the index value of the StoreCartEntry object
-	 *                              to get.
+	 * @param integer $entry_id the index value of the StoreCartEntry object
+	 *                           to get.
 	 *
-	 * @return StoreCartEntry
-	 *
-	 * @throws StoreCartEntryNotFoundException
+	 * @return StoreCartEntry the entry with the given id in this cart of null
+	 *                         if no such entry exists.
 	 */
-	public function getEntryById($cartEntryId)
+	public function getEntryById($entry_id)
 	{
-		if (isset($this->entries[$cartEntryId]))
-			return $this->entries[$cartEntryId];
+		if (isset($this->entries[$entry_id]))
+			$entry = $this->entries[$entry_id];
 		else
-			throw new SwatCartEntryNotFoundException();
+			$entry = null;
+
+		return $entry;
 	}
 
 	/**
@@ -112,16 +146,16 @@ class StoreCartModule extends SwatApplicationModule
 	 * An array is returned because database ids are not required to be unique
 	 * across StoreCartItems in a single cart.
 	 *
-	 * @param integer $itemId the database id of the StoreItem in the cart to
-	 *                         be returned.
+	 * @param integer $item_id the database id of the StoreItem in the cart to
+	 *                          be returned.
 	 *
 	 * @return array an array of StoreCartEntry objects.
 	 */
-	public function &getEntriesByItemId($itemId)
+	public function &getEntriesByItemId($item_id)
 	{
 		$entries = array();
 		foreach ($this->entries as $entry) {
-			if ($entry->getItemId() == $itemId)
+			if ($entry->getItemId() == $item_id)
 				$entries[] = $entry;
 		}
 		return $entries;
@@ -143,7 +177,7 @@ class StoreCartModule extends SwatApplicationModule
 	/**
 	 * Checks if this cart is empty
 	 *
-	 * @return boolean whether this cart is empty or not.
+	 * @return boolean true if this cart is empty and false if it is not.
 	 */
 	public function isEmpty()
 	{
@@ -169,6 +203,12 @@ class StoreCartModule extends SwatApplicationModule
 	 */
 	public function getTotalQuantity()
 	{
+		$total_quantity = 0;
+
+		foreach ($this->entries as $entry)
+			$total_quantity += $entry->getQuantity();
+
+		return $total_quantity;
 	}
 
 	/*
@@ -216,9 +256,7 @@ class StoreCartModule extends SwatApplicationModule
 	 *
 	 * @return double the cost of shipping this order.
 	 */
-	public function getShippingCost($address, $method)
-	{
-	}
+	public abstract function getShippingCost($address, $method);
 
 	/**
 	 * Gets the cost of the StoreCartEntry objects in this cart
