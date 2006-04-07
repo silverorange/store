@@ -19,7 +19,6 @@ abstract class StoreCartModule extends SwatApplicationModule
 
 	public function init()
 	{
-		$this->load();
 	}
 
     // }}}
@@ -34,7 +33,7 @@ abstract class StoreCartModule extends SwatApplicationModule
 	 *
 	 * @var array
 	 */
-	protected $entries;
+	protected $entries = array();
 
 	/**
 	 * An array of cart entries that were removed from the cart
@@ -44,7 +43,7 @@ abstract class StoreCartModule extends SwatApplicationModule
 	 *
 	 * @var array
 	 */
-	protected $removed_entries;
+	protected $removed_entries = array();
 
 	/**
 	 * Loads this cart
