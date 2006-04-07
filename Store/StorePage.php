@@ -7,7 +7,6 @@ require_once('Swat/SwatPage.php');
 
 abstract class StorePage extends SwatPage
 {
-
 	public $found = false;
 
 	protected $source = array();
