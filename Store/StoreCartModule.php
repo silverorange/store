@@ -84,8 +84,10 @@ abstract class StoreCartModule extends SwatApplicationModule
 			}
 		}
 
-		if (!$already_in_cart)
-			$this->entries[] = $cartEntry;
+		if (!$already_in_cart) {
+			$cart_entry->setDatabase($this->app->db);
+			$this->entries[] = $cart_entry;
+		}
 	}
 
 	/**
