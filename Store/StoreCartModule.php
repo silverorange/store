@@ -9,6 +9,10 @@ require_once 'Store/dataobjects/StoreCartEntryWrapper.php';
  * This class contains cart functionality common to all sites. It is typically
  * extended on a per-site basis.
  *
+ * There is intentionally no getEntryById functnio because cart entries are
+ * un-indexed. When an item is added to the cart, it does not have a cartid to
+ * index by. Only after the cart is saved do all entries have unique ids.
+ *
  * @package   Store
  * @copyright 2005 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
@@ -26,10 +30,8 @@ abstract class StoreCartModule extends SwatApplicationModule
 	/**
 	 * The entries in this cart
 	 *
-	 * This is an array of StoreCartEntry data objects.
-	 *
-	 * The array is indexed by entry ids. Most StoreCartEntry lookup
-	 * methods use the array index to find entries.
+	 * This is an array of StoreCartEntry data objects. The array is
+	 * intentionally unindexed.
 	 *
 	 * @var array
 	 */
@@ -101,12 +103,16 @@ abstract class StoreCartModule extends SwatApplicationModule
 	 */
 	public function removeEntryById($entry_id)
 	{
-		if (isset($this->entries[$entry_id])) {
-			$old_entry = $this->entries[$entry_id];
-			unset($this->entries[$entry_id]);
-			$this->removed_entries[] = $old_entry;
-		} else {
-			$old_entry = null;
+		$old_entry = null;
+
+		foreach ($this->entries as $entry) {
+			if ($entry->id == $entry_id) {
+				$key = key($this->entries);
+				$old_entry = $this->entries[$key];
+				unset($this->entries[$key]);
+				$this->removed_entries[] = $old_entry;
+				break;
+			}
 		}
 
 		return $old_entry;
@@ -120,25 +126,6 @@ abstract class StoreCartModule extends SwatApplicationModule
 	public function &getEntries()
 	{
 		return $this->entries;
-	}
-
-	/**
-	 * Get a reference to a specific StoreCartEntry object in this cart
-	 *
-	 * @param integer $entry_id the index value of the StoreCartEntry object
-	 *                           to get.
-	 *
-	 * @return StoreCartEntry the entry with the given id in this cart of null
-	 *                         if no such entry exists.
-	 */
-	public function getEntryById($entry_id)
-	{
-		if (isset($this->entries[$entry_id]))
-			$entry = $this->entries[$entry_id];
-		else
-			$entry = null;
-
-		return $entry;
 	}
 
 	/**
