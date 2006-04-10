@@ -1,6 +1,7 @@
 <?php
 
-require_once 'Store/StoreCart.php';
+require_once 'Swat/SwatControl.php';
+require_once 'Store/StoreCartModule.php';
 
 /**
  * A viewer for shopping carts for an e-commerce web application
@@ -27,31 +28,14 @@ require_once 'Store/StoreCart.php';
  * @copyright 2005 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-abstract class StoreCartView
+abstract class StoreCartView extends SwatControl
 {
 	/**
 	 * The StoreCart object to view
 	 *
 	 * @var StoreCart
 	 */
-	private $cart;
-
-	/**
-	 * Creates a new cart viewer
-	 *
-	 * @param StoreCart $cart a reference to the cart to view.
-	 */
-	public function __construct(StoreCart $cart)
-	{
-		$this->setCart($cart);
-	}
-
-	/**
-	 * Display this view
-	 *
-	 * @access public
-	 */
-	public abstract function display();
+	protected $cart;
 
 	/**
 	 * Gets the StoreCart object that is being viewed
@@ -68,7 +52,7 @@ abstract class StoreCartView
 	 *
 	 * @param StoreCart $cart a reference to the cart to view.
 	 */
-	public function setCart(StoreCart $cart)
+	public function setCart(StoreCartModule $cart)
 	{
 		$this->cart = $cart;
 	}
