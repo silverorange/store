@@ -9,7 +9,7 @@ require_once 'Store/dataobjects/StoreCartEntryWrapper.php';
  * This class contains cart functionality common to all sites. It is typically
  * extended on a per-site basis.
  *
- * There is intentionally no getEntryById functnio because cart entries are
+ * There is intentionally no getEntryById() method because cart entries are
  * un-indexed. When an item is added to the cart, it does not have a cartid to
  * index by. Only after the cart is saved do all entries have unique ids.
  *
