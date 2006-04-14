@@ -217,9 +217,7 @@ abstract class StoreCartModule extends SwatApplicationModule
 	 *
 	 * @return double the value of tax for this cart.
 	 */
-	public function getTaxCost($address)
-	{
-	}
+	public abstract function getTaxCost($address);
 
 	/**
 	 * Gets the total cost for an order of the contents of this cart
@@ -228,9 +226,7 @@ abstract class StoreCartModule extends SwatApplicationModule
 	 *
 	 * @return double the cost of this cart's contents.
 	 */
-	public function getTotalCost()
-	{
-	}
+	public abstract function getTotalCost();
 
 	/**
 	 * Gets the cost of shipping the contents of this cart to a location
@@ -254,6 +250,11 @@ abstract class StoreCartModule extends SwatApplicationModule
 	 */
 	public function getSubtotalCost()
 	{
+		$total = 0;
+		foreach ($this->entries as $entry)
+			$total += $entry->getExtensionCost();
+
+		return $total;
 	}
 }
 
