@@ -169,7 +169,7 @@ abstract class StoreCartModule extends SwatApplicationModule
 	 */
 	public function isEmpty()
 	{
-		return count($this->entries) ? true : false;
+		return count($this->entries) ? false : true;
 	}
 	
 	/**
