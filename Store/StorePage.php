@@ -16,6 +16,11 @@ abstract class StorePage extends SwatPage
 		$this->source = $source;
 	}
 
+	public function getSource()
+	{
+		return $this->source;
+	}
+
 	public function init()
 	{
 		$this->initInternal();

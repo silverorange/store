@@ -101,10 +101,12 @@ abstract class StoreApplication extends SwatApplication
 	public function resolvePage()
 	{
 		$source = self::initVar('source');
-		
 		$page = $this->instantiatePage($source);
-		$source_exp = explode('/', $source);
-		$page->setSource($source_exp);
+
+		if (count($page->getSource()) == 0) {
+			$path = explode('/', $source);
+			$page->setSource($path);
+		}
 
 		return $page;
 	}
