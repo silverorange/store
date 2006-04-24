@@ -229,18 +229,11 @@ abstract class StoreCartModule extends SwatApplicationModule
 	public abstract function getTotalCost();
 
 	/**
-	 * Gets the cost of shipping the contents of this cart to a location
-	 *
-	 * Needs to know where it is shipping to, and what shipment method is used.
-	 *
-	 * @param StoreAddress $address the address the cart contents will be
-	 *                               shipped to.
-	 * @param StoreShipmentMethod $method the method the cart contents will be
-	 *                                     shipped via.
+	 * Gets the cost of shipping the contents of this cart
 	 *
 	 * @return double the cost of shipping this order.
 	 */
-	public abstract function getShippingCost($address, $method);
+	public abstract function getShippingCost();
 
 	/**
 	 * Gets the cost of the StoreCartEntry objects in this cart
@@ -250,11 +243,11 @@ abstract class StoreCartModule extends SwatApplicationModule
 	 */
 	public function getSubtotalCost()
 	{
-		$total = 0;
+		$subtotal = 0;
 		foreach ($this->entries as $entry)
-			$total += $entry->getExtensionCost();
+			$subtotal += $entry->getExtensionCost();
 
-		return $total;
+		return $subtotal;
 	}
 }
 

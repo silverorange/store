@@ -100,13 +100,51 @@ abstract class StoreCartEntry extends SwatDBDataObject
 	/**
 	 * Gets the unit cost of the StoreItem for this cart entry
 	 *
+	 * The unit cost is caucluated based on quantity discounts.
+	 *
 	 * @return double the unit cost of the StoreItem for this cart entry.
 	 */
 	public function getItemCost()
 	{
-		return $this->item->price;
+		$price = $this->item->price;
+
+		// This relies on the ordering of quantity discounts. They are ordered
+		// with the largest quantity first.
+		foreach ($this->item->quantitydiscounts as $quantity_discount) {
+			if ($this->getQuantity() >= $quantity_discount->quantity) {
+				$price = $quantity_discount->price;
+				break;
+			}
+		}
+
+		return $price;
 	}
-	
+
+	/**
+	 * Gets how much money is saved by quantity discounts
+	 *
+	 * @return double how much money is saved from quantity discounts or zero
+	 *                 if no quantity discount applies.
+	 */
+	public function getQuantityDiscountCost()
+	{
+		$return = 0;
+		$extension = $this->item->price * $this->getQuantity();
+
+		// This relies on the ordering of quantity discounts. They are ordered
+		// with the largest quantity first.
+		foreach ($this->item->quantitydiscounts as $quantity_discount) {
+			if ($this->getQuantity() >= $quantity_discount->quantity) {
+				$return = $extension -
+					$quantity_discount->price * $this->getQuantity();
+
+				break;
+			}
+		}
+
+		return $return;
+	}
+
 	/**
 	 * Gets the extension cost of this cart entry
 	 *
@@ -117,7 +155,7 @@ abstract class StoreCartEntry extends SwatDBDataObject
 	 */
 	public function getExtensionCost()
 	{
-		return ($this->item->price * $this->quantity);
+		return ($this->getItemCost() * $this->quantity);
 	}
 
 	/**
