@@ -32,7 +32,7 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreItemWrapper
  */
-class StoreItem extends SwatDBDataObject
+abstract class StoreItem extends SwatDBDataObject
 {
 	/**
 	 * Unique identifier
