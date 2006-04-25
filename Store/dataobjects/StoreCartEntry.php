@@ -88,11 +88,11 @@ abstract class StoreCartEntry extends SwatDBDataObject
 	}
 
 	/**
-	 * Gets the SKU of the item in this cart entry
+	 * Gets the id of the item in this cart entry
 	 *
-	 * @return integer the SKU of the item of this cart entry.
+	 * @return integer the id of the item of this cart entry.
 	 */
-	public function getItemSKU()
+	public function getItemId()
 	{
 		return $this->item->id;
 	}
@@ -171,7 +171,7 @@ abstract class StoreCartEntry extends SwatDBDataObject
 	 */
 	public function compare(StoreCartEntry $entry)
 	{
-		return strcmp($this->getItemSKU(), $entry->getItemSKU());
+		return strcmp($this->getItemId(), $entry->getItemId());
 	}
 
 	/**
@@ -185,7 +185,7 @@ abstract class StoreCartEntry extends SwatDBDataObject
 	 */
 	public function combine(StoreCartEntry $entry)
 	{
-		if (strcmp($this->getItemSKU(), $entry->getItemSKU()) == 0)
+		if ($this->compare($entry) == 0)
 			$this->quantity += $entry->getQuantity();
 	}
 }
