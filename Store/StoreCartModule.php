@@ -48,6 +48,19 @@ abstract class StoreCartModule extends SwatApplicationModule
 	protected $removed_entries = array();
 
 	/**
+	 * A cache of cart totals
+	 *
+	 * Cart totalling methods may optionally use this array to cache their
+	 * values. When the setChanged() method is called, the cache is cleared.
+	 *
+	 * @var boolean
+	 * @see StoreCartModule::setChanged()
+	 */
+	protected $totals = array();
+
+	protected $changed = false;
+
+	/**
 	 * Loads this cart
 	 *
 	 * Subclasses may load this cart from the database, a session or using some
@@ -90,6 +103,8 @@ abstract class StoreCartModule extends SwatApplicationModule
 
 		if (!$already_in_cart)
 			$this->entries[] = $cart_entry;
+
+		$this->setChanged();
 	}
 
 	/**
@@ -111,7 +126,35 @@ abstract class StoreCartModule extends SwatApplicationModule
 				$old_entry = $this->entries[$key];
 				unset($this->entries[$key]);
 				$this->removed_entries[] = $old_entry;
+				$this->setChanged();
 				break;
+			}
+		}
+
+		return $old_entry;
+	}
+
+	/**
+	 * Removes a StoreCartEntry from this cart
+	 *
+	 * @param StoreCartEntry $entry the StoreCartEntry object to remove.
+	 *
+	 * @return StoreCartEntry the entry that was removed or null if no entry
+	 *                         was removed.
+	 */
+	public function removeEntry($entry)
+	{
+		$old_entry = null;
+
+		if (in_array($entry, $this->entries)) {
+			foreach ($this->entries as $key => $cart_entry) {
+				if ($cart_entry === $entry) {
+					$old_entry = $this->entries[$key];
+					unset($this->entries[$key]);
+					$this->removed_entries[] = $old_entry;
+					$this->setChanged();
+					break;
+				}
 			}
 		}
 
@@ -159,6 +202,7 @@ abstract class StoreCartModule extends SwatApplicationModule
 	{
 		$entries =& $this->entries;
 		$this->entries = array();
+		$this->setChanged();
 		return $entries;
 	}
 	
@@ -199,6 +243,24 @@ abstract class StoreCartModule extends SwatApplicationModule
 		return $total_quantity;
 	}
 
+	/**
+	 * Updates the quantity of an entry in this cart
+	 *
+	 * @param StoreCartEntry $entry the entry to update.
+	 * @param integer $value the new entry value.
+	 */
+	public function setEntryQuantity(StoreCartEntry $entry, $value)
+	{
+		if (in_array($entry, $this->entries)) {
+			if ($value == 0) {
+				$this->removeEntry($entry);
+			} else {
+				$entry->setQuantity($value);
+				$this->setChanged();
+			}
+		}
+	}
+
 	/*
 	 * Implementation note:
 	 *   Totalling methods should call protected methods to ease sub-classing
@@ -217,7 +279,7 @@ abstract class StoreCartModule extends SwatApplicationModule
 	 *
 	 * @return double the value of tax for this cart.
 	 */
-	public abstract function getTaxCost($address);
+	public abstract function getTaxCost(StoreProvState $provstate);
 
 	/**
 	 * Gets the total cost for an order of the contents of this cart
@@ -226,7 +288,7 @@ abstract class StoreCartModule extends SwatApplicationModule
 	 *
 	 * @return double the cost of this cart's contents.
 	 */
-	public abstract function getTotalCost();
+	public abstract function getTotalCost(StoreProvState $provstate);
 
 	/**
 	 * Gets the cost of shipping the contents of this cart
@@ -243,11 +305,44 @@ abstract class StoreCartModule extends SwatApplicationModule
 	 */
 	public function getSubtotalCost()
 	{
+		if ($this->cachedValueExists('subtotal'))
+			return $this->getCachedValue('subtotal');
+
 		$subtotal = 0;
 		foreach ($this->entries as $entry)
 			$subtotal += $entry->getExtensionCost();
 
+		$this->setCachedValue('subtotal', $subtotal);
+
 		return $subtotal;
+	}
+
+	/**
+	 * Sets this cart as modified
+	 *
+	 * This clears the totals cache if it has entries.
+	 */
+	protected function setChanged()
+	{
+		$this->changed = true;
+
+		foreach ($this->totals as $key => $value)
+			$this->totals[$key] = null;
+	}
+
+	protected function cachedValueExists($name)
+	{
+		return isset($this->totals[$name]);
+	}
+
+	protected function getCachedValue($name)
+	{
+		return $this->totals[$name.get_class($this)];
+	}
+
+	protected function setCachedValue($name, $value)
+	{
+		$this->totals[$name.get_class($this)] = $value;
 	}
 }
 
