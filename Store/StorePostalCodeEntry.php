@@ -10,7 +10,7 @@ require_once 'Swat/SwatEntry.php';
  * {@link StorePostalCodeEntry::$country} property to a known ISO-3611 code to
  * validate postal codes for a particular country.
  *
- * @package   store
+ * @package   Store
  * @copyright 2006 silverorange
  */
 class StorePostalCodeEntry extends SwatEntry
