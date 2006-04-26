@@ -233,7 +233,7 @@ abstract class StoreCartModule extends SwatApplicationModule
 	 *
 	 * @return integer the number of StoreItems in this cart.
 	 */
-	public function getTotalQuantity()
+	public function getItemCount()
 	{
 		$total_quantity = 0;
 
