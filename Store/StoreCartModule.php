@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Swat/SwatApplicationModule.php';
+require_once 'Site/SiteApplicationModule.php';
 require_once 'Store/dataobjects/StoreCartEntryWrapper.php';
 
 /**
@@ -17,7 +17,7 @@ require_once 'Store/dataobjects/StoreCartEntryWrapper.php';
  * @copyright 2005 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-abstract class StoreCartModule extends SwatApplicationModule
+abstract class StoreCartModule extends SiteApplicationModule
 {
     // {{{ public function init()
 

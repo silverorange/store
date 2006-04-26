@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Swat/SwatApplicationModule.php';
+require_once 'Site/SiteApplicationModule.php';
 require_once 'SwatDB/exceptions/SwatDBException.php';
 require_once 'MDB2.php';
 
@@ -10,7 +10,7 @@ require_once 'MDB2.php';
  * @package Store
  * @copyright silverorange 2006
  */
-class StoreDatabaseModule extends SwatApplicationModule
+class StoreDatabaseModule extends SiteApplicationModule
 {
     // {{{ public properties
 	

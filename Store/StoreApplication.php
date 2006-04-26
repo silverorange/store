@@ -1,5 +1,5 @@
 <?
-require_once('Swat/SwatApplication.php');
+require_once('Site/SiteApplication.php');
 require_once('Store/StoreDatabaseModule.php');
 require_once('Store/StoreSessionModule.php');
 require_once('Store/StoreCartModule.php');
@@ -12,7 +12,7 @@ require_once('MDB2.php');
  * @package Store
  * @copyright silverorange 2004
  */
-abstract class StoreApplication extends SwatApplication
+abstract class StoreApplication extends SiteApplication
 {
 	// {{{ public properties
 
@@ -96,7 +96,7 @@ abstract class StoreApplication extends SwatApplication
 	/**
 	 * Get the page object.
 	 * Uses the $_GET variables to decide which page subclass to instantiate.
-	 * @return SwatPage A subclass of SwatPage is returned.
+	 * @return SitePage A subclass of SitePage is returned.
 	 */
 	public function resolvePage()
 	{

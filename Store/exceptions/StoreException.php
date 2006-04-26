@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Swat/exceptions/SwatException.php';
+require_once 'Site/exceptions/SiteException.php';
 
 /**
  * An exception in the Store package
@@ -9,7 +9,7 @@ require_once 'Swat/exceptions/SwatException.php';
  * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreException extends SwatException
+class StoreException extends SiteException
 {
 	public $title = null;
 }
