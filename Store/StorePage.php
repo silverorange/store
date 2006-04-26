@@ -9,7 +9,7 @@ abstract class StorePage extends SwatPage
 {
 	public $found = false;
 
-	protected $source = array();
+	protected $source = null;
 
 	public function setSource($source)
 	{

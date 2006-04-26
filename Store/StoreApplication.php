@@ -102,12 +102,6 @@ abstract class StoreApplication extends SwatApplication
 	{
 		$source = self::initVar('source');
 		$page = $this->instantiatePage($source);
-
-		if (count($page->getSource()) == 0) {
-			$path = explode('/', $source);
-			$page->setSource($path);
-		}
-
 		return $page;
 	}
 
