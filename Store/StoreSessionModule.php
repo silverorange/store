@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Swat/SwatApplicationModule.php';
+require_once 'Site/SiteApplicationModule.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Date.php';
 
@@ -10,7 +10,7 @@ require_once 'Date.php';
  * @package Store
  * @copyright silverorange 2006
  */
-class StoreSessionModule extends SwatApplicationModule
+class StoreSessionModule extends SiteApplicationModule
 {
     // {{{ public function init()
 

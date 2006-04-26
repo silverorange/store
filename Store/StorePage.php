@@ -3,9 +3,9 @@
  * @package Store
  * @copyright silverorange 2005
  */
-require_once('Swat/SwatPage.php');
+require_once('Site/SitePage.php');
 
-abstract class StorePage extends SwatPage
+abstract class StorePage extends SitePage
 {
 	public $found = false;
 
