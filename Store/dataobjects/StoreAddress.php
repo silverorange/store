@@ -22,6 +22,8 @@ require_once 'SwatDB/SwatDBDataObject.php';
  */
 class StoreAddress extends SwatDBDataObject
 {
+	// {{{ public properties
+
 	/**
 	 * Address identifier
 	 *
@@ -68,14 +70,8 @@ class StoreAddress extends SwatDBDataObject
 	 */
 	public $postalcode;
 
-	/**
-	 * The date this address was created
-	 *
-	 * This field is useful for ordering multiple addresses.
-	 *
-	 * @var SwatDate
-	 */
-	public $createdate;
+	// }}}
+	// {{{ protection function init()
 
 	protected function init()
 	{
@@ -85,6 +81,9 @@ class StoreAddress extends SwatDBDataObject
 		$this->registerInternalField('country', 'StoreCountry');
 		$this->registerDateField('createdate');
 	}
+
+	// }}}
+	// {{{ public function display()
 
 	/**
 	 * Displays this address in postal format
@@ -123,6 +122,9 @@ class StoreAddress extends SwatDBDataObject
 		$address_tag->close();
 	}
 
+	// }}}
+	// {{{ public function displayCondensed()
+
 	/**
 	 * Displays this address in a two-line condensed form
 	 *
@@ -154,6 +156,8 @@ class StoreAddress extends SwatDBDataObject
 
 		$address_tag->close();
 	}
+
+	// }}}
 }
 
 ?>
