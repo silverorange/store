@@ -31,7 +31,7 @@ class StoreCountry extends SwatDBDataObject
 
 	protected function init()
 	{
-		$this->table = 'countries';
+		$this->table = 'Country';
 		$this->id_field = 'text:id';
 	}
 
