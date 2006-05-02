@@ -17,7 +17,7 @@ class StoreCountryWrapper extends SwatDBRecordsetWrapper
 
 	public static function loadSetFromDB($db, $id_set)
 	{
-		$sql = 'select * from countries where id in (%s)';
+		$sql = 'select * from Country where id in (%s)';
 		$sql = sprintf($sql, $id_set);
 
 		return SwatDB::query($db, $sql, 'StoreCountryWrapper');

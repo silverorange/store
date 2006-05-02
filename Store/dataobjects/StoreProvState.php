@@ -74,7 +74,7 @@ class StoreProvState extends SwatDBDataObject
 
 	protected function init()
 	{
-		$this->table = 'provstates';
+		$this->table = 'ProvState';
 		$this->id_field = 'integer:id';
 
 		$this->registerInternalField('country', 'StoreCountry');
