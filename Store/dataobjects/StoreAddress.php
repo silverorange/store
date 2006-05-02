@@ -109,7 +109,7 @@ class StoreAddress extends SwatDBDataObject
 		}
 
 		echo SwatString::minimizeEntities($this->city);
-		echo SwatString::minimizeEntities($this->provstate->abbreviation);
+		echo SwatString::minimizeEntities($this->provstate->abbreviaton);
 		if ($this->postalcode !== null) {
 			echo '&nbsp;&nbsp;';
 			echo SwatString::minimizeEntities($this->postalcode);
