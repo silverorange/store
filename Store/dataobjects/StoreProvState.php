@@ -53,7 +53,7 @@ class StoreProvState extends SwatDBDataObject
 	 *
 	 * @var string
 	 */
-	public $abbrev;
+	public $abbreviation;
 
 	/**
 	 * 
