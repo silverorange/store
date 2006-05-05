@@ -66,7 +66,7 @@ class StoreSessionModule extends SiteApplicationModule
 	 */
 	public function isActive()
 	{
-		return (session_id() != null);
+		return (session_id() !== null);
 	}
 
     // }}}
