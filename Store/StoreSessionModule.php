@@ -16,9 +16,16 @@ class StoreSessionModule extends SiteApplicationModule
 
 	public function init()
 	{
+		$session_name = $this->app->id;
+
 		session_cache_limiter('');
 		session_save_path('/so/phpsessions/'.$this->app->id);
-		session_name($this->app->id);
+		session_name($session_name);
+
+		if (isset($_GET[$session_name]) ||
+			isset($_POST[$session_name]) ||
+			isset($_COOKIE[$session_name]))
+				$this->activate();
 	}
 
     // }}}
