@@ -33,6 +33,9 @@ class StoreSessionModule extends SiteApplicationModule
 
 	public function activate()
 	{
+		if ($this->isActive())
+			return;
+
 		session_start();
 
 		if (!isset($_SESSION['account_id']))
@@ -63,7 +66,7 @@ class StoreSessionModule extends SiteApplicationModule
 	 */
 	public function isActive()
 	{
-		return isset($_SESSION);
+		return (session_id() != null);
 	}
 
     // }}}
