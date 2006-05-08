@@ -48,7 +48,6 @@ abstract class StoreItem extends SwatDBDataObject
 	 */
 	public $title;
 
-	protected abstract function loadQuantityDiscounts();
 }
 
 ?>
