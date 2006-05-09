@@ -100,10 +100,10 @@ abstract class StoreCartModule extends SiteApplicationModule
 	{
 		$cart_entry->setDatabase($this->app->db);
 
-		$already_in_cart = false;
-
-		if (!$this->validateEntry())
+		if (!$this->validateEntry($cart_entry))
 			return;
+
+		$already_in_cart = false;
 
 		// check for item
 		foreach ($this->entries as $entry) {
