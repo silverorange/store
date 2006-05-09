@@ -19,13 +19,7 @@ require_once 'Store/dataobjects/StoreCartEntryWrapper.php';
  */
 abstract class StoreCartModule extends SiteApplicationModule
 {
-    // {{{ public function init()
-
-	public function init()
-	{
-	}
-
-    // }}}
+	// {{{ protected properties
 
 	/**
 	 * The entries in this cart
@@ -59,6 +53,17 @@ abstract class StoreCartModule extends SiteApplicationModule
 	protected $totals = array();
 
 	protected $changed = false;
+	// }}}
+
+	// {{{ public function init()
+
+	public function init()
+	{
+	}
+
+	// }}}
+
+	// {{{ public abstract function load()
 
 	/**
 	 * Loads this cart
@@ -67,6 +72,8 @@ abstract class StoreCartModule extends SiteApplicationModule
 	 * other method.
 	 */
 	public abstract function load();
+	// }}}
+	// {{{ public abstract function save()
 
 	/**
 	 * Saves this cart
@@ -77,6 +84,9 @@ abstract class StoreCartModule extends SiteApplicationModule
 	 * @see StoreCartModule::load()
 	 */
 	public abstract function save();
+
+	// }}}
+	// {{{ public function addEntry()
 
 	/**
 	 * Adds a StoreCartEntry to this cart
@@ -106,6 +116,8 @@ abstract class StoreCartModule extends SiteApplicationModule
 
 		$this->setChanged();
 	}
+	// }}}
+	// {{{ public function removeEntryById()
 
 	/**
 	 * Removes a StoreCartEntry from this cart
@@ -133,6 +145,8 @@ abstract class StoreCartModule extends SiteApplicationModule
 
 		return $old_entry;
 	}
+	// }}}
+	// {{{ public function removeEntry()
 
 	/**
 	 * Removes a StoreCartEntry from this cart
@@ -161,6 +175,9 @@ abstract class StoreCartModule extends SiteApplicationModule
 		return $old_entry;
 	}
 
+	// }}}
+	// {{{ public function getEntries()
+
 	/**
 	 * Gets a reference to the internal array of StoreCartEntry objects.
 	 *
@@ -170,6 +187,8 @@ abstract class StoreCartModule extends SiteApplicationModule
 	{
 		return $this->entries;
 	}
+	// }}}
+	// {{{ public function getEntriesByItemId()
 
 	/**
 	 * Returns an array of entries in the cart based on the database item id
@@ -192,6 +211,9 @@ abstract class StoreCartModule extends SiteApplicationModule
 		return $entries;
 	}
 
+	// }}}
+	// {{{ public function removeAllEntries()
+
 	/**
 	 * Removes all entries from this cart
 	 *
@@ -205,7 +227,9 @@ abstract class StoreCartModule extends SiteApplicationModule
 		$this->setChanged();
 		return $entries;
 	}
-	
+	// }}}
+	// {{{ public function isEmpty()
+
 	/**
 	 * Checks if this cart is empty
 	 *
@@ -215,7 +239,10 @@ abstract class StoreCartModule extends SiteApplicationModule
 	{
 		return count($this->entries) ? false : true;
 	}
-	
+
+	// }}}
+	// {{{ public function getEntryCount()	
+
 	/**
 	 * Gets the number of StoreCartEntry objects in this cart
 	 *
@@ -225,6 +252,9 @@ abstract class StoreCartModule extends SiteApplicationModule
 	{
 		return count($this->entries);
 	}
+
+	// }}}
+	// {{{ public function getItemCount()
 
 	/**
 	 * Returns the number of StoreItems in this cart
@@ -243,6 +273,9 @@ abstract class StoreCartModule extends SiteApplicationModule
 		return $total_quantity;
 	}
 
+	// }}}
+	// {{{ public function setEntryQuantity()
+
 	/**
 	 * Updates the quantity of an entry in this cart
 	 *
@@ -260,12 +293,15 @@ abstract class StoreCartModule extends SiteApplicationModule
 			}
 		}
 	}
+	// }}}
 
 	/*
 	 * Implementation note:
 	 *   Totalling methods should call protected methods to ease sub-classing
 	 *   the StoreCart class.
 	 */
+
+	// {{{ public abstract function getTaxCost()
 
 	/**
 	 * Gets the value of taxes for this cart
@@ -280,6 +316,9 @@ abstract class StoreCartModule extends SiteApplicationModule
 	 * @return double the value of tax for this cart.
 	 */
 	public abstract function getTaxCost(StoreProvState $provstate);
+	
+	// }}}
+	// {{{ public abstract function getTotalCost()
 
 	/**
 	 * Gets the total cost for an order of the contents of this cart
@@ -290,12 +329,18 @@ abstract class StoreCartModule extends SiteApplicationModule
 	 */
 	public abstract function getTotalCost(StoreProvState $provstate);
 
+	// }}}
+	// {{{ public abstract function getShippingCost()
+
 	/**
 	 * Gets the cost of shipping the contents of this cart
 	 *
 	 * @return double the cost of shipping this order.
 	 */
 	public abstract function getShippingCost();
+
+	// }}}
+	// {{{ public function getSubtotalCost()
 
 	/**
 	 * Gets the cost of the StoreCartEntry objects in this cart
@@ -317,6 +362,10 @@ abstract class StoreCartModule extends SiteApplicationModule
 		return $subtotal;
 	}
 
+	// }}}
+
+	// {{{ protected function setChanged()
+
 	/**
 	 * Sets this cart as modified
 	 *
@@ -330,20 +379,31 @@ abstract class StoreCartModule extends SiteApplicationModule
 			$this->totals[$key] = null;
 	}
 
+	// }}}
+	// {{{ protected function cachedValueExists()
+
 	protected function cachedValueExists($name)
 	{
 		return isset($this->totals[$name]);
 	}
+
+	// }}}
+	// {{{ protected function getCachedValue()
 
 	protected function getCachedValue($name)
 	{
 		return $this->totals[$name.get_class($this)];
 	}
 
+	// }}}
+	// {{{ protected function setCachedValue()
+
 	protected function setCachedValue($name, $value)
 	{
 		$this->totals[$name.get_class($this)] = $value;
 	}
+
+	// }}}
 }
 
 ?>
