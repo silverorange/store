@@ -120,21 +120,6 @@ abstract class StoreCartModule extends SiteApplicationModule
 		$this->setChanged();
 	}
 	// }}}
-	// {{{ protected function validateEntry()
-
-	/**
-	 * Checks to see if the entry is valid
-	 *
-	 * Used to verify that the entry exists and is available for
-	 * purchase.
-	 *
-	 * @param StoreCartEntry $cartEntry the StoreCartEntry to validate.
-	 */
-	protected function validateEntry(StoreCartEntry $cart_entry)
-	{
-		return true;
-	}
-	// }}}
 	// {{{ public function removeEntryById()
 
 	/**
@@ -311,6 +296,21 @@ abstract class StoreCartModule extends SiteApplicationModule
 			}
 		}
 	}
+	// }}}
+	// {{{ protected function validateEntry()
+
+	/**
+	 * Checks to see if the entry is valid
+	 *
+	 * Used to verify that the entry exists and is available for purchase.
+	 *
+	 * @param StoreCartEntry $cartEntry the StoreCartEntry to validate.
+	 */
+	protected function validateEntry(StoreCartEntry $cart_entry)
+	{
+		return true;
+	}
+
 	// }}}
 
 	/*
