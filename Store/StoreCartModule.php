@@ -102,6 +102,9 @@ abstract class StoreCartModule extends SiteApplicationModule
 
 		$already_in_cart = false;
 
+		if (!$this->validateEntry())
+			return;
+
 		// check for item
 		foreach ($this->entries as $entry) {
 			if ($entry->compare($cart_entry) == 0) {
@@ -115,6 +118,21 @@ abstract class StoreCartModule extends SiteApplicationModule
 			$this->entries[] = $cart_entry;
 
 		$this->setChanged();
+	}
+	// }}}
+	// {{{ protected function validateEntry()
+
+	/**
+	 * Checks to see if the entry is valid
+	 *
+	 * Used to verify that the entry exists and is available for
+	 * purchase.
+	 *
+	 * @param StoreCartEntry $cartEntry the StoreCartEntry to validate.
+	 */
+	protected function validateEntry(StoreCartEntry $cart_entry)
+	{
+		return true;
 	}
 	// }}}
 	// {{{ public function removeEntryById()
