@@ -2,6 +2,7 @@
 
 require_once 'Site/SiteApplicationModule.php';
 require_once 'Store/dataobjects/StoreCartEntryWrapper.php';
+require_once 'Swat/SwatMessage.php';
 
 /**
  * A shopping-cart object.
@@ -51,6 +52,15 @@ abstract class StoreCartModule extends SiteApplicationModule
 	 * @see StoreCartModule::setChanged()
 	 */
 	protected $totals = array();
+
+	/**
+	 * An array of cart messages
+	 *
+	 * An array of SwatMessages used to display cart entry status messages
+	 *
+	 * @var array
+	 */
+	protected $messages = array();
 
 	protected $changed = false;
 	// }}}
@@ -296,6 +306,19 @@ abstract class StoreCartModule extends SiteApplicationModule
 			}
 		}
 	}
+	// }}}
+	// {{{ public function getMessages()
+
+	/**
+	 * Returns the cart status messages of this cart
+	 *
+	 * @return array An array of SwatMessages.
+	 */
+	public function getMessages()
+	{
+		return $this->messages;
+	}
+
 	// }}}
 	// {{{ protected function validateEntry()
 
