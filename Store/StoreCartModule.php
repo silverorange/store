@@ -54,8 +54,6 @@ abstract class StoreCartModule extends SiteApplicationModule
 	protected $totals = array();
 
 	/**
-	 * An array of cart messages
-	 *
 	 * An array of SwatMessages used to display cart entry status messages
 	 *
 	 * @var array
@@ -63,6 +61,7 @@ abstract class StoreCartModule extends SiteApplicationModule
 	protected $messages = array();
 
 	protected $changed = false;
+
 	// }}}
 
 	// {{{ public function init()
@@ -310,13 +309,26 @@ abstract class StoreCartModule extends SiteApplicationModule
 	// {{{ public function getMessages()
 
 	/**
-	 * Returns the cart status messages of this cart
+	 * Gets the status messages of this cart
 	 *
-	 * @return array An array of SwatMessages.
+	 * @return array an array of SwatMessages.
 	 */
 	public function getMessages()
 	{
 		return $this->messages;
+	}
+
+	// }}}
+	// {{{ public function hasMessages()
+
+	/**
+	 * Returns whether or not this cart has messages
+	 *
+	 * @return boolean whether or not this cart has messages.
+	 */
+	public function hasMessages()
+	{
+		return count($this->messages > 0);
 	}
 
 	// }}}
