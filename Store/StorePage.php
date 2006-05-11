@@ -1,10 +1,11 @@
-<?
-/**
- * @package Store
- * @copyright silverorange 2005
- */
+<?php
+
 require_once('Site/SitePage.php');
 
+/**
+ * @package   Store
+ * @copyright 2005 silverorange
+ */
 abstract class StorePage extends SitePage
 {
 	public $found = false;
