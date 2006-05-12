@@ -58,7 +58,7 @@ abstract class StoreCartModule extends SiteApplicationModule
 	 *
 	 * @var array
 	 */
-	protected $messages = array();
+	private $messages = array();
 
 	protected $changed = false;
 
@@ -307,6 +307,19 @@ abstract class StoreCartModule extends SiteApplicationModule
 			}
 		}
 	}
+	// }}}
+	// {{{ public function addMessage()
+
+	/**
+	 * Adds a status messages to this cart
+	 *
+	 * @param SwatMessage $message Status message.
+	 */
+	public function addMessage(SwatMessage $message)
+	{
+		$this->messages[] = $message;
+	}
+
 	// }}}
 	// {{{ public function getMessages()
 
