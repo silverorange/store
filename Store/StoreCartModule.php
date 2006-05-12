@@ -299,7 +299,7 @@ abstract class StoreCartModule extends SiteApplicationModule
 	public function setEntryQuantity(StoreCartEntry $entry, $value)
 	{
 		if (in_array($entry, $this->entries)) {
-			if ($value == 0) {
+			if ($value <= 0) {
 				$this->removeEntry($entry);
 			} else {
 				$entry->setQuantity($value);
