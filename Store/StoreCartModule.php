@@ -110,7 +110,7 @@ abstract class StoreCartModule extends SiteApplicationModule
 		$cart_entry->setDatabase($this->app->db);
 
 		if (!$this->validateEntry($cart_entry))
-			return;
+			return false;
 
 		$already_in_cart = false;
 
@@ -127,6 +127,8 @@ abstract class StoreCartModule extends SiteApplicationModule
 			$this->entries[] = $cart_entry;
 
 		$this->setChanged();
+
+		return true;
 	}
 	// }}}
 	// {{{ public function removeEntryById()
