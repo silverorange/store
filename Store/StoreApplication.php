@@ -34,7 +34,7 @@ abstract class StoreApplication extends SiteApplication
 		$this->initModules();
 
 		// set up convenience references
-		$this->db = $this->database->mdb2;
+		$this->db = $this->database->getConnection();
 
 		try {
 			$this->initPage();
