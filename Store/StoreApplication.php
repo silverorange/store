@@ -1,10 +1,10 @@
 <?php
 
 require_once 'Site/SiteApplication.php';
-require_once 'Store/StoreDatabaseModule.php';
+require_once 'Site/SiteDatabaseModule.php';
+require_once 'Site/SiteServerConfigModule.php';
 require_once 'Store/StoreSessionModule.php';
 require_once 'Store/StoreCartModule.php';
-require_once 'Site/SiteServerConfigModule.php';
 require_once 'Store/exceptions/StoreNotFoundException.php';
 require_once 'MDB2.php';
 
@@ -133,7 +133,7 @@ abstract class StoreApplication extends SiteApplication
 	{
 		return array(
 			'session'  => 'StoreSessionModule',
-			'database' => 'StoreDatabaseModule',
+			'database' => 'SiteDatabaseModule',
 			'cart'     => 'StoreCartModule',
 			'config'   => 'SiteServerConfigModule');
 	}
