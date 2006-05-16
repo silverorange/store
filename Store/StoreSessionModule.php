@@ -100,6 +100,51 @@ class StoreSessionModule extends SiteApplicationModule
 	}
 
     // }}}
+    // {{{ public function __set()
+
+	/**
+	 * Set a session variable.
+	 */
+	public function __set($name, $value)
+	{
+		if (!$this->isActive())
+			throw new StoreException('Session is  not active.');
+
+		$_SESSION[$name] = $value;
+	}
+
+    // }}}
+    // {{{ public function &__get()
+
+	/**
+	 * Get a session variable.
+	 */
+	public function &__get($name)
+	{
+		if (!$this->isActive())
+			throw new StoreException('Session is not active.');
+
+		if (!isset($_SESSION[$name]))
+			throw new StoreException("Session variable '$name' is not set.");
+
+		return $_SESSION[$name];
+	}
+
+    // }}}
+    // {{{ public function isDefined()
+
+	/**
+	 * Check existence of a session variable.
+	 */
+	public function isDefined($name)
+	{
+		if (!$this->isActive())
+			throw new StoreException('Session is not active.');
+
+		return isset($_SESSION[$name]);
+	}
+
+    // }}}
 }
 
 ?>
