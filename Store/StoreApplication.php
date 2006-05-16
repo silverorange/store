@@ -4,6 +4,7 @@ require_once 'Site/SiteApplication.php';
 require_once 'Store/StoreDatabaseModule.php';
 require_once 'Store/StoreSessionModule.php';
 require_once 'Store/StoreCartModule.php';
+require_once 'Site/SiteServerConfigModule.php';
 require_once 'Store/exceptions/StoreNotFoundException.php';
 require_once 'MDB2.php';
 
@@ -21,32 +22,7 @@ abstract class StoreApplication extends SiteApplication
 
 	public $exception_page_source = 'exception';
 
-	protected $module_list = array(
-		'session'  => 'StoreSessionModule',
-		'database' => 'StoreDatabaseModule',
-		'cart'     => 'StoreCartModule'
-	);
-
 	// }}}
-    // {{{ public function __construct()
-
-    /**
-     * Creates a new application object
-     *
-     * @param string $id a unique identifier for this application.
-     */
-    public function __construct($id)
-    {
-		parent::__construct($id);
-
-		foreach ($this->module_list as $name => $class) {
-			$this->addModule(new $class($this));
-			// set up convenience reference
-			$this->$name = $this->modules[$class];
-		}
-	}
-
-    // }}}
 	// {{{ public function init()
 
 	/**
@@ -148,6 +124,18 @@ abstract class StoreApplication extends SiteApplication
 		}
 
 		parent::relocate($uri);
+	}
+
+	// }}}
+	// {{{ protected function getDefaultModuleList()
+
+	protected function getDefaultModuleList()
+	{
+		return array(
+			'session'  => 'StoreSessionModule',
+			'database' => 'StoreDatabaseModule',
+			'cart'     => 'StoreCartModule',
+			'config'   => 'SiteServerConfigModule');
 	}
 
 	// }}}
