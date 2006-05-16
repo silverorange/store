@@ -1,10 +1,11 @@
-<?
-require_once('Site/SiteApplication.php');
-require_once('Store/StoreDatabaseModule.php');
-require_once('Store/StoreSessionModule.php');
-require_once('Store/StoreCartModule.php');
-require_once('Store/exceptions/StoreNotFoundException.php');
-require_once('MDB2.php');
+<?php
+
+require_once 'Site/SiteApplication.php';
+require_once 'Store/StoreDatabaseModule.php';
+require_once 'Store/StoreSessionModule.php';
+require_once 'Store/StoreCartModule.php';
+require_once 'Store/exceptions/StoreNotFoundException.php';
+require_once 'MDB2.php';
 
 /**
  * Web application class for a store
@@ -151,4 +152,5 @@ abstract class StoreApplication extends SiteApplication
 
 	// }}}
 }
+
 ?>
