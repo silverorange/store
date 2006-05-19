@@ -21,6 +21,7 @@ class StoreNoAccessException extends StoreException
 	{
 		parent::__construct($message, $code);
 		$this->title = _('No Access');
+		$this->http_status_code = 403;
 	}
 }
 
