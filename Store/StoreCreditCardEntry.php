@@ -37,14 +37,16 @@ class StoreCreditCardEntry extends SwatEntry
 			return;
 		}
 
-        	$check_number = ereg_replace ('[^0-9]+', '', $this->value);
+		$value = str_replace(array('-', ' '), '', $this->value);
 
-		if (!Validate_Finance_CreditCard::number($check_number)) {
+		if (!Validate_Finance_CreditCard::number($value)) {
 			$msg = Swat::_('The credit card number you have entered is not valid.
 				Please check to make sure you have entered it correctly.');
 
 			$this->addMessage(new SwatMessage($msg, SwatMessage::ERROR));
 		}
+
+		$this->value = $value;
 	}
 
 
