@@ -21,6 +21,7 @@ class StoreNotFoundException extends StoreException
 	{
 		parent::__construct($message, $code);
 		$this->title = _('Not Found');
+		$this->http_status_code = 404;
 	}
 }
 
