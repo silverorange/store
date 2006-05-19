@@ -32,8 +32,10 @@ class StoreCreditCardEntry extends SwatEntry
 		if ($this->value === null)
 			return;
 
-		if ($this->show_blank_value && $this->value == $this->blank_value)
+		if ($this->show_blank_value && $this->value == $this->blank_value) {
+			$this->value = null;
 			return;
+		}
 
         	$check_number = ereg_replace ('[^0-9]+', '', $this->value);
 
