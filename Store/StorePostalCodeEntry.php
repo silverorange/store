@@ -103,7 +103,7 @@ class StorePostalCodeEntry extends SwatEntry
 		if ($province !== null &&
 			!$this->validateByProvince($value, $province)) {
 			$message = new SwatMessage('The <strong>%s</strong> field '.
-				'must be a valid for the selected province.',
+				'must be valid for the selected province.',
 				SwatMessage::ERROR);
 
 			$message->content_type = 'text/xml';
