@@ -63,7 +63,6 @@ abstract class StoreCartModule extends SiteApplicationModule
 	protected $changed = false;
 
 	// }}}
-
 	// {{{ public function init()
 
 	public function init()
@@ -71,7 +70,6 @@ abstract class StoreCartModule extends SiteApplicationModule
 	}
 
 	// }}}
-
 	// {{{ public abstract function load()
 
 	/**
@@ -159,6 +157,7 @@ abstract class StoreCartModule extends SiteApplicationModule
 
 		return $old_entry;
 	}
+
 	// }}}
 	// {{{ public function removeEntry()
 
@@ -201,6 +200,7 @@ abstract class StoreCartModule extends SiteApplicationModule
 	{
 		return $this->entries;
 	}
+
 	// }}}
 	// {{{ public function getEntriesByItemId()
 
@@ -241,6 +241,7 @@ abstract class StoreCartModule extends SiteApplicationModule
 		$this->setChanged();
 		return $entries;
 	}
+
 	// }}}
 	// {{{ public function isEmpty()
 
@@ -307,6 +308,7 @@ abstract class StoreCartModule extends SiteApplicationModule
 			}
 		}
 	}
+
 	// }}}
 	// {{{ public function addMessage()
 
