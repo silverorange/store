@@ -84,7 +84,7 @@ class StoreCreditCardEntry extends SwatEntry
 	protected function getDisplayValue()
 	{
 		if ($this->show_blank_value && $this->value === null)
-			return $this->blank_value
+			return $this->blank_value;
 		else
 			return $this->value;
 	}
