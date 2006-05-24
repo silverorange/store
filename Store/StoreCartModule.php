@@ -2,6 +2,7 @@
 
 require_once 'Site/SiteApplicationModule.php';
 require_once 'Store/dataobjects/StoreCartEntryWrapper.php';
+require_once 'Store/exceptions/StoreException.php';
 require_once 'Swat/SwatMessage.php';
 
 /**
@@ -267,6 +268,28 @@ abstract class StoreCartModule extends SiteApplicationModule
 	}
 
 	// }}}
+	// {{{ public function getSavedEntries()
+
+	/**
+	 * Gets entries of this cart that are saved for later and are not included
+	 * in orders
+	 *
+	 * Saved items are also not used in item cost totalling methods.
+	 *
+	 * @return array entries of this cart that are saved for later and are not
+	 *                included in orders.
+	 */
+	public function &getSavedEntries()
+	{
+		$entries = array();
+		foreach ($this->entries as $entry) {
+			if ($entry->isSaved())
+				$entries[] = $entry;
+		}
+		return $entries;
+	}
+
+	// }}}
 	// {{{ public function removeAllEntries()
 
 	/**
@@ -461,15 +484,16 @@ abstract class StoreCartModule extends SiteApplicationModule
 	 */
 	public function getSubtotalCost()
 	{
-		if ($this->cachedValueExists('subtotal'))
-			return $this->getCachedValue('subtotal');
+		if ($this->cachedValueExists('store-subtotal')) {
+			$subtotal = $this->getCachedValue('store-subtotal');
+		} else {
+			$subtotal = 0;
+			$entries = $this->getAvailableEntries();
+			foreach ($entries as $entry)
+				$subtotal += $entry->getExtensionCost();
 
-		$subtotal = 0;
-		$entries = $this->getAvailableEntries();
-		foreach ($entries as $entry)
-			$subtotal += $entry->getExtensionCost();
-
-		$this->setCachedValue('subtotal', $subtotal);
+			$this->setCachedValue('store-subtotal', $subtotal);
+		}
 
 		return $subtotal;
 	}
@@ -484,10 +508,7 @@ abstract class StoreCartModule extends SiteApplicationModule
 	 */
 	protected function setChanged()
 	{
-		$this->changed = true;
-
-		foreach ($this->totals as $key => $value)
-			$this->totals[$key] = null;
+		$this->totals = array();
 	}
 
 	// }}}
@@ -503,7 +524,7 @@ abstract class StoreCartModule extends SiteApplicationModule
 
 	protected function getCachedValue($name)
 	{
-		return $this->totals[$name.get_class($this)];
+		return $this->totals[$name];
 	}
 
 	// }}}
@@ -511,7 +532,11 @@ abstract class StoreCartModule extends SiteApplicationModule
 
 	protected function setCachedValue($name, $value)
 	{
-		$this->totals[$name.get_class($this)] = $value;
+		if (isset($this->totals[$name]))
+			throw new StoreException('Overwriting cached cart value '.
+				"'{$name}'.");
+
+		$this->totals[$name] = $value;
 	}
 
 	// }}}
