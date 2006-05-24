@@ -268,28 +268,6 @@ abstract class StoreCartModule extends SiteApplicationModule
 	}
 
 	// }}}
-	// {{{ public function getSavedEntries()
-
-	/**
-	 * Gets entries of this cart that are saved for later and are not included
-	 * in orders
-	 *
-	 * Saved items are also not used in item cost totalling methods.
-	 *
-	 * @return array entries of this cart that are saved for later and are not
-	 *                included in orders.
-	 */
-	public function &getSavedEntries()
-	{
-		$entries = array();
-		foreach ($this->entries as $entry) {
-			if ($entry->isSaved())
-				$entries[] = $entry;
-		}
-		return $entries;
-	}
-
-	// }}}
 	// {{{ public function removeAllEntries()
 
 	/**
