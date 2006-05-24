@@ -56,6 +56,15 @@ abstract class StoreCartEntry extends SwatDBDataObject
 	public $quantity;
 
 	/**
+	 * Whether or not this cart entry is saved for later
+	 *
+	 * Entries that are saved for later are not included in orders.
+	 *
+	 * @var boolean
+	 */
+	public $saved;
+
+	/**
 	 * Sets up this cart entry data object
 	 *
 	 * IMPORTANT:
@@ -187,6 +196,16 @@ abstract class StoreCartEntry extends SwatDBDataObject
 	{
 		if ($this->compare($entry) == 0)
 			$this->quantity += $entry->getQuantity();
+	}
+
+	/**
+	 * Whether or not this entry is saved for later
+	 *
+	 * @return boolean whether or not this entry is saved for later.
+	 */
+	public function isSaved()
+	{
+		return $this->saved;
 	}
 }
 
