@@ -1,7 +1,7 @@
 <?php
 
 require_once 'SwatDB/SwatDBRecordsetWrapper.php';
-require_once 'Store/dataobjects/StoreCartEntry.php';
+require_once 'Store/dataobjects/StoreAddress.php';
 
 /**
  * A recordset wrapper class for StoreAddress objects
