@@ -202,6 +202,47 @@ abstract class StoreCartModule extends SiteApplicationModule
 	}
 
 	// }}}
+	// {{{ public function getAvailableEntries()
+
+	/**
+	 * Gets the entries of this cart that are available for order
+	 *
+	 * Only available entries are used for cart cost totalling methods.
+	 *
+	 * @return array the entries of this cart that are available for order.
+	 *                All entries are returned by default. Subclasses may
+	 *                override this method to provide additional availability
+	 *                filtering on entries.
+	 *
+	 * @see StoreCartModule::getUnavailableEntries()
+	 */
+	public function &getAvailableEntries()
+	{
+		return $this->entries;
+	}
+
+	// }}}
+	// {{{ public function getUnavailableEntries()
+
+	/**
+	 * Gets the entries of this cart that are not available for order
+	 *
+	 * Only available entries are used for cart cost totalling methods.
+	 *
+	 * @return array the entries of this cart that are not available for order.
+	 *                No entries are returned by default. Subclasses may
+	 *                override this method to provide additional availability
+	 *                filtering on entries.
+	 *
+	 * @see StoreCartModule::getAvailableEntries()
+	 */
+	public function &getUnavailableEntries()
+	{
+		$entries = array();
+		return $entries;
+	}
+
+	// }}}
 	// {{{ public function getEntriesByItemId()
 
 	/**
@@ -424,7 +465,8 @@ abstract class StoreCartModule extends SiteApplicationModule
 			return $this->getCachedValue('subtotal');
 
 		$subtotal = 0;
-		foreach ($this->entries as $entry)
+		$entries = $this->getAvailableEntries();
+		foreach ($entries as $entry)
 			$subtotal += $entry->getExtensionCost();
 
 		$this->setCachedValue('subtotal', $subtotal);
@@ -433,7 +475,6 @@ abstract class StoreCartModule extends SiteApplicationModule
 	}
 
 	// }}}
-
 	// {{{ protected function setChanged()
 
 	/**
