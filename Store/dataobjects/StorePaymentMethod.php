@@ -1,5 +1,6 @@
 <?php
 
+require_once 'Store/dataobjects/StorePaymentMethodType.php';
 require_once 'SwatDB/SwatDBDataObject.php';
 
 /**
@@ -21,6 +22,86 @@ require_once 'SwatDB/SwatDBDataObject.php';
  */
 class StorePaymentMethod extends SwatDBDataObject
 {
+	// {{{ public properties
+
+	/**
+	 * Payment method identifier
+	 *
+	 * @var integer
+	 */
+	public $id;
+
+	/**
+	 * Credit Card Full Name
+	 *
+	 * @var string
+	 */
+	public $creditcard_fullname;
+
+	/**
+	 * Credit Card Last 4 Digits
+	 *
+	 * @var integer
+	 */
+	public $creditcard_last4;
+
+	/**
+	 * Default Payment Method
+	 *
+	 * @var boolean
+	 */
+	public $default_paymentmethod;
+
+	/**
+	 * The expiry date of the creditcard
+	 *
+	 * @var Date
+	 */
+	public $creditcard_expiry;	
+
+	// }}}
+	// {{{ protection function init()
+
+	protected function init()
+	{
+		$this->id_field = 'integer:id';
+
+		$this->registerInternalField('paymentmethod', 'StorePaymentMethodType');
+		$this->registerDateField('createdate');
+		$this->registerDateField('creditcard_expiry');
+	}
+
+	// }}}
+	// {{{ public function display()
+
+	/**
+	 * Displays this payment method formatted
+	 */
+	public function display()
+	{
+		$br_tag = new SwatHtmlTag('br');
+		$div_tag = new SwatHtmlTag('div');
+		$div_tag->open();
+
+		echo SwatString::minimizeEntities($this->paymentmethod->title);
+		$br_tag->display();
+
+		if ($this->creditcard_last4 !== null) {
+			echo self::creditcardFormat($this->creditcard_last4, '**** **** **** ####');
+			$br_tag->display();
+
+			echo 'Expiry: '.$this->creditcard_expiry->format(SwatDate::DF_CC_MY);
+			$br_tag->display();
+
+			echo SwatString::minimizeEntities($this->creditcard_fullname);
+			$br_tag->display();
+		}
+
+		$div_tag->close();
+	}
+
+	// }}}
+	// {{{  public static function creditcardFormat()
 	/**
 	 * Formats a credit card number according to a format string
 	 *
@@ -79,6 +160,7 @@ class StorePaymentMethod extends SwatDBDataObject
 		}
 		return $output;
 	}
+	// }}}
 }
 
 ?>
