@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Store/StoreCartModule.php';
-require_once 'Store/StoreSavedCartModule.php';
 
 /**
  * A shopping-cart object
@@ -16,7 +15,7 @@ require_once 'Store/StoreSavedCartModule.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreCartModule
  */
-abstract class StoreShoppingCartModule extends StoreCartModule
+abstract class StoreCheckoutCartModule extends StoreCartModule
 {
 	// {{{ public function getAvailableEntries()
 
