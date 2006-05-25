@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Store/StoreCartModule.php';
+require_once 'Store/StoreSavedCartModule.php';
 
 /**
  * A shopping-cart object
@@ -8,12 +9,12 @@ require_once 'Store/StoreCartModule.php';
  * The shopping cart is a cart object that is intended for purchase. Shopping
  * carts have price totalling methods and methods to get available and
  * unavailable entries. This class contains shopping-cart functionality common
- * to all sites. It is typically extended on a per-site basis.
+ * to all sites. It is intended to be extended on a per-site basis.
  *
  * @package   Store
  * @copyright 2005-2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
- * @see       StoreShoppingCartModule
+ * @see       StoreCartModule
  */
 abstract class StoreShoppingCartModule extends StoreCartModule
 {
