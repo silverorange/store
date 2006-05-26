@@ -46,8 +46,10 @@ class StoreSessionModule extends SiteApplicationModule
     // {{{ public function isLoggedIn()
 
 	/**
-	 * Check the user's logged-in status
-	 * @return bool True if user is logged in. 
+	 * Check the current user's logged-in status
+	 *
+	 * @return boolean true if user is logged in, false if the user is not
+	 *                  logged in.
 	 */
 	public function isLoggedIn()
 	{
