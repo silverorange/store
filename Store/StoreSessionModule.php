@@ -7,13 +7,16 @@ require_once 'Date.php';
 /**
  * Web application module for sessions
  *
- * @package Store
- * @copyright silverorange 2006
+ * @package   Store
+ * @copyright 2006 silverorange
  */
 class StoreSessionModule extends SiteApplicationModule
 {
     // {{{ public function init()
 
+	/**
+	 * Initializes this session module
+	 */
 	public function init()
 	{
 		$session_name = $this->app->id;
@@ -31,6 +34,11 @@ class StoreSessionModule extends SiteApplicationModule
     // }}}
     // {{{ public function activate()
 
+	/**
+	 * Activates the current user's session
+	 *
+	 * Subsequent calls to the {@link isActive()} method will return true.
+	 */
 	public function activate()
 	{
 		if ($this->isActive())
@@ -46,7 +54,7 @@ class StoreSessionModule extends SiteApplicationModule
     // {{{ public function isLoggedIn()
 
 	/**
-	 * Check the current user's logged-in status
+	 * Checks the current user's logged-in status
 	 *
 	 * @return boolean true if user is logged in, false if the user is not
 	 *                  logged in.
@@ -63,8 +71,10 @@ class StoreSessionModule extends SiteApplicationModule
     // {{{ public function isActive()
 
 	/**
-	 * Check if there is an active session
-	 * @return bool True if session is active. 
+	 * Checks if there is an active session
+	 *
+	 * @return boolean true if session is active, false if the session is
+	 *                  inactive.
 	 */
 	public function isActive()
 	{
@@ -75,8 +85,9 @@ class StoreSessionModule extends SiteApplicationModule
     // {{{ public function getAccountID()
 
 	/**
-	 * Retrieve the current account ID
-	 * @return integer current account ID, or null if not logged in.
+	 * Retrieves the current account ID
+	 *
+	 * @return integer the current account ID, or null if not logged in.
 	 */
 	public function getAccountID()
 	{
@@ -90,8 +101,9 @@ class StoreSessionModule extends SiteApplicationModule
     // {{{ public function getSessionID()
 
 	/**
-	 * Retrieve the current session ID
-	 * @return integer current session ID, or null if no active session.
+	 * Retrieves the current session ID
+	 *
+	 * @return integer the current session ID, or null if no active session.
 	 */
 	public function getSessionID()
 	{
@@ -105,7 +117,12 @@ class StoreSessionModule extends SiteApplicationModule
     // {{{ public function isDefined()
 
 	/**
-	 * Check existence of a session variable.
+	 * Checks the existence of a session variable
+	 *
+	 * @param string $name the name of the session variable to check for.
+	 *
+	 * @return boolean true if a session variable with the given name exists.
+	 *                  False if it does not.
 	 */
 	public function isDefined($name)
 	{
@@ -119,7 +136,10 @@ class StoreSessionModule extends SiteApplicationModule
     // {{{ private function __set()
 
 	/**
-	 * Set a session variable.
+	 * Sets a session variable
+	 *
+	 * @param string $name the name of the session variable to set.
+	 * @param mixed $value the value to set the variable to.
 	 */
 	private function __set($name, $value)
 	{
@@ -133,7 +153,11 @@ class StoreSessionModule extends SiteApplicationModule
     // {{{ private function &__get()
 
 	/**
-	 * Get a session variable.
+	 * Gets a session variable
+	 *
+	 * @param string $name the name of the session variable to get.
+	 *
+	 * @return mixed the session variable value. This is returned by reference.
 	 */
 	private function &__get($name)
 	{
