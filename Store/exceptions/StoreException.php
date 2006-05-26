@@ -11,6 +11,4 @@ require_once 'Site/exceptions/SiteException.php';
  */
 class StoreException extends SiteException
 {
-	public $title = null;
-	public $http_status_code = 500;
 }
