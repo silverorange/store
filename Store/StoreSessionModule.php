@@ -12,7 +12,7 @@ require_once 'Date.php';
  */
 class StoreSessionModule extends SiteApplicationModule
 {
-    // {{{ public function init()
+	// {{{ public function init()
 
 	/**
 	 * Initializes this session module
@@ -31,8 +31,8 @@ class StoreSessionModule extends SiteApplicationModule
 				$this->activate();
 	}
 
-    // }}}
-    // {{{ public function activate()
+	// }}}
+	// {{{ public function activate()
 
 	/**
 	 * Activates the current user's session
@@ -50,8 +50,39 @@ class StoreSessionModule extends SiteApplicationModule
 			$_SESSION['account_id'] = 0;
 	}
 
-    // }}}
-    // {{{ public function isLoggedIn()
+	// }}}
+	// {{{ public function logIn()
+
+	/**
+	 * Logs in the current user
+	 *
+	 * @param integer $account_id the account ID to log the current user in
+	 *                             with.
+	 */
+	public function logIn($account_id)
+	{
+		if ($this->isLoggedIn())
+			throw new SwatException('User is already logged in.');
+
+		$_SESSION['account_id'] = (integer)$account_id;
+	}
+
+	// }}}
+	// {{{ public function logOut()
+
+	/**
+	 * Logs the current user out
+	 */
+	public function logIn()
+	{
+		if (!$this->isLoggedIn())
+			return;
+
+		$_SESSION['account_id'] = 0;
+	}
+
+	// }}}
+	// {{{ public function isLoggedIn()
 
 	/**
 	 * Checks the current user's logged-in status
@@ -67,8 +98,8 @@ class StoreSessionModule extends SiteApplicationModule
 		return false;
 	}
 
-    // }}}
-    // {{{ public function isActive()
+	// }}}
+	// {{{ public function isActive()
 
 	/**
 	 * Checks if there is an active session
@@ -81,8 +112,8 @@ class StoreSessionModule extends SiteApplicationModule
 		return (strlen(session_id()) > 0);
 	}
 
-    // }}}
-    // {{{ public function getAccountID()
+	// }}}
+	// {{{ public function getAccountID()
 
 	/**
 	 * Retrieves the current account ID
@@ -97,8 +128,8 @@ class StoreSessionModule extends SiteApplicationModule
 		return $_SESSION['account_id'];
 	}
 
-    // }}}
-    // {{{ public function getSessionID()
+	// }}}
+	// {{{ public function getSessionID()
 
 	/**
 	 * Retrieves the current session ID
@@ -113,8 +144,8 @@ class StoreSessionModule extends SiteApplicationModule
 		return session_id();
 	}
 
-    // }}}
-    // {{{ public function isDefined()
+	// }}}
+	// {{{ public function isDefined()
 
 	/**
 	 * Checks the existence of a session variable
@@ -132,8 +163,8 @@ class StoreSessionModule extends SiteApplicationModule
 		return isset($_SESSION[$name]);
 	}
 
-    // }}}
-    // {{{ private function __set()
+	// }}}
+	// {{{ private function __set()
 
 	/**
 	 * Sets a session variable
@@ -149,8 +180,8 @@ class StoreSessionModule extends SiteApplicationModule
 		$_SESSION[$name] = $value;
 	}
 
-    // }}}
-    // {{{ private function &__get()
+	// }}}
+	// {{{ private function &__get()
 
 	/**
 	 * Gets a session variable
@@ -170,7 +201,7 @@ class StoreSessionModule extends SiteApplicationModule
 		return $_SESSION[$name];
 	}
 
-    // }}}
+	// }}}
 }
 
 ?>
