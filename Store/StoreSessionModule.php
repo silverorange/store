@@ -73,7 +73,7 @@ class StoreSessionModule extends SiteApplicationModule
 	/**
 	 * Logs the current user out
 	 */
-	public function logIn()
+	public function logOut()
 	{
 		if (!$this->isLoggedIn())
 			return;
