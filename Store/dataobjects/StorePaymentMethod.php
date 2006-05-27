@@ -1,21 +1,17 @@
 <?php
 
-require_once 'Store/dataobjects/StorePaymentMethodType.php';
+require_once 'Store/dataobjects/StorePaymentType.php';
 require_once 'SwatDB/SwatDBDataObject.php';
 
 /**
  * A payment method for an ecommerce web application
  *
- * Payment methods are usually tied to {@link StoreCustomer} objects or
+ * Payment methods are usually tied to {@link StoreAccount} objects or
  * {@link StoreOrder} objects.
  *
- * A payment method is uses to represent differnt ways of paying for an order
- * in an ecommerce web application. Some examples are:
- *
- * - VISA
- * - AMEX
- * - Cheque
- * - COD
+ * A payment method represents a way to pay for a particular customer.
+ * It stores the type of payment (VISA, MC, COD) as well as necessary
+ * payment details such as card number and expriy date.
  *
  * @package   Store
  * @copyright 2006 silverorange
@@ -32,32 +28,32 @@ class StorePaymentMethod extends SwatDBDataObject
 	public $id;
 
 	/**
-	 * Credit Card Full Name
+	 * Full name on the credit card
 	 *
 	 * @var string
 	 */
-	public $creditcard_fullname;
+	public $credit_card_fullname;
 
 	/**
-	 * Credit Card Last 4 Digits
+	 * Last 4 digits of the credit card
 	 *
-	 * @var integer
+	 * @var string
 	 */
-	public $creditcard_last4;
+	public $credit_card_last4;
 
 	/**
-	 * Default Payment Method
+	 * Number of the credit card
 	 *
-	 * @var boolean
+	 * @var string
 	 */
-	public $default_paymentmethod;
+	public $credit_card_number;
 
 	/**
-	 * The expiry date of the creditcard
+	 * The expiry date of the credit card
 	 *
 	 * @var Date
 	 */
-	public $creditcard_expiry;	
+	public $credit_card_expiry;	
 
 	// }}}
 	// {{{ protection function init()
@@ -65,10 +61,8 @@ class StorePaymentMethod extends SwatDBDataObject
 	protected function init()
 	{
 		$this->id_field = 'integer:id';
-
-		$this->registerInternalField('paymentmethod', 'StorePaymentMethodType');
-		$this->registerDateField('createdate');
-		$this->registerDateField('creditcard_expiry');
+		$this->registerInternalField('payment_type', 'StorePaymentType');
+		$this->registerDateField('credit_card_expiry');
 	}
 
 	// }}}
@@ -83,17 +77,18 @@ class StorePaymentMethod extends SwatDBDataObject
 		$div_tag = new SwatHtmlTag('div');
 		$div_tag->open();
 
-		echo SwatString::minimizeEntities($this->paymentmethod->title);
+		echo SwatString::minimizeEntities($this->payment_type->title);
 		$br_tag->display();
 
-		if ($this->creditcard_last4 !== null) {
-			echo self::creditcardFormat($this->creditcard_last4, '**** **** **** ####');
+		if ($this->credit_card_last4 !== null) {
+			// TODO: use $this->payment_type->cc_mask
+			echo self::creditCardFormat($this->credit_card_last4, '**** **** **** ####');
 			$br_tag->display();
 
-			echo 'Expiry: '.$this->creditcard_expiry->format(SwatDate::DF_CC_MY);
+			echo 'Expiry: '.$this->credit_card_expiry->format(SwatDate::DF_CC_MY);
 			$br_tag->display();
 
-			echo SwatString::minimizeEntities($this->creditcard_fullname);
+			echo SwatString::minimizeEntities($this->credit_card_fullname);
 			$br_tag->display();
 		}
 
@@ -101,7 +96,7 @@ class StorePaymentMethod extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{  public static function creditcardFormat()
+	// {{{  public static function creditCardFormat()
 	/**
 	 * Formats a credit card number according to a format string
 	 *
@@ -113,7 +108,7 @@ class StorePaymentMethod extends SwatDBDataObject
 	 * For example:
 	 * <code>
 	 * // displays '*** **6 7890'
-	 * echo StorePaymentMethod::creditcardFormat(1234567890, '*** **# ####');
+	 * echo StorePaymentMethod::creditCardFormat(1234567890, '*** **# ####');
 	 * </code>
 	 *
 	 * @param string $number
@@ -122,7 +117,7 @@ class StorePaymentMethod extends SwatDBDataObject
 	 *
 	 * @return string
 	 */
-	public static function creditcardFormat($number,
+	public static function creditCardFormat($number,
 		$format = '#### #### #### ####', $zero_fill = true)
 	{
 		$number = trim((string)$number);
