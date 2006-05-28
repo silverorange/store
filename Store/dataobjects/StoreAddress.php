@@ -133,7 +133,7 @@ class StoreAddress extends SwatDBDataObject
 	public function displayCondensed()
 	{
 		$br_tag = new SwatHtmlTag('br');
-		$address_tag = new SwatHtmlTag('address');
+		$address_tag = new SwatHtmlTag('span');
 		$address_tag->open();
 
 		echo SwatString::minimizeEntities($this->fullname), ', ';
