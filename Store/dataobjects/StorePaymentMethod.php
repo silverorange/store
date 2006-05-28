@@ -74,8 +74,8 @@ class StorePaymentMethod extends SwatDBDataObject
 	public function display()
 	{
 		$br_tag = new SwatHtmlTag('br');
-		$div_tag = new SwatHtmlTag('div');
-		$div_tag->open();
+		$span_tag = new SwatHtmlTag('span');
+		$span_tag->open();
 
 		echo SwatString::minimizeEntities($this->payment_type->title);
 		$br_tag->display();
@@ -92,7 +92,7 @@ class StorePaymentMethod extends SwatDBDataObject
 			$br_tag->display();
 		}
 
-		$div_tag->close();
+		$span_tag->close();
 	}
 
 	// }}}
