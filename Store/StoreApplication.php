@@ -25,6 +25,9 @@ abstract class StoreApplication extends SiteApplication
 		parent::initModules();
 		// set up convenience references
 		$this->db = $this->database->getConnection();
+
+		if ($this->session->isLoggedIn())
+			$this->session->account->setDatabase($this->db);
 	}
 
 	// }}}
