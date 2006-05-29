@@ -68,7 +68,7 @@ class StoreAddress extends SwatDBDataObject
 	 *
 	 * @var string
 	 */
-	public $postalcode;
+	public $postal_code;
 
 	// }}}
 	// {{{ protection function init()
@@ -132,29 +132,23 @@ class StoreAddress extends SwatDBDataObject
 	 */
 	public function displayCondensed()
 	{
-		$br_tag = new SwatHtmlTag('br');
-		$address_tag = new SwatHtmlTag('span');
-		$address_tag->open();
-
 		echo SwatString::minimizeEntities($this->fullname), ', ';
 		echo SwatString::minimizeEntities($this->line1);
 		if ($this->line2 !== null)
 			echo ', ', SwatString::minimizeEntities($this->line2);
 
-		$br_tag->display();
+		echo "\n";
 
-		echo SwatString::minimizeEntities($this->city), ' ';
+		echo SwatString::minimizeEntities($this->city), ', ';
 		echo SwatString::minimizeEntities($this->provstate->abbreviation);
 
-		if ($this->postalcode !== null) {
-			echo '&nbsp;&nbsp;';
-			echo SwatString::minimizeEntities($this->postalcode);
+		if ($this->postal_code !== null) {
+			echo ', ';
+			echo SwatString::minimizeEntities($this->postal_code);
 		}
 		echo ', ';
 
 		echo SwatString::minimizeEntities($this->country->title);
-
-		$address_tag->close();
 	}
 
 	// }}}

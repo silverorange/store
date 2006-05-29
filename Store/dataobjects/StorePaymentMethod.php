@@ -73,26 +73,20 @@ class StorePaymentMethod extends SwatDBDataObject
 	 */
 	public function display()
 	{
-		$br_tag = new SwatHtmlTag('br');
-		$span_tag = new SwatHtmlTag('span');
-		$span_tag->open();
-
 		echo SwatString::minimizeEntities($this->payment_type->title);
-		$br_tag->display();
 
 		if ($this->credit_card_last4 !== null) {
 			// TODO: use $this->payment_type->cc_mask
+			echo "\n";
 			echo self::creditCardFormat($this->credit_card_last4, '**** **** **** ####');
-			$br_tag->display();
 
+			echo "\n";
 			echo 'Expiry: '.$this->credit_card_expiry->format(SwatDate::DF_CC_MY);
-			$br_tag->display();
 
+			echo "\n";
 			echo SwatString::minimizeEntities($this->credit_card_fullname);
-			$br_tag->display();
 		}
 
-		$span_tag->close();
 	}
 
 	// }}}
