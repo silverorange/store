@@ -11,7 +11,7 @@ require_once 'Store/StoreCartModule.php';
  * to all sites. It is intended to be extended on a per-site basis.
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreCartModule
  */

@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StorePaymentMethod.php';
  * extended on a per-site basis.
  *
  * @package   Store
- * @copyright 2005 silverorange
+ * @copyright 2005-2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StorePaymentMethodWrapper extends SwatDBRecordsetWrapper
