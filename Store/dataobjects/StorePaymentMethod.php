@@ -90,6 +90,20 @@ class StorePaymentMethod extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function setCreditCardNumber()
+
+	/**
+	 * Encrypts a number and stores it in the credit_card_number property
+	 */
+	public function setCreditCardNumber($number)
+	{
+		// TODO: PGP encrypt $number here
+
+
+		$this->credit_card_number = null // TODO: store encrypted number here
+	}
+
+	// }}}
 	// {{{  public static function creditCardFormat()
 	/**
 	 * Formats a credit card number according to a format string
