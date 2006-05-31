@@ -2,6 +2,7 @@
 
 require_once 'Store/dataobjects/StorePaymentType.php';
 require_once 'SwatDB/SwatDBDataObject.php';
+require_once 'Crypt/GPG.php';
 
 /**
  * A payment method for an ecommerce web application
@@ -56,6 +57,11 @@ class StorePaymentMethod extends SwatDBDataObject
 	public $credit_card_expiry;	
 
 	// }}}
+	// {{{ protected properties
+
+	protected $gpg_id = null;
+
+	// }}}
 	// {{{ protection function init()
 
 	protected function init()
@@ -97,13 +103,23 @@ class StorePaymentMethod extends SwatDBDataObject
 	 */
 	public function setCreditCardNumber($number)
 	{
-		// TODO: PGP encrypt $number here
+		if ($this->gpg_id === null)
+			throw new StoreException('No GPG id provided.');
 
-
-		$this->credit_card_number = null // TODO: store encrypted number here
+		$this->credit_card_number =
+			self::encryptCreditCardNumber($number, $this->gpg_id);
 	}
 
 	// }}}
+	// {{{ public static function encryptCreditCardNumber()
+
+	public static function encryptCreditCardNumber($number, $gpg_id)
+	{
+		$gpg = new Crypt_GPG();
+		return $gpg->encrypt($number, $gpg_id);
+	}
+
+	// }}}	
 	// {{{  public static function creditCardFormat()
 	/**
 	 * Formats a credit card number according to a format string
