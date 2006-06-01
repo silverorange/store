@@ -1,5 +1,6 @@
 <?php
 
+require_once 'Swat/SwatNavBarEntry.php';
 require_once 'Store/dataobjects/StoreDataObject.php';
 // TODO: temp commented until Category dataobject is moved into Store
 //require_once 'Store/StoreCategoryWrapper.php';
@@ -140,6 +141,30 @@ class StoreArticle extends StoreDataObject
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 		$wrapper = $this->class_map->resolveClass('StoreCategoryWrapper');
 		return SwatDB::query($this->db, $sql, $wrapper);
+	}
+
+	// }}}
+	// {{{ protected function loadNavBarEntries()
+
+	protected function loadNavBarEntries()
+	{
+		$sql = sprintf('select * from getArticleNavbar(%s)',
+			$this->db->quote($this->id, 'integer'));
+
+		$navbar_rows = SwatDB::query($this->db, $sql);
+		$entries = array();
+
+		$path = '';
+		foreach ($navbar_rows as $row) {
+			if (strlen($path) == 0)
+				$path.= $row->shortname;
+			else
+				$path.= '/'.$row->shortname;
+
+			$entries[] = new SwatNavBarEntry($row->title,	$path);
+		}
+
+		return $entries;
 	}
 
 	// }}}
