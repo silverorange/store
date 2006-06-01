@@ -73,7 +73,7 @@ class StoreSessionModule extends SiteApplicationModule
 		$logged_in = false;
 
 		if ($this->isLoggedIn())
-			throw new SwatException('User is already logged in.');
+			$this->logout();
 
 		$class_mapper = StoreDataObjectClassMap::instance();
 		$class_name = $class_mapper->resolveClass('StoreAccount');
