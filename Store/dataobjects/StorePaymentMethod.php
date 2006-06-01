@@ -1,7 +1,7 @@
 <?php
 
+require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StorePaymentType.php';
-require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Crypt/GPG.php';
 
 /**
@@ -17,7 +17,7 @@ require_once 'Crypt/GPG.php';
  * @package   Store
  * @copyright 2006 silverorange
  */
-class StorePaymentMethod extends SwatDBDataObject
+class StorePaymentMethod extends StoreDataObject
 {
 	// {{{ public properties
 
@@ -67,7 +67,9 @@ class StorePaymentMethod extends SwatDBDataObject
 	protected function init()
 	{
 		$this->id_field = 'integer:id';
-		$this->registerInternalField('payment_type', 'StorePaymentType');
+		$this->registerInternalField('payment_type',
+			$this->class_map->resolveClass('StorePaymentType'));
+
 		$this->registerDateField('credit_card_expiry');
 	}
 

@@ -1,6 +1,6 @@
 <?php
 
-require_once 'SwatDB/SwatDBDataObject.php';
+require_once 'Store/dataobjects/StoreDataObject.php';
 
 /**
  * A country data object
@@ -8,7 +8,7 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * @package   Store
  * @copyright 2006 silverorange
  */
-class StoreCountry extends SwatDBDataObject
+class StoreCountry extends StoreDataObject
 {
 	// {{{ public properties
 

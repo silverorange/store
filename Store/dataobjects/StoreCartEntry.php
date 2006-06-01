@@ -1,9 +1,8 @@
 <?php
 
+require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreItem.php';
 require_once 'Store/dataobjects/StoreAccount.php';
-
-require_once 'SwatDB/SwatDBDataObject.php';
 
 /**
  * An entry in a shopping cart for an e-commerce web application
@@ -26,7 +25,7 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreCart
  */
-abstract class StoreCartEntry extends SwatDBDataObject
+abstract class StoreCartEntry extends StoreDataObject
 {
 	/**
 	 * The id of this cart entry
@@ -72,8 +71,11 @@ abstract class StoreCartEntry extends SwatDBDataObject
 	 */
 	protected function init()
 	{
-		$this->registerInternalField('item', 'StoreItem');
-		$this->registerInternalField('account', 'StoreAccount');
+		$this->registerInternalField('item',
+			$this->class_map->resolveClass('StoreItem'));
+
+		$this->registerInternalField('account',
+			$this->resolveClass('StoreAccount'));
 	}
 
 	/**
