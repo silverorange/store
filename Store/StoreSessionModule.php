@@ -2,6 +2,7 @@
 
 require_once 'Site/SiteApplicationModule.php';
 require_once 'SwatDB/SwatDB.php';
+require_once 'Store/StoreDataObjectClassMap.php';
 require_once 'Date.php';
 
 /**
@@ -43,6 +44,10 @@ class StoreSessionModule extends SiteApplicationModule
 	{
 		if ($this->isActive())
 			return;
+
+		$class_map = StoreDataObjectClassMap::instance();
+		// load the Account dataobject class before starting the session
+		$class_map->resolveClass('StoreAccount');
 
 		session_start();
 
