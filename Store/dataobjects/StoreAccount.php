@@ -139,7 +139,7 @@ class StoreAccount extends StoreDataObject
 			$this->db->quote($email, 'text'),
 			$this->db->quote(md5($password), 'text'));
 
-		$row = SwatDB::queryRow($this->app->db, $sql);
+		$row = SwatDB::queryRow($this->db, $sql);
 		if ($row === null)
 			return false;
 
