@@ -4,7 +4,7 @@ require_once 'SwatDB/SwatDB.php';
 require_once 'Store/dataobjects/StoreDataObject.php';
 
 /**
- * A customer for an e-commerce web application
+ * A account for an e-commerce web application
  *
  * StoreAccount objects contain data like name and email that correspond
  * directly to database fields. StoreAccount objects can have multiple
@@ -13,14 +13,14 @@ require_once 'Store/dataobjects/StoreDataObject.php';
  * There are three typical ways to use a StoreAccount object:
  *
  * - Create a new StoreAccount object with a blank constructor. Modify some
- *   properties of the customer object and call the StoreAccount::saveToDB()
+ *   properties of the account object and call the StoreAccount::saveToDB()
  *   method. A new row is inserted into the database.
  *
  * <code>
- * $new_customer = new StoreAccount();
- * $new_cusotmer->email = 'customer@example.com';
- * $new_customer->fullname = 'Example Customer';
- * $new_customer->saveToDB();
+ * $new_account = new StoreAccount();
+ * $new_cusotmer->email = 'account@example.com';
+ * $new_account->fullname = 'Example Customer';
+ * $new_account->saveToDB();
  * </code>
  *
  * - Create a new StoreAccount object with a blank constructor. Call the
@@ -29,11 +29,11 @@ require_once 'Store/dataobjects/StoreDataObject.php';
  *   modified properties are updated in the database.
  *
  * <code>
- * $customer = new StoreAccount();
- * $customer->loadFromDB(123);
- * echo 'Hello ' . $customer->fullname;
- * $customer->email = 'new_address@example.com';
- * $customer->saveToDB();
+ * $account = new StoreAccount();
+ * $account->loadFromDB(123);
+ * echo 'Hello ' . $account->fullname;
+ * $account->email = 'new_address@example.com';
+ * $account->saveToDB();
  * </code>
  *
  * - Create a new StoreAccount object passing a record set into the
@@ -45,11 +45,11 @@ require_once 'Store/dataobjects/StoreDataObject.php';
  * Example usage as an MDB wrapper:
  *
  * <code>
- * $sql = '-- select a customer here';
- * $customer = $db->query($sql, null, true, 'Account');
- * echo 'Hello ' . $customer->fullname;
- * $customer->email = 'new_address@example.com';
- * $customer->saveToDB();
+ * $sql = '-- select a account here';
+ * $account = $db->query($sql, null, true, 'Account');
+ * echo 'Hello ' . $account->fullname;
+ * $account->email = 'new_address@example.com';
+ * $account->saveToDB();
  * </code>
  *
  * @package   Store
@@ -62,45 +62,45 @@ class StoreAccount extends StoreDataObject
 	// {{{ public properties
 
 	/**
-	 * The database id of this customer
+	 * The database id of this account 
 	 *
 	 * If this property is null or 0 when StoreAccount::saveToDB() method is
-	 * called, a new customer is inserted in the database.
+	 * called, a new account is inserted in the database.
 	 *
 	 * @var string
 	 */
 	public $id;
 
 	/**
-	 * The full name of this customer
+	 * The full name of this account
 	 *
 	 * @var string
 	 */
 	public $fullname;
 
 	/**
-	 * The email address of this customer
+	 * The email address of this account
 	 *
 	 * @var string
 	 */
 	public $email;
 
 	/**
-	 * The phone number of this customer
+	 * The phone number of this account
 	 *
 	 * @var string
 	 */
 	public $phone;
 
 	/**
-	 * The md5() of this customer's password
+	 * The md5() of this account's password
 	 *
 	 * @var string
 	 */
 	public $password;
 
 	/**
-	 * The date this customer was created on
+	 * The date this account was created on
 	 *
 	 * @var Date
 	 */
