@@ -113,7 +113,7 @@ class StoreSessionModule extends SiteApplicationModule
 	 */
 	public function isLoggedIn()
 	{
-		if (isset($this->isDefined('account'))
+		if ($this->isDefined('account'))
 			return ($this->account !== null);
 
 		return false;
