@@ -1,16 +1,16 @@
 <?php
 
-require_once 'SwatDB/SwatDBRecordSetWrapper.php';
+require_once 'SwatDB/SwatDBRecordsetWrapper.php';
 require_once 'Store/StoreDataObjectClassMap.php';
 
 /**
- * A record-set wrapper that includes a class-mapping object
+ * A recordset wrapper that includes a class-mapping object
  *
  * @package   Store
  * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-abstract class StoreRecordSetWrapper extends SwatDBRecordSetWrapper
+abstract class StoreRecordsetWrapper extends SwatDBRecordsetWrapper
 {
 	/**
 	 * The class-mapping object
