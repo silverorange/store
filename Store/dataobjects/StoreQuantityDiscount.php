@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/dataobjects/SDBDataObject.php';
+require_once 'Store/dataobjects/StoreDataObject.php';
 
 /**
  * Quantity discount object
