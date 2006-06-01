@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Site/SiteApplicationModule.php';
+require_once 'Store/StoreDataObjectClassMap.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Store/StoreDataObjectClassMap.php';
 require_once 'Date.php';
@@ -51,39 +52,54 @@ class StoreSessionModule extends SiteApplicationModule
 
 		session_start();
 
-		if (!isset($_SESSION['account_id']))
-			$_SESSION['account_id'] = 0;
+		if (!$this->isDefined('account'))
+			$this->account = null;
 	}
 
 	// }}}
-	// {{{ public function logIn()
+	// {{{ public function login()
 
 	/**
 	 * Logs in the current user
 	 *
-	 * @param integer $account_id the account ID to log the current user in
-	 *                             with.
+	 * @param string $email the email address of the user to login.
+	 * @param string $password the password of the user to login.
+	 *
+	 * @return boolean true if the user was successfully logged in and false if
+	 *                       the email/password pair did not match an account.
 	 */
-	public function logIn($account_id)
+	public function login($email, $password)
 	{
+		$logged_in = false;
+
 		if ($this->isLoggedIn())
 			throw new SwatException('User is already logged in.');
 
-		$_SESSION['account_id'] = (integer)$account_id;
+		$class_mapper = StoreDataObjectClassMap::instance();
+		$class_name = $class_mapper->resolveClass('StoreAccount');
+		$account = new $class_name();
+
+		if ($account->loadFromDBWithCredentials($email, $password)) {
+			$this->activate();
+			$this->account = $account;
+			$logged_in = true;
+		}
+
+		return $logged_in;
 	}
 
 	// }}}
-	// {{{ public function logOut()
+	// {{{ public function logout()
 
 	/**
 	 * Logs the current user out
 	 */
-	public function logOut()
+	public function logout()
 	{
 		if (!$this->isLoggedIn())
 			return;
 
-		$_SESSION['account_id'] = 0;
+		$this->account = null;
 	}
 
 	// }}}
@@ -97,8 +113,8 @@ class StoreSessionModule extends SiteApplicationModule
 	 */
 	public function isLoggedIn()
 	{
-		if (isset($_SESSION['account_id']))
-			return ($_SESSION['account_id'] != 0);
+		if (isset($this->isDefined('account'))
+			return ($this->account !== null);
 
 		return false;
 	}
@@ -130,7 +146,7 @@ class StoreSessionModule extends SiteApplicationModule
 		if (!$this->isLoggedIn())
 			return null;
 
-		return $_SESSION['account_id'];
+		return $this->account->id;
 	}
 
 	// }}}
