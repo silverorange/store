@@ -152,6 +152,33 @@ class StoreAccount extends SwatDBDataObject
 	}
 
 	/**
+	 * Loads an acount from the database with account credentials
+	 *
+	 * @param string $email the email address of the account.
+	 * @param string $password the password of the account.
+	 *
+	 * @return boolean true if the loading was successful and false if it was
+	 *                  not.
+	 */
+	public function loadFromDBWithCredentials($email, $password)
+	{
+		$this->checkDB();
+
+		$sql = sprintf('select * from %s
+			where email = %s and password = %s',
+			$this->table,
+			$this->db->quote($email_address->value, 'text'),
+			$this->db->quote(md5($password->value), 'text'));
+
+		$row = SwatDB::queryRow($this->app->db, $sql);
+		if ($row === null)
+			return false;
+
+		$this->initFromRow($row);
+		return true;
+	}
+
+	/**
 	 * Saves this customer object to the database
 	 *
 	 * Only modified properties are updated and if this customer does not have
