@@ -75,7 +75,7 @@ abstract class StoreCartEntry extends StoreDataObject
 			$this->class_map->resolveClass('StoreItem'));
 
 		$this->registerInternalField('account',
-			$this->resolveClass('StoreAccount'));
+			$this->class_map->resolveClass('StoreAccount'));
 	}
 
 	/**
