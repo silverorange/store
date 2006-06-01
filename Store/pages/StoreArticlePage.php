@@ -5,13 +5,14 @@ require_once 'Swat/SwatHtmlTag.php';
 require_once 'Swat/SwatString.php';
 require_once 'Store/pages/StorePage.php';
 require_once 'Store/dataobjects/StoreArticleWrapper.php';
+require_once 'Store/StoreDataObjectClassMap.php';
 
 /**
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2005-2006 silverorange
  */
-class ArticlePage extends StorePage
+class StoreArticlePage extends StorePage
 {
 	// {{{ protected properties
 
@@ -44,10 +45,14 @@ class ArticlePage extends StorePage
 	public function build()
 	{
 		parent::build();
+		$this->buildArticle();
+	}
 
-		$this->layout->addHtmlHeadEntry(
-			new SwatStyleSheetHtmlHeadEntry('styles/article.css', 1));
+	// }}}
+	// {{{ protected function buildArticle()
 
+	protected function buildArticle()
+	{
 		if (($article_id = $this->findArticle()) === null)
 			throw new StoreNotFoundException();
 
@@ -67,9 +72,9 @@ class ArticlePage extends StorePage
 	}
 
 	// }}}
-	// {{{ private function findArticle()
+	// {{{ protected function findArticle()
 
-	private function findArticle()
+	protected function findArticle()
 	{
 		// trim at 254 to prevent database errors
 		$path = substr($this->path, 0, 254);
@@ -82,9 +87,9 @@ class ArticlePage extends StorePage
 	}
 
 	// }}}
-	// {{{ private function queryArticle()
+	// {{{ protected function queryArticle()
 
-	private function queryArticle($article_id)
+	protected function queryArticle($article_id)
 	{
 		$sql = 'select * from Article where id = %s and enabled = %s';
 
@@ -92,6 +97,7 @@ class ArticlePage extends StorePage
 			$this->app->db->quote($article_id, 'integer'),
 			$this->app->db->quote(true, 'boolean'));
 
+		$wrapper = 
 		$articles = SwatDB::query($this->app->db, $sql, 'StoreArticleWrapper');
 
 		return $articles->getFirst();
@@ -157,7 +163,9 @@ class ArticlePage extends StorePage
 			$this->app->db->quote(true, 'boolean'),
 			$this->app->db->quote(true, 'boolean'));
 
-		return SwatDB::query($this->app->db, $sql, 'StoreArticleWrapper');
+		$class_map = StoreDataObjectClassMap::instance();
+		$wrapper = $class_map->resolveClass('StoreArticleWrapper');
+		return SwatDB::query($this->app->db, $sql, $wrapper);
 	}
 
 	// }}}
