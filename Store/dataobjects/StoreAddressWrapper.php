@@ -1,6 +1,6 @@
 <?php
 
-require_once 'SwatDB/SwatDBRecordsetWrapper.php';
+require_once 'Store/dataobjects/StoreRecordSetWrapper.php';
 require_once 'Store/dataobjects/StoreAddress.php';
 
 /**
@@ -13,14 +13,15 @@ require_once 'Store/dataobjects/StoreAddress.php';
  * @copyright 2005-2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreAddressWrapper extends SwatDBRecordsetWrapper
+class StoreAddressWrapper extends StoreRecordsetWrapper
 {
 	// {{{ protected function init()
 
 	protected function init()
 	{
 		parent::init();
-		$this->row_wrapper_class = 'StoreAddress';
+		$this->row_wrapper_class =
+			$this->class_map->resolveClass('StoreAddress');
 	}
 
 	// }}}

@@ -1,5 +1,6 @@
 <?php
 
+require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreCountry.php';
 require_once 'Store/dataobjects/StoreProvState.php';
 
@@ -7,7 +8,6 @@ require_once 'Swat/SwatHtmlTag.php';
 require_once 'Swat/SwatString.php';
 
 require_once 'SwatDB/SwatDB.php';
-require_once 'SwatDB/SwatDBDataObject.php';
 
 /**
  * An address for an e-commerce web application
@@ -20,7 +20,7 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * @copyright 2005-2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreAddress extends SwatDBDataObject
+class StoreAddress extends StoreDataObject
 {
 	// {{{ public properties
 
@@ -77,8 +77,12 @@ class StoreAddress extends SwatDBDataObject
 	{
 		$this->id_field = 'integer:id';
 
-		$this->registerInternalField('provstate', 'StoreProvState');
-		$this->registerInternalField('country', 'StoreCountry');
+		$this->registerInternalField('provstate',
+			$this->class_map->resolveClass('StoreProvState'));
+
+		$this->registerInternalField('country',
+			$this->class_map->resolveClass('StoreCountry'));
+
 		$this->registerDateField('createdate');
 	}
 

@@ -1,6 +1,6 @@
 <?php
 
-require_once 'SwatDB/SwatDBDataObject.php';
+require_once 'Store/dataobjects/SDBDataObject.php';
 
 /**
  * Quantity discount object

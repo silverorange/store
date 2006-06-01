@@ -1,6 +1,6 @@
 <?php
 
-require_once 'SwatDB/SwatDBDataObject.php';
+require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreCountry.php';
 
 /**
@@ -9,7 +9,7 @@ require_once 'Store/dataobjects/StoreCountry.php';
  * @package   Store
  * @copyright 2006 silverorange
  */
-class StoreProvState extends SwatDBDataObject
+class StoreProvState extends StoreDataObject
 {
 	// {{{ public properties
 
@@ -77,7 +77,8 @@ class StoreProvState extends SwatDBDataObject
 		$this->table = 'ProvState';
 		$this->id_field = 'integer:id';
 
-		$this->registerInternalField('country', 'StoreCountry');
+		$this->registerInternalField('country',
+			$this->class_map->resolveClass('StoreCountry'));
 	}
 
 	// }}}
