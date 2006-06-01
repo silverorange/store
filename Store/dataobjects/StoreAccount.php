@@ -6,47 +6,47 @@ require_once 'Store/dataobjects/StoreDataObject.php';
 /**
  * A customer for an e-commerce web application
  *
- * StoreCustomer objects contain data like name and email that correspond
- * directly to database fields. StoreCustomer objects can have multiple
+ * StoreAccount objects contain data like name and email that correspond
+ * directly to database fields. StoreAccount objects can have multiple
  * StoreAddress objects.
  *
- * There are three typical ways to use a StoreCustomer object:
+ * There are three typical ways to use a StoreAccount object:
  *
- * - Create a new StoreCustomer object with a blank constructor. Modify some
- *   properties of the customer object and call the StoreCustomer::saveToDB()
+ * - Create a new StoreAccount object with a blank constructor. Modify some
+ *   properties of the customer object and call the StoreAccount::saveToDB()
  *   method. A new row is inserted into the database.
  *
  * <code>
- * $new_customer = new StoreCustomer();
+ * $new_customer = new StoreAccount();
  * $new_cusotmer->email = 'customer@example.com';
  * $new_customer->fullname = 'Example Customer';
  * $new_customer->saveToDB();
  * </code>
  *
- * - Create a new StoreCustomer object with a blank constructor. Call the
- *   StoreCustomer::loadFromDB() method on the object instance passing in a
+ * - Create a new StoreAccount object with a blank constructor. Call the
+ *   StoreAccount::loadFromDB() method on the object instance passing in a
  *   database id. Modify some properties and call the saveToDB() method. The
  *   modified properties are updated in the database.
  *
  * <code>
- * $customer = new StoreCustomer();
+ * $customer = new StoreAccount();
  * $customer->loadFromDB(123);
  * echo 'Hello ' . $customer->fullname;
  * $customer->email = 'new_address@example.com';
  * $customer->saveToDB();
  * </code>
  *
- * - Create a new StoreCustomer object passing a record set into the
+ * - Create a new StoreAccount object passing a record set into the
  *   constructor. The first row of the record set will be loaded as the data
  *   for the object instance. Modify some properties and call the
- *   StoreCustomer::saveToDB() method. The modified properties are updated
+ *   StoreAccount::saveToDB() method. The modified properties are updated
  *   in the database.
  *
  * Example usage as an MDB wrapper:
  *
  * <code>
  * $sql = '-- select a customer here';
- * $customer = $db->query($sql, null, true, 'StoreCustomer');
+ * $customer = $db->query($sql, null, true, 'Account');
  * echo 'Hello ' . $customer->fullname;
  * $customer->email = 'new_address@example.com';
  * $customer->saveToDB();
@@ -55,14 +55,14 @@ require_once 'Store/dataobjects/StoreDataObject.php';
  * @package   Store
  * @copyright 2005-2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
- * @see       StoreCustomerWrapper
+ * @see       StoreAccountWrapper
  */
 class StoreAccount extends StoreDataObject
 {
 	/**
 	 * The database id of this customer
 	 *
-	 * If this property is null or 0 when StoreCustomer::saveToDB() method is
+	 * If this property is null or 0 when StoreAccount::saveToDB() method is
 	 * called, a new customer is inserted in the database.
 	 *
 	 * @var string
