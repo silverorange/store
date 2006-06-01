@@ -1,7 +1,8 @@
 <?php
 
 require_once 'Store/dataobjects/StoreDataObject.php';
-require_once 'Store/StoreCategoryWrapper.php';
+// TODO: temp commented until Category dataobject is moved into Store
+//require_once 'Store/StoreCategoryWrapper.php';
 
 /**
  * @package   Store
