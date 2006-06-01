@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/dataobjects/StoreRecordSetWrapper.php';
+require_once 'Store/dataobjects/StoreRecordsetWrapper.php';
 require_once 'Store/dataobjects/StoreAddress.php';
 
 /**
