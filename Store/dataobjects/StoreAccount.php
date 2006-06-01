@@ -136,8 +136,8 @@ class StoreAccount extends StoreDataObject
 		$sql = sprintf('select * from %s
 			where email = %s and password = %s',
 			$this->table,
-			$this->db->quote($email_address->value, 'text'),
-			$this->db->quote(md5($password->value), 'text'));
+			$this->db->quote($email, 'text'),
+			$this->db->quote(md5($password), 'text'));
 
 		$row = SwatDB::queryRow($this->app->db, $sql);
 		if ($row === null)
