@@ -1,7 +1,7 @@
 <?php
 
 require_once 'SwatDB/SwatDB.php';
-require_once 'SwatDB/SwatDBDataObject.php';
+require_once 'Store/dataobjects/StoreDataObject.php';
 
 /**
  * A customer for an e-commerce web application
@@ -57,7 +57,7 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreCustomerWrapper
  */
-class StoreAccount extends SwatDBDataObject
+class StoreAccount extends StoreDataObject
 {
 	/**
 	 * The database id of this customer
