@@ -127,31 +127,6 @@ class StoreAccount extends SwatDBDataObject
 	private $addresses;
 
 	/**
-	 * An array of property names of this object that are not database fields
-	 *
-	 * @var array
-	 */
-	private $db_field_blacklist = array('addresses');
-
-	/**
-	 * Loads a customer from the database into this object
-	 *
-	 * @param integer $id the database id of the customer to load.
-	 *
-	 * @return boolean true if the customer was found in the database and false
-	 *                  if the customer was not found in the database.
-	 */
-	public function loadFromDB($id)
-	{
-		$fields = array_diff(array_keys($this->getProperties()), $this->db_field_blacklist);
-		$row = SwatDB::queryRow($this->app->db, 'Customer', $fields, 'customer_id', $id);
-		$this->initFromRow($row);
-		$this->generatePropertyHashes();
-
-		// TODO: load complex properties here (like $addresses)
-	}
-
-	/**
 	 * Loads an acount from the database with account credentials
 	 *
 	 * @param string $email the email address of the account.
@@ -176,19 +151,6 @@ class StoreAccount extends SwatDBDataObject
 
 		$this->initFromRow($row);
 		return true;
-	}
-
-	/**
-	 * Saves this customer object to the database
-	 *
-	 * Only modified properties are updated and if this customer does not have
-	 * an id set or the id is 0 then it is inserted instead of updated.
-	 *
-	 * @return boolean true on successfully saving and false on failure
-	 *                  to save.
-	 */
-	public function saveToDB()
-	{
 	}
 }
 
