@@ -8,8 +8,6 @@ require_once('Site/pages/SitePage.php');
  */
 abstract class StorePage extends SitePage
 {
-	public $found = false;
-
 }
 
 ?>
