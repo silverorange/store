@@ -59,6 +59,8 @@ require_once 'Store/dataobjects/StoreDataObject.php';
  */
 class StoreAccount extends StoreDataObject
 {
+	// {{{ public properties
+
 	/**
 	 * The database id of this customer
 	 *
@@ -91,11 +93,11 @@ class StoreAccount extends StoreDataObject
 	public $phone;
 
 	/**
-	 * Whether or not this customer should receive email updates
+	 * The md5() of this customer's password
 	 *
-	 * @var boolean
+	 * @var string
 	 */
-	public $emailupdate;
+	public $password;
 
 	/**
 	 * The date this customer was created on
@@ -103,28 +105,20 @@ class StoreAccount extends StoreDataObject
 	 * @var Date
 	 */
 	public $createdate;
-	
-	/**
-	 * The time this customer last logged in
-	 *
-	 * @var Date
-	 */
-	public $lastlogin;
 
-	/**
-	 * Whether or not this is a simple account
-	 *
-	 * @var boolean
-	 */
-	public $simple;
+	// }}}
+	// {{{ protected function init()
 
-	/**
-	 * An array of StoreAddress objects. The array is associative of the form
-	 *     id => StoreAddress
-	 *
-	 * @var arrray
-	 */
-	private $addresses;
+	protected function init()
+	{
+		$this->table = 'Account';
+		$this->id_field = 'integer:id';
+
+		$this->registerDateField('createdate');
+	}
+
+	// }}}
+	// {{{ public function loadFromDBWithCredentials()
 
 	/**
 	 * Loads an acount from the database with account credentials
@@ -152,6 +146,8 @@ class StoreAccount extends StoreDataObject
 		$this->initFromRow($row);
 		return true;
 	}
+
+	// }}}
 }
 
 ?>
