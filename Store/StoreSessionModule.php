@@ -15,7 +15,7 @@ class StoreSessionModule extends SiteApplicationModule
 {
 	// {{{ private properties
 
-	private $_data_object_classes = array();
+	private $data_object_classes = array();
 
 	// }}}
 	// {{{ public function init()
@@ -51,16 +51,16 @@ class StoreSessionModule extends SiteApplicationModule
 			return;
 
 		// load the dataobject classes before starting the session
-		if (count($this->_data_object_classes)) {
+		if (count($this->data_object_classes)) {
 			$class_map = StoreDataObjectClassMap::instance();
 
-			foreach ($this->_data_object_classes as $name => $class)
+			foreach ($this->data_object_classes as $name => $class)
 				$class_map->resolveClass($class);
 		}
 
 		session_start();
 
-		foreach ($this->_data_object_classes as $name => $class) {
+		foreach ($this->data_object_classes as $name => $class) {
 			if ($this->isDefined($name) && $this->$name !== null)
 				$this->$name->setDatabase($this->app->db);
 			else
@@ -217,7 +217,7 @@ class StoreSessionModule extends SiteApplicationModule
 	 */
 	public function registerDataObject($name, $class)
 	{
-		$this->_data_object_classes[$name] = $class;
+		$this->data_object_classes[$name] = $class;
 	}
 
 	// }}}
