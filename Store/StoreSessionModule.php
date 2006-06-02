@@ -3,7 +3,6 @@
 require_once 'Site/SiteApplicationModule.php';
 require_once 'Store/StoreDataObjectClassMap.php';
 require_once 'SwatDB/SwatDB.php';
-require_once 'Store/StoreDataObjectClassMap.php';
 require_once 'Date.php';
 
 /**
@@ -126,7 +125,13 @@ class StoreSessionModule extends SiteApplicationModule
 		if (!$this->isDefined('account'))
 			return false;
 
-		return ($this->account !== null);
+		if ($this->account === null)
+			return false;
+
+		if ($this->account->id === null)
+			return false;
+
+		return true;
 	}
 
 	// }}}
