@@ -12,16 +12,6 @@ require_once 'StoreArticle.php';
  */
 class StoreArticleWrapper extends StoreRecordsetWrapper
 {
-	// {{{ protected function init()
-
-	protected function init()
-	{
-		parent::init();
-		$this->row_wrapper_class =
-			$this->class_map->resolveClass('StoreArticle');
-	}
-
-	// }}}
 	// {{{ public static function loadSetFromDB()
 
 	public static function loadSetFromDB($db, $id_set, $fields = '*')
@@ -42,6 +32,16 @@ class StoreArticleWrapper extends StoreRecordsetWrapper
 				return $article;
 
 		return null;
+	}
+
+	// }}}
+	// {{{ protected function init()
+
+	protected function init()
+	{
+		parent::init();
+		$this->row_wrapper_class =
+			$this->class_map->resolveClass('StoreArticle');
 	}
 
 	// }}}
