@@ -62,7 +62,7 @@ class StoreSessionModule extends SiteApplicationModule
 
 		foreach ($this->data_object_classes as $name => $class) {
 			if ($this->isDefined($name) && $this->$name !== null)
-				$this->$name->setDatabase($this->app->db);
+				$this->$name->setDatabase($this->app->database->getConnection());
 			else
 				$this->$name = null;
 		}
