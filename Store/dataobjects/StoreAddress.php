@@ -132,9 +132,44 @@ class StoreAddress extends StoreDataObject
 	/**
 	 * Displays this address in a two-line condensed form
 	 *
-	 * This display is ideal for cell renderers.
+	 * This display uses XHTML and is ideal for cell renderers.
 	 */
 	public function displayCondensed()
+	{
+		$br_tag = new SwatHtmlTag('br');
+		$address_tag = new SwatHtmlTag('address');
+		$address_tag->open();
+
+		echo SwatString::minimizeEntities($this->fullname), ', ';
+		echo SwatString::minimizeEntities($this->line1);
+		if ($this->line2 !== null)
+			echo ', ', SwatString::minimizeEntities($this->line2);
+
+		$br_tag->display();
+
+		echo SwatString::minimizeEntities($this->city), ' ';
+		echo SwatString::minimizeEntities($this->provstate->abbreviation);
+
+		if ($this->postal_code !== null) {
+			echo '&nbsp;&nbsp;';
+			echo SwatString::minimizeEntities($this->postal_code);
+		}
+		echo ', ';
+
+		echo SwatString::minimizeEntities($this->country->title);
+
+		$address_tag->close();
+	}
+
+	// }}}
+	// {{{ public function displayCondensedAsText()
+
+	/**
+	 * Displays this address in a two-line condensed form
+	 *
+	 * This display is formatted as plain text and is ideal for emails.
+	 */
+	public function displayCondensedAsText()
 	{
 		echo SwatString::minimizeEntities($this->fullname), ', ';
 		echo SwatString::minimizeEntities($this->line1);
