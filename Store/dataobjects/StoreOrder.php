@@ -17,24 +17,24 @@ class StoreOrder extends StoreDataObject
 	// {{{ public properties
 
 	/**
-     * Unique identifier
-     *
-     * @var integer
-     */
+	 * Unique identifier
+	 *
+	 * @var integer
+	 */
 	public $id;
 
 	/**
-     * Snapshot of the customer's email address
-     *
-     * @var string
-     */
+	 * Snapshot of the customer's email address
+	 *
+	 * @var string
+	 */
 	public $email;
 
 	/**
-     * Snapshot of the customer's Phone Number
-     *
-     * @var string
-     */
+	 * Snapshot of the customer's Phone Number
+	 *
+	 * @var string
+	 */
 	public $phone;
 
 	/**
