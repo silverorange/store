@@ -67,6 +67,10 @@ abstract class StoreCheckoutStepPage extends StoreCheckoutPage
 				$this->app, $this->ui);
 
 		parent::build();
+
+		foreach ($this->embedded_edit_page_classes as $class)
+			call_user_func(array($class, 'postBuildCommon'),
+				$this->app, $this->ui);
 	}
 
 	// }}}
