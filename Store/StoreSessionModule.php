@@ -51,7 +51,7 @@ class StoreSessionModule extends SiteApplicationModule
 			return;
 
 		// load the dataobject classes before starting the session
-		if (count($this->_data_object_classes))
+		if (count($this->_data_object_classes)) {
 			$class_map = StoreDataObjectClassMap::instance();
 
 			foreach ($this->_data_object_classes as $name => $class)
