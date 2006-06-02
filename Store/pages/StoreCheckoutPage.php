@@ -97,9 +97,6 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 	{
 		parent::build();
 
-		$this->layout->addHtmlHeadEntry(
-			new SwatStyleSheetHtmlHeadEntry('styles/checkout.css', 1));
-
 		if ($this->ui !== null) {
 			$this->layout->addHtmlHeadEntrySet(
 				$this->ui->getRoot()->getHtmlHeadEntries());

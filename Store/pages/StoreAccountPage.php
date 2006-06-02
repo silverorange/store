@@ -8,11 +8,6 @@ require_once('Store/pages/StoreArticlePage.php');
  */
 abstract class StoreAccountPage extends StoreArticlePage
 {
-	// {{{ protected properties
-
-	protected $login_source = 'account/login';
-
-	// }}}
 	// {{{ public function init()
 
 	public function init()
@@ -20,8 +15,8 @@ abstract class StoreAccountPage extends StoreArticlePage
 		parent::init();
 
 		// redirect to login page if not logged in
-		if (!$this->app->session->isLoggedIn() && $this->source != $this->login_source)
-			$this->app->relocate($this->login_source);
+		if (!$this->app->session->isLoggedIn() && $this->source != 'account/login')
+			$this->app->relocate('account/login');
 	}
 
 	// }}}
