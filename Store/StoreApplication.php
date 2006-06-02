@@ -26,8 +26,8 @@ abstract class StoreApplication extends SiteApplication
 		// set up convenience references
 		$this->db = $this->database->getConnection();
 
-		if ($this->session->isLoggedIn())
-			$this->session->account->setDatabase($this->db);
+		$this->session->registerDataObject('account', 'StoreAccount');
+		$this->session->registerDataObject('order', 'StoreOrder');
 	}
 
 	// }}}

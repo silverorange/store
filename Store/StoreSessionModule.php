@@ -13,6 +13,11 @@ require_once 'Date.php';
  */
 class StoreSessionModule extends SiteApplicationModule
 {
+	// {{{ private properties
+
+	private $_data_object_classes = array();
+
+	// }}}
 	// {{{ public function init()
 
 	/**
@@ -45,20 +50,22 @@ class StoreSessionModule extends SiteApplicationModule
 		if ($this->isActive())
 			return;
 
-		$class_map = StoreDataObjectClassMap::instance();
-		// load the Account dataobject class before starting the session
-		$class_map->resolveClass('StoreAccount');
+		// load the dataobject classes before starting the session
+		if (count($this->_data_object_classes))
+			$class_map = StoreDataObjectClassMap::instance();
+
+			foreach ($this->_data_object_classes as $name => $class)
+				$class_map->resolveClass($class);
+		}
 
 		session_start();
 
-		if ($this->isDefined('account'))
-			$this->account->setDatabase($this->app->db);
-		else
-			$this->account = null;
-
-		if ($this->isDefined('order'))
-			$this->order->setDatabase($this->app->db);
-
+		foreach ($this->_data_object_classes as $name => $class) {
+			if ($this->isDefined($name) && $this->$name !== null)
+				$this->$name->setDatabase($this->app->db);
+			else
+				$this->$name = null;
+		}
 	}
 
 	// }}}
@@ -197,6 +204,20 @@ class StoreSessionModule extends SiteApplicationModule
 			throw new StoreException('Session is not active.');
 
 		return isset($_SESSION[$name]);
+	}
+
+	// }}}
+	// {{{ public function registerDataObject()
+
+	/**
+	 * Register a dataobject class for a session variable
+	 *
+	 * @param string $name the name of the session variable
+	 * @param string $class the dataobject class name
+	 */
+	public function registerDataObject($name, $class)
+	{
+		$this->_data_object_classes[$name] = $class;
 	}
 
 	// }}}
