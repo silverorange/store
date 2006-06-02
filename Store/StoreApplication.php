@@ -18,19 +18,6 @@ abstract class StoreApplication extends SiteApplication
 	public $db;
 
 	// }}}
-	// {{{ protected function initModules()
-
-	protected function initModules()
-	{
-		parent::initModules();
-		// set up convenience references
-		$this->db = $this->database->getConnection();
-
-		$this->session->registerDataObject('account', 'StoreAccount');
-		$this->session->registerDataObject('order', 'StoreOrder');
-	}
-
-	// }}}
 	// {{{ public function relocate()
 
 	/**
@@ -64,9 +51,24 @@ abstract class StoreApplication extends SiteApplication
 	protected function getDefaultModuleList()
 	{
 		return array(
-			'session'  => 'StoreSessionModule',
+			'config'   => 'SiteServerConfigModule',
 			'database' => 'SiteDatabaseModule',
-			'config'   => 'SiteServerConfigModule');
+			'session'  => 'StoreSessionModule', // must follow database
+		);
+	}
+
+	// }}}
+	// {{{ protected function initModules()
+
+	protected function initModules()
+	{
+		$this->session->registerDataObject('account', 'StoreAccount');
+		$this->session->registerDataObject('order', 'StoreOrder');
+
+		parent::initModules();
+
+		// set up convenience references
+		$this->db = $this->database->getConnection();
 	}
 
 	// }}}
