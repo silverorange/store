@@ -16,16 +16,6 @@ abstract class StoreArticlePageFactory
 	protected $default_page_class = 'ArticlePage';
 
 	// }}}
-	// {{{ private properties
-
-	/**
-	 * Singleton instance
-	 *
-	 * @var StoreArticlePageFactory
-	 */
-	private static $instance = null;
-
-	// }}}
 	// {{{ abstract public static function instance()
 
 	/**
