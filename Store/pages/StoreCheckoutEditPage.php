@@ -57,6 +57,11 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 	public function process()
 	{
 		parent::process();
+
+		// Call using $this instead of self:: since we want run the
+		// code in the subclass.
+		$this->preProcessCommon($this->app, $this->ui);
+
 		$this->ui->process();
 
 		// Call using $this instead of self:: since we want run the
@@ -70,6 +75,13 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 				$this->app->relocate('checkout/confirmation');
 			}
 		}
+	}
+
+	// }}}
+	// {{{ public static function preProcessCommon()
+
+	public static function preProcessCommon($app, $ui)
+	{
 	}
 
 	// }}}
