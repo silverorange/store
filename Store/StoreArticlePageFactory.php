@@ -2,94 +2,106 @@
 
 require_once 'SwatDB/SwatDB.php';
 require_once 'Store/exceptions/StoreNotFoundException.php';
-require_once '../include/layouts/VeseysLocaleLayout.php';
+require_once 'Store/layouts/StoreLayout.php';
 
 /**
- * @package   veseys2
+ * @package   Store
  * @copyright 2006 silverorange
  */
-class ArticlePageFactory
+abstract class StoreArticlePageFactory
 {
-	// {{{ private static function getPageMap()
+	// {{{ protected properties
 
-	private static function getPageMap()
-	{
-		return array(
-			'^(about/contact)$'                    => 'ContactPage',
-			'^(gardeninfo/mantis/request)$'        => 'MantisCatalogRequestPage',
-			'^(about/veseys/fundraising/request)$' => 'FundraisingRequestPage',
-			'^(catalogue)$'                        => 'CatalogRequestPage',
-			'^(quickorder)$'                       => 'QuickOrderPage',
-			'^(search)$'                           => 'SearchPage',
-			'^(cart)$'                             => 'CartPage',
-			'^(cart/promotion)$'                   => 'PromotionPage',
-			'^(about)$'                            => 'AboutPage',
-			'^(about/website/sitemap)$'            => 'SiteMapPage',
-
-			'^(about/website/newsletter)$'         => 'NewsletterSignupPage',
-			'^(about/website/newsletter/remove)$'  => 'NewsletterRemovePage',
-
-			'^(account)$'                          => 'AccountDetailsPage',
-			'^(account/login)$'                    => 'AccountLoginPage',
-			'^(account/edit)$'                     => 'AccountEditPage',
-			'^(account)/order([0-9]+)$'            => 'AccountOrderPage',
-			'^(account/forgotpassword)$'           => 'AccountForgotPasswordPage',
-
-			'^(gardeninfo/gallery)$'               => 'GalleryPage',
-			'^(gardeninfo/gallery)/page([0-9]+)$'  => 'GalleryPage',
-			'^(gardeninfo/gallery)/photo([0-9]+)$' => 'GalleryPhotoPage',
-
-			'^(gardeninfo/guide/.*)$'              => 'PlantingGuidePage',
-			'^(gardeninfo/guide)$'                 => 'PlantingGuidePage',
-			'^(gardeninfo/frost)$'                 => 'FrostDatesPage',
-			'^(gardeninfo/legend)$'                => 'LegendPage',
-
-			'^(gardeninfo/forum)$'                 => 'ForumPage',
-			'^(gardeninfo/forum)/page([0-9]+)$'    => 'ForumPage',
-			'^(gardeninfo/forum)/message([0-9]+)$' => 'ForumMessagePage',
-			'^(gardeninfo/forum)/new$'             => 'ForumPostPage',
-
-			'^(checkout)$'                         => 'CheckoutFrontPage',
-			'^(checkout/first)$'                   => 'CheckoutFirstPage',
-			'^(checkout/confirmation)$'            => 'CheckoutConfirmationPage',
-			'^(checkout/basicinfo)$'               => 'CheckoutBasicInfoPage',
-			'^(checkout/billingaddress)$'          => 'CheckoutBillingAddressPage',
-			'^(checkout/shippingaddress)$'         => 'CheckoutShippingAddressPage',
-			'^(checkout/paymentmethod)$'           => 'CheckoutPaymentMethodPage',
-			'^(checkout/promotion)$'               => 'CheckoutPromotionPage',
-			'^(checkout/thankyou)$'                => 'CheckoutThankYouPage',
-		);
-	}
+	protected $page_class_path = '../include/pages';
+	protected $default_page_class = 'ArticlePage';
 
 	// }}}
-	// {{{ public static function resolvePage()
+	// {{{ private properties
 
-	public static function resolvePage($app, $source)
+	/**
+	 * Singleton instance
+	 *
+	 * @var StoreArticlePageFactory
+	 */
+	private static $instance = null;
+
+	// }}}
+	// {{{ abstract public static function instance()
+
+	/**
+	 * Gets the singleton instance of the class-mapping object
+	 *
+	 * @return StoreDataObjectClassMap the singleton instance of the class-
+	 *                                  mapping object.
+	 */
+	abstract public static function instance();
+
+	// }}}
+	// {{{ public function resolvePage()
+
+	public function resolvePage($app, $source)
 	{
-		$layout = new VeseysLocaleLayout($app, '../include/layouts/xhtml/default.php');
+		$layout = $this->resolveLayout($app, $source);
 
-		foreach (self::getPageMap() as $pattern => $class) {
+		foreach ($this->getPageMap() as $pattern => $class) {
 			$regs = array();
 			$regexp = '@'.$pattern.'@u';
 			if (preg_match($regexp, $source, $regs) === 1) {
-				$class_file = sprintf('../include/pages/%s.php', $class);
-				require_once $class_file;
 				array_shift($regs); //discard full match
 				$article_path = array_shift($regs);
 				array_unshift($regs, $layout);
 				array_unshift($regs, $app);
-
-				$page = call_user_func_array(
-					array(new ReflectionClass($class), 'newInstance'),
-					$regs);
-
+				$page = $this->instantiatePage($class, $regs);
 				$page->setPath($article_path);
 				return $page;
 			}
 		}
 
-		require_once '../include/pages/ArticlePage.php';
-		return new ArticlePage($app, $layout);
+		$params = array($app, $layout);
+		$page = $this->instantiatePage($this->default_page_class, $params);
+		return $page;
+	}
+
+	// }}}
+	// {{{ protected function instantiatePage()
+
+	public function instantiatePage($class, $params)
+	{
+		$class_file = sprintf('%s/%s.php', $this->page_class_path, $class);
+		require_once $class_file;
+
+		$page = call_user_func_array(
+			array(new ReflectionClass($class), 'newInstance'), $params);
+
+		return $page;
+	}
+
+	// }}}
+	// {{{ protected function getPageMap()
+
+	protected function getPageMap()
+	{
+		return array();
+	}
+
+	// }}}
+	// {{{ protected function resolveLayout()
+
+	protected function resolveLayout($app, $source)
+	{
+		return new StoreLayout($app);
+	}
+
+	// }}}
+	// {{{ private function __construct()
+
+	/**
+	 * Creates a StoreAritclePageFactory object
+	 *
+	 * The constructor is private as this class uses the singleton pattern.
+	 */
+	private function __construct()
+	{
 	}
 
 	// }}}
