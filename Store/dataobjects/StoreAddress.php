@@ -137,8 +137,6 @@ class StoreAddress extends StoreDataObject
 	public function displayCondensed()
 	{
 		$br_tag = new SwatHtmlTag('br');
-		$address_tag = new SwatHtmlTag('address');
-		$address_tag->open();
 
 		echo SwatString::minimizeEntities($this->fullname), ', ';
 		echo SwatString::minimizeEntities($this->line1);
@@ -157,8 +155,6 @@ class StoreAddress extends StoreDataObject
 		echo ', ';
 
 		echo SwatString::minimizeEntities($this->country->title);
-
-		$address_tag->close();
 	}
 
 	// }}}
