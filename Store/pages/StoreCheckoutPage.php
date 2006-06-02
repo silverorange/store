@@ -1,18 +1,18 @@
 <?php
 
-require_once '../include/pages/ArticlePage.php';
+require_once 'Store/pages/StoreArticlePage.php';
 require_once 'Store/StoreUI.php';
 
 /**
- * Base clas for checkout pages
+ * Base class for checkout pages
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2006 silverorange
  */
-abstract class CheckoutPage extends ArticlePage
+abstract class StoreCheckoutPage extends StoreArticlePage
 {
 	// init phase
-	// {{{ private properties
+	// {{{ protected properties
 
 	protected $ui = null;
 
@@ -25,14 +25,9 @@ abstract class CheckoutPage extends ArticlePage
 	{
 		parent::init();
 
+		// relocate to cart if no session
 		if (!$this->app->session->isActive())
 			$this->app->relocate('cart');
-
-		if ($this->app->session->isDefined('account'))
-			$this->app->session->account->setDatabase($this->app->db);
-
-		if ($this->app->session->isDefined('order'))
-			$this->app->session->order->setDatabase($this->app->db);
 
 		// initialize session variable to track checkout progress
 		if (!$this->app->session->isDefined('checkout_progress'))
@@ -50,7 +45,7 @@ abstract class CheckoutPage extends ArticlePage
 	protected function loadCheckoutFormUI()
 	{
 		$this->ui = new StoreUI();
-		$this->ui->loadFromXML(dirname(__FILE__).'/checkout.xml');
+		$this->ui->loadFromXML('Store/pages/checkout.xml');
 	}
 
 	// }}}

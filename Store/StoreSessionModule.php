@@ -52,8 +52,14 @@ class StoreSessionModule extends SiteApplicationModule
 
 		session_start();
 
-		if (!$this->isDefined('account'))
+		if ($this->isDefined('account'))
+			$this->account->setDatabase($this->app->db);
+		else
 			$this->account = null;
+
+		if ($this->isDefined('order'))
+			$this->order->setDatabase($this->app->db);
+
 	}
 
 	// }}}
