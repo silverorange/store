@@ -30,27 +30,6 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 
 	// }}}
 
-	// build phase
-	// {{{ public function build()
-
-	public function build()
-	{
-		parent::build();
-
-		// Call using $this instead of self:: since we want run the
-		// code in the subclass.
-		$this->buildCommon($this->app, $this->ui);
-	}
-
-	// }}}
-	// {{{ public static function buildCommon()
-
-	public static function buildCommon($app, $ui)
-	{
-	}
-
-	// }}}
-
 	// process phase
 	// {{{ public function process()
 
@@ -88,6 +67,38 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 	// {{{ public static function processCommon()
 
 	public static function processCommon($app, $ui)
+	{
+	}
+
+	// }}}
+
+	// build phase
+	// {{{ public function build()
+
+	public function build()
+	{
+		// Call using $this instead of self:: since we want run the
+		// code in the subclass.
+		$this->buildCommon($this->app, $this->ui);
+
+		parent::build();
+
+		// Call using $this instead of self:: since we want run the
+		// code in the subclass.
+		$this->postBuildCommon($this->app, $this->ui);
+	}
+
+	// }}}
+	// {{{ public static function buildCommon()
+
+	public static function buildCommon($app, $ui)
+	{
+	}
+
+	// }}}
+	// {{{ public static function postBuildCommon()
+
+	public static function postBuildCommon($app, $ui)
 	{
 	}
 
