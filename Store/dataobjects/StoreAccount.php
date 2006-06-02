@@ -148,28 +148,6 @@ class StoreAccount extends StoreDataObject
 	}
 
 	// }}}
-
-	// loader methods
-	// {{{ protected function loadAddresses()
-
-	protected function loadAddresses()
-	{
-		$sql= 'select id from AccountAddress where account = %s';
-		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
-		return AccountAddressWrapper::loadSetFromDB($this->db, $sql);
-	}
-
-	// }}}
-	// {{{ protected function loadPaymentMethods()
-
-	protected function loadPaymentMethods()
-	{
-		$sql= 'select id from AccountPaymentMethod where account = %s';
-		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
-		return AccountPaymentMethodWrapper::loadSetFromDB($this->db, $sql);
-	}
-
-	// }}}
 }
 
 ?>
