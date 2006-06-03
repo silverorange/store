@@ -114,7 +114,7 @@ class StorePaymentMethod extends StoreDataObject
 	 */
 	public function displayAsText()
 	{
-		echo SwatString::minimizeEntities($this->payment_type->title);
+		echo $this->payment_type->title;
 
 		if ($this->credit_card_last4 !== null) {
 			// TODO: use $this->payment_type->cc_mask
@@ -125,7 +125,7 @@ class StorePaymentMethod extends StoreDataObject
 			echo 'Expiry: '.$this->credit_card_expiry->format(SwatDate::DF_CC_MY);
 
 			echo "\n";
-			echo SwatString::minimizeEntities($this->credit_card_fullname);
+			echo $this->credit_card_fullname;
 		}
 
 	}
