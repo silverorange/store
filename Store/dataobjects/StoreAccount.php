@@ -2,6 +2,9 @@
 
 require_once 'SwatDB/SwatDB.php';
 require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'Store/dataobjects/StoreAddressWrapper.php';
+require_once 'Store/dataobjects/StorePaymentMethodWrapper.php';
+require_once 'Store/dataobjects/StoreOrderWrapper.php';
 
 /**
  * A account for an e-commerce web application
@@ -145,6 +148,38 @@ class StoreAccount extends StoreDataObject
 
 		$this->initFromRow($row);
 		return true;
+	}
+
+	// }}}
+
+	// loader methods
+	// {{{ protected function loadAddresses()
+
+	protected function loadAddresses()
+	{
+		$sql= 'select * from AccountAddress where account = %s';
+		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+		return SwatDB::query($this->db, $sql, 'StoreAddressWrapper');
+	}
+
+	// }}}
+	// {{{ protected function loadPaymentMethods()
+
+	protected function loadPaymentMethods()
+	{
+		$sql= 'select * from AccountPaymentMethod where account = %s';
+		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+		return SwatDB::query($this->db, $sql, 'StoreAccountPaymentMethodWrapper');
+	}
+
+	// }}}
+	// {{{ protected function loadOrders()
+
+	protected function loadOrders()
+	{
+		$sql= 'select * from Orders where account = %s';
+		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+		return SwatDB::query($this->db, $sql, 'OrderWrapper');
 	}
 
 	// }}}
