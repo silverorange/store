@@ -167,23 +167,23 @@ class StoreAddress extends StoreDataObject
 	 */
 	public function displayCondensedAsText()
 	{
-		echo SwatString::minimizeEntities($this->fullname), ', ';
-		echo SwatString::minimizeEntities($this->line1);
+		echo $this->fullname, ', ';
+		echo $this->line1;
 		if ($this->line2 !== null)
-			echo ', ', SwatString::minimizeEntities($this->line2);
+			echo ', ', $this->line2;
 
 		echo "\n";
 
-		echo SwatString::minimizeEntities($this->city), ', ';
-		echo SwatString::minimizeEntities($this->provstate->abbreviation);
+		echo $this->city, ', ';
+		echo $this->provstate->abbreviation;
 
 		if ($this->postal_code !== null) {
 			echo ', ';
-			echo SwatString::minimizeEntities($this->postal_code);
+			echo $this->postal_code;
 		}
 		echo ', ';
 
-		echo SwatString::minimizeEntities($this->country->title);
+		echo $this->country->title;
 	}
 
 	// }}}
