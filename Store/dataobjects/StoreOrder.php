@@ -2,7 +2,7 @@
 
 require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreAccount.php';
-require_once 'Store/dataobjects/StoreAddress.php';
+require_once 'Store/dataobjects/StoreOrderAddress.php';
 require_once 'Store/dataobjects/StorePaymentMethod.php';
 
 /**
@@ -88,10 +88,10 @@ class StoreOrder extends StoreDataObject
 			$this->class_map->resolveClass('StoreAccount'));
 
 		$this->registerInternalField('billing_address',
-			$this->class_map->resolveClass('StoreAddress'));
+			$this->class_map->resolveClass('StoreOrderAddress'));
 
 		$this->registerInternalField('shipping_address',
-			$this->class_map->resolveClass('StoreAddress'));
+			$this->class_map->resolveClass('StoreOrderAddress'));
 
 		$this->registerInternalField('payment_method',
 			$this->class_map->resolveClass('StorePaymentMethod'));
