@@ -120,7 +120,7 @@ class StoreArticlePage extends StorePage
 		if ($articles->getCount() == 0)
 			return;
 
-		echo '<ul id="sub-articles">';
+		echo '<ul class="sub-articles">';
 
 		foreach($articles as $article) {
 			echo '<li>';
