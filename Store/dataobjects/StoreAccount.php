@@ -2,7 +2,7 @@
 
 require_once 'SwatDB/SwatDB.php';
 require_once 'Store/dataobjects/StoreDataObject.php';
-require_once 'Store/dataobjects/StoreAddressWrapper.php';
+require_once 'Store/dataobjects/StoreAccountAddressWrapper.php';
 require_once 'Store/dataobjects/StorePaymentMethodWrapper.php';
 require_once 'Store/dataobjects/StoreOrderWrapper.php';
 
@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreOrderWrapper.php';
  *
  * StoreAccount objects contain data like name and email that correspond
  * directly to database fields. StoreAccount objects can have multiple
- * StoreAddress objects.
+ * StoreAccountAddress objects.
  *
  * There are three typical ways to use a StoreAccount object:
  *
@@ -159,7 +159,8 @@ class StoreAccount extends StoreDataObject
 	{
 		$sql= 'select * from AccountAddress where account = %s';
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
-		return SwatDB::query($this->db, $sql, 'StoreAddressWrapper');
+		return SwatDB::query($this->db, $sql,
+			$this->class_map->resolveClass('StoreAccountAddressWrapper'));
 	}
 
 	// }}}
@@ -169,7 +170,8 @@ class StoreAccount extends StoreDataObject
 	{
 		$sql= 'select * from AccountPaymentMethod where account = %s';
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
-		return SwatDB::query($this->db, $sql, 'StoreAccountPaymentMethodWrapper');
+		return SwatDB::query($this->db, $sql,
+			$this->class_map->resolveClass('StoreAccountPaymentMethodWrapper'));
 	}
 
 	// }}}
@@ -179,7 +181,8 @@ class StoreAccount extends StoreDataObject
 	{
 		$sql= 'select * from Orders where account = %s';
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
-		return SwatDB::query($this->db, $sql, 'OrderWrapper');
+		return SwatDB::query($this->db, $sql,
+			$this->class_map->resolveClass('StoreOrderWrapper'));
 	}
 
 	// }}}

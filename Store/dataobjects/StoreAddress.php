@@ -1,13 +1,11 @@
 <?php
 
-require_once 'Store/dataobjects/StoreDataObject.php';
-require_once 'Store/dataobjects/StoreCountry.php';
-require_once 'Store/dataobjects/StoreProvState.php';
 
 require_once 'Swat/SwatHtmlTag.php';
 require_once 'Swat/SwatString.php';
-
-require_once 'SwatDB/SwatDB.php';
+require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'Store/dataobjects/StoreCountry.php';
+require_once 'Store/dataobjects/StoreProvState.php';
 
 /**
  * An address for an e-commerce web application
@@ -20,7 +18,7 @@ require_once 'SwatDB/SwatDB.php';
  * @copyright 2005-2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreAddress extends StoreDataObject
+abstract class StoreAddress extends StoreDataObject
 {
 	// {{{ public properties
 
