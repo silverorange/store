@@ -22,6 +22,24 @@ class StoreProductWrapper extends StoreRecordsetWrapper
 	}
 
 	// }}}
+	// {{{ public static function loadSetFromDBWithPrimaryCategory()
+
+	public static function loadSetFromDBWithPrimaryCategory($db, $id_set,
+		$fields = '*')
+	{
+		$sql = 'select %s, ProductPrimaryCategoryView.primary_category
+			from Product
+			left outer join ProductPrimaryCategoryView
+			on Product.id = ProductPrimaryCategoryView.product
+			where id in (%s)';
+
+		$sql = sprintf($sql, $fields, $id_set);
+		$class_map = StoreDataObjectClassMap::instance();
+		return SwatDB::query($db, $sql,
+			$class_map->resolveClass('StoreProductWrapper'));
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
