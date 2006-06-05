@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Swat/SwatNavBar.php';
+require_once 'Swat/SwatNavBarEntry.php';
 require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreArticleWrapper.php';
 
@@ -63,28 +63,6 @@ class StoreCategory extends StoreDataObject
 	public $displayorder;
 
 	// }}}
-	// {{{ public function getNavbar()
-
-	public function getNavbar($link, $use_path = false)
-	{
-		$sql = sprintf('select * from getCategoryNavbar(%s)',
-			$this->db->quote($this->id, 'integer'));
-
-		$rs = SwatDB::query($this->db, $sql);
-		$navbar = new SwatNavBar();
-		$path = '';
-
-		foreach ($rs as $row) {
-			$path.=$row->shortname;
-			$link_value = $use_path ? $path : $row->id;
-			$navbar->createEntry($row->title, sprintf($link, $link_value));
-			$path.='/';
-		}
-
-		return $navbar;
-	}
-
-	// }}}
 	// {{{ protected function init()
 
 	protected function init()
@@ -140,6 +118,52 @@ class StoreCategory extends StoreDataObject
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 		$wrapper = $this->class_map->resolveClass('StoreArticleWrapper');
 		return SwatDB::query($this->db, $sql, $wrapper);
+	}
+
+	// }}}
+	// {{{ protected function loadNavBarEntries()
+
+	protected function loadNavBarEntries()
+	{
+		$entries = array();
+
+		$path = '';
+		foreach ($this->queryNavBar() as $row) {
+			if (strlen($path) == 0)
+				$path.= $row->shortname;
+			else
+				$path.= '/'.$row->shortname;
+
+			$entries[] = new SwatNavBarEntry($row->title, $path);
+		}
+
+		return $entries;
+	}
+
+	// }}}
+	// {{{ protected function loadAdminNavBarEntries()
+
+	protected function loadAdminNavBarEntries()
+	{
+		$entries = array();
+
+		foreach ($this->queryNavBar() as $row) {
+			$link = sprintf('Category/Index?id=%s', $row->id);
+			$entries[] = new SwatNavBarEntry($row->title, $link);
+		}
+
+		return $entries;
+	}
+
+	// }}}
+	// {{{ private function queryNavBar()
+
+	protected function queryNavBar()
+	{
+		$sql = sprintf('select * from getCategoryNavbar(%s)',
+			$this->db->quote($this->id, 'integer'));
+
+		return SwatDB::query($this->db, $sql);
 	}
 
 	// }}}
