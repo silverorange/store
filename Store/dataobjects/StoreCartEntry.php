@@ -76,6 +76,9 @@ abstract class StoreCartEntry extends StoreDataObject
 
 		$this->registerInternalField('account',
 			$this->class_map->resolveClass('StoreAccount'));
+
+		$this->table = 'CartEntry';
+		$this->id_field = 'integer:id';
 	}
 
 	/**
