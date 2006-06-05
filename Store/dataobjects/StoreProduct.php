@@ -93,7 +93,16 @@ class StoreProduct extends StoreDataObject
 	// }}}
 	// {{{ protected properties
 
+	/**
+	 *
+	 * @var integer
+	 */ 
 	protected $join_region = null;
+
+	/**
+	 *
+	 * @var boolean
+	 */
 	protected $limit_by_region = true;
 
 	// }}}
@@ -110,6 +119,8 @@ class StoreProduct extends StoreDataObject
 
 	protected function init()
 	{
+		$this->registerInternalField('primary_category', 'Category');
+		$this->registerInternalField('path');
 		$this->registerDateField('createdate');
 
 		$this->table = 'Product';
@@ -137,6 +148,29 @@ class StoreProduct extends StoreDataObject
 		}
 
 		return $items;
+	}
+
+	// }}}
+	// {{{ protected function loadPath()
+
+	protected function loadPath()
+	{
+		$path = '';
+
+		if ($this->hasInternalValue('path') &&
+			$this->getInternalValue('path') !== null) {
+			$path = $this->getInternalValue('path').'/'.$this->shortname;
+		} elseif ($this->hasInternalValue('primary_category')) {
+			$primary_category = $this->getInternalValue('primary_category');
+
+			$sql = sprintf('select getCategoryPath(%s)',
+				$this->db->quote($primary_category, 'integer'));
+
+			$path = SwatDB::queryOne($this->db, $sql);
+			$path.= '/'.$this->shortname;
+		}
+
+		return $path;
 	}
 
 	// }}}
