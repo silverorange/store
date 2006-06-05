@@ -132,7 +132,7 @@ class StoreProduct extends StoreDataObject
 		} else {
 			$sql = 'select id from Item where product = %s';
 			$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
-			$items = call_user_func(array($wrapper, 'loadSetFromDB'),
+			$items = call_user_func(array($wrapper, 'loadSetFromDBWithRegion'),
 				$this->db, $sql, $this->join_region, $this->limit_by_region);
 		}
 
