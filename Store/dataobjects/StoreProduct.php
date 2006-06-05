@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'Store/dataobjects/StoreItemWrapper.php';
 
 /**
  * A product for an e-commerce web application
