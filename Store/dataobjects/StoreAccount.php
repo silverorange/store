@@ -109,6 +109,13 @@ class StoreAccount extends StoreDataObject
 	 */
 	public $createdate;
 
+	/**
+	 * Id of the default payment method
+	 *
+	 * @var integer
+	 */
+	public $default_payment_method;
+
 	// }}}
 	// {{{ protected function init()
 
