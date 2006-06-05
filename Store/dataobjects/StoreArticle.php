@@ -2,7 +2,7 @@
 
 require_once 'Swat/SwatNavBarEntry.php';
 require_once 'Store/dataobjects/StoreDataObject.php';
-require_once 'Store/StoreCategoryWrapper.php';
+require_once 'Store/dataobjects/StoreCategoryWrapper.php';
 
 /**
  *
