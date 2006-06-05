@@ -1,5 +1,7 @@
 <?php
 
+require_once 'Store/dataobjects/StoreDataObject.php';
+
 /**
  * A product for an e-commerce web application
  *
@@ -46,14 +48,71 @@
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreProductWrapper
  */
-class StoreProduct extends SwatDBDataObject
+class StoreProduct extends StoreDataObject
 {
+	// {{{ public properties
+
 	/**
 	 * Unique identifier
 	 *
 	 * @var integer
 	 */
 	public $id;
+
+	/**
+	 * Identifier used in URL
+	 *
+	 * Unique within a catalog.
+	 *
+	 * @var string
+	 */
+	public $shortname;
+
+	/**
+	 * User visible title
+	 *
+	 * @var string
+	 */
+	public $title;
+
+	/**
+	 * User visible content
+	 *
+	 * @var string
+	 */
+	public $bodytext;
+
+	/**
+	 * Create date
+	 *
+	 * @var Date
+	 */
+	public $createdate;
+
+	// }}}
+	// {{{ protected function init()
+
+	protected function init()
+	{
+		$this->registerDateField('createdate');
+
+		$this->table = 'Product';
+		$this->id_field = 'integer:id';
+	}
+
+	// }}}
+	// {{{ protected function loadItems()
+
+	protected function loadItems()
+	{
+		$sql = 'select id from Item where product = %s';
+		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+		$wrapper = $this->class_map->resolveClass('StoreItemWrapper');
+		return call_user_func(array($wrapper, 'loadSetFromDB'),
+			$this->db, $sql);
+	}
+
+	// }}}
 }
 
 ?>
