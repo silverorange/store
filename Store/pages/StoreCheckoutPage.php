@@ -33,6 +33,8 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 		if (!$this->app->session->isDefined('checkout_progress'))
 			$this->resetProgress();
 
+		$this->initDataObjects();
+
 		// enforce dependencies for progressing through the checkout
 		foreach ($this->getProgressDependencies() as $dependency)
 			if (!in_array($dependency, $this->app->session->checkout_progress))
@@ -64,6 +66,26 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 	protected function getProgressDependencies()
 	{
 		return array();
+	}
+
+	// }}}
+	// {{{ protected function initDataObjects()
+
+	protected function initDataObjects()
+	{
+		if (!$this->app->session->isDefined('account') ||
+			$this->app->session->account === null) {
+				$this->app->session->account = new Account();
+				$this->app->session->account->setDatabase($this->app->db);
+				$this->resetProgress();
+		}
+
+		if (!$this->app->session->isDefined('order') ||
+			$this->app->session->order === null) {
+				$this->app->session->order = new Order();
+				$this->app->session->order->setDatabase($this->app->db);
+				$this->resetProgress();
+		}
 	}
 
 	// }}}
