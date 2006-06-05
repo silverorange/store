@@ -10,18 +10,6 @@ require_once 'Store/dataobjects/StoreProduct.php';
  */
 class StoreProductWrapper extends StoreRecordsetWrapper
 {
-	// {{{ public static function loadSetFromDB()
-
-	public static function loadSetFromDB($db, $id_set, $fields = '*')
-	{
-		$sql = 'select %s from Product where id in (%s)';
-		$sql = sprintf($sql, $fields, $id_set);
-		$class_map = StoreDataObjectClassMap::instance();
-		return SwatDB::query($db, $sql,
-			$class_map->resolveClass('StoreProductWrapper'));
-	}
-
-	// }}}
 	// {{{ public static function loadSetFromDBWithPrimaryCategory()
 
 	public static function loadSetFromDBWithPrimaryCategory($db, $id_set,
