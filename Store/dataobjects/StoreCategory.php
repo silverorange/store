@@ -1,5 +1,6 @@
 <?php
 
+require_once 'Swat/SwatNavBar.php';
 require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreArticleWrapper.php';
 
@@ -62,6 +63,28 @@ class StoreCategory extends StoreDataObject
 	public $displayorder;
 
 	// }}}
+	// {{{ public function getNavbar()
+
+	public function getNavbar($link, $use_path = false)
+	{
+		$sql = sprintf('select * from getCategoryNavbar(%s)',
+			$this->db->quote($this->id, 'integer'));
+
+		$rs = SwatDB::query($this->db, $sql);
+		$navbar = new SwatNavBar();
+		$path = '';
+
+		foreach ($rs as $row) {
+			$path.=$row->shortname;
+			$link_value = $use_path ? $path : $row->id;
+			$navbar->createEntry($row->title, sprintf($link, $link_value));
+			$path.='/';
+		}
+
+		return $navbar;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
@@ -74,6 +97,8 @@ class StoreCategory extends StoreDataObject
 	}
 
 	// }}}
+
+	// loader methods
 	// {{{ protected function loadPath()
 
 	protected function loadPath()
