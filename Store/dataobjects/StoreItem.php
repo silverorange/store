@@ -34,6 +34,8 @@ require_once 'Store/dataobjects/StoreDataObject.php';
  */
 abstract class StoreItem extends StoreDataObject
 {
+	// {{{ public properties
+
 	/**
 	 * Unique identifier
 	 *
@@ -42,12 +44,114 @@ abstract class StoreItem extends StoreDataObject
 	public $id;
 
 	/**
-	 * The visible title of this item
+	 * User visible description
 	 *
 	 * @var string
 	 */
-	public $title;
+	public $description;
 
+	/**
+	 * Order of display
+	 *
+	 * @var integer
+	 */
+	public $displayorder;
+
+	/**
+	 * Price
+	 *
+	 * This field is joined from the ItemRegionBinding table.
+	 *
+	 * @var float
+	 */
+	public $price;
+
+	// }}}
+	// {{{ public function setRegion()
+
+	public function setRegion($region, $limiting = true)
+	{
+		$this->join_region = $region;
+		$this->limit_by_region = $limiting;
+	}
+
+	// }}}
+	// {{{ protected properties
+
+	protected $join_region = null;
+	protected $limit_by_region = true;
+
+	// }}}
+	// {{{ protected function init()
+
+	protected function init()
+	{
+		$this->registerInternalField('region',
+			$this->class_map->resolveClass('StoreRegion'));
+
+		$this->registerInternalField('product',
+			$this->class_map->resolveClass('StoreProduct'));
+
+		$this->table = 'Item';
+		$this->id_field = 'integer:id';
+	}
+
+	// }}}
+	// {{{ protected function loadQuantityDiscounts()
+
+	protected function loadQuantityDiscounts()
+	{
+		$quantity_discounts = null;
+
+		if ($this->hasInternalValue('region')) {
+			$sql = 'select id from QuantityDiscount where item = %s';
+			$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+			$wrapper =
+				$this->class_map->resolveClass('StoreQuantityDiscountWrapper');
+
+			$quantity_discounts = call_user_func(
+				array($wrapper, 'loadSetFromDB'),
+				$this->db, $sql, $this->getInternalValue('region'));
+		}
+
+		return $quantity_discounts;
+	}
+
+	// }}}
+	// {{{ protected function loadFromDBInteral()
+
+	/**
+	 * If a limiting region is specified, loadFromDB() will automatically load
+	 * region specific fields for this item
+	 *
+	 * @param integer $id the id of the item to load into this object.
+	 *
+	 * @see StoreItem::setRegion()
+	 */
+	protected function loadFromDBInternal($id)
+	{
+		if ($this->join_region === null)
+			return parent::loadFromDBInternal($id);
+
+		$id_field = new SwatDBField($this->id_field, 'integer');
+		$sql = 'select Item.*, ItemRegionBinding.price, ItemRegionBinding.region
+			from Item
+				%s ItemRegionBinding on item = Item.id
+					and ItemRegionBinding.region = %s
+			where Item.id = %s';
+
+		$sql = sprintf($sql,
+			$this->limit_by_region ? 'inner join' : 'left outer join',
+			$this->db->quote($this->join_region, 'integer'),
+			$this->db->quote($id, 'integer'));
+
+		$rs = SwatDB::query($this->db, $sql, null);
+		$row = $rs->fetchRow(MDB2_FETCHMODE_ASSOC);
+
+		return $row;
+	}
+
+	// }}}
 }
 
 ?>

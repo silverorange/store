@@ -90,6 +90,21 @@ class StoreProduct extends StoreDataObject
 	public $createdate;
 
 	// }}}
+	// {{{ protected properties
+
+	protected $join_region = null;
+	protected $limit_by_region = true;
+
+	// }}}
+	// {{{ public function setRegion()
+
+	public function setRegion($region, $limiting = true)
+	{
+		$this->join_region = $region;
+		$this->limit_by_region = $limiting;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
@@ -105,11 +120,22 @@ class StoreProduct extends StoreDataObject
 
 	protected function loadItems()
 	{
-		$sql = 'select id from Item where product = %s';
-		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+		$items = null;
 		$wrapper = $this->class_map->resolveClass('StoreItemWrapper');
-		return call_user_func(array($wrapper, 'loadSetFromDB'),
-			$this->db, $sql);
+
+		if ($this->join_region === null) {
+			$sql = 'select id from Item where product = %s';
+			$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+			$items = call_user_func(array($wrapper, 'loadSetFromDB'),
+				$this->db, $sql);
+		} else {
+			$sql = 'select id from Item where product = %s';
+			$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+			$items = call_user_func(array($wrapper, 'loadSetFromDB'),
+				$this->db, $sql, $this->join_region, $this->limit_by_region);
+		}
+
+		return $items;
 	}
 
 	// }}}
