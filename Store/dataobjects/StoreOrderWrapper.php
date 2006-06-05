@@ -12,17 +12,6 @@ require_once 'Store/dataobjects/StoreOrder.php';
  */
 class StoreOrderWrapper extends StoreRecordsetWrapper
 {
-	// {{{ public static function loadSetFromDB()
-
-	public static function loadSetFromDB($db, $id_set, $fields = '*')
-	{
-		$sql = 'select %s from Orders where id in (%s) order by id asc';
-		$sql = sprintf($sql, $fields, $id_set);
-		return SwatDB::query($db, $sql,
-			$this->class_map->resolveClass('StoreOrderWrapper'));
-	}
-
-	// }}}
 	// {{{ protected function init()
 
 	protected function init()

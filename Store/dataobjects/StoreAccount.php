@@ -164,7 +164,7 @@ class StoreAccount extends StoreDataObject
 
 	protected function loadAddresses()
 	{
-		$sql= 'select * from AccountAddress where account = %s';
+		$sql= 'select * from AccountAddress where account = %s order by id asc';
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 		return SwatDB::query($this->db, $sql,
 			$this->class_map->resolveClass('StoreAccountAddressWrapper'));
@@ -175,7 +175,7 @@ class StoreAccount extends StoreDataObject
 
 	protected function loadPaymentMethods()
 	{
-		$sql= 'select * from AccountPaymentMethod where account = %s';
+		$sql= 'select * from AccountPaymentMethod where account = %s order by id asc';
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 		return SwatDB::query($this->db, $sql,
 			$this->class_map->resolveClass('StoreAccountPaymentMethodWrapper'));
@@ -186,7 +186,7 @@ class StoreAccount extends StoreDataObject
 
 	protected function loadOrders()
 	{
-		$sql= 'select * from Orders where account = %s';
+		$sql= 'select * from Orders where account = %s order by id asc';
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 		return SwatDB::query($this->db, $sql,
 			$this->class_map->resolveClass('StoreOrderWrapper'));

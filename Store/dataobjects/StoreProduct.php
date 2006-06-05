@@ -23,26 +23,9 @@ require_once 'Store/dataobjects/StoreItemWrapper.php';
  * Ideally, products are displayed one to a page but it is possible to display
  * many products on one page.
  *
- * The load one product, use something like the following:
- *
- * <code>
- * $sql = '-- select a product here';
- * $product = $db->query($sql, null, true, 'StoreProduct');
- * </code>
- *
  * If there are many StoreProduct objects that must be loaded for a page
  * request, the MDB2 wrapper class called StoreProductWrapper should be used to
  * load the objects.
- *
- * To load many products, use something like the following:
- *
- * <code>
- * $sql = '-- select many products here';
- * $products = $db->query($sql, null, true, 'StoreProductWrapper');
- * foreach ($products as $product) {
- *     // do something with each product here ...
- * }
- * </code>
  *
  * @package   Store
  * @copyright 2005-2006 silverorange

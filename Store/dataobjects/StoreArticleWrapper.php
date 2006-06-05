@@ -12,17 +12,6 @@ require_once 'StoreArticle.php';
  */
 class StoreArticleWrapper extends StoreRecordsetWrapper
 {
-	// {{{ public static function loadSetFromDB()
-
-	public static function loadSetFromDB($db, $id_set, $fields = '*')
-	{
-		$sql = 'select %s from Article where id in (%s)';
-		$sql = sprintf($sql, $fields, $id_set);
-		$wrapper = $this->class_map->resolveClass('StoreArticleWrapper');
-		return SwatDB::query($db, $sql, $wrapper);
-	}
-
-	// }}}
 	// {{{ public function getByShortname()
 
 	public function getByShortname($shortname)
