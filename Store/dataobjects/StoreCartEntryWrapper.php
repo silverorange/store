@@ -22,6 +22,8 @@ class StoreCartEntryWrapper extends StoreRecordsetWrapper
 		parent::init();
 		$this->row_wrapper_class =
 			$this->class_map->resolveClass('StoreCartEntry');
+
+		$this->index_field = 'id';
 	}
 
 	// }}}
