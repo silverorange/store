@@ -16,7 +16,9 @@ class StoreCategoryWrapper extends StoreRecordsetWrapper
 	{
 		$sql = 'select %s from Category where id in (%s)';
 		$sql = sprintf($sql, $fields, $id_set);
-		return SwatDB::query($db, $sql, 'CategoryWrapper');
+		$class_map = StoreDataObjectClassMap::instance();
+		return SwatDB::query($db, $sql,
+			$class_map->resolveClass('StoreCategoryWrapper'));
 	}
 
 	// }}}
