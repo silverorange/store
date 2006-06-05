@@ -13,17 +13,17 @@ class StoreCategory extends StoreDataObject
 	// {{{ public properties
 
 	/**
-     * Unique identifier
-     *
-     * @var integer
-     */
+	 * Unique identifier
+	 *
+	 * @var integer
+	 */
 	public $id;
 
 	/**
-     * ID of parent category
-     *
-     * @var integer
-     */
+	 * ID of parent category
+	 *
+	 * @var integer
+	 */
 	public $parent;
 
 	/**
