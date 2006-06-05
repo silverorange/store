@@ -3,7 +3,7 @@
 require_once 'SwatDB/SwatDB.php';
 require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreAccountAddressWrapper.php';
-require_once 'Store/dataobjects/StorePaymentMethodWrapper.php';
+require_once 'Store/dataobjects/StoreAccountPaymentMethodWrapper.php';
 require_once 'Store/dataobjects/StoreOrderWrapper.php';
 
 /**
