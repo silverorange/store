@@ -2,10 +2,10 @@
 
 require_once 'Swat/SwatNavBarEntry.php';
 require_once 'Store/dataobjects/StoreDataObject.php';
-// TODO: temp commented until Category dataobject is moved into Store
-//require_once 'Store/StoreCategoryWrapper.php';
+require_once 'Store/StoreCategoryWrapper.php';
 
 /**
+ *
  * @package   Store
  * @copyright 2006 silverorange
  */
@@ -127,7 +127,7 @@ class StoreArticle extends StoreDataObject
 	 *
 	 * Related categories are ordered by the category table's display order.
 	 *
-	 * @see Category::loadRelatedArticles()
+	 * @see StoreCategory::loadRelatedArticles()
 	 */
 	protected function loadRelatedCategories()
 	{
