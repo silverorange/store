@@ -17,7 +17,7 @@ require_once 'Crypt/GPG.php';
  * @package   Store
  * @copyright 2006 silverorange
  */
-class StorePaymentMethod extends StoreDataObject
+abstract class StorePaymentMethod extends StoreDataObject
 {
 	// {{{ public properties
 
