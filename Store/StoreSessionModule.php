@@ -82,8 +82,6 @@ class StoreSessionModule extends SiteApplicationModule
 	 */
 	public function login($email, $password)
 	{
-		$logged_in = false;
-
 		if ($this->isLoggedIn())
 			$this->logout();
 
@@ -95,10 +93,9 @@ class StoreSessionModule extends SiteApplicationModule
 		if ($account->loadFromDBWithCredentials($email, $password)) {
 			$this->activate();
 			$this->account = $account;
-			$logged_in = true;
 		}
 
-		return $logged_in;
+		return $this->isLoggedIn();
 	}
 
 	// }}}
