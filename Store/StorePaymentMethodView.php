@@ -6,24 +6,24 @@ require_once 'Swat/SwatHtmlTag.php';
 require_once 'Swat/SwatControl.php';
 
 /**
- * A viewer for an address object.
+ * A viewer for an payment method object.
  *
  * @package   Store
  * @copyright 2005 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 
-class StoreAddressView extends SwatControl
+class StorePaymentMethodView extends SwatControl
 {
-	private $address = null;
+	private $payment_method = null;
 	private $remove_button;
-	private $edit_address_link = 'account/address%s';
+	private $edit_link = 'account/payment%s';
 
-	public function __construct(StoreAddress $address)
+	public function __construct(StorePaymentMethod $payment_method)
 	{
-		$this->address = $address;
+		$this->payment_method = $payment_method;
 		$this->remove_button =
-			new SwatConfirmationButton('address_remove_'.$address->id);
+			new SwatConfirmationButton('payment_method_remove_'.$payment_method->id);
 	}
 
 	public function process()
@@ -47,29 +47,24 @@ class StoreAddressView extends SwatControl
 	public function display()
 	{
 		ob_start();
-		//$this->address->displayCondensedAsText();
-		//TEMP because the above is currently broken
-		echo 'Steven Garrity, Loserville,
-			IN, USA, 50567';
-		$address_text = ob_get_clean();
+		$this->payment_method->displayAsText();
+		$payment_method_text = ob_get_clean();
 
 		$div = new SwatHtmlTag('div');
 
 		$div->open();
 
-		//TEMP because the above is currently broken
-		//$this->address->displayCondensed();
-		echo 'Steven Garrity, Loserville, IN, USA, 50567';
+		$this->payment_method->display();
 
 		$a = new SwatHtmlTag('a');
-		$a->href = sprintf($this->edit_address_link, $this->address->id);
-		$a->setContent('edit address');
+		$a->href = sprintf($this->edit_link, $this->payment_method->id);
+		$a->setContent('edit payment method');
 		$a->display();
 
-		$this->remove_button->title = 'Remove Address';
+		$this->remove_button->title = 'Remove Payment Method';
 		$this->remove_button->confirmation_message = sprintf(
-			"Are you sure you want to remove the following address?\n\n%s",
-			$address_text);
+			"Are you sure you want to remove the following payment method?\n\n%s",
+			$payment_method_text);
 		$this->remove_button->display();
 
 		$div->close();
