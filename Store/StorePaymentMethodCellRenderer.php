@@ -9,7 +9,7 @@ require_once 'Store/dataobjects/StorePaymentMethod.php';
  * @package   Store
  * @copyright 2006 silverorange
  */
-class StorePaymentCellRenderer extends SwatCellRenderer
+class StorePaymentMethodCellRenderer extends SwatCellRenderer
 {
 	/**
 	 * Whether or not this payment was made with a credit card
