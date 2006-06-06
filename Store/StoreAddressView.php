@@ -15,15 +15,14 @@ require_once 'Swat/SwatControl.php';
 
 class StoreAddressView extends SwatControl
 {
-	private $address = null;
+	public $address;
 	private $remove_button;
 	private $edit_address_link = 'account/address%s';
 
-	public function __construct(StoreAddress $address)
+	public function init()
 	{
-		$this->address = $address;
 		$this->remove_button =
-			new SwatConfirmationButton('address_remove_'.$address->id);
+			new SwatConfirmationButton($this->id);
 	}
 
 	public function process()
