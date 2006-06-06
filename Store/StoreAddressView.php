@@ -47,19 +47,14 @@ class StoreAddressView extends SwatControl
 	public function display()
 	{
 		ob_start();
-		//$this->address->displayCondensedAsText();
-		//TEMP because the above is currently broken
-		echo 'Steven Garrity, Loserville,
-			IN, USA, 50567';
+		$this->address->displayCondensedAsText();
 		$address_text = ob_get_clean();
 
 		$div = new SwatHtmlTag('div');
 
 		$div->open();
 
-		//TEMP because the above is currently broken
-		//$this->address->displayCondensed();
-		echo 'Steven Garrity, Loserville, IN, USA, 50567';
+		$this->address->displayCondensed();
 
 		$a = new SwatHtmlTag('a');
 		$a->href = sprintf($this->edit_address_link, $this->address->id);
