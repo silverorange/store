@@ -12,8 +12,8 @@ class StoreAccountPaymentMethod extends StorePaymentMethod
 
 	protected function init()
 	{
+		parent::init();
 		$this->table = 'AccountPaymentMethod';
-
 		$this->registerInternalField('account',
 			$this->class_map->resolveClass('StoreAccount'));
 	}
