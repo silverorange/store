@@ -6,8 +6,6 @@ require_once 'Store/dataobjects/StoreItem.php';
 /**
  * A recordset wrapper class for Item objects
  *
- * TODO: remove DB dependency on ItemGroupBinding table
- *
  * @package   Store
  * @copyright 2005-2006 silverorange
  */
@@ -17,11 +15,9 @@ class StoreItemWrapper extends StoreRecordsetWrapper
 
 	public static function loadSetFromDB($db, $id_set)
 	{
-		$sql = 'select Item.*, ItemGroup.title as item_group_title
-			from Item
-				left outer join ItemGroup on Item.item_group = ItemGroup.id
+		$sql = 'select Item.* from Item
 			where Item.id in (%s)
-			order by ItemGroup.displayorder, Item.displayorder, Item.sku, 
+			order by Item.displayorder, Item.sku, 
 				Item.part_count';
 
 		$sql = sprintf($sql, $id_set);
@@ -50,13 +46,12 @@ class StoreItemWrapper extends StoreRecordsetWrapper
 		$limiting = true)
 	{
 		$sql = 'select Item.*, ItemRegionBinding.price,
-			ItemRegionBinding.region, ItemGroup.title as item_group_title
+			ItemRegionBinding.region
 			from Item
 				%s ItemRegionBinding on ItemRegionBinding.item = Item.id and
 					ItemRegionBinding.region = %s
-				left outer join ItemGroup on Item.item_group = ItemGroup.id
 			where Item.id in (%s)
-			order by ItemGroup.displayorder, Item.displayorder, Item.sku, 
+			order by Item.displayorder, Item.sku, 
 				Item.part_count';
 
 		$sql = sprintf($sql,
