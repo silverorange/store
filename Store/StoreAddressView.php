@@ -57,7 +57,7 @@ class StoreAddressView extends SwatControl
 
 		$a = new SwatHtmlTag('a');
 		$a->href = sprintf($this->edit_address_link, $this->address->id);
-		$a->setContent('edit address');
+		$a->setContent('Edit Address');
 		$a->display();
 
 		$this->remove_button->title = 'Remove Address';
