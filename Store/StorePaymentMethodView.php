@@ -57,7 +57,7 @@ class StorePaymentMethodView extends SwatControl
 
 		$a = new SwatHtmlTag('a');
 		$a->href = sprintf($this->edit_link, $this->payment_method->id);
-		$a->setContent('edit payment method');
+		$a->setContent('Edit Payment Method');
 		$a->display();
 
 		$this->remove_button->title = 'Remove Payment Method';
