@@ -24,6 +24,11 @@ abstract class StoreDataObject extends SwatDBDataObject
 		$this->class_map = StoreDataObjectClassMap::instance();
 		parent::__construct($data);
 	}
+
+	public function __wakeup()
+	{
+		$this->class_map = StoreDataObjectClassMap::instance();
+	}
 }
 
 ?>
