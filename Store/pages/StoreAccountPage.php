@@ -15,8 +15,10 @@ abstract class StoreAccountPage extends StoreArticlePage
 		parent::init();
 
 		// redirect to login page if not logged in
-		if (!$this->app->session->isLoggedIn() && $this->source != 'account/login')
-			$this->app->relocate('account/login');
+		if (!$this->app->session->isLoggedIn() &&
+			$this->source != 'account/login' &&
+			$this->source != 'account/edit')
+				$this->app->relocate('account/login');
 	}
 
 	// }}}
