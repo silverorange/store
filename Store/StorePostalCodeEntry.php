@@ -93,8 +93,8 @@ class StorePostalCodeEntry extends SwatEntry
 		$value = strtr($value, $trans);
 
 		if (preg_match('/^[ABCEGHJ-NPRSTVXY]\d[A-Z]\d[A-Z]\d$/u', $value) == 0) {
-			$message = new SwatMessage('The <strong>%s</strong> field must '.
-				'be a valid Canadian postal code.', SwatMessage::ERROR);
+			$message = new SwatMessage('The <strong>%s</strong> field is not '.
+				'a valid Canadian postal code.', SwatMessage::ERROR);
 
 			$message->content_type = 'text/xml';
 			$this->addMessage($message);
@@ -103,7 +103,7 @@ class StorePostalCodeEntry extends SwatEntry
 		if ($province !== null &&
 			!$this->validateByProvince($value, $province)) {
 			$message = new SwatMessage('The <strong>%s</strong> field '.
-				'must be valid for the selected province.',
+				'is not valid for the selected province.',
 				SwatMessage::ERROR);
 
 			$message->content_type = 'text/xml';
@@ -139,7 +139,7 @@ class StorePostalCodeEntry extends SwatEntry
 		}
 
 		if ($state !== null && !$this->validateByState($value, $state)) {
-			$message = new SwatMessage('The <strong>%s</strong> field must '.
+			$message = new SwatMessage('The <strong>%s</strong> field is not '.
 				'valid for the selected state.', SwatMessage::ERROR);
 
 			$message->content_type = 'text/xml';
