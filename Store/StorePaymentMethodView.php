@@ -15,15 +15,14 @@ require_once 'Swat/SwatControl.php';
 
 class StorePaymentMethodView extends SwatControl
 {
-	private $payment_method = null;
+	public $payment_method;
 	private $remove_button;
 	private $edit_link = 'account/payment%s';
 
-	public function __construct(StorePaymentMethod $payment_method)
+	public function init()
 	{
-		$this->payment_method = $payment_method;
 		$this->remove_button =
-			new SwatConfirmationButton('payment_method_remove_'.$payment_method->id);
+			new SwatConfirmationButton($this->id);
 	}
 
 	public function process()
