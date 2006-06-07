@@ -236,7 +236,7 @@ class StorePostalCodeEntry extends SwatEntry
 			break;
 		}
 
-		return in_array($code{0}, $districts);
+		return in_array($code[0], $districts);
 	}
 
 	// }}}
