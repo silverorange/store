@@ -17,7 +17,7 @@ class StorePaymentMethodView extends SwatControl
 {
 	public $payment_method;
 	private $remove_button;
-	private $edit_link = 'account/payment%s';
+	private $edit_link = 'account/paymentmethod%s';
 
 	public function init()
 	{
