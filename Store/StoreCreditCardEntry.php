@@ -18,6 +18,8 @@ class StoreCreditCardEntry extends SwatEntry
 	 */
 	public $show_blank_value = false;
 
+	public $size = 16;
+
 	/**
 	 * The value to display as place holder for the credit card number
 	 *
