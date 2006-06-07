@@ -71,10 +71,10 @@ abstract class StoreCartEntry extends StoreDataObject
 	 */
 	protected function init()
 	{
-		$this->registerInternalField('item',
+		$this->registerInternalProperty('item',
 			$this->class_map->resolveClass('StoreItem'));
 
-		$this->registerInternalField('account',
+		$this->registerInternalProperty('account',
 			$this->class_map->resolveClass('StoreAccount'));
 
 		$this->table = 'CartEntry';

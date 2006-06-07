@@ -14,7 +14,7 @@ class StoreAccountPaymentMethod extends StorePaymentMethod
 	{
 		parent::init();
 		$this->table = 'AccountPaymentMethod';
-		$this->registerInternalField('account',
+		$this->registerInternalProperty('account',
 			$this->class_map->resolveClass('StoreAccount'));
 	}
 

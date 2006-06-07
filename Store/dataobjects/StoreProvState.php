@@ -77,7 +77,7 @@ class StoreProvState extends StoreDataObject
 		$this->table = 'ProvState';
 		$this->id_field = 'integer:id';
 
-		$this->registerInternalField('country',
+		$this->registerInternalProperty('country',
 			$this->class_map->resolveClass('StoreCountry'));
 	}
 

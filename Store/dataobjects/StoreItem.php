@@ -86,10 +86,10 @@ abstract class StoreItem extends StoreDataObject
 
 	protected function init()
 	{
-		$this->registerInternalField('region',
+		$this->registerInternalProperty('region',
 			$this->class_map->resolveClass('StoreRegion'));
 
-		$this->registerInternalField('product',
+		$this->registerInternalProperty('product',
 			$this->class_map->resolveClass('StoreProduct'));
 
 		$this->table = 'Item';
@@ -118,20 +118,20 @@ abstract class StoreItem extends StoreDataObject
 	}
 
 	// }}}
-	// {{{ protected function loadFromDBInteral()
+	// {{{ protected function loadInteral()
 
 	/**
-	 * If a limiting region is specified, loadFromDB() will automatically load
+	 * If a limiting region is specified, load() will automatically load
 	 * region specific fields for this item
 	 *
 	 * @param integer $id the id of the item to load into this object.
 	 *
 	 * @see StoreItem::setRegion()
 	 */
-	protected function loadFromDBInternal($id)
+	protected function loadInternal($id)
 	{
 		if ($this->join_region === null)
-			return parent::loadFromDBInternal($id);
+			return parent::loadInternal($id);
 
 		$id_field = new SwatDBField($this->id_field, 'integer');
 		$sql = 'select Item.*, ItemRegionBinding.price, ItemRegionBinding.region

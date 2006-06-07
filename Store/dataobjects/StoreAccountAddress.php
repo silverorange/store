@@ -15,6 +15,9 @@ class StoreAccountAddress extends StoreAddress
 	{
 		parent::init();
 		$this->table = 'AccountAddress';
+
+		$this->registerInternalProperty('account',
+			$this->class_map->resolveClass('StoreAccount'));
 	}
 
 	// }}}

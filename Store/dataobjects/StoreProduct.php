@@ -102,11 +102,11 @@ class StoreProduct extends StoreDataObject
 
 	protected function init()
 	{
-		$this->registerInternalField('primary_category',
+		$this->registerInternalProperty('primary_category',
 			$this->class_map->resolveClass('StoreCategory'));
 
-		$this->registerInternalField('path');
-		$this->registerDateField('createdate');
+		$this->registerInternalProperty('path');
+		$this->registerDateProperty('createdate');
 
 		$this->table = 'Product';
 		$this->id_field = 'integer:id';

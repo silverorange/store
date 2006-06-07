@@ -75,13 +75,13 @@ abstract class StoreAddress extends StoreDataObject
 	{
 		$this->id_field = 'integer:id';
 
-		$this->registerInternalField('provstate',
+		$this->registerInternalProperty('provstate',
 			$this->class_map->resolveClass('StoreProvState'));
 
-		$this->registerInternalField('country',
+		$this->registerInternalProperty('country',
 			$this->class_map->resolveClass('StoreCountry'));
 
-		$this->registerDateField('createdate');
+		$this->registerDateProperty('createdate');
 	}
 
 	// }}}
