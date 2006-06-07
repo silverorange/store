@@ -194,27 +194,40 @@ class StoreAccount extends StoreDataObject
 
 	// }}}
 
-	// saving methods
-	// {{{ public function save()
+	// saver methods
+	// {{{ protected function saveAddresses()
 
-	public function save() {
-		parent::save();
+	protected function saveAddresses()
+	{
+		foreach ($this->addresses as $address)
+			$address->account = $this;
 
-		if ($this->hasSubDataObject('addresses')) {
-			foreach ($this->addresses as $address)
-				$address->account = $this;
+		$this->addresses->setDatabase($this->db);
+		$this->addresses->save();
+	}
 
-			$this->addresses->setDatabase($this->db);
-			$this->addresses->save();
-		}
+	// }}}
+	// {{{ protected function savePayementMethods()
 
-		if ($this->hasSubDataObject('payment_methods')) {
-			foreach ($this->payment_methods as $payment_method)
-				$payment_method->account = $this;
+	protected function savePayementMethods()
+	{
+		foreach ($this->payment_methods as $payment_method)
+			$payment_method->account = $this;
 
-			$this->payment_methods->setDatabase($this->db);
-			$this->payment_methods->save();
-		}
+		$this->payment_methods->setDatabase($this->db);
+		$this->payment_methods->save();
+	}
+
+	// }}}
+	// {{{ protected function saveOrders()
+
+	protected function saveOrders()
+	{
+		foreach ($this->orders as $order)
+			$order->account = $this;
+
+		$this->orders->setDatabase($this->db);
+		$this->orders->save();
 	}
 
 	// }}}
