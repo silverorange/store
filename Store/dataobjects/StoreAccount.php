@@ -16,33 +16,33 @@ require_once 'Store/dataobjects/StoreOrderWrapper.php';
  * There are three typical ways to use a StoreAccount object:
  *
  * - Create a new StoreAccount object with a blank constructor. Modify some
- *   properties of the account object and call the StoreAccount::saveToDB()
+ *   properties of the account object and call the StoreAccount::save()
  *   method. A new row is inserted into the database.
  *
  * <code>
  * $new_account = new StoreAccount();
  * $new_cusotmer->email = 'account@example.com';
  * $new_account->fullname = 'Example Customer';
- * $new_account->saveToDB();
+ * $new_account->save();
  * </code>
  *
  * - Create a new StoreAccount object with a blank constructor. Call the
- *   StoreAccount::loadFromDB() method on the object instance passing in a
- *   database id. Modify some properties and call the saveToDB() method. The
+ *   StoreAccount::load() method on the object instance passing in a
+ *   database id. Modify some properties and call the save() method. The
  *   modified properties are updated in the database.
  *
  * <code>
  * $account = new StoreAccount();
- * $account->loadFromDB(123);
+ * $account->load(123);
  * echo 'Hello ' . $account->fullname;
  * $account->email = 'new_address@example.com';
- * $account->saveToDB();
+ * $account->save();
  * </code>
  *
  * - Create a new StoreAccount object passing a record set into the
  *   constructor. The first row of the record set will be loaded as the data
  *   for the object instance. Modify some properties and call the
- *   StoreAccount::saveToDB() method. The modified properties are updated
+ *   StoreAccount::save() method. The modified properties are updated
  *   in the database.
  *
  * Example usage as an MDB wrapper:
@@ -52,7 +52,7 @@ require_once 'Store/dataobjects/StoreOrderWrapper.php';
  * $account = $db->query($sql, null, true, 'Account');
  * echo 'Hello ' . $account->fullname;
  * $account->email = 'new_address@example.com';
- * $account->saveToDB();
+ * $account->save();
  * </code>
  *
  * @package   Store
@@ -67,7 +67,7 @@ class StoreAccount extends StoreDataObject
 	/**
 	 * The database id of this account 
 	 *
-	 * If this property is null or 0 when StoreAccount::saveToDB() method is
+	 * If this property is null or 0 when StoreAccount::save() method is
 	 * called, a new account is inserted in the database.
 	 *
 	 * @var string
@@ -124,11 +124,11 @@ class StoreAccount extends StoreDataObject
 		$this->table = 'Account';
 		$this->id_field = 'integer:id';
 
-		$this->registerDateField('createdate');
+		$this->registerDateProperty('createdate');
 	}
 
 	// }}}
-	// {{{ public function loadFromDBWithCredentials()
+	// {{{ public function loadWithCredentials()
 
 	/**
 	 * Loads an acount from the database with account credentials
@@ -139,7 +139,7 @@ class StoreAccount extends StoreDataObject
 	 * @return boolean true if the loading was successful and false if it was
 	 *                  not.
 	 */
-	public function loadFromDBWithCredentials($email, $password)
+	public function loadWithCredentials($email, $password)
 	{
 		$this->checkDB();
 
@@ -190,6 +190,31 @@ class StoreAccount extends StoreDataObject
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 		return SwatDB::query($this->db, $sql,
 			$this->class_map->resolveClass('StoreOrderWrapper'));
+	}
+
+	// }}}
+
+	// saving methods
+	// {{{ public function save()
+
+	public function save() {
+		parent::save();
+
+		if ($this->hasSubDataObject('addresses')) {
+			foreach ($this->addresses as $address)
+				$address->account = $this;
+
+			$this->addresses->setDatabase($this->db);
+			$this->addresses->save();
+		}
+
+		if ($this->hasSubDataObject('payment_methods')) {
+			foreach ($this->payment_methods as $payment_method)
+				$payment_method->account = $this;
+
+			$this->payment_methods->setDatabase($this->db);
+			$this->payment_methods->save();
+		}
 	}
 
 	// }}}

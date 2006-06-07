@@ -90,10 +90,10 @@ class StoreArticle extends StoreDataObject
 
 	protected function init()
 	{
-		$this->registerInternalField('parent',
+		$this->registerInternalProperty('parent',
 			$this->class_map->resolveClass('StoreArticle'));
 
-		$this->registerDateField('createdate');
+		$this->registerDateProperty('createdate');
 
 		$this->table = 'Article';
 		$this->id_field = 'integer:id';

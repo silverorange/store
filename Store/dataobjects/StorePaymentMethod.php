@@ -67,10 +67,10 @@ abstract class StorePaymentMethod extends StoreDataObject
 	protected function init()
 	{
 		$this->id_field = 'integer:id';
-		$this->registerInternalField('payment_type',
+		$this->registerInternalProperty('payment_type',
 			$this->class_map->resolveClass('StorePaymentType'));
 
-		$this->registerDateField('credit_card_expiry');
+		$this->registerDateProperty('credit_card_expiry');
 	}
 
 	// }}}

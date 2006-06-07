@@ -84,19 +84,19 @@ class StoreOrder extends StoreDataObject
 
 	protected function init()
 	{
-		$this->registerInternalField('account',
+		$this->registerInternalProperty('account',
 			$this->class_map->resolveClass('StoreAccount'));
 
-		$this->registerInternalField('billing_address',
+		$this->registerInternalProperty('billing_address',
 			$this->class_map->resolveClass('StoreOrderAddress'));
 
-		$this->registerInternalField('shipping_address',
+		$this->registerInternalProperty('shipping_address',
 			$this->class_map->resolveClass('StoreOrderAddress'));
 
-		$this->registerInternalField('payment_method',
+		$this->registerInternalProperty('payment_method',
 			$this->class_map->resolveClass('StoreOrderPaymentMethod'));
 
-		$this->registerDateField('createdate');
+		$this->registerDateProperty('createdate');
 
 		$this->table = 'Orders';
 		$this->id_field = 'integer:id';

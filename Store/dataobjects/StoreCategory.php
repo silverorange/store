@@ -67,8 +67,8 @@ class StoreCategory extends StoreDataObject
 
 	protected function init()
 	{
-		$this->registerInternalField('path');
-		$this->registerDateField('createdate');
+		$this->registerInternalProperty('path');
+		$this->registerDateProperty('createdate');
 
 		$this->table = 'Category';
 		$this->id_field = 'integer:id';
