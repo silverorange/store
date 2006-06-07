@@ -90,7 +90,7 @@ class StoreSessionModule extends SiteApplicationModule
 		$account = new $class_name();
 		$account->setDatabase($this->app->db);
 
-		if ($account->loadFromDBWithCredentials($email, $password)) {
+		if ($account->loadWithCredentials($email, $password)) {
 			$this->activate();
 			$this->account = $account;
 		}
