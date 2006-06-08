@@ -215,9 +215,9 @@ class StoreAccount extends StoreDataObject
 	}
 
 	// }}}
-	// {{{ protected function savePayementMethods()
+	// {{{ protected function savePaymentMethods()
 
-	protected function savePayementMethods()
+	protected function savePaymentMethods()
 	{
 		foreach ($this->payment_methods as $payment_method)
 			$payment_method->account = $this;
