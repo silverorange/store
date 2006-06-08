@@ -143,18 +143,26 @@ class StoreAccount extends StoreDataObject
 	{
 		$this->checkDB();
 
-		$sql = sprintf('select * from %s
+		$sql = sprintf('select id from %s
 			where email = %s and password = %s',
 			$this->table,
 			$this->db->quote($email, 'text'),
 			$this->db->quote(md5($password), 'text'));
 
-		$row = SwatDB::queryRow($this->db, $sql);
-		if ($row === null)
+		$id = SwatDB::queryOne($this->db, $sql);
+
+		if ($id === null)
 			return false;
 
-		$this->initFromRow($row);
-		return true;
+		return $this->load($id);
+	}
+
+	// }}}
+	// {{{ protected function getSerializableSubDataObjects()
+
+	protected function getSerializableSubDataObjects()
+	{
+		return array('addresses', 'payment_methods');
 	}
 
 	// }}}
