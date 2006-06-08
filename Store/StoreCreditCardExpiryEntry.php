@@ -34,13 +34,13 @@ class StoreCreditCardExpiryEntry extends SwatDateEntry
 
 	// }}}
 	// {{{ public function showEditMessage()
+
 	/*
 	 * Checks the validity of the current set date
 	 *
 	 * This method is useful when editing an expiry date to notify the
 	 * customer that they must update it.
 	 */
-
 	public function showEditMessage()
 	{
 		$content = sprintf('The expiry date that was entered (%s)
@@ -52,6 +52,8 @@ class StoreCreditCardExpiryEntry extends SwatDateEntry
 
 		$this->value = null;
 	}
+
+	// }}}
 }
 
 ?>
