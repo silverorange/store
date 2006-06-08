@@ -9,7 +9,7 @@ require_once 'Validate/Finance/CreditCard.php';
  * @package   Store
  * @copyright 2006 silverorange
  */
-class StoreCreditCardEntry extends SwatEntry
+class StoreCreditCardNumberEntry extends SwatEntry
 {
 	/**
 	 * Whether or not to show a blank_value
