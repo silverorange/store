@@ -45,6 +45,9 @@ class StorePaymentMethodView extends SwatControl
 
 	public function display()
 	{
+		if (!$this->visible)
+			return;
+
 		ob_start();
 		$this->payment_method->displayAsText();
 		$payment_method_text = ob_get_clean();
