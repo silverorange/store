@@ -17,6 +17,7 @@ class StoreAccountPaymentMethodWrapper extends StoreRecordsetWrapper
 	protected function init()
 	{
 		parent::init();
+		$this->index_field = 'id';
 		$this->row_wrapper_class =
 			$this->class_map->resolveClass('StoreAccountPaymentMethod');
 	}
