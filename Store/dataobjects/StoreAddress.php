@@ -95,19 +95,18 @@ abstract class StoreAddress extends StoreDataObject
 	 */
 	public function display()
 	{
-		$br_tag = new SwatHtmlTag('br');
 		$address_tag = new SwatHtmlTag('address');
 		$address_tag->open();
 
 		echo SwatString::minimizeEntities($this->fullname);
-		$br_tag->display();
+		echo '<br />';
 
 		echo SwatString::minimizeEntities($this->line1);
-		$br_tag->display();
+		echo '<br />';
 
 		if ($this->line2 !== null) {
 			echo SwatString::minimizeEntities($this->line2);
-			$br_tag->display();
+			echo '<br />';
 		}
 
 		echo SwatString::minimizeEntities($this->city);
@@ -116,10 +115,10 @@ abstract class StoreAddress extends StoreDataObject
 			echo '&nbsp;&nbsp;';
 			echo SwatString::minimizeEntities($this->postalcode);
 		}
-		$br_tag->display();
+		echo '<br />';
 
 		echo SwatString::minimizeEntities($this->country->title);
-		$br_tag->display();
+		echo '<br />';
 
 		$address_tag->close();
 	}
@@ -134,14 +133,12 @@ abstract class StoreAddress extends StoreDataObject
 	 */
 	public function displayCondensed()
 	{
-		$br_tag = new SwatHtmlTag('br');
-
 		echo SwatString::minimizeEntities($this->fullname), ', ';
 		echo SwatString::minimizeEntities($this->line1);
 		if ($this->line2 !== null)
 			echo ', ', SwatString::minimizeEntities($this->line2);
 
-		$br_tag->display();
+		echo '<br />';
 
 		echo SwatString::minimizeEntities($this->city), ' ';
 		echo SwatString::minimizeEntities($this->provstate->abbreviation);
