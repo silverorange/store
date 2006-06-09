@@ -81,24 +81,26 @@ abstract class StorePaymentMethod extends StoreDataObject
 	 */
 	public function display()
 	{
-		$br_tag = new SwatHtmlTag('br');
 		$span_tag = new SwatHtmlTag('span');
 		$span_tag->open();
 
 		echo SwatString::minimizeEntities($this->payment_type->title);
-		$br_tag->display();
+		echo '<br />';
 
 		if ($this->credit_card_last4 !== null) {
 			// TODO: use $this->payment_type->cc_mask
 			echo self::creditCardFormat($this->credit_card_last4, '**** **** **** ####');
+			echo '<br />';
+		}
 
-			$br_tag->display();
-
+		if ($this->credit_card_expiry !== null) {
 			echo 'Expiry: '.$this->credit_card_expiry->format(SwatDate::DF_CC_MY);
-			$br_tag->display();
+			echo '<br />';
+		}
 
+		if ($this->credit_card_fullname !== null) {
 			echo SwatString::minimizeEntities($this->credit_card_fullname);
-			$br_tag->display();
+			echo '<br />';
 		}
 
 		$span_tag->close();
@@ -120,10 +122,14 @@ abstract class StorePaymentMethod extends StoreDataObject
 			// TODO: use $this->payment_type->cc_mask
 			echo "\n";
 			echo self::creditCardFormat($this->credit_card_last4, '**** **** **** ####');
+		}
 
+		if ($this->credit_card_expiry !== null) {
 			echo "\n";
 			echo 'Expiry: '.$this->credit_card_expiry->format(SwatDate::DF_CC_MY);
+		}
 
+		if ($this->credit_card_fullname !== null) {
 			echo "\n";
 			echo $this->credit_card_fullname;
 		}
@@ -140,6 +146,8 @@ abstract class StorePaymentMethod extends StoreDataObject
 	{
 		if ($this->gpg_id === null)
 			throw new StoreException('No GPG id provided.');
+
+		$this->credit_card_last4 = substr($number, -4);
 
 		$this->credit_card_number =
 			self::encryptCreditCardNumber($number, $this->gpg_id);
