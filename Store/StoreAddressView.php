@@ -45,6 +45,9 @@ class StoreAddressView extends SwatControl
 
 	public function display()
 	{
+		if (!$this->visible)
+			return;
+
 		ob_start();
 		$this->address->displayCondensedAsText();
 		$address_text = ob_get_clean();
