@@ -21,18 +21,20 @@ class StoreCreditCardExpiryEntry extends SwatDateEntry
 		$this->display_parts = self::MONTH|self::YEAR;
 
 		$this->setValidRange(0, 20);
+		
+		$this->valid_range_start->setMonth(Date_Calc::getMonth());
 	}
 
 	// }}}
-	// {{{ public function process()
+	// {{{ isValid()
 
-	public function process()
+	public function isValid()
 	{
-		parent::process();
-
+		if (Date::compare($this->value, $this->valid_range_start, true))
+			return false;
+		else
+			return true;
 	}
-
-	// }}}
 }
 
 ?>
