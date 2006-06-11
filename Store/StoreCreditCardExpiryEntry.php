@@ -30,7 +30,7 @@ class StoreCreditCardExpiryEntry extends SwatDateEntry
 
 	public function isValid()
 	{
-		if (Date::compare($this->value, $this->valid_range_start, true) == -1)
+		if (Date::compare($this->value, $this->valid_range_start, true) < 0)
 			return false;
 		else
 			return true;
