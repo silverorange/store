@@ -235,6 +235,25 @@ class StoreSessionModule extends SiteApplicationModule
 	}
 
 	// }}}
+	// {{{ private function __unset()
+
+	/**
+	 * Removes a session variable
+	 *
+	 * @param string $name the name of the session variable to set.
+	 */
+	private function __unset($name)
+	{
+		if (!$this->isActive())
+			throw new StoreException('Session is  not active.');
+
+		if (!isset($_SESSION[$name]))
+			throw new StoreException("Session variable '$name' is not set.");
+
+		unset($_SESSION[$name]);
+	}
+
+	// }}}
 	// {{{ private function &__get()
 
 	/**
