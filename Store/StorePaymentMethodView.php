@@ -64,6 +64,7 @@ class StorePaymentMethodView extends SwatControl
 		$a->display();
 
 		$this->remove_button->title = 'Remove Payment Method';
+		$this->remove_button->class = 'store-remove';
 		$this->remove_button->confirmation_message = sprintf(
 			"Are you sure you want to remove the following payment method?\n\n%s",
 			$payment_method_text);
