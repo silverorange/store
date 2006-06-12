@@ -80,6 +80,7 @@ abstract class StoreCartModule extends SiteApplicationModule
 	 * other method.
 	 */
 	public abstract function load();
+
 	// }}}
 	// {{{ public abstract function save()
 
