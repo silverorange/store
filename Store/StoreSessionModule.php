@@ -99,8 +99,11 @@ class StoreSessionModule extends SiteApplicationModule
 			$this->activate();
 			$this->account = $account;
 
-			foreach ($this->login_callbacks as $callback)
-				call_user_func($callback);
+			foreach ($this->login_callbacks as $login_callback) {
+				$callback = $login_callback['callback'];
+				$parameters = $login_callback['parameters'];
+				call_user_func_array($callback, $parameters);
+			}
 		}
 
 		return $this->isLoggedIn();
@@ -234,13 +237,22 @@ class StoreSessionModule extends SiteApplicationModule
 	 *
 	 * @param callback $callback the callback to call when a successful login
 	 *                            is performed.
+	 * @param array $parameters the paramaters to pass to the callback. Use an
+	 *                           empty array for no parameters.
 	 */
-	public function registerLoginCallback($callback)
+	public function registerLoginCallback($callback, $parameters = array())
 	{
 		if (!is_callable($callback))
 			throw new StoreException('Cannot register invalid callback.');
 
-		$this->login_callbacks[] = $callback;
+		if (!is_array($parameters))
+			throw new StoreException('Callback parameters must be specified '.
+				'in an array.');
+
+		$this->login_callbacks[] = array(
+			'callback' => $callback,
+			'parameters' => $parameters
+		);
 	}
 
 	// }}}
