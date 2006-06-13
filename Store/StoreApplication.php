@@ -2,6 +2,7 @@
 
 require_once 'Site/SiteApplication.php';
 require_once 'Site/SiteDatabaseModule.php';
+require_once 'Site/SiteCookieModule.php';
 require_once 'Site/SiteServerConfigModule.php';
 
 require_once 'Store/StoreSessionModule.php';
@@ -57,6 +58,7 @@ abstract class StoreApplication extends SiteApplication
 			'database' => 'SiteDatabaseModule',
 			'session'  => 'StoreSessionModule', // must follow database
 			'cart'     => 'StoreCartModule', // must follow session
+			'cookie'   => 'SiteCookieModule',
 		);
 	}
 
