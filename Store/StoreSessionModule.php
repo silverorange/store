@@ -66,7 +66,7 @@ class StoreSessionModule extends SiteApplicationModule
 		session_start();
 
 		foreach ($this->data_object_classes as $name => $class) {
-			if ($this->isDefined($name) && $this->$name !== null)
+			if (isset($this->$name) && $this->$name !== null)
 				$this->$name->setDatabase($this->app->database->getConnection());
 			else
 				$this->$name = null;
@@ -137,7 +137,7 @@ class StoreSessionModule extends SiteApplicationModule
 		if (!$this->isActive())
 			return false;
 
-		if (!$this->isDefined('account'))
+		if (!isset($this->account))
 			return false;
 
 		if ($this->account === null)
@@ -196,25 +196,6 @@ class StoreSessionModule extends SiteApplicationModule
 	}
 
 	// }}}
-	// {{{ public function isDefined()
-
-	/**
-	 * Checks the existence of a session variable
-	 *
-	 * @param string $name the name of the session variable to check for.
-	 *
-	 * @return boolean true if a session variable with the given name exists.
-	 *                  False if it does not.
-	 */
-	public function isDefined($name)
-	{
-		if (!$this->isActive())
-			throw new StoreException('Session is not active.');
-
-		return isset($_SESSION[$name]);
-	}
-
-	// }}}
 	// {{{ public function registerDataObject()
 
 	/**
@@ -270,6 +251,22 @@ class StoreSessionModule extends SiteApplicationModule
 			throw new StoreException('Session is  not active.');
 
 		$_SESSION[$name] = $value;
+	}
+
+	// }}}
+	// {{{ private function __isset()
+
+	/**
+	 * Checks the existence of a session variable
+	 *
+	 * @param string $name the name of the session variable to check.
+	 */
+	private function __isset($name)
+	{
+		if (!$this->isActive())
+			throw new StoreException('Session is  not active.');
+
+		return isset($_SESSION[$name]);
 	}
 
 	// }}}

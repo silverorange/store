@@ -30,7 +30,7 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 			$this->app->relocate('cart');
 
 		// initialize session variable to track checkout progress
-		if (!$this->app->session->isDefined('checkout_progress'))
+		if (!isset($this->app->session->checkout_progress))
 			$this->resetProgress();
 
 		$this->initDataObjects();
@@ -73,14 +73,14 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 
 	protected function initDataObjects()
 	{
-		if (!$this->app->session->isDefined('account') ||
+		if (!isset($this->app->session->account) ||
 			$this->app->session->account === null) {
 				$this->app->session->account = new Account();
 				$this->app->session->account->setDatabase($this->app->db);
 				$this->resetProgress();
 		}
 
-		if (!$this->app->session->isDefined('order') ||
+		if (!isset($this->app->session->order) ||
 			$this->app->session->order === null) {
 				$this->app->session->order = new Order();
 				$this->app->session->order->setDatabase($this->app->db);
@@ -95,7 +95,7 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 
 	protected function updateProgress()
 	{
-		if (!$this->app->session->isDefined('checkout_progress'))
+		if (!isset($this->app->session->checkout_progress))
 			$this->app->session->checkout_progress = array();
 
 		$this->app->session->checkout_progress[] = $this->source;
