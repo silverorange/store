@@ -1,411 +1,354 @@
 <?php
 
 require_once 'Site/SiteApplicationModule.php';
-require_once 'Store/dataobjects/StoreCartEntryWrapper.php';
+
+require_once 'Store/StoreSessionModule.php';
+require_once 'Store/StoreDataObjectClassMap.php';
+require_once 'Store/StoreCart.php';
+require_once 'Store/StoreSavedCart.php';
+require_once 'Store/StoreCheckoutCart.php';
 require_once 'Store/exceptions/StoreException.php';
-require_once 'Swat/SwatMessage.php';
+require_once 'Store/dataobjects/StoreCartEntryWrapper.php';
+require_once 'Store/dataobjects/StoreItemWrapper.php';
+require_once 'Store/dataobjects/StoreProductWrapper.php';
+require_once 'Store/dataobjects/StoreCategoryWrapper.php';
 
 /**
- * A cart object
+ * Manages the carts used by a web-store application
  *
- * Carts modules are containers for cart entry objects. This class contains
- * cart functionality common to all sites. Most site code will want to extend
- * either {@link StoreShoppingCartModule} or {@link StoreSavedCartModule}.
+ * Most web stores will have at least two carts. This class handles loading
+ * carts and moving objects between carts.
  *
- * There is intentionally no getEntryById() method because cart entries are
- * un-indexed. When an item is added to the cart, it does not have a cartid to
- * index by. Only after the cart is saved do all entries have unique ids.
+ * Depends on the StoreSessionModule module and thus should be specified after
+ * the StoreSessionModule in the application's
+ * {@link SiteApplication::getDefaultModuleList()} method.
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
- * @see       StoreShoppingCartModule
+ * @see       StoreCart
  */
-abstract class StoreCartModule extends SiteApplicationModule
+class StoreCartModule extends SiteApplicationModule
 {
 	// {{{ protected properties
 
 	/**
-	 * The entries in this cart
+	 * A collection of carts managed by this module
 	 *
-	 * This is an array of StoreCartEntry data objects. The array is
-	 * intentionally unindexed.
-	 *
-	 * @var array
-	 */
-	protected $entries = array();
-
-	/**
-	 * An array of cart entries that were removed from the cart
-	 *
-	 * After the cart is loaded and before it is saved, this array keeps track
-	 * of entries there were removed from the cart. The array is unindexed.
+	 * The array is of the form 'id' => StoreCart object
 	 *
 	 * @var array
 	 */
-	protected $removed_entries = array();
+	protected $carts = array();
 
 	/**
-	 * A cache of cart totals
+	 * Entries used by the carts managed by this cart module
 	 *
-	 * Cart totalling methods may optionally use this array to cache their
-	 * values. When the setChanged() method is called, the cache is cleared.
+	 * This is initialized to an array iterator by default but may be set to
+	 * a cart entry recordset wrapper in the loadEntries() method.
 	 *
-	 * @var boolean
-	 * @see StoreCartModule::setChanged()
+	 * @var StoreCartEntryWrapper|ArrayIteraror
+	 *
+	 * @see StoreCartModule::loadEntries()
 	 */
-	protected $totals = array();
+	protected $entries = null;
+
+	// }}}
+	// {{{ public function __construct()
 
 	/**
-	 * An array of SwatMessages used to display cart entry status messages
+	 * Creates a new cart module
 	 *
-	 * @var array
+	 * When the cart module is created, the default carts are loaded. See
+	 * {@link StoreCartModule::getDefaultModuleList()}.
+	 *
+	 * @param SiteApplication $app the application this module belongs to.
+	 *
+	 * @throws StoreException if there is no session module loaded the cart
+	 *                         module throws an exception.
+	 *
+	 * @see StoreCartModule::getDefaultCartList()
 	 */
-	private $messages = array();
+	public function __construct(SiteApplication $app)
+	{
+		if (!(isset($app->session) &&
+			$app->session instanceof StoreSessionModule))
+			throw new StoreException('The StoreCartModule requires a '.
+				'StoreSessionModule to be loaded. Please either explicitly '.
+				'add a session module to the application before instantiating '.
+				'the cart module, or specify the session module before the '.
+				'cart module in the application\'s getDefaultModuleList() '.
+				'method.');
+
+		parent::__construct($app);
+
+		$this->entries = new ArrayIterator(array());
+
+		// create default carts
+		foreach ($this->getDefaultCartList() as $cart_id => $cart_class)
+			$this->addCart(new $cart_class($this, $app), $cart_id);
+	}
 
 	// }}}
 	// {{{ public function init()
 
+	/**
+	 * Initializes this cart module
+	 *
+	 * This initializes all the carts this module contains and registers a
+	 * callback for when the application's session module logs in.
+	 */
 	public function init()
 	{
+		foreach ($this->carts as $cart)
+			$cart->init();
+
+		if (isset($this->checkout) && isset($this->saved)) {
+			$this->app->session->registerLoginCallback(
+				array($this, 'moveAllEntries'),
+				array($this->checkout, $this->saved));
+		}
 	}
 
 	// }}}
-	// {{{ public abstract function load()
+	// {{{ public function load()
 
 	/**
-	 * Loads this cart
+	 * Loads this cart module
 	 *
-	 * Subclasses may load this cart from the database, a session or using some
-	 * other method.
+	 * By default, this populates the checkout and saved carts from the
+	 * database. Subclasses may reimplement this method to provide their own
+	 * behaviour.
 	 */
-	public abstract function load();
+	public function load()
+	{
+		$this->loadEntries();
+
+		foreach ($this->carts as $cart)
+			$cart->load();
+	}
 
 	// }}}
-	// {{{ public abstract function save()
+	// {{{ public function save()
 
 	/**
-	 * Saves this cart
-	 *
-	 * Subclasses may save this cart to the database, a session or some other
-	 * storage medium.
+	 * Saves this cart module
 	 *
 	 * @see StoreCartModule::load()
 	 */
-	public abstract function save();
-
-	// }}}
-	// {{{ public function addEntry()
-
-	/**
-	 * Adds a StoreCartEntry to this cart
-	 *
-	 * If an equivalent entry already exists in the cart, the two entries are
-	 * combined.
-	 *
-	 * @param StoreCartEntry $cartEntry the StoreCartEntry to add.
-	 */
-	public function addEntry(StoreCartEntry $cart_entry)
+	public function save()
 	{
-		$cart_entry->setDatabase($this->app->db);
-
-		if (!$this->validateEntry($cart_entry))
-			return false;
-
-		$already_in_cart = false;
-
-		// check for item
-		foreach ($this->entries as $entry) {
-			if ($entry->compare($cart_entry) == 0) {
-				$already_in_cart = true;
-				$entry->combine($cart_entry);
-				break;
-			}
-		}
-
-		if (!$already_in_cart)
-			$this->entries[] = $cart_entry;
-
-		$this->setChanged();
-
-		return true;
-	}
-	// }}}
-	// {{{ public function removeEntryById()
-
-	/**
-	 * Removes a StoreCartEntry from this cart
-	 *
-	 * @param integer $entry_id the index value of the StoreCartEntry object
-	 *                           to remove.
-	 *
-	 * @return StoreCartEntry the entry that was removed or null if no entry
-	 *                         was removed.
-	 */
-	public function removeEntryById($entry_id)
-	{
-		$old_entry = null;
-
-		foreach ($this->entries as $entry) {
-			if ($entry->id == $entry_id) {
-				$key = key($this->entries);
-				$old_entry = $this->entries[$key];
-				unset($this->entries[$key]);
-				$this->removed_entries[] = $old_entry;
-				$this->setChanged();
-				break;
-			}
-		}
-
-		return $old_entry;
+		foreach ($this->carts as $cart)
+			$cart->save();
 	}
 
 	// }}}
-	// {{{ public function removeEntry()
+	// {{{ public function addCart()
 
 	/**
-	 * Removes a StoreCartEntry from this cart
+	 * Adds a cart to be managed by this cart module
 	 *
-	 * @param StoreCartEntry $entry the StoreCartEntry object to remove.
+	 * @param StoreCart $cart the cart to add to this cart module.
+	 * @param string $id the identifier of the cart
 	 *
-	 * @return StoreCartEntry the entry that was removed or null if no entry
-	 *                         was removed.
+	 * @throws StoreException if the identifier is already used for another
+	 *                         cart or if the identifier collides with a
+	 *                         property name an exception is thrown.
 	 */
-	public function removeEntry($entry)
+	public function addCart(StoreCart $cart, $id)
 	{
-		$old_entry = null;
+		if (isset($this->carts[$id]))
+			throw new StoreException("A cart with the id '{$id}' already ".
+				'exists in this module.');
 
-		if (in_array($entry, $this->entries)) {
-			foreach ($this->entries as $key => $cart_entry) {
-				if ($cart_entry === $entry) {
-					$old_entry = $this->entries[$key];
-					unset($this->entries[$key]);
-					$this->removed_entries[] = $old_entry;
-					$this->setChanged();
-					break;
-				}
-			}
-		}
+		$properties = get_object_vars($this);
+		if (array_key_exists($id, $properties))
+			throw new SiteException("Invalid cart identifier '{$id}'. ".
+				'Cart identifiers must not be the same as any of the '.
+				'property names of this cart module.');
 
-		return $old_entry;
+		$this->carts[$id] = $cart;
 	}
 
 	// }}}
+	// {{ public function moveAllEntries()
+
+	/**
+	 * Moves all entries of one cart to another cart
+	 *
+	 * @param StoreCart $from the cart to move entries from.
+	 * @param StoreCart $to the cart to move entries to.
+	 */
+	public function moveAllEntries(StoreCart $from, StoreCart $to)
+	{
+		// TODO: implement me
+	}
+
+	// }}
 	// {{{ public function getEntries()
 
 	/**
-	 * Gets a reference to the internal array of StoreCartEntry objects.
+	 * Gets all cart entries belonging to this cart module
 	 *
-	 * @return array an array of StoreCartEntry objects.
+	 * This is <em>not</em> guaranteed to be all the cart entries of all the
+	 * carts managed by this cart module.
+	 *
+	 * If no entries were set in the loadEntries() method, this will return an
+	 * empty array iterator object.
+	 *
+	 * @return StoreCartEntryWrapper|ArrayIterator the cart entries belonging
+	 *                                              to this cart module.
 	 */
-	public function &getEntries()
+	public function getEntries()
 	{
 		return $this->entries;
 	}
 
 	// }}}
-	// {{{ public function getEntriesByItemId()
+	// {{{ protected function getDefaultCartList()
 
 	/**
-	 * Returns an array of entries in the cart based on the database item id
+	 * Gets a list of default carts to be managed by this cart module
 	 *
-	 * An array is returned because database ids are not required to be unique
-	 * across StoreCartItems in a single cart.
+	 * Default carts are created and added to this cart module in the
+	 * constructor. Subclasses may override this method to specify different
+	 * default carts. {@link StoreCart} object may be added to this cart module
+	 * at run time with the {@link StoreCartModule::addCart()} method.
 	 *
-	 * @param integer $item_id the database id of the StoreItem in the cart to
-	 *                          be returned.
-	 *
-	 * @return array an array of StoreCartEntry objects.
+	 * @return array a list of default carts to be managed by this cart module.
+	 *                the array is of the form 'identifier' => 'class'.
 	 */
-	public function &getEntriesByItemId($item_id)
+	protected function getDefaultCartList()
 	{
-		$entries = array();
-		foreach ($this->entries as $entry) {
-			if ($entry->getItemId() == $item_id)
-				$entries[] = $entry;
+		$list = array(
+			'checkout' => 'StoreCheckoutCart',
+			'saved'    => 'StoreSavedCart'
+		);
+
+		return $list;
+	}
+
+	// }}}
+	// {{{ protected function loadEntries()
+
+	/**
+	 * Loads the entries used by this cart module
+	 *
+	 * Carts managed by this cart module may ask this module for its entries in
+	 * their load() methods.
+	 *
+	 * @see StoreCart::load()
+	 */
+	protected function loadEntries()
+	{
+		// make sure default carts exist
+		if (!(isset($this->checkout) && isset($this->saved)))
+			return;
+
+		// make sure we're browsing a request with a region
+		if ($this->app->getRegion() === null)
+			return;
+
+		if ($this->app->session->isLoggedIn()) {
+			$where_clause = sprintf('where account = %s',
+				$this->app->db->quote($this->app->session->getAccountId(),
+				'integer'));
+		} elseif ($this->app->session->isActive()) {
+			$where_clause = sprintf('where sessionid = %s',
+				$this->app->db->quote(session_id(), 'text'));
+		} else {
+			// not logged in, and no active session, so no cart entries
+			return;
 		}
-		return $entries;
+
+		$class_mapper = StoreDataObjectClassMap::instance();
+
+		$entry_sql = 'select CartEntry.*
+			from CartEntry
+				inner join Item on CartEntry.item = Item.id
+			%s
+			order by Item.classcode, Item.product,
+				Item.displayorder, Item.sku, Item.part_count';
+
+		$entry_sql = sprintf($entry_sql, $where_clause);
+
+		$this->entries = SwatDB::query($this->app->db, $entry_sql,
+			$class_mapper->resolveClass('StoreCartEntryWrapper'));
+
+		if ($this->entries->getCount() == 0)
+			return;
+
+		// for implodeArray()
+		$this->app->db->loadModule('Datatype', null, true);
+		$item_ids = $this->entries->getInternalValues('item');
+
+		$quoted_item_ids =
+			$this->app->db->datatype->implodeArray($item_ids, 'integer');
+
+		$items = StoreItemWrapper::loadSetFromDBWithRegion(
+			$this->app->db, $quoted_item_ids, $this->app->getRegion()->id,
+			false);
+
+		$product_sql = 'select id, shortname, title, primary_category
+			from Product left outer join ProductPrimaryCategoryView
+			on product = id where id in (%s)';
+
+		$products = $items->loadAllSubDataObjects('product', $this->app->db,
+			$product_sql, $class_mapper->resolveClass('StoreProductWrapper'));
+
+		$category_sql = 'select id, getCategoryPath(id) as path
+			from Category where id in (%s)';
+
+		$categories = $products->loadAllSubDataObjects('primary_category',
+			$this->app->db, $category_sql,
+			$class_mapper->resolveClass('StoreCategoryWrapper'));
+
+		$this->entries->attachSubDataObjects('item', $items);
 	}
 
 	// }}}
-	// {{{ public function removeAllEntries()
+	// {{{ private function __get()
 
 	/**
-	 * Removes all entries from this cart
+	 * Gets a cart from this cart module
 	 *
-	 * @return array the array of StoreCartEntry objects that were removed from
-	 *                this cart.
+	 * @param string $name the name of the cart to get. If no such cart exists
+	 *                      an exception is thrown.
+	 *
+	 * @throws StoreException
 	 */
-	public function &removeAllEntries()
+	private function __get($name)
 	{
-		$entries =& $this->entries;
-		$this->entries = array();
-		$this->setChanged();
-		return $entries;
+		if (isset($this->carts[$name]))
+			return $this->carts[$name];
+
+		throw new SiteException('Cart module does not have a property with '.
+			"the name '{$name}', and no cart with the identifier '{$name}' ".
+			'is loaded.');
 	}
 
 	// }}}
-	// {{{ public function isEmpty()
+	// {{{ private function __isset()
 
 	/**
-	 * Checks if this cart is empty
+	 * Checks if a property of this cart module is set
 	 *
-	 * @return boolean true if this cart is empty and false if it is not.
+	 * This magic method allows carts managed by this cart module to act as
+	 * read-only public properties of this module.
+	 *
+	 * @param string $name the name of the property to check for existance.
+	 *
+	 * @return boolean true if the property or cart exists in this object and
+	 *                  false if it does not.
 	 */
-	public function isEmpty()
+	private function __isset($name)
 	{
-		return count($this->entries) ? false : true;
-	}
+		$isset = isset($this->$name);
 
-	// }}}
-	// {{{ public function getEntryCount()	
+		if (!$isset)
+			$isset = isset($this->carts[$name]);
 
-	/**
-	 * Gets the number of StoreCartEntry objects in this cart
-	 *
-	 * @return integer the number of StoreCartEntry objects in this cart
-	 */
-	public function getEntryCount()
-	{
-		return count($this->entries);
-	}
-
-	// }}}
-	// {{{ public function getItemCount()
-
-	/**
-	 * Returns the number of StoreItems in this cart
-	 *
-	 * The number is calculated based based on StoreCartEntry quantities.
-	 *
-	 * @return integer the number of StoreItems in this cart.
-	 */
-	public function getItemCount()
-	{
-		$total_quantity = 0;
-
-		foreach ($this->entries as $entry)
-			$total_quantity += $entry->getQuantity();
-
-		return $total_quantity;
-	}
-
-	// }}}
-	// {{{ public function setEntryQuantity()
-
-	/**
-	 * Updates the quantity of an entry in this cart
-	 *
-	 * @param StoreCartEntry $entry the entry to update.
-	 * @param integer $value the new entry value.
-	 */
-	public function setEntryQuantity(StoreCartEntry $entry, $value)
-	{
-		if (in_array($entry, $this->entries)) {
-			if ($value <= 0) {
-				$this->removeEntry($entry);
-			} else {
-				$entry->setQuantity($value);
-				$this->setChanged();
-			}
-		}
-	}
-
-	// }}}
-	// {{{ public function addMessage()
-
-	/**
-	 * Adds a status messages to this cart
-	 *
-	 * @param SwatMessage $message Status message.
-	 */
-	public function addMessage(SwatMessage $message)
-	{
-		$this->messages[] = $message;
-	}
-
-	// }}}
-	// {{{ public function getMessages()
-
-	/**
-	 * Gets the status messages of this cart
-	 *
-	 * @return array an array of SwatMessages.
-	 */
-	public function getMessages()
-	{
-		return $this->messages;
-	}
-
-	// }}}
-	// {{{ public function hasMessages()
-
-	/**
-	 * Returns whether or not this cart has messages
-	 *
-	 * @return boolean whether or not this cart has messages.
-	 */
-	public function hasMessages()
-	{
-		return count($this->messages > 0);
-	}
-
-	// }}}
-	// {{{ protected function validateEntry()
-
-	/**
-	 * Checks to see if the entry is valid
-	 *
-	 * Used to verify that the entry exists and is available for purchase.
-	 *
-	 * @param StoreCartEntry $cartEntry the StoreCartEntry to validate.
-	 */
-	protected function validateEntry(StoreCartEntry $cart_entry)
-	{
-		return true;
-	}
-
-	// }}}
-
-	// caching methods
-	// {{{ protected function setChanged()
-
-	/**
-	 * Sets this cart as modified
-	 *
-	 * This clears the totals cache if it has entries.
-	 */
-	protected function setChanged()
-	{
-		$this->totals = array();
-	}
-
-	// }}}
-	// {{{ protected function cachedValueExists()
-
-	protected function cachedValueExists($name)
-	{
-		return isset($this->totals[$name]);
-	}
-
-	// }}}
-	// {{{ protected function getCachedValue()
-
-	protected function getCachedValue($name)
-	{
-		return $this->totals[$name];
-	}
-
-	// }}}
-	// {{{ protected function setCachedValue()
-
-	protected function setCachedValue($name, $value)
-	{
-		if (isset($this->totals[$name]))
-			throw new StoreException('Overwriting cached cart value '.
-				"'{$name}'.");
-
-		$this->totals[$name] = $value;
+		return $isset;
 	}
 
 	// }}}

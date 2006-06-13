@@ -3,7 +3,9 @@
 require_once 'Site/SiteApplication.php';
 require_once 'Site/SiteDatabaseModule.php';
 require_once 'Site/SiteServerConfigModule.php';
+
 require_once 'Store/StoreSessionModule.php';
+require_once 'Store/StoreCartModule.php';
 
 /**
  * Web application class for a store
@@ -54,6 +56,7 @@ abstract class StoreApplication extends SiteApplication
 			'config'   => 'SiteServerConfigModule',
 			'database' => 'SiteDatabaseModule',
 			'session'  => 'StoreSessionModule', // must follow database
+			'cart'     => 'StoreCartModule', // must follow session
 		);
 	}
 
