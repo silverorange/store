@@ -1,6 +1,8 @@
 <?php
 
 require_once 'Site/SiteSessionModule.php';
+require_once 'Site/SiteDatabaseModule.php';
+
 require_once 'Store/StoreDataObjectClassMap.php';
 
 /**
@@ -19,6 +21,32 @@ class StoreSessionModule extends SiteSessionModule
 	// {{{ protected properties
 
 	protected $login_callbacks = array();
+
+	// }}}
+	// {{{ public function __construct()
+
+	/**
+	 * Creates a new store session module
+	 *
+	 * @param SiteApplication $app the application this module belongs to.
+	 *
+	 * @throws StoreException if there is no database module loaded the session
+	 *                         module throws an exception.
+	 *
+	 */
+	public function __construct(SiteApplication $app)
+	{
+		if (!(isset($app->database) &&
+			$app->database instanceof SiteDatabaseModule))
+			throw new StoreException('The StoreSessionModule requires a '.
+				'SiteDatabaseModule to be loaded. Please either explicitly '.
+				'add a database module to the application before '.
+				'instantiating the session module, or specify the database '.
+				'module before the session module in the application\'s '.
+				'getDefaultModuleList() method.');
+
+		parent::__construct($app);
+	}
 
 	// }}}
 	// {{{ public function login()
