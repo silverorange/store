@@ -2,7 +2,5 @@
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
-	<widget class="SwatFrame" id="checkout_frame">
-		<widget class="SwatForm" id="form" />
-	</widget>
+	<widget class="SwatForm" id="form" />
 </swatml>
