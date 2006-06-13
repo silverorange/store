@@ -1,17 +1,15 @@
 <?php
 
-require_once 'Site/SiteApplicationModule.php';
+require_once 'Site/SiteSessionModule.php';
 require_once 'Store/StoreDataObjectClassMap.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'Date.php';
 
 /**
- * Web application module for sessions
+ * Web application module for store sessions
  *
  * @package   Store
  * @copyright 2006 silverorange
  */
-class StoreSessionModule extends SiteApplicationModule
+class StoreSessionModule extends SiteSessionModule
 {
 	// {{{ private properties
 
@@ -21,57 +19,6 @@ class StoreSessionModule extends SiteApplicationModule
 	// {{{ protected properties
 
 	protected $login_callbacks = array();
-
-	// }}}
-	// {{{ public function init()
-
-	/**
-	 * Initializes this session module
-	 */
-	public function init()
-	{
-		$session_name = $this->app->id;
-
-		session_cache_limiter('');
-		session_save_path('/so/phpsessions/'.$this->app->id);
-		session_name($session_name);
-
-		if (isset($_GET[$session_name]) ||
-			isset($_POST[$session_name]) ||
-			isset($_COOKIE[$session_name]))
-				$this->activate();
-	}
-
-	// }}}
-	// {{{ public function activate()
-
-	/**
-	 * Activates the current user's session
-	 *
-	 * Subsequent calls to the {@link isActive()} method will return true.
-	 */
-	public function activate()
-	{
-		if ($this->isActive())
-			return;
-
-		// load the dataobject classes before starting the session
-		if (count($this->data_object_classes)) {
-			$class_map = StoreDataObjectClassMap::instance();
-
-			foreach ($this->data_object_classes as $name => $class)
-				$class_map->resolveClass($class);
-		}
-
-		session_start();
-
-		foreach ($this->data_object_classes as $name => $class) {
-			if (isset($this->$name) && $this->$name !== null)
-				$this->$name->setDatabase($this->app->database->getConnection());
-			else
-				$this->$name = null;
-		}
-	}
 
 	// }}}
 	// {{{ public function login()
@@ -150,20 +97,6 @@ class StoreSessionModule extends SiteApplicationModule
 	}
 
 	// }}}
-	// {{{ public function isActive()
-
-	/**
-	 * Checks if there is an active session
-	 *
-	 * @return boolean true if session is active, false if the session is
-	 *                  inactive.
-	 */
-	public function isActive()
-	{
-		return (strlen(session_id()) > 0);
-	}
-
-	// }}}
 	// {{{ public function getAccountID()
 
 	/**
@@ -177,22 +110,6 @@ class StoreSessionModule extends SiteApplicationModule
 			return null;
 
 		return $this->account->id;
-	}
-
-	// }}}
-	// {{{ public function getSessionID()
-
-	/**
-	 * Retrieves the current session ID
-	 *
-	 * @return integer the current session ID, or null if no active session.
-	 */
-	public function getSessionID()
-	{
-		if (!$this->isActive())
-			return null;
-
-		return session_id();
 	}
 
 	// }}}
@@ -237,76 +154,29 @@ class StoreSessionModule extends SiteApplicationModule
 	}
 
 	// }}}
-	// {{{ private function __set()
+	// {{{ protected function startSession()
 
 	/**
-	 * Sets a session variable
-	 *
-	 * @param string $name the name of the session variable to set.
-	 * @param mixed $value the value to set the variable to.
+	 * Starts a session
 	 */
-	private function __set($name, $value)
+	protected function startSession()
 	{
-		if (!$this->isActive())
-			throw new StoreException('Session is  not active.');
+		// load the dataobject classes before starting the session
+		if (count($this->data_object_classes)) {
+			$class_map = StoreDataObjectClassMap::instance();
 
-		$_SESSION[$name] = $value;
-	}
+			foreach ($this->data_object_classes as $name => $class)
+				$class_map->resolveClass($class);
+		}
 
-	// }}}
-	// {{{ private function __isset()
+		session_start();
 
-	/**
-	 * Checks the existence of a session variable
-	 *
-	 * @param string $name the name of the session variable to check.
-	 */
-	private function __isset($name)
-	{
-		if (!$this->isActive())
-			throw new StoreException('Session is  not active.');
-
-		return isset($_SESSION[$name]);
-	}
-
-	// }}}
-	// {{{ private function __unset()
-
-	/**
-	 * Removes a session variable
-	 *
-	 * @param string $name the name of the session variable to set.
-	 */
-	private function __unset($name)
-	{
-		if (!$this->isActive())
-			throw new StoreException('Session is  not active.');
-
-		if (!isset($_SESSION[$name]))
-			throw new StoreException("Session variable '$name' is not set.");
-
-		unset($_SESSION[$name]);
-	}
-
-	// }}}
-	// {{{ private function &__get()
-
-	/**
-	 * Gets a session variable
-	 *
-	 * @param string $name the name of the session variable to get.
-	 *
-	 * @return mixed the session variable value. This is returned by reference.
-	 */
-	private function &__get($name)
-	{
-		if (!$this->isActive())
-			throw new StoreException('Session is not active.');
-
-		if (!isset($_SESSION[$name]))
-			throw new StoreException("Session variable '$name' is not set.");
-
-		return $_SESSION[$name];
+		foreach ($this->data_object_classes as $name => $class) {
+			if (isset($this->$name) && $this->$name !== null)
+				$this->$name->setDatabase($this->app->database->getConnection());
+			else
+				$this->$name = null;
+		}
 	}
 
 	// }}}
