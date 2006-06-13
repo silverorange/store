@@ -18,6 +18,11 @@ class StoreSessionModule extends SiteApplicationModule
 	private $data_object_classes = array();
 
 	// }}}
+	// {{{ protected properties
+
+	protected $login_callbacks = array();
+
+	// }}}
 	// {{{ public function init()
 
 	/**
@@ -93,6 +98,9 @@ class StoreSessionModule extends SiteApplicationModule
 		if ($account->loadWithCredentials($email, $password)) {
 			$this->activate();
 			$this->account = $account;
+
+			foreach ($this->login_callbacks as $callback)
+				call_user_func($callback);
 		}
 
 		return $this->isLoggedIn();
@@ -215,6 +223,24 @@ class StoreSessionModule extends SiteApplicationModule
 	public function registerDataObject($name, $class)
 	{
 		$this->data_object_classes[$name] = $class;
+	}
+
+	// }}}
+	// {{{ public function registerLoginCallback()
+
+	/**
+	 * Registers a callback function that is executed when a successful session
+	 * login is performed
+	 *
+	 * @param callback $callback the callback to call when a successful login
+	 *                            is performed.
+	 */
+	public function registerLoginCallback($callback)
+	{
+		if (!is_callable($callback))
+			throw new StoreException('Cannot register invalid callback.');
+
+		$this->login_callbacks[] = $callback;
 	}
 
 	// }}}
