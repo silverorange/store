@@ -186,9 +186,9 @@ abstract class StoreCart extends SwatObject
 	 */
 	public function addEntryValidate(StoreCartEntry $entry)
 	{
-		$cart_entry->setDatabase($this->app->db);
+		$entry->setDatabase($this->app->db);
 
-		if ($valid = $this->validateEntry($cart_entry))
+		if ($valid = $this->validateEntry($entry))
 			$this->addEntry($entry);
 
 		return $valid;
