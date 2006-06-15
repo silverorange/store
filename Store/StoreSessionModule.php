@@ -71,6 +71,7 @@ class StoreSessionModule extends SiteSessionModule
 			$this->activate();
 			$this->account = $account;
 
+			$this->setAccountCookie();
 			$this->runLoginCallbacks();
 		}
 
@@ -99,6 +100,7 @@ class StoreSessionModule extends SiteSessionModule
 			$this->activate();
 			$this->account = $account;
 
+			$this->setAccountCookie();
 			$this->runLoginCallbacks();
 		}
 
@@ -229,9 +231,9 @@ class StoreSessionModule extends SiteSessionModule
 	}
 
 	// }}}
-	// {{{ private function getNewAccountObject()
+	// {{{ protected function getNewAccountObject()
 
-	private function getNewAccountObject()
+	protected function getNewAccountObject()
 	{
 		$class_mapper = StoreDataObjectClassMap::instance();
 		$class_name = $class_mapper->resolveClass('StoreAccount');
@@ -242,15 +244,26 @@ class StoreSessionModule extends SiteSessionModule
 	}
 
 	// }}}
-	// {{{ private function runLoginCallbacks()
+	// {{{ protected function runLoginCallbacks()
 
-	private function runLoginCallbacks()
+	protected function runLoginCallbacks()
 	{
 		foreach ($this->login_callbacks as $login_callback) {
 			$callback = $login_callback['callback'];
 			$parameters = $login_callback['parameters'];
 			call_user_func_array($callback, $parameters);
 		}
+	}
+
+	// }}}
+	// {{{ protected function setAccountCookie()
+
+	protected function setAccountCookie()
+	{
+		if (!isset($this->app->cookie))
+			return;
+
+		$this->app->cookie->setCookie('account_id', $this->getAccountId());
 	}
 
 	// }}}
