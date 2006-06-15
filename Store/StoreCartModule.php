@@ -105,8 +105,8 @@ class StoreCartModule extends SiteApplicationModule
 
 		if (isset($this->checkout) && isset($this->saved)) {
 			$this->app->session->registerLoginCallback(
-				array($this, 'moveAllEntries'),
-				array($this->checkout, $this->saved));
+				array($this, 'handleLogin'),
+				array());
 		}
 	}
 
@@ -174,14 +174,39 @@ class StoreCartModule extends SiteApplicationModule
 	// {{ public function moveAllEntries()
 
 	/**
-	 * Moves all entries of one cart to another cart
+	 * Manages moving around cart entries when a user logs into an account
 	 *
-	 * @param StoreCart $from the cart to move entries from.
-	 * @param StoreCart $to the cart to move entries to.
+	 * By default, if the uses has cart entries before logging in, any entries
+	 * in the user's account cart are moved to the user's saved cart and
+	 * entries from the user's session cart are moved to the logged-in account
+	 * cart.
 	 */
-	public function moveAllEntries(StoreCart $from, StoreCart $to)
+	public function handleLogin()
 	{
-		// TODO: implement me
+		if (isset($this->checkout) && isset($this->saved) &&
+			$this->checkout->getEntryCount() > 0) {
+
+			// reload to get account cart entries
+			$this->load();
+
+			// move account cart entries to saved cart
+			$entries = &$this->checkout->removeAllEntries();
+			foreach ($entries as $entry)
+				$this->saved->addEntry($entry);
+
+			// move session cart entries to account cart
+			$account_id = $this->app->session->getAccountId();
+			foreach ($this->entries as $entry) {
+				if ($entry->sessionid == session_id()) {
+					$entry->sessionid = null;
+					$entry->account = $account_id;
+					$this->checkout->addEntry($entry);
+				}
+			}
+
+		} else {
+			$this->load();
+		}
 	}
 
 	// }}
@@ -250,9 +275,10 @@ class StoreCartModule extends SiteApplicationModule
 			return;
 
 		if ($this->app->session->isLoggedIn()) {
-			$where_clause = sprintf('where account = %s',
-				$this->app->db->quote($this->app->session->getAccountId(),
-				'integer'));
+			$account_id = $this->app->session->getAccountId();
+			$where_clause = sprintf('where account = %s or sessionid = %s',
+				$this->app->db->quote($account_id, 'integer'),
+				$this->app->db->quote(session_id(), 'text'));
 		} elseif ($this->app->session->isActive()) {
 			$where_clause = sprintf('where sessionid = %s',
 				$this->app->db->quote(session_id(), 'text'));

@@ -24,6 +24,8 @@ class StoreSavedCart extends StoreCart
 	 */
 	public function load()
 	{
+		$this->entries = array();
+
 		foreach ($this->module->getEntries() as $entry)
 			if ($entry->saved)
 				$this->entries[] = $entry;
