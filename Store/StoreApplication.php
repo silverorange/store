@@ -56,9 +56,9 @@ abstract class StoreApplication extends SiteApplication
 		return array(
 			'config'   => 'SiteServerConfigModule',
 			'database' => 'SiteDatabaseModule',
-			'session'  => 'StoreSessionModule', // must follow database
-			'cart'     => 'StoreCartModule', // must follow session
+			'session'  => 'StoreSessionModule',
 			'cookie'   => 'SiteCookieModule',
+			'cart'     => 'StoreCartModule',
 		);
 	}
 
