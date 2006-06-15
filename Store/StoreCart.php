@@ -146,15 +146,11 @@ abstract class StoreCart extends SwatObject
 	 * If an equivalent entry already exists in the cart, the two entries are
 	 * combined.
 	 *
-	 * @param StoreCartEntry $cartEntry the StoreCartEntry to add.
+	 * @param StoreCartEntry $entry the StoreCartEntry to add.
 	 */
 	public function addEntry(StoreCartEntry $cart_entry)
 	{
 		$cart_entry->setDatabase($this->app->db);
-
-		if (!$this->validateEntry($cart_entry))
-			return false;
-
 		$already_in_cart = false;
 
 		// check for item
@@ -170,8 +166,32 @@ abstract class StoreCart extends SwatObject
 			$this->entries[] = $cart_entry;
 
 		$this->setChanged();
+	}
 
-		return true;
+	// }}}
+	// {{{ public function addEntryValidate()
+
+	/**
+	 * Adds a StoreCartEntry to this cart after validating the entry
+	 *
+	 * Validity of an entry is defined in the {@link validateEntry()} method.
+	 * The entry is only added if it is valid.
+	 *
+	 * @param StoreCartEntry $entry the StoreCartEntry to add.
+	 *
+	 * @return boolean true if the entry is valid and was added and false if
+	 *                       the entry is not valid and was not added.
+	 *
+	 * @see StoreCart::addEntry(), StoreCart::validateEntry()
+	 */
+	public function addEntryValidate(StoreCartEntry $entry)
+	{
+		$cart_entry->setDatabase($this->app->db);
+
+		if ($valid = $this->validateEntry($cart_entry))
+			$this->addEntry($entry);
+
+		return $valid;
 	}
 
 	// }}}
