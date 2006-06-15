@@ -22,7 +22,7 @@ abstract class StoreCheckoutCart extends StoreCart
 	public function init()
 	{
 		parent::init();
-		$this->findPersistentCartEntries();
+		$this->restoreAbandonedCartEntries();
 	}
 
 	// }}}
@@ -116,18 +116,21 @@ abstract class StoreCheckoutCart extends StoreCart
 	 *
 	 * This method makes carrying over session cart content work.
 	 */
-	protected function findPersistentCartEntries()
+	protected function restoreAbandonedCartEntries()
 	{
-		$persistent_cart_cookie = $this->app->id.'_previous_session';
+		// don't try to restore the cart entries if we don't have a cookie
+		// module
+		if (!isset($this->app->cookie))
+			return;
 
-		if (isset($_COOKIE[$persistent_cart_cookie])) {
+		if (isset($this->app->cookie->cart_session)) {
 			if (!$this->app->session->isActive())
 				$this->app->session->activate();
 
-			$previous_session = $_COOKIE[$persistent_cart_cookie];
+			$previous_session = $this->app->cookie->cart_session;
 			$current_session = $this->app->session->getSessionID();
 
-			if ($previous_session != $current_session) {
+			if ($previous_session !== $current_session) {
 				$sql = 'update CartEntry set sessionid = %s
 					where sessionid = %s';
 
@@ -139,14 +142,9 @@ abstract class StoreCheckoutCart extends StoreCart
 			}
 		}
 
-		if ($this->app->session->isActive()) {
-			$expiry = strtotime('+90 days');
-			// TODO: get domain from application
-			// setcookie($persistent_cart_cookie,
-			//	$this->app->session->getSessionID(), $expiry, '/', $domain);
-			setcookie($persistent_cart_cookie,
-				$this->app->session->getSessionID(), $expiry, '/');
-		}
+		if ($this->app->session->isActive())
+			$this->app->cookie->setCookie('cart_session',
+				$this->app->session->getSessionID());
 	}
 
 	// }}}
