@@ -17,6 +17,8 @@ abstract class StoreAccountPage extends StoreArticlePage
 		// redirect to login page if not logged in
 		if (!$this->app->session->isLoggedIn() &&
 			$this->source != 'account/login' &&
+			$this->source != 'account/forgotpassword' &&
+			$this->source != 'account/resetpassword' &&
 			$this->source != 'account/edit')
 				$this->app->relocate('account/login');
 	}
