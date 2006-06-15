@@ -103,6 +103,13 @@ class StoreAccount extends StoreDataObject
 	public $password;
 
 	/**
+	 * Hashed password tag for reseting the account password
+	 *
+	 * @var text
+	 */
+	public $password_tag;
+
+	/**
 	 * The date this account was created on
 	 *
 	 * @var Date
