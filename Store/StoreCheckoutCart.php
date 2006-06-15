@@ -33,9 +33,22 @@ abstract class StoreCheckoutCart extends StoreCart
 	 */
 	public function load()
 	{
-		foreach ($this->module->getEntries() as $entry)
-			if (!$entry->saved)
-				$this->entries[] = $entry;
+		$this->entries = array();
+
+		if ($this->app->session->isLoggedIn()) {
+			$account_id = $this->app->session->getAccountId();
+			foreach ($this->module->getEntries() as $entry) {
+				if ($entry->getInternalValue('account') == $account_id &&
+					!$entry->saved) {
+					$this->entries[] = $entry;
+				}
+			}
+		} else {
+			foreach ($this->module->getEntries() as $entry) {
+				if (session_id() == $entry->sessionid && !$entry->saved)
+					$this->entries[] = $entry;
+			}
+		}
 	}
 
 	// }}}
