@@ -302,7 +302,7 @@ abstract class StoreCart extends SwatObject
 	 */
 	public function &removeAllEntries()
 	{
-		$entries =& $this->entries;
+		$entries = $this->entries;
 		$this->entries = array();
 		$this->setChanged();
 		return $entries;
