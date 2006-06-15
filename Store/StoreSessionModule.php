@@ -65,20 +65,41 @@ class StoreSessionModule extends SiteSessionModule
 		if ($this->isLoggedIn())
 			$this->logout();
 
-		$class_mapper = StoreDataObjectClassMap::instance();
-		$class_name = $class_mapper->resolveClass('StoreAccount');
-		$account = new $class_name();
-		$account->setDatabase($this->app->db);
+		$account = $this->getNewAccountObject();
 
 		if ($account->loadWithCredentials($email, $password)) {
 			$this->activate();
 			$this->account = $account;
 
-			foreach ($this->login_callbacks as $login_callback) {
-				$callback = $login_callback['callback'];
-				$parameters = $login_callback['parameters'];
-				call_user_func_array($callback, $parameters);
-			}
+			$this->runLoginCallbacks();
+		}
+
+		return $this->isLoggedIn();
+	}
+
+	// }}}
+	// {{{ public function loginById()
+
+	/**
+	 * Logs in the current user with an account id
+	 *
+	 * @param integer $id The id of the Account to login
+	 *
+	 * @return boolean true if the user was successfully logged in and false if
+	 *                       the id does not match an account.
+	 */
+	public function loginById($id)
+	{
+		if ($this->isLoggedIn())
+			$this->logout();
+
+		$account = $this->getNewAccountObject();
+
+		if ($account->load($id)) {
+			$this->activate();
+			$this->account = $account;
+
+			$this->runLoginCallbacks();
 		}
 
 		return $this->isLoggedIn();
@@ -204,6 +225,31 @@ class StoreSessionModule extends SiteSessionModule
 				$this->$name->setDatabase($this->app->database->getConnection());
 			else
 				$this->$name = null;
+		}
+	}
+
+	// }}}
+	// {{{ private function getNewAccountObject()
+
+	private function getNewAccountObject()
+	{
+		$class_mapper = StoreDataObjectClassMap::instance();
+		$class_name = $class_mapper->resolveClass('StoreAccount');
+		$account = new $class_name();
+		$account->setDatabase($this->app->db);
+
+		return $account;
+	}
+
+	// }}}
+	// {{{ private function runLoginCallbacks()
+
+	private function runLoginCallbacks()
+	{
+		foreach ($this->login_callbacks as $login_callback) {
+			$callback = $login_callback['callback'];
+			$parameters = $login_callback['parameters'];
+			call_user_func_array($callback, $parameters);
 		}
 	}
 
