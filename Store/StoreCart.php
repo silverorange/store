@@ -40,16 +40,6 @@ abstract class StoreCart extends SwatObject
 	protected $entries = array();
 
 	/**
-	 * An array of cart entries that were removed from the cart
-	 *
-	 * After the cart is loaded and before it is saved, this array keeps track
-	 * of entries there were removed from the cart. The array is unindexed.
-	 *
-	 * @var array
-	 */
-	protected $removed_entries = array();
-
-	/**
 	 * A cache of cart totals
 	 *
 	 * Cart totalling methods may optionally use this array to cache their
@@ -133,8 +123,6 @@ abstract class StoreCart extends SwatObject
 			$this->preSaveEntry($entry);
 			$entry->save();
 		}
-
-		$this->cleanUpRemovedEntries();
 	}
 
 	// }}}
@@ -175,8 +163,10 @@ abstract class StoreCart extends SwatObject
 			}
 		}
 
-		if (!$already_in_cart)
+		if (!$already_in_cart) {
 			$this->entries[] = $cart_entry;
+			$this->module->registerAddedEntry($cart_entry);
+		}
 
 		$this->setChanged();
 	}
@@ -228,7 +218,7 @@ abstract class StoreCart extends SwatObject
 				$key = key($this->entries);
 				$old_entry = $this->entries[$key];
 				unset($this->entries[$key]);
-				$this->removed_entries[] = $old_entry;
+				$this->module->registerRemovedEntry($old_entry);
 				$this->setChanged();
 				break;
 			}
@@ -257,7 +247,7 @@ abstract class StoreCart extends SwatObject
 				if ($cart_entry === $entry) {
 					$old_entry = $this->entries[$key];
 					unset($this->entries[$key]);
-					$this->removed_entries[] = $old_entry;
+					$this->module->registerRemovedEntry($old_entry);
 					$this->setChanged();
 					break;
 				}
@@ -281,6 +271,10 @@ abstract class StoreCart extends SwatObject
 		$entries = $this->entries;
 		$this->entries = array();
 		$this->setChanged();
+
+		foreach ($entries as $entry)
+			$this->module->registerRemovedEntry($entry);
+
 		return $entries;
 	}
 
@@ -427,26 +421,6 @@ abstract class StoreCart extends SwatObject
 	protected function validateEntry(StoreCartEntry $cart_entry)
 	{
 		return true;
-	}
-
-	// }}}
-	// {{{ protected function cleanUpRemovedEntries()
-
-	/**
-	 * Cleans up cart entries that were removed from this cart
-	 */
-	protected function cleanUpRemovedEntries()
-	{
-		if (count($this->removed_entries) > 0) {
-			$ids = array();
-			foreach ($this->removed_entries as $entry)
-				$ids[] = $this->app->db->quote($entry->id, 'integer');
-
-			$sql = sprintf('delete from CartEntry where id in (%s)',
-				implode(',', $ids));
-
-			SwatDB::query($this->app->db, $sql);
-		}
 	}
 
 	// }}}
