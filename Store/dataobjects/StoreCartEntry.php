@@ -27,6 +27,8 @@ require_once 'Store/dataobjects/StoreAccount.php';
  */
 abstract class StoreCartEntry extends StoreDataObject
 {
+	// {{{ public properties
+
 	/**
 	 * The id of this cart entry
 	 *
@@ -63,6 +65,9 @@ abstract class StoreCartEntry extends StoreDataObject
 	 */
 	public $saved;
 
+	// }}}
+	// {{{ protected function init()
+
 	/**
 	 * Sets up this cart entry data object
 	 *
@@ -81,6 +86,9 @@ abstract class StoreCartEntry extends StoreDataObject
 		$this->id_field = 'integer:id';
 	}
 
+	// }}}
+	// {{{ public function getQuantity()
+
 	/**
 	 * Gets the number of items this cart entry represents
 	 *
@@ -90,6 +98,9 @@ abstract class StoreCartEntry extends StoreDataObject
 	{
 		return $this->quantity;
 	}
+
+	// }}}
+	// {{{ public function setQuantity()
 
 	/**
 	 * Sets the number of items this cart entry represents
@@ -101,6 +112,9 @@ abstract class StoreCartEntry extends StoreDataObject
 		$this->quantity = (integer)$quantity;
 	}
 
+	// }}}
+	// {{{ public function getItemId()
+
 	/**
 	 * Gets the id of the item in this cart entry
 	 *
@@ -110,6 +124,9 @@ abstract class StoreCartEntry extends StoreDataObject
 	{
 		return $this->item->id;
 	}
+
+	// }}}
+	// {{{ public function getItemCost()
 
 	/**
 	 * Gets the unit cost of the StoreItem for this cart entry
@@ -133,6 +150,9 @@ abstract class StoreCartEntry extends StoreDataObject
 
 		return $price;
 	}
+
+	// }}}
+	// {{{ public function getQuantityDiscountCost()
 
 	/**
 	 * Gets how much money is saved by quantity discounts
@@ -159,6 +179,9 @@ abstract class StoreCartEntry extends StoreDataObject
 		return $return;
 	}
 
+	// }}}
+	// {{{ public function getExtensionCost()
+
 	/**
 	 * Gets the extension cost of this cart entry
 	 *
@@ -171,6 +194,9 @@ abstract class StoreCartEntry extends StoreDataObject
 	{
 		return ($this->getItemCost() * $this->quantity);
 	}
+
+	// }}}
+	// {{{ public function compare()
 
 	/**
 	 * Compares this entry with another entry by item
@@ -188,6 +214,9 @@ abstract class StoreCartEntry extends StoreDataObject
 		return strcmp($this->getItemId(), $entry->getItemId());
 	}
 
+	// }}}
+	// {{{ public function combine()
+
 	/**
 	 * Combines an entry with this entry
 	 *
@@ -203,6 +232,9 @@ abstract class StoreCartEntry extends StoreDataObject
 			$this->quantity += $entry->getQuantity();
 	}
 
+	// }}}
+	// {{{ public function isSaved()
+
 	/**
 	 * Whether or not this entry is saved for later
 	 *
@@ -212,6 +244,8 @@ abstract class StoreCartEntry extends StoreDataObject
 	{
 		return $this->saved;
 	}
+
+	// }}}
 }
 
 ?>

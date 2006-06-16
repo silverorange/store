@@ -12,6 +12,8 @@ require_once 'Store/StoreDataObjectClassMap.php';
  */
 abstract class StoreDataObject extends SwatDBDataObject
 {
+	// {{{ protected properties
+
 	/**
 	 * The class-mapping object
 	 *
@@ -19,17 +21,25 @@ abstract class StoreDataObject extends SwatDBDataObject
 	 */
 	protected $class_map;
 
+	// }}}
+	// {{{ public function __construct(
+
 	public function __construct($data = null)
 	{
 		$this->class_map = StoreDataObjectClassMap::instance();
 		parent::__construct($data);
 	}
 
+	// }}}
+	// {{{ public function __wakeup()
+
 	public function __wakeup()
 	{
 		parent::__wakeup();
 		$this->class_map = StoreDataObjectClassMap::instance();
 	}
+
+	// }}}
 }
 
 ?>

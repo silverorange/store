@@ -12,6 +12,8 @@ require_once 'Store/StoreDataObjectClassMap.php';
  */
 abstract class StoreRecordsetWrapper extends SwatDBRecordsetWrapper
 {
+	// {{{ protected properties
+
 	/**
 	 * The class-mapping object
 	 *
@@ -19,11 +21,16 @@ abstract class StoreRecordsetWrapper extends SwatDBRecordsetWrapper
 	 */
 	protected $class_map;
 
+	// }}}
+	// {{{ public function __construct()
+
 	public function __construct($rs)
 	{
 		$this->class_map = StoreDataObjectClassMap::instance();
 		parent::__construct($rs);
 	}
+
+	// }}}
 }
 
 ?>
