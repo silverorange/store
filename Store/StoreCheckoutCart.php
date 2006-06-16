@@ -107,7 +107,7 @@ abstract class StoreCheckoutCart extends StoreCart
 	}
 
 	// }}}
-	// {{{ protected function findPersistentCartEntries()
+	// {{{ protected function restoreAbandonedCartEntries()
 
 	/**
 	 * Checks for a persistant saved session cart and updates the cart entry's
