@@ -171,7 +171,7 @@ class StoreCartModule extends SiteApplicationModule
 	}
 
 	// }}}
-	// {{ public function moveAllEntries()
+	// {{{ public function handleLogin()
 
 	/**
 	 * Manages moving around cart entries when a user logs into an account
@@ -209,7 +209,7 @@ class StoreCartModule extends SiteApplicationModule
 		}
 	}
 
-	// }}
+	// }}}
 	// {{{ public function getEntries()
 
 	/**
