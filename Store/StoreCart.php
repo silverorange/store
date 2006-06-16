@@ -138,6 +138,19 @@ abstract class StoreCart extends SwatObject
 	}
 
 	// }}}
+	// {{{ public function isEmpty()
+
+	/**
+	 * Checks if this cart is empty
+	 *
+	 * @return boolean true if this cart is empty and false if it is not.
+	 */
+	public function isEmpty()
+	{
+		return count($this->entries) ? false : true;
+	}
+
+	// }}}
 	// {{{ public function addEntry()
 
 	/**
@@ -255,6 +268,23 @@ abstract class StoreCart extends SwatObject
 	}
 
 	// }}}
+	// {{{ public function removeAllEntries()
+
+	/**
+	 * Removes all entries from this cart
+	 *
+	 * @return array the array of StoreCartEntry objects that were removed from
+	 *                this cart.
+	 */
+	public function &removeAllEntries()
+	{
+		$entries = $this->entries;
+		$this->entries = array();
+		$this->setChanged();
+		return $entries;
+	}
+
+	// }}}
 	// {{{ public function getEntries()
 
 	/**
@@ -289,36 +319,6 @@ abstract class StoreCart extends SwatObject
 				$entries[] = $entry;
 		}
 		return $entries;
-	}
-
-	// }}}
-	// {{{ public function removeAllEntries()
-
-	/**
-	 * Removes all entries from this cart
-	 *
-	 * @return array the array of StoreCartEntry objects that were removed from
-	 *                this cart.
-	 */
-	public function &removeAllEntries()
-	{
-		$entries = $this->entries;
-		$this->entries = array();
-		$this->setChanged();
-		return $entries;
-	}
-
-	// }}}
-	// {{{ public function isEmpty()
-
-	/**
-	 * Checks if this cart is empty
-	 *
-	 * @return boolean true if this cart is empty and false if it is not.
-	 */
-	public function isEmpty()
-	{
-		return count($this->entries) ? false : true;
 	}
 
 	// }}}
