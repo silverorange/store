@@ -15,6 +15,8 @@ require_once 'Swat/SwatUI.php';
  */
 class StoreUI extends SwatUI
 {
+	// {{{ public function __construct()
+
 	/**
 	 * Creates a new StoreUI object
 	 */
@@ -24,6 +26,8 @@ class StoreUI extends SwatUI
 
 		$this->class_map['Store'] = 'Store';
 	}
+
+	// }}}
 }
 
 ?>

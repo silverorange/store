@@ -11,6 +11,8 @@ require_once 'Swat/SwatCellRenderer.php';
  */
 class StoreQuantityCellRenderer extends SwatCellRenderer
 {
+	// {{{ public properties
+
 	/**
 	 * Id
 	 *
@@ -29,6 +31,9 @@ class StoreQuantityCellRenderer extends SwatCellRenderer
 	 */
 	public $value;
 
+	// }}}
+	// {{{ public function render()
+
 	public function render()
 	{
 		$input_tag = new SwatHtmlTag('input');
@@ -43,6 +48,9 @@ class StoreQuantityCellRenderer extends SwatCellRenderer
 		$input_tag->display();
 	}
 
+	// }}}
+	// {{{ public function getTdAttributes()
+
 	/**
 	 * Gets TD-tag attributes
 	 *
@@ -55,6 +63,8 @@ class StoreQuantityCellRenderer extends SwatCellRenderer
 	{
 		return array('class' => 'store-quantity-input-cell-renderer');
 	}
+
+	// }}}
 }
 
 ?>
