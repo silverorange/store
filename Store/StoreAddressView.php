@@ -15,9 +15,18 @@ require_once 'Swat/SwatControl.php';
 
 class StoreAddressView extends SwatControl
 {
+	// {{{ public properties
+
 	public $address;
+
+	// }}}
+	// {{{ private properties
+
 	private $remove_button;
 	private $edit_address_link = 'account/address%s';
+
+	// }}}
+	// {{{ public function init()
 
 	public function init()
 	{
@@ -25,15 +34,24 @@ class StoreAddressView extends SwatControl
 			new SwatConfirmationButton($this->id);
 	}
 
+	// }}}
+	// {{{ public function process()
+
 	public function process()
 	{
 		$this->remove_button->process();
 	}
 
+	// }}}
+	// {{{ public function hasBeenClicked()
+
 	public function hasBeenClicked()
 	{
 		return $this->remove_button->hasBeenClicked();
 	}
+
+	// }}}
+	// {{{ public function getHtmlHeadEntries()
 
 	public function getHtmlHeadEntries()
 	{
@@ -42,6 +60,9 @@ class StoreAddressView extends SwatControl
 
 		return $out;
 	}
+
+	// }}}
+	// {{{ public function display()
 
 	public function display()
 	{
@@ -71,6 +92,8 @@ class StoreAddressView extends SwatControl
 		$this->remove_button->display();
 		$div->close();
 	}
+
+	// }}}
 }
 
 ?>

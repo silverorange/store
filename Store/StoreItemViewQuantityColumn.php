@@ -14,9 +14,14 @@ require_once('Swat/SwatHtmlTag.php');
  */
 class StoreItemViewQuantityColumn extends SwatTableViewColumn
 {
+	// {{{ private properties
+
 	private $items = null;
 
 	private $quantity_renderer = null;
+
+	// }}}
+	// {{{ public function init()
 
 	public function init()
 	{
@@ -31,6 +36,9 @@ class StoreItemViewQuantityColumn extends SwatTableViewColumn
 		*/
 	}
 
+	// }}}
+	// {{{ public function process()
+
 	public function process()
 	{
 		$name = $this->getRendererName();
@@ -39,10 +47,16 @@ class StoreItemViewQuantityColumn extends SwatTableViewColumn
 			$this->items = $_POST[$name];
 	}
 
+	// }}}
+	// {{{ public function getItems()
+
 	public function getItems()
 	{
 		return $this->items;
 	}
+
+	// }}}
+	// {{{ private function getRendererName()
 
 	private function getRendererName()
 	{
@@ -50,6 +64,9 @@ class StoreItemViewQuantityColumn extends SwatTableViewColumn
 
 		return $renderer->id;
 	}
+
+	// }}}
+	// {{{ private function getQuantityRenderer()
 
 	private function getQuantityRenderer()
 	{
@@ -60,6 +77,8 @@ class StoreItemViewQuantityColumn extends SwatTableViewColumn
 		throw new SwatException("The column '{$this->id}' must contain a ".
 			'quantity cell renderer.');
 	}
+
+	// }}}
 }
 
 ?>

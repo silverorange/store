@@ -15,9 +15,18 @@ require_once 'Swat/SwatControl.php';
 
 class StorePaymentMethodView extends SwatControl
 {
+	// {{{ public properties
+
 	public $payment_method;
+
+	// }}}
+	// {{{ private properties
+
 	private $remove_button;
 	private $edit_link = 'account/paymentmethod%s';
+
+	// }}}
+	// {{{ public function init
 
 	public function init()
 	{
@@ -25,15 +34,24 @@ class StorePaymentMethodView extends SwatControl
 			new SwatConfirmationButton($this->id);
 	}
 
+	// }}}
+	// {{{ public function process()
+
 	public function process()
 	{
 		$this->remove_button->process();
 	}
 
+	// }}}
+	// {{{ public function hasBeenClicked()
+
 	public function hasBeenClicked()
 	{
 		return $this->remove_button->hasBeenClicked();
 	}
+
+	// }}}
+	// {{{ public function getHtmlHeadEntries()
 
 	public function getHtmlHeadEntries()
 	{
@@ -42,6 +60,9 @@ class StorePaymentMethodView extends SwatControl
 
 		return $out;
 	}
+
+	// }}}
+	// {{{ public function display()
 
 	public function display()
 	{
@@ -72,6 +93,8 @@ class StorePaymentMethodView extends SwatControl
 
 		$div->close();
 	}
+
+	// }}}
 }
 
 ?>

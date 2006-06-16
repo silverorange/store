@@ -26,7 +26,7 @@ class StoreCreditCardExpiryEntry extends SwatDateEntry
 	}
 
 	// }}}
-	// {{{ isValid()
+	// {{{ public function isValid()
 
 	public function isValid()
 	{
@@ -35,6 +35,8 @@ class StoreCreditCardExpiryEntry extends SwatDateEntry
 		else
 			return true;
 	}
+
+	// }}}
 }
 
 ?>
