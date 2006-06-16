@@ -11,6 +11,8 @@ require_once 'Store/exceptions/StoreException.php';
  */
 class StoreNotFoundException extends StoreException
 {
+	// {{{ public function __construct()
+
 	/**
 	 * Creates a new not found exception
 	 *
@@ -23,6 +25,8 @@ class StoreNotFoundException extends StoreException
 		$this->title = _('Not Found');
 		$this->http_status_code = 404;
 	}
+
+	// }}}
 }
 
 ?>
