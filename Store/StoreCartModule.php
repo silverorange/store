@@ -53,6 +53,19 @@ class StoreCartModule extends SiteApplicationModule
 	 */
 	protected $entries = null;
 
+	/**
+	 * An array of cart entries that were removed from the carts managed by
+	 * this module
+	 *
+	 * After the carts are loaded and before they are saved, this array keeps
+	 * track of entries there were removed from carts. The array is unindexed.
+	 *
+	 * @var array
+	 *
+	 * @see StoreCartModule::registerRemovedEntry()
+	 */
+	protected $removed_entries = array();
+
 	// }}}
 	// {{{ public function __construct()
 
@@ -140,6 +153,46 @@ class StoreCartModule extends SiteApplicationModule
 	{
 		foreach ($this->carts as $cart)
 			$cart->save();
+
+		$this->deleteRemovedEntries();
+	}
+
+	// }}}
+	// {{{ public function registerRemovedEntry()
+
+	/**
+	 * Notifies this cart module that an entry was removed from a cart
+	 *
+	 * The cart module is responsible for deleting removed entries.
+	 *
+	 * @param StoreCartEntry $entry the entry that was added.
+	 *
+	 * @see StoreCartModule::deleteRemovedEntries()
+	 */
+	public function registerRemovedEntry(StoreCartEntry $entry)
+	{
+		if (!in_array($entry, $this->removed_entries))
+			$this->removed_entries[] = $entry;
+	}
+
+	// }}}
+	// {{{ public function registerAddedEntry()
+
+	/**
+	 * Notifies this cart module that an entry was added to a cart
+	 *
+	 * @param StoreCartEntry $entry the entry that was added.
+	 */
+	public function registerAddedEntry(StoreCartEntry $entry)
+	{
+		if (in_array($entry, $this->removed_entries)) {
+			foreach ($this->removed_entries as $key => $removed_entry) {
+				if ($removed_entry === $entry) {
+					unset($this->removed_entries[$key]);
+					break;
+				}
+			}
+		}
 	}
 
 	// }}}
@@ -330,6 +383,26 @@ class StoreCartModule extends SiteApplicationModule
 			$class_mapper->resolveClass('StoreCategoryWrapper'));
 
 		$this->entries->attachSubDataObjects('item', $items);
+	}
+
+	// }}}
+	// {{{ protected function deleteRemovedEntries()
+
+	/**
+	 * Cleans up cart entries that were removed from this cart
+	 */
+	protected function deleteRemovedEntries()
+	{
+		if (count($this->removed_entries) > 0) {
+			$ids = array();
+			foreach ($this->removed_entries as $entry)
+				$ids[] = $this->app->db->quote($entry->id, 'integer');
+
+			$sql = sprintf('delete from CartEntry where id in (%s)',
+				implode(',', $ids));
+
+			SwatDB::query($this->app->db, $sql);
+		}
 	}
 
 	// }}}
