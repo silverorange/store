@@ -11,6 +11,8 @@ require_once 'Store/dataobjects/StorePaymentMethod.php';
  */
 class StorePaymentMethodCellRenderer extends SwatCellRenderer
 {
+	// {{{ public properties
+
 	/**
 	 * Whether or not this payment was made with a credit card
 	 *
@@ -52,6 +54,9 @@ class StorePaymentMethodCellRenderer extends SwatCellRenderer
 	 */
 	public $credit_card_number;
 
+	// }}}
+	// {{{ public function render()
+
 	public function render()
 	{
 		if ($this->is_credit_card)
@@ -59,6 +64,9 @@ class StorePaymentMethodCellRenderer extends SwatCellRenderer
 		else
 			$this->renderCashOrCheque();
 	}
+
+	// }}}
+	// {{{ protected function renderCreditCard()
 
 	protected function renderCreditCard()
 	{
@@ -86,11 +94,16 @@ class StorePaymentMethodCellRenderer extends SwatCellRenderer
 			echo $this->credit_card_expiry_date->format(SwatDate::DF_CC_MY);
 	}
 
+	// }}}
+	// {{{ protected function renderCashOrCheque()
+
 	protected function renderCashOrCheque()
 	{
 		if ($this->method_title !== null)
 			echo $this->method_title;
 	}
+
+	// }}}
 }
 
 ?>

@@ -13,6 +13,8 @@ require_once 'Swat/SwatEntry.php';
  */
 class StoreKeywordEntry extends SwatEntry
 {
+	// {{{ public properties
+
 	/**
 	 * The name of this keyword entry widget
 	 *
@@ -22,6 +24,9 @@ class StoreKeywordEntry extends SwatEntry
 	 * @var string
 	 */
 	public $name;
+
+	// }}}
+	// {{{ public function display()
 
 	public function display()
 	{
@@ -52,6 +57,8 @@ class StoreKeywordEntry extends SwatEntry
 
 		$input_tag->display();
 	}
+
+	// }}}
 }
 
 ?>

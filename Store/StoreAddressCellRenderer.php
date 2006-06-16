@@ -11,12 +11,17 @@ require_once 'Swat/SwatCellRenderer.php';
  */
 class StoreAddressCellRenderer extends SwatCellRenderer
 {
+	// {{{ public properties
+
 	/**
 	 * The store address object to render
 	 *
 	 * @var StoreAddress
 	 */
 	public $address;
+
+	// }}}
+	// {{{ public function render
 
 	/**
 	 * Renders a store address
@@ -26,6 +31,8 @@ class StoreAddressCellRenderer extends SwatCellRenderer
 		if ($this->address instanceof StoreAddress)
 			$this->address->displayCondensed();
 	}
+
+	// }}}
 }
 
 ?>

@@ -11,12 +11,24 @@ require_once 'Validate/Finance/CreditCard.php';
  */
 class StoreCreditCardNumberEntry extends SwatEntry
 {
+	// {{{ public properties
+
 	/**
 	 * Whether or not to show a blank_value
 	 *
 	 * @var boolean
 	 */
 	public $show_blank_value = false;
+
+	/**
+	 * The value to display as place holder for the credit card number
+	 *
+	 * @var string
+	 */
+	public $blank_value = '****************';
+
+	// }}}
+	// {{{ public function __construct()
 
 	/**
 	 * Creates a new credit card entry widget
@@ -31,12 +43,8 @@ class StoreCreditCardNumberEntry extends SwatEntry
 		$this->size = 16;
 	}
 
-	/**
-	 * The value to display as place holder for the credit card number
-	 *
-	 * @var string
-	 */
-	public $blank_value = '****************';
+	// }}}
+	// {{{ public function process()
 	
 	public function process()
 	{
@@ -62,6 +70,8 @@ class StoreCreditCardNumberEntry extends SwatEntry
 		$this->value = $value;
 	}
 
+	// }}}
+	// {{{ public function display()
 
 	public function display()
 	{
@@ -94,6 +104,9 @@ class StoreCreditCardNumberEntry extends SwatEntry
 		$input_tag->display();
 	}
 
+	// }}}
+	// {{{ protected function getDisplayValue()
+
 	protected function getDisplayValue()
 	{
 		if ($this->show_blank_value && $this->value === null)
@@ -101,6 +114,8 @@ class StoreCreditCardNumberEntry extends SwatEntry
 		else
 			return $this->value;
 	}
+
+	// }}}
 }
 
 ?>

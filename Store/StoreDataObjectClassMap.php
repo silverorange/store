@@ -18,6 +18,8 @@ require_once 'Swat/SwatObject.php';
  */
 class StoreDataObjectClassMap extends SwatObject
 {
+	// {{{ private properties
+
 	/**
 	 * Singleton instance
 	 *
@@ -41,6 +43,9 @@ class StoreDataObjectClassMap extends SwatObject
 	 */
 	private $path = null;
 
+	// }}}
+	// {{{ public static function instance()
+
 	/**
 	 * Gets the singleton instance of the class-mapping object
 	 *
@@ -55,6 +60,9 @@ class StoreDataObjectClassMap extends SwatObject
 		return self::$instance;
 	}
 
+	// }}}
+	// {{{ public function addMapping()
+
 	/**
 	 * Adds a class-mapping to the class-mapping object
 	 *
@@ -66,6 +74,9 @@ class StoreDataObjectClassMap extends SwatObject
 	{
 		$this->map[$store_class_name] = $class_name;
 	}
+
+	// }}}
+	// {{{ public function resolveClass()
 
 	/**
 	 * Gets the appropriate class name for a given Store package class name
@@ -95,6 +106,9 @@ class StoreDataObjectClassMap extends SwatObject
 		return $class_name;
 	}
 
+	// }}}
+	// {{{ public function setDataObjectPath()
+
 	/**
 	 * Sets the path to search for site-specific class files
 	 *
@@ -105,6 +119,9 @@ class StoreDataObjectClassMap extends SwatObject
 		$this->path = $path;
 	}
 
+	// }}}
+	// {{{ private function __construct()
+
 	/**
 	 * Creates a Store data-object class-mapping object
 	 *
@@ -113,6 +130,8 @@ class StoreDataObjectClassMap extends SwatObject
 	private function __construct()
 	{
 	}
+
+	// }}}
 }
 
 ?>
