@@ -15,6 +15,8 @@ require_once 'Swat/SwatEntry.php';
  */
 class StorePostalCodeEntry extends SwatEntry
 {
+	// {{{ public properties
+
 	/**
 	 * The country to validate the postal code in
 	 *
@@ -35,6 +37,9 @@ class StorePostalCodeEntry extends SwatEntry
 	 * @var string
 	 */
 	public $provstate;
+
+	// }}}
+	// {{{ public function process()
 
 	/**
 	 * Processes this postal code entry widget
@@ -59,6 +64,9 @@ class StorePostalCodeEntry extends SwatEntry
 			break;
 		}
 	}
+
+	// }}}
+	// {{{ private function validateCA()
 
 	/**
 	 * Validates a Canadian postal code
@@ -116,6 +124,9 @@ class StorePostalCodeEntry extends SwatEntry
 		$this->value = $value;
 	}
 
+	// }}}
+	// {{{ private function validateUS()
+
 	/**
 	 * Validates a United States ZIP Code
 	 */
@@ -149,6 +160,9 @@ class StorePostalCodeEntry extends SwatEntry
 		$this->value = $value;
 	}
 
+	// }}}
+	// {{{ private function validateUK()
+
 	/**
 	 * Validates a United Kingdom postcode
 	 */
@@ -177,6 +191,7 @@ class StorePostalCodeEntry extends SwatEntry
 		$this->value = $value;
 	}
 
+	// }}}
 	// {{{ public function validateByProvince()
 
 	/**

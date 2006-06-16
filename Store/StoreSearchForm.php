@@ -14,9 +14,13 @@ require_once 'Swat/SwatForm.php';
  */
 class StoreSearchForm extends SwatForm
 {
+	// {{{ protected function displayHiddenFields()
+
 	protected function displayHiddenFields()
 	{
 	}
+
+	// }}}
 }
 
 ?>

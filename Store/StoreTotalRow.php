@@ -12,9 +12,14 @@ require_once 'Swat/SwatMoneyCellRenderer.php';
  */
 class StoreTotalRow extends SwatTableViewRow
 {
+	// {{{ public properties
+
 	public $title;
 	public $value;
 	public $offset = 0;
+
+	// }}}
+	// {{{ public function display()
 
 	public function display()
 	{
@@ -53,6 +58,8 @@ class StoreTotalRow extends SwatTableViewRow
 
 		$tr_tag->close();
 	}
+
+	// }}}
 }
 
 ?>

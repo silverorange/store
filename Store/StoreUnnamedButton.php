@@ -13,6 +13,8 @@ require_once 'Swat/SwatButton.php';
  */
 class StoreUnnamedButton extends SwatButton
 {
+	// {{{ public function display()
+
 	public function display()
 	{
 		if (!$this->visible)
@@ -40,6 +42,8 @@ class StoreUnnamedButton extends SwatButton
 
 		$input_tag->display();
 	}
+
+	// }}}
 }
 
 ?>
