@@ -349,6 +349,29 @@ abstract class StoreCart extends SwatObject
 	}
 
 	// }}}
+	// {{{ public function getProductCount()
+
+	/**
+	 * Gets the number of unique products in this cart
+	 *
+	 * @return integer the number of unique products in this cart.
+	 */
+	public function getProductCount()
+	{
+		$count = 0;
+
+		$product_id = null;
+		foreach ($this->entries as $entry) {
+			if ($entry->item->product->id !== $product_id)
+				$count++;
+
+			$product_id = $entry->item->product->id;
+		}
+
+		return $count;
+	}
+
+	// }}}
 	// {{{ public function setEntryQuantity()
 
 	/**
