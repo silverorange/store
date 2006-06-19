@@ -126,16 +126,16 @@ abstract class StoreCartEntry extends StoreDataObject
 	}
 
 	// }}}
-	// {{{ public function getItemCost()
+	// {{{ public function getCalculatedItemPrice()
 
 	/**
 	 * Gets the unit cost of the StoreItem for this cart entry
 	 *
-	 * The unit cost is caucluated based on quantity discounts.
+	 * The unit cost is caucluated based on discounts.
 	 *
 	 * @return double the unit cost of the StoreItem for this cart entry.
 	 */
-	public function getItemCost()
+	public function getCalculatedItemCost()
 	{
 		$price = $this->item->price;
 
@@ -152,15 +152,19 @@ abstract class StoreCartEntry extends StoreDataObject
 	}
 
 	// }}}
-	// {{{ public function getQuantityDiscountCost()
+	// {{{ public function getDiscount()
 
 	/**
-	 * Gets how much money is saved by quantity discounts
+	 * Gets how much money is saved by discounts
 	 *
-	 * @return double how much money is saved from quantity discounts or zero
-	 *                 if no quantity discount applies.
+	 * Discounts include all types of discount schemes. By default, this is
+	 * quantity discounts. Subclasses are encouraged to account for other
+	 * site-specific discounts in this method.
+	 *
+	 * @return double how much money is saved from discounts or zero if no
+	 *                 discount applies.
 	 */
-	public function getQuantityDiscountCost()
+	public function getDiscount()
 	{
 		$return = 0;
 		$extension = $this->item->price * $this->getQuantity();
@@ -192,7 +196,7 @@ abstract class StoreCartEntry extends StoreDataObject
 	 */
 	public function getExtensionCost()
 	{
-		return ($this->getItemCost() * $this->quantity);
+		return ($this->getCalculatedItemCost() * $this->getQuantity());
 	}
 
 	// }}}
