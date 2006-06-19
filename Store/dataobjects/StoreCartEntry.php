@@ -184,7 +184,7 @@ abstract class StoreCartEntry extends StoreDataObject
 	}
 
 	// }}}
-	// {{{ public function getExtensionCost()
+	// {{{ public function getExtension()
 
 	/**
 	 * Gets the extension cost of this cart entry
@@ -194,7 +194,7 @@ abstract class StoreCartEntry extends StoreDataObject
 	 *
 	 * @return double the extension cost of this cart entry.
 	 */
-	public function getExtensionCost()
+	public function getExtension()
 	{
 		return ($this->getCalculatedItemCost() * $this->getQuantity());
 	}
