@@ -150,68 +150,90 @@ abstract class StoreCheckoutCart extends StoreCart
 	// }}}
 
 	// price calculation methods
-	// {{{ public function getSubtotalCost()
+	// {{{ public function getItemTotal()
 
 	/**
 	 * Gets the cost of the StoreCartEntry objects in this cart
 	 *
+	 * This is sometimes called the subtotal.
+	 *
 	 * @return double the sum of the extensions of all StoreCartEntry objects
 	 *                 in this cart.
 	 */
-	public function getSubtotalCost()
+	public function getItemTotal()
 	{
-		if ($this->cachedValueExists('store-subtotal')) {
-			$subtotal = $this->getCachedValue('store-subtotal');
+		if ($this->cachedValueExists('store-item-total')) {
+			$subtotal = $this->getCachedValue('store-item-total');
 		} else {
 			$subtotal = 0;
 			$entries = $this->getAvailableEntries();
 			foreach ($entries as $entry)
-				$subtotal += $entry->getExtensionCost();
+				$subtotal += $entry->getExtension();
 
-			$this->setCachedValue('store-subtotal', $subtotal);
+			$this->setCachedValue('store-item-total', $subtotal);
 		}
 
 		return $subtotal;
 	}
 
 	// }}}
-	// {{{ public abstract function getTaxCost()
+	// {{{ public function getTotal()
 
 	/**
-	 * Gets the value of taxes for this cart
+	 * Gets the total cost for an order of the contents of this cart
+	 *
+	 * By default, the total is calculated as item total + tax + shipping.
+	 * Subclasses may override this to calculate totals differently.
+	 *
+	 * @param StoreProvState $provstate the province or state the tax is
+	 *                                   calculated for.
+	 *
+	 * @return double the cost of this cart's contents.
+	 */
+	public function getTotal(StoreProvState $provstate)
+	{
+		if ($this->cachedValueExists('store-total')) {
+			$total = $this->getCachedValue('store-total');
+		} else {
+			$total = 0;
+			$total += $this->getItemTotal();
+			$total += $this->getTax($provstate);
+			$total += $this->getShipping($provstate);
+			$this->setCachedValue('store-total', $total);
+		}
+
+		return $total;
+	}
+
+	// }}}
+	// {{{ public abstract function getTax()
+
+	/**
+	 * Gets the cost of taxes for this cart
 	 *
 	 * Calculates applicable taxes based on the contents of this cart. Tax
 	 * Calculations need to know where purchase is made in order to correctly
 	 * apply tax.
 	 *
-	 * @param StoreAddress $address a StoreAddress where this purchase is made
-	 *                               from.
+	 * @param StoreProvState $provstate the province or state the tax is
+	 *                                   calculated for.
 	 *
 	 * @return double the value of tax for this cart.
 	 */
-	public abstract function getTaxCost(StoreProvState $provstate);
+	public abstract function getTax(StoreProvState $provstate);
 	
 	// }}}
-	// {{{ public abstract function getTotalCost()
-
-	/**
-	 * Gets the total cost for an order of the contents of this cart
-	 *
-	 * The total is calculated as subtotal + tax + shipping.
-	 *
-	 * @return double the cost of this cart's contents.
-	 */
-	public abstract function getTotalCost(StoreProvState $provstate);
-
-	// }}}
-	// {{{ public abstract function getShippingCost()
+	// {{{ public abstract function getShippingTotal()
 
 	/**
 	 * Gets the cost of shipping the contents of this cart
 	 *
+	 * @param StoreProvState $provstate the province or state the cart contents
+	 *                                   are to be shipped to.
+	 *
 	 * @return double the cost of shipping this order.
 	 */
-	public abstract function getShippingCost();
+	public abstract function getShippingTotal(StoreProvState $provstate);
 
 	// }}}
 }
