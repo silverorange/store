@@ -76,9 +76,13 @@ class StoreAddressView extends SwatControl
 		$div = new SwatHtmlTag('div');
 		$div->class = 'store-address';
 
-		$a = new SwatHtmlTag('a');
-		$a->href = sprintf($this->edit_address_link, $this->address->id);
-		$a->setContent('Edit Address');
+		$controls = new SwatHtmlTag('div');
+		$controls->class = 'store-address-controls';
+
+		$edit_link = new SwatToolLink();
+		$edit_link->href = sprintf($this->edit_address_link, $this->address->id);
+		$edit_link->title = 'Edit Address';
+		$edit_link->setFromStock('edit');
 
 		$this->remove_button->title = 'Remove Address';
 		$this->remove_button->class = 'store-remove';
@@ -87,9 +91,11 @@ class StoreAddressView extends SwatControl
 			$address_text);
 
 		$div->open();
-		$this->address->displayCondensed();
-		$a->display();
-		$this->remove_button->display();
+			$controls->open();
+				$edit_link->display();
+				$this->remove_button->display();
+			$controls->close();
+			$this->address->displayCondensed();
 		$div->close();
 	}
 
