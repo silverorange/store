@@ -83,18 +83,18 @@ class StoreAddressView extends SwatControl
 		$edit_link->title = 'Edit Address';
 		$edit_link->setFromStock('edit');
 
-		$this->remove_button->title = 'Remove Address';
+		$this->remove_button->title = 'Remove';
 		$this->remove_button->class = 'store-remove';
 		$this->remove_button->confirmation_message = sprintf(
 			"Are you sure you want to remove the following address?\n\n%s",
 			$address_text);
 
 		$div->open();
+			$this->address->displayCondensed();
 			$controls->open();
 				$edit_link->display();
 				$this->remove_button->display();
 			$controls->close();
-			$this->address->displayCondensed();
 		$div->close();
 	}
 
