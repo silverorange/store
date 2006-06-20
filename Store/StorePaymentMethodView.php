@@ -51,14 +51,13 @@ class StorePaymentMethodView extends SwatControl
 	}
 
 	// }}}
-	// {{{ public function getHtmlHeadEntries()
+	// {{{ public function getHtmlHeadEntrySet()
 
-	public function getHtmlHeadEntries()
+	public function getHtmlHeadEntrySet()
 	{
-		$out = new SwatHtmlHeadEntrySet($this->html_head_entries);
-		$out->addEntrySet($this->remove_button->getHtmlHeadEntries());
-
-		return $out;
+		$set = parent::getHtmlHeadEntrySet();
+		$set->addEntrySet($this->remove_button->getHtmlHeadEntrySet());
+		return $set;
 	}
 
 	// }}}
