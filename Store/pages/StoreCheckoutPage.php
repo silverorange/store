@@ -121,7 +121,7 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 
 		if ($this->ui !== null) {
 			$this->layout->addHtmlHeadEntrySet(
-				$this->ui->getRoot()->getHtmlHeadEntries());
+				$this->ui->getRoot()->getHtmlHeadEntrySet());
 
 			$this->layout->startCapture('content');
 			$this->ui->display();
