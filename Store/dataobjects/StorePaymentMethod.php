@@ -85,7 +85,7 @@ abstract class StorePaymentMethod extends StoreDataObject
 		$span_tag->open();
 
 		echo SwatString::minimizeEntities($this->payment_type->title);
-		echo '<br />';
+		echo ': ';
 
 		if ($this->credit_card_last4 !== null) {
 			// TODO: use $this->payment_type->cc_mask
@@ -95,12 +95,11 @@ abstract class StorePaymentMethod extends StoreDataObject
 
 		if ($this->credit_card_expiry !== null) {
 			echo 'Expiry: '.$this->credit_card_expiry->format(SwatDate::DF_CC_MY);
-			echo '<br />';
 		}
 
 		if ($this->credit_card_fullname !== null) {
+			echo ', ';
 			echo SwatString::minimizeEntities($this->credit_card_fullname);
-			echo '<br />';
 		}
 
 		$span_tag->close();
