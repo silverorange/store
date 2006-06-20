@@ -79,7 +79,7 @@ class StorePaymentMethodView extends SwatControl
 		$controls->class = 'store-payment-method-controls';
 
 		$edit_link = new SwatToolLink();
-		$edit_link->href = sprintf($this->edit_link, $this->payment_method->id);
+		$edit_link->link = sprintf($this->edit_link, $this->payment_method->id);
 		$edit_link->title = 'Edit Payment Method';
 		$edit_link->setFromStock('edit');
 

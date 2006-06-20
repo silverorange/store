@@ -80,7 +80,7 @@ class StoreAddressView extends SwatControl
 		$controls->class = 'store-address-controls';
 
 		$edit_link = new SwatToolLink();
-		$edit_link->href = sprintf($this->edit_address_link, $this->address->id);
+		$edit_link->link = sprintf($this->edit_address_link, $this->address->id);
 		$edit_link->title = 'Edit Address';
 		$edit_link->setFromStock('edit');
 
