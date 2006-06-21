@@ -4,6 +4,7 @@ require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/dataobjects/StoreOrderAddress.php';
 require_once 'Store/dataobjects/StoreOrderPaymentMethod.php';
+require_once 'Store/dataobjects/StoreOrderItemWrapper.php';
 
 /**
  *
@@ -100,6 +101,19 @@ class StoreOrder extends StoreDataObject
 
 		$this->table = 'Orders';
 		$this->id_field = 'integer:id';
+	}
+
+	// }}}
+
+	// loader methods
+	// {{{ protected function loadItems()
+
+	protected function loadItems()
+	{
+		$wrapper = $this->class_map->resolveClass('StoreOrderItemWrapper');
+		$sql = 'select * from OrderItem where ordernum = %s';
+		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+		return SwatDB::query($this->db, $sql, $wrapper);
 	}
 
 	// }}}

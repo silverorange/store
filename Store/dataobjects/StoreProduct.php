@@ -113,6 +113,8 @@ class StoreProduct extends StoreDataObject
 	}
 
 	// }}}
+
+	// loader methods
 	// {{{ protected function loadItems()
 
 	protected function loadItems()
