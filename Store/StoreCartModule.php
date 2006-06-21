@@ -345,9 +345,11 @@ class StoreCartModule extends SiteApplicationModule
 		$entry_sql = 'select CartEntry.*
 			from CartEntry
 				inner join Item on CartEntry.item = Item.id
+				inner join ClassCode on Item.classcode = ClassCode.id
 			%s
-			order by Item.classcode, Item.product,
-				Item.displayorder, Item.sku, Item.part_count';
+			order by ClassCode.shipping_type, Item.classcode,
+				Item.product, Item.displayorder, Item.sku,
+				Item.part_count';
 
 		$entry_sql = sprintf($entry_sql, $where_clause);
 
