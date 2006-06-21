@@ -115,10 +115,8 @@ class StoreSessionModule extends SiteSessionModule
 	 */
 	public function logout()
 	{
-		if (!$this->isLoggedIn())
-			return;
-
 		$this->account = null;
+		$this->removeAccountCookie();
 	}
 
 	// }}}
@@ -264,6 +262,17 @@ class StoreSessionModule extends SiteSessionModule
 			return;
 
 		$this->app->cookie->setCookie('account_id', $this->getAccountId());
+	}
+
+	// }}}
+	// {{{ protected function removeAccountCookie()
+
+	protected function removeAccountCookie()
+	{
+		if (!isset($this->app->cookie))
+			return;
+
+		$this->app->cookie->removeCookie('account_id');
 	}
 
 	// }}}
