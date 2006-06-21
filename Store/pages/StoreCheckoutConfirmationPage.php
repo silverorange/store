@@ -30,29 +30,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$wrapper = $this->class_map->resolveClass('StoreOrderItemWrapper');
 		$order->items = new $wrapper();
 
-		foreach ($this->app->cart->checkout->getEntries() as $entry) {
-			$item = $this->createOrderItem($entry);
-			$order->items->add($item);
-		}
-	}
-
-	// }}}
-	// {{{ private function createOrderItem()
-
-	private function createOrderItem(StoreCartEntry $entry)
-	{
-		$class = $this->class_map->resolveClass('StoreOrderItem');
-		$order_item = new $class();
-
-		$order_item->price = $entry->item->getCalculatedItemPrice();
-		$order_item->quantity = $entry->item->getQuantity();
-		$order_item->extension = $entry->item->getExtension();
-		$order_item->description = $entry->item->description;
-		$order_item->product = $entry->item->product->id;
-		$order_item->product_title = $entry->item->product->title;
-		$order_item->quick_order = $entry->quick_order;
-
-		return $order_item;
+		foreach ($this->app->cart->checkout->getEntries() as $entry)
+			$order->items->add($entry->createOrderItem());
 	}
 
 	// }}}

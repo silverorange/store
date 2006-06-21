@@ -3,6 +3,7 @@
 require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreItem.php';
 require_once 'Store/dataobjects/StoreAccount.php';
+require_once 'Store/dataobjects/StoreOrderItem.php';
 
 /**
  * An entry in a shopping cart for an e-commerce web application
@@ -254,6 +255,30 @@ abstract class StoreCartEntry extends StoreDataObject
 	public function isSaved()
 	{
 		return $this->saved;
+	}
+
+	// }}}
+	// {{{ public function createOrderItem()
+
+	/**
+	 * Create a new order item dataobject that corresponds to this cart entry.
+	 *
+	 * @return StoreOrderItem a new StoreOrderItem object.
+	 */
+	public function createOrderItem(StoreCartEntry $entry)
+	{
+		$class = $this->class_map->resolveClass('StoreOrderItem');
+		$order_item = new $class();
+
+		$order_item->price = $this->item->getCalculatedItemPrice();
+		$order_item->quantity = $this->item->getQuantity();
+		$order_item->extension = $this->item->getExtension();
+		$order_item->description = $this->item->getDescription();
+		$order_item->product = $this->item->product->id;
+		$order_item->product_title = $this->item->product->title;
+		$order_item->quick_order = $this->quick_order;
+
+		return $order_item;
 	}
 
 	// }}}
