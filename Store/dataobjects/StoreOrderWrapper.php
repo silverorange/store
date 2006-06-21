@@ -18,7 +18,6 @@ class StoreOrderWrapper extends StoreRecordsetWrapper
 	{
 		parent::init();
 		$this->row_wrapper_class = $this->class_map->resolveClass('StoreOrder');
-
 		$this->index_field = 'id';
 	}
 

@@ -65,6 +65,13 @@ abstract class StoreCartEntry extends StoreDataObject
 	 */
 	public $saved;
 
+	/**
+	 * Whether or not this cart entry was created on the quick order page
+	 *
+	 * @var boolean
+	 */
+	public $quick_order;
+
 	// }}}
 	// {{{ protected function init()
 
