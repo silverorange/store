@@ -66,7 +66,7 @@ class StoreCategory extends StoreDataObject
 	/**
 	 * Body text of this category
 	 *
-	 * This text id intended to be displayed on a page dedicated to this
+	 * This text is intended to be displayed on a page dedicated to this
 	 * category.
 	 *
 	 * @var string 
