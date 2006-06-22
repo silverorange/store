@@ -124,17 +124,6 @@ class StoreAccount extends StoreDataObject
 	public $default_payment_method;
 
 	// }}}
-	// {{{ protected function init()
-
-	protected function init()
-	{
-		$this->table = 'Account';
-		$this->id_field = 'integer:id';
-
-		$this->registerDateProperty('createdate');
-	}
-
-	// }}}
 	// {{{ public function loadWithCredentials()
 
 	/**
@@ -162,6 +151,17 @@ class StoreAccount extends StoreDataObject
 			return false;
 
 		return $this->load($id);
+	}
+
+	// }}}
+	// {{{ protected function init()
+
+	protected function init()
+	{
+		$this->table = 'Account';
+		$this->id_field = 'integer:id';
+
+		$this->registerDateProperty('createdate');
 	}
 
 	// }}}
