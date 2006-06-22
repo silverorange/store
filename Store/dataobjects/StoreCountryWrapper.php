@@ -12,18 +12,6 @@ require_once 'Store/dataobjects/StoreCountry.php';
  */
 class StoreCountryWrapper extends StoreRecordsetWrapper
 {
-	// {{{ public static function loadSetFromDB()
-
-	public static function loadSetFromDB($db, $id_set)
-	{
-		$sql = 'select * from Country where id in (%s)';
-		$sql = sprintf($sql, $id_set);
-
-		return SwatDB::query($db, $sql,
-			$this->class_map->resolveClass('StoreCountryWrapper'));
-	}
-
-	// }}}
 	// {{{ protected function init()
 
 	protected function init()
