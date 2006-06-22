@@ -5,9 +5,27 @@ require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreArticleWrapper.php';
 
 /**
+ * A category for an e-commerce web application
  *
+ * Categories are a navigational network that lies beneath the products and
+ * items of a store. The sole purpose of categories is to organize products
+ * and items into meaningful and navigatable sets.
+ *
+ * <pre>
+ * Category
+ * |
+ * -- Product
+ *    |
+ *    -- Item
+ * </pre>
+ *
+ * One category may belong to another category and may contain multiple
+ * categories. There is no restriction on placing a single category into
+ * multiple categories so categories do not represent a tree structure.
+ * 
  * @package   Store
  * @copyright 2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCategory extends StoreDataObject
 {
@@ -21,44 +39,51 @@ class StoreCategory extends StoreDataObject
 	public $id;
 
 	/**
-	 * ID of parent category
+	 * Identifier of parent category
+	 *
+	 * If this category is a root category, this property is null.
 	 *
 	 * @var integer
 	 */
 	public $parent;
 
 	/**
+	 * Short, textual identifier of this category
 	 *
+	 * This identifier is designed to be used in URL's.
 	 *
-	 * @var varchar(255)
+	 * @var string
 	 */
 	public $shortname;
 
 	/**
 	 * User visible title
 	 *
-	 * @var varchar(255)
+	 * @var string 
 	 */
 	public $title;
 
 	/**
+	 * Body text of this category
 	 *
+	 * This text id intended to be displayed on a page dedicated to this
+	 * category.
 	 *
-	 * @var text
+	 * @var string 
 	 */
 	public $bodytext;
 
 	/**
+	 * The date this category was created
 	 *
-	 *
-	 * @var timestamp
+	 * @var Date 
 	 */
 	public $createdate;
 
 	/**
+	 * Order of display of this category
 	 *
-	 *
-	 * @var int not null default 0
+	 * @var integer
 	 */
 	public $displayorder;
 
@@ -79,6 +104,15 @@ class StoreCategory extends StoreDataObject
 	// loader methods
 	// {{{ protected function loadPath()
 
+	/**
+	 * Loads the URL fragment of this category
+	 *
+	 * If the path was part of the initial query to load this category, that
+	 * value is returned. Otherwise, a separate query gets the path of this
+	 * category. If you are calling this method frequently during a single
+	 * request, it is more efficient to include the path in the initial
+	 * category query.
+	 */
 	protected function loadPath()
 	{
 		$path = '';
@@ -123,6 +157,12 @@ class StoreCategory extends StoreDataObject
 	// }}}
 	// {{{ protected function loadNavBarEntries()
 
+	/**
+	 * Loads a set of {@link SwatNavbarEntry} objects for this category 
+	 *
+	 * The links in the navbar entries are intended for the customer visible
+	 * side of an e-commerce application.
+	 */
 	protected function loadNavBarEntries()
 	{
 		$entries = array();
@@ -143,6 +183,12 @@ class StoreCategory extends StoreDataObject
 	// }}}
 	// {{{ protected function loadAdminNavBarEntries()
 
+	/**
+	 * Loads a set of {@link SwatNavbarEntry} objects for this category
+	 *
+	 * The links in the navbar entries are intended for the administration side
+	 * of an e-commerce application.
+	 */
 	protected function loadAdminNavBarEntries()
 	{
 		$entries = array();
@@ -158,6 +204,9 @@ class StoreCategory extends StoreDataObject
 	// }}}
 	// {{{ private function queryNavBar()
 
+	/**
+	 * Helper method for loading navbar entries of this category
+	 */
 	protected function queryNavBar()
 	{
 		$sql = sprintf('select * from getCategoryNavbar(%s)',
