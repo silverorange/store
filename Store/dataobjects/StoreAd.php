@@ -18,10 +18,10 @@ class StoreAd extends StoreDataObject
 	// {{{ public properties
 
 	/**
-     * Unique identifier for this advertisement
-     *
-     * @var integer
-     */
+	 * Unique identifier for this advertisement
+	 *
+	 * @var integer
+	 */
 	public $id;
 
 	/**
