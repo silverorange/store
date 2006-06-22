@@ -115,7 +115,7 @@ class StoreArticle extends StoreDataObject
 	// {{{ protected function loadPath()
 
 	/**
-	 * Loads the URL of this article
+	 * Loads the URL fragment of this article
 	 *
 	 * If the path was part of the initial query to load this article, that
 	 * value is returned. Otherwise, a separate query gets the path of this
@@ -125,17 +125,17 @@ class StoreArticle extends StoreDataObject
 	 */
 	protected function loadPath()
 	{
-		if ($this->hasInternalValue('path')) {
+		$path = '';
+
+		if ($this->hasInternalValue('path') &&
+			$this->getInternameValue('path') !== null) {
 			$path = $this->getInternalValue('path');
+		} else {
+			$sql = sprintf('select getArticlePath(%s)',
+				$this->db->quote($this->id, 'integer'));
 
-			if ($path !== null)
-				return $path;
+			$path = SwatDB::queryOne($this->db, $sql);
 		}
-
-		$sql = sprintf('select getArticlePath(%s)',
-			$this->db->quote($this->id, 'integer'));
-
-		$path = SwatDB::queryOne($this->db, $sql);
 
 		return $path;
 	}
