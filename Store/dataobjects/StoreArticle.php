@@ -5,9 +5,18 @@ require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreCategoryWrapper.php';
 
 /**
+ * An article in an e-commerce web application
+ *
+ * Articles on an e-commerce web application represent navigatable pages that
+ * are outside the category/product structure hierarchy. Examples include
+ * an "about us" page, a newsletter signup page and a shipping policy page.
+ *
+ * StoreArticle objects themselves may represent a tree structure by accessing
+ * the {@link StoreAddress::$parent} property. 
  *
  * @package   Store
  * @copyright 2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreArticle extends StoreDataObject
 {
@@ -56,7 +65,7 @@ class StoreArticle extends StoreDataObject
 	public $displayorder;
 
 	/**
-	 * Whether article can be loaded on the front-end
+	 * Whether article can be loaded on the front-end (customer visible)
 	 *
 	 * @var boolean
 	 */
@@ -77,9 +86,10 @@ class StoreArticle extends StoreDataObject
 	public $searchable;
 
 	/**
-	 * String identifer
+	 * Short, textual identifer for this article
 	 *
-	 * Unique among siblings and used in the URL.
+	 * The shortname must be unique among siblings and is intended for use
+	 * in URL's.
 	 *
 	 * @var string
 	 */
@@ -102,6 +112,15 @@ class StoreArticle extends StoreDataObject
 	// }}}
 	// {{{ protected function loadPath()
 
+	/**
+	 * Loads the URL of this article
+	 *
+	 * If the path was part of the initial query to load this article, that
+	 * value is returned. Otherwise, a separate query gets the path of this
+	 * article. If you are calling this method frequently during a single
+	 * request, it is more efficient to include the path in the initial
+	 * article query.
+	 */
 	protected function loadPath()
 	{
 		if ($this->hasInternalValue('path')) {
@@ -146,6 +165,9 @@ class StoreArticle extends StoreDataObject
 	// }}}
 	// {{{ protected function loadNavBarEntries()
 
+	/**
+	 * Loads a set of {@link SwatNavbarEntry} objects for this article
+	 */
 	protected function loadNavBarEntries()
 	{
 		$sql = sprintf('select * from getArticleNavbar(%s)',
