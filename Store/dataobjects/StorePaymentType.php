@@ -7,13 +7,14 @@ require_once 'Store/dataobjects/StoreDataObject.php';
  *
  * @package   Store
  * @copyright 2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StorePaymentType extends StoreDataObject
 {
 	// {{{ public properties
 
 	/**
-	 * 
+	 * Unique identifier of this payment type 
 	 *
 	 * @var string 
 	 */
@@ -22,47 +23,53 @@ class StorePaymentType extends StoreDataObject
 	/**
 	 * Non-visible string indentifier
 	 *
+	 * This is something like 'VS', 'MC' or 'DS'.
+	 *
 	 * @var string
 	 */
 	public $shortname;
 
 	/**
-	 * Whether this payment type is available
+	 * Whether or not this payment type is available
 	 *
 	 * @var boolean
 	 */
 	public $enabled;
 
 	/**
-	 * User visible name for this type
+	 * User visible title for this payment type
 	 *
 	 * @var string
 	 */
 	public $title;
 
 	/**
-	 * User visible note for this type
+	 * User visible note for this payment type
+	 *
+	 * The note field should be used to inform customers of additional
+	 * requirements or conditions on this payment method type. For example, it
+	 * could contain special shipping information for COD payments.
 	 *
 	 * @var string
 	 */
 	public $note;
 
 	/**
-	 * Relative order of display
+	 * Order of display
 	 *
 	 * @var integer
 	 */
 	public $displayorder;
 
 	/**
-	 * Whether this type is a credit card
+	 * Whether or not this payment type is a credit card
 	 *
 	 * @var boolean
 	 */
 	public $credit_card;
 
 	/**
-	 * Additional charge applied when using this type
+	 * Additional charge applied when using this payment type
 	 *
 	 * @var double
 	 */
