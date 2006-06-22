@@ -72,7 +72,11 @@ abstract class StorePaymentMethod extends StoreDataObject
 	// {{{ protected properties
 
 	/**
-	 * The GPG id used toencrypt credit card numbers for this payment method
+	 * The GPG id used to encrypt credit card numbers for this payment method
+	 *
+	 * Subclasses should set this value in their
+	 * {@link StorePaymentMethod::init()} or
+	 * {@link StorePaymentMethod::__construct()} methods.
 	 *
 	 * @var string
 	 */
