@@ -219,7 +219,7 @@ class StoreAccount extends StoreDataObject
 		$sql = sprintf('select * from AccountPaymentMethod
 			where account = %s
 			order by id asc',
-			sprintf($sql, $this->db->quote($this->id, 'integer'));
+			$this->db->quote($this->id, 'integer'));
 
 		return SwatDB::query($this->db, $sql,
 			$this->class_map->resolveClass('StoreAccountPaymentMethodWrapper'));
