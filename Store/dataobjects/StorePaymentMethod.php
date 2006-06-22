@@ -79,18 +79,6 @@ abstract class StorePaymentMethod extends StoreDataObject
 	protected $gpg_id = null;
 
 	// }}}
-	// {{{ protection function init()
-
-	protected function init()
-	{
-		$this->id_field = 'integer:id';
-		$this->registerInternalProperty('payment_type',
-			$this->class_map->resolveClass('StorePaymentType'));
-
-		$this->registerDateProperty('credit_card_expiry');
-	}
-
-	// }}}
 	// {{{ public function setCreditCardNumber()
 
 	/**
@@ -263,6 +251,18 @@ abstract class StorePaymentMethod extends StoreDataObject
 			}
 		}
 		return $output;
+	}
+
+	// }}}
+	// {{{ protected function init()
+
+	protected function init()
+	{
+		$this->id_field = 'integer:id';
+		$this->registerInternalProperty('payment_type',
+			$this->class_map->resolveClass('StorePaymentType'));
+
+		$this->registerDateProperty('credit_card_expiry');
 	}
 
 	// }}}
