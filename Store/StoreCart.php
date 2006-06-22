@@ -145,56 +145,52 @@ abstract class StoreCart extends SwatObject
 	 * Adds a StoreCartEntry to this cart
 	 *
 	 * If an equivalent entry already exists in the cart, the two entries are
-	 * combined.
-	 *
-	 * @param StoreCartEntry $entry the StoreCartEntry to add.
-	 */
-	public function addEntry(StoreCartEntry $cart_entry)
-	{
-		$cart_entry->setDatabase($this->app->db);
-		$already_in_cart = false;
-
-		// check for item
-		foreach ($this->entries as $entry) {
-			if ($entry->compare($cart_entry) == 0) {
-				$already_in_cart = true;
-				$entry->combine($cart_entry);
-				break;
-			}
-		}
-
-		if (!$already_in_cart) {
-			$this->entries[] = $cart_entry;
-			$this->module->registerAddedEntry($cart_entry);
-		}
-
-		$this->setChanged();
-	}
-
-	// }}}
-	// {{{ public function addEntryValidate()
-
-	/**
-	 * Adds a StoreCartEntry to this cart after validating the entry
-	 *
-	 * Validity of an entry is defined in the {@link validateEntry()} method.
-	 * The entry is only added if it is valid.
+	 * combined. Validity of an entry is defined in the {@link validateEntry()}
+	 * method. The entry is only added if it is valid.
 	 *
 	 * @param StoreCartEntry $entry the StoreCartEntry to add.
 	 *
 	 * @return boolean true if the entry is valid and was added and false if
 	 *                       the entry is not valid and was not added.
 	 *
-	 * @see StoreCart::addEntry(), StoreCart::validateEntry()
+	 * @see StoreCart::validateEntry() StoreCart::validateEntryCombination()
 	 */
-	public function addEntryValidate(StoreCartEntry $entry)
+	public function addEntry(StoreCartEntry $entry)
 	{
 		$entry->setDatabase($this->app->db);
 
-		if ($valid = $this->validateEntry($entry))
-			$this->addEntry($entry);
+		if (!$this->validateEntry($entry))
+			return false;
 
-		return $valid;
+		$already_in_cart = false;
+
+		// check for item
+		foreach ($this->entries as $key => $existing_entry) {
+			if ($existing_entry->compare($entry) == 0) {
+				$already_in_cart = true;
+				$backup_entry = clone $existing_entry;
+				$existing_entry->combine($entry);
+
+				if (!$this->validateCombinedEntry($existing_entry)) {
+					// rollback to original entry
+					$this->entries[$key] = $backup_entry;
+					return false;
+				}
+
+				break;
+			}
+		}
+
+		if (!$already_in_cart) {
+			if (!$this->validateCombinedEntry($entry))
+				return false;
+
+			$this->entries[] = $entry;
+			$this->module->registerAddedEntry($entry);
+		}
+
+		$this->setChanged();
+		return true;
 	}
 
 	// }}}
@@ -439,9 +435,24 @@ abstract class StoreCart extends SwatObject
 	 *
 	 * Used to verify that the entry exists and is available for purchase.
 	 *
-	 * @param StoreCartEntry $cartEntry the StoreCartEntry to validate.
+	 * @param StoreCartEntry $entry the StoreCartEntry to validate.
 	 */
-	protected function validateEntry(StoreCartEntry $cart_entry)
+	protected function validateEntry(StoreCartEntry $entry)
+	{
+		return true;
+	}
+
+	// }}}
+	// {{{ protected function validateCombinedEntry()
+
+	/**
+	 * Checks entry validity after combining with existing entries in cart.
+	 *
+	 * Used to verify quantities meet requirments for purchase.
+	 *
+	 * @param StoreCartEntry $entry the StoreCartEntry to validate.
+	 */
+	protected function validateCombinedEntry(StoreCartEntry $entry)
 	{
 		return true;
 	}
