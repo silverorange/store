@@ -10,8 +10,9 @@ require_once 'Store/dataobjects/StoreOrderWrapper.php';
  * A account for an e-commerce web application
  *
  * StoreAccount objects contain data like name and email that correspond
- * directly to database fields. StoreAccount objects can have multiple
- * StoreAccountAddress objects.
+ * directly to database fields. StoreAccount objects may have one or more 
+ * StoreAccountAddress objects, one or more StoreAccountPaymentMethod objects
+ * and one or more StoreOrder objects all accessed as sub-data-objects.
  *
  * There are three typical ways to use a StoreAccount object:
  *
@@ -26,17 +27,30 @@ require_once 'Store/dataobjects/StoreOrderWrapper.php';
  * $new_account->save();
  * </code>
  *
+ * Using this technique, you may also add addresses and payment methods as sub-
+ * data-objects and have them save automatically when you call
+ * {@link StoreAccount::save()}.
+ *
  * - Create a new StoreAccount object with a blank constructor. Call the
- *   StoreAccount::load() method on the object instance passing in a
- *   database id. Modify some properties and call the save() method. The
- *   modified properties are updated in the database.
+ *   {@link StoreAccount::load()} or {@link StoreAccount::loadWithCredentials}
+ *   method on the object instance. Modify some properties and call the save()
+ *   method. The modified properties are updated in the database.
  *
  * <code>
+ * // using regular data-object load() method
  * $account = new StoreAccount();
  * $account->load(123);
  * echo 'Hello ' . $account->fullname;
  * $account->email = 'new_address@example.com';
  * $account->save();
+ *
+ * // using loadWithCredentials()
+ * $account = new StoreAccount();
+ * if ($account->loadWithCredentials('test@example.com', 'secretpassword')) {
+ *     echo 'Hello ' . $account->fullname;
+ *     $account->email = 'new_address@example.com';
+ *     $account->save();
+ * }
  * </code>
  *
  * - Create a new StoreAccount object passing a record set into the
@@ -45,7 +59,7 @@ require_once 'Store/dataobjects/StoreOrderWrapper.php';
  *   StoreAccount::save() method. The modified properties are updated
  *   in the database.
  *
- * Example usage as an MDB wrapper:
+ * Example usage as an MDB2 wrapper:
  *
  * <code>
  * $sql = '-- select a account here';
@@ -97,6 +111,9 @@ class StoreAccount extends StoreDataObject
 
 	/**
 	 * The md5() of this account's password
+	 *
+	 * By design, there is no way to get the actual password of this account
+	 * through the StoreAccount object.
 	 *
 	 * @var string
 	 */
@@ -177,10 +194,16 @@ class StoreAccount extends StoreDataObject
 	// loader methods
 	// {{{ protected function loadAddresses()
 
+	/**
+	 * Loads StoreAccountAddress sub-data-objects for this StoreAccount
+	 */
 	protected function loadAddresses()
 	{
-		$sql= 'select * from AccountAddress where account = %s order by id asc';
-		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+		$sql = sprintf('select * from AccountAddress
+			where account = %s
+			order by id asc',
+			$this->db->quote($this->id, 'integer'));
+
 		return SwatDB::query($this->db, $sql,
 			$this->class_map->resolveClass('StoreAccountAddressWrapper'));
 	}
@@ -188,10 +211,16 @@ class StoreAccount extends StoreDataObject
 	// }}}
 	// {{{ protected function loadPaymentMethods()
 
+	/**
+	 * Loads StoreAccountPaymentMethod sub-data-objects for this StoreAccount
+	 */
 	protected function loadPaymentMethods()
 	{
-		$sql= 'select * from AccountPaymentMethod where account = %s order by id asc';
-		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+		$sql = sprintf('select * from AccountPaymentMethod
+			where account = %s
+			order by id asc',
+			sprintf($sql, $this->db->quote($this->id, 'integer'));
+
 		return SwatDB::query($this->db, $sql,
 			$this->class_map->resolveClass('StoreAccountPaymentMethodWrapper'));
 	}
@@ -199,10 +228,18 @@ class StoreAccount extends StoreDataObject
 	// }}}
 	// {{{ protected function loadOrders()
 
+	/**
+	 * Loads StoreOrder sub-data-objects for this StoreAccount
+	 *
+	 * This represents a set of past orders made with this account.
+	 */
 	protected function loadOrders()
 	{
-		$sql= 'select * from Orders where account = %s order by id asc';
-		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+		$sql = sprintf('select * from Orders
+			where account = %s
+			order by id asc',
+			$this->db->quote($this->id, 'integer'));
+
 		return SwatDB::query($this->db, $sql,
 			$this->class_map->resolveClass('StoreOrderWrapper'));
 	}
@@ -212,6 +249,10 @@ class StoreAccount extends StoreDataObject
 	// saver methods
 	// {{{ protected function saveAddresses()
 
+	/**
+	 * Automatically saves StoreAccontAddress sub-data-objects when this
+	 * StoreAccount object is saved
+	 */
 	protected function saveAddresses()
 	{
 		foreach ($this->addresses as $address)
@@ -224,6 +265,10 @@ class StoreAccount extends StoreDataObject
 	// }}}
 	// {{{ protected function savePaymentMethods()
 
+	/**
+	 * Automatically saves StoreAccontPaymentMethod sub-data-objects when this
+	 * StoreAccount object is saved
+	 */
 	protected function savePaymentMethods()
 	{
 		foreach ($this->payment_methods as $payment_method)
@@ -236,6 +281,10 @@ class StoreAccount extends StoreDataObject
 	// }}}
 	// {{{ protected function saveOrders()
 
+	/**
+	 * Automatically saves StoreOrder sub-data-objects when this StoreAccount
+	 * object is saved
+	 */
 	protected function saveOrders()
 	{
 		foreach ($this->orders as $order)
