@@ -1,6 +1,5 @@
 <?php
 
-
 require_once 'Swat/SwatHtmlTag.php';
 require_once 'Swat/SwatString.php';
 require_once 'Store/dataobjects/StoreDataObject.php';
@@ -10,13 +9,14 @@ require_once 'Store/dataobjects/StoreProvState.php';
 /**
  * An address for an e-commerce web application
  *
- * Addresses usually belongs to customers but can be used in other instances.
+ * Addresses usually belongs to accounts but may be used in other instances.
  * There is intentionally no reference back to the account or order this
  * address belongs to.
  *
  * @package   Store
  * @copyright 2005-2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ * @see       StoreAccountAddress, StoreOrderAddress
  */
 abstract class StoreAddress extends StoreDataObject
 {
@@ -129,7 +129,9 @@ abstract class StoreAddress extends StoreDataObject
 	/**
 	 * Displays this address in a two-line condensed form
 	 *
-	 * This display uses XHTML and is ideal for cell renderers.
+	 * This display uses XHTML and is ideal for cell renderers. The format of
+	 * this display borrows from but does not conform to the Canada Post
+	 * address rules.
 	 */
 	public function displayCondensed()
 	{
@@ -158,7 +160,9 @@ abstract class StoreAddress extends StoreDataObject
 	/**
 	 * Displays this address in a two-line condensed form
 	 *
-	 * This display is formatted as plain text and is ideal for emails.
+	 * This display is formatted as plain text and is ideal for emails. The
+	 * format of this display borrows from but does not conform to the Canada
+	 * Post address rules.
 	 */
 	public function displayCondensedAsText()
 	{
@@ -169,11 +173,11 @@ abstract class StoreAddress extends StoreDataObject
 
 		echo "\n";
 
-		echo $this->city, ', ';
+		echo $this->city, ' ';
 		echo $this->provstate->abbreviation;
 
 		if ($this->postal_code !== null) {
-			echo ', ';
+			echo '  ';
 			echo $this->postal_code;
 		}
 		echo ', ';
