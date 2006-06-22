@@ -137,20 +137,29 @@ abstract class StoreItem extends StoreDataObject
 
 	protected function loadQuantityDiscounts()
 	{
-		$quantity_discounts = null;
+		if (!$this->hasInternalValue('region'))
+			return null;
 
-		if ($this->hasInternalValue('region')) {
-			$sql = 'select id from QuantityDiscount where item = %s';
-			$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
-			$wrapper =
-				$this->class_map->resolveClass('StoreQuantityDiscountWrapper');
+		$region = $this->getInternalValue('region');
 
-			$quantity_discounts = call_user_func(
-				array($wrapper, 'loadSetFromDB'),
-				$this->db, $sql, $this->getInternalValue('region'));
-		}
+		$sql = 'select QuantityDiscount.*, QuantityDiscountRegionBinding.price
+			from QuantityDiscount 
+			inner join QuantityDiscountRegionBinding on
+			quantity_discount = QuantityDiscount.id ';
 
-		return $quantity_discounts;
+		if ($region !== null)
+			$sql.= sprintf(' and region = %s',
+				$this->db->quote($region, 'integer'));
+                  
+		$sql.= 'where QuantityDiscount.item = %s
+			order by QuantityDiscount.quantity desc';
+
+		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+
+		$wrapper =
+			$this->class_map->resolveClass('StoreQuantityDiscountWrapper');
+
+		return SwatDB::query($this->db, $sql, $wrapper);
 	}
 
 	// }}}
