@@ -110,6 +110,8 @@ class StoreArticle extends StoreDataObject
 	}
 
 	// }}}
+
+	// loader methods
 	// {{{ protected function loadPath()
 
 	/**

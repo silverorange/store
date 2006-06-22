@@ -97,27 +97,6 @@ abstract class StoreItem extends StoreDataObject
 	}
 
 	// }}}
-	// {{{ protected function loadQuantityDiscounts()
-
-	protected function loadQuantityDiscounts()
-	{
-		$quantity_discounts = null;
-
-		if ($this->hasInternalValue('region')) {
-			$sql = 'select id from QuantityDiscount where item = %s';
-			$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
-			$wrapper =
-				$this->class_map->resolveClass('StoreQuantityDiscountWrapper');
-
-			$quantity_discounts = call_user_func(
-				array($wrapper, 'loadSetFromDB'),
-				$this->db, $sql, $this->getInternalValue('region'));
-		}
-
-		return $quantity_discounts;
-	}
-
-	// }}}
 	// {{{ protected function loadInteral()
 
 	/**
@@ -149,6 +128,29 @@ abstract class StoreItem extends StoreDataObject
 		$row = $rs->fetchRow(MDB2_FETCHMODE_ASSOC);
 
 		return $row;
+	}
+
+	// }}}
+
+	// loader methods
+	// {{{ protected function loadQuantityDiscounts()
+
+	protected function loadQuantityDiscounts()
+	{
+		$quantity_discounts = null;
+
+		if ($this->hasInternalValue('region')) {
+			$sql = 'select id from QuantityDiscount where item = %s';
+			$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+			$wrapper =
+				$this->class_map->resolveClass('StoreQuantityDiscountWrapper');
+
+			$quantity_discounts = call_user_func(
+				array($wrapper, 'loadSetFromDB'),
+				$this->db, $sql, $this->getInternalValue('region'));
+		}
+
+		return $quantity_discounts;
 	}
 
 	// }}}
