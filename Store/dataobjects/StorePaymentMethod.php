@@ -10,12 +10,17 @@ require_once 'Crypt/GPG.php';
  * Payment methods are usually tied to {@link StoreAccount} objects or
  * {@link StoreOrder} objects.
  *
- * A payment method represents a way to pay for a particular customer.
- * It stores the type of payment (VISA, MC, COD) as well as necessary
- * payment details such as card number and expriy date.
+ * A payment method represents a way to pay for a purchase. A payment method
+ * stores the type of payment (VISA, MC, COD) as well as necessary payment
+ * details such as name, card number and expiry date.
+ *
+ * Sensitive fields such as credit card numbers are stored using GPG
+ * encryption.
  *
  * @package   Store
  * @copyright 2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ * @see       StorePaymentType
  */
 abstract class StorePaymentMethod extends StoreDataObject
 {
@@ -38,12 +43,19 @@ abstract class StorePaymentMethod extends StoreDataObject
 	/**
 	 * Last 4 digits of the credit card
 	 *
+	 * This value is stored unencrypted and is displayed to the customer to
+	 * allow the customer to identify his or her credit cards.
+	 *
 	 * @var string
 	 */
 	public $credit_card_last4;
 
 	/**
 	 * Number of the credit card
+	 *
+	 * This value is encrypted using GPG encryption. The only way the number
+	 * may be retrieved is by using GPG decryption with the correct GPG private
+	 * key.
 	 *
 	 * @var string
 	 */
@@ -59,6 +71,11 @@ abstract class StorePaymentMethod extends StoreDataObject
 	// }}}
 	// {{{ protected properties
 
+	/**
+	 * The GPG id used toencrypt credit card numbers for this payment method
+	 *
+	 * @var string
+	 */
 	protected $gpg_id = null;
 
 	// }}}
@@ -71,6 +88,33 @@ abstract class StorePaymentMethod extends StoreDataObject
 			$this->class_map->resolveClass('StorePaymentType'));
 
 		$this->registerDateProperty('credit_card_expiry');
+	}
+
+	// }}}
+	// {{{ public function setCreditCardNumber()
+
+	/**
+	 * Sets the credit card number of this payment method
+	 *
+	 * When setting the credit card number, use this method rather than
+	 * modifying the public {@link StorePaymentMethod::$credit_card_number}
+	 * property.
+	 *
+	 * Credit card numbers are stored encrypted. There is no way to retrieve
+	 * the actual credit card number after setting it without knowing the GPG
+	 * private key needed to decrypt the credit card number.
+	 *
+	 * @param string $number the new credit card number.
+	 */
+	public function setCreditCardNumber($number)
+	{
+		if ($this->gpg_id === null)
+			throw new StoreException('No GPG id provided.');
+
+		$this->credit_card_last4 = substr($number, -4);
+
+		$this->credit_card_number =
+			self::encryptCreditCardNumber($number, $this->gpg_id);
 	}
 
 	// }}}
@@ -89,17 +133,20 @@ abstract class StorePaymentMethod extends StoreDataObject
 
 		if ($this->credit_card_last4 !== null) {
 			// TODO: use $this->payment_type->cc_mask
-			echo self::creditCardFormat($this->credit_card_last4, '**** **** **** ####');
+			echo self::formatCreditCardNumber($this->credit_card_last4,
+				'**** **** **** ####');
+
 			echo '<br />';
 		}
 
 		if ($this->credit_card_expiry !== null) {
-			echo 'Expiry: '.$this->credit_card_expiry->format(SwatDate::DF_CC_MY);
+			echo 'Expiry: ',
+				$this->credit_card_expiry->format(SwatDate::DF_CC_MY);
 		}
 
 		if ($this->credit_card_fullname !== null) {
-			echo ', ';
-			echo SwatString::minimizeEntities($this->credit_card_fullname);
+			echo ', ',
+				SwatString::minimizeEntities($this->credit_card_fullname);
 		}
 
 		$span_tag->close();
@@ -120,41 +167,33 @@ abstract class StorePaymentMethod extends StoreDataObject
 		if ($this->credit_card_last4 !== null) {
 			// TODO: use $this->payment_type->cc_mask
 			echo "\n";
-			echo self::creditCardFormat($this->credit_card_last4, '**** **** **** ####');
+			echo self::formatCreditCardNumber($this->credit_card_last4,
+				'**** **** **** ####');
 		}
 
 		if ($this->credit_card_expiry !== null) {
-			echo "\n";
-			echo 'Expiry: '.$this->credit_card_expiry->format(SwatDate::DF_CC_MY);
+			echo "\nExpiry: ",
+				$this->credit_card_expiry->format(SwatDate::DF_CC_MY);
 		}
 
 		if ($this->credit_card_fullname !== null) {
-			echo "\n";
-			echo $this->credit_card_fullname;
+			echo "\n",
+				$this->credit_card_fullname;
 		}
 
-	}
-
-	// }}}
-	// {{{ public function setCreditCardNumber()
-
-	/**
-	 * Encrypts a number and stores it in the credit_card_number property
-	 */
-	public function setCreditCardNumber($number)
-	{
-		if ($this->gpg_id === null)
-			throw new StoreException('No GPG id provided.');
-
-		$this->credit_card_last4 = substr($number, -4);
-
-		$this->credit_card_number =
-			self::encryptCreditCardNumber($number, $this->gpg_id);
 	}
 
 	// }}}
 	// {{{ public static function encryptCreditCardNumber()
 
+	/**
+	 * Encrypts a credit card number using GPG encryption
+	 *
+	 * @param string $number the credit card number to encrypt.
+	 * @param string $gpg_id the GPG id to encrypt with.
+	 *
+	 * @return string the encrypted credit card number.
+	 */
 	public static function encryptCreditCardNumber($number, $gpg_id)
 	{
 		$gpg = new Crypt_GPG();
@@ -162,7 +201,8 @@ abstract class StorePaymentMethod extends StoreDataObject
 	}
 
 	// }}}	
-	// {{{  public static function creditCardFormat()
+	// {{{  public static function formatCreditCardNumber()
+
 	/**
 	 * Formats a credit card number according to a format string
 	 *
@@ -174,16 +214,19 @@ abstract class StorePaymentMethod extends StoreDataObject
 	 * For example:
 	 * <code>
 	 * // displays '*** **6 7890'
-	 * echo StorePaymentMethod::creditCardFormat(1234567890, '*** **# ####');
+	 * echo StorePaymentMethod::formatCreditCardNumber(1234567890,
+	 *      '*** **# ####');
 	 * </code>
 	 *
-	 * @param string $number
-	 * @param string $format
-	 * @param boolean $zero_fill
+	 * @param string $number the creditcard number to format.
+	 * @param string $format the format string to use.
+	 * @param boolean $zero_fill whether or not the prepend the credit card
+	 *                            number with zeros until it is as long as the
+	 *                            format string.
 	 *
-	 * @return string
+	 * @return string the formatted credit card number.
 	 */
-	public static function creditCardFormat($number,
+	public static function formatCreditCardNumber($number,
 		$format = '#### #### #### ####', $zero_fill = true)
 	{
 		$number = trim((string)$number);
@@ -221,6 +264,7 @@ abstract class StorePaymentMethod extends StoreDataObject
 		}
 		return $output;
 	}
+
 	// }}}
 }
 
