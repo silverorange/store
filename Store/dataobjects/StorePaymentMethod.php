@@ -97,6 +97,10 @@ abstract class StorePaymentMethod extends StoreDataObject
 	 * private key needed to decrypt the credit card number.
 	 *
 	 * @param string $number the new credit card number.
+	 *
+	 * @throws StoreException a StoreException is thrown if this class has no
+	 *                         defined GPG id and you try to set the credit
+	 *                         card number.
 	 */
 	public function setCreditCardNumber($number)
 	{
