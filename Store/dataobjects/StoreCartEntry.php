@@ -124,7 +124,7 @@ abstract class StoreCartEntry extends StoreDataObject
 	 *
 	 * @return double the unit cost of the StoreItem for this cart entry.
 	 */
-	public function getCalculatedItemCost()
+	public function getCalculatedItemPrice()
 	{
 		$price = $this->item->price;
 
@@ -185,7 +185,7 @@ abstract class StoreCartEntry extends StoreDataObject
 	 */
 	public function getExtension()
 	{
-		return ($this->getCalculatedItemCost() * $this->getQuantity());
+		return ($this->getCalculatedItemPrice() * $this->getQuantity());
 	}
 
 	// }}}
