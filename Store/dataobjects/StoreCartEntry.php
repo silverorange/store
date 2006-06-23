@@ -31,9 +31,11 @@ abstract class StoreCartEntry extends StoreDataObject
 	// {{{ public properties
 
 	/**
-	 * The id of this cart entry
+	 * A unique identifier of this cart entry
 	 *
-	 * @var string
+	 * The unique identifier is not always present on every cart entry.
+	 *
+	 * @var integer 
 	 */
 	public $id;
 
@@ -261,11 +263,12 @@ abstract class StoreCartEntry extends StoreDataObject
 	// {{{ public function createOrderItem()
 
 	/**
-	 * Create a new order item dataobject that corresponds to this cart entry.
+	 * Creates a new order item dataobject that corresponds to this cart entry
 	 *
-	 * @return StoreOrderItem a new StoreOrderItem object.
+	 * @return StoreOrderItem a new StoreOrderItem object that corresponds to
+	 *                         this cart entry.
 	 */
-	public function createOrderItem(StoreCartEntry $entry)
+	public function createOrderItem()
 	{
 		$class = $this->class_map->resolveClass('StoreOrderItem');
 		$order_item = new $class();
