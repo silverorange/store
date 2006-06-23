@@ -76,27 +76,6 @@ abstract class StoreCartEntry extends StoreDataObject
 	public $quick_order;
 
 	// }}}
-	// {{{ protected function init()
-
-	/**
-	 * Sets up this cart entry data object
-	 *
-	 * IMPORTANT:
-	 * You better override this in your subclass or you'll get weird errors.
-	 */
-	protected function init()
-	{
-		$this->registerInternalProperty('item',
-			$this->class_map->resolveClass('StoreItem'));
-
-		$this->registerInternalProperty('account',
-			$this->class_map->resolveClass('StoreAccount'));
-
-		$this->table = 'CartEntry';
-		$this->id_field = 'integer:id';
-	}
-
-	// }}}
 	// {{{ public function getQuantity()
 
 	/**
@@ -282,6 +261,24 @@ abstract class StoreCartEntry extends StoreDataObject
 		$order_item->quick_order = $this->quick_order;
 
 		return $order_item;
+	}
+
+	// }}}
+	// {{{ protected function init()
+
+	/**
+	 * Sets up this cart entry data object
+	 */
+	protected function init()
+	{
+		$this->registerInternalProperty('item',
+			$this->class_map->resolveClass('StoreItem'));
+
+		$this->registerInternalProperty('account',
+			$this->class_map->resolveClass('StoreAccount'));
+
+		$this->table = 'CartEntry';
+		$this->id_field = 'integer:id';
 	}
 
 	// }}}
