@@ -17,8 +17,9 @@ class StoreOrderItemWrapper extends StoreRecordsetWrapper
 	protected function init()
 	{
 		parent::init();
-		$this->row_wrapper_class = $this->class_map->resolveClass('StoreOrderItem');
 		$this->index_field = 'id';
+		$this->row_wrapper_class =
+			$this->class_map->resolveClass('StoreOrderItem');
 	}
 
 	// }}}
