@@ -83,7 +83,7 @@ class StorePaymentMethodCellRenderer extends SwatCellRenderer
 
 		$code_tag = new SwatHtmlTag('code');
 		$code_tag->setContent(SwatString::minimizeEntities(
-			StorePaymentMethod::creditcardFormat($this->credit_card_number,
+			StorePaymentMethod::formatCreditCardNumber($this->credit_card_number,
 			$format)));
 
 		$code_tag->display();
