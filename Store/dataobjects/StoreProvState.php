@@ -14,60 +14,48 @@ class StoreProvState extends StoreDataObject
 	// {{{ public properties
 
 	/**
-	 * 
+	 * Unique identifier of this province or state 
 	 *
 	 * @var integer
 	 */
 	public $id;
 
 	/**
-	 * 
+	 * User visible title of this province or state 
 	 *
 	 * @var string
 	 */
 	public $title;
 
 	/**
-	 * not null default false,
+	 * Whether or not provincial sales tax applies in this province or state
 	 *
 	 * @var boolean
 	 */
 	public $pst;
 
 	/**
-	 * not null default false,
+	 * Whether or not harmonized sales tax applies in this province or state
 	 *
 	 * @var boolean
 	 */
 	public $hst;
 
 	/**
-	 * not null default false,
+	 * Whether or not general sales tax applies in this province or state
 	 *
 	 * @var boolean
 	 */
 	public $gst;
 
 	/**
-	 * 
+	 * A two letter abbreviation used to identify this province of state 
+	 *
+	 * This is also used for displaying addresses.
 	 *
 	 * @var string
 	 */
 	public $abbreviation;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	public $location;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	public $pcode;
 
 	// }}}
 	// {{{ protected function init()
