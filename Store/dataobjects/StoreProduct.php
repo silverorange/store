@@ -44,9 +44,10 @@ class StoreProduct extends StoreDataObject
 	public $id;
 
 	/**
-	 * Identifier used in URL
+	 * A short textual identifier for this product
 	 *
-	 * Unique within a catalog.
+	 * This identifier is designed to be used in URL's and must be unique
+	 * within a catalog.
 	 *
 	 * @var string
 	 */
@@ -77,20 +78,35 @@ class StoreProduct extends StoreDataObject
 	// {{{ protected properties
 
 	/**
+	 * The region to use when loading region-specific fields in item sub-data-
+	 * objects
 	 *
 	 * @var integer
+	 * @see StoreProduct::setRegion()
 	 */ 
 	protected $join_region = null;
 
 	/**
+	 * Whether or not to exclude items unavailable in the current join region
+	 * when loading item sub-data-objects
 	 *
 	 * @var boolean
+	 * @see StoreProduct::setRegion()
 	 */
 	protected $limit_by_region = true;
 
 	// }}}
 	// {{{ public function setRegion()
 
+	/**
+	 * Sets the region to use when loading region-specific fields for item
+	 * sub-data-objects
+	 *
+	 * @param integer $join_region the unique identifier of the region to use.
+	 * @param boolean $limiting whether or not to exclude items unavailable in
+	 *                           the current join region when loading item
+	 *                           sub-data-objects.
+	 */
 	public function setRegion($region, $limiting = true)
 	{
 		$this->join_region = $region;
@@ -117,6 +133,14 @@ class StoreProduct extends StoreDataObject
 	// loader methods
 	// {{{ protected function loadItems()
 
+	/**
+	 * Loads item sub-data-objects for this product
+	 *
+	 * If you want to loead region-specific fields on the items, call the
+	 * {@link StoreProduct::setRegion()} method first.
+	 *
+	 * @see StoreProduct::setRegion()
+	 */
 	protected function loadItems()
 	{
 		$items = null;
@@ -140,6 +164,15 @@ class StoreProduct extends StoreDataObject
 	// }}}
 	// {{{ protected function loadPath()
 
+	/**
+	 * Loads the URL fragment of this product 
+	 *
+	 * If the path was part of the initial query to load this product, that
+	 * value is returned. Otherwise, a separate query gets the path of this
+	 * product. If you are calling this method frequently during a single
+	 * request, it is more efficient to include the path in the initial
+	 * product query.
+	 */
 	protected function loadPath()
 	{
 		$path = '';
