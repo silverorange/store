@@ -2,19 +2,31 @@
 
 require_once 'Store/dataobjects/StoreDataObject.php';
 
-/*
+/**
+ * An item in an order
+ *
+ * A single order contains multiple order items. An order item contains all
+ * price, product, quantity and discount information from when the order was
+ * placed. An order item is a combination of important fields from an item,
+ * a cart entry and a product.
+ *
+ * You can automatically create StoreOrderItem objects from StoreCartEntry
+ * objects using the {@link StoreCartEntry::createOrderItem()} method.
+ *
  * @package   Store
- * @copyright silverorange 2006
+ * @copyright 2005-2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ * @see       StoreCartEntry::createOrderItem()
  */
 class StoreOrderItem extends StoreDataObject
 {
 	// {{{ public properties
 
 	/**
-	* Unique identifier
-	*
-	* @var integer
-	*/
+	 * Unique identifier
+	 *
+	 * @var integer
+	 */
 	public $id;
 
 	/**
@@ -46,7 +58,7 @@ class StoreOrderItem extends StoreDataObject
 	public $extension;
 
 	/**
-	 * Product
+	 * Product identifier
 	 *
 	 * @var integer
 	 */
@@ -60,7 +72,7 @@ class StoreOrderItem extends StoreDataObject
 	public $product_title;
 
 	/**
-	 * Quickorder?
+	 * Whether or not this item was ordered through the quick-order tool
 	 *
 	 * @var boolean
 	 */
