@@ -141,7 +141,7 @@ abstract class StoreResetPasswordMailMessage extends SiteMultipartMailMessage
 			'password for your account. Your password has not yet been '.
 			'changed. Please click on the following link and follow the '.
 			'outlined steps to change your account password.</p>'.
-			'<a href="%$1s">%$1s</a></p>'.
+			'<a href="%1$s">%1$s</a></p>'.
 			'<p>Clicking on this link will take you to a page that requires '.
 			'you to enter in and confirm a new password. Once you have chosen '.
 			'and confirmed your new password you will be taken to your '.
