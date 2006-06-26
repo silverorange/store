@@ -97,7 +97,7 @@ class StoreClassMap extends SwatObject
 		if (array_key_exists($name, $this->map)) {
 			$class_name = $this->map[$name];
 
-			if ($this->path !== null) {
+			if (!class_exists($class_name) && $this->path !== null) {
 				$class_file = sprintf('%s/%s.php', $this->path, $class_name);
 				require_once $class_file;
 			}
