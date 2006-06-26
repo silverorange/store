@@ -1,0 +1,28 @@
+.loading {
+	font-family: sans-serif;
+	font-size: 80%;
+	color: #91916E;
+}
+
+#article-bodytext {
+	float: right;
+	width: 200px;
+}
+
+#quickorder_form {
+	margin-right: 220px;
+}
+
+th.store-quick-order-description-header,
+td.store-quick-order-description-cell {
+	width: 100%;
+}
+
+#quickorder_form td.swat-cell-renderer {
+	padding-top: 1em;
+	padding-bottom: 1em;
+}
+
+#quickorder_form td.store-quick-order-description-cell label {
+	font-weight: normal;
+}
