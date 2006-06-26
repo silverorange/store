@@ -136,7 +136,7 @@ abstract class StoreResetPasswordMailMessage extends SiteMultipartMailMessage
 	 */
 	protected function getHtmlBody()
 	{	
-		$text_body =
+		$body =
 			'<p>This email is in response to your recent request for a new '.
 			'password for your account. Your password has not yet been '.
 			'changed. Please click on the following link and follow the '.
