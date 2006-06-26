@@ -32,7 +32,7 @@ class StoreItemViewQuantityColumn extends SwatTableViewColumn
 		/*
 		if ($this->view !== null)
 			$this->view->addJavaScript(
-				'store/javascript/store-item-view-quantity-column.js');
+				'packages/store/javascript/store-item-view-quantity-column.js');
 		*/
 	}
 
