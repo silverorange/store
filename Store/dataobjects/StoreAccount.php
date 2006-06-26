@@ -1,10 +1,12 @@
 <?php
 
 require_once 'SwatDB/SwatDB.php';
+require_once 'Store/StoreResetPasswordMailMessage.php';
 require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreAccountAddressWrapper.php';
 require_once 'Store/dataobjects/StoreAccountPaymentMethodWrapper.php';
 require_once 'Store/dataobjects/StoreOrderWrapper.php';
+require_once 'Store/dataobjects/StoreAccountWrapper.php';
 
 /**
  * A account for an e-commerce web application
@@ -187,6 +189,62 @@ class StoreAccount extends StoreDataObject
 	protected function getSerializableSubDataObjects()
 	{
 		return array('addresses', 'payment_methods');
+	}
+
+	// }}}
+
+	// password methods
+	// {{{ public function resetPassword()
+
+	/**
+	 * Resets this account's password
+	 *
+	 * This method in turn calls the static
+	 * {@link StoreAccount::generatePassword()} method on this account.
+	 */
+	public function resetPassword()
+	{
+		self::generatePassword($this->db, $this->id);
+	}
+
+	// }}}
+	// {{{ public static function generatePassword()
+
+	/**
+	 * Creates a unique tag and emails the account holder a tagged URL to
+	 * update their password
+	 *
+	 * @param MDB2_Driver $db the database driver to use.
+	 * @param integer $id the account id of the account we are updating.
+	 * @param string $base_href the base of the tagged URL the account holder
+	 *                           is sent.
+	 */
+	public static function generatePassword($db, $id, $base_href = '')
+	{
+		$password_tag = md5(uniqid(rand(), true));
+		$password_link = $base_href.'account/resetpassword/'.$password_tag;
+
+		// update the database with new password tag
+		$sql = sprintf('update Account set password_tag = %s where id = %s',
+			$db->quote($password_tag, 'text'),
+			$db->quote($id, 'integer'));
+
+		SwatDB::exec($db, $sql);
+
+		$class_mapper = StoreDataObjectClassMap::instance();
+
+		$account_sql = sprintf('select id, email, fullname from Account
+			where id = %s',
+			$db->quote($id, 'integer'));
+
+		$account = SwatDB::query($db, $account_sql,
+			$class_mapper->resolveClass('StoreAccountWrapper'))->getFirst();
+
+		$class = $class_mapper->resolveClass('StoreResetPasswordMailMessage');
+
+		// email the new password tag to the user
+		$email = new $class($account, $password_link);
+		$email->send();
 	}
 
 	// }}}
