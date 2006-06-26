@@ -1,16 +1,16 @@
 <?php
 
-require_once 'Store/StorePageFactory.php';
+require_once 'Site/SitePageFactory.php';
 
 /**
  * @package   Store
  * @copyright 2006 silverorange
  */
-abstract class StoreArticlePageFactory extends StorePageFactory
+abstract class StoreArticlePageFactory extends SitePageFactory
 {
 	// {{{ protected properties
 
-	protected $default_page_class = 'ArticlePage';
+	protected $default_page_class = 'StoreArticlePage';
 
 	// }}}
 	// {{{ public function resolvePage()
