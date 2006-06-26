@@ -36,6 +36,9 @@ class StoreQuantityCellRenderer extends SwatCellRenderer
 
 	public function render()
 	{
+		if (!$this->visible)
+			return;
+
 		$input_tag = new SwatHtmlTag('input');
 		$input_tag->type = 'text';
 		$input_tag->name = $this->id.'[]';

@@ -28,6 +28,9 @@ class StoreAddressCellRenderer extends SwatCellRenderer
 	 */
 	public function render()
 	{
+		if (!$this->visible)
+			return;
+
 		if ($this->address instanceof StoreAddress)
 			$this->address->displayCondensed();
 	}
