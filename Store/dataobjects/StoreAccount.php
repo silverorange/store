@@ -231,7 +231,7 @@ class StoreAccount extends StoreDataObject
 
 		SwatDB::exec($db, $sql);
 
-		$class_mapper = StoreDataObjectClassMap::instance();
+		$class_mapper = StoreClassMap::instance();
 
 		$account_sql = sprintf('select id, email, fullname from Account
 			where id = %s',
