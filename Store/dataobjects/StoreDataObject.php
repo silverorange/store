@@ -1,7 +1,7 @@
 <?php
 
 require_once 'SwatDB/SwatDBDataObject.php';
-require_once 'Store/StoreDataObjectClassMap.php';
+require_once 'Store/StoreClassMap.php';
 
 /**
  * A data-object that contains a class-mapping object
@@ -17,7 +17,7 @@ abstract class StoreDataObject extends SwatDBDataObject
 	/**
 	 * The class-mapping object
 	 *
-	 * @var StoreDataObjectClassMap
+	 * @var StoreClassMap
 	 */
 	protected $class_map;
 
@@ -26,7 +26,7 @@ abstract class StoreDataObject extends SwatDBDataObject
 
 	public function __construct($data = null)
 	{
-		$this->class_map = StoreDataObjectClassMap::instance();
+		$this->class_map = StoreClassMap::instance();
 		parent::__construct($data);
 	}
 
@@ -36,7 +36,7 @@ abstract class StoreDataObject extends SwatDBDataObject
 	public function __wakeup()
 	{
 		parent::__wakeup();
-		$this->class_map = StoreDataObjectClassMap::instance();
+		$this->class_map = StoreClassMap::instance();
 	}
 
 	// }}}

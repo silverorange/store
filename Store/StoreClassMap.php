@@ -16,14 +16,14 @@ require_once 'Swat/SwatObject.php';
  * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreDataObjectClassMap extends SwatObject
+class StoreClassMap extends SwatObject
 {
 	// {{{ private properties
 
 	/**
 	 * Singleton instance
 	 *
-	 * @var StoreDataObjectClassMap
+	 * @var StoreClassMap
 	 */
 	private static $instance = null;
 
@@ -49,7 +49,7 @@ class StoreDataObjectClassMap extends SwatObject
 	/**
 	 * Gets the singleton instance of the class-mapping object
 	 *
-	 * @return StoreDataObjectClassMap the singleton instance of the class-
+	 * @return StoreClassMap the singleton instance of the class-
 	 *                                  mapping object.
 	 */
 	public static function instance()
@@ -97,7 +97,7 @@ class StoreDataObjectClassMap extends SwatObject
 		if (array_key_exists($name, $this->map)) {
 			$class_name = $this->map[$name];
 
-			if (!class_exists($class_name) && $this->path !== null) {
+			if ($this->path !== null) {
 				$class_file = sprintf('%s/%s.php', $this->path, $class_name);
 				require_once $class_file;
 			}

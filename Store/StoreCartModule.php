@@ -3,7 +3,7 @@
 require_once 'Site/SiteApplicationModule.php';
 
 require_once 'Store/StoreSessionModule.php';
-require_once 'Store/StoreDataObjectClassMap.php';
+require_once 'Store/StoreClassMap.php';
 require_once 'Store/StoreCart.php';
 require_once 'Store/StoreSavedCart.php';
 require_once 'Store/StoreCheckoutCart.php';
@@ -340,7 +340,7 @@ class StoreCartModule extends SiteApplicationModule
 			return;
 		}
 
-		$class_mapper = StoreDataObjectClassMap::instance();
+		$class_mapper = StoreClassMap::instance();
 
 		$entry_sql = 'select CartEntry.*
 			from CartEntry

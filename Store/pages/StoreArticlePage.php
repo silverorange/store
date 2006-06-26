@@ -6,7 +6,7 @@ require_once 'Swat/SwatString.php';
 require_once 'Site/exceptions/SiteNotFoundException.php';
 require_once 'Store/pages/StorePage.php';
 require_once 'Store/dataobjects/StoreArticleWrapper.php';
-require_once 'Store/StoreDataObjectClassMap.php';
+require_once 'Store/StoreClassMap.php';
 
 /**
  *
@@ -166,7 +166,7 @@ class StoreArticlePage extends StorePage
 			$this->app->db->quote(true, 'boolean'),
 			$this->app->db->quote(true, 'boolean'));
 
-		$class_map = StoreDataObjectClassMap::instance();
+		$class_map = StoreClassMap::instance();
 		$wrapper = $class_map->resolveClass('StoreArticleWrapper');
 		return SwatDB::query($this->app->db, $sql, $wrapper);
 	}

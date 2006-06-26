@@ -3,7 +3,7 @@
 require_once 'Site/SiteSessionModule.php';
 require_once 'Site/SiteDatabaseModule.php';
 
-require_once 'Store/StoreDataObjectClassMap.php';
+require_once 'Store/StoreClassMap.php';
 
 /**
  * Web application module for store sessions
@@ -212,7 +212,7 @@ class StoreSessionModule extends SiteSessionModule
 	{
 		// load the dataobject classes before starting the session
 		if (count($this->data_object_classes)) {
-			$class_map = StoreDataObjectClassMap::instance();
+			$class_map = StoreClassMap::instance();
 
 			foreach ($this->data_object_classes as $name => $class)
 				$class_map->resolveClass($class);
@@ -233,7 +233,7 @@ class StoreSessionModule extends SiteSessionModule
 
 	protected function getNewAccountObject()
 	{
-		$class_mapper = StoreDataObjectClassMap::instance();
+		$class_mapper = StoreClassMap::instance();
 		$class_name = $class_mapper->resolveClass('StoreAccount');
 		$account = new $class_name();
 		$account->setDatabase($this->app->db);
