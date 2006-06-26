@@ -3,7 +3,7 @@
 require_once 'Store/dataobjects/StoreCartEntry.php';
 require_once 'Store/dataobjects/StoreItem.php';
 require_once 'Store/pages/StoreQuickOrderServer.php';
-require_once 'Store/StoreDataObjectClassMap.php';
+require_once 'Store/StoreClassMap.php';
 require_once 'Store/pages/StoreArticlePage.php';
 require_once 'Store/StoreUI.php';
 require_once 'Swat/SwatString.php';
@@ -87,7 +87,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		$sku_renderer = $sku_column->getRenderer('renderer');
 
 		if ($form->isProcessed()) {
-			$class_map = StoreDataObjectClassMap::instance();
+			$class_map = StoreClassMap::instance();
 			foreach ($sku_renderer->getClonedWidgets() as $id => $sku_widget) {
 				$view = $description_renderer->getWidget($id);
 				$sku = $sku_widget->value;
@@ -157,7 +157,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 
 	protected function addItem($item_id, $quantity)
 	{
-		$class_map = StoreDataObjectClassMap::instance();
+		$class_map = StoreClassMap::instance();
 		$cart_entry_class = $class_map->resolveClass('StoreCartEntry');
 		$cart_entry = new $cart_entry_class();
 

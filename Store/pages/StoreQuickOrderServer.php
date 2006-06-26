@@ -2,7 +2,7 @@
 
 require_once 'Site/pages/SiteXMLRPCServer.php';
 require_once 'Store/StoreQuickOrderItemView.php';
-require_once 'Store/StoreDataObjectClassMap.php';
+require_once 'Store/StoreClassMap.php';
 
 /**
  * Handles XML-RPC requests from the quick order page
@@ -44,7 +44,7 @@ abstract class StoreQuickOrderServer extends SiteXMLRPCServer
 		$view = new StoreQuickOrderItemView('item_'.$replicator_id);
 		$view->show_blank = false;
 
-		$class_map = StoreDataObjectClassMap::instance();
+		$class_map = StoreClassMap::instance();
 		$class = $class_map->resolveClass(__CLASS__);
 
 		if (method_exists($class, 'initQuickOrderItemView'))

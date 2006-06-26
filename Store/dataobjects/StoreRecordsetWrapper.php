@@ -1,7 +1,7 @@
 <?php
 
 require_once 'SwatDB/SwatDBRecordsetWrapper.php';
-require_once 'Store/StoreDataObjectClassMap.php';
+require_once 'Store/StoreClassMap.php';
 
 /**
  * A recordset wrapper that includes a class-mapping object
@@ -17,7 +17,7 @@ abstract class StoreRecordsetWrapper extends SwatDBRecordsetWrapper
 	/**
 	 * The class-mapping object
 	 *
-	 * @var StoreDataObjectClassMap
+	 * @var StoreClassMap
 	 */
 	protected $class_map;
 
@@ -26,7 +26,7 @@ abstract class StoreRecordsetWrapper extends SwatDBRecordsetWrapper
 
 	public function __construct($rs)
 	{
-		$this->class_map = StoreDataObjectClassMap::instance();
+		$this->class_map = StoreClassMap::instance();
 		parent::__construct($rs);
 	}
 
