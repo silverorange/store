@@ -1,44 +1,42 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
-	<!--widget class="SwatFrame" id="quick_order_frame"-->
-		<widget class="SwatForm" id="quick_order_form">
-			<widget class="SwatTableView" id="quick_order_view">
-				<object class="SwatTableViewColumn" id="sku_column">
-					<property name="title">Catalogue Item Number</property>
-					<object class="SwatWidgetCellRenderer" id="renderer">
-						<property name="replicator_id" type="data">id</property>
-						<widget class="SwatEntry" id="sku">
-							<property name="size" type="integer">10</property>
-						</widget>
-					</object>
+	<widget class="SwatForm" id="quick_order_form">
+		<widget class="SwatTableView" id="quick_order_view">
+			<object class="SwatTableViewColumn" id="sku_column">
+				<property name="title">Catalogue Item Number</property>
+				<object class="SwatWidgetCellRenderer" id="renderer">
+					<property name="replicator_id" type="data">id</property>
+					<widget class="SwatEntry" id="sku">
+						<property name="size" type="integer">10</property>
+					</widget>
 				</object>
-				<object class="SwatTableViewColumn" id="description_column">
-					<property name="title">Description</property>
-					<object class="StoreQuickOrderDescriptionCellRenderer" id="description">
-						<property name="replicator_id" type="data">id</property>
-						<widget class="StoreQuickOrderItemView" id="item">
-							<property name="show_blank" type="boolean">false</property>
-						</widget>
-					</object>
+			</object>
+			<object class="SwatTableViewColumn" id="description_column">
+				<property name="title">Description</property>
+				<object class="StoreQuickOrderDescriptionCellRenderer" id="description">
+					<property name="replicator_id" type="data">id</property>
+					<widget class="StoreQuickOrderItemView" id="item">
+						<property name="show_blank" type="boolean">false</property>
+					</widget>
 				</object>
-				<object class="SwatTableViewColumn" id="quantity_column">
-					<property name="title">Quantity</property>
-					<object class="SwatWidgetCellRenderer" id="renderer">
-						<property name="replicator_id" type="data">id</property>
-						<widget class="SwatIntegerEntry" id="quantity">
-							<property name="value" type="integer">1</property>
-							<property name="size" type="integer">3</property>
-							<property name="maxlength" type="integer">8</property>
-						</widget>
-					</object>
+			</object>
+			<object class="SwatTableViewColumn" id="quantity_column">
+				<property name="title">Quantity</property>
+				<object class="SwatWidgetCellRenderer" id="renderer">
+					<property name="replicator_id" type="data">id</property>
+					<widget class="SwatIntegerEntry" id="quantity">
+						<property name="value" type="integer">1</property>
+						<property name="size" type="integer">3</property>
+						<property name="maxlength" type="integer">8</property>
+					</widget>
 				</object>
+			</object>
+		</widget>
+		<widget class="SwatFooterFormField">
+			<widget class="SwatButton">
+				<property name="title">Add to Cart</property>
 			</widget>
-			<widget class="SwatFooterFormField">
-				<widget class="SwatButton">
-					<property name="title">Add to Cart</property>
-				</widget>
-			</widget>
-		<!--/widget-->
+		</widget>
 	</widget>
 </swatml>
