@@ -3,9 +3,9 @@
 require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatHtmlTag.php';
 require_once 'Swat/SwatString.php';
+require_once 'Site/exceptions/SiteNotFoundException.php';
 require_once 'Store/pages/StorePage.php';
 require_once 'Store/dataobjects/StoreArticleWrapper.php';
-require_once 'Store/exceptions/StoreNotFoundException.php';
 require_once 'Store/StoreDataObjectClassMap.php';
 
 /**
@@ -55,11 +55,11 @@ class StoreArticlePage extends StorePage
 	protected function buildArticle()
 	{
 		if (($article_id = $this->findArticle()) === null)
-			throw new StoreNotFoundException(
+			throw new SiteNotFoundException(
 				sprintf("Article page not found for path '%s'", $this->path));
 
 		if (($article = $this->queryArticle($article_id)) === null)
-			throw new StoreNotFoundException(
+			throw new SiteNotFoundException(
 				sprintf("Article dataobject failed to load for article id %s",
 				$article_id));
 
