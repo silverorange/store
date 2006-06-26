@@ -10,7 +10,7 @@ require_once 'Swat/SwatObject.php';
  *
  * This class also tries to require site-specific class files for mapped
  * class names. You can modify the behaviour of the automatic require using the
- * {@link setDataObjectPath()} method.
+ * {@link setPath()} method.
  *
  * @package   Store
  * @copyright 2006 silverorange
@@ -66,8 +66,8 @@ class StoreClassMap extends SwatObject
 	/**
 	 * Adds a class-mapping to the class-mapping object
 	 *
-	 * @param string $store_class_name the name of the Store package data-
-	 *                                  object to override.
+	 * @param string $store_class_name the name of the Store package 
+	 *                                  class to override.
 	 * @param string $class_nam the name of the site-specific class.
 	 */
 	public function addMapping($store_class_name, $class_name)
@@ -86,7 +86,7 @@ class StoreClassMap extends SwatObject
 	 *
 	 * @return string the appropriate class name for site-specific code. If
 	 *                 the site-specific code has overridden a Store package
-	 *                 data-object class, the site-specific overridden value is
+	 *                 class, the site-specific overridden value is
 	 *                 returned. Otherwise, the Store package default class
 	 *                 name is returned.
 	 */
@@ -107,14 +107,14 @@ class StoreClassMap extends SwatObject
 	}
 
 	// }}}
-	// {{{ public function setDataObjectPath()
+	// {{{ public function setPath()
 
 	/**
 	 * Sets the path to search for site-specific class files
 	 *
 	 * @param string $path the path to search for site-specific class files.
 	 */
-	public function setDataObjectPath($path)
+	public function setPath($path)
 	{
 		$this->path = $path;
 	}
@@ -123,7 +123,7 @@ class StoreClassMap extends SwatObject
 	// {{{ private function __construct()
 
 	/**
-	 * Creates a Store data-object class-mapping object
+	 * Creates a Store class-mapping object
 	 *
 	 * The constructor is private as this class uses the singleton pattern.
 	 */
