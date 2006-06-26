@@ -1,0 +1,59 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatForm" id="cart_form">
+		<property name="visible" type="boolean">false</property>
+		<widget class="SwatMessageDisplay" id="messages" />
+		<widget class="SwatFrame" id="cart_frame">
+			<widget class="SwatTableView" id="cart_view">
+				<object class="SwatTableViewGroup">
+					<property name="group_by">item.product.id</property>
+					<object class="SwatLinkCellRenderer">
+						<property name="text" type="data">item.product.title</property>
+						<property name="link" type="data">product_link</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="title">Quantity</property>
+					<object class="SwatNumericCellRenderer">
+						<property name="value" type="data">quantity</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="title">Item #</property>
+					<object class="SwatTextCellRenderer">
+						<property name="text" type="data">item.sku</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="title">Description</property>
+					<object class="SwatTextCellRenderer">
+						<property name="text" type="data">description</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="title">Price</property>
+					<object class="SwatMoneyCellRenderer">
+						<property name="value" type="data">item.price</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="title">Extension</property>
+					<object class="SwatMoneyCellRenderer">
+						<property name="value" type="data">extension</property>
+					</object>
+				</object>
+			</widget>
+			<widget class="SwatToolbar" id="checkout_bottom_field">
+				<widget class="SwatToolLink" id="cart">
+					<property name="title">View Entire Cart »</property>
+					<property name="link">cart</property>
+				</widget>
+				<widget class="SwatToolLink" id="checkout">
+					<property name="title">Proceed to Checkout »</property>
+					<property name="link">checkout</property>
+				</widget>
+			</widget>
+		</widget>
+	</widget>
+</swatml>
