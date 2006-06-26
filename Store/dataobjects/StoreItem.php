@@ -1,6 +1,8 @@
 <?php
 
 require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'Store/dataobjects/StoreQuantityDiscountWrapper.php';
+require_once 'Store/dataobjects/StoreItemRegionBindingWrapper.php';
 
 /**
  * An item for an e-commerce web application
@@ -113,10 +115,10 @@ abstract class StoreItem extends StoreDataObject
 			return parent::loadInternal($id);
 
 		$id_field = new SwatDBField($this->id_field, 'integer');
-		$sql = 'select Item.*, ItemRegionBinding.price, ItemRegionBinding.region
+		$sql = 'select Item.*, ItemRegionBinding.price
 			from Item
-				%s ItemRegionBinding on item = Item.id
-					and ItemRegionBinding.region = %s
+			%s ItemRegionBinding on item = Item.id
+				and ItemRegionBinding.region = %s
 			where Item.id = %s';
 
 		$sql = sprintf($sql,
@@ -158,6 +160,20 @@ abstract class StoreItem extends StoreDataObject
 
 		$wrapper =
 			$this->class_map->resolveClass('StoreQuantityDiscountWrapper');
+
+		return SwatDB::query($this->db, $sql, $wrapper);
+	}
+
+	// }}}
+	// {{{ protected function loadRegionBindings()
+
+	protected function loadRegionBindings()
+	{
+		$sql = 'select * from ItemRegionBinding where item = %s';
+		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+
+		$wrapper =
+			$this->class_map->resolveClass('StoreItemRegionBindingWrapper');
 
 		return SwatDB::query($this->db, $sql, $wrapper);
 	}
