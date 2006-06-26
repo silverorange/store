@@ -46,6 +46,13 @@ abstract class StoreItem extends StoreDataObject
 	public $id;
 
 	/**
+	 * Merchant's stocking keeping unit (SKU)
+	 *
+	 * @var string
+	 */
+	public $sku;
+
+	/**
 	 * User visible description
 	 *
 	 * @var string

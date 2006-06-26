@@ -30,6 +30,13 @@ class StoreOrderItem extends StoreDataObject
 	public $id;
 
 	/**
+	 * Merchant's stocking keeping unit (SKU)
+	 *
+	 * @var string
+	 */
+	public $sku;
+
+	/**
 	 * Quantity
 	 *
 	 * @var integer

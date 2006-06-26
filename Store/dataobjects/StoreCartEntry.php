@@ -252,6 +252,7 @@ abstract class StoreCartEntry extends StoreDataObject
 		$class = $this->class_map->resolveClass('StoreOrderItem');
 		$order_item = new $class();
 
+		$order_item->sku = $this->item->sku;
 		$order_item->price = $this->getCalculatedItemPrice();
 		$order_item->quantity = $this->getQuantity();
 		$order_item->extension = $this->getExtension();
