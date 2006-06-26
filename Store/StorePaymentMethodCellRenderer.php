@@ -59,6 +59,9 @@ class StorePaymentMethodCellRenderer extends SwatCellRenderer
 
 	public function render()
 	{
+		if (!$this->visible)
+			return;
+
 		if ($this->is_credit_card)
 			$this->renderCreditCard();
 		else
