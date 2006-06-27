@@ -9,26 +9,26 @@ require_once 'Site/pages/SiteExceptionPage.php';
 class StoreExceptionPage extends SiteExceptionPage
 {
 	// build phase
-	// {{{ protected function display()
+	// {{{ protected function getSuggestions()
 
-	protected function display($status)
+	protected function getSuggestions()
 	{
-		printf('<p>%s</p>', $this->getSummary($status));
+		$suggestions = array();
 
-		$output = '<ul class="spaced">'.
-			'<li>If you followed a link from our site or elsewhere, '.
-			'please <a href="about/contact">contact us</a> and let us '.
-			'know where you came from so we can do our best to fix '.
-			'it.</li><li>If you typed in the address, please double '.
-			'check the spelling.</li><li>If you are looking for a '.
-			'product or product information, try browsing the product '.
-			'listing to the left or using the search box on the top '.
-			'right.</li></ul>';
+		$suggestions['contact'] =
+			'If you followed a link from our site or elsewhere, please '.
+			'<a href="about/contact">contact us</a> and let us know where '.
+			'you came from so we can do our best to fix it.';
 
-		echo $output;
+		$suggestions['typo'] =
+			'If you typed in the address, please double check the spelling.';
 
-		if ($this->exception !== null)
-			$this->exception->process(false);
+		$suggestions['search'] =
+			'If you are looking for a product or product information, try '.
+			'browsing the product listing to the left or using the search box '.
+			'on the top right.';
+
+		return $suggestions;
 	}
 
 	// }}}
