@@ -146,7 +146,8 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 
 		if ($item === null) {
 			$msg = sprintf("“%s” is not an available item number.", $sku);
-			$this->app->cart->checkout->addMessage(new SwatMessage($msg, SwatMessage::WARNING));
+			$this->app->cart->checkout->addMessage(
+				new SwatMessage($msg, SwatMessage::WARNING));
 		}
 
 		return $item;
@@ -197,10 +198,12 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		$this->layout->addHtmlHeadEntrySet(XML_RPCAjax::getHtmlHeadEntrySet());
 
 		$this->layout->addHtmlHeadEntry(
-			new SwatJavaScriptHtmlHeadEntry('store-package/javascript/quick-order-page.js', 1));
+			new SwatJavaScriptHtmlHeadEntry(
+			'store-package/javascript/quick-order-page.js', 1));
 
 		$this->layout->addHtmlHeadEntry(
-			new SwatStyleSheetHtmlHeadEntry('store-package/styles/quick-order.css'));
+			new SwatStyleSheetHtmlHeadEntry(
+			'store-package/styles/quick-order.css'));
 
 		// TODO: use this if and when we move cart pages into Store
 		//$this->layout->addHtmlHeadEntry(
