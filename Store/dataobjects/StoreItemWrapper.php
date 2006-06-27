@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreItem.php';
  * A recordset wrapper class for Item objects
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2006 silverorange
  */
 class StoreItemWrapper extends StoreRecordsetWrapper
 {
