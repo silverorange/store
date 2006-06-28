@@ -218,6 +218,8 @@ class StoreAccount extends StoreDataObject
 	 * @param integer $id the account id of the account we are updating.
 	 * @param string $base_href the base of the tagged URL the account holder
 	 *                           is sent.
+	 *
+	 * @see StoreAccount::generateNewPassword()
 	 */
 	public static function generatePassword($db, $id, $base_href = '')
 	{
@@ -233,7 +235,7 @@ class StoreAccount extends StoreDataObject
 
 		$class_mapper = StoreClassMap::instance();
 
-		$account_sql = sprintf('select id, email, fullname from Account
+		$account_sql = sprintf('select email, fullname from Account
 			where id = %s',
 			$db->quote($id, 'integer'));
 
@@ -244,6 +246,47 @@ class StoreAccount extends StoreDataObject
 
 		// email the new password tag to the user
 		$email = new $class($account, $password_link);
+		$email->send();
+	}
+
+	// }}}
+	// {{{ public static function generateNewPassword()
+
+	/**
+	 * Generates a new password for an acocunt, saves it, and emails it to
+	 * the account holder
+	 *
+	 * @param MDB2_Driver_Common $db the database driver to use.
+	 * @param integer id of the account to update.
+	 *
+	 * @see StoreAccount::generatePassword()
+	 */
+	public static function generateNewPassword($db, $id)
+	{
+		require_once 'Text/Password.php';
+
+		$new_password = Text_Password::Create();
+
+		// update database with new password
+		$sql = sprintf('update Account set password = %s where id = %s',
+			$db->quote(md5($new_password), 'text'),
+			$db->quote($id, 'integer'));
+
+		SwatDB::exec($db, $sql);
+
+		$class_mapper = StoreClassMap::instance();
+
+		$account_sql = sprintf('select email, fullname from Account
+			where id = %s',
+			$db->quote($id, 'integer'));
+
+		$account = SwatDB::query($db, $account_sql,
+			$class_mapper->resolveClass('StoreAccountWrapper'))->getFirst();
+
+		$class = $class_mapper->resolveClass('StoreNewPasswordMailMessage');
+
+		// email the new password to the account holder 
+		$email = new $class($account, $new_password);
 		$email->send();
 	}
 
