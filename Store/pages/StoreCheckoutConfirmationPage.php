@@ -27,7 +27,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	private function createOrderItems()
 	{
 		$order = $this->app->session->order;
-		$wrapper = $this->class_map->resolveClass('StoreOrderItemWrapper');
+		$class_map = StoreClassMap::instance();
+		$wrapper = $class_map->resolveClass('StoreOrderItemWrapper');
 		$order->items = new $wrapper();
 
 		foreach ($this->app->cart->checkout->getEntries() as $entry)
