@@ -66,7 +66,7 @@ class StoreAd extends StoreDataObject
 	{
 		$this->table = 'Ad';
 		$this->id_field = 'integer:id';
-		$this->registerDateField('createdate');
+		$this->registerDateProperty('createdate');
 	}
 
 	// }}}
