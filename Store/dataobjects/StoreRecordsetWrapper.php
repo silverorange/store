@@ -24,7 +24,7 @@ abstract class StoreRecordsetWrapper extends SwatDBRecordsetWrapper
 	// }}}
 	// {{{ public function __construct()
 
-	public function __construct($rs)
+	public function __construct($rs = null)
 	{
 		$this->class_map = StoreClassMap::instance();
 		parent::__construct($rs);
