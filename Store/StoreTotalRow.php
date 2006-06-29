@@ -42,7 +42,7 @@ class StoreTotalRow extends SwatTableViewRow
 		$th_tag->display();
 
 		if ($this->value > 0) {
-			$renderer = new StoreMoneyCellRenderer();
+			$renderer = new SwatMoneyCellRenderer();
 			$renderer->value = $this->value;
 
 			$td_tag = new SwatHtmlTag('td', $renderer->getTdAttributes());
