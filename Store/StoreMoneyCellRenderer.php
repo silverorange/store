@@ -11,6 +11,13 @@ require_once 'Swat/SwatMoneyCellRenderer.php';
  */
 class StoreMoneyCellRenderer extends SwatMoneyCellRenderer
 {
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->addStyleSheet('packages/swat/styles/swat.css');
+	}
+
 	public function render()
 	{
 		if ($this->value === null) {
