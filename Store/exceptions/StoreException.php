@@ -12,3 +12,5 @@ require_once 'Site/exceptions/SiteException.php';
 class StoreException extends SiteException
 {
 }
+
+?>
