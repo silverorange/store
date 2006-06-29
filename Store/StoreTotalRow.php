@@ -38,16 +38,24 @@ class StoreTotalRow extends SwatTableViewRow
 		$th_tag->colspan = $column_count - 1 - $this->offset;
 		$th_tag->setContent($this->title.':');
 
-		$renderer = new SwatMoneyCellRenderer();
-		$renderer->value = $this->value;
-
-		$td_tag = new SwatHtmlTag('td', $renderer->getTdAttributes());
-
 		$tr_tag->open();
 		$th_tag->display();
-		$td_tag->open();
-		$renderer->render();
-		$td_tag->close();
+
+		if ($this->value > 0) {
+			$renderer = new StoreMoneyCellRenderer();
+			$renderer->value = $this->value;
+
+			$td_tag = new SwatHtmlTag('td', $renderer->getTdAttributes());
+			$td_tag->open();
+			$renderer->render();
+			$td_tag->close();
+		} else {
+			$td_tag = new SwatHtmlTag('td');
+			$td_tag->class = 'store-free';
+			$td_tag->open();
+			echo 'FREE';
+			$td_tag->close();
+		}
 
 		if ($this->offset > 0) {
 			$td_tag = new SwatHtmlTag('td');
