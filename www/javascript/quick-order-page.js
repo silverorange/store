@@ -5,7 +5,6 @@
  * @package   Store
  * @copyright 2006 silverorange
  */
-
 function StoreQuickOrder(id, num_rows)
 {
 	var self = this;
@@ -85,8 +84,8 @@ function StoreQuickOrder_staticTimeOut(quick_order, replicator_id)
 
 	function callBack(response)
 	{
-		description._effect.custom(0, 1);
 		if (response.sequence > description._displayed_sequence) {
+			description._effect.custom(0, 1);
 			description.innerHTML = response.description;
 			description._displayed_sequence = response.sequence;
 		}
