@@ -70,7 +70,7 @@ abstract class StoreQuickOrderServer extends SiteXMLRPCServer
 	 * @xmlrpc.hidden
 	 */
 	public static function initQuickOrderItemView($db, $sku, $region_id,
-		StoreQuickOrderItemView &$view)
+		StoreQuickOrderItemView $view)
 	{
 		require_once 'Store/dataobjects/StoreItemWrapper.php';
 		require_once 'Swat/SwatString.php';
