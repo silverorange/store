@@ -198,14 +198,14 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		$this->layout->addHtmlHeadEntrySet(XML_RPCAjax::getHtmlHeadEntrySet());
 
 		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'store-package/javascript/quick-order-page.js', 1));
+			'packages/store/javascript/quick-order-page.js', 1));
 
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'store-package/styles/quick-order.css'));
+			'packages/store/styles/quick-order.css'));
 
 		// TODO: use this if and when we move cart pages into Store
-		//$this->layout->addHtmlHeadEntry(
-		//	new SwatStyleSheetHtmlHeadEntry('styles/cart.css'));
+		//$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+		//	'packages/store/styles/cart.css'));
 
 		$this->layout->addHtmlHeadEntrySet(
 			$this->cart_ui->getRoot()->getHtmlHeadEntrySet());
