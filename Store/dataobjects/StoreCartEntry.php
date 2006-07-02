@@ -244,13 +244,14 @@ abstract class StoreCartEntry extends StoreDataObject
 	/**
 	 * Creates a new order item dataobject that corresponds to this cart entry
 	 *
-	 * @param StoreProvState $provstate the province or state to create the
-	 *                                   order item in.
+	 * @param StoreProvState $billing_provstate the province or state the order
+	 *                                           containing this item is billed
+	 *                                           in.
 	 *
 	 * @return StoreOrderItem a new StoreOrderItem object that corresponds to
 	 *                         this cart entry.
 	 */
-	public function createOrderItem(StoreProvState $provstate)
+	public function createOrderItem(StoreProvState $billing_provstate)
 	{
 		$class = $this->class_map->resolveClass('StoreOrderItem');
 		$order_item = new $class();
