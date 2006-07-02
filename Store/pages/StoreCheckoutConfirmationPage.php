@@ -31,7 +31,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$wrapper = $class_map->resolveClass('StoreOrderItemWrapper');
 		$order->items = new $wrapper();
 
-		foreach ($this->app->cart->checkout->getEntries() as $entry)
+		foreach ($this->app->cart->checkout->getAvailableEntries() as $entry)
 			$order->items->add($entry->createOrderItem());
 	}
 
