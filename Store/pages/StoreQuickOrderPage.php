@@ -198,7 +198,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		$this->layout->addHtmlHeadEntrySet(XML_RPCAjax::getHtmlHeadEntrySet());
 
 		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/javascript/quick-order-page.js', 1));
+			'packages/store/javascript/store-quick-order-page.js', 1));
 
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
 			'packages/store/styles/quick-order.css'));
