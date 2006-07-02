@@ -185,20 +185,23 @@ abstract class StoreCheckoutCart extends StoreCart
 	 * By default, the total is calculated as item total + tax + shipping.
 	 * Subclasses may override this to calculate totals differently.
 	 *
-	 * @param StoreProvState $provstate the province or state the tax is
-	 *                                   calculated for.
+	 * @param StoreProvState $billing_provstate the province or state this cart
+	 *                                           is billed from.
+	 * @param StoreProvState $shipping_provstate the province or state this
+	 *                                            cart is shipped to.
 	 *
 	 * @return double the cost of this cart's contents.
 	 */
-	public function getTotal(StoreProvState $provstate)
+	public function getTotal(StoreProvState $billing_provstate,
+		StoreProvState $shipping_provstate)
 	{
 		if ($this->cachedValueExists('store-total')) {
 			$total = $this->getCachedValue('store-total');
 		} else {
 			$total = 0;
 			$total += $this->getItemTotal();
-			$total += $this->getTax($provstate);
-			$total += $this->getShipping($provstate);
+			$total += $this->getTax($billing_provstate);
+			$total += $this->getShipping($shipping_provstate);
 			$this->setCachedValue('store-total', $total);
 		}
 
@@ -215,12 +218,12 @@ abstract class StoreCheckoutCart extends StoreCart
 	 * Calculations need to know where purchase is made in order to correctly
 	 * apply tax.
 	 *
-	 * @param StoreProvState $provstate the province or state the tax is
-	 *                                   calculated for.
+	 * @param StoreProvState $billing_provstate the province or state the tax
+	 *                                           is calculated for.
 	 *
-	 * @return double the value of tax for this cart.
+	 * @return double the tax charged for the contents of this cart.
 	 */
-	public abstract function getTax(StoreProvState $provstate);
+	public abstract function getTax(StoreProvState $billing_provstate);
 	
 	// }}}
 	// {{{ public abstract function getShippingTotal()
@@ -228,12 +231,14 @@ abstract class StoreCheckoutCart extends StoreCart
 	/**
 	 * Gets the cost of shipping the contents of this cart
 	 *
-	 * @param StoreProvState $provstate the province or state the cart contents
-	 *                                   are to be shipped to.
+	 * @param StoreProvState $shipping_provstate the province or state this
+	 *                                            cart's contents are to be
+	 *                                            shipped to.
 	 *
 	 * @return double the cost of shipping this order.
 	 */
-	public abstract function getShippingTotal(StoreProvState $provstate);
+	public abstract function getShippingTotal(
+		StoreProvState $shipping_provstate);
 
 	// }}}
 }
