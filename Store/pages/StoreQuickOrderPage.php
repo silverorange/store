@@ -126,7 +126,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 					} else {
 						$message = new SwatMessage(sprintf(
 							'The quantity of item #%s must be at least one.',
-							$sku), SwatMessage::WARNING);
+							$sku), SwatMessage::ERROR);
 
 						$message_display->add($message);
 						$quantity_widget->value = $quantity;
@@ -159,7 +159,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		if ($item === null) {
 			$message = new SwatMessage(
 				sprintf('“%s” is not an available item number.', $sku),
-				SwatMessage::WARNING);
+				SwatMessage::ERROR);
 
 			$message_display = $this->cart_ui->getWidget('messages');
 			$message_display->add($message);
