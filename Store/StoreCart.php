@@ -153,7 +153,7 @@ abstract class StoreCart extends SwatObject
 	 * @return boolean true if the entry is valid and was added and false if
 	 *                       the entry is not valid and was not added.
 	 *
-	 * @see StoreCart::validateEntry() StoreCart::validateEntryCombination()
+	 * @see StoreCart::validateEntry() StoreCart::validateCombinedEntry()
 	 */
 	public function addEntry(StoreCartEntry $entry)
 	{
