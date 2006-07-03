@@ -100,7 +100,8 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 
 					if (method_exists($class, 'initQuickOrderItemView'))
 						call_user_func(array($class, 'initQuickOrderItemView'),
-							$this->app->db, $sku, $this->app->getRegion()->id, $view);
+							$this->app->db, $sku, $this->app->getRegion()->id,
+							$view);
 					else
 						self::initQuickOrderItemView($this->app->db, $sku,
 							$this->app->getRegion()->id, $view);
