@@ -210,16 +210,8 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		//$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
 		//	'packages/store/styles/cart.css'));
 
-		$this->layout->addHtmlHeadEntrySet(
-			$this->cart_ui->getRoot()->getHtmlHeadEntrySet());
-
-		$this->layout->addHtmlHeadEntrySet(
-			$this->form_ui->getRoot()->getHtmlHeadEntrySet());
-
-		$view = $this->form_ui->getWidget('quick_order_view');
-		$view->model = $this->getQuickOrderTableStore();
-
 		$this->buildCartView();
+		$this->buildQuickOrderView();
 
 		$this->layout->startCapture('content');
 		$this->cart_ui->display();
@@ -233,6 +225,9 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 
 	protected function buildCartView()
 	{
+		$this->layout->addHtmlHeadEntrySet(
+			$this->cart_ui->getRoot()->getHtmlHeadEntrySet());
+
 		$message_display = $this->cart_ui->getWidget('messages');
 		foreach ($this->app->cart->checkout->getMessages() as $message)
 			$message_display->add($message);
@@ -250,6 +245,18 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 
 			$this->cart_ui->getWidget('cart_form')->visible = true;
 		}
+	}
+
+	// }}}
+	// {{{ protected function buildQuickOrderView()
+
+	protected function buildQuickOrderView()
+	{
+		$this->layout->addHtmlHeadEntrySet(
+			$this->form_ui->getRoot()->getHtmlHeadEntrySet());
+
+		$view = $this->form_ui->getWidget('quick_order_view');
+		$view->model = $this->getQuickOrderTableStore();
 	}
 
 	// }}}
