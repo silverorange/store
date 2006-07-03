@@ -229,9 +229,9 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 	}
 
 	// }}}
-	// {{{ private function buildCartView()
+	// {{{ protected function buildCartView()
 
-	private function buildCartView()
+	protected function buildCartView()
 	{
 		$message_display = $this->cart_ui->getWidget('messages');
 		foreach ($this->app->cart->checkout->getMessages() as $message)
@@ -253,9 +253,9 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 	}
 
 	// }}}
-	// {{{ private function getCartTableStore()
+	// {{{ protected function getCartTableStore()
 
-	private function getCartTableStore()
+	protected function getCartTableStore()
 	{
 		$ids = array();
 		foreach ($this->items_added as $item)
@@ -286,9 +286,9 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 	}
 
 	// }}}
-	// {{{ private function getQuickOrderTableStore()
+	// {{{ protected function getQuickOrderTableStore()
 
-	private function getQuickOrderTableStore()
+	protected function getQuickOrderTableStore()
 	{
 		$store = new SwatTableStore();
 
@@ -300,9 +300,9 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 	}
 
 	// }}}
-	// {{{ private function displayJavaScript()
+	// {{{ protected function displayJavaScript()
 
-	private function displayJavaScript()
+	protected function displayJavaScript()
 	{
 		$id = 'quick_order';
 		echo '<script type="text/javascript">'."\n";
