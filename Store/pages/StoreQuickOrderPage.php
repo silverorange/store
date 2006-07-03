@@ -257,6 +257,9 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 
 		$view = $this->form_ui->getWidget('quick_order_view');
 		$view->model = $this->getQuickOrderTableStore();
+
+		if ($view->model->getRowCount() == 0)
+			$this->form_ui->getWidget('quick_order_form')->visible = false;
 	}
 
 	// }}}
@@ -295,6 +298,10 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 	// }}}
 	// {{{ protected function getQuickOrderTableStore()
 
+	/**
+	 *
+	 * @return SwatTableStore
+	 */
 	protected function getQuickOrderTableStore()
 	{
 		$store = new SwatTableStore();
@@ -304,6 +311,8 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 			$row->id = $i;
 			$store->addRow($row);
 		}
+
+		return $store;
 	}
 
 	// }}}
