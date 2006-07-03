@@ -1,9 +1,8 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
+	<widget class="SwatMessageDisplay" id="messages" />
 	<widget class="SwatForm" id="cart_form">
-		<property name="visible" type="boolean">false</property>
-		<widget class="SwatMessageDisplay" id="messages" />
 		<widget class="SwatFrame" id="cart_frame">
 			<widget class="SwatTableView" id="cart_view">
 				<object class="SwatTableViewGroup">
