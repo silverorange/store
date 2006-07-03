@@ -11,6 +11,9 @@ require_once 'Store/dataobjects/StoreItemRegionBindingWrapper.php';
  * several items. For example, you could have a tee-shirt product and several
  * items under the product describing different sizes or colours.
  *
+ * Sites are expected to subclass this class to add site-speific properties
+ * such as weight, units, status and whether or not to show the price range.
+ *
  * <pre>
  * Category
  * |
@@ -46,7 +49,7 @@ abstract class StoreItem extends StoreDataObject
 	public $id;
 
 	/**
-	 * Merchant's stocking keeping unit (SKU)
+	 * Merchant's stocking keeping unit (SKU) identifier
 	 *
 	 * @var string
 	 */
@@ -67,11 +70,15 @@ abstract class StoreItem extends StoreDataObject
 	public $displayorder;
 
 	/**
-	 * Price
+	 * Unit cost of this item
 	 *
-	 * This field is joined from the ItemRegionBinding table.
+	 * This field is joined from the ItemRegionBinding table; it is not a
+	 * regular field. Only read from the price property.
 	 *
 	 * @var float
+	 *
+	 * @todo Make this protected with either an accessor method or a magic get
+	 *       implementation or a fake autoloader method.
 	 */
 	public $price;
 
