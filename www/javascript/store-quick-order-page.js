@@ -73,14 +73,21 @@ function StoreQuickOrderItem(quick_order_id, id)
 
 	this.timer = null;
 	this.new_description = null;
+
+	this.quantity = document.getElementById('quantity_' + id);
+	this.quantity.value = '';
 }
 
 StoreQuickOrderItem.prototype.fadeIn = function()
 {
+	if (!this.quantity.value && this.new_description.length > 0)
+		this.quantity.value = '1';
+
 	if (this.new_description != null)
 		this.div.innerHTML = this.new_description;
 
 	this.new_description = null;
+
 	this.in_effect.custom(0, 1);
 }
 
