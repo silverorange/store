@@ -86,6 +86,8 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		$sku_column = $view->getColumn('sku_column');
 		$sku_renderer = $sku_column->getRenderer('renderer');
 
+		$message_display = $this->cart_ui->getWidget('messages');
+
 		if ($form->isProcessed()) {
 			$class_map = StoreClassMap::instance();
 			foreach ($sku_renderer->getClonedWidgets() as $id => $sku_widget) {
@@ -112,13 +114,22 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 				if ($item_id === null && $sku !== null)
 					$item_id = $this->getItemId($sku);
 
-				if ($item_id !== null && $quantity > 0) {
-					if ($this->addItem($item_id, $quantity)) {
-						// clear fields after a successful add
-						$sku_widget->value = '';
-						$quantity_widget->value = '1';
-						$view->product_title = null;
-						$view->options = array();
+				if ($item_id !== null) {
+					if ($quantity > 0) {
+						if ($this->addItem($item_id, $quantity)) {
+							// clear fields after a successful add
+							$sku_widget->value = '';
+							$quantity_widget->value = '1';
+							$view->product_title = null;
+							$view->options = array();
+						}
+					} else {
+						$message = new SwatMessage(sprintf(
+							'The quantity of item #%s must be at least one.',
+							$sku), SwatMessage::WARNING);
+
+						$message_display->add($message);
+						$quantity_widget->value = $quantity;
 					}
 				}
 			}
