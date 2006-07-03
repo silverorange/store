@@ -107,6 +107,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 				}
 
 				$item_id = $view->value;
+				
 				if ($item_id === null && $sku !== null)
 					$item_id = $this->getItemId($sku);
 
@@ -129,13 +130,12 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 	/**
 	 * Gets the item id for a given sku
 	 *
-	 * If no item with the given sku is found, a message is added to the cart
-	 * module.
+	 * If no item with the given sku is found, a message is added to this page.
 	 *
 	 * @param string $sku the sku of the item to get.
 	 *
-	 * @return integer the id of the item with the given sku
-	 *                  or null if no item is found.
+	 * @return integer the id of the item with the given sku or null if no
+	 *                  item is found.
 	 */
 	protected function getItemId($sku)
 	{
@@ -145,9 +145,12 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		$item = SwatDB::queryOne($this->app->db, $sql);
 
 		if ($item === null) {
-			$msg = sprintf("“%s” is not an available item number.", $sku);
-			$this->app->cart->checkout->addMessage(
-				new SwatMessage($msg, SwatMessage::WARNING));
+			$message = new SwatMessage(
+				sprintf('“%s” is not an available item number.', $sku),
+				SwatMessage::WARNING);
+
+			$message_display = $this->cart_ui->getWidget('messages');
+			$message_display->add($message);
 		}
 
 		return $item;
@@ -224,11 +227,9 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 
 		$view->model = $store;
 
-		if (count($this->app->cart->checkout->getMessages()) != 0) {
-			$message_display = $this->cart_ui->getWidget('messages');
-			foreach ($this->app->cart->checkout->getMessages() as $message)
-				$message_display->add($message);
-		}
+		$message_display = $this->cart_ui->getWidget('messages');
+		foreach ($this->app->cart->checkout->getMessages() as $message)
+			$message_display->add($message);
 
 		$this->layout->startCapture('content');
 		$this->displayCart();
@@ -242,8 +243,11 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 
 	private function displayCart()
 	{
+		$this->cart_ui->getWidget('messages')->display();
+
 		$cart_view = $this->cart_ui->getWidget('cart_view');
 		$cart_view->model = $this->getCartTableStore();
+
 		$count = $cart_view->model->getRowCount();
 		if ($count > 0) {
 			$frame = $this->cart_ui->getWidget('cart_frame');
@@ -256,8 +260,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 			$cart_div->class = 'cart-items';
 			$cart_div->open();
 
-			$this->cart_ui->getWidget('cart_form')->visible = true;
-			$this->cart_ui->display();
+			$this->cart_ui->getWidget('cart_form')->display();
 
 			$cart_div->close();
 		}
