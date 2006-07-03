@@ -389,19 +389,6 @@ abstract class StoreCart extends SwatObject
 	}
 
 	// }}}
-	// {{{ public function addMessage()
-
-	/**
-	 * Adds a status messages to this cart
-	 *
-	 * @param SwatMessage $message Status message.
-	 */
-	public function addMessage(SwatMessage $message)
-	{
-		$this->messages[] = $message;
-	}
-
-	// }}}
 	// {{{ public function getMessages()
 
 	/**
@@ -425,6 +412,19 @@ abstract class StoreCart extends SwatObject
 	public function hasMessages()
 	{
 		return count($this->messages > 0);
+	}
+
+	// }}}
+	// {{{ protected function addMessage()
+
+	/**
+	 * Adds a status messages to this cart
+	 *
+	 * @param SwatMessage $message Status message.
+	 */
+	protected function addMessage(SwatMessage $message)
+	{
+		$this->messages[] = $message;
 	}
 
 	// }}}
