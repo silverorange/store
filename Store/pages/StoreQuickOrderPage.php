@@ -217,33 +217,25 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 			$this->form_ui->getRoot()->getHtmlHeadEntrySet());
 
 		$view = $this->form_ui->getWidget('quick_order_view');
-		$store = new SwatTableStore();
+		$view->model = $this->getQuickOrderTableStore();
 
-		for ($i = 0; $i < $this->num_rows; $i++) {
-			$row = null;
-			$row->id = $i;
-			$store->addRow($row);
-		}
-
-		$view->model = $store;
-
-		$message_display = $this->cart_ui->getWidget('messages');
-		foreach ($this->app->cart->checkout->getMessages() as $message)
-			$message_display->add($message);
+		$this->buildCartView();
 
 		$this->layout->startCapture('content');
-		$this->displayCart();
+		$this->cart_ui->display();
 		$this->form_ui->display();
 		$this->displayJavaScript();
 		$this->layout->endCapture();
 	}
 
 	// }}}
-	// {{{ private function displayCart()
+	// {{{ private function buildCartView()
 
-	private function displayCart()
+	private function buildCartView()
 	{
-		$this->cart_ui->getWidget('messages')->display();
+		$message_display = $this->cart_ui->getWidget('messages');
+		foreach ($this->app->cart->checkout->getMessages() as $message)
+			$message_display->add($message);
 
 		$cart_view = $this->cart_ui->getWidget('cart_view');
 		$cart_view->model = $this->getCartTableStore();
@@ -256,13 +248,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 				'The following items were added to your cart:',
 				$count);
 
-			$cart_div = new SwatHtmlTag('div');
-			$cart_div->class = 'cart-items';
-			$cart_div->open();
-
-			$this->cart_ui->getWidget('cart_form')->display();
-
-			$cart_div->close();
+			$this->cart_ui->getWidget('cart_form')->visible = true;
 		}
 	}
 
@@ -297,6 +283,20 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		}
 
 		return $store;
+	}
+
+	// }}}
+	// {{{ private function getQuickOrderTableStore()
+
+	private function getQuickOrderTableStore()
+	{
+		$store = new SwatTableStore();
+
+		for ($i = 0; $i < $this->num_rows; $i++) {
+			$row = null;
+			$row->id = $i;
+			$store->addRow($row);
+		}
 	}
 
 	// }}}
