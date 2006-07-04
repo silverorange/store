@@ -92,6 +92,34 @@ abstract class StoreItem extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ public function isAvailableInRegion()
+
+	/**
+	 * Whether or not this item is available for purchase in the given region
+	 *
+	 * The item needs to have an id before this method will work.
+	 *
+	 * @param StoreRegion $region the region to check the availability of this
+	 *                             item for.
+	 *
+	 * @return boolean true if this item is available for purchase in the
+	 *                  given region and false if it is not.
+	 */
+	public function isAvailableInRegion(StoreRegion $region)
+	{
+		if ($this->id === null)
+			throw new StoreException('Item must have an id set before region '.
+				'availability can be determined.');
+
+		$sql = sprintf('select count(item) from ItemRegionBinding
+			where item = %s and region = %s',
+			$this->db->quote($this->id, 'integer'),
+			$this->db->quote($region->id, 'integer'));
+
+		return (SwatDB::queryOne($this->db, $sql) > 0);
+	}
+
+	// }}}
 	// {{{ protected properties
 
 	protected $join_region = null;
