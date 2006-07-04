@@ -83,6 +83,12 @@ abstract class StoreItem extends StoreDataObject
 	public $price;
 
 	// }}}
+	// {{{ protected properties
+
+	protected $join_region = null;
+	protected $limit_by_region = true;
+
+	// }}}
 	// {{{ public function setRegion()
 
 	public function setRegion($region, $limiting = true)
@@ -118,12 +124,6 @@ abstract class StoreItem extends StoreDataObject
 
 		return (SwatDB::queryOne($this->db, $sql) > 0);
 	}
-
-	// }}}
-	// {{{ protected properties
-
-	protected $join_region = null;
-	protected $limit_by_region = true;
 
 	// }}}
 	// {{{ protected function init()
