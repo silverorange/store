@@ -100,6 +100,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 				if ($sku !== null) {
 					$class = $class_map->resolveClass('StoreQuickOrderServer');
 
+					// static override resolution
 					if (method_exists($class, 'initQuickOrderItemView'))
 						call_user_func(array($class, 'initQuickOrderItemView'),
 							$this->app->db, $sku, $this->app->getRegion()->id,
@@ -111,8 +112,17 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 
 				$item_id = $view->value;
 				
-				if ($item_id === null && $sku !== null)
+				if ($item_id === null && $sku !== null) {
 					$item_id = $this->getItemId($sku);
+					if ($item_id === null) {
+						$message = new SwatMessage(sprintf(
+							'“%s” is not an available catalogue item number.',
+							$sku), SwatMessage::ERROR);
+
+						$messages = $this->cart_ui->getWidget('messages');
+						$messages->add($message);
+					}
+				}
 
 				if ($item_id !== null && $this->addItem($item_id, $quantity)) {
 					// clear fields after a successful add
@@ -131,8 +141,6 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 	/**
 	 * Gets the item id for a given sku
 	 *
-	 * If no item with the given sku is found, a message is added to this page.
-	 *
 	 * @param string $sku the sku of the item to get.
 	 *
 	 * @return integer the id of the item with the given sku or null if no
@@ -144,16 +152,6 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 			$this->app->db->quote($sku, 'text'));
 
 		$item = SwatDB::queryOne($this->app->db, $sql);
-
-		if ($item === null) {
-			$message = new SwatMessage(
-				sprintf('“%s” is not an available item number.', $sku),
-				SwatMessage::ERROR);
-
-			$message_display = $this->cart_ui->getWidget('messages');
-			$message_display->add($message);
-		}
-
 		return $item;
 	}
 
