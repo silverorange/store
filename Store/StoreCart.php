@@ -446,7 +446,19 @@ abstract class StoreCart extends SwatObject
 	 */
 	protected function validateEntry(StoreCartEntry $entry)
 	{
-		return true;
+		$valid = true;
+
+		if ($entry->quantity <= 0) {
+			$message = sprintf(
+				'Quantity of “%s” item #%s must be at least one.',
+				$entry->item->product->title,
+				$entry->item->sku);
+
+			$this->addMessage(new SwatMessage($message, SwatMessage::ERROR));
+			$valid = false;
+		}
+
+		return $valid;
 	}
 
 	// }}}
