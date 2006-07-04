@@ -110,6 +110,8 @@ abstract class StoreItem extends StoreDataObject
 	 *
 	 * @return boolean true if this item is available for purchase in the
 	 *                  given region and false if it is not.
+	 *
+	 * @throws StoreException if this item has no id defined.
 	 */
 	public function isAvailableInRegion(StoreRegion $region)
 	{
