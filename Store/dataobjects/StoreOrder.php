@@ -81,6 +81,17 @@ class StoreOrder extends StoreDataObject
 	public $subtotal;
 
 	// }}}
+	// {{{ public function getShippingAddress()
+
+	public function getShippingAddress()
+	{
+		if ($this->ship_to_billing_address)
+			return $this->billing_address;
+
+		return $this->shipping_address;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
