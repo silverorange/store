@@ -214,14 +214,15 @@ class StoreAccount extends StoreDataObject
 	 * Creates a unique tag and emails the account holder a tagged URL to
 	 * update their password
 	 *
-	 * @param MDB2_Driver $db the database driver to use.
+	 * @param MDB2_Driver_Common $db the database driver to use.
 	 * @param integer $id the account id of the account we are updating.
 	 * @param string $base_href the base of the tagged URL the account holder
 	 *                           is sent.
 	 *
 	 * @see StoreAccount::generateNewPassword()
 	 */
-	public static function generatePassword($db, $id, $base_href = '')
+	public static function generatePassword(MDB2_Driver_Common $db, $id,
+		$base_href = '')
 	{
 		$password_tag = md5(uniqid(rand(), true));
 		$password_link = $base_href.'account/resetpassword/'.$password_tag;
@@ -261,7 +262,7 @@ class StoreAccount extends StoreDataObject
 	 *
 	 * @see StoreAccount::generatePassword()
 	 */
-	public static function generateNewPassword($db, $id)
+	public static function generateNewPassword(MDB2_Driver_Common $db, $id)
 	{
 		require_once 'Text/Password.php';
 
