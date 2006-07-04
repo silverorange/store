@@ -438,9 +438,9 @@ abstract class StoreCart extends SwatObject
 	 * ensure an entry's quantity is valid.
 	 *
 	 * While validating an entry, this method should add validation error
-	 * messages to this cart.
+	 * messages to this cart. See {@link StoreCart::addMessage()}.
 	 *
-	 * @param StoreCartEntry $entry the StoreCartEntry to validate.
+	 * @param StoreCartEntry $entry the cart entry to validate.
 	 *
 	 * @return boolean true if the entry is valid and false if it is not valid.
 	 */
@@ -471,10 +471,10 @@ abstract class StoreCart extends SwatObject
 	 * Used to verify quantities meet requirments for purchase.
 	 *
 	 * While validating an entry, this method should add validation error
-	 * messages to this cart.
+	 * messages to this cart. See {@link StoreCart::addMessage()}.
 	 *
-	 * @param StoreCartEntry $entry the StoreCartEntry to validate when
-	 *                               combined with the entries in this cart.
+	 * @param StoreCartEntry $entry the cart entry to validate when combined
+	 *                               with the other entries in this cart.
 	 *
 	 * @return boolean true if the entry is valid in combination with the
 	 *                  entries in this cart and false if it is not valid.
