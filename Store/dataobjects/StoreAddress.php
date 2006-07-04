@@ -186,6 +186,21 @@ abstract class StoreAddress extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ public function copyFrom()
+
+	public function copyFrom(StoreAddress $address)
+	{
+		$this->id          = $address->id;
+		$this->fullname    = $address->fullname;
+		$this->line1       = $address->line1;
+		$this->line2       = $address->line2;
+		$this->city        = $address->city;
+		$this->postal_code = $address->postal_code;
+		$this->provstate   = $address->getInternalValue('provstate');
+		$this->country     = $address->getInternalValue('country');
+	}
+
+	// }}}
 }
 
 ?>
