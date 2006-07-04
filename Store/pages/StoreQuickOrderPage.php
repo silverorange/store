@@ -99,15 +99,28 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 				// populate item flydown
 				if ($sku !== null) {
 					$class = $class_map->resolveClass('StoreQuickOrderServer');
+					$overridden_method = false;
 
 					// static override resolution
-					if (method_exists($class, 'initQuickOrderItemView'))
-						call_user_func(array($class, 'initQuickOrderItemView'),
+					if ($class_name != 'StoreQuickOrderServer') {
+						$reflector = new ReflectorClass(get_class($class));
+						if ($reflector->hasMethod('initQuickOrderItemView')) {
+							$method =
+								$reflector->getMethod('initQuickOrderItemView');
+
+							if ($method->isPublic() && $method->isStatic()) {
+								$method->invoke(null, $this->app->db, $sku,
+									$this->app->getRegion()->id, $view);
+
+								$overridden_method = true;
+							}
+						}
+					}
+
+					if (!$overridden_method)
+						StoreQuickOrderServer::initQuickOrderItemView(
 							$this->app->db, $sku, $this->app->getRegion()->id,
 							$view);
-					else
-						self::initQuickOrderItemView($this->app->db, $sku,
-							$this->app->getRegion()->id, $view);
 				}
 
 				$item_id = $view->value;
