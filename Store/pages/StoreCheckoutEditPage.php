@@ -43,12 +43,12 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 
 		$this->ui->process();
 
-		// Call using $this instead of self:: since we want run the
-		// code in the subclass.
-		$this->processCommon($this->app, $this->ui);
-
 		$form = $this->ui->getWidget('form');
 		if ($form->isProcessed()) {
+			// Call using $this instead of self:: since we want run the
+			// code in the subclass.
+			$this->processCommon($this->app, $this->ui);
+
 			if (!$form->hasMessage()) {
 				$this->updateProgress();
 				$this->app->relocate('checkout/confirmation');
