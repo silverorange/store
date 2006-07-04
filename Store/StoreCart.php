@@ -431,11 +431,18 @@ abstract class StoreCart extends SwatObject
 	// {{{ protected function validateEntry()
 
 	/**
-	 * Checks to see if the entry is valid
+	 * Checks to see if an entry is valid
 	 *
-	 * Used to verify that the entry exists and is available for purchase.
+	 * Use this method to verify that the item referenced by an entry exists
+	 * and that the item is available for purchase. Also use this method to
+	 * ensure an entry's quantity is valid.
+	 *
+	 * While validating an entry, this method should add validation error
+	 * messages to this cart.
 	 *
 	 * @param StoreCartEntry $entry the StoreCartEntry to validate.
+	 *
+	 * @return boolean true if the entry is valid and false if it is not valid.
 	 */
 	protected function validateEntry(StoreCartEntry $entry)
 	{
@@ -446,11 +453,19 @@ abstract class StoreCart extends SwatObject
 	// {{{ protected function validateCombinedEntry()
 
 	/**
-	 * Checks entry validity after combining with existing entries in cart.
+	 * Checks to see if an entry is valid after combining the entry with
+	 * existing entries in this cart
 	 *
 	 * Used to verify quantities meet requirments for purchase.
 	 *
-	 * @param StoreCartEntry $entry the StoreCartEntry to validate.
+	 * While validating an entry, this method should add validation error
+	 * messages to this cart.
+	 *
+	 * @param StoreCartEntry $entry the StoreCartEntry to validate when
+	 *                               combined with the entries in this cart.
+	 *
+	 * @return boolean true if the entry is valid in combination with the
+	 *                  entries in this cart and false if it is not valid.
 	 */
 	protected function validateCombinedEntry(StoreCartEntry $entry)
 	{
