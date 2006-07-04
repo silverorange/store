@@ -114,23 +114,12 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 				if ($item_id === null && $sku !== null)
 					$item_id = $this->getItemId($sku);
 
-				if ($item_id !== null) {
-					if ($quantity > 0) {
-						if ($this->addItem($item_id, $quantity)) {
-							// clear fields after a successful add
-							$sku_widget->value = '';
-							$quantity_widget->value = '1';
-							$view->product_title = null;
-							$view->options = array();
-						}
-					} else {
-						$message = new SwatMessage(sprintf(
-							'The quantity of item #%s must be at least one.',
-							$sku), SwatMessage::ERROR);
-
-						$message_display->add($message);
-						$quantity_widget->value = $quantity;
-					}
+				if ($item_id !== null && $this->addItem($item_id, $quantity)) {
+					// clear fields after a successful add
+					$sku_widget->value = '';
+					$quantity_widget->value = '1';
+					$view->product_title = null;
+					$view->options = array();
 				}
 			}
 		}
@@ -185,7 +174,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 			$cart_entry->sessionid = $this->app->session->getSessionID();
 
 		$item_class = $class_map->resolveClass('StoreItem');
-		$item = new Item();
+		$item = new $item_class();
 		$item->setDatabase($this->app->db);
 		$item->setRegion($this->app->getRegion()->id, false);
 		$item->load($item_id);
@@ -201,6 +190,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 
 		return $added;
 	}
+
 	// }}}
 
 	// build phase
