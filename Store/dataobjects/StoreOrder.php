@@ -25,6 +25,13 @@ class StoreOrder extends StoreDataObject
 	public $id;
 
 	/**
+	 * The full name of this customer
+	 *
+	 * @var string
+	 */
+	public $fullname;
+
+	/**
 	 * Snapshot of the customer's email address
 	 *
 	 * @var string
