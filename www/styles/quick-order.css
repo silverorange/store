@@ -9,7 +9,7 @@
 	width: 200px;
 }
 
-#quickorder_form {
+#quick_order_form {
 	margin-right: 220px;
 }
 
@@ -18,11 +18,11 @@ td.store-quick-order-description-cell {
 	width: 100%;
 }
 
-#quickorder_form td.swat-cell-renderer {
+#quick_order_form td.swat-cell-renderer {
 	padding-top: 1em;
 	padding-bottom: 1em;
 }
 
-#quickorder_form td.store-quick-order-description-cell label {
+#quick_order_form td.store-quick-order-description-cell label {
 	font-weight: normal;
 }
