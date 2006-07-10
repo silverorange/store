@@ -102,8 +102,8 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 					$overridden_method = false;
 
 					// static override resolution
-					if ($class_name != 'StoreQuickOrderServer') {
-						$reflector = new ReflectorClass(get_class($class));
+					if ($class != 'StoreQuickOrderServer') {
+						$reflector = new ReflectionClass($class);
 						if ($reflector->hasMethod('initQuickOrderItemView')) {
 							$method =
 								$reflector->getMethod('initQuickOrderItemView');
