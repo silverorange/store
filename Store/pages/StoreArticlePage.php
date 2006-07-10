@@ -111,8 +111,10 @@ class StoreArticlePage extends StorePage
 
 	protected function displayArticle(StoreArticle $article)
 	{
-		echo '<div id="article-bodytext">',
+		if (strlen($article->bodytext)) {	
+			echo '<div id="article-bodytext">',
 			(string)$article->bodytext, '</div>';
+		}
 	}
 
 	// }}}
