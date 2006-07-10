@@ -194,6 +194,17 @@ class StoreAccount extends StoreDataObject
 	// }}}
 
 	// password methods
+	// {{{ public function setPassword()
+
+	/**
+	 * Sets this account's password
+	 */
+	public function setPassword($password)
+	{
+		$this->password = md5($password);
+	}
+
+	// }}}
 	// {{{ public function resetPassword()
 
 	/**
