@@ -14,12 +14,6 @@
 					</object>
 				</object>
 				<object class="SwatTableViewColumn">
-					<property name="title">Quantity</property>
-					<object class="SwatNumericCellRenderer">
-						<property name="value" type="data">quantity</property>
-					</object>
-				</object>
-				<object class="SwatTableViewColumn">
 					<property name="title">Item #</property>
 					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">item.sku</property>
@@ -35,6 +29,12 @@
 					<property name="title">Price</property>
 					<object class="SwatMoneyCellRenderer">
 						<property name="value" type="data">item.price</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="title">Quantity</property>
+					<object class="SwatNumericCellRenderer">
+						<property name="value" type="data">quantity</property>
 					</object>
 				</object>
 				<object class="SwatTableViewColumn">
