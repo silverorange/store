@@ -50,9 +50,12 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$wrapper = $class_map->resolveClass('StoreOrderItemWrapper');
 		$order->items = new $wrapper();
 
+		$billing_provstate = $order->billing_address->provstate;
+		$shipping_provstate = $order->shipping_address->provstate;
+
 		foreach ($this->app->cart->checkout->getAvailableEntries() as $entry) {
-			$order_item = 
-				$entry->createOrderItem($order->billing_address->provstate);
+			$order_item = $entry->createOrderItem(
+				$billing_provstate, $shipping_provstate);
 
 			$order->items->add($order_item);
 		}
