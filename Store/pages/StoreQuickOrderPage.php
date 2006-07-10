@@ -226,8 +226,11 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		$this->buildCartView();
 		$this->buildQuickOrderView();
 
-		$this->layout->startCapture('content');
+		$this->layout->startCapture('content', true);
 		$this->cart_ui->display();
+		$this->layout->endCapture();
+
+		$this->layout->startCapture('content');
 		$this->form_ui->display();
 		$this->displayJavaScript();
 		$this->layout->endCapture();
