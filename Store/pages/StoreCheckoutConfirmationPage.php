@@ -18,7 +18,26 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	public function init()
 	{
 		parent::init();
+		$this->checkOrder();
 		$this->createOrderItems();
+	}
+
+	// }}}
+	// {{{ private function checkOrder()
+
+	private function checkOrder()
+	{
+		$order = $this->app->session->order;
+
+		if (!($order->billing_address instanceof StoreOrderAddress))
+			throw new StoreException('Missing billing address.  '.
+				'StoreOrder::billing_address must be a valid reference to a '.
+				'StoreOrderAddress object by this point.');
+
+		if (!($order->shipping_address instanceof StoreOrderAddress))
+			throw new StoreException('Missing shipping address.  '.
+				'StoreOrder::shipping_address must be a valid reference to a '.
+				'StoreOrderAddress object by this point.');
 	}
 
 	// }}}
