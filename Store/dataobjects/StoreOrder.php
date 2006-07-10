@@ -122,6 +122,14 @@ class StoreOrder extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ protected function getSerializableSubDataObjects()
+
+	protected function getSerializableSubDataObjects()
+	{
+		return array('shipping_address', 'billing_address', 'payment_method');
+	}
+
+	// }}}
 
 	// loader methods
 	// {{{ protected function loadItems()
