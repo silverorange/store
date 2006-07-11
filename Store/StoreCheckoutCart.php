@@ -201,7 +201,7 @@ abstract class StoreCheckoutCart extends StoreCart
 			$total = 0;
 			$total += $this->getItemTotal();
 			$total += $this->getTax($billing_provstate);
-			$total += $this->getShipping($shipping_provstate);
+			$total += $this->getShippingTotal($shipping_provstate);
 			$this->setCachedValue('store-total', $total);
 		}
 
