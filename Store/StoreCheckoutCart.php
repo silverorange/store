@@ -163,17 +163,17 @@ abstract class StoreCheckoutCart extends StoreCart
 	public function getItemTotal()
 	{
 		if ($this->cachedValueExists('store-item-total')) {
-			$subtotal = $this->getCachedValue('store-item-total');
+			$total = $this->getCachedValue('store-item-total');
 		} else {
-			$subtotal = 0;
+			$total = 0;
 			$entries = $this->getAvailableEntries();
 			foreach ($entries as $entry)
-				$subtotal += $entry->getExtension();
+				$total += $entry->getExtension();
 
-			$this->setCachedValue('store-item-total', $subtotal);
+			$this->setCachedValue('store-item-total', $total);
 		}
 
-		return $subtotal;
+		return $total;
 	}
 
 	// }}}
