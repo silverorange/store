@@ -81,11 +81,11 @@ class StoreOrder extends StoreDataObject
 	public $total;
 
 	/**
-	 * Subtotal amount
+	 * Item total (subtotal) amount
 	 *
 	 * @var float
 	 */
-	public $subtotal;
+	public $item_total;
 
 	// }}}
 	// {{{ public function getShippingAddress()
