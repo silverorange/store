@@ -53,13 +53,6 @@ class StoreOrder extends StoreDataObject
 	public $createdate;
 
 	/**
-	 * Ship to billing address?
-	 *
-	 * @var boolean
-	 */
-	public $ship_to_billing_address;
-
-	/**
 	 * Shipping amount
 	 *
 	 * @var float
@@ -79,17 +72,6 @@ class StoreOrder extends StoreDataObject
 	 * @var float
 	 */
 	public $item_total;
-
-	// }}}
-	// {{{ public function getShippingAddress()
-
-	public function getShippingAddress()
-	{
-		if ($this->ship_to_billing_address)
-			return $this->billing_address;
-
-		return $this->shipping_address;
-	}
 
 	// }}}
 	// {{{ protected function init()
