@@ -3,7 +3,7 @@
 require_once 'Site/pages/SiteExceptionPage.php';
 
 /**
- * @package   veseys2
+ * @package   Store
  * @copyright 2006 silverorange
  */
 class StoreExceptionPage extends SiteExceptionPage
