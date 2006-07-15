@@ -82,7 +82,7 @@ abstract class StoreQuickOrderServer extends SiteXMLRPCServer
 		$items = StoreItemWrapper::loadSetFromDBWithRegion($db, $sql,
 			$region_id, false);
 
-		if ($items->getCount() > 0)
+		if (count($items) > 0)
 			$view->product_title = $items->getFirst()->product->title;
 
 		foreach ($items as $item) {
