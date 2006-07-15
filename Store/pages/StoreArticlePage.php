@@ -120,9 +120,10 @@ class StoreArticlePage extends StorePage
 	// }}}
 	// {{{ protected function displaySubArticles()
 
-	protected function displaySubArticles($articles, $path = null)
+	protected function displaySubArticles(StoreArticleWrapper $articles,
+		$path = null)
 	{
-		if ($articles->getCount() == 0)
+		if (count($articles) == 0)
 			return;
 
 		echo '<ul class="sub-articles">';
@@ -157,6 +158,9 @@ class StoreArticlePage extends StorePage
 	// }}}
 	// {{{ protected function querySubArticles()
 
+	/**
+	 * @return StoreArticleWrapper
+	 */
 	protected function querySubArticles($article_id)
 	{
 		$sql = 'select id, title, shortname, description from Article where
