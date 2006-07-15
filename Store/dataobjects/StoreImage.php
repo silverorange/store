@@ -6,8 +6,8 @@ require_once 'Image/Transform.php';
 /**
  * An image data object
  *
- * @package veseys2
- * @copyright silverorange 2005
+ * @package   Store
+ * @copyright 2005-2006 silverorange
  */
 abstract class StoreImage extends StoreDataObject
 {
