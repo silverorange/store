@@ -356,7 +356,7 @@ class StoreCartModule extends SiteApplicationModule
 		$this->entries = SwatDB::query($this->app->db, $entry_sql,
 			$class_mapper->resolveClass('StoreCartEntryWrapper'));
 
-		if ($this->entries->getCount() == 0)
+		if (count($this->entries) == 0)
 			return;
 
 		// for implodeArray()
