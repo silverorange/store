@@ -20,8 +20,8 @@ class StoreCreditCardExpiryEntry extends SwatDateEntry
 		$this->show_month_number = true;
 		$this->display_parts = self::MONTH|self::YEAR;
 
+		// do not allow dates in the past
 		$this->setValidRange(0, 20);
-		
 		$this->valid_range_start->setMonth(Date_Calc::getMonth());
 	}
 
