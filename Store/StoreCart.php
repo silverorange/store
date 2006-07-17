@@ -162,51 +162,58 @@ abstract class StoreCart extends SwatObject
 	 *
 	 * @param StoreCartEntry $entry the StoreCartEntry to add.
 	 *
-	 * @return boolean true if the entry is valid and was added and false if
-	 *                       the entry is not valid and was not added.
+	 * @return StoreCartEntry the added entry. If the entry to be added is not
+	 *                         valid, null is returned.
 	 *
 	 * @see StoreCart::validateEntry() StoreCart::validateCombinedEntry()
 	 */
 	public function addEntry(StoreCartEntry $entry)
 	{
+		$added_entry = null;
+
 		$entry->setDatabase($this->app->db);
 
-		if (!$this->validateEntry($entry))
-			return false;
+		if ($this->validateEntry($entry)) {
+			$already_in_cart = false;
 
-		$already_in_cart = false;
+			// check for existing entry to combine with
+			foreach ($this->entries as $key => $existing_entry) {
+				if ($existing_entry->compare($entry) == 0) {
+					$already_in_cart = true;
+					$backup_entry = clone $existing_entry;
+					$existing_entry->combine($entry);
 
-		// check for item
-		foreach ($this->entries as $key => $existing_entry) {
-			if ($existing_entry->compare($entry) == 0) {
-				$already_in_cart = true;
-				$backup_entry = clone $existing_entry;
-				$existing_entry->combine($entry);
+					if ($this->validateCombinedEntry($existing_entry)) {
+						$added_entry = $existing_entry;
+						$this->setChanged();
+					} else {
+						// rollback to original entry
+						$this->entries[$key] = $backup_entry;
+					}
 
-				if (!$this->validateCombinedEntry($existing_entry)) {
-					// rollback to original entry
-					$this->entries[$key] = $backup_entry;
-					return false;
+					// we don't need this anymore
+					unset($backup_entry);
+
+					break;
 				}
+			}
 
-				break;
+			// not combining. add individual entry
+			if (!$already_in_cart && $this->validateCombinedEntry($entry)) {
+				$this->preSaveEntry($entry);
+				$entry->save();
+
+				$this->entries[] = $entry;
+				$this->entries_by_id[$entry->id] = $entry;
+
+				$added_entry = $entry;
+
+				$this->module->registerAddedEntry($entry);
+				$this->setChanged();
 			}
 		}
 
-		if (!$already_in_cart) {
-			if (!$this->validateCombinedEntry($entry))
-				return false;
-
-			$this->preSaveEntry($entry);
-			$entry->save();
-
-			$this->entries[] = $entry;
-			$this->entries_by_id[$entry->id] = $entry;
-			$this->module->registerAddedEntry($entry);
-		}
-
-		$this->setChanged();
-		return true;
+		return $added_entry;
 	}
 
 	// }}}
