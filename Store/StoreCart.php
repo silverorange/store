@@ -34,12 +34,21 @@ abstract class StoreCart extends SwatObject
 	/**
 	 * The entries in this cart
 	 *
-	 * This is an array of StoreCartEntry data objects. The array is
-	 * intentionally unindexed.
+	 * This is an array of StoreCartEntry data objects.
 	 *
 	 * @var array
 	 */
 	protected $entries = array();
+
+	/**
+	 * The entries in this cart indexed by their id
+	 *
+	 * This is an array of StoreCartEntry data objects indexed by the entry
+	 * ids.
+	 *
+	 * @var array
+	 */
+	protected $entries_by_id = array();
 
 	/**
 	 * A cache of cart totals
@@ -188,7 +197,11 @@ abstract class StoreCart extends SwatObject
 			if (!$this->validateCombinedEntry($entry))
 				return false;
 
+			$this->preSaveEntry($entry);
+			$entry->save();
+
 			$this->entries[] = $entry;
+			$this->entries_by_id[$entry->id] = $entry;
 			$this->module->registerAddedEntry($entry);
 		}
 
@@ -212,16 +225,8 @@ abstract class StoreCart extends SwatObject
 	{
 		$old_entry = null;
 
-		foreach ($this->entries as $entry) {
-			if ($entry->id == $entry_id) {
-				$key = key($this->entries);
-				$old_entry = $this->entries[$key];
-				unset($this->entries[$key]);
-				$this->module->registerRemovedEntry($old_entry);
-				$this->setChanged();
-				break;
-			}
-		}
+		if (array_key_exists($entry_id, $this->entries_by_id))
+			$old_entry = $this->removeEntry($this->entries_by_id[$entry_id]);
 
 		return $old_entry;
 	}
@@ -246,6 +251,7 @@ abstract class StoreCart extends SwatObject
 				if ($cart_entry === $entry) {
 					$old_entry = $this->entries[$key];
 					unset($this->entries[$key]);
+					unset($this->entries_by_id[$entry->id]);
 					$this->module->registerRemovedEntry($old_entry);
 					$this->setChanged();
 					break;
@@ -275,6 +281,28 @@ abstract class StoreCart extends SwatObject
 			$this->module->registerRemovedEntry($entry);
 
 		return $entries;
+	}
+
+	// }}}
+	// {{{ public function getEntryById()
+
+	/**
+	 * Gets an entry in this cart by its id
+	 *
+	 * @param integer $entry_id the database id of the entry in the cart to
+	 *                          be returned.
+	 *
+	 * @return StoreCartEntry the entry with the given id or null if no such
+	 *                         entry exists in this cart.
+	 */
+	public function getEntryById($entry_id)
+	{
+		$entry = null;
+
+		if (array_key_exists($entry_id, $this->entries_by_id))
+			$entry = $this->entries_by_id[$entry_id];
+
+		return $entry;
 	}
 
 	// }}}
