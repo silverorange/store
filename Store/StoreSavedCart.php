@@ -26,9 +26,12 @@ class StoreSavedCart extends StoreCart
 	{
 		$this->entries = array();
 
-		foreach ($this->module->getEntries() as $entry)
-			if ($entry->saved)
+		foreach ($this->module->getEntries() as $entry) {
+			if ($entry->saved) {
 				$this->entries[] = $entry;
+				$this->entries_by_id[$entry->id] = $entry;
+			}
+		}
 	}
 
 	// }}}
