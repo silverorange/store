@@ -15,10 +15,12 @@ require_once 'Store/exceptions/StoreException.php';
  * functionality common to all sites. Most site code will want to extend either
  * {@link StoreCheckoutCart} or {@link StoreSavedCart}.
  *
- * There is intentionally no getEntryById() method because cart entries are
- * un-indexed. When an item is added to the cart, it does not necessarily have
- * a cart id to index by. Only after the cart is saved do all entries have
- * unique ids.
+ * Cart entries are automatically indexed by their id. When adding new cart
+ * entries to this cart, the entries are assigned an id and indexed.
+ *
+ * Cart entries may be accessed through their entry id which guarentees a
+ * unique cart entry. Alternatively, cart entries may be accessed through item
+ * ids which do not necessarily reference a unique cart entry.
  *
  * @package   Store
  * @copyright 2005-2006 silverorange
