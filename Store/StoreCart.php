@@ -235,7 +235,7 @@ abstract class StoreCart extends SwatObject
 	 * @return StoreCartEntry the entry that was removed or null if no entry
 	 *                         was removed.
 	 */
-	public function removeEntry($entry)
+	public function removeEntry(StoreCartEntry $entry)
 	{
 		$old_entry = null;
 
