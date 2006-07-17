@@ -114,6 +114,22 @@ abstract class StorePaymentMethod extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ public function getCreditCardNumber()
+
+	public function getCreditCardNumber($encrypted_number, $secret_key,
+		$passphrase)
+	{
+		if ($this->gpg_id === null)
+			throw new StoreException('No GPG id provided.');
+
+		$this->credit_card_number =
+			self::decryptCreditCardNumber($encrypted_number, $secret_key,
+			$passphrase);
+
+		$this->credit_card_last4 = substr($this->credit_card_number, -4);
+	}
+
+	// }}}
 	// {{{ public function display()
 
 	/**
@@ -196,7 +212,21 @@ abstract class StorePaymentMethod extends StoreDataObject
 		return $gpg->encrypt($number, $gpg_id);
 	}
 
-	// }}}	
+	// }}}
+	// {{{ public static function decryptCreditCardNumber()
+
+	public static function decryptCreditCardNumber($encrypted_number,
+		$secret_key, $passphrase)
+	{
+		$gpg = new Crypt_GPG();
+
+		// TODO - import secret_key file
+
+		return $gpg->decrypt($encrypted_number, $passphrase);
+	
+	}
+
+	// }}}
 	// {{{  public static function formatCreditCardNumber()
 
 	/**
