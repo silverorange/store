@@ -200,16 +200,8 @@ abstract class StoreCart extends SwatObject
 
 			// not combining. add individual entry
 			if (!$already_in_cart && $this->validateCombinedEntry($entry)) {
-				$this->preSaveEntry($entry);
-				$entry->save();
-
-				$this->entries[] = $entry;
-				$this->entries_by_id[$entry->id] = $entry;
-
+				$this->addNewEntry($entry);
 				$added_entry = $entry;
-
-				$this->module->registerAddedEntry($entry);
-				$this->setChanged();
 			}
 		}
 
@@ -534,6 +526,29 @@ abstract class StoreCart extends SwatObject
 	 */
 	protected function preSaveEntry(StoreCartEntry $entry)
 	{
+	}
+
+	// }}}
+	// {{{ protected function addNewEntry()
+
+	/**
+	 * Adds a new entry to this cart
+	 *
+	 * This performs maintennance tasks required when adding an actual new
+	 * entry object to this cart.
+	 *
+	 * @param StoreCartEntry $entry the entry to add.
+	 */
+	protected function addNewEntry(StoreCartEntry $entry)
+	{
+		$this->preSaveEntry($entry);
+		$entry->save();
+
+		$this->entries[] = $entry;
+		$this->entries_by_id[$entry->id] = $entry;
+
+		$this->module->registerAddedEntry($entry);
+		$this->setChanged();
 	}
 
 	// }}}
