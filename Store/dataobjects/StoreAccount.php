@@ -247,7 +247,7 @@ class StoreAccount extends StoreDataObject
 
 		$class_mapper = StoreClassMap::instance();
 
-		$account_sql = sprintf('select email, fullname from Account
+		$account_sql = sprintf('select id, email, fullname from Account
 			where id = %s',
 			$db->quote($id, 'integer'));
 
@@ -288,7 +288,7 @@ class StoreAccount extends StoreDataObject
 
 		$class_mapper = StoreClassMap::instance();
 
-		$account_sql = sprintf('select email, fullname from Account
+		$account_sql = sprintf('select id, email, fullname from Account
 			where id = %s',
 			$db->quote($id, 'integer'));
 
