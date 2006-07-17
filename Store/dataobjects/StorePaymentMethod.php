@@ -116,17 +116,13 @@ abstract class StorePaymentMethod extends StoreDataObject
 	// }}}
 	// {{{ public function getCreditCardNumber()
 
-	public function getCreditCardNumber($encrypted_number, $secret_key,
-		$passphrase)
+	public function getCreditCardNumber($secret_key, $passphrase)
 	{
 		if ($this->gpg_id === null)
 			throw new StoreException('No GPG id provided.');
 
-		$this->credit_card_number =
-			self::decryptCreditCardNumber($encrypted_number, $secret_key,
-			$passphrase);
-
-		$this->credit_card_last4 = substr($this->credit_card_number, -4);
+		return self::decryptCreditCardNumber($this->credit_card_number,
+			$secret_key, $passphrase);
 	}
 
 	// }}}
