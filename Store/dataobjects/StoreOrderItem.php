@@ -46,7 +46,7 @@ class StoreOrderItem extends StoreDataObject
 	/**
 	 * Price
 	 *
-	 * @var string
+	 * @var float
 	 */
 	public $price;
 
