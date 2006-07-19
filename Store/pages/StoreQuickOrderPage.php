@@ -45,6 +45,9 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		$form = $this->form_ui->getWidget('quick_order_form');
 		$form->action = $this->source;
 
+		$view = $this->form_ui->getWidget('quick_order_view');
+		$view->model = $this->getQuickOrderTableStore();
+
 		$this->form_ui->init();
 
 		$this->cart_ui = new StoreUI();
@@ -54,6 +57,26 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		$cart_form->action = $this->source;
 
 		$this->cart_ui->init();
+	}
+
+	// }}}
+	// {{{ protected function getQuickOrderTableStore()
+
+	/**
+	 *
+	 * @return SwatTableStore
+	 */
+	protected function getQuickOrderTableStore()
+	{
+		$store = new SwatTableStore();
+
+		for ($i = 0; $i < $this->num_rows; $i++) {
+			$row = null;
+			$row->id = $i;
+			$store->addRow($row);
+		}
+
+		return $store;
 	}
 
 	// }}}
@@ -129,21 +152,33 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 					$item_id = $this->getItemId($sku);
 					if ($item_id === null) {
 						$message = new SwatMessage(sprintf(
-							'“%s” is not an available catalogue item number.',
+							'“%s” is not an available %%s.',
 							$sku), SwatMessage::ERROR);
 
-						$messages = $this->cart_ui->getWidget('messages');
-						$messages->add($message);
+						$sku_widget->addMessage($message);
 					}
 				}
 
-				if ($item_id !== null && $this->addItem($item_id, $quantity)) {
+				if ($item_id !== null && !$sku_renderer->hasMessage($id) &&
+					!$quantity_renderer->hasMessage($id) &&
+					$this->addItem($item_id, $quantity)) {
 					// clear fields after a successful add
 					$sku_widget->value = '';
 					$quantity_widget->value = '1';
 					$view->product_title = null;
 					$view->options = array();
 				}
+			}
+
+			if ($form->hasMessage()) {
+				$message = new SwatMessage('There is a problem with one or '.
+					'more of the items you requested.',
+					SwatMessage::ERROR);
+
+				$message->secondary_content = 'Please address the fields '.
+					'highlighted below and re-submit the form.';
+
+				$this->cart_ui->getWidget('messages')->add($message);
 			}
 		}
 	}
@@ -272,7 +307,6 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 			$this->form_ui->getRoot()->getHtmlHeadEntrySet());
 
 		$view = $this->form_ui->getWidget('quick_order_view');
-		$view->model = $this->getQuickOrderTableStore();
 
 		if ($view->model->getRowCount() == 0)
 			$this->form_ui->getWidget('quick_order_form')->visible = false;
@@ -306,26 +340,6 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 
 				$store->addRow($ds, $entry->item->id);
 			}
-		}
-
-		return $store;
-	}
-
-	// }}}
-	// {{{ protected function getQuickOrderTableStore()
-
-	/**
-	 *
-	 * @return SwatTableStore
-	 */
-	protected function getQuickOrderTableStore()
-	{
-		$store = new SwatTableStore();
-
-		for ($i = 0; $i < $this->num_rows; $i++) {
-			$row = null;
-			$row->id = $i;
-			$store->addRow($row);
 		}
 
 		return $store;
