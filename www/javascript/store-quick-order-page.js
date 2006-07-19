@@ -75,7 +75,8 @@ function StoreQuickOrderItem(quick_order_id, id)
 	this.new_description = null;
 
 	this.quantity = document.getElementById('quantity_' + id);
-	this.quantity.value = '';
+	if (this.quantity.value == '1')
+		this.quantity.value = '';
 }
 
 StoreQuickOrderItem.prototype.fadeIn = function()
