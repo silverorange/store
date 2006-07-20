@@ -419,7 +419,6 @@ abstract class StoreCart extends SwatObject
 					$entry->setQuantity($value);
 					if ($this->validateEntry($entry) &&
 						$this->validateCombinedEntry($entry)) {
-						echo 'foo';
 						$this->setChanged();
 						unset($backup_entry);
 					} else {
