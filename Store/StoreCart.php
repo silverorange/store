@@ -189,6 +189,8 @@ abstract class StoreCart extends SwatObject
 					} else {
 						// rollback to original entry
 						$this->entries[$key] = $backup_entry;
+						$this->entries_by_id[$backup_entry->id] =
+							$backup_entry;
 					}
 
 					// we don't need this anymore
@@ -408,12 +410,25 @@ abstract class StoreCart extends SwatObject
 	 */
 	public function setEntryQuantity(StoreCartEntry $entry, $value)
 	{
-		if (in_array($entry, $this->entries)) {
-			if ($value <= 0) {
-				$this->removeEntry($entry);
-			} else {
-				$entry->setQuantity($value);
-				$this->setChanged();
+		foreach ($this->entries as $key => $existing_entry) {
+			if ($existing_entry === $entry) {
+				if ($value <= 0) {
+					$this->removeEntry($entry);
+				} else {
+					$backup_entry = clone $entry;
+					$entry->setQuantity($value);
+					if ($this->validateEntry($entry) &&
+						$this->validateCombinedEntry($entry)) {
+						echo 'foo';
+						$this->setChanged();
+						unset($backup_entry);
+					} else {
+						// rollback to original entry
+						$this->entries[$key] = $backup_entry;
+						$this->entries_by_id[$backup_entry->id] =
+							$backup_entry;
+					}
+				}
 			}
 		}
 	}
