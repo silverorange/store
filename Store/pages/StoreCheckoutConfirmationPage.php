@@ -1,5 +1,6 @@
 <?php
 
+require_once 'Swat/SwatDate.php';
 require_once 'Store/pages/StoreCheckoutPage.php';
 require_once 'Store/dataobjects/StoreOrderItemWrapper.php';
 require_once 'Store/dataobjects/StoreCartEntry.php';
@@ -96,9 +97,18 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		if ($form->isProcessed()) {
 			$this->updateProgress();
+
+			// set createdate to now
+			$this->app->session->order->createdate = new SwatDate();
+
+			// save order
 			$this->app->session->order->save();
 
-			//TODO: empty cart
+			// we're done, remove order from session
+			$this->app->session->order = null;
+
+			// remove entries from cart that were ordered
+			$this->app->cart->checkout->removeAvailableEntries();
 
 			$this->app->relocate('checkout/thankyou');
 		}
