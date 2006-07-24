@@ -39,7 +39,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$shipping_provstate = $order->shipping_address->provstate;
 
 		$order->item_total = $cart->getItemTotal();
-		$order->shipping = $cart->getShippingTotal($shipping_provstate);
+		$order->shipping_total = $cart->getShippingTotal($shipping_provstate);
 		$order->total = $cart->getTotal($billing_provstate, $shipping_provstate);
 	}
 
