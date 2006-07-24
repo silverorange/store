@@ -19,17 +19,21 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		parent::init();
 		$this->checkOrder();
-		$this->createOrderTotals();
+		$this->createOrder();
 		$this->createOrderItems();
 	}
 
 	// }}}
-	// {{{ protected function createOrderTotals()
+	// {{{ protected function createOrder()
 
-	protected function createOrderTotals()
+	protected function createOrder()
 	{
 		$cart = $this->app->cart->checkout;
 		$order = $this->app->session->order;
+
+		$order->locale = $this->app->getLocale();
+
+		//order totals
 
 		$billing_provstate = $order->billing_address->provstate;
 		$shipping_provstate = $order->shipping_address->provstate;
@@ -92,6 +96,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		if ($form->isProcessed()) {
 			$this->updateProgress();
+			$this->app->session->order->save();
+
+			//TODO: empty cart
+
 			$this->app->relocate('checkout/thankyou');
 		}
 	}
