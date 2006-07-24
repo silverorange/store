@@ -33,6 +33,9 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 		if (!isset($this->app->session->checkout_progress))
 			$this->resetProgress();
 
+		if ($this->app->session->isLoggedIn())
+			$this->app->session->checkout_with_account = true;
+
 		$this->initDataObjects();
 
 		// enforce dependencies for progressing through the checkout
