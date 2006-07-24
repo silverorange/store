@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Store/StoreCart.php';
+require_once 'Store/dataobjects/StoreAddress.php';
 
 /**
  * A checkout cart object
@@ -173,6 +174,41 @@ abstract class StoreCheckoutCart extends StoreCart
 	// }}}
 
 	// price calculation methods
+	// {{{ public function getTotal()
+
+	/**
+	 * Gets the total cost for an order of the contents of this cart
+	 *
+	 * By default, the total is calculated as item total + tax + shipping.
+	 * Subclasses may override this to calculate totals differently.
+	 *
+	 * @param StoreAddress $billing_address the billing address of the order.
+	 * @param StoreAddress $shipping_address the shipping address of the order.
+	 *
+	 * @return double the cost of this cart's contents.
+	 */
+	public function getTotal(StoreAddress $billing_address,
+		StoreAddress $shipping_address)
+	{
+		if ($this->cachedValueExists('store-total')) {
+			$total = $this->getCachedValue('store-total');
+		} else {
+			$total = 0;
+			$total += $this->getItemTotal();
+
+			$total += $this->getTaxTotal(
+				$billing_address, $shipping_address);
+
+			$total += $this->getShippingTotal(
+				$shipping_address, $shipping_address);
+
+			$this->setCachedValue('store-total', $total);
+		}
+
+		return $total;
+	}
+
+	// }}}
 	// {{{ public function getItemTotal()
 
 	/**
@@ -200,68 +236,42 @@ abstract class StoreCheckoutCart extends StoreCart
 	}
 
 	// }}}
-	// {{{ public function getTotal()
+	// {{{ abstract public function getShippingTotal()
 
 	/**
-	 * Gets the total cost for an order of the contents of this cart
+	 * Gets the cost of shipping the contents of this cart
 	 *
-	 * By default, the total is calculated as item total + tax + shipping.
-	 * Subclasses may override this to calculate totals differently.
+	 * @param StoreAddress $billing_address the billing address of the order.
+	 * @param StoreAddress $shipping_address the shipping address of the order.
 	 *
-	 * @param StoreProvState $billing_provstate the province or state this cart
-	 *                                           is billed from.
-	 * @param StoreProvState $shipping_provstate the province or state this
-	 *                                            cart is shipped to.
-	 *
-	 * @return double the cost of this cart's contents.
+	 * @return double the cost of shipping this order.
 	 */
-	public function getTotal(StoreProvState $billing_provstate,
-		StoreProvState $shipping_provstate)
-	{
-		if ($this->cachedValueExists('store-total')) {
-			$total = $this->getCachedValue('store-total');
-		} else {
-			$total = 0;
-			$total += $this->getItemTotal();
-			$total += $this->getTax($billing_provstate);
-			$total += $this->getShippingTotal($shipping_provstate);
-			$this->setCachedValue('store-total', $total);
-		}
-
-		return $total;
-	}
+	abstract public function getShippingTotal(StoreAddress $billing_address,
+		StoreAddress $shipping_address);
 
 	// }}}
-	// {{{ public abstract function getTax()
+	// {{{ abstract public function getTaxTotal()
 
 	/**
-	 * Gets the cost of taxes for this cart
+	 * Gets the total amount of taxes for this cart
 	 *
 	 * Calculates applicable taxes based on the contents of this cart. Tax
 	 * Calculations need to know where purchase is made in order to correctly
 	 * apply tax.
 	 *
-	 * @param StoreProvState $billing_provstate the province or state the tax
-	 *                                           is calculated for.
+	 * @param StoreAddress $billing_address the billing address of the order.
+	 * @param StoreAddress $shipping_address the shipping address of the order.
 	 *
 	 * @return double the tax charged for the contents of this cart.
 	 */
-	public abstract function getTax(StoreProvState $billing_provstate);
+	abstract public function getTaxTotal(StoreAddress $billing_address,
+		StoreAddress $shipping_address);
 	
 	// }}}
-	// {{{ public abstract function getShippingTotal()
+	// {{{ abstract public function getTaxProvstate()
 
-	/**
-	 * Gets the cost of shipping the contents of this cart
-	 *
-	 * @param StoreProvState $shipping_provstate the province or state this
-	 *                                            cart's contents are to be
-	 *                                            shipped to.
-	 *
-	 * @return double the cost of shipping this order.
-	 */
-	public abstract function getShippingTotal(
-		StoreProvState $shipping_provstate);
+	abstract public function getTaxProvstate(
+		StoreAddress $billing_address, StoreAddress $shipping_address);
 
 	// }}}
 }

@@ -53,13 +53,6 @@ class StoreOrder extends StoreDataObject
 	public $createdate;
 
 	/**
-	 * Shipping amount
-	 *
-	 * @var float
-	 */
-	public $shipping_total;
-
-	/**
 	 * Total amount
 	 *
 	 * @var float
@@ -67,11 +60,25 @@ class StoreOrder extends StoreDataObject
 	public $total;
 
 	/**
-	 * Item total (subtotal) amount
+	 * Item total
 	 *
 	 * @var float
 	 */
 	public $item_total;
+
+	/**
+	 * Shipping total
+	 *
+	 * @var float
+	 */
+	public $shipping_total;
+
+	/**
+	 * Tax total
+	 *
+	 * @var float
+	 */
+	public $tax_total;
 
 	// }}}
 	// {{{ protected function init()
