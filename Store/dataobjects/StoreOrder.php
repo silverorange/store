@@ -57,7 +57,7 @@ class StoreOrder extends StoreDataObject
 	 *
 	 * @var float
 	 */
-	public $shipping;
+	public $shipping_total;
 
 	/**
 	 * Total amount
