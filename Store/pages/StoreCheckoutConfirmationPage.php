@@ -37,12 +37,16 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		if (isset($this->session->ad))
 			$order->ad = $this->session->ad;
 
-		$billing_provstate = $order->billing_address->provstate;
-		$shipping_provstate = $order->shipping_address->provstate;
-
 		$order->item_total = $cart->getItemTotal();
-		$order->shipping_total = $cart->getShippingTotal($shipping_provstate);
-		$order->total = $cart->getTotal($billing_provstate, $shipping_provstate);
+
+		$order->shipping_total = $cart->getShippingTotal($order->billing_address,
+			 $order->shipping_address);
+
+		$order->tax_total = $cart->getTaxTotal($order->billing_address,
+			 $order->shipping_address);
+
+		$order->total = $cart->getTotal($order->billing_address,
+			$order->shipping_address);
 	}
 
 	// }}}
@@ -55,13 +59,11 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$wrapper = $class_map->resolveClass('StoreOrderItemWrapper');
 		$order->items = new $wrapper();
 
-		$billing_provstate = $order->billing_address->provstate;
-		$shipping_provstate = $order->shipping_address->provstate;
+		$tax_provstate = $this->app->cart->checkout->getTaxProvstate(
+					$order->billing_address, $order->shipping_address);
 
 		foreach ($this->app->cart->checkout->getAvailableEntries() as $entry) {
-			$order_item = $entry->createOrderItem(
-				$billing_provstate, $shipping_provstate);
-
+			$order_item = $entry->createOrderItem($tax_provstate);
 			$order->items->add($order_item);
 		}
 	}
