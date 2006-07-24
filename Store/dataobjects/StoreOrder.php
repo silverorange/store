@@ -82,13 +82,13 @@ class StoreOrder extends StoreDataObject
 			$this->class_map->resolveClass('StoreAccount'));
 
 		$this->registerInternalProperty('billing_address',
-			$this->class_map->resolveClass('StoreOrderAddress'));
+			$this->class_map->resolveClass('StoreOrderAddress'), true);
 
 		$this->registerInternalProperty('shipping_address',
-			$this->class_map->resolveClass('StoreOrderAddress'));
+			$this->class_map->resolveClass('StoreOrderAddress'), true);
 
 		$this->registerInternalProperty('payment_method',
-			$this->class_map->resolveClass('StoreOrderPaymentMethod'));
+			$this->class_map->resolveClass('StoreOrderPaymentMethod'), true);
 
 		$this->registerDateProperty('createdate');
 
@@ -115,6 +115,24 @@ class StoreOrder extends StoreDataObject
 		$sql = 'select * from OrderItem where ordernum = %s';
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 		return SwatDB::query($this->db, $sql, $wrapper);
+	}
+
+	// }}}
+
+	// saver methods
+	// {{{ protected function saveItems()
+
+	/**
+	 * Automatically saves StoreOrderItem sub-data-objects when this
+	 * StoreOrder object is saved
+	 */
+	protected function saveItems()
+	{
+		foreach ($this->items as $item)
+			$item->ordernum = $this;
+
+		$this->items->setDatabase($this->db);
+		$this->items->save();
 	}
 
 	// }}}
