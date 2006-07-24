@@ -34,7 +34,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		$order->locale = $this->app->getLocale();
 
-		//order totals
+		if (isset($this->session->ad))
+			$order->ad = $this->session->ad;
 
 		$billing_provstate = $order->billing_address->provstate;
 		$shipping_provstate = $order->shipping_address->provstate;
