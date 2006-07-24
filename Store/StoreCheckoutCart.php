@@ -97,6 +97,25 @@ abstract class StoreCheckoutCart extends StoreCart
 	}
 
 	// }}}
+	// {{{ public function removeAvailableEntries()
+
+	/**
+	 * Removes all available entries from this cart
+	 *
+	 * @return array the array of StoreCartEntry objects that were removed from
+	 *                this cart.
+	 */
+	public function &removeAvailableEntries()
+	{
+		$removed_entries = array();
+
+		foreach ($this->getAvailableEntries() as $entry)
+			$removed_entries[] = $this->removeEntry($entry);
+
+		return $removed_entries;
+	}
+
+	// }}}
 	// {{{ protected function preSaveEntry()
 
 	/**
