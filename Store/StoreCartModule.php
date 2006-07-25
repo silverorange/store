@@ -370,7 +370,7 @@ class StoreCartModule extends SiteApplicationModule
 			$this->app->db, $quoted_item_ids, $this->app->getRegion()->id,
 			false);
 
-		$product_sql = 'select id, shortname, title, primary_category
+		$product_sql = 'select id, shortname, title, primary_category, catalog
 			from Product left outer join ProductPrimaryCategoryView
 			on product = id where id in (%s)';
 
