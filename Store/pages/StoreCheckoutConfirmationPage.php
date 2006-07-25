@@ -59,7 +59,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$wrapper = $class_map->resolveClass('StoreOrderItemWrapper');
 		$order->items = new $wrapper();
 
-		$tax_provstate = $this->app->cart->checkout->getTaxProvstate(
+		$tax_provstate = $this->app->cart->checkout->getTaxProvState(
 					$order->billing_address, $order->shipping_address);
 
 		foreach ($this->app->cart->checkout->getAvailableEntries() as $entry) {
