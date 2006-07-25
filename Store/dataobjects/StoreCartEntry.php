@@ -264,6 +264,10 @@ abstract class StoreCartEntry extends StoreDataObject
 		$order_item->product_title = $this->item->product->title;
 		$order_item->quick_order = $this->quick_order;
 
+		// set database if it exists
+		if ($this->db !== null)
+			$order_item->setDatabase($this->db);
+
 		return $order_item;
 	}
 
