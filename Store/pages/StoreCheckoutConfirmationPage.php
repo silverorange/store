@@ -100,12 +100,14 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		if ($form->isProcessed()) {
 			$this->updateProgress();
+			$order = $this->app->session->order;
 
 			// set createdate to now
-			$this->app->session->order->createdate = new SwatDate();
+			$order->createdate = new SwatDate();
 
 			// save order
-			$this->app->session->order->save();
+			$order->save();
+			$this->updateInventory($order);
 
 			// we're done, remove order from session
 			$this->app->session->order = null;
@@ -115,6 +117,13 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 			$this->app->relocate('checkout/thankyou');
 		}
+	}
+
+	// }}}
+	// {{{ protected function updateInventory()
+
+	protected function updateInventory($order)
+	{
 	}
 
 	// }}}
