@@ -107,13 +107,15 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 			// save order
 			$order->save();
-			$this->updateInventory($order);
 
 			// we're done, remove order from session
 			$this->app->session->order = null;
 
 			// remove entries from cart that were ordered
-			$this->app->cart->checkout->removeAvailableEntries();
+			$ordered_entries = 
+				$this->app->cart->checkout->removeAvailableEntries();
+
+			$this->updateInventory($ordered_entries);
 
 			$this->app->relocate('checkout/thankyou');
 		}
@@ -122,7 +124,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	// }}}
 	// {{{ protected function updateInventory()
 
-	protected function updateInventory($order)
+	protected function updateInventory($entries)
 	{
 	}
 
