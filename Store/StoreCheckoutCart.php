@@ -268,9 +268,9 @@ abstract class StoreCheckoutCart extends StoreCart
 		StoreAddress $shipping_address);
 	
 	// }}}
-	// {{{ abstract public function getTaxProvstate()
+	// {{{ abstract public function getTaxProvState()
 
-	abstract public function getTaxProvstate(
+	abstract public function getTaxProvState(
 		StoreAddress $billing_address, StoreAddress $shipping_address);
 
 	// }}}
