@@ -70,6 +70,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 				$this->app->cart->checkout->removeAvailableEntries();
 
 			$this->updateInventory($ordered_entries);
+			$this->sendConfirmationEmail($order);
 
 			$this->app->relocate('checkout/thankyou');
 		}
@@ -79,6 +80,13 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	// {{{ protected function updateInventory()
 
 	protected function updateInventory($entries)
+	{
+	}
+
+	// }}}
+	// {{{ protected function sendConfirmationEmail()
+
+	protected function sendConfirmationEmail($order)
 	{
 	}
 
