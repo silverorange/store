@@ -121,6 +121,7 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 	public function build()
 	{
 		parent::build();
+		$this->buildInternal();
 
 		if ($this->ui !== null) {
 			$this->layout->addHtmlHeadEntrySet(
@@ -130,6 +131,13 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 			$this->ui->display();
 			$this->layout->endCapture();
 		}
+	}
+
+	// }}}
+	// {{{ protected function buildInternal()
+
+	protected function buildInternal()
+	{
 	}
 
 	// }}}

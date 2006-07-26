@@ -20,52 +20,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		parent::init();
 		$this->checkOrder();
-		$this->createOrder();
-		$this->createOrderItems();
-	}
-
-	// }}}
-	// {{{ protected function createOrder()
-
-	protected function createOrder()
-	{
-		$cart = $this->app->cart->checkout;
-		$order = $this->app->session->order;
-
-		$order->locale = $this->app->getLocale();
-
-		if (isset($this->session->ad))
-			$order->ad = $this->session->ad;
-
-		$order->item_total = $cart->getItemTotal();
-
-		$order->shipping_total = $cart->getShippingTotal($order->billing_address,
-			 $order->shipping_address);
-
-		$order->tax_total = $cart->getTaxTotal($order->billing_address,
-			 $order->shipping_address);
-
-		$order->total = $cart->getTotal($order->billing_address,
-			$order->shipping_address);
-	}
-
-	// }}}
-	// {{{ protected function createOrderItems()
-
-	protected function createOrderItems()
-	{
-		$order = $this->app->session->order;
-		$class_map = StoreClassMap::instance();
-		$wrapper = $class_map->resolveClass('StoreOrderItemWrapper');
-		$order->items = new $wrapper();
-
-		$tax_provstate = $this->app->cart->checkout->getTaxProvState(
-			$order->billing_address, $order->shipping_address);
-
-		foreach ($this->app->cart->checkout->getAvailableEntries() as $entry) {
-			$order_item = $entry->createOrderItem($tax_provstate);
-			$order->items->add($order_item);
-		}
 	}
 
 	// }}}
@@ -126,6 +80,62 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	protected function updateInventory($entries)
 	{
+	}
+
+	// }}}
+
+	// build phase
+	// {{{ protected function buildInternal()
+
+	protected function buildInternal()
+	{
+		parent::buildInternal();
+		$this->createOrder();
+		$this->createOrderItems();
+	}
+
+	// }}}
+	// {{{ protected function createOrder()
+
+	protected function createOrder()
+	{
+		$cart = $this->app->cart->checkout;
+		$order = $this->app->session->order;
+
+		$order->locale = $this->app->getLocale();
+
+		if (isset($this->session->ad))
+			$order->ad = $this->session->ad;
+
+		$order->item_total = $cart->getItemTotal();
+
+		$order->shipping_total = $cart->getShippingTotal($order->billing_address,
+			 $order->shipping_address);
+
+		$order->tax_total = $cart->getTaxTotal($order->billing_address,
+			 $order->shipping_address);
+
+		$order->total = $cart->getTotal($order->billing_address,
+			$order->shipping_address);
+	}
+
+	// }}}
+	// {{{ protected function createOrderItems()
+
+	protected function createOrderItems()
+	{
+		$order = $this->app->session->order;
+		$class_map = StoreClassMap::instance();
+		$wrapper = $class_map->resolveClass('StoreOrderItemWrapper');
+		$order->items = new $wrapper();
+
+		$tax_provstate = $this->app->cart->checkout->getTaxProvState(
+			$order->billing_address, $order->shipping_address);
+
+		foreach ($this->app->cart->checkout->getAvailableEntries() as $entry) {
+			$order_item = $entry->createOrderItem($tax_provstate);
+			$order->items->add($order_item);
+		}
 	}
 
 	// }}}
