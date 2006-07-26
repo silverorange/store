@@ -122,7 +122,7 @@ abstract class StorePaymentMethod extends StoreDataObject
 			throw new StoreException('No GPG id provided.');
 
 		return self::decryptCreditCardNumber($this->credit_card_number,
-			$secret_key, $passphrase);
+			$secret_key, $passphrase, $this->gpg_id);
 	}
 
 	// }}}
@@ -212,14 +212,23 @@ abstract class StorePaymentMethod extends StoreDataObject
 	// {{{ public static function decryptCreditCardNumber()
 
 	public static function decryptCreditCardNumber($encrypted_number,
-		$secret_key, $passphrase)
+		$secret_key, $passphrase, $gpg_id)
 	{
 		$gpg = new Crypt_GPG();
 
-		// TODO - import secret_key file
+		if (!is_readable($secret_key))
+			 throw new StoreException('Secret key can not be read.');
 
-		return $gpg->decrypt($encrypted_number, $passphrase);
-	
+		$key_handle = fopen($secret_key, "r");
+		$key_data = fread($key_handle, filesize($secret_key));
+
+		$gpg->importKey($key_data);
+
+		$decrypted_data = $gpg->decrypt($encrypted_number, $passphrase);
+
+		$gpg->deleteSecretKey($gpg_id);
+
+		return $decrypted_data;
 	}
 
 	// }}}
