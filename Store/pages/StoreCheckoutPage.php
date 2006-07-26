@@ -29,6 +29,10 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 		if (!$this->app->session->isActive())
 			$this->app->relocate('cart');
 
+		// relocate to cart if no items in the cart
+		if (count($this->app->cart->checkout->getAvailableEntries()) <= 0)
+			$this->app->relocate('cart');
+
 		// initialize session variable to track checkout progress
 		if (!isset($this->app->session->checkout_progress))
 			$this->resetProgress();
