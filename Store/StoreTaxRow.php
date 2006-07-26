@@ -23,13 +23,11 @@ class StoreTaxRow extends SwatTableViewRow
 
 	public function display()
 	{
-		if ($this->value === null)
+		// taxes are never free
+		if ($this->value === null || $this->value <= 0)
 			$this->visible = false;
 
 		if (!$this->visible)
-			return;
-
-		if (!($this->value > 0))
 			return;
 
 		$tr_tag = new SwatHtmlTag('tr');
