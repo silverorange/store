@@ -88,11 +88,25 @@ class StoreCategory extends StoreDataObject
 	public $displayorder;
 
 	// }}}
+	// {{{ protected properties
+
+	protected $join_region = null;
+
+	// }}}
+	// {{{ public function setRegion()
+
+	public function setRegion($region)
+	{
+		$this->join_region = $region;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
 	{
 		$this->registerInternalProperty('path');
+		$this->registerInternalProperty('product_count');
 		$this->registerDateProperty('createdate');
 
 		$this->table = 'Category';
@@ -128,6 +142,40 @@ class StoreCategory extends StoreDataObject
 		}
 
 		return $path;
+	}
+
+	// }}}
+	// {{{ protected function loadProductCount()
+
+	/**
+	 * Loads the count of visible products in this category
+	 *
+	 * If the product_count was part of the initial query to load this
+	 * category, that value is returned. Otherwise, a separate query gets the
+	 * product_count of this category. If you are calling this method
+	 * frequently during a singlerequest, it is more efficient to include the
+	 * product_count in the initial category query.
+	 */
+	protected function loadProductCount()
+	{
+		$product_count = '';
+
+		if ($this->hasInternalValue('product_count') &&
+			$this->getInternalValue('product_count') !== null) {
+			$product_count = $this->getInternalValue('product_count');
+		} else {
+			$sql = 'select product_count
+				from CategoryVisibleProductCountByRegionView
+				where region = %s and category = %s';
+
+			$sql = sprintf($sql,
+				$this->db->quote($this->join_region, 'integer'),
+				$this->db->quote($this->id, 'integer'));
+
+			$product_count = SwatDB::queryOne($this->db, $sql);
+		}
+
+		return $product_count;
 	}
 
 	// }}}
