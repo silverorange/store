@@ -29,6 +29,9 @@ class StoreTaxRow extends SwatTableViewRow
 		if (!$this->visible)
 			return;
 
+		if (!($this->value > 0))
+			return;
+
 		$tr_tag = new SwatHtmlTag('tr');
 		$tr_tag->class = 'store-total-row';
 		$tr_tag->id = $this->id;
@@ -41,15 +44,13 @@ class StoreTaxRow extends SwatTableViewRow
 		$tr_tag->open();
 		$th_tag->display();
 
-		if ($this->value > 0) {
-			$renderer = new SwatMoneyCellRenderer();
-			$renderer->value = $this->value;
+		$renderer = new SwatMoneyCellRenderer();
+		$renderer->value = $this->value;
 
-			$td_tag = new SwatHtmlTag('td', $renderer->getTdAttributes());
-			$td_tag->open();
-			$renderer->render();
-			$td_tag->close();
-		}
+		$td_tag = new SwatHtmlTag('td', $renderer->getTdAttributes());
+		$td_tag->open();
+		$renderer->render();
+		$td_tag->close();
 
 		if ($this->offset > 0) {
 			$td_tag = new SwatHtmlTag('td');
