@@ -581,16 +581,12 @@ class StoreCartPage extends StoreArticlePage
 		$ds->quantity = $entry->getQuantity();
 		$ds->description = $entry->item->getDescription();
 		$ds->extension = $entry->getExtension();
-		$ds->is_not_gift = true;
-		$ds->is_gift = false;
+		$ds->message = null;
 
 		if ($entry->item->product->primary_category === null)
 			$ds->product_link = null;
 		else
 			$ds->product_link = 'store/'.$entry->item->product->path;
-
-		$ds->message = ($entry instanceof CustomSeedCartEntry) ?
-			$entry->message : null;
 
 		return $ds;
 	}
