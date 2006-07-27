@@ -3,12 +3,13 @@
 require_once 'Swat/SwatTextCellRenderer.php';
 
 /**
- * A cart message cell renderer
+ * A cell renderer for displaying messages in the cart
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class CartMessageCellRenderer extends SwatTextCellRenderer
+class StoreCartMessageCellRenderer extends SwatTextCellRenderer
 {
 	// {{{ public function render()
 
@@ -18,7 +19,7 @@ class CartMessageCellRenderer extends SwatTextCellRenderer
 			return;
 
 		$div = new SwatHtmlTag('div');
-		$div->class = 'veseys-cart-message';
+		$div->class = 'store-cart-message';
 		$div->setContent($this->text, 'text/xml');
 		$div->display();
 	}
