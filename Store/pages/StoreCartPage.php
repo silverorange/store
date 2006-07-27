@@ -620,35 +620,12 @@ class StoreCartPage extends StoreArticlePage
 		$ds = new SwatDetailsStore($entry);
 
 		$ds->description = $entry->item->getDescription();
+		$ds->message = null;
 
 		if ($entry->item->product->primary_category === null)
 			$ds->product_link = null;
 		else
 			$ds->product_link = 'store/'.$entry->item->product->path;
-
-		$ds->message = ($entry instanceof CustomSeedCartEntry) ?
-				$entry->message : null;
-
-		// get unavailable status
-		if ($entry->item->status == Item::STATUS_OUT_OF_STOCK) {
-			$ds->status = Item::getStatusTitle(Item::STATUS_OUT_OF_STOCK);
-		} elseif ($entry->item->status == Item::STATUS_BACKORDERED) {
-			$ds->status = Item::getStatusTitle(Item::STATUS_BACKORDERED);
-		} elseif ($entry->getInternalValue('region') !==
-			$this->app->getRegion()->id) {
-			switch ($this->app->getRegion()->id) {
-			case Region::REGION_US:
-				$ds->status = sprintf('Not available in the %s',
-					$this->app->getRegion()->title);
-
-				break;
-			default:
-				$ds->status = sprintf('Not available in %s',
-					$this->app->getRegion()->title);
-
-				break;
-			}
-		}
 
 		return $ds;
 	}
@@ -680,13 +657,12 @@ class StoreCartPage extends StoreArticlePage
 		$ds->quantity = $entry->getQuantity();
 		$ds->description = $entry->item->getDescription();
 		$ds->extension = $entry->getExtension();
+		$ds->message = null;
 
 		if ($entry->item->product->primary_category === null)
 			$ds->product_link = null;
 		else
 			$ds->product_link = 'store/'.$entry->item->product->path;
-
-		$ds->message = null;
 
 		return $ds;
 	}
