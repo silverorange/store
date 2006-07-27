@@ -54,26 +54,39 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		if ($form->isProcessed()) {
 			$this->updateProgress();
-			$order = $this->app->session->order;
 
-			// set createdate to now
-			$order->createdate = new SwatDate();
-
-			// save order
-			$order->save();
-
-			// we're done, remove order from session
-			$this->app->session->order = null;
-
-			// remove entries from cart that were ordered
-			$ordered_entries = 
-				$this->app->cart->checkout->removeAvailableEntries();
-
+			$ordered_entries = $this->processOrder();
 			$this->updateInventory($ordered_entries);
 			$this->sendConfirmationEmail($order);
 
 			$this->app->relocate('checkout/thankyou');
 		}
+	}
+
+	// }}}
+	// {{{ protected function order()
+
+	/**
+	 * @return array a reference to an array of ordered entries
+	 */
+	protected function &processOrder()
+	{
+		$order = $this->app->session->order;
+
+		// set createdate to now
+		$order->createdate = new SwatDate();
+
+		// save order
+		$order->save();
+
+		// we're done, remove order from session
+		$this->app->session->order = null;
+
+		// remove entries from cart that were ordered
+		$ordered_entries = 
+			$this->app->cart->checkout->removeAvailableEntries();
+
+		return $ordered_entries;
 	}
 
 	// }}}
