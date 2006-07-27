@@ -50,10 +50,10 @@ abstract class StoreCartPage extends StoreArticlePage
 	{
 		parent::init();
 
-		if (!isset($this->cart->checkout))
+		if (!isset($this->app->cart->checkout))
 			throw new StoreException('Store has no checkout cart.');
 
-		if (!isset($this->cart->saved))
+		if (!isset($this->app->cart->saved))
 			throw new StoreException('Store has no saved cart.');
 
 		$this->ui = new StoreUI();
