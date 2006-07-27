@@ -111,7 +111,8 @@ function StoreQuickOrder_staticTimeOut(quick_order, replicator_id)
 	var sku = item.sku.value;
 	item.sequence++;
 
-	item.div.innerHTML = '<span class="loading">loading …</span>';
+	item.div.innerHTML = '<span class="store-quick-order-item-loading">' +
+		'loading …</span>';
 
 	function callBack(response)
 	{
