@@ -1,0 +1,245 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatForm" id="form">
+		<widget class="SwatMessageDisplay" id="message_display" />
+		<widget class="SwatFrame" id="cart_frame">
+			<widget class="SwatHeaderFormField" id="checkout_top_field">
+				<widget class="SwatButton" id="update_top">
+					<property name="title">Update Cart</property>
+				</widget>
+				<widget class="SwatButton" id="checkout_top">
+					<property name="title">Proceed to Checkout</property>
+					<property name="visible" type="boolean">false</property>
+				</widget>
+			</widget>
+			<!-- {{{ available cart -->
+			<widget class="SwatTableView" id="available_cart_view">
+				<object class="SwatTableViewGroup">
+					<property name="group_by">item.product.id</property>
+					<object class="SwatLinkCellRenderer">
+						<property name="text" type="data">item.product.title</property>
+						<property name="link" type="data">product_link</property>
+					</object>
+				</object>
+				<object class="StoreItemColumn">
+					<property name="id">entry</property>
+					<property name="title">Item #</property>
+					<object class="SwatTextCellRenderer">
+						<property name="text" type="data">item.sku</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="title">Description</property>
+					<object class="StoreCartEntryDescriptionCellRenderer">
+						<property name="text" type="data">description</property>
+					</object>
+					<object class="StoreCartMessageCellRenderer">
+						<property name="text" type="data">message</property>
+						<property name="content_type">text/xml</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="id">price</property>
+					<property name="title">Price</property>
+					<object class="StoreItemPriceCellRenderer">
+						<property name="value" type="data">item.price</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="id">quantity_column</property>
+					<property name="title">Quantity</property>
+					<object class="SwatWidgetCellRenderer">
+						<property name="id">quantity_renderer</property>
+						<property name="replicator_id" type="data">id</property>
+						<widget class="SwatIntegerEntry" id="quantity_entry">
+							<property name="size" type="integer">3</property>
+							<property name="maxlength" type="integer">8</property>
+							<property name="value" type="data">quantity</property>
+							<property name="minimum_value" type="integer">0</property>
+							<property name="show_thousands_separator" type="boolean">false</property>
+						</widget>
+					</object>
+					<object class="SwatNumericCellRenderer">
+						<property name="value" type="data">quantity</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="title">Total</property>
+					<object class="StoreItemPriceCellRenderer">
+						<property name="value" type="data">extension</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="id">remove_column</property>
+					<object class="SwatWidgetCellRenderer">
+						<property name="id">remove_available_renderer</property>
+						<property name="replicator_id" type="data">id</property>
+						<widget class="SwatButton" id="remove_available_button">
+							<property name="title">Remove</property>
+						</widget>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="id">move_column</property>
+					<object class="SwatWidgetCellRenderer">
+						<property name="id">move_available_renderer</property>
+						<property name="replicator_id" type="data">id</property>
+						<widget class="SwatButton" id="move_available_button">
+							<property name="title">Save for Later</property>
+						</widget>
+					</object>
+				</object>
+				<object class="StoreTotalRow">
+					<property name="id">shipping</property>
+					<property name="offset" type="integer">2</property>
+					<property name="title">Shipping Total</property>
+				</object>
+				<object class="StoreTotalRow">
+					<property name="id">subtotal</property>
+					<property name="offset" type="integer">2</property>
+					<property name="title">Subtotal</property>
+				</object>
+			</widget>
+			<!-- }}} -->
+			<!-- {{{ unavailable cart -->
+			<widget class="SwatContainer" id="unavailable_cart">
+				<property name="visible" type="boolean">false</property>
+				<widget class="SwatContentBlock" id="unavailable_cart_message" />
+				<widget class="SwatTableView" id="unavailable_cart_view">
+					<object class="SwatTableViewGroup">
+						<property name="group_by">item.product.id</property>
+						<object class="SwatLinkCellRenderer">
+							<property name="text" type="data">item.product.title</property>
+							<property name="link" type="data">product_link</property>
+						</object>
+					</object>
+					<object class="StoreItemColumn">
+						<property name="id">entry</property>
+						<property name="title">Item #</property>
+						<object class="SwatTextCellRenderer">
+							<property name="text" type="data">item.sku</property>
+						</object>
+					</object>
+					<object class="SwatTableViewColumn">
+						<property name="title">Description</property>
+						<object class="StoreCartEntryDescriptionCellRenderer">
+							<property name="text" type="data">description</property>
+						</object>
+					</object>
+					<object class="SwatTableViewColumn">
+						<property name="title">Status</property>
+						<object class="SwatTextCellRenderer">
+							<property name="text" type="data">status</property>
+						</object>
+					</object>
+					<object class="SwatTableViewColumn">
+						<property name="id">remove_column</property>
+						<object class="SwatWidgetCellRenderer">
+							<property name="id">remove_unavailable_renderer</property>
+							<property name="replicator_id" type="data">id</property>
+							<widget class="SwatButton" id="remove_unavailable_button">
+								<property name="title">Remove</property>
+							</widget>
+						</object>
+					</object>
+					<object class="SwatTableViewColumn">
+						<property name="id">move_column</property>
+						<object class="SwatWidgetCellRenderer">
+							<property name="id">move_unavailable_renderer</property>
+							<property name="replicator_id" type="data">id</property>
+							<widget class="SwatButton" id="move_unavailable_button">
+								<property name="title">Save for Later</property>
+							</widget>
+						</object>
+					</object>
+				</widget>
+			</widget>
+			<!-- }}} -->
+			<widget class="SwatFooterFormField">
+				<widget class="SwatButton" id="update_bottom">
+					<property name="title">Update Cart</property>
+				</widget>
+				<widget class="SwatButton" id="checkout_bottom">
+					<property name="title">Proceed to Checkout</property>
+					<property name="visible" type="boolean">false</property>
+				</widget>
+			</widget>
+		</widget>
+	</widget>
+	<widget class="SwatForm" id="saved_cart_form">
+		<property name="visible" type="boolean">false</property>
+		<widget class="SwatFrame" id="saved_cart_frame">
+			<widget class="SwatContentBlock" id="saved_cart_message" />
+			<!-- {{{ saved cart -->
+			<widget class="SwatTableView" id="saved_cart_view">
+				<object class="SwatTableViewGroup">
+					<property name="group_by">item.product.id</property>
+					<object class="SwatLinkCellRenderer">
+						<property name="text" type="data">item.product.title</property>
+						<property name="link" type="data">product_link</property>
+					</object>
+				</object>
+				<object class="StoreItemColumn">
+					<property name="id">entry</property>
+					<property name="title">Item #</property>
+					<object class="SwatTextCellRenderer">
+						<property name="text" type="data">item.sku</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="title">Description</property>
+					<object class="StoreCartEntryDescriptionCellRenderer">
+						<property name="text" type="data">description</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="id">price</property>
+					<property name="title">Price</property>
+					<object class="StoreMoneyCellRenderer">
+						<property name="value" type="data">item.price</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="id">quantity_column</property>
+					<property name="title">Quantity</property>
+					<object class="SwatNumericCellRenderer">
+						<property name="value" type="data">quantity</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="title">Total</property>
+					<object class="StoreMoneyCellRenderer">
+						<property name="value" type="data">extension</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="id">remove_column</property>
+					<object class="SwatWidgetCellRenderer">
+						<property name="id">remove_saved_renderer</property>
+						<property name="replicator_id" type="data">id</property>
+						<widget class="SwatButton" id="remove_saved_button">
+							<property name="title">Remove</property>
+						</widget>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="id">move_column</property>
+					<object class="SwatWidgetCellRenderer">
+						<property name="id">move_saved_renderer</property>
+						<property name="replicator_id" type="data">id</property>
+						<widget class="SwatButton" id="move_saved_button">
+							<property name="title">Move to Cart</property>
+						</widget>
+					</object>
+				</object>
+			</widget>
+			<!-- }}} -->
+			<widget class="SwatFooterFormField" id="saved_cart_move_all_field">
+				<widget class="SwatButton" id="saved_cart_move_all">
+					<property name="title">Add All Saved Items to Cart</property>
+				</widget>
+			</widget>
+		</widget>
+	</widget>
+</swatml>
