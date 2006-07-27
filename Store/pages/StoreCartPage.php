@@ -1,19 +1,11 @@
 <?php
 
-require_once 'Store/StoreUI.php';
 require_once 'Store/pages/ArticlePage.php';
+require_once 'Store/StoreUI.php';
+
 require_once 'Swat/SwatString.php';
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
-
-require_once '../include/dataobjects/ProvState.php';
-require_once '../include/ItemColumn.php';
-require_once '../include/ItemPriceCellRenderer.php';
-require_once '../include/CartClassCodeTableView.php';
-require_once '../include/ClassCodeGroup.php';
-require_once '../include/CartEntryDescriptionCellRenderer.php';
-require_once '../include/CartMessageCellRenderer.php';
-require_once '../include/ShippingTypeGroup.php';
 
 /**
  * Shopping cart display page
