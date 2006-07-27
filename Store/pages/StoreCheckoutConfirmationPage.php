@@ -80,7 +80,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$order->save();
 
 		// we're done, remove order from session
-		$this->app->session->order = null;
+		unset($this->app->session->order);
 
 		// remove entries from cart that were ordered
 		$ordered_entries = 
