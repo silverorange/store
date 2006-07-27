@@ -21,17 +21,6 @@
 	width: 100%;
 }
 
-.swat-table-view .shipping-row th,
-.swat-table-view tbody .shipping-row td {
-	border: 0;
-	background: #FFFFEE;
-}
-
-.swat-table-view .shipping-row th {
-	text-align: right;
-}
-
-
 /* Product Cart (mini cart view on product page) */
 
 #main-content #cart_frame .swat-frame-title {
