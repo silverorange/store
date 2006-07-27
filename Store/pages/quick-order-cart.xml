@@ -13,7 +13,7 @@
 						<property name="link" type="data">product_link</property>
 					</object>
 				</object>
-				<object class="SwatTableViewColumn">
+				<object class="StoreItemColumn">
 					<property name="title">Item #</property>
 					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">item.sku</property>
@@ -21,7 +21,7 @@
 				</object>
 				<object class="SwatTableViewColumn">
 					<property name="title">Description</property>
-					<object class="SwatTextCellRenderer">
+					<object class="StoreCartEntryDescriptionCellRenderer">
 						<property name="text" type="data">description</property>
 					</object>
 				</object>
