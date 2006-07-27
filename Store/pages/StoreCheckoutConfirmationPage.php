@@ -57,7 +57,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 			$ordered_entries = $this->processOrder();
 			$this->updateInventory($ordered_entries);
-			$this->sendConfirmationEmail($order);
 
 			$this->app->relocate('checkout/thankyou');
 		}
@@ -78,6 +77,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		// save order
 		$order->save();
+
+		// send email
+		$this->sendConfirmationEmail($order);
 
 		// we're done, remove order from session
 		unset($this->app->session->order);
