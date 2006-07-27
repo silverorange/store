@@ -72,9 +72,9 @@ class StoreCartPage extends StoreArticlePage
 	}
 
 	// }}}
-	// {{{ private function processCheckoutCartForm()
+	// {{{ protected function processCheckoutCartForm()
 
-	private function processCheckoutCartForm()
+	protected function processCheckoutCartForm()
 	{
 		$form = $this->ui->getWidget('form');
 		$form->process();
@@ -104,9 +104,9 @@ class StoreCartPage extends StoreArticlePage
 	}
 
 	// }}}
-	// {{{ private function processSavedCartForm()
+	// {{{ protected function processSavedCartForm()
 
-	private function processSavedCartForm()
+	protected function processSavedCartForm()
 	{
 		$form = $this->ui->getWidget('saved_cart_form');
 		$form->process();
