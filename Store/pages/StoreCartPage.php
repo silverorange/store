@@ -686,29 +686,7 @@ class StoreCartPage extends StoreArticlePage
 		else
 			$ds->product_link = 'store/'.$entry->item->product->path;
 
-		$ds->message = ($entry instanceof CustomSeedCartEntry) ?
-				$entry->message : null;
-
-		// get unavailable status
-		if ($entry->item->status == Item::STATUS_OUT_OF_STOCK) {
-			$ds->status = Item::getStatusTitle(Item::STATUS_OUT_OF_STOCK);
-		} elseif ($entry->item->status == Item::STATUS_BACKORDERED) {
-			$ds->status = Item::getStatusTitle(Item::STATUS_BACKORDERED);
-		} elseif ($entry->getInternalValue('region') !==
-			$this->app->getRegion()->id) {
-			switch ($this->app->getRegion()->id) {
-			case Region::REGION_US:
-				$dsw->status = sprintf('Not available in the %s',
-					$this->app->getRegion()->title);
-
-				break;
-			default:
-				$ds->status = sprintf('Not available in %s',
-					$this->app->getRegion()->title);
-
-				break;
-			}
-		}
+		$ds->message = null;
 
 		return $ds;
 	}
