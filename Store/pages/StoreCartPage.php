@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/pages/ArticlePage.php';
+require_once 'Store/pages/StoreArticlePage.php';
 require_once 'Store/StoreUI.php';
 
 require_once 'Swat/SwatString.php';
