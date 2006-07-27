@@ -559,7 +559,7 @@ abstract class StoreCartPage extends StoreArticlePage
 	/**
 	 * @return SwatDetailsStore
 	 */
-	protected function getAvailableRow(StoreCartEntry $row)
+	protected function getAvailableRow(StoreCartEntry $entry)
 	{
 		$ds = new SwatDetailsStore($entry);
 
