@@ -38,8 +38,6 @@ class StoreCartPage extends StoreArticlePage
 	{
 		parent::init();
 
-		$this->app->cart->checkout->loadClassCodes();
-
 		$this->ui = new StoreUI();
 		$this->ui->loadFromXML(dirname(__FILE__).'/cart.xml');
 
@@ -133,9 +131,9 @@ class StoreCartPage extends StoreArticlePage
 	}
 
 	// }}}
-	// {{{ private function updateCheckoutCart()
+	// {{{ protected function updateCheckoutCart()
 
-	private function updateCheckoutCart()
+	protected function updateCheckoutCart()
 	{
 		$message_display = $this->ui->getWidget('message_display');
 		$available_view = $this->ui->getWidget('available_cart_view');
@@ -254,9 +252,9 @@ class StoreCartPage extends StoreArticlePage
 	}
 
 	// }}}
-	// {{{ private function updateSavedCart()
+	// {{{ protected function updateSavedCart()
 
-	private function updateSavedCart()
+	protected function updateSavedCart()
 	{
 		$message_display = $this->ui->getWidget('message_display');
 		$saved_view = $this->ui->getWidget('saved_cart_view');
@@ -307,25 +305,22 @@ class StoreCartPage extends StoreArticlePage
 	}
 
 	// }}}
-	// {{{ private function moveAllSavedCart()
+	// {{{ protected function moveAllSavedCart()
 
 	/**
 	 * Moves all saved cart items to checkout cart
 	 */
-	private function moveAllSavedCart()
+	protected function moveAllSavedCart()
 	{
 		$message_display = $this->ui->getWidget('message_display');
 		$saved_view = $this->ui->getWidget('saved_cart_view');
 
 		$num_moved_items = 0;
-		$quantity_column = $saved_view->getColumn('quantity_column');
-		$quantity_renderer = $quantity_column->getRendererByPosition(); 
-		foreach ($quantity_renderer->getClonedWidgets() as $id => $widget) {
+		$move_column = $saved_view->getColumn('move_column');
+		$move_renderer = $move_column->getRendererByPosition(); 
+		foreach ($move_renderer->getClonedWidgets() as $id => $widget) {
 			$entry = $this->app->cart->saved->getEntryById($id);
-			$quantity = $quantity_renderer->getWidget($id)->value;
-			
 			$this->added_entry_ids[] = $id;
-			$entry->setQuantity($quantity);
 			$this->app->cart->saved->removeEntry($entry);
 			$this->app->cart->checkout->addEntry($entry);
 			$num_moved_items++;
@@ -347,8 +342,6 @@ class StoreCartPage extends StoreArticlePage
 	{
 		parent::build();
 
-		$this->app->cart->checkout->loadApplicablePromotions();
-
 		if (count($this->added_entry_ids) > 0 ||
 			count($this->updated_entry_ids) > 0) {
 				$this->layout->addHtmlHeadEntry(
@@ -362,7 +355,7 @@ class StoreCartPage extends StoreArticlePage
 		}
 
 		$this->layout->addHtmlHeadEntry(
-			new SwatStyleSheetHtmlHeadEntry('styles/cart.css', 1));
+			new SwatStyleSheetHtmlHeadEntry('packages/store/styles/cart.css', 1));
 
 		$this->layout->addHtmlHeadEntrySet(
 			$this->ui->getRoot()->getHtmlHeadEntrySet());
@@ -386,10 +379,8 @@ class StoreCartPage extends StoreArticlePage
 			$this->buildUnavailableTableView();
 		}
 
+		// always show saved cart if it has items
 		$this->buildSavedTableView();
-
-		if (isset($this->app->session->promotion))
-			$this->ui->getWidget('promotion_note')->visible = false;
 
 		$this->layout->startCapture('content');
 		$this->ui->display();
