@@ -84,11 +84,12 @@ class StoreCartPage extends StoreArticlePage
 			$checkout_bottom = $this->ui->getWidget('checkout_bottom');
 
 			if ($form->hasMessage()) {
-				$msg = new SwatMessage('There is a problem with the '.
-					'information submitted.', SwatMessage::ERROR);
+				$msg = new SwatMessage(Store::_(
+					'There is a problem with the information submitted.'),
+					SwatMessage::ERROR);
 
-				$msg->secondary_content = 'Please address the fields '.
-					'highlighted below and re-submit the form.';
+				$msg->secondary_content = Store::_('Please address the '.
+					'fields highlighted below and re-submit the form.');
 
 				$this->ui->getWidget('message_display')->add($msg);
 			} else {
@@ -113,11 +114,12 @@ class StoreCartPage extends StoreArticlePage
 
 		if ($form->isProcessed()) {
 			if ($form->hasMessage()) {
-				$msg = new SwatMessage('There is a problem with the '.
-					'information submitted.', SwatMessage::ERROR);
+				$msg = new SwatMessage(Store::_(
+					'There is a problem with the information submitted.'),
+					SwatMessage::ERROR);
 
-				$msg->secondary_content = 'Please address the fields '.
-					'highlighted below and re-submit the form.';
+				$msg->secondary_content = Store::_('Please address the '.
+					'fields highlighted below and re-submit the form.');
 
 				$this->ui->getWidget('message_display')->add($msg);
 			} else {
@@ -236,11 +238,12 @@ class StoreCartPage extends StoreArticlePage
 		}
 
 		if ($item_removed)
-			$message_display->add(new SwatMessage('One item removed from '.
-				'shopping cart', SwatMessage::NOTIFICATION));
+			$message_display->add(new SwatMessage(Store::_(
+				'One item removed from shopping cart'),
+				SwatMessage::NOTIFICATION));
 
 		if ($item_updated)
-			$message_display->add(new SwatMessage(sprintf(ngettext(
+			$message_display->add(new SwatMessage(sprintf(Store::ngettext(
 				'%s item quantity updated', '%s item quantities updated',
 				$num_items_updated),
 				SwatString::numberFormat($num_items_updated)),
@@ -293,13 +296,13 @@ class StoreCartPage extends StoreArticlePage
 		}
 
 		if ($item_removed)
-			$message_display->add(new SwatMessage(
-				'One item removed from saved cart.',
+			$message_display->add(new SwatMessage(Store::_(
+				'One item removed from saved cart.'),
 				SwatMessage::NOTIFICATION));
 
 		if ($item_moved)
-			$message_display->add(new SwatMessage(
-				'One item moved to shopping cart.',
+			$message_display->add(new SwatMessage(Store::_(
+				'One item moved to shopping cart.'),
 				SwatMessage::NOTIFICATION));
 	}
 
@@ -328,7 +331,7 @@ class StoreCartPage extends StoreArticlePage
 			$num_moved_items++;
 		}
 
-		$message_display->add(new SwatMessage(sprintf(ngettext(
+		$message_display->add(new SwatMessage(sprintf(Store::ngettext(
 			'%s item moved to shopping cart.',
 			'%s items moved to shopping cart.', $num_moved_items),
 			SwatString::numberFormat($num_moved_items)),
@@ -365,13 +368,14 @@ class StoreCartPage extends StoreArticlePage
 			$this->ui->getRoot()->getHtmlHeadEntrySet());
 
 		if ($this->app->cart->checkout->isEmpty()) {
-			$empty_message = new SwatMessage('Your Shopping Cart is Empty',
+			$empty_message = new SwatMessage(Store::_(
+				'Your Shopping Cart is Empty'),
 				SwatMessage::NOTIFICATION);
 
 			$empty_message->content_type = 'text/xml';
-			$empty_message->secondary_content =
+			$empty_message->secondary_content = Store::_(
 				'You can add items to your shopping cart by selecting from '.
-				'the menu on the left and browsing for products.';
+				'the menu on the left and browsing for products.');
 
 			$messages = $this->ui->getWidget('message_display');
 			$messages->add($empty_message);
@@ -482,10 +486,10 @@ class StoreCartPage extends StoreArticlePage
 			$message = $this->ui->getWidget('unavailable_cart_message');
 			$message->content_type = 'text/xml';
 
-			$title = ngettext('Unavailable Item', 'Unavailable Items',
+			$title = Store::ngettext('Unavailable Item', 'Unavailable Items',
 				$count);
 
-			$text = ngettext(
+			$text = Store::ngettext(
 				'The item below is in your cart but is not currently '.
 				'available for purchasing and will not be included in '.
 				'your order.',
@@ -525,8 +529,8 @@ class StoreCartPage extends StoreArticlePage
 			$message = $this->ui->getWidget('saved_cart_message');
 			$message->content_type = 'text/xml';
 
-			$title = ngettext('Saved Item', 'Saved Items', $count);
-			$text = ngettext(
+			$title = Store::ngettext('Saved Item', 'Saved Items', $count);
+			$text = Store::ngettext(
 				'The item below is saved for later and will not be included '.
 				'in your order. You may move the item to your shopping cart '.
 				'by clicking the “add to cart” button.',
