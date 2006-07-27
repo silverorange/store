@@ -5,17 +5,18 @@ require_once 'Swat/SwatTextCellRenderer.php';
 /** 
  * Cell renderer for cart entry description column in the cart
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class CartEntryDescriptionCellRenderer extends SwatTextCellRenderer
+class StoreCartEntryDescriptionCellRenderer extends SwatTextCellRenderer
 {
 	// {{{ public function getCSSClassNames()
 
 	protected function getCSSClassNames()
 	{
 		$classes = parent::getCSSClassNames();
-		$classes[] = 'cart-entry-description';
+		$classes[] = 'store-cart-entry-description';
 
 		return $classes;
 	}
