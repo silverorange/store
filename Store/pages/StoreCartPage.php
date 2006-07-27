@@ -1,11 +1,12 @@
 <?php
 
 require_once 'Store/StoreUI.php';
+require_once 'Store/pages/ArticlePage.php';
 require_once 'Swat/SwatString.php';
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
+
 require_once '../include/dataobjects/ProvState.php';
-require_once '../include/pages/ArticlePage.php';
 require_once '../include/ItemColumn.php';
 require_once '../include/ItemPriceCellRenderer.php';
 require_once '../include/CartClassCodeTableView.php';
@@ -17,10 +18,10 @@ require_once '../include/ShippingTypeGroup.php';
 /**
  * Shopping cart display page
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2006 silverorange
  */
-class CartPage extends ArticlePage
+class StoreCartPage extends StoreArticlePage
 {
 	// {{{ private properties
 
@@ -550,156 +551,162 @@ class CartPage extends ArticlePage
 	}
 
 	// }}}
-	// {{{ private function getAvailableTableStore()
+	// {{{ protected function getAvailableTableStore()
 
-	private function getAvailableTableStore()
+	protected function getAvailableTableStore()
 	{
 		$store = new SwatTableStore();
 
 		$entries = $this->app->cart->checkout->getAvailableEntries();
-		foreach ($entries as $entry) {
-			$ds = new SwatDetailsStore($entry);
-
-			$ds->quantity = $entry->getQuantity();
-			$ds->description = $entry->item->getDescription();
-			$ds->extension = $entry->getExtension();
-			$ds->is_not_gift = true;
-			$ds->is_gift = false;
-
-			if ($entry->item->product->primary_category === null)
-				$ds->product_link = null;
-			else
-				$ds->product_link = 'store/'.$entry->item->product->path;
-
-			$ds->message = ($entry instanceof CustomSeedCartEntry) ?
-				$entry->message : null;
-
-			$store->addRow($ds);
-		}
-
-		// add gift rows
-		$entries = $this->app->cart->checkout->getPromotionGiftEntries();
-		foreach ($entries as $entry) {
-			$ds = new SwatDetailsStore($entry);
-
-			$ds->description = $entry->item->getDescription();
-			$ds->item->price = $entry->getCalculatedItemPrice();
-			$ds->extension = $entry->getExtension();
-			$ds->is_not_gift = false;
-			$ds->is_gift = true;
-
-			if ($entry->item->product->primary_category === null)
-				$ds->product_link = null;
-			else
-				$ds->product_link = 'store/'.$entry->item->product->path;
-
-			// show gifts in their own classcode group
-			$ds->item->classcode->title = 'FREE GIFTS';
-			$ds->item->classcode->id = -1;
-			$ds->message = null;
-
-			$store->addRow($ds);
-		}
+		foreach ($entries as $entry)
+			$store->addRow($this->getAvailableRow($entry));
 
 		return $store;
 	}
 
 	// }}}
-	// {{{ private function getUnavailableTableStore()
+	// {{{ protected function getAvailableRow()
 
-	private function getUnavailableTableStore()
+	/**
+	 * @return SwatDetailsStore
+	 */
+	protected function getAvailableRow(StoreCartEntry $row)
+	{
+		$ds = new SwatDetailsStore($entry);
+
+		$ds->quantity = $entry->getQuantity();
+		$ds->description = $entry->item->getDescription();
+		$ds->extension = $entry->getExtension();
+		$ds->is_not_gift = true;
+		$ds->is_gift = false;
+
+		if ($entry->item->product->primary_category === null)
+			$ds->product_link = null;
+		else
+			$ds->product_link = 'store/'.$entry->item->product->path;
+
+		$ds->message = ($entry instanceof CustomSeedCartEntry) ?
+			$entry->message : null;
+
+		return $ds;
+	}
+
+	// }}}
+	// {{{ protected function getUnavailableTableStore()
+
+	protected function getUnavailableTableStore()
 	{
 		$store = new SwatTableStore();
 
 		$entries = $this->app->cart->checkout->getUnavailableEntries();
-		foreach ($entries as $entry) {
-			$ds = new SwatDetailsStore($entry);
-
-			$ds->description = $entry->item->getDescription();
-
-			if ($entry->item->product->primary_category === null)
-				$ds->product_link = null;
-			else
-				$ds->product_link = 'store/'.$entry->item->product->path;
-
-			$ds->message = ($entry instanceof CustomSeedCartEntry) ?
-					$entry->message : null;
-
-			// get unavailable status
-			if ($entry->item->status == Item::STATUS_OUT_OF_STOCK) {
-				$ds->status = Item::getStatusTitle(Item::STATUS_OUT_OF_STOCK);
-			} elseif ($entry->item->status == Item::STATUS_BACKORDERED) {
-				$ds->status = Item::getStatusTitle(Item::STATUS_BACKORDERED);
-			} elseif ($entry->getInternalValue('region') !==
-				$this->app->getRegion()->id) {
-				switch ($this->app->getRegion()->id) {
-				case Region::REGION_US:
-					$ds->status = sprintf('Not available in the %s',
-						$this->app->getRegion()->title);
-
-					break;
-				default:
-					$ds->status = sprintf('Not available in %s',
-						$this->app->getRegion()->title);
-
-					break;
-				}
-			}
-
-			$store->addRow($ds);
-		}
+		foreach ($entries as $entry)
+			$store->addRow($this->getUnavailableRow($entry));
 
 		return $store;
 	}
 
 	// }}}
-	// {{{ private function getSavedTableStore()
+	// {{{ protected function getUnavailableRow()
 
-	private function getSavedTableStore()
+	/**
+	 * @return SwatDetailsStore
+	 */
+	protected function getUnavailableRow(StoreCartEntry $entry)
+	{
+		$ds = new SwatDetailsStore($entry);
+
+		$ds->description = $entry->item->getDescription();
+
+		if ($entry->item->product->primary_category === null)
+			$ds->product_link = null;
+		else
+			$ds->product_link = 'store/'.$entry->item->product->path;
+
+		$ds->message = ($entry instanceof CustomSeedCartEntry) ?
+				$entry->message : null;
+
+		// get unavailable status
+		if ($entry->item->status == Item::STATUS_OUT_OF_STOCK) {
+			$ds->status = Item::getStatusTitle(Item::STATUS_OUT_OF_STOCK);
+		} elseif ($entry->item->status == Item::STATUS_BACKORDERED) {
+			$ds->status = Item::getStatusTitle(Item::STATUS_BACKORDERED);
+		} elseif ($entry->getInternalValue('region') !==
+			$this->app->getRegion()->id) {
+			switch ($this->app->getRegion()->id) {
+			case Region::REGION_US:
+				$ds->status = sprintf('Not available in the %s',
+					$this->app->getRegion()->title);
+
+				break;
+			default:
+				$ds->status = sprintf('Not available in %s',
+					$this->app->getRegion()->title);
+
+				break;
+			}
+		}
+
+		return $ds;
+	}
+
+	// }}}
+	// {{{ protected function getSavedTableStore()
+
+	protected function getSavedTableStore()
 	{
 		$store = new SwatTableStore();
 
 		$entries = $this->app->cart->saved->getEntries();
-		foreach ($entries as $entry) {
-			$ds = new SwatDetailsStore($entry);
-
-			$ds->quantity = $entry->getQuantity();
-			$ds->description = $entry->item->getDescription();
-			$ds->extension = $entry->getExtension();
-
-			if ($entry->item->product->primary_category === null)
-				$ds->product_link = null;
-			else
-				$ds->product_link = 'store/'.$entry->item->product->path;
-
-			$ds->message = ($entry instanceof CustomSeedCartEntry) ?
-					$entry->message : null;
-
-			// get unavailable status
-			if ($entry->item->status == Item::STATUS_OUT_OF_STOCK) {
-				$ds->status = Item::getStatusTitle(Item::STATUS_OUT_OF_STOCK);
-			} elseif ($entry->item->status == Item::STATUS_BACKORDERED) {
-				$ds->status = Item::getStatusTitle(Item::STATUS_BACKORDERED);
-			} elseif ($entry->getInternalValue('region') !==
-				$this->app->getRegion()->id) {
-				switch ($this->app->getRegion()->id) {
-				case Region::REGION_US:
-					$dsw->status = sprintf('Not available in the %s',
-						$this->app->getRegion()->title);
-
-					break;
-				default:
-					$ds->status = sprintf('Not available in %s',
-						$this->app->getRegion()->title);
-
-					break;
-				}
-			}
-
-			$store->addRow($ds);
-		}
+		foreach ($entries as $entry)
+			$store->addRow($this->getSavedRow($entry));
 
 		return $store;
+	}
+
+	// }}}
+	// {{{ protected function getSavedRow()
+
+	/**
+	 * @return SwatDetailsStore
+	 */
+	protected function getSavedRow(StoreCartEntry $entry)
+	{
+		$ds = new SwatDetailsStore($entry);
+
+		$ds->quantity = $entry->getQuantity();
+		$ds->description = $entry->item->getDescription();
+		$ds->extension = $entry->getExtension();
+
+		if ($entry->item->product->primary_category === null)
+			$ds->product_link = null;
+		else
+			$ds->product_link = 'store/'.$entry->item->product->path;
+
+		$ds->message = ($entry instanceof CustomSeedCartEntry) ?
+				$entry->message : null;
+
+		// get unavailable status
+		if ($entry->item->status == Item::STATUS_OUT_OF_STOCK) {
+			$ds->status = Item::getStatusTitle(Item::STATUS_OUT_OF_STOCK);
+		} elseif ($entry->item->status == Item::STATUS_BACKORDERED) {
+			$ds->status = Item::getStatusTitle(Item::STATUS_BACKORDERED);
+		} elseif ($entry->getInternalValue('region') !==
+			$this->app->getRegion()->id) {
+			switch ($this->app->getRegion()->id) {
+			case Region::REGION_US:
+				$dsw->status = sprintf('Not available in the %s',
+					$this->app->getRegion()->title);
+
+				break;
+			default:
+				$ds->status = sprintf('Not available in %s',
+					$this->app->getRegion()->title);
+
+				break;
+			}
+		}
+
+		return $ds;
 	}
 
 	// }}}
