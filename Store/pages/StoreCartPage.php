@@ -428,34 +428,12 @@ class StoreCartPage extends StoreArticlePage
 	}
 
 	// }}}
-	// {{{ private function buildAvailableTableView()
+	// {{{ protected function buildAvailableTableView()
 
-	private function buildAvailableTableView()
+	protected function buildAvailableTableView()
 	{
 		$available_view = $this->ui->getWidget('available_cart_view');
 		$available_view->model = $this->getAvailableTableStore();
-
-		$shipping_type_totals = array();
-		$shipping_types = $this->app->cart->checkout->getShippingTypes();
-		foreach ($shipping_types as $shipping_type)
-			$shipping_type_totals[$shipping_type->id] =
-				$this->app->cart->checkout->getShippingTypeTotal(
-					$shipping_type);
-
-		$available_view->getGroup('shipping_type')->setShippingTypeTotals(
-			$shipping_type_totals);
-
-		$shipping_type_classcodes = array();
-		foreach ($this->app->cart->checkout->getClassCodes() as $classcode) {
-			$id = $classcode->shipping_type->id;
-			if (!isset($shipping_type_classcodes[$id]))
-				$shipping_type_classcodes[$id] = array();
-
-			$shipping_type_classcodes[$id][] = $classcode->title;
-		}
-
-		$available_view->getGroup('shipping_type')->setShippingTypeClassCodes(
-			$shipping_type_classcodes);
 
 		$available_view->getRow('subtotal')->value =
 			$this->app->cart->checkout->getSubtotal();
@@ -473,9 +451,9 @@ class StoreCartPage extends StoreArticlePage
 	}
 
 	// }}}
-	// {{{ private function buildUnavailableTableView()
+	// {{{ protected function buildUnavailableTableView()
 
-	private function buildUnavailableTableView()
+	protected function buildUnavailableTableView()
 	{
 		$unavailable_view = $this->ui->getWidget('unavailable_cart_view');
 		$unavailable_view->model = $this->getUnavailableTableStore();
@@ -512,9 +490,9 @@ class StoreCartPage extends StoreArticlePage
 	}
 
 	// }}}
-	// {{{ private function buildSavedTableView()
+	// {{{ protected function buildSavedTableView()
 
-	private function buildSavedTableView()
+	protected function buildSavedTableView()
 	{
 		$saved_view = $this->ui->getWidget('saved_cart_view');
 		$saved_view->model = $this->getSavedTableStore();
