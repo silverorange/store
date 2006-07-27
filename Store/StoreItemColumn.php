@@ -5,10 +5,11 @@ require_once 'Swat/SwatTableViewColumn.php';
 /**
  * A table-view column that displays item ids in the tr tag
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class ItemColumn extends SwatTableViewColumn
+class StoreItemColumn extends SwatTableViewColumn
 {
 	// {{{ public function getTrAttributes()
 
