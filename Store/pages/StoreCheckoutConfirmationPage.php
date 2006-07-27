@@ -64,7 +64,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	}
 
 	// }}}
-	// {{{ protected function order()
+	// {{{ protected function processOrder()
 
 	/**
 	 * @return array a reference to an array of ordered entries
