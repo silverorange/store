@@ -21,13 +21,28 @@ require_once '../include/ShippingTypeGroup.php';
  * @package   Store
  * @copyright 2006 silverorange
  */
-class StoreCartPage extends StoreArticlePage
+abstract class StoreCartPage extends StoreArticlePage
 {
-	// {{{ private properties
+	// {{{ protected properties
 
-	private $ui;
-	private $updated_entry_ids = array();
-	private $added_entry_ids = array();
+	/**
+	 * @var StoreUI
+	 */
+	protected $ui;
+
+	/**
+	 * An array of cart entry ids that were updated
+	 *
+	 * @var array
+	 */
+	protected $updated_entry_ids = array();
+
+	/**
+	 * An array of cart entry ids that were added (or moved) to a cart 
+	 *
+	 * @var array
+	 */
+	protected $added_entry_ids = array();
 
 	// }}}
 
