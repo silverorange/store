@@ -1,0 +1,76 @@
+#available_cart_view   tfoot th,
+#unavailable_cart_view tfoot th,
+#saved_cart_view       tfoot th {
+	text-align: right;
+}
+
+#available_cart_view   tbody th,
+#unavailable_cart_view tbody th,
+#saved_cart_view       tbody th {
+	background: none;
+	background-color: #FFFFEE;
+}
+
+#available_cart_view   .swat-table-view-group,
+#unavailable_cart_view .swat-table-view-group,
+#saved_cart_view       .swat-table-view-group {
+	border: 0;
+}
+
+.swat-table-view td.cart-entry-description {
+	width: 100%;
+}
+
+.swat-table-view td.veseys-classcode-header {
+	padding-top: 1em;
+	padding-bottom: 0.5em;
+	letter-spacing: 0.1em;
+}
+
+.swat-table-view tr.veseys-classcode-header td,
+.swat-table-view tr.veseys-classcode-header,
+.swat-table-view tr.veseys-classcode-subheader,
+.swat-table-view tr.veseys-classcode-subheader th,
+#available_cart_view   tbody tr.veseys-classcode-subheader th,
+#unavailable_cart_view tbody tr.veseys-classcode-subheader th,
+#saved_cart_view       tbody tr.veseys-classcode-subheader th {
+	background: none;
+}
+
+
+.swat-table-view .shipping-row th,
+.swat-table-view tbody .shipping-row td {
+	border: 0;
+	background: #FFFFEE;
+}
+
+.swat-table-view .shipping-row th {
+	text-align: right;
+}
+
+
+/* Product Cart (mini cart view on product page) */
+
+#main-content #cart_frame .swat-frame-title {
+	font-size: 120%;
+}
+
+#cart_frame ul.swat-toolbar {
+	width: 99%;
+	background: none;
+	border: 0;
+	margin: 0;
+	position: static;
+	text-align: right;
+	font-size: 80%;
+	font-family: sans-serif;
+}
+
+#cart_frame .swat-toolbar li {
+}
+
+#cart_frame .swat-toolbar .swat-tool-link,
+#cart_frame .swat-toolbar .swat-tool-link-insensitive {
+	border: none;
+	text-decoration: underline;
+}
