@@ -26,6 +26,11 @@ abstract class StoreCartPage extends StoreArticlePage
 	// {{{ protected properties
 
 	/**
+	 * @var string
+	 */
+	protected $ui_xml = 'Store/pages/cart.xml';
+
+	/**
 	 * @var StoreUI
 	 */
 	protected $ui;
@@ -53,14 +58,18 @@ abstract class StoreCartPage extends StoreArticlePage
 	{
 		parent::init();
 
-		$this->ui = new StoreUI();
-		$this->ui->loadFromXML(dirname(__FILE__).'/cart.xml');
+		if (!isset($this->cart->checkout))
+			throw new StoreException('Store has no checkout cart.');
 
+		if (!isset($this->cart->saved))
+			throw new StoreException('Store has no saved cart.');
+
+		$this->ui = new StoreUI();
+		$this->ui->loadFromXML($this->ui_xml);
+
+		// set table store for widget validation
 		$available_view = $this->ui->getWidget('available_cart_view');
 		$available_view->model = $this->getAvailableTableStore();
-
-		$saved_view = $this->ui->getWidget('saved_cart_view');
-		$saved_view->model = $this->getSavedTableStore();
 
 		$form = $this->ui->getWidget('form');
 		$form->action = $this->source;
