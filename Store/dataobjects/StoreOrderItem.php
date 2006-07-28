@@ -86,6 +86,16 @@ class StoreOrderItem extends StoreDataObject
 	public $quick_order;
 
 	// }}}
+	// {{{ private properties
+
+	/**
+	 * Cart entry id this order item was created from.
+	 *
+	 * @var integer
+	 */
+	private $cart_entry_id = null;
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
@@ -95,6 +105,22 @@ class StoreOrderItem extends StoreDataObject
 
 		$this->table = 'OrderItem';
 		$this->id_field = 'integer:id';
+	}
+
+	// }}}
+	// {{{ public function setCartEntryId()
+
+	public function setCartEntryId($id)
+	{
+		$this->cart_entry_id = $id;
+	}
+
+	// }}}
+	// {{{ public function getCartEntryId()
+
+	public function getCartEntryId()
+	{
+		return $this->cart_entry_id;
 	}
 
 	// }}}
