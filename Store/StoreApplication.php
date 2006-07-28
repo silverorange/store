@@ -40,7 +40,7 @@ abstract class StoreApplication extends SiteApplication
 	public function relocate($uri, $append_sid = true)
 	{
 		if ($append_sid && $this->session->isActive()) {
-			if (strpos($url, '?') === FALSE)
+			if (strpos($uri, '?') === FALSE)
 				$uri.= '?';
 			else
 				$uri.= '&';
