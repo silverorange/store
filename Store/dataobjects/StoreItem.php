@@ -119,12 +119,26 @@ abstract class StoreItem extends StoreDataObject
 			throw new StoreException('Item must have an id set before region '.
 				'availability can be determined.');
 
-		$sql = sprintf('select count(item) from ItemRegionBinding
-			where item = %s and region = %s',
-			$this->db->quote($this->id, 'integer'),
-			$this->db->quote($region->id, 'integer'));
+		// if this item has an is_available value set for the given region use
+		// it instead of performing another query
+		if ($this->hasInternalValue('region') &&
+			$this->getInternalValue('region') == $region->id &&
+			$this->hasInternalValue('is_available')) {
 
-		return (SwatDB::queryOne($this->db, $sql) > 0);
+			$available = $this->getInternalValue('is_available');
+		} else {
+			$sql = 'select count(item) from AvailableItemView
+					where AvailableItemView.item= %s
+					and AvailableItemView.region = %s';
+
+			$sql = sprintf($sql,
+				$this->db->quote($this->id, 'integer'),
+				$this->db->quote($region->id, 'integer'));
+
+			$available = (SwatDB::queryOne($this->db, $sql) > 0);
+		}
+
+		return $available;
 	}
 
 	// }}}
@@ -132,6 +146,7 @@ abstract class StoreItem extends StoreDataObject
 
 	protected function init()
 	{
+		$this->registerInternalProperty('is_available');
 		$this->registerInternalProperty('region',
 			$this->class_map->resolveClass('StoreRegion'));
 
