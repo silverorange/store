@@ -34,6 +34,9 @@ class StoreItemWrapper extends StoreRecordsetWrapper
 	 * Loads a set of items with region-specific fields filled in with a
 	 * specific region
 	 *
+	 * Also loads item availability for the given region in the is_available
+	 * field.
+	 *
 	 * @param MDB2_Driver_Common $db
 	 * @param string $id_set
 	 * @param integer $region the region to use for region-specific fields.
@@ -46,16 +49,23 @@ class StoreItemWrapper extends StoreRecordsetWrapper
 		$limiting = true)
 	{
 		$sql = 'select Item.*, ItemRegionBinding.price,
-			ItemRegionBinding.region
+			ItemRegionBinding.region,
+			case when AvailableItemView.item is null then false
+				else true
+				end as is_available
 			from Item
 				%s ItemRegionBinding on ItemRegionBinding.item = Item.id and
 					ItemRegionBinding.region = %s
+				left outer join AvailableItemView on
+					AvailableItemView.item = Item.id and
+						AvailableItemView.region = %s
 			where Item.id in (%s)
 			order by Item.displayorder, Item.sku, 
 				Item.part_count';
 
 		$sql = sprintf($sql,
 			$limiting ? 'inner join' : 'left outer join',
+			$db->quote($region, 'integer'),
 			$db->quote($region, 'integer'),
 			$id_set);
 
