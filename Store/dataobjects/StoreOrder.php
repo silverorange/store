@@ -108,7 +108,12 @@ class StoreOrder extends StoreDataObject
 
 	protected function getSerializableSubDataObjects()
 	{
-		return array('shipping_address', 'billing_address', 'payment_method');
+		return array(
+			'shipping_address',
+			'billing_address',
+			'payment_method',
+			'items',
+		);
 	}
 
 	// }}}
