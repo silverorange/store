@@ -53,11 +53,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$form = $this->ui->getWidget('form');
 
 		if ($form->isProcessed()) {
+			$this->processOrder();
 			$this->updateProgress();
-
-			$ordered_entries = $this->processOrder();
-			$this->updateInventory($ordered_entries);
-
 			$this->app->relocate('checkout/thankyou');
 		}
 	}
@@ -66,9 +63,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	// {{{ protected function processOrder()
 
 	/**
-	 * @return array a reference to an array of ordered entries
+	 * @return StoreOrder the order object
 	 */
-	protected function &processOrder()
+	protected function processOrder()
 	{
 		$order = $this->app->session->order;
 
@@ -78,31 +75,24 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		// save order
 		$order->save();
 
-		// send email
-		$this->sendConfirmationEmail($order);
-
 		// we're done, remove order from session
 		unset($this->app->session->order);
 
 		// remove entries from cart that were ordered
-		$ordered_entries = 
-			$this->app->cart->checkout->removeAvailableEntries();
+		$this->removeCartEntries($order);
 
-		return $ordered_entries;
+		return $order;
 	}
 
 	// }}}
-	// {{{ protected function updateInventory()
+	// {{{ protected function removeCartEntries()
 
-	protected function updateInventory($entries)
+	protected function removeCartEntries($order)
 	{
-	}
-
-	// }}}
-	// {{{ protected function sendConfirmationEmail()
-
-	protected function sendConfirmationEmail($order)
-	{
+		foreach ($order->items as $item) {
+			$entry_id = $item->getCartEntryId();
+			$this->app->cart->checkout->removeEntryById($entry_id);
+		}
 	}
 
 	// }}}
