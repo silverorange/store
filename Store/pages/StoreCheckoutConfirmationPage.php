@@ -118,6 +118,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$cart = $this->app->cart->checkout;
 		$order = $this->app->session->order;
 
+		if ($this->app->session->checkout_with_account)
+			$order->account = $this->app->session->account;
+
 		$order->locale = $this->app->getLocale();
 
 		if (isset($this->session->ad))
