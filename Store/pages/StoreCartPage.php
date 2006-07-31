@@ -358,18 +358,6 @@ abstract class StoreCartPage extends StoreArticlePage
 	{
 		parent::build();
 
-		if (count($this->added_entry_ids) > 0 ||
-			count($this->updated_entry_ids) > 0) {
-				$this->layout->addHtmlHeadEntry(
-					new SwatJavaScriptHtmlHeadEntry('javascript/prototype.lite.js'));
-
-				$this->layout->addHtmlHeadEntry(
-					new SwatJavaScriptHtmlHeadEntry('javascript/moo.fx.js'));
-
-				$this->layout->addHtmlHeadEntry(
-					new SwatJavaScriptHtmlHeadEntry('javascript/veseys.fx.js'));
-		}
-
 		$this->layout->addHtmlHeadEntry(
 			new SwatStyleSheetHtmlHeadEntry('packages/store/styles/cart.css', 1));
 
@@ -400,38 +388,7 @@ abstract class StoreCartPage extends StoreArticlePage
 
 		$this->layout->startCapture('content');
 		$this->ui->display();
-		$this->displayJavaScript();
 		$this->layout->endCapture();
-	}
-
-	// }}}
-	// {{{ private function displayJavaScript()
-
-	private function displayJavaScript()
-	{
-		if (count($this->added_entry_ids) > 0 ||
-			count($this->updated_entry_ids) > 0) {
-
-			echo '<script type="text/javascript">', "\n";
-
-			foreach ($this->added_entry_ids as $id) {
-				printf(
-					"var animate_%s = new fx.BackgroundImage('entry_%s', ".
-					"{duration: 2000, num_frames: 11});\n".
-					"animate_%s.toggle();\n",
-					$id, $id, $id);
-			}
-
-			foreach ($this->updated_entry_ids as $id) {
-				printf(
-					"var animate_%s = new fx.BackgroundImage('entry_%s', ".
-					"{duration: 2000, num_frames: 11});\n".
-					"animate_%s.toggle();\n",
-					$id, $id, $id);
-			}
-
-			echo '</script>';
-		}
 	}
 
 	// }}}
