@@ -94,6 +94,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$entry_id = $order_item->getCartEntryId();
 			$this->app->cart->checkout->removeEntryById($entry_id);
 		}
+
+		$this->app->cart->save();
 	}
 
 	// }}}
