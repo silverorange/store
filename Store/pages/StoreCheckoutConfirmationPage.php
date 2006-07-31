@@ -89,8 +89,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	protected function removeCartEntries($order)
 	{
-		foreach ($order->items as $item) {
-			$entry_id = $item->getCartEntryId();
+		foreach ($order->items as $order_item) {
+			$entry_id = $order_item->getCartEntryId();
 			$this->app->cart->checkout->removeEntryById($entry_id);
 		}
 	}
