@@ -35,6 +35,9 @@ function StoreQuickOrderItem_keyUpEvent(event)
 	if (source.value != item.old_value) {
 		var sku = source.value;
 
+		if (!item.quantity.value && sku.length > 0)
+			item.quantity.value = '1';
+
 		if (item.timer != null)
 			window.clearInterval(item.timer);
 
@@ -81,9 +84,6 @@ function StoreQuickOrderItem(quick_order_id, id)
 
 StoreQuickOrderItem.prototype.fadeIn = function()
 {
-	if (!this.quantity.value && this.new_description.length > 0)
-		this.quantity.value = '1';
-
 	if (this.new_description != null)
 		this.div.innerHTML = this.new_description;
 
