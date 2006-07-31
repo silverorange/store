@@ -20,6 +20,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		parent::init();
 		$this->checkOrder();
+
+		// relocate to cart if no items in the cart
+		if (count($this->app->cart->checkout->getAvailableEntries()) <= 0)
+			$this->app->relocate('cart');
 	}
 
 	// }}}
