@@ -10,6 +10,7 @@ require_once 'Swat/SwatString.php';
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
 require_once 'XML/RPCAjax.php';
+require_once 'MooFx/MooFx.php';
 
 /**
  *
@@ -247,6 +248,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		parent::build();
 
 		$this->layout->addHtmlHeadEntrySet(XML_RPCAjax::getHtmlHeadEntrySet());
+		$this->layout->addHtmlHeadEntrySet(MooFx::getHtmlHeadEntrySet());
 
 		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
 			'packages/store/javascript/store-quick-order-page.js', 1));
