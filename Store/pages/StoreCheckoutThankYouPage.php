@@ -8,7 +8,7 @@ require_once 'Store/pages/StoreCheckoutPage.php';
  * @package   Store
  * @copyright 2006 silverorange
  */
-class StoreCheckoutThankyouPage extends StoreCheckoutPage
+class StoreCheckoutThankYouPage extends StoreCheckoutPage
 {
 	// init phase
 	// {{{ public function init()
