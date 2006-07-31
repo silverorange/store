@@ -105,6 +105,8 @@ class StoreOrderItem extends StoreDataObject
 
 		$this->table = 'OrderItem';
 		$this->id_field = 'integer:id';
+
+		$this->serializable_private_properties[] = 'cart_entry_id';
 	}
 
 	// }}}
