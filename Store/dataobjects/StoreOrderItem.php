@@ -86,7 +86,7 @@ class StoreOrderItem extends StoreDataObject
 	public $quick_order;
 
 	// }}}
-	// {{{ protetced properties
+	// {{{ protected properties
 
 	/**
 	 * Cart entry id this order item was created from.
