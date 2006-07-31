@@ -86,14 +86,14 @@ class StoreOrderItem extends StoreDataObject
 	public $quick_order;
 
 	// }}}
-	// {{{ private properties
+	// {{{ protetced properties
 
 	/**
 	 * Cart entry id this order item was created from.
 	 *
 	 * @var integer
 	 */
-	private $cart_entry_id = null;
+	protected $cart_entry_id = null;
 
 	// }}}
 	// {{{ protected function init()
