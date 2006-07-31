@@ -31,9 +31,9 @@ abstract class StoreDataObject extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ public function wakeup()
+	// {{{ protected function wakeup()
 
-	public function wakeup()
+	protected function wakeup()
 	{
 		$this->class_map = StoreClassMap::instance();
 		parent::wakeup();
