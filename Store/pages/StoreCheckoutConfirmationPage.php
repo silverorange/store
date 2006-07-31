@@ -79,9 +79,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		// save order
 		$order->save();
 
-		// we're done, remove order from session
-		unset($this->app->session->order);
-
 		// remove entries from cart that were ordered
 		$this->removeCartEntries($order);
 
