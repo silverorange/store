@@ -61,7 +61,7 @@ class StoreRegion extends StoreDataObject
 		$this->checkDB();
 
 		$sql = 'select id, title from Country
-			inner join on BillingCountryRegionBinding where
+			inner join BillingCountryRegionBinding on
 				Country.id = BillingCountryRegionBinding.country and
 					BillingCountryRegionBinding.region = %s';
 
@@ -83,7 +83,7 @@ class StoreRegion extends StoreDataObject
 		$this->checkDB();
 
 		$sql = 'select id, title from Country
-			inner join on ShippingCountryRegionBinding where
+			inner join ShippingCountryRegionBinding on
 				Country.id = ShippingCountryRegionBinding.country and
 					ShippingCountryRegionBinding.region = %s';
 
