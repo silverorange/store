@@ -61,9 +61,9 @@ class StoreRegion extends StoreDataObject
 		$this->checkDB();
 
 		$sql = 'select id, title from Country
-			inner join BillingCountryRegionBinding on
-				Country.id = BillingCountryRegionBinding.country and
-					BillingCountryRegionBinding.region = %s';
+			inner join RegionBillingCountryBinding on
+				Country.id = RegionBillingCountryBinding.country and
+					RegionBillingCountryBinding.region = %s';
 
 		$sql = sprintf($sql, $this->id);
 		return SwatDB::query($this->db, $sql, 'StoreCountryWrapper');
@@ -83,9 +83,9 @@ class StoreRegion extends StoreDataObject
 		$this->checkDB();
 
 		$sql = 'select id, title from Country
-			inner join ShippingCountryRegionBinding on
-				Country.id = ShippingCountryRegionBinding.country and
-					ShippingCountryRegionBinding.region = %s';
+			inner join RegionShippingCountryBinding on
+				Country.id = RegionShippingCountryBinding.country and
+					RegionShippingCountryBinding.region = %s';
 
 		$sql = sprintf($sql, $this->id);
 		return SwatDB::query($this->db, $sql, 'StoreCountryWrapper');
