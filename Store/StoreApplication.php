@@ -3,7 +3,7 @@
 require_once 'Site/SiteApplication.php';
 require_once 'Site/SiteDatabaseModule.php';
 require_once 'Site/SiteCookieModule.php';
-require_once 'Site/SiteServerConfigModule.php';
+require_once 'Site/SiteConfigModule.php';
 
 require_once 'Store/Store.php';
 require_once 'Store/StoreSessionModule.php';
