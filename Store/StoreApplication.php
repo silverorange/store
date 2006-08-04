@@ -37,7 +37,7 @@ abstract class StoreApplication extends SiteApplication
 	 * @param string $uri the URI to relocate to.
 	 * @param boolean $append_sid whether to append the SID to the URI
 	 */
-	public function relocate($uri, $append_sid = true)
+	public function relocate($uri, $secure = null, $append_sid = true)
 	{
 		if ($append_sid && $this->session->isActive()) {
 			if (strpos($uri, '?') === FALSE)
@@ -48,7 +48,7 @@ abstract class StoreApplication extends SiteApplication
 			$uri.= sprintf('%s=%s', session_name(), session_id());
 		}
 
-		parent::relocate($uri);
+		parent::relocate($uri, $secure);
 	}
 
 	// }}}
