@@ -6,7 +6,7 @@ require_once 'Swat/SwatMoneyCellRenderer.php';
  * Renders item prices
  *
  * Outputs "Free" if value is 0. When displaying free, a CSS class called
- * store-free is preprended to the list of TD classes.
+ * store-free is appended to the list of TD classes.
  *
  * @package   Store
  * @copyright 2006 silverorange
@@ -29,14 +29,16 @@ class StoreItemPriceCellRenderer extends SwatMoneyCellRenderer
 	}
 
 	// }}}
-	// {{{ public function getTdAttributes()
+	// {{{ protected function getCSSClassNames()
 
-	public function getTdAttributes()
+	protected function getCSSClassNames()
 	{
+		$classes = parent::getCSSClassNames();
+
 		if ($this->value > 0)
-			return array('class' => 'store-free swat-money-cell-renderer');
-		else
-			return array('class' => 'swat-money-cell-renderer');
+			$classes[] = 'store-free';
+
+		return $classes;
 	}
 
 	// }}}
