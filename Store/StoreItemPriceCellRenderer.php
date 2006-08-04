@@ -29,16 +29,13 @@ class StoreItemPriceCellRenderer extends SwatMoneyCellRenderer
 	}
 
 	// }}}
-	// {{{ protected function getCSSClassNames()
+	// {{{ public function getTdAttributes()
 
-	protected function getCSSClassNames()
+	public function getTdAttributes()
 	{
-		$classes = parent::getCSSClassNames();
-
-		if ($this->value > 0)
-			$classes[] = 'store-free';
-
-		return $classes;
+		$attributes = parent::getTdAttributes();
+		$attributes['class'].= ' store-free';
+		return $attributes;
 	}
 
 	// }}}
