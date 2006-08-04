@@ -81,6 +81,21 @@ abstract class StoreApplication extends SiteApplication
 	}
 
 	// }}}
+	// {{{ protected function getSecureSourceList()
+
+	/**
+	 * @see SiteApplication::getSecureSourceList()
+	 */
+	protected function getSecureSourceList()
+	{
+		$list = parent::getSecureSourceList();
+		$list[] = '^checkout.*';
+		$list[] = '^account.*';
+
+		return $list;
+	}
+
+	// }}}
 	// {{{ protected function parseAd()
 
 	protected function parseAd($ad_shortname)
