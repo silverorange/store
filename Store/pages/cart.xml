@@ -29,9 +29,9 @@
 						<property name="text" type="data">item.sku</property>
 					</object>
 				</object>
-				<object class="SwatTableViewColumn">
+				<object class="SwatTableViewColumn" id="store_description_column">
 					<property name="title">Description</property>
-					<object class="StoreCartEntryDescriptionCellRenderer">
+					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">description</property>
 					</object>
 					<object class="StoreCartMessageCellRenderer">
@@ -123,7 +123,7 @@
 					</object>
 					<object class="SwatTableViewColumn">
 						<property name="title">Description</property>
-						<object class="StoreCartEntryDescriptionCellRenderer">
+						<object class="SwatTextCellRenderer">
 							<property name="text" type="data">description</property>
 						</object>
 					</object>
@@ -189,7 +189,7 @@
 				</object>
 				<object class="SwatTableViewColumn">
 					<property name="title">Description</property>
-					<object class="StoreCartEntryDescriptionCellRenderer">
+					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">description</property>
 					</object>
 				</object>
