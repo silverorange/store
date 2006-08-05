@@ -21,7 +21,7 @@
 				</object>
 				<object class="SwatTableViewColumn">
 					<property name="title">Description</property>
-					<object class="StoreCartEntryDescriptionCellRenderer">
+					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">description</property>
 					</object>
 				</object>
