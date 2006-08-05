@@ -28,14 +28,7 @@ class StoreUnnamedButton extends SwatButton
 		$input_tag->type = 'submit';
 		$input_tag->id = $this->id;
 		$input_tag->value = $this->title;
-
-		if ($primary)
-			$input_tag->class = 'swat-button swat-primary';
-		else
-			$input_tag->class = 'swat-button';
-
-		if ($this->class !== null)
-			$input_tag->class.= ' '.$this->class;
+		$input_tag->class = implode(' ', $this->getCSSClassNames());
 
 		if (strlen($this->access_key) > 0)
 			$input_tag->accesskey = $this->access_key;
