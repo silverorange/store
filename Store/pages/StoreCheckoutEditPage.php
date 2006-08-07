@@ -37,13 +37,17 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 	{
 		parent::process();
 
-		// Call using $this instead of self:: since we want run the
-		// code in the subclass.
-		$this->preProcessCommon($this->app, $this->ui);
+		$form = $this->ui->getWidget('form');
+
+		if ($form->isSubmitted()) {
+			/* Call using $this instead of self:: since we want run the
+			 * code in the subclass.
+			 */
+			$this->preProcessCommon($this->app, $this->ui);
+		}
 
 		$this->ui->process();
 
-		$form = $this->ui->getWidget('form');
 		if ($form->isProcessed()) {
 			// Call using $this instead of self:: since we want run the
 			// code in the subclass.

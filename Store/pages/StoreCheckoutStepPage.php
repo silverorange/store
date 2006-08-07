@@ -44,13 +44,16 @@ abstract class StoreCheckoutStepPage extends StoreCheckoutPage
 	{
 		parent::process();
 
-		foreach ($this->embedded_edit_page_classes as $class)
-			call_user_func(array($class, 'preProcessCommon'),
-				$this->app, $this->ui);
+		$form = $this->ui->getWidget('form');
+
+		if ($form->isSubmitted()) {
+			foreach ($this->embedded_edit_page_classes as $class)
+				call_user_func(array($class, 'preProcessCommon'),
+					$this->app, $this->ui);
+		}
 
 		$this->ui->process();
 
-		$form = $this->ui->getWidget('form');
 		if ($form->isProcessed()) {
 			foreach ($this->embedded_edit_page_classes as $class)
 				call_user_func(array($class, 'processCommon'),
