@@ -115,7 +115,8 @@ class StoreSessionModule extends SiteSessionModule
 	 */
 	public function logout()
 	{
-		$this->account = null;
+		unset($this->account);
+		unset($this->order);
 		$this->removeAccountCookie();
 	}
 
