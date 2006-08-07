@@ -51,8 +51,9 @@ class StoreCheckoutThankYouPage extends StoreCheckoutPage
 		$this->display();
 		$this->layout->endCapture();
 
-		//clear the order
+		// clear the order and logout
 		unset($this->app->session->order);
+		$this->app->session->logout();
 	}
 
 	// }}}
