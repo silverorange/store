@@ -92,6 +92,16 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 	}
 
 	// }}}
+	// {{{ protected function checkCart()
+
+	protected function checkCart()
+	{
+		// relocate to cart if no items in the cart
+		if (count($this->app->cart->checkout->getAvailableEntries()) <= 0)
+			$this->app->relocate('cart');
+	}
+
+	// }}}
 
 	// process phase
 	// {{{ protected function updateProgress()
