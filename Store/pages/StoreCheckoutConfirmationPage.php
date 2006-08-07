@@ -20,7 +20,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		parent::init();
 		$this->checkOrder();
-		$this->checkCart();
 	}
 
 	// }}}
@@ -55,6 +54,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		if ($form->isProcessed()) {
 			$this->processOrder();
+			$this->app->session->account->save();
 			$this->updateProgress();
 			$this->app->relocate('checkout/thankyou');
 		}

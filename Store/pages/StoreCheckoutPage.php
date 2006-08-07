@@ -29,6 +29,8 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 		if (!$this->app->session->isActive())
 			$this->app->relocate('cart');
 
+		$this->checkCart();
+
 		// initialize session variable to track checkout progress
 		if (!isset($this->app->session->checkout_progress))
 			$this->resetProgress();
