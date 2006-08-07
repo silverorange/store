@@ -21,6 +21,14 @@ class StoreCheckoutThankYouPage extends StoreCheckoutPage
 	}
 
 	// }}}
+	// {{{ protected function checkCart()
+
+	protected function checkCart()
+	{
+		// do nothing - cart should be empty now
+	}
+
+	// }}}
 	// {{{ protected function getProgressDependencies()
 
 	protected function getProgressDependencies()
