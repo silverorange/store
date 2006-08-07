@@ -107,7 +107,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		parent::buildInternal();
 		$this->createOrder();
-		$this->createOrderItems();
 	}
 
 	// }}}
@@ -117,6 +116,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		$cart = $this->app->cart->checkout;
 		$order = $this->app->session->order;
+
+		$this->createOrderItems($order);
 
 		if ($this->app->session->checkout_with_account)
 			$order->account = $this->app->session->account;
@@ -141,9 +142,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	// }}}
 	// {{{ protected function createOrderItems()
 
-	protected function createOrderItems()
+	protected function createOrderItems($order)
 	{
-		$order = $this->app->session->order;
 		$class_map = StoreClassMap::instance();
 		$wrapper = $class_map->resolveClass('StoreOrderItemWrapper');
 		$order->items = new $wrapper();
