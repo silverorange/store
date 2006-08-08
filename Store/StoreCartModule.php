@@ -329,11 +329,11 @@ class StoreCartModule extends SiteApplicationModule
 
 		if ($this->app->session->isLoggedIn()) {
 			$account_id = $this->app->session->getAccountId();
-			$where_clause = sprintf('where account = %s or sessionid = %s',
+			$where_clause = sprintf('account = %s or sessionid = %s',
 				$this->app->db->quote($account_id, 'integer'),
 				$this->app->db->quote(session_id(), 'text'));
 		} elseif ($this->app->session->isActive()) {
-			$where_clause = sprintf('where sessionid = %s',
+			$where_clause = sprintf('sessionid = %s',
 				$this->app->db->quote(session_id(), 'text'));
 		} else {
 			// not logged in, and no active session, so no cart entries
@@ -342,17 +342,7 @@ class StoreCartModule extends SiteApplicationModule
 
 		$class_mapper = StoreClassMap::instance();
 
-		$entry_sql = 'select CartEntry.*
-			from CartEntry
-				inner join Item on CartEntry.item = Item.id
-				inner join ClassCode on Item.classcode = ClassCode.id
-			%s
-			order by ClassCode.shipping_type, ClassCode.displayorder,
-				Item.classcode,
-				Item.product, Item.displayorder, Item.sku,
-				Item.part_count';
-
-		$entry_sql = sprintf($entry_sql, $where_clause);
+		$entry_sql = $this->getEntrySql($where_clause);
 
 		$this->entries = SwatDB::query($this->app->db, $entry_sql,
 			$class_mapper->resolveClass('StoreCartEntryWrapper'));
@@ -386,6 +376,20 @@ class StoreCartModule extends SiteApplicationModule
 			$class_mapper->resolveClass('StoreCategoryWrapper'));
 
 		$this->entries->attachSubDataObjects('item', $items);
+	}
+
+	// }}}
+	// {{{ protected function getEntrySql()
+	
+	protected function getEntrySql($where_clause)
+	{
+		$entry_sql = 'select CartEntry.*
+			from CartEntry
+				inner join Item on CartEntry.item = Item.id
+			where %s
+			order by Item.product, Item.displayorder';
+
+		return sprintf($entry_sql, $where_clause);
 	}
 
 	// }}}
