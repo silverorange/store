@@ -1,25 +1,13 @@
-#available_cart_view   tfoot th,
-#unavailable_cart_view tfoot th,
-#saved_cart_view       tfoot th,
-#item_container        tfoot th,
-#checkout_cart         tfoot th {
+.store-cart-view tfoot th {
 	text-align: right;
 }
 
-#available_cart_view   tbody th,
-#unavailable_cart_view tbody th,
-#saved_cart_view       tbody th,
-#item_container        tbody th,
-#checkout_cart         tbody th {
+.store-cart-view tbody th {
 	background: none;
 	background-color: #FFFFEE;
 }
 
-#available_cart_view   .swat-table-view-group,
-#unavailable_cart_view .swat-table-view-group,
-#saved_cart_view       .swat-table-view-group,
-#item_container        .swat-table-view-group,
-#checkout_cart         .swat-table-view-group {
+.store-cart-view .swat-table-view-group {
 	border: 0;
 }
 
