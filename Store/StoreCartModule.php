@@ -347,7 +347,8 @@ class StoreCartModule extends SiteApplicationModule
 				inner join Item on CartEntry.item = Item.id
 				inner join ClassCode on Item.classcode = ClassCode.id
 			%s
-			order by ClassCode.shipping_type, Item.classcode,
+			order by ClassCode.shipping_type, ClassCode.displayorder,
+				Item.classcode,
 				Item.product, Item.displayorder, Item.sku,
 				Item.part_count';
 
