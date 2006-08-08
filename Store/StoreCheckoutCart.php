@@ -128,23 +128,27 @@ abstract class StoreCheckoutCart extends StoreCart
 		if (!isset($this->app->cookie))
 			return;
 
-		if (isset($this->app->cookie->cart_session)) {
-			if (!$this->app->session->isActive())
-				$this->app->session->activate();
+		try {
+			if (isset($this->app->cookie->cart_session)) {
+				if (!$this->app->session->isActive())
+					$this->app->session->activate();
 
-			$previous_session = $this->app->cookie->cart_session;
-			$current_session = $this->app->session->getSessionID();
+				$previous_session = $this->app->cookie->cart_session;
+				$current_session = $this->app->session->getSessionID();
 
-			if ($previous_session !== $current_session) {
-				$sql = 'update CartEntry set sessionid = %s
-					where sessionid = %s';
+				if ($previous_session !== $current_session) {
+					$sql = 'update CartEntry set sessionid = %s
+						where sessionid = %s';
 
-				$sql = sprintf($sql,
-					$this->app->db->quote($current_session, 'text'),
-					$this->app->db->quote($previous_session, 'text'));
-				
-				SwatDB::exec($this->app->db, $sql);
+					$sql = sprintf($sql,
+						$this->app->db->quote($current_session, 'text'),
+						$this->app->db->quote($previous_session, 'text'));
+					
+					SwatDB::exec($this->app->db, $sql);
+				}
 			}
+		} catch (SiteCookieException $e) {
+			// silently handle bad cookie exception
 		}
 
 		if ($this->app->session->isActive())
