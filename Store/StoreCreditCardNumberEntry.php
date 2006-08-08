@@ -40,7 +40,7 @@ class StoreCreditCardNumberEntry extends SwatEntry
 	public function __construct($id = null)
 	{
 		parent::__construct($id);
-		$this->size = 16;
+		$this->size = 17;
 	}
 
 	// }}}
