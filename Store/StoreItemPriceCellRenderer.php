@@ -21,21 +21,32 @@ class StoreItemPriceCellRenderer extends SwatMoneyCellRenderer
 		if (!$this->visible)
 			return;
 
-		if ($this->value > 0)
-			parent::render();
-		else
+		if ($this->isFree())
 			echo Store::_('Free!');
+		else
+			parent::render();
 
 	}
 
 	// }}}
-	// {{{ public function getTdAttributes()
+	// {{{ public function getDataSpecificCSSClassNames()
 
-	public function getTdAttributes()
+	public function getDataSpecificCSSClassNames()
 	{
-		$attributes = parent::getTdAttributes();
-		$attributes['class'].= ' store-free';
-		return $attributes;
+		$classes = array();
+
+		if ($this->isFree())
+			$classes[] = 'store-free';
+
+		return $classes;
+	}
+
+	// }}}
+	// {{{ protected function isFree()
+
+	protected function isFree()
+	{
+		return ($this->value <= 0);
 	}
 
 	// }}}

@@ -9,29 +9,23 @@ require_once 'Swat/SwatWidgetCellRenderer.php';
  */
 class StoreQuickOrderDescriptionCellRenderer extends SwatWidgetCellRenderer
 {
-	// {{{ public function getThAttributes()
-
-	public function getThAttributes()
-	{
-		return array('class' => 'store-quick-order-description-header');
-	}
-
-	// }}}
-	// {{{ public function getTdAttributes()
-
-	public function getTdAttributes()
-	{
-		return array('class' => 'store-quick-order-description-cell');
-	}
-
-	// }}}
 	// {{{ public function render()
 
 	public function render()
 	{
-		echo '<div id="'.$this->id.'_'.$this->replicator_id.'">';
+		$div_tag = new SwatHtmlTag('div');
+		$div_tag->id = $this->id.'_'.$this->replicator_id;
+		$div_tag->open();
 		parent::render();
-		echo '</div>';
+		$div_tag->close();
+	}
+
+	// }}}
+	// {{{ public function getBaseCSSClassNames()
+
+	public function getBaseCSSClassNames()
+	{
+		return array('store-quick-order-description-cell');
 	}
 
 	// }}}
