@@ -10,6 +10,21 @@ require_once 'Store/pages/StoreCheckoutPage.php';
  */
 abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 {
+	// {{{ protected static function getOptionalValue()
+
+	protected static function getOptionalStringValue($ui, $id)
+	{
+		$widget = $ui->getWidget($id);
+		$value = trim($widget->value);
+
+		if (strlen($value) === 0)
+			$value = null;
+
+		return $value;
+	}
+
+	// }}}
+
 	// init phase
 	// {{{ protected function initCheckoutFormUI()
 
