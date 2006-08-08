@@ -19,6 +19,20 @@ class StoreTotalRow extends SwatTableViewRow
 	public $offset = 0;
 
 	// }}}
+	// {{{ protected properties
+
+	protected $money_cell_renderer;
+
+	// }}}
+	// {{{ public function __construct()
+
+	public function __construct()
+	{
+		parent::__construct();
+		$this->money_cell_renderer = new SwatMoneyCellRenderer();
+	}
+
+	// }}}
 	// {{{ public function display()
 
 	public function display()
@@ -41,21 +55,18 @@ class StoreTotalRow extends SwatTableViewRow
 		$tr_tag->open();
 		$th_tag->display();
 
-		if ($this->value > 0) {
-			$renderer = new SwatMoneyCellRenderer();
-			$renderer->value = $this->value;
+		$td_tag = new SwatHtmlTag('td');
+		$td_tag->class = $this->getCSSClassString();
+		$td_tag->open();
 
-			$td_tag = new SwatHtmlTag('td', $renderer->getTdAttributes());
-			$td_tag->open();
-			$renderer->render();
-			$td_tag->close();
+		if ($this->value > 0) {
+			$this->money_cell_renderer->value = $this->value;
+			$this->money_cell_renderer->render();
 		} else {
-			$td_tag = new SwatHtmlTag('td');
-			$td_tag->class = 'store-free';
-			$td_tag->open();
 			echo 'FREE';
-			$td_tag->close();
 		}
+
+		$td_tag->close();
 
 		if ($this->offset > 0) {
 			$td_tag = new SwatHtmlTag('td');
@@ -65,6 +76,31 @@ class StoreTotalRow extends SwatTableViewRow
 		}
 
 		$tr_tag->close();
+	}
+
+	// }}}
+	// {{{ protected function getCSSClassNames()
+
+	protected function getCSSClassNames()
+	{
+		$classes = array();
+
+		if ($this->value > 0) {
+			// renderer inheritance classes
+			$classes = array_merge($classes,
+				$this->money_cell_renderer->getInheritanceCSSClassNames());
+
+			// renderer base classes
+			$classes = array_merge($classes,
+				$this->money_cell_renderer->getBaseCSSClassNames());
+		} else {
+			$classes[] = 'store-free';
+		}
+
+		// user specified classes
+		$classes = array_merge($classes, $this->classes);
+
+		return $classes;
 	}
 
 	// }}}

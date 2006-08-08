@@ -52,19 +52,14 @@ class StoreQuantityCellRenderer extends SwatCellRenderer
 	}
 
 	// }}}
-	// {{{ public function getTdAttributes()
+	// {{{ public function getBaseCSSClassNames()
 
 	/**
-	 * Gets TD-tag attributes
-	 *
-	 * @return array an array of attributes to apply to the TD tag of this cell
-	 *                renderer.
-	 *
-	 * @see SwatCellRenderer::getTdAttributes()
+	 * @see SwatCellRenderer::getBaseCSSClassNames()
 	 */
-	public function getTdAttributes()
+	public function getBaseCSSClassNames()
 	{
-		return array('class' => 'store-quantity-input-cell-renderer');
+		return array('store-quantity-input-cell-renderer');
 	}
 
 	// }}}
