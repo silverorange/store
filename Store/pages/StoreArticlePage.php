@@ -113,7 +113,7 @@ class StoreArticlePage extends StorePage
 	{
 		if (strlen($article->bodytext)) {	
 			echo '<div id="article-bodytext">',
-			(string)$article->bodytext, '</div>';
+				(string)$article->bodytext, '</div>';
 		}
 	}
 
