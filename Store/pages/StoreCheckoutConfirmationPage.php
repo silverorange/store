@@ -54,7 +54,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		if ($form->isProcessed()) {
 			$this->processOrder();
-			$this->app->session->account->save();
+			$this->processAccount();
 			$this->updateProgress();
 			$this->app->relocate('checkout/thankyou');
 		}
@@ -80,6 +80,55 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$this->removeCartEntries($order);
 
 		return $order;
+	}
+
+	// }}}
+	// {{{ protected function processAccount()
+
+	protected function processAccount()
+	{
+		$account = $this->app->session->account;
+		$order = $this->app->session->order;
+
+		// store new addresses and payment methods in account
+		if ($this->app->session->checkout_with_account) {
+			$this->addAddressToAccount($order->billing_address);
+
+			if ($order->shipping_address->id !== $order->billing_address->id)
+				$this->addAddressToAccount($order->shipping_address);
+
+			$this->addPaymentMethodToAccount($order->payment_method);
+		}
+
+		$account->save();
+	}
+
+	// }}}
+	// {{{ protected function addAddressToAccount()
+
+	protected function addAddressToAccount(StoreOrderAddress $order_address)
+	{
+		// check that address is not already in account
+		if ($order_address->getAccountAddressId() === null) {
+			$account_address = new StoreAccountAddress();
+			$account_address->copyFrom($order_address);
+			$this->app->session->account->addresses->add($account_address);
+		}
+	}
+
+	// }}}
+	// {{{ protected function addPaymentMethodToAccount()
+
+	protected function addPaymentMethodToAccount(StoreOrderPaymentMethod $order_payment_method)
+	{
+		// check that payment method is not already in account
+		if ($order_payment_method->getAccountPaymentMethodId() === null) {
+			$account_payment_method = new AccountPaymentMethod();
+			$account_payment_method->copyFrom($order_payment_method);
+
+			$this->app->session->account->payment_methods->add(
+				$account_payment_method);
+		}
 	}
 
 	// }}}
