@@ -50,13 +50,15 @@ class StoreCreditCardNumberEntry extends SwatEntry
 	{
 		parent::process();
 
+		$data = &$this->getForm()->getFormData();
+
+		if (isset($data[$this->id.'_blank_value'])
+			&& $this->value == $data[$this->id.'_blank_value']) {
+				$this->value = null;
+		}
+
 		if ($this->value === null)
 			return;
-
-		if ($this->show_blank_value && $this->value == $this->blank_value) {
-			$this->value = null;
-			return;
-		}
 
 		$value = str_replace(array('-', ' '), '', $this->value);
 
@@ -68,6 +70,22 @@ class StoreCreditCardNumberEntry extends SwatEntry
 		}
 
 		$this->value = $value;
+	}
+
+	// }}}
+	// {{{ public function display()
+
+	public function display()
+	{
+		parent::display();
+
+		if (!$this->visible)
+			return;
+
+		// add a hidden field to track how the widget was displayed
+		if ($this->show_blank_value)
+			$this->getForm()->addHiddenField(
+				$this->id.'_blank_value', $this->blank_value);
 	}
 
 	// }}}
