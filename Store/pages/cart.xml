@@ -44,7 +44,7 @@
 					<property name="id">price</property>
 					<property name="title">Price</property>
 					<object class="StoreItemPriceCellRenderer">
-						<property name="value" type="data">item.price</property>
+						<property name="value" type="data">price</property>
 					</object>
 				</object>
 				<object class="SwatTableViewColumn">
@@ -200,7 +200,7 @@
 					<property name="id">price</property>
 					<property name="title">Price</property>
 					<object class="StoreMoneyCellRenderer">
-						<property name="value" type="data">item.price</property>
+						<property name="value" type="data">price</property>
 					</object>
 				</object>
 				<object class="SwatTableViewColumn">
