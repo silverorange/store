@@ -14,7 +14,7 @@ require_once 'Store/dataobjects/StoreAdWrapper.php';
  * Web application class for a store
  *
  * @package   Store
- * @copyright 2004-2006 silverorange
+ * @copyright 2005-2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreApplication extends SiteApplication

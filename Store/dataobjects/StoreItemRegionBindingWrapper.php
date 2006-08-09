@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreItemRegionBinding.php';
  * A recordset wrapper class for ItemRegionBinding objects
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2006 silverorange
  */
 class StoreItemRegionBindingWrapper extends StoreRecordsetWrapper
 {
