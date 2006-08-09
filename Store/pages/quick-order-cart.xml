@@ -28,7 +28,7 @@
 				<object class="SwatTableViewColumn">
 					<property name="title">Price</property>
 					<object class="SwatMoneyCellRenderer">
-						<property name="value" type="data">item.price</property>
+						<property name="value" type="data">price</property>
 					</object>
 				</object>
 				<object class="SwatTableViewColumn">
