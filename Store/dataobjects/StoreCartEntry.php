@@ -129,12 +129,10 @@ abstract class StoreCartEntry extends StoreDataObject
 		$price = $this->item->price;
 
 		// This relies on the ordering of quantity discounts. They are ordered
-		// with the largest quantity first.
-		foreach ($this->item->quantitydiscounts as $quantity_discount) {
-			if ($this->getQuantity() >= $quantity_discount->quantity) {
+		// with the smallest quantity first.
+		foreach ($this->item->quantity_discounts as $quantity_discount) {
+			if ($this->getQuantity() >= $quantity_discount->quantity)
 				$price = $quantity_discount->price;
-				break;
-			}
 		}
 
 		return $price;
