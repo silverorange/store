@@ -12,7 +12,7 @@ require_once 'Swat/SwatMoneyCellRenderer.php';
  * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreItemPriceCellRenderer extends SwatMoneyCellRenderer
+class StorePriceCellRenderer extends SwatMoneyCellRenderer
 {
 	// {{{ public function render()
 

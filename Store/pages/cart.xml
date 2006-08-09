@@ -43,7 +43,7 @@
 				<object class="SwatTableViewColumn">
 					<property name="id">price</property>
 					<property name="title">Price</property>
-					<object class="StoreItemPriceCellRenderer">
+					<object class="StorePriceCellRenderer">
 						<property name="value" type="data">price</property>
 					</object>
 				</object>
@@ -67,7 +67,7 @@
 				</object>
 				<object class="SwatTableViewColumn">
 					<property name="title">Total</property>
-					<object class="StoreItemPriceCellRenderer">
+					<object class="StorePriceCellRenderer">
 						<property name="value" type="data">extension</property>
 					</object>
 				</object>
@@ -199,7 +199,7 @@
 				<object class="SwatTableViewColumn">
 					<property name="id">price</property>
 					<property name="title">Price</property>
-					<object class="StoreMoneyCellRenderer">
+					<object class="StorePriceCellRenderer">
 						<property name="value" type="data">price</property>
 					</object>
 				</object>
