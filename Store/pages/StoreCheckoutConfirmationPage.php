@@ -79,6 +79,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		// remove entries from cart that were ordered
 		$this->removeCartEntries($order);
 
+		unset($this->app->session->ad);
+
 		return $order;
 	}
 
@@ -183,6 +185,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		$order->total = $cart->getTotal($order->billing_address,
 			$order->shipping_address);
+
+		if (isset($this->app->session->ad))
+			$order->ad = $this->app->session->ad;
 	}
 
 	// }}}
