@@ -158,9 +158,11 @@ abstract class StoreCartPage extends StoreArticlePage
 		$remove_column = $available_view->getColumn('remove_column');
 		$remove_renderer = $remove_column->getRendererByPosition(); 
 		$item_removed = false;
+		$num_items_removed = 0;
 		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
 			if ($widget->hasBeenClicked()) {
 				$item_removed = true;
+				$num_items_removed++;
 				$this->app->cart->checkout->removeEntryById($id);
 
 				break;
@@ -177,6 +179,7 @@ abstract class StoreCartPage extends StoreArticlePage
 			foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
 				if ($widget->hasBeenClicked()) {
 					$item_removed = true;
+					$num_items_removed++;
 					$this->app->cart->checkout->removeEntryById($id);
 
 					break;
@@ -242,23 +245,30 @@ abstract class StoreCartPage extends StoreArticlePage
 						$this->app->cart->checkout->setEntryQuantity($entry,
 							$widget->value);
 						
-						$widget->value = $entry->getQuantity();
+						if ($widget->value > 0) {
+							$num_items_updated++;
+							$item_updated = true;
+						} else {
+							$num_items_removed++;
+							$item_removed = true;
+						}
 
-						$item_updated = true;
-						$num_items_updated++;
+						$widget->value = $entry->getQuantity();
 					}
 				}
 			}
 		}
 
 		if ($item_removed)
-			$message_display->add(new SwatMessage(Store::_(
-				'One item removed from shopping cart'),
+			$message_display->add(new SwatMessage(sprintf(ngettext(
+				'One item removed from shopping cart.',
+				'%s items removed form shopping cart.', $num_items_removed),
+				SwatString::numberFormat($num_items_removed)),
 				SwatMessage::NOTIFICATION));
 
 		if ($item_updated)
 			$message_display->add(new SwatMessage(sprintf(Store::ngettext(
-				'%s item quantity updated', '%s item quantities updated',
+				'One item quantity updated.', '%s item quantities updated.',
 				$num_items_updated),
 				SwatString::numberFormat($num_items_updated)),
 				SwatMessage::NOTIFICATION));
