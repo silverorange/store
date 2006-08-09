@@ -41,6 +41,13 @@ class StoreQuantityDiscount extends SwatDBDataObject
 	 */
 	public $quantity;
 
+	/**
+	 * Price of item to use at this quantity
+	 *
+	 * @var integer
+	 */
+	public $price;
+
 	// }}}
 }
 
