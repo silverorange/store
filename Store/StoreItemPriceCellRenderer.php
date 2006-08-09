@@ -18,7 +18,7 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 	 *
 	 * @var StoreQuantityDiscount
 	 */
-	public $quantitydiscounts;
+	public $quantity_discounts;
 
 	// }}}
 	// {{{ public function render()
@@ -26,21 +26,24 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 	public function render()
 	{
 		parent::render();
-		if ($this->quantitydiscounts !== null)
-			foreach ($this->quantitydiscounts as $quantitydiscount)
-				$this->renderDiscount($quantitydiscount);
+		if ($this->quantity_discounts !== null)
+			foreach ($this->quantity_discounts as $quantity_discount)
+				$this->renderDiscount($quantity_discount);
 	}
 
 	// }}}
 	// {{{ private function renderDiscount()
 
-	private function renderDiscount(StoreQuantityDiscount $quantitydiscount)
+	private function renderDiscount(StoreQuantityDiscount $quantity_discount)
 	{
 		$price = SwatString::minimizeEntities(SwatString::moneyFormat(
-			$quantitydiscount->price, $this->locale, $this->display_currency));
+			$quantity_discount->price, $this->locale, $this->display_currency));
 
-		printf('<br />%s %s %s', $quantitydiscount->quantity, 
-			Store::_('or more:'), $price);
+		$div = new SwatHtmlTag('div');
+		$div->open();
+		printf('%s %s %s', $quantity_discount->quantity, Store::_('or more:'), 
+			$price);
+		$div->close();
 	}
 
 	// }}}
