@@ -26,6 +26,7 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 	public function render()
 	{
 		parent::render();
+
 		if ($this->quantity_discounts !== null)
 			foreach ($this->quantity_discounts as $quantity_discount)
 				$this->renderDiscount($quantity_discount);
@@ -36,13 +37,12 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 
 	private function renderDiscount(StoreQuantityDiscount $quantity_discount)
 	{
-		$price = SwatString::minimizeEntities(SwatString::moneyFormat(
-			$quantity_discount->price, $this->locale, $this->display_currency));
-
+		$this->value = $quantity_discount->price;
 		$div = new SwatHtmlTag('div');
+
 		$div->open();
-		printf('%s %s %s', $quantity_discount->quantity, Store::_('or more:'), 
-			$price);
+		printf(Store::_('%s or more: '), $quantity_discount->quantity);
+		parent::render();
 		$div->close();
 	}
 
