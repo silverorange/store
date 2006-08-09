@@ -111,7 +111,7 @@ abstract class StoreCartPage extends StoreArticlePage
 				if (!$form->hasMessage() &&
 					($checkout_top->hasBeenClicked() ||
 					$checkout_bottom->hasBeenClicked())) {
-					$this->app->cart->checkout->save();
+					$this->app->cart->save();
 					$this->app->relocate('checkout');
 				}
 			}
