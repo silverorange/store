@@ -158,7 +158,7 @@ abstract class StoreCartEntry extends StoreDataObject
 
 		// This relies on the ordering of quantity discounts. They are ordered
 		// with the largest quantity first.
-		foreach ($this->item->quantitydiscounts as $quantity_discount) {
+		foreach ($this->item->quantity_discounts as $quantity_discount) {
 			if ($this->getQuantity() >= $quantity_discount->quantity) {
 				$return = $extension -
 					$quantity_discount->price * $this->getQuantity();
