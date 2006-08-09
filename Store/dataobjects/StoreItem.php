@@ -213,7 +213,7 @@ abstract class StoreItem extends StoreDataObject
 				$this->db->quote($region, 'integer'));
                   
 		$sql.= 'where QuantityDiscount.item = %s
-			order by QuantityDiscount.quantity desc';
+			order by QuantityDiscount.quantity asc';
 
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 
