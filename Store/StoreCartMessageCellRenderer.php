@@ -19,7 +19,7 @@ class StoreCartMessageCellRenderer extends SwatTextCellRenderer
 			return;
 
 		$div = new SwatHtmlTag('div');
-		$div->class = 'store-cart-message';
+		$div->class = 'store-cart-message-cell-renderer';
 		$div->setContent($this->text, 'text/xml');
 		$div->display();
 	}
