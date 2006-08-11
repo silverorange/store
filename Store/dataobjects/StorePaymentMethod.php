@@ -133,31 +133,40 @@ abstract class StorePaymentMethod extends StoreDataObject
 	 */
 	public function display()
 	{
+		$div_tag = new SwatHtmlTag('div');
+		$div_tag->class = 'store-payment-method';
 		$span_tag = new SwatHtmlTag('span');
-		$span_tag->open();
+		$div_tag->open();
 
 		echo SwatString::minimizeEntities($this->payment_type->title);
 		echo ': ';
 
 		if ($this->credit_card_last4 !== null) {
+			$span_tag->class = 'store-payment-method-credit-card-number';
 			// TODO: use $this->payment_type->cc_mask
-			echo self::formatCreditCardNumber($this->credit_card_last4,
-				'**** **** **** ####');
-
-			echo '<br />';
+			$span_tag->setContent(self::formatCreditCardNumber(
+				$this->credit_card_last4, '**** **** **** ####'));
+			$span_tag->display();
 		}
 
-		if ($this->credit_card_expiry !== null) {
-			echo 'Expiry: ',
-				$this->credit_card_expiry->format(SwatDate::DF_CC_MY);
-		}
+		if ($this->credit_card_expiry !== null ||
+			$this->credit_card_fullname !== null) {
 
-		if ($this->credit_card_fullname !== null) {
-			echo ', ',
-				SwatString::minimizeEntities($this->credit_card_fullname);
-		}
+			$div_tag->class = 'store-payment-method-info';
+			$div_tag->open();
 
-		$span_tag->close();
+			if ($this->credit_card_expiry !== null) {
+				echo 'Expiry: ',
+					$this->credit_card_expiry->format(SwatDate::DF_CC_MY);
+			}
+
+			if ($this->credit_card_fullname !== null) {
+				echo ', ',
+					SwatString::minimizeEntities($this->credit_card_fullname);
+			}
+
+			$div_tag->close();
+		}
 	}
 
 	// }}}
