@@ -53,8 +53,13 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$form = $this->ui->getWidget('form');
 
 		if ($form->isProcessed()) {
+			$this->app->db->beginTransaction();
+
 			$this->processOrder();
 			$this->processAccount();
+
+			$this->app->db->commit();
+
 			$this->updateProgress();
 			$this->app->relocate('checkout/thankyou');
 		}
