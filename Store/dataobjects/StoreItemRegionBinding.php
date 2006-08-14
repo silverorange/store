@@ -19,6 +19,14 @@ class StoreItemRegionBinding extends StoreDataObject
 	 */
 	public $price;
 
+	/**
+	 * If the item should be available
+	 *
+	 * @var boolean
+	 */
+	public $enabled;
+
+
 	// }}}
 	// {{{ protected function init()
 
