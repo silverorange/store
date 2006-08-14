@@ -70,6 +70,20 @@ abstract class StoreItem extends StoreDataObject
 	public $displayorder;
 
 	/**
+	 * If this item is enabled for the limiting region
+	 *
+	 * This field is joined from the ItemRegionBinding table; it is not a
+	 * regular field. Only read from the enabled property.
+	 *
+	 * @var boolean
+	 *
+	 * @todo I assume, like price below make this protected with either an
+	 *       accessor method or a magic get implementation or a fake autoloader
+	 *       method.
+	 */
+	public $enabled;
+
+	/**
 	 * Unit cost of this item
 	 *
 	 * This field is joined from the ItemRegionBinding table; it is not a
@@ -174,7 +188,8 @@ abstract class StoreItem extends StoreDataObject
 			return parent::loadInternal($id);
 
 		$id_field = new SwatDBField($this->id_field, 'integer');
-		$sql = 'select Item.*, ItemRegionBinding.price
+		$sql = 'select Item.*, ItemRegionBinding.price, 
+				ItemRegionBinding.enabled
 			from Item
 			%s ItemRegionBinding on item = Item.id
 				and ItemRegionBinding.region = %s

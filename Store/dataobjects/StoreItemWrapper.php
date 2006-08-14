@@ -49,7 +49,7 @@ class StoreItemWrapper extends StoreRecordsetWrapper
 		$limiting = true)
 	{
 		$sql = 'select Item.*, ItemRegionBinding.price,
-			ItemRegionBinding.region,
+			ItemRegionBinding.enabled, ItemRegionBinding.region,
 			case when AvailableItemView.item is null then false
 				else true
 				end as is_available
