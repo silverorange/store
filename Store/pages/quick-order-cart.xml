@@ -23,6 +23,7 @@
 					<property name="title">Description</property>
 					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">description</property>
+						<property name="classes[]">store-cart-description</property>
 					</object>
 				</object>
 				<object class="SwatTableViewColumn">
