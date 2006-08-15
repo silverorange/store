@@ -357,12 +357,12 @@ class StoreCartModule extends SiteApplicationModule
 		// for implodeArray()
 		$this->app->db->loadModule('Datatype', null, true);
 		$item_ids = $this->entries->getInternalValues('item');
-		$item_wrapper = $class_mapper->resolveClass('StoreItemWrapper'));
+		$class = $class_mapper->resolveClass('StoreItemWrapper'));
 
 		$quoted_item_ids =
 			$this->app->db->datatype->implodeArray($item_ids, 'integer');
 
-		$items = $item_wrapper::loadSetFromDBWithRegion(
+		$items = call_user_func(array($class, 'loadSetFromDBWithRegion'),
 			$this->app->db, $quoted_item_ids, $this->app->getRegion()->id,
 			false);
 
