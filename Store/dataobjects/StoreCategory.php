@@ -165,7 +165,7 @@ class StoreCategory extends StoreDataObject
 			$product_count = $this->getInternalValue('product_count');
 		} else {
 			$sql = 'select product_count
-				from CategoryVisibleProductCountByRegion
+				from CategoryVisibleProductCountByRegionCache
 				where region = %s and category = %s';
 
 			$sql = sprintf($sql,
