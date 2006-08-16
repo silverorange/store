@@ -229,6 +229,7 @@ abstract class StorePaymentMethod extends StoreDataObject
 	{
 		$gpg = new Crypt_GPG();
 
+		// TODO: throw a more specific exception here
 		if (!is_readable($secret_key))
 			 throw new StoreException('Secret key can not be read.');
 
