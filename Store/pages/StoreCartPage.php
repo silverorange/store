@@ -198,6 +198,8 @@ abstract class StoreCartPage extends StoreArticlePage
 				if ($widget->hasBeenClicked()) {
 					$entry = $this->app->cart->checkout->getEntryById($id);
 
+					// make sure entry wasn't already moved
+					// (i.e. a page resubmit)
 					if ($entry === null)
 						break;
 
