@@ -334,11 +334,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 				$ds->description = $entry->item->getDescription();
 				$ds->price = $entry->getCalculatedItemPrice();
 				$ds->extension = $entry->getExtension();
-
-				if ($entry->item->product->primary_category === null)
-					$ds->product_link = null;
-				else
-					$ds->product_link = 'store/'.$entry->item->product->path;
+				$ds->product_link = 'store/'.$entry->item->product->path;
 
 				$store->addRow($ds, $entry->item->id);
 			}
