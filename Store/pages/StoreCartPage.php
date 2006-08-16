@@ -197,6 +197,10 @@ abstract class StoreCartPage extends StoreArticlePage
 			foreach ($move_renderer->getClonedWidgets() as $id => $widget) {
 				if ($widget->hasBeenClicked()) {
 					$entry = $this->app->cart->checkout->getEntryById($id);
+
+					if ($entry === null)
+						break;
+
 					$quantity = $quantity_renderer->getWidget($id)->value;
 
 					$this->added_entry_ids[] = $id;
