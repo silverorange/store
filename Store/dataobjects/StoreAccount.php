@@ -1,6 +1,7 @@
 <?php
 
 require_once 'SwatDB/SwatDB.php';
+require_once 'Swat/SwatString.php';
 require_once 'Store/StoreResetPasswordMailMessage.php';
 require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreAccountAddressWrapper.php';
@@ -235,7 +236,7 @@ class StoreAccount extends StoreDataObject
 	public static function generatePassword(MDB2_Driver_Common $db, $id,
 		$base_href = '')
 	{
-		$password_tag = md5(uniqid(rand(), true));
+		$password_tag = SwatString::hash(uniqid(rand(), true));
 		$password_link = $base_href.'account/resetpassword/'.$password_tag;
 
 		// update the database with new password tag
