@@ -23,6 +23,7 @@ class StorePriceCellRenderer extends SwatMoneyCellRenderer
 
 		if ($this->value === null)
 			return;
+
 		if ($this->isFree())
 			echo Store::_('Free!');
 		else
