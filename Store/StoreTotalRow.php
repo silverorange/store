@@ -86,15 +86,15 @@ class StoreTotalRow extends SwatTableViewRow
 	{
 		$classes = array();
 
-		if ($this->value > 0) {
-			// renderer inheritance classes
-			$classes = array_merge($classes,
-				$this->money_cell_renderer->getInheritanceCSSClassNames());
+		// renderer inheritance classes
+		$classes = array_merge($classes,
+			$this->money_cell_renderer->getInheritanceCSSClassNames());
 
-			// renderer base classes
-			$classes = array_merge($classes,
-				$this->money_cell_renderer->getBaseCSSClassNames());
-		} else {
+		// renderer base classes
+		$classes = array_merge($classes,
+			$this->money_cell_renderer->getBaseCSSClassNames());
+
+		if ($this->value == 0) {
 			$classes[] = 'store-free';
 		}
 
