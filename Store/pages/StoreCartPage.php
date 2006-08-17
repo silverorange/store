@@ -267,8 +267,9 @@ abstract class StoreCartPage extends StoreArticlePage
 
 		if ($item_removed)
 			$message_display->add(new SwatMessage(sprintf(ngettext(
-				'One item removed from shopping cart.',
-				'%s items removed form shopping cart.', $num_items_removed),
+				'One item has been removed from shopping cart.',
+				'%s items have been removed from shopping cart.', 
+				$num_items_removed),
 				SwatString::numberFormat($num_items_removed)),
 				SwatMessage::NOTIFICATION));
 
