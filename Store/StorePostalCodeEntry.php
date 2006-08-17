@@ -106,9 +106,7 @@ class StorePostalCodeEntry extends SwatEntry
 
 			$message->content_type = 'text/xml';
 			$this->addMessage($message);
-		}
-
-		if ($province !== null &&
+		} elseif ($province !== null &&
 			!$this->validateByProvince($value, $province)) {
 			$message = new SwatMessage('The <strong>%s</strong> field '.
 				'is not valid for the selected province.',
@@ -116,9 +114,7 @@ class StorePostalCodeEntry extends SwatEntry
 
 			$message->content_type = 'text/xml';
 			$this->addMessage($message);
-		}
-
-		if (strlen($value) > 3)
+		} elseif (strlen($value) > 3)
 			$value = substr($value, 0, 3).' '.substr($value, 3, 3);
 
 		$this->value = $value;
@@ -139,22 +135,20 @@ class StorePostalCodeEntry extends SwatEntry
 
 		// matches ZIP or ZIP+4 codes
 		if (preg_match('/^\d{5}((-| )\d{4})?$/u', $value) == 0) {
-			$message = new SwatMessage('The <strong>%s</strong> field must '.
-				'be a valid US ZIP Code.', SwatMessage::ERROR);
+			$message = new SwatMessage('The <strong>%s</strong> field is not '.
+				'a valid US ZIP Code.', SwatMessage::ERROR);
+
+			$message->content_type = 'text/xml';
+			$this->addMessage($message);
+		} elseif ($state !== null && !$this->validateByState($value, $state)) {
+			$message = new SwatMessage('The <strong>%s</strong> field is not '.
+				'valid for the selected state.', SwatMessage::ERROR);
 
 			$message->content_type = 'text/xml';
 			$this->addMessage($message);
 		} else {
 			// correctly formatted. make sure ZIP+4 is separated by a dash.
 			$value = str_replace(' ', '-', $value);
-		}
-
-		if ($state !== null && !$this->validateByState($value, $state)) {
-			$message = new SwatMessage('The <strong>%s</strong> field is not '.
-				'valid for the selected state.', SwatMessage::ERROR);
-
-			$message->content_type = 'text/xml';
-			$this->addMessage($message);
 		}
 
 		$this->value = $value;
