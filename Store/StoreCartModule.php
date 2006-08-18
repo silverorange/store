@@ -152,12 +152,15 @@ class StoreCartModule extends SiteApplicationModule
 	public function save()
 	{
 		$this->app->db->beginTransaction();
+		try {
+			foreach ($this->carts as $cart)
+				$cart->save();
 
-		foreach ($this->carts as $cart)
-			$cart->save();
-
-		$this->deleteRemovedEntries();
-
+			$this->deleteRemovedEntries();
+		} catch (Exception $e) {
+			$this->app->db->rollback();
+			throw $e;
+		}
 		$this->app->db->commit();
 	}
 
