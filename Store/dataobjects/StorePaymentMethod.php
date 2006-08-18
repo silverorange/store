@@ -229,16 +229,15 @@ abstract class StorePaymentMethod extends StoreDataObject
 	{
 		$gpg = new Crypt_GPG();
 
-		// TODO: throw a more specific exception here
-		if (!is_readable($secret_key))
-			 throw new StoreException('Secret key can not be read.');
+		// TODO: GPG should not throw an exception when a check to see
+		//			if a key fingerprint exists doesn't
+		// 			if key already exists, don't try to re-insert it
+		// if ($gpg->getSecretFingerprint($gpg_id, false) === null)
+		$gpg->importKey($secret_key);
 
-		$key_handle = fopen($secret_key, "r");
-		$key_data = fread($key_handle, filesize($secret_key));
-
-		$gpg->importKey($key_data);
-
-		$decrypted_data = $gpg->decrypt($encrypted_number, $passphrase);
+		// TODO: better exception handling here?
+		if ($gpg->getSecretFingerprint($gpg_id, false) !== null)
+			$decrypted_data = $gpg->decrypt($encrypted_number, md5($passphrase));
 
 		$gpg->deleteSecretKey($gpg_id);
 
