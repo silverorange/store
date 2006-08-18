@@ -49,7 +49,7 @@ class StorePriceCellRenderer extends SwatMoneyCellRenderer
 
 	protected function isFree()
 	{
-		return ($this->value <= 0);
+		return ($this->value == 0);
 	}
 
 	// }}}
