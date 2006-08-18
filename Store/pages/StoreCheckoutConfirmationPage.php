@@ -54,10 +54,13 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		if ($form->isProcessed()) {
 			$this->app->db->beginTransaction();
-
-			$this->processOrder();
-			$this->processAccount();
-
+			try {
+				$this->processOrder();
+				$this->processAccount();
+			} catch (Exception $e) {
+				$this->app->db->rollback();
+				throw $e;
+			}
 			$this->app->db->commit();
 
 			$this->updateProgress();
