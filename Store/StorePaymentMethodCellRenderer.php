@@ -14,45 +14,11 @@ class StorePaymentMethodCellRenderer extends SwatCellRenderer
 	// {{{ public properties
 
 	/**
-	 * Whether or not this payment was made with a credit card
+	 * The StorePaymentMethod dataobject to display 
 	 *
-	 * @var boolean
+	 * @var StorePaymentMethod
 	 */
-	public $is_credit_card = true;
-
-	/**
-	 * The title of the method used for this payment
-	 *
-	 * @var string
-	 */
-	public $method_title;
-
-	// credit card specific fields
-
-	/**
-	 * The format string used for displaying credit cards
-	 *
-	 * Use a different format string for displaying masked numbers.
-	 *
-	 * @var string
-	 */
-	public $credit_card_format;
-
-	/**
-	 * The expiry date of the credit card used
-	 *
-	 * @var SwatDate
-	 */
-	public $credit_card_expiry_date;
-
-	/**
-	 * The credit card number used
-	 *
-	 * This may be either a full credit card number or a partial number.
-	 *
-	 * @var string
-	 */
-	public $credit_card_number;
+	public $payment_method;
 
 	// }}}
 	// {{{ public function render()
@@ -62,48 +28,7 @@ class StorePaymentMethodCellRenderer extends SwatCellRenderer
 		if (!$this->visible)
 			return;
 
-		if ($this->is_credit_card)
-			$this->renderCreditCard();
-		else
-			$this->renderCashOrCheque();
-	}
-
-	// }}}
-	// {{{ protected function renderCreditCard()
-
-	protected function renderCreditCard()
-	{
-		$br_tag = new SwatHtmlTag('br');
-
-		if ($this->method_title !== null) {
-			// TODO: in the future we may want to display an image logo here.
-			echo $this->method_title;
-			$br_tag->display();
-		}
-
-		$format = ($this->credit_card_format === null) ?
-			'**** **** **** ####' : $this->credit_card_format;
-
-		$code_tag = new SwatHtmlTag('code');
-		$code_tag->setContent(SwatString::minimizeEntities(
-			StorePaymentMethod::formatCreditCardNumber($this->credit_card_number,
-			$format)));
-
-		$code_tag->display();
-
-		$br_tag->display();
-
-		if ($this->credit_card_expiry_date instanceof SwatDate)
-			echo $this->credit_card_expiry_date->format(SwatDate::DF_CC_MY);
-	}
-
-	// }}}
-	// {{{ protected function renderCashOrCheque()
-
-	protected function renderCashOrCheque()
-	{
-		if ($this->method_title !== null)
-			echo $this->method_title;
+		$this->payment_method->display();
 	}
 
 	// }}}
