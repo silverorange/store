@@ -237,7 +237,7 @@ abstract class StorePaymentMethod extends StoreDataObject
 
 		// TODO: better exception handling here?
 		if ($gpg->getSecretFingerprint($gpg_id, false) !== null)
-			$decrypted_data = $gpg->decrypt($encrypted_number, md5($passphrase));
+			$decrypted_data = $gpg->decrypt($encrypted_number, $passphrase);
 
 		$gpg->deleteSecretKey($gpg_id);
 
