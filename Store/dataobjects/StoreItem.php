@@ -142,7 +142,7 @@ abstract class StoreItem extends StoreDataObject
 			$available = $this->getInternalValue('is_available');
 		} else {
 			$sql = 'select count(item) from AvailableItemView
-					where AvailableItemView.item= %s
+					where AvailableItemView.item = %s
 					and AvailableItemView.region = %s';
 
 			$sql = sprintf($sql,
