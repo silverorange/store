@@ -18,6 +18,8 @@ class StoreQuantityEntry extends SwatIntegerEntry
 	{
 		parent::__construct($id);
 
+		$this->addStyleSheet('packages/store/styles/store-quantity-entry.css');
+
 		$this->minimum_value = 0;
 		$this->maxlength = 8;
 		$this->size = 3;
