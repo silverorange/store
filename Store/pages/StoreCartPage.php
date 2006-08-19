@@ -358,16 +358,22 @@ abstract class StoreCartPage extends StoreArticlePage
 		$move_renderer = $move_column->getRendererByPosition(); 
 		foreach ($move_renderer->getClonedWidgets() as $id => $widget) {
 			$entry = $this->app->cart->saved->getEntryById($id);
-			$this->added_entry_ids[] = $id;
-			$this->app->cart->saved->removeEntry($entry);
-			$this->app->cart->checkout->addEntry($entry);
-			$num_moved_items++;
+
+			// make sure entry wasn't already moved
+			// (i.e. a page resubmit)
+			if ($entry !== null) {
+				$this->added_entry_ids[] = $id;
+				$this->app->cart->saved->removeEntry($entry);
+				$this->app->cart->checkout->addEntry($entry);
+				$num_moved_items++;
+			}
 		}
 
-		$message_display->add(new SwatMessage(sprintf(Store::ngettext(
-			'One item moved to shopping cart.',
-			'%s items moved to shopping cart.', $num_moved_items),
-			SwatString::numberFormat($num_moved_items))));
+		if ($num_moved_items > 0)
+			$message_display->add(new SwatMessage(sprintf(Store::ngettext(
+				'One item moved to shopping cart.',
+				'%s items moved to shopping cart.', $num_moved_items),
+				SwatString::numberFormat($num_moved_items))));
 	}
 
 	// }}}
