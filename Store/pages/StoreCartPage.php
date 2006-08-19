@@ -319,6 +319,11 @@ abstract class StoreCartPage extends StoreArticlePage
 				if ($widget->hasBeenClicked()) {
 					$entry = $this->app->cart->saved->getEntryById($id);
 
+					// make sure entry wasn't already moved
+					// (i.e. a page resubmit)
+					if ($entry === null)
+						break;
+
 					$this->added_entry_ids[] = $id;
 					$item_moved = true;
 
