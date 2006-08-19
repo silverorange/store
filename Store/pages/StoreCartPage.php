@@ -369,10 +369,9 @@ abstract class StoreCartPage extends StoreArticlePage
 		}
 
 		$message_display->add(new SwatMessage(sprintf(Store::ngettext(
-			'%s item moved to shopping cart.',
+			'One item moved to shopping cart.',
 			'%s items moved to shopping cart.', $num_moved_items),
-			SwatString::numberFormat($num_moved_items)),
-			SwatMessage::NOTIFICATION));
+			SwatString::numberFormat($num_moved_items))));
 	}
 
 	// }}}
