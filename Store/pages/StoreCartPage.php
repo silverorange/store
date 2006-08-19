@@ -280,6 +280,10 @@ abstract class StoreCartPage extends StoreArticlePage
 				SwatString::numberFormat($num_items_updated)),
 				SwatMessage::NOTIFICATION));
 
+		if ($item_moved)
+			$message_display->add(new SwatMessage(
+				'One item has been saved for later.'));
+
 		foreach ($this->app->cart->checkout->getMessages() as $message)
 			$message_display->add($message);
 	}
@@ -328,12 +332,12 @@ abstract class StoreCartPage extends StoreArticlePage
 
 		if ($item_removed)
 			$message_display->add(new SwatMessage(Store::_(
-				'One item removed from saved cart.'),
+				'One item has been removed from saved cart.'),
 				SwatMessage::NOTIFICATION));
 
 		if ($item_moved)
 			$message_display->add(new SwatMessage(Store::_(
-				'One item moved to shopping cart.'),
+				'One item has been moved to shopping cart.'),
 				SwatMessage::NOTIFICATION));
 	}
 
