@@ -270,15 +270,13 @@ abstract class StoreCartPage extends StoreArticlePage
 				'One item has been removed from shopping cart.',
 				'%s items have been removed from shopping cart.', 
 				$num_items_removed),
-				SwatString::numberFormat($num_items_removed)),
-				SwatMessage::NOTIFICATION));
+				SwatString::numberFormat($num_items_removed))));
 
 		if ($item_updated)
 			$message_display->add(new SwatMessage(sprintf(Store::ngettext(
 				'One item quantity updated.', '%s item quantities updated.',
 				$num_items_updated),
-				SwatString::numberFormat($num_items_updated)),
-				SwatMessage::NOTIFICATION));
+				SwatString::numberFormat($num_items_updated))));
 
 		if ($item_moved)
 			$message_display->add(new SwatMessage(
@@ -337,13 +335,11 @@ abstract class StoreCartPage extends StoreArticlePage
 
 		if ($item_removed)
 			$message_display->add(new SwatMessage(Store::_(
-				'One item has been removed from saved cart.'),
-				SwatMessage::NOTIFICATION));
+				'One item has been removed from saved cart.')));
 
 		if ($item_moved)
 			$message_display->add(new SwatMessage(Store::_(
-				'One item has been moved to shopping cart.'),
-				SwatMessage::NOTIFICATION));
+				'One item has been moved to shopping cart.')));
 	}
 
 	// }}}
@@ -391,8 +387,7 @@ abstract class StoreCartPage extends StoreArticlePage
 
 		if ($this->app->cart->checkout->isEmpty()) {
 			$empty_message = new SwatMessage(Store::_(
-				'Your Shopping Cart is Empty'),
-				SwatMessage::NOTIFICATION);
+				'Your Shopping Cart is Empty'));
 
 			$empty_message->content_type = 'text/xml';
 			$empty_message->secondary_content = Store::_(
