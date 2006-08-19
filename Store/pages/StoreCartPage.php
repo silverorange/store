@@ -453,12 +453,12 @@ abstract class StoreCartPage extends StoreArticlePage
 				$count);
 
 			$text = Store::ngettext(
-				'The item below is in your cart but is not currently '.
-				'available for purchasing and will not be included in '.
-				'your order.',
-				'The items below are in your cart but are not currently '.
-				'available for purchasing and will not be included in '.
-				'your order.', $count);
+				'The item below is in your shopping cart but is not '.
+				'currently available for purchasing and will not be included '.
+				'in your order.',
+				'The items below are in your shopping cart but are not '.
+				'currently available for purchasing and will not be included '.
+				'in your order.', $count);
 
 			ob_start();
 
