@@ -1,6 +1,6 @@
 <?php
 
-require_once('Store/pages/StoreArticlePage.php');
+require_once 'Store/pages/StoreArticlePage.php';
 
 /**
  * @package   Store
@@ -21,17 +21,6 @@ abstract class StoreAccountPage extends StoreArticlePage
 			$this->source != 'account/resetpassword' &&
 			$this->source != 'account/edit')
 				$this->app->relocate('account/login');
-	}
-
-	// }}}
-
-	// build phase
-	// {{{ public function build()
-
-	public function build()
-	{
-		parent::build();
-
 	}
 
 	// }}}
