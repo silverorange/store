@@ -111,9 +111,9 @@ abstract class StoreAddress extends StoreDataObject
 
 		echo SwatString::minimizeEntities($this->city);
 		echo SwatString::minimizeEntities($this->provstate->abbreviation);
-		if ($this->postalcode !== null) {
+		if ($this->postal_code !== null) {
 			echo '&nbsp;&nbsp;';
-			echo SwatString::minimizeEntities($this->postalcode);
+			echo SwatString::minimizeEntities($this->postal_code);
 		}
 		echo '<br />';
 
