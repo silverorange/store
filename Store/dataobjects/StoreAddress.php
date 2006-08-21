@@ -98,27 +98,21 @@ abstract class StoreAddress extends StoreDataObject
 		$address_tag = new SwatHtmlTag('address');
 		$address_tag->open();
 
-		echo SwatString::minimizeEntities($this->fullname);
-		echo '<br />';
+		echo SwatString::minimizeEntities($this->fullname), '<br />',
+			SwatString::minimizeEntities($this->line1), '<br />';
 
-		echo SwatString::minimizeEntities($this->line1);
-		echo '<br />';
+		if ($this->line2 !== null)
+			echo SwatString::minimizeEntities($this->line2), '<br />';
 
-		if ($this->line2 !== null) {
-			echo SwatString::minimizeEntities($this->line2);
-			echo '<br />';
-		}
+		echo SwatString::minimizeEntities($this->city), ' ',
+			SwatString::minimizeEntities($this->provstate->abbreviation);
 
-		echo SwatString::minimizeEntities($this->city);
-		echo SwatString::minimizeEntities($this->provstate->abbreviation);
-		if ($this->postal_code !== null) {
-			echo '&nbsp;&nbsp;';
-			echo SwatString::minimizeEntities($this->postal_code);
-		}
-		echo '<br />';
+		if ($this->postalcode !== null)
+			echo '&nbsp;&nbsp;',
+				SwatString::minimizeEntities($this->postal_code);
 
-		echo SwatString::minimizeEntities($this->country->title);
-		echo '<br />';
+		echo '<br />',
+			SwatString::minimizeEntities($this->country->title), '<br />';
 
 		$address_tag->close();
 	}
