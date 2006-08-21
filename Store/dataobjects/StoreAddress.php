@@ -107,7 +107,7 @@ abstract class StoreAddress extends StoreDataObject
 		echo SwatString::minimizeEntities($this->city), ' ',
 			SwatString::minimizeEntities($this->provstate->abbreviation);
 
-		if ($this->postalcode !== null)
+		if ($this->postal_code !== null)
 			echo '&nbsp;&nbsp;',
 				SwatString::minimizeEntities($this->postal_code);
 
