@@ -497,7 +497,7 @@ abstract class StoreCartPage extends StoreArticlePage
 			$message = $this->ui->getWidget('saved_cart_message');
 			$message->content_type = 'text/xml';
 
-			$title = Store::ngettext('Saved Item', 'Saved Items', $count);
+			$title = Store::_('Saved Items');
 			$text = Store::ngettext(
 				'The item below is saved for later and will not be included '.
 				'in your order. You may move the item to your shopping cart '.
@@ -513,6 +513,16 @@ abstract class StoreCartPage extends StoreArticlePage
 			$header_tag = new SwatHtmlTag('h3');
 			$header_tag->setContent($title);
 			$header_tag->display();
+
+			if (!$this->app->session->isLoggedIn()) {
+				$message_display = new SwatMessageDisplay();
+				$warning_message = new SwatMessage(Swat::_(
+					'Items will not be saved unless you create an account or '.
+					'log in.'), SwatMessage::WARNING);
+
+				$message_display->add($warning_message);
+				$message_display->display();
+			}
 
 			$paragraph_tag = new SwatHtmlTag('p');
 			$paragraph_tag->setContent($text);
