@@ -501,10 +501,10 @@ abstract class StoreCartPage extends StoreArticlePage
 			$text = Store::ngettext(
 				'The item below is saved for later and will not be included '.
 				'in your order. You may move the item to your shopping cart '.
-				'by clicking the “add to cart” button.',
+				'by clicking the “Move to Cart” button.',
 				'The items below are saved for later and will not be included '.
 				'in your order. You may move any of the items to your '.
-				'shopping cart by clicking the “add to cart” button next to '.
+				'shopping cart by clicking the “Move to Cart” button next to '.
 				'the item.',
 				$count);
 
