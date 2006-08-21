@@ -266,7 +266,7 @@ abstract class StoreCartPage extends StoreArticlePage
 		}
 
 		if ($item_removed)
-			$message_display->add(new SwatMessage(sprintf(ngettext(
+			$message_display->add(new SwatMessage(sprintf(Store::ngettext(
 				'One item has been removed from shopping cart.',
 				'%s items have been removed from shopping cart.', 
 				$num_items_removed),
@@ -279,15 +279,15 @@ abstract class StoreCartPage extends StoreArticlePage
 				SwatString::numberFormat($num_items_updated))));
 
 		if ($item_moved) {
-			$moved_message = new SwatMessage(
-				'One item has been saved for later.');
+			$moved_message = new SwatMessage(Store::_(
+				'One item has been saved for later.'));
 
 			$moved_message->content_type = 'text/xml';
 
 			if (!$this->app->session->isLoggedIn())
-				$moved_message->secondary_content = sprintf(
+				$moved_message->secondary_content = sprintf(Store::_(
 					'Items will not be saved unless you %screate an account '.
-					'or log in%s.', '<a href="account">', '</a>');
+					'or log in%s.'), '<a href="account">', '</a>');
 
 			$message_display->add($moved_message);
 		}
