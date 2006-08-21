@@ -516,9 +516,12 @@ abstract class StoreCartPage extends StoreArticlePage
 
 			if (!$this->app->session->isLoggedIn()) {
 				$message_display = new SwatMessageDisplay();
-				$warning_message = new SwatMessage(Swat::_(
-					'Items will not be saved unless you create an account or '.
-					'log in.'), SwatMessage::WARNING);
+				$warning_message = new SwatMessage(sprintf(Swat::_(
+					'Items will not be saved unless you %screate an account '.
+					'or log in%s.'), '<a href="account">', '</a>'),
+					SwatMessage::WARNING);
+
+				$warning_message->content_type = 'text/xml';
 
 				$message_display->add($warning_message);
 				$message_display->display();
