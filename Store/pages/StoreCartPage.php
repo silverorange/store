@@ -278,9 +278,19 @@ abstract class StoreCartPage extends StoreArticlePage
 				$num_items_updated),
 				SwatString::numberFormat($num_items_updated))));
 
-		if ($item_moved)
-			$message_display->add(new SwatMessage(
-				'One item has been saved for later.'));
+		if ($item_moved) {
+			$moved_message = new SwatMessage(
+				'One item has been saved for later.');
+
+			$moved_message->content_type = 'text/xml';
+
+			if (!$this->app->session->isLoggedIn())
+				$moved_message->secondary_content = sprintf(
+					'Items will not be saved unless you %screate an account '.
+					'or log in%s.', '<a href="account">', '</a>');
+
+			$message_display->add($moved_message);
+		}
 
 		foreach ($this->app->cart->checkout->getMessages() as $message)
 			$message_display->add($message);
