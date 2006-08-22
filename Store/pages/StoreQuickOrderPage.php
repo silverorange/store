@@ -2,7 +2,6 @@
 
 require_once 'Store/dataobjects/StoreCartEntry.php';
 require_once 'Store/dataobjects/StoreItem.php';
-require_once 'Store/pages/StoreQuickOrderServer.php';
 require_once 'Store/StoreClassMap.php';
 require_once 'Store/pages/StoreArticlePage.php';
 require_once 'Store/StoreUI.php';

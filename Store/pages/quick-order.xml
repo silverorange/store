@@ -17,7 +17,7 @@
 					<property name="title">Description</property>
 					<object class="StoreQuickOrderDescriptionCellRenderer" id="description">
 						<property name="replicator_id" type="data">id</property>
-						<widget class="StoreQuickOrderItemView" id="item" />
+						<widget class="StoreQuickOrderItemSelector" id="item" />
 					</object>
 				</object>
 				<object class="SwatTableViewColumn" id="quantity_column">

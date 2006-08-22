@@ -12,7 +12,7 @@ require_once 'Swat/SwatFlydown.php';
  * @package   Store
  * @copyright 2006 silverorange
  */
-class StoreQuickOrderItemView extends SwatInputControl implements SwatState
+class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 {
 	// {{{ public properties
 
