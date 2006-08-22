@@ -175,8 +175,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	protected function createEmbeddedWidgets()
 	{
 		if (!$this->widgets_created) {
-			$this->items_flydown = new SwatFlydown($this->id.'_items');
-			$this->items_flydown->show_blank = false;
+			$this->items_flydown = $this->getItemsFlydown();
 
 			$this->form_field = new SwatFormField($this->id.'_field');
 			$this->form_field->parent = $this;
@@ -184,6 +183,19 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 
 			$this->widgets_created = true;
 		}
+	}
+
+	// }}}
+	// {{{ protected function getItemsFlydown()
+
+	protected function getItemsFlydown()
+	{
+		if ($this->items_flydown === null) {
+			$this->items_flydown = new SwatFlydown($this->id.'_items');
+			$this->items_flydown->show_blank = false;
+		}
+
+		return $this->items_flydown;
 	}
 
 	// }}}
