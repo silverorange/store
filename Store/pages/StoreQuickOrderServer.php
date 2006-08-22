@@ -56,35 +56,6 @@ abstract class StoreQuickOrderServer extends SiteXMLRPCServer
 	}
 
 	// }}}
-	// {{{ public static function initQuickOrderItemView()
-
-	/**
-	 * @xmlrpc.hidden
-	 */
-	public static function initQuickOrderItemView($db, $sku, $region_id,
-		StoreQuickOrderItemView $view)
-	{
-		require_once 'Store/dataobjects/StoreItemWrapper.php';
-		require_once 'Swat/SwatString.php';
-
-		$sku = strtolower($sku);
-		$sql = sprintf('select id from Item where lower(sku) = %s',
-			$db->quote($sku, 'text'));
-
-		$items = StoreItemWrapper::loadSetFromDBWithRegion($db, $sql,
-			$region_id, false);
-
-		if (count($items) > 0)
-			$view->product_title = $items->getFirst()->product->title;
-
-		foreach ($items as $item) {
-			$description = $item->getDescription();
-			$description.= ' '.SwatString::moneyFormat($item->price);
-			$view->addOption($item->id, $description);
-		}
-	}
-
-	// }}}
 }
 
 ?>
