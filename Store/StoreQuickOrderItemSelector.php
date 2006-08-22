@@ -125,7 +125,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	}
 
 	// }}}
-	// {{{ protected function loadItems()
+	// {{{ protected function getItems()
 
 	protected function getItems()
 	{
@@ -134,6 +134,15 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 			$this->db, $sql, $this->region->id, false);
 
 		return $items;
+	}
+
+	// }}}
+	// {{{ protected function clearItems()
+
+	protected function clearItems()
+	{
+		$this->form_field->title = null;
+		$this->items_flydown->options = array();
 	}
 
 	// }}}
