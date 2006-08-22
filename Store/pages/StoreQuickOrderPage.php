@@ -49,6 +49,14 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		$view = $this->form_ui->getWidget('quick_order_view');
 		$view->model = $this->getQuickOrderTableStore();
 
+		$quick_order_view = $this->form_ui->getWidget('quick_order_view');
+		$description_column = $quick_order_view->getColumn('description_column');
+		$description_renderer = $description_column->getRendererByPosition();
+		$item_view = $description_renderer->getPrototypeWidget();
+		$item_view->db = $this->app->db;
+		$item_view->region = $this->app->getRegion();
+		$item_view->sku = null;
+
 		$this->form_ui->init();
 
 		$this->cart_ui = new StoreUI();
@@ -113,42 +121,22 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		$message_display = $this->cart_ui->getWidget('messages');
 
 		if ($form->isProcessed()) {
-			$class_map = StoreClassMap::instance();
 			foreach ($sku_renderer->getClonedWidgets() as $id => $sku_widget) {
-				$view = $description_renderer->getWidget($id);
+				$items = $description_renderer->getWidget($id);
 				$sku = $sku_widget->value;
 				$quantity_widget = $quantity_renderer->getWidget($id);
 				$quantity = $quantity_widget->value;
 
 				// populate item flydown
 				if ($sku !== null) {
-					$class = $class_map->resolveClass('StoreQuickOrderServer');
-					$overridden_method = false;
-
-					// static override resolution
-					if ($class != 'StoreQuickOrderServer') {
-						$reflector = new ReflectionClass($class);
-						if ($reflector->hasMethod('initQuickOrderItemView')) {
-							$method =
-								$reflector->getMethod('initQuickOrderItemView');
-
-							if ($method->isPublic() && $method->isStatic()) {
-								$method->invoke(null, $this->app->db, $sku,
-									$this->app->getRegion()->id, $view);
-
-								$overridden_method = true;
-							}
-						}
-					}
-
-					if (!$overridden_method)
-						StoreQuickOrderServer::initQuickOrderItemView(
-							$this->app->db, $sku, $this->app->getRegion()->id,
-							$view);
+					$items->sku = $sku;
+					$items->db = $this->app->db;
+					$items->region = $this->app->getRegion();
+					$items->init();
 				}
 
-				$item_id = $view->value;
-				
+				$item_id = $items->value;
+
 				if ($item_id === null && $sku !== null) {
 					$item_id = $this->getItemId($sku);
 					if ($item_id === null) {
@@ -166,8 +154,8 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 					// clear fields after a successful add
 					$sku_widget->value = '';
 					$quantity_widget->value = '1';
-					$view->product_title = null;
-					$view->options = array();
+					$items->sku = null;
+					$items->init();
 				}
 			}
 

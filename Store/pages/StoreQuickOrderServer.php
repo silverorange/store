@@ -42,18 +42,10 @@ abstract class StoreQuickOrderServer extends SiteXMLRPCServer
 	public function getItemDescription($sku, $replicator_id, $sequence)
 	{
 		$view = new StoreQuickOrderItemView('item_'.$replicator_id);
-		$view->show_blank = false;
-
-		$class_map = StoreClassMap::instance();
-		$class = $class_map->resolveClass(__CLASS__);
-
-		if (method_exists($class, 'initQuickOrderItemView'))
-			call_user_func(array($class, 'initQuickOrderItemView'),
-				$this->app->db, $sku, $this->app->getRegion()->id, $view);
-		else
-			self::initQuickOrderItemView($this->app->db, $sku, 
-				$this->app->getRegion()->id, $view);
-
+		$view->db = $this->app->db;
+		$view->region = $this->app->getRegion();
+		$view->sku = $sku;
+		$view->init();
 		$view->display();
 
 		$obj = array();
