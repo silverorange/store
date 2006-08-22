@@ -1,8 +1,7 @@
 <?php
 
 require_once 'Site/pages/SiteXMLRPCServer.php';
-require_once 'Store/StoreQuickOrderItemView.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'Store/StoreQuickOrderItemSelector.php';
 
 /**
  * Handles XML-RPC requests from the quick order page
@@ -41,7 +40,7 @@ abstract class StoreQuickOrderServer extends SiteXMLRPCServer
 	 */
 	public function getItemDescription($sku, $replicator_id, $sequence)
 	{
-		$view = new StoreQuickOrderItemView('item_'.$replicator_id);
+		$view = new StoreQuickOrderItemSelector('item_'.$replicator_id);
 		$view->db = $this->app->db;
 		$view->region = $this->app->getRegion();
 		$view->sku = $sku;
