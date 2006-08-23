@@ -48,13 +48,13 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		$view = $this->form_ui->getWidget('quick_order_view');
 		$view->model = $this->getQuickOrderTableStore();
 
-		$quick_order_view = $this->form_ui->getWidget('quick_order_view');
-		$description_column = $quick_order_view->getColumn('description_column');
-		$description_renderer = $description_column->getRendererByPosition();
-		$item_view = $description_renderer->getPrototypeWidget();
-		$item_view->db = $this->app->db;
-		$item_view->region = $this->app->getRegion();
-		$item_view->sku = null;
+		$column = $view->getColumn('item_selector_column');
+		$item_selector =
+			$column->getRendererByPosition()->getPrototypeWidget();
+
+		$item_selector->db = $this->app->db;
+		$item_selector->region = $this->app->getRegion();
+		$item_selector->sku = null;
 
 		$this->form_ui->init();
 
@@ -111,8 +111,9 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		$quantity_column = $view->getColumn('quantity_column');
 		$quantity_renderer = $quantity_column->getRenderer('renderer');
 
-		$description_column = $view->getColumn('description_column');
-		$description_renderer = $description_column->getRendererByPosition();
+		$item_selector_column = $view->getColumn('item_selector_column');
+		$item_selector_renderer =
+			$item_selector_column->getRendererByPosition();
 
 		$sku_column = $view->getColumn('sku_column');
 		$sku_renderer = $sku_column->getRenderer('renderer');
@@ -121,20 +122,20 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 
 		if ($form->isProcessed()) {
 			foreach ($sku_renderer->getClonedWidgets() as $id => $sku_widget) {
-				$items = $description_renderer->getWidget($id);
+				$item_selector = $item_selector_renderer->getWidget($id);
 				$sku = $sku_widget->value;
 				$quantity_widget = $quantity_renderer->getWidget($id);
 				$quantity = $quantity_widget->value;
 
 				// populate item flydown
 				if ($sku !== null) {
-					$items->sku = $sku;
-					$items->db = $this->app->db;
-					$items->region = $this->app->getRegion();
-					$items->init();
+					$item_selector->sku = $sku;
+					$item_selector->db = $this->app->db;
+					$item_selector->region = $this->app->getRegion();
+					$item_selector->init();
 				}
 
-				$item_id = $items->value;
+				$item_id = $item_selector->value;
 
 				if ($item_id === null && $sku !== null) {
 					$item_id = $this->getItemId($sku);
@@ -153,8 +154,8 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 					// clear fields after a successful add
 					$sku_widget->value = '';
 					$quantity_widget->value = '1';
-					$items->sku = null;
-					$items->init();
+					$item_selector->sku = null;
+					$item_selector->init();
 				}
 			}
 
@@ -336,9 +337,10 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 	protected function displayJavaScript()
 	{
 		$id = 'quick_order';
+		$item_selector_id = 'item_selector';
 		echo '<script type="text/javascript">'."\n";
-		printf("var %s_obj = new StoreQuickOrder('%s', %s);\n",
-			$id, $id, $this->num_rows);
+		printf("var %s_obj = new StoreQuickOrder('%s', '%s', %s);\n",
+			$id, $id, $item_selector_id, $this->num_rows);
 
 		echo '</script>';
 	}

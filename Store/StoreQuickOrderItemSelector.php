@@ -84,7 +84,12 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 			return;
 
 		$this->createEmbeddedWidgets();
+
+		$div_tag = new SwatHtmlTag('div');
+		$div_tag->id = $this->id;
+		$div_tag->open();
 		$this->form_field->display();
+		$div_tag->close();
 	}
 
 	// }}}
