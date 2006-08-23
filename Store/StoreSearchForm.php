@@ -14,10 +14,21 @@ require_once 'Swat/SwatForm.php';
  */
 class StoreSearchForm extends SwatForm
 {
+	// {{{ public function __construct()
+
+	public function __construct()
+	{
+		$this->setMethod(SwatForm::METHOD_GET);
+	}
+			$this->quick_search_ui->getWidget('search')->setMethod(
+				SwatForm::METHOD_GET);
+
+	// }}}
 	// {{{ protected function displayHiddenFields()
 
 	protected function displayHiddenFields()
 	{
+		// override to not output any hidden fields
 	}
 
 	// }}}
