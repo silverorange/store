@@ -5,14 +5,14 @@
  * @package   Store
  * @copyright 2006 silverorange
  */
-function StoreQuickOrder(id, num_rows)
+function StoreQuickOrder(id, item_selector_id, num_rows)
 {
 	this.id = id;
 	this.items = [];
 
 	var item;
 	for (var i = 0; i < num_rows; i++) {
-		item = new StoreQuickOrderItem(this.id, i);
+		item = new StoreQuickOrderItem(this.id, item_selector_id, i);
 		this.items.push(item);
 	}
 }
@@ -51,14 +51,14 @@ function StoreQuickOrderItem_keyUpEvent(event)
 	return true;
 }
 
-function StoreQuickOrderItem(quick_order_id, id)
+function StoreQuickOrderItem(quick_order_id, item_selector_id, id)
 {
 	var self = this;
 	var is_ie = (document.addEventListener) ? false : true;
 
 	this.id = id;
 	this.quick_order_id = quick_order_id;
-	this.div = document.getElementById('description_' + id);
+	this.div = document.getElementById(item_selector_id + '_' + id);
 	this.sequence = 0;
 	this.displayed_sequence = 0;
 	this.out_effect = new fx.Opacity(this.div, {duration: 500,
