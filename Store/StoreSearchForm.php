@@ -20,8 +20,6 @@ class StoreSearchForm extends SwatForm
 	{
 		$this->setMethod(SwatForm::METHOD_GET);
 	}
-			$this->quick_search_ui->getWidget('search')->setMethod(
-				SwatForm::METHOD_GET);
 
 	// }}}
 	// {{{ protected function displayHiddenFields()
