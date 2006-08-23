@@ -62,8 +62,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 		$this->createEmbeddedWidgets();
 
 		if ($this->sku === null) {
-			$this->form_field->title = null;
-			$this->items_flydown->options = array();
+			$this->clearItems();
 		} else {
 			$items = $this->getItems();
 
