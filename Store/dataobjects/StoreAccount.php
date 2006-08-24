@@ -211,12 +211,15 @@ class StoreAccount extends StoreDataObject
 	/**
 	 * Resets this account's password
 	 *
+	 * @param SiteApplication $app the application resetting this account's
+	 *                              password.
+	 *
 	 * This method in turn calls the static
 	 * {@link StoreAccount::generatePassword()} method on this account.
 	 */
-	public function resetPassword()
+	public function resetPassword(SiteApplication $app)
 	{
-		self::generatePassword($this->db, $this->id);
+		self::generatePassword($app, $this->id);
 	}
 
 	// }}}
