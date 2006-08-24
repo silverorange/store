@@ -101,6 +101,14 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 		// relocate to cart if no items in the cart
 		if (count($this->app->cart->checkout->getAvailableEntries()) <= 0)
 			$this->app->relocate('cart');
+
+		/*
+		 * Handle rare case if something went wrong in the thank you page and
+		 * a saved order exists in the session.
+		 */
+		if (isset($this->app->session->order) &&
+			$this->app->session->order->id !== null)
+				unset($this->app->session->order);
 	}
 
 	// }}}
