@@ -1,4 +1,5 @@
-/* Page-specific styles for the quick-order tool */
+@import url("store-mini-cart.css");
+
 
 .store-quick-order-item-loading {
 	font-family: sans-serif;
@@ -27,4 +28,9 @@ td.store-quick-order-description-cell {
 
 #quick_order_form td.store-quick-order-description-cell label {
 	font-weight: normal;
+}
+
+#quick_order_form td.store-quick-order-description-cell select {
+	width: 98%;
+	font-size: 80%;
 }

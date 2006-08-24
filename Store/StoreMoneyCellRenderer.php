@@ -15,7 +15,8 @@ class StoreMoneyCellRenderer extends SwatMoneyCellRenderer
 	{
 		parent::__construct();
 
-		$this->addStyleSheet('packages/swat/styles/swat.css');
+		$this->addStyleSheet('packages/swat/styles/swat.css',
+			Swat::PACKAGE_ID);
 	}
 
 	public function render()

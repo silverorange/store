@@ -1,0 +1,24 @@
+@import url("store-cart.css");
+
+/* Product Cart (cart view on product page and quick order page) */
+
+#main-content .store-mini-cart-frame .swat-frame-title {
+	font-size: 120%;
+}
+
+.store-mini-cart-frame ul.swat-toolbar {
+	width: 99%;
+	background: none;
+	border: 0;
+	margin: 0;
+	position: static;
+	text-align: right;
+	font-size: 80%;
+	font-family: sans-serif;
+}
+
+.store-mini-cart-frame .swat-toolbar .swat-tool-link,
+.store-mini-cart-frame .swat-toolbar .swat-tool-link-insensitive {
+	border: none;
+	text-decoration: underline;
+}

@@ -163,6 +163,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		parent::buildInternal();
 		$this->createOrder();
+
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/styles/store-checkout-confirmation-page.css',
+			Store::PACKAGE_ID));
 	}
 
 	// }}}

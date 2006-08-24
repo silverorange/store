@@ -5,7 +5,9 @@
 	<widget class="SwatForm" id="cart_form">
 		<property name="visible" type="boolean">false</property>
 		<widget class="SwatFrame" id="cart_frame">
+			<property name="classes[]">store-mini-cart-frame</property>
 			<widget class="SwatTableView" id="cart_view">
+				<property name="classes[]">store-cart-entry-view</property>
 				<object class="SwatTableViewGroup">
 					<property name="group_by">item.product.id</property>
 					<object class="SwatLinkCellRenderer">

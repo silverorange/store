@@ -18,7 +18,8 @@ class StoreQuantityEntry extends SwatIntegerEntry
 	{
 		parent::__construct($id);
 
-		$this->addStyleSheet('packages/store/styles/store-quantity-entry.css');
+		$this->addStyleSheet('packages/store/styles/store-quantity-entry.css',
+			 Store::PACKAGE_ID);
 
 		$this->minimum_value = 0;
 		$this->maxlength = 8;
@@ -36,7 +37,8 @@ class StoreQuantityEntry extends SwatIntegerEntry
 	 */
 	protected function getCSSClassNames()
 	{
-		$classes = array('swat-entry', 'store-quantity-entry');
+		$classes = parent::getCSSClassNames();
+		$classes[] = 'store-quantity-entry';
 		$classes = array_merge($classes, $this->classes);
 		return $classes;
 	}

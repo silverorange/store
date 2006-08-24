@@ -4,17 +4,19 @@
 	<widget class="SwatForm" id="form">
 		<widget class="SwatMessageDisplay" id="message_display" />
 		<widget class="SwatFrame" id="cart_frame">
-			<widget class="SwatHeaderFormField" id="checkout_top_field">
-				<widget class="SwatButton" id="update_top">
+			<widget class="SwatHeaderFormField">
+				<property name="classes[]">store-cart-entry-view-header</property>
+				<widget class="SwatButton" id="header_update_button">
 					<property name="title">Update Cart</property>
 				</widget>
-				<widget class="SwatButton" id="checkout_top">
+				<widget class="SwatButton" id="header_checkout_button">
 					<property name="title">Proceed to Checkout</property>
 					<property name="visible" type="boolean">false</property>
 				</widget>
 			</widget>
 			<!-- {{{ available cart -->
 			<widget class="SwatTableView" id="available_cart_view">
+				<property name="classes[]">store-cart-entry-view</property>
 				<object class="SwatTableViewGroup">
 					<property name="group_by">item.product.id</property>
 					<object class="SwatLinkCellRenderer">
@@ -108,6 +110,7 @@
 				<property name="visible" type="boolean">false</property>
 				<widget class="SwatContentBlock" id="unavailable_cart_message" />
 				<widget class="SwatTableView" id="unavailable_cart_view">
+					<property name="classes[]">store-cart-entry-view</property>
 					<object class="SwatTableViewGroup">
 						<property name="group_by">item.product.id</property>
 						<object class="SwatLinkCellRenderer">
@@ -159,10 +162,11 @@
 			</widget>
 			<!-- }}} -->
 			<widget class="SwatFooterFormField">
-				<widget class="SwatButton" id="update_bottom">
+				<property name="classes[]">store-cart-entry-view-footer</property>
+				<widget class="SwatButton" id="footer_update_button">
 					<property name="title">Update Cart</property>
 				</widget>
-				<widget class="SwatButton" id="checkout_bottom">
+				<widget class="SwatButton" id="footer_checkout_button">
 					<property name="title">Proceed to Checkout</property>
 					<property name="visible" type="boolean">false</property>
 				</widget>
@@ -175,6 +179,7 @@
 			<widget class="SwatContentBlock" id="saved_cart_message" />
 			<!-- {{{ saved cart -->
 			<widget class="SwatTableView" id="saved_cart_view">
+				<property name="classes[]">store-cart-entry-view</property>
 				<object class="SwatTableViewGroup">
 					<property name="group_by">item.product.id</property>
 					<object class="SwatLinkCellRenderer">
@@ -238,8 +243,8 @@
 				</object>
 			</widget>
 			<!-- }}} -->
-			<widget class="SwatFooterFormField" id="saved_cart_move_all_field">
-				<widget class="SwatButton" id="saved_cart_move_all">
+			<widget class="SwatFooterFormField">
+				<widget class="SwatButton" id="saved_cart_move_all_button">
 					<property name="title">Add All Saved Items to Cart</property>
 				</widget>
 			</widget>

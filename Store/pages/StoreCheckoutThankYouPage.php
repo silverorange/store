@@ -54,6 +54,10 @@ class StoreCheckoutThankYouPage extends StoreCheckoutPage
 		// clear the order and logout
 		unset($this->app->session->order);
 		$this->app->session->logout();
+
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/styles/store-checkout-thank-you-page.css',
+			Store::PACKAGE_ID));
 	}
 
 	// }}}

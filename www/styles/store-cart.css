@@ -1,0 +1,19 @@
+.store-cart-entry-view tfoot th,
+.store-order-item-view tfoot th {
+	text-align: right;
+}
+
+.store-cart-entry-view tbody th,
+.store-order-item-view tbody th {
+	background: none;
+}
+
+.store-cart-entry-view tbody td.swat-table-view-group,
+.store-order-item-view tbody td.swat-table-view-group {
+	border: 0;
+}
+
+.store-cart-description {
+	width: 100%;
+}
+
