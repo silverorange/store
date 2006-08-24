@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Swat/SwatDate.php';
+require_once 'SwatDB/SwatDBTransaction.php';
 require_once 'Store/pages/StoreCheckoutPage.php';
 require_once 'Store/dataobjects/StoreOrderItemWrapper.php';
 require_once 'Store/dataobjects/StoreCartEntry.php';
@@ -53,15 +54,15 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$form = $this->ui->getWidget('form');
 
 		if ($form->isProcessed()) {
-			$this->app->db->beginTransaction();
+			$transaction = new SwatDBTransaction($this->app->db);
 			try {
 				$this->processOrder();
 				$this->processAccount();
 			} catch (Exception $e) {
-				$this->app->db->rollback();
+				$transaction->rollback();
 				throw $e;
 			}
-			$this->app->db->commit();
+			$transaction->commit();
 
 			$this->updateProgress();
 			$this->app->relocate('checkout/thankyou');
