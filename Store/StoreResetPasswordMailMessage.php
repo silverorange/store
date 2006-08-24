@@ -44,9 +44,10 @@ abstract class StoreResetPasswordMailMessage extends SiteMultipartMailMessage
 	 * @param string $password_link the URL of the application page that
 	 *                               performs the password reset.
 	 */
-	public function __construct(StoreAccount $account, $password_link)
+	public function __construct(SiteApplication $app, StoreAccount $account,
+		$password_link)
 	{
-		parent::__construct();
+		parent::__construct($app);
 
 		$this->password_link = $password_link;
 		$this->account = $account;
