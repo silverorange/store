@@ -239,13 +239,13 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		$this->layout->addHtmlHeadEntrySet(MooFx::getHtmlHeadEntrySet());
 
 		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/javascript/store-quick-order-page.js', 1));
+			'packages/store/javascript/store-quick-order-page.js',
+			Store::PACKAGE_ID));
 
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/quick-order.css'));
-
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/cart.css'));
+		$this->layout->addHtmlHeadEntry(
+			new SwatStyleSheetHtmlHeadEntry(
+				'packages/store/styles/store-quick-order-page.css',
+				Store::PACKAGE_ID));
 
 		$this->buildCartView();
 		$this->buildQuickOrderView();

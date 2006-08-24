@@ -94,8 +94,17 @@ abstract class StoreCartPage extends StoreArticlePage
 		$form->process();
 
 		if ($form->isProcessed()) {
-			$checkout_top = $this->ui->getWidget('checkout_top');
-			$checkout_bottom = $this->ui->getWidget('checkout_bottom');
+			$checkout_button_ids =
+				array('header_checkout_button', 'footer_checkout_button');
+
+			$checkout_button_clicked = false;
+			foreach ($checkout_button_ids as $id) {
+				$button = $this->ui->getWidget($id);
+				if ($button->hasBeenClicked()) {
+					$checkout_button_clicked = true;
+					break;
+				}
+			}
 
 			if ($form->hasMessage()) {
 				$msg = new SwatMessage(Store::_(
@@ -108,9 +117,7 @@ abstract class StoreCartPage extends StoreArticlePage
 				$this->ui->getWidget('message_display')->add($msg);
 			} else {
 				$this->updateCheckoutCart();
-				if (!$form->hasMessage() &&
-					($checkout_top->hasBeenClicked() ||
-					$checkout_bottom->hasBeenClicked())) {
+				if (!$form->hasMessage() && $checkout_button_clicked) {
 					$this->app->cart->save();
 					$this->app->relocate('checkout');
 				}
@@ -137,8 +144,8 @@ abstract class StoreCartPage extends StoreArticlePage
 
 				$this->ui->getWidget('message_display')->add($msg);
 			} else {
-				$move_all = $this->ui->getWidget('saved_cart_move_all');
-				if ($move_all->hasBeenClicked())
+				$button = $this->ui->getWidget('saved_cart_move_all_button');
+				if ($button->hasBeenClicked())
 					$this->moveAllSavedCart();
 				else
 					$this->updateSavedCart();
@@ -396,7 +403,9 @@ abstract class StoreCartPage extends StoreArticlePage
 		parent::build();
 
 		$this->layout->addHtmlHeadEntry(
-			new SwatStyleSheetHtmlHeadEntry('packages/store/styles/cart.css', 1));
+			new SwatStyleSheetHtmlHeadEntry(
+				'packages/store/styles/store-cart-page.css',
+				Store::PACKAGE_ID));
 
 		$this->layout->addHtmlHeadEntrySet(
 			$this->ui->getRoot()->getHtmlHeadEntrySet());
@@ -443,8 +452,8 @@ abstract class StoreCartPage extends StoreArticlePage
 				new StoreOrderAddress, new StoreOrderAddress);
 
 		// fall-through assignment of visiblity to both checkout buttons
-		$this->ui->getWidget('checkout_top')->visible =
-			$this->ui->getWidget('checkout_bottom')->visible =
+		$this->ui->getWidget('header_checkout_button')->visible =
+			$this->ui->getWidget('footer_checkout_button')->visible =
 			$available_view->visible =
 			($available_view->model->getRowCount() > 0);
 

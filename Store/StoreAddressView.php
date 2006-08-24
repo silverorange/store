@@ -73,10 +73,10 @@ class StoreAddressView extends SwatControl
 		$address_text = ob_get_clean();
 
 		$div = new SwatHtmlTag('div');
-		$div->class = 'store-address';
+		$div->class = $this->getCssClassString();
 
 		$controls = new SwatHtmlTag('div');
-		$controls->class = 'store-address-controls';
+		$controls->class = 'store-address-view-controls';
 
 		$edit_link = new SwatToolLink();
 		$edit_link->link = sprintf($this->edit_address_link, $this->address->id);
@@ -96,6 +96,22 @@ class StoreAddressView extends SwatControl
 				$this->remove_button->display();
 			$controls->close();
 		$div->close();
+	}
+
+	// }}}
+	// {{{ protected function getCSSClassNames()
+
+	/**
+	 * Gets the array of CSS classes that are applied to this entry widget
+	 *
+	 * @return array the array of CSS classes that are applied to this entry
+	 *                widget.
+	 */
+	protected function getCSSClassNames()
+	{
+		$classes = array('store-address-view');
+		$classes = array_merge($classes, $this->classes);
+		return $classes;
 	}
 
 	// }}}

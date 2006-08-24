@@ -30,7 +30,8 @@ class StoreTotalRow extends SwatTableViewRow
 	{
 		parent::__construct();
 		$this->money_cell_renderer = new SwatMoneyCellRenderer();
-		$this->addStyleSheet('packages/store/styles/store-total-row.css');
+		$this->addStyleSheet('packages/store/styles/store-total-row.css',
+			 Store::PACKAGE_ID);
 	}
 
 	// }}}

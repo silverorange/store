@@ -72,10 +72,10 @@ class StorePaymentMethodView extends SwatControl
 		$payment_method_text = ob_get_clean();
 
 		$div = new SwatHtmlTag('div');
-		$div->class = 'store-payment-method';
+		$div->class = $this->getCssClassString();
 
 		$controls = new SwatHtmlTag('div');
-		$controls->class = 'store-payment-method-controls';
+		$controls->class = 'store-payment-method-view-controls';
 
 		$edit_link = new SwatToolLink();
 		$edit_link->link = sprintf($this->edit_link, $this->payment_method->id);
@@ -95,6 +95,22 @@ class StorePaymentMethodView extends SwatControl
 				$this->remove_button->display();
 			$controls->close();
 		$div->close();
+	}
+
+	// }}}
+	// {{{ protected function getCSSClassNames()
+
+	/**
+	 * Gets the array of CSS classes that are applied to this entry widget
+	 *
+	 * @return array the array of CSS classes that are applied to this entry
+	 *                widget.
+	 */
+	protected function getCSSClassNames()
+	{
+		$classes = array('store-payment-method-view');
+		$classes = array_merge($classes, $this->classes);
+		return $classes;
 	}
 
 	// }}}

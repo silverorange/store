@@ -39,6 +39,20 @@ class StorePostalCodeEntry extends SwatEntry
 	public $provstate;
 
 	// }}}
+	// {{{ public function __construct()
+
+	public function __construct($id = null)
+	{
+		parent::__construct($id);
+
+		$this->addStyleSheet(
+			'packages/store/styles/store-postal-code-entry.css',
+			Store::PACKAGE_ID);
+
+		$this->size = 10;
+	}
+
+	// }}}
 	// {{{ public function process()
 
 	/**
@@ -63,6 +77,22 @@ class StorePostalCodeEntry extends SwatEntry
 		default: // No validation
 			break;
 		}
+	}
+
+	// }}}
+	// {{{ protected function getCSSClassNames()
+	/**
+	 * Gets the array of CSS classes that are applied to this entry widget
+	 *
+	 * @return array the array of CSS classes that are applied to this entry
+	 *                widget.
+	 */
+	protected function getCSSClassNames()
+	{
+		$classes = parent::getCSSClassNames();
+		$classes[] = 'store-postal-code-entry';
+		$classes = array_merge($classes, $this->classes);
+		return $classes;
 	}
 
 	// }}}
