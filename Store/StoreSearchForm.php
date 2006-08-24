@@ -18,6 +18,8 @@ class StoreSearchForm extends SwatForm
 
 	public function __construct()
 	{
+		parent::__construct();
+
 		$this->setMethod(SwatForm::METHOD_GET);
 	}
 
