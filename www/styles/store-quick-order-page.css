@@ -16,8 +16,8 @@
 	margin-right: 220px;
 }
 
-th.store-quick-order-description-header,
-td.store-quick-order-description-cell {
+th.store-quick-order-item-selector,
+td.store-quick-order-item-selector {
 	width: 100%;
 }
 
@@ -26,11 +26,10 @@ td.store-quick-order-description-cell {
 	padding-bottom: 1em;
 }
 
-#quick_order_form td.store-quick-order-description-cell label {
+#quick_order_form td.store-quick-order-item-selector label {
 	font-weight: normal;
 }
 
-#quick_order_form td.store-quick-order-description-cell select {
-	width: 98%;
+#quick_order_form td.store-quick-order-item-selector select {
 	font-size: 80%;
 }
