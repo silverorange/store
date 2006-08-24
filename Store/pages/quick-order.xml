@@ -17,7 +17,7 @@
 					<property name="title">Description</property>
 					<object class="SwatWidgetCellRenderer" id="item_selector_renderer">
 						<property name="replicator_id" type="data">id</property>
-						<property name="classes[]">store-quick-order-description-cell</property>
+						<property name="classes[]">store-quick-order-item-selector</property>
 						<widget class="StoreQuickOrderItemSelector" id="item_selector" />
 					</object>
 				</object>
