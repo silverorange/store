@@ -1,5 +1,7 @@
 <?php
 
+require_once 'SwatDB/SwatDBTransaction.php';
+
 require_once 'Site/SiteApplicationModule.php';
 
 require_once 'Store/StoreSessionModule.php';
@@ -151,17 +153,19 @@ class StoreCartModule extends SiteApplicationModule
 	 */
 	public function save()
 	{
-		$this->app->db->beginTransaction();
+		$transaction = new SwatDBTransaction($this->app->db);
+
 		try {
 			foreach ($this->carts as $cart)
 				$cart->save();
 
 			$this->deleteRemovedEntries();
 		} catch (Exception $e) {
-			$this->app->db->rollback();
+			$transaction->rollback();
 			throw $e;
 		}
-		$this->app->db->commit();
+
+		$transaction->commit();
 	}
 
 	// }}}
