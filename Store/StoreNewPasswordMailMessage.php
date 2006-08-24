@@ -42,9 +42,10 @@ abstract class StoreNewPasswordMailMessage extends SiteMultipartMailMessage
 	 * @param StoreAccount $account the account to create the email for.
 	 * @param string $new_password the new password assigned to the account.
 	 */
-	public function __construct(StoreAccount $account, $new_password)
+	public function __construct(SiteApplication $app, StoreAccount $account,
+		$new_password)
 	{
-		parent::__construct();
+		parent::__construct($app);
 
 		$this->new_password = $new_password;
 		$this->account = $account;
