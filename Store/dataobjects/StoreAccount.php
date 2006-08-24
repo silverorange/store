@@ -226,14 +226,14 @@ class StoreAccount extends StoreDataObject
 	 * Creates a unique tag and emails the account holder a tagged URL to
 	 * update their password
 	 *
-	 * @param MDB2_Driver_Common $db the database driver to use.
+	 * @param SiteApplication $app the application sending mail.
 	 * @param integer $id the account id of the account we are updating.
 	 * @param string $base_href the base of the tagged URL the account holder
 	 *                           is sent.
 	 *
 	 * @see StoreAccount::generateNewPassword()
 	 */
-	public static function generatePassword(MDB2_Driver_Common $db, $id,
+	public static function generatePassword(SiteApplication $app, $id,
 		$base_href = '')
 	{
 		$password_tag = SwatString::hash(uniqid(rand(), true));
@@ -241,24 +241,24 @@ class StoreAccount extends StoreDataObject
 
 		// update the database with new password tag
 		$sql = sprintf('update Account set password_tag = %s where id = %s',
-			$db->quote($password_tag, 'text'),
-			$db->quote($id, 'integer'));
+			$app->db->quote($password_tag, 'text'),
+			$app->db->quote($id, 'integer'));
 
-		SwatDB::exec($db, $sql);
+		SwatDB::exec($app->db, $sql);
 
 		$class_mapper = StoreClassMap::instance();
 
 		$account_sql = sprintf('select email, fullname from Account
 			where id = %s',
-			$db->quote($id, 'integer'));
+			$app->db->quote($id, 'integer'));
 
-		$account = SwatDB::query($db, $account_sql,
+		$account = SwatDB::query($app->db, $account_sql,
 			$class_mapper->resolveClass('StoreAccountWrapper'))->getFirst();
 
 		$class = $class_mapper->resolveClass('StoreResetPasswordMailMessage');
 
 		// email the new password tag to the user
-		$email = new $class($account, $password_link);
+		$email = new $class($app, $account, $password_link);
 		$email->send();
 	}
 
@@ -269,12 +269,12 @@ class StoreAccount extends StoreDataObject
 	 * Generates a new password for an acocunt, saves it, and emails it to
 	 * the account holder
 	 *
-	 * @param MDB2_Driver_Common $db the database driver to use.
+	 * @param SiteApplication $app the application sending mail.
 	 * @param integer id of the account to update.
 	 *
 	 * @see StoreAccount::generatePassword()
 	 */
-	public static function generateNewPassword(MDB2_Driver_Common $db, $id)
+	public static function generateNewPassword(SiteApplication $app, $id)
 	{
 		require_once 'Text/Password.php';
 
@@ -282,24 +282,24 @@ class StoreAccount extends StoreDataObject
 
 		// update database with new password
 		$sql = sprintf('update Account set password = %s where id = %s',
-			$db->quote(md5($new_password), 'text'),
-			$db->quote($id, 'integer'));
+			$app->db->quote(md5($new_password), 'text'),
+			$app->db->quote($id, 'integer'));
 
-		SwatDB::exec($db, $sql);
+		SwatDB::exec($app->db, $sql);
 
 		$class_mapper = StoreClassMap::instance();
 
 		$account_sql = sprintf('select email, fullname from Account
 			where id = %s',
-			$db->quote($id, 'integer'));
+			$app->db->quote($id, 'integer'));
 
-		$account = SwatDB::query($db, $account_sql,
+		$account = SwatDB::query($app->db, $account_sql,
 			$class_mapper->resolveClass('StoreAccountWrapper'))->getFirst();
 
 		$class = $class_mapper->resolveClass('StoreNewPasswordMailMessage');
 
 		// email the new password to the account holder 
-		$email = new $class($account, $new_password);
+		$email = new $class($app, $account, $new_password);
 		$email->send();
 	}
 
