@@ -2,8 +2,8 @@
 
 /* Product Cart (cart view on product page and quick order page) */
 
-#main-content .store-mini-cart-frame .swat-frame-title {
-	font-size: 120%;
+.store-mini-cart-frame .swat-frame-contents {
+	padding: 8px;
 }
 
 .store-mini-cart-frame ul.swat-toolbar {
