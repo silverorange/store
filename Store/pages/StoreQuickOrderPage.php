@@ -216,11 +216,13 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 
 		// explicitly load product to get product path information
 		$product_wrapper = $class_map->resolveClass('StoreProductWrapper');
-		$sql = sprintf('select id, title, shortname, primary_category
+		$sql = sprintf('select id, title, shortname,
+				getCategoryPath(primary_category) as path
 			from Product
 				left outer join ProductPrimaryCategoryView on product = id
 			where id = %s',
-			$this->app->db->quote($item->id, 'integer'));
+			$this->app->db->quote(
+				$item->getInternalValue('product'), 'integer'));
 
 		$products = SwatDB::query($this->app->db, $sql, $product_wrapper);
 		$product = $products->getFirst();
