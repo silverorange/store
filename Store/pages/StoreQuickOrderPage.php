@@ -214,6 +214,18 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		$item->setRegion($this->app->getRegion()->id, false);
 		$item->load($item_id);
 
+		// explicitly load product to get product path information
+		$product_wrapper = $class_map->resolveClass('StoreProductWrapper');
+		$sql = sprintf('select id, title, shortname, primary_category
+			from Product
+				left outer join ProductPrimaryCategoryView on product = id
+			where id = %s',
+			$this->app->db->quote($item->id, 'integer'));
+
+		$products = SwatDB::query($this->app->db, $sql, $product_wrapper);
+		$product = $products->getFirst();
+		$item->product = $product;
+
 		$cart_entry->item = $item;
 		$cart_entry->quantity = $quantity;
 		$cart_entry->quick_order = true;
