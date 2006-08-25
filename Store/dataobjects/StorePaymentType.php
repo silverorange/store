@@ -97,6 +97,9 @@ class StorePaymentType extends StoreDataObject
 			throw new StoreException('Payment type must have an id set '.
 				'before region availability can be determined.');
 
+		if (!$this->enabled)
+			return false;
+
 		$sql = sprintf('select count(id) from PaymentType
 			inner join PaymentTypeRegionBinding on payment_type = id and
 				region = %s
@@ -104,9 +107,7 @@ class StorePaymentType extends StoreDataObject
 			$this->db->quote($region->id, 'integer'),
 			$this->db->quote($this->id, 'integer'));
 
-		$available = (SwatDB::queryOne($this->db, $sql) > 0);
-
-		return $available;
+		return (SwatDB::queryOne($this->db, $sql) > 0);
 	}
 
 	// }}}
