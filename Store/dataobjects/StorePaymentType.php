@@ -76,6 +76,40 @@ class StorePaymentType extends StoreDataObject
 	public $surcharge;
 
 	// }}}
+	// {{{ public function isAvailableInRegion()
+
+	/**
+	 * Whether or not this item is available for purchase in the given region
+	 *
+	 * The item needs to have an id before this method will work.
+	 *
+	 * @param StoreRegion $region the region to check the availability of this
+	 *                             item for.
+	 *
+	 * @return boolean true if this item is available for purchase in the
+	 *                  given region and false if it is not.
+	 *
+	 * @throws StoreException if this item has no id defined.
+	 */
+	public function isAvailableInRegion(StoreRegion $region)
+	{
+		if ($this->id === null)
+			throw new StoreException('Payment type must have an id set '.
+				'before region availability can be determined.');
+
+		$sql = sprintf('select count(id) from PaymentType
+			inner join PaymentTypeRegionBinding on payment_type = id and
+				region = %s
+			where enabled = true and id = %s',
+			$this->db->quote($region->id, 'integer'),
+			$this->db->quote($this->id, 'integer'));
+
+		$available = (SwatDB::queryOne($this->db, $sql) > 0);
+
+		return $available;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
