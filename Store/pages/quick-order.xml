@@ -25,7 +25,7 @@
 					<property name="title">Quantity</property>
 					<object class="SwatWidgetCellRenderer" id="renderer">
 						<property name="replicator_id" type="data">id</property>
-						<widget class="SwatIntegerEntry" id="quantity">
+						<widget class="StoreQuantityEntry" id="quantity">
 							<property name="value" type="integer">1</property>
 							<property name="size" type="integer">3</property>
 							<property name="maxlength" type="integer">8</property>
