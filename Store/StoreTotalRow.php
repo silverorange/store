@@ -64,9 +64,7 @@ class StoreTotalRow extends SwatTableViewRow
 			$th_tag->open();
 			$anchor_tag = new SwatHtmlTag('a');
 			$anchor_tag->href = $this->link;
-			if ($this->link_title !== null)
-				$anchor_tag->title = $this->link_title;
-
+			$anchor_tag->title = $this->link_title;
 			$anchor_tag->setContent($this->title);
 			$anchor_tag->display();
 			echo ':';
