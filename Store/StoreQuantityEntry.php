@@ -44,6 +44,30 @@ class StoreQuantityEntry extends SwatIntegerEntry
 	}
 
 	// }}}
+	// {{{ protected function getValidationMessage()
+
+	/**
+	 * Get validation message
+	 *
+	 * @see SwatEntry::getValidationMessage()
+	 */
+	protected function getValidationMessage($id)
+	{
+		switch ($id) {
+		case 'integer':
+			return Store::_('The %s field must be a whole number.');
+		case 'below-minimum':
+			if ($this->minimum_value === 0)
+				return Store::_('The %%s field must be at least 1.');
+			else
+				return Store::_('The %%s field must be at least %s.');
+
+		default:
+			return parent::getValidationMessage($id);
+		}
+	}
+
+	// }}}
 }
 
 ?>
