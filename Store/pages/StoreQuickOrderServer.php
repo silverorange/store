@@ -40,20 +40,20 @@ abstract class StoreQuickOrderServer extends SiteXMLRPCServer
 	 */
 	public function getItemDescription($sku, $replicator_id, $sequence)
 	{
-		$view =
+		$selector =
 			new StoreQuickOrderItemSelector('item_selector_'.$replicator_id);
 
-		$view->db = $this->app->db;
-		$view->region = $this->app->getRegion();
-		$view->sku = $sku;
-		$view->init();
-		$view->display();
+		$selector->db = $this->app->db;
+		$selector->region = $this->app->getRegion();
+		$selector->sku = $sku;
+		$selector->init();
+		$selector->display();
 
-		$obj = array();
-		$obj['description'] = ob_get_clean();
-		$obj['sequence'] = $sequence;
+		$response = array();
+		$response['description'] = ob_get_clean();
+		$response['sequence'] = $sequence;
 
-		return $obj;
+		return $response;
 	}
 
 	// }}}
