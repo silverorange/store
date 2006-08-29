@@ -96,6 +96,42 @@ class StoreArticle extends StoreDataObject
 	public $shortname;
 
 	// }}}
+	// {{{ public static function loadFromPath()
+
+	public static function loadFromPath($db, $path, $region, $fields = null)
+	{
+		if ($fields === null)
+			$fields = array('id', 'title');
+
+		foreach ($fields as &$field)
+			$field = 'Article.'.$field;
+		
+		$sql = 'select %s from
+				findArticle(%s)
+			inner join Article on findArticle = Article.id
+			inner join VisibleArticleView on
+				findArticle = VisibleArticleView.id and
+					VisibleArticleView.region = %s';
+
+		$sql = sprintf($sql,
+			implode(',', $fields),
+			$db->quote($path, 'text'),
+			$db->quote($region->id, 'integer'));
+
+		$class_map = StoreClassMap::instance();
+		$wrapper = $class_map->resolveClass('StoreArticleWrapper');
+		$articles = SwatDB::query($db, $sql, $wrapper);
+
+		if (count($articles) < 1)
+			return null;
+
+		$article = $articles->getFirst();
+		$article->setInternalValue('path', $path);
+
+		return $article;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
