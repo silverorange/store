@@ -14,8 +14,10 @@ class StoreTotalRow extends SwatTableViewRow
 {
 	// {{{ public properties
 
-	public $title;
-	public $value;
+	public $title = null;
+	public $link = null;
+	public $link_title = null;
+	public $value = null;
 	public $offset = 0;
 
 	// }}}
@@ -52,10 +54,24 @@ class StoreTotalRow extends SwatTableViewRow
 		$column_count = $this->view->getVisibleColumnCount();
 		$th_tag = new SwatHtmlTag('th');
 		$th_tag->colspan = $column_count - 1 - $this->offset;
-		$th_tag->setContent($this->title.':');
 
 		$tr_tag->open();
-		$th_tag->display();
+
+		if ($this->link === null) {
+			$th_tag->setContent($this->title.':');
+			$th_tag->display();
+		} else {
+			$th_tag->open();
+			$anchor_tag = new SwatHtmlTag('a');
+			$anchor_tag->href = $this->link;
+			if ($this->link_title !== null)
+				$anchor_tag->title = $this->link_title;
+
+			$anchor_tag->setContent($this->title);
+			$anchor_tag->display();
+			echo ':';
+			$th_tag->close();
+		}
 
 		$td_tag = new SwatHtmlTag('td');
 		$td_tag->class = $this->getCSSClassString();
