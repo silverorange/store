@@ -190,8 +190,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		$order->item_total = $cart->getItemTotal();
 
-		$order->shipping_total = $cart->getShippingTotal($order->billing_address,
-			 $order->shipping_address);
+		$order->shipping_total = $cart->getShippingTotal(
+			$order->billing_address, $order->shipping_address);
 
 		$order->tax_total = $cart->getTaxTotal($order->billing_address,
 			 $order->shipping_address);
