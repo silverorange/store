@@ -96,7 +96,7 @@ class StoreArticle extends StoreDataObject
 	public $shortname;
 
 	// }}}
-	// {{{ public function loadFromPath()
+	// {{{ public function loadWithPath()
 
 	/**
 	 * Loads an article from the database with a path in a region
