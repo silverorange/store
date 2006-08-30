@@ -96,39 +96,57 @@ class StoreArticle extends StoreDataObject
 	public $shortname;
 
 	// }}}
-	// {{{ public static function loadFromPath()
+	// {{{ public function loadFromPath()
 
-	public static function loadFromPath($db, $path, $region, $fields = null)
+	/**
+	 * Loads an article from the database with a path in a region
+	 *
+	 * @param string $path the path of the article in the article tree. Article
+	 *                      nodes are separated by a '/' character.
+	 * @param StoreRegion $region the region to filter the article by.
+	 * @param array $fields the article fields to load from the database. By
+	 *                       default, only the id and title are loaded. The
+	 *                       path pseudo-field is always populated from the
+	 *                       <code>$path</code> parameter.
+	 *
+	 * @return boolean true if an article was successfully loaded and false if
+	 *                  no article was found in the given region at the
+	 *                  specified path.
+	 */
+	public function loadWithPath($path, StoreRegion $region,
+		$fields = array('id', 'title'))
 	{
-		if ($fields === null)
-			$fields = array('id', 'title');
+		$this->checkDB();
 
+		$found = false;
+
+		$id_field = new SwatDBField($this->id_field, 'integer');
 		foreach ($fields as &$field)
-			$field = 'Article.'.$field;
-		
-		$sql = 'select %s from
-				findArticle(%s)
-			inner join Article on findArticle = Article.id
+			$field = $this->table.'.'.$field;
+
+		$sql = 'select %1$s from
+				findArticle(%2$s)
+			inner join %3$s on findArticle = %3$s.%4$s
 			inner join VisibleArticleView on
 				findArticle = VisibleArticleView.id and
-					VisibleArticleView.region = %s';
+					VisibleArticleView.region = %5$s';
 
 		$sql = sprintf($sql,
-			implode(',', $fields),
-			$db->quote($path, 'text'),
-			$db->quote($region->id, 'integer'));
+			implode(', ', $fields),
+			$this->db->quote($path, 'text'),
+			$this->table,
+			$id_field->name,
+			$this->db->quote($region->id, 'integer'));
 
-		$class_map = StoreClassMap::instance();
-		$wrapper = $class_map->resolveClass('StoreArticleWrapper');
-		$articles = SwatDB::query($db, $sql, $wrapper);
+		$row = SwatDB::queryRow($this->db, $sql);
+		if ($row !== null) {
+			$this->initFromRow($row);
+			$this->setInternalValue('path', $path);
+			$this->generatePropertyHashes();
+			$found = true;
+		}
 
-		if (count($articles) < 1)
-			return null;
-
-		$article = $articles->getFirst();
-		$article->setInternalValue('path', $path);
-
-		return $article;
+		return $found;
 	}
 
 	// }}}
