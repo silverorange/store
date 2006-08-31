@@ -2,7 +2,7 @@
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
 	<widget class="SwatForm" id="form">
-		<widget class="SwatMessageDisplay" id="message_display" />
+		<widget class="StoreMessageDisplay" id="message_display" />
 		<widget class="SwatFrame" id="cart_frame">
 			<widget class="SwatHeaderFormField">
 				<property name="classes[]">store-cart-entry-view-header</property>
