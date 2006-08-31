@@ -53,6 +53,11 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		$form = $this->ui->getWidget('form');
 
+		$message = new SwatMessage('Please Review Your Order');
+		$message->content_type= 'text/xml';
+		$message->secondary_content = 'Press the <em>Place Order</em> button to complete your order.';
+		$this->ui->getWidget('message_display')->add($message);
+
 		if ($form->isProcessed()) {
 			$transaction = new SwatDBTransaction($this->app->db);
 			try {
