@@ -2,6 +2,7 @@
 
 require_once 'Store/pages/StoreArticlePage.php';
 require_once 'Store/StoreUI.php';
+require_once 'Store/StoreMessage.php';
 
 require_once 'Swat/SwatString.php';
 require_once 'Swat/SwatTableStore.php';
@@ -273,21 +274,24 @@ abstract class StoreCartPage extends StoreArticlePage
 		}
 
 		if ($item_removed)
-			$message_display->add(new SwatMessage(sprintf(Store::ngettext(
+			$message_display->add(new StoreMessage(sprintf(Store::ngettext(
 				'One item has been removed from shopping cart.',
 				'%s items have been removed from shopping cart.', 
 				$num_items_removed),
-				SwatString::numberFormat($num_items_removed))));
+				SwatString::numberFormat($num_items_removed)),
+				StoreMessage::CART_NOTIFICATION));
 
 		if ($item_updated)
-			$message_display->add(new SwatMessage(sprintf(Store::ngettext(
+			$message_display->add(new StoreMessage(sprintf(Store::ngettext(
 				'One item quantity updated.', '%s item quantities updated.',
 				$num_items_updated),
-				SwatString::numberFormat($num_items_updated))));
+				SwatString::numberFormat($num_items_updated)),
+				StoreMessage::CART_NOTIFICATION));
 
 		if ($item_moved) {
-			$moved_message = new SwatMessage(Store::_(
-				'One item has been saved for later.'));
+			$moved_message = new StoreMessage(Store::_(
+				'One item has been saved for later.'),
+				StoreMessage::CART_NOTIFICATION);
 
 			$moved_message->content_type = 'text/xml';
 
@@ -351,12 +355,14 @@ abstract class StoreCartPage extends StoreArticlePage
 		}
 
 		if ($item_removed)
-			$message_display->add(new SwatMessage(Store::_(
-				'One item has been removed from saved cart.')));
+			$message_display->add(new StoreMessage(
+				Store::_('One item has been removed from saved cart.'),
+				StoreMessage::CART_NOTIFICATION));
 
 		if ($item_moved)
-			$message_display->add(new SwatMessage(Store::_(
-				'One item has been moved to shopping cart.')));
+			$message_display->add(new StoreMessage(
+				Store::_('One item has been moved to shopping cart.'),
+				StoreMessage::CART_NOTIFICATION));
 	}
 
 	// }}}
@@ -387,10 +393,12 @@ abstract class StoreCartPage extends StoreArticlePage
 		}
 
 		if ($num_moved_items > 0)
-			$message_display->add(new SwatMessage(sprintf(Store::ngettext(
+			$message_display->add(new StoreMessage(
+				sprintf(Store::ngettext(
 				'One item moved to shopping cart.',
 				'%s items moved to shopping cart.', $num_moved_items),
-				SwatString::numberFormat($num_moved_items))));
+				SwatString::numberFormat($num_moved_items)),
+				StoreMessage::CART_NOTIFICATION));
 	}
 
 	// }}}
@@ -411,8 +419,9 @@ abstract class StoreCartPage extends StoreArticlePage
 			$this->ui->getRoot()->getHtmlHeadEntrySet());
 
 		if ($this->app->cart->checkout->isEmpty()) {
-			$empty_message = new SwatMessage(Store::_(
-				'Your Shopping Cart is Empty'));
+			$empty_message = new StoreMessage(
+				Store::_('Your Shopping Cart is Empty'),
+				StoreMessage::CART_NOTIFICATION);
 
 			$empty_message->content_type = 'text/xml';
 			$empty_message->secondary_content = Store::_(
@@ -531,7 +540,7 @@ abstract class StoreCartPage extends StoreArticlePage
 
 			if (!$this->app->session->isLoggedIn()) {
 				$message_display = new SwatMessageDisplay();
-				$warning_message = new SwatMessage(sprintf(Swat::_(
+				$warning_message = new SwatMessage(sprintf(Store::_(
 					'Items will not be saved unless you %screate an account '.
 					'or log in%s.'), '<a href="account">', '</a>'),
 					SwatMessage::WARNING);
