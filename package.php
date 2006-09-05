@@ -2,7 +2,7 @@
 
 require_once 'PEAR/PackageFileManager2.php';
 
-$version = '0.9.1';
+$version = '0.9.2';
 $notes = <<<EOT
 - RC1
 EOT;
@@ -37,9 +37,9 @@ $package->setPackageType('php');
 $package->setLicense('LGPL', 'http://www.gnu.org/copyleft/lesser.html');
 
 $package->setReleaseVersion($version);
-$package->setReleaseStability('beta');
+$package->setReleaseStability('stable');
 $package->setAPIVersion('0.0.1');
-$package->setAPIStability('beta');
+$package->setAPIStability('stable');
 $package->setNotes($notes);
 
 $package->addIgnore('package.php');
