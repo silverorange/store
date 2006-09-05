@@ -123,8 +123,9 @@ function StoreQuickOrder_staticTimeOut(quick_order, replicator_id)
 		}
 	}
 
-	client.callProcedure('getItemDescription',
-		[sku, replicator_id, item.sequence], callBack);
+	client.callProcedure('getItemDescription', callBack,
+		[sku,      replicator_id, item.sequence],
+		['string', 'string',      'int']);
 
 	window.clearInterval(item.timer);
 }
