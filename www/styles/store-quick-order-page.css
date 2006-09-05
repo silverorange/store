@@ -9,11 +9,11 @@
 
 #article-bodytext {
 	float: right;
-	width: 200px;
+	width: 140px;
 }
 
 #quick_order_form {
-	margin-right: 220px;
+	margin-right: 160px;
 }
 
 th.store-quick-order-item-selector,
@@ -32,4 +32,27 @@ td.store-quick-order-item-selector {
 
 #quick_order_form td.store-quick-order-item-selector select {
 	font-size: 80%;
+}
+
+#quick_order_frame .swat-frame-contents {
+	padding-left: 6px;
+	padding-right: 4px;
+}
+
+#quick_order_frame .swat-footer-form-field {
+	margin-left: -6px;
+	margin-right: -4px;
+}
+
+#quick_order_frame .store-quantity-entry {
+	width: 2.5em;
+}
+
+#quick_order_frame .swat-table-view .sku-column {
+	padding-left: 4px;
+	padding-right: 2px;
+}
+
+#quick_order_frame .swat-table-view .sku-column .swat-entry {
+	width: 3.5em;
 }
