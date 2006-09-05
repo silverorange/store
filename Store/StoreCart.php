@@ -75,6 +75,14 @@ abstract class StoreCart extends SwatObject
 	 */
 	protected $app;
 
+	/**
+	 * An internal flag marking whether or not the {@link StoreCart::$entries}
+	 * array is sorted
+	 *
+	 * @var boolean
+	 */
+	protected $sorted = false;
+
 	// }}}
 	// {{{ private properties
 
@@ -312,10 +320,13 @@ abstract class StoreCart extends SwatObject
 	/**
 	 * Gets a reference to the internal array of StoreCartEntry objects
 	 *
+	 * The array is sorted by the {@link StoreCart::sort()} method.
+	 *
 	 * @return array an array of StoreCartEntry objects.
 	 */
 	public function &getEntries()
 	{
+		$this->sort();
 		return $this->entries;
 	}
 
@@ -566,6 +577,59 @@ abstract class StoreCart extends SwatObject
 	}
 
 	// }}}
+	// {{{ protected function sort()
+
+	/**
+	 * Sorts the entries of this cart
+	 *
+	 * This method is called by getEntries() if the cart's sort order is stale.
+	 */
+	protected function sort()
+	{
+		if (!$this->sorted) {
+			usort($this->entries, array('StoreCart', 'compare'));
+			$this->sorted = true;
+		}
+	}
+
+	// }}}
+	// {{{ protected static function compare()
+
+	/**
+	 * Compares two entries in this cart
+	 *
+	 * This comparison method is used byt the StoreCart::sort() method.
+	 *
+	 * Cart entries are compared numerically by id. If an entry's id is null,
+	 * the entry is considered less than any entry having a non-null id.
+	 *
+	 * @param StoreCartEntry $entry1 the cart entry on the left side of the
+	 *                                comparison.
+	 * @param StoreCartEntry $entry2 the cart entry on the right side of the
+	 *                                comparison.
+	 *
+	 * @return integer a tri-value where -1 means the left side is less than
+	 *                  the right side, 1 means the left side is greater than
+	 *                  the right side and 0 means the left side and right
+	 *                  side are equivalent.
+	 */
+	protected static function compare(StoreCartEntry $entry1,
+		StoreCartEntry $entry2)
+	{
+		if ($entry1->id === null && $entry2->id !== null)
+			return -1;
+
+		if ($entry1->id !== null && $entry2->id === null)
+			return 1;
+
+		if (($entry1->id === null && $entry2->id === null) ||
+			($entry1->id == $entry2->id))
+			return 0;
+
+		return ($entry1->id < $entry2->id) ? -1 : 1;
+	}
+
+	// }}}
 
 	// caching methods
 	// {{{ protected function setChanged()
@@ -578,6 +642,7 @@ abstract class StoreCart extends SwatObject
 	protected function setChanged()
 	{
 		$this->totals = array();
+		$this->sorted = false;
 	}
 
 	// }}}
