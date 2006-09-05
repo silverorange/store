@@ -2,16 +2,16 @@
 
 require_once 'PEAR/PackageFileManager2.php';
 
-$version = '0.0.1';
+$version = '0.9.1';
 $notes = <<<EOT
-- initial test package
+- RC1
 EOT;
 
 $description =<<<EOT
-Swat based framework for store.
+Classes specific to building store websites.
 
+* Built on top of Swat and Site packages
 * An OO-style API
-* A set of user-interface widgets
 EOT;
 
 $package = new PEAR_PackageFileManager2();
@@ -30,7 +30,7 @@ $result = $package->setOptions(
 );
 
 $package->setPackage('Store');
-$package->setSummary('Swat based framework for store');
+$package->setSummary('Classes for building store websites');
 $package->setDescription($description);
 $package->setChannel('pear.silverorange.com');
 $package->setPackageType('php');
@@ -47,13 +47,17 @@ $package->addIgnore('package.php');
 $package->addMaintainer('lead', 'nrf', 'Nathan Fredrickson', 'nathan@silverorange.com');
 $package->addMaintainer('lead', 'gauthierm', 'Mike Gauthier', 'mike@silverorange.com');
 
-$package->setPhpDep('5.0.5');
+$package->setPhpDep('5.1.5');
 $package->setPearinstallerDep('1.4.0');
-$package->addPackageDepWithChannel('required', 'Swat', 'pear.silverorange.com', '0.0.4');
-$package->addPackageDepWithChannel('required', 'Admin', 'pear.silverorange.com', '0.1.4');
+$package->addPackageDepWithChannel('required', 'Swat', 'pear.silverorange.com', '0.9.1');
+$package->addPackageDepWithChannel('required', 'Site', 'pear.silverorange.com', '0.9.1');
+$package->addPackageDepWithChannel('required', 'XML_RPCAjax', 'pear.silverorange.com', '0.9.1');
+$package->addPackageDepWithChannel('required', 'MooFx', 'pear.silverorange.com', '0.9.1');
+$package->addPackageDepWithChannel('required', 'Crypt_GPG', 'pear.silverorange.com', '0.3.1');
+$package->addPackageDepWithChannel('required', 'Text_Password', 'pear.php.net', '1.1.0');
+$package->addPackageDepWithChannel('required', 'Image_Transform', 'pear.php.net', '0.9.0');
+$package->addPackageDepWithChannel('required', 'Validate_Finance_CreditCard', 'pear.php.net', '0.5.2');
 $package->generateContents();
-
-//$package->addReplacement('package-info', 'pear-config', '@package_version@', 'version');
 
 if (isset($_GET['make']) || (isset($_SERVER['argv']) && @$_SERVER['argv'][1] == 'make')) {
 	$package->writePackageFile();
