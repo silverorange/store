@@ -396,22 +396,6 @@ class StoreAccount extends StoreDataObject
 	}
 
 	// }}}
-	// {{{ protected function saveOrders()
-
-	/**
-	 * Automatically saves StoreOrder sub-data-objects when this StoreAccount
-	 * object is saved
-	 */
-	protected function saveOrders()
-	{
-		foreach ($this->orders as $order)
-			$order->account = $this;
-
-		$this->orders->setDatabase($this->db);
-		$this->orders->save();
-	}
-
-	// }}}
 }
 
 ?>

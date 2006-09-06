@@ -61,8 +61,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		if ($form->isProcessed()) {
 			$transaction = new SwatDBTransaction($this->app->db);
 			try {
-				$this->processOrder();
 				$this->processAccount();
+				$this->processOrder();
 			} catch (Exception $e) {
 				$transaction->rollback();
 				throw $e;
@@ -83,6 +83,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	protected function processOrder()
 	{
 		$order = $this->app->session->order;
+
+		// attach order to account
+		if ($this->app->session->checkout_with_account)
+			$order->account = $this->app->session->account;
 
 		// set createdate to now
 		$order->createdate = new SwatDate();
@@ -184,9 +188,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$order = $this->app->session->order;
 
 		$this->createOrderItems($order);
-
-		if ($this->app->session->checkout_with_account)
-			$order->account = $this->app->session->account;
 
 		$order->locale = $this->app->getLocale();
 
