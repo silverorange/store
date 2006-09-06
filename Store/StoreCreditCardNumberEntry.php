@@ -55,6 +55,7 @@ class StoreCreditCardNumberEntry extends SwatEntry
 		if (isset($data[$this->id.'_blank_value'])
 			&& $this->value == $data[$this->id.'_blank_value']) {
 				$this->value = null;
+				$this->show_blank_value = true;
 		}
 
 		if ($this->value === null)
