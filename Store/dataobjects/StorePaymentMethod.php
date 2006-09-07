@@ -116,13 +116,10 @@ abstract class StorePaymentMethod extends StoreDataObject
 	// }}}
 	// {{{ public function getCreditCardNumber()
 
-	public function getCreditCardNumber($secret_key, $passphrase)
+	public function getCreditCardNumber(Crypt_GPG $gpg, $passphrase)
 	{
-		if ($this->gpg_id === null)
-			throw new StoreException('No GPG id provided.');
-
-		return self::decryptCreditCardNumber($this->credit_card_number,
-			$secret_key, $passphrase, $this->gpg_id);
+		return self::decryptCreditCardNumber($this->credit_card_number, $gpg,
+			$passphrase);
 	}
 
 	// }}}
@@ -215,7 +212,7 @@ abstract class StorePaymentMethod extends StoreDataObject
 	 *
 	 * @return string the encrypted credit card number.
 	 */
-	public static function encryptCreditCardNumber($number, $gpg_id)
+	public static function encryptCreditCardNumber($number, Crypt_GPG $gpg)
 	{
 		$gpg = new Crypt_GPG();
 		return $gpg->encrypt($number, $gpg_id);
@@ -225,22 +222,9 @@ abstract class StorePaymentMethod extends StoreDataObject
 	// {{{ public static function decryptCreditCardNumber()
 
 	public static function decryptCreditCardNumber($encrypted_number,
-		$secret_key, $passphrase, $gpg_id)
+		Crypt_GPG $gpg, $passphrase)
 	{
-		$gpg = new Crypt_GPG();
-
-		// TODO: GPG should not throw an exception when a check to see
-		//			if a key fingerprint exists doesn't
-		// 			if key already exists, don't try to re-insert it
-		// if ($gpg->getSecretFingerprint($gpg_id, false) === null)
-		$gpg->importKey($secret_key);
-
-		// TODO: better exception handling here?
-		if ($gpg->getSecretFingerprint($gpg_id, false) !== null)
-			$decrypted_data = $gpg->decrypt($encrypted_number, $passphrase);
-
-		$gpg->deleteSecretKey($gpg_id);
-
+		$decrypted_data = $gpg->decrypt($encrypted_number, $passphrase);
 		return $decrypted_data;
 	}
 
