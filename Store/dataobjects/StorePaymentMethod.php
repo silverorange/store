@@ -212,7 +212,7 @@ abstract class StorePaymentMethod extends StoreDataObject
 	 *
 	 * @return string the encrypted credit card number.
 	 */
-	public static function encryptCreditCardNumber($number, Crypt_GPG $gpg)
+	public static function encryptCreditCardNumber($number, $gpg_id)
 	{
 		$gpg = new Crypt_GPG();
 		return $gpg->encrypt($number, $gpg_id);
