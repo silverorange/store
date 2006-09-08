@@ -2,9 +2,9 @@
 
 require_once 'PEAR/PackageFileManager2.php';
 
-$version = '0.9.2';
+$version = '0.9.3';
 $notes = <<<EOT
-- RC1
+- RC3
 EOT;
 
 $description =<<<EOT
@@ -24,7 +24,7 @@ $result = $package->setOptions(
 		'baseinstalldir'    => '/',
 		'packagedirectory'  => './',
 		'dir_roles'         => array(
-			'Site' => 'php'
+			'Store' => 'php'
 		),
 	)
 );
