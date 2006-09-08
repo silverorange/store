@@ -137,6 +137,13 @@ class StoreAccount extends StoreDataObject
 	public $createdate;
 
 	/**
+	 * The last date on which this account was logged into
+	 *
+	 * @var Date
+	 */
+	public $last_login;
+
+	/**
 	 * Id of the default payment method
 	 *
 	 * @var integer
