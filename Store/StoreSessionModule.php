@@ -73,6 +73,14 @@ class StoreSessionModule extends SiteSessionModule
 
 			$this->setAccountCookie();
 			$this->runLoginCallbacks();
+
+			// save last login date
+			$now = new SwatDate();
+			$sql = sprintf('update Account set last_login = %s where id = %s',
+				$this->app->db->quote($now->getDate(), 'date'),
+				$this->app->db->quote($account->id, 'integer'));
+
+			SwatDB::exec($this->app->db, $sql);
 		}
 
 		return $this->isLoggedIn();
