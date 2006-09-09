@@ -139,7 +139,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	// }}}
 	// {{{ protected function addPaymentMethodToAccount()
 
-	protected function addPaymentMethodToAccount(StoreOrderPaymentMethod $order_payment_method)
+	protected function addPaymentMethodToAccount(
+		StoreOrderPaymentMethod $order_payment_method)
 	{
 		// check that payment method is not already in account
 		if ($order_payment_method->getAccountPaymentMethodId() === null) {
