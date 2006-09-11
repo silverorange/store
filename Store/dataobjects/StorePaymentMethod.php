@@ -118,8 +118,13 @@ abstract class StorePaymentMethod extends StoreDataObject
 
 	public function getCreditCardNumber(Crypt_GPG $gpg, $passphrase)
 	{
-		return self::decryptCreditCardNumber($this->credit_card_number, $gpg,
-			$passphrase);
+		$credit_card_number = $this->credit_card_number;
+
+		if ($credit_card_number !== null) 
+			$credit_card_number = self::decryptCreditCardNumber(
+				$credit_card_number, $gpg, $passphrase);
+
+		return $credit_card_number;
 	}
 
 	// }}}
