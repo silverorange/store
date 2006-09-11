@@ -84,6 +84,17 @@ abstract class StoreApplication extends SiteApplication
 				$this->session->activate();
 
 			$this->session->ad = $ad;
+
+			$now = new SwatDate();
+			$now->toUTC();
+
+			SwatDB::insertRow($this->db, 'AdReferrer',
+				array('date:createdate', 'integer:ad'),
+				array('createdate' => $now->getDate(), 'ad' => $ad->id));
+
+			$source = self::initVar('source');
+
+			$this->relocate($source);
 		}
 	}
 
