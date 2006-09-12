@@ -1,3 +1,19 @@
+2006-09-12  isaac
+
+	* [r10867] store/trunk/Store/dataobjects/StoreAccount.php:
+	  do this only with postgres lower()
+	* [r10862] store/trunk/Store/dataobjects/StoreAccount.php:
+	  make email case insensitive when logging in. this assumes
+	  postgresql's lower function will return the same value as
+	  php's strtolower, which seems like a safe assumption
+	  
+	  fixes: (4972) make log in email case insensitive
+
+2006-09-12  nrf
+
+	* [r10859] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release
+
 2006-09-11  nrf
 
 	* [r10818] store/trunk/Store/StorePrivateDataDeleter.php,
