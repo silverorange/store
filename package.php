@@ -2,9 +2,9 @@
 
 require_once 'PEAR/PackageFileManager2.php';
 
-$version = '0.9.3';
+$version = '0.9.4';
 $notes = <<<EOT
-- RC3
+see ChangeLog
 EOT;
 
 $description =<<<EOT
@@ -49,11 +49,11 @@ $package->addMaintainer('lead', 'gauthierm', 'Mike Gauthier', 'mike@silverorange
 
 $package->setPhpDep('5.1.5');
 $package->setPearinstallerDep('1.4.0');
-$package->addPackageDepWithChannel('required', 'Swat', 'pear.silverorange.com', '0.9.1');
-$package->addPackageDepWithChannel('required', 'Site', 'pear.silverorange.com', '0.9.1');
+$package->addPackageDepWithChannel('required', 'Swat', 'pear.silverorange.com', '0.9.6');
+$package->addPackageDepWithChannel('required', 'Site', 'pear.silverorange.com', '0.9.7');
 $package->addPackageDepWithChannel('required', 'XML_RPCAjax', 'pear.silverorange.com', '0.9.1');
-$package->addPackageDepWithChannel('required', 'MooFx', 'pear.silverorange.com', '0.9.1');
-$package->addPackageDepWithChannel('required', 'Crypt_GPG', 'pear.silverorange.com', '0.3.1');
+$package->addPackageDepWithChannel('required', 'MooFx', 'pear.silverorange.com', '0.9.2');
+$package->addPackageDepWithChannel('required', 'Crypt_GPG', 'pear.silverorange.com', '0.3.3');
 $package->addPackageDepWithChannel('required', 'Text_Password', 'pear.php.net', '1.1.0');
 $package->addPackageDepWithChannel('required', 'Image_Transform', 'pear.php.net', '0.9.0');
 $package->addPackageDepWithChannel('required', 'Validate_Finance_CreditCard', 'pear.php.net', '0.5.2');

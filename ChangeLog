@@ -1,0 +1,3336 @@
+2006-09-11  nrf
+
+	* [r10818] store/trunk/Store/StorePrivateDataDeleter.php,
+	  store/trunk/Store/StorePrivateDataDeleterApplication.php:
+	  Push the private data deleter that mike wrote for veseys up into
+	  Store.
+	  Add an abstract deleter class that is used within the deleter
+	  application.
+
+2006-09-11  gauthierm
+
+	* [r10793] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  don't try to decrypt null credit card numbers
+
+2006-09-11  nick
+
+	* [r10772] store/trunk/Store/StoreApplication.php:
+	  Record AdReferrer
+
+2006-09-09  gauthierm
+
+	* [r10744]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  wrap long line
+
+2006-09-08  gauthierm
+
+	* [r10738] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  this was changed accidentally working on the export/download
+	  system
+	* [r10737] store/trunk/Store/StoreSessionModule.php:
+	  save last login date when logging in
+
+2006-09-08  isaac
+
+	* [r10736] store/trunk/Store/dataobjects/StoreAccount.php:
+	  add last_login to the dataobject
+
+2006-09-08  nrf
+
+	* [r10705] store/trunk/package.php:
+	  prepare for release
+
+2006-09-07  gauthierm
+
+	* [r10672] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Pass a gpg object when decrypting rather than creating a new
+	  one. This will
+	  prevent the need to re-import/delete on every decryption.
+
+2006-09-06  nrf
+
+	* [r10640] store/trunk/Store/dataobjects/StoreAccount.php,
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  - Remove automagic order saving from StoreAccount dataobject.
+	  Explicit order saving should be and is done in confirmation page
+	  process.
+	  - Process account first, then order. Attach order to account
+	  after account is saved and has an id.
+	* [r10632] store/trunk/Store/StoreCreditCardNumberEntry.php:
+	  If the blank value is found when processing, then default to
+	  show the blank value again.
+
+2006-09-05  gauthierm
+
+	* [r10609] store/trunk/www/javascript/store-quick-order-page.js:
+	  specify types in RPC call.
+
+2006-09-05  nrf
+
+	* [r10590] store/trunk/package.php:
+	  prepare for release
+	* [r10588] store/trunk/package.php:
+	  prepare for release
+
+2006-09-05  steven
+
+	* [r10582] store/trunk/www/styles/store-quick-order-page.css:
+	  (4914) quickorder page in ie at 800x600 moved below text when
+	  ordering 81802
+
+2006-09-05  gauthierm
+
+	* [r10521] store/trunk/Store/StoreCheckoutCart.php:
+	  use getEntries() in getAvailableEntries()
+	* [r10520] store/trunk/Store/StoreCart.php:
+	  sort cart entries when getting them
+
+2006-08-31  steven
+
+	* [r10487]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  (4929) add note to confirmation page to review your order and
+	  than it has NOT been completed
+	* [r10486] store/trunk/www/images,
+	  store/trunk/www/images/cart-notification.png,
+	  store/trunk/www/styles/store-message.css:
+	  Styles and image for new StoreMessage type, CART_NOTIFICATION
+
+2006-08-31  nrf
+
+	* [r10480] store/trunk/Store/StoreMessage.php,
+	  store/trunk/Store/StoreMessageDisplay.php,
+	  store/trunk/Store/pages/StoreCartPage.php,
+	  store/trunk/Store/pages/cart.xml,
+	  store/trunk/www/styles/store-message.css:
+	  Add a StoreMessage subclass of SwatMessage with a store specific
+	  message type.
+	  Use new message type on the cart page.
+
+2006-08-30  gauthierm
+
+	* [r10451] store/trunk/Store/dataobjects/StoreArticle.php:
+	  fix folding
+	* [r10449] store/trunk/Store/dataobjects/StoreArticle.php:
+	  - make method non-static since we are loading a single article
+	  - return a boolean like other single loader methods
+	  - rename method to match other object/set loader methods
+	  - put literal default parameters into method signature
+	  - added type hinting for region parameter
+	  - documentation
+	  - use $this->table_name and $this->id_field for table name and
+	  id field
+
+2006-08-29  nrf
+
+	* [r10419] store/trunk/Store/pages/quick-order.xml:
+	  Fight a losing battle against XML rot in Store.
+	* [r10405] store/trunk/Store/StoreQuantityEntry.php:
+	  Use new SwatEntry API to override some validation messages.
+	* [r10386] store/trunk/Store/dataobjects/StoreArticle.php:
+	  Add a convience method for loading an article from a path while
+	  obeying visibilty rules. By default only the title and id are
+	  loaded.
+
+2006-08-29  gauthierm
+
+	* [r10372] store/trunk/Store/pages/StoreQuickOrderServer.php:
+	  rename variables
+	* [r10370] store/trunk/Store/pages/StoreQuickOrderServer.php:
+	  fix widget id
+
+2006-08-29  nrf
+
+	* [r10365] store/trunk/Store/StoreTotalRow.php:
+	  Conveniently, SwatHtmlTag does not output null attributes.
+
+2006-08-29  gauthierm
+
+	* [r10362]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  wrap long line
+	* [r10361] store/trunk/Store/StoreTotalRow.php:
+	  added support for a link
+
+2006-08-28  steven
+
+	* [r10359] store/trunk/Store/pages/StoreCartPage.php:
+	  Mike: Please Review
+	  (4910) make saved cart title be the frame title - assigned to
+	  Mike
+	  This relies on the SwatML ID, but I think that's inevitable.
+	* [r10351] store/trunk/www/styles/store-cart.css:
+	  (4904) right align "free" in cart for price/total columns
+
+2006-08-26  gauthierm
+
+	* [r10275] store/trunk/Store/pages/StoreArticlePage.php:
+	  use Visible and Enabled article views in article queries
+
+2006-08-25  steven
+
+	* [r10262] store/trunk/www/styles/store-mini-cart.css:
+	  minor padding tweaks to mini cart
+
+2006-08-25  gauthierm
+
+	* [r10251] store/trunk/Store/dataobjects/StorePaymentType.php:
+	  shortcut case for enabled
+	* [r10250] store/trunk/Store/dataobjects/StorePaymentType.php:
+	  add isAvailableInRegion() method
+	* [r10235] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  - one less query
+	  - select product by product id rather than item id
+	* [r10234] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  explicitly load product so we can get primary category and path
+	  info.
+
+2006-08-25  nrf
+
+	* [r10225] store/trunk/Store/pages/cart.xml:
+	  This was removed in CSS refactoring, but is used for
+	  non-formatting purposes.
+
+2006-08-24  steven
+
+	* [r10215] store/trunk/www/styles/store-quick-order-page.css:
+	  Match updated CSS class name - remove percentage that was
+	  accidentally committed
+
+2006-08-24  gauthierm
+
+	* [r10211] store/trunk/Store/pages/quick-order.xml:
+	  change class name
+
+2006-08-24  nrf
+
+	* [r10208] store/trunk/Store/pages/StoreCheckoutPage.php:
+	  Robustify.
+	* [r10202]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Use SwatDBtTransaction
+	* [r10197] store/trunk/Store/StoreCartModule.php:
+	  Use SwatDBTransaction for db transactions.
+	* [r10182] store/trunk/Store/StoreSearchForm.php:
+	  shame
+
+2006-08-24  gauthierm
+
+	* [r10171] store/trunk/Store/dataobjects/StoreAccount.php:
+	  respect site API changes
+	* [r10169] store/trunk/Store/dataobjects/StoreAccount.php:
+	  respect site package API changes
+
+2006-08-24  steven
+
+	* [r10162] store/trunk/Store/Store.php,
+	  store/trunk/Store/StoreAddressView.php,
+	  store/trunk/Store/StoreItemViewQuantityColumn.php,
+	  store/trunk/Store/StoreMoneyCellRenderer.php,
+	  store/trunk/Store/StorePaymentMethodView.php,
+	  store/trunk/Store/StorePostalCodeEntry.php,
+	  store/trunk/Store/StoreQuantityEntry.php,
+	  store/trunk/Store/StoreTotalRow.php,
+	  store/trunk/Store/pages/StoreCartPage.php,
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php,
+	  store/trunk/Store/pages/StoreCheckoutThankYouPage.php,
+	  store/trunk/Store/pages/StoreQuickOrderPage.php,
+	  store/trunk/Store/pages/cart.xml,
+	  store/trunk/Store/pages/quick-order-cart.xml,
+	  store/trunk/www/styles/cart.css,
+	  store/trunk/www/styles/quick-order.css,
+	  store/trunk/www/styles/store-cart-page.css,
+	  store/trunk/www/styles/store-cart.css,
+	  store/trunk/www/styles/store-checkout-confirmation-page.css,
+	  store/trunk/www/styles/store-checkout-thank-you-page.css,
+	  store/trunk/www/styles/store-mini-cart.css,
+	  store/trunk/www/styles/store-postal-code-entry.css,
+	  store/trunk/www/styles/store-quick-order-page.css:
+	  Great CSS refactoring
+
+2006-08-24  gauthierm
+
+	* [r10160] store/trunk/Store/StoreNewPasswordMailMessage.php,
+	  store/trunk/Store/StoreResetPasswordMailMessage.php:
+	  respect site package API changes
+
+2006-08-23  gauthierm
+
+	* [r10112] store/trunk/Store/StoreQuickOrderItemSelector.php:
+	  I could have sworn I comitted this...
+
+2006-08-23  nrf
+
+	* [r10110] store/trunk/Store/StoreSearchForm.php:
+	  This wasn't supposed to be here.
+	* [r10109] store/trunk/Store/StoreSearchForm.php:
+	  - Default to method GET.
+	  - Comment empty method.
+	* [r10093] store/trunk/Store/StoreTableViewButtonRow.php:
+	  Push up to Store. This was already generalized, so mostly just
+	  rename.
+
+2006-08-23  gauthierm
+
+	* [r10083] store/trunk/www/javascript/store-quick-order-page.js:
+	  update to work with recent changes
+	* [r10082]
+	  store/trunk/Store/StoreQuickOrderDescriptionCellRenderer.php,
+	  store/trunk/Store/StoreQuickOrderItemSelector.php,
+	  store/trunk/Store/pages/StoreQuickOrderPage.php,
+	  store/trunk/Store/pages/quick-order.xml:
+	  - remove need for custom cell renderer by displaying a div
+	  around the custom
+	  widget
+	  - update javascript accordingly
+	  - clean column/renderer/widget ids
+
+2006-08-22  gauthierm
+
+	* [r10081] store/trunk/Store/StoreQuickOrderItemSelector.php:
+	  added protected method to get items flydown
+	* [r10080] store/trunk/Store/StoreQuickOrderItemSelector.php:
+	  - added clearItems() method
+	  - fixed folding
+	* [r10079] store/trunk/Store/pages/StoreQuickOrderServer.php:
+	  - respect name change
+	  - class mapper is no longer required
+	* [r10078] store/trunk/Store/StoreQuickOrderItemSelector.php,
+	  store/trunk/Store/StoreQuickOrderItemView.php,
+	  store/trunk/Store/pages/StoreQuickOrderPage.php,
+	  store/trunk/Store/pages/quick-order.xml:
+	  - rename StoreQuickOrderItemView as StoreQuickOrderItemSelector
+	  - don't require quick order server on quick order page as it is
+	  not used
+	* [r10077] store/trunk/Store/pages/StoreQuickOrderServer.php:
+	  this is not needed anymore
+	* [r10076] store/trunk/Store/StoreQuickOrderItemView.php,
+	  store/trunk/Store/pages/StoreQuickOrderPage.php,
+	  store/trunk/Store/pages/StoreQuickOrderServer.php,
+	  store/trunk/Store/pages/quick-order.xml:
+	  Semi-major refactoring of quick-order page.
+	  - made StoreQuickOrderItemView do more of the real work and made
+	  it easily
+	  subclassable. This class will be renamed *Selector soon.
+	  - don't use any of the static override method stuff as we are
+	  just using an
+	  object instance in both the server and the regular page.
+
+2006-08-21  gauthierm
+
+	* [r10022] store/trunk/Store/pages/StoreCartPage.php:
+	  use store translations
+	* [r10021] store/trunk/Store/pages/StoreCartPage.php:
+	  add secondary content to saved message if we're not logged in
+	* [r10020] store/trunk/Store/pages/StoreCartPage.php:
+	  add link to create an account or log in
+	* [r10019] store/trunk/Store/pages/StoreCartPage.php:
+	  - unpluralize saved cart title
+	  - added a message if you have items in your saved cart and are
+	  not logged in
+	* [r10005] store/trunk/Store/dataobjects/StoreAddress.php:
+	  REGRESSIONvim
+	  /so/packages/store/work-gauthierm/Store/dataobjects/StoreAddress.php!
+	  SHAME (upon myself)
+	* [r10004] store/trunk/Store/dataobjects/StoreAddress.php:
+	  - use 1/3 as many echo statements
+	  - add a breaking space between city and provstate
+
+2006-08-21  steven
+
+	* [r10003] store/trunk/Store/dataobjects/StoreAddress.php:
+	  update underscorification
+	* [r9994] store/trunk/Store/pages/StoreCartPage.php:
+	  Update reference to changed button text
+
+2006-08-20  gauthierm
+
+	* [r9963] store/trunk/Store/StoreCreditCardExpiryEntry.php:
+	  coding conventions
+	* [r9960] store/trunk/Store/pages/StoreAccountPage.php:
+	  - fix require statement
+	  - remove unused build method
+
+2006-08-19  gauthierm
+
+	* [r9942] store/trunk/Store/pages/StoreCartPage.php:
+	  fix for page reload after move all items button is used
+	* [r9941] store/trunk/Store/pages/StoreCartPage.php:
+	  remove explicit notification message types. These default to
+	  notification.
+	* [r9940] store/trunk/Store/pages/StoreCartPage.php:
+	  Spell 'One' for single case
+	* [r9938] store/trunk/Store/pages/StoreCartPage.php:
+	  this check is needed for the saved cart as well.
+	* [r9935] store/trunk/Store/pages/StoreCartPage.php:
+	  call it shopping cart to distinguish from saved cart
+	* [r9933] store/trunk/Store/pages/StoreCartPage.php:
+	  - (4731) add a 1 item saved for later message on cart
+	  - wording consistency fixes.
+
+2006-08-18  dave
+
+	* [r9918] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  move md5'ing out of this package
+	* [r9899] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  method gets passed the secret key data instead of being passed
+	  the file name and sucking it in - needs some improvements to GPG
+	  to make the exception handling better
+
+2006-08-18  steven
+
+	* [r9890] store/trunk/www/styles/cart.css:
+	  Move Veseys-specific class from store to veseys2
+	* [r9883] store/trunk/www/styles/cart.css:
+	  Prevent accidental CSS over-ride
+
+2006-08-18  nick
+
+	* [r9881] store/trunk/Store/StorePriceCellRenderer.php:
+	  Only output "Free" if price is 0. This allows negative values
+	  for things like
+	  promotions.
+	* [r9869] store/trunk/Store/StorePaymentMethodCellRenderer.php:
+	  A vastly simplified payment method cell renderer
+
+2006-08-18  steven
+
+	* [r9868] store/trunk/Store/StoreQuantityEntry.php,
+	  store/trunk/www/styles/store-quantity-entry.css:
+	  Right-align StoreQuantity entries
+	* [r9852] store/trunk/www/styles/cart.css:
+	  Eliminate extra horizontal lines in cart
+
+2006-08-18  gauthierm
+
+	* [r9851] store/trunk/Store/StoreCartModule.php,
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  add rollback calls to transactions
+	* [r9838] store/trunk/Store/dataobjects/StoreItem.php:
+	  whitespace
+
+2006-08-17  gauthierm
+
+	* [r9826] store/trunk/Store/StoreQuantityEntry.php:
+	  fix typo
+	* [r9822] store/trunk/Store/StoreQuantityEntry.php:
+	  New class for store quantity entry boxes.
+	* [r9816] store/trunk/Store/dataobjects/StoreAccount.php:
+	  use shorter hash
+
+2006-08-17  isaac
+
+	* [r9797] store/trunk/Store/StoreTotalRow.php:
+	  (4749) on checkout thankyou, when shipping is free, the free
+	  text doesn't align with the other prices, should be right aligned
+	* [r9775] store/trunk/Store/pages/StoreCartPage.php:
+	  (4733) item removed message add 'have been' to match other
+	  messages. Also fix typo s/form/from
+	* [r9764] store/trunk/Store/StorePostalCodeEntry.php:
+	  fixes (4680) only show one error on postal code validation
+
+2006-08-17  nrf
+
+	* [r9752] store/trunk/Store/StorePriceCellRenderer.php:
+	  whitespace
+
+2006-08-16  nick
+
+	* [r9745] store/trunk/Store/StorePriceCellRenderer.php:
+	  Output nothing if price === null
+	* [r9741] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Remove the conditional around the link path.
+	* [r9739] store/trunk/Store/pages/StoreCartPage.php:
+	  Added comment to explain the conditional
+	  --This line, and those below, will be ignored-
+	  M StoreCartPage.php
+	* [r9738] store/trunk/Store/pages/StoreCartPage.php:
+	  Prevent error if item was already moved out of the checkout
+	  cart. Mike, can you
+	  just quickly look this over?
+	  
+	  i.e.
+	  - add item to my cart
+	  - click "save for later"
+	  - reload the page (re-submit the form)
+
+2006-08-16  gauthierm
+
+	* [r9683] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  added todo. A generic exception is unsafe to catch.
+
+2006-08-15  nrf
+
+	* [r9672] store/trunk/Store/StoreApplication.php:
+	  Site does this now, and it does it better.
+	* [r9638] store/trunk/Store/StoreCartModule.php:
+	  syntax error
+	* [r9637] store/trunk/Store/StoreCartModule.php:
+	  Bugfree this time
+	* [r9636] store/trunk/Store/StoreCartModule.php:
+	  Fix nick's bug.
+	  Use class mapper to get wrapper name.
+
+2006-08-15  steven
+
+	* [r9624] store/trunk/Store/pages/quick-order-cart.xml:
+	  Add store-cart-description class
+
+2006-08-15  gauthierm
+
+	* [r9613] store/trunk/Store/dataobjects/StoreCategory.php:
+	  respect table name change
+
+2006-08-14  isaac
+
+	* [r9567] store/trunk/Store/dataobjects/StoreItem.php,
+	  store/trunk/Store/dataobjects/StoreItemRegionBinding.php,
+	  store/trunk/Store/dataobjects/StoreItemWrapper.php:
+	  move enabled into the ItemRegionBinding (i think it makes sense
+	  at the store level)
+
+2006-08-14  gauthierm
+
+	* [r9563] store/trunk/Store/dataobjects/StoreCategory.php:
+	  use visible product count cache
+
+2006-08-13  gauthierm
+
+	* [r9514] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Review Steven requested:
+	  - add blank line after multiline statement
+	  - combined multiple echos into a single statement
+	  - don't show a comma before the fullname if there is no date
+	  - close outer span tag
+
+2006-08-11  steven
+
+	* [r9500] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  This was a SPAN before and not a DIV so it could be used in
+	  LABEL tags - reverting that change
+	* [r9495] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Clean up display of paymeths - Mike, please review
+
+2006-08-11  nick
+
+	* [r9492] store/trunk/Store/StoreCartModule.php,
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Added more db transactions. Even though the dataobjects have
+	  them, we need to
+	  be sure that things like the account and the order and the
+	  delete of items are
+	  all successful.
+	  
+	  Nathan, can you review this as well?
+
+2006-08-11  gauthierm
+
+	* [r9478] store/trunk/Store/StoreCartMessageCellRenderer.php:
+	  baleted.
+
+2006-08-10  steven
+
+	* [r9453] store/trunk/Store/StoreTotalRow.php,
+	  store/trunk/www/styles/store-total-row.css:
+	  Right-align <th> cells in StoreTotalRow
+
+2006-08-10  nrf
+
+	* [r9431] store/trunk/Store/StoreCartMessageCellRenderer.php:
+	  Fix class name
+	* [r9415] store/trunk/Store/StoreApplication.php:
+	  Load messages module in Store
+
+2006-08-09  nrf
+
+	* [r9405] store/trunk/Store/pages/StoreCartPage.php:
+	  When updating a qty to zero, consider it to be removed.
+	* [r9401] store/trunk/Store/pages/StoreCartPage.php:
+	  Properly save the cart.
+	* [r9393] store/trunk/Store/StoreItemPriceCellRenderer.php:
+	  Use parent::render() to display qty discount prices.
+
+2006-08-09  isaac
+
+	* [r9391] store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  quantitydiscounts to quantity_discounts as it should be
+	* [r9388] store/trunk/Store/StoreItemPriceCellRenderer.php:
+	  wrap each quantity_discount in a div
+	* [r9386] store/trunk/Store/StoreItemPriceCellRenderer.php,
+	  store/trunk/Store/dataobjects/StoreItem.php:
+	  - add cell renderer for ItemPrice, to be used on product page,
+	  which displays any quantity discounts
+	  - order quantity discounts from low to high, now that they don't
+	  need to be ordered for them to be calculated correctly
+
+2006-08-09  nrf
+
+	* [r9384] store/trunk/Store/Store.php,
+	  store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/dataobjects/StoreAd.php,
+	  store/trunk/Store/dataobjects/StoreItemRegionBindingWrapper.php,
+	  store/trunk/Store/dataobjects/StoreOrderAddress.php,
+	  store/trunk/Store/dataobjects/StoreOrderItem.php:
+	  Update copyright dates.
+	* [r9382] store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  Reflect changed ordering.
+
+2006-08-09  isaac
+
+	* [r9369] store/trunk/Store/StoreItemPriceCellRenderer.php,
+	  store/trunk/Store/StorePriceCellRenderer.php,
+	  store/trunk/Store/pages/cart.xml:
+	  rename StoreItemPriceCellRenderer to just
+	  StorePriceCellRenderer, as the StoreItemPriceCellRenderer name
+	  is needed for
+	  the (coming) renderer to be used on item display on the product
+	  page (to display quantity discounts), the new name is
+	  not ideal, but as it gets used in many places, it was hard to
+	  make it more specific
+	* [r9358] store/trunk/Store/pages/StoreCartPage.php,
+	  store/trunk/Store/pages/StoreQuickOrderPage.php,
+	  store/trunk/Store/pages/cart.xml,
+	  store/trunk/Store/pages/quick-order-cart.xml:
+	  use calculated price for cart displays, not item.price (useful
+	  for things like gifts and quantity discounts)
+	* [r9355] store/trunk/Store/dataobjects/StoreQuantityDiscount.php:
+	  kinda useless without price
+
+2006-08-09  nick
+
+	* [r9348]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Move ads from the site to the store package
+
+2006-08-09  nrf
+
+	* [r9321] store/trunk/Store/StoreCreditCardNumberEntry.php:
+	  Make StoreCreditCardNumberEntry usuable by adding a hidden field
+	  to track the state of $show_blank_value when the widget is
+	  displayed.
+
+2006-08-08  nrf
+
+	* [r9319]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Save new addresses and payment methods in account.
+	* [r9315] store/trunk/Store/pages/StoreCheckoutEditPage.php:
+	  Convienence method for checkout edit pages.
+
+2006-08-08  gauthierm
+
+	* [r9314] store/trunk/Store/StoreCheckoutCart.php:
+	  silently handle bad cookie exception
+
+2006-08-08  nrf
+
+	* [r9310] store/trunk/Store/dataobjects/StoreOrderAddress.php,
+	  store/trunk/Store/dataobjects/StoreOrderPaymentMethod.php,
+	  store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Straighten out confusion between AccountAddress ids and
+	  OrderAddress ids.
+	  Same for PaymentMethod.
+
+2006-08-08  nick
+
+	* [r9304] store/trunk/Store/StoreCartModule.php:
+	  Refactor getEntries method
+	* [r9302] store/trunk/Store/StoreCartModule.php:
+	  Added ordering by ClassCode.displayorder
+	  
+	  But, this must be a bit wrong to have ClassCode stuff in the
+	  Store package...
+	  Next task is to sort that out.
+
+2006-08-08  steven
+
+	* [r9296] store/trunk/Store/StoreCreditCardNumberEntry.php:
+	  Bump default size of credit card number entry from 16 to 17
+	  because lots of browsers make 16 look a bit too narrow
+
+2006-08-08  nrf
+
+	* [r9295] store/trunk/Store/StoreCreditCardNumberEntry.php:
+	  Duplication leads to bitrot... remove duplication, reduce bitrot.
+
+2006-08-08  steven
+
+	* [r9283] store/trunk/www/styles/cart.css:
+	  Use new store-cart-view class rather than a growing list of IDs
+	* [r9233] store/trunk/www/styles/cart.css:
+	  Some styles for the checkout cart
+
+2006-08-08  gauthierm
+
+	* [r9221] store/trunk/Store/StoreItemPriceCellRenderer.php,
+	  store/trunk/Store/StoreQuantityCellRenderer.php,
+	  store/trunk/Store/StoreQuickOrderDescriptionCellRenderer.php,
+	  store/trunk/Store/StoreTaxRow.php,
+	  store/trunk/Store/StoreTotalRow.php:
+	  Respect Swat API changes.
+	* [r9218] store/trunk/Store/pages/StoreArticlePage.php:
+	  Indenting fix.
+
+2006-08-07  nrf
+
+	* [r9212] store/trunk/Store/pages/StoreCheckoutThankYouPage.php:
+	  Automatically logout when done ordering.
+	* [r9211]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php,
+	  store/trunk/Store/pages/StoreCheckoutPage.php:
+	  Move checkCart() call to where i meant to put it earlier.
+	  Save account object at end of checkout.
+	* [r9208]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php,
+	  store/trunk/Store/pages/StoreCheckoutPage.php,
+	  store/trunk/Store/pages/StoreCheckoutThankYouPage.php:
+	  Check cart contents on all checkout pages except for the
+	  thank-you page.
+	* [r9205] store/trunk/Store/StoreSessionModule.php:
+	  Use magic __unset();
+	  Clear order dataobject on logout... prevent data leakage.
+	* [r9203] store/trunk/Store/pages/StoreCheckoutEditPage.php,
+	  store/trunk/Store/pages/StoreCheckoutStepPage.php:
+	  Only preprocess if the form has been submitted.
+
+2006-08-07  nick
+
+	* [r9192]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Small restructuring of where and how OrderItem is called
+
+2006-08-07  steven
+
+	* [r9175] store/trunk/Store/pages/cart.xml,
+	  store/trunk/www/styles/cart.css:
+	  Add a class to the cart entry descriptions and use CSS to hold
+	  it open wide
+
+2006-08-07  nrf
+
+	* [r9167] store/trunk/Store/dataobjects/StoreAddress.php:
+	  Don't copy the id when copy contents of one StoreAddress to
+	  another StoreAddress.
+
+2006-08-05  nrf
+
+	* [r9129] store/trunk/Store/StoreCategoryPath.php,
+	  store/trunk/Store/StoreCategoryPathEntry.php:
+	  Push up to Store.
+
+2006-08-05  steven
+
+	* [r9122] store/trunk/Store/pages/quick-order-cart.xml:
+	  Don't use StoreCartEntryDescriptionCellRenderer - it's dead
+	* [r9121] store/trunk/Store/pages/cart.xml:
+	  Don't use StoreCartEntryDescriptionCellRenderer - it doesn't
+	  exist anymore
+	* [r9120] store/trunk/Store/StoreAddressView.php,
+	  store/trunk/Store/StorePaymentMethodView.php:
+	  classes[] array rather than class property
+
+2006-08-05  gauthierm
+
+	* [r9117] store/trunk/Store/StoreUnnamedButton.php:
+	  I fixed this class before I wrote this method.
+	* [r9110] store/trunk/Store/StoreUnnamedButton.php:
+	  Respect swat changes.
+
+2006-08-04  nrf
+
+	* [r9088] store/trunk/Store/StoreApplication.php:
+	  Reflect SiteApplication API change and register store pages as
+	  secure.
+	* [r9082] store/trunk/Store/StoreApplication.php:
+	  Reflect SiteApplication changes.
+
+2006-08-04  gauthierm
+
+	* [r9075] store/trunk/Store/StoreItemPriceCellRenderer.php:
+	  This was broken for some reason for getThAttributes(). I'm lazy
+	  so I'm fixing
+	  it this way.
+
+2006-08-04  steven
+
+	* [r9073]
+	  store/trunk/Store/StoreCartEntryDescriptionCellRenderer.php,
+	  store/trunk/www/styles/cart.css:
+	  Remove StoreCartEntryDescriptionCellRenderer and it's CSS
+	  This is obsolete now that we have classes on TDs in a
+	  SwatTableColumn
+	* [r9072] store/trunk/www/styles/cart.css:
+	  apply buttons styles to confirmation page cart listing
+
+2006-08-04  gauthierm
+
+	* [r9070] store/trunk/Store/StoreItemPriceCellRenderer.php:
+	  Use getCSSClasses() method instead of getTdAttributes().
+
+2006-08-03  nrf
+
+	* [r9035] store/trunk/Store/StoreApplication.php:
+	  missing include
+	* [r9030] store/trunk/Store/StoreApplication.php:
+	  Use new SiteConfigModule.
+
+2006-08-03  gauthierm
+
+	* [r8971] store/trunk/Store/dataobjects/StoreRegion.php:
+	  Use new table names. I forgot to commit this earlier.
+
+2006-08-02  gauthierm
+
+	* [r8943] store/trunk/Store/dataobjects/StoreRegion.php:
+	  I was obviously not awake when I wrote this.
+	* [r8942] store/trunk/Store/dataobjects/StoreRegion.php,
+	  store/trunk/Store/dataobjects/StoreRegionWrapper.php:
+	  These methods were in the wrong object. Whoops!!
+
+2006-08-02  steven
+
+	* [r8940] store/trunk/www/styles/cart.css:
+	  Remove unused class
+
+2006-07-31  gauthierm
+
+	* [r8872] store/trunk/Store/dataobjects/StoreRegionWrapper.php:
+	  Methods to load applicable billing and shipping countries.
+
+2006-07-31  nick
+
+	* [r8862]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Record the account with the order
+	* [r8860] store/trunk/Store/pages/StoreCheckoutThankYouPage.php,
+	  store/trunk/Store/pages/StoreCheckoutThankyouPage.php:
+	  Fixed case
+	* [r8859] store/trunk/Store/pages/StoreCheckoutThankyouPage.php:
+	  Make a base class for thank you page on checkout
+
+2006-07-31  gauthierm
+
+	* [r8858] store/trunk/www/javascript/store-quick-order-page.js:
+	  Update quantity field after entring anything in the sku field.
+	  
+	  This works better when a used types a sku and presses enter
+	  before the
+	  asynchronous request completes.
+	* [r8851] store/trunk/Store/pages/StoreCartPage.php:
+	  Remove veseys specific javascript from store cart page.
+	* [r8845] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Use MooFx package.
+
+2006-07-31  nrf
+
+	* [r8826]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Explicitly save cart since we relocate and never run the build
+	  phase.
+	* [r8822]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Leave order in the session for the thank-you page to use.
+
+2006-07-31  nick
+
+	* [r8821]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php,
+	  store/trunk/Store/pages/StoreCheckoutPage.php:
+	  Moved the relocate to just the confirmation page
+
+2006-07-31  gauthierm
+
+	* [r8819] store/trunk/Store/dataobjects/StoreOrderItem.php:
+	  Fix typo.
+
+2006-07-31  nrf
+
+	* [r8810]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  rename a local var
+	* [r8807] store/trunk/Store/dataobjects/StoreOrderItem.php:
+	  Protected since the parent needs access to serialize/unserialize
+	* [r8804] store/trunk/Store/dataobjects/StoreOrderItem.php:
+	  Reflect changes in SwatDB
+	* [r8800] store/trunk/Store/dataobjects/StoreDataObject.php:
+	  reflect change to SwatDB
+	* [r8794] store/trunk/Store/dataobjects/StoreOrderItem.php:
+	  Serialize cart_entry_id too.
+
+2006-07-28  gauthierm
+
+	* [r8757] store/trunk/Store/dataobjects/StoreDataObject.php:
+	  Respect SwatDB changes.
+
+2006-07-28  nrf
+
+	* [r8734] store/trunk/Store/StoreCheckoutCart.php:
+	  Remove removeAvailableEntries() as it is no longer used.
+	* [r8733]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Refactor confirmation page processing. Getting closer to
+	  working...
+	* [r8732] store/trunk/Store/StoreApplication.php:
+	  typo
+	* [r8730] store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  Set cart_entry_id when creating a new order item.
+	* [r8729] store/trunk/Store/dataobjects/StoreOrderItem.php:
+	  Add a private property and accessor methods to store the
+	  cart-entry-id that this order-item was created from.
+	* [r8728] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Add 'items' to set of serializable sub-dataobjects within a
+	  StoreOrder.
+
+2006-07-28  gauthierm
+
+	* [r8712] store/trunk/Store/dataobjects/StoreItem.php:
+	  - register is_available as an internal property
+	  - if is_available is set as an internal value and item region is
+	  the same as
+	  the specified region, use internal value to determine item
+	  availability
+	  instead of performing a query.
+	* [r8711] store/trunk/Store/dataobjects/StoreItemWrapper.php:
+	  Load item availability by region when loading a set of items.
+
+2006-07-27  gauthierm
+
+	* [r8705] store/trunk/www/styles/cart.css:
+	  Move more styles to veseys code.
+	* [r8703] store/trunk/www/styles/quick-order.css:
+	  Package specific loading CSS class name.
+	* [r8702] store/trunk/www/javascript/store-quick-order-page.js:
+	  Use package specific CSS class name.
+	* [r8701] store/trunk/www/styles/quick-order.css:
+	  Added comment.
+	* [r8698] store/trunk/www/styles/cart.css:
+	  Remove veseys specific styles.
+	* [r8696] store/trunk/www/styles/cart.css:
+	  Fix class name.
+	* [r8694] store/trunk/Store/pages/quick-order-cart.xml:
+	  Use new table classes.
+	* [r8687] store/trunk/Store/pages/cart.xml:
+	  Basic cart edit page.
+	* [r8686] store/trunk/Store/pages/StoreCartPage.php:
+	  Fix parameter name.
+	* [r8685] store/trunk/Store/pages/StoreCartPage.php:
+	  Fix cart checks.
+	* [r8682] store/trunk/Store/pages/StoreCartPage.php:
+	  Fix require.
+	* [r8681] store/trunk/Store/pages/StoreCartPage.php:
+	  Require correct files.
+	* [r8679]
+	  store/trunk/Store/StoreCartEntryDescriptionCellRenderer.php,
+	  store/trunk/Store/StoreCartMessageCellRenderer.php:
+	  Relicence and storify.
+	* [r8677] store/trunk/Store/StoreCartMessageCellRenderer.php,
+	  veseys2/trunk/include/CartMessageCellRenderer.php:
+	  Move to store.
+	* [r8675]
+	  store/trunk/Store/StoreCartEntryDescriptionCellRenderer.php,
+	  veseys2/trunk/include/CartEntryDescriptionCellRenderer.php:
+	  Move to store.
+	* [r8669] store/trunk/Store/StoreItemPriceCellRenderer.php:
+	  - remove veseys specific CSS
+	  - license
+	  - rename for store
+	  - use store for text translations.
+	* [r8668] store/trunk/Store/StoreItemPriceCellRenderer.php,
+	  veseys2/trunk/include/ItemPriceCellRenderer.php:
+	  Move to store.
+	* [r8664] store/trunk/Store/StoreItemColumn.php:
+	  Relicence and change package.
+	* [r8663] store/trunk/Store/Store.php:
+	  Add license information.
+	* [r8661] store/trunk/Store/StoreItemColumn.php,
+	  veseys2/trunk/include/ItemColumn.php:
+	  Move this to store.
+	* [r8660] store/trunk/Store/pages/StoreCartPage.php:
+	  - throw exception if checkout cart of saved cart is not defined.
+	  - saved view does not need its table store in init().
+	  - add ability to set xml file to load.
+	* [r8657] store/trunk/Store/pages/StoreCartPage.php:
+	  - make properties protected.
+	  - document properties.
+	  - make class abstract.
+	* [r8655] store/trunk/Store/pages/StoreCartPage.php:
+	  - remove veseys specific code
+	  - make private methods protected
+	  - fix move all code
+	* [r8654] store/trunk/Store/pages/StoreCartPage.php:
+	  Remove veseys specific code and make subclassable.
+	* [r8652] store/trunk/Store/pages/StoreCartPage.php:
+	  Remove veseys specific fields.
+	* [r8651] store/trunk/Store/pages/StoreCartPage.php:
+	  Remove veseys specific code.
+	* [r8650] store/trunk/Store/pages/StoreCartPage.php:
+	  Remove veseys specific code.
+	* [r8649] store/trunk/Store/pages/StoreCartPage.php:
+	  Translate strings.
+	* [r8648] store/trunk/Store/StoreApplication.php:
+	  Require store static methods in store applications.
+	* [r8647] store/trunk/Store/Store.php:
+	  add a static class for translation methods. Store classes should
+	  use these
+	  methods to translate strings.
+	* [r8644] store/trunk/Store/pages/StoreCartPage.php:
+	  Make more subclassable
+	* [r8642] store/trunk/Store/pages/StoreCartPage.php:
+	  - make more subclassable.
+	  - change package name.
+	  - remove promotion gifts (veseys specific).
+	* [r8640] store/trunk/Store/pages/StoreCartPage.php:
+	  Move cart page to store.
+	* [r8636] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Moved cart styles to Store.
+	* [r8635] store/trunk/www/styles/cart.css,
+	  veseys2/trunk/www/styles/cart.css:
+	  Move cart styles to store package.
+	* [r8623]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Send order confirmation before we destroy the order object.
+	* [r8621]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  This is the preferred way to remove something from the session.
+	* [r8620]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Fix folding.
+	* [r8614]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Move order processing into its own protected method.
+
+2006-07-26  nrf
+
+	* [r8598] store/trunk/Store/dataobjects/StoreCategory.php:
+	  Add product_count to category dataobject.
+
+2006-07-26  dave
+
+	* [r8581] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  new and improved, now wtih GPG decryption - needs cleanup
+
+2006-07-26  nick
+
+	* [r8570] store/trunk/Store/pages/StoreCheckoutPage.php:
+	  Added check to make sure there are available items in the cart,
+	  otherwise
+	  redirect to the cart.
+	  
+	  Nathan/Mike: can you guys double-check that this logic is
+	  correct and the
+	  app->cart->checkout is alwys there at this point?
+	* [r8557]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Added Order Confirmation
+
+2006-07-26  nrf
+
+	* [r8527]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php,
+	  store/trunk/Store/pages/StoreCheckoutPage.php:
+	  Move order creation from init() to build() of
+	  CheckoutConfirmation. This was an oversight that is critical to
+	  ensure that what you see on the confirmation page is the same as
+	  what gets ordered. The flow is:
+	  
+	  first page load:
+	  CheckoutConfirmationPage:init() - sanity check of order in
+	  session
+	  ChecoutConfirmationPage:build() - create the order & items in
+	  session and display it
+	  
+	  second page load:
+	  CheckoutConfirmationPage:init() - sanity check of order in
+	  session
+	  ChecoutConfirmationPage:process() - save the order in session
+	  and relocate
+
+2006-07-26  gauthierm
+
+	* [r8519] store/trunk/Store/StoreTaxRow.php:
+	  !($this->value > 0) ????
+	  
+	  It's not even that late in Chicago!
+
+2006-07-26  nick
+
+	* [r8516] store/trunk/Store/StoreTaxRow.php:
+	  Fixed tax fields that were showing up when the value was 0
+
+2006-07-25  gauthierm
+
+	* [r8481] store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  Set database when creating order items.
+	* [r8468]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Fix indenting.
+	* [r8467]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Fix method name.
+	* [r8466] store/trunk/Store/StoreCheckoutCart.php:
+	  The word provstate is a silverorangeism but should be
+	  capitalized as two words
+	  for methods and classes.
+
+2006-07-25  nrf
+
+	* [r8465]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Pass entries instead of order items.
+	* [r8463]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Add hook for subclassing.
+
+2006-07-25  gauthierm
+
+	* [r8445] store/trunk/Store/StoreCartModule.php:
+	  Select catalogue on products.
+
+2006-07-25  nick
+
+	* [r8426] store/trunk/Store/StoreTaxRow.php:
+	  New StoreTaxRow that will hide non-zero values
+
+2006-07-24  nrf
+
+	* [r8421] store/trunk/Store/StoreCheckoutCart.php,
+	  store/trunk/Store/dataobjects/StoreCartEntry.php,
+	  store/trunk/Store/dataobjects/StoreOrder.php,
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Refactoring and cleanup of checkout cart totalling methods.
+	* [r8384]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Store ad in order if it exists in session.
+	* [r8380]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Finish up CheckoutConfirmationPage::process()
+	  - set order createdate to now
+	  - remove order from session
+	  - remove entries from cart that were ordered
+	* [r8379] store/trunk/Store/StoreCheckoutCart.php:
+	  Add method removeAvailableEntries()
+	* [r8372]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Use correct field name.
+	* [r8371] store/trunk/Store/pages/StoreCheckoutPage.php:
+	  Old change in my tree. I think this was needed.
+	* [r8370] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Save sub-dataobjects of an order.
+	* [r8359] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Rename field to match DB.
+
+2006-07-24  nick
+
+	* [r8358]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Still needs some work, but some new additions to
+	  OrderConfirmation
+
+2006-07-20  gauthierm
+
+	* [r8312] store/trunk/Store/StoreCart.php:
+	  Remove debug.
+	* [r8311] store/trunk/Store/StoreCart.php:
+	  - in addItem rollback the indexed array on add failure as well.
+	  - in setEntryQuantity validate the quantity and rollback if it
+	  is not valid.
+
+2006-07-19  gauthierm
+
+	* [r8308] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  - use new Swat changes to validate fields.
+	* [r8304] store/trunk/Store/pages/quick-order.xml:
+	  set minimum value to 1
+	* [r8303] store/trunk/www/javascript/store-quick-order-page.js:
+	  Only clear quantity on init if it is the default quantity.
+	* [r8300] store/trunk/Store/pages/quick-order.xml:
+	  - spell separator correctly
+	  - added minimum value
+
+2006-07-17  gauthierm
+
+	* [r8217] store/trunk/Store/dataobjects/StoreAccount.php:
+	  Not needed anymore.
+	* [r8210] store/trunk/Store/dataobjects/StoreAccount.php:
+	  Select id field as it is needed for indexing.
+	* [r8200] store/trunk/Store/StoreCart.php:
+	  - Move some comon tasks into a new protected method.
+
+2006-07-17  nrf
+
+	* [r8196] store/trunk/Store/dataobjects/StoreOrderItem.php:
+	  Make OrderItem::$price a float.
+
+2006-07-17  gauthierm
+
+	* [r8192] store/trunk/Store/StoreCart.php:
+	  Return StoreCartEntry or null instead of true or false.
+
+2006-07-17  dave
+
+	* [r8191] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  some pointers from nate as to how this will work
+	* [r8187] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  beginning of credit card decryption methods
+
+2006-07-17  gauthierm
+
+	* [r8181] store/trunk/Store/StoreCheckoutCart.php,
+	  store/trunk/Store/StoreSavedCart.php:
+	  Index entries by id when loading.
+	* [r8180] store/trunk/Store/StoreCart.php:
+	  Index cart entries by database id.
+	* [r8176] store/trunk/Store/StoreCart.php:
+	  Update documentation pending code changes.
+	* [r8174] store/trunk/Store/StoreCart.php:
+	  Added type hinting.
+	* [r8173] store/trunk/Store/StoreCart.php:
+	  Update comment.
+
+2006-07-16  gauthierm
+
+	* [r8152] store/trunk/Store/StoreCreditCardExpiryEntry.php:
+	  Added comment.
+
+2006-07-15  gauthierm
+
+	* [r8140] store/trunk/Store/dataobjects/StoreImage.php:
+	  Fix package name and copyright date.
+	* [r8139] store/trunk/Store/pages/StoreExceptionPage.php:
+	  Fix package name.
+	* [r8121] store/trunk/Store/pages/StoreQuickOrderServer.php:
+	  Remove use of getCount().
+	* [r8120] store/trunk/Store/StoreCartModule.php:
+	  Remove use of getCount().
+	* [r8119] store/trunk/Store/pages/StoreArticlePage.php:
+	  Remove use of getCount() and added type hinting.
+
+2006-07-14  nrf
+
+	* [r8073] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Remove Order::$ship_to_billing_address. See last commit.
+
+2006-07-11  nick
+
+	* [r7930] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Removed fullname from Order (this is taken care of using the
+	  addresses and
+	  accounts)
+
+2006-07-11  nrf
+
+	* [r7921] store/trunk/Store/dataobjects/StoreImage.php:
+	  Move Image data object into StoreImage, an abstract base.
+
+2006-07-11  nick
+
+	* [r7917]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Reorder methods
+	* [r7912] store/trunk/Store/StoreCheckoutCart.php:
+	  Fixed methods for calculating shipping
+
+2006-07-11  nrf
+
+	* [r7901] store/trunk/Store/StoreCheckoutCart.php:
+	  Rename local variable.
+
+2006-07-11  nick
+
+	* [r7900] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Renamed subtotal to item_total
+
+2006-07-10  steven
+
+	* [r7881] store/trunk/Store/pages/StoreArticlePage.php:
+	  Don't output the article-bodytext wrapping DIV if there is no
+	  article bodytext
+
+2006-07-10  nrf
+
+	* [r7872] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Add a copyFrom() method to enable copying fields between
+	  different subclasses of StorePaymentMethod objects. Analogous
+	  to StoreAddress::copyFrom().
+	* [r7869]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Unfortunately type hinting does not work when passing magic
+	  __get() return values as paramaters. Workaround by setting
+	  __get() return to a local variable and then passing that a param.
+	* [r7868] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Enumerate sub-dataobjects to be serialized.
+
+2006-07-10  steven
+
+	* [r7864] store/trunk/Store/pages/quick-order.xml:
+	  Add a SwatFrame back to the QuickOrder page
+	* [r7861] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Move article body text to below the cart UI, but above the quick
+	  order UI
+	* [r7857] store/trunk/Store/pages/quick-order-cart.xml:
+	  Move Quantity column between Price and Extension - where it
+	  belongs
+
+2006-07-10  nrf
+
+	* [r7856] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Its ReflectionClass, not ReflectorClass.
+	  Fix local variable name.
+
+2006-07-10  steven
+
+	* [r7855] store/trunk/www/styles/quick-order.css:
+	  Style up the quick order body text and fix a few changed class
+	  names
+
+2006-07-10  nrf
+
+	* [r7854] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Add a fullname property to StoreOrder
+	* [r7853] store/trunk/Store/dataobjects/StoreAccount.php:
+	  Add method to set password field.
+	* [r7851]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Add some sanity checks. Too bad assert() does not throw
+	  exceptions... PHP6 maybe
+	* [r7850] store/trunk/Store/dataobjects/StoreDataObject.php:
+	  Setup class map before calling parent::__wakeup()
+
+2006-07-04  nrf
+
+	* [r7790] store/trunk/Store/pages/StoreCheckoutEditPage.php,
+	  store/trunk/Store/pages/StoreCheckoutStepPage.php:
+	  Only call processCommon() when the form has been submitted.
+	* [r7783] store/trunk/Store/dataobjects/StoreAddress.php:
+	  Add a copyFrom() method for copy on StoreAddress into another.
+	* [r7782] store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  Pass both shipping and billing addresses to order item creation
+	  method.
+	* [r7780] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Move to Store.
+	  TODO: drop the ship to billing boolean field and put same id in
+	  both address fields.
+
+2006-07-04  gauthierm
+
+	* [r7768] store/trunk/Store/dataobjects/StoreAccount.php:
+	  Update type hinting.
+	* [r7762] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Make sure overridden method is static and public. This is
+	  probably overkill but
+	  what-the-heck?
+	* [r7760] store/trunk/Store/dataobjects/StoreItem.php:
+	  Added @throws tag to docblock.
+	* [r7759] store/trunk/Store/StoreCart.php:
+	  Morre documentation updates. We already know we're referring to a
+	  StoreCartEntry so we don't need to say it again.
+	* [r7757] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Move error message out of getItemId().
+	* [r7756] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Let cart handle negative quantities and instantiate the correct
+	  item class in
+	  addItem().
+	* [r7752] store/trunk/Store/dataobjects/StoreItem.php:
+	  Put properties before methods.
+	* [r7751] store/trunk/Store/dataobjects/StoreItem.php:
+	  Added isAvailableInRegion() method. This does the region
+	  specific part of what
+	  isAvailable() does.
+	* [r7750] store/trunk/Store/StoreCart.php:
+	  Don't allow adding negative-quantity cart entries.
+	* [r7749] store/trunk/Store/StoreCart.php:
+	  Added and updated documentation.
+
+2006-07-03  gauthierm
+
+	* [r7748] store/trunk/Store/dataobjects/StoreItem.php:
+	  Updated documentation. Some of this was taken from the old
+	  StoreItem class
+	  before normalizing it through Veseys work.
+	* [r7746] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Change error types to match other UI errors on front-end.
+	* [r7745] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Show a message if entered quantity is negative.
+	* [r7744] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Wrap long line.
+	* [r7743] store/trunk/Store/StoreCart.php:
+	  Fix docblock method name.
+	* [r7741] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  - Return table store.
+	  - Don't show quickorder form if no rows are available in the
+	  quickorder store.
+	* [r7740] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Move quick-order building into its own method. Move more cart
+	  specific stuff
+	  to the buildCartView() method.
+	* [r7739] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Make methods protected.
+	* [r7738] store/trunk/Store/pages/StoreQuickOrderPage.php,
+	  store/trunk/Store/pages/quick-order-cart.xml:
+	  Steven tells me the cart-items div is not required so refactor
+	  this to be a
+	  little cleaner.
+	* [r7736] store/trunk/Store/pages/StoreQuickOrderPage.php,
+	  store/trunk/Store/pages/quick-order-cart.xml:
+	  - Make getItemId() add error message to the page instead of the
+	  cart.
+	  - Updated documentation of getItemId().
+	  - Limit 1 in the getItemId() select statement.
+	  - Always display the message display even if we are not showing
+	  the cart.
+	  - Explicitly display the form instead of setting visible and
+	  displaying the
+	  whole UI.
+	  - Don't check for hasMessages() when adding cart messages to the
+	  page. The
+	  foreach loop will never run if getMessages() returns an empty
+	  array.
+	* [r7735] store/trunk/Store/StoreCart.php:
+	  Make adding messaged protected. Only the cart should be able to
+	  add messages to
+	  itself as the cart is never responsible for displaying messages.
+	* [r7729] store/trunk/www/javascript/store-quick-order-page.js:
+	  Set quantity to 1 when item is loaded. Veseys suggested this in
+	  Friday's
+	  meeting.
+
+2006-07-02  gauthierm
+
+	* [r7728]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Pass order billing address povstate to createOrderItem().
+	  
+	  TODO: make sure billing address provstate is set at this point.
+	* [r7727] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Use renamed javascript.
+	* [r7726] store/trunk/www/javascript/quick-order-page.js,
+	  store/trunk/www/javascript/store-quick-order-page.js:
+	  Rename this js file for store package.
+	* [r7725] store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  Rename provstate as billing_provstate.
+	* [r7722] store/trunk/Store/StoreCheckoutCart.php:
+	  Tax is calculated with billing address provstate and shipping is
+	  calculated
+	  with shipping address provstate. Update documentation and method
+	  signatures to
+	  reflect this.
+	  
+	  The getTotal() method needs both provstates.
+	* [r7721]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Only create orderitems for available entries.
+	* [r7719] store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  Orderitem creation is province/state dependent.
+
+2006-07-01  gauthierm
+
+	* [r7717] store/trunk/www/javascript/quick-order-page.js:
+	  Get rid of jarring transition from 100% opacity to 0% opacity.
+	  This is a fairly
+	  major restructuring of the quickorder JavaScript that needs
+	  further
+	  documentation. Let me know if anything is broken.
+	  
+	  Now with 50% more sexy!
+
+2006-06-30  gauthierm
+
+	* [r7715] store/trunk/www/javascript/quick-order-page.js:
+	  Trigger effect when we're showing the correct frame.
+	* [r7714] store/trunk/Store/pages/StoreQuickOrderServer.php:
+	  This is always passed by reference.
+	* [r7703] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Use new resource path for JavaScript and style-sheets.
+
+2006-06-29  gauthierm
+
+	* [r7693] store/trunk/Store/StoreMoneyCellRenderer.php:
+	  Include CSS class.
+	* [r7692] store/trunk/Store/StoreMoneyCellRenderer.php:
+	  Money cell renderer that shows n/a when no value is available.
+	* [r7687] store/trunk/Store/StoreTotalRow.php:
+	  Fix typo.
+	* [r7685] store/trunk/Store/StoreTotalRow.php:
+	  Display 'FREE' when total is $0.00.
+	* [r7676] store/trunk/Store/exceptions/StoreException.php,
+	  store/trunk/Store/pages/StoreExceptionPage.php:
+	  Close PHP files.
+
+2006-06-28  gauthierm
+
+	* [r7661] store/trunk/Store/StoreApplication.php:
+	  Added parsing of ad token. Updated docblock.
+	* [r7660] store/trunk/Store/dataobjects/StoreAd.php:
+	  Use correct method name.
+	* [r7659] store/trunk/Store/dataobjects/StoreAdWrapper.php:
+	  A wrapper for ad objects.
+
+2006-06-28  nrf
+
+	* [r7658]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Get the class_map before using it.
+	* [r7657] store/trunk/Store/dataobjects/StoreRecordsetWrapper.php:
+	  Match parent constructor.
+
+2006-06-28  gauthierm
+
+	* [r7653] store/trunk/Store/StoreNewPasswordMailMessage.php:
+	  Mail message for assigning new passwords to accounts.
+	* [r7652] store/trunk/Store/dataobjects/StoreAccount.php:
+	  Re-add old reset password function as generateNewPassword().
+
+2006-06-27  nrf
+
+	* [r7618] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  This fits in 80.
+	* [r7616] store/trunk/Store/pages/StoreExceptionPage.php:
+	  Cleanup using features of parent class.
+
+2006-06-27  dave
+
+	* [r7608] store/trunk/Store/pages/StoreExceptionPage.php:
+	  follow convention
+	* [r7586] store/trunk/Store/StoreAddressView.php,
+	  store/trunk/Store/StorePaymentMethodView.php,
+	  store/trunk/Store/StoreShipmentMethod.php,
+	  store/trunk/Store/dataobjects/StoreItemWrapper.php,
+	  store/trunk/Store/pages/StoreExceptionPage.php,
+	  store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  wrap long lines
+
+2006-06-26  gauthierm
+
+	* [r7559] store/trunk/Store/StoreResetPasswordMailMessage.php:
+	  Fix sprintf syntax.
+
+2006-06-26  nrf
+
+	* [r7556] store/trunk/Store/StoreClassMap.php:
+	  Commit 7525 got lost when i renamed this class. Add it again.
+	* [r7552] store/trunk/Store/pages/quick-order.xml:
+	  Don't use a thousands seperator in quantity entries.
+	* [r7550] store/trunk/Store/StoreClassMap.php:
+	  Rename a method.
+	* [r7549] store/trunk/Store/pages/quick-order.xml:
+	  Remove commented out frame.
+	* [r7546] store/trunk/Store/dataobjects/StoreAccount.php:
+	  This was missed earlier due to concurrent commits.
+	* [r7544] store/trunk/Store/StoreItemViewQuantityColumn.php:
+	  Change include path for packages. This avoids a naming conflict
+	  between the 'store' tag and the Store package and simplifies the
+	  Apache config.
+	* [r7540] store/trunk/Store/StoreCartModule.php,
+	  store/trunk/Store/StoreClassMap.php,
+	  store/trunk/Store/StoreDataObjectClassMap.php,
+	  store/trunk/Store/StoreSessionModule.php,
+	  store/trunk/Store/dataobjects/StoreDataObject.php,
+	  store/trunk/Store/dataobjects/StoreItemWrapper.php,
+	  store/trunk/Store/dataobjects/StoreRecordsetWrapper.php,
+	  store/trunk/Store/pages/StoreArticlePage.php,
+	  store/trunk/Store/pages/StoreQuickOrderPage.php,
+	  store/trunk/Store/pages/StoreQuickOrderServer.php:
+	  Rename StoreDataObjectClassMap to StoreClassMap to better
+	  reflect its functionality and usage.
+	* [r7538] store/trunk/Store/StoreArticlePageFactory.php,
+	  store/trunk/Store/StorePageFactory.php,
+	  store/trunk/Store/StoreXMLRPCServerFactory.php,
+	  store/trunk/Store/exceptions/StoreNotFoundException.php,
+	  store/trunk/Store/pages/StoreArticlePage.php:
+	  Push up from Store to Site.
+	* [r7533]
+	  store/trunk/Store/StoreQuickOrderDescriptionCellRenderer.php,
+	  store/trunk/Store/StoreQuickOrderItemView.php,
+	  store/trunk/Store/pages/StoreQuickOrderPage.php,
+	  store/trunk/Store/pages/StoreQuickOrderServer.php,
+	  store/trunk/Store/pages/quick-order-cart.xml,
+	  store/trunk/Store/pages/quick-order.xml, store/trunk/www,
+	  store/trunk/www/javascript,
+	  store/trunk/www/javascript/quick-order-page.js,
+	  store/trunk/www/styles, store/trunk/www/styles/quick-order.css:
+	  Push quick order page and server up into Store package.
+	  Add a www/ dir for Store.
+
+2006-06-26  gauthierm
+
+	* [r7530] store/trunk/Store/StoreResetPasswordMailMessage.php:
+	  Added line break.
+	* [r7529] store/trunk/Store/StoreResetPasswordMailMessage.php:
+	  Fix misnamed variable.
+	* [r7527] store/trunk/Store/StoreResetPasswordMailMessage.php,
+	  store/trunk/Store/dataobjects/StoreAccount.php:
+	  Moved reset password functionality into Store package.
+	* [r7526] store/trunk/Store/dataobjects/StoreAccountWrapper.php:
+	  Wrapper for accounts.
+	* [r7525] store/trunk/Store/StoreDataObjectClassMap.php:
+	  Only try to require class if it is not defined.
+
+2006-06-26  nrf
+
+	* [r7521] store/trunk/Store/dataobjects/StoreCartEntry.php,
+	  store/trunk/Store/dataobjects/StoreItem.php,
+	  store/trunk/Store/dataobjects/StoreOrderItem.php:
+	  Move SKU into Store.
+
+2006-06-26  gauthierm
+
+	* [r7519] store/trunk/Store/dataobjects/StoreQuantityDiscount.php:
+	  Added and updated documentation (did this Friday).
+	* [r7518] store/trunk/Store/StorePaymentMethodCellRenderer.php:
+	  Respect visible property.
+	* [r7510] store/trunk/Store/StoreAddressCellRenderer.php,
+	  store/trunk/Store/StoreQuantityCellRenderer.php:
+	  Respect new visible property.
+
+2006-06-26  nrf
+
+	* [r7500] store/trunk/Store/dataobjects/StoreItem.php,
+	  store/trunk/Store/dataobjects/StoreItemRegionBinding.php,
+	  store/trunk/Store/dataobjects/StoreItemRegionBindingWrapper.php:
+	  Add a StoreItemRegionBinding dataobject.
+
+2006-06-23  steven
+
+	* [r7484] store/trunk/Store/StorePaymentMethodCellRenderer.php:
+	  rename creditCardFormat() as formatCreditCardNumber().
+
+2006-06-23  gauthierm
+
+	* [r7481] store/trunk/Store/dataobjects/StoreProduct.php:
+	  Added and updated documentation.
+	* [r7480] store/trunk/Store/dataobjects/StoreRegionWrapper.php:
+	  Relicense.
+	* [r7478] store/trunk/Store/dataobjects/StoreRegion.php:
+	  Updated documentation.
+	* [r7475]
+	  store/trunk/Store/dataobjects/StoreQuantityDiscountWrapper.php:
+	  Relicense.
+	* [r7472] store/trunk/Store/dataobjects/StoreProvState.php:
+	  Updated documentation and removed pcode and location fields.
+	  
+	  pcode was removed altogether and location is veseys specific.
+	* [r7470] store/trunk/Store/dataobjects/StoreOrderItemWrapper.php:
+	  Wrap long line.
+	* [r7469] store/trunk/Store/dataobjects/StoreOrderItem.php:
+	  Added and cleaned up documentation.
+	* [r7466] store/trunk/Store/dataobjects/StoreCartEntryWrapper.php:
+	  Removed useless comment.
+	* [r7464] store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  s/getCalculatedItemCost/getCalculatedItemPrice
+	* [r7463] store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  - move protected after public
+	  - remove comment that does not apply anymore since we have a
+	  class mapping
+	  object.
+	* [r7462] store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  Call methods on the right object in createOrderItem().
+	* [r7461] store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  - documentation updates
+	  - fixed method signature
+
+2006-06-23  nrf
+
+	* [r7453] store/trunk/Store/dataobjects/StoreProductWrapper.php:
+	  - Remove StoreProductWrapper::loadSetFromDBWithPrimaryCategory()
+
+2006-06-22  gauthierm
+
+	* [r7451] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Added @throws tag.
+	* [r7450] store/trunk/Store/dataobjects/StoreCategory.php:
+	  Fix typo.
+	* [r7449] store/trunk/Store/dataobjects/StoreAd.php:
+	  Spaces to tabs.
+	* [r7444] store/trunk/Store/dataobjects/StorePaymentType.php:
+	  Updated and added documentation.
+	* [r7442]
+	  store/trunk/Store/dataobjects/StoreOrderPaymentMethod.php:
+	  Added documentation.
+	* [r7440] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Added more documentation.
+	* [r7436] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Fix typo and move protected below public.
+	* [r7435] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  - Added and updated documentation.
+	  - Renamed creditCardFormat() as formatCreditCardNumber()
+
+2006-06-22  nrf
+
+	* [r7431] store/trunk/Store/dataobjects/StoreItem.php:
+	  Load quantity discounts without using loadSetFromDB()
+
+2006-06-22  gauthierm
+
+	* [r7430]
+	  store/trunk/Store/dataobjects/StoreOrderAddressWrapper.php:
+	  relicense.
+	* [r7429] store/trunk/Store/dataobjects/StoreOrderAddress.php:
+	  Added documentation.
+	* [r7428] store/trunk/Store/dataobjects/StoreCountryWrapper.php:
+	  relicense.
+	* [r7427] store/trunk/Store/dataobjects/StoreCountry.php:
+	  Documentation updates.
+	* [r7421] store/trunk/Store/dataobjects/StoreAccount.php:
+	  Remove accidental sprintf.
+	* [r7419] store/trunk/Store/dataobjects/StoreCategoryWrapper.php:
+	  Added documentation.
+	* [r7418] store/trunk/Store/dataobjects/StoreCategory.php:
+	  Added and updated documentation.
+	* [r7416] store/trunk/Store/dataobjects/StoreArticle.php:
+	  Documentation fix and have one point of return from loadPath().
+
+2006-06-22  nrf
+
+	* [r7414] store/trunk/Store/dataobjects/StoreArticle.php,
+	  store/trunk/Store/dataobjects/StoreItem.php:
+	  Reorder methods, add "loader methods" section.
+	* [r7411]
+	  store/trunk/Store/dataobjects/StoreQuantityDiscountWrapper.php:
+	  Remove another loadSetFromDB() method.
+
+2006-06-22  gauthierm
+
+	* [r7410] store/trunk/Store/dataobjects/StoreArticleWrapper.php:
+	  - Added documentation
+	  - Refactored the getByShortname() method to have one return
+	  point. The
+	  developer of Corel Draw told me I should do this.
+	* [r7408] store/trunk/Store/dataobjects/StoreAddress.php:
+	  Documentation updated.
+
+2006-06-22  nrf
+
+	* [r7407] store/trunk/Store/dataobjects/StoreCountryWrapper.php:
+	  Remove unused loadSetFromDB method.
+
+2006-06-22  gauthierm
+
+	* [r7402] store/trunk/Store/dataobjects/StoreArticle.php:
+	  Documentation and docblock updates.
+	* [r7395] store/trunk/Store/dataobjects/StoreAd.php:
+	  Moved ad object into Store package.
+	* [r7394]
+	  store/trunk/Store/dataobjects/StoreAccountAddressWrapper.php,
+	  store/trunk/Store/dataobjects/StoreAccountPaymentMethodWrapper.php:
+	  
+	  Small docblock additions.
+	* [r7393] store/trunk/Store/dataobjects/StoreAccountAddress.php,
+	  store/trunk/Store/dataobjects/StoreAccountPaymentMethod.php:
+	  Documentation and whitespace fixes.
+	* [r7392] store/trunk/Store/dataobjects/StoreAccount.php:
+	  Cleanup
+	  - documentation added
+	  - wrap long lines
+	  - clean up sprintf calls in loaders
+	* [r7391] store/trunk/Store/dataobjects/StoreAccount.php:
+	  Public before protected.
+
+2006-06-22  nrf
+
+	* [r7373] store/trunk/Store/StoreCart.php:
+	  - Remove addEntryValidate() method.
+	  - Make addEntry() call validateEntry().
+	  - Add validateCombinedEntry() to validate entries after
+	  combining with existing entries in the cart.
+
+2006-06-22  nick
+
+	* [r7350] store/trunk/Store/pages/StoreExceptionPage.php:
+	  Store Exception
+
+2006-06-21  nrf
+
+	* [r7328] store/trunk/Store/dataobjects/StoreCartEntry.php,
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Move createOrderItem() into cart entry dataobject and make
+	  public.
+	* [r7324]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Push confirmation page upstream.
+	* [r7323] store/trunk/Store/dataobjects/StoreCartEntry.php,
+	  store/trunk/Store/dataobjects/StoreOrder.php,
+	  store/trunk/Store/dataobjects/StoreOrderItem.php,
+	  store/trunk/Store/dataobjects/StoreOrderItemWrapper.php,
+	  store/trunk/Store/dataobjects/StoreOrderWrapper.php,
+	  store/trunk/Store/dataobjects/StoreProduct.php:
+	  Push dataobjects upsteam.
+	* [r7310] store/trunk/Store/StoreSessionModule.php:
+	  Remove account cookie on explicit logout.
+
+2006-06-21  gauthierm
+
+	* [r7303] store/trunk/Store/StoreCartModule.php:
+	  Order by shipping type. This is knid of veseys specific but so
+	  is some other
+	  stuff in this class so I'm leaving it here for now.
+
+2006-06-20  steven
+
+	* [r7288] store/trunk/Store/StoreAddressView.php,
+	  store/trunk/Store/StorePaymentMethodView.php,
+	  store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Clean up AddressView and PaymentMethodView a bit more:
+	  - shorten text on buttons
+	  - move buttons/links below content
+
+2006-06-20  nrf
+
+	* [r7274] store/trunk/Store/StoreAddressView.php,
+	  store/trunk/Store/StorePaymentMethodView.php,
+	  store/trunk/Store/pages/StoreCheckoutPage.php:
+	  Reflect changes to Swat API.
+
+2006-06-20  steven
+
+	* [r7251] store/trunk/Store/StoreAddressView.php,
+	  store/trunk/Store/StorePaymentMethodView.php:
+	  Fix links in new SwatToolLinks ("href" was left over from
+	  SwatHtmlTags, is now "link")
+	* [r7247] store/trunk/Store/StoreAddressView.php,
+	  store/trunk/Store/StorePaymentMethodView.php:
+	  Clean up display of StoreAddressView and StorePaymentMethodView
+	  - group remove and edit links in a "controls" div for formatting
+	  - make the edit link a SwatToolLink with the "edit" stock id
+	  - group the config lines for the SwatHtmlTags together to
+	  simplify display section
+
+2006-06-19  gauthierm
+
+	* [r7239] store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  Rename as getExtension().
+	* [r7235] store/trunk/Store/StoreCheckoutCart.php:
+	  Rename, refactor and reimplement store checkout cart totalling
+	  methods.
+	* [r7234] store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  You renames and repurposes some methods.
+	* [r7233] store/trunk/Store/StoreCart.php:
+	  We add product count.
+
+2006-06-16  gauthierm
+
+	* [r7163] store/trunk/Store/StoreCart.php,
+	  store/trunk/Store/StoreCartModule.php:
+	  - Made the cart module responsible for deleting entries. This
+	  fixes a bug where
+	  removing an entry from one cart and adding it to another would
+	  delete it from
+	  the databsae.
+	  - Made removeAllEntries() register its removed entries.
+
+2006-06-16  dave
+
+	* [r7158] store/trunk/Store/exceptions/StoreNoAccessException.php,
+	  store/trunk/Store/exceptions/StoreNotFoundException.php:
+	  folding added
+	* [r7157] store/trunk/Store/dataobjects/StoreCartEntry.php,
+	  store/trunk/Store/dataobjects/StoreDataObject.php,
+	  store/trunk/Store/dataobjects/StoreRecordsetWrapper.php:
+	  folding added
+	* [r7156] store/trunk/Store/StorePostalCodeEntry.php,
+	  store/trunk/Store/StoreQuantityCellRenderer.php,
+	  store/trunk/Store/StoreSearchForm.php,
+	  store/trunk/Store/StoreShipmentMethod.php,
+	  store/trunk/Store/StoreTotalRow.php,
+	  store/trunk/Store/StoreUI.php,
+	  store/trunk/Store/StoreUnnamedButton.php:
+	  folding added
+	* [r7155] store/trunk/Store/StoreAddressCellRenderer.php,
+	  store/trunk/Store/StoreAddressView.php,
+	  store/trunk/Store/StoreCreditCardExpiryEntry.php,
+	  store/trunk/Store/StoreCreditCardNumberEntry.php,
+	  store/trunk/Store/StoreDataObjectClassMap.php,
+	  store/trunk/Store/StoreItemViewQuantityColumn.php,
+	  store/trunk/Store/StoreKeywordEntry.php,
+	  store/trunk/Store/StorePaymentMethodCellRenderer.php,
+	  store/trunk/Store/StorePaymentMethodView.php:
+	  folding added
+
+2006-06-16  nrf
+
+	* [r7134] store/trunk/Store/StoreCheckoutCart.php:
+	  fix folding
+
+2006-06-16  gauthierm
+
+	* [r7131] store/trunk/Store/StoreCart.php:
+	  Clean up.
+	* [r7130] store/trunk/Store/StoreCartModule.php:
+	  Fix folding.
+
+2006-06-15  gauthierm
+
+	* [r7121] store/trunk/Store/StoreSessionModule.php:
+	  - Set a cookie containing the account id when logging in.
+	  - Make some internal login methods protected instead of private.
+	* [r7119] store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/StoreCheckoutCart.php:
+	  Make restoreAbandonedCartEntries() use the SiteCookieModule to
+	  manipulate
+	  cookies. Also renamed this method from
+	  findPersistentCartEntries().
+	  
+	  Put cookie module before cart module in getDefaultModuleList().
+	  Made it a soft
+	  dependency of restoreAbandonedCartEntries().
+
+2006-06-15  nrf
+
+	* [r7117] store/trunk/Store/StoreTotalRow.php:
+	  Move TotalRow into StoreTotalRow and
+	  - Use SwatMoneyCellRenderer
+	  - Drop inclusion of non-existent CSS
+	  - Put CSS class on TR and name to match PHP class
+	  - Use new column count method on table view
+
+2006-06-15  gauthierm
+
+	* [r7105] store/trunk/Store/StoreCartModule.php,
+	  store/trunk/Store/StoreCheckoutCart.php,
+	  store/trunk/Store/StoreSavedCart.php:
+	  - Implement automatic merging and moving of cart entries when
+	  you login.
+	  - Clear entries array() in load() methods of carts.
+	* [r7097] store/trunk/Store/StoreCart.php:
+	  If we assign a reference, the next line changes the reference.
+	  Copy the array
+	  instead.
+	* [r7096] store/trunk/Store/StoreCart.php:
+	  Fix misnamed variable
+	* [r7093] store/trunk/Store/StoreCart.php:
+	  Made addEntry() not do validation and added a method that
+	  explicitly validates
+	  entries. Validation can be expensive and if we're shuffling
+	  things between
+	  multiple carts we don't want to do it.
+
+2006-06-15  nick
+
+	* [r7076] store/trunk/Store/dataobjects/StoreAccount.php,
+	  store/trunk/Store/pages/StoreAccountPage.php:
+	  Changes to the store package for reseting a password
+	* [r7073] store/trunk/Store/StoreSessionModule.php:
+	  Restructured to allow logging in with just an account id -
+	  useful for the reset
+	  password page
+
+2006-06-13  gauthierm
+
+	* [r7051] store/trunk/Store/StoreSessionModule.php:
+	  Cause an error if the databaes module is not created during
+	  session module
+	  construction.
+
+2006-06-13  nrf
+
+	* [r7049] store/trunk/Store/StoreApplication.php:
+	  Load the cookie module.
+
+2006-06-13  gauthierm
+
+	* [r7046] store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/StoreCart.php,
+	  store/trunk/Store/StoreCartModule.php,
+	  store/trunk/Store/StoreCheckoutCart.php,
+	  store/trunk/Store/StoreCheckoutCartModule.php,
+	  store/trunk/Store/StoreSavedCart.php,
+	  store/trunk/Store/StoreSavedCartModule.php:
+	  Major changes to the cart structure:
+	  - only one application module needs to be loaded
+	  - application module contains and manages many carts
+	  - this means we can efficiently load both the saved and checkout
+	  cart
+	  - lots of stuff pushed up from veseys
+	  - carts are dependent on the database and session modules now
+	  - carts are no longer modules
+	  - added several methods to carts to ease subclassing
+	  - general cleanups abound
+	  
+	  With the new structure, to work with carts do something like.
+	  
+	  $this->app->cart->checkout->addEntry($entry);
+
+2006-06-13  nrf
+
+	* [r7034] store/trunk/Store/StoreSessionModule.php:
+	  Move half of StoreSessionModule to SiteSessionModule.
+
+2006-06-13  steven
+
+	* [r7026] store/trunk/Store/pages/checkout.xml:
+	  Drop the top level SwatFrame from the checkout page
+
+2006-06-13  nrf
+
+	* [r7019] store/trunk/Store/StoreSessionModule.php,
+	  store/trunk/Store/pages/StoreCheckoutPage.php:
+	  Replace isDefined() with magic __isset()
+
+2006-06-13  gauthierm
+
+	* [r7017] store/trunk/Store/StoreSessionModule.php:
+	  Added ability to specify parameters on registered callbacks.
+	* [r7016] store/trunk/Store/StoreSessionModule.php:
+	  Ability to register and execute callback functions for loggin in
+	  to an account.
+
+2006-06-12  nick
+
+	* [r7010] store/trunk/Store/StoreSessionModule.php:
+	  Added a magic unset method. If there was already a way to do
+	  this, please let
+	  me know.
+
+2006-06-12  steven
+
+	* [r7006] store/trunk/Store/StoreAddressView.php:
+	  Add CSS hook and group the display portions of the SwatHtml tags
+	  together (nate's idea)
+	* [r7001] store/trunk/Store/StoreAddressView.php,
+	  store/trunk/Store/StorePaymentMethodView.php:
+	  Add CSS hooks for remove buttons on Addresses and Paymeths
+
+2006-06-12  nrf
+
+	* [r7000] store/trunk/Store/StoreCartModule.php:
+	  whitespace
+
+2006-06-12  gauthierm
+
+	* [r6993] store/trunk/Store/StoreCartView.php:
+	  this is not used.
+
+2006-06-11  nrf
+
+	* [r6987] store/trunk/Store/StoreCreditCardExpiryEntry.php:
+	  While this method may return exactly -1, it is often
+	  conventional that comparison functions return:
+	  less than zero,
+	  zero, or
+	  greater than zero.
+
+2006-06-11  nick
+
+	* [r6986] store/trunk/Store/StoreCreditCardExpiryEntry.php:
+	  Fixed typo with logic
+	* [r6984] store/trunk/Store/StoreCreditCardExpiryEntry.php:
+	  Improve the error checking for this widget
+	* [r6983] store/trunk/Store/StoreCreditCardExpiryEntry.php:
+	  This message made sense when the logic was more complicated.
+	  Removed once it
+	  just became a message.
+
+2006-06-09  gauthierm
+
+	* [r6970] store/trunk/Store/dataobjects/StoreAddress.php:
+	  Echo stright br tags instead of using SwatHtmlTag. This is
+	  faster and Nathan
+	  approves. This also matches recent changes in StorePaymentMethod.
+
+2006-06-09  nrf
+
+	* [r6961] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Make setCreditCardNumber() method set the last4 field as well.
+	  Display whatever fields we have.
+	  Don't abuse SwatHtmlTag
+	* [r6957]
+	  store/trunk/Store/dataobjects/StoreAccountPaymentMethodWrapper.php,
+	  
+	  store/trunk/Store/dataobjects/StoreOrderPaymentMethodWrapper.php:
+	  
+	  Identify the index field so that objects are indexed.
+	* [r6939] store/trunk/Store/StoreAddressView.php,
+	  store/trunk/Store/StorePaymentMethodView.php:
+	  Respect visibility property.
+
+2006-06-08  nrf
+
+	* [r6926] store/trunk/Store/dataobjects/StoreAccount.php:
+	  Typo
+	* [r6924] store/trunk/Store/StoreCreditCardExpiryEntry.php:
+	  Fix folding
+	  What uses showEditMessage() ?
+	* [r6919] store/trunk/Store/dataobjects/StoreAccount.php:
+	  Make loadWithCredentials() call load() for actual loading.
+	  Override getSerializableSubDataObjects().
+
+2006-06-08  nick
+
+	* [r6892] store/trunk/Store/StoreCreditCardExpiryEntry.php:
+	  New expiry date entry
+	* [r6891] store/trunk/Store/StoreCreditCardEntry.php,
+	  store/trunk/Store/StoreCreditCardNumberEntry.php:
+	  Rename creditcardentry to creditcardnumberentry because I'm
+	  adding
+	  creditcardexpiryentry
+
+2006-06-07  gauthierm
+
+	* [r6877] store/trunk/Store/StorePostalCodeEntry.php:
+	  Square braces instead of curly braces for string byte addresses
+	  are recommended
+	  by PHP.
+	* [r6867] store/trunk/Store/StoreCreditCardEntry.php:
+	  Override size correctly.
+
+2006-06-07  nrf
+
+	* [r6858] store/trunk/Store/dataobjects/StoreAccount.php:
+	  Make saver methods parallel to the loader methods.
+
+2006-06-07  nick
+
+	* [r6854] store/trunk/Store/StoreCreditCardEntry.php:
+	  Set size here rather than in xml
+
+2006-06-07  nrf
+
+	* [r6851] store/trunk/Store/StoreSessionModule.php:
+	  Reflect changes to SwatDB API.
+	* [r6847] store/trunk/Store/dataobjects/StoreAccount.php,
+	  store/trunk/Store/dataobjects/StoreAccountAddress.php,
+	  store/trunk/Store/dataobjects/StoreAccountPaymentMethod.php,
+	  store/trunk/Store/dataobjects/StoreAddress.php,
+	  store/trunk/Store/dataobjects/StoreArticle.php,
+	  store/trunk/Store/dataobjects/StoreCartEntry.php,
+	  store/trunk/Store/dataobjects/StoreCategory.php,
+	  store/trunk/Store/dataobjects/StoreItem.php,
+	  store/trunk/Store/dataobjects/StoreOrder.php,
+	  store/trunk/Store/dataobjects/StorePaymentMethod.php,
+	  store/trunk/Store/dataobjects/StoreProduct.php,
+	  store/trunk/Store/dataobjects/StoreProvState.php:
+	  Reflect changes to SwatDB API.
+
+2006-06-07  nick
+
+	* [r6842] store/trunk/Store/StorePaymentMethodView.php:
+	  Changed link
+
+2006-06-06  nrf
+
+	* [r6828] store/trunk/Store/pages/StoreAccountPage.php:
+	  Don't redirect for account/edit either
+
+2006-06-06  nick
+
+	* [r6823] store/trunk/Store/StorePostalCodeEntry.php:
+	  Fix error messages
+
+2006-06-06  nrf
+
+	* [r6811] store/trunk/Store/pages/StoreArticlePage.php:
+	  Add messages to Store exceptions.
+	  Nick, depsite what I said yeseterday, Store*Exceptions should
+	  have messages but they are not publicly visible.
+	* [r6795] store/trunk/Store/StoreArticlePageFactory.php,
+	  store/trunk/Store/StorePageFactory.php,
+	  store/trunk/Store/StoreXMLRPCServerFactory.php:
+	  Add StoreXMLRPCServerFactory and a common base class
+	  StorePageFactory.
+	  Push upstream!
+	* [r6793] store/trunk/Store/dataobjects/StoreDataObject.php:
+	  Call parent::__wakeup()
+	* [r6790] store/trunk/Store/dataobjects/StoreDataObject.php:
+	  Instantiate a new class map when waking up.
+
+2006-06-06  nick
+
+	* [r6788]
+	  store/trunk/Store/dataobjects/StoreAccountAddressWrapper.php,
+	  store/trunk/Store/dataobjects/StoreOrderWrapper.php:
+	  Add index by id
+
+2006-06-06  nrf
+
+	* [r6785] store/trunk/Store/dataobjects/StoreItemWrapper.php:
+	  Remove join to ItemGroup that doesn't belong in Store and is no
+	  longer needed.
+
+2006-06-06  nick
+
+	* [r6778] store/trunk/Store/StoreAddressView.php,
+	  store/trunk/Store/StorePaymentMethodView.php:
+	  Change case
+
+2006-06-06  gauthierm
+
+	* [r6775] store/trunk/Store/dataobjects/StoreProduct.php:
+	  Use store category class.
+
+2006-06-06  nick
+
+	* [r6773] store/trunk/Store/StoreAddressView.php,
+	  store/trunk/Store/StorePaymentMethodView.php:
+	  More refactoring
+	* [r6772] store/trunk/Store/StorePaymentMethodCellRenderer.php:
+	  Fixed the class name
+	* [r6766] store/trunk/Store/StoreAddressView.php,
+	  store/trunk/Store/StorePaymentMethodView.php:
+	  New view updates
+
+2006-06-06  gauthierm
+
+	* [r6763]
+	  store/trunk/Store/dataobjects/StoreAccountPaymentMethod.php:
+	  Call parent::init().
+
+2006-06-05  nick
+
+	* [r6761] store/trunk/Store/StorePaymentMethodView.php:
+	  First commit so nathan can show me something cool
+	* [r6759] store/trunk/Store/StorePaymentCellRenderer.php,
+	  store/trunk/Store/StorePaymentMethodCellRenderer.php:
+	  Rename PaymentCellRenderer
+	* [r6757] store/trunk/Store/StoreAddressView.php:
+	  New Address View
+
+2006-06-05  gauthierm
+
+	* [r6753] store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  Extra stuff that was supposed to live in init() now lives in
+	  init().
+
+2006-06-05  nrf
+
+	* [r6743] store/trunk/Store/dataobjects/StoreAccount.php,
+	  store/trunk/Store/dataobjects/StoreAccountAddressWrapper.php,
+	  store/trunk/Store/dataobjects/StoreArticleWrapper.php,
+	  store/trunk/Store/dataobjects/StoreCategoryWrapper.php,
+	  store/trunk/Store/dataobjects/StoreOrderAddressWrapper.php,
+	  store/trunk/Store/dataobjects/StoreOrderWrapper.php,
+	  store/trunk/Store/dataobjects/StoreProduct.php,
+	  store/trunk/Store/dataobjects/StoreProductWrapper.php,
+	  store/trunk/Store/dataobjects/StoreRegionWrapper.php:
+	  Clean up wrappers.
+
+2006-06-05  gauthierm
+
+	* [r6742] store/trunk/Store/dataobjects/StoreCartEntryWrapper.php:
+	  Move some sutff to Store.
+	* [r6739] store/trunk/Store/dataobjects/StoreProduct.php:
+	  Moved primary category concept to store.
+	* [r6737] store/trunk/Store/dataobjects/StoreProductWrapper.php:
+	  Move this method to store.
+	* [r6735] store/trunk/Store/dataobjects/StoreProduct.php:
+	  Call correct loader when region specified.
+	* [r6731] store/trunk/Store/dataobjects/StoreProduct.php:
+	  Require wrapper class.
+	* [r6730] store/trunk/Store/dataobjects/StoreItemWrapper.php:
+	  Added a default item wrapper.
+	* [r6722]
+	  store/trunk/Store/dataobjects/StoreQuantityDiscountWrapper.php:
+	  Added default quantity discount wrapper.
+	* [r6721] store/trunk/Store/dataobjects/StoreItem.php,
+	  store/trunk/Store/dataobjects/StoreProduct.php,
+	  store/trunk/Store/dataobjects/StoreRegion.php,
+	  store/trunk/Store/dataobjects/StoreRegionWrapper.php:
+	  - Added region specific stuff to item/product
+	  - Added region object/wrapper
+
+2006-06-05  nrf
+
+	* [r6715] store/trunk/Store/dataobjects/StoreCategory.php:
+	  Make navbar loading methods parallel with article dataobject.
+	* [r6711] store/trunk/Store/dataobjects/StoreCategory.php:
+	  - Move method upstream.
+	  - Reorder methods.
+	* [r6706] store/trunk/Store/dataobjects/StoreAccount.php,
+	  store/trunk/Store/dataobjects/StoreAccountPaymentMethod.php,
+	  store/trunk/Store/dataobjects/StoreAccountPaymentMethodWrapper.php,
+	  store/trunk/Store/dataobjects/StoreOrder.php,
+	  store/trunk/Store/dataobjects/StoreOrderPaymentMethod.php,
+	  store/trunk/Store/dataobjects/StoreOrderPaymentMethodWrapper.php,
+	  store/trunk/Store/dataobjects/StorePaymentMethod.php,
+	  store/trunk/Store/dataobjects/StorePaymentMethodWrapper.php:
+	  Clean up payment method dataobjects.
+
+2006-06-05  gauthierm
+
+	* [r6705] store/trunk/Store/dataobjects/StoreCategory.php:
+	  Spaces to tabs.
+	* [r6703] store/trunk/Store/dataobjects/StoreProductWrapper.php:
+	  Moved upstream.
+	* [r6698] store/trunk/Store/dataobjects/StoreCategoryWrapper.php:
+	  Use class map.
+	* [r6693] store/trunk/Store/dataobjects/StoreArticle.php:
+	  Fix require path.
+	* [r6691] store/trunk/Store/dataobjects/StoreProduct.php:
+	  Moving stuff upstream.
+	* [r6686] store/trunk/Store/dataobjects/StoreArticle.php,
+	  store/trunk/Store/dataobjects/StoreCategory.php,
+	  store/trunk/Store/dataobjects/StoreCategoryWrapper.php:
+	  Move category data-objects to Store.
+	* [r6684] store/trunk/Store/dataobjects/StoreAccount.php:
+	  Move default payment method to store.
+
+2006-06-05  nrf
+
+	* [r6680] store/trunk/Store/StoreSessionModule.php:
+	  - Use a single code path through isLoggedIn() method to
+	  determine login state.
+	* [r6678] store/trunk/Store/pages/StoreCheckoutPage.php:
+	  - Move initializing of session dataobjects to base class.
+	  - Reset checkout progress if either dataobject is new (handles
+	  logout during checkout case).
+
+2006-06-04  steven
+
+	* [r6668] store/trunk/Store/pages/StoreArticlePage.php:
+	  Chant sub-articles list CSS hook from an ID to a class (in some
+	  places it's subclassed and used twice on a page)
+
+2006-06-04  nrf
+
+	* [r6662] store/trunk/Store/dataobjects/StoreAccount.php,
+	  store/trunk/Store/dataobjects/StoreAccountAddress.php,
+	  store/trunk/Store/dataobjects/StoreAccountAddressWrapper.php,
+	  store/trunk/Store/dataobjects/StoreAddress.php,
+	  store/trunk/Store/dataobjects/StoreAddressWrapper.php,
+	  store/trunk/Store/dataobjects/StoreOrder.php,
+	  store/trunk/Store/dataobjects/StoreOrderAddress.php,
+	  store/trunk/Store/dataobjects/StoreOrderAddressWrapper.php,
+	  store/trunk/Store/dataobjects/StoreOrderWrapper.php:
+	  Cleanup address dataobjects. Still more dataobject cleanup to
+	  do...
+
+2006-06-03  nick
+
+	* [r6656] store/trunk/Store/dataobjects/StoreAddress.php:
+	  Don't minimize entities for text display (this could/will be
+	  used in emails)
+	* [r6654] store/trunk/Store/dataobjects/StoreAccount.php:
+	  Move loader methods into Store package class
+	* [r6653] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Don't minimize entities here - this needs to be done on output
+	  because for
+	  emails or plain text contexts these entities shouldn't be escaped
+
+2006-06-02  nrf
+
+	* [r6638] store/trunk/Store/pages/StoreCheckoutStepPage.php:
+	  Refactor for subclass-ability.
+
+2006-06-02  gauthierm
+
+	* [r6634] store/trunk/Store/dataobjects/StoreAddress.php:
+	  We had a semantastic discussion are concluded the address tag is
+	  not
+	  appropriate here.
+
+2006-06-02  steven
+
+	* [r6632] store/trunk/Store/pages/checkout.xml:
+	  Change ID name to be more verboseeee
+
+2006-06-02  nrf
+
+	* [r6627] store/trunk/Store/pages/checkout.xml:
+	  give the frame an id
+
+2006-06-02  gauthierm
+
+	* [r6625] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Fix changes from r6224.
+	* [r6618] store/trunk/Store/dataobjects/StoreAddress.php:
+	  Fix changes made in r6224.
+
+2006-06-02  nrf
+
+	* [r6595] store/trunk/Store/pages/StoreCheckoutStepPage.php:
+	  Call postBuildCommon() on checkout step pages.
+	* [r6582] store/trunk/Store/pages/StoreCheckoutEditPage.php:
+	  Reorder methods.
+	  Add a statuc postBuildCommon() method.
+
+2006-06-02  dave
+
+	* [r6574] store/trunk/package.php:
+	  bare bones pear package generator
+
+2006-06-02  nrf
+
+	* [r6566] store/trunk/Store/pages/StoreAccountPage.php,
+	  store/trunk/Store/pages/StoreCheckoutPage.php:
+	  - Move reference to style sheet out of Store
+	  - Remove uneccessary abstraction.
+	* [r6562] store/trunk/Store/dataobjects/StoreAccount.php,
+	  store/trunk/Store/dataobjects/StoreAddressWrapper.php,
+	  store/trunk/Store/dataobjects/StoreArticleWrapper.php:
+	  Undo last commit
+	* [r6561] store/trunk/Store/dataobjects/StoreAccount.php,
+	  store/trunk/Store/dataobjects/StoreAddressWrapper.php,
+	  store/trunk/Store/dataobjects/StoreArticleWrapper.php:
+	  make address wrapper work, still broken in other ways
+	* [r6554] store/trunk/Store/pages/StoreCheckoutStepPage.php:
+	  Add an abstract base page class for step pages in the checkout.
+	* [r6553] store/trunk/Store/pages/StoreCheckoutEditPage.php:
+	  Add a static preProcessCommon() method as discussed in comments
+	  to commit 6219.
+	* [r6552] store/trunk/Store/pages/StoreEditCheckoutPage.php:
+	  Remove misnamed file.
+	* [r6550] store/trunk/Store/pages/StoreCheckoutEditPage.php:
+	  Name correctly and make part of the Store package.
+	* [r6549] store/trunk/Store/pages/StoreEditCheckoutPage.php:
+	  Copy veseys CheckoutEditPage into Store package.
+	* [r6545] store/trunk/Store/StoreSessionModule.php:
+	  Convenience reference is not setup at this point.
+	* [r6544] store/trunk/Store/StoreApplication.php:
+	  Load session module before database module.
+	  Register dataobjects in session before initializing session
+	  module since init() calls activate().
+
+2006-06-02  gauthierm
+
+	* [r6543] store/trunk/Store/StoreSessionModule.php:
+	  Remove PEARism. That's what you get for making commits at 2:30
+	  AM.
+	* [r6540] store/trunk/Store/StoreArticlePageFactory.php:
+	  Refacoring of the instance() method has removed the need for
+	  this static
+	  property.
+
+2006-06-02  nrf
+
+	* [r6539] store/trunk/Store/StoreSessionModule.php:
+	  fix parse error
+
+2006-06-02  gauthierm
+
+	* [r6538] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Spaces to tabs.
+
+2006-06-02  nrf
+
+	* [r6536] store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/StoreSessionModule.php:
+	  Add mechanism to register dataobject classes associated with
+	  session variables so that the session module can preload classes
+	  before activating the session.
+	* [r6533] store/trunk/Store/StoreSessionModule.php:
+	  - Remove double require.
+	  - Don't consider the session logged in if the Account dataobject
+	  is new (no id).
+	* [r6531] store/trunk/Store/StoreSessionModule.php,
+	  store/trunk/Store/pages/StoreCheckoutPage.php:
+	  Turn veseys CheckoutPage into StoreCheckoutPage.
+	  Move setting of DB on session dataobjects to StoreSessionModule.
+	* [r6529] store/trunk/Store/pages/checkout.xml,
+	  veseys2/trunk/include/pages/checkout.xml:
+	  Move upstream.
+	* [r6528] store/trunk/Store/pages/StoreCheckoutPage.php:
+	  Copy veseys CheckoutPage to Store package to create a base
+	  StoreCheckoutPage class.
+	* [r6523] store/trunk/Store/StoreArticlePageFactory.php,
+	  store/trunk/Store/layouts/StoreLayout.php:
+	  Add a StoreLayout.
+	  Turn veseys ArticlePageFactory into abstract base class
+	  StoreArticlePageFactory.
+	  Push upsteam!
+	* [r6522] store/trunk/Store/StoreSessionModule.php:
+	  Make sure session is active before checking if logged in.
+	  Also refactor to follow same pattern as other methods: if
+	  (negative conditional) return;
+
+2006-06-01  nrf
+
+	* [r6521] store/trunk/Store/StoreArticlePageFactory.php:
+	  Push upstream!
+	* [r6518] store/trunk/Store/pages/StoreAccountPage.php:
+	  Add a base class for Account pages.
+	* [r6517] store/trunk/Store/pages/StoreArticlePage.php:
+	  Rename class to fit in Store package and make more sub-classable.
+	* [r6516] store/trunk/Store/pages/StorePage.php:
+	  Remove unused class var.
+	* [r6515] store/trunk/Store/StoreSessionModule.php:
+	  This case occurs if the user goes back and resubmits a login
+	  form. Instead of throwing an exception, call logout() and then
+	  process the new login.
+	* [r6514] store/trunk/Store/pages/StoreArticlePage.php:
+	  Copy veseys ArticlePage to StoreArticlePage
+	  Go Upstream!
+
+2006-06-01  gauthierm
+
+	* [r6511] store/trunk/Store/dataobjects/StoreOrder.php:
+	  A data object for orders in the Store package.
+
+2006-06-01  nrf
+
+	* [r6510] store/trunk/Store/dataobjects/StoreArticle.php:
+	  Add a loader method for navbar entries.
+
+2006-06-01  gauthierm
+
+	* [r6507] store/trunk/Store/dataobjects/StoreAccount.php:
+	  Fix db reference. The guts of this method were copied from
+	  page-level code.
+	* [r6505] store/trunk/Store/dataobjects/StoreAccount.php:
+	  Fix variable references.
+
+2006-06-01  nrf
+
+	* [r6504] store/trunk/Store/dataobjects/StoreArticle.php,
+	  store/trunk/Store/dataobjects/StoreArticleWrapper.php:
+	  - fix path
+	  - comment out require temporarily
+
+2006-06-01  gauthierm
+
+	* [r6503] store/trunk/Store/StoreSessionModule.php:
+	  Set database before trying to load from database.
+	* [r6502] store/trunk/Store/StoreSessionModule.php:
+	  Remove isset(). This is embarassing... for me.
+	* [r6499] store/trunk/Store/dataobjects/StoreAccount.php:
+	  Fix documentation references to customer. Renamed as account.
+
+2006-06-01  nrf
+
+	* [r6498] store/trunk/Store/dataobjects/StoreArticle.php,
+	  store/trunk/Store/dataobjects/StoreArticleWrapper.php:
+	  Move article dataobject into Store package.
+	  Going upstream!
+
+2006-06-01  gauthierm
+
+	* [r6497] store/trunk/Store/dataobjects/StoreAccount.php:
+	  Added some fields and removed other fields to match generic
+	  accounts based
+	  on accounts in veseys2.
+	* [r6496] store/trunk/Store/dataobjects/StoreAccount.php:
+	  s/StoreCustomer/StoreAccount
+	* [r6495] store/trunk/Store/dataobjects/StoreAccount.php:
+	  Extend StoreDataObject.
+	* [r6494] store/trunk/Store/dataobjects/StoreAccount.php:
+	  Remove cruft.
+	  - removed loadFromDB().
+	  - removed saveToDB().
+	* [r6493] store/trunk/Store/dataobjects/StoreAccount.php:
+	  Added loadFromDBWithCredentials.
+	* [r6491] store/trunk/Store/StoreSessionModule.php:
+	  Changes to the session module to support account logins better.
+	  Site code
+	  should subclass the StoreAccount object.
+	  - renamed logIn as login and logOut as logout
+	  - dropped the account_id property.
+	* [r6486] store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  Call method on correct object.
+	* [r6485] store/trunk/Store/dataobjects/StoreAddressWrapper.php:
+	  Fix class name.
+	* [r6484] store/trunk/Store/dataobjects/StoreQuantityDiscount.php:
+	  I had to go to a doctor's appointment in the middle of typing
+	  this line out.
+	* [r6483] store/trunk/Store/dataobjects/StoreRecordsetWrapper.php:
+	  Fix class names.
+	* [r6482] store/trunk/Store/dataobjects/StoreRecordSetWrapper.php,
+	  store/trunk/Store/dataobjects/StoreRecordsetWrapper.php:
+	  Rename class.
+
+2006-06-01  nrf
+
+	* [r6480] store/trunk/Store/StoreSessionModule.php:
+	  Load account dataobject before starting session.
+
+2006-06-01  gauthierm
+
+	* [r6477] store/trunk/Store/StoreDataObjectClassMap.php,
+	  store/trunk/Store/dataobjects/StoreAddress.php,
+	  store/trunk/Store/dataobjects/StoreAddressWrapper.php,
+	  store/trunk/Store/dataobjects/StoreCartEntry.php,
+	  store/trunk/Store/dataobjects/StoreCartEntryWrapper.php,
+	  store/trunk/Store/dataobjects/StoreCountry.php,
+	  store/trunk/Store/dataobjects/StoreCountryWrapper.php,
+	  store/trunk/Store/dataobjects/StoreDataObject.php,
+	  store/trunk/Store/dataobjects/StoreItem.php,
+	  store/trunk/Store/dataobjects/StorePaymentMethod.php,
+	  store/trunk/Store/dataobjects/StorePaymentType.php,
+	  store/trunk/Store/dataobjects/StoreProvState.php,
+	  store/trunk/Store/dataobjects/StoreQuantityDiscount.php,
+	  store/trunk/Store/dataobjects/StoreRecordSetWrapper.php:
+	  Added a magical StoreDataobjectClassMap object that will handle
+	  site-specific
+	  data-object class overrides.
+
+2006-05-31  dave
+
+	* [r6373] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  do CC encryption in one place - neat and tidy
+
+2006-05-30  nrf
+
+	* [r6333] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Add setCreditCardNumber() method, not yet implemented.
+
+2006-05-29  nrf
+
+	* [r6317] store/trunk/Store/StoreCheckoutCartModule.php,
+	  store/trunk/Store/dataobjects/StoreAccount.php,
+	  store/trunk/Store/dataobjects/StoreAddressWrapper.php,
+	  store/trunk/Store/dataobjects/StoreCartEntryWrapper.php,
+	  store/trunk/Store/dataobjects/StoreItem.php,
+	  store/trunk/Store/dataobjects/StorePaymentMethodWrapper.php,
+	  store/trunk/Store/dataobjects/StoreProduct.php,
+	  store/trunk/Store/pages/StorePage.php:
+	  Update copyright tags from SVN logs.
+
+2006-05-29  nick
+
+	* [r6224] store/trunk/Store/dataobjects/StoreAddress.php,
+	  store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Removed the html from display so we can control better how these
+	  are displayed
+	  on the front end and use them in an email if we want
+
+2006-05-28  nick
+
+	* [r6217] store/trunk/Store/StoreApplication.php:
+	  Set the DB for the Account module. Nathan, this doesn't quite
+	  seem right to me,
+	  but I'm not sure where else to put it. Your help on this would
+	  be appreciated.
+	* [r6215] store/trunk/Store/dataobjects/StoreAddress.php,
+	  store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Converted block-level tags to spans. I know this isn't
+	  semantically correct,
+	  but otherwise we can't include the data in a label to select a
+	  radio list.
+	  Steven, is this ok? Any other ideas on how to deal with this?
+
+2006-05-27  nrf
+
+	* [r6194] store/trunk/Store/dataobjects/StorePaymentMethod.php,
+	  store/trunk/Store/dataobjects/StorePaymentMethodType.php,
+	  store/trunk/Store/dataobjects/StorePaymentType.php:
+	  Refactor payment method/type dataobjects as discussed with Mike
+	  & Nick.
+
+2006-05-26  nrf
+
+	* [r6180] store/trunk/Store/exceptions/StoreException.php:
+	  Move up to Site
+	* [r6169] store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/StorePage.php, store/trunk/Store/layouts,
+	  store/trunk/Store/pages, store/trunk/Store/pages/StorePage.php:
+	  Major refactoring of the site framework across all packages.
+	  This is still a bit rough, but both the Veseys frontend and the
+	  admin are running on it. While the Admin package was changed
+	  heavily to work with the new Site package, its interface did not
+	  change much so admin site code requires minimal changes to work.
+	  
+	  - Go upstream! Site package does more now.
+	  - Remove duplicated functionality form Store and Admin packages.
+	  - SiteLayout and subclasses are now responsible for the "site
+	  trim".
+	  - HtmlHeadEntry API moved to SiteLayout and now used by Admin
+	  too.
+	  - Single point of page sub-classing from StorePage to VeseysPage
+	  is gone allowing other base page subclasses in Store.
+	  - The *Internal() methods are gone from Store,
+	  init()/proccess()/build() are now sub-classed directly.
+
+2006-05-26  gauthierm
+
+	* [r6139] store/trunk/Store/StoreSessionModule.php:
+	  Fix logOut method name.
+	* [r6138] store/trunk/Store/StoreSessionModule.php:
+	  - Added logIn() and logOut() methods
+	  - Spaces to Tabs.
+	* [r6137] store/trunk/Store/StoreSessionModule.php:
+	  Documentation updates all-round.
+	* [r6136] store/trunk/Store/StoreSessionModule.php:
+	  Docblock updates.
+	* [r6135] store/trunk/Store/StoreSessionModule.php:
+	  Make magic methods private.
+
+2006-05-25  gauthierm
+
+	* [r6114] store/trunk/Store/StoreCheckoutCartModule.php,
+	  store/trunk/Store/StoreShoppingCartModule.php:
+	  Rename ShoppingCart as CheckoutCart.
+	* [r6109] store/trunk/Store/StoreSavedCartModule.php,
+	  store/trunk/Store/StoreShoppingCartModule.php:
+	  - Added saved cart module.
+	  - Updated docblock on shopping-cart module.
+
+2006-05-25  nick
+
+	* [r6062] store/trunk/Store/dataobjects/StorePaymentMethod.php,
+	  store/trunk/Store/dataobjects/StorePaymentMethodType.php,
+	  store/trunk/Store/dataobjects/StorePaymentMethodWrapper.php:
+	  All new dataobject stuff to display payment details nicely and
+	  easily
+
+2006-05-24  gauthierm
+
+	* [r6033] store/trunk/Store/StoreCartModule.php,
+	  store/trunk/Store/StoreShoppingCartModule.php:
+	  Split some of StoreCartModule into a new class
+	  StoreShoppingCartModule.
+	* [r6032] store/trunk/Store/StoreCartModule.php:
+	  Remove the getSavedEntries() method. Saved entries will be
+	  handled by another
+	  session module.
+
+2006-05-24  nick
+
+	* [r6021] store/trunk/Store/dataobjects/StoreAddressWrapper.php:
+	  Fixed require()
+	* [r6020] store/trunk/Store/dataobjects/StoreAddressWrapper.php:
+	  Add a wrapper class for Store Addresses
+
+2006-05-24  gauthierm
+
+	* [r6012] store/trunk/Store/StoreCartModule.php:
+	  - Fixed caching.
+	  - Added getSavedEntries() method.
+	* [r6011] store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  Added saved property and isSaved() method.
+	* [r6009] store/trunk/Store/StoreCartModule.php:
+	  Added getAvailableEntries() and getUnavailableEntries() methods.
+
+2006-05-23  nick
+
+	* [r5975] store/trunk/Store/StoreCreditCardEntry.php:
+	  Fixed parse error
+
+2006-05-19  gauthierm
+
+	* [r5848] store/trunk/Store/StoreCartModule.php:
+	  Whitespace.
+
+2006-05-19  nick
+
+	* [r5843] store/trunk/Store/StoreCreditCardEntry.php:
+	  Normalize the credit card number
+	* [r5842] store/trunk/Store/StoreCreditCardEntry.php:
+	  Only output blank_value if no value is set
+	* [r5841] store/trunk/Store/StoreCreditCardEntry.php:
+	  Set value to null if the blank value was set
+	* [r5840] store/trunk/Store/StoreCreditCardEntry.php:
+	  First commit of a credit card entry.
+	  - verifies number using Luhn algorithim
+	  - allows for a blank value to be displayed
+	  We may want to add something to verify the credit card type.
+	  This is easy to
+	  add, but we need to decide how it will interact with another
+	  widget.
+
+2006-05-19  nrf
+
+	* [r5819] store/trunk/Store/exceptions/StoreException.php,
+	  store/trunk/Store/exceptions/StoreNoAccessException.php,
+	  store/trunk/Store/exceptions/StoreNotFoundException.php:
+	  Add HTTP status codes to store exceptions
+	* [r5817]
+	  store/trunk/Store/exceptions/StoreCartEntryNotFoundException.php:
+	  
+	  remove unused exception
+
+2006-05-19  steven
+
+	* [r5809] store/trunk/Store/StorePostalCodeEntry.php:
+	  Fix wording goof in Postal Code validation error message (a Dan
+	  J. find)
+
+2006-05-16  nrf
+
+	* [r5680] store/trunk/Store/StoreApplication.php:
+	  reflect change to SiteDatabaseModule API
+	* [r5674] store/trunk/Store/StoreApplication.php:
+	  StoreCartModule is abstract, don't include it in the default
+	  list.
+
+2006-05-16  gauthierm
+
+	* [r5673] store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/StoreDatabaseModule.php:
+	  Use SiteDatabaseModule.
+
+2006-05-16  nrf
+
+	* [r5667] store/trunk/Store/StoreApplication.php:
+	  reflect changes to Site API
+
+2006-05-16  gauthierm
+
+	* [r5662] store/trunk/Store/StoreApplication.php:
+	  Coding conventions.
+	* [r5658] store/trunk/Store/StoreKeywordEntry.php,
+	  store/trunk/Store/StoreSearchForm.php,
+	  store/trunk/Store/StoreUnnamedButton.php:
+	  Three classes that make user-friendly keyword search pages
+	  easier to create.
+
+2006-05-16  nrf
+
+	* [r5656] store/trunk/Store/StoreSessionModule.php:
+	  Add support for setting and getting session variables.
+
+2006-05-12  nick
+
+	* [r5612] store/trunk/Store/StoreCartModule.php:
+	  Remove item if quantity < 0 as well as == 0
+	* [r5608] store/trunk/Store/StoreCartModule.php:
+	  Added method for adding messages to the cart
+	* [r5599] store/trunk/Store/StoreCartModule.php:
+	  Return false on addEntry() if the item isn't valid
+
+2006-05-11  gauthierm
+
+	* [r5569] store/trunk/Store/StorePage.php:
+	  Fix docblock.
+
+2006-05-10  gauthierm
+
+	* [r5553] store/trunk/Store/StoreCartModule.php:
+	  Added hasMessage() method and small documentation fixes.
+	* [r5552] store/trunk/Store/StoreCartModule.php:
+	  Committed cart message changes that Nick added. Nick had to go
+	  do a
+	  presentation.
+
+2006-05-09  gauthierm
+
+	* [r5532] store/trunk/Store/StoreCartModule.php:
+	  Pass enntry to be validated when calling validateEntry() in
+	  add().
+	* [r5529] store/trunk/Store/StoreCartModule.php:
+	  Small formatting fixes and move protected below public.
+
+2006-05-09  nick
+
+	* [r5511] store/trunk/Store/StoreCartModule.php:
+	  Added protected validateEntry() method
+	* [r5510] store/trunk/Store/StoreCartModule.php:
+	  Added folding
+
+2006-05-09  nrf
+
+	* [r5507] store/trunk/Store/StoreApplication.php:
+	  Session aware relocate() method.
+
+2006-05-08  isaac
+
+	* [r5480] store/trunk/Store/dataobjects/StoreItem.php:
+	  remove the abstract function - not all sites necessarily have
+	  quantity discounts
+
+2006-05-06  gauthierm
+
+	* [r5421] store/trunk/Store/StoreSessionModule.php:
+	  session_id() returns an empty string when there is no session:
+	  
+	  http://ca.php.net/session_id
+
+2006-05-05  gauthierm
+
+	* [r5420] store/trunk/Store/StoreSessionModule.php:
+	  Use strict equality.
+
+2006-05-05  nrf
+
+	* [r5415] store/trunk/Store/StoreSessionModule.php:
+	  make sessions at least not through an error
+	* [r5399] store/trunk/Store/StoreSessionModule.php:
+	  activate session if cookie/get/post exists
+	* [r5393] store/trunk/Store/StoreSessionModule.php:
+	  Add a bunch of methods
+
+2006-05-02  isaac
+
+	* [r5187] store/trunk/Store/dataobjects/StoreAddress.php:
+	  took me a while - but finally got it spelled right
+	* [r5186] store/trunk/Store/dataobjects/StoreAddress.php:
+	  spelling mistake
+	* [r5185] store/trunk/Store/dataobjects/StoreProvState.php:
+	  missed one field name update
+	* [r5184] store/trunk/Store/dataobjects/StoreAccount.php,
+	  store/trunk/Store/dataobjects/StoreAddress.php,
+	  store/trunk/Store/dataobjects/StoreCountry.php,
+	  store/trunk/Store/dataobjects/StoreCountryWrapper.php,
+	  store/trunk/Store/dataobjects/StoreProvState.php:
+	  update misc sql to reflect new naming conventions
+
+2006-05-01  dave
+
+	* [r5136] store/trunk/Store/dataobjects/StoreAddress.php:
+	  add folding, remove createdate
+
+2006-04-26  nrf
+
+	* [r5014] store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/StoreCartModule.php,
+	  store/trunk/Store/StoreDatabaseModule.php,
+	  store/trunk/Store/StorePage.php,
+	  store/trunk/Store/StoreSessionModule.php,
+	  store/trunk/Store/exceptions/StoreException.php:
+	  Update Store packge to use new Site package.
+
+2006-04-26  gauthierm
+
+	* [r4978] store/trunk/Store/StorePostalCodeEntry.php:
+	  Fix package name.
+
+2006-04-26  nrf
+
+	* [r4972] store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/StorePage.php:
+	  simplify... make StorePage::$source a simple string with no
+	  convoluted logic.
+
+2006-04-26  gauthierm
+
+	* [r4965] store/trunk/Store/StoreCartModule.php:
+	  Method name change. Was discussed in office chat room.
+
+2006-04-25  gauthierm
+
+	* [r4928] store/trunk/Store/StoreCartModule.php:
+	  - Added a total caching mechanism that is still slightly broken.
+	  - Added a remove method that accepts an entry object.
+	  - Added a method to change an entry quantity.
+	  - Change signature of getTotalCost() and getTaxCost().
+	* [r4927] store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  - Renamed getItemSKU() as getItemId().
+	  - Makde combine method use the compare method.
+
+2006-04-24  gauthierm
+
+	* [r4902] store/trunk/Store/StoreCartModule.php,
+	  store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  Better cart totalling methods.
+	* [r4880] store/trunk/Store/dataobjects/StoreItem.php:
+	  Make abstract.
+	* [r4871] store/trunk/Store/dataobjects/StoreItem.php:
+	  Added abstract loader method for discounts.
+	* [r4868] store/trunk/Store/dataobjects/StoreQuantityDiscount.php:
+	  Added quantity discount sto store package.
+
+2006-04-22  gauthierm
+
+	* [r4847] store/trunk/Store/StorePaymentCellRenderer.php:
+	  - Added a cell renderer for displaying payment details.
+
+2006-04-17  nrf
+
+	* [r4761] store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/StorePage.php:
+	  Add StorePage::getSource() method.
+	  Have StoreApplication only set $page->source when it is not
+	  already set.
+
+2006-04-17  steven
+
+	* [r4749] store/trunk/Store/StoreCartModule.php:
+	  This was backwards or something (stole the fix from nrf's tree)
+
+2006-04-14  gauthierm
+
+	* [r4722] store/trunk/Store/StoreCartModule.php:
+	  Made a few methods abstract and added implementation of
+	  getSubtotal.
+
+2006-04-10  gauthierm
+
+	* [r4667] store/trunk/Store/StoreCartView.php:
+	  Update date.
+	* [r4666] store/trunk/Store/StoreCartView.php:
+	  - Extend SwatControl
+	  - remove display(). It is defined in SwatWidget
+	  - remove constructor.
+	  - make cart protected
+	  - use StoreCartModule instead of StoreCart
+	* [r4649] store/trunk/Store/StoreCartModule.php:
+	  Fixed typio.
+	* [r4647] store/trunk/Store/StoreCartModule.php:
+	  Remove indexes on cart entries.
+
+2006-04-07  gauthierm
+
+	* [r4636] store/trunk/Store/StoreCartModule.php:
+	  Always set database on all entries added to cart.
+	* [r4635] store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  Only compare item ids, not quantities.
+	* [r4634] store/trunk/Store/StorePage.php:
+	  remove blank line.
+	* [r4631] store/trunk/Store/dataobjects/StoreCartEntryWrapper.php,
+	  store/trunk/Store/dataobjects/StoreCountryWrapper.php:
+	  Use new init() method in SwatDBRecordsetWrapper.
+	* [r4627] store/trunk/Store/StoreCartModule.php:
+	  Fixed for addToCart().
+	* [r4624] store/trunk/Store/StoreCartModule.php:
+	  - don't load the cart in init
+	  - make the entries and removed_entries properties arrays.
+	* [r4621] store/trunk/Store/StoreCartModule.php:
+	  Declare class as abstract.
+	* [r4620] store/trunk/Store/StoreCartModule.php:
+	  - Added abstract load and save methods.
+	  - Cleaned up methods.
+	  - Added removed_entries array.
+	  - implemented some un-implemented methods.
+
+2006-04-07  nrf
+
+	* [r4618] store/trunk/Store/dataobjects/StoreAccount.php,
+	  store/trunk/Store/dataobjects/StoreCustomer.php:
+	  Rename, still needs alot of work
+
+2006-04-07  gauthierm
+
+	* [r4617] store/trunk/Store/dataobjects/StoreCartEntryWrapper.php:
+	  Small cleanups.
+	* [r4615] store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  Fix typo.
+
+2006-04-07  nrf
+
+	* [r4614] store/trunk/Store/StoreCartModule.php:
+	  add init() method
+	* [r4611] store/trunk/Store/dataobjects/StoreCart.php,
+	  store/trunk/Store/dataobjects/StoreCartEntryWrapper.php:
+	  Renaming
+	* [r4610] store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/StoreCartModule.php,
+	  store/trunk/Store/dataobjects/StoreCart.php:
+	  Refactoring of cart
+
+2006-04-07  gauthierm
+
+	* [r4608] store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  - Make extend SwatDBData object
+	  - make abstract
+	  - fill out methods
+
+2006-04-07  nrf
+
+	* [r4606] store/trunk/Store/StoreCart.php,
+	  store/trunk/Store/StoreCartEntry.php,
+	  store/trunk/Store/dataobjects/StoreCart.php,
+	  store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  move cart objects
+
+2006-04-07  gauthierm
+
+	* [r4599] store/trunk/Store/dataobjects/StoreAddress.php:
+	  Use better postal formatting.
+	* [r4597] store/trunk/Store/StoreAddressCellRenderer.php:
+	  Added a cell renderer for addresses.
+	* [r4591] store/trunk/Store/dataobjects/StoreAddress.php:
+	  Added id field and fixed init method.
+	* [r4587] store/trunk/Store/dataobjects/StoreAddress.php:
+	  Remove old and bit-rotted load and save methods. The base class
+	  handles this
+	  now.
+
+2006-04-06  isaac
+
+	* [r4559] store/trunk/Store/dataobjects/StoreAddress.php:
+	  make the includes point to the right files - mike missed this
+	  when he renamed a lot of stuff
+
+2006-04-05  dave
+
+	* [r4539] store/trunk/Store/dataobjects/StoreCountry.php,
+	  store/trunk/Store/dataobjects/StoreProvState.php:
+	  fix class names
+
+2006-04-03  gauthierm
+
+	* [r4501] store/trunk/Store/dataobjects/StoreAddress.php:
+	  Better display methods.
+	* [r4500] store/trunk/Store/dataobjects/StoreAddress.php:
+	  A better base class for address data objects with a display
+	  method.
+	* [r4499] store/trunk/Store/dataobjects/CountryWrapper.php,
+	  store/trunk/Store/dataobjects/StoreCountryWrapper.php:
+	  Rename.
+	* [r4498] store/trunk/Store/dataobjects/CountryWrapper.php:
+	  Small cleanups.
+	* [r4497] store/trunk/Store/dataobjects/CountryWrapper.php:
+	  Move this from veseys2 to store.
+	* [r4493] store/trunk/Store/dataobjects/Country.php,
+	  store/trunk/Store/dataobjects/ProvState.php:
+	  
+	* [r4492] store/trunk/Store/dataobjects/StoreCountry.php,
+	  store/trunk/Store/dataobjects/StoreProvState.php:
+	  Cleanups and rename.
+	* [r4491] store/trunk/Store/dataobjects/StoreCountry.php,
+	  store/trunk/Store/dataobjects/StoreProvState.php:
+	  Rename.
+	* [r4490] store/trunk/Store/dataobjects/Country.php,
+	  store/trunk/Store/dataobjects/ProvState.php:
+	  Move these into generic store package.
+	* [r4462] store/trunk/Store/StorePostalCodeEntry.php:
+	  Added default case.
+
+2006-03-31  gauthierm
+
+	* [r4445] store/trunk/Store/dataobjects/StoreAddress.php:
+	  Remove some stuff I accidentally comitted. This was an earlier
+	  attempt at
+	  postal code validation for store addresses.
+	* [r4442] store/trunk/Store/StorePostalCodeEntry.php,
+	  store/trunk/Store/dataobjects/StoreAddress.php,
+	  store/trunk/Store/tests:
+	  Validate US ZIP Codes based on state FIPS code. I've tested this
+	  with approx
+	  30,000 real ZIP Codes from the 1990 US Census. There are 6
+	  errors and upon
+	  examination, the errors are ZIP codes that are not in the given
+	  State or do
+	  not exist at all.
+	* [r4430] store/trunk/Store/StorePostalCodeEntry.php:
+	  Added optional province/state validation to postal code entry.
+	  Currently only
+	  Canadian provinces are validated.
+
+2006-03-20  gauthierm
+
+	* [r4283] store/trunk/Store/StorePostalCodeEntry.php:
+	  Normalize ZIP+4 codes on entry.
+
+2006-03-17  gauthierm
+
+	* [r4267] store/trunk/Store/StorePostalCodeEntry.php:
+	  Wrap absurdly long line and remove parentheses.
+	* [r4266] store/trunk/Store/StorePostalCodeEntry.php:
+	  Added a postal code entry widget.
+	* [r4256] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Added a payment method data object with a credit card number
+	  formatting
+	  method.
+
+2006-02-20  nrf
+
+	* [r3635] store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/StoreApplicationDatabaseModule.php,
+	  store/trunk/Store/StoreApplicationSessionModule.php,
+	  store/trunk/Store/StoreDatabaseModule.php,
+	  store/trunk/Store/StoreSessionModule.php:
+	  Rename modules.
+
+2006-02-01  nrf
+
+	* [r3201] store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/StoreApplicationDatabaseModule.php,
+	  store/trunk/Store/StoreApplicationSessionModule.php:
+	  Update store application to use application modules.
+	* [r3199] store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/exceptions/StoreException.php,
+	  store/trunk/Store/exceptions/StoreNoAccessException.php,
+	  store/trunk/Store/exceptions/StoreNotFoundException.php:
+	  Add some Store exceptions and remove replacePageNotFound()
+
+2006-01-10  nrf
+
+	* [r2890] store/trunk/Store/StoreItemViewQuantityColumn.php,
+	  store/trunk/Store/StoreQuantityCellRenderer.php:
+	  add a column and cellrenderer for quantity entry/display in a
+	  table view of items
+	* [r2889] store/trunk/Store/StoreCustomerWrapper.php,
+	  store/trunk/Store/StoreItemView.php,
+	  store/trunk/Store/StoreItemWrapper.php:
+	  Remove some wrappers for now
+	* [r2888] store/trunk/Store/StoreAddress.php,
+	  store/trunk/Store/StoreCustomer.php,
+	  store/trunk/Store/StoreItem.php,
+	  store/trunk/Store/StoreProduct.php,
+	  store/trunk/Store/dataobjects,
+	  store/trunk/Store/dataobjects/StoreAddress.php,
+	  store/trunk/Store/dataobjects/StoreCustomer.php,
+	  store/trunk/Store/dataobjects/StoreItem.php,
+	  store/trunk/Store/dataobjects/StoreProduct.php:
+	  create dataobjects dir
+	  move dataobjects into new dir
+	  update dataobjects to reflect changes to SwatDBDataObject
+	* [r2887] store/trunk/Store/StoreCartEntryNotFoundException.php,
+	  store/trunk/Store/exceptions,
+	  store/trunk/Store/exceptions/StoreCartEntryNotFoundException.php:
+	  
+	  create exceptions dir, move exception class into it
+	* [r2886] store/trunk/Store/StoreUI.php:
+	  Add a UI manager for stores
+
+2006-01-06  nrf
+
+	* [r2871] store/trunk/Store/StoreApplication.php:
+	  fix whitespace
+	  make NotFoundPage work
+
+2005-10-21  nrf
+
+	* [r2386] store/trunk/Store/StoreApplication.php:
+	  Add doc block so docs go in the correct package.
+
+2005-09-26  nrf
+
+	* [r2102] store/trunk/Store/StorePage.php:
+	  Restructure public methods on StorePage based on our UML control
+	  flow diagram.
+
+2005-08-29  nrf
+
+	* [r1596] store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/StorePage.php:
+	  Resturcture page building methods.
+
+2005-08-24  nrf
+
+	* [r1435] store/trunk/Store/StoreApplication.php:
+	  Cleanup and add a replacePage method
+
+2005-08-10  nrf
+
+	* [r1315] store/trunk/Store/StoreApplication.php:
+	  Handle not found better.
+
+2005-08-09  nrf
+
+	* [r1287] store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/StorePage.php:
+	  Added two new classes.
+
+2005-08-05  gauthierm
+
+	* [r1276] store/trunk/Store/StoreCustomer.php:
+	  Missing quotes in docuentation.
+
+2005-08-02  gauthierm
+
+	* [r1263] store/trunk/Store/StoreCartEntryNotFoundException.php:
+	  Add class level docblock tags.
+	* [r1262] store/trunk/Store/StoreProduct.php:
+	  Initial documentation.
+	* [r1261] store/trunk/Store/StoreItem.php:
+	  I'm not sure what types these are but docs won't build without
+	  something here.
+	* [r1260] store/trunk/Store/StoreItemView.php:
+	  Split this into a separate file.
+	* [r1259] store/trunk/Store/StoreItem.php:
+	  Documentation.
+	* [r1258] store/trunk/Store/StoreCustomer.php,
+	  store/trunk/Store/StoreCustomerWrapper.php:
+	  Small documentation fixes.
+	* [r1257] store/trunk/Store/StoreCustomer.php:
+	  Fix typo.
+	* [r1256] store/trunk/Store/StoreCustomer.php:
+	  Documentation.
+	* [r1255] store/trunk/Store/StoreCart.php,
+	  store/trunk/Store/StoreCartEntry.php:
+	  Implemented StoreCart::addEntry(), fixed
+	  StoreCart::removeEntryById() and added
+	  StoreCartEntry::getItemId().
+	* [r1254] store/trunk/Store/StoreAddress.php:
+	  Cleanup and documentation.
+
+2005-08-01  gauthierm
+
+	* [r1253] store/trunk/Store/StoreCustomer.php:
+	  phpdocumentor doesn't make the 2 and 3 bullets if there are code
+	  example in
+	  between.
+	* [r1251] store/trunk/Store/StoreCustomer.php,
+	  store/trunk/Store/StoreItemWrapper.php:
+	  Added code examples to Customer use cases.
+
+2005-08-01  nrf
+
+	* [r1240] store/trunk/Store/StoreCustomer.php,
+	  store/trunk/Store/StoreCustomerWrapper.php:
+	  Addded a StoreCustomerWrapper
+
+2005-08-01  gauthierm
+
+	* [r1239] store/trunk/Store/StoreItemWrapper.php:
+	  Update documentation.
+	* [r1237] store/trunk/Store/StoreItem.php:
+	  Implement loading and saving.
+	* [r1236] store/trunk/Store/StoreCustomer.php:
+	  Respect changes in SwatDBDataObject.
+	* [r1232] store/trunk/Store/StoreItem.php:
+	  Make this extend SwatDBDataObject
+	* [r1231] store/trunk/Store/StoreItemWrapper.php:
+	  Remove unnecessary requirement of SwatDB.
+	* [r1230] store/trunk/Store/StoreItemWrapper.php:
+	  Missing colon.
+	* [r1229] store/trunk/Store/StoreCartEntry.php:
+	  Fix wording here.
+
+2005-08-01  nrf
+
+	* [r1227] store/trunk/Store/StoreItemWrapper.php:
+	  Updated to subclass new SwatDBRecordsetWrapper.
+	* [r1225] store/trunk/Store/StoreAddressView.php:
+	  This was supposed to be in the last commit
+	* [r1224] store/trunk/Store/StoreAddress.php:
+	  Split AddressView into separate file.
+	* [r1223] store/trunk/Store/StoreCartView.php:
+	  Added missing requires. Changed constructor to use set method.
+
+2005-08-01  gauthierm
+
+	* [r1221] store/trunk/Store/StoreCart.php,
+	  store/trunk/Store/StoreCartEntry.php,
+	  store/trunk/Store/StoreCartEntryNotFoundException.php,
+	  store/trunk/Store/StoreCartView.php,
+	  store/trunk/Store/StoreProduct.php:
+	  Add some basic functrionality and some more documentation.
+	* [r1219] store/trunk/Store/StoreCartView.php:
+	  Documentation and cleanup.
+	* [r1218] store/trunk/Store/StoreShipmentMethod.php:
+	  Split this into its own file and update documentation.
+	* [r1217] store/trunk/Store/StoreAddress.php:
+	  Documentation and cleanup.
+	* [r1216] store/trunk/Store/StoreCartEntry.php:
+	  Documentation and cleanup.
+	* [r1215] store/trunk/Store/StoreItem.php:
+	  Documentation fix.
+	* [r1214] store/trunk/Store/StoreCart.php:
+	  Documentation fix.
+	* [r1212] store/trunk/Store/StoreCart.php,
+	  store/trunk/Store/StoreItem.php,
+	  store/trunk/Store/StoreItemWrapper.php:
+	  Add inline code tags to examples in documentation.
+	* [r1210] store/trunk/Store/StoreItemWrapper.php:
+	  Documentation and cleanup.
+	* [r1207] store/trunk/Store/StoreItem.php:
+	  Documentation and cleanup.
+	* [r1205] store/trunk/Store/StoreCart.php:
+	  Cleanup and documentation.
+	* [r1204] store/trunk/Store/StoreCustomer.php:
+	  Clean up and documentation
+
+2005-07-25  gauthierm
+
+	* [r1174] store/trunk/Store/StoreCustomer.php:
+	  Made this extend SwatDBDataObject.
+
+2005-07-25  nrf
+
+	* [r1165] store/trunk/Store/StoreAddress.php,
+	  store/trunk/Store/StoreCart.php,
+	  store/trunk/Store/StoreCartEntry.php,
+	  store/trunk/Store/StoreCartEntryNotFoundException.php,
+	  store/trunk/Store/StoreCartView.php,
+	  store/trunk/Store/StoreCustomer.php,
+	  store/trunk/Store/StoreItem.php,
+	  store/trunk/Store/StoreItemWrapper.php,
+	  store/trunk/Store/StoreProduct.php,
+	  store/trunk/StoreAddress.php, store/trunk/StoreCart.php,
+	  store/trunk/StoreCartEntry.php,
+	  store/trunk/StoreCartEntryNotFoundException.php,
+	  store/trunk/StoreCartView.php, store/trunk/StoreCustomer.php,
+	  store/trunk/StoreItem.php, store/trunk/StoreItemWrapper.php,
+	  store/trunk/StoreProduct.php:
+	  Moved everything to where it belongs
+	* [r1164] store/trunk/Store:
+	  new directory
+	* [r1162] store/trunk/StoreAddress.php, store/trunk/StoreCart.php,
+	  store/trunk/StoreCartEntry.php,
+	  store/trunk/StoreCartEntryNotFoundException.php,
+	  store/trunk/StoreCartView.php, store/trunk/StoreCustomer.php,
+	  store/trunk/StoreItem.php, store/trunk/StoreItemWrapper.php,
+	  store/trunk/StoreProduct.php:
+	  initial import
+	* [r1161] store/trunk:
+	  new package dir
+
