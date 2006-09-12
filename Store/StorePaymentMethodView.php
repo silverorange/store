@@ -26,7 +26,7 @@ class StorePaymentMethodView extends SwatControl
 	private $edit_link = 'account/paymentmethod%s';
 
 	// }}}
-	// {{{ public function init
+	// {{{ public function init()
 
 	public function init()
 	{
@@ -69,6 +69,7 @@ class StorePaymentMethodView extends SwatControl
 			return;
 
 		ob_start();
+		$this->payment_method->displayAsText();
 		$payment_method_text = ob_get_clean();
 
 		$div = new SwatHtmlTag('div');
@@ -85,15 +86,16 @@ class StorePaymentMethodView extends SwatControl
 		$this->remove_button->title = 'Remove';
 		$this->remove_button->classes[] = 'store-remove';
 		$this->remove_button->confirmation_message = sprintf(
-			"Are you sure you want to remove the following payment method?\n\n%s",
+			"Are you sure you want to remove the following payment ".
+			"method?\n\n%s",
 			$payment_method_text);
 
 		$div->open();
-			$this->payment_method->display();
-			$controls->open();
-				$edit_link->display();
-				$this->remove_button->display();
-			$controls->close();
+		$this->payment_method->display();
+		$controls->open();
+		$edit_link->display();
+		$this->remove_button->display();
+		$controls->close();
 		$div->close();
 	}
 
