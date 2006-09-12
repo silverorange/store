@@ -167,9 +167,9 @@ class StoreAccount extends StoreDataObject
 		$this->checkDB();
 
 		$sql = sprintf('select id from %s
-			where lower(email) = %s and password = %s',
+			where lower(email) = lower(%s) and password = %s',
 			$this->table,
-			$this->db->quote(strtolower($email), 'text'),
+			$this->db->quote($email, 'text'),
 			$this->db->quote(md5($password), 'text'));
 
 		$id = SwatDB::queryOne($this->db, $sql);
