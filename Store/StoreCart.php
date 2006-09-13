@@ -600,9 +600,6 @@ abstract class StoreCart extends SwatObject
 	 *
 	 * This comparison method is used byt the StoreCart::sort() method.
 	 *
-	 * Cart entries are compared numerically by id. If an entry's id is null,
-	 * the entry is considered less than any entry having a non-null id.
-	 *
 	 * @param StoreCartEntry $entry1 the cart entry on the left side of the
 	 *                                comparison.
 	 * @param StoreCartEntry $entry2 the cart entry on the right side of the
@@ -616,17 +613,7 @@ abstract class StoreCart extends SwatObject
 	protected static function compare(StoreCartEntry $entry1,
 		StoreCartEntry $entry2)
 	{
-		if ($entry1->id === null && $entry2->id !== null)
-			return -1;
-
-		if ($entry1->id !== null && $entry2->id === null)
-			return 1;
-
-		if (($entry1->id === null && $entry2->id === null) ||
-			($entry1->id == $entry2->id))
-			return 0;
-
-		return ($entry1->id < $entry2->id) ? -1 : 1;
+		return $entry1->compare($entry2);
 	}
 
 	// }}}
