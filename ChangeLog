@@ -1,3 +1,24 @@
+2006-09-13  gauthierm
+
+	* [r10939] store/trunk/Store/StoreCart.php,
+	  store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  Move comparison algorithm into CartEntry::compare() and use
+	  CartEntry::compare() in Cart::compare().
+
+2006-09-12  gauthierm
+
+	* [r10904] store/trunk/Store/StorePaymentMethodView.php:
+	  - fix folding
+	  - display payment method details in delete confirmation
+	  - remove some indenting
+
+2006-09-12  nrf
+
+	* [r10876] store/trunk/package.php:
+	  prepare for release
+	* [r10874] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release
+
 2006-09-12  isaac
 
 	* [r10867] store/trunk/Store/dataobjects/StoreAccount.php:
