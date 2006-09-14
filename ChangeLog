@@ -1,3 +1,8 @@
+2006-09-13  nrf
+
+	* [r10943] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release
+
 2006-09-13  gauthierm
 
 	* [r10939] store/trunk/Store/StoreCart.php,
