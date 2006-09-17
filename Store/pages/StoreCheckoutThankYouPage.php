@@ -45,12 +45,6 @@ abstract class StoreCheckoutThankYouPage extends StoreCheckoutPage
 	{
 		parent::build();
 
-		$this->buildInternal();
-
-		$this->layout->startCapture('content');
-		$this->display();
-		$this->layout->endCapture();
-
 		// clear the order and logout
 		unset($this->app->session->order);
 		$this->app->session->logout();
@@ -59,18 +53,6 @@ abstract class StoreCheckoutThankYouPage extends StoreCheckoutPage
 			'packages/store/styles/store-checkout-thank-you-page.css',
 			Store::PACKAGE_ID));
 	}
-
-	// }}}
-	// {{{ protected function buildInternal()
-
-	protected function buildInternal()
-	{
-	}
-
-	// }}}
-	// {{{ abstract protected function display()
-
-	abstract protected function display();
 
 	// }}}
 }
