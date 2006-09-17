@@ -1,3 +1,20 @@
+2006-09-17  gauthierm
+
+	* [r11054] store/trunk/Store/pages/StoreCheckoutThankYouPage.php:
+	  Since this page descends from StoreCheckoutPage we should use
+	  the build-in buildInternal() of the parent class and not call it
+	  again here.
+	  
+	  The parent buildInternal() also takes care of displaying
+	  automatically so I removed that method.
+	* [r11053] store/trunk/Store/pages/StoreCheckoutThankYouPage.php:
+	  make display method abstract
+
+2006-09-14  nrf
+
+	* [r10977] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release
+
 2006-09-13  nrf
 
 	* [r10943] store/trunk/ChangeLog, store/trunk/package.php:
