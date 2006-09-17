@@ -8,7 +8,7 @@ require_once 'Store/pages/StoreCheckoutPage.php';
  * @package   Store
  * @copyright 2006 silverorange
  */
-class StoreCheckoutThankYouPage extends StoreCheckoutPage
+abstract class StoreCheckoutThankYouPage extends StoreCheckoutPage
 {
 	// init phase
 	// {{{ public function init()
@@ -68,11 +68,9 @@ class StoreCheckoutThankYouPage extends StoreCheckoutPage
 	}
 
 	// }}}
-	// {{{ protected function display()
+	// {{{ abstract protected function display()
 
-	protected function display()
-	{
-	}
+	abstract protected function display();
 
 	// }}}
 }
