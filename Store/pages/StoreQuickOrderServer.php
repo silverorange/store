@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Site/pages/SiteXMLRPCServer.php';
+require_once 'Site/exceptions/SiteNotFoundException.php';
 require_once 'Store/StoreQuickOrderItemSelector.php';
 
 /**
@@ -19,7 +20,7 @@ abstract class StoreQuickOrderServer extends SiteXMLRPCServer
 	public function init()
 	{
 		if (!isset($GLOBALS['HTTP_RAW_POST_DATA']))
-			throw new SiteException('Page not found.');
+			throw new SiteNotFoundException('Page not found.');
 	}
 
 	// }}}
