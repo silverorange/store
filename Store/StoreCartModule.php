@@ -310,7 +310,6 @@ class StoreCartModule extends SiteApplicationModule
 	protected function getDefaultCartList()
 	{
 		$list = array(
-			'checkout' => 'StoreCheckoutCart',
 			'saved'    => 'StoreSavedCart'
 		);
 
