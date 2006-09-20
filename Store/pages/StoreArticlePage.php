@@ -54,6 +54,11 @@ class StoreArticlePage extends StorePage
 
 	protected function buildArticle()
 	{
+		// don't try to resolve articles that are deeper than the max depth
+		if (count(explode('/', $this->path)) > StoreArticle::MAX_DEPTH)
+			throw new SiteNotFoundException(
+				sprintf("Article page not found for path '%s'", $this->path));
+
 		if (($article_id = $this->findArticle()) === null)
 			throw new SiteNotFoundException(
 				sprintf("Article page not found for path '%s'", $this->path));
