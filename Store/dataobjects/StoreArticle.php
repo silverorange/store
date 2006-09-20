@@ -30,7 +30,7 @@ class StoreArticle extends StoreDataObject
 	 *
 	 * The root article is the zero-th level article. 
 	 */
-	MAX_DEPTH = 8;
+	const MAX_DEPTH = 8;
 
 	// }}}
 	// {{{ public properties

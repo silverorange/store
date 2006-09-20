@@ -39,7 +39,7 @@ class StoreCategory extends StoreDataObject
 	 *
 	 * The root category is the zero-th level category. 
 	 */
-	MAX_DEPTH = 8;
+	const MAX_DEPTH = 8;
 
 	// }}}
 	// {{{ public properties
