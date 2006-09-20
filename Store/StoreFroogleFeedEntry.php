@@ -120,8 +120,7 @@ class StoreFroogleFeedEntry extends AtomFeedEntry
 				'isbn', $this->isbn, $this->name_space));
 
 		if ($this->link !== null)
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'link', $this->link, $this->name_space));
+			$entry->appendChild($this->link->getNode($document));
 
 		if ($this->manufacturer !== null)
 			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
