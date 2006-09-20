@@ -98,10 +98,6 @@ class StoreCartModule extends SiteApplicationModule
 		parent::__construct($app);
 
 		$this->entries = new ArrayIterator(array());
-
-		// create default carts
-		foreach ($this->getDefaultCartList() as $cart_id => $cart_class)
-			$this->addCart(new $cart_class($this, $app), $cart_id);
 	}
 
 	// }}}
@@ -291,29 +287,6 @@ class StoreCartModule extends SiteApplicationModule
 	public function getEntries()
 	{
 		return $this->entries;
-	}
-
-	// }}}
-	// {{{ protected function getDefaultCartList()
-
-	/**
-	 * Gets a list of default carts to be managed by this cart module
-	 *
-	 * Default carts are created and added to this cart module in the
-	 * constructor. Subclasses may override this method to specify different
-	 * default carts. {@link StoreCart} object may be added to this cart module
-	 * at run time with the {@link StoreCartModule::addCart()} method.
-	 *
-	 * @return array a list of default carts to be managed by this cart module.
-	 *                the array is of the form 'identifier' => 'class'.
-	 */
-	protected function getDefaultCartList()
-	{
-		$list = array(
-			'saved'    => 'StoreSavedCart'
-		);
-
-		return $list;
 	}
 
 	// }}}
