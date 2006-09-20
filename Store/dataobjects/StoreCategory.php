@@ -29,6 +29,19 @@ require_once 'Store/dataobjects/StoreArticleWrapper.php';
  */
 class StoreCategory extends StoreDataObject
 {
+	// {{{ class constants
+
+	/**
+	 * The maximum depth of categories in the category tree
+	 *
+	 * Objects that interact with categories may choose not to respect
+	 * categories with a depth greater than this value.
+	 *
+	 * The root category is the zero-th level category. 
+	 */
+	MAX_DEPTH = 8;
+
+	// }}}
 	// {{{ public properties
 
 	/**
