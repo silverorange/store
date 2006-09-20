@@ -99,6 +99,18 @@ abstract class StoreApplication extends SiteApplication
 	}
 
 	// }}}
+	// {{{ protected function loadPage()
+
+	protected function loadPage()
+	{
+		$ad_shortname = self::initVar('ad');
+		if ($ad_shortname !== null)
+			$this->parseAd($ad_shortname);
+
+		parent::loadPage();
+	}
+
+	// }}}
 }
 
 ?>
