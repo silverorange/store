@@ -28,27 +28,6 @@ class StoreProvState extends StoreDataObject
 	public $title;
 
 	/**
-	 * Whether or not provincial sales tax applies in this province or state
-	 *
-	 * @var boolean
-	 */
-	public $pst;
-
-	/**
-	 * Whether or not harmonized sales tax applies in this province or state
-	 *
-	 * @var boolean
-	 */
-	public $hst;
-
-	/**
-	 * Whether or not general sales tax applies in this province or state
-	 *
-	 * @var boolean
-	 */
-	public $gst;
-
-	/**
 	 * A two letter abbreviation used to identify this province of state 
 	 *
 	 * This is also used for displaying addresses.
