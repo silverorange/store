@@ -97,6 +97,12 @@ class StoreOrder extends StoreDataObject
 		$this->registerInternalProperty('payment_method',
 			$this->class_map->resolveClass('StoreOrderPaymentMethod'), true);
 
+		$this->registerInternalProperty('locale',
+			$this->class_map->resolveClass('StoreLocale'), true);
+
+		$this->registerInternalProperty('ad',
+			$this->class_map->resolveClass('StoreAd'), true);
+
 		$this->registerDateProperty('createdate');
 
 		$this->table = 'Orders';
