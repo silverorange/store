@@ -34,6 +34,15 @@ abstract class StoreResetPasswordMailMessage extends SiteMultipartMailMessage
 	 */
 	protected $password_link;
 
+	/**
+	 * The title of the application sending the reset password mail
+	 *
+	 * This title is visible inside the mail message bodytext.
+	 *
+	 * @var string
+	 */
+	protected $application_title;
+
 	// }}}
 	// {{{ public function __construct()
 
@@ -55,10 +64,11 @@ abstract class StoreResetPasswordMailMessage extends SiteMultipartMailMessage
 		$this->init();
 
 		$required_properties = array(
+			'application_title',
 			'smtp_server',
 			'from_address',
 			'from_name',
-			'subject'
+			'subject',
 		);
 
 		foreach ($required_properties as $property) {
@@ -79,6 +89,7 @@ abstract class StoreResetPasswordMailMessage extends SiteMultipartMailMessage
 	 * on this mail message.
 	 *
 	 * Site-specific properties that must be set are:
+	 * - {@link StoreResetPasswordMailMessage::$application_title},
 	 * - {@link SiteMultipartMailMessage::$smtp_server},
 	 * - {@link SiteMultipartMailMessage::$from_address},
 	 * - {@link SiteMultipartMailMessage::$from_name} and
@@ -104,10 +115,10 @@ abstract class StoreResetPasswordMailMessage extends SiteMultipartMailMessage
 	{	
 		$body =
 			"This email is in response to your recent request for a new ".
-			"password for your account. Your password has not yet been ".
+			"password for your %1\$s account. Your password has not yet been ".
 			"changed. Please click on the following link and follow the ".
 			"outlined steps to change your account password.\n\n".
-			"%s\n\n".
+			"%2\$s\n\n".
 			"Clicking on this link will take you to a page that requires you ".
 			"to enter in and confirm a new password. Once you have chosen ".
 			"and confirmed your new password you will be taken to your ".
@@ -119,12 +130,13 @@ abstract class StoreResetPasswordMailMessage extends SiteMultipartMailMessage
 			"verifying that you requested a new password for your".
 			"account.\n\n".
 			"I did not request a new password:\n".
-			"If you did not request a new password then someone may have ".
-			"accidentally entered your email when requesting a new password. ".
-			"Have no fear! Your account information is safe. Simply ignore ".
-			"this email and continue using your existing password.";
+			"If you did not request a new password from %1\$s then someone ".
+			"may have accidentally entered your email when requesting a new ".
+			"password. Have no fear! Your account information is safe. ".
+			"Simply ignore this email and continue using your existing ".
+			"password.";
 
-		return sprintf($body, $this->password_link);
+		return sprintf($body, $this->application_title, $this->password_link);
 	}
 
 	// }}}
@@ -139,10 +151,10 @@ abstract class StoreResetPasswordMailMessage extends SiteMultipartMailMessage
 	{	
 		$body =
 			'<p>This email is in response to your recent request for a new '.
-			'password for your account. Your password has not yet been '.
+			'password for your %1$s account. Your password has not yet been '.
 			'changed. Please click on the following link and follow the '.
 			'outlined steps to change your account password.</p>'.
-			'<a href="%1$s">%1$s</a></p>'.
+			'<a href="%2$s">%2$s</a></p>'.
 			'<p>Clicking on this link will take you to a page that requires '.
 			'you to enter in and confirm a new password. Once you have chosen '.
 			'and confirmed your new password you will be taken to your '.
@@ -154,12 +166,13 @@ abstract class StoreResetPasswordMailMessage extends SiteMultipartMailMessage
 			'verifying that you requested a new password for your'.
 			'account.</p>'.
 			'<p>I did not request a new password:<br />'.
-			'If you did not request a new password then someone may have '.
-			'accidentally entered your email when requesting a new password. '.
-			'Have no fear! Your account information is safe. Simply ignore '.
-			'this email and continue using your existing password.</p>';
+			'If you did not request a new password from %1$s then someone '.
+			'may have accidentally entered your email when requesting a new '.
+			'password. Have no fear! Your account information is safe. '.
+			'Simply ignore this email and continue using your existing '.
+			'password.</p>';
 
-		return sprintf($body, $this->password_link);
+		return sprintf($body, $this->application_title, $this->password_link);
 	}
 
 	// }}}
