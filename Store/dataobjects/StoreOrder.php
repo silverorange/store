@@ -124,6 +124,14 @@ class StoreOrder extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ public function getTitle()
+
+	public function getTitle()
+	{
+		return sprintf('Order %s', $this->id);
+	}
+
+	// }}}
 
 	// loader methods
 	// {{{ protected function loadItems()

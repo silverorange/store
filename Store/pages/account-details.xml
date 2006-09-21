@@ -1,0 +1,83 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<widget class="SwatForm" id="account_form">
+
+		<!-- Saved Cart Message -->
+		<widget class="SwatMessageDisplay" id="saved_cart_message" />
+
+		<widget class="SwatFrame" id="details_frame">
+
+			<widget class="SwatToolbar" id="account_details_toolbar">
+				<widget class="SwatToolLink">
+					<property name="title">Edit Account Details</property>
+					<property name="link">account/edit</property>
+					<property name="stock_id">edit</property>
+				</widget>
+				<widget class="SwatToolLink">
+					<property name="title">Change Login Password</property>
+					<property name="link">account/changepassword</property>
+					<property name="stock_id">edit</property>
+				</widget>
+			</widget>
+
+			<!-- Details -->
+			<widget class="SwatDetailsView" id="account_details_view">
+				<object class="SwatDetailsViewField">
+					<property name="title">Name</property>
+					<object class="SwatTextCellRenderer">
+						<property name="text" type="data">fullname</property>
+					</object>
+				</object>
+				<object class="SwatDetailsViewField">
+					<property name="title">Email</property>
+					<object class="SwatTextCellRenderer">
+						<property name="text" type="data">email</property>
+					</object>
+				</object>
+				<object class="SwatDetailsViewField">
+					<property name="id">phone</property>
+					<property name="title">Phone #</property>
+					<object class="SwatTextCellRenderer">
+						<property name="text" type="data">phone</property>
+					</object>
+				</object>
+			</widget>
+
+		</widget>
+
+		<!-- Addresses -->
+		<widget class="SwatFrame" id="account_address_container">
+			<property name="title">Addresses</property>
+			<widget class="SwatToolbar">
+				<widget class="SwatToolLink">
+					<property name="title">Add a New Address</property>
+					<property name="link">account/address</property>
+					<property name="stock_id">add</property>
+				</widget>
+			</widget>
+			<widget class="SwatContainer" id="account_address_views" />
+		</widget>
+
+		<!-- Payment Methods -->
+		<widget class="SwatFrame" id="account_payment_method_container">
+			<property name="title">Credit Cards</property>
+			<widget class="SwatToolbar">
+				<widget class="SwatToolLink">
+					<property name="title">Add a New Credit Card</property>
+					<property name="link">account/paymentmethod</property>
+					<property name="stock_id">add</property>
+				</widget>
+			</widget>
+			<widget class="SwatContainer" id="account_payment_method_views" />
+		</widget>
+
+		<!-- Orders -->
+		<widget class="SwatFrame" id="account_order_container">
+			<property name="title">Past Orders</property>
+			<widget class="SwatContentBlock" id="account_order" />
+		</widget>
+
+	</widget>
+</swatml>

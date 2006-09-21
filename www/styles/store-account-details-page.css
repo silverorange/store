@@ -1,0 +1,51 @@
+/* Account Details page */
+
+#account_address_container,
+#account_payment_method_container {
+	float: left;
+	width: 48%;
+}
+
+#account_address_container {
+	margin-right: 10px;
+}
+
+#account_order_container {
+	clear: left;
+}
+
+
+/* Addresses & Payment Methods */
+
+.store-address-view,
+.store-payment-method-view {
+	margin: 0 0 1em 0;
+}
+
+.store-address-view-controls,
+.store-payment-method-view-controls {
+	margin-top: 2px;
+}
+
+.store-address-view-controls input.store-remove,
+.store-payment-method-view-controls input.store-remove {
+	font-weight: normal;
+}
+
+#account_address_container p,
+#account_payment_method_container p {
+	margin: 0;
+}
+
+
+/* Order History */
+
+#account_order_container ul {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+#account_order_container li {
+	margin-bottom: 0.5em;
+}

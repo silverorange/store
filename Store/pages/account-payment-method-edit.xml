@@ -1,0 +1,44 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatForm" id="edit_form">
+		<widget class="SwatMessageDisplay" id="message_display" />
+		<widget class="SwatFormField">
+			<property name="title">Payment Type</property>
+			<widget class="SwatRadioList" id="payment_type">
+				<property name="required" type="boolean">true</property>
+			</widget>
+		</widget>
+		<widget class="SwatFormField" id="credit_card_number_field">
+			<property name="title">Credit Card Number</property>
+			<widget class="StoreCreditCardNumberEntry" id="credit_card_number">
+				<property name="required" type="boolean">true</property>
+				<property name="maxlength" type="integer">50</property>
+			</widget>
+		</widget>
+		<widget class="SwatFormField" id="credit_card_number_last4_field">
+			<property name="title">Credit Card Number</property>
+			<property name="visible" type="boolean">false</property>
+			<widget class="SwatContentBlock" id="credit_card_number_last4" />
+		</widget>
+		<widget class="SwatFormField">
+			<property name="title">Expiry Date</property>
+			<widget class="StoreCreditCardExpiryEntry" id="credit_card_expiry">
+				<property name="required" type="boolean">true</property>
+			</widget>
+		</widget>
+		<widget class="SwatFormField">
+			<property name="title">Name on Card</property>
+			<widget class="SwatEntry" id="credit_card_fullname">
+				<property name="required" type="boolean">true</property>
+				<property name="maxlength" type="integer">255</property>
+				<property name="size" type="integer">35</property>
+			</widget>
+		</widget>
+		<widget class="SwatFooterFormField">
+			<widget class="SwatButton" id="submit_button">
+				<property name="title">Add New Payment Method</property>
+			</widget>
+		</widget>
+	</widget>
+</swatml>
