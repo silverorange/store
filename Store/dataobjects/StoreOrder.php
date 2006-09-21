@@ -5,6 +5,7 @@ require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/dataobjects/StoreOrderAddress.php';
 require_once 'Store/dataobjects/StoreOrderPaymentMethod.php';
 require_once 'Store/dataobjects/StoreOrderItemWrapper.php';
+require_once 'Store/dataobjects/StoreAd.php';
 
 /**
  *
