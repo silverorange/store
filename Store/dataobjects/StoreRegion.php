@@ -39,6 +39,29 @@ class StoreRegion extends StoreDataObject
 	public $title;
 
 	// }}}
+	// {{{ public function getFirstLocale()
+
+	/**
+	 * Gets the first locale of this region
+	 *
+	 * @return Locale the first locale.
+	 */
+	public function getFirstLocale()
+	{
+		return $this->locales->getFirst();
+	}
+
+	// }}}
+	// {{{ protected function loadLocales()
+
+	protected function loadLocales()
+	{
+		$sql = 'select * from Locale where region = %s';
+		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+		return SwatDB::query($this->db, $sql, 'LocaleWrapper');
+	}
+	
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
