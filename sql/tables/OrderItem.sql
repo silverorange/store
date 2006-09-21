@@ -8,7 +8,7 @@ create table OrderItem (
 	extension numeric(11, 2) not null,
 	product int not null,
 	product_title varchar(255) not null,
-	--catalog int, TODO: move to store (add to dataobject)
+	catalog int, TODO: move to store (add to dataobject)
 	quick_order boolean not null default false,
 	primary key (id)
 );
