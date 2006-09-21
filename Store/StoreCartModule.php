@@ -254,7 +254,7 @@ class StoreCartModule extends SiteApplicationModule
 			$this->load();
 
 			// move account cart entries to saved cart
-			$entries = &$checkout_cart->removeAllEntries();
+			$entries = $checkout_cart->removeAllEntries();
 			foreach ($entries as $entry)
 				$saved_cart->addEntry($entry);
 
