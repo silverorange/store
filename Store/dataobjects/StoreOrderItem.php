@@ -79,6 +79,13 @@ class StoreOrderItem extends StoreDataObject
 	public $product_title;
 
 	/**
+	 * Catalog id
+	 *
+	 * @var integer
+	 */
+	public $catalog;
+
+	/**
 	 * Whether or not this item was ordered through the quick-order tool
 	 *
 	 * @var boolean
