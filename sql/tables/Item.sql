@@ -4,7 +4,7 @@ create table Item (
 	product int not null references Product(id) on delete cascade,
 	displayorder int not null default 0,
 	description varchar(255),
-	status int not null default 0, -- TODO: push up to store (add to dataobject)
+	status int not null default 0,
 	item_group int references ItemGroup(id),
 	primary key (id)
 );
