@@ -290,6 +290,28 @@ class StoreCartModule extends SiteApplicationModule
 	}
 
 	// }}}
+	// {{{ public function getCartsByClass()
+
+	/**
+	 * Gets all carts registered with this module of a particular class
+	 *
+	 * @param string $class_name the name of the class.
+	 *
+	 * @return array an array of StoreCart objects of the given class that are
+	 *                registered with this module. The array is indexed as
+	 *                $name => $cart.
+	 */
+	public function getCartsByClass($class_name)
+	{
+		$carts = array();
+		foreach ($this->carts as $name => $cart)
+			if ($cart instanceof $class_name)
+				$carts[$name] = $cart;
+
+		return $carts;
+	}
+
+	// }}}
 	// {{{ protected function loadEntries()
 
 	/**
@@ -394,6 +416,64 @@ class StoreCartModule extends SiteApplicationModule
 
 			SwatDB::query($this->app->db, $sql);
 		}
+	}
+
+	// }}}
+	// {{{ protected function getCheckoutCart()
+	/**
+	 * Convenience method to make a best guess at getting the checkout
+	 * cart registered with this module
+	 *
+	 * This method is used internally.
+	 *
+	 * @return StoreCheckoutCart the checkout cart registered with this module
+	 *                            or null if no appropriate cart object is
+	 *                            found.
+	 */
+	protected function getCheckoutCart()
+	{
+		$cart = null;
+
+		// first check conventional named cart
+		if (isset($this->checkout)) {
+			$cart = $this->checkout;
+		} else {
+			$carts = $this->getCartsByClass('StoreCheckoutCart');
+			// we found one cart so it must be the checkout cart
+			if (count($carts) == 1)
+				$cart = reset($carts);
+		}
+
+		return $cart;
+	}
+
+	// }}}
+	// {{{ protected function getSavedCart()
+	/**
+	 * Convenience method to make a best guess at getting the saved
+	 * cart registered with this module
+	 *
+	 * This method is used internally.
+	 *
+	 * @return StoreSavedCart the saved cart registered with this module
+	 *                         or null if no appropriate cart object is
+	 *                         found.
+	 */
+	protected function getSavedCart()
+	{
+		$cart = null;
+
+		// first check conventional named cart
+		if (isset($this->saved)) {
+			$cart = $this->saved;
+		} else {
+			$carts = $this->getCartsByClass('StoreSavedCart');
+			// we found one cart so it must be the saved cart
+			if (count($carts) == 1)
+				$cart = reset($carts);
+		}
+
+		return $cart;
 	}
 
 	// }}}
