@@ -114,7 +114,8 @@ class StoreCartModule extends SiteApplicationModule
 		foreach ($this->carts as $cart)
 			$cart->init();
 
-		if (isset($this->checkout) && isset($this->saved)) {
+		if ($this->getCheckoutCart() !== null &&
+			$this->getSavedCart() !== null) {
 			$this->app->session->registerLoginCallback(
 				array($this, 'handleLogin'),
 				array());
@@ -243,16 +244,19 @@ class StoreCartModule extends SiteApplicationModule
 	 */
 	public function handleLogin()
 	{
-		if (isset($this->checkout) && isset($this->saved) &&
+		$checkout_cart = $this->getCheckoutCart();
+		$saved_cart = $this->getSavedCart();
+
+		if ($checkout_cart !== null && $saved_cart !== null &&
 			$this->checkout->getEntryCount() > 0) {
 
 			// reload to get account cart entries
 			$this->load();
 
 			// move account cart entries to saved cart
-			$entries = &$this->checkout->removeAllEntries();
+			$entries = &$checkout_cart->removeAllEntries();
 			foreach ($entries as $entry)
-				$this->saved->addEntry($entry);
+				$saved_cart->addEntry($entry);
 
 			// move session cart entries to account cart
 			$account_id = $this->app->session->getAccountId();
@@ -260,7 +264,7 @@ class StoreCartModule extends SiteApplicationModule
 				if ($entry->sessionid == session_id()) {
 					$entry->sessionid = null;
 					$entry->account = $account_id;
-					$this->checkout->addEntry($entry);
+					$checkout_cart->addEntry($entry);
 				}
 			}
 
@@ -325,7 +329,7 @@ class StoreCartModule extends SiteApplicationModule
 	protected function loadEntries()
 	{
 		// make sure default carts exist
-		if (!(isset($this->checkout) && isset($this->saved)))
+		if ($this->getCheckoutCart() === null || $this->getSavedCart() === null)
 			return;
 
 		// make sure we're browsing a request with a region
@@ -420,6 +424,7 @@ class StoreCartModule extends SiteApplicationModule
 
 	// }}}
 	// {{{ protected function getCheckoutCart()
+
 	/**
 	 * Convenience method to make a best guess at getting the checkout
 	 * cart registered with this module
@@ -449,6 +454,7 @@ class StoreCartModule extends SiteApplicationModule
 
 	// }}}
 	// {{{ protected function getSavedCart()
+
 	/**
 	 * Convenience method to make a best guess at getting the saved
 	 * cart registered with this module
