@@ -15,8 +15,8 @@ create table Orders (
 	shipping_total numeric(11, 2) not null,
 	tax_total numeric(11, 2) not null,
 
-	--ad int null references Ad(id), TODO: move to Store (add to dataobject)
-	--locale char(5) not null references Locale(id), TODO: move to Store (add to dataobject)
+	ad int null references Ad(id), -- TODO: move to Store (add to dataobject)
+	locale char(5) not null references Locale(id), -- TODO: move to Store (add to dataobject)
 
 	primary key (id)
 );
