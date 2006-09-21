@@ -33,6 +33,15 @@ abstract class StoreNewPasswordMailMessage extends SiteMultipartMailMessage
 	 */
 	protected $new_password;
 
+	/**
+	 * The title of the application sending the reset password mail
+	 *
+	 * This title is visible inside the mail message bodytext.
+	 *
+	 * @var string
+	 */
+	protected $application_title;
+
 	// }}}
 	// {{{ public function __construct()
 
@@ -53,10 +62,11 @@ abstract class StoreNewPasswordMailMessage extends SiteMultipartMailMessage
 		$this->init();
 
 		$required_properties = array(
+			'application_title',
 			'smtp_server',
 			'from_address',
 			'from_name',
-			'subject'
+			'subject',
 		);
 
 		foreach ($required_properties as $property) {
@@ -77,6 +87,7 @@ abstract class StoreNewPasswordMailMessage extends SiteMultipartMailMessage
 	 * on this mail message.
 	 *
 	 * Site-specific properties that must be set are:
+	 * - {@link StoreNewPasswordMailMessage::$application_title},
 	 * - {@link SiteMultipartMailMessage::$smtp_server},
 	 * - {@link SiteMultipartMailMessage::$from_address},
 	 * - {@link SiteMultipartMailMessage::$from_name} and
@@ -102,12 +113,12 @@ abstract class StoreNewPasswordMailMessage extends SiteMultipartMailMessage
 	{	
 		$body =
 			"This email is in response to your recent request for a new ".
-			"password for your account. Your new password is:\n\n".
+			"password for your %s account. Your new password is:\n\n".
 			"%s\n\n".
 			"After logging into your account, you can set a new password by ".
 			"clicking the \"Change Login Password\" on your account page.";
 
-		return sprintf($body, $this->new_password);
+		return sprintf($body, $this->application_title, $this->new_password);
 	}
 
 	// }}}
@@ -122,13 +133,13 @@ abstract class StoreNewPasswordMailMessage extends SiteMultipartMailMessage
 	{	
 		$body =
 			'<p>This email is in response to your recent request for a new '.
-			'password for your account. Your new password is:</p>'.
+			'password for your %s account. Your new password is:</p>'.
 			'<p><strong>%s</strong></p>'.
 			'<p>After logging into your account, you can set a new password '.
 			'by clicking the "Change Login Password" on your account '.
 			'page.</p>';
 
-		return sprintf($body, $this->new_password);
+		return sprintf($body, $this->application_title, $this->new_password);
 	}
 
 	// }}}
