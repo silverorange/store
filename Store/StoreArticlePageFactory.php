@@ -13,6 +13,19 @@ abstract class StoreArticlePageFactory extends SitePageFactory
 	protected $default_page_class = 'StoreArticlePage';
 
 	// }}}
+	// {{{ public function __construct()
+
+	/**
+	 * Creates a new StoreUI object
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->class_map['Store'] = 'Store/pages';
+	}
+
+	// }}}
 	// {{{ public function resolvePage()
 
 	public function resolvePage($app, $source)
