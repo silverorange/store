@@ -2,6 +2,7 @@
 
 require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreCountryWrapper.php';
+require_once 'Store/dataobjects/StoreLocaleWrapper.php';
 
 /**
  * Regions are areas in which products may be sold. Each region may have
@@ -58,7 +59,7 @@ class StoreRegion extends StoreDataObject
 	{
 		$sql = 'select * from Locale where region = %s';
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
-		return SwatDB::query($this->db, $sql, 'LocaleWrapper');
+		return SwatDB::query($this->db, $sql, 'StoreLocaleWrapper');
 	}
 	
 	// }}}
