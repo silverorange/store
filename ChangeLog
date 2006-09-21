@@ -1,5 +1,117 @@
+2006-09-21  gauthierm
+
+	* [r11311] store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  fix comparison function to compare on item ids rather than entry
+	  ids
+
 2006-09-21  nrf
 
+	* [r11299] store/trunk/Store/pages/StoreSiteMapPage.php:
+	  Push sitemap page upstream.
+
+2006-09-21  gauthierm
+
+	* [r11297] store/trunk/Store/StoreNewPasswordMailMessage.php:
+	  added ability to set application title
+	* [r11292] store/trunk/Store/StoreResetPasswordMailMessage.php:
+	  make it possible to set the application title on reset password
+	  mail messages
+
+2006-09-21  nrf
+
+	* [r11291] store/trunk/Store/StoreShippingAddressCellRenderer.php,
+	  store/trunk/Store/dataobjects/StoreOrder.php,
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php,
+	  store/trunk/Store/pages/StoreAccountChangePasswordPage.php,
+	  store/trunk/Store/pages/StoreAccountDetailsPage.php,
+	  store/trunk/Store/pages/StoreAccountEditPage.php,
+	  store/trunk/Store/pages/StoreAccountForgotPasswordPage.php,
+	  store/trunk/Store/pages/StoreAccountLoginPage.php,
+	  store/trunk/Store/pages/StoreAccountOrderPage.php,
+	  store/trunk/Store/pages/StoreAccountPaymentMethodEditPage.php,
+	  store/trunk/Store/pages/StoreAccountResetPasswordPage.php,
+	  store/trunk/Store/pages/StoreAccountResetPasswordThankYouPage.php,
+	  store/trunk/Store/pages/account-address-edit.xml,
+	  store/trunk/Store/pages/account-change-password.xml,
+	  store/trunk/Store/pages/account-details.xml,
+	  store/trunk/Store/pages/account-edit.xml,
+	  store/trunk/Store/pages/account-forgot-password.xml,
+	  store/trunk/Store/pages/account-login.xml,
+	  store/trunk/Store/pages/account-order.xml,
+	  store/trunk/Store/pages/account-payment-method-edit.xml,
+	  store/trunk/Store/pages/account-reset-password.xml,
+	  store/trunk/www/styles/store-account-details-page.css,
+	  store/trunk/www/styles/store-account-edit-page.css,
+	  store/trunk/www/styles/store-account-login-page.css,
+	  store/trunk/www/styles/store-account-order-page.css,
+	  store/trunk/www/styles/store-account-reset-password-page.css:
+	  Upstream most of the veseys account pages into the Store package.
+
+2006-09-21  nick
+
+	* [r11273] store/trunk/Store/dataobjects/StoreOrder.php,
+	  store/trunk/Store/dataobjects/StoreRegion.php:
+	  Use StoreLocale rather than Locale and StoreAd is needed in
+	  StoreOrder.php
+	* [r11261] store/trunk/Store/dataobjects/StoreRegionWrapper.php:
+	  Add the loadSetFromDB method
+	* [r11256] store/trunk/Store/dataobjects/StoreRegion.php:
+	  Remove all the methods and move them up to the store package,
+	  leave the
+	  constants
+	* [r11249] store/trunk/sql/tables/Orders.sql:
+	  TWO TODOs - TWODONES
+	  -This line, and those below, will be ignored--
+	  
+	  M Orders.sql
+	* [r11248] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Move 'ad' and 'locale' to the store package
+	* [r11244] store/trunk/Store/dataobjects/StoreItem.php:
+	  Move status to Store::Item table. We've decided to leave the
+	  constants and
+	  methods that deal with the constants in site code rather than
+	  pushing those up
+	  to Store
+	* [r11242] store/trunk/sql/tables/Item.sql:
+	  Move status to Store::Item table
+	* [r11241] store/trunk/sql/tables/OrderItem.sql:
+	  TODONE, and un-remark the index
+	* [r11240] store/trunk/sql/tables/OrderItem.sql:
+	  Add catalog to the store package
+	* [r11239] store/trunk/Store/dataobjects/StoreOrderItem.php:
+	  Move catalog to the Store package
+
+2006-09-21  nrf
+
+	* [r11228] store/trunk/Store/StoreArticlePageFactory.php:
+	  Add mapping for Store pages.
+
+2006-09-21  gauthierm
+
+	* [r11219] store/trunk/Store/StoreCartModule.php:
+	  fix forwards compatibility notice. This method returns a
+	  reference already.
+	* [r11217] store/trunk/Store/StoreCartModule.php:
+	  use new getSavedCart() and getCheckoutCart() methods internally.
+	* [r11215] store/trunk/Store/StoreCartModule.php:
+	  - added getCartsByClass() method
+	  - added protected getCheckoutCart() and getSavedCart() methods
+
+2006-09-21  nrf
+
+	* [r11212] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.0.4
+
+2006-09-21  gauthierm
+
+	* [r11211] store/trunk/Store/StoreLocaleApplication.php:
+	  use preg instead of ereg
+
+2006-09-21  nrf
+
+	* [r11204] store/trunk/Store/dataobjects/StoreLocale.php,
+	  store/trunk/Store/dataobjects/StoreLocaleWrapper.php:
+	  Push up to Store.
 	* [r11203] store/trunk/sql/tables/Item.sql,
 	  store/trunk/sql/tables/Orders.sql,
 	  store/trunk/sql/views/ItemView.sql:
