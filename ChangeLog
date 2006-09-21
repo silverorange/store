@@ -1,3 +1,50 @@
+2006-09-20  gauthierm
+
+	* [r11187] store/trunk/Store/StoreCartModule.php:
+	  Remove the getDefaultCartList() method. addCart() is the
+	  preferred method to add carts.
+
+2006-09-20  nrf
+
+	* [r11185] store/trunk/Store/dataobjects/StoreProvState.php:
+	  Push down to veseys... steven we need a new hand motion.
+	* [r11168] store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/StoreLocaleApplication.php:
+	  Create a new StoreLocaleApplication that upstreams alot of
+	  veseys Application.
+
+2006-09-20  gauthierm
+
+	* [r11153] store/trunk/Store/dataobjects/StoreArticle.php,
+	  store/trunk/Store/dataobjects/StoreCategory.php:
+	  fix syntax errors
+	* [r11151] store/trunk/Store/StoreCartModule.php:
+	  StoreCheckoutCart is abstract so don't add it to the default
+	  list of carts
+	* [r11150] store/trunk/Store/pages/StoreArticlePage.php:
+	  don't try to resolve articles that are deeper than the max depth
+	* [r11146] store/trunk/Store/dataobjects/StoreArticle.php,
+	  store/trunk/Store/dataobjects/StoreCategory.php:
+	  add constants for maximum depth for tree-based objects
+
+2006-09-20  nick
+
+	* [r11129] store/trunk/Store/StoreFroogleFeedEntry.php:
+	  Make entry->link a AtomFeedLink like it should be
+	* [r11127] store/trunk/Store/StoreFroogleFeedEntry.php:
+	  Call the right class for static methods
+	* [r11119] store/trunk/Store/StoreFroogleFeed.php,
+	  store/trunk/Store/StoreFroogleFeedEntry.php,
+	  store/trunk/Store/StoreFroogleFeedServer.php:
+	  Froogle components for the store
+
+2006-09-18  nrf
+
+	* [r11066] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.0.2
+	* [r11065] store/trunk/Store/pages/StoreQuickOrderServer.php:
+	  throw a SiteNotFoundException instead of SiteException.
+
 2006-09-17  nrf
 
 	* [r11057] store/trunk/ChangeLog, store/trunk/package.php:
