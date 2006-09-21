@@ -80,10 +80,11 @@ abstract class StoreLocaleApplication extends StoreApplication
 		$this->locale = null;
 		$this->region = null;
 
-		if (!ereg('([a-z][a-z])/([a-z][a-z])', $locale, $regs))
+		$matches = array();
+		if (preg_match('@([a-z][a-z])/([a-z][a-z])@', $locale, $matches) != 1)
 			return;
 
-		$this->locale = $regs[2].'_'.strtoupper($regs[1]);
+		$this->locale = $matches[2].'_'.strtoupper($matches[1]);
 
 		$sql = 'select id, title from Region where id in
 			(select region from Locale where id = %s)';
