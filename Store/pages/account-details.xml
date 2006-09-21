@@ -62,10 +62,10 @@
 
 		<!-- Payment Methods -->
 		<widget class="SwatFrame" id="account_payment_method_container">
-			<property name="title">Credit Cards</property>
+			<property name="title">Payment Methods</property>
 			<widget class="SwatToolbar">
 				<widget class="SwatToolLink">
-					<property name="title">Add a New Credit Card</property>
+					<property name="title">Add a New Payment Method</property>
 					<property name="link">account/paymentmethod</property>
 					<property name="stock_id">add</property>
 				</widget>
