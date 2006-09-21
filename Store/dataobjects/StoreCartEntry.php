@@ -202,17 +202,10 @@ abstract class StoreCartEntry extends StoreDataObject
 	 */
 	public function compare(StoreCartEntry $entry)
 	{
-		if ($this->id === null && $entry->id !== null)
-			return -1;
-
-		if ($this->id !== null && $entry->id === null)
-			return 1;
-
-		if (($this->id === null && $entry->id === null) ||
-			($this->id == $entry->id))
+		if ($this->getItemId() === $entry->getItemId())
 			return 0;
 
-		return ($this->id < $entry->id) ? -1 : 1;
+		return ($this->getItemId() < $entry->getItemId()) ? -1 : 1;
 	}
 
 	// }}}
