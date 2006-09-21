@@ -84,6 +84,13 @@ abstract class StoreItem extends StoreDataObject
 	public $enabled;
 
 	/**
+	 * The status of an item - backordered, etc
+	 *
+	 * @var integer
+	 */
+	public $status;
+
+	/**
 	 * Unit cost of this item
 	 *
 	 * This field is joined from the ItemRegionBinding table; it is not a
