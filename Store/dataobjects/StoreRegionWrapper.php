@@ -12,6 +12,17 @@ require_once 'Store/dataobjects/StoreRegion.php';
  */
 class StoreRegionWrapper extends StoreRecordsetWrapper
 {
+	// {{{ public static function loadSetFromDB()
+
+	public static function loadSetFromDB($db, $id_set)
+	{
+		$sql = 'select * from Region where id in (%s)';
+
+		$sql = sprintf($sql, $id_set);
+		return SwatDB::query($db, $sql, 'RegionWrapper');
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
