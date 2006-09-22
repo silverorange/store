@@ -1,13 +1,15 @@
 <?php
 
 require_once 'Store/dataobjects/StoreItemWrapper.php';
+require_once 'Store/StoreItemPriceCellRenderer.php';
+require_once 'Swat/SwatGroupedFlydown.php';
 require_once 'Swat/SwatString.php';
 require_once 'Swat/SwatState.php';
 require_once 'Swat/SwatInputControl.php';
-require_once 'Swat/SwatFlydown.php';
 
 /**
- *
+ * Item selector that puts items into optgroups based on item
+ * groups
  *
  * @package   Store
  * @copyright 2006 silverorange
@@ -146,7 +148,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	protected function clearItems()
 	{
 		$this->form_field->title = null;
-		$this->items_flydown->options = array();
+		$this->items_flydown->setTree(new SwatTreeFlydownNode(null, 'root'));
 	}
 
 	// }}}
@@ -166,11 +168,42 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 
 	protected function buildItemsFlydown($items)
 	{
-		foreach ($items as $item) {
-			$description = $item->getDescription();
-			$description.= ' '.SwatString::moneyFormat($item->price);
-			$this->items_flydown->addOption($item->id, $description);
+		$tree = new SwatTreeFlydownNode(null, 'root');
+
+		if (count($items) <= 1) {
+			foreach ($items as $item)
+				$tree->addChild($this->getItemNode($item, true));
+		} else {
+			$item_group = false;
+			$num_item_groups = 0;
+			foreach ($items as $item) {
+				if ($item->getInternalValue('item_group') !== $item_group) {
+					$item_group = $item->getInternalValue('item_group');
+
+					if ($item_group === null) {
+						$group_title = '[ungrouped]';
+					} else {
+						$group_title = $item->item_group->title;
+						$num_item_groups++;
+					}
+
+					$item_group_node =
+						new SwatTreeFlydownNode(null, $group_title);
+
+					$tree->addChild($item_group_node);
+				}
+
+				$item_group_node->addChild($this->getItemNode($item));
+			}
+
+			// flatten tree is there are no item groups
+			if ($num_item_groups == 0) {
+				$item_group_node->parent = null;
+				$tree = $item_group_node;
+			}
 		}
+
+		$this->items_flydown->setTree($tree);
 	}
 
 	// }}}
@@ -195,11 +228,28 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	protected function getItemsFlydown()
 	{
 		if ($this->items_flydown === null) {
-			$this->items_flydown = new SwatFlydown($this->id.'_items');
+			$this->items_flydown = new SwatGroupedFlydown($this->id.'_items');
 			$this->items_flydown->show_blank = false;
 		}
 
 		return $this->items_flydown;
+	}
+
+	// }}}
+	// {{{ protected function getItemNode()
+
+	protected function getItemNode($item, $show_item_group = false)
+	{
+		$renderer = new StoreItemPriceCellRenderer();
+		$description = $item->getDescription($show_item_group);
+		$renderer->value = $item->price;
+		$renderer->quantity_discounts = $item->quantity_discounts;
+
+		ob_start();
+		$renderer->render();
+		$description.= ' '.ob_get_clean();
+
+		return new SwatTreeFlydownNode($item->id, $description);
 	}
 
 	// }}}
