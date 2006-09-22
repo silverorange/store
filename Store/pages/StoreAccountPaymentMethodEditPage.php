@@ -101,11 +101,13 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 					$this->app->session->account->payment_methods->add(
 						$payment_method);
 
-					$this->addMessage('One credit card has been added.',
+					$this->addMessage(
+						Store::_('One credit card has been added.'),
 						$payment_method);
 
 				} elseif ($payment_method->isModified()) {
-					$this->addMessage('One credit card has been updated.',
+					$this->addMessage(
+						Store::_('One credit card has been updated.'),
 						$payment_method);
 				}
 
@@ -216,12 +218,18 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 	protected function buildLabels()
 	{
 		if ($this->id === null) {
-			$this->layout->navbar->createEntry('Add a New Payment Method');
-			$this->layout->data->title = 'Add a New Payment Method';
+			$this->layout->navbar->createEntry(
+				Store::_('Add a New Payment Method'));
+
+			$this->layout->data->title = Store::_('Add a New Payment Method');
 		} else {
-			$this->layout->navbar->createEntry('Edit a Payment Method');
-			$this->ui->getWidget('submit_button')->title = 'Update Payment Method';
-			$this->layout->data->title = 'Edit a Payment Method';
+			$this->layout->navbar->createEntry(
+				Store::_('Edit a Payment Method'));
+
+			$this->ui->getWidget('submit_button')->title =
+				Store::_('Update Payment Method');
+
+			$this->layout->data->title = Store::_('Edit a Payment Method');
 		}
 	}
 
@@ -242,8 +250,8 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 		if (!$this->ui->getWidget('credit_card_expiry')->isValid()) {
 			$expiry = $this->ui->getWidget('credit_card_expiry');
 
-			$content = sprintf('The expiry date that was entered (%s)
-				is in the past. Please enter an updated date.',
+			$content = sprintf(Store::_('The expiry date that was entered '.
+				'(%s) is in the past. Please enter an updated date.'),
 				$expiry->value->format(SwatDate::DF_CC_MY));
 
 			$message = new SwatMessage($content, SwatMessage::WARNING);
