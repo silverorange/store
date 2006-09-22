@@ -121,8 +121,8 @@ class StoreAccountDetailsPage extends StoreAccountPage
 				$account->addresses->remove($view->address);
 				$view->visible = false;
 
-				$msg = new SwatMessage('One address has been removed.',
-					SwatMessage::NOTIFICATION);
+				$msg = new SwatMessage(
+					Store::_('One address has been removed.'));
 
 				$msg->secondary_content = $address_condensed;
 				$msg->content_type = 'text/xml';
@@ -148,8 +148,8 @@ class StoreAccountDetailsPage extends StoreAccountPage
 				$account->payment_methods->remove($view->payment_method);
 				$view->visible = false;
 
-				$msg = new SwatMessage('One credit card has been removed.',
-					SwatMessage::NOTIFICATION);
+				$msg = new SwatMessage(
+					Store::_('One credit card has been removed.'));
 
 				$msg->secondary_content = $payment_condensed;
 				$msg->content_type = 'text/xml';
@@ -219,13 +219,12 @@ class StoreAccountDetailsPage extends StoreAccountPage
 		$count = $this->app->cart->saved->getEntryCount();
 
 		if ($count > 0) {
-			$message = new SwatMessage(ngettext(
+			$message = new SwatMessage(sprintf(Store::ngettext(
 				'You have an item saved for later. View your '.
-				'<a href="cart">Shopping Cart</a> to add this item to your '.
-				'order.',
+				'%sShopping Cart%s to add this item to your order.',
 				'You have items saved for later. View your '.
-				'<a href="cart">Shopping Cart</a> to add these items to your '.
-				'order.', $count));
+				'%sShopping Cart%s to add these items to your order.',
+				$count), '<a href="cart">', '</a>'));
 
 			$message->content_type = 'text/xml';
 
@@ -258,7 +257,7 @@ class StoreAccountDetailsPage extends StoreAccountPage
 		} else {
 			$div_tag = new SwatHtmlTag('div');
 			$div_tag->class = 'swat-none';
-			$div_tag->setContent('<none>');
+			$div_tag->setContent(Store::_('<none>'));
 			$div_tag->display();
 		}
 
