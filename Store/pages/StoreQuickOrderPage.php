@@ -140,8 +140,8 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 				if ($item_id === null && $sku !== null) {
 					$item_id = $this->getItemId($sku);
 					if ($item_id === null) {
-						$message = new SwatMessage(sprintf(
-							'“%s” is not an available %%s.',
+						$message = new SwatMessage(sprintf(Store::_(
+							'“%s” is not an available %%s.'),
 							$sku), SwatMessage::ERROR);
 
 						$sku_widget->addMessage($message);
@@ -160,12 +160,12 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 			}
 
 			if ($form->hasMessage()) {
-				$message = new SwatMessage('There is a problem with one or '.
-					'more of the items you requested.',
+				$message = new SwatMessage(Store::_('There is a problem with '.
+					'one or more of the items you requested.'),
 					SwatMessage::ERROR);
 
-				$message->secondary_content = 'Please address the fields '.
-					'highlighted below and re-submit the form.';
+				$message->secondary_content = Store::_('Please address the '.
+					'fields highlighted below and re-submit the form.');
 
 				$this->cart_ui->getWidget('messages')->add($message);
 			}
@@ -292,7 +292,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		$count = $cart_view->model->getRowCount();
 		if ($count > 0) {
 			$frame = $this->cart_ui->getWidget('cart_frame');
-			$frame->title = ngettext(
+			$frame->title = Store::ngettext(
 				'The following item was added to your cart:',
 				'The following items were added to your cart:',
 				$count);
@@ -355,6 +355,8 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		echo '<script type="text/javascript">'."\n";
 		printf("var %s_obj = new StoreQuickOrder('%s', '%s', %s);\n",
 			$id, $id, $item_selector_id, $this->num_rows);
+
+		// TODO: JavaScript string translations
 
 		echo '</script>';
 	}
