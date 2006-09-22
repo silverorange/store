@@ -67,13 +67,16 @@ class StoreAccountLoginPage extends StoreAccountPage
 				$this->app->cart->save();
 				$this->app->relocate('account');
 			} else {
-				$message = new SwatMessage('Login Incorrect',
+				$message = new SwatMessage(Store::_('Login Incorrect'),
 					SwatMessage::WARNING);
 
-				$message->secondary_content =
-				    '<ul><li>Please check the spelling on your email '.
-					'address or password</li><li>Password is case-sensitive. '.
-					'Make sure your <kbd>Caps Lock</kbd> key is off</li></ul>';
+				$message->secondary_content = sprintf(
+					'<ul><li>%s</li><li>%s</li></ul>',
+					Store::_('Please check the spelling on your email '.
+						'address or password.'),
+					sprintf(Store::_('Password is case-sensitive. Make sure '.
+						'your %sCaps Lock%s key is off.'),
+						'<kbd>', '</kbd>'));
 
 				$message->content_type = 'text/xml';
 				$this->ui->getWidget('message_display')->add($message);
