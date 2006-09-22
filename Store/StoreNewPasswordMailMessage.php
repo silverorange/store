@@ -111,14 +111,9 @@ abstract class StoreNewPasswordMailMessage extends SiteMultipartMailMessage
 	 */
 	protected function getTextBody()
 	{	
-		$body =
-			"This email is in response to your recent request for a new ".
-			"password for your %s account. Your new password is:\n\n".
-			"%s\n\n".
-			"After logging into your account, you can set a new password by ".
-			"clicking the \"Change Login Password\" on your account page.";
-
-		return sprintf($body, $this->application_title, $this->new_password);
+		return $this->getFormattedBody(
+			"%s\n\n%s\n\n%s",
+			$this->new_password);
 	}
 
 	// }}}
@@ -130,16 +125,27 @@ abstract class StoreNewPasswordMailMessage extends SiteMultipartMailMessage
 	 * @return string the HTML content of this mail message.
 	 */
 	protected function getHtmlBody()
-	{	
-		$body =
-			'<p>This email is in response to your recent request for a new '.
-			'password for your %s account. Your new password is:</p>'.
-			'<p><strong>%s</strong></p>'.
-			'<p>After logging into your account, you can set a new password '.
-			'by clicking the "Change Login Password" on your account '.
-			'page.</p>';
+	{
+		return $this->getFormattedBody(
+			'<p>%s</p><p>%s</p><p>%s</p>',
+			sprintf('<strong>%s</strong>', $this->new_password));
+	}
 
-		return sprintf($body, $this->application_title, $this->new_password);
+	// }}}
+	// {{{ protected function getFormattedBody()
+
+	protected function getFormattedBody($format_string, $formatted_password)
+	{
+		return sprintf($format_string,
+			sprintf(Store::_('This email is in response to your recent '.
+			'request for a new password for your %s account. Your new '.
+			'password is:'), $this->application_title),
+			
+			$formatted_password,
+
+			Store::_('After logging into your account, you can set a new '.
+			'password by clicking the "Change Login Password" on your '.
+			'account page.'));
 	}
 
 	// }}}
