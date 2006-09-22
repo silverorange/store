@@ -64,8 +64,8 @@ class StoreCreditCardNumberEntry extends SwatEntry
 		$value = str_replace(array('-', ' '), '', $this->value);
 
 		if (!Validate_Finance_CreditCard::number($value)) {
-			$msg = Swat::_('The credit card number you have entered is not valid.
-				Please check to make sure you have entered it correctly.');
+			$msg = Store::_('The %s field is not a valid credit card number. '.
+				'Please ensure it is entered correctly.');
 
 			$this->addMessage(new SwatMessage($msg, SwatMessage::ERROR));
 		}
