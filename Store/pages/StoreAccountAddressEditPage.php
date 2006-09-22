@@ -63,7 +63,8 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 		if ($this->id === null)
 			return new StoreAccountAddress();
 
-		$address = $this->app->session->account->addresses->getByIndex($this->id);
+		$address =
+			$this->app->session->account->addresses->getByIndex($this->id);
 
 		if ($address === null)
 			throw new SiteNotFoundException.php(
@@ -92,11 +93,11 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 			$this->validate();
 
 			if ($form->hasMessage()) {
-				$msg = new SwatMessage('There is a problem with the '.
-					'information submitted.', SwatMessage::ERROR);
+				$msg = new SwatMessage(Store::_('There is a problem with the '.
+					'information submitted.'), SwatMessage::ERROR);
 
-				$msg->secondary_content = 'Please address the fields '.
-					'highlighted below and re-submit the form.';
+				$msg->secondary_content = Store::_('Please address the '.
+					'fields highlighted below and re-submit the form.');
 
 				$this->ui->getWidget('message_display')->add($msg);
 			} else {
@@ -105,9 +106,10 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 
 				if ($this->id === null) {
 					$this->app->session->account->addresses->add($address);
-					$this->addMessage('One address has been added.', $address);
+					$this->addMessage(Store::_('One address has been added.'),
+						$address);
 				} elseif ($address->isModified()) {
-					$this->addMessage('One address has been updated.',
+					$this->addMessage(Store::_('One address has been updated.'),
 						$address);
 				}
 
@@ -182,13 +184,13 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 
 			if ($count == 0) {
 				if ($country_title === null) {
-					$message_content = 'The selected <strong>%s</strong> is '.
-						'not a province or state of the selected country.';
+					$message_content = Store::_('The selected %s is '.
+						'not a province or state of the selected country.');
 				} else {
-					$message_content = sprintf('The selected '.
-						'<strong>%%s</strong> is not a province or state of '.
-						'the selected country <strong>%s</strong>.',
-						$country_title);
+					$message_content = sprintf(Store::_('The selected '.
+						'%%s is not a province or state of the selected '.
+						'country %s%s%s.'),
+						'<strong>', $country_title, '</strong>');
 				}
 
 				$message = new SwatMessage($message_content,
@@ -230,12 +232,16 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 			$this->ui->getRoot()->getHtmlHeadEntrySet());
 
 		if ($this->id === null) {
-			$this->layout->navbar->createEntry('Add a New Address');
-			$this->layout->data->title = 'Add a New Address';
+			$this->layout->navbar->createEntry(Store::_('Add a New Address'));
+			$this->layout->data->title = Store::_('Add a New Address');
 		} else {
-			$this->layout->navbar->createEntry('Edit an Existing Address');
-			$this->ui->getWidget('submit_button')->title = 'Update Address';
-			$this->layout->data->title = 'Edit an Exisiting Address';
+			$this->layout->navbar->createEntry(
+				Store::_('Edit an Existing Address'));
+
+			$this->ui->getWidget('submit_button')->title =
+				Store::_('Update Address');
+
+			$this->layout->data->title = Store::_('Edit an Exisiting Address');
 		}
 
 		$provstate_flydown = $this->ui->getWidget('provstate');
