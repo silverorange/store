@@ -91,8 +91,8 @@ class StoreAccountResetPasswordPage extends StoreArticlePage
 				$this->app->session->account->password_tag = null;
 				$this->app->session->account->save();
 
-				$this->app->messages->add(
-					new SwatMessage('Account password has been updated.'));
+				$this->app->messages->add(new SwatMessage(
+						Store::_('Account password has been updated.')));
 
 				$this->app->relocate('account');
 			}
@@ -119,15 +119,16 @@ class StoreAccountResetPasswordPage extends StoreArticlePage
 			Store::PACKAGE_ID));
 
 		if ($this->account_id === null) {
-			$text = '<p>Please verify that the link is exactly the same as '.
-				'the one emailed to you.</p>'.
-				'<ul><li>If you requested an email more than once, only the most '.
-				'recent link will work.</li>'.
-				'<li>If you have lost the link sent in the email, you may '.
-				'<a href="account/forgotpassword">have the email sent again</a>.'.
-				'</li></ul>';
+			$text = sprintf('<p>%s</p><ul><li>%s</li><li>%s</li></ul>',
+				Store::_('Please verify that the link is exactly the same as '.
+					'the one emailed to you.'),
+				Store::_('If you requested an email more than once, only the '.
+					'most recent link will work.'),
+				sprintf(Store::_('If you have lost the link sent in the '.
+					'email, you may %shave the email sent again%s.'),
+					'<a href="account/forgotpassword">', '</a>'));
 
-			$msg = new SwatMessage('Link Incorrect',
+			$msg = new SwatMessage(Store::_('Link Incorrect'),
 				SwatMessage::WARNING);
 
 			$msg->secondary_content = $text;
