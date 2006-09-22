@@ -30,8 +30,10 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 
 	protected function initCheckoutFormUI()
 	{
-		// Call using $this instead of self:: since we want run the
-		// code in the subclass.
+		/*
+		 * Call using $this instead of self:: since we want run the
+		 * code in the subclass.
+		 */
 		$this->initCommon($this->app, $this->ui);
 		parent::initCheckoutFormUI();
 	}
@@ -55,7 +57,8 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 		$form = $this->ui->getWidget('form');
 
 		if ($form->isSubmitted()) {
-			/* Call using $this instead of self:: since we want run the
+			/*
+			 * Call using $this instead of self:: since we want run the
 			 * code in the subclass.
 			 */
 			$this->preProcessCommon($this->app, $this->ui);
@@ -64,8 +67,10 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 		$this->ui->process();
 
 		if ($form->isProcessed()) {
-			// Call using $this instead of self:: since we want run the
-			// code in the subclass.
+			/*
+			 * Call using $this instead of self:: since we want run the
+			 * code in the subclass.
+			 */
 			$this->processCommon($this->app, $this->ui);
 
 			if (!$form->hasMessage()) {
