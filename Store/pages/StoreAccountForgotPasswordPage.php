@@ -77,13 +77,14 @@ class StoreAccountForgotPasswordPage extends StoreAccountPage
 			sprintf($sql, $this->app->db->quote($email, 'text')));
 
 		if ($id === null) {
-			$msg = new SwatMessage(
-				'There is no Veseys.com account with this email address.',
+			$msg = new SwatMessage(Store::_(
+				'There is no Veseys.com account with this email address.'),
 				SwatMessage::ERROR);
 
-			$msg->secondary_content =
+			$msg->secondary_content = sprintf(Store::_(
 				'Make sure you entered it correctly, or '.
-				'<a href="account/edit">create a New Account</a>.';
+				'%screate a New Account%s.'),
+				'<a href="account/edit">', '</a>');
 
 			$msg->content_type = 'text/xml';
 			$this->ui->getWidget('email')->addMessage($msg);
