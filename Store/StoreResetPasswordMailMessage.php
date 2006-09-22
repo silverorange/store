@@ -113,36 +113,9 @@ abstract class StoreResetPasswordMailMessage extends SiteMultipartMailMessage
 	 */
 	protected function getTextBody()
 	{	
-		$body = Store::_(
-			Store::_('This email is in response to your recent request for a '.
-			'new password for your %1$s account. Your password has not yet '.
-			'been changed. Please click on the following link and follow the '.
-			'outlined steps to change your account password.')."\n\n".
-
-			"%2\$s\n\n".
-
-			Store::_('Clicking on this link will take you to a page that '.
-			'requires you to enter in and confirm a new password. Once you '.
-			'have chosen and confirmed your new password you will be taken to '.
-			'your account page.')."\n\n".
-
-			Store::_('Why did I get this email?')."\n".
-
-			Store::_('When a customer forgets their password the only way '.
-			'for us to verify their identity is to send an email to the '.
-			'address listed in their account. By clicking on the link above '.
-			'you are verifying that you requested a new password for your '.
-			'account.')."\n\n".
-
-			Store::_('I did not request a new password:')."\n".
-
-			Store::_('If you did not request a new password from %1$s then '.
-			'someone may have accidentally entered your email when '.
-			'requesting a new password. Have no fear! Your account '.
-			'information is safe. Simply ignore this email and continue '.
-			'using your existing password.');
-
-		return sprintf($body, $this->application_title, $this->password_link);
+		return $this->getFormattedBody(
+			"%s\n\n%s\n\n%s\n\n%s\n%s\n\n%s\n%s",
+			$this->password_link);
 	}
 
 	// }}}
@@ -155,30 +128,46 @@ abstract class StoreResetPasswordMailMessage extends SiteMultipartMailMessage
 	 */
 	protected function getHtmlBody()
 	{	
-		$body =
-			'<p>This email is in response to your recent request for a new '.
-			'password for your %1$s account. Your password has not yet been '.
-			'changed. Please click on the following link and follow the '.
-			'outlined steps to change your account password.</p>'.
-			'<a href="%2$s">%2$s</a></p>'.
-			'<p>Clicking on this link will take you to a page that requires '.
-			'you to enter in and confirm a new password. Once you have chosen '.
-			'and confirmed your new password you will be taken to your '.
-			'account page.</p>'.
-			'<p>Why did I get this email?<br />'.
-			'When a customer forgets their password the only way for us to '.
-			'verify their identity is to send an email to the address listed '.
-			'in their account. By clicking on the link above you are '.
-			'verifying that you requested a new password for your'.
-			'account.</p>'.
-			'<p>I did not request a new password:<br />'.
-			'If you did not request a new password from %1$s then someone '.
-			'may have accidentally entered your email when requesting a new '.
-			'password. Have no fear! Your account information is safe. '.
-			'Simply ignore this email and continue using your existing '.
-			'password.</p>';
+		return $this->getFormattedBody(
+			'<p>%s</p><p>%s</p><p>%s</p><p>%s<br />%s</p><p>%s<br />%s</p>',
+			sprintf('<a href="%1$s">%1$s</a>', $this->password_link));
+	}
 
-		return sprintf($body, $this->application_title, $this->password_link);
+	// }}}
+	// {{{ protected function getFormattedBody()
+
+	protected function getFormattedBody($format_string, $formatted_link)
+	{
+		return sprintf($format_string,
+			sprintf(Store::_('This email is in response to your recent '.
+			'request for a new password for your %s account. Your password '.
+			'has not yet been changed. Please click on the following link '.
+			'and follow the outlined steps to change your account password.'),
+				$this->application_title),
+
+			$formatted_link,
+
+			Store::_('Clicking on this link will take you to a page that '.
+			'requires you to enter in and confirm a new password. Once you '.
+			'have chosen and confirmed your new password you will be taken to '.
+			'your account page.'),
+
+			Store::_('Why did I get this email?'),
+
+			Store::_('When a customer forgets their password the only way '.
+			'for us to verify their identity is to send an email to the '.
+			'address listed in their account. By clicking on the link above '.
+			'you are verifying that you requested a new password for your '.
+			'account.'),
+
+			Store::_('I did not request a new password:'),
+
+			sprintf(Store::_('If you did not request a new password from %s '.
+			'then someone may have accidentally entered your email when '.
+			'requesting a new password. Have no fear! Your account '.
+			'information is safe. Simply ignore this email and continue '.
+			'using your existing password.'),
+				$this->application_title));
 	}
 
 	// }}}
