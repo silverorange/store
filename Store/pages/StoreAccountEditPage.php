@@ -93,12 +93,12 @@ class StoreAccountEditPage extends StoreAccountPage
 
 					$this->app->session->loginById($account->id);
 
-					$message = new SwatMessage('New account has been created.',
-						SwatMessage::NOTIFICATION);
+					$message = new SwatMessage(
+						Store::_('New account has been created.'));
 
 				} elseif ($this->app->session->account->isModified()) {
-					$message = new SwatMessage('Account details have been updated.',
-						SwatMessage::NOTIFICATION);
+					$message = new SwatMessage(
+						Store::_('Account details have been updated.'));
 
 					$this->app->messages->add($message);
 
@@ -165,14 +165,16 @@ class StoreAccountEditPage extends StoreAccountPage
 			$this->app->db->quote($account_id, 'integer')));
 
 		if (count($query) > 0) {
+			$email_link = sprintf('<a href="account/forgotpassword?email=%s">',
+				$email->value);
+
 			$message = new SwatMessage(
-				'An account already exists with this email address.',
+				Store::_('An account already exists with this email address.'),
 				SwatMessage::ERROR);
 
 			$message->secondary_content =
-				sprintf('You can <a href="account/forgotpassword?email=%s">'.
-				'request a new password</a> to log into the existing account.',
-				$email->value);
+				sprintf(Store::_('You can %srequest a new password%s to log '.
+					'into the existing account.'), $email_link, '</a>');
 
 			$message->content_type = 'text/xml';
 			$email->addMessage($message);
@@ -210,13 +212,19 @@ class StoreAccountEditPage extends StoreAccountPage
 		$form->action = $this->source;
 
 		if ($this->app->session->isLoggedIn()) {
-			$this->layout->navbar->createEntry('Edit Account Details');
-			$this->layout->data->title = 'Edit Account Details';
-			$this->ui->getWidget('submit_button')->title = 'Update Account Details';
+			$this->layout->navbar->createEntry(
+				Store::_('Edit Account Details'));
+
+			$this->layout->data->title = Store::_('Edit Account Details');
+			$this->ui->getWidget('submit_button')->title =
+				Store::_('Update Account Details');
+
 			$this->ui->getWidget('password_container')->visible = false;
 		} else {
-			$this->layout->navbar->createEntry('Create a New Account');
-			$this->layout->data->title = 'Create a New account';
+			$this->layout->navbar->createEntry(
+				Store::_('Create a New Account'));
+
+			$this->layout->data->title = Store::_('Create a New account');
 		}
 
 		if ($this->app->session->isLoggedIn() && !$form->isProcessed()) {
