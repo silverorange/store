@@ -15,7 +15,8 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	// {{{ protected properties
 
 	/**
-	 * Id of the account payment method this order payment method was created from
+	 * Id of the account payment method this order payment method was created
+	 * from
 	 *
 	 * @var integer
 	 */
