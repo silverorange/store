@@ -79,7 +79,7 @@ class StoreTotalRow extends SwatTableViewRow
 			$this->money_cell_renderer->value = $this->value;
 			$this->money_cell_renderer->render();
 		} else {
-			echo 'FREE';
+			echo Store::_('FREE');
 		}
 
 		$td_tag->close();
