@@ -17,21 +17,22 @@ class StoreAccountResetPasswordThankyouPage extends StoreArticlePage
 	{
 		parent::build();
 
-
 		$this->layout->startCapture('content');
 
-		echo '<div class="notification">';
-		echo '<h4>Your Password has been Reset</h4>';
-		echo '<p>Your password has been reset and you are now logged-in.</p>';
-		echo '<ul class="redirect-links">';
+		echo '<div class="notification">',
+			'<h4>', Store::_('Your Password has been Reset'), '</h4>',
+			'<p>', Store::_('Your password has been reset and you are now '.
+			'logged-in.'), '</p>',
+			'<ul class="redirect-links">';
 
-		if ($this->app->cart->checkout->getEntryCount() != 0)
-			echo '<li><a href="checkout">Proceed to Checkout</a></li>';
+		if (count($this->app->cart->checkout->getAvailableEntries()) > 0)
+			echo '<li><a href="checkout">', Store::_('Proceed to Checkout'),
+				'</a></li>';
 
-		echo '<li><a href="account">View your Account</a></li>';
-
-		echo '</ul>';
-		echo '</div>';
+		echo '<li><a href="account">', Store::_('View your Account'),
+			'</a></li>',
+			'</ul>',
+			'</div>';
 
 		$this->layout->endCapture();
 	}
