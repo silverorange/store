@@ -80,15 +80,14 @@ class StorePaymentMethodView extends SwatControl
 
 		$edit_link = new SwatToolLink();
 		$edit_link->link = sprintf($this->edit_link, $this->payment_method->id);
-		$edit_link->title = 'Edit Payment Method';
+		$edit_link->title = Store::_('Edit Payment Method');
 		$edit_link->setFromStock('edit');
 
-		$this->remove_button->title = 'Remove';
+		$this->remove_button->title = Store::_('Remove');
 		$this->remove_button->classes[] = 'store-remove';
-		$this->remove_button->confirmation_message = sprintf(
-			"Are you sure you want to remove the following payment ".
-			"method?\n\n%s",
-			$payment_method_text);
+		$this->remove_button->confirmation_message = sprintf("%s\n\n%s",
+			Store::_('Are you sure you want to remove the following payment '.
+				'method?'), $payment_method_text);
 
 		$div->open();
 		$this->payment_method->display();
