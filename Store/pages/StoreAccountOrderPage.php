@@ -60,7 +60,7 @@ class StoreAccountOrderPage extends StoreAccountPage
 		$add_item_renderer = new SwatWidgetCellRenderer();
 		$add_item_renderer->id = 'add_item_renderer';
 		$add_item_button = new SwatButton('add_item_button');
-		$add_item_button->title = 'Add to Cart';
+		$add_item_button->title = Store::_('Add to Cart');
 		$add_item_button->classes[] = 'cart-move';
 		$add_item_button->classes[] = 'compact-button';
 		$add_item_renderer->setPrototypeWidget($add_item_button);
