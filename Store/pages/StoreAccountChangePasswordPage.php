@@ -63,8 +63,9 @@ class StoreAccountChangePasswordPage extends StoreAccountPage
 				$this->app->session->account->password = md5($password);
 				$this->app->session->account->save();
 
-				$message = new SwatMessage('Account password has been updated.',
-					SwatMessage::NOTIFICATION);
+				$message = new SwatMessage(Store::_(
+					'Account password has been updated.'));
+
 				$this->app->messages->add($message);
 
 				$this->app->relocate('account');
@@ -81,7 +82,7 @@ class StoreAccountChangePasswordPage extends StoreAccountPage
 		$value = md5($old_password->value);
 
 		if ($value != $this->app->session->account->password) {
-			$message = new SwatMessage('Your password is incorrect.',
+			$message = new SwatMessage(Store::_('Your password is incorrect.'),
 				SwatMessage::ERROR);
 
 			$message->content_type = 'text/xml';
@@ -99,8 +100,8 @@ class StoreAccountChangePasswordPage extends StoreAccountPage
 	{
 		parent::build();
 
-		$this->layout->navbar->createEntry('New Password');
-		$this->layout->data->title = 'Choose a New Password';
+		$this->layout->navbar->createEntry(Store::_('New Password'));
+		$this->layout->data->title = Store::_('Choose a New Password');
 
 		$form = $this->ui->getWidget('edit_form');
 		$form->action = $this->source;
