@@ -128,7 +128,7 @@ class StoreAccountResetPasswordPage extends StoreArticlePage
 				'</li></ul>';
 
 			$msg = new SwatMessage('Link Incorrect',
-				SwatMessage::ERROR);
+				SwatMessage::WARNING);
 
 			$msg->secondary_content = $text;
 			$msg->content_type = 'text/xml';
