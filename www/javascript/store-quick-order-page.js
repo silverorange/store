@@ -5,6 +5,7 @@
  * @package   Store
  * @copyright 2006 silverorange
  */
+
 function StoreQuickOrder(id, item_selector_id, num_rows)
 {
 	this.id = id;
