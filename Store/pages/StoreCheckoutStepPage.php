@@ -12,15 +12,14 @@ abstract class StoreCheckoutStepPage extends StoreCheckoutPage
 {
 	// {{{ private properties
 
-	private $embedded_edit_page_classes = array();
 	private $embedded_edit_pages = array();
 
 	// }}}
 	// {{{ public function registerEmbeddedEditPage()
 
-	public function registerEmbeddedEditPage($class)
+	public function registerEmbeddedEditPage($page)
 	{
-		$this->embedded_edit_page_classes[] = $class;
+		$this->embedded_edit_pages[] = $page;
 	}
 
 	// }}}
@@ -30,14 +29,10 @@ abstract class StoreCheckoutStepPage extends StoreCheckoutPage
 
 	protected function initCheckoutFormUI()
 	{
-		foreach ($this->embedded_edit_page_classes as $class) {
-			$page = new $class($this->app, $this->layout);
+		foreach ($this->embedded_edit_pages as $page) {
 			$page->setUI($this->ui);
-			$this->embedded_edit_pages[] = $page;
-		}
-
-		foreach ($this->embedded_edit_pages as $page)
 			$page->initCommon();
+		}
 
 		parent::initCheckoutFormUI();
 	}

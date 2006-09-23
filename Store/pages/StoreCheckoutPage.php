@@ -11,7 +11,6 @@ require_once 'Store/StoreUI.php';
  */
 abstract class StoreCheckoutPage extends StoreArticlePage
 {
-	// init phase
 	// {{{ protected properties
 
 	protected $ui = null;

@@ -10,11 +10,24 @@ require_once 'Store/pages/StoreCheckoutPage.php';
  */
 abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 {
+	// {{{ protected properties
+
+	protected $ui_xml = null;
+
+	// }}}
 	// {{{ public function setUI()
 
 	public function setUI($ui = null)
 	{
 		$this->ui = $ui;
+	}
+
+	// }}}
+	// {{{ public function getXml()
+
+	public function getXml()
+	{
+		return $this->ui_xml;
 	}
 
 	// }}}
