@@ -13,6 +13,7 @@ abstract class StoreCheckoutStepPage extends StoreCheckoutPage
 	// {{{ private properties
 
 	private $embedded_edit_page_classes = array();
+	private $embedded_edit_pages = array();
 
 	// }}}
 	// {{{ public function registerEmbeddedEditPage()
@@ -29,8 +30,14 @@ abstract class StoreCheckoutStepPage extends StoreCheckoutPage
 
 	protected function initCheckoutFormUI()
 	{
-		foreach ($this->embedded_edit_page_classes as $class)
-			call_user_func(array($class, 'initCommon'),	$this->app, $this->ui);
+		foreach ($this->embedded_edit_page_classes as $class) {
+			$page = new $class($this->app, $this->layout);
+			$page->setUI($this->ui);
+			$this->embedded_edit_pages[] = $page;
+		}
+
+		foreach ($this->embedded_edit_pages as $page)
+			$page->initCommon();
 
 		parent::initCheckoutFormUI();
 	}
@@ -46,19 +53,15 @@ abstract class StoreCheckoutStepPage extends StoreCheckoutPage
 
 		$form = $this->ui->getWidget('form');
 
-		if ($form->isSubmitted()) {
-			foreach ($this->embedded_edit_page_classes as $class)
-				call_user_func(array($class, 'preProcessCommon'),
-					$this->app, $this->ui);
-		}
+		if ($form->isSubmitted())
+			foreach ($this->embedded_edit_pages as $page)
+				$page->preProcessCommon();
 
 		$this->ui->process();
 
-		if ($form->isProcessed()) {
-			foreach ($this->embedded_edit_page_classes as $class)
-				call_user_func(array($class, 'processCommon'),
-					$this->app, $this->ui);
-		}
+		if ($form->isProcessed())
+			foreach ($this->embedded_edit_pages as $page)
+				$page->processCommon();
 	}
 
 	// }}}
@@ -78,9 +81,8 @@ abstract class StoreCheckoutStepPage extends StoreCheckoutPage
 
 	protected function buildCommon()
 	{
-		foreach ($this->embedded_edit_page_classes as $class)
-			call_user_func(array($class, 'buildCommon'),
-				$this->app, $this->ui);
+		foreach ($this->embedded_edit_pages as $page)
+			$page->buildCommon();
 	}
 
 	// }}}
@@ -88,9 +90,8 @@ abstract class StoreCheckoutStepPage extends StoreCheckoutPage
 
 	protected function postBuildCommon()
 	{
-		foreach ($this->embedded_edit_page_classes as $class)
-			call_user_func(array($class, 'postBuildCommon'),
-				$this->app, $this->ui);
+		foreach ($this->embedded_edit_pages as $page)
+			$page->postBuildCommon();
 	}
 
 	// }}}

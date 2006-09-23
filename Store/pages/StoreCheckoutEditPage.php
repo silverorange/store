@@ -10,11 +10,19 @@ require_once 'Store/pages/StoreCheckoutPage.php';
  */
 abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 {
-	// {{{ protected static function getOptionalValue()
+	// {{{ public function setUI()
 
-	protected static function getOptionalStringValue($ui, $id)
+	public function setUI($ui = null)
 	{
-		$widget = $ui->getWidget($id);
+		$this->ui = $ui;
+	}
+
+	// }}}
+	// {{{ protected function getOptionalStringValue()
+
+	protected function getOptionalStringValue($id)
+	{
+		$widget = $this->ui->getWidget($id);
 		$value = trim($widget->value);
 
 		if (strlen($value) === 0)
@@ -30,18 +38,14 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 
 	protected function initCheckoutFormUI()
 	{
-		/*
-		 * Call using $this instead of self:: since we want run the
-		 * code in the subclass.
-		 */
-		$this->initCommon($this->app, $this->ui);
+		$this->initCommon();
 		parent::initCheckoutFormUI();
 	}
 
 	// }}}
-	// {{{ public static function initCommon()
+	// {{{ public function initCommon()
 
-	public static function initCommon($app, $ui)
+	public function initCommon()
 	{
 	}
 
@@ -56,22 +60,13 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 
 		$form = $this->ui->getWidget('form');
 
-		if ($form->isSubmitted()) {
-			/*
-			 * Call using $this instead of self:: since we want run the
-			 * code in the subclass.
-			 */
-			$this->preProcessCommon($this->app, $this->ui);
-		}
+		if ($form->isSubmitted())
+			$this->preProcessCommon();
 
 		$this->ui->process();
 
 		if ($form->isProcessed()) {
-			/*
-			 * Call using $this instead of self:: since we want run the
-			 * code in the subclass.
-			 */
-			$this->processCommon($this->app, $this->ui);
+			$this->processCommon();
 
 			if (!$form->hasMessage()) {
 				$this->updateProgress();
@@ -81,16 +76,16 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 	}
 
 	// }}}
-	// {{{ public static function preProcessCommon()
+	// {{{ public function preProcessCommon()
 
-	public static function preProcessCommon($app, $ui)
+	public function preProcessCommon()
 	{
 	}
 
 	// }}}
-	// {{{ public static function processCommon()
+	// {{{ public function processCommon()
 
-	public static function processCommon($app, $ui)
+	public function processCommon()
 	{
 	}
 
@@ -101,28 +96,22 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 
 	public function build()
 	{
-		// Call using $this instead of self:: since we want run the
-		// code in the subclass.
-		$this->buildCommon($this->app, $this->ui);
-
+		$this->buildCommon();
 		parent::build();
-
-		// Call using $this instead of self:: since we want run the
-		// code in the subclass.
-		$this->postBuildCommon($this->app, $this->ui);
+		$this->postBuildCommon();
 	}
 
 	// }}}
-	// {{{ public static function buildCommon()
+	// {{{ public function buildCommon()
 
-	public static function buildCommon($app, $ui)
+	public function buildCommon()
 	{
 	}
 
 	// }}}
-	// {{{ public static function postBuildCommon()
+	// {{{ public function postBuildCommon()
 
-	public static function postBuildCommon($app, $ui)
+	public function postBuildCommon()
 	{
 	}
 
