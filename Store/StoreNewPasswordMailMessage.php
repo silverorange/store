@@ -5,7 +5,7 @@ require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/exceptions/StoreException.php';
 
 /**
- * Email that is sent to account holders when they are given a new password
+ * Email that is sent to account holders when they are given new passwords
  *
  * To send a new password message:
  * <code>
