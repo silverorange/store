@@ -77,7 +77,7 @@ require_once 'Store/dataobjects/StoreAccountWrapper.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreAccountWrapper
  */
-class StoreAccount extends StoreDataObject
+abstract class StoreAccount extends StoreDataObject
 {
 	// {{{ public properties
 
@@ -218,100 +218,106 @@ class StoreAccount extends StoreDataObject
 	/**
 	 * Resets this account's password
 	 *
+	 * Creates a unique tag and emails this account's holder a tagged URL to
+	 * update his or her password.
+	 *
 	 * @param SiteApplication $app the application resetting this account's
 	 *                              password.
-	 *
-	 * This method in turn calls the static
-	 * {@link StoreAccount::generatePassword()} method on this account.
-	 */
-	public function resetPassword(SiteApplication $app)
-	{
-		self::generatePassword($app, $this->id);
-	}
-
-	// }}}
-	// {{{ public static function generatePassword()
-
-	/**
-	 * Creates a unique tag and emails the account holder a tagged URL to
-	 * update their password
-	 *
-	 * @param SiteApplication $app the application sending mail.
-	 * @param integer $id the account id of the account we are updating.
 	 * @param string $base_href the base of the tagged URL the account holder
 	 *                           is sent.
-	 *
-	 * @see StoreAccount::generateNewPassword()
 	 */
-	public static function generatePassword(SiteApplication $app, $id,
-		$base_href = '')
+	public function resetPassword(SiteApplication $app, $base_href = '')
 	{
+		$this->checkDB();
+
 		$password_tag = SwatString::hash(uniqid(rand(), true));
 		$password_link = $base_href.'account/resetpassword/'.$password_tag;
 
-		// update the database with new password tag
-		$sql = sprintf('update Account set password_tag = %s where id = %s',
-			$app->db->quote($password_tag, 'text'),
-			$app->db->quote($id, 'integer'));
+		/*
+		 * Update the database with new password tag.
+		 *
+		 * Don't use the regular dataobject saving here in case other fields
+		 * have changed.
+		 */
+		$id_field = new SwatDBField($this->id_field, 'integer');
+		$sql = sprintf('update %s set password_tag = %s where %s = %s',
+			$this->table,
+			$this->db->quote($password_tag, 'text'),
+			$id_field->name,
+			$this->db->quote($this->{$id_field->name}, $id_field->type));
 
-		SwatDB::exec($app->db, $sql);
+		SwatDB::exec($this->db, $sql);
 
-		$class_mapper = StoreClassMap::instance();
-
-		$account_sql = sprintf('select email, fullname from Account
-			where id = %s',
-			$app->db->quote($id, 'integer'));
-
-		$account = SwatDB::query($app->db, $account_sql,
-			$class_mapper->resolveClass('StoreAccountWrapper'))->getFirst();
-
-		$class = $class_mapper->resolveClass('StoreResetPasswordMailMessage');
-
-		// email the new password tag to the user
-		$email = new $class($app, $account, $password_link);
-		$email->send();
+		// email instructions to the account holder 
+		$this->sendResetPasswordMailMessage($app, $password_link);
 	}
 
 	// }}}
 	// {{{ public static function generateNewPassword()
 
 	/**
-	 * Generates a new password for an acocunt, saves it, and emails it to
-	 * the account holder
+	 * Generates a new password for this account, saves it, and emails it to
+	 * this account's holder
 	 *
-	 * @param SiteApplication $app the application sending mail.
-	 * @param integer id of the account to update.
+	 * @param SiteApplication $app the application generating the new password.
 	 *
-	 * @see StoreAccount::generatePassword()
+	 * @see StoreAccount::resetPassword()
 	 */
-	public static function generateNewPassword(SiteApplication $app, $id)
+	public function generateNewPassword(SiteApplication $app)
 	{
 		require_once 'Text/Password.php';
 
 		$new_password = Text_Password::Create();
 
-		// update database with new password
-		$sql = sprintf('update Account set password = %s where id = %s',
+		/*
+		 * Update the database with new password.
+		 *
+		 * Don't use the regular dataobject saving here in case other fields
+		 * have changed.
+		 */
+		$id_field = new SwatDBField($this->id_field, 'integer');
+		$sql = sprintf('update %s set password = %s where %s = %s',
+			$this->table,
 			$app->db->quote(md5($new_password), 'text'),
-			$app->db->quote($id, 'integer'));
+			$id_field->name,
+			$this->db->quote($this->{$id_field->name}, $id_field->type));
 
 		SwatDB::exec($app->db, $sql);
 
-		$class_mapper = StoreClassMap::instance();
-
-		$account_sql = sprintf('select email, fullname from Account
-			where id = %s',
-			$app->db->quote($id, 'integer'));
-
-		$account = SwatDB::query($app->db, $account_sql,
-			$class_mapper->resolveClass('StoreAccountWrapper'))->getFirst();
-
-		$class = $class_mapper->resolveClass('StoreNewPasswordMailMessage');
-
 		// email the new password to the account holder 
-		$email = new $class($app, $account, $new_password);
-		$email->send();
+		$this->sendNewPasswordMailMessage($app, $new_password);
 	}
+
+	// }}}
+	// {{{ abstract protected function sendResetPasswordMailMessage()
+
+	/**
+	 * Emails this account's holder with instructions on how to finish
+	 * resetting his or her password
+	 *
+	 * @param SiteApplication $app the application sending mail.
+	 * @param string $password_link a URL indicating the page at which the
+	 *                               account holder may complete the reset-
+	 *                               password process.
+	 *
+	 * @see StoreAccount::resetPassword()
+	 */
+	abstract protected function sendResetPasswordMailMessage(
+		SiteApplication $app, $password_link);
+
+	// }}}
+	// {{{ abstract protected function sendNewPasswordMailMessage()
+
+	/**
+	 * Emails this account's holder with his or her new generated password
+	 *
+	 * @param SiteApplication $app the application sending mail.
+	 * @param string $new_password this account's new password.
+	 *
+	 * @see StoreAccount::generateNewPassword()
+	 */
+	abstract protected function sendNewPasswordMailMessage(
+		SiteApplication $app, $new_password);
 
 	// }}}
 

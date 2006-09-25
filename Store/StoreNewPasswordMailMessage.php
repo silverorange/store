@@ -7,15 +7,12 @@ require_once 'Store/exceptions/StoreException.php';
 /**
  * Email that is sent to account holders when they are given a new password
  *
- * Sites must subclass this class and set site-specific properties. See the
- * {@link StoreNewPasswordMailMessage::init()} method for details.
- *
  * @package   Store
  * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreAccount
  */
-abstract class StoreNewPasswordMailMessage extends SiteMultipartMailMessage
+class StoreNewPasswordMailMessage extends SiteMultipartMailMessage
 {
 	// {{{ protected properties
 
@@ -52,53 +49,39 @@ abstract class StoreNewPasswordMailMessage extends SiteMultipartMailMessage
 	 * @param string $new_password the new password assigned to the account.
 	 */
 	public function __construct(SiteApplication $app, StoreAccount $account,
-		$new_password)
+		$new_password, $application_title)
 	{
 		parent::__construct($app);
 
 		$this->new_password = $new_password;
 		$this->account = $account;
-
-		$this->init();
-
-		$required_properties = array(
-			'application_title',
-			'smtp_server',
-			'from_address',
-			'from_name',
-			'subject',
-		);
-
-		foreach ($required_properties as $property) {
-			if (!isset($this->$property))
-				throw new StoreException(sprintf(
-					'%s property must be set in init() method',
-					$property));
-		}
+		$this->application_title = $application_title;
 	}
 
 	// }}}
-	// {{{ protected function init()
+	// {{{ public function send()
 
 	/**
-	 * Initializes properties of this mail message
-	 *
-	 * Subclasses must extends this method to set site-specific properties
-	 * on this mail message.
-	 *
-	 * Site-specific properties that must be set are:
-	 * - {@link StoreNewPasswordMailMessage::$application_title},
-	 * - {@link SiteMultipartMailMessage::$smtp_server},
-	 * - {@link SiteMultipartMailMessage::$from_address},
-	 * - {@link SiteMultipartMailMessage::$from_name} and
-	 * - {@link SiteMultipartMailMessage::$subject}
+	 * Sends this mail message
 	 */
-	protected function init()
+	public function send()
 	{
+		if ($this->account->email === null)
+			throw new StoreException('Account requires an email address to '.
+				'generate new password. Make sure email is loaded on the '.
+				'account object.');
+
+		if ($this->account->fullname === null)
+			throw new StoreException('Account requires a fullname to '.
+				'generate new password. Make sure fullname is loaded on the '.
+				'account object.');
+
 		$this->to_address = $this->account->email;
 		$this->to_name = $this->account->fullname;
 		$this->text_body = $this->getTextBody();
 		$this->html_body = $this->getHtmlBody();
+
+		parent::send();
 	}
 
 	// }}}

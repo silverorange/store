@@ -69,14 +69,17 @@ class StoreAccountForgotPasswordPage extends StoreAccountPage
 
 	private function generatePassword()
 	{
+		$class_mapper = StoreClassMap::instance();
 		$email = $this->ui->getWidget('email')->value;
 
-		$sql = 'select id from Account where lower(email) = lower(%s)';
+		$account_sql = sprintf('select id, email, fullname from Account
+			where lower(email) = lower(%s)',
+			$this->app->db->quote($email, 'text'));
 
-		$id = SwatDB::queryOne($this->app->db,
-			sprintf($sql, $this->app->db->quote($email, 'text')));
+		$account = SwatDB::query($this->app->db, $account_sql,
+			$class_mapper->resolveClass('StoreAccountWrapper'))->getFirst();
 
-		if ($id === null) {
+		if ($account === null) {
 			$msg = new SwatMessage(Store::_(
 				'There is no Veseys.com account with this email address.'),
 				SwatMessage::ERROR);
@@ -89,8 +92,7 @@ class StoreAccountForgotPasswordPage extends StoreAccountPage
 			$msg->content_type = 'text/xml';
 			$this->ui->getWidget('email')->addMessage($msg);
 		} else {
-			StoreAccount::generatePassword($this->app, $id,
-				$this->app->getBaseHref());
+			$account->resetPassword($this->app, $this->app->getBaseHref());
 		}
 	}
 
