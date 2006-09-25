@@ -28,6 +28,7 @@ class StoreFroogleFeedEntry extends AtomFeedEntry
 	public $delivery_notes = null;
 	public $delivery_radius = null;
 	public $format = null;
+	public $image_link = null;
 	public $isbn = null;
 	public $manufacturer = null;
 	public $manufacturer_id = null;
@@ -119,8 +120,9 @@ class StoreFroogleFeedEntry extends AtomFeedEntry
 			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
 				'isbn', $this->isbn, $this->name_space));
 
-		if ($this->link !== null)
-			$entry->appendChild($this->link->getNode($document));
+		if ($this->image_link !== null)
+			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
+				'image_link', $this->image_link, $this->name_space));
 
 		if ($this->manufacturer !== null)
 			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
