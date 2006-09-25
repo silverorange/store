@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Store/pages/StoreArticlePage.php';
-require_once 'Store/StoreUI.php';
 
 /**
  * Base class for checkout pages
@@ -11,12 +10,6 @@ require_once 'Store/StoreUI.php';
  */
 abstract class StoreCheckoutPage extends StoreArticlePage
 {
-	// {{{ protected properties
-
-	protected $ui = null;
-
-	// }}}
-
 	// init phase
 	// {{{ public function init()
 
@@ -43,25 +36,6 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 		foreach ($this->getProgressDependencies() as $dependency)
 			if (!in_array($dependency, $this->app->session->checkout_progress))
 				$this->app->relocate($dependency);
-	}
-
-	// }}}
-	// {{{ protected function loadCheckoutFormUI()
-
-	protected function loadCheckoutFormUI()
-	{
-		$this->ui = new StoreUI();
-		$this->ui->loadFromXML('Store/pages/checkout.xml');
-	}
-
-	// }}}
-	// {{{ protected function initCheckoutFormUI()
-
-	protected function initCheckoutFormUI()
-	{
-		$form = $this->ui->getWidget('form');
-		$form->action = $this->source;
-		$this->ui->init();
 	}
 
 	// }}}
@@ -130,33 +104,6 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 	{
 		$this->app->session->checkout_progress = array();
 		$this->app->session->checkout_with_account = false;
-	}
-
-	// }}}
-
-	// build phase
-	// {{{ public function build()
-
-	public function build()
-	{
-		parent::build();
-		$this->buildInternal();
-
-		if ($this->ui !== null) {
-			$this->layout->addHtmlHeadEntrySet(
-				$this->ui->getRoot()->getHtmlHeadEntrySet());
-
-			$this->layout->startCapture('content');
-			$this->ui->display();
-			$this->layout->endCapture();
-		}
-	}
-
-	// }}}
-	// {{{ protected function buildInternal()
-
-	protected function buildInternal()
-	{
 	}
 
 	// }}}

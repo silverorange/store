@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/pages/StoreCheckoutPage.php';
+require_once 'Store/pages/StoreCheckoutUIPage.php';
 
 /**
  * Base class for edit pages in the checkout
@@ -8,29 +8,8 @@ require_once 'Store/pages/StoreCheckoutPage.php';
  * @package   Store
  * @copyright 2006 silverorange
  */
-abstract class StoreCheckoutEditPage extends StoreCheckoutPage
+abstract class StoreCheckoutEditPage extends StoreCheckoutUIPage
 {
-	// {{{ protected properties
-
-	protected $ui_xml = null;
-
-	// }}}
-	// {{{ public function setUI()
-
-	public function setUI($ui = null)
-	{
-		$this->ui = $ui;
-	}
-
-	// }}}
-	// {{{ public function getXml()
-
-	public function getXml()
-	{
-		return $this->ui_xml;
-	}
-
-	// }}}
 	// {{{ protected function getOptionalStringValue()
 
 	protected function getOptionalStringValue($id)
@@ -47,12 +26,12 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 	// }}}
 
 	// init phase
-	// {{{ protected function initCheckoutFormUI()
+	// {{{ protected function initInternal()
 
-	protected function initCheckoutFormUI()
+	protected function initInternal()
 	{
+		parent::initInternal();
 		$this->initCommon();
-		parent::initCheckoutFormUI();
 	}
 
 	// }}}
