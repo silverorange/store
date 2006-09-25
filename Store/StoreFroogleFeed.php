@@ -28,12 +28,36 @@ class StoreFroogleFeed extends AtomFeed
 	/**
 	 * Get text node
 	 */
-	public static function getTextNode($document, $name, $value)
+	public static function getTextNode($document, $name, $value, $name_space = null)
 	{
 		// value must be text-only
 		$value = strip_tags($value);
 
-		return parent::getTextNode($document, $name, $value);
+		return parent::getTextNode($document, $name, $value, $name_space);
+	}
+
+	// }}}
+	// {{{ public static function getDateNode()
+
+	/**
+	 * Get date node
+	 */
+	public static function getDateNode($document, $name, $date, $name_space = null)
+	{
+		if ($name == 'expiration_date') {
+			if ($name_space !== null)
+				$name = $name_space.':'.$name;
+
+			if ($date === null || !$date instanceof Date)
+				throw new PEAR_Exception(sprintf('%s is not a Date', $name));
+
+			return self::getTextNode($document, 
+				$name,
+				$date->format('%Y-%m-%d'));
+		} else {
+			return parent::getDateNode($document, $name, $date, $name_space);
+		}
+
 	}
 
 	// }}}
