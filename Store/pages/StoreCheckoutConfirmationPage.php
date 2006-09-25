@@ -2,7 +2,7 @@
 
 require_once 'Swat/SwatDate.php';
 require_once 'SwatDB/SwatDBTransaction.php';
-require_once 'Store/pages/StoreCheckoutPage.php';
+require_once 'Store/pages/StoreCheckoutUIPage.php';
 require_once 'Store/dataobjects/StoreOrderItemWrapper.php';
 require_once 'Store/dataobjects/StoreCartEntry.php';
 
@@ -12,7 +12,7 @@ require_once 'Store/dataobjects/StoreCartEntry.php';
  * @package   Store
  * @copyright 2006 silverorange
  */
-class StoreCheckoutConfirmationPage extends StoreCheckoutPage
+class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 {
 	// init phase
 	// {{{ public function init()

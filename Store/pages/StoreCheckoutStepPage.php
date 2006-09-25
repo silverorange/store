@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/pages/StoreCheckoutPage.php';
+require_once 'Store/pages/StoreCheckoutUIPage.php';
 
 /**
  * Base class for a step page of checkout
@@ -8,7 +8,7 @@ require_once 'Store/pages/StoreCheckoutPage.php';
  * @package   Store
  * @copyright 2006 silverorange
  */
-abstract class StoreCheckoutStepPage extends StoreCheckoutPage
+abstract class StoreCheckoutStepPage extends StoreCheckoutUIPage
 {
 	// {{{ private properties
 
@@ -23,18 +23,27 @@ abstract class StoreCheckoutStepPage extends StoreCheckoutPage
 	}
 
 	// }}}
+	// {{{ public function getEmbeddedEditPages()
+
+	public function getEmbeddedEditPages()
+	{
+		return $this->embedded_edit_pages;
+	}
+
+	// }}}
 
 	// init phase
-	// {{{ protected function initCheckoutFormUI()
+	// {{{ protected function initInternal()
 
-	protected function initCheckoutFormUI()
+	protected function initInternal()
 	{
-		foreach ($this->embedded_edit_pages as $page) {
-			$page->setUI($this->ui);
-			$page->initCommon();
-		}
+		parent::initInternal();
 
-		parent::initCheckoutFormUI();
+		foreach ($this->embedded_edit_pages as $page)
+			$page->setUI($this->ui);
+
+		foreach ($this->embedded_edit_pages as $page)
+			$page->initCommon();
 	}
 
 	// }}}
