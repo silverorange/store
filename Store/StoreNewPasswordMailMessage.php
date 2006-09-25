@@ -7,6 +7,20 @@ require_once 'Store/exceptions/StoreException.php';
 /**
  * Email that is sent to account holders when they are given a new password
  *
+ * To send a new password message:
+ * <code>
+ * $new_password = 'mysecret';
+ * $email = new StoreNewPasswordMailMessage($app, $account, $new_password,
+ *     'My Application Title');
+ *
+ * $email->smtp_server = 'example.com';
+ * $email->from_address = 'service@example.com';
+ * $email->from_name = 'Customer Service';
+ * $email->subject = 'Your New Password';
+ *
+ * $email->send();
+ * </code>
+ *
  * @package   Store
  * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1

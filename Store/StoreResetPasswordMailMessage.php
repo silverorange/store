@@ -5,7 +5,21 @@ require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/exceptions/StoreException.php';
 
 /**
- * Email that is sent to account holders when they request a new password
+ * Email that is sent to account holders when they request new passwords
+ *
+ * To send a password reset message:
+ * <code>
+ * $password_link = '/account/resetpassword'
+ * $email = new StoreResetPasswordMailMessage($app, $account, $password_link,
+ *     'My Application Title');
+ *
+ * $email->smtp_server = 'example.com';
+ * $email->from_address = 'service@example.com';
+ * $email->from_name = 'Customer Service';
+ * $email->subject = 'Reset Your Password';
+ *
+ * $email->send();
+ * </code>
  *
  * @package   Store
  * @copyright 2006 silverorange
