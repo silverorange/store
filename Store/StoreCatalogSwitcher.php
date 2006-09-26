@@ -17,6 +17,7 @@ require_once 'StoreCatalogSelector.php';
 class StoreCatalogSwitcher extends SwatControl
 {
 	public $db;
+	public $title;
 
 	private $catalog_selector;
 	private $switch_button;
@@ -32,6 +33,7 @@ class StoreCatalogSwitcher extends SwatControl
 	{
 		parent::__construct($id);
 
+		$this->title = Store::_('Catalog');
 		$this->addStyleSheet('styles/catalog-switcher.css');
 	}
 
@@ -106,7 +108,7 @@ class StoreCatalogSwitcher extends SwatControl
 
 		$label_tag = new SwatHtmlTag('label');
 		$label_tag->for = $this->id.'_selector';
-		$label_tag->setContent(Store::_('Catalogue:'));
+		$label_tag->setContent(sprintf('%s:', $this->title));
 		$label_tag->display();
 		
 		echo '&nbsp;';
