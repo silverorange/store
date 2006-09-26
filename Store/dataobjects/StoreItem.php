@@ -3,6 +3,7 @@
 require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreQuantityDiscountWrapper.php';
 require_once 'Store/dataobjects/StoreItemRegionBindingWrapper.php';
+require_once 'Store/dataobjects/StoreItemGroup.php';
 
 /**
  * An item for an e-commerce web application
@@ -173,6 +174,9 @@ abstract class StoreItem extends StoreDataObject
 
 		$this->registerInternalProperty('product',
 			$this->class_map->resolveClass('StoreProduct'));
+
+		$this->registerInternalProperty('item_group',
+			$this->class_map->resolveClass('StoreItemGroup'));
 
 		$this->table = 'Item';
 		$this->id_field = 'integer:id';
