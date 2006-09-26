@@ -12,8 +12,6 @@ require_once 'Swat/SwatHtmlTag.php';
 /**
  * An admin menu view that has an item search box at the top
  *
- * TODO: remove SKU terminology in favour of 'item'
- *
  * @package   Store
  * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
@@ -30,7 +28,7 @@ class StoreAdminMenuView extends AdminMenuView
 	/**
 	 * @var SwatEntry
 	 */
-	protected $sku_entry;
+	protected $item_entry;
 
 	// }}}
 	// {{{ public function __construct()
@@ -46,16 +44,16 @@ class StoreAdminMenuView extends AdminMenuView
 
 		$this->store = $store;
 
-		$entry = new SwatEntry('quick_search_sku');
+		$entry = new SwatEntry('quick_search_item');
 		$entry->size = 5;
-		$this->sku_entry = $entry;
+		$this->item_entry = $entry;
 
 		$button = new SwatButton();
 		$button->stock_id = 'submit';
 		$button->title = 'Go';
 
 		$field = new SwatFormField();
-		$field->title = 'SKU';
+		$field->title = 'Item #';
 		$field->add($entry);
 		$field->add($button);
 
@@ -65,8 +63,8 @@ class StoreAdminMenuView extends AdminMenuView
 
 		$this->form = $form;
 
-		$this->html_head_entry_set->addEntry(
-			new SwatStyleSheetHtmlHeadEntry('styles/quick-sku-search.css'));
+		$this->html_head_entry_set->addEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/styles/quick-search.css'));
 	}
 
 	// }}}
@@ -83,16 +81,16 @@ class StoreAdminMenuView extends AdminMenuView
 	}
 
 	// }}}
-	// {{{ public function getSkuEntry()
+	// {{{ public function getItemEntry()
 
 	/**
 	 * Gets the item search box of this menu
 	 *
 	 * @return SwatEntry
 	 */
-	public function getSkuEntry()
+	public function getItemEntry()
 	{
-		return $this->sku_entry;
+		return $this->item_entry;
 	}
 
 	// }}}
