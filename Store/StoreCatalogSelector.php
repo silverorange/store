@@ -6,10 +6,10 @@ require_once 'SwatDB/SwatDB.php';
 /**
  * A widget to allow selecting a catalog
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2005-2006 silverorange
  */
-class CatalogSelector extends SwatFlydown
+class StoreCatalogSelector extends SwatFlydown
 {
 	// {{{ constants
 
@@ -107,10 +107,11 @@ class CatalogSelector extends SwatFlydown
 		$options = array();
 		
 		$options[] = new SwatOption(
-			self::constructValue(self::ALL_CATALOGS), 'All');
+			self::constructValue(self::ALL_CATALOGS), Store::_('All'));
 
 		$options[] = new SwatOption(
-			self::constructValue(self::ALL_ENABLED_CATALOGS), 'All Enabled');
+			self::constructValue(self::ALL_ENABLED_CATALOGS), 
+				Store::_('All Enabled'));
 
 		$regions = SwatDB::getOptionArray($this->db, 'Region', 'title', 'id', 
 			'title');
@@ -118,7 +119,7 @@ class CatalogSelector extends SwatFlydown
 		foreach ($regions as $id => $title)
 			$options[] = new SwatOption(
 				self::constructValue(self::ALL_ENABLED_CATALOGS_IN_REGION, null, $id),
-				sprintf('All Enabled in %s', $title));
+				sprintf(Store::_('All Enabled in %s'), $title));
 
 		$options[] = new SwatFlydownDivider('');
 

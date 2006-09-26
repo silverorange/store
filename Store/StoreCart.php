@@ -505,7 +505,7 @@ abstract class StoreCart extends SwatObject
 
 		if ($entry->quantity <= 0) {
 			$message = sprintf(
-				'Quantity of “%s” item #%s must be at least one.',
+				Store::_('Quantity of “%s” item #%s must be at least one.'),
 				$entry->item->product->title,
 				$entry->item->sku);
 

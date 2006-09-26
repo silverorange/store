@@ -4,17 +4,17 @@ require_once 'Swat/SwatHtmlTag.php';
 require_once 'Swat/SwatButton.php';
 require_once 'Swat/SwatControl.php';
 
-require_once 'CatalogSelector.php';
+require_once 'StoreCatalogSelector.php';
 
 /**
  * A widget to switch the active catalog(s) in the admin
  *
  * The active catalog(s) is used for category pages.
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2005-2006 silverorange
  */
-class CatalogSwitcher extends SwatControl
+class StoreCatalogSwitcher extends SwatControl
 {
 	public $db;
 
@@ -37,7 +37,7 @@ class CatalogSwitcher extends SwatControl
 
 	public function init()
 	{
-		$this->catalog_selector = new CatalogSelector($this->id.'_selector');
+		$this->catalog_selector = new StoreCatalogSelector($this->id.'_selector');
 		$this->catalog_selector->parent = $this;
 		$this->catalog_selector->db = $this->db;
 		$this->catalog_selector->init();
@@ -47,7 +47,7 @@ class CatalogSwitcher extends SwatControl
 
 		if ($state === null) {
 			$this->catalog_selector->scope =
-				CatalogSelector::ALL_ENABLED_CATALOGS;
+				StoreCatalogSelector::ALL_ENABLED_CATALOGS;
 		} else {
 			$valid_state = true;
 			$state_exp = explode('_', $state);
@@ -55,7 +55,7 @@ class CatalogSwitcher extends SwatControl
 			$value = (count($state_exp) == 2) ? $state_exp[1] : null;
 			switch ($scope) {
 			// make sure it is a valid catalogue
-			case CatalogSelector::ONE_CATALOG:
+			case StoreCatalogSelector::ONE_CATALOG:
 				$sql = sprintf('select count(id) from Catalog where id = %s',
 					$this->db->quote($value, 'integer'));
 
@@ -65,14 +65,14 @@ class CatalogSwitcher extends SwatControl
 					$this->catalog_selector->region = null;
 					$this->catalog_selector->catalog= null;
 					$this->catalog_selector->scope =
-						CatalogSelector::ALL_ENABLED_CATALOGS;
+						StoreCatalogSelector::ALL_ENABLED_CATALOGS;
 
 					unset($_SESSION['catalog']);
 				}
 				break;
 
 			// make sure it is a valid region
-			case CatalogSelector::ALL_ENABLED_CATALOGS_IN_REGION:
+			case StoreCatalogSelector::ALL_ENABLED_CATALOGS_IN_REGION:
 				$sql = sprintf('select count(id) from Region where id = %s',
 					$this->db->quote($value, 'integer'));
 
@@ -82,7 +82,7 @@ class CatalogSwitcher extends SwatControl
 					$this->catalog_selector->region = null;
 					$this->catalog_selector->catalog= null;
 					$this->catalog_selector->scope =
-						CatalogSelector::ALL_ENABLED_CATALOGS;
+						StoreCatalogSelector::ALL_ENABLED_CATALOGS;
 
 					unset($_SESSION['catalog']);
 				}
@@ -94,7 +94,7 @@ class CatalogSwitcher extends SwatControl
 
 		$this->switch_button = new SwatButton($this->id.'_switch_button');
 		$this->switch_button->parent = $this;
-		$this->switch_button->title = 'Switch';
+		$this->switch_button->title = Store::_('Switch');
 		$this->switch_button->init();
 	}
 
@@ -106,7 +106,7 @@ class CatalogSwitcher extends SwatControl
 
 		$label_tag = new SwatHtmlTag('label');
 		$label_tag->for = $this->id.'_selector';
-		$label_tag->setContent('Catalogue:');
+		$label_tag->setContent(Store::_('Catalogue:'));
 		$label_tag->display();
 		
 		echo '&nbsp;';
