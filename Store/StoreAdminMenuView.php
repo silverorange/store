@@ -10,26 +10,33 @@ require_once 'Swat/SwatButton.php';
 require_once 'Swat/SwatHtmlTag.php';
 
 /**
- * A veseys specific admin menu view
+ * An admin menu view that has an item search box at the top
  *
- * @package   veseys2
+ * TODO: remove SKU terminology in favour of 'item'
+ *
+ * @package   Store
  * @copyright 2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class VeseysAdminMenuView extends AdminMenuView
+class StoreAdminMenuView extends AdminMenuView
 {
 	// {{{ protected properties
 
+	/**
+	 * @var SwatForm
+	 */
 	protected $form;
+
+	/**
+	 * @var SwatEntry
+	 */
 	protected $sku_entry;
 
 	// }}}
 	// {{{ public function __construct()
 
 	/**
-	 * Creates a new Veseys admin menu view
-	 *
-	 * The Veseys admin has a sku quick search displayed at the top of the
-	 * menu.
+	 * Creates a new store admin menu view with an item search box at the top
 	 *
 	 * @param AdminMenuStore $store the menu store to view.
 	 */
@@ -65,6 +72,11 @@ class VeseysAdminMenuView extends AdminMenuView
 	// }}}
 	// {{{public function getForm()
 
+	/**
+	 * Gets the form containing the item search box of this menu
+	 *
+	 * @return SwatForm
+	 */
 	public function getForm()
 	{
 		return $this->form;
@@ -73,6 +85,11 @@ class VeseysAdminMenuView extends AdminMenuView
 	// }}}
 	// {{{ public function getSkuEntry()
 
+	/**
+	 * Gets the item search box of this menu
+	 *
+	 * @return SwatEntry
+	 */
 	public function getSkuEntry()
 	{
 		return $this->sku_entry;
@@ -82,9 +99,9 @@ class VeseysAdminMenuView extends AdminMenuView
 	// {{{ public function display()
 
 	/**
-	 * Displays this menu
+	 * Displays this admin menu
 	 *
-	 * The Veseys menu displays a quick SKU search form on top of the menu.
+	 * The store admin menu displays an item search form on top of the menu.
 	 */
 	public function display()
 	{
