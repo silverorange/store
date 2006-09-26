@@ -1,0 +1,34 @@
+.swat-frame {
+	margin: 0;
+}
+
+#contact_form {
+	float: right;
+	width: 300px;
+	margin-left: 20px;
+}
+
+#contact_form .swat-entry,
+#contact_form .swat-flydown,
+#contact_form .swat-textarea {
+	width: 98%;
+}
+
+dl#contact_details {
+	margin: 1em;
+}
+
+dl#contact_details dt {
+	font-weight: bold;
+	margin-bottom: 0.5em;
+}
+
+dl#contact_details dd {
+	margin-left: 1em;
+	margin-bottom: 1em;
+}
+
+strong.phone-number {
+	font-size: 150%;
+	font-weight: normal;
+}
