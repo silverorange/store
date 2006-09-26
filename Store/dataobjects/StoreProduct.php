@@ -2,6 +2,9 @@
 
 require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreItemWrapper.php';
+require_once 'Store/dataobjects/StoreItemGroupWrapper.php';
+require_once 'Store/dataobjects/StoreCatalog.php';
+require_once 'Store/dataobjects/StoreProductImage.php';
 
 /**
  * A product for an e-commerce web application
@@ -124,6 +127,12 @@ class StoreProduct extends StoreDataObject
 		$this->registerInternalProperty('path');
 		$this->registerDateProperty('createdate');
 
+		$this->registerInternalProperty('catalog',
+			$this->class_map->resolveClass('StoreCatalog'));
+
+		$this->registerInternalProperty('image',
+			$this->class_map->resolveClass('StoreProductImage'));
+
 		$this->table = 'Product';
 		$this->id_field = 'integer:id';
 	}
@@ -191,6 +200,18 @@ class StoreProduct extends StoreDataObject
 		}
 
 		return $path;
+	}
+
+	// }}}
+	// {{{ protected function loadItemGroups()
+
+	protected function loadItemGroups()
+	{
+		$sql = 'select * from ItemGroup
+			where product = %s order by displayorder';
+
+		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+		return SwatDB::query($this->db, $sql, 'StoreItemGroupWrapper');
 	}
 
 	// }}}
