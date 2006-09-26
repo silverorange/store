@@ -3,7 +3,7 @@
 <swatml>
 	<widget class="SwatForm" id="contact_form">
 		<widget class="SwatFrame" id="frame">
-			<property name="title">Send Us a Message</property>
+			<property name="title">Send us a Message</property>
 			<widget class="SwatFormField">
 				<property name="title">Email</property>
 				<widget class="SwatEmailEntry" id="email">
