@@ -9,10 +9,10 @@ require_once 'Admin/AdminDependencySummaryWrapper.php';
 /**
  * Delete confirmation page for Regions
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2005-2006 silverorange
  */
-class RegionDelete extends AdminDBDelete
+class StoreRegionDelete extends AdminDBDelete
 {
 	// process phase
 	// {{{ protected function processDBData()
