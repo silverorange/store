@@ -2,9 +2,9 @@
 
 require_once 'Store/dataobjects/StoreDataObject.php';
 
-/*
+/**
  * @package   Store
- * @copyright silverorange 2005
+ * @copyright 2005-2006 silverorange
  */
 class StoreCatalog extends StoreDataObject
 {
