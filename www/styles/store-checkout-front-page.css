@@ -1,0 +1,33 @@
+/* Checkout Front */
+
+#new_customers_frame,
+#login_frame {
+	float: left;
+	width: 45%;
+}
+
+#new_customers_frame {
+	margin-right: 20px;
+}
+
+#login_frame input#email_address {
+	width: 98%;
+}
+
+#new_customers_frame p,
+#login_frame p {
+	margin: 0 0 0.5em 0;
+	line-height: 1.2;
+}
+
+#new_customers_frame h4 {
+	margin: 0;
+}
+
+#create_account_form {
+	margin-bottom: 1em;
+}
+
+#new_customers_frame .swat-button {
+	font-weight: bold;
+}

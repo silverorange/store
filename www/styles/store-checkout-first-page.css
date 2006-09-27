@@ -1,0 +1,87 @@
+/* Side-by-side billing/shipping addresses */
+
+.checkout-column-left {
+	margin-right: 4%;
+}
+
+.checkout-column-left,
+.checkout-column-right {
+	width: 42%;
+	float: left;
+}
+
+.checkout-no-column .swat-entry,
+.checkout-column-left .swat-entry,
+.checkout-column-right .swat-entry,
+#credit_card_fullname {
+	width: 98%;
+}
+
+
+/* Stacked Addresses */
+
+.checkout-no-column #billing_address_list_container,
+.checkout-no-column #shipping_address_list_container,
+.checkout-no-column #payment_method_list {
+	float: left;
+	width: 43%;
+	margin-right: 3%;
+}
+
+#billing_address_form,
+#shipping_address_form,
+#payment_method_form {
+	border: 0;
+	padding: 0;
+	margin: 0;
+}
+
+.checkout-no-column #billing_address_form,
+.checkout-no-column #shipping_address_form,
+.checkout-no-column #payment_method_form {
+	float: left;
+	width: 40%;
+}
+
+.swat-fieldset:after {
+    content: "."; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden;
+}
+
+#payment_method_container {
+	clear: left;
+}
+
+
+#checkout_footer .swat-note {
+	font-size: 100%;
+	margin-top: 0.5em;
+}
+
+
+.swat-footer-form-field {
+	clear: both;
+}
+
+#checkout_footer .swat-primary {
+	font-weight: bold;
+	color: #333;
+	font-size: 120%;
+	margin: 0;
+}
+
+#payment_method_container p.smallprint {
+	margin: 0;
+}
+
+#payment_method_container .smallprint a:link,
+#payment_method_container .smallprint a:visited {
+	color: #91916E;
+}
+
+#payment_method_container .smallprint a:hover {
+	color: #3B4D84;
+}

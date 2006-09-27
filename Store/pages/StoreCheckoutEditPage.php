@@ -35,10 +35,32 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutUIPage
 	}
 
 	// }}}
+	// {{{ protected function loadUI()
+
+	protected function loadUI()
+	{
+		$page_xml = $this->ui_xml;
+		$this->ui_xml = dirname(__FILE__).'/checkout-edit.xml';
+		parent::loadUI();
+		$this->ui_xml = $page_xml;
+
+		$container = $this->ui->getWidget('container');
+		$this->ui->loadFromXML($this->ui_xml, $container);
+	}
+
+	// }}}
 	// {{{ public function initCommon()
 
 	public function initCommon()
 	{
+	}
+
+	// }}}
+	// {{{ protected function getProgressDependencies()
+
+	protected function getProgressDependencies()
+	{
+		return array('checkout/first');
 	}
 
 	// }}}

@@ -1,0 +1,66 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatDisplayableContainer" id="shipping_address_list_container">
+		<widget class="SwatRadioTable" id="shipping_address_list">
+			<property name="value">billing</property>
+		</widget>
+		<widget class="SwatContentBlock" id="account_shipping_address_region_message" />
+	</widget>
+	<widget class="SwatFieldset" id="shipping_address_form">
+		<widget class="SwatFormField">
+			<property name="title">First Name &amp; Last Name</property>
+			<widget class="SwatEntry" id="shipping_address_fullname">
+				<property name="required" type="boolean">true</property>
+				<property name="maxlength" type="integer">255</property>
+				<property name="size" type="integer">35</property>
+			</widget>
+		</widget>
+		<widget class="SwatFormField">
+			<property name="title">Address Line 1</property>
+			<widget class="SwatEntry" id="shipping_address_line1">
+				<property name="required" type="boolean">true</property>
+				<property name="maxlength" type="integer">255</property>
+				<property name="size" type="integer">35</property>
+			</widget>
+		</widget>
+		<widget class="SwatFormField">
+			<property name="title">Address Line 2</property>
+			<widget class="SwatEntry" id="shipping_address_line2">
+				<property name="maxlength" type="integer">255</property>
+				<property name="size" type="integer">35</property>
+			</widget>
+		</widget>
+		<widget class="SwatFormField">
+			<property name="title">City</property>
+			<widget class="SwatEntry" id="shipping_address_city">
+				<property name="required" type="boolean">true</property>
+				<property name="maxlength" type="integer">255</property>
+				<property name="size" type="integer">35</property>
+			</widget>
+		</widget>
+		<widget class="SwatFormField" id="shipping_address_provstate_field">
+			<property name="title">Province</property>
+			<widget class="SwatFlydown" id="shipping_address_provstate">
+				<property name="required" type="boolean">true</property>
+				<property name="show_blank" type="boolean">true</property>
+			</widget>
+		</widget>
+		<widget class="SwatFormField" id="shipping_address_postalcode_field">
+			<property name="title">Postal Code</property>
+			<widget class="StorePostalCodeEntry" id="shipping_address_postalcode">
+				<property name="required" type="boolean">true</property>
+				<property name="maxlength" type="integer">50</property>
+			</widget>
+		</widget>
+		<widget class="SwatFormField" id="shipping_address_country_field">
+			<property name="title">Country</property>
+			<property name="note_content_type">text/xml</property>
+			<widget class="SwatFlydown" id="shipping_address_country">
+				<property name="required" type="boolean">false</property>
+				<property name="show_blank" type="boolean">false</property>
+			</widget>
+		</widget>
+	</widget>
+</swatml>
+

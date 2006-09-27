@@ -1,1 +1,42 @@
 @import url("store-cart.css");
+
+.checkout-column-left  .swat-tool-link,
+.checkout-column-right .swat-tool-link,
+.checkout-no-column    .swat-tool-link {
+	border: 1px solid;
+	font-family: sans-serif;
+	font-size: 80%;
+	font-weight: normal;
+	padding-bottom: 3px;
+	padding-top: 3px;
+	display: block;
+	float: right;
+}
+
+.swat-fieldset address {
+	font-style: normal;
+}
+
+#item_container {
+	clear: left;
+}
+
+#checkout_footer .swat-primary {
+	font-weight: bold;
+	color: #333;
+	font-size: 120%;
+	margin: 0;
+}
+
+
+/* Side-by-side billing/shipping addresses */
+
+.checkout-column-left {
+	margin-right: 4%;
+}
+
+.checkout-column-left,
+.checkout-column-right {
+	width: 42%;
+	float: left;
+}

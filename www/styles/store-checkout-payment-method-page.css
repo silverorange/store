@@ -1,0 +1,14 @@
+#payment_method_form {
+	border: 0;
+	padding: 0;
+	margin: 1em;
+}
+
+.add-new {
+	font-family: sans-serif;
+	font-weight: bold;
+}
+
+.swat-form #payment_method_save_field label {
+	font-weight: normal;
+}
