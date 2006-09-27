@@ -177,19 +177,25 @@ abstract class StoreItem extends StoreDataObject
 	abstract public function hasAvailableStatus();
 
 	// }}}
-	// {{{ abstract public function getFullDescription()
+	// {{{ abstract public function getDescription()
 
 	/**
-	 * Gets a detailed description for this item
+	 * Gets a description for this item
 	 *
-	 * @return string a detailed description for this item.
+	 * @param boolean $include_item_group an optional paramater that specifies
+	 *                                     whether or not to include item-group
+	 *                                     information in the description. By
+	 *                                     default, item-group information is
+	 *                                     included.
 	 *
-	 * @see StoreItem::getDescription()
+	 * @return string a description for this item.
+	 *
+	 * @see StoreItem::getDetailedDescription()
 	 */
-	abstract public function getDetailedDescription();
+	abstract public function getDescription($include_item_group = true);
 
 	// }}}
-	// {{{ abstract public function getFullDescription()
+	// {{{ abstract public function getDetailedDescription()
 
 	/**
 	 * Gets a detailed description for this item
