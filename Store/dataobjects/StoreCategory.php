@@ -2,6 +2,7 @@
 
 require_once 'Swat/SwatNavBarEntry.php';
 require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'Store/dataobjects/StoreCategoryImage.php';
 require_once 'Store/dataobjects/StoreArticleWrapper.php';
 require_once 'Store/dataobjects/StoreCategoryImage.php';
 
@@ -119,9 +120,12 @@ class StoreCategory extends StoreDataObject
 
 	protected function init()
 	{
+		$this->registerDateProperty('createdate');
+
 		$this->registerInternalProperty('path');
 		$this->registerInternalProperty('product_count');
-		$this->registerDateProperty('createdate');
+		$this->registerInternalProperty('image',
+			$this->class_map->resolveClass('StoreCategoryImage'));
 
 		$this->registerInternalProperty('image',
 			$this->class_map->resolveClass('StoreCategoryImage'));
