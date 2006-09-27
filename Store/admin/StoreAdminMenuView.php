@@ -64,7 +64,7 @@ class StoreAdminMenuView extends AdminMenuView
 		$this->form = $form;
 
 		$this->html_head_entry_set->addEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-quick-search.css',
+			'packages/store/admin/styles/store-quick-search.css',
 			Store::PACKAGE_ID));
 	}
 
