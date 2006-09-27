@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Swat/SwatDate.php';
+require_once 'Swat/SwatDetailsStore.php';
 require_once 'SwatDB/SwatDBTransaction.php';
 require_once 'Store/pages/StoreCheckoutUIPage.php';
 require_once 'Store/dataobjects/StoreOrderItemWrapper.php';
@@ -191,6 +192,88 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
 			'packages/store/styles/store-checkout-confirmation-page.css',
 			Store::PACKAGE_ID));
+
+		$order = $this->app->session->order;
+
+		$this->buildItems($order);
+		$this->buildBasicInfo($order);
+		$this->buildBillingAddress($order);
+		$this->buildShippingAddress($order);
+		$this->buildPaymentMethod($order);
+	}
+
+	// }}}
+	// {{{ protected function buildBasicInfo()
+
+	protected function buildBasicInfo($order)
+	{
+		$ds = new SwatDetailsStore($order);
+		$view = $this->ui->getWidget('basic_info_details');
+
+		if ($this->app->session->isLoggedIn())
+			$ds->fullname = $this->app->session->account->fullname;
+		else
+			$view->getField('fullname_field')->visible = false;
+
+		$view->data = $ds;
+	}
+
+	// }}}
+	// {{{ protected function buildBillingAddress()
+
+	protected function buildBillingAddress($order)
+	{
+		ob_start();	
+		$order->billing_address->display();
+
+		$this->ui->getWidget('billing_address')->content = ob_get_clean();
+		$this->ui->getWidget('billing_address')->content_type = 'text/xml';
+	}
+
+	// }}}
+	// {{{ protected function buildShippingAddress()
+
+	protected function buildShippingAddress($order)
+	{
+		ob_start();	
+		// compare references since these are not saved yet
+		if ($order->shipping_address === $order->billing_address) {
+			$span_tag = new SwatHtmlTag('span');
+			$span_tag->class = 'swat-none';
+			$span_tag->setContent('<ship to billing address>');
+			$span_tag->display();
+		} else {
+			$order->shipping_address->display();
+		}
+
+		$this->ui->getWidget('shipping_address')->content = ob_get_clean();
+		$this->ui->getWidget('shipping_address')->content_type = 'text/xml';
+	}
+
+	// }}}
+	// {{{ protected function buildPaymentMethod()
+
+	protected function buildPaymentMethod($order)
+	{
+		ob_start();	
+		$order->payment_method->display();
+
+		$this->ui->getWidget('payment_method')->content = ob_get_clean();
+		$this->ui->getWidget('payment_method')->content_type = 'text/xml';
+	}
+
+	// }}}
+	// {{{ protected function buildItems()
+
+	protected function buildItems($order)
+	{
+		$items_view = $this->ui->getWidget('items_view');
+		$items_view->model = $order->getOrderDetailsTableStore();
+
+		$items_view->getRow('shipping')->value = $order->shipping_total;
+		$items_view->getRow('subtotal')->value = $order->getSubtotal();
+
+		$items_view->getRow('total')->value = $order->total;
 	}
 
 	// }}}
