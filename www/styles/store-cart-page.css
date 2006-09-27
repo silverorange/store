@@ -1,1 +1,48 @@
 @import url("store-cart.css");
+
+.store-cart-entry-view-header .swat-form-field-contents,
+.store-cart-entry-view-footer .swat-form-field-contents {
+	text-align: right;
+}
+
+.store-cart-entry-view-header .swat-button,
+.store-cart-entry-view-footer .swat-button {
+	vertical-align: middle;
+}
+
+#header_checkout_button,
+#footer_checkout_button {
+	font-weight: bold;
+	color: #333;
+	font-size: 110%;
+	margin-left: 0.5em;
+	padding-top: 0.1em;
+	padding-bottom: 0.1em;
+	width: 12em;
+}
+
+#header_update_button,
+#footer_update_button {
+	font-size: 80%;
+	padding-top: 0.1em;
+	padding-bottom: 0.1em;
+}
+
+.swat-table-view td.remove-column {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.swat-table-view td.move-column {
+	padding-left: 0;
+	padding-right: 4px;
+}
+
+.store-cart-entry-view .move-column .swat-button {
+	width: 8.5em;
+}
+
+#saved_cart_move_all_field {
+	text-align: right;
+}
+
