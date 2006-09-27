@@ -164,6 +164,87 @@ abstract class StoreItem extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ abstract public function hasAvailableStatus()
+
+	/**
+	 * Gets whether or not this item has a status which makes this item
+	 * available for purchase
+	 *
+	 * @return boolean true if this item has a status making it available for
+	 *                  purchase and false if this item has a status making it
+	 *                  unavailable for purchase.
+	 */
+	abstract public function hasAvailableStatus();
+
+	// }}}
+	// {{{ abstract public function getFullDescription()
+
+	/**
+	 * Gets a detailed description for this item
+	 *
+	 * @return string a detailed description for this item.
+	 *
+	 * @see StoreItem::getDescription()
+	 */
+	abstract public function getDetailedDescription();
+
+	// }}}
+	// {{{ abstract public function getFullDescription()
+
+	/**
+	 * Gets a detailed description for this item
+	 *
+	 * @return string a detailed description for this item.
+	 *
+	 * @see StoreItem::getDescription()
+	 */
+	abstract public function getDetailedDescription();
+
+	// }}}
+	// {{{ public static function validateSku()
+
+	/**
+	 * Validates a new item SKU in the given catalogue
+	 *
+	 * SKU's must be unique across all catalogues with the exception that they
+	 * can exist multiple times amongst catalogues that are clones of each
+	 * other and multiple times within a single product.
+	 *
+	 * @param string $sku the new SKU.
+	 * @param integer $catalog_id the database identifier of the catalogue to
+	 *                             validate the new SKU in.
+	 * @param integer $product the product the SKU belongs to.
+	 * @param array $valid_skus an optional array of SKUs to ignore when
+	 *                           validating.
+	 * @return true if the new SKU is valid in the given catalogue and product
+	 *          and false
+	 *          if it is not.
+	 */
+	public static function validateSku($db, $sku, $catalog_id, $product_id,
+		$valid_skus = array())
+	{
+		$sql = 'select count(ItemView.id) from itemView 
+			inner join Product on ItemView.product = Product.id 
+			inner join Catalog on Product.catalog = Catalog.id 
+			where Catalog.id not in 
+				(select clone from CatalogCloneView where catalog = %s) 
+				and Product.id != %s 
+			and ItemView.sku = %s';
+
+		$sql = sprintf($sql,
+			$db->quote($catalog_id, 'integer'),
+			$db->quote($product_id, 'integer'),
+			$db->quote($sku, 'text'));
+		
+		if (count($valid_skus) > 0) {
+			$sql.= sprintf(' and ItemView.sku not in (%s)',
+				$db->implodeArray($valid_skus, 'text'));
+		}
+
+		return (SwatDB::queryOne($db, $sql) == 0);
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
