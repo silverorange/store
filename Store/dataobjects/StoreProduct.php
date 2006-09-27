@@ -211,7 +211,62 @@ class StoreProduct extends StoreDataObject
 			where product = %s order by displayorder';
 
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
-		return SwatDB::query($this->db, $sql, 'StoreItemGroupWrapper');
+		return SwatDB::query($this->db, $sql,
+			$this->class_map->resolveClass('StoreItemGroupWrapper'));
+	}
+
+	// }}}
+	// {{{ protected function loadCategories()
+
+	protected function loadCategories()
+	{
+		$sql = 'select id, title, shortname from Category where id in
+			(select category from CategoryProductBinding
+			where product = %s)';
+
+		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+		return SwatDB::query($this->db, $sql,
+			$this->class_map->resolveClass('StoreCategoryWrapper'));
+	}
+
+	// }}}
+	// {{{ protected function loadFeaturedCategories()
+
+	protected function loadFeaturedCategories()
+	{
+		$sql = 'select id, title, shortname from Category where id in
+			(select category from CategoryFeaturedProductBinding
+			where product = %s)';
+
+		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+		return SwatDB::query($this->db, $sql,
+			$this->class_map->resolveClass('StoreCategoryWrapper'));
+	}
+
+	// }}}
+	// {{{ protected function loadRelatedProducts()
+
+	/**
+	 * Loads related products
+	 *
+	 * Related products are loaded with primary categories and ordered by the
+	 * binding table's display order.
+	 */
+	protected function loadRelatedProducts()
+	{
+		$sql = 'select Product.*, ProductPrimaryCategoryView.primary_category,
+			getCategoryPath(ProductPrimaryCategoryView.primary_category) as path
+			from Product
+				inner join ProductRelatedProductBinding
+					on Product.id = ProductRelatedProductBinding.related_product
+						and ProductRelatedProductBinding.source_product = %s
+				left outer join ProductPrimaryCategoryView
+					on Product.id = ProductPrimaryCategoryView.product
+			order by ProductRelatedProductBinding.displayorder asc';
+
+		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+		return SwatDB::query($this->db, $sql,
+			$this->class_map->resolveClass('StoreProductWrapper'));
 	}
 
 	// }}}
