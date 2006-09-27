@@ -129,7 +129,6 @@ class StoreCategoryPage extends StoreStorePage
 		echo '<ul class="product-list">';
 
 		foreach ($products as $product) {
-			$product->disableTagLoader();
 			echo '<li class="product-icon">';
 			$link = $path.'/'.$product->shortname;
 			$product->displayAsIcon($link);
@@ -196,9 +195,9 @@ class StoreCategoryPage extends StoreStorePage
 	}
 
 	// }}}
-	// {{{ private function displayFeaturedProducts()
+	// {{{ protected function queryFeaturedProducts()
 
-	private function displayFeaturedProducts($category_id)
+	protected function queryFeaturedProducts($category_id)
 	{
 		$sql = 'select Product.id, shortname, title, image,
 				primary_category, getCategoryPath(primary_category) as path
@@ -220,6 +219,16 @@ class StoreCategoryPage extends StoreStorePage
 
 		$products = SwatDB::query($this->app->db, $sql, 'StoreProductWrapper');
 
+		return $products;
+	}
+
+	// }}}
+	// {{{ protected function displayFeaturedProducts()
+
+	protected function displayFeaturedProducts($category_id)
+	{
+		$products = $this->queryFeaturedProducts($category_id);
+
 		if (count($products) == 0)
 			return;
 
@@ -239,7 +248,6 @@ class StoreCategoryPage extends StoreStorePage
 		$li_tag->class = 'product-text';
 
 		foreach ($products as $product) {
-			$product->disableTagLoader();
 			$li_tag->open();
 			$path = 'store/'.$product->path;
 			$product->displayAsText($path);

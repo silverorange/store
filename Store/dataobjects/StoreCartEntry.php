@@ -26,7 +26,7 @@ require_once 'Store/dataobjects/StoreOrderItem.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreCart
  */
-abstract class StoreCartEntry extends StoreDataObject
+class StoreCartEntry extends StoreDataObject
 {
 	// {{{ public properties
 

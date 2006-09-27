@@ -66,6 +66,16 @@ abstract class StoreStorePage extends StorePage
 	// }}}
 
 	// build phase
+	// {{{ public function build()
+
+	public function build()
+	{
+		parent::build();
+
+		$this->layout->navbar->createEntry('Store', 'store');
+	}
+
+	// }}}
 	// {{{ protected function queryCategory()
 
 	protected function queryCategory($category_id)
