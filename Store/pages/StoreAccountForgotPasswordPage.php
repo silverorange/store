@@ -81,7 +81,7 @@ class StoreAccountForgotPasswordPage extends StoreAccountPage
 
 		if ($account === null) {
 			$msg = new SwatMessage(Store::_(
-				'There is no Veseys.com account with this email address.'),
+				'There is no account with this email address.'),
 				SwatMessage::ERROR);
 
 			$msg->secondary_content = sprintf(Store::_(
