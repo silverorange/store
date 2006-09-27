@@ -1,0 +1,10 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatContainer" id="container" />
+	<widget class="SwatFooterFormField">
+		<widget class="SwatButton">
+			<property name="title">Update</property>
+		</widget>
+	</widget>
+</swatml>

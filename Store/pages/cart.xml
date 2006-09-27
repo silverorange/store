@@ -37,10 +37,6 @@
 						<property name="text" type="data">description</property>
 						<property name="classes[]">store-cart-description</property>
 					</object>
-					<object class="StoreCartMessageCellRenderer">
-						<property name="text" type="data">message</property>
-						<property name="content_type">text/xml</property>
-					</object>
 				</object>
 				<object class="SwatTableViewColumn">
 					<property name="id">price</property>

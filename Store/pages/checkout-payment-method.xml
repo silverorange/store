@@ -1,0 +1,47 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatRadioTable" id="payment_method_list">
+		<property name="value">new</property>
+	</widget>
+	<widget class="SwatFieldset" id="payment_method_form">
+		<widget class="SwatFormField">
+			<property name="title">Credit Card Type</property>
+			<widget class="SwatRadioList" id="payment_type">
+				<property name="required" type="boolean">true</property>
+			</widget>
+		</widget>
+		<widget class="SwatFormField">
+			<property name="title">Credit Card Number</property>
+			<widget class="StoreCreditCardNumberEntry" id="credit_card_number">
+				<property name="required" type="boolean">true</property>
+				<property name="maxlength" type="integer">50</property>
+			</widget>
+		</widget>
+		<widget class="SwatFormField">
+			<property name="title">Expiry Date</property>
+			<widget class="StoreCreditCardExpiryEntry" id="credit_card_expiry">
+				<property name="required" type="boolean">true</property>
+			</widget>
+		</widget>
+		<widget class="SwatFormField">
+			<property name="title">Name on Card</property>
+			<widget class="SwatEntry" id="credit_card_fullname">
+				<property name="required" type="boolean">true</property>
+				<property name="maxlength" type="integer">255</property>
+				<property name="size" type="integer">35</property>
+			</widget>
+		</widget>
+		<widget class="SwatFormField" id="save_account_payment_method_field">
+			<property name="visible" type="boolean">false</property>
+			<property name="title">Save my credit card information with my account for future web orders</property>
+			<widget class="SwatCheckbox" id="save_account_payment_method">
+				<property name="value" type="boolean">true</property>
+			</widget>
+		</widget>
+		<widget class="SwatContentBlock" id="payment_method_note">
+			<property name="content"><![CDATA[<p class="smallprint">As you have opted to checkout as a guest, your credit card information will <em>not</em> be saved for future visits to the website. See our <a href="about/website/privacy">privacy &amp; security policy</a> for more information about how your information will be used.</p>]]></property>
+			<property name="content_type">text/xml</property>
+		</widget>
+	</widget>
+</swatml>

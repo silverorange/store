@@ -1,0 +1,138 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<!-- {{{ basic info -->
+	<widget class="SwatFieldset" id="basic_info_container">
+		<property name="title">Basic Information</property>
+		<widget class="SwatToolLink">
+			<property name="title">Edit Basic Information</property>
+			<property name="link">checkout/confirmation/basicinfo</property>
+			<property name="stock_id">edit</property>
+		</widget>
+		<widget class="SwatDetailsView" id="basic_info_details">
+			<object class="SwatDetailsViewField" id="fullname_field">
+				<property name="title">Name</property>
+				<object class="SwatNullTextCellRenderer">
+					<property name="text" type="data">fullname</property>
+				</object>
+			</object>
+			<object class="SwatDetailsViewField">
+				<property name="title">Email</property>
+				<object class="SwatNullTextCellRenderer">
+					<property name="text" type="data">email</property>
+				</object>
+			</object>
+			<object class="SwatDetailsViewField" id="phone">
+				<property name="title">Phone</property>
+				<object class="SwatNullTextCellRenderer">
+					<property name="text" type="data">phone</property>
+				</object>
+			</object>
+			<object class="SwatDetailsViewField" id="comments">
+				<property name="title">Comments</property>
+				<object class="SwatNullTextCellRenderer">
+					<property name="text" type="data">comments</property>
+				</object>
+			</object>
+		</widget>
+	</widget>
+	<!-- }}} -->
+	<!-- {{{ billing address -->
+	<widget class="SwatFieldset" id="billing_address_container">
+		<property name="title">Billing Address</property>
+		<widget class="SwatToolLink">
+			<property name="title">Edit</property>
+			<property name="link">checkout/confirmation/billingaddress</property>
+			<property name="stock_id">edit</property>
+		</widget>
+		<widget class="SwatContentBlock" id="billing_address" />
+	</widget>
+	<!-- }}} -->
+	<!-- {{{ shipping address -->
+	<widget class="SwatFieldset" id="shipping_address_container">
+		<property name="title">Shipping Address</property>
+		<widget class="SwatToolLink">
+			<property name="title">Edit</property>
+			<property name="link">checkout/confirmation/shippingaddress</property>
+			<property name="stock_id">edit</property>
+		</widget>
+		<widget class="SwatContentBlock" id="shipping_address" />
+	</widget>
+	<!-- }}} -->
+	<!-- {{{ payment method -->
+	<widget class="SwatFieldset" id="payment_method_container">
+		<property name="title">Credit Card</property>
+		<widget class="SwatToolLink">
+			<property name="title">Edit</property>
+			<property name="link">checkout/confirmation/paymentmethod</property>
+			<property name="stock_id">edit</property>
+		</widget>
+		<widget class="SwatContentBlock" id="payment_method" />
+	</widget>
+	<!-- }}} -->
+	<!-- {{{ items -->
+	<widget class="SwatFieldset" id="item_container">
+		<property name="title">Items</property>
+		<widget class="SwatToolLink" id="item_link">
+			<property name="title">Edit Items</property>
+			<property name="link">checkout/confirmation/cart</property>
+			<property name="stock_id">edit</property>
+		</widget>
+		<widget class="SwatTableView" id="items_view">
+			<property name="classes[]">store-order-item-view</property>
+			<object class="SwatTableViewGroup">
+				<property name="group_by">product</property>
+				<object class="SwatTextCellRenderer">
+					<property name="text" type="data">product_title</property>
+				</object>
+			</object>
+			<object class="SwatTableViewColumn">
+				<property name="title">Item #</property>
+				<object class="SwatTextCellRenderer">
+					<property name="text" type="data">sku</property>
+					<property name="classes[]">item-sku</property>
+				</object>
+			</object>
+			<object class="SwatTableViewColumn">
+				<property name="title">Description</property>
+				<object class="SwatTextCellRenderer">
+					<property name="text" type="data">description</property>
+					<property name="classes[]">store-cart-description</property>
+				</object>
+			</object>
+			<object class="SwatTableViewColumn">
+				<property name="title">Price</property>
+				<object class="StorePriceCellRenderer">
+					<property name="value" type="data">price</property>
+				</object>
+			</object>
+			<object class="SwatTableViewColumn">
+				<property name="title">Quantity</property>
+				<object class="SwatNumericCellRenderer">
+					<property name="value" type="data">quantity</property>
+				</object>
+			</object>
+			<object class="SwatTableViewColumn">
+				<property name="title">Total</property>
+				<object class="StorePriceCellRenderer">
+					<property name="value" type="data">extension</property>
+				</object>
+			</object>
+			<object class="StoreTotalRow" id="subtotal">
+				<property name="title">Subtotal</property>
+			</object>
+			<object class="StoreTotalRow" id="shipping">
+				<property name="title">Shipping Total</property>
+			</object>
+			<object class="StoreTotalRow" id="total">
+				<property name="title">Total</property>
+			</object>
+		</widget>
+	</widget>
+	<!-- }}} -->
+	<widget class="SwatFooterFormField" id="checkout_footer">
+		<widget class="SwatButton" id="submit">
+			<property name="title">Place Order</property>
+		</widget>
+	</widget>
+</swatml>

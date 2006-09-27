@@ -14,6 +14,16 @@ require_once 'Store/dataobjects/StoreCartEntry.php';
  */
 class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 {
+	// {{{ public function __construct()
+
+	public function __construct(SiteApplication $app, SiteLayout $layout)
+	{
+		parent::__construct($app, $layout);
+		$this->ui_xml = 'Store/pages/checkout-confirmation.xml';
+	}
+
+	// }}}
+
 	// init phase
 	// {{{ public function init()
 

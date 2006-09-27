@@ -1,6 +1,8 @@
 <?php
 
 require_once 'Store/pages/StoreArticlePage.php';
+require_once 'Store/dataobjects/StoreAccount.php';
+require_once 'Store/dataobjects/StoreOrder.php';
 
 /**
  * Base class for checkout pages
@@ -22,6 +24,7 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 			$this->app->relocate('cart');
 
 		$this->checkCart();
+		$this->app->session->activate();
 
 		// initialize session variable to track checkout progress
 		if (!isset($this->app->session->checkout_progress))
@@ -53,14 +56,18 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 	{
 		if (!isset($this->app->session->account) ||
 			$this->app->session->account === null) {
-				$this->app->session->account = new Account();
+				$class_map = StoreClassMap::instance();
+				$account_class = $class_map->resolveClass('StoreAccount');
+				$this->app->session->account = new $account_class();
 				$this->app->session->account->setDatabase($this->app->db);
 				$this->resetProgress();
 		}
 
 		if (!isset($this->app->session->order) ||
 			$this->app->session->order === null) {
-				$this->app->session->order = new Order();
+				$class_map = StoreClassMap::instance();
+				$order_class = $class_map->resolveClass('StoreOrder');
+				$this->app->session->order = new $order_class();
 				$this->app->session->order->setDatabase($this->app->db);
 				$this->resetProgress();
 		}

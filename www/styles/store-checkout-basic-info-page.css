@@ -1,0 +1,11 @@
+.basic_info_first {
+	padding-right: 250px;
+}
+
+#basic_info_container #comments_field {
+	position: absolute;
+	top: 2em;
+	right: 2em;
+	margin: 0;
+	width: 200px;
+}
