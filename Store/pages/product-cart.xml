@@ -11,7 +11,7 @@
 				<object class="StoreItemColumn">
 					<property name="title">Item</property>
 					<property name="id">entry</property>
-					<object class="ItemDescriptionCellRenderer">
+					<object class="StoreItemDescriptionCellRenderer">
 						<property name="sku" type="data">item.sku</property>
 						<property name="description" type="data">description</property>
 						<property name="classes[]">store-cart-description</property>
