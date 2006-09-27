@@ -194,6 +194,22 @@ abstract class StoreCheckoutCart extends StoreCart
 	}
 
 	// }}}
+	// {{{ public function getSubtotal()
+
+	public function getSubtotal()
+	{
+		if ($this->cachedValueExists('store-subtotal')) {
+			$total = $this->getCachedValue('store-subtotal');
+		} else {
+			$total = 0;
+			$total += $this->getItemTotal();
+			$this->setCachedValue('store-subtotal', $total);
+		}
+
+		return $total;
+	}
+
+	// }}}
 	// {{{ public function getItemTotal()
 
 	/**
