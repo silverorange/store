@@ -1,5 +1,7 @@
 <?php
 
+require_once 'Swat/SwatTableStore.php';
+require_once 'Swat/SwatDetailsStore.php';
 require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/dataobjects/StoreOrderAddress.php';
@@ -82,6 +84,61 @@ class StoreOrder extends StoreDataObject
 	public $tax_total;
 
 	// }}}
+	// {{{ public function getSubtotal()
+
+	/**
+	 * Gets the subtotal for this order
+	 *
+	 * By default this is defined as item_total. Site-specific sub-classes may
+	 * include other values in addition to item_total.
+	 *
+	 * @return integer this order's subtotal.
+	 */
+	public function getSubtotal()
+	{
+		return $this->item_total;
+	}
+
+	// }}}
+	// {{{ public function getOrderDetailsTableStore()
+
+	public function getOrderDetailsTableStore()
+	{
+		$store = new SwatTableStore();
+
+		foreach ($this->items as $item) {
+			$ds = $this->getOrderItemDetailsStore($item);
+			$store->addRow($ds);
+		}
+
+		return $store;
+	}
+
+	// }}}
+	// {{{ public function getTitle()
+
+	public function getTitle()
+	{
+		return sprintf('Order %s', $this->id);
+	}
+
+	// }}}
+	// {{{ public function sendConfirmationEmail()
+
+	public function sendConfirmationEmail(SiteApplication $app)
+	{
+		// TOOD: implement this by pulling up from the Veseys Order dataobject
+	}
+
+	// }}}
+	// {{{ public function getReceiptHeader()
+
+	public function getReceiptHeader()
+	{
+		return 'Thank you for placing an order online.';
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
@@ -124,11 +181,14 @@ class StoreOrder extends StoreDataObject
 	}
 
 	// }}}
-	// {{{ public function getTitle()
+	// {{{ protected function getOrderItemDetailsStore()
 
-	public function getTitle()
+	public function getOrderItemDetailsStore($item)
 	{
-		return sprintf('Order %s', $this->id);
+		$ds = new SwatDetailsStore($item);
+		$ds->item = $item;
+
+		return $ds;
 	}
 
 	// }}}
@@ -138,10 +198,9 @@ class StoreOrder extends StoreDataObject
 
 	protected function loadItems()
 	{
-		$wrapper = $this->class_map->resolveClass('StoreOrderItemWrapper');
-		$sql = 'select * from OrderItem where ordernum = %s';
+		$sql = 'select * from OrderItem where ordernum = %s order by sku asc';
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
-		return SwatDB::query($this->db, $sql, $wrapper);
+		return SwatDB::query($this->db, $sql, 'StoreOrderItemWrapper');
 	}
 
 	// }}}
