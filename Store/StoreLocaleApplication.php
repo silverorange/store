@@ -96,7 +96,7 @@ abstract class StoreLocaleApplication extends StoreApplication
 		if ($this->region === null)
 			$this->locale = null;
 		else
-			setlocale(LC_ALL, $this->locale);
+			setlocale(LC_ALL, $this->locale.'.UTF-8');
 	}
 
 	// }}}
