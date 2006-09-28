@@ -77,6 +77,7 @@
 						<widget class="SwatButton" id="remove_available_button">
 							<property name="title">Remove</property>
 							<property name="classes[]">compact-button</property>
+							<property name="classes[]">store-remove</property>
 						</widget>
 					</object>
 				</object>
@@ -143,7 +144,8 @@
 							<property name="replicator_id" type="data">id</property>
 							<widget class="SwatButton" id="remove_unavailable_button">
 								<property name="title">Remove</property>
-							<property name="classes[]">compact-button</property>
+								<property name="classes[]">compact-button</property>
+								<property name="classes[]">store-remove</property>
 							</widget>
 						</object>
 					</object>
@@ -229,6 +231,7 @@
 						<widget class="SwatButton" id="remove_saved_button">
 							<property name="title">Remove</property>
 							<property name="classes[]">compact-button</property>
+							<property name="classes[]">store-remove</property>
 						</widget>
 					</object>
 				</object>
