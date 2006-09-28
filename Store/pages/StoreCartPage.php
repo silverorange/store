@@ -233,6 +233,11 @@ abstract class StoreCartPage extends StoreArticlePage
 				if ($widget->hasBeenClicked()) {
 					$entry = $this->app->cart->checkout->getEntryById($id);
 
+					// make sure entry wasn't already moved
+					// (i.e. a page resubmit)
+					if ($entry === null)
+						break;
+
 					$this->added_entry_ids[] = $id;
 					$item_moved = true;
 
@@ -322,8 +327,7 @@ abstract class StoreCartPage extends StoreArticlePage
 		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
 			if ($widget->hasBeenClicked()) {
 				$item_removed = true;
-				$entry = $this->app->cart->saved->getEntryById($id);
-				$this->app->cart->saved->removeEntry($entry);
+				$this->app->cart->saved->removeEntryById($id);
 
 				break;
 			}
