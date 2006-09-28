@@ -3,7 +3,8 @@
 require_once 'Admin/pages/AdminIndex.php';
 require_once 'Admin/AdminTableStore.php';
 require_once 'SwatDB/SwatDB.php';
-require_once 'include/ConversionRateCellRenderer.php';
+
+require_once 'include/StoreConversionRateCellRenderer.php';
 
 /**
  * Report page for Ad

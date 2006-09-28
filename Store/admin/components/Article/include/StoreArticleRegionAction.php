@@ -9,7 +9,7 @@ require_once 'Swat/SwatControl.php';
  * @package   Store
  * @copyright 2005-2006 silverorange
  */
-class ArticleRegionAction extends SwatControl
+class StoreArticleRegionAction extends SwatControl
 {
 	public $db;
 

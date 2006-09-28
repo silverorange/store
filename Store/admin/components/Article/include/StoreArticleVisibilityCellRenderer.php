@@ -8,7 +8,7 @@ require_once 'Swat/SwatCellRenderer.php';
  * @package   Store
  * @copyright 2005-2006 silverorange
  */
-class VisibilityCellRenderer extends SwatCellRenderer
+class StoreArticleVisibilityCellRenderer extends SwatCellRenderer
 {
 	public $article = false;
 	public $db = false;
