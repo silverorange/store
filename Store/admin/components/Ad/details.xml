@@ -1,0 +1,50 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<widget class="SwatFrame" id="index_frame">
+		<property name="title">Ads Details</property>
+		<widget class="SwatFieldset">
+			<property name="title">Referrers in the Last</property>	
+			<widget class="SwatTableView" id="referrer_period_view">
+				<object class="SwatTableViewColumn">
+					<object class="SwatTextCellRenderer">
+						<property name="text" type="data">period</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="title">Referrers</property>
+					<object class="SwatNumericCellRenderer">
+						<property name="value" type="data">referrers</property>
+					</object>
+				</object>
+			</widget>
+		</widget>
+		<widget class="SwatFieldset">
+			<property name="title">Orders in the Last</property>	
+			<widget class="SwatTableView" id="orders_view">
+				<object class="SwatTableViewColumn">
+					<object class="SwatTextCellRenderer">
+						<property name="text" type="data">period</property>
+					</object>
+				</object>
+			</widget>
+		</widget>
+		<widget class="SwatFieldset">
+			<property name="title">Catalogue Requests in the Last</property>	
+			<widget class="SwatTableView" id="catalogrequest_period_view">
+				<object class="SwatTableViewColumn">
+					<object class="SwatTextCellRenderer">
+						<property name="text" type="data">period</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="title">Requests</property>
+					<object class="SwatNumericCellRenderer">
+						<property name="value" type="data">referrers</property>
+					</object>
+				</object>
+			</widget>
+		</widget>
+	</widget>
+</swatml>
