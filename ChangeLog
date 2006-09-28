@@ -1,3 +1,27 @@
+2006-09-28  nrf
+
+	* [r11615] store/branches/1.0.x:
+	  create a branch for 1.0.x
+
+2006-09-22  nrf
+
+	* [r11339] store/tags/release-1.0.6:
+	  tag release 1.0.6
+	* [r11338] store/trunk/package.php:
+	  prepare for release of 1.0.6
+	* [r11337] store/trunk/Store/StoreQuickOrderItemSelector.php,
+	  store/trunk/www/javascript/store-quick-order-page.js:
+	  Item groups are in Store so push up support for them in the
+	  quick order page.
+	  Display quantity discounts.
+
+2006-09-21  nrf
+
+	* [r11321] store/trunk/Store/pages/account-details.xml:
+	  Remove veseysism from Store package.
+	* [r11314] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.0.5
+
 2006-09-21  gauthierm
 
 	* [r11311] store/trunk/Store/dataobjects/StoreCartEntry.php:
