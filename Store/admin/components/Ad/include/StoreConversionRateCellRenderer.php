@@ -5,10 +5,10 @@ require_once 'Swat/SwatPercentageCellRenderer.php';
 /**
  * Displays conversion rates that are NaN as a none-styled dash
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2006 silverorange
  */
-class ConversionRateCellRenderer extends SwatPercentageCellRenderer
+class StoreConversionRateCellRenderer extends SwatPercentageCellRenderer
 {
 	// {{{ public function render()
 

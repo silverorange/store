@@ -4,9 +4,10 @@ require_once 'Admin/pages/AdminSearch.php';
 require_once 'Admin/AdminTableStore.php';
 require_once 'Admin/AdminSearchClause.php';
 require_once 'SwatDB/SwatDB.php';
-require_once 'include/ArticleActionsProcessor.php';
-require_once 'include/ArticleRegionAction.php';
-require_once 'include/VisibilityCellRenderer.php';
+
+require_once 'include/StoreArticleActionsProcessor.php';
+require_once 'include/StoreArticleRegionAction.php';
+require_once 'include/StoreArticleVisibilityCellRenderer.php';
 
 /**
  * Search page for Articles
@@ -61,7 +62,7 @@ class StoreArticleSearch extends AdminSearch
 
 	protected function processActions(SwatTableView $view, SwatActions $actions)
 	{
-		$processor = new ArticleActionsProcessor($this);
+		$processor = new StoreArticleActionsProcessor($this);
 		$processor->process($view, $actions);
 	}
 
@@ -75,7 +76,7 @@ class StoreArticleSearch extends AdminSearch
 		parent::buildInternal();
 
 		$this->ui->getWidget('visibility')->addOptionsByArray(
-			ArticleActionsProcessor::getActions());
+			StoreArticleActionsProcessor::getActions());
 	}
 
 	// }}}
@@ -133,7 +134,7 @@ class StoreArticleSearch extends AdminSearch
 			$this->getWhereClause());
 
 		$pager = $this->ui->getWidget('pager');
-		$pager->total_records =	SwatDB::queryOne($this->app->db, $sql);
+		$pager->total_records = SwatDB::queryOne($this->app->db, $sql);
 
 		$sql = 'select Article.id,
 					Article.title, 

@@ -13,7 +13,7 @@ require_once 'SwatDB/SwatDB.php';
  * @package   Store
  * @copyright 2005-2006 silverorange
  */
-class ArticleActionsProcessor
+class StoreArticleActionsProcessor
 {
 	/**
 	 * A reference to the page that is using this action processor

@@ -6,9 +6,9 @@ require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatString.php';
 
-require_once 'include/ArticleActionsProcessor.php';
-require_once 'include/ArticleRegionAction.php';
-require_once 'include/VisibilityCellRenderer.php';
+require_once 'include/StoreArticleActionsProcessor.php';
+require_once 'include/StoreArticleRegionAction.php';
+require_once 'include/StoreArticleVisibilityCellRenderer.php';
 
 /**
  * Index page for Articles
@@ -45,7 +45,7 @@ class StoreArticleIndex extends AdminIndex
 
 	protected function processActions(SwatTableView $view, SwatActions $actions)
 	{
-		$processor = new ArticleActionsProcessor($this);
+		$processor = new StoreArticleActionsProcessor($this);
 		$processor->process($view, $actions);
 	}
 
@@ -114,7 +114,7 @@ class StoreArticleIndex extends AdminIndex
 			$tool_value);
 
 		$this->ui->getWidget('visibility')->addOptionsByArray(
-			ArticleActionsProcessor::getActions());
+			StoreArticleActionsProcessor::getActions());
 	}
 
 	// }}}
