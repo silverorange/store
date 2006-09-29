@@ -151,11 +151,11 @@ class StoreCheckoutFirstPage extends StoreCheckoutStepPage
 	}
 
 	// }}}
-	// {{{ protected function buildCommon()
+	// {{{ protected function buildInternal()
 
-	protected function buildCommon()
+	protected function buildInternal()
 	{
-		parent::buildCommon();
+		parent::buildInternal();
 
 		// if there are no saved addresses, add a side-by-side class to the frame
 		// if there are saved addresses, add a stacked class to the frame
