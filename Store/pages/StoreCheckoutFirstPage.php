@@ -177,7 +177,7 @@ class StoreCheckoutFirstPage extends StoreCheckoutStepPage
 		$payment_method_container = $this->ui->getWidget('payment_method_container');
 
 		if (!$payment_method_list->visible)
-			$payment_method_container->classes[]  = 'checkout-column-right';
+			$payment_method_container->classes[]  = 'checkout-column-left';
 		else
 			$payment_method_container->classes[]  = 'checkout-no-column';
 
