@@ -5,14 +5,14 @@ require_once 'Admin/AdminSummaryDependency.php';
 /**
  * A dependency entry for addresses 
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2006 silverorange
  */
-class AddressDependency extends AdminSummaryDependency
+class StoreAddressDependency extends AdminSummaryDependency
 {
 	protected function getDependencyText($count)
 	{
-		$message = ngettext('%d dependent %s address',
+		$message = Store::ngettext('%d dependent %s address',
 			'%s dependent %s addresses', $count);
 
 		$message = sprintf($message,
