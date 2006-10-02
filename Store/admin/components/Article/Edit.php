@@ -13,9 +13,13 @@ require_once 'Swat/SwatDate.php';
  */
 class ArticleEdit extends AdminDBEdit
 {
+	// {{{ protected properties 
+
+	protected $fields;
+
+	// }}}
 	// {{{ private properties 
 
-	private $fields;
 	private $parent;
 
 	// }}}

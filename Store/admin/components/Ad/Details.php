@@ -75,7 +75,7 @@ class StoreAdDetails extends AdminIndex
 	// }}}
 	// {{{ protected function getOrdersTableStore()
 
-	private function getOrdersTableStore()
+	protected function getOrdersTableStore()
 	{
 		$regions = $this->queryRegions();
 		$this->appendRegionColumns($regions);
@@ -169,9 +169,9 @@ class StoreAdDetails extends AdminIndex
 	}
 
 	// }}}
-	// {{{ private function appendRegionColumns()
+	// {{{ protected function appendRegionColumns()
 
-	private function appendRegionColumns($regions)
+	protected function appendRegionColumns($regions)
 	{
 		$view = $this->ui->getWidget('orders_view');
 
