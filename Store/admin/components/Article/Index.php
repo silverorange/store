@@ -102,9 +102,9 @@ class StoreArticleIndex extends AdminIndex
 			// move the articles frame inside of the detail frame
 			$articles_frame->parent->remove($articles_frame);
 			$details_frame->add($articles_frame);
-			$articles_frame->title = 'Sub-Articles';
+			$articles_frame->title = Store::_('Sub-Articles');
 			$this->ui->getWidget('articles_new')->title =
-				'New Sub-Article';
+				Store::_('New Sub-Article');
 
 			$this->buildDetails();
 		}
@@ -150,7 +150,8 @@ class StoreArticleIndex extends AdminIndex
 
 		if ($row === null)
 			throw new AdminNotFoundException(
-				sprintf("Article with id '%s' not found.", $this->id));
+				sprintf(Store::_('Article with id ‘%s’ not found.'),
+					$this->id));
 
 		if ($row->bodytext !== null)
 			$row->bodytext = SwatString::condense(SwatString::toXHTML(
@@ -160,7 +161,7 @@ class StoreArticleIndex extends AdminIndex
 			$row->description = SwatString::condense(SwatString::toXHTML(
 				$row->description));
 
-		$details_frame->title = 'Article';
+		$details_frame->title = Store::_('Article');
 		$details_frame->subtitle = $row->title;
 		$details_view->data = &$row;
 
@@ -169,7 +170,8 @@ class StoreArticleIndex extends AdminIndex
 
 		// build navbar
 		$this->navbar->popEntry();
-		$this->navbar->addEntry(new SwatNavBarEntry('Articles', 'Article'));
+		$this->navbar->addEntry(new SwatNavBarEntry(Store::_('Articles'),
+			'Article'));
 
 		if ($row->parent != null) {
 			$navbar_rs = SwatDB::executeStoredProc($this->app->db, 

@@ -36,7 +36,7 @@ class StoreArticleSearch extends AdminSearch
 
 		$this->ui->getWidget('article_region_action')->db = $this->app->db;
 
-		$this->navbar->createEntry('Search');
+		$this->navbar->createEntry(Store::_('Search'));
 	}
 
 	// }}}
@@ -158,7 +158,8 @@ class StoreArticleSearch extends AdminSearch
 		
 		if ($store->getRowCount() != 0)
 			$this->ui->getWidget('results_message')->content =
-				$pager->getResultsMessage('result', 'results');
+				$pager->getResultsMessage(Store::_('result'), 
+					Store::_('results'));
 
 		return $store;
 	}

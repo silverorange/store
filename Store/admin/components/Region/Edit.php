@@ -75,7 +75,7 @@ class StoreRegionEdit extends AdminDBEdit
 			$region_shipping_country_list->values, 'Country', 'text:id');
 
 		$msg = new SwatMessage(
-			sprintf('&#8220;%s&#8221; has been saved.', $values['title']));
+			sprintf(Store::_('“%s” has been saved.'), $values['title']));
 
 		$this->app->messages->add($msg);
 	}
@@ -92,7 +92,7 @@ class StoreRegionEdit extends AdminDBEdit
 
 		if ($row === null)
 			throw new AdminNotFoundException(
-				sprintf("Region with id '%s' not found.", $this->id));
+				sprintf(Store::_('Region with id ‘%s’ not found.'), $this->id));
 
 		$this->ui->setValues(get_object_vars($row));
 
