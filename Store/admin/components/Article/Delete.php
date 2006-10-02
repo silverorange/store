@@ -10,7 +10,7 @@ require_once 'Admin/AdminListDependency.php';
  * @package   veseys2
  * @copyright 2005-2006 silverorange
  */
-class ArticleDelete extends AdminDBDelete
+class StoreArticleDelete extends AdminDBDelete
 {
 	// {{{ private properties 
 
