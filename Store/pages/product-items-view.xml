@@ -50,6 +50,7 @@
 			</object>
 			<object class="StoreTableViewButtonRow">
 				<property name="id">add_button</property>
+				<property name="visible" type="boolean">false</property>
 				<property name="title">Add to Cart</property>
 			</object>
 		</widget>

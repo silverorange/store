@@ -23,7 +23,6 @@ class StoreProductPage extends StoreStorePage
 	public $product_id;
 	public $product = null;
 	public $has_description = false;
-	public $has_quantity_widget = false;
 
 	// }}}
 	// {{{ protected properties
@@ -120,6 +119,9 @@ class StoreProductPage extends StoreStorePage
 	
 				$last_sku = $item->sku;
 				$store->addRow($ds);
+
+				if ($ds->is_available)
+					$view->getRow('add_button')->visible = true;
 			}
 		}
 
@@ -142,13 +144,10 @@ class StoreProductPage extends StoreStorePage
 		$ds->is_available = $item->isAvailableInRegion($this->app->getRegion());
 				
 		$ds->status = '';
-		$this->has_quantity_widget = true;
 
-		if (!$ds->is_available) {
-			$this->has_quantity_widget = false;
+		if (!$ds->is_available)
 			$ds->status = sprintf('<span class="item-status">%s</span>',
 				Item::getStatusTitle($item->status));
-		}
 		
 		return $ds;
 	}
@@ -531,9 +530,6 @@ class StoreProductPage extends StoreStorePage
 
 		if (!$this->has_description)
 			$view->getColumn('description_column')->visible = false;
-
-		if (!$this->has_quantity_widget)
-			$view->getRow('add_button')->visible = false;
 
 		$this->items_ui->display();
 	}
