@@ -22,7 +22,14 @@ class StoreAddressView extends SwatControl
 	// }}}
 	// {{{ private properties
 
+	/**
+	 * @var SwatButton
+	 */
 	private $remove_button;
+
+	/**
+	 * @var string
+	 */
 	private $edit_address_link = 'account/address%s';
 
 	// }}}
@@ -79,22 +86,24 @@ class StoreAddressView extends SwatControl
 		$controls->class = 'store-address-view-controls';
 
 		$edit_link = new SwatToolLink();
-		$edit_link->link = sprintf($this->edit_address_link, $this->address->id);
-		$edit_link->title = 'Edit Address';
+		$edit_link->link = sprintf($this->edit_address_link,
+			$this->address->id);
+
+		$edit_link->title = Store::_('Edit Address');
 		$edit_link->setFromStock('edit');
 
-		$this->remove_button->title = 'Remove';
+		$this->remove_button->title = Store::_('Remove');
 		$this->remove_button->classes[] = 'store-remove';
-		$this->remove_button->confirmation_message = sprintf(
-			"Are you sure you want to remove the following address?\n\n%s",
+		$this->remove_button->confirmation_message = sprintf(Store::_(
+			"Are you sure you want to remove the following address?\n\n%s"),
 			$address_text);
 
 		$div->open();
-			$this->address->displayCondensed();
-			$controls->open();
-				$edit_link->display();
-				$this->remove_button->display();
-			$controls->close();
+		$this->address->displayCondensed();
+		$controls->open();
+		$edit_link->display();
+		$this->remove_button->display();
+		$controls->close();
 		$div->close();
 	}
 
