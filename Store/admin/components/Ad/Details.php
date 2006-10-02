@@ -47,11 +47,11 @@ class StoreAdDetails extends AdminIndex
 		$this->ui->getWidget('index_frame')->subtitle = $title;
 
 		$this->periods = array(
-			'day' => 'Day',
-			'week' => 'Week',
-			'two_week' => '2 Weeks',
-			'month' => 'Month',
-			'total' => 'Total'
+			'day' => Store::_('Day'),
+			'week' => Store::_('Week'),
+			'two_week' => Store::_('2 Weeks'),
+			'month' => Store::_('Month'),
+			'total' => Store::_('Total')
 		);
 	}
 
@@ -177,7 +177,8 @@ class StoreAdDetails extends AdminIndex
 
 		foreach ($regions as $region) {
 			$subtotal_column = new SwatTableViewColumn('subtotal_'.$region->id);
-			$subtotal_column->title = $region->title.' Subtotal';
+			$subtotal_column->title = sprintf(Store::_('%s Subtotal'),
+				$region->title);
 
 			$subtotal_renderer = new SwatMoneyCellRenderer();
 			$subtotal_renderer->locale = $region->getFirstLocale()->id;
@@ -188,7 +189,8 @@ class StoreAdDetails extends AdminIndex
 
 
 			$orders_column = new SwatTableViewColumn('orders_'.$region->id);
-			$orders_column->title = $region->title.' Orders';
+			$orders_column->title = sprintf(Store::_('%s Orders'),
+				$region->title);
 
 			$orders_renderer = new SwatNumericCellRenderer();
 
@@ -201,7 +203,7 @@ class StoreAdDetails extends AdminIndex
 		}
 
 		$orders_column = new SwatTableViewColumn('total_orders');
-		$orders_column->title = 'Total Orders';
+		$orders_column->title = Store::_('Total Orders');
 
 		$orders_renderer = new SwatNumericCellRenderer();
 

@@ -26,9 +26,9 @@ class StoreAdDelete extends AdminDBDelete
 
 		$num = SwatDB::exec($this->app->db, $sql);
 
-		$msg = new SwatMessage(sprintf(ngettext('One ad has been deleted.',
-			'%d ads have been deleted.', $num), $num),
-			SwatMessage::NOTIFICATION);
+		$msg = new SwatMessage(sprintf(Store::ngettext(
+			'One ad has been deleted.', '%d ads have been deleted.', $num),
+			$num), SwatMessage::NOTIFICATION);
 
 		$this->app->messages->add($msg);	
 	}
@@ -45,13 +45,13 @@ class StoreAdDelete extends AdminDBDelete
 		$item_list = $this->getItemList('integer');
 
 		$dep = new AdminListDependency();
-		$dep->title = 'ad';
+		$dep->title = Store::_('ad');
 		$dep->entries = AdminListDependency::queryEntries($this->app->db,
 			'Ad', 'integer:id', null, 'text:title', 'id',
 			'id in ('.$item_list.')', AdminDependency::DELETE);
 
 		$dep_orders = new AdminSummaryDependency();
-		$dep_orders->title = 'order';
+		$dep_orders->title = Store::_('order');
 		$dep_orders->summaries = AdminSummaryDependency::querySummaries(
 			$this->app->db, 'Orders', 'integer:id', 'integer:ad',
 			'ad in ('.$item_list.')', AdminDependency::NODELETE);
