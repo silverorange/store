@@ -7,10 +7,10 @@ require_once 'SwatDB/SwatDB.php';
 /**
  * Index page for Countries
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2006 silverorange
  */
-class CountryIndex extends AdminIndex
+class StoreCountryIndex extends AdminIndex
 {
 	// init phase
 	// {{{ protected function initInternal()

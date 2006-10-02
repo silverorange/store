@@ -8,10 +8,10 @@ require_once 'Swat/SwatMessage.php';
 /**
  * Edit page for Countries
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2006 silverorange
  */
-class CountryEdit extends AdminDBEdit
+class StoreCountryEdit extends AdminDBEdit
 {
 	// {{{ private properties
 
