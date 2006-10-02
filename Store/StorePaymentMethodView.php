@@ -12,7 +12,6 @@ require_once 'Swat/SwatControl.php';
  * @copyright 2005-2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-
 class StorePaymentMethodView extends SwatControl
 {
 	// {{{ public properties
@@ -22,7 +21,14 @@ class StorePaymentMethodView extends SwatControl
 	// }}}
 	// {{{ private properties
 
+	/**
+	 * @var SwatButton
+	 */
 	private $remove_button;
+
+	/**
+	 * @var string
+	 */
 	private $edit_link = 'account/paymentmethod%s';
 
 	// }}}
@@ -79,7 +85,9 @@ class StorePaymentMethodView extends SwatControl
 		$controls->class = 'store-payment-method-view-controls';
 
 		$edit_link = new SwatToolLink();
-		$edit_link->link = sprintf($this->edit_link, $this->payment_method->id);
+		$edit_link->link = sprintf($this->edit_link,
+			$this->payment_method->id);
+
 		$edit_link->title = Store::_('Edit Payment Method');
 		$edit_link->setFromStock('edit');
 
