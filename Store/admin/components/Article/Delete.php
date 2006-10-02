@@ -33,9 +33,9 @@ class ArticleDelete extends AdminDBDelete
 
 		$num = SwatDB::exec($this->app->db, $sql);
 
-		$msg = new SwatMessage(sprintf(ngettext('One article has been deleted.',
-			'%d articles have been deleted.', $num), $num),
-			SwatMessage::NOTIFICATION);
+		$msg = new SwatMessage(sprintf(Store::ngettext(
+			'One article has been deleted.', '%d articles have been deleted.',
+			$num), SwatString::numberFormat($num)), SwatMessage::NOTIFICATION);
 
 		$this->app->messages->add($msg);
 	}
@@ -71,7 +71,7 @@ class ArticleDelete extends AdminDBDelete
 		$item_list = $this->getItemList('integer');
 		
 		$dep = new AdminListDependency();
-		$dep->title = 'article';
+		$dep->title = Store::_('article');
 		$dep->entries = AdminListDependency::queryEntries($this->app->db,
 			'Article', 'integer:id', null, 'text:title', 'title',
 			'id in ('.$item_list.')', AdminDependency::DELETE);
@@ -94,7 +94,7 @@ class ArticleDelete extends AdminDBDelete
 	private function getDependencies($dep, $item_list)
 	{
 		$dep_subarticles = new AdminListDependency();
-		$dep_subarticles->title = 'sub-article';
+		$dep_subarticles->title = Store::_('sub-article');
 		$dep_subarticles->entries = AdminListDependency::queryEntries(
 			$this->app->db, 'Article', 'integer:id', 'integer:parent',
 			'title', 'title', 'parent in ('.$item_list.')',
@@ -129,7 +129,7 @@ class ArticleDelete extends AdminDBDelete
 					'Article/Index?id='.$elem->id));
 		}
 
-		$this->navbar->addEntry(new SwatNavBarEntry('Delete'));
+		$this->navbar->addEntry(new SwatNavBarEntry(Store::_('Delete')));
 	}
 
 	// }}}

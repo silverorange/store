@@ -56,9 +56,9 @@ class StoreArticleActionsProcessor
 			$processor->setItems($view->checked_items);
 			$processor->processAction();
 
-			$msg = new SwatMessage(sprintf(ngettext(
+			$msg = new SwatMessage(sprintf(Store::ngettext(
 				'Accessibility has been updated for one article.',
-				'Accessibility has been updated for %s articles.', $num),
+				'Accessibility has been updated for %d articles.', $num),
 				SwatString::numberFormat($num)));
 
 			break;
@@ -70,9 +70,10 @@ class StoreArticleActionsProcessor
 				SwatDB::updateColumn($this->page->app->db, 'Article', 
 					'boolean:show', true, 'id', $view->checked_items);
 
-				$msg = new SwatMessage(sprintf(ngettext(
+				$msg = new SwatMessage(sprintf(Store::ngettext(
 					'One article has been shown in the menu.',
-					'%d articles have been shown in the menu.', $num), $num));
+					'%d articles have been shown in the menu.', $num),
+					SwatString::numberFormat($num)));
 				
 				break;
 
@@ -80,10 +81,10 @@ class StoreArticleActionsProcessor
 				SwatDB::updateColumn($this->page->app->db, 'Article', 
 					'boolean:show', false, 'id', $view->checked_items);
 
-				$msg = new SwatMessage(sprintf(ngettext(
+				$msg = new SwatMessage(sprintf(Store::ngettext(
 					'One article has been hidden from the menu.',
 					'%d articles have been hidden from the menu.', $num), 
-					$num));
+					SwatString::numberFormat($num)));
 
 				break;
 
@@ -91,9 +92,10 @@ class StoreArticleActionsProcessor
 				SwatDB::updateColumn($this->page->app->db, 'Article', 
 					'boolean:searchable', true, 'id', $view->checked_items);
 
-				$msg = new SwatMessage(sprintf(ngettext(
+				$msg = new SwatMessage(sprintf(Store::ngettext(
 					'One article has been made searchable.',
-					'%d articles have been made searchable.', $num), $num));
+					'%d articles have been made searchable.', $num), 
+					SwatString::numberFormat($num)));
 				
 				break;
 
@@ -101,10 +103,10 @@ class StoreArticleActionsProcessor
 				SwatDB::updateColumn($this->page->app->db, 'Article', 
 					'boolean:searchable', false, 'id', $view->checked_items);
 
-				$msg = new SwatMessage(sprintf(ngettext(
+				$msg = new SwatMessage(sprintf(Store::ngettext(
 					'One article has been hidden from the search results.',
 					'%d articles have been hidden from the search results.', 
-					$num), $num));
+					$num), SwatString::numberFormat($num)));
 
 				break;
 
@@ -112,9 +114,10 @@ class StoreArticleActionsProcessor
 				SwatDB::updateColumn($this->page->app->db, 'Article', 
 					'boolean:enabled', true, 'id', $view->checked_items);
 
-				$msg = new SwatMessage(sprintf(ngettext(
+				$msg = new SwatMessage(sprintf(Store::ngettext(
 					'One article has been enabled.',
-					'%d articles have been enabled.', $num), $num));
+					'%d articles have been enabled.', $num), 
+					SwatString::numberFormat($num)));
 
 				break;
 
@@ -122,9 +125,10 @@ class StoreArticleActionsProcessor
 				SwatDB::updateColumn($this->page->app->db, 'Article', 
 					'boolean:enabled', false, 'id', $view->checked_items);
 
-				$msg = new SwatMessage(sprintf(ngettext(
+				$msg = new SwatMessage(sprintf(Store::ngettext(
 					'One article has been disabled.',
-					'%d articles have been disabled.', $num), $num));
+					'%d articles have been disabled.', $num),
+					SwatString::numberFormat($num)));
 
 				break;
 
@@ -139,10 +143,10 @@ class StoreArticleActionsProcessor
 	public static function getActions()
 	{
 		return array(
-			'show_in_menu' => 'show in menu',
-			'hide_from_menu' => 'hide from menu',
-			'show_in_search' => 'show in search',
-			'hide_from_search' => 'hide from search',
+			'show_in_menu' => Store::_('show in menu'),
+			'hide_from_menu' => Store::_('hide from menu'),
+			'show_in_search' => Store::_('show in search'),
+			'hide_from_search' => Store::_('hide from search'),
 		);
 	}
 }

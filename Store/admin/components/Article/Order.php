@@ -49,7 +49,7 @@ class StoreArticleOrder extends AdminDBOrder
 		parent::buildInternal();
 
 		$frame = $this->ui->getWidget('order_frame');
-		$frame->title = 'Order Articles';
+		$frame->title = Store::_('Order Articles');
 	}
 
 	// }}}
@@ -68,7 +68,8 @@ class StoreArticleOrder extends AdminDBOrder
 		$sql = 'select sum(displayorder) from Article where '.$where_clause;
 		$sum = SwatDB::queryOne($this->app->db, $sql, 'integer');
 		$options_list = $this->ui->getWidget('options');
-		$options_list->value = ($sum == 0) ? 'auto' : 'custom';
+		$options_list->value = ($sum == 0) ? Store::_('auto') :
+			Store::_('custom');
 	}
 
 	// }}}
@@ -77,7 +78,8 @@ class StoreArticleOrder extends AdminDBOrder
 	protected function buildNavBar()
 	{
 		$this->navbar->popEntry();
-		$this->navbar->addEntry(new SwatNavBarEntry('Articles', 'Article'));
+		$this->navbar->addEntry(new SwatNavBarEntry(Store::_('Articles'),
+			'Article'));
 
 		if ($this->parent !== null) {
 			$navbar_rs = SwatDB::executeStoredProc($this->app->db, 

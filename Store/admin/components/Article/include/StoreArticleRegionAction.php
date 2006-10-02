@@ -35,21 +35,21 @@ class StoreArticleRegionAction extends SwatControl
 	{
 		$this->init();
 		$this->region_flydown->show_blank = false;
-		$options = array(0 => 'All');
+		$options = array(0 => Store::_('All'));
 		$options = $options + $this->regions;
 		$this->region_flydown->addOptionsByArray($options);
 
 		$label_tag = new SwatHtmlTag('label');
 		$label_tag->for = $this->id.'_region';
-		$label_tag->setContent('For Region: ');
+		$label_tag->setContent(Store::_('For Region: '));
 		$label_tag->display();
 		$this->region_flydown->display();
 
 		$this->accessibility_selector->addOption(
-			new SwatOption(true, 'accessible'));
+			new SwatOption(true, Store::_('accessible')));
 
 		$this->accessibility_selector->addOption(
-			new SwatOption(false, 'not accessible'));
+			new SwatOption(false, Store::_('not accessible')));
 
 		$this->accessibility_selector->display();
 	}

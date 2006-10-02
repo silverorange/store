@@ -29,9 +29,9 @@ class StoreRegionDelete extends AdminDBDelete
 
 		$num = SwatDB::exec($this->app->db, $sql);
 
-		$msg = new SwatMessage(sprintf(ngettext('One region has been deleted.',
-			'%d regions have been deleted.', $num), $num),
-			SwatMessage::NOTIFICATION);
+		$msg = new SwatMessage(sprintf(Store::ngettext(
+			'One region has been deleted.', '%d regions have been deleted.',
+			$num), SwatString::numberFormat($num)), SwatMessage::NOTIFICATION);
 
 		$this->app->messages->add($msg);
 	}
@@ -48,14 +48,14 @@ class StoreRegionDelete extends AdminDBDelete
 		$item_list = $this->getItemList('integer');
 
 		$dep = new AdminListDependency();
-		$dep->title = 'Region';
+		$dep->title = Store::_('Region');
 		$dep->entries = AdminListDependency::queryEntries($this->app->db,
 			'Region', 'integer:id', null, 'text:title', 'id',
 			'id in ('.$item_list.')', AdminDependency::DELETE);
 
 		// dependent products
 		$dep_products = new AdminSummaryDependency();
-		$dep_products->title = 'Product';
+		$dep_products->title = Store::_('Product');
 		
 		$sql = sprintf('select count(distinct Item.product) as count,
 				ItemRegionBinding.region as parent, %s::integer as status_level
@@ -75,7 +75,7 @@ class StoreRegionDelete extends AdminDBDelete
 
 		// dependent locales
 		$dep_locales = new AdminSummaryDependency();
-		$dep_locales->title = 'Locale';
+		$dep_locales->title = Store::_('Locale');
 		$dep_locales->summaries = AdminSummaryDependency::querySummaries(
 			$this->app->db, 'Locale', 'integer:id', 'integer:region',
 			'region in ('.$item_list.')', AdminDependency::NODELETE);

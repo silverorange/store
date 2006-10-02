@@ -38,21 +38,22 @@ class StoreArticleVisibilityCellRenderer extends SwatCellRenderer
 				foreach ($region_availability as $region)
 					$regions[] = $region->title;
 
-				echo 'accessible to: ', implode(', ', $regions), '<br />';
+				echo Store::_('accessible to: '), implode(', ', $regions),
+					'<br />';
 			}
 
 			if (!$this->searchable)
-				$messages[] = 'not searchable';
+				$messages[] = Store::_('not searchable');
 			elseif ($this->display_positive_states)
-				$messages[] = 'searchable';
+				$messages[] = Store::_('searchable');
 
 			if (!$this->show_in_menu)
-				$messages[] = 'not shown in menu';
+				$messages[] = Store::_('not shown in menu');
 			elseif ($this->display_positive_states)
-				$messages[] = 'shown in menu';
+				$messages[] = Store::_('shown in menu');
 
 		} else {
-			$messages[] = 'not accessible';
+			$messages[] = Store::_('not accessible');
 		}
 
 		echo implode($this->separator, $messages);

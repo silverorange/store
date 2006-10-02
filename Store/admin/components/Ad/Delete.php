@@ -28,7 +28,7 @@ class StoreAdDelete extends AdminDBDelete
 
 		$msg = new SwatMessage(sprintf(Store::ngettext(
 			'One ad has been deleted.', '%d ads have been deleted.', $num),
-			$num), SwatMessage::NOTIFICATION);
+			SwatString::numberFormat($num)), SwatMessage::NOTIFICATION);
 
 		$this->app->messages->add($msg);	
 	}
