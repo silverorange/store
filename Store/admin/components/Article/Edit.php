@@ -11,7 +11,7 @@ require_once 'Swat/SwatDate.php';
  * @package   veseys2
  * @copyright 2005-2006 silverorange
  */
-class ArticleEdit extends AdminDBEdit
+class StoreArticleEdit extends AdminDBEdit
 {
 	// {{{ protected properties 
 
