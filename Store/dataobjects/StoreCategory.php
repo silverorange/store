@@ -4,7 +4,6 @@ require_once 'Swat/SwatNavBarEntry.php';
 require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreCategoryImage.php';
 require_once 'Store/dataobjects/StoreArticleWrapper.php';
-require_once 'Store/dataobjects/StoreCategoryImage.php';
 
 /**
  * A category for an e-commerce web application
@@ -124,9 +123,6 @@ class StoreCategory extends StoreDataObject
 
 		$this->registerInternalProperty('path');
 		$this->registerInternalProperty('product_count');
-		$this->registerInternalProperty('image',
-			$this->class_map->resolveClass('StoreCategoryImage'));
-
 		$this->registerInternalProperty('image',
 			$this->class_map->resolveClass('StoreCategoryImage'));
 
