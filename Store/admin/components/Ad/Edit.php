@@ -47,7 +47,7 @@ class StoreAdEdit extends AdminDBEdit
 
 		} elseif (!$this->validateShortname($shortname, $this->id)) {
 			$msg = new SwatMessage(
-				'Short name already exists and must be unique.', 
+				Store::_('Short name already exists and must be unique.'),
 				SwatMessage::ERROR);
 
 			$this->ui->getWidget('shortname')->addMessage($msg);
@@ -100,7 +100,7 @@ class StoreAdEdit extends AdminDBEdit
 		}
 
 		$msg = new SwatMessage(
-			sprintf('&#8220;%s&#8221; has been saved.', $values['title']));
+			sprintf(Store::_('“%s” has been saved.'), $values['title']));
 
 		$this->app->messages->add($msg);
 	}
@@ -117,7 +117,7 @@ class StoreAdEdit extends AdminDBEdit
 
 		if ($row === null)
 			throw new AdminNotFoundException(
-				sprintf("Ad with id '%s' not found.", $this->id));
+				sprintf(Store::_('Ad with id ‘%s’ not found.'), $this->id));
 
 		$this->ui->setValues(get_object_vars($row));
 	}
