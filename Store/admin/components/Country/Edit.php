@@ -62,7 +62,7 @@ class StoreCountryEdit extends AdminDBEdit
 		}
 
 		$msg = new SwatMessage(
-			sprintf(Store:_('“%s” has been saved.'), $values['title']));
+			sprintf(Store::_('“%s” has been saved.'), $values['title']));
 
 		$this->app->messages->add($msg);
 	}
@@ -82,7 +82,7 @@ class StoreCountryEdit extends AdminDBEdit
 
 			if ($count > 0) {
 				$message = new SwatMessage(
-					Store:_('<strong>Country Code</strong> already exists. '.
+					Store::_('<strong>Country Code</strong> already exists. '.
 					'Country code must be unique for each country.'),
 					SwatMessage::ERROR);
 
