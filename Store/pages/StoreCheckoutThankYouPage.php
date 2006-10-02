@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/pages/StoreCheckoutPage.php';
+require_once 'Store/pages/StoreCheckoutUIPage.php';
 
 /**
  * Confirmation page of checkout
@@ -8,8 +8,18 @@ require_once 'Store/pages/StoreCheckoutPage.php';
  * @package   Store
  * @copyright 2006 silverorange
  */
-class StoreCheckoutThankYouPage extends StoreCheckoutPage
+class StoreCheckoutThankYouPage extends StoreCheckoutUIPage
 {
+	// {{{ public function __construct()
+
+	public function __construct(SiteApplication $app, SiteLayout $layout)
+	{
+		parent::__construct($app, $layout);
+		$this->ui_xml = 'Store/pages/checkout-thank-you.xml';
+	}
+
+	// }}}
+
 	// init phase
 	// {{{ public function init()
 
@@ -18,6 +28,22 @@ class StoreCheckoutThankYouPage extends StoreCheckoutPage
 		parent::init();
 
 		$this->resetProgress();
+	}
+
+	// }}}
+	// {{{ protected function initInternal()
+
+	protected function initInternal()
+	{
+	}
+
+	// }}}
+	// {{{ protected function loadUI()
+
+	protected function loadUI()
+	{
+		$this->ui = new StoreUI();
+		$this->ui->loadFromXML($this->ui_xml);
 	}
 
 	// }}}
@@ -48,10 +74,6 @@ class StoreCheckoutThankYouPage extends StoreCheckoutPage
 		// clear the order and logout
 		unset($this->app->session->order);
 		$this->app->session->logout();
-
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-checkout-thank-you-page.css',
-			Store::PACKAGE_ID));
 	}
 
 	// }}}
@@ -59,30 +81,46 @@ class StoreCheckoutThankYouPage extends StoreCheckoutPage
 
 	protected function buildInternal()
 	{
-		$this->ui = new StoreUI();
-		$this->ui->loadFromXML('Store/pages/checkout-thank-you.xml');
+		parent::buildInternal();
 
-		$this->ui->init();
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/styles/store-checkout-thank-you-page.css',
+			Store::PACKAGE_ID));
 
+		$this->buildHeader();
+
+		if ($this->app->session->order->account !== null)
+			$this->buildAccountMessage();
+
+		$this->buildOrderDetails();
+	}
+
+	// }}}
+	// {{{ protected function buildHeader()
+
+	protected function buildHeader()
+	{
 		$this->ui->getWidget('header')->content =
 			SwatString::toXHTML($this->app->session->order->getReceiptHeader()).
 			'<div style="page-break-after: always"></div>';
+	}
 
-		if ($this->app->session->order->account !== null) {
-			$message = new SwatMessage('Your Account',
-				SwatMessage::NOTIFICATION);
+	// }}}
+	// {{{ protected function buildAccountMessage()
 
-			$message->secondary_content = 'By logging into your account the '.
-				'next time you visit our website, you can edit your addresses '.
-				'and payment methods, view previously placed orders, re-order '.
-				'items from your previous orders, and checkout without '.
-				'having to re-enter all of your address and payment '.
-				'information.';
+	protected function buildAccountMessage()
+	{
+		$message = new SwatMessage('Your Account',
+			SwatMessage::NOTIFICATION);
 
-			$this->ui->getWidget('message_display')->add($message);
-		}
+		$message->secondary_content = 'By logging into your account the '.
+			'next time you visit our website, you can edit your addresses '.
+			'and payment methods, view previously placed orders, re-order '.
+			'items from your previous orders, and checkout without '.
+			'having to re-enter all of your address and payment '.
+			'information.';
 
-		$this->buildOrderDetails();
+		$this->ui->getWidget('message_display')->add($message);
 	}
 
 	// }}}
