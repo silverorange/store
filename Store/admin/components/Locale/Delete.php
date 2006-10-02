@@ -13,25 +13,37 @@ require_once 'Admin/AdminSummaryDependency.php';
  */
 class StoreLocaleDelete extends AdminDBDelete
 {
+	/// {{{ protected properties
+
+	protected $item_list;
+
+	/// }}}
+
 	// process phase
 	// {{{ protected function processDBData()
 
 	protected function processDBData()
 	{
 		parent::processDBData();
+		$this->item_list = $this->getItemList('text');
 
-		$sql = 'delete from Locale where id in (%s)
-				and id not in (select locale from Orders)
-				and id not in (select locale from CatalogRequest)';
-
-		$item_list = $this->getItemList('text');
-		$num = SwatDB::exec($this->app->db, sprintf($sql, $item_list));
+		$sql = $this->getProcessSQL();
+		$num = SwatDB::exec($this->app->db, sprintf($sql, $this->item_list));
 
 		$msg = new SwatMessage(sprintf(Store::ngettext(
 			'One locale has been deleted.', '%d locales have been deleted.',
 			$num), SwatString::numberFormat($num)), SwatMessage::NOTIFICATION);
 
 		$this->app->messages->add($msg);
+	}
+
+	// }}}
+	// {{{ protected function getProcessSQL()
+
+	protected function getProcessSQL()
+	{
+		return 'delete from Locale where id in (%s)
+			and id not in (select locale from Orders)';
 	}
 
 	// }}}
@@ -43,31 +55,8 @@ class StoreLocaleDelete extends AdminDBDelete
 	{
 		parent::buildInternal();
 
-		$item_list = $this->getItemList('text');
-
-		$dep = new AdminListDependency();
-		$dep->title = Store::_('Locale');
-		$dep->entries = AdminListDependency::queryEntries($this->app->db,
-			'Locale', 'text:id', null, 'text:id', 'id',
-			'id in ('.$item_list.')', AdminDependency::DELETE);
-
-		// dependent orders
-		$dep_orders = new AdminSummaryDependency();
-		$dep_orders->title = Store::_('Order');
-		$dep_orders->summaries = AdminSummaryDependency::querySummaries(
-			$this->app->db, 'Orders', 'integer:id', 'text:locale',
-			'locale in ('.$item_list.')', AdminDependency::NODELETE);
-
-		$dep->addDependency($dep_orders);
-
-		// dependent catalog requests 
-		$dep_catalogrequests= new AdminSummaryDependency();
-		$dep_catalogrequests->title = Store::_('Catalogue Request');
-		$dep_catalogrequests->entries = AdminSummaryDependency::querySummaries(
-			$this->app->db, 'CatalogRequest', 'integer:id', 'text:locale', 
-			'locale in ('.$item_list.')', AdminDependency::NODELETE);
-
-		$dep->addDependency($dep_catalogrequests);
+		$this->item_list = $this->getItemList('text');
+		$dep = $this->getDependency();
 
 		$message = $this->ui->getWidget('confirmation_message');
 		$message->content = $dep->getMessage();
@@ -75,6 +64,29 @@ class StoreLocaleDelete extends AdminDBDelete
 
 		if ($dep->getStatusLevelCount(AdminDependency::DELETE) == 0)
 			$this->switchToCancelButton();
+	}
+
+	// }}}
+	// {{{ protected function getDependency()
+
+	protected function getDependency()
+	{
+		$dep = new AdminListDependency();
+		$dep->title = Store::_('Locale');
+		$dep->entries = AdminListDependency::queryEntries($this->app->db,
+			'Locale', 'text:id', null, 'text:id', 'id',
+			'id in ('.$this->item_list.')', AdminDependency::DELETE);
+
+		// dependent orders
+		$dep_orders = new AdminSummaryDependency();
+		$dep_orders->title = Store::_('Order');
+		$dep_orders->summaries = AdminSummaryDependency::querySummaries(
+			$this->app->db, 'Orders', 'integer:id', 'text:locale',
+			'locale in ('.$this->item_list.')', AdminDependency::NODELETE);
+
+		$dep->addDependency($dep_orders);
+
+		return $dep;
 	}
 
 	// }}}
