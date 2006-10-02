@@ -1,0 +1,33 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<widget class="SwatFrame" id="edit_frame">
+		<property name="title">Country</property>
+		<widget class="SwatForm" id="edit_form">
+			<widget class="SwatFormField" id="id_field">
+				<property name="title">Country Code</property>
+				<property name="note"><![CDATA[This is the <a href="http://userpage.chemie.fu-berlin.de/diverse/doc/ISO_3166.html" target="_blank">ISO-3611</a> two-letter country code for this country.]]></property>
+				<property name="note_content_type">text/xml</property>
+				<widget class="SwatEntry" id="id_edit">
+					<property name="required" type="boolean">true</property>
+					<property name="maxlength" type="integer">2</property>
+					<property name="size" type="integer">3</property>
+				</widget>
+				<widget class="SwatContentBlock" id="id_non_edit">
+					<property name="visible" type="boolean">false</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title">Title</property>
+				<widget class="SwatEntry" id="title">
+					<property name="required" type="boolean">true</property>
+					<property name="maxlength" type="integer">255</property>
+				</widget>
+			</widget>
+			<widget class="SwatFooterFormField">
+				<widget class="SwatButton" id="submit_button" />
+			</widget>
+		</widget>
+	</widget>
+</swatml>
