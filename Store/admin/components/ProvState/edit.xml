@@ -1,0 +1,56 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<widget class="SwatFrame" id="edit_frame">
+		<property name="title">Province/State</property>
+		<widget class="SwatForm" id="edit_form">
+			<widget class="SwatFormField">
+				<property name="title">Title</property>
+				<widget class="SwatEntry" id="title">
+					<property name="required" type="boolean">true</property>
+					<property name="maxlength" type="integer">100</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title">Abbreviation</property>
+				<widget class="SwatEntry" id="abbreviation">
+					<property name="size" type="integer">5</property>
+					<property name="required" type="boolean">true</property>
+					<property name="maxlength" type="integer">10</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title">Location</property>
+				<property name="note">The location field is used in the catalog request export files.</property>
+				<widget class="SwatEntry" id="location">
+					<property name="size" type="integer">5</property>
+					<property name="required" type="boolean">true</property>
+					<property name="maxlength" type="integer">10</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title">Country</property>
+				<widget class="SwatFlydown" id="country" />
+			</widget>
+			<widget class="SwatFieldset">
+				<property name="title">Applicable Taxes</property>
+				<widget class="SwatFormField">
+					<property name="title">GST?</property>
+					<widget class="SwatCheckbox" id="gst" />
+				</widget>
+				<widget class="SwatFormField">
+					<property name="title">PST?</property>
+					<widget class="SwatCheckbox" id="pst" />
+				</widget>
+				<widget class="SwatFormField">
+					<property name="title">HST?</property>
+					<widget class="SwatCheckbox" id="hst" />
+				</widget>
+			</widget>
+			<widget class="SwatFooterFormField">
+				<widget class="SwatButton" id="submit_button" />
+			</widget>
+		</widget>
+	</widget>
+</swatml>
