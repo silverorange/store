@@ -1,3 +1,544 @@
+2006-10-02  isaac
+
+	* [r11732] store/trunk/Store/admin/components/Locale/Delete.php:
+	  remove veseys specfic code from the Locale component
+
+2006-10-02  nrf
+
+	* [r11727] store/trunk/Store/dataobjects/StoreCategory.php:
+	  Remove duplication.
+
+2006-10-02  steven
+
+	* [r11724] store/trunk/Store/pages/StoreCheckoutFirstPage.php:
+	  Left column... not right.
+
+2006-10-02  isaac
+
+	* [r11719] store/trunk/Store/StoreCatalogSwitcher.php:
+	  after discussion, we decided to do this (setting the output from
+	  Catalog to Catalogue) correctly with gettext
+	* [r11716] store/trunk/Store/admin/components/Locale,
+	  store/trunk/Store/admin/components/Locale/Delete.php,
+	  store/trunk/Store/admin/components/Locale/Edit.php,
+	  store/trunk/Store/admin/components/Locale/Index.php:
+	  Locale admin component to Store
+	* [r11713] store/trunk/Store/admin/components/Ad/Details.php,
+	  store/trunk/Store/admin/components/Ad/Edit.php,
+	  store/trunk/Store/admin/components/Article/Delete.php,
+	  store/trunk/Store/admin/components/Article/Edit.php,
+	  store/trunk/Store/admin/components/Article/Index.php,
+	  store/trunk/Store/admin/components/Country/Edit.php,
+	  store/trunk/Store/admin/components/ProvState/Edit.php,
+	  store/trunk/Store/admin/components/Region/Edit.php:
+	  private to protected - some things were left private, so may
+	  have to change someday - but probably not
+	* [r11709] store/trunk/Store/admin/components/ProvState,
+	  store/trunk/Store/admin/components/ProvState/Delete.php,
+	  store/trunk/Store/admin/components/ProvState/Edit.php,
+	  store/trunk/Store/admin/components/ProvState/Index.php:
+	  moving ProvState up to Store
+	* [r11707] store/trunk/Store/admin/components/Country/Edit.php:
+	  :: as opposed to incorrect :
+	* [r11706] store/trunk/Store/admin/components/Country/Edit.php,
+	  store/trunk/Store/admin/components/Country/Index.php,
+	  store/trunk/Store/admin/components/Country/include/AddressDependency.php,
+	  
+	  store/trunk/Store/admin/components/Country/include/CountryDependency.php,
+	  
+	  store/trunk/Store/admin/components/Country/include/ProvStateDependency.php,
+	  
+	  store/trunk/Store/admin/components/Country/include/StoreAddressDependency.php,
+	  
+	  store/trunk/Store/admin/components/Country/include/StoreCountryDependency.php,
+	  
+	  store/trunk/Store/admin/components/Country/include/StoreProvStateDependency.php:
+	  
+	  fix up country includes, and a few missed class and package names
+	* [r11705] store/trunk/Store/admin/components/Country,
+	  store/trunk/Store/admin/components/Country/Delete.php,
+	  store/trunk/Store/admin/components/Country/Edit.php:
+	  move country component to store, with all the cleanup in code
+	  that comes with that
+	* [r11703] store/trunk/Store/admin/components/Ad/Delete.php,
+	  store/trunk/Store/admin/components/Article/Delete.php,
+	  store/trunk/Store/admin/components/Article/Edit.php,
+	  store/trunk/Store/admin/components/Article/Index.php,
+	  store/trunk/Store/admin/components/Article/Order.php,
+	  store/trunk/Store/admin/components/Article/Search.php,
+	  store/trunk/Store/admin/components/Article/include/StoreArticleActionsProcessor.php,
+	  
+	  store/trunk/Store/admin/components/Article/include/StoreArticleRegionAction.php,
+	  
+	  store/trunk/Store/admin/components/Article/include/StoreArticleVisibilityCellRenderer.php,
+	  store/trunk/Store/admin/components/Region/Delete.php,
+	  store/trunk/Store/admin/components/Region/Edit.php:
+	  - make sure all strings are translated, and within the Store
+	  scope + utf8-ify messages for Articles
+	  - make sure all values passed to the sprintf wrapped around a
+	  ngettext() are sent to SwatString::numberFormat() first
+
+2006-10-02  gauthierm
+
+	* [r11702] store/trunk/Store/StorePaymentMethodView.php:
+	  coding conventions
+
+2006-10-02  nrf
+
+	* [r11700] store/trunk/Store/pages/StoreProductPage.php,
+	  store/trunk/Store/pages/product-items-view.xml:
+	  Refactor logic to determine when Add to Cart button is shown.
+
+2006-10-02  gauthierm
+
+	* [r11699] store/trunk/Store/StoreAddressView.php:
+	  whitespace
+
+2006-10-02  isaac
+
+	* [r11696] store/trunk/Store/admin/components/Ad/Delete.php,
+	  store/trunk/Store/admin/components/Ad/Details.php,
+	  store/trunk/Store/admin/components/Ad/Edit.php:
+	  make sure all strings are translated, and within the Store scope
+	  + utf8-ify messages
+
+2006-10-02  nrf
+
+	* [r11694] store/trunk/Store/pages/StoreCheckoutThankYouPage.php:
+	  This was missed when pushing upstream from veseys.
+
+2006-10-02  gauthierm
+
+	* [r11691] store/trunk/Store/StoreAddressView.php:
+	  coding conventions
+
+2006-09-29  nrf
+
+	* [r11662] store/trunk/Store/pages/StoreCheckoutFirstPage.php,
+	  store/trunk/Store/pages/StoreCheckoutStepPage.php:
+	  s/buildCommon()/buildInternal/ in ChckeoutStepPage to avoid
+	  confusion with buildCommon() in CheckoutEditPage
+
+2006-09-28  steven
+
+	* [r11647] store/trunk/Store/pages/cart.xml:
+	  add store-remove class to remove buttons
+
+2006-09-28  isaac
+
+	* [r11622] store/trunk/Store/admin/components/Ad/Index.php,
+	  store/trunk/Store/admin/components/Ad/include/ConversionRateCellRenderer.php,
+	  
+	  store/trunk/Store/admin/components/Ad/include/StoreConversionRateCellRenderer.php,
+	  store/trunk/Store/admin/components/Ad/index.xml,
+	  store/trunk/Store/admin/components/Article/Index.php,
+	  store/trunk/Store/admin/components/Article/Search.php,
+	  store/trunk/Store/admin/components/Article/include/ArticleActionsProcessor.php,
+	  
+	  store/trunk/Store/admin/components/Article/include/ArticleRegionAction.php,
+	  
+	  store/trunk/Store/admin/components/Article/include/StoreArticleActionsProcessor.php,
+	  
+	  store/trunk/Store/admin/components/Article/include/StoreArticleRegionAction.php,
+	  
+	  store/trunk/Store/admin/components/Article/include/StoreArticleVisibilityCellRenderer.php,
+	  
+	  store/trunk/Store/admin/components/Article/include/VisibilityCellRenderer.php,
+	  store/trunk/Store/admin/components/Article/index.xml,
+	  store/trunk/Store/admin/components/Article/search.xml:
+	  clean up of included classes in Article and Ad components
+	* [r11620] store/trunk/Store/admin/components/Ad,
+	  store/trunk/Store/admin/components/Ad/Delete.php,
+	  store/trunk/Store/admin/components/Ad/Details.php,
+	  store/trunk/Store/admin/components/Ad/Edit.php,
+	  store/trunk/Store/admin/components/Ad/Index.php,
+	  store/trunk/Store/admin/components/Article,
+	  store/trunk/Store/admin/components/Article/Index.php,
+	  store/trunk/Store/admin/components/Article/Order.php,
+	  store/trunk/Store/admin/components/Article/Search.php,
+	  store/trunk/Store/admin/components/Article/include/ArticleActionsProcessor.php,
+	  
+	  store/trunk/Store/admin/components/Article/include/ArticleRegionAction.php,
+	  
+	  store/trunk/Store/admin/components/Article/include/VisibilityCellRenderer.php:
+	  
+	  move articles and ads components up to store
+
+2006-09-28  gauthierm
+
+	* [r11613] store/trunk/Store/pages/StoreCartPage.php:
+	  - fix crasher when you resubmit the page after removing a saved
+	  item
+	  - fix crasher when you resubmit the page after moving an
+	  unavailable item to your saved cart
+
+2006-09-27  nrf
+
+	* [r11606]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Push up from veseys and refactor to make more sub-classable.
+	* [r11605] store/trunk/Store/dataobjects/StoreOrder.php:
+	  push up from veseys
+
+2006-09-27  gauthierm
+
+	* [r11599] store/trunk/Store/dataobjects/StoreItem.php:
+	  I thought I committed this but the record states otherwise
+	* [r11588] store/trunk/Store/dataobjects/StoreItem.php:
+	  - move validateSku() to Store
+	  - define some methods in StoreItem as abstract
+	* [r11584] store/trunk/Store/dataobjects/StoreCatalog.php:
+	  coding conventinos
+
+2006-09-27  steven
+
+	* [r11577] store/trunk/www/styles/store-cart-page.css:
+	  move cart styles up to store
+	* [r11576] store/trunk/Store/pages/cart.xml:
+	  Use compact-button class on cart control buttons
+
+2006-09-27  gauthierm
+
+	* [r11575] store/trunk/Store/StoreLocaleApplication.php:
+	  Use UTF-8 for locales. This probably only works on Linux.
+	* [r11574] store/trunk/Store/dataobjects/StoreCategory.php:
+	  move category image to store
+
+2006-09-27  nrf
+
+	* [r11573] store/trunk/Store/StoreCheckoutCart.php:
+	  Add a default implementation of StoreCheckoutCart::getSubtotal()
+	  so that Store pages can call it.
+
+2006-09-27  steven
+
+	* [r11572] store/trunk/Store/pages/checkout-first.xml:
+	  Remove debuging text and unnecesary classes
+
+2006-09-27  nrf
+
+	* [r11563] store/trunk/sql/functions/getCategoryPathInfo.sql:
+	  remove twigs from Store package
+	* [r11562] store/trunk/Store/StoreItemDescriptionCellRenderer.php,
+	  store/trunk/Store/dataobjects/StoreCartEntry.php,
+	  store/trunk/Store/dataobjects/StoreCategory.php,
+	  store/trunk/Store/pages/StoreCategoryPage.php,
+	  store/trunk/Store/pages/StoreStorePage.php,
+	  store/trunk/Store/pages/product-cart.xml:
+	  puch up from veseys and cleanup
+
+2006-09-27  gauthierm
+
+	* [r11556] store/trunk/Store/dataobjects/StoreProduct.php:
+	  move some loader methods from Veseys into Store
+
+2006-09-27  steven
+
+	* [r11548]
+	  store/trunk/Store/pages/StoreAccountForgotPasswordPage.php:
+	  remove veseys reference
+
+2006-09-27  nrf
+
+	* [r11546] store/trunk/Store/pages/StoreCheckoutBasicInfoPage.php,
+	  store/trunk/Store/pages/StoreCheckoutBillingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutCartPage.php,
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php,
+	  store/trunk/Store/pages/StoreCheckoutEditPage.php,
+	  store/trunk/Store/pages/StoreCheckoutFirstPage.php,
+	  store/trunk/Store/pages/StoreCheckoutFrontPage.php,
+	  store/trunk/Store/pages/StoreCheckoutPage.php,
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php,
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutThankYouPage.php,
+	  store/trunk/Store/pages/cart.xml,
+	  store/trunk/Store/pages/checkout-basic-info.xml,
+	  store/trunk/Store/pages/checkout-billing-address.xml,
+	  store/trunk/Store/pages/checkout-cart.xml,
+	  store/trunk/Store/pages/checkout-confirmation.xml,
+	  store/trunk/Store/pages/checkout-edit.xml,
+	  store/trunk/Store/pages/checkout-first.xml,
+	  store/trunk/Store/pages/checkout-front.xml,
+	  store/trunk/Store/pages/checkout-payment-method.xml,
+	  store/trunk/Store/pages/checkout-shipping-address.xml,
+	  store/trunk/Store/pages/checkout-thank-you.xml,
+	  store/trunk/www/javascript/store-checkout-billing-address.js,
+	  store/trunk/www/javascript/store-checkout-first-page.js,
+	  store/trunk/www/javascript/store-checkout-page.js,
+	  store/trunk/www/javascript/store-checkout-payment-method.js,
+	  store/trunk/www/javascript/store-checkout-shipping-address.js,
+	  store/trunk/www/styles/store-checkout-address-page.css,
+	  store/trunk/www/styles/store-checkout-basic-info-page.css,
+	  store/trunk/www/styles/store-checkout-cart-page.css,
+	  store/trunk/www/styles/store-checkout-confirmation-page.css,
+	  store/trunk/www/styles/store-checkout-first-page.css,
+	  store/trunk/www/styles/store-checkout-front-page.css,
+	  store/trunk/www/styles/store-checkout-payment-method-page.css:
+	  Push generic parts of veseys checkout up into Store package.
+
+2006-09-27  steven
+
+	* [r11536] store/trunk/Store/admin/StoreAdminMenuView.php,
+	  store/trunk/www/admin/styles/store-quick-search.css,
+	  store/trunk/www/styles/store-quick-search.css:
+	  move quick search css file
+	* [r11535] store/trunk/www/admin, store/trunk/www/admin/styles:
+	  new style dirs
+
+2006-09-27  gauthierm
+
+	* [r11528] store/trunk/www/styles/store-quick-search.css:
+	  Copy item quick-search from Veseys.
+	* [r11527] store/trunk/Store/admin/StoreAdminMenuView.php:
+	  fix file name
+	* [r11526] store/trunk/Store/admin/StoreAdminMenuView.php:
+	  specify package id when adding head entry
+
+2006-09-26  gauthierm
+
+	* [r11507] store/trunk/Store/pages/contact.xml:
+	  Unless we're captitalizing 'A' in 'Send us a Message' we should
+	  lowercase 'us'.
+
+2006-09-26  nrf
+
+	* [r11503] store/trunk/Store/StoreStorePageFactory.php,
+	  store/trunk/Store/pages/StoreCategoryPage.php,
+	  store/trunk/Store/pages/StoreProductImagePage.php,
+	  store/trunk/Store/pages/StoreProductPage.php,
+	  store/trunk/Store/pages/StoreStorePage.php,
+	  store/trunk/Store/pages/product-cart.xml,
+	  store/trunk/Store/pages/product-items-view.xml,
+	  store/trunk/www/javascript/store-product-page.js:
+	  Push product/category pages into Store package.
+	* [r11497] store/trunk/Store/dataobjects/StoreCatalog.php,
+	  store/trunk/Store/dataobjects/StoreItem.php,
+	  store/trunk/Store/dataobjects/StoreItemGroup.php,
+	  store/trunk/Store/dataobjects/StoreItemGroupWrapper.php,
+	  store/trunk/Store/dataobjects/StoreProduct.php,
+	  store/trunk/Store/dataobjects/StoreProductImage.php,
+	  store/trunk/Store/dataobjects/StoreProductImageWrapper.php:
+	  Move some dataobjects up from veseys.
+
+2006-09-26  isaac
+
+	* [r11495] store/trunk/Store/admin/components/Region/Delete.php,
+	  store/trunk/Store/admin/components/Region/Edit.php,
+	  store/trunk/Store/admin/components/Region/Index.php:
+	  make region component work
+
+2006-09-26  gauthierm
+
+	* [r11489] store/trunk/Store/admin/StoreAdminMenuView.php:
+	  - remove sku terminology from store package
+	  - use css in store package (doesn't exist yet)
+	* [r11487] store/trunk/Store/StoreAdminMenuView.php,
+	  store/trunk/Store/admin/StoreAdminMenuView.php:
+	  move menu view to Store/admin
+	* [r11486] store/trunk/Store/StoreAdminMenuView.php:
+	  rename, clean and add documentation
+
+2006-09-26  isaac
+
+	* [r11485] store/trunk/Store/admin/components/Region,
+	  veseys2/trunk/include/admin/components/Region:
+	  move Region component upstream - will break some things for a
+	  little while
+
+2006-09-26  gauthierm
+
+	* [r11483] store/trunk/Store/StoreAdminMenuView.php:
+	  Copy menu view to store from Veseys. This menu view is useful
+	  for other stores.
+
+2006-09-26  isaac
+
+	* [r11482] store/trunk/Store/admin,
+	  store/trunk/Store/admin/components:
+	  dir for Store level admin components
+	* [r11465] store/trunk/Store/StoreCatalogSwitcher.php:
+	  allow the Title of the Switcher to be set by the site
+	* [r11462] store/trunk/Store/StoreCart.php,
+	  store/trunk/Store/StoreCatalogSelector.php,
+	  store/trunk/Store/StoreCatalogSwitcher.php:
+	  - cleanup the recently moved CatalogSwitcher and Selector
+	  - translate strings in StoreCart
+	* [r11461] store/trunk/Store/StoreCatalogSelector.php,
+	  veseys2/trunk/include/admin/CatalogSelector.php:
+	  move catalogselector up to store - will fix everything this
+	  breaks shortly
+	* [r11460] store/trunk/Store/StoreCatalogSwitcher.php,
+	  veseys2/trunk/include/admin/CatalogSwitcher.php:
+	  move catalogswitcher up to store - will fix everything this
+	  breaks shortly
+
+2006-09-26  nrf
+
+	* [r11453] store/trunk/Store/dataobjects/StoreCategoryImage.php,
+	  store/trunk/Store/dataobjects/StoreCategoryImageWrapper.php:
+	  Add category image dataobject to Store package.
+	* [r11450] store/trunk/www/styles/store-contact-page.css:
+	  This was supposed to be the the last commit.
+	* [r11449] store/trunk/Store/pages/StoreContactPage.php,
+	  store/trunk/Store/pages/contact.xml:
+	  Push contact page up to Store package.
+	  
+	  TODO: Steven, www/styles/store-contact-page.css is copied from
+	  Veseys.
+	  Can you review it for Veseyisms and remove them and do the
+	  opposite in
+	  veseys2/www/styles/contact-page.css and
+	  uppermost/www/styles/contact-page.css
+
+2006-09-25  gauthierm
+
+	* [r11447] store/trunk/Store/StoreNewPasswordMailMessage.php:
+	  parallelism
+	* [r11446] store/trunk/Store/StoreNewPasswordMailMessage.php,
+	  store/trunk/Store/StoreResetPasswordMailMessage.php:
+	  added examples to documentation
+
+2006-09-25  nick
+
+	* [r11442] store/trunk/Store/StoreFroogleFeed.php,
+	  store/trunk/Store/StoreFroogleFeedEntry.php:
+	  Fixed namespace for text nodes, and duplication of 'link' which
+	  already exists
+	  in the AtomFeedEntry parent class
+
+2006-09-25  gauthierm
+
+	* [r11433] store/trunk/Store/StoreNewPasswordMailMessage.php,
+	  store/trunk/Store/StoreResetPasswordMailMessage.php,
+	  store/trunk/Store/dataobjects/StoreAccount.php,
+	  store/trunk/Store/pages/StoreAccountForgotPasswordPage.php:
+	  Refactor account password management methods:
+	  - generatePassword() and generateNewPassword() are no longer
+	  static. This results in less queries.
+	  - move mail sending into separate abstract methods
+	  - make mail messages non-abstract and modify so they can be
+	  re-used on multiple sites
+	  - updated forgot password page to respect API changes
+
+2006-09-25  nrf
+
+	* [r11400]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php,
+	  store/trunk/Store/pages/StoreCheckoutEditPage.php,
+	  store/trunk/Store/pages/StoreCheckoutPage.php,
+	  store/trunk/Store/pages/StoreCheckoutStepPage.php,
+	  store/trunk/Store/pages/StoreCheckoutUIPage.php:
+	  Further refactor checkout, it's getting smaller:
+	  StoreCheckoutConfirmationPage.php | 4 -
+	  StoreCheckoutEditPage.php | 31 +-------
+	  StoreCheckoutPage.php | 53 ---------------
+	  StoreCheckoutStepPage.php | 25 ++++---
+	  StoreCheckoutUIPage.php | 131
+	  +++++++++-----------------------------
+	  5 files changed, 56 insertions(+), 188 deletions(-)
+
+2006-09-23  nrf
+
+	* [r11385] store/trunk/Store/pages/StoreCheckoutEditPage.php,
+	  store/trunk/Store/pages/StoreCheckoutPage.php,
+	  store/trunk/Store/pages/StoreCheckoutStepPage.php:
+	  More refactoring
+	  - Simplify by removing classes array.
+	  - Tie XML file to the edit page in way that can be accesses by
+	  step pages and overridable.
+	* [r11383] store/trunk/Store/pages/StoreCheckoutEditPage.php,
+	  store/trunk/Store/pages/StoreCheckoutStepPage.php:
+	  Refactor checkout to eliminate static methods in checkout edit
+	  pages.
+
+2006-09-22  gauthierm
+
+	* [r11374] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  translate strings
+	* [r11373] store/trunk/Store/pages/StoreExceptionPage.php:
+	  translate strings
+	* [r11372] store/trunk/Store/pages/StoreCheckoutEditPage.php:
+	  tidy multiline comments
+	* [r11371]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  translate strings
+	* [r11370]
+	  store/trunk/Store/pages/StoreAccountResetPasswordThankYouPage.php:
+	  
+	  - translate strings
+	  - combine multiple echo statements into fewer echo statements
+	  - fix conditional displaying of checkout link
+	* [r11369]
+	  store/trunk/Store/pages/StoreAccountPaymentMethodEditPage.php:
+	  translate strings
+	* [r11368] store/trunk/Store/pages/StoreAccountOrderPage.php:
+	  translate strings
+	* [r11367] store/trunk/Store/pages/StoreAccountOrderPage.php:
+	  translate strings
+	* [r11366] store/trunk/Store/pages/StoreAccountLoginPage.php:
+	  translate strings
+	* [r11365]
+	  store/trunk/Store/pages/StoreAccountForgotPasswordPage.php:
+	  translate strings
+	* [r11364] store/trunk/Store/pages/StoreAccountEditPage.php:
+	  translate strings
+	* [r11363] store/trunk/Store/pages/StoreAccountDetailsPage.php:
+	  translate strings
+	* [r11362]
+	  store/trunk/Store/pages/StoreAccountChangePasswordPage.php:
+	  translate strings
+	* [r11360]
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php:
+	  translate strings
+	* [r11356]
+	  store/trunk/Store/dataobjects/StoreOrderPaymentMethod.php:
+	  wrap long line
+	* [r11355] store/trunk/Store/StoreTotalRow.php:
+	  translate strings
+	* [r11354] store/trunk/Store/StoreShippingAddressCellRenderer.php:
+	  translate strings
+	* [r11353] store/trunk/Store/StoreItemViewQuantityColumn.php,
+	  store/trunk/Store/StoreQuantityCellRenderer.php:
+	  Remove old and unused classes StoreItemViewQuantityColumn and
+	  StoreQuantityCellRenderer. Widget cell renderers do all of this
+	  now.
+	* [r11352] store/trunk/Store/StorePostalCodeEntry.php:
+	  translate strings
+	* [r11351] store/trunk/Store/StorePaymentMethodView.php:
+	  translate strings
+	* [r11350] store/trunk/Store/StoreCreditCardNumberEntry.php:
+	  - tidy error message
+	  - use store translations
+	* [r11349] store/trunk/Store/StoreNewPasswordMailMessage.php:
+	  translate text and only have one copy of the text
+	* [r11348] store/trunk/Store/StoreResetPasswordMailMessage.php:
+	  now with half as much text and twice as much translatability.
+	* [r11347] store/trunk/Store/StoreResetPasswordMailMessage.php:
+	  translate text body
+	* [r11346]
+	  store/trunk/Store/pages/StoreAccountResetPasswordPage.php:
+	  Translate strings in Store package.
+	* [r11342]
+	  store/trunk/Store/pages/StoreAccountResetPasswordPage.php:
+	  make this message a warning rather than an error
+
+2006-09-22  nrf
+
+	* [r11338] store/trunk/package.php:
+	  prepare for release of 1.0.6
+	* [r11337] store/trunk/Store/StoreQuickOrderItemSelector.php,
+	  store/trunk/www/javascript/store-quick-order-page.js:
+	  Item groups are in Store so push up support for them in the
+	  quick order page.
+	  Display quantity discounts.
+
+2006-09-21  nrf
+
+	* [r11321] store/trunk/Store/pages/account-details.xml:
+	  Remove veseysism from Store package.
+	* [r11314] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.0.5
+
 2006-09-21  gauthierm
 
 	* [r11311] store/trunk/Store/dataobjects/StoreCartEntry.php:
