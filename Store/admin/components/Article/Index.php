@@ -118,9 +118,9 @@ class StoreArticleIndex extends AdminIndex
 	}
 
 	// }}}
-	// {{{ private function buildDetails()
+	// {{{ protected function buildDetails()
 
-	private function buildDetails() 
+	protected function buildDetails() 
 	{
 		$details_block = $this->ui->getWidget('details_block');
 		$details_view = $this->ui->getWidget('details_view');

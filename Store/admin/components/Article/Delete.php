@@ -12,8 +12,12 @@ require_once 'Admin/AdminListDependency.php';
  */
 class ArticleDelete extends AdminDBDelete
 {
+	// {{{ private properties 
+
 	// used for custom relocate
 	private $parent_id;
+
+	// }}}
 
 	// process phase
 	// {{{ protected function processDBData()
@@ -89,9 +93,9 @@ class ArticleDelete extends AdminDBDelete
 	}
 
 	// }}}
-	// {{{ private function getDependencies()
+	// {{{ protected function getDependencies()
 
-	private function getDependencies($dep, $item_list)
+	protected function getDependencies($dep, $item_list)
 	{
 		$dep_subarticles = new AdminListDependency();
 		$dep_subarticles->title = Store::_('sub-article');
@@ -114,9 +118,9 @@ class ArticleDelete extends AdminDBDelete
 	}
 
 	// }}}
-	// {{{ private fucntion buildNavBar()
+	// {{{ protected function buildNavBar()
 
-	private function buildNavBar()
+	protected function buildNavBar()
 	{
 		$this->navbar->popEntry();
 

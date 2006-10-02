@@ -13,9 +13,9 @@ require_once 'Swat/SwatMessage.php';
  */
 class StoreProvStateEdit extends AdminDBEdit
 {
-	// {{{ private properties
+	// {{{ protected properties
 
-	private $fields;
+	protected $fields;
 
 	// }}}
 
