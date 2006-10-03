@@ -23,7 +23,7 @@
 				</object>
 				<object class="SwatTableViewColumn" id="status">
 					<property name="title">Status</property>
-					<object class="CatalogStatusCellRenderer">
+					<object class="StoreCatalogStatusCellRenderer">
 						<property name="catalog" type="data">id</property>
 					</object>
 				</object>

@@ -3,6 +3,7 @@
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="frame">
+		<property name="title">Catalog</property>
 		<widget class="SwatToolbar" id="toolbar">
 			<widget class="SwatToolLink">
 				<property name="title">Edit Catalog</property>
@@ -53,7 +54,7 @@
 			</object>
 			<object class="SwatDetailsViewField" id="status">
 				<property name="title">Status</property>
-				<object class="CatalogStatusCellRenderer" id="status_renderer">
+				<object class="StoreCatalogStatusCellRenderer" id="status_renderer">
 					<property name="catalog" type="data">id</property>
 				</object>
 			</object>

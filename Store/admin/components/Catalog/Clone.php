@@ -14,6 +14,15 @@ require_once 'include/StoreCatalogStatusCellRenderer.php';
  */
 class StoreCatalogClone extends AdminDBEdit
 {
+	// {{{ protected properties
+
+	/**
+	 * @var string
+	 */
+	protected $ui_xml = 'Store/admin/components/Catalog/clone.xml';
+
+	// }}}
+
 	// init phase
 	// {{{ protected function initInternal()
 
@@ -21,7 +30,7 @@ class StoreCatalogClone extends AdminDBEdit
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML(dirname(__FILE__).'/clone.xml');
+		$this->ui->loadFromXML($this->ui_xml);
 	}
 
 	// }}}
@@ -76,7 +85,7 @@ class StoreCatalogClone extends AdminDBEdit
 		if ($row === null)
 			throw new AdminNotFoundException(
 				sprintf(Store::_('%s with id ‘%s’ not found.',
-				Store::_('Catalog'), $this->id));
+				Store::_('Catalog'), $this->id)));
 
 		if ($row->clone_id !== null)
 			throw new AdminNoAccessException(

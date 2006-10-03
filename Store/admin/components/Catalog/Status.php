@@ -4,8 +4,8 @@ require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatMessage.php';
-
-require_once '../../include/dataobjects/StoreCatalog.php';
+require_once 'Store/dataobjects/StoreCatalog.php';
+require_once 'Store/StoreClassMap.php';
 
 /**
  * Change status page for Catalogs
@@ -15,6 +15,14 @@ require_once '../../include/dataobjects/StoreCatalog.php';
  */
 class StoreCatalogStatus extends AdminDBEdit
 {
+	// {{{ protected properties
+
+	/**
+	 * @var string
+	 */
+	protected $ui_xml = 'Store/admin/components/Catalog/status.xml';
+
+	// }}}
 	// {{{ private properties
 
 	private $catalog;
@@ -32,16 +40,19 @@ class StoreCatalogStatus extends AdminDBEdit
 
 		if ($id === null)
 			throw new AdminNotFoundException(
-				sprintf(Store::_('Catalog with id ‘%s’ not found.'),
-					$this->id));
+				sprintf("Catalog with id '%s' not found.", $this->id));
 
-		$this->ui->loadFromXML(dirname(__FILE__).'/status.xml');
+		$this->ui->loadFromXML($this->ui_xml);
 
 		$status_flydown = $this->ui->getWidget('status');
 		$status_options = array();
 
-		foreach (Catalog::getStatuses() as $id => $title)
-			$status_options[] = new SwatOption($id, $title);
+		$class_map = StoreClassMap::instance();
+		$catalog = $class_map->resolveClass('StoreCatalog');
+
+		foreach (call_user_func(array($catalog, 'getStatuses')) as 
+			$id => $title)
+				$status_options[] = new SwatOption($id, $title);
 
 		$status_flydown->options = $status_options;
 
@@ -59,7 +70,8 @@ class StoreCatalogStatus extends AdminDBEdit
 					CatalogCloneView.clone = CloneCatalog.id
 			where Catalog.id = %s';
 
-		$sql = sprintf($sql, $this->app->db->quote($this->id, 'integer'));
+		$sql = sprintf($sql,
+			$this->app->db->quote($this->id, 'integer'));
 
 		$this->catalog = SwatDB::queryRow($this->app->db, $sql);
 	}
@@ -107,8 +119,7 @@ class StoreCatalogStatus extends AdminDBEdit
 			$where_clause);
 
 		$msg = new SwatMessage(
-			sprintf(Store::_('The status of “%s” has been updated.'),
-				$this->catalog->title));
+			sprintf('The status of “%s” has been updated.', $this->catalog->title));
 
 		// disable clone
 		if ($enabled && $this->catalog->clone !== null) {
@@ -131,8 +142,7 @@ class StoreCatalogStatus extends AdminDBEdit
 			SwatDB::exec($this->app->db, $sql);
 
 			$msg->secondary_content =
-				sprintf(Store::_(
-					'“%s” has been automatically disabled in all regions.'),
+				sprintf('“%s” has been automatically disabled in all regions.',
 					$this->catalog->clone_title);
 		}
 
@@ -149,32 +159,32 @@ class StoreCatalogStatus extends AdminDBEdit
 		if ($this->catalog->clone !== null) {
 			$note = $this->ui->getWidget('clone_note');
 			$note->visible = true;
-			$note->title = Store::_('Warning');
+			$note->title = 'Warning';
 			$note->content_type = 'text/xml';
 			if ($this->catalog->is_parent) {
-				$note->content = sprintf(Store::_(
+				$note->content = sprintf(
 					'<p>The catalogue <strong>%s</strong> has a clone. Enabling '.
 					'the catalogue <strong>%s</strong> in any region will '.
 					'disable the catalogue <strong>%s</strong> in all '.
-					'regions.</p>'),
+					'regions.</p>',
 					SwatString::minimizeEntities($this->catalog->title),
 					SwatString::minimizeEntities($this->catalog->title),
 					SwatString::minimizeEntities($this->catalog->clone_title));
 			} else {
-				$note->content = sprintf(Store::_(
+				$note->content = sprintf(
 					'<p>The catalogue <strong>%s</strong> is a cloned '.
 					'catalogue. Enabling the catalogue <strong>%s</strong> '.
 					'in any region will disable the catalogue '.
-					'<strong>%s</strong> in all regions.'),
+					'<strong>%s</strong> in all regions.',
 					SwatString::minimizeEntities($this->catalog->title),
 					SwatString::minimizeEntities($this->catalog->title),
 					SwatString::minimizeEntities($this->catalog->clone_title));
 			}
 
-			$note->content.= sprintf(Store::_(
-				'<p>Enable this %s only if you are done making %s changes, '.
-				'and you want to apply the changes to the  live website.</p>'),
-				Store::_('Catalog'));
+			$note->content.=
+				'<p>Enable this catalogue only if you are done making '.
+				'catalogue changes, and you want to apply the changes to the '.
+				'live website.</p>';
 		}
 
 		$status_replicator = $this->ui->getWidget('status_replicator');
@@ -200,7 +210,7 @@ class StoreCatalogStatus extends AdminDBEdit
 	// }}}
 	// {{{ protected function buildFrame()
 
-	protected function buildFrame()
+	protected function buildFrame2()
 	{
 		// don't do any frame title stuff
 	}

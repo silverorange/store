@@ -4,8 +4,8 @@ require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatMessage.php';
-
-require_once '../../include/dataobjects/StoreCatalog.php';
+require_once 'Store/dataobjects/StoreCatalog.php';
+require_once 'Store/StoreClassMap.php';
 
 /**
  * Edit page for Catalogs
@@ -19,6 +19,11 @@ class StoreCatalogEdit extends AdminDBEdit
 
 	protected $fields;
 
+	/**
+	 * @var string
+	 */
+	protected $ui_xml = 'Store/admin/components/Catalog/edit.xml';
+
 	// }}}
 
 	// init phase
@@ -28,15 +33,21 @@ class StoreCatalogEdit extends AdminDBEdit
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
+		$this->ui->loadFromXML($this->ui_xml);
 
 		$this->fields = array('title');
+
+		$id = SiteApplication::initVar('id', null);
 
 		$status_flydown = $this->ui->getWidget('status');
 		$status_options = array();
 
-		foreach (Catalog::getStatuses() as $id => $title)
-			$status_options[] = new SwatOption($id, $title);
+		$class_map = StoreClassMap::instance();
+		$catalog = $class_map->resolveClass('StoreCatalog');
+
+		foreach (call_user_func(array($catalog, 'getStatuses')) as 
+			$id => $title)
+				$status_options[] = new SwatOption($id, $title);
 
 		$status_flydown->options = $status_options;
 
@@ -45,8 +56,8 @@ class StoreCatalogEdit extends AdminDBEdit
 		$id = SiteApplication::initVar('id', null);
 		if ($id === null) {
 			$status_replicator->replicators =
-				SwatDB::getOptionArray($this->app->db,
-					'Region', 'title', 'id', 'title');
+				SwatDB::getOptionArray($this->app->db, 'Region', 'title', 'id',
+					'title');
 		} else {
 			$status_replicator->visible = false;
 		}
@@ -98,8 +109,9 @@ class StoreCatalogEdit extends AdminDBEdit
 				if ($status_flydown->value == Catalog::STATUS_ENABLED_IN_SEASON)
 					$available_regions[] = $region;
 
-				if ($status_flydown->value == Catalog::STATUS_ENABLED_OUT_OF_SEASON)
-					$unavailable_regions[] = $region;
+				if ($status_flydown->value == 
+					Catalog::STATUS_ENABLED_OUT_OF_SEASON)
+						$unavailable_regions[] = $region;
 			}
 
 			SwatDB::updateBinding($this->app->db, 'CatalogRegionBinding',

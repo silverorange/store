@@ -69,6 +69,7 @@ class StoreCatalogDelete extends AdminDBDelete
 
 		$id = $this->getFirstItem();
 
+		$this->getDependency();
 		$dep = new AdminListDependency();
 		$dep->title = Store::_('catalog');
 		$dep->entries = AdminListDependency::queryEntries($this->app->db,
@@ -90,38 +91,15 @@ class StoreCatalogDelete extends AdminDBDelete
 
 		$dep->addDependency($dep_products);
 
-		// dependent promotions (can delete if there is a clone for this
-		// catalogue)
-		$dep_promotions = new AdminListDependency();
-		$dep_promotions->title = Store::_('promotion');
-
-		$sql = "select Catalog.id as parent, Promotion.id,
-				%s as status_level,
-				('(' || Promotion.code || ') ' || Promotion.title) as title
-			from Promotion
-				inner join Catalog on Promotion.catalog = Catalog.id
-				left outer join CatalogCloneView
-					on CatalogCloneView.catalog = Catalog.id
-			where Catalog.id = %s and CatalogCloneView.clone is null";
-
-		$sql = sprintf($sql,
-			$this->app->db->quote(AdminDependency::NODELETE, 'integer'),
-			$this->app->db->quote($id, 'integer'));
-
-		$dep_promotions->entries = SwatDB::query($this->app->db, $sql,
-			'AdminDependencyEntryWrapper');
-
-		$dep->addDependency($dep_promotions);
-
 		$message = $this->ui->getWidget('confirmation_message');
 		$message->content_type = 'text/xml';
 		$message->content = $dep->getMessage();
 
 		$note = $this->ui->getWidget('note');
 		$note->visible = true;
-		$note->content = sprintf(Store::_('A %s must have no products and no '.
-			'promotions, or be disabled in all regions and have a clone in '.
-			'order to be deleted.'), Store::_('catalog'));
+		$note->content = sprintf(Store::_('A %s must have no products, or be '.
+			'disabled in all regions and have a clone in order to be deleted.'),
+			Store::_('catalog'));
 
 		if ($dep->getStatusLevelCount(AdminDependency::DELETE) == 0)
 			$this->switchToCancelButton();
