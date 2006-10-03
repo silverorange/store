@@ -19,7 +19,7 @@
 					</object>
 					<object class="SwatDetailsViewField" id="status">
 						<property name="title">Status</property>
-						<object class="CatalogStatusCellRenderer" id="status_renderer">
+						<object class="StoreCatalogStatusCellRenderer" id="status_renderer">
 							<property name="catalog" type="data">id</property>
 						</object>
 					</object>

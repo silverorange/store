@@ -1,20 +1,25 @@
 <?php
 
 require_once 'Swat/SwatCellRenderer.php';
+require_once 'Store/dataobjects/StoreCatalog.php';
+require_once 'Store/StoreClassMap.php';
 
 /**
- * Cell renderer that displays a summary of the status of a catelogue
+ * Cell renderer that displays a summary of the status of a catalog
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2005-2006 silverorange
  */
-class CatalogStatusCellRenderer extends SwatCellRenderer
+class StoreCatalogStatusCellRenderer extends SwatCellRenderer
 {
 	public $catalog;
 	public $db;
 
 	public function render()
 	{
+		$class_map = StoreClassMap::instance();
+		$catalog = $class_map->resolveClass('StoreCatalog');
+
 		$sql = 'select Region.title, available
 			from Region
 				left outer join CatalogRegionBinding on
@@ -27,13 +32,8 @@ class CatalogStatusCellRenderer extends SwatCellRenderer
 		foreach ($catalog_statuses as $row) {
 			echo SwatString::minimizeEntities($row->title);
 			echo ': ';
-
-			if ($row->available === null) {
-				echo 'disabled';
-			} else {
-				echo ($row->available) ? 
-					'enabled (in season)' : 'enabled (out of season)';
-			}
+			echo call_user_func(array($catalog, 'getStatusTitle'),
+				$row->available);
 
 			echo '<br />';
 		}

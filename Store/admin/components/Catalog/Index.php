@@ -4,7 +4,6 @@ require_once 'Admin/pages/AdminIndex.php';
 require_once 'Admin/AdminTableStore.php';
 require_once 'SwatDB/SwatDB.php';
 
-require_once 'include/StoreCatalogStatusAction.php';
 require_once 'include/StoreCatalogStatusCellRenderer.php';
 
 /**
@@ -13,8 +12,17 @@ require_once 'include/StoreCatalogStatusCellRenderer.php';
  * @package   Store
  * @copyright 2005-2006 silverorange
  */
-class CatalogIndex extends AdminIndex
+class StoreCatalogIndex extends AdminIndex
 {
+	// {{{ protected properties
+
+	/**
+	 * @var string
+	 */
+	protected $ui_xml = 'Store/admin/components/Catalog/index.xml';
+
+	// }}}
+
 	// init phase
 	// {{{ protected function initInternal()
 
@@ -22,7 +30,7 @@ class CatalogIndex extends AdminIndex
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML(dirname(__FILE__).'/index.xml');
+		$this->ui->loadFromXML($this->ui_xml);
 
 		// set a default order on the table view
 		$index_view = $this->ui->getWidget('index_view');
