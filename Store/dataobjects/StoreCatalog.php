@@ -6,7 +6,7 @@ require_once 'Store/dataobjects/StoreDataObject.php';
  * @package   Store
  * @copyright 2005-2006 silverorange
  */
-class StoreCatalog extends StoreDataObject
+abstract class StoreCatalog extends StoreDataObject
 {
 	// {{{ public properties
 
@@ -35,6 +35,13 @@ class StoreCatalog extends StoreDataObject
 		$this->id_field = 'integer:id';
 	}
 
+	// }}}
+	// {{{ abstract static public function getStatusTitle()
+	abstract static public function getStatusTitle($status);
+	// }}}
+
+	// {{{ abstract static public function getStatuses()
+	abstract static public function getStatuses();
 	// }}}
 }
 
