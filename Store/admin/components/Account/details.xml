@@ -1,0 +1,159 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<widget class="SwatFrame" id="details_frame">
+		<widget class="SwatToolbar" id="details_toolbar">
+			<widget class="SwatToolLink">
+				<property name="title">Edit Account</property>
+				<property name="link">Account/Edit?id=%s</property>
+				<property name="stock_id">edit</property>
+			</widget>
+			<widget class="SwatToolLink">
+				<property name="title">Email New Password</property>
+				<property name="link">Account/EmailPassword?id=%s</property>
+				<property name="stock_id">email</property>
+			</widget>
+		</widget>
+
+		<!-- Details -->
+
+		<widget class="SwatDetailsView" id="details_view">
+			<object class="SwatDetailsViewField">
+				<property name="title">Name</property>
+				<object class="SwatNullTextCellRenderer">
+					<property name="text" type="data">fullname</property>
+				</object>
+			</object>
+			<object class="SwatDetailsViewField">
+				<property name="title">Email</property>
+				<object class="SwatNullTextCellRenderer">
+					<property name="text" type="data">email</property>
+				</object>
+			</object>
+			<object class="SwatDetailsViewField">
+				<property name="title">Phone #</property>
+				<object class="SwatNullTextCellRenderer">
+					<property name="text" type="data">phone</property>
+				</object>
+			</object>
+			<object class="SwatDetailsViewField" id="createdate">
+				<property name="title">Created On</property>
+				<object class="SwatDateCellRenderer">
+					<property name="date" type="data">createdate</property>
+				</object>
+			</object>
+		</widget>
+
+
+		<!-- Orders -->
+
+		<widget class="SwatFrame" id="orders_frame">
+			<property name="title">Orders</property>
+			<widget class="SwatForm" id="index_form">
+				<widget class="SwatTableView" id="orders_view">
+					<object class="AdminTableViewOrderableColumn" id="id">
+						<property name="title">Order #</property>
+						<object class="AdminTitleLinkCellRenderer">
+							<property name="text">V-%s</property>
+							<property name="value" type="data">id</property>
+							<property name="link">Order/Details?id=%s&amp;account=%s</property>
+							<property name="link_value[]" type="data">id</property>
+							<property name="link_value[]" type="data">account_id</property>
+						</object>
+					</object>
+					<object class="AdminTableViewOrderableColumn" id="createdate">
+						<property name="title">Placed On</property>
+						<object class="SwatDateCellRenderer">
+							<property name="date" type="data">createdate</property>
+						</object>
+					</object>
+					<object class="AdminTableViewOrderableColumn" id="total">
+						<property name="title">Total</property>
+						<object class="SwatMoneyCellRenderer">
+							<property name="value" type="data">total</property>
+						</object>
+					</object>
+				</widget>
+			</widget>
+		</widget>
+
+		<!-- Addresses -->
+
+		<widget class="SwatFrame" id="account_addresses_frame">
+			<property name="title">Addresses</property>
+			<widget class="SwatForm" id="addresses_form">
+				<widget class="SwatToolbar" id="address_details_toolbar">
+					<widget class="SwatToolLink">
+						<property name="title">Add Address</property>
+						<property name="link">Account/AddressEdit?account=%s</property>
+						<property name="stock_id">add</property>
+					</widget>
+				</widget>
+				<widget class="SwatTableView" id="addresses_view">
+					<object class="SwatTableViewCheckboxColumn" id="checkbox">
+						<object class="SwatCheckboxCellRenderer" id="items">
+							<property name="value" type="data">id</property>
+						</object>
+					</object>
+					<object class="SwatTableViewColumn" id="controls">
+						<object class="AdminControlCellRenderer">
+							<property name="link">Account/AddressEdit?id=%s</property>
+							<property name="link_value" type="data">id</property>
+							<property name="stock_id">edit</property>
+						</object>
+					</object>
+					<object class="AdminTableViewOrderableColumn" id="id">
+						<property name="title">Address</property>
+						<object class="StoreAddressCellRenderer">
+							<property name="address" type="data">address</property>
+						</object>
+					</object>
+					<object class="AdminTableViewOrderableColumn" id="default_address">
+						<property name="title">Default Address</property>
+						<object class="SwatBooleanCellRenderer">
+							<property name="value" type="data">default_address</property>
+						</object>
+					</object>
+				</widget>
+				<widget class="SwatActions" id="address_actions">
+					<widget class="SwatActionItem" id="address_delete">
+						<property name="title">delete…</property>
+					</widget>
+				</widget>
+			</widget>
+		</widget>
+
+		<!-- Payment Methods -->
+
+		<widget class="SwatFrame" id="account_payment_methods_frame">
+			<property name="title">Payment Methods</property>
+			<widget class="SwatForm" id="payment_methods_form">
+				<widget class="SwatTableView" id="payment_methods_view">
+					<object class="SwatTableViewCheckboxColumn" id="checkbox">
+						<object class="SwatCheckboxCellRenderer" id="items">
+							<property name="value" type="data">id</property>
+						</object>
+					</object>
+					<object class="SwatTableViewColumn" id="controls">
+						<object class="AdminControlCellRenderer">
+							<property name="link">Account/PaymentMethodEdit?id=%s</property>
+							<property name="link_value" type="data">id</property>
+							<property name="stock_id">edit</property>
+						</object>
+					</object>
+					<object class="SwatTableViewColumn" id="id">
+						<object class="StorePaymentMethodCellRenderer">
+							<property name="payment_method" type="data">payment_method</property>
+						</object>
+					</object>
+				</widget>
+				<widget class="SwatActions" id="payment_methods_actions">
+					<widget class="SwatActionItem" id="payment_method_delete">
+						<property name="title">delete…</property>
+					</widget>
+				</widget>
+			</widget>
+		</widget>
+	</widget>
+</swatml>

@@ -1,0 +1,71 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<widget class="SwatFrame" id="frame">
+		<widget class="SwatToolbar" id="toolbar">
+			<widget class="SwatToolLink">
+				<property name="title">Edit Catalog</property>
+				<property name="link">Catalog/Edit?id=%s</property>
+				<property name="stock_id" type="string">edit</property>
+			</widget>
+			<widget class="SwatToolLink" id="clone">
+				<property name="title">Clone Catalog</property>
+				<property name="link">Catalog/Clone?id=%s</property>
+				<property name="sensitive" type="boolean">false</property>
+			</widget>
+			<widget class="SwatToolLink" id="status">
+				<property name="title">Change Catalog Status</property>
+				<property name="link">Catalog/Status?id=%s</property>
+				<property name="sensitive" type="boolean">true</property>
+			</widget>
+			<widget class="SwatToolLink" id="delete">
+				<property name="title">Delete Catalog</property>
+				<property name="link">Catalog/Delete?id=%s</property>
+				<property name="stock_id">delete</property>
+				<property name="sensitive" type="boolean">false</property>
+			</widget>
+		</widget>
+		<widget class="SwatDetailsView" id="component_details">
+			<object class="SwatDetailsViewField" id="title">
+				<property name="title">Title</property>
+				<object class="SwatTextCellRenderer" id="title_renderer">
+					<property name="text" type="data">title</property>
+				</object>
+			</object>
+			<object class="SwatDetailsViewField" id="parent">
+				<property name="title">Clone Of</property>
+				<property name="visible" type="boolean">false</property>
+				<object class="SwatLinkCellRenderer">
+					<property name="text" type="data">parent_title</property>
+					<property name="link" type="string">Catalog/Details?id=%s</property>
+					<property name="link_value" type="data">parent_id</property>
+				</object>
+			</object>
+			<object class="SwatDetailsViewField" id="clone">
+				<property name="title">Clone</property>
+				<property name="visible" type="boolean">false</property>
+				<object class="SwatLinkCellRenderer">
+					<property name="text" type="data">clone_title</property>
+					<property name="link" type="string">Catalog/Details?id=%s</property>
+					<property name="link_value" type="data">clone_id</property>
+				</object>
+			</object>
+			<object class="SwatDetailsViewField" id="status">
+				<property name="title">Status</property>
+				<object class="CatalogStatusCellRenderer" id="status_renderer">
+					<property name="catalog" type="data">id</property>
+				</object>
+			</object>
+			<object class="SwatDetailsViewField" id="status">
+				<property name="title">Number of Products</property>
+				<object class="SwatNumericCellRenderer">
+					<property name="value" type="data">num_products</property>
+				</object>
+			</object>
+		</widget>
+		<widget class="AdminNote">
+			<property name="content">Only disabled catalogs or catalogs containing no products may be deleted.</property>
+		</widget>
+	</widget>
+</swatml>

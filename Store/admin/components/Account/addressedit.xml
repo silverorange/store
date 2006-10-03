@@ -1,0 +1,64 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<widget class="SwatFrame" id="edit_frame">
+		<property name="title">Address for</property>
+		<widget class="SwatForm" id="edit_form">
+			<widget class="SwatFormField">
+				<property name="title">Full Name</property>
+				<widget class="SwatEntry" id="fullname">
+					<property name="required" type="boolean">true</property>
+					<property name="maxlength" type="integer">255</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title">Line 1</property>
+				<widget class="SwatEntry" id="line1">
+					<property name="required" type="boolean">true</property>
+					<property name="maxlength" type="integer">255</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title">Line 2</property>
+				<widget class="SwatEntry" id="line2">
+					<property name="maxlength" type="integer">255</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title">City</property>
+				<widget class="SwatEntry" id="city">
+					<property name="required" type="boolean">true</property>
+					<property name="maxlength" type="integer">255</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title">Province / State</property>
+				<widget class="SwatFlydown" id="provstate">
+					<!-- this may not be required on other sites. It is required on veseys -->
+					<property name="required" type="boolean">true</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title">Country</property>
+				<widget class="SwatFlydown" id="country">
+					<property name="required" type="boolean">true</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title">Postal Code / Zip Code</property>
+				<widget class="StorePostalCodeEntry" id="postal_code">
+					<property name="size" type="integer">10</property>
+					<property name="maxlength" type="integer">50</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title">Default Address</property>
+				<widget class="SwatCheckbox" id="default_address" />
+			</widget>
+			<widget class="SwatFooterFormField">
+				<widget class="SwatButton" id="submit_button" />
+			</widget>
+		</widget>
+	</widget>
+</swatml>
