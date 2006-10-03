@@ -48,6 +48,15 @@ class Store
 	}
 
 	// }}}
+	// {{{ public static function setupGettext()
+
+	public static function setupGettext()
+	{
+		bindtextdomain(GETTEXT_DOMAIN, '@DATA-DIR@/Store/locale');
+		bind_textdomain_codeset(GETTEXT_DOMAIN, 'UTF-8');
+	}
+
+	// }}}
 	// {{{ public static function getDependencies()
 
 	/**
@@ -62,5 +71,7 @@ class Store
 
 	// }}}
 }
+
+self::setupGettext();
 
 ?>
