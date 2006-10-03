@@ -1,0 +1,814 @@
+# English (Great Britain) translation of the Store package.
+# Copyright (C) 2006 silverorange
+# This file is distributed under the same license as the Store package.
+# silverorange <slice@silverorange.com, 2006.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Store 1.1.0\n"
+"Report-Msgid-Bugs-To: slice@silverorange.com\n"
+"POT-Creation-Date: 2006-10-03 11:23-0300\n"
+"PO-Revision-Date: 2006-10-03 11:30-0300\n"
+"Last-Translator: Nathan Fredrickson <nathan@silverorange.com>\n"
+"Language-Team: silverorange\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../Store/exceptions/StoreNoAccessException.php:25
+msgid "No Access"
+msgstr ""
+
+#: ../Store/pages/StoreCheckoutConfirmationPage.php:67
+msgid "Please Review Your Order"
+msgstr ""
+
+#: ../Store/pages/StoreCheckoutConfirmationPage.php:69
+#, php-format
+msgid "Press the "
+msgstr ""
+
+#: ../Store/pages/StoreCheckoutConfirmationPage.php:70
+#, php-format
+msgid "%sPlace Order%s button to complete your order."
+msgstr ""
+
+#: ../Store/pages/StoreExceptionPage.php:19
+#, php-format
+msgid "If you followed a link from our site or elsewhere, please "
+msgstr ""
+
+#: ../Store/pages/StoreExceptionPage.php:20
+#, php-format
+msgid "%scontact us%s and let us know where you came from so we can do "
+msgstr ""
+
+#: ../Store/pages/StoreExceptionPage.php:21
+#, php-format
+msgid "our best to fix it."
+msgstr ""
+
+#: ../Store/pages/StoreExceptionPage.php:25
+msgid "If you typed in the address, please double check the spelling."
+msgstr ""
+
+#: ../Store/pages/StoreExceptionPage.php:28
+msgid "If you are looking for a product or product information, try "
+msgstr ""
+
+#: ../Store/pages/StoreExceptionPage.php:29
+msgid "browsing the product listing to the left or using the search box "
+msgstr ""
+
+#: ../Store/pages/StoreExceptionPage.php:30
+msgid "on the top right."
+msgstr ""
+
+#: ../Store/pages/StoreQuickOrderPage.php:144
+#, php-format
+msgid "“%s” is not an available %%s."
+msgstr ""
+
+#: ../Store/pages/StoreQuickOrderPage.php:163
+msgid "There is a problem with "
+msgstr ""
+
+#: ../Store/pages/StoreQuickOrderPage.php:164
+msgid "one or more of the items you requested."
+msgstr ""
+
+#: ../Store/pages/StoreQuickOrderPage.php:167
+#: ../Store/pages/StoreCartPage.php:115 ../Store/pages/StoreCartPage.php:143
+#: ../Store/pages/StoreAccountAddressEditPage.php:99
+msgid "Please address the "
+msgstr ""
+
+#: ../Store/pages/StoreQuickOrderPage.php:168
+#: ../Store/pages/StoreCartPage.php:116 ../Store/pages/StoreCartPage.php:144
+#: ../Store/pages/StoreAccountAddressEditPage.php:100
+msgid "fields highlighted below and re-submit the form."
+msgstr ""
+
+#: ../Store/pages/StoreQuickOrderPage.php:296
+msgid "The following item was added to your cart:"
+msgid_plural "The following items were added to your cart:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/pages/StoreCartPage.php:112 ../Store/pages/StoreCartPage.php:140
+msgid "There is a problem with the information submitted."
+msgstr ""
+
+#: ../Store/pages/StoreCartPage.php:283
+#: ../Store/pages/StoreCheckoutCartPage.php:114
+#: ../Store/pages/StoreCheckoutCartPage.php:206
+#, php-format
+msgid "One item has been removed from shopping cart."
+msgid_plural "%s items have been removed from shopping cart."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/pages/StoreCartPage.php:291
+#, php-format
+msgid "One item quantity updated."
+msgid_plural "%s item quantities updated."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/pages/StoreCartPage.php:298
+msgid "One item has been saved for later."
+msgstr ""
+
+#: ../Store/pages/StoreCartPage.php:305 ../Store/pages/StoreCartPage.php:548
+#, php-format
+msgid "Items will not be saved unless you %screate an account "
+msgstr ""
+
+#: ../Store/pages/StoreCartPage.php:306 ../Store/pages/StoreCartPage.php:549
+#, php-format
+msgid "or log in%s."
+msgstr ""
+
+#: ../Store/pages/StoreCartPage.php:363
+msgid "One item has been removed from saved cart."
+msgstr ""
+
+#: ../Store/pages/StoreCartPage.php:368
+msgid "One item has been moved to shopping cart."
+msgstr ""
+
+#: ../Store/pages/StoreCartPage.php:402
+#, php-format
+msgid "One item moved to shopping cart."
+msgid_plural "%s items moved to shopping cart."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/pages/StoreCartPage.php:427
+msgid "Your Shopping Cart is Empty"
+msgstr ""
+
+#: ../Store/pages/StoreCartPage.php:432
+msgid "You can add items to your shopping cart by selecting from "
+msgstr ""
+
+#: ../Store/pages/StoreCartPage.php:433
+msgid "the menu on the left and browsing for products."
+msgstr ""
+
+#: ../Store/pages/StoreCartPage.php:489
+msgid "Unavailable Item"
+msgid_plural "Unavailable Items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/pages/StoreCartPage.php:493
+msgid "The item below is in your shopping cart but is not "
+msgid_plural "currently available for purchasing and will not be included "
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/pages/StoreCartPage.php:495 ../Store/pages/StoreCartPage.php:498
+msgid "in your order."
+msgid_plural "The items below are in your shopping cart but are not "
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/pages/StoreCartPage.php:497
+msgid "currently available for purchasing and will not be included "
+msgstr ""
+
+#: ../Store/pages/StoreCartPage.php:529
+msgid "Saved Items"
+msgstr ""
+
+#: ../Store/pages/StoreCartPage.php:534
+msgid "The item below is saved for later and will not be included "
+msgid_plural "in your order. You may move the item to your shopping cart "
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/pages/StoreCartPage.php:536
+msgid "by clicking the “Move to Cart” button."
+msgid_plural "The items below are saved for later and will not be included "
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/pages/StoreCartPage.php:538
+msgid "in your order. You may move any of the items to your "
+msgstr ""
+
+#: ../Store/pages/StoreCartPage.php:539
+msgid "shopping cart by clicking the “Move to Cart” button next to "
+msgstr ""
+
+#: ../Store/pages/StoreCartPage.php:540
+msgid "the item."
+msgstr ""
+
+#: ../Store/pages/StoreAccountChangePasswordPage.php:67
+#: ../Store/pages/StoreAccountResetPasswordPage.php:95
+msgid "Account password has been updated."
+msgstr ""
+
+#: ../Store/pages/StoreAccountChangePasswordPage.php:85
+msgid "Your password is incorrect."
+msgstr ""
+
+#: ../Store/pages/StoreAccountChangePasswordPage.php:103
+msgid "New Password"
+msgstr ""
+
+#: ../Store/pages/StoreAccountChangePasswordPage.php:104
+msgid "Choose a New Password"
+msgstr ""
+
+#: ../Store/pages/StoreAccountAddressEditPage.php:96
+msgid "There is a problem with the "
+msgstr ""
+
+#: ../Store/pages/StoreAccountAddressEditPage.php:97
+msgid "information submitted."
+msgstr ""
+
+#: ../Store/pages/StoreAccountAddressEditPage.php:109
+msgid "One address has been added."
+msgstr ""
+
+#: ../Store/pages/StoreAccountAddressEditPage.php:112
+msgid "One address has been updated."
+msgstr ""
+
+#: ../Store/pages/StoreAccountAddressEditPage.php:187
+#, php-format
+msgid "The selected %s is "
+msgstr ""
+
+#: ../Store/pages/StoreAccountAddressEditPage.php:188
+msgid "not a province or state of the selected country."
+msgstr ""
+
+#: ../Store/pages/StoreAccountAddressEditPage.php:190
+#, php-format
+msgid "The selected "
+msgstr ""
+
+#: ../Store/pages/StoreAccountAddressEditPage.php:191
+#, php-format
+msgid "%%s is not a province or state of the selected "
+msgstr ""
+
+#: ../Store/pages/StoreAccountAddressEditPage.php:192
+#, php-format
+msgid "country %s%s%s."
+msgstr ""
+
+#: ../Store/pages/StoreAccountAddressEditPage.php:235
+#: ../Store/pages/StoreAccountAddressEditPage.php:236
+msgid "Add a New Address"
+msgstr ""
+
+#: ../Store/pages/StoreAccountAddressEditPage.php:239
+msgid "Edit an Existing Address"
+msgstr ""
+
+#: ../Store/pages/StoreAccountAddressEditPage.php:242
+msgid "Update Address"
+msgstr ""
+
+#: ../Store/pages/StoreAccountAddressEditPage.php:244
+msgid "Edit an Exisiting Address"
+msgstr ""
+
+#: ../Store/pages/StoreAccountForgotPasswordPage.php:84
+msgid "There is no account with this email address."
+msgstr ""
+
+#: ../Store/pages/StoreAccountForgotPasswordPage.php:88
+#, php-format
+msgid "Make sure you entered it correctly, or "
+msgstr ""
+
+#: ../Store/pages/StoreAccountForgotPasswordPage.php:89
+#, php-format
+msgid "%screate a New Account%s."
+msgstr ""
+
+#: ../Store/pages/StoreAccountResetPasswordPage.php:123
+msgid "Please verify that the link is exactly the same as "
+msgstr ""
+
+#: ../Store/pages/StoreAccountResetPasswordPage.php:124
+msgid "the one emailed to you."
+msgstr ""
+
+#: ../Store/pages/StoreAccountResetPasswordPage.php:125
+msgid "If you requested an email more than once, only the "
+msgstr ""
+
+#: ../Store/pages/StoreAccountResetPasswordPage.php:126
+msgid "most recent link will work."
+msgstr ""
+
+#: ../Store/pages/StoreAccountResetPasswordPage.php:127
+#, php-format
+msgid "If you have lost the link sent in the "
+msgstr ""
+
+#: ../Store/pages/StoreAccountResetPasswordPage.php:128
+#, php-format
+msgid "email, you may %shave the email sent again%s."
+msgstr ""
+
+#: ../Store/pages/StoreAccountResetPasswordPage.php:131
+msgid "Link Incorrect"
+msgstr ""
+
+#: ../Store/pages/StoreAccountResetPasswordThankYouPage.php:23
+msgid "Your Password has been Reset"
+msgstr ""
+
+#: ../Store/pages/StoreAccountResetPasswordThankYouPage.php:24
+msgid "Your password has been reset and you are now "
+msgstr ""
+
+#: ../Store/pages/StoreAccountResetPasswordThankYouPage.php:25
+msgid "logged-in."
+msgstr ""
+
+#: ../Store/pages/StoreAccountResetPasswordThankYouPage.php:29
+msgid "Proceed to Checkout"
+msgstr ""
+
+#: ../Store/pages/StoreAccountResetPasswordThankYouPage.php:32
+msgid "View your Account"
+msgstr ""
+
+#: ../Store/pages/StoreAccountLoginPage.php:70
+msgid "Login Incorrect"
+msgstr ""
+
+#: ../Store/pages/StoreAccountLoginPage.php:75
+msgid "Please check the spelling on your email "
+msgstr ""
+
+#: ../Store/pages/StoreAccountLoginPage.php:76
+msgid "address or password."
+msgstr ""
+
+#: ../Store/pages/StoreAccountLoginPage.php:77
+#, php-format
+msgid "Password is case-sensitive. Make sure "
+msgstr ""
+
+#: ../Store/pages/StoreAccountLoginPage.php:78
+#, php-format
+msgid "your %sCaps Lock%s key is off."
+msgstr ""
+
+#: ../Store/pages/StoreAccountEditPage.php:97
+msgid "New account has been created."
+msgstr ""
+
+#: ../Store/pages/StoreAccountEditPage.php:101
+msgid "Account details have been updated."
+msgstr ""
+
+#: ../Store/pages/StoreAccountEditPage.php:172
+msgid "An account already exists with this email address."
+msgstr ""
+
+#: ../Store/pages/StoreAccountEditPage.php:176
+#, php-format
+msgid "You can %srequest a new password%s to log "
+msgstr ""
+
+#: ../Store/pages/StoreAccountEditPage.php:177
+#, php-format
+msgid "into the existing account."
+msgstr ""
+
+#: ../Store/pages/StoreAccountEditPage.php:216
+#: ../Store/pages/StoreAccountEditPage.php:218
+msgid "Edit Account Details"
+msgstr ""
+
+#: ../Store/pages/StoreAccountEditPage.php:220
+msgid "Update Account Details"
+msgstr ""
+
+#: ../Store/pages/StoreAccountEditPage.php:225
+msgid "Create a New Account"
+msgstr ""
+
+#: ../Store/pages/StoreAccountEditPage.php:227
+msgid "Create a New account"
+msgstr ""
+
+#: ../Store/pages/StoreAccountOrderPage.php:63
+msgid "Add to Cart"
+msgstr ""
+
+#: ../Store/pages/StoreAccountOrderPage.php:167
+#, php-format
+msgid "Sorry, “%s” is no longer available."
+msgstr ""
+
+#: ../Store/pages/StoreAccountOrderPage.php:294
+#, php-format
+msgid "“%1$s” added to shopping cart."
+msgid_plural "%2$s items added to shopping cart."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/pages/StoreAccountDetailsPage.php:125
+msgid "One address has been removed."
+msgstr ""
+
+#: ../Store/pages/StoreAccountDetailsPage.php:152
+msgid "One credit card has been removed."
+msgstr ""
+
+#: ../Store/pages/StoreAccountDetailsPage.php:223
+#, php-format
+msgid "You have an item saved for later. View your "
+msgid_plural "%sShopping Cart%s to add this item to your order."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/pages/StoreAccountDetailsPage.php:260
+msgid "<none>"
+msgstr ""
+
+#: ../Store/pages/StoreAccountPaymentMethodEditPage.php:105
+msgid "One credit card has been added."
+msgstr ""
+
+#: ../Store/pages/StoreAccountPaymentMethodEditPage.php:110
+msgid "One credit card has been updated."
+msgstr ""
+
+#: ../Store/pages/StoreAccountPaymentMethodEditPage.php:222
+#: ../Store/pages/StoreAccountPaymentMethodEditPage.php:224
+msgid "Add a New Payment Method"
+msgstr ""
+
+#: ../Store/pages/StoreAccountPaymentMethodEditPage.php:227
+#: ../Store/pages/StoreAccountPaymentMethodEditPage.php:232
+msgid "Edit a Payment Method"
+msgstr ""
+
+#: ../Store/pages/StoreAccountPaymentMethodEditPage.php:230
+msgid "Update Payment Method"
+msgstr ""
+
+#: ../Store/pages/StoreAccountPaymentMethodEditPage.php:253
+#, php-format
+msgid "The expiry date that was entered "
+msgstr ""
+
+#: ../Store/pages/StoreAccountPaymentMethodEditPage.php:254
+#, php-format
+msgid "(%s) is in the past. Please enter an updated date."
+msgstr ""
+
+#: ../Store/pages/StoreContactPage.php:25
+msgid "General Question"
+msgstr ""
+
+#: ../Store/pages/StoreContactPage.php:26
+msgid "My Order"
+msgstr ""
+
+#: ../Store/pages/StoreContactPage.php:27
+msgid "Website"
+msgstr ""
+
+#: ../Store/pages/StoreContactPage.php:28
+msgid "Products"
+msgstr ""
+
+#: ../Store/pages/StoreContactPage.php:29
+msgid "Privacy"
+msgstr ""
+
+#: ../Store/pages/StoreCheckoutCartPage.php:198
+#, php-format
+msgid "One item quantity has been updated."
+msgid_plural "%s item quantities have been updated."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/pages/StoreProductPage.php:410
+msgid "The following item on this page is in your shopping cart:"
+msgid_plural "The following items on this page are in your shopping cart:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/pages/StoreProductPage.php:466
+#: ../Store/pages/StoreCategoryPage.php:296
+msgid "Related Articles: "
+msgstr ""
+
+#: ../Store/StorePostalCodeEntry.php:134 ../Store/StorePostalCodeEntry.php:168
+#: ../Store/StorePostalCodeEntry.php:174
+#, php-format
+msgid "The %s field is not "
+msgstr ""
+
+#: ../Store/StorePostalCodeEntry.php:135
+msgid "a valid Canadian postal code."
+msgstr ""
+
+#: ../Store/StorePostalCodeEntry.php:141
+#, php-format
+msgid "The %s field "
+msgstr ""
+
+#: ../Store/StorePostalCodeEntry.php:142
+msgid "is not valid for the selected province."
+msgstr ""
+
+#: ../Store/StorePostalCodeEntry.php:169
+msgid "a valid US ZIP Code."
+msgstr ""
+
+#: ../Store/StorePostalCodeEntry.php:175
+msgid "valid for the selected state."
+msgstr ""
+
+#: ../Store/StorePostalCodeEntry.php:208
+#, php-format
+msgid "The %s field must "
+msgstr ""
+
+#: ../Store/StorePostalCodeEntry.php:209
+msgid "be a valid United Kingdom postcode."
+msgstr ""
+
+#: ../Store/StoreTotalRow.php:82
+msgid "FREE"
+msgstr ""
+
+#: ../Store/StoreCart.php:508
+#, php-format
+msgid "Quantity of “%s” item #%s must be at least one."
+msgstr ""
+
+#: ../Store/StoreQuantityEntry.php:58
+#, php-format
+msgid "The %s field must be a whole number."
+msgstr ""
+
+#: ../Store/StoreQuantityEntry.php:61
+#, php-format
+msgid "The %%s field must be at least 1."
+msgstr ""
+
+#: ../Store/StoreQuantityEntry.php:63
+#, php-format
+msgid "The %%s field must be at least %s."
+msgstr ""
+
+#: ../Store/StorePaymentMethodView.php:83
+msgid "Edit Payment Method"
+msgstr ""
+
+#: ../Store/StorePaymentMethodView.php:86
+msgid "Remove"
+msgstr ""
+
+#: ../Store/StorePaymentMethodView.php:89
+msgid "Are you sure you want to remove the following payment "
+msgstr ""
+
+#: ../Store/StorePaymentMethodView.php:90
+msgid "method?"
+msgstr ""
+
+#: ../Store/StoreCreditCardNumberEntry.php:67
+#, php-format
+msgid "The %s field is not a valid credit card number. "
+msgstr ""
+
+#: ../Store/StoreCreditCardNumberEntry.php:68
+msgid "Please ensure it is entered correctly."
+msgstr ""
+
+#: ../Store/StoreNewPasswordMailMessage.php:137
+#: ../Store/StoreResetPasswordMailMessage.php:139
+#, php-format
+msgid "This email is in response to your recent "
+msgstr ""
+
+#: ../Store/StoreNewPasswordMailMessage.php:138
+#, php-format
+msgid "request for a new password for your %s account. Your new "
+msgstr ""
+
+#: ../Store/StoreNewPasswordMailMessage.php:139
+#, php-format
+msgid "password is:"
+msgstr ""
+
+#: ../Store/StoreNewPasswordMailMessage.php:143
+msgid "After logging into your account, you can set a new "
+msgstr ""
+
+#: ../Store/StoreNewPasswordMailMessage.php:144
+msgid "password by clicking the \"Change Login Password\" on your "
+msgstr ""
+
+#: ../Store/StoreNewPasswordMailMessage.php:145
+msgid "account page."
+msgstr ""
+
+#: ../Store/StoreResetPasswordMailMessage.php:140
+#, php-format
+msgid "request for a new password for your %s account. Your password "
+msgstr ""
+
+#: ../Store/StoreResetPasswordMailMessage.php:141
+#, php-format
+msgid "has not yet been changed. Please click on the following link "
+msgstr ""
+
+#: ../Store/StoreResetPasswordMailMessage.php:142
+#, php-format
+msgid "and follow the outlined steps to change your account password."
+msgstr ""
+
+#: ../Store/StoreResetPasswordMailMessage.php:147
+msgid "Clicking on this link will take you to a page that "
+msgstr ""
+
+#: ../Store/StoreResetPasswordMailMessage.php:148
+msgid "requires you to enter in and confirm a new password. Once you "
+msgstr ""
+
+#: ../Store/StoreResetPasswordMailMessage.php:149
+msgid "have chosen and confirmed your new password you will be taken to "
+msgstr ""
+
+#: ../Store/StoreResetPasswordMailMessage.php:150
+msgid "your account page."
+msgstr ""
+
+#: ../Store/StoreResetPasswordMailMessage.php:152
+msgid "Why did I get this email?"
+msgstr ""
+
+#: ../Store/StoreResetPasswordMailMessage.php:154
+msgid "When a customer forgets their password the only way "
+msgstr ""
+
+#: ../Store/StoreResetPasswordMailMessage.php:155
+msgid "for us to verify their identity is to send an email to the "
+msgstr ""
+
+#: ../Store/StoreResetPasswordMailMessage.php:156
+msgid "address listed in their account. By clicking on the link above "
+msgstr ""
+
+#: ../Store/StoreResetPasswordMailMessage.php:157
+msgid "you are verifying that you requested a new password for your "
+msgstr ""
+
+#: ../Store/StoreResetPasswordMailMessage.php:158
+msgid "account."
+msgstr ""
+
+#: ../Store/StoreResetPasswordMailMessage.php:160
+msgid "I did not request a new password:"
+msgstr ""
+
+#: ../Store/StoreResetPasswordMailMessage.php:162
+#, php-format
+msgid "If you did not request a new password from %s "
+msgstr ""
+
+#: ../Store/StoreResetPasswordMailMessage.php:163
+#, php-format
+msgid "then someone may have accidentally entered your email when "
+msgstr ""
+
+#: ../Store/StoreResetPasswordMailMessage.php:164
+#, php-format
+msgid "requesting a new password. Have no fear! Your account "
+msgstr ""
+
+#: ../Store/StoreResetPasswordMailMessage.php:165
+#, php-format
+msgid "information is safe. Simply ignore this email and continue "
+msgstr ""
+
+#: ../Store/StoreResetPasswordMailMessage.php:166
+#, php-format
+msgid "using your existing password."
+msgstr ""
+
+#: ../Store/admin/components/Region/Delete.php:32
+#, php-format
+msgid "One region has been deleted."
+msgid_plural "%d regions have been deleted."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/admin/components/Article/include/StoreArticleActionsProcessor.php:60
+#, php-format
+msgid "Accessibility has been updated for one article."
+msgid_plural "Accessibility has been updated for %s articles."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/admin/components/Article/include/StoreArticleActionsProcessor.php:74
+#, php-format
+msgid "One article has been shown in the menu."
+msgid_plural "%d articles have been shown in the menu."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/admin/components/Article/include/StoreArticleActionsProcessor.php:84
+#, php-format
+msgid "One article has been hidden from the menu."
+msgid_plural "%d articles have been hidden from the menu."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/admin/components/Article/include/StoreArticleActionsProcessor.php:95
+#, php-format
+msgid "One article has been made searchable."
+msgid_plural "%d articles have been made searchable."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/admin/components/Article/include/StoreArticleActionsProcessor.php:105
+#, php-format
+msgid "One article has been hidden from the search results."
+msgid_plural "%d articles have been hidden from the search results."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/admin/components/Article/include/StoreArticleActionsProcessor.php:116
+#, php-format
+msgid "One article has been enabled."
+msgid_plural "%d articles have been enabled."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/admin/components/Article/include/StoreArticleActionsProcessor.php:126
+#, php-format
+msgid "One article has been disabled."
+msgid_plural "%d articles have been disabled."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/admin/components/Article/Delete.php:36
+#, php-format
+msgid "One article has been deleted."
+msgid_plural "%d articles have been deleted."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/admin/components/Ad/Delete.php:29
+#, php-format
+msgid "One ad has been deleted."
+msgid_plural "%d ads have been deleted."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/StoreItemPriceCellRenderer.php:44
+#, php-format
+msgid "%s or more: "
+msgstr ""
+
+#: ../Store/StorePriceCellRenderer.php:28
+msgid "Free!"
+msgstr ""
+
+#: ../Store/StoreCatalogSwitcher.php:36
+msgid "Catalog"
+msgstr ""
+
+#: ../Store/StoreCatalogSwitcher.php:99
+msgid "Switch"
+msgstr ""
+
+#: ../Store/StoreShippingAddressCellRenderer.php:26
+msgid "<ship to billing address>"
+msgstr ""
+
+#: ../Store/StoreCatalogSelector.php:110
+msgid "All"
+msgstr ""
+
+#: ../Store/StoreCatalogSelector.php:114
+msgid "All Enabled"
+msgstr ""
+
+#: ../Store/StoreCatalogSelector.php:122
+#, php-format
+msgid "All Enabled in %s"
+msgstr ""

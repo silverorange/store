@@ -24,7 +24,8 @@ $result = $package->setOptions(
 		'baseinstalldir'    => '/',
 		'packagedirectory'  => './',
 		'dir_roles'         => array(
-			'Store' => 'php'
+			'Store' => 'php',
+			'locale' => 'data',
 		),
 	)
 );
@@ -46,6 +47,8 @@ $package->addIgnore('package.php');
 
 $package->addMaintainer('lead', 'nrf', 'Nathan Fredrickson', 'nathan@silverorange.com');
 $package->addMaintainer('lead', 'gauthierm', 'Mike Gauthier', 'mike@silverorange.com');
+
+$package->addReplacement('Store/Store.php', 'pear-config', '@DATA-DIR@', 'data_dir');
 
 $package->setPhpDep('5.1.5');
 $package->setPearinstallerDep('1.4.0');
