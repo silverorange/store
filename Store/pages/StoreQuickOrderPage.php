@@ -150,7 +150,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 
 				if ($item_id !== null && !$sku_renderer->hasMessage($id) &&
 					!$quantity_renderer->hasMessage($id) &&
-					$this->addItem($item_id, $quantity)) {
+					$this->addItem($item_id, $quantity, $sku)) {
 					// clear fields after a successful add
 					$sku_widget->value = '';
 					$quantity_widget->value = '1';
@@ -195,7 +195,22 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 	// }}}
 	// {{{ protected function addItem()
 
-	protected function addItem($item_id, $quantity)
+	protected function addItem($item_id, $quantity, $sku)
+	{
+		$cart_entry = $this->getCartEntry($item_id, $quantity, $sku);
+
+		$added = $this->app->cart->checkout->addEntry($cart_entry);
+
+		if ($added)
+			$this->items_added[] = $cart_entry->item;
+
+		return $added;
+	}
+
+	// }}}
+	// {{{ protected function getCartEntry()
+
+	protected function getCartEntry($item_id, $quantity, $sku)
 	{
 		$class_map = StoreClassMap::instance();
 		$cart_entry_class = $class_map->resolveClass('StoreCartEntry');
@@ -232,12 +247,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		$cart_entry->quantity = $quantity;
 		$cart_entry->quick_order = true;
 
-		$added = $this->app->cart->checkout->addEntry($cart_entry);
-
-		if ($added)
-			$this->items_added[] = $item;
-
-		return $added;
+		return $cart_entry;
 	}
 
 	// }}}
