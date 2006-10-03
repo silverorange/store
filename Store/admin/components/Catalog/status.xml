@@ -1,0 +1,25 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<widget class="SwatFrame" id="edit_frame">
+		<property name="title">Change Catalog Status</property>
+		<widget class="SwatForm" id="edit_form">
+			<widget class="AdminNote" id="clone_note">
+				<property name="visible" type="boolean">false</property>
+				<property name="content">Only disabled catalogs or catalogs containing no products may be deleted.</property>
+			</widget>
+			<widget class="SwatReplicatorFormField" id="status_replicator">
+				<property name="title">Status</property>
+				<widget class="SwatFlydown" id="status">
+					<property name="show_blank" type="boolean">false</property>
+					<property name="required" type="boolean">true</property>
+					<property name="value" type="constant">Catalog::STATUS_DISABLED</property>
+				</widget>
+			</widget>
+			<widget class="SwatFooterFormField">
+				<widget class="SwatButton" id="submit_button" />
+			</widget>
+		</widget>
+	</widget>
+</swatml>

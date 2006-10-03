@@ -1,0 +1,36 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<widget class="SwatFrame" id="index_frame">
+		<property name="title">Catalogs</property>
+		<widget class="SwatToolbar" id="articles_toolbar">
+			<widget class="SwatToolLink">
+				<property name="title">New Catalog</property>
+				<property name="link">Catalog/Edit</property>
+				<property name="stock_id">create</property>
+			</widget>
+		</widget>
+		<widget class="SwatForm" id="index_form">
+			<widget class="SwatTableView" id="index_view">
+				<object class="AdminTableViewOrderableColumn" id="title">
+					<property name="title">Title</property>
+					<object class="AdminTitleLinkCellRenderer">
+						<property name="text" type="data">title</property>
+						<property name="link">Catalog/Details?id=%s</property>
+						<property name="link_value" type="data">id</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn" id="status">
+					<property name="title">Status</property>
+					<object class="CatalogStatusCellRenderer">
+						<property name="catalog" type="data">id</property>
+					</object>
+				</object>
+			</widget>
+			<widget class="AdminNote">
+				<property name="content">Catalogs may be deleted or may have their statuses changed from their catalog details pages.</property>
+			</widget>
+		</widget>
+	</widget>
+</swatml>
