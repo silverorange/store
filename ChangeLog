@@ -1,3 +1,38 @@
+2006-10-03  isaac
+
+	* [r11756] store/trunk/Store/admin/components/Account,
+	  store/trunk/Store/admin/components/Account/addressedit.xml,
+	  store/trunk/Store/admin/components/Account/details.xml,
+	  store/trunk/Store/admin/components/Account/edit.xml,
+	  store/trunk/Store/admin/components/Account/index.xml,
+	  store/trunk/Store/admin/components/Account/search.xml,
+	  store/trunk/Store/admin/components/Catalog,
+	  store/trunk/Store/admin/components/Catalog/Clone.php,
+	  store/trunk/Store/admin/components/Catalog/Delete.php,
+	  store/trunk/Store/admin/components/Catalog/Details.php,
+	  store/trunk/Store/admin/components/Catalog/Edit.php,
+	  store/trunk/Store/admin/components/Catalog/Index.php,
+	  store/trunk/Store/admin/components/Catalog/Status.php,
+	  store/trunk/Store/admin/components/Catalog/clone.xml,
+	  store/trunk/Store/admin/components/Catalog/details.xml,
+	  store/trunk/Store/admin/components/Catalog/edit.xml,
+	  store/trunk/Store/admin/components/Catalog/index.xml,
+	  store/trunk/Store/admin/components/Catalog/status.xml:
+	  Catalog up to Store - this still includes some Veseyisms, and
+	  needs a far bit of cleanup - but need to commit to be able to
+	  move some stuff around
+
+2006-10-02  isaac
+
+	* [r11737] store/trunk/Store/admin/components/Article/Delete.php,
+	  store/trunk/Store/admin/components/Article/Edit.php:
+	  forgot to prefix classes with Store
+
+2006-10-02  nrf
+
+	* [r11735] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.1.0
+
 2006-10-02  isaac
 
 	* [r11732] store/trunk/Store/admin/components/Locale/Delete.php:
