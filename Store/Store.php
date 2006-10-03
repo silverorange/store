@@ -72,6 +72,6 @@ class Store
 	// }}}
 }
 
-self::setupGettext();
+Store::setupGettext();
 
 ?>
