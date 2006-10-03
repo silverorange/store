@@ -340,15 +340,9 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		foreach ($entries as $entry) {
 			// filter entries by added items 
 			if (in_array($entry->item->id, $ids)) {
-				$ds = new SwatDetailsStore($entry);
+				$row = $this->getCartTableStoreRow($entry);
 
-				$ds->quantity = $entry->getQuantity();
-				$ds->description = $entry->item->getDescription();
-				$ds->price = $entry->getCalculatedItemPrice();
-				$ds->extension = $entry->getExtension();
-				$ds->product_link = 'store/'.$entry->item->product->path;
-
-				$store->addRow($ds, $entry->item->id);
+				$store->addRow($row, $entry->item->id);
 			}
 		}
 
@@ -356,6 +350,22 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 	}
 
 	// }}}
+	// {{{ protected function getCartTableStoreRow()
+
+	protected function getCartTableStoreRow($entry)
+	{
+		$ds = new SwatDetailsStore($entry);
+
+		$ds->quantity = $entry->getQuantity();
+		$ds->description = $entry->item->getDescription();
+		$ds->price = $entry->getCalculatedItemPrice();
+		$ds->extension = $entry->getExtension();
+		$ds->product_link = 'store/'.$entry->item->product->path;
+
+		return $ds;
+	}
+
+	//}}}
 	// {{{ protected function displayJavaScript()
 
 	protected function displayJavaScript()
