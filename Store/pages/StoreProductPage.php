@@ -170,13 +170,12 @@ class StoreProductPage extends StoreStorePage
 	protected function processProduct()
 	{
 		$this->items_ui->process();
-
 		$form = $this->items_ui->getWidget('form');
-		$view = $this->items_ui->getWidget('items_view');
-		$column = $view->getColumn('quantity_column');
-		$renderer = $column->getRenderer('quantity_renderer');
 
 		if ($form->isProcessed()) {
+			$view = $this->items_ui->getWidget('items_view');
+			$column = $view->getColumn('quantity_column');
+			$renderer = $column->getRenderer('quantity_renderer');
 
 			if ($form->hasMessage()) {
 				$message = new SwatMessage('There is a problem with one or '.
