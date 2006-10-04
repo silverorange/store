@@ -59,9 +59,6 @@
 							<property name="show_thousands_separator" type="boolean">false</property>
 						</widget>
 					</object>
-					<object class="SwatNumericCellRenderer">
-						<property name="value" type="data">quantity</property>
-					</object>
 				</object>
 				<object class="SwatTableViewColumn">
 					<property name="title">Total</property>
