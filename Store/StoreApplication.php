@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Site/SiteApplication.php';
+require_once 'Site/SiteWebApplication.php';
 require_once 'Site/SiteDatabaseModule.php';
 require_once 'Site/SiteCookieModule.php';
 require_once 'Site/SiteConfigModule.php';
@@ -17,7 +17,7 @@ require_once 'Store/dataobjects/StoreAdWrapper.php';
  * @copyright 2005-2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-abstract class StoreApplication extends SiteApplication
+abstract class StoreApplication extends SiteWebApplication
 {
 	// {{{ public properties
 
