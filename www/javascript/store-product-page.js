@@ -6,7 +6,7 @@
  * @param String form_id the id of the form used to submit item data for this
  *                        product page.
  */
-function ProductPage(item_ids, form_id)
+function StoreProductPage(item_ids, form_id)
 {
 	var self = this;
 	var is_ie = (document.addEventListener) ? false : true;
