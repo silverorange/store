@@ -37,11 +37,21 @@ abstract class StoreCatalog extends StoreDataObject
 
 	// }}}
 	// {{{ abstract static public function getStatusTitle()
+
 	abstract static public function getStatusTitle($status);
+
 	// }}}
 
 	// {{{ abstract static public function getStatuses()
+
 	abstract static public function getStatuses();
+
+	// }}}
+
+	// {{{ abstract static public function getStatusConstant()
+
+	abstract static public function getStatusConstant($status);
+
 	// }}}
 }
 

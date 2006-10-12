@@ -7,7 +7,6 @@
 		<widget class="SwatForm" id="edit_form">
 			<widget class="AdminNote" id="clone_note">
 				<property name="visible" type="boolean">false</property>
-				<property name="content">Only disabled catalogs or catalogs containing no products may be deleted.</property>
 			</widget>
 			<widget class="SwatReplicatorFormField" id="status_replicator">
 				<property name="title">Status</property>

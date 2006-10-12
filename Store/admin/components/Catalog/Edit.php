@@ -13,7 +13,7 @@ require_once 'Store/StoreClassMap.php';
  * @package   Store
  * @copyright 2005-2006 silverorange
  */
-class StoreCatalogEdit extends AdminDBEdit
+abstract class StoreCatalogEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
@@ -88,47 +88,9 @@ class StoreCatalogEdit extends AdminDBEdit
 	}
 
 	// }}}
-	// {{{ private function saveStatus()
+	// {{{ abstract protected function saveStatus()
 
-	private function saveStatus()
-	{
-		$status_replicator = $this->ui->getWidget('status_replicator');
-		if ($status_replicator->visible) {
-
-			$regions = array();
-			$available_regions = array();
-			$unavailable_regions = array();
-
-			foreach ($status_replicator->replicators as $region => $dummy) {
-				$status_flydown =
-					$status_replicator->getWidget('status', $region);
-
-				if ($status_flydown->value != Catalog::STATUS_DISABLED)
-					$regions[] = $region;
-
-				if ($status_flydown->value == Catalog::STATUS_ENABLED_IN_SEASON)
-					$available_regions[] = $region;
-
-				if ($status_flydown->value == 
-					Catalog::STATUS_ENABLED_OUT_OF_SEASON)
-						$unavailable_regions[] = $region;
-			}
-
-			SwatDB::updateBinding($this->app->db, 'CatalogRegionBinding',
-				'catalog', $this->id, 'region', $regions, 'Region', 'id');
-
-			$where_clause = sprintf('catalog = %s',
-				$this->app->db->quote($this->id, 'integer'));
-
-			SwatDB::updateColumn($this->app->db, 'CatalogRegionBinding',
-				'boolean:available', true, 'region', $available_regions,
-				$where_clause);
-
-			SwatDB::updateColumn($this->app->db, 'CatalogRegionBinding',
-				'boolean:available', false, 'region', $unavailable_regions,
-				$where_clause);
-		}
-	}
+	abstract protected function saveStatus();
 
 	// }}}
 
@@ -147,25 +109,13 @@ class StoreCatalogEdit extends AdminDBEdit
 
 		$this->ui->setValues(get_object_vars($row));
 
-		$status_replicator = $this->ui->getWidget('status_replicator');
-		$sql = 'select region, available from CatalogRegionBinding
-			where catalog = %s';
-
-		$sql = sprintf($sql,
-			$this->app->db->quote($this->id, 'integer'));
-
-		$statuses = SwatDB::query($this->app->db, $sql);
-
-		foreach ($statuses as $status) {
-			$status_flydown = $status_replicator->getWidget('status',
-				$status->region);
-
-			if ($status->available)
-				$status_flydown->value = Catalog::STATUS_ENABLED_IN_SEASON;
-			else
-				$status_flydown->value = Catalog::STATUS_ENABLED_OUT_OF_SEASON;
-		}
+		$this->loadStatus();
 	}
+
+	// }}}
+	// {{{ abstract protected function loadStatus()
+
+	abstract protected function loadStatus();
 
 	// }}}
 	// {{{ protected function buildNavBar()

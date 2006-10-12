@@ -13,7 +13,7 @@ require_once 'Store/StoreClassMap.php';
  * @package   Store
  * @copyright 2005-2006 silverorange
  */
-class StoreCatalogStatus extends AdminDBEdit
+abstract class StoreCatalogStatus extends AdminDBEdit
 {
 	// {{{ protected properties
 
@@ -39,8 +39,9 @@ class StoreCatalogStatus extends AdminDBEdit
 			'title', 'id', $this->id);
 
 		if ($id === null)
-			throw new AdminNotFoundException(
-				sprintf("Catalog with id '%s' not found.", $this->id));
+			throw new AdminNotFoundException(sprintf(
+				Store::_('%s with id ‘%s’ not found.'), Store::_('Catalog'),
+				$this->id));
 
 		$this->ui->loadFromXML($this->ui_xml);
 
@@ -83,71 +84,42 @@ class StoreCatalogStatus extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$enabled = false;
-		$regions = array();
-		$available_regions = array();
-		$unavailable_regions = array();
-
-		$status_replicator = $this->ui->getWidget('status_replicator');
-		foreach ($status_replicator->replicators as $region => $dummy) {
-			$status_flydown = $status_replicator->getWidget('status', $region);
-
-			if ($status_flydown->value != Catalog::STATUS_DISABLED) {
-				$regions[] = $region;
-				$enabled = true;
-			}
-
-			if ($status_flydown->value == Catalog::STATUS_ENABLED_IN_SEASON)
-				$available_regions[] = $region;
-
-			if ($status_flydown->value == Catalog::STATUS_ENABLED_OUT_OF_SEASON)
-				$unavailable_regions[] = $region;
-		}
-
-    	SwatDB::updateBinding($this->app->db, 'CatalogRegionBinding', 'catalog',
-			$this->id, 'region', $regions, 'Region', 'id');
-
-		$where_clause = sprintf('catalog = %s',
-			$this->app->db->quote($this->id, 'integer'));
-
-		SwatDB::updateColumn($this->app->db, 'CatalogRegionBinding',
-			'boolean:available', true, 'region', $available_regions,
-			$where_clause);
-
-		SwatDB::updateColumn($this->app->db, 'CatalogRegionBinding',
-			'boolean:available', false, 'region', $unavailable_regions,
-			$where_clause);
+		$this->saveStatus();
 
 		$msg = new SwatMessage(
-			sprintf('The status of “%s” has been updated.', $this->catalog->title));
+			sprintf(Store::_('The status of “%s” has been updated.'),
+				$this->catalog->title));
 
 		// disable clone
-		if ($enabled && $this->catalog->clone !== null) {
-			$sql = 'update Promotion set catalog = %s where catalog =
-				(select clone from CatalogCloneView where catalog = %s)';
-
-			$sql = sprintf($sql,
-				$this->app->db->quote($this->id, 'integer'),
-				$this->app->db->quote($this->id, 'integer'));
-
-			SwatDB::exec($this->app->db, $sql);
-
-			$sql = 'delete from CatalogRegionBinding
-				where catalog in
-					(select clone from CatalogCloneView where catalog = %s)';
-
-			$sql = sprintf($sql,
-				$this->app->db->quote($this->id, 'integer'));
-
-			SwatDB::exec($this->app->db, $sql);
-
-			$msg->secondary_content =
-				sprintf('“%s” has been automatically disabled in all regions.',
-					$this->catalog->clone_title);
-		}
+		if ($enabled && $this->catalog->clone !== null)
+			$this->disableClone();
 
 		$this->app->messages->add($msg);
 	}
+
+	// }}}
+	// {{{ protected function disableClone()
+
+	protected function disableClone()
+	{
+		$sql = 'delete from CatalogRegionBinding
+			where catalog in
+				(select clone from CatalogCloneView where catalog = %s)';
+
+		$sql = sprintf($sql,
+			$this->app->db->quote($this->id, 'integer'));
+
+		SwatDB::exec($this->app->db, $sql);
+
+		$msg->secondary_content = sprintf(Store::_(
+			'“%s” has been automatically disabled in all regions.'),
+			$this->catalog->clone_title);
+	}
+
+	// }}}
+	// {{{ abstract protected function saveStatus()
+
+	abstract protected function saveStatus();
 
 	// }}}
 
@@ -159,32 +131,31 @@ class StoreCatalogStatus extends AdminDBEdit
 		if ($this->catalog->clone !== null) {
 			$note = $this->ui->getWidget('clone_note');
 			$note->visible = true;
-			$note->title = 'Warning';
+			$note->title = Store::_('Warning');
 			$note->content_type = 'text/xml';
 			if ($this->catalog->is_parent) {
-				$note->content = sprintf(
-					'<p>The catalogue <strong>%s</strong> has a clone. Enabling '.
-					'the catalogue <strong>%s</strong> in any region will '.
-					'disable the catalogue <strong>%s</strong> in all '.
-					'regions.</p>',
-					SwatString::minimizeEntities($this->catalog->title),
+				$note->content = sprintf(Store::_(
+					'<p>The %1$s <strong>%2$s</strong> has a clone. Enabling '.
+					'the %1$s <strong>%2$s</strong> in any region will '.
+					'disable the %1$s <strong>%3$s</strong> in all '.
+					'regions.</p>'),
+					Store::_('catalog'),
 					SwatString::minimizeEntities($this->catalog->title),
 					SwatString::minimizeEntities($this->catalog->clone_title));
 			} else {
-				$note->content = sprintf(
-					'<p>The catalogue <strong>%s</strong> is a cloned '.
-					'catalogue. Enabling the catalogue <strong>%s</strong> '.
-					'in any region will disable the catalogue '.
-					'<strong>%s</strong> in all regions.',
-					SwatString::minimizeEntities($this->catalog->title),
+				$note->content = sprintf(Store::_(
+					'<p>The %1$s <strong>%2$s</strong> is a cloned  %1$s. '.
+					'Enabling the %1$s <strong>%2$s</strong> in any region '.
+					'will disable the %1$s <strong>%3$s</strong> in all '.
+					'regions.</p>'),
+					Store::_('catalog'),
 					SwatString::minimizeEntities($this->catalog->title),
 					SwatString::minimizeEntities($this->catalog->clone_title));
 			}
 
-			$note->content.=
-				'<p>Enable this catalogue only if you are done making '.
-				'catalogue changes, and you want to apply the changes to the '.
-				'live website.</p>';
+			$note->content.= sprintf(Store::_('<p>Enable this %1$s only if you '.
+				'are done making %1$s changes, and you want to apply the '.
+				'changes to the live website.</p>', Store::_('catalog')));
 		}
 
 		$status_replicator = $this->ui->getWidget('status_replicator');
@@ -194,25 +165,20 @@ class StoreCatalogStatus extends AdminDBEdit
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->id, 'integer'));
 
+		$class_map = StoreClassMap::instance();
+		$catalog = $class_map->resolveClass('StoreCatalog');
+
 		$statuses = SwatDB::query($this->app->db, $sql);
 
 		foreach ($statuses as $status) {
 			$status_flydown = $status_replicator->getWidget('status',
 				$status->region);
 
-			if ($status->available)
-				$status_flydown->value = Catalog::STATUS_ENABLED_IN_SEASON;
-			else
-				$status_flydown->value = Catalog::STATUS_ENABLED_OUT_OF_SEASON;
+			$status_constant = call_user_func(array($catalog,
+				'getStatusConstant'), $status->available);
+
+			$status_flydown->value = $status_constant;
 		}
-	}
-
-	// }}}
-	// {{{ protected function buildFrame()
-
-	protected function buildFrame2()
-	{
-		// don't do any frame title stuff
 	}
 
 	// }}}

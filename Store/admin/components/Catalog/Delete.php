@@ -8,8 +8,7 @@ require_once 'Admin/AdminSummaryDependency.php';
 /**
  * Delete confirmation page for Catalogs
  *
- * Only single deletes are supported. Deletes only happen from the details
- * page.
+ * Only single deletes are supported. Deletes only happen from the details page
  *
  * @package   Store
  * @copyright 2005-2006 silverorange
@@ -35,10 +34,8 @@ class StoreCatalogDelete extends AdminDBDelete
 
 		$num = SwatDB::exec($this->app->db, $sql);
 
-		$msg = new SwatMessage(sprintf(Store::ngettext(
-			'One catalogue has been deleted.',
-			'%d catalogues have been deleted.', $num),
-			SwatString::numberFormat($num)), SwatMessage::NOTIFICATION);
+		$msg = new SwatMessage(sprintf(Store::_('One %s has been deleted.'),
+			Store::_('catalog')), SwatMessage::NOTIFICATION);
 
 		$this->app->messages->add($msg);
 	}
@@ -69,13 +66,33 @@ class StoreCatalogDelete extends AdminDBDelete
 
 		$id = $this->getFirstItem();
 
-		$this->getDependency();
 		$dep = new AdminListDependency();
 		$dep->title = Store::_('catalog');
 		$dep->entries = AdminListDependency::queryEntries($this->app->db,
 			'Catalog', 'integer:id', null, 'text:title', 'id',
 			sprintf('id = %s', $id), AdminDependency::DELETE);
 
+		$this->getDependencies($dep, $id);
+
+		$message = $this->ui->getWidget('confirmation_message');
+		$message->content_type = 'text/xml';
+		$message->content = $dep->getMessage();
+
+		$note = $this->ui->getWidget('note');
+		$note->visible = true;
+		$note->content = $this->getNoteContent();
+
+		if ($dep->getStatusLevelCount(AdminDependency::DELETE) == 0)
+			$this->switchToCancelButton();
+
+		$this->buildNavBar($id);
+	}
+
+	// }}}
+	// {{{ protected function getDependencies()
+
+	protected function getDependencies($dep, $id)
+	{
 		// dependent products
 		$dep_products = new AdminSummaryDependency();
 		$dep_products->title = Store::_('product');
@@ -91,22 +108,7 @@ class StoreCatalogDelete extends AdminDBDelete
 
 		$dep->addDependency($dep_products);
 
-		$message = $this->ui->getWidget('confirmation_message');
-		$message->content_type = 'text/xml';
-		$message->content = $dep->getMessage();
-
-		$note = $this->ui->getWidget('note');
-		$note->visible = true;
-		$note->content = sprintf(Store::_('A %s must have no products, or be '.
-			'disabled in all regions and have a clone in order to be deleted.'),
-			Store::_('catalog'));
-
-		if ($dep->getStatusLevelCount(AdminDependency::DELETE) == 0)
-			$this->switchToCancelButton();
-
-		$this->buildNavBar($id);
 	}
-
 	// }}}
 	// {{{ private function buildNavBar()
 
@@ -118,6 +120,16 @@ class StoreCatalogDelete extends AdminDBDelete
 		$title = SwatDB::queryOne($this->app->db, $sql);
 		$this->navbar->createEntry($title, $link);
 		$this->navbar->addEntry($last_entry);
+	}
+
+	// }}}
+	// {{{ protected function getNoteContent()
+
+	protected function getNoteContent()
+	{
+		return sprintf(Store::_('A %s must have no products, or be '.
+			'disabled in all regions and have a clone in order to be deleted.'),
+			Store::_('catalog'));
 	}
 
 	// }}}
