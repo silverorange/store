@@ -155,7 +155,7 @@ abstract class StoreCatalogStatus extends AdminDBEdit
 
 			$note->content.= sprintf(Store::_('<p>Enable this %1$s only if you '.
 				'are done making %1$s changes, and you want to apply the '.
-				'changes to the live website.</p>', Store::_('catalog')));
+				'changes to the live website.</p>'), Store::_('catalog'));
 		}
 
 		$status_replicator = $this->ui->getWidget('status_replicator');
