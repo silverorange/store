@@ -32,8 +32,12 @@ class StoreCatalogStatusCellRenderer extends SwatCellRenderer
 		foreach ($catalog_statuses as $row) {
 			echo SwatString::minimizeEntities($row->title);
 			echo ': ';
+
+			$status_constant = call_user_func(array($catalog,
+				'getStatusConstant'), $row->available);
+
 			echo call_user_func(array($catalog, 'getStatusTitle'),
-				$row->available);
+				$status_constant);
 
 			echo '<br />';
 		}
