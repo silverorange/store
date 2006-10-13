@@ -4,7 +4,7 @@
 	<widget class="SwatForm" id="edit_form">
 		<widget class="SwatMessageDisplay" id="message_display" />
 		<widget class="SwatFormField">
-			<property name="title">First &amp; Last Name</property>
+			<property name="title" translatable="yes">First &amp; Last Name</property>
 			<widget class="SwatEntry" id="fullname">
 				<property name="size" type="integer">35</property>
 				<property name="required" type="boolean">true</property>
@@ -12,8 +12,8 @@
 			</widget>
 		</widget>
 		<widget class="SwatFormField">
-			<property name="title">Email</property>
-			<property name="note">Rest assured, we will neither sell nor share your email address.</property>
+			<property name="title" translatable="yes">Email</property>
+			<property name="note" translatable="yes">Rest assured, we will neither sell nor share your email address.</property>
 			<widget class="SwatEmailEntry" id="email">
 				<property name="size" type="integer">35</property>
 				<property name="required" type="boolean">true</property>
@@ -21,7 +21,7 @@
 			</widget>
 		</widget>
 		<widget class="SwatFormField">
-			<property name="title">Re-type Email</property>
+			<property name="title" translatable="yes">Re-type Email</property>
 			<widget class="SwatConfirmEmailEntry" id="confirm_email">
 				<property name="maxlength" type="integer">255</property>
 				<property name="size" type="integer">35</property>
@@ -30,8 +30,8 @@
 		</widget>
 		<widget class="SwatContainer" id="password_container">
 			<widget class="SwatFormField" id="password_field">
-				<property name="title">Choose a Password</property>
-				<property name="note">Password is case-sensitive.</property>
+				<property name="title" translatable="yes">Choose a Password</property>
+				<property name="note" translatable="yes">Password is case-sensitive.</property>
 				<widget class="SwatPasswordEntry" id="password">
 					<property name="minlength" type="integer">4</property>
 					<property name="required" type="boolean">true</property>
@@ -39,7 +39,7 @@
 				</widget>
 			</widget>
 			<widget class="SwatFormField" id="confirm_password_field">
-				<property name="title">Re-type Password</property>
+				<property name="title" translatable="yes">Re-type Password</property>
 				<widget class="SwatConfirmPasswordEntry" id="confirm_password">
 					<property name="required" type="boolean">true</property>
 					<property name="maxlength" type="integer">255</property>
@@ -47,7 +47,7 @@
 			</widget>
 		</widget>
 		<widget class="SwatFormField">
-			<property name="title">Phone Number</property>
+			<property name="title" translatable="yes">Phone Number</property>
 			<widget class="SwatEntry" id="phone">
 				<property name="size" type="integer">15</property>
 				<property name="maxlength" type="integer">100</property>
@@ -55,7 +55,7 @@
 		</widget>
 		<widget class="SwatFooterFormField">
 			<widget class="SwatButton" id="submit_button">
-				<property name="title">Sign up for an account</property>
+				<property name="title" translatable="yes">Sign up for an account</property>
 			</widget>
 		</widget>
 	</widget>

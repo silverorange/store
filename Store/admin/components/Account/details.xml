@@ -5,12 +5,12 @@
 	<widget class="SwatFrame" id="details_frame">
 		<widget class="SwatToolbar" id="details_toolbar">
 			<widget class="SwatToolLink">
-				<property name="title">Edit Account</property>
+				<property name="title" translatable="yes">Edit Account</property>
 				<property name="link">Account/Edit?id=%s</property>
 				<property name="stock_id">edit</property>
 			</widget>
 			<widget class="SwatToolLink">
-				<property name="title">Email New Password</property>
+				<property name="title" translatable="yes">Email New Password</property>
 				<property name="link">Account/EmailPassword?id=%s</property>
 				<property name="stock_id">email</property>
 			</widget>
@@ -20,25 +20,25 @@
 
 		<widget class="SwatDetailsView" id="details_view">
 			<object class="SwatDetailsViewField">
-				<property name="title">Name</property>
+				<property name="title" translatable="yes">Name</property>
 				<object class="SwatNullTextCellRenderer">
 					<property name="text" type="data">fullname</property>
 				</object>
 			</object>
 			<object class="SwatDetailsViewField">
-				<property name="title">Email</property>
+				<property name="title" translatable="yes">Email</property>
 				<object class="SwatNullTextCellRenderer">
 					<property name="text" type="data">email</property>
 				</object>
 			</object>
 			<object class="SwatDetailsViewField">
-				<property name="title">Phone #</property>
+				<property name="title" translatable="yes">Phone #</property>
 				<object class="SwatNullTextCellRenderer">
 					<property name="text" type="data">phone</property>
 				</object>
 			</object>
 			<object class="SwatDetailsViewField" id="createdate">
-				<property name="title">Created On</property>
+				<property name="title" translatable="yes">Created On</property>
 				<object class="SwatDateCellRenderer">
 					<property name="date" type="data">createdate</property>
 				</object>
@@ -49,13 +49,13 @@
 		<!-- Orders -->
 
 		<widget class="SwatFrame" id="orders_frame">
-			<property name="title">Orders</property>
+			<property name="title" translatable="yes">Orders</property>
 			<widget class="SwatForm" id="index_form">
 				<widget class="SwatTableView" id="orders_view">
 					<object class="AdminTableViewOrderableColumn" id="id">
-						<property name="title">Order #</property>
+						<property name="title" translatable="yes">Order #</property>
 						<object class="AdminTitleLinkCellRenderer">
-							<property name="text">V-%s</property>
+							<property name="text">%s</property>
 							<property name="value" type="data">id</property>
 							<property name="link">Order/Details?id=%s&amp;account=%s</property>
 							<property name="link_value[]" type="data">id</property>
@@ -63,13 +63,13 @@
 						</object>
 					</object>
 					<object class="AdminTableViewOrderableColumn" id="createdate">
-						<property name="title">Placed On</property>
+						<property name="title" translatable="yes">Placed On</property>
 						<object class="SwatDateCellRenderer">
 							<property name="date" type="data">createdate</property>
 						</object>
 					</object>
 					<object class="AdminTableViewOrderableColumn" id="total">
-						<property name="title">Total</property>
+						<property name="title" translatable="yes">Total</property>
 						<object class="SwatMoneyCellRenderer">
 							<property name="value" type="data">total</property>
 						</object>
@@ -81,11 +81,11 @@
 		<!-- Addresses -->
 
 		<widget class="SwatFrame" id="account_addresses_frame">
-			<property name="title">Addresses</property>
+			<property name="title" translatable="yes">Addresses</property>
 			<widget class="SwatForm" id="addresses_form">
 				<widget class="SwatToolbar" id="address_details_toolbar">
 					<widget class="SwatToolLink">
-						<property name="title">Add Address</property>
+						<property name="title" translatable="yes">Add Address</property>
 						<property name="link">Account/AddressEdit?account=%s</property>
 						<property name="stock_id">add</property>
 					</widget>
@@ -104,13 +104,13 @@
 						</object>
 					</object>
 					<object class="AdminTableViewOrderableColumn" id="id">
-						<property name="title">Address</property>
+						<property name="title" translatable="yes">Address</property>
 						<object class="StoreAddressCellRenderer">
 							<property name="address" type="data">address</property>
 						</object>
 					</object>
 					<object class="AdminTableViewOrderableColumn" id="default_address">
-						<property name="title">Default Address</property>
+						<property name="title" translatable="yes">Default Address</property>
 						<object class="SwatBooleanCellRenderer">
 							<property name="value" type="data">default_address</property>
 						</object>
@@ -118,7 +118,7 @@
 				</widget>
 				<widget class="SwatActions" id="address_actions">
 					<widget class="SwatActionItem" id="address_delete">
-						<property name="title">delete…</property>
+						<property name="title" translatable="yes">delete…</property>
 					</widget>
 				</widget>
 			</widget>
@@ -127,7 +127,7 @@
 		<!-- Payment Methods -->
 
 		<widget class="SwatFrame" id="account_payment_methods_frame">
-			<property name="title">Payment Methods</property>
+			<property name="title" translatable="yes">Payment Methods</property>
 			<widget class="SwatForm" id="payment_methods_form">
 				<widget class="SwatTableView" id="payment_methods_view">
 					<object class="SwatTableViewCheckboxColumn" id="checkbox">
@@ -150,7 +150,7 @@
 				</widget>
 				<widget class="SwatActions" id="payment_methods_actions">
 					<widget class="SwatActionItem" id="payment_method_delete">
-						<property name="title">delete…</property>
+						<property name="title" translatable="yes">delete…</property>
 					</widget>
 				</widget>
 			</widget>

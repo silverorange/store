@@ -3,34 +3,34 @@
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="search_disclosure">
-		<property name="title">Search Articles</property>
+		<property name="title" translatable="yes">Search Articles</property>
 		<widget class="SwatForm" id="search_form">
 			<widget class="SwatFormField">
-				<property name="title">Title</property>
+				<property name="title" translatable="yes">Title</property>
 				<widget class="AdminSearchOperatorFlydown" id="search_title_op" />
 				<widget class="SwatEntry" id="search_title" />
 			</widget>
 			<widget class="SwatGroupingFormField">
-				<property name="title">Accessible to</property>
+				<property name="title" translatable="yes">Accessible to</property>
 				<widget class="SwatCheckboxList" id="search_regions" />
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title">Shown in Menu</property>
+				<property name="title" translatable="yes">Shown in Menu</property>
 				<widget class="SwatYesNoFlydown" id="search_show" />
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title">Searchable</property>
+				<property name="title" translatable="yes">Searchable</property>
 				<widget class="SwatYesNoFlydown" id="search_searchable" />
 			</widget>
 			<widget class="SwatFooterFormField">
 				<widget class="SwatButton" id="submit_button">
-					<property name="title">Search</property>
+					<property name="title" translatable="yes">Search</property>
 				</widget>
 			</widget>
 		</widget>
 	</widget>
 	<widget class="SwatFrame" id="results_frame">
-		<property name="title">Articles</property>
+		<property name="title" translatable="yes">Articles</property>
 		<property name="visible" type="boolean">false</property>
 		<widget class="SwatContentBlock" id="results_message" />
 
@@ -42,7 +42,7 @@
 					</object>
 				</object>
 				<object class="AdminTableViewOrderableColumn" id="title">
-					<property name="title">Title</property>
+					<property name="title" translatable="yes">Title</property>
 					<object class="AdminTitleLinkCellRenderer">
 						<property name="text" type="data">title</property>
 						<property name="link">Article/Index?id=%s</property>
@@ -50,7 +50,7 @@
 					</object>
 				</object>
 				<object class="SwatTableViewColumn" id="visibility">
-					<property name="title">Visibility</property>
+					<property name="title" translatable="yes">Visibility</property>
 					<object class="StoreArticleVisibilityCellRenderer">
 						<property name="article" type="data">id</property>
 						<property name="show_in_menu" type="data">show</property>
@@ -63,17 +63,17 @@
 			</widget>
 			<widget class="SwatActions" id="index_actions">
 				<widget class="SwatActionItem" id="delete">
-					<property name="title">delete…</property>
+					<property name="title" translatable="yes">delete…</property>
 				</widget>
 				<widget class="SwatActionItem" id="accessibility_action">
-					<property name="title">set accessibility…</property>
+					<property name="title" translatable="yes">set accessibility…</property>
 					<widget class="SwatFormField">
-						<property name="title">Accessibility</property>
+						<property name="title" translatable="yes">Accessibility</property>
 						<widget class="StoreArticleRegionAction" id="article_region_action" />
 					</widget>
 				</widget>
 				<widget class="SwatActionItem" id="visibility_action">
-					<property name="title">change visibility…</property>
+					<property name="title" translatable="yes">change visibility…</property>
 					<widget class="SwatFlydown" id="visibility">
 						<property name="show_blank" type="boolean">false</property>
 					</widget>

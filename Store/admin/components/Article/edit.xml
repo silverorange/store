@@ -3,49 +3,49 @@
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="edit_frame">
-		<property name="title">Article</property>
+		<property name="title" translatable="yes">Article</property>
 		<widget class="SwatForm" id="edit_form">
 			<widget class="SwatFormField">
-				<property name="title">Title</property>
+				<property name="title" translatable="yes">Title</property>
 				<widget class="SwatEntry" id="title">
 					<property name="required" type="boolean">true</property>
 					<property name="maxlength" type="integer">255</property>
 				</widget>
 			</widget>
 			<widget class="SwatFormField" id="shortname_field">
-				<property name="title">Short Name</property>
+				<property name="title" translatable="yes">Short Name</property>
 				<widget class="AdminUniqueEntry" id="shortname">
 					<property name="required" type="boolean">true</property>
 					<property name="maxlength" type="integer">255</property>
 				</widget>
 			</widget>
 			<widget class="SwatFieldset">
-				<property name="title">Article Visibility</property>
+				<property name="title" translatable="yes">Article Visibility</property>
 				<widget class="SwatGroupingFormField">
-					<property name="title">Accessible to</property>
+					<property name="title" translatable="yes">Accessible to</property>
 					<widget class="SwatCheckboxList" id="regions" />
 				</widget>
 				<widget class="SwatFormField">
-					<property name="title">Show in menu?</property>
+					<property name="title" translatable="yes">Show in menu?</property>
 					<widget class="SwatCheckbox" id="show">
 						<property name="value" type="boolean">true</property>
 					</widget>
 				</widget>
 				<widget class="SwatFormField">
-					<property name="title">Show in Search?</property>
+					<property name="title" translatable="yes">Show in Search?</property>
 					<widget class="SwatCheckbox" id="searchable">
 						<property name="value" type="boolean">true</property>
 					</widget>
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title">Description</property>
+				<property name="title" translatable="yes">Description</property>
 				<widget class="SwatTextarea" id="description">
 					<property name="rows" type="integer">4</property>
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title">Bodytext</property>
+				<property name="title" translatable="yes">Bodytext</property>
 				<widget class="SwatTextarea" id="bodytext">
 					<property name="rows" type="integer">20</property>
 				</widget>

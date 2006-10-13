@@ -3,10 +3,10 @@
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="index_frame">
-		<property name="title">Provinces &amp; States</property>
+		<property name="title" translatable="yes">Provinces &amp; States</property>
 		<widget class="SwatToolbar" id="index_toolbar">
 			<widget class="SwatToolLink">
-				<property name="title">Add a Province/State</property>
+				<property name="title" translatable="yes">Add a Province/State</property>
 				<property name="link">ProvState/Edit</property>
 				<property name="stock_id">create</property>
 			</widget>
@@ -25,7 +25,7 @@
 					</object>
 				</object>
 				<object class="SwatTableViewColumn">
-					<property name="title">Title</property>
+					<property name="title" translatable="yes">Title</property>
 					<object class="AdminTitleLinkCellRenderer">
 						<property name="text" type="data">title</property>
 						<property name="link">ProvState/Edit?id=%s</property>
@@ -34,13 +34,13 @@
 					</object>
 				</object>
 				<object class="SwatTableViewColumn">
-					<property name="title">Abbreviation</property>
+					<property name="title" translatable="yes">Abbreviation</property>
 					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">abbreviation</property>
 					</object>
 				</object>
 				<object class="SwatTableViewColumn">
-					<property name="title">Location</property>
+					<property name="title" translatable="yes">Location</property>
 					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">location</property>
 					</object>
@@ -48,7 +48,7 @@
 			</widget>
 			<widget class="SwatActions" id="index_actions">
 				<widget class="SwatActionItem" id="delete">
-					<property name="title">delete…</property>
+					<property name="title" translatable="yes">delete…</property>
 				</widget>
 			</widget>
 		</widget>

@@ -12,28 +12,28 @@
 				</object>
 			</object>
 			<object class="SwatTableViewColumn">
-				<property name="title">Item #</property>
+				<property name="title" translatable="yes">Item #</property>
 				<object class="SwatTextCellRenderer">
 					<property name="text" type="data">sku</property>
 					<property name="classes[]">item-sku</property>
 				</object>
 			</object>
 			<object class="SwatTableViewColumn" id="description_column">
-				<property name="title">Description</property>
+				<property name="title" translatable="yes">Description</property>
 				<object class="SwatTextCellRenderer">
 					<property name="text" type="data">description</property>
 					<property name="classes[]">store-cart-description</property>
 				</object>
 			</object>
 			<object class="SwatTableViewColumn">
-				<property name="title">Price</property>
+				<property name="title" translatable="yes">Price</property>
 				<object class="StoreItemPriceCellRenderer">
 					<property name="value" type="data">price</property>
 					<property name="quantity_discounts" type="data">quantity_discounts</property>
 				</object>
 			</object>
 			<object class="SwatTableViewColumn" id="quantity_column">
-				<property name="title">Quantity</property>
+				<property name="title" translatable="yes">Quantity</property>
 				<property name="classes[]">item-quantity</property>
 				<object class="SwatWidgetCellRenderer" id="quantity_renderer">
 					<property name="replicator_id" type="data">id</property>
@@ -51,7 +51,7 @@
 			<object class="StoreTableViewButtonRow">
 				<property name="id">add_button</property>
 				<property name="visible" type="boolean">false</property>
-				<property name="title">Add to Cart</property>
+				<property name="title" translatable="yes">Add to Cart</property>
 			</object>
 		</widget>
 	</widget>

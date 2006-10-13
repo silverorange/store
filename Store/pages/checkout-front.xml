@@ -3,55 +3,55 @@
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="new_customers_frame">
-		<property name="title">New Customers</property>
+		<property name="title" translatable="yes">New Customers</property>
 		<widget class="SwatContentBlock">
-			<property name="content"><![CDATA[<h4>Create a New Account</h4><p>Creating an account will make it quicker and easier to order again when you return.</p>]]></property>
+			<property name="content" translatable="yes"><![CDATA[<h4>Create a New Account</h4><p>Creating an account will make it quicker and easier to order again when you return.</p>]]></property>
 			<property name="content_type">text/xml</property>
 		</widget>
 		<widget class="SwatForm" id="create_account_form">
 			<widget class="SwatFormField">
 				<widget class="SwatButton">
-					<property name="title">Create Account</property>
+					<property name="title" translatable="yes">Create Account</property>
 				</widget>
 			</widget>
 		</widget>
 		<widget class="SwatContentBlock">
-			<property name="content"><![CDATA[<h4>Checkout as a Guest</h4><p>If you would rather not create an account, you can simply checkout as a guest.</p>]]></property>
+			<property name="content" translatable="yes"><![CDATA[<h4>Checkout as a Guest</h4><p>If you would rather not create an account, you can simply checkout as a guest.</p>]]></property>
 			<property name="content_type">text/xml</property>
 		</widget>
 		<widget class="SwatForm" id="just_place_form">
 			<widget class="SwatFormField">
 				<widget class="SwatButton">
-					<property name="title">Checkout as a Guest</property>
+					<property name="title" translatable="yes">Checkout as a Guest</property>
 				</widget>
 			</widget>
 		</widget>
 	</widget>
 	<widget class="SwatFrame" id="login_frame">
-		<property name="title">Returning Customers</property>
+		<property name="title" translatable="yes">Returning Customers</property>
 		<widget class="SwatContentBlock">
-			<property name="content"><![CDATA[<p>If you have created an account before on our website, login here to checkout.</p>]]></property>
+			<property name="content" translatable="yes"><![CDATA[<p>If you have created an account before on our website, login here to checkout.</p>]]></property>
 			<property name="content_type">text/xml</property>
 		</widget>
 		<widget class="SwatForm" id="login_form">
 			<widget class="SwatFormField">
-				<property name="title">Email Address</property>
+				<property name="title" translatable="yes">Email Address</property>
 				<widget class="SwatEmailEntry" id="email_address">
 					<property name="maxlength" type="integer">255</property>
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title">Password</property>
+				<property name="title" translatable="yes">Password</property>
 				<widget class="SwatPasswordEntry" id="password">
 					<property name="maxlength" type="integer">255</property>
 				</widget>
 			</widget>
 			<widget class="SwatFooterFormField">
 				<widget class="SwatButton">
-					<property name="title">Login</property>
+					<property name="title" translatable="yes">Login</property>
 				</widget>
 				<widget class="SwatContentBlock">
-					<property name="content"><![CDATA[<a href="account/forgotpassword">Forgot your password?</a>]]></property>
+					<property name="content" translatable="yes"><![CDATA[<a href="account/forgotpassword">Forgot your password?</a>]]></property>
 					<property name="content_type">text/xml</property>
 				</widget>
 			</widget>

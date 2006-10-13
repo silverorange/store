@@ -11,12 +11,12 @@
 
 			<widget class="SwatToolbar" id="account_details_toolbar">
 				<widget class="SwatToolLink">
-					<property name="title">Edit Account Details</property>
+					<property name="title" translatable="yes">Edit Account Details</property>
 					<property name="link">account/edit</property>
 					<property name="stock_id">edit</property>
 				</widget>
 				<widget class="SwatToolLink">
-					<property name="title">Change Login Password</property>
+					<property name="title" translatable="yes">Change Login Password</property>
 					<property name="link">account/changepassword</property>
 					<property name="stock_id">edit</property>
 				</widget>
@@ -25,20 +25,20 @@
 			<!-- Details -->
 			<widget class="SwatDetailsView" id="account_details_view">
 				<object class="SwatDetailsViewField">
-					<property name="title">Name</property>
+					<property name="title" translatable="yes">Name</property>
 					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">fullname</property>
 					</object>
 				</object>
 				<object class="SwatDetailsViewField">
-					<property name="title">Email</property>
+					<property name="title" translatable="yes">Email</property>
 					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">email</property>
 					</object>
 				</object>
 				<object class="SwatDetailsViewField">
 					<property name="id">phone</property>
-					<property name="title">Phone #</property>
+					<property name="title" translatable="yes">Phone #</property>
 					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">phone</property>
 					</object>
@@ -49,10 +49,10 @@
 
 		<!-- Addresses -->
 		<widget class="SwatFrame" id="account_address_container">
-			<property name="title">Addresses</property>
+			<property name="title" translatable="yes">Addresses</property>
 			<widget class="SwatToolbar">
 				<widget class="SwatToolLink">
-					<property name="title">Add a New Address</property>
+					<property name="title" translatable="yes">Add a New Address</property>
 					<property name="link">account/address</property>
 					<property name="stock_id">add</property>
 				</widget>
@@ -62,10 +62,10 @@
 
 		<!-- Payment Methods -->
 		<widget class="SwatFrame" id="account_payment_method_container">
-			<property name="title">Payment Methods</property>
+			<property name="title" translatable="yes">Payment Methods</property>
 			<widget class="SwatToolbar">
 				<widget class="SwatToolLink">
-					<property name="title">Add a New Payment Method</property>
+					<property name="title" translatable="yes">Add a New Payment Method</property>
 					<property name="link">account/paymentmethod</property>
 					<property name="stock_id">add</property>
 				</widget>
@@ -75,7 +75,7 @@
 
 		<!-- Orders -->
 		<widget class="SwatFrame" id="account_order_container">
-			<property name="title">Past Orders</property>
+			<property name="title" translatable="yes">Past Orders</property>
 			<widget class="SwatContentBlock" id="account_order" />
 		</widget>
 

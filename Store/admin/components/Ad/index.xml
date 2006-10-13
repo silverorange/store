@@ -3,10 +3,10 @@
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="index_frame">
-		<property name="title">Ads</property>
+		<property name="title" translatable="yes">Ads</property>
 		<widget class="SwatToolbar" id="index_toolbar">
 			<widget class="SwatToolLink">
-				<property name="title">New Ad</property>
+				<property name="title" translatable="yes">New Ad</property>
 				<property name="link">Ad/Edit</property>
 				<property name="stock_id">create</property>
 			</widget>
@@ -19,7 +19,7 @@
 					</object>
 				</object>
 				<object class="AdminTableViewOrderableColumn" id="shortname">
-					<property name="title">Short Name</property>
+					<property name="title" translatable="yes">Short Name</property>
 					<object class="AdminTitleLinkCellRenderer">
 						<property name="text" type="data">shortname</property>
 						<property name="link">Ad/Details?id=%s</property>
@@ -27,25 +27,25 @@
 					</object>
 				</object>
 				<object class="AdminTableViewOrderableColumn" id="title">
-					<property name="title">Title</property>
+					<property name="title" translatable="yes">Title</property>
 					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">title</property>
 					</object>
 				</object>
 				<object class="AdminTableViewOrderableColumn" id="total_orders">
-					<property name="title">Total Orders</property>
+					<property name="title" translatable="yes">Total Orders</property>
 					<object class="SwatNumericCellRenderer">
 						<property name="value" type="data">order_count</property>
 					</object>
 				</object>
 				<object class="AdminTableViewOrderableColumn" id="total_referrers">
-					<property name="title">Total Referrers</property>
+					<property name="title" translatable="yes">Total Referrers</property>
 					<object class="SwatNumericCellRenderer">
 						<property name="value" type="data">total_referrers</property>
 					</object>
 				</object>
 				<object class="AdminTableViewOrderableColumn" id="conversion_rate">
-					<property name="title">Conversion Rate</property>
+					<property name="title" translatable="yes">Conversion Rate</property>
 					<object class="StoreConversionRateCellRenderer">
 						<property name="value" type="data">conversion_rate</property>
 						<property name="precision" type="integer">2</property>
@@ -54,7 +54,7 @@
 			</widget>
 			<widget class="SwatActions" id="index_actions">
 				<widget class="SwatActionItem" id="delete">
-					<property name="title">delete…</property>
+					<property name="title" translatable="yes">delete…</property>
 				</widget>
 			</widget>
 		</widget>

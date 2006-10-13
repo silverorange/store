@@ -8,12 +8,12 @@
 		<property name="visible" type="boolean">false</property>
 		<widget class="SwatToolbar" id="details_toolbar">
 			<widget class="SwatToolLink">
-				<property name="title">Edit Article</property>
+				<property name="title" translatable="yes">Edit Article</property>
 				<property name="link">Article/Edit?id=%s</property>
 				<property name="stock_id">edit</property>
 			</widget>
 			<widget class="SwatToolLink">
-				<property name="title">Delete Article</property>
+				<property name="title" translatable="yes">Delete Article</property>
 				<property name="link">Article/Delete?id=%s</property>
 				<property name="stock_id">delete</property>
 			</widget>
@@ -21,19 +21,19 @@
 		<widget class="SwatContentBlock" id="details_block" />
 		<widget class="SwatDetailsView" id="details_view">
 			<object class="SwatDetailsViewField">
-				<property name="title">Short Name</property>
+				<property name="title" translatable="yes">Short Name</property>
 				<object class="SwatTextCellRenderer">
 					<property name="text" type="data">shortname</property>
 				</object>
 			</object>
 			<object class="SwatDetailsViewField">
-				<property name="title">Title</property>
+				<property name="title" translatable="yes">Title</property>
 				<object class="SwatTextCellRenderer">
 					<property name="text" type="data">title</property>
 				</object>
 			</object>
 			<object class="SwatDetailsViewField" id="visibility">
-				<property name="title">Visibility</property>
+				<property name="title" translatable="yes">Visibility</property>
 				<object class="StoreArticleVisibilityCellRenderer">
 					<property name="article" type="data">id</property>
 					<property name="show_in_menu" type="data">show</property>
@@ -43,7 +43,7 @@
 				</object>
 			</object>
 			<object class="SwatDetailsViewField" id="createdate">
-				<property name="title">Created</property>
+				<property name="title" translatable="yes">Created</property>
 				<object class="SwatDateCellRenderer">
 					<property name="date" type="data">createdate</property>
 					<property name="format" type="constant">SwatDate::DF_DATE_TIME</property>
@@ -51,7 +51,7 @@
 				</object>
 			</object>
 			<object class="SwatDetailsViewField" id="modified_date">
-				<property name="title">Last Modified</property>
+				<property name="title" translatable="yes">Last Modified</property>
 				<object class="SwatDateCellRenderer">
 					<property name="date" type="data">modified_date</property>
 					<property name="format" type="constant">SwatDate::DF_DATE_TIME</property>
@@ -59,13 +59,13 @@
 				</object>
 			</object>
 			<object class="SwatDetailsViewVerticalField">
-				<property name="title">Description</property>
+				<property name="title" translatable="yes">Description</property>
 				<object class="SwatNullTextCellRenderer">
 					<property name="text" type="data">description</property>
 				</object>
 			</object>
 			<object class="SwatDetailsViewVerticalField">
-				<property name="title">Body Text</property>
+				<property name="title" translatable="yes">Body Text</property>
 				<object class="SwatNullTextCellRenderer">
 					<property name="text" type="data">bodytext</property>
 				</object>
@@ -75,15 +75,15 @@
 
 	<!-- Articles and Sub-Articles -->
 	<widget class="SwatFrame" id="articles_frame">
-		<property name="title">Articles</property>
+		<property name="title" translatable="yes">Articles</property>
 		<widget class="SwatToolbar" id="articles_toolbar">
 			<widget class="SwatToolLink" id="articles_new">
-				<property name="title">New Article</property>
+				<property name="title" translatable="yes">New Article</property>
 				<property name="link">Article/Edit%s</property>
 				<property name="stock_id">create</property>
 			</widget>
 			<widget class="SwatToolLink" id="articles_order">
-				<property name="title">Change Article Order</property>
+				<property name="title" translatable="yes">Change Article Order</property>
 				<property name="link">Article/Order%s</property>
 				<property name="stock_id">change-order</property>
 			</widget>
@@ -96,7 +96,7 @@
 					</object>
 				</object>
 				<object class="AdminTableViewOrderableColumn" id="title">
-					<property name="title">Title</property>
+					<property name="title" translatable="yes">Title</property>
 					<object class="AdminTreeTitleLinkCellRenderer">
 						<property name="text" type="data">title</property>
 						<property name="link">Article/Index?id=%s</property>
@@ -105,7 +105,7 @@
 					</object>
 				</object>
 				<object class="SwatTableViewColumn" id="visibility">
-					<property name="title">Visibility</property>
+					<property name="title" translatable="yes">Visibility</property>
 					<object class="StoreArticleVisibilityCellRenderer">
 						<property name="article" type="data">id</property>
 						<property name="show_in_menu" type="data">show</property>
@@ -115,19 +115,19 @@
 			</widget>
 			<widget class="SwatActions" id="index_actions">
 				<widget class="SwatActionItem" id="delete">
-					<property name="title">delete…</property>
+					<property name="title" translatable="yes">delete…</property>
 				</widget>
 				<widget class="SwatActionItem" id="accessibility_action">
-					<property name="title">set accessibility…</property>
+					<property name="title" translatable="yes">set accessibility…</property>
 					<widget class="SwatFormField">
-						<property name="title">Accessibility</property>
+						<property name="title" translatable="yes">Accessibility</property>
 						<widget class="StoreArticleRegionAction" id="article_region_action" />
 					</widget>
 				</widget>
 				<widget class="SwatActionItem" id="visibility_action">
-					<property name="title">change visibility…</property>
+					<property name="title" translatable="yes">change visibility…</property>
 					<widget class="SwatFormField">
-						<property name="title">Visibility</property>
+						<property name="title" translatable="yes">Visibility</property>
 						<widget class="SwatFlydown" id="visibility">
 							<property name="show_blank" type="boolean">false</property>
 						</widget>

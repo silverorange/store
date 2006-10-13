@@ -3,9 +3,9 @@
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="index_frame">
-		<property name="title">Ads Details</property>
+		<property name="title" translatable="yes">Ads Details</property>
 		<widget class="SwatFieldset">
-			<property name="title">Referrers in the Last</property>	
+			<property name="title" translatable="yes">Referrers in the Last</property>	
 			<widget class="SwatTableView" id="referrer_period_view">
 				<object class="SwatTableViewColumn">
 					<object class="SwatTextCellRenderer">
@@ -13,7 +13,7 @@
 					</object>
 				</object>
 				<object class="SwatTableViewColumn">
-					<property name="title">Referrers</property>
+					<property name="title" translatable="yes">Referrers</property>
 					<object class="SwatNumericCellRenderer">
 						<property name="value" type="data">referrers</property>
 					</object>
@@ -21,7 +21,7 @@
 			</widget>
 		</widget>
 		<widget class="SwatFieldset">
-			<property name="title">Orders in the Last</property>	
+			<property name="title" translatable="yes">Orders in the Last</property>	
 			<widget class="SwatTableView" id="orders_view">
 				<object class="SwatTableViewColumn">
 					<object class="SwatTextCellRenderer">
@@ -31,7 +31,7 @@
 			</widget>
 		</widget>
 		<widget class="SwatFieldset">
-			<property name="title">Catalogue Requests in the Last</property>	
+			<property name="title" translatable="yes">Catalogue Requests in the Last</property>	
 			<widget class="SwatTableView" id="catalogrequest_period_view">
 				<object class="SwatTableViewColumn">
 					<object class="SwatTextCellRenderer">
@@ -39,7 +39,7 @@
 					</object>
 				</object>
 				<object class="SwatTableViewColumn">
-					<property name="title">Requests</property>
+					<property name="title" translatable="yes">Requests</property>
 					<object class="SwatNumericCellRenderer">
 						<property name="value" type="data">referrers</property>
 					</object>

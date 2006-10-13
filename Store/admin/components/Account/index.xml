@@ -2,13 +2,13 @@
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
 	<widget class="SwatFrame" id="results_frame">
-		<property name="title">Accounts</property>
+		<property name="title" translatable="yes">Accounts</property>
 		<property name="visible" type="boolean">false</property>
 		<widget class="SwatContentBlock" id="results_message" />
 		<widget class="SwatForm" id="index_form">
 			<widget class="SwatTableView" id="index_view">
 				<object class="AdminTableViewOrderableColumn" id="fullname">
-					<property name="title">Name</property>
+					<property name="title" translatable="yes">Name</property>
 					<object class="AdminTitleLinkCellRenderer">
 						<property name="text" type="data">fullname</property>
 						<property name="link">Account/Details?id=%s</property>
@@ -17,13 +17,13 @@
 					</object>
 				</object>
 				<object class="AdminTableViewOrderableColumn" id="email">
-					<property name="title">Email</property>
+					<property name="title" translatable="yes">Email</property>
 					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">email</property>
 					</object>
 				</object>
 				<object class="AdminTableViewOrderableColumn" id="order_count">
-					<property name="title"># of Orders</property>
+					<property name="title" translatable="yes"># of Orders</property>
 					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">order_count</property>
 					</object>

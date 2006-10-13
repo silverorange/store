@@ -3,29 +3,29 @@
 <swatml>
 	<widget class="SwatForm" id="contact_form">
 		<widget class="SwatFrame" id="frame">
-			<property name="title">Send us a Message</property>
+			<property name="title" translatable="yes">Send us a Message</property>
 			<widget class="SwatFormField">
-				<property name="title">Email</property>
+				<property name="title" translatable="yes">Email</property>
 				<widget class="SwatEmailEntry" id="email">
 					<property name="required" type="boolean">true</property>
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title">Subject</property>
+				<property name="title" translatable="yes">Subject</property>
 				<widget class="SwatFlydown" id="subject">
 					<property name="required" type="boolean">true</property>
 					<property name="show_blank" type="boolean">false</property>
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title">Message</property>
+				<property name="title" translatable="yes">Message</property>
 				<widget class="SwatTextarea" id="message">
 					<property name="required" type="boolean">true</property>
 				</widget>
 			</widget>
 			<widget class="SwatFooterFormField">
 				<widget class="SwatButton">
-					<property name="title">Send Message</property>
+					<property name="title" translatable="yes">Send Message</property>
 				</widget>
 			</widget>
 		</widget>
