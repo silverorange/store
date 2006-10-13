@@ -5,9 +5,9 @@ create table Product (
 	bodytext text,
 	createdate timestamp,
 	shortname varchar(255),
-	image int references Image(id) on delete set null,
+	primary_image int references Image(id) on delete set null,
 	primary key (id)
 );
 
 CREATE INDEX Product_catalog_index ON Product(catalog);
-CREATE INDEX Product_image_index ON Product(image);
+CREATE INDEX Product_primary_image_index ON Product(primary_image);

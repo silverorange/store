@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'Store/dataobjects/StoreImageWrapper.php';
 require_once 'Store/dataobjects/StoreItemWrapper.php';
 require_once 'Store/dataobjects/StoreItemGroupWrapper.php';
 require_once 'Store/dataobjects/StoreCatalog.php';
@@ -130,7 +131,7 @@ class StoreProduct extends StoreDataObject
 		$this->registerInternalProperty('catalog',
 			$this->class_map->resolveClass('StoreCatalog'));
 
-		$this->registerInternalProperty('image',
+		$this->registerInternalProperty('primary_image',
 			$this->class_map->resolveClass('StoreProductImage'));
 
 		$this->table = 'Product';
@@ -267,6 +268,24 @@ class StoreProduct extends StoreDataObject
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 		return SwatDB::query($this->db, $sql,
 			$this->class_map->resolveClass('StoreProductWrapper'));
+	}
+
+	// }}}
+	// {{{ protected function loadImages()
+
+	/**
+	 * Loads images for this product
+	 *
+	 * @return StoreImageWrapper
+	 */
+	protected function loadImages()
+	{
+		$sql = 'select * Image where id in
+			(select image from ProductImageBinding where product = %s)';
+
+		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+		return SwatDB::query($this->db, $sql,
+			$this->class_map->resolveClass('StoreImageWrapper'));
 	}
 
 	// }}}
