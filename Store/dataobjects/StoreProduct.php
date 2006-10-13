@@ -1,11 +1,11 @@
 <?php
 
 require_once 'Store/dataobjects/StoreDataObject.php';
-require_once 'Store/dataobjects/StoreImageWrapper.php';
 require_once 'Store/dataobjects/StoreItemWrapper.php';
 require_once 'Store/dataobjects/StoreItemGroupWrapper.php';
 require_once 'Store/dataobjects/StoreCatalog.php';
 require_once 'Store/dataobjects/StoreProductImage.php';
+require_once 'Store/dataobjects/StoreProductImageWrapper.php';
 
 /**
  * A product for an e-commerce web application
@@ -285,7 +285,7 @@ class StoreProduct extends StoreDataObject
 
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 		return SwatDB::query($this->db, $sql,
-			$this->class_map->resolveClass('StoreImageWrapper'));
+			$this->class_map->resolveClass('StoreProductImageWrapper'));
 	}
 
 	// }}}
