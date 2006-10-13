@@ -40,7 +40,7 @@ class StoreProductImagePage extends StoreStorePage
 		$this->layout->addHtmlHeadEntrySet(
 			$this->back_link->getHtmlHeadEntrySet());
 
-		if ($product->image === null)
+		if ($product->primary_image === null)
 			throw new SiteNotFoundException();
 
 		$this->layout->startCapture('content');
@@ -81,9 +81,9 @@ class StoreProductImagePage extends StoreStorePage
 		$div->id = 'product_image_large';
 
 		$img_tag = new SwatHtmlTag('img');
-		$img_tag->src = $product->image->getURI('large');
-		$img_tag->width = $product->image->large_width;
-		$img_tag->height = $product->image->large_height;
+		$img_tag->src = $product->primary_image->getURI('large');
+		$img_tag->width = $product->primary_image->large_width;
+		$img_tag->height = $product->primary_image->large_height;
 		$img_tag->alt = 'Photo of '.$product->title;
 
 		$div->open();

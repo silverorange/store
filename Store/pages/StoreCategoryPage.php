@@ -147,7 +147,7 @@ class StoreCategoryPage extends StoreStorePage
 		 * See detailed explanation below.
 		 */
 		$sql = 'select Product.id, Product.shortname, Product.title,
-				Product.image
+				Product.primary_image
 			from Product 
 			inner join CategoryProductBinding
 				on CategoryProductBinding.product = Product.id
@@ -168,7 +168,7 @@ class StoreCategoryPage extends StoreStorePage
 
 		$sql = 'select * from Image where id in (%s)';
 		$products->loadAllSubDataObjects(
-			'image', $this->app->db, $sql, 'StoreProductImageWrapper');
+			'primary_image', $this->app->db, $sql, 'StoreProductImageWrapper');
 
 		return $products;
 	}

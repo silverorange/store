@@ -469,7 +469,7 @@ class StoreProductPage extends StoreStorePage
 
 	protected function displayProduct()
 	{
-		if ($this->product->image !== null)
+		if ($this->product->primary_image !== null)
 			$this->displayImage();
 
 		$this->displayBodyText();
@@ -490,9 +490,9 @@ class StoreProductPage extends StoreStorePage
 		$div->id = 'product_image';
 
 		$img_tag = new SwatHtmlTag('img');
-		$img_tag->src = $this->product->image->getURI('small');
-		$img_tag->width = $this->product->image->small_width;
-		$img_tag->height = $this->product->image->small_height;
+		$img_tag->src = $this->product->primary_image->getURI('small');
+		$img_tag->width = $this->product->primary_image->small_width;
+		$img_tag->height = $this->product->primary_image->small_height;
 		$img_tag->alt = 'Photo of '.$this->product->title;
 
 		$anchor = new SwatHtmlTag('a');

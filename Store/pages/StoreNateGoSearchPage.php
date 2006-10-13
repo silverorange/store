@@ -375,7 +375,7 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 				'StoreProductImageWrapper');
 
 			$products->loadAllSubDataObjects(
-				'image', $this->app->db, $sql, $image_wrapper_class);
+				'primary_image', $this->app->db, $sql, $image_wrapper_class);
 
 			$this->search_has_results[] = StoreSearchPage::TYPE_PRODUCTS;
 			$this->ui->getWidget('product_results_frame')->visible = true;
