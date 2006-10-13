@@ -4,7 +4,7 @@
 	<widget class="SwatContainer" id="container" />
 	<widget class="SwatFooterFormField">
 		<widget class="SwatButton">
-			<property name="title">Update</property>
+			<property name="title" translatable="yes">Update</property>
 		</widget>
 	</widget>
 </swatml>

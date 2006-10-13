@@ -2,7 +2,7 @@
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
 	<widget class="SwatFormField" id="fullname_field">
-		<property name="title">First &amp; Last Name</property>
+		<property name="title" translatable="yes">First &amp; Last Name</property>
 		<widget class="SwatEntry" id="fullname">
 			<property name="required" type="boolean">true</property>
 			<property name="maxlength" type="integer">255</property>
@@ -10,46 +10,46 @@
 		</widget>
 	</widget>
 	<widget class="SwatFormField">
-		<property name="title">Email</property>
-		<property name="note">Rest assured, we will not sell or share your email address.</property>
+		<property name="title" translatable="yes">Email</property>
+		<property name="note" translatable="yes">Rest assured, we will not sell or share your email address.</property>
 		<widget class="SwatEmailEntry" id="email">
 			<property name="maxlength" type="integer">255</property>
 			<property name="size" type="integer">35</property>
 		</widget>
 	</widget>
 	<widget class="SwatFormField">
-		<property name="title">Re-type Email</property>
+		<property name="title" translatable="yes">Re-type Email</property>
 		<widget class="SwatConfirmEmailEntry" id="confirm_email">
 			<property name="maxlength" type="integer">255</property>
 			<property name="size" type="integer">35</property>
 		</widget>
 	</widget>
 	<widget class="SwatFormField" id="password_field">
-		<property name="title">Password</property>
-		<property name="note">Password is case-sensitive.</property>
+		<property name="title" translatable="yes">Password</property>
+		<property name="note" translatable="yes">Password is case-sensitive.</property>
 		<widget class="SwatPasswordEntry" id="password">
 			<property name="minlength" type="integer">4</property>
 			<property name="maxlength" type="integer">255</property>
 		</widget>
 	</widget>
 	<widget class="SwatFormField" id="confirm_password_field">
-		<property name="title">Re-type Password</property>
-		<property name="note">Leave Password fields blank for them to remain the same.</property>
+		<property name="title" translatable="yes">Re-type Password</property>
+		<property name="note" translatable="yes">Leave Password fields blank for them to remain the same.</property>
 		<widget class="SwatConfirmPasswordEntry" id="confirm_password">
 			<property name="minlength" type="integer">4</property>
 			<property name="maxlength" type="integer">255</property>
 		</widget>
 	</widget>
 	<widget class="SwatFormField" id="phone_field">
-		<property name="title">Phone Number</property>
+		<property name="title" translatable="yes">Phone Number</property>
 		<widget class="SwatEntry" id="phone">
 			<property name="maxlength" type="integer">100</property>
 			<property name="size" type="integer">15</property>
 		</widget>
 	</widget>
 	<widget class="SwatFormField" id="comments_field">
-		<property name="title">Comments</property>
-		<property name="note">Use this space for more detailed shipping instructions, comments about our site, etc.</property>
+		<property name="title" translatable="yes">Comments</property>
+		<property name="note" translatable="yes">Use this space for more detailed shipping instructions, comments about our site, etc.</property>
 		<widget class="SwatTextarea" id="comments">
 			<property name="rows" type="integer">4</property>
 			<property name="cols" type="integer">20</property>

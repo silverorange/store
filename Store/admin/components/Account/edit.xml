@@ -3,24 +3,24 @@
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="edit_frame">
-		<property name="title">Account</property>
+		<property name="title" translatable="yes">Account</property>
 		<widget class="SwatForm" id="edit_form">
 			<widget class="SwatFormField">
-				<property name="title">Full Name</property>
+				<property name="title" translatable="yes">Full Name</property>
 				<widget class="SwatEntry" id="fullname">
 					<property name="required" type="boolean">true</property>
 					<property name="maxlength" type="integer">255</property>
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title">Email</property>
+				<property name="title" translatable="yes">Email</property>
 				<widget class="SwatEmailEntry" id="email">
 					<property name="required" type="boolean">true</property>
 					<property name="maxlength" type="integer">255</property>
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title">Phone #</property>
+				<property name="title" translatable="yes">Phone #</property>
 				<widget class="SwatEntry" id="phone">
 					<property name="maxlength" type="integer">100</property>
 				</widget>

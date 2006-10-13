@@ -16,32 +16,32 @@
 					</object>
 				</object>
 				<object class="StoreItemColumn">
-					<property name="title">Item #</property>
+					<property name="title" translatable="yes">Item #</property>
 					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">item.sku</property>
 					</object>
 				</object>
 				<object class="SwatTableViewColumn">
-					<property name="title">Description</property>
+					<property name="title" translatable="yes">Description</property>
 					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">description</property>
 						<property name="classes[]">store-cart-description</property>
 					</object>
 				</object>
 				<object class="SwatTableViewColumn">
-					<property name="title">Price</property>
+					<property name="title" translatable="yes">Price</property>
 					<object class="SwatMoneyCellRenderer">
 						<property name="value" type="data">price</property>
 					</object>
 				</object>
 				<object class="SwatTableViewColumn">
-					<property name="title">Quantity</property>
+					<property name="title" translatable="yes">Quantity</property>
 					<object class="SwatNumericCellRenderer">
 						<property name="value" type="data">quantity</property>
 					</object>
 				</object>
 				<object class="SwatTableViewColumn">
-					<property name="title">Extension</property>
+					<property name="title" translatable="yes">Extension</property>
 					<object class="SwatMoneyCellRenderer">
 						<property name="value" type="data">extension</property>
 					</object>
@@ -49,11 +49,11 @@
 			</widget>
 			<widget class="SwatToolbar" id="checkout_bottom_field">
 				<widget class="SwatToolLink" id="cart">
-					<property name="title">View Entire Cart »</property>
+					<property name="title" translatable="yes">View Entire Cart »</property>
 					<property name="link">cart</property>
 				</widget>
 				<widget class="SwatToolLink" id="checkout">
-					<property name="title">Proceed to Checkout »</property>
+					<property name="title" translatable="yes">Proceed to Checkout »</property>
 					<property name="link">checkout</property>
 				</widget>
 			</widget>

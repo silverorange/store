@@ -3,10 +3,10 @@
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="index_frame">
-		<property name="title">Locales</property>
+		<property name="title" translatable="yes">Locales</property>
 		<widget class="SwatToolbar" id="index_toolbar">
 			<widget class="SwatToolLink">
-				<property name="title">New Locale</property>
+				<property name="title" translatable="yes">New Locale</property>
 				<property name="link">Locale/Edit</property>
 				<property name="stock_id">create</property>
 			</widget>
@@ -19,13 +19,13 @@
 					</object>
 				</object>
 				<object class="AdminTableViewOrderableColumn" id="id">
-					<property name="title">Locale</property>
+					<property name="title" translatable="yes">Locale</property>
 					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">id</property>
 					</object>
 				</object>
 				<object class="AdminTableViewOrderableColumn" id="region_title">
-					<property name="title">Region</property>
+					<property name="title" translatable="yes">Region</property>
 					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">region_title</property>
 					</object>
@@ -33,7 +33,7 @@
 			</widget>
 			<widget class="SwatActions" id="index_actions">
 				<widget class="SwatActionItem" id="delete">
-					<property name="title">delete…</property>
+					<property name="title" translatable="yes">delete…</property>
 				</widget>
 			</widget>
 		</widget>

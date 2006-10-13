@@ -3,11 +3,11 @@
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="edit_frame">
-		<property name="title">Locale</property>
+		<property name="title" translatable="yes">Locale</property>
 		<widget class="SwatForm" id="edit_form">
 			<widget class="SwatFormField">
-				<property name="title">Locale</property>
-				<property name="note">Locale identifier in form xx_YY, where xx is a two-letter ISO 639 language code and YY is a two-letter ISO 3166 country code.</property>
+				<property name="title" translatable="yes">Locale</property>
+				<property name="note" translatable="yes">Locale identifier in form xx_YY, where xx is a two-letter ISO 639 language code and YY is a two-letter ISO 3166 country code.</property>
 				<widget class="SwatEntry" id="id">
 					<property name="size" type="integer">7</property>
 					<property name="required" type="boolean">true</property>
@@ -15,7 +15,7 @@
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title">Region</property>
+				<property name="title" translatable="yes">Region</property>
 				<widget class="SwatFlydown" id="region" />
 			</widget>
 			<widget class="SwatFooterFormField">

@@ -3,27 +3,27 @@
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="edit_frame">
-		<property name="title">Payment Method for</property>
+		<property name="title" translatable="yes">Payment Method for</property>
 		<widget class="SwatForm" id="edit_form">
 			<widget class="SwatFormField">
-				<property name="title">Payment Type</property>
+				<property name="title" translatable="yes">Payment Type</property>
 				<widget class="SwatFlydown" id="payment_type">
 					<property name="required" type="boolean">true</property>
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title">Name on Credit Card</property>
+				<property name="title" translatable="yes">Name on Credit Card</property>
 				<widget class="SwatEntry" id="credit_card_fullname">
 					<property name="required" type="boolean">true</property>
 					<property name="maxlength" type="integer">255</property>
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title">Credit Card Number</property>
+				<property name="title" translatable="yes">Credit Card Number</property>
 				<widget class="SwatContentBlock" id="credit_card_last4" />
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title">Expiry Date</property>
+				<property name="title" translatable="yes">Expiry Date</property>
 				<widget class="SwatDateEntry" id="credit_card_expiry">
 					<property name="required" type="boolean">true</property>
 					<property name="display_parts" type="constant">YEAR|MONTH</property>

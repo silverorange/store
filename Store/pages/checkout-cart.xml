@@ -5,10 +5,10 @@
 		<widget class="SwatHeaderFormField">
 			<property name="classes[]">store-cart-entry-view-header</property>
 			<widget class="SwatButton" id="header_update_button">
-				<property name="title">Update</property>
+				<property name="title" translatable="yes">Update</property>
 			</widget>
 			<widget class="SwatButton" id="header_continue_button">
-				<property name="title">Update and Return to Checkout</property>
+				<property name="title" translatable="yes">Update and Return to Checkout</property>
 			</widget>
 		</widget>
 		<widget class="SwatTableView" id="cart_view">
@@ -21,14 +21,14 @@
 			</object>
 			<object class="StoreItemColumn">
 				<property name="id">entry</property>
-				<property name="title">Item #</property>
+				<property name="title" translatable="yes">Item #</property>
 				<object class="SwatTextCellRenderer">
 					<property name="text" type="data">item.sku</property>
 					<property name="classes[]">item-sku</property>
 				</object>
 			</object>
 			<object class="SwatTableViewColumn">
-				<property name="title">Description</property>
+				<property name="title" translatable="yes">Description</property>
 				<object class="SwatTextCellRenderer">
 					<property name="text" type="data">description</property>
 					<property name="classes[]">store-cart-description</property>
@@ -45,14 +45,14 @@
 			</object>
 			<object class="SwatTableViewColumn">
 				<property name="id">price</property>
-				<property name="title">Price</property>
+				<property name="title" translatable="yes">Price</property>
 				<object class="StorePriceCellRenderer">
 					<property name="value" type="data">price</property>
 				</object>
 			</object>
 			<object class="SwatTableViewColumn">
 				<property name="id">quantity_column</property>
-				<property name="title">Quantity</property>
+				<property name="title" translatable="yes">Quantity</property>
 				<object class="SwatWidgetCellRenderer">
 					<property name="id">quantity_renderer</property>
 					<property name="replicator_id" type="data">id</property>
@@ -65,7 +65,7 @@
 				</object>
 			</object>
 			<object class="SwatTableViewColumn">
-				<property name="title">Total</property>
+				<property name="title" translatable="yes">Total</property>
 				<object class="StorePriceCellRenderer">
 					<property name="value" type="data">extension</property>
 				</object>
@@ -76,7 +76,7 @@
 					<property name="id">remove_renderer</property>
 					<property name="replicator_id" type="data">id</property>
 					<widget class="SwatButton" id="remove_button">
-						<property name="title">Remove</property>
+						<property name="title" translatable="yes">Remove</property>
 						<property name="classes[]">compact-button</property>
 						<property name="classes[]">store-remove</property>
 					</widget>
@@ -88,7 +88,7 @@
 					<property name="id">move_available_renderer</property>
 					<property name="replicator_id" type="data">id</property>
 					<widget class="SwatButton" id="move_available_button">
-						<property name="title">Save for Later</property>
+						<property name="title" translatable="yes">Save for Later</property>
 						<property name="classes[]">compact-button</property>
 						<property name="classes[]">cart-move</property>
 					</widget>
@@ -97,26 +97,26 @@
 			<object class="StoreTotalRow">
 				<property name="id">subtotal</property>
 				<property name="offset" type="integer">2</property>
-				<property name="title">Subtotal</property>
+				<property name="title" translatable="yes">Subtotal</property>
 			</object>
 			<object class="StoreTotalRow">
 				<property name="id">shipping</property>
 				<property name="offset" type="integer">2</property>
-				<property name="title">Shipping Total</property>
+				<property name="title" translatable="yes">Shipping Total</property>
 			</object>
 			<object class="StoreTotalRow">
 				<property name="id">total</property>
 				<property name="offset" type="integer">2</property>
-				<property name="title">Total</property>
+				<property name="title" translatable="yes">Total</property>
 			</object>
 		</widget>
 		<widget class="SwatFooterFormField">
 			<property name="classes[]">store-cart-entry-view-footer</property>
 			<widget class="SwatButton" id="footer_update_button">
-				<property name="title">Update</property>
+				<property name="title" translatable="yes">Update</property>
 			</widget>
 			<widget class="SwatButton" id="footer_continue_button">
-				<property name="title">Update and Return to Checkout</property>
+				<property name="title" translatable="yes">Update and Return to Checkout</property>
 			</widget>
 		</widget>
 	</widget>

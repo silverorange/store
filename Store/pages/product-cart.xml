@@ -9,7 +9,7 @@
 			<widget class="SwatTableView" id="cart_view">
 				<property name="classes[]">store-cart-entry-view</property>
 				<object class="StoreItemColumn">
-					<property name="title">Item</property>
+					<property name="title" translatable="yes">Item</property>
 					<property name="id">entry</property>
 					<object class="StoreItemDescriptionCellRenderer">
 						<property name="sku" type="data">item.sku</property>
@@ -18,20 +18,20 @@
 					</object>
 				</object>
 				<object class="SwatTableViewColumn">
-					<property name="title">Price</property>
+					<property name="title" translatable="yes">Price</property>
 					<object class="StorePriceCellRenderer">
 						<property name="value" type="data">price</property>
 					</object>
 				</object>
 				<object class="SwatTableViewColumn">
-					<property name="title">Quantity</property>
-					<property name="abbreviated_title">Qty.</property>
+					<property name="title" translatable="yes">Quantity</property>
+					<property name="abbreviated_title" translatable="yes">Qty.</property>
 					<object class="SwatNumericCellRenderer">
 						<property name="value" type="data">quantity</property>
 					</object>
 				</object>
 				<object class="SwatTableViewColumn">
-					<property name="title">Total</property>
+					<property name="title" translatable="yes">Total</property>
 					<object class="StoreMoneyCellRenderer">
 						<property name="value" type="data">extension</property>
 					</object>
@@ -42,7 +42,7 @@
 						<property name="id">remove_renderer</property>
 						<property name="replicator_id" type="data">id</property>
 						<widget class="SwatButton" id="remove_button">
-							<property name="title">Remove</property>
+							<property name="title" translatable="yes">Remove</property>
 							<property name="classes[]">compact-button</property>
 							<property name="classes[]">store-remove</property>
 						</widget>
@@ -51,11 +51,11 @@
 			</widget>
 			<widget class="SwatToolbar" id="checkout_bottom_field">
 				<widget class="SwatToolLink" id="cart">
-					<property name="title">View Entire Cart »</property>
+					<property name="title" translatable="yes">View Entire Cart »</property>
 					<property name="link">cart</property>
 				</widget>
 				<widget class="SwatToolLink" id="checkout">
-					<property name="title">Proceed to Checkout »</property>
+					<property name="title" translatable="yes">Proceed to Checkout »</property>
 					<property name="link">checkout</property>
 				</widget>
 			</widget>
