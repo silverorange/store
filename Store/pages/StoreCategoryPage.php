@@ -199,7 +199,7 @@ class StoreCategoryPage extends StoreStorePage
 
 	protected function queryFeaturedProducts($category_id)
 	{
-		$sql = 'select Product.id, shortname, title, image,
+		$sql = 'select Product.id, shortname, title, primary_image,
 				primary_category, getCategoryPath(primary_category) as path
 			from Product
 				inner join CategoryFeaturedProductBinding
