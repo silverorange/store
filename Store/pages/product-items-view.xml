@@ -8,7 +8,7 @@
 			<object class="SwatTableViewGroup">
 				<property name="group_by">item_group.id</property>
 				<object class="SwatTextCellRenderer">
-					<property name="text" type="data" translatable="yes">item_group.title</property>
+					<property name="text" type="data">item_group.title</property>
 				</object>
 			</object>
 			<object class="SwatTableViewColumn">
