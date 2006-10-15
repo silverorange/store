@@ -26,36 +26,15 @@ class StoreKeywordEntry extends SwatEntry
 	public $name;
 
 	// }}}
-	// {{{ public function display()
+	// {{{ protected function getInputTag()
 
-	public function display()
+	protected function getInputTag()
 	{
-		if (!$this->visible)
-			return;
+		$tag = parent::getInputTag();
+		if ($this->name !== null)
+			$tag->name = $this->name;
 
-		$input_tag = new SwatHtmlTag('input');
-		$input_tag->type = $this->html_input_type;
-		$input_tag->name = ($this->name === null) ? $this->id : $this->name;
-		$input_tag->class = 'swat-entry';
-		$input_tag->id = $this->id;
-		$input_tag->onfocus = 'this.select();';
-		if (!$this->isSensitive())
-			$input_tag->disabled = 'disabled';
-
-		$value = $this->getDisplayValue();
-		if ($value !== null)
-			$input_tag->value = $value;
-
-		if ($this->size !== null)
-			$input_tag->size = $this->size;
-
-		if ($this->maxlength !== null)
-			$input_tag->maxlength = $this->maxlength;
-
-		if (strlen($this->access_key) > 0)
-			$input_tag->accesskey = $this->access_key;
-
-		$input_tag->display();
+		return $tag;
 	}
 
 	// }}}
