@@ -1,3 +1,14 @@
+2006-10-16  nrf
+
+	* [r11995] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.1.4
+	* [r11994] store/trunk/locale/en_CA/LC_MESSAGES/store.mo,
+	  store/trunk/locale/en_GB/LC_MESSAGES/store.mo,
+	  store/trunk/locale/en_US/LC_MESSAGES/store.mo,
+	  store/trunk/po/en_CA.po, store/trunk/po/en_GB.po,
+	  store/trunk/po/en_US.po:
+	  update transtaltions
+
 2006-10-16  isaac
 
 	* [r11991] store/trunk/Store/admin/components/Ad/Details.php,
