@@ -1,5 +1,42 @@
 2006-10-16  nrf
 
+	* [r12028] store/trunk/Store/admin/components/Account/Details.php,
+	  store/trunk/Store/admin/components/Account/Edit.php,
+	  store/trunk/Store/admin/components/Account/EmailPassword.php,
+	  store/trunk/Store/admin/components/Account/Index.php,
+	  store/trunk/Store/admin/components/Account/PaymentMethodEdit.php,
+	  store/trunk/Store/admin/components/Ad/Details.php,
+	  store/trunk/Store/admin/components/Ad/Edit.php,
+	  store/trunk/Store/admin/components/Ad/Index.php,
+	  store/trunk/Store/admin/components/Article/Edit.php,
+	  store/trunk/Store/admin/components/Article/Index.php,
+	  store/trunk/Store/admin/components/Article/Search.php,
+	  store/trunk/Store/admin/components/Catalog/Clone.php,
+	  store/trunk/Store/admin/components/Catalog/Details.php,
+	  store/trunk/Store/admin/components/Catalog/Edit.php,
+	  store/trunk/Store/admin/components/Catalog/Index.php,
+	  store/trunk/Store/admin/components/Catalog/Status.php,
+	  store/trunk/Store/admin/components/Country/Edit.php,
+	  store/trunk/Store/admin/components/Country/Index.php,
+	  store/trunk/Store/admin/components/Locale/Edit.php,
+	  store/trunk/Store/admin/components/Locale/Index.php,
+	  store/trunk/Store/admin/components/ProvState/Edit.php,
+	  store/trunk/Store/admin/components/ProvState/Index.php,
+	  store/trunk/Store/admin/components/Region/Edit.php,
+	  store/trunk/Store/admin/components/Region/Index.php:
+	  Since these XML files are in Store but loaded through AdminUI we
+	  have to explicitly add 'Store' to the class map so that
+	  translations are looked up in the Store gettext domain.
+
+2006-10-16  isaac
+
+	* [r12021] store/trunk/Store/admin/components/Region/index.xml:
+	  translatable = true = error
+
+2006-10-16  nrf
+
+	* [r12010] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.1.5
 	* [r11995] store/trunk/ChangeLog, store/trunk/package.php:
 	  prepare for release of 1.1.4
 	* [r11994] store/trunk/locale/en_CA/LC_MESSAGES/store.mo,
