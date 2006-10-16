@@ -30,6 +30,7 @@ class StoreArticleIndex extends AdminIndex
 
 	protected function initInternal()
 	{
+		$this->ui->mapClassPrefixToPath('Store', 'Store');
 		$this->ui->loadFromXML(dirname(__FILE__).'/index.xml');
 		
 		$this->id = SiteApplication::initVar('id');

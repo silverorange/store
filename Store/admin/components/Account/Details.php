@@ -35,6 +35,7 @@ class AccountDetails extends AdminIndex
 	{
 		parent::initInternal();
 
+		$this->ui->mapClassPrefixToPath('Store', 'Store');
 		$this->ui->loadFromXML(dirname(__FILE__).'/details.xml');
 
 		$this->id = SiteApplication::initVar('id');

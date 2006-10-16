@@ -31,6 +31,7 @@ class StoreArticleEdit extends AdminDBEdit
 	{
 		parent::initInternal();
 
+		$this->ui->mapClassPrefixToPath('Store', 'Store');
 		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
 
 		$this->fields = array(

@@ -27,6 +27,7 @@ class AccountEdit extends AdminDBEdit
 	{
 		parent::initInternal();
 
+		$this->ui->mapClassPrefixToPath('Store', 'Store');
 		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
 
 		$this->fields = array('fullname', 'email', 'integer:veseys_number', 
