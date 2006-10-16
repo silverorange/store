@@ -25,16 +25,23 @@ LOCALEDIR = ../locale
 all:
 	make $(TARGETS)
 
-potfiles:
+potfiles-php:
 	rm -f $@-t $@
-	(sed -e '/^#/d' < $@.in) > $@-t
-	(for i in `cat $@-t`; do find $$i -name *.php | grep -v \.sync; done) >> $@
+	(sed -e '/^#/d' < potfiles.in) > $@-t
+	(for i in `cat $@-t`; do find $$i -name *.php; done) >> $@
+	rm -f $@-t
+
+potfiles-xml:
+	rm -f $@-t $@
+	(sed -e '/^#/d' < potfiles.in) > $@-t
+	(for i in `cat $@-t`; do find $$i -name *.xml; done) >> $@
 	rm -f $@-t
 
 pot: $(POTFILE)
 
-$(POTFILE): potfiles
-	$(XGETTEXT) -k_P -o $(POTFILE) -f potfiles
+$(POTFILE): potfiles-php potfiles-xml
+	$(XGETTEXT) -o $(POTFILE) -L Php -f potfiles-php
+	$(XGETTEXT) -j -o $(POTFILE) -L Glade -f potfiles-xml
 	$(MSGUNIQ) -o $(POTFILE) $(POTFILE)
 
 %.mo: %.po
@@ -52,4 +59,4 @@ update: pot
 	done
 
 clean:
-	rm -f potfiles *.mo *.pot
+	rm -f potfiles-* *.mo *.pot
