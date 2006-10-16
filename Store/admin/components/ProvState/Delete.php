@@ -20,9 +20,7 @@ class StoreProvStateDelete extends AdminDBDelete
 	{
 		parent::processDBData();
 
-		$sql = 'delete from ProvState where id in (%s)
-				and id not in (select provstate from OrderAddress)
-				and id not in (select provstate from CatalogRequest)';
+		$sql = $this->getProcessSQL();
 		$item_list = $this->getItemList('integer');
 		$sql = sprintf($sql, $item_list);
 		$num = SwatDB::exec($this->app->db, $sql);
@@ -34,6 +32,15 @@ class StoreProvStateDelete extends AdminDBDelete
 			SwatMessage::NOTIFICATION);
 
 		$this->app->messages->add($msg);
+	}
+
+	// }}}
+	// {{{ protected function getProcessSQL()
+
+	protected function getProcessSQL()
+	{
+		return 'delete from ProvState where id in (%s)
+			and id not in (select provstate from OrderAddress)';
 	}
 
 	// }}}
@@ -53,23 +60,7 @@ class StoreProvStateDelete extends AdminDBDelete
 			'ProvState', 'id', null, 'text:title', 'title',
 			'id in ('.$item_list.')', AdminDependency::DELETE);
 
-		// dependent orders
-		$dep_orders = new AdminSummaryDependency();
-		$dep_orders->title = Store::_('Order Address');
-		$dep_orders->summaries = AdminSummaryDependency::querySummaries(
-			$this->app->db, 'OrderAddress', 'integer:id', 'integer:provstate',
-			'provstate in ('.$item_list.')', AdminDependency::NODELETE);
-
-		$dep->addDependency($dep_orders);
-
-		// dependent catalog requests
-		$dep_cat_requests = new AdminSummaryDependency();
-		$dep_cat_requests->title = Store::_('Catalogue Order');
-		$dep_cat_requests->summary = AdminSummaryDependency::querySummaries(
-			$this->app->db, 'CatalogRequest', 'integer:id', 'integer:provstate',
-			'provstate in ('.$item_list.')', AdminDependency::NODELETE);
-
-		$dep->addDependency($dep_cat_requests);
+		$this->getDependencies($dep, $item_list);
 
 		$message = $this->ui->getWidget('confirmation_message');
 		$message->content = $dep->getMessage();
@@ -79,6 +70,20 @@ class StoreProvStateDelete extends AdminDBDelete
 			$this->switchToCancelButton();
 	}
 
+	// }}}
+	// {{{ protected function getDependencies()
+
+	protected function getDependencies($dep, $item_list)
+	{
+		// dependent orders
+		$dep_orders = new AdminSummaryDependency();
+		$dep_orders->title = Store::_('Order Address');
+		$dep_orders->summaries = AdminSummaryDependency::querySummaries(
+			$this->app->db, 'OrderAddress', 'integer:id', 'integer:provstate',
+			'provstate in ('.$item_list.')', AdminDependency::NODELETE);
+
+		$dep->addDependency($dep_orders);
+	}
 	// }}}
 }
 
