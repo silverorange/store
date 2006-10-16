@@ -21,32 +21,8 @@
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Location</property>
-				<property name="note" translatable="yes">The location field is used in the catalog request export files.</property>
-				<widget class="SwatEntry" id="location">
-					<property name="size" type="integer">5</property>
-					<property name="required" type="boolean">true</property>
-					<property name="maxlength" type="integer">10</property>
-				</widget>
-			</widget>
-			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Country</property>
 				<widget class="SwatFlydown" id="country" />
-			</widget>
-			<widget class="SwatFieldset">
-				<property name="title" translatable="yes">Applicable Taxes</property>
-				<widget class="SwatFormField">
-					<property name="title" translatable="yes">GST?</property>
-					<widget class="SwatCheckbox" id="gst" />
-				</widget>
-				<widget class="SwatFormField">
-					<property name="title" translatable="yes">PST?</property>
-					<widget class="SwatCheckbox" id="pst" />
-				</widget>
-				<widget class="SwatFormField">
-					<property name="title" translatable="yes">HST?</property>
-					<widget class="SwatCheckbox" id="hst" />
-				</widget>
 			</widget>
 			<widget class="SwatFooterFormField">
 				<widget class="SwatButton" id="submit_button" />

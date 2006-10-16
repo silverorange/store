@@ -12,6 +12,15 @@ require_once 'SwatDB/SwatDB.php';
  */
 class StoreProvStateIndex extends AdminIndex
 {
+	// {{{ protected properties
+
+	/**
+	 * @var string
+	 */
+	protected $ui_xml = 'Store/admin/components/ProvState/index.xml';
+
+	// }}}
+
 	// init phase
 	// {{{ protected function initInternal()
 
@@ -19,7 +28,7 @@ class StoreProvStateIndex extends AdminIndex
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML(dirname(__FILE__).'/index.xml');
+		$this->ui->loadFromXML($this->ui_xml);
 	}
 
 	// }}}
@@ -45,8 +54,7 @@ class StoreProvStateIndex extends AdminIndex
 	protected function getTableStore($view)
 	{
 		$sql = 'select ProvState.id, ProvState.title,
-					Country.title as country_title, ProvState.abbreviation,
-					ProvState.location
+					Country.title as country_title, ProvState.abbreviation
 				from ProvState
 					inner join Country on Country.id = ProvState.country
 				order by %s';

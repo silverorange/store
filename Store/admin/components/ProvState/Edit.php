@@ -17,6 +17,11 @@ class StoreProvStateEdit extends AdminDBEdit
 
 	protected $fields;
 
+	/**
+	 * @var string
+	 */
+	protected $ui_xml = 'Store/admin/components/ProvState/edit.xml';
+
 	// }}}
 
 	// init phase
@@ -26,9 +31,9 @@ class StoreProvStateEdit extends AdminDBEdit
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
+		$this->ui->loadFromXML($this->ui_xml);
 
-		$this->fields = array('title', 'abbreviation', 'location', 'country');
+		$this->fields = array('title', 'abbreviation', 'country');
 		
 		$country_flydown = $this->ui->getWidget('country');
 		$country_flydown->show_blank = false;
@@ -63,8 +68,7 @@ class StoreProvStateEdit extends AdminDBEdit
 
 	protected function getUIValues()
 	{
-		return $this->ui->getValues(array('title', 'abbreviation', 'location',
-			'country'));
+		return $this->ui->getValues(array('title', 'abbreviation', 'country'));
 	}
 
 	// }}}

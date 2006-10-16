@@ -39,12 +39,6 @@
 						<property name="text" type="data">abbreviation</property>
 					</object>
 				</object>
-				<object class="SwatTableViewColumn">
-					<property name="title" translatable="yes">Location</property>
-					<object class="SwatTextCellRenderer">
-						<property name="text" type="data">location</property>
-					</object>
-				</object>
 			</widget>
 			<widget class="SwatActions" id="index_actions">
 				<widget class="SwatActionItem" id="delete">
