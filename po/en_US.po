@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Store 1.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-16 13:02-0300\n"
+"POT-Creation-Date: 2006-10-16 13:09-0300\n"
 "PO-Revision-Date: 2006-10-03 11:30-0300\n"
 "Last-Translator: Nathan Fredrickson <nathan@silverorange.com>\n"
 "Language-Team: silverorange\n"
@@ -991,23 +991,23 @@ msgstr ""
 msgid "order"
 msgstr ""
 
-#: ../Store/admin/components/Ad/Details.php:50
+#: ../Store/admin/components/Ad/Details.php:54
 msgid "Day"
 msgstr ""
 
-#: ../Store/admin/components/Ad/Details.php:51
+#: ../Store/admin/components/Ad/Details.php:55
 msgid "Week"
 msgstr ""
 
-#: ../Store/admin/components/Ad/Details.php:52
+#: ../Store/admin/components/Ad/Details.php:56
 msgid "2 Weeks"
 msgstr ""
 
-#: ../Store/admin/components/Ad/Details.php:53
+#: ../Store/admin/components/Ad/Details.php:57
 msgid "Month"
 msgstr ""
 
-#: ../Store/admin/components/Ad/Details.php:54 ../Store/pages/cart.xml:64
+#: ../Store/admin/components/Ad/Details.php:58 ../Store/pages/cart.xml:64
 #: ../Store/pages/cart.xml:218 ../Store/pages/account-order.xml:112
 #: ../Store/pages/account-order.xml:126
 #: ../Store/pages/checkout-confirmation.xml:116
@@ -1020,17 +1020,17 @@ msgstr ""
 msgid "Total"
 msgstr ""
 
-#: ../Store/admin/components/Ad/Details.php:180
+#: ../Store/admin/components/Ad/Details.php:160
 #, php-format
 msgid "%s Subtotal"
 msgstr ""
 
-#: ../Store/admin/components/Ad/Details.php:192
+#: ../Store/admin/components/Ad/Details.php:172
 #, php-format
 msgid "%s Orders"
 msgstr ""
 
-#: ../Store/admin/components/Ad/Details.php:206
+#: ../Store/admin/components/Ad/Details.php:186
 #: ../Store/admin/components/Ad/index.xml:36
 msgid "Total Orders"
 msgstr ""
@@ -2014,14 +2014,6 @@ msgstr ""
 
 #: ../Store/admin/components/Ad/details.xml:24
 msgid "Orders in the Last"
-msgstr ""
-
-#: ../Store/admin/components/Ad/details.xml:34
-msgid "Catalog Requests in the Last"
-msgstr ""
-
-#: ../Store/admin/components/Ad/details.xml:42
-msgid "Requests"
 msgstr ""
 
 #: ../Store/admin/components/Ad/edit.xml:6
