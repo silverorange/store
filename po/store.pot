@@ -1,21 +1,21 @@
-# English (Canada) translation of the Store package.
-# Copyright (C) 2006 silverorange
-# This file is distributed under the same license as the Store package.
-# silverorange <slice@silverorange.com, 2006.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Store 1.1.0\n"
-"Report-Msgid-Bugs-To: slice@silverorange.com\n"
-"POT-Creation-Date: 2006-10-03 11:23-0300\n"
-"PO-Revision-Date: 2006-10-03 11:30-0300\n"
-"Last-Translator: Nathan Fredrickson <nathan@silverorange.com>\n"
-"Language-Team: silverorange\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-10-13 15:57-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
 #: ../Store/exceptions/StoreNoAccessException.php:25
 msgid "No Access"
@@ -91,7 +91,7 @@ msgstr ""
 msgid "fields highlighted below and re-submit the form."
 msgstr ""
 
-#: ../Store/pages/StoreQuickOrderPage.php:296
+#: ../Store/pages/StoreQuickOrderPage.php:306
 msgid "The following item was added to your cart:"
 msgid_plural "The following items were added to your cart:"
 msgstr[0] ""
@@ -501,15 +501,63 @@ msgid_plural "%s item quantities have been updated."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/pages/StoreProductPage.php:410
+#: ../Store/pages/StoreProductPage.php:408
 msgid "The following item on this page is in your shopping cart:"
 msgid_plural "The following items on this page are in your shopping cart:"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/pages/StoreProductPage.php:466
+#: ../Store/pages/StoreProductPage.php:464
 #: ../Store/pages/StoreCategoryPage.php:296
 msgid "Related Articles: "
+msgstr ""
+
+#: ../Store/pages/StoreSearchPage.php:366
+#, php-format
+msgid "No article results found for “%s”."
+msgstr ""
+
+#: ../Store/pages/StoreSearchPage.php:369
+#, php-format
+msgid "No category results found for “%s”."
+msgstr ""
+
+#: ../Store/pages/StoreSearchPage.php:372
+#, php-format
+msgid "No product results found for “%s”."
+msgstr ""
+
+#: ../Store/pages/StoreSearchPage.php:375
+#, php-format
+msgid "No results found for “%s”."
+msgstr ""
+
+#: ../Store/pages/StoreSearchPage.php:381
+msgid "Try using less specific keywords"
+msgstr ""
+
+#: ../Store/pages/StoreSearchPage.php:382
+msgid "You can search by an item’s catalogue number "
+msgstr ""
+
+#: ../Store/pages/StoreSearchPage.php:383
+msgid "(i.e. 1219M1)"
+msgstr ""
+
+#: ../Store/StoreAddressView.php:91
+msgid "Edit Address"
+msgstr ""
+
+#: ../Store/StoreAddressView.php:94 ../Store/StorePaymentMethodView.php:94
+msgid "Remove"
+msgstr ""
+
+#: ../Store/StoreAddressView.php:97
+#, php-format
+msgid ""
+"Are you sure you want to remove the following address?\n"
+"\n"
+"%s"
 msgstr ""
 
 #: ../Store/StorePostalCodeEntry.php:134 ../Store/StorePostalCodeEntry.php:168
@@ -572,19 +620,15 @@ msgstr ""
 msgid "The %%s field must be at least %s."
 msgstr ""
 
-#: ../Store/StorePaymentMethodView.php:83
+#: ../Store/StorePaymentMethodView.php:91
 msgid "Edit Payment Method"
 msgstr ""
 
-#: ../Store/StorePaymentMethodView.php:86
-msgid "Remove"
-msgstr ""
-
-#: ../Store/StorePaymentMethodView.php:89
+#: ../Store/StorePaymentMethodView.php:97
 msgid "Are you sure you want to remove the following payment "
 msgstr ""
 
-#: ../Store/StorePaymentMethodView.php:90
+#: ../Store/StorePaymentMethodView.php:98
 msgid "method?"
 msgstr ""
 
@@ -709,17 +753,71 @@ msgstr ""
 msgid "using your existing password."
 msgstr ""
 
-#: ../Store/admin/components/Region/Delete.php:32
+#: ../Store/admin/components/Region/Delete.php:33
 #, php-format
 msgid "One region has been deleted."
 msgid_plural "%d regions have been deleted."
 msgstr[0] ""
 msgstr[1] ""
 
+#: ../Store/admin/components/Region/Delete.php:51
+msgid "Region"
+msgstr ""
+
+#: ../Store/admin/components/Region/Delete.php:58
+msgid "Product"
+msgstr ""
+
+#: ../Store/admin/components/Region/Delete.php:78
+#: ../Store/admin/components/Locale/Delete.php:75
+msgid "Locale"
+msgstr ""
+
+#: ../Store/admin/components/Region/Edit.php:78
+#: ../Store/admin/components/Article/Edit.php:133
+#: ../Store/admin/components/Ad/Edit.php:103
+#: ../Store/admin/components/Locale/Edit.php:64
+#: ../Store/admin/components/Country/Edit.php:65
+#: ../Store/admin/components/ProvState/Edit.php:56
+#: ../Store/admin/components/Catalog/Edit.php:85
+#, php-format
+msgid "“%s” has been saved."
+msgstr ""
+
+#: ../Store/admin/components/Region/Edit.php:95
+#, php-format
+msgid "Region with id ‘%s’ not found."
+msgstr ""
+
+#: ../Store/admin/components/Article/include/StoreArticleVisibilityCellRenderer.php:41
+msgid "accessible to: "
+msgstr ""
+
+#: ../Store/admin/components/Article/include/StoreArticleVisibilityCellRenderer.php:46
+msgid "not searchable"
+msgstr ""
+
+#: ../Store/admin/components/Article/include/StoreArticleVisibilityCellRenderer.php:48
+msgid "searchable"
+msgstr ""
+
+#: ../Store/admin/components/Article/include/StoreArticleVisibilityCellRenderer.php:51
+msgid "not shown in menu"
+msgstr ""
+
+#: ../Store/admin/components/Article/include/StoreArticleVisibilityCellRenderer.php:53
+msgid "shown in menu"
+msgstr ""
+
+#: ../Store/admin/components/Article/include/StoreArticleVisibilityCellRenderer.php:56
+#: ../Store/admin/components/Article/include/StoreArticleRegionAction.php:52
+msgid "not accessible"
+msgstr ""
+
 #: ../Store/admin/components/Article/include/StoreArticleActionsProcessor.php:60
 #, php-format
 msgid "Accessibility has been updated for one article."
-msgid_plural "Accessibility has been updated for %s articles."
+msgid_plural "Accessibility has been updated for %d articles."
 msgstr[0] ""
 msgstr[1] ""
 
@@ -730,52 +828,447 @@ msgid_plural "%d articles have been shown in the menu."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/admin/components/Article/include/StoreArticleActionsProcessor.php:84
+#: ../Store/admin/components/Article/include/StoreArticleActionsProcessor.php:85
 #, php-format
 msgid "One article has been hidden from the menu."
 msgid_plural "%d articles have been hidden from the menu."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/admin/components/Article/include/StoreArticleActionsProcessor.php:95
+#: ../Store/admin/components/Article/include/StoreArticleActionsProcessor.php:96
 #, php-format
 msgid "One article has been made searchable."
 msgid_plural "%d articles have been made searchable."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/admin/components/Article/include/StoreArticleActionsProcessor.php:105
+#: ../Store/admin/components/Article/include/StoreArticleActionsProcessor.php:107
 #, php-format
 msgid "One article has been hidden from the search results."
 msgid_plural "%d articles have been hidden from the search results."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/admin/components/Article/include/StoreArticleActionsProcessor.php:116
+#: ../Store/admin/components/Article/include/StoreArticleActionsProcessor.php:118
 #, php-format
 msgid "One article has been enabled."
 msgid_plural "%d articles have been enabled."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/admin/components/Article/include/StoreArticleActionsProcessor.php:126
+#: ../Store/admin/components/Article/include/StoreArticleActionsProcessor.php:129
 #, php-format
 msgid "One article has been disabled."
 msgid_plural "%d articles have been disabled."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/admin/components/Article/Delete.php:36
+#: ../Store/admin/components/Article/include/StoreArticleActionsProcessor.php:146
+msgid "show in menu"
+msgstr ""
+
+#: ../Store/admin/components/Article/include/StoreArticleActionsProcessor.php:147
+msgid "hide from menu"
+msgstr ""
+
+#: ../Store/admin/components/Article/include/StoreArticleActionsProcessor.php:148
+msgid "show in search"
+msgstr ""
+
+#: ../Store/admin/components/Article/include/StoreArticleActionsProcessor.php:149
+msgid "hide from search"
+msgstr ""
+
+#: ../Store/admin/components/Article/include/StoreArticleRegionAction.php:38
+#: ../Store/StoreCatalogSelector.php:110
+msgid "All"
+msgstr ""
+
+#: ../Store/admin/components/Article/include/StoreArticleRegionAction.php:44
+msgid "For Region: "
+msgstr ""
+
+#: ../Store/admin/components/Article/include/StoreArticleRegionAction.php:49
+msgid "accessible"
+msgstr ""
+
+#: ../Store/admin/components/Article/Order.php:52
+msgid "Order Articles"
+msgstr ""
+
+#: ../Store/admin/components/Article/Order.php:71
+msgid "auto"
+msgstr ""
+
+#: ../Store/admin/components/Article/Order.php:72
+msgid "custom"
+msgstr ""
+
+#: ../Store/admin/components/Article/Order.php:81
+#: ../Store/admin/components/Article/Index.php:173
+msgid "Articles"
+msgstr ""
+
+#: ../Store/admin/components/Article/Delete.php:41
 #, php-format
 msgid "One article has been deleted."
 msgid_plural "%d articles have been deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/admin/components/Ad/Delete.php:29
+#: ../Store/admin/components/Article/Delete.php:78
+msgid "article"
+msgstr ""
+
+#: ../Store/admin/components/Article/Delete.php:101
+msgid "sub-article"
+msgstr ""
+
+#: ../Store/admin/components/Article/Delete.php:136
+msgid "Delete"
+msgstr ""
+
+#: ../Store/admin/components/Article/Edit.php:74
+msgid "Shortname already exists and must be unique."
+msgstr ""
+
+#: ../Store/admin/components/Article/Edit.php:197
+#: ../Store/admin/components/Article/Index.php:153
+#, php-format
+msgid "Article with id ‘%s’ not found."
+msgstr ""
+
+#: ../Store/admin/components/Article/Search.php:39
+msgid "Search"
+msgstr ""
+
+#: ../Store/admin/components/Article/Search.php:161
+msgid "result"
+msgstr ""
+
+#: ../Store/admin/components/Article/Search.php:162
+msgid "results"
+msgstr ""
+
+#: ../Store/admin/components/Article/Index.php:105
+msgid "Sub-Articles"
+msgstr ""
+
+#: ../Store/admin/components/Article/Index.php:107
+msgid "New Sub-Article"
+msgstr ""
+
+#: ../Store/admin/components/Article/Index.php:164
+msgid "Article"
+msgstr ""
+
+#: ../Store/admin/components/Ad/Delete.php:30
 #, php-format
 msgid "One ad has been deleted."
 msgid_plural "%d ads have been deleted."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/admin/components/Ad/Delete.php:48
+msgid "ad"
+msgstr ""
+
+#: ../Store/admin/components/Ad/Delete.php:54
+#: ../Store/admin/components/Country/Delete.php:62
+msgid "order"
+msgstr ""
+
+#: ../Store/admin/components/Ad/Details.php:50
+msgid "Day"
+msgstr ""
+
+#: ../Store/admin/components/Ad/Details.php:51
+msgid "Week"
+msgstr ""
+
+#: ../Store/admin/components/Ad/Details.php:52
+msgid "2 Weeks"
+msgstr ""
+
+#: ../Store/admin/components/Ad/Details.php:53
+msgid "Month"
+msgstr ""
+
+#: ../Store/admin/components/Ad/Details.php:54
+msgid "Total"
+msgstr ""
+
+#: ../Store/admin/components/Ad/Details.php:180
+#, php-format
+msgid "%s Subtotal"
+msgstr ""
+
+#: ../Store/admin/components/Ad/Details.php:192
+#, php-format
+msgid "%s Orders"
+msgstr ""
+
+#: ../Store/admin/components/Ad/Details.php:206
+msgid "Total Orders"
+msgstr ""
+
+#: ../Store/admin/components/Ad/Edit.php:50
+msgid "Short name already exists and must be unique."
+msgstr ""
+
+#: ../Store/admin/components/Ad/Edit.php:120
+#, php-format
+msgid "Ad with id ‘%s’ not found."
+msgstr ""
+
+#: ../Store/admin/components/Locale/Delete.php:34
+#, php-format
+msgid "One locale has been deleted."
+msgid_plural "%d locales have been deleted."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/admin/components/Locale/Delete.php:82
+msgid "Order"
+msgstr ""
+
+#: ../Store/admin/components/Locale/Edit.php:49
+msgid "Invalid locale identifier."
+msgstr ""
+
+#: ../Store/admin/components/Country/include/StoreCountryDependency.php:17
+msgid "Delete the following country?"
+msgid_plural "Delete the following countries?"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/admin/components/Country/include/StoreCountryDependency.php:23
+msgid "The following country can not be deleted:"
+msgid_plural "The following countries can not be deleted:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/admin/components/Country/include/StoreAddressDependency.php:15
+#, php-format
+msgid "%d dependent %s address"
+msgid_plural "%s dependent %s addresses"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/admin/components/Country/include/StoreProvStateDependency.php:15
+msgid "Dependent province or state:"
+msgid_plural "Dependent provinces or states:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/admin/components/Country/Delete.php:38
+#, php-format
+msgid "One country has been deleted."
+msgid_plural "%s countries have been deleted."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/admin/components/Country/Delete.php:72
+msgid "account"
+msgstr ""
+
+#: ../Store/admin/components/Country/Edit.php:85
+msgid "<strong>Country Code</strong> already exists. "
+msgstr ""
+
+#: ../Store/admin/components/Country/Edit.php:86
+msgid "Country code must be unique for each country."
+msgstr ""
+
+#: ../Store/admin/components/Country/Edit.php:107
+#, php-format
+msgid "Country with id ‘%s’ not found."
+msgstr ""
+
+#: ../Store/admin/components/ProvState/Delete.php:31
+#, php-format
+msgid "One province or state has been deleted."
+msgid_plural "%d provinces and/or states have been deleted."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/admin/components/ProvState/Delete.php:51
+msgid "Province/State"
+msgstr ""
+
+#: ../Store/admin/components/ProvState/Delete.php:58
+msgid "Order Address"
+msgstr ""
+
+#: ../Store/admin/components/ProvState/Delete.php:67
+msgid "Catalogue Order"
+msgstr ""
+
+#: ../Store/admin/components/ProvState/Edit.php:82
+#, php-format
+msgid "Province/State with id ‘%s’ not found."
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Clone.php:52
+#, php-format
+msgid "The %s “%s” could not be cloned."
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Clone.php:53
+#: ../Store/admin/components/Catalog/Clone.php:57
+#: ../Store/admin/components/Catalog/Clone.php:93
+#: ../Store/admin/components/Catalog/Delete.php:38
+#: ../Store/admin/components/Catalog/Delete.php:70
+#: ../Store/admin/components/Catalog/Delete.php:132
+#: ../Store/admin/components/Catalog/Status.php:142
+#: ../Store/admin/components/Catalog/Status.php:151
+#: ../Store/admin/components/Catalog/Status.php:158
+msgid "catalog"
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Clone.php:56
+#, php-format
+msgid "The %s “%s” has been cloned."
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Clone.php:87
+#: ../Store/admin/components/Catalog/Status.php:43
+#: ../Store/admin/components/Catalog/Details.php:65
+#: ../Store/admin/components/Catalog/Edit.php:107
+#, php-format
+msgid "%s with id ‘%s’ not found."
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Clone.php:88
+#: ../Store/admin/components/Catalog/Status.php:43
+#: ../Store/admin/components/Catalog/Details.php:66
+#: ../Store/admin/components/Catalog/Edit.php:108
+#: ../Store/StoreCatalogSwitcher.php:109
+msgid "Catalog"
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Clone.php:92
+#, php-format
+msgid "Cannot clone a %s that is already a clone."
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Clone.php:135
+msgid "Clone"
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Delete.php:37
+#, php-format
+msgid "One %s has been deleted."
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Delete.php:98
+msgid "product"
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Delete.php:130
+#, php-format
+msgid "A %s must have no products, or be "
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Delete.php:131
+#, php-format
+msgid "disabled in all regions and have a clone in order to be deleted."
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Status.php:90
+#, php-format
+msgid "The status of “%s” has been updated."
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Status.php:115
+#, php-format
+msgid "“%s” has been automatically disabled in all regions."
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Status.php:134
+msgid "Warning"
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Status.php:138
+#, php-format
+msgid "<p>The %1$s <strong>%2$s</strong> has a clone. Enabling "
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Status.php:139
+#, php-format
+msgid "the %1$s <strong>%2$s</strong> in any region will "
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Status.php:140
+#, php-format
+msgid "disable the %1$s <strong>%3$s</strong> in all "
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Status.php:141
+#: ../Store/admin/components/Catalog/Status.php:150
+#, php-format
+msgid "regions.</p>"
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Status.php:147
+#, php-format
+msgid "<p>The %1$s <strong>%2$s</strong> is a cloned  %1$s. "
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Status.php:148
+#, php-format
+msgid "Enabling the %1$s <strong>%2$s</strong> in any region "
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Status.php:149
+#, php-format
+msgid "will disable the %1$s <strong>%3$s</strong> in all "
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Status.php:156
+#, php-format
+msgid "<p>Enable this %1$s only if you "
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Status.php:157
+#, php-format
+msgid "are done making %1$s changes, and you want to apply the "
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Status.php:158
+#, php-format
+msgid "changes to the live website.</p>"
+msgstr ""
+
+#: ../Store/admin/components/Catalog/Status.php:196
+msgid "Change Status"
+msgstr ""
+
+#: ../Store/admin/components/Account/PaymentMethodDelete.php:39
+#, php-format
+msgid "One payment method for %s has been deleted."
+msgid_plural "%d payment methods for %s have been deleted."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/admin/components/Account/PaymentMethodDelete.php:71
+#, php-format
+msgid "Payment Method for %s"
+msgid_plural "Payment Methods for %s"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/admin/components/Account/AddressDelete.php:38
+#, php-format
+msgid "One address for %s has been deleted."
+msgid_plural "%d addresses for %s have been deleted."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/admin/components/Account/AddressDelete.php:65
+#, php-format
+msgid "Address for %s"
+msgid_plural "Addresses for %s"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -788,20 +1281,12 @@ msgstr ""
 msgid "Free!"
 msgstr ""
 
-#: ../Store/StoreCatalogSwitcher.php:36
-msgid "Catalog"
-msgstr ""
-
-#: ../Store/StoreCatalogSwitcher.php:99
+#: ../Store/StoreCatalogSwitcher.php:97
 msgid "Switch"
 msgstr ""
 
 #: ../Store/StoreShippingAddressCellRenderer.php:26
 msgid "<ship to billing address>"
-msgstr ""
-
-#: ../Store/StoreCatalogSelector.php:110
-msgid "All"
 msgstr ""
 
 #: ../Store/StoreCatalogSelector.php:114
@@ -811,4 +1296,8 @@ msgstr ""
 #: ../Store/StoreCatalogSelector.php:122
 #, php-format
 msgid "All Enabled in %s"
+msgstr ""
+
+#: ../Store/pages/product-items-view.xml:22
+msgid "Description"
 msgstr ""
