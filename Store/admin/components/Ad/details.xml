@@ -31,7 +31,7 @@
 			</widget>
 		</widget>
 		<widget class="SwatFieldset">
-			<property name="title" translatable="yes">Catalogue Requests in the Last</property>	
+			<property name="title" translatable="yes">Catalog Requests in the Last</property>	
 			<widget class="SwatTableView" id="catalogrequest_period_view">
 				<object class="SwatTableViewColumn">
 					<object class="SwatTextCellRenderer">
