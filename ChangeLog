@@ -1,3 +1,244 @@
+2006-10-16  isaac
+
+	* [r11991] store/trunk/Store/admin/components/Ad/Details.php,
+	  store/trunk/Store/admin/components/Ad/details.xml:
+	  remove veseyisms from store ad component
+
+2006-10-16  nrf
+
+	* [r11989] store/trunk/locale/en_CA/LC_MESSAGES/store.mo,
+	  store/trunk/locale/en_GB/LC_MESSAGES/store.mo,
+	  store/trunk/locale/en_US, store/trunk/locale/en_US/LC_MESSAGES,
+	  store/trunk/locale/en_US/LC_MESSAGES/store.mo,
+	  store/trunk/po/Makefile, store/trunk/po/en_CA.po,
+	  store/trunk/po/en_GB.po, store/trunk/po/en_US.po,
+	  store/trunk/po/store.pot:
+	  Update translations.
+	* [r11987] store/trunk/Store/pages/StoreSearchPage.php:
+	  Remove veseysism
+
+2006-10-16  isaac
+
+	* [r11986] store/trunk/Store/admin/components/Ad/details.xml,
+	  store/trunk/Store/pages/quick-order.xml:
+	  use correct spellings for store
+
+2006-10-16  nrf
+
+	* [r11985] store/trunk/po/store.pot:
+	  updated pot file
+	* [r11983] store/trunk/po/Makefile:
+	  Update Makefile to extract translatable strings from XML too.
+
+2006-10-16  isaac
+
+	* [r11982] store/trunk/Store/admin/components/Locale/Delete.php,
+	  store/trunk/Store/admin/components/ProvState/Delete.php,
+	  store/trunk/Store/admin/components/ProvState/Edit.php,
+	  store/trunk/Store/admin/components/ProvState/Index.php,
+	  store/trunk/Store/admin/components/ProvState/edit.xml,
+	  store/trunk/Store/admin/components/ProvState/index.xml:
+	  - remove a bunch of veseyisms from the ProvState component
+	  - standardize the methods on the Locale delete to match other
+	  components
+	* [r11974] store/trunk/Store/admin/components/Catalog/edit.xml,
+	  store/trunk/Store/admin/components/Catalog/status.xml:
+	  assume there will always be the constant
+	  Catalog::STATUS_DISABLED, even if the value isn't the same site
+	  to site - this lets us remove all xml for catalogs from sites
+	  for now
+
+2006-10-15  gauthierm
+
+	* [r11964] store/trunk/Store/StoreKeywordEntry.php:
+	  Don't reimplement SwatEntry::display() in StoreKeywordEntry.
+	  Fixes #105.
+
+2006-10-13  isaac
+
+	* [r11946] store/trunk/Store/pages/product-items-view.xml:
+	  misplaced translatable
+	* [r11945]
+	  store/trunk/Store/admin/components/Account/addressedit.xml,
+	  store/trunk/Store/admin/components/Account/details.xml,
+	  store/trunk/Store/admin/components/Account/edit.xml,
+	  store/trunk/Store/admin/components/Account/index.xml,
+	  store/trunk/Store/admin/components/Account/paymentmethodedit.xml,
+	  store/trunk/Store/admin/components/Ad/details.xml,
+	  store/trunk/Store/admin/components/Ad/edit.xml,
+	  store/trunk/Store/admin/components/Ad/index.xml,
+	  store/trunk/Store/admin/components/Article/edit.xml,
+	  store/trunk/Store/admin/components/Article/index.xml,
+	  store/trunk/Store/admin/components/Article/search.xml,
+	  store/trunk/Store/admin/components/Catalog/clone.xml,
+	  store/trunk/Store/admin/components/Catalog/details.xml,
+	  store/trunk/Store/admin/components/Catalog/edit.xml,
+	  store/trunk/Store/admin/components/Catalog/index.xml,
+	  store/trunk/Store/admin/components/Catalog/status.xml,
+	  store/trunk/Store/admin/components/Country/edit.xml,
+	  store/trunk/Store/admin/components/Country/index.xml,
+	  store/trunk/Store/admin/components/Locale/edit.xml,
+	  store/trunk/Store/admin/components/Locale/index.xml,
+	  store/trunk/Store/admin/components/ProvState/edit.xml,
+	  store/trunk/Store/admin/components/ProvState/index.xml,
+	  store/trunk/Store/admin/components/Region/edit.xml,
+	  store/trunk/Store/admin/components/Region/index.xml,
+	  store/trunk/Store/pages/account-address-edit.xml,
+	  store/trunk/Store/pages/account-change-password.xml,
+	  store/trunk/Store/pages/account-details.xml,
+	  store/trunk/Store/pages/account-edit.xml,
+	  store/trunk/Store/pages/account-forgot-password.xml,
+	  store/trunk/Store/pages/account-login.xml,
+	  store/trunk/Store/pages/account-order.xml,
+	  store/trunk/Store/pages/account-payment-method-edit.xml,
+	  store/trunk/Store/pages/account-reset-password.xml,
+	  store/trunk/Store/pages/cart.xml,
+	  store/trunk/Store/pages/checkout-basic-info.xml,
+	  store/trunk/Store/pages/checkout-billing-address.xml,
+	  store/trunk/Store/pages/checkout-cart.xml,
+	  store/trunk/Store/pages/checkout-confirmation.xml,
+	  store/trunk/Store/pages/checkout-edit.xml,
+	  store/trunk/Store/pages/checkout-first.xml,
+	  store/trunk/Store/pages/checkout-front.xml,
+	  store/trunk/Store/pages/checkout-payment-method.xml,
+	  store/trunk/Store/pages/checkout-shipping-address.xml,
+	  store/trunk/Store/pages/checkout-thank-you.xml,
+	  store/trunk/Store/pages/contact.xml,
+	  store/trunk/Store/pages/product-cart.xml,
+	  store/trunk/Store/pages/product-items-view.xml,
+	  store/trunk/Store/pages/quick-order-cart.xml,
+	  store/trunk/Store/pages/quick-order.xml,
+	  store/trunk/Store/pages/search.xml:
+	  update all xml strings to be translatable now that they are in
+	  store
+
+2006-10-13  gauthierm
+
+	* [r11940] store/trunk/Store/pages/StoreCategoryPage.php:
+	  rename Product.image to Product.primary_image
+	* [r11936] store/trunk/Store/dataobjects/StoreProduct.php:
+	  use correct wrapper class
+	* [r11933] store/trunk/Store/pages/StoreCategoryPage.php,
+	  store/trunk/Store/pages/StoreNateGoSearchPage.php,
+	  store/trunk/Store/pages/StoreProductImagePage.php,
+	  store/trunk/Store/pages/StoreProductPage.php:
+	  rename Product.image as Product.primary_image
+	* [r11929] store/trunk/Store/dataobjects/StoreImageWrapper.php,
+	  store/trunk/Store/dataobjects/StoreProduct.php,
+	  store/trunk/sql/tables/Product.sql,
+	  store/trunk/sql/tables/ProductImageBinding.sql:
+	  Database and dataobject changes to allow multiple images
+	  per-product. This is
+	  half of ticket #86.
+
+2006-10-12  gauthierm
+
+	* [r11924] store/trunk/www/javascript/store-product-page.js:
+	  this was missed when it was moved to store
+
+2006-10-12  isaac
+
+	* [r11914] store/trunk/Store/admin/components/Catalog/Status.php:
+	  some missplaced brackets in a sprintf in my last commit
+	* [r11913] store/trunk/Store/admin/components/Catalog/Delete.php,
+	  store/trunk/Store/admin/components/Catalog/Edit.php,
+	  store/trunk/Store/admin/components/Catalog/Status.php,
+	  store/trunk/Store/admin/components/Catalog/include/StoreCatalogStatusAction.php,
+	  
+	  store/trunk/Store/admin/components/Catalog/include/StoreCatalogStatusCellRenderer.php,
+	  store/trunk/Store/admin/components/Catalog/status.xml,
+	  store/trunk/Store/dataobjects/StoreCatalog.php,
+	  store/trunk/sql/tables/CatalogRegionBinding.sql:
+	  this finishes moving the Catalog component up to Store, which
+	  includes:
+	  - adding another abstract method to the dataobject to get the
+	  dataobjects constants based on a value passed in - this
+	  allows us to do most status changes/displays in Store instead of
+	  constantly needing to be subclassed
+	  - updated the StatusCellRenderer so it works properly (see above)
+	  - found a bug in the cascade deletes that has already been fixed
+	  in veseys in r11906, but since we keep a copy of the
+	  sql in store, fix it here as well
+	  - completely removed CatalogStatusAction, as it hasn't been used
+	  in ages - way back in r8418
+	  - do the usual refactor and cleanup on Delete, Status and Edit -
+	  note Edit is now an abstract class
+
+2006-10-12  gauthierm
+
+	* [r11911] store/trunk/Store/StoreApplication.php:
+	  extend SiteWebApplication
+
+2006-10-04  nrf
+
+	* [r11797] store/trunk/Store/pages/StoreProductPage.php:
+	  We don't need these refs unless the form has been submitted.
+	* [r11796] store/trunk/Store/pages/cart.xml:
+	  Remove superfluous cell renderer.
+
+2006-10-03  isaac
+
+	* [r11783] store/trunk/Store/dataobjects/StoreCatalog.php:
+	  add abstract methods
+	* [r11782] store/trunk/Store/admin/components/Catalog/Clone.php,
+	  store/trunk/Store/admin/components/Catalog/Delete.php,
+	  store/trunk/Store/admin/components/Catalog/Details.php,
+	  store/trunk/Store/admin/components/Catalog/Edit.php,
+	  store/trunk/Store/admin/components/Catalog/Index.php,
+	  store/trunk/Store/admin/components/Catalog/Status.php,
+	  store/trunk/Store/admin/components/Catalog/clone.xml,
+	  store/trunk/Store/admin/components/Catalog/details.xml,
+	  store/trunk/Store/admin/components/Catalog/edit.xml,
+	  store/trunk/Store/admin/components/Catalog/include/StatusAction.php,
+	  
+	  store/trunk/Store/admin/components/Catalog/include/StatusCellRenderer.php,
+	  
+	  store/trunk/Store/admin/components/Catalog/include/StoreCatalogStatusAction.php,
+	  
+	  store/trunk/Store/admin/components/Catalog/include/StoreCatalogStatusCellRenderer.php,
+	  store/trunk/Store/admin/components/Catalog/index.xml,
+	  store/trunk/Store/admin/components/Catalog/status.xml:
+	  further cleanup of Catalog component in Store - Status, Edit and
+	  Delete still all need a fair amount of work
+
+2006-10-03  nick
+
+	* [r11776] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Make it easier to subclass the values for the mini-cart
+	* [r11773] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Restructuring to make adding extra cart entry information easier
+
+2006-10-03  gauthierm
+
+	* [r11767] store/trunk/Store/pages/StoreNateGoSearchPage.php,
+	  store/trunk/Store/pages/StoreSearchPage.php,
+	  store/trunk/Store/pages/search.xml,
+	  store/trunk/www/styles/store-search-page.css:
+	  Push search page to Store.
+
+2006-10-03  nrf
+
+	* [r11764] store/trunk/package.php:
+	  prepare for release of 1.1.3
+	* [r11763] store/trunk/Store/Store.php:
+	  This is getting embarassing
+	* [r11761] store/trunk/package.php:
+	  prepare for release of 1.1.2
+	* [r11760] store/trunk/Store/Store.php:
+	  oops
+	* [r11758] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.1.1
+	* [r11757] store/trunk/Store/Store.php, store/trunk/locale,
+	  store/trunk/locale/en_CA, store/trunk/locale/en_CA/LC_MESSAGES,
+	  store/trunk/locale/en_CA/LC_MESSAGES/store.mo,
+	  store/trunk/locale/en_GB, store/trunk/locale/en_GB/LC_MESSAGES,
+	  store/trunk/locale/en_GB/LC_MESSAGES/store.mo,
+	  store/trunk/package.php, store/trunk/po,
+	  store/trunk/po/Makefile, store/trunk/po/en_CA.po,
+	  store/trunk/po/en_GB.po, store/trunk/po/potfiles.in,
+	  store/trunk/po/store.pot:
+	  Add gettext setup.
+
 2006-10-03  isaac
 
 	* [r11756] store/trunk/Store/admin/components/Account,
