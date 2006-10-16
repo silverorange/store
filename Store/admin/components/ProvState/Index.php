@@ -28,6 +28,7 @@ class StoreProvStateIndex extends AdminIndex
 	{
 		parent::initInternal();
 
+		$this->ui->mapClassPrefixToPath('Store', 'Store');
 		$this->ui->loadFromXML($this->ui_xml);
 	}
 

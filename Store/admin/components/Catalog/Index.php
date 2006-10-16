@@ -30,6 +30,7 @@ class StoreCatalogIndex extends AdminIndex
 	{
 		parent::initInternal();
 
+		$this->ui->mapClassPrefixToPath('Store', 'Store');
 		$this->ui->loadFromXML($this->ui_xml);
 
 		// set a default order on the table view

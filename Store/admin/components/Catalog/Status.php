@@ -43,6 +43,7 @@ abstract class StoreCatalogStatus extends AdminDBEdit
 				Store::_('%s with id ‘%s’ not found.'), Store::_('Catalog'),
 				$this->id));
 
+		$this->ui->mapClassPrefixToPath('Store', 'Store');
 		$this->ui->loadFromXML($this->ui_xml);
 
 		$status_flydown = $this->ui->getWidget('status');

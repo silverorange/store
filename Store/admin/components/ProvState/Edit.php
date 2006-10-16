@@ -31,6 +31,7 @@ class StoreProvStateEdit extends AdminDBEdit
 	{
 		parent::initInternal();
 
+		$this->ui->mapClassPrefixToPath('Store', 'Store');
 		$this->ui->loadFromXML($this->ui_xml);
 
 		$this->fields = array('title', 'abbreviation', 'country');

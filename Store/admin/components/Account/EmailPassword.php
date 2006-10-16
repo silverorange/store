@@ -26,6 +26,7 @@ class AccountEmailPassword extends AdminConfirmation
 
 	protected function initInternal()
 	{
+		$this->ui->mapClassPrefixToPath('Store', 'Store');
 		$this->ui->loadFromXML('Admin/pages/confirmation.xml');
 
 		$this->id = SiteApplication::initVar('id');

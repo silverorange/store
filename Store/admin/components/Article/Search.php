@@ -24,6 +24,7 @@ class StoreArticleSearch extends AdminSearch
 	{
 		parent::initInternal();
 
+		$this->ui->mapClassPrefixToPath('Store', 'Store');
 		$this->ui->loadFromXML(dirname(__FILE__).'/search.xml');
 
 		$regions_sql = 'select id, title from Region';

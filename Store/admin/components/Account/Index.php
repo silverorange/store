@@ -22,6 +22,7 @@ class AccountIndex extends AdminSearch
 	{
 		parent::initInternal();
 
+		$this->ui->mapClassPrefixToPath('Store', 'Store');
 		$this->ui->loadFromXML(dirname(__FILE__).'/search.xml');
 		$this->ui->loadFromXML(dirname(__FILE__).'/index.xml');
 	}
