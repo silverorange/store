@@ -377,10 +377,8 @@ abstract class StoreSearchPage extends StoreArticlePage
 		}
 
 		$title = sprintf($title, SwatString::minimizeEntities($keywords));
-		$tips = sprintf('<ul><li>%s</li><li>%s</li></ul>',
-			Store::_('Try using less specific keywords'),
-			Store::_('You can search by an item’s catalogue number '.
-				'(i.e. 1219M1)'));
+		$tips = sprintf('<ul><li>%s</li></ul>',
+			Store::_('Try using less specific keywords'));
 
 		$message = new SwatMessage($title);
 		$message->secondary_content = $tips;
