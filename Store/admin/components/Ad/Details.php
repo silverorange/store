@@ -16,6 +16,13 @@ require_once 'Store/dataobjects/StoreRegionWrapper.php';
  */
 class StoreAdDetails extends AdminIndex
 {
+	// {{{ protected properties
+
+	protected $id;
+	protected $ui_mxl = 'Store/admin/components/Ad/details.xml';
+	protected $periods;
+
+	// }}}}
 	// {{{ private properties
 
 	/**
@@ -24,9 +31,6 @@ class StoreAdDetails extends AdminIndex
 	 * @var RegionsWrapper
 	 */
 	private $regions = null;
-
-	private $id;
-	private $periods;
 	// }}}
 
 	// init phase
@@ -36,7 +40,7 @@ class StoreAdDetails extends AdminIndex
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML(dirname(__FILE__).'/details.xml');
+		$this->ui->loadFromXML($this->ui_xml);
 
 		$this->id = SiteApplication::initVar('id');
 
@@ -67,8 +71,6 @@ class StoreAdDetails extends AdminIndex
 			return $this->getOrdersTableStore();
 		case 'referrer_period_view' :
 			return $this->getRefererPeriodTableStore();
-		case 'catalogrequest_period_view' :
-			return $this->getCatalogRequestPeriodTableStore();
 		}
 	}
 
@@ -115,28 +117,6 @@ class StoreAdDetails extends AdminIndex
 	protected function getRefererPeriodTableStore()
 	{
 		$sql = sprintf('select *from AdReferrerByPeriodView where ad = %s',
-			$this->app->db->quote($this->id, 'integer'));
-
-		$row = SwatDB::queryRow($this->app->db, $sql);
-
-		$store = new SwatTableStore();
-
-		foreach ($this->periods as $key => $val) {
-			$myvar->period = $val;
-			$myvar->referrers = intval($row->$key);
-
-			$store->addRow(clone $myvar);
-		}
-
-		return $store;
-	}
-
-	// }}}
-	// {{{ protected function getCatalogRequestPeriodTableStore()
-
-	protected function getCatalogRequestPeriodTableStore()
-	{
-		$sql = sprintf('select * from CatalogRequestByAdView where ad = %s',
 			$this->app->db->quote($this->id, 'integer'));
 
 		$row = SwatDB::queryRow($this->app->db, $sql);
