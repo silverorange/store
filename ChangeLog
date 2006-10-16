@@ -1,5 +1,19 @@
 2006-10-16  nrf
 
+	* [r12038] store/trunk/package.php:
+	  prepare for release of 1.1.7
+
+2006-10-16  gauthierm
+
+	* [r12036] store/trunk/Store/pages/StoreAccountDetailsPage.php:
+	  - fix private/public folding/method declaration mixups
+	  - make private methods protected so site code can call them in
+	  subclasses
+
+2006-10-16  nrf
+
+	* [r12029] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.1.6
 	* [r12028] store/trunk/Store/admin/components/Account/Details.php,
 	  store/trunk/Store/admin/components/Account/Edit.php,
 	  store/trunk/Store/admin/components/Account/EmailPassword.php,
