@@ -3,6 +3,7 @@
 <swatml>
 	<!-- {{{ basic info -->
 	<widget class="SwatFieldset" id="basic_info_container">
+		<property name="classes[]">checkout-no-column</property>
 		<property name="title" translatable="yes">Basic Information</property>
 		<widget class="SwatToolLink">
 			<property name="title" translatable="yes">Edit Basic Information</property>
@@ -39,6 +40,7 @@
 	<!-- }}} -->
 	<!-- {{{ billing address -->
 	<widget class="SwatFieldset" id="billing_address_container">
+		<property name="classes[]">checkout-column-left</property>
 		<property name="title" translatable="yes">Billing Address</property>
 		<widget class="SwatToolLink">
 			<property name="title" translatable="yes">Edit</property>
@@ -50,6 +52,7 @@
 	<!-- }}} -->
 	<!-- {{{ shipping address -->
 	<widget class="SwatFieldset" id="shipping_address_container">
+		<property name="classes[]">checkout-column-right</property>
 		<property name="title" translatable="yes">Shipping Address</property>
 		<widget class="SwatToolLink">
 			<property name="title" translatable="yes">Edit</property>
@@ -61,6 +64,7 @@
 	<!-- }}} -->
 	<!-- {{{ payment method -->
 	<widget class="SwatFieldset" id="payment_method_container">
+		<property name="classes[]">checkout-no-column</property>
 		<property name="title" translatable="yes">Credit Card</property>
 		<widget class="SwatToolLink">
 			<property name="title" translatable="yes">Edit</property>
@@ -72,6 +76,7 @@
 	<!-- }}} -->
 	<!-- {{{ items -->
 	<widget class="SwatFieldset" id="item_container">
+		<property name="classes[]">checkout-no-column</property>
 		<property name="title" translatable="yes">Items</property>
 		<widget class="SwatToolLink" id="item_link">
 			<property name="title" translatable="yes">Edit Items</property>
