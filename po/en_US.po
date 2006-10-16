@@ -1,21 +1,21 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# English (United States) translation of the Store package.
+# Copyright (C) 2006 silverorange
+# This file is distributed under the same license as the Store package.
+# silverorange <slice@silverorange.com, 2006.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Store 1.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-13 15:57-0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2006-10-16 13:02-0300\n"
+"PO-Revision-Date: 2006-10-03 11:30-0300\n"
+"Last-Translator: Nathan Fredrickson <nathan@silverorange.com>\n"
+"Language-Team: silverorange\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../Store/exceptions/StoreNoAccessException.php:25
 msgid "No Access"
@@ -218,10 +218,12 @@ msgid "Your password is incorrect."
 msgstr ""
 
 #: ../Store/pages/StoreAccountChangePasswordPage.php:103
+#: ../Store/pages/account-reset-password.xml:8
 msgid "New Password"
 msgstr ""
 
 #: ../Store/pages/StoreAccountChangePasswordPage.php:104
+#: ../Store/pages/account-change-password.xml:17
 msgid "Choose a New Password"
 msgstr ""
 
@@ -267,6 +269,7 @@ msgstr ""
 
 #: ../Store/pages/StoreAccountAddressEditPage.php:235
 #: ../Store/pages/StoreAccountAddressEditPage.php:236
+#: ../Store/pages/account-details.xml:55
 msgid "Add a New Address"
 msgstr ""
 
@@ -339,6 +342,7 @@ msgid "logged-in."
 msgstr ""
 
 #: ../Store/pages/StoreAccountResetPasswordThankYouPage.php:29
+#: ../Store/pages/cart.xml:13 ../Store/pages/cart.xml:169
 msgid "Proceed to Checkout"
 msgstr ""
 
@@ -392,6 +396,7 @@ msgstr ""
 
 #: ../Store/pages/StoreAccountEditPage.php:216
 #: ../Store/pages/StoreAccountEditPage.php:218
+#: ../Store/pages/account-details.xml:14
 msgid "Edit Account Details"
 msgstr ""
 
@@ -408,6 +413,7 @@ msgid "Create a New account"
 msgstr ""
 
 #: ../Store/pages/StoreAccountOrderPage.php:63
+#: ../Store/pages/quick-order.xml:40 ../Store/pages/product-items-view.xml:54
 msgid "Add to Cart"
 msgstr ""
 
@@ -452,6 +458,7 @@ msgstr ""
 
 #: ../Store/pages/StoreAccountPaymentMethodEditPage.php:222
 #: ../Store/pages/StoreAccountPaymentMethodEditPage.php:224
+#: ../Store/pages/account-details.xml:68
 msgid "Add a New Payment Method"
 msgstr ""
 
@@ -536,19 +543,14 @@ msgstr ""
 msgid "Try using less specific keywords"
 msgstr ""
 
-#: ../Store/pages/StoreSearchPage.php:382
-msgid "You can search by an item’s catalogue number "
-msgstr ""
-
-#: ../Store/pages/StoreSearchPage.php:383
-msgid "(i.e. 1219M1)"
-msgstr ""
-
 #: ../Store/StoreAddressView.php:91
 msgid "Edit Address"
 msgstr ""
 
 #: ../Store/StoreAddressView.php:94 ../Store/StorePaymentMethodView.php:94
+#: ../Store/pages/cart.xml:75 ../Store/pages/cart.xml:143
+#: ../Store/pages/cart.xml:229 ../Store/pages/checkout-cart.xml:79
+#: ../Store/pages/product-cart.xml:45
 msgid "Remove"
 msgstr ""
 
@@ -761,6 +763,9 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: ../Store/admin/components/Region/Delete.php:51
+#: ../Store/admin/components/Region/edit.xml:6
+#: ../Store/admin/components/Locale/index.xml:28
+#: ../Store/admin/components/Locale/edit.xml:18
 msgid "Region"
 msgstr ""
 
@@ -769,7 +774,10 @@ msgid "Product"
 msgstr ""
 
 #: ../Store/admin/components/Region/Delete.php:78
-#: ../Store/admin/components/Locale/Delete.php:75
+#: ../Store/admin/components/Locale/Delete.php:54
+#: ../Store/admin/components/Locale/index.xml:22
+#: ../Store/admin/components/Locale/edit.xml:6
+#: ../Store/admin/components/Locale/edit.xml:9
 msgid "Locale"
 msgstr ""
 
@@ -778,7 +786,7 @@ msgstr ""
 #: ../Store/admin/components/Ad/Edit.php:103
 #: ../Store/admin/components/Locale/Edit.php:64
 #: ../Store/admin/components/Country/Edit.php:65
-#: ../Store/admin/components/ProvState/Edit.php:56
+#: ../Store/admin/components/ProvState/Edit.php:61
 #: ../Store/admin/components/Catalog/Edit.php:85
 #, php-format
 msgid "“%s” has been saved."
@@ -906,6 +914,8 @@ msgstr ""
 
 #: ../Store/admin/components/Article/Order.php:81
 #: ../Store/admin/components/Article/Index.php:173
+#: ../Store/admin/components/Article/search.xml:33
+#: ../Store/admin/components/Article/index.xml:78
 msgid "Articles"
 msgstr ""
 
@@ -939,6 +949,8 @@ msgid "Article with id ‘%s’ not found."
 msgstr ""
 
 #: ../Store/admin/components/Article/Search.php:39
+#: ../Store/pages/search.xml:16
+#: ../Store/admin/components/Article/search.xml:27
 msgid "Search"
 msgstr ""
 
@@ -959,6 +971,7 @@ msgid "New Sub-Article"
 msgstr ""
 
 #: ../Store/admin/components/Article/Index.php:164
+#: ../Store/admin/components/Article/edit.xml:6
 msgid "Article"
 msgstr ""
 
@@ -994,7 +1007,16 @@ msgstr ""
 msgid "Month"
 msgstr ""
 
-#: ../Store/admin/components/Ad/Details.php:54
+#: ../Store/admin/components/Ad/Details.php:54 ../Store/pages/cart.xml:64
+#: ../Store/pages/cart.xml:218 ../Store/pages/account-order.xml:112
+#: ../Store/pages/account-order.xml:126
+#: ../Store/pages/checkout-confirmation.xml:116
+#: ../Store/pages/checkout-confirmation.xml:128
+#: ../Store/pages/checkout-thank-you.xml:113
+#: ../Store/pages/checkout-thank-you.xml:125
+#: ../Store/pages/checkout-cart.xml:68 ../Store/pages/checkout-cart.xml:110
+#: ../Store/pages/product-cart.xml:34
+#: ../Store/admin/components/Account/details.xml:72
 msgid "Total"
 msgstr ""
 
@@ -1009,6 +1031,7 @@ msgid "%s Orders"
 msgstr ""
 
 #: ../Store/admin/components/Ad/Details.php:206
+#: ../Store/admin/components/Ad/index.xml:36
 msgid "Total Orders"
 msgstr ""
 
@@ -1021,14 +1044,14 @@ msgstr ""
 msgid "Ad with id ‘%s’ not found."
 msgstr ""
 
-#: ../Store/admin/components/Locale/Delete.php:34
+#: ../Store/admin/components/Locale/Delete.php:28
 #, php-format
 msgid "One locale has been deleted."
 msgid_plural "%d locales have been deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/admin/components/Locale/Delete.php:82
+#: ../Store/admin/components/Locale/Delete.php:76
 msgid "Order"
 msgstr ""
 
@@ -1085,26 +1108,24 @@ msgstr ""
 msgid "Country with id ‘%s’ not found."
 msgstr ""
 
-#: ../Store/admin/components/ProvState/Delete.php:31
+#: ../Store/admin/components/ProvState/Delete.php:29
 #, php-format
 msgid "One province or state has been deleted."
 msgid_plural "%d provinces and/or states have been deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/admin/components/ProvState/Delete.php:51
+#: ../Store/admin/components/ProvState/Delete.php:58
+#: ../Store/pages/account-address-edit.xml:38
+#: ../Store/admin/components/ProvState/edit.xml:6
 msgid "Province/State"
 msgstr ""
 
-#: ../Store/admin/components/ProvState/Delete.php:58
+#: ../Store/admin/components/ProvState/Delete.php:80
 msgid "Order Address"
 msgstr ""
 
-#: ../Store/admin/components/ProvState/Delete.php:67
-msgid "Catalogue Order"
-msgstr ""
-
-#: ../Store/admin/components/ProvState/Edit.php:82
+#: ../Store/admin/components/ProvState/Edit.php:86
 #, php-format
 msgid "Province/State with id ‘%s’ not found."
 msgstr ""
@@ -1144,6 +1165,8 @@ msgstr ""
 #: ../Store/admin/components/Catalog/Details.php:66
 #: ../Store/admin/components/Catalog/Edit.php:108
 #: ../Store/StoreCatalogSwitcher.php:109
+#: ../Store/admin/components/Catalog/details.xml:6
+#: ../Store/admin/components/Catalog/edit.xml:6
 msgid "Catalog"
 msgstr ""
 
@@ -1153,6 +1176,7 @@ msgid "Cannot clone a %s that is already a clone."
 msgstr ""
 
 #: ../Store/admin/components/Catalog/Clone.php:135
+#: ../Store/admin/components/Catalog/details.xml:47
 msgid "Clone"
 msgstr ""
 
@@ -1298,6 +1322,913 @@ msgstr ""
 msgid "All Enabled in %s"
 msgstr ""
 
+#: ../Store/pages/contact.xml:6
+msgid "Send us a Message"
+msgstr ""
+
+#: ../Store/pages/contact.xml:8 ../Store/pages/account-forgot-password.xml:10
+#: ../Store/pages/account-details.xml:34 ../Store/pages/account-edit.xml:15
+#: ../Store/pages/account-order.xml:24
+#: ../Store/pages/checkout-basic-info.xml:13
+#: ../Store/pages/checkout-confirmation.xml:20
+#: ../Store/pages/checkout-thank-you.xml:36
+#: ../Store/admin/components/Account/details.xml:29
+#: ../Store/admin/components/Account/edit.xml:16
+#: ../Store/admin/components/Account/index.xml:20
+msgid "Email"
+msgstr ""
+
+#: ../Store/pages/contact.xml:14
+msgid "Subject"
+msgstr ""
+
+#: ../Store/pages/contact.xml:21
+msgid "Message"
+msgstr ""
+
+#: ../Store/pages/contact.xml:28
+msgid "Send Message"
+msgstr ""
+
+#: ../Store/pages/cart.xml:10 ../Store/pages/cart.xml:166
+msgid "Update Cart"
+msgstr ""
+
+#: ../Store/pages/cart.xml:29 ../Store/pages/cart.xml:119
+#: ../Store/pages/cart.xml:191 ../Store/pages/quick-order-cart.xml:19
+#: ../Store/pages/account-order.xml:78
+#: ../Store/pages/checkout-confirmation.xml:90
+#: ../Store/pages/checkout-thank-you.xml:88
+#: ../Store/pages/checkout-cart.xml:24
+#: ../Store/pages/product-items-view.xml:15
+msgid "Item #"
+msgstr ""
+
+#: ../Store/pages/cart.xml:35 ../Store/pages/cart.xml:197
+#: ../Store/pages/quick-order.xml:17 ../Store/pages/quick-order-cart.xml:25
+#: ../Store/pages/account-order.xml:84
+#: ../Store/pages/checkout-confirmation.xml:97
+#: ../Store/pages/checkout-thank-you.xml:94
+#: ../Store/pages/checkout-cart.xml:31
 #: ../Store/pages/product-items-view.xml:22
+#: ../Store/admin/components/Article/edit.xml:42
+#: ../Store/admin/components/Article/index.xml:62
 msgid "Description"
+msgstr ""
+
+#: ../Store/pages/cart.xml:43 ../Store/pages/cart.xml:205
+#: ../Store/pages/quick-order-cart.xml:32 ../Store/pages/account-order.xml:100
+#: ../Store/pages/checkout-confirmation.xml:104
+#: ../Store/pages/checkout-thank-you.xml:101
+#: ../Store/pages/checkout-cart.xml:48 ../Store/pages/product-cart.xml:21
+#: ../Store/pages/product-items-view.xml:29
+msgid "Price"
+msgstr ""
+
+#: ../Store/pages/cart.xml:50 ../Store/pages/cart.xml:212
+#: ../Store/pages/quick-order.xml:25 ../Store/pages/quick-order-cart.xml:38
+#: ../Store/pages/account-order.xml:106
+#: ../Store/pages/checkout-confirmation.xml:110
+#: ../Store/pages/checkout-thank-you.xml:107
+#: ../Store/pages/checkout-cart.xml:55 ../Store/pages/product-cart.xml:27
+#: ../Store/pages/product-items-view.xml:36
+msgid "Quantity"
+msgstr ""
+
+#: ../Store/pages/cart.xml:87 ../Store/pages/cart.xml:155
+#: ../Store/pages/checkout-cart.xml:91
+msgid "Save for Later"
+msgstr ""
+
+#: ../Store/pages/cart.xml:95 ../Store/pages/checkout-confirmation.xml:125
+#: ../Store/pages/checkout-thank-you.xml:122
+#: ../Store/pages/checkout-cart.xml:105
+msgid "Shipping Total"
+msgstr ""
+
+#: ../Store/pages/cart.xml:100 ../Store/pages/account-order.xml:118
+#: ../Store/pages/checkout-confirmation.xml:122
+#: ../Store/pages/checkout-thank-you.xml:119
+#: ../Store/pages/checkout-cart.xml:100
+msgid "Subtotal"
+msgstr ""
+
+#: ../Store/pages/cart.xml:132 ../Store/admin/components/Catalog/clone.xml:21
+#: ../Store/admin/components/Catalog/status.xml:12
+#: ../Store/admin/components/Catalog/details.xml:56
+#: ../Store/admin/components/Catalog/edit.xml:16
+#: ../Store/admin/components/Catalog/index.xml:25
+msgid "Status"
+msgstr ""
+
+#: ../Store/pages/cart.xml:241
+msgid "Move to Cart"
+msgstr ""
+
+#: ../Store/pages/cart.xml:250
+msgid "Add All Saved Items to Cart"
+msgstr ""
+
+#: ../Store/pages/quick-order.xml:8
+msgid "Catalog Item Number"
+msgstr ""
+
+#: ../Store/pages/quick-order-cart.xml:44
+msgid "Extension"
+msgstr ""
+
+#: ../Store/pages/quick-order-cart.xml:52 ../Store/pages/product-cart.xml:54
+msgid "View Entire Cart »"
+msgstr ""
+
+#: ../Store/pages/quick-order-cart.xml:56 ../Store/pages/product-cart.xml:58
+msgid "Proceed to Checkout »"
+msgstr ""
+
+#: ../Store/pages/account-address-edit.xml:7
+#: ../Store/pages/checkout-shipping-address.xml:12
+#: ../Store/pages/checkout-billing-address.xml:12
+msgid "First Name & Last Name"
+msgstr ""
+
+#: ../Store/pages/account-address-edit.xml:15
+#: ../Store/pages/checkout-shipping-address.xml:20
+#: ../Store/pages/checkout-billing-address.xml:20
+msgid "Address Line 1"
+msgstr ""
+
+#: ../Store/pages/account-address-edit.xml:23
+#: ../Store/pages/checkout-shipping-address.xml:28
+#: ../Store/pages/checkout-billing-address.xml:28
+msgid "Address Line 2"
+msgstr ""
+
+#: ../Store/pages/account-address-edit.xml:30
+#: ../Store/pages/checkout-shipping-address.xml:35
+#: ../Store/pages/checkout-billing-address.xml:35
+#: ../Store/admin/components/Account/addressedit.xml:29
+msgid "City"
+msgstr ""
+
+#: ../Store/pages/account-address-edit.xml:45
+msgid "Postal/Zip Code"
+msgstr ""
+
+#: ../Store/pages/account-address-edit.xml:53
+#: ../Store/pages/checkout-shipping-address.xml:57
+#: ../Store/pages/checkout-billing-address.xml:57
+#: ../Store/admin/components/Country/edit.xml:6
+#: ../Store/admin/components/ProvState/edit.xml:24
+#: ../Store/admin/components/Account/addressedit.xml:40
+msgid "Country"
+msgstr ""
+
+#: ../Store/pages/account-address-edit.xml:61
+msgid "Add New Address"
+msgstr ""
+
+#: ../Store/pages/account-payment-method-edit.xml:7
+#: ../Store/admin/components/Account/paymentmethodedit.xml:9
+msgid "Payment Type"
+msgstr ""
+
+#: ../Store/pages/account-payment-method-edit.xml:13
+#: ../Store/pages/account-payment-method-edit.xml:20
+#: ../Store/pages/checkout-payment-method.xml:15
+#: ../Store/admin/components/Account/paymentmethodedit.xml:22
+msgid "Credit Card Number"
+msgstr ""
+
+#: ../Store/pages/account-payment-method-edit.xml:25
+#: ../Store/pages/checkout-payment-method.xml:22
+#: ../Store/admin/components/Account/paymentmethodedit.xml:26
+msgid "Expiry Date"
+msgstr ""
+
+#: ../Store/pages/account-payment-method-edit.xml:31
+#: ../Store/pages/checkout-payment-method.xml:28
+msgid "Name on Card"
+msgstr ""
+
+#: ../Store/pages/account-payment-method-edit.xml:40
+msgid "Add New Payment Method"
+msgstr ""
+
+#: ../Store/pages/account-change-password.xml:7
+msgid "Enter Your Current Password"
+msgstr ""
+
+#: ../Store/pages/account-change-password.xml:8
+msgid " <a href=\"account/forgotpassword\">Forgot your current password?</a>"
+msgstr ""
+
+#: ../Store/pages/account-change-password.xml:25
+msgid "Re-type the New Password"
+msgstr ""
+
+#: ../Store/pages/account-change-password.xml:34
+#: ../Store/pages/account-reset-password.xml:20
+msgid "Update Password"
+msgstr ""
+
+#: ../Store/pages/account-forgot-password.xml:6
+msgid ""
+"<p>Forgot your password? No problem.</p><p>Simply enter your email address "
+"and a new password will be sent to you.</p>"
+msgstr ""
+
+#: ../Store/pages/account-forgot-password.xml:18
+msgid "Request a New Password"
+msgstr ""
+
+#: ../Store/pages/account-reset-password.xml:9
+#: ../Store/pages/account-edit.xml:34
+#: ../Store/pages/checkout-basic-info.xml:29
+msgid "Password is case-sensitive."
+msgstr ""
+
+#: ../Store/pages/account-reset-password.xml:15
+msgid "Confirm New Password"
+msgstr ""
+
+#: ../Store/pages/account-details.xml:19
+msgid "Change Login Password"
+msgstr ""
+
+#: ../Store/pages/account-details.xml:28
+#: ../Store/pages/checkout-confirmation.xml:14
+#: ../Store/admin/components/Account/details.xml:23
+#: ../Store/admin/components/Account/index.xml:11
+msgid "Name"
+msgstr ""
+
+#: ../Store/pages/account-details.xml:41
+#: ../Store/admin/components/Account/details.xml:35
+#: ../Store/admin/components/Account/edit.xml:23
+msgid "Phone #"
+msgstr ""
+
+#: ../Store/pages/account-details.xml:52
+#: ../Store/admin/components/Account/details.xml:84
+msgid "Addresses"
+msgstr ""
+
+#: ../Store/pages/account-details.xml:65
+#: ../Store/admin/components/Account/details.xml:130
+msgid "Payment Methods"
+msgstr ""
+
+#: ../Store/pages/account-details.xml:78
+msgid "Past Orders"
+msgstr ""
+
+#: ../Store/pages/account-login.xml:8 ../Store/pages/checkout-front.xml:38
+msgid "Email Address"
+msgstr ""
+
+#: ../Store/pages/account-login.xml:15
+#: ../Store/pages/checkout-basic-info.xml:28
+#: ../Store/pages/checkout-front.xml:44
+msgid "Password"
+msgstr ""
+
+#: ../Store/pages/account-login.xml:22 ../Store/pages/checkout-front.xml:51
+msgid "Login"
+msgstr ""
+
+#: ../Store/pages/account-login.xml:25
+msgid " <a href=\"account/forgotpassword\">Forgot your password?</a>"
+msgstr ""
+
+#: ../Store/pages/account-login.xml:32
+msgid "Don’t Have an Account?"
+msgstr ""
+
+#: ../Store/pages/account-login.xml:34
+msgid ""
+"<p>Creating an account will make it quicker and easier to order again when "
+"you return.</p>"
+msgstr ""
+
+#: ../Store/pages/account-login.xml:40
+msgid "Create an Account"
+msgstr ""
+
+#: ../Store/pages/account-edit.xml:7 ../Store/pages/checkout-basic-info.xml:5
+msgid "First & Last Name"
+msgstr ""
+
+#: ../Store/pages/account-edit.xml:16
+msgid "Rest assured, we will neither sell nor share your email address."
+msgstr ""
+
+#: ../Store/pages/account-edit.xml:24
+#: ../Store/pages/checkout-basic-info.xml:21
+msgid "Re-type Email"
+msgstr ""
+
+#: ../Store/pages/account-edit.xml:33
+msgid "Choose a Password"
+msgstr ""
+
+#: ../Store/pages/account-edit.xml:42
+#: ../Store/pages/checkout-basic-info.xml:36
+msgid "Re-type Password"
+msgstr ""
+
+#: ../Store/pages/account-edit.xml:50 ../Store/pages/account-order.xml:30
+#: ../Store/pages/checkout-basic-info.xml:44
+msgid "Phone Number"
+msgstr ""
+
+#: ../Store/pages/account-edit.xml:58
+msgid "Sign up for an account"
+msgstr ""
+
+#: ../Store/pages/account-order.xml:9
+msgid "Add All Order Items to Cart"
+msgstr ""
+
+#: ../Store/pages/account-order.xml:17
+#: ../Store/pages/checkout-thank-you.xml:29
+msgid "Order Placed"
+msgstr ""
+
+#: ../Store/pages/account-order.xml:36
+#: ../Store/pages/checkout-basic-info.xml:51
+#: ../Store/pages/checkout-confirmation.xml:32
+#: ../Store/pages/checkout-thank-you.xml:48
+msgid "Comments"
+msgstr ""
+
+#: ../Store/pages/account-order.xml:42
+#: ../Store/pages/checkout-thank-you.xml:54
+msgid "Payment"
+msgstr ""
+
+#: ../Store/pages/account-order.xml:48 ../Store/pages/checkout-first.xml:8
+#: ../Store/pages/checkout-confirmation.xml:42
+#: ../Store/pages/checkout-thank-you.xml:60
+msgid "Billing Address"
+msgstr ""
+
+#: ../Store/pages/account-order.xml:54 ../Store/pages/checkout-first.xml:11
+#: ../Store/pages/checkout-confirmation.xml:53
+#: ../Store/pages/checkout-thank-you.xml:66
+msgid "Shipping Address"
+msgstr ""
+
+#: ../Store/pages/account-order.xml:66
+#: ../Store/pages/checkout-confirmation.xml:75
+#: ../Store/pages/checkout-thank-you.xml:78
+msgid "Items"
+msgstr ""
+
+#: ../Store/pages/account-order.xml:122
+msgid "Shipping"
+msgstr ""
+
+#: ../Store/pages/checkout-basic-info.xml:14
+msgid "Rest assured, we will not sell or share your email address."
+msgstr ""
+
+#: ../Store/pages/checkout-basic-info.xml:37
+msgid "Leave Password fields blank for them to remain the same."
+msgstr ""
+
+#: ../Store/pages/checkout-basic-info.xml:52
+msgid ""
+"Use this space for more detailed shipping instructions, comments about our "
+"site, etc."
+msgstr ""
+
+#: ../Store/pages/checkout-edit.xml:7 ../Store/pages/checkout-cart.xml:8
+#: ../Store/pages/checkout-cart.xml:116
+msgid "Update"
+msgstr ""
+
+#: ../Store/pages/checkout-front.xml:6
+msgid "New Customers"
+msgstr ""
+
+#: ../Store/pages/checkout-front.xml:8
+msgid ""
+"<h4>Create a New Account</h4><p>Creating an account will make it quicker and "
+"easier to order again when you return.</p>"
+msgstr ""
+
+#: ../Store/pages/checkout-front.xml:14
+msgid "Create Account"
+msgstr ""
+
+#: ../Store/pages/checkout-front.xml:19
+msgid ""
+"<h4>Checkout as a Guest</h4><p>If you would rather not create an account, "
+"you can simply checkout as a guest.</p>"
+msgstr ""
+
+#: ../Store/pages/checkout-front.xml:25
+msgid "Checkout as a Guest"
+msgstr ""
+
+#: ../Store/pages/checkout-front.xml:31
+msgid "Returning Customers"
+msgstr ""
+
+#: ../Store/pages/checkout-front.xml:33
+msgid ""
+"<p>If you have created an account before on our website, login here to "
+"checkout.</p>"
+msgstr ""
+
+#: ../Store/pages/checkout-front.xml:54
+msgid "<a href=\"account/forgotpassword\">Forgot your password?</a>"
+msgstr ""
+
+#: ../Store/pages/checkout-shipping-address.xml:43
+#: ../Store/pages/checkout-billing-address.xml:43
+msgid "Province"
+msgstr ""
+
+#: ../Store/pages/checkout-shipping-address.xml:50
+#: ../Store/pages/checkout-billing-address.xml:50
+msgid "Postal Code"
+msgstr ""
+
+#: ../Store/pages/search.xml:8
+msgid "Keywords"
+msgstr ""
+
+#: ../Store/pages/search.xml:23
+msgid "Article Search Results"
+msgstr ""
+
+#: ../Store/pages/search.xml:31
+msgid "Category Search Results"
+msgstr ""
+
+#: ../Store/pages/search.xml:36
+msgid "Product Search Results"
+msgstr ""
+
+#: ../Store/pages/checkout-payment-method.xml:9
+msgid "Credit Card Type"
+msgstr ""
+
+#: ../Store/pages/checkout-payment-method.xml:37
+msgid "Save my credit card information with my account for future web orders"
+msgstr ""
+
+#: ../Store/pages/checkout-payment-method.xml:43
+msgid ""
+"<p class=\"smallprint\">As you have opted to checkout as a guest, your "
+"credit card information will <em>not</em> be saved for future visits to the "
+"website. See our <a href=\"about/website/privacy\">privacy &amp; security "
+"policy</a> for more information about how your information will be used.</p>"
+msgstr ""
+
+#: ../Store/pages/checkout-first.xml:5
+#: ../Store/pages/checkout-confirmation.xml:6
+msgid "Basic Information"
+msgstr ""
+
+#: ../Store/pages/checkout-first.xml:14
+#: ../Store/pages/checkout-confirmation.xml:64
+msgid "Credit Card"
+msgstr ""
+
+#: ../Store/pages/checkout-first.xml:17
+msgid ""
+"You will have a chance to review your order on the next step before "
+"purchasing."
+msgstr ""
+
+#: ../Store/pages/checkout-first.xml:19
+msgid "Next Step"
+msgstr ""
+
+#: ../Store/pages/checkout-confirmation.xml:8
+msgid "Edit Basic Information"
+msgstr ""
+
+#: ../Store/pages/checkout-confirmation.xml:26
+#: ../Store/pages/checkout-thank-you.xml:42
+msgid "Phone"
+msgstr ""
+
+#: ../Store/pages/checkout-confirmation.xml:44
+#: ../Store/pages/checkout-confirmation.xml:55
+#: ../Store/pages/checkout-confirmation.xml:66
+msgid "Edit"
+msgstr ""
+
+#: ../Store/pages/checkout-confirmation.xml:77
+msgid "Edit Items"
+msgstr ""
+
+#: ../Store/pages/checkout-confirmation.xml:135
+msgid "Place Order"
+msgstr ""
+
+#: ../Store/pages/checkout-thank-you.xml:5
+msgid "Your order has been placed."
+msgstr ""
+
+#: ../Store/pages/checkout-thank-you.xml:7
+msgid ""
+"\n"
+"\t\t\t\t\n"
+"\t\t\t\t<p>Thank you for your order.  You will receive an email\n"
+"\t\t\t\tconfirmation which will include the following detailed\n"
+"\t\t\t\torder receipt for your records. If you wish, you can print\n"
+"\t\t\t\ta copy of this page for reference. </p>\n"
+"\t\t\t\t\n"
+"\t\t\t\t"
+msgstr ""
+
+#: ../Store/pages/checkout-thank-you.xml:21
+msgid "Order Receipt"
+msgstr ""
+
+#: ../Store/pages/checkout-cart.xml:11 ../Store/pages/checkout-cart.xml:119
+msgid "Update and Return to Checkout"
+msgstr ""
+
+#: ../Store/pages/product-cart.xml:12
+msgid "Item"
+msgstr ""
+
+#: ../Store/pages/product-cart.xml:28
+msgid "Qty."
+msgstr ""
+
+#: ../Store/admin/components/Region/index.xml:6
+msgid "Regions"
+msgstr ""
+
+#: ../Store/admin/components/Region/index.xml:9
+msgid "New Region"
+msgstr ""
+
+#: ../Store/admin/components/Region/index.xml:22
+#: ../Store/admin/components/Region/edit.xml:9
+#: ../Store/admin/components/Article/edit.xml:9
+#: ../Store/admin/components/Article/search.xml:9
+#: ../Store/admin/components/Article/search.xml:45
+#: ../Store/admin/components/Article/index.xml:30
+#: ../Store/admin/components/Article/index.xml:99
+#: ../Store/admin/components/Ad/edit.xml:9
+#: ../Store/admin/components/Ad/index.xml:30
+#: ../Store/admin/components/Country/index.xml:22
+#: ../Store/admin/components/Country/edit.xml:22
+#: ../Store/admin/components/ProvState/index.xml:28
+#: ../Store/admin/components/ProvState/edit.xml:9
+#: ../Store/admin/components/Catalog/clone.xml:15
+#: ../Store/admin/components/Catalog/clone.xml:31
+#: ../Store/admin/components/Catalog/details.xml:32
+#: ../Store/admin/components/Catalog/edit.xml:9
+#: ../Store/admin/components/Catalog/index.xml:17
+msgid "Title"
+msgstr ""
+
+#: ../Store/admin/components/Region/edit.xml:16
+msgid "Orders placed in this region may be billed to the following countries"
+msgstr ""
+
+#: ../Store/admin/components/Region/edit.xml:20
+msgid "Orders placed in this region may be shipped to the following countries"
+msgstr ""
+
+#: ../Store/admin/components/Article/edit.xml:16
+#: ../Store/admin/components/Article/index.xml:24
+#: ../Store/admin/components/Ad/edit.xml:16
+#: ../Store/admin/components/Ad/index.xml:22
+msgid "Short Name"
+msgstr ""
+
+#: ../Store/admin/components/Article/edit.xml:23
+msgid "Article Visibility"
+msgstr ""
+
+#: ../Store/admin/components/Article/edit.xml:25
+#: ../Store/admin/components/Article/search.xml:14
+msgid "Accessible to"
+msgstr ""
+
+#: ../Store/admin/components/Article/edit.xml:29
+msgid "Show in menu?"
+msgstr ""
+
+#: ../Store/admin/components/Article/edit.xml:35
+msgid "Show in Search?"
+msgstr ""
+
+#: ../Store/admin/components/Article/edit.xml:48
+msgid "Bodytext"
+msgstr ""
+
+#: ../Store/admin/components/Article/search.xml:6
+msgid "Search Articles"
+msgstr ""
+
+#: ../Store/admin/components/Article/search.xml:18
+msgid "Shown in Menu"
+msgstr ""
+
+#: ../Store/admin/components/Article/search.xml:22
+msgid "Searchable"
+msgstr ""
+
+#: ../Store/admin/components/Article/search.xml:53
+#: ../Store/admin/components/Article/index.xml:36
+#: ../Store/admin/components/Article/index.xml:108
+#: ../Store/admin/components/Article/index.xml:130
+msgid "Visibility"
+msgstr ""
+
+#: ../Store/admin/components/Article/search.xml:66
+#: ../Store/admin/components/Article/index.xml:118
+#: ../Store/admin/components/Ad/index.xml:57
+#: ../Store/admin/components/Locale/index.xml:36
+#: ../Store/admin/components/Country/index.xml:39
+#: ../Store/admin/components/ProvState/index.xml:45
+#: ../Store/admin/components/Account/details.xml:121
+#: ../Store/admin/components/Account/details.xml:153
+msgid "delete…"
+msgstr ""
+
+#: ../Store/admin/components/Article/search.xml:69
+#: ../Store/admin/components/Article/index.xml:121
+msgid "set accessibility…"
+msgstr ""
+
+#: ../Store/admin/components/Article/search.xml:71
+#: ../Store/admin/components/Article/index.xml:123
+msgid "Accessibility"
+msgstr ""
+
+#: ../Store/admin/components/Article/search.xml:76
+#: ../Store/admin/components/Article/index.xml:128
+msgid "change visibility…"
+msgstr ""
+
+#: ../Store/admin/components/Article/index.xml:11
+msgid "Edit Article"
+msgstr ""
+
+#: ../Store/admin/components/Article/index.xml:16
+msgid "Delete Article"
+msgstr ""
+
+#: ../Store/admin/components/Article/index.xml:46
+msgid "Created"
+msgstr ""
+
+#: ../Store/admin/components/Article/index.xml:54
+msgid "Last Modified"
+msgstr ""
+
+#: ../Store/admin/components/Article/index.xml:68
+msgid "Body Text"
+msgstr ""
+
+#: ../Store/admin/components/Article/index.xml:81
+msgid "New Article"
+msgstr ""
+
+#: ../Store/admin/components/Article/index.xml:86
+msgid "Change Article Order"
+msgstr ""
+
+#: ../Store/admin/components/Ad/details.xml:6
+msgid "Ads Details"
+msgstr ""
+
+#: ../Store/admin/components/Ad/details.xml:8
+msgid "Referrers in the Last"
+msgstr ""
+
+#: ../Store/admin/components/Ad/details.xml:16
+msgid "Referrers"
+msgstr ""
+
+#: ../Store/admin/components/Ad/details.xml:24
+msgid "Orders in the Last"
+msgstr ""
+
+#: ../Store/admin/components/Ad/details.xml:34
+msgid "Catalog Requests in the Last"
+msgstr ""
+
+#: ../Store/admin/components/Ad/details.xml:42
+msgid "Requests"
+msgstr ""
+
+#: ../Store/admin/components/Ad/edit.xml:6
+msgid "Ad"
+msgstr ""
+
+#: ../Store/admin/components/Ad/index.xml:6
+msgid "Ads"
+msgstr ""
+
+#: ../Store/admin/components/Ad/index.xml:9
+msgid "New Ad"
+msgstr ""
+
+#: ../Store/admin/components/Ad/index.xml:42
+msgid "Total Referrers"
+msgstr ""
+
+#: ../Store/admin/components/Ad/index.xml:48
+msgid "Conversion Rate"
+msgstr ""
+
+#: ../Store/admin/components/Locale/index.xml:6
+msgid "Locales"
+msgstr ""
+
+#: ../Store/admin/components/Locale/index.xml:9
+msgid "New Locale"
+msgstr ""
+
+#: ../Store/admin/components/Locale/edit.xml:10
+msgid ""
+"Locale identifier in form xx_YY, where xx is a two-letter ISO 639 language "
+"code and YY is a two-letter ISO 3166 country code."
+msgstr ""
+
+#: ../Store/admin/components/Country/index.xml:6
+msgid "Countries"
+msgstr ""
+
+#: ../Store/admin/components/Country/index.xml:9
+msgid "New Country"
+msgstr ""
+
+#: ../Store/admin/components/Country/index.xml:31
+#: ../Store/admin/components/Country/edit.xml:9
+msgid "Country Code"
+msgstr ""
+
+#: ../Store/admin/components/Country/edit.xml:10
+msgid ""
+"This is the <a href=\"http://userpage.chemie.fu-berlin.de/diverse/doc/"
+"ISO_3166.html\" target=\"_blank\">ISO-3611</a> two-letter country code for "
+"this country."
+msgstr ""
+
+#: ../Store/admin/components/ProvState/index.xml:6
+msgid "Provinces & States"
+msgstr ""
+
+#: ../Store/admin/components/ProvState/index.xml:9
+msgid "Add a Province/State"
+msgstr ""
+
+#: ../Store/admin/components/ProvState/index.xml:37
+#: ../Store/admin/components/ProvState/edit.xml:16
+msgid "Abbreviation"
+msgstr ""
+
+#: ../Store/admin/components/Catalog/clone.xml:6
+#: ../Store/admin/components/Catalog/clone.xml:39
+#: ../Store/admin/components/Catalog/details.xml:14
+msgid "Clone Catalog"
+msgstr ""
+
+#: ../Store/admin/components/Catalog/clone.xml:9
+msgid ""
+"Cloning creates an exact duplicate of the selected catalog. The new cloned "
+"catalog is unavailable by default on the public website. Work such as "
+"seasonal updating, pricing adjustments and new product entry may then be "
+"performed on the new cloned catalog. When all of the desired changes have "
+"been made, the new cloned catalog may be made available to the public. "
+"Enabling the new cloned catalog automatically disables the old catalog."
+msgstr ""
+
+#: ../Store/admin/components/Catalog/clone.xml:12
+msgid "Original Details"
+msgstr ""
+
+#: ../Store/admin/components/Catalog/clone.xml:29
+msgid "Clone Details"
+msgstr ""
+
+#: ../Store/admin/components/Catalog/status.xml:6
+#: ../Store/admin/components/Catalog/details.xml:19
+msgid "Change Catalog Status"
+msgstr ""
+
+#: ../Store/admin/components/Catalog/details.xml:9
+msgid "Edit Catalog"
+msgstr ""
+
+#: ../Store/admin/components/Catalog/details.xml:24
+msgid "Delete Catalog"
+msgstr ""
+
+#: ../Store/admin/components/Catalog/details.xml:38
+msgid "Clone Of"
+msgstr ""
+
+#: ../Store/admin/components/Catalog/details.xml:62
+msgid "Number of Products"
+msgstr ""
+
+#: ../Store/admin/components/Catalog/details.xml:69
+msgid ""
+"Only disabled catalogs or catalogs containing no products may be deleted."
+msgstr ""
+
+#: ../Store/admin/components/Catalog/index.xml:6
+msgid "Catalogs"
+msgstr ""
+
+#: ../Store/admin/components/Catalog/index.xml:9
+msgid "New Catalog"
+msgstr ""
+
+#: ../Store/admin/components/Catalog/index.xml:32
+msgid ""
+"Catalogs may be deleted or may have their statuses changed from their "
+"catalog details pages."
+msgstr ""
+
+#: ../Store/admin/components/Account/paymentmethodedit.xml:6
+msgid "Payment Method for"
+msgstr ""
+
+#: ../Store/admin/components/Account/paymentmethodedit.xml:15
+msgid "Name on Credit Card"
+msgstr ""
+
+#: ../Store/admin/components/Account/addressedit.xml:9
+#: ../Store/admin/components/Account/edit.xml:9
+msgid "Full Name"
+msgstr ""
+
+#: ../Store/admin/components/Account/addressedit.xml:16
+msgid "Line 1"
+msgstr ""
+
+#: ../Store/admin/components/Account/addressedit.xml:23
+msgid "Line 2"
+msgstr ""
+
+#: ../Store/admin/components/Account/addressedit.xml:36
+msgid "Province / State"
+msgstr ""
+
+#: ../Store/admin/components/Account/addressedit.xml:46
+msgid "Postal Code / Zip Code"
+msgstr ""
+
+#: ../Store/admin/components/Account/addressedit.xml:53
+#: ../Store/admin/components/Account/details.xml:113
+msgid "Default Address"
+msgstr ""
+
+#: ../Store/admin/components/Account/details.xml:8
+msgid "Edit Account"
+msgstr ""
+
+#: ../Store/admin/components/Account/details.xml:13
+msgid "Email New Password"
+msgstr ""
+
+#: ../Store/admin/components/Account/details.xml:41
+msgid "Created On"
+msgstr ""
+
+#: ../Store/admin/components/Account/details.xml:52
+msgid "Orders"
+msgstr ""
+
+#: ../Store/admin/components/Account/details.xml:56
+msgid "Order #"
+msgstr ""
+
+#: ../Store/admin/components/Account/details.xml:66
+msgid "Placed On"
+msgstr ""
+
+#: ../Store/admin/components/Account/details.xml:88
+msgid "Add Address"
+msgstr ""
+
+#: ../Store/admin/components/Account/details.xml:107
+msgid "Address"
+msgstr ""
+
+#: ../Store/admin/components/Account/edit.xml:6
+msgid "Account"
+msgstr ""
+
+#: ../Store/admin/components/Account/index.xml:5
+msgid "Accounts"
+msgstr ""
+
+#: ../Store/admin/components/Account/index.xml:26
+msgid "# of Orders"
 msgstr ""
