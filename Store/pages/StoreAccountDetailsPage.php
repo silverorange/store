@@ -42,9 +42,9 @@ class StoreAccountDetailsPage extends StoreAccountPage
 	}
 
 	// }}}
-	// {{{ private function initAddressViews()
+	// {{{ protected function initAddressViews()
 
-	private function initAddressViews(StoreAccount $account)
+	protected function initAddressViews(StoreAccount $account)
 	{
 		$container = $this->ui->getWidget('account_address_views');
 
@@ -58,9 +58,9 @@ class StoreAccountDetailsPage extends StoreAccountPage
 	}
 
 	// }}}
-	// {{{ private function initPaymentMethodViews()
+	// {{{ protected function initPaymentMethodViews()
 
-	private function initPaymentMethodViews(StoreAccount $account)
+	protected function initPaymentMethodViews(StoreAccount $account)
 	{
 		$container = $this->ui->getWidget('account_payment_method_views');
 
@@ -98,16 +98,16 @@ class StoreAccountDetailsPage extends StoreAccountPage
 	// }}}
 	// {{{ protected function processInternal()
 
-	protected function processInternal($account)
+	protected function processInternal(StoreAccount $account)
 	{
 		$this->processAddressViews($account);
 		$this->processPaymentMethodViews($account);
 	}
 
 	// }}}
-	// {{{ public function processAddressViews()
+	// {{{ protected function processAddressViews()
 
-	private function processAddressViews($account)
+	protected function processAddressViews(StoreAccount $account)
 	{
 		$container = $this->ui->getWidget('account_address_container');
 		$views = $container->getDescendants('StoreAddressView');
@@ -132,9 +132,9 @@ class StoreAccountDetailsPage extends StoreAccountPage
 	}
 
 	// }}}
-	// {{{ public function processPaymentMethodViews()
+	// {{{ protected function processPaymentMethodViews()
 
-	private function processPaymentMethodViews($account)
+	protected function processPaymentMethodViews(StoreAccount $account)
 	{
 		$container = $this->ui->getWidget('account_payment_method_container');
 		$views = $container->getDescendants('StorePaymentMethodView');
@@ -212,9 +212,9 @@ class StoreAccountDetailsPage extends StoreAccountPage
 	}
 
 	// }}}
-	// {{{ private function buildSavedCartMessage()
+	// {{{ protected function buildSavedCartMessage()
 
-	private function buildSavedCartMessage()
+	protected function buildSavedCartMessage()
 	{
 		$count = $this->app->cart->saved->getEntryCount();
 
@@ -234,9 +234,9 @@ class StoreAccountDetailsPage extends StoreAccountPage
 	}
 
 	// }}}
-	// {{{ private function buildOrders()
+	// {{{ protected function buildOrders()
 
-	private function buildOrders() 
+	protected function buildOrders() 
 	{
 		ob_start();
 
