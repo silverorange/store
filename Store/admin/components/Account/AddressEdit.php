@@ -8,12 +8,17 @@ require_once 'Swat/SwatMessage.php';
 /**
  * Edit page for a Account Address
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2006 silverorange
  */
 
-class AccountAddressEdit extends AdminDBEdit
+class StoreAccountAddressEdit extends AdminDBEdit
 {
+	// {{{ protected properties
+
+	$this->ui_xml = 'Store/admin/components/Account/addressedit.xml';
+
+	// }}}
 	// {{{ private properties
 
 	private $fields;
@@ -30,12 +35,12 @@ class AccountAddressEdit extends AdminDBEdit
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML(dirname(__FILE__).'/addressedit.xml');
+		$this->ui->loadFromXML($this->ui_xml);
 
 		$this->initAccount();
 
-		$this->fields = array('fullname', 'line1', 'line2', 
-			'city', 'integer:provstate', 'text:country', 'postal_code',
+		$this->fields = array('fullname', 'line1', 'line2', 'city',
+			'integer:provstate', 'text:country', 'postal_code',
 			'boolean:default_address');
 	}
 
@@ -47,13 +52,13 @@ class AccountAddressEdit extends AdminDBEdit
 		if ($this->id === null)
 			$this->account_id = $this->app->initVar('account');
 		else
-			$this->account_id = SwatDB::queryOne($this->app->db, 
-				sprintf('select account from AccountAddress where id = %s', 
-					$this->app->db->quote($this->id, 'integer')));
+			$this->account_id = SwatDB::queryOne($this->app->db,
+				sprintf('select account from AccountAddress where id = %s',
+				$this->app->db->quote($this->id, 'integer')));
 
-		$this->account_fullname = SwatDB::queryOne($this->app->db, 
-			sprintf('select fullname from Account where id = %s', 
-				$this->app->db->quote($this->account_id, 'integer')));
+		$this->account_fullname = SwatDB::queryOne($this->app->db,
+			sprintf('select fullname from Account where id = %s',
+			$this->app->db->quote($this->account_id, 'integer')));
 
 		$fullname_widget = $this->ui->getWidget('fullname');
 		$fullname_widget->value = $this->account_fullname;
@@ -77,8 +82,7 @@ class AccountAddressEdit extends AdminDBEdit
 
 			if ($provstate->value !== null) {
 				$sql = sprintf('select abbreviation from ProvState
-					where id = %s',
-					$this->app->db->quote($provstate->value));
+					where id = %s', $this->app->db->quote($provstate->value));
 
 				$provstate_abbreviation =
 					SwatDB::queryOne($this->app->db, $sql);
@@ -96,7 +100,7 @@ class AccountAddressEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$values = $this->ui->getValues(array('fullname', 'line1', 'line2', 
+		$values = $this->ui->getValues(array('fullname', 'line1', 'line2',
 			'city', 'provstate', 'country', 'postal_code', 'default_address'));
 
 		if ($this->id === null) {
@@ -111,13 +115,13 @@ class AccountAddressEdit extends AdminDBEdit
 			SwatDB::insertRow($this->app->db, 'AccountAddress', $this->fields,
 				$values);
 		} else {
-			SwatDB::updateRow($this->app->db, 'AccountAddress', $this->fields, 
+			SwatDB::updateRow($this->app->db, 'AccountAddress', $this->fields,
 				$values, 'id', $this->id);
 		}
 
-		$msg = new SwatMessage(
-			sprintf('Address for &#8220;%s&#8221; has been saved.', 
-				$this->account_fullname));
+		$msg = new SwatMessage(sprintf(
+			Store::_('Address for “%s” has been saved.'),
+			this->account_fullname));
 
 		$this->app->messages->add($msg);
 	}
@@ -133,8 +137,8 @@ class AccountAddressEdit extends AdminDBEdit
 
 		if ($country->value !== null) {
 			$country_title = SwatDB::queryOne($this->app->db,
-				sprintf('select title from Country
-					where id = %s', $this->app->db->quote($country->value)));
+				sprintf('select title from Country where id = %s',
+				$this->app->db->quote($country->value)));
 		} else {
 			$country_title = null;
 		}
@@ -150,12 +154,13 @@ class AccountAddressEdit extends AdminDBEdit
 
 			if ($count == 0) {
 				if ($country_title === null) {
-					$message_content = 'The selected <strong>%s</strong> is '.
-						'not a province or state of the selected country.';
+					$message_content = Store::_('The selected '.
+						'<strong>%s</strong> is  not a province or state of '.
+						'the selected country.');
 				} else {
-					$message_content = sprintf('The selected '.
+					$message_content = sprintf(Store:_('The selected '.
 						'<strong>%%s</strong> is not a province or state of '.
-						'the selected country <strong>%s</strong>.',
+						'the selected country <strong>%s</strong>.'),
 						$country_title);
 				}
 
@@ -201,10 +206,12 @@ class AccountAddressEdit extends AdminDBEdit
 	{
 		parent::buildNavBar();
 		$last_entry = $this->navbar->popEntry();
-		$last_entry->title = $last_entry->title.' Address';
+		$last_entry->title = sprintf(Store::_('%s Address'),
+			$last_entry->title);
 
-		$this->navbar->addEntry(new SwatNavBarEntry($this->account_fullname, 
+		$this->navbar->addEntry(new SwatNavBarEntry($this->account_fullname,
 			sprintf('Account/Details?id=%s', $this->account_id)));
+
 		$this->navbar->addEntry($last_entry);
 		
 		$this->title = $this->account_fullname;
@@ -215,12 +222,13 @@ class AccountAddressEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$row = SwatDB::queryRowFromTable($this->app->db, 'AccountAddress', 
+		$row = SwatDB::queryRowFromTable($this->app->db, 'AccountAddress',
 			$this->fields, 'id', $this->id);
 
 		if ($row === null)
 			throw new AdminNotFoundException(
-				sprintf("account address with id '%s' not found.", $this->id));
+				sprintf(Store::_('account address with id ‘%s’ not found.',
+				$this->id));
 
 		$this->ui->setValues(get_object_vars($row));
 	}

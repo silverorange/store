@@ -13,10 +13,10 @@ require_once 'Store/dataobjects/StoreAccountPaymentMethod.php';
 /**
  * Edit page for Account Payment Methods
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2006 silverorange
  */
-class AccountPaymentMethodEdit extends AdminDBEdit
+class StoreAccountPaymentMethodEdit extends AdminDBEdit
 {
 	// {{{ private properties
 
@@ -38,12 +38,8 @@ class AccountPaymentMethodEdit extends AdminDBEdit
 
 		$this->initAccount();
 
-		$this->fields = array(
-			'integer:payment_type',
-			'credit_card_fullname',
-			'credit_card_last4',
-			'date:credit_card_expiry',
-		);
+		$this->fields = array('integer:payment_type','credit_card_fullname',
+			'credit_card_last4','date:credit_card_expiry');
 	}
 
 	// }}}
@@ -55,10 +51,10 @@ class AccountPaymentMethodEdit extends AdminDBEdit
 			$this->account_id = $this->app->initVar('account');
 		else
 			$this->account_id = SwatDB::queryOne($this->app->db, sprintf(
-				'select account from AccountPaymentMethod where id = %s', 
+				'select account from AccountPaymentMethod where id = %s',
 				$this->app->db->quote($this->id, 'integer')));
 
-		$this->account_fullname = SwatDB::queryOne($this->app->db, 
+		$this->account_fullname = SwatDB::queryOne($this->app->db,
 			sprintf('select fullname from Account where id = %s', 
 				$this->app->db->quote($this->account_id, 'integer')));
 	}
@@ -70,8 +66,8 @@ class AccountPaymentMethodEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$values = $this->ui->getValues(array('payment_type', 
-			'credit_card_fullname', 'credit_card_expiry')); 
+		$values = $this->ui->getValues(array('payment_type',
+			'credit_card_fullname', 'credit_card_expiry'));
 
 		$values['credit_card_expiry'] =
 			$values['credit_card_expiry']->getDate();
@@ -81,11 +77,11 @@ class AccountPaymentMethodEdit extends AdminDBEdit
 			if ($field == 'credit_card_last4')
 				unset($this->fields[$key]);
 
-		SwatDB::updateRow($this->app->db, 'AccountPaymentMethod', 
+		SwatDB::updateRow($this->app->db, 'AccountPaymentMethod',
 			$this->fields, $values, 'id', $this->id);
 
 		$msg = new SwatMessage(sprintf(
-			'Payment method for &#8220;%s&#8221; has been saved.', 
+			Store::_('Payment method for “%s” has been saved.'),
 			$this->account_fullname));
 
 		$this->app->messages->add($msg);
@@ -119,7 +115,8 @@ class AccountPaymentMethodEdit extends AdminDBEdit
 	{
 		parent::buildNavBar();
 		$last_entry = $this->navbar->popEntry();
-		$last_entry->title = $last_entry->title.' Payment Method';
+		$last_entry->title = sprintf(Store::_('%s Payment Method'),
+			$last_entry->title);
 
 		$this->navbar->addEntry(new SwatNavBarEntry($this->account_fullname, 
 			sprintf('Account/Details?id=%s', $this->account_id)));
@@ -138,9 +135,9 @@ class AccountPaymentMethodEdit extends AdminDBEdit
 			'AccountPaymentMethod', $this->fields, 'id', $this->id);
 
 		if ($row === null)
-			throw new AdminNotFoundException(
-				sprintf("Account payment method with id '%s' not found.", 
-					$this->id));
+			throw new AdminNotFoundException(sprintf(
+				Store::_('Account payment method with id ‘%s’ not found.'),
+				$this->id));
 
 		$credit_card_last4 = $this->ui->getWidget('credit_card_last4');
 		$credit_card_last4->content =

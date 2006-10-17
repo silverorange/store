@@ -4,17 +4,30 @@ require_once 'Admin/pages/AdminSearch.php';
 require_once 'Admin/AdminSearchClause.php';
 require_once 'Admin/AdminTableStore.php';
 require_once 'SwatDB/SwatDB.php';
-require_once '../../include/VeseysNumberCellRenderer.php';
 
 /**
  * Index page for Accounts
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2006 silverorange
  */
 
-class AccountIndex extends AdminSearch
+class StoreAccountIndex extends AdminSearch
 {
+	// {{{ protected properties
+
+	/**
+	 * @var string
+	 */
+	protected $ui_xml = 'Store/admin/components/Account/index.xml';
+
+	/**
+	 * @var string
+	 */
+	protected $search_xml = 'Store/admin/components/Account/search.xml';
+
+	// }}}
+
 	// init phase
 	// {{{ protected function initInternal()
 
@@ -23,8 +36,8 @@ class AccountIndex extends AdminSearch
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML(dirname(__FILE__).'/search.xml');
-		$this->ui->loadFromXML(dirname(__FILE__).'/index.xml');
+		$this->ui->loadFromXML($this->search_xml);
+		$this->ui->loadFromXML($this->ui_xml);
 	}
 
 	// }}}
@@ -51,6 +64,11 @@ class AccountIndex extends AdminSearch
 
 	protected function getWhereClause()
 	{
+		/** 
+		 * The only way an account fullname can be null is if we've cleared the
+		 * data from it with the privacy scripts - we don't ever want to display
+		 * these accounts in the search results
+		 */
 		$where = 'Account.fullname is not null';
 
 		// fullname
@@ -66,14 +84,6 @@ class AccountIndex extends AdminSearch
 		$emailClause->value = $this->ui->getWidget('search_email')->value;
 		$emailClause->operator = AdminSearchClause::OP_CONTAINS;
 		$where.= $emailClause->getClause($this->app->db);
-		
-		// veseys_number
-		$veseys_numberClause = new AdminSearchClause('veseys_number');
-		$veseys_numberClause->table = 'Account';
-		$veseys_numberClause->value = 
-			$this->ui->getWidget('search_veseys_number')->value;
-		$veseys_numberClause->operator = AdminSearchClause::OP_CONTAINS;
-		$where.= $veseys_numberClause->getClause($this->app->db);
 
 		return $where;
 	}
@@ -85,14 +95,7 @@ class AccountIndex extends AdminSearch
 	{
 		$pager = $this->ui->getWidget('pager');
 
-		$sql = 'select Account.id, Account.fullname, Account.email, 
-					Account.veseys_number, AccountOrderCountView.order_count
-				from Account
-					left outer join AccountOrderCountView on 
-						Account.id = AccountOrderCountView.account
-				where %s
-				order by %s';
-
+		$sql = $this->getSQL();
 		$sql = sprintf($sql,
 			$this->getWhereClause(),
 			$this->getOrderByClause($view,
@@ -107,6 +110,20 @@ class AccountIndex extends AdminSearch
 				$pager->getResultsMessage('result', 'results');
 
 		return $store;
+	}
+
+	// }}}
+	// {{{ protected function getSQL()
+
+	protected function getSQL()
+	{
+		return 'select Account.id, Account.fullname, Account.email,
+			AccountOrderCountView.order_count
+			from Account
+				left outer join AccountOrderCountView on 
+				Account.id = AccountOrderCountView.account
+			where %s
+			order by %s';
 	}
 
 	// }}}

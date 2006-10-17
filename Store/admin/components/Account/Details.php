@@ -2,26 +2,31 @@
 
 require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatDetailsStore.php';
-
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'Admin/pages/AdminIndex.php';
 require_once 'Admin/AdminTableStore.php';
-
 require_once 'Store/StoreAddressCellRenderer.php';
 require_once 'Store/StorePaymentMethodCellRenderer.php';
 require_once 'Store/dataobjects/StoreAccountPaymentMethodWrapper.php';
-
-require_once '../../include/VeseysNumberCellRenderer.php';
-require_once '../../include/dataobjects/Account.php';
+require_once 'Store/dataobjects/StoreAccount.php';
+require_once 'Store/StoreClassMap.php';
 
 /**
  * Details page for accounts
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2006 silverorange
  */
-class AccountDetails extends AdminIndex
+class StoreAccountDetails extends AdminIndex
 {
+	// {{{ protected properties
+
+	/**
+	 * @var string
+	 */
+	protected $ui_xml = 'Store/admin/components/Account/details.xml';
+
+	// }}}
 	// {{{ private properties
 
 	private $id;
@@ -36,7 +41,7 @@ class AccountDetails extends AdminIndex
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML(dirname(__FILE__).'/details.xml');
+		$this->ui->loadFromXML($this->ui_xml);
 
 		$this->id = SiteApplication::initVar('id');
 	}
@@ -150,15 +155,12 @@ class AccountDetails extends AdminIndex
 
 	protected function getAddressesTableStore($view) 
 	{
-		$sql = 'select AccountAddress.*
-				from AccountAddress
-				where AccountAddress.account = %s
+		$sql = 'select * from AccountAddress where AccountAddress.account = %s
 				order by %s';
 
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->id, 'integer'),
-			$this->getOrderByClause($view,
-				'AccountAddress.createdate desc'));
+			$this->getOrderByClause($view, 'AccountAddress.createdate desc'));
 
 		$rs = SwatDB::query($this->app->db, $sql);
 		$ts = new SwatTableStore();
@@ -180,12 +182,10 @@ class AccountDetails extends AdminIndex
 
 	protected function getPaymentMethodsTableStore($view) 
 	{
-		$sql = sprintf('select * from AccountPaymentMethod
-			where account = %s',
+		$sql = sprintf('select * from AccountPaymentMethod where account = %s',
 			$this->app->db->quote($this->id, 'integer'));
 
-		$payment_methods =
-			SwatDB::query($this->app->db, $sql,
+		$payment_methods = SwatDB::query($this->app->db, $sql,
 				'StoreAccountPaymentMethodWrapper');
 
 		$store = new SwatTableStore();
@@ -195,6 +195,14 @@ class AccountDetails extends AdminIndex
 			$store->addRow($ds);
 		}
 		return $store;
+	}
+
+	// }}}
+	// {{{ protected function getAccountDetailsStore()
+
+	protected function getAccountDetailsStore($account) 
+	{
+		return new SwatDetailsStore($account);
 	}
 
 	// }}}
@@ -223,13 +231,16 @@ class AccountDetails extends AdminIndex
 
 	private function loadAccount() 
 	{
-		$account = new Account();
+		$class_map = StoreClassMap::instance();
+		$account_class = $class_map->resolveClass('StoreAccount');
+
+		$account = new $account_class();
 		$account->setDatabase($this->app->db);
 
 		if (!$account->load($this->id))
-			throw new AdminNotFoundException(
-				sprintf('A account with an id of %d does not exist.', 
-					$this->id));
+			throw new AdminNotFoundException(sprintf(
+				Store::_('A account with an id of ‘%d’ does not exist.'),
+				$this->id));
 
 		return $account;
 	}
@@ -239,16 +250,10 @@ class AccountDetails extends AdminIndex
 
 	private function buildAccountDetails($account) 
 	{
-		$ds = new SwatDetailsStore($account);
-
-		// get newsletter subscriber
-		if ($account->isNewsletterSubscriber())
-			$ds->newsletter_subscriber = ' (newsletter&nbsp;subscriber)';
-		else
-			$ds->newsletter_subscriber = '';
+		$ds = $this->getAccountDetailsStore($account);
 
 		$details_frame = $this->ui->getWidget('details_frame');
-		$details_frame->title = 'Account';
+		$details_frame->title = Store::_('Account');
 		$details_frame->subtitle = $ds->fullname;
 
 		$details_view = $this->ui->getWidget('details_view');
