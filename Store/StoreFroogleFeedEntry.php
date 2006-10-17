@@ -15,7 +15,6 @@ class StoreFroogleFeedEntry extends AtomFeedEntry
 
 	public $name_space = 'g';
 
-	public $description;
 	public $expiration_date;
 	public $price;
 
@@ -63,9 +62,6 @@ class StoreFroogleFeedEntry extends AtomFeedEntry
 		$entry = parent::getNode($document);
 
 		//required fields (id and title are handled in the parent class)
-
-		$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-			'description', $this->description, $this->name_space));
 
 		$entry->appendChild(StoreFroogleFeed::getDateNode($document,
 			'expiration_date', $this->expiration_date, $this->name_space));
