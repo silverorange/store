@@ -3,14 +3,14 @@
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="search_frame">
-		<property name="title">Search Accounts</property>
+		<property name="title" translatable="yes">Search Accounts</property>
 		<widget class="SwatForm" id="search_form">
 			<widget class="SwatFormField">
-				<property name="title">Name</property>
+				<property name="title" translatable="yes">Name</property>
 				<widget class="SwatEntry" id="search_fullname" />
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title">Email Address</property>
+				<property name="title" translatable="yes">Email Address</property>
 				<widget class="SwatEntry" id="search_email" />
 			</widget>
 			<widget class="SwatFooterFormField">

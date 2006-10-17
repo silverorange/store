@@ -2,16 +2,16 @@
 
 require_once 'Admin/pages/AdminDBDelete.php';
 require_once 'SwatDB/SwatDB.php';
-require_once 'include/AccountPaymentMethodDependency.php';
 require_once 'Store/dataobjects/StorePaymentMethod.php';
 
+require_once 'include/StoreAccountPaymentMethodDependency.php';
 /**
  * Delete confirmation page for Account Payment Methods
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2006 silverorange
  */
-class AccountPaymentMethodDelete extends AdminDBDelete
+class StoreAccountPaymentMethodDelete extends AdminDBDelete
 {
 	// {{{ private properties
 
@@ -30,15 +30,16 @@ class AccountPaymentMethodDelete extends AdminDBDelete
 
 		$item_list = $this->getItemList('integer');
 
-		$sql = sprintf('delete from AccountPaymentMethod where id in (%s)', 
+		$sql = sprintf('delete from AccountPaymentMethod where id in (%s)',
 			$item_list);
 
 		$num = SwatDB::exec($this->app->db, $sql);
 
-		$msg = new SwatMessage(sprintf(ngettext(
+		$msg = new SwatMessage(sprintf(Store::ngettext(
 			'One payment method for %s has been deleted.',
-			'%d payment methods for %s have been deleted.', $num), $num, 
-			$this->account_fullname), SwatMessage::NOTIFICATION);
+			'%d payment methods for %s have been deleted.', $num),
+			SwatString::numberFormat($num), $this->account_fullname),
+			SwatMessage::NOTIFICATION);
 
 		$this->app->messages->add($msg);
 	}
@@ -57,22 +58,21 @@ class AccountPaymentMethodDelete extends AdminDBDelete
 		$form->addHiddenField('account', $this->account_id);
 
 		$this->navbar->popEntry();
-		$this->navbar->addEntry(new SwatNavBarEntry($this->account_fullname, 
+		$this->navbar->addEntry(new SwatNavBarEntry($this->account_fullname,
 			sprintf('Account/Details?id=%s', $this->account_id)));
 
-		$this->navbar->createEntry('Payment Method Delete');
+		$this->navbar->createEntry(Store::_('Payment Method Delete'));
 
 		$this->title = $this->account_fullname;
 
 		$item_list = $this->getItemList('integer');
 		$num = $this->getItemCount();
 
-		$dep = new AccountPaymentMethodDependency();
-		$dep->title = sprintf(ngettext('Payment Method for %s', 
+		$dep = new StoreAccountPaymentMethodDependency();
+		$dep->title = sprintf(Store::ngettext('Payment Method for %s',
 			'Payment Methods for %s', $num), $this->account_fullname);
 
-		$sql = sprintf('select * from AccountPaymentMethod
-			where id in (%s)',
+		$sql = sprintf('select * from AccountPaymentMethod where id in (%s)',
 			$item_list);
 
 		$methods = SwatDB::query($this->app->db, $sql,

@@ -5,16 +5,14 @@ require_once 'Admin/exceptions/AdminNoAccessException.php';
 require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'SwatDB/SwatDB.php';
 
-require_once '../../include/NewPasswordMailMessage.php';
-
 /**
  * Page to generate a new password for an account and email the new password
  * to the account holder
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2006 silverorange
  */
-class AccountEmailPassword extends AdminConfirmation
+class StoreAccountEmailPassword extends AdminConfirmation
 {
 	/**
 	 * @var StoreAccount
@@ -53,11 +51,9 @@ class AccountEmailPassword extends AdminConfirmation
 		if ($form->button->id == 'yes_button') {
 			$this->account->generateNewPassword($this->app);
 
-			$msg = new SwatMessage(sprintf(
-				'%s’s password has been reset and has been emailed to '.
-				'<a href="email:%s">%s</a>.',
-				$this->account->fullname, $this->account->email,
-				$this->account->email));
+			$msg = new SwatMessage(sprintf(Store::_('%1$s’s password has been '.
+				'reset and has been emailed to <a href="email:%2$s">%2$s</a>.'),
+				$this->account->fullname, $this->account->email));
 
 			$msg->content_type = 'text/xml';
 
@@ -82,13 +78,14 @@ class AccountEmailPassword extends AdminConfirmation
 		$this->navbar->createEntry($this->account->fullname,
 			sprintf('Account/Details?id=%s', $this->id));
 
-		$this->navbar->createEntry('Email New Password Confirmation');
+		$this->navbar->createEntry(Store::_('Email New Password Confirmation'));
 
 		$message = $this->ui->getWidget('confirmation_message');
 		$message->content = $this->getConfirmationMessage();
 		$message->content_type = 'text/xml';
 
-		$this->ui->getWidget('yes_button')->title = 'Reset & Email Password';
+		$this->ui->getWidget('yes_button')->title =
+			Store::_('Reset & Email Password');
 	}
 
 	// }}}
@@ -99,9 +96,9 @@ class AccountEmailPassword extends AdminConfirmation
 		ob_start();
 		$confirmation_title = new SwatHtmlTag('h3');
 
-		$confirmation_title->setContent(
-			sprintf('Are you sure you want to reset the password for %s?', 
-				$this->account->fullname));
+		$confirmation_title->setContent(sprintf(
+			Store::_('Are you sure you want to reset the password for %s?'),
+			$this->account->fullname));
 
 		$confirmation_title->display();
 
@@ -109,9 +106,8 @@ class AccountEmailPassword extends AdminConfirmation
 		$email_anchor->href = sprintf('email:%s', $this->account->email);
 		$email_anchor->setContent($this->account->email);
 
-		echo 'A new password will be generated and sent to ';
-		$email_anchor->display();
-		echo '.';
+		echo 'A new password will be generated and sent to ',
+			$email_anchor->display(),'.';
 
 		return ob_get_clean();
 	}

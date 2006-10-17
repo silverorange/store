@@ -8,15 +8,20 @@ require_once 'Swat/SwatMessage.php';
 /**
  * Edit page for Accounts
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2006 silverorange
  */
 
-class AccountEdit extends AdminDBEdit
+class StoreAccountEdit extends AdminDBEdit
 {
-	// {{{ private properties
+	// {{{ protected properties
 
-	private $fields;
+	protected $fields;
+
+	/**
+	 * @var string
+	 */
+	protected $ui_xml = 'Store/admin/components/Account/edit.xml';
 
 	// }}}
 
@@ -28,33 +33,14 @@ class AccountEdit extends AdminDBEdit
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
+		$this->ui->loadFromXML($this->ui_xml);
 
-		$this->fields = array('fullname', 'email', 'integer:veseys_number', 
-			'phone');
+		$this->fields = array('fullname', 'email', 'phone');
 	}
 
 	// }}}
 
 	// process phase
-	// {{{ protected function saveDBData()
-
-	protected function saveDBData()
-	{
-		$values = $this->ui->getValues(array('fullname', 'email', 
-			'veseys_number', 'phone'));
-		
-		SwatDB::updateRow($this->app->db, 'Account', $this->fields, $values,
-			'id', $this->id);
-
-		$msg = new SwatMessage(
-			sprintf('Account &#8220;%s&#8221; has been saved.', 
-				$values['fullname']));
-
-		$this->app->messages->add($msg);
-	}
-
-	// }}}
 	// {{{ protected function validate()
 
 	protected function validate()
@@ -71,13 +57,37 @@ class AccountEdit extends AdminDBEdit
 				$this->app->db->quote($this->id, 'integer')));
 	
 			if (count($query) > 0) {
-				$message = new SwatMessage(
-					'An account already exists with this email address.',
+				$message = new SwatMessage(Store::_(
+					'An account already exists with this email address.'),
 					SwatMessage::ERROR);
 	
 				$email->addMessage($message);
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function saveDBData()
+
+	protected function saveDBData()
+	{
+		$values = $this->getUIValues();
+
+		SwatDB::updateRow($this->app->db, 'Account', $this->fields, $values,
+			'id', $this->id);
+
+		$msg = new SwatMessage(sprintf(Store::_('Account “%s” has been saved.'),
+			$values['fullname']));
+
+		$this->app->messages->add($msg);
+	}
+
+	// }}}
+	// {{{ protected function getUIValues()
+
+	protected function getUIValues()
+	{
+		return $this->ui->getValues(array('fullname', 'email', 'phone'));
 	}
 
 	// }}}
@@ -92,7 +102,7 @@ class AccountEdit extends AdminDBEdit
 
 		$this->navbar->addEntry(new SwatNavBarEntry($account_fullname, 
 			sprintf('Account/Details?id=%s', $this->id)));
-		$this->navbar->addEntry(new SwatNavBarEntry('Edit'));
+		$this->navbar->addEntry(new SwatNavBarEntry(Store::_('Edit')));
 		$this->title = $account_fullname;
 	}
 
@@ -106,7 +116,8 @@ class AccountEdit extends AdminDBEdit
 
 		if ($row === null)
 			throw new AdminNotFoundException(
-				sprintf("Account with id '%s' not found.", $this->id));
+				sprintf(Store::_("Account with id ‘%s’ not found."),
+				$this->id));
 
 		$this->ui->setValues(get_object_vars($row));
 	}

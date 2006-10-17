@@ -2,15 +2,16 @@
 
 require_once 'Admin/pages/AdminDBDelete.php';
 require_once 'SwatDB/SwatDB.php';
-require_once 'include/AccountAddressDependency.php';
+
+require_once 'include/StoreAccountAddressDependency.php';
 
 /**
  * Delete confirmation page for Account Addresses
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2006 silverorange
  */
-class AccountAddressDelete extends AdminDBDelete
+class StoreAccountAddressDelete extends AdminDBDelete
 {
 	// {{{ private properties
 
@@ -29,17 +30,18 @@ class AccountAddressDelete extends AdminDBDelete
 
 		$item_list = $this->getItemList('integer');
 		
-		$sql = sprintf('delete from AccountAddress where id in (%s)', 
+		$sql = sprintf('delete from AccountAddress where id in (%s)',
 			$item_list);
 
 		$num = SwatDB::exec($this->app->db, $sql);
 
-		$msg = new SwatMessage(sprintf(ngettext(
+		$msg = new SwatMessage(sprintf(Store::ngettext(
 			'One address for %s has been deleted.',
-			'%d addresses for %s have been deleted.', $num), $num,
-			$this->account_fullname), SwatMessage::NOTIFICATION);
+			'%d addresses for %s have been deleted.', $num),
+			SwatString::numberFormat($num), $this->account_fullname),
+			SwatMessage::NOTIFICATION);
 
-		$this->app->messages->add($msg);	
+		$this->app->messages->add($msg);
 	}
 
 	// }}}
@@ -61,8 +63,8 @@ class AccountAddressDelete extends AdminDBDelete
 		$item_list = $this->getItemList('integer');
 		$num = $this->getItemCount();
 
-		$dep = new AccountAddressDependency();
-		$dep->title = sprintf(ngettext('Address for %s', 
+		$dep = new StoreAccountAddressDependency();
+		$dep->title = sprintf(Store::ngettext('Address for %s',
 			'Addresses for %s', $num), $this->account_fullname);
 
 		$rs = SwatDB::query($this->app->db,
@@ -79,10 +81,10 @@ class AccountAddressDelete extends AdminDBDelete
 
 		$entries = array();
 		$title_one_line =
-			'<address>%s<br />%s<br />%s, %s<br/>%s<br />%s</address>';		
+			'<address>%s<br />%s<br />%s, %s<br/>%s<br />%s</address>';
 
 		$title_two_lines =
-			'<address>%s<br />%s<br />%s<br />%s, %s<br/>%s<br />%s</address>';		
+			'<address>%s<br />%s<br />%s<br />%s, %s<br/>%s<br />%s</address>';
 
 		foreach ($rs as $row) {
 			$entry = new AdminDependencyEntry();
@@ -125,10 +127,10 @@ class AccountAddressDelete extends AdminDBDelete
 	private function buildNavBar()
 	{
 		$this->navbar->popEntry();
-		$this->navbar->addEntry(new SwatNavBarEntry($this->account_fullname, 
+		$this->navbar->addEntry(new SwatNavBarEntry($this->account_fullname,
 			sprintf('Account/Details?id=%s', $this->account_id)));
 
-		$this->navbar->createEntry('Address Delete');
+		$this->navbar->createEntry(Store::_('Address Delete'));
 
 		$this->title = $this->account_fullname;
 	}
