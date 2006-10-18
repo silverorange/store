@@ -1,5 +1,5 @@
-.basic_info_first {
-	padding-right: 250px;
+#basic_info_container .swat-form-field {
+	margin-right: 250px;
 }
 
 #basic_info_container #comments_field {
