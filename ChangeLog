@@ -1,3 +1,92 @@
+2006-10-18  gauthierm
+
+	* [r12109]
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php:
+	  fix syntax error and sprintf syntax error
+	* [r12108] store/trunk/Store/pages/StoreCheckoutFrontPage.php:
+	  fix syntax error and make error string generation easier to
+	  maintain
+	* [r12106] store/trunk/Store/pages/StoreCheckoutBasicInfoPage.php:
+	  - added documentation to validateEmailAddress
+	  - made validateEmailAddress protected instead of private
+
+2006-10-18  isaac
+
+	* [r12103] store/trunk/Store/StoreCatalogSelector.php,
+	  store/trunk/Store/StorePostalCodeEntry.php:
+	  clean up some line lengths
+	* [r12102] store/trunk/Store/StoreCartModule.php,
+	  store/trunk/Store/StoreQuickOrderItemSelector.php,
+	  store/trunk/Store/StoreSessionModule.php,
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php,
+	  store/trunk/Store/pages/StoreAccountDetailsPage.php,
+	  store/trunk/Store/pages/StoreAccountOrderPage.php,
+	  store/trunk/Store/pages/StoreAccountPaymentMethodEditPage.php,
+	  store/trunk/Store/pages/StoreArticlePage.php,
+	  store/trunk/Store/pages/StoreCartPage.php,
+	  store/trunk/Store/pages/StoreCategoryPage.php,
+	  store/trunk/Store/pages/StoreCheckoutBasicInfoPage.php,
+	  store/trunk/Store/pages/StoreCheckoutBillingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutCartPage.php,
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php,
+	  store/trunk/Store/pages/StoreCheckoutFirstPage.php,
+	  store/trunk/Store/pages/StoreCheckoutFrontPage.php,
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php,
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutThankYouPage.php,
+	  store/trunk/Store/pages/StoreNateGoSearchPage.php,
+	  store/trunk/Store/pages/StoreProductImagePage.php,
+	  store/trunk/Store/pages/StoreProductPage.php,
+	  store/trunk/Store/pages/StoreSearchPage.php,
+	  store/trunk/Store/pages/StoreStorePage.php:
+	  general sweep of store files to make sure every string is
+	  translatable. Fixed line lengths, spacing, etc when I came
+	  across it.
+	  
+	  as well, a few veseyisms still existed in
+	  StoreAccountPaymentMethodEditPage (referering to them as credit
+	  cards) - not
+	  sure how we'll fix this in veseys now though
+	* [r12101]
+	  store/trunk/Store/admin/components/Account/AddressEdit.php:
+	  fix a few sloppy php errors on the Address Edit page
+
+2006-10-17  nick
+
+	* [r12090] store/trunk/Store/StoreFroogleFeedEntry.php:
+	  Removed description from the FroogleFeed - I swear this was in
+	  the google namespace when I built this, but now it seems to use
+	  the atom "summary" tag.
+
+2006-10-17  isaac
+
+	* [r12083]
+	  store/trunk/Store/admin/components/Account/AddressDelete.php,
+	  store/trunk/Store/admin/components/Account/AddressEdit.php,
+	  store/trunk/Store/admin/components/Account/Details.php,
+	  store/trunk/Store/admin/components/Account/Edit.php,
+	  store/trunk/Store/admin/components/Account/EmailPassword.php,
+	  store/trunk/Store/admin/components/Account/Index.php,
+	  store/trunk/Store/admin/components/Account/PaymentMethodDelete.php,
+	  
+	  store/trunk/Store/admin/components/Account/PaymentMethodEdit.php,
+	  
+	  store/trunk/Store/admin/components/Account/include/AccountAddressDependency.php,
+	  
+	  store/trunk/Store/admin/components/Account/include/AccountPaymentMethodDependency.php,
+	  
+	  store/trunk/Store/admin/components/Account/include/StoreAccountAddressDependency.php,
+	  
+	  store/trunk/Store/admin/components/Account/include/StoreAccountPaymentMethodDependency.php,
+	  store/trunk/Store/admin/components/Account/index.xml,
+	  store/trunk/Store/admin/components/Account/search.xml:
+	  Account component up to store
+
+2006-10-16  nrf
+
+	* [r12046] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.1.9
+
 2006-10-16  steven
 
 	* [r12044] store/trunk/Store/pages/checkout-confirmation.xml:
