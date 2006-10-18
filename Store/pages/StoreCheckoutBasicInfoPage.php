@@ -87,12 +87,13 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
-	// {{{ private function validateEmailAddress()
+	// {{{ protected function validateEmailAddress()
 
-	private function validateEmailAddress()
+	/**
+	 * Verifies entered email address is not a duplicate of an existing account
+	 */
+	protected function validateEmailAddress()
 	{
-		// verify the email address is not a duplicate of an account
-
 		$email_entry = $this->ui->getWidget('email');
 		$email_address = $email_entry->value;
 
