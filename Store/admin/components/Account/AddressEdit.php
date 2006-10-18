@@ -16,7 +16,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
-	$this->ui_xml = 'Store/admin/components/Account/addressedit.xml';
+	protected $ui_xml = 'Store/admin/components/Account/addressedit.xml';
 
 	// }}}
 	// {{{ private properties
@@ -121,7 +121,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 
 		$msg = new SwatMessage(sprintf(
 			Store::_('Address for “%s” has been saved.'),
-			this->account_fullname));
+			$this->account_fullname));
 
 		$this->app->messages->add($msg);
 	}
@@ -158,7 +158,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 						'<strong>%s</strong> is  not a province or state of '.
 						'the selected country.');
 				} else {
-					$message_content = sprintf(Store:_('The selected '.
+					$message_content = sprintf(Store::_('The selected '.
 						'<strong>%%s</strong> is not a province or state of '.
 						'the selected country <strong>%s</strong>.'),
 						$country_title);
@@ -227,7 +227,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 
 		if ($row === null)
 			throw new AdminNotFoundException(
-				sprintf(Store::_('account address with id ‘%s’ not found.',
+				sprintf(Store::_('account address with id ‘%s’ not found.'),
 				$this->id));
 
 		$this->ui->setValues(get_object_vars($row));
