@@ -111,13 +111,15 @@ class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 				$message = new SwatMessage(Store::_('Login Incorrect'),
 					SwatMessage::WARNING);
 
-				$output = sprintf('<ul><li>%s</li><li>%s</li></ul>',
-					Store::_('Please check the spelling on your email address '.
-						'or password',
+				$tips = array(
+					Store::_('Please check the spelling on your email '.
+						'address or password'),
 					sprintf(Store::_('Password is case-sensitive. Make sure '.
-						'your %sCaps Lock%s key is off'),'<kbd>','</kbd>'));
+                        'your %sCaps Lock%s key is off'), '<kbd>', '</kbd>'),
+				);
+				$message->secondary_content =
+					vsprintf('<ul><li>%s</li><li>%s</li></ul>', $tips);
 
-				$message->secondary_content = $output;
 				$message->content_type = 'text/xml';
 
 				$this->ui->getWidget('message_display')->add($message);
