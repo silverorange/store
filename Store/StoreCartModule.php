@@ -92,7 +92,7 @@ class StoreCartModule extends SiteApplicationModule
 				'StoreSessionModule to be loaded. Please either explicitly '.
 				'add a session module to the application before instantiating '.
 				'the cart module, or specify the session module before the '.
-				'cart module in the application\'s getDefaultModuleList() '.
+				'cart module in the application’s getDefaultModuleList() '.
 				'method.');
 
 		parent::__construct($app);

@@ -72,7 +72,8 @@ class StoreProductPage extends StoreStorePage
 	{
 		$this->cart_ui = new StoreUI();
 		$this->cart_ui->loadFromXML($this->cart_ui_xml);
-		$this->cart_ui->getRoot()->addStyleSheet('packages/store/styles/store-cart.css');
+		$this->cart_ui->getRoot()->addStyleSheet(
+			'packages/store/styles/store-cart.css');
 
 		$cart_form = $this->cart_ui->getWidget('cart_form');
 		$cart_form->action = $this->source;
@@ -178,12 +179,12 @@ class StoreProductPage extends StoreStorePage
 			$renderer = $column->getRenderer('quantity_renderer');
 
 			if ($form->hasMessage()) {
-				$message = new SwatMessage('There is a problem with one or '.
-					'more of the items you requested.',
+				$message = new SwatMessage(Store::_('There is a problem with '.
+					'one or more of the items you requested.'),
 					SwatMessage::ERROR);
 
-				$message->secondary_content = 'Please address the fields '.
-					'highlighted below and re-submit the form.';
+				$message->secondary_content = Store::_('Please address the '.
+					'fields highlighted below and re-submit the form.');
 
 				$this->items_ui->getWidget('message_display')->add($message);
 			}
@@ -211,11 +212,11 @@ class StoreProductPage extends StoreStorePage
 			if ($num_items_added) {
 				
 				$message = new StoreMessage(
-					'Your shopping cart has been updated.',
+					Store::_('Your shopping cart has been updated.'),
 					StoreMessage::CART_NOTIFICATION);
 
-				$message->secondary_content = 'You may continue shopping by '.
-					'following any of the links on this page.';
+				$message->secondary_content = Store::_('You may continue '.
+					'shopping by following any of the links on this page.');
 
 				$this->cart_ui->getWidget('messages')->add($message);
 			}
@@ -274,8 +275,8 @@ class StoreProductPage extends StoreStorePage
 				$this->item_removed = true;
 				$this->app->cart->checkout->removeEntryById($id);
 				$this->cart_ui->getWidget('messages')->add(new StoreMessage(
-					'An item has been removed from your shopping cart.',
-					StoreMessage::CART_NOTIFICATION));
+					Store::_('An item has been removed from your shopping '.
+					'cart.'), StoreMessage::CART_NOTIFICATION));
 
 				break;
 			}
@@ -404,7 +405,7 @@ class StoreProductPage extends StoreStorePage
 		$count = $cart_view->model->getRowCount();
 		if ($count > 0) {
 			$frame = $this->cart_ui->getWidget('cart_frame');
-			$frame->title = ngettext(
+			$frame->title = Store::ngettext(
 				'The following item on this page is in your shopping cart:',
 				'The following items on this page are in your shopping cart:',
 				$count);
@@ -493,16 +494,16 @@ class StoreProductPage extends StoreStorePage
 		$img_tag->src = $this->product->primary_image->getURI('small');
 		$img_tag->width = $this->product->primary_image->small_width;
 		$img_tag->height = $this->product->primary_image->small_height;
-		$img_tag->alt = 'Photo of '.$this->product->title;
+		$img_tag->alt = sprintf(Store::_('Photo of %s'), $this->product->title);
 
 		$anchor = new SwatHtmlTag('a');
 		$anchor->href = $this->source.'/image';
-		$anchor->title = 'View Larger Image';
+		$anchor->title = Store::_('View Larger Image');
 
 		$div->open();
 		$anchor->open();
 		$img_tag->display();
-		echo '<span>View Larger Image</span>';
+		echo Store::_('<span>View Larger Image</span>');
 		$anchor->close();
 		$div->close();
 	}
@@ -545,7 +546,7 @@ class StoreProductPage extends StoreStorePage
 		$div->id = 'related_products';
 
 		$header_tag = new SwatHtmlTag('h4');
-		$header_tag->setContent('You might also be interested in...');
+		$header_tag->setContent(Store::_('You might also be interested in...'));
 
 		$ul_tag = new SwatHtmlTag('ul');
 		$ul_tag->class = 'product-list';

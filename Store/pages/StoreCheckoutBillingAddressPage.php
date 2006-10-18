@@ -91,8 +91,8 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 				$this->app->session->account->addresses->getByIndex($address_id);
 
 			if (!($account_address instanceof StoreAccountAddress))
-				throw new StoreException('Account address not found.  '.
-					"Address with id '$address_id' not found.");
+				throw new StoreException('Account address not found. Address '.
+					'with id ‘$address_id’ not found.');
 
 			$order_address = new StoreOrderAddress();
 			$order_address->copyFrom($account_address);
@@ -218,8 +218,9 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 	protected function buildList()
 	{
 		$address_list = $this->ui->getWidget('billing_address_list');
-		$address_list->addOption('new',
-			'<span class="add-new">Add a New Address</span>', 'text/xml');
+		$address_list->addOption('new', sprintf(
+			'<span class="add-new">%s</span>', Store::_('Add a New Address')),
+			'text/xml');
 
 		$content_block =
 			$this->ui->getWidget('account_billing_address_region_message');
@@ -242,14 +243,16 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 			$this->app->db, 'ProvState', 'title', 'id', 'title',
 			sprintf('country in (select country from
 				RegionBillingCountryBinding where region = %s)',
-				$this->app->db->quote($this->app->getRegion()->id, 'integer'))));
+				$this->app->db->quote($this->app->getRegion()->id,
+				'integer'))));
 
 		$country_flydown = $this->ui->getWidget('billing_address_country');
 		$country_flydown->addOptionsByArray(SwatDB::getOptionArray(
 			$this->app->db, 'Country', 'title', 'id', 'title',
 			sprintf('id in (select country from RegionBillingCountryBinding
 				where region = %s)',
-				$this->app->db->quote($this->app->getRegion()->id, 'integer'))));
+				$this->app->db->quote($this->app->getRegion()->id,
+				'integer'))));
 	}
 
 	// }}}

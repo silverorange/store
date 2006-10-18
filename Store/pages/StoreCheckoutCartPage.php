@@ -50,11 +50,11 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 
 		if ($form->isProcessed()) {
 			if ($form->hasMessage()) {
-				$msg = new SwatMessage('There is a problem with the '.
-					'information submitted.', SwatMessage::ERROR);
+				$msg = new SwatMessage(Store::_('There is a problem with the '.
+					'information submitted.'), SwatMessage::ERROR);
 
-				$msg->secondary_content = 'Please address the fields '.
-					'highlighted below and re-submit the form.';
+				$msg->secondary_content = Store::_('Please address the fields '.
+					'highlighted below and re-submit the form.');
 
 				$this->ui->getWidget('message_display')->add($msg);
 			} else {
@@ -110,7 +110,7 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 
 		if ($num_entries_removed > 0) {
 			$message_display = $this->ui->getWidget('message_display');
-			$message_display->add(new SwatMessage(sprintf(ngettext(
+			$message_display->add(new SwatMessage(sprintf(Store::ngettext(
 				'One item has been removed from shopping cart.',
 				'%s items have been removed form shopping cart.',
 				$num_entries_removed),
@@ -153,7 +153,7 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 		if ($entry_moved) {
 			$message_display = $this->ui->getWidget('message_display');
 			$message_display->add(new SwatMessage(
-				'One item has been saved for later.'));
+				Store::_('One item has been saved for later.')));
 		}
 
 		return $entry_moved;
@@ -194,7 +194,7 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 		$message_display = $this->ui->getWidget('message_display');
 
 		if ($num_entries_updated > 0) {
-			$message_display->add(new SwatMessage(sprintf(ngettext(
+			$message_display->add(new SwatMessage(sprintf(Store::ngettext(
 				'One item quantity has been updated.',
 				'%s item quantities have been updated.',
 				$num_entries_updated),
@@ -202,7 +202,7 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 		}
 
 		if ($num_entries_removed > 0) {
-			$message_display->add(new SwatMessage(sprintf(ngettext(
+			$message_display->add(new SwatMessage(sprintf(Store::ngettext(
 				'One item has been removed from shopping cart.',
 				'%s items have been removed form shopping cart.',
 				$num_entries_removed),

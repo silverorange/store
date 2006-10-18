@@ -108,12 +108,14 @@ class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 				$this->updateProgress();
 				$this->app->relocate('checkout/first');
 			} else {
-				$message = new SwatMessage('Login Incorrect',
+				$message = new SwatMessage(Store::_('Login Incorrect'),
 					SwatMessage::WARNING);
 
-				$output = '<ul><li>Please check the spelling on your email '.
-					'address or password</li><li>Password is case-sensitive. '.
-					'Make sure your <kbd>Caps Lock</kbd> key is off</li></ul>';
+				$output = sprintf('<ul><li>%s</li><li>%s</li></ul>',
+					Store::_('Please check the spelling on your email address '.
+						'or password',
+					sprintf(Store::_('Password is case-sensitive. Make sure '.
+						'your %sCaps Lock%s key is off'),'<kbd>','</kbd>'));
 
 				$message->secondary_content = $output;
 				$message->content_type = 'text/xml';

@@ -149,7 +149,7 @@ class StoreAccountDetailsPage extends StoreAccountPage
 				$view->visible = false;
 
 				$msg = new SwatMessage(
-					Store::_('One credit card has been removed.'));
+					Store::_('One payment method has been removed.'));
 
 				$msg->secondary_content = $payment_condensed;
 				$msg->content_type = 'text/xml';

@@ -69,7 +69,8 @@ class StoreCheckoutFirstPage extends StoreCheckoutStepPage
 
 			$container_id = substr($container_id, 1);
 		} else {
-			throw new StoreException("Unable to guess container for page $class");
+			throw new StoreException(
+				"Unable to guess container for page $class");
 		}
 
 		$container = $this->ui->getWidget($container_id);
@@ -108,11 +109,11 @@ class StoreCheckoutFirstPage extends StoreCheckoutStepPage
 		$form = $this->ui->getWidget('form');
 		if ($form->isProcessed()) {
 			if ($form->hasMessage()) {
-				$msg = new SwatMessage('There is a problem with the '
-					.'information submitted.', SwatMessage::ERROR);
+				$msg = new SwatMessage(Store::_('There is a problem with the '.
+					'information submitted.'), SwatMessage::ERROR);
 
-				$msg->secondary_content = 'Please address the fields '
-					.'highlighted below and re-submit the form.';
+				$msg->secondary_content = Store::_('Please address the fields '.
+					'highlighted below and re-submit the form.');
 
 				$this->ui->getWidget('message_display')->add($msg);
 			} else {
@@ -131,7 +132,7 @@ class StoreCheckoutFirstPage extends StoreCheckoutStepPage
 	{
 		parent::build();
 
-		$this->layout->data->title = 'Checkout';
+		$this->layout->data->title = Store::_('Checkout');
 		$this->layout->navbar->popEntry();
 
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
@@ -174,7 +175,8 @@ class StoreCheckoutFirstPage extends StoreCheckoutStepPage
 		// if there are no saved payment methods, add a side-by-side class
 		// if there are saved payment methods, add a stacked class
 		$payment_method_list = $this->ui->getWidget('payment_method_list');
-		$payment_method_container = $this->ui->getWidget('payment_method_container');
+		$payment_method_container = 
+			$this->ui->getWidget('payment_method_container');
 
 		if (!$payment_method_list->visible)
 			$payment_method_container->classes[]  = 'checkout-column-left';

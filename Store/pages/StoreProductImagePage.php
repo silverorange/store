@@ -35,7 +35,8 @@ class StoreProductImagePage extends StoreStorePage
 		$product->setRegion($this->app->getRegion()->id);
 		$product->load($this->product_id);
 		$this->buildNavBar($product);
-		$this->layout->data->title = sprintf('%s: Image', $product->title);
+		$this->layout->data->title = sprintf(Store::_('%s: Image'),
+			$product->title);
 
 		$this->layout->addHtmlHeadEntrySet(
 			$this->back_link->getHtmlHeadEntrySet());
@@ -63,7 +64,7 @@ class StoreProductImagePage extends StoreStorePage
 
 		$link .= '/'.$product->shortname;
 		$this->layout->navbar->createEntry($product->title, $link);
-		$this->layout->navbar->createEntry('Image');
+		$this->layout->navbar->createEntry(Store::_('Image'));
 	}
 
 	// }}}
@@ -71,7 +72,7 @@ class StoreProductImagePage extends StoreStorePage
 
 	private function displayImage($product)
 	{
-		$this->back_link->title = 'Back to Product Page';
+		$this->back_link->title = Store::_('Back to Product Page');
 		$this->back_link->link =
 			$this->layout->navbar->getEntryByPosition(-1)->link;
 
@@ -84,7 +85,7 @@ class StoreProductImagePage extends StoreStorePage
 		$img_tag->src = $product->primary_image->getURI('large');
 		$img_tag->width = $product->primary_image->large_width;
 		$img_tag->height = $product->primary_image->large_height;
-		$img_tag->alt = 'Photo of '.$product->title;
+		$img_tag->alt = sprintf(Store::_('Photo of %s'), $product->title);
 
 		$div->open();
 		$img_tag->display();

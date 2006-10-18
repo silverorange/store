@@ -110,13 +110,13 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 
 		if (count($rs) > 0) {
 			$message = new SwatMessage(
-				'An account already exists with this email address.',
+				Store::_('An account already exists with this email address.'),
 				SwatMessage::ERROR);
 
-			$message->secondary_content =
-				sprintf('You can <a href="account/forgotpassword?email=%s">'.
-				'request a new password</a> to log into the existing account.',
-				$email_address);
+			$message->secondary_content = sprintf(Store::_('You can %srequest '.
+				'a new password%s to log into the existing account.'),
+				sprintf('<a href="account/forgotpassword?email=%s">',
+				$email_address), '</a>');
 
 			$message->content_type = 'text/xml';
 			$email_entry->addMessage($message);
