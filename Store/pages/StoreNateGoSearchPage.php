@@ -172,7 +172,7 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 					sprintf('<a href="search?keywords=%s">',
 						urlencode($corrected_phrase)),
 					SwatString::minimizeEntities($corrected_string),
-					'</a>');
+					'</a>'));
 
 			$misspellings_message->content_type = 'text/xml';
 
