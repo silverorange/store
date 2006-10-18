@@ -18,6 +18,8 @@ class StorePaymentMethodView extends SwatControl
 
 	public $payment_method;
 
+	public $paymentMethodConfirmText;
+
 	// }}}
 	// {{{ private properties
 
@@ -94,8 +96,7 @@ class StorePaymentMethodView extends SwatControl
 		$this->remove_button->title = Store::_('Remove');
 		$this->remove_button->classes[] = 'store-remove';
 		$this->remove_button->confirmation_message = sprintf("%s\n\n%s",
-			Store::_('Are you sure you want to remove the following payment '.
-				'method?'), $payment_method_text);
+			$this->paymentMethodConfirmText, $payment_method_text);
 
 		$div->open();
 		$this->payment_method->display();
