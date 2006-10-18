@@ -209,7 +209,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$method_list = $this->ui->getWidget('payment_method_list');
 		$method_list->addOption('new',
 			sprintf('<span class="add-new">%s</span>',
-			Store::_('Add a New Credit Card')), 'text/xml');
+			$this->getNewPaymentMethodText()), 'text/xml');
 
 		if ($this->app->session->isLoggedIn()) {
 			foreach ($this->app->session->account->payment_methods as $method) {
@@ -229,6 +229,14 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		}
 
 		$method_list->visible = (count($method_list->options) > 1);
+	}
+
+	// }}}
+	// {{{ protected function getNewPaymentMethodText()
+
+	protected function getNewPaymentMethodText()
+	{
+		return Store::_('Add a New Payment Method');
 	}
 
 	// }}}

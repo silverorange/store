@@ -148,14 +148,21 @@ class StoreAccountDetailsPage extends StoreAccountPage
 				$account->payment_methods->remove($view->payment_method);
 				$view->visible = false;
 
-				$msg = new SwatMessage(
-					Store::_('One payment method has been removed.'));
+				$msg = new SwatMessage($this->getPaymentMethodText());
 
 				$msg->secondary_content = $payment_condensed;
 				$msg->content_type = 'text/xml';
 				$this->app->messages->add($msg);
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function getPaymentMethodText()
+
+	protected function getPaymentMethodText()
+	{
+ 		return Store::_('One payment method has been removed.');
 	}
 
 	// }}}
