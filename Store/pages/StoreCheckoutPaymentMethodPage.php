@@ -257,7 +257,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 			$this->ui->getWidget('payment_method_note')->content = sprintf(
 				Store::_('%sSee our %sprivacy &amp; security policy%s for '.
-				'more information about how your information will be used.$s',
+				'more information about how your information will be used.%s'),
 				'<p class="smallprint">', '<a href="about/website/privacy">',
 				'</a>', '</p>');
 		}
