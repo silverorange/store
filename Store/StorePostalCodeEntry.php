@@ -131,16 +131,15 @@ class StorePostalCodeEntry extends SwatEntry
 		$value = strtr($value, $trans);
 
 		if (preg_match('/^[ABCEGHJ-NPRSTVXY]\d[A-Z]\d[A-Z]\d$/u', $value) == 0) {
-			$message = new SwatMessage(Store::_('The %s field is not '.
-				'a valid Canadian postal code.'), SwatMessage::ERROR);
+			$message = new SwatMessage(Store::_('The %s field is not a valid '.
+				'Canadian postal code.'), SwatMessage::ERROR);
 
 			$message->content_type = 'text/xml';
 			$this->addMessage($message);
 		} elseif ($province !== null &&
 			!$this->validateByProvince($value, $province)) {
-			$message = new SwatMessage(Store::_('The %s field '.
-				'is not valid for the selected province.'),
-				SwatMessage::ERROR);
+			$message = new SwatMessage(Store::_('The %s field is not valid '.
+				'for the selected province.'), SwatMessage::ERROR);
 
 			$message->content_type = 'text/xml';
 			$this->addMessage($message);
@@ -165,14 +164,14 @@ class StorePostalCodeEntry extends SwatEntry
 
 		// matches ZIP or ZIP+4 codes
 		if (preg_match('/^\d{5}((-| )\d{4})?$/u', $value) == 0) {
-			$message = new SwatMessage(Store::_('The %s field is not '.
-				'a valid US ZIP Code.'), SwatMessage::ERROR);
+			$message = new SwatMessage(Store::_('The %s field is not a valid '.
+				'US ZIP Code.'), SwatMessage::ERROR);
 
 			$message->content_type = 'text/xml';
 			$this->addMessage($message);
 		} elseif ($state !== null && !$this->validateByState($value, $state)) {
-			$message = new SwatMessage(Store::_('The %s field is not '.
-				'valid for the selected state.'), SwatMessage::ERROR);
+			$message = new SwatMessage(Store::_('The %s field is not valid '.
+				'for the selected state.'), SwatMessage::ERROR);
 
 			$message->content_type = 'text/xml';
 			$this->addMessage($message);
@@ -205,8 +204,8 @@ class StorePostalCodeEntry extends SwatEntry
 			'GIR0AA$/u';
 
 		if (preg_match($regex, $value) == 0) {
-			$message = new SwatMessage(Store::_('The %s field must '.
-				'be a valid United Kingdom postcode.'), SwatMessage::ERROR);
+			$message = new SwatMessage(Store::_('The %s field is not a valid '.
+				'United Kingdom postcode.'), SwatMessage::ERROR);
 
 			$message->content_type = 'text/xml';
 			$this->addMessage($message);
