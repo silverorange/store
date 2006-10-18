@@ -113,17 +113,17 @@ class StoreCatalogSelector extends SwatFlydown
 			self::constructValue(self::ALL_ENABLED_CATALOGS), 
 				Store::_('All Enabled'));
 
-		$regions = SwatDB::getOptionArray($this->db, 'Region', 'title', 'id', 
+		$regions = SwatDB::getOptionArray($this->db, 'Region', 'title', 'id',
 			'title');
 
 		foreach ($regions as $id => $title)
 			$options[] = new SwatOption(
-				self::constructValue(self::ALL_ENABLED_CATALOGS_IN_REGION, null, $id),
-				sprintf(Store::_('All Enabled in %s'), $title));
+				self::constructValue(self::ALL_ENABLED_CATALOGS_IN_REGION, null,
+				$id), sprintf(Store::_('All Enabled in %s'), $title));
 
 		$options[] = new SwatFlydownDivider('');
 
-		$catalogs = SwatDB::getOptionArray($this->db, 'Catalog', 'title', 'id', 
+		$catalogs = SwatDB::getOptionArray($this->db, 'Catalog', 'title', 'id',
 			'title');
 
 		foreach ($catalogs as $id => $title)
