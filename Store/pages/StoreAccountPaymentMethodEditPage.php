@@ -101,14 +101,9 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 					$this->app->session->account->payment_methods->add(
 						$payment_method);
 
-					$this->addMessage(
-						Store::_('One payment method has been added.'),
-						$payment_method);
-
+					$this->addMessage('add', $payment_method);
 				} elseif ($payment_method->isModified()) {
-					$this->addMessage(
-						Store::_('One payment method has been updated.'),
-						$payment_method);
+					$this->addMessage('update', $payment_method);
 				}
 
 				$this->app->session->account->save();
@@ -118,9 +113,27 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 	}
 
 	// }}}
+	// {{{ protected function getMessageText()
+
+	protected function getMessageText($text)
+	{
+		switch ($text) {
+		case 'add':
+			return Store::_('One payment method has been added.');
+		case 'update':
+			return Store::_('One payment method has been updated.');
+		default:
+			return $text;
+		}
+	}
+
+	// }}}
 	// {{{ private function addMessage()
+
 	private function addMessage($text, $payment_method)
 	{
+		$text = $this->getMessageText($text);
+
 		ob_start();
 		$payment_method->display();
 		$payment_display = ob_get_clean();
