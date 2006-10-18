@@ -81,11 +81,12 @@ class StoreAccountOrderPage extends StoreAccountPage
 
 	private function loadOrder()
 	{
-		$this->order = $this->app->session->account->orders->getByIndex($this->id);
+		$this->order = $this->app->session->account->orders->getByIndex(
+			$this->id);
 
 		if ($this->order === null)
 			throw new SiteNotFoundException(
-				sprintf('An order with an id of %d does not exist.',
+				sprintf('An order with an id of ‘%d’ does not exist.',
 				$this->id));
 	}
 

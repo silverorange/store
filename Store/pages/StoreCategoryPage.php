@@ -80,7 +80,7 @@ class StoreCategoryPage extends StoreStorePage
 
 	protected function displaySubCategories($category_id = null)
 	{
-		$sql = 'select Category.id, Category.title, Category.shortname, 
+		$sql = 'select Category.id, Category.title, Category.shortname,
 				Category.image, c.product_count
 			from Category
 			left outer join CategoryVisibleProductCountByRegionCache as c
@@ -237,7 +237,7 @@ class StoreCategoryPage extends StoreStorePage
 		$div->open();
 
 		$header_tag = new SwatHtmlTag('h4');
-		$header_tag->setContent('Featuring:');
+		$header_tag->setContent(Store::_('Featuring:'));
 		$header_tag->display();
 
 		$ul_tag = new SwatHtmlTag('ul');

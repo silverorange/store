@@ -42,7 +42,7 @@ class StoreSessionModule extends SiteSessionModule
 				'SiteDatabaseModule to be loaded. Please either explicitly '.
 				'add a database module to the application before '.
 				'instantiating the session module, or specify the database '.
-				'module before the session module in the application\'s '.
+				'module before the session module in the application’s '.
 				'getDefaultModuleList() method.');
 
 		parent::__construct($app);

@@ -110,15 +110,15 @@ class StoreCheckoutThankYouPage extends StoreCheckoutUIPage
 
 	protected function buildAccountMessage()
 	{
-		$message = new SwatMessage('Your Account',
+		$message = new SwatMessage(Store::_('Your Account'),
 			SwatMessage::NOTIFICATION);
 
-		$message->secondary_content = 'By logging into your account the '.
-			'next time you visit our website, you can edit your addresses '.
+		$message->secondary_content = Store::_('By logging into your account '.
+			'the next time you visit our website, you can edit your addresses '.
 			'and payment methods, view previously placed orders, re-order '.
 			'items from your previous orders, and checkout without '.
 			'having to re-enter all of your address and payment '.
-			'information.';
+			'information.');
 
 		$this->ui->getWidget('message_display')->add($message);
 	}

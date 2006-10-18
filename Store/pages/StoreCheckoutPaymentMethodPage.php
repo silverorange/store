@@ -71,17 +71,22 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 			if ($this->app->session->order->payment_method !== null &&
 				$this->app->session->order->payment_method->getAccountPaymentMethodId() === null) {
-					$order_payment_method = $this->app->session->order->payment_method;
+					$order_payment_method = 
+						$this->app->session->order->payment_method;
 			} else {
 				$class_map = StoreClassMap::instance();
-				$class_name = $class_map->resolveClass('StoreOrderPaymentMethod');
+				$class_name = $class_map->resolveClass(
+					'StoreOrderPaymentMethod');
+
 				$order_payment_method = new $class_name();
 			}
 
 			$order_payment_method->payment_type =
 				$this->ui->getWidget('payment_type')->value;
 
-			$credit_card_number = $this->ui->getWidget('credit_card_number')->value;
+			$credit_card_number = 
+				$this->ui->getWidget('credit_card_number')->value;
+
 			if ($credit_card_number !== null)
 				$order_payment_method->setCreditCardNumber(
 					$credit_card_number);
@@ -96,11 +101,12 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			$method_id = intval($method_list->value);
 
 			$account_payment_method = 
-				$this->app->session->account->payment_methods->getByIndex($method_id);
+				$this->app->session->account->payment_methods->getByIndex(
+					$method_id);
 
 			if (!($account_payment_method instanceof StoreAccountPaymentMethod))
 				throw new StoreException('Account payment method not found. '.
-					"Method with id '$method_id' not found.");
+					"Method with id ‘$method_id’ not found.");
 
 			$class_map = StoreClassMap::instance();
 			$class_name = $class_map->resolveClass('StoreOrderPaymentMethod');
@@ -174,7 +180,8 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				 *        since we only store the encrypted number in the
 				 *        dataobject.
 				 */
-				$this->ui->getWidget('credit_card_number')->show_blank_value = true;
+				$this->ui->getWidget('credit_card_number')->show_blank_value =
+					true;
 
 				$this->ui->getWidget('credit_card_expiry')->value =
 					$order->payment_method->credit_card_expiry;
@@ -201,7 +208,8 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	{
 		$method_list = $this->ui->getWidget('payment_method_list');
 		$method_list->addOption('new',
-			'<span class="add-new">Add a New Credit Card</span>', 'text/xml');
+			sprintf('<span class="add-new">%s</span>',
+			Store::_('Add a New Credit Card')), 'text/xml');
 
 		if ($this->app->session->isLoggedIn()) {
 			foreach ($this->app->session->account->payment_methods as $method) {
@@ -244,11 +252,14 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			$this->loadDataFromSession();
 
 		if ($this->app->session->checkout_with_account) {
-			$this->ui->getWidget('save_account_payment_method_field')->visible = true;
-			$this->ui->getWidget('payment_method_note')->content = 
-				'<p class="smallprint">See our <a href="about/website/privacy">'.
-				'privacy &amp; security policy</a> for more information about '.
-				'how your information will be used.</p>';
+			$this->ui->getWidget('save_account_payment_method_field')->visible =
+				true;
+
+			$this->ui->getWidget('payment_method_note')->content = sprintf(
+				Store::_('%sSee our %sprivacy &amp; security policy%s for '.
+				'more information about how your information will be used.$s',
+				'<p class="smallprint">', '<a href="about/website/privacy">',
+				'</a>', '</p>');
 		}
 	}
 

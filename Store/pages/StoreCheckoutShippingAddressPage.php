@@ -87,11 +87,12 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 			$address_id = intval($address_list->value);
 
 			$account_address = 
-				$this->app->session->account->addresses->getByIndex($address_id);
+				$this->app->session->account->addresses->getByIndex(
+				$address_id);
 
 			if (!($account_address instanceof StoreAccountAddress))
 				throw new StoreException('Account address not found.  '.
-					"Address with id '$address_id' not found.");
+					"Address with id ‘$address_id’ not found.");
 
 			$order_address = new StoreOrderAddress();
 			$order_address->copyFrom($account_address);
@@ -201,7 +202,8 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 			} else {
 				// compare references since these are not saved yet
 				if ($order->billing_address === $order->shipping_address) {
-					$this->ui->getWidget('shipping_address_list')->value = 'billing';
+					$this->ui->getWidget('shipping_address_list')->value = 
+						'billing';
 
 				} else {
 					$this->ui->getWidget('shipping_address_list')->value =
@@ -220,21 +222,26 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 		$content_block =
 			$this->ui->getWidget('account_shipping_address_region_message');
 
+		$span = '<span class="add-new">%s</span>';
+
 		// TODO: it is possible to select a billing address that is not
 		// shippable and then select "ship to billing address".
 		if ($this->app->session->checkout_with_account) {
-			$address_list->addOption('new',
-				'<span class="add-new">Add a New Address</span>', 'text/xml');
+			$address_list->addOption('new', 
+				sprintf($span, Store::_('Add a New Address')), 'text/xml');
 
 			$address_list->addOption('billing',
-				'<span class="add-new">Ship to Billing Address</span>', 'text/xml');
+				sprintf($span, Store::_('Ship to Billing Address')),
+				'text/xml');
 
 		} else {
 			$address_list->addOption('billing',
-				'<span class="add-new">Ship to Billing Address</span>', 'text/xml');
+				sprintf($span, Store::_('Ship to Billing Address')),
+				'text/xml');
 
 			$address_list->addOption('new',
-				'<span class="add-new">Ship to a Different Address</span>', 'text/xml');
+				sprintf($span, Store::_('Ship to a Different Address')),
+				'text/xml');
 		}
 
 		if ($this->app->session->isLoggedIn()) {

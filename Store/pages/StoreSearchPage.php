@@ -276,7 +276,7 @@ abstract class StoreSearchPage extends StoreArticlePage
 			$navbar->display();
 			$paragraph_tag->open();
 			echo SwatString::condense($article->bodytext, 150).'&nbsp;';
-			$anchor_tag->setContent('more&nbsp;»');
+			$anchor_tag->setContent(Store::_('more').'&nbsp;»');
 			$anchor_tag->display();
 			$paragraph_tag->close();
 			echo '</li>';

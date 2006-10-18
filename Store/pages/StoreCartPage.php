@@ -294,8 +294,8 @@ abstract class StoreCartPage extends StoreArticlePage
 				StoreMessage::CART_NOTIFICATION));
 
 		if ($item_moved) {
-			$moved_message = new StoreMessage(Store::_(
-				'One item has been saved for later.'),
+			$moved_message = new StoreMessage(
+				Store::_('One item has been saved for later.'),
 				StoreMessage::CART_NOTIFICATION);
 
 			$moved_message->content_type = 'text/xml';

@@ -74,7 +74,7 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 
 		if ($payment_method === null)
 			throw new SiteNotFoundException(
-				sprintf('A payment method with an id of %d does not exist.',
+				sprintf('A payment method with an id of ‘%d’ does not exist.',
 				$this->id));
 
 		return $payment_method;
@@ -102,12 +102,12 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 						$payment_method);
 
 					$this->addMessage(
-						Store::_('One credit card has been added.'),
+						Store::_('One payment method has been added.'),
 						$payment_method);
 
 				} elseif ($payment_method->isModified()) {
 					$this->addMessage(
-						Store::_('One credit card has been updated.'),
+						Store::_('One payment method has been updated.'),
 						$payment_method);
 				}
 

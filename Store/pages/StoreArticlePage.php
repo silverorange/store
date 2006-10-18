@@ -57,15 +57,15 @@ class StoreArticlePage extends StorePage
 		// don't try to resolve articles that are deeper than the max depth
 		if (count(explode('/', $this->path)) > StoreArticle::MAX_DEPTH)
 			throw new SiteNotFoundException(
-				sprintf("Article page not found for path '%s'", $this->path));
+				sprintf('Article page not found for path ‘%s’', $this->path));
 
 		if (($article_id = $this->findArticle()) === null)
 			throw new SiteNotFoundException(
-				sprintf("Article page not found for path '%s'", $this->path));
+				sprintf('Article page not found for path ‘%s’', $this->path));
 
 		if (($article = $this->queryArticle($article_id)) === null)
 			throw new SiteNotFoundException(
-				sprintf("Article dataobject failed to load for article id %s",
+				sprintf('Article dataobject failed to load for article id ‘%s’',
 				$article_id));
 
 		$sub_articles = $this->querySubArticles($article_id);
@@ -117,7 +117,7 @@ class StoreArticlePage extends StorePage
 
 	protected function displayArticle(StoreArticle $article)
 	{
-		if (strlen($article->bodytext)) {	
+		if (strlen($article->bodytext)) {
 			echo '<div id="article-bodytext">',
 				(string)$article->bodytext, '</div>';
 		}

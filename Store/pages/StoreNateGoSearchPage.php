@@ -168,10 +168,11 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 			$corrected_string = trim($corrected_string);
 
 			$misspellings_message =
-				new SwatMessage(sprintf(
-					'Did you mean “<a href="search?keywords=%s">%s</a>”?',
-					urlencode($corrected_phrase),
-					SwatString::minimizeEntities($corrected_string)));
+				new SwatMessage(sprintf('Did you mean “%s%s%s”?',
+					sprintf('<a href="search?keywords=%s">',
+						urlencode($corrected_phrase)),
+					SwatString::minimizeEntities($corrected_string),
+					'</a>');
 
 			$misspellings_message->content_type = 'text/xml';
 

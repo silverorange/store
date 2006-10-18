@@ -240,7 +240,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		if ($order->shipping_address === $order->billing_address) {
 			$span_tag = new SwatHtmlTag('span');
 			$span_tag->class = 'swat-none';
-			$span_tag->setContent('<ship to billing address>');
+			$span_tag->setContent(Store::_('<ship to billing address>'));
 			$span_tag->display();
 		} else {
 			$order->shipping_address->display();

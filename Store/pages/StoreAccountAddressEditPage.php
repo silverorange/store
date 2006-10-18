@@ -68,7 +68,7 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 
 		if ($address === null)
 			throw new SiteNotFoundException.php(
-				sprintf('An address with an id of %d does not exist.',
+				sprintf('An address with an id of ‘%d’ does not exist.',
 				$this->id));
 
 		return $address;
