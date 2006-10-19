@@ -3,6 +3,7 @@
 require_once 'Store/pages/StoreSearchPage.php';
 require_once 'NateGoSearch/NateGoSearchQuery.php';
 require_once 'NateGoSearch/NateGoSearchSpellChecker.php';
+require_once 'Swat/SwatHtmlTag.php';
 
 /**
  * @package   Store
@@ -154,25 +155,33 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 			$corrected_phrase = $corrected_string =
 				' '.$this->ui->getWidget('search_keywords')->value.' ';
 
+			$corrected_string = SwatString::minimizeEntities($corrected_string);
+
 			foreach ($misspellings as $misspelling => $correction) {
 				// for URL
 				$corrected_phrase = str_replace(' '.$misspelling.' ',
 					' '.$correction.' ', $corrected_phrase);
 
 				// for display
-				$corrected_string = str_replace(' '.$misspelling.' ',
-					' <strong>'.$correction.'</strong> ', $corrected_string);
+				$corrected_string = str_replace(
+					' '.SwatString::minimizeEntities($misspelling).' ',
+					' <strong>'.SwatString::minimizeEntities($correction).
+					'</strong> ',
+					$corrected_string);
 			}
 
 			$corrected_phrase = trim($corrected_phrase);
 			$corrected_string = trim($corrected_string);
 
-			$misspellings_message =
-				new SwatMessage(sprintf('Did you mean “%s%s%s”?',
-					sprintf('<a href="search?keywords=%s">',
-						urlencode($corrected_phrase)),
-					SwatString::minimizeEntities($corrected_string),
-					'</a>'));
+			$misspellings_link = new SwatHtmlTag('a');
+			$misspellings_link->href = sprintf('search?keywords=%s',
+				urlencode($corrected_phrase));
+
+			$misspellings_link->setContent($corrected_string, 'text/xml');
+
+			$misspellings_message = new SwatMessage(sprintf(
+				Store::_('Did you mean “%s”?'),
+				$misspellings_link->toString()));
 
 			$misspellings_message->content_type = 'text/xml';
 
