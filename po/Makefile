@@ -26,15 +26,16 @@ all:
 	make $(TARGETS)
 
 potfiles-php:
-	rm -f $@-t $@
-	(sed -e '/^#/d' < potfiles.in) > $@-t
-	(for i in `cat $@-t`; do find $$i -name *.php; done) >> $@
-	rm -f $@-t
+	rm -f $@-t1 $@-t2 $@
+	(sed -e '/^#/d' < potfiles.in) > $@-t1
+	(for i in `cat $@-t1`; do find $$i -name \*.php; done) >> $@-t2
+	(for i in `cat $@-t2`; do php preprocess.php $$i > $$i.gettext; echo $$i.gettext; done) >> $@
+	rm -f $@-t1 $@-t2
 
 potfiles-xml:
 	rm -f $@-t $@
 	(sed -e '/^#/d' < potfiles.in) > $@-t
-	(for i in `cat $@-t`; do find $$i -name *.xml; done) >> $@
+	(for i in `cat $@-t`; do find $$i -name \*.xml; done) >> $@
 	rm -f $@-t
 
 pot: $(POTFILE)
