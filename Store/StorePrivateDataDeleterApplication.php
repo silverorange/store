@@ -1,8 +1,9 @@
 <?php
 
-require_once 'Site/SiteApplication.php';
+require_once 'Site/SiteCommandLineApplication.php';
 require_once 'Site/SiteDatabaseModule.php';
 require_once 'Site/SiteConfigModule.php';
+require_once 'Store/Store.php';
 require_once 'Store/StorePrivateDataDeleter.php';
 
 /**
@@ -11,7 +12,7 @@ require_once 'Store/StorePrivateDataDeleter.php';
  * @package   Store
  * @copyright 2006 silverorange
  */
-class StorePrivateDataDeleterApplication extends SiteApplication
+class StorePrivateDataDeleterApplication extends SiteCommandLineApplication
 {
 	// {{{ public properties
 
@@ -41,6 +42,33 @@ class StorePrivateDataDeleterApplication extends SiteApplication
 	protected $dry_run = false;
 
 	// }}}
+	// {{{ public function __construct()
+
+	/**
+	 * Creates a new private data deleter application
+	 *
+	 * @param string $id
+	 * @param string $title
+	 * @param string $documentation
+	 *
+	 * @see SiteCommandLineApplication::__construct()
+	 */
+	public function __construct($id, $title, $documentation)
+	{
+		parent::__construct($id, $title, $documentation);
+		$debug = new SiteCommandLineArgument(array('-D', '--debug'),
+			'setDebug', Store::_('Turns on debugging mode which causes '.
+			'output for each action to be sent to stdout.'));
+
+		$dry_run = new SiteCommandLineArgument(array('--dry-run'),
+			'setDryRun', Store::_('No private data is actually deleted. Use '.
+			'with --debug to see what data will be deleted.'));
+
+		$this->addCommandLineArgument($debug);
+		$this->addCommandLineArgument($dry_run);
+	}
+
+	// }}}
 	// {{{ public function initModules()
 
 	/**
@@ -50,7 +78,6 @@ class StorePrivateDataDeleterApplication extends SiteApplication
 	public function initModules()
 	{
 		parent::initModules();
-		$this->db = $this->database->getConnection();
 		$this->db->loadModule('Datatype', null, true);
 	}
 
@@ -59,6 +86,7 @@ class StorePrivateDataDeleterApplication extends SiteApplication
 
 	public function run()
 	{
+		$this->parseCommandLineArguments();
 		$this->initModules();
 		if ($this->dry_run)
 			$this->debug("Dry Run: ".
