@@ -92,7 +92,7 @@ class StoreContactPage extends StoreArticlePage
 
 		try {
 			$message->send();
-		} catch (SwatMailException $e) {
+		} catch (SiteMailException $e) {
 			$e->process(false);
 		}
 	}
