@@ -18,23 +18,12 @@ function StoreQuickOrder(id, item_selector_id, num_rows)
 	}
 }
 
-function StoreQuickOrderItem_keyUpEvent(event)
+function StoreQuickOrderItem_keyUpEvent(event, item)
 {
-	if (typeof event == 'undefined')
-		var event = window.event;
+	var target = YAHOO.util.Event.getTarget(event);
 
-	var source;
-	if (typeof event.target != 'undefined')
-		source = event.target;
-	else if (typeof event.srcElement != 'undefined')
-		source = event.srcElement;
-	else
-		return true;
-	
-	var item = source._object;
-
-	if (source.value != item.old_value) {
-		var sku = source.value;
+	if (target.value != item.old_value) {
+		var sku = target.value;
 
 		if (!item.quantity.value && sku.length > 0)
 			item.quantity.value = '1';
@@ -46,34 +35,32 @@ function StoreQuickOrderItem_keyUpEvent(event)
 			'StoreQuickOrder_staticTimeOut(' + item.quick_order_id + '_obj, ' +
 				item.id + ');', StoreQuickOrder.timeout_delay);
 
-		item.old_value = source.value;
+		item.old_value = target.value;
 	}
-
-	return true;
 }
 
 function StoreQuickOrderItem(quick_order_id, item_selector_id, id)
 {
-	var self = this;
-	var is_ie = (document.addEventListener) ? false : true;
-
 	this.id = id;
 	this.quick_order_id = quick_order_id;
 	this.div = document.getElementById(item_selector_id + '_' + id);
 	this.sequence = 0;
 	this.displayed_sequence = 0;
-	this.out_effect = new fx.Opacity(this.div, {duration: 500,
-		onComplete: function() { self.fadeIn(); }});
 
-	this.in_effect = new fx.Opacity(this.div, {duration: 1000});
+	this.out_effect = new YAHOO.util.Anim(this.div,
+		{ opacity: { from: 1, to: 0 } }, 0.5);
+	
+	this.out_effect.onComplete.subscribe(StoreQuickOrderItem.handleFadeOut,
+		this);
+
+	this.in_effect = new YAHOO.util.Anim(this.div,
+		{ opacity: { from: 0, to: 1 } }, 1);
 
 	this.sku = document.getElementById('sku_' + id);
-	this.sku._object = this;
 	this.old_value = this.sku.value;
-	if (is_ie)
-		this.sku.attachEvent('onkeyup', StoreQuickOrderItem_keyUpEvent);
-	else
-		this.sku.addEventListener('keyup', StoreQuickOrderItem_keyUpEvent, true);
+
+	YAHOO.util.Event.addListener(this.sku, 'keyup',
+		StoreQuickOrderItem_keyUpEvent, this);
 
 	this.timer = null;
 	this.new_description = null;
@@ -83,19 +70,13 @@ function StoreQuickOrderItem(quick_order_id, item_selector_id, id)
 		this.quantity.value = '';
 }
 
-StoreQuickOrderItem.prototype.fadeIn = function()
+StoreQuickOrderItem.handleFadeOut = function(type, args, quick_order_item)
 {
-	if (this.new_description != null)
-		this.div.innerHTML = this.new_description;
+	if (quick_order_item.new_description != null)
+		quick_order_item.div.innerHTML = quick_order_item.new_description;
 
-	this.new_description = null;
-
-	this.in_effect.custom(0, 1);
-}
-
-StoreQuickOrderItem.prototype.fadeOut = function()
-{
-	this.out_effect.custom(1, 0);
+	quick_order_item.new_description = null;
+	quick_order_item.in_effect.animate();
 }
 
 /**
@@ -118,7 +99,7 @@ function StoreQuickOrder_staticTimeOut(quick_order, replicator_id)
 	function callBack(response)
 	{
 		if (response.sequence > item.displayed_sequence) {
-			item.fadeOut();
+			item.out_effect.animate();
 			item.new_description = response.description;
 			item.displayed_sequence = response.sequence;
 		}
