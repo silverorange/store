@@ -158,11 +158,11 @@ class StoreSessionModule extends SiteSessionModule
 	// {{{ public function getAccountID()
 
 	/**
-	 * Retrieves the current account ID
+	 * Retrieves the current account Id
 	 *
 	 * @return integer the current account ID, or null if not logged in.
 	 */
-	public function getAccountID()
+	public function getAccountId()
 	{
 		if (!$this->isLoggedIn())
 			return null;
