@@ -2,7 +2,6 @@
 
 require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/pages/StoreAccountPage.php';
-require_once 'Store/dataobjects/StoreAccountAddress.php';
 require_once 'Store/StoreClassMap.php';
 require_once 'Store/StoreUI.php';
 
