@@ -48,7 +48,7 @@ class StoreCategoryPage extends StoreStorePage
 		$this->displayRelatedArticles($category);
 		$this->layout->endCapture();
 
-		$this->buildPage($category_id);
+		$this->buildPage($category);
 	}
 
 	// }}}
@@ -67,18 +67,18 @@ class StoreCategoryPage extends StoreStorePage
 	// }}}
 	// {{{ protected function buildPage()
 
-	protected function buildPage($category_id)
+	protected function buildPage($category)
 	{
 		$this->layout->startCapture('content');
-		$this->displayFeaturedProducts($category_id);
-		$this->displayCategory($category_id);
+		$this->displayFeaturedProducts($category->id);
+		$this->displayCategory($category->id);
 		$this->layout->endCapture();
 	}
 
 	// }}}
-	// {{{ protected function displaySubCategories()
+	// {{{ protected function querySubCategories()
 
-	protected function displaySubCategories($category_id = null)
+	protected function querySubCategories($category_id = null)
 	{
 		$sql = 'select Category.id, Category.title, Category.shortname,
 				Category.image, c.product_count
@@ -100,11 +100,24 @@ class StoreCategoryPage extends StoreStorePage
 			'StoreCategoryWrapper');
 
 		if (count($sub_categories) == 0)
-			return;
+			return $sub_categories;
 
 		$sql = 'select * from Image where id in (%s)';
 		$sub_categories->loadAllSubDataObjects(
 			'image', $this->app->db, $sql, 'StoreCategoryImageWrapper');
+
+		return $sub_categories;
+	}
+
+	// }}}
+	// {{{ protected function displaySubCategories()
+
+	protected function displaySubCategories($category_id = null)
+	{
+		$sub_categories = $this->querySubCategories($category_id);
+
+		if (count($sub_categories) == 0)
+			return;
 
 		echo '<ul class="category-list">';
 
