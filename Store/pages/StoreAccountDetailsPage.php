@@ -300,7 +300,6 @@ class StoreAccountDetailsPage extends StoreAccountPage
 		echo ' - ', $createdate->format(SwatDate::DF_DATE);
 
 		return ob_get_clean();
-
 	}
 
 	// }}}
