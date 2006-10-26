@@ -2,7 +2,7 @@
 
 require_once 'PEAR/PackageFileManager2.php';
 
-$version = '1.1.13';
+$version = '1.1.14';
 $notes = <<<EOT
 see ChangeLog
 EOT;
@@ -56,7 +56,7 @@ $package->setPearinstallerDep('1.4.0');
 $package->addPackageDepWithChannel('required', 'Swat', 'pear.silverorange.com', '1.0.0');
 $package->addPackageDepWithChannel('required', 'Site', 'pear.silverorange.com', '1.0.3');
 $package->addPackageDepWithChannel('required', 'XML_RPCAjax', 'pear.silverorange.com', '1.0.0');
-$package->addPackageDepWithChannel('required', 'MooFx', 'pear.silverorange.com', '1.0.0');
+$package->addPackageDepWithChannel('required', 'Yui', 'pear.silverorange.com', '1.0.1');
 $package->addPackageDepWithChannel('required', 'Crypt_GPG', 'pear.silverorange.com', '0.3.3');
 $package->addPackageDepWithChannel('required', 'Text_Password', 'pear.php.net', '1.1.0');
 $package->addPackageDepWithChannel('required', 'Image_Transform', 'pear.silverorange.com', '0.9.0so1');
