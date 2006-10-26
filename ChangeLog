@@ -1,3 +1,119 @@
+2006-10-24  nrf
+
+	* [r12291] store/trunk/Store/pages/StoreAccountEditPage.php:
+	  Unused require.
+
+2006-10-23  gauthierm
+
+	* [r12269] store/trunk/Store/StoreSessionModule.php:
+	  rename ID to Id to be consistent with other code
+	* [r12259] store/trunk/Store/StoreCartModule.php:
+	  load primary image on products in cart
+
+2006-10-22  gauthierm
+
+	* [r12218] store/trunk/Store/pages/StoreAccountOrderPage.php:
+	  Link to shopping cart in add to cart message on order history
+	  page in account. Fixes #127.
+
+2006-10-20  gauthierm
+
+	* [r12197] store/trunk/Store/pages/StoreQuickOrderPage.php,
+	  store/trunk/www/javascript/store-quick-order-page.js:
+	  use Yahoo UI Library for JavaScript animations and events
+	  instead of custom event handling and moo.fx animations.
+	* [r12181]
+	  store/trunk/Store/StorePrivateDataDeleterApplication.php:
+	  Use SiteCommandLineApplication
+
+2006-10-20  steven
+
+	* [r12177] store/trunk/Store/pages/StoreContactPage.php:
+	  Patch from griffbrad, who writes
+	  "I noticed in StoreContactPage, though, that when sending the
+	  mail is unsuccessful a SwatMailException is thrown instead of a
+	  SiteMailException."
+
+2006-10-19  nrf
+
+	* [r12171] store/trunk/po/en_CA.po, store/trunk/po/en_GB.po,
+	  store/trunk/po/en_US.po:
+	  Update translation files.
+	* [r12170] store/trunk/po/Makefile, store/trunk/po/preprocess.php:
+	  Add Mike's preprocessing script and Makefile magic to run it.
+	  
+	  This makes PHP code such as
+	  _('string 1'.' & '.'string 2')
+	  extract as a single translatable string
+	  "string 1 & string 2"
+	  analogous to adjacent strings in C which gettext handles
+	  natively.
+
+2006-10-19  gauthierm
+
+	* [r12148] store/trunk/Store/pages/StoreNateGoSearchPage.php:
+	  - fix escaping of misspelled words
+	  - simplify construction of misspellings message using SwatHtmlTag
+	  - translate misspellings message
+
+2006-10-18  nick
+
+	* [r12143]
+	  store/trunk/Store/dataobjects/StoreEmailListSubscriber.php,
+	  store/trunk/Store/pages/StoreEmailListSubscribePage.php,
+	  store/trunk/Store/pages/email-list-subscribe.xml,
+	  store/trunk/sql/tables/EmailListSubscriber.sql:
+	  Nathan and I have deceided to move Email List stuff to
+	  site-specific code for
+	  now until we sort out better what is in common. Right now,
+	  uppermost and veseys
+	  are quite different.
+
+2006-10-18  nrf
+
+	* [r12141] store/trunk/package.php:
+	  prepare for release of 1.1.12
+	* [r12140] store/trunk/Store/pages/StoreNateGoSearchPage.php:
+	  Fix a syntax error.
+	* [r12136] store/trunk/package.php:
+	  prepare for release of 1.1.11
+	* [r12133]
+	  store/trunk/Store/pages/StoreAccountPaymentMethodEditPage.php:
+	  refactoring to allow more payment method text to be rewritten on
+	  veseys
+
+2006-10-18  isaac
+
+	* [r12129] store/trunk/Store/StorePaymentMethodView.php,
+	  store/trunk/Store/pages/StoreAccountDetailsPage.php:
+	  refactoring to allow more payment method text to be rewritten on
+	  veseys
+	* [r12123] store/trunk/Store/pages/StoreAccountDetailsPage.php,
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php:
+	  refactoring to allow payment method text to be set to credit
+	  card for veseys
+
+2006-10-18  steven
+
+	* [r12121]
+	  store/trunk/www/styles/store-checkout-basic-info-page.css:
+	  Fix width of Basic Info fields next to right column Comments
+	  field
+
+2006-10-18  nick
+
+	* [r12117]
+	  store/trunk/Store/dataobjects/StoreEmailListSubscriber.php,
+	  store/trunk/Store/pages/StoreEmailListSubscribePage.php,
+	  store/trunk/Store/pages/email-list-subscribe.xml,
+	  store/trunk/sql/tables/EmailListSubscriber.sql:
+	  Add Email List subscribe to the Store package
+
+2006-10-18  nrf
+
+	* [r12113] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.1.10
+
 2006-10-18  gauthierm
 
 	* [r12109]
