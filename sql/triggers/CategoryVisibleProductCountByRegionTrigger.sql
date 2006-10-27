@@ -25,9 +25,9 @@
  * Of these relationships, the CategoryProductBinding is already included
  * in the VisibleProductCache triggers.
  */
-CREATE OR REPLACE FUNCTION updateCategoryVisibleProductCountByRegion () RETURNS trigger AS $$ 
+CREATE OR REPLACE FUNCTION updateCategoryVisibleProductCountByRegion () RETURNS INTEGER AS $$ 
     BEGIN
-		delete from CategoryVisibleProductCountByRegionCache;
+		truncate CategoryVisibleProductCountByRegionCache;
 		insert into CategoryVisibleProductCountByRegionCache (category, region, product_count)
 			select category, region, product_count from CategoryVisibleProductCountByRegionView
 			where category is not null;
@@ -36,8 +36,15 @@ CREATE OR REPLACE FUNCTION updateCategoryVisibleProductCountByRegion () RETURNS 
     END;
 $$ LANGUAGE 'plpgsql';
 
+CREATE OR REPLACE FUNCTION runUpdateCategoryVisibleProductCountByRegion () RETURNS trigger AS $$ 
+    BEGIN
+		perform updateCategoryVisibleProductCountByRegion();
+        RETURN NULL;
+    END;
+$$ LANGUAGE 'plpgsql';
+
 CREATE TRIGGER CategoryVisibleProductCountByRegionTrigger AFTER INSERT ON VisibleProductCache
-    FOR EACH STATEMENT EXECUTE PROCEDURE updateCategoryVisibleProductCountByRegion();
+    FOR EACH STATEMENT EXECUTE PROCEDURE runUpdateCategoryVisibleProductCountByRegion();
 
 CREATE TRIGGER CategoryVisibleProductCountByRegionTrigger AFTER INSERT OR UPDATE OR DELETE ON Category 
-    FOR EACH STATEMENT EXECUTE PROCEDURE updateCategoryVisibleProductCountByRegion();
+    FOR EACH STATEMENT EXECUTE PROCEDURE runUpdateCategoryVisibleProductCountByRegion();
