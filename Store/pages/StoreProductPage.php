@@ -470,8 +470,13 @@ class StoreProductPage extends StoreStorePage
 
 	protected function displayProduct()
 	{
-		if ($this->product->primary_image !== null)
+		if ($this->product->primary_image !== null) {
+			echo '<div id="product_images">';
 			$this->displayImage();
+			echo '</div>';
+		}
+
+		echo '<div id="product_contents">';
 
 		$this->displayBodyText();
 
@@ -480,6 +485,8 @@ class StoreProductPage extends StoreStorePage
 		$this->displayItems();
 
 		$this->displayRelatedProducts();
+
+		echo '</div>';
 	}
 
 	// }}}
