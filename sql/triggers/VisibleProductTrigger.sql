@@ -30,9 +30,9 @@
  * - ItemRegionBinding insert
  * - ItemRegionBinding delete
  */
-CREATE OR REPLACE FUNCTION updateVisibleProduct () RETURNS trigger AS $$
+CREATE OR REPLACE FUNCTION updateVisibleProduct () RETURNS INTEGER AS $$
     BEGIN
-		delete from VisibleProductCache;
+		truncate VisibleProductCache;
 		insert into VisibleProductCache (product, region)
 			select product, region from VisibleProductView;
 
@@ -40,14 +40,21 @@ CREATE OR REPLACE FUNCTION updateVisibleProduct () RETURNS trigger AS $$
     END;
 $$ LANGUAGE 'plpgsql';
 
+CREATE OR REPLACE FUNCTION runUpdateVisibleProduct () RETURNS trigger AS $$
+    BEGIN
+		perform updateVisibleProduct();
+        RETURN NULL;
+    END;
+$$ LANGUAGE 'plpgsql';
+
 CREATE TRIGGER VisibleProductTrigger AFTER INSERT OR DELETE OR UPDATE ON CatalogRegionBinding 
-    FOR EACH STATEMENT EXECUTE PROCEDURE updateVisibleProduct();
+    FOR EACH STATEMENT EXECUTE PROCEDURE runUpdateVisibleProduct();
 
 CREATE TRIGGER VisibleProductTrigger AFTER INSERT OR DELETE OR UPDATE ON CategoryProductBinding
-    FOR EACH STATEMENT EXECUTE PROCEDURE updateVisibleProduct();
+    FOR EACH STATEMENT EXECUTE PROCEDURE runUpdateVisibleProduct();
 
 CREATE TRIGGER VisibleProductTrigger AFTER UPDATE ON Item
-    FOR EACH STATEMENT EXECUTE PROCEDURE updateVisibleProduct();
+    FOR EACH STATEMENT EXECUTE PROCEDURE runUpdateVisibleProduct();
 
 CREATE TRIGGER VisibleProductTrigger AFTER INSERT OR DELETE OR UPDATE ON ItemRegionBinding
-    FOR EACH STATEMENT EXECUTE PROCEDURE updateVisibleProduct();
+    FOR EACH STATEMENT EXECUTE PROCEDURE runUpdateVisibleProduct();
