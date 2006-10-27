@@ -11,6 +11,18 @@ require_once 'Store/dataobjects/StoreProduct.php';
  */
 class StoreProductImagePage extends StoreStorePage
 {
+	// {{{ public properties
+
+	public $product_id;
+	public $image_id;
+
+	// }}}
+	// {{{ protected properties
+
+	public $product;
+	public $image;
+
+	// }}}
 	// {{{ public function __construct()
 
 	public function __construct(SiteApplication $app, SiteLayout $layout)
@@ -30,22 +42,31 @@ class StoreProductImagePage extends StoreStorePage
 
 		$class_map = StoreClassMap::instance();
 		$product_class = $class_map->resolveClass('StoreProduct');
-		$product = new $product_class();
-		$product->setDatabase($this->app->db);
-		$product->setRegion($this->app->getRegion()->id);
-		$product->load($this->product_id);
-		$this->buildNavBar($product);
+		$this->product = new $product_class();
+		$this->product->setDatabase($this->app->db);
+		$this->product->setRegion($this->app->getRegion()->id);
+		$this->product->load($this->product_id);
+		$this->buildNavBar();
 		$this->layout->data->title = sprintf(Store::_('%s: Image'),
-			$product->title);
+			$this->product->title);
 
 		$this->layout->addHtmlHeadEntrySet(
 			$this->back_link->getHtmlHeadEntrySet());
 
-		if ($product->primary_image === null)
+		if ($this->image_id === null)
+			$this->image = $this->product->primary_image;
+		else
+			$this->image = $this->product->images->getByIndex($this->image_id);
+
+		if ($this->image === null)
 			throw new SiteNotFoundException();
 
 		$this->layout->startCapture('content');
-		$this->displayImage($product);
+		$this->displayImage();
+
+		if (count($this->product->images) > 1)
+			$this->displayOtherImages();
+
 		$this->layout->endCapture();
 	}
 
@@ -53,7 +74,7 @@ class StoreProductImagePage extends StoreStorePage
 
 	// {{{ private function buildNavBar()
 
-	private function buildNavBar($product)
+	private function buildNavBar()
 	{
 		$link = 'store';
 
@@ -62,15 +83,15 @@ class StoreProductImagePage extends StoreStorePage
 			$this->layout->navbar->createEntry($path_entry->title, $link);
 		}
 
-		$link .= '/'.$product->shortname;
-		$this->layout->navbar->createEntry($product->title, $link);
+		$link .= '/'.$this->product->shortname;
+		$this->layout->navbar->createEntry($this->product->title, $link);
 		$this->layout->navbar->createEntry(Store::_('Image'));
 	}
 
 	// }}}
 	// {{{ private function displayImage()
 
-	private function displayImage($product)
+	private function displayImage()
 	{
 		$this->back_link->title = Store::_('Back to Product Page');
 		$this->back_link->link =
@@ -82,14 +103,49 @@ class StoreProductImagePage extends StoreStorePage
 		$div->id = 'product_image_large';
 
 		$img_tag = new SwatHtmlTag('img');
-		$img_tag->src = $product->primary_image->getURI('large');
-		$img_tag->width = $product->primary_image->large_width;
-		$img_tag->height = $product->primary_image->large_height;
-		$img_tag->alt = sprintf(Store::_('Photo of %s'), $product->title);
+		$img_tag->src = $this->image->getURI('large');
+		$img_tag->width = $this->image->large_width;
+		$img_tag->height = $this->image->large_height;
+		$img_tag->alt = sprintf(Store::_('Photo of %s'), $this->product->title);
 
 		$div->open();
 		$img_tag->display();
 		$div->close();
+	}
+
+	// }}}
+	// {{{ protected function displayOtherImages()
+
+	protected function displayOtherImages()
+	{
+		$li_tag = new SwatHtmlTag('li');
+		$li_tag->id = 'product_secondary_image';
+		$img_tag = new SwatHtmlTag('img');
+		$img_tag->alt = sprintf(Store::_('Additional Photo of %s'), $this->product->title);
+
+		echo '<ul>';
+
+		foreach ($this->product->images as $image) {
+			if ($this->image->id === $image->id)
+				continue;
+
+			$img_tag->src = $image->getURI('thumb');
+			$img_tag->width = $image->thumb_width;
+			$img_tag->height = $image->thumb_height;
+
+			$anchor = new SwatHtmlTag('a');
+			$anchor->href = sprintf('%s/image%s', $this->source, $image->id);
+			$anchor->title = Store::_('View Larger Image');
+
+			$li_tag->open();
+			$anchor->open();
+			$img_tag->display();
+			echo Store::_('<span>View Larger Image</span>');
+			$anchor->close();
+			$li_tag->close();
+		}
+
+		echo '</ul>';
 	}
 
 	// }}}
