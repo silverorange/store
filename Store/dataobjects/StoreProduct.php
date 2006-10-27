@@ -280,7 +280,7 @@ class StoreProduct extends StoreDataObject
 	 */
 	protected function loadImages()
 	{
-		$sql = 'select * Image where id in
+		$sql = 'select * from Image where id in
 			(select image from ProductImageBinding where product = %s)';
 
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
