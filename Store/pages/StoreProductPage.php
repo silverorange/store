@@ -473,6 +473,10 @@ class StoreProductPage extends StoreStorePage
 		if ($this->product->primary_image !== null) {
 			echo '<div id="product_images">';
 			$this->displayImage();
+
+			if (count($this->product->images) > 1)
+				$this->displaySecondaryImages();
+
 			echo '</div>';
 		}
 
@@ -513,6 +517,41 @@ class StoreProductPage extends StoreStorePage
 		echo Store::_('<span>View Larger Image</span>');
 		$anchor->close();
 		$div->close();
+	}
+
+	// }}}
+	// {{{ protected function displaySecondaryImages()
+
+	protected function displaySecondaryImages()
+	{
+		$li_tag = new SwatHtmlTag('li');
+		$li_tag->id = 'product_secondary_image';
+		$img_tag = new SwatHtmlTag('img');
+		$img_tag->alt = sprintf(Store::_('Additional Photo of %s'), $this->product->title);
+
+		echo '<ul>';
+
+		foreach ($this->product->images as $image) {
+			if ($this->product->primary_image->id === $image->id)
+				continue;
+
+			$img_tag->src = $image->getURI('thumb');
+			$img_tag->width = $image->thumb_width;
+			$img_tag->height = $image->thumb_height;
+
+			$anchor = new SwatHtmlTag('a');
+			$anchor->href = sprintf('%s/image%s', $this->source, $image->id);
+			$anchor->title = Store::_('View Larger Image');
+
+			$li_tag->open();
+			$anchor->open();
+			$img_tag->display();
+			echo Store::_('<span>View Larger Image</span>');
+			$anchor->close();
+			$li_tag->close();
+		}
+
+		echo '</ul>';
 	}
 
 	// }}}

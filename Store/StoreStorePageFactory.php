@@ -35,7 +35,8 @@ class StoreStorePageFactory
 			return $this->resolveFrontPage($path);
 
 		// if path ends with 'image', try to load product image page
-		if (end($path) == 'image') {
+		$regexp = '@^image([0-9]+)?$@u';
+		if (preg_match($regexp, end($path), $regs)) {
 			array_pop($path);
 
 			list($product_id, $category_id) = 
@@ -44,8 +45,13 @@ class StoreStorePageFactory
 			if ($product_id === null)
 				throw new SiteNotFoundException();
 
+			if (isset($regs[1]))
+				$image_id = intval($regs[1]);
+			else 
+				$image_id = null;
+
 			return $this->resolveProductImagePage($path, $category_id,
-				$product_id);
+				$product_id, $image_id);
 		}
 
 		$category_id = 
@@ -112,13 +118,15 @@ class StoreStorePageFactory
 	// }}}
 	// {{{ protected function resolveProductImagePage()
 
-	protected function resolveProductImagePage($path, $category_id, $product_id)
+	protected function resolveProductImagePage($path, $category_id,
+		$product_id, $image_id = null)
 	{
 		$layout = $this->resolveLayout($path);
 		require_once 'Store/pages/StoreProductImagePage.php';
 		$page = new StoreProductImagePage($this->app, $layout);
 		$page->path = new StoreCategoryPath($this->app, $category_id);
 		$page->product_id = $product_id;
+		$page->image_id = $image_id;
 
 		return $page;
 	}
