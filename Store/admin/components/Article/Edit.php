@@ -8,8 +8,9 @@ require_once 'Swat/SwatDate.php';
 /**
  * Edit page for Articles
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2005-2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreArticleEdit extends AdminDBEdit
 {
