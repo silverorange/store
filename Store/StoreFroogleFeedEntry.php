@@ -5,9 +5,9 @@ require_once 'AtomFeed/AtomFeedEntry.php';
 /**
  * Froogle feed entry
  *
- * @packageAtomFeed
+ * @package   Store
  * @copyright 2005-2006 silverorange
- * @licensehttp://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreFroogleFeedEntry extends AtomFeedEntry
 {
