@@ -2,9 +2,12 @@
 
 require_once 'Store/dataobjects/StoreDataObject.php';
 
-/*
+/**
+ * Dataobject to group {@link StoreItem} objects within a {@link StoreProduct}
+ *
  * @package   Store
- * @copyright silverorange 2005
+ * @copyright 2005-2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemGroup extends StoreDataObject
 {
