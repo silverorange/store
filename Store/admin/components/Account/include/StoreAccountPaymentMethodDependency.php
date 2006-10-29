@@ -2,9 +2,17 @@
 
 require_once 'Admin/AdminListDependency.php';
 
+/**
+ * Custom dependency for accountpayment methods 
+ *
+ * Subclassed to fix pluralization.
+ *
+ * @package   Store
+ * @copyright 2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ */
 class StoreAccountPaymentMethodDependency extends AdminListDependency
 {
-	//subclassed to get rid of the pluralization
 	protected function getStatusLevelText($status_level, $count)
 	{
 		switch ($status_level) {
