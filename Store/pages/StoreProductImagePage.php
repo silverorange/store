@@ -62,10 +62,15 @@ class StoreProductImagePage extends StoreStorePage
 			throw new SiteNotFoundException();
 
 		$this->layout->startCapture('content');
+
+		echo '<div id="product_images">';
+
 		$this->displayImage();
 
 		if (count($this->product->images) > 1)
 			$this->displayOtherImages();
+
+		echo '</div>';
 
 		$this->layout->endCapture();
 	}
@@ -119,11 +124,10 @@ class StoreProductImagePage extends StoreStorePage
 	protected function displayOtherImages()
 	{
 		$li_tag = new SwatHtmlTag('li');
-		$li_tag->id = 'product_secondary_image';
 		$img_tag = new SwatHtmlTag('img');
 		$img_tag->alt = sprintf(Store::_('Additional Photo of %s'), $this->product->title);
 
-		echo '<ul>';
+		echo '<ul id="product_secondary_images">';
 
 		foreach ($this->product->images as $image) {
 			if ($this->image->id === $image->id)
