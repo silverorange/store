@@ -525,11 +525,10 @@ class StoreProductPage extends StoreStorePage
 	protected function displaySecondaryImages()
 	{
 		$li_tag = new SwatHtmlTag('li');
-		$li_tag->id = 'product_secondary_image';
 		$img_tag = new SwatHtmlTag('img');
 		$img_tag->alt = sprintf(Store::_('Additional Photo of %s'), $this->product->title);
 
-		echo '<ul>';
+		echo '<ul id="product_secondary_images">';
 
 		foreach ($this->product->images as $image) {
 			if ($this->product->primary_image->id === $image->id)
