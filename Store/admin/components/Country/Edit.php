@@ -18,6 +18,11 @@ class StoreCountryEdit extends AdminDBEdit
 
 	protected $fields;
 
+	/**
+	 * @var string
+	 */
+	protected $ui_xml = 'Store/admin/components/Country/edit.xml';
+
 	// }}}
 
 	// init phase
@@ -28,7 +33,7 @@ class StoreCountryEdit extends AdminDBEdit
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
+		$this->ui->loadFromXML($this->ui_xml);
 
 		if ($this->id === null) {
 			$this->fields = array('title', 'id');
@@ -48,20 +53,14 @@ class StoreCountryEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		if ($this->id === null) {
-			$values = array(
-				'title' => $this->ui->getWidget('title')->getState(),
-				'id' => $this->ui->getWidget('id_edit')->getState());
+		$values = $this->getUIValues();
 
+		if ($this->id === null)
 			SwatDB::insertRow($this->app->db, 'Country', $this->fields, 
 				$values);
-
-			$this->id = $values['id'];
-		} else {
-			$values = $this->ui->getValues(array('title'));
+		else
 			SwatDB::updateRow($this->app->db, 'Country', $this->fields, 
 				$values, 'text:id', $this->id);
-		}
 
 		$msg = new SwatMessage(
 			sprintf(Store::_('“%s” has been saved.'), $values['title']));
@@ -92,6 +91,19 @@ class StoreCountryEdit extends AdminDBEdit
 				$this->ui->getWidget('id_edit')->addMessage($message);
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function getUIValues()
+
+	protected function getUIValues()
+	{
+		if ($this->id === null)
+			$values['id'] = $this->ui->getWidget('id_edit')->value;
+
+		$values['title'] = $this->ui->getWidget('title')->value;
+
+		return $values;
 	}
 
 	// }}}
