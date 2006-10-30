@@ -15,6 +15,7 @@ require_once 'include/StoreAddressDependency.php';
  *
  * @package   Store
  * @copyright 2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCountryDelete extends AdminDBDelete
 {

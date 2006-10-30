@@ -13,6 +13,7 @@ require_once 'Store/dataobjects/StoreRegionWrapper.php';
  *
  * @package   Store
  * @copyright 2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAdDetails extends AdminIndex
 {
