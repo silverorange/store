@@ -12,6 +12,7 @@ require_once 'Store/admin/components/Catalog/include/'.
  *
  * @package   Store
  * @copyright 2005-2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCatalogDetails extends AdminPage
 {
