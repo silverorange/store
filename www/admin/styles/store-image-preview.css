@@ -1,0 +1,59 @@
+/*
+ * Style content for the image preview for categories/products
+ */
+
+.image-frame {
+	position: relative;
+	z-index: 99; /* IE6 needs this */
+	float: right;
+	width: 140px;
+	margin: 0 0 16px 2em;
+}
+
+.image-frame img {
+	border: 1px solid #CCC;
+	padding: 2px;
+}
+
+.image-frame ul.swat-toolbar {
+	padding: 0;
+	top: 16px;
+}
+
+.image-frame ul.swat-toolbar li {
+	display: block;
+}
+
+.image-frame ul.swat-toolbar li a {
+	display: block;
+}
+
+#details_frame {
+	width: 100%;
+}
+
+#categories_frame .sub-categories {
+	clear: right;
+}
+
+#category_image_frame {
+	width: 240px;
+	height: 76px;
+}
+
+#category_image_frame .swat-frame-contents {
+	padding: 4px;
+}
+
+#category_image_frame ul.swat-toolbar {
+	margin: 0;
+	position: static;
+	float: left;
+	width: 160px;
+}
+
+#category_image_frame img {
+	float: left;
+	margin-bottom: 4px;
+	margin-right: 4px;
+}
