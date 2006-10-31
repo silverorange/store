@@ -1,0 +1,7 @@
+.category-no-products td,
+.product-no-items td,
+.product-disabled td,
+.item-disabled td {
+	filter: alpha(opacity = 40);
+	opacity: 0.40;
+}
