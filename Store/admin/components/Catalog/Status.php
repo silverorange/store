@@ -29,6 +29,7 @@ abstract class StoreCatalogStatus extends AdminDBEdit
 	private $catalog;
 
 	// }}}
+
 	// init phase
 	// {{{ protected function initInternal()
 
