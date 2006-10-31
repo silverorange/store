@@ -1,0 +1,66 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<widget class="SwatFrame" id="search_frame">
+		<property name="title" translatable="yes">Search Orders</property>
+		<widget class="SwatForm" id="search_form">
+			<widget class="SwatFieldset" id="order_numbers">
+				<property name="title" translatable="yes">Order Numbers</property>
+				<widget class="SwatFormField">
+					<property name="title" translatable="yes">Order Number is</property>
+					<widget class="SwatEntry" id="search_id">
+						<property name="size" type="integer">10</property>
+					</widget>
+				</widget>
+				<widget class="SwatFormField">
+					<property name="title" translatable="yes">Greater than</property>
+					<widget class="SwatEntry" id="search_id_gt">
+						<property name="size" type="integer">10</property>
+					</widget>
+				</widget>
+				<widget class="SwatFormField">
+					<property name="title" translatable="yes">Less than</property>
+					<widget class="SwatEntry" id="search_id_lt">
+						<property name="size" type="integer">10</property>
+					</widget>
+				</widget>
+			</widget>
+			<widget class="SwatFieldset" id="customer_info">
+				<property name="title" translatable="yes">Customer Info</property>
+				<widget class="SwatFormField">
+					<property name="title" translatable="yes">Customer Name</property>
+					<widget class="SwatEntry" id="search_fullname" />
+				</widget>
+				<widget class="SwatFormField">
+					<property name="title" translatable="yes">Email Address</property>
+					<widget class="SwatEntry" id="search_email" />
+				</widget>
+				<widget class="SwatFormField">
+					<property name="title" translatable="yes">Country</property>
+					<widget class="SwatFlydown" id="search_region" />
+				</widget>
+			</widget>
+			<widget class="SwatFieldset" id="date_range">
+				<property name="title" translatable="yes">Order Date Range</property>
+				<widget class="SwatFormField" id="date_after">
+					<property name="title" translatable="yes">Ordered On or After</property>
+					<widget class="SwatDateEntry" id="search_createdate_gt">
+						<property name="valid_range_start" type="date">2000-01-01</property>
+					</widget>
+				</widget>
+				<widget class="SwatFormField" id="date_before">
+					<property name="title" translatable="yes">Ordered Before</property>
+					<widget class="SwatDateEntry" id="search_createdate_lt">
+						<property name="valid_range_start" type="date">2000-01-01</property>
+					</widget>
+				</widget>
+			</widget>
+			<widget class="SwatFooterFormField">
+				<widget class="SwatButton" id="submit_button">
+					<property name="title" translatable="yes">Search</property>
+				</widget>
+			</widget>
+		</widget>
+	</widget>
+</swatml>

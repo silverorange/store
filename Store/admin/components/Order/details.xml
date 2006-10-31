@@ -1,0 +1,27 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<widget class="SwatFrame" id="details_frame">
+		<widget class="SwatToolbar" id="details_toolbar">
+			<widget class="SwatToolLink">
+				<property name="title" translatable="yes">Resend Email Confirmation</property>
+				<property name="link">Order/EmailConfirmation?id=%s</property>
+				<property name="stock_id">email</property>
+			</widget>
+		</widget>
+		<!-- {{{ Order Details -->
+
+		<widget class="SwatDetailsView" id="order_details">
+		</widget>
+
+		<!-- }}} -->
+		<!-- {{{ Items -->
+
+		<widget class="SwatFrame" id="items_frame">
+			<property name="title" translatable="yes">Items</property>
+		</widget>
+
+		<!-- }}} -->
+	</widget>
+</swatml>
