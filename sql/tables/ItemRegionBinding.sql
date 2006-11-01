@@ -2,7 +2,7 @@ create table ItemRegionBinding (
 	item int not null references Item(id) on delete cascade,
 	region int not null references Region(id),
 	enabled boolean not null default true,
-	price numeric(11, 2) not null,
+	price numeric(11, 2),
 	primary key (item, region)
 );
 
