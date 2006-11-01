@@ -22,7 +22,7 @@ abstract class StoreDataObject extends SwatDBDataObject
 	protected $class_map;
 
 	// }}}
-	// {{{ public function __construct(
+	// {{{ public function __construct()
 
 	public function __construct($data = null)
 	{
