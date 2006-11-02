@@ -138,7 +138,9 @@ class StoreProductImagePage extends StoreStorePage
 			$img_tag->height = $image->thumb_height;
 
 			$anchor = new SwatHtmlTag('a');
-			$anchor->href = sprintf('%s/image%s', $this->source, $image->id);
+			$anchor->href = sprintf('%s/image%s', 
+				$this->getProductPageSource(), $image->id);
+
 			$anchor->title = Store::_('View Larger Image');
 
 			$li_tag->open();
@@ -150,6 +152,18 @@ class StoreProductImagePage extends StoreStorePage
 		}
 
 		echo '</ul>';
+	}
+
+	// }}}
+	// {{{ private function getProductPageSource()
+
+	private function getProductPageSource()
+	{
+		$source_exp = explode('/', $this->source);
+		array_pop($source_exp);
+		$source = implode('/', $source_exp);
+
+		return $source;
 	}
 
 	// }}}
