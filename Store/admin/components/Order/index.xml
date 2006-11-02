@@ -10,8 +10,7 @@
 				<object class="AdminTableViewOrderableColumn" id="id">
 					<property name="title" translatable="yes">Order #</property>
 					<object class="AdminTitleLinkCellRenderer">
-						<property name="text">%s</property>
-						<property name="value" type="data">id</property>
+						<property name="text" type="data">title</property>
 						<property name="link">Order/Details?id=%s</property>
 						<property name="link_value" type="data">id</property>
 					</object>
