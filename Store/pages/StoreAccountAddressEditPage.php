@@ -57,7 +57,6 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 	// }}}
 	// {{{ private function findAddress()
 
-
 	private function findAddress()
 	{
 		if ($this->id === null)
@@ -121,6 +120,7 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 
 	// }}}
 	// {{{ private function addMessage()
+
 	private function addMessage($text, $address)
 	{
 		ob_start();
