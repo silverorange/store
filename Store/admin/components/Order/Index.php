@@ -232,7 +232,18 @@ class StoreOrderIndex extends AdminSearch
 			$this->ui->getWidget('results_message')->content =
 				$pager->getResultsMessage('result', 'results');
 
+		foreach ($store->getRows() as $row)
+			$row->title = $this->getOrderTitle($row);
+
 		return $store;
+	}
+
+	// }}}
+	// {{{ protected function getOrderTitle()
+
+	protected function getOrderTitle($order) 
+	{
+		return sprintf(Store::_('Order %s'), $order->id);
 	}
 
 	// }}}
