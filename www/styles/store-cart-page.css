@@ -14,11 +14,9 @@
 #footer_checkout_button {
 	font-weight: bold;
 	color: #333;
-	font-size: 110%;
 	margin-left: 0.5em;
 	padding-top: 0.1em;
 	padding-bottom: 0.1em;
-	width: 13em;
 }
 
 #header_update_button,
