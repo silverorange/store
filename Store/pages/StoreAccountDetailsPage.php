@@ -35,10 +35,18 @@ class StoreAccountDetailsPage extends StoreAccountPage
 		$this->ui = new StoreUI();
 		$this->ui->loadFromXML($this->ui_xml);
 
-		$this->initPaymentMethodViews($this->app->session->account);
-		$this->initAddressViews($this->app->session->account);
+		$this->initInternal($this->app->session->account);
 
 		$this->ui->init();
+	}
+
+	// }}}
+	// {{{ protected function initInternal()
+
+	protected function initInternal(StoreAccount $account)
+	{
+		$this->initPaymentMethodViews($account);
+		$this->initAddressViews($account);
 	}
 
 	// }}}
