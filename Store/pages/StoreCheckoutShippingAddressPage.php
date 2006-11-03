@@ -244,10 +244,8 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 				'text/xml');
 		}
 
-		if ($this->app->session->isLoggedIn()) {
+		if ($this->app->session->isLoggedIn())
 			$this->buildAccountShippingAddresses($address_list);
-			$this->buildAccountShippingAddressRegionMessage($content_block);
-		}
 	}
 
 	// }}}
