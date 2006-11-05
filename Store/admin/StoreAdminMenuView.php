@@ -37,6 +37,7 @@ class StoreAdminMenuView extends AdminMenuView
 	 * Creates a new store admin menu view with an item search box at the top
 	 *
 	 * @param AdminMenuStore $store the menu store to view.
+	 * @param string $id the unique identifier of this menu-view.
 	 */
 	public function __construct(AdminMenuStore $store, $id = null)
 	{
@@ -50,10 +51,10 @@ class StoreAdminMenuView extends AdminMenuView
 
 		$button = new SwatButton();
 		$button->stock_id = 'submit';
-		$button->title = 'Go';
+		$button->title = Store::_('Go');
 
-		$field = new SwatFormField();
-		$field->title = 'Item #';
+		$field = new SwatFormField('quick_search_item_field');
+		$field->title = Store::_('Item #');
 		$field->add($entry);
 		$field->add($button);
 
