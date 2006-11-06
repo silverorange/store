@@ -8,6 +8,11 @@
 	background: none;
 }
 
+.store-cart-entry-view thead th,
+.store-order-item-view thead th {
+	white-space: nowrap;
+}
+
 .store-cart-entry-view tbody td.swat-table-view-group,
 .store-order-item-view tbody td.swat-table-view-group {
 	border: 0;
