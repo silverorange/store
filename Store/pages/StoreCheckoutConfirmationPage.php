@@ -98,6 +98,21 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	{
 		$order = $this->app->session->order;
 
+		$this->saveOrder($order);
+
+		// remove entries from cart that were ordered
+		$this->removeCartEntries($order);
+
+		unset($this->app->session->ad);
+
+		return $order;
+	}
+
+	// }}}
+	// {{{ protected function saveOrder()
+
+	protected function saveOrder(StoreOrder $order)
+	{
 		// attach order to account
 		if ($this->app->session->checkout_with_account)
 			$order->account = $this->app->session->account;
@@ -107,13 +122,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 		// save order
 		$order->save();
-
-		// remove entries from cart that were ordered
-		$this->removeCartEntries($order);
-
-		unset($this->app->session->ad);
-
-		return $order;
 	}
 
 	// }}}
