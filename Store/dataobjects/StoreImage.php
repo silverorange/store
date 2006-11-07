@@ -82,45 +82,50 @@ abstract class StoreImage extends StoreDataObject
 	/**
 	 * Does special resizing and cropping for thumbnail images
 	 *
-	 * Thumbnail images are always 100 pixels by 100 pixels. This resizes the
-	 * image so the smallest dimension is 100 pixels and then crops the image
-	 * at 100 pixels by 100 pixels in the center.
+	 * Thumbnail images are always a fixed size. This resizes and crops the
+	 * image so that the largest portion from the center image used.
 	 *
 	 * @param Image_Transform $image the image transformer to work with. The
 	 *                                tranformer should already have an image
 	 *                                loaded.
 	 *
-	 * @param integer $max_dimension the max dimension for a thumbnail image.
+	 * @param integer $width the width of a thumbnail image.
+	 * @param integer $height the height of a thumbnail image, if null
+	 *                         thumbnail is square.
 	 *
 	 * @throws SwatException if no image is loaded in the transformer.
 	 */
 	public static function processThumbnail(
-		Image_Transform $image, $max_dimension = 100)
+		Image_Transform $image, $width, $height = null)
 	{
 		if ($image->image === null)
 			throw new SwatException('No image loaded.');
 
-		// resize so smallest side is $max_dimension pixels
-		if ($image->img_x >= $image->img_y) {
-			$new_y = $max_dimension;
+		if ($height === null)
+			$height = $width;
+
+		if ($image->img_x / $width > $image->img_y / $height) {
+			$new_y = $height;
 			$new_x = round(($new_y / $image->img_y) * $image->img_x, 0);
 		} else {
-			$new_x = $max_dimension;
+			$new_x = $width;
 			$new_y = round(($new_x / $image->img_x) * $image->img_y, 0);
 		}
+
 		$image->resize($new_x, $new_y);
 
-		// crop if not square
-		if ($image->new_x != $image->new_y) {
-			if ($image->new_x > $image->new_y) {
-				$crop_x = round(($image->new_x - $max_dimension) / 2, 0);
-				$crop_y = 0;
-			} elseif ($image->new_x < $image->new_y) {
-				$crop_y = round(($image->new_y - $max_dimension) / 2, 0);
-				$crop_x = 0;
-			}
-			$image->crop($max_dimension, $max_dimension,
-				$crop_x, $crop_y);
+		// crop to fit
+		if ($image->new_x != $width || $image->new_y != $height) {
+			$offset_x = 0;
+			$offset_y = 0;
+
+			if ($image->new_x > $width)
+				$offset_x = round(($image->new_x - $width) / 2, 0);
+
+			if ($image->new_y > $height)
+				$offset_y = round(($image->new_y - $height) / 2, 0);
+
+			$image->crop($width, $height, $offset_x, $offset_y);
 		}
 	}
 
@@ -137,15 +142,21 @@ abstract class StoreImage extends StoreDataObject
 	 *                                loaded.
 	 *
 	 * @param integer $max_width the max width for the image.
+	 * @param integer $max_height the max height for the image.
 	 *
 	 * @throws SwatException if no image is loaded in the transformer.
 	 */
-	public static function processImage(Image_Transform $image, $max_width)
+	public static function processImage(Image_Transform $image,
+		$max_width = null, $max_height = null)
 	{
 		if ($image->image === null)
 			throw new SwatException('No image loaded.');
 
-		$image->fitX($max_width);
+		if ($max_width !== null)
+			$image->fitX($max_width);
+
+		if ($max_height !== null)
+			$image->fitY($max_height);
 	}
 
 	// }}}
@@ -154,12 +165,17 @@ abstract class StoreImage extends StoreDataObject
 	/**
 	 * Gets an array of size identifiers for an image
 	 *
-	 * These are small text descriptions of the valid sizes. They are commonly
+	 * The keys are small text descriptions of the valid sizes and the values
+	 * are two-element arrays storing the dimensions.  The keys are commonly
 	 * used to separate images and thumbnails into separate directories. For
 	 * example, the returned array might be:
 	 *
 	 * <code>
-	 * array('thumb' => 100, 'small' => 200, 'large' => 400);
+	 * array(
+	 *     'thumb' => array(100, 150),
+	 *     'small' => array(200, null),
+	 *     'large' => array(400, null),
+	 * );
 	 * </code>
 	 *
 	 * @return array textual identifiers of the valid sizes for images.
