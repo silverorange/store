@@ -145,7 +145,8 @@ abstract class StoreItem extends StoreDataObject
 		// it instead of performing another query
 		if ($this->hasInternalValue('region') &&
 			$this->getInternalValue('region') == $region->id &&
-			$this->hasInternalValue('is_available')) {
+			$this->hasInternalValue('is_available') &&
+			$this->getInternalValue('is_available') !== null) {
 
 			$available = $this->getInternalValue('is_available');
 		} else {
@@ -286,7 +287,8 @@ abstract class StoreItem extends StoreDataObject
 			return parent::loadInternal($id);
 
 		$id_field = new SwatDBField($this->id_field, 'integer');
-		$sql = 'select Item.*, ItemRegionBinding.price, 
+		$sql = 'select Item.*, ItemRegionBinding.price,
+				ItemRegionBinding.region,
 				ItemRegionBinding.enabled
 			from Item
 			%s ItemRegionBinding on item = Item.id
@@ -322,7 +324,7 @@ abstract class StoreItem extends StoreDataObject
 			quantity_discount = QuantityDiscount.id ';
 
 		if ($region !== null)
-			$sql.= sprintf(' and region = %s',
+			$sql.= sprintf('and region = %s ',
 				$this->db->quote($region, 'integer'));
                   
 		$sql.= 'where QuantityDiscount.item = %s
