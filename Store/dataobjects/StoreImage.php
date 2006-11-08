@@ -106,10 +106,10 @@ abstract class StoreImage extends StoreDataObject
 
 		if ($image->img_x / $width > $image->img_y / $height) {
 			$new_y = $height;
-			$new_x = round(($new_y / $image->img_y) * $image->img_x, 0);
+			$new_x = ceil(($new_y / $image->img_y) * $image->img_x);
 		} else {
 			$new_x = $width;
-			$new_y = round(($new_x / $image->img_x) * $image->img_y, 0);
+			$new_y = ceil(($new_x / $image->img_x) * $image->img_y);
 		}
 
 		$image->resize($new_x, $new_y);
@@ -120,10 +120,10 @@ abstract class StoreImage extends StoreDataObject
 			$offset_y = 0;
 
 			if ($image->new_x > $width)
-				$offset_x = round(($image->new_x - $width) / 2, 0);
+				$offset_x = ceil(($image->new_x - $width) / 2);
 
 			if ($image->new_y > $height)
-				$offset_y = round(($image->new_y - $height) / 2, 0);
+				$offset_y = ceil(($image->new_y - $height) / 2);
 
 			$image->crop($width, $height, $offset_x, $offset_y);
 		}
