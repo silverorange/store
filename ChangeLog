@@ -1,3 +1,21 @@
+2006-11-08  nrf
+
+	* [r12776] store/branches/1.1.x:
+	  recreate branch
+
+2006-10-26  nrf
+
+	* [r12347] store/tags/release-1.1.14:
+	  tag release 1.1.14
+	* [r12346] store/trunk/package.php:
+	  prepare for release of 1.1.14
+	* [r12340] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.1.13
+	* [r12339] store/trunk/Store/pages/StoreCategoryPage.php:
+	  Split query and display methods to make more sub-classable.
+	* [r12338] store/trunk/Store/pages/StoreAccountDetailsPage.php:
+	  Whitespace
+
 2006-10-24  nrf
 
 	* [r12291] store/trunk/Store/pages/StoreAccountEditPage.php:
