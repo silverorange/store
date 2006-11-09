@@ -242,8 +242,6 @@ abstract class StoreNateGoSearchIndexer extends SiteSearchIndexer
 				$this->db);
 
 		$product_indexer->addTerm(new NateGoSearchTerm('title', 5));
-		$product_indexer->addTerm(new NateGoSearchTerm('subtitle', 2));
-		$product_indexer->addTerm(new NateGoSearchTerm('latin_name', 2));
 		$product_indexer->addTerm(new NateGoSearchTerm('bodytext'));
 		$product_indexer->setMaximumWordLength(32);
 		$product_indexer->addUnindexedWords(
@@ -260,8 +258,7 @@ abstract class StoreNateGoSearchIndexer extends SiteSearchIndexer
 			NateGoSearchIndexer::getDefaultUnindexedWords());
 
 		$sql = sprintf('select Product.id, Product.title,
-				Product.subtitle, Product.latin_name, Product.bodytext,
-				Item.sku, Item.description
+				Product.bodytext, Item.sku, Item.description
 			from Item
 				inner join Product on Item.product = Product.id
 				inner join NateGoSearchQueue
