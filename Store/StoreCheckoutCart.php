@@ -134,7 +134,7 @@ abstract class StoreCheckoutCart extends StoreCart
 					$this->app->session->activate();
 
 				$previous_session = $this->app->cookie->cart_session;
-				$current_session = $this->app->session->getSessionID();
+				$current_session = $this->app->session->getSessionId();
 
 				if ($previous_session !== $current_session) {
 					$sql = 'update CartEntry set sessionid = %s
@@ -153,7 +153,7 @@ abstract class StoreCheckoutCart extends StoreCart
 
 		if ($this->app->session->isActive())
 			$this->app->cookie->setCookie('cart_session',
-				$this->app->session->getSessionID());
+				$this->app->session->getSessionId());
 	}
 
 	// }}}
