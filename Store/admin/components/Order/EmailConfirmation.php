@@ -128,10 +128,10 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 			$this->order->setDatabase($this->app->db);
 
 			if (!$this->order->load($this->id))
-				throw new AdminNotFoundException(
-					sprintf(Store::_('An order with an id of %d '.
-						'does not exist.'),
-						$this->id));
+				throw new AdminNotFoundException(sprintf(
+					Store::_('An order with an id of ‘%d’ does not exist.'),
+					$this->id));
+
 		}
 		return $this->order;
 	}
@@ -148,18 +148,17 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 			// use account navbar
 			$this->navbar->popEntry();
 			$this->navbar->addEntry(new SwatNavBarEntry(
-				Store::_('Customer Accounts'),
-				'Account'));
+				Store::_('Customer Accounts'), 'Account'));
 
 			$this->navbar->addEntry(new SwatNavBarEntry(
-				$this->order->account->fullname, 
+				$this->order->account->fullname,
 				'Account/Details?id='.$this->order->account));
 
 			$this->title = $this->order->account->fullname;
 
 			$this->navbar->createEntry($this->getOrderTitle(),
-				sprintf('Order/Details?id=%s&account=%s',
-					$this->id, $this->account));
+				sprintf('Order/Details?id=%s&account=%s', $this->id,
+				$this->account));
 		}
 
 		$this->navbar->createEntry(Store::_('Resend Confirmation Email'));

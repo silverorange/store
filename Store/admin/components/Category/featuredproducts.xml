@@ -1,0 +1,41 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatFrame" id="search_frame">
+		<property name="title" translatable="yes">Filter By Category</property>
+		<widget class="SwatForm" id="search_form">
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Category</property>
+				<widget class="SwatTreeFlydown" id="category_flydown" />
+			</widget>
+			<widget class="SwatFooterFormField">
+				<widget class="SwatButton" id="submit_button">
+					<property name="title" translatable="yes">List Products</property>
+				</widget>
+			</widget>
+		</widget>
+	</widget>
+	<widget class="SwatFrame" id="results_frame">
+		<property name="title" translatable="yes">Choose Product(s) to Feature</property>
+		<widget class="SwatForm" id="index_form">
+			<widget class="SwatTableView" id="index_view">
+				<object class="SwatTableViewCheckboxColumn" id="checkbox">
+					<object class="SwatCheckboxCellRenderer" id="items">
+						<property name="value" type="data">id</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn" id="title">
+					<property name="title" translatable="yes">Title</property>
+					<object class="SwatTextCellRenderer">
+						<property name="text" type="data">title</property>
+					</object>
+				</object>
+			</widget>
+			<widget class="SwatFooterFormField">
+				<widget class="SwatButton" id="add_button">
+					<property name="title" translatable="yes">Add Featured Product(s)</property>
+				</widget>
+			</widget>
+		</widget>
+	</widget>
+</swatml>

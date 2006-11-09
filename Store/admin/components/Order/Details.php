@@ -98,10 +98,9 @@ abstract class StoreOrderDetails extends AdminPage
 			$this->order->setDatabase($this->app->db);
 
 			if (!$this->order->load($this->id))
-				throw new AdminNotFoundException(
-					sprintf(Store::_('An order with an id of %d '.
-						'does not exist.'),
-						$this->id));
+				throw new AdminNotFoundException(sprintf(
+					Store::_('An order with an id of ‘%d’ does not exist.'),
+					$this->id));
 		}
 		return $this->order;
 	}
@@ -123,8 +122,7 @@ abstract class StoreOrderDetails extends AdminPage
 			// use account navbar
 			$this->navbar->popEntry();
 			$this->navbar->addEntry(new SwatNavBarEntry(
-				Store::_('Customer Accounts'),
-				'Account'));
+				Store::_('Customer Accounts'), 'Account'));
 
 			$this->navbar->addEntry(new SwatNavBarEntry(
 				$this->order->account->fullname, 
@@ -133,8 +131,7 @@ abstract class StoreOrderDetails extends AdminPage
 			$this->title = $this->order->account->fullname;
 		}
 
-		$this->navbar->addEntry(new SwatNavBarEntry(
-			$this->getOrderTitle()));
+		$this->navbar->addEntry(new SwatNavBarEntry($this->getOrderTitle()));
 	}
 
 	// }}}

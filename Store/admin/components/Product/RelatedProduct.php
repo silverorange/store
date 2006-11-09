@@ -1,0 +1,219 @@
+<?php
+
+require_once 'Admin/pages/AdminSearch.php';
+require_once 'Admin/AdminTableStore.php';
+require_once 'SwatDB/SwatDB.php';
+require_once 'Swat/SwatTreeFlydownNode.php';
+require_once 'Swat/SwatFlydownDivider.php';
+require_once 'Store/StoreCatalogSelector.php';
+
+require_once 'Store/admin/components/Product/include/'.
+	'StoreProductSearchWhereClause.php';
+
+/**
+ * Search page for Related Products
+ *
+ * @package   Store
+ * @copyright 2005-2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ */
+class StoreProductRelatedProduct extends AdminSearch
+{
+	// {{{ protected properties
+
+	protected $ui_xml = 'Store/admin/components/Product/relatedproduct.xml';
+	protected $search_xml = 'Store/admin/components/Product/search.xml';
+
+	// }}}
+	// {{{ private properties
+
+	private $category_id;
+	private $product_id;
+
+	// }}}
+
+	// init phase
+	// {{{ protected function initInternal()
+
+	protected function initInternal()
+	{
+		parent::initInternal();
+
+		$this->product_id = SiteApplication::initVar('id');
+		$this->category_id = SiteApplication::initVar('category');
+
+		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->search_xml);
+
+		$catalog_selector = $this->ui->getWidget('catalog_selector');
+		$catalog_selector->db = $this->app->db;
+	}
+
+	// }}}
+
+	// process phase
+	// {{{ protected function processInternal()
+
+	protected function processInternal()
+	{
+		parent::processInternal();
+
+		$form = $this->ui->getWidget('index_form');
+		$view = $this->ui->getWidget('index_view');
+
+		if ($form->isProcessed()) {
+			if (count($view->checked_items) != 0) {
+
+				$product_list = array();
+				foreach ($view->checked_items as $item)
+					$product_list[] = $this->app->db->quote($item, 'integer');
+
+				$id = $this->app->db->quote(SiteApplication::initVar('id'), 
+					'integer');
+				// relate products
+				$sql = sprintf('insert into ProductRelatedProductBinding 
+					(source_product, related_product)
+						select %s, Product.id from Product where 
+							Product.id not in (
+								select related_product 
+								from ProductRelatedProductBinding 
+								where source_product = %s)
+					and Product.id
+						in (%s)', $id, $id, implode(',', $product_list));
+
+				$num = $this->app->db->query($sql);
+
+				$msg = new SwatMessage(sprintf(Store::ngettext(
+					'One product has been related to this product.',
+					'%d products have been related to this product.', $num), 
+					SwatString::numberFormat($num)), SwatMessage::NOTIFICATION);
+
+			}
+
+			if (SiteApplication::initVar('category') === null)
+				$this->app->relocate('Product/Details?id='.
+					SiteApplication::initVar('id'));
+			else
+				$this->app->relocate('Product/Details?id='.
+					SiteApplication::initVar('id').'&category='.
+					SiteApplication::initVar('category'));
+				
+		}
+
+		$pager = $this->ui->getWidget('pager');
+		$pager->process();
+	}
+
+	// }}}
+
+	// build phase
+	// {{{ protected function buildInternal() 
+
+	protected function buildInternal()
+	{
+		parent::buildInternal();
+		$this->buildNavBar();
+
+		$rs = SwatDB::executeStoredProc($this->app->db,
+			'getCategoryTree', array('null'));
+
+		$tree = new SwatTreeFlydownNode('Root', '');
+		$tree->addChild(new SwatTreeFlydownNode(-1,
+			Store::_('<uncategorized>')));
+
+		$tree->addChild(new SwatTreeFlydownNode(new SwatFlydownDivider()));
+		$tree = SwatDB::buildTreeOptionArray($rs, 'title', 'id', 'levelnum',
+			$tree);
+
+		$category_selector = $this->ui->getWidget('search_category');
+		$category_selector->setTree($tree);
+
+		$search_frame = $this->ui->getWidget('search_frame');
+		$search_frame->title = Store::_('Search for Related Products to Add');
+
+		$search_form = $this->ui->getWidget('search_form');
+		$search_form->action = $this->getRelativeURL();
+		$search_form->addHiddenField('category', $this->category_id);
+
+		$form = $this->ui->getWidget('index_form');
+		$form->action = $this->getRelativeURL();
+		$form->addHiddenField('category', $this->category_id);
+	}
+
+	// }}}
+	// {{{ protected function getWhereClause()
+
+	protected function getWhereClause()
+	{
+		$where_clause = new ProductSearchWhereClause($this->ui,
+			$this->app->db);
+
+		return $where_clause->getWhereClause();
+	}
+
+	// }}}
+	// {{{ protected function getTableStore()
+
+	protected function getTableStore($view)
+	{
+		$sql = sprintf('select count(id) from Product where %s',
+			$this->getWhereClause());
+
+		$pager = $this->ui->getWidget('pager');
+		$pager->total_records = SwatDB::queryOne($this->app->db, $sql);
+
+		$sql = 'select id, title
+				from Product
+				where %s
+				order by %s';
+
+		$sql = sprintf($sql,
+			$this->getWhereClause(),
+			$this->getOrderByClause($view,
+				'Product.title, Product.id'));
+
+		$this->app->db->setLimit($pager->page_size, $pager->current_record);
+
+		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
+
+		return $store;
+	}
+
+	// }}}
+	// {{{ private function buildNavBar()
+
+	private function buildNavBar() 
+	{
+		if ($this->category_id !== null) {
+			$this->navbar->popEntry();
+			$this->navbar->addEntry(new SwatNavBarEntry(
+				Store::_('Product Categories'), 'Category'));
+
+			$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
+				'getCategoryNavbar', array($this->category_id));
+
+			foreach ($cat_navbar_rs as $entry)
+				$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
+					'Category/Index?id='.$entry->id));
+		}
+
+		if ($this->category_id === null)
+			$link = sprintf('Product/Details?id=%s', $this->product_id);
+		else
+			$link = sprintf('Product/Details?id=%s&category=%s', 
+				$this->product_id, $this->category_id);
+
+		$product_title = SwatDB::queryOneFromTable($this->app->db, 'Product',
+			'text:title', 'id', $this->product_id);
+
+		$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));
+		$this->navbar->addEntry(new SwatNavBarEntry(
+			Store::_('Add Related Products')));
+
+		$this->title = $product_title;
+	}
+
+	// }}}
+}
+
+?>

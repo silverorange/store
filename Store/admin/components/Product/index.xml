@@ -1,0 +1,45 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatFrame" id="results_frame">
+		<property name="title" translatable="yes">Products</property>
+		<property name="visible" type="boolean">false</property>
+		<widget class="SwatContentBlock" id="results_message" />
+	
+		<widget class="SwatForm" id="index_form">
+			<widget class="StoreProductTableView" id="index_view">
+				<object class="SwatTableViewCheckboxColumn" id="checkbox">
+					<object class="SwatCheckboxCellRenderer" id="items">
+						<property name="value" type="data">id</property>
+					</object>
+				</object>
+				<object class="AdminTableViewOrderableColumn" id="title">
+					<property name="title" translatable="yes">Title</property>
+					<object class="StoreProductTitleCellRenderer">
+						<property name="text" type="data">title</property>
+						<property name="link">Product/Details?id=%s</property>
+						<property name="link_value[]" type="data">id</property>
+						<property name="item_count" type="data">item_count</property>
+						<property name="stock_id">product</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="title" translatable="yes">Items</property>
+					<object class="StoreItemStatusCellRenderer">
+						<property name="count_available" type="data">count_available</property>
+						<property name="count_outofstock" type="data">count_outofstock</property>
+						<property name="count_disabled" type="data">count_disabled</property>
+					</object>
+				</object>
+			</widget>
+			<widget class="AdminPagination" id="pager">
+				<property name="link">Product</property>
+			</widget>
+			<widget class="SwatActions" id="index_actions">
+				<widget class="SwatActionItem" id="delete">
+					<property name="title" translatable="yes">delete…</property>
+				</widget>
+			</widget>
+		</widget>
+	</widget>
+</swatml>

@@ -42,7 +42,7 @@ class StoreOrderIndex extends AdminSearch
 		
 		$search_region = $this->ui->getWidget('search_region');
 		$search_region->show_blank = true;
-		$search_region->addOptionsByArray(SwatDB::getOptionArray($this->app->db, 
+		$search_region->addOptionsByArray(SwatDB::getOptionArray($this->app->db,
 			'Region', 'title', 'id', 'title'));
 	}
 
@@ -190,11 +190,11 @@ class StoreOrderIndex extends AdminSearch
 
 	protected function getTableStore($view)
 	{
-		$sql = 'select count(Orders.id) from Orders 
+		$sql = 'select count(Orders.id) from Orders
 					left outer join Account on Orders.account = Account.id
-					inner join OrderAddress as BillingAddress 
+					inner join OrderAddress as BillingAddress
 						on Orders.billing_address = BillingAddress.id
-					inner join OrderAddress as ShippingAddress 
+					inner join OrderAddress as ShippingAddress
 						on Orders.shipping_address = ShippingAddress.id
 					inner join Locale on Orders.locale = Locale.id
 					inner join Region on Locale.region = Region.id
