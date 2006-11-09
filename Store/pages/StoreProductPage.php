@@ -244,7 +244,7 @@ class StoreProductPage extends StoreStorePage
 				$this->app->session->getAccountID();
 		else
 			$cart_entry->sessionid =
-				$this->app->session->getSessionID();
+				$this->app->session->getSessionId();
 
 		// load item manually here so we can specify region
 		$item = new Item();
