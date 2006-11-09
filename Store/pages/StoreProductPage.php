@@ -241,7 +241,7 @@ class StoreProductPage extends StoreStorePage
 
 		if ($this->app->session->isLoggedIn())
 			$cart_entry->account =
-				$this->app->session->getAccountID();
+				$this->app->session->getAccountId();
 		else
 			$cart_entry->sessionid =
 				$this->app->session->getSessionId();
