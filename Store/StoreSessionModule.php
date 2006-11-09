@@ -155,7 +155,7 @@ class StoreSessionModule extends SiteSessionModule
 	}
 
 	// }}}
-	// {{{ public function getAccountID()
+	// {{{ public function getAccountId()
 
 	/**
 	 * Retrieves the current account Id
