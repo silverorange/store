@@ -1,6 +1,8 @@
 <?php
 
 require_once 'Site/SiteSearchIndexer.php';
+require_once 'Store/Store.php';
+require_once 'Store/pages/StoreSearchPage.php';
 require_once 'NateGoSearch/NateGoSearchIndexer.php';
 
 /**
@@ -13,7 +15,7 @@ require_once 'NateGoSearch/NateGoSearchIndexer.php';
  * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreNateGoSearchIndexer extends SiteSearchIndexer
+abstract class StoreNateGoSearchIndexer extends SiteSearchIndexer
 {
 	// {{{ class constants
 
