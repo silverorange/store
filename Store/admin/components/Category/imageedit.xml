@@ -1,0 +1,43 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<widget class="SwatFrame" id="edit_frame">
+		<property name="title" translatable="yes">Change Category Image for</property>
+		<widget class="SwatForm" id="edit_form">
+			<widget class="SwatImageDisplay" id="image">
+				<property name="image">../images/elements/category-place-holder.png</property>
+				<property name="width" type="integer">100</property>
+				<property name="height" type="integer">100</property>
+				<property name="alt" translatable="yes">No Image Available</property>
+			</widget>
+			<widget class="SwatFieldset">
+				<property name="title" translatable="yes">Upload an Image to be Automatically Resized</property>
+				<widget class="SwatFormField">
+					<property name="title">Image</property>
+					<widget class="SwatFileEntry" id="orig_image">
+						<property name="accept_mime_types[]">image/jpeg</property>
+					</widget>
+				</widget>
+			</widget>
+			<widget class="SwatMessageDisplay" id="message">
+				<property name="visible" type="boolean">true</property>
+			</widget>
+			<widget class="SwatFieldset">
+				<property name="title" translatable="yes">or Upload an Image that has been Manually Resized</property>
+				<widget class="SwatFormField" id="thumbnail_field">
+					<property name="title" translatable="yes">Thumbnail Image</property>
+					<widget class="SwatFileEntry" id="thumb_image">
+						<property name="accept_mime_types[]">image/jpeg</property>
+						<property name="display_mime_types" type="boolean">false</property>
+					</widget>
+				</widget>
+			</widget>
+			<widget class="SwatFooterFormField">
+				<widget class="SwatButton" id="submit_button">
+					<property name="title" translatable="yes">Upload</property>
+				</widget>
+			</widget>
+		</widget>
+	</widget>
+</swatml>
