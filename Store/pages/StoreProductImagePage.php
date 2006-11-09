@@ -112,6 +112,8 @@ class StoreProductImagePage extends StoreStorePage
 		$img_tag->width = $this->image->large_width;
 		$img_tag->height = $this->image->large_height;
 		$img_tag->alt = sprintf(Store::_('Photo of %s'), $this->product->title);
+		$img_tag->class = $this->image->border ?
+			'store-border-on' : 'store-border-off';
 
 		$div->open();
 		$img_tag->display();
@@ -136,6 +138,8 @@ class StoreProductImagePage extends StoreStorePage
 			$img_tag->src = $image->getURI('thumb');
 			$img_tag->width = $image->thumb_width;
 			$img_tag->height = $image->thumb_height;
+			$img_tag->class = $image->border ?
+				'store-border-on' : 'store-border-off';
 
 			$anchor = new SwatHtmlTag('a');
 			$anchor->href = sprintf('%s/image%s', 

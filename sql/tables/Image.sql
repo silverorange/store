@@ -1,5 +1,6 @@
 create table Image (
 	id serial,
+	border boolean not null default true,
 
 	thumb_width integer,
 	thumb_height integer,
