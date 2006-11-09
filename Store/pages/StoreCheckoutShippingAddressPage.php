@@ -219,8 +219,6 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 	protected function buildList()
 	{
 		$address_list = $this->ui->getWidget('shipping_address_list');
-		$content_block =
-			$this->ui->getWidget('account_shipping_address_region_message');
 
 		$span = '<span class="add-new">%s</span>';
 
