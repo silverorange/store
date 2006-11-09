@@ -336,7 +336,6 @@ abstract class StoreSearchPage extends StoreArticlePage
 		$li_tag = new SwatHtmlTag('li');
 
 		foreach ($products as $product) {
-			$product->disableTagLoader();
 			echo '<li class="product-tile">';
 			$link_href = 'store/'.$product->path;
 			$product->displayAsTile($link_href);
