@@ -145,7 +145,7 @@ class StoreAccountOrderPage extends StoreAccountPage
 
 		if ($item_id !== null) {
 			$cart_entry = new CartEntry();
-			$cart_entry->account = $this->app->session->getAccountID();
+			$cart_entry->account = $this->app->session->getAccountId();
 
 			// load item manually here so we can specify region
 			$item = new Item();

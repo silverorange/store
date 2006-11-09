@@ -219,7 +219,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		$this->app->session->activate();
 
 		if ($this->app->session->isLoggedIn())
-			$cart_entry->account = $this->app->session->getAccountID();
+			$cart_entry->account = $this->app->session->getAccountId();
 		else
 			$cart_entry->sessionid = $this->app->session->getSessionId();
 
