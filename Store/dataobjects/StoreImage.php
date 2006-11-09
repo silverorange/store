@@ -24,6 +24,15 @@ abstract class StoreImage extends StoreDataObject
 	public $id;
 
 	/**
+	 * Whether to display with a border
+	 *
+	 * not null default true,
+	 *
+	 * @var integer
+	 */
+	public $border = true;
+
+	/**
 	 * not null default 0,
 	 *
 	 * @var integer
