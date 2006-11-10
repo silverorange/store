@@ -129,6 +129,10 @@ abstract class StoreAddress extends StoreDataObject
 	 */
 	public function displayCondensed()
 	{
+		/*
+		 * Condensed display is intentionally not wrapped in an address tag so
+		 * it may be wrapped inside an inline element. See r6634.
+		 */
 		echo SwatString::minimizeEntities($this->fullname), ', ';
 		echo SwatString::minimizeEntities($this->line1);
 		if ($this->line2 !== null)
