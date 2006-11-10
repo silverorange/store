@@ -82,19 +82,6 @@ class StoreProductPage extends StoreStorePage
 	}
 
 	// }}}
-	// {{{ private function loadProduct()
-
-	private function loadProduct($id)
-	{
-		$class_map = StoreClassMap::instance();
-		$product_class = $class_map->resolveClass('StoreProduct');
-		$this->product = new $product_class();
-		$this->product->setDatabase($this->app->db);
-		$this->product->setRegion($this->app->getRegion()->id);
-		$this->product->load($id);
-	}
-
-	// }}}
 	// {{{ protected function getItemTableStore()
 
 	protected function getItemTableStore($view)
@@ -151,6 +138,19 @@ class StoreProductPage extends StoreStorePage
 				Item::getStatusTitle($item->status));
 		
 		return $ds;
+	}
+
+	// }}}
+	// {{{ private function loadProduct()
+
+	private function loadProduct($id)
+	{
+		$class_map = StoreClassMap::instance();
+		$product_class = $class_map->resolveClass('StoreProduct');
+		$this->product = new $product_class();
+		$this->product->setDatabase($this->app->db);
+		$this->product->setRegion($this->app->getRegion()->id);
+		$this->product->load($id);
 	}
 
 	// }}}
