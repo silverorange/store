@@ -323,11 +323,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		$wrapper = $class_map->resolveClass('StoreOrderItemWrapper');
 		$order->items = new $wrapper();
 
-		$tax_provstate = $this->app->cart->checkout->getTaxProvState(
-			$order->billing_address, $order->shipping_address);
-
 		foreach ($this->app->cart->checkout->getAvailableEntries() as $entry) {
-			$order_item = $entry->createOrderItem($tax_provstate);
+			$order_item = $entry->createOrderItem();
 			$order->items->add($order_item);
 		}
 	}
