@@ -84,7 +84,7 @@ class StoreProductPage extends StoreStorePage
 	// }}}
 	// {{{ protected function getItemTableStore()
 
-	protected function getItemTableStore($view)
+	protected function getItemTableStore(SwatTableView $view)
 	{
 		$store = new SwatTableStore();
 		$last_sku = null;
@@ -120,7 +120,7 @@ class StoreProductPage extends StoreStorePage
 	// }}}
 	// {{{ protected function getItemDetailsStore()
 
-	protected function getItemDetailsStore($item)
+	protected function getItemDetailsStore(StoreItem $item)
 	{
 		$ds = new SwatDetailsStore($item);
 	
@@ -374,7 +374,7 @@ class StoreProductPage extends StoreStorePage
 	// }}}
 	// {{{ protected function getCartDetailsStore()
 
-	protected function getCartDetailsStore($entry)
+	protected function getCartDetailsStore(StoreCartEntry $entry)
 	{
 		$ds = new SwatDetailsStore($entry);
 
@@ -389,7 +389,7 @@ class StoreProductPage extends StoreStorePage
 	// }}}
 	// {{{ protected function isOnThisPage()
 
-	protected function isOnThisPage($item)
+	protected function isOnThisPage(StoreItem $item)
 	{
 		return ($item->product->id === $this->product_id);
 	}
@@ -528,7 +528,8 @@ class StoreProductPage extends StoreStorePage
 	{
 		$li_tag = new SwatHtmlTag('li');
 		$img_tag = new SwatHtmlTag('img');
-		$img_tag->alt = sprintf(Store::_('Additional Photo of %s'), $this->product->title);
+		$img_tag->alt = sprintf(Store::_('Additional Photo of %s'),
+			$this->product->title);
 
 		echo '<ul id="product_secondary_images">';
 
