@@ -72,12 +72,14 @@ class StoreCategoryAddProducts extends AdminSearch
 					$this->app->db->quote($this->category_id, 'integer'),
 					implode(',', $product_list));
 
-				$num = $this->app->db->query($sql);
+				$num = SwatDB::exec($this->app->db, $sql);
 
 				$msg = new SwatMessage(sprintf(Store::ngettext(
 					'One product has been added to this category.',
 					'%d products have been added to this category.', $num),
 					SwatString::numberFormat($num)), SwatMessage::NOTIFICATION);
+
+				$this->app->messages->add($msg);
 			}
 
 			$this->app->relocate('Category/Index?id='.$this->category_id);
