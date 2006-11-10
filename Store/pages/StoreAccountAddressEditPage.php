@@ -55,25 +55,6 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 	}
 
 	// }}}
-	// {{{ private function findAddress()
-
-	private function findAddress()
-	{
-		if ($this->id === null)
-			return new StoreAccountAddress();
-
-		$address =
-			$this->app->session->account->addresses->getByIndex($this->id);
-
-		if ($address === null)
-			throw new SiteNotFoundException.php(
-				sprintf('An address with an id of ‘%d’ does not exist.',
-				$this->id));
-
-		return $address;
-	}
-
-	// }}}
 
 	// process phase
 	// {{{ public function process()
@@ -200,6 +181,25 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 				$provstate->addMessage($message);
 			}
 		}
+	}
+
+	// }}}
+	// {{{ private function findAddress()
+
+	private function findAddress()
+	{
+		if ($this->id === null)
+			return new StoreAccountAddress();
+
+		$address =
+			$this->app->session->account->addresses->getByIndex($this->id);
+
+		if ($address === null)
+			throw new SiteNotFoundException.php(
+				sprintf('An address with an id of ‘%d’ does not exist.',
+				$this->id));
+
+		return $address;
 	}
 
 	// }}}
