@@ -20,6 +20,20 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 
 	// }}}
 
+	// init phase
+	// {{{ public function initCommon()
+
+	public function initCommon()
+	{
+		parent::initCommon();
+
+		// default country flydown to the country of the current locale
+		$country_flydown = $this->ui->getWidget('shipping_address_country');
+		$country_flydown->value = $this->app->getCountry();
+	}
+
+	// }}}
+
 	// process phase
 	// {{{ public function preProcessCommon()
 
