@@ -161,13 +161,15 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 	}
 
 	// }}}
-	// {{{ private function getItemQuerySQL()
+	// {{{ private function getStatusTitle()
 
-	private function getItemQuerySQL()
+	private function getStatusTitle()
 	{
 		$class_map = StoreClassMap::instance();
 		$item = $class_map->resolveClass('StoreItem');
 
+		// TODO: this interface is not guarenteed due to the method being
+		// static
 		return call_user_func(array($item, 'getStatusTitle'), $this->status);
 	}
 
