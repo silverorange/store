@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Swat/SwatEntry.php';
+require_once 'Store.php';
 
 /**
  * A widget for entering a postal code
