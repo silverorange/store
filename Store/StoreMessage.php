@@ -23,11 +23,11 @@ class StoreMessage extends SwatMessage
 	const CART_NOTIFICATION = 100;
 
 	// }}}
-	// {{{ public function getCssClass()
+	// {{{ public function getCSSClassString()
 
-	public function getCssClass()
+	public function getCSSClassString()
 	{
-		$class = parent::getCssClass();
+		$class = parent::getCSSClassString();
 
 		switch ($this->type) {
 			case StoreMessage::CART_NOTIFICATION :
