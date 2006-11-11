@@ -70,7 +70,7 @@ class StoreItemGroupEdit extends AdminDBEdit
 
 		if ($row === null)
 			throw new AdminNotFoundException(sprintf(
-				Store::_('Item Group with id ‘%s’ not found.', $this->id));
+				Store::_('Item Group with id ‘%s’ not found.', $this->id)));
 
 		$this->ui->setValues(get_object_vars($row));
 	}
