@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Admin/exceptions/AdminNotFoundException.php';
+require_once 'Admin/pages/AdminiPage.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatString.php';
 require_once 'Store/admin/components/Catalog/include/'.
