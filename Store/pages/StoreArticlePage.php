@@ -19,6 +19,11 @@ class StoreArticlePage extends StorePage
 
 	protected $path = null;
 
+	/**
+	 * @var StoreArticle
+	 */
+	protected $article;
+
 	// }}}
 	// {{{ public function setSource()
 
@@ -39,6 +44,36 @@ class StoreArticlePage extends StorePage
 	}
 
 	// }}}
+	// {{{ public function init()
+
+	public function init()
+	{
+		parent::init();
+		$this->initArticle();
+		$this->layout->selected_article_id = $this->article->id;
+	}
+
+	// }}}
+	// {{{ protected function initArticle()
+
+	protected function initArticle()
+	{
+		// don't try to resolve articles that are deeper than the max depth
+		if (count(explode('/', $this->path)) > StoreArticle::MAX_DEPTH)
+			throw new SiteNotFoundException(
+				sprintf('Article page not found for path ‘%s’', $this->path));
+
+		if (($article_id = $this->findArticle()) === null)
+			throw new SiteNotFoundException(
+				sprintf('Article page not found for path ‘%s’', $this->path));
+
+		if (($this->article = $this->queryArticle($article_id)) === null)
+			throw new SiteNotFoundException(
+				sprintf('Article dataobject failed to load for article id ‘%s’',
+				$article_id));
+	}
+
+	// }}}
 
 	// build phase
 	// {{{ public function build()
@@ -54,30 +89,16 @@ class StoreArticlePage extends StorePage
 
 	protected function buildArticle()
 	{
-		// don't try to resolve articles that are deeper than the max depth
-		if (count(explode('/', $this->path)) > StoreArticle::MAX_DEPTH)
-			throw new SiteNotFoundException(
-				sprintf('Article page not found for path ‘%s’', $this->path));
-
-		if (($article_id = $this->findArticle()) === null)
-			throw new SiteNotFoundException(
-				sprintf('Article page not found for path ‘%s’', $this->path));
-
-		if (($article = $this->queryArticle($article_id)) === null)
-			throw new SiteNotFoundException(
-				sprintf('Article dataobject failed to load for article id ‘%s’',
-				$article_id));
-
-		$sub_articles = $this->querySubArticles($article_id);
+		$sub_articles = $this->querySubArticles($this->article->id);
 		$this->layout->data->title =
-			SwatString::minimizeEntities((string)$article->title);
+			SwatString::minimizeEntities((string)$this->article->title);
 
 		$this->layout->startCapture('content');
-		$this->displayArticle($article);
+		$this->displayArticle($this->article);
 		$this->displaySubArticles($sub_articles);
 		$this->layout->endCapture();
 
-		$this->layout->navbar->addEntries($article->navbar_entries);
+		$this->layout->navbar->addEntries($this->article->navbar_entries);
 	}
 
 	// }}}
