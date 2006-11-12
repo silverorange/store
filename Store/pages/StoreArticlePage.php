@@ -5,19 +5,26 @@ require_once 'Swat/SwatHtmlTag.php';
 require_once 'Swat/SwatString.php';
 require_once 'Site/exceptions/SiteNotFoundException.php';
 require_once 'Store/pages/StorePage.php';
+require_once 'Store/dataobjects/StoreArticle.php';
 require_once 'Store/dataobjects/StoreArticleWrapper.php';
 require_once 'Store/StoreClassMap.php';
 
 /**
+ * A page for loading and displaying articles
  *
  * @package   Store
  * @copyright 2005-2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ * @see       StoreArticle
  */
 class StoreArticlePage extends StorePage
 {
 	// {{{ protected properties
 
-	protected $path = null;
+	/**
+	 * @var string
+	 */
+	protected $path;
 
 	/**
 	 * @var StoreArticle
@@ -44,6 +51,8 @@ class StoreArticlePage extends StorePage
 	}
 
 	// }}}
+
+	// init phase
 	// {{{ public function init()
 
 	public function init()
@@ -104,6 +113,12 @@ class StoreArticlePage extends StorePage
 	// }}}
 	// {{{ protected function findArticle()
 
+	/**
+	 * Gets an article database identifier from this page's path
+	 *
+	 * @return integer the database identifier corresponding to this page's
+	 *                  path or null if no such identifier exists.
+	 */
 	protected function findArticle()
 	{
 		// trim at 254 to prevent database errors
@@ -112,13 +127,20 @@ class StoreArticlePage extends StorePage
 			$this->app->db->quote($path, 'text'));
 
 		$article_id = SwatDB::queryOne($this->app->db, $sql);
-
 		return $article_id;
 	}
 
 	// }}}
 	// {{{ protected function queryArticle()
 
+	/**
+	 * Gets an article object from the database
+	 *
+	 * @param integer $id the database identifier of the article to get.
+	 *
+	 * @return StoreArticle the specified article or null if no such article
+	 *                       exists.
+	 */
 	protected function queryArticle($article_id)
 	{
 		$sql = 'select * from Article where id = %s and id in
@@ -128,17 +150,23 @@ class StoreArticlePage extends StorePage
 			$this->app->db->quote($article_id, 'integer'),
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
-		$articles = SwatDB::query($this->app->db, $sql, 'StoreArticleWrapper');
-
+		$class_map = StoreClassMap::instance();
+		$wrapper = $class_map->resolveClass('StoreArticleWrapper');
+		$articles = SwatDB::query($this->app->db, $sql, $wrapper);
 		return $articles->getFirst();
 	}
 
 	// }}}
 	// {{{ protected function displayArticle()
 
+	/**
+	 * Displays an article
+	 *
+	 * @param StoreArticle $article the article to display.
+	 */
 	protected function displayArticle(StoreArticle $article)
 	{
-		if (strlen($article->bodytext)) {
+		if (strlen($article->bodytext) > 0) {
 			echo '<div id="article-bodytext">',
 				(string)$article->bodytext, '</div>';
 		}
@@ -147,6 +175,15 @@ class StoreArticlePage extends StorePage
 	// }}}
 	// {{{ protected function displaySubArticles()
 
+	/**
+	 * Displays a set of articles as sub-articles
+	 *
+	 * @param StoreArticleWrapper $articles the set of articles to display.
+	 * @param string $path an optional string containing the path to the
+	 *                      article being displayed.
+	 *
+	 * @see StoreArticlePage::displaySubArticle()
+	 */
 	protected function displaySubArticles(StoreArticleWrapper $articles,
 		$path = null)
 	{
@@ -167,7 +204,15 @@ class StoreArticlePage extends StorePage
 	// }}}
 	// {{{ protected function displaySubArticle()
 
-	protected function displaySubArticle($article, $path = null)
+	/**
+	 * Displays an article as a sub-article
+	 *
+	 * @param StoreArticle $article the article to display.
+	 * @param string $path an optional string containing the path to the
+	 *                      article being displayed. If no path is provided,
+	 *                      the path of the current page is used.
+	 */
+	protected function displaySubArticle(StoreArticle $article, $path = null)
 	{
 		if ($path === null)
 			$path = $this->path;
@@ -186,7 +231,13 @@ class StoreArticlePage extends StorePage
 	// {{{ protected function querySubArticles()
 
 	/**
-	 * @return StoreArticleWrapper
+	 * Gets sub-articles of an article
+	 *
+	 * @param integer $id the database identifier of the article from which to
+	 *                     get sub-articles.
+	 *
+	 * @return StoreArticleWrapper a recordset of sub-articles of the
+	 *                              specified article.
 	 */
 	protected function querySubArticles($article_id)
 	{
