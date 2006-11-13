@@ -8,6 +8,7 @@ require_once 'Site/SiteMessagesModule.php';
 require_once 'Store/Store.php';
 require_once 'Store/StoreSessionModule.php';
 require_once 'Store/StoreCartModule.php';
+require_once 'Store/StoreClassMap.php';
 require_once 'Store/dataobjects/StoreAdWrapper.php';
 
 /**
@@ -21,6 +22,16 @@ abstract class StoreApplication extends SiteWebApplication
 {
 	// {{{ public properties
 
+	/**
+	 * A convenience reference to the database connection of this store
+	 * application
+	 *
+	 * This reference is available after StoreWebApplication::initModules() is
+	 * called. This means this convenience reference is usually available just
+	 * after the construction of this application is completed.
+	 *
+	 * @var MDB2_Connection
+	 */
 	public $db;
 
 	// }}}
@@ -57,6 +68,14 @@ abstract class StoreApplication extends SiteWebApplication
 	// {{{ protected function getSecureSourceList()
 
 	/**
+	 * Gets an array of pages sources that are secure
+	 *
+	 * For store web applications, this list containes all checkout and account
+	 * pages by default.
+	 *
+	 * @return array an array or regular expressions using PREG syntax that
+	 *                match source strings that are secure.
+	 *
 	 * @see SiteApplication::getSecureSourceList()
 	 */
 	protected function getSecureSourceList()
@@ -71,13 +90,24 @@ abstract class StoreApplication extends SiteWebApplication
 	// }}}
 	// {{{ protected function parseAd()
 
+	/**
+	 * Parses an ad shortname into an ad object and stores a row in the
+	 * ad referral table
+	 *
+	 * After the referral is logged, the ad is removed from the URL through
+	 * a relocate.
+	 *
+	 * @param string $ad_shortname the shortname of the ad.
+	 */
 	protected function parseAd($ad_shortname)
 	{
 		$sql = sprintf('select id, title, shortname from Ad
 			where shortname = %s',
 			$this->db->quote($ad_shortname, 'text'));
 
-		$ad = SwatDB::query($this->db, $sql, 'StoreAdWrapper')->getFirst();
+		$class_mapper = StoreClassMap::instance();
+		$wrapper = $class_mapper->resolveClass('StoreAdWrapper');
+		$ad = SwatDB::query($this->db, $sql, $wrapper)->getFirst();
 
 		if ($ad !== null) {
 			if (!$this->session->isActive())
