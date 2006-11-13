@@ -4,10 +4,11 @@ require_once 'Store/dataobjects/StoreAddress.php';
 require_once 'Swat/SwatCellRenderer.php';
 
 /**
- * A cell renderer for rendering store address objects
+ * A cell renderer for rendering address objects
  *
  * @package   Store
  * @copyright 2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAddressCellRenderer extends SwatCellRenderer
 {
@@ -24,7 +25,7 @@ class StoreAddressCellRenderer extends SwatCellRenderer
 	// {{{ public function render
 
 	/**
-	 * Renders a store address
+	 * Renders an address
 	 */
 	public function render()
 	{

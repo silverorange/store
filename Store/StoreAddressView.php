@@ -6,7 +6,10 @@ require_once 'Swat/SwatHtmlTag.php';
 require_once 'Swat/SwatControl.php';
 
 /**
- * A viewer for an address object.
+ * A viewer for an address object
+ *
+ * This view contains a link to edit the address and a button to remove the
+ * address. This view is a Swat widget and can exist in the Swat widget tree.
  *
  * @package   Store
  * @copyright 2005-2006 silverorange
@@ -19,17 +22,20 @@ class StoreAddressView extends SwatControl
 	public $address;
 
 	// }}}
+	// {{{ protected properties
+
+	/**
+	 * @var string
+	 */
+	protected $edit_address_link = 'account/address%s';
+
+	// }}}
 	// {{{ private properties
 
 	/**
 	 * @var SwatButton
 	 */
 	private $remove_button;
-
-	/**
-	 * @var string
-	 */
-	private $edit_address_link = 'account/address%s';
 
 	// }}}
 	// {{{ public function init()
@@ -53,6 +59,12 @@ class StoreAddressView extends SwatControl
 	// }}}
 	// {{{ public function hasBeenClicked()
 
+	/**
+	 * Whether or not the 'remove' button of this view whas been clicked
+	 *
+	 * @return boolean true if the remove button has been clicked and false if
+	 *                  it has not.
+	 */
 	public function hasBeenClicked()
 	{
 		return $this->remove_button->hasBeenClicked();
@@ -112,10 +124,10 @@ class StoreAddressView extends SwatControl
 	// {{{ protected function getCSSClassNames()
 
 	/**
-	 * Gets the array of CSS classes that are applied to this entry widget
+	 * Gets the array of CSS classes that are applied to this address view
 	 *
-	 * @return array the array of CSS classes that are applied to this entry
-	 *                widget.
+	 * @return array the array of CSS classes that are applied to this address 
+	 *                view.
 	 */
 	protected function getCSSClassNames()
 	{
