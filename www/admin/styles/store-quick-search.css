@@ -12,6 +12,8 @@
 
 #quick_search_form label {
 	vertical-align: middle;
+	color: #837352;
+	font-size: 80%;
 }
 
 #quick_search_form .swat-form-field-contents {
