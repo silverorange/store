@@ -23,7 +23,7 @@ class StoreCategoryTitleCellRenderer extends AdminTreeTitleLinkCellRenderer
 		if ($this->product_count == 0 && !$this->always_visible) {
 			$this->text = SwatString::minimizeEntities($this->text);
 			$this->content_type = 'text/xml';
-			$this->text.= ' <span>&lt;no products&gt;</span>';
+			$this->text.= ' <span>&lt;'.Store::_('no products').'&gt;</span>';
 		} else {
 			$this->content_type = 'text/plain';
 		}
@@ -36,18 +36,20 @@ class StoreCategoryTitleCellRenderer extends AdminTreeTitleLinkCellRenderer
 		$out = array();
 
 		if (intval($this->child_count) == 0)
-			$out[] = 'no sub-categories';
+			$out[] = Store::_('no sub-categories');
 		else
-			$out[] = sprintf(ngettext('One sub-category', '%d sub-categories',
-				$this->child_count), $this->child_count);
+			$out[] = sprintf(Store::ngettext('One sub-category',
+				'%d sub-categories', $this->child_count),
+				SwatString::numberForamt($this->child_count));
 
 		if (intval($this->product_count) == 0)
-			$out[] = 'no products in the selected catalogue(s)';
+			$out[] = Store::_('no products in the selected catalogue(s)');
 		else
-			$out[] = sprintf(ngettext(
+			$out[] = sprintf(Store::ngettext(
 				'One product in the selected catalogue(s)',
 				'%d products in the selected catalogue(s)',
-				$this->product_count), $this->product_count);
+				$this->product_count),
+				SwatString::numberFormat($this->product_count));
 
 		return implode(', ', $out);
 	}
