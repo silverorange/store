@@ -63,6 +63,14 @@ class StoreCheckoutThankYouPage extends StoreCheckoutUIPage
 	}
 
 	// }}}
+	// {{{ protected function initDataObjects()
+
+	protected function initDataObjects()
+	{
+		// do nothing
+	}
+
+	// }}}
 
 	// build phase
 	// {{{ public function build()
@@ -70,9 +78,6 @@ class StoreCheckoutThankYouPage extends StoreCheckoutUIPage
 	public function build()
 	{
 		parent::build();
-
-		// clear the order and logout
-		unset($this->app->session->order);
 		$this->app->session->logout();
 	}
 
