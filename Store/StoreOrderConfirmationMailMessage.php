@@ -174,6 +174,9 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
 
 	protected function displayDetailsText()
 	{
+		echo self::LINE_BREAK;
+		echo self::LINE_BREAK;
+
 		$createdate = clone $this->order->createdate;
 		$createdate->convertTZ($this->app->default_time_zone);
 		printf('Order Placed: %s',
@@ -231,21 +234,38 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
 				$product = $item->product;
 			}
 
-			printf('   Item #: %s, Quantity: %s',
-				$item->sku,
-				$item->quantity);
-
-			echo self::LINE_BREAK;
-
-			if ($item->description !== null)
-				echo '   Description: ', $item->description, self::LINE_BREAK;
-
-			printf('   Price: %s, Total: %s',
-				SwatString::moneyFormat($item->price, $locale),
-				SwatString::moneyFormat($item->extension, $locale));
+			$this->displayItemHeader($item);
+			$this->displayItemFooter($item);
 
 			echo self::LINE_BREAK, self::LINE_BREAK;
 		}
+	}
+
+	// }}}
+	// {{{ protected function displayItemHeader()
+
+	protected function displayItemHeader($item)
+	{
+		printf('   Item #: %s, Quantity: %s',
+			$item->sku,
+			$item->quantity);
+
+		echo self::LINE_BREAK;
+
+		if ($item->description !== null)
+			echo '   Description: ', $item->description, self::LINE_BREAK;
+	}
+
+	// }}}
+	// {{{ protected function displayItemFooter()
+
+	protected function displayItemFooter($item)
+	{
+		$locale = $this->order->locale->id;
+
+		printf('   Price: %s, Total: %s',
+			SwatString::moneyFormat($item->price, $locale),
+			SwatString::moneyFormat($item->extension, $locale));
 	}
 
 	// }}}
@@ -272,11 +292,6 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
 
 		echo self::LINE_BREAK;
 		printf('Total: %s', SwatString::moneyFormat($order->total, $locale));
-
-		if (count($this->order->getShippingTypeTotalArray()) > 1) {
-			echo self::LINE_BREAK, self::LINE_BREAK;
-			echo $this->order->getMultipleClassCodesText();
-		}
 	}
 
 	// }}}
