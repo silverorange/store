@@ -111,6 +111,10 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 				'If you proceed, %s items will be “%s” for “%s”.',
 				$count), SwatString::numberFormat($count),
 				$this->getEnabledText(), $this->getRegionTitle());
+
+			$this->ui->getWidget('yes_button')->title = sprintf(
+				Store::ngettext('%s Item', '%s Items', $count),
+				$this->getEnabledVerb());
 		}
 
 		$message = $this->ui->getWidget('confirmation_message');
@@ -143,7 +147,7 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 		}
 
 		$this->navbar->addEntry(new SwatNavBarEntry(sprintf(
-			Store::_('%s Items Confirmation'), $this->getEnableText())));
+			Store::_('%s Items Confirmation'), $this->getEnabledVerb())));
 	}
 
 	// }}}
@@ -202,11 +206,11 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 	}
 
 	// }}}
-	// {{{ private function getEnableText()
+	// {{{ private function getEnabledVerb()
 
-	private function getEnableText()
+	private function getEnabledVerb()
 	{
-		return ($this->enabled) ? Store::_('enable') : Store::_('disable');
+		return ($this->enabled) ? Store::_('Enable') : Store::_('Disable');
 	}
 
 	// }}}
