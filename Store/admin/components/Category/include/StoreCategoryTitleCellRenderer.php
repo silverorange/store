@@ -40,7 +40,7 @@ class StoreCategoryTitleCellRenderer extends AdminTreeTitleLinkCellRenderer
 		else
 			$out[] = sprintf(Store::ngettext('One sub-category',
 				'%d sub-categories', $this->child_count),
-				SwatString::numberForamt($this->child_count));
+				SwatString::numberFormat($this->child_count));
 
 		if (intval($this->product_count) == 0)
 			$out[] = Store::_('no products in the selected catalogue(s)');
