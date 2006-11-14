@@ -74,16 +74,13 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 			item in (%s)', $this->app->db->quote($this->enabled, 'boolean'),
 			$this->getRegionQuerySQL(), $this->getItemQuerySQL());
 
-		SwatDB::exec($this->app->db, $sql);
+		$count = SwatDB::exec($this->app->db, $sql);
 
 		$rs = SwatDB::query($this->app->db, $this->getItemQuerySQL());
-		$num = count($rs);
+		$count = count($rs);
 
-		$msg = new SwatMessage(sprintf(Store::ngettext(
-			'One item has been “%2$s” for “%3$s”.', 
-			'%s items have been “%s” for “%s”.', $num),
-			SwatString::numberFormat($num), $this->getEnabledText(),
-			$this->getRegionTitle()), SwatMessage::NOTIFICATION);
+		$msg = new SwatMessage($this->getEnabledText('message', $count),
+			SwatMessage::NOTIFICATION);
 
 		$this->app->messages->add($msg);
 	}
@@ -106,16 +103,10 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 			$this->switchToCancelButton();
 			$msg = Store::_('There are no items in the selected categories.');
 		} else {
-			$msg = sprintf(Store::ngettext(
-				'%4$sIf you proceed, one item will be “%2$s” for “%3$s”.%5$s',
-				'%4$sIf you proceed, %s items will be “%s” for “%s”.%5$s',
-				$count), SwatString::numberFormat($count),
-				$this->getEnabledText(), $this->getRegionTitle(),
-				'<h3>', '</h3>');
+			$msg = $this->getEnabledText('confirmation', $count);
 
-			$this->ui->getWidget('yes_button')->title = sprintf(
-				Store::ngettext('Set Item as “%s”', 'Set Items as “%s”',
-				$count), $this->getEnabledText());
+			$this->ui->getWidget('yes_button')->title =
+				$this->getEnabledText('button', $count);
 		}
 
 		$message = $this->ui->getWidget('confirmation_message');
@@ -147,8 +138,8 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 					'Category/Index?id='.$row->id));
 		}
 
-		$this->navbar->addEntry(new SwatNavBarEntry(sprintf(
-			Store::_('%s Items Confirmation'), $this->getEnabledVerb())));
+		$this->navbar->addEntry(new SwatNavBarEntry(
+			$this->getEnabledText('navbar')));
 	}
 
 	// }}}
@@ -207,19 +198,61 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 	}
 
 	// }}}
-	// {{{ private function getEnabledVerb()
-
-	private function getEnabledVerb()
-	{
-		return ($this->enabled) ? Store::_('Enable') : Store::_('Disable');
-	}
-
-	// }}}
 	// {{{ private function getEnabledText()
 
-	private function getEnabledText()
+	private function getEnabledText($id, $count = 0)
 	{
-		return ($this->enabled) ? Store::_('enabled') : Store::_('disabled');
+		if ($this->enabled) {
+			switch ($id) {
+			case 'button':
+				return Store::ngettext('Set item as “enabled”',
+					'Set items as “enabled”', $count);
+	
+			case 'confirmation':
+				return sprintf(Store::ngettext(
+				'%sIf you proceed, one item will be “enabled” for “%3$s”.%4$s',
+				'%sIf you proceed, %s items will be “enabled” for “%s”.%s',
+				$count), '<h3>', SwatString::numberFormat($count),
+				$this->getRegionTitle(), '</h3>');
+
+			case 'message':
+				return sprintf(Store::ngettext(
+					'One item has been “enabled” for “%2$s”.', 
+					'%s items have been “enabled” for “%s”.', $count),
+					SwatString::numberFormat($count), $this->getRegionTitle());
+
+			case 'navbar':
+				return Store::_('Enable Items Confirmation');
+
+			default:
+				return null;
+			}
+		} else {
+			switch ($id) {
+			case 'button':
+				return Store::ngettext('Set item as “disabled”',
+					'Set items as “disabled”', $count);
+	
+			case 'confirmation':
+				return sprintf(Store::ngettext(
+				'%sIf you proceed, one item will be “disabled” for “%3$s”.%4$s',
+				'%sIf you proceed, %s items will be “disabled” for “%s”.%s',
+				$count), '<h3>', SwatString::numberFormat($count),
+				$this->getRegionTitle(), '</h3>');
+
+			case 'message':
+				return sprintf(Store::ngettext(
+					'One item has been “disabled” for “%2$s”.', 
+					'%s items have been “disabled” for “%s”.', $count),
+					SwatString::numberFormat($count), $this->getRegionTitle());
+
+			case 'navbar':
+				return Store::_('Disable Items Confirmation');
+
+			default:
+				return null;
+			}
+		}
 	}
 
 	// }}}
