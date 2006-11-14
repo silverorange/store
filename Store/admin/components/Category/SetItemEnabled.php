@@ -205,20 +205,20 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 		if ($this->enabled) {
 			switch ($id) {
 			case 'button':
-				return Store::ngettext('Set item as “enabled”',
-					'Set items as “enabled”', $count);
+				return Store::ngettext('Set item as enabled',
+					'Set items as enabled', $count);
 	
 			case 'confirmation':
 				return '<h3>'.sprintf(Store::ngettext(
-				'If you proceed, one item will be “enabled” for “%2$s”.',
-				'If you proceed, %s items will be “enabled” for “%s”.',
+				'If you proceed, one item will be enabled for “%2$s”.',
+				'If you proceed, %s items will be enabled for “%s”.',
 				$count), SwatString::numberFormat($count),
 				$this->getRegionTitle()).'</h3>';
 
 			case 'message':
 				return sprintf(Store::ngettext(
-					'One item has been “enabled” for “%2$s”.',
-					'%s items have been “enabled” for “%s”.', $count),
+					'One item has been enabled for “%2$s”.',
+					'%s items have been enabled for “%s”.', $count),
 					SwatString::numberFormat($count), $this->getRegionTitle());
 
 			case 'navbar':
@@ -230,20 +230,20 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 		} else {
 			switch ($id) {
 			case 'button':
-				return Store::ngettext('Set item as “disabled”',
-					'Set items as “disabled”', $count);
+				return Store::ngettext('Set item as disabled',
+					'Set items as disabled', $count);
 	
 			case 'confirmation':
 				return '<h3>'.sprintf(Store::ngettext(
-				'If you proceed, one item will be “disabled” for “%2$s”.',
-				'If you proceed, %s items will be “disabled” for “%s”.',
+				'If you proceed, one item will be disabled for “%2$s”.',
+				'If you proceed, %s items will be disabled for “%s”.',
 				$count), SwatString::numberFormat($count),
 				$this->getRegionTitle()).'</h3>';
 
 			case 'message':
 				return sprintf(Store::ngettext(
-					'One item has been “disabled” for “%2$s”.',
-					'%s items have been “disabled” for “%s”.', $count),
+					'One item has been disabled for “%2$s”.',
+					'%s items have been disabled for “%s”.', $count),
 					SwatString::numberFormat($count), $this->getRegionTitle());
 
 			case 'navbar':
