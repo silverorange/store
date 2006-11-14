@@ -46,7 +46,7 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 	// }}}
 
 	// process phase
-	// {{{ protected function processDBData()
+	// {{{ protected function processResponse()
 
 	protected function processResponse()
 	{
