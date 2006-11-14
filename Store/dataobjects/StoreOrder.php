@@ -2,12 +2,14 @@
 
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
+require_once 'Store/StoreOrderConfirmationMailMessage.php';
 require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/dataobjects/StoreOrderAddress.php';
 require_once 'Store/dataobjects/StoreOrderPaymentMethod.php';
 require_once 'Store/dataobjects/StoreOrderItemWrapper.php';
 require_once 'Store/dataobjects/StoreAd.php';
+require_once 'Store/dataobjects/StoreLocale.php';
 
 /**
  *
@@ -127,7 +129,18 @@ class StoreOrder extends StoreDataObject
 
 	public function sendConfirmationEmail(SiteApplication $app)
 	{
-		// TOOD: implement this by pulling up from the Veseys Order dataobject
+		// This is demo code. StoreOrderConfirmationMailMessage is
+		// abstract and the site-specific version must be used.
+
+		if ($this->email === null)
+			return;
+
+		try {
+			$email = new StoreOrderConfirmationMailMessage($app, $this);
+			$email->send();
+		} catch (SiteMailException $e) {
+			$e->process(false);
+		}
 	}
 
 	// }}}
