@@ -44,6 +44,8 @@ $(POTFILE): potfiles-php potfiles-xml
 	$(XGETTEXT) -o $(POTFILE) -L Php -f potfiles-php
 	$(XGETTEXT) -j -o $(POTFILE) -L Glade -f potfiles-xml
 	$(MSGUNIQ) -o $(POTFILE) $(POTFILE)
+	for i in `cat potfiles-php`; do rm -f $$i; done
+	rm -f potfiles-php
 
 %.mo: %.po
 	$(MSGFMT) -o $@ $<
