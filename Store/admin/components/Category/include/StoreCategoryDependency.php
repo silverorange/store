@@ -5,7 +5,7 @@ require_once 'Admin/AdminListDependency.php';
 /**
  * A dependency for categories
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
@@ -15,13 +15,16 @@ class StoreCategoryDependency extends AdminListDependency
 	{
 		switch ($status_level) {
 		case AdminDependency::DELETE:
-			$message = ngettext('Delete the following category?',
-					'Delete the following categories?', $count);
+			$message = Store::ngettext('Delete the following category?',
+				'Delete the following categories?', $count);
+
 			break;
 
 		case AdminDependency::NODELETE:
-			$message = ngettext('The following category can not be deleted:',
-					'The following categories can not be deleted:', $count);
+			$message = Store::ngettext(
+				'The following category can not be deleted:',
+				'The following categories can not be deleted:', $count);
+
 			break;
 
 		default:
@@ -33,7 +36,7 @@ class StoreCategoryDependency extends AdminListDependency
 
 	protected function getDependencyText($count)
 	{
-		$message = ngettext('Dependent sub-category:',
+		$message = Store::ngettext('Dependent sub-category:',
 			'Dependent sub-categories:', $count);
 
 		return $message;

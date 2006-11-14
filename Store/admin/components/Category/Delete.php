@@ -3,7 +3,7 @@
 require_once 'Admin/pages/AdminDBDelete.php';
 require_once 'SwatDB/SwatDB.php';
 
-require_once 'include/StoreProductDependency.php';
+require_once 'include/StoreCategoryProductDependency.php';
 require_once 'include/StoreCategoryDependency.php';
 
 /**
@@ -13,7 +13,7 @@ require_once 'include/StoreCategoryDependency.php';
  * @copyright 2005-2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class CategoryDelete extends AdminDBDelete
+class StoreCategoryDelete extends AdminDBDelete
 {
 	// {{{ private properties
 
@@ -92,7 +92,7 @@ class CategoryDelete extends AdminDBDelete
 
 		$item_list = $this->getItemList('integer');
 
-		$dep = new CategoryDependency();
+		$dep = new StoreCategoryDependency();
 		$dep->entries = AdminListDependency::queryEntries($this->app->db,
 			'Category', 'integer:id', null, 'text:title', 'title',
 			'id in ('.$item_list.')', AdminDependency::DELETE);
@@ -121,7 +121,7 @@ class CategoryDelete extends AdminDBDelete
 
 	private function getDependentCategories($dep, $item_list)
 	{
-		$dep_subcategories = new CategoryDependency();
+		$dep_subcategories = new StoreCategoryDependency();
 
 		$dep_subcategories->entries = AdminListDependency::queryEntries(
 			$this->app->db, 'Category', 'integer:id', 'integer:parent',
@@ -148,7 +148,7 @@ class CategoryDelete extends AdminDBDelete
 
 	private function getDependentProducts($dep, $item_list)
 	{
-		$dep_products = new ProductDependency();
+		$dep_products = new StoreCategoryProductDependency();
 
 		$dep_products->summaries = AdminSummaryDependency::querySummaries(
 			$this->app->db, 'CategoryProductBinding', 'integer:product',
