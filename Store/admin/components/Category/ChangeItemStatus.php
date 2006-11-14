@@ -98,10 +98,10 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 			$msg = Store::_('There are no items in the selected categories.');
 		} else {
 			$msg = sprintf(Store::ngettext(
-				'Set one item status as “%s”?',
-				'Set %s item statuses as “%s”?', $count),
-				SwatString::numberFormat($count),
-				$this->getStatusTitle());
+				'%3$sSet one item status as “%2$s”?%4$s',
+				'%3$sSet %1$s item statuses as “%2$s”?%4%s', $count),
+				SwatString::numberFormat($count), $this->getStatusTitle(),
+				'<h3>', '</h3>');
 
 			$this->ui->getWidget('yes_button')->title =
 				Store::ngettext('Change Item Status', 'Change Item Statuses',

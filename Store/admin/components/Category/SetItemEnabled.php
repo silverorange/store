@@ -107,14 +107,15 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 			$msg = Store::_('There are no items in the selected categories.');
 		} else {
 			$msg = sprintf(Store::ngettext(
-				'If you proceed, one item will be “%2$s” for “%3$s”.',
-				'If you proceed, %s items will be “%s” for “%s”.',
+				'%4$sIf you proceed, one item will be “%2$s” for “%3$s”.%5$s',
+				'%4$sIf you proceed, %s items will be “%s” for “%s”.%5$s',
 				$count), SwatString::numberFormat($count),
-				$this->getEnabledText(), $this->getRegionTitle());
+				$this->getEnabledText(), $this->getRegionTitle(),
+				'<h3>', '</h3>');
 
 			$this->ui->getWidget('yes_button')->title = sprintf(
-				Store::ngettext('%s Item', '%s Items', $count),
-				$this->getEnabledVerb());
+				Store::ngettext('Set Item as “%s”', 'Set Items as “%s”',
+				$count), $this->getEnabledText());
 		}
 
 		$message = $this->ui->getWidget('confirmation_message');
