@@ -52,9 +52,9 @@ abstract class StoreCatalogStatus extends AdminDBEdit
 		$status_options = array();
 
 		$class_map = StoreClassMap::instance();
-		$catalog = $class_map->resolveClass('StoreCatalog');
+		$catalog_class = $class_map->resolveClass('StoreCatalog');
 
-		foreach (call_user_func(array($catalog, 'getStatuses')) as 
+		foreach (call_user_func(array($catalog_class, 'getStatuses')) as 
 			$id => $title)
 				$status_options[] = new SwatOption($id, $title);
 
@@ -169,7 +169,7 @@ abstract class StoreCatalogStatus extends AdminDBEdit
 			$this->app->db->quote($this->id, 'integer'));
 
 		$class_map = StoreClassMap::instance();
-		$catalog = $class_map->resolveClass('StoreCatalog');
+		$catalog_class = $class_map->resolveClass('StoreCatalog');
 
 		$statuses = SwatDB::query($this->app->db, $sql);
 
@@ -177,7 +177,7 @@ abstract class StoreCatalogStatus extends AdminDBEdit
 			$status_flydown = $status_replicator->getWidget('status',
 				$status->region);
 
-			$status_constant = call_user_func(array($catalog,
+			$status_constant = call_user_func(array($catalog_class,
 				'getStatusConstant'), $status->available);
 
 			$status_flydown->value = $status_constant;

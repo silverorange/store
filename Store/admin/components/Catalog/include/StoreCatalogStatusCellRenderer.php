@@ -19,7 +19,7 @@ class StoreCatalogStatusCellRenderer extends SwatCellRenderer
 	public function render()
 	{
 		$class_map = StoreClassMap::instance();
-		$catalog = $class_map->resolveClass('StoreCatalog');
+		$catalog_class = $class_map->resolveClass('StoreCatalog');
 
 		$sql = 'select Region.title, available
 			from Region
@@ -34,10 +34,10 @@ class StoreCatalogStatusCellRenderer extends SwatCellRenderer
 			echo SwatString::minimizeEntities($row->title);
 			echo ': ';
 
-			$status_constant = call_user_func(array($catalog,
+			$status_constant = call_user_func(array($catalog_class,
 				'getStatusConstant'), $row->available);
 
-			echo call_user_func(array($catalog, 'getStatusTitle'),
+			echo call_user_func(array($catalog_class, 'getStatusTitle'),
 				$status_constant);
 
 			echo '<br />';

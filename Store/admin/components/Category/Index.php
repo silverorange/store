@@ -394,9 +394,9 @@ class StoreCategoryIndex extends AdminIndex
 	protected function getItemStatuses()
 	{
 		$class_map = StoreClassMap::instance();
-		$item = $class_map->resolveClass('StoreItem');
+		$item_class = $class_map->resolveClass('StoreItem');
 
-		return call_user_func(array($item, 'getStatuses'));
+		return call_user_func(array($item_class, 'getStatuses'));
 	}
 	// }}}
 	// {{{ protected function getTableStore()

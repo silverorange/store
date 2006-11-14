@@ -19,8 +19,9 @@ class StoreItemStatusCellRenderer extends SwatCellRenderer
 	public function render()
 	{
 		$class_map = StoreClassMap::instance();
-		$item = $class_map->resolveClass('StoreItem');
-		$title = call_user_func(array($item, 'getStatusTitle'), $this->status);
+		$item_class = $class_map->resolveClass('StoreItem');
+		$title = call_user_func(array($item_class, 'getStatusTitle'),
+			$this->status);
 
 		echo SwatString::minimizeEntities($title);
 	}
