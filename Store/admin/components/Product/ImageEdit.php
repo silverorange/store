@@ -184,7 +184,7 @@ class StoreProductImageEdit extends AdminPage
 
 					$validated = false;
 					$msg = new SwatMessage(sprintf(
-						Store::_('The %3$s%s must be %1$s × %2$s pixels.'),
+						Store::_('The %%s must be %1$s × %2$s pixels.'),
 						$dimensions[0], $dimensions[1]), SwatMessage::ERROR);
 
 					$file->addMessage($msg);
@@ -192,7 +192,7 @@ class StoreProductImageEdit extends AdminPage
 					$validated = false;
 
 					$msg = new SwatMessage(sprintf(Store::_(
-						'The %2$s%s can be at most %1$s× pixels wide.'),
+						'The %%s can be at most %1$s× pixels wide.'),
 						$dimensions[0]), SwatMessage::ERROR);
 
 					$file->addMessage($msg);
