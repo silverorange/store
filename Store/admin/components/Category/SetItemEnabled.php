@@ -205,8 +205,8 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 		if ($this->enabled) {
 			switch ($id) {
 			case 'button':
-				return Store::ngettext('Set item as enabled',
-					'Set items as enabled', $count);
+				return Store::ngettext('Set Item as Enabled',
+					'Set Items as Enabled', $count);
 	
 			case 'confirmation':
 				return '<h3>'.sprintf(Store::ngettext(
@@ -230,8 +230,8 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 		} else {
 			switch ($id) {
 			case 'button':
-				return Store::ngettext('Set item as disabled',
-					'Set items as disabled', $count);
+				return Store::ngettext('Set Item as Disabled',
+					'Set Items as Disabled', $count);
 	
 			case 'confirmation':
 				return '<h3>'.sprintf(Store::ngettext(
