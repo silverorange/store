@@ -209,11 +209,11 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 					'Set items as “enabled”', $count);
 	
 			case 'confirmation':
-				return sprintf(Store::ngettext(
-				'%sIf you proceed, one item will be “enabled” for “%3$s”.%4$s',
-				'%sIf you proceed, %s items will be “enabled” for “%s”.%s',
-				$count), '<h3>', SwatString::numberFormat($count),
-				$this->getRegionTitle(), '</h3>');
+				return '<h3>'.sprintf(Store::ngettext(
+				'If you proceed, one item will be “enabled” for “%2$s”.',
+				'If you proceed, %s items will be “enabled” for “%s”.',
+				$count), SwatString::numberFormat($count),
+				$this->getRegionTitle()).'</h3>';
 
 			case 'message':
 				return sprintf(Store::ngettext(
@@ -234,11 +234,11 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 					'Set items as “disabled”', $count);
 	
 			case 'confirmation':
-				return sprintf(Store::ngettext(
-				'%sIf you proceed, one item will be “disabled” for “%3$s”.%4$s',
-				'%sIf you proceed, %s items will be “disabled” for “%s”.%s',
-				$count), '<h3>', SwatString::numberFormat($count),
-				$this->getRegionTitle(), '</h3>');
+				return '<h3>'.sprintf(Store::ngettext(
+				'If you proceed, one item will be “disabled” for “%2$s”.',
+				'If you proceed, %s items will be “disabled” for “%s”.',
+				$count), SwatString::numberFormat($count),
+				$this->getRegionTitle()).'</h3>';
 
 			case 'message':
 				return sprintf(Store::ngettext(
