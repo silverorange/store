@@ -92,8 +92,8 @@ abstract class StoreOrderDetails extends AdminPage
 	{
 		if ($this->order === null) {
 			$class_map = StoreClassMap::instance();
-			$order = $class_map->resolveClass('StoreOrder');
-			$this->order = new $order();
+			$order_class = $class_map->resolveClass('StoreOrder');
+			$this->order = new $order_class();
 
 			$this->order->setDatabase($this->app->db);
 

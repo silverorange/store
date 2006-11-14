@@ -45,9 +45,9 @@ abstract class StoreCatalogEdit extends AdminDBEdit
 		$status_options = array();
 
 		$class_map = StoreClassMap::instance();
-		$catalog = $class_map->resolveClass('StoreCatalog');
+		$catalog_class = $class_map->resolveClass('StoreCatalog');
 
-		foreach (call_user_func(array($catalog, 'getStatuses')) as 
+		foreach (call_user_func(array($catalog_class, 'getStatuses')) as 
 			$id => $title)
 				$status_options[] = new SwatOption($id, $title);
 
