@@ -19,6 +19,7 @@ class StoreTotalRow extends SwatTableViewRow
 	public $link_title = null;
 	public $value = null;
 	public $offset = 0;
+	public $note = null;
 
 	// }}}
 	// {{{ protected properties
@@ -57,19 +58,27 @@ class StoreTotalRow extends SwatTableViewRow
 
 		$tr_tag->open();
 
+		$th_tag->open();
+
 		if ($this->link === null) {
-			$th_tag->setContent($this->title.':');
-			$th_tag->display();
+			echo SwatString::minimizeEntities($this->title);
 		} else {
-			$th_tag->open();
 			$anchor_tag = new SwatHtmlTag('a');
 			$anchor_tag->href = $this->link;
 			$anchor_tag->title = $this->link_title;
 			$anchor_tag->setContent($this->title);
 			$anchor_tag->display();
 			echo ':';
-			$th_tag->close();
 		}
+
+		if ($this->note !== null) {
+			$div = new SwatHtmlTag('div');
+			$div->class = 'note';
+			$div->setContent($this->note);
+			$div->display();
+		}
+
+		$th_tag->close();
 
 		$td_tag = new SwatHtmlTag('td');
 		$td_tag->class = $this->getCSSClassString();
