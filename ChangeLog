@@ -1,3 +1,636 @@
+2006-11-14  nick
+
+	* [r13023]
+	  store/trunk/Store/admin/components/Order/EmailConfirmation.php:
+	  fix docs
+
+2006-11-14  isaac
+
+	* [r13020] store/trunk/Store/admin/components/Category/Delete.php,
+	  store/trunk/Store/admin/components/Category/include/StoreCategoryDependency.php,
+	  
+	  store/trunk/Store/admin/components/Category/include/StoreCategoryProductDependency.php,
+	  
+	  store/trunk/Store/admin/components/Category/include/StoreCategoryTableView.php,
+	  
+	  store/trunk/Store/admin/components/Category/include/StoreCategoryTitleCellRenderer.php:
+	  
+	  a few things missed while moving categories up to store
+
+2006-11-14  nrf
+
+	* [r13014] store/trunk/Store/StoreSessionModule.php:
+	  Let the checkout handle the order dataobject, the session
+	  manages the account dataobject.
+
+2006-11-14  isaac
+
+	* [r13013]
+	  store/trunk/Store/admin/components/ItemGroup/Delete.php:
+	  follow mikes lead, which should of been obvious, and move the
+	  surrounding html outside of the sprintf - when doing
+	  this, I also noticed a sprintf placeholder that had been removed
+	  in r12938 that is actually used a few lines below
+
+2006-11-14  nrf
+
+	* [r13012] store/trunk/Store/pages/StoreCheckoutPage.php,
+	  store/trunk/Store/pages/StoreCheckoutThankYouPage.php:
+	  - Do not unset the order on the thank-you page.
+	  - Instead check whether order has already been saved when
+	  initializing the Order dataobject.
+	  - Remove special check for rare case of thank you page not
+	  loading which will now be handled in the normal path.
+
+2006-11-14  gauthierm
+
+	* [r13010]
+	  store/trunk/Store/admin/components/Category/SetItemEnabled.php:
+	  use title case for button text
+	* [r13009]
+	  store/trunk/Store/admin/components/Category/SetItemEnabled.php:
+	  don't put enabled/disabled in quotation marks.
+	* [r13008]
+	  store/trunk/Store/admin/components/Category/SetItemEnabled.php:
+	  no need to include html replacement markers in the translated
+	  string itself when the html goes around the whole string
+
+2006-11-14  isaac
+
+	* [r13007]
+	  store/trunk/Store/admin/components/Category/SetItemEnabled.php:
+	  this snuck in as well
+	* [r13006]
+	  store/trunk/Store/admin/components/Category/SetItemEnabled.php:
+	  ws
+	* [r13005]
+	  store/trunk/Store/admin/components/Category/SetItemEnabled.php:
+	  after discussion with nrf, restructure to make translation better
+	* [r13004] store/trunk/Store/admin/components/Catalog/Edit.php,
+	  store/trunk/Store/admin/components/Catalog/Status.php,
+	  store/trunk/Store/admin/components/Catalog/include/StoreCatalogStatusCellRenderer.php,
+	  store/trunk/Store/admin/components/Category/Index.php,
+	  store/trunk/Store/admin/components/Item/include/StoreItemStatusCellRenderer.php,
+	  store/trunk/Store/admin/components/Order/Details.php,
+	  store/trunk/Store/admin/components/Order/EmailConfirmation.php:
+	  standardize on $item_class when using StoreClassMap as discussed
+	* [r13003]
+	  store/trunk/Store/admin/components/Category/ChangeItemStatus.php,
+	  store/trunk/Store/admin/components/Category/SetItemEnabled.php:
+	  move r12973 up to store, wish i'd noticed this before r13001
+	* [r13002]
+	  store/trunk/Store/admin/components/ItemGroup/Delete.php:
+	  this was fixed up in r12938, but it was originally intended to
+	  remove all html markup from the string, so hence this commit
+	* [r13001]
+	  store/trunk/Store/admin/components/Category/ChangeItemStatus.php,
+	  store/trunk/Store/admin/components/Category/SetItemEnabled.php:
+	  move r12947 to store where it belongs, and fix up steven's code
+	  along the way.
+	  
+	  For future reference Steve, you don't need to wrap an ngettext
+	  in a sprintf unless you have placeholders that need
+	  replacing within the text
+
+2006-11-14  nick
+
+	* [r12995] store/trunk/Store/pages/account-order.xml:
+	  Message is no longer part of the store package (if it ever was)
+
+2006-11-13  steven
+
+	* [r12994] store/trunk/www/admin/styles/store-quick-search.css:
+	  Make the Store quick item search label smaller/prettier (based
+	  on mike's work)
+
+2006-11-13  gauthierm
+
+	* [r12971] store/trunk/Store/dataobjects/StoreImageWrapper.php:
+	  a recordset wrapper for abstract objects makes no sense
+	* [r12970] store/trunk/Store/StoreAddressCellRenderer.php,
+	  store/trunk/Store/StoreAddressView.php,
+	  store/trunk/Store/StoreApplication.php:
+	  - add an update api documentation
+	  - use class map when parsing ad object in StoreWebApplication
+	* [r12968] store/trunk/Store/StoreArticlePageFactory.php:
+	  - add and update api documentation
+	  - make constructor protected to preserve singleton pattern
+	  - escape delimiters in page map patterns
+
+2006-11-12  gauthierm
+
+	* [r12958] store/trunk/Store/pages/StoreArticlePage.php:
+	  - added type hinting
+	  - use class map in queryArticle()
+	  - added and updated docblocks
+	  - explicitly check strlen() > 0 instead of just strlen()
+	* [r12957] store/trunk/Store/pages/StoreArticlePage.php:
+	  get article in init phase and set selected article id with the
+	  id of the page article. This likely breaks something.
+
+2006-11-11  gauthierm
+
+	* [r12943]
+	  store/trunk/Store/admin/components/Category/ChangeItemStatus.php:
+	  
+	  remove note and rename variable.
+	* [r12942] store/trunk/Store/admin/components/Catalog/Details.php:
+	  fix typo
+	* [r12941]
+	  store/trunk/Store/admin/components/Category/ChangeItemStatus.php:
+	  
+	  fix method name and add note
+	* [r12940] store/trunk/Store/admin/components/Catalog/Details.php:
+	  add required file
+	* [r12939] store/trunk/Store/StorePostalCodeEntry.php:
+	  add required file
+	* [r12938]
+	  store/trunk/Store/admin/components/ItemGroup/Delete.php,
+	  store/trunk/Store/admin/components/ItemGroup/Edit.php:
+	  fix syntax errors
+	* [r12926] store/trunk/Store/StoreMessage.php:
+	  Respect Swat API change in r12925.
+
+2006-11-10  nrf
+
+	* [r12918]
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php:
+	  Move method to the correct phase.
+
+2006-11-10  gauthierm
+
+	* [r12915] store/trunk/Store/pages/StoreProductPage.php:
+	  add type hinting and wrap lines
+	* [r12912] store/trunk/Store/pages/StoreProductPage.php:
+	  private after protected
+	* [r12909] store/trunk/Store/dataobjects/StoreAddress.php:
+	  added comment for our future selves.
+
+2006-11-10  nrf
+
+	* [r12899] store/trunk/Store/dataobjects/StoreCartEntry.php,
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Remove dead tax code that doesn't belong in Store anyway.
+
+2006-11-10  isaac
+
+	* [r12886]
+	  store/trunk/Store/admin/components/Category/AddProducts.php,
+	  store/trunk/Store/admin/components/Category/FeaturedProducts.php:
+	  
+	  these had really old database calls - using
+	  $this->app->db->query() as opposed to calling through SwatDB -
+	  as well,
+	  they should of been using exec, not query.
+	  
+	  Also, the messages weren't be added to the app, so were never
+	  displayed
+
+2006-11-10  nrf
+
+	* [r12885] store/trunk/Store/StoreLocaleApplication.php,
+	  store/trunk/Store/pages/StoreCheckoutBillingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php:
+	  Default country flydowns to the country of the current locale.
+
+2006-11-09  isaac
+
+	* [r12858] store/trunk/Store/admin/components/Category,
+	  store/trunk/Store/admin/components/Category/AddProducts.php,
+	  store/trunk/Store/admin/components/Category/ChangeItemStatus.php,
+	  store/trunk/Store/admin/components/Category/Delete.php,
+	  store/trunk/Store/admin/components/Category/Edit.php,
+	  store/trunk/Store/admin/components/Category/FeaturedProducts.php,
+	  store/trunk/Store/admin/components/Category/ImageDelete.php,
+	  store/trunk/Store/admin/components/Category/ImageEdit.php,
+	  store/trunk/Store/admin/components/Category/Index.php,
+	  store/trunk/Store/admin/components/Category/Order.php,
+	  store/trunk/Store/admin/components/Category/ProductOrder.php,
+	  store/trunk/Store/admin/components/Category/RemoveProducts.php,
+	  store/trunk/Store/admin/components/Category/SetItemEnabled.php,
+	  store/trunk/Store/admin/components/Category/addproducts.xml,
+	  store/trunk/Store/admin/components/Category/edit.xml,
+	  store/trunk/Store/admin/components/Category/featuredproducts.xml,
+	  store/trunk/Store/admin/components/Category/imageedit.xml,
+	  store/trunk/Store/admin/components/Category/include/CategoryDependency.php,
+	  
+	  store/trunk/Store/admin/components/Category/include/CategoryTableView.php,
+	  
+	  store/trunk/Store/admin/components/Category/include/CategoryTitleCellRenderer.php,
+	  
+	  store/trunk/Store/admin/components/Category/include/ProductDependency.php,
+	  
+	  store/trunk/Store/admin/components/Category/include/StoreCategoryDependency.php,
+	  
+	  store/trunk/Store/admin/components/Category/include/StoreCategoryProductDependency.php,
+	  
+	  store/trunk/Store/admin/components/Category/include/StoreCategoryTableView.php,
+	  
+	  store/trunk/Store/admin/components/Category/include/StoreCategoryTitleCellRenderer.php,
+	  store/trunk/Store/admin/components/Category/index.xml,
+	  store/trunk/Store/admin/components/Item,
+	  store/trunk/Store/admin/components/Item/Delete.php,
+	  store/trunk/Store/admin/components/Item/Edit.php,
+	  store/trunk/Store/admin/components/Item/LimitedStockEdit.php,
+	  store/trunk/Store/admin/components/Item/Order.php,
+	  store/trunk/Store/admin/components/Item/QuantityDiscount.php,
+	  store/trunk/Store/admin/components/Item/QuantityDiscountDelete.php,
+	  store/trunk/Store/admin/components/Item/edit.xml,
+	  store/trunk/Store/admin/components/Item/include/ItemExportCellRenderer.php,
+	  
+	  store/trunk/Store/admin/components/Item/include/ItemStatusCellRenderer.php,
+	  
+	  store/trunk/Store/admin/components/Item/include/QuantityCellRenderer.php,
+	  
+	  store/trunk/Store/admin/components/Item/include/QuantityDiscountActions.php,
+	  
+	  store/trunk/Store/admin/components/Item/include/QuantityDiscountTableView.php,
+	  
+	  store/trunk/Store/admin/components/Item/include/StoreItemQuantityCellRenderer.php,
+	  
+	  store/trunk/Store/admin/components/Item/include/StoreItemQuantityDiscountActions.php,
+	  
+	  store/trunk/Store/admin/components/Item/include/StoreItemQuantityDiscountTableView.php,
+	  
+	  store/trunk/Store/admin/components/Item/include/StoreItemStatusCellRenderer.php,
+	  store/trunk/Store/admin/components/Item/limitedstockedit.xml,
+	  store/trunk/Store/admin/components/Item/quantity-discount.xml,
+	  store/trunk/Store/admin/components/ItemGroup,
+	  store/trunk/Store/admin/components/ItemGroup/Delete.php,
+	  store/trunk/Store/admin/components/ItemGroup/Edit.php,
+	  store/trunk/Store/admin/components/ItemGroup/Order.php,
+	  store/trunk/Store/admin/components/ItemGroup/edit.xml,
+	  store/trunk/Store/admin/components/Order/Details.php,
+	  store/trunk/Store/admin/components/Order/EmailConfirmation.php,
+	  store/trunk/Store/admin/components/Order/Index.php,
+	  store/trunk/Store/admin/components/Product,
+	  store/trunk/Store/admin/components/Product/Delete.php,
+	  store/trunk/Store/admin/components/Product/Details.php,
+	  store/trunk/Store/admin/components/Product/Edit.php,
+	  store/trunk/Store/admin/components/Product/ImageDelete.php,
+	  store/trunk/Store/admin/components/Product/ImageEdit.php,
+	  store/trunk/Store/admin/components/Product/Index.php,
+	  store/trunk/Store/admin/components/Product/RelatedProduct.php,
+	  store/trunk/Store/admin/components/Product/RelatedProductDelete.php,
+	  store/trunk/Store/admin/components/Product/TipEdit.php,
+	  store/trunk/Store/admin/components/Product/details.xml,
+	  store/trunk/Store/admin/components/Product/edit.xml,
+	  store/trunk/Store/admin/components/Product/imageedit.xml,
+	  store/trunk/Store/admin/components/Product/include,
+	  store/trunk/Store/admin/components/Product/include/IconCellRenderer.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/ItemDependency.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/ItemDiscountCellRenderer.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/ItemGroupAction.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/ItemGroupGroup.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/ItemRegionPriceCellRenderer.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/ItemStatusCellRenderer.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/ItemTableView.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/PageNumberCellRenderer.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/ProductSearchWhereClause.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/ProductTableView.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/ProductTitleCellRenderer.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/RelatedProductDependency.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/StoreItemDiscountCellRenderer.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/StoreItemGroupAction.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/StoreItemGroupGroup.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/StoreItemRegionPriceCellRenderer.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/StoreItemStatusCellRenderer.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/StoreItemTableView.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/StoreProductItemDependency.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/StoreProductRelatedProductDependency.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/StoreProductSearchWhereClause.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/StoreProductTableView.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/StoreProductTitleCellRenderer.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/SymbolCellRenderer.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/TagCellRenderer.php,
+	  store/trunk/Store/admin/components/Product/index.xml,
+	  store/trunk/Store/admin/components/Product/relatedproduct.xml,
+	  store/trunk/Store/admin/components/Product/search.xml,
+	  store/trunk/Store/admin/components/Product/tipedit.xml:
+	  copy Category, Product, Item and ItemGroup up to store - some of
+	  these files will probably be moved again before I'm
+	  done. These aren't 100% tested and working with existing sites,
+	  but those changes should come soon, so look for massif
+	  veseys and uppermost commits to make use of all this shortly
+
+2006-11-09  nick
+
+	* [r12857]
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php:
+	  This widget hasn't been needed since commit 12662
+
+2006-11-09  gauthierm
+
+	* [r12846] store/trunk/Store/pages/StoreSearchPage.php:
+	  remove veseysism
+	* [r12844] store/trunk/Store/StoreNateGoSearchIndexer.php:
+	  remove Veseys specific fields
+	* [r12837] store/trunk/Store/StoreNateGoSearchIndexer.php:
+	  - declare class as abstract
+	  - require appropriate files
+	* [r12832] store/trunk/Store/StoreNateGoSearchIndexer.php:
+	  move nate-go search indexer to store
+
+2006-11-09  nrf
+
+	* [r12824] store/trunk/sql/triggers/AdReferrerInsertTrigger.sql:
+	  Same misnamed trigger
+
+2006-11-09  gauthierm
+
+	* [r12814] store/trunk/Store/pages/StoreAccountOrderPage.php,
+	  store/trunk/Store/pages/StoreProductPage.php,
+	  store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Rename *AccountID as *AccountId.
+
+2006-11-09  nrf
+
+	* [r12813] store/trunk/Store/dataobjects/StoreImage.php,
+	  store/trunk/Store/pages/StoreProductImagePage.php,
+	  store/trunk/Store/pages/StoreProductPage.php,
+	  store/trunk/sql/tables/Image.sql:
+	  - Add a boolean "border" field to images.
+	  - Use new classes "store-border-on" and "store-border-off"
+
+2006-11-09  gauthierm
+
+	* [r12811] store/trunk/Store/StoreSessionModule.php:
+	  fix folding
+	* [r12809] store/trunk/Store/StoreCheckoutCart.php,
+	  store/trunk/Store/pages/StoreProductPage.php,
+	  store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  rename *SessionID as *SessionId in SiteSessionModule. This
+	  matches API changes in #12808.
+
+2006-11-08  gauthierm
+
+	* [r12772] store/trunk/Store/dataobjects/StoreItem.php:
+	  - only use shortcut is_available if the value is not null
+	  - select region field in Item::loadInternal()
+	  - fix syntax error in quantity discount region sql
+
+2006-11-08  nrf
+
+	* [r12766] store/trunk/Store/dataobjects/StoreImage.php:
+	  Always round up to ensure final image is not smaller than the
+	  requested size.
+
+2006-11-07  nrf
+
+	* [r12761] store/trunk/Store/dataobjects/StoreImage.php:
+	  - two dimensional sizing of images
+	  - non-square thumbnails... cropped to any rectangle
+
+2006-11-06  gauthierm
+
+	* [r12691]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  move saving the order into a protected method
+
+2006-11-06  steven
+
+	* [r12687] store/trunk/www/styles/store-cart.css:
+	  Keep store-cart-table-view header cells from wrapping
+	  This keeps the "Item #" heading from getting broken on to two
+	  lines
+
+2006-11-05  gauthierm
+
+	* [r12675] store/trunk/Store/admin/StoreAdminMenuView.php:
+	  - give form field an id so we can get at it later
+	  - translate strings
+	  - add documentetion
+
+2006-11-03  nick
+
+	* [r12661]
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php:
+	  Take this method out of the Store package - it's only a Veseys
+	  thing. Note -
+	  this gets teh checkout working on uppermost again.
+
+2006-11-02  nrf
+
+	* [r12643] store/trunk/Store/pages/StoreProductImagePage.php:
+	  Fix links to other images on ProductImagePage
+
+2006-11-02  nick
+
+	* [r12637] store/trunk/Store/admin/components/Account/Details.php:
+	  The id needs to be accessible by sub-classes
+
+2006-11-02  steven
+
+	* [r12624] store/trunk/www/styles/store-cart-page.css:
+	  remove large font size and fixed width button fix from Store
+	  (veseys can do it locally if we want)
+	* [r12620] store/trunk/www/styles/store-cart-page.css:
+	  Make the checkout buttons a bit wider.
+	  I had hoped to make this fixed EM width IE-only (since it's
+	  really to keep the buttons from getting too wide in IE) as
+	  mentioned in the comments on ticket #169. However, that's
+	  prooving to be too tricky, so I'm just making it a bit wider.
+
+2006-11-02  nick
+
+	* [r12605] store/trunk/Store/admin/components/Order/Index.php,
+	  store/trunk/Store/admin/components/Order/index.xml:
+	  Allow the title of the Order to be set via subclassing. Lets us
+	  leave the xml
+	  alone for simple changes.
+
+2006-11-02  gauthierm
+
+	* [r12598] store/trunk/Store/admin/StoreAdminMenuView.php:
+	  use new getInlineJavascript() and displayInlineJavaScript()
+	  methods
+	* [r12591]
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php:
+	  whitespace
+	* [r12588] store/trunk/Store/pages/StoreAccountDetailsPage.php:
+	  Create an initInternal() method like processInternal() for
+	  StoreAccountDetailsPage.
+
+2006-11-01  gauthierm
+
+	* [r12574] store/trunk/Store/StoreAddressView.php,
+	  store/trunk/Store/StorePaymentMethodView.php:
+	  set parent reference for buttons
+	* [r12530] store/trunk/Store/dataobjects/StoreDataObject.php:
+	  fix folding
+
+2006-11-01  isaac
+
+	* [r12521] store/trunk/sql/tables/ItemRegionBinding.sql:
+	  we no longer want to clear these rows when not enabled, which
+	  means price can be null
+
+2006-10-31  nick
+
+	* [r12503] store/trunk/Store/admin/components/Order,
+	  store/trunk/Store/admin/components/Order/Details.php,
+	  store/trunk/Store/admin/components/Order/EmailConfirmation.php,
+	  store/trunk/Store/admin/components/Order/Index.php,
+	  store/trunk/Store/admin/components/Order/details.xml,
+	  store/trunk/Store/admin/components/Order/index.xml,
+	  store/trunk/Store/admin/components/Order/search.xml:
+	  Moved from Veseys to the Store package
+	* [r12501] store/trunk/Store/admin/components/Catalog/Status.php:
+	  Added line break for formatting
+
+2006-10-31  steven
+
+	* [r12487] store/trunk/www/admin/styles/disabled-rows.css:
+	  Move disabled-row CSS from veseys to Store
+
+2006-10-30  nick
+
+	* [r12465] store/trunk/Store/admin/components/Country/Edit.php:
+	  Restructured to allow easier subclassing
+
+2006-10-30  steven
+
+	* [r12449] store/trunk/www/admin/styles/store-image-preview.css:
+	  Move styles up from veseys for images on Category page
+	* [r12421] store/trunk/Store/pages/StoreProductImagePage.php:
+	  Wrap product image page contents in product_images div to match
+	  product page styles
+
+2006-10-30  isaac
+
+	* [r12413] store/trunk/Store/admin/components/Ad/Delete.php,
+	  store/trunk/Store/admin/components/Ad/Details.php,
+	  store/trunk/Store/admin/components/Ad/Edit.php,
+	  store/trunk/Store/admin/components/Ad/Index.php,
+	  store/trunk/Store/admin/components/Ad/include/StoreConversionRateCellRenderer.php,
+	  store/trunk/Store/admin/components/Article/Index.php,
+	  store/trunk/Store/admin/components/Article/Order.php,
+	  store/trunk/Store/admin/components/Article/Search.php,
+	  store/trunk/Store/admin/components/Article/include/StoreArticleActionsProcessor.php,
+	  
+	  store/trunk/Store/admin/components/Article/include/StoreArticleRegionAction.php,
+	  
+	  store/trunk/Store/admin/components/Article/include/StoreArticleVisibilityCellRenderer.php,
+	  store/trunk/Store/admin/components/Catalog/Clone.php,
+	  store/trunk/Store/admin/components/Catalog/Delete.php,
+	  store/trunk/Store/admin/components/Catalog/Details.php,
+	  store/trunk/Store/admin/components/Catalog/Edit.php,
+	  store/trunk/Store/admin/components/Catalog/Index.php,
+	  store/trunk/Store/admin/components/Catalog/Status.php,
+	  store/trunk/Store/admin/components/Catalog/include/StoreCatalogStatusCellRenderer.php,
+	  store/trunk/Store/admin/components/Country/Delete.php,
+	  store/trunk/Store/admin/components/Country/Edit.php,
+	  store/trunk/Store/admin/components/Country/Index.php,
+	  store/trunk/Store/admin/components/Country/include/StoreAddressDependency.php,
+	  
+	  store/trunk/Store/admin/components/Country/include/StoreCountryDependency.php,
+	  
+	  store/trunk/Store/admin/components/Country/include/StoreProvStateDependency.php,
+	  store/trunk/Store/admin/components/Locale/Delete.php,
+	  store/trunk/Store/admin/components/Locale/Edit.php,
+	  store/trunk/Store/admin/components/Locale/Index.php,
+	  store/trunk/Store/admin/components/ProvState/Delete.php,
+	  store/trunk/Store/admin/components/ProvState/Edit.php,
+	  store/trunk/Store/admin/components/ProvState/Index.php,
+	  store/trunk/Store/admin/components/Region/Delete.php,
+	  store/trunk/Store/admin/components/Region/Edit.php,
+	  store/trunk/Store/admin/components/Region/Index.php:
+	  following mike's lead, fix up docblocks
+	* [r12412]
+	  store/trunk/Store/admin/components/Account/AddressDelete.php,
+	  store/trunk/Store/admin/components/Account/AddressEdit.php,
+	  store/trunk/Store/admin/components/Account/Details.php,
+	  store/trunk/Store/admin/components/Account/Edit.php,
+	  store/trunk/Store/admin/components/Account/EmailPassword.php,
+	  store/trunk/Store/admin/components/Account/Index.php,
+	  store/trunk/Store/admin/components/Account/PaymentMethodDelete.php,
+	  
+	  store/trunk/Store/admin/components/Account/PaymentMethodEdit.php:
+	  
+	  following mike's lead, fix up docblocks
+
+2006-10-30  steven
+
+	* [r12411] store/trunk/Store/pages/StoreProductPage.php:
+	  Move secondary image IDs from <li> tags to <ul> so the ID is
+	  unique
+
+2006-10-29  gauthierm
+
+	* [r12401] store/trunk/Store/StoreFroogleFeed.php:
+	  fix package name and date
+	* [r12400] store/trunk/Store/dataobjects/StoreItemGroup.php:
+	  fix docblock
+	* [r12399]
+	  store/trunk/Store/admin/components/Account/include/StoreAccountAddressDependency.php,
+	  
+	  store/trunk/Store/admin/components/Account/include/StoreAccountPaymentMethodDependency.php:
+	  
+	  add docblocks
+	* [r12398] store/trunk/Store/StoreFroogleFeedEntry.php:
+	  fix docblock
+	* [r12397] store/trunk/Store/admin/components/Article/Delete.php,
+	  store/trunk/Store/admin/components/Article/Edit.php:
+	  fix package name and add license
+
+2006-10-27  nrf
+
+	* [r12369] store/trunk/Store/StoreStorePageFactory.php,
+	  store/trunk/Store/pages/StoreProductImagePage.php,
+	  store/trunk/Store/pages/StoreProductPage.php:
+	  Add ability to display multiple product images to
+	  StoreProductPage and StoreProductImagePage
+	* [r12367] store/trunk/Store/dataobjects/StoreProduct.php:
+	  Missing from
+
+2006-10-27  steven
+
+	* [r12362] store/trunk/Store/pages/StoreProductPage.php:
+	  wrap product page contents and images in their own divs
+
+2006-10-27  nrf
+
+	* [r12359]
+	  store/trunk/sql/triggers/CategoryVisibleProductCountByRegionTrigger.sql,
+	  store/trunk/sql/triggers/VisibleProductTrigger.sql:
+	  Mike's new cache update triggers from veseys.
+
+2006-10-26  nrf
+
+	* [r12346] store/trunk/package.php:
+	  prepare for release of 1.1.14
+	* [r12340] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.1.13
+	* [r12339] store/trunk/Store/pages/StoreCategoryPage.php:
+	  Split query and display methods to make more sub-classable.
+	* [r12338] store/trunk/Store/pages/StoreAccountDetailsPage.php:
+	  Whitespace
+
 2006-10-24  nrf
 
 	* [r12291] store/trunk/Store/pages/StoreAccountEditPage.php:
