@@ -74,7 +74,7 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 			item in (%s)', $this->app->db->quote($this->enabled, 'boolean'),
 			$this->getRegionQuerySQL(), $this->getItemQuerySQL());
 
-		$count = SwatDB::exec($this->app->db, $sql);
+		SwatDB::exec($this->app->db, $sql);
 
 		$rs = SwatDB::query($this->app->db, $this->getItemQuerySQL());
 		$count = count($rs);
