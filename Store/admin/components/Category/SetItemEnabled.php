@@ -217,7 +217,7 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 
 			case 'message':
 				return sprintf(Store::ngettext(
-					'One item has been “enabled” for “%2$s”.', 
+					'One item has been “enabled” for “%2$s”.',
 					'%s items have been “enabled” for “%s”.', $count),
 					SwatString::numberFormat($count), $this->getRegionTitle());
 
@@ -242,7 +242,7 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 
 			case 'message':
 				return sprintf(Store::ngettext(
-					'One item has been “disabled” for “%2$s”.', 
+					'One item has been “disabled” for “%2$s”.',
 					'%s items have been “disabled” for “%s”.', $count),
 					SwatString::numberFormat($count), $this->getRegionTitle());
 
