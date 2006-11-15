@@ -1,5 +1,65 @@
 2006-11-14  nick
 
+	* [r13053] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Template for other order confirmation email methods
+	* [r13052] store/trunk/Store/StoreTotalRow.php,
+	  store/trunk/www/styles/store-total-row.css:
+	  Added an optional note property to TotalRows. This is useful for
+	  specifying
+	  where the taxes or shipping apply
+
+2006-11-14  nrf
+
+	* [r13051]
+	  store/trunk/Store/admin/components/Product/ImageEdit.php:
+	  The first placeholder needs to be escaped (double %) since it is
+	  used by SwatFormField to subsitute the field name into the
+	  message. It could be double escaped AND numbered, but that's
+	  not necessary since the second sprintf() only expects one
+	  placeholder.
+	* [r13050]
+	  store/trunk/Store/admin/components/Category/ImageEdit.php:
+	  The first placeholder needs to be escaped (double %) since it is
+	  used by SwatFormField to subsitute the field name into the
+	  message.
+
+2006-11-14  nick
+
+	* [r13049]
+	  store/trunk/Store/StoreOrderConfirmationMailMessage.php:
+	  Refactored a little bit more
+
+2006-11-14  nrf
+
+	* [r13045] store/trunk/package.php:
+	  prepare for release of 1.2.1
+	* [r13043]
+	  store/trunk/Store/admin/components/Category/include/StoreCategoryTitleCellRenderer.php:
+	  
+	  Fix typo
+
+2006-11-14  nick
+
+	* [r13037]
+	  store/trunk/Store/StoreOrderConfirmationMailMessage.php:
+	  Fixed include of StoreLocale and filled in a template for
+	  sendOrderConfirmationEmail
+
+2006-11-14  nrf
+
+	* [r13035] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.2.0
+	* [r13034] store/trunk/locale/en_CA/LC_MESSAGES/store.mo,
+	  store/trunk/locale/en_GB/LC_MESSAGES/store.mo,
+	  store/trunk/locale/en_US/LC_MESSAGES/store.mo,
+	  store/trunk/po/en_CA.po, store/trunk/po/en_GB.po,
+	  store/trunk/po/en_US.po:
+	  Update translations.
+	* [r13033] store/trunk/po/Makefile:
+	  Remove the pre-processed files.
+
+2006-11-14  nick
+
 	* [r13023]
 	  store/trunk/Store/admin/components/Order/EmailConfirmation.php:
 	  fix docs
