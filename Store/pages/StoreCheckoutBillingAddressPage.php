@@ -92,6 +92,9 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 			$order_address->provstate =
 				$this->ui->getWidget('billing_address_provstate')->value;
 
+			$order_address->provstate_other =
+				$this->ui->getWidget('billing_address_provstate_other')->value;
+
 			$order_address->postal_code =
 				$this->ui->getWidget('billing_address_postalcode')->value;
 
@@ -134,6 +137,14 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 
 		$country->process();
 		$provstate->process();
+
+		if ($provstate->value === 'other') {
+			$provstate_other =
+				$this->ui->getWidget('billing_address_provstate_other');
+
+			$provstate_other->required = true;
+			$provstate->value = null;
+		}
 
 		if ($provstate->value !== null) {
 			$sql = sprintf('select abbreviation from ProvState where id = %s',
@@ -214,6 +225,9 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 				$this->ui->getWidget('billing_address_provstate')->value =
 					$order->billing_address->getInternalValue('provstate');
 
+				$this->ui->getWidget('billing_address_provstate_other')->value =
+					$order->billing_address->provstate_other;
+
 				$this->ui->getWidget('billing_address_postalcode')->value =
 					$order->billing_address->postal_code;
 
@@ -259,6 +273,13 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 				RegionBillingCountryBinding where region = %s)',
 				$this->app->db->quote($this->app->getRegion()->id,
 				'integer'))));
+
+		$provstate_other = $this->ui->getWidget('billing_address_provstate_other');
+		if ($provstate_other->visible) {
+			$provstate_flydown->addDivider();
+			$option = new SwatOption('other', 'Other…');
+			$provstate_flydown->addOption($option);
+		}
 
 		$country_flydown = $this->ui->getWidget('billing_address_country');
 		$country_flydown->addOptionsByArray(SwatDB::getOptionArray(
