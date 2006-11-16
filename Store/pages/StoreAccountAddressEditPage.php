@@ -17,10 +17,14 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 	 */
 	protected $ui_xml = 'Store/pages/account-address-edit.xml';
 
+	/**
+	 * @var SwatUI
+	 */
+	protected $ui;
+
 	// }}}
 	// {{{ private properties
 
-	private $ui;
 	private $id;
 
 	// }}}
@@ -127,6 +131,11 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 		$country->process();
 		$provstate->process();
 
+		if ($provstate->value === 'other') {
+			$this->ui->getWidget('provstate_other')->required = true;
+			$provstate->value = null;
+		}
+
 		if ($provstate->value !== null) {
 			$sql = sprintf('select abbreviation from ProvState where id = %s',
 				$this->app->db->quote($provstate->value));
@@ -154,7 +163,7 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 			$country_title = null;
 		}
 
-		if ($provstate->value !== null) {
+		if (is_integer($provstate->value)) {
 			// validate provstate by country
 			$sql = sprintf('select count(id) from ProvState
 				where id = %s and country = %s',
@@ -212,6 +221,7 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 		$address->line2 = $this->ui->getWidget('line2')->value;
 		$address->city = $this->ui->getWidget('city')->value;
 		$address->provstate = $this->ui->getWidget('provstate')->value;
+		$address->provstate_other = $this->ui->getWidget('provstate_other')->value;
 		$address->postal_code = $this->ui->getWidget('postal_code')->value;
 		$address->country = $this->ui->getWidget('country')->value;
 	}
@@ -247,6 +257,13 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 		$provstate_flydown = $this->ui->getWidget('provstate');
 		$provstate_flydown->addOptionsByArray(SwatDB::getOptionArray(
 			$this->app->db, 'ProvState', 'title', 'id', 'country, title'));
+
+		$provstate_other = $this->ui->getWidget('provstate_other');
+		if ($provstate_other->visible) {
+			$provstate_flydown->addDivider();
+			$option = new SwatOption('other', 'Other…');
+			$provstate_flydown->addOption($option);
+		}
 
 		$country_flydown = $this->ui->getWidget('country');
 		$country_flydown->addOptionsByArray(SwatDB::getOptionArray(
