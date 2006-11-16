@@ -163,7 +163,7 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 			$country_title = null;
 		}
 
-		if (is_integer($provstate->value)) {
+		if ($provstate->value !== null) {
 			// validate provstate by country
 			$sql = sprintf('select count(id) from ProvState
 				where id = %s and country = %s',
