@@ -4,7 +4,8 @@ create table OrderAddress (
 	line1 varchar(255) not null,
 	line2 varchar(255),
 	city varchar(255) not null,
-	provstate int not null references ProvState(id),
+	provstate int references ProvState(id),
+	provstate_other varchar(255),
 	country char(2) not null references Country(id),
 	postal_code varchar(50) not null,
 	primary key (id)
