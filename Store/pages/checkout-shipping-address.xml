@@ -31,7 +31,7 @@
 				<property name="size" type="integer">35</property>
 			</widget>
 		</widget>
-		<widget class="SwatFormField">
+		<widget class="SwatFormField" id="shipping_address_city_field">
 			<property name="title" translatable="yes">City</property>
 			<widget class="SwatEntry" id="shipping_address_city">
 				<property name="required" type="boolean">true</property>
