@@ -40,14 +40,18 @@
 			</widget>
 		</widget>
 		<widget class="SwatFormField" id="billing_address_provstate_field">
-			<property name="title" translatable="yes">Province</property>
+			<property name="title" translatable="yes">Province/State</property>
 			<widget class="SwatFlydown" id="billing_address_provstate">
 				<property name="required" type="boolean">true</property>
 				<property name="show_blank" type="boolean">true</property>
 			</widget>
+			<widget class="SwatEntry" id="billing_address_provstate_other">
+				<property name="maxlength" type="integer">255</property>
+				<property name="size" type="integer">35</property>
+			</widget>
 		</widget>
 		<widget class="SwatFormField" id="billing_address_postalcode_field">
-			<property name="title" translatable="yes">Postal Code</property>
+			<property name="title" translatable="yes">Postal/ZIP Code</property>
 			<widget class="StorePostalCodeEntry" id="billing_address_postalcode">
 				<property name="required" type="boolean">true</property>
 				<property name="maxlength" type="integer">50</property>
