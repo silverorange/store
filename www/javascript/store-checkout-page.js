@@ -7,8 +7,10 @@ function StoreCheckoutPage_sensitizeFields(elements)
 		else
 			element = elements[i];
 
-		element.disabled = false;
-		element.className = element.className.replace(/ *swat-insensitive/, '');
+		if (element) {
+			element.disabled = false;
+			YAHOO.util.Dom.removeClass(element, 'swat-insensitive');
+		}
 	}
 }
 
@@ -21,7 +23,9 @@ function StoreCheckoutPage_desensitizeFields(elements)
 		else
 			element = elements[i];
 
-		element.disabled = true;
-		element.className += ' swat-insensitive';
+		if (element) {
+			element.disabled = true;
+			YAHOO.util.Dom.addClass(element, 'swat-insensitive');
+		}
 	}
 }

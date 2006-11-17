@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Store/pages/StoreCheckoutEditPage.php';
+require_once 'YUI/YUI.php';
 
 /**
  * Billing address edit page of checkout
@@ -183,6 +184,9 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 		$address_list = $this->ui->getWidget('billing_address_list');
 
 		if ($address_list->visible) {
+			$yui = new YUI(array('dom', 'event'));
+			$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
+
 			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
 				'packages/store/javascript/store-checkout-page.js',
 				Store::PACKAGE_ID));
