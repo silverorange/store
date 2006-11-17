@@ -11,7 +11,7 @@
 		<property name="title" translatable="yes">Shipping Address</property>
 	</widget>
 	<widget class="SwatFieldset" id="payment_method_container">
-		<property name="title" translatable="yes">Credit Card</property>
+		<property name="title" translatable="yes">Payment Method</property>
 	</widget>
 	<widget class="SwatFooterFormField" id="checkout_footer">
 		<property name="note" translatable="yes">You will have a chance to review your order on the next step before purchasing.</property>
