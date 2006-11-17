@@ -9,7 +9,7 @@
 			<property name="size" type="integer">35</property>
 		</widget>
 	</widget>
-	<widget class="SwatFormField">
+	<widget class="SwatFormField" id="email_field">
 		<property name="title" translatable="yes">Email</property>
 		<property name="note" translatable="yes">Rest assured, we will not sell or share your email address.</property>
 		<widget class="SwatEmailEntry" id="email">
@@ -18,7 +18,7 @@
 			<property name="size" type="integer">35</property>
 		</widget>
 	</widget>
-	<widget class="SwatFormField">
+	<widget class="SwatFormField" id="confirm_email_field">
 		<property name="title" translatable="yes">Re-type Email</property>
 		<widget class="SwatConfirmEmailEntry" id="confirm_email">
 			<property name="required" type="boolean">true</property>
@@ -42,7 +42,6 @@
 			<property name="maxlength" type="integer">255</property>
 		</widget>
 	</widget>
-	<widget class="SwatContainer" id="basic_info_extra_fields_container" />
 	<widget class="SwatFormField" id="phone_field">
 		<property name="title" translatable="yes">Phone Number</property>
 		<widget class="SwatEntry" id="phone">
