@@ -1,3 +1,15 @@
+2006-11-17  nrf
+
+	* [r13110] store/branches/1.2.x:
+	  Make a branch so we can do a maintenance release for veseys.
+
+2006-11-15  nrf
+
+	* [r13058] store/tags/release-1.2.2:
+	  tag release 1.2.2
+	* [r13057] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.2.2
+
 2006-11-14  nick
 
 	* [r13053] store/trunk/Store/dataobjects/StoreOrder.php:
