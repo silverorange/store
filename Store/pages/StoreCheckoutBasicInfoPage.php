@@ -30,12 +30,6 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 
 		$confirm_email = $this->ui->getWidget('confirm_email');
 		$confirm_email->email_widget = $this->ui->getWidget('email');
-
-		if ($this->app->session->checkout_with_account) {
-			$email = $this->ui->getWidget('email');
-			$email->required = true;
-			$confirm_email->required = true;
-		}
 	}
 
 	// }}}
