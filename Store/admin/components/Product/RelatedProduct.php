@@ -145,7 +145,7 @@ class StoreProductRelatedProduct extends AdminSearch
 
 	protected function getWhereClause()
 	{
-		$where_clause = new ProductSearchWhereClause($this->ui,
+		$where_clause = new StoreProductSearchWhereClause($this->ui,
 			$this->app->db);
 
 		return $where_clause->getWhereClause();
