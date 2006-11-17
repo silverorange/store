@@ -40,6 +40,7 @@
 			<property name="maxlength" type="integer">255</property>
 		</widget>
 	</widget>
+	<widget class="SwatContainer" id="basic_info_extra_fields_container" />
 	<widget class="SwatFormField" id="phone_field">
 		<property name="title" translatable="yes">Phone Number</property>
 		<widget class="SwatEntry" id="phone">
