@@ -127,7 +127,8 @@ class StoreCategoryAddProducts extends AdminSearch
 
 	protected function getWhereClause()
 	{
-		$where_clause = new ProductSearchWhereClause($this->ui, $this->app->db);
+		$where_clause = new StoreProductSearchWhereClause($this->ui,
+			$this->app->db);
 
 		return $where_clause->getWhereClause();
 	}
