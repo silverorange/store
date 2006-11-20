@@ -235,6 +235,13 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 	{
 		parent::build();
 
+		$yui = new YUI(array('dom', 'event'));
+		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
+
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			'packages/store/javascript/store-account-address.js',
+			Store::PACKAGE_ID));
+
 		$form = $this->ui->getWidget('edit_form');
 		$form->action = $this->source;
 
@@ -281,6 +288,7 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 
 		$this->layout->startCapture('content');
 		$this->ui->display();
+		$this->displayJavaScript();
 		$this->layout->endCapture();
 	}
 
@@ -296,6 +304,19 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 		$this->ui->getWidget('provstate')->value = $address->provstate->id;
 		$this->ui->getWidget('postal_code')->value = $address->postal_code;
 		$this->ui->getWidget('country')->value = $address->country->id;
+	}
+
+	// }}}
+	// {{{ protected function displayJavaScript()
+
+	protected function displayJavaScript()
+	{
+		$id = 'checkout_billing_address';
+		echo '<script type="text/javascript">'."\n";
+		printf("var %s_obj = new StoreAccountAddress('%s');\n",
+			$id, $id);
+
+		echo '</script>';
 	}
 
 	// }}}
