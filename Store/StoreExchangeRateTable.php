@@ -4,7 +4,7 @@ require_once 'Swat/SwatDate.php';
 require_once 'Store/exceptions/StoreException.php';
 
 /**
- * Exchange rate lookup class
+ * Exchange rate table lookup class
  *
  * This class uses the tables provided by Federal Reserve Bank of
  * St. Louis FRED® (Federal Reserve Economic Data) database to return daily
@@ -14,61 +14,60 @@ require_once 'Store/exceptions/StoreException.php';
  * @copyright 2005-2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreExchangeRate
+class StoreExchangeRateTable
 {
 	// {{{ protected properties
 
 	/**
-	 * The date the website launched
+	 * Currency to convert from
 	 *
-	 * @var SwatDate
-	 */
-	protected $cutoff_date = null;
-
-	/**
-	 * Exchange rate series id
+	 * ISO 4217 currency code
 	 *
 	 * @var string
 	 */
-	protected $series_id;
+	protected $from_currency;
 
-	// }}}
-
-	// build phase
-	// {{{ public function setCutoffDate()
+	/**
+	 * Currency to convert to
+	 *
+	 * ISO 4217 currency code
+	 *
+	 * @var string
+	 */
+	protected $to_currency;
 
 	/**
 	 * Set the cut-off date for the list of exchange rates.
 	 *
-	 * The array returned from getExchangeRate() will begin on the cut-off
+	 * The array returned from getRate() will begin on the cut-off
 	 * date and contain values up until the present.
 	 *
-	 * @param SwatDate $date The date of the cut-off 
+	 * @var SwatDate
 	 */
-	public function setCutoffDate(SwatDate $date)
-	{
-		$this->cutoff_date = $date;
-	}
+	protected $cut_off_date = null;
 
 	// }}}
-	// {{{ public function setSeriesId()
+	// {{{ public function __construct()
 
 	/**
-	 * Set the series id for the exchange rate you wish to calculate.
+	 * Creates a new exchange rate table
 	 *
-	 * The series id specifies what exchange rate is calculated. See {@link
-	 * http://research.stlouisfed.org/fred2/categories/15} for a full list
-	 * of possible ids.
-	 *
+	 * @param $from_currency Currency to convert from 
+	 * @param $to_currency Currency to convert to 
 	 * @param SwatDate $date The date of the cut-off 
 	 */
-	public function setSeriesId($series_id)
+	public function __construct($from_currency, $to_currency,
+		SwatDate $cut_off_date = null)
 	{
-		$this->series_id = $series_id;
+		$this->from_currency = $from_currency;
+		$this->to_currency = $to_currency;
+		$this->cut_off_date = $cut_off_date;
 	}
 
 	// }}}
-	// {{{ public function getExchangeRate()
+
+	// build phase
+	// {{{ public function getRate()
 
 	/**
 	 * Get an exchange rate
@@ -80,17 +79,12 @@ class StoreExchangeRate
 	 *
 	 * @return float The exchange rate for the given date.
 	 */
-	public function getExchangeRate($date = null)
+	public function getRate($date = null)
 	{
 		static $exchange_rates = array();
 
-		if ($this->series_id === null)
-			throw new StoreException('You must specify an exchange rate series id.');
-
 		if (empty($exchange_rates)) {
-			$exchange_data =
-				file(sprintf('http://research.stlouisfed.org/fred2/data/%s.txt',
-					$this->series_id));
+			$exchange_data = file($this->getUrl());
 
 			// start looking from most recent exchange rates
 			$exchange_data = array_reverse($exchange_data);
@@ -106,9 +100,9 @@ class StoreExchangeRate
 					$exchange_date->setHour(12);
 					$exchange_date->setTZbyID('America/New_York');
 
-					if ($this->cutoff_date !== null &&
+					if ($this->cut_off_date !== null &&
 						SwatDate::compare($exchange_date,
-						$this->cutoff_date) < 0)
+						$this->cut_off_date) < 0)
 						break;
 				}
 			}
@@ -131,6 +125,35 @@ class StoreExchangeRate
 		}
 
 		return end($exchange_rates);
+	}
+
+	// }}}
+	// {{{ private function getUrl()
+
+	private function getUrl()
+	{
+		$conversion = $this->from_currency.'_'.$this->to_currency;
+
+		$filename = null;
+
+		switch ($conversion) {
+		case 'USD_CAD':
+			$filename = 'DEXCAUS';
+			break;
+		case 'GBP_USD':
+			$filename = 'DEXUSUK';
+			break;
+		case 'EUR_USD':
+			$filename = 'DEXUSEU';
+			break;
+		}
+
+		if ($filename === null)
+			throw new StoreException('The currency conversion requested is '.
+				'not supported.');
+
+		return sprintf('http://research.stlouisfed.org/fred2/data/%s.txt',
+			$filename);
 	}
 
 	// }}}
