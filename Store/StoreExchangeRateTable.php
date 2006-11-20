@@ -39,7 +39,7 @@ class StoreExchangeRateTable
 	/**
 	 * Set the cut-off date for the list of exchange rates.
 	 *
-	 * The array returned from getRate() will begin on the cut-off
+	 * The array returned from getRates() will begin on the cut-off
 	 * date and contain values up until the present.
 	 *
 	 * @var SwatDate
@@ -47,6 +47,12 @@ class StoreExchangeRateTable
 	protected $cut_off_date = null;
 
 	// }}}
+	// {{{ private properties
+
+	private $exchange_rates = array();
+
+	// }}}
+
 	// {{{ public function __construct()
 
 	/**
@@ -65,8 +71,6 @@ class StoreExchangeRateTable
 	}
 
 	// }}}
-
-	// build phase
 	// {{{ public function getRate()
 
 	/**
@@ -81,34 +85,10 @@ class StoreExchangeRateTable
 	 */
 	public function getRate($date = null)
 	{
-		static $exchange_rates = array();
+		if (empty($this->exchange_rates))
+			$this->exchange_rates = $this->getRates();
 
-		if (empty($exchange_rates)) {
-			$exchange_data = file($this->getUrl());
-
-			// start looking from most recent exchange rates
-			$exchange_data = array_reverse($exchange_data);
-			$expression = '/(\d{4}-\d\d-\d\d)  (\d\.\d{4})/u';
-
-			foreach ($exchange_data as $line) {
-				if (preg_match($expression, $line, $regs) === 1) {
-					$exchange_rates[$regs[1]] = floatval($regs[2]);
-
-					// only get exchange rate data for dates after site launch
-					$exchange_date = new SwatDate($regs[1]);
-					// rates are noon buying rates in New York City
-					$exchange_date->setHour(12);
-					$exchange_date->setTZbyID('America/New_York');
-
-					if ($this->cut_off_date !== null &&
-						SwatDate::compare($exchange_date,
-						$this->cut_off_date) < 0)
-						break;
-				}
-			}
-		}
-
-		if (empty($exchange_rates))
+		if (empty($this->exchange_rates))
 			return null;
 
 		if ($date !== null) {
@@ -117,14 +97,14 @@ class StoreExchangeRateTable
 			for ($i = 0; $i < 7; $i++) {
 				$key = $day->format('%Y-%m-%d');
 
-				if (array_key_exists($key, $exchange_rates))
+				if (array_key_exists($key, $this->exchange_rates))
 					return $exchange_rates[$key];
 
 				$day->addSpan(new Date_Span(array(1, 0, 0, 0)));
 			}
 		}
 
-		return end($exchange_rates);
+		return end($this->exchange_rates);
 	}
 
 	// }}}
@@ -157,6 +137,37 @@ class StoreExchangeRateTable
 	}
 
 	// }}}
+	// {{{ private function getRates()
+
+	private function getRates()
+	{
+		$exchange_rates = array();
+
+		$exchange_data = file($this->getUrl());
+
+		// start looking from most recent exchange rates
+		$exchange_data = array_reverse($exchange_data);
+		$expression = '/(\d{4}-\d\d-\d\d)  (\d\.\d{4})/u';
+
+		foreach ($exchange_data as $line) {
+			if (preg_match($expression, $line, $regs) === 1) {
+				$exchange_rates[$regs[1]] = floatval($regs[2]);
+
+				// only get exchange rate data for dates after site launch
+				$exchange_date = new SwatDate($regs[1]);
+				// rates are noon buying rates in New York City
+				$exchange_date->setHour(12);
+				$exchange_date->setTZbyID('America/New_York');
+
+				if ($this->cut_off_date !== null &&
+					SwatDate::compare($exchange_date,
+					$this->cut_off_date) < 0)
+					break;
+			}
+		}
+
+		return $exchange_rates;
+	}
 }
 
 ?>
