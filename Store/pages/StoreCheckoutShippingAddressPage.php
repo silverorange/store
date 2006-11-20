@@ -185,6 +185,10 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 				Store::PACKAGE_ID));
 
 			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+				'packages/store/javascript/store-checkout-address.js',
+				Store::PACKAGE_ID));
+
+			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
 				'packages/store/javascript/store-checkout-shipping-address.js',
 				Store::PACKAGE_ID));
 
