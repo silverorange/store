@@ -1,7 +1,7 @@
 CREATE OR REPLACE FUNCTION createAdLocaleBindings () RETURNS trigger AS $$ 
     BEGIN
 		INSERT INTO AdLocaleBinding (ad, locale)
-			SELECT Ad.id as ad, NEW.id as locale;
+			SELECT Ad.id as ad, NEW.id as locale FROM Ad;
 
         RETURN NULL;
     END;
