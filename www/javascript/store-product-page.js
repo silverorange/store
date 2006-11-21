@@ -41,6 +41,7 @@ function StoreProductPage(item_ids, form_id)
 			else
 				event.returnValue = false;
 
+			// TODO: translate me
 			alert('Please enter a quantity.');
 		}
 
