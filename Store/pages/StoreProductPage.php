@@ -73,7 +73,7 @@ class StoreProductPage extends StoreStorePage
 		$this->cart_ui = new StoreUI();
 		$this->cart_ui->loadFromXML($this->cart_ui_xml);
 		$this->cart_ui->getRoot()->addStyleSheet(
-			'packages/store/styles/store-cart.css');
+			'packages/store/styles/store-cart.css', Store::PACKAGE_ID);
 
 		$cart_form = $this->cart_ui->getWidget('cart_form');
 		$cart_form->action = $this->source;
