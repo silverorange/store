@@ -123,7 +123,7 @@ class StoreProductRelatedProduct extends AdminSearch
 		$rs = SwatDB::executeStoredProc($this->app->db, 'getCategoryTree', 
 			'null');
 
-		$category_tree = SwatDB::buildDataTree($rs, 'title', 'id', 'levelnum');
+		$category_tree = SwatDB::getDataTree($rs, 'title', 'id', 'levelnum');
 		$tree->addTree($category_tree);
 
 
