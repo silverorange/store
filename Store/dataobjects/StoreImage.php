@@ -75,6 +75,20 @@ abstract class StoreImage extends StoreDataObject
 	public $large_height;
 
 	// }}}
+	// {{{ abstract public function getURI()
+
+	abstract public function getURI($set = 'large');
+
+	// }}}
+	// {{{ public function hasOriginal()
+
+	public function hasOriginal()
+	{
+		$uri = $this->getURI('original');
+		return (file_exists($uri));
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
