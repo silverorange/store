@@ -143,18 +143,17 @@ class StoreProductIndex extends AdminSearch
 	{
 		parent::buildInternal();
 
+		$category_flydown = $this->ui->getWidget('search_category');
+
+		$tree = $category_flydown->getTree();
+		$tree->addChild(new SwatTreeFlydownNode(-1, '<uncategorized>'));
+		$tree->addChild(new SwatTreeFlydownNode(new SwatFlydownDivider()));
+
 		$rs = SwatDB::executeStoredProc($this->app->db, 'getCategoryTree', 
 			'null');
 
-		$tree = new SwatTreeFlydownNode('Root', '');
-		$tree->addChild(new SwatTreeFlydownNode(-1,
-			Store::_('<uncategorized>')));
-
-		$tree->addChild(new SwatTreeFlydownNode(new SwatFlydownDivider()));
-		SwatDB::buildTreeOptionArray($rs, 'title', 'id', 'levelnum', $tree);
-
-		$tree_flydown = $this->ui->getWidget('search_category');
-		$tree_flydown->setTree($tree);
+		$category_tree = SwatDB::buildDataTree($rs, 'title', 'id', 'levelnum');
+		$tree->addTree($category_tree);
 	}
 
 	// }}}

@@ -104,21 +104,21 @@ class StoreCategoryAddProducts extends AdminSearch
 
 		$this->buildNavBar();
 
-		$rs = SwatDB::executeStoredProc($this->app->db, 'getCategoryTree', 
-			array('null'));
+		$category_flydown = $this->ui->getWidget('search_category');
+		$tree = $category_flydown->getTree();
 
-		$tree = new SwatTreeFlydownNode('Root', '');
 		$tree->addChild(new SwatTreeFlydownNode(-1,
 			Store::_('<uncategorized>')));
 
 		$tree->addChild(new SwatTreeFlydownNode(new SwatFlydownDivider('')));
-		$subtree = SwatDB::buildDataTree($rs, 'title', 'id', 'levelnum');
-		$subtree = SwatTreeFlydownNode::convertFromDataTree($subtree);	
 
-		$tree->addTree($subtree);
+		$rs = SwatDB::executeStoredProc($this->app->db, 'getCategoryTree', 
+			array('null'));
 
-		$category_selector = $this->ui->getWidget('search_category');
-		$category_selector->setTree($tree);
+		$category_tree = SwatDB::buildDataTree($rs, 'title', 'id', 'levelnum');
+
+		$tree->addTree($category_tree);
+
 
 		$search_frame = $this->ui->getWidget('search_frame');
 		$search_frame->title = Store::_('Search for Products to Add');
