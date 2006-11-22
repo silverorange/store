@@ -114,19 +114,18 @@ class StoreProductRelatedProduct extends AdminSearch
 		parent::buildInternal();
 		$this->buildNavBar();
 
-		$rs = SwatDB::executeStoredProc($this->app->db,
-			'getCategoryTree', array('null'));
+		$category_flydown = $this->ui->getWidget('search_category');
 
-		$tree = new SwatTreeFlydownNode('Root', '');
-		$tree->addChild(new SwatTreeFlydownNode(-1,
-			Store::_('<uncategorized>')));
-
+		$tree = $category_flydown->getTree();
+		$tree->addChild(new SwatTreeFlydownNode(-1, '<uncategorized>'));
 		$tree->addChild(new SwatTreeFlydownNode(new SwatFlydownDivider()));
-		$tree = SwatDB::buildTreeOptionArray($rs, 'title', 'id', 'levelnum',
-			$tree);
 
-		$category_selector = $this->ui->getWidget('search_category');
-		$category_selector->setTree($tree);
+		$rs = SwatDB::executeStoredProc($this->app->db, 'getCategoryTree', 
+			'null');
+
+		$category_tree = SwatDB::buildDataTree($rs, 'title', 'id', 'levelnum');
+		$tree->addTree($category_tree);
+
 
 		$search_frame = $this->ui->getWidget('search_frame');
 		$search_frame->title = Store::_('Search for Related Products to Add');
