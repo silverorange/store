@@ -115,16 +115,16 @@ class StoreProductImagePage extends StoreStorePage
 		$img_tag->class = $this->image->border ?
 			'store-border-on' : 'store-border-off';
 
-		if ($this->image->hasOriginal()) {
-			$anchor = new SwatHtmlTag('a');
-			$anchor->href = $this->image->getURI('original');
-			$anchor->setContent(Store::_('Download High Resolution Image'));
-			$anchor->display();
-		}
-
 		$div->open();
 		$img_tag->display();
 		$div->close();
+
+		if ($this->image->hasOriginal()) {
+			$download_link = new SwatToolLink();
+			$download_link->link = $this->image->getURI('original');
+			$download_link->title = Store::_('Download High Resolution Image');
+			$download_link->display();
+		}
 	}
 
 	// }}}
