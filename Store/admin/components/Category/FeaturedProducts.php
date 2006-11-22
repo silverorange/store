@@ -92,7 +92,7 @@ class StoreCategoryFeaturedProducts extends AdminIndex
 		$rs = SwatDB::executeStoredProc($this->app->db, 'getCategoryTree',
 			array($parent));
 
-		$tree = SwatDB::buildTreeOptionArray($rs, 'title', 'id', 'levelnum');
+		$tree = SwatDB::buildDataTree($rs, 'title', 'id', 'levelnum');
 
 		$category_flydown = $this->ui->getWidget('category_flydown');
 		$category_flydown->setTree($tree);
