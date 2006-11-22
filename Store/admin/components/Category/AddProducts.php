@@ -112,7 +112,10 @@ class StoreCategoryAddProducts extends AdminSearch
 			Store::_('<uncategorized>')));
 
 		$tree->addChild(new SwatTreeFlydownNode(new SwatFlydownDivider('')));
-		SwatDB::buildTreeOptionArray($rs, 'title', 'id', 'levelnum', $tree);
+		$subtree = SwatDB::buildDataTree($rs, 'title', 'id', 'levelnum');
+		$subtree = SwatTreeFlydownNode::convertFromDataTree($subtree);	
+
+		$tree->addTree($subtree);
 
 		$category_selector = $this->ui->getWidget('search_category');
 		$category_selector->setTree($tree);
