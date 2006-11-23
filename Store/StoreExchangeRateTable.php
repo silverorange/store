@@ -104,7 +104,7 @@ class StoreExchangeRateTable
 			}
 		}
 
-		return end($this->exchange_rates);
+		return current($this->exchange_rates);
 	}
 
 	// }}}
