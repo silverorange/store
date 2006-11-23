@@ -61,7 +61,7 @@ class StoreItemEdit extends AdminDBEdit
 
 		$class_map = StoreClassMap::instance();
 		$item_class = $class_map->resolveClass('StoreItem');
-		$statuses = call_user_func(array($category_image, 'getStatuses'));
+		$statuses = call_user_func(array($item_class, 'getStatuses'));
 
 		$status_radiolist = $this->ui->getWidget('status');
 		$status_radiolist->addOptionsByArray($statuses);
@@ -71,6 +71,48 @@ class StoreItemEdit extends AdminDBEdit
 
 		$price_replicator = $this->ui->getWidget('price_replicator');
 		$price_replicator->replicators = $regions;
+		$enabled_replicator = $this->ui->getWidget('enabled_replicator');
+		$enabled_replicator->replicators = $regions;
+
+		$this->initItemRegionFields();
+	}
+
+	// }}}
+	// {{{ private function initItemRegionFields()
+
+	private function initItemRegionFields()
+	{
+		$price_replicator = $this->ui->getWidget('price_replicator');
+
+		$sql = 'select Region.id as region, price, enabled, locale.id as locale
+			from Region
+			left outer join ItemRegionBinding on
+				ItemRegionBinding.region = Region.id
+				and item = %s
+			inner join Locale on Region.id = Locale.region
+			order by Region.id';
+
+		$sql = sprintf($sql, $this->app->db->quote($this->id, 'integer'));
+		$rs = SwatDB::query($this->app->db, $sql);
+		$regions[] = null;
+
+		foreach ($rs as $row) {
+			// this is to filter out regions with multiple locales - as we only
+			// want the first locale.  MIght be a better way to do this.
+			if (array_key_exists($row->region, $regions) === false) {
+				$regions[$row->region] = true;
+				$price_widget =
+					$price_replicator->getWidget('price', $row->region);
+	
+				$price_widget->locale = $row->locale;
+				$price_widget->value = $row->price;
+	
+				$enabled_widget = 
+					$price_replicator->getWidget('enabled', $row->region);
+	
+				$enabled_widget->value = $row->enabled;
+			}
+		}
 	}
 
 	// }}}
@@ -152,8 +194,8 @@ class StoreItemEdit extends AdminDBEdit
 		if (!StoreItem::validateSku($this->app->db, $sku->value, $catalog,
 			$this->product_id, $valid)) {
 			$sku->addMessage(new SwatMessage(
-				Store::_('%s must be unique amongst all catalogues unless '.
-				'catalogues are clones of each other.')));
+				Store::_('%s must be unique amongst all catalogs unless '.
+				'catalogs are clones of each other.')));
 		}
 	}
 
@@ -303,36 +345,6 @@ class StoreItemEdit extends AdminDBEdit
 
 		$this->item_sku = $row->sku;
 		$this->ui->setValues(get_object_vars($row));
-		$this->loadItemRegionFields();
-	}
-
-	// }}}
-	// {{{ private function loadItemRegionFields()
-
-	private function loadItemRegionFields()
-	{
-		$price_replicator = $this->ui->getWidget('price_replicator');
-
-		$sql = 'select Region.id as region, price, enabled
-			from Region
-			left outer join ItemRegionBinding on
-				ItemRegionBinding.region = Region.id
-				and item = %s
-			order by Region.id';
-
-		$sql = sprintf($sql, $this->app->db->quote($this->id, 'integer'));
-		$rs = SwatDB::query($this->app->db, $sql);
-		foreach ($rs as $row) {
-			$price_widget =
-				$price_replicator->getWidget('price', $row->region);
-
-			$price_widget->setState($row->price);
-
-			$enabled_widget = 
-				$price_replicator->getWidget('enabled', $row->region);
-
-			$enabled_widget->setState($row->enabled);
-		}
 	}
 
 	// }}}
@@ -340,6 +352,7 @@ class StoreItemEdit extends AdminDBEdit
 
 	private function displayJavaScript()
 	{
+		//TODO - this is wrong and veseys specific
 		$price_replicator = $this->ui->getWidget('price_replicator');
 		$replicator_ids = array_keys($price_replicator->replicators);
 		$replicator_ids = implode(', ', $replicator_ids);

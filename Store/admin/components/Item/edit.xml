@@ -15,7 +15,6 @@
 			</widget>
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Additional Description</property>
-				<property name="note" translatable="yes">The description for an item is automatically generated using the Quantity &amp; Units fields below. Any text entered here is used in addition to the auto-generated description text.</property>
 				<widget class="SwatEntry" id="description">
 					<property name="maxlength" type="integer">255</property>
 				</widget>
@@ -31,14 +30,20 @@
 					</widget>
 					<widget class="SwatFormField">
 						<property name="title" translatable="yes">Price</property>
-						<widget class="SwatMoneyEntry" id="price">
-							<property name="locale">en_UK</property>
-						</widget>
+						<widget class="SwatMoneyEntry" id="price" />
 					</widget>
 				</widget>
 				<widget class="SwatContentBlock">
 					<property name="content" translatable="yes"><![CDATA[<div class="swat-note" id="pricing_note">The enabled checkbox must be set for the this item to appear on the site in that region. The enabled flag overrides all other item statuses. The price is required if the item is enabled in that region.</div>]]></property>
 					<property name="content_type">text/xml</property>
+				</widget>
+			</widget>
+			<widget class="SwatFieldset">
+				<property name="title" translatable="yes">Status</property>
+				<widget class="SwatFormField">
+					<widget class="SwatRadioList" id="status">
+						<property name="required" type="boolean">true</property>
+					</widget>
 				</widget>
 			</widget>
 			<widget class="SwatFooterFormField">

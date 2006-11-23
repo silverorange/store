@@ -14,15 +14,17 @@ require_once 'Store/dataobjects/StoreRegionWrapper.php';
 require_once 'Store/dataobjects/StoreItemWrapper.php';
 require_once 'Store/StoreClassMap.php';
 require_once 'Store/dataobjects/StoreProduct.php';
-//note sure if these are actually needed
-//require_once 'Store/dataobjects/StoreItem.php';
-//require_once 'Store/admin/components/Item/StoreItemStatusCellRenderer.php';
-//require_once 'Store/admin/components/Product/StoreItemTableView.php';
-//require_once 'Store/admin/components/Product/StoreItemGroupAction.php';
-//require_once 'Store/admin/components/Product/StoreItemGroupGroup.php';
-//require_once 'Store/admin/components/Product/StoreItemRegionPriceCellRenderer.php';
-//require_once 'Store/admin/components/Product/include/StoreItemDiscountCellRenderer.php';
+require_once 'Store/admin/components/Product/include/StoreItemTableView.php';
+require_once 'Store/admin/components/Product/include/StoreItemGroupGroup.php';
+require_once 'Store/admin/components/Product/include/StoreItemGroupAction.php';
+require_once
+	'Store/admin/components/Item/include/StoreItemStatusCellRenderer.php';
 
+require_once 
+	'Store/admin/components/Product/include/StoreItemDiscountCellRenderer.php';
+
+require_once 'Store/admin/components/Product/include/'.
+	'StoreItemRegionPriceCellRenderer.php';
 
 /**
  * Index page for Products
@@ -35,7 +37,7 @@ class StoreProductDetails extends AdminIndex
 {
 	// {{{ protected properties
 
-	protected $ui_xml = 'Store/admin/components/Products/details.xml';
+	protected $ui_xml = 'Store/admin/components/Product/details.xml';
 
 	// }}}
 	// {{{ private properties
@@ -199,7 +201,7 @@ class StoreProductDetails extends AdminIndex
 			'id', $view->checked_items);
 
 		$msg = new SwatMessage(sprintf(Store::ngettext(
-			'The status of one item has been changed.', 
+			'The status of one item has been changed.',
 			'The status of %d items has been changed.', $num),
 			SwatString::numberFormat($num)));
 
@@ -728,7 +730,7 @@ class StoreProductDetails extends AdminIndex
 			$regions_join,
 			$this->app->db->quote($this->id, 'integer'),
 			$this->getOrderByClause($view,
-				'Item.displayorder, Item.sku, Item.part_count'));
+				'Item.displayorder, Item.sku')); //TODO:, Item.part_count <- needs to go back to veseys
 
 		$items = SwatDB::query($this->app->db, $sql, 'StoreItemWrapper');
 		$store = new SwatTableStore();
@@ -796,7 +798,7 @@ class StoreProductDetails extends AdminIndex
 			$renderer->locale = $region->getFirstLocale()->id;
 
 			$column = new SwatTableViewOrderableColumn('price_'.$region->id);
-			$column->title = Store::_('%s Price', $region->title);
+			$column->title = sprintf(Store::_('%s Price'), $region->title);
 			$column->addRenderer($renderer);
 			$column->addMappingToRenderer($renderer,
 				'price_'.$region->id, 'value');
