@@ -98,6 +98,7 @@
 						<property name="link_value" type="data">id</property>
 						<property name="product_count" type="data">product_count</property>
 						<property name="child_count" type="data">child_count</property>
+						<property name="currently_visible" type="data">currently_visible</property>
 						<property name="always_visible" type="data">always_visible</property>
 					</object>
 				</object>
