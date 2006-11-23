@@ -5,7 +5,7 @@ require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Date.php';
 require_once 'Image/Transform.php';
-require_once 'Store/dataobjects/ProductImage.php';
+require_once 'Store/dataobjects/StoreProductImage.php';
 require_once 'Store/StoreClassMap.php';
 
 /**
@@ -381,9 +381,9 @@ class StoreProductImageEdit extends AdminPage
 
 		//set the notes on the manual image fields
 		$class_map = StoreClassMap::instance();
-		$category_image = $class_map->resolveClass('StoreCategoryImage');
+		$product_image = $class_map->resolveClass('StoreProductImage');
 		// name => max dimensions
-		$sizes = call_user_func(array($category_image, 'getSizes'));
+		$sizes = call_user_func(array($product_image, 'getSizes'));
 
 		//set the notes on the manual image fields
 		$message = Store::_('Maximum Dimensions: %s px');

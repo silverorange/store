@@ -11,7 +11,7 @@ require_once
 	'Store/admin/components/Product/include/StoreProductSearchWhereClause.php';
 
 require_once 
-	'Store/admin/components/Product/include/Store/ProductTableView.php';
+	'Store/admin/components/Product/include/StoreProductTableView.php';
 
 require_once 
 	'Store/admin/components/Product/include/StoreProductTitleCellRenderer.php';
@@ -30,8 +30,8 @@ class StoreProductIndex extends AdminSearch
 {
 	// {{{ protected properties
 
-	protected $ui_xml = 'Store/admin/components/Product/include/index.xml';
-	protected $search_xml = 'Store/admin/components/Product/include/search.xml';
+	protected $index_xml = 'Store/admin/components/Product/index.xml';
+	protected $search_xml = 'Store/admin/components/Product/search.xml';
 
 	// }}}
 	// {{{ private properties

@@ -52,12 +52,6 @@
 				</object>
 			</object>
 			<object class="SwatDetailsViewField">
-				<property name="title" translatable="yes">Subtitle</property>
-				<object class="SwatNullTextCellRenderer">
-					<property name="text" type="data">subtitle</property>
-				</object>
-			</object>
-			<object class="SwatDetailsViewField">
 				<property name="title" translatable="yes">Belongs to Categories</property>
 				<object class="SwatNullTextCellRenderer">
 					<property name="text" type="data">categories</property>
@@ -171,7 +165,6 @@
 						<property name="title" translatable="yes">Status</property>
 						<object class="StoreItemStatusCellRenderer">
 							<property name="status" type="data">status</property>
-							<property name="limited_stock_quantity" type="data">limited_stock_quantity</property>
 						</object>
 						<object class="SwatInputCell">
 							<widget class="SwatContentBlock" id="input_status" />

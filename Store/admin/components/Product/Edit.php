@@ -42,8 +42,8 @@ class StoreProductEdit extends AdminDBEdit
 		$this->category_id = SiteApplication::initVar('category');
 
 		if ($this->category_id === null && $this->id === null)
-			throw new AdminNoAccessException('A category ID or a product ID '.
-				'must be passed in the URL.');
+			throw new AdminNoAccessException(Store::_(
+				'A category ID or a product ID must be passed in the URL.'));
 
 		$catalog_flydown = $this->ui->getWidget('catalog');
 		$catalog_flydown->show_blank = true;
