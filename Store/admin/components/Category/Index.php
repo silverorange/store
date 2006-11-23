@@ -546,26 +546,7 @@ class StoreCategoryIndex extends AdminIndex
 
 		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
 
-		$sql = 'select category, sum(product_count) as product_count
-			from CategoryProductCountByCatalogView
-			where category in (select id from Category where parent %s %s)
-				and catalog in (%s)
-			group by category';
-
-		$sql = sprintf($sql,
-			SwatDB::equalityOperator($this->id),
-			$this->app->db->quote($this->id, 'integer'),
-			$this->ui->getWidget('catalog_switcher')->getSubQuery());
-
-		$rs = SwatDB::query($this->app->db, $sql);
-		$product_count = array();
-
-		foreach ($rs as $row)
-			$product_count[$row->category] = $row->product_count;
-
-		foreach ($store->getRows() as $row)
-			$row->product_count =
-				isset($product_count[$row->id]) ? $product_count[$row->id] : 0;
+		$this->setCategoryVisibility($store);
 
 		if ($store->getRowCount() == 0) {
 			$index_form = $this->ui->getWidget('categories_index_form');
@@ -617,6 +598,52 @@ class StoreCategoryIndex extends AdminIndex
 		}
 
 		return $store;
+	}
+
+	// }}}
+	// {{{ private function setCategoryVisibility()
+
+	private function setCategoryVisibility($store)
+	{
+		$sql = 'select category, sum(product_count) as product_count
+			from CategoryProductCountByCatalogView
+			where category in (select id from Category where parent %s %s)
+				and catalog in (%s)
+			group by category';
+
+		$sql = sprintf($sql,
+			SwatDB::equalityOperator($this->id),
+			$this->app->db->quote($this->id, 'integer'),
+			$this->ui->getWidget('catalog_switcher')->getSubQuery());
+
+		$rs = SwatDB::query($this->app->db, $sql);
+		$product_count = array();
+
+		foreach ($rs as $row)
+			$product_count[$row->category] = $row->product_count;
+
+
+		$sql = 'select category
+			from VisibleCategoryView 
+			where category in (select id from Category where parent %s %s)';
+
+		$sql = sprintf($sql,
+			SwatDB::equalityOperator($this->id),
+			$this->app->db->quote($this->id, 'integer'));
+
+		$rs = SwatDB::query($this->app->db, $sql);
+		$visbile_categories = array();
+
+		foreach ($rs as $row)
+			$visible_categories[$row->category] = true;
+
+
+		foreach ($store->getRows() as $row) {
+			$row->product_count =
+				isset($product_count[$row->id]) ? $product_count[$row->id] : 0;
+
+			$row->currently_visible = (isset($visible_categories[$row->id]));
+		}
 	}
 
 	// }}}

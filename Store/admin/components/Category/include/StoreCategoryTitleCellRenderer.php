@@ -14,6 +14,7 @@ require_once 'Swat/SwatString.php';
 class StoreCategoryTitleCellRenderer extends AdminTreeTitleLinkCellRenderer
 {
 	public $product_count = 0;
+	public $currently_visible = true;
 	public $always_visible = false;
 
 	public function render()
@@ -24,6 +25,10 @@ class StoreCategoryTitleCellRenderer extends AdminTreeTitleLinkCellRenderer
 			$this->text = SwatString::minimizeEntities($this->text);
 			$this->content_type = 'text/xml';
 			$this->text.= ' <span>&lt;'.Store::_('no products').'&gt;</span>';
+		} elseif (!$this->currently_visible && !$this->always_visible) {
+			$this->text = SwatString::minimizeEntities($this->text);
+			$this->content_type = 'text/xml';
+			$this->text.= ' <span>&lt;'.Store::_('no available products').'&gt;</span>';
 		} else {
 			$this->content_type = 'text/plain';
 		}
