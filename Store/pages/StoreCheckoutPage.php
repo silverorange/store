@@ -37,7 +37,8 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 
 		// enforce dependencies for progressing through the checkout
 		foreach ($this->getProgressDependencies() as $dependency)
-			if (!in_array($dependency, $this->app->session->checkout_progress))
+			if (!in_array($dependency,
+				$this->app->session->checkout_progress->getArrayCopy()))
 				$this->app->relocate($dependency);
 	}
 
@@ -93,7 +94,7 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 	protected function updateProgress()
 	{
 		if (!isset($this->app->session->checkout_progress))
-			$this->app->session->checkout_progress = array();
+			$this->app->session->checkout_progress = new ArrayObject();
 
 		$this->app->session->checkout_progress[] = $this->source;
 	}
@@ -103,7 +104,7 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 
 	protected function resetProgress()
 	{
-		$this->app->session->checkout_progress = array();
+		$this->app->session->checkout_progress = new ArrayObject();
 		$this->app->session->checkout_with_account = false;
 	}
 
