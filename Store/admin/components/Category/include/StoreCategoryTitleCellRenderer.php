@@ -25,10 +25,13 @@ class StoreCategoryTitleCellRenderer extends AdminTreeTitleLinkCellRenderer
 			$this->text = SwatString::minimizeEntities($this->text);
 			$this->content_type = 'text/xml';
 			$this->text.= ' <span>&lt;'.Store::_('no products').'&gt;</span>';
+
 		} elseif (!$this->currently_visible && !$this->always_visible) {
 			$this->text = SwatString::minimizeEntities($this->text);
 			$this->content_type = 'text/xml';
-			$this->text.= ' <span>&lt;'.Store::_('no available products').'&gt;</span>';
+			$this->text.= ' <span>&lt;'.Store::_('no available products').
+				'&gt;</span>';
+
 		} else {
 			$this->content_type = 'text/plain';
 		}
@@ -48,11 +51,11 @@ class StoreCategoryTitleCellRenderer extends AdminTreeTitleLinkCellRenderer
 				SwatString::numberFormat($this->child_count));
 
 		if (intval($this->product_count) == 0)
-			$out[] = Store::_('no products in the selected catalogue(s)');
+			$out[] = Store::_('no products in the selected catalog(s)');
 		else
 			$out[] = sprintf(Store::ngettext(
-				'One product in the selected catalogue(s)',
-				'%d products in the selected catalogue(s)',
+				'One product in the selected catalog(s)',
+				'%d products in the selected catalog(s)',
 				$this->product_count),
 				SwatString::numberFormat($this->product_count));
 
