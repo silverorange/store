@@ -93,7 +93,7 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 	protected function updateProgress()
 	{
 		if (!isset($this->app->session->checkout_progress))
-			$this->app->session->checkout_progress = array();
+			$this->app->session->checkout_progress = new ArrayObject();
 
 		$this->app->session->checkout_progress[] = $this->source;
 	}
