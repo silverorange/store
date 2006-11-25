@@ -88,6 +88,7 @@ function StoreQuickOrderItem(quick_order_id, item_selector_id, id)
 	this.timer = null;
 	this.new_description = null;
 
+	// clear default quantities if JavaScript is enabled
 	this.quantity = document.getElementById('quantity_' + id);
 	if (this.quantity.value == '1')
 		this.quantity.value = '';
