@@ -90,8 +90,16 @@ function StoreQuickOrderItem(quick_order_id, item_selector_id, id)
 
 	// clear default quantities if JavaScript is enabled
 	this.quantity = document.getElementById('quantity_' + id);
-	if (this.quantity.value == '1')
-		this.quantity.value = '';
+	if (this.quantity.value == '1') {
+		// find containing TR tag
+		var parent = this.quantity.parentNode;
+		while (parent && parent.tagName != 'TR')
+			parent = parent.parentNode;
+
+		// only clear values on quantity fields that don't have errors
+		if (!YAHOO.util.Dom.hasClass(parent, 'swat-error'))
+			this.quantity.value = '';
+	}
 }
 
 /**
