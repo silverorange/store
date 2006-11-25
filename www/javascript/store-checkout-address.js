@@ -17,6 +17,8 @@ function StoreCheckoutAddress(id)
 
 		if (!this.provstate_other_sensitive)
 			StoreCheckoutPage_desensitizeFields([this.provstate_other_id]);
+	} else {
+		this.provstate_other_sensitive = true;
 	}
 
 	// initialize state
