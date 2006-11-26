@@ -42,8 +42,8 @@ class StoreProductRelatedProduct extends AdminSearch
 		$this->product_id = SiteApplication::initVar('id');
 		$this->category_id = SiteApplication::initVar('category');
 
-		$this->ui->loadFromXML($this->ui_xml);
 		$this->ui->loadFromXML($this->search_xml);
+		$this->ui->loadFromXML($this->ui_xml);
 
 		$catalog_selector = $this->ui->getWidget('catalog_selector');
 		$catalog_selector->db = $this->app->db;
