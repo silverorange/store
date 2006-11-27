@@ -59,6 +59,7 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 			$spell_checker->getDefaultMisspellingsFilename());
 
 		$query = new NateGoSearchQuery($this->app->db);
+		$query->addBlockedWords(NateGoSearchQuery::getDefaultBlockedWords());
 		$query->setSpellChecker($spell_checker);
 
 		if ($this->search_type === null ||
@@ -104,7 +105,7 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 			$has_categories = in_array(StoreSearchPage::TYPE_CATEGORIES,
 				$this->search_has_results);
 
-			$has_products  = in_array(StoreSearchPage::TYPE_PRODUCTS,
+			$has_products = in_array(StoreSearchPage::TYPE_PRODUCTS,
 				$this->search_has_results);
 
 			// set the article frame to use the whole width if it is the only
