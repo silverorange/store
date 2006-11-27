@@ -139,17 +139,6 @@ class StoreProductRelatedProduct extends AdminSearch
 	}
 
 	// }}}
-	// {{{ protected function getWhereClause()
-
-	protected function getWhereClause()
-	{
-		$where_clause = new StoreProductSearchWhereClause($this->ui,
-			$this->app->db);
-
-		return $where_clause->getWhereClause();
-	}
-
-	// }}}
 	// {{{ protected function getTableStore()
 
 	protected function getTableStore($view)
