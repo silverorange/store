@@ -119,17 +119,21 @@ class StoreProductSearch
 		// keywords are included in the where clause if fulltext searching is
 		// turned off
 		if ($this->getProductSearchType() === null) {
+			$where.= ' and (';
+
 			$clause = new AdminSearchClause('title');
 			$clause->table = 'Product';
 			$clause->value = $this->ui->getWidget('search_keywords')->value;
 			$clause->operator = AdminSearchClause::OP_CONTAINS;
-			$where.= $clause->getClause($this->db);
+			$where.= $clause->getClause($this->db, '');
 
 			$clause = new AdminSearchClause('bodytext');
 			$clause->table = 'Product';
 			$clause->value = $this->ui->getWidget('search_keywords')->value;
 			$clause->operator = AdminSearchClause::OP_CONTAINS;
-			$where.= $clause->getClause($this->db);
+			$where.= $clause->getClause($this->db, 'or');
+
+			$where.= ') ';
 		}
 
 		// sku
