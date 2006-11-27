@@ -16,13 +16,13 @@ require_once 'Swat/SwatUI.php';
  */
 class StoreProductSearch
 {
-	// {{{ private properties
+	// {{{ protected properties
 
-	private $db;
-	private $ui;
-	private $order_by_clause;
-	private $join_clause;
-	private $where_clause;
+	protected $db;
+	protected $ui;
+	protected $order_by_clause;
+	protected $join_clause;
+	protected $where_clause;
 
 	// }}}
 	// {{{ public function __construct()
