@@ -87,7 +87,8 @@ class StoreCategoryPage extends StoreStorePage
 				on c.category = Category.id and c.region = %s
 			where parent %s %s
 			and id in 
-				(select Category from VisibleCategoryView where region = %s)
+				(select Category from VisibleCategoryView
+				where region = %s or region is null)
 			order by displayorder, title';
 
 		$sql = sprintf($sql,
