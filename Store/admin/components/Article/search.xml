@@ -6,9 +6,8 @@
 		<property name="title" translatable="yes">Search Articles</property>
 		<widget class="SwatForm" id="search_form">
 			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Title</property>
-				<widget class="AdminSearchOperatorFlydown" id="search_title_op" />
-				<widget class="SwatEntry" id="search_title" />
+				<property name="title" translatable="yes">Keywords</property>
+				<widget class="SwatEntry" id="search_keywords" />
 			</widget>
 			<widget class="SwatGroupingFormField">
 				<property name="title" translatable="yes">Accessible to</property>

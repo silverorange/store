@@ -4,6 +4,7 @@ require_once 'Admin/pages/AdminSearch.php';
 require_once 'Admin/AdminTableStore.php';
 require_once 'Admin/AdminSearchClause.php';
 require_once 'SwatDB/SwatDB.php';
+require_once 'NateGoSearch/NateGoSearchQuery.php';
 
 require_once 'include/StoreArticleActionsProcessor.php';
 require_once 'include/StoreArticleRegionAction.php';
@@ -12,11 +13,13 @@ require_once 'include/StoreArticleVisibilityCellRenderer.php';
 /**
  * Search page for Articles
  *
+ * The search page used the NateGoSearch package for fulltext searching.
+ *
  * @package   Store
  * @copyright 2005-2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreArticleSearch extends AdminSearch
+abstract class StoreArticleSearch extends AdminSearch
 {
 	// init phase
 	// {{{ protected function initInternal()
@@ -91,12 +94,7 @@ class StoreArticleSearch extends AdminSearch
 		if ($where !== null)
 			return $where;
 
-		$where = '1=1';
-	
-		$clause = new AdminSearchClause('title');
-		$clause->value = $this->ui->getWidget('search_title')->value;
-		$clause->operator = $this->ui->getWidget('search_title_op')->value;
-		$where.= $clause->getClause($this->app->db);
+		$where = '1 = 1';
 
 		$search_regions = $this->ui->getWidget('search_regions');
 		foreach ($search_regions->options as $value => $title) {
@@ -116,6 +114,7 @@ class StoreArticleSearch extends AdminSearch
 		$clause = new AdminSearchClause('boolean:show');
 		$clause->value = 
 			$this->ui->getWidget('search_show')->getValueAsBoolean();
+
 		$where.= $clause->getClause($this->app->db);
 
 		$clause = new AdminSearchClause('boolean:searchable');
@@ -132,7 +131,32 @@ class StoreArticleSearch extends AdminSearch
 
 	protected function getTableStore($view)
 	{
-		$sql = sprintf('select count(id) from Article where %s',
+		$keywords = $this->ui->getWidget('search_keywords')->value;
+		if ($keywords !== null) {
+			$query = new NateGoSearchQuery($this->app->db);
+			$query->addDocumentType($this->getArticleSearchType());
+			$result = $query->query($keywords);
+
+			$keyword_join_clause = sprintf(
+				'inner join %1$s on
+					%1$s.document_id = Article.id and
+					%1$s.unique_id = %2$s and %1$s.document_type = %3$s',
+				$result->getResultTable(),
+				$this->app->db->quote($result->getUniqueId(), 'text'),
+				$this->app->db->quote($this->getArticleSearchType(),
+					'integer'));
+
+			$order_clause = $this->getOrderByClause($view,
+				sprintf('%1$s.displayorder1, %1$s.displayorder2, Article.title',
+					$result->getResultTable()), 'Article');
+		} else {
+			$keyword_join_clause = '';
+			$order_clause = $this->getOrderByClause($view, 'Article.title',
+				'Article');
+		}
+
+		$sql = sprintf('select count(id) from Article %s where %s',
+			$keyword_join_clause,
 			$this->getWhereClause());
 
 		$pager = $this->ui->getWidget('pager');
@@ -143,12 +167,14 @@ class StoreArticleSearch extends AdminSearch
 					Article.show,
 					Article.searchable
 				from Article
+				%s
 				where %s
 				order by %s';
 
 		$sql = sprintf($sql,
+			$keyword_join_clause,
 			$this->getWhereClause(),
-			$this->getOrderByClause($view, 'Article.title', 'Article'));
+			$order_clause);
 
 		$this->app->db->setLimit($pager->page_size, $pager->current_record);
 		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
@@ -157,7 +183,7 @@ class StoreArticleSearch extends AdminSearch
 		$view = $this->ui->getWidget('index_view');
 		$view->getColumn('visibility')->getRendererByPosition()->db =
 			$this->app->db;
-		
+
 		if ($store->getRowCount() != 0)
 			$this->ui->getWidget('results_message')->content =
 				$pager->getResultsMessage(Store::_('result'), 
@@ -165,6 +191,16 @@ class StoreArticleSearch extends AdminSearch
 
 		return $store;
 	}
+
+	// }}}
+	// {{{ protected abstract function getArticleSearchType()
+
+	/**
+	 * Gets the search type for articles for this web-application
+	 *
+	 * @return integer the search type for articles for this web-application.
+	 */
+	protected abstract function getArticleSearchType();
 
 	// }}}
 }
