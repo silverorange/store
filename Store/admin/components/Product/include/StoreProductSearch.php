@@ -47,6 +47,9 @@ class StoreProductSearch
 
 			$query = new NateGoSearchQuery($db);
 			$query->addDocumentType($this->getProductSearchType());
+			$query->addBlockedWords(
+				NateGoSearchQuery::getDefaultBlockedWords());
+
 			$result = $query->query($keywords);
 
 			$this->join_clause = sprintf(
@@ -112,6 +115,11 @@ class StoreProductSearch
 	// }}}
 	// {{{ protected function buildWhereClause()
 
+	/**
+	 * Builds the SQL where clause for a product search
+	 *
+	 * @see StoreProductSearch::getWhereClause()
+	 */
 	protected function buildWhereClause()
 	{
 		$where = '1 = 1';
