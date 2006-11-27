@@ -204,6 +204,9 @@ class StoreArticleSearch extends AdminSearch
 		if ($keywords !== null && $this->getArticleSearchType() !== null) {
 			$query = new NateGoSearchQuery($this->app->db);
 			$query->addDocumentType($this->getArticleSearchType());
+			$query->addBlockedWords(
+				NateGoSearchQuery::getDefaultBlockedWords());
+
 			$result = $query->query($keywords);
 
 			$this->join_clause = sprintf(
