@@ -1,5 +1,8 @@
 <?php
 
+require_once 'Swat/SwatUI.php';
+require_once 'MDB2.php';
+
 /**
  * Gets the where clause for a product search
  *
@@ -29,14 +32,7 @@ class StoreProductSearchWhereClause
 	 */
 	public function getWhereClause()
 	{
-		$where = '1=1';
-
-		// title
-		$clause = new AdminSearchClause('title');
-		$clause->table = 'Product';
-		$clause->value = $this->ui->getWidget('search_title')->value;
-		$clause->operator = $this->ui->getWidget('search_title_op')->value;
-		$where.= $clause->getClause($this->db);
+		$where = '1 = 1';
 
 		// sku
 		$clause = new AdminSearchClause('sku');

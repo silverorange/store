@@ -26,7 +26,7 @@ require_once
  * @copyright 2005-2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreProductIndex extends AdminSearch
+abstract class StoreProductIndex extends AdminSearch
 {
 	// {{{ protected properties
 
@@ -95,10 +95,6 @@ class StoreProductIndex extends AdminSearch
 		}
 
 		$pager = $this->ui->getWidget('pager');
-		$pager->total_records = SwatDB::queryOne($this->app->db,
-			sprintf('select count(id) from Product where %s',
-				$this->getWhereClause()));
-
 		$pager->process();
 	}
 
@@ -172,7 +168,11 @@ class StoreProductIndex extends AdminSearch
 
 	protected function getTableStore($view)
 	{
-		$sql = sprintf('select count(id) from Product where %s',
+		$keywords = $this->ui->getWidget('search_keywords')->value;
+		$search = $this->getProductNateGoSearch($this->app->db, $keywords);
+
+		$sql = sprintf('select count(id) from Product %s where %s',
+			$search->getJoinClause(),
 			$this->getWhereClause());
 
 		$pager = $this->ui->getWidget('pager');
@@ -187,25 +187,40 @@ class StoreProductIndex extends AdminSearch
 				from Product
 					inner join ProductItemCountByStatusView as statuses on
 						statuses.product = Product.id
+					%s
 				where %s
 				order by %s';
 
 		$sql = sprintf($sql,
+			$search->getJoinClause(),
 			$this->getWhereClause(),
-			$this->getOrderByClause($view,
-				'Product.title, Product.id'));
+			$this->getOrderByClause($view, $search->getOrderByClause()));
 
 		$this->app->db->setLimit($pager->page_size, $pager->current_record);
 
 		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
 
-		if ($store->getRowCount() != 0)
+		if ($store->getRowCount() > 0)
 			$this->ui->getWidget('results_message')->content =
 				$pager->getResultsMessage('result', 'results');
 
-
 		return $store;
 	}
+
+	// }}}
+	// {{{ protected abstract function getProductNateGoSearch()
+
+	/**
+	 * Gets the nate-go product search object for the given keywords
+	 *
+	 * @param MDB2_Driver_Common $db the database containing the NateGoSearch
+	 *                                index.
+	 * @param string $keywords the keywords to search for.
+	 *
+	 * @return StoreProductNateGoSearch the nate-go product search object.
+	 */
+	protected abstract function getProductNateGoSearch(MDB2_Driver_Common $db,
+		$keywords);
 
 	// }}}
 }
