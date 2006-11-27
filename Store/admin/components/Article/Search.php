@@ -13,14 +13,20 @@ require_once 'include/StoreArticleVisibilityCellRenderer.php';
 /**
  * Search page for Articles
  *
- * The search page used the NateGoSearch package for fulltext searching.
- *
  * @package   Store
  * @copyright 2005-2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-abstract class StoreArticleSearch extends AdminSearch
+class StoreArticleSearch extends AdminSearch
 {
+	// {{{ protected proeprties
+
+	protected $where_clause;
+	protected $join_clause;
+	protected $order_by_clause;
+
+	// }}}
+
 	// init phase
 	// {{{ protected function initInternal()
 
@@ -89,41 +95,60 @@ abstract class StoreArticleSearch extends AdminSearch
 
 	protected function getWhereClause()
 	{
-		static $where = null;
+		if ($this->where_clause === null) {
+			$where = '1 = 1';
 
-		if ($where !== null)
-			return $where;
+			// keywords are included in the where clause if fulltext searching
+			// is turned off
+			if ($this->getArticleSearchType() === null) {
+				$where.= ' and (';
 
-		$where = '1 = 1';
+				$clause = new AdminSearchClause('title');
+				$clause->table = 'Article';
+				$clause->value = $this->ui->getWidget('search_keywords')->value;
+				$clause->operator = AdminSearchClause::OP_CONTAINS;
+				$where.= $clause->getClause($this->app->db, '');
 
-		$search_regions = $this->ui->getWidget('search_regions');
-		foreach ($search_regions->options as $value => $title) {
-			if (in_array($value, $search_regions->values)) {
-				$where.= sprintf(' and id in
-					(select article from ArticleRegionBinding
-					where region = %s)',
-					$this->app->db->quote($value, 'integer'));
-			} else {
-				$where.= sprintf(' and id not in
-					(select article from ArticleRegionBinding
-					where region = %s)',
-					$this->app->db->quote($value, 'integer'));
+				$clause = new AdminSearchClause('bodytext');
+				$clause->table = 'Article';
+				$clause->value = $this->ui->getWidget('search_keywords')->value;
+				$clause->operator = AdminSearchClause::OP_CONTAINS;
+				$where.= $clause->getClause($this->app->db, 'or');
+
+				$where.= ') ';
 			}
+
+			$search_regions = $this->ui->getWidget('search_regions');
+			foreach ($search_regions->options as $value => $title) {
+				if (in_array($value, $search_regions->values)) {
+					$where.= sprintf(' and id in
+						(select article from ArticleRegionBinding
+						where region = %s)',
+						$this->app->db->quote($value, 'integer'));
+				} else {
+					$where.= sprintf(' and id not in
+						(select article from ArticleRegionBinding
+						where region = %s)',
+						$this->app->db->quote($value, 'integer'));
+				}
+			}
+
+			$clause = new AdminSearchClause('boolean:show');
+			$clause->value = 
+				$this->ui->getWidget('search_show')->getValueAsBoolean();
+
+			$where.= $clause->getClause($this->app->db);
+
+			$clause = new AdminSearchClause('boolean:searchable');
+			$clause->value = 
+				$this->ui->getWidget('search_searchable')->getValueAsBoolean();
+
+			$where.= $clause->getClause($this->app->db);
+
+			$this->where = $where;
 		}
 
-		$clause = new AdminSearchClause('boolean:show');
-		$clause->value = 
-			$this->ui->getWidget('search_show')->getValueAsBoolean();
-
-		$where.= $clause->getClause($this->app->db);
-
-		$clause = new AdminSearchClause('boolean:searchable');
-		$clause->value = 
-			$this->ui->getWidget('search_searchable')->getValueAsBoolean();
-
-		$where.= $clause->getClause($this->app->db);
-
-		return $where;
+		return $this->where;
 	}
 
 	// }}}
@@ -131,32 +156,10 @@ abstract class StoreArticleSearch extends AdminSearch
 
 	protected function getTableStore($view)
 	{
-		$keywords = $this->ui->getWidget('search_keywords')->value;
-		if ($keywords !== null) {
-			$query = new NateGoSearchQuery($this->app->db);
-			$query->addDocumentType($this->getArticleSearchType());
-			$result = $query->query($keywords);
-
-			$keyword_join_clause = sprintf(
-				'inner join %1$s on
-					%1$s.document_id = Article.id and
-					%1$s.unique_id = %2$s and %1$s.document_type = %3$s',
-				$result->getResultTable(),
-				$this->app->db->quote($result->getUniqueId(), 'text'),
-				$this->app->db->quote($this->getArticleSearchType(),
-					'integer'));
-
-			$order_clause = $this->getOrderByClause($view,
-				sprintf('%1$s.displayorder1, %1$s.displayorder2, Article.title',
-					$result->getResultTable()), 'Article');
-		} else {
-			$keyword_join_clause = '';
-			$order_clause = $this->getOrderByClause($view, 'Article.title',
-				'Article');
-		}
+		$this->searchArticles();
 
 		$sql = sprintf('select count(id) from Article %s where %s',
-			$keyword_join_clause,
+			$this->join_clause,
 			$this->getWhereClause());
 
 		$pager = $this->ui->getWidget('pager');
@@ -172,9 +175,9 @@ abstract class StoreArticleSearch extends AdminSearch
 				order by %s';
 
 		$sql = sprintf($sql,
-			$keyword_join_clause,
+			$this->join_clause,
 			$this->getWhereClause(),
-			$order_clause);
+			$this->getOrderByClause($view, $this->order_by_clause));
 
 		$this->app->db->setLimit($pager->page_size, $pager->current_record);
 		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
@@ -193,14 +196,48 @@ abstract class StoreArticleSearch extends AdminSearch
 	}
 
 	// }}}
-	// {{{ protected abstract function getArticleSearchType()
+	// {{{ protected function searchArticles()
+
+	protected function searchArticles()
+	{
+		$keywords = $this->ui->getWidget('search_keywords')->value;
+		if ($keywords !== null && $this->getArticleSearchType() !== null) {
+			$query = new NateGoSearchQuery($this->app->db);
+			$query->addDocumentType($this->getArticleSearchType());
+			$result = $query->query($keywords);
+
+			$this->join_clause = sprintf(
+				'inner join %1$s on
+					%1$s.document_id = Article.id and
+					%1$s.unique_id = %2$s and %1$s.document_type = %3$s',
+				$result->getResultTable(),
+				$this->app->db->quote($result->getUniqueId(), 'text'),
+				$this->app->db->quote($this->getArticleSearchType(),
+					'integer'));
+
+			$this->order_by_clause =
+				sprintf('%1$s.displayorder1, %1$s.displayorder2, Article.title',
+					$result->getResultTable());
+		} else {
+			$this->join_clause = '';
+			$this->order_by_clause = 'Article.title';
+		}
+	}
+
+	// }}}
+	// {{{ protected function getArticleSearchType()
 
 	/**
 	 * Gets the search type for articles for this web-application
 	 *
-	 * @return integer the search type for articles for this web-application.
+	 * @return integer the search type for articles for this web-application or
+	 *                  null if fulltext searching is not implemented for the
+	 *                  current application.
 	 */
-	protected abstract function getArticleSearchType();
+	protected function getArticleSearchType()
+	{
+		return null;
+	}
 
 	// }}}
 }
