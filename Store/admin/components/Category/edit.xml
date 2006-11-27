@@ -27,7 +27,7 @@
 			</widget>
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Always Visible</property>
-				<property name="note" translatable="yes">This will cause the category to be visible on the site, regardless of visibility rules.</property>
+				<property name="note" translatable="yes">Always show this category on the site even when it contains no enabled products.</property>
 				<widget class="SwatCheckbox" id="always_visible">
 					<property name="value" type="boolean">false</property>
 				</widget>
