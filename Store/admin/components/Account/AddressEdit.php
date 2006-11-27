@@ -155,7 +155,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 			if ($count == 0) {
 				if ($country_title === null) {
 					$message_content = Store::_('The selected '.
-						'<strong>%s</strong> is  not a province or state of '.
+						'<strong>%s</strong> is not a province or state of '.
 						'the selected country.');
 				} else {
 					$message_content = sprintf(Store::_('The selected '.

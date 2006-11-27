@@ -21,8 +21,18 @@
 			</widget>
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Body Text</property>
-				<widget class="SwatTextarea" id="bodytext" />
+				<widget class="SwatTextarea" id="bodytext">
+					<property name="rows" type="integer">20</property>
+				</widget>
 			</widget>
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Always Visible</property>
+				<property name="note" translatable="yes">This will cause the category to be visible on the site, regardless of visibility rules.</property>
+				<widget class="SwatCheckbox" id="always_visible">
+					<property name="value" type="boolean">false</property>
+				</widget>
+			</widget>
+
 			<widget class="SwatFooterFormField">
 				<widget class="SwatButton" id="submit_button" />
 			</widget>
