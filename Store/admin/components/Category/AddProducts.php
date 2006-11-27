@@ -85,10 +85,6 @@ class StoreCategoryAddProducts extends AdminSearch
 		}
 
 		$pager = $this->ui->getWidget('pager');
-		$pager->total_records = SwatDB::queryOne($this->app->db,
-			sprintf('select count(id) from Product where %s',
-				$this->getWhereClause()));
-
 		$pager->process();
 	}
 
