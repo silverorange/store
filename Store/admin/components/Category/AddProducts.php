@@ -6,8 +6,7 @@ require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatTreeFlydownNode.php';
 require_once 'Swat/SwatFlydownDivider.php';
 require_once 'Store/StoreCatalogSelector.php';
-require_once 'Store/admin/components/Product/include/'.
-	'StoreProductSearchWhereClause.php';
+require_once 'Store/admin/components/Product/include/StoreProductSearch.php';
 
 /**
  * Search page for add products to category tool
@@ -16,7 +15,7 @@ require_once 'Store/admin/components/Product/include/'.
  * @copyright 2005-2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-abstract class StoreCategoryAddProducts extends AdminSearch
+class StoreCategoryAddProducts extends AdminSearch
 {
 	// {{{ private properties
 
@@ -132,27 +131,15 @@ abstract class StoreCategoryAddProducts extends AdminSearch
 	}
 
 	// }}}
-	// {{{ protected function getWhereClause()
-
-	protected function getWhereClause()
-	{
-		$where_clause = new StoreProductSearchWhereClause($this->ui,
-			$this->app->db);
-
-		return $where_clause->getWhereClause();
-	}
-
-	// }}}
 	// {{{ protected function getTableStore()
 
 	protected function getTableStore($view)
 	{
-		$keywords = $this->ui->getWidget('search_keywords')->value;
-		$search = $this->getProductNateGoSearch($this->app->db, $keywords);
+		$search = $this->getProductSearch();
 
 		$sql = sprintf('select count(id) from Product %s where %s',
 			$search->getJoinClause(),
-			$this->getWhereClause());
+			$search->getWhereClause());
 
 		$pager = $this->ui->getWidget('pager');
 		$pager->total_records = SwatDB::queryOne($this->app->db, $sql);
@@ -160,7 +147,7 @@ abstract class StoreCategoryAddProducts extends AdminSearch
 		$sql = 'select id, title from Product %s where %s order by %s';
 		$sql = sprintf($sql,
 			$search->getJoinClause(),
-			$this->getWhereClause(),
+			$search->getWhereClause(),
 			$this->getOrderByClause($view, $search->getOrderByClause()));
 
 		$this->app->db->setLimit($pager->page_size, $pager->current_record);
@@ -171,19 +158,17 @@ abstract class StoreCategoryAddProducts extends AdminSearch
 	}
 
 	// }}}
-	// {{{ protected abstract function getProductNateGoSearch()
+	// {{{ protected function getProductSearch()
 
 	/**
-	 * Gets the nate-go product search object for the given keywords
+	 * Gets the product search object
 	 *
-	 * @param MDB2_Driver_Common $db the database containing the NateGoSearch
-	 *                                index.
-	 * @param string $keywords the keywords to search for.
-	 *
-	 * @return StoreProductNateGoSearch the nate-go product search object.
+	 * @return StoreProductSearch the product search object.
 	 */
-	protected abstract function getProductNateGoSearch(MDB2_Driver_Common $db,
-		$keywords);
+	protected function getProductSearch()
+	{
+		return new StoreProductSearch($this->ui, $this->app->db);
+	}
 
 	// }}}
 	// {{{ private function buildNavBar()
