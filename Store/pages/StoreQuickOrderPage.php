@@ -153,7 +153,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 					$this->addItem($item_id, $quantity, $sku)) {
 					// clear fields after a successful add
 					$sku_widget->value = '';
-					$quantity_widget->value = '1';
+					$quantity_widget->value = 1;
 					$item_selector->sku = null;
 					$item_selector->init();
 				}
