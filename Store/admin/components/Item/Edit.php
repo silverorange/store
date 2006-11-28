@@ -7,6 +7,7 @@ require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatMessage.php';
 require_once 'Store/StoreClassMap.php';
 require_once 'Store/dataobjects/StoreItem.php';
+require_once 'Store/dataobjects/StoreRegionWrapper.php';
 
 /**
  * Edit page for Items
@@ -71,48 +72,6 @@ class StoreItemEdit extends AdminDBEdit
 
 		$price_replicator = $this->ui->getWidget('price_replicator');
 		$price_replicator->replicators = $regions;
-		$enabled_replicator = $this->ui->getWidget('enabled_replicator');
-		$enabled_replicator->replicators = $regions;
-
-		$this->initItemRegionFields();
-	}
-
-	// }}}
-	// {{{ private function initItemRegionFields()
-
-	private function initItemRegionFields()
-	{
-		$price_replicator = $this->ui->getWidget('price_replicator');
-
-		$sql = 'select Region.id as region, price, enabled, locale.id as locale
-			from Region
-			left outer join ItemRegionBinding on
-				ItemRegionBinding.region = Region.id
-				and item = %s
-			inner join Locale on Region.id = Locale.region
-			order by Region.id';
-
-		$sql = sprintf($sql, $this->app->db->quote($this->id, 'integer'));
-		$rs = SwatDB::query($this->app->db, $sql);
-		$regions[] = null;
-
-		foreach ($rs as $row) {
-			// this is to filter out regions with multiple locales - as we only
-			// want the first locale.  MIght be a better way to do this.
-			if (array_key_exists($row->region, $regions) === false) {
-				$regions[$row->region] = true;
-				$price_widget =
-					$price_replicator->getWidget('price', $row->region);
-	
-				$price_widget->locale = $row->locale;
-				$price_widget->value = $row->price;
-	
-				$enabled_widget = 
-					$price_replicator->getWidget('enabled', $row->region);
-	
-				$enabled_widget->value = $row->enabled;
-			}
-		}
 	}
 
 	// }}}
@@ -124,16 +83,20 @@ class StoreItemEdit extends AdminDBEdit
 	{
 		/*
 		 * Pre-process "enabled" checkboxes to set required flag on price
-		 * entries.
+		 * entries.  Also set correct locale on the Price Entry.
 		 */
+		$sql = 'select id, title from Region order by Region.id';
+		$regions = SwatDB::query($this->app->db, $sql, 'StoreRegionWrapper');
+
 		$replicator = $this->ui->getWidget('price_replicator');
 
-		foreach ($replicator->replicators as $region => $title) {
-			$enabled_widget = $replicator->getWidget('enabled', $region);
+		foreach ($regions as $region) {
+			$enabled_widget = $replicator->getWidget('enabled', $region->id);
 			$enabled_widget->process();
 			
-			$replicator->getWidget('price', $region)->required =
-				$enabled_widget->value;
+			$price_widget = $replicator->getWidget('price', $region->id);
+			$price_widget->required = $enabled_widget->value;
+			$price_widget->locale = $region->getFirstLocale()->id;
 		}
 
 		parent::process();
@@ -345,9 +308,35 @@ class StoreItemEdit extends AdminDBEdit
 
 		$this->item_sku = $row->sku;
 		$this->ui->setValues(get_object_vars($row));
+		$this->loadReplicators();
 	}
 
 	// }}}
+
+	// {{{ private function loadReplicators()
+	private function loadReplicators()
+	{
+		$price_replicator = $this->ui->getWidget('price_replicator');
+
+		$sql = 'select Region.id as region, price, enabled
+			from Region
+			left outer join ItemRegionBinding on
+				ItemRegionBinding.region = Region.id
+				and item = %s
+			order by Region.id';
+
+		$sql = sprintf($sql, $this->app->db->quote($this->id, 'integer'));
+		$rs = SwatDB::query($this->app->db, $sql);
+		foreach ($rs as $row) {
+			$price_replicator->getWidget('price', $row->region)->value =
+				$row->price;
+
+			$price_replicator->getWidget('enabled', $row->region)->value =
+				$row->enabled;
+		}
+	}
+	// }}}
+
 	// {{{ private function displayJavaScript()
 
 	private function displayJavaScript()
