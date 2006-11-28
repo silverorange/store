@@ -334,7 +334,7 @@ class StoreProductDetails extends AdminIndex
 	// build phase
 	// {{{ protected function buildInternal()
 
-	protected function buildInternal() 
+	protected function buildInternal()
 	{
 		parent::buildInternal();
 		$this->buildProduct();
@@ -345,7 +345,7 @@ class StoreProductDetails extends AdminIndex
 	// }}}
 	// {{{ protected function getTableStore()
 
-	protected function getTableStore($view) 
+	protected function getTableStore($view)
 	{
 		switch ($view->id) {
 			case 'items_view':
@@ -360,7 +360,7 @@ class StoreProductDetails extends AdminIndex
 	// build phase - product details
 	// {{{ private function buildProduct()
 
-	private function buildProduct() 
+	private function buildProduct()
 	{
 		$product = $this->loadProduct();
 
@@ -392,7 +392,7 @@ class StoreProductDetails extends AdminIndex
 	// }}}
 	// {{{ private function buildNavBar()
 
-	private function buildNavBar($product) 
+	private function buildNavBar($product)
 	{
 		if ($this->category_id !== null) {
 			// use category navbar
@@ -414,7 +414,7 @@ class StoreProductDetails extends AdminIndex
 	// }}}
 	// {{{ private function loadProduct()
 
-	private function loadProduct() 
+	private function loadProduct()
 	{
 		$class_map = StoreClassMap::instance();
 		$product_class = $class_map->resolveClass('StoreProduct');
@@ -432,7 +432,7 @@ class StoreProductDetails extends AdminIndex
 	// }}}
 	// {{{ protected function buildProductDetails()
 
-	protected function buildProductDetails($product) 
+	protected function buildProductDetails($product)
 	{
 		$ds = new SwatDetailsStore($product);
 
@@ -546,7 +546,7 @@ class StoreProductDetails extends AdminIndex
 	// build phase - items
 	// {{{ protected function buildItems()
 
-	protected function buildItems() 
+	protected function buildItems()
 	{
 		$view = $this->ui->getWidget('items_view');
 		$form = $this->ui->getWidget('items_form');
@@ -581,7 +581,7 @@ class StoreProductDetails extends AdminIndex
 	// }}}
 	// {{{ private function buildItemGroups()
 
-	private function buildItemGroups() 
+	private function buildItemGroups()
 	{
 		$view = $this->ui->getWidget('items_view');
 		$group_header = $view->getGroup('group');
@@ -827,7 +827,7 @@ class StoreProductDetails extends AdminIndex
 	// build phase - related products
 	// {{{ private function buildRelatedProducts()
 
-	private function buildRelatedProducts() 
+	private function buildRelatedProducts()
 	{
 		$toolbar = $this->ui->getWidget('related_products_toolbar');
 
