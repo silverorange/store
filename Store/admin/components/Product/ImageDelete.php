@@ -35,6 +35,7 @@ class StoreProductImageDelete extends AdminDBDelete
 	{
 		parent::initInternal();
 		$this->category_id = SiteApplication::initVar('category');
+		$this->product_id = SiteApplication::initVar('product');
 
 		$yes_button = $this->ui->getWidget('yes_button');
 		$yes_button->title = Store::_('Remove');
@@ -49,48 +50,54 @@ class StoreProductImageDelete extends AdminDBDelete
 	{
 		parent::processDBData();
 
-		// get image id from product
-		$sql = sprintf('select primary_image from Product where id in (%s)',
-			$this->getItemList('integer'));
+		$image_id = $this->getFirstItem();
 
-		$image_id = SwatDB::queryOne($this->app->db, $sql);
+		// get products with this image as primary_image
+		$sql = sprintf('select count(id) from Product where primary_image = %s',
+			$this->app->db->quote($image_id, 'integer'));
 
-		if ($image_id !== null) {
-			// remove image from product
-			$sql = sprintf('update Product set primary_image = null
-				where id in (%s)', $this->getItemList('integer'));
+		$products = SwatDB::queryOne($this->app->db, $sql);
+
+		if ($products > 1) {
+			$sql = sprintf('delete from ProductImageBinding where image = %s
+				and product = %s',
+				$this->app->db->quote($image_id, 'integer'),
+				$this->app->db->quote($this->product_id, 'integer'));
+
+			SwatDB::exec($this->app->db, $sql);
+		} else {
+			$sql = sprintf('delete from Image where id = %s',
+				$this->app->db->quote($image_id, 'integer'));
 
 			SwatDB::exec($this->app->db, $sql);
 
-			// check if image is attached to other products
-			$sql = sprintf('select count(id) from Product
-				where primary_image = %s',
-				$this->app->db->quote($image_id, 'integer'));
+			// delete the actual files
+			$class_map = StoreClassMap::instance();
+			$product_image = $class_map->resolveClass('StoreProductImage');
+			$sizes = call_user_func(array($product_image, 'getSizes'));
 
-			$image_count = SwatDB::queryOne($this->app->db, $sql);
+			foreach ($sizes as $size => $dimensions)
+				unlink('../images/products/'.$size.'/'.$image_id.'.jpg');
 
-			// delete image
-			if ($image_count == 0) {
-				$sql = sprintf('delete from Image where id = %s',
-					$this->app->db->quote($image_id, 'integer'));
-
-				$num = SwatDB::exec($this->app->db, $sql);
-
-				// delete the actual files
-				$class_map = StoreClassMap::instance();
-				$product_image = $class_map->resolveClass('StoreProductImage');
-				$sizes = call_user_func(array($product_image, 'getSizes'));
-
-				foreach ($sizes as $size => $dimensions)
-					unlink('../images/products/'.$size.'/'.$image_id.'.jpg');
-			}
-
-			$msg = new SwatMessage(
-				Store::_('One product image has been removed.'),
-				SwatMessage::NOTIFICATION);
-
-			$this->app->messages->add($msg);
 		}
+
+		// set the primary_image to the next image on the product, if
+		// none, primary_image = null
+		$sql = sprintf('update Product set primary_image =
+			(select image from ProductImageBinding
+				where ProductImageBinding.product = Product.id
+				order by displayorder
+				limit 1)
+			where id = %s',
+			$this->app->db->quote($this->product_id, 'integer'));
+
+		SwatDB::exec($this->app->db, $sql);
+
+		$msg = new SwatMessage(
+			Store::_('One product image has been removed.'),
+			SwatMessage::NOTIFICATION);
+
+		$this->app->messages->add($msg);
 	}
 
 	// }}}
@@ -104,33 +111,32 @@ class StoreProductImageDelete extends AdminDBDelete
 
 		$this->buildNavBar();
 
+		$image_id = $this->getFirstItem();
+
 		$form = $this->ui->getWidget('confirmation_form');
 		$form->addHiddenField('category', $this->category_id);
+		$form->addHiddenField('product', $this->product_id);
 
 		$message = $this->ui->getWidget('confirmation_message');
 		$image_display = new SwatImageDisplay();
 
-		$sql = sprintf('select * from Image where id in
-			(select primary_image from Product where id in (%s))',
-			$this->getItemList('integer'));
+		$sql = sprintf('select * from Image where id = %s',
+			$this->app->db->quote($image_id, 'integer'));
 			
-		$images = SwatDB::query($this->app->db, $sql);
+		$image = SwatDB::queryRow($this->app->db, $sql);
 
 		ob_start();
 
-		foreach ($images as $image) {
-			$image_display->width = $image->small_width;
-			$image_display->height = $image->small_height;
-			$image_display->image =
-				'../images/products/small/'.$image->id.'.jpg';
+		$image_display->width = $image->thumb_width;
+		$image_display->height = $image->thumb_height;
+		$image_display->image =
+			'../images/products/thumb/'.$image->id.'.jpg';
 
-			$image_display->alt = sprintf('Image of %s', $this->product_title);
-			$image_display->display();
-		}
+		$image_display->alt = sprintf('Image of %s', $this->product_title);
+		$image_display->display();
 
 		$message->content = sprintf('<h3>%s</h3>',
-			Store::ngettext('Remove the following image?',
-			'Remove the following images?', count($this->items))).
+			Store::_('Remove the following image?')).
 			ob_get_clean();
 
 		$message->content_type = 'text/xml';
@@ -160,7 +166,7 @@ class StoreProductImageDelete extends AdminDBDelete
 		}
 
 		if ($this->single_delete) {
-			$id = $this->getFirstItem();
+			$id = $this->product_id;
 			$this->product_title = SwatDB::queryOneFromTable($this->app->db,
 				'Product', 'text:title', 'id', $id);
 
