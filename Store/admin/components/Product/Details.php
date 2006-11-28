@@ -253,7 +253,6 @@ class StoreProductDetails extends AdminIndex
 						'product' => $this->id,
 					);
 
-					
 					$item_id = SwatDB::insertRow($this->app->db, 'Item',
 						$fields, $values, 'id');
 
