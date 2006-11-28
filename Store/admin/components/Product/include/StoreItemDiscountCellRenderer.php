@@ -37,7 +37,7 @@ class StoreItemDiscountCellRenderer extends SwatLinkCellRenderer
 			$this->text = $this->edit_text;
 			parent::render();
 			$this->text = $old_text;
-			echo Store::_(' (%s)', SwatString::numberFormat($num));
+			echo sprintf(Store::_(' (%s)', SwatString::numberFormat($num)));
 		}
 	}
 }
