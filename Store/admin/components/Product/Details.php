@@ -253,11 +253,12 @@ class StoreProductDetails extends AdminIndex
 						'product' => $this->id,
 					);
 
+					
 					$item_id = SwatDB::insertRow($this->app->db, 'Item',
 						$fields, $values, 'id');
 
 					foreach ($regions as $region) {
-						$price = $input_row->getWidget('price_'.$region->id, 
+						$price = $input_row->getWidget('price_'.$region->id,
 							$replicator_id);
 
 						if ($price->getState() !== null) {
@@ -272,6 +273,8 @@ class StoreProductDetails extends AdminIndex
 								$item_region_values);
 						}
 					}
+
+					$this->addNewItemExtras($item_id);
 
 					// remove the row after we entered it
 					$input_row->removeReplicatedRow($replicator_id);
@@ -303,6 +306,17 @@ class StoreProductDetails extends AdminIndex
 
 			$this->app->messages->add($msg);
 		}
+	}
+
+	// }}}
+	// {{{ protected function addNewItemExtras()
+
+	protected function addNewItemExtras($item_id)
+	{
+		/**
+		 * this is a placeholder function, for the occasional case where a site
+		 * would require that we insert rows into other tables on item creation
+		 */
 	}
 
 	// }}}
