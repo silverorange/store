@@ -73,6 +73,7 @@ class StoreProductImageEdit extends AdminPage
 				$this->app->messages->add($msg);
 			} else {
 				if ($this->processImages()) {
+					$this->saveDBData();
 					$this->relocate();
 				} else {
 					$msg = new SwatMessage($msg_text, SwatMessage::ERROR);
@@ -244,6 +245,25 @@ class StoreProductImageEdit extends AdminPage
 	}
 
 	// }}}
+	// {{{ protected function saveDBData()
+
+	protected function saveDBData()
+	{
+		$fields = array('text:title', 'boolean:border');
+		$values = array(
+			'title' => $this->ui->getWidget('title')->value,
+			'border' => $this->ui->getWidget('border')->value
+			);
+
+		SwatDB::updateRow($this->app->db, 'Image', $fields, $values,
+			'id', $this->id);
+
+		$msg = new SwatMessage(Store::_('Image has been saved.'));
+
+		$this->app->messages->add($msg);
+	}
+
+	// }}}
 	// {{{ private function saveImages()
 
 	/**
@@ -280,6 +300,13 @@ class StoreProductImageEdit extends AdminPage
 
 			SwatDB::insertRow($this->app->db, 'ProductImageBinding',
 				$fields, $values);
+
+			// update the product to use the new image
+			if ($displayorder == 0)
+				SwatDB::updateRow($this->app->db, 'Product',
+					array('integer:primary_image'),
+					array('primary_image' => $new_id), 'integer:id',
+					$this->product_id);
 		} else {
 			$sql = sprintf('update ProductImageBinding set image = %s
 				where image = %s and product = %s',
@@ -289,13 +316,6 @@ class StoreProductImageEdit extends AdminPage
 
 			SwatDB::exec($this->app->db, $sql);
 		}
-
-		// update the product to use the new image
-		if ($old_id === null && $displayorder == 0)
-			SwatDB::updateRow($this->app->db, 'Product',
-				array('integer:primary_image'),
-				array('primary_image' => $new_id), 'integer:id',
-				$this->product_id);
 
 		// no more products reference the image so delete it
 		if ($old_id !== null) {
@@ -393,6 +413,9 @@ class StoreProductImageEdit extends AdminPage
 	{
 		parent::buildInternal();
 
+		if ($this->id !== null)
+			$this->loadDBData();
+
 		$this->buildImage();
 		$this->buildForm();
 		$this->buildNavBar();
@@ -477,6 +500,29 @@ class StoreProductImageEdit extends AdminPage
 			$url = $this->getRefererURL();
 			$form->addHiddenField(self::RELOCATE_URL_FIELD, $url);
 		}
+	}
+
+	// }}}
+	// {{{ protected function loadDBData()
+
+	protected function loadDBData()
+	{
+		$sql = 'select title, border from Image
+			inner join ProductImageBinding on image = id
+			where id = %s and product = %s';
+
+		$sql = sprintf($sql,
+			$this->app->db->quote($this->id, 'integer'),
+			$this->app->db->quote($this->product_id, 'integer'));
+
+		$row = SwatDB::queryRow($this->app->db, $sql);
+
+		if ($row === null)
+			throw new AdminNotFoundException(sprintf(
+				Store::_('An image with an id of ‘%d’ does not exist.'),
+				$this->id));
+
+		$this->ui->setValues(get_object_vars($row));
 	}
 
 	// }}}
