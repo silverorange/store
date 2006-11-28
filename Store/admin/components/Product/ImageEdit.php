@@ -35,10 +35,11 @@ class StoreProductImageEdit extends AdminPage
 
 		$this->ui->loadFromXML('Store/admin/components/Product/imageedit.xml');
 
+		$this->id = $this->app->initVar('id');
 		$this->product_id = $this->app->initVar('product');
 		$this->category_id = SiteApplication::initVar('category');
 
-		$sql = 'select title, primary_image from Product where id = %s';
+		$sql = 'select title from Product where id = %s';
 		$sql = sprintf($sql, 
 			$this->app->db->quote($this->product_id, 'integer'));
 
@@ -49,7 +50,6 @@ class StoreProductImageEdit extends AdminPage
 				Store::_('There is no image associated with product ‘%d’.'),
 				$this->product_id));
 
-		$this->id = $row->primary_image;
 		$this->product_title = $row->title;
 	}
 
@@ -262,15 +262,45 @@ class StoreProductImageEdit extends AdminPage
 		$new_id = SwatDB::insertRow($this->app->db, 'Image',
 			$fields, $data, 'integer:id');
 
+		// bind the new image to the product
+		if ($old_id === null) {
+			$sql = sprintf('select max(displayorder) from ProductImageBinding
+					where product = %s',
+					$this->app->db->quote($this->product_id, 'integer'));
+			$displayorder = SwatDB::queryOne($this->app->db, $sql);
+			$displayorder = ($displayorder === null) ? 0 : $displayorder + 1;
+
+			$fields = array('integer:product',
+					'integer:image',
+					'integer:displayorder');
+
+			$values = array('product' => $this->product_id,
+					'image' => $new_id,
+					'displayorder' => $displayorder);
+
+			SwatDB::insertRow($this->app->db, 'ProductImageBinding',
+				$fields, $values);
+		} else {
+			$sql = sprintf('update ProductImageBinding set image = %s
+				where image = %s and product = %s',
+				$this->app->db->quote($new_id, 'integer'),
+				$this->app->db->quote($old_id, 'integer'),
+				$this->app->db->quote($this->product_id, 'integer'));
+
+			SwatDB::exec($this->app->db, $sql);
+		}
+
 		// update the product to use the new image
-		SwatDB::updateRow($this->app->db, 'Product',
-			array('integer:primary_image'),
-			array('primary_image' => $new_id), 'integer:id',
-			$this->product_id);
+		if ($old_id === null && $displayorder == 0)
+			SwatDB::updateRow($this->app->db, 'Product',
+				array('integer:primary_image'),
+				array('primary_image' => $new_id), 'integer:id',
+				$this->product_id);
 
 		// no more products reference the image so delete it
 		if ($old_id !== null) {
-			$sql = 'select count(id) from Product where primary_image = %s';
+			$sql = 'select count(product) from ProductImageBinding
+				where image = %s';
 			$sql = sprintf($sql,
 				$this->app->db->quote($old_id, 'integer'));
 
@@ -289,7 +319,7 @@ class StoreProductImageEdit extends AdminPage
 						$old_id.'.jpg';
 			}
 		}
-
+			
 		// save images
 		foreach ($sizes as $size => $dimensions) {
 			if (isset($images[$size])) {

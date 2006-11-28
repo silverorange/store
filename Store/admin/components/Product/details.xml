@@ -20,30 +20,6 @@
 				<property name="link">../%s</property>
 			</widget>
 		</widget>
-		<!-- {{{ Image Details -->
-		<widget class="SwatFrame" id="product_image_frame">
-			<property name="classes[]">image-frame</property>
-			<widget class="SwatImageDisplay" id="image">
-				<property name="image">../images/elements/product-place-holder.png</property>
-				<property name="width" type="integer">100</property>
-				<property name="height" type="integer">100</property>
-				<property name="alt" translatable="yes">No Image Available</property>
-			</widget>
-			<widget class="SwatToolbar" id="image_toolbar">
-				<widget class="SwatToolLink" id="image_edit">
-					<property name="title" translatable="yes">Add an Image</property>
-					<property name="link">Product/ImageEdit?product=%s</property>
-					<property name="stock_id">create</property>
-				</widget>
-				<widget class="SwatToolLink" id="image_delete">
-					<property name="title" translatable="yes">Remove Image</property>
-					<property name="visible" type="boolean">false</property>
-					<property name="link">Product/ImageDelete?id=%s</property>
-					<property name="stock_id">delete</property>
-				</widget>
-			</widget>
-		</widget>
-		<!-- }}} -->
 		<widget class="SwatDetailsView" id="details_view">
 			<object class="SwatDetailsViewField">
 				<property name="title" translatable="yes">Short Name</property>
@@ -79,6 +55,26 @@
 					<property name="text" type="data">bodytext</property>
 				</object>
 			</object>
+		</widget>
+		<!-- }}} -->
+		<!-- {{{ Product Images -->
+		<widget class="SwatFrame">
+			<property name="title" translatable="yes">Product Images</property>
+			<widget class="SwatToolBar" id="product_images_toolbar">
+				<widget class="SwatToolLink" id="image_edit">
+					<property name="title" translatable="yes">Add an Image</property>
+					<property name="link">Product/ImageEdit?product=%s</property>
+					<property name="stock_id">create</property>
+				</widget>
+				<widget class="SwatToolLink" id="image_order">
+					<property name="title" translatable="yes">Change Image Order</property>
+					<property name="link">Product/ImageOrder?product=%s</property>
+					<property name="stock_id">change-order</property>
+				</widget>
+			</widget>
+			<widget class="SwatForm" id="product_images_form">
+				<property name="classes[]">store-product-images</property>
+			</widget>
 		</widget>
 		<!-- }}} -->
 		<!-- {{{ Items -->

@@ -18,6 +18,8 @@ require_once 'Store/admin/components/Product/include/StoreItemTableView.php';
 require_once 'Store/admin/components/Product/include/StoreItemGroupGroup.php';
 require_once 'Store/admin/components/Product/include/StoreItemGroupAction.php';
 require_once
+	'Store/admin/components/Product/include/StoreProductImageDisplay.php';
+require_once
 	'Store/admin/components/Item/include/StoreItemStatusCellRenderer.php';
 
 require_once 
@@ -352,6 +354,7 @@ class StoreProductDetails extends AdminIndex
 		parent::buildInternal();
 		$this->buildProduct();
 		$this->buildItems();
+		$this->buildProductImages();
 		$this->buildRelatedProducts();
 	}
 
@@ -378,7 +381,6 @@ class StoreProductDetails extends AdminIndex
 		$product = $this->loadProduct();
 
 		$this->buildProductDetails($product);
-		$this->buildImageDetails($product);
 
 		$details_frame = $this->ui->getWidget('details_frame');
 		$details_frame->title = Store::_('Product');
@@ -491,41 +493,6 @@ class StoreProductDetails extends AdminIndex
 		}
 	}
 
-	// }}}
-	// {{{ private function buildImageDetails()
-
-	private function buildImageDetails($product)
-	{
-		$this->ui->getWidget('image_toolbar')->setToolLinkValues($this->id);
-
-		if ($this->category_id !== null) {
-			// set image edit link
-			$image_edit = $this->ui->getWidget('image_edit');
-			$image_edit->link = 'Product/ImageEdit?product=%s&category=%s';
-			$image_edit->value = array($this->id, $this->category_id);
-
-			// set image delete link
-			$image_delete = $this->ui->getWidget('image_delete');
-			$image_delete->link = 'Product/ImageDelete?id=%s&category=%s';
-			$image_delete->value = array($this->id, $this->category_id);
-		}
-
-		if ($product->primary_image === null) {
-			return;
-		} else {
-			$image = $this->ui->getWidget('image');
-			$image->image = 
-				'../images/products/thumb/'.$product->primary_image->id.'.jpg';
-
-			$image->width = $product->primary_image->thumb_width;
-			$image->height = $product->primary_image->thumb_height;
-			$image->alt = sprintf(Store::_('Image of %s'), $product->title);
-		}
-
-		$this->ui->getWidget('image_edit')->title = Store::_('Replace Image');
-		$this->ui->getWidget('image_delete')->visible = true;
-
-	}
 	// }}}
 	// {{{ private function displayCategories()
 
@@ -833,6 +800,68 @@ class StoreProductDetails extends AdminIndex
 			// need to manually init here
 			$column->init();
 		}
+	}
+
+	// }}}
+
+	// build phase - product images
+	// {{{ private function buildProductImages()
+
+	private function buildProductImages()
+	{
+		$toolbar = $this->ui->getWidget('product_images_toolbar');
+
+		if ($this->category_id === null) {
+			$toolbar->setToolLinkValues($this->id);
+		} else {
+			foreach ($toolbar->getToolLinks() as $tool_link)
+				$tool_link->link.= '&category=%s';
+
+			$toolbar->setToolLinkValues(array($this->id, $this->category_id));
+		}
+
+		$images = $this->getProductImages();
+		$form = $this->ui->getWidget('product_images_form');
+
+		$order_link = $this->ui->getWidget('image_order');
+		$order_link->sensitive = ($images->getRowCount() > 1);
+
+		foreach ($images->getRows() as $image) {
+			$widget = new StoreProductImageDisplay();
+			$widget->image_id = $image->id;
+			$widget->category_id = $this->category_id;
+			$widget->product_id = $this->id;
+			$widget->image = $image->image;
+			$widget->width = $image->thumb_width;
+			$widget->height = $image->thumb_height;
+			$widget->alt = $image->alt;
+
+			$form->addChild($widget);
+		}
+	}
+
+	// }}}
+	// {{{ private function getProductImages()
+
+	private function getProductImages()
+	{
+		$sql = 'select Image.id, thumb_width, thumb_height
+			from Image
+			inner join ProductImageBinding on
+				ProductImageBinding.image = Image.id
+			where ProductImageBinding.product = %s';
+
+		$sql = sprintf($sql,
+			$this->app->db->quote($this->id, 'integer'));
+
+		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
+
+		foreach ($store->getRows() as $row) {
+			$row->image = '../images/products/thumb/'.$row->id.'.jpg';
+			$row->alt = '';
+		}
+
+		return $store;
 	}
 
 	// }}}
