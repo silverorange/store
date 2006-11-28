@@ -8,7 +8,7 @@
 			<widget class="AdminNote">
 				<property name="content" translatable="yes">To add a quantity discount, add a new quantity threshold and the corresponding pricing. You can add more than one quantity discount at the same time by clicking the “enter another” link. When you are done entering quantity discounts, click the “Done” button.</property>
 			</widget>
-			<widget class="StoreQuantityDiscountTableView" id="index_view">
+			<widget class="StoreItemQuantityDiscountTableView" id="index_view">
 				<object class="SwatTableViewCheckboxColumn" id="checkbox">
 					<object class="SwatCheckboxCellRenderer" id="items">
 						<property name="value" type="data">id</property>
@@ -17,7 +17,7 @@
 				</object>
 				<object class="AdminTableViewOrderableColumn" id="quantity">
 					<property name="title" translatable="yes">Quantity</property>
-					<object class="StoreQuantityCellRenderer" id="quantity">
+					<object class="StoreItemQuantityCellRenderer" id="quantity">
 						<property name="text" type="data">quantity</property>
 						<property name="secondary_text" translatable="yes">or more, each</property>
 					</object>
@@ -30,7 +30,7 @@
 				</object>
 				<object class="SwatTableViewInputRow" />
 			</widget>
-			<widget class="StoreQuantityDiscountActions" id="index_actions">
+			<widget class="StoreItemQuantityDiscountActions" id="index_actions">
 				<property name="show_blank" type="boolean">false</property>
 				<widget class="SwatActionItem" id="add">
 					<property name="title" translatable="yes">add quantity discounts</property>
