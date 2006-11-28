@@ -68,11 +68,13 @@ class StoreItemQuantityDiscount extends AdminIndex
 		$regions = $this->queryRegions();
 		$view = $this->ui->getWidget('index_view');
 
+		//TODO: add this back to veseys
 		$item_row = $this->getItemRow();
 		$quantity =
 			$view->getColumn('quantity')->getInputCell()->getPrototypeWidget();
 
 		$quantity->minimum_value = $item_row->quantity;
+		//$quantity->minimum_value = 1;
 
 		// add dynamic columns to view
 		$this->appendPriceColumns($view, $regions);
@@ -123,10 +125,11 @@ class StoreItemQuantityDiscount extends AdminIndex
 			}
 
 			$sql = 'select sku, product, description,
-						minimum_quantity as quantity,
+						-- minimum_quantity as quantity, TODO: this needs to go back in for veseys
 						-- regions select piece goes here
 						%s
-						unit
+						-- unit TODO: this needs to go back in for veseys
+						1 as quantity
 					from Item
 						-- regions join piece goes here
 						%s
@@ -147,7 +150,7 @@ class StoreItemQuantityDiscount extends AdminIndex
 	private function appendPriceColumns(SwatTableView $view, $regions)
 	{
 		foreach ($regions as $region) {
-			$renderer = new ItemRegionPriceCellRenderer();
+			$renderer = new StoreItemRegionPriceCellRenderer();
 			$renderer->locale = $region->getFirstLocale()->id;
 
 			$column = new SwatTableViewOrderableColumn('price_'.$region->id);
