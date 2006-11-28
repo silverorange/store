@@ -849,7 +849,8 @@ class StoreProductDetails extends AdminIndex
 			from Image
 			inner join ProductImageBinding on
 				ProductImageBinding.image = Image.id
-			where ProductImageBinding.product = %s';
+			where ProductImageBinding.product = %s
+			order by displayorder';
 
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->id, 'integer'));
