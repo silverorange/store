@@ -111,6 +111,16 @@ class StoreCatalogDelete extends AdminDBDelete
 
 	}
 	// }}}
+	// {{{ protected function getNoteContent()
+
+	protected function getNoteContent()
+	{
+		return sprintf(Store::_('A %s must have no products, or be '.
+			'disabled in all regions and have a clone in order to be deleted.'),
+			Store::_('catalog'));
+	}
+
+	// }}}
 	// {{{ private function buildNavBar()
 
 	private function buildNavBar($id)
@@ -121,16 +131,6 @@ class StoreCatalogDelete extends AdminDBDelete
 		$title = SwatDB::queryOne($this->app->db, $sql);
 		$this->navbar->createEntry($title, $link);
 		$this->navbar->addEntry($last_entry);
-	}
-
-	// }}}
-	// {{{ protected function getNoteContent()
-
-	protected function getNoteContent()
-	{
-		return sprintf(Store::_('A %s must have no products, or be '.
-			'disabled in all regions and have a clone in order to be deleted.'),
-			Store::_('catalog'));
 	}
 
 	// }}}
