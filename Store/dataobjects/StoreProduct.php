@@ -271,6 +271,46 @@ class StoreProduct extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ protected function loadPrimaryImage()
+
+	/**
+	 * Loads the primary image of this product 
+	 *
+	 * If the primary image was part of the initial query to load this product,
+	 * that value is returned. Otherwise, a separate query gets the primary
+	 * image of this product. If you are calling this method frequently during
+	 * a single request, it is more efficient to include the primary image in
+	 * the initial product query.
+	 */
+	protected function loadPrimaryImage()
+	{
+		$primary_image = null;
+
+		if ($this->hasInternalValue('primary_image') &&
+			$this->getInternalValue('primary_image') !== null) {
+			$primary_image_id = $this->getInternalValue('primary_image');
+
+			$sql = 'select * from Image where id = %s';
+
+			$sql = sprintf($sql,
+				$this->db->quote($primary_image_id, 'integer'));
+		} else {
+			$sql = 'select * from Image where id in
+				(select image from ProductPrimaryImageView
+				where product = %s)';
+
+			$sql = sprintf($sql,
+				$this->db->quote($this->id, 'integer'));
+		}
+
+		$wrapper = $this->class_map->resolveClass('StoreProductImageWrapper');
+		$rs = SwatDB::query($this->db, $sql, $wrapper);
+		$primary_image = $rs->getFirst();
+
+		return $primary_image;
+	}
+
+	// }}}
 	// {{{ protected function loadImages()
 
 	/**
@@ -280,8 +320,11 @@ class StoreProduct extends StoreDataObject
 	 */
 	protected function loadImages()
 	{
-		$sql = 'select * from Image where id in
-			(select image from ProductImageBinding where product = %s)';
+		$sql = 'select Image.* from Image
+			inner join ProductImageBinding 
+				on ProductImageBinding.image = Image.id
+			where ProductImageBinding.product = %s
+			order by ProductImageBinding.displayorder';
 
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 		return SwatDB::query($this->db, $sql,

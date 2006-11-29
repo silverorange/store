@@ -322,6 +322,8 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 		 */
 		 $sql_joins = sprintf('left outer join ProductPrimaryCategoryView on
 				ProductPrimaryCategoryView.product = Product.id
+			left outer join ProductPrimaryImageView
+				on ProductPrimaryImageView.product = Product.id
 			inner join VisibleProductCache on
 				VisibleProductCache.product = Product.id and
 				VisibleProductCache.region = %2$s
@@ -352,6 +354,7 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 		 */
 		$sql = sprintf('select Product.*, Product.id as tag,
 				ProductPrimaryCategoryView.primary_category,
+				ProductPrimaryImageView.image as primary_image,
 				getCategoryPath(ProductPrimaryCategoryView.primary_category) as path
 			from Product
 				%2$s

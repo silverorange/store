@@ -5,7 +5,6 @@ create table Product (
 	bodytext text,
 	createdate timestamp,
 	shortname varchar(255),
-	primary_image int references Image(id) on delete set null,
 	primary key (id)
 );
 

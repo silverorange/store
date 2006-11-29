@@ -161,12 +161,14 @@ class StoreCategoryPage extends StoreStorePage
 		 * See detailed explanation below.
 		 */
 		$sql = 'select Product.id, Product.shortname, Product.title,
-				Product.primary_image
+				ProductPrimaryImageView.image as primary_image
 			from Product 
 			inner join CategoryProductBinding
 				on CategoryProductBinding.product = Product.id
 			inner join VisibleProductCache
 				on VisibleProductCache.product = Product.id
+			left outer join ProductPrimaryImageView
+				on ProductPrimaryImageView.product = Product.id
 			where CategoryProductBinding.category in (%s)
 				and VisibleProductCache.region = %s
 			order by displayorder, title';
@@ -213,8 +215,9 @@ class StoreCategoryPage extends StoreStorePage
 
 	protected function queryFeaturedProducts($category_id)
 	{
-		$sql = 'select Product.id, shortname, title, primary_image,
-				primary_category, getCategoryPath(primary_category) as path
+		$sql = 'select Product.id, shortname, title, primary_category,
+				ProductPrimaryImageView.image as primary_image,
+				getCategoryPath(primary_category) as path
 			from Product
 				inner join CategoryFeaturedProductBinding
 					on Product.id = CategoryFeaturedProductBinding.product
@@ -224,6 +227,8 @@ class StoreCategoryPage extends StoreStorePage
 						and VisibleProductCache.region = %s
 				left outer join ProductPrimaryCategoryView
 					on ProductPrimaryCategoryView.product = Product.id
+				left outer join ProductPrimaryImageView
+					on ProductPrimaryImageView.product = Product.id
 			order by CategoryFeaturedProductBinding.displayorder,
 				Product.title';
 
