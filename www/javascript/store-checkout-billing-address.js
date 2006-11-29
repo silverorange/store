@@ -7,7 +7,14 @@ function StoreCheckoutBillingAddress(id)
 	this.provstate = document.getElementById('billing_address_provstate');
 	this.provstate_other_id = 'billing_address_provstate_other';
 
-	this.fields = [
+	StoreCheckoutBillingAddress.superclass.constructor.call(this, id);
+}
+
+YAHOO.extend(StoreCheckoutBillingAddress, StoreCheckoutAddress);
+
+StoreCheckoutBillingAddress.prototype.getFieldNames = function()
+{
+	return [
 		'billing_address_fullname',
 		'billing_address_line1',
 		'billing_address_line2',
@@ -15,8 +22,4 @@ function StoreCheckoutBillingAddress(id)
 		'billing_address_provstate',
 		'billing_address_postalcode',
 		'billing_address_country'];
-
-	StoreCheckoutBillingAddress.superclass.constructor.call(this, id);
 }
-
-YAHOO.extend(StoreCheckoutBillingAddress, StoreCheckoutAddress);

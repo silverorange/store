@@ -2,6 +2,7 @@ function StoreCheckoutAddress(id)
 {
 	this.id = id;
 	this.sensitive = null;
+	this.fields = this.getFieldNames();
 
 	// set up event handlers
 	for (var i = 0; i < this.list.length; i++)
@@ -78,4 +79,9 @@ StoreCheckoutAddress.provstateChangeHandler = function(event, address)
 		StoreCheckoutPage_sensitizeFields([address.provstate_other_id]);
 	else
 		StoreCheckoutPage_desensitizeFields([address.provstate_other_id]);
+}
+
+StoreCheckoutAddress.prototype.getFieldNames = function()
+{
+	return [];
 }
