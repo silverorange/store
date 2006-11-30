@@ -56,7 +56,9 @@ class StoreProvStateDelete extends AdminDBDelete
 		$item_list = $this->getItemList('integer');
 
 		$dep = new AdminListDependency();
-		$dep->title = Store::_('Province/State');
+		$dep->setTitle(
+			Store::_('province or state'), Store::_('provinces or states'));
+
 		$dep->entries = AdminListDependency::queryEntries($this->app->db,
 			'ProvState', 'id', null, 'text:title', 'title',
 			'id in ('.$item_list.')', AdminDependency::DELETE);
@@ -78,7 +80,9 @@ class StoreProvStateDelete extends AdminDBDelete
 	{
 		// dependent orders
 		$dep_orders = new AdminSummaryDependency();
-		$dep_orders->title = Store::_('Order Address');
+		$dep_orders->setTitle(
+			Store::_('order address'), Store::_('order addresses'));
+
 		$dep_orders->summaries = AdminSummaryDependency::querySummaries(
 			$this->app->db, 'OrderAddress', 'integer:id', 'integer:provstate',
 			'provstate in ('.$item_list.')', AdminDependency::NODELETE);

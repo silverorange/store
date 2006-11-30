@@ -1,14 +1,10 @@
 <?php
 
 require_once 'Admin/pages/AdminDBDelete.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'Swat/SwatString.php';
 require_once 'Admin/AdminListDependency.php';
 require_once 'Admin/AdminSummaryDependency.php';
-
-require_once 'include/StoreCountryDependency.php';
-require_once 'include/StoreProvStateDependency.php';
-require_once 'include/StoreAddressDependency.php';
+require_once 'SwatDB/SwatDB.php';
+require_once 'Swat/SwatString.php';
 
 /**
  * Delete confirmation page for Countries
@@ -53,14 +49,17 @@ class StoreCountryDelete extends AdminDBDelete
 
 		$item_list = $this->getItemList('text');
 
-		$dep = new StoreCountryDependency();
+		$dep = new AdminListDependency();
+		$dep->setTitle(Store::_('country'), Store::_('countries'));
 		$dep->entries = AdminListDependency::queryEntries($this->app->db,
 			'Country', 'text:id', null, 'text:title', 'title',
 			'id in ('.$item_list.')', AdminDependency::DELETE);
 
 		// dependent order addresses
-		$orders_billing_dependency = new StoreAddressDependency();
-		$orders_billing_dependency->title = Store::_('order');
+		$orders_billing_dependency = new AdminSummaryDependency();
+		$orders_billing_dependency->setTitle(
+			Store::_('order address'), Store::_('order addresses'));
+
 		$orders_billing_dependency->summaries =
 			AdminSummaryDependency::querySummaries(
 			$this->app->db, 'OrderAddress', 'integer:id', 'text:country', 
@@ -69,8 +68,10 @@ class StoreCountryDelete extends AdminDBDelete
 		$dep->addDependency($orders_billing_dependency);
 
 		// dependent account addresses
-		$addresses_dependency = new StoreAddressDependency();
-		$addresses_dependency->title = Store::_('account');
+		$addresses_dependency = new AdminSummaryDependency();
+		$addresses_dependency->setTitle(
+			Store::_('account address'), Store::_('account addresses'));
+
 		$addresses_dependency->summaries =
 			AdminSummaryDependency::querySummaries($this->app->db,
 			'AccountAddress', 'integer:id', 'text:country',
@@ -78,7 +79,10 @@ class StoreCountryDelete extends AdminDBDelete
 
 		$dep->addDependency($addresses_dependency);
 
-		$provstates_dependency = new StoreProvStateDependency();
+		$provstates_dependency = new AdminListDependency();
+		$provstates_dependency->setTitle(
+			Store::_('province or state'), Store::_('provinces or states'));
+
 		$provstates_dependency->entries =
 			AdminListDependency::queryEntries($this->app->db,
 			'ProvState', 'integer:id', 'text:country', 'text:title', 'title',

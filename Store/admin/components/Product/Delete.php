@@ -108,7 +108,7 @@ class StoreProductDelete extends AdminDBDelete
 		$item_list = $this->getItemList('integer');
 
 		$dep = new AdminListDependency();
-		$dep->title = Store::_('product');
+		$dep->setTitle(Store::_('product'), Store::_('products'));
 		$dep->entries = AdminListDependency::queryEntries($this->app->db,
 			'Product', 'integer:id', null, 'text:title', 'title',
 			'id in ('.$item_list.')', AdminDependency::DELETE);

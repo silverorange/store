@@ -52,7 +52,7 @@ class StoreLocaleDelete extends AdminDBDelete
 
 		$item_list = $this->getItemList('text');
 		$dep = new AdminListDependency();
-		$dep->title = Store::_('Locale');
+		$dep->setTitle(Store::_('locale'), Store::_('locales'));
 		$dep->entries = AdminListDependency::queryEntries($this->app->db,
 			'Locale', 'text:id', null, 'text:id', 'id',
 			'id in ('.$item_list.')', AdminDependency::DELETE);
@@ -74,7 +74,7 @@ class StoreLocaleDelete extends AdminDBDelete
 	{
 		// dependent orders
 		$dep_orders = new AdminSummaryDependency();
-		$dep_orders->title = Store::_('Order');
+		$dep_orders->setTitle(Store::_('order'), Store::_('orders'));
 		$dep_orders->summaries = AdminSummaryDependency::querySummaries(
 			$this->app->db, 'Orders', 'integer:id', 'text:locale',
 			'locale in ('.$item_list.')', AdminDependency::NODELETE);

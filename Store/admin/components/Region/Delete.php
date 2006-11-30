@@ -49,15 +49,15 @@ class StoreRegionDelete extends AdminDBDelete
 		$item_list = $this->getItemList('integer');
 
 		$dep = new AdminListDependency();
-		$dep->title = Store::_('Region');
+		$dep->setTitle(Store::_('region'), Store::_('regions'));
 		$dep->entries = AdminListDependency::queryEntries($this->app->db,
 			'Region', 'integer:id', null, 'text:title', 'id',
 			'id in ('.$item_list.')', AdminDependency::DELETE);
 
 		// dependent products
 		$dep_products = new AdminSummaryDependency();
-		$dep_products->title = Store::_('Product');
-		
+		$dep_products->setTitle(Store::_('product'), Store::_('products'));
+
 		$sql = sprintf('select count(distinct Item.product) as count,
 				ItemRegionBinding.region as parent, %s::integer as status_level
 			from Product 
@@ -76,7 +76,7 @@ class StoreRegionDelete extends AdminDBDelete
 
 		// dependent locales
 		$dep_locales = new AdminSummaryDependency();
-		$dep_locales->title = Store::_('Locale');
+		$dep_locales->setTitle(Store::_('locale'), Store::_('locales'));
 		$dep_locales->summaries = AdminSummaryDependency::querySummaries(
 			$this->app->db, 'Locale', 'integer:id', 'integer:region',
 			'region in ('.$item_list.')', AdminDependency::NODELETE);

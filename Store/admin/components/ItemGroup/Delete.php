@@ -73,12 +73,12 @@ class StoreItemGroupDelete extends AdminDBDelete
 		$item_list = $this->getItemList('integer');
 
 		$dep = new AdminListDependency();
-		$dep->title = Store::_('Group');
+		$dep->setTitle(Store::_('group'), Store::_('groups'));
 		$dep->entries = AdminListDependency::queryEntries($this->app->db,
 			'ItemGroup', 'integer:id', null, 'text:title', 'id',
 			'id in ('.$item_list.')', AdminDependency::DELETE);
 
-		$message_content = '%s<p>'.Store::_('Items in removed groups will '.
+		$message_content = '<p>'.Store::_('Items in removed groups will '.
 			'%snot%s be deleted. Items in removed groups will still be '.
 			'available for sale and will appear ungrouped on the website.').
 			'</p>';

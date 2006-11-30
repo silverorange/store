@@ -3,8 +3,6 @@
 require_once 'Admin/pages/AdminDBDelete.php';
 require_once 'SwatDB/SwatDB.php';
 
-require_once 'include/StoreAccountAddressDependency.php';
-
 /**
  * Delete confirmation page for Account Addresses
  *
@@ -64,9 +62,12 @@ class StoreAccountAddressDelete extends AdminDBDelete
 		$item_list = $this->getItemList('integer');
 		$num = $this->getItemCount();
 
-		$dep = new StoreAccountAddressDependency();
-		$dep->title = sprintf(Store::ngettext('Address for %s',
-			'Addresses for %s', $num), $this->account_fullname);
+		$dep = new AdminListDependency();
+
+		$fullname = $this->account_fullname;
+		$singular = sprintf(Store::_('address for %s'), $fullname);
+		$plural = sprintf(Store::_('addresses for %s'), $fullname);
+		$dep->setTitle($singular, $plural);
 
 		$rs = SwatDB::query($this->app->db,
 			'select AccountAddress.id, fullname, line1, line2, city,

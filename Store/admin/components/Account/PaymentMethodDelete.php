@@ -4,7 +4,6 @@ require_once 'Admin/pages/AdminDBDelete.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Store/dataobjects/StorePaymentMethod.php';
 
-require_once 'include/StoreAccountPaymentMethodDependency.php';
 /**
  * Delete confirmation page for Account Payment Methods
  *
@@ -69,9 +68,12 @@ class StoreAccountPaymentMethodDelete extends AdminDBDelete
 		$item_list = $this->getItemList('integer');
 		$num = $this->getItemCount();
 
-		$dep = new StoreAccountPaymentMethodDependency();
-		$dep->title = sprintf(Store::ngettext('Payment Method for %s',
-			'Payment Methods for %s', $num), $this->account_fullname);
+		$dep = new AdminListDependency();
+
+		$fullname = $this->account_fullname;
+		$singular = sprintf(Store::_('payment method for %s'), $fullname);
+		$plural = sprintf(Store::_('payment methods for %s'), $fullname);
+		$dep->setTitle($singular, $plural);
 
 		$sql = sprintf('select * from AccountPaymentMethod where id in (%s)',
 			$item_list);

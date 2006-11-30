@@ -7,17 +7,14 @@ require_once 'Swat/SwatTreeFlydownNode.php';
 require_once 'Swat/SwatFlydownDivider.php';
 require_once 'Store/StoreCatalogSelector.php';
 
-require_once 
-	'Store/admin/components/Product/include/StoreProductTableView.php';
+require_once 'Store/admin/components/Product/include/StoreProductTableView.php';
+require_once 'Store/admin/components/Product/include/StoreProductSearch.php';
 
 require_once 
 	'Store/admin/components/Product/include/StoreProductTitleCellRenderer.php';
 
 require_once
 	'Store/admin/components/Product/include/StoreItemStatusCellRenderer.php';
-
-require_once
-	'Store/admin/components/Product/include/StoreProductSearch.php';
 
 /**
  * Index page for Products
