@@ -21,7 +21,8 @@
 			</widget>
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Body Text</property>
-				<widget class="SwatTextarea" id="bodytext">
+				<widget class="SwatXHTMLTextarea" id="bodytext">
+					<property name="allow_ignore_validation_errors" type="boolean">true</property>
 					<property name="rows" type="integer">20</property>
 				</widget>
 			</widget>
