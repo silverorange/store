@@ -1,3 +1,5 @@
+-- Note - like all sql in this directory, this should only be viewed as a
+-- template for a local sites version of admin-changes.sql
 
 -- Product Management
 INSERT INTO AdminSection (id, displayorder, title, description, show)
@@ -23,8 +25,6 @@ INSERT INTO AdminComponent (id, section, displayorder, shortname, title, descrip
 INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
 	VALUES (201, 102, 20, 'Order', 'Orders', NULL, true, true);
 INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
-	VALUES (202, 102, 30, 'DailyOrder', 'Daily Orders', NULL, true, true);
-INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
 	VALUES (204, 102, 50, 'Ad', 'Ads', NULL, true, true);
 
 -- Reports
@@ -33,8 +33,6 @@ INSERT INTO AdminSection (id, displayorder, title, description, show)
 
 INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
 	VALUES (300, 103, 20, 'WebStat', 'Web Stats', NULL, true, true);
-INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
-	VALUES (301, 103, 30, 'Commission', 'Commissions', NULL, true, true);
 
 -- Site Content
 INSERT INTO AdminSection (id, displayorder, title, description, show)
@@ -49,8 +47,6 @@ INSERT INTO AdminSubComponent (id, component, title, shortname, show, displayord
 INSERT INTO AdminSection (id, displayorder, title, description, show)
 	VALUES (105, 50, 'Store Settings', null, true);
 
-INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
-	VALUES (500, 105, 60, 'PaymentType', 'Payment Types', NULL, true, true);
 INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
 	VALUES (501, 105, 70, 'Locale', 'Locales', NULL, true, true);
 INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
@@ -82,4 +78,3 @@ INSERT INTO AdminComponentAdminGroupBinding (component, groupnum) SELECT id, 1 F
 INSERT INTO AdminComponentAdminGroupBinding (component, groupnum) SELECT id, 100 FROM AdminComponent;
 DELETE FROM AdminComponentAdminGroupBinding WHERE groupnum = 100
 	AND component IN (1,2,3,4,5);
-
