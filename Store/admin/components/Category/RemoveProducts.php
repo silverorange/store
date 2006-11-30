@@ -56,12 +56,12 @@ class StoreCategoryRemoveProducts extends AdminDBConfirmation
 
 		SwatDB::query($this->app->db, $sql);
 
-		$msg = new SwatMessage(sprintf(Store::ngettext(
+		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One category has had its products removed.',
 			'%d categories have had their products removed.', $num),
 			SwatString::numberFormat($num)), SwatMessage::NOTIFICATION);
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}
@@ -96,34 +96,34 @@ class StoreCategoryRemoveProducts extends AdminDBConfirmation
 				$valid_rows[] = $row;
 		}
 
-		$msg = '';
+		$message = '';
 		if (count($valid_rows) > 0) {
-			$msg.= sprintf('<h3>%s</h3><ul>',
+			$message.= sprintf('<h3>%s</h3><ul>',
 				Store::_('Remove all products from the following categories?'));
 
 			foreach ($valid_rows as $row)
-				$msg.= sprintf(Store::_('<li>%s - %s product(s)</li>'),
+				$message.= sprintf(Store::_('<li>%s - %s product(s)</li>'),
 					$row->title, $row->num_products);
 			
-			$msg.= '</ul>';
+			$message.= '</ul>';
 			$this->ui->getWidget('yes_button')->title = Store::_('Remove');
 		} else {
 			$this->switchToCancelButton();
 		}
 
 		if (count($invalid_rows) > 0) {
-			$msg.= sprintf('<p><strong>%s</strong></p><ul>',
+			$message.= sprintf('<p><strong>%s</strong></p><ul>',
 				Store::_('There are no products attached to the following '.
 				'categories:'));
 
 			foreach ($invalid_rows as $row)
-				$msg.= '<li>'.$row->title.'</li>';
+				$message.= '<li>'.$row->title.'</li>';
 
-			$msg .= '</ul>';
+			$message .= '</ul>';
 		}
 
 		$message = $this->ui->getWidget('confirmation_message');
-		$message->content = $msg;
+		$message->content = $message;
 		$message->content_type = 'text/xml';
 
 		$note = $this->ui->getWidget('note');

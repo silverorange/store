@@ -42,7 +42,7 @@ class StoreArticleActionsProcessor
 	public function process($view, $actions)
 	{
 		$num = count($view->checked_items);
-		$msg = null;
+		$message = null;
 
 		switch ($actions->selected->id) {
 		case 'delete':
@@ -57,7 +57,7 @@ class StoreArticleActionsProcessor
 			$processor->setItems($view->checked_items);
 			$processor->processAction();
 
-			$msg = new SwatMessage(sprintf(Store::ngettext(
+			$message = new SwatMessage(sprintf(Store::ngettext(
 				'Accessibility has been updated for one article.',
 				'Accessibility has been updated for %d articles.', $num),
 				SwatString::numberFormat($num)));
@@ -68,10 +68,10 @@ class StoreArticleActionsProcessor
 			$visibility = $actions->selected->widget->getChild('visibility');
 			switch ($visibility->value) {
 			case 'show_in_menu':
-				SwatDB::updateColumn($this->page->app->db, 'Article', 
+				SwatDB::updateColumn($this->page->app->db, 'Article',
 					'boolean:show', true, 'id', $view->checked_items);
 
-				$msg = new SwatMessage(sprintf(Store::ngettext(
+				$message = new SwatMessage(sprintf(Store::ngettext(
 					'One article has been shown in the menu.',
 					'%d articles have been shown in the menu.', $num),
 					SwatString::numberFormat($num)));
@@ -79,54 +79,54 @@ class StoreArticleActionsProcessor
 				break;
 
 			case 'hide_from_menu':
-				SwatDB::updateColumn($this->page->app->db, 'Article', 
+				SwatDB::updateColumn($this->page->app->db, 'Article',
 					'boolean:show', false, 'id', $view->checked_items);
 
-				$msg = new SwatMessage(sprintf(Store::ngettext(
+				$message = new SwatMessage(sprintf(Store::ngettext(
 					'One article has been hidden from the menu.',
-					'%d articles have been hidden from the menu.', $num), 
+					'%d articles have been hidden from the menu.', $num),
 					SwatString::numberFormat($num)));
 
 				break;
 
 			case 'show_in_search':
-				SwatDB::updateColumn($this->page->app->db, 'Article', 
+				SwatDB::updateColumn($this->page->app->db, 'Article',
 					'boolean:searchable', true, 'id', $view->checked_items);
 
-				$msg = new SwatMessage(sprintf(Store::ngettext(
+				$message = new SwatMessage(sprintf(Store::ngettext(
 					'One article has been made searchable.',
-					'%d articles have been made searchable.', $num), 
+					'%d articles have been made searchable.', $num),
 					SwatString::numberFormat($num)));
 				
 				break;
 
 			case 'hide_from_search':
-				SwatDB::updateColumn($this->page->app->db, 'Article', 
+				SwatDB::updateColumn($this->page->app->db, 'Article',
 					'boolean:searchable', false, 'id', $view->checked_items);
 
-				$msg = new SwatMessage(sprintf(Store::ngettext(
+				$message = new SwatMessage(sprintf(Store::ngettext(
 					'One article has been hidden from the search results.',
-					'%d articles have been hidden from the search results.', 
+					'%d articles have been hidden from the search results.',
 					$num), SwatString::numberFormat($num)));
 
 				break;
 
 			case 'enable':
-				SwatDB::updateColumn($this->page->app->db, 'Article', 
+				SwatDB::updateColumn($this->page->app->db, 'Article',
 					'boolean:enabled', true, 'id', $view->checked_items);
 
-				$msg = new SwatMessage(sprintf(Store::ngettext(
+				$message = new SwatMessage(sprintf(Store::ngettext(
 					'One article has been enabled.',
-					'%d articles have been enabled.', $num), 
+					'%d articles have been enabled.', $num),
 					SwatString::numberFormat($num)));
 
 				break;
 
 			case 'disable':
-				SwatDB::updateColumn($this->page->app->db, 'Article', 
+				SwatDB::updateColumn($this->page->app->db, 'Article',
 					'boolean:enabled', false, 'id', $view->checked_items);
 
-				$msg = new SwatMessage(sprintf(Store::ngettext(
+				$message = new SwatMessage(sprintf(Store::ngettext(
 					'One article has been disabled.',
 					'%d articles have been disabled.', $num),
 					SwatString::numberFormat($num)));
@@ -137,8 +137,8 @@ class StoreArticleActionsProcessor
 			}
 		}
 
-		if ($msg !== null)
-			$this->page->app->messages->add($msg);
+		if ($message !== null)
+			$this->page->app->messages->add($message);
 	}
 
 	public static function getActions()

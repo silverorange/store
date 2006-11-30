@@ -35,10 +35,10 @@ class StoreCatalogDelete extends AdminDBDelete
 
 		$num = SwatDB::exec($this->app->db, $sql);
 
-		$msg = new SwatMessage(sprintf(Store::_('One %s has been deleted.'),
+		$message = new SwatMessage(sprintf(Store::_('One %s has been deleted.'),
 			Store::_('catalog')), SwatMessage::NOTIFICATION);
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}

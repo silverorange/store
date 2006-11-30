@@ -65,21 +65,21 @@ class StoreRegionEdit extends AdminDBEdit
 		$region_billing_country_list = 
 			$this->ui->getWidget('region_billing_country');
 
-		SwatDB::updateBinding($this->app->db, 'RegionBillingCountryBinding', 
+		SwatDB::updateBinding($this->app->db, 'RegionBillingCountryBinding',
 			'region', $this->id, 'text:country',
 			$region_billing_country_list->values, 'Country', 'text:id');
 
 		$region_shipping_country_list = 
 			$this->ui->getWidget('region_shipping_country');
 
-		SwatDB::updateBinding($this->app->db, 'RegionShippingCountryBinding', 
+		SwatDB::updateBinding($this->app->db, 'RegionShippingCountryBinding',
 			'region', $this->id, 'text:country',
 			$region_shipping_country_list->values, 'Country', 'text:id');
 
-		$msg = new SwatMessage(
+		$message = new SwatMessage(
 			sprintf(Store::_('“%s” has been saved.'), $values['title']));
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}
@@ -89,7 +89,7 @@ class StoreRegionEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$row = SwatDB::queryRowFromTable($this->app->db, 'Region', 
+		$row = SwatDB::queryRowFromTable($this->app->db, 'Region',
 			$this->fields, 'id', $this->id);
 
 		if ($row === null)

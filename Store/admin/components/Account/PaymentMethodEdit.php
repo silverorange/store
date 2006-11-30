@@ -81,11 +81,11 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 		SwatDB::updateRow($this->app->db, 'AccountPaymentMethod',
 			$this->fields, $values, 'id', $this->id);
 
-		$msg = new SwatMessage(sprintf(
+		$message = new SwatMessage(sprintf(
 			Store::_('Payment method for “%s” has been saved.'),
 			$this->account_fullname));
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}

@@ -52,10 +52,10 @@ class StoreItemGroupEdit extends AdminDBEdit
 			SwatDB::updateRow($this->app->db, 'ItemGroup', $this->fields,
 				$values, 'id', $this->id);
 
-		$msg = new SwatMessage(sprintf(Store::_('“%s” has been saved.'),
+		$message = new SwatMessage(sprintf(Store::_('“%s” has been saved.'),
 			$values['title']));
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}
@@ -65,7 +65,7 @@ class StoreItemGroupEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$row = SwatDB::queryRowFromTable($this->app->db, 'ItemGroup', 
+		$row = SwatDB::queryRowFromTable($this->app->db, 'ItemGroup',
 			$this->fields, 'id', $this->id);
 
 		if ($row === null)

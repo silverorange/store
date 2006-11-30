@@ -82,7 +82,7 @@ class StoreProductRelatedProduct extends AdminSearch
 
 				$num = $this->app->db->query($sql);
 
-				$msg = new SwatMessage(sprintf(Store::ngettext(
+				$message = new SwatMessage(sprintf(Store::ngettext(
 					'One product has been related to this product.',
 					'%d products have been related to this product.', $num), 
 					SwatString::numberFormat($num)), SwatMessage::NOTIFICATION);

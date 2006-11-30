@@ -66,13 +66,13 @@ class StoreCategoryFeaturedProducts extends AdminIndex
 
 				$num = SwatDB::exec($this->app->db, $sql);
 
-				$msg = new SwatMessage(sprintf(Store::ngettext(
+				$message = new SwatMessage(sprintf(Store::ngettext(
 					'One featured product has been updated.',
 					'%s featured products have been updated.', $num),
 					SwatString::numberFormat($num)),
 					SwatMessage::NOTIFICATION);
 
-				$this->app->messages->add($msg);
+				$this->app->messages->add($message);
 			}
 
 			$this->app->relocate('Category/Index?id='.$this->parent);

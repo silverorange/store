@@ -63,11 +63,11 @@ class StoreCategoryImageDelete extends AdminDBDelete
 			foreach ($sizes as $size => $dimensions)
 				unlink('../images/categories/'.$size.'/'.$image_id.'.jpg');
 
-			$msg = new SwatMessage(
+			$message = new SwatMessage(
 				Store::_('The category image has been deleted.'),
 				SwatMessage::NOTIFICATION);
 
-			$this->app->messages->add($msg);
+			$this->app->messages->add($message);
 		}
 	}
 

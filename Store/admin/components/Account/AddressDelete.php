@@ -34,13 +34,13 @@ class StoreAccountAddressDelete extends AdminDBDelete
 
 		$num = SwatDB::exec($this->app->db, $sql);
 
-		$msg = new SwatMessage(sprintf(Store::ngettext(
+		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One address for %s has been deleted.',
 			'%d addresses for %s have been deleted.', $num),
 			SwatString::numberFormat($num), $this->account_fullname),
 			SwatMessage::NOTIFICATION);
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}

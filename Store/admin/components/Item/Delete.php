@@ -27,12 +27,12 @@ class StoreItemDelete extends AdminDBDelete
 
 		$num = SwatDB::exec($this->app->db, $sql);
 
-		$msg = new SwatMessage(sprintf(
+		$message = new SwatMessage(sprintf(
 			Store::ngettext('One item has been deleted.',
 			'%d items have been deleted.', $num),
 			SwatString::numberFormat($num)), SwatMessage::NOTIFICATION);
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}

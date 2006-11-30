@@ -77,7 +77,7 @@ class StoreItemGroupAction extends SwatControl
 				array('title' => $new_title, 'product' => $this->product_id),
 				'id');
 
-			$msg = new SwatMessage(
+			$message = new SwatMessage(
 				sprintf(Store::ngettext(
 				'One item has been added to the new group “%s”.',
 				'%d items have been added to the new group “%s”.',
@@ -87,7 +87,7 @@ class StoreItemGroupAction extends SwatControl
 		} elseif (strcmp($group_id, 'no_group') == 0) {
 			$group_id = null;
 
-			$msg = new SwatMessage(
+			$message = new SwatMessage(
 				sprintf(Store::ngettext(
 				'One item has been removed from a group.', 
 				'%d items have been removed from group(s).', count($items)),
@@ -98,7 +98,7 @@ class StoreItemGroupAction extends SwatControl
 			$sql = 'select title from ItemGroup where id = %s';
 			$sql = sprintf($sql, $this->db->quote($group_id, 'integer'));
 			$old_title = SwatDB::queryOne($this->db, $sql);
-			$msg = new SwatMessage(
+			$message = new SwatMessage(
 				sprintf(Store::ngettext(
 				'One item has been added to the group “%s”.', 
 				'%d items have been added to the group “%s”.',
@@ -106,10 +106,10 @@ class StoreItemGroupAction extends SwatControl
 				$old_title), SwatMessage::NOTIFICATION);
 		}
 
-		SwatDB::updateColumn($this->db, 'Item', 'integer:item_group', $group_id, 
+		SwatDB::updateColumn($this->db, 'Item', 'integer:item_group', $group_id,
 			'integer:id', $items);
 
-		return $msg;
+		return $message;
 	}
 
 	public function getFocusableHtmlId()

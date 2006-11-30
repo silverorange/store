@@ -35,13 +35,13 @@ class StoreAccountPaymentMethodDelete extends AdminDBDelete
 
 		$num = SwatDB::exec($this->app->db, $sql);
 
-		$msg = new SwatMessage(sprintf(Store::ngettext(
+		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One payment method for %s has been deleted.',
 			'%d payment methods for %s have been deleted.', $num),
 			SwatString::numberFormat($num), $this->account_fullname),
 			SwatMessage::NOTIFICATION);
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}

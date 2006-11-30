@@ -108,14 +108,14 @@ abstract class StoreCartPage extends StoreArticlePage
 			}
 
 			if ($form->hasMessage()) {
-				$msg = new SwatMessage(Store::_(
+				$message = new SwatMessage(Store::_(
 					'There is a problem with the information submitted.'),
 					SwatMessage::ERROR);
 
-				$msg->secondary_content = Store::_('Please address the '.
+				$message->secondary_content = Store::_('Please address the '.
 					'fields highlighted below and re-submit the form.');
 
-				$this->ui->getWidget('message_display')->add($msg);
+				$this->ui->getWidget('message_display')->add($message);
 			} else {
 				$this->updateCheckoutCart();
 				if (!$form->hasMessage() && $checkout_button_clicked) {
@@ -136,14 +136,14 @@ abstract class StoreCartPage extends StoreArticlePage
 
 		if ($form->isProcessed()) {
 			if ($form->hasMessage()) {
-				$msg = new SwatMessage(Store::_(
+				$message = new SwatMessage(Store::_(
 					'There is a problem with the information submitted.'),
 					SwatMessage::ERROR);
 
-				$msg->secondary_content = Store::_('Please address the '.
+				$message->secondary_content = Store::_('Please address the '.
 					'fields highlighted below and re-submit the form.');
 
-				$this->ui->getWidget('message_display')->add($msg);
+				$this->ui->getWidget('message_display')->add($message);
 			} else {
 				$button = $this->ui->getWidget('saved_cart_move_all_button');
 				if ($button->hasBeenClicked())

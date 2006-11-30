@@ -77,13 +77,13 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 			$this->validate();
 
 			if ($form->hasMessage()) {
-				$msg = new SwatMessage(Store::_('There is a problem with the '.
-					'information submitted.'), SwatMessage::ERROR);
+				$message = new SwatMessage(Store::_('There is a problem with '.
+					'the information submitted.'), SwatMessage::ERROR);
 
-				$msg->secondary_content = Store::_('Please address the '.
+				$message->secondary_content = Store::_('Please address the '.
 					'fields highlighted below and re-submit the form.');
 
-				$this->ui->getWidget('message_display')->add($msg);
+				$this->ui->getWidget('message_display')->add($message);
 			} else {
 				$address = $this->findAddress();
 				$this->updateAddress($address);
@@ -92,6 +92,7 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 					$this->app->session->account->addresses->add($address);
 					$this->addMessage(Store::_('One address has been added.'),
 						$address);
+
 				} elseif ($address->isModified()) {
 					$this->addMessage(Store::_('One address has been updated.'),
 						$address);

@@ -30,11 +30,11 @@ class StoreRegionDelete extends AdminDBDelete
 
 		$num = SwatDB::exec($this->app->db, $sql);
 
-		$msg = new SwatMessage(sprintf(Store::ngettext(
+		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One region has been deleted.', '%d regions have been deleted.',
 			$num), SwatString::numberFormat($num)), SwatMessage::NOTIFICATION);
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}
@@ -62,7 +62,7 @@ class StoreRegionDelete extends AdminDBDelete
 				ItemRegionBinding.region as parent, %s::integer as status_level
 			from Product 
 				inner join Item on Item.product = Product.id
-				inner join ItemRegionBinding on ItemRegionBinding.item = Item.id 
+				inner join ItemRegionBinding on ItemRegionBinding.item = Item.id
 					and ItemRegionBinding.region in (%s)
 			group by ItemRegionBinding.region',
 			AdminDependency::NODELETE, $item_list);

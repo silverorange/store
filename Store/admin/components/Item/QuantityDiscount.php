@@ -344,28 +344,28 @@ class StoreItemQuantityDiscount extends AdminIndex
 		}
 
 		if (count($new_discounts) == 1) {
-			$msg = new SwatMessage(sprintf(Store::_('“%s” has been added.'),
+			$message = new SwatMessage(sprintf(Store::_('“%s” has been added.'),
 					$new_discounts[0]));
 
-			$this->app->messages->add($msg);
+			$this->app->messages->add($message);
 		} elseif (count($new_discounts) > 1) {
 			$discount_list = '<ul><li>'.implode('</li><li>',
 				$new_discounts).'</li></ul>';
 
-			$msg = new SwatMessage(
+			$message = new SwatMessage(
 				Store::_('The following quantity discounts have been added:'));
 
-			$msg->secondary_content = $discount_list;
-			$msg->content_type = 'text/xml';
-			$this->app->messages->add($msg);
+			$message->secondary_content = $discount_list;
+			$message->content_type = 'text/xml';
+			$this->app->messages->add($message);
 		}
 
 		if ($has_invalid_row) {
-			$msg = new SwatMessage(Store::_('There was a problem adding the '.
-				'quantity discount(s). Please review the highlighted fields '.
-				'for errors and try again.'), SwatMessage::ERROR);
+			$message = new SwatMessage(Store::_('There was a problem adding '.
+				'the quantity discount(s). Please review the highlighted '.
+				'fields for errors and try again.'), SwatMessage::ERROR);
 
-			$this->app->messages->add($msg);
+			$this->app->messages->add($message);
 		} else {
 			$this->relocate();
 		}

@@ -79,10 +79,10 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 		$rs = SwatDB::query($this->app->db, $this->getItemQuerySQL());
 		$count = count($rs);
 
-		$msg = new SwatMessage($this->getEnabledText('message', $count),
+		$message = new SwatMessage($this->getEnabledText('message', $count),
 			SwatMessage::NOTIFICATION);
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}
@@ -101,16 +101,18 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 
 		if ($count == 0) {
 			$this->switchToCancelButton();
-			$msg = Store::_('There are no items in the selected categories.');
+			$message = Store::_(
+				'There are no items in the selected categories.');
+
 		} else {
-			$msg = $this->getEnabledText('confirmation', $count);
+			$message = $this->getEnabledText('confirmation', $count);
 
 			$this->ui->getWidget('yes_button')->title =
 				$this->getEnabledText('button', $count);
 		}
 
 		$message = $this->ui->getWidget('confirmation_message');
-		$message->content = $msg;
+		$message->content = $message;
 		$message->content_type = 'text/xml';
 
 		$form = $this->ui->getWidget('confirmation_form');

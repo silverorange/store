@@ -50,16 +50,17 @@ class StoreCatalogClone extends AdminDBEdit
 				$this->app->db->quote($title, 'text')));
 
 		if ($clone_id == -1) {
-			$msg = new SwatMessage(
+			$message = new SwatMessage(
 				sprintf(Store::_('The %s “%s” could not be cloned.'),
 				Store::_('catalog'), $title), SwatMessage::SYSTEM_ERROR);
+
 		} else {
-			$msg = new SwatMessage(
+			$message = new SwatMessage(
 				sprintf(Store::_('The %s “%s” has been cloned.'),
 				Store::_('catalog'), $title));
 		}
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}

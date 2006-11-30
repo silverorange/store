@@ -65,19 +65,21 @@ class StoreProductImageEdit extends AdminPage
 		$form = $this->ui->getWidget('edit_form');
 
 		if ($form->isProcessed()) {
-			$msg_text = Store::_('There is a problem with the one of the '.
+			$message_text = Store::_('There is a problem with the one of the '.
 				'files submitted below.');
 
 			if (!$this->validate()) {
-				$msg = new SwatMessage($msg_text, SwatMessage::ERROR);
-				$this->app->messages->add($msg);
+				$message = new SwatMessage($message_text, SwatMessage::ERROR);
+				$this->app->messages->add($message);
 			} else {
 				if ($this->processImages()) {
 					$this->saveDBData();
 					$this->relocate();
 				} else {
-					$msg = new SwatMessage($msg_text, SwatMessage::ERROR);
-					$this->app->messages->add($msg);
+					$message = new SwatMessage($message_text,
+						SwatMessage::ERROR);
+
+					$this->app->messages->add($message);
 				}
 			}
 		}
@@ -184,19 +186,19 @@ class StoreProductImageEdit extends AdminPage
 					$transformer->img_y != $dimensions[1])) {
 
 					$validated = false;
-					$msg = new SwatMessage(sprintf(
+					$message = new SwatMessage(sprintf(
 						Store::_('The %%s must be %1$s × %2$s pixels.'),
 						$dimensions[0], $dimensions[1]), SwatMessage::ERROR);
 
-					$file->addMessage($msg);
+					$file->addMessage($message);
 				} elseif ($transformer->img_x > $dimensions[0]) {
 					$validated = false;
 
-					$msg = new SwatMessage(sprintf(Store::_(
+					$message = new SwatMessage(sprintf(Store::_(
 						'The %%s can be at most %1$s× pixels wide.'),
 						$dimensions[0]), SwatMessage::ERROR);
 
-					$file->addMessage($msg);
+					$file->addMessage($message);
 				} else {
 					$data[$size.'_width'] = $transformer->img_x;
 					$data[$size.'_height'] = $transformer->img_y;
@@ -224,11 +226,11 @@ class StoreProductImageEdit extends AdminPage
 			} catch (SwatDBException $e) {
 				$transaction->rollback();
 
-				$msg = new SwatMessage(Store::_('A database error has '.
+				$message = new SwatMessage(Store::_('A database error has '.
 					'occurred. The image was not changed.'),
 					SwatMessage::SYSTEM_ERROR);
 
-				$this->app->messages->add($msg);
+				$this->app->messages->add($message);
 				$e->process();
 
 				$validated = true;
@@ -258,9 +260,9 @@ class StoreProductImageEdit extends AdminPage
 		SwatDB::updateRow($this->app->db, 'Image', $fields, $values,
 			'id', $this->id);
 
-		$msg = new SwatMessage(Store::_('Image has been saved.'));
+		$message = new SwatMessage(Store::_('Image has been saved.'));
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}
@@ -385,11 +387,11 @@ class StoreProductImageEdit extends AdminPage
 			($thumb->isUploaded() && $small->isUploaded() &&
 			$large->isUploaded()))) {
 
-			$msg = new SwatMessage(Store::_('You need to specify all image '.
-				'sizes when creating a new image or upload an image to be '.
-				'automatically resized.'), SwatMessage::ERROR);
+			$message = new SwatMessage(Store::_('You need to specify all '.
+				'image sizes when creating a new image or upload an image to '.
+				'be automatically resized.'), SwatMessage::ERROR);
 
-			$message->add($msg);
+			$message->add($message);
 
 			return false;
 		}

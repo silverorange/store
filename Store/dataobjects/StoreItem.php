@@ -40,6 +40,22 @@ require_once 'Store/dataobjects/StoreItemGroup.php';
  */
 abstract class StoreItem extends StoreDataObject
 {
+	// {{{ constants
+	/**
+	 * Shown on site and available for order
+	 *
+	 * No special note is displayed.
+	 */
+	//abstract const STATUS_AVAILABLE;
+
+	/**
+	 * Shown on the site but unavailable for ordering
+	 *
+	 * Items are displayed with a note indicating the item is not in stock.
+	 */
+	//abstract const STATUS_OUT_OF_STOCK;
+
+	// }}}
 	// {{{ public properties
 
 	/**

@@ -72,11 +72,11 @@ class StoreArticleEdit extends AdminDBEdit
 			$this->ui->getWidget('shortname')->value = $shortname;
 
 		} elseif (!$this->validateShortname($shortname)) {
-			$msg = new SwatMessage(
+			$message = new SwatMessage(
 				Store::_('Shortname already exists and must be unique.'), 
 				SwatMessage::ERROR);
 
-			$this->ui->getWidget('shortname')->addMessage($msg);
+			$this->ui->getWidget('shortname')->addMessage($message);
 		}
 	}
 
@@ -131,10 +131,10 @@ class StoreArticleEdit extends AdminDBEdit
 
 		$this->addToSearchQueue();
 
-		$msg = new SwatMessage(
+		$message = new SwatMessage(
 			sprintf(Store::_('“%s” has been saved.'), $values['title']));
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}
@@ -144,7 +144,7 @@ class StoreArticleEdit extends AdminDBEdit
 	{
 		$region_list = $this->ui->getWidget('regions');
 		
-		SwatDB::updateBinding($this->app->db, 'ArticleRegionBinding', 
+		SwatDB::updateBinding($this->app->db, 'ArticleRegionBinding',
 			'article', $this->id, 'region', $region_list->values, 'Region',
 			'id');
 	}
@@ -191,7 +191,7 @@ class StoreArticleEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$row = SwatDB::queryRowFromTable($this->app->db, 'Article', 
+		$row = SwatDB::queryRowFromTable($this->app->db, 'Article',
 			$this->fields, 'integer:id', $this->id);
 
 		if ($row === null)
@@ -227,14 +227,15 @@ class StoreArticleEdit extends AdminDBEdit
 	protected function buildNavBar()
 	{
 		if ($this->id !== null) {
-			$navbar_rs = SwatDB::executeStoredProc($this->app->db, 
+			$navbar_rs = SwatDB::executeStoredProc($this->app->db,
 				'getArticleNavBar', array($this->id));
 
 			foreach ($navbar_rs as $elem)
 				$this->navbar->addEntry(new SwatNavBarEntry($elem->title,
 					'Article/Index?id='.$elem->id));
+
 		} elseif ($this->parent !== null) {
-			$navbar_rs = SwatDB::executeStoredProc($this->app->db, 
+			$navbar_rs = SwatDB::executeStoredProc($this->app->db,
 				'getArticleNavBar', array($this->parent));
 
 			foreach ($navbar_rs as $elem)

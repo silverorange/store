@@ -164,11 +164,11 @@ class StoreAccountOrderPage extends StoreAccountPage
 			}
 		}
 
-		$msg = new SwatMessage(sprintf(Store::_(
+		$message = new SwatMessage(sprintf(Store::_(
 			'Sorry, “%s” is no longer available.'),
 			$order_item->sku));
 
-		$this->ui->getWidget('message_display')->add($msg);
+		$this->ui->getWidget('message_display')->add($message);
 
 		return false;
 	}
@@ -291,15 +291,15 @@ class StoreAccountOrderPage extends StoreAccountPage
 	{
 		$num = count($this->items_added);
 		if ($num > 0) {
-			$msg = new SwatMessage(sprintf(Store::ngettext(
+			$message = new SwatMessage(sprintf(Store::ngettext(
 				'“%1$s” added to %3$sshopping cart%4$s.',
 				'%2$s items added to %3$sshopping cart%4$s.', $num),
 				current($this->items_added)->sku, $num,
 				'<a href="cart">', '</a>'));
 
-			$msg->content_type = 'text/xml';
+			$message->content_type = 'text/xml';
 
-			$this->ui->getWidget('message_display')->add($msg);
+			$this->ui->getWidget('message_display')->add($message);
 		}
 	}
 

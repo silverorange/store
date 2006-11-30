@@ -62,10 +62,10 @@ class StoreLocaleEdit extends AdminDBEdit
 		SwatDB::insertRow($this->app->db, 'Locale', $this->fields,
 			$values);
 
-		$msg = new SwatMessage(
+		$message = new SwatMessage(
 			sprintf(Store::_('“%s” has been saved.'), $values['id']));
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}
@@ -75,10 +75,10 @@ class StoreLocaleEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$msg = new SwatMessage('Locales can not be edited.',
+		$message = new SwatMessage('Locales can not be edited.',
 			SwatMessage::WARNING);
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 		$this->app->relocate('Locale');
 	}
 
