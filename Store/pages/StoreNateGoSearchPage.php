@@ -337,8 +337,13 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 				$this->getDocumentType(StoreSearchPage::TYPE_PRODUCTS),
 				'integer'));
 
-		$total_products = SwatDB::queryOne($this->app->db,
-			'select count(Product.id) from Product '.$sql_joins);
+		$where_clause = $this->getProductWhereClause();
+
+		$total_sql = sprintf('select count(Product.id) from Product %s %s',
+			$sql_joins,
+			$where_clause);
+
+		$total_products = SwatDB::queryOne($this->app->db, $total_sql);
 
 		$pagination = $this->ui->getWidget('product_pagination');
 		$pagination->total_records = $total_products;
@@ -358,14 +363,14 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 				getCategoryPath(ProductPrimaryCategoryView.primary_category) as path
 			from Product
 				%2$s
-				%5$s
+			%5$s
 			order by %1$s.displayorder1 asc, %1$s.displayorder2 asc
 			limit %3$s offset %4$s',
 			$result->getResultTable(),
 			$sql_joins,
 			$this->app->db->quote($pagination->page_size, 'integer'),
 			$this->app->db->quote($pagination->current_record, 'integer'),
-			$this->getProductWhereClause());
+			$where_clause);
 
 		$class_map = StoreClassMap::instance();
 		$wrapper_class = $class_map->resolveClass('StoreProductWrapper');
