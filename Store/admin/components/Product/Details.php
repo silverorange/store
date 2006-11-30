@@ -29,7 +29,7 @@ require_once 'Store/admin/components/Product/include/'.
 	'StoreItemRegionPriceCellRenderer.php';
 
 /**
- * Index page for Products
+ * Details page for Products
  *
  * @package   Store
  * @copyright 2005-2006 silverorange
@@ -40,12 +40,11 @@ class StoreProductDetails extends AdminIndex
 	// {{{ protected properties
 
 	protected $ui_xml = 'Store/admin/components/Product/details.xml';
+	protected $id;
+	protected $category_id;
 
 	// }}}
 	// {{{ private properties
-
-	private $id;
-	private $category_id;
 
 	/**
 	 * Cache of regions used by queryRegions()
