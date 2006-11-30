@@ -4,7 +4,6 @@ require_once 'Admin/pages/AdminDBDelete.php';
 require_once 'SwatDB/SwatDB.php';
 
 require_once 'include/StoreCategoryProductDependency.php';
-require_once 'include/StoreCategoryDependency.php';
 
 /**
  * Delete confirmation page for Categories
@@ -92,7 +91,8 @@ class StoreCategoryDelete extends AdminDBDelete
 
 		$item_list = $this->getItemList('integer');
 
-		$dep = new StoreCategoryDependency();
+		$dep = new AdminListDependency();
+		$dep->setTitle(Store::_('category', 'categories'));
 		$dep->entries = AdminListDependency::queryEntries($this->app->db,
 			'Category', 'integer:id', null, 'text:title', 'title',
 			'id in ('.$item_list.')', AdminDependency::DELETE);
@@ -121,7 +121,9 @@ class StoreCategoryDelete extends AdminDBDelete
 
 	private function getDependentCategories($dep, $item_list)
 	{
-		$dep_subcategories = new StoreCategoryDependency();
+		$dep_subcategories = new AdminListDependency();
+		$dep_subcategories->setTitle(
+			Store::_('sub-category'), Store::_('sub-categories'));
 
 		$dep_subcategories->entries = AdminListDependency::queryEntries(
 			$this->app->db, 'Category', 'integer:id', 'integer:parent',
@@ -136,9 +138,9 @@ class StoreCategoryDelete extends AdminDBDelete
 			$entries = array();
 			foreach ($dep_subcategories->entries as $entry)
 				$entries[] = $this->app->db->quote($entry->id, 'integer');
-		
+
 			$item_list = implode(',', $entries);
-		
+
 			$this->getDependentCategories($dep_subcategories, $item_list);
 		}
 	}
@@ -149,7 +151,6 @@ class StoreCategoryDelete extends AdminDBDelete
 	private function getDependentProducts($dep, $item_list)
 	{
 		$dep_products = new StoreCategoryProductDependency();
-
 		$dep_products->summaries = AdminSummaryDependency::querySummaries(
 			$this->app->db, 'CategoryProductBinding', 'integer:product',
 			'integer:category', 'category in ('.$item_list.')',

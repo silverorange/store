@@ -61,7 +61,9 @@ class StoreItemQuantityDiscountDelete extends AdminDBDelete
 		$item_list = $this->getItemList('integer');
 
 		$dep = new AdminListDependency();
-		$dep->title = Store::_('Quantity Discount');
+		$dep->setTitle(
+			Store::_('quantity discount'), Store::_('quantity discounts'));
+
 		$dep->entries = AdminListDependency::queryEntries($this->app->db,
 			'QuantityDiscount', 'integer:id', null, 'integer:quantity', 'id',
 			'id in ('.$item_list.')', AdminDependency::DELETE);

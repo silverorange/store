@@ -76,13 +76,13 @@ class StoreArticleDelete extends AdminDBDelete
 		$item_list = $this->getItemList('integer');
 		
 		$dep = new AdminListDependency();
-		$dep->title = Store::_('article');
+		$dep->setTitle(Store::_('article'), Store::_('articles'));
 		$dep->entries = AdminListDependency::queryEntries($this->app->db,
 			'Article', 'integer:id', null, 'text:title', 'title',
 			'id in ('.$item_list.')', AdminDependency::DELETE);
 
 		$this->getDependencies($dep, $item_list);
-			
+
 		$message = $this->ui->getWidget('confirmation_message');
 		$message->content = $dep->getMessage();
 		$message->content_type = 'text/xml';
@@ -99,7 +99,9 @@ class StoreArticleDelete extends AdminDBDelete
 	protected function getDependencies($dep, $item_list)
 	{
 		$dep_subarticles = new AdminListDependency();
-		$dep_subarticles->title = Store::_('sub-article');
+		$dep_subarticles->setTitle(
+			Store::_('sub-article'), Store::_('sub-articles'));
+
 		$dep_subarticles->entries = AdminListDependency::queryEntries(
 			$this->app->db, 'Article', 'integer:id', 'integer:parent',
 			'title', 'title', 'parent in ('.$item_list.')',

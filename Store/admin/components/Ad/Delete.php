@@ -46,13 +46,13 @@ class StoreAdDelete extends AdminDBDelete
 		$item_list = $this->getItemList('integer');
 
 		$dep = new AdminListDependency();
-		$dep->title = Store::_('ad');
+		$dep->setTitle(Store::_('ad'), Store::_('ads'));
 		$dep->entries = AdminListDependency::queryEntries($this->app->db,
 			'Ad', 'integer:id', null, 'text:title', 'id',
 			'id in ('.$item_list.')', AdminDependency::DELETE);
 
 		$dep_orders = new AdminSummaryDependency();
-		$dep_orders->title = Store::_('order');
+		$dep_orders->setTitle(Store::_('order'), Store::_('orders'));
 		$dep_orders->summaries = AdminSummaryDependency::querySummaries(
 			$this->app->db, 'Orders', 'integer:id', 'integer:ad',
 			'ad in ('.$item_list.')', AdminDependency::NODELETE);

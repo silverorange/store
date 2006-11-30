@@ -2,7 +2,6 @@
 
 require_once 'Admin/pages/AdminDBDelete.php';
 require_once 'SwatDB/SwatDB.php';
-require_once 'Admin/AdminDependency.php';
 
 /**
  * Remove products confirmation page for Categories

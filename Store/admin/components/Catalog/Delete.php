@@ -68,7 +68,7 @@ class StoreCatalogDelete extends AdminDBDelete
 		$id = $this->getFirstItem();
 
 		$dep = new AdminListDependency();
-		$dep->title = Store::_('catalog');
+		$dep->setTitle(Store::_('catalog'), Store::_('catalogs'));
 		$dep->entries = AdminListDependency::queryEntries($this->app->db,
 			'Catalog', 'integer:id', null, 'text:title', 'id',
 			sprintf('id = %s', $id), AdminDependency::DELETE);
@@ -96,7 +96,7 @@ class StoreCatalogDelete extends AdminDBDelete
 	{
 		// dependent products
 		$dep_products = new AdminSummaryDependency();
-		$dep_products->title = Store::_('product');
+		$dep_products->setTitle(Store::_('product'), Store::_('products'));
 
 		if ($this->catalogIsEnabled())
 			$default_status_level = AdminDependency::NODELETE;
@@ -108,8 +108,8 @@ class StoreCatalogDelete extends AdminDBDelete
 			sprintf('catalog = %s', $id), $default_status_level);
 
 		$dep->addDependency($dep_products);
-
 	}
+
 	// }}}
 	// {{{ protected function getNoteContent()
 
