@@ -54,9 +54,16 @@ abstract class StoreApplication extends SiteWebApplication
 
 	protected function initModules()
 	{
-		$this->session->registerDataObject('account', 'StoreAccount');
-		$this->session->registerDataObject('order', 'StoreOrder');
-		$this->session->registerDataObject('ad', 'StoreAd');
+		$class_map = StoreClassMap::instance();
+
+		$this->session->registerDataObject('account',
+			$class_map->resolveClass('StoreAccount'));
+
+		$this->session->registerDataObject('order',
+			$class_map->resolveClass('StoreOrder'));
+
+		$this->session->registerDataObject('ad',
+			$class_map->resolveClass('StoreAd'));
 
 		parent::initModules();
 
