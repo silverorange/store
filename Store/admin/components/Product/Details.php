@@ -123,6 +123,21 @@ class StoreProductDetails extends AdminIndex
 
 	protected function processActions(SwatTableView $view, SwatActions $actions)
 	{
+		switch ($view->id) {
+		case 'items_view':
+			$this->processItemsActions($view, $actions);
+			break;
+		case 'product_reviews_view':
+			$this->processProductReviewsActions($view, $actions);
+			break;
+		}
+	}
+
+	// }}}
+	// {{{ protected function processItemsActions()
+
+	protected function processItemsActions(SwatTableView $view, SwatActions $actions)
+	{
 		switch ($actions->selected->id) {
 		case 'delete':
 			$this->app->replacePage('Item/Delete');
@@ -192,6 +207,54 @@ class StoreProductDetails extends AdminIndex
 		}
 	}
 
+	// }}}
+	// {{{ private function processProductReviewsActions()
+
+	private function processProductReviewsActions($view, $actions)
+	{
+		switch ($actions->selected->id) {
+		case 'product_reviews_delete':
+			$this->app->replacePage('ProductReview/Delete');
+			$this->app->getPage()->setItems($view->checked_items);
+			break;
+
+		case 'product_reviews_enable':
+			$sql = 'update ProductReview set enabled = %s
+				where id in (%s)';
+
+			SwatDB::exec($this->app->db, sprintf($sql,
+				$this->app->db->quote(true, 'boolean'),
+				implode(',', $view->checked_items)));
+
+			$num = count($view->checked_items);
+
+			$msg = new SwatMessage(sprintf(ngettext(
+				'One product review has been enabled.',
+				'%d product reviews have been enabled.', $num),
+				SwatString::numberFormat($num)));
+
+			$this->app->messages->add($msg);
+			break;
+
+		case 'product_reviews_disable':
+			$sql = 'update ProductReview set enabled = %s
+				where id in (%s)';
+
+			SwatDB::exec($this->app->db, sprintf($sql,
+				$this->app->db->quote(false, 'boolean'),
+				implode(',', $view->checked_items)));
+
+			$num = count($view->checked_items);
+
+			$msg = new SwatMessage(sprintf(ngettext(
+				'One product review has been disabled.',
+				'%d product reviews have been disabled.', $num),
+				SwatString::numberFormat($num)));
+
+			$this->app->messages->add($msg);
+			break;
+		}
+	}
 	// }}}
 	// {{{ private function changeStatus()
 	protected function changeStatus(SwatTableView $view, $status)
