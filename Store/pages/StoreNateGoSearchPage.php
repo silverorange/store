@@ -358,12 +358,14 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 				getCategoryPath(ProductPrimaryCategoryView.primary_category) as path
 			from Product
 				%2$s
+				%5$s
 			order by %1$s.displayorder1 asc, %1$s.displayorder2 asc
 			limit %3$s offset %4$s',
 			$result->getResultTable(),
 			$sql_joins,
 			$this->app->db->quote($pagination->page_size, 'integer'),
-			$this->app->db->quote($pagination->current_record, 'integer'));
+			$this->app->db->quote($pagination->current_record, 'integer'),
+			$this->getProductWhereClause());
 
 		$class_map = StoreClassMap::instance();
 		$wrapper_class = $class_map->resolveClass('StoreProductWrapper');
@@ -400,6 +402,22 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 			$this->displayProducts($products);
 			$product_results->content = ob_get_clean();
 		}
+	}
+
+	// }}}
+	// {{{ protected function getProductWhereClause()
+
+	/**
+	 * Allows subclasses to do additional filtering on Products above and
+	 * beyond the fulltext and visibility filtering
+	 *
+	 * Subclasses should include the 'where' in the returned where clause.
+	 *
+	 * @return string a where clause that affects the product query.
+	 */
+	protected function getProductWhereClause()
+	{
+		return '';
 	}
 
 	// }}}
