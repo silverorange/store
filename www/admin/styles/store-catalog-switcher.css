@@ -1,0 +1,29 @@
+.catalog-switcher {
+	float: right;
+	margin: 18px 12px 0 0;
+	text-align: right;
+	z-index: 99;
+	position: relative;
+}
+
+.catalog-switcher label {
+	font-size: 85%;
+	color: #837352;
+}
+
+.catalog-switcher .swat-form-field-contents {
+	display: inline;
+}
+
+.catalog-switcher select,
+.catalog-switcher input {
+	font-size: 85%;
+	vertical-align: middle;
+	padding: 1px;
+	border: 1px solid #dcceb2;
+	color: #837352;
+}
+
+.catalog-switcher input {
+	background: #f6f2ea url(../packages/admin/images/admin-title-link-cell-renderer-background.png) top repeat-x;
+}
