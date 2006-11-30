@@ -76,10 +76,10 @@ class StoreAccountEdit extends AdminDBEdit
 		SwatDB::updateRow($this->app->db, 'Account', $this->fields, $values,
 			'id', $this->id);
 
-		$msg = new SwatMessage(sprintf(Store::_('Account “%s” has been saved.'),
-			$values['fullname']));
+		$message = new SwatMessage(sprintf(
+			Store::_('Account “%s” has been saved.'), $values['fullname']));
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}
@@ -97,10 +97,10 @@ class StoreAccountEdit extends AdminDBEdit
 
 	protected function buildNavBar() 
 	{
-		$account_fullname = SwatDB::queryOneFromTable($this->app->db, 
+		$account_fullname = SwatDB::queryOneFromTable($this->app->db,
 			'Account', 'text:fullname', 'id', $this->id);
 
-		$this->navbar->addEntry(new SwatNavBarEntry($account_fullname, 
+		$this->navbar->addEntry(new SwatNavBarEntry($account_fullname,
 			sprintf('Account/Details?id=%s', $this->id)));
 		$this->navbar->addEntry(new SwatNavBarEntry(Store::_('Edit')));
 		$this->title = $account_fullname;

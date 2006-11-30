@@ -73,12 +73,12 @@ class StoreCategoryAddProducts extends AdminSearch
 
 				$num = SwatDB::exec($this->app->db, $sql);
 
-				$msg = new SwatMessage(sprintf(Store::ngettext(
+				$message = new SwatMessage(sprintf(Store::ngettext(
 					'One product has been added to this category.',
 					'%d products have been added to this category.', $num),
 					SwatString::numberFormat($num)), SwatMessage::NOTIFICATION);
 
-				$this->app->messages->add($msg);
+				$this->app->messages->add($message);
 			}
 
 			$this->app->relocate('Category/Index?id='.$this->category_id);
@@ -107,7 +107,7 @@ class StoreCategoryAddProducts extends AdminSearch
 
 		$tree->addChild(new SwatTreeFlydownNode(new SwatFlydownDivider('')));
 
-		$rs = SwatDB::executeStoredProc($this->app->db, 'getCategoryTree', 
+		$rs = SwatDB::executeStoredProc($this->app->db, 'getCategoryTree',
 			array('null'));
 
 		$category_tree = SwatDB::getDataTree($rs, 'title', 'id', 'levelnum');

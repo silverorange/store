@@ -59,10 +59,10 @@ class StoreProvStateEdit extends AdminDBEdit
 			SwatDB::updateRow($this->app->db, 'ProvState', $this->fields, 
 				$values, 'id', $this->id);
 
-		$msg = new SwatMessage(
+		$message = new SwatMessage(
 			sprintf(Store::_('“%s” has been saved.'), $values['title']));
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}

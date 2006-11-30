@@ -89,7 +89,7 @@ abstract class StoreCatalogStatus extends AdminDBEdit
 	{
 		$this->saveStatus();
 
-		$msg = new SwatMessage(
+		$message = new SwatMessage(
 			sprintf(Store::_('The status of “%s” has been updated.'),
 				$this->catalog->title));
 
@@ -97,7 +97,7 @@ abstract class StoreCatalogStatus extends AdminDBEdit
 		if ($enabled && $this->catalog->clone !== null)
 			$this->disableClone();
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}
@@ -114,7 +114,7 @@ abstract class StoreCatalogStatus extends AdminDBEdit
 
 		SwatDB::exec($this->app->db, $sql);
 
-		$msg->secondary_content = sprintf(Store::_(
+		$message->secondary_content = sprintf(Store::_(
 			'“%s” has been automatically disabled in all regions.'),
 			$this->catalog->clone_title);
 	}
@@ -156,8 +156,8 @@ abstract class StoreCatalogStatus extends AdminDBEdit
 					SwatString::minimizeEntities($this->catalog->clone_title));
 			}
 
-			$note->content.= sprintf(Store::_('<p>Enable this %1$s only if you '.
-				'are done making %1$s changes, and you want to apply the '.
+			$note->content.= sprintf(Store::_('<p>Enable this %1$s only if '.
+				'you are done making %1$s changes, and you want to apply the '.
 				'changes to the live website.</p>'), Store::_('catalog'));
 		}
 

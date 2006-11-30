@@ -26,13 +26,13 @@ class StoreProvStateDelete extends AdminDBDelete
 		$sql = sprintf($sql, $item_list);
 		$num = SwatDB::exec($this->app->db, $sql);
 
-		$msg = new SwatMessage(sprintf(Store::ngettext(
+		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One province or state has been deleted.',
 			'%d provinces and/or states have been deleted.', $num),
 			SwatString::numberFormat($num)),
 			SwatMessage::NOTIFICATION);
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}

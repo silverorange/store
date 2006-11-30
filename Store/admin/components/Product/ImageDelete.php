@@ -93,11 +93,11 @@ class StoreProductImageDelete extends AdminDBDelete
 
 		SwatDB::exec($this->app->db, $sql);
 
-		$msg = new SwatMessage(
+		$message = new SwatMessage(
 			Store::_('One product image has been removed.'),
 			SwatMessage::NOTIFICATION);
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}

@@ -13,7 +13,7 @@ require_once 'Admin/AdminListDependency.php';
  */
 class StoreArticleDelete extends AdminDBDelete
 {
-	// {{{ private properties 
+	// {{{ private properties
 
 	// used for custom relocate
 	private $parent_id;
@@ -38,11 +38,11 @@ class StoreArticleDelete extends AdminDBDelete
 
 		$num = SwatDB::exec($this->app->db, $sql);
 
-		$msg = new SwatMessage(sprintf(Store::ngettext(
+		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One article has been deleted.', '%d articles have been deleted.',
 			$num), SwatString::numberFormat($num)), SwatMessage::NOTIFICATION);
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}
@@ -57,8 +57,9 @@ class StoreArticleDelete extends AdminDBDelete
 			if ($this->parent_id === null)
 				$this->app->relocate('Article/Index');
 			else
-				$this->app->relocate(sprintf('Article/Index?id=%s', 
+				$this->app->relocate(sprintf('Article/Index?id=%s',
 					$this->parent_id));
+
 		} else {
 			parent::relocate();
 		}

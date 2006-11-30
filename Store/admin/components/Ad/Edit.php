@@ -48,11 +48,11 @@ class StoreAdEdit extends AdminDBEdit
 			$this->ui->getWidget('shortname')->value = $shortname;
 
 		} elseif (!$this->validateShortname($shortname, $this->id)) {
-			$msg = new SwatMessage(
+			$message = new SwatMessage(
 				Store::_('Short name already exists and must be unique.'),
 				SwatMessage::ERROR);
 
-			$this->ui->getWidget('shortname')->addMessage($msg);
+			$this->ui->getWidget('shortname')->addMessage($message);
 		}
 	}
 
@@ -101,10 +101,10 @@ class StoreAdEdit extends AdminDBEdit
 				'id', $this->id);
 		}
 
-		$msg = new SwatMessage(
+		$message = new SwatMessage(
 			sprintf(Store::_('“%s” has been saved.'), $values['title']));
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}

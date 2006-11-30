@@ -73,12 +73,12 @@ class StoreProductRelatedProductDelete extends AdminDBDelete
 
 		$num = SwatDB::exec($this->app->db, $sql);
 
-		$msg = new SwatMessage(sprintf(Store::ngettext(
+		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One related product has been removed.',
 			'%d related products have been removed.', $num),
 			SwatString::numberFormat($num)), SwatMessage::NOTIFICATION);
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}
@@ -98,7 +98,7 @@ class StoreProductRelatedProductDelete extends AdminDBDelete
 		$item_list = $this->getItemList('integer');
 
 		$dep = new StoreProductRelatedProductsDependency();
-		$dep->product_title = SwatDB::queryOneFromTable($this->app->db, 
+		$dep->product_title = SwatDB::queryOneFromTable($this->app->db,
 			'Product', 'text:title', 'id', $this->id);
 
 		$dep->entries = AdminListDependency::queryEntries($this->app->db,

@@ -136,7 +136,7 @@ class StoreCategoryIndex extends AdminIndex
 	private function processProductActions($view, $actions)
 	{
 		$num = count($view->checked_items);
-		$msg = null;
+		$message = null;
 
 		$item_list = array();
 		foreach ($view->checked_items as $item)
@@ -156,7 +156,7 @@ class StoreCategoryIndex extends AdminIndex
 				$this->app->db->quote($this->id, 'integer'),
 				implode(',', $item_list)));
 
-			$msg = new SwatMessage(sprintf(Store::ngettext(
+			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One product has been removed from this category.',
 				'%s products have been removed from this category.', $num),
 				SwatString::numberFormat($num)));
@@ -173,7 +173,7 @@ class StoreCategoryIndex extends AdminIndex
 			SwatDB::updateColumn($this->app->db, 'Item', 'integer:status',
 				$new_status, 'product', $item_list);
 
-			$msg = new SwatMessage(sprintf(Store::ngettext(
+			$message = new SwatMessage(sprintf(Store::ngettext(
 				'The status of one item has been changed.',
 				'The status of %s items has been changed.', $num),
 				SwatString::numberFormat($num)));
@@ -197,7 +197,7 @@ class StoreCategoryIndex extends AdminIndex
 
 			$num = SwatDB::exec($this->app->db, $sql);
 
-			$msg = new SwatMessage(sprintf(Store::ngettext(
+			$message = new SwatMessage(sprintf(Store::ngettext(
 				'The minor member status of one product has been changed.',
 				'The minor member status of %s products has been changed.',
 				$num), SwatString::numberFormat($num)));
@@ -224,7 +224,7 @@ class StoreCategoryIndex extends AdminIndex
 				$region_sql,
 				implode(',', $view->checked_items)));
 
-			$msg = new SwatMessage(sprintf(Store::ngettext(
+			$message = new SwatMessage(sprintf(Store::ngettext(
 				'%s item has been enabled.',
 				'%s items have been enabled.', $num),
 				SwatString::numberFormat($num)));
@@ -251,7 +251,7 @@ class StoreCategoryIndex extends AdminIndex
 				$region_sql,
 				implode(',', $view->checked_items)));
 
-			$msg = new SwatMessage(sprintf(Store::ngettext(
+			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One item has been disabled.',
 				'%s items have been disabled.', $num),
 				SwatString::numberFormat($num)));
@@ -259,8 +259,8 @@ class StoreCategoryIndex extends AdminIndex
 			break;
 		}
 
-		if ($msg !== null)
-			$this->app->messages->add($msg);
+		if ($message !== null)
+			$this->app->messages->add($message);
 	}
 
 	// }}}
@@ -269,7 +269,7 @@ class StoreCategoryIndex extends AdminIndex
 	private function processFeaturedProductActions($view, $actions)
 	{
 		$num = count($view->checked_items);
-		$msg = null;
+		$message = null;
 
 		switch ($actions->selected->id) {
 		case 'featured_products_remove':
@@ -283,14 +283,14 @@ class StoreCategoryIndex extends AdminIndex
 				$this->app->db->quote($this->id, 'integer'),
 				implode(',', $item_list)));
 
-			$msg = new SwatMessage(sprintf(Store::ngettext(
+			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One featured product has been removed from this category.',
 				'%s featured products have been removed from this category.',
 				$num), SwatString::numberFormat($num)));
 		}
 
-		if ($msg !== null)
-			$this->app->messages->add($msg);
+		if ($message !== null)
+			$this->app->messages->add($message);
 	}
 
 	// }}}

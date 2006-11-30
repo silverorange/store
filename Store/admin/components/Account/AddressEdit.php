@@ -119,11 +119,11 @@ class StoreAccountAddressEdit extends AdminDBEdit
 				$values, 'id', $this->id);
 		}
 
-		$msg = new SwatMessage(sprintf(
+		$message = new SwatMessage(sprintf(
 			Store::_('Address for “%s” has been saved.'),
 			$this->account_fullname));
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}

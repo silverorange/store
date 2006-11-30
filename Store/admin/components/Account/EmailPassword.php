@@ -52,13 +52,14 @@ class StoreAccountEmailPassword extends AdminConfirmation
 		if ($form->button->id == 'yes_button') {
 			$this->account->generateNewPassword($this->app);
 
-			$msg = new SwatMessage(sprintf(Store::_('%1$s’s password has been '.
-				'reset and has been emailed to <a href="email:%2$s">%2$s</a>.'),
+			$message = new SwatMessage(sprintf(
+				Store::_('%1$s’s password has been reset and has been emailed '.
+				'to <a href="email:%2$s">%2$s</a>.'),
 				$this->account->fullname, $this->account->email));
 
-			$msg->content_type = 'text/xml';
+			$message->content_type = 'text/xml';
 
-			$this->app->messages->add($msg);
+			$this->app->messages->add($message);
 		}
 	}
 

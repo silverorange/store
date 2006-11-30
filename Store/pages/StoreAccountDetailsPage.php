@@ -147,12 +147,12 @@ class StoreAccountDetailsPage extends StoreAccountPage
 				$account->addresses->remove($view->address);
 				$view->visible = false;
 
-				$msg = new SwatMessage(
+				$message = new SwatMessage(
 					Store::_('One address has been removed.'));
 
-				$msg->secondary_content = $address_condensed;
-				$msg->content_type = 'text/xml';
-				$this->app->messages->add($msg);
+				$message->secondary_content = $address_condensed;
+				$message->content_type = 'text/xml';
+				$this->app->messages->add($message);
 			}
 		}
 	}
@@ -174,11 +174,12 @@ class StoreAccountDetailsPage extends StoreAccountPage
 				$account->payment_methods->remove($view->payment_method);
 				$view->visible = false;
 
-				$msg = new SwatMessage($this->getPaymentMethodText('removed'));
+				$message = new SwatMessage(
+					$this->getPaymentMethodText('removed'));
 
-				$msg->secondary_content = $payment_condensed;
-				$msg->content_type = 'text/xml';
-				$this->app->messages->add($msg);
+				$message->secondary_content = $payment_condensed;
+				$message->content_type = 'text/xml';
+				$this->app->messages->add($message);
 			}
 		}
 	}

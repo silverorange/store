@@ -80,17 +80,17 @@ class StoreAccountForgotPasswordPage extends StoreAccountPage
 			$class_mapper->resolveClass('StoreAccountWrapper'))->getFirst();
 
 		if ($account === null) {
-			$msg = new SwatMessage(Store::_(
+			$message = new SwatMessage(Store::_(
 				'There is no account with this email address.'),
 				SwatMessage::ERROR);
 
-			$msg->secondary_content = sprintf(Store::_(
+			$message->secondary_content = sprintf(Store::_(
 				'Make sure you entered it correctly, or '.
 				'%screate a New Account%s.'),
 				'<a href="account/edit">', '</a>');
 
-			$msg->content_type = 'text/xml';
-			$this->ui->getWidget('email')->addMessage($msg);
+			$message->content_type = 'text/xml';
+			$this->ui->getWidget('email')->addMessage($message);
 		} else {
 			$account->resetPassword($this->app, $this->app->getBaseHref());
 		}

@@ -48,13 +48,13 @@ class StoreItemGroupDelete extends AdminDBDelete
 		$sql = sprintf('delete from ItemGroup where id in (%s)', $item_list);
 		$num = SwatDB::exec($this->app->db, $sql);
 
-		$msg = new SwatMessage(sprintf(Store::ngettext(
+		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One group has been deleted.',
 			'%d groups have been deleted.', $num),
 			SwatString::numberForamt($num)),
 			SwatMessage::NOTIFICATION);
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}
@@ -126,7 +126,7 @@ class StoreItemGroupDelete extends AdminDBDelete
 		if ($this->category_id === null)
 			$link = sprintf('Product/Details?id=%s', $product_id);
 		else
-			$link = sprintf('Product/Details?id=%s&category=%s', $product_id, 
+			$link = sprintf('Product/Details?id=%s&category=%s', $product_id,
 				$this->category_id);
 
 		$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));

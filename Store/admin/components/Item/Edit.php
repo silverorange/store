@@ -124,10 +124,10 @@ class StoreItemEdit extends AdminDBEdit
 		$this->addToSearchQueue();
 		$this->saveItemRegionFields();
 
-		$msg = new SwatMessage(
+		$message = new SwatMessage(
 			sprintf(Store::_('“%s” has been saved.'), $values['sku']));
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}

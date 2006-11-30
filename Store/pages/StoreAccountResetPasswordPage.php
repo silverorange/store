@@ -128,12 +128,12 @@ class StoreAccountResetPasswordPage extends StoreArticlePage
 					'email, you may %shave the email sent again%s.'),
 					'<a href="account/forgotpassword">', '</a>'));
 
-			$msg = new SwatMessage(Store::_('Link Incorrect'),
+			$message = new SwatMessage(Store::_('Link Incorrect'),
 				SwatMessage::WARNING);
 
-			$msg->secondary_content = $text;
-			$msg->content_type = 'text/xml';
-			$this->ui->getWidget('message_display')->add($msg);
+			$message->secondary_content = $text;
+			$message->content_type = 'text/xml';
+			$this->ui->getWidget('message_display')->add($message);
 
 			$this->ui->getWidget('field_container')->visible = false;
 

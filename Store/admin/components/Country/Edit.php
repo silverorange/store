@@ -62,10 +62,10 @@ class StoreCountryEdit extends AdminDBEdit
 			SwatDB::updateRow($this->app->db, 'Country', $this->fields, 
 				$values, 'text:id', $this->id);
 
-		$msg = new SwatMessage(
+		$message = new SwatMessage(
 			sprintf(Store::_('“%s” has been saved.'), $values['title']));
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 
 	// }}}

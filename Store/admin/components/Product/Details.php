@@ -146,8 +146,8 @@ class StoreProductDetails extends AdminIndex
 
 		case 'change_group':
 			$item_group_action = $this->ui->getWidget('item_group');
-			$msg = $item_group_action->processAction($view->checked_items);
-			$this->app->messages->add($msg);	
+			$message = $item_group_action->processAction($view->checked_items);
+			$this->app->messages->add($message);
 			break;
 
 		case 'change_status' :
@@ -172,12 +172,12 @@ class StoreProductDetails extends AdminIndex
 
 			$num = count($view->checked_items);
 
-			$msg = new SwatMessage(sprintf(Store::ngettext(
+			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One item has been enabled.',
 				'%d items have been enabled.', $num),
 				SwatString::numberFormat($num)));
 
-			$this->app->messages->add($msg);
+			$this->app->messages->add($message);
 			break;
 
 		case 'disable':
@@ -197,12 +197,12 @@ class StoreProductDetails extends AdminIndex
 
 			$num = count($view->checked_items);
 
-			$msg = new SwatMessage(sprintf(Store::ngettext(
+			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One item has been disabled.',
 				'%d items have been disabled.', $num),
 				SwatString::numberFormat($num)));
 
-			$this->app->messages->add($msg);
+			$this->app->messages->add($message);
 			break;
 		}
 	}
@@ -228,12 +228,12 @@ class StoreProductDetails extends AdminIndex
 
 			$num = count($view->checked_items);
 
-			$msg = new SwatMessage(sprintf(ngettext(
+			$message = new SwatMessage(sprintf(ngettext(
 				'One product review has been enabled.',
 				'%d product reviews have been enabled.', $num),
 				SwatString::numberFormat($num)));
 
-			$this->app->messages->add($msg);
+			$this->app->messages->add($message);
 			break;
 
 		case 'product_reviews_disable':
@@ -246,12 +246,12 @@ class StoreProductDetails extends AdminIndex
 
 			$num = count($view->checked_items);
 
-			$msg = new SwatMessage(sprintf(ngettext(
+			$message = new SwatMessage(sprintf(ngettext(
 				'One product review has been disabled.',
 				'%d product reviews have been disabled.', $num),
 				SwatString::numberFormat($num)));
 
-			$this->app->messages->add($msg);
+			$this->app->messages->add($message);
 			break;
 		}
 	}
@@ -264,12 +264,12 @@ class StoreProductDetails extends AdminIndex
 		SwatDB::updateColumn($this->app->db, 'Item', 'integer:status', $status,
 			'id', $view->checked_items);
 
-		$msg = new SwatMessage(sprintf(Store::ngettext(
+		$message = new SwatMessage(sprintf(Store::ngettext(
 			'The status of one item has been changed.',
 			'The status of %d items has been changed.', $num),
 			SwatString::numberFormat($num)));
 
-		$this->app->messages->add($msg);
+		$this->app->messages->add($message);
 	}
 	// }}}
 	// {{{ private function addNewItems()
@@ -347,27 +347,27 @@ class StoreProductDetails extends AdminIndex
 			}
 
 			if (count($new_skus) == 1) {
-				$msg = new SwatMessage(sprintf(Store::_('“%s” has been added.'),
-					$new_skus[0]));
+				$message = new SwatMessage(sprintf(
+					Store::_('“%s” has been added.'), $new_skus[0]));
 
-				$this->app->messages->add($msg);
+				$this->app->messages->add($message);
 			} elseif (count($new_skus) > 1) {
 				$sku_list = '<ul><li>'.implode('</li><li>', $new_skus).
 					'</li></ul>';
 
-				$msg = new SwatMessage(
+				$message = new SwatMessage(
 					Store::_('The following items have been added:'));
 
-				$msg->secondary_content = $sku_list;
-				$msg->content_type = 'text/xml';
-				$this->app->messages->add($msg);
+				$message->secondary_content = $sku_list;
+				$message->content_type = 'text/xml';
+				$this->app->messages->add($message);
 			}
 		} else {
-			$msg = new SwatMessage(Store::_('There was a problem adding the '.
-				'item(s). Please check the highlighted fields below.'),
+			$message = new SwatMessage(Store::_('There was a problem adding '.
+				'the item(s). Please check the highlighted fields below.'),
 				SwatMessage::ERROR);
 
-			$this->app->messages->add($msg);
+			$this->app->messages->add($message);
 		}
 	}
 
