@@ -218,12 +218,12 @@ class StoreSessionModule extends SiteSessionModule
 	 */
 	protected function startSession()
 	{
-		// load the dataobject classes before starting the session
-		if (count($this->data_object_classes)) {
-			$class_map = StoreClassMap::instance();
-
-			foreach ($this->data_object_classes as $name => $class)
-				$class_map->resolveClass($class);
+		// make sure dataobject classes are loaded before starting the session
+		foreach ($this->data_object_classes as $name => $class) {
+			if (!class_exists($class))
+				throw new StoreException("Class $class does not exist. ".
+					'The class must be loaded before it can be registered '.
+					'in the session.');
 		}
 
 		session_start();
