@@ -300,13 +300,6 @@ class StoreProductImageEdit extends AdminPage
 
 			SwatDB::insertRow($this->app->db, 'ProductImageBinding',
 				$fields, $values);
-
-			// update the product to use the new image
-			if ($displayorder == 0)
-				SwatDB::updateRow($this->app->db, 'Product',
-					array('integer:primary_image'),
-					array('primary_image' => $new_id), 'integer:id',
-					$this->product_id);
 		} else {
 			$sql = sprintf('update ProductImageBinding set image = %s
 				where image = %s and product = %s',

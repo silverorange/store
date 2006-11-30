@@ -60,12 +60,6 @@ class StoreProductImageOrder extends AdminDBOrder
 		SwatDB::updateColumn($this->app->db, 'ProductImageBinding',
 			'integer:displayorder', $index,
 			'integer:image', array($id));
-
-		if ($index == 1) {
-			SwatDB::updateColumn($this->app->db, 'Product',
-				'integer:primary_image', $id,
-				'integer:id', array($this->product_id));
-		}
 	}
 
 	// }}}
