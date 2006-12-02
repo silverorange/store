@@ -34,6 +34,11 @@ class StoreProductPage extends StoreStorePage
 	protected $item_removed = false;
 	protected $added_entry_ids = array();
 
+	/**
+	 * @var StoreArticleWrapper
+	 */
+	protected $related_articles;
+
 	// }}}
 
 	// init phase
@@ -426,17 +431,8 @@ class StoreProductPage extends StoreStorePage
 	 */
 	protected function displayRelatedArticles()
 	{
-		$class_map = StoreClassMap::instance();
-		$category_class = $class_map->resolveClass('StoreCategory');
-		$category = new $category_class();
-		$last_entry = $this->path->getLast();
-
-		if ($last_entry === null)
-			return;
-
-		$category->id = $last_entry->id;
-		$category->setDatabase($this->app->db);
-		if (count($category->related_articles) > 0) {
+		$related_articles = $this->getRelatedArticles();
+		if (count($related_articles) > 0) {
 			$ul_tag = new SwatHtmlTag('ul');
 			$ul_tag->id = 'related_articles';
 			$ul_tag->open();
@@ -444,7 +440,7 @@ class StoreProductPage extends StoreStorePage
 			$anchor_tag = new SwatHtmlTag('a');
 			$li_tag = new SwatHtmlTag('li');
 			$div_tag = new SwatHtmlTag('div');
-			foreach ($category->related_articles as $article) {
+			foreach ($related_articles as $article) {
 				$li_tag->open();
 
 				$this->displayRelatedArticlesTitle();
@@ -461,6 +457,40 @@ class StoreProductPage extends StoreStorePage
 			}
 
 			$ul_tag->close();
+		}
+	}
+
+	// }}}
+	// {{{ protected function displayRelatedArticleLinks()
+
+	/**
+	 * Displays related articles links from the parent category on this product
+	 * page
+	 */
+	protected function displayRelatedArticleLinks()
+	{
+		$related_articles = $this->getRelatedArticles();
+		if (count($related_articles) > 0) {
+			$div_tag = new SwatHtmlTag('div');
+			$div_tag->id = 'related_articles';
+			$div_tag->open();
+
+			$this->displayRelatedArticlesTitle();
+
+			$anchor_tag = new SwatHtmlTag('a');
+			$first = true;
+			foreach ($related_articles as $article) {
+				if ($first)
+					$first = false;
+				else
+					echo ', ';
+
+				$anchor_tag->href = $article->path;
+				$anchor_tag->setContent($article->title);
+				$anchor_tag->display();
+			}
+
+			$div_tag->close();
 		}
 	}
 
@@ -652,6 +682,29 @@ class StoreProductPage extends StoreStorePage
 
 	protected function displayCartJavaScript()
 	{
+	}
+
+	// }}}
+	// {{{ protected function getRelatedArticles()
+
+	/**
+	 * Gets related articles from the direct parent category of the product
+	 * on this page
+	 */
+	protected function getRelatedArticles()
+	{
+		if ($this->related_articles === null) {
+			$last_entry = $this->path->getLast();
+			if ($last_entry !== null) {
+				$class_map = StoreClassMap::instance();
+				$category_class = $class_map->resolveClass('StoreCategory');
+				$category = new $category_class();
+				$category->id = $last_entry->id;
+				$category->setDatabase($this->app->db);
+				$this->related_articles = $category->related_articles;
+			}
+		}
+		return $this->related_articles;
 	}
 
 	// }}}
