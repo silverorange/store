@@ -521,9 +521,9 @@ class StoreProductPage extends StoreStorePage
 
 		$this->displayBodyText();
 
-		$this->displayItems();
+		$this->displayRelatedArticleLinks();
 
-		$this->displayRelatedArticles();
+		$this->displayItems();
 
 		$this->displayRelatedProducts();
 
