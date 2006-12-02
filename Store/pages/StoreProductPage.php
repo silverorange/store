@@ -421,7 +421,9 @@ class StoreProductPage extends StoreStorePage
 	// }}}
 	// {{{ protected function displayRelatedArticles()
 
-	// displays related articles from the parent category on this page
+	/**
+	 * Displays related articles from the parent category on this product page
+	 */
 	protected function displayRelatedArticles()
 	{
 		$class_map = StoreClassMap::instance();
@@ -435,25 +437,30 @@ class StoreProductPage extends StoreStorePage
 		$category->id = $last_entry->id;
 		$category->setDatabase($this->app->db);
 		if (count($category->related_articles) > 0) {
-			$div = new SwatHtmlTag('div');
-			$div->id = 'related_articles';
-			$div->open();
-			$this->displayRelatedArticlesTitle();
+			$ul_tag = new SwatHtmlTag('ul');
+			$ul_tag->id = 'related_articles';
+			$ul_tag->open();
 
-			$first = true;
 			$anchor_tag = new SwatHtmlTag('a');
+			$li_tag = new SwatHtmlTag('li');
+			$div_tag = new SwatHtmlTag('div');
 			foreach ($category->related_articles as $article) {
-				if ($first)
-					$first = false;
-				else
-					echo ', ';
+				$li_tag->open();
 
+				$this->displayRelatedArticlesTitle();
 				$anchor_tag->href = $article->path;
 				$anchor_tag->setContent($article->title);
 				$anchor_tag->display();
+
+				$div_tag->setContent(
+					SwatString::condense($article->bodytext, 200));
+
+				$div_tag->display();
+
+				$li_tag->close();
 			}
 
-			$div->close();
+			$ul_tag->close();
 		}
 	}
 
@@ -484,9 +491,9 @@ class StoreProductPage extends StoreStorePage
 
 		$this->displayBodyText();
 
-		$this->displayRelatedArticles();
-
 		$this->displayItems();
+
+		$this->displayRelatedArticles();
 
 		$this->displayRelatedProducts();
 
