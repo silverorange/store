@@ -448,8 +448,16 @@ class StoreProductPage extends StoreStorePage
 				$anchor_tag->setContent($article->title);
 				$anchor_tag->display();
 
-				$div_tag->setContent(
-					SwatString::condense($article->bodytext, 200));
+				// spaces are non-breaking
+				$anchor_tag->setContent('[ more ]');
+
+				$bodytext = SwatString::condense($article->bodytext, null);
+
+				// spaces are non-breaking
+				$bodytext = SwatString::ellipsizeRight($bodytext, 200,
+					' … '.$anchor_tag->toString());
+
+				$div_tag->setContent($bodytext, 'text/xml');
 
 				$div_tag->display();
 
