@@ -167,12 +167,53 @@ class StoreArticlePage extends StorePage
 	protected function displayArticle(StoreArticle $article)
 	{
 		if (strlen($article->bodytext) > 0) {
-			echo '<div id="article-bodytext">',
-				(string)$article->bodytext, '</div>';
+			$bodytext = (string)$article->bodytext;
+
+			$bodytext = $this->replaceMarkers($bodytext);
+
+			echo '<div id="article-bodytext">',$bodytext,'</div>';
 		}
 	}
 
 	// }}}
+	// {{{ protected function replaceMarkers()
+
+	/**
+	 * Replace markers in article
+	 *
+	 * @param string $text the text of the article.
+	 *
+	 * @return string Article text with markers replaced by dynamic content
+	 */
+	protected function replaceMarkers($text)
+	{
+		//TODO: regexp to grab markers here
+		$markers = array();
+
+		foreach ($markers as $marker) {
+			$replace_text = $this->replaceMarker($marker);
+			//TODO: replace marker in text with this value
+		}
+
+		return $text;
+	}
+
+	// }}}
+	// {{{ protected function replaceMarker()
+
+	/**
+	 * Replace marker
+	 *
+	 * @param string $marker_id The id of the marker found in the article.
+	 *
+	 * @return string Replacement text for the given marker id
+	 */
+	protected function replaceMarker($marker_id)
+	{
+	}
+
+	// }}}
+
 	// {{{ protected function displaySubArticles()
 
 	/**
