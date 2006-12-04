@@ -449,7 +449,7 @@ class StoreProductPage extends StoreStorePage
 				$anchor_tag->display();
 
 				// spaces are non-breaking
-				$anchor_tag->setContent('[ more ]');
+				$anchor_tag->setContent(' read more »');
 
 				$bodytext = SwatString::condense($article->bodytext, null);
 
