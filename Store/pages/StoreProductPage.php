@@ -433,20 +433,22 @@ class StoreProductPage extends StoreStorePage
 	{
 		$related_articles = $this->getRelatedArticles();
 		if (count($related_articles) > 0) {
-			$ul_tag = new SwatHtmlTag('ul');
-			$ul_tag->id = 'related_articles';
-			$ul_tag->open();
+			$dl_tag = new SwatHtmlTag('dl');
+			$dl_tag->id = 'related_articles';
+			$dl_tag->open();
 
 			$anchor_tag = new SwatHtmlTag('a');
-			$li_tag = new SwatHtmlTag('li');
-			$div_tag = new SwatHtmlTag('div');
+			$dd_tag = new SwatHtmlTag('dd');
+			$dt_tag = new SwatHtmlTag('dt');
 			foreach ($related_articles as $article) {
-				$li_tag->open();
+				$dt_tag->open();
 
 				$this->displayRelatedArticlesTitle();
 				$anchor_tag->href = $article->path;
 				$anchor_tag->setContent($article->title);
 				$anchor_tag->display();
+
+				$dt_tag->close();
 
 				// spaces are non-breaking
 				$anchor_tag->setContent('read more »');
@@ -457,14 +459,12 @@ class StoreProductPage extends StoreStorePage
 				$bodytext = SwatString::ellipsizeRight($bodytext, 200,
 					' … '.$anchor_tag->toString());
 
-				$div_tag->setContent($bodytext, 'text/xml');
+				$dd_tag->setContent($bodytext, 'text/xml');
 
-				$div_tag->display();
-
-				$li_tag->close();
+				$dd_tag->display();
 			}
 
-			$ul_tag->close();
+			$dl_tag->close();
 		}
 	}
 
