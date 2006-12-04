@@ -480,7 +480,7 @@ class StoreProductPage extends StoreStorePage
 		$related_articles = $this->getRelatedArticles();
 		if (count($related_articles) > 0) {
 			$div_tag = new SwatHtmlTag('div');
-			$div_tag->id = 'related_articles';
+			$div_tag->id = 'related_article_links';
 			$div_tag->open();
 
 			$this->displayRelatedArticlesTitle();
