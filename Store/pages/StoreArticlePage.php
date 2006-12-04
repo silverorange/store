@@ -168,52 +168,12 @@ class StoreArticlePage extends StorePage
 	{
 		if (strlen($article->bodytext) > 0) {
 			$bodytext = (string)$article->bodytext;
-
 			$bodytext = $this->replaceMarkers($bodytext);
-
-			echo '<div id="article-bodytext">',$bodytext,'</div>';
+			echo '<div id="article-bodytext">', $bodytext, '</div>';
 		}
 	}
 
 	// }}}
-	// {{{ protected function replaceMarkers()
-
-	/**
-	 * Replace markers in article
-	 *
-	 * @param string $text the text of the article.
-	 *
-	 * @return string Article text with markers replaced by dynamic content
-	 */
-	protected function replaceMarkers($text)
-	{
-		//TODO: regexp to grab markers here
-		$markers = array();
-
-		foreach ($markers as $marker) {
-			$replace_text = $this->replaceMarker($marker);
-			//TODO: replace marker in text with this value
-		}
-
-		return $text;
-	}
-
-	// }}}
-	// {{{ protected function replaceMarker()
-
-	/**
-	 * Replace marker
-	 *
-	 * @param string $marker_id The id of the marker found in the article.
-	 *
-	 * @return string Replacement text for the given marker id
-	 */
-	protected function replaceMarker($marker_id)
-	{
-	}
-
-	// }}}
-
 	// {{{ protected function displaySubArticles()
 
 	/**
@@ -295,6 +255,63 @@ class StoreArticlePage extends StorePage
 		$class_map = StoreClassMap::instance();
 		$wrapper = $class_map->resolveClass('StoreArticleWrapper');
 		return SwatDB::query($this->app->db, $sql, $wrapper);
+	}
+
+	// }}}
+	// {{{ protected function getReplacementMarkerText()
+
+	/**
+	 * Gets replacement text for a specfied replacement marker identifier
+	 *
+	 * @param string $marker_id the id of the marker found in the article
+	 *                           bodytext.
+	 *
+	 * @return string the replacement text for the given marker id.
+	 */
+	protected function getReplacementMarkerText($marker_id)
+	{
+		// by default, always return a blank string as replacement text
+		return '';
+	}
+
+	// }}}
+	// {{{ protected final function replaceMarkers()
+
+	/**
+	 * Replaces markers in article with dynamic content
+	 *
+	 * @param string $text the bodytext of the article.
+	 *
+	 * @return string the article bodytext with markers replaced by dynamic
+	 *                 content.
+	 *
+	 * @see StoreArticlePage::getReplacementMarkerText()
+	 */
+	protected final function replaceMarkers($text)
+	{
+		$marker_pattern = '/<!-- \[(.*)?\] -->/u';
+		$callback = array($this, 'getReplacementMarkerTextByMatches');
+		return preg_replace_callback($marker_pattern, $callback, $text);
+	}
+
+	// }}}
+	// {{{ private final function getReplacementMarkerId()
+
+	/**
+	 * Gets replacement text for a replacement marker from within a matches
+	 * array returned from a PERL regular expression
+	 *
+	 * @param array $matches the PERL regular expression matches array.
+	 *
+	 * @return string the replacement text for the first parenthesized
+	 *                 subpattern of the <i>$matches</i> array.
+	 */
+	private final function getReplacementMarkerTextByMatches($matches)
+	{
+		if (isset($matches[1]))
+			return $this->getReplacementMarkerText($matches[1]);
+
+		return '';
 	}
 
 	// }}}
