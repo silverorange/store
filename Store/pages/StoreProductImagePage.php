@@ -63,7 +63,7 @@ class StoreProductImagePage extends StoreStorePage
 
 		$this->layout->startCapture('content');
 
-		echo '<div id="product_images">';
+		echo '<div id="product_images" class="large-image-page">';
 
 		$this->displayImage();
 
