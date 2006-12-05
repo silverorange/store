@@ -573,14 +573,18 @@ class StoreProductPage extends StoreStorePage
 	{
 		$li_tag = new SwatHtmlTag('li');
 		$img_tag = new SwatHtmlTag('img');
-		$img_tag->alt = sprintf(Store::_('Additional Photo of %s'),
-			$this->product->title);
 
 		echo '<ul id="product_secondary_images">';
 
 		foreach ($this->product->images as $image) {
 			if ($this->product->primary_image->id === $image->id)
 				continue;
+
+			if ($image->title === null)
+				$img_tag->alt = sprintf(Store::_('Additional Photo of %s'),
+					$this->product->title);
+			else
+				$img_tag->alt = $image->title; 
 
 			$img_tag->src = $image->getURI('thumb');
 			$img_tag->width = $image->thumb_width;

@@ -33,6 +33,20 @@ abstract class StoreImage extends StoreDataObject
 	public $border = true;
 
 	/**
+	 * Title 
+	 *
+	 * @var string
+	 */
+	public $title;
+
+	/**
+	 * Description
+	 *
+	 * @var string
+	 */
+	public $description;
+
+	/**
 	 * not null default 0,
 	 *
 	 * @var integer
