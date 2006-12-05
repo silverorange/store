@@ -251,10 +251,11 @@ class StoreProductImageEdit extends AdminPage
 
 	protected function saveDBData()
 	{
-		$fields = array('text:title', 'boolean:border');
+		$fields = array('text:title', 'boolean:border', 'text:description');
 		$values = array(
 			'title' => $this->ui->getWidget('title')->value,
-			'border' => $this->ui->getWidget('border')->value
+			'border' => $this->ui->getWidget('border')->value,
+			'description' => $this->ui->getWidget('description')->value
 			);
 
 		SwatDB::updateRow($this->app->db, 'Image', $fields, $values,
@@ -408,8 +409,12 @@ class StoreProductImageEdit extends AdminPage
 	{
 		parent::buildInternal();
 
-		if ($this->id !== null)
+		if ($this->id !== null) {
 			$this->loadDBData();
+
+			$this->ui->getWidget('submit_button')->title = 
+				Store::_('Update');
+		}
 
 		$this->buildImage();
 		$this->buildForm();
@@ -502,7 +507,7 @@ class StoreProductImageEdit extends AdminPage
 
 	protected function loadDBData()
 	{
-		$sql = 'select title, border from Image
+		$sql = 'select title, border, description from Image
 			inner join ProductImageBinding on image = id
 			where id = %s and product = %s';
 

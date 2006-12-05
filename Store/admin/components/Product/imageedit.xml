@@ -16,9 +16,12 @@
 				<widget class="SwatFormField">
 					<property name="title" translatable="yes">Caption</property>
 					<widget class="SwatEntry" id="title">
-						<property name="required" type="boolean">false</property>
 						<property name="maxlength" type="integer">255</property>
 					</widget>
+				</widget>
+				<widget class="SwatFormField">
+					<property name="title" translatable="yes">Description</property>
+					<widget class="SwatTextarea" id="description" />
 				</widget>
 				<widget class="SwatFormField">
 					<property name="title" translatable="yes">Show Border</property>
