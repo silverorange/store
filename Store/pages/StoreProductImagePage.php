@@ -104,8 +104,8 @@ class StoreProductImagePage extends StoreStorePage
 
 		$this->back_link->display();
 
-		$div = new SwatHtmlTag('div');
-		$div->id = 'product_image_large';
+		$div_tag = new SwatHtmlTag('div');
+		$div_tag->id = 'product_image_large';
 
 		$img_tag = new SwatHtmlTag('img');
 		$img_tag->src = $this->image->getURI('large');
@@ -115,9 +115,23 @@ class StoreProductImagePage extends StoreStorePage
 		$img_tag->class = $this->image->border ?
 			'store-border-on' : 'store-border-off';
 
-		$div->open();
+		$div_tag->open();
 		$img_tag->display();
-		$div->close();
+		$div_tag->close();
+
+		if ($this->image->title !== null) {
+			$h3_tag = new SwatHtmlTag('h3');
+			$h3_tag->setContent($this->image->title);
+			$h3_tag->display();
+		}
+
+		if ($this->image->description !== null) {
+			$description = SwatString::toXHTML(
+				SwatString::minimizeEntities(
+				$this->image->description));
+			$div_tag->setContent($description, 'text/xml');
+			$div_tag->display();
+		}
 
 		if ($this->image->hasOriginal()) {
 			$download_link = new SwatToolLink();
@@ -134,13 +148,18 @@ class StoreProductImagePage extends StoreStorePage
 	{
 		$li_tag = new SwatHtmlTag('li');
 		$img_tag = new SwatHtmlTag('img');
-		$img_tag->alt = sprintf(Store::_('Additional Photo of %s'), $this->product->title);
 
 		echo '<ul id="product_secondary_images">';
 
 		foreach ($this->product->images as $image) {
 			if ($this->image->id === $image->id)
 				continue;
+
+			if ($image->title === null)
+				$img_tag->alt = sprintf(Store::_('Additional Photo of %s'),
+					$this->product->title);
+			else
+				$img_tag->alt = $image->title; 
 
 			$img_tag->src = $image->getURI('thumb');
 			$img_tag->width = $image->thumb_width;
