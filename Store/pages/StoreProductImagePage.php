@@ -119,6 +119,13 @@ class StoreProductImagePage extends StoreStorePage
 		$img_tag->display();
 		$div_tag->close();
 
+		if ($this->image->hasOriginal()) {
+			$download_link = new SwatToolLink();
+			$download_link->link = $this->image->getURI('original');
+			$download_link->title = Store::_('Download High Resolution Image');
+			$download_link->display();
+		}
+
 		if ($this->image->title !== null) {
 			$h3_tag = new SwatHtmlTag('h3');
 			$h3_tag->setContent($this->image->title);
@@ -131,13 +138,6 @@ class StoreProductImagePage extends StoreStorePage
 				$this->image->description));
 			$div_tag->setContent($description, 'text/xml');
 			$div_tag->display();
-		}
-
-		if ($this->image->hasOriginal()) {
-			$download_link = new SwatToolLink();
-			$download_link->link = $this->image->getURI('original');
-			$download_link->title = Store::_('Download High Resolution Image');
-			$download_link->display();
 		}
 	}
 
