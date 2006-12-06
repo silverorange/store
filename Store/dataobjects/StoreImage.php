@@ -113,6 +113,8 @@ abstract class StoreImage extends StoreDataObject
 		if ($this->title !== null) {
 			$img_tag->alt = 'Photo of '.$this->title;
 			$img_tag->title = $this->title;
+		} else {
+			$img_tag->alt = '';
 		}
 
 		$width = $set.'_width';

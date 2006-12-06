@@ -109,7 +109,7 @@ class StoreProductImagePage extends StoreStorePage
 
 		$img_tag = $this->image->getImgTag('large');
 
-		if ($img_tag->alt === null)
+		if ($img_tag->alt == '')
 			$img_tag->alt = sprintf(Store::_('Photo of %s'),
 				$this->product->title);
 
