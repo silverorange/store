@@ -282,7 +282,7 @@ class StoreCategoryPage extends StoreStorePage
 	// }}}
 	// {{{ protected function displayRelatedArticles()
 
-	protected function displayRelatedArticles(Category $category)
+	protected function displayRelatedArticles(StoreCategory $category)
 	{
 		if (count($category->related_articles) > 0) {
 			$div = new SwatHtmlTag('div');
