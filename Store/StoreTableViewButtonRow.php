@@ -37,8 +37,15 @@ class StoreTableViewButtonRow extends SwatTableViewRow
 	 */
 	public $tab_index = null;
 
+	/**
+	 * How many table-view columns the button should span
+	 *
+	 * @var integer
+	 */
+	public $span = 1;
+
 	// }}}
-	// {{{ private properties
+	// {{{ protected properties
 
 	/**
 	 * Whether or not the internal widgets used by this row have been created
@@ -46,14 +53,14 @@ class StoreTableViewButtonRow extends SwatTableViewRow
 	 *
 	 * @var boolean
 	 */
-	private $widgets_created = false;
+	protected $widgets_created = false;
 
 	/**
 	 * Button displayed in this row
 	 *
 	 * @var SwatButton
 	 */
-	private $button = null;
+	protected $button = null;
 
 	// }}}
 	// {{{ public function init()
@@ -135,12 +142,12 @@ class StoreTableViewButtonRow extends SwatTableViewRow
 	}
 
 	// }}}
-	// {{{ private function createEmbeddedWidgets()
+	// {{{ protected function createEmbeddedWidgets()
 
 	/**
 	 * Instantiates the tool-link for this input row
 	 */
-	private function createEmbeddedWidgets()
+	protected function createEmbeddedWidgets()
 	{
 		if (!$this->widgets_created) {
 			$this->button = new SwatButton($this->id.'_button');
