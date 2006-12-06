@@ -229,10 +229,19 @@ class StoreSessionModule extends SiteSessionModule
 		session_start();
 
 		foreach ($this->data_object_classes as $name => $class) {
-			if (isset($this->$name) && $this->$name !== null)
-				$this->$name->setDatabase($this->app->database->getConnection());
-			else
+			if (isset($this->$name) && $this->$name !== null) {
+				if (is_array($this->$name)) {
+					foreach ($this->$name as $object) {
+						$object->setDatabase(
+							$this->app->database->getConnection());
+					}
+				} else {
+					$this->$name->setDatabase(
+						$this->app->database->getConnection());
+				}
+			} else {
 				$this->$name = null;
+			}
 		}
 	}
 
