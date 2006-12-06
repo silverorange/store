@@ -8,12 +8,14 @@
 			<widget class="AdminNote" id="clone_note">
 				<property name="visible" type="boolean">false</property>
 			</widget>
-			<widget class="SwatReplicatorFormField" id="status_replicator">
+			<widget class="SwatFieldset">
 				<property name="title" translatable="yes">Status</property>
-				<widget class="SwatFlydown" id="status">
-					<property name="show_blank" type="boolean">false</property>
-					<property name="required" type="boolean">true</property>
-					<property name="value" type="constant">Catalog::STATUS_DISABLED</property>
+				<widget class="SwatReplicableFormField" id="status_replicator">
+					<widget class="SwatFlydown" id="status">
+						<property name="show_blank" type="boolean">false</property>
+						<property name="required" type="boolean">true</property>
+						<property name="value" type="constant">Catalog::STATUS_DISABLED</property>
+					</widget>
 				</widget>
 			</widget>
 			<widget class="SwatFooterFormField">
