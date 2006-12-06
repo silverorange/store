@@ -311,21 +311,17 @@ class StoreCategory extends StoreDataObject
 				$this->product_count));
 		}
 
-		$img_tag = new SwatHtmlTag('img');
-		$img_tag->alt = 'Photo of '.$this->title;
-
 		if ($this->image !== null) {
-			$img_tag->src = $this->image->getURI('thumb');
-			$img_tag->width = $this->image->thumb_width;
-			$img_tag->height = $this->image->thumb_height;
-			$img_tag->class = $this->image->border ?
-				'store-border-on' : 'store-border-off';
+			$img_tag = $this->image->getImgTag('thumb');
 		} else {
+			$img_tag = new SwatHtmlTag('img');
 			$img_tag->src = 'images/elements/category-place-holder.png';
 			$img_tag->width = CategoryImage::THUMB_WIDTH;
 			$img_tag->height = CategoryImage::THUMB_HEIGHT;
 			$img_tag->class = 'store-border-on';
 		}
+
+		$img_tag->alt = 'Photo of '.$this->title;
 
 		$anchor_tag->open();
 		$img_tag->display();
