@@ -225,7 +225,7 @@
 				<widget class="SwatToolLink">
 					<property name="title" translatable="yes">Add a Related Product</property>
 					<property name="stock_id">create</property>
-					<property name="link">Product/RelatedProduct?id=%s</property>
+					<property name="link">Product/RelatedProduct?product=%s</property>
 				</widget>
 			</widget>
 			<widget class="AdminNote">
