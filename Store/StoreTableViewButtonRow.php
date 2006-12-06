@@ -4,13 +4,26 @@ require_once 'Swat/SwatTableViewRow.php';
 require_once 'Swat/SwatButton.php';
 
 /**
- * A table view row with an embedded button.
+ * A table view row with an embedded button
  *
  * @package   Store
  * @copyright 2006 silverorange
  */
 class StoreTableViewButtonRow extends SwatTableViewRow
 {
+	// {{{ class constants
+
+	/**
+	 * Display the button in the left cell
+	 */
+	const POSITION_LEFT = 0;
+
+	/**
+	 * Display the button in the right cell
+	 */
+	const POSITION_RIGHT = 1;
+
+	// }}}
 	// {{{ public properties
 
 	/**
@@ -43,6 +56,16 @@ class StoreTableViewButtonRow extends SwatTableViewRow
 	 * @var integer
 	 */
 	public $span = 1;
+
+	/**
+	 * Whether to display the button in the left or right cell or the row
+	 *
+	 * By default, the vutton displays in the left cell. Use the POSITION_*
+	 * constants to control the button position.
+	 * 
+	 * @var integer
+	 */
+	public $position = self::POSITION_LEFT;
 
 	// }}}
 	// {{{ protected properties
@@ -101,17 +124,23 @@ class StoreTableViewButtonRow extends SwatTableViewRow
 		$tr_tag->open();
 		$td_tag->open();
 
-		// properties may have been modified since the widgets were created
-		$this->button->title = $this->title;
-		$this->button->tab_index = $this->tab_index;
-		$this->button->display();
+		if ($this->position === self::POSITION_LEFT || $this->offset == 0)
+			$this->displayButton();
+		else
+			echo '&nbsp;';
 
 		$td_tag->close();
 
 		if ($this->offset > 0) {
 			$td_tag->colspan = $this->offset;
-			$td_tag->setContent('&nbsp;');
-			$td_tag->display();
+			$td_tag->open();
+
+			if ($this->position === self::POSITION_RIGHT)
+				$this->displayButton();
+			else
+				echo '&nbsp;';
+			
+			$td_tag->close();
 		}
 
 		$tr_tag->close();
@@ -124,6 +153,20 @@ class StoreTableViewButtonRow extends SwatTableViewRow
 	{
 		$this->createEmbeddedWidgets();
 		return $this->button->hasBeenClicked();
+	}
+
+	// }}}
+	// {{{ protected function displayButton()
+
+	/**
+	 * Displays the button contained by this row
+	 */
+	protected function displayButton()
+	{
+		// properties may have been modified since the widgets were created
+		$this->button->title = $this->title;
+		$this->button->tab_index = $this->tab_index;
+		$this->button->display();
 	}
 
 	// }}}
@@ -149,7 +192,6 @@ class StoreTableViewButtonRow extends SwatTableViewRow
 		if (!$this->widgets_created) {
 			$this->button = new SwatButton($this->id.'_button');
 			$this->button->parent = $this;
-
 			$this->widgets_created = true;
 		}
 	}
