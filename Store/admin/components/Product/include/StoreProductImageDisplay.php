@@ -59,22 +59,26 @@ class StoreProductImageDisplay extends SwatImageDisplay
 
 		$toolbar = new SwatToolBar();
 
+		if ($this->category_id === null)
+			$get_vars = sprintf('product=%s',
+				$this->product_id);
+		else
+			$get_vars = sprintf('product=%s&category=%s',
+				$this->product_id, $this->category_id);
 
 		$edit = new SwatToolLink();
-		$edit->link = sprintf('Product/ImageEdit?id=%s&product=%s&category=%s',
+		$edit->link = sprintf('Product/ImageEdit?id=%s&%s',
 			$this->image_id,
-			$this->product_id,
-			$this->category_id);
+			$get_vars);
 
 		$edit->setFromStock('edit');
 		$edit->title = Store::_('Edit');
 		$toolbar->addChild($edit);
 
 		$delete = new SwatToolLink();
-		$delete->link = sprintf('Product/ImageDelete?id=%s&product=%s&category=%s',
+		$delete->link = sprintf('Product/ImageDelete?id=%s&%s',
 			$this->image_id,
-			$this->product_id,
-			$this->category_id);
+			$get_vars);
 
 		$delete->setFromStock('delete');
 		$delete->title = Store::_('Remove');
