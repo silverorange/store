@@ -21,7 +21,7 @@
 			</widget>
 			<widget class="SwatFieldset" id="availability_fieldset">
 				<property name="title" translatable="yes">Availability &amp; Pricing</property>
-				<widget class="SwatReplicatorFieldset" id="price_replicator">
+				<widget class="SwatReplicableFieldset" id="price_replicator">
 					<widget class="SwatFormField">
 						<property name="title" translatable="yes">Enabled</property>
 						<widget class="SwatCheckbox" id="enabled">
