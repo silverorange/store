@@ -281,6 +281,63 @@ class StoreCategory extends StoreDataObject
 	}
 
 	// }}}
+
+	// display methods
+	// {{{ public function displayAsTile()
+
+	/**
+	 * Displays the category as:
+	 *
+	 * [ IMAGE ] _Title_
+	 *
+	 * @param string $link the link to use when displaying. This link should go
+	 *                      to this category's page.
+	 */
+	public function displayAsTile($link)
+	{
+		$anchor_tag = new SwatHtmlTag('a');
+		$anchor_tag->class = 'category-tile-link';
+		$anchor_tag->href = $link;
+
+		$title_span = new SwatHtmlTag('span');
+		$title_span->class = 'category-tile-title';
+		$title_span->setContent($this->title);
+
+		if ($this->product_count > 1) {
+			$details_span = new SwatHtmlTag('span');
+			$details_span->class = 'category-tile-details';
+			$details_span->setContent(sprintf(
+				ngettext('%s product', '%s products', $this->product_count),
+				$this->product_count));
+		}
+
+		$img_tag = new SwatHtmlTag('img');
+		$img_tag->alt = 'Photo of '.$this->title;
+
+		if ($this->image !== null) {
+			$img_tag->src = $this->image->getURI('thumb');
+			$img_tag->width = $this->image->thumb_width;
+			$img_tag->height = $this->image->thumb_height;
+			$img_tag->class = $this->image->border ?
+				'store-border-on' : 'store-border-off';
+		} else {
+			$img_tag->src = 'images/elements/category-place-holder.png';
+			$img_tag->width = CategoryImage::THUMB_WIDTH;
+			$img_tag->height = CategoryImage::THUMB_HEIGHT;
+			$img_tag->class = 'store-border-on';
+		}
+
+		$anchor_tag->open();
+		$img_tag->display();
+		$title_span->display();
+		$anchor_tag->close();
+		echo ' ';
+
+		if ($this->product_count > 1)
+			$details_span->display();
+	}
+
+	// }}}
 }
 
 ?>
