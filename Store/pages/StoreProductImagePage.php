@@ -107,13 +107,11 @@ class StoreProductImagePage extends StoreStorePage
 		$div_tag = new SwatHtmlTag('div');
 		$div_tag->id = 'product_image_large';
 
-		$img_tag = new SwatHtmlTag('img');
-		$img_tag->src = $this->image->getURI('large');
-		$img_tag->width = $this->image->large_width;
-		$img_tag->height = $this->image->large_height;
-		$img_tag->alt = sprintf(Store::_('Photo of %s'), $this->product->title);
-		$img_tag->class = $this->image->border ?
-			'store-border-on' : 'store-border-off';
+		$img_tag = $this->image->getImgTag('large');
+
+		if ($img_tag->alt === null)
+			$img_tag->alt = sprintf(Store::_('Photo of %s'),
+				$this->product->title);
 
 		$div_tag->open();
 		$img_tag->display();
@@ -147,7 +145,6 @@ class StoreProductImagePage extends StoreStorePage
 	protected function displayOtherImages()
 	{
 		$li_tag = new SwatHtmlTag('li');
-		$img_tag = new SwatHtmlTag('img');
 
 		echo '<ul id="product_secondary_images">';
 
@@ -155,17 +152,10 @@ class StoreProductImagePage extends StoreStorePage
 			if ($this->image->id === $image->id)
 				continue;
 
-			if ($image->title === null)
+			$img_tag = $image->getImgTag('thumb');
+			if ($img_tag->alt === null)
 				$img_tag->alt = sprintf(Store::_('Additional Photo of %s'),
 					$this->product->title);
-			else
-				$img_tag->alt = $image->title; 
-
-			$img_tag->src = $image->getURI('thumb');
-			$img_tag->width = $image->thumb_width;
-			$img_tag->height = $image->thumb_height;
-			$img_tag->class = $image->border ?
-				'store-border-on' : 'store-border-off';
 
 			$anchor = new SwatHtmlTag('a');
 			$anchor->href = sprintf('%s/image%s', 
