@@ -1,5 +1,6 @@
 <?php
 
+require_once 'Swat/SwatHtmlTag.php';
 require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Image/Transform.php';
 
@@ -100,6 +101,30 @@ abstract class StoreImage extends StoreDataObject
 	{
 		$uri = $this->getURI('original');
 		return (file_exists($uri));
+	}
+
+	// }}}
+	// {{{ public function getImgTag()
+
+	public function getImgTag($set)
+	{
+		$img_tag = new SwatHtmlTag('img');
+
+		if ($this->title !== null) {
+			$img_tag->alt = 'Photo of '.$this->title;
+			$img_tag->title = $this->title;
+		}
+
+		$width = $set.'_width';
+		$height = $set.'_height';
+
+		$img_tag->src = $this->getURI($set);
+		$img_tag->width = $this->$width;
+		$img_tag->height = $this->$height;
+		$img_tag->class = $this->border ?
+			'store-border-on' : 'store-border-off';
+
+		return $img_tag;
 	}
 
 	// }}}
