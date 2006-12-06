@@ -107,7 +107,20 @@ abstract class StoreCartPage extends StoreArticlePage
 				}
 			}
 
+			$available_view = $this->ui->getWidget('available_cart_view');
+			$available_remove_all = $available_view->getRow('subtotal');
+
+			$unavailable_view = $this->ui->getWidget('unavailable_cart_view');
+			$unavailable_remove_all = $unavailable_view->getRow('remove_all');
+
+			if ($available_remove_all->hasBeenClicked())
+				$this->removeAllAvailableCheckoutCart();
+
+			if ($unavailable_remove_all->hasBeenClicked())
+				$this->removeAllUnavailableCheckoutCart();
+
 			if ($form->hasMessage()) {
+				//TODO: this message can show after all items are removed
 				$message = new SwatMessage(Store::_(
 					'There is a problem with the information submitted.'),
 					SwatMessage::ERROR);
@@ -145,9 +158,15 @@ abstract class StoreCartPage extends StoreArticlePage
 
 				$this->ui->getWidget('message_display')->add($message);
 			} else {
-				$button = $this->ui->getWidget('saved_cart_move_all_button');
-				if ($button->hasBeenClicked())
+				$saved_view = $this->ui->getWidget('saved_cart_view');
+				$remove_button = $saved_view->getRow('remove_all');
+				$move_button =
+					$this->ui->getWidget('saved_cart_move_all_button');
+
+				if ($move_button->hasBeenClicked())
 					$this->moveAllSavedCart();
+				elseif ($remove_button->hasBeenClicked())
+					$this->removeAllSavedCart();
 				else
 					$this->updateSavedCart();
 			}
@@ -313,6 +332,79 @@ abstract class StoreCartPage extends StoreArticlePage
 	}
 
 	// }}}
+	// {{{ protected function removeAllAvailableCheckoutCart()
+
+	/**
+	 * Removes all available cart items
+	 */
+	protected function removeAllAvailableCheckoutCart()
+	{
+		$message_display = $this->ui->getWidget('message_display');
+		$view = $this->ui->getWidget('available_cart_view');
+
+		$num_removed_items = 0;
+
+		// remove column is just used to get cart ids that were displayed
+		$remove_column = $view->getColumn('remove_column');
+		$remove_renderer = $remove_column->getRendererByPosition(); 
+		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
+			$entry = $this->app->cart->checkout->getEntryById($id);
+
+			// make sure entry wasn't already removed
+			// (i.e. a page resubmit)
+			if ($entry !== null) {
+				$this->app->cart->checkout->removeEntry($entry);
+				$num_removed_items++;
+			}
+		}
+
+		if ($num_removed_items > 0)
+			$message_display->add(new StoreMessage(
+				sprintf(Store::ngettext(
+				'One item has been removed from cart.',
+				'%s items have been removed from cart.', $num_removed_items),
+				SwatString::numberFormat($num_removed_items)),
+				StoreMessage::CART_NOTIFICATION));
+	}
+
+	// }}}
+	// {{{ protected function removeAllUnavailableCheckoutCart()
+
+	/**
+	 * Removes all unavailable cart items
+	 */
+	protected function removeAllUnavailableCheckoutCart()
+	{
+		$message_display = $this->ui->getWidget('message_display');
+		$view = $this->ui->getWidget('unavailable_cart_view');
+
+		$num_removed_items = 0;
+
+		// remove column is just used to get cart ids that were displayed
+		$remove_column = $view->getColumn('remove_column');
+		$remove_renderer = $remove_column->getRendererByPosition(); 
+		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
+			$entry = $this->app->cart->checkout->getEntryById($id);
+
+			// make sure entry wasn't already removed
+			// (i.e. a page resubmit)
+			if ($entry !== null) {
+				$this->app->cart->checkout->removeEntry($entry);
+				$num_removed_items++;
+			}
+		}
+
+		if ($num_removed_items > 0)
+			$message_display->add(new StoreMessage(
+				sprintf(Store::ngettext(
+				'One item has been removed from unavailable items.',
+				'%s items have been removed from unavailable items.',
+				$num_removed_items),
+				SwatString::numberFormat($num_removed_items)),
+				StoreMessage::CART_NOTIFICATION));
+	}
+
+	// }}}
 	// {{{ protected function updateSavedCart()
 
 	protected function updateSavedCart()
@@ -360,7 +452,7 @@ abstract class StoreCartPage extends StoreArticlePage
 
 		if ($item_removed)
 			$message_display->add(new StoreMessage(
-				Store::_('One item has been removed from saved cart.'),
+				Store::_('One item has been removed from saved items.'),
 				StoreMessage::CART_NOTIFICATION));
 
 		if ($item_moved)
@@ -402,6 +494,43 @@ abstract class StoreCartPage extends StoreArticlePage
 				'One item moved to shopping cart.',
 				'%s items moved to shopping cart.', $num_moved_items),
 				SwatString::numberFormat($num_moved_items)),
+				StoreMessage::CART_NOTIFICATION));
+	}
+
+	// }}}
+	// {{{ protected function removeAllSavedCart()
+
+	/**
+	 * Removes all saved cart items
+	 */
+	protected function removeAllSavedCart()
+	{
+		$message_display = $this->ui->getWidget('message_display');
+		$view = $this->ui->getWidget('saved_cart_view');
+
+		$num_removed_items = 0;
+
+		// remove column is just used to get cart ids that were displayed
+		$remove_column = $view->getColumn('remove_column');
+		$remove_renderer = $remove_column->getRendererByPosition(); 
+		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
+			$entry = $this->app->cart->saved->getEntryById($id);
+
+			// make sure entry wasn't already removed
+			// (i.e. a page resubmit)
+			if ($entry !== null) {
+				$this->app->cart->saved->removeEntry($entry);
+				$num_removed_items++;
+			}
+		}
+
+		if ($num_removed_items > 0)
+			$message_display->add(new StoreMessage(
+				sprintf(Store::ngettext(
+				'One item has been removed from saved items.',
+				'%s items have been removed from saved items.',
+				$num_removed_items),
+				SwatString::numberFormat($num_removed_items)),
 				StoreMessage::CART_NOTIFICATION));
 	}
 
