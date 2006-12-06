@@ -94,10 +94,12 @@
 					<property name="offset" type="integer">2</property>
 					<property name="title" translatable="yes">Shipping Total</property>
 				</object>
-				<object class="StoreTotalRow">
+				<object class="StoreTotalConfirmationButtonRow">
 					<property name="id">subtotal</property>
 					<property name="offset" type="integer">2</property>
-					<property name="title" translatable="yes">Subtotal</property>
+					<property name="title">Subtotal</property>
+					<property name="button_title">Remove All Items</property>
+					<property name="button_confirmation_message">Remove all items from cart?</property>
 				</object>
 			</widget>
 			<!-- }}} -->
@@ -156,6 +158,13 @@
 								<property name="classes[]">compact-button</property>
 							</widget>
 						</object>
+					</object>
+					<object class="StoreTableViewConfirmationButtonRow">
+						<property name="id">remove_all</property>
+						<property name="offset" type="integer">2</property>
+						<property name="position" type="constant">POSITION_RIGHT</property>
+						<property name="title">Remove All Unavailable Items</property>
+						<property name="confirmation_message">Remove all items from unavailable items?</property>
 					</object>
 				</widget>
 			</widget>
@@ -242,6 +251,13 @@
 							<property name="classes[]">compact-button</property>
 						</widget>
 					</object>
+				</object>
+				<object class="StoreTableViewConfirmationButtonRow">
+					<property name="id">remove_all</property>
+					<property name="offset" type="integer">2</property>
+					<property name="position" type="constant">POSITION_RIGHT</property>
+					<property name="title">Remove All Saved Items</property>
+					<property name="confirmation_message">Remove all items from saved items?</property>
 				</object>
 			</widget>
 			<!-- }}} -->
