@@ -144,9 +144,6 @@ class StoreTableViewButtonRow extends SwatTableViewRow
 	// }}}
 	// {{{ protected function createEmbeddedWidgets()
 
-	/**
-	 * Instantiates the tool-link for this input row
-	 */
 	protected function createEmbeddedWidgets()
 	{
 		if (!$this->widgets_created) {
