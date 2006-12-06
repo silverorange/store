@@ -230,7 +230,8 @@ class StoreSessionModule extends SiteSessionModule
 
 		foreach ($this->data_object_classes as $name => $class) {
 			if (isset($this->$name) && $this->$name !== null) {
-				if (is_array($this->$name)) {
+				if (is_array($this->$name) ||
+					$this->$name instanceof ArrayObject) {
 					foreach ($this->$name as $object) {
 						$object->setDatabase(
 							$this->app->database->getConnection());
