@@ -52,11 +52,23 @@ class StoreTotalRow extends SwatTableViewRow
 		$tr_tag->class = 'store-total-row';
 		$tr_tag->id = $this->id;
 
+		$tr_tag->open();
+
+		$this->displayHeader();
+		$this->displayTotal();
+		$this->displayBlank();
+
+		$tr_tag->close();
+	}
+
+	// }}}
+	// {{{ protected function displayHeader()
+
+	protected function displayHeader()
+	{
 		$column_count = $this->view->getVisibleColumnCount();
 		$th_tag = new SwatHtmlTag('th');
 		$th_tag->colspan = $column_count - 1 - $this->offset;
-
-		$tr_tag->open();
 
 		$th_tag->open();
 
@@ -68,8 +80,8 @@ class StoreTotalRow extends SwatTableViewRow
 			$anchor_tag->title = $this->link_title;
 			$anchor_tag->setContent($this->title);
 			$anchor_tag->display();
-			echo ':';
 		}
+		echo ':';
 
 		if ($this->note !== null) {
 			$div = new SwatHtmlTag('div');
@@ -79,6 +91,14 @@ class StoreTotalRow extends SwatTableViewRow
 		}
 
 		$th_tag->close();
+	}
+
+	// }}}
+	// {{{ protected function displayTotal()
+
+	protected function displayTotal()
+	{
+		$column_count = $this->view->getVisibleColumnCount();
 
 		$td_tag = new SwatHtmlTag('td');
 		$td_tag->class = $this->getCSSClassString();
@@ -92,15 +112,19 @@ class StoreTotalRow extends SwatTableViewRow
 		}
 
 		$td_tag->close();
+	}
 
+	// }}}
+	// {{{ protected function displayBlank()
+
+	protected function displayBlank()
+	{
 		if ($this->offset > 0) {
 			$td_tag = new SwatHtmlTag('td');
 			$td_tag->colspan = $this->offset;
 			$td_tag->setContent('&nbsp;');
 			$td_tag->display();
 		}
-
-		$tr_tag->close();
 	}
 
 	// }}}
