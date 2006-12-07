@@ -127,9 +127,6 @@ class StoreProductDetails extends AdminIndex
 		case 'items_view':
 			$this->processItemsActions($view, $actions);
 			break;
-		case 'product_reviews_view':
-			$this->processProductReviewsActions($view, $actions);
-			break;
 		}
 	}
 
@@ -207,54 +204,6 @@ class StoreProductDetails extends AdminIndex
 		}
 	}
 
-	// }}}
-	// {{{ private function processProductReviewsActions()
-
-	private function processProductReviewsActions($view, $actions)
-	{
-		switch ($actions->selected->id) {
-		case 'product_reviews_delete':
-			$this->app->replacePage('ProductReview/Delete');
-			$this->app->getPage()->setItems($view->checked_items);
-			break;
-
-		case 'product_reviews_enable':
-			$sql = 'update ProductReview set enabled = %s
-				where id in (%s)';
-
-			SwatDB::exec($this->app->db, sprintf($sql,
-				$this->app->db->quote(true, 'boolean'),
-				implode(',', $view->checked_items)));
-
-			$num = count($view->checked_items);
-
-			$message = new SwatMessage(sprintf(ngettext(
-				'One product review has been enabled.',
-				'%d product reviews have been enabled.', $num),
-				SwatString::numberFormat($num)));
-
-			$this->app->messages->add($message);
-			break;
-
-		case 'product_reviews_disable':
-			$sql = 'update ProductReview set enabled = %s
-				where id in (%s)';
-
-			SwatDB::exec($this->app->db, sprintf($sql,
-				$this->app->db->quote(false, 'boolean'),
-				implode(',', $view->checked_items)));
-
-			$num = count($view->checked_items);
-
-			$message = new SwatMessage(sprintf(ngettext(
-				'One product review has been disabled.',
-				'%d product reviews have been disabled.', $num),
-				SwatString::numberFormat($num)));
-
-			$this->app->messages->add($message);
-			break;
-		}
-	}
 	// }}}
 	// {{{ private function changeStatus()
 	protected function changeStatus(SwatTableView $view, $status)
