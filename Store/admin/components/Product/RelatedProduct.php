@@ -38,7 +38,7 @@ class StoreProductRelatedProduct extends AdminSearch
 	{
 		parent::initInternal();
 
-		$this->product_id = SiteApplication::initVar('id');
+		$this->product_id = SiteApplication::initVar('product');
 		$this->category_id = SiteApplication::initVar('category');
 
 		$this->ui->loadFromXML($this->search_xml);
@@ -62,41 +62,42 @@ class StoreProductRelatedProduct extends AdminSearch
 
 		if ($form->isProcessed()) {
 			if (count($view->checked_items) != 0) {
-
 				$product_list = array();
 				foreach ($view->checked_items as $item)
 					$product_list[] = $this->app->db->quote($item, 'integer');
 
-				$id = $this->app->db->quote(SiteApplication::initVar('id'), 
-					'integer');
 				// relate products
-				$sql = sprintf('insert into ProductRelatedProductBinding 
-					(source_product, related_product)
-						select %s, Product.id from Product where 
-							Product.id not in (
-								select related_product 
-								from ProductRelatedProductBinding 
-								where source_product = %s)
-					and Product.id
-						in (%s)', $id, $id, implode(',', $product_list));
+				$sql = 'insert into ProductRelatedProductBinding 
+						(source_product, related_product)
+					select %1$s, Product.id from Product where 
+						Product.id not in (
+							select related_product 
+							from ProductRelatedProductBinding 
+							where source_product = %1$s)
+						and Product.id in (%2$s)';
 
-				$num = $this->app->db->query($sql);
+				$sql = sprintf($sql,
+					$this->app->db->quote($this->product_id, 'integer'),
+					implode(',', $product_list));
+
+
+				$num = SwatDB::exec($this->app->db, $sql);
 
 				$message = new SwatMessage(sprintf(Store::ngettext(
 					'One product has been related to this product.',
 					'%d products have been related to this product.', $num), 
-					SwatString::numberFormat($num)), SwatMessage::NOTIFICATION);
+					SwatString::numberFormat($num)),
+					SwatMessage::NOTIFICATION);
 
 			}
 
-			if (SiteApplication::initVar('category') === null)
+			if ($this->category_id === null)
 				$this->app->relocate('Product/Details?id='.
-					SiteApplication::initVar('id'));
+					$this->product_id);
 			else
 				$this->app->relocate('Product/Details?id='.
-					SiteApplication::initVar('id').'&category='.
-					SiteApplication::initVar('category'));
-				
+					$this->product_id.'&category='.
+					$this->category_id);
 		}
 
 		$pager = $this->ui->getWidget('pager');
@@ -131,11 +132,9 @@ class StoreProductRelatedProduct extends AdminSearch
 
 		$search_form = $this->ui->getWidget('search_form');
 		$search_form->action = $this->getRelativeURL();
-		$search_form->addHiddenField('category', $this->category_id);
 
 		$form = $this->ui->getWidget('index_form');
 		$form->action = $this->getRelativeURL();
-		$form->addHiddenField('category', $this->category_id);
 	}
 
 	// }}}
