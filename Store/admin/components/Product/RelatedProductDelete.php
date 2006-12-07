@@ -2,8 +2,8 @@
 
 require_once 'Admin/pages/AdminDBDelete.php';
 require_once 'SwatDB/SwatDB.php';
-require_once 'Store/admin/include/components/Product/'.
-	'StoreProductRelatedProductsDependency.php';
+require_once 'Store/admin/components/Product/'.
+	'include/StoreProductRelatedProductDependency.php';
 
 /**
  * Delete confirmation page for Related Products
@@ -97,7 +97,7 @@ class StoreProductRelatedProductDelete extends AdminDBDelete
 
 		$item_list = $this->getItemList('integer');
 
-		$dep = new StoreProductRelatedProductsDependency();
+		$dep = new StoreProductRelatedProductDependency();
 		$dep->product_title = SwatDB::queryOneFromTable($this->app->db,
 			'Product', 'text:title', 'id', $this->id);
 
