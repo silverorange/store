@@ -101,7 +101,7 @@ class StoreItemOrder extends AdminDBOrder
 
 		$sql = sprintf('select id, sku, description from Item
 			where %s
-			order by displayorder, sku, part_count',
+			order by displayorder, sku',
 			$where_clause);
 
 		$items = SwatDB::query($this->app->db, $sql);
