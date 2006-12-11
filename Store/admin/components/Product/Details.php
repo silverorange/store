@@ -385,26 +385,36 @@ class StoreProductDetails extends AdminIndex
 	}
 
 	// }}}
-	// {{{ protected function appendCategoryToLinks()
+	// {{{ protected function buildCategoryToolBarLinks()
 
-	protected function appendCategoryToLinks($view, $toolbar, $groups = array())
+	protected function buildCategoryToolBarLinks(SwatToolBar $toolbar)
 	{
 		if ($this->category_id === null) {
 			$toolbar->setToolLinkValues($this->id);
 		} else {
 			foreach ($toolbar->getToolLinks() as $tool_link)
-				$tool_link->link.= '&category=%s';
+				if (substr($tool_link->link, -5) === 'id=%s' ||
+					substr($tool_link->link, -10) === 'product=%s')
+					$tool_link->link.= '&category=%s';
 
 			$toolbar->setToolLinkValues(array($this->id, $this->category_id));
+		}
+	}
 
+	// }}}
+	// {{{ protected function buildCategoryTableViewLinks()
+
+	protected function buildCategoryTableViewLinks(SwatTableView $view)
+	{
+		if ($this->category_id !== null) {
 			$link_suffix = sprintf('&category=%s', $this->category_id);
 			foreach ($view->getColumns() as $column)
 				foreach ($column->getRenderers() as $renderer)
 					if ($renderer instanceof SwatLinkCellRenderer)
 						$renderer->link.= $link_suffix;
 
-			foreach ($groups as $group)
-				foreach ($view->getGroup($group)->getRenderers() as $renderer)
+			foreach ($view->getGroups() as $group)
+				foreach ($group->getRenderers() as $renderer)
 					if ($renderer instanceof SwatLinkCellRenderer)
 						$renderer->link.= $link_suffix;
 		}
@@ -504,18 +514,7 @@ class StoreProductDetails extends AdminIndex
 		$this->title = $product->title;
 
 		$toolbar = $this->ui->getWidget('details_toolbar');
-
-		if ($this->category_id === null) {
-			$toolbar->setToolLinkValues($this->id);
-		} else {
-			foreach ($toolbar->getToolLinks() as $tool_link) {
-				if ($tool_link->id != 'view_in_store') {
-					$tool_link->link.= '&category=%s';
-					$tool_link->value = array($this->id, $this->category_id);
-				}
-			}
-		}
-
+		$this->buildCategoryToolBarLinks($toolbar);
 		$this->buildViewInStoreToolLinks($product);
 		$this->buildNavBar($product);
 	}
@@ -595,7 +594,8 @@ class StoreProductDetails extends AdminIndex
 		$view->getColumn('quantity_discounts')->getRendererByPosition()->db =
 			$this->app->db;
 
-		$this->appendCategoryToLinks($view, $toolbar, array('group'));
+		$this->buildCategoryToolBarLinks($toolbar);
+		$this->buildCategoryTableViewLinks($view);
 	}
 
 	// }}}
@@ -821,15 +821,7 @@ class StoreProductDetails extends AdminIndex
 	private function buildProductImages()
 	{
 		$toolbar = $this->ui->getWidget('product_images_toolbar');
-
-		if ($this->category_id === null) {
-			$toolbar->setToolLinkValues($this->id);
-		} else {
-			foreach ($toolbar->getToolLinks() as $tool_link) {
-				$tool_link->link.= '&category=%s';
-				$tool_link->value = array($this->id, $this->category_id);
-			}
-		}
+		$this->buildCategoryToolBarLinks($toolbar);
 
 		$images = $this->getProductImages();
 		$form = $this->ui->getWidget('product_images_form');
@@ -885,7 +877,8 @@ class StoreProductDetails extends AdminIndex
 	{
 		$toolbar = $this->ui->getWidget('related_products_toolbar');
 		$view = $this->ui->getWidget('related_products_view');
-		$this->appendCategoryToLinks($view, $toolbar);
+		$this->buildCategoryToolBarLinks($toolbar);
+		$this->buildCategoryTableViewLinks($view);
 	}
 
 	// }}}
