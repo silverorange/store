@@ -714,7 +714,7 @@ class StoreProductDetails extends AdminIndex
 					-- region join piece goes here
 					%s
 				where Item.product = %s
-				order by group_order, Item.item_group, %s';
+				order by group_order, ItemGroup.title, Item.item_group, %s';
 
 		$sql = sprintf($sql,
 			$regions_select,
