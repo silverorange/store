@@ -22,11 +22,11 @@ class StoreItemEdit extends AdminDBEdit
 
 	protected $ui_xml = 'Store/admin/components/Item/edit.xml';
 	protected $fields;
+	protected $product_id;
 
 	// }}}
 	// {{{ private properties
 
-	private $product_id;
 	private $category_id;
 	private $item_sku;
 
