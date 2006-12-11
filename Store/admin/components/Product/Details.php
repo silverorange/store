@@ -108,17 +108,6 @@ class StoreProductDetails extends AdminIndex
 	}
 
 	// }}}
-	// {{{ private function processRelatedProducts()
-
-	private function processRelatedProducts($view)
-	{
-		$this->app->replacePage('Product/RelatedProductDelete');
-		$this->app->getPage()->setItems($view->checked_items);
-		$this->app->getPage()->setId($this->id);
-		$this->app->getPage()->setCategory($this->category_id);
-	}
-
-	// }}}
 	// {{{ protected function processActions()
 
 	protected function processActions(SwatTableView $view, SwatActions $actions)
@@ -205,7 +194,30 @@ class StoreProductDetails extends AdminIndex
 	}
 
 	// }}}
+	// {{{ protected function addNewItemExtras()
+
+	protected function addNewItemExtras($item_id)
+	{
+		/**
+		 * this is a placeholder function, for the occasional case where a site
+		 * would require that we insert rows into other tables on item creation
+		 */
+	}
+
+	// }}}
+	// {{{ private function processRelatedProducts()
+
+	private function processRelatedProducts($view)
+	{
+		$this->app->replacePage('Product/RelatedProductDelete');
+		$this->app->getPage()->setItems($view->checked_items);
+		$this->app->getPage()->setId($this->id);
+		$this->app->getPage()->setCategory($this->category_id);
+	}
+
+	// }}}
 	// {{{ private function changeStatus()
+
 	protected function changeStatus(SwatTableView $view, $status)
 	{
 		$num = count($view->checked_items);
@@ -220,6 +232,7 @@ class StoreProductDetails extends AdminIndex
 
 		$this->app->messages->add($message);
 	}
+
 	// }}}
 	// {{{ private function addNewItems()
 
@@ -321,17 +334,6 @@ class StoreProductDetails extends AdminIndex
 	}
 
 	// }}}
-	// {{{ protected function addNewItemExtras()
-
-	protected function addNewItemExtras($item_id)
-	{
-		/**
-		 * this is a placeholder function, for the occasional case where a site
-		 * would require that we insert rows into other tables on item creation
-		 */
-	}
-
-	// }}}
 	// {{{ private function validateItemRows()
 
 	private function validateItemRows($input_row, $catalog)
@@ -411,77 +413,6 @@ class StoreProductDetails extends AdminIndex
 	// }}}
 
 	// build phase - product details
-	// {{{ private function buildProduct()
-
-	private function buildProduct()
-	{
-		$product = $this->loadProduct();
-
-		$this->buildProductDetails($product);
-
-		$details_frame = $this->ui->getWidget('details_frame');
-		$details_frame->title = Store::_('Product');
-		$details_frame->subtitle = $product->title;
-		$this->title = $product->title;
-
-		$toolbar = $this->ui->getWidget('details_toolbar');
-
-		if ($this->category_id === null) {
-			$toolbar->setToolLinkValues($this->id);
-		} else {
-			foreach ($toolbar->getToolLinks() as $tool_link) {
-				if ($tool_link->id != 'view_in_store') {
-					$tool_link->link.= '&category=%s';
-					$tool_link->value = array($this->id, $this->category_id);
-				}
-			}
-		}
-
-		$this->buildViewInStoreToolLinks($product);
-		$this->buildNavBar($product);
-	}
-
-	// }}}
-	// {{{ private function buildNavBar()
-
-	private function buildNavBar($product)
-	{
-		if ($this->category_id !== null) {
-			// use category navbar
-			$this->navbar->popEntry();
-			$this->navbar->addEntry(new SwatNavBarEntry(
-				Store::_('Product Categories'), 'Category'));
-
-			$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
-				'getCategoryNavbar', array($this->category_id));
-
-			foreach ($cat_navbar_rs as $entry)
-				$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
-					'Category/Index?id='.$entry->id));
-		}
-
-		$this->navbar->addEntry(new SwatNavBarEntry($product->title));
-	}
-
-	// }}}
-	// {{{ private function loadProduct()
-
-	private function loadProduct()
-	{
-		$class_map = StoreClassMap::instance();
-		$product_class = $class_map->resolveClass('StoreProduct');
-		$product = new $product_class();
-		$product->setDatabase($this->app->db);
-
-		if (!$product->load($this->id))
-			throw new AdminNotFoundException(sprintf(
-				Store::_('A product with an id of ‘%d’ does not exist.'),
-				$this->id));
-
-		return $product;
-	}
-
-	// }}}
 	// {{{ protected function buildProductDetails()
 
 	protected function buildProductDetails($product)
@@ -556,6 +487,77 @@ class StoreProductDetails extends AdminIndex
 
 			echo '</ul>';
 		}
+	}
+
+	// }}}
+	// {{{ private function buildProduct()
+
+	private function buildProduct()
+	{
+		$product = $this->loadProduct();
+
+		$this->buildProductDetails($product);
+
+		$details_frame = $this->ui->getWidget('details_frame');
+		$details_frame->title = Store::_('Product');
+		$details_frame->subtitle = $product->title;
+		$this->title = $product->title;
+
+		$toolbar = $this->ui->getWidget('details_toolbar');
+
+		if ($this->category_id === null) {
+			$toolbar->setToolLinkValues($this->id);
+		} else {
+			foreach ($toolbar->getToolLinks() as $tool_link) {
+				if ($tool_link->id != 'view_in_store') {
+					$tool_link->link.= '&category=%s';
+					$tool_link->value = array($this->id, $this->category_id);
+				}
+			}
+		}
+
+		$this->buildViewInStoreToolLinks($product);
+		$this->buildNavBar($product);
+	}
+
+	// }}}
+	// {{{ private function buildNavBar()
+
+	private function buildNavBar($product)
+	{
+		if ($this->category_id !== null) {
+			// use category navbar
+			$this->navbar->popEntry();
+			$this->navbar->addEntry(new SwatNavBarEntry(
+				Store::_('Product Categories'), 'Category'));
+
+			$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
+				'getCategoryNavbar', array($this->category_id));
+
+			foreach ($cat_navbar_rs as $entry)
+				$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
+					'Category/Index?id='.$entry->id));
+		}
+
+		$this->navbar->addEntry(new SwatNavBarEntry($product->title));
+	}
+
+	// }}}
+	// {{{ private function loadProduct()
+
+	private function loadProduct()
+	{
+		$class_map = StoreClassMap::instance();
+		$product_class = $class_map->resolveClass('StoreProduct');
+		$product = new $product_class();
+		$product->setDatabase($this->app->db);
+
+		if (!$product->load($this->id))
+			throw new AdminNotFoundException(sprintf(
+				Store::_('A product with an id of ‘%d’ does not exist.'),
+				$this->id));
+
+		return $product;
 	}
 
 	// }}}
