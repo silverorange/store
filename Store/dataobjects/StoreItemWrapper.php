@@ -18,8 +18,8 @@ class StoreItemWrapper extends StoreRecordsetWrapper
 		$sql = 'select Item.* from Item
 				left outer join ItemGroup on Item.item_group = ItemGroup.id
 			where Item.id in (%s)
-			order by coalesce(ItemGroup.displayorder, -1), Item.displayorder,
-				Item.sku';
+			order by coalesce(ItemGroup.displayorder, -1), ItemGroup.title,
+				Item.displayorder, Item.sku';
 
 		$sql = sprintf($sql, $id_set);
 
@@ -62,8 +62,8 @@ class StoreItemWrapper extends StoreRecordsetWrapper
 						AvailableItemView.region = %s
 				left outer join ItemGroup on Item.item_group = ItemGroup.id
 			where Item.id in (%s)
-			order by coalesce(ItemGroup.displayorder, -1), Item.displayorder, 
-				Item.sku';
+			order by coalesce(ItemGroup.displayorder, -1), ItemGroup.title,
+				Item.displayorder, Item.sku';
 
 		$sql = sprintf($sql,
 			$limiting ? 'inner join' : 'left outer join',
