@@ -40,6 +40,7 @@ class StoreTableViewConfirmationButtonRow extends StoreTableViewButtonRow
 		if (!$this->widgets_created) {
 			$this->button = new SwatConfirmationButton($this->id.'_button');
 			$this->button->parent = $this;
+			$this->button->classes[] = 'compact-button';
 			$this->widgets_created = true;
 		}
 	}

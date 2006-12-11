@@ -122,25 +122,31 @@ class StoreTableViewButtonRow extends SwatTableViewRow
 		$td_tag->colspan = $column_count - $this->offset;
 
 		$tr_tag->open();
-		$td_tag->open();
 
-		if ($this->position === self::POSITION_LEFT || $this->offset == 0)
+		if ($this->position === self::POSITION_LEFT || $this->offset == 0) {
+			$td_tag->class = 'button-cell';
+			$td_tag->open();
 			$this->displayButton();
-		else
+			$td_tag->close();
+		} else {
+			$td_tag->open();
 			echo '&nbsp;';
-
-		$td_tag->close();
+			$td_tag->close();
+		}
 
 		if ($this->offset > 0) {
 			$td_tag->colspan = $this->offset;
-			$td_tag->open();
 
-			if ($this->position === self::POSITION_RIGHT)
+			if ($this->position === self::POSITION_RIGHT) {
+				$td_tag->class = 'button-cell';
+				$td_tag->open();
 				$this->displayButton();
-			else
+				$td_tag->close();
+			} else {
+				$td_tag->open();
 				echo '&nbsp;';
-			
-			$td_tag->close();
+				$td_tag->close();
+			}	
 		}
 
 		$tr_tag->close();

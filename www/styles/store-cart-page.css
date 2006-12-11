@@ -44,3 +44,15 @@
 	text-align: right;
 }
 
+
+.swat-table-view .store-total-row td.button-cell,
+.swat-table-view .store-table-view-button-row td.button-cell {
+	padding: 0.2em 4px 0.2em 0;
+	text-align: center;
+}
+
+.swat-table-view .store-total-row #subtotal_button,
+.swat-table-view .store-table-view-button-row #remove_all_button {
+	margin-left: 4px;
+}
+
