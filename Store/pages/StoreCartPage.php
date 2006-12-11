@@ -593,6 +593,9 @@ abstract class StoreCartPage extends StoreArticlePage
 			$this->app->cart->checkout->getShippingTotal(
 				new StoreOrderAddress, new StoreOrderAddress);
 
+		if ($available_view->model->getRowCount() == 1)
+			$available_view->getRow('subtotal')->show_button = false;
+
 		// fall-through assignment of visiblity to both checkout buttons
 		$this->ui->getWidget('header_checkout_button')->visible =
 			$this->ui->getWidget('footer_checkout_button')->visible =
@@ -637,6 +640,9 @@ abstract class StoreCartPage extends StoreArticlePage
 			$paragraph_tag->display();
 
 			$message->content = ob_get_clean();
+
+			if ($count == 1)
+				$unavailable_view->getRow('remove_button')->visible = false;
 		}
 	}
 
@@ -689,6 +695,9 @@ abstract class StoreCartPage extends StoreArticlePage
 			$paragraph_tag->display();
 
 			$message->content = ob_get_clean();
+
+			if ($count == 1)
+				$saved_view->getRow('remove_all')->visible = false;
 		}
 	}
 

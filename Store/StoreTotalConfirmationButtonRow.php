@@ -15,6 +15,7 @@ class StoreTotalConfirmationButtonRow extends StoreTotalRow
 	public $button_title;
 	public $button_confirmation_message;
 	public $button_tab_index;
+	public $show_button = true;
 
 	protected $button;
 	protected $widgets_created = false;
@@ -75,6 +76,7 @@ class StoreTotalConfirmationButtonRow extends StoreTotalRow
 			$this->button->title = $this->button_title;
 			$this->button->classes[] = 'compact-button';
 			$this->button->tab_index = $this->button_tab_index;
+			$this->button->visible = $this->show_button;
 			$this->button->confirmation_message =
 				$this->button_confirmation_message;
 
