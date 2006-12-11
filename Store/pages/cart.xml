@@ -263,7 +263,7 @@
 			<!-- }}} -->
 			<widget class="SwatFooterFormField" id="saved_cart_move_all_field">
 				<widget class="SwatButton" id="saved_cart_move_all_button">
-					<property name="title" translatable="yes">Add All Saved Items to Cart</property>
+					<property name="title" translatable="yes">Move All Saved Items to Cart</property>
 				</widget>
 			</widget>
 		</widget>
