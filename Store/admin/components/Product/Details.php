@@ -396,7 +396,6 @@ class StoreProductDetails extends AdminIndex
 			$toolbar->setToolLinkValues(array($this->id, $this->category_id));
 
 			$link_suffix = sprintf('&category=%s', $this->category_id);
-
 			foreach ($view->getColumns() as $column)
 				foreach ($column->getRenderers() as $renderer)
 					if ($renderer instanceof SwatLinkCellRenderer)
@@ -820,6 +819,15 @@ class StoreProductDetails extends AdminIndex
 	private function buildProductImages()
 	{
 		$toolbar = $this->ui->getWidget('product_images_toolbar');
+
+		if ($this->category_id === null) {
+			$toolbar->setToolLinkValues($this->id);
+		} else {
+			foreach ($toolbar->getToolLinks() as $tool_link) {
+				$tool_link->link.= '&category=%s';
+				$tool_link->value = array($this->id, $this->category_id);
+			}
+		}
 
 		$images = $this->getProductImages();
 		$form = $this->ui->getWidget('product_images_form');
