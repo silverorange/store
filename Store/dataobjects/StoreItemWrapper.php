@@ -16,15 +16,14 @@ class StoreItemWrapper extends StoreRecordsetWrapper
 	public static function loadSetFromDB($db, $id_set)
 	{
 		$sql = 'select Item.* from Item
+				left outer join ItemGroup on Item.item_group = ItemGroup.id
 			where Item.id in (%s)
-			order by Item.displayorder, Item.sku, 
-				Item.part_count';
+			order by coalesce(ItemGroup.displayorder, -1), Item.displayorder,
+				Item.sku';
 
 		$sql = sprintf($sql, $id_set);
 
-		$class_map = StoreClassMap::instance();
-		return SwatDB::query($db, $sql,
-			$class_map->resolveClass('StoreItemWrapper'));
+		return SwatDB::query($db, $sql, 'ItemWrapper');
 	}
 
 	// }}}
@@ -59,9 +58,10 @@ class StoreItemWrapper extends StoreRecordsetWrapper
 				left outer join AvailableItemView on
 					AvailableItemView.item = Item.id and
 						AvailableItemView.region = %s
+				left outer join ItemGroup on Item.item_group = ItemGroup.id
 			where Item.id in (%s)
-			order by Item.displayorder, Item.sku, 
-				Item.part_count';
+			order by coalesce(ItemGroup.displayorder, -1), Item.displayorder, 
+				Item.sku';
 
 		$sql = sprintf($sql,
 			$limiting ? 'inner join' : 'left outer join',
