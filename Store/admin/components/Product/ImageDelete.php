@@ -53,7 +53,8 @@ class StoreProductImageDelete extends AdminDBDelete
 		$image_id = $this->getFirstItem();
 
 		// get products with this image as primary_image
-		$sql = sprintf('select count(id) from Product where primary_image = %s',
+		$sql = sprintf('select count(product) from ProductImageBinding
+			where image = %s',
 			$this->app->db->quote($image_id, 'integer'));
 
 		$products = SwatDB::queryOne($this->app->db, $sql);
@@ -80,18 +81,6 @@ class StoreProductImageDelete extends AdminDBDelete
 				unlink('../images/products/'.$size.'/'.$image_id.'.jpg');
 
 		}
-
-		// set the primary_image to the next image on the product, if
-		// none, primary_image = null
-		$sql = sprintf('update Product set primary_image =
-			(select image from ProductImageBinding
-				where ProductImageBinding.product = Product.id
-				order by displayorder
-				limit 1)
-			where id = %s',
-			$this->app->db->quote($this->product_id, 'integer'));
-
-		SwatDB::exec($this->app->db, $sql);
 
 		$message = new SwatMessage(
 			Store::_('One product image has been removed.'),
