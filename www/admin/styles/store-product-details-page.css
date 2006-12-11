@@ -1,0 +1,42 @@
+.store-product-image-display img {
+	float: left;
+}
+
+.store-product-image-display {
+	float: left;
+	margin-right: 10px;
+}
+
+
+.store-product-image-display ul.swat-toolbar {
+	float: left;
+	top: 0;    /* Override SwatToolbar default position when inside a SwatFrame */
+	margin: 0; /* Override SwatToolbar default margin when inside a SwatFrame */
+	padding: 0;
+}
+
+.store-product-image-display ul.swat-toolbar li,
+.store-product-image-display ul.swat-toolbar li a {
+	display: block;
+	border: 0;
+}
+.store-product-images:after {
+	content: "."; 
+	display: block; 
+	height: 0; 
+	clear: both; 
+	visibility: hidden;
+}
+
+.store-product-images {
+	display: inline-block;
+}
+
+.store-product-images {
+	display: block;
+}
+
+* html .store-product-images {
+	height: 1px;
+}
+
