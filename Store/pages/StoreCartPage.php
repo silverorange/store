@@ -594,7 +594,7 @@ abstract class StoreCartPage extends StoreArticlePage
 				new StoreOrderAddress, new StoreOrderAddress);
 
 		if ($available_view->model->getRowCount() == 1)
-			$available_view->getRow('subtotal')->show_button = false;
+			$available_view->getRow('subtotal')->button_visible = false;
 
 		// fall-through assignment of visiblity to both checkout buttons
 		$this->ui->getWidget('header_checkout_button')->visible =
