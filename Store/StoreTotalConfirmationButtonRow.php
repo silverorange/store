@@ -68,10 +68,12 @@ class StoreTotalConfirmationButtonRow extends StoreTotalRow
 		if ($this->offset > 0) {
 			$this->createEmbeddedWidgets();
 			$td_tag = new SwatHtmlTag('td');
+			$td_tag->class = 'button-cell';
 			$td_tag->colspan = $this->offset;
 			$td_tag->open();
 
 			$this->button->title = $this->button_title;
+			$this->button->classes[] = 'compact-button';
 			$this->button->tab_index = $this->button_tab_index;
 			$this->button->confirmation_message =
 				$this->button_confirmation_message;
