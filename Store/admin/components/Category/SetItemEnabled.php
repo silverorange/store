@@ -101,18 +101,18 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 
 		if ($count == 0) {
 			$this->switchToCancelButton();
-			$message = Store::_(
+			$message_text = Store::_(
 				'There are no items in the selected categories.');
 
 		} else {
-			$message = $this->getEnabledText('confirmation', $count);
+			$message_text = $this->getEnabledText('confirmation', $count);
 
 			$this->ui->getWidget('yes_button')->title =
 				$this->getEnabledText('button', $count);
 		}
 
 		$message = $this->ui->getWidget('confirmation_message');
-		$message->content = $message;
+		$message->content = $message_text;
 		$message->content_type = 'text/xml';
 
 		$form = $this->ui->getWidget('confirmation_form');

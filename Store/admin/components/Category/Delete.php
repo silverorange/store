@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Admin/pages/AdminDBDelete.php';
+require_once 'Admin/AdminListDependency.php';
 require_once 'SwatDB/SwatDB.php';
 
 require_once 'include/StoreCategoryProductDependency.php';
@@ -92,7 +93,7 @@ class StoreCategoryDelete extends AdminDBDelete
 		$item_list = $this->getItemList('integer');
 
 		$dep = new AdminListDependency();
-		$dep->setTitle(Store::_('category', 'categories'));
+		$dep->setTitle(Store::_('category'), Store::_('categories'));
 		$dep->entries = AdminListDependency::queryEntries($this->app->db,
 			'Category', 'integer:id', null, 'text:title', 'title',
 			'id in ('.$item_list.')', AdminDependency::DELETE);
