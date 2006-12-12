@@ -1,3 +1,829 @@
+2006-12-12  nrf
+
+	* [r13815] store/trunk/Store/pages/StoreNateGoSearchPage.php:
+	  Explicitly list fields in select list. Good to do and works
+	  around an odd bug.
+
+2006-12-12  isaac
+
+	* [r13809]
+	  store/trunk/Store/admin/components/Category/ChangeItemStatus.php,
+	  store/trunk/Store/admin/components/Category/Delete.php,
+	  store/trunk/Store/admin/components/Category/RemoveProducts.php,
+	  store/trunk/Store/admin/components/Category/SetItemEnabled.php:
+	  i could punch myself in the face for the 3 cases of assigning
+	  $message->content = $message;
+
+2006-12-12  gauthierm
+
+	* [r13794] store/trunk/Store/admin/components/ItemGroup/Order.php:
+	  Fix #402: when changing order of itemgroups, the confirmation
+	  message isn't clear enough.
+
+2006-12-11  nick
+
+	* [r13790] store/trunk/Store/StoreTotalConfirmationButtonRow.php,
+	  store/trunk/Store/pages/StoreCartPage.php:
+	  variable renaming
+	* [r13789] store/trunk/Store/StoreTotalConfirmationButtonRow.php,
+	  store/trunk/Store/pages/StoreCartPage.php:
+	  Hide the "remove all" buttons if you only have one cart-entry.
+	  Completes ticket
+	  #389.
+	  
+	  The ticket states: "Remove All buttons are a bit weird/redundant
+	  when you only
+	  have 1 item in your cart (or even when you only have 2 or 3)."
+	  I've removed the
+	  buttons when there's one item in any of the saved, unavailable,
+	  or available
+	  carts, but it's a simple to change to hide it in the case where
+	  there are more
+	  - though I think that behaviour sounds a bit weird/unexpected.
+	* [r13788] store/trunk/Store/pages/cart.xml:
+	  Make wording consistent with the per-item buttons
+	* [r13786]
+	  store/trunk/www/admin/styles/store-product-details-page.css:
+	  Whoops, forgot to commit this.
+
+2006-12-11  isaac
+
+	* [r13782] store/trunk/Store/admin/components/Product/Details.php:
+	  final part of fixing #400 - make the order of itemgroups in the
+	  admin match the order on the front
+	* [r13778] store/trunk/Store/dataobjects/StoreItemWrapper.php:
+	  order by ItemGroup.title as well, in case the displayorders are
+	  the same - part of #400 - but admin tools still need
+	  some work
+	* [r13775] store/trunk/Store/dataobjects/StoreItemWrapper.php:
+	  r13773 broke this by mistake - revert these lines
+	* [r13773] store/trunk/Store/dataobjects/StoreItemWrapper.php:
+	  ItemGroups are part of store, so update the wrapper to reflect
+	  this - also remove a veseyism from the wrapper
+
+2006-12-11  steven
+
+	* [r13766] store/trunk/Store/StoreTableViewButtonRow.php,
+	  store/trunk/Store/StoreTableViewConfirmationButtonRow.php,
+	  store/trunk/Store/StoreTotalConfirmationButtonRow.php,
+	  store/trunk/www/styles/store-cart-page.css:
+	  Style "Remove All" Buttons in Cart
+	  fixes ticket #374
+
+2006-12-11  gauthierm
+
+	* [r13764] store/trunk/Store/admin/components/Product/Details.php:
+	  Clean up toolbar links in product/details. This removes
+	  appendCategoryLinks() and adds two methods specific to toolbars
+	  and table-views. Fixes #397.
+	* [r13763] store/trunk/Store/admin/components/Product/Details.php:
+	  Put private methods after protected methods and fix folding.
+	  This has been a convention for 3 years.
+
+2006-12-11  isaac
+
+	* [r13756] store/trunk/Store/admin/components/Item/Edit.php:
+	  make product_id protected not private
+	* [r13754]
+	  store/trunk/Store/admin/components/Product/ImageDelete.php:
+	  primary_image no longer exists
+	* [r13753] store/trunk/Store/admin/components/Product/Details.php:
+	  fix the toolbar links on the product images - all the toolbar
+	  code in this file is a royal mess, and needs to be
+	  refactored - nick kind of did this in r13682 - but it could be
+	  done a lot nicer
+
+2006-12-08  isaac
+
+	* [r13723] store/trunk/Store/admin/components/Item/Order.php:
+	  fix #379 - the part_count in the order by needs to be added back
+	  for veseys
+
+2006-12-07  nick
+
+	* [r13707]
+	  store/trunk/Store/admin/components/Product/RelatedProduct.php,
+	  store/trunk/Store/admin/components/Product/RelatedProductDelete.php:
+	  
+	  Fixed up some serious bitrot in related products.
+	* [r13705] store/trunk/Store/admin/components/Product/Details.php:
+	  ProductReview stuff is uppermost-specific, remove from Store
+
+2006-12-06  gauthierm
+
+	* [r13703] store/trunk/Store/pages/cart.xml:
+	  add removeall buttons to store template cart XML.
+	* [r13701] store/trunk/Store/pages/StoreCartPage.php:
+	  Add functionality to remove all items from
+	  (saved|unavailable|available) carts. NEEDS TESTINGsvn di
+	  StoreCartPage.php
+	* [r13700] store/trunk/Store/StoreTotalConfirmationButtonRow.php:
+	  Crazy new hybrid row that contains a total and a button.
+	* [r13699]
+	  store/trunk/Store/StoreTableViewConfirmationButtonRow.php:
+	  Button row using confirmation buttons
+	* [r13698] store/trunk/Store/StoreTableViewButtonRow.php:
+	  - move button display into a protected method to ease subclassing
+	  - add option to display button in left or right cell
+	* [r13697] store/trunk/Store/StoreTableViewButtonRow.php:
+	  remove nonsensical comment
+	* [r13696] store/trunk/Store/StoreTableViewButtonRow.php:
+	  make protected to enable subclassing
+	* [r13695] store/trunk/Store/StoreTotalRow.php:
+	  Split display into separate methods to simplify subclassing
+
+2006-12-06  nick
+
+	* [r13691] store/trunk/Store/dataobjects/StoreCategory.php:
+	  Use new getImgTag method
+	* [r13689] store/trunk/Store/pages/StoreCategoryPage.php:
+	  Method should check for instance of Store package class
+	* [r13687] store/trunk/Store/dataobjects/StoreCategory.php:
+	  Add displayAsTile() to the Store package.
+	* [r13682] store/trunk/Store/admin/components/Product/Details.php,
+	  store/trunk/Store/admin/components/Product/details.xml,
+	  store/trunk/Store/admin/components/Product/include/StoreProductImageDisplay.php:
+	  
+	  Restructure somewhat to make appending category links easier.
+
+2006-12-06  gauthierm
+
+	* [r13661] store/trunk/Store/admin/components/Catalog/edit.xml,
+	  store/trunk/Store/admin/components/Catalog/status.xml,
+	  store/trunk/Store/admin/components/Item/edit.xml:
+	  Respect Swat replicator API changes.
+
+2006-12-06  nick
+
+	* [r13654] store/trunk/Store/dataobjects/StoreImage.php,
+	  store/trunk/Store/pages/StoreProductImagePage.php,
+	  store/trunk/Store/pages/StoreProductPage.php:
+	  Set alt to a blank string instead of null
+	* [r13650] store/trunk/Store/dataobjects/StoreImage.php,
+	  store/trunk/Store/pages/StoreProductImagePage.php,
+	  store/trunk/Store/pages/StoreProductPage.php:
+	  Added a getImgTag to StoreImage.
+
+2006-12-06  gauthierm
+
+	* [r13645] store/trunk/Store/StoreSessionModule.php:
+	  work with ArrayObjects as well
+	* [r13644] store/trunk/Store/StoreSessionModule.php:
+	  allow arrays of registered data objects to be initialized
+
+2006-12-05  nick
+
+	* [r13618] store/trunk/Store/pages/StoreProductImagePage.php:
+	  Moved the "download original" link up. This will need a little
+	  formatting as it
+	  now runs into the image title.
+	* [r13617] store/trunk/Store/dataobjects/StoreImage.php,
+	  store/trunk/Store/pages/StoreProductImagePage.php,
+	  store/trunk/Store/pages/StoreProductPage.php:
+	  Added title/description to images. Completes ticket 328.
+	  
+	  The formatting on the Product-Image-Page is a bit weird, for
+	  some reason the
+	  width is restricted causing the description and "original image"
+	  link wrap far
+	  too narrowly. I'll make a trac ticket to fix it.
+	* [r13614]
+	  store/trunk/Store/admin/components/Product/ImageEdit.php,
+	  store/trunk/Store/admin/components/Product/imageedit.xml,
+	  store/trunk/sql/tables/Image.sql:
+	  added description to images. fixes ticket #282
+
+2006-12-05  steven
+
+	* [r13610] store/trunk/Store/pages/StoreProductImagePage.php:
+	  extra CSS hook for large image page
+
+2006-12-04  gauthierm
+
+	* [r13595] store/trunk/Store/pages/StoreArticlePage.php:
+	  Add preg replacement for replacement marker stuff Nick wrote.
+
+2006-12-04  nick
+
+	* [r13589] store/trunk/Store/pages/StoreArticlePage.php:
+	  New methods for replacing magic markers within static article
+	  text
+	  - mike: can you add the regexp to this?
+
+2006-12-04  steven
+
+	* [r13577] store/trunk/Store/pages/StoreProductPage.php:
+	  Use a definition list (<dl>) rather than a UL for related
+	  articles
+
+2006-12-04  gauthierm
+
+	* [r13574] store/trunk/Store/pages/StoreProductPage.php:
+	  remove leading space from link
+	* [r13573] store/trunk/Store/pages/StoreProductPage.php:
+	  better link text
+	* [r13572] store/trunk/Store/pages/StoreProductPage.php:
+	  Use a different XML id in case both links and summaries are
+	  displayed on the same page
+
+2006-12-02  gauthierm
+
+	* [r13565] store/trunk/Store/pages/StoreProductPage.php:
+	  display more links on ellipsized articles.
+	* [r13562] store/trunk/Store/pages/StoreProductPage.php:
+	  Make product display the same as it was before r13560 in regards
+	  to related articles.
+	* [r13561] store/trunk/Store/pages/StoreProductPage.php:
+	  Add back the related article link display method as
+	  displayRelatedArticleLinks() and add a caching mechanism to get
+	  related articles in case both display methods are used on the
+	  same page.
+	* [r13560] store/trunk/Store/pages/StoreProductPage.php:
+	  Display bodytext summary with related articles on product page
+	  and display related articles underneath the items view.
+
+2006-11-30  gauthierm
+
+	* [r13539] store/trunk/Store/pages/StoreNateGoSearchPage.php:
+	  use where clause when getting totla count as well
+
+2006-11-30  isaac
+
+	* [r13534] store/trunk/Store/StoreCreditCardNumberEntry.php,
+	  store/trunk/Store/admin/components/Account/AddressDelete.php,
+	  store/trunk/Store/admin/components/Account/AddressEdit.php,
+	  store/trunk/Store/admin/components/Account/Edit.php,
+	  store/trunk/Store/admin/components/Account/EmailPassword.php,
+	  store/trunk/Store/admin/components/Account/PaymentMethodDelete.php,
+	  
+	  store/trunk/Store/admin/components/Account/PaymentMethodEdit.php,
+	  store/trunk/Store/admin/components/Ad/Delete.php,
+	  store/trunk/Store/admin/components/Ad/Edit.php,
+	  store/trunk/Store/admin/components/Article/Delete.php,
+	  store/trunk/Store/admin/components/Article/Edit.php,
+	  store/trunk/Store/admin/components/Article/include/StoreArticleActionsProcessor.php,
+	  store/trunk/Store/admin/components/Catalog/Clone.php,
+	  store/trunk/Store/admin/components/Catalog/Delete.php,
+	  store/trunk/Store/admin/components/Catalog/Edit.php,
+	  store/trunk/Store/admin/components/Catalog/Status.php,
+	  store/trunk/Store/admin/components/Category/AddProducts.php,
+	  store/trunk/Store/admin/components/Category/ChangeItemStatus.php,
+	  store/trunk/Store/admin/components/Category/Delete.php,
+	  store/trunk/Store/admin/components/Category/Edit.php,
+	  store/trunk/Store/admin/components/Category/FeaturedProducts.php,
+	  store/trunk/Store/admin/components/Category/ImageDelete.php,
+	  store/trunk/Store/admin/components/Category/ImageEdit.php,
+	  store/trunk/Store/admin/components/Category/Index.php,
+	  store/trunk/Store/admin/components/Category/RemoveProducts.php,
+	  store/trunk/Store/admin/components/Category/SetItemEnabled.php,
+	  store/trunk/Store/admin/components/Country/Delete.php,
+	  store/trunk/Store/admin/components/Country/Edit.php,
+	  store/trunk/Store/admin/components/Item/Delete.php,
+	  store/trunk/Store/admin/components/Item/Edit.php,
+	  store/trunk/Store/admin/components/Item/QuantityDiscount.php,
+	  store/trunk/Store/admin/components/Item/QuantityDiscountDelete.php,
+	  store/trunk/Store/admin/components/ItemGroup/Delete.php,
+	  store/trunk/Store/admin/components/ItemGroup/Edit.php,
+	  store/trunk/Store/admin/components/Locale/Delete.php,
+	  store/trunk/Store/admin/components/Locale/Edit.php,
+	  store/trunk/Store/admin/components/Order/EmailConfirmation.php,
+	  store/trunk/Store/admin/components/Product/Delete.php,
+	  store/trunk/Store/admin/components/Product/Details.php,
+	  store/trunk/Store/admin/components/Product/Edit.php,
+	  store/trunk/Store/admin/components/Product/ImageDelete.php,
+	  store/trunk/Store/admin/components/Product/ImageEdit.php,
+	  store/trunk/Store/admin/components/Product/RelatedProduct.php,
+	  store/trunk/Store/admin/components/Product/RelatedProductDelete.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/StoreItemGroupAction.php,
+	  store/trunk/Store/admin/components/ProvState/Delete.php,
+	  store/trunk/Store/admin/components/ProvState/Edit.php,
+	  store/trunk/Store/admin/components/Region/Delete.php,
+	  store/trunk/Store/admin/components/Region/Edit.php,
+	  store/trunk/Store/dataobjects/StoreItem.php,
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php,
+	  store/trunk/Store/pages/StoreAccountDetailsPage.php,
+	  store/trunk/Store/pages/StoreAccountForgotPasswordPage.php,
+	  store/trunk/Store/pages/StoreAccountOrderPage.php,
+	  store/trunk/Store/pages/StoreAccountResetPasswordPage.php,
+	  store/trunk/Store/pages/StoreCartPage.php,
+	  store/trunk/Store/pages/StoreCheckoutCartPage.php,
+	  store/trunk/Store/pages/StoreCheckoutFirstPage.php:
+	  message is good - please keep an eye out for bugs this introduces
+
+2006-11-30  gauthierm
+
+	* [r13532] store/trunk/Store/pages/StoreNateGoSearchPage.php:
+	  add a method to get an additional where clause for the product
+	  query
+	* [r13528] store/trunk/Store/admin/components/Article/edit.xml,
+	  store/trunk/Store/admin/components/Category/edit.xml:
+	  Use XHTML validating widget for category and article boxytext
+	  editors.
+
+2006-11-30  isaac
+
+	* [r13516] store/trunk/sql/admin-changes.sql:
+	  update this to not include some site specific stuff, and add a
+	  note to the top, reminding us that it's only here to be
+	  a template file - close #268
+
+2006-11-30  steven
+
+	* [r13515] store/trunk/Store/StoreCatalogSwitcher.php,
+	  store/trunk/www/admin/styles/store-catalog-switcher.css:
+	  Move Catalog Switcher CSS up to Store
+
+2006-11-30  nick
+
+	* [r13500]
+	  store/trunk/Store/admin/components/Product/ImageEdit.php,
+	  store/trunk/Store/admin/components/Product/ImageOrder.php:
+	  Remove primary_image from the admin
+	* [r13499] store/trunk/Store/admin/components/Product/Details.php:
+	  With more than on table-view now on the page, make actions into
+	  2 methods
+
+2006-11-30  isaac
+
+	* [r13497] store/trunk/Store/admin/components/Product/Details.php:
+	  forgot to commit this the other day - make id and category
+	  protected not private
+
+2006-11-30  nrf
+
+	* [r13481] store/trunk/Store/StoreQuantityEntry.php:
+	  Reflect API changes in SwatEntry.
+	* [r13479] store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/StoreSessionModule.php:
+	  Fix #200 by pushing the loading of dataobject classes out of the
+	  session module.
+
+2006-11-30  gauthierm
+
+	* [r13478]
+	  store/trunk/Store/admin/components/Account/AddressDelete.php,
+	  store/trunk/Store/admin/components/Account/PaymentMethodDelete.php,
+	  store/trunk/Store/admin/components/Account/include,
+	  store/trunk/Store/admin/components/Ad/Delete.php,
+	  store/trunk/Store/admin/components/Article/Delete.php,
+	  store/trunk/Store/admin/components/Catalog/Delete.php,
+	  store/trunk/Store/admin/components/Category/Delete.php,
+	  store/trunk/Store/admin/components/Category/RemoveProducts.php,
+	  store/trunk/Store/admin/components/Category/include/StoreCategoryDependency.php,
+	  store/trunk/Store/admin/components/Country/Delete.php,
+	  store/trunk/Store/admin/components/Country/include,
+	  store/trunk/Store/admin/components/Item/Delete.php,
+	  store/trunk/Store/admin/components/Item/QuantityDiscountDelete.php,
+	  store/trunk/Store/admin/components/ItemGroup/Delete.php,
+	  store/trunk/Store/admin/components/Locale/Delete.php,
+	  store/trunk/Store/admin/components/Product/Delete.php,
+	  store/trunk/Store/admin/components/Product/Index.php,
+	  store/trunk/Store/admin/components/ProvState/Delete.php,
+	  store/trunk/Store/admin/components/Region/Delete.php:
+	  Update Store/admin to use new AdminDependency API defined in
+	  r13476. This is part of ticket #65.
+
+2006-11-29  gauthierm
+
+	* [r13477] store/trunk/Store/admin/components/Catalog/Delete.php:
+	  private before protected
+	* [r13463] store/trunk/www/javascript/store-checkout-address.js,
+	  store/trunk/www/javascript/store-checkout-billing-address.js,
+	  store/trunk/www/javascript/store-checkout-shipping-address.js:
+	  Make it easier for JavaScript subclasses to extend or modify the
+	  list of address fields. This will help fix ticket #8.
+
+2006-11-29  nrf
+
+	* [r13453] store/trunk/Store/StoreCartModule.php,
+	  store/trunk/Store/dataobjects/StoreProduct.php,
+	  store/trunk/Store/pages/StoreCategoryPage.php,
+	  store/trunk/Store/pages/StoreNateGoSearchPage.php,
+	  store/trunk/sql/tables/Product.sql:
+	  Refactor primary_image
+	  - Remove primary_image from Product table.
+	  - Add a loader method to StoreProduct for primary_image. The
+	  primary_image is now handled very much like primary_category and
+	  path and can be loaded in the initial query or individually
+	  on-demand later.
+	  - Update category, product, and search pages to efficiently load
+	  the primary image. No additional queries are run on these
+	  pages, just an extra join.
+	  - Remove image loading from cart module since images are not
+	  displayed on the cart.
+
+2006-11-28  nick
+
+	* [r13449] store/trunk/Store/admin/components/Product/Details.php,
+	  store/trunk/Store/admin/components/Product/ImageEdit.php,
+	  store/trunk/Store/admin/components/Product/imageedit.xml:
+	  Add caption, border options. Fix displayorder of images on
+	  product page.
+	  This completes ticket #209
+	* [r13447] store/trunk/Store/admin/components/Product/Details.php,
+	  store/trunk/Store/admin/components/Product/ImageDelete.php,
+	  store/trunk/Store/admin/components/Product/ImageEdit.php,
+	  store/trunk/Store/admin/components/Product/ImageOrder.php,
+	  store/trunk/Store/admin/components/Product/details.xml,
+	  store/trunk/Store/admin/components/Product/imageedit.xml,
+	  store/trunk/Store/admin/components/Product/include/StoreProductImageDisplay.php:
+	  
+	  First commit of an overhaul to product image tools to allow for
+	  multiple images
+	  Changes still to come:
+	  - add caption/border options to the edit page
+	  - maybe remove all the primary_image stuff in favor of a
+	  view-based system
+	* [r13445] store/trunk/sql/tables/ProductImageBinding.sql:
+	  New displayorder field
+	* [r13444]
+	  store/trunk/sql/views/ProductImageMinimumDisplayorderView.sql,
+	  store/trunk/sql/views/ProductPrimaryImageView.sql:
+	  New views to automatically figure out which image is the primary
+	  image based on
+	  displayorder
+
+2006-11-28  isaac
+
+	* [r13439] store/trunk/Store/admin/components/Product/Details.php:
+	  remove ws introduced in r13437
+	* [r13437] store/trunk/Store/admin/components/Product/Details.php:
+	  add a placeholder function as part of the code that adds new
+	  items, that will be useful for subclassed Details pages - like
+	  on uppermost
+	* [r13433]
+	  store/trunk/Store/admin/components/Item/QuantityDiscount.php,
+	  store/trunk/Store/admin/components/Item/quantity-discount.xml,
+	  store/trunk/Store/admin/components/Product/include/StoreItemDiscountCellRenderer.php:
+	  
+	  - finally fix the StoreItemDiscountCellRenderer - it brings me
+	  great shame it took me this many tries
+	  - get Quantity Discounts somewhat working - still have some
+	  veseyisms to sort out
+	* [r13411] store/trunk/Store/admin/components/Product/Details.php,
+	  store/trunk/Store/admin/components/Product/include/StoreItemDiscountCellRenderer.php:
+	  
+	  a missing sprintf, and some ws cleanup
+	* [r13402] store/trunk/Store/admin/components/Item/Edit.php:
+	  fix the item editor correctly - this will actually respect the
+	  correct locale per region for the price entry widget,
+	  which was just hacked to en_CA for veseys originally
+
+2006-11-27  gauthierm
+
+	* [r13378] store/trunk/Store/admin/components/Article/Search.php:
+	  add default blocked words to the query
+	* [r13377]
+	  store/trunk/Store/admin/components/Product/include/StoreProductSearch.php:
+	  
+	  add default blocked words to the query
+	* [r13376] store/trunk/Store/pages/StoreNateGoSearchPage.php:
+	  add default blocked words to the query
+	* [r13366]
+	  store/trunk/Store/admin/components/Category/AddProducts.php:
+	  total records are not needed here for navbar processing
+	* [r13362] store/trunk/Store/admin/components/Article/Search.php:
+	  make article search non-abstract and use simple 'like' keyword
+	  search when fulltext searching is not implemented.
+	* [r13361]
+	  store/trunk/Store/admin/components/Product/include/StoreProductSearch.php:
+	  
+	  search title or bodytext for keywords
+	* [r13360]
+	  store/trunk/Store/admin/components/Product/include/StoreProductSearch.php:
+	  
+	  make private properties protected
+
+2006-11-27  nrf
+
+	* [r13358] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  The value of this widget is an integer, not a string.
+
+2006-11-27  gauthierm
+
+	* [r13357]
+	  store/trunk/Store/admin/components/Product/RelatedProduct.php:
+	  this method is not used
+	* [r13356]
+	  store/trunk/Store/admin/components/Category/AddProducts.php:
+	  make add products tool non-abstract like r13354
+	* [r13355]
+	  store/trunk/Store/admin/components/Product/RelatedProduct.php:
+	  make related products tool non-abstract like r13354
+	* [r13354] store/trunk/Store/admin/components/Product/Index.php,
+	  store/trunk/Store/admin/components/Product/include/StoreProductNateGoSearch.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/StoreProductSearch.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/StoreProductSearchWhereClause.php:
+	  
+	  make product search non-abstract and make keywords field default
+	  to a sql 'like' match instead of a fulltext search.
+
+2006-11-27  nrf
+
+	* [r13348] store/trunk/Store/pages/StoreCategoryPage.php:
+	  Categories that are always_visible are not region-specific and
+	  thus have null in the region column of the VisibleCategoryView.
+
+2006-11-27  gauthierm
+
+	* [r13346]
+	  store/trunk/Store/admin/components/Category/AddProducts.php,
+	  store/trunk/Store/admin/components/Product/Index.php,
+	  store/trunk/Store/admin/components/Product/RelatedProduct.php,
+	  store/trunk/Store/admin/components/Product/include/StoreProductNateGoSearch.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/StoreProductSearchWhereClause.php,
+	  store/trunk/Store/admin/components/Product/search.xml:
+	  fulltext search for products
+	* [r13331] store/trunk/Store/admin/components/Article/Search.php,
+	  store/trunk/Store/admin/components/Article/search.xml:
+	  use fulltext keyword search on admin article search tool
+
+2006-11-27  isaac
+
+	* [r13329] store/trunk/Store/admin/components/Category/edit.xml:
+	  clean up the note
+	* [r13327]
+	  store/trunk/Store/admin/components/Account/AddressEdit.php,
+	  store/trunk/Store/admin/components/Category/Edit.php,
+	  store/trunk/Store/admin/components/Category/edit.xml:
+	  - add the ability to edit the always_visible bool on categories,
+	  this will fix ticket #304 - can someone review the
+	  wording on the edit page
+	  - made the bodytext field a bit taller - feedback? should we do
+	  it on products too? go back to the defaults?
+	  - fix a message on with a double space on the address edit
+
+2006-11-26  gauthierm
+
+	* [r13318]
+	  store/trunk/Store/admin/components/Product/RelatedProduct.php:
+	  fix order of uis
+
+2006-11-25  gauthierm
+
+	* [r13311] store/trunk/www/javascript/store-checkout-address.js:
+	  Fix #309: provstate_other doesn't enable unless there is a
+	  provstate flydown.
+	* [r13310] store/trunk/www/javascript/store-quick-order-page.js:
+	  Fix #312: Quantity of 1 cleared by JavaScript.
+	* [r13309] store/trunk/www/javascript/store-quick-order-page.js:
+	  add a comment. This is also the code that's causing #312.
+	* [r13308] store/trunk/www/javascript/store-quick-order-page.js:
+	  add some documentation to help debugging #312.
+
+2006-11-24  gauthierm
+
+	* [r13279] store/trunk/Store/pages/StoreCheckoutPage.php:
+	  workaround for PHP bug 39449.
+	* [r13278] store/trunk/Store/pages/StoreCheckoutPage.php:
+	  workaround for PHP bug 39449.
+
+2006-11-24  isaac
+
+	* [r13268] store/trunk/locale/en_CA/LC_MESSAGES/store.mo,
+	  store/trunk/locale/en_GB/LC_MESSAGES/store.mo,
+	  store/trunk/locale/en_US/LC_MESSAGES/store.mo,
+	  store/trunk/po/en_CA.po, store/trunk/po/en_GB.po,
+	  store/trunk/po/en_US.po:
+	  update translations
+	* [r13263]
+	  store/trunk/Store/admin/components/Category/include/StoreCategoryTitleCellRenderer.php:
+	  
+	  ws and use the code locale
+
+2006-11-23  isaac
+
+	* [r13254] store/trunk/Store/admin/components/Item/Edit.php,
+	  store/trunk/Store/admin/components/Item/edit.xml,
+	  store/trunk/Store/admin/components/Product/Details.php,
+	  store/trunk/Store/admin/components/Product/Edit.php,
+	  store/trunk/Store/admin/components/Product/ImageEdit.php,
+	  store/trunk/Store/admin/components/Product/Index.php,
+	  store/trunk/Store/admin/components/Product/details.xml:
+	  clean up further left over vesey-isms, remove some embarresing
+	  mistakes, and start to get the Item Editor working
+	  correctly with multiple locales - which surprisingly, never
+	  existed before
+
+2006-11-23  nick
+
+	* [r13252] store/trunk/Store/admin/components/Category/Index.php,
+	  store/trunk/Store/admin/components/Category/include/StoreCategoryTableView.php,
+	  
+	  store/trunk/Store/admin/components/Category/include/StoreCategoryTitleCellRenderer.php,
+	  store/trunk/Store/admin/components/Category/index.xml:
+	  Make categories that have no available products in any region
+	  show a message
+	  and appear grayed-out. fixes #135;
+	* [r13220] store/trunk/Store/StoreExchangeRateTable.php:
+	  The most recent exchange rate seems to be the first, not last
+	  entry. I'm not
+	  sure why this differs from the veseys code - I'll look into it
+	  more tomorrow.
+
+2006-11-22  nick
+
+	* [r13208]
+	  store/trunk/Store/admin/components/Category/AddProducts.php,
+	  store/trunk/Store/admin/components/Category/FeaturedProducts.php,
+	  store/trunk/Store/admin/components/Product/Index.php,
+	  store/trunk/Store/admin/components/Product/RelatedProduct.php:
+	  Rename buildDataTree to getDataTree
+	* [r13202]
+	  store/trunk/Store/admin/components/Category/FeaturedProducts.php,
+	  store/trunk/Store/admin/components/Product/RelatedProduct.php:
+	  More tree changes.
+	* [r13201]
+	  store/trunk/Store/admin/components/Category/AddProducts.php,
+	  store/trunk/Store/admin/components/Product/Index.php:
+	  Bring nodes up to date for trees
+	* [r13189]
+	  store/trunk/Store/admin/components/Category/AddProducts.php:
+	  Fix the building of the category tree to work with new
+	  SwatDB::buildDataTree()
+	  method
+
+2006-11-22  gauthierm
+
+	* [r13187]
+	  store/trunk/Store/admin/components/Category/AddProducts.php:
+	  Make pager work. Fixes #284.
+
+2006-11-22  nrf
+
+	* [r13182] store/trunk/Store/pages/StoreProductImagePage.php:
+	  Use a tool link instead.
+	* [r13180] store/trunk/Store/dataobjects/StoreImage.php,
+	  store/trunk/Store/pages/StoreProductImagePage.php:
+	  Make original images available for download on ProductImagePage
+
+2006-11-21  nrf
+
+	* [r13167] store/trunk/sql/triggers/LocaleInsertTrigger.sql:
+	  This never worked. Probably needs to be changed in veseys too.
+
+2006-11-21  gauthierm
+
+	* [r13162] store/trunk/Store/pages/StoreProductPage.php:
+	  add package id to store css
+	* [r13158] store/trunk/www/javascript/store-product-page.js:
+	  add note
+
+2006-11-20  gauthierm
+
+	* [r13150]
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php,
+	  store/trunk/www/javascript/store-account-address.js:
+	  Add JavaScript to enable/disable the provstate_other field for
+	  hte account address editor. Fixes #256.
+	* [r13149]
+	  store/trunk/Store/pages/StoreCheckoutBillingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php:
+	  Include new JavaScript file for checkout pages. Finishes #257.
+	* [r13148]
+	  store/trunk/www/javascript/store-checkout-shipping-address.js:
+	  Make shipping address extend address base class. This makes
+	  shipping adderess work for #256 while removing dozens of lines
+	  of code.
+	* [r13147] store/trunk/www/javascript/store-checkout-address.js,
+	  store/trunk/www/javascript/store-checkout-billing-address.js:
+	  move billing address class to its own file
+	* [r13146] store/trunk/www/javascript/store-checkout-address.js,
+	  store/trunk/www/javascript/store-checkout-billing-address.js:
+	  rename file
+	* [r13145]
+	  store/trunk/www/javascript/store-checkout-billing-address.js:
+	  Rewrite JavaScript so it uses inheritance.
+	  
+	  This is the first JavaScript class to use YUI class extension.
+	  And there was much rejoicing.
+
+2006-11-20  nick
+
+	* [r13140] store/trunk/Store/StoreExchangeRateTable.php:
+	  Restructured and fixed some documentation
+
+2006-11-20  gauthierm
+
+	* [r13139]
+	  store/trunk/www/javascript/store-checkout-billing-address.js:
+	  disable provstate_other based on provstate value
+
+2006-11-20  nick
+
+	* [r13137] store/trunk/Store/StoreExchangeRate.php,
+	  store/trunk/Store/StoreExchangeRateTable.php:
+	  First commit of the exchange rate class - currently only
+	  supports a few
+	  currencies, but can be expanded to include more as needed.
+	* [r13136] store/trunk/Store/StoreExchangeRate.php:
+	  Temporary commit - file will be renamed in a moment.
+
+2006-11-20  isaac
+
+	* [r13132] store/trunk/Store/admin/components/Product/Index.php:
+	  fix #244
+
+2006-11-17  gauthierm
+
+	* [r13118]
+	  store/trunk/Store/admin/components/Category/AddProducts.php,
+	  store/trunk/Store/admin/components/Product/Index.php,
+	  store/trunk/Store/admin/components/Product/RelatedProduct.php:
+	  Fix class name. This needs to be pushed to live at the nearest
+	  opportunity.
+	* [r13117]
+	  store/trunk/Store/pages/StoreCheckoutBillingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php,
+	  store/trunk/www/javascript/store-checkout-billing-address.js,
+	  store/trunk/www/javascript/store-checkout-page.js,
+	  store/trunk/www/javascript/store-checkout-shipping-address.js:
+	  Update checkout JavaScript:
+	  - use YUI for events and class manipulation
+	  - support for new address fields
+
+2006-11-17  nrf
+
+	* [r13109] store/trunk/Store/pages/checkout-first.xml:
+	  Remove veseysism from Store.
+	* [r13105] store/trunk/Store/pages/checkout-basic-info.xml:
+	  - Remove hacky empty conatiner.
+	  - Add some ids.
+	* [r13101] store/trunk/Store/pages/StoreCheckoutBasicInfoPage.php,
+	  store/trunk/Store/pages/checkout-basic-info.xml:
+	  Change default value of required on email field in Store to
+	  true. I split this from veseys incorrectly. This makes Store
+	  self-consistent by always requiring email. Veseys will override
+	  this.
+	* [r13099] store/trunk/Store/pages/checkout-basic-info.xml:
+	  Add a container for site code to use for additional fields if
+	  needed.
+
+2006-11-16  nrf
+
+	* [r13090]
+	  store/trunk/Store/pages/StoreCheckoutBillingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php:
+	  Smartly build and process the page based upon visibility of the
+	  provstate flydown and provstate_other entry. The store package
+	  will support use of either one or both. TODO: javascript to
+	  disable/enable the entry when both the flydown and entry are
+	  visible.
+	* [r13089] store/trunk/Store/pages/checkout-billing-address.xml,
+	  store/trunk/Store/pages/checkout-shipping-address.xml:
+	  Add some ids.
+	* [r13086]
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php:
+	  Revert an unnecessary change I made earlier.
+	* [r13085] store/trunk/Store/pages/checkout-billing-address.xml,
+	  store/trunk/Store/pages/checkout-shipping-address.xml:
+	  - Add provstate_other field to address forms in checkout XML.
+	  - Change field titles to be consistent with account address edit
+	  XML.
+	  
+	  Why is it North-American-centric?
+	  a) It has to be something since it is not practical to be
+	  truely international in a single form.
+	  b) North-American-centric is broader than Canada-centric and
+	  covers the majority of our clients.
+	  c) It's just a default and site code can customize as necessary
+	  (forms on Veseys will look the same).
+	* [r13082] store/trunk/Store/pages/account-address-edit.xml:
+	  This was supposed to be included in the last commit.
+	* [r13081]
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php:
+	  - Add SwatEntry for provstate_other field.
+	  - s/Zip/ZIP/ as per USPS guidelines.
+	  - Smartly build and process the page based upon visibility of
+	  the provstate flydown and provstat_other entry. The store
+	  package will support use of either one or both. TODO: javascript
+	  to disable/enable the entry when both the flydown and entry are
+	  visible.
+	* [r13080] store/trunk/Store/dataobjects/StoreAddress.php:
+	  - Add provstate_other field.
+	  - Refactor to allow different formatting rules for different
+	  countries. I may go further and spilt these into viewer objects.
+	* [r13077] store/trunk/sql/tables/AccountAddress.sql,
+	  store/trunk/sql/tables/OrderAddress.sql:
+	  Add db field for optional "other" provstate.
+
+2006-11-16  steven
+
+	* [r13073] store/trunk/Store/pages/StoreCheckoutBasicInfoPage.php:
+	  Better message when you try to create an account with an email
+	  that already exists. Veseys was getting confused customers with
+	  the previous message (they were requesting a new password, even
+	  though they didn't need to).
+
+2006-11-15  nrf
+
+	* [r13057] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.2.2
+
 2006-11-14  nick
 
 	* [r13053] store/trunk/Store/dataobjects/StoreOrder.php:
