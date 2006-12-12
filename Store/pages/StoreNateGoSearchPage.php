@@ -357,8 +357,8 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 		 * The 'Product.id as tag' is a hack to effieciently load tags.
 		 * See detailed explanation below.
 		 */
-		$sql = sprintf('select Product.*, Product.id as tag,
-				ProductPrimaryCategoryView.primary_category,
+		$sql = sprintf('select Product.title, Product.shortname, Product.bodytext,
+				Product.id as tag, ProductPrimaryCategoryView.primary_category,
 				ProductPrimaryImageView.image as primary_image,
 				getCategoryPath(ProductPrimaryCategoryView.primary_category) as path
 			from Product
