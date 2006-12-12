@@ -96,34 +96,34 @@ class StoreCategoryRemoveProducts extends AdminDBConfirmation
 				$valid_rows[] = $row;
 		}
 
-		$message = '';
+		$message_text = '';
 		if (count($valid_rows) > 0) {
-			$message.= sprintf('<h3>%s</h3><ul>',
+			$message_text.= sprintf('<h3>%s</h3><ul>',
 				Store::_('Remove all products from the following categories?'));
 
 			foreach ($valid_rows as $row)
-				$message.= sprintf(Store::_('<li>%s - %s product(s)</li>'),
+				$message_text.= sprintf(Store::_('<li>%s - %s product(s)</li>'),
 					$row->title, $row->num_products);
 			
-			$message.= '</ul>';
+			$message_text.= '</ul>';
 			$this->ui->getWidget('yes_button')->title = Store::_('Remove');
 		} else {
 			$this->switchToCancelButton();
 		}
 
 		if (count($invalid_rows) > 0) {
-			$message.= sprintf('<p><strong>%s</strong></p><ul>',
+			$message_text.= sprintf('<p><strong>%s</strong></p><ul>',
 				Store::_('There are no products attached to the following '.
 				'categories:'));
 
 			foreach ($invalid_rows as $row)
-				$message.= '<li>'.$row->title.'</li>';
+				$message_text.= '<li>'.$row->title.'</li>';
 
-			$message .= '</ul>';
+			$message_text .= '</ul>';
 		}
 
 		$message = $this->ui->getWidget('confirmation_message');
-		$message->content = $message;
+		$message->content = $message_text;
 		$message->content_type = 'text/xml';
 
 		$note = $this->ui->getWidget('note');

@@ -95,13 +95,13 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 
 		if ($count == 0) {
 			$this->switchToCancelButton();
-			$message = Store::_(
+			$message_text = Store::_(
 				'There are no items in the selected categories.');
 
 		} else {
-			$message = sprintf(Store::ngettext(
+			$message_text = sprintf(Store::ngettext(
 				'%3$sSet one item status as “%2$s”?%4$s',
-				'%3$sSet %1$s item statuses as “%2$s”?%4%s', $count),
+				'%3$sSet %1$s item statuses as “%2$s”?%4$s', $count),
 				SwatString::numberFormat($count), $this->getStatusTitle(),
 				'<h3>', '</h3>');
 
@@ -111,7 +111,7 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 		}
 
 		$message = $this->ui->getWidget('confirmation_message');
-		$message->content = $message;
+		$message->content = $message_text;
 		$message->content_type = 'text/xml';
 
 		$form = $this->ui->getWidget('confirmation_form');
