@@ -41,6 +41,14 @@ class StoreItemGroupOrder extends AdminDBOrder
 	}
 
 	// }}}
+	// {{{ protected function getUpdatedMessage()
+
+	protected function getUpdatedMessage()
+	{
+		return new SwatMessage(Store::_('Item group order updated.'));
+	}
+
+	// }}}
 
 	// build phase
 	// {{{ protected function buildInternal()
@@ -61,7 +69,7 @@ class StoreItemGroupOrder extends AdminDBOrder
 	// {{{ protected function loadData()
 
 	protected function loadData()
-	{ 
+	{
 		$where_clause = sprintf('product = %s',
 			$this->app->db->quote($this->product_id, 'integer'));
 
@@ -78,7 +86,7 @@ class StoreItemGroupOrder extends AdminDBOrder
 	// }}}
 	// {{{ protected function buildNavBar()
 
-	protected function buildNavBar() 
+	protected function buildNavBar()
 	{
 		$this->navbar->popEntries(2);
 
@@ -104,7 +112,7 @@ class StoreItemGroupOrder extends AdminDBOrder
 		if ($this->category_id === null)
 			$link = sprintf('Product/Details?id=%s', $this->product_id);
 		else
-			$link = sprintf('Product/Details?id=%s&category=%s', 
+			$link = sprintf('Product/Details?id=%s&category=%s',
 				$this->product_id, $this->category_id);
 
 		$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));
