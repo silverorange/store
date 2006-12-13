@@ -334,7 +334,7 @@ class StorePostalCodeEntry extends SwatEntry
 			$ranges = array('995' => '999');
 			break;
 		case 'WY': // Wyoming
-			$ranges = array('820' => '831');
+			$ranges = array('820' => '831', '83414' => '83414');
 			break;
 		case 'UT': // Utah
 			$ranges = array('84' => '84');
@@ -355,7 +355,9 @@ class StorePostalCodeEntry extends SwatEntry
 			$ranges = array('85' => '86');
 			break;
 		case 'TX': // Texas
-			$ranges = array('75' => '79', '885' => '885');
+			$ranges = array('75' => '79', '885' => '885', '73301' => '73301',
+				'73344' => '73344');
+
 			break;
 		case 'OK': // Oklahoma
 			$ranges = array('73' => '74');
@@ -378,7 +380,7 @@ class StorePostalCodeEntry extends SwatEntry
 		case 'IL': // Illinois
 			$ranges = array('60' => '62');
 			break;
-		case 'WI': // Wisconsis
+		case 'WI': // Wisconsin
 			$ranges = array('53' => '54');
 			break;
 		case 'SD': // South Dakota
@@ -403,22 +405,22 @@ class StorePostalCodeEntry extends SwatEntry
 			$ranges = array('48' => '49');
 			break;
 		case 'KY': // Kentucky
-			$ranges = array('40' => '42');
+			$ranges = array('400' => '427');
 			break;
 		case 'IN': // Indiana
 			$ranges = array('46' => '47');
 			break;
-		case 'AA': // American Forces (America)
+		case 'AA': // American Forces (Central and South America)
 			$ranges = array('340' => '340');
 			break;
 		case 'TN': // Tennessee
 			$ranges = array('370' => '385');
 			break;
 		case 'MS': // Mississippi
-			$ranges = array('386' => '399');
+			$ranges = array('386' => '397');
 			break;
 		case 'GA': // Georgia
-			$ranges = array('30' => '31', '39901' => '39901');
+			$ranges = array('30' => '31', '398' => '398', '39901' => '39901');
 			break;
 		case 'FL': // Flordia
 			$ranges = array('32' => '34');
@@ -430,7 +432,7 @@ class StorePostalCodeEntry extends SwatEntry
 			$ranges = array('247' => '269');
 			break;
 		case 'VA': // Virginia (partially overlaps with DC)
-			$ranges = array('220' => '246', '200' => '200', '201' => '201');
+			$ranges = array('220' => '246', '200' => '201');
 			break;
 		case 'SC': // South Carolina
 			$ranges = array('29' => '29');
@@ -456,10 +458,12 @@ class StorePostalCodeEntry extends SwatEntry
 			$ranges = array('197' => '199');
 			break;
 		case 'VI': // Virgin Islands
+			$ranges = array('008' => '008');
+			break;
 		case 'PR': // Puerto Rico
 			$ranges = array('006' => '007', '009' => '009');
 			break;
-		case 'AE': // American Forces (E)
+		case 'AE': // American Forces (Europe)
 			$ranges = array('09' => '09');
 			break;
 		case 'VT': // Vermont
@@ -475,7 +479,9 @@ class StorePostalCodeEntry extends SwatEntry
 			$ranges = array('030' => '038');
 			break;
 		case 'MA': // Massachusetts
-			$ranges = array('010' => '027');
+			$ranges = array('010' => '027', '05501' = > '05501',
+				'05544' => '05544');
+
 			break;
 		case 'ME': // Maine
 			$ranges = array('039' => '049');
