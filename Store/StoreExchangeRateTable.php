@@ -98,7 +98,7 @@ class StoreExchangeRateTable
 				$key = $day->format('%Y-%m-%d');
 
 				if (array_key_exists($key, $this->exchange_rates))
-					return $exchange_rates[$key];
+					return $this->exchange_rates[$key];
 
 				$day->addSpan(new Date_Span(array(1, 0, 0, 0)));
 			}
