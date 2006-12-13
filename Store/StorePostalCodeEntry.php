@@ -430,7 +430,7 @@ class StorePostalCodeEntry extends SwatEntry
 			$ranges = array('247' => '269');
 			break;
 		case 'VA': // Virginia (partially overlaps with DC)
-			$ranges = array('220' => '246', '200' => '200');
+			$ranges = array('220' => '246', '200' => '200', '201' => '201');
 			break;
 		case 'SC': // South Carolina
 			$ranges = array('29' => '29');
