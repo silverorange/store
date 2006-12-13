@@ -87,8 +87,7 @@ abstract class StoreStorePage extends StorePage
 		$sql = 'select * from Category where id = %s';
 
 		$sql = sprintf($sql,
-			$this->app->db->quote($category_id, 'integer'),
-			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+			$this->app->db->quote($category_id, 'integer'));
 
 		$categories = SwatDB::query($this->app->db, $sql,
 			'StoreCategoryWrapper');
