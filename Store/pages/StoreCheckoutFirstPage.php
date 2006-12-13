@@ -115,7 +115,7 @@ class StoreCheckoutFirstPage extends StoreCheckoutStepPage
 				$message->secondary_content = Store::_('Please address the '.
 					'fields highlighted below and re-submit the form.');
 
-				$this->ui->getWidget('message_display')->add($msg);
+				$this->ui->getWidget('message_display')->add($message);
 			} else {
 				$this->updateProgress();
 				$this->app->relocate('checkout/confirmation');
