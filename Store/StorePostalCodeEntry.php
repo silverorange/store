@@ -479,7 +479,7 @@ class StorePostalCodeEntry extends SwatEntry
 			$ranges = array('030' => '038');
 			break;
 		case 'MA': // Massachusetts
-			$ranges = array('010' => '027', '05501' = > '05501',
+			$ranges = array('010' => '027', '05501' => '05501',
 				'05544' => '05544');
 
 			break;
