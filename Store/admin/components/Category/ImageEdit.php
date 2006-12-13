@@ -317,7 +317,7 @@ class StoreCategoryImageEdit extends AdminPage
 				'thumbnail image when creating a new image or upload an image '.
 				'to be automatically resized.'), SwatMessage::ERROR);
 
-			$message->add($msg);
+			$message->add($message);
 
 			return false;
 		}
