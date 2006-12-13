@@ -65,7 +65,7 @@ class StoreItemGroupAction extends SwatControl
 
 	public function processAction($items)
 	{
-		$msg = null;
+		$message = null;
 		$group_id = $this->groups->value;
 
 		// create a new item group
