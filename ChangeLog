@@ -1,5 +1,41 @@
+2006-12-13  nick
+
+	* [r13871] store/trunk/Store/StoreExchangeRateTable.php:
+	  Fix variable scope
+
+2006-12-13  gauthierm
+
+	* [r13863] store/trunk/Store/StorePostalCodeEntry.php:
+	  Fix parse error
+	* [r13861] store/trunk/Store/StorePostalCodeEntry.php:
+	  Nick points out these ranges for VIrginia can be combined. They
+	  were previously separated when taken from the Wikipedia because
+	  the 20000-20099 range is shared with DC.
+	* [r13860] store/trunk/Store/StorePostalCodeEntry.php:
+	  Updates to Zip Code validation:
+	  - Virgin Islands gets its own range
+	  - two specific codes added to Massachusetts
+	  - 39800-39899 range added to Georgia
+	  - Mississippi range shortened from 38600-39999 to 38600-39799
+	  - Kentucky range shortened from 40000-42999 to 40000-42799
+	  - two specific codes added to Texas
+	  - one specific code added to Wyoming
+
+2006-12-13  nrf
+
+	* [r13856] store/trunk/Store/StorePostalCodeEntry.php:
+	  Add missing ZIP code range for VA.
+
 2006-12-12  nrf
 
+	* [r13840] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.3.0
+	* [r13839] store/trunk/locale/en_CA/LC_MESSAGES/store.mo,
+	  store/trunk/locale/en_GB/LC_MESSAGES/store.mo,
+	  store/trunk/locale/en_US/LC_MESSAGES/store.mo,
+	  store/trunk/po/en_CA.po, store/trunk/po/en_GB.po,
+	  store/trunk/po/en_US.po:
+	  Update translations.
 	* [r13815] store/trunk/Store/pages/StoreNateGoSearchPage.php:
 	  Explicitly list fields in select list. Good to do and works
 	  around an odd bug.
