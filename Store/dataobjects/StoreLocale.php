@@ -46,6 +46,22 @@ class StoreLocale extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ public function getTitle()
+	
+	/**
+	 * Get a title that can be displayed for this locale
+	 *
+	 * This method should be over-ridden on a per-site basis. By default,
+	 * it simply displays the locale id.
+	 *
+	 * @return string the title of the locale.
+	 */
+	public function getTitle()
+	{
+		return $this->id;
+	}
+
+	// }}}
 }
 
 ?>
