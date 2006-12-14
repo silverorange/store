@@ -38,6 +38,9 @@ abstract class StoreArticlePageFactory extends SitePageFactory
 	public function resolvePage(SiteWebApplication $app, $source)
 	{
 		$layout = $this->resolveLayout($app, $source);
+		$article_path = $source;
+
+		$page = null;
 
 		foreach ($this->getPageMap() as $pattern => $class) {
 			$regs = array();
@@ -48,15 +51,33 @@ abstract class StoreArticlePageFactory extends SitePageFactory
 				$article_path = array_shift($regs);
 				array_unshift($regs, $layout);
 				array_unshift($regs, $app);
+
 				$page = $this->instantiatePage($class, $regs);
 				$page->setPath($article_path);
-				return $page;
+				break;
 			}
 		}
 
-		// not found in page map so instantiate default page
-		$params = array($app, $layout);
-		$page = $this->instantiatePage($this->default_page_class, $params);
+		if ($page === null) {
+			// not found in page map so instantiate default page
+			$params = array($app, $layout);
+			$page = $this->instantiatePage($this->default_page_class, $params);
+		}
+
+		$article_id = $this->findArticle($app, $article_path);
+
+		if ($article_id === null)
+			throw new SiteNotFoundException(
+				sprintf('Article page not found for path ‘%s’',
+					$article_path));
+
+		$page->article_id = $article_id;
+
+		if (!$page->isVisibleInRegion($app->getRegion())) {
+			$page = $this->instantiateNotVisiblePage($app, $layout);
+			$page->article_id = $article_id;
+		}
+
 		return $page;
 	}
 
@@ -72,6 +93,37 @@ abstract class StoreArticlePageFactory extends SitePageFactory
 
 		// set location to load Store page classes from
 		$this->class_map['Store'] = 'Store/pages';
+	}
+
+	// }}}
+	// {{{ protected function instantiateNotVisiblePage()
+
+	protected function instantiateNotVisiblePage($app, $layout)
+	{
+		require_once 'Store/pages/StoreArticleNotVisiblePage.php';
+		$page = new StoreArticleNotVisiblePage($app, $layout);
+
+		return $page;
+	}
+
+	// }}}
+	// {{{ protected function findArticle()
+
+	/**
+	 * Gets an article database identifier from this page's path
+	 *
+	 * @return integer the database identifier corresponding to this page's
+	 *                  path or null if no such identifier exists.
+	 */
+	protected function findArticle($app, $path)
+	{
+		// trim at 254 to prevent database errors
+		$path = substr($path, 0, 254);
+		$sql = sprintf('select findArticle(%s)',
+			$app->db->quote($path, 'text'));
+
+		$article_id = SwatDB::queryOne($app->db, $sql);
+		return $article_id;
 	}
 
 	// }}}

@@ -17,8 +17,13 @@ require_once 'Store/StoreClassMap.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreArticle
  */
-class StoreArticlePage extends StorePage
+class StoreArticlePage extends StorePage 
 {
+	// {{{ public properties
+
+	public $article_id;
+
+	// }}}
 	// {{{ protected properties
 
 	/**
@@ -63,6 +68,21 @@ class StoreArticlePage extends StorePage
 	}
 
 	// }}}
+	// {{{ public function isVisibleInRegion()
+
+	public function isVisibleInRegion(StoreRegion $region)
+	{
+		$sql = sprintf('select id from EnabledArticleView
+			where id = %s and region = %s',
+			$this->app->db->quote($this->article_id, 'integer'),
+			$this->app->db->quote($region->id, 'integer'));
+
+		$article_id = SwatDB::queryOne($this->app->db, $sql);
+
+		return ($article_id !== null);
+	}
+
+	// }}}
 	// {{{ protected function initArticle()
 
 	protected function initArticle()
@@ -72,14 +92,10 @@ class StoreArticlePage extends StorePage
 			throw new SiteNotFoundException(
 				sprintf('Article page not found for path ‘%s’', $this->path));
 
-		if (($article_id = $this->findArticle()) === null)
-			throw new SiteNotFoundException(
-				sprintf('Article page not found for path ‘%s’', $this->path));
-
-		if (($this->article = $this->queryArticle($article_id)) === null)
+		if (($this->article = $this->queryArticle($this->article_id)) === null)
 			throw new SiteNotFoundException(
 				sprintf('Article dataobject failed to load for article id ‘%s’',
-				$article_id));
+				$this->article_id));
 	}
 
 	// }}}
@@ -111,26 +127,6 @@ class StoreArticlePage extends StorePage
 	}
 
 	// }}}
-	// {{{ protected function findArticle()
-
-	/**
-	 * Gets an article database identifier from this page's path
-	 *
-	 * @return integer the database identifier corresponding to this page's
-	 *                  path or null if no such identifier exists.
-	 */
-	protected function findArticle()
-	{
-		// trim at 254 to prevent database errors
-		$path = substr($this->path, 0, 254);
-		$sql = sprintf('select findArticle(%s)',
-			$this->app->db->quote($path, 'text'));
-
-		$article_id = SwatDB::queryOne($this->app->db, $sql);
-		return $article_id;
-	}
-
-	// }}}
 	// {{{ protected function queryArticle()
 
 	/**
@@ -143,8 +139,7 @@ class StoreArticlePage extends StorePage
 	 */
 	protected function queryArticle($article_id)
 	{
-		$sql = 'select * from Article where id = %s and id in
-			(select id from EnabledArticleView where region = %s)';
+		$sql = 'select * from Article where id = %s';
 
 		$sql = sprintf($sql,
 			$this->app->db->quote($article_id, 'integer'),
