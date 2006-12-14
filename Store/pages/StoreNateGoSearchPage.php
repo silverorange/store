@@ -92,15 +92,15 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 		if ($this->searchWasPerformed()) {
 			if ($this->search_type === null ||
 				$this->search_type == StoreSearchPage::TYPE_CATEGORIES)
-				$this->searchCategories($this->nate_go_search_result);
+				$this->searchCategories();
 
 			if ($this->search_type === null ||
 				$this->search_type == StoreSearchPage::TYPE_PRODUCTS)
-				$this->searchProducts($this->nate_go_search_result);
+				$this->searchProducts();
 
 			if ($this->search_type === null ||
 				$this->search_type == StoreSearchPage::TYPE_ARTICLES)
-				$this->searchArticles($this->nate_go_search_result);
+				$this->searchArticles();
 
 			$has_categories = in_array(StoreSearchPage::TYPE_CATEGORIES,
 				$this->search_has_results);
@@ -210,9 +210,9 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 	// }}}
 	// {{{ protected function searchArticles()
 
-	protected function searchArticles($result)
+	protected function searchArticles()
 	{
-		$this->validateNateGoSearchResult($result);
+		$result = $this->nate_go_search_result;
 
 		/*
 		 * This query selects only visible and searchable articles and filters
@@ -275,9 +275,9 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 	// }}}
 	// {{{ protected function searchCategories()
 
-	protected function searchCategories($result)
+	protected function searchCategories()
 	{
-		$this->validateNateGoSearchResult($result);
+		$result = $this->nate_go_search_result;
 
 		$sql = 'select Category.id, Category.title, Category.shortname,
 				Category.image, c.product_count
@@ -326,13 +326,10 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 
 	/**
 	 * Searches for product results and displays results
-	 *
-	 * @param NateGoSearchResult $result the NateGoSearch result object to use
-	 *                                    for searching.
 	 */
-	protected function searchProducts($result)
+	protected function searchProducts()
 	{
-		$this->validateNateGoSearchResult($result);
+		$result = $this->nate_go_search_result;
 
 		/*
 		 * We cannot use normal loader methods here because we need ordering
@@ -445,16 +442,6 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 	protected function getProductWhereClause()
 	{
 		return '';
-	}
-
-	// }}}
-	// {{{ protected final function validateNateGoSearchResult()
-
-	protected final function validateNateGoSearchResult($result)
-	{
-		if ($result !== null && !($result instanceof NateGoSearchResult))
-			throw new SwatException('The $result paramater must be a '.
-				'NateGoSearchResult or null');
 	}
 
 	// }}}
