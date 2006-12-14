@@ -515,15 +515,7 @@ class StoreProductPage extends StoreStorePage
 
 	protected function displayProduct()
 	{
-		if ($this->product->primary_image !== null) {
-			echo '<div id="product_images">';
-			$this->displayImage();
-
-			if (count($this->product->images) > 1)
-				$this->displaySecondaryImages();
-
-			echo '</div>';
-		}
+		$this->displayImages();
 
 		echo '<div id="product_contents">';
 
@@ -536,6 +528,23 @@ class StoreProductPage extends StoreStorePage
 		$this->displayRelatedProducts();
 
 		echo '</div>';
+	}
+
+	// }}}
+	// {{{ protected function displayImages()
+
+	protected function displayImages()
+	{
+		if ($this->product->primary_image !== null) {
+			echo '<div id="product_images">';
+			$this->displayImage();
+
+			if (count($this->product->images) > 1)
+				$this->displaySecondaryImages();
+
+			echo '</div>';
+		}
+
 	}
 
 	// }}}
