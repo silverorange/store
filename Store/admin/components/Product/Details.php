@@ -372,6 +372,26 @@ class StoreProductDetails extends AdminIndex
 	}
 
 	// }}}
+	// {{{ protected function buildForms()
+
+	protected function buildForms()
+	{
+		parent::buildForms();
+
+		// always show add new item action regardless of entries in item table
+		if ($this->ui->getWidget('items_view')->model->getRowCount() == 0) {
+			$this->ui->getWidget('index_actions')->visible = true;
+			$this->ui->getWidget('action_divider_1')->visible = false;
+			$this->ui->getWidget('delete')->visible = false;
+			$this->ui->getWidget('change_group')->visible = false;
+			$this->ui->getWidget('change_status')->visible = false;
+			$this->ui->getWidget('action_divider_2')->visible = false;
+			$this->ui->getWidget('enable')->visible = false;
+			$this->ui->getWidget('disable')->visible = false;
+		}
+	}
+
+	// }}}
 	// {{{ protected function getTableStore()
 
 	protected function getTableStore($view)
