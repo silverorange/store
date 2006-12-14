@@ -53,6 +53,15 @@ class StoreRegion extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ protected function init()
+
+	protected function init()
+	{
+		$this->table = 'Region';
+		$this->id_field = 'integer:id';
+	}
+
+	// }}}
 	// {{{ protected function loadLocales()
 
 	protected function loadLocales()
@@ -62,15 +71,6 @@ class StoreRegion extends StoreDataObject
 		return SwatDB::query($this->db, $sql, 'StoreLocaleWrapper');
 	}
 	
-	// }}}
-	// {{{ protected function init()
-
-	protected function init()
-	{
-		$this->table = 'Region';
-		$this->id_field = 'integer:id';
-	}
-
 	// }}}
 	// {{{ protected function loadBillingCountries()
 
