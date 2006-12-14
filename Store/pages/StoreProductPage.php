@@ -52,6 +52,21 @@ class StoreProductPage extends StoreStorePage
 	}
 
 	// }}}
+	// {{{ public function isVisibleInRegion()
+
+	public function isVisibleInRegion(StoreRegion $region)
+	{
+		$sql = sprintf('select product from VisibleProductCache
+			where product = %s and  region = %s',
+			$this->app->db->quote($this->product_id, 'integer'),
+			$this->app->db->quote($region->id, 'integer'));
+
+		$product = SwatDB::queryOne($this->app->db, $sql);
+
+		return ($product !== null);
+	}
+
+	// }}}
 	// {{{ protected function initProduct()
 
 	protected function initProduct()

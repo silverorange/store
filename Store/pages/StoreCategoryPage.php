@@ -2,6 +2,7 @@
 
 require_once 'Swat/SwatString.php';
 require_once 'Store/pages/StoreStorePage.php';
+require_once 'Store/dataobjects/StoreLocaleWrapper.php';
 require_once 'Store/dataobjects/StoreCategoryWrapper.php';
 require_once 'Store/dataobjects/StoreProductWrapper.php';
 require_once 'Store/dataobjects/StoreProductImageWrapper.php';
@@ -23,6 +24,23 @@ class StoreCategoryPage extends StoreStorePage
 			return $category->id;
 
 		return null;
+	}
+
+	// }}}
+	// {{{ public function isVisibleInRegion()
+
+	public function isVisibleInRegion(StoreRegion $region)
+	{
+		$category_id = $this->path->getLast()->id;
+
+		$sql = sprintf('select category from VisibleCategoryView
+			where category = %s and (region = %s or region is null)',
+			$this->app->db->quote($category_id, 'integer'),
+			$this->app->db->quote($region->id, 'integer'));
+
+		$category = SwatDB::queryOne($this->app->db, $sql);
+
+		return ($category !== null);
 	}
 
 	// }}}
@@ -49,19 +67,6 @@ class StoreCategoryPage extends StoreStorePage
 		$this->layout->endCapture();
 
 		$this->buildPage($category);
-	}
-
-	// }}}
-	// {{{ private function buildNavBar()
-
-	private function buildNavBar()
-	{
-		$link = 'store';
-
-		foreach ($this->path as $path_entry) {
-			$link .= '/'.$path_entry->shortname;
-			$this->layout->navbar->createEntry($path_entry->title, $link);
-		}
 	}
 
 	// }}}
@@ -313,6 +318,19 @@ class StoreCategoryPage extends StoreStorePage
 	protected function displayRelatedArticlesTitle()
 	{
 		echo Store::_('Related Articles: ');
+	}
+
+	// }}}
+	// {{{ private function buildNavBar()
+
+	private function buildNavBar()
+	{
+		$link = 'store';
+
+		foreach ($this->path as $path_entry) {
+			$link .= '/'.$path_entry->shortname;
+			$this->layout->navbar->createEntry($path_entry->title, $link);
+		}
 	}
 
 	// }}}

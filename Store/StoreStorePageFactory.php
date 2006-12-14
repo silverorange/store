@@ -54,8 +54,7 @@ class StoreStorePageFactory
 				$product_id, $image_id);
 		}
 
-		$category_id = 
-			$this->findCategory($path);
+		$category_id = $this->findCategory($path);
 
 		// if path is a valid category, load category page
 		if ($category_id !== null)
@@ -89,28 +88,24 @@ class StoreStorePageFactory
 	}
 
 	// }}}
-	// {{{ protected function resolveCategoryPage()
 
-	protected function resolveCategoryPage($path, $category_id)
-	{
-		$layout = $this->resolveLayout($path);
-		require_once 'Store/pages/StoreCategoryPage.php';
-		$page = new StoreCategoryPage($this->app, $layout);
-		$page->path = new StoreCategoryPath($this->app, $category_id);
-
-		return $page;
-	}
-
-	// }}}
+// products
 	// {{{ protected function resolveProductPage()
 
 	protected function resolveProductPage($path, $category_id, $product_id)
 	{
 		$layout = $this->resolveLayout($path);
-		require_once 'Store/pages/StoreProductPage.php';
-		$page = new StoreProductPage($this->app, $layout);
+		$page = $this->instantiateProductPage($layout);
 		$page->path = new StoreCategoryPath($this->app, $category_id);
 		$page->product_id = $product_id;
+
+		$region = $this->app->getRegion();
+
+		if (!$page->isVisibleInRegion($region)) {
+			$page = $this->instantiateProductNotVisiblePage($layout);
+			$page->path = new StoreCategoryPath($this->app, $category_id);
+			$page->product_id = $product_id;
+		}
 
 		return $page;
 	}
@@ -127,6 +122,99 @@ class StoreStorePageFactory
 		$page->path = new StoreCategoryPath($this->app, $category_id);
 		$page->product_id = $product_id;
 		$page->image_id = $image_id;
+
+		return $page;
+	}
+
+	// }}}
+	// {{{ protected function instantiateProductPage()
+
+	protected function instantiateProductPage($layout)
+	{
+		require_once 'Store/pages/StoreProductPage.php';
+		$page = new StoreProductPage($this->app, $layout);
+
+		return $page;
+	}
+
+	// }}}
+	// {{{ protected function instantiateProductNotVisiblePage()
+
+	protected function instantiateProductNotVisiblePage($layout)
+	{
+		require_once 'Store/pages/StoreProductNotVisiblePage.php';
+		$page = new StoreProductNotVisiblePage($this->app, $layout);
+
+		return $page;
+	}
+
+	// }}}
+	// {{{ protected function findProduct()
+
+	protected function findProduct($path)
+	{
+		$product_id = null;
+		$db = $this->app->db;
+		$region_id = $this->app->getRegion()->id;
+
+		$product_shortname = array_pop($path);
+		$category_id = $this->findCategory($path);
+
+		if ($category_id !== null) {
+			$sql = 'select id from Product where shortname = %s
+				and id in 
+				(select product from CategoryProductBinding where category = %s)';
+
+			$sql = sprintf($sql,
+				$db->quote($product_shortname, 'text'),
+				$db->quote($category_id, 'integer'));
+
+			$product_id = SwatDB::queryOne($db, $sql);
+		}
+
+		return array($product_id, $category_id);
+	}
+
+	// }}}
+
+// categories
+	// {{{ protected function resolveCategoryPage()
+
+	protected function resolveCategoryPage($path, $category_id)
+	{
+		$layout = $this->resolveLayout($path);
+		$page = $this->instantiateCategoryPage($layout);
+		$page->path = new StoreCategoryPath($this->app, $category_id);
+
+		$region = $this->app->getRegion();
+
+		if (!$page->isVisibleInRegion($region)) {
+			$page = $this->instantiateCategoryNotVisiblePage($layout);
+			$page->path = new StoreCategoryPath($this->app, $category_id);
+			$page->category_id = $category_id;
+		}
+
+		return $page;
+	}
+
+	// }}}
+	// {{{ protected function instantiateCategoryPage()
+
+	protected function instantiateCategoryPage($layout)
+	{
+		require_once 'Store/pages/StoreCategoryPage.php';
+		$page = new StoreCategoryPage($this->app, $layout);
+
+		return $page;
+	}
+
+	// }}}
+	// {{{ protected function instantiateCategoryNotVisiblePage()
+
+	protected function instantiateCategoryNotVisiblePage($layout)
+	{
+		require_once 'Store/pages/StoreCategoryNotVisiblePage.php';
+		$page = new StoreCategoryNotVisiblePage($this->app, $layout);
 
 		return $page;
 	}
@@ -153,49 +241,15 @@ class StoreStorePageFactory
 			 * be visible in both regions.  This is the reason for the
 			 * "region is null" clause below.
 			 */
-			$sql = 'select findCategory from findCategory(%s)
-				inner join VisibleCategoryView on
-					findCategory = VisibleCategoryView.category
-				where region = %s or region is null';
+			$sql = 'select findCategory from findCategory(%s)';
 
 			$sql = sprintf($sql,
-				$db->quote($path_str, 'text'),
-				$db->quote($region_id, 'integer'));
+				$db->quote($path_str, 'text'));
 
 			$category_id = SwatDB::queryOne($db, $sql);
 		}
 
 		return $category_id;
-	}
-
-	// }}}
-	// {{{ protected function findProduct()
-
-	protected function findProduct($path)
-	{
-		$product_id = null;
-		$db = $this->app->db;
-		$region_id = $this->app->getRegion()->id;
-
-		$product_shortname = array_pop($path);
-		$category_id = $this->findCategory($path);
-
-		if ($category_id !== null) {
-			$sql = 'select id from Product where shortname = %s
-				and id in 
-				(select product from CategoryProductBinding where category = %s)
-				and id in 
-				(select product from VisibleProductCache where region = %s)';
-
-			$sql = sprintf($sql,
-				$db->quote($product_shortname, 'text'),
-				$db->quote($category_id, 'integer'),
-				$db->quote($region_id, 'integer'));
-
-			$product_id = SwatDB::queryOne($db, $sql);
-		}
-
-		return array($product_id, $category_id);
 	}
 
 	// }}}

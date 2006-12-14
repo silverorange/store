@@ -1,0 +1,8 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatFrame" id="frame">
+		<widget class="SwatContentBlock" id="content" />
+		<widget class="SwatMessageDisplay" id="available_regions" />
+	</widget>
+</swatml>
