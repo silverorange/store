@@ -16,7 +16,7 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 	/**
 	 * @var NateGoSearchResult
 	 */
-	protected $search_result;
+	protected $nate_go_search_result;
 
 	// }}}
 
@@ -32,8 +32,8 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 	 */
 	protected function search($keywords)
 	{
-		$this->search_result = $this->searchNateGo($keywords);
-		$this->recordSearch($this->search_result->getQueryString());
+		$this->nate_go_search_result = $this->searchNateGo($keywords);
+		$this->recordSearch($this->nate_go_search_result->getQueryString());
 	}
 
 	// }}}
@@ -89,18 +89,18 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 	{
 		parent::build();
 
-		if ($this->search_result !== null) {
+		if ($this->searchWasPerformed()) {
 			if ($this->search_type === null ||
 				$this->search_type == StoreSearchPage::TYPE_CATEGORIES)
-				$this->searchCategories($this->search_result);
+				$this->searchCategories($this->nate_go_search_result);
 
 			if ($this->search_type === null ||
 				$this->search_type == StoreSearchPage::TYPE_PRODUCTS)
-				$this->searchProducts($this->search_result);
+				$this->searchProducts($this->nate_go_search_result);
 
 			if ($this->search_type === null ||
 				$this->search_type == StoreSearchPage::TYPE_ARTICLES)
-				$this->searchArticles($this->search_result);
+				$this->searchArticles($this->nate_go_search_result);
 
 			$has_categories = in_array(StoreSearchPage::TYPE_CATEGORIES,
 				$this->search_has_results);
@@ -136,7 +136,9 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 				$messages = $this->ui->getWidget('search_message');
 				$messages->add($no_product_results);
 			}
+		}
 
+		if ($this->nate_go_search_result !== null) {
 			$this->buildMisspellings();
 		}
 
@@ -146,12 +148,26 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 	}
 
 	// }}}
+	// {{{ protected function searchWasPerformed()
+
+	/**
+	 * Whether or not a search was performed
+	 *
+	 * @return boolean true if a search was performed and false if a search was
+	 *                  not performed.
+	 */
+	protected function searchWasPerformed()
+	{
+		return ($this->nate_go_search_result !== null);
+	}
+
+	// }}}
 	// {{{ protected function buildMisspellings()
 
 	// display suggested spellings
 	protected function buildMisspellings()
 	{
-		$misspellings = $this->search_result->getMisspellings();
+		$misspellings = $this->nate_go_search_result->getMisspellings();
 		if (count($misspellings) > 0 ) {
 			$corrected_phrase = $corrected_string =
 				' '.$this->ui->getWidget('search_keywords')->value.' ';
@@ -194,8 +210,10 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 	// }}}
 	// {{{ protected function searchArticles()
 
-	protected function searchArticles(NateGoSearchResult $result)
+	protected function searchArticles($result)
 	{
+		$this->validateNateGoSearchResult($result);
+
 		/*
 		 * This query selects only visible and searchable articles and filters
 		 * by search results, ordering by search relevance.
@@ -257,8 +275,10 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 	// }}}
 	// {{{ protected function searchCategories()
 
-	protected function searchCategories(NateGoSearchResult $result)
+	protected function searchCategories($result)
 	{
+		$this->validateNateGoSearchResult($result);
+
 		$sql = 'select Category.id, Category.title, Category.shortname,
 				Category.image, c.product_count
 			from Category
@@ -310,8 +330,10 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 	 * @param NateGoSearchResult $result the NateGoSearch result object to use
 	 *                                    for searching.
 	 */
-	protected function searchProducts(NateGoSearchResult $result)
+	protected function searchProducts($result)
 	{
+		$this->validateNateGoSearchResult($result);
+
 		/*
 		 * We cannot use normal loader methods here because we need ordering
 		 * by search relevance.
@@ -423,6 +445,16 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 	protected function getProductWhereClause()
 	{
 		return '';
+	}
+
+	// }}}
+	// {{{ protected final function validateNateGoSearchResult()
+
+	protected final function validateNateGoSearchResult($result)
+	{
+		if ($result !== null && !($result instanceof NateGoSearchResult))
+			throw new SwatException('The $result paramater must be a '.
+				'NateGoSearchResult or null');
 	}
 
 	// }}}

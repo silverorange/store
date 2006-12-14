@@ -229,6 +229,17 @@ abstract class StoreSearchPage extends StoreArticlePage
 	}
 
 	// }}}
+	// {{{ protected function searchWasPerformed()
+
+	/**
+	 * Whether or not a search was performed
+	 *
+	 * @return boolean true if a search was performed and false if a search was
+	 *                  not performed.
+	 */
+	abstract protected function searchWasPerformed();
+
+	// }}}
 	// {{{ protected function getKeywordsField()
 
 	/**
