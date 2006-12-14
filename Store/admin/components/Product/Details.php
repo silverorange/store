@@ -194,6 +194,30 @@ class StoreProductDetails extends AdminIndex
 	}
 
 	// }}}
+	// {{{ protected function validateItemRows()
+
+	protected function validateItemRows($input_row, $catalog)
+	{
+		$validate = true;
+		$replicators = $input_row->getReplicators();
+
+		foreach ($replicators as $replicator_id) {
+			// validate sku
+			$sku_widget = $input_row->getWidget('sku', $replicator_id);
+			if (!StoreItem::validateSku($this->app->db,
+				$sku_widget->getState(), $catalog, $this->id)) {
+				$sku_widget->addMessage(new SwatMessage(
+					Store::_('%s must be unique amongst all catalogs unless '.
+					'catalogs are clones of each other.')));
+
+				$validate = false;
+			}
+		}
+
+		return $validate;
+	}
+
+	// }}}
 	// {{{ protected function addNewItemExtras()
 
 	protected function addNewItemExtras($item_id)
@@ -218,7 +242,7 @@ class StoreProductDetails extends AdminIndex
 	// }}}
 	// {{{ private function changeStatus()
 
-	protected function changeStatus(SwatTableView $view, $status)
+	private function changeStatus(SwatTableView $view, $status)
 	{
 		$num = count($view->checked_items);
 
@@ -331,30 +355,6 @@ class StoreProductDetails extends AdminIndex
 
 			$this->app->messages->add($message);
 		}
-	}
-
-	// }}}
-	// {{{ private function validateItemRows()
-
-	private function validateItemRows($input_row, $catalog)
-	{
-		$validate = true;
-		$replicators = $input_row->getReplicators();
-
-		foreach ($replicators as $replicator_id) {
-			// validate sku
-			$sku_widget = $input_row->getWidget('sku', $replicator_id);
-			if (!StoreItem::validateSku($this->app->db,
-				$sku_widget->getState(), $catalog, $this->id)) {
-				$sku_widget->addMessage(new SwatMessage(
-					Store::_('%s must be unique amongst all catalogs unless '.
-					'catalogs are clones of each other.')));
-
-				$validate = false;
-			}
-		}
-
-		return $validate;
 	}
 
 	// }}}
