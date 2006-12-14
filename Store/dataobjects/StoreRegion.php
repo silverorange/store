@@ -67,7 +67,9 @@ class StoreRegion extends StoreDataObject
 	protected function loadLocales()
 	{
 		$sql = 'select * from Locale where region = %s';
-		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+		$sql = sprintf($sql,
+			$this->db->quote($this->id, 'integer'));
+
 		return SwatDB::query($this->db, $sql, 'StoreLocaleWrapper');
 	}
 	
@@ -89,7 +91,9 @@ class StoreRegion extends StoreDataObject
 				Country.id = RegionBillingCountryBinding.country and
 					RegionBillingCountryBinding.region = %s';
 
-		$sql = sprintf($sql, $this->id);
+		$sql = sprintf($sql,
+			$this->db->quote($this->id, 'integer'));
+
 		return SwatDB::query($this->db, $sql, 'StoreCountryWrapper');
 	}
 
@@ -111,9 +115,10 @@ class StoreRegion extends StoreDataObject
 				Country.id = RegionShippingCountryBinding.country and
 					RegionShippingCountryBinding.region = %s';
 
-		$sql = sprintf($sql, $this->id);
-		return SwatDB::query($this->db, $sql, 'StoreCountryWrapper');
+		$sql = sprintf($sql,
+			$this->db->quote($this->id, 'integer'));
 
+		return SwatDB::query($this->db, $sql, 'StoreCountryWrapper');
 	}
 
 	// }}}
