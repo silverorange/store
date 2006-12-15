@@ -495,6 +495,14 @@ class StorePostalCodeEntry extends SwatEntry
 			break;
 		}
 
+		// truncate code if longer than 5 characters
+		if (strlen($code) > 5)
+			$code = substr($code, 0 , 5);
+
+		// prepend code with zeros if shorter than 5 characters
+		if (strlen($code) < 5)
+			$code = str_repeat('0', 5 - strlen($code)).$code;
+
 		// is code between some start and end range?
 		$valid = false;
 		foreach ($ranges as $start => $end) {
