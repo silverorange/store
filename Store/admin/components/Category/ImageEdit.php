@@ -313,11 +313,11 @@ class StoreCategoryImageEdit extends AdminPage
 		if ($this->id === null && !($image->isUploaded() || 
 			$thumb->isUploaded())) {
 
-			$message = new SwatMessage(Store::_('You need to specify a '.
+			$message_text = new SwatMessage(Store::_('You need to specify a '.
 				'thumbnail image when creating a new image or upload an image '.
 				'to be automatically resized.'), SwatMessage::ERROR);
 
-			$message->add($message);
+			$message->add($message_text);
 
 			return false;
 		}
