@@ -388,11 +388,11 @@ class StoreProductImageEdit extends AdminPage
 			($thumb->isUploaded() && $small->isUploaded() &&
 			$large->isUploaded()))) {
 
-			$message = new SwatMessage(Store::_('You need to specify all '.
+			$message_text = new SwatMessage(Store::_('You need to specify all '.
 				'image sizes when creating a new image or upload an image to '.
 				'be automatically resized.'), SwatMessage::ERROR);
 
-			$message->add($message);
+			$message->add($message_text);
 
 			return false;
 		}
