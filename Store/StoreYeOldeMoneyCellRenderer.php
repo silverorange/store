@@ -2,16 +2,16 @@
 
 /* vim: set noexpandtab tabstop=4 shiftwidth=4 foldmethod=marker: */
 
-require_once 'Swat/SwatMoneyCellRenderer.php';
+require_once 'Store/StoreItemPriceCellRenderer.php';
 
 /**
  * A currency cell renderer
  *
- * @package   Swat
- * @copyright 2005-2006 silverorange
+ * @package   Store
+ * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreYeOldeMoneyCellRenderer extends SwatMoneyCellRenderer
+class StoreYeOldeMoneyCellRenderer extends StoreItemPriceCellRenderer
 {
 	// {{{ public function render()
 
