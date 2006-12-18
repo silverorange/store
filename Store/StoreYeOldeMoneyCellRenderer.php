@@ -29,12 +29,12 @@ class StoreYeOldeMoneyCellRenderer extends StoreItemPriceCellRenderer
 			SwatString::moneyFormat(
 				$this->value, $this->locale, $this->display_currency));
 
-		if ($locale !== null) {
+		if ($this->locale !== null) {
 			$old_locale = setlocale(LC_ALL, 0);
-			if (setlocale(LC_ALL, $locale) === false) {
+			if (setlocale(LC_ALL, $this->locale) === false) {
 				throw new SwatException(sprintf('Locale %s passed to the '.
 					'moneyFormat() method is not valid for this operating '.
-					'system.', $locale));
+					'system.', $this->locale));
 			}
 		}
 
@@ -50,7 +50,7 @@ class StoreYeOldeMoneyCellRenderer extends StoreItemPriceCellRenderer
 					'to UTF-8', $character_set));
 		}
 
-		if ($locale !== null)
+		if ($this->locale !== null)
 			setlocale(LC_ALL, $old_locale);
 
 		$search = sprintf('/%s([0-9][0-9])/u',
