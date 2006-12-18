@@ -55,6 +55,7 @@ class StoreAdminMenuView extends AdminMenuView
 
 		$field = new SwatFormField('quick_search_item_field');
 		$field->title = Store::_('Item #');
+		$field->access_key = '4';
 		$field->add($entry);
 		$field->add($button);
 
