@@ -68,7 +68,7 @@ abstract class StoreArticlePageFactory extends SitePageFactory
 
 		if ($article_id === null)
 			throw new SiteNotFoundException(
-				sprintf('Article page not found for path ‘%s’',
+				sprintf('Article not found for path ‘%s’',
 					$article_path));
 
 		$page->article_id = $article_id;
