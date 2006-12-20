@@ -139,7 +139,7 @@ abstract class StorePaymentMethod extends StoreDataObject
 	{
 		$credit_card_number = $this->credit_card_number;
 
-		if ($credit_card_number !== null) 
+		if ($credit_card_number !== null)
 			$credit_card_number = self::decryptCreditCardNumber(
 				$credit_card_number, $gpg, $passphrase);
 
@@ -162,9 +162,9 @@ abstract class StorePaymentMethod extends StoreDataObject
 
 		if ($this->credit_card_last4 !== null) {
 			$span_tag->class = 'store-payment-method-credit-card-number';
-			// TODO: use $this->payment_type->cc_mask
-			$span_tag->setContent(self::formatCreditCardNumber(
-				$this->credit_card_last4, '**** **** **** ####'));
+			$span_tag->setContent(StorePaymentType::formatCreditCardNumber(
+				$this->credit_card_last4,
+				$this->payment_type->getCreditCardMaskedFormat()));
 
 			$span_tag->display();
 		}
@@ -207,10 +207,10 @@ abstract class StorePaymentMethod extends StoreDataObject
 		echo $this->payment_type->title;
 
 		if ($this->credit_card_last4 !== null) {
-			// TODO: use $this->payment_type->cc_mask
 			echo "\n";
-			echo self::formatCreditCardNumber($this->credit_card_last4,
-				'**** **** **** ####');
+			echo StorePaymentType::formatCreditCardNumber(
+				$this->credit_card_last4,
+				$this->payment_type->getCreditCardMaskedFormat());
 		}
 
 		if ($this->credit_card_expiry !== null) {
@@ -222,7 +222,6 @@ abstract class StorePaymentMethod extends StoreDataObject
 			echo "\n",
 				$this->credit_card_fullname;
 		}
-
 	}
 
 	// }}}
