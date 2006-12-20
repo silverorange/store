@@ -20,13 +20,14 @@ require_once 'Store/dataobjects/StoreDataObject.php';
  * dinersclub   | Diners Club         | credit card       | US+CA
  * jcb          | Japan Credit Bureau | credit card       | JA
  * discover     | Discover Card       | credit card       | US
- * bankcard     | Bankcard            | credit card       | AU
  * unionpay     | China UnionPay      | credit card       | CH
  * paypal       | PayPal              | online payment    | Global
  * cheque       | cheque              | cheque            |
  * account      | on account          | on account        |
  * cod          | cash on delivery    | cash on delivery  |
  * </pre>
+ *
+ * *Bankcard is ceasing all operations in 
  *
  * @package   Store
  * @copyright 2006 silverorange
@@ -131,6 +132,82 @@ class StorePaymentType extends StoreDataObject
 			$this->db->quote($this->id, 'integer'));
 
 		return (SwatDB::queryOne($this->db, $sql) > 0);
+	}
+
+	// }}}
+	// {{{ public function getCreditCardMaskedFormat()
+
+	/**
+	 * Gets the masked format string for this payment type if this payment
+	 * type is a credit card
+	 *
+	 * @return string the masked format string for this payment type. If no
+	 *                 suitable mask is available (for example if this type is
+	 *                 not a credit card), null is returned.
+	 */
+	public function getCreditCardMaskedFormat()
+	{
+		$mask = null;
+
+		switch ($this->shortname) {
+		case 'visa':
+		case 'mastercard':
+		case 'discover':
+		case 'jcb':
+		case 'electron':
+		case 'unionpay':
+		case 'delta':
+		case 'switch':
+		case 'solo':
+			$mask = '**** **** **** ####';
+			break;
+		case 'amex':
+			$mask = '**** ****** #####';
+			break;
+		case 'dinersclub':
+			$mask = '**** ****** ####';
+			break;
+		}
+
+		return $mask;
+	}
+
+	// }}}
+	// {{{ public function getCreditCardFormat()
+
+	/**
+	 * Gets the format string for this payment type if this payment type is a
+	 * credit card
+	 *
+	 * @return string the format string for this payment type. If no suitable
+	 *                 suitable format is available (for example if this type
+	 *                 is not a credit card), null is returned.
+	 */
+	public function getCreditCardFormat()
+	{
+		$mask = null;
+
+		switch ($this->shortname) {
+		case 'visa':
+		case 'mastercard':
+		case 'discover':
+		case 'jcb':
+		case 'electron':
+		case 'unionpay':
+		case 'delta':
+		case 'switch':
+		case 'solo':
+			$mask = '#### #### #### ####';
+			break;
+		case 'amex':
+			$mask = '#### ###### #####';
+			break;
+		case 'dinersclub':
+			$mask = '#### ###### ####';
+			break;
+		}
+
+		return $mask;
 	}
 
 	// }}}
