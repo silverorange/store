@@ -66,7 +66,26 @@ abstract class StorePaymentMethod extends StoreDataObject
 	 *
 	 * @var Date
 	 */
-	public $credit_card_expiry;	
+	public $credit_card_expiry;
+
+	/**
+	 * The inception date of the credit card
+	 *
+	 * This is required for some debit cards.
+	 *
+	 * @var Date
+	 */
+	public $card_inception;
+
+	/**
+	 * The issue number for Switch and Solo debit cards
+	 *
+	 * This is a 1 or 2 character string containing the issue number exactly as
+	 * it appears on the card.
+	 *
+	 * @var string
+	 */
+	public $card_issue_number;
 
 	// }}}
 	// {{{ protected properties
@@ -308,6 +327,7 @@ abstract class StorePaymentMethod extends StoreDataObject
 			$this->class_map->resolveClass('StorePaymentType'));
 
 		$this->registerDateProperty('credit_card_expiry');
+		$this->registerDateProperty('card_inception');
 	}
 
 	// }}}
