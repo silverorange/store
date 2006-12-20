@@ -27,8 +27,6 @@ require_once 'Store/dataobjects/StoreDataObject.php';
  * cod          | cash on delivery    | cash on delivery  |
  * </pre>
  *
- * *Bankcard is ceasing all operations in 
- *
  * @package   Store
  * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
