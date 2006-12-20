@@ -63,6 +63,14 @@ class StoreProductImageOrder extends AdminDBOrder
 	}
 
 	// }}}
+	// {{{ protected function getUpdatedMessage()
+
+	protected function getUpdatedMessage()
+	{
+		return new SwatMessage(Store::_('Image order updated.'));
+	}
+
+	// }}}
 
 	// build phase
 	// {{{ protected function buildInternal()
