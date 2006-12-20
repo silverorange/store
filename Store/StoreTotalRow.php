@@ -20,6 +20,7 @@ class StoreTotalRow extends SwatTableViewRow
 	public $value = null;
 	public $offset = 0;
 	public $note = null;
+	public $note_content_type = 'text';
 
 	// }}}
 	// {{{ protected properties
@@ -86,7 +87,7 @@ class StoreTotalRow extends SwatTableViewRow
 		if ($this->note !== null) {
 			$div = new SwatHtmlTag('div');
 			$div->class = 'note';
-			$div->setContent($this->note);
+			$div->setContent($this->note, $this->note_content_type);
 			$div->display();
 		}
 
