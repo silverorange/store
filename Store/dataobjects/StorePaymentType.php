@@ -144,6 +144,8 @@ class StorePaymentType extends StoreDataObject
 	 * @return string the masked format string for this payment type. If no
 	 *                 suitable mask is available (for example if this type is
 	 *                 not a credit card), null is returned.
+	 *
+	 * @see StorePaymentType::formatCreditCardNumber()
 	 */
 	public function getCreditCardMaskedFormat()
 	{
@@ -182,6 +184,8 @@ class StorePaymentType extends StoreDataObject
 	 * @return string the format string for this payment type. If no suitable
 	 *                 suitable format is available (for example if this type
 	 *                 is not a credit card), null is returned.
+	 *
+	 * @see StorePaymentType::formatCreditCardNumber()
 	 */
 	public function getCreditCardFormat()
 	{
@@ -208,6 +212,71 @@ class StorePaymentType extends StoreDataObject
 		}
 
 		return $mask;
+	}
+
+	// }}}
+	// {{{  public static function formatCreditCardNumber()
+
+	/**
+	 * Formats a credit card number according to a format string
+	 *
+	 * Format strings may contain spaces, hash marks or stars.
+	 * ' ' - inserts a space at this position
+	 * '*' - displays a * at this position
+	 * '#' - displays the number at this position
+	 *
+	 * For example:
+	 * <code>
+	 * // displays '*** **6 7890'
+	 * echo StorePaymentType::formatCreditCardNumber(1234567890,
+	 *      '*** **# ####');
+	 * </code>
+	 *
+	 * @param string $number the creditcard number to format.
+	 * @param string $format the format string to use.
+	 * @param boolean $zero_fill whether or not the prepend the credit card
+	 *                            number with zeros until it is as long as the
+	 *                            format string.
+	 *
+	 * @return string the formatted credit card number.
+	 */
+	public static function formatCreditCardNumber($number,
+		$format = '#### #### #### ####', $zero_fill = true)
+	{
+		$number = trim((string)$number);
+		$output = '';
+		$format_len = strlen(str_replace(' ', '', $format));
+
+		// trim the number if it is too big
+		if (strlen($number) > $format_len)
+			$number = substr($number, 0, $format_len);
+
+		// expand the number if it is too small
+		if (strlen($number) < $format_len) {
+			$number = ($zero_fill) ?
+				str_pad($number, $format_len, '0', STR_PAD_LEFT) :
+				str_pad($number, $format_len, '*', STR_PAD_LEFT);
+		}
+
+		// format number (from right to left)
+		$numberpos = strlen($number) - 1;
+		for ($i = strlen($format) - 1; $i >= 0; $i--) {
+			$char = $format{$i};
+			switch ($char) {
+			case '#':
+				$output = $number{$numberpos}.$output;
+				$numberpos--;
+				break;
+			case '*':
+				$output = '*'.$output;
+				$numberpos--;
+				break;
+			case ' ':
+				$output = ' '.$output;
+				break;
+			}
+		}
+		return $output;
 	}
 
 	// }}}

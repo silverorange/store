@@ -277,44 +277,17 @@ abstract class StorePaymentMethod extends StoreDataObject
 	 *                            format string.
 	 *
 	 * @return string the formatted credit card number.
+	 *
+	 * @see StorePaymentType::formatCreditCardNumber()
+	 *
+	 * @deprecated Use StorePaymentType::formatCreditCardNumber() instead. This
+	 *             method will be removed in future versions of Store.
 	 */
 	public static function formatCreditCardNumber($number,
 		$format = '#### #### #### ####', $zero_fill = true)
 	{
-		$number = trim((string)$number);
-		$output = '';
-		$format_len = strlen(str_replace(' ', '', $format));
-
-		// trim the number if it is too big
-		if (strlen($number) > $format_len)
-			$number = substr($number, 0, $format_len);
-
-		// expand the number if it is too small
-		if (strlen($number) < $format_len) {
-			$number = ($zero_fill) ?
-				str_pad($number, $format_len, '0', STR_PAD_LEFT) :
-				str_pad($number, $format_len, '*', STR_PAD_LEFT);
-		}
-
-		// format number (from right to left)
-		$numberpos = strlen($number) - 1;
-		for ($i = strlen($format) - 1; $i >= 0; $i--) {
-			$char = $format{$i};
-			switch ($char) {
-			case '#':
-				$output = $number{$numberpos}.$output;
-				$numberpos--;
-				break;
-			case '*':
-				$output = '*'.$output;
-				$numberpos--;
-				break;
-			case ' ':
-				$output = ' '.$output;
-				break;
-			}
-		}
-		return $output;
+		return StorePaymentType::formatCreditCardNumber($number, $format,
+			$zero_fill);
 	}
 
 	// }}}
