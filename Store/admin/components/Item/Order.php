@@ -60,6 +60,14 @@ class StoreItemOrder extends AdminDBOrder
 	}
 
 	// }}}
+	// {{{ protected function getUpdatedMessage()
+
+	protected function getUpdatedMessage()
+	{
+		return new SwatMessage(Store::_('Item order updated.'));
+	}
+
+	// }}}
 
 	// build phase
 	// {{{ protected function buildFrame()
