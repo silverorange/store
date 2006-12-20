@@ -23,7 +23,9 @@ require_once 'Store/dataobjects/StoreDataObject.php';
  * bankcard     | Bankcard            | credit card       | AU
  * unionpay     | China UnionPay      | credit card       | CH
  * paypal       | PayPal              | online payment    | Global
- * cheque       | cheque              | cheque            | Global
+ * cheque       | cheque              | cheque            |
+ * account      | on account          | on account        |
+ * cod          | cash on delivery    | cash on delivery  |
  * </pre>
  *
  * @package   Store
