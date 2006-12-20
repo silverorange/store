@@ -5,6 +5,27 @@ require_once 'Store/dataobjects/StoreDataObject.php';
 /**
  * A payment type data object
  *
+ * Payment type shortnames are by convention:
+ *
+ * <pre>
+ * Shortname    | Description         | Type              | Region
+ * -------------+---------------------+-------------------+--------
+ * visa         | Visa                | credit card       | Global
+ * mastercard   | Master Card         | credit card       | Global
+ * delta        | Visa Debit/Delta    | debit card        | UK
+ * solo         | Solo                | debit card        | UK
+ * switch       | Switch              | debit card        | UK
+ * electron     | Visa Electron       | credit/debit card | Outside US+CA+AU
+ * amex         | American Express    | credit card       | Global
+ * dinersclub   | Diners Club         | credit card       | US+CA
+ * jcb          | Japan Credit Bureau | credit card       | JA
+ * discover     | Discover Card       | credit card       | US
+ * bankcard     | Bankcard            | credit card       | AU
+ * unionpay     | China UnionPay      | credit card       | CH
+ * paypal       | PayPal              | online payment    | Global
+ * cheque       | cheque              | cheque            | Global
+ * </pre>
+ *
  * @package   Store
  * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
