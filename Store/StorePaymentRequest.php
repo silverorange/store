@@ -128,6 +128,17 @@ abstract class StorePaymentRequest
 	// }}}
 	// {{{ public function __construct()
 
+	/**
+	 * Creates a new payment request
+	 *
+	 * @param integer $type the type of payment request to make. Should be one
+	 *                       of the StorePaymentRequest::TYPE_* constants.
+	 * @param string $mode the transaction mode to use. Should be one of the
+	 *                      values returned by
+	 *                      {@link StorePaymentRequest::getAvailableModes()}.
+	 *
+	 * @throws StoreException if the type or the mode is invalid.
+	 */
 	public function __construct($type, $mode)
 	{
 		if (!in_array($mode, $this->getAvailableModes()))
@@ -264,21 +275,51 @@ abstract class StorePaymentRequest
 	// }}}
 	// {{{ abstract protected function __toString()
 
+	/**
+	 * Gets a string representation of this payment request
+	 *
+	 * This is primarily useful for debugging and/or logging.
+	 *
+	 * @return string a string representation of this payment request
+	 */
 	abstract protected function __toString();
 
 	// }}}
 	// {{{ abstract protected function getTypeMap()
 
+	/**
+	 * Gets a mapping of valid request types for this request to
+	 * protocol-specific trasaction types
+	 *
+	 * The array is indexed by StorePaymentRequest::TYPE_* constants and the
+	 * values are protocol-specific transaction types.
+	 *
+	 * @return array a mapping of valid request types to protocol-specific
+	 *                transaction types.
+	 */
 	abstract protected function getTypeMap();
 
 	// }}}
 	// {{{ abstract protected function getDefaultData()
 
+	/**
+	 * Gets a key-value array of protocol-specific default data
+	 *
+	 * @return array a key-value array of protocol-specific default data. The
+	 *                key is a protocol field and the value is the default
+	 *                value to use for the field.
+	 */
 	abstract protected function getDefaultData();
 
 	// }}}
 	// {{{ abstract protected function getDefaultRequiredFields()
 
+	/**
+	 * Gets a list of protocol-specific fields that are required by default
+	 *
+	 * @return array a list of protocol-specific fields that are required by
+	 *                default.
+	 */
 	abstract protected function getDefaultRequiredFields();
 
 	// }}}
