@@ -169,6 +169,14 @@ abstract class StorePaymentRequest
 	// }}}
 	// {{{ public function setField()
 
+	/**
+	 * Sets a request field
+	 *
+	 * @param string $name the name of the field to set. Valid names are
+	 *                      found in the integration manual for the payment
+	 *                      provider.
+	 * @param mixed $value the value to set for the field.
+	 */
 	public function setField($name, $value)
 	{
 		$this->data[$name] = $value;
@@ -177,6 +185,13 @@ abstract class StorePaymentRequest
 	// }}}
 	// {{{ public function setFields()
 
+	/**
+	 * Sets multiple request fields
+	 *
+	 * @param array $fields an array of name-value pairs where the name is
+	 *                       a field name and the value is the value to set
+	 *                       for the field.
+	 */
 	public function setFields(array $fields)
 	{
 		foreach ($fields as $name => $value)
@@ -186,6 +201,12 @@ abstract class StorePaymentRequest
 	// }}}
 	// {{{ public function getTypeString()
 
+	/**
+	 * Gets a human-readable string representing a request type
+	 *
+	 * @param integer $type a request type. One of the
+	 *                       StorePaymentRequest::TYPE_* constants.
+	 */
 	public function getTypeString($type)
 	{
 		$string = 'unknown payment type';
