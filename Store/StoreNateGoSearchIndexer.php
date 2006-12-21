@@ -60,37 +60,9 @@ abstract class StoreNateGoSearchIndexer extends SiteSearchIndexer
 	 */
 	public function queue()
 	{
-		$this->output(Store::_('Repopulating search queue ... '),
-			self::VERBOSITY_ALL);
-
-		// clear queue 
-		SwatDB::exec($this->db, 'delete from NateGoSearchQueue');
-
-		// articles
-		$sql = sprintf('insert into NateGoSearchQueue
-			(document_type, document_id) select %s, id from Article',
-			$this->db->quote($this->getDocumentType(
-				StoreSearchPage::TYPE_ARTICLES), 'integer'));
-
-		SwatDB::exec($this->db, $sql);
-
-		// products 
-		$sql = sprintf('insert into NateGoSearchQueue
-			(document_type, document_id) select %s, id from Product',
-			$this->db->quote($this->getDocumentType(
-				StoreSearchPage::TYPE_PRODUCTS), 'integer'));
-
-		SwatDB::exec($this->db, $sql);
-
-		// categories 
-		$sql = sprintf('insert into NateGoSearchQueue
-			(document_type, document_id) select %s, id from Category',
-			$this->db->quote($this->getDocumentType(
-				StoreSearchPage::TYPE_CATEGORIES), 'integer'));
-
-		SwatDB::exec($this->db, $sql);
-
-		$this->output(Store::_('done')."\n", self::VERBOSITY_ALL);
+		$this->queueArticles();
+		$this->queueProducts();
+		$this->queueCategories();
 	}
 
 	// }}}
@@ -104,6 +76,96 @@ abstract class StoreNateGoSearchIndexer extends SiteSearchIndexer
 		$this->indexArticles();
 		$this->indexProducts();
 		$this->indexCategories();
+	}
+
+	// }}}
+	// {{{ protected function queueArticles()
+
+	/**
+	 * Repopulates the articles queue
+	 */
+	protected function queueArticles()
+	{
+		$this->output(Store::_('Repopulating article search queue ... '),
+			self::VERBOSITY_ALL);
+
+		// clear queue 
+		$sql = sprintf('delete from NateGoSearchQueue
+			where document_type = %s',
+			$this->db->quote($this->getDocumentType(
+				StoreSearchPage::TYPE_ARTICLES), 'integer'));
+
+		SwatDB::exec($this->db, $sql);
+
+		// fill queue 
+		$sql = sprintf('insert into NateGoSearchQueue
+			(document_type, document_id) select %s, id from Article',
+			$this->db->quote($this->getDocumentType(
+				StoreSearchPage::TYPE_ARTICLES), 'integer'));
+
+		SwatDB::exec($this->db, $sql);
+
+		$this->output(Store::_('done')."\n", self::VERBOSITY_ALL);
+	}
+
+	// }}}
+	// {{{ protected function queueProducts()
+
+	/**
+	 * Repopulates the products queue
+	 */
+	protected function queueProducts()
+	{
+		$this->output(Store::_('Repopulating product search queue ... '),
+			self::VERBOSITY_ALL);
+
+		// clear queue 
+		$sql = sprintf('delete from NateGoSearchQueue
+			where document_type = %s',
+			$this->db->quote($this->getDocumentType(
+				StoreSearchPage::TYPE_PRODUCTS), 'integer'));
+
+		SwatDB::exec($this->db, $sql);
+
+		// fill queue 
+		$sql = sprintf('insert into NateGoSearchQueue
+			(document_type, document_id) select %s, id from Product',
+			$this->db->quote($this->getDocumentType(
+				StoreSearchPage::TYPE_PRODUCTS), 'integer'));
+
+		SwatDB::exec($this->db, $sql);
+
+		$this->output(Store::_('done')."\n", self::VERBOSITY_ALL);
+	}
+
+	// }}}
+	// {{{ protected function queueCategories()
+
+	/**
+	 * Repopulates the categories queue
+	 */
+	protected function queueCategories()
+	{
+		$this->output(Store::_('Repopulating category search queue ... '),
+			self::VERBOSITY_ALL);
+
+		// clear queue 
+		$sql = sprintf('delete from NateGoSearchQueue
+			where document_type = %s',
+			$this->db->quote($this->getDocumentType(
+				StoreSearchPage::TYPE_CATEGORIES), 'integer'));
+
+		SwatDB::exec($this->db, $sql);
+
+		// fill queue
+		$sql = sprintf('insert into NateGoSearchQueue
+			(document_type, document_id) select %s, id from Category',
+			$this->db->quote($this->getDocumentType(
+				StoreSearchPage::TYPE_CATEGORIES), 'integer'));
+
+		SwatDB::exec($this->db, $sql);
+
+		$this->output(Store::_('done')."\n", self::VERBOSITY_ALL);
 	}
 
 	// }}}
