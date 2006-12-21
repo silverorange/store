@@ -85,9 +85,44 @@ abstract class StorePaymentRequest
 	// }}}
 	// {{{ protected properties
 
+	/**
+	 * The type of request
+	 *
+	 * One of the StorePaymentRequest::TYPE_* constants.
+	 *
+	 * @var integer
+	 */
 	protected $type;
+
+	/**
+	 * The transaction mode for this request
+	 *
+	 * Transaction modes let you switch between live, test and other modes of
+	 * transaction. The mode should be one of the modes returned by
+	 * {@link StorePaymentRequest::getAvailableModes()}.
+	 *
+	 * @var string
+	 */
 	protected $mode;
+
+	/**
+	 * Protocol specific data
+	 *
+	 * This is an array with index names representing protocol fields and
+	 * values representing protocol values.
+	 *
+	 * @var array
+	 */
 	protected $data = array();
+
+	/**
+	 * An array or fields required by this request's protocol
+	 *
+	 * This array may be modified by different methods that dictate more or
+	 * fewer fields are required based on protocol-specific rules.
+	 *
+	 * @var array
+	 */
 	protected $required_fields = array();
 
 	// }}}
