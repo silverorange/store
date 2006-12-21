@@ -365,7 +365,8 @@ abstract class StoreNateGoSearchIndexer extends SiteSearchIndexer
 
 		$product_indexer->commit();
 		$item_indexer->commit();
-		unset($indexer);
+		unset($product_indexer);
+		unset($item_indexer);
 
 		$sql = sprintf('delete from NateGoSearchQueue where document_type = %s',
 			$this->db->quote($this->getDocumentType(
