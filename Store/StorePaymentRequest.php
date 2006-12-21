@@ -152,11 +152,11 @@ abstract class StorePaymentRequest
 			$available_type_strings = array();
 			foreach ($available_types as $available_type) {
 				$available_type_strings[] =
-					$this->getTypeString($available_type);
+					self::getTypeString($available_type);
 			}
 			throw new StoreException(sprintf("Invalid request type: %s. ".
 				"Valid types are: %s.",
-				$this->getTypeString($type),
+				self::getTypeString($type),
 				implode(', ', $available_type_strings)));
 		}
 
@@ -199,7 +199,7 @@ abstract class StorePaymentRequest
 	}
 
 	// }}}
-	// {{{ public function getTypeString()
+	// {{{ public static function getTypeString()
 
 	/**
 	 * Gets a human-readable string representing a request type
@@ -207,7 +207,7 @@ abstract class StorePaymentRequest
 	 * @param integer $type a request type. One of the
 	 *                       StorePaymentRequest::TYPE_* constants.
 	 */
-	public function getTypeString($type)
+	public static function getTypeString($type)
 	{
 		$string = 'unknown payment type';
 
