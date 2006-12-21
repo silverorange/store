@@ -241,11 +241,22 @@ abstract class StorePaymentRequest
 	// }}}
 	// {{{ abstract public function process()
 
+	/**
+	 * Processes this request
+	 *
+	 * Subclasses implement this method to perform protocol-specific
+	 * processing of fields and values.
+	 */
 	abstract public function process();
 
 	// }}}
 	// {{{ protected function makeFieldRequired()
 
+	/**
+	 * Makes a field required
+	 *
+	 * @param string $field_name the name of the field to make required.
+	 */
 	protected function makeFieldRequired($field_name)
 	{
 		if (!in_array($field_name, $this->required_fields))
@@ -255,6 +266,11 @@ abstract class StorePaymentRequest
 	// }}}
 	// {{{ protected function makeFieldsRequired()
 
+	/**
+	 * Makes a list of fields required
+	 *
+	 * @param array $field_names a list of field names to make required.
+	 */
 	protected function makeFieldsRequired(array $field_names)
 	{
 		foreach ($field_names as $field_name)
@@ -264,6 +280,12 @@ abstract class StorePaymentRequest
 	// }}} 
 	// {{{ protected function checkRequiredFields()
 
+	/**
+	 * Ensures all required fields are set on this request
+	 *
+	 * @throws StoreException A StoreException is thrown if a required field
+	 *                        is not set.
+	 */
 	protected function checkRequiredFields()
 	{
 		foreach ($this->required_fields as $field_name) {
@@ -277,6 +299,11 @@ abstract class StorePaymentRequest
 	// }}} 
 	// {{{ protected function getAvailableModes()
 
+	/**
+	 * Gets a list of available transaction modes for this request
+	 *
+	 * @return array a list of available transaction modes for this request.
+	 */
 	protected function getAvailableModes()
 	{
 		return array(
@@ -288,6 +315,12 @@ abstract class StorePaymentRequest
 	// }}}
 	// {{{ protected function getAvailableTypes()
 
+	/**
+	 * Gets a list of available transaction types for this request
+	 *
+	 * By default, available types are taken from
+	 * {@link StorePaymentRequest::getTypeMap()} method.
+	 */
 	protected function getAvailableTypes()
 	{
 		return array_keys($this->getTypeMap());
