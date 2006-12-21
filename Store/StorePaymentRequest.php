@@ -2,16 +2,84 @@
 
 require_once 'Store/exceptions/StoreException.php';
 
+/**
+ * Base class for online financial transaction requests
+ *
+ * The basic pattern for making online transactions is:
+ *
+ * 1. create a request object
+ * 2. set protocol-specific fields on the request object
+ * 3. process the request to get a response object
+ * 4. get protocol-specific fields from the response object
+ *
+ * @package   Store
+ * @copyright 2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ */
 abstract class StorePaymentRequest
 {
 	// {{{ class constants
 
+	/**
+	 * A normal payment request 
+	 *
+	 * Funds are requested immediately and collected during the next bank
+	 * processing period or sooner if the payment provider supports it.
+	 */
 	const TYPE_NORMAL   = 0;
+
+	/**
+	 * A credit card authentication request
+	 *
+	 * An authentication does not collect funds. An authentication will return
+	 * a transaction id that can be used to collect funds at a later date
+	 * without requiring the user to re-enter their payment details.
+	 */
 	const TYPE_AUTH     = 1;
+
+	/**
+	 * A credit or refund request
+	 *
+	 * Instead of collecting funds from the card holder, funds are transferred
+	 * to the card holder.
+	 */
 	const TYPE_CREDIT   = 2;
+
+	/**
+	 * A post-authorized payment request
+	 *
+	 * Funds are requested immediately using an authenticated transaction id.
+	 * The transaction id should be from a previous
+	 * {@link StorePaymentRequest::TYPE_AUTH} request.
+	 */
 	const TYPE_POSTAUTH = 3;
+
+	/**
+	 * A cancel transaction request
+	 *
+	 * Cancels any type of transaction. The cancel request must be made before
+	 * the payment provider's backend payment system completes the transaction
+	 * (usually happens once a day). If the payment provider's backend payment
+	 * system has already processed the transaction, the void request will
+	 * fail.
+	 */
 	const TYPE_VOID     = 4;
+
+	/**
+	 * A deferred payment request
+	 *
+	 * Places a shadow on card holder's funds for a few days. When the payment
+	 * is ready to be collected, the funds should be released using a
+	 * {@link StorePaymentRequest::TYPE_RELEASE} request.
+	 */
 	const TYPE_DEFERRED = 5;
+
+	/**
+	 * A release deferred funds request
+	 *
+	 * Released funds shadowed by a deferred payment request using a deferred
+	 * transaction id. 
+	 */
 	const TYPE_RELEASE  = 6;
 
 	// }}}
