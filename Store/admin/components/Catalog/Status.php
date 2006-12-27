@@ -87,15 +87,15 @@ abstract class StoreCatalogStatus extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$this->saveStatus();
+		$catalog_enabled = $this->saveStatus();
+
+		// disable clone
+		if ($catalog_enabled && $this->catalog->clone !== null)
+			$this->disableClone();
 
 		$message = new SwatMessage(
 			sprintf(Store::_('The status of “%s” has been updated.'),
 				$this->catalog->title));
-
-		// disable clone
-		if ($enabled && $this->catalog->clone !== null)
-			$this->disableClone();
 
 		$this->app->messages->add($message);
 	}
@@ -121,6 +121,11 @@ abstract class StoreCatalogStatus extends AdminDBEdit
 
 	// }}}
 	// {{{ abstract protected function saveStatus()
+	/**
+	 * Each subclass must do its own saving of status
+	 * 
+	 * @return boolean true if a catalog has been enabled in any region
+	 */
 
 	abstract protected function saveStatus();
 
