@@ -111,7 +111,7 @@ class StoreCategoryAddProducts extends AdminSearch
 			array('null'));
 
 		$category_tree = SwatDB::getDataTree($rs, 'title', 'id', 'levelnum');
-		$tree->addTree($category_tree)
+		$tree->addTree($category_tree);
 
 		$search_frame = $this->ui->getWidget('search_frame');
 		$search_frame->title = Store::_('Search for Products to Add');
