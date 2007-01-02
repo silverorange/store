@@ -1,28 +1,23 @@
 function ItemGroupAction(id, values)
 {
-	var self = this;
-	var is_ie = (document.addEventListener) ? false : true;
-
 	this.id = id;
 	this.values = values;
 	this.title = document.getElementById(this.id + '_title');
 	this.title.style.display = 'none';
 	this.groups = document.getElementById(this.id + '_groups');
 
-	function groupChangeHandler()
-	{
-		self.handleChange();
-	}
+	YAHOO.util.Event.addListener(this.groups, 'change',
+		ItemGroupAction.handleGroupChange, this);
 
-	if (is_ie)
-		this.groups.attachEvent('onchange', groupChangeHandler);
-	else
-		this.groups.addEventListener('change', groupChangeHandler, false);
-
-	this.handleChange();
+	this.init();
 }
 
-ItemGroupAction.prototype.handleChange = function()
+ItemGroupAction.handleGroupChange = function(event, item_group_action)
+{
+	item_group_action.init();
+}
+
+ItemGroupAction.prototype.init = function()
 {
 	if (this.values[this.groups.selectedIndex] == 'new_group') {
 		this.title.style.display = 'inline';
