@@ -22,7 +22,14 @@ class StoreCreditCardExpiryEntry extends SwatDateEntry
 
 		// do not allow dates in the past
 		$this->setValidRange(0, 20);
-		$this->valid_range_start->setMonth(Date_Calc::getMonth());
+
+		// set start date fields to first day of the current month
+		$today = new Date();
+		$this->valid_range_start->setMonth($today->getMonth());
+		$this->valid_range_start->setDay(1);
+		$this->valid_range_start->setHour(0);
+		$this->valid_range_start->setMinute(0);
+		$this->valid_range_start->setSecond(0);
 	}
 
 	// }}}
@@ -30,7 +37,7 @@ class StoreCreditCardExpiryEntry extends SwatDateEntry
 
 	public function isValid()
 	{
-		if (Date::compare($this->value, $this->valid_range_start, true) < 0)
+		if (Date::compare($this->value, $this->valid_range_start, true) == -1)
 			return false;
 		else
 			return true;
