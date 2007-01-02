@@ -22,17 +22,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	// }}}
 
-	// init phase
-	// {{{ public function initCommon()
-
-	public function initCommon()
-	{
-		$expiry = $this->ui->getWidget('credit_card_expiry');
-		$expiry->valid_range_start = new Date();
-	}
-
-	// }}}
-
 	// process phase
 	// {{{ public function preProcessCommon()
 
