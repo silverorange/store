@@ -57,7 +57,6 @@ ItemRegionReplicator.handleClick = function(event, replicator)
 ItemRegionReplicator.prototype.sensitize = function(focus)
 {
 	this.price.disabled = false;
-	this.special_shipping_amount.disabled = false;
 
 	if (focus) {
 		YAHOO.util.Dom.removeClass(this.price, 'swat-insensitive');

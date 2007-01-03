@@ -8,6 +8,7 @@ require_once 'Swat/SwatMessage.php';
 require_once 'Store/StoreClassMap.php';
 require_once 'Store/dataobjects/StoreItem.php';
 require_once 'Store/dataobjects/StoreRegionWrapper.php';
+require_once 'YUI/YUI.php';
 
 /**
  * Edit page for Items
@@ -39,9 +40,12 @@ class StoreItemEdit extends AdminDBEdit
 	{
 		parent::initInternal();
 
+		$yui = new YUI(array('dom', 'event'));
+		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
+
 		$this->ui->loadFromXML($this->ui_xml);
 		$this->ui->getRoot()->addJavaScript(
-			'javascript/store-item-edit-page.js');
+			'packages/store/admin/javascript/store-item-edit-page.js');
 
 		$this->ui->getRoot()->addStyleSheet('styles/item-edit-page.css');
 
@@ -336,26 +340,19 @@ class StoreItemEdit extends AdminDBEdit
 		}
 	}
 	// }}}
-
 	// {{{ private function displayJavaScript()
 
 	private function displayJavaScript()
 	{
-		//TODO - this is wrong and veseys specific
 		$price_replicator = $this->ui->getWidget('price_replicator');
 		$replicator_ids = array_keys($price_replicator->replicators);
 		$replicator_ids = implode(', ', $replicator_ids);
-
-		$limited_stock_id = 'limited_stock_quantity';
-		$radio_button_id = 'status_2';
 		$form_id = 'edit_form';
 
 		echo '<script type="text/javascript">'."\n";
 		printf("var item_edit_page = ".
-			"new ItemEditPage('%s', '%s', '%s', [%s]);\n",
+			"new ItemEditPage('%s', [%s]);\n",
 			$form_id,
-			$limited_stock_id,
-			$radio_button_id,
 			$replicator_ids);
 
 		echo '</script>';
