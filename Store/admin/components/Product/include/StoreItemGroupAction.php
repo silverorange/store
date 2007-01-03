@@ -3,6 +3,8 @@
 require_once 'Swat/SwatFlydown.php';
 require_once 'Swat/SwatEntry.php';
 require_once 'Swat/SwatControl.php';
+require_once 'Store/Store.php';
+require_once 'YUI/YUI.php';
 
 /**
  * A custom action for grouping items inside products
@@ -24,7 +26,12 @@ class StoreItemGroupAction extends SwatControl
 	{
 		parent::__construct($id);
 
-		$this->addJavaScript('javascript/store-item-group-action.js');
+		$yui = new YUI('event');
+		$this->html_head_entry_set->addEntrySet($yui->getHtmlHeadEntrySet());
+
+		$this->addJavaScript(
+			'packages/store/admin/javascript/store-item-group-action.js',
+			Store::PACKAGE_ID);
 	}
 
 	public function init()
@@ -54,7 +61,7 @@ class StoreItemGroupAction extends SwatControl
 
 		$this->groups->display();
 		$this->group_title->display();
-		$this->displayInlineJavaScript();
+		$this->displayInlineJavaScript($this->getInlineJavaScript());
 	}
 
 	public function process()
@@ -120,7 +127,7 @@ class StoreItemGroupAction extends SwatControl
 		return $this->groups->id;
 	}
 
-	protected function displayInlineJavaScript()
+	protected function getInlineJavaScript()
 	{
 		$values = array();
 		foreach ($this->groups->options as $option)
