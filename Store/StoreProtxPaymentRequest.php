@@ -10,6 +10,10 @@ require_once 'Store/StoreProtxPaymentResponse.php';
  * integration guidelines at:
  * {@link http://www.protx.com/downloads/docs/VSPDirectProtocolandIntegrationGuideline.pdf}.
  *
+ * This class allows you to manipulate VSP Direct requests at the protocol
+ * level. For higher-level payment processing, use the set of
+ * {@link StorePaymentProvider} classes.
+ *
  * This class relies on the CURL extension which is included with PHP in
  * PHP version 5.1 or greater.
  *
