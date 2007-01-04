@@ -162,9 +162,6 @@ class StoreCategoryPage extends StoreStorePage
 
 	protected function queryProducts($sub_query)
 	{
-		/* The 'id as tag' is a hack to effieciently load tags.
-		 * See detailed explanation below.
-		 */
 		$sql = 'select Product.id, Product.shortname, Product.title,
 				ProductPrimaryImageView.image as primary_image
 			from Product 
