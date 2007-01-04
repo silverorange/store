@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/exceptions/StoreException.php';
+require_once 'Store/exceptions/StorePaymentException.php';
 
 /**
  * Thrown when a payment request is not authorized by the issuing bank
@@ -10,7 +10,7 @@ require_once 'Store/exceptions/StoreException.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StorePaymentRequest, StorePaymentProvider
  */
-class StorePaymentNotAuthorizedException extends StoreException
+class StorePaymentNotAuthorizedException extends StorePaymentException
 {
 }
 

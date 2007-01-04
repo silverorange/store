@@ -1,16 +1,16 @@
 <?php
 
-require_once 'Store/exceptions/StorePaymentException.php';
+require_once 'Store/exceptions/StoreException.php';
 
 /**
- * Thrown when a payment request is rejected based on merchant configured rules
+ * Base class for payment exceptions
  *
  * @package   Store
  * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StorePaymentRequest, StorePaymentProvider
  */
-class StorePaymentRejectedException extends StorePaymentException
+abstract class StorePaymentException extends StoreException
 {
 }
 

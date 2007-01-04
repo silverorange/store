@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/exceptions/StoreException.php';
+require_once 'Store/exceptions/StorePaymentException.php';
 
 /**
  * Exception that is thrown when an invalid payment request is processed
@@ -10,7 +10,7 @@ require_once 'Store/exceptions/StoreException.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StorePaymentRequest, StorePaymentProvider
  */
-class StorePaymentInvalidException extends StoreException
+class StorePaymentInvalidException extends StorePaymentException
 {
 }
 

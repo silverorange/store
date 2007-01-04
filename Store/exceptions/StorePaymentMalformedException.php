@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/exceptions/StoreException.php';
+require_once 'Store/exceptions/StorePaymentException.php';
 
 /**
  * Exception that is thrown when a malformed payment request is processed
@@ -15,7 +15,7 @@ require_once 'Store/exceptions/StoreException.php';
  * @see       StorePaymentRequest, StorePaymentProvider,
  *            StorePaymentInvalidException
  */
-class StorePaymentMalformedException extends StoreException
+class StorePaymentMalformedException extends StorePaymentException
 {
 }
 
