@@ -11,7 +11,7 @@ require_once 'Store/StoreItemPriceCellRenderer.php';
  * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreYeOldeMoneyCellRenderer extends StoreItemPriceCellRenderer
+class StoreYeOldePriceCellRenderer extends StoreItemPriceCellRenderer
 {
 	// {{{ public function render()
 
