@@ -116,17 +116,25 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 		$tx_type = $type_map[$type];
 		$this->setField('TxType', $tx_type);
 
+		$payment_types = array(
+			StorePaymentRequest::TYPE_AUTH,
+			StorePaymentRequest::TYPE_DEFERRED,
+			StorePaymentRequest::TYPE_NORMAL,
+		);
+
 		switch ($this->mode) {
 		case 'simulator':
 			$this->url = self::URL_SIMULATOR; 
 			break;
 		case 'test':
-			$this->url = ($type === 'payment') ? self::URL_TEST_PAYMENT :
+			$this->url = (in_array($type, $payment_types)) ?
+				self::URL_TEST_PAYMENT :
 				sprintf(self::URL_TEST, ucfirst(strtolower($tx_type)));
 
 			break;
 		case 'live':
-			$this->url = ($type === 'payment') ? self::URL_LIVE_PAYMENT :
+			$this->url = (in_array($type, $payment_types)) ?
+				self::URL_LIVE_PAYMENT :
 				sprintf(self::URL_LIVE, ucfirst(strtolower($tx_type)));
 
 			break;
@@ -178,14 +186,20 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 			$this->getPostFields());
 
 		$response_text = curl_exec($this->curl_handle);
-		$content_type = curl_getinfo($this->curl_handle,
-			CURLINFO_CONTENT_TYPE);
 
-		// we got an error page
-		if (strtolower($content_type) === 'text/html')
+		set_error_handler(create_function('$errno, $errstr', ''),
+			E_NOTICE | E_WARNING);
+
+		$document = new DOMDocument();
+		$document->loadHTML($response_text);
+
+		restore_error_handler();
+
+		if ($document->nodeName == 'html') {
 			throw new StoreException(sprintf('Received an error page as a '.
 				"response. Error contents are: '%s'.",
-				$this->parseErrorPage($response_text)));
+				$this->parseErrorPage($document)));
+		}
 
 		return new StoreProtxPaymentResponse($response_text);
 	}
@@ -357,24 +371,16 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	 * This method is used to generate helpful error messages in the event that
 	 * something goes wrong.
 	 *
-	 * @param string $html_content the HTML content of the error page.
+	 * @param DOMDocument $document
 	 *
 	 * @return string the error message contained in the error page.
 	 */
-	private function parseErrorPage($html_content)
+	private function parseErrorPage(DOMDocument $document)
 	{
 		$error = '';
 
-		set_error_handler(create_function('$errno, $errstr', ''),
-			E_NOTICE | E_WARNING);
-
-		$document = new DOMDocument();
-		$document->loadHTML($html_content);
-
-		restore_error_handler();
-
 		$blockquotes = $document->getElementsByTagName('blockquote');
-		if (count($blockquotes) > 0) {
+		if ($blockquotes->length > 0) {
 			$value = (string)$blockquotes->item(0)->nodeValue;
 			$error = trim(preg_replace('/\s+/s', ' ', $value));
 		}
