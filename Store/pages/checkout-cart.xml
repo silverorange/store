@@ -34,15 +34,6 @@
 					<property name="classes[]">store-cart-description</property>
 				</object>
 			</object>
-			<object class="SwatTableViewSpanningColumn">
-				<property name="offset" type="integer">1</property>
-				<object class="SwatTextCellRenderer">
-					<property name="visible" type="data">has_message</property>
-					<property name="text" type="data">message</property>
-					<property name="content_type">text/xml</property>
-					<property name="classes[]">cart-message-renderer</property>
-				</object>
-			</object>
 			<object class="SwatTableViewColumn">
 				<property name="id">price</property>
 				<property name="title" translatable="yes">Price</property>
