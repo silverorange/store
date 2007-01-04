@@ -152,6 +152,24 @@ class StoreOrder extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ public function getDescription()
+
+	/**
+	 * Gets a short, textual description of this order
+	 *
+	 * For example: "Example Company Order #12345".
+	 *
+	 * This description is used for various purposes including financial
+	 * transaction records.
+	 *
+	 * @return string a short, textual description of this order.
+	 */
+	public function getDescription()
+	{
+		return sprintf('Order #%s', $this->id);
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
