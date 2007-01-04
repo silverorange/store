@@ -51,9 +51,6 @@
 						<property name="value" type="data">quantity</property>
 					</widget>
 				</object>
-				<object class="SwatNumericCellRenderer">
-					<property name="value" type="data">quantity</property>
-				</object>
 			</object>
 			<object class="SwatTableViewColumn">
 				<property name="title" translatable="yes">Total</property>
