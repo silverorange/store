@@ -246,6 +246,9 @@ abstract class StorePaymentRequest
 	 *
 	 * Subclasses implement this method to perform protocol-specific
 	 * processing of fields and values.
+	 *
+	 * @return StorePaymentResponse the response from the payment provider for
+	 *                               this request.
 	 */
 	abstract public function process();
 
@@ -334,7 +337,7 @@ abstract class StorePaymentRequest
 	 *
 	 * This is primarily useful for debugging and/or logging.
 	 *
-	 * @return string a string representation of this payment request
+	 * @return string a string representation of this payment request.
 	 */
 	abstract protected function __toString();
 
