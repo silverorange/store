@@ -94,7 +94,7 @@ class StoreProtxPaymentResponse extends StorePaymentResponse
 	 */
 	protected function __toString()
 	{
-		return $this->response_text;
+		return $this->response_text."\n";
 	}
 
 	// }}}
