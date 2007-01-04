@@ -13,6 +13,21 @@ require_once 'Store/StoreItemPriceCellRenderer.php';
  */
 class StoreYeOldePriceCellRenderer extends StoreItemPriceCellRenderer
 {
+	// {{{ public function getBaseCSSClassNames()
+
+	/** 
+	 * Gets the base CSS class names for this cell renderer
+	 *
+	 * @return array the array of base CSS class names for this cell renderer.
+	 */
+	public function getBaseCSSClassNames()
+	{
+		$classes = parent::getBaseCSSClassNames();
+		$classes[] = 'store-ye-olde-price-cell-renderer';
+		return $classes;
+	}
+
+	// }}}
 	// {{{ public function render()
 
 	/**
