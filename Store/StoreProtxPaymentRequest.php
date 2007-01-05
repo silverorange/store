@@ -106,7 +106,7 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	 *
 	 * @throws StoreException if the type or the mode is invalid.
 	 */
-	public function __construct($type = StorePaymentRequest::TYPE_NORMAL,
+	public function __construct($type = StorePaymentRequest::TYPE_PAY,
 		$mode = null)
 	{
 		if ($mode === null)
@@ -121,9 +121,9 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 		$this->setField('TxType', $tx_type);
 
 		$payment_types = array(
-			StorePaymentRequest::TYPE_AUTH,
-			StorePaymentRequest::TYPE_DEFERRED,
-			StorePaymentRequest::TYPE_NORMAL,
+			StorePaymentRequest::TYPE_AUTHORIZE,
+			StorePaymentRequest::TYPE_HOLD,
+			StorePaymentRequest::TYPE_PAY,
 		);
 
 		switch ($this->mode) {
@@ -278,13 +278,13 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	protected function getTypeMap()
 	{
 		static $type_map = array(
-			StorePaymentRequest::TYPE_NORMAL   => 'PAYMENT',
-			StorePaymentRequest::TYPE_AUTH     => 'PREAUTH',
-			StorePaymentRequest::TYPE_CREDIT   => 'CREDIT',
-			StorePaymentRequest::TYPE_POSTAUTH => 'REPEAT',
-			StorePaymentRequest::TYPE_VOID     => 'VOID',
-			StorePaymentRequest::TYPE_DEFERRED => 'DEFERRED',
-			StorePaymentRequest::TYPE_RELEASE  => 'RELEASE',
+			StorePaymentRequest::TYPE_PAY           => 'PAYMENT',
+			StorePaymentRequest::TYPE_AUTHORIZE     => 'PREAUTH',
+			StorePaymentRequest::TYPE_REFUND        => 'CREDIT',
+			StorePaymentRequest::TYPE_AUTHORIZEDPAY => 'REPEAT',
+			StorePaymentRequest::TYPE_VOID          => 'VOID',
+			StorePaymentRequest::TYPE_HOLD          => 'DEFERRED',
+			StorePaymentRequest::TYPE_RELEASE       => 'RELEASE',
 		);
 
 		return $type_map;

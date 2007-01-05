@@ -17,7 +17,7 @@ class StorePayflowProPaymentRequest extends StorePaymentRequest
 	// }}}
 	// {{{ public function __construct()
 
-	public function __construct($type = StorePaymentRequest::TYPE_NORMAL,
+	public function __construct($type = StorePaymentRequest::TYPE_PAY,
 		$mode = null)
 	{
 		if ($mode === null)
@@ -71,11 +71,11 @@ class StorePayflowProPaymentRequest extends StorePaymentRequest
 	protected function getTypeMap()
 	{
 		static $type_map = array(
-			StorePaymentRequest::TYPE_NORMAL   => 'S',
-			StorePaymentRequest::TYPE_AUTH     => 'A',
-			StorePaymentRequest::TYPE_CREDIT   => 'C',
-			StorePaymentRequest::TYPE_POSTAUTH => 'D',
-			StorePaymentRequest::TYPE_VOID     => 'V',
+			StorePaymentRequest::TYPE_PAY           => 'S',
+			StorePaymentRequest::TYPE_AUTHORIZE     => 'A',
+			StorePaymentRequest::TYPE_REFUND        => 'C',
+			StorePaymentRequest::TYPE_AUTHORIZEDPAY => 'D',
+			StorePaymentRequest::TYPE_VOID          => 'V',
 		);
 
 		return $type_map;

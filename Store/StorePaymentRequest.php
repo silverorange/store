@@ -26,7 +26,7 @@ abstract class StorePaymentRequest
 	 * Funds are requested immediately and collected during the next bank
 	 * processing period or sooner if the payment provider supports it.
 	 */
-	const TYPE_NORMAL   = 0;
+	const TYPE_PAY           = 0;
 
 	/**
 	 * A credit card authentication request
@@ -35,7 +35,7 @@ abstract class StorePaymentRequest
 	 * a transaction id that can be used to collect funds at a later date
 	 * without requiring the user to re-enter their payment details.
 	 */
-	const TYPE_AUTH     = 1;
+	const TYPE_AUTHORIZE     = 1;
 
 	/**
 	 * A credit or refund request
@@ -43,16 +43,16 @@ abstract class StorePaymentRequest
 	 * Instead of collecting funds from the card holder, funds are transferred
 	 * to the card holder.
 	 */
-	const TYPE_CREDIT   = 2;
+	const TYPE_REFUND        = 2;
 
 	/**
 	 * A post-authorized payment request
 	 *
 	 * Funds are requested immediately using an authenticated transaction id.
 	 * The transaction id should be from a previous
-	 * {@link StorePaymentRequest::TYPE_AUTH} request.
+	 * {@link StorePaymentRequest::TYPE_AUTHORIZE} request.
 	 */
-	const TYPE_POSTAUTH = 3;
+	const TYPE_AUTHORIZEDPAY = 3;
 
 	/**
 	 * A cancel transaction request
@@ -63,7 +63,7 @@ abstract class StorePaymentRequest
 	 * system has already processed the transaction, the void request will
 	 * fail.
 	 */
-	const TYPE_VOID     = 4;
+	const TYPE_VOID          = 4;
 
 	/**
 	 * A deferred payment request
@@ -72,7 +72,7 @@ abstract class StorePaymentRequest
 	 * is ready to be collected, the funds should be released using a
 	 * {@link StorePaymentRequest::TYPE_RELEASE} request.
 	 */
-	const TYPE_DEFERRED = 5;
+	const TYPE_HOLD          = 5;
 
 	/**
 	 * A release deferred funds request
@@ -80,7 +80,7 @@ abstract class StorePaymentRequest
 	 * Released funds shadowed by a deferred payment request using a deferred
 	 * transaction id. 
 	 */
-	const TYPE_RELEASE  = 6;
+	const TYPE_RELEASE       = 6;
 
 	// }}}
 	// {{{ protected properties
@@ -212,23 +212,23 @@ abstract class StorePaymentRequest
 		$string = 'unknown payment type';
 
 		switch ($type) {
-		case StorePaymentRequest::TYPE_NORMAL:
-			$string = 'normal (payment)';
+		case StorePaymentRequest::TYPE_PAY:
+			$string = 'payment';
 			break;
-		case StorePaymentRequest::TYPE_AUTH:
+		case StorePaymentRequest::TYPE_AUTHORIZE:
 			$string = 'authorization';
 			break;
-		case StorePaymentRequest::TYPE_CREDIT:
-			$string = 'credit (refund)';
+		case StorePaymentRequest::TYPE_REFUND:
+			$string = 'refund';
 			break;
-		case StorePaymentRequest::TYPE_POSTAUTH:
+		case StorePaymentRequest::TYPE_AUTHORIZEDPAY:
 			$string = 'post-authorization payment';
 			break;
 		case StorePaymentRequest::TYPE_VOID:
 			$string = 'void (cancel)';
 			break;
-		case StorePaymentRequest::TYPE_DEFERRED:
-			$string = 'deferred';
+		case StorePaymentRequest::TYPE_HOLD:
+			$string = 'hold';
 			break;
 		case StorePaymentRequest::TYPE_RELEASE:
 			$string = 'release';
