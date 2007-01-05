@@ -1,16 +1,5 @@
 /* Billing & Shipping Addresses */
 
-#billing_address_postalcode_field,
-#shipping_address_postalcode_field {
-	float: left;
-	width: 11em;
-	margin-right: 0.8em;
-}
-
-#billing_address_country {
-	width: 10em;
-}
-
 #billing_address_form,
 #shipping_address_form {
 	border: 0;
