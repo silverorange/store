@@ -200,6 +200,18 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$card_expiry = $payment_method->credit_card_expiry->format('%m%y');
 		$description = substr($order->getDescription(), 0, 100);
 
+		$billing_address = $this->getAddressString($order->billing_address);
+		$billing_post_code =
+			substr($order->billing_address->postal_code, 0, 10);
+
+		$delivery_address = $this->getAddressString($order->shipping_address);
+		$delivery_post_code =
+			substr($order->shipping_address->postal_code, 0, 10);
+
+		$customer_name = substr($order->billing_address->fullname, 0, 100);
+		$contact_number = substr($order->phone, 0, 20);
+		$customer_email = substr($order->email, 0, 255);
+
 		$payment_type_map = $this->getPaymentTypeMap();
 		if (array_key_exists($payment_method->payment_type->shortname,
 			$payment_type_map)) {
@@ -210,14 +222,21 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		}
 
 		$payment_fields = array(
-			'Amount'       => $amount,
-			'CardHolder'   => $card_holder,
-			'CardNumber'   => $card_number,
-			'ExpiryDate'   => $card_expiry,
-			'CardType'     => $card_type,
-			'ExpiryDate'   => $card_expiry,
-			'Currency'     => $this->currency,
-			'Description'  => $description,
+			'Amount'           => $amount,
+			'CardHolder'       => $card_holder,
+			'CardNumber'       => $card_number,
+			'ExpiryDate'       => $card_expiry,
+			'CardType'         => $card_type,
+			'ExpiryDate'       => $card_expiry,
+			'Currency'         => $this->currency,
+			'Description'      => $description,
+			'BillingAddress'   => $billing_address,
+			'BillingPostCode'  => $billing_post_code,
+			'DeliveryAddress'  => $delivery_address,
+			'DeliveryPostCode' => $delivery_post_code,
+			'CustomerName'     => $customer_name,
+			'ContactNumber'    => $contact_number,
+			'CustomerEMail'    => $customer_email,
 		);
 
 		$fields = array_merge($fields, $payment_fields);
@@ -231,6 +250,14 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		// Issue number is required for Solo and Switch
 		if (in_array($card_type, array('SWITCH', 'SOLO'))) {
 			$fields['IssueNumber'] = $payment_method->card_issue_number;
+		}
+
+		// AVS/CV2 mode
+		if ($this->avs_mode == StorePaymentProvider::AVS_ON) {
+			$fields['ApplyAVSCV2'] = 1; // Force checks
+			// TODO: include AVS/CV2 fields
+		} else {
+			$fields['ApplyAVSCV2'] = 2; // Force NO checks
 		}
 
 		return $fields;
@@ -323,6 +350,25 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		);
 
 		return $type_map;
+	}
+
+	// }}}
+	// {{{ private function getAddressString()
+
+	private function getAddressString(StoreOrderAddress $address)
+	{
+		$address_string = $address->line1.' ';
+		$address_string.= ($address->line2 === null) ? '' : $address->line2.' ';
+		$address_string.= $address->city.' ';
+
+		$provstate = $address->getInternalValue('provstate');
+		$address_string.= ($provstate === null) ?
+			$address->provstate_other : $provstate;
+
+		$address_string.= $address->country->title;
+		$address_string = substr($address_string, 0, 200);
+
+		return $address_string;
 	}
 
 	// }}}
