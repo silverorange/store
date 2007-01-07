@@ -111,29 +111,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	// TODO: do something here
 	}
 
-	public function authorize(StoreOrder $order, $card_number,
-		$card_verification_value = null)
-	{
-		$request = new StoreProtxPaymentRequest(
-			StorePaymentRequest::TYPE_AUTHORIZE, $this->mode);
-
-		$fields = $this->getOrderPaymentFields($order);
-		$request->setFields($fields);
-		$request->setField('CardNumber', $card_number);
-		if ($card_verification_value !== null)
-			$request->setField('CV2', $card_verification_value);
-
-		$response = $request->process();
-		$this->checkResponse($response);
-
-	// TODO: do something here
-	}
-
 	public function refund(StoreOrder $order, $amount = null)
-	{
-	}
-
-	public function authorizedPay(StoreOrder $order)
 	{
 	}
 
