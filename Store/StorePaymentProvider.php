@@ -3,6 +3,26 @@
 abstract class StorePaymentProvider
 {
 	/**
+	 * Use Address Verification Service (AVS)
+	 */
+	const AVS_ON  = true;
+
+	/**
+	 * Don't use Address Verification Service (AVS)
+	 */
+	const AVS_OFF = false;
+
+	/**
+	 * The Address Verification Service (AVS) mode
+	 *
+	 * One of either StorePaymentProvider::AVS_ON or
+	 * StorePaymentProvider::AVS_OFF.
+	 *
+	 * @var boolean
+	 */
+	protected $avs_mode = self::AVS_OFF;
+
+	/**
 	 * Creates a new payment provider instance
 	 *
 	 * This is the main mechanism for starting an online payment transaction.
@@ -49,6 +69,25 @@ abstract class StorePaymentProvider
 	 *                           parameters.
 	 */
 	abstract public function __construct(array $paramaters);
+
+	/**
+	 * Set the Address Verification Service (AVS) mode
+	 *
+	 * Using AVS allows site code to validate transactions based on address and
+	 * card verification value. Using AVS never prevents transactions, it just
+	 * allows site code to decided whether or not to make a transaction. As
+	 * such, it does not make much sense to use AVS with the
+	 * {@link StorePaymentProvider::pay()} method. AVS is not used by default.
+	 *
+	 * @param boolean $mode optional. The AVS mode to use. One of either
+	 *                                 {@link StorePaymentProvider::AVS_ON} or
+	 *                                 {@link StorePaymentProvider::AVS_OFF}. If
+	 *                                 Not specified, defaults to AVS_ON.
+	 */
+	public function setAvsMode($mode = self::AVS_ON)
+	{
+		$this->avs_mode = (boolean)$mode;
+	}
 
 	public function pay(StoreOrder $order, $card_number,
 		$card_verification_value = null)
