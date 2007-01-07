@@ -118,6 +118,10 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	public function void(StoreOrder $order)
 	{
 	}
+
+	public function abort(StoreOrder $order)
+	{
+	}
 	// {{{ private function getOrderRequiredFields()
 
 	/**

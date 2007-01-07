@@ -147,6 +147,14 @@ abstract class StorePaymentProvider
 			'%s does not implement the %s() method.',
 			get_class($this), __FUNCTION__));
 	}
+
+	public function abort(StoreOrder $order)
+	{
+		require_once 'Store/exceptions/StoreUnimplementedException.php';
+		throw new StoreUnimplementedException(sprintf(
+			'%s does not implement the %s() method.',
+			get_class($this), __FUNCTION__));
+	}
 }
 
 ?>
