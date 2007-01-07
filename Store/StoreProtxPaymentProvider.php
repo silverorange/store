@@ -357,13 +357,14 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 
 	private function getAddressString(StoreOrderAddress $address)
 	{
-		$address_string = $address->line1.' ';
-		$address_string.= ($address->line2 === null) ? '' : $address->line2.' ';
-		$address_string.= $address->city.' ';
+		$address_string = $address->line1;
+		$address_string.= ($address->line2 === null) ? '' : ' '.$address->line2;
+		$address_string.= ', '.$address->city.' ';
 
 		$provstate = $address->getInternalValue('provstate');
 		$address_string.= ($provstate === null) ?
-			$address->provstate_other : $provstate;
+			$address->provstate_other.', ' :
+			$address->provstate->abbreviation.', ';
 
 		$address_string.= $address->country->title;
 		$address_string = substr($address_string, 0, 200);
