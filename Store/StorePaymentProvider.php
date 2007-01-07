@@ -80,9 +80,9 @@ abstract class StorePaymentProvider
 	 * {@link StorePaymentProvider::pay()} method. AVS is not used by default.
 	 *
 	 * @param boolean $mode optional. The AVS mode to use. One of either
-	 *                                 {@link StorePaymentProvider::AVS_ON} or
-	 *                                 {@link StorePaymentProvider::AVS_OFF}. If
-	 *                                 Not specified, defaults to AVS_ON.
+	 *                       {@link StorePaymentProvider::AVS_ON} or
+	 *                       {@link StorePaymentProvider::AVS_OFF}. If not
+	 *                       specified, defaults to AVS_ON.
 	 */
 	public function setAvsMode($mode = self::AVS_ON)
 	{
