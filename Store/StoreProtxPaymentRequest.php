@@ -285,6 +285,7 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 			StorePaymentRequest::TYPE_VOID          => 'VOID',
 			StorePaymentRequest::TYPE_HOLD          => 'DEFERRED',
 			StorePaymentRequest::TYPE_RELEASE       => 'RELEASE',
+			StorePaymentRequest::TYPE_ABORT         => 'ABORT',
 		);
 
 		return $type_map;

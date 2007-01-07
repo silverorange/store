@@ -70,17 +70,28 @@ abstract class StorePaymentRequest
 	 *
 	 * Places a shadow on card holder's funds for a few days. When the payment
 	 * is ready to be collected, the funds should be released using a
-	 * {@link StorePaymentRequest::TYPE_RELEASE} request.
+	 * {@link StorePaymentRequest::TYPE_RELEASE} request. If the transaction
+	 * should not be completed, use a {@link StorePaymentRequest::TYPE_ABORT}
+	 * request.
 	 */
 	const TYPE_HOLD          = 5;
 
 	/**
 	 * A release deferred funds request
 	 *
-	 * Released funds shadowed by a deferred payment request using a deferred
-	 * transaction id. 
+	 * Releases funds shadowed by a deferred payment request using a deferred
+	 * transaction id.
 	 */
 	const TYPE_RELEASE       = 6;
+
+	/**
+	 * An abort deferred funds request
+	 *
+	 * Aborts a deferred payment request using a deferred transaction id. The
+	 * shadow is removed from the card-holder's card and a release may no
+	 * longer be made on the deferred transaction.
+	 */
+	const TYPE_ABORT         = 7;
 
 	// }}}
 	// {{{ protected properties
@@ -232,6 +243,9 @@ abstract class StorePaymentRequest
 			break;
 		case StorePaymentRequest::TYPE_RELEASE:
 			$string = 'release';
+			break;
+		case StorePaymentRequest::TYPE_ABORT:
+			$string = 'abort';
 			break;
 		}
 
