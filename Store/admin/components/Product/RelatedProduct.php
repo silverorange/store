@@ -120,12 +120,11 @@ class StoreProductRelatedProduct extends AdminSearch
 		$tree->addChild(new SwatTreeFlydownNode(-1, '<uncategorized>'));
 		$tree->addChild(new SwatTreeFlydownNode(new SwatFlydownDivider()));
 
-		$rs = SwatDB::executeStoredProc($this->app->db, 'getCategoryTree', 
+		$rs = SwatDB::executeStoredProc($this->app->db, 'getCategoryTree',
 			'null');
 
 		$category_tree = SwatDB::getDataTree($rs, 'title', 'id', 'levelnum');
 		$tree->addTree($category_tree);
-
 
 		$search_frame = $this->ui->getWidget('search_frame');
 		$search_frame->title = Store::_('Search for Related Products to Add');
