@@ -229,7 +229,7 @@
 				</widget>
 			</widget>
 			<widget class="AdminNote">
-				<property name="content" translatable="yes">Related products are displayed at the bottom of this product’s page under the heading “You might also be interested in ….”</property>
+				<property name="content" translatable="yes">Related products are displayed at the bottom of this product’s page under the heading “You might also be interested in …”.</property>
 			</widget>
 			<widget class="SwatForm" id="related_products_form">
 				<widget class="SwatTableView" id="related_products_view">
