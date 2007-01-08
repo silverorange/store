@@ -174,16 +174,84 @@ abstract class StoreCartPage extends StoreArticlePage
 	}
 
 	// }}}
+	// {{{ protected function getAvailableMoveRenderer()
+
+	protected function getAvailableMoveRenderer()
+	{
+		$view = $this->ui->getWidget('available_cart_view');
+		$column = $view->getColumn('move_column');
+		return $column->getRendererByPosition(); 
+	}
+
+	// }}}
+	// {{{ protected function getAvailableRemoveRenderer()
+
+	protected function getAvailableRemoveRenderer()
+	{
+		$view = $this->ui->getWidget('available_cart_view');
+		$column = $view->getColumn('remove_column');
+		return $column->getRendererByPosition(); 
+	}
+
+	// }}}
+	// {{{ protected function getAvailableQuantityRenderer()
+
+	protected function getAvailableQuantityRenderer()
+	{
+		$view = $this->ui->getWidget('available_cart_view');
+		$column = $view->getColumn('quantity_column');
+		return $column->getRendererByPosition(); 
+	}
+
+	// }}}
+	// {{{ protected function getUnavailableRemoveRenderer()
+
+	protected function getUnavailableRemoveRenderer()
+	{
+		$view = $this->ui->getWidget('unavailable_cart_view');
+		$column = $view->getColumn('remove_column');
+		return $column->getRendererByPosition(); 
+	}
+
+	// }}}
+	// {{{ protected function getUnavailableMoveRenderer()
+
+	protected function getUnavailableMoveRenderer()
+	{
+		$view = $this->ui->getWidget('unavailable_cart_view');
+		$column = $view->getColumn('move_column');
+		return $column->getRendererByPosition(); 
+	}
+
+	// }}}
+	// {{{ protected function getSavedMoveRenderer()
+
+	protected function getSavedMoveRenderer()
+	{
+		$view = $this->ui->getWidget('saved_cart_view');
+		$column = $view->getColumn('move_column');
+		return $column->getRendererByPosition(); 
+	}
+
+	// }}}
+	// {{{ protected function getSavedRemoveRenderer()
+
+	protected function getSavedRemoveRenderer()
+	{
+		$view = $this->ui->getWidget('saved_cart_view');
+		$column = $view->getColumn('remove_column');
+		return $column->getRendererByPosition(); 
+	}
+
+	// }}}
 	// {{{ protected function updateCheckoutCart()
 
 	protected function updateCheckoutCart()
 	{
 		$message_display = $this->ui->getWidget('message_display');
-		$available_view = $this->ui->getWidget('available_cart_view');
 
 		// check for removed available items
-		$remove_column = $available_view->getColumn('remove_column');
-		$remove_renderer = $remove_column->getRendererByPosition(); 
+		$remove_renderer = $this->getAvailableRemoveRenderer();
 		$item_removed = false;
 		$num_items_removed = 0;
 		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
@@ -198,11 +266,7 @@ abstract class StoreCartPage extends StoreArticlePage
 
 		// check for removed unavailable items
 		if (!$item_removed) {
-			$unavailable_view = $this->ui->getWidget('unavailable_cart_view');
-			$remove_column =
-				$unavailable_view->getColumn('remove_column');
-
-			$remove_renderer = $remove_column->getRendererByPosition(); 
+			$remove_renderer = $this->getUnavailableRemoveRenderer();
 			foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
 				if ($widget->hasBeenClicked()) {
 					$item_removed = true;
@@ -217,10 +281,8 @@ abstract class StoreCartPage extends StoreArticlePage
 		// check for moved available items
 		$item_moved = false;
 		if (!$item_removed) {
-			$quantity_column = $available_view->getColumn('quantity_column');
-			$quantity_renderer = $quantity_column->getRendererByPosition(); 
-			$move_column = $available_view->getColumn('move_column');
-			$move_renderer = $move_column->getRendererByPosition(); 
+			$quantity_renderer = $this->getAvailableQuantityRenderer();
+			$move_renderer = $this->getAvailableMoveRenderer();
 			foreach ($move_renderer->getClonedWidgets() as $id => $widget) {
 				if ($widget->hasBeenClicked()) {
 					$entry = $this->app->cart->checkout->getEntryById($id);
@@ -246,8 +308,7 @@ abstract class StoreCartPage extends StoreArticlePage
 
 		// check for moved unavailable items
 		if (!$item_removed && !$item_moved) {
-			$move_column = $unavailable_view->getColumn('move_column');
-			$move_renderer = $move_column->getRendererByPosition(); 
+			$move_renderer = $this->getUnavailableMoveRenderer();
 			foreach ($move_renderer->getClonedWidgets() as $id => $widget) {
 				if ($widget->hasBeenClicked()) {
 					$entry = $this->app->cart->checkout->getEntryById($id);
@@ -272,8 +333,7 @@ abstract class StoreCartPage extends StoreArticlePage
 		$item_updated = false;
 		$num_items_updated = 0;
 		if (!$item_removed && !$item_moved) {
-			$quantity_column = $available_view->getColumn('quantity_column');
-			$quantity_renderer = $quantity_column->getRendererByPosition(); 
+			$quantity_renderer = $this->getAvailableQuantityRenderer();
 			foreach ($quantity_renderer->getClonedWidgets() as $id => $widget) {
 				if (!$widget->hasMessage()) {
 					$entry = $this->app->cart->checkout->getEntryById($id);
@@ -340,13 +400,11 @@ abstract class StoreCartPage extends StoreArticlePage
 	protected function removeAllAvailableCheckoutCart()
 	{
 		$message_display = $this->ui->getWidget('message_display');
-		$view = $this->ui->getWidget('available_cart_view');
 
 		$num_removed_items = 0;
 
-		// remove column is just used to get cart ids that were displayed
-		$remove_column = $view->getColumn('remove_column');
-		$remove_renderer = $remove_column->getRendererByPosition(); 
+		// pick an arbitrary renderer to iterate existing entry ids
+		$remove_renderer = $this->getAvailableRemoveRenderer();
 		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
 			$entry = $this->app->cart->checkout->getEntryById($id);
 
@@ -376,13 +434,11 @@ abstract class StoreCartPage extends StoreArticlePage
 	protected function removeAllUnavailableCheckoutCart()
 	{
 		$message_display = $this->ui->getWidget('message_display');
-		$view = $this->ui->getWidget('unavailable_cart_view');
 
 		$num_removed_items = 0;
 
-		// remove column is just used to get cart ids that were displayed
-		$remove_column = $view->getColumn('remove_column');
-		$remove_renderer = $remove_column->getRendererByPosition(); 
+		// pick an arbitrary renderer to iterate existing entry ids
+		$remove_renderer = $this->getUnavailableRemoveRenderer();
 		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
 			$entry = $this->app->cart->checkout->getEntryById($id);
 
@@ -410,12 +466,10 @@ abstract class StoreCartPage extends StoreArticlePage
 	protected function updateSavedCart()
 	{
 		$message_display = $this->ui->getWidget('message_display');
-		$saved_view = $this->ui->getWidget('saved_cart_view');
 
 		// check for removed saved items
 		$item_removed = false;
-		$remove_column = $saved_view->getColumn('remove_column');
-		$remove_renderer = $remove_column->getRendererByPosition(); 
+		$remove_renderer = $this->getSavedRemoveRenderer();
 		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
 			if ($widget->hasBeenClicked()) {
 				$item_removed = true;
@@ -428,8 +482,7 @@ abstract class StoreCartPage extends StoreArticlePage
 		// check for item being moved to checkout 
 		$item_moved = false;
 		if (!$item_removed) {
-			$move_column = $saved_view->getColumn('move_column');
-			$move_renderer = $move_column->getRendererByPosition(); 
+			$move_renderer = $this->getSavedMoveRenderer();
 			foreach ($move_renderer->getClonedWidgets() as $id => $widget) {
 				if ($widget->hasBeenClicked()) {
 					$entry = $this->app->cart->saved->getEntryById($id);
@@ -470,11 +523,11 @@ abstract class StoreCartPage extends StoreArticlePage
 	protected function moveAllSavedCart()
 	{
 		$message_display = $this->ui->getWidget('message_display');
-		$saved_view = $this->ui->getWidget('saved_cart_view');
 
 		$num_moved_items = 0;
-		$move_column = $saved_view->getColumn('move_column');
-		$move_renderer = $move_column->getRendererByPosition(); 
+
+		// pick an arbitrary renderer to iterate existing entry ids
+		$move_renderer = $this->getSavedMoveColumn();
 		foreach ($move_renderer->getClonedWidgets() as $id => $widget) {
 			$entry = $this->app->cart->saved->getEntryById($id);
 
@@ -506,13 +559,11 @@ abstract class StoreCartPage extends StoreArticlePage
 	protected function removeAllSavedCart()
 	{
 		$message_display = $this->ui->getWidget('message_display');
-		$view = $this->ui->getWidget('saved_cart_view');
 
 		$num_removed_items = 0;
 
-		// remove column is just used to get cart ids that were displayed
-		$remove_column = $view->getColumn('remove_column');
-		$remove_renderer = $remove_column->getRendererByPosition(); 
+		// pick an arbitrary renderer to iterate existing entry ids
+		$remove_renderer = $this->getSavedRemoveRenderer();
 		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
 			$entry = $this->app->cart->saved->getEntryById($id);
 
