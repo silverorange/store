@@ -185,7 +185,13 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 	 */
 	protected function getItemId($sku)
 	{
-		$sql = sprintf('select id from Item where sku = %s',
+		$sql = sprintf('select id from Item
+			inner join VisibleProductCache on
+				Item.product = VisibleProductCache.product and
+					VisibleProductCache.region = %s
+			where lower(sku) = %s
+			limit 1',
+			$this->db->quote($this->app->getRegion()->id, 'integer'),
 			$this->app->db->quote($sku, 'text'));
 
 		$item = SwatDB::queryOne($this->app->db, $sql);
