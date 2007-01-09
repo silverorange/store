@@ -191,7 +191,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 					VisibleProductCache.region = %s
 			where lower(sku) = %s
 			limit 1',
-			$this->db->quote($this->app->getRegion()->id, 'integer'),
+			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
 			$this->app->db->quote($sku, 'text'));
 
 		$item = SwatDB::queryOne($this->app->db, $sql);
