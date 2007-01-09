@@ -157,7 +157,12 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	protected function getItemSql()
 	{
 		$sku = strtolower($this->sku);
-		$sql = sprintf('select id from Item where lower(sku) = %s',
+		$sql = sprintf('select id from Item
+			inner join VisibleProductCache on
+				Item.product = VisibleProductCache.product and
+					VisibleProductCache.region = %s
+			where lower(sku) = %s',
+			$this->db->quote($this->region->id, 'integer'),
 			$this->db->quote($sku, 'text'));
 
 		return $sql;
