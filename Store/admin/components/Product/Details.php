@@ -619,86 +619,9 @@ class StoreProductDetails extends AdminIndex
 	}
 
 	// }}}
-	// {{{ private function buildItemGroups()
+	// {{{ protected function getItemsTableStore()
 
-	private function buildItemGroups()
-	{
-		$view = $this->ui->getWidget('items_view');
-		$group_header = $view->getGroup('group');
-		$groups = $this->queryItemGroups();
-		$has_items = (count($groups) > 0);
-
-		// if there is one row and the groupnum is 0 then there are no
-		// item_groups with items in them for this product
-		if (count($groups) == 0) {
-			// there are no items
-		} elseif (count($groups) == 1 && $groups->getFirst()->item_group == 0) {
-			$num_groups = 0;
-		} elseif ($groups->getFirst()->item_group == 0) {
-			$num_groups = count($groups) - 1;
-		} else {
-			$num_groups = count($groups);
-		}
-
-		$group_info = array();
-		foreach ($groups as $group)
-			$group_info[$group->item_group] = $group->num_items;
-		
-		$group_header->group_info = $group_info;
-
-		$order_link = $this->ui->getWidget('items_order');
-
-		if ($has_items) {
-			if ($num_groups == 0) {
-				// order items link orders items
-				// and don't show group headers
-				$group_header->visible = false;
-				// order link is insensitive if there is only 1 item
-				$order_link->sensitive = ($groups->getFirst()->num_items > 1);
-			} elseif ($num_groups == 1) {
-				// order groups link is not sensitive.
-				// order items through the group header
-				$order_link->title = Store::_('Change Group Order');
-				$order_link->sensitive = false;
-			} else {
-				// order items link orders item_groups
-				$order_link->title = Store::_('Change Group Order');
-				$order_link->link = 'ItemGroup/Order?product=%s';
-			}
-		} else {
-			$order_link->sensitive = false;
-		}
-	}
-
-	// }}}
-	// {{{ private function queryItemGroups()
-
-	private function queryItemGroups()
-	{
-		// get information about item groups used in this product
-		$sql = 'select
-					-- coalesce to 0 to match select query in getTableView()
-					coalesce(item_group, 0) as item_group,
-					count(id) as num_items
-				from Item where
-					product = %s and
-					(item_group is null or
-					item_group in (select id from ItemGroup where product = %s))
-				group by item_group
-				-- make sure the empty group is first
-				order by item_group desc';
-				
-		$sql = sprintf($sql,
-			$this->app->db->quote($this->id, 'integer'),
-			$this->app->db->quote($this->id, 'integer'));
-
-		return SwatDB::query($this->app->db, $sql);
-	}
-
-	// }}}
-	// {{{ private function getItemsTableStore()
-
-	private function getItemsTableStore($view)
+	protected function getItemsTableStore($view)
 	{
 		/*
 		 * This dynamic SQL is needed to make the table orderable by the price
@@ -782,6 +705,83 @@ class StoreProductDetails extends AdminIndex
 		}
 
 		return $store;
+	}
+
+	// }}}
+	// {{{ private function buildItemGroups()
+
+	private function buildItemGroups()
+	{
+		$view = $this->ui->getWidget('items_view');
+		$group_header = $view->getGroup('group');
+		$groups = $this->queryItemGroups();
+		$has_items = (count($groups) > 0);
+
+		// if there is one row and the groupnum is 0 then there are no
+		// item_groups with items in them for this product
+		if (count($groups) == 0) {
+			// there are no items
+		} elseif (count($groups) == 1 && $groups->getFirst()->item_group == 0) {
+			$num_groups = 0;
+		} elseif ($groups->getFirst()->item_group == 0) {
+			$num_groups = count($groups) - 1;
+		} else {
+			$num_groups = count($groups);
+		}
+
+		$group_info = array();
+		foreach ($groups as $group)
+			$group_info[$group->item_group] = $group->num_items;
+		
+		$group_header->group_info = $group_info;
+
+		$order_link = $this->ui->getWidget('items_order');
+
+		if ($has_items) {
+			if ($num_groups == 0) {
+				// order items link orders items
+				// and don't show group headers
+				$group_header->visible = false;
+				// order link is insensitive if there is only 1 item
+				$order_link->sensitive = ($groups->getFirst()->num_items > 1);
+			} elseif ($num_groups == 1) {
+				// order groups link is not sensitive.
+				// order items through the group header
+				$order_link->title = Store::_('Change Group Order');
+				$order_link->sensitive = false;
+			} else {
+				// order items link orders item_groups
+				$order_link->title = Store::_('Change Group Order');
+				$order_link->link = 'ItemGroup/Order?product=%s';
+			}
+		} else {
+			$order_link->sensitive = false;
+		}
+	}
+
+	// }}}
+	// {{{ private function queryItemGroups()
+
+	private function queryItemGroups()
+	{
+		// get information about item groups used in this product
+		$sql = 'select
+					-- coalesce to 0 to match select query in getTableView()
+					coalesce(item_group, 0) as item_group,
+					count(id) as num_items
+				from Item where
+					product = %s and
+					(item_group is null or
+					item_group in (select id from ItemGroup where product = %s))
+				group by item_group
+				-- make sure the empty group is first
+				order by item_group desc';
+				
+		$sql = sprintf($sql,
+			$this->app->db->quote($this->id, 'integer'),
+			$this->app->db->quote($this->id, 'integer'));
+
+		return SwatDB::query($this->app->db, $sql);
 	}
 
 	// }}}
