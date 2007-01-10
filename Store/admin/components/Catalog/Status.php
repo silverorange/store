@@ -121,12 +121,12 @@ abstract class StoreCatalogStatus extends AdminDBEdit
 
 	// }}}
 	// {{{ abstract protected function saveStatus()
+
 	/**
 	 * Each subclass must do its own saving of status
 	 * 
-	 * @return boolean true if a catalog has been enabled in any region
+	 * @return boolean true if a catalog has been enabled in any region.
 	 */
-
 	abstract protected function saveStatus();
 
 	// }}}
