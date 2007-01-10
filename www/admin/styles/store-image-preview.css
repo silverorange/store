@@ -32,13 +32,13 @@
 	width: 100%;
 }
 
-#categories_frame .sub-categories {
+#categories_frame {
 	clear: right;
 }
 
 #category_image_frame {
 	width: 240px;
-	height: 76px;
+	height: 104px;
 }
 
 #category_image_frame .swat-frame-contents {
