@@ -781,11 +781,7 @@ abstract class StoreCartPage extends StoreArticlePage
 		$ds->price = $entry->getCalculatedItemPrice();
 		$ds->extension = $entry->getExtension();
 		$ds->message = null;
-
-		if ($entry->item->product->primary_category === null)
-			$ds->product_link = null;
-		else
-			$ds->product_link = 'store/'.$entry->item->product->path;
+		$ds->product_link = 'store/'.$entry->item->product->path;
 
 		return $ds;
 	}

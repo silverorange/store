@@ -190,7 +190,9 @@ class StoreProduct extends StoreDataObject
 		if ($this->hasInternalValue('path') &&
 			$this->getInternalValue('path') !== null) {
 			$path = $this->getInternalValue('path').'/'.$this->shortname;
-		} elseif ($this->hasInternalValue('primary_category')) {
+		} elseif ($this->hasInternalValue('primary_category') &&
+			$this->getInternalValue('primary_category') !== null) {
+
 			$primary_category = $this->getInternalValue('primary_category');
 
 			$sql = sprintf('select getCategoryPath(%s)',
@@ -198,6 +200,8 @@ class StoreProduct extends StoreDataObject
 
 			$path = SwatDB::queryOne($this->db, $sql);
 			$path.= '/'.$this->shortname;
+		} else {
+			$path = $this->shortname;
 		}
 
 		return $path;
