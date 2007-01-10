@@ -48,6 +48,9 @@ abstract class StoreLocaleApplication extends StoreApplication
 	// }}}
 	// {{{ public function getLocale()
 
+	/**
+	 * @return string
+	 */
 	public function getLocale()
 	{
 		return $this->locale;
@@ -56,6 +59,9 @@ abstract class StoreLocaleApplication extends StoreApplication
 	// }}}
 	// {{{ public function getRegion()
 
+	/**
+	 * @return StoreRegion
+	 */
 	public function getRegion()
 	{
 		return $this->region;
