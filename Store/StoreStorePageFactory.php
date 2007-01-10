@@ -157,17 +157,42 @@ class StoreStorePageFactory
 		$db = $this->app->db;
 		$region_id = $this->app->getRegion()->id;
 
-		$product_shortname = array_pop($path);
-		$category_id = $this->findCategory($path);
+		if (count($path) > 1) {
+			$product_shortname = array_pop($path);
+			$category_id = $this->findCategory($path);
 
-		if ($category_id !== null) {
+			if ($category_id !== null) {
+				$sql = 'select id from Product where shortname = %s
+					and id in 
+					(select product from CategoryProductBinding
+					where category = %s)
+					and id in
+					(select product from VisibleProductCache where region = %s)';
+
+				$sql = sprintf($sql,
+					$db->quote($product_shortname, 'text'),
+					$db->quote($category_id, 'integer'),
+					$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+
+				$product_id = SwatDB::queryOne($db, $sql);
+			}
+		} else {
+			/*
+			 * Last chance: look for uncategorized products that are visible
+			 * due to the site-specific implementation of VisibleProductView.
+			 */
+			$product_shortname = current($path);
+			$category_id = null;
+
 			$sql = 'select id from Product where shortname = %s
-				and id in 
-				(select product from CategoryProductBinding where category = %s)';
+				and id not in 
+				(select product from CategoryProductBinding)
+				and id in
+				(select product from VisibleProductCache where region = %s)';
 
 			$sql = sprintf($sql,
 				$db->quote($product_shortname, 'text'),
-				$db->quote($category_id, 'integer'));
+				$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
 			$product_id = SwatDB::queryOne($db, $sql);
 		}
