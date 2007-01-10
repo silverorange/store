@@ -1,3 +1,381 @@
+2007-01-10  nrf
+
+	* [r14269] store/trunk/Store/dataobjects/StoreProduct.php,
+	  store/trunk/Store/pages/StoreCartPage.php:
+	  Build links properly for uncategorized products.
+	* [r14268] store/trunk/Store/StoreStorePageFactory.php:
+	  Respect VisibleProductView when querying for products and allow
+	  the loading of uncategorized products.
+
+2007-01-10  nick
+
+	* [r14264] store/trunk/Store/admin/components/Product/Details.php:
+	  Make the table store method protected so that uppermost can
+	  re-order the
+	  results.
+
+2007-01-10  gauthierm
+
+	* [r14257] store/trunk/Store/StoreLocaleApplication.php:
+	  Add some bare-bones documentation of getLocale() and getRegion().
+	* [r14256] store/trunk/Store/admin/components/Catalog/Status.php:
+	  Fix docblock.
+
+2007-01-09  gauthierm
+
+	* [r14242] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  use correct db reference
+	* [r14240] store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Filter items by visiblity by default on quickorder.
+	* [r14239] store/trunk/Store/StoreQuickOrderItemSelector.php:
+	  Filter items using the visible product cache by default
+
+2007-01-08  gauthierm
+
+	* [r14227] store/trunk/Store/pages/StoreCartPage.php:
+	  Make it easier to use a different column layout in site code.
+	  This is part of ticket #472.
+
+2007-01-08  isaac
+
+	* [r14209]
+	  store/trunk/Store/admin/components/Product/RelatedProduct.php,
+	  store/trunk/Store/admin/components/Product/details.xml:
+	  do r14208 in store and then some ws
+
+2007-01-07  gauthierm
+
+	* [r14205] store/trunk/Store/StorePaymentProvider.php,
+	  store/trunk/Store/StorePaymentRequest.php,
+	  store/trunk/Store/StoreProtxPaymentProvider.php,
+	  store/trunk/Store/StoreProtxPaymentRequest.php:
+	  New transaction type: abort.
+	* [r14204] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Remove two methods that were discontinued by Protx in Jaunary
+	  2007
+	* [r14203] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Better address tring.
+	* [r14202] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Add more optional fields to Protx payment processing. Some of
+	  these fields are required for AVS checks.
+	* [r14201] store/trunk/Store/StorePaymentProvider.php:
+	  Docblock fix
+	* [r14200] store/trunk/Store/StorePaymentProvider.php:
+	  Added a method to control whether or not AVS is used for
+	  transactions.
+
+2007-01-05  nick
+
+	* [r14198] store/trunk/www/styles/store-checkout-address-page.css:
+	  Make postal code and country appear on separate lines.
+
+2007-01-05  gauthierm
+
+	* [r14196] store/trunk/Store/StorePaymentProvider.php,
+	  store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Work in progress high-level API for payment processing.
+	* [r14195] store/trunk/Store/StorePayflowProPaymentRequest.php,
+	  store/trunk/Store/StorePaymentRequest.php,
+	  store/trunk/Store/StoreProtxPaymentRequest.php:
+	  Rename some constants.
+
+2007-01-04  gauthierm
+
+	* [r14192] store/trunk/Store/StoreProtxPaymentRequest.php:
+	  Add some documentation
+	* [r14191]
+	  store/trunk/Store/exceptions/StorePaymentErrorException.php,
+	  store/trunk/Store/exceptions/StorePaymentException.php,
+	  store/trunk/Store/exceptions/StorePaymentInvalidException.php,
+	  store/trunk/Store/exceptions/StorePaymentMalformedException.php,
+	  store/trunk/Store/exceptions/StorePaymentNotAuthorizedException.php,
+	  store/trunk/Store/exceptions/StorePaymentRejectedException.php:
+	  Add a base class for payment exceptions
+	* [r14190] store/trunk/Store/StoreProtxPaymentResponse.php:
+	  Remove newline so we can see exactly what the server sends back
+	* [r14188]
+	  store/trunk/Store/exceptions/StoreUnimplementedException.php:
+	  Exception for unimplemented methods.
+
+2007-01-04  nick
+
+	* [r14186] store/trunk/Store/pages/checkout-cart.xml:
+	  Displaying the quantity was only needed for veseys gifts (the
+	  xml file is
+	  already over-written in veseys)
+	* [r14184] store/trunk/Store/pages/checkout-cart.xml:
+	  I believe has_message is a veseys-only setting. It appears that
+	  veseys pages
+	  implement this themselves.
+
+2007-01-04  gauthierm
+
+	* [r14178] store/trunk/Store/pages/StoreCategoryPage.php:
+	  This comment doesn't apply to store code.
+
+2007-01-04  steven
+
+	* [r14177] store/trunk/Store/StoreYeOldePriceCellRenderer.php:
+	  Give StoreYeOldePriceCellRenderer a CSS class of it's own
+
+2007-01-04  gauthierm
+
+	* [r14176] store/trunk/Store/StorePaymentRequest.php:
+	  Documentation fixes
+	* [r14175] store/trunk/Store/StoreProtxPaymentResponse.php:
+	  Add a newline to output.
+	* [r14174]
+	  store/trunk/Store/exceptions/StorePaymentErrorException.php,
+	  store/trunk/Store/exceptions/StorePaymentInvalidException.php,
+	  store/trunk/Store/exceptions/StorePaymentMalformedException.php,
+	  store/trunk/Store/exceptions/StorePaymentNotAuthorizedException.php,
+	  store/trunk/Store/exceptions/StorePaymentRejectedException.php:
+	  New exceptions for payment processing/.
+	* [r14172] store/trunk/Store/StoreYeOldeMoneyCellRenderer.php,
+	  store/trunk/Store/StoreYeOldePriceCellRenderer.php:
+	  rename class
+	* [r14167] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Add a new method to get a short description of an order
+	* [r14166] store/trunk/Store/StoreProtxPaymentRequest.php:
+	  Better error handling and URL construction.
+
+2007-01-03  gauthierm
+
+	* [r14137]
+	  store/trunk/Store/admin/components/Product/include/StoreItemGroupAction.php:
+	  
+	  Fix JavaScript in item group action widget. Finishes #326.
+	* [r14136] store/trunk/Store/admin/components/Item/Edit.php,
+	  store/trunk/www/admin/javascript/store-item-edit-page.js:
+	  Make item edit page JavaScript work. Fixes part of #326.
+
+2007-01-02  gauthierm
+
+	* [r14134]
+	  store/trunk/www/admin/javascript/store-item-group-action.js:
+	  Remove references to Veseys and use Yahoo UI to do heavy lifting.
+	* [r14133]
+	  store/trunk/www/admin/javascript/store-item-edit-page.js:
+	  Remove Veseys specific code and use Yahoo UI to do heavy lifting.
+	* [r14129]
+	  store/trunk/www/admin/javascript/store-item-edit-page.js,
+	  store/trunk/www/admin/javascript/store-item-group-action.js:
+	  Copy admin JavaScript from Veseys.
+	* [r14127] store/trunk/www/admin/javascript:
+	  new dir
+	* [r14122] store/trunk/Store/StoreCreditCardExpiryEntry.php:
+	  Zero the time and day on the valid start date for credit card
+	  expiry entry. Also explicitly check for -1 instead of less than
+	  0 for isValid(). Fixes #439: Can't checkout with a credit card
+	  that expires this month.
+	* [r14119]
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php:
+	  Don't try to set the valid start date for credit card expiry on
+	  the checkout page. The credit card expiry date widget does this
+	  automatically and correctly.
+
+2007-01-02  steven
+
+	* [r14117] store/trunk/www/admin/styles/store-image-preview.css:
+	  Fix overzealous styles
+
+2006-12-27  gauthierm
+
+	* [r14091]
+	  store/trunk/Store/admin/components/Category/AddProducts.php:
+	  Fix parse error
+
+2006-12-27  isaac
+
+	* [r14087] store/trunk/Store/admin/components/Catalog/Status.php,
+	  store/trunk/www/admin/styles/store-image-preview.css:
+	  fix catalog tool and veseys exception from 11:06 today
+	* [r14081]
+	  store/trunk/Store/admin/components/Category/AddProducts.php:
+	  ws
+
+2006-12-23  gauthierm
+
+	* [r14074] store/trunk/Store/StoreProtxPaymentResponse.php:
+	  Documentation
+	* [r14073] store/trunk/Store/StoreProtxPaymentRequest.php:
+	  Documentation!
+
+2006-12-21  gauthierm
+
+	* [r14068] store/trunk/Store/StoreNateGoSearchIndexer.php:
+	  Unset correct variables in search indexer.
+	* [r14065] store/trunk/Store/StoreNateGoSearchIndexer.php:
+	  Split re-queueing into protected methods for each search type.
+	* [r14062] store/trunk/Store/StorePaymentResponse.php:
+	  docs and folding
+	* [r14061] store/trunk/Store/StorePaymentRequest.php:
+	  MORE documentation
+	* [r14060] store/trunk/Store/StorePaymentRequest.php:
+	  Make getTypeString() static.
+	* [r14059] store/trunk/Store/StorePaymentRequest.php:
+	  documentation
+	* [r14058] store/trunk/Store/StorePaymentRequest.php:
+	  More docs
+	* [r14055] store/trunk/Store/StorePaymentRequest.php:
+	  More documentation.
+	* [r14054] store/trunk/Store/StorePaymentRequest.php:
+	  Some documentation.
+
+2006-12-20  nick
+
+	* [r14049] store/trunk/Store/StoreTotalRow.php:
+	  Add option content_type for the note.
+
+2006-12-20  gauthierm
+
+	* [r14045] store/trunk/Store/StorePayflowProPaymentRequest.php,
+	  store/trunk/Store/StorePaymentRequest.php,
+	  store/trunk/Store/StorePaymentResponse.php,
+	  store/trunk/Store/StoreProtxPaymentRequest.php,
+	  store/trunk/Store/StoreProtxPaymentResponse.php:
+	  First checkin of payment processing abilities to the store
+	  package. These classes are all undocumented works in progress.
+	  I'm checking this in just so I can track changes, not because it
+	  is ready to be used. I'm also working on convenience
+	  methods/classes to make it so you can process a StoreOrder
+	  object without having to speak the protocol of the payment
+	  provider.
+	* [r14044] store/trunk/Store/dataobjects/StorePaymentType.php:
+	  remove note that accidentally got comitted.
+	* [r14043] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Use new methods in StorePaymentType for
+	  StorePaymentMethod::display*() methods.
+	* [r14042] store/trunk/Store/dataobjects/StorePaymentMethod.php,
+	  store/trunk/Store/dataobjects/StorePaymentType.php:
+	  move formatCreditCardNumber() method from PaymentMethod to
+	  PaymentType.
+	* [r14041] store/trunk/Store/dataobjects/StorePaymentType.php:
+	  Add standard credit card masks to StorePaymentType dataobject.
+	  Also remove bankcard from the list of conventional payment type
+	  shortnames as all bankcard transactions cease 19 January 2007.
+	* [r14040] store/trunk/Store/dataobjects/StorePaymentType.php:
+	  add a couple more non-card payment shortnames to documentation.
+	* [r14039] store/trunk/Store/dataobjects/StorePaymentType.php:
+	  Add some handy documentation for payment type shortnames
+	* [r14018] store/trunk/Store/dataobjects/StorePaymentMethod.php,
+	  store/trunk/sql/tables/AccountPaymentMethod.sql,
+	  store/trunk/sql/tables/OrderPaymentMethod.sql:
+	  new payment method fields for supporting debit cards.
+	* [r14006] store/trunk/Store/admin/components/Item/Order.php,
+	  store/trunk/Store/admin/components/Product/ImageOrder.php:
+	  More descriptive order updated messages for ticket #406.
+	* [r14005] store/trunk/Store/pages/StoreCartPage.php:
+	  Add an Id to message display on saved cart.
+
+2006-12-19  gauthierm
+
+	* [r13972] store/trunk/Store/StoreArticlePageFactory.php:
+	  Fix misleading exception string
+
+2006-12-18  steven
+
+	* [r13944] store/trunk/Store/admin/StoreAdminMenuView.php:
+	  Add accesskey for quick search.
+	  I used "4" as the access key as it's convension for search:
+	  http://diveintoaccessibility.org/day_29_making_everything_searchable.html
+
+2006-12-18  gauthierm
+
+	* [r13943] store/trunk/Store/StoreYeOldeMoneyCellRenderer.php:
+	  set locale properly.
+	* [r13942] store/trunk/Store/StoreYeOldeMoneyCellRenderer.php:
+	  extend StoreItemPriceCellRenderer instead.
+	* [r13941] store/trunk/Store/StoreYeOldeMoneyCellRenderer.php:
+	  New cell renderer for rendering ye'olde style monies.
+
+2006-12-15  isaac
+
+	* [r13925]
+	  store/trunk/Store/admin/components/Category/ImageEdit.php,
+	  store/trunk/Store/admin/components/Product/ImageEdit.php:
+	  a couple more bad occurances of ->add()
+
+2006-12-14  nick
+
+	* [r13919] store/trunk/Store/dataobjects/StoreLocale.php,
+	  store/trunk/Store/pages/StoreNotVisiblePage.php:
+	  Added a locale getTitle() method that can be used in the
+	  side-bar locale
+	  switcher and on the new notVisible pages
+	* [r13918] store/trunk/Store/StoreArticlePageFactory.php,
+	  store/trunk/Store/StoreStorePageFactory.php,
+	  store/trunk/Store/pages/StoreArticleNotVisiblePage.php,
+	  store/trunk/Store/pages/StoreArticlePage.php,
+	  store/trunk/Store/pages/StoreCategoryNotVisiblePage.php,
+	  store/trunk/Store/pages/StoreCategoryPage.php,
+	  store/trunk/Store/pages/StoreNotVisiblePage.php,
+	  store/trunk/Store/pages/StorePage.php,
+	  store/trunk/Store/pages/StoreProductNotVisiblePage.php,
+	  store/trunk/Store/pages/StoreProductPage.php,
+	  store/trunk/Store/pages/not-visible-page.xml:
+	  A refactoring of Store pages and factories to allow the display
+	  of special
+	  pages in the case that a page is not visible. This gives the
+	  user better
+	  feedback when they switch locales on the website. If the page is
+	  not available
+	  in a given region, but is available in another, a friendly
+	  message lets them
+	  know and provides links to the region with the
+	  article/category/product.
+
+2006-12-14  isaac
+
+	* [r13910] store/trunk/Store/admin/components/Product/Details.php,
+	  store/trunk/Store/admin/components/Product/details.xml:
+	  show the add new item action (and hide the others), when there
+	  are no items in the items table view - this fixes #417
+
+2006-12-14  gauthierm
+
+	* [r13905] store/trunk/Store/pages/StoreNateGoSearchPage.php:
+	  Don't pass result object to search methods because it is already
+	  a protected class property.
+	* [r13904] store/trunk/Store/pages/StoreNateGoSearchPage.php,
+	  store/trunk/Store/pages/StoreSearchPage.php:
+	  Changes to search pages:
+	  - add a method to see whether or not a search was performed
+	  - remove type hinting so we can pass null as result
+	  - rename search_result as nate_go_search_result
+
+2006-12-14  nick
+
+	* [r13903] store/trunk/Store/dataobjects/StoreRegion.php:
+	  Bring sql up to date
+	* [r13901] store/trunk/Store/pages/StoreProductPage.php:
+	  Make a displayPhotos method.
+	* [r13900] store/trunk/Store/dataobjects/StoreRegion.php:
+	  Re-order methods
+
+2006-12-14  isaac
+
+	* [r13896] store/trunk/Store/admin/components/Product/Details.php:
+	  make validate function protected so we can override it on sites
+
+2006-12-13  nick
+
+	* [r13890] store/trunk/Store/pages/StoreStorePage.php:
+	  For some reason region was being passed to the sql even though
+	  there's only one
+	  %s
+
+2006-12-13  gauthierm
+
+	* [r13889] store/trunk/Store/StorePostalCodeEntry.php:
+	  In validateByState(), truncate long codes at 5 characters.
+	  Prepend short codes with 0.
+
+2006-12-13  nrf
+
+	* [r13882] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.3.3
+
 2006-12-13  isaac
 
 	* [r13881]
