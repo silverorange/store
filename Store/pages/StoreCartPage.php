@@ -527,7 +527,7 @@ abstract class StoreCartPage extends StoreArticlePage
 		$num_moved_items = 0;
 
 		// pick an arbitrary renderer to iterate existing entry ids
-		$move_renderer = $this->getSavedMoveColumn();
+		$move_renderer = $this->getSavedMoveRenderer();
 		foreach ($move_renderer->getClonedWidgets() as $id => $widget) {
 			$entry = $this->app->cart->saved->getEntryById($id);
 
