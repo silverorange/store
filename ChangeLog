@@ -1,5 +1,7 @@
 2007-01-10  nrf
 
+	* [r14286] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.4.0
 	* [r14269] store/trunk/Store/dataobjects/StoreProduct.php,
 	  store/trunk/Store/pages/StoreCartPage.php:
 	  Build links properly for uncategorized products.
