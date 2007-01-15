@@ -111,8 +111,9 @@
 						</object>
 						<object class="AdminGroupLinkCellRenderer" id="order">
 							<property name="text" translatable="yes">change item order</property>
-							<property name="link">Item/Order?item_group=%s</property>
-							<property name="link_value" type="data">item_group_id</property>
+							<property name="link">Item/Order?item_group=%s&amp;product=%s</property>
+							<property name="link_value[]" type="data">item_group_id</property>
+							<property name="link_value[]" type="data">product.id</property>
 						</object>
 					</object>
 					<object class="SwatTableViewCheckboxColumn" id="checkbox">

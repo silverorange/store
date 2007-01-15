@@ -98,12 +98,16 @@ class StoreItemOrder extends AdminDBOrder
 
 	protected function loadData()
 	{ 
-		if ($this->item_group_id !== null)
-			$where_clause = sprintf('item_group = %s',
-				$this->app->db->quote($this->item_group_id, 'integer'));
-		else
-			$where_clause = sprintf('product = %s',
+		if ($this->item_group_id === null)
+			$where_clause = sprintf('Item.product = %s',
 				$this->app->db->quote($this->product_id, 'integer'));
+		elseif ($this->item_group_id == 0)
+			$where_clause = sprintf('Item.item_group is null and Item.product = %s',
+				$this->app->db->quote($this->product_id, 'integer'));
+		else
+			$where_clause = sprintf('Item.item_group = %s',
+				$this->app->db->quote($this->item_group_id, 'integer'));
+
 
 		$order_widget = $this->ui->getWidget('order');
 
