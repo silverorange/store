@@ -227,9 +227,10 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 				$this->getDocumentType(StoreSearchPage::TYPE_ARTICLES),
 				'integer'));
 
-		$where_clause = sprintf('where Article.searchable = true and
+		$where_clause = sprintf('where Article.searchable = %s and
 			Article.id in
 				(select id from VisibleArticleView where region = %s)',
+			$this->app->db->quote(true, 'boolean'),
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
 		$total_articles = SwatDB::queryOne($this->app->db,
