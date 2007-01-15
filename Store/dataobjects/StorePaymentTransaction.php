@@ -16,6 +16,31 @@ require_once 'Store/dataobjects/StoreDataObject.php';
  */
 class StorePaymentMethod extends StoreDataObject
 {
+	// {{{ class constants
+
+	/**
+	 * Field was checked and passed checks
+	 */
+	const STATUS_PASSED     = 0;
+
+	/**
+	 * Field was checked and failed checks
+	 */
+	const STATUS_FAILED     = 1;
+
+	/**
+	 * Field may or may not have been provided but was not checked either
+	 * because check is not supported by card provider or the developer opted
+	 * not to check AVS fields.
+	 */
+	const STATUS_NOTCHECKED = 2;
+
+	/**
+	 * Field was not provided and thus not checked
+	 */
+	const STATUS_MISSING    = 3;
+
+	// }}}
 	// {{{ public properties
 
 	/**
@@ -41,6 +66,36 @@ class StorePaymentMethod extends StoreDataObject
 	 * @var string
 	 */
 	public $security_key;
+
+	/**
+	 * Status of address check
+	 *
+	 * One of StorePaymentTransaction::STATUS_*.
+	 * {@link StorePaymentTransaction::STATUS_NOTCHECKED} by default.
+	 *
+	 * @var integer
+	 */
+	public $address_status = self::STATUS_NOTCHECKED;
+
+	/**
+	 * Status of zip/postal code check
+	 *
+	 * One of StorePaymentTransaction::STATUS_*.
+	 * {@link StorePaymentTransaction::STATUS_NOTCHECKED} by default.
+	 *
+	 * @var integer
+	 */
+	public $postal_code_status = self::STATUS_NOTCHECKED;
+
+	/**
+	 * Status of card verification value check
+	 *
+	 * One of StorePaymentTransaction::STATUS_*.
+	 * {@link StorePaymentTransaction::STATUS_NOTCHECKED} by default.
+	 *
+	 * @var integer
+	 */
+	public $card_verification_value_status = self::STATUS_NOTCHECKED;
 
 	// }}}
 	// {{{ protected function init()
