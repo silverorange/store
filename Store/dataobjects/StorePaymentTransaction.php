@@ -14,7 +14,7 @@ require_once 'Store/dataobjects/StoreDataObject.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StorePaymentProvider
  */
-class StorePaymentMethod extends StoreDataObject
+class StorePaymentTransaction extends StoreDataObject
 {
 	// {{{ class constants
 
