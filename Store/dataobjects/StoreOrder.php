@@ -20,6 +20,34 @@ require_once 'Store/dataobjects/StoreLocale.php';
  */
 class StoreOrder extends StoreDataObject
 {
+	// {{{ class constants
+
+	/**
+	 * Payment not authorized or received, the default state for orders
+	 */
+	const STATUS_INITIALIZED = 1;
+
+	/**
+	 * Payment is authorized but not received
+	 */
+	const STATUS_AUTHORIZED  = 2;
+
+	/**
+	 * Payment is received and order is ready for shipping
+	 */
+	const STATUS_BILLED      = 3;
+
+	/**
+	 * Order is shipped
+	 */
+	const STATUS_SHIPPED     = 4;
+
+	/**
+	 * Shipping provider has confirmed delivery of the order
+	 */
+	const STATUS_DELIVERED   = 5;
+	
+	// }}}
 	// {{{ public properties
 
 	/**
@@ -84,6 +112,15 @@ class StoreOrder extends StoreDataObject
 	 * @var float
 	 */
 	public $tax_total;
+
+	/**
+	 * Status of the order
+	 *
+	 * One of the StoreOrder::STATUS_* constants.
+	 *
+	 * @var integer
+	 */
+	public $status = self::STATUS_INITIALIZED;
 
 	// }}}
 	// {{{ public function getSubtotal()
