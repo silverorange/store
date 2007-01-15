@@ -12,11 +12,11 @@ require_once 'SwatDB/SwatDB.php';
  */
 class StoreItemOrder extends AdminDBOrder
 {
-	// {{{ private properties
+	// {{{ protected properties
 
-	private $item_group_id;
-	private $product_id;
-	private $category_id;
+	protected $item_group_id;
+	protected $product_id;
+	protected $category_id;
 
 	// }}}
 
