@@ -205,7 +205,7 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 			$this->app->session->account->addresses->getByIndex($this->id);
 
 		if ($address === null)
-			throw new SiteNotFoundException.php(
+			throw new SiteNotFoundException(
 				sprintf('An address with an id of ‘%d’ does not exist.',
 				$this->id));
 
