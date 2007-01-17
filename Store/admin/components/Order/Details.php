@@ -51,7 +51,10 @@ abstract class StoreOrderDetails extends AdminPage
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
 		$this->ui->loadFromXML($this->ui_xml);
-		$this->ui->getRoot()->addStyleSheet('styles/order-details.css', 1);
+
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/admin/styles/store-order-details.css',
+			Store::PACKAGE_ID));
 
 		$this->id = SiteApplication::initVar('id');
 		$this->account = SiteApplication::initVar('account');
