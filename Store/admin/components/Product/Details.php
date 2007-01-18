@@ -445,7 +445,7 @@ class StoreProductDetails extends AdminIndex
 	// build phase - product details
 	// {{{ protected function buildProductDetails()
 
-	protected function buildProductDetails($product)
+	protected function getProductDetailStore($product)
 	{
 		$ds = new SwatDetailsStore($product);
 
@@ -461,8 +461,29 @@ class StoreProductDetails extends AdminIndex
 		$ds->bodytext = SwatString::condense(SwatString::toXHTML(
 			$product->bodytext));
 
+		return $ds;
+	}
+
+	// }}}
+	// {{{ private function buildProduct()
+
+	private function buildProduct()
+	{
+		$product = $this->loadProduct();
+
+		$ds = $this->getProductDetailStore($product);
 		$details_view = $this->ui->getWidget('details_view');
 		$details_view->data = $ds;
+
+		$details_frame = $this->ui->getWidget('details_frame');
+		$details_frame->title = Store::_('Product');
+		$details_frame->subtitle = $product->title;
+		$this->title = $product->title;
+
+		$toolbar = $this->ui->getWidget('details_toolbar');
+		$this->buildCategoryToolBarLinks($toolbar);
+		$this->buildViewInStoreToolLinks($product);
+		$this->buildNavBar($product);
 	}
 
 	// }}}
@@ -517,26 +538,6 @@ class StoreProductDetails extends AdminIndex
 
 			echo '</ul>';
 		}
-	}
-
-	// }}}
-	// {{{ private function buildProduct()
-
-	private function buildProduct()
-	{
-		$product = $this->loadProduct();
-
-		$this->buildProductDetails($product);
-
-		$details_frame = $this->ui->getWidget('details_frame');
-		$details_frame->title = Store::_('Product');
-		$details_frame->subtitle = $product->title;
-		$this->title = $product->title;
-
-		$toolbar = $this->ui->getWidget('details_toolbar');
-		$this->buildCategoryToolBarLinks($toolbar);
-		$this->buildViewInStoreToolLinks($product);
-		$this->buildNavBar($product);
 	}
 
 	// }}}
