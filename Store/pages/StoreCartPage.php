@@ -250,129 +250,43 @@ abstract class StoreCartPage extends StoreArticlePage
 	{
 		$message_display = $this->ui->getWidget('message_display');
 
-		// check for removed available items
-		$remove_renderer = $this->getAvailableRemoveRenderer();
-		$item_removed = false;
-		$num_items_removed = 0;
-		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
-			if ($widget->hasBeenClicked()) {
-				$item_removed = true;
-				$num_items_removed++;
-				$this->app->cart->checkout->removeEntryById($id);
+		$num_entries_moved   = 0;
+		$num_entries_removed = 0;
+		$num_entries_updated = 0;
 
-				break;
-			}
+		$num_entries_removed = $this->removeAvailableEntries();
+
+		if ($num_entries_removed == 0)
+			$num_entries_removed = $this->removeUnavailableEntries();
+
+		if ($num_entries_removed == 0)
+			$num_entries_moved = $this->moveAvailableEntries();
+
+		if ($num_entries_removed == 0 && $num_entries_moved == 0)
+			$num_entries_moved = $this->moveUnavailableEntries();
+
+		if ($num_entries_removed == 0 && $num_entries_moved == 0) {
+			$result = $this->updateAvailableEntries();
+			$num_entries_updated = $result['num_entries_updated'];
+			$num_entries_removed = $result['num_entries_removed'];
 		}
 
-		// check for removed unavailable items
-		if (!$item_removed) {
-			$remove_renderer = $this->getUnavailableRemoveRenderer();
-			foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
-				if ($widget->hasBeenClicked()) {
-					$item_removed = true;
-					$num_items_removed++;
-					$this->app->cart->checkout->removeEntryById($id);
-
-					break;
-				}
-			}
-		}
-
-		// check for moved available items
-		$item_moved = false;
-		if (!$item_removed) {
-			$quantity_renderer = $this->getAvailableQuantityRenderer();
-			$move_renderer = $this->getAvailableMoveRenderer();
-			foreach ($move_renderer->getClonedWidgets() as $id => $widget) {
-				if ($widget->hasBeenClicked()) {
-					$entry = $this->app->cart->checkout->getEntryById($id);
-
-					// make sure entry wasn't already moved
-					// (i.e. a page resubmit)
-					if ($entry === null)
-						break;
-
-					$quantity = $quantity_renderer->getWidget($id)->value;
-
-					$this->added_entry_ids[] = $id;
-					$item_moved = true;
-
-					$entry->setQuantity($quantity);
-					$this->app->cart->checkout->removeEntry($entry);
-					$this->app->cart->saved->addEntry($entry);
-
-					break;
-				}
-			}
-		}
-
-		// check for moved unavailable items
-		if (!$item_removed && !$item_moved) {
-			$move_renderer = $this->getUnavailableMoveRenderer();
-			foreach ($move_renderer->getClonedWidgets() as $id => $widget) {
-				if ($widget->hasBeenClicked()) {
-					$entry = $this->app->cart->checkout->getEntryById($id);
-
-					// make sure entry wasn't already moved
-					// (i.e. a page resubmit)
-					if ($entry === null)
-						break;
-
-					$this->added_entry_ids[] = $id;
-					$item_moved = true;
-
-					$this->app->cart->checkout->removeEntry($entry);
-					$this->app->cart->saved->addEntry($entry);
-
-					break;
-				}
-			}
-		}
-
-		// check for updated items
-		$item_updated = false;
-		$num_items_updated = 0;
-		if (!$item_removed && !$item_moved) {
-			$quantity_renderer = $this->getAvailableQuantityRenderer();
-			foreach ($quantity_renderer->getClonedWidgets() as $id => $widget) {
-				if (!$widget->hasMessage()) {
-					$entry = $this->app->cart->checkout->getEntryById($id);
-					if ($entry !== null &&
-						$entry->getQuantity() !== $widget->value) {
-						$this->updated_entry_ids[] = $id;
-						$this->app->cart->checkout->setEntryQuantity($entry,
-							$widget->value);
-						
-						if ($widget->value > 0) {
-							$num_items_updated++;
-							$item_updated = true;
-						} else {
-							$num_items_removed++;
-							$item_removed = true;
-						}
-
-						$widget->value = $entry->getQuantity();
-					}
-				}
-			}
-		}
-
-		if ($item_removed)
+		if ($num_entries_removed > 0)
 			$message_display->add(new StoreMessage(sprintf(Store::ngettext(
 				'One item has been removed from shopping cart.',
 				'%s items have been removed from shopping cart.', 
-				$num_items_removed),
-				SwatString::numberFormat($num_items_removed)),
+				$num_entries_removed),
+				SwatString::numberFormat($num_entries_removed)),
 				StoreMessage::CART_NOTIFICATION));
 
-		if ($item_updated)
+		if ($num_entries_updated > 0)
 			$message_display->add(new StoreMessage(sprintf(Store::ngettext(
 				'One item quantity updated.', '%s item quantities updated.',
-				$num_items_updated),
-				SwatString::numberFormat($num_items_updated)),
+				$num_entries_updated),
+				SwatString::numberFormat($num_entries_updated)),
 				StoreMessage::CART_NOTIFICATION));
 
-		if ($item_moved) {
+		if ($num_entries_moved > 0) {
 			$moved_message = new StoreMessage(
 				Store::_('One item has been saved for later.'),
 				StoreMessage::CART_NOTIFICATION);
@@ -583,6 +497,159 @@ abstract class StoreCartPage extends StoreArticlePage
 				$num_removed_items),
 				SwatString::numberFormat($num_removed_items)),
 				StoreMessage::CART_NOTIFICATION));
+	}
+
+	// }}}
+	// {{{ protected function moveAvailableEntries()
+
+	/**
+	 * @return integer the number of entries that were moved.
+	 */
+	protected function moveAvailableEntries()
+	{
+		$num_entries_moved = 0;
+
+		$quantity_renderer = $this->getAvailableQuantityRenderer();
+		$move_renderer = $this->getAvailableMoveRenderer();
+		foreach ($move_renderer->getClonedWidgets() as $id => $widget) {
+			if ($widget->hasBeenClicked()) {
+				$entry = $this->app->cart->checkout->getEntryById($id);
+
+				// make sure entry wasn't already moved
+				// (i.e. a page resubmit)
+				if ($entry === null)
+					break;
+
+				$quantity = $quantity_renderer->getWidget($id)->value;
+
+				$this->added_entry_ids[] = $id;
+				$num_entries_moved++;
+
+				$entry->setQuantity($quantity);
+				$this->app->cart->checkout->removeEntry($entry);
+				$this->app->cart->saved->addEntry($entry);
+
+				break;
+			}
+		}
+
+		return $num_entries_moved;
+	}
+
+	// }}}
+	// {{{ protected function removeAvailableEntries()
+
+	/**
+	 * @return integer the number of entries that were removed.
+	 */
+	protected function removeAvailableEntries()
+	{
+		$num_entries_removed = 0;
+
+		$remove_renderer = $this->getAvailableRemoveRenderer();
+		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
+			if ($widget->hasBeenClicked()) {
+				$num_entries_removed++;
+				$this->app->cart->checkout->removeEntryById($id);
+
+				break;
+			}
+		}
+
+		return $num_entries_removed;
+	}
+
+	// }}}
+	// {{{ protected function moveUnavailableEntries()
+
+	/**
+	 * @return integer the number of entries that were moved.
+	 */
+	protected function moveUnavailableEntries()
+	{
+		$num_entries_moved = 0;
+
+		$move_renderer = $this->getUnavailableMoveRenderer();
+		foreach ($move_renderer->getClonedWidgets() as $id => $widget) {
+			if ($widget->hasBeenClicked()) {
+				$entry = $this->app->cart->checkout->getEntryById($id);
+
+				// make sure entry wasn't already moved
+				// (i.e. a page resubmit)
+				if ($entry === null)
+					break;
+
+				$this->added_entry_ids[] = $id;
+				$num_entries_moved++;
+
+				$this->app->cart->checkout->removeEntry($entry);
+				$this->app->cart->saved->addEntry($entry);
+
+				break;
+			}
+		}
+
+		return $num_entries_moved;
+	}
+
+	// }}}
+	// {{{ protected function removeUnavailableEntries()
+
+	/**
+	 * @return integer the number of entries that were removed.
+	 */
+	protected function removeUnavailableEntries()
+	{
+		$num_entries_removed = 0;
+
+		$remove_renderer = $this->getUnavailableRemoveRenderer();
+		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
+			if ($widget->hasBeenClicked()) {
+				$num_entries_removed++;
+				$this->app->cart->checkout->removeEntryById($id);
+
+				break;
+			}
+		}
+
+		return $num_entries_removed;
+	}
+
+	// }}}
+	// {{{ protected function updateAvailableEntries()
+
+	/**
+	 * @return integer the number of entries that were updated.
+	 */
+	protected function updateAvailableEntries()
+	{
+		$num_entries_updated = 0;
+		$num_entries_removed = 0;
+
+		$quantity_renderer = $this->getAvailableQuantityRenderer();
+		foreach ($quantity_renderer->getClonedWidgets() as $id => $widget) {
+			if (!$widget->hasMessage()) {
+				$entry = $this->app->cart->checkout->getEntryById($id);
+				if ($entry !== null &&
+					$entry->getQuantity() !== $widget->value) {
+					$this->updated_entry_ids[] = $id;
+					$this->app->cart->checkout->setEntryQuantity($entry,
+						$widget->value);
+					
+					if ($widget->value > 0)
+						$num_entries_updated++;
+					else
+						$num_entries_removed++;
+
+					$widget->value = $entry->getQuantity();
+				}
+			}
+		}
+
+		return array(
+			'num_entries_updated' => $num_entries_updated,
+			'num_entries_removed' => $num_entries_removed,
+		);
 	}
 
 	// }}}
