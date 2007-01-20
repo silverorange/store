@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Store/pages/StoreCheckoutUIPage.php';
+require_once 'Store/StoreMessage.php';
 require_once 'Swat/SwatString.php';
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
@@ -117,19 +118,19 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 	{
 		$message_display = $this->ui->getWidget('message_display');
 
-		$num_moved_entries   = 0;
-		$num_removed_entries = 0;
-		$num_updated_entries = 0;
+		$num_entries_moved   = 0;
+		$num_entries_removed = 0;
+		$num_entries_updated = 0;
 
-		$num_removed_entries += $this->processRemovedEntries();
+		$num_entries_removed += $this->processRemovedEntries();
 
-		if ($num_removed_entries == 0)
-			$num_moved_entries += $this->processMovedEntries();
+		if ($num_entries_removed == 0)
+			$num_entries_moved += $this->processMovedEntries();
 
-		if ($num_removed_entries == 0 && $num_moved_entries == 0) {
+		if ($num_entries_removed == 0 && $num_entries_moved == 0) {
 			$result = $this->processUpdatedEntries();
-			$num_removed_entries += $reuslt['num_removed_entries'];
-			$num_updated_entries += $reuslt['num_updated_entries'];
+			$num_entries_removed += $result['num_entries_removed'];
+			$num_entries_updated += $result['num_entries_updated'];
 		}
 
 		if ($num_entries_removed > 0) {
