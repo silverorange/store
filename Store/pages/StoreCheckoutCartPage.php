@@ -134,7 +134,7 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 		}
 
 		if ($num_entries_removed > 0) {
-			$message_display->add(new SwatMessage(sprintf(Store::ngettext(
+			$message_display->add(new StoreMessage(sprintf(Store::ngettext(
 				'One item has been removed from shopping cart.',
 				'%s items have been removed form shopping cart.',
 				$num_entries_removed),
@@ -143,14 +143,13 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 		}
 
 		if ($num_entries_moved > 0) {
-			$message_display = $this->ui->getWidget('message_display');
-			$message_display->add(new SwatMessage(
+			$message_display->add(new StoreMessage(
 				Store::_('One item has been saved for later.'),
 				StoreMessage::CART_NOTIFICATION));
 		}
 
 		if ($num_entries_updated > 0) {
-			$message_display->add(new SwatMessage(sprintf(Store::ngettext(
+			$message_display->add(new StoreMessage(sprintf(Store::ngettext(
 				'One item quantity has been updated.',
 				'%s item quantities have been updated.',
 				$num_entries_updated),
@@ -167,7 +166,6 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 
 	protected function processRemovedEntries()
 	{
-		$message_display = $this->ui->getWidget('message_display');
 		$remove_renderer = $this->getRemoveRenderer();
 
 		$num_entries_removed = 0;
@@ -188,7 +186,6 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 
 	protected function processMovedEntries()
 	{
-		$message_display = $this->ui->getWidget('message_display');
 		$quantity_renderer = $this->getQuantityRenderer();
 		$move_renderer = $this->getMoveRenderer();
 
@@ -220,7 +217,6 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 
 	protected function processUpdatedEntries()
 	{
-		$message_display = $this->ui->getWidget('message_display');
 		$quantity_renderer = $this->getQuantityRenderer();
 
 		$num_entries_removed = 0;
