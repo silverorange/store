@@ -254,21 +254,21 @@ abstract class StoreCartPage extends StoreArticlePage
 		$num_entries_removed = 0;
 		$num_entries_updated = 0;
 
-		$num_entries_removed = $this->removeAvailableEntries();
+		$num_entries_removed += $this->removeAvailableEntries();
 
 		if ($num_entries_removed == 0)
-			$num_entries_removed = $this->removeUnavailableEntries();
+			$num_entries_removed += $this->removeUnavailableEntries();
 
 		if ($num_entries_removed == 0)
-			$num_entries_moved = $this->moveAvailableEntries();
+			$num_entries_moved += $this->moveAvailableEntries();
 
 		if ($num_entries_removed == 0 && $num_entries_moved == 0)
-			$num_entries_moved = $this->moveUnavailableEntries();
+			$num_entries_moved += $this->moveUnavailableEntries();
 
 		if ($num_entries_removed == 0 && $num_entries_moved == 0) {
 			$result = $this->updateAvailableEntries();
-			$num_entries_updated = $result['num_entries_updated'];
-			$num_entries_removed = $result['num_entries_removed'];
+			$num_entries_updated += $result['num_entries_updated'];
+			$num_entries_removed += $result['num_entries_removed'];
 		}
 
 		if ($num_entries_removed > 0)
@@ -281,7 +281,8 @@ abstract class StoreCartPage extends StoreArticlePage
 
 		if ($num_entries_updated > 0)
 			$message_display->add(new StoreMessage(sprintf(Store::ngettext(
-				'One item quantity updated.', '%s item quantities updated.',
+				'One item quantity has been updated.',
+				'%s item quantities have been updated.',
 				$num_entries_updated),
 				SwatString::numberFormat($num_entries_updated)),
 				StoreMessage::CART_NOTIFICATION));
@@ -384,10 +385,10 @@ abstract class StoreCartPage extends StoreArticlePage
 		$num_entries_moved   = 0;
 		$num_entries_removed = 0;
 
-		$num_entries_removed = $this->removeSavedEntries();
+		$num_entries_removed += $this->removeSavedEntries();
 
 		if ($num_entries_removed == 0)
-			$num_entries_moved = $this->moveSavedEntries();
+			$num_entries_moved += $this->moveSavedEntries();
 
 		if ($num_entries_removed > 0)
 			$message_display->add(new StoreMessage(
