@@ -81,13 +81,84 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 	}
 
 	// }}}
+	// {{{ protected function getMoveRenderer()
+
+	protected function getMoveRenderer()
+	{
+		$view = $this->ui->getWidget('cart_view');
+		$column = $view->getColumn('move_column');
+		return $column->getRendererByPosition(); 
+	}
+
+	// }}}
+	// {{{ protected function getRemoveRenderer()
+
+	protected function getRemoveRenderer()
+	{
+		$view = $this->ui->getWidget('cart_view');
+		$column = $view->getColumn('remove_column');
+		return $column->getRendererByPosition(); 
+	}
+
+	// }}}
+	// {{{ protected function getQuantityRenderer()
+
+	protected function getQuantityRenderer()
+	{
+		$view = $this->ui->getWidget('cart_view');
+		$column = $view->getColumn('quantity_column');
+		return $column->getRendererByPosition(); 
+	}
+
+	// }}}
 	// {{{ protected function processEntries()
 
 	protected function processEntries()
 	{
-		if (!$this->processRemovedEntries())
-			if (!$this->processMovedEntries())
-				$this->processUpdatedEntries();
+		$message_display = $this->ui->getWidget('message_display');
+
+		$num_moved_entries   = 0;
+		$num_removed_entries = 0;
+		$num_updated_entries = 0;
+
+		$num_removed_entries += $this->processRemovedEntries();
+
+		if ($num_removed_entries == 0)
+			$num_moved_entries += $this->processMovedEntries();
+
+		if ($num_removed_entries == 0 && $num_moved_entries == 0) {
+			$result = $this->processUpdatedEntries();
+			$num_removed_entries += $reuslt['num_removed_entries'];
+			$num_updated_entries += $reuslt['num_updated_entries'];
+		}
+
+		if ($num_entries_removed > 0) {
+			$message_display->add(new SwatMessage(sprintf(Store::ngettext(
+				'One item has been removed from shopping cart.',
+				'%s items have been removed form shopping cart.',
+				$num_entries_removed),
+				SwatString::numberFormat($num_entries_removed)),
+				StoreMessage::CART_NOTIFICATION));
+		}
+
+		if ($num_entries_moved > 0) {
+			$message_display = $this->ui->getWidget('message_display');
+			$message_display->add(new SwatMessage(
+				Store::_('One item has been saved for later.'),
+				StoreMessage::CART_NOTIFICATION));
+		}
+
+		if ($num_entries_updated > 0) {
+			$message_display->add(new SwatMessage(sprintf(Store::ngettext(
+				'One item quantity has been updated.',
+				'%s item quantities have been updated.',
+				$num_entries_updated),
+				SwatString::numberFormat($num_entries_removed)),
+				StoreMessage::CART_NOTIFICATION));
+		}
+
+		foreach ($this->app->cart->checkout->getMessages() as $message)
+			$message_display->add($message);
 	}
 
 	// }}}
@@ -95,11 +166,11 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 
 	protected function processRemovedEntries()
 	{
-		$view = $this->ui->getWidget('cart_view');
-		$remove_column = $view->getColumn('remove_column');
-		$remove_renderer = $remove_column->getRendererByPosition(); 
+		$message_display = $this->ui->getWidget('message_display');
+		$remove_renderer = $this->getRemoveRenderer();
 
 		$num_entries_removed = 0;
+
 		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
 			if ($widget->hasBeenClicked()) {
 				$num_entries_removed++;
@@ -108,16 +179,7 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 			}
 		}
 
-		if ($num_entries_removed > 0) {
-			$message_display = $this->ui->getWidget('message_display');
-			$message_display->add(new SwatMessage(sprintf(Store::ngettext(
-				'One item has been removed from shopping cart.',
-				'%s items have been removed form shopping cart.',
-				$num_entries_removed),
-				SwatString::numberFormat($num_entries_removed))));
-		}
-
-		return ($num_entries_removed > 0);
+		return $num_entries_removed;
 	}
 
 	// }}}
@@ -125,13 +187,12 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 
 	protected function processMovedEntries()
 	{
-		$view = $this->ui->getWidget('cart_view');
-		$quantity_column = $view->getColumn('quantity_column');
-		$quantity_renderer = $quantity_column->getRendererByPosition(); 
-		$move_column = $view->getColumn('move_column');
-		$move_renderer = $move_column->getRendererByPosition();
+		$message_display = $this->ui->getWidget('message_display');
+		$quantity_renderer = $this->getQuantityRenderer();
+		$move_renderer = $this->getMoveRenderer();
 
-		$entry_moved = false;
+		$num_entries_moved = 0;
+
 		foreach ($move_renderer->getClonedWidgets() as $id => $widget) {
 			if ($widget->hasBeenClicked()) {
 				$entry = $this->app->cart->checkout->getEntryById($id);
@@ -145,18 +206,12 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 				$entry->setQuantity($quantity);
 				$this->app->cart->checkout->removeEntry($entry);
 				$this->app->cart->saved->addEntry($entry);
-				$entry_moved = true;
+				$num_entries_moved++;
 				break;
 			}
 		}
 
-		if ($entry_moved) {
-			$message_display = $this->ui->getWidget('message_display');
-			$message_display->add(new SwatMessage(
-				Store::_('One item has been saved for later.')));
-		}
-
-		return $entry_moved;
+		return $num_entries_moved;
 	}
 
 	// }}}
@@ -165,9 +220,7 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 	protected function processUpdatedEntries()
 	{
 		$message_display = $this->ui->getWidget('message_display');
-		$view = $this->ui->getWidget('cart_view');
-		$quantity_column = $view->getColumn('quantity_column');
-		$quantity_renderer = $quantity_column->getRendererByPosition(); 
+		$quantity_renderer = $this->getQuantityRenderer();
 
 		$num_entries_removed = 0;
 		$num_entries_updated = 0;
@@ -191,26 +244,10 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 			}
 		}
 
-		$message_display = $this->ui->getWidget('message_display');
-
-		if ($num_entries_updated > 0) {
-			$message_display->add(new SwatMessage(sprintf(Store::ngettext(
-				'One item quantity has been updated.',
-				'%s item quantities have been updated.',
-				$num_entries_updated),
-				SwatString::numberFormat($num_entries_updated))));
-		}
-
-		if ($num_entries_removed > 0) {
-			$message_display->add(new SwatMessage(sprintf(Store::ngettext(
-				'One item has been removed from shopping cart.',
-				'%s items have been removed form shopping cart.',
-				$num_entries_removed),
-				SwatString::numberFormat($num_entries_removed))));
-		}
-
-		foreach ($this->app->cart->checkout->getMessages() as $message)
-			$message_display->add($message);
+		return array(
+			'num_entries_updated' => $num_entries_updated,
+			'num_entries_removed' => $num_entries_removed,
+		);
 	}
 
 	// }}}
