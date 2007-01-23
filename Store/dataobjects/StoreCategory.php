@@ -4,6 +4,7 @@ require_once 'Swat/SwatNavBarEntry.php';
 require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreCategoryImage.php';
 require_once 'Store/dataobjects/StoreArticleWrapper.php';
+require_once 'Store/dataobjects/StoreRegion.php';
 
 /**
  * A category for an e-commerce web application
@@ -104,14 +105,17 @@ class StoreCategory extends StoreDataObject
 	// }}}
 	// {{{ protected properties
 
-	protected $join_region = null;
+	/**
+	 * @var StoreRegion
+	 */
+	protected $region = null;
 
 	// }}}
 	// {{{ public function setRegion()
 
-	public function setRegion($region)
+	public function setRegion(StoreRegion $region)
 	{
-		$this->join_region = $region;
+		$this->region = $region;
 	}
 
 	// }}}
@@ -186,7 +190,7 @@ class StoreCategory extends StoreDataObject
 				where region = %s and category = %s';
 
 			$sql = sprintf($sql,
-				$this->db->quote($this->join_region, 'integer'),
+				$this->db->quote($this->region->id, 'integer'),
 				$this->db->quote($this->id, 'integer'));
 
 			$product_count = SwatDB::queryOne($this->db, $sql);
