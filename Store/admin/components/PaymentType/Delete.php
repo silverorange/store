@@ -6,12 +6,13 @@ require_once 'Admin/AdminListDependency.php';
 require_once 'Admin/AdminSummaryDependency.php';
 
 /**
- * Delete confirmation page for PaymentType
+ * Delete confirmation page for payment types
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2005-2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class PaymentTypeDelete extends AdminDBDelete
+class StorePaymentTypeDelete extends AdminDBDelete
 {
 	// process phase
 	// {{{ protected function processDBData()

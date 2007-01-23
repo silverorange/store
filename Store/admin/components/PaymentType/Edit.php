@@ -6,12 +6,13 @@ require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatMessage.php';
 
 /**
- * Edit page for PaymentType
+ * Edit page for payment types
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2005-2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class PaymentTypeEdit extends AdminDBEdit
+class StorePaymentTypeEdit extends AdminDBEdit
 {
 	// {{{ private properties
 
@@ -129,4 +130,5 @@ class PaymentTypeEdit extends AdminDBEdit
 
 	// }}}
 }
+
 ?>
