@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'Store/dataobjects/StoreQuantityDiscountRegionBindingWrapper.php';
 
 /**
  * Quantity discount object
@@ -16,7 +17,7 @@ require_once 'Store/dataobjects/StoreDataObject.php';
  * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreQuantityDiscount extends SwatDBDataObject
+class StoreQuantityDiscount extends StoreDataObject
 {
 	// {{{ public properties
 
@@ -47,6 +48,31 @@ class StoreQuantityDiscount extends SwatDBDataObject
 	 * @var integer
 	 */
 	public $price;
+
+	// }}}
+	// {{{ protected function init()
+
+	protected function init()
+	{
+		$this->table = 'QuantityDiscount';
+		$this->id_field = 'integer:id';
+	}
+
+	// }}}
+	// {{{ protected function loadRegionBindings()
+
+	protected function loadRegionBindings()
+	{
+		$sql = 'select * from QuantityDiscountRegionBinding
+			where quantity_discount = %s';
+
+		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+
+		$wrapper = $this->class_map->resolveClass(
+			'StoreQuantityDiscountRegionBindingWrapper');
+
+		return SwatDB::query($this->db, $sql, $wrapper);
+	}
 
 	// }}}
 }
