@@ -169,7 +169,7 @@ class StoreProductPage extends StoreStorePage
 		$product_class = $class_map->resolveClass('StoreProduct');
 		$this->product = new $product_class();
 		$this->product->setDatabase($this->app->db);
-		$this->product->setRegion($this->app->getRegion()->id);
+		$this->product->setRegion($this->app->getRegion());
 		$this->product->load($id);
 	}
 
@@ -269,7 +269,7 @@ class StoreProductPage extends StoreStorePage
 		// load item manually here so we can specify region
 		$item = new Item();
 		$item->setDatabase($this->app->db);
-		$item->setRegion($this->app->getRegion()->id);
+		$item->setRegion($this->app->getRegion());
 		$item->load($item_id);
 
 		$cart_entry->item = $item;

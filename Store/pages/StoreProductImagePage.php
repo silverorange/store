@@ -44,7 +44,7 @@ class StoreProductImagePage extends StoreStorePage
 		$product_class = $class_map->resolveClass('StoreProduct');
 		$this->product = new $product_class();
 		$this->product->setDatabase($this->app->db);
-		$this->product->setRegion($this->app->getRegion()->id);
+		$this->product->setRegion($this->app->getRegion());
 		$this->product->load($this->product_id);
 		$this->buildNavBar();
 		$this->layout->data->title = sprintf(Store::_('%s: Image'),

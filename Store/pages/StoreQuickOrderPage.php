@@ -232,7 +232,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		$item_class = $class_map->resolveClass('StoreItem');
 		$item = new $item_class();
 		$item->setDatabase($this->app->db);
-		$item->setRegion($this->app->getRegion()->id, false);
+		$item->setRegion($this->app->getRegion(), false);
 		$item->load($item_id);
 
 		// explicitly load product to get product path information
