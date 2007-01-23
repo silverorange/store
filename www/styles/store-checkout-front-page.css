@@ -10,6 +10,14 @@
 	margin-right: 20px;
 }
 
+#just_place_form {
+	padding: 0 16px;
+}
+
+#new_customers_frame .compact-button {
+	margin: 0;
+}
+
 #login_frame input#email_address {
 	width: 98%;
 }

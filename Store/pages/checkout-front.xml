@@ -2,27 +2,30 @@
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
-	<widget class="SwatFrame" id="new_customers_frame">
-		<property name="title" translatable="yes">New Customers</property>
-		<widget class="SwatContentBlock">
-			<property name="content" translatable="yes"><![CDATA[<h4>Create a New Account</h4><p>Creating an account will make it quicker and easier to order again when you return.</p>]]></property>
-			<property name="content_type">text/xml</property>
-		</widget>
-		<widget class="SwatForm" id="create_account_form">
-			<widget class="SwatFormField">
-				<widget class="SwatButton">
-					<property name="title" translatable="yes">Create Account</property>
+	<widget class="SwatDisplayableContainer" id="new_customers_frame">
+		<widget class="SwatFrame">
+			<property name="title" translatable="yes">New Customers</property>
+			<widget class="SwatForm" id="create_account_form">
+				<widget class="SwatContentBlock">
+					<property name="content" translatable="yes"><![CDATA[<p>Creating an account will make it quicker and easier to order again when you return.</p>]]></property>
+					<property name="content_type">text/xml</property>
+				</widget>
+				<widget class="SwatFormField">
+					<widget class="SwatButton">
+						<property name="title" translatable="yes">Create a New Account</property>
+					</widget>
 				</widget>
 			</widget>
 		</widget>
-		<widget class="SwatContentBlock">
-			<property name="content" translatable="yes"><![CDATA[<h4>Checkout as a Guest</h4><p>If you would rather not create an account, you can simply checkout as a guest.</p>]]></property>
-			<property name="content_type">text/xml</property>
-		</widget>
 		<widget class="SwatForm" id="just_place_form">
+			<widget class="SwatContentBlock">
+				<property name="content" translatable="yes"><![CDATA[<p>If you would rather not create an account, you can simply checkout as a guest.</p>]]></property>
+				<property name="content_type">text/xml</property>
+			</widget>
 			<widget class="SwatFormField">
-				<widget class="SwatButton">
+				<widget class="SwatButton" id="checkout_as_guest_button">
 					<property name="title" translatable="yes">Checkout as a Guest</property>
+					<property name="classes[]">compact-button</property>
 				</widget>
 			</widget>
 		</widget>
