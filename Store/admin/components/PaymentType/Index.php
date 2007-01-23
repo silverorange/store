@@ -5,12 +5,13 @@ require_once 'Admin/AdminTableStore.php';
 require_once 'SwatDB/SwatDB.php';
 
 /**
- * Index page for Payment Type
+ * Index page for payment types
  *
- * @package   veseys2
+ * @package   Store
  * @copyright 2005-2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class PaymentTypeIndex extends AdminIndex
+class StorePaymentTypeIndex extends AdminIndex
 {
 	// init phase
 	// {{{ protected function initInternal()
