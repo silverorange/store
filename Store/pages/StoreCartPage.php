@@ -789,7 +789,7 @@ abstract class StoreCartPage extends StoreArticlePage
 			$message->content = ob_get_clean();
 
 			if ($count == 1)
-				$unavailable_view->getRow('remove_button')->visible = false;
+				$unavailable_view->getRow('remove_all')->visible = false;
 		}
 	}
 
