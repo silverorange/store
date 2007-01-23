@@ -85,10 +85,10 @@ class StoreProduct extends StoreDataObject
 	 * The region to use when loading region-specific fields in item sub-data-
 	 * objects
 	 *
-	 * @var integer
+	 * @var StoreRegion
 	 * @see StoreProduct::setRegion()
 	 */ 
-	protected $join_region = null;
+	protected $region = null;
 
 	/**
 	 * Whether or not to exclude items unavailable in the current join region
@@ -106,14 +106,14 @@ class StoreProduct extends StoreDataObject
 	 * Sets the region to use when loading region-specific fields for item
 	 * sub-data-objects
 	 *
-	 * @param integer $join_region the unique identifier of the region to use.
+	 * @param StoreRegion $region the region to use.
 	 * @param boolean $limiting whether or not to exclude items unavailable in
 	 *                           the current join region when loading item
 	 *                           sub-data-objects.
 	 */
-	public function setRegion($region, $limiting = true)
+	public function setRegion(StoreRegion $region, $limiting = true)
 	{
-		$this->join_region = $region;
+		$this->region = $region;
 		$this->limit_by_region = $limiting;
 	}
 
@@ -156,7 +156,7 @@ class StoreProduct extends StoreDataObject
 		$items = null;
 		$wrapper = $this->class_map->resolveClass('StoreItemWrapper');
 
-		if ($this->join_region === null) {
+		if ($this->region === null) {
 			$sql = 'select id from Item where product = %s';
 			$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 			$items = call_user_func(array($wrapper, 'loadSetFromDB'),
@@ -165,7 +165,7 @@ class StoreProduct extends StoreDataObject
 			$sql = 'select id from Item where product = %s';
 			$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 			$items = call_user_func(array($wrapper, 'loadSetFromDBWithRegion'),
-				$this->db, $sql, $this->join_region, $this->limit_by_region);
+				$this->db, $sql, $this->region->id, $this->limit_by_region);
 		}
 
 		return $items;
