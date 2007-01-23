@@ -69,8 +69,7 @@ class StoreArticleOrder extends AdminDBOrder
 		$sql = 'select sum(displayorder) from Article where '.$where_clause;
 		$sum = SwatDB::queryOne($this->app->db, $sql, 'integer');
 		$options_list = $this->ui->getWidget('options');
-		$options_list->value = ($sum == 0) ? Store::_('auto') :
-			Store::_('custom');
+		$options_list->value = ($sum == 0) ? 'auto') : 'custom';
 	}
 
 	// }}}
