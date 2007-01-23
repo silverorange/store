@@ -123,15 +123,29 @@ abstract class StoreItem extends StoreDataObject
 	// }}}
 	// {{{ protected properties
 
-	protected $join_region = null;
+	/**
+	 * @var StoreRegion
+	 */
+	protected $region;
+
+	/**
+	 * @var boolean
+	 */
 	protected $limit_by_region = true;
 
 	// }}}
 	// {{{ public function setRegion()
 
-	public function setRegion($region, $limiting = true)
+	/**
+	 * Sets the region to use when loading region-specific fields for this item
+	 *
+	 * @param StoreRegion $region the region to use.
+	 * @param boolean $limiting whether or not to not load this item if it is
+	 *                           not available in the given region.
+	 */
+	public function setRegion(StoreRegion $region, $limiting = true)
 	{
-		$this->join_region = $region;
+		$this->region = $region;
 		$this->limit_by_region = $limiting;
 	}
 
@@ -299,25 +313,26 @@ abstract class StoreItem extends StoreDataObject
 	 */
 	protected function loadInternal($id)
 	{
-		if ($this->join_region === null)
-			return parent::loadInternal($id);
+		if ($this->region === null) {
+			$row = parent::loadInternal($id);
+		} else {
+			$id_field = new SwatDBField($this->id_field, 'integer');
+			$sql = 'select Item.*, ItemRegionBinding.price,
+					ItemRegionBinding.region,
+					ItemRegionBinding.enabled
+				from Item
+				%s ItemRegionBinding on item = Item.id
+					and ItemRegionBinding.region = %s
+				where Item.id = %s';
 
-		$id_field = new SwatDBField($this->id_field, 'integer');
-		$sql = 'select Item.*, ItemRegionBinding.price,
-				ItemRegionBinding.region,
-				ItemRegionBinding.enabled
-			from Item
-			%s ItemRegionBinding on item = Item.id
-				and ItemRegionBinding.region = %s
-			where Item.id = %s';
+			$sql = sprintf($sql,
+				$this->limit_by_region ? 'inner join' : 'left outer join',
+				$this->db->quote($this->region->id, 'integer'),
+				$this->db->quote($id, 'integer'));
 
-		$sql = sprintf($sql,
-			$this->limit_by_region ? 'inner join' : 'left outer join',
-			$this->db->quote($this->join_region, 'integer'),
-			$this->db->quote($id, 'integer'));
-
-		$rs = SwatDB::query($this->db, $sql, null);
-		$row = $rs->fetchRow(MDB2_FETCHMODE_ASSOC);
+			$rs = SwatDB::query($this->db, $sql, null);
+			$row = $rs->fetchRow(MDB2_FETCHMODE_ASSOC);
+		}
 
 		return $row;
 	}
