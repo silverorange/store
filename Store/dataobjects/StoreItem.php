@@ -88,6 +88,13 @@ abstract class StoreItem extends StoreDataObject
 	public $displayorder;
 
 	/**
+	 * The status of an item - backordered, etc
+	 *
+	 * @var integer
+	 */
+	public $status;
+
+	/**
 	 * If this item is enabled for the limiting region
 	 *
 	 * This field is joined from the ItemRegionBinding table; it is not a
@@ -100,13 +107,6 @@ abstract class StoreItem extends StoreDataObject
 	 *       method.
 	 */
 	public $enabled;
-
-	/**
-	 * The status of an item - backordered, etc
-	 *
-	 * @var integer
-	 */
-	public $status;
 
 	/**
 	 * Unit cost of this item
@@ -288,9 +288,6 @@ abstract class StoreItem extends StoreDataObject
 	protected function init()
 	{
 		$this->registerInternalProperty('is_available');
-		$this->registerInternalProperty('region',
-			$this->class_map->resolveClass('StoreRegion'));
-
 		$this->registerInternalProperty('product',
 			$this->class_map->resolveClass('StoreProduct'));
 
