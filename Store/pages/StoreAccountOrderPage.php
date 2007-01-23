@@ -150,7 +150,7 @@ class StoreAccountOrderPage extends StoreAccountPage
 			// load item manually here so we can specify region
 			$item = new Item();
 			$item->setDatabase($this->app->db);
-			$item->setRegion($this->app->getRegion()->id);
+			$item->setRegion($this->app->getRegion());
 			$item->load($item_id);
 
 			$cart_entry->item = $item;
