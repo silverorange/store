@@ -54,8 +54,8 @@ class StorePaymentTypeEdit extends AdminDBEdit
 			$this->ui->getWidget('shortname')->value = $shortname;
 
 		} elseif (!$this->validateShortname($shortname)) {
-			$message = new SwatMessage(
-				'Shortname already exists and must be unique.',
+			$message = new SwatMessage(Store::_(
+				'Shortname already exists and must be unique.'),
 				SwatMessage::ERROR);
 
 			$this->ui->getWidget('shortname')->addMessage($message);
@@ -101,7 +101,7 @@ class StorePaymentTypeEdit extends AdminDBEdit
 			'Region', 'id');
 
 		$message = new SwatMessage(
-			sprintf('“%s” has been saved.', $values['title']));
+			sprintf(Store::_('“%s” has been saved.'), $values['title']));
 
 		$this->app->messages->add($message);
 	}

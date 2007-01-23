@@ -3,28 +3,28 @@
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="edit_frame">
-		<property name="title">Payment Type</property>
+		<property name="title" translatable="yes">Payment Type</property>
 		<widget class="SwatForm" id="edit_form">
 			<widget class="SwatFormField">
-				<property name="title">Title</property>
+				<property name="title" translatable="yes">Title</property>
 				<widget class="SwatEntry" id="title">
 					<property name="required" type="boolean">true</property>
 					<property name="maxlength" type="integer">255</property>
 				</widget>
 			</widget>
 			<widget class="SwatFormField" id="shortname_field">
-				<property name="title">Shortname</property>
+				<property name="title" translatable="yes">Shortname</property>
 				<widget class="AdminUniqueEntry" id="shortname">
 					<property name="required" type="boolean">true</property>
 					<property name="maxlength" type="integer">100</property>
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title">Enabled?</property>
+				<property name="title" translatable="yes">Enabled?</property>
 				<widget class="SwatCheckbox" id="enabled" />
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title">Available to Customers in the following Regions</property>
+				<property name="title" translatable="yes">Available to Customers in the following Regions</property>
 				<widget class="SwatCheckboxList" id="regions" />
 			</widget>
 			<widget class="SwatFooterFormField">

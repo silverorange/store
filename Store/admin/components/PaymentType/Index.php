@@ -43,7 +43,7 @@ class StorePaymentTypeIndex extends AdminIndex
 			SwatDB::updateColumn($this->app->db, 'PaymentType', 
 				'boolean:enabled', true, 'id', $view->checked_items);
 
-			$message = new SwatMessage(sprintf(ngettext(
+			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One payment type has been enabled.',
 				'%d payment types have been enabled.', $num),
 				SwatString::numberFormat($num)));
@@ -54,7 +54,7 @@ class StorePaymentTypeIndex extends AdminIndex
 			SwatDB::updateColumn($this->app->db, 'PaymentType', 
 				'boolean:enabled', false, 'id', $view->checked_items);
 
-			$message = new SwatMessage(sprintf(ngettext(
+			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One payment type has been disabled.',
 				'%d payment types have been disabled.', $num),
 				SwatString::numberFormat($num)));

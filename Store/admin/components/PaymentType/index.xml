@@ -3,15 +3,15 @@
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="index_frame">
-		<property name="title">Payment Types</property>
+		<property name="title" translatable="yes">Payment Types</property>
 		<widget class="SwatToolbar" id="index_toolbar">
 			<widget class="SwatToolLink">
-				<property name="title">New Payment Type</property>
+				<property name="title" translatable="yes">New Payment Type</property>
 				<property name="link">PaymentType/Edit</property>
 				<property name="stock_id">create</property>
 			</widget>
 			<widget class="SwatToolLink">
-				<property name="title">Change Payment Type Order</property>
+				<property name="title" translatable="yes">Change Order</property>
 				<property name="link">PaymentType/Order</property>
 			</widget>
 		</widget>
@@ -23,7 +23,7 @@
 					</object>
 				</object>
 				<object class="AdminTableViewOrderableColumn" id="title">
-					<property name="title">Title</property>
+					<property name="title" translatable="yes">Title</property>
 					<object class="AdminTitleLinkCellRenderer">
 						<property name="text" type="data">title</property>
 						<property name="link">PaymentType/Edit?id=%s</property>
@@ -32,13 +32,13 @@
 					</object>
 				</object>
 				<object class="AdminTableViewOrderableColumn" id="shortname">
-					<property name="title">Shortname</property>
+					<property name="title" translatable="yes">Shortname</property>
 					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">shortname</property>
 					</object>
 				</object>
 				<object class="AdminTableViewOrderableColumn" id="enabled">
-					<property name="title">Enabled</property>
+					<property name="title" translatable="yes">Enabled</property>
 					<object class="SwatBooleanCellRenderer">
 						<property name="value" type="data">enabled</property>
 					</object>

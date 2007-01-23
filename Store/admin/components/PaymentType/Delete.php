@@ -30,7 +30,7 @@ class StorePaymentTypeDelete extends AdminDBDelete
 
 		$num = SwatDB::exec($this->app->db, $sql);
 
-		$message = new SwatMessage(sprintf(ngettext(
+		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One payment method has been deleted.',
 			'%d payment methods have been deleted.', $num),
 			SwatString::numberFormat($num)),
@@ -51,14 +51,17 @@ class StorePaymentTypeDelete extends AdminDBDelete
 		$item_list = $this->getItemList('integer');
 
 		$dep = new AdminListDependency();
-		$dep->setTitle('payment type', 'payment types');
+		$dep->setTitle(Store::_('payment type'), Store::_('payment types'));
 		$dep->entries = AdminListDependency::queryEntries($this->app->db,
 			'PaymentType', 'integer:id', null, 'text:title', 'id',
 			'id in ('.$item_list.')', AdminDependency::DELETE);
 
 		// dependent order payment methods
 		$dep_orders = new AdminSummaryDependency();
-		$dep_orders->setTitle('order payment method', 'order payment methods');
+		$dep_orders->setTitle(
+			Store::_('order payment method'),
+			Store::_('order payment methods'));
+
 		$dep_orders->summaries = AdminSummaryDependency::querySummaries(
 			$this->app->db, 'OrderPaymentMethod', 'integer:id',
 			'integer:payment_type', 'payment_type in ('.$item_list.')',
@@ -69,7 +72,8 @@ class StorePaymentTypeDelete extends AdminDBDelete
 		// dependent account payment methods
 		$dep_account = new AdminSummaryDependency();
 		$dep_account->setTitle(
-			'account payment method', 'account payment methods');
+			Store::_('account payment method'),
+			Store::_('account payment methods'));
 
 		$dep_account->summaries = AdminSummaryDependency::querySummaries(
 			$this->app->db, 'AccountPaymentMethod', 'integer:id',
