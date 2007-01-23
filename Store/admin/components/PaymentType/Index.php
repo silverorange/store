@@ -73,7 +73,7 @@ class StorePaymentTypeIndex extends AdminIndex
 	{
 		$sql = sprintf('select id, title, enabled, shortname
 				from PaymentType order by %s',
-			$this->getOrderByClause($view, 'title'));
+			$this->getOrderByClause($view, 'displayorder, title'));
 
 		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
 

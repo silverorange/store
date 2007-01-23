@@ -10,6 +10,10 @@
 				<property name="link">PaymentType/Edit</property>
 				<property name="stock_id">create</property>
 			</widget>
+			<widget class="SwatToolLink">
+				<property name="title">Change Payment Type Order</property>
+				<property name="link">PaymentType/Order</property>
+			</widget>
 		</widget>
 		<widget class="SwatForm" id="index_form">
 			<widget class="SwatTableView" id="index_view">
