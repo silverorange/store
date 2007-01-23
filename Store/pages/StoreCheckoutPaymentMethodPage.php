@@ -237,7 +237,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$payment_types_sql = sprintf('select id, title from PaymentType
 			inner join PaymentTypeRegionBinding on
 				payment_type = id and region = %s
-			where enabled = true order by title',
+			where enabled = true order by displayorder, title',
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
 		$payment_types = SwatDB::query($this->app->db, $payment_types_sql);
