@@ -116,6 +116,10 @@ class StoreProduct extends StoreDataObject
 	{
 		$this->region = $region;
 		$this->limit_by_region = $limiting;
+
+		if ($this->hasSubDataObject('items'))
+			foreach ($this->items as $item)
+				$item->setRegion($region, $limiting);
 	}
 
 	// }}}
@@ -166,7 +170,11 @@ class StoreProduct extends StoreDataObject
 			$sql = 'select id from Item where product = %s';
 			$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 			$items = call_user_func(array($wrapper, 'loadSetFromDBWithRegion'),
-				$this->db, $sql, $this->region->id, $this->limit_by_region);
+				$this->db, $sql, $this->region, $this->limit_by_region);
+
+			if ($items !== null)
+				foreach ($items as $item)
+					$item->setRegion($this->region);
 		}
 
 		return $items;

@@ -2,6 +2,7 @@
 
 require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreQuantityDiscountRegionBindingWrapper.php';
+require_once 'Store/dataobjects/StoreRegion.php';
 
 /**
  * Quantity discount object
@@ -42,12 +43,94 @@ class StoreQuantityDiscount extends StoreDataObject
 	 */
 	public $quantity;
 
+	// }}}
+	// {{{ protected properties
+
+	/**
+	 * @var StoreRegion
+	 */
+	protected $region;
+
+	/**
+	 * @var boolean
+	 */
+	protected $limit_by_region = true;
+
 	/**
 	 * Price of item to use at this quantity
 	 *
 	 * @var integer
 	 */
-	public $price;
+	protected $price = array();
+
+	// }}}
+	// {{{ public function setRegion()
+
+	/**
+	 * Sets the region to use when loading region-specific fields for this
+	 * quantity discount
+	 *
+	 * @param StoreRegion $region the region to use.
+	 * @param boolean $limiting whether or not to not load this quantity
+	 *                           discount if it is not available in the given
+	 *                           region.
+	 */
+	public function setRegion(StoreRegion $region, $limiting = true)
+	{
+		$this->region = $region;
+		$this->limit_by_region = $limiting;
+	}
+
+	// }}}
+	// {{{ public function getPrice()
+
+	/**
+	 * Gets the price of this quantity discount in a region
+	 *
+	 * @param StoreRegion $region optional. Region for which to get price. If
+	 *                             no region is specified, the region set using
+	 *                             {@link StoreQuantityDiscount::setRegion()}
+	 *                             is used.
+	 *
+	 * @return double the price of this quantity discount in the given region
+	 *                 or null if this quantity discount has no price in the
+	 *                 given region.
+	 */
+	public function getPrice($region = null)
+	{
+		if ($region !== null && !($region instanceof StoreRegion))
+			throw new StoreException(
+				'$region must be an instance of StoreRegion.');
+
+		// If region is not specified but is set through setRegion() use
+		// that region instead.
+		if ($region === null && $this->region !== null)
+			$region = $this->region;
+
+		// A region is required.
+		if ($region === null)
+			throw new StoreException(
+				'$region must be specified unless setRegion() is called '.
+				'beforehand.');
+
+		$price = null;
+
+		if ($this->region->id == $region->id && $this->price !== null) {
+			$price = $this->price;
+		} else {
+			// Price is not loaded, load from specified region through region
+			// bindings.
+			$region_bindings = $this->region_bindings;
+			foreach ($region_bindings as $binding) {
+				if ($binding->getInternalValue('region') == $region->id) {
+					$price = $binding->price;
+					break;
+				}
+			}
+		}
+
+		return $price;
+	}
 
 	// }}}
 	// {{{ protected function init()
@@ -56,6 +139,22 @@ class StoreQuantityDiscount extends StoreDataObject
 	{
 		$this->table = 'QuantityDiscount';
 		$this->id_field = 'integer:id';
+	}
+
+	// }}}
+	// {{{ protected function initFromRow()
+
+	protected function initFromRow($row)
+	{
+		parent::initFromRow($row);
+
+		if (is_object($row))
+			$row = get_object_vars($row);
+
+		if (isset($row['region_id'])) {
+			if (isset($row['price']))
+				$this->price[$row['region_id']] = $row['price'];
+		}
 	}
 
 	// }}}
