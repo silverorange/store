@@ -137,7 +137,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	{
 		$sql = $this->getItemSql();
 		$items = StoreItemWrapper::loadSetFromDBWithRegion(
-			$this->db, $sql, $this->region->id, false);
+			$this->db, $sql, $this->region, false);
 
 		return $items;
 	}
@@ -247,7 +247,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	{
 		$renderer = new StoreItemPriceCellRenderer();
 		$description = $item->getDescription($show_item_group);
-		$renderer->value = $item->price;
+		$renderer->value = $item->getPrice();
 		$renderer->quantity_discounts = $item->quantity_discounts;
 
 		ob_start();

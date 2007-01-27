@@ -118,7 +118,7 @@ class StoreProductPage extends StoreStorePage
 			$this->app->db, $sql, 'StoreItemGroupWrapper');
 
 		foreach ($this->product->items as $item) {
-			if ($item->enabled === true) {
+			if ($item->isEnabled()) {
 				$ds = $this->getItemDetailsStore($item);
 				$ds->tab_index = $tab_index++;
 
@@ -156,6 +156,8 @@ class StoreProductPage extends StoreStorePage
 		if (!$ds->is_available)
 			$ds->status = sprintf('<span class="item-status">%s</span>',
 				Item::getStatusTitle($item->status));
+
+		$ds->price = $item->getPrice();
 		
 		return $ds;
 	}
