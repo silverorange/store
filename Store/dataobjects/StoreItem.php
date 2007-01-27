@@ -94,33 +94,6 @@ abstract class StoreItem extends StoreDataObject
 	 */
 	public $status;
 
-	/**
-	 * If this item is enabled for the limiting region
-	 *
-	 * This field is joined from the ItemRegionBinding table; it is not a
-	 * regular field. Only read from the enabled property.
-	 *
-	 * @var boolean
-	 *
-	 * @todo I assume, like price below make this protected with either an
-	 *       accessor method or a magic get implementation or a fake autoloader
-	 *       method.
-	 */
-	public $enabled;
-
-	/**
-	 * Unit cost of this item
-	 *
-	 * This field is joined from the ItemRegionBinding table; it is not a
-	 * regular field. Only read from the price property.
-	 *
-	 * @var float
-	 *
-	 * @todo Make this protected with either an accessor method or a magic get
-	 *       implementation or a fake autoloader method.
-	 */
-	public $price;
-
 	// }}}
 	// {{{ protected properties
 
@@ -133,6 +106,33 @@ abstract class StoreItem extends StoreDataObject
 	 * @var boolean
 	 */
 	protected $limit_by_region = true;
+
+	/**
+	 * Cache of enabled state of this item indexed by region id
+	 *
+	 * This is an array of boolean values.
+	 *
+	 * @var array
+	 */
+	protected $is_enabled = array();
+
+	/**
+	 * Cache of unit cost of this item indexed by region id
+	 *
+	 * This is an array of floats.
+	 *
+	 * @var array
+	 */
+	protected $price = array();
+
+	/**
+	 * Cache of availability of this item indexed by region id
+	 *
+	 * This is an array of boolean values.
+	 *
+	 * @var array
+	 */
+	protected $is_available = array();
 
 	// }}}
 	// {{{ public function setRegion()
@@ -148,6 +148,10 @@ abstract class StoreItem extends StoreDataObject
 	{
 		$this->region = $region;
 		$this->limit_by_region = $limiting;
+
+		if ($this->hasSubDataObject('quantity_discounts'))
+			foreach ($this->quantity_discounts as $quantity_discount)
+				$quantity_discount->setRegion($region, $limiting);
 	}
 
 	// }}}
@@ -174,12 +178,9 @@ abstract class StoreItem extends StoreDataObject
 
 		// if this item has an is_available value set for the given region use
 		// it instead of performing another query
-		if ($this->hasInternalValue('region') &&
-			$this->getInternalValue('region') == $region->id &&
-			$this->hasInternalValue('is_available') &&
-			$this->getInternalValue('is_available') !== null) {
-
-			$available = $this->getInternalValue('is_available');
+		if ($this->region !== null && $this->region->id == $region->id &&
+			isset($this->is_available[$region->id])) {
+			$available = $this->is_available[$region->id];
 		} else {
 			$sql = 'select count(item) from AvailableItemView
 					where AvailableItemView.item = %s
@@ -190,9 +191,113 @@ abstract class StoreItem extends StoreDataObject
 				$this->db->quote($region->id, 'integer'));
 
 			$available = (SwatDB::queryOne($this->db, $sql) > 0);
+			$this->is_available[$region->id] = $available;
 		}
 
 		return $available;
+	}
+
+	// }}}
+	// {{{ public function isEnabled()
+
+	/**
+	 * Gets whether or not this item is enabled in a region
+	 *
+	 * @param StoreRegion $region optional. Region for which to get enabled
+	 *                             status. If no region is specified, the
+	 *                             region set using
+	 *                             {@link StoreItem::setRegion()} is used.
+	 *
+	 * @return boolean true if this item is enabled in the given region and
+	 *                  false if it is not.
+	 */
+	public function isEnabled(StoreRegion $region = null)
+	{
+		if ($region !== null && !($region instanceof StoreRegion))
+			throw new StoreException(
+				'$region must be an instance of StoreRegion.');
+
+		// If region is not specified but is set through setRegion() use
+		// that region instead.
+		if ($region === null && $this->region !== null)
+			$region = $this->region;
+
+		// A region is required.
+		if ($region === null)
+			throw new StoreException(
+				'$region must be specified unless setRegion() is called '.
+				'beforehand.');
+
+		$enabled = null;
+
+		if ($this->region->id == $region->id &&
+			isset($this->is_enabled[$region->id])) {
+			$enabled = $this->is_enabled[$region->id];
+		} else {
+			// Price is not loaded, load from specified region through region
+			// bindings.
+			$region_bindings = $this->region_bindings;
+			foreach ($region_bindings as $binding) {
+				if ($binding->getInternalValue('region') == $region->id) {
+					$enabled = $binding->enabled;
+					$this->is_enabled[$region->id] = $enabled;
+					break;
+				}
+			}
+		}
+
+		return $enabled;
+	}
+
+	// }}}
+	// {{{ public function getPrice()
+
+	/**
+	 * Gets the price of this item in a region
+	 *
+	 * @param StoreRegion $region optional. Region for which to get price. If
+	 *                             no region is specified, the region set using
+	 *                             {@link StoreItem::setRegion()} is used.
+	 *
+	 * @return double the price of this item in the given region or null if
+	 *                 this item has no price in the given region.
+	 */
+	public function getPrice($region = null)
+	{
+		if ($region !== null && !($region instanceof StoreRegion))
+			throw new StoreException(
+				'$region must be an instance of StoreRegion.');
+
+		// If region is not specified but is set through setRegion() use
+		// that region instead.
+		if ($region === null && $this->region !== null)
+			$region = $this->region;
+
+		// A region is required.
+		if ($region === null)
+			throw new StoreException(
+				'$region must be specified unless setRegion() is called '.
+				'beforehand.');
+
+		$price = null;
+
+		if ($this->region->id == $region->id &&
+			isset($this->price[$region->id])) {
+			$price = $this->price[$region->id];
+		} else {
+			// Price is not loaded, load from specified region through region
+			// bindings.
+			$region_bindings = $this->region_bindings;
+			foreach ($region_bindings as $binding) {
+				if ($binding->getInternalValue('region') == $region->id) {
+					$price = $binding->price;
+					$this->price[$region->id] = $price;
+					break;
+				}
+			}
+		}
+
+		return $price;
 	}
 
 	// }}}
@@ -287,7 +392,6 @@ abstract class StoreItem extends StoreDataObject
 
 	protected function init()
 	{
-		$this->registerInternalProperty('is_available');
 		$this->registerInternalProperty('product',
 			$this->class_map->resolveClass('StoreProduct'));
 
@@ -296,6 +400,36 @@ abstract class StoreItem extends StoreDataObject
 
 		$this->table = 'Item';
 		$this->id_field = 'integer:id';
+	}
+
+	// }}}
+	// {{{ protected function initFromRow()
+
+	/**
+	 * Initializes this item from a row object
+	 *
+	 * If the row object has a 'region_id' field and any of the fields
+	 * 'price', 'enabled', and 'is_available' these values are cached for
+	 * subsequent calls to teh getPrice(), isEnabled() and
+	 * isAvailableInRegion() methods.
+	 */
+	protected function initFromRow($row)
+	{
+		parent::initFromRow($row);
+
+		if (is_object($row))
+			$row = get_object_vars($row);
+
+		if (isset($row['region_id'])) {
+			if (isset($row['price']))
+				$this->price[$row['region_id']] = $row['price'];
+
+			if (isset($row['enabled']))
+				$this->is_enabled[$row['region_id']] = $row['enabled'];
+
+			if (isset($row['is_available']))
+				$this->is_available[$row['region_id']] = $row['is_available'];
+		}
 	}
 
 	// }}}
@@ -311,25 +445,26 @@ abstract class StoreItem extends StoreDataObject
 	 */
 	protected function loadInternal($id)
 	{
-		if ($this->region === null) {
-			$row = parent::loadInternal($id);
-		} else {
+		if ($this->region !== null)  {
 			$id_field = new SwatDBField($this->id_field, 'integer');
+
 			$sql = 'select Item.*, ItemRegionBinding.price,
-					ItemRegionBinding.region,
 					ItemRegionBinding.enabled
 				from Item
-				%s ItemRegionBinding on item = Item.id
+					inner join ItemRegionBinding on item = Item.id
 					and ItemRegionBinding.region = %s
-				where Item.id = %s';
+				where %s.%s = %s';
 
 			$sql = sprintf($sql,
-				$this->limit_by_region ? 'inner join' : 'left outer join',
 				$this->db->quote($this->region->id, 'integer'),
+				$this->table,
+				$id_field->name,
 				$this->db->quote($id, 'integer'));
 
 			$rs = SwatDB::query($this->db, $sql, null);
 			$row = $rs->fetchRow(MDB2_FETCHMODE_ASSOC);
+		} else {
+			$row = parent::loadInternal($id);
 		}
 
 		return $row;
@@ -342,29 +477,38 @@ abstract class StoreItem extends StoreDataObject
 
 	protected function loadQuantityDiscounts()
 	{
-		if (!$this->hasInternalValue('region'))
-			return null;
-
-		$region = $this->getInternalValue('region');
-
-		$sql = 'select QuantityDiscount.*, QuantityDiscountRegionBinding.price
-			from QuantityDiscount 
-			inner join QuantityDiscountRegionBinding on
-			quantity_discount = QuantityDiscount.id ';
-
-		if ($region !== null)
-			$sql.= sprintf('and region = %s ',
-				$this->db->quote($region, 'integer'));
-                  
-		$sql.= 'where QuantityDiscount.item = %s
-			order by QuantityDiscount.quantity asc';
-
-		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
-
+		$quantity_discounts = null;
 		$wrapper =
 			$this->class_map->resolveClass('StoreQuantityDiscountWrapper');
 
-		return SwatDB::query($this->db, $sql, $wrapper);
+		if ($this->region === null) {
+			$sql = sprintf('select * from QuantityDiscount 
+				where QuantityDiscount.item = %s
+				order by QuantityDiscount.quantity asc',
+				$this->db->quote($this->id, 'integer'));
+
+			$quantity_discounts = SwatDB::query($this->db, $sql, $wrapper);
+		} else {
+			$sql = sprintf('select QuantityDiscount.*,
+					QuantityDiscountRegionBinding.price,
+					QuantityDiscountRegionBinding.region as region_id
+				from QuantityDiscount
+					%s QuantityDiscountRegionBinding on
+					quantity_discount = QuantityDiscount.id and
+					region = %s
+				where QuantityDiscount.item = %s
+				order by QuantityDiscount.quantity asc',
+				$this->limit_by_region ? 'inner join' : 'left outer join',
+				$this->db->quote($this->region->id, 'integer'),
+				$this->db->quote($this->id, 'integer'));
+
+			$quantity_discounts = SwatDB::query($this->db, $sql, $wrapper);
+			if ($quantity_discounts !== null)
+				foreach ($quantity_discounts as $discount)
+					$discount->setRegion($this->region, $this->limit_by_region);
+		}
+
+		return $quantity_discounts;
 	}
 
 	// }}}

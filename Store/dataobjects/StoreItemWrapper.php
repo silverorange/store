@@ -40,17 +40,17 @@ class StoreItemWrapper extends StoreRecordsetWrapper
 	 *
 	 * @param MDB2_Driver_Common $db
 	 * @param string $id_set
-	 * @param integer $region the region to use for region-specific fields.
+	 * @param StoreRegion $region the region to use for region-specific fields.
 	 * @param boolean $limiting whether or not to load items that are not in
 	 *                           the given region. If true, these items are not
 	 *                           loaded. If false, the items are loaded without
 	 *                           region specific fields.
 	 */
-	public static function loadSetFromDBWithRegion($db, $id_set, $region,
-		$limiting = true)
+	public static function loadSetFromDBWithRegion($db, $id_set,
+		StoreRegion $region, $limiting = true)
 	{
 		$sql = 'select Item.*, ItemRegionBinding.price,
-			ItemRegionBinding.enabled, ItemRegionBinding.region,
+			ItemRegionBinding.enabled, ItemRegionBinding.region as region_id,
 			case when AvailableItemView.item is null then false
 				else true
 				end as is_available
@@ -67,13 +67,19 @@ class StoreItemWrapper extends StoreRecordsetWrapper
 
 		$sql = sprintf($sql,
 			$limiting ? 'inner join' : 'left outer join',
-			$db->quote($region, 'integer'),
-			$db->quote($region, 'integer'),
+			$db->quote($region->id, 'integer'),
+			$db->quote($region->id, 'integer'),
 			$id_set);
 
 		$class_map = StoreClassMap::instance();
-		return SwatDB::query($db, $sql,
+		$items = SwatDB::query($db, $sql,
 			$class_map->resolveClass('StoreItemWrapper'));
+
+		if ($items !== null)
+			foreach ($items as $item)
+				$item->setRegion($region, $limiting);
+
+		return $items;
 	}
 
 	// }}}

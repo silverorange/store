@@ -108,14 +108,34 @@ class StoreCategory extends StoreDataObject
 	/**
 	 * @var StoreRegion
 	 */
-	protected $region = null;
+	protected $region;
+
+	/**
+	 * @var boolean
+	 */
+	protected $limit_by_region = true;
+
+	/**
+	 * Cache of product counts for this category indexed by region id
+	 *
+	 * This is an array of integers.
+	 *
+	 * @var array
+	 */
+	protected $product_count = array();
 
 	// }}}
 	// {{{ public function setRegion()
 
-	public function setRegion(StoreRegion $region)
+	public function setRegion(StoreRegion $region, $limiting = true)
 	{
 		$this->region = $region;
+		$this->limit_by_region = $limiting;
+
+		// TODO: there is no loadProducts() method
+		if ($this->hasSubDataObject('products'))
+			foreach ($this->products as $product)
+				$product->setRegion($region, $limiting);
 	}
 
 	// }}}
@@ -176,6 +196,8 @@ class StoreCategory extends StoreDataObject
 	 * product_count of this category. If you are calling this method
 	 * frequently during a singlerequest, it is more efficient to include the
 	 * product_count in the initial category query.
+	 *
+	 * @todo make this method getProductCount(StoreRegion $region = null)
 	 */
 	protected function loadProductCount()
 	{

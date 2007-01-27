@@ -126,13 +126,13 @@ class StoreCartEntry extends StoreDataObject
 	 */
 	public function getCalculatedItemPrice()
 	{
-		$price = $this->item->price;
+		$price = $this->item->getPrice();
 
 		// This relies on the ordering of quantity discounts. They are ordered
 		// with the smallest quantity first.
 		foreach ($this->item->quantity_discounts as $quantity_discount) {
 			if ($this->getQuantity() >= $quantity_discount->quantity)
-				$price = $quantity_discount->price;
+				$price = $quantity_discount->getPrice();
 		}
 
 		return $price;
@@ -154,14 +154,14 @@ class StoreCartEntry extends StoreDataObject
 	public function getDiscount()
 	{
 		$return = 0;
-		$extension = $this->item->price * $this->getQuantity();
+		$extension = $this->item->getPrice() * $this->getQuantity();
 
 		// This relies on the ordering of quantity discounts. They are ordered
 		// with the largest quantity first.
 		foreach ($this->item->quantity_discounts as $quantity_discount) {
 			if ($this->getQuantity() >= $quantity_discount->quantity) {
 				$return = $extension -
-					$quantity_discount->price * $this->getQuantity();
+					$quantity_discount->getPrice() * $this->getQuantity();
 
 				break;
 			}
