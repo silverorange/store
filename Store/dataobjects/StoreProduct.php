@@ -265,6 +265,9 @@ class StoreProduct extends StoreDataObject
 	 *
 	 * Related products are loaded with primary categories and ordered by the
 	 * binding table's display order.
+	 *
+	 * @todo: Make this method region aware and remove site-specific overridden
+	 *        versions.
 	 */
 	protected function loadRelatedProducts()
 	{
