@@ -368,7 +368,7 @@ class StoreCartModule extends SiteApplicationModule
 			$this->app->db->datatype->implodeArray($item_ids, 'integer');
 
 		$items = call_user_func(array($class, 'loadSetFromDBWithRegion'),
-			$this->app->db, $quoted_item_ids, $this->app->getRegion()->id,
+			$this->app->db, $quoted_item_ids, $this->app->getRegion(),
 			false);
 
 		$product_sql = 'select id, shortname, title, primary_category, catalog
