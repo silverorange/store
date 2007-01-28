@@ -85,8 +85,8 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$response = $request->process();
 		$this->checkResponse($response);
 
-	// TODO: do something here
-		echo $response;
+		$transaction = $this->getPaymentTransaction($response);
+		return $transaction;
 	}
 
 	public function release(StoreOrder $order) 
@@ -108,7 +108,8 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$response = $request->process();
 		$this->checkResponse($response);
 
-	// TODO: do something here
+		$transaction = $this->getPaymentTransaction($response);
+		return $transaction;
 	}
 
 	public function refund(StoreOrder $order, $amount = null)
@@ -352,6 +353,94 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$address_string = substr($address_string, 0, 200);
 
 		return $address_string;
+	}
+
+	// }}}
+	// {{{ private function getPaymentTransaction()
+
+	/**
+	 * Builds a payment transaction object from a Protx payment response
+	 *
+	 * @param StoreProtxPaymentResponse $response the response object to
+	 *                                             build the transaction object
+	 *                                             from.
+	 *
+	 * @return StorePaymentTransaction the payment transaction object.
+	 */
+	private function getPaymentTransaction(StoreProtxPaymentResponse $response)
+	{
+		$transaction = new StorePaymentTransaction();
+		$transaction->transaction_id = $response->getField('VSPTxId');
+		$transaction->security_key = $response->getField('SecurityKey');
+
+		switch ($response->getField('AddressResult')) {
+		case 'NOTPROVIDED':
+			$transaction->address_status =
+				StorePaymentTransaction::STATUS_MISSING;
+
+			break;
+		case 'NOTCHECKED':
+			$transaction->address_status =
+				StorePaymentTransaction::STATUS_NOTCHECKED;
+
+			break;
+		case 'MATCHED':
+			$transaction->address_status =
+				StorePaymentTransaction::STATUS_PASSED;
+
+			break;
+		case 'NOTMATCHED':
+			$transaction->address_status =
+				StorePaymentTransaction::STATUS_FAILED;
+
+			break;
+		}
+
+		switch ($response->getField('PostCodeResult')) {
+		case 'NOTPROVIDED':
+			$transaction->postal_code_status =
+				StorePaymentTransaction::STATUS_MISSING;
+
+			break;
+		case 'NOTCHECKED':
+			$transaction->postal_code_status =
+				StorePaymentTransaction::STATUS_NOTCHECKED;
+
+			break;
+		case 'MATCHED':
+			$transaction->postal_code_status =
+				StorePaymentTransaction::STATUS_PASSED;
+
+			break;
+		case 'NOTMATCHED':
+			$transaction->postal_code_status =
+				StorePaymentTransaction::STATUS_FAILED;
+
+			break;
+		}
+
+		switch ($response->getField('CS2Result')) {
+		case 'NOTPROVIDED':
+			$transaction->card_verification_value_status =
+				StorePaymentTransaction::STATUS_MISSING;
+
+			break;
+		case 'NOTCHECKED':
+			$transaction->card_verification_value_status =
+				StorePaymentTransaction::STATUS_NOTCHECKED;
+
+			break;
+		case 'MATCHED':
+			$transaction->card_verification_value_status =
+				StorePaymentTransaction::STATUS_PASSED;
+
+			break;
+		case 'NOTMATCHED':
+			$transaction->card_verification_value_status =
+				StorePaymentTransaction::STATUS_FAILED;
+
+			break;
+		}
 	}
 
 	// }}}
