@@ -443,9 +443,9 @@ class StoreProductDetails extends AdminIndex
 	// }}}
 
 	// build phase - product details
-	// {{{ protected function buildProductDetails()
+	// {{{ protected function getProductDetailsStore()
 
-	protected function getProductDetailStore($product)
+	protected function getProductDetailsStore($product)
 	{
 		$ds = new SwatDetailsStore($product);
 
@@ -471,7 +471,7 @@ class StoreProductDetails extends AdminIndex
 	{
 		$product = $this->loadProduct();
 
-		$ds = $this->getProductDetailStore($product);
+		$ds = $this->getProductDetailsStore($product);
 		$details_view = $this->ui->getWidget('details_view');
 		$details_view->data = $ds;
 
