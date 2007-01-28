@@ -1,5 +1,7 @@
 <?php
 
+require_once 'Store/dataobjects/StorePaymentTransaction.php';
+
 abstract class StorePaymentProvider
 {
 	/**
@@ -89,6 +91,20 @@ abstract class StorePaymentProvider
 		$this->avs_mode = (boolean)$mode;
 	}
 
+	/**
+	 * Pay for an order immediately
+	 *
+	 * @param StoreOrder $order the order to pay for.
+	 * @param string $card_number the card number to use for payment.
+	 * @param string $card_verification_value optional. Card verification value
+	 *                                         used for fraud prevention.
+	 *
+	 * @return StorePaymentTransaction the transaction object for the payment.
+	 *                                  this object contains information such
+	 *                                  as the transaction identifier and
+	 *                                  Address Verification Service (AVS)
+	 *                                  results.
+	 */
 	public function pay(StoreOrder $order, $card_number,
 		$card_verification_value = null)
 	{
@@ -98,7 +114,18 @@ abstract class StorePaymentProvider
 			get_class($this), __FUNCTION__));
 	}
 
-	public function release(StoreOrder $order)
+	/**
+	 * Release funds held for an order payment
+	 *
+	 * @param StorePaymentTransaction $transaction the tranaction used to place
+	 *                                              a hold on the funds. This
+	 *                                              should be a transaction
+	 *                                              returned by
+	 *                                              {@link StorePaymentProvider::hold()}.
+	 *
+	 * @see StorePaymentProvider::hold()
+	 */
+	public function release(StorePaymentTransaction $transaction)
 	{
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
@@ -106,6 +133,22 @@ abstract class StorePaymentProvider
 			get_class($this), __FUNCTION__));
 	}
 
+	/**
+	 * Place a hold on funds for an order
+	 *
+	 * @param StoreOrder $order the order to hold funds for.
+	 * @param string $card_number the card number to place the hold on.
+	 * @param string $card_verification_value optional. Card verification value
+	 *                                         used for fraud prevention.
+	 *
+	 * @return StorePaymentTransaction the transaction object for the payment.
+	 *                                  this object contains information such
+	 *                                  as the transaction identifier and
+	 *                                  Address Verification Service (AVS)
+	 *                                  results.
+	 *
+	 * @see StorePaymentProvider::release()
+	 */
 	public function hold(StoreOrder $order, $card_number,
 		$card_verification_value = null)
 	{
