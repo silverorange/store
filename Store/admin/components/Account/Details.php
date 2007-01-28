@@ -33,6 +33,14 @@ class StoreAccountDetails extends AdminIndex
 	protected $id;
 
 	// }}}
+	// {{{ private propeties
+
+	/**
+	 * @var StoreAccount
+	 */
+	private $account;
+
+	// }}}
 
 	// init phase
 	// {{{ protected function initInternal()
@@ -45,6 +53,27 @@ class StoreAccountDetails extends AdminIndex
 		$this->ui->loadFromXML($this->ui_xml);
 
 		$this->id = SiteApplication::initVar('id');
+	}
+
+	// }}}
+	// {{{ protected function getAccount()
+
+	protected function getAccount() 
+	{
+		if ($this->account === null) {
+			$class_map = StoreClassMap::instance();
+			$account_class = $class_map->resolveClass('StoreAccount');
+
+			$this->account = new $account_class();
+			$this->account->setDatabase($this->app->db);
+
+			if (!$this->account->load($this->id))
+				throw new AdminNotFoundException(sprintf(
+					Store::_('A account with an id of ‘%d’ does not exist.'),
+					$this->id));
+		}
+
+		return $this->account;
 	}
 
 	// }}}
@@ -99,7 +128,8 @@ class StoreAccountDetails extends AdminIndex
 	public function buildInternal() 
 	{
 		parent::buildInternal();
-		$this->buildAccount();
+
+		$this->buildAccountDetails();
 
 		$toolbar = $this->ui->getWidget('details_toolbar');
 		$toolbar->setToolLinkValues($this->id);
@@ -113,6 +143,8 @@ class StoreAccountDetails extends AdminIndex
 
 		$date_renderer = $date_column->getRendererByPosition();
 		$date_renderer->display_time_zone = $this->app->default_time_zone;
+
+		$this->buildNavBar();
 	}
 
 	// }}}
@@ -201,57 +233,17 @@ class StoreAccountDetails extends AdminIndex
 	// }}}
 	// {{{ protected function getAccountDetailsStore()
 
-	protected function getAccountDetailsStore($account) 
+	protected function getAccountDetailsStore() 
 	{
-		return new SwatDetailsStore($account);
+		return new SwatDetailsStore($this->getAccount());
 	}
 
 	// }}}
-	// {{{ private function buildAccount()
+	// {{{ protected function buildAccountDetails()
 
-	private function buildAccount() 
+	protected function buildAccountDetails() 
 	{
-		$account = $this->loadAccount();
-
-		$this->buildAccountDetails($account);
-		$this->buildNavBar($account);
-	}
-
-	// }}}
-	// {{{ private function buildNavBar()
-
-	private function buildNavBar($account) 
-	{
-		$this->navbar->addEntry(new SwatNavBarEntry($account->fullname));
-
-		$this->title = $account->fullname;
-	}
-
-	// }}}
-	// {{{ private function loadAccount()
-
-	private function loadAccount() 
-	{
-		$class_map = StoreClassMap::instance();
-		$account_class = $class_map->resolveClass('StoreAccount');
-
-		$account = new $account_class();
-		$account->setDatabase($this->app->db);
-
-		if (!$account->load($this->id))
-			throw new AdminNotFoundException(sprintf(
-				Store::_('A account with an id of ‘%d’ does not exist.'),
-				$this->id));
-
-		return $account;
-	}
-
-	// }}}
-	// {{{ private function buildAccountDetails()
-
-	private function buildAccountDetails($account) 
-	{
-		$ds = $this->getAccountDetailsStore($account);
+		$ds = $this->getAccountDetailsStore();
 
 		$details_frame = $this->ui->getWidget('details_frame');
 		$details_frame->title = Store::_('Account');
@@ -264,6 +256,16 @@ class StoreAccountDetails extends AdminIndex
 		$date_renderer->display_time_zone = $this->app->default_time_zone;
 
 		$details_view->data = $ds;
+	}
+
+	// }}}
+	// {{{ private function buildNavBar()
+
+	private function buildNavBar() 
+	{
+		$fullname = $this->getAccount()->fullname;
+		$this->navbar->addEntry(new SwatNavBarEntry($fullname));
+		$this->title = $fullname;
 	}
 
 	// }}}
