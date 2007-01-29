@@ -10,6 +10,13 @@ require_once 'Store/pages/StoreCheckoutUIPage.php';
  */
 class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 {
+	// {{{ protected properties
+
+	/**
+	 * @var string
+	 */
+	protected $ui_xml = 'Store/pages/checkout-front.xml';
+	// }}}
 	// init phase
 	// {{{ public function init()
 
@@ -32,7 +39,7 @@ class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 	protected function loadUI()
 	{
 		$this->ui = new StoreUI();
-		$this->ui->loadFromXML(dirname(__FILE__).'/checkout-front.xml');
+		$this->ui->loadFromXML($this->ui_xml);
 	}
 
 	// }}}
