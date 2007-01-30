@@ -13,6 +13,22 @@ require_once 'Store/dataobjects/StoreCategory.php';
  */
 class StoreCategoryWrapper extends StoreRecordsetWrapper
 {
+	// {{{ public function setRegion()
+
+	/**
+	 * Sets the region for all categories in this record set
+	 *
+	 * @param StoreRegion $region the region to use.
+	 * @param boolean $limiting whether or not to not load this category if it
+	 *                           is not available in the given region.
+	 */
+	public function setRegion(StoreRegion $region, $limiting = true)
+	{
+		foreach ($this as $category)
+			$category->setRegion($region, $limiting);
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
