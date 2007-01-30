@@ -83,6 +83,13 @@ abstract class StoreCart extends SwatObject
 	 */
 	protected $sorted = false;
 
+	/**
+	 * Whether to combine entries with identical items.
+	 *
+	 * @var boolean
+	 */
+	protected $combine_entries = true;
+
 	// }}}
 	// {{{ private properties
 
@@ -184,27 +191,29 @@ abstract class StoreCart extends SwatObject
 		if ($this->validateEntry($entry)) {
 			$already_in_cart = false;
 
-			// check for existing entry to combine with
-			foreach ($this->entries as $key => $existing_entry) {
-				if ($existing_entry->compare($entry) == 0) {
-					$already_in_cart = true;
-					$backup_entry = clone $existing_entry;
-					$existing_entry->combine($entry);
+			if ($this->combine_entries) {
+				// check for existing entry to combine with
+				foreach ($this->entries as $key => $existing_entry) {
+					if ($existing_entry->compare($entry) == 0) {
+						$already_in_cart = true;
+						$backup_entry = clone $existing_entry;
+						$existing_entry->combine($entry);
 
-					if ($this->validateCombinedEntry($existing_entry)) {
-						$added_entry = $existing_entry;
-						$this->setChanged();
-					} else {
-						// rollback to original entry
-						$this->entries[$key] = $backup_entry;
-						$this->entries_by_id[$backup_entry->id] =
-							$backup_entry;
+						if ($this->validateCombinedEntry($existing_entry)) {
+							$added_entry = $existing_entry;
+							$this->setChanged();
+						} else {
+							// rollback to original entry
+							$this->entries[$key] = $backup_entry;
+							$this->entries_by_id[$backup_entry->id] =
+								$backup_entry;
+						}
+
+						// we don't need this anymore
+						unset($backup_entry);
+
+						break;
 					}
-
-					// we don't need this anymore
-					unset($backup_entry);
-
-					break;
 				}
 			}
 
@@ -441,6 +450,19 @@ abstract class StoreCart extends SwatObject
 				}
 			}
 		}
+	}
+
+	// }}}
+	// {{{ public function setCombineEntries()
+
+	/**
+	 * Set whether to combine entries for identical items in this cart
+	 *
+	 * @param boolean $combine_entries whether to combine entries.
+	 */
+	public function setCombineEntries($combine_entries)
+	{
+		$this->combine_entries = $combine_entries;
 	}
 
 	// }}}
