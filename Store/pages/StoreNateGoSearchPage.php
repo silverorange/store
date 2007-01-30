@@ -281,7 +281,7 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 		$result = $this->nate_go_search_result;
 
 		$sql = 'select Category.id, Category.title, Category.shortname,
-				Category.image, c.product_count
+				Category.image, c.product_count, c.region as region_id
 			from Category
 				inner join CategoryVisibleProductCountByRegionCache as c
 					on c.category = Category.id and c.region = %s
