@@ -302,6 +302,7 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 		$class_map = StoreClassMap::instance();
 		$wrapper_class = $class_map->resolveClass('StoreCategoryWrapper');
 		$categories = SwatDB::query($this->app->db, $sql, $wrapper_class);
+		$categories->setRegion($this->app->getRegion());
 
 		if (count($categories) > 0) {
 			$sql = 'select * from Image where id in (%s)';

@@ -105,6 +105,8 @@ class StoreCategoryPage extends StoreStorePage
 		$sub_categories = SwatDB::query($this->app->db, $sql,
 			'StoreCategoryWrapper');
 
+		$sub_categories->setRegion($this->app->getRegion());
+
 		if (count($sub_categories) == 0)
 			return $sub_categories;
 
