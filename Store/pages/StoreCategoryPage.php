@@ -86,7 +86,7 @@ class StoreCategoryPage extends StoreStorePage
 	protected function querySubCategories($category_id = null)
 	{
 		$sql = 'select Category.id, Category.title, Category.shortname,
-				Category.image, c.product_count
+				Category.image, c.product_count, c.region as region_id
 			from Category
 			left outer join CategoryVisibleProductCountByRegionCache as c
 				on c.category = Category.id and c.region = %s
