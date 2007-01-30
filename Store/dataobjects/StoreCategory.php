@@ -139,6 +139,68 @@ class StoreCategory extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ public function getProductCount()
+
+	/**
+	 * Loads the count of visible products in this category in a region
+	 *
+	 * If you are calling this method frequently during a single request, it is
+	 * more efficient to include the 'product_count' and 'region_id' fields in
+	 * the initial category query.
+	 *
+	 * @param StoreRegion $region optional. Region for which to get product
+	 *                             count. If no region is specified, the region
+	 *                             set using {@link StoreItem::setRegion()}
+	 *                             is used.
+	 *
+	 * @return integer the count of visible products in this category in the
+	 *                 given region.
+	 */
+	public function getProductCount($region = null)
+	{
+		if ($region !== null && !($region instanceof StoreRegion))
+			throw new StoreException(
+				'$region must be an instance of StoreRegion.');
+
+		// If region is not specified but is set through setRegion() use
+		// that region instead.
+		if ($region === null && $this->region !== null)
+			$region = $this->region;
+
+		// A region is required.
+		if ($region === null)
+			throw new StoreException(
+				'$region must be specified unless setRegion() is called '.
+				'beforehand.');
+
+		// We can set this to zero because if there is a null result in the
+		// CategoryVisibleProductCountByRegionCache this is the same as having
+		// no products.
+		$product_count = 0;
+
+		if ($this->region->id == $region->id &&
+			isset($this->product_count[$region->id])) {
+			$product_count = $this->product_count[$region->id];
+		} else {
+			$sql = 'select product_count
+				from CategoryVisibleProductCountByRegionCache
+				where region = %s and category = %s';
+
+			$sql = sprintf($sql,
+				$this->db->quote($region->id, 'integer'),
+				$this->db->quote($this->id, 'integer'));
+
+			$product_count = SwatDB::queryOne($this->db, $sql);
+			if ($product_count === null)
+				$product_count = 0;
+
+			$this->product_count[$region->id] = $product_count;
+		}
+
+		return $product_count;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
@@ -146,12 +208,34 @@ class StoreCategory extends StoreDataObject
 		$this->registerDateProperty('createdate');
 
 		$this->registerInternalProperty('path');
-		$this->registerInternalProperty('product_count');
 		$this->registerInternalProperty('image',
 			$this->class_map->resolveClass('StoreCategoryImage'));
 
 		$this->table = 'Category';
 		$this->id_field = 'integer:id';
+	}
+
+	// }}}
+	// {{{ protected function initFromRow()
+
+	/**
+	 * Initializes this category from a row object
+	 *
+	 * If the row object has a 'region_id' field and the fields
+	 * 'product_count' the product_count value is cached for subsequent calls
+	 * to the getProductCount() method.
+	 */
+	protected function initFromRow($row)
+	{
+		parent::initFromRow($row);
+
+		if (is_object($row))
+			$row = get_object_vars($row);
+
+		if (isset($row['region_id'])) {
+			if (isset($row['product_count']))
+				$this->product_count[$row['region_id']] = $row['product_count'];
+		}
 	}
 
 	// }}}
@@ -183,42 +267,6 @@ class StoreCategory extends StoreDataObject
 		}
 
 		return $path;
-	}
-
-	// }}}
-	// {{{ protected function loadProductCount()
-
-	/**
-	 * Loads the count of visible products in this category
-	 *
-	 * If the product_count was part of the initial query to load this
-	 * category, that value is returned. Otherwise, a separate query gets the
-	 * product_count of this category. If you are calling this method
-	 * frequently during a singlerequest, it is more efficient to include the
-	 * product_count in the initial category query.
-	 *
-	 * @todo make this method getProductCount(StoreRegion $region = null)
-	 */
-	protected function loadProductCount()
-	{
-		$product_count = '';
-
-		if ($this->hasInternalValue('product_count') &&
-			$this->getInternalValue('product_count') !== null) {
-			$product_count = $this->getInternalValue('product_count');
-		} else {
-			$sql = 'select product_count
-				from CategoryVisibleProductCountByRegionCache
-				where region = %s and category = %s';
-
-			$sql = sprintf($sql,
-				$this->db->quote($this->region->id, 'integer'),
-				$this->db->quote($this->id, 'integer'));
-
-			$product_count = SwatDB::queryOne($this->db, $sql);
-		}
-
-		return $product_count;
 	}
 
 	// }}}
