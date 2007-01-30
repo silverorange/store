@@ -67,9 +67,9 @@ class StoreTotalRow extends SwatTableViewRow
 
 	protected function displayHeader()
 	{
-		$column_count = $this->view->getVisibleColumnCount();
+		$colspan = $this->view->getXhtmlColspan();
 		$th_tag = new SwatHtmlTag('th');
-		$th_tag->colspan = $column_count - 1 - $this->offset;
+		$th_tag->colspan = $colspan - 1 - $this->offset;
 
 		$th_tag->open();
 
@@ -99,8 +99,6 @@ class StoreTotalRow extends SwatTableViewRow
 
 	protected function displayTotal()
 	{
-		$column_count = $this->view->getVisibleColumnCount();
-
 		$td_tag = new SwatHtmlTag('td');
 		$td_tag->class = $this->getCSSClassString();
 		$td_tag->open();
