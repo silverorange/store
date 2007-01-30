@@ -301,6 +301,16 @@ abstract class StoreItem extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ abstract public function getStatusText()
+
+	/**
+	 * Gets a textual description of this item's status
+	 *
+	 * @return string a textual description of this item's status.
+	 */
+	abstract public function getStatusText();
+
+	// }}}
 	// {{{ abstract public function hasAvailableStatus()
 
 	/**
