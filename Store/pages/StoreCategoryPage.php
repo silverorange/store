@@ -102,17 +102,18 @@ class StoreCategoryPage extends StoreStorePage
 			$this->app->db->quote($category_id, 'integer'),
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
-		$sub_categories = SwatDB::query($this->app->db, $sql,
-			'StoreCategoryWrapper');
-
+		$class_map = StoreClassMap::instance();
+		$wrapper_class = $class_map->resolveClass('StoreCategoryWrapper');
+		$sub_categories = SwatDB::query($this->app->db, $sql, $wrapper_class);
 		$sub_categories->setRegion($this->app->getRegion());
 
 		if (count($sub_categories) == 0)
 			return $sub_categories;
 
 		$sql = 'select * from Image where id in (%s)';
+		$wrapper_class = $class_map->resolveClass('StoreCategoryImageWrapper');
 		$sub_categories->loadAllSubDataObjects(
-			'image', $this->app->db, $sql, 'StoreCategoryImageWrapper');
+			'image', $this->app->db, $sql, $wrapper_class);
 
 		return $sub_categories;
 	}
@@ -181,14 +182,17 @@ class StoreCategoryPage extends StoreStorePage
 			$sub_query,
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
-		$products = SwatDB::query($this->app->db, $sql, 'StoreProductWrapper');
+		$class_map = StoreClassMap::instance();
+		$wrapper_class = $class_map->resolveClass('StoreProductWrapper');
+		$products = SwatDB::query($this->app->db, $sql, $wrapper_class);
 
 		if (count($products) == 0)
 			return $products;
 
 		$sql = 'select * from Image where id in (%s)';
+		$wrapper_class = $class_map->resolveClass('StoreProductImageWrapper');
 		$products->loadAllSubDataObjects(
-			'primary_image', $this->app->db, $sql, 'StoreProductImageWrapper');
+			'primary_image', $this->app->db, $sql, $wrapper_class);
 
 		return $products;
 	}
@@ -240,7 +244,9 @@ class StoreCategoryPage extends StoreStorePage
 			$this->app->db->quote($category_id, 'integer'),
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
-		$products = SwatDB::query($this->app->db, $sql, 'StoreProductWrapper');
+		$class_map = StoreClassMap::instance();
+		$wrapper_class = $class_map->resolveClass('StoreProductWrapper');
+		$products = SwatDB::query($this->app->db, $sql, $wrapper_class);
 
 		return $products;
 	}
