@@ -914,6 +914,8 @@ abstract class StoreCartPage extends StoreArticlePage
 		else
 			$ds->product_link = 'store/'.$entry->item->product->path;
 
+		$ds->status = $entry->item->getStatusText();
+
 		return $ds;
 	}
 
