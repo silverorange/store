@@ -377,12 +377,12 @@ class StoreCategory extends StoreDataObject
 		$title_span->class = 'category-tile-title';
 		$title_span->setContent($this->title);
 
-		if ($this->product_count > 1) {
+		if ($this->getProductCount() > 1) {
 			$details_span = new SwatHtmlTag('span');
 			$details_span->class = 'category-tile-details';
 			$details_span->setContent(sprintf(
-				ngettext('%s product', '%s products', $this->product_count),
-				$this->product_count));
+				ngettext('%s product', '%s products', $this->getProductCount()),
+				$this->getProductCount()));
 		}
 
 		if ($this->image !== null) {
@@ -403,7 +403,7 @@ class StoreCategory extends StoreDataObject
 		$anchor_tag->close();
 		echo ' ';
 
-		if ($this->product_count > 1)
+		if ($this->getProductCount() > 1)
 			$details_span->display();
 	}
 
