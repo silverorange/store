@@ -171,10 +171,6 @@ class StoreProduct extends StoreDataObject
 			$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 			$items = call_user_func(array($wrapper, 'loadSetFromDBWithRegion'),
 				$this->db, $sql, $this->region, $this->limit_by_region);
-
-			if ($items !== null)
-				foreach ($items as $item)
-					$item->setRegion($this->region);
 		}
 
 		return $items;

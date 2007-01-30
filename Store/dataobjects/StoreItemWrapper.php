@@ -11,6 +11,22 @@ require_once 'Store/dataobjects/StoreItem.php';
  */
 class StoreItemWrapper extends StoreRecordsetWrapper
 {
+	// {{{ public function setRegion()
+
+	/**
+	 * Sets the region for all items in this record set
+	 *
+	 * @param StoreRegion $region the region to use.
+	 * @param boolean $limiting whether or not to not load this item if it is
+	 *                           not available in the given region.
+	 */
+	public function setRegion(StoreRegion $region, $limiting = true)
+	{
+		foreach ($this as $item)
+			$item->setRegion($region, $limiting);
+	}
+
+	// }}}
 	// {{{ public static function loadSetFromDB()
 
 	public static function loadSetFromDB($db, $id_set)
@@ -76,8 +92,7 @@ class StoreItemWrapper extends StoreRecordsetWrapper
 			$class_map->resolveClass('StoreItemWrapper'));
 
 		if ($items !== null)
-			foreach ($items as $item)
-				$item->setRegion($region, $limiting);
+			$items->setRegion($region, $limiting);
 
 		return $items;
 	}
