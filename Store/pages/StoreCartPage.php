@@ -838,6 +838,7 @@ abstract class StoreCartPage extends StoreArticlePage
 			}
 
 			$paragraph_tag = new SwatHtmlTag('p');
+			$paragraph_tag->id = 'saved_cart_description';
 			$paragraph_tag->setContent($text);
 			$paragraph_tag->display();
 
