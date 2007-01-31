@@ -352,6 +352,10 @@ class StoreProductPage extends StoreStorePage
 			new SwatStyleSheetHtmlHeadEntry(
 				'packages/store/styles/store-mini-cart.css', Store::PACKAGE_ID));
 
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			'packages/store/javascript/store-background-image-animation.js',
+			Store::PACKAGE_ID));
+
 		$this->layout->addHtmlHeadEntrySet(
 			$this->cart_ui->getRoot()->getHtmlHeadEntrySet());
 	}
@@ -701,18 +705,63 @@ class StoreProductPage extends StoreStorePage
 		$item_ids = "'".implode("', '", $item_ids)."'";
 
 		echo '<script type="text/javascript">', "\n";
+		echo '// <![CDATA[', "\n";
 
 		printf("var product_page = new StoreProductPage([%s], '%s');\n",
 			$item_ids, $form_id);
 
+		echo '// ]]>';
 		echo '</script>';
 	}
 
 	// }}}
 	// {{{ protected function displayCartJavaScript()
 
+	/**
+	 * @see StoreProductPage::getCartAnimationFrames()
+	 */
 	protected function displayCartJavaScript()
 	{
+		$frames = $this->getCartAnimationFrames();
+		echo count($this->added_entry_ids), ";", count($frames);
+
+		// only show animation if some animation frames are defined and
+		// there are added entries
+		if (count($frames) > 0 && count($this->added_entry_ids) > 0 ) {
+			echo '<script type="text/javascript">', "\n";
+			echo '// <![CDATA[', "\n";
+
+			$frames_list = "['".implode("', '", $frames)."']";
+
+			foreach ($this->added_entry_ids as $id) {
+				printf("var animation_%1\$s = new StoreBackgroundImageAnim(".
+					"'entry_%1\$s', { frames: { from: 1, to: %2\$s } }, 2);\n".
+					"animation_%1\$s.addFrameImages(%3\$s);\n".
+					"animation_%1\$s.animate();\n",
+					$id, count($frames), $frames_list);
+			}
+
+			echo '// ]]>';
+			echo '</script>';
+		}
+	}
+
+	// }}}
+	// {{{ protected function getCartAnimationFrames()
+
+	/**
+	 * Gets the animation frames to use for animating the background cells of
+	 * added cart entries on the product page cart display.
+	 *
+	 * By default, no animation frames are defined. Subclasses should define
+	 * a set of animation frames by extending this method if they want to use
+	 * the background image animation effect on added cart entries.
+	 *
+	 * @return array an array of image URL fragments for the animation frames.
+	 */
+	protected function getCartAnimationFrames()
+	{
+		return array();
 	}
 
 	// }}}
