@@ -37,7 +37,7 @@
 	 * @param {String | Array} images Either a single image filename or an Array of image filenames to add to this animation.
 	 */
 	proto.addFrameImages = function(images) {
-		if (!(images instanceof 'Array'))
+		if (!(images instanceof Array))
 			images = [images];
 
 		// preload images
