@@ -91,7 +91,7 @@ class StoreCategoryAddProducts extends AdminSearch
 	// }}}
 
 	// build phase
-	// {{{ protected function buildInternal() 
+	// {{{ protected function buildInternal()
 
 	protected function buildInternal()
 	{

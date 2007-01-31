@@ -6,7 +6,6 @@ require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatTreeFlydownNode.php';
 require_once 'Swat/SwatFlydownDivider.php';
 require_once 'Store/StoreCatalogSelector.php';
-
 require_once 'Store/admin/components/Product/include/StoreProductSearch.php';
 
 /**
@@ -69,10 +68,10 @@ class StoreProductRelatedProduct extends AdminSearch
 				// relate products
 				$sql = 'insert into ProductRelatedProductBinding 
 						(source_product, related_product)
-					select %1$s, Product.id from Product where 
+					select %1$s, Product.id from Product where
 						Product.id not in (
-							select related_product 
-							from ProductRelatedProductBinding 
+							select related_product
+							from ProductRelatedProductBinding
 							where source_product = %1$s)
 						and Product.id in (%2$s)';
 
@@ -85,19 +84,18 @@ class StoreProductRelatedProduct extends AdminSearch
 
 				$message = new SwatMessage(sprintf(Store::ngettext(
 					'One product has been related to this product.',
-					'%d products have been related to this product.', $num), 
+					'%d products have been related to this product.', $num),
 					SwatString::numberFormat($num)),
 					SwatMessage::NOTIFICATION);
 
+				$this->app->messages->add($message);
 			}
 
 			if ($this->category_id === null)
-				$this->app->relocate('Product/Details?id='.
-					$this->product_id);
+				$this->app->relocate('Product/Details?id='.$this->product_id);
 			else
-				$this->app->relocate('Product/Details?id='.
-					$this->product_id.'&category='.
-					$this->category_id);
+				$this->app->relocate('Product/Details?id='.$this->product_id.
+					'&category='.$this->category_id);
 		}
 
 		$pager = $this->ui->getWidget('pager');
@@ -107,7 +105,7 @@ class StoreProductRelatedProduct extends AdminSearch
 	// }}}
 
 	// build phase
-	// {{{ protected function buildInternal() 
+	// {{{ protected function buildInternal()
 
 	protected function buildInternal()
 	{
@@ -179,7 +177,7 @@ class StoreProductRelatedProduct extends AdminSearch
 	// }}}
 	// {{{ private function buildNavBar()
 
-	private function buildNavBar() 
+	private function buildNavBar()
 	{
 		if ($this->category_id !== null) {
 			$this->navbar->popEntry();
@@ -197,7 +195,7 @@ class StoreProductRelatedProduct extends AdminSearch
 		if ($this->category_id === null)
 			$link = sprintf('Product/Details?id=%s', $this->product_id);
 		else
-			$link = sprintf('Product/Details?id=%s&category=%s', 
+			$link = sprintf('Product/Details?id=%s&category=%s',
 				$this->product_id, $this->category_id);
 
 		$product_title = SwatDB::queryOneFromTable($this->app->db, 'Product',
