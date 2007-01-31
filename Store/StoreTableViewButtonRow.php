@@ -117,9 +117,9 @@ class StoreTableViewButtonRow extends SwatTableViewRow
 		$tr_tag->id = $this->id;
 		$tr_tag->class = $this->getCSSClassString();
 
-		$column_count = $this->view->getVisibleColumnCount();
+		$colspan = $this->view->getXhtmlColspan();
 		$td_tag = new SwatHtmlTag('td');
-		$td_tag->colspan = $column_count - $this->offset;
+		$td_tag->colspan = $colspan - $this->offset;
 
 		$tr_tag->open();
 
