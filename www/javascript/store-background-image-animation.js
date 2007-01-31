@@ -3,7 +3,7 @@
  * of an element with a series of frames.
  *
  * <p>Usage: <code>var myAnim = new StoreBackgroundImageAnim(el, { frames: { from: 0, to: 50 }, 1, Y.Easing.e
- * <p>Frames are arbitrary numbers corresponding to the number of animation frame images you want to cycle through
+ * <p>Frames are arbitrary numbers corresponding to the number of animation frame images you want to cycle through. Animation will stop on the last frame.
  * @requires YAHOO.util.Anim
  * @requires YAHOO.util.AnimMgr
  * @requires YAHOO.util.Easing
@@ -68,8 +68,10 @@
 	 */
 	proto.setAttribute = function(attr, val, unit) {
 		if ( this.patterns.frames.test(attr) ) {
+			// frames are indexed starting at 0 but referenced as 1st, 2nd, etc
+			var frame = val - 1
 			// apply frame
-			var frame_image = StoreBackgroundImageAnim.frame_images[val].src;
+			var frame_image = StoreBackgroundImageAnim.frame_images[frame].src;
 			superclass.setAttribute.call(this, 'backgroundImage',
 				'url(' + frame_image + ')', unit);
 		} else {
