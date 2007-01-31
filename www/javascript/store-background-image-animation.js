@@ -23,15 +23,7 @@
 		StoreBackgroundImageAnim.superclass.constructor.call(
 			this, el, attributes, duration, method);
 
-		// preload images
 		StoreBackgroundImageAnim.frame_images = [];
-		for (var i = 1; i <= 11; i++) {
-			image = new Image();
-			image.src = 
-				'images/swat-local/frames/swat-table-view-cell-background-' + i + '.png';
-
-			StoreBackgroundImageAnim.frame_images[i] = image;
-		}
 	};
 
 	YAHOO.extend(StoreBackgroundImageAnim, YAHOO.util.Anim);
@@ -39,6 +31,22 @@
 	// shorthand
 	var superclass = StoreBackgroundImageAnim.superclass;
 	var proto = StoreBackgroundImageAnim.prototype;
+
+	/**
+	 * Adds image frames to this animation
+	 * @param {String | Array} images Either a single image filename or an Array of image filenames to add to this animation.
+	 */
+	proto.addFrameImages = function(images) {
+		if (!(images instanceof 'Array'))
+			images = [images];
+
+		// preload images
+		for (var i = 0; i <= images.length; i++) {
+			image = new Image();
+			image.src = images[i]; 
+			StoreBackgroundImageAnim.frame_images.push(image);
+		}
+	}
 
 	/**
 	 * toString method
