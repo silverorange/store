@@ -125,19 +125,22 @@ class StoreProductSearch
 		$where = '1 = 1';
 
 		// keywords are included in the where clause if fulltext searching is
-		// turned off
-		if ($this->getProductSearchType() === null) {
+		// turned off, we need to check length of the trimmed value because if
+		// its thats what AdminSearchClause does to it
+		$keywords_value = $this->ui->getWidget('search_keywords')->value;
+		if ($this->getProductSearchType() === null &&
+			strlen(trim($keywords_value)) > 0) {
 			$where.= ' and (';
 
 			$clause = new AdminSearchClause('title');
 			$clause->table = 'Product';
-			$clause->value = $this->ui->getWidget('search_keywords')->value;
+			$clause->value = $keywords_value;
 			$clause->operator = AdminSearchClause::OP_CONTAINS;
 			$where.= $clause->getClause($this->db, '');
 
 			$clause = new AdminSearchClause('bodytext');
 			$clause->table = 'Product';
-			$clause->value = $this->ui->getWidget('search_keywords')->value;
+			$clause->value = $keywords_value;
 			$clause->operator = AdminSearchClause::OP_CONTAINS;
 			$where.= $clause->getClause($this->db, 'or');
 
