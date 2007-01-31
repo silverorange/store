@@ -195,7 +195,7 @@ class StoreCartEntry extends StoreDataObject
 	 * @param StoreCartEntry $entry the entry to compare this entry to.
 	 *
 	 * @return integer a tri-value indicating how this entry compares to the
-	 *                  given entry. The value is negative is this entry is
+	 *                  given entry. The value is negative if this entry is
 	 *                  less than the given entry, zero if this entry is equal
 	 *                  to the given entry and positive it this entry is
 	 *                  greater than the given entry.
