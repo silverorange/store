@@ -52,21 +52,22 @@ class StoreProductImageDelete extends AdminDBDelete
 
 		$image_id = $this->getFirstItem();
 
-		// get products with this image as primary_image
+		// we need a count products that use this image to help decide to delete
+		// the actual image or not
 		$sql = sprintf('select count(product) from ProductImageBinding
 			where image = %s',
 			$this->app->db->quote($image_id, 'integer'));
 
-		$products = SwatDB::queryOne($this->app->db, $sql);
+		$num_products = SwatDB::queryOne($this->app->db, $sql);
 
-		if ($products > 1) {
-			$sql = sprintf('delete from ProductImageBinding where image = %s
-				and product = %s',
-				$this->app->db->quote($image_id, 'integer'),
-				$this->app->db->quote($this->product_id, 'integer'));
+		$sql = sprintf('delete from ProductImageBinding where image = %s
+			and product = %s',
+			$this->app->db->quote($image_id, 'integer'),
+			$this->app->db->quote($this->product_id, 'integer'));
 
-			SwatDB::exec($this->app->db, $sql);
-		} else {
+		SwatDB::exec($this->app->db, $sql);
+
+		if ($num_products === 1) {
 			$sql = sprintf('delete from Image where id = %s',
 				$this->app->db->quote($image_id, 'integer'));
 
