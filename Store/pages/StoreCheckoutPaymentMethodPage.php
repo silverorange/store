@@ -263,7 +263,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			where enabled = true order by displayorder, title',
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
-		$class_map = StoreClassMapper::instance();
+		$class_map = StoreClassMap::instance();
 		$wrapper = $class_map->resolveClass('StorePaymentTypeWrapper');
 		return SwatDB::query($this->app->db, $payment_types_sql, $wrapper);
 	}
