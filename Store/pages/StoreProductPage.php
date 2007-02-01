@@ -723,7 +723,6 @@ class StoreProductPage extends StoreStorePage
 	protected function displayCartJavaScript()
 	{
 		$frames = $this->getCartAnimationFrames();
-		echo count($this->added_entry_ids), ";", count($frames);
 
 		// only show animation if some animation frames are defined and
 		// there are added entries
