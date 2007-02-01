@@ -43,7 +43,8 @@ class StoreProductSearch
 		$this->db = $db;
 
 		$keywords = $ui->getWidget('search_keywords')->value;
-		if ($keywords !== null && $this->getProductSearchType() !== null) {
+		if (strlen(trim($keywords)) > 0 &&
+			$this->getProductSearchType() !== null) {
 
 			$query = new NateGoSearchQuery($db);
 			$query->addDocumentType($this->getProductSearchType());
