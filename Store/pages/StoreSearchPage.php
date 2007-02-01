@@ -193,7 +193,7 @@ abstract class StoreSearchPage extends StoreArticlePage
 		return
 			$form->isProcessed() ||
 			$quick_search_form->isProcessed() ||
-			(strlen($keywords) > 0);
+			(strlen(trim($keywords)) > 0);
 	}
 
 	// }}}
