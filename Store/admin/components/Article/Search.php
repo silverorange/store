@@ -201,7 +201,9 @@ class StoreArticleSearch extends AdminSearch
 	protected function searchArticles()
 	{
 		$keywords = $this->ui->getWidget('search_keywords')->value;
-		if ($keywords !== null && $this->getArticleSearchType() !== null) {
+		if (strlen(trim($keywords)) > 0 &&
+			$this->getArticleSearchType() !== null) {
+
 			$query = new NateGoSearchQuery($this->app->db);
 			$query->addDocumentType($this->getArticleSearchType());
 			$query->addBlockedWords(
