@@ -57,6 +57,26 @@ class StoreCheckoutFirstPage extends StoreCheckoutStepPage
 	}
 
 	// }}}
+	// {{{ protected function initInternal()
+
+	protected function initInternal()
+	{
+		parent::initInternal();
+
+		// passwords only required on checkout/first
+		$this->ui->getWidget('password')->required = true;
+		$this->ui->getWidget('confirm_password')->required = true;
+	}
+
+	// }}}
+	// {{{ protected function getProgressDependencies()
+
+	protected function getProgressDependencies()
+	{
+		return array('checkout');
+	}
+
+	// }}}
 	// {{{ private function getContainer()
 
 	private function getContainer($page)
@@ -76,26 +96,6 @@ class StoreCheckoutFirstPage extends StoreCheckoutStepPage
 
 		$container = $this->ui->getWidget($container_id);
 		return $container;
-	}
-
-	// }}}
-	// {{{ protected function initInternal()
-
-	protected function initInternal()
-	{
-		parent::initInternal();
-
-		// passwords only required on checkout/first
-		$this->ui->getWidget('password')->required = true;
-		$this->ui->getWidget('confirm_password')->required = true;
-	}
-
-	// }}}
-	// {{{ protected function getProgressDependencies()
-
-	protected function getProgressDependencies()
-	{
-		return array('checkout');
 	}
 
 	// }}}
