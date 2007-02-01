@@ -63,14 +63,15 @@ class StoreCheckoutFirstPage extends StoreCheckoutStepPage
 	{
 		$class = get_class($page);
 
+		$matches = array();
 		if (preg_match('/Checkout(.*)Page$/', $class, $matches)) {
-			$container_id = preg_replace('/([A-Z])/e',
-				"'_'.strtolower('\\1')", $matches[1]).'_container';
+			$container_id = strtolower(
+				preg_replace('/([A-Z])/u', '_\\1', $matches[1])).'_container';
 
 			$container_id = substr($container_id, 1);
 		} else {
 			throw new StoreException(
-				"Unable to guess container for page $class");
+				"Unable to guess container for page {$class}");
 		}
 
 		$container = $this->ui->getWidget($container_id);
