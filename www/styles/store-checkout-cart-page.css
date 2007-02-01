@@ -21,6 +21,8 @@
 
 #header_update_button,
 #footer_update_button {
+	font-weight: normal;
+	color: #333;
 	font-size: 80%;
 	padding-top: 0.1em;
 	padding-bottom: 0.1em;
