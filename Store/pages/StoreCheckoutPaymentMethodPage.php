@@ -3,6 +3,7 @@
 require_once 'Store/dataobjects/StoreAccountPaymentMethodWrapper.php';
 require_once 'Store/pages/StoreCheckoutEditPage.php';
 require_once 'Store/dataobjects/StoreOrderPaymentMethod.php';
+require_once 'Store/dataobjects/StorePaymentTypeWrapper.php';
 
 /**
  * Payment method edit page of checkout
@@ -221,26 +222,12 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
-	// {{{ protected function getNewPaymentMethodText()
-
-	protected function getNewPaymentMethodText()
-	{
-		return Store::_('Add a New Payment Method');
-	}
-
-	// }}}
 	// {{{ protected function buildForm()
 
 	protected function buildForm()
 	{
+		$payment_types = $this->getPaymentTypes();
 		$payment_type_flydown = $this->ui->getWidget('payment_type');
-		$payment_types_sql = sprintf('select id, title from PaymentType
-			inner join PaymentTypeRegionBinding on
-				payment_type = id and region = %s
-			where enabled = true order by displayorder, title',
-			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
-
-		$payment_types = SwatDB::query($this->app->db, $payment_types_sql);
 		foreach ($payment_types as $payment_type)
 			$payment_type_flydown->addOption(
 				new SwatOption($payment_type->id, $payment_type->title));
@@ -261,6 +248,27 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
+	// {{{ protected function getPaymentTypes()
+
+	/**
+	 * Gets available payment types for new payment methods
+	 *
+	 * @return StorePaymentTypeWrapper
+	 */
+	protected function getPaymentTypes()
+	{
+		$payment_types_sql = sprintf('select id, title from PaymentType
+			inner join PaymentTypeRegionBinding on
+				payment_type = id and region = %s
+			where enabled = true order by displayorder, title',
+			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+
+		$class_map = StoreClassMapper::instance();
+		$wrapper = $class_map->resolveClass('StorePaymentTypeWrapper');
+		return SwatDB::query($this->app->db, $payment_types_sql, $wrapper);
+	}
+
+	// }}}
 	// {{{ protected function displayJavaScript()
 
 	protected function displayJavaScript()
@@ -271,6 +279,14 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			$id, $id);
 
 		echo '</script>';
+	}
+
+	// }}}
+	// {{{ protected function getNewPaymentMethodText()
+
+	protected function getNewPaymentMethodText()
+	{
+		return Store::_('Add a New Payment Method');
 	}
 
 	// }}}
