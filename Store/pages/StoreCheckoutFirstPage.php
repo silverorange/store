@@ -64,7 +64,7 @@ class StoreCheckoutFirstPage extends StoreCheckoutStepPage
 		$class = get_class($page);
 
 		$matches = array();
-		if (preg_match('/Checkout(.*)Page$/', $class, $matches)) {
+		if (preg_match('/Checkout(.*)Page$/', $class, $matches) === 1) {
 			$container_id = strtolower(
 				preg_replace('/([A-Z])/u', '_\\1', $matches[1])).'_container';
 
