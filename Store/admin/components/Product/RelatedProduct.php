@@ -66,7 +66,7 @@ class StoreProductRelatedProduct extends AdminSearch
 					$product_list[] = $this->app->db->quote($item, 'integer');
 
 				// relate products
-				$sql = 'insert into ProductRelatedProductBinding 
+				$sql = 'insert into ProductRelatedProductBinding
 						(source_product, related_product)
 					select %1$s, Product.id from Product where
 						Product.id not in (

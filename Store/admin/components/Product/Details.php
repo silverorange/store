@@ -491,6 +491,7 @@ class StoreProductDetails extends AdminIndex
 
 	private function buildViewInStoreToolLinks($product)
 	{
+		//TODO: only make link when the product is actually available (maybe)
 		$some_category = $product->categories->getFirst();
 		if ($some_category !== null) {
 			$prototype_tool_link = $this->ui->getWidget('view_in_store');
@@ -624,6 +625,53 @@ class StoreProductDetails extends AdminIndex
 
 	protected function getItemsTableStore($view)
 	{
+		$sql = $this->getItemsSql();
+		$items = SwatDB::query($this->app->db, $sql, 'StoreItemWrapper');
+		$store = new SwatTableStore();
+
+		foreach ($items as $item) {
+			$ds = new SwatDetailsStore($item);
+
+			$ds->description = $item->getDescription();
+
+			$ds->item_group_title = ($item->item_group === null) ?
+				Store::_('[Ungrouped]') : $item->item_group->title;
+
+			$ds->item_group_id = ($item->item_group === null) ?
+				0 : $item->item_group->id;
+
+			foreach ($this->queryRegions() as $region) {
+				$price_field_name = sprintf('price_%s', $region->id);
+				$enabled_field_name = sprintf('enabled_%s', $region->id);
+				$ds->$price_field_name = null;
+				$ds->$enabled_field_name = false;
+			}
+
+			$enabled = false;
+			foreach ($item->region_bindings as $binding) {
+				$price_field_name = 
+					sprintf('price_%s', $binding->getInternalValue('region'));
+
+				$enabled_field_name = 
+					sprintf('enabled_%s', $binding->getInternalValue('region'));
+
+				$ds->$price_field_name = $binding->price;
+				$ds->$enabled_field_name = $binding->enabled;
+				$enabled = $enabled || $binding->enabled;
+			}
+			$ds->enabled = $enabled;
+
+			$store->addRow($ds);
+		}
+
+		return $store;
+	}
+
+	// }}}
+	// {{{ protected function getItemsTableStore()
+
+	protected function getItemsSql()
+	{
 		/*
 		 * This dynamic SQL is needed to make the table orderable by the price
 		 * columns.
@@ -664,48 +712,17 @@ class StoreProductDetails extends AdminIndex
 			$regions_select,
 			$regions_join,
 			$this->app->db->quote($this->id, 'integer'),
-			$this->getOrderByClause($view,
-				'Item.displayorder, Item.sku')); //TODO:, Item.part_count <- needs to go back to veseys
+			$this->getOrderByClause($view, $this->getItemsOrderBy());
 
-		$items = SwatDB::query($this->app->db, $sql, 'StoreItemWrapper');
-		$store = new SwatTableStore();
+		return $sql;
+	}
 
-		foreach ($items as $item) {
-			$ds = new SwatDetailsStore($item);
+	// }}}
+	// {{{ protected function getItemsOrderBy()
 
-			$ds->description = $item->getDescription();
-
-			$ds->item_group_title = ($item->item_group === null) ?
-				Store::_('[Ungrouped]') : $item->item_group->title;
-
-			$ds->item_group_id = ($item->item_group === null) ?
-				0 : $item->item_group->id;
-
-			foreach ($this->queryRegions() as $region) {
-				$price_field_name = sprintf('price_%s', $region->id);
-				$enabled_field_name = sprintf('enabled_%s', $region->id);
-				$ds->$price_field_name = null;
-				$ds->$enabled_field_name = false;
-			}
-
-			$enabled = false;
-			foreach ($item->region_bindings as $binding) {
-				$price_field_name = 
-					sprintf('price_%s', $binding->getInternalValue('region'));
-
-				$enabled_field_name = 
-					sprintf('enabled_%s', $binding->getInternalValue('region'));
-
-				$ds->$price_field_name = $binding->price;
-				$ds->$enabled_field_name = $binding->enabled;
-				$enabled = $enabled || $binding->enabled;
-			}
-			$ds->enabled = $enabled;
-
-			$store->addRow($ds);
-		}
-
-		return $store;
+	protected function getItemsOrderBy()
+	{
+		return 'Item.displayorder, Item.sku';
 	}
 
 	// }}}
