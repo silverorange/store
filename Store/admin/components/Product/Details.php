@@ -712,15 +712,15 @@ class StoreProductDetails extends AdminIndex
 			$regions_select,
 			$regions_join,
 			$this->app->db->quote($this->id, 'integer'),
-			$this->getOrderByClause($view, $this->getItemsOrderBy()));
+			$this->getOrderByClause($view, $this->getItemsOrderByClause()));
 
 		return $sql;
 	}
 
 	// }}}
-	// {{{ protected function getItemsOrderBy()
+	// {{{ protected function getItemsOrderByClause()
 
-	protected function getItemsOrderBy()
+	protected function getItemsOrderByClause()
 	{
 		return 'Item.displayorder, Item.sku';
 	}
