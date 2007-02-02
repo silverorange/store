@@ -116,12 +116,15 @@ abstract class StorePaymentMethod extends StoreDataObject
 	 * private key needed to decrypt the credit card number.
 	 *
 	 * @param string $number the new credit card number.
+	 * @param boolean $store_unencrypted optional flag to store an uncrypted
+	 *                                    version of the card number in the
+	 *                                    
 	 *
 	 * @throws StoreException a StoreException is thrown if this class has no
 	 *                         defined GPG id and you try to set the credit
 	 *                         card number.
 	 */
-	public function setCreditCardNumber($number)
+	public function setCreditCardNumber($number, $store_unencrypted = false)
 	{
 		if ($this->gpg_id === null)
 			throw new StoreException('No GPG id provided.');
@@ -158,9 +161,10 @@ abstract class StorePaymentMethod extends StoreDataObject
 		$span_tag->class = 'store-payment-method';
 		$span_tag->open();
 
-		echo SwatString::minimizeEntities($this->payment_type->title), ': ';
+		echo SwatString::minimizeEntities($this->payment_type->title);
 
 		if ($this->credit_card_last4 !== null) {
+			echo ': ';
 			$span_tag->class = 'store-payment-method-credit-card-number';
 			$span_tag->setContent(StorePaymentType::formatCreditCardNumber(
 				$this->credit_card_last4,
