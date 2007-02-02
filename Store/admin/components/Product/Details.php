@@ -625,7 +625,7 @@ class StoreProductDetails extends AdminIndex
 
 	protected function getItemsTableStore($view)
 	{
-		$sql = $this->getItemsSql();
+		$sql = $this->getItemsSql($view);
 		$items = SwatDB::query($this->app->db, $sql, 'StoreItemWrapper');
 		$store = new SwatTableStore();
 
@@ -670,7 +670,7 @@ class StoreProductDetails extends AdminIndex
 	// }}}
 	// {{{ protected function getItemsTableStore()
 
-	protected function getItemsSql()
+	protected function getItemsSql($view)
 	{
 		/*
 		 * This dynamic SQL is needed to make the table orderable by the price
