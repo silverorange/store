@@ -19,7 +19,7 @@ require_once
 /**
  * Index page for Products
  *
- * @package   veseys2
+ * @package   Store 
  * @copyright 2005-2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
