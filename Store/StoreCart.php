@@ -264,7 +264,7 @@ abstract class StoreCart extends SwatObject
 	{
 		$old_entry = null;
 
-		if (in_array($entry, $this->entries)) {
+		if (in_array($entry, $this->entries, true)) {
 			foreach ($this->entries as $key => $cart_entry) {
 				if ($cart_entry === $entry) {
 					$old_entry = $this->entries[$key];
