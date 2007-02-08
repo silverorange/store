@@ -51,7 +51,7 @@ class StoreItemGroupDelete extends AdminDBDelete
 		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One group has been deleted.',
 			'%d groups have been deleted.', $num),
-			SwatString::numberForamt($num)),
+			SwatString::numberFormat($num)),
 			SwatMessage::NOTIFICATION);
 
 		$this->app->messages->add($message);
@@ -84,8 +84,8 @@ class StoreItemGroupDelete extends AdminDBDelete
 			'</p>';
 
 		$message = $this->ui->getWidget('confirmation_message');
-		$message->content = sprintf($message_content, $dep->getMessage(),
-			'<em>', '</em>');
+		$message->content = $dep->getMessage().
+			sprintf($message_content, '<em>', '</em>');
 
 		$message->content_type = 'text/xml';
 
