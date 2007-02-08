@@ -57,9 +57,11 @@ class StoreQuantityDiscount extends StoreDataObject
 	protected $limit_by_region = true;
 
 	/**
-	 * Price of item to use at this quantity
+	 * Cache of price of item to use at this quantity indexed by region id
 	 *
-	 * @var integer
+	 * This is an array of floats.
+	 *
+	 * @var array
 	 */
 	protected $price = array();
 
@@ -115,8 +117,9 @@ class StoreQuantityDiscount extends StoreDataObject
 
 		$price = null;
 
-		if ($this->region->id == $region->id && $this->price !== null) {
-			$price = $this->price;
+		if ($this->region->id == $region->id &&
+			isset($this->price[$region->id])) {
+			$price = $this->price[$region->id];
 		} else {
 			// Price is not loaded, load from specified region through region
 			// bindings.
@@ -124,6 +127,7 @@ class StoreQuantityDiscount extends StoreDataObject
 			foreach ($region_bindings as $binding) {
 				if ($binding->getInternalValue('region') == $region->id) {
 					$price = $binding->price;
+					$this->price[$region->id] = $price;
 					break;
 				}
 			}
