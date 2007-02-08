@@ -189,11 +189,6 @@ class StoreAccountOrderPage extends StoreAccountPage
 			'packages/store/styles/store-account-order-page.css',
 			Store::PACKAGE_ID));
 
-		$this->layout->addHtmlHeadEntry(
-			new SwatStyleSheetHtmlHeadEntry(
-				'packages/store/styles/store-cart-page.css',
-				Store::PACKAGE_ID));
-
 		$this->ui->getWidget('form')->action = $this->source;
 
 		$this->buildCartMessages();
