@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Store 1.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-12 19:54-0400\n"
+"POT-Creation-Date: 2007-02-08 17:05-0400\n"
 "PO-Revision-Date: 2006-11-24 11:17-0400\n"
 "Last-Translator: Isaac Grant <isaac@silverorange.com>\n"
 "Language-Team: silverorange\n"
@@ -58,21 +58,21 @@ msgid "“%s” is not an available %%s."
 msgstr ""
 
 #: ../Store/pages/StoreQuickOrderPage.php.gettext:163
-#: ../Store/pages/StoreProductPage.php.gettext:187
+#: ../Store/pages/StoreProductPage.php.gettext:205
 msgid "There is a problem with one or more of the items you requested."
 msgstr ""
 
 #: ../Store/pages/StoreQuickOrderPage.php.gettext:167
 #: ../Store/pages/StoreCartPage.php.gettext:128
 #: ../Store/pages/StoreCartPage.php.gettext:156
-#: ../Store/pages/StoreAccountAddressEditPage.php.gettext:83
-#: ../Store/pages/StoreCheckoutFirstPage.php.gettext:115
-#: ../Store/pages/StoreCheckoutCartPage.php.gettext:56
-#: ../Store/pages/StoreProductPage.php.gettext:191
+#: ../Store/pages/StoreAccountAddressEditPage.php.gettext:84
+#: ../Store/pages/StoreCheckoutFirstPage.php.gettext:116
+#: ../Store/pages/StoreCheckoutCartPage.php.gettext:57
+#: ../Store/pages/StoreProductPage.php.gettext:209
 msgid "Please address the fields highlighted below and re-submit the form."
 msgstr ""
 
-#: ../Store/pages/StoreQuickOrderPage.php.gettext:307
+#: ../Store/pages/StoreQuickOrderPage.php.gettext:313
 msgid "The following item was added to your cart:"
 msgid_plural "The following items were added to your cart:"
 msgstr[0] ""
@@ -80,89 +80,89 @@ msgstr[1] ""
 
 #: ../Store/pages/StoreCartPage.php.gettext:124
 #: ../Store/pages/StoreCartPage.php.gettext:152
-#: ../Store/pages/StoreAccountAddressEditPage.php.gettext:80
-#: ../Store/pages/StoreCheckoutFirstPage.php.gettext:112
-#: ../Store/pages/StoreCheckoutCartPage.php.gettext:53
+#: ../Store/pages/StoreAccountAddressEditPage.php.gettext:81
+#: ../Store/pages/StoreCheckoutFirstPage.php.gettext:113
+#: ../Store/pages/StoreCheckoutCartPage.php.gettext:54
 msgid "There is a problem with the information submitted."
 msgstr ""
 
-#: ../Store/pages/StoreCartPage.php.gettext:301
-#: ../Store/pages/StoreCheckoutCartPage.php.gettext:113
-#: ../Store/pages/StoreCheckoutCartPage.php.gettext:205
+#: ../Store/pages/StoreCartPage.php.gettext:275
+#: ../Store/pages/StoreCheckoutCartPage.php.gettext:233
 #, php-format
 msgid "One item has been removed from shopping cart."
 msgid_plural "%s items have been removed from shopping cart."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/pages/StoreCartPage.php.gettext:309
+#: ../Store/pages/StoreCartPage.php.gettext:283
+#: ../Store/pages/StoreCheckoutCartPage.php.gettext:248
 #, php-format
-msgid "One item quantity updated."
-msgid_plural "%s item quantities updated."
+msgid "One item quantity has been updated."
+msgid_plural "%s item quantities have been updated."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/pages/StoreCartPage.php.gettext:317
-#: ../Store/pages/StoreCheckoutCartPage.php.gettext:156
+#: ../Store/pages/StoreCartPage.php.gettext:292
+#: ../Store/pages/StoreCheckoutCartPage.php.gettext:243
 msgid "One item has been saved for later."
 msgstr ""
 
-#: ../Store/pages/StoreCartPage.php.gettext:323
-#: ../Store/pages/StoreCartPage.php.gettext:682
+#: ../Store/pages/StoreCartPage.php.gettext:298
+#: ../Store/pages/StoreCartPage.php.gettext:829
 #, php-format
 msgid "Items will not be saved unless you %screate an account or log in%s."
 msgstr ""
 
-#: ../Store/pages/StoreCartPage.php.gettext:363
+#: ../Store/pages/StoreCartPage.php.gettext:336
 #, php-format
 msgid "One item has been removed from cart."
 msgid_plural "%s items have been removed from cart."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/pages/StoreCartPage.php.gettext:399
+#: ../Store/pages/StoreCartPage.php.gettext:370
 #, php-format
 msgid "One item has been removed from unavailable items."
 msgid_plural "%s items have been removed from unavailable items."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/pages/StoreCartPage.php.gettext:455
-#: ../Store/pages/StoreCartPage.php.gettext:529
+#: ../Store/pages/StoreCartPage.php.gettext:395
+#: ../Store/pages/StoreCartPage.php.gettext:467
 #, php-format
 msgid "One item has been removed from saved items."
 msgid_plural "%s items have been removed from saved items."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/pages/StoreCartPage.php.gettext:460
+#: ../Store/pages/StoreCartPage.php.gettext:400
 msgid "One item has been moved to shopping cart."
 msgstr ""
 
-#: ../Store/pages/StoreCartPage.php.gettext:493
+#: ../Store/pages/StoreCartPage.php.gettext:433
 #, php-format
 msgid "One item moved to shopping cart."
 msgid_plural "%s items moved to shopping cart."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/pages/StoreCartPage.php.gettext:556
+#: ../Store/pages/StoreCartPage.php.gettext:703
 msgid "Your Shopping Cart is Empty"
 msgstr ""
 
-#: ../Store/pages/StoreCartPage.php.gettext:560
+#: ../Store/pages/StoreCartPage.php.gettext:707
 msgid ""
 "You can add items to your shopping cart by selecting from the menu on the "
 "left and browsing for products."
 msgstr ""
 
-#: ../Store/pages/StoreCartPage.php.gettext:621
+#: ../Store/pages/StoreCartPage.php.gettext:768
 msgid "Unavailable Item"
 msgid_plural "Unavailable Items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/pages/StoreCartPage.php.gettext:624
+#: ../Store/pages/StoreCartPage.php.gettext:771
 msgid ""
 "The item below is in your shopping cart but is not currently available for "
 "purchasing and will not be included in your order."
@@ -172,11 +172,11 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/pages/StoreCartPage.php.gettext:664
+#: ../Store/pages/StoreCartPage.php.gettext:811
 msgid "Saved Items"
 msgstr ""
 
-#: ../Store/pages/StoreCartPage.php.gettext:668
+#: ../Store/pages/StoreCartPage.php.gettext:815
 msgid ""
 "The item below is saved for later and will not be included in your order. "
 "You may move the item to your shopping cart by clicking the “Move to Cart” "
@@ -219,42 +219,42 @@ msgid ""
 "enter all of your address and payment information."
 msgstr ""
 
-#: ../Store/pages/StoreAccountAddressEditPage.php.gettext:93
+#: ../Store/pages/StoreAccountAddressEditPage.php.gettext:94
 msgid "One address has been added."
 msgstr ""
 
-#: ../Store/pages/StoreAccountAddressEditPage.php.gettext:97
+#: ../Store/pages/StoreAccountAddressEditPage.php.gettext:98
 msgid "One address has been updated."
 msgstr ""
 
-#: ../Store/pages/StoreAccountAddressEditPage.php.gettext:178
+#: ../Store/pages/StoreAccountAddressEditPage.php.gettext:179
 #, php-format
 msgid "The selected %s is not a province or state of the selected country."
 msgstr ""
 
-#: ../Store/pages/StoreAccountAddressEditPage.php.gettext:181
+#: ../Store/pages/StoreAccountAddressEditPage.php.gettext:182
 #, php-format
 msgid ""
 "The selected %%s is not a province or state of the selected country %s%s%s."
 msgstr ""
 
-#: ../Store/pages/StoreAccountAddressEditPage.php.gettext:253
 #: ../Store/pages/StoreAccountAddressEditPage.php.gettext:254
+#: ../Store/pages/StoreAccountAddressEditPage.php.gettext:255
 #: ../Store/pages/StoreCheckoutBillingAddressPage.php.gettext:258
 #: ../Store/pages/StoreCheckoutShippingAddressPage.php.gettext:265
 #: ../Store/pages/account-details.xml:55
 msgid "Add a New Address"
 msgstr ""
 
-#: ../Store/pages/StoreAccountAddressEditPage.php.gettext:257
+#: ../Store/pages/StoreAccountAddressEditPage.php.gettext:258
 msgid "Edit an Existing Address"
 msgstr ""
 
-#: ../Store/pages/StoreAccountAddressEditPage.php.gettext:260
+#: ../Store/pages/StoreAccountAddressEditPage.php.gettext:261
 msgid "Update Address"
 msgstr ""
 
-#: ../Store/pages/StoreAccountAddressEditPage.php.gettext:262
+#: ../Store/pages/StoreAccountAddressEditPage.php.gettext:263
 msgid "Edit an Exisiting Address"
 msgstr ""
 
@@ -307,7 +307,7 @@ msgid "View your Account"
 msgstr ""
 
 #: ../Store/pages/StoreAccountLoginPage.php.gettext:70
-#: ../Store/pages/StoreCheckoutFrontPage.php.gettext:111
+#: ../Store/pages/StoreCheckoutFrontPage.php.gettext:118
 msgid "Login Incorrect"
 msgstr ""
 
@@ -350,6 +350,7 @@ msgid "Update Account Details"
 msgstr ""
 
 #: ../Store/pages/StoreAccountEditPage.php.gettext:224
+#: ../Store/pages/checkout-front.xml:15
 msgid "Create a New Account"
 msgstr ""
 
@@ -367,7 +368,7 @@ msgstr ""
 msgid "Sorry, “%s” is no longer available."
 msgstr ""
 
-#: ../Store/pages/StoreAccountOrderPage.php.gettext:294
+#: ../Store/pages/StoreAccountOrderPage.php.gettext:299
 #, php-format
 msgid "“%1$s” added to %3$sshopping cart%4$s."
 msgid_plural "%2$s items added to %3$sshopping cart%4$s."
@@ -399,7 +400,7 @@ msgstr[1] ""
 
 #: ../Store/pages/StoreAccountDetailsPage.php.gettext:286
 #: ../Store/admin/components/Product/include/StoreItemDiscountCellRenderer.php.gettext:33
-#: ../Store/admin/components/Product/include/StoreItemGroupAction.php.gettext:52
+#: ../Store/admin/components/Product/include/StoreItemGroupAction.php.gettext:59
 msgid "<none>"
 msgstr ""
 
@@ -413,7 +414,7 @@ msgstr ""
 
 #: ../Store/pages/StoreAccountPaymentMethodEditPage.php.gettext:235
 #: ../Store/pages/StoreAccountPaymentMethodEditPage.php.gettext:237
-#: ../Store/pages/StoreCheckoutPaymentMethodPage.php.gettext:239
+#: ../Store/pages/StoreCheckoutPaymentMethodPage.php.gettext:289
 #: ../Store/pages/account-details.xml:68
 msgid "Add a New Payment Method"
 msgstr ""
@@ -434,11 +435,11 @@ msgid ""
 "updated date."
 msgstr ""
 
-#: ../Store/pages/StoreCheckoutFrontPage.php.gettext:115
+#: ../Store/pages/StoreCheckoutFrontPage.php.gettext:122
 msgid "Please check the spelling on your email address or password"
 msgstr ""
 
-#: ../Store/pages/StoreCheckoutFrontPage.php.gettext:117
+#: ../Store/pages/StoreCheckoutFrontPage.php.gettext:124
 #, php-format
 msgid "Password is case-sensitive. Make sure your %sCaps Lock%s key is off"
 msgstr ""
@@ -457,14 +458,14 @@ msgstr ""
 msgid "Ship to a Different Address"
 msgstr ""
 
-#: ../Store/pages/StoreCheckoutPaymentMethodPage.php.gettext:267
+#: ../Store/pages/StoreCheckoutPaymentMethodPage.php.gettext:243
 #, php-format
 msgid ""
 "%sSee our %sprivacy &amp; security policy%s for more information about how "
 "your information will be used.%s"
 msgstr ""
 
-#: ../Store/pages/StoreCheckoutFirstPage.php.gettext:135
+#: ../Store/pages/StoreCheckoutFirstPage.php.gettext:136
 msgid "Checkout"
 msgstr ""
 
@@ -490,65 +491,58 @@ msgstr ""
 msgid "Privacy"
 msgstr ""
 
-#: ../Store/pages/StoreCheckoutCartPage.php.gettext:197
-#, php-format
-msgid "One item quantity has been updated."
-msgid_plural "%s item quantities have been updated."
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../Store/pages/StoreProductPage.php.gettext:220
+#: ../Store/pages/StoreProductPage.php.gettext:238
 msgid "Your shopping cart has been updated."
 msgstr ""
 
-#: ../Store/pages/StoreProductPage.php.gettext:223
+#: ../Store/pages/StoreProductPage.php.gettext:241
 msgid "You may continue shopping by following any of the links on this page."
 msgstr ""
 
-#: ../Store/pages/StoreProductPage.php.gettext:283
+#: ../Store/pages/StoreProductPage.php.gettext:301
 msgid "An item has been removed from your shopping cart."
 msgstr ""
 
-#: ../Store/pages/StoreProductPage.php.gettext:413
+#: ../Store/pages/StoreProductPage.php.gettext:435
 msgid "The following item on this page is in your shopping cart:"
 msgid_plural "The following items on this page are in your shopping cart:"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/pages/StoreProductPage.php.gettext:510
-#: ../Store/pages/StoreCategoryPage.php.gettext:315
+#: ../Store/pages/StoreProductPage.php.gettext:532
+#: ../Store/pages/StoreCategoryPage.php.gettext:325
 msgid "Related Articles: "
 msgstr ""
 
-#: ../Store/pages/StoreProductPage.php.gettext:552
+#: ../Store/pages/StoreProductPage.php.gettext:583
 #: ../Store/pages/StoreProductImagePage.php.gettext:113
 #, php-format
 msgid "Photo of %s"
 msgstr ""
 
-#: ../Store/pages/StoreProductPage.php.gettext:557
-#: ../Store/pages/StoreProductPage.php.gettext:589
+#: ../Store/pages/StoreProductPage.php.gettext:588
+#: ../Store/pages/StoreProductPage.php.gettext:620
 #: ../Store/pages/StoreProductImagePage.php.gettext:164
 msgid "View Larger Image"
 msgstr ""
 
-#: ../Store/pages/StoreProductPage.php.gettext:562
-#: ../Store/pages/StoreProductPage.php.gettext:594
+#: ../Store/pages/StoreProductPage.php.gettext:593
+#: ../Store/pages/StoreProductPage.php.gettext:625
 #: ../Store/pages/StoreProductImagePage.php.gettext:169
 msgid "<span>View Larger Image</span>"
 msgstr ""
 
-#: ../Store/pages/StoreProductPage.php.gettext:584
+#: ../Store/pages/StoreProductPage.php.gettext:615
 #: ../Store/pages/StoreProductImagePage.php.gettext:157
 #, php-format
 msgid "Additional Photo of %s"
 msgstr ""
 
-#: ../Store/pages/StoreProductPage.php.gettext:640
+#: ../Store/pages/StoreProductPage.php.gettext:671
 msgid "You might also be interested in..."
 msgstr ""
 
-#: ../Store/pages/StoreCategoryPage.php.gettext:259
+#: ../Store/pages/StoreCategoryPage.php.gettext:269
 msgid "Featuring:"
 msgstr ""
 
@@ -570,37 +564,67 @@ msgstr ""
 msgid "Download High Resolution Image"
 msgstr ""
 
-#: ../Store/pages/StoreSearchPage.php.gettext:279
+#: ../Store/pages/StoreSearchPage.php.gettext:290
 msgid "more"
 msgstr ""
 
-#: ../Store/pages/StoreSearchPage.php.gettext:365
+#: ../Store/pages/StoreSearchPage.php.gettext:376
 #, php-format
 msgid "No article results found for “%s”."
 msgstr ""
 
-#: ../Store/pages/StoreSearchPage.php.gettext:368
+#: ../Store/pages/StoreSearchPage.php.gettext:379
 #, php-format
 msgid "No category results found for “%s”."
 msgstr ""
 
-#: ../Store/pages/StoreSearchPage.php.gettext:371
+#: ../Store/pages/StoreSearchPage.php.gettext:382
 #, php-format
 msgid "No product results found for “%s”."
 msgstr ""
 
-#: ../Store/pages/StoreSearchPage.php.gettext:374
+#: ../Store/pages/StoreSearchPage.php.gettext:385
 #, php-format
 msgid "No results found for “%s”."
 msgstr ""
 
-#: ../Store/pages/StoreSearchPage.php.gettext:380
+#: ../Store/pages/StoreSearchPage.php.gettext:391
 msgid "Try using less specific keywords"
 msgstr ""
 
-#: ../Store/pages/StoreNateGoSearchPage.php.gettext:184
+#: ../Store/pages/StoreNateGoSearchPage.php.gettext:200
 #, php-format
 msgid "Did you mean “%s”?"
+msgstr ""
+
+#: ../Store/pages/StoreCategoryNotVisiblePage.php.gettext:38
+#, php-format
+msgid ""
+"Products in the %s category are not available from our %s\n"
+"\t\t\tstore."
+msgstr ""
+
+#: ../Store/pages/StoreArticleNotVisiblePage.php.gettext:43
+#, php-format
+msgid "%s is not available on our %s store."
+msgstr ""
+
+#: ../Store/pages/StoreProductNotVisiblePage.php.gettext:38
+#, php-format
+msgid "%s is not available from our %s store."
+msgstr ""
+
+#: ../Store/pages/StoreNotVisiblePage.php.gettext:98
+#, php-format
+msgid ""
+"It is\n"
+"\t\t\t\tavailable on our %s store."
+msgstr ""
+
+#: ../Store/pages/StoreNotVisiblePage.php.gettext:103
+msgid ""
+"It is available\n"
+"\t\t\t\tin the following regions:"
 msgstr ""
 
 #: ../Store/StoreAddressView.php.gettext:105
@@ -614,7 +638,7 @@ msgstr ""
 #: ../Store/admin/components/Category/ImageDelete.php.gettext:27
 #: ../Store/admin/components/Category/RemoveProducts.php.gettext:109
 #: ../Store/pages/cart.xml:75 ../Store/pages/cart.xml:145
-#: ../Store/pages/cart.xml:238 ../Store/pages/checkout-cart.xml:79
+#: ../Store/pages/cart.xml:238 ../Store/pages/checkout-cart.xml:67
 #: ../Store/pages/product-cart.xml:45
 msgid "Remove"
 msgstr ""
@@ -624,7 +648,7 @@ msgstr ""
 msgid "Are you sure you want to remove the following address?\\n\\n%s"
 msgstr ""
 
-#: ../Store/dataobjects/StoreCategory.php.gettext:310
+#: ../Store/dataobjects/StoreCategory.php.gettext:384
 #, php-format
 msgid "%s product"
 msgid_plural "%s products"
@@ -656,11 +680,11 @@ msgstr ""
 msgid "The %s field is not a valid United Kingdom postcode."
 msgstr ""
 
-#: ../Store/StoreTotalRow.php.gettext:111
+#: ../Store/StoreTotalRow.php.gettext:110
 msgid "FREE"
 msgstr ""
 
-#: ../Store/StoreCart.php.gettext:508
+#: ../Store/StoreCart.php.gettext:530
 #, php-format
 msgid "Quantity of “%s” item #%s must be at least one."
 msgstr ""
@@ -744,7 +768,7 @@ msgid ""
 "continue using your existing password."
 msgstr ""
 
-#: ../Store/StoreQuickOrderItemSelector.php.gettext:184
+#: ../Store/StoreQuickOrderItemSelector.php.gettext:189
 msgid "[ungrouped]"
 msgstr ""
 
@@ -795,7 +819,8 @@ msgstr ""
 #: ../Store/admin/components/Product/Edit.php.gettext:130
 #: ../Store/admin/components/ItemGroup/Edit.php.gettext:55
 #: ../Store/admin/components/Category/Edit.php.gettext:113
-#: ../Store/admin/components/Item/Edit.php.gettext:128
+#: ../Store/admin/components/Item/Edit.php.gettext:132
+#: ../Store/admin/components/PaymentType/Edit.php.gettext:104
 #, php-format
 msgid "“%s” has been saved."
 msgstr ""
@@ -912,15 +937,7 @@ msgstr ""
 msgid "Order Articles"
 msgstr ""
 
-#: ../Store/admin/components/Article/Order.php.gettext:72
-msgid "auto"
-msgstr ""
-
-#: ../Store/admin/components/Article/Order.php.gettext:73
-msgid "custom"
-msgstr ""
-
-#: ../Store/admin/components/Article/Order.php.gettext:82
+#: ../Store/admin/components/Article/Order.php.gettext:81
 #: ../Store/admin/components/Article/Index.php.gettext:175
 #: ../Store/admin/components/Article/search.xml:32
 #: ../Store/admin/components/Article/index.xml:78
@@ -957,6 +974,7 @@ msgstr ""
 #: ../Store/admin/components/Article/Edit.php.gettext:76
 #: ../Store/admin/components/Product/Edit.php.gettext:75
 #: ../Store/admin/components/Category/Edit.php.gettext:60
+#: ../Store/admin/components/PaymentType/Edit.php.gettext:57
 msgid "Shortname already exists and must be unique."
 msgstr ""
 
@@ -1043,7 +1061,7 @@ msgstr ""
 #: ../Store/pages/checkout-confirmation.xml:133
 #: ../Store/pages/checkout-thank-you.xml:113
 #: ../Store/pages/checkout-thank-you.xml:125
-#: ../Store/pages/checkout-cart.xml:68 ../Store/pages/checkout-cart.xml:110
+#: ../Store/pages/checkout-cart.xml:56 ../Store/pages/checkout-cart.xml:98
 #: ../Store/pages/product-cart.xml:34
 #: ../Store/admin/components/Account/details.xml:72
 #: ../Store/admin/components/Order/index.xml:31
@@ -1159,9 +1177,9 @@ msgstr ""
 #: ../Store/admin/components/Catalog/Delete.php.gettext:39
 #: ../Store/admin/components/Catalog/Delete.php.gettext:71
 #: ../Store/admin/components/Catalog/Delete.php.gettext:120
-#: ../Store/admin/components/Catalog/Status.php.gettext:145
-#: ../Store/admin/components/Catalog/Status.php.gettext:154
-#: ../Store/admin/components/Catalog/Status.php.gettext:161
+#: ../Store/admin/components/Catalog/Status.php.gettext:150
+#: ../Store/admin/components/Catalog/Status.php.gettext:159
+#: ../Store/admin/components/Catalog/Status.php.gettext:166
 msgid "catalog"
 msgstr ""
 
@@ -1195,7 +1213,7 @@ msgstr ""
 msgid "Catalog"
 msgstr ""
 
-#: ../Store/admin/components/Catalog/Status.php.gettext:93
+#: ../Store/admin/components/Catalog/Status.php.gettext:97
 #, php-format
 msgid "The status of “%s” has been updated."
 msgstr ""
@@ -1205,11 +1223,11 @@ msgstr ""
 msgid "“%s” has been automatically disabled in all regions."
 msgstr ""
 
-#: ../Store/admin/components/Catalog/Status.php.gettext:137
+#: ../Store/admin/components/Catalog/Status.php.gettext:142
 msgid "Warning"
 msgstr ""
 
-#: ../Store/admin/components/Catalog/Status.php.gettext:140
+#: ../Store/admin/components/Catalog/Status.php.gettext:145
 #, php-format
 msgid ""
 "<p>The %1$s <strong>%2$s</strong> has a clone. Enabling the %1$s <strong>%2"
@@ -1217,7 +1235,7 @@ msgid ""
 "regions.</p>"
 msgstr ""
 
-#: ../Store/admin/components/Catalog/Status.php.gettext:149
+#: ../Store/admin/components/Catalog/Status.php.gettext:154
 #, php-format
 msgid ""
 "<p>The %1$s <strong>%2$s</strong> is a cloned  %1$s. Enabling the %1$s "
@@ -1225,14 +1243,14 @@ msgid ""
 "strong> in all regions.</p>"
 msgstr ""
 
-#: ../Store/admin/components/Catalog/Status.php.gettext:159
+#: ../Store/admin/components/Catalog/Status.php.gettext:164
 #, php-format
 msgid ""
 "<p>Enable this %1$s only if you are done making %1$s changes, and you want "
 "to apply the changes to the live website.</p>"
 msgstr ""
 
-#: ../Store/admin/components/Catalog/Status.php.gettext:199
+#: ../Store/admin/components/Catalog/Status.php.gettext:204
 msgid "Change Status"
 msgstr ""
 
@@ -1340,12 +1358,12 @@ msgstr ""
 msgid "Account payment method with id ‘%s’ not found."
 msgstr ""
 
-#: ../Store/admin/components/Account/Details.php.gettext:243
+#: ../Store/admin/components/Account/Details.php.gettext:72
 #, php-format
 msgid "A account with an id of ‘%d’ does not exist."
 msgstr ""
 
-#: ../Store/admin/components/Account/Details.php.gettext:257
+#: ../Store/admin/components/Account/Details.php.gettext:249
 #: ../Store/admin/components/Account/edit.xml:6
 msgid "Account"
 msgstr ""
@@ -1391,13 +1409,13 @@ msgid "A confirmation of %s will be sent to "
 msgstr ""
 
 #: ../Store/admin/components/Order/EmailConfirmation.php.gettext:132
-#: ../Store/admin/components/Order/Details.php.gettext:102
+#: ../Store/admin/components/Order/Details.php.gettext:105
 #, php-format
 msgid "An order with an id of ‘%d’ does not exist."
 msgstr ""
 
 #: ../Store/admin/components/Order/EmailConfirmation.php.gettext:151
-#: ../Store/admin/components/Order/Details.php.gettext:125
+#: ../Store/admin/components/Order/Details.php.gettext:128
 msgid "Customer Accounts"
 msgstr ""
 
@@ -1406,13 +1424,13 @@ msgid "Resend Confirmation Email"
 msgstr ""
 
 #: ../Store/admin/components/Order/EmailConfirmation.php.gettext:172
-#: ../Store/admin/components/Order/Details.php.gettext:113
+#: ../Store/admin/components/Order/Details.php.gettext:116
 #: ../Store/admin/components/Order/Index.php.gettext:246
 #, php-format
 msgid "Order %s"
 msgstr ""
 
-#: ../Store/admin/components/Order/Details.php.gettext:72
+#: ../Store/admin/components/Order/Details.php.gettext:75
 msgid "Order"
 msgstr ""
 
@@ -1458,29 +1476,29 @@ msgstr ""
 msgid "no items"
 msgstr ""
 
-#: ../Store/admin/components/Product/include/StoreItemGroupAction.php.gettext:37
+#: ../Store/admin/components/Product/include/StoreItemGroupAction.php.gettext:44
 msgid "group name"
 msgstr ""
 
-#: ../Store/admin/components/Product/include/StoreItemGroupAction.php.gettext:53
+#: ../Store/admin/components/Product/include/StoreItemGroupAction.php.gettext:60
 msgid "<new group>"
 msgstr ""
 
-#: ../Store/admin/components/Product/include/StoreItemGroupAction.php.gettext:81
+#: ../Store/admin/components/Product/include/StoreItemGroupAction.php.gettext:88
 #, php-format
 msgid "One item has been added to the new group “%s”."
 msgid_plural "%d items have been added to the new group “%s”."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/admin/components/Product/include/StoreItemGroupAction.php.gettext:91
+#: ../Store/admin/components/Product/include/StoreItemGroupAction.php.gettext:98
 #, php-format
 msgid "One item has been removed from a group."
 msgid_plural "%d items have been removed from group(s)."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/admin/components/Product/include/StoreItemGroupAction.php.gettext:102
+#: ../Store/admin/components/Product/include/StoreItemGroupAction.php.gettext:109
 #, php-format
 msgid "One item has been added to the group “%s”."
 msgid_plural "%d items have been added to the group “%s”."
@@ -1499,19 +1517,19 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: ../Store/admin/components/Product/RelatedProductDelete.php.gettext:126
-#: ../Store/admin/components/Product/RelatedProduct.php.gettext:188
+#: ../Store/admin/components/Product/RelatedProduct.php.gettext:185
 #: ../Store/admin/components/Product/Delete.php.gettext:136
-#: ../Store/admin/components/Product/ImageDelete.php.gettext:145
-#: ../Store/admin/components/Product/Details.php.gettext:531
+#: ../Store/admin/components/Product/ImageDelete.php.gettext:146
+#: ../Store/admin/components/Product/Details.php.gettext:550
 #: ../Store/admin/components/Product/Edit.php.gettext:232
 #: ../Store/admin/components/Product/ImageEdit.php.gettext:536
-#: ../Store/admin/components/Product/ImageOrder.php.gettext:134
+#: ../Store/admin/components/Product/ImageOrder.php.gettext:142
 #: ../Store/admin/components/ItemGroup/Order.php.gettext:99
 #: ../Store/admin/components/ItemGroup/Delete.php.gettext:106
 #: ../Store/admin/components/ItemGroup/Edit.php.gettext:125
 #: ../Store/admin/components/Category/Index.php.gettext:491
-#: ../Store/admin/components/Item/Order.php.gettext:139
-#: ../Store/admin/components/Item/Edit.php.gettext:266
+#: ../Store/admin/components/Item/Order.php.gettext:152
+#: ../Store/admin/components/Item/Edit.php.gettext:270
 #: ../Store/admin/components/Item/QuantityDiscount.php.gettext:519
 msgid "Product Categories"
 msgstr ""
@@ -1520,18 +1538,18 @@ msgstr ""
 msgid "Remove Related"
 msgstr ""
 
-#: ../Store/admin/components/Product/RelatedProduct.php.gettext:86
+#: ../Store/admin/components/Product/RelatedProduct.php.gettext:85
 #, php-format
 msgid "One product has been related to this product."
 msgid_plural "%d products have been related to this product."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/admin/components/Product/RelatedProduct.php.gettext:131
+#: ../Store/admin/components/Product/RelatedProduct.php.gettext:128
 msgid "Search for Related Products to Add"
 msgstr ""
 
-#: ../Store/admin/components/Product/RelatedProduct.php.gettext:209
+#: ../Store/admin/components/Product/RelatedProduct.php.gettext:206
 #: ../Store/admin/components/Product/relatedproduct.xml:6
 #: ../Store/admin/components/Product/relatedproduct.xml:26
 msgid "Add Related Products"
@@ -1544,18 +1562,18 @@ msgid_plural "%d products have been deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/admin/components/Product/ImageDelete.php.gettext:86
+#: ../Store/admin/components/Product/ImageDelete.php.gettext:87
 msgid "One product image has been removed."
 msgstr ""
 
-#: ../Store/admin/components/Product/ImageDelete.php.gettext:128
+#: ../Store/admin/components/Product/ImageDelete.php.gettext:129
 #: ../Store/admin/components/Category/ImageDelete.php.gettext:112
 msgid "Remove the following image?"
 msgid_plural "Remove the following images?"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/admin/components/Product/ImageDelete.php.gettext:140
+#: ../Store/admin/components/Product/ImageDelete.php.gettext:141
 #: ../Store/admin/components/Category/ImageDelete.php.gettext:125
 #: ../Store/admin/components/Category/index.xml:45
 msgid "Remove Image"
@@ -1576,32 +1594,8 @@ msgid_plural "%d items have been disabled."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/admin/components/Product/Details.php.gettext:228
-#: ../Store/admin/components/Category/Index.php.gettext:176
-#, php-format
-msgid "The status of one item has been changed."
-msgid_plural "The status of %d items has been changed."
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../Store/admin/components/Product/Details.php.gettext:313
-#: ../Store/admin/components/Item/QuantityDiscount.php.gettext:347
-#, php-format
-msgid "“%s” has been added."
-msgstr ""
-
-#: ../Store/admin/components/Product/Details.php.gettext:321
-msgid "The following items have been added:"
-msgstr ""
-
-#: ../Store/admin/components/Product/Details.php.gettext:328
-msgid ""
-"There was a problem adding the item(s). Please check the highlighted fields "
-"below."
-msgstr ""
-
-#: ../Store/admin/components/Product/Details.php.gettext:350
-#: ../Store/admin/components/Item/Edit.php.gettext:160
+#: ../Store/admin/components/Product/Details.php.gettext:210
+#: ../Store/admin/components/Item/Edit.php.gettext:164
 #, php-format
 msgid ""
 "%s must be unique amongst all catalogs unless catalogs are clones of each "
@@ -1610,34 +1604,58 @@ msgstr ""
 "%s must be unique amongst all catalogues unless catalogs are clones of each "
 "other."
 
-#: ../Store/admin/components/Product/Details.php.gettext:512
+#: ../Store/admin/components/Product/Details.php.gettext:241
+#: ../Store/admin/components/Category/Index.php.gettext:176
+#, php-format
+msgid "The status of one item has been changed."
+msgid_plural "The status of %d items has been changed."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/admin/components/Product/Details.php.gettext:326
+#: ../Store/admin/components/Item/QuantityDiscount.php.gettext:347
+#, php-format
+msgid "“%s” has been added."
+msgstr ""
+
+#: ../Store/admin/components/Product/Details.php.gettext:334
+msgid "The following items have been added:"
+msgstr ""
+
+#: ../Store/admin/components/Product/Details.php.gettext:341
+msgid ""
+"There was a problem adding the item(s). Please check the highlighted fields "
+"below."
+msgstr ""
+
+#: ../Store/admin/components/Product/Details.php.gettext:476
 #: ../Store/admin/components/Product/edit.xml:6
 msgid "Product"
 msgstr ""
 
-#: ../Store/admin/components/Product/Details.php.gettext:556
+#: ../Store/admin/components/Product/Details.php.gettext:575
 #: ../Store/admin/components/Product/Edit.php.gettext:273
 #, php-format
 msgid "A product with an id of ‘%d’ does not exist."
 msgstr ""
 
-#: ../Store/admin/components/Product/Details.php.gettext:587
+#: ../Store/admin/components/Product/Details.php.gettext:606
 #: ../Store/admin/components/Category/Index.php.gettext:371
 #: ../Store/admin/components/Category/SetItemEnabled.php.gettext:197
 msgid "All Regions"
 msgstr ""
 
-#: ../Store/admin/components/Product/Details.php.gettext:641
-#: ../Store/admin/components/Product/Details.php.gettext:645
+#: ../Store/admin/components/Product/Details.php.gettext:635
+msgid "[Ungrouped]"
+msgstr ""
+
+#: ../Store/admin/components/Product/Details.php.gettext:780
+#: ../Store/admin/components/Product/Details.php.gettext:784
 #: ../Store/admin/components/ItemGroup/Order.php.gettext:120
 msgid "Change Group Order"
 msgstr ""
 
-#: ../Store/admin/components/Product/Details.php.gettext:735
-msgid "[Ungrouped]"
-msgstr ""
-
-#: ../Store/admin/components/Product/Details.php.gettext:792
+#: ../Store/admin/components/Product/Details.php.gettext:827
 #: ../Store/admin/components/Item/QuantityDiscount.php.gettext:157
 #, php-format
 msgid "%s Price"
@@ -1692,7 +1710,7 @@ msgstr ""
 
 #: ../Store/admin/components/Product/ImageEdit.php.gettext:416
 #: ../Store/pages/checkout-edit.xml:7 ../Store/pages/checkout-cart.xml:8
-#: ../Store/pages/checkout-cart.xml:116
+#: ../Store/pages/checkout-cart.xml:104
 msgid "Update"
 msgstr ""
 
@@ -1719,7 +1737,11 @@ msgstr ""
 msgid "Change Product Image"
 msgstr ""
 
-#: ../Store/admin/components/Product/ImageOrder.php.gettext:75
+#: ../Store/admin/components/Product/ImageOrder.php.gettext:70
+msgid "Image order updated."
+msgstr ""
+
+#: ../Store/admin/components/Product/ImageOrder.php.gettext:83
 msgid "Order Product Images"
 msgstr ""
 
@@ -1733,8 +1755,8 @@ msgstr ""
 
 #: ../Store/admin/components/ItemGroup/Order.php.gettext:95
 #: ../Store/admin/components/ItemGroup/Edit.php.gettext:121
-#: ../Store/admin/components/Item/Order.php.gettext:135
-#: ../Store/admin/components/Item/Edit.php.gettext:262
+#: ../Store/admin/components/Item/Order.php.gettext:148
+#: ../Store/admin/components/Item/Edit.php.gettext:266
 #: ../Store/admin/components/Item/QuantityDiscount.php.gettext:515
 msgid "Product Search"
 msgstr ""
@@ -1968,11 +1990,11 @@ msgstr[1] ""
 msgid "<uncategorized>"
 msgstr ""
 
-#: ../Store/admin/components/Category/AddProducts.php.gettext:118
+#: ../Store/admin/components/Category/AddProducts.php.gettext:117
 msgid "Search for Products to Add"
 msgstr ""
 
-#: ../Store/admin/components/Category/AddProducts.php.gettext:185
+#: ../Store/admin/components/Category/AddProducts.php.gettext:184
 #: ../Store/admin/components/Category/addproducts.xml:6
 msgid "Add Products"
 msgstr ""
@@ -2112,34 +2134,38 @@ msgid_plural "%d quantity discounts have been deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../Store/admin/components/Item/Order.php.gettext:72
+#: ../Store/admin/components/Item/Order.php.gettext:67
+msgid "Item order updated."
+msgstr ""
+
+#: ../Store/admin/components/Item/Order.php.gettext:80
 msgid "Order Items"
 msgstr ""
 
-#: ../Store/admin/components/Item/Order.php.gettext:110
+#: ../Store/admin/components/Item/Order.php.gettext:123
 #, php-format
 msgid "Item #%s"
 msgstr ""
 
-#: ../Store/admin/components/Item/Order.php.gettext:112
+#: ../Store/admin/components/Item/Order.php.gettext:125
 #, php-format
 msgid "Item #%s - %s"
 msgstr ""
 
-#: ../Store/admin/components/Item/Edit.php.gettext:55
+#: ../Store/admin/components/Item/Edit.php.gettext:59
 msgid "A product ID or an item ID must be passed in the URL."
 msgstr ""
 
-#: ../Store/admin/components/Item/Edit.php.gettext:289
+#: ../Store/admin/components/Item/Edit.php.gettext:293
 #: ../Store/admin/components/Product/details.xml:85
 msgid "New Item"
 msgstr ""
 
-#: ../Store/admin/components/Item/Edit.php.gettext:291
+#: ../Store/admin/components/Item/Edit.php.gettext:295
 msgid "Edit Item"
 msgstr ""
 
-#: ../Store/admin/components/Item/Edit.php.gettext:304
+#: ../Store/admin/components/Item/Edit.php.gettext:308
 #, php-format
 msgid "Item with id ‘%s’ not found."
 msgstr ""
@@ -2184,6 +2210,55 @@ msgstr ""
 msgid "Quantity Discounts for SKU %s"
 msgstr ""
 
+#: ../Store/admin/components/PaymentType/Order.php.gettext:34
+msgid "Order Payment Types"
+msgstr ""
+
+#: ../Store/admin/components/PaymentType/Delete.php.gettext:33
+#, php-format
+msgid "One payment method has been deleted."
+msgid_plural "%d payment methods have been deleted."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/admin/components/PaymentType/Delete.php.gettext:54
+msgid "payment type"
+msgstr ""
+
+#: ../Store/admin/components/PaymentType/Delete.php.gettext:54
+msgid "payment types"
+msgstr ""
+
+#: ../Store/admin/components/PaymentType/Delete.php.gettext:62
+msgid "order payment method"
+msgstr ""
+
+#: ../Store/admin/components/PaymentType/Delete.php.gettext:63
+msgid "order payment methods"
+msgstr ""
+
+#: ../Store/admin/components/PaymentType/Delete.php.gettext:75
+msgid "account payment method"
+msgstr ""
+
+#: ../Store/admin/components/PaymentType/Delete.php.gettext:76
+msgid "account payment methods"
+msgstr ""
+
+#: ../Store/admin/components/PaymentType/Index.php.gettext:46
+#, php-format
+msgid "One payment type has been enabled."
+msgid_plural "%d payment types have been enabled."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../Store/admin/components/PaymentType/Index.php.gettext:57
+#, php-format
+msgid "One payment type has been disabled."
+msgid_plural "%d payment types have been disabled."
+msgstr[0] ""
+msgstr[1] ""
+
 #: ../Store/admin/StoreAdminMenuView.php.gettext:54
 msgid "Go"
 msgstr ""
@@ -2219,26 +2294,36 @@ msgid ""
 "be deleted."
 msgstr ""
 
-#: ../Store/StoreNateGoSearchIndexer.php.gettext:63
-msgid "Repopulating search queue ... "
+#: ../Store/StoreNateGoSearchIndexer.php.gettext:89
+msgid "Repopulating article search queue ... "
 msgstr ""
 
-#: ../Store/StoreNateGoSearchIndexer.php.gettext:93
-#: ../Store/StoreNateGoSearchIndexer.php.gettext:159
-#: ../Store/StoreNateGoSearchIndexer.php.gettext:222
-#: ../Store/StoreNateGoSearchIndexer.php.gettext:301
+#: ../Store/StoreNateGoSearchIndexer.php.gettext:108
+#: ../Store/StoreNateGoSearchIndexer.php.gettext:138
+#: ../Store/StoreNateGoSearchIndexer.php.gettext:168
+#: ../Store/StoreNateGoSearchIndexer.php.gettext:221
+#: ../Store/StoreNateGoSearchIndexer.php.gettext:284
+#: ../Store/StoreNateGoSearchIndexer.php.gettext:363
 msgid "done"
 msgstr ""
 
-#: ../Store/StoreNateGoSearchIndexer.php.gettext:138
+#: ../Store/StoreNateGoSearchIndexer.php.gettext:119
+msgid "Repopulating product search queue ... "
+msgstr ""
+
+#: ../Store/StoreNateGoSearchIndexer.php.gettext:149
+msgid "Repopulating category search queue ... "
+msgstr ""
+
+#: ../Store/StoreNateGoSearchIndexer.php.gettext:200
 msgid "Indexing articles ... "
 msgstr ""
 
-#: ../Store/StoreNateGoSearchIndexer.php.gettext:201
+#: ../Store/StoreNateGoSearchIndexer.php.gettext:263
 msgid "Indexing categories ... "
 msgstr ""
 
-#: ../Store/StoreNateGoSearchIndexer.php.gettext:271
+#: ../Store/StoreNateGoSearchIndexer.php.gettext:333
 msgid "Indexing products ... "
 msgstr ""
 
@@ -2296,7 +2381,7 @@ msgstr ""
 #: ../Store/pages/product-items-view.xml:22
 #: ../Store/admin/components/Article/edit.xml:42
 #: ../Store/admin/components/Article/index.xml:62
-#: ../Store/admin/components/Product/details.xml:140
+#: ../Store/admin/components/Product/details.xml:141
 #: ../Store/admin/components/Product/imageedit.xml:23
 #: ../Store/admin/components/ItemGroup/edit.xml:25
 msgid "Description"
@@ -2306,7 +2391,7 @@ msgstr ""
 #: ../Store/pages/quick-order-cart.xml:32 ../Store/pages/account-order.xml:91
 #: ../Store/pages/checkout-confirmation.xml:109
 #: ../Store/pages/checkout-thank-you.xml:101
-#: ../Store/pages/checkout-cart.xml:48 ../Store/pages/product-cart.xml:21
+#: ../Store/pages/checkout-cart.xml:39 ../Store/pages/product-cart.xml:21
 #: ../Store/pages/product-items-view.xml:29
 #: ../Store/admin/components/Item/edit.xml:32
 msgid "Price"
@@ -2317,20 +2402,20 @@ msgstr ""
 #: ../Store/pages/account-order.xml:97
 #: ../Store/pages/checkout-confirmation.xml:115
 #: ../Store/pages/checkout-thank-you.xml:107
-#: ../Store/pages/checkout-cart.xml:55 ../Store/pages/product-cart.xml:27
+#: ../Store/pages/checkout-cart.xml:46 ../Store/pages/product-cart.xml:27
 #: ../Store/pages/product-items-view.xml:36
 #: ../Store/admin/components/Item/quantity-discount.xml:19
 msgid "Quantity"
 msgstr ""
 
 #: ../Store/pages/cart.xml:87 ../Store/pages/cart.xml:157
-#: ../Store/pages/checkout-cart.xml:91
+#: ../Store/pages/checkout-cart.xml:79
 msgid "Save for Later"
 msgstr ""
 
 #: ../Store/pages/cart.xml:95 ../Store/pages/checkout-confirmation.xml:130
 #: ../Store/pages/checkout-thank-you.xml:122
-#: ../Store/pages/checkout-cart.xml:105
+#: ../Store/pages/checkout-cart.xml:93
 msgid "Shipping Total"
 msgstr ""
 
@@ -2339,8 +2424,8 @@ msgstr ""
 #: ../Store/admin/components/Catalog/details.xml:56
 #: ../Store/admin/components/Catalog/edit.xml:16
 #: ../Store/admin/components/Catalog/index.xml:25
-#: ../Store/admin/components/Product/details.xml:161
-#: ../Store/admin/components/Product/details.xml:192
+#: ../Store/admin/components/Product/details.xml:162
+#: ../Store/admin/components/Product/details.xml:193
 #: ../Store/admin/components/Category/index.xml:122
 #: ../Store/admin/components/Category/index.xml:216
 #: ../Store/admin/components/Item/edit.xml:42
@@ -2425,6 +2510,7 @@ msgstr ""
 
 #: ../Store/pages/account-payment-method-edit.xml:7
 #: ../Store/admin/components/Account/paymentmethodedit.xml:9
+#: ../Store/admin/components/PaymentType/edit.xml:6
 msgid "Payment Type"
 msgstr ""
 
@@ -2519,7 +2605,7 @@ msgstr ""
 msgid "Past Orders"
 msgstr ""
 
-#: ../Store/pages/account-login.xml:8 ../Store/pages/checkout-front.xml:38
+#: ../Store/pages/account-login.xml:8 ../Store/pages/checkout-front.xml:41
 #: ../Store/admin/components/Account/search.xml:13
 #: ../Store/admin/components/Order/search.xml:36
 msgid "Email Address"
@@ -2527,11 +2613,11 @@ msgstr ""
 
 #: ../Store/pages/account-login.xml:15
 #: ../Store/pages/checkout-basic-info.xml:30
-#: ../Store/pages/checkout-front.xml:44
+#: ../Store/pages/checkout-front.xml:47
 msgid "Password"
 msgstr ""
 
-#: ../Store/pages/account-login.xml:22 ../Store/pages/checkout-front.xml:51
+#: ../Store/pages/account-login.xml:22 ../Store/pages/checkout-front.xml:54
 msgid "Login"
 msgstr ""
 
@@ -2543,7 +2629,7 @@ msgstr ""
 msgid "Don’t Have an Account?"
 msgstr ""
 
-#: ../Store/pages/account-login.xml:34
+#: ../Store/pages/account-login.xml:34 ../Store/pages/checkout-front.xml:10
 msgid ""
 "<p>Creating an account will make it quicker and easier to order again when "
 "you return.</p>"
@@ -2630,7 +2716,7 @@ msgstr ""
 #: ../Store/pages/account-order.xml:109
 #: ../Store/pages/checkout-confirmation.xml:127
 #: ../Store/pages/checkout-thank-you.xml:119
-#: ../Store/pages/checkout-cart.xml:100
+#: ../Store/pages/checkout-cart.xml:88
 msgid "Subtotal"
 msgstr ""
 
@@ -2652,41 +2738,31 @@ msgid ""
 "site, etc."
 msgstr ""
 
-#: ../Store/pages/checkout-front.xml:6
+#: ../Store/pages/checkout-front.xml:7
 msgid "New Customers"
 msgstr ""
 
-#: ../Store/pages/checkout-front.xml:8
+#: ../Store/pages/checkout-front.xml:22
 msgid ""
-"<h4>Create a New Account</h4><p>Creating an account will make it quicker and "
-"easier to order again when you return.</p>"
+"<p>If you would rather not create an account, you can simply checkout as a "
+"guest.</p>"
 msgstr ""
 
-#: ../Store/pages/checkout-front.xml:14
-msgid "Create Account"
-msgstr ""
-
-#: ../Store/pages/checkout-front.xml:19
-msgid ""
-"<h4>Checkout as a Guest</h4><p>If you would rather not create an account, "
-"you can simply checkout as a guest.</p>"
-msgstr ""
-
-#: ../Store/pages/checkout-front.xml:25
+#: ../Store/pages/checkout-front.xml:27
 msgid "Checkout as a Guest"
 msgstr ""
 
-#: ../Store/pages/checkout-front.xml:31
+#: ../Store/pages/checkout-front.xml:34
 msgid "Returning Customers"
 msgstr ""
 
-#: ../Store/pages/checkout-front.xml:33
+#: ../Store/pages/checkout-front.xml:36
 msgid ""
 "<p>If you have created an account before on our website, login here to "
 "checkout.</p>"
 msgstr ""
 
-#: ../Store/pages/checkout-front.xml:54
+#: ../Store/pages/checkout-front.xml:57
 msgid "<a href=\"account/forgotpassword\">Forgot your password?</a>"
 msgstr ""
 
@@ -2783,7 +2859,7 @@ msgstr ""
 msgid "Order Receipt"
 msgstr ""
 
-#: ../Store/pages/checkout-cart.xml:11 ../Store/pages/checkout-cart.xml:119
+#: ../Store/pages/checkout-cart.xml:11 ../Store/pages/checkout-cart.xml:107
 msgid "Update and Return to Checkout"
 msgstr ""
 
@@ -2823,7 +2899,7 @@ msgstr ""
 #: ../Store/admin/components/Catalog/index.xml:17
 #: ../Store/admin/components/Product/relatedproduct.xml:15
 #: ../Store/admin/components/Product/edit.xml:9
-#: ../Store/admin/components/Product/details.xml:242
+#: ../Store/admin/components/Product/details.xml:243
 #: ../Store/admin/components/Product/index.xml:17
 #: ../Store/admin/components/Category/featuredproducts.xml:28
 #: ../Store/admin/components/Category/edit.xml:9
@@ -2831,6 +2907,8 @@ msgstr ""
 #: ../Store/admin/components/Category/index.xml:180
 #: ../Store/admin/components/Category/index.xml:275
 #: ../Store/admin/components/Category/addproducts.xml:15
+#: ../Store/admin/components/PaymentType/edit.xml:9
+#: ../Store/admin/components/PaymentType/index.xml:26
 msgid "Title"
 msgstr ""
 
@@ -2843,7 +2921,7 @@ msgstr ""
 #: ../Store/admin/components/ProvState/index.xml:45
 #: ../Store/admin/components/Account/details.xml:121
 #: ../Store/admin/components/Account/details.xml:153
-#: ../Store/admin/components/Product/details.xml:180
+#: ../Store/admin/components/Product/details.xml:181
 #: ../Store/admin/components/Product/index.xml:40
 #: ../Store/admin/components/Category/index.xml:114
 #: ../Store/admin/components/Category/index.xml:211
@@ -2854,8 +2932,8 @@ msgstr ""
 #: ../Store/admin/components/Region/edit.xml:6
 #: ../Store/admin/components/Locale/index.xml:28
 #: ../Store/admin/components/Locale/edit.xml:18
-#: ../Store/admin/components/Product/details.xml:202
-#: ../Store/admin/components/Product/details.xml:211
+#: ../Store/admin/components/Product/details.xml:203
+#: ../Store/admin/components/Product/details.xml:212
 #: ../Store/admin/components/Category/index.xml:132
 #: ../Store/admin/components/Category/index.xml:141
 #: ../Store/admin/components/Category/index.xml:226
@@ -3326,62 +3404,62 @@ msgstr ""
 msgid "change item order"
 msgstr ""
 
-#: ../Store/admin/components/Product/details.xml:125
+#: ../Store/admin/components/Product/details.xml:126
 #: ../Store/admin/components/Item/edit.xml:9
 msgid "SKU"
 msgstr ""
 
-#: ../Store/admin/components/Product/details.xml:151
+#: ../Store/admin/components/Product/details.xml:152
 msgid "Qty. Discounts"
 msgstr ""
 
-#: ../Store/admin/components/Product/details.xml:153
+#: ../Store/admin/components/Product/details.xml:154
 msgid "add"
 msgstr ""
 
-#: ../Store/admin/components/Product/details.xml:154
+#: ../Store/admin/components/Product/details.xml:155
 msgid "edit"
 msgstr ""
 
-#: ../Store/admin/components/Product/details.xml:176
+#: ../Store/admin/components/Product/details.xml:177
 msgid "add new items"
 msgstr ""
 
-#: ../Store/admin/components/Product/details.xml:183
+#: ../Store/admin/components/Product/details.xml:184
 msgid "move to group…"
 msgstr ""
 
-#: ../Store/admin/components/Product/details.xml:185
+#: ../Store/admin/components/Product/details.xml:186
 msgid "Group"
 msgstr ""
 
-#: ../Store/admin/components/Product/details.xml:190
+#: ../Store/admin/components/Product/details.xml:191
 msgid "change status…"
 msgstr ""
 
-#: ../Store/admin/components/Product/details.xml:200
+#: ../Store/admin/components/Product/details.xml:201
 msgid "enable…"
 msgstr ""
 
-#: ../Store/admin/components/Product/details.xml:209
+#: ../Store/admin/components/Product/details.xml:210
 msgid "disable…"
 msgstr ""
 
-#: ../Store/admin/components/Product/details.xml:223
+#: ../Store/admin/components/Product/details.xml:224
 msgid "Related Products"
 msgstr ""
 
-#: ../Store/admin/components/Product/details.xml:226
+#: ../Store/admin/components/Product/details.xml:227
 msgid "Add a Related Product"
 msgstr ""
 
-#: ../Store/admin/components/Product/details.xml:232
+#: ../Store/admin/components/Product/details.xml:233
 msgid ""
 "Related products are displayed at the bottom of this product’s page under "
-"the heading “You might also be interested in ….”"
+"the heading “You might also be interested in …”."
 msgstr ""
 
-#: ../Store/admin/components/Product/details.xml:253
+#: ../Store/admin/components/Product/details.xml:254
 msgid "Remove Checked Related Products"
 msgstr ""
 
@@ -3594,6 +3672,7 @@ msgid "Availability & Pricing"
 msgstr ""
 
 #: ../Store/admin/components/Item/edit.xml:26
+#: ../Store/admin/components/PaymentType/index.xml:41
 msgid "Enabled"
 msgstr ""
 
@@ -3623,4 +3702,29 @@ msgstr ""
 
 #: ../Store/admin/components/Item/quantity-discount.xml:36
 msgid "add quantity discounts"
+msgstr ""
+
+#: ../Store/admin/components/PaymentType/edit.xml:16
+#: ../Store/admin/components/PaymentType/index.xml:35
+msgid "Shortname"
+msgstr ""
+
+#: ../Store/admin/components/PaymentType/edit.xml:23
+msgid "Enabled?"
+msgstr ""
+
+#: ../Store/admin/components/PaymentType/edit.xml:27
+msgid "Available to Customers in the following Regions"
+msgstr ""
+
+#: ../Store/admin/components/PaymentType/index.xml:6
+msgid "Payment Types"
+msgstr ""
+
+#: ../Store/admin/components/PaymentType/index.xml:9
+msgid "New Payment Type"
+msgstr ""
+
+#: ../Store/admin/components/PaymentType/index.xml:14
+msgid "Change Order"
 msgstr ""
