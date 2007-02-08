@@ -37,7 +37,7 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 
 	private function renderDiscount(StoreQuantityDiscount $quantity_discount)
 	{
-		$this->value = $quantity_discount->price;
+		$this->value = $quantity_discount->getPrice();
 		$div = new SwatHtmlTag('div');
 
 		$div->open();
