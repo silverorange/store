@@ -176,7 +176,7 @@
 					<widget class="SwatActionItem" id="add">
 						<property name="title" translatable="yes">add new items</property>
 					</widget>
-					<widget class="SwatActionItemDivider" id="action_divider_1" />
+					<widget class="SwatActionItemDivider" />
 					<widget class="SwatActionItem" id="delete">
 						<property name="title" translatable="yes">delete…</property>
 					</widget>
@@ -196,7 +196,7 @@
 							</widget>
 						</widget>
 					</widget>
-					<widget class="SwatActionItemDivider" id="action_divider_2" />
+					<widget class="SwatActionItemDivider" />
 					<widget class="SwatActionItem" id="enable">
 						<property name="title" translatable="yes">enable…</property>
 						<widget class="SwatFormField">
