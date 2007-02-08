@@ -15,6 +15,7 @@ abstract class StoreImage extends StoreDataObject
 	// {{{ constants
 
 	const COMPRESSION_QUALITY = 85;
+	const DPI = 72;
 
 	// }}}
 	// {{{ public properties
@@ -191,6 +192,9 @@ abstract class StoreImage extends StoreDataObject
 
 			$image->crop($width, $height, $offset_x, $offset_y);
 		}
+
+		$image->setDpi(self::DPI, self::DPI);
+		$image->strip();
 	}
 
 	// }}}
@@ -221,6 +225,9 @@ abstract class StoreImage extends StoreDataObject
 
 		if ($max_height !== null)
 			$image->fitY($max_height);
+
+		$image->setDpi(self::DPI, self::DPI);
+		$image->strip();
 	}
 
 	// }}}
