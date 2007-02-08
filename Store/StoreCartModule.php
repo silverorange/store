@@ -179,7 +179,7 @@ class StoreCartModule extends SiteApplicationModule
 	 */
 	public function registerRemovedEntry(StoreCartEntry $entry)
 	{
-		if (!in_array($entry, $this->removed_entries))
+		if (!in_array($entry, $this->removed_entries, true))
 			$this->removed_entries[] = $entry;
 	}
 
@@ -193,7 +193,7 @@ class StoreCartModule extends SiteApplicationModule
 	 */
 	public function registerAddedEntry(StoreCartEntry $entry)
 	{
-		if (in_array($entry, $this->removed_entries)) {
+		if (in_array($entry, $this->removed_entries, true)) {
 			foreach ($this->removed_entries as $key => $removed_entry) {
 				if ($removed_entry === $entry) {
 					unset($this->removed_entries[$key]);
