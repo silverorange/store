@@ -5,10 +5,10 @@ require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'Admin/exceptions/AdminNoAccessException.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatMessage.php';
+require_once 'Swat/SwatYUI.php';
 require_once 'Store/StoreClassMap.php';
 require_once 'Store/dataobjects/StoreItem.php';
 require_once 'Store/dataobjects/StoreRegionWrapper.php';
-require_once 'YUI/YUI.php';
 
 /**
  * Edit page for Items
@@ -40,7 +40,7 @@ class StoreItemEdit extends AdminDBEdit
 	{
 		parent::initInternal();
 
-		$yui = new YUI(array('dom', 'event'));
+		$yui = new SwatYUI(array('dom', 'event'));
 		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
 
 		$this->ui->loadFromXML($this->ui_xml);

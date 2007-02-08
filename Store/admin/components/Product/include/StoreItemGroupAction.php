@@ -3,8 +3,8 @@
 require_once 'Swat/SwatFlydown.php';
 require_once 'Swat/SwatEntry.php';
 require_once 'Swat/SwatControl.php';
+require_once 'Swat/SwatYUI.php';
 require_once 'Store/Store.php';
-require_once 'YUI/YUI.php';
 
 /**
  * A custom action for grouping items inside products
@@ -26,7 +26,7 @@ class StoreItemGroupAction extends SwatControl
 	{
 		parent::__construct($id);
 
-		$yui = new YUI('event');
+		$yui = new SwatYUI(array('event'));
 		$this->html_head_entry_set->addEntrySet($yui->getHtmlHeadEntrySet());
 
 		$this->addJavaScript(
