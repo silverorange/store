@@ -1,3 +1,495 @@
+2007-02-08  nrf
+
+	* [r14849] store/trunk/Store/pages/StoreQuickOrderServer.php:
+	  Put selector in a form
+	* [r14848] store/trunk/locale/en_CA/LC_MESSAGES/store.mo,
+	  store/trunk/po/en_CA.po:
+	  Update translations
+
+2007-02-08  gauthierm
+
+	* [r14847] store/trunk/Store/StoreItemPriceCellRenderer.php:
+	  Use getPrice() instead of for quantity discounts
+	* [r14846]
+	  store/trunk/Store/dataobjects/StoreQuantityDiscount.php:
+	  Fix getPrice() in StoreQuantityDiscount.
+
+2007-02-08  nrf
+
+	* [r14844] store/trunk/Store/dataobjects/StoreImage.php:
+	  Set DPI and strip images when processing.
+	* [r14841] store/trunk/locale/en_CA/LC_MESSAGES/store.mo,
+	  store/trunk/locale/en_GB/LC_MESSAGES/store.mo,
+	  store/trunk/locale/en_US/LC_MESSAGES/store.mo,
+	  store/trunk/po/en_CA.po, store/trunk/po/en_GB.po,
+	  store/trunk/po/en_US.po:
+	  Update translations
+
+2007-02-08  steven
+
+	* [r14840] store/trunk/Store/pages/StoreAccountOrderPage.php,
+	  store/trunk/www/styles/store-account-order-page.css:
+	  Fixup my mistakes from r14705 - include store-cart.css as a CSS
+	  @import, not a PHP include
+
+2007-02-08  isaac
+
+	* [r14832]
+	  store/trunk/Store/admin/components/ItemGroup/Delete.php:
+	  fix some typo's
+	* [r14823] store/trunk/Store/admin/components/Product/Details.php,
+	  store/trunk/Store/admin/components/Product/details.xml:
+	  thanks to r14822 this can be done without using each widgets id
+	  (and removes the need for id's on the dividers)
+	* [r14814] store/trunk/Store/admin/components/Item/Order.php,
+	  store/trunk/Store/admin/components/Product/Details.php:
+	  - make some functions protected and protected final that were
+	  private to fix quick adding of items on veseys
+	  - 80 chars in Item/Order.php
+
+2007-02-08  gauthierm
+
+	* [r14812] store/trunk/Store/StoreCartModule.php:
+	  Use strict comparison to prevent 'Nesting level too deep -
+	  recursive dependency?' recursion errors
+	* [r14793] store/trunk/Store/admin/components/Item/Edit.php,
+	  store/trunk/Store/admin/components/Product/include/StoreItemGroupAction.php,
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php,
+	  store/trunk/Store/pages/StoreCheckoutBillingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php,
+	  store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Use SwatYUI instead of YUI.
+
+2007-02-06  nick
+
+	* [r14728] store/trunk/Store/StoreCart.php:
+	  This has to be strict to keep it from becoming recursive. I
+	  found this useful
+	  tidbit online:
+	  
+	  "I hadn’t considered what I was doing with this code. When
+	  comparing two objects
+	  using the non-strict comparison operator (==) PHP compares all
+	  the properties
+	  of the objects and if they match the objects are deemed to be
+	  equal. If they
+	  don’t match they are not equal. In effect, we have a recursive
+	  comparison of
+	  all the properties of each object, and all their properties,
+	  etc. until we
+	  reach basic data types like strings and integers."
+
+2007-02-06  steven
+
+	* [r14705] store/trunk/Store/pages/StoreAccountOrderPage.php:
+	  Include store-cart.css in the Account Order history page -
+	  Nathan: please review that this is the correct way to do it
+
+2007-02-05  gauthierm
+
+	* [r14700] store/trunk/Store/admin/components/Product/Index.php,
+	  store/trunk/Store/admin/components/Product/include/StoreProductItemDependency.php:
+	  
+	  Fix package names
+
+2007-02-03  gauthierm
+
+	* [r14679] store/trunk/Store/admin/components/Article/Order.php:
+	  Fix parse error on article ordering tool.
+
+2007-02-02  steven
+
+	* [r14666] store/trunk/resources, store/trunk/resources/assets,
+	  store/trunk/resources/assets/animated-background:
+	  Copy Gimp original files of background animation from Veseys to
+	  Store
+
+2007-02-02  isaac
+
+	* [r14664] store/trunk/Store/admin/components/Product/Details.php:
+	  rename getItemsOrderBy to the much better getItemsOrderByClause
+	  - thanks mike
+
+2007-02-02  gauthierm
+
+	* [r14658] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Only display separator if we have something ot separate in
+	  payment method display
+
+2007-02-02  isaac
+
+	* [r14657] store/trunk/Store/admin/components/Product/Details.php:
+	  getItemsSql needs passed through
+	* [r14656] store/trunk/Store/admin/components/Product/Details.php:
+	  forgot a closing )
+
+2007-02-02  gauthierm
+
+	* [r14655] store/trunk/Store/dataobjects/StorePaymentType.php:
+	  Add loadFromShortname() method to StorePaymentType
+
+2007-02-02  isaac
+
+	* [r14653] store/trunk/Store/admin/components/Product/Details.php,
+	  store/trunk/Store/admin/components/Product/RelatedProduct.php:
+	  - refactor Details to allow better subclassing on sites (vesey's
+	  needs to be able to subclass the orderby)
+	  - ws in relatedproduct
+
+2007-02-01  gauthierm
+
+	* [r14645] store/trunk/Store/pages/StoreCheckoutFirstPage.php:
+	  private after protected
+	* [r14642] store/trunk/Store/pages/StoreCheckoutFirstPage.php:
+	  explicitly check for preg match
+	* [r14641] store/trunk/Store/pages/StoreCheckoutFirstPage.php:
+	  - define the matches array before using it by reference
+	  - don't use the /e modifier on the regular expression as this is
+	  an order of magnitude slower than playing strtolower() around
+	  the final result
+	  - respect so coding conventions for variable in a double quoted
+	  string.
+
+2007-02-01  steven
+
+	* [r14640] store/trunk/www/styles/store-checkout-cart-page.css:
+	  unbold Update button on StoreCheckoutCartPage
+
+2007-02-01  gauthierm
+
+	* [r14636]
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php:
+	  Fix class name
+	* [r14634]
+	  store/trunk/Store/dataobjects/StorePaymentTypeWrapper.php:
+	  recordset wrapper for payment types
+	* [r14631]
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php:
+	  Add method to get list of available payment types to make
+	  subclassing easier
+	* [r14622] store/trunk/Store/pages/StoreProductPage.php:
+	  remove debug JavaScript. Shame
+	* [r14619] store/trunk/Store/admin/components/Article/Search.php:
+	  Don't perform searches if the search string is all whitetext.
+	  Discussed in #551.
+	* [r14618]
+	  store/trunk/Store/admin/components/Product/include/StoreProductSearch.php:
+	  
+	  Don't perform searches if the search string is all whitetext.
+	  Discussed in #551.
+	* [r14617] store/trunk/Store/pages/StoreSearchPage.php:
+	  Don't perform searches if the search string is all whitetext.
+	  Discussed in #551.
+
+2007-01-31  gauthierm
+
+	* [r14613]
+	  store/trunk/www/javascript/store-background-image-animation.js:
+	  Small changes to the background image animation to make it work
+	  more intuitively
+
+2007-01-31  nrf
+
+	* [r14610] store/trunk/Store/StoreTableViewButtonRow.php:
+	  Use XHTML colspan instead of column count to calculate colspan.
+
+2007-01-31  gauthierm
+
+	* [r14609] store/trunk/Store/pages/StoreProductPage.php:
+	  Move cart background image naimation to StoreProductPage.
+	* [r14608]
+	  store/trunk/www/javascript/store-background-image-animation.js:
+	  Correct instanceof syntax for JavaScript
+
+2007-01-31  steven
+
+	* [r14604] store/trunk/Store/pages/StoreCartPage.php:
+	  Add CSS hook
+
+2007-01-31  isaac
+
+	* [r14597]
+	  store/trunk/Store/admin/components/Category/AddProducts.php,
+	  store/trunk/Store/admin/components/Product/RelatedProduct.php,
+	  store/trunk/Store/admin/components/Product/include/StoreProductSearch.php:
+	  
+	  - fix the StoreProductSearch so that if you don't have fulltext
+	  search enabled, and keywords are null, we don't
+	  generate bad sql
+	  - actually add the message to the app in RelatedProduct and
+	  clean up ws
+	  - ws in Category/AddProducts
+
+2007-01-31  gauthierm
+
+	* [r14594]
+	  store/trunk/www/javascript/store-background-image-animation.js:
+	  Don't hard-code frame images in background image animation.
+	* [r14592]
+	  store/trunk/www/javascript/store-background-image-animation.js:
+	  Push background image animation upstream from Veseys to Store.
+
+2007-01-31  nick
+
+	* [r14591] store/trunk/Store/dataobjects/StoreCartEntry.php:
+	  Typo
+
+2007-01-31  isaac
+
+	* [r14589]
+	  store/trunk/Store/admin/components/Product/ImageDelete.php:
+	  make image deletion code work correctly within our multiple
+	  image scheme - it should always remove from ProductImageBinding,
+	  and only sometimes delete from Image
+
+2007-01-30  gauthierm
+
+	* [r14577] store/trunk/Store/pages/StoreProductPage.php:
+	  Add big fat TODO
+
+2007-01-30  nrf
+
+	* [r14575] store/trunk/Store/StoreCart.php:
+	  Add boolean property to control whether entries are combined for
+	  identical items.
+
+2007-01-30  gauthierm
+
+	* [r14574] store/trunk/Store/pages/StoreCategoryPage.php:
+	  Use class map to resolve class names for wrapper classes in
+	  StoreCategoryPage.
+	* [r14573] store/trunk/Store/pages/StoreCategoryPage.php,
+	  store/trunk/Store/pages/StoreNateGoSearchPage.php:
+	  Set region on loaded categories.
+	* [r14572] store/trunk/Store/dataobjects/StoreCategoryWrapper.php:
+	  Add setRegion() method to StoreCategory.
+	* [r14570] store/trunk/Store/dataobjects/StoreItemWrapper.php,
+	  store/trunk/Store/dataobjects/StoreProduct.php:
+	  Add a setRegion() method to StoreItemWrapper and remove
+	  unnecessary calls to setRegion() in StoreProduct::loadItems().
+	* [r14568] store/trunk/Store/dataobjects/StoreCategory.php:
+	  Make display method use new method
+	* [r14566] store/trunk/Store/pages/StoreNateGoSearchPage.php:
+	  Load region_id to identify what region the product_count field
+	  is loaded for.
+	* [r14565] store/trunk/Store/pages/StoreCategoryPage.php:
+	  Load region_id to identify what region the product_count field
+	  is loaded for.
+	* [r14564] store/trunk/Store/dataobjects/StoreCategory.php:
+	  Do a todo: Change loadProductCount() to getProductCount() and
+	  make it work like price loading for items. This will temporarily
+	  break some site code.
+	* [r14546] store/trunk/Store/pages/StoreCartPage.php:
+	  set status of unavailable cart entry row in store package
+	* [r14543] store/trunk/Store/dataobjects/StoreItem.php:
+	  Add abstract method to get status text
+
+2007-01-30  nrf
+
+	* [r14537] store/trunk/Store/StoreTotalRow.php:
+	  Use total colspan instead of column count to calculate TH
+	  colspan.
+
+2007-01-29  steven
+
+	* [r14501] store/trunk/Store/pages/checkout-front.xml:
+	  Add an ID to make this text PHP accessible
+	* [r14497] store/trunk/Store/pages/StoreCheckoutFrontPage.php:
+	  Make StoreCheckoutFrontPage us a variable for the ui XML like
+	  other store pages.
+
+2007-01-28  gauthierm
+
+	* [r14494] store/trunk/Store/admin/components/Product/Details.php:
+	  Fix typo in method name and fix folding.
+	* [r14488] store/trunk/Store/admin/components/Account/Details.php:
+	  Refactor acocunt details page to make it easier for subclasses
+	  to use the account dataobject.
+	* [r14487] store/trunk/Store/StorePaymentProvider.php:
+	  Documentation (not finished documentation).
+	* [r14486] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Return transaction objects from pay and hold methods.
+
+2007-01-27  gauthierm
+
+	* [r14483] store/trunk/Store/StoreQuickOrderItemSelector.php,
+	  store/trunk/Store/pages/StoreProductPage.php:
+	  Respect Store API changes.'
+	* [r14478] store/trunk/Store/dataobjects/StoreProduct.php:
+	  add todo
+	* [r14476] store/trunk/Store/StoreCartModule.php:
+	  respect API change in StoreItemWrapper.
+	* [r14475] store/trunk/Store/dataobjects/StoreCartEntry.php,
+	  store/trunk/Store/dataobjects/StoreCategory.php,
+	  store/trunk/Store/dataobjects/StoreItem.php,
+	  store/trunk/Store/dataobjects/StoreItemWrapper.php,
+	  store/trunk/Store/dataobjects/StoreProduct.php,
+	  store/trunk/Store/dataobjects/StoreQuantityDiscount.php:
+	  Change the way region-specific fields are loaded on store data
+	  objects. The setRegion() method makes more sense now and
+	  region-specific shortcut fields are now loaded through get*()
+	  methods. Also, the quantity discount object has been updated to
+	  make its region specific fields more like the item fields.
+
+2007-01-23  steven
+
+	* [r14466] store/trunk/Store/pages/checkout-front.xml,
+	  store/trunk/www/styles/store-checkout-front-page.css:
+	  Experimental layout changes to make creating an account more
+	  prominent than checking out as a guest. Feedback is welcome.
+
+2007-01-23  gauthierm
+
+	* [r14465]
+	  store/trunk/Store/dataobjects/StoreQuantityDiscount.php:
+	  extend StoreDataObject and add loadRegionBindings() method to
+	  StoreQuantityDiscount.
+	* [r14464]
+	  store/trunk/Store/dataobjects/StoreQuantityDiscountRegionBinding.php,
+	  
+	  store/trunk/Store/dataobjects/StoreQuantityDiscountRegionBindingWrapper.php:
+	  
+	  Quantity discounts are split by region so create appropriate
+	  data objects.
+	* [r14463] store/trunk/Store/dataobjects/StoreCategory.php:
+	  Make setRegion() take a region object instead of an id.
+	* [r14462] store/trunk/Store/dataobjects/StoreItem.php:
+	  don't register region as an internal proeprty
+	* [r14455] store/trunk/Store/dataobjects/StoreItem.php,
+	  store/trunk/Store/dataobjects/StoreProduct.php:
+	  Add missing requires
+	* [r14454] store/trunk/Store/pages/StoreAccountOrderPage.php,
+	  store/trunk/Store/pages/StoreProductImagePage.php,
+	  store/trunk/Store/pages/StoreProductPage.php,
+	  store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Respect api change in r14453
+	* [r14453] store/trunk/Store/dataobjects/StoreItem.php,
+	  store/trunk/Store/dataobjects/StoreProduct.php:
+	  Make setRegion() in StoreItem and StoreProduct take a region
+	  dataobject instead of an id.
+	* [r14450]
+	  store/trunk/Store/admin/components/PaymentType/Delete.php,
+	  store/trunk/Store/admin/components/PaymentType/Edit.php,
+	  store/trunk/Store/admin/components/PaymentType/Index.php,
+	  store/trunk/Store/admin/components/PaymentType/edit.xml,
+	  store/trunk/Store/admin/components/PaymentType/index.xml:
+	  Mark strings as translatable.
+	* [r14448]
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php:
+	  Respect displayorder of payment types.
+	* [r14446] store/trunk/Store/admin/components/Article/Order.php:
+	  These strings should not be translated
+	* [r14445]
+	  store/trunk/Store/admin/components/PaymentType/Index.php,
+	  store/trunk/Store/admin/components/PaymentType/Order.php,
+	  store/trunk/Store/admin/components/PaymentType/index.xml:
+	  Add ordering tools for payment types
+	* [r14444]
+	  store/trunk/Store/admin/components/PaymentType/Delete.php,
+	  store/trunk/Store/admin/components/PaymentType/Edit.php,
+	  store/trunk/Store/admin/components/PaymentType/Index.php:
+	  Remove veseysisms and tidy code
+	* [r14443] store/trunk/Store/admin/components/PaymentType:
+	  Copy payment type tool from veseys
+	* [r14442] store/trunk/Store/pages/StoreCartPage.php:
+	  Respect XML change. Fixes ticket #519.
+
+2007-01-22  gauthierm
+
+	* [r14412] store/trunk/Store/pages/StoreCheckoutCartPage.php:
+	  Move message building into a separate method.
+
+2007-01-20  gauthierm
+
+	* [r14408] store/trunk/Store/pages/checkout.xml:
+	  Use StoreMessageDisplay on checkout pages.
+	* [r14407] store/trunk/Store/pages/StoreCheckoutCartPage.php:
+	  Use StoreMessage objects and remove unnecessary references to
+	  message display in processing methods.
+	* [r14406] store/trunk/Store/pages/StoreCartPage.php:
+	  Use cumulative totals for affected entries. I think this will
+	  result in fewer undetected typo bugs.
+	* [r14405] store/trunk/Store/pages/StoreCheckoutCartPage.php:
+	  Fix variable names and add missing require
+	* [r14404] store/trunk/Store/pages/StoreCheckoutCartPage.php:
+	  - Make it possible to change the UI position of renderers in the
+	  StoreCheckoutCart
+	  - Generate messages outside the individual processing sections
+	  so it is easier to override the processing sections
+
+2007-01-19  gauthierm
+
+	* [r14402] store/trunk/Store/pages/StoreCartPage.php:
+	  split saved cart updating into separate protected methods
+	* [r14400] store/trunk/Store/pages/StoreCartPage.php:
+	  Split available cart updating into separate protected methods.
+
+2007-01-18  isaac
+
+	* [r14372] store/trunk/Store/admin/components/Product/Details.php:
+	  rename buildProductDetails to getProductDetailsStore, and change
+	  its behaviour a bit to allow for better subclassing.
+	  also reorder some functions.
+
+2007-01-18  nick
+
+	* [r14362]
+	  store/trunk/Store/dataobjects/StoreProvStateWrapper.php:
+	  I needed a wrapper for the newsletter stuff on veseys
+
+2007-01-17  gauthierm
+
+	* [r14341] store/trunk/www/admin/styles/store-order-details.css:
+	  Add print-specific styles for admin order details to Store
+	  package.
+	* [r14340] store/trunk/Store/admin/components/Order/Details.php:
+	  Include page-level style-sheet properly.
+
+2007-01-16  gauthierm
+
+	* [r14334]
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php:
+	  Fix typo that causes fatal error.
+
+2007-01-15  nick
+
+	* [r14331] store/trunk/Store/admin/components/Item/Order.php,
+	  store/trunk/Store/admin/components/Product/details.xml:
+	  Add a query var for product to make ordering of 'ungrouped'
+	  items possible and
+	  update the order page to reflect the change in logic.
+	* [r14325] store/trunk/Store/admin/components/Item/Order.php:
+	  Make properties protected so they can be used by sub-classes
+
+2007-01-15  gauthierm
+
+	* [r14320]
+	  store/trunk/Store/dataobjects/StorePaymentTransaction.php:
+	  Fix class name
+	* [r14317]
+	  store/trunk/Store/dataobjects/StorePaymentTransaction.php:
+	  Add AVS status fields
+	* [r14315]
+	  store/trunk/Store/dataobjects/StorePaymentTransaction.php:
+	  New class for storing the result of a payment transaction
+
+2007-01-15  nick
+
+	* [r14314] store/trunk/Store/pages/StoreNateGoSearchPage.php:
+	  Change to use MDB2 quoting
+
+2007-01-15  gauthierm
+
+	* [r14313] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Add status to order data object
+
+2007-01-11  nrf
+
+	* [r14290] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.4.1
+	* [r14289] store/trunk/Store/pages/StoreCartPage.php:
+	  Fix a misnamed method call. I think this was the intent.
+
 2007-01-10  nrf
 
 	* [r14286] store/trunk/ChangeLog, store/trunk/package.php:
