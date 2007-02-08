@@ -379,15 +379,12 @@ class StoreProductDetails extends AdminIndex
 		parent::buildForms();
 
 		// always show add new item action regardless of entries in item table
+		// but also keep all other actions hidden
 		if ($this->ui->getWidget('items_view')->model->getRowCount() == 0) {
-			$this->ui->getWidget('index_actions')->visible = true;
-			$this->ui->getWidget('action_divider_1')->visible = false;
-			$this->ui->getWidget('delete')->visible = false;
-			$this->ui->getWidget('change_group')->visible = false;
-			$this->ui->getWidget('change_status')->visible = false;
-			$this->ui->getWidget('action_divider_2')->visible = false;
-			$this->ui->getWidget('enable')->visible = false;
-			$this->ui->getWidget('disable')->visible = false;
+			$index_actions = $this->ui->getWidget('index_actions');
+			$index_actions->visible = true;
+			foreach ($index_actions->getActionItems() as $id => $widget)
+				if ($widget->id !== 'add') $widget->visible = false;
 		}
 	}
 
