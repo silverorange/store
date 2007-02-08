@@ -8,8 +8,8 @@ require_once 'Store/StoreUI.php';
 require_once 'Swat/SwatString.php';
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
+require_once 'Swat/SwatYUI.php';
 require_once 'XML/RPCAjax.php';
-require_once 'YUI/YUI.php';
 
 /**
  *
@@ -267,7 +267,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 
 		$this->layout->addHtmlHeadEntrySet(XML_RPCAjax::getHtmlHeadEntrySet());
 
-		$yui = new YUI(array('event', 'animation'));
+		$yui = new SwatYUI(array('event', 'animation'));
 		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
 
 		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(

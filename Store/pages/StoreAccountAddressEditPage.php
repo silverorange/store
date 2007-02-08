@@ -1,5 +1,6 @@
 <?php
 
+require_once 'Swat/SwatYUI.php';
 require_once 'Store/pages/StoreAccountPage.php';
 require_once 'Store/dataobjects/StoreAccountAddress.php';
 require_once 'Store/StoreUI.php';
@@ -236,7 +237,7 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 	{
 		parent::build();
 
-		$yui = new YUI(array('dom', 'event'));
+		$yui = new SwatYUI(array('dom', 'event'));
 		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
 
 		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
