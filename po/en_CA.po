@@ -1185,7 +1185,7 @@ msgstr "catalogue"
 
 #: ../Store/admin/components/Catalog/Delete.php.gettext:71
 msgid "catalogs"
-msgstr ""
+msgstr "catalogues"
 
 #: ../Store/admin/components/Catalog/Delete.php.gettext:118
 #, php-format
@@ -1601,7 +1601,7 @@ msgid ""
 "%s must be unique amongst all catalogs unless catalogs are clones of each "
 "other."
 msgstr ""
-"%s must be unique amongst all catalogues unless catalogs are clones of each "
+"%s must be unique amongst all catalogues unless catalogues are clones of each "
 "other."
 
 #: ../Store/admin/components/Product/Details.php.gettext:241
@@ -1831,8 +1831,8 @@ msgstr "no products in the selected catalogue(s)"
 #, php-format
 msgid "One product in the selected catalog(s)"
 msgid_plural "%d products in the selected catalog(s)"
-msgstr[0] "One product in the selected catalogue(s)"
-msgstr[1] "%d products in the selected catalogue(s)"
+msgstr[0] "%d products in the selected catalogue(s)"
+msgstr[1] "One product in the selected catalogue(s)"
 
 #: ../Store/admin/components/Category/ImageEdit.php.gettext:46
 #, php-format
