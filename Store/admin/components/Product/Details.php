@@ -229,20 +229,9 @@ class StoreProductDetails extends AdminIndex
 	}
 
 	// }}}
-	// {{{ private function processRelatedProducts()
+	// {{{ protected final function changeStatus()
 
-	private function processRelatedProducts($view)
-	{
-		$this->app->replacePage('Product/RelatedProductDelete');
-		$this->app->getPage()->setItems($view->checked_items);
-		$this->app->getPage()->setId($this->id);
-		$this->app->getPage()->setCategory($this->category_id);
-	}
-
-	// }}}
-	// {{{ private function changeStatus()
-
-	private function changeStatus(SwatTableView $view, $status)
+	protected final function changeStatus(SwatTableView $view, $status)
 	{
 		$num = count($view->checked_items);
 
@@ -258,9 +247,9 @@ class StoreProductDetails extends AdminIndex
 	}
 
 	// }}}
-	// {{{ private function addNewItems()
+	// {{{ protected function addNewItems()
 
-	private function addNewItems()
+	protected function addNewItems()
 	{
 		$sql = sprintf('select catalog from Product where id = %s',
 			$this->app->db->quote($this->id, 'integer'));
@@ -355,6 +344,17 @@ class StoreProductDetails extends AdminIndex
 
 			$this->app->messages->add($message);
 		}
+	}
+
+	// }}}
+	// {{{ private function processRelatedProducts()
+
+	private function processRelatedProducts($view)
+	{
+		$this->app->replacePage('Product/RelatedProductDelete');
+		$this->app->getPage()->setItems($view->checked_items);
+		$this->app->getPage()->setId($this->id);
+		$this->app->getPage()->setCategory($this->category_id);
 	}
 
 	// }}}
@@ -726,6 +726,21 @@ class StoreProductDetails extends AdminIndex
 	}
 
 	// }}}
+	// {{{ protected final function queryRegions()
+
+	protected final function queryRegions()
+	{
+		if ($this->regions === null) {
+			$sql = 'select id, title from Region order by id';
+
+			$this->regions =
+				SwatDB::query($this->app->db, $sql, 'StoreRegionWrapper');
+		}
+
+		return $this->regions;
+	}
+
+	// }}}
 	// {{{ private function buildItemGroups()
 
 	private function buildItemGroups()
@@ -800,21 +815,6 @@ class StoreProductDetails extends AdminIndex
 			$this->app->db->quote($this->id, 'integer'));
 
 		return SwatDB::query($this->app->db, $sql);
-	}
-
-	// }}}
-	// {{{ private function queryRegions()
-
-	private function queryRegions()
-	{
-		if ($this->regions === null) {
-			$sql = 'select id, title from Region order by id';
-
-			$this->regions =
-				SwatDB::query($this->app->db, $sql, 'StoreRegionWrapper');
-		}
-
-		return $this->regions;
 	}
 
 	// }}}

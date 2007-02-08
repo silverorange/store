@@ -102,7 +102,8 @@ class StoreItemOrder extends AdminDBOrder
 			$where_clause = sprintf('Item.product = %s',
 				$this->app->db->quote($this->product_id, 'integer'));
 		elseif ($this->item_group_id == 0)
-			$where_clause = sprintf('Item.item_group is null and Item.product = %s',
+			$where_clause = sprintf(
+				'Item.item_group is null and Item.product = %s',
 				$this->app->db->quote($this->product_id, 'integer'));
 		else
 			$where_clause = sprintf('Item.item_group = %s',
