@@ -58,7 +58,7 @@ class StoreAccountDetails extends AdminIndex
 	// }}}
 	// {{{ protected function getAccount()
 
-	protected function getAccount() 
+	protected function getAccount()
 	{
 		if ($this->account === null) {
 			$class_map = StoreClassMap::instance();
@@ -233,7 +233,7 @@ class StoreAccountDetails extends AdminIndex
 	// }}}
 	// {{{ protected function getAccountDetailsStore()
 
-	protected function getAccountDetailsStore() 
+	protected function getAccountDetailsStore()
 	{
 		return new SwatDetailsStore($this->getAccount());
 	}
@@ -261,7 +261,7 @@ class StoreAccountDetails extends AdminIndex
 	// }}}
 	// {{{ private function buildNavBar()
 
-	private function buildNavBar() 
+	private function buildNavBar()
 	{
 		$fullname = $this->getAccount()->fullname;
 		$this->navbar->addEntry(new SwatNavBarEntry($fullname));
