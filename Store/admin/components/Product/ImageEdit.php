@@ -17,6 +17,11 @@ require_once 'Store/StoreClassMap.php';
  */
 class StoreProductImageEdit extends AdminPage
 {
+	// {{{ protected properties
+
+	protected $ui_xml = 'Store/admin/components/Product/imageedit.xml';
+
+	// }}}
 	// {{{ private properties
 
 	private $id;
@@ -33,7 +38,7 @@ class StoreProductImageEdit extends AdminPage
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML('Store/admin/components/Product/imageedit.xml');
+		$this->ui->loadFromXML($this->ui_xml);
 
 		$this->id = $this->app->initVar('id');
 		$this->product_id = $this->app->initVar('product');
