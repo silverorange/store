@@ -5,6 +5,7 @@ create table Orders (
 	phone varchar(100),
 	comments text,
 	createdate timestamp not null,
+	status int not null default 1,
 
 	billing_address int not null references OrderAddress(id),
 	shipping_address int not null references OrderAddress(id),
