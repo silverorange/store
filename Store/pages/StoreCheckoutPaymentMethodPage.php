@@ -201,18 +201,14 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			sprintf('<span class="add-new">%s</span>',
 			$this->getNewPaymentMethodText()), 'text/xml');
 
-		if ($this->app->session->isLoggedIn()) {
-			foreach ($this->app->session->account->payment_methods as $method) {
-				$payment_type = $method->payment_type;
-				if ($payment_type->isAvailableInRegion($this->app->getRegion())) {
-					ob_start();
-					$method->display();
-					$method_display = ob_get_clean();
-					$method_list->addOption($method->id, $method_display,
-						'text/xml');
-				}
-			}
+		foreach ($this->getPaymentMethods() as $method) {
+			ob_start();
+			$method->display();
+			$method_display = ob_get_clean();
+			$method_list->addOption($method->id, $method_display, 'text/xml');
+		}
 
+		if ($this->app->session->isLoggedIn()) {
 			if ($this->app->session->account->default_payment_method !== null)
 				$method_list->value =
 					$this->app->session->account->default_payment_method;
@@ -245,6 +241,33 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				'<p class="smallprint">', '<a href="about/website/privacy">',
 				'</a>', '</p>');
 		}
+	}
+
+	// }}}
+	// {{{ protected function getPaymentMethods()
+
+	/**
+	 * Gets available payment methods
+	 *
+	 * @return StoreAccountPaymentMethodWrapper
+	 */
+	protected function getPaymentMethods()
+	{
+		$class_map = StoreClassMap::instance();
+		$wrapper = $class_map->resolveClass('StoreAccountPaymentMethodWrapper');
+		$payment_methods = new $wrapper();
+
+		if ($this->app->session->isLoggedIn()) {
+			$region = $this->app->getRegion();
+			$account = $this->app->session->account;
+			foreach ($account->payment_methods as $method) {
+				$payment_type = $method->payment_type;
+				if ($payment_type->isAvailableInRegion($region))
+					$payment_methods->add($method);
+			}
+		}
+
+		return $payment_methods;
 	}
 
 	// }}}
