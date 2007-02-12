@@ -522,8 +522,8 @@ abstract class StoreCartPage extends StoreArticlePage
 		$remove_renderer = $this->getAvailableRemoveRenderer();
 		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
 			if ($widget->hasBeenClicked()) {
-				$num_entries_removed++;
-				$this->app->cart->checkout->removeEntryById($id);
+				if ($this->app->cart->checkout->removeEntryById($id) !== null)
+					$num_entries_removed++;
 
 				break;
 			}
@@ -615,8 +615,8 @@ abstract class StoreCartPage extends StoreArticlePage
 		$remove_renderer = $this->getUnavailableRemoveRenderer();
 		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
 			if ($widget->hasBeenClicked()) {
-				$num_entries_removed++;
-				$this->app->cart->checkout->removeEntryById($id);
+				if ($this->app->cart->checkout->removeEntryById($id) !== null)
+					$num_entries_removed++;
 
 				break;
 			}
@@ -671,8 +671,8 @@ abstract class StoreCartPage extends StoreArticlePage
 		$remove_renderer = $this->getSavedRemoveRenderer();
 		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
 			if ($widget->hasBeenClicked()) {
-				$num_entries_removed++;
-				$this->app->cart->saved->removeEntryById($id);
+				if ($this->app->cart->saved->removeEntryById($id) !== null)
+					$num_entries_removed++;
 
 				break;
 			}
