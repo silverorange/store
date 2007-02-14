@@ -22,10 +22,10 @@ class StoreAdDelete extends AdminDBDelete
 		parent::processDBData();
 
 		$item_list = $this->getItemList('text');
-		
-		$sql = sprintf('delete from Ad where id in (%s)', $item_list);
+		$sql = 'delete from Ad where id in (%s)
+			and id not in (select ad from Orders where ad is not null)';
 
-		$num = SwatDB::exec($this->app->db, $sql);
+		$num = SwatDB::exec($this->app->db, sprintf($sql, $item_list));
 
 		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One ad has been deleted.', '%d ads have been deleted.', $num),
