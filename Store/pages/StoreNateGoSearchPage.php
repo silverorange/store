@@ -331,93 +331,12 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 	 */
 	protected function searchProducts()
 	{
-		$result = $this->nate_go_search_result;
+		$this->buildProductPagination();
 
-		/*
-		 * We cannot use normal loader methods here because we need ordering
-		 * by search relevance.
-		 *
-		 * This query selects only visible products and selects the primary
-		 * category field and filters by search results, ordering by search
-		 * relevance.
-		 */
-		 $sql_joins = sprintf('left outer join ProductPrimaryCategoryView on
-				ProductPrimaryCategoryView.product = Product.id
-			left outer join ProductPrimaryImageView
-				on ProductPrimaryImageView.product = Product.id
-			inner join VisibleProductCache on
-				VisibleProductCache.product = Product.id and
-				VisibleProductCache.region = %2$s
-			inner join %1$s on
-				%1$s.document_id = Product.id and
-				%1$s.unique_id = %3$s and %1$s.document_type = %4$s',
-			$result->getResultTable(),
-			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
-			$this->app->db->quote($result->getUniqueId(), 'text'),
-			$this->app->db->quote(
-				$this->getDocumentType(StoreSearchPage::TYPE_PRODUCTS),
-				'integer'));
-
-		$where_clause = $this->getProductWhereClause();
-
-		$total_sql = sprintf('select count(Product.id) from Product %s %s',
-			$sql_joins,
-			$where_clause);
-
-		$total_products = SwatDB::queryOne($this->app->db, $total_sql);
-
-		$pagination = $this->ui->getWidget('product_pagination');
-		$pagination->total_records = $total_products;
-		$pagination->link = sprintf('search?keywords=%s&type=products&page=%%s',
-			$this->getKeywordsField());
-
-		$pagination->setCurrentPage(SiteApplication::initVar('page', 0,
-			SiteApplication::VAR_GET));
-
-		/*
-		 * The 'Product.id as tag' is a hack to effieciently load tags.
-		 * See detailed explanation below.
-		 */
-		$sql = sprintf('select Product.title, Product.shortname, Product.bodytext,
-				Product.id as tag, ProductPrimaryCategoryView.primary_category,
-				ProductPrimaryImageView.image as primary_image,
-				getCategoryPath(ProductPrimaryCategoryView.primary_category) as path
-			from Product
-				%2$s
-			%5$s
-			order by %1$s.displayorder1 asc, %1$s.displayorder2 asc
-			limit %3$s offset %4$s',
-			$result->getResultTable(),
-			$sql_joins,
-			$this->app->db->quote($pagination->page_size, 'integer'),
-			$this->app->db->quote($pagination->current_record, 'integer'),
-			$where_clause);
-
-		$class_map = StoreClassMap::instance();
-		$wrapper_class = $class_map->resolveClass('StoreProductWrapper');
-		$products = SwatDB::query($this->app->db, $sql, $wrapper_class);
+		$products = $this->queryProducts();
 
 		if (count($products) > 0) {
-			/*
-			 * Effciently load tags. The 'product as id' is a slight hack since
-			 * there is a product-tag binding table, but we only support one
-			 * tag per product. This is needed so that loadAllSubDataObjects()
-			 * can properly attach the tag objects to the products.
-			 */
-			/*$sql = 'select product as id, title, description from Tag 
-				inner join ProductTagBinding on ProductTagBinding.tag = Tag.id 
-					and ProductTagBinding.product in (%s)';
-
-			$products->loadAllSubDataObjects(
-				'tag', $this->app->db, $sql, 'TagWrapper');
-			*/
-
-			$sql = 'select * from Image where id in (%s)';
-			$image_wrapper_class = $class_map->resolveClass(
-				'StoreProductImageWrapper');
-
-			$products->loadAllSubDataObjects(
-				'primary_image', $this->app->db, $sql, $image_wrapper_class);
+			$this->loadProductSubDataObjects($products);
 
 			$this->search_has_results[] = StoreSearchPage::TYPE_PRODUCTS;
 			$this->ui->getWidget('product_results_frame')->visible = true;
@@ -428,6 +347,105 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 			$this->displayProducts($products);
 			$product_results->content = ob_get_clean();
 		}
+	}
+
+	// }}}
+	// {{{ protected function buildProductPagination()
+
+	protected function buildProductPagination()
+	{
+		$total_sql = sprintf('select count(Product.id) from Product %s %s',
+			$this->getProductJoinClause(),
+			$this->getProductWhereClause());
+
+		$total_products = SwatDB::queryOne($this->app->db, $total_sql);
+
+		$pagination = $this->ui->getWidget('product_pagination');
+		$pagination->total_records = $total_products;
+		$pagination->link = sprintf('search?keywords=%s&type=products&page=%%s',
+			$this->getKeywordsField());
+
+		$pagination->setCurrentPage(SiteApplication::initVar('page', 0,
+			SiteApplication::VAR_GET));
+	}
+
+	// }}}
+	// {{{ protected function queryProducts()
+
+	/**
+	 * Allows subclasses to add additional fields to the product query
+	 *
+	 * @return StoreProductWrapper An ordered collection of StoreProduct
+	 * 	dataobjects to display as search results.
+	 */
+	protected function queryProducts()
+	{
+		/*
+		 * We cannot use normal loader methods here because we need ordering
+		 * by search relevance.
+		 *
+		 * This query selects only visible products and selects the primary
+		 * category field and filters by search results, ordering by search
+		 * relevance.
+		 *
+		 * The 'Product.id as tag' is a hack to efficiently load tags.
+		 * See detailed explanation below.
+		 */
+
+		$pagination = $this->ui->getWidget('product_pagination');
+
+		$sql = sprintf('select Product.title, Product.shortname, Product.bodytext,
+				Product.id as tag, ProductPrimaryCategoryView.primary_category,
+				ProductPrimaryImageView.image as primary_image,
+				getCategoryPath(ProductPrimaryCategoryView.primary_category) as path
+			from Product
+			%1$s -- join
+			%2$s -- where
+			%3$s -- order by
+			limit %4$s offset %5$s',
+			$this->getProductJoinClause(),
+			$this->getProductWhereClause(),
+			$this->getProductOrderByClause(),
+			$this->app->db->quote($pagination->page_size, 'integer'),
+			$this->app->db->quote($pagination->current_record, 'integer'));
+
+		$class_map = StoreClassMap::instance();
+		$wrapper_class = $class_map->resolveClass('StoreProductWrapper');
+		return SwatDB::query($this->app->db, $sql, $wrapper_class);
+	}
+
+	// }}}
+	// {{{ protected function loadProductSubDataObjects()
+
+	/**
+	 * Load sub dataobjects for the StoreProductWrapper results
+	 *
+	 * @param StoreProductWrapper $products A collection of StoreProduct
+	 * 	dataobjects.
+	 */
+	protected function loadProductSubDataObjects(StoreProductWrapper $products)
+	{
+		/*
+		 * Effciently load tags. The 'product as id' is a slight hack since
+		 * there is a product-tag binding table, but we only support one
+		 * tag per product. This is needed so that loadAllSubDataObjects()
+		 * can properly attach the tag objects to the products.
+		 */
+		/*$sql = 'select product as id, title, description from Tag 
+			inner join ProductTagBinding on ProductTagBinding.tag = Tag.id 
+				and ProductTagBinding.product in (%s)';
+
+		$products->loadAllSubDataObjects(
+			'tag', $this->app->db, $sql, 'TagWrapper');
+		*/
+		$class_map = StoreClassMap::instance();
+
+		$sql = 'select * from Image where id in (%s)';
+		$image_wrapper_class = $class_map->resolveClass(
+			'StoreProductImageWrapper');
+
+		$products->loadAllSubDataObjects(
+			'primary_image', $this->app->db, $sql, $image_wrapper_class);
 	}
 
 	// }}}
@@ -444,6 +462,70 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 	protected function getProductWhereClause()
 	{
 		return '';
+	}
+
+	// }}}
+	// {{{ protected function getProductOrderByClause()
+
+	/**
+	 * Allows subclasses to do optional ordering based on search
+	 * parameters.
+	 *
+	 * Subclasses should include the 'order by' in the returned order clause.
+	 *
+	 * @return string an order clause that affects the product query.
+	 */
+	protected function getProductOrderByClause()
+	{
+		$result = $this->nate_go_search_result;
+
+		if ($result === null)
+			return '';
+		else
+			return sprintf('order by %1$s.displayorder1 asc,
+				%1$s.displayorder2 asc',
+				$result->getResultTable());
+	}
+
+	// }}}
+	// {{{ protected function getProductJoinClause()
+
+	/**
+	 * Allows subclasses to do additional joins on Products above and
+	 * beyond the joining of visiblity and product information tables
+	 *
+	 * @param $allow_non_keyword_search boolean If true, the search result
+	 * 	table is only joined if results were found. This should be set
+	 * 	to true for searches that have additional search criteria
+	 * 	beyond keywords.
+	 *
+	 * @return string a join clause that affects the product query.
+	 */
+	protected function getProductJoinClause($allow_non_keyword_search = false)
+	{
+		$result = $this->nate_go_search_result;
+
+		$join_clause = sprintf('left outer join ProductPrimaryCategoryView on
+					ProductPrimaryCategoryView.product = Product.id
+				left outer join ProductPrimaryImageView
+					on ProductPrimaryImageView.product = Product.id
+				inner join VisibleProductCache on
+					VisibleProductCache.product = Product.id and
+					VisibleProductCache.region = %s',
+				$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+
+		if ($result !== null || !$allow_non_keyword_search) {
+			$join_clause.= sprintf('inner join %1$s on
+				%1$s.document_id = Product.id and
+				%1$s.unique_id = %2$s and %1$s.document_type = %3$s',
+				$result->getResultTable(),
+				$this->app->db->quote($result->getUniqueId(), 'text'),
+				$this->app->db->quote(
+					$this->getDocumentType(StoreSearchPage::TYPE_PRODUCTS),
+					'integer'));
+		}
+
+		return $join_clause;
 	}
 
 	// }}}
