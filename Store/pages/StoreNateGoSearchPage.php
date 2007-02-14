@@ -514,20 +514,28 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 					VisibleProductCache.region = %s',
 				$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
-		if ($result !== null || !$allow_non_keyword_search) {
-			$join_clause.= sprintf('inner join %1$s on
-				%1$s.document_id = Product.id and
-				%1$s.unique_id = %2$s and %1$s.document_type = %3$s',
-				$result->getResultTable(),
-				$this->app->db->quote($result->getUniqueId(), 'text'),
-				$this->app->db->quote(
-					$this->getDocumentType(StoreSearchPage::TYPE_PRODUCTS),
-					'integer'));
-		}
+		if ($result !== null || !$allow_non_keyword_search)
+			$join_clause.= $this->getProductFulltextJoinClause();
 
 		return $join_clause;
 	}
 
+	// }}}
+	// {{{ protected function getProductFulltextJoinClause()
+
+	protected function getProductFulltextJoinClause()
+	{
+		$result = $this->nate_go_search_result;
+
+		return sprintf('inner join %1$s on
+			%1$s.document_id = Product.id and
+			%1$s.unique_id = %2$s and %1$s.document_type = %3$s',
+			$result->getResultTable(),
+			$this->app->db->quote($result->getUniqueId(), 'text'),
+			$this->app->db->quote(
+				$this->getDocumentType(StoreSearchPage::TYPE_PRODUCTS),
+				'integer'));
+	}
 	// }}}
 	// {{{ abstract protected function getDocumentType()
 
