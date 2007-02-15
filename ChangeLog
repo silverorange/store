@@ -1,3 +1,15 @@
+2007-02-15  nrf
+
+	* [r15019] store/branches/1.5.x:
+	  make a branch
+
+2007-02-09  nrf
+
+	* [r14879] store/tags/release-1.5.1:
+	  tag release 1.5.1
+	* [r14878] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.5.1
+
 2007-02-09  isaac
 
 	* [r14876]
