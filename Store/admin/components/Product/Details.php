@@ -665,9 +665,9 @@ class StoreProductDetails extends AdminIndex
 	}
 
 	// }}}
-	// {{{ protected function getItemsTableStore()
+	// {{{ protected function getItemsSql()
 
-	protected function getItemsSql($view)
+	protected function getItemsSql(SwatTableView $view)
 	{
 		/*
 		 * This dynamic SQL is needed to make the table orderable by the price
