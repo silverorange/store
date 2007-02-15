@@ -1,3 +1,66 @@
+2007-02-15  gauthierm
+
+	* [r15036] store/trunk/Store/admin/components/Product/Details.php:
+	  We probably don't want to be db quoting these substituted values.
+	* [r15033] store/trunk/Store/admin/components/Product/Details.php:
+	  fix folding and add type hinting
+
+2007-02-15  steven
+
+	* [r15030] store/trunk/www/styles/store-search-page.css:
+	  Fixed ticket #608 before it was even filed
+
+2007-02-14  isaac
+
+	* [r15010] store/trunk/Store/admin/components/Ad/Delete.php:
+	  the depenency for orders is a nodelete, but we weren't enforcing
+	  it, and would of caused exceptions
+
+2007-02-14  nick
+
+	* [r14994] store/trunk/Store/pages/StoreNateGoSearchPage.php:
+	  Further break up the join clause
+	* [r14985] store/trunk/Store/pages/StoreNateGoSearchPage.php:
+	  First attempt at refactoring the product search parts. This
+	  allows us to
+	  override various parts in a fairly logical way. (see my next
+	  commit for
+	  uppermost)
+
+2007-02-12  gauthierm
+
+	* [r14948]
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php:
+	  Add a method to get checkout payment methods to make subclassing
+	  easier
+
+2007-02-12  steven
+
+	* [r14943]
+	  store/trunk/www/admin/styles/store-catalog-switcher.css:
+	  Don't float the catalog switcher in/over the frame below it -
+	  this was hacky and caused ticket #23
+
+2007-02-12  nrf
+
+	* [r14927] store/trunk/Store/pages/StoreCartPage.php:
+	  Only count removed items that actually existed.
+
+2007-02-09  gauthierm
+
+	* [r14900] store/trunk/sql/tables/Orders.sql:
+	  add status column
+
+2007-02-09  isaac
+
+	* [r14888] store/trunk/Store/admin/components/Account/Details.php:
+	  ws
+
+2007-02-09  nrf
+
+	* [r14878] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.5.1
+
 2007-02-09  isaac
 
 	* [r14876]
