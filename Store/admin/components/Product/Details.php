@@ -678,17 +678,19 @@ class StoreProductDetails extends AdminIndex
 		$regions_join_base =
 			'left outer join ItemRegionBinding as ItemRegionBinding_%1$s
 				on ItemRegionBinding_%1$s.item = Item.id
-					and ItemRegionBinding_%1$s.region = %1$s';
+					and ItemRegionBinding_%1$s.region = %2$s';
 
-		$regions_select_base = 'ItemRegionBinding_%1$s.price as price_%1$s';
+		$regions_select_base = 'ItemRegionBinding_%s.price as price_%s';
 
 		$regions_join = '';
 		$regions_select = '';
 		foreach ($regions as $region) {
 			$regions_join.= sprintf($regions_join_base,
+				$region->id,
 				$this->app->db->quote($region->id, 'integer')).' ';
 
 			$regions_select.= sprintf($regions_select_base,
+				$region->id,
 				$this->app->db->quote($region->id, 'integer')).', ';
 		}
 
