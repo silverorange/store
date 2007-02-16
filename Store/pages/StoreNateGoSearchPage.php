@@ -18,6 +18,15 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 	 */
 	protected $nate_go_search_result;
 
+	/**
+	 * Whether or not to allow results with no keywords
+	 *
+	 * Should be set to false if another criteria is used to search
+	 *
+	 * @var boolean
+	 */
+	protected $require_keywords = true;
+
 	// }}}
 
 	// process phase
@@ -333,19 +342,21 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 	{
 		$this->buildProductPagination();
 
-		$products = $this->queryProducts();
+		if ($this->nate_go_search_result !== null || !$this->require_keywords) {
+			$products = $this->queryProducts();
 
-		if (count($products) > 0) {
-			$this->loadProductSubDataObjects($products);
+			if (count($products) > 0) {
+				$this->loadProductSubDataObjects($products);
 
-			$this->search_has_results[] = StoreSearchPage::TYPE_PRODUCTS;
-			$this->ui->getWidget('product_results_frame')->visible = true;
-			$product_results = $this->ui->getWidget('product_results');
-			$product_results->content_type = 'text/xml';
+				$this->search_has_results[] = StoreSearchPage::TYPE_PRODUCTS;
+				$this->ui->getWidget('product_results_frame')->visible = true;
+				$product_results = $this->ui->getWidget('product_results');
+				$product_results->content_type = 'text/xml';
 
-			ob_start();
-			$this->displayProducts($products);
-			$product_results->content = ob_get_clean();
+				ob_start();
+				$this->displayProducts($products);
+				$product_results->content = ob_get_clean();
+			}
 		}
 	}
 
@@ -406,7 +417,6 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 			$this->app->db->quote($pagination->page_size, 'integer'),
 			$this->app->db->quote($pagination->current_record, 'integer'),
 			$this->getProductSelectClause());
-
 
 		$class_map = StoreClassMap::instance();
 		$wrapper_class = $class_map->resolveClass('StoreProductWrapper');
@@ -509,14 +519,9 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 	 * Allows subclasses to do additional joins on Products above and
 	 * beyond the joining of visiblity and product information tables
 	 *
-	 * @param $allow_non_keyword_search boolean If true, the search result
-	 * 	table is only joined if results were found. This should be set
-	 * 	to true for searches that have additional search criteria
-	 * 	beyond keywords.
-	 *
 	 * @return string a join clause that affects the product query.
 	 */
-	protected function getProductJoinClause($allow_non_keyword_search = false)
+	protected function getProductJoinClause()
 	{
 		$result = $this->nate_go_search_result;
 
@@ -529,7 +534,7 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 					VisibleProductCache.region = %s',
 				$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
-		if ($result !== null || !$allow_non_keyword_search)
+		if ($result !== null)
 			$join_clause.= $this->getProductFulltextJoinClause();
 
 		return $join_clause;
