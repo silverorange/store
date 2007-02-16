@@ -164,7 +164,7 @@ class StoreArticlePage extends StorePage
 		if (strlen($article->bodytext) > 0) {
 			$bodytext = (string)$article->bodytext;
 			$bodytext = $this->replaceMarkers($bodytext);
-			echo '<div id="article-bodytext">', $bodytext, '</div>';
+			echo '<div id="article_bodytext">', $bodytext, '</div>';
 		}
 	}
 
