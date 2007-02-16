@@ -394,10 +394,7 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 
 		$pagination = $this->ui->getWidget('product_pagination');
 
-		$sql = sprintf('select Product.title, Product.shortname, Product.bodytext,
-				Product.id as tag, ProductPrimaryCategoryView.primary_category,
-				ProductPrimaryImageView.image as primary_image,
-				getCategoryPath(ProductPrimaryCategoryView.primary_category) as path
+		$sql = sprintf('select %6$s
 			from Product
 			%1$s -- join
 			%2$s -- where
@@ -407,7 +404,9 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 			$this->getProductWhereClause(),
 			$this->getProductOrderByClause(),
 			$this->app->db->quote($pagination->page_size, 'integer'),
-			$this->app->db->quote($pagination->current_record, 'integer'));
+			$this->app->db->quote($pagination->current_record, 'integer'),
+			$this->getProductSelectClause());
+
 
 		$class_map = StoreClassMap::instance();
 		$wrapper_class = $class_map->resolveClass('StoreProductWrapper');
@@ -446,6 +445,22 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 
 		$products->loadAllSubDataObjects(
 			'primary_image', $this->app->db, $sql, $image_wrapper_class);
+	}
+
+	// }}}
+	// {{{ protected function getProductSelectClause()
+
+	/**
+	 * Allows subclasses to add additional columns to the select list.
+	 *
+	 * @return string a select clause for the product query.
+	 */
+	protected function getProductSelectClause()
+	{
+		return 'Product.title, Product.shortname, Product.bodytext,
+			Product.id as tag, ProductPrimaryCategoryView.primary_category,
+			ProductPrimaryImageView.image as primary_image,
+			getCategoryPath(ProductPrimaryCategoryView.primary_category) as path';
 	}
 
 	// }}}
