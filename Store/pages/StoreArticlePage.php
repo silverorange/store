@@ -290,7 +290,7 @@ class StoreArticlePage extends StorePage
 	}
 
 	// }}}
-	// {{{ private final function getReplacementMarkerId()
+	// {{{ private final function getReplacementMarkerTextByMatches()
 
 	/**
 	 * Gets replacement text for a replacement marker from within a matches
