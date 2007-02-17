@@ -44,10 +44,12 @@ class StoreItemEdit extends AdminDBEdit
 		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
 
 		$this->ui->loadFromXML($this->ui_xml);
-		$this->ui->getRoot()->addJavaScript(
-			'packages/store/admin/javascript/store-item-edit-page.js');
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			'packages/store/admin/javascript/store-item-edit-page.js',
+			Store::PACKAGE_ID));
 
-		$this->ui->getRoot()->addStyleSheet('styles/item-edit-page.css');
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'styles/item-edit-page.css', Store::PACKAGE_ID));
 
 		$this->fields = array('description', 'sku', 'integer:status');
 
@@ -340,9 +342,9 @@ class StoreItemEdit extends AdminDBEdit
 		}
 	}
 	// }}}
-	// {{{ private function displayJavaScript()
+	// {{{ protected function displayJavaScript()
 
-	private function displayJavaScript()
+	protected function displayJavaScript()
 	{
 		$price_replicator = $this->ui->getWidget('price_replicator');
 		$replicator_ids = array_keys($price_replicator->replicators);
