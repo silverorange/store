@@ -352,13 +352,13 @@ class StoreItemEdit extends AdminDBEdit
 		$replicator_ids = implode(', ', $replicator_ids);
 		$form_id = 'edit_form';
 
-		echo '<script type="text/javascript">'."\n";
+		echo '<script type="text/javascript">', "\n//<![CDATA[\n";
 		printf("var item_edit_page = ".
-			"new ItemEditPage('%s', [%s]);\n",
+			"new ItemEditPage('%s', [%s]);",
 			$form_id,
 			$replicator_ids);
 
-		echo '</script>';
+		echo "\n//]]>\n</script>";
 	}
 
 	// }}}
