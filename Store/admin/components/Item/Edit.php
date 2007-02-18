@@ -319,7 +319,25 @@ class StoreItemEdit extends AdminDBEdit
 	}
 
 	// }}}
+	// {{{ protected function displayJavaScript()
 
+	protected function displayJavaScript()
+	{
+		$price_replicator = $this->ui->getWidget('price_replicator');
+		$replicator_ids = array_keys($price_replicator->replicators);
+		$replicator_ids = implode(', ', $replicator_ids);
+		$form_id = 'edit_form';
+
+		echo '<script type="text/javascript">', "\n//<![CDATA[\n";
+		printf("var item_edit_page = ".
+			"new ItemEditPage('%s', [%s]);",
+			$form_id,
+			$replicator_ids);
+
+		echo "\n//]]>\n</script>";
+	}
+
+	// }}}
 	// {{{ private function loadReplicators()
 	private function loadReplicators()
 	{
@@ -342,25 +360,6 @@ class StoreItemEdit extends AdminDBEdit
 				$row->enabled;
 		}
 	}
-	// }}}
-	// {{{ protected function displayJavaScript()
-
-	protected function displayJavaScript()
-	{
-		$price_replicator = $this->ui->getWidget('price_replicator');
-		$replicator_ids = array_keys($price_replicator->replicators);
-		$replicator_ids = implode(', ', $replicator_ids);
-		$form_id = 'edit_form';
-
-		echo '<script type="text/javascript">', "\n//<![CDATA[\n";
-		printf("var item_edit_page = ".
-			"new ItemEditPage('%s', [%s]);",
-			$form_id,
-			$replicator_ids);
-
-		echo "\n//]]>\n</script>";
-	}
-
 	// }}}
 }
 
