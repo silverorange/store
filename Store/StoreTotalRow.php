@@ -20,7 +20,7 @@ class StoreTotalRow extends SwatTableViewRow
 	public $value = null;
 	public $offset = 0;
 	public $note = null;
-	public $note_content_type = 'text';
+	public $note_content_type = 'text/plain';
 
 	// }}}
 	// {{{ protected properties
