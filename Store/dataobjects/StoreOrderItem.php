@@ -160,8 +160,7 @@ class StoreOrderItem extends StoreDataObject
 					and AvailableItemView.region = %s
 				where Item.sku = %s',
 			$this->db->quote($region->id, 'integer'),
-			$this->db->quote($this->sku, 'text'),
-			$this->db->quote($this->part_count, 'integer'));
+			$this->db->quote($this->sku, 'text'));
 
 		return SwatDB::queryOne($this->db, $sql);
 	}
