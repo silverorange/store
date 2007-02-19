@@ -7,7 +7,7 @@ require_once 'Store/StoreUI.php';
 
 /**
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  */
 class StoreAccountEditPage extends StoreAccountPage
 {
@@ -112,7 +112,7 @@ class StoreAccountEditPage extends StoreAccountPage
 	// }}}
 	// {{{ protected function updateAccount()
 
-	protected function updateAccount($account)
+	protected function updateAccount(StoreAccount $account)
 	{
 		if (!$this->app->session->isLoggedIn()) {
 			$account->password = 
@@ -127,7 +127,7 @@ class StoreAccountEditPage extends StoreAccountPage
 	// }}}
 	// {{{ private function updateNewsletterSubscriber()
 
-	private function updateNewsletterSubscriber($account)
+	private function updateNewsletterSubscriber(StoreAccount $account)
 	{
 		$new_email = $this->ui->getWidget('email')->value;
 
@@ -235,7 +235,7 @@ class StoreAccountEditPage extends StoreAccountPage
 	// }}}
 	// {{{ protected function setWidgetValues()
 
-	protected function setWidgetValues($account)
+	protected function setWidgetValues(StoreAccount $account)
 	{
 		$this->ui->getWidget('fullname')->value = $account->fullname;
 		$this->ui->getWidget('email')->value = $account->email;
