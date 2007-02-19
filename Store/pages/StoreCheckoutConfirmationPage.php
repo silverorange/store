@@ -136,13 +136,17 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		if ($this->app->session->checkout_with_account) {
 			$this->addAddressToAccount($order->billing_address);
 
+	 		// shipping address is only added if it differs from billing address
 			if ($order->shipping_address->id !== $order->billing_address->id)
 				$this->addAddressToAccount($order->shipping_address);
 
-			$this->addPaymentMethodToAccount($order->payment_method);
+	 		// new payment methods are only added if a session flag is set
+			if ($this->app->session->save_account_payment_method)
+				$this->addPaymentMethodToAccount($order->payment_method);
 		}
 
 		$account->save();
+		unset($this->app->session->save_account_payment_method);
 	}
 
 	// }}}
