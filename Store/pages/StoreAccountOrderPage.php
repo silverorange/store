@@ -112,6 +112,41 @@ class StoreAccountOrderPage extends StoreAccountPage
 	}
 
 	// }}}
+	// {{{ protected function addItem()
+
+	protected function addItem($order_item)
+	{
+		$item_id = $order_item->getAvailableItemId($this->app->getRegion());
+
+		if ($item_id !== null) {
+			$cart_entry = new CartEntry();
+			$cart_entry->account = $this->app->session->getAccountId();
+
+			// load item manually here so we can specify region
+			$item = new Item();
+			$item->setDatabase($this->app->db);
+			$item->setRegion($this->app->getRegion());
+			$item->load($item_id);
+
+			$cart_entry->item = $item;
+			$cart_entry->quantity = $order_item->quantity;
+
+			if ($this->app->cart->checkout->addEntry($cart_entry)) {
+				$this->items_added[] = $item;
+				return true;
+			}
+		}
+
+		$message = new SwatMessage(sprintf(Store::_(
+			'Sorry, “%s” is no longer available.'),
+			$order_item->sku));
+
+		$this->ui->getWidget('message_display')->add($message);
+
+		return false;
+	}
+
+	// }}}
 	// {{{ private function addAllItems()
 
 	private function addAllItems()
@@ -134,43 +169,6 @@ class StoreAccountOrderPage extends StoreAccountPage
 			if ($button->hasBeenClicked())
 				$this->addItem($item);
 		}
-	}
-
-	// }}}
-	// {{{ private function addItem()
-
-	private function addItem($order_item)
-	{
-		$item_id = $order_item->getAvailableItemId($this->app->getRegion());
-
-		if ($item_id !== null) {
-			$cart_entry = new CartEntry();
-			$cart_entry->account = $this->app->session->getAccountId();
-
-			// load item manually here so we can specify region
-			$item = new Item();
-			$item->setDatabase($this->app->db);
-			$item->setRegion($this->app->getRegion());
-			$item->load($item_id);
-
-			$cart_entry->item = $item;
-			$cart_entry->quantity = $order_item->quantity;
-			$cart_entry->quick_order = false;
-			$cart_entry->pay_by_installments = $order_item->pay_by_installments;
-
-			if ($this->app->cart->checkout->addEntry($cart_entry)) {
-				$this->items_added[] = $item;
-				return true;
-			}
-		}
-
-		$message = new SwatMessage(sprintf(Store::_(
-			'Sorry, “%s” is no longer available.'),
-			$order_item->sku));
-
-		$this->ui->getWidget('message_display')->add($message);
-
-		return false;
 	}
 
 	// }}}
