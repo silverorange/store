@@ -235,8 +235,9 @@ class StoreAccountOrderPage extends StoreAccountPage
 
 		$items_view = $this->ui->getWidget('items_view');
 
-		$items_view->model = $this->order->getOrderDetailsTableStore();
-		$this->setItemPaths($items_view->model);
+		$store = $this->order->getOrderDetailsTableStore();
+		$this->setItemPaths($store);
+		$items_view->model = $store;
 
 		$items_view->getRow('shipping')->value = $this->order->shipping_total;
 		$items_view->getRow('subtotal')->value = $this->order->getSubtotal();
