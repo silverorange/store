@@ -1,3 +1,67 @@
+2007-02-19  nrf
+
+	* [r15181]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Push up missing code from veseys.
+
+2007-02-19  gauthierm
+
+	* [r15170] store/trunk/Store/StoreTotalRow.php:
+	  set default content type to text/plain instead of text
+	* [r15165] store/trunk/Store/pages/StoreAccountEditPage.php:
+	  add type hinting
+
+2007-02-19  nick
+
+	* [r15151] store/trunk/Store/dataobjects/StoreOrderItem.php:
+	  forgot to remove this
+	* [r15150] store/trunk/Store/pages/StoreAccountOrderPage.php:
+	  Remove veseys-specific fields and make the method protected
+	  rather than private
+	* [r15146] store/trunk/Store/dataobjects/StoreOrderItem.php:
+	  This method was pushed up from veseys, though veseys still
+	  maintains a
+	  variation of it.
+
+2007-02-18  gauthierm
+
+	* [r15128] store/trunk/Store/admin/components/Item/Edit.php:
+	  private methods before protected
+	* [r15127] store/trunk/Store/admin/components/Item/Edit.php:
+	  wrap JavaScript in CDATA tags
+
+2007-02-17  gauthierm
+
+	* [r15114] store/trunk/Store/admin/components/Item/Edit.php:
+	  add TODO
+	* [r15113] store/trunk/Store/admin/components/Item/Edit.php:
+	  Make it possible to override item edit page javascript and use
+	  correct package id for html head entries
+
+2007-02-16  nick
+
+	* [r15083] store/trunk/Store/pages/StoreNateGoSearchPage.php:
+	  This makes more sense than doing a check in the join clause.
+	* [r15080] store/trunk/Store/pages/StoreNateGoSearchPage.php:
+	  Refactor a little more to allow easy overriding of the select
+	  clause
+
+2007-02-16  steven
+
+	* [r15061] store/trunk/Store/pages/StoreArticlePage.php,
+	  store/trunk/www/styles/store-quick-order-page.css:
+	  Rename ID from article-bodytext to article_bodytext
+
+2007-02-16  gauthierm
+
+	* [r15052] store/trunk/Store/pages/StoreArticlePage.php:
+	  fix folding
+
+2007-02-15  nrf
+
+	* [r15044] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.6.0
+
 2007-02-15  gauthierm
 
 	* [r15036] store/trunk/Store/admin/components/Product/Details.php:
