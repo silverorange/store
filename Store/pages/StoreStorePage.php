@@ -51,12 +51,15 @@ abstract class StoreStorePage extends StorePage
 
 	protected function getSelectedTopCategoryId()
 	{
-		$top_category = $this->path->getFirst();
+		$category_id = null;
 
-		if ($top_category !== null)
-			return $top_category->id;
+		if ($this->path !== null) {
+			$top_category = $this->path->getFirst();
+			if ($top_category !== null)
+				$category_id = $top_category->id;
+		}
 
-		return null;
+		return $category_id;
 	}
 
 	// }}}
