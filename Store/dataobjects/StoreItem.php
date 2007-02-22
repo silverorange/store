@@ -42,19 +42,20 @@ require_once 'Store/dataobjects/StoreRegion.php';
 abstract class StoreItem extends StoreDataObject
 {
 	// {{{ constants
+
 	/**
 	 * Shown on site and available for order
 	 *
 	 * No special note is displayed.
 	 */
-	//abstract const STATUS_AVAILABLE;
+	//const STATUS_AVAILABLE;
 
 	/**
 	 * Shown on the site but unavailable for ordering
 	 *
 	 * Items are displayed with a note indicating the item is not in stock.
 	 */
-	//abstract const STATUS_OUT_OF_STOCK;
+	//const STATUS_OUT_OF_STOCK;
 
 	// }}}
 	// {{{ public properties
@@ -420,7 +421,7 @@ abstract class StoreItem extends StoreDataObject
 	 *
 	 * If the row object has a 'region_id' field and any of the fields
 	 * 'price', 'enabled', and 'is_available' these values are cached for
-	 * subsequent calls to teh getPrice(), isEnabled() and
+	 * subsequent calls to the getPrice(), isEnabled() and
 	 * isAvailableInRegion() methods.
 	 */
 	protected function initFromRow($row)
