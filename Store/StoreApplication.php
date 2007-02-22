@@ -30,7 +30,7 @@ abstract class StoreApplication extends SiteWebApplication
 	 * called. This means this convenience reference is usually available just
 	 * after the construction of this application is completed.
 	 *
-	 * @var MDB2_Connection
+	 * @var MDB2_Driver_Common
 	 */
 	public $db;
 
