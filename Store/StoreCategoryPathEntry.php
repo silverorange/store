@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @package Store
- * @copyright silverorange 2004
+ * @package   Store
+ * @copyright 2004-2007 silverorange
  */
 class StoreCategoryPathEntry
 {
@@ -19,4 +19,5 @@ class StoreCategoryPathEntry
 		$this->title = $row->title;
 	}
 }
+
 ?>
