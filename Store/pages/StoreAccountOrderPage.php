@@ -55,6 +55,14 @@ class StoreAccountOrderPage extends StoreAccountPage
 		$this->ui->loadFromXML($this->ui_xml);
 		$this->ui->init();
 
+		$this->initAddButtonColumn();
+	}
+
+	// }}}
+	// {{{ protected function initAddButtonColumn()
+
+	protected function initAddButtonColumn()
+	{
 		// add item cell renderer
 		$items_view = $this->ui->getWidget('items_view');
 		$add_item_renderer = new SwatWidgetCellRenderer();
@@ -71,7 +79,7 @@ class StoreAccountOrderPage extends StoreAccountPage
 			'id', 'replicator_id');
 
 		$add_item_column->addMappingToRenderer($add_item_renderer,
-			'is_available', 'visible', $add_item_button);
+			'show_add_button', 'visible', $add_item_button);
 
 		$items_view->appendColumn($add_item_column);
 	}
@@ -147,18 +155,18 @@ class StoreAccountOrderPage extends StoreAccountPage
 	}
 
 	// }}}
-	// {{{ private function addAllItems()
+	// {{{ protected function addAllItems()
 
-	private function addAllItems()
+	protected function addAllItems()
 	{
 		foreach ($this->order->items as $item)
 			$this->addItem($item);
 	}
 
 	// }}}
-	// {{{ private function addOneItem()
+	// {{{ protected function addOneItem()
 
-	private function addOneItem()
+	protected function addOneItem()
 	{
 		$items_view = $this->ui->getWidget('items_view');
 		$column = $items_view->getColumn('add_item_column');
@@ -235,13 +243,23 @@ class StoreAccountOrderPage extends StoreAccountPage
 
 		$items_view = $this->ui->getWidget('items_view');
 
-		$store = $this->order->getOrderDetailsTableStore();
-		$this->setItemPaths($store);
+		$store = $this->getOrderDetailsTableStore();
 		$items_view->model = $store;
 
 		$items_view->getRow('shipping')->value = $this->order->shipping_total;
 		$items_view->getRow('subtotal')->value = $this->order->getSubtotal();
 		$items_view->getRow('total')->value = $this->order->total;
+	}
+
+	// }}}
+	// {{{ protected function getOrderDetailsTableStore()
+
+	protected function getOrderDetailsTableStore()
+	{
+		$store = $this->order->getOrderDetailsTableStore();
+		$this->setItemPaths($store);
+
+		return $store;
 	}
 
 	// }}}
@@ -275,10 +293,10 @@ class StoreAccountOrderPage extends StoreAccountPage
 		foreach ($store->getRows() as $row) {
 			if (isset($paths[$row->id])) {
 				$row->path = $paths[$row->id];
-				$row->is_available = true;
+				$row->show_add_button = true;
 			} else {
 				$row->path = null;
-				$row->is_available = false;
+				$row->show_add_button = false;
 			}
 		}
 	}
