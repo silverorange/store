@@ -89,21 +89,21 @@ class StoreStorePageFactory
 
 	// }}}
 
-// products
+	// products
 	// {{{ protected function resolveProductPage()
 
 	protected function resolveProductPage($path, $category_id, $product_id)
 	{
 		$layout = $this->resolveLayout($path);
 		$page = $this->instantiateProductPage($layout);
-		$page->path = new StoreCategoryPath($this->app, $category_id);
+		$page->setPath(new StoreCategoryPath($this->app, $category_id));
 		$page->product_id = $product_id;
 
 		$region = $this->app->getRegion();
 
 		if (!$page->isVisibleInRegion($region)) {
 			$page = $this->instantiateProductNotVisiblePage($layout);
-			$page->path = new StoreCategoryPath($this->app, $category_id);
+			$page->setPath(new StoreCategoryPath($this->app, $category_id));
 			$page->product_id = $product_id;
 		}
 
@@ -119,7 +119,7 @@ class StoreStorePageFactory
 		$layout = $this->resolveLayout($path);
 		require_once 'Store/pages/StoreProductImagePage.php';
 		$page = new StoreProductImagePage($this->app, $layout);
-		$page->path = new StoreCategoryPath($this->app, $category_id);
+		$page->setPath(new StoreCategoryPath($this->app, $category_id));
 		$page->product_id = $product_id;
 		$page->image_id = $image_id;
 
@@ -151,6 +151,9 @@ class StoreStorePageFactory
 	// }}}
 	// {{{ protected function findProduct()
 
+	/**
+	 * @param array $path an array of shortnames representing the current path.
+	 */
 	protected function findProduct($path)
 	{
 		$product_id = null;
@@ -209,13 +212,13 @@ class StoreStorePageFactory
 	{
 		$layout = $this->resolveLayout($path);
 		$page = $this->instantiateCategoryPage($layout);
-		$page->path = new StoreCategoryPath($this->app, $category_id);
+		$page->setPath(new StoreCategoryPath($this->app, $category_id));
 
 		$region = $this->app->getRegion();
 
 		if (!$page->isVisibleInRegion($region)) {
 			$page = $this->instantiateCategoryNotVisiblePage($layout);
-			$page->path = new StoreCategoryPath($this->app, $category_id);
+			$page->setPath(new StoreCategoryPath($this->app, $category_id));
 			$page->category_id = $category_id;
 		}
 
@@ -247,6 +250,9 @@ class StoreStorePageFactory
 	// }}}
 	// {{{ protected function findCategory()
 
+	/**
+	 * @param array $path an array of shortnames representing the current path.
+	 */
 	protected function findCategory($path)
 	{
 		$category_id = null;
