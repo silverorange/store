@@ -24,20 +24,6 @@ abstract class StoreArticlePageFactory extends SitePageFactory
 	protected $default_page_class = 'StoreArticlePage';
 
 	// }}}
-	// {{{ protected function __construct()
-
-	/**
-	 * Creates a StoreArticlePageFactory
-	 */
-	protected function __construct()
-	{
-		parent::__construct();
-
-		// set location to load Store page classes from
-		$this->class_map['Store'] = 'Store/pages';
-	}
-
-	// }}}
 	// {{{ public function resolvePage()
 
 	/**
@@ -93,6 +79,20 @@ abstract class StoreArticlePageFactory extends SitePageFactory
 		}
 
 		return $page;
+	}
+
+	// }}}
+	// {{{ protected function __construct()
+
+	/**
+	 * Creates a StoreArticlePageFactory
+	 */
+	protected function __construct()
+	{
+		parent::__construct();
+
+		// set location to load Store page classes from
+		$this->class_map['Store'] = 'Store/pages';
 	}
 
 	// }}}
