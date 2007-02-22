@@ -3,8 +3,8 @@
 require_once 'Store/StoreCategoryPathEntry.php';
 
 /**
- * @package Store
- * @copyright 2005-2006 silverorange
+ * @package   Store
+ * @copyright 2005-2007 silverorange
  */
 class StoreCategoryPath implements Iterator, Countable
 {
