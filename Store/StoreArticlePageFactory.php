@@ -24,13 +24,27 @@ abstract class StoreArticlePageFactory extends SitePageFactory
 	protected $default_page_class = 'StoreArticlePage';
 
 	// }}}
+	// {{{ protected function __construct()
+
+	/**
+	 * Creates a StoreArticlePageFactory
+	 */
+	protected function __construct()
+	{
+		parent::__construct();
+
+		// set location to load Store page classes from
+		$this->class_map['Store'] = 'Store/pages';
+	}
+
+	// }}}
 	// {{{ public function resolvePage()
 
 	/**
 	 * Resolves a page object from a source string
 	 *
-	 * @param SiteWebApplication $app the web application for which the page is
-	 *                                 being resolved.
+	 * @param StoreApplication $app the web application for which the page is
+	 *                               being resolved.
 	 * @param string $source the source string for which to get the page.
 	 *
 	 * @return StoreArticlePage the page for the given source string.
@@ -82,23 +96,10 @@ abstract class StoreArticlePageFactory extends SitePageFactory
 	}
 
 	// }}}
-	// {{{ protected function __construct()
-
-	/**
-	 * Creates a StoreArticlePageFactory
-	 */
-	protected function __construct()
-	{
-		parent::__construct();
-
-		// set location to load Store page classes from
-		$this->class_map['Store'] = 'Store/pages';
-	}
-
-	// }}}
 	// {{{ protected function instantiateNotVisiblePage()
 
-	protected function instantiateNotVisiblePage($app, $layout)
+	protected function instantiateNotVisiblePage(StoreApplication $app,
+		SiteLayout $layout)
 	{
 		require_once 'Store/pages/StoreArticleNotVisiblePage.php';
 		$page = new StoreArticleNotVisiblePage($app, $layout);
@@ -110,12 +111,15 @@ abstract class StoreArticlePageFactory extends SitePageFactory
 	// {{{ protected function findArticle()
 
 	/**
-	 * Gets an article database identifier from this page's path
+	 * Gets an article id from the given article path
 	 *
-	 * @return integer the database identifier corresponding to this page's
-	 *                  path or null if no such identifier exists.
+	 * @param StoreApplication $app
+	 * @param string $path
+	 *
+	 * @return integer the database identifier corresponding to the given
+	 *                  articl path or null if no such identifier exists.
 	 */
-	protected function findArticle($app, $path)
+	protected function findArticle(StoreApplication $app, $path)
 	{
 		// trim at 254 to prevent database errors
 		$path = substr($path, 0, 254);
