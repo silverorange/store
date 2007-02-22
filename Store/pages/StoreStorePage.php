@@ -9,6 +9,7 @@ require_once 'Store/dataobjects/StoreCategoryImageWrapper.php';
 /**
  * @package   Store
  * @copyright 2005-2007 silverorange
+ * @see       StoreStorePageFactory
  */
 abstract class StoreStorePage extends StorePage
 {
