@@ -56,6 +56,14 @@ class StoreArticlePage extends StorePage
 	}
 
 	// }}}
+	// {{{ public function getPath()
+
+	public function getPath($path)
+	{
+		return $this->path;
+	}
+
+	// }}}
 
 	// init phase
 	// {{{ public function init()
