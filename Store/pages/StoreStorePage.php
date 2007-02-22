@@ -1,19 +1,31 @@
 <?php
 
 require_once 'SwatDB/SwatDB.php';
+require_once 'Store/StoreCategoryPath.php';
 require_once 'Store/dataobjects/StoreCategoryWrapper.php';
 require_once 'Store/pages/StorePage.php';
 require_once 'Store/dataobjects/StoreCategoryImageWrapper.php';
 
 /**
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2007 silverorange
  */
 abstract class StoreStorePage extends StorePage
 {
-	// {{{ public properties
+	// {{{ protected properties
 
-	public $path;
+	/**
+	 * @var StoreCategoryPath
+	 */
+	protected $path;
+
+	// }}}
+	// {{{ public function setPath()
+
+	public function setPath(StoreCategoryPath $path)
+	{
+		$this->path = $path;
+	}
 
 	// }}}
 
