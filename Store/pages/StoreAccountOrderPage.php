@@ -141,7 +141,7 @@ class StoreAccountOrderPage extends StoreAccountPage
 
 			if ($this->app->cart->checkout->addEntry($cart_entry)) {
 				$this->items_added[] = $item;
-				return true;
+				return $cart_entry;
 			}
 		}
 
@@ -151,7 +151,7 @@ class StoreAccountOrderPage extends StoreAccountPage
 
 		$this->ui->getWidget('message_display')->add($message);
 
-		return false;
+		return null;
 	}
 
 	// }}}
