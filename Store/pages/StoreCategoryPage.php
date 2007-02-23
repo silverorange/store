@@ -31,14 +31,19 @@ class StoreCategoryPage extends StoreStorePage
 
 	public function isVisibleInRegion(StoreRegion $region)
 	{
-		$category_id = $this->path->getLast()->id;
+		$category = null;
 
-		$sql = sprintf('select category from VisibleCategoryView
-			where category = %s and (region = %s or region is null)',
-			$this->app->db->quote($category_id, 'integer'),
-			$this->app->db->quote($region->id, 'integer'));
+		$path_entry = $this->path->getLast();
+		if ($path_entry !== null) {
+			$category_id = $path_entry->id;
 
-		$category = SwatDB::queryOne($this->app->db, $sql);
+			$sql = sprintf('select category from VisibleCategoryView
+				where category = %s and (region = %s or region is null)',
+				$this->app->db->quote($category_id, 'integer'),
+				$this->app->db->quote($region->id, 'integer'));
+
+			$category = SwatDB::queryOne($this->app->db, $sql);
+		}
 
 		return ($category !== null);
 	}
