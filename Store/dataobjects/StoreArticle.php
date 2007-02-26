@@ -15,7 +15,7 @@ require_once 'Store/dataobjects/StoreCategoryWrapper.php';
  * the {@link StoreAddress::$parent} property. 
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreArticle extends StoreDataObject
@@ -122,7 +122,9 @@ class StoreArticle extends StoreDataObject
 	// {{{ public function getNavBarEntries()
 
 	/**
-	 * Gets the set of {@link SwatNavbarEntry} objects for this article
+	 * Gets the set of {@link SwatNavBarEntry} objects for this article
+	 *
+	 * @return array the set of SwatNavBarEntry objects for this article.
 	 */
 	public function getNavBarEntries()
 	{
