@@ -144,11 +144,9 @@ abstract class StoreNotVisiblePage extends StorePage
 
 		ob_start();
 
-		$title = $locale->region->title.' - '.$locale->getTitle().'';
-
 		$a_tag->href = $this->app->getBaseHref(null, $locale->id).
 			$this->source;
-		$a_tag->setContent($title);
+		$a_tag->setContent($locale->getTitle());
 		$a_tag->display();
 
 		return ob_get_clean();
