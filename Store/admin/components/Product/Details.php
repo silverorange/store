@@ -518,7 +518,7 @@ class StoreProductDetails extends AdminIndex
 		if (count($categories) == 1) {
 			$category = $categories->getFirst();
 			$navbar = new SwatNavBar();
-			$navbar->addEntries($category->admin_navbar_entries);
+			$navbar->addEntries($category->getAdminNavBarEntries());
 			$navbar->display();
 
 		// multiple categories, show in list
@@ -527,7 +527,7 @@ class StoreProductDetails extends AdminIndex
 				
 			foreach ($categories as $category) {
 				$navbar = new SwatNavBar();
-				$navbar->addEntries($category->admin_navbar_entries);
+				$navbar->addEntries($category->getAdminNavBarEntries());
 
 				echo '<li>';
 				$navbar->display();
