@@ -1,3 +1,158 @@
+2007-02-26  gauthierm
+
+	* [r15419] store/trunk/Store/dataobjects/StoreCategory.php:
+	  Remove navbar entry for 'store' from
+	  StoreCategory::getNavBarEntries()
+
+2007-02-26  nrf
+
+	* [r15415] store/trunk/Store/StorePathEntry.php:
+	  make public
+
+2007-02-26  gauthierm
+
+	* [r15411] store/trunk/Store/pages/StorePage.php:
+	  Add a getter method for StorePage::$path. Some site code needs
+	  accessto this.
+	* [r15410] store/trunk/Store/pages/StoreNotVisiblePage.php:
+	  Remove setPath() and $path from StoreNotVisiblePage since it
+	  extends StorePage.
+
+2007-02-26  nrf
+
+	* [r15408] store/trunk/Store/pages/StoreArticlePage.php:
+	  $path is now a StorePath object and can not be initialized from
+	  $source
+
+2007-02-26  gauthierm
+
+	* [r15406] store/trunk/Store/pages/StoreCategoryPage.php,
+	  store/trunk/Store/pages/StoreStorePage.php:
+	  Updates to StoreStorePage and StoreCategoryPage now that
+	  StorePage has a setPath() method. Also several changes to
+	  actually check if the path is set before using it.
+	* [r15405] store/trunk/Store/StoreArticlePageFactory.php,
+	  store/trunk/Store/pages/StoreArticlePage.php:
+	  Use StoreArticlePath objects for StoreArticlePage objects.
+	* [r15403] store/trunk/Store/pages/StoreNotVisiblePage.php,
+	  store/trunk/Store/pages/StorePage.php:
+	  Add setPath() method to Store page base classes.
+	* [r15401] store/trunk/Store/StoreCategoryPathEntry.php:
+	  Remove this unused class. This was replaced with the generic
+	  StorePathEntry class.
+	* [r15400] store/trunk/Store/StoreArticlePath.php,
+	  store/trunk/Store/StoreCategoryPath.php:
+	  Make StoreCategoryPath extend StorePath and create a
+	  StoreArticlePath class
+	* [r15399] store/trunk/Store/StorePath.php:
+	  make addEntry final and fix parse error
+	* [r15397] store/trunk/Store/pages/StoreSearchPage.php:
+	  We still need the path for displaying the category in the search
+	  results.
+	* [r15396] store/trunk/Store/pages/StoreSearchPage.php:
+	  Use StoreCategory::getNavBarEntries() to display category search
+	  results.
+	* [r15395] store/trunk/Store/dataobjects/StoreCategory.php:
+	  Include 'store' in category navbars.
+	* [r15393] store/trunk/Store/admin/components/Product/Details.php:
+	  respect API change in r15392.
+	* [r15392] store/trunk/Store/dataobjects/StoreCategory.php:
+	  Make navbar entries on StoreCategory get methods instead of a
+	  magic loader methods (which is intended for dataobjects and
+	  recordsets).
+	* [r15391] store/trunk/Store/dataobjects/StoreArticle.php:
+	  doc cleanup
+	* [r15390] store/trunk/Store/dataobjects/StoreArticle.php:
+	  Make navbar entries on StoreArticle a get method instead of a
+	  magic loader method (which is intended for dataobjects and
+	  recordsets).
+
+2007-02-26  nrf
+
+	* [r15388] store/trunk/sql/functions/getCategoryNavBar.sql:
+	  This is still used by the admin
+	* [r15387] store/trunk/Store/StoreApplication.php:
+	  hopefully fix #644: attempt to save ad referrer multiple times
+	  in case database deadlock occurs.
+	* [r15381] store/trunk/sql/functions/getArticlePathInfo.sql:
+	  clean up
+	* [r15380] store/trunk/sql/functions/getAritclePathInfo.sql,
+	  store/trunk/sql/functions/getArticlePathInfo.sql:
+	  rename
+	* [r15379] store/trunk/sql/functions/getCategoryPathInfo.sql:
+	  cleanup
+
+2007-02-26  gauthierm
+
+	* [r15378] store/trunk/sql/functions/getCategoryPathInfo.sql:
+	  general cleanups
+
+2007-02-26  nrf
+
+	* [r15377] store/trunk/sql/functions/getAritclePathInfo.sql:
+	  new function
+	* [r15375] store/trunk/sql/functions/getCategoryNavBar.sql:
+	  Obsoleted by getCategoryPathInfo()
+	* [r15374] store/trunk/sql/functions/getCategoryPathInfo.sql:
+	  Remove veseysism from Store.
+
+2007-02-23  gauthierm
+
+	* [r15319] store/trunk/Store/StorePath.php,
+	  store/trunk/Store/StorePathEntry.php:
+	  Generic version of StoreCategoryPath that will be used for
+	  StoreArticlePath all working towards finishing ticket #641 for
+	  Uppermost
+	* [r15318] store/trunk/Store/pages/StoreCategoryPage.php:
+	  If there is no path set on the category page, don't check the
+	  path to see if the category is visible
+
+2007-02-22  gauthierm
+
+	* [r15316] store/trunk/Store/StoreArticlePageFactory.php:
+	  put protected constructor below again. My bad.
+	* [r15314] store/trunk/Store/StoreArticlePageFactory.php:
+	  Documentation and type hinting cleanup
+	* [r15313] store/trunk/Store/pages/StoreStorePage.php:
+	  If no path is set, return null
+	* [r15312] store/trunk/Store/pages/StoreStorePage.php:
+	  add @see tag
+	* [r15300] store/trunk/Store/dataobjects/StoreItem.php:
+	  fix typo
+	* [r15298] store/trunk/Store/StoreCategoryPathEntry.php:
+	  coding conventions
+	* [r15296] store/trunk/Store/StoreCategoryPath.php:
+	  update docblock
+	* [r15295] store/trunk/Store/StoreStorePageFactory.php,
+	  store/trunk/Store/pages/StoreStorePage.php:
+	  Make StoreStorePage::$path protected instead of public and
+	  create a setter method with type hinting.
+	* [r15290] store/trunk/Store/StoreApplication.php:
+	  Use correct class name for docblock
+	* [r15289] store/trunk/Store/layouts/StoreLayout.php:
+	  Coding conventions. This must be old.
+
+2007-02-22  nrf
+
+	* [r15268] store/trunk/Store/pages/StoreArticlePage.php:
+	  Add a getter
+	* [r15265] store/trunk/Store/pages/StoreAccountOrderPage.php:
+	  Return the new cart_entry on success.
+	* [r15262] store/trunk/Store/pages/StoreAccountOrderPage.php:
+	  Refactor for subclassability
+
+2007-02-20  nrf
+
+	* [r15232]
+	  store/trunk/sql/tables/ProductRelatedProductBinding.sql:
+	  more missing on delete cascades
+	* [r15230] store/trunk/sql/tables/ProductImageBinding.sql:
+	  Delete on cascade
+	* [r15221] store/trunk/Store/pages/StoreAccountOrderPage.php:
+	  Superficial, but this makes more sense to me.
+	* [r15205] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.6.1
+
 2007-02-19  nrf
 
 	* [r15181]
