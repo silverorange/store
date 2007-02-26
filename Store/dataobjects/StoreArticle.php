@@ -109,6 +109,50 @@ class StoreArticle extends StoreDataObject
 	public $shortname;
 
 	// }}}
+	// {{{ protected properties
+
+	/**
+	 * @var array
+	 *
+	 * @see StoreArticle::getNavBarEntries()
+	 */
+	protected $navbar_entries;
+
+	// }}}
+	// {{{ public function getNavBarEntries()
+
+	/**
+	 * Gets the set of {@link SwatNavbarEntry} objects for this article
+	 */
+	public function getNavBarEntries()
+	{
+		if ($this->navbar_entries === null) {
+			$this->navbar_entries = array();
+
+			$sql = sprintf('select * from getArticleNavbar(%s)',
+				$this->db->quote($this->id, 'integer'));
+
+			$navbar_rows = SwatDB::query($this->db, $sql);
+
+			$path = '';
+			$first = true;
+			foreach ($navbar_rows as $row) {
+				if ($first) {
+					$path.= $row->shortname;
+					$first = false;
+				} else {
+					$path.= '/'.$row->shortname;
+				}
+
+				$this->navbar_entries[] =
+					new SwatNavBarEntry($row->title, $path);
+			}
+		}
+
+		return $this->navbar_entries;
+	}
+
+	// }}}
 	// {{{ public function loadWithPath()
 
 	/**
@@ -229,33 +273,6 @@ class StoreArticle extends StoreDataObject
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 		$wrapper = $this->class_map->resolveClass('StoreCategoryWrapper');
 		return SwatDB::query($this->db, $sql, $wrapper);
-	}
-
-	// }}}
-	// {{{ protected function loadNavBarEntries()
-
-	/**
-	 * Loads a set of {@link SwatNavbarEntry} objects for this article
-	 */
-	protected function loadNavBarEntries()
-	{
-		$sql = sprintf('select * from getArticleNavbar(%s)',
-			$this->db->quote($this->id, 'integer'));
-
-		$navbar_rows = SwatDB::query($this->db, $sql);
-		$entries = array();
-
-		$path = '';
-		foreach ($navbar_rows as $row) {
-			if (strlen($path) == 0)
-				$path.= $row->shortname;
-			else
-				$path.= '/'.$row->shortname;
-
-			$entries[] = new SwatNavBarEntry($row->title,	$path);
-		}
-
-		return $entries;
 	}
 
 	// }}}
