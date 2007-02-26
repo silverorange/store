@@ -228,7 +228,6 @@ class StoreCategory extends StoreDataObject
 			$this->navbar_entries = array();
 
 			$path = 'store';
-			$this->navbar_entries[] = new SwatNavBarEntry('Store', $path);
 			foreach ($this->queryNavBar() as $row) {
 				$path.= '/'.$row->shortname;
 				$this->navbar_entries[] =
