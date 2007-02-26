@@ -17,6 +17,19 @@ abstract class StorePage extends SitePage
 	protected $path;
 
 	// }}}
+	// {{{ public function getPath()
+
+	/**
+	 * Gets the path of this page
+	 *
+	 * @return StorePath the path of this page.
+	 */
+	public function getPath()
+	{
+		return $this->path;
+	}
+
+	// }}}
 	// {{{ public function setPath()
 
 	/**
