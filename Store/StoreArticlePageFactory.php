@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Site/SitePageFactory.php';
+require_once 'Store/StoreArticlePath.php';
 
 /**
  * Resolves and creates article pages in a store web application
@@ -53,7 +54,6 @@ abstract class StoreArticlePageFactory extends SitePageFactory
 				array_unshift($regs, $app);
 
 				$page = $this->instantiatePage($class, $regs);
-				$page->setPath($article_path);
 				break;
 			}
 		}
@@ -71,11 +71,15 @@ abstract class StoreArticlePageFactory extends SitePageFactory
 				sprintf('Article not found for path ‘%s’',
 					$article_path));
 
+		$article_path = new StoreArticlePath($app, $article_id);
+
 		$page->article_id = $article_id;
+		$page->setPath($article_path);
 
 		if (!$page->isVisibleInRegion($app->getRegion())) {
 			$page = $this->instantiateNotVisiblePage($app, $layout);
 			$page->article_id = $article_id;
+			$page->setPath($article_path);
 		}
 
 		return $page;
@@ -117,7 +121,7 @@ abstract class StoreArticlePageFactory extends SitePageFactory
 	 * @param string $path
 	 *
 	 * @return integer the database identifier corresponding to the given
-	 *                  articl path or null if no such identifier exists.
+	 *                  article path or null if no such identifier exists.
 	 */
 	protected function findArticle(StoreApplication $app, $path)
 	{
