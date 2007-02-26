@@ -122,17 +122,41 @@ abstract class StoreApplication extends SiteWebApplication
 
 			$this->session->ad = $ad;
 
-			$now = new SwatDate();
-			$now->toUTC();
-
-			SwatDB::insertRow($this->db, 'AdReferrer',
-				array('date:createdate', 'integer:ad'),
-				array('createdate' => $now->getDate(), 'ad' => $ad->id));
+			/*
+			 * Do to mass mailings, large numbers of people follow links with
+			 * ads which can lead to database deadlock when inserting the ad
+			 * referrer. Here we make five attempts before giving up and 
+			 * throwing the exception.
+			 */
+			$attempt = 0;
+			while (true) {
+				try {
+					$attempt++;
+					$this->insertAdReferrer($ad);
+					break;
+				} catch (SwatDBException $e) {
+					if ($attempt > 5)
+						throw $e;
+				}
+			}
 
 			$source = self::initVar('source');
 
 			$this->relocate($source);
 		}
+	}
+
+	// }}}
+	// {{{ private function insertAdReferrer()
+
+	private function insertAdReferrer($ad)
+	{
+		$now = new SwatDate();
+		$now->toUTC();
+
+		SwatDB::insertRow($this->db, 'AdReferrer',
+			array('date:createdate', 'integer:ad'),
+			array('createdate' => $now->getDate(), 'ad' => $ad->id));
 	}
 
 	// }}}
