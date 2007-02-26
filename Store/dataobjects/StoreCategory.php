@@ -124,6 +124,20 @@ class StoreCategory extends StoreDataObject
 	 */
 	protected $product_count = array();
 
+	/**
+	 * @var array
+	 *
+	 * @see StoreCategory::getNavBarEntries()
+	 */
+	protected $navbar_entries;
+
+	/**
+	 * @var array
+	 *
+	 * @see StoreCategory::getAdminNavBarEntries()
+	 */
+	protected $admin_navbar_entries;
+
 	// }}}
 	// {{{ public function setRegion()
 
@@ -198,6 +212,61 @@ class StoreCategory extends StoreDataObject
 		}
 
 		return $product_count;
+	}
+
+	// }}}
+	// {{{ public function getNavBarEntries()
+
+	/**
+	 * Gets the set of {@link SwatNavBarEntry} objects for this category
+	 *
+	 * @return array the set of SwatNavBarEntry objects for this category.
+	 */
+	public function getNavBarEntries()
+	{
+		if ($this->navbar_entries === null) {
+			$this->navbar_entries = array();
+
+			$path = '';
+			$first = true;
+			foreach ($this->queryNavBar() as $row) {
+				if ($first) {
+					$path.= $row->shortname;
+					$first = false;
+				} else {
+					$path.= '/'.$row->shortname;
+				}
+
+				$this->navbar_entries[] =
+					new SwatNavBarEntry($row->title, $path);
+			}
+		}
+
+		return $this->navbar_entries;
+	}
+
+	// }}}
+	// {{{ public function getAdminNavBarEntries()
+
+	/**
+	 * Gets the set of {@link SwatNavBarEntry} objects for this category
+	 * with links for the admin site
+	 *
+	 * @return array the set of SwatNavBarEntry objects for this category.
+	 */
+	public function getAdminNavBarEntries()
+	{
+		if ($this->admin_navbar_entries === null) {
+			$this->admin_navbar_entries = array();
+
+			foreach ($this->queryNavBar() as $row) {
+				$link = sprintf('Category/Index?id=%s', $row->id);
+				$this->admin_navbar_entries[] =
+					new SwatNavBarEntry($row->title, $link);
+			}
+		}
+
+		return $this->admin_navbar_entries;
 	}
 
 	// }}}
@@ -291,53 +360,6 @@ class StoreCategory extends StoreDataObject
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 		$wrapper = $this->class_map->resolveClass('StoreArticleWrapper');
 		return SwatDB::query($this->db, $sql, $wrapper);
-	}
-
-	// }}}
-	// {{{ protected function loadNavBarEntries()
-
-	/**
-	 * Loads a set of {@link SwatNavbarEntry} objects for this category 
-	 *
-	 * The links in the navbar entries are intended for the customer visible
-	 * side of an e-commerce application.
-	 */
-	protected function loadNavBarEntries()
-	{
-		$entries = array();
-
-		$path = '';
-		foreach ($this->queryNavBar() as $row) {
-			if (strlen($path) == 0)
-				$path.= $row->shortname;
-			else
-				$path.= '/'.$row->shortname;
-
-			$entries[] = new SwatNavBarEntry($row->title, $path);
-		}
-
-		return $entries;
-	}
-
-	// }}}
-	// {{{ protected function loadAdminNavBarEntries()
-
-	/**
-	 * Loads a set of {@link SwatNavbarEntry} objects for this category
-	 *
-	 * The links in the navbar entries are intended for the administration side
-	 * of an e-commerce application.
-	 */
-	protected function loadAdminNavBarEntries()
-	{
-		$entries = array();
-
-		foreach ($this->queryNavBar() as $row) {
-			$link = sprintf('Category/Index?id=%s', $row->id);
-			$entries[] = new SwatNavBarEntry($row->title, $link);
-		}
-
-		return $entries;
 	}
 
 	// }}}
