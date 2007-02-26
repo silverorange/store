@@ -4,6 +4,7 @@ require_once 'Swat/SwatMessage.php';
 require_once 'Swat/SwatHtmlTag.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Store/StoreUI.php';
+require_once 'Store/StorePath.php';
 require_once 'Store/pages/StorePage.php';
 require_once 'Site/exceptions/SiteNotFoundException.php';
 
@@ -19,7 +20,15 @@ abstract class StoreNotVisiblePage extends StorePage
 {
 	// {{{ protected properties
 
+	/**
+	 * @var StoreUI
+	 */
 	protected $ui;
+
+	/**
+	 * @var StorePath
+	 */
+	protected $path;
 
 	// }}}
 	// {{{ public function init()
@@ -30,6 +39,19 @@ abstract class StoreNotVisiblePage extends StorePage
 
 		$this->ui = new StoreUI();
 		$this->ui->loadFromXML('Store/pages/not-visible-page.xml');
+	}
+
+	// }}}
+	// {{{ public function setPath()
+
+	/**
+	 * Sets the path of this page
+	 *
+	 * @param StorePath $path
+	 */
+	public function setPath(StorePath $path)
+	{
+		$this->path = $path;
 	}
 
 	// }}}
@@ -72,9 +94,11 @@ abstract class StoreNotVisiblePage extends StorePage
 		if ($link_prefix !== '')
 			$link_prefix = $link_prefix.'/';
 
-		foreach ($this->path as $path_entry) {
-			$link = $link_prefix.$path_entry->shortname;
-			$this->layout->navbar->createEntry($path_entry->title, $link);
+		if ($this->path !== null) {
+			foreach ($this->path as $path_entry) {
+				$link = $link_prefix.$path_entry->shortname;
+				$this->layout->navbar->createEntry($path_entry->title, $link);
+			}
 		}
 	}
 
