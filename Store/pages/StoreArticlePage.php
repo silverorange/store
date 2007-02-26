@@ -13,7 +13,7 @@ require_once 'Store/StoreClassMap.php';
  * A page for loading and displaying articles
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreArticle
  */
@@ -25,11 +25,6 @@ class StoreArticlePage extends StorePage
 
 	// }}}
 	// {{{ protected properties
-
-	/**
-	 * @var string
-	 */
-	protected $path;
 
 	/**
 	 * @var StoreArticle
@@ -48,19 +43,19 @@ class StoreArticlePage extends StorePage
 	}
 
 	// }}}
-	// {{{ public function setPath()
+	// {{{ public function hasParentInPath()
 
-	public function setPath($path)
+	/**
+	 * Whether or not this page has the parent id in its path
+	 *
+	 * @param integer $article_id the parent article id to check.
+	 *
+	 * @return boolean true if this page has the given id in its path and false
+	 *                  if it does not.
+	 */
+	public function hasParentInPath($article_id)
 	{
-		$this->path = $path;
-	}
-
-	// }}}
-	// {{{ public function getPath()
-
-	public function getPath($path)
-	{
-		return $this->path;
+		return $this->path->hasId($article_id);
 	}
 
 	// }}}
@@ -80,14 +75,23 @@ class StoreArticlePage extends StorePage
 
 	public function isVisibleInRegion(StoreRegion $region)
 	{
-		$sql = sprintf('select id from EnabledArticleView
-			where id = %s and region = %s',
-			$this->app->db->quote($this->article_id, 'integer'),
-			$this->app->db->quote($region->id, 'integer'));
+		$article = null;
 
-		$article_id = SwatDB::queryOne($this->app->db, $sql);
+		if ($this->path !== null) {
+			$path_entry = $this->path->getLast();
+			if ($path_entry !== null) {
+				$article_id = $path_entry->id;
 
-		return ($article_id !== null);
+				$sql = sprintf('select id from EnabledArticleView
+					where id = %s and region = %s',
+					$this->app->db->quote($article_id, 'integer'),
+					$this->app->db->quote($region->id, 'integer'));
+
+				$article = SwatDB::queryOne($this->app->db, $sql);
+			}
+		}
+
+		return ($article !== null);
 	}
 
 	// }}}
@@ -96,7 +100,7 @@ class StoreArticlePage extends StorePage
 	protected function initArticle()
 	{
 		// don't try to resolve articles that are deeper than the max depth
-		if (count(explode('/', $this->path)) > StoreArticle::MAX_DEPTH)
+		if (count($this->path) > StoreArticle::MAX_DEPTH)
 			throw new SiteNotFoundException(
 				sprintf('Article page not found for path ‘%s’', $this->path));
 
@@ -131,7 +135,29 @@ class StoreArticlePage extends StorePage
 		$this->displaySubArticles($sub_articles);
 		$this->layout->endCapture();
 
-		$this->layout->navbar->addEntries($this->article->navbar_entries);
+		$this->buildNavBar();
+	}
+
+	// }}}
+	// {{{ protected function buildNavBar()
+
+	protected function buildNavBar()
+	{
+		if ($this->path !== null) {
+			$navbar = $this->layout->navbar;
+			$link = '';
+			$first = true;
+			foreach ($this->path as $path_entry) {
+				if ($first) {
+					$link.= $path_entry->shortname;
+					$first = false;
+				} else {
+					$link.= '/'.$path_entry->shortname;
+				}
+
+				$navbar->createEntry($path_entry->title, $link);
+			}
+		}
 	}
 
 	// }}}
