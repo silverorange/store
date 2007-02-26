@@ -1,5 +1,16 @@
 2007-02-26  gauthierm
 
+	* [r15423] store/trunk/Store/pages/StoreArticleNotVisiblePage.php:
+	  Respect API change to StoreArticle. NavBarEntries are now loded
+	  using a getter.
+
+2007-02-26  nrf
+
+	* [r15420] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.6.2
+
+2007-02-26  gauthierm
+
 	* [r15419] store/trunk/Store/dataobjects/StoreCategory.php:
 	  Remove navbar entry for 'store' from
 	  StoreCategory::getNavBarEntries()
