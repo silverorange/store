@@ -25,11 +25,6 @@ abstract class StoreNotVisiblePage extends StorePage
 	 */
 	protected $ui;
 
-	/**
-	 * @var StorePath
-	 */
-	protected $path;
-
 	// }}}
 	// {{{ public function init()
 
@@ -39,19 +34,6 @@ abstract class StoreNotVisiblePage extends StorePage
 
 		$this->ui = new StoreUI();
 		$this->ui->loadFromXML('Store/pages/not-visible-page.xml');
-	}
-
-	// }}}
-	// {{{ public function setPath()
-
-	/**
-	 * Sets the path of this page
-	 *
-	 * @param StorePath $path
-	 */
-	public function setPath(StorePath $path)
-	{
-		$this->path = $path;
 	}
 
 	// }}}
