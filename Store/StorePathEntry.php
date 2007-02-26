@@ -17,14 +17,14 @@
  */
 class StorePathEntry
 {
-	// {{{ protected properties
+	// {{{ public properties
 
 	/**
 	 * The database id of this entry
 	 *
 	 * @var integer
 	 */
-	protected $id;
+	public $id;
 
 	/**
 	 * The database id of the parent of this entry or null if this entry
@@ -32,21 +32,21 @@ class StorePathEntry
 	 *
 	 * @var integer
 	 */
-	protected $parent;
+	public $parent;
 
 	/**
 	 * The shortname of this entry
 	 *
 	 * @var string
 	 */
-	protected $shortname;
+	public $shortname;
 
 	/**
 	 * The title of this entry
 	 *
 	 * @var string
 	 */
-	protected $title;
+	public $title;
 
 	// }}}
 	// {{{ public function __construct()
@@ -66,29 +66,6 @@ class StorePathEntry
 		$this->parent = $parent;
 		$this->shortname = $shortname;
 		$this->title = $title;
-	}
-
-	// }}}
-	// {{{ private function __get()
-
-	/**
-	 * Magic get for allowing reading but not writing of path entry properties
-	 *
-	 * @param string $name the name of the property to get.
-	 *
-	 * @return mixed the value of the property if the property is readable.
-	 */
-	private function __get($name)
-	{
-		static $readable_properties = array(
-			'id',
-			'parent',
-			'shortname',
-			'title',
-		);
-
-		if (in_array($name, $readable_properties))
-			return $this->$name;
 	}
 
 	// }}}
