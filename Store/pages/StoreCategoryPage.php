@@ -18,12 +18,15 @@ class StoreCategoryPage extends StoreStorePage
 
 	protected function getSelectedCategoryId()
 	{
-		$category = $this->path->getLast();
+		$category_id = null;
 
-		if ($category !== null)
-			return $category->id;
+		if ($this->path !== null) {
+			$path_entry = $this->path->getLast();
+			if ($path_entry !== null)
+				$category_id = $path_entry->id;
+		}
 
-		return null;
+		return $category_id;
 	}
 
 	// }}}
@@ -33,16 +36,18 @@ class StoreCategoryPage extends StoreStorePage
 	{
 		$category = null;
 
-		$path_entry = $this->path->getLast();
-		if ($path_entry !== null) {
-			$category_id = $path_entry->id;
+		if ($this->path !== null) {
+			$path_entry = $this->path->getLast();
+			if ($path_entry !== null) {
+				$category_id = $path_entry->id;
 
-			$sql = sprintf('select category from VisibleCategoryView
-				where category = %s and (region = %s or region is null)',
-				$this->app->db->quote($category_id, 'integer'),
-				$this->app->db->quote($region->id, 'integer'));
+				$sql = sprintf('select category from VisibleCategoryView
+					where category = %s and (region = %s or region is null)',
+					$this->app->db->quote($category_id, 'integer'),
+					$this->app->db->quote($region->id, 'integer'));
 
-			$category = SwatDB::queryOne($this->app->db, $sql);
+				$category = SwatDB::queryOne($this->app->db, $sql);
+			}
 		}
 
 		return ($category !== null);
@@ -335,11 +340,12 @@ class StoreCategoryPage extends StoreStorePage
 
 	private function buildNavBar()
 	{
-		$link = 'store';
-
-		foreach ($this->path as $path_entry) {
-			$link .= '/'.$path_entry->shortname;
-			$this->layout->navbar->createEntry($path_entry->title, $link);
+		if ($this->path !== null) {
+			$link = 'store';
+			foreach ($this->path as $path_entry) {
+				$link.= '/'.$path_entry->shortname;
+				$this->layout->navbar->createEntry($path_entry->title, $link);
+			}
 		}
 	}
 

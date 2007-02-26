@@ -13,23 +13,6 @@ require_once 'Store/dataobjects/StoreCategoryImageWrapper.php';
  */
 abstract class StoreStorePage extends StorePage
 {
-	// {{{ protected properties
-
-	/**
-	 * @var StoreCategoryPath
-	 */
-	protected $path;
-
-	// }}}
-	// {{{ public function setPath()
-
-	public function setPath(StoreCategoryPath $path)
-	{
-		$this->path = $path;
-	}
-
-	// }}}
-
 	// init phase
 	// {{{ public function init()
 
@@ -67,12 +50,15 @@ abstract class StoreStorePage extends StorePage
 
 	protected function getSelectedSecondaryCategoryId()
 	{
-		$secondary_category = $this->path->get(1);
+		$secondary_category_id = null;
 
-		if ($secondary_category !== null)
-			return $secondary_category->id;
+		if ($this->path !== null) {
+			$secondary_category = $this->path->get(1);
+			if ($secondary_category !== null)
+				$secondary_category_id = $secondary_category->id;
+		}
 
-		return null;
+		return $secondary_category_id;
 	}
 
 	// }}}
