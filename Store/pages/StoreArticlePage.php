@@ -32,17 +32,6 @@ class StoreArticlePage extends StorePage
 	protected $article;
 
 	// }}}
-	// {{{ public function setSource()
-
-	public function setSource($source)
-	{
-		$this->source = $source;
-
-		if ($this->path === null)
-			$this->path = $source;
-	}
-
-	// }}}
 	// {{{ public function hasParentInPath()
 
 	/**
