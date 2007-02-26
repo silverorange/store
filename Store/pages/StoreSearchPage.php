@@ -312,6 +312,7 @@ abstract class StoreSearchPage extends StoreArticlePage
 		foreach ($categories as $category) {
 			$navbar = new SwatNavBar();
 			$navbar->addEntries($category->getNavBarEntries());
+			$path = $navbar->getLastEntry()->link;
 
 			echo '<li class="category-tile">';
 			$category->displayAsTile($path);
