@@ -50,7 +50,7 @@ abstract class StorePath implements Iterator, Countable
 	}
 
 	// }}}
-	// {{{ public function addEntry()
+	// {{{ public final function addEntry()
 
 	/**
 	 * Adds an entry to this path
@@ -144,7 +144,7 @@ abstract class StorePath implements Iterator, Countable
 			if ($first)
 				$first = false;
 			else
-				$path.= '/'
+				$path.= '/';
 
 			$path.= $entry->shortname;
 		}
