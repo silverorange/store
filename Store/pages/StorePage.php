@@ -1,13 +1,35 @@
 <?php
 
-require_once('Site/pages/SitePage.php');
+require_once 'Site/pages/SitePage.php';
+require_once 'Store/StorePath.php';
 
 /**
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2007 silverorange
  */
 abstract class StorePage extends SitePage
 {
+	// {{{ protected properties
+
+	/**
+	 * @var StoreCategoryPath
+	 */
+	protected $path;
+
+	// }}}
+	// {{{ public function setPath()
+
+	/**
+	 * Sets the path of this page
+	 *
+	 * @param StorePath $path
+	 */
+	public function setPath(StorePath $path)
+	{
+		$this->path = $path;
+	}
+
+	// }}}
 	// {{{ public function isVisibleInRegion()
 
 	/**
