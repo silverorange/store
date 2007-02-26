@@ -275,7 +275,7 @@ abstract class StoreSearchPage extends StoreArticlePage
 
 		foreach ($articles as $article) {
 			$navbar = new SwatNavBar();
-			$navbar->addEntries($article->navbar_entries);
+			$navbar->addEntries($article->getNavBarEntries());
 
 			$anchor_tag = new SwatHtmlTag('a');
 			$anchor_tag->href = $navbar->getLastEntry()->link;
@@ -311,17 +311,7 @@ abstract class StoreSearchPage extends StoreArticlePage
 
 		foreach ($categories as $category) {
 			$navbar = new SwatNavBar();
-			$sql = sprintf('select * from getCategoryNavbar(%s)',
-			$this->app->db->quote($category->id, 'integer'));
-
-			$navbar_rows = SwatDB::query($this->app->db, $sql);
-
-			$path = 'store';
-			foreach ($navbar_rows as $row) {
-				$path.= '/'.$row->shortname;
-				$navbar->addEntry(new SwatNavBarEntry($row->title,
-					$path));
-			}
+			$navbar->addEntries($category->getNavBarEntries());
 
 			echo '<li class="category-tile">';
 			$category->displayAsTile($path);
