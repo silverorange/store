@@ -258,7 +258,7 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 			from Article
 				%2$s
 				%3$s
-			order by %1$s.displayorder1, %1$s.displayorder2
+			order by %1$s.displayorder1, %1$s.displayorder2, Article.title
 			limit %4$s offset %5$s',
 			$result->getResultTable(),
 			$join_clause,
@@ -508,7 +508,7 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 			return '';
 		else
 			return sprintf('order by %1$s.displayorder1 asc,
-				%1$s.displayorder2 asc',
+				%1$s.displayorder2 asc, Product.title',
 				$result->getResultTable());
 	}
 
