@@ -110,6 +110,7 @@
 						<property name="article" type="data">id</property>
 						<property name="show_in_menu" type="data">show</property>
 						<property name="searchable" type="data">searchable</property>
+						<property name="display_positive_states" type="boolean">true</property>
 					</object>
 				</object>
 			</widget>
