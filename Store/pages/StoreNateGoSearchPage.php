@@ -505,7 +505,7 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 		$result = $this->nate_go_search_result;
 
 		if ($result === null)
-			return '';
+			return 'order by Product.title';
 		else
 			return sprintf('order by %1$s.displayorder1 asc,
 				%1$s.displayorder2 asc, Product.title',
