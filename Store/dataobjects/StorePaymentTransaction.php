@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'Store/dataobjects/StoreOrder.php';
 
 /**
  * A payment transaction for an e-commerce web application
@@ -111,6 +112,8 @@ class StorePaymentTransaction extends StoreDataObject
 	{
 		$this->id_field = 'integer:id';
 		$this->table = 'PaymentTransaction';
+		$this->registerInternalProperty('ordernum',
+			$this->class_map->resolveClass('StoreOrder'));
 	}
 
 	// }}}
