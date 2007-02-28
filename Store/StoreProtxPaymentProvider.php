@@ -85,7 +85,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$response = $request->process();
 		$this->checkResponse($response);
 
-		$transaction = $this->getPaymentTransaction($response);
+		$transaction = $this->getPaymentTransaction($response, $order->id);
 		return $transaction;
 	}
 
@@ -108,7 +108,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$response = $request->process();
 		$this->checkResponse($response);
 
-		$transaction = $this->getPaymentTransaction($response);
+		$transaction = $this->getPaymentTransaction($response, $order->id);
 		return $transaction;
 	}
 
@@ -364,12 +364,18 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	 * @param StoreProtxPaymentResponse $response the response object to
 	 *                                             build the transaction object
 	 *                                             from.
+	 * @param integer $order_id the id of the order used to make the
+	 *                           transaction.
 	 *
 	 * @return StorePaymentTransaction the payment transaction object.
 	 */
-	private function getPaymentTransaction(StoreProtxPaymentResponse $response)
+	private function getPaymentTransaction(StoreProtxPaymentResponse $response,
+		$order_id)
 	{
 		$transaction = new StorePaymentTransaction();
+		$transaction->createdate = new SwatDate();
+		$transaction->createdate->toUTC();
+		$transaction->ordernum = $order_id;
 		$transaction->transaction_id = $response->getField('VPSTxId');
 		$transaction->security_key = $response->getField('SecurityKey');
 
