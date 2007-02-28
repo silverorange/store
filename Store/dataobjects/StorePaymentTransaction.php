@@ -58,7 +58,7 @@ class StorePaymentTransaction extends StoreDataObject
 	public $transaction_id;
 
 	/**
-	 * Security key used to validate the <i>transaction_id</i>
+	 * Security key used to validate the <i>$transaction_id</i>
 	 *
 	 * The security key is not used for every payment provider. For payment
 	 * providers that do not use a security key, this property is null.
@@ -66,6 +66,13 @@ class StorePaymentTransaction extends StoreDataObject
 	 * @var string
 	 */
 	public $security_key;
+
+	/**
+	 * The date this transaction was created on
+	 *
+	 * @var Date
+	 */
+	public $createdate;
 
 	/**
 	 * Status of address check
@@ -103,6 +110,7 @@ class StorePaymentTransaction extends StoreDataObject
 	protected function init()
 	{
 		$this->id_field = 'integer:id';
+		$this->table = 'PaymentTransaction';
 	}
 
 	// }}}
