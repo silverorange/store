@@ -99,6 +99,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		$order = $this->app->session->order;
 
 		$this->saveOrder($order);
+		$this->processPayment($order);
 
 		// remove entries from cart that were ordered
 		$this->removeCartEntries($order);
@@ -122,6 +123,23 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 		// save order
 		$order->save();
+	}
+
+	// }}}
+	// {{{ protected function processPayment()
+
+	/**
+	 * Does automatic card payment processing for an order
+	 *
+	 * By default, no automatic payment processing is done. Subclasses should
+	 * override this method to perform automatic payment processing.
+	 *
+	 * @param StoreOrder $order the order for which payment processing is done.
+	 *
+	 * @see StorePaymentProvider
+	 */
+	protected function processPayment(StoreOrder $order)
+	{
 	}
 
 	// }}}
