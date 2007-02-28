@@ -370,7 +370,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	private function getPaymentTransaction(StoreProtxPaymentResponse $response)
 	{
 		$transaction = new StorePaymentTransaction();
-		$transaction->transaction_id = $response->getField('VSPTxId');
+		$transaction->transaction_id = $response->getField('VPSTxId');
 		$transaction->security_key = $response->getField('SecurityKey');
 
 		switch ($response->getField('AddressResult')) {
@@ -441,6 +441,8 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 
 			break;
 		}
+
+		return $transaction;
 	}
 
 	// }}}
