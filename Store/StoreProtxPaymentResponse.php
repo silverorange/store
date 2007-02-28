@@ -115,8 +115,11 @@ class StoreProtxPaymentResponse extends StorePaymentResponse
 	{
 		$lines = explode("\r\n", $response_text);
 		foreach ($lines as $line) {
-			list($name, $value) = explode('=', $line, 2);
-			$this->response[$name] = $value;
+			$exp_line = explode('=', $line, 2);
+			if (count($exp_line) == 2) {
+				list($name, $value) = $exp_line;
+				$this->response[$name] = $value;
+			}
 		}
 	}
 
