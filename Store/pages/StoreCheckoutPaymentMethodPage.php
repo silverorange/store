@@ -102,29 +102,29 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	/**
 	 * Updates session order payment method properties from form values
 	 *
-	 * @param StoreOrderPaymentMethod $order_payment_method
+	 * @param StoreOrderPaymentMethod $payment_method
 	 */
 	protected function updatePaymentMethod(
-		StoreOrderPaymentMethod $order_payment_method)
+		StoreOrderPaymentMethod $payment_method)
 	{
-		$order_payment_method->payment_type =
+		$payment_method->payment_type =
 			$this->ui->getWidget('payment_type')->value;
 
-		$this->updatePaymentMethodCardNumber($order_payment_method);
+		$this->updatePaymentMethodCardNumber($payment_method);
 
-		$order_payment_method->setCardVerificationValue(
+		$payment_method->setCardVerificationValue(
 			$this->ui->getWidget('card_verification_value')->value);
 
-		$order_payment_method->card_issue_number =
+		$payment_method->card_issue_number =
 			$this->ui->getWidget('card_issue_number')->value;
 
-		$order_payment_method->credit_card_expiry =
+		$payment_method->credit_card_expiry =
 			$this->ui->getWidget('credit_card_expiry')->value;
 
-		$order_payment_method->card_inception =
+		$payment_method->card_inception =
 			$this->ui->getWidget('card_inception')->value;
 
-		$order_payment_method->credit_card_fullname =
+		$payment_method->credit_card_fullname =
 			$this->ui->getWidget('credit_card_fullname')->value;
 	}
 
@@ -132,20 +132,20 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	// {{{ protected function updatePaymentMethodCardNumber()
 
 	/**
-	 * Updates session order payment method card number from form value
+	 * Updates session order payment method card number from form values
 	 *
 	 * The card number is stored encrypted in the payment method. Subclasses
 	 * can override this method to optionally store an unencrypted version
 	 * of the card number.
 	 *
-	 * @param StoreOrderPaymentMethod $order_payment_method
+	 * @param StoreOrderPaymentMethod $payment_method
 	 */
 	protected function updatePaymentMethodCardNumber(
-		StoreOrderPaymentMethod $order_payment_method)
+		StoreOrderPaymentMethod $payment_method)
 	{
 		$card_number = $this->ui->getWidget('credit_card_number')->value;
 		if ($card_number !== null)
-			$order_payment_method->setCreditCardNumber($card_number);
+			$payment_method->setCreditCardNumber($card_number);
 	}
 
 	// }}}
