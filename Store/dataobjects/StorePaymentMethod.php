@@ -273,6 +273,18 @@ abstract class StorePaymentMethod extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ public function copyFrom()
+
+	public function copyFrom(StorePaymentMethod $method)
+	{
+		$this->credit_card_fullname = $method->credit_card_fullname;
+		$this->credit_card_last4    = $method->credit_card_last4;
+		$this->credit_card_number   = $method->credit_card_number;
+		$this->credit_card_expiry   = $method->credit_card_expiry;
+		$this->payment_type         = $method->getInternalValue('payment_type');
+	}
+
+	// }}}
 	// {{{ public static function encryptCreditCardNumber()
 
 	/**
@@ -348,18 +360,6 @@ abstract class StorePaymentMethod extends StoreDataObject
 
 		$this->registerDateProperty('credit_card_expiry');
 		$this->registerDateProperty('card_inception');
-	}
-
-	// }}}
-	// {{{ public function copyFrom()
-
-	public function copyFrom(StorePaymentMethod $method)
-	{
-		$this->credit_card_fullname = $method->credit_card_fullname;
-		$this->credit_card_last4    = $method->credit_card_last4;
-		$this->credit_card_number   = $method->credit_card_number;
-		$this->credit_card_expiry   = $method->credit_card_expiry;
-		$this->payment_type         = $method->getInternalValue('payment_type');
 	}
 
 	// }}}
