@@ -115,12 +115,20 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 	// }}}
 	// {{{ protected function updatePaymentMethod()
 
-	protected function updatePaymentMethod($payment_method)
+	/**
+	 * Updates an account payment method's properties from form values
+	 *
+	 * @param StoreAccountPaymentMethod $payment_method
+	 */
+	protected function updatePaymentMethod(
+		StoreAccountPaymentMethod $payment_method)
 	{
 		$payment_method->payment_type =
 			$this->ui->getWidget('payment_type')->value;
 
-		$this->updatePaymentMethodCardNumber($payment_method);
+		if ($this->id === null)
+			$payment_method->setCreditCardNumber(
+				$this->ui->getWidget('credit_card_number')->value);
 
 		$payment_method->card_issue_number =
 			$this->ui->getWidget('card_issue_number')->value;
@@ -133,16 +141,6 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 
 		$payment_method->credit_card_fullname =
 			$this->ui->getWidget('credit_card_fullname')->value;
-	}
-
-	// }}}
-	// {{{ protected function updatePaymentMethodCardNumber()
-
-	protected function updatePaymentMethodCardNumber($payment_method)
-	{
-		if ($this->id === null)
-			$payment_method->setCreditCardNumber(
-				$this->ui->getWidget('credit_card_number')->value);
 	}
 
 	// }}}
