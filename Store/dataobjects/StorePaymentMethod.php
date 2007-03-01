@@ -81,7 +81,9 @@ abstract class StorePaymentMethod extends StoreDataObject
 	 * The issue number for Switch and Solo debit cards
 	 *
 	 * This is a 1 or 2 character string containing the issue number exactly as
-	 * it appears on the card.
+	 * it appears on the card. Note: This is a string not an integer. An issue
+	 * number of '04' is different than an issue number of '4' and both numbers
+	 * are valid issue numbers.
 	 *
 	 * @var string
 	 */
