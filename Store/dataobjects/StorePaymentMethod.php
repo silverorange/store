@@ -400,11 +400,11 @@ abstract class StorePaymentMethod extends StoreDataObject
 	}
 
 	// }}}
-	// {{{ protected function getSerializeablePrivateProperties()
+	// {{{ protected function getSerializablePrivateProperties()
 
-	protected function getSerializeablePrivateProperties()
+	protected function getSerializablePrivateProperties()
 	{
-		$properties = parent::getSerializeablePrivateProperties();
+		$properties = parent::getSerializablePrivateProperties();
 		$properties[] = 'card_verification_value';
 		$properties[] = 'unencrypted_card_number';
 		return $properties;
