@@ -18,7 +18,7 @@ class StoreArticleVisibilityCellRenderer extends SwatCellRenderer
 	public $show_in_menu = false;
 
 	public $display_positive_states = false;
-	public $separator = '<br />';
+	public $separator = ', ';
 
 	public function render()
 	{
@@ -30,18 +30,8 @@ class StoreArticleVisibilityCellRenderer extends SwatCellRenderer
 		$sql = sprintf($sql, $this->db->quote($this->article, 'integer'));
 		$region_availability = SwatDB::query($this->db, $sql);
 
-		$messages = array();
-
 		if (count($region_availability)) {
-
-			if ($this->display_positive_states) {
-				$regions = array();
-				foreach ($region_availability as $region)
-					$regions[] = $region->title;
-
-				echo Store::_('accessible to: '), implode(', ', $regions),
-					'<br />';
-			}
+			$messages = array();
 
 			if (!$this->searchable)
 				$messages[] = Store::_('not searchable');
@@ -53,11 +43,20 @@ class StoreArticleVisibilityCellRenderer extends SwatCellRenderer
 			elseif ($this->display_positive_states)
 				$messages[] = Store::_('shown in menu');
 
+			echo implode($this->separator, $messages);
+
+			if ($this->display_positive_states) {
+				$regions = array();
+				foreach ($region_availability as $region)
+					$regions[] = $region->title;
+
+				echo '<br />', Store::_('accessible to: '),
+					implode(', ', $regions);
+			}
 		} else {
-			$messages[] = Store::_('not accessible');
+			echo Store::_('not accessible');
 		}
 
-		echo implode($this->separator, $messages);
 	}
 }
 
