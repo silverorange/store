@@ -5,26 +5,47 @@
 		<property name="value">new</property>
 	</widget>
 	<widget class="SwatFieldset" id="payment_method_form">
-		<widget class="SwatFormField">
-			<property name="title" translatable="yes">Credit Card Type</property>
+		<widget class="SwatFormField" id="payment_type_field">
+			<property name="title" translatable="yes">Card Type</property>
 			<widget class="SwatRadioList" id="payment_type">
 				<property name="required" type="boolean">true</property>
 			</widget>
 		</widget>
-		<widget class="SwatFormField">
-			<property name="title" translatable="yes">Credit Card Number</property>
+		<widget class="SwatFormField" id="card_number_field">
+			<property name="title" translatable="yes">Card Number</property>
 			<widget class="StoreCreditCardNumberEntry" id="credit_card_number">
 				<property name="required" type="boolean">true</property>
 				<property name="maxlength" type="integer">50</property>
 			</widget>
 		</widget>
-		<widget class="SwatFormField">
+		<widget class="SwatFormField" id="card_verification_value_field">
+			<property name="title" translatable="yes">Card Verification Value</property>
+			<widget class="SwatEntry" id="card_verification_value">
+				<property name="required" type="boolean">true</property>
+				<property name="maxlength" type="integer">4</property>
+				<property name="size" type="integer">4</property>
+			</widget>
+		</widget>
+		<widget class="SwatFormField" id="card_issue_number_field">
+			<property name="title" translatable="yes">Card Issue Number</property>
+			<property name="note" translatable="yes">Required for debit cards.</property>
+			<widget class="SwatEntry" id="card_issue_number">
+				<property name="maxlength" type="integer">2</property>
+				<property name="size" type="integer">4</property>
+			</widget>
+		</widget>
+		<widget class="SwatFormField" id="card_expiry_field">
 			<property name="title" translatable="yes">Expiry Date</property>
 			<widget class="StoreCreditCardExpiryEntry" id="credit_card_expiry">
 				<property name="required" type="boolean">true</property>
 			</widget>
 		</widget>
-		<widget class="SwatFormField">
+		<widget class="SwatFormField" id="card_inception_field">
+			<property name="title" translatable="yes">Inception Date</property>
+			<property name="note" translatable="yes">Required for debit cards.</property>
+			<widget class="StoreCreditCardExpiryEntry" id="card_inception" />
+		</widget>
+		<widget class="SwatFormField" id="card_fullname_field">
 			<property name="title" translatable="yes">Name on Card</property>
 			<widget class="SwatEntry" id="credit_card_fullname">
 				<property name="required" type="boolean">true</property>
