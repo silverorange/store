@@ -157,6 +157,9 @@ abstract class StorePaymentMethod extends StoreDataObject
 
 		$this->credit_card_number =
 			self::encryptCreditCardNumber($number, $this->gpg_id);
+
+		if ($store_unencrypted)
+			$this->unencrypted_card_number = (string)$number;
 	}
 
 	// }}}
