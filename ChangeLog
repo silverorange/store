@@ -1,3 +1,56 @@
+2007-03-01  nrf
+
+	* [r15518]
+	  store/trunk/Store/pages/StoreCheckoutBillingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php:
+	  fix #664
+
+2007-03-01  gauthierm
+
+	* [r15515] store/trunk/Store/pages/account-change-password.xml:
+	  don't autocomplete password fields on the change password page.
+	* [r15514]
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php:
+	  Small fixes to account address editor
+	* [r15513] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Actually store unencrypted card number
+	* [r15512] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Add method to read unencrypted version of card number from
+	  payment method.
+	* [r15511] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  public before protected
+	* [r15510] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Add getter and setter to access protected
+	  card_verification_value property for store payment methods.
+
+2007-02-28  gauthierm
+
+	* [r15501] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Set createdate and ordernum for protx payment transactions
+	* [r15500]
+	  store/trunk/Store/dataobjects/StorePaymentTransaction.php:
+	  Add ordernum property to payment tranasction object
+	* [r15499]
+	  store/trunk/Store/dataobjects/StorePaymentTransaction.php:
+	  Add createdate to PaymentTransaction dataobject and set the
+	  table name.
+	* [r15498]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Add a blank method to StoreCheckoutConfirmation for doing
+	  payment processing.
+	* [r15497] store/trunk/sql/tables/PaymentTransaction.sql:
+	  New table for storing card payment transactions
+	* [r15481] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Small fixes to
+	  StoreProtxPaymentProvider::getPaymentTransaction().
+	* [r15480] store/trunk/Store/StoreProtxPaymentResponse.php:
+	  Handle Protx responses where a field is blank
+
+2007-02-27  nrf
+
+	* [r15453] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.6.5
+
 2007-02-27  gauthierm
 
 	* [r15452] store/trunk/Store/pages/StoreNateGoSearchPage.php:
