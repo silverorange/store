@@ -268,6 +268,7 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 		$this->ui->getWidget('payment_type')->value =
 			$payment_method->payment_type->id;
 
+		// TODO: use payment method to get correct mask
 		$this->ui->getWidget('credit_card_number_last4')->content =
 			StorePaymentMethod::formatCreditCardNumber(
 				$payment_method->credit_card_last4,
