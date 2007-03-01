@@ -73,7 +73,9 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 		$address_list = $this->ui->getWidget('shipping_address_list');
 
 		if ($address_list->value === null || $address_list->value === 'new') {
-			$order_address = new StoreOrderAddress();
+			$class_map = StoreClassMap::instance();
+			$class_name = $class_map->resolveClass('StoreOrderAddress');
+			$order_address = new $class_name();
 
 			$order_address->fullname =
 				$this->ui->getWidget('shipping_address_fullname')->value;
