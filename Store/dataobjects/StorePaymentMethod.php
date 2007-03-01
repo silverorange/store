@@ -101,6 +101,15 @@ abstract class StorePaymentMethod extends StoreDataObject
 	 */
 	protected $gpg_id = null;
 
+	/**
+	 * The card verification value of this payment method
+	 *
+	 * @var string
+	 *
+	 * @see StorePaymentMethod::getCardVerificationValue()
+	 */
+	protected $card_verification_value = '';
+
 	// }}}
 	// {{{ public function setCreditCardNumber()
 
@@ -147,6 +156,41 @@ abstract class StorePaymentMethod extends StoreDataObject
 				$credit_card_number, $gpg, $passphrase);
 
 		return $credit_card_number;
+	}
+
+	// }}}
+	// {{{ public function setCardVerificationValue()
+
+	/**
+	 * Sets the card verification value (CVV) of this payment method
+	 *
+	 * Due to VISA rules on how CVVs are processed, CVVs are never saved in
+	 * the database. This method sets an internal property that may be accessed
+	 * for the lifetime of this object using the
+	 * {@link StorePaymentMethod::getCardVerificationValue()} method.
+	 *
+	 * @param string $value the card verification value.
+	 *
+	 * @see StorePaymentMethod::getCardVerificationValue()
+	 */
+	public function setCardVerificationValue($value)
+	{
+		$this->card_verification_value = (string)$value;
+	}
+
+	// }}}
+	// {{{ public function getCardVerificationValue()
+
+	/**
+	 * Gets the card verification value (CVV) of this payment method
+	 *
+	 * @return string the card verification value of this payment method.
+	 *
+	 * @see StorePaymentMethod::setCardVerificationValue()
+	 */
+	public function getCardVerificationValue()
+	{
+		return $this->card_verification_value;
 	}
 
 	// }}}
