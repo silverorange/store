@@ -18,7 +18,7 @@ require_once 'Crypt/GPG.php';
  * encryption.
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StorePaymentType
  */
@@ -110,6 +110,15 @@ abstract class StorePaymentMethod extends StoreDataObject
 	 */
 	protected $card_verification_value = '';
 
+	/**
+	 * The unencrypted card number of this payment method
+	 *
+	 * @var string
+	 *
+	 * @see StorePaymentMethod::getUnencryptedCardNumber()
+	 */
+	protected $unencrypted_card_number = '';
+
 	// }}}
 	// {{{ public function setCreditCardNumber()
 
@@ -126,8 +135,14 @@ abstract class StorePaymentMethod extends StoreDataObject
 	 *
 	 * @param string $number the new credit card number.
 	 * @param boolean $store_unencrypted optional flag to store an uncrypted
-	 *                                    version of the card number in the
-	 *                                    
+	 *                                    version of the card number as an
+	 *                                    internal property. This value is
+	 *                                    never saved in the database but can
+	 *                                    be retrieved for the lifetime of
+	 *                                    this object using the
+	 *                                    {@link StorePaymentMethod::getUnencryptedCardNumber()}
+	 *                                    method.
+	 *                                   
 	 *
 	 * @throws StoreException a StoreException is thrown if this class has no
 	 *                         defined GPG id and you try to set the credit
@@ -156,6 +171,23 @@ abstract class StorePaymentMethod extends StoreDataObject
 				$credit_card_number, $gpg, $passphrase);
 
 		return $credit_card_number;
+	}
+
+	// }}}
+	// {{{ public function getUnencryptedCardNumber()
+
+	/**
+	 * Gets the unencrypted card number stored in this payment method
+	 *
+	 * The card number must have been stored in this payment method using the
+	 * <i>$store_unencrypted</i> paramater on the
+	 * {@link StorePaymentMethod::setCreditCardNumber()} method.
+	 *
+	 * @return string the unencrypted card number stored in this payment method.
+	 */
+	public function getUnencryptedCardNumber()
+	{
+		return $this->unencrypted_card_number;
 	}
 
 	// }}}
