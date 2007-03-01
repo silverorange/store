@@ -143,12 +143,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	protected function updatePaymentMethodCardNumber(
 		StoreOrderPaymentMethod $order_payment_method)
 	{
-		$credit_card_number = 
-			$this->ui->getWidget('credit_card_number')->value;
-
-		if ($credit_card_number !== null)
-			$order_payment_method->setCreditCardNumber(
-				$credit_card_number);
+		$card_number = $this->ui->getWidget('credit_card_number')->value;
+		if ($card_number !== null)
+			$order_payment_method->setCreditCardNumber($card_number);
 	}
 
 	// }}}
