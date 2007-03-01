@@ -113,6 +113,39 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 	}
 
 	// }}}
+	// {{{ protected function updatePaymentMethod()
+
+	protected function updatePaymentMethod($payment_method)
+	{
+		$payment_method->payment_type =
+			$this->ui->getWidget('payment_type')->value;
+
+		$this->updatePaymentMethodCardNumber($payment_method);
+
+		$payment_method->card_issue_number =
+			$this->ui->getWidget('card_issue_number')->value;
+
+		$payment_method->credit_card_expiry =
+			$this->ui->getWidget('credit_card_expiry')->value;
+
+		$payment_method->card_inception =
+			$this->ui->getWidget('card_inception')->value;
+
+		$payment_method->credit_card_fullname =
+			$this->ui->getWidget('credit_card_fullname')->value;
+	}
+
+	// }}}
+	// {{{ protected function updatePaymentMethodCardNumber()
+
+	protected function updatePaymentMethodCardNumber($payment_method)
+	{
+		if ($this->id === null)
+			$payment_method->setCreditCardNumber(
+				$this->ui->getWidget('credit_card_number')->value);
+	}
+
+	// }}}
 	// {{{ protected function getMessageText()
 
 	protected function getMessageText($text)
@@ -130,7 +163,7 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 	// }}}
 	// {{{ private function addMessage()
 
-	private function addMessage($text, $payment_method)
+	private function addMessage($text, StorePaymentMethod $payment_method)
 	{
 		$text = $this->getMessageText($text);
 
@@ -142,25 +175,6 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 		$message->secondary_content = $payment_display;
 		$message->content_type = 'text/xml';
 		$this->app->messages->add($message);
-	}
-
-	// }}}
-	// {{{ private function updatePaymentMethod()
-
-	private function updatePaymentMethod($payment_method)
-	{
-		$payment_method->payment_type =
-			$this->ui->getWidget('payment_type')->value;
-
-		$payment_method->credit_card_expiry =
-			$this->ui->getWidget('credit_card_expiry')->value;
-
-		$payment_method->credit_card_fullname =
-			$this->ui->getWidget('credit_card_fullname')->value;
-
-		if ($this->id === null)
-			$payment_method->setCreditCardNumber(
-				$this->ui->getWidget('credit_card_number')->value);
 	}
 
 	// }}}
@@ -247,18 +261,23 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 	}
 
 	// }}}
-	// {{{ private function setWidgetValues()
+	// {{{ protected function setWidgetValues()
 
-	private function setWidgetValues($payment_method)
+	protected function setWidgetValues($payment_method)
 	{
-		$this->ui->getWidget('credit_card_expiry')->value =
-			$payment_method->credit_card_expiry;
-
 		$this->ui->getWidget('payment_type')->value =
 			$payment_method->payment_type->id;
 
-		$this->ui->getWidget('credit_card_fullname')->value =
-			$payment_method->credit_card_fullname;
+		$this->ui->getWidget('credit_card_number_last4')->content =
+			StorePaymentMethod::formatCreditCardNumber(
+				$payment_method->credit_card_last4,
+				'**** **** **** ####');
+
+		$this->ui->getWidget('card_issue_number')->value =
+			$payment_method->card_issue_number;
+
+		$this->ui->getWidget('credit_card_expiry')->value =
+			$payment_method->credit_card_expiry;
 
 		if (!$this->ui->getWidget('credit_card_expiry')->isValid()) {
 			$expiry = $this->ui->getWidget('credit_card_expiry');
@@ -273,10 +292,11 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 			$expiry->value = null;
 		}
 
-		$this->ui->getWidget('credit_card_number_last4')->content =
-			StorePaymentMethod::formatCreditCardNumber(
-				$payment_method->credit_card_last4,
-				'**** **** **** ####');
+		$this->ui->getWidget('card_inception')->value =
+			$payment_method->card_inception;
+
+		$this->ui->getWidget('credit_card_fullname')->value =
+			$payment_method->credit_card_fullname;
 	}
 
 	// }}}
