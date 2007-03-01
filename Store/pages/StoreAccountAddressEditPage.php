@@ -7,7 +7,7 @@ require_once 'Store/StoreUI.php';
 
 /**
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  */
 class StoreAccountAddressEditPage extends StoreAccountPage
 {
@@ -223,7 +223,9 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 		$address->line2 = $this->ui->getWidget('line2')->value;
 		$address->city = $this->ui->getWidget('city')->value;
 		$address->provstate = $this->ui->getWidget('provstate')->value;
-		$address->provstate_other = $this->ui->getWidget('provstate_other')->value;
+		$address->provstate_other =
+			$this->ui->getWidget('provstate_other')->value;
+
 		$address->postal_code = $this->ui->getWidget('postal_code')->value;
 		$address->country = $this->ui->getWidget('country')->value;
 	}
@@ -303,7 +305,12 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 		$this->ui->getWidget('line1')->value = $address->line1;
 		$this->ui->getWidget('line2')->value = $address->line2;
 		$this->ui->getWidget('city')->value = $address->city;
-		$this->ui->getWidget('provstate')->value = $address->provstate->id;
+		$this->ui->getWidget('provstate')->value =
+			$address->getInternalValue('provstate');
+
+		$this->ui->getWidget('provstate_other')->value =
+			$address->provstate_other;
+
 		$this->ui->getWidget('postal_code')->value = $address->postal_code;
 		$this->ui->getWidget('country')->value = $address->country->id;
 	}
