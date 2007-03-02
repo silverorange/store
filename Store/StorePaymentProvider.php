@@ -1,9 +1,37 @@
 <?php
 
 require_once 'Store/dataobjects/StorePaymentTransaction.php';
+require_once 'Store/dataobjects/StoreOrder.php';
 
+/**
+ * Class to manage automated card transactions for e-commerce stores
+ *
+ * This class implements the factory pattern to make it easy to change payment
+ * providers without needing to alter your site code.
+ *
+ * Example usage:
+ * <code>
+ * $paramaters = array(
+ *     'mode'   => 'test',
+ *     'vendor' => 'my-vendor-id',
+ * );
+ * $provider = StorePaymentProvider::factory('Protx', $paramaters);
+ * $transaction = $provider->pay($order);
+ * if ($transaction->address_status == StorePaymentTransaction::STATUS_FAILED) {
+ *     echo 'Invalid billing address detected!';
+ *     $provider->abort($transaction);
+ * }
+ * </code>
+ *
+ * @package   Store
+ * @copyright 2007 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ * @see       StorePaymentProvider::factory();
+ */
 abstract class StorePaymentProvider
 {
+	// {{{ class constants
+
 	/**
 	 * Use Address Verification Service (AVS)
 	 */
@@ -14,6 +42,9 @@ abstract class StorePaymentProvider
 	 */
 	const AVS_OFF = false;
 
+	// }}}
+	// {{{ protected properties
+
 	/**
 	 * The Address Verification Service (AVS) mode
 	 *
@@ -23,6 +54,9 @@ abstract class StorePaymentProvider
 	 * @var boolean
 	 */
 	protected $avs_mode = self::AVS_OFF;
+
+	// }}}
+	// {{{ public static function factory()
 
 	/**
 	 * Creates a new payment provider instance
@@ -62,6 +96,9 @@ abstract class StorePaymentProvider
 		return $reflector->newInstance($parameters);
 	}
 
+	// }}}
+	// {{{ abstract public function __construct()
+
 	/**
 	 * Creates a new payment provider
 	 *
@@ -71,6 +108,9 @@ abstract class StorePaymentProvider
 	 *                           parameters.
 	 */
 	abstract public function __construct(array $paramaters);
+
+	// }}}
+	// {{{ public function setAvsMode()
 
 	/**
 	 * Set the Address Verification Service (AVS) mode
@@ -90,6 +130,9 @@ abstract class StorePaymentProvider
 	{
 		$this->avs_mode = (boolean)$mode;
 	}
+
+	// }}}
+	// {{{ public function pay()
 
 	/**
 	 * Pay for an order immediately
@@ -114,24 +157,8 @@ abstract class StorePaymentProvider
 			get_class($this), __FUNCTION__));
 	}
 
-	/**
-	 * Release funds held for an order payment
-	 *
-	 * @param StorePaymentTransaction $transaction the tranaction used to place
-	 *                                              a hold on the funds. This
-	 *                                              should be a transaction
-	 *                                              returned by
-	 *                                              {@link StorePaymentProvider::hold()}.
-	 *
-	 * @see StorePaymentProvider::hold()
-	 */
-	public function release(StorePaymentTransaction $transaction)
-	{
-		require_once 'Store/exceptions/StoreUnimplementedException.php';
-		throw new StoreUnimplementedException(sprintf(
-			'%s does not implement the %s() method.',
-			get_class($this), __FUNCTION__));
-	}
+	// }}}
+	// {{{ public function hold()
 
 	/**
 	 * Place a hold on funds for an order
@@ -157,6 +184,30 @@ abstract class StorePaymentProvider
 			'%s does not implement the %s() method.',
 			get_class($this), __FUNCTION__));
 	}
+
+	// }}}
+	// {{{ public function release()
+
+	/**
+	 * Release funds held for an order payment
+	 *
+	 * @param StorePaymentTransaction $transaction the tranaction used to place
+	 *                                              a hold on the funds. This
+	 *                                              should be a transaction
+	 *                                              returned by
+	 *                                              {@link StorePaymentProvider::hold()}.
+	 *
+	 * @see StorePaymentProvider::hold()
+	 */
+	public function release(StorePaymentTransaction $transaction)
+	{
+		require_once 'Store/exceptions/StoreUnimplementedException.php';
+		throw new StoreUnimplementedException(sprintf(
+			'%s does not implement the %s() method.',
+			get_class($this), __FUNCTION__));
+	}
+
+	// }}}
 
 	public function authorize(StoreOrder $order, $card_number,
 		$card_verification_value = null)
