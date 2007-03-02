@@ -13,6 +13,16 @@ class StoreCardInceptionEntry extends SwatDateEntry
 {
 	// {{{ public function __construct()
 
+	/**
+	 * Creates a new card inception date entry widget
+	 *
+	 * The valid range is set from Jaunuary 1, 1992 up to and including the
+	 * current month.
+	 *
+	 * @param string $id
+	 *
+	 * @see SwatWidget::__construct()
+	 */
 	public function __construct($id = null)
 	{
 		parent::__construct($id);
@@ -20,16 +30,12 @@ class StoreCardInceptionEntry extends SwatDateEntry
 		$this->show_month_number = true;
 		$this->display_parts = self::MONTH | self::YEAR;
 
-		// allow dates up to 5 years in the past
-		$this->setValidRange(-5, 0);
+		// inception date for cards is no less than 1992
+		$this->valid_range_start = new Date('1992-01-01T00:00:00');
 
-		// set start date fields to first day of the current month
-		$today = new Date();
-		$this->valid_range_start->setMonth($today->getMonth());
-		$this->valid_range_start->setDay(1);
-		$this->valid_range_start->setHour(0);
-		$this->valid_range_start->setMinute(0);
-		$this->valid_range_start->setSecond(0);
+		// is valid up to and including the present month
+		$this->valid_range_end = new Date(
+			Date_Calc::beginOfMonthBySpan(1, 0, 0, '%Y-%m-%dT00:00:00'));
 	}
 
 	// }}}
