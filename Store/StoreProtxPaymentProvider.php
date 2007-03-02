@@ -89,7 +89,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		return $transaction;
 	}
 
-	public function release(StoreOrder $order) 
+	public function release(StorePaymentTransaction $transaction) 
 	{
 	}
 
@@ -112,15 +112,15 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		return $transaction;
 	}
 
-	public function refund(StoreOrder $order, $amount = null)
+	public function refund(StorePaymentTransaction $transaction, $amount = null)
 	{
 	}
 
-	public function void(StoreOrder $order)
+	public function void(StorePaymentTransaction $transaction)
 	{
 	}
 
-	public function abort(StoreOrder $order)
+	public function abort(StorePaymentTransaction $transaction)
 	{
 	}
 	// {{{ private function getOrderRequiredFields()

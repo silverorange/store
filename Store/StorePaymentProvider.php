@@ -167,7 +167,7 @@ abstract class StorePaymentProvider
 			get_class($this), __FUNCTION__));
 	}
 
-	public function refund(StoreOrder $order, $amount = null)
+	public function refund(StorePaymentTransaction $transaction, $amount = null)
 	{
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
@@ -183,7 +183,7 @@ abstract class StorePaymentProvider
 			get_class($this), __FUNCTION__));
 	}
 
-	public function void(StoreOrder $order)
+	public function void(StorePaymentTransaction $transaction)
 	{
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
@@ -191,7 +191,7 @@ abstract class StorePaymentProvider
 			get_class($this), __FUNCTION__));
 	}
 
-	public function abort(StoreOrder $order)
+	public function abort(StorePaymentTransaction $transaction)
 	{
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
