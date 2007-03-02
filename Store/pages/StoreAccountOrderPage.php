@@ -122,10 +122,8 @@ class StoreAccountOrderPage extends StoreAccountPage
 	// }}}
 	// {{{ protected function addItem()
 
-	protected function addItem($order_item)
+	protected function addItem($item_id, $order_item)
 	{
-		$item_id = $order_item->getAvailableItemId($this->app->getRegion());
-
 		if ($item_id !== null) {
 			$cart_entry = new CartEntry();
 			$cart_entry->account = $this->app->session->getAccountId();
@@ -159,8 +157,10 @@ class StoreAccountOrderPage extends StoreAccountPage
 
 	protected function addAllItems()
 	{
-		foreach ($this->order->items as $item)
-			$this->addItem($item);
+		foreach ($this->order->items as $order_item) {
+			$item_id = $this->findItem($order_item);
+			$this->addItem($item_id, $order_item);
+		}
 	}
 
 	// }}}
@@ -172,11 +172,23 @@ class StoreAccountOrderPage extends StoreAccountPage
 		$column = $items_view->getColumn('add_item_column');
 		$renderer = $column->getRenderer('add_item_renderer');
 
-		foreach ($this->order->items as $item) {
-			$button = $renderer->getWidget($item->id);
-			if ($button->hasBeenClicked())
-				$this->addItem($item);
+		foreach ($this->order->items as $order_item) {
+			$button = $renderer->getWidget($order_item->id);
+			if ($button->hasBeenClicked()) {
+				$item_id = $this->findItem($order_item);
+				$this->addItem($item_id, $order_item);
+			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function findItem()
+
+	protected function findItem($order_item)
+	{
+		$item_id = $order_item->getAvailableItemId($this->app->getRegion());
+
+		return $item_id;
 	}
 
 	// }}}
