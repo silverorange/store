@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Store/pages/StoreArticlePage.php';
+require_once 'Store/StoreClassMap.php';
 require_once 'Store/StoreUI.php';
 require_once 'Store/StoreMessage.php';
 
@@ -736,9 +737,11 @@ abstract class StoreCartPage extends StoreArticlePage
 		$available_view->getRow('subtotal')->value =
 			$this->app->cart->checkout->getSubtotal();
 
+		$class_map = StoreClassMap::instance();
+		$class_name = $class_map->resolveClass('StoreOrderAddress');
 		$available_view->getRow('shipping')->value =
 			$this->app->cart->checkout->getShippingTotal(
-				new StoreOrderAddress, new StoreOrderAddress);
+				new $class_name(), new $class_name);
 
 		if ($available_view->model->getRowCount() == 1)
 			$available_view->getRow('subtotal')->button_visible = false;

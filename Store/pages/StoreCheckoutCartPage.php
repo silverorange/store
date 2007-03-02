@@ -2,6 +2,7 @@
 
 require_once 'Store/pages/StoreCheckoutUIPage.php';
 require_once 'Store/StoreMessage.php';
+require_once 'Store/StoreClassMap.php';
 require_once 'Swat/SwatString.php';
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
@@ -286,8 +287,10 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 
 		$view->getRow('subtotal')->value = $cart->getSubtotal();
 
+		$class_map = StoreClassMap::instance();
+		$class_name = $class_map->resolveClass('StoreOrderAddress');
 		$view->getRow('shipping')->value = $cart->getShippingTotal(
-			new StoreOrderAddress(), new StoreOrderAddress());
+			new $class_name(), new $class_name());
 
 		$view->getRow('total')->value = $cart->getTotal(
 			$order->billing_address, $order->shipping_address);
