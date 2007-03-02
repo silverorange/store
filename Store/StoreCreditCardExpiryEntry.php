@@ -1,13 +1,13 @@
 <?php
 
 require_once 'Swat/SwatDateEntry.php';
-require_once 'Swat/SwatMessage.php';
 
 /**
- * A widget for basic validation of a card date
+ * A widget for entry of payment card dates
  *
  * @package   Store
  * @copyright 2006-2007 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCreditCardExpiryEntry extends SwatDateEntry
 {
