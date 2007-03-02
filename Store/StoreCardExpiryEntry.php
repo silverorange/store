@@ -13,6 +13,16 @@ class StoreCardExpiryEntry extends SwatDateEntry
 {
 	// {{{ public function __construct()
 
+	/**
+	 * Creates a new card expiry date entry widget
+	 *
+	 * The valid range is set from the current month up to 20 years in the
+	 * future.
+	 *
+	 * @param string $id
+	 *
+	 * @see SwatWidget::__construct()
+	 */
 	public function __construct($id = null)
 	{
 		parent::__construct($id);
