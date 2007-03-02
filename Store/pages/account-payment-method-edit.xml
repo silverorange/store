@@ -34,14 +34,14 @@
 		</widget>
 		<widget class="SwatFormField" id="card_expiry_field">
 			<property name="title" translatable="yes">Expiry Date</property>
-			<widget class="StoreCreditCardExpiryEntry" id="credit_card_expiry">
+			<widget class="StoreCardExpiryEntry" id="credit_card_expiry">
 				<property name="required" type="boolean">true</property>
 			</widget>
 		</widget>
 		<widget class="SwatFormField" id="card_inception_field">
 			<property name="title" translatable="yes">Inception Date</property>
 			<property name="note" translatable="yes">Required for debit cards.</property>
-			<widget class="StoreCreditCardExpiryEntry" id="card_inception" />
+			<widget class="StoreCardInceptionEntry" id="card_inception" />
 		</widget>
 		<widget class="SwatFormField">
 			<property name="title" translatable="yes">Name on Card</property>
