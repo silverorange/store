@@ -71,12 +71,11 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 	protected function saveDataToSession()
 	{
 		$address_list = $this->ui->getWidget('shipping_address_list');
+		$class_map = StoreClassMap::instance();
+		$class_name = $class_map->resolveClass('StoreOrderAddress');
+		$order_address = new $class_name();
 
 		if ($address_list->value === null || $address_list->value === 'new') {
-			$class_map = StoreClassMap::instance();
-			$class_name = $class_map->resolveClass('StoreOrderAddress');
-			$order_address = new $class_name();
-
 			$order_address->fullname =
 				$this->ui->getWidget('shipping_address_fullname')->value;
 
@@ -114,7 +113,6 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 				throw new StoreException('Account address not found.  '.
 					"Address with id ‘$address_id’ not found.");
 
-			$order_address = new StoreOrderAddress();
 			$order_address->copyFrom($account_address);
 		}
 
