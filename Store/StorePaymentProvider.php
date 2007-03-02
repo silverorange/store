@@ -12,8 +12,8 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * Example usage:
  * <code>
  * $paramaters = array(
- *     'mode'   => 'test',
- *     'vendor' => 'my-vendor-id',
+ *     'Mode'   => 'test',
+ *     'Vendor' => 'my-vendor-id',
  * );
  * $provider = StorePaymentProvider::factory('Protx', $paramaters);
  * $transaction = $provider->pay($order);
@@ -70,6 +70,8 @@ abstract class StorePaymentProvider
 	 *
 	 * @return StorePaymentProvider a payment provider instance using the
 	 *                               specified driver.
+	 *
+	 * @see StorePaymentProvider::__construct()
 	 *
 	 * @throws StoreException if the driver specified by <i>$driver</i> could
 	 *                         not be loaded.
