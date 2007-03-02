@@ -43,7 +43,7 @@
 		<widget class="SwatFormField" id="card_inception_field">
 			<property name="title" translatable="yes">Inception Date</property>
 			<property name="note" translatable="yes">Required for debit cards.</property>
-			<widget class="StoreCreditCardExpiryEntry" id="card_inception" />
+			<widget class="StoreCardInceptionEntry" id="card_inception" />
 		</widget>
 		<widget class="SwatFormField" id="card_fullname_field">
 			<property name="title" translatable="yes">Name on Card</property>
