@@ -4,10 +4,10 @@ require_once 'Swat/SwatDateEntry.php';
 require_once 'Swat/SwatMessage.php';
 
 /**
- * A widget for basic validation of a credit card
+ * A widget for basic validation of a card date
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  */
 class StoreCreditCardExpiryEntry extends SwatDateEntry
 {
@@ -20,7 +20,7 @@ class StoreCreditCardExpiryEntry extends SwatDateEntry
 		$this->show_month_number = true;
 		$this->display_parts = self::MONTH | self::YEAR;
 
-		// do not allow dates in the past
+		// do not allow dates in the past by default
 		$this->setValidRange(0, 20);
 
 		// set start date fields to first day of the current month
@@ -30,17 +30,6 @@ class StoreCreditCardExpiryEntry extends SwatDateEntry
 		$this->valid_range_start->setHour(0);
 		$this->valid_range_start->setMinute(0);
 		$this->valid_range_start->setSecond(0);
-	}
-
-	// }}}
-	// {{{ public function isValid()
-
-	public function isValid()
-	{
-		if (Date::compare($this->value, $this->valid_range_start, true) == -1)
-			return false;
-		else
-			return true;
 	}
 
 	// }}}
