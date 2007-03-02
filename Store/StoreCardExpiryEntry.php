@@ -3,7 +3,7 @@
 require_once 'Swat/SwatDateEntry.php';
 
 /**
- * A widget for entry of payment card dates
+ * A widget for entry of payment card expiry dates
  *
  * @package   Store
  * @copyright 2006-2007 silverorange
