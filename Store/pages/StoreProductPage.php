@@ -671,7 +671,7 @@ class StoreProductPage extends StoreStorePage
 		$header_tag->setContent(Store::_('You might also be interested in...'));
 
 		$ul_tag = new SwatHtmlTag('ul');
-		$ul_tag->class = 'product-list';
+		$ul_tag->class = 'product-list clearfix';
 
 		$li_tag = new SwatHtmlTag('li');
 		$li_tag->class = 'product-icon';
