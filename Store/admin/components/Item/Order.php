@@ -1,5 +1,7 @@
 <?php
 
+require_once 'Store/StoreClassMap.php';
+require_once 'Store/dataobjects/StoreItemWrapper.php';
 require_once 'Admin/pages/AdminDBOrder.php';
 require_once 'SwatDB/SwatDB.php';
 
@@ -112,20 +114,16 @@ class StoreItemOrder extends AdminDBOrder
 
 		$order_widget = $this->ui->getWidget('order');
 
-		$sql = sprintf('select id, sku, description from Item
-			where %s
-			order by displayorder, sku',
+		$sql = sprintf('select id from Item where %s',
 			$where_clause);
 
-		$items = SwatDB::query($this->app->db, $sql);
-		foreach ($items as $item) {
-			if ($item->description === null)
-				$title = sprintf(Store::_('Item #%s'), $item->sku);
-			else
-				$title = sprintf(Store::_('Item #%s - %s'),
-					$item->sku, $item->description);
+		$class_map = StoreClassMap::instance();
+		$item_wrapper_class = $class_map->resolveClass('StoreItemWrapper');
+		$items = call_user_func(array($item_wrapper_class, 'loadSetFromDb'),
+			$this->app->db, $sql);
 
-			$order_widget->addOption($item->id, $title);
+		foreach ($items as $item) {
+			$order_widget->addOption($item->id, $item->getDescription());
 		}
 
 		$sql = 'select sum(displayorder) from Item where '.$where_clause;
