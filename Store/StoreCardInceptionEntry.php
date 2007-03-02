@@ -1,13 +1,13 @@
 <?php
 
 require_once 'Swat/SwatDateEntry.php';
-require_once 'Swat/SwatMessage.php';
 
 /**
- * A widget for inception date of a card
+ * A widget for entry of payment card inception dates
  *
  * @package   Store
  * @copyright 2007 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCardInceptionEntry extends SwatDateEntry
 {
@@ -30,17 +30,6 @@ class StoreCardInceptionEntry extends SwatDateEntry
 		$this->valid_range_start->setHour(0);
 		$this->valid_range_start->setMinute(0);
 		$this->valid_range_start->setSecond(0);
-	}
-
-	// }}}
-	// {{{ public function isValid()
-
-	public function isValid()
-	{
-		if (Date::compare($this->value, $this->valid_range_start, true) == -1)
-			return false;
-		else
-			return true;
 	}
 
 	// }}}
