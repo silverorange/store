@@ -111,7 +111,7 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 
 			if (!($account_address instanceof StoreAccountAddress))
 				throw new StoreException('Account address not found. Address '.
-					'with id ‘$address_id’ not found.');
+					"with id ‘{$address_id}’ not found.");
 
 			$order_address->copyFrom($account_address);
 		}
