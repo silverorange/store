@@ -69,6 +69,16 @@ class StorePaymentTransaction extends StoreDataObject
 	public $security_key;
 
 	/**
+	 * Authorization code of this transaction
+	 *
+	 * Some payment providers require this field for 2-part transactions. For
+	 * example, a hold-release transaction might require this field.
+	 *
+	 * @var string
+	 */
+	public $authorization_code;
+
+	/**
 	 * The date this transaction was created on
 	 *
 	 * @var Date
