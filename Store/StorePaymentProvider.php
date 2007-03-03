@@ -301,7 +301,24 @@ abstract class StorePaymentProvider
 			'%s does not implement the %s() method.',
 			get_class($this), __FUNCTION__));
 	}
+	// {{{ public function void()
 
+	/**
+	 * Voids a transaction
+	 *
+	 * Voiding cancels a transaction and prevents both both merchant fees and
+	 * charging the customer. 
+	 *
+	 * A void must be performed before the merchant bank settles outstanding
+	 * transactions. Once settled, a transaction cannot be voided.
+	 *
+	 * Once a transaction is voided it cannot be refunded, released, repeated,
+	 * aborted, or voided again.
+	 *
+	 * If this method does not throw an exception, the void was successful.
+	 *
+	 * @param StorePaymentTransaction $transaction the tranaction to void.
+	 */
 	public function void(StorePaymentTransaction $transaction)
 	{
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
@@ -309,6 +326,8 @@ abstract class StorePaymentProvider
 			'%s does not implement the %s() method.',
 			get_class($this), __FUNCTION__));
 	}
+
+	// }}}
 }
 
 ?>
