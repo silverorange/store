@@ -106,8 +106,9 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 		} else {
 			$address_id = intval($address_list->value);
 
-			$account_address = 
-				$this->app->session->account->addresses->getByIndex($address_id);
+			$account_address =
+				$this->app->session->account->addresses->getByIndex(
+				$address_id);
 
 			if (!($account_address instanceof StoreAccountAddress))
 				throw new StoreException('Account address not found. Address '.
