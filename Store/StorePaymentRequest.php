@@ -26,16 +26,16 @@ abstract class StorePaymentRequest
 	 * Funds are requested immediately and collected during the next bank
 	 * processing period or sooner if the payment provider supports it.
 	 */
-	const TYPE_PAY           = 0;
+	const TYPE_PAY         = 0;
 
 	/**
-	 * A credit card authentication request
+	 * A credit card verification request
 	 *
-	 * An authentication does not collect funds. An authentication will return
-	 * a transaction id that can be used to collect funds at a later date
-	 * without requiring the user to re-enter their payment details.
+	 * An verification does not collect funds. An verification will return
+	 * transaction information that can be used to collect funds at a later
+	 * date without requiring the user to re-enter their payment details.
 	 */
-	const TYPE_AUTHORIZE     = 1;
+	const TYPE_VERIFY      = 1;
 
 	/**
 	 * A credit or refund request
@@ -43,16 +43,16 @@ abstract class StorePaymentRequest
 	 * Instead of collecting funds from the card holder, funds are transferred
 	 * to the card holder.
 	 */
-	const TYPE_REFUND        = 2;
+	const TYPE_REFUND      = 2;
 
 	/**
-	 * A post-authorized payment request
+	 * A post-verified payment request
 	 *
-	 * Funds are requested immediately using an authenticated transaction id.
-	 * The transaction id should be from a previous
-	 * {@link StorePaymentRequest::TYPE_AUTHORIZE} request.
+	 * Funds are requested immediately using verified transaction information.
+	 * The transaction information should be from a previous
+	 * {@link StorePaymentRequest::TYPE_VERIFY} request.
 	 */
-	const TYPE_AUTHORIZEDPAY = 3;
+	const TYPE_VERIFIEDPAY = 3;
 
 	/**
 	 * A cancel transaction request
@@ -63,7 +63,7 @@ abstract class StorePaymentRequest
 	 * system has already processed the transaction, the void request will
 	 * fail.
 	 */
-	const TYPE_VOID          = 4;
+	const TYPE_VOID        = 4;
 
 	/**
 	 * A deferred payment request
@@ -74,7 +74,7 @@ abstract class StorePaymentRequest
 	 * should not be completed, use a {@link StorePaymentRequest::TYPE_ABORT}
 	 * request.
 	 */
-	const TYPE_HOLD          = 5;
+	const TYPE_HOLD        = 5;
 
 	/**
 	 * A release deferred funds request
@@ -82,7 +82,7 @@ abstract class StorePaymentRequest
 	 * Releases funds shadowed by a deferred payment request using a deferred
 	 * transaction id.
 	 */
-	const TYPE_RELEASE       = 6;
+	const TYPE_RELEASE     = 6;
 
 	/**
 	 * An abort deferred funds request
@@ -91,7 +91,7 @@ abstract class StorePaymentRequest
 	 * shadow is removed from the card-holder's card and a release may no
 	 * longer be made on the deferred transaction.
 	 */
-	const TYPE_ABORT         = 7;
+	const TYPE_ABORT       = 7;
 
 	// }}}
 	// {{{ protected properties
@@ -226,13 +226,13 @@ abstract class StorePaymentRequest
 		case StorePaymentRequest::TYPE_PAY:
 			$string = 'payment';
 			break;
-		case StorePaymentRequest::TYPE_AUTHORIZE:
+		case StorePaymentRequest::TYPE_VERIFY:
 			$string = 'authorization';
 			break;
 		case StorePaymentRequest::TYPE_REFUND:
 			$string = 'refund';
 			break;
-		case StorePaymentRequest::TYPE_AUTHORIZEDPAY:
+		case StorePaymentRequest::TYPE_VERIFIEDPAY:
 			$string = 'post-authorization payment';
 			break;
 		case StorePaymentRequest::TYPE_VOID:
