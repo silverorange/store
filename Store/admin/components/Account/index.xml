@@ -25,7 +25,7 @@
 				<object class="AdminTableViewOrderableColumn" id="order_count">
 					<property name="title" translatable="yes"># of Orders</property>
 					<object class="SwatNumericCellRenderer">
-						<property name="value" type="integer">order_count</property>
+						<property name="value" type="data">order_count</property>
 					</object>
 				</object>
 			</widget>
