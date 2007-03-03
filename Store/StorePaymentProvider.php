@@ -16,10 +16,12 @@ require_once 'Store/dataobjects/StoreOrder.php';
  *     'Vendor' => 'my-vendor-id',
  * );
  * $provider = StorePaymentProvider::factory('Protx', $paramaters);
- * $transaction = $provider->pay($order);
+ * $transaction = $provider->hold($order);
  * if ($transaction->address_status == StorePaymentTransaction::STATUS_FAILED) {
  *     echo 'Invalid billing address detected!';
  *     $provider->abort($transaction);
+ * } else {
+ *     $provider->release($transaction);
  * }
  * </code>
  *
@@ -211,6 +213,33 @@ abstract class StorePaymentProvider
 	}
 
 	// }}}
+	// {{{ public function abort()
+
+	/**
+	 * Abort a hold on funds held for an order payment
+	 *
+	 * Call this method if you have a transaction from a previous call to
+	 * {@link StorePaymentProvider::hold()} that you would like to cancel.
+	 *
+	 * If this method does not throw an exception, the about was successful.
+	 *
+	 * @param StorePaymentTransaction $transaction the tranaction used to place
+	 *                                              a hold on the funds. This
+	 *                                              should be a transaction
+	 *                                              returned by
+	 *                                              {@link StorePaymentProvider::hold()}.
+	 *
+	 * @see StorePaymentProvider::hold()
+	 */
+	public function abort(StorePaymentTransaction $transaction)
+	{
+		require_once 'Store/exceptions/StoreUnimplementedException.php';
+		throw new StoreUnimplementedException(sprintf(
+			'%s does not implement the %s() method.',
+			get_class($this), __FUNCTION__));
+	}
+
+	// }}}
 	// {{{ public function verify()
 
 	/**
@@ -274,14 +303,6 @@ abstract class StorePaymentProvider
 	}
 
 	public function void(StorePaymentTransaction $transaction)
-	{
-		require_once 'Store/exceptions/StoreUnimplementedException.php';
-		throw new StoreUnimplementedException(sprintf(
-			'%s does not implement the %s() method.',
-			get_class($this), __FUNCTION__));
-	}
-
-	public function abort(StorePaymentTransaction $transaction)
 	{
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(

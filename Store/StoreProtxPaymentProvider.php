@@ -182,16 +182,47 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
+	// {{{ public function abort()
+
+	/**
+	 * Abort a hold on funds held for an order payment
+	 *
+	 * Call this method if you have a transaction from a previous call to
+	 * {@link StorePaymentProvider::hold()} that you would like to cancel.
+	 *
+	 * If this method does not throw an exception, the about was successful.
+	 *
+	 * @param StorePaymentTransaction $transaction the tranaction used to place
+	 *                                              a hold on the funds. This
+	 *                                              should be a transaction
+	 *                                              returned by
+	 *                                              {@link StorePaymentProvider::hold()}.
+	 */
+	public function abort(StorePaymentTransaction $transaction)
+	{
+		$request = new StoreProtxPaymentRequest(
+			StorePaymentRequest::TYPE_ABORT, $this->mode);
+
+		$fields = array(
+			'Vendor'       => $this->vendor,
+			'VendorTxCode' => $transaction->getInternalValue('ordernum');
+			'VPSTxId'      => $transaction->transaction_id,
+			'SecurityKey'  => $transaction->security_key,
+			'TxAuthNo'     => $transaction->authorization_code,
+		);
+
+		$request->setFields($fields);
+		$response = $request->process();
+		$this->checkResponse($response);
+	}
+
+	// }}}
 
 	public function refund(StorePaymentTransaction $transaction, $amount = null)
 	{
 	}
 
 	public function void(StorePaymentTransaction $transaction)
-	{
-	}
-
-	public function abort(StorePaymentTransaction $transaction)
 	{
 	}
 	// {{{ private function getOrderRequiredFields()
