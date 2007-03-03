@@ -121,7 +121,7 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 		$this->setField('TxType', $tx_type);
 
 		$payment_types = array(
-			StorePaymentRequest::TYPE_AUTHORIZE,
+			StorePaymentRequest::TYPE_VERIFY,
 			StorePaymentRequest::TYPE_HOLD,
 			StorePaymentRequest::TYPE_PAY,
 		);
@@ -279,9 +279,9 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	{
 		static $type_map = array(
 			StorePaymentRequest::TYPE_PAY           => 'PAYMENT',
-			StorePaymentRequest::TYPE_AUTHORIZE     => 'PREAUTH',
+			StorePaymentRequest::TYPE_VERIFY        => 'AUTHORIZE',
 			StorePaymentRequest::TYPE_REFUND        => 'CREDIT',
-			StorePaymentRequest::TYPE_AUTHORIZEDPAY => 'REPEAT',
+			StorePaymentRequest::TYPE_VERIFIEDPAY   => 'REPEAT', // TODO
 			StorePaymentRequest::TYPE_VOID          => 'VOID',
 			StorePaymentRequest::TYPE_HOLD          => 'DEFERRED',
 			StorePaymentRequest::TYPE_RELEASE       => 'RELEASE',

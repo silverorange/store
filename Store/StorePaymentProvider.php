@@ -211,8 +211,28 @@ abstract class StorePaymentProvider
 	}
 
 	// }}}
+	// {{{ public function verify()
 
-	public function authorize(StoreOrder $order, $card_number,
+	/**
+	 * Verifies a card payment for an order
+	 *
+	 * The payment is not actually made but all fraud prevention checks
+	 * (AVS, 3D-Secure) are performed on the card. The resulting transaction
+	 * object can then be used to pay for the order at a later date.
+	 *
+	 * @param StoreOrder $order the order to verify the card payment for.
+	 * @param string $card_number the card number to use for payment.
+	 * @param string $card_verification_value optional. Card verification value
+	 *                                         used for fraud prevention.
+	 *
+	 * @return StorePaymentTransaction the transaction object containing the
+	 *                                  verification results. This transaction
+	 *                                  may optionally be used to pay for the
+	 *                                  order at a later date.
+	 *
+	 * @see StorePaymentProvider::verifiedPay()
+	 */
+	public function verify(StoreOrder $order, $card_number,
 		$card_verification_value = null)
 	{
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
@@ -221,7 +241,21 @@ abstract class StorePaymentProvider
 			get_class($this), __FUNCTION__));
 	}
 
-	public function refund(StorePaymentTransaction $transaction, $amount = null)
+	// }}}
+	// {{{ public function verifiedPay()
+
+	/**
+	 * Pays for an order using an already verified transaction
+	 *
+	 * @param StorePaymentTranaction $transaction the verified transaction to
+	 *                                             pay with. This should be a
+	 *                                             transaction returned from a
+	 *                                             {@link StorePaymentProvider::vefiry()}
+	 *                                             call.
+	 *
+	 * @see StorePaymentProvider::verify()
+	 */
+	public function verifiedPay(StorePaymentTransaction $transaction)
 	{
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
@@ -229,7 +263,9 @@ abstract class StorePaymentProvider
 			get_class($this), __FUNCTION__));
 	}
 
-	public function authorizedPay(StoreOrder $order)
+	// }}}
+
+	public function refund(StorePaymentTransaction $transaction, $amount = null)
 	{
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
