@@ -449,7 +449,9 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$transaction->ordernum = $order_id;
 		$transaction->transaction_id = $response->getField('VPSTxId');
 		$transaction->security_key = $response->getField('SecurityKey');
+		$transaction->authorization_code = $response->getField('TxAuthNo');
 
+		// address
 		switch ($response->getField('AddressResult')) {
 		case 'NOTPROVIDED':
 			$transaction->address_status =
@@ -473,6 +475,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 			break;
 		}
 
+		// postal/zip code
 		switch ($response->getField('PostCodeResult')) {
 		case 'NOTPROVIDED':
 			$transaction->postal_code_status =
@@ -496,7 +499,8 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 			break;
 		}
 
-		switch ($response->getField('CS2Result')) {
+		// card verification value
+		switch ($response->getField('CV2Result')) {
 		case 'NOTPROVIDED':
 			$transaction->card_verification_value_status =
 				StorePaymentTransaction::STATUS_MISSING;
