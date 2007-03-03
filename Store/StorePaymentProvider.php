@@ -293,14 +293,38 @@ abstract class StorePaymentProvider
 	}
 
 	// }}}
+	// {{{ public function refund()
 
-	public function refund(StorePaymentTransaction $transaction, $amount = null)
+	/**
+	 * Refunds all or part of a transaction
+	 *
+	 * Refunds can only be made on transactions that have been settled by
+	 * the merchant bank. If the transaction has not yet been settled, you can
+	 * perform call {@link StorePaymentProvider::void()} to cancel the
+	 * original transaction without incurring merchant fees.
+	 *
+	 * @param StorePaymentTransaction the original transaction to refund.
+	 * @param string $description optional. A description of why the refund is
+	 *                             being made. If not specified, a blank string
+	 *                             is used.
+	 * @param double $amount optional. The amount to refund. This amount cannot
+	 *                        exceed the original transaction value. If not
+	 *                        specified, the amount defaults to the total value
+	 *                        of the order for the original transaction.
+	 *
+	 * @return StorePaymentTransaction a new transaction object representing
+	 *                                  the refund transaction.
+	 */
+	public function refund(StorePaymentTransaction $transaction,
+		$description = '', $amount = null)
 	{
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',
 			get_class($this), __FUNCTION__));
 	}
+
+	// }}}
 	// {{{ public function void()
 
 	/**
