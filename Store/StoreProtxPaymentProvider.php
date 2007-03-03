@@ -221,10 +221,46 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	public function refund(StorePaymentTransaction $transaction, $amount = null)
 	{
 	}
+	// {{{ public function void()
 
+	/**
+	 * Voids a transaction
+	 *
+	 * Voiding cancels a transaction and prevents both both merchant fees and
+	 * charging the customer. 
+	 *
+	 * A void must be performed before the merchant bank settles outstanding
+	 * transactions. Once settled, a transaction cannot be voided.
+	 *
+	 * For Protx, this means the void must be performed before the morning
+	 * following the creation of the transaction.
+	 *
+	 * Once a transaction is voided it cannot be refunded, released, repeated,
+	 * aborted, or voided again.
+	 *
+	 * If this method does not throw an exception, the void was successful.
+	 *
+	 * @param StorePaymentTransaction $transaction the tranaction to void.
+	 */
 	public function void(StorePaymentTransaction $transaction)
 	{
+		$request = new StoreProtxPaymentRequest(
+			StorePaymentRequest::TYPE_VOID, $this->mode);
+
+		$fields = array(
+			'Vendor'       => $this->vendor,
+			'VendorTxCode' => $transaction->getInternalValue('ordernum');
+			'VPSTxId'      => $transaction->transaction_id,
+			'SecurityKey'  => $transaction->security_key,
+			'TxAuthNo'     => $transaction->authorization_code,
+		);
+
+		$request->setFields($fields);
+		$response = $request->process();
+		$this->checkResponse($response);
 	}
+
+	// }}}
 	// {{{ private function getOrderRequiredFields()
 
 	/**
