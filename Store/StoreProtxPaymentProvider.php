@@ -2,9 +2,18 @@
 
 require_once 'Store/StorePaymentProvider.php';
 require_once 'Store/StoreProtxPaymentRequest.php';
+require_once 'Store/dataobjects/StorePaymentTransaction.php';
 require_once 'Store/dataobjects/StoreOrder.php';
 require_once 'Store/exceptions/StoreException.php';
 
+/**
+ * Payment provider driver for Protx VSP Direct payments
+ *
+ * @package   Store
+ * @copyright 2007 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ * @see       StorePaymentProvider
+ */
 class StoreProtxPaymentProvider extends StorePaymentProvider
 {
 	// {{{ private properties
@@ -69,7 +78,22 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
+	// {{{ public function pay()
 
+	/**
+	 * Pay for an order immediately
+	 *
+	 * @param StoreOrder $order the order to pay for.
+	 * @param string $card_number the card number to use for payment.
+	 * @param string $card_verification_value optional. Card verification value
+	 *                                         used for fraud prevention.
+	 *
+	 * @return StorePaymentTransaction the transaction object for the payment.
+	 *                                  this object contains information such
+	 *                                  as the transaction identifier and
+	 *                                  Address Verification Service (AVS)
+	 *                                  results.
+	 */
 	public function pay(StoreOrder $order, $card_number,
 		$card_verification_value = null)
 	{
@@ -89,10 +113,23 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		return $transaction;
 	}
 
-	public function release(StorePaymentTransaction $transaction) 
-	{
-	}
+	// }}}
+	// {{{ public function hold()
 
+	/**
+	 * Place a hold on funds for an order
+	 *
+	 * @param StoreOrder $order the order to hold funds for.
+	 * @param string $card_number the card number to place the hold on.
+	 * @param string $card_verification_value optional. Card verification value
+	 *                                         used for fraud prevention.
+	 *
+	 * @return StorePaymentTransaction the transaction object for the payment.
+	 *                                  this object contains information such
+	 *                                  as the transaction identifier and
+	 *                                  Address Verification Service (AVS)
+	 *                                  results.
+	 */
 	public function hold(StoreOrder $order, $card_number,
 		$card_verification_value = null)
 	{
@@ -111,6 +148,40 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$transaction = $this->getPaymentTransaction($response, $order->id);
 		return $transaction;
 	}
+
+	// }}}
+	// {{{ public function release()
+
+	/**
+	 * Release funds held for an order payment
+	 *
+	 * If this method does not throw an exception, the release was successful.
+	 *
+	 * @param StorePaymentTransaction $transaction the tranaction used to place
+	 *                                              a hold on the funds. This
+	 *                                              should be a transaction
+	 *                                              returned by
+	 *                                              {@link StorePaymentProvider::hold()}.
+	 */
+	public function release(StorePaymentTransaction $transaction) 
+	{
+		$request = new StoreProtxPaymentRequest(
+			StorePaymentRequest::TYPE_RELEASE, $this->mode);
+
+		$fields = array(
+			'Vendor'       => $this->vendor,
+			'VendorTxCode' => $transaction->getInternalValue('ordernum');
+			'VPSTxId'      => $transaction->transaction_id,
+			'SecurityKey'  => $transaction->security_key,
+			'TxAuthNo'     => $transaction->authorization_code,
+		);
+
+		$request->setFields($fields);
+		$response = $request->process();
+		$this->checkResponse($response);
+	}
+
+	// }}}
 
 	public function refund(StorePaymentTransaction $transaction, $amount = null)
 	{
