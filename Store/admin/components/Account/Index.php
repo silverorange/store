@@ -118,10 +118,10 @@ class StoreAccountIndex extends AdminSearch
 	protected function getSQL()
 	{
 		return 'select Account.id, Account.fullname, Account.email,
-			AccountOrderCountView.order_count
+				coalesce(AccountOrderCountView.order_count, 0) as order_count
 			from Account
 				left outer join AccountOrderCountView on 
-				Account.id = AccountOrderCountView.account
+					Account.id = AccountOrderCountView.account
 			where %s
 			order by %s';
 	}
