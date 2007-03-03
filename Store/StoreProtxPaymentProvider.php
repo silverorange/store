@@ -217,10 +217,72 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
+	// {{{ public function refund()
 
-	public function refund(StorePaymentTransaction $transaction, $amount = null)
+	/**
+	 * Refunds all or part of a transaction
+	 *
+	 * Refunds can only be made on transactions that have been settled by
+	 * the merchant bank. If the transaction has not yet been settled, you can
+	 * perform call {@link StorePaymentProvider::void()} to cancel the
+	 * original transaction without incurring merchant fees.
+	 *
+	 * @param StorePaymentTransaction the original transaction to refund.
+	 * @param string $description optional. A description of why the refund is
+	 *                             being made. If not specified, a blank string
+	 *                             is used.
+	 * @param double $amount optional. The amount to refund. This amount cannot
+	 *                        exceed the original transaction value. If not
+	 *                        specified, the amount defaults to the total value
+	 *                        of the order for the original transaction.
+	 *
+	 * @return StorePaymentTransaction a new transaction object representing
+	 *                                  the refund transaction.
+	 */
+	public function refund(StorePaymentTransaction $transaction,
+		$description = '', $amount = null)
 	{
+		$request = new StoreProtxPaymentRequest(
+			StorePaymentRequest::TYPE_REFUND, $this->mode);
+
+		// compose refund transaction id from order and original transaction
+		$transaction_id = $transaction->order->id.'-'.$transaction->id;
+		$amount = ($amount === null) ? $order->total : $amount; 
+		if ($amount > 100000) {
+			throw new StoreException('Protx refunds can only be made for '.
+				'values of 100,000 or less.');
+		}
+		$amount = SwatString::numberFormat($amount, 2, null, false);
+		$description = substr($description, 0, 100);
+
+		$fields = array(
+			'Vendor'              => $this->vendor,
+			'VendorTxCode'        => $transaction_id,
+			'Amount'              => $amount,
+			'Currency'            => $this->currency,
+			'Description'         => $description,
+			'RelatedVPSTxId'      => $transaction->transaction_id,
+			'RelatedVendorTxCode' => $transaction->order->id,
+			'RelatedSecurityKey'  => $transaction->security_key,
+			'RelatedTxAuthNo'     => $transaction->authorization_code,
+		);
+
+		$request->setFields($fields);
+		$response = $request->process();
+		$this->checkResponse($response);
+
+		$refund_transaction = new StorePaymentTransaction();
+		$refund_transaction->createdate = new SwatDate();
+		$refund_transaction->createdate->toUTC();
+		$refund_transaction->ordernum = $transaction->order->id;
+		$refund_transaction->transaction_id = $response->getField('VPSTxId');
+		$refund_transaction->authorization_code =
+			$response->getField('TxAuthNo');
+
+		return $refund_transaction;
 	}
+
+	// }}}
 	// {{{ public function void()
 
 	/**
