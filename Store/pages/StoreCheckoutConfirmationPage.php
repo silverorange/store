@@ -3,6 +3,7 @@
 require_once 'Swat/SwatDate.php';
 require_once 'Swat/SwatDetailsStore.php';
 require_once 'SwatDB/SwatDBTransaction.php';
+require_once 'Store/StoreClassMap.php';
 require_once 'Store/pages/StoreCheckoutUIPage.php';
 require_once 'Store/dataobjects/StoreOrderItemWrapper.php';
 require_once 'Store/dataobjects/StoreCartEntry.php';
@@ -145,13 +146,30 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	// }}}
 	// {{{ protected function processAccount()
 
+	/**
+	 * @return StoreAccount the account object
+	 */
 	protected function processAccount()
 	{
 		$account = $this->app->session->account;
-		$order = $this->app->session->order;
 
-		// store new addresses and payment methods in account
+		$this->saveAccount($account);
+
+		unset($this->app->session->save_account_payment_method);
+
+		return $account;
+	}
+
+	// }}}
+	// {{{ protected function saveAccount()
+
+	protected function saveAccount(StoreAccount $account)
+	{
+		// if we are creating a new account, store new addresses and payment
+		// methods in account and set the createdate to now
 		if ($this->app->session->checkout_with_account) {
+			$order = $this->app->session->order;
+
 			$this->addAddressToAccount($order->billing_address);
 
 	 		// shipping address is only added if it differs from billing address
@@ -161,10 +179,13 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	 		// new payment methods are only added if a session flag is set
 			if ($this->app->session->save_account_payment_method)
 				$this->addPaymentMethodToAccount($order->payment_method);
+
+			// set createdate to now
+			$account->createdate = new SwatDate();
 		}
 
+		// save account
 		$account->save();
-		unset($this->app->session->save_account_payment_method);
 	}
 
 	// }}}
@@ -174,7 +195,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	{
 		// check that address is not already in account
 		if ($order_address->getAccountAddressId() === null) {
-			$account_address = new StoreAccountAddress();
+			$class_map = StoreClassMap::instance();
+			$class_name = $class_map->resolveClass('StoreAccountAddress');
+			$account_address = new $class_name();
 			$account_address->copyFrom($order_address);
 			$this->app->session->account->addresses->add($account_address);
 		}
