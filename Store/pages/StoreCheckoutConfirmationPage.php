@@ -211,7 +211,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	{
 		// check that payment method is not already in account
 		if ($order_payment_method->getAccountPaymentMethodId() === null) {
-			$account_payment_method = new AccountPaymentMethod();
+			$class_map = StoreClassMap::instance();
+			$class_name = $class_map->resolveClass('StoreAccountPaymentMethod');
+			$account_payment_method = new $class_name();
 			$account_payment_method->copyFrom($order_payment_method);
 
 			$this->app->session->account->payment_methods->add(
