@@ -121,6 +121,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 		// set createdate to now
 		$order->createdate = new SwatDate();
+		$order->createdate->toUTC();
 
 		// save order
 		$order->save();
@@ -182,6 +183,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 			// set createdate to now
 			$account->createdate = new SwatDate();
+			$account->createdate->toUTC();
 		}
 
 		// save account
