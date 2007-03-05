@@ -8,6 +8,7 @@ require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/dataobjects/StoreOrderAddress.php';
 require_once 'Store/dataobjects/StoreOrderPaymentMethod.php';
 require_once 'Store/dataobjects/StoreOrderItemWrapper.php';
+require_once 'Store/dataobjects/StorePaymentTransactionWrapper.php';
 require_once 'Store/dataobjects/StoreAd.php';
 require_once 'Store/dataobjects/StoreLocale.php';
 
@@ -266,9 +267,27 @@ class StoreOrder extends StoreDataObject
 
 	protected function loadItems()
 	{
-		$sql = 'select * from OrderItem where ordernum = %s order by sku asc';
-		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
-		return SwatDB::query($this->db, $sql, 'StoreOrderItemWrapper');
+		$sql = sprintf('select * from OrderItem
+			where ordernum = %s
+			order by sku asc',
+			$this->db->quote($this->id, 'integer'));
+
+		return SwatDB::query($this->db, $sql,
+			$this->class_map->resolveClass('StoreOrderItemWrapper'));
+	}
+
+	// }}}
+	// {{{ protected function loadTransactions()
+
+	protected function loadTransactions()
+	{
+		$sql = sprintf('select * from PaymentTransaction
+			where ordernum = %s
+			order by createdate asc',
+			$this->db->quote($this->id, 'integer'));
+
+		return SwatDB::query($this->db, $sql,
+			$this->class_map->resolveClass('StorePaymentTransactionWrapper'));
 	}
 
 	// }}}
