@@ -205,7 +205,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 
 		$fields = array(
 			'Vendor'       => $this->vendor,
-			'VendorTxCode' => $transaction->getInternalValue('ordernum');
+			'VendorTxCode' => $transaction->getInternalValue('ordernum'),
 			'VPSTxId'      => $transaction->transaction_id,
 			'SecurityKey'  => $transaction->security_key,
 			'TxAuthNo'     => $transaction->authorization_code,
@@ -311,7 +311,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 
 		$fields = array(
 			'Vendor'       => $this->vendor,
-			'VendorTxCode' => $transaction->getInternalValue('ordernum');
+			'VendorTxCode' => $transaction->getInternalValue('ordernum'),
 			'VPSTxId'      => $transaction->transaction_id,
 			'SecurityKey'  => $transaction->security_key,
 			'TxAuthNo'     => $transaction->authorization_code,
