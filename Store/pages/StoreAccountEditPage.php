@@ -85,8 +85,12 @@ class StoreAccountEditPage extends StoreAccountPage
 				$this->updateAccount($account);
 
 				if (!$this->app->session->isLoggedIn()) {
+
 					$account->createdate = new SwatDate();
 					$account->createdate->toUTC();
+					$account->last_login = new SwatDate();
+					$account->last_login->toUTC();
+
 					$account->setDatabase($this->app->db);
 					$account->save();
 
