@@ -1,0 +1,15 @@
+.store-transaction-status-cell-renderer-passed {
+	color: #2a3;
+}
+
+.store-transaction-status-cell-renderer-failed {
+	color: #c32;
+}
+
+.store-transaction-status-cell-renderer-notchecked {
+	color: #c92;
+}
+
+.store-transaction-status-cell-renderer-missing {
+	color: #c92;
+}
