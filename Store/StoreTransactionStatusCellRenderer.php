@@ -31,7 +31,7 @@ class StoreTransactionStatusCellRenderer extends SwatCellRenderer
 	{
 		parent::__construct();
 		$this->addStyleSheet(
-			'package/store/styles/store-transaction-status-cell-renderer.css',
+			'packages/store/styles/store-transaction-status-cell-renderer.css',
 			Store::PACKAGE_ID);
 	}
 
