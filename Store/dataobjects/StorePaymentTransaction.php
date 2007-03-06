@@ -131,8 +131,10 @@ class StorePaymentTransaction extends StoreDataObject
 	{
 		$this->id_field = 'integer:id';
 		$this->table = 'PaymentTransaction';
+		$this->registerDateProperty('createdate');
 		$this->registerInternalProperty('ordernum',
 			$this->class_map->resolveClass('StoreOrder'));
+
 	}
 
 	// }}}
