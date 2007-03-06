@@ -116,13 +116,13 @@ class StorePaymentTransaction extends StoreDataObject
 	public $card_verification_value_status = self::STATUS_NOTCHECKED;
 
 	/**
-	 * The type of transaction used
+	 * The type of request used to create this transaction
 	 *
 	 * This should be one of the {@link StorePaymentRequest}::TYPE_* constants.
 	 *
 	 * @var integer
 	 */
-	public $transaction_type;
+	public $request_type;
 
 	// }}}
 	// {{{ protected function init()
