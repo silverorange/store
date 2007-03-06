@@ -128,7 +128,7 @@ class StoreOrder extends StoreDataObject
 	 *
 	 * @var boolean
 	 */
-	public $is_cancelled = false;
+	public $cancelled = false;
 
 	// }}}
 	// {{{ public function getSubtotal()
@@ -265,6 +265,43 @@ class StoreOrder extends StoreDataObject
 		$ds->item = $item;
 
 		return $ds;
+	}
+
+	// }}}
+
+	// order status methods
+	// {{{ public function isBillable()
+
+	/**
+	 * Gets whether or not this order is ready to bill
+	 *
+	 * This order is ready to bill if payment is authorized and this order is
+	 * not cancelled.
+	 *
+	 * @return boolean true if this order is ready to be billed and false if it
+	 *                  is not.
+	 */
+	public function isBillable()
+	{
+		return (!$this->cancelled &&
+			$this->status == self::STATUS_AUTHORIZED);
+	}
+
+	// }}}
+	// {{{ public function isShippable()
+
+	/**
+	 * Gets whether or not this order is ready to ship 
+	 *
+	 * This order is ready to ship if payment is completed and this order is
+	 * not cancelled.
+	 *
+	 * @return boolean true if this order is ready to be shipped and false if
+	 *                  it is not.
+	 */
+	public function isShippable()
+	{
+		return (!$this->cancelled && $this->status == self::STATUS_BILLED);
 	}
 
 	// }}}
