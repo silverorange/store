@@ -6,7 +6,7 @@ create table Orders (
 	comments text,
 	createdate timestamp not null,
 	status int not null default 1,
-	is_cancelled boolean not null defaunt false,
+	is_cancelled boolean not null default false,
 
 	billing_address int not null references OrderAddress(id),
 	shipping_address int not null references OrderAddress(id),
