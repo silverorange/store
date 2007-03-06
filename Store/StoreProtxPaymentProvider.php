@@ -109,7 +109,9 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$response = $request->process();
 		$this->checkResponse($response);
 
-		$transaction = $this->getPaymentTransaction($response, $order->id);
+		$transaction = $this->getPaymentTransaction($response, $order->id,
+			StorePaymentRequest::TYPE_PAY);
+
 		return $transaction;
 	}
 
@@ -145,7 +147,9 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$response = $request->process();
 		$this->checkResponse($response);
 
-		$transaction = $this->getPaymentTransaction($response, $order->id);
+		$transaction = $this->getPaymentTransaction($response, $order->id,
+			StorePaymentRequest::TYPE_HOLD);
+
 		return $transaction;
 	}
 
@@ -275,6 +279,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$refund_transaction->createdate = new SwatDate();
 		$refund_transaction->createdate->toUTC();
 		$refund_transaction->ordernum = $transaction->order->id;
+		$refund_transaction->request_type = StorePaymentRequest::TYPE_REFUND;
 		$refund_transaction->transaction_id = $response->getField('VPSTxId');
 		$refund_transaction->authorization_code =
 			$response->getField('TxAuthNo');
@@ -566,11 +571,13 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	 *                                             from.
 	 * @param integer $order_id the id of the order used to make the
 	 *                           transaction.
+	 * @param integer $request_type the type of request used to make the
+	 *                               transaction.
 	 *
 	 * @return StorePaymentTransaction the payment transaction object.
 	 */
 	private function getPaymentTransaction(StoreProtxPaymentResponse $response,
-		$order_id)
+		$order_id, $request_type)
 	{
 		$transaction = new StorePaymentTransaction();
 		$transaction->createdate = new SwatDate();
@@ -579,6 +586,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$transaction->transaction_id = $response->getField('VPSTxId');
 		$transaction->security_key = $response->getField('SecurityKey');
 		$transaction->authorization_code = $response->getField('TxAuthNo');
+		$transaction->request_type = $request_type;
 
 		// address
 		switch ($response->getField('AddressResult')) {
