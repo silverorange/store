@@ -123,6 +123,13 @@ class StoreOrder extends StoreDataObject
 	 */
 	public $status = self::STATUS_INITIALIZED;
 
+	/**
+	 * Whether or not this order is cancelled
+	 *
+	 * @var boolean
+	 */
+	public $is_cancelled = false;
+
 	// }}}
 	// {{{ public function getSubtotal()
 
