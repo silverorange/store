@@ -144,6 +144,26 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 			break;
 		}
 
+		// make additional fields required based on request type
+		switch ($this->type) {
+		case StorePaymentRequest::TYPE_PAY:
+		case StorePaymentRequest::TYPE_HOLD:
+			$this->makeFieldsRequired($this->getPaymentRequiredFields());
+			break;
+		case StorePaymentRequest::TYPE_RELEASE:
+			$this->makeFieldsRequired($this->getReleaseRequiredFields());
+			break;
+		case StorePaymentRequest::TYPE_ABORT:
+			$this->makeFieldsRequired($this->getAbortRequiredFields());
+			break;
+		case StorePaymentRequest::TYPE_VOID:
+			$this->makeFieldsRequired($this->getVoidRequiredFields());
+			break;
+		case StorePaymentRequest::TYPE_REFUND:
+			$this->makeFieldsRequired($this->getRefundRequiredFields());
+			break;
+		}
+
 		$this->curl_handle = curl_init();
 		curl_setopt_array($this->curl_handle, array(
 			CURLOPT_URL  => $this->url,
@@ -309,6 +329,25 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 			'TxType',
 			'Vendor',
 			'VendorTxCode',
+		);
+
+		return $default_required_fields;
+	}
+
+	// }}}
+	// {{{ protected function getPaymentRequiredFields()
+
+	/**
+	 * Gets a list of protocol-specific fields that are required for payment
+	 *
+	 * See the VSP Direct Integration Guidelines document for details.
+	 *
+	 * @return array a list of protocol-specific fields that are required for
+	 *                payment.
+	 */
+	protected function getPaymentRequiredFields()
+	{
+		static $payment_required_fields = array(
 			'Amount',
 			'Currency',
 			'Description',
@@ -318,7 +357,77 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 			'CardType',
 		);
 
-		return $default_required_fields;
+		return $payment_required_fields;
+	}
+
+	// }}}
+	// {{{ protected function getAbortRequiredFields()
+
+	/**
+	 * Gets a list of protocol-specific fields that are required for an abort
+	 *
+	 * See the VSP Direct Integration Guidelines document for details.
+	 *
+	 * @return array a list of protocol-specific fields that are required for
+	 *                an abort.
+	 */
+	protected function getAbortRequiredFields()
+	{
+		static $abort_required_fields = array(
+			'VPSTxId',
+			'SecurityKey',
+			'TxAuthNo',
+		);
+
+		return $abort_required_fields;
+	}
+
+	// }}}
+	// {{{ protected function getRefundRequiredFields()
+
+	/**
+	 * Gets a list of protocol-specific fields that are required for a refund
+	 *
+	 * See the VSP Direct Integration Guidelines document for details.
+	 *
+	 * @return array a list of protocol-specific fields that are required for
+	 *                a refund.
+	 */
+	protected function getRefundRequiredFields()
+	{
+		static $refund_required_fields = array(
+			'Amount',
+			'Currency',
+			'Description',
+			'RelatedVPSTxId',
+			'RelatedVendorTxCode',
+			'RelatedSecurityKey',
+			'RelatedTxAuthNo',
+		);
+
+		return $refund_required_fields;
+	}
+
+	// }}}
+	// {{{ protected function getVoidRequiredFields()
+
+	/**
+	 * Gets a list of protocol-specific fields that are required for a void
+	 *
+	 * See the VSP Direct Integration Guidelines document for details.
+	 *
+	 * @return array a list of protocol-specific fields that are required for
+	 *                a void.
+	 */
+	protected function getVoidRequiredFields()
+	{
+		static $void_required_fields = array(
+			'VPSTxId',
+			'SecurityKey',
+			'TxAuthNo',
+		);
+
+		return $void_required_fields;
 	}
 
 	// }}}
