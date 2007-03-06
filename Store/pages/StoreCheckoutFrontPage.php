@@ -17,6 +17,7 @@ class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 	 */
 	protected $ui_xml = 'Store/pages/checkout-front.xml';
 	// }}}
+
 	// init phase
 	// {{{ public function init()
 
