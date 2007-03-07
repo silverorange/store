@@ -78,18 +78,10 @@ abstract class StoreCheckoutStepPage extends StoreCheckoutUIPage
 		foreach ($this->embedded_edit_pages as $page)
 			$page->buildCommon();
 
-		$this->buildInternal();
 		parent::build();
 
 		foreach ($this->embedded_edit_pages as $page)
 			$page->postBuildCommon();
-	}
-
-	// }}}
-	// {{{ protected function buildInternal()
-
-	protected function buildInternal()
-	{
 	}
 
 	// }}}
