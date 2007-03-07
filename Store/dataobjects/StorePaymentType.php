@@ -103,7 +103,7 @@ class StorePaymentType extends StoreDataObject
 	/**
 	 * Loads a payment type by its shortname
 	 *
-	 * @param string $shortname the shortname of the payment tpye to load.
+	 * @param string $shortname the shortname of the payment type to load.
 	 */
 	public function loadFromShortname($shortname)
 	{
