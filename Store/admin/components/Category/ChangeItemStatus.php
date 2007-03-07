@@ -54,6 +54,7 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 		$this->category_id = SiteApplication::initVar('category');
 		$this->setStatus(SiteApplication::initVar('status'));
 
+		// catalog switcher is used to filter items that status is set on 
 		$this->catalog_switcher = new StoreCatalogSwitcher();
 		$this->catalog_switcher->db = $this->app->db;
 		$this->catalog_switcher->init();
