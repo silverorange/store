@@ -10,10 +10,11 @@ require_once 'Swat/SwatDetailsStore.php';
 require_once 'Admin/AdminTableStore.php';
 require_once 'Admin/pages/AdminIndex.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
+require_once 'Store/StoreClassMap.php';
+require_once 'Store/StoreItemStatusList.php';
+require_once 'Store/dataobjects/StoreProduct.php';
 require_once 'Store/dataobjects/StoreRegionWrapper.php';
 require_once 'Store/dataobjects/StoreItemWrapper.php';
-require_once 'Store/StoreClassMap.php';
-require_once 'Store/dataobjects/StoreProduct.php';
 require_once 'Store/admin/components/Product/include/StoreItemTableView.php';
 require_once 'Store/admin/components/Product/include/StoreItemGroupGroup.php';
 require_once 'Store/admin/components/Product/include/StoreItemGroupAction.php';
@@ -32,7 +33,7 @@ require_once 'Store/admin/components/Product/include/'.
  * Details page for Products
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductDetails extends AdminIndex
@@ -240,7 +241,7 @@ class StoreProductDetails extends AdminIndex
 
 		$message = new SwatMessage(sprintf(Store::ngettext(
 			'The status of one item has been changed.',
-			'The status of %d items has been changed.', $num),
+			'The status of %s items has been changed.', $num),
 			SwatString::numberFormat($num)));
 
 		$this->app->messages->add($message);
@@ -596,9 +597,12 @@ class StoreProductDetails extends AdminIndex
 		$input_status =
 			$view->getColumn('status')->getInputCell()->getPrototypeWidget();
 
-		$input_status->content = Item::getStatusTitle(Item::STATUS_AVAILABLE);
+		$input_status->content =
+			StoreItemStatusList::status('available')->title;
 
-		$this->ui->getWidget('status')->addOptionsByArray(Item::getStatuses());
+		foreach (StoreItemStatusList::statuses() as $status)
+			$this->ui->getWidget('status')->addOption(
+				new SwatOption($status->id, $status->title));
 
 		// setup the flydowns for enabled/disabled actions
 		$regions = SwatDB::getOptionArray($this->app->db, 'Region', 'title',
@@ -630,6 +634,7 @@ class StoreProductDetails extends AdminIndex
 			$ds = new SwatDetailsStore($item);
 
 			$ds->description = $item->getDescription();
+			$ds->status = $item->getStatus();
 
 			$ds->item_group_title = ($item->item_group === null) ?
 				Store::_('[Ungrouped]') : $item->item_group->title;

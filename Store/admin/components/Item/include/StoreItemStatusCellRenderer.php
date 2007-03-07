@@ -2,28 +2,26 @@
 
 require_once 'Swat/SwatCellRenderer.php';
 require_once 'Swat/SwatString.php';
-require_once 'Store/dataobjects/StoreItem.php';
 require_once 'Store/StoreClassMap.php';
+require_once 'Store/StoreItemStatusList.php';
 
 /**
  * Cell renderer that displays a summary of the status of an item
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemStatusCellRenderer extends SwatCellRenderer
 {
-	public $status = null;
+	/**
+	 * @var StoreItemStatus
+	 */
+	public $status;
 
 	public function render()
 	{
-		$class_map = StoreClassMap::instance();
-		$item_class = $class_map->resolveClass('StoreItem');
-		$title = call_user_func(array($item_class, 'getStatusTitle'),
-			$this->status);
-
-		echo SwatString::minimizeEntities($title);
+		echo SwatString::minimizeEntities($this->status->title);
 	}
 }
 
