@@ -362,7 +362,7 @@ class StoreCategoryIndex extends AdminIndex
 				new SwatOption($status->id, $status->title));
 
 			$categories_status->addOption(
-				new SwatOption($status->id, $status->title));
+				new SwatOption($status->id, $status->title.'…'));
 		}
 
 		// setup the flydowns for enabled/disabled actions
