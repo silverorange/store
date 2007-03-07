@@ -47,7 +47,12 @@ class StoreOrder extends StoreDataObject
 	 * Shipping provider has confirmed delivery of the order
 	 */
 	const STATUS_DELIVERED   = 5;
-	
+
+	/**
+	 * Order is completed
+	 */
+	const STATUS_COMPLETE    = 6;
+
 	// }}}
 	// {{{ public properties
 
