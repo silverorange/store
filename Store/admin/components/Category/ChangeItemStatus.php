@@ -4,14 +4,16 @@ require_once 'Admin/pages/AdminDBDelete.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Admin/AdminDependency.php';
 require_once 'Store/StoreCatalogSwitcher.php';
-require_once 'Store/dataobjects/StoreItem.php';
 require_once 'Store/StoreClassMap.php';
+require_once 'Store/StoreItemStatusList.php';
+require_once 'Store/dataobjects/StoreItem.php';
 
 /**
- * Remove products confirmation page for Categories
+ * Item status change confirmation page for changing item status within the
+ * category component 
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCategoryChangeItemStatus extends AdminDBConfirmation
@@ -19,6 +21,10 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 	// {{{ private properties
 
 	private $category_id;
+
+	/**
+	 * @var StoreItemStatus
+	 */
 	private $status;
 
 	// }}}
@@ -32,9 +38,9 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 	// }}}
 	// {{{ public function setStatus()
 
-	public function setStatus($status)
+	public function setStatus($status_id)
 	{
-		$this->status = $status;
+		$this->status = StoreItemStatusList::statuses()->getById($status_id);
 	}
 
 	// }}}
@@ -46,7 +52,7 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 	{
 		parent::initInternal();
 		$this->category_id = SiteApplication::initVar('category');
-		$this->status = SiteApplication::initVar('status');
+		$this->setStatus(SiteApplication::initVar('status'));
 
 		$this->catalog_switcher = new StoreCatalogSwitcher();
 		$this->catalog_switcher->db = $this->app->db;
@@ -63,9 +69,9 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 		parent::processDBData();
 
 		$item_list = $this->getItemList('integer');
-		
+
 		$sql = sprintf('update Item set status = %s where id in (%s)',
-			$this->app->db->quote($this->status, 'integer'),
+			$this->app->db->quote($this->status->id, 'integer'),
 			$this->getItemQuerySQL());
 
 		$num = SwatDB::exec($this->app->db, $sql);
@@ -73,7 +79,7 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One item has had its status set as “%s”.',
 			'%s items have had their status set as “%s”.', $num),
-			SwatString::numberFormat($num), $this->getStatusTitle()),
+			SwatString::numberFormat($num), $this->status->title),
 			SwatMessage::NOTIFICATION);
 
 		$this->app->messages->add($message);
@@ -102,7 +108,7 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 			$message_text = sprintf(Store::ngettext(
 				'%3$sSet one item status as “%2$s”?%4$s',
 				'%3$sSet %1$s item statuses as “%2$s”?%4$s', $count),
-				SwatString::numberFormat($count), $this->getStatusTitle(),
+				SwatString::numberFormat($count), $this->status->title,
 				'<h3>', '</h3>');
 
 			$this->ui->getWidget('yes_button')->title =
@@ -116,7 +122,7 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 
 		$form = $this->ui->getWidget('confirmation_form');
 		$form->addHiddenField('category', $this->category_id);
-		$form->addHiddenField('status', $this->status);
+		$form->addHiddenField('status', $this->status->id);
 	}
 
 	// }}}
@@ -140,7 +146,6 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 	}
 
 	// }}}
-
 	// {{{ private function getItemQuerySQL()
 
 	private function getItemQuerySQL()
@@ -164,18 +169,6 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 			$this->catalog_switcher->getSubquery());
 
 		return $sql;
-	}
-
-	// }}}
-	// {{{ private function getStatusTitle()
-
-	private function getStatusTitle()
-	{
-		$class_map = StoreClassMap::instance();
-		$item_class = $class_map->resolveClass('StoreItem');
-
-		return call_user_func(array($item_class, 'getStatusTitle'),
-			$this->status);
 	}
 
 	// }}}
