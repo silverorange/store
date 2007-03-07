@@ -31,7 +31,7 @@ require_once 'Store/admin/components/Product/include/'.
  * Index page for Categories
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCategoryIndex extends AdminIndex
@@ -355,14 +355,15 @@ class StoreCategoryIndex extends AdminIndex
 			$tool_value);
 
 		// setup the flydowns for status actions
-		$statuses = $this->getItemStatuses();
+		$products_status = $this->ui->getWidget('products_status');
+		$categories_status = $this->ui->getWidget('categories_status');
+		foreach (StoreItemStatusList::statuses() as $status) {
+			$products_status->addOption(
+				new SwatOption($status->id, $status->title));
 
-		$this->ui->getWidget('products_status')->addOptionsByArray($statuses);
-
-		foreach ($statuses as &$status)
-			$status.= '…';
-
-		$this->ui->getWidget('categories_status')->addOptionsByArray($statuses);
+			$categories_status->addOption(
+				new SwatOption($status->id, $status->title));
+		}
 
 		// setup the flydowns for enabled/disabled actions
 		$regions = SwatDB::getOptionArray($this->app->db, 'Region', 'title',
@@ -388,16 +389,6 @@ class StoreCategoryIndex extends AdminIndex
 		$this->buildMessages();
 	}
 
-	// }}}
-	// {{{ protected function getItemStatuses()
-
-	protected function getItemStatuses()
-	{
-		$class_map = StoreClassMap::instance();
-		$item_class = $class_map->resolveClass('StoreItem');
-
-		return call_user_func(array($item_class, 'getStatuses'));
-	}
 	// }}}
 	// {{{ protected function getTableStore()
 

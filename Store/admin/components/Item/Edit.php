@@ -14,7 +14,7 @@ require_once 'Store/dataobjects/StoreRegionWrapper.php';
  * Edit page for Items
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemEdit extends AdminDBEdit
@@ -58,21 +58,20 @@ class StoreItemEdit extends AdminDBEdit
 		$this->category_id = SiteApplication::initVar('category');
 		$this->item_sku = SiteApplication::initVar('item_sku');
 
-		if ($this->product_id === null && $this->id === null)
+		if ($this->product_id === null && $this->id === null) {
 			throw new AdminNoAccessException(Store::_(
 				'A product ID or an item ID must be passed in the URL.'));
-
-		elseif ($this->product_id === null)
+		} elseif ($this->product_id === null) {
 			$this->product_id = SwatDB::queryOne($this->app->db,
 				sprintf('select product from Item where id = %s',
 				$this->app->db->quote($this->id, 'integer')));
-
-		$class_map = StoreClassMap::instance();
-		$item_class = $class_map->resolveClass('StoreItem');
-		$statuses = call_user_func(array($item_class, 'getStatuses'));
+		}
 
 		$status_radiolist = $this->ui->getWidget('status');
-		$status_radiolist->addOptionsByArray($statuses);
+		foreach (StoreItemStatusList::statuses() as $status) {
+			$status_radiolist->addOption(
+				new SwatOption($status->id, $status->title));
+		}
 
 		$regions = SwatDB::getOptionArray($this->app->db, 'Region', 'title',
 			'id', 'title');
