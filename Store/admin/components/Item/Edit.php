@@ -328,8 +328,7 @@ class StoreItemEdit extends AdminDBEdit
 		$form_id = 'edit_form';
 
 		echo '<script type="text/javascript">', "\n//<![CDATA[\n";
-		printf("var item_edit_page = ".
-			"new StoreItemEditPage('%s', [%s]);",
+		printf("var item_edit_page = new StoreItemEditPage('%s', [%s]);",
 			$form_id,
 			$replicator_ids);
 
