@@ -89,31 +89,28 @@ class StorePaymentTransaction extends StoreDataObject
 	 * Status of address check
 	 *
 	 * One of StorePaymentTransaction::STATUS_*.
-	 * {@link StorePaymentTransaction::STATUS_NOTCHECKED} by default.
 	 *
 	 * @var integer
 	 */
-	public $address_status = self::STATUS_NOTCHECKED;
+	public $address_status;
 
 	/**
 	 * Status of zip/postal code check
 	 *
 	 * One of StorePaymentTransaction::STATUS_*.
-	 * {@link StorePaymentTransaction::STATUS_NOTCHECKED} by default.
 	 *
 	 * @var integer
 	 */
-	public $postal_code_status = self::STATUS_NOTCHECKED;
+	public $postal_code_status;
 
 	/**
 	 * Status of card verification value check
 	 *
 	 * One of StorePaymentTransaction::STATUS_*.
-	 * {@link StorePaymentTransaction::STATUS_NOTCHECKED} by default.
 	 *
 	 * @var integer
 	 */
-	public $card_verification_value_status = self::STATUS_NOTCHECKED;
+	public $card_verification_value_status;
 
 	/**
 	 * The type of request used to create this transaction
