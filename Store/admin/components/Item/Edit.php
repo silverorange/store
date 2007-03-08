@@ -7,6 +7,7 @@ require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatMessage.php';
 require_once 'Swat/SwatYUI.php';
 require_once 'Store/StoreClassMap.php';
+require_once 'Store/StoreItemStatusList.php';
 require_once 'Store/dataobjects/StoreItem.php';
 require_once 'Store/dataobjects/StoreRegionWrapper.php';
 
