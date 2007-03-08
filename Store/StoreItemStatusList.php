@@ -1,9 +1,8 @@
 <?php
 
-require_once 'Swat/SwatObject.php';
-require_once 'Store/Store.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'Store/StoreStatusList.php';
 require_once 'Store/StoreItemStatus.php';
+require_once 'Store/StoreClassMap.php';
 
 /**
  * A list of {@link StoreItemStatus} objects
@@ -21,7 +20,7 @@ require_once 'Store/StoreItemStatus.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreItemStatus
  */
-class StoreItemStatusList extends SwatObject implements Iterator, Countable
+class StoreItemStatusList extends StoreStatusList
 {
 	// {{{ private properties
 
@@ -31,48 +30,6 @@ class StoreItemStatusList extends SwatObject implements Iterator, Countable
 	 * @var array
 	 */
 	private static $defined_statuses = null;
-
-	/**
-	 * Index value used to implement the iterator interface for this list
-	 *
-	 * @var integer
-	 */
-	private $current_index = 0;
-
-	// }}}
-	// {{{ protected properties
-
-	/**
-	 * An array of item statuses indexed by id 
-	 *
-	 * @var array
-	 */
-	protected $statuses_by_id = array();
-
-	/**
-	 * An array of item statuses indexed by shortname
-	 *
-	 * @var array
-	 */
-	protected $statuses_by_shortname = array();
-
-	/**
-	 * An array of item statuses indexed numerically in the order they
-	 * were added
-	 *
-	 * @var array
-	 */
-	protected $statuses = array();
-
-	// }}}
-	// {{{ public function __construct()
-
-	public function __construct()
-	{
-		foreach ($this->getDefinedStatuses() as $status) {
-			$this->add($status);
-		}
-	}
 
 	// }}}
 	// {{{ public static function status()
@@ -94,166 +51,43 @@ class StoreItemStatusList extends SwatObject implements Iterator, Countable
 	 */
 	public static function status($status_shortname)
 	{
+		return self::statuses()->getByShortname($status_shortname);
+	}
+
+	// }}}
+	// {{{ public static function statuses()
+
+	/**
+	 * Convenience function to get status list object
+	 *
+	 * Example usage:
+	 *
+	 * <code>
+	 * foreach (StoreItemStatusList::statues() as $status) {
+	 *     echo $status->title, "\n";
+	 * }
+	 * </code>
+	 *
+	 * @return StoreItemStatusList a list of item statuses.
+	 */
+	public static function statuses()
+	{
 		$class_map = StoreClassMap::instance();
 		$list_class = $class_map->resolveClass('StoreItemStatusList');
-		$list = new $list_class();
-		return $list->getByShortname($status_shortname);
-	}
-
-	// }}}
-	// {{{ public function getById()
-
-	/**
-	 * Gets an item status by its id
-	 *
-	 * @param integer $id the id of the item status to get.
-	 *
-	 * @return StoreItemStatus the item status with the given id or null if no
-	 *                          such item status exists.
-	 */
-	public function getById($id)
-	{
-		$status = null;
-		if (array_key_exists($id, $this->statuses_by_id))
-			$status = $this->statuses_by_id[$id];
-
-		return $status;
-	}
-
-	// }}}
-	// {{{ public function getByShortname()
-
-	/**
-	 * Gets an item status by its shortname 
-	 *
-	 * @param stirng $shortname the shortname of the item status to get.
-	 *
-	 * @return StoreItemStatus the item status with the given shortname id or
-	 *                          null if no such item status exists.
-	 */
-	public function getByShortname($shortname)
-	{
-		$status = null;
-		if (array_key_exists($shortname, $this->statuses_by_shortname))
-			$status = $this->statuses_by_shortname[$shortname];
-
-		return $status;
-	}
-
-	// }}}
-	// {{{ public function current()
-
-	/**
-	 * Returns the current status
-	 *
-	 * @return mixed the current status.
-	 */
-	public final function current()
-	{
-		return $this->statuses[$this->current_index];
-	}
-
-	// }}}
-	// {{{ public function key()
-
-	/**
-	 * Returns the key of the current status
-	 *
-	 * @return integer the key of the current status
-	 */
-	public final function key()
-	{
-		return $this->current_index;
-	}
-
-	// }}}
-	// {{{ public function next()
-
-	/**
-	 * Moves forward to the next status
-	 */
-	public final function next()
-	{
-		$this->current_index++;
-	}
-
-	// }}}
-	// {{{ public function prev()
-
-	/**
-	 * Moves forward to the previous status
-	 */
-	public final function prev()
-	{
-		$this->current_index--;
-	}
-
-	// }}}
-	// {{{ public function rewind()
-
-	/**
-	 * Rewinds this iterator to the first status
-	 */
-	public final function rewind()
-	{
-		$this->current_index = 0;
-	}
-
-	// }}}
-	// {{{ public function valid()
-
-	/**
-	 * Checks is there is a current status after calls to rewind() and next()
-	 *
-	 * @return boolean true if there is a current status and false if there
-	 *                  is not.
-	 */
-	public final function valid()
-	{
-		return isset($this->statuses[$this->current_index]);
-	}
-
-	// }}}
-	// {{{ public function count()
-
-	/**
-	 * Gets the number of statuses in this list
-	 *
-	 * This satisfies the Countable interface.
-	 *
-	 * @return integer the number of statuses in this list.
-	 */
-	public function count()
-	{
-		return count($this->statuses);
-	}
-
-	// }}}
-	// {{{ protected function add()
-
-	/**
-	 * Adds an item status to this list
-	 *
-	 * @param StoreItemStatus $status the status to add.
-	 */
-	protected function add(StoreItemStatus $status)
-	{
-		$this->statuses[] = $status;
-		$this->statuses_by_id[$status->id] = $status;
-		$this->statuses_by_shortname[$status->shortname] = $status;
+		return new $list_class();
 	}
 
 	// }}}
 	// {{{ protected function getDefinedStatuses()
 
 	/**
-	 * Gets an array of defined item statuses for this list class
+	 * Gets an array of defined item statuses for this class of list
 	 *
 	 * Subclasses are encoraged to override this method to change the default
 	 * set of item statuses or to provide additional statuses.
 	 *
 	 * @return array an array of {@link StoreItemStatus} objects representing
-	 *                all defined item statuses for this list class.
+	 *                all defined item statuses for this class of list.
 	 */
 	protected function getDefinedStatuses()
 	{
