@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Store/StoreStatusList.php';
-require_once 'Store/StoreItemStatus.php';
+require_once 'Store/StoreOrderStatus.php';
 require_once 'Store/StoreClassMap.php';
 
 /**
@@ -122,14 +122,22 @@ class StoreOrderStatusList extends StoreStatusList
 			$class_map = StoreClassMap::instance();
 			$status_class = $class_map->resolveClass('StoreOrderStatus');
 
-			$available_status =
-				new $status_class(0, 'available', Store::_('Available'));
+			$initilized_status =
+				new $status_class(1, 'initialized', Store::_('Initialized'));
 
-			$out_of_stock_status =
-				new $status_class(1, 'outofstock', Store::_('Out of Stock'));
+			$authorized_status =
+				new $status_class(2, 'authorized', Store::_('Authorized'));
 
-			self::$defined_statuses[] = $available_status;
-			self::$defined_statuses[] = $out_of_stock_status;
+			$billed_status =
+				new $status_class(3, 'billed', Store::_('Billed'));
+
+			$shipped_status =
+				new $status_class(4, 'shipped', Store::_('Shipped'));
+
+			self::$defined_statuses[] = $initilized_status;
+			self::$defined_statuses[] = $authorized_status;
+			self::$defined_statuses[] = $billed_status;
+			self::$defined_statuses[] = $shipped_status;
 		}
 
 		return self::$defined_statuses;
