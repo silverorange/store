@@ -5,20 +5,20 @@
  * @param Array price_replicators a list of replicator ids for the price
  *                                 fields.
  */
-function ItemEditPage(form_id, price_replicators)
+function StoreItemEditPage(form_id, price_replicators)
 {
 	this.price_replicators = [];
 	for (var i = 0; i < price_replicators.length; i++) {
 		this.price_replicators[i] =
-			new ItemRegionReplicator(price_replicators[i]);
+			new StoreItemRegionReplicator(price_replicators[i]);
 	}
 
 	var form = document.getElementById(form_id);
-	YAHOO.util.Event.addListener(form, 'submit', ItemEditPage.handleSubmit,
+	YAHOO.util.Event.addListener(form, 'submit', StoreItemEditPage.handleSubmit,
 		this);
 }
 
-ItemEditPage.handleSubmit = function(event, page)
+StoreItemEditPage.handleSubmit = function(event, page)
 {
 	// sensitize prices so they send data even if they are desensitized
 	for (var i = 0; i < page.price_replicators.length; i++)
@@ -30,14 +30,14 @@ ItemEditPage.handleSubmit = function(event, page)
  *
  * @param number id the replicator id of this price replicator.
  */
-function ItemRegionReplicator(id)
+function StoreItemRegionReplicator(id)
 {
 	this.id = id;
 	this.enabled = document.getElementById('enabled_price_replicator' + id);
 	this.price = document.getElementById('price_price_replicator' + id);
 
 	YAHOO.util.Event.addListener(this.enabled, 'click',
-		ItemRegionReplicator.handleClick, this);
+		StoreItemRegionReplicator.handleClick, this);
 
 	// initialize
 	if (this.enabled.checked)
@@ -46,7 +46,7 @@ function ItemRegionReplicator(id)
 		this.desensitize();
 }
 
-ItemRegionReplicator.handleClick = function(event, replicator)
+StoreItemRegionReplicator.handleClick = function(event, replicator)
 {
 	if (replicator.enabled.checked)
 		replicator.sensitize(true);
@@ -54,7 +54,7 @@ ItemRegionReplicator.handleClick = function(event, replicator)
 		replicator.desensitize();
 }
 
-ItemRegionReplicator.prototype.sensitize = function(focus)
+StoreItemRegionReplicator.prototype.sensitize = function(focus)
 {
 	this.price.disabled = false;
 
@@ -64,7 +64,7 @@ ItemRegionReplicator.prototype.sensitize = function(focus)
 	}
 }
 
-ItemRegionReplicator.prototype.desensitize = function()
+StoreItemRegionReplicator.prototype.desensitize = function()
 {
 	this.price.disabled = true;
 	YAHOO.util.Dom.addClass(this.price, 'swat-insensitive');
