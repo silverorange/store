@@ -31,6 +31,15 @@ class StoreItemStatusList extends StoreStatusList
 	 */
 	private static $defined_statuses = null;
 
+	/**
+	 * The item status list instance used for the singleton pattern
+	 *
+	 * @var StoreItemStatusList
+	 *
+	 * @see StoreItemStatusList::statuses()
+	 */
+	private static $instance;
+
 	// }}}
 	// {{{ public static function status()
 
@@ -58,23 +67,26 @@ class StoreItemStatusList extends StoreStatusList
 	// {{{ public static function statuses()
 
 	/**
-	 * Convenience function to get status list object
+	 * Gets the list of defined item statuses
 	 *
 	 * Example usage:
 	 *
 	 * <code>
-	 * foreach (StoreItemStatusList::statues() as $status) {
+	 * foreach (StoreItemStatusList::statuses() as $status) {
 	 *     echo $status->title, "\n";
 	 * }
 	 * </code>
 	 *
-	 * @return StoreItemStatusList a list of item statuses.
+	 * @return StoreItemStatusList the list of item statuses.
 	 */
 	public static function statuses()
 	{
-		$class_map = StoreClassMap::instance();
-		$list_class = $class_map->resolveClass('StoreItemStatusList');
-		return new $list_class();
+		if (self::$instance === null) {
+			$class_map = StoreClassMap::instance();
+			$list_class = $class_map->resolveClass('StoreItemStatusList');
+			self::$instance = new $list_class();
+		}
+		return self::$instance;
 	}
 
 	// }}}
