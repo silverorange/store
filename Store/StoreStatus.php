@@ -28,7 +28,7 @@ require_once 'Swat/SwatObject.php';
  * @copyright 2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-abstract class StoreOrderStatus extends SwatObject
+abstract class StoreStatus extends SwatObject
 {
 	// {{{ public properties
 
