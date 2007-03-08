@@ -3,6 +3,8 @@
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
 require_once 'Store/StoreOrderConfirmationMailMessage.php';
+require_once 'Store/StoreOrderStatus.php';
+require_once 'Store/StoreOrderStatusList.php';
 require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/dataobjects/StoreOrderAddress.php';
@@ -21,39 +23,6 @@ require_once 'Store/dataobjects/StoreLocale.php';
  */
 class StoreOrder extends StoreDataObject
 {
-	// {{{ class constants
-
-	/**
-	 * Payment not authorized or received, the default state for orders
-	 */
-	const STATUS_INITIALIZED = 1;
-
-	/**
-	 * Payment is authorized but not received
-	 */
-	const STATUS_AUTHORIZED  = 2;
-
-	/**
-	 * Payment is received and order is ready for shipping
-	 */
-	const STATUS_BILLED      = 3;
-
-	/**
-	 * Order is shipped
-	 */
-	const STATUS_SHIPPED     = 4;
-
-	/**
-	 * Shipping provider has confirmed delivery of the order
-	 */
-	const STATUS_DELIVERED   = 5;
-
-	/**
-	 * Order is completed
-	 */
-	const STATUS_COMPLETE    = 6;
-
-	// }}}
 	// {{{ public properties
 
 	/**
@@ -120,20 +89,23 @@ class StoreOrder extends StoreDataObject
 	public $tax_total;
 
 	/**
+	 * Whether or not this order is cancelled
+	 *
+	 * @var boolean
+	 */
+	public $cancelled = false;
+
+	// }}}
+	// {{{ protected properties
+
+	/**
 	 * Status of the order
 	 *
 	 * One of the StoreOrder::STATUS_* constants.
 	 *
 	 * @var integer
 	 */
-	public $status = self::STATUS_INITIALIZED;
-
-	/**
-	 * Whether or not this order is cancelled
-	 *
-	 * @var boolean
-	 */
-	public $cancelled = false;
+	protected $status;
 
 	// }}}
 	// {{{ public function getSubtotal()
@@ -224,6 +196,7 @@ class StoreOrder extends StoreDataObject
 
 	protected function init()
 	{
+		$this->registerInternalProperty('status');
 		$this->registerInternalProperty('account',
 			$this->class_map->resolveClass('StoreAccount'));
 
@@ -275,6 +248,34 @@ class StoreOrder extends StoreDataObject
 	// }}}
 
 	// order status methods
+	// {{{ public function getStatus()
+
+	/** 
+	 * Gets the status of this order
+	 *
+	 * @return StoreOrderStatus the status of this order or null if this
+	 *                           orders's status is undefined.
+	 */
+	public function getStatus()
+	{
+		if ($this->status === null && $this->hasInternalValue('status')) {
+			$list = StoreOrderStatusList::statuses();
+			$this->status = $list->getById($this->getInternalValue('status'));
+		}
+
+		return $this->status;
+	}
+
+	// }}}
+	// {{{ public function setStatus()
+
+	public function setStatus(StoreOrderStatus $status)
+	{
+		$this->status = $status;
+		$this->setInternalValue('status', $status->id);
+	}
+
+	// }}}
 	// {{{ public function isBillable()
 
 	/**
@@ -289,7 +290,7 @@ class StoreOrder extends StoreDataObject
 	public function isBillable()
 	{
 		return (!$this->cancelled &&
-			$this->status == self::STATUS_AUTHORIZED);
+			$this->getStatus() === StoreOrderStatusList::status('authorized'));
 	}
 
 	// }}}
@@ -306,7 +307,8 @@ class StoreOrder extends StoreDataObject
 	 */
 	public function isShippable()
 	{
-		return (!$this->cancelled && $this->status == self::STATUS_BILLED);
+		return (!$this->cancelled &&
+			$this->getStatus() === StoreOrderStatusList::status('billed'));
 	}
 
 	// }}}
