@@ -40,24 +40,26 @@ class StoreTransactionStatusCellRenderer extends SwatCellRenderer
 
 	public function render()
 	{
-		switch ($this->status) {
-		case (StorePaymentTransaction::STATUS_PASSED):
+		switch (true) {
+		case ($this->status === StorePaymentTransaction::STATUS_PASSED):
 			$css_class = 'store-transaction-status-cell-renderer-passed';
 			$title = Store::_('passed');
 			break;
-		case (StorePaymentTransaction::STATUS_FAILED):
+		case ($this->status === StorePaymentTransaction::STATUS_FAILED):
 			$css_class = 'store-transaction-status-cell-renderer-failed';
 			$title = Store::_('failed');
 			break;
-		case (StorePaymentTransaction::STATUS_NOTCHECKED):
+		case ($this->status === StorePaymentTransaction::STATUS_NOTCHECKED):
 			$css_class = 'store-transaction-status-cell-renderer-not-checked';
 			$title = Store::_('not checked');
 			break;
-		case (StorePaymentTransaction::STATUS_MISSING):
-		default:
+		case ($this->status === StorePaymentTransaction::STATUS_MISSING):
 			$css_class = 'store-transaction-status-cell-renderer-missing';
 			$title = Store::_('not provided');
 			break;
+		default:
+			$css_class = 'swat-none';
+			$title = '—';
 		}
 
 		$span_tag = new SwatHtmlTag('span');
