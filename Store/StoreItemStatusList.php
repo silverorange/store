@@ -7,12 +7,15 @@ require_once 'Store/StoreClassMap.php';
 /**
  * A list of {@link StoreItemStatus} objects
  *
- * This list contains all available item statuses and has methods to get
- * patticular statuses.
+ * This list defines all item statuses and has methods to get a particular
+ * status.
  *
- * By default, two statuses are defined: 'available' and 'outofstock'. If
- * Site code needs additional statuses if should subclass this class and
- * add statuses in the {@link StoreItemStatusList::getDefinedStatuses()}
+ * By default, the following item statuses are defined:
+ * - 'available'
+ * - 'outofstock'
+ *
+ * If site code needs different or additional statuses it should subclass this
+ * class and override the {@link StoreItemStatusList::getDefinedStatuses()}
  * method.
  *
  * @package   Store
