@@ -102,7 +102,7 @@ class StoreOrderStatusCellRenderer extends SwatCellRenderer
 		}
 
 		if ($this->show_summary) {
-			echo '<br />';
+			echo '&nbsp;';
 			echo SwatString::minimizeEntities($this->status->title);
 			if ($this->cancelled)
 				printf('&nbsp;<strong>(%s)</strong>', Store::_('cancelled'));
