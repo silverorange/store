@@ -38,6 +38,13 @@ class StoreOrderStatusCellRenderer extends SwatCellRenderer
 	 */
 	public $max_status = StoreOrder::STATUS_COMPLETE;
 
+	/**
+	 * Whether or not to render a textual summary of the current order status
+	 *
+	 * @var boolean
+	 */
+	public $show_summary = true;
+
 	// }}}
 	// {{{ public function __construct()
 
@@ -80,14 +87,16 @@ class StoreOrderStatusCellRenderer extends SwatCellRenderer
 			$incomplete_img_tag->display();
 		}
 
-		echo '<br />';
+		if ($this->show_summary) {
+			echo '<br />';
 
-		$current_status = 'test'; //TODO
-		echo SwatString::minimizeEntities($current_status);
-		if ($this->cancelled)
-			printf('&nbsp;(%s)', Store::_('cancelled'));
+			$current_status = 'test'; //TODO
 
+			echo SwatString::minimizeEntities($current_status);
+			if ($this->cancelled)
+				printf('&nbsp;(%s)', Store::_('cancelled'));
 		}
+	}
 
 	// }}}
 }
