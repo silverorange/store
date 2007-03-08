@@ -51,16 +51,6 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
 	protected $statuses = array();
 
 	// }}}
-	// {{{ public function __construct()
-
-	public function __construct()
-	{
-		foreach ($this->getDefinedStatuses() as $status) {
-			$this->add($status);
-		}
-	}
-
-	// }}}
 	// {{{ public function getById()
 
 	/**
@@ -216,6 +206,16 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
 	 *                defined statuses for this class of list.
 	 */
 	abstract protected function getDefinedStatuses();
+
+	// }}}
+	// {{{ protected final function __construct()
+
+	protected final function __construct()
+	{
+		foreach ($this->getDefinedStatuses() as $status) {
+			$this->add($status);
+		}
+	}
 
 	// }}}
 }
