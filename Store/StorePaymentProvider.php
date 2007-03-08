@@ -202,6 +202,9 @@ abstract class StorePaymentProvider
 	 *                                              returned by
 	 *                                              {@link StorePaymentProvider::hold()}.
 	 *
+	 * @return StorePaymentTransaction a transaction object representing the
+	 *                                  released transaction.
+	 *
 	 * @see StorePaymentProvider::hold()
 	 */
 	public function release(StorePaymentTransaction $transaction)
@@ -228,6 +231,9 @@ abstract class StorePaymentProvider
 	 *                                              should be a transaction
 	 *                                              returned by
 	 *                                              {@link StorePaymentProvider::hold()}.
+	 *
+	 * @return StorePaymentTransaction a transaction object representing the
+	 *                                  aborted transaction.
 	 *
 	 * @see StorePaymentProvider::hold()
 	 */
@@ -281,6 +287,9 @@ abstract class StorePaymentProvider
 	 *                                             transaction returned from a
 	 *                                             {@link StorePaymentProvider::vefiry()}
 	 *                                             call.
+	 *
+	 * @return StorePaymentTransaction a transaction object representing the
+	 *                                  verified payment transaction.
 	 *
 	 * @see StorePaymentProvider::verify()
 	 */
@@ -342,6 +351,9 @@ abstract class StorePaymentProvider
 	 * If this method does not throw an exception, the void was successful.
 	 *
 	 * @param StorePaymentTransaction $transaction the tranaction to void.
+	 *
+	 * @return StorePaymentTransaction a transaction object representing the
+	 *                                  voided transaction.
 	 */
 	public function void(StorePaymentTransaction $transaction)
 	{
