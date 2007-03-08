@@ -31,13 +31,6 @@ class StoreOrderStatusCellRenderer extends SwatCellRenderer
 	public $cancelled = false;
 
 	/**
-	 * The largest possible order status (complete)
-	 *
-	 * @var integer
-	 */
-	public $max_status = StoreOrder::STATUS_COMPLETE;
-
-	/**
 	 * Whether or not to render a textual summary of the current order status
 	 *
 	 * @var boolean
