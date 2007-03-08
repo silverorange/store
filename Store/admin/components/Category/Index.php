@@ -357,7 +357,7 @@ class StoreCategoryIndex extends AdminIndex
 		// setup the flydowns for status actions
 		$products_status = $this->ui->getWidget('products_status');
 		$categories_status = $this->ui->getWidget('categories_status');
-		foreach (StoreItemStatusList::statuses() as $status) {
+		foreach ($this->getItemStatuses() as $status) {
 			$products_status->addOption(
 				new SwatOption($status->id, $status->title));
 
@@ -402,6 +402,14 @@ class StoreCategoryIndex extends AdminIndex
 		case 'featured_products_index_view':
 			return $this->getFeaturedProductTableStore($view);
 		}
+	}
+
+	// }}}
+	// {{{ protected function getItemStatuses()
+
+	protected function getItemStatuses()
+	{
+		return StoreItemStatusList::statuses();
 	}
 
 	// }}}
