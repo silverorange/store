@@ -85,7 +85,7 @@ class StoreArticleEdit extends AdminDBEdit
 
 	protected function validateShortname($shortname)
 	{
-		$sql = 'select shortname from Article 
+		$sql = 'select shortname from Article
 				where shortname = %s and parent %s %s and id %s %s';
 
 		$sql = sprintf($sql,
@@ -184,6 +184,10 @@ class StoreArticleEdit extends AdminDBEdit
 		$regions = $this->ui->getWidget('regions');
 		$regions->options = SwatDB::getOptionArray($this->app->db,
 			'Region', 'text:title', 'integer:id');
+
+		//default region visibility
+		if ($this->id === null)
+			$regions->values = array_flip($regions->options);
 	}
 
 	// }}}
