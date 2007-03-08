@@ -600,9 +600,7 @@ class StoreProductDetails extends AdminIndex
 		$input_status->content =
 			StoreItemStatusList::status('available')->title;
 
-		foreach (StoreItemStatusList::statuses() as $status)
-			$this->ui->getWidget('status')->addOption(
-				new SwatOption($status->id, $status->title));
+		$this->buildStatusList();
 
 		// setup the flydowns for enabled/disabled actions
 		$regions = SwatDB::getOptionArray($this->app->db, 'Region', 'title',
@@ -619,6 +617,16 @@ class StoreProductDetails extends AdminIndex
 
 		$this->buildCategoryToolBarLinks($toolbar);
 		$this->buildCategoryTableViewLinks($view);
+	}
+
+	// }}}
+	// {{{ protected function buildStatusList()
+
+	protected function buildStatusList()
+	{
+		foreach (StoreItemStatusList::statuses() as $status)
+			$this->ui->getWidget('status')->addOption(
+				new SwatOption($status->id, $status->title));
 	}
 
 	// }}}
