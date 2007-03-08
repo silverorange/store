@@ -166,6 +166,9 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	 *                                              should be a transaction
 	 *                                              returned by
 	 *                                              {@link StorePaymentProvider::hold()}.
+	 *
+	 * @return StorePaymentTransaction a transaction object representing the
+	 *                                  released transaction.
 	 */
 	public function release(StorePaymentTransaction $transaction) 
 	{
@@ -183,6 +186,15 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$request->setFields($fields);
 		$response = $request->process();
 		$this->checkResponse($response);
+
+		$release_transaction = new StorePaymentTransaction();
+		$release_transaction->createdate = new SwatDate();
+		$release_transaction->createdate->toUTC();
+		$release_transaction->ordernum = $transaction->order->id;
+		$release_transaction->request_type = StorePaymentRequest::TYPE_RELEASE;
+		$release_transaction->transaction_id = $transaction->transaction_id;
+
+		return $release_transaction;
 	}
 
 	// }}}
@@ -201,6 +213,9 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	 *                                              should be a transaction
 	 *                                              returned by
 	 *                                              {@link StorePaymentProvider::hold()}.
+	 *
+	 * @return StorePaymentTransaction a transaction object representing the
+	 *                                  aborted transaction.
 	 */
 	public function abort(StorePaymentTransaction $transaction)
 	{
@@ -218,6 +233,15 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$request->setFields($fields);
 		$response = $request->process();
 		$this->checkResponse($response);
+
+		$abort_transaction = new StorePaymentTransaction();
+		$abort_transaction->createdate = new SwatDate();
+		$abort_transaction->createdate->toUTC();
+		$abort_transaction->ordernum = $transaction->order->id;
+		$abort_transaction->request_type = StorePaymentRequest::TYPE_ABORT;
+		$abort_transaction->transaction_id = $transaction->transaction_id;
+
+		return $abort_transaction;
 	}
 
 	// }}}
@@ -308,6 +332,9 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	 * If this method does not throw an exception, the void was successful.
 	 *
 	 * @param StorePaymentTransaction $transaction the tranaction to void.
+	 *
+	 * @return StorePaymentTransaction a transaction object representing the
+	 *                                  voided transaction.
 	 */
 	public function void(StorePaymentTransaction $transaction)
 	{
@@ -325,6 +352,15 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$request->setFields($fields);
 		$response = $request->process();
 		$this->checkResponse($response);
+
+		$void_transaction = new StorePaymentTransaction();
+		$void_transaction->createdate = new SwatDate();
+		$void_transaction->createdate->toUTC();
+		$void_transaction->ordernum = $transaction->order->id;
+		$void_transaction->request_type = StorePaymentRequest::TYPE_VOID;
+		$void_transaction->transaction_id = $transaction->transaction_id;
+
+		return $void_transaction;
 	}
 
 	// }}}
