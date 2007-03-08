@@ -25,6 +25,13 @@ class StoreOrderStatusCellRenderer extends SwatCellRenderer
 	public $status = StoreOrder::STATUS_INITIALIZED;
 
 	/**
+	 * Whether or not the order is cancelled
+	 *
+	 * @var boolean
+	 */
+	public $cancelled = false;
+
+	/**
 	 * The largest possible order status (complete)
 	 *
 	 * @var integer
@@ -77,7 +84,10 @@ class StoreOrderStatusCellRenderer extends SwatCellRenderer
 
 		$current_status = 'test'; //TODO
 		echo SwatString::minimizeEntities($current_status);
-	}
+		if ($this->cancelled)
+			printf('&nbsp;(%s)', Store::_('cancelled'));
+
+		}
 
 	// }}}
 }
