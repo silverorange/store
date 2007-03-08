@@ -361,6 +361,28 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	}
 
 	// }}}
+	// {{{ protected function getReleaseRequiredFields()
+
+	/**
+	 * Gets a list of protocol-specific fields that are required for a release
+	 *
+	 * See the VSP Direct Integration Guidelines document for details.
+	 *
+	 * @return array a list of protocol-specific fields that are required for
+	 *                a release.
+	 */
+	protected function getReleaseRequiredFields()
+	{
+		static $release_required_fields = array(
+			'VPSTxId',
+			'SecurityKey',
+			'TxAuthNo',
+		);
+
+		return $release_required_fields;
+	}
+
+	// }}}
 	// {{{ protected function getAbortRequiredFields()
 
 	/**
