@@ -190,7 +190,9 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$release_transaction = new StorePaymentTransaction();
 		$release_transaction->createdate = new SwatDate();
 		$release_transaction->createdate->toUTC();
-		$release_transaction->ordernum = $transaction->order->id;
+		$release_transaction->ordernum =
+			$transaction->getInternalValue('ordernum');
+
 		$release_transaction->request_type = StorePaymentRequest::TYPE_RELEASE;
 		$release_transaction->transaction_id = $transaction->transaction_id;
 
@@ -237,7 +239,9 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$abort_transaction = new StorePaymentTransaction();
 		$abort_transaction->createdate = new SwatDate();
 		$abort_transaction->createdate->toUTC();
-		$abort_transaction->ordernum = $transaction->order->id;
+		$abort_transaction->ordernum =
+			$transaction->getInternalValue('ordernum');
+
 		$abort_transaction->request_type = StorePaymentRequest::TYPE_ABORT;
 		$abort_transaction->transaction_id = $transaction->transaction_id;
 
@@ -290,7 +294,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 			'Currency'            => $this->currency,
 			'Description'         => $description,
 			'RelatedVPSTxId'      => $transaction->transaction_id,
-			'RelatedVendorTxCode' => $transaction->order->id,
+			'RelatedVendorTxCode' => $transaction->ordernum->id,
 			'RelatedSecurityKey'  => $transaction->security_key,
 			'RelatedTxAuthNo'     => $transaction->authorization_code,
 		);
@@ -356,7 +360,9 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$void_transaction = new StorePaymentTransaction();
 		$void_transaction->createdate = new SwatDate();
 		$void_transaction->createdate->toUTC();
-		$void_transaction->ordernum = $transaction->order->id;
+		$void_transaction->ordernum =
+			$transaction->getInternalValue('ordernum');
+
 		$void_transaction->request_type = StorePaymentRequest::TYPE_VOID;
 		$void_transaction->transaction_id = $transaction->transaction_id;
 
