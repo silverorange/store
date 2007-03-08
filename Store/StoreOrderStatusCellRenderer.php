@@ -1,6 +1,8 @@
 <?php
 
 require_once 'Swat/SwatCellRenderer.php';
+require_once 'Store/StoreOrderStatus.php';
+require_once 'Store/StoreOrderStatusList.php';
 require_once 'Store/dataobjects/StoreOrder.php';
 
 /**
@@ -17,12 +19,9 @@ class StoreOrderStatusCellRenderer extends SwatCellRenderer
 	/**
 	 * The status to render
 	 *
-	 * Should be one of the {@link StoreOrder}::STATUS_* constants. Is
-	 * Is {@link StoreOrder::STATUS_INITIALIZED} by default.
-	 *
-	 * @var integer
+	 * @var StoreOrderStatus
 	 */
-	public $status = StoreOrder::STATUS_INITIALIZED;
+	public $status;
 
 	/**
 	 * Whether or not the order is cancelled
@@ -70,10 +69,6 @@ class StoreOrderStatusCellRenderer extends SwatCellRenderer
 		$complete_img_tag->alt = Store::_('complete');
 		$complete_img_tag->width = 20;
 		$complete_img_tag->height = 10;
-		for ($i = 0; $i < $this->status; $i++) {
-			$complete_img_tag->title = ''; //TODO
-			$complete_img_tag->display();
-		}
 
 		$incomplete_img_tag = new SwatHtmlTag('img');
 		$incomplete_img_tag->src =
@@ -82,19 +77,35 @@ class StoreOrderStatusCellRenderer extends SwatCellRenderer
 		$incomplete_img_tag->alt = Store::_('incomplete');
 		$incomplete_img_tag->width = 20;
 		$incomplete_img_tag->height = 10;
-		for ($i = $this->status; $i < $this->max_status; $i++) {
-			$incomplete_img_tag->title = ''; //TODO
-			$incomplete_img_tag->display();
+
+		$completed = true;
+		$first = true;
+
+		foreach (StoreOrderStatusList::statuses() as $status) {
+			if ($first) {
+				// ignore first status (initialized)
+				$first = false;
+			} else {
+				if ($completed) {
+					$complete_img_tag->title = $status->title;
+					$complete_img_tag->display();
+				} else {
+					$incomplete_img_tag->title = $status->title;
+					$incomplete_img_tag->display();
+				}
+			}
+
+			// Order statuses are progressive. Once we reach the current
+			// status, subsequent statuses are incomplete.
+			if ($status === $this->status)
+				$completed = false;
 		}
 
 		if ($this->show_summary) {
 			echo '<br />';
-
-			$current_status = 'test'; //TODO
-
-			echo SwatString::minimizeEntities($current_status);
+			echo SwatString::minimizeEntities($this->status->title);
 			if ($this->cancelled)
-				printf('&nbsp;(%s)', Store::_('cancelled'));
+				printf('&nbsp;<strong>(%s)</strong>', Store::_('cancelled'));
 		}
 	}
 
