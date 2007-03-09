@@ -185,7 +185,7 @@ class StoreArticleEdit extends AdminDBEdit
 		$regions->options = SwatDB::getOptionArray($this->app->db,
 			'Region', 'text:title', 'integer:id');
 
-		//default region visibility
+		// default region visibility
 		if ($this->id === null)
 			$regions->values = array_flip($regions->options);
 	}
