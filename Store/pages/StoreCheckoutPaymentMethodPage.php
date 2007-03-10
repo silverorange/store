@@ -9,7 +9,8 @@ require_once 'Store/dataobjects/StorePaymentTypeWrapper.php';
  * Payment method edit page of checkout
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2007 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 {
@@ -28,6 +29,8 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	public function preProcessCommon()
 	{
+		// TODO: set debit card fields as required when a debit card is used
+
 		$method_list = $this->ui->getWidget('payment_method_list');
 		$method_list->process();
 
@@ -44,6 +47,16 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	public function processCommon()
 	{
+		// make sure expiry date is after (or equal) to the inception date
+		$card_expiry = $this->ui->getWidget('credit_card_expiry');
+		$card_inception = $this->ui->getWidget('card_inception');
+		if ($card_expiry->value !== null && $card_inception->value !== null &&
+			Date::compare($card_expiry->value, $card_inception->value) < 0) {
+			$card_expiry->addMessage(new SwatMessage(Store::_(
+				'The card expiry date must be after the card inception date.'),
+				SwatMessage::ERROR));
+		}
+
 		if ($this->ui->getWidget('form')->hasMessage())
 			return;
 
