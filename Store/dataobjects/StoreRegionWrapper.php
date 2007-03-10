@@ -27,7 +27,7 @@ class StoreRegionWrapper extends StoreRecordsetWrapper
 
 	protected function init()
 	{
-		parent::init();:
+		parent::init();
 
 		$this->row_wrapper_class =
 			$this->class_map->resolveClass('StoreRegion');
