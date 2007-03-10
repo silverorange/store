@@ -92,6 +92,19 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutUIPage
 	// }}}
 	// {{{ public function preProcessCommon()
 
+	/**
+	 * Sets up additional properties on this checkout edit page to allow
+	 * proper processing of data
+	 *
+	 * This method is only called when the form on this edit page is submitted.
+	 *
+	 * Subclasses may connect dependent widgets and initialize additional
+	 * widget processing properties by overriding and implementing this method.
+	 * A subclass could, for example, set certain widgets as either required or
+	 * not required in this method.
+	 *
+	 * By default, no additional processing setup is performed.
+	 */
 	public function preProcessCommon()
 	{
 	}
@@ -99,6 +112,14 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutUIPage
 	// }}}
 	// {{{ public function processCommon()
 
+	/**
+	 * Processes the data submitted by this checkout edit page
+	 *
+	 * Subclasses may add additional validation code here and update checkout
+	 * objects by overriding and implementing this method.
+	 *
+	 * By default, no additional processing is performed.
+	 */
 	public function processCommon()
 	{
 	}
