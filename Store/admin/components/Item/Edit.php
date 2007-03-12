@@ -210,7 +210,7 @@ class StoreItemEdit extends AdminDBEdit
 		$delete_sql = sprintf($delete_sql,
 			$this->app->db->quote($this->id, 'integer'));
 
-		SwatDB::query($this->app->db, $delete_sql);
+		SwatDB::exec($this->app->db, $delete_sql);
 
 		$insert_sql = 'insert into ItemRegionBinding 
 			(item, region, price, enabled)
