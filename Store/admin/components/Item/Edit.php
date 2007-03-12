@@ -49,9 +49,9 @@ class StoreItemEdit extends AdminDBEdit
 			'packages/store/admin/javascript/store-item-edit-page.js',
 			Store::PACKAGE_ID));
 
-		// TODO: move this style to Store
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'styles/item-edit-page.css', Store::PACKAGE_ID));
+			'packages/store/admin/styles/store-item-edit-page.css',
+			Store::PACKAGE_ID));
 
 		$this->fields = array('description', 'sku', 'integer:status');
 
