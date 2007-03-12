@@ -8,7 +8,7 @@ function StoreCheckoutPaymentMethodPage(id)
 	// set up event handlers
 	for (var i = 0; i < this.list.length; i++) {
 		YAHOO.util.Event.addListener(this.list[i], 'click',
-			SwatCheckoutPaymentMethodPage.handlePaymentMethodClick, this);
+			StoreCheckoutPaymentMethodPage.handlePaymentMethodClick, this);
 	}
 
 	this.fields = [
