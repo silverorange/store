@@ -185,12 +185,12 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$method_list = $this->ui->getWidget('payment_method_list');
 
 		if ($method_list->visible) {
+			$path = 'packages/store/javascript/';
 			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-				'packages/store/javascript/store-checkout-page.js',
-				Store::PACKAGE_ID));
+				$path.'store-checkout-page.js', Store::PACKAGE_ID));
 
 			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-				'packages/store/javascript/store-checkout-payment-method.js',
+				$path.'store-checkout-payment-method-page.js',
 				Store::PACKAGE_ID));
 
 			$this->layout->startCapture('content');
@@ -356,11 +356,11 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	protected function displayJavaScript()
 	{
 		$id = 'checkout_payment_method';
-		echo '<script type="text/javascript">'."\n";
-		printf("var %s_obj = new StoreCheckoutPaymentMethod('%s');\n",
+		echo '<script type="text/javascript">', "\n// <![CDATA[\n";
+		printf("\nvar %s_obj = new StoreCheckoutPaymentMethodPage('%s');",
 			$id, $id);
 
-		echo '</script>';
+		echo "\n// ]]>\n</script>";
 	}
 
 	// }}}
