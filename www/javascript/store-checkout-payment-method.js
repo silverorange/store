@@ -1,35 +1,25 @@
-function StoreCheckoutPaymentMethod(id)
+function StoreCheckoutPaymentMethodPage(id)
 {
 	this.id = id;
-	this.sensitive = null;
 	this.container = document.getElementById('payment_method_container');
 	this.list = document.getElementsByName('payment_method_list');
 	this.list_new = document.getElementById('payment_method_list_new');
 
-	var is_ie = (document.addEventListener) ? false: true;
-	var self = this;
-
-	function clickHandler(event)
-	{
-		if (self.list_new.checked)
-			self.sensitize();
-		else if (self.sensitive || self.sensitive == null)
-			self.desensitize();
-	}
-
 	// set up event handlers
 	for (var i = 0; i < this.list.length; i++) {
-		if (is_ie)
-			this.list[i].attachEvent('onclick', clickHandler);
-		else
-			this.list[i].addEventListener('click', clickHandler, true);
+		YAHOO.util.Event.addListener(this.list[i], 'click',
+			SwatCheckoutPaymentMethodPage.handlePaymentMethodClick, this);
 	}
 
 	this.fields = [
 		'payment_type',
 		'credit_card_number',
+		'card_verification_value',
+		'card_issue_number',
 		'credit_card_expiry_month',
 		'credit_card_expiry_year',
+		'card_inception_month',
+		'card_inception_year',
 		'credit_card_fullname'
 	];
 
@@ -39,28 +29,39 @@ function StoreCheckoutPaymentMethod(id)
 	for (var i = 0; i < payment_type_options.length; i++)
 		this.fields.push(payment_type_options[i].id);
 
-	// initialize state
-	if (this.list_new.checked)
+	this.updateFields();
+}
+
+StoreCheckoutPaymentMethodPage.handlePaymentMethodClick = function(event, page)
+{
+	page.updateFields();
+}
+
+StoreCheckoutPaymentMethodPage.prototype.updateFields = function()
+{
+	if (this.isSensitive()) 
 		this.sensitize();
 	else
 		this.desensitize();
 }
 
-StoreCheckoutPaymentMethod.prototype.sensitize = function()
+StoreCheckoutPaymentMethodPage.prototype.isSensitive = function()
 {
-	if (this.container)
-		this.container.className = this.container.className.replace(
-			/ *swat-insensitive/, '');
-
-	StoreCheckoutPage_sensitizeFields(this.fields);
-	this.sensitive = true;
+	return this.list_new.checked;
 }
 
-StoreCheckoutPaymentMethod.prototype.desensitize = function()
+StoreCheckoutPaymentMethodPage.prototype.sensitize = function()
 {
 	if (this.container)
-		this.container.className += ' swat-insensitive';
+		YAHOO.util.Dom.removeClass(this.container, 'swat-insensitive');
+
+	StoreCheckoutPage_sensitizeFields(this.fields);
+}
+
+StoreCheckoutPaymentMethodPage.prototype.desensitize = function()
+{
+	if (this.container)
+		YAHOO.util.Dom.addClass(this.container, 'swat-insensitive');
 
 	StoreCheckoutPage_desensitizeFields(this.fields);
-	this.sensitive = false;
 }
