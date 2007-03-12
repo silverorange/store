@@ -20,7 +20,8 @@ function StoreCheckoutPaymentMethodPage(id)
 		'credit_card_expiry_year',
 		'card_inception_month',
 		'card_inception_year',
-		'credit_card_fullname'
+		'credit_card_fullname',
+		'save_account_payment_method'
 	];
 
 	var payment_type_options =
