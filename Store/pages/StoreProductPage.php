@@ -152,11 +152,9 @@ class StoreProductPage extends StoreStorePage
 		$ds->is_available = $item->isAvailableInRegion($this->app->getRegion());
 				
 		$ds->status = '';
-
-		// TODO: make this properly use StoreItem
 		if (!$ds->is_available)
 			$ds->status = sprintf('<span class="item-status">%s</span>',
-				Item::getStatusTitle($item->status));
+				$item->getStatus()->title);
 
 		$ds->price = $item->getPrice();
 		
