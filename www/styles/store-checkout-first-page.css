@@ -73,15 +73,15 @@
 	margin: 0;
 }
 
-#payment_method_container p.smallprint {
+#payment_method_container p.small-print {
 	margin: 0;
 }
 
-#payment_method_container .smallprint a:link,
-#payment_method_container .smallprint a:visited {
+#payment_method_container .small-print a:link,
+#payment_method_container .small-print a:visited {
 	color: #91916E;
 }
 
-#payment_method_container .smallprint a:hover {
+#payment_method_container .small-print a:hover {
 	color: #3B4D84;
 }

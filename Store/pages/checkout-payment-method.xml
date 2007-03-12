@@ -61,7 +61,7 @@
 			</widget>
 		</widget>
 		<widget class="SwatContentBlock" id="payment_method_note">
-			<property name="content" translatable="yes"><![CDATA[<p class="smallprint">As you have opted to checkout as a guest, your credit card information will <em>not</em> be saved for future visits to the website. See our <a href="about/website/privacy">privacy &amp; security policy</a> for more information about how your information will be used.</p>]]></property>
+			<property name="content" translatable="yes"><![CDATA[<p class="small-print">As you have opted to checkout as a guest, your credit card information will <em>not</em> be saved for future visits to the website. See our <a href="about/website/privacy">privacy &amp; security policy</a> for more information about how your information will be used.</p>]]></property>
 			<property name="content_type">text/xml</property>
 		</widget>
 	</widget>
