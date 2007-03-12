@@ -5,6 +5,8 @@ require_once 'Store/dataobjects/StoreQuantityDiscountWrapper.php';
 require_once 'Store/dataobjects/StoreItemRegionBindingWrapper.php';
 require_once 'Store/dataobjects/StoreItemGroup.php';
 require_once 'Store/dataobjects/StoreRegion.php';
+require_once 'Store/StoreItemStatus.php';
+require_once 'Store/StoreItemStatusList.php';
 
 /**
  * An item for an e-commerce web application
@@ -41,23 +43,6 @@ require_once 'Store/dataobjects/StoreRegion.php';
  */
 abstract class StoreItem extends StoreDataObject
 {
-	// {{{ constants
-
-	/**
-	 * Shown on site and available for order
-	 *
-	 * No special note is displayed.
-	 */
-	//const STATUS_AVAILABLE;
-
-	/**
-	 * Shown on the site but unavailable for ordering
-	 *
-	 * Items are displayed with a note indicating the item is not in stock.
-	 */
-	//const STATUS_OUT_OF_STOCK;
-
-	// }}}
 	// {{{ public properties
 
 	/**
@@ -87,13 +72,6 @@ abstract class StoreItem extends StoreDataObject
 	 * @var integer
 	 */
 	public $displayorder;
-
-	/**
-	 * The status of an item - backordered, etc
-	 *
-	 * @var integer
-	 */
-	public $status;
 
 	// }}}
 	// {{{ protected properties
@@ -134,6 +112,16 @@ abstract class StoreItem extends StoreDataObject
 	 * @var array
 	 */
 	protected $is_available = array();
+
+	/**
+	 * The status of an item - backordered, etc
+	 *
+	 * @var StoreItemStatus
+	 *
+	 * @see StoreItem::getStatus()
+	 * @see StoreItem::setStatus()
+	 */
+	protected $status;
 
 	// }}}
 	// {{{ public function setRegion()
@@ -302,17 +290,7 @@ abstract class StoreItem extends StoreDataObject
 	}
 
 	// }}}
-	// {{{ abstract public function getStatusText()
-
-	/**
-	 * Gets a textual description of this item's status
-	 *
-	 * @return string a textual description of this item's status.
-	 */
-	abstract public function getStatusText();
-
-	// }}}
-	// {{{ abstract public function hasAvailableStatus()
+	// {{{ public function hasAvailableStatus()
 
 	/**
 	 * Gets whether or not this item has a status which makes this item
@@ -322,7 +300,11 @@ abstract class StoreItem extends StoreDataObject
 	 *                  purchase and false if this item has a status making it
 	 *                  unavailable for purchase.
 	 */
-	abstract public function hasAvailableStatus();
+	public function hasAvailableStatus()
+	{
+		return
+			($this->getStatus() === StoreItemStatusList::status('available'));
+	}
 
 	// }}}
 	// {{{ abstract public function getDescription()
@@ -399,10 +381,39 @@ abstract class StoreItem extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ public function getStatus()
+
+	/** 
+	 * Gets the status of this item
+	 *
+	 * @return StoreItemStatus the status of this item or null if this item's
+	 *                          status is undefined.
+	 */
+	public function getStatus()
+	{
+		if ($this->status === null && $this->hasInternalValue('status')) {
+			$list = StoreItemStatusList::statuses();
+			$this->status = $list->getById($this->getInternalValue('status'));
+		}
+
+		return $this->status;
+	}
+
+	// }}}
+	// {{{ public function setStatus()
+
+	public function setStatus(StoreItemStatus $status)
+	{
+		$this->status = $status;
+		$this->setInternalValue('status', $status->id);
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
 	{
+		$this->registerInternalProperty('status');
 		$this->registerInternalProperty('product',
 			$this->class_map->resolveClass('StoreProduct'));
 
