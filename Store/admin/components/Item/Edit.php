@@ -338,18 +338,18 @@ class StoreItemEdit extends AdminDBEdit
 
 	// }}}
 	// {{{ private function loadReplicators()
+
 	private function loadReplicators()
 	{
 		$price_replicator = $this->ui->getWidget('price_replicator');
 
-		$sql = 'select Region.id as region, price, enabled
+		$sql = sprintf('select Region.id as region, price, enabled
 			from Region
 			left outer join ItemRegionBinding on
 				ItemRegionBinding.region = Region.id
-				and item = %s
-			order by Region.id';
+				and item = %s'.;
+			$this->app->db->quote($this->id, 'integer'));
 
-		$sql = sprintf($sql, $this->app->db->quote($this->id, 'integer'));
 		$rs = SwatDB::query($this->app->db, $sql);
 		foreach ($rs as $row) {
 			$price_replicator->getWidget('price', $row->region)->value =
@@ -359,6 +359,7 @@ class StoreItemEdit extends AdminDBEdit
 				$row->enabled;
 		}
 	}
+
 	// }}}
 }
 
