@@ -347,7 +347,7 @@ class StoreItemEdit extends AdminDBEdit
 			from Region
 			left outer join ItemRegionBinding on
 				ItemRegionBinding.region = Region.id
-				and item = %s'.;
+				and item = %s',
 			$this->app->db->quote($this->id, 'integer'));
 
 		$rs = SwatDB::query($this->app->db, $sql);
