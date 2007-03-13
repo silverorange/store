@@ -7,7 +7,7 @@
 #quick_search_form div.swat-form-field {
 	padding: 0.5em;
 	margin: 1px;
-	background: #f8f6f0 url(../packages/swat/images/swat-toolbar-background.png) bottom left repeat-x;
+	background: #f8f6f0;
 }
 
 #quick_search_form label {
