@@ -3,14 +3,23 @@
 require_once 'Swat/SwatDetailsStore.php';
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatWidgetCellRenderer.php';
+
 require_once 'Site/exceptions/SiteNotFoundException.php';
-require_once 'Store/StoreUI.php';
+
+require_once 'Store/dataobjects/StoreCartEntry.php';
+require_once 'Store/dataobjects/StoreItem.php';
 require_once 'Store/pages/StoreAccountPage.php';
 require_once 'Store/StoreShippingAddressCellRenderer.php';
+require_once 'Store/StoreUI.php';
 
 /**
+ * Page to display old orders placed using an account
+ *
+ * Items in old orders can be added to the checkout card from this page.
+ *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountOrderPage extends StoreAccountPage
 {
@@ -122,14 +131,20 @@ class StoreAccountOrderPage extends StoreAccountPage
 	// }}}
 	// {{{ protected function addItem()
 
-	protected function addItem($item_id, $order_item)
+	/**
+	 * @return StoreCartEntry the entry that was added.
+	 */
+	protected function addItem($item_id, StoreOrderItem $order_item)
 	{
 		if ($item_id !== null) {
-			$cart_entry = new CartEntry();
+			$class_map = StoreClassMap::instance();
+			$cart_entry_class = $class_map->resolveClass('StoreCartEntry');
+			$cart_entry = new $cart_entry_class();
 			$cart_entry->account = $this->app->session->getAccountId();
 
 			// load item manually here so we can specify region
-			$item = new Item();
+			$item_class = $class_map->resolveClass('StoreItem');
+			$item = new $item_class();
 			$item->setDatabase($this->app->db);
 			$item->setRegion($this->app->getRegion());
 			$item->load($item_id);
@@ -184,10 +199,12 @@ class StoreAccountOrderPage extends StoreAccountPage
 	// }}}
 	// {{{ protected function findItem()
 
-	protected function findItem($order_item)
+	/**
+	 * @return integer
+	 */
+	protected function findItem(StoreOrderItem $order_item)
 	{
 		$item_id = $order_item->getAvailableItemId($this->app->getRegion());
-
 		return $item_id;
 	}
 
