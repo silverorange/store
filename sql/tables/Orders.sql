@@ -1,23 +1,23 @@
 create table Orders (
 	id serial,
-	account int default null references Account(id) on delete set null,
+	account integer default null references Account(id) on delete set null,
 	email varchar(255),
 	phone varchar(100),
 	comments text,
 	createdate timestamp not null,
-	status int not null default 1,
+	status integer not null default 1,
 	cancelled boolean not null default false,
 
-	billing_address int not null references OrderAddress(id),
-	shipping_address int not null references OrderAddress(id),
-	payment_method int not null references OrderPaymentMethod(id),
+	billing_address integer not null references OrderAddress(id),
+	shipping_address integer not null references OrderAddress(id),
+	payment_method integer not null references OrderPaymentMethod(id),
 
 	total numeric(11, 2) not null,
 	item_total numeric(11, 2) not null,
 	shipping_total numeric(11, 2) not null,
 	tax_total numeric(11, 2) not null,
 
-	ad int null references Ad(id),
+	ad integer null references Ad(id),
 	locale char(5) not null references Locale(id),
 
 	primary key (id)
