@@ -1,5 +1,488 @@
+2007-03-13  gauthierm
+
+	* [r15839] store/trunk/Store/pages/StoreAccountOrderPage.php:
+	  Tidy up account order page by adding type hinting and use class
+	  map
+
+2007-03-13  steven
+
+	* [r15826] store/trunk/www/admin/styles/store-quick-search.css:
+	  Remove broken image reference
+
+2007-03-12  gauthierm
+
+	* [r15815] store/trunk/www/admin/styles/store-item-edit-page.css:
+	  Remove Veseys-specific style.
+	* [r15813] store/trunk/Store/admin/components/Item/Edit.php:
+	  Fix parse error
+	* [r15812] store/trunk/Store/admin/components/Item/Edit.php:
+	  TODO TODONE
+	* [r15811] store/trunk/www/admin/styles/store-item-edit-page.css:
+	  Add item edit page CSS to Store package. There was a TODO for
+	  this.
+	* [r15810] store/trunk/Store/admin/components/Item/Edit.php:
+	  use exec instead of query for performing a db delete.
+	* [r15809] store/trunk/Store/admin/components/Item/Edit.php:
+	  orderby doesn't matter since we set the value by region
+	* [r15808] store/trunk/Store/dataobjects/StoreItem.php:
+	  New API for handling status on StoreItem dataobjects.
+	* [r15807] store/trunk/Store/pages/StoreProductPage.php:
+	  Use new item status API in store product page when getting
+	  status title.
+	* [r15804]
+	  store/trunk/www/javascript/store-checkout-payment-method-page.js:
+	  
+	  Add another field to store checkout payment method page js that
+	  is defined in Store.
+	* [r15803]
+	  store/trunk/www/javascript/store-checkout-payment-method-page.js:
+	  
+	  Fix typo.
+	* [r15801]
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php:
+	  Respect changes to the store checkout payment method page js in
+	  Store PHP
+	* [r15800]
+	  store/trunk/www/javascript/store-checkout-payment-method-page.js,
+	  store/trunk/www/javascript/store-checkout-payment-method.js:
+	  Make JavaScript filename use our normal naming convention for
+	  page-level js.
+	* [r15799]
+	  store/trunk/www/javascript/store-checkout-payment-method.js:
+	  Cleanup store checkout payment method page JavaScript and make
+	  it use YUI. This will make writing site-level JavaScript a lot
+	  easier in the future.
+
+2007-03-12  steven
+
+	* [r15788] store/trunk/www/styles/store-quick-order-page.css:
+	  CSS hex color case change
+	* [r15771] store/trunk/www/styles/store-checkout-first-page.css:
+	  moved these colors to the site-specific css
+	* [r15768]
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php,
+	  store/trunk/Store/pages/checkout-payment-method.xml,
+	  store/trunk/www/styles/store-checkout-first-page.css:
+	  Rename smallprint CSS class to small-print - for consisitacity
+
+2007-03-10  gauthierm
+
+	* [r15758] store/trunk/Store/dataobjects/StoreRegionWrapper.php:
+	  fix typo
+	* [r15757] store/trunk/Store/dataobjects/StoreRegionWrapper.php:
+	  Set index field on region wrapper
+	* [r15754] store/trunk/Store/pages/StoreCheckoutEditPage.php:
+	  Add some helpful docs
+	* [r15753]
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php:
+	  Make sure card inception date is on or before the expiry date.
+	  Fixes ticket #666.
+
+2007-03-09  gauthierm
+
+	* [r15736] store/trunk/Store/admin/components/Article/Edit.php:
+	  coding convention fixes
+	* [r15735] store/trunk/sql/tables/PaymentTransaction.sql:
+	  cascade delete payment transations when deleting orders.
+
+2007-03-08  gauthierm
+
+	* [r15733] store/trunk/Store/StoreOrderStatusCellRenderer.php:
+	  This cell renderer property is not needed anymore.
+	* [r15732] store/trunk/Store/admin/components/Item/Edit.php:
+	  require required file
+	* [r15731] store/trunk/Store/StoreItemStatusList.php:
+	  tidy docs
+	* [r15730] store/trunk/Store/StoreOrderStatusList.php:
+	  Define some default statuses to match documentation.
+	* [r15729] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Use order status object for order statuses instead of constants.
+	* [r15727] store/trunk/Store/StoreOrderStatusCellRenderer.php:
+	  display summary on the same line as graphics
+	* [r15726] store/trunk/Store/StoreOrderStatusCellRenderer.php:
+	  Make order status cell renderer use new order status objects and
+	  list.
+	* [r15724] store/trunk/Store/admin/components/Category/Index.php:
+	  Require required file.
+	* [r15723] store/trunk/Store/StoreOrderStatusList.php:
+	  Add status list for order statuses to Store.
+	* [r15722] store/trunk/Store/StoreItemStatusList.php,
+	  store/trunk/Store/StoreStatusList.php:
+	  Use a singleton pattern so there is only one instance of the
+	  list class.
+	* [r15721] store/trunk/Store/StoreItemStatusList.php,
+	  store/trunk/Store/StoreStatusList.php:
+	  Create an abstract base class for status lists and make the item
+	  status list extend the base list class.
+	* [r15720] store/trunk/Store/StoreOrderStatus.php:
+	  Object for order statuses
+	* [r15719] store/trunk/Store/StoreStatus.php:
+	  fix class name
+	* [r15718] store/trunk/Store/StoreItemStatus.php,
+	  store/trunk/Store/StoreStatus.php:
+	  Split majority of StoreItemStatus code into an abstract base
+	  class and remove the unuseful compare() and isEqual() methods
+	  (these methods were useful before item::getStatus() existed).
+	* [r15715] store/trunk/Store/StoreOrderStatusCellRenderer.php:
+	  Add a flag to control showing the summary on the order status
+	  cell renderer
+	* [r15714] store/trunk/Store/StoreOrderStatusCellRenderer.php:
+	  If order is cancelled, show that in the status cell renderer
+	* [r15713]
+	  store/trunk/www/images/store-order-status-cell-renderer-complete.png,
+	  
+	  store/trunk/www/images/store-order-status-cell-renderer-incomplete.png:
+	  
+	  Match admin hues better with order status images.
+	* [r15708]
+	  store/trunk/Store/StoreTransactionStatusCellRenderer.php:
+	  Rendere unknown statuses as a dash
+	* [r15706]
+	  store/trunk/Store/dataobjects/StorePaymentTransaction.php:
+	  Remove default values from transaction statuses since some
+	  request types don't involve avs checks.
+	* [r15705] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Set ordernum field correctly.
+	* [r15703] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  return transaction objects for all protx payment transactions.
+	* [r15702] store/trunk/Store/StorePaymentProvider.php:
+	  Return transaction objects from all payment provider methods.
+	* [r15700]
+	  store/trunk/Store/StorePaymentRequestTypeCellRenderer.php:
+	  Cell renderer to render payment request types
+	* [r15697] store/trunk/Store/StoreProtxPaymentRequest.php:
+	  Define required fields for a Protx VSP Direct release
+	  transaction.
+
+2007-03-08  isaac
+
+	* [r15691] store/trunk/Store/admin/components/Article/Edit.php:
+	  fix #690 and ws - store will need to be repackaged
+
+2007-03-08  gauthierm
+
+	* [r15686] store/trunk/Store/admin/components/Category/Index.php:
+	  Turns out subclasses were using this method I removed so I'm
+	  adding it back
+	* [r15681] store/trunk/Store/admin/components/Item/Edit.php:
+	  small cleanups to inline javascript in Store item edit page
+	* [r15678] store/trunk/Store/admin/components/Product/Details.php:
+	  Move building status list into a protected method
+	* [r15670] store/trunk/Store/admin/components/Item/Edit.php:
+	  Match r15669
+	* [r15669]
+	  store/trunk/www/admin/javascript/store-item-edit-page.js:
+	  Prefix item edit page JavaScript classes with Store.
+
+2007-03-07  gauthierm
+
+	* [r15665] store/trunk/Store/admin/components/Category/Index.php:
+	  Status change for categories has a confirmation page.
+	* [r15664]
+	  store/trunk/Store/admin/components/Category/ChangeItemStatus.php:
+	  
+	  Add helpful note
+	* [r15663]
+	  store/trunk/Store/admin/components/Category/ChangeItemStatus.php:
+	  
+	  Use new store item status list object on the category status
+	  change tool.
+	* [r15660] store/trunk/Store/admin/components/Category/Index.php,
+	  store/trunk/Store/admin/components/Item/Edit.php,
+	  store/trunk/Store/admin/components/Item/include/StoreItemStatusCellRenderer.php,
+	  store/trunk/Store/admin/components/Product/Details.php:
+	  Use new item status object and list for store admin tools. This
+	  simplifies a lot of things and fixes some bugs.
+	* [r15654] store/trunk/Store/StoreItemStatus.php,
+	  store/trunk/Store/StoreItemStatusList.php:
+	  New way of handling item statuses. Changes are required to the
+	  StoreItem object as well.
+	* [r15649] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Add a new 'completed' order status.
+	* [r15648] store/trunk/Store/dataobjects/StorePaymentType.php:
+	  Fix typo
+	* [r15644] store/trunk/Store/pages/StoreCheckoutStepPage.php:
+	  Don't mangle inheritance in StoreCheckoutStepPage::build(). This
+	  needs review but should fix ticket #689. I've tested the veseys
+	  checkout and it still works properly.
+
+2007-03-06  gauthierm
+
+	* [r15641] store/trunk/Store/StoreOrderStatusCellRenderer.php,
+	  store/trunk/www/images/store-order-status-cell-renderer-complete.png,
+	  
+	  store/trunk/www/images/store-order-status-cell-renderer-incomplete.png:
+	  
+	  Cell renderer to graphically renderer order statuses
+	* [r15639] store/trunk/Store/pages/StoreCheckoutFrontPage.php:
+	  Whitespace
+	* [r15638] store/trunk/Store/dataobjects/StoreOrder.php:
+	  rename 'is_cancelled' field to 'cancelled' (matches 'enabled' in
+	  other places) and added two order status related methods.
+	* [r15636] store/trunk/Store/StoreProtxPaymentRequest.php:
+	  Smarter checks for required fields based on request type in
+	  StoreProtxPaymentRequest. This allows types other than pay and
+	  hold to work.
+
+2007-03-06  steven
+
+	* [r15630]
+	  store/trunk/www/styles/store-transaction-status-cell-renderer.css:
+	  
+	  Bold the text in the transaction status cell renderers - this
+	  makes the color of the text more distinct
+
+2007-03-06  gauthierm
+
+	* [r15629]
+	  store/trunk/Store/dataobjects/StorePaymentTransaction.php:
+	  register StorePaymentTransaction:: as a date property.
+	* [r15628] store/trunk/sql/tables/Orders.sql:
+	  fix typo
+	* [r15627] store/trunk/Store/dataobjects/StoreOrder.php,
+	  store/trunk/sql/tables/Orders.sql:
+	  add is_cancelled property to order dataobject
+	* [r15625] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Set request type on new transactions.
+	* [r15624]
+	  store/trunk/Store/dataobjects/StorePaymentTransaction.php,
+	  store/trunk/sql/tables/PaymentTransaction.sql:
+	  rename transaction_type as request_type
+	* [r15623]
+	  store/trunk/Store/dataobjects/StorePaymentTransaction.php,
+	  store/trunk/sql/tables/PaymentTransaction.sql:
+	  Add transaction type field to transaction dataobject
+
+2007-03-05  gauthierm
+
+	* [r15620] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Fix more parse errors. Curse you copy-paste
+	* [r15619] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Fix parse error
+	* [r15612]
+	  store/trunk/www/styles/store-transaction-status-cell-renderer.css:
+	  
+	  fix small typo in transaction status cell renderer
+	* [r15611]
+	  store/trunk/www/styles/store-transaction-status-cell-renderer.css:
+	  
+	  CSS for transaction status cell renderer
+	* [r15610]
+	  store/trunk/Store/StoreTransactionStatusCellRenderer.php:
+	  Fix typo in including css file
+	* [r15609]
+	  store/trunk/Store/StoreTransactionStatusCellRenderer.php:
+	  new cell renderer to render payment transaction statuses
+	* [r15608] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Add loader for payment transactions to the order dataobject and
+	  make the item loader use the class map.
+	* [r15607]
+	  store/trunk/Store/dataobjects/StorePaymentTransactionWrapper.php:
+	  
+	  recordset wrapper for payment transactions
+	* [r15606]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Set last_login for accounts created in the checkout. Finishes
+	  ticket #675.
+	* [r15605] store/trunk/Store/pages/StoreAccountEditPage.php:
+	  set last_login date when creating a new account. This makes
+	  sense since the account logs in when it is created.
+	* [r15604]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Convert createdates to UTC. This is probably redundant but
+	  matches how we do it in other places.
+	* [r15603] store/trunk/Store/StoreSessionModule.php:
+	  Convert login date to UTC. This is probably redundant but
+	  matches how we do it other places
+
+2007-03-04  gauthierm
+
+	* [r15593]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Use class map when adding payment methods to accounts. Shame
+	* [r15592]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Make processing and saving accounts work the same as orders with
+	  a separate process and save method. Also, set the createdate if
+	  we're creating a new account and use the class map when adding
+	  account addresses rfom an order.
+
+2007-03-03  gauthierm
+
+	* [r15589] store/trunk/Store/StorePaymentProvider.php,
+	  store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Implement and document the refund() method.
+	* [r15588] store/trunk/Store/StorePaymentProvider.php,
+	  store/trunk/Store/StoreProtxPaymentProvider.php:
+	  document and implement the void() method.
+	* [r15587] store/trunk/Store/StorePaymentProvider.php,
+	  store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Implement and document the abort() method.
+	* [r15586] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Store TxAuthNo in protx transactions and fix a typo in checking
+	  the CVV status.
+	* [r15585] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Add documentation and folding and implement the release() method.
+	* [r15584]
+	  store/trunk/Store/pages/StoreCheckoutBillingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php:
+	  coding conventions
+	* [r15582] store/trunk/Store/admin/components/Account/index.xml:
+	  Fix XML typo that prevented order_count from showing. It is a
+	  data property, not an integer property.
+	* [r15581] store/trunk/Store/admin/components/Account/Index.php:
+	  Coallesce order count to zero on admin account index if account
+	  has no orders.
+	* [r15580] store/trunk/Store/StorePaymentProvider.php,
+	  store/trunk/Store/StorePaymentRequest.php,
+	  store/trunk/Store/StoreProtxPaymentRequest.php:
+	  Re-purpose the authorize/preauthorized payment types as verified
+	  and preverified. Most card providers will not allow
+	  preauth/repeat type transactions anymore as they are inheriently
+	  prone to fraud and/or having 3rd parties unnecessarily store
+	  card information.
+	* [r15579] store/trunk/Store/StoreCardDateEntry.php:
+	  Remove this class as it became StoreCardExpiryEntry
+	* [r15578]
+	  store/trunk/Store/dataobjects/StorePaymentTransaction.php,
+	  store/trunk/sql/tables/PaymentTransaction.sql:
+	  add authorization code field to payment transaction object
+	* [r15577] store/trunk/Store/StoreCreditCardExpiryEntry.php:
+	  remove this file sicne it was renamed
+
+2007-03-02  gauthierm
+
+	* [r15574] store/trunk/Store/StorePaymentProvider.php:
+	  tidy docs
+	* [r15573] store/trunk/Store/StorePaymentProvider.php:
+	  Add docs
+	* [r15572] store/trunk/Store/StorePaymentProvider.php:
+	  add some docs and folding
+	* [r15571] store/trunk/Store/StorePaymentProvider.php,
+	  store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Pass transaction objects to certain payment providet methods
+	  where it makes sense to.
+
+2007-03-02  nrf
+
+	* [r15567] store/trunk/Store/pages/StoreAccountOrderPage.php:
+	  Refactor for subclassabiltity.
+
+2007-03-02  gauthierm
+
+	* [r15564] store/trunk/Store/StoreCardExpiryEntry.php:
+	  Add docs
+	* [r15563] store/trunk/Store/StoreCardInceptionEntry.php:
+	  Fix valid ranges for card inception entry.
+	* [r15561]
+	  store/trunk/Store/pages/account-payment-method-edit.xml,
+	  store/trunk/Store/pages/checkout-payment-method.xml:
+	  Respect name change on expiry date entry widget and use
+	  inception date widget for account payment method editor.
+	* [r15560] store/trunk/Store/StoreCardInceptionEntry.php:
+	  Remove isValid() method that is incorrect and not needed now
+	  that SwatDateEntry has the same method. Also tidy some docs and
+	  remove unneeded require statement.
+	* [r15559] store/trunk/Store/StoreCardExpiryEntry.php:
+	  match docs with class name
+	* [r15558] store/trunk/Store/StoreCardExpiryEntry.php:
+	  Nathan created a StoreCardInceptionEntry when I wasn't paying
+	  attention so rename this back to StoreCardExpiryEntry.
+	* [r15557] store/trunk/Store/StoreCardDateEntry.php:
+	  Rename StoreCreditCardExpiryEntry to StoreCardDateEntry
+	* [r15556] store/trunk/Store/StoreCreditCardExpiryEntry.php:
+	  Small doc cleanups and remove unneeded require
+	* [r15555] store/trunk/Store/StoreCreditCardExpiryEntry.php:
+	  SwatDateEntry::isValid() now works better than
+	  StoreCreditCardExpiryEntry::isValid()
+
+2007-03-02  nrf
+
+	* [r15553] store/trunk/Store/StoreCardInceptionEntry.php,
+	  store/trunk/Store/pages/checkout-payment-method.xml:
+	  #667 Make card inception date selector go x years in the past
+	  instead of x years in the future.
+	  Add a new widget for card inception dates. Is up to 5 years in
+	  the past enough?
+	* [r15550] store/trunk/Store/admin/components/Item/Order.php:
+	  #556: make Item/Order.php use Item::getDescription();
+
+2007-03-02  gauthierm
+
+	* [r15548]
+	  store/trunk/Store/pages/StoreCheckoutBillingAddressPage.php:
+	  Fix typo in exception string generation
+	* [r15547] store/trunk/Store/pages/StoreCartPage.php,
+	  store/trunk/Store/pages/StoreCheckoutCartPage.php:
+	  Use class map when calculating passing in order addresses to
+	  calculate the shipping total. I don't think this caused any
+	  errors on live sites.
+
+2007-03-02  steven
+
+	* [r15546] store/trunk/Store/pages/StoreProductPage.php:
+	  add .clearfix css class for clearing floats
+
+2007-03-02  nrf
+
+	* [r15541]
+	  store/trunk/Store/pages/StoreCheckoutBillingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php:
+	  Use the class map to create new StoreOrderAddress objects.
+
+2007-03-01  gauthierm
+
+	* [r15539]
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php:
+	  Remove 'order_' from some local variables since it is obvious
+	  they are order payment methods from type hinting.
+	* [r15538]
+	  store/trunk/Store/pages/StoreAccountPaymentMethodEditPage.php:
+	  It doesn't make sense to have a hook to store unencrypted card
+	  numbers in the session on the account payment method edit page
+	  so remove this method.
+	  
+	  Also, add documentation and type hinting to
+	  updatePaymentMethod().
+	* [r15536]
+	  store/trunk/Store/pages/StoreAccountPaymentMethodEditPage.php:
+	  add TODO
+	* [r15534]
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php:
+	  rename local variable. It is Isaac's job to fix the XML and db
+	  field names later
+	* [r15533]
+	  store/trunk/Store/pages/StoreAccountPaymentMethodEditPage.php,
+	  store/trunk/Store/pages/account-payment-method-edit.xml:
+	  Add new Store payment method fields to account payment method
+	  page.
+	* [r15532]
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php,
+	  store/trunk/Store/pages/checkout-payment-method.xml:
+	  Add new Store payment method fields to checkout payment method
+	  page.
+	* [r15531] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Spell serializable correctly.
+	* [r15530] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  serialize card_verification_value and unencrypted_card_number
+	  with payment methods
+
 2007-03-01  nrf
 
+	* [r15526]
+	  store/trunk/Store/admin/components/Article/include/StoreArticleVisibilityCellRenderer.php,
+	  store/trunk/Store/admin/components/Article/index.xml:
+	  fix #658
+
+2007-03-01  gauthierm
+
+	* [r15524] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Add documentation
+
+2007-03-01  nrf
+
+	* [r15519] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.6.6
 	* [r15518]
 	  store/trunk/Store/pages/StoreCheckoutBillingAddressPage.php,
 	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php:
