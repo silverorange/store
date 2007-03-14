@@ -269,7 +269,7 @@ class StorePaymentType extends StoreDataObject
 			'unionpay',
 		);
 
-		return (in_array($this->shortname), $card_types);
+		return (in_array($this->shortname, $card_types));
 	}
 
 	// }}}
