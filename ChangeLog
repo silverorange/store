@@ -1,3 +1,20 @@
+2007-03-14  gauthierm
+
+	* [r15858] store/trunk/Store/pages/StoreCartPage.php:
+	  Use new Item status API on unavailable cart entries
+
+2007-03-13  gauthierm
+
+	* [r15847] store/trunk/sql/tables/Orders.sql:
+	  use integer instead of int like we do elsewhere
+	* [r15846] store/trunk/sql/tables/Orders.sql:
+	  Fix field name. cancelled, not is_cancelled.
+
+2007-03-13  nrf
+
+	* [r15843] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.7.0
+
 2007-03-13  gauthierm
 
 	* [r15839] store/trunk/Store/pages/StoreAccountOrderPage.php:
