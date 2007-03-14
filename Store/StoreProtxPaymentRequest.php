@@ -57,6 +57,13 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	const URL_LIVE =
 		'https://ukvps.protx.com/vps200/dotransaction.dll?Service=Vendor%sTx';
 
+	/**
+	 * URL for getting live transaction status
+	 *
+	 * No such feature exists for the test or simulator modes.
+	 */
+	const URL_LIVE_STATUS = 'https://ukvps.protx.com/txstatus/txstatus.asp';
+
 	// }}}
 	// {{{ public properties
 
@@ -116,9 +123,15 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 
 		parent::__construct($type, $mode);
 
-		$type_map = $this->getTypeMap();
-		$tx_type = $type_map[$type];
-		$this->setField('TxType', $tx_type);
+		if ($type != StorePaymentRequest::TYPE_STATUS) {
+			$type_map = $this->getTypeMap();
+			$tx_type = $type_map[$type];
+
+	 		// For Protx VSP Direct, the protocol version is defaulted to
+			// '2.22'.
+			$this->setField('VPSProtocol', '2.22');
+			$this->setField('TxType', $tx_type);
+		}
 
 		$payment_types = array(
 			StorePaymentRequest::TYPE_VERIFY,
@@ -128,18 +141,30 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 
 		switch ($this->mode) {
 		case 'simulator':
-			$this->url = self::URL_SIMULATOR; 
+			if ($type == StorePaymentRequest::TYPE_STATUS)
+				echo 'Not supported';
+				//$this->url = self::URL_LIVE_STATUS;
+			else
+				$this->url = self::URL_SIMULATOR; 
+
 			break;
 		case 'test':
-			$this->url = (in_array($type, $payment_types)) ?
-				self::URL_TEST_PAYMENT :
-				sprintf(self::URL_TEST, ucfirst(strtolower($tx_type)));
+			if ($type == StorePaymentRequest::TYPE_STATUS)
+				echo 'Not supported';
+				//$this->url = self::URL_LIVE_STATUS;
+			else
+				$this->url = (in_array($type, $payment_types)) ?
+					self::URL_TEST_PAYMENT :
+					sprintf(self::URL_TEST, ucfirst(strtolower($tx_type)));
 
 			break;
 		case 'live':
-			$this->url = (in_array($type, $payment_types)) ?
-				self::URL_LIVE_PAYMENT :
-				sprintf(self::URL_LIVE, ucfirst(strtolower($tx_type)));
+			if ($type == StorePaymentRequest::TYPE_STATUS)
+				$this->url = self::URL_LIVE_STATUS;
+			else
+				$this->url = (in_array($type, $payment_types)) ?
+					self::URL_LIVE_PAYMENT :
+					sprintf(self::URL_LIVE, ucfirst(strtolower($tx_type)));
 
 			break;
 		}
@@ -161,6 +186,9 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 			break;
 		case StorePaymentRequest::TYPE_REFUND:
 			$this->makeFieldsRequired($this->getRefundRequiredFields());
+			break;
+		case StorePaymentRequest::TYPE_STATUS:
+			$this->makeFieldsRequired($this->getStatusRequiredFields());
 			break;
 		}
 
@@ -306,6 +334,8 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 			StorePaymentRequest::TYPE_HOLD          => 'DEFERRED',
 			StorePaymentRequest::TYPE_RELEASE       => 'RELEASE',
 			StorePaymentRequest::TYPE_ABORT         => 'ABORT',
+			// no protocol-specific type exists for status
+			StorePaymentRequest::TYPE_STATUS        => '',
 		);
 
 		return $type_map;
@@ -325,8 +355,6 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	protected function getDefaultRequiredFields()
 	{
 		static $default_required_fields = array(
-			'VPSProtocol',
-			'TxType',
 			'Vendor',
 			'VendorTxCode',
 		);
@@ -348,6 +376,8 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	protected function getPaymentRequiredFields()
 	{
 		static $payment_required_fields = array(
+			'VPSProtocol',
+			'TxType',
 			'Amount',
 			'Currency',
 			'Description',
@@ -374,6 +404,8 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	protected function getReleaseRequiredFields()
 	{
 		static $release_required_fields = array(
+			'VPSProtocol',
+			'TxType',
 			'VPSTxId',
 			'SecurityKey',
 			'TxAuthNo',
@@ -396,6 +428,8 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	protected function getAbortRequiredFields()
 	{
 		static $abort_required_fields = array(
+			'VPSProtocol',
+			'TxType',
 			'VPSTxId',
 			'SecurityKey',
 			'TxAuthNo',
@@ -418,6 +452,8 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	protected function getRefundRequiredFields()
 	{
 		static $refund_required_fields = array(
+			'VPSProtocol',
+			'TxType',
 			'Amount',
 			'Currency',
 			'Description',
@@ -444,6 +480,8 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	protected function getVoidRequiredFields()
 	{
 		static $void_required_fields = array(
+			'VPSProtocol',
+			'TxType',
 			'VPSTxId',
 			'SecurityKey',
 			'TxAuthNo',
@@ -453,24 +491,21 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	}
 
 	// }}}
-	// {{{ protected function getDefaultData()
+	// {{{ protected function getStatusRequiredFields()
 
 	/**
-	 * Gets a key-value array of protocol-specific default data
+	 * Gets a list of protocol-specific fields that are required for a status
+	 * request
 	 *
-	 * For Protx VSP Direct, the protocol version is defaulted to '2.22'.
+	 * There is no documentation online for this feature. The required fields
+	 * are 'Vendor' and 'VendorTxCode'.
 	 *
-	 * @return array a key-value array of protocol-specific default data. The
-	 *                key is a protocol field and the value is the default
-	 *                value to use for the field.
+	 * @return array a list of protocol-specific fields that are required for
+	 *                a status request.
 	 */
-	protected function getDefaultData()
+	protected function getStatusRequiredFields()
 	{
-		static $default_data = array(
-			'VPSProtocol'  => '2.22',
-		);
-
-		return $default_data;
+		return array();
 	}
 
 	// }}}
