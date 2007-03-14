@@ -93,6 +93,13 @@ abstract class StorePaymentRequest
 	 */
 	const TYPE_ABORT       = 7;
 
+	/**
+	 * A status request
+	 *
+	 * Requests the status of an existing transaction.
+	 */
+	const TYPE_STATUS      = 8;
+
 	// }}}
 	// {{{ protected properties
 
@@ -247,6 +254,9 @@ abstract class StorePaymentRequest
 		case StorePaymentRequest::TYPE_ABORT:
 			$string = 'abort';
 			break;
+		case StorePaymentRequest::TYPE_STATUS:
+			$string = 'status';
+			break;
 		}
 
 		return $string;
@@ -344,6 +354,24 @@ abstract class StorePaymentRequest
 	}
 
 	// }}}
+	// {{{ protected function getDefaultData()
+
+	/**
+	 * Gets a key-value array of protocol-specific default data
+	 *
+	 * By default, no default data is specified. Subclasses should override
+	 * this method to define default data.
+	 *
+	 * @return array a key-value array of protocol-specific default data. The
+	 *                key is a protocol field and the value is the default
+	 *                value to use for the field.
+	 */
+	protected function getDefaultData()
+	{
+		return array();
+	}
+
+	// }}}
 	// {{{ abstract protected function __toString()
 
 	/**
@@ -369,18 +397,6 @@ abstract class StorePaymentRequest
 	 *                transaction types.
 	 */
 	abstract protected function getTypeMap();
-
-	// }}}
-	// {{{ abstract protected function getDefaultData()
-
-	/**
-	 * Gets a key-value array of protocol-specific default data
-	 *
-	 * @return array a key-value array of protocol-specific default data. The
-	 *                key is a protocol field and the value is the default
-	 *                value to use for the field.
-	 */
-	abstract protected function getDefaultData();
 
 	// }}}
 	// {{{ abstract protected function getDefaultRequiredFields()
