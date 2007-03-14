@@ -252,7 +252,11 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 
 			$response = new StoreProtxPaymentResponse($response_text);
 		} else {
-			$response = new StoreProtxPaymentResponse('');
+			if ($this->type == StorePaymentRequest::TYPE_STATUS)
+				$response = new StoreProtxPaymentResponse(
+					$this->getFakeStatusResponseText());
+			else
+				$response = new StoreProtxPaymentResponse('');
 		}
 
 		return $response;
@@ -560,6 +564,34 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 		}
 
 		return $error;
+	}
+
+	// }}}
+	// {{{ private function getFakeStatusResponseText()
+
+	/**
+	 * Gets the text of a fake status response which is used when a status
+	 * request is performed in 'test' or 'simulator' mode
+	 *
+	 * Protx does not have a test server for status requests. This method
+	 * provides a dogfood response that matches the format of a real response
+	 * from the live server.
+	 *
+	 * @return string a string containing the fake status request response text.
+	 */
+	private function getFakeStatusResponseText()
+	{
+		return
+			"Status=OK\r\n".
+			"StatusDetail=Fake status response for testing.\r\n".
+			"TransactionType=DEFERRED\r\n".
+			"Released=NO\r\n".
+			"VSPTxID={1234-5678-9012-3456-7890-123456789}\r\n".
+			"Amount=314.16\r\n".
+			"Currency=USD\r\n".
+			"Received=14/03/07 03:14:16\r\n".
+			"Settled=NO\r\n";
+
 	}
 
 	// }}}
