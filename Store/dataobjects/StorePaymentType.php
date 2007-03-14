@@ -242,6 +242,37 @@ class StorePaymentType extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ public function isCard()
+
+	/**
+	 * Gets whether or not this payment type uses a card (debit or credit)
+	 *
+	 * Payment types that conventionally use a card are listed in the
+	 * class-level documentation of {@link StorePaymentType}.
+	 *
+	 * @return boolean true if this payment type uses a card and false if this
+	 *                  payment type does not use a card.
+	 */
+	public function isCard()
+	{
+		$card_types = array(
+			'visa',
+			'mastercard',
+			'delta', 
+			'solo',
+			'switch',
+			'electron',
+			'amex',
+			'dinersclub',
+			'jcb',
+			'discover',
+			'unionpay',
+		);
+
+		return (in_array($this->shortname), $card_types);
+	}
+
+	// }}}
 	// {{{  public static function formatCreditCardNumber()
 
 	/**
