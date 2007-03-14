@@ -273,6 +273,87 @@ class StorePaymentType extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ public function hasInceptionDate()
+
+	/**
+	 * Gets whether or not this payment type uses an inception date
+	 *
+	 * Payment types that conventionally use an inception date are 'solo',
+	 * 'switch' and 'amex'.
+	 *
+	 * @return boolean true if this payment type uses an inception date and
+	 *                  false if this payment type does not use an inception
+	 *                  date.
+	 *
+	 * @see StorePaymentMethod::$inception_date
+	 */
+	public function hasInceptionDate()
+	{
+		$card_types = array(
+			'solo',
+			'switch',
+			'amex',
+		);
+
+		return (in_array($this->shortname, $card_types));
+	}
+
+	// }}}
+	// {{{ public function hasIssueNumber()
+
+	/**
+	 * Gets whether or not this payment type uses an issue number
+	 *
+	 * Payment types that conventionally use an issue number are 'solo' and
+	 * 'switch'.
+	 *
+	 * @return boolean true if this payment type uses an issue number and false
+	 *                  if this payment type does not use an issue number.
+	 *
+	 * @see StorePaymentMethod::$issue_number
+	 */
+	public function hasIssueNumber()
+	{
+		$card_types = array(
+			'solo',
+			'switch',
+		);
+
+		return (in_array($this->shortname, $card_types));
+	}
+
+	// }}}
+	// {{{ public function isCard()
+
+	/**
+	 * Gets whether or not this payment type uses a card (debit or credit)
+	 *
+	 * Payment types that conventionally use a card are listed in the
+	 * class-level documentation of {@link StorePaymentType}.
+	 *
+	 * @return boolean true if this payment type uses a card and false if this
+	 *                  payment type does not use a card.
+	 */
+	public function isCard()
+	{
+		$card_types = array(
+			'visa',
+			'mastercard',
+			'delta', 
+			'solo',
+			'switch',
+			'electron',
+			'amex',
+			'dinersclub',
+			'jcb',
+			'discover',
+			'unionpay',
+		);
+
+		return (in_array($this->shortname, $card_types));
+	}
+
+	// }}}
 	// {{{  public static function formatCreditCardNumber()
 
 	/**
