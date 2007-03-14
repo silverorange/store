@@ -145,20 +145,14 @@ abstract class StorePaymentMethod extends StoreDataObject
 	 *                                    {@link StorePaymentMethod::getUnencryptedCardNumber()}
 	 *                                    method.
 	 *                                   
-	 *
-	 * @throws StoreException a StoreException is thrown if this class has no
-	 *                         defined GPG id and you try to set the credit
-	 *                         card number.
 	 */
 	public function setCreditCardNumber($number, $store_unencrypted = false)
 	{
-		if ($this->gpg_id === null)
-			throw new StoreException('No GPG id provided.');
-
 		$this->credit_card_last4 = substr($number, -4);
 
-		$this->credit_card_number =
-			self::encryptCreditCardNumber($number, $this->gpg_id);
+		if ($this->gpg_id !== null)
+			$this->credit_card_number =
+				self::encryptCreditCardNumber($number, $this->gpg_id);
 
 		if ($store_unencrypted)
 			$this->unencrypted_card_number = (string)$number;
