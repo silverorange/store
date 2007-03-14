@@ -141,18 +141,12 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 
 		switch ($this->mode) {
 		case 'simulator':
-			if ($type == StorePaymentRequest::TYPE_STATUS)
-				echo 'Not supported';
-				//$this->url = self::URL_LIVE_STATUS;
-			else
+			if ($type != StorePaymentRequest::TYPE_STATUS)
 				$this->url = self::URL_SIMULATOR; 
 
 			break;
 		case 'test':
-			if ($type == StorePaymentRequest::TYPE_STATUS)
-				echo 'Not supported';
-				//$this->url = self::URL_LIVE_STATUS;
-			else
+			if ($type != StorePaymentRequest::TYPE_STATUS)
 				$this->url = (in_array($type, $payment_types)) ?
 					self::URL_TEST_PAYMENT :
 					sprintf(self::URL_TEST, ucfirst(strtolower($tx_type)));
@@ -192,12 +186,14 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 			break;
 		}
 
-		$this->curl_handle = curl_init();
-		curl_setopt_array($this->curl_handle, array(
-			CURLOPT_URL  => $this->url,
-			CURLOPT_POST => 1,
-			CURLOPT_RETURNTRANSFER => 1,
-			));
+		if ($this->url !== null) {
+			$this->curl_handle = curl_init();
+			curl_setopt_array($this->curl_handle, array(
+				CURLOPT_URL  => $this->url,
+				CURLOPT_POST => 1,
+				CURLOPT_RETURNTRANSFER => 1,
+				));
+		}
 	}
 
 	// }}}
@@ -234,26 +230,32 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 
 		$this->checkRequiredFields();
 
-		curl_setopt($this->curl_handle, CURLOPT_POSTFIELDS,
-			$this->getPostFields());
+		if ($this->curl_handle !== null) {
+			curl_setopt($this->curl_handle, CURLOPT_POSTFIELDS,
+				$this->getPostFields());
 
-		$response_text = curl_exec($this->curl_handle);
+			$response_text = curl_exec($this->curl_handle);
 
-		set_error_handler(create_function('$errno, $errstr', ''),
-			E_NOTICE | E_WARNING);
+			set_error_handler(create_function('$errno, $errstr', ''),
+				E_NOTICE | E_WARNING);
 
-		$document = new DOMDocument();
-		$document->loadHTML($response_text);
+			$document = new DOMDocument();
+			$document->loadHTML($response_text);
 
-		restore_error_handler();
+			restore_error_handler();
 
-		if ($document->nodeName == 'html') {
-			throw new StoreException(sprintf('Received an error page as a '.
-				"response. Error contents are: '%s'.",
-				$this->parseErrorPage($document)));
+			if ($document->nodeName == 'html') {
+				throw new StoreException(sprintf('Received an error page as a '.
+					"response. Error contents are: '%s'.",
+					$this->parseErrorPage($document)));
+			}
+
+			$response = new StoreProtxPaymentResponse($response_text);
+		} else {
+			$response = new StoreProtxPaymentResponse('');
 		}
 
-		return new StoreProtxPaymentResponse($response_text);
+		return $response;
 	}
 
 	// }}}
@@ -264,7 +266,8 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	 */
 	public function __destruct()
 	{
-		curl_close($this->curl_handle);
+		if ($this->curl_handle !== null)
+			curl_close($this->curl_handle);
 	}
 
 	// }}}
