@@ -48,6 +48,11 @@ class StoreContactPage extends StoreArticlePage
 		$form->action = $this->source;
 		$form->action.= '#message_display';
 
+		$email_to = $this->ui->getWidget('email_to');
+		$email_to->content_type = 'text/xml';
+		$email_to->content = sprintf('<a href="mailto:%1$s">%1$s</a>',
+			$this->app->config->email->contact_address);
+
 		$this->ui->init();
 	}
 

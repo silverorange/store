@@ -4,8 +4,12 @@
 	<widget class="SwatForm" id="contact_form">
 		<widget class="SwatFrame" id="frame">
 			<property name="title" translatable="yes">Send us a Message</property>
+			<widget class="SwatFormField" id="email_to_field">
+				<property name="title" translatable="yes">Send To</property>
+				<widget class="SwatContentBlock" id="email_to" />
+			</widget>
 			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Email</property>
+				<property name="title" translatable="yes">Your Email</property>
 				<widget class="SwatEmailEntry" id="email">
 					<property name="required" type="boolean">true</property>
 				</widget>
