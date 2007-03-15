@@ -2,7 +2,7 @@ function StoreCheckoutPaymentMethodPage(id, inception_date_ids,
 	issue_number_ids)
 {
 	this.id = id;
-	this.container = document.getElementById('payment_method_container');
+	this.container = document.getElementById('payment_method_form');
 	this.list_new = document.getElementById('payment_method_list_new');
 	this.inception_date_types = [];
 	this.issue_number_types = [];
