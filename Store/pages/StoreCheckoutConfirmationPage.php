@@ -85,8 +85,31 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			$transaction->commit();
 
 			$this->updateProgress();
-			$this->app->relocate('checkout/thankyou');
+
+			if ($this->isPaymentSuccessful())
+				$this->app->relocate('checkout/thankyou');
+			else
+				$this->app->relocate('checkout/paymentfailure');
 		}
+	}
+
+	// }}}
+	// {{{ protected function isSuccessful()
+
+	/**
+	 * Gets whether of not order payment processing was successful
+	 *
+	 * By default, payment processing is always successful since there is no
+	 * payment processing done by default.
+	 *
+	 * @return boolean true if the order payment was processed successfully and
+	 *                  false if there was a problem with order payment.
+	 *
+	 * @see StoreCheckoutConfirmationPage::processPayment()
+	 */
+	protected function isPaymentSuccessful()
+	{
+		return true;
 	}
 
 	// }}}
