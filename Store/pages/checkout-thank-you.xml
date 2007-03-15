@@ -1,27 +1,11 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
-	<widget class="SwatFrame">
-		<property name="title" translatable="yes">Your order has been placed.</property>
-		<widget class="SwatContentBlock">
-			<property name="content" translatable="yes">
-				<![CDATA[
-				<p>Thank you for your order.  You will receive an email
-				confirmation which will include the following detailed
-				order receipt for your records. If you wish, you can print
-				a copy of this page for reference. </p>
-				]]>
-				</property>
-			<property name="content_type">text/xml</property>
-		</widget>
-		<widget class="SwatMessageDisplay" id="message_display" />
-	</widget>
-
+	<widget class="SwatContentBlock" id="final_note" />
+	<widget class="SwatContentBlock" id="account_note" />
 	<widget class="SwatFrame">
 		<property name="title" translatable="yes">Order Receipt</property>
-		<widget class="SwatContentBlock" id="header">
-			<property name="content_type">text/xml</property>
-		</widget>
+		<widget class="SwatContentBlock" id="header" />
 		<!-- {{{ Order Details -->
 
 		<widget class="SwatDetailsView" id="order_details">

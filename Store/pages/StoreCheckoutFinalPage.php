@@ -17,7 +17,7 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 	public function init()
 	{
 		parent::init();
-		$this->resetProgress();
+//		$this->resetProgress();
 	}
 
 	// }}}
@@ -68,7 +68,7 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 	public function build()
 	{
 		parent::build();
-		$this->app->session->logout();
+//		$this->app->session->logout();
 	}
 
 	// }}}
@@ -78,18 +78,16 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 	{
 		parent::buildInternal();
 
-		$this->buildHeader();
-
-		if ($this->app->session->order->account !== null)
-			$this->buildAccountMessage();
-
+		$this->buildFinalNote();
+		$this->buildAccountNote();
+		$this->buildOrderHeader();
 		$this->buildOrderDetails();
 	}
 
 	// }}}
-	// {{{ protected function buildHeader()
+	// {{{ protected function buildOrderHeader()
 
-	protected function buildHeader()
+	protected function buildOrderHeader()
 	{
 		$header = $this->ui->getWidget('header');
 		if ($header instanceof SwatContentBlock) {
@@ -98,24 +96,6 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 				$this->app->session->order->getReceiptHeader()).
 				'<div style="page-break-after: always"></div>';
 		}
-	}
-
-	// }}}
-	// {{{ protected function buildAccountMessage()
-
-	protected function buildAccountMessage()
-	{
-		$message = new SwatMessage(Store::_('Your Account'),
-			SwatMessage::NOTIFICATION);
-
-		$message->secondary_content = Store::_('By logging into your account '.
-			'the next time you visit our website, you can edit your addresses '.
-			'and payment methods, view previously placed orders, re-order '.
-			'items from your previous orders, and checkout without '.
-			'having to re-enter all of your address and payment '.
-			'information.');
-
-		$this->ui->getWidget('message_display')->add($message);
 	}
 
 	// }}}
@@ -149,6 +129,65 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 		$items_view->getRow('subtotal')->value = $order->getSubtotal();
 
 		$items_view->getRow('total')->value = $order->total;
+	}
+
+	// }}}
+	// {{{ protected function buildFinalNote()
+
+	protected function buildFinalNote()
+	{
+		$note = $this->ui->getWidget('final_note');
+		if ($note instanceof SwatContentBlock) {
+			$note->content_type = 'text/xml';
+			ob_start();
+			$this->displayFinalNote();
+			$note->content = ob_get_clean();
+		}
+	}
+
+	// }}}
+	// {{{ protected function buildAccountNote()
+
+	protected function buildAccountNote()
+	{
+		$note = $this->ui->getWidget('account_note');
+		if ($note instanceof SwatContentBlock && 
+			$this->app->session->order->account !== null) {
+			$note->content_type = 'text/xml';
+			ob_start();
+			$this->displayAccountNote();
+			$note->content = ob_get_clean();
+		}
+	}
+
+	// }}}
+	// {{{ abstract protected function displayFinalNote()
+
+	/**
+	 * Displays the final note at the top of the page to the user
+	 *
+	 * This note indicated whether or not the checkout was successful and may
+	 * contain additional instructions depending on the particular store.
+	 */
+	abstract protected function displayFinalNote();
+
+	// }}}
+	// {{{ protected function displayAccountNote()
+
+	protected function displayAccountNote()
+	{
+		$header_tag = new SwatHtmlTag('h3');
+		$header_tag->setContent(Store::_('Your Account'));
+		$paragraph_tag = new SwatHtmlTag('p');
+		$paragraph_tag->setContent(Store::_('By logging into your account '.
+			'the next time you visit our website, you can edit your addresses '.
+			'and payment methods, view previously placed orders, re-order '.
+			'items from your previous orders, and checkout without '.
+			'having to re-enter all of your address and payment '.
+			'information.'));
+
+		$header_tag->display();
+		$paragraph_tag->display();
 	}
 
 	// }}}
