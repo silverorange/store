@@ -356,9 +356,23 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	protected function displayJavaScript()
 	{
 		$id = 'checkout_payment_method';
+		$inception_date_ids = array();
+		$issue_number_ids = array();
+		foreach ($this->getPaymentTypes() as $type) {
+			if ($type->hasInceptionDate())
+				$inception_date_ids[] = $type->id;
+
+			if ($type->hasIssueNumber())
+				$issue_number_ids[] = $type->id;
+		}
+
 		echo '<script type="text/javascript">', "\n// <![CDATA[\n";
-		printf("\nvar %s_obj = new StoreCheckoutPaymentMethodPage('%s');",
-			$id, $id);
+		printf("\nvar %s_obj = ".
+			"new StoreCheckoutPaymentMethodPage('%s', [%s], [%s]);",
+			$id,
+			$id,
+			implode(', ', $inception_date_ids),
+			implode(', ', $issue_number_ids));
 
 		echo "\n// ]]>\n</script>";
 	}
