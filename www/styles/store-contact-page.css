@@ -29,13 +29,6 @@ dl#contact_details dd {
 	margin-bottom: 1em;
 }
 
-
-/* TODO: move this phone style to veseys */
-strong.phone-number {
-	font-size: 150%;
-	font-weight: normal;
-}
-
 #email_to_field.swat-form-field label,
 #email_to_field.swat-form-field .swat-form-field-contents {
 	display: inline;
