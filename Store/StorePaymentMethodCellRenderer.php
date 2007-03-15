@@ -4,10 +4,11 @@ require_once 'Swat/SwatCellRenderer.php';
 require_once 'Store/dataobjects/StorePaymentMethod.php';
 
 /**
- * Cell renderer for displaying payment details for an order
+ * Cell renderer for rendering a payment method
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StorePaymentMethodCellRenderer extends SwatCellRenderer
 {
@@ -28,7 +29,8 @@ class StorePaymentMethodCellRenderer extends SwatCellRenderer
 		if (!$this->visible)
 			return;
 
-		$this->payment_method->display();
+		if ($this->payment_method instanceof StorePaymentMethod)
+			$this->payment_method->display();
 	}
 
 	// }}}
