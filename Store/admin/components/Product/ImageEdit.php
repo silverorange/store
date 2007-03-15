@@ -212,6 +212,10 @@ class StoreProductImageEdit extends AdminPage
 				$delete_files[] = $file->getTempFileName();
 
 				$changed = true;
+
+				call_user_func(
+					array($product_image, 'processManualImage'),
+					$transformer, $size);
 			}
 		}
 

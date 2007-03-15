@@ -231,6 +231,29 @@ abstract class StoreImage extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ public static function processManualImage()
+
+	/**
+	 * Processing for manually resized images
+	 *
+	 * @param Image_Transform $image the image transformer to work with. The
+	 *                                tranformer should already have an image
+	 *                                loaded.
+	 *
+	 * @param string $size the size tag.
+	 *
+	 * @throws SwatException if no image is loaded in the transformer.
+	 */
+	public static function processManualImage(Image_Transform $image, $size)
+	{
+		if ($image->image === null)
+			throw new SwatException('No image loaded.');
+
+		$image->setDpi(self::DPI, self::DPI);
+		$image->strip();
+	}
+
+	// }}}
 	// {{{ abstract public static function getSizes()
 
 	/**
