@@ -1,5 +1,6 @@
 <?php
 
+require_once 'Swat/SwatYUI.php';
 require_once 'Store/pages/StoreCheckoutAggregateStepPage.php';
 require_once 'Store/pages/StoreCheckoutBasicInfoPage.php';
 require_once 'Store/pages/StoreCheckoutBillingAddressPage.php';
@@ -10,7 +11,7 @@ require_once 'Store/pages/StoreCheckoutPaymentMethodPage.php';
  * First step of checkout
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  */
 class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 {
@@ -77,6 +78,8 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 
 
 		if ($this->app->session->checkout_with_account) {
+			$yui = new SwatYUI(array('event'));
+			$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
 			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
 				'packages/store/javascript/store-checkout-first-page.js',
 				Store::PACKAGE_ID));
@@ -128,15 +131,13 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 
 	protected function displayJavaScript()
 	{
-		echo '<script type="text/javascript">', "\n";
+		$id = 'checkout_first_page';
 
-		printf("var checkout_first_page = ".
-			"new StoreCheckoutFirstPage('%s', '%s', '%s');\n",
-			$this->ui->getWidget('fullname')->id,
-			$this->ui->getWidget('billing_address_fullname')->id,
-			$this->ui->getWidget('credit_card_fullname')->id);
+		echo '<script type="text/javascript">', "\n// <![CDATA[\n";
+		printf("\nvar %s_obj = new StoreCheckoutFirstPage();",
+			$id);
 
-		echo '</script>';
+		echo "\n// ]]>\n</script>";
 	}
 
 	// }}}

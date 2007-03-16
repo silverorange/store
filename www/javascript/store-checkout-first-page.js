@@ -1,39 +1,36 @@
 /**
  * Fills name in billing address and credit card fullname when unfocusing
  * basic info fullname
- *
- * @param String fullname_id the name of the fullname entry input.
- * @param String billing_address_fullname_id the name of the billing fullname
- *                                            entry input.
- * @param String credit_card_fullname_id the name of the credit card entry
- *                                        input.
  */
-function StoreCheckoutFirstPage(fullname_id, billing_address_fullname_id,
-	credit_card_fullname_id)
+function StoreCheckoutFirstPage()
 {
-	var self = this;
-	var is_ie = (document.addEventListener) ? false : true;
-
-	this.fullname = document.getElementById(fullname_id);
+	this.fullname = document.getElementById('fullname');
+	this.credit_card_fullname = document.getElementById('credit_card_fullname');
 	this.billing_address_fullname =
-		document.getElementById(billing_address_fullname_id);
+		document.getElementById('billing_address_fullname');
 
-	this.credit_card_fullname =
-		document.getElementById(credit_card_fullname_id);
-
-	function handleBlur(event)
-	{
-		if (self.billing_address_fullname.value == '')
-			self.billing_address_fullname.value =
-				self.fullname.value;
-
-		if (self.credit_card_fullname.value == '')
-			self.credit_card_fullname.value =
-				self.fullname.value;
+	if (this.fullname) {
+		YAHOO.util.Event.addListener(this.fullname, 'blur',
+			StoreCheckoutFirstPage.handleFullnameBlur, this);
 	}
+}
 
-	if (is_ie)
-		this.fullname.attachEvent('onblur', handleBlur);
-	else
-		this.fullname.addEventListener('blur', handleBlur, false);
+StoreCheckoutFirstPage.handleFullnameBlur = function(event, page)
+{
+	page.updateFields();
+}
+
+StoreCheckoutFirstPage.prototype.updateFields = function()
+{
+	if (this.fullname) {
+		if (this.billing_address_fullname &&
+			this.billing_address_fullname.value == '') {
+			this.billing_address_fullname.value = this.fullname.value;
+		}
+
+		if (this.credit_card_fullname &&
+			this.credit_card_fullname.value == '') {
+			this.credit_card_fullname.value = this.fullname.value;
+		}
+	}
 }
