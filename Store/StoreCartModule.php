@@ -117,8 +117,10 @@ class StoreCartModule extends SiteApplicationModule
 		if ($this->getCheckoutCart() !== null &&
 			$this->getSavedCart() !== null) {
 			$this->app->session->registerLoginCallback(
-				array($this, 'handleLogin'),
-				array());
+				array($this, 'handleLogin'));
+
+			$this->app->session->registerRegenerateIdCallback(
+				array($this, 'handleRegenerateId'));
 		}
 	}
 
@@ -261,7 +263,7 @@ class StoreCartModule extends SiteApplicationModule
 			// move session cart entries to account cart
 			$account_id = $this->app->session->getAccountId();
 			foreach ($this->entries as $entry) {
-				if ($entry->sessionid == session_id()) {
+				if ($entry->sessionid == $this->app->session->getSessionId()) {
 					$entry->sessionid = null;
 					$entry->account = $account_id;
 					$checkout_cart->addEntry($entry);
@@ -271,6 +273,23 @@ class StoreCartModule extends SiteApplicationModule
 		} else {
 			$this->load();
 		}
+	}
+
+	// }}}
+	// {{{ public function handleRegenerateId()
+
+	/**
+	 * Updates the session ID in the database when it changes
+	 */
+	public function handleRegenerateId($old_id, $new_id)
+	{
+		$sql = 'update CartEntry set sessionid = %s where sessionid = %s';
+
+		$sql = sprintf($sql,
+				$this->app->db->quote($new_id, 'text'),
+				$this->app->db->quote($old_id, 'text'));
+
+		SwatDB::exec($this->app->db, $sql);
 	}
 
 	// }}}
@@ -340,10 +359,10 @@ class StoreCartModule extends SiteApplicationModule
 			$account_id = $this->app->session->getAccountId();
 			$where_clause = sprintf('account = %s or sessionid = %s',
 				$this->app->db->quote($account_id, 'integer'),
-				$this->app->db->quote(session_id(), 'text'));
+				$this->app->db->quote($this->app->session->getSessionId(), 'text'));
 		} elseif ($this->app->session->isActive()) {
 			$where_clause = sprintf('sessionid = %s',
-				$this->app->db->quote(session_id(), 'text'));
+				$this->app->db->quote($this->app->session->getSessionId(), 'text'));
 		} else {
 			// not logged in, and no active session, so no cart entries
 			return;
