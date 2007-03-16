@@ -94,7 +94,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	}
 
 	// }}}
-	// {{{ protected function isSuccessful()
+	// {{{ protected function isPaymentSuccessful()
 
 	/**
 	 * Gets whether of not order payment processing was successful
