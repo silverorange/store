@@ -180,16 +180,17 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 			$yui = new SwatYUI(array('dom', 'event'));
 			$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
 
+			$path = 'packages/store/javascript/';
 			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-				'packages/store/javascript/store-checkout-page.js',
+				$path.'store-checkout-page.js',
 				Store::PACKAGE_ID));
 
 			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-				'packages/store/javascript/store-checkout-address.js',
+				$path.'store-checkout-address-page.js',
 				Store::PACKAGE_ID));
 
 			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-				'packages/store/javascript/store-checkout-shipping-address.js',
+				$path.'store-checkout-shipping-address-page.js',
 				Store::PACKAGE_ID));
 
 			$this->layout->startCapture('content');

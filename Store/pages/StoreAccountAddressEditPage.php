@@ -241,16 +241,15 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 
 		$yui = new SwatYUI(array('dom', 'event'));
 		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
-
 		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/javascript/store-account-address.js',
+			'packages/store/javascript/store-account-address-page.js',
 			Store::PACKAGE_ID));
-
-		$form = $this->ui->getWidget('edit_form');
-		$form->action = $this->source;
 
 		$this->layout->addHtmlHeadEntrySet(
 			$this->ui->getRoot()->getHtmlHeadEntrySet());
+
+		$form = $this->ui->getWidget('edit_form');
+		$form->action = $this->source;
 
 		if ($this->id === null) {
 			$this->layout->navbar->createEntry(Store::_('Add a New Address'));

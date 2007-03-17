@@ -188,16 +188,17 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 			$yui = new SwatYUI(array('dom', 'event'));
 			$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
 
+			$path = 'packages/store/javascript/';
 			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-				'packages/store/javascript/store-checkout-page.js',
+				$path.'store-checkout-page.js',
 				Store::PACKAGE_ID));
 
 			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-				'packages/store/javascript/store-checkout-address.js',
+				$path.'store-checkout-address-page.js',
 				Store::PACKAGE_ID));
 
 			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-				'packages/store/javascript/store-checkout-billing-address.js',
+				$path.'store-checkout-billing-address-page.js',
 				Store::PACKAGE_ID));
 
 			$this->layout->startCapture('content');
@@ -339,7 +340,7 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 	{
 		$id = 'checkout_billing_address';
 		echo '<script type="text/javascript">'."\n";
-		printf("var %s_obj = new StoreCheckoutBillingAddress('%s');\n",
+		printf("var %s_obj = new StoreCheckoutBillingAddressPage('%s');\n",
 			$id, $id);
 
 		echo '</script>';
