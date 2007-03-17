@@ -194,7 +194,7 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 				Store::PACKAGE_ID));
 
 			$this->layout->startCapture('content');
-			$this->displayJavaScript();
+			Swat::displayJavaScript($this->getInlineJavaScript());
 			$this->layout->endCapture();
 		}
 	}
@@ -344,16 +344,14 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
-	// {{{ protected function displayJavaScript()
+	// {{{ protected function displayInlineJavaScript()
 
-	protected function displayJavaScript()
+	protected function displayInlineJavaScript()
 	{
 		$id = 'checkout_shipping_address';
-		echo '<script type="text/javascript">'."\n";
-		printf("var %s_obj = new StoreCheckoutShippingAddressPage('%s');\n",
+		return sprintf(
+			"var %s_obj = new StoreCheckoutShippingAddressPage('%s');",
 			$id, $id);
-
-		echo '</script>';
 	}
 
 	// }}}

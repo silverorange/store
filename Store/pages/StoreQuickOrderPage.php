@@ -288,7 +288,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 
 		$this->layout->startCapture('content');
 		$this->form_ui->display();
-		$this->displayJavaScript();
+		Swat::displayInlineJavaScript($this->getInlineJavaScript());
 		$this->layout->endCapture();
 	}
 
@@ -374,19 +374,29 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 	}
 
 	//}}}
-	// {{{ protected function displayJavaScript()
+	// {{{ protected function getInlineJavaScript()
 
-	protected function displayJavaScript()
+	protected function getInlineJavaScript()
 	{
+		static $translations_displayed = false;
+
 		$id = 'quick_order';
 		$item_selector_id = 'item_selector';
-		echo '<script type="text/javascript">'."\n";
-		printf("var %s_obj = new StoreQuickOrder('%s', '%s', %s);\n",
+
+		$javascript = '';
+		if (!$translations_displayed) {
+		//	$javascript.= sprintf(
+		//		"StoreQuickOrder.enter_quantity_message = '%s';\n",
+		//		Store::_('Please enter a quantity.'));
+
+			$translations_displayed = true;
+		}
+
+		$javascript.= sprintf(
+			"var %s_obj = new StoreQuickOrder('%s', '%s', %s);",
 			$id, $id, $item_selector_id, $this->num_rows);
 
-		// TODO: JavaScript string translations
-
-		echo '</script>';
+		return $javascript;
 	}
 
 	// }}}
