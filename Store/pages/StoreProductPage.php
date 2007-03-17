@@ -3,6 +3,7 @@
 require_once 'Swat/SwatString.php';
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
+require_once 'Swat/SwatYUI.php';
 require_once 'Store/StoreUI.php';
 require_once 'Store/pages/StoreStorePage.php';
 require_once 'Store/dataobjects/StoreCartEntry.php';
@@ -14,7 +15,7 @@ require_once 'Store/StoreMessage.php';
  * A product page
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2007 silverorange
  */
 class StoreProductPage extends StoreStorePage
 {
@@ -330,6 +331,8 @@ class StoreProductPage extends StoreStorePage
 
 	protected function buildProduct()
 	{
+		$yui = new SwatYUI(array('event'));
+		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
 		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
 			'packages/store/javascript/store-product-page.js',
 			Store::PACKAGE_ID));
@@ -694,19 +697,27 @@ class StoreProductPage extends StoreStorePage
 
 	protected function displayProductJavaScript()
 	{
+		static $translations_displayed = false;
+
 		$item_ids = array();
 		$model = $this->items_ui->getWidget('items_view')->model;
 		foreach ($model->getRows() as $item)
 			$item_ids[] = $item->id;
 
-		$form_id = $this->items_ui->getWidget('form')->id;
 		$item_ids = "'".implode("', '", $item_ids)."'";
 
 		echo '<script type="text/javascript">', "\n";
 		echo '// <![CDATA[', "\n";
 
-		printf("var product_page = new StoreProductPage([%s], '%s');\n",
-			$item_ids, $form_id);
+		if (!$translations_displayed) {
+			printf("StoreProductPage.enter_quantity_message = '%s';\n",
+				Store::_('Please enter a quantity.'));
+
+			$translations_displayed = true;
+		}
+
+		printf("var product_page = new StoreProductPage([%s]);\n",
+			$item_ids);
 
 		echo '// ]]>';
 		echo '</script>';
