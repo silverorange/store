@@ -350,7 +350,7 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 	{
 		$id = 'checkout_shipping_address';
 		echo '<script type="text/javascript">'."\n";
-		printf("var %s_obj = new StoreCheckoutShippingAddress('%s');\n",
+		printf("var %s_obj = new StoreCheckoutShippingAddressPage('%s');\n",
 			$id, $id);
 
 		echo '</script>';
