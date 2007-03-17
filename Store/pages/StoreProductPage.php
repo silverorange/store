@@ -734,10 +734,8 @@ class StoreProductPage extends StoreStorePage
 
 		$frames = $this->getCartAnimationFrames();
 
-		// only show animation if some animation frames are defined and
-		// there are added entries
-		if (count($frames) > 0 && count($this->added_entry_ids) > 0 ) {
-
+		// only show animation if some animation frames are defined
+		if (count($frames) > 0) {
 			$frames_list = "['".implode("', '", $frames)."']";
 
 			foreach ($this->added_entry_ids as $id) {
