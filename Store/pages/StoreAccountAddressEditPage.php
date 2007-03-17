@@ -321,7 +321,7 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 	{
 		$id = 'checkout_billing_address';
 		echo '<script type="text/javascript">'."\n";
-		printf("var %s_obj = new StoreAccountAddress('%s');\n",
+		printf("var %s_obj = new StoreAccountAddressPage('%s');\n",
 			$id, $id);
 
 		echo '</script>';
