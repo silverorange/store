@@ -25,6 +25,8 @@ function StoreQuickOrder(id, item_selector_id, num_rows)
 	}
 }
 
+StoreQuickOrder.loading_text = 'loading …';
+
 /**
  * Handles keyup events on the sku field
  *
@@ -142,7 +144,7 @@ function StoreQuickOrder_staticTimeOut(quick_order, replicator_id)
 	item.sequence++;
 
 	item.div.innerHTML = '<span class="store-quick-order-item-loading">' +
-		'loading …</span>';
+		StoreQuickOrder.loading_text + '</span>';
 
 	function callBack(response)
 	{

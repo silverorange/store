@@ -385,9 +385,8 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 
 		$javascript = '';
 		if (!$translations_displayed) {
-		//	$javascript.= sprintf(
-		//		"StoreQuickOrder.enter_quantity_message = '%s';\n",
-		//		Store::_('Please enter a quantity.'));
+			$javascript.= sprintf("StoreQuickOrder.loading_text = '%s';\n",
+				Store::_('loading …'));
 
 			$translations_displayed = true;
 		}
