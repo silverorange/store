@@ -85,7 +85,7 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 				Store::PACKAGE_ID));
 
 			$this->layout->startCapture('content');
-			$this->displayJavaScript();
+			Swat::displayInlineJavaScript($this->getInlineJavaScript());
 			$this->layout->endCapture();
 		}
 	}
@@ -127,17 +127,13 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 	}
 
 	// }}}
-	// {{{ protected function displayJavaScript()
+	// {{{ protected function getInlineJavaScript()
 
-	protected function displayJavaScript()
+	protected function getInlineJavaScript()
 	{
 		$id = 'checkout_first_page';
-
-		echo '<script type="text/javascript">', "\n// <![CDATA[\n";
-		printf("\nvar %s_obj = new StoreCheckoutFirstPage();",
+		return sprintf("var %s_obj = new StoreCheckoutFirstPage();",
 			$id);
-
-		echo "\n// ]]>\n</script>";
 	}
 
 	// }}}

@@ -291,7 +291,7 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 
 		$this->layout->startCapture('content');
 		$this->ui->display();
-		$this->displayJavaScript();
+		Swat::displayInlineJavaScript($this->getInlineJavaScript());
 		$this->layout->endCapture();
 	}
 
@@ -315,16 +315,13 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 	}
 
 	// }}}
-	// {{{ protected function displayJavaScript()
+	// {{{ protected function getInlineJavaScript()
 
-	protected function displayJavaScript()
+	protected function getInlineJavaScript()
 	{
 		$id = 'checkout_billing_address';
-		echo '<script type="text/javascript">'."\n";
-		printf("var %s_obj = new StoreAccountAddressPage('%s');\n",
+		return sprintf("var %s_obj = new StoreAccountAddressPage('%s');",
 			$id, $id);
-
-		echo '</script>';
 	}
 
 	// }}}

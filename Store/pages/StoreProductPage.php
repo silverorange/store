@@ -321,8 +321,8 @@ class StoreProductPage extends StoreStorePage
 		$this->layout->startCapture('content');
 		$this->displayCart();
 		$this->displayProduct();
-		$this->displayProductJavaScript();
-		$this->displayCartJavaScript();
+		Swat::displayInlineJavaScript($this->getProductInlineJavaScript());
+		Swat::displayInlineJavaScript($this->getCartInlineJavaScript());
 		$this->layout->endCapture();
 	}
 
@@ -693,9 +693,9 @@ class StoreProductPage extends StoreStorePage
 	}
 
 	// }}}
-	// {{{ protected function displayProductJavaScript()
+	// {{{ protected function getProductInlineJavaScript()
 
-	protected function displayProductJavaScript()
+	protected function getProductInlineJavaScript()
 	{
 		static $translations_displayed = false;
 
@@ -706,52 +706,51 @@ class StoreProductPage extends StoreStorePage
 
 		$item_ids = "'".implode("', '", $item_ids)."'";
 
-		echo '<script type="text/javascript">', "\n";
-		echo '// <![CDATA[', "\n";
-
+		$javascript = '';
 		if (!$translations_displayed) {
-			printf("StoreProductPage.enter_quantity_message = '%s';\n",
+			$javascript.= sprintf(
+				"StoreProductPage.enter_quantity_message = '%s';\n",
 				Store::_('Please enter a quantity.'));
 
 			$translations_displayed = true;
 		}
 
-		printf("var product_page = new StoreProductPage([%s]);\n",
+		$javascript.= sprintf(
+			"var product_page = new StoreProductPage([%s]);",
 			$item_ids);
 
-		echo '// ]]>';
-		echo '</script>';
+		return $javascript;
 	}
 
 	// }}}
-	// {{{ protected function displayCartJavaScript()
+	// {{{ protected function getCartInlineJavaScript()
 
 	/**
 	 * @see StoreProductPage::getCartAnimationFrames()
 	 */
-	protected function displayCartJavaScript()
+	protected function getCartInlineJavaScript()
 	{
+		$javascript = '';
+
 		$frames = $this->getCartAnimationFrames();
 
 		// only show animation if some animation frames are defined and
 		// there are added entries
 		if (count($frames) > 0 && count($this->added_entry_ids) > 0 ) {
-			echo '<script type="text/javascript">', "\n";
-			echo '// <![CDATA[', "\n";
 
 			$frames_list = "['".implode("', '", $frames)."']";
 
 			foreach ($this->added_entry_ids as $id) {
-				printf("var animation_%1\$s = new StoreBackgroundImageAnim(".
+				$javascript.= sprintf(
+					"var animation_%1\$s = new StoreBackgroundImageAnim(".
 					"'entry_%1\$s', { frames: { from: 1, to: %2\$s } }, 2);\n".
 					"animation_%1\$s.addFrameImages(%3\$s);\n".
 					"animation_%1\$s.animate();\n",
 					$id, count($frames), $frames_list);
 			}
-
-			echo '// ]]>';
-			echo '</script>';
 		}
+
+		return $javascript;
 	}
 
 	// }}}

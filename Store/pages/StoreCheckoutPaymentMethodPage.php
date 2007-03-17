@@ -194,7 +194,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				Store::PACKAGE_ID));
 
 			$this->layout->startCapture('content');
-			$this->displayJavaScript();
+			Swat::displayInlineJavaScript($this->getInlineJavaScript());
 			$this->layout->endCapture();
 		}
 	}
@@ -351,9 +351,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
-	// {{{ protected function displayJavaScript()
+	// {{{ protected function getInlineJavaScript()
 
-	protected function displayJavaScript()
+	protected function getInlineJavaScript()
 	{
 		$id = 'checkout_payment_method';
 		$inception_date_ids = array();
@@ -366,15 +366,12 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				$issue_number_ids[] = $type->id;
 		}
 
-		echo '<script type="text/javascript">', "\n// <![CDATA[\n";
-		printf("\nvar %s_obj = ".
+		return sprintf("var %s_obj = ".
 			"new StoreCheckoutPaymentMethodPage('%s', [%s], [%s]);",
 			$id,
 			$id,
 			implode(', ', $inception_date_ids),
 			implode(', ', $issue_number_ids));
-
-		echo "\n// ]]>\n</script>";
 	}
 
 	// }}}
