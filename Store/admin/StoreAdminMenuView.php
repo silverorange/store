@@ -122,7 +122,7 @@ class StoreAdminMenuView extends AdminMenuView
 		}
 
 		$this->displayMenuContent();
-		$this->displayInlineJavaScript($this->getInlineJavaScript());
+		Store::displayInlineJavaScript($this->getInlineJavaScript());
 
 		$menu_div->close();
 	}
