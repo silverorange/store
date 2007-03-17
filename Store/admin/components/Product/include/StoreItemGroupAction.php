@@ -61,7 +61,7 @@ class StoreItemGroupAction extends SwatControl
 
 		$this->groups->display();
 		$this->group_title->display();
-		$this->displayInlineJavaScript($this->getInlineJavaScript());
+		Swat::displayInlineJavaScript($this->getInlineJavaScript());
 	}
 
 	public function process()
