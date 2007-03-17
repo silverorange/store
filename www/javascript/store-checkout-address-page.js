@@ -1,4 +1,4 @@
-function StoreCheckoutAddress(id)
+function StoreCheckoutAddressPage(id)
 {
 	this.id = id;
 	this.sensitive = null;
@@ -7,11 +7,11 @@ function StoreCheckoutAddress(id)
 	// set up event handlers
 	for (var i = 0; i < this.list.length; i++)
 		YAHOO.util.Event.addListener(this.list[i], 'click',
-			StoreCheckoutAddress.clickHandler, this);
+			StoreCheckoutAddressPage.clickHandler, this);
 
 	if (this.provstate) {
 		YAHOO.util.Event.addListener(this.provstate, 'change',
-			StoreCheckoutAddress.provstateChangeHandler, this);
+			StoreCheckoutAddressPage.provstateChangeHandler, this);
 
 		this.provstate_other_sensitive =
 			(this.provstate.value === 's:5:"other";');
@@ -29,7 +29,7 @@ function StoreCheckoutAddress(id)
 		this.desensitize();
 }
 
-StoreCheckoutAddress.prototype.sensitize = function()
+StoreCheckoutAddressPage.prototype.sensitize = function()
 {
 	if (this.container)
 		YAHOO.util.Dom.removeClass(this.container, 'swat-insensitive');
@@ -46,7 +46,7 @@ StoreCheckoutAddress.prototype.sensitize = function()
 	this.sensitive = true;
 }
 
-StoreCheckoutAddress.prototype.desensitize = function()
+StoreCheckoutAddressPage.prototype.desensitize = function()
 {
 	if (this.container)
 		YAHOO.util.Dom.addClass(this.container, 'swat-insensitive');
@@ -62,7 +62,7 @@ StoreCheckoutAddress.prototype.desensitize = function()
 	this.sensitive = false;
 }
 
-StoreCheckoutAddress.clickHandler = function(event, address)
+StoreCheckoutAddressPage.clickHandler = function(event, address)
 {
 	if (address.list_new.checked)
 		address.sensitize();
@@ -70,7 +70,7 @@ StoreCheckoutAddress.clickHandler = function(event, address)
 		address.desensitize();
 }
 
-StoreCheckoutAddress.provstateChangeHandler = function(event, address)
+StoreCheckoutAddressPage.provstateChangeHandler = function(event, address)
 {
 	var provstate = YAHOO.util.Event.getTarget(event);
 	address.provstate_other_sensitive = (provstate.value === 's:5:"other";');
@@ -81,7 +81,7 @@ StoreCheckoutAddress.provstateChangeHandler = function(event, address)
 		StoreCheckoutPage_desensitizeFields([address.provstate_other_id]);
 }
 
-StoreCheckoutAddress.prototype.getFieldNames = function()
+StoreCheckoutAddressPage.prototype.getFieldNames = function()
 {
 	return [];
 }
