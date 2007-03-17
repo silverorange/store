@@ -1,4 +1,4 @@
-function StoreCheckoutBillingAddress(id)
+function StoreCheckoutBillingAddressPage(id)
 {
 	this.container = document.getElementById('billing_address_container');
 	this.list = document.getElementsByName('billing_address_list');
@@ -7,12 +7,12 @@ function StoreCheckoutBillingAddress(id)
 	this.provstate = document.getElementById('billing_address_provstate');
 	this.provstate_other_id = 'billing_address_provstate_other';
 
-	StoreCheckoutBillingAddress.superclass.constructor.call(this, id);
+	StoreCheckoutBillingAddressPage.superclass.constructor.call(this, id);
 }
 
-YAHOO.extend(StoreCheckoutBillingAddress, StoreCheckoutAddress);
+YAHOO.extend(StoreCheckoutBillingAddressPage, StoreCheckoutAddressPage);
 
-StoreCheckoutBillingAddress.prototype.getFieldNames = function()
+StoreCheckoutBillingAddressPage.prototype.getFieldNames = function()
 {
 	return [
 		'billing_address_fullname',

@@ -1,4 +1,4 @@
-function StoreCheckoutShippingAddress(id)
+function StoreCheckoutShippingAddressPage(id)
 {
 	this.container = document.getElementById('shipping_address_container');
 	this.list = document.getElementsByName('shipping_address_list');
@@ -7,12 +7,12 @@ function StoreCheckoutShippingAddress(id)
 	this.provstate = document.getElementById('shipping_address_provstate');
 	this.provstate_other_id = 'shipping_address_provstate_other';
 
-	StoreCheckoutShippingAddress.superclass.constructor.call(this, id);
+	StoreCheckoutShippingAddressPage.superclass.constructor.call(this, id);
 }
 
-YAHOO.extend(StoreCheckoutShippingAddress, StoreCheckoutAddress);
+YAHOO.extend(StoreCheckoutShippingAddressPage, StoreCheckoutAddressPage);
 
-StoreCheckoutShippingAddress.prototype.getFieldNames = function()
+StoreCheckoutShippingAddressPage.prototype.getFieldNames = function()
 {
 	return [
 		'shipping_address_fullname',

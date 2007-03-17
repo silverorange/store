@@ -1,4 +1,4 @@
-function StoreAccountAddress(id)
+function StoreAccountAddressPage(id)
 {
 	this.provstate = document.getElementById('provstate');
 	this.provstate_other =
@@ -9,7 +9,7 @@ function StoreAccountAddress(id)
 
 	if (this.provstate && this.provstate_other) {
 		YAHOO.util.Event.addListener(this.provstate, 'change',
-			StoreAccountAddress.provstateChangeHandler, this);
+			StoreAccountAddressPage.provstateChangeHandler, this);
 
 		this.provstate_other_sensitive =
 			(this.provstate.value === 's:5:"other";');
@@ -22,7 +22,7 @@ function StoreAccountAddress(id)
 	}
 }
 
-StoreAccountAddress.provstateChangeHandler = function(event, address)
+StoreAccountAddressPage.provstateChangeHandler = function(event, address)
 {
 	var provstate = YAHOO.util.Event.getTarget(event);
 	address.provstate_other_sensitive = (provstate.value === 's:5:"other";');
