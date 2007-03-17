@@ -202,7 +202,7 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 				Store::PACKAGE_ID));
 
 			$this->layout->startCapture('content');
-			Swat::displayJavaScript($this->getInlineJavaScript());
+			Swat::displayInlineJavaScript($this->getInlineJavaScript());
 			$this->layout->endCapture();
 		}
 	}
