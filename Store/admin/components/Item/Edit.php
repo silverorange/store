@@ -242,7 +242,7 @@ class StoreItemEdit extends AdminDBEdit
 	protected function display()
 	{
 		parent::display();
-		$this->displayJavaScript();
+		Swat::displayInlineJavaScript($this->getInlineJavaScript());
 	}
 
 	// }}}
@@ -319,21 +319,18 @@ class StoreItemEdit extends AdminDBEdit
 	}
 
 	// }}}
-	// {{{ protected function displayJavaScript()
+	// {{{ protected function getInlineJavaScript()
 
-	protected function displayJavaScript()
+	protected function getInlineJavaScript()
 	{
 		$price_replicator = $this->ui->getWidget('price_replicator');
 		$replicator_ids = array_keys($price_replicator->replicators);
 		$replicator_ids = implode(', ', $replicator_ids);
 		$form_id = 'edit_form';
-
-		echo '<script type="text/javascript">', "\n//<![CDATA[\n";
-		printf("var item_edit_page = new StoreItemEditPage('%s', [%s]);",
+		return sprintf(
+			"var item_edit_page = new StoreItemEditPage('%s', [%s]);",
 			$form_id,
 			$replicator_ids);
-
-		echo "\n//]]>\n</script>";
 	}
 
 	// }}}
