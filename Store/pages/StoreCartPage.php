@@ -96,18 +96,6 @@ abstract class StoreCartPage extends StoreArticlePage
 		$form->process();
 
 		if ($form->isProcessed()) {
-			$checkout_button_ids =
-				array('header_checkout_button', 'footer_checkout_button');
-
-			$checkout_button_clicked = false;
-			foreach ($checkout_button_ids as $id) {
-				$button = $this->ui->getWidget($id);
-				if ($button->hasBeenClicked()) {
-					$checkout_button_clicked = true;
-					break;
-				}
-			}
-
 			$available_view = $this->ui->getWidget('available_cart_view');
 			$available_remove_all = $available_view->getRow('subtotal');
 
@@ -132,12 +120,41 @@ abstract class StoreCartPage extends StoreArticlePage
 				$this->ui->getWidget('message_display')->add($message);
 			} else {
 				$this->updateCheckoutCart();
-				if (!$form->hasMessage() && $checkout_button_clicked) {
+				if (!$form->hasMessage() &&
+					$this->checkoutButtonHasBeenClicked()) {
 					$this->app->cart->save();
 					$this->app->relocate('checkout');
 				}
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function checkoutButtonHasBeenClicked()
+
+	/**
+	 * Whether or not a button has been clicked indicating the customer
+	 * wants to proceed to the checkout
+	 *
+	 * @return boolean true if the customer is to proceed to the checkout
+	 *                  and false if the customer is to stay on the cart
+	 *                  page.
+	 */
+	protected function checkoutButtonHasBeenClicked()
+	{
+		$checkout_button_ids =
+			array('header_checkout_button', 'footer_checkout_button');
+
+		$checkout_button_clicked = false;
+		foreach ($checkout_button_ids as $id) {
+			$button = $this->ui->getWidget($id);
+			if ($button->hasBeenClicked()) {
+				$checkout_button_clicked = true;
+				break;
+			}
+		}
+
+		return $checkout_button_clicked;
 	}
 
 	// }}}
