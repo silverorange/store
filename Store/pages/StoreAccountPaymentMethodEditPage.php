@@ -7,8 +7,11 @@ require_once 'Store/StoreClassMap.php';
 require_once 'Swat/SwatDate.php';
 
 /**
+ * Page to allow customers to add or edit payment methods on their account
+ *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 {
@@ -261,16 +264,16 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 	// }}}
 	// {{{ protected function setWidgetValues()
 
-	protected function setWidgetValues($payment_method)
+	protected function setWidgetValues(
+		StoreAccountPaymentMethod $payment_method)
 	{
 		$this->ui->getWidget('payment_type')->value =
 			$payment_method->payment_type->id;
 
-		// TODO: use payment method to get correct mask
 		$this->ui->getWidget('credit_card_number_last4')->content =
-			StorePaymentMethod::formatCreditCardNumber(
+			StorePaymentType::formatCreditCardNumber(
 				$payment_method->credit_card_last4,
-				'**** **** **** ####');
+				$payment_method->payment_type->getCreditCardMaskedFormat());
 
 		$this->ui->getWidget('card_issue_number')->value =
 			$payment_method->card_issue_number;
