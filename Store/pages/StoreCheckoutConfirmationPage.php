@@ -89,7 +89,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			if ($this->isPaymentSuccessful())
 				$this->app->relocate('checkout/thankyou');
 			else
-				$this->app->relocate('checkout/paymentfailure');
+				$this->app->relocate('checkout/paymentfailed');
 		}
 	}
 
