@@ -62,24 +62,42 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 			} else {
 				$this->processEntries();
 
-				$continue_button_ids =
-					array('header_continue_button', 'footer_continue_button');
-
-				$continue_button_clicked = false;
-				foreach ($continue_button_ids as $id) {
-					$button = $this->ui->getWidget($id);
-					if ($button->hasBeenClicked()) {
-						$continue_button_clicked = true;
-						break;
-					}
-				}
-
-				if (!$form->hasMessage() && $continue_button_clicked) {
+				if (!$form->hasMessage() &&
+					$this->continueButtonHasBeenClicked()) {
 					$this->app->cart->save();
 					$this->app->relocate('checkout/confirmation');
 				}
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function continueButtonHasBeenClicked()
+
+	/**
+	 * Whether or not a button has been clicked indicating the customer
+	 * wants to return to the checkout
+	 *
+	 * @return boolean true if the customer is to return to the checkout
+	 *                  and false if the customer is to stay on the checkout
+	 *                  cart page.
+	 */
+	protected function continueButtonHasBeenClicked()
+	{
+		$continue_button_ids =
+			array('header_continue_button', 'footer_continue_button');
+
+		$continue_button_clicked = false;
+		foreach ($continue_button_ids as $id) {
+			$button = $this->ui->getWidget($id);
+			if ($button !== null && $button instanceof SwatButton &&
+				$button->hasBeenClicked()) {
+				$continue_button_clicked = true;
+				break;
+			}
+		}
+
+		return $continue_button_clicked;
 	}
 
 	// }}}
