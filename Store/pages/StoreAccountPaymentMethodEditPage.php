@@ -59,21 +59,27 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 	// }}}
 	// {{{ private function findPaymentMethod()
 
+	/**
+	 * @return StoreAccountPaymentMethod
+	 */
 	private function findPaymentMethod()
 	{
+		$account = $this->app->session->account;
+
 		if ($this->id === null) {
+			// create a new payment method
 			$class_map = StoreClassMap::instance();
 			$class = $class_map->resolveClass('StoreAccountPaymentMethod');
-			return new $class();
+			$payment_method = new $class();
+		} else {
+			// edit existing payment method
+			$payment_method = $account->payment_methods->getByIndex($this->id);
+
+			// go back to account page if payment type is disabled
+			$payment_type = $payment_method->payment_type;
+			if (!$payment_type->isAvailableInRegion($this->app->getRegion()))
+				$this->app->relocate('account');
 		}
-
-		$payment_method =
-			$this->app->session->account->payment_methods->getByIndex($this->id);
-
-		// go back to account page if payment type is disabled
-		$payment_type = $payment_method->payment_type;
-		if (!$payment_type->isAvailableInRegion($this->app->getRegion()))
-			$this->app->relocate('account');
 
 		if ($payment_method === null)
 			throw new SiteNotFoundException(
@@ -220,9 +226,12 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 		$this->buildLabels();
 
 		if ($this->id !== null) {
-			$this->ui->getWidget('credit_card_number_field')->visible = false;
-			$this->ui->getWidget('credit_card_number_last4_field')->visible = true;
+			$this->ui->getWidget('credit_card_number')->visible = false;
+			$this->ui->getWidget('credit_card_number_last4')->visible = true;
 			$this->ui->getWidget('payment_type')->show_blank = false;
+		} else {
+			$this->ui->getWidget('credit_card_number')->visible = true;
+			$this->ui->getWidget('credit_card_number_last4')->visible = false;
 		}
 
 		$type_flydown = $this->ui->getWidget('payment_type');
