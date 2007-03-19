@@ -121,7 +121,7 @@ abstract class StoreCartPage extends StoreArticlePage
 			} else {
 				$this->updateCheckoutCart();
 				if (!$form->hasMessage() &&
-					$this->checkoutButtonHasBeenClicked()) {
+					$this->continueButtonHasBeenClicked()) {
 					$this->app->cart->save();
 					$this->app->relocate('checkout');
 				}
@@ -130,7 +130,7 @@ abstract class StoreCartPage extends StoreArticlePage
 	}
 
 	// }}}
-	// {{{ protected function checkoutButtonHasBeenClicked()
+	// {{{ protected function continueButtonHasBeenClicked()
 
 	/**
 	 * Whether or not a button has been clicked indicating the customer
@@ -140,21 +140,21 @@ abstract class StoreCartPage extends StoreArticlePage
 	 *                  and false if the customer is to stay on the cart
 	 *                  page.
 	 */
-	protected function checkoutButtonHasBeenClicked()
+	protected function continueButtonHasBeenClicked()
 	{
-		$checkout_button_ids =
+		$continue_button_ids =
 			array('header_checkout_button', 'footer_checkout_button');
 
-		$checkout_button_clicked = false;
-		foreach ($checkout_button_ids as $id) {
+		$continue_button_clicked = false;
+		foreach ($continue_button_ids as $id) {
 			$button = $this->ui->getWidget($id);
 			if ($button->hasBeenClicked()) {
-				$checkout_button_clicked = true;
+				$continue_button_clicked = true;
 				break;
 			}
 		}
 
-		return $checkout_button_clicked;
+		return $continue_button_clicked;
 	}
 
 	// }}}
