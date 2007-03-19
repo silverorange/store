@@ -344,9 +344,9 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
-	// {{{ protected function displayInlineJavaScript()
+	// {{{ protected function getInlineJavaScript()
 
-	protected function displayInlineJavaScript()
+	protected function getInlineJavaScript()
 	{
 		$id = 'checkout_shipping_address';
 		return sprintf(
