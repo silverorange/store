@@ -29,33 +29,36 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	public function preProcessCommon()
 	{
-		// set debit card fields as required when a debit card is used
-		$type_list = $this->ui->getWidget('payment_type');
-		$type_list->process();
-
-		$class_map = StoreClassMap::instance();
-		$class_name = $class_map->resolveClass('StorePaymentType');
-		$payment_type = new $class_name();
-		$payment_type->setDatabase($this->app->db);
-		$payment_type->load($type_list->value);
-
-		$this->ui->getWidget('card_inception')->required =
-			$payment_type->hasInceptionDate();
-
-		$this->ui->getWidget('card_issue_number')->required =
-			$payment_type->hasIssueNumber();
-
-		// set all fields as not required when an existing payment method is
-		// selected
 		$method_list = $this->ui->getWidget('payment_method_list');
 		$method_list->process();
 
-		if ($method_list->value !== null && $method_list->value !== 'new') {
+		if ($method_list->value === null || $method_list->value === 'new') {
+			// set debit card fields as required when a debit card is used
+			$type_list = $this->ui->getWidget('payment_type');
+			$type_list->process();
+
+			if ($type_list->value !== null) {
+				$class_map = StoreClassMap::instance();
+				$class_name = $class_map->resolveClass('StorePaymentType');
+				$payment_type = new $class_name();
+				$payment_type->setDatabase($this->app->db);
+				$payment_type->load($type_list->value);
+
+				$this->ui->getWidget('card_inception')->required =
+					$payment_type->hasInceptionDate();
+
+				$this->ui->getWidget('card_issue_number')->required =
+					$payment_type->hasIssueNumber();
+			}
+		} else {
+			// set all fields as not required when an existing payment method
+			// is selected
 			$container = $this->ui->getWidget('payment_method_form');
 			$controls = $container->getDescendants('SwatInputControl');
 			foreach ($controls as $control)
 				$control->required = false;
 		}
+
 	}
 
 	// }}}
