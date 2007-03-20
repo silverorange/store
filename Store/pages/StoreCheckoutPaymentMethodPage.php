@@ -1,9 +1,11 @@
 <?php
 
-require_once 'Store/dataobjects/StoreAccountPaymentMethodWrapper.php';
+require_once 'Store/StoreClassMap.php';
 require_once 'Store/pages/StoreCheckoutEditPage.php';
+require_once 'Store/dataobjects/StoreAccountPaymentMethodWrapper.php';
 require_once 'Store/dataobjects/StoreOrderPaymentMethod.php';
 require_once 'Store/dataobjects/StorePaymentTypeWrapper.php';
+require_once 'Store/dataobjects/StorePaymentType.php';
 
 /**
  * Payment method edit page of checkout
