@@ -2,6 +2,7 @@
 
 require_once 'Store/pages/StoreAccountPage.php';
 require_once 'Store/dataobjects/StoreAccountPaymentMethod.php';
+require_once 'Store/dataobjects/StorePaymentType.php';
 require_once 'Store/StoreUI.php';
 require_once 'Store/StoreClassMap.php';
 require_once 'Swat/SwatDate.php';
@@ -97,6 +98,22 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 	public function process()
 	{
 		parent::process();
+
+		$type_list = $this->ui->getWidget('payment_type');
+		$type_list->process();
+
+		if ($type_list->value !== null) {
+			$class_map = StoreClassMap::instance();
+			$class_name = $class_map->resolveClass('StorePaymentType');
+			$payment_type = new $class_name();
+			$payment_type->setDatabase($this->app->db);
+			$payment_type->load($type_list->value);
+			$this->ui->getWidget('card_inception')->required =
+				$payment_type->hasInceptionDate();
+
+			$this->ui->getWidget('card_issue_number')->required =
+				$payment_type->hasIssueNumber();
+		}
 
 		$form = $this->ui->getWidget('edit_form');
 		$form->process();
