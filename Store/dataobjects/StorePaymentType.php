@@ -369,10 +369,10 @@ class StorePaymentType extends StoreDataObject
 		// format number (from right to left)
 		$numberpos = strlen($number) - 1;
 		for ($i = strlen($format) - 1; $i >= 0; $i--) {
-			$char = $format{$i};
+			$char = $format[$i];
 			switch ($char) {
 			case '#':
-				$output = $number{$numberpos}.$output;
+				$output = $number[$numberpos].$output;
 				$numberpos--;
 				break;
 			case '*':
