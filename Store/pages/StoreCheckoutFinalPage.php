@@ -3,7 +3,7 @@
 require_once 'Store/pages/StoreCheckoutUIPage.php';
 
 /**
- * Abstracr base class for final page of the checkout
+ * Abstract base class for final page of the checkout
  *
  * @package   Store
  * @copyright 2007 silverorange
