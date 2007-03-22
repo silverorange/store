@@ -11,9 +11,9 @@ function StoreCheckoutBillingAddressPage(id, provstate_other_index)
 		provstate_other_index);
 }
 
-YAHOO.extend(StoreCheckoutBillingAddressPage, StoreCheckoutAddressPage);
-
-StoreCheckoutBillingAddressPage.prototype.getFieldNames = function()
+YAHOO.extend(StoreCheckoutBillingAddressPage, StoreCheckoutAddressPage, {
+	
+getFieldNames: function()
 {
 	return [
 		'billing_address_fullname',
@@ -24,3 +24,5 @@ StoreCheckoutBillingAddressPage.prototype.getFieldNames = function()
 		'billing_address_postalcode',
 		'billing_address_country'];
 }
+
+});

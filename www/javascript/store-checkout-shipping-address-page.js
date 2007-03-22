@@ -11,9 +11,9 @@ function StoreCheckoutShippingAddressPage(id, provstate_other_index)
 		provstate_other_index);
 }
 
-YAHOO.extend(StoreCheckoutShippingAddressPage, StoreCheckoutAddressPage);
+YAHOO.extend(StoreCheckoutShippingAddressPage, StoreCheckoutAddressPage, {
 
-StoreCheckoutShippingAddressPage.prototype.getFieldNames = function()
+getFieldNames: function()
 {
 	return [
 		'shipping_address_fullname',
@@ -24,3 +24,5 @@ StoreCheckoutShippingAddressPage.prototype.getFieldNames = function()
 		'shipping_address_postalcode',
 		'shipping_address_country'];
 }
+
+});
