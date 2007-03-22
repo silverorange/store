@@ -116,7 +116,7 @@ class StoreProductRelatedProductDelete extends AdminDBDelete
 	// }}}
 	// {{{ private function buildNavBar()
 
-	private function buildNavBar() 
+	private function buildNavBar()
 	{
 		$this->navbar->popEntry();
 
