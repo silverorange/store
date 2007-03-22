@@ -1,8 +1,9 @@
-function StoreCheckoutAddressPage(id)
+function StoreCheckoutAddressPage(id, provstate_other_index)
 {
 	this.id = id;
 	this.sensitive = null;
 	this.fields = this.getFieldNames();
+	this.provstate_other_index = provstate_other_index;
 
 	// set up event handlers
 	for (var i = 0; i < this.list.length; i++)
@@ -11,10 +12,10 @@ function StoreCheckoutAddressPage(id)
 
 	if (this.provstate) {
 		YAHOO.util.Event.addListener(this.provstate, 'change',
-			StoreCheckoutAddressPage.provstateChangeHandler, this);
+			this.provstateChangeHandler, this, true);
 
 		this.provstate_other_sensitive =
-			(this.provstate.value === 's:5:"other";');
+			(this.provstate.selectedIndex == this.provstate_other_index);
 
 		if (!this.provstate_other_sensitive)
 			StoreCheckoutPage_desensitizeFields([this.provstate_other_id]);
@@ -23,7 +24,7 @@ function StoreCheckoutAddressPage(id)
 	}
 
 	// initialize state
-	if (this.list_new.checked)
+	if (!this.list_new || this.list_new.checked)
 		this.sensitize();
 	else
 		this.desensitize();
@@ -70,15 +71,16 @@ StoreCheckoutAddressPage.clickHandler = function(event, address)
 		address.desensitize();
 }
 
-StoreCheckoutAddressPage.provstateChangeHandler = function(event, address)
+StoreCheckoutAddressPage.prototype.provstateChangeHandler = function(event,
+	address)
 {
-	var provstate = YAHOO.util.Event.getTarget(event);
-	address.provstate_other_sensitive = (provstate.value === 's:5:"other";');
+	this.provstate_other_sensitive =
+		(this.provstate.selectedIndex == this.provstate_other_index);
 
-	if (address.provstate_other_sensitive)
-		StoreCheckoutPage_sensitizeFields([address.provstate_other_id]);
+	if (this.provstate_other_sensitive)
+		StoreCheckoutPage_sensitizeFields([this.provstate_other_id]);
 	else
-		StoreCheckoutPage_desensitizeFields([address.provstate_other_id]);
+		StoreCheckoutPage_desensitizeFields([this.provstate_other_id]);
 }
 
 StoreCheckoutAddressPage.prototype.getFieldNames = function()

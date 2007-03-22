@@ -174,29 +174,25 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 
 	public function postBuildCommon()
 	{
-		$address_list = $this->ui->getWidget('shipping_address_list');
+		$yui = new SwatYUI(array('dom', 'event'));
+		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
 
-		if ($address_list->visible) {
-			$yui = new SwatYUI(array('dom', 'event'));
-			$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
+		$path = 'packages/store/javascript/';
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			$path.'store-checkout-page.js',
+			Store::PACKAGE_ID));
 
-			$path = 'packages/store/javascript/';
-			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-				$path.'store-checkout-page.js',
-				Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			$path.'store-checkout-address-page.js',
+			Store::PACKAGE_ID));
 
-			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-				$path.'store-checkout-address-page.js',
-				Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			$path.'store-checkout-shipping-address-page.js',
+			Store::PACKAGE_ID));
 
-			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-				$path.'store-checkout-shipping-address-page.js',
-				Store::PACKAGE_ID));
-
-			$this->layout->startCapture('content');
-			Swat::displayInlineJavaScript($this->getInlineJavaScript());
-			$this->layout->endCapture();
-		}
+		$this->layout->startCapture('content');
+		Swat::displayInlineJavaScript($this->getInlineJavaScript());
+		$this->layout->endCapture();
 	}
 
 	// }}}
@@ -348,10 +344,12 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 
 	protected function getInlineJavaScript()
 	{
+		$provstate = $this->ui->getWidget('shipping_address_provstate');
+		$provstate_other_index = count($provstate->options);
 		$id = 'checkout_shipping_address';
 		return sprintf(
-			"var %s_obj = new StoreCheckoutShippingAddressPage('%s');",
-			$id, $id);
+			"var %s_obj = new StoreCheckoutShippingAddressPage('%s', %s);",
+			$id, $id, $provstate_other_index);
 	}
 
 	// }}}
