@@ -8,9 +8,8 @@
 			<property name="classes[]">store-mini-cart-frame</property>
 			<widget class="SwatTableView" id="cart_view">
 				<property name="classes[]">store-cart-entry-view</property>
-				<object class="StoreItemColumn">
+				<object class="StoreItemColumn" id="entry">
 					<property name="title" translatable="yes">Item</property>
-					<property name="id">entry</property>
 					<object class="StoreItemDescriptionCellRenderer">
 						<property name="sku" type="data">item.sku</property>
 						<property name="description" type="data">description</property>
@@ -36,10 +35,8 @@
 						<property name="value" type="data">extension</property>
 					</object>
 				</object>
-				<object class="SwatTableViewColumn">
-					<property name="id">remove_column</property>
-					<object class="SwatWidgetCellRenderer">
-						<property name="id">remove_renderer</property>
+				<object class="SwatTableViewColumn" id="remove_column">
+					<object class="SwatWidgetCellRenderer" id="remove_renderer">
 						<property name="replicator_id" type="data">id</property>
 						<widget class="SwatButton" id="remove_button">
 							<property name="title" translatable="yes">Remove</property>

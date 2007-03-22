@@ -48,8 +48,7 @@
 					<property name="content_type">text/xml</property>
 				</object>
 			</object>
-			<object class="StoreTableViewButtonRow">
-				<property name="id">add_button</property>
+			<object class="StoreTableViewButtonRow" id="add_button">
 				<property name="visible" type="boolean">false</property>
 				<property name="title" translatable="yes">Add to Cart</property>
 			</object>
