@@ -2,8 +2,8 @@
 
 #login_frame {
 	width: 55%;
-	margin-right: 20px;
 	float: left;
+	margin-right: 4%;
 }
 
 #new_customers_frame {
@@ -23,4 +23,6 @@
 	clear: left;
 }
 
-
+#login_frame .swat-footer-form-field .swat-button {
+	vertical-align: middle;
+}
