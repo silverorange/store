@@ -1,6 +1,6 @@
 function StoreCheckoutShippingAddressPage(id)
 {
-	this.container = document.getElementById('shipping_address_container');
+	this.container = document.getElementById('shipping_address_form');
 	this.list = document.getElementsByName('shipping_address_list');
 	this.list_new = document.getElementById('shipping_address_list_new');
 
