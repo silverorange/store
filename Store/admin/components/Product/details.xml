@@ -151,11 +151,11 @@
 					<object class="SwatTableViewColumn" id="quantity_discounts">
 						<property name="title" translatable="yes">Qty. Discounts</property>
 						<object class="StoreItemDiscountCellRenderer">
+							<property name="id" type="data">id</property>
 							<property name="text" translatable="yes">add</property>
 							<property name="edit_text" translatable="yes">edit</property>
 							<property name="link">Item/QuantityDiscount?id=%s</property>
 							<property name="link_value" type="data">id</property>
-							<property name="id" type="data">id</property>
 						</object>
 					</object>
 					<object class="SwatTableViewColumn" id="status">

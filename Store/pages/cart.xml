@@ -24,8 +24,7 @@
 						<property name="link" type="data">product_link</property>
 					</object>
 				</object>
-				<object class="StoreItemColumn">
-					<property name="id">entry</property>
+				<object class="StoreItemColumn" id="entry">
 					<property name="title" translatable="yes">Item #</property>
 					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">item.sku</property>
@@ -38,18 +37,15 @@
 						<property name="classes[]">store-cart-description</property>
 					</object>
 				</object>
-				<object class="SwatTableViewColumn">
-					<property name="id">price</property>
+				<object class="SwatTableViewColumn" id="price">
 					<property name="title" translatable="yes">Price</property>
 					<object class="StorePriceCellRenderer">
 						<property name="value" type="data">price</property>
 					</object>
 				</object>
-				<object class="SwatTableViewColumn">
-					<property name="id">quantity_column</property>
+				<object class="SwatTableViewColumn" id="quantity_column">
 					<property name="title" translatable="yes">Quantity</property>
-					<object class="SwatWidgetCellRenderer">
-						<property name="id">quantity_renderer</property>
+					<object class="SwatWidgetCellRenderer" id ="quantity_renderer">
 						<property name="replicator_id" type="data">id</property>
 						<widget class="SwatIntegerEntry" id="quantity_entry">
 							<property name="size" type="integer">3</property>
@@ -66,10 +62,8 @@
 						<property name="value" type="data">extension</property>
 					</object>
 				</object>
-				<object class="SwatTableViewColumn">
-					<property name="id">remove_column</property>
-					<object class="SwatWidgetCellRenderer">
-						<property name="id">remove_available_renderer</property>
+				<object class="SwatTableViewColumn" id="remove_column">
+					<object class="SwatWidgetCellRenderer" id="remove_available_renderer">
 						<property name="replicator_id" type="data">id</property>
 						<widget class="SwatButton" id="remove_available_button">
 							<property name="title" translatable="yes">Remove</property>
@@ -78,10 +72,8 @@
 						</widget>
 					</object>
 				</object>
-				<object class="SwatTableViewColumn">
-					<property name="id">move_column</property>
-					<object class="SwatWidgetCellRenderer">
-						<property name="id">move_available_renderer</property>
+				<object class="SwatTableViewColumn" id="move_column">
+					<object class="SwatWidgetCellRenderer" id="move_available_renderer">
 						<property name="replicator_id" type="data">id</property>
 						<widget class="SwatButton" id="move_available_button">
 							<property name="title" translatable="yes">Save for Later</property>
@@ -89,13 +81,11 @@
 						</widget>
 					</object>
 				</object>
-				<object class="StoreTotalRow">
-					<property name="id">shipping</property>
+				<object class="StoreTotalRow" id="shipping">
 					<property name="offset" type="integer">2</property>
 					<property name="title" translatable="yes">Shipping Total</property>
 				</object>
-				<object class="StoreTotalConfirmationButtonRow">
-					<property name="id">subtotal</property>
+				<object class="StoreTotalConfirmationButtonRow" id="subtotal">
 					<property name="offset" type="integer">2</property>
 					<property name="title">Subtotal</property>
 					<property name="button_title">Remove All Items</property>
@@ -116,8 +106,7 @@
 							<property name="link" type="data">product_link</property>
 						</object>
 					</object>
-					<object class="StoreItemColumn">
-						<property name="id">entry</property>
+					<object class="StoreItemColumn" id="entry">
 						<property name="title" translatable="yes">Item #</property>
 						<object class="SwatTextCellRenderer">
 							<property name="text" type="data">item.sku</property>
@@ -136,10 +125,8 @@
 							<property name="text" type="data">status</property>
 						</object>
 					</object>
-					<object class="SwatTableViewColumn">
-						<property name="id">remove_column</property>
-						<object class="SwatWidgetCellRenderer">
-							<property name="id">remove_unavailable_renderer</property>
+					<object class="SwatTableViewColumn" id="remove_column">
+						<object class="SwatWidgetCellRenderer" id="remove_unavailable_renderer">
 							<property name="replicator_id" type="data">id</property>
 							<widget class="SwatButton" id="remove_unavailable_button">
 								<property name="title" translatable="yes">Remove</property>
@@ -148,10 +135,8 @@
 							</widget>
 						</object>
 					</object>
-					<object class="SwatTableViewColumn">
-						<property name="id">move_column</property>
-						<object class="SwatWidgetCellRenderer">
-							<property name="id">move_unavailable_renderer</property>
+					<object class="SwatTableViewColumn" id="move_column">
+						<object class="SwatWidgetCellRenderer" id="move_unavailable_renderer">
 							<property name="replicator_id" type="data">id</property>
 							<widget class="SwatButton" id="move_unavailable_button">
 								<property name="title" translatable="yes">Save for Later</property>
@@ -159,8 +144,7 @@
 							</widget>
 						</object>
 					</object>
-					<object class="StoreTableViewConfirmationButtonRow">
-						<property name="id">remove_all</property>
+					<object class="StoreTableViewConfirmationButtonRow" id="remove_all">
 						<property name="offset" type="integer">2</property>
 						<property name="position" type="constant">POSITION_RIGHT</property>
 						<property name="title">Remove All Unavailable Items</property>
@@ -195,8 +179,7 @@
 						<property name="link" type="data">product_link</property>
 					</object>
 				</object>
-				<object class="StoreItemColumn">
-					<property name="id">entry</property>
+				<object class="StoreItemColumn" id="entry">
 					<property name="title" translatable="yes">Item #</property>
 					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">item.sku</property>
@@ -209,15 +192,13 @@
 						<property name="classes[]">store-cart-description</property>
 					</object>
 				</object>
-				<object class="SwatTableViewColumn">
-					<property name="id">price</property>
+				<object class="SwatTableViewColumn" id="price">
 					<property name="title" translatable="yes">Price</property>
 					<object class="StorePriceCellRenderer">
 						<property name="value" type="data">price</property>
 					</object>
 				</object>
-				<object class="SwatTableViewColumn">
-					<property name="id">quantity_column</property>
+				<object class="SwatTableViewColumn" id="quantity_column">
 					<property name="title" translatable="yes">Quantity</property>
 					<object class="SwatNumericCellRenderer">
 						<property name="value" type="data">quantity</property>
@@ -229,10 +210,8 @@
 						<property name="value" type="data">extension</property>
 					</object>
 				</object>
-				<object class="SwatTableViewColumn">
-					<property name="id">remove_column</property>
-					<object class="SwatWidgetCellRenderer">
-						<property name="id">remove_saved_renderer</property>
+				<object class="SwatTableViewColumn" id="remove_column">
+					<object class="SwatWidgetCellRenderer" id="remove_saved_renderer">
 						<property name="replicator_id" type="data">id</property>
 						<widget class="SwatButton" id="remove_saved_button">
 							<property name="title" translatable="yes">Remove</property>
@@ -241,10 +220,8 @@
 						</widget>
 					</object>
 				</object>
-				<object class="SwatTableViewColumn">
-					<property name="id">move_column</property>
-					<object class="SwatWidgetCellRenderer">
-						<property name="id">move_saved_renderer</property>
+				<object class="SwatTableViewColumn" id="move_column">
+					<object class="SwatWidgetCellRenderer" id="move_saved_renderer">
 						<property name="replicator_id" type="data">id</property>
 						<widget class="SwatButton" id="move_saved_button">
 							<property name="title" translatable="yes">Move to Cart</property>
@@ -252,8 +229,7 @@
 						</widget>
 					</object>
 				</object>
-				<object class="StoreTableViewConfirmationButtonRow">
-					<property name="id">remove_all</property>
+				<object class="StoreTableViewConfirmationButtonRow" id="remove_all">
 					<property name="offset" type="integer">2</property>
 					<property name="position" type="constant">POSITION_RIGHT</property>
 					<property name="title">Remove All Saved Items</property>
