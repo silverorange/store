@@ -321,7 +321,7 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 	{
 		$provstate = $this->ui->getWidget('provstate');
 		$provstate_other_index = count($provstate->options);
-		$id = 'checkout_billing_address';
+		$id = 'account_address';
 		return sprintf("var %s_obj = new StoreAccountAddressPage('%s', %s);",
 			$id, $id, $provstate_other_index);
 	}
