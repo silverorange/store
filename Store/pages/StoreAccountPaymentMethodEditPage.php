@@ -3,9 +3,11 @@
 require_once 'Store/pages/StoreAccountPage.php';
 require_once 'Store/dataobjects/StoreAccountPaymentMethod.php';
 require_once 'Store/dataobjects/StorePaymentType.php';
+require_once 'Store/dataobjects/StorePaymentTypeWrapper.php';
 require_once 'Store/StoreUI.php';
 require_once 'Store/StoreClassMap.php';
 require_once 'Swat/SwatDate.php';
+require_once 'Swat/SwatYUI.php';
 
 /**
  * Page to allow customers to add or edit payment methods on their account
@@ -210,11 +212,17 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 	{
 		parent::build();
 
-		$form = $this->ui->getWidget('edit_form');
-		$form->action = $this->source;
+		$yui = new SwatYUI(array('dom', 'event'));
+		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			'packages/store/javascript/store-account-payment-method-page.js',
+			Store::PACKAGE_ID));
 
 		$this->layout->addHtmlHeadEntrySet(
 			$this->ui->getRoot()->getHtmlHeadEntrySet());
+
+		$form = $this->ui->getWidget('edit_form');
+		$form->action = $this->source;
 
 		$type_where_clause = 'enabled = true';
 		$type_join_clause = sprintf('inner join PaymentTypeRegionBinding on '.
@@ -256,13 +264,16 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 			%s where %s order by title',
 			$type_join_clause, $type_where_clause);
 
-		$types = SwatDB::query($this->app->db, $types_sql);
+		$class_map = StoreClassMap::instance();
+		$wrapper = $class_map->resolveClass('StorePaymentTypeWrapper');
+		$types = SwatDB::query($this->app->db, $types_sql, $wrapper);
 		foreach ($types as $type)
 			$type_flydown->addOption(
 				new SwatOption($type->id, $type->title));
 
 		$this->layout->startCapture('content');
 		$this->ui->display();
+		Swat::displayInlineJavaScript($this->getInlineJavaScript($types));
 		$this->layout->endCapture();
 	}
 
@@ -325,6 +336,30 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 
 		$this->ui->getWidget('credit_card_fullname')->value =
 			$payment_method->credit_card_fullname;
+	}
+
+	// }}}
+	// {{{ protected function getInlineJavaScript()
+
+	protected function getInlineJavaScript(StorePaymentTypeWrapper $types)
+	{
+		$id = 'account_payment_method';
+		$inception_date_ids = array();
+		$issue_number_ids = array();
+		foreach ($types as $type) {
+			if ($type->hasInceptionDate())
+				$inception_date_ids[] = $type->id;
+
+			if ($type->hasIssueNumber())
+				$issue_number_ids[] = $type->id;
+		}
+
+		return sprintf("var %s_obj = ".
+			"new StoreAccountPaymentMethodPage('%s', [%s], [%s]);",
+			$id,
+			$id,
+			implode(', ', $inception_date_ids),
+			implode(', ', $issue_number_ids));
 	}
 
 	// }}}
