@@ -25,6 +25,9 @@ class StoreConversionRateCellRenderer extends SwatPercentageCellRenderer
 			$div_tag->setContent('—');
 			$div_tag->display();
 		} else {
+			if ($this->value > 1)
+				$this->value = 1;
+
 			parent::render();
 		}
 	}
