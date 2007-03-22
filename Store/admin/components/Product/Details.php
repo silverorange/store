@@ -26,8 +26,7 @@ require_once
 require_once 
 	'Store/admin/components/Product/include/StoreItemDiscountCellRenderer.php';
 
-require_once 'Store/admin/components/Product/include/'.
-	'StoreItemRegionPriceCellRenderer.php';
+require_once 'Store/admin/StoreItemRegionPriceCellRenderer.php';
 
 /**
  * Details page for Products
