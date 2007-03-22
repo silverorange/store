@@ -11,7 +11,7 @@
 					<property name="content_type">text/xml</property>
 				</widget>
 				<widget class="SwatFormField">
-					<widget class="SwatButton">
+					<widget class="SwatButton" id="create_account_button">
 						<property name="title" translatable="yes">Create a New Account</property>
 					</widget>
 				</widget>
