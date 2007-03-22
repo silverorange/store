@@ -1,6 +1,6 @@
 function StoreCheckoutBillingAddressPage(id)
 {
-	this.container = document.getElementById('billing_address_container');
+	this.container = document.getElementById('billing_address_form');
 	this.list = document.getElementsByName('billing_address_list');
 	this.list_new = document.getElementById('billing_address_list_new');
 
