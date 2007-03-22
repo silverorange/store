@@ -1,4 +1,4 @@
-function StoreCheckoutShippingAddressPage(id)
+function StoreCheckoutShippingAddressPage(id, provstate_other_index)
 {
 	this.container = document.getElementById('shipping_address_form');
 	this.list = document.getElementsByName('shipping_address_list');
@@ -7,7 +7,8 @@ function StoreCheckoutShippingAddressPage(id)
 	this.provstate = document.getElementById('shipping_address_provstate');
 	this.provstate_other_id = 'shipping_address_provstate_other';
 
-	StoreCheckoutShippingAddressPage.superclass.constructor.call(this, id);
+	StoreCheckoutShippingAddressPage.superclass.constructor.call(this, id,
+		provstate_other_index);
 }
 
 YAHOO.extend(StoreCheckoutShippingAddressPage, StoreCheckoutAddressPage);
