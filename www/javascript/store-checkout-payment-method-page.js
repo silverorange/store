@@ -137,13 +137,13 @@ StoreCheckoutPaymentMethodPage.prototype.isInceptionDateSensitive = function()
 
 StoreCheckoutPaymentMethodPage.prototype.sensitizeInceptionDate = function()
 {
-	YAHOO.util.Dom.addClass('card_inception_field', 'swat-insensitive');
+	YAHOO.util.Dom.removeClass('card_inception_field', 'swat-insensitive');
 	StoreCheckoutPage_sensitizeFields(this.inception_date_fields);
 }
 
 StoreCheckoutPaymentMethodPage.prototype.desensitizeInceptionDate = function()
 {
-	YAHOO.util.Dom.removeClass('card_inception_field', 'swat-insensitive');
+	YAHOO.util.Dom.addClass('card_inception_field', 'swat-insensitive');
 	StoreCheckoutPage_desensitizeFields(this.inception_date_fields);
 }
 
@@ -165,12 +165,12 @@ StoreCheckoutPaymentMethodPage.prototype.isIssueNumberSensitive = function()
 
 StoreCheckoutPaymentMethodPage.prototype.sensitizeIssueNumber = function()
 {
-	YAHOO.util.Dom.addClass('card_issue_number_field', 'swat-insensitive');
+	YAHOO.util.Dom.removeClass('card_issue_number_field', 'swat-insensitive');
 	StoreCheckoutPage_sensitizeFields(this.issue_number_fields);
 }
 
 StoreCheckoutPaymentMethodPage.prototype.desensitizeIssueNumber = function()
 {
-	YAHOO.util.Dom.removeClass('card_issue_number_field', 'swat-insensitive');
+	YAHOO.util.Dom.addClass('card_issue_number_field', 'swat-insensitive');
 	StoreCheckoutPage_desensitizeFields(this.issue_number_fields);
 }
