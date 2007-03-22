@@ -3,11 +3,11 @@
 #new_customers_frame,
 #login_frame {
 	float: left;
-	width: 47%;
+	width: 48%;
 }
 
 #new_customers_frame {
-	margin-right: 4%;
+	margin-right: 3%;
 }
 
 #just_place_form {
