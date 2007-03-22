@@ -22,6 +22,10 @@
 	width: 98%;
 }
 
+#login_form .swat-footer-form-field .swat-button {
+	vertical-align: middle;
+}
+
 #new_customers_frame p,
 #login_frame p {
 	margin: 0 0 0.5em 0;
