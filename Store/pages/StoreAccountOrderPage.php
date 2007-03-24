@@ -20,6 +20,8 @@ require_once 'Store/StoreUI.php';
  * @package   Store
  * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ * @see       StoreAccount
+ * @see       StoreOrder
  */
 class StoreAccountOrderPage extends StoreAccountPage
 {
