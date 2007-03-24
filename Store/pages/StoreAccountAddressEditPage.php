@@ -6,8 +6,12 @@ require_once 'Store/dataobjects/StoreAccountAddress.php';
 require_once 'Store/StoreUI.php';
 
 /**
+ * Page for adding and editing addresses stored on accounts
+ *
  * @package   Store
  * @copyright 2006-2007 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ * @see       StoreAccount
  */
 class StoreAccountAddressEditPage extends StoreAccountPage
 {
@@ -106,49 +110,6 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 	}
 
 	// }}}
-	// {{{ private function addMessage()
-
-	private function addMessage($text, $address)
-	{
-		ob_start();
-		$address->displayCondensed();
-		$address_condensed = ob_get_clean();
-
-		$message = new SwatMessage($text, SwatMessage::NOTIFICATION);
-		$message->secondary_content = $address_condensed;
-		$message->content_type = 'text/xml';
-		$this->app->messages->add($message);
-	}
-
-	// }}}
-	// {{{ private function setupPostalCode()
-
-	private function setupPostalCode()
-	{
-		// set provsate and country on postal code entry
-		$postal_code = $this->ui->getWidget('postal_code');
-		$country = $this->ui->getWidget('country');
-		$provstate = $this->ui->getWidget('provstate');
-
-		$country->process();
-		$provstate->process();
-
-		if ($provstate->value === 'other') {
-			$this->ui->getWidget('provstate_other')->required = true;
-			$provstate->value = null;
-		}
-
-		if ($provstate->value !== null) {
-			$sql = sprintf('select abbreviation from ProvState where id = %s',
-				$this->app->db->quote($provstate->value));
-
-			$provstate_abbreviation = SwatDB::queryOne($this->app->db, $sql);
-			$postal_code->country = $country->value;
-			$postal_code->provstate = $provstate_abbreviation;
-		}
-	}
-
-	// }}}
 	// {{{ protected function validate()
 
 	protected function validate()
@@ -191,6 +152,49 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 				$message->content_type = 'text/xml';
 				$provstate->addMessage($message);
 			}
+		}
+	}
+
+	// }}}
+	// {{{ private function addMessage()
+
+	private function addMessage($text, $address)
+	{
+		ob_start();
+		$address->displayCondensed();
+		$address_condensed = ob_get_clean();
+
+		$message = new SwatMessage($text, SwatMessage::NOTIFICATION);
+		$message->secondary_content = $address_condensed;
+		$message->content_type = 'text/xml';
+		$this->app->messages->add($message);
+	}
+
+	// }}}
+	// {{{ private function setupPostalCode()
+
+	private function setupPostalCode()
+	{
+		// set provsate and country on postal code entry
+		$postal_code = $this->ui->getWidget('postal_code');
+		$country = $this->ui->getWidget('country');
+		$provstate = $this->ui->getWidget('provstate');
+
+		$country->process();
+		$provstate->process();
+
+		if ($provstate->value === 'other') {
+			$this->ui->getWidget('provstate_other')->required = true;
+			$provstate->value = null;
+		}
+
+		if ($provstate->value !== null) {
+			$sql = sprintf('select abbreviation from ProvState where id = %s',
+				$this->app->db->quote($provstate->value));
+
+			$provstate_abbreviation = SwatDB::queryOne($this->app->db, $sql);
+			$postal_code->country = $country->value;
+			$postal_code->provstate = $provstate_abbreviation;
 		}
 	}
 
@@ -296,6 +300,18 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 	}
 
 	// }}}
+	// {{{ protected function getInlineJavaScript()
+
+	protected function getInlineJavaScript()
+	{
+		$provstate = $this->ui->getWidget('provstate');
+		$provstate_other_index = count($provstate->options);
+		$id = 'account_address';
+		return sprintf("var %s_obj = new StoreAccountAddressPage('%s', %s);",
+			$id, $id, $provstate_other_index);
+	}
+
+	// }}}
 	// {{{ private function setWidgetValues()
 
 	private function setWidgetValues($address)
@@ -312,18 +328,6 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 
 		$this->ui->getWidget('postal_code')->value = $address->postal_code;
 		$this->ui->getWidget('country')->value = $address->country->id;
-	}
-
-	// }}}
-	// {{{ protected function getInlineJavaScript()
-
-	protected function getInlineJavaScript()
-	{
-		$provstate = $this->ui->getWidget('provstate');
-		$provstate_other_index = count($provstate->options);
-		$id = 'account_address';
-		return sprintf("var %s_obj = new StoreAccountAddressPage('%s', %s);",
-			$id, $id, $provstate_other_index);
 	}
 
 	// }}}

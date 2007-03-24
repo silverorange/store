@@ -4,8 +4,15 @@ require_once 'Store/pages/StoreArticlePage.php';
 require_once 'Store/StoreUI.php';
 
 /**
+ * Page to reset the password for an account
+ *
+ * Users are required to enter a new password.
+ *
  * @package   Store
  * @copyright 2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ * @see       StoreAccount
+ * @see       StoreAccountForgotPasswordPage
  */
 class StoreAccountResetPasswordPage extends StoreArticlePage
 {
@@ -24,6 +31,8 @@ class StoreAccountResetPasswordPage extends StoreArticlePage
 	private $account_id;
 
 	// }}}
+
+	// init phase
 	// {{{ public function __construct()
 
 	public function __construct(SiteApplication $app, SiteLayout $layout,
@@ -43,8 +52,6 @@ class StoreAccountResetPasswordPage extends StoreArticlePage
 	}
 
 	// }}}
-
-	// init phase
 	// {{{ public function init()
 
 	public function init()

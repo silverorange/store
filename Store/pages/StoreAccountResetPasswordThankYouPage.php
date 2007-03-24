@@ -4,9 +4,11 @@ require_once 'Store/pages/StoreArticlePage.php';
 require_once 'Store/StoreUI.php';
 
 /**
+ * Confirmation page for resetting an account password
  *
  * @package   Store
  * @copyright 2006 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountResetPasswordThankyouPage extends StoreArticlePage
 {
