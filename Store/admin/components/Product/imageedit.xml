@@ -25,7 +25,9 @@
 				</widget>
 				<widget class="SwatFormField">
 					<property name="title" translatable="yes">Show Border</property>
-					<widget class="SwatCheckbox" id="border" />
+					<widget class="SwatCheckbox" id="border">
+						<property name="value" type="boolean">true</property>
+					</widget>
 				</widget>
 			</widget>
 			<widget class="SwatFieldset">
