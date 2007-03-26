@@ -85,8 +85,10 @@ StoreAccountPaymentMethodPage.prototype.sensitizeInceptionDate = function()
 	var element;
 	for (var i = 0; i < this.inception_date_fields.length; i++) {
 		element = document.getElementById(this.inception_date_fields[i]);
-		element.disabled = false;
-		YAHOO.util.Dom.removeClass(element, 'swat-insensitive');
+		if (element) {
+			element.disabled = false;
+			YAHOO.util.Dom.removeClass(element, 'swat-insensitive');
+		}
 	}
 }
 
@@ -97,8 +99,10 @@ StoreAccountPaymentMethodPage.prototype.desensitizeInceptionDate = function()
 	var element;
 	for (var i = 0; i < this.inception_date_fields.length; i++) {
 		element = document.getElementById(this.inception_date_fields[i]);
-		element.disabled = true;
-		YAHOO.util.Dom.addClass(element, 'swat-insensitive');
+		if (element) {
+			element.disabled = true;
+			YAHOO.util.Dom.addClass(element, 'swat-insensitive');
+		}
 	}
 }
 
@@ -125,8 +129,10 @@ StoreAccountPaymentMethodPage.prototype.sensitizeIssueNumber = function()
 	var element;
 	for (var i = 0; i < this.issue_number_fields.length; i++) {
 		element = document.getElementById(this.issue_number_fields[i]);
-		element.disabled = false;
-		YAHOO.util.Dom.removeClass(element, 'swat-insensitive');
+		if (element) {
+			element.disabled = false;
+			YAHOO.util.Dom.removeClass(element, 'swat-insensitive');
+		}
 	}
 }
 
@@ -137,7 +143,9 @@ StoreAccountPaymentMethodPage.prototype.desensitizeIssueNumber = function()
 	var element;
 	for (var i = 0; i < this.issue_number_fields.length; i++) {
 		element = document.getElementById(this.issue_number_fields[i]);
-		element.disabled = true;
-		YAHOO.util.Dom.addClass(element, 'swat-insensitive');
+		if (element) {
+			element.disabled = true;
+			YAHOO.util.Dom.addClass(element, 'swat-insensitive');
+		}
 	}
 }
