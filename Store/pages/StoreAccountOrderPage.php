@@ -191,7 +191,7 @@ class StoreAccountOrderPage extends StoreAccountPage
 
 		foreach ($this->order->items as $order_item) {
 			$button = $renderer->getWidget($order_item->id);
-			if ($button->hasBeenClicked()) {
+			if ($button instanceof SwatButton && $button->hasBeenClicked()) {
 				$item_id = $this->findItem($order_item);
 				$this->addItem($item_id, $order_item);
 			}
