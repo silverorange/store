@@ -69,6 +69,11 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 	{
 		parent::build();
 		$this->app->session->logout();
+
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'styles/store-checkout-final-page.css',
+			Store::PACKAGE_ID));
+
 	}
 
 	// }}}
