@@ -46,9 +46,12 @@ class StoreProductEdit extends AdminDBEdit
 				'A category ID or a product ID must be passed in the URL.'));
 
 		$catalog_flydown = $this->ui->getWidget('catalog');
-		$catalog_flydown->show_blank = true;
 		$catalog_flydown->addOptionsByArray(SwatDB::getOptionArray(
 			$this->app->db, 'Catalog', 'title', 'id', 'title'));
+
+		// Only show blank option if there is more than one catalogue to choose
+		// from.
+		$catalog_flydown->show_blank = (count($catalog_flydown->options) > 1);
 
 		if ($this->id === null) {
 			$this->ui->getWidget('shortname_field')->visible = false;
@@ -189,6 +192,7 @@ class StoreProductEdit extends AdminDBEdit
 
 		// smart defaulting of the catalog
 		if ($this->id === null) {
+			// TODO: use $this->app->session
 			if (isset($_SESSION['catalog']) &&
 				is_numeric($_SESSION['catalog'])) {
 				$catalog = $_SESSION['catalog'];
@@ -197,7 +201,7 @@ class StoreProductEdit extends AdminDBEdit
 					from Product 
 					where id in (
 						select product from CategoryProductBinding 
-						where category=%s) 
+						where category = %s) 
 					group by catalog 
 					order by num_products desc
 					limit 1';
@@ -252,7 +256,7 @@ class StoreProductEdit extends AdminDBEdit
 				$link = sprintf('Product/Details?id=%s', $this->id);
 			else
 				$link = sprintf('Product/Details?id=%s&category=%s', $this->id,
-				$this->category_id);
+					$this->category_id);
 
 			$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));
 			$this->navbar->addEntry(new SwatNavBarEntry(Store::_('Edit')));
