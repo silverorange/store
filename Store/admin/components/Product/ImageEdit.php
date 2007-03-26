@@ -179,6 +179,11 @@ class StoreProductImageEdit extends AdminPage
 		// manually sized images
 		foreach ($sizes as $size => $dimensions) {
 			$file = $this->ui->getWidget($size.'_image');
+
+			// if original size is not uploaded, use large size as the original
+			if ($size === 'original' && !$file->isUploaded())
+					$file = $this->ui->getWidget('large_image');
+
 			if ($file->isUploaded()) {
 				$transformer = Image_Transform::factory('Imagick2');
 				$transformer->load($file->getTempFileName());
@@ -196,11 +201,12 @@ class StoreProductImageEdit extends AdminPage
 						$dimensions[0], $dimensions[1]), SwatMessage::ERROR);
 
 					$file->addMessage($message);
-				} elseif ($transformer->img_x > $dimensions[0]) {
+				} elseif ($dimensions[0] !== null &&
+					$transformer->img_x > $dimensions[0]) {
 					$validated = false;
 
 					$message = new SwatMessage(sprintf(Store::_(
-						'The %%s can be at most %1$s× pixels wide.'),
+						'The %%s can be at most %1$s pixels wide.'),
 						$dimensions[0]), SwatMessage::ERROR);
 
 					$file->addMessage($message);
