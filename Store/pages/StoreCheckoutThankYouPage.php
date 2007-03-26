@@ -25,7 +25,7 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
 	protected function displayFinalNote()
 	{
 		$header_tag = new SwatHtmlTag('h3');
-		$header_tag->setContent(Store::_('Your Order has been Placed'));
+		$header_tag->setContent(Store::_('Your order has been placed.'));
 		$paragraph_tag = new SwatHtmlTag('p');
 		$paragraph_tag->setContent(Store::_(
 			'Thank you for your order. You will receive an email '.
