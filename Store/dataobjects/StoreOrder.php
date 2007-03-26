@@ -168,9 +168,18 @@ class StoreOrder extends StoreDataObject
 	// }}}
 	// {{{ public function getReceiptHeader()
 
+	/**
+	 * Gets the header text for order receipts
+	 *
+	 * Subclasses should return a string from this method if they wish to
+	 * display a header on all order receipts. By default, an empty string is
+	 * returned so no header is displayed on order receipts.
+	 *
+	 * @return string the header text for order receipts.
+	 */
 	public function getReceiptHeader()
 	{
-		return 'Thank you for placing an order online.';
+		return '';
 	}
 
 	// }}}
