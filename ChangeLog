@@ -1,3 +1,425 @@
+2007-03-26  nrf
+
+	* [r16198] store/trunk/Store/pages/StoreAccountOrderPage.php:
+	  Make sure we have a button
+
+2007-03-26  gauthierm
+
+	* [r16189]
+	  store/trunk/www/javascript/store-account-payment-method-page.js:
+	  Prevent JavaScript errors on account payment if inception date
+	  and issue number fields are not visible. This is a followup to
+	  r16140.
+	* [r16188] store/trunk/Store/pages/StoreCheckoutThankYouPage.php:
+	  Revert r15932. We already reviewed this text as a group for
+	  Veseys.
+
+2007-03-26  steven
+
+	* [r16187] store/trunk/Store/pages/StoreCheckoutFinalPage.php,
+	  store/trunk/www/styles/store-checkout-final-page.css:
+	  Include store-cart.css on CheckoutFinal page (will be included
+	  in CheckoutThankYou as well, since it's a subclass)
+	  Fixes ticket #791
+
+2007-03-26  gauthierm
+
+	* [r16184] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Add documentation to getRecepitHeader() and make it return a
+	  blank string by default.
+
+2007-03-24  gauthierm
+
+	* [r16167]
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php,
+	  store/trunk/Store/pages/StoreAccountChangePasswordPage.php,
+	  store/trunk/Store/pages/StoreAccountDetailsPage.php,
+	  store/trunk/Store/pages/StoreAccountForgotPasswordPage.php,
+	  store/trunk/Store/pages/StoreAccountLoginPage.php,
+	  store/trunk/Store/pages/StoreAccountOrderPage.php,
+	  store/trunk/Store/pages/StoreAccountResetPasswordPage.php,
+	  store/trunk/Store/pages/StoreAccountResetPasswordThankYouPage.php:
+	  
+	  Tidy up account pages:
+	  - add LGPL license
+	  - add class descriptions in docblock
+	  - fix order of methods (public->protected->private)
+
+2007-03-22  nrf
+
+	* [r16147]
+	  store/trunk/Store/admin/components/Ad/include/StoreConversionRateCellRenderer.php:
+	  
+	  A conversion rate greater than 1 is bogus.
+
+2007-03-22  gauthierm
+
+	* [r16140]
+	  store/trunk/Store/pages/StoreAccountPaymentMethodEditPage.php,
+	  store/trunk/www/javascript/store-account-payment-method-page.js:
+	  Finish ticket #733: Add JavaScript to account payment method
+	  editor that disables debit fields. This has not been tested as
+	  neither Veseys not Uppermost use this feature.
+	* [r16135]
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php:
+	  Use a more correct id in inline JavaScript.
+	* [r16134]
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php,
+	  store/trunk/www/javascript/store-account-address-page.js:
+	  Fix problem described in #743 for account address edit page
+	  JavaScript.
+	* [r16133]
+	  store/trunk/www/javascript/store-checkout-billing-address-page.js,
+	  
+	  store/trunk/www/javascript/store-checkout-shipping-address-page.js:
+	  
+	  Safer overriding of class methods on checkout address page
+	  javascript.
+	* [r16132]
+	  store/trunk/Store/pages/StoreCheckoutBillingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php,
+	  store/trunk/www/javascript/store-checkout-address-page.js,
+	  store/trunk/www/javascript/store-checkout-billing-address-page.js,
+	  
+	  store/trunk/www/javascript/store-checkout-shipping-address-page.js:
+	  
+	  Fix JavaScipt to enable/disable provstate_other field on
+	  StoreCheckout*AddressPage. Fixes ticket #743.
+
+2007-03-22  steven
+
+	* [r16130] store/trunk/Store/pages/account-login.xml:
+	  Add ID to login button for a CSS hook
+	* [r16129] store/trunk/www/styles/store-account-login-page.css:
+	  better flexible box margins and vertical alignment for login
+	  button
+
+2007-03-22  isaac
+
+	* [r16128] store/trunk/sql/tables/AccountPaymentMethod.sql,
+	  store/trunk/sql/tables/Item.sql,
+	  store/trunk/sql/tables/OrderPaymentMethod.sql:
+	  match r16126
+
+2007-03-22  nrf
+
+	* [r16123] store/trunk/Store/admin/components/Product/details.xml,
+	  store/trunk/Store/pages/account-details.xml,
+	  store/trunk/Store/pages/cart.xml,
+	  store/trunk/Store/pages/checkout-cart.xml,
+	  store/trunk/Store/pages/product-cart.xml,
+	  store/trunk/Store/pages/product-items-view.xml:
+	  Consistently set "id" as an attribute on the object/widget
+	  instead of as a property within.
+
+2007-03-22  gauthierm
+
+	* [r16121]
+	  store/trunk/www/javascript/store-checkout-payment-method-page.js:
+	  
+	  Add insensitive class when desensitizing fields rather than the
+	  other way around. This is part of ticket #753.
+	* [r16120]
+	  store/trunk/www/javascript/store-checkout-billing-address-page.js,
+	  
+	  store/trunk/www/javascript/store-checkout-shipping-address-page.js:
+	  
+	  Add insensitive styles to the correct container. Fixes #754.
+
+2007-03-22  isaac
+
+	* [r16114]
+	  store/trunk/Store/admin/components/Product/RelatedProductDelete.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/StoreItemGroupAction.php:
+	  
+	  fix the itemgroup messages when only one item is being moved,
+	  and ws
+
+2007-03-22  gauthierm
+
+	* [r16108] store/trunk/Store/admin/components/Product/Details.php:
+	  Use new location of item region price cell renderer
+	* [r16107]
+	  store/trunk/Store/admin/StoreItemRegionPriceCellRenderer.php,
+	  store/trunk/Store/admin/components/Product/include/StoreItemRegionPriceCellRenderer.php:
+	  
+	  Move this cell renderer to the Store/admin directory as I'd like
+	  to use it in multiple components.
+
+2007-03-22  steven
+
+	* [r16105] store/trunk/www/styles/store-checkout-front-page.css:
+	  give the login button a vertical align to better line up with
+	  the "Forgot your password?" link text
+	* [r16104] store/trunk/www/styles/store-checkout-front-page.css:
+	  Safer wrapping on checkout front page
+	* [r16102] store/trunk/www/styles/store-checkout-front-page.css:
+	  Even better wrapping at 800x600
+	* [r16101] store/trunk/www/styles/store-checkout-front-page.css:
+	  Better CSS wrapping for the New Customers and Returning
+	  Customers boxes at low resolutions
+	* [r16099] store/trunk/Store/pages/checkout-front.xml:
+	  Add ID to create-account button as a CSS hook
+
+2007-03-21  nrf
+
+	* [r16067] store/trunk/Store/pages/StoreCheckoutFinalPage.php:
+	  typo
+
+2007-03-20  gauthierm
+
+	* [r16059] store/trunk/Store/dataobjects/StorePaymentType.php:
+	  Use square brackets instead of curly braces forstring
+	  addressing. Curly braces are set to be deprecated in future PHP
+	  versions.
+	* [r16058]
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php:
+	  require correct files.
+	* [r16057] store/trunk/Store/pages/StoreAccountEditPage.php:
+	  Add LGPL license
+	* [r16054]
+	  store/trunk/Store/pages/StoreAccountPaymentMethodEditPage.php:
+	  Fix ticket #734. Require debit fields when debit card is
+	  selected on account payment method edit page.
+
+2007-03-19  gauthierm
+
+	* [r16032] store/trunk/Store/pages/StoreCartPage.php:
+	  Make method name match StoreCheckoutCartPage.
+	* [r16031] store/trunk/Store/pages/StoreCheckoutCartPage.php:
+	  Add protected method that decided whether or not to return to
+	  the checkout when processing the checkout cart page.
+	* [r16030] store/trunk/Store/pages/StoreCartPage.php:
+	  Add protected method that decided whether or not to proceed to
+	  the checkout when processing the cart page.
+	* [r16021]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  fix path to payment failed page
+	* [r16019]
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php:
+	  Don't process the type list unless we're adding a new type. This
+	  prevents the page from not validating when an existing payment
+	  method is selected.
+	* [r16018]
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php:
+	  TODO TODONE. Require inception date and issue number on checkout
+	  payment method page where appropriate.
+	* [r16017]
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php:
+	  Fix a typo
+	* [r16015]
+	  store/trunk/Store/pages/StoreAccountPaymentMethodEditPage.php,
+	  store/trunk/Store/pages/account-payment-method-edit.xml:
+	  Cleanup the
+	  StoreAccountPaymentMethodEditPage::findPaymentMethod() method
+	  and do another TODO.
+	* [r16014]
+	  store/trunk/Store/pages/StoreAccountPaymentMethodEditPage.php:
+	  Do a TODO, add type hinting and tidy docblock
+
+2007-03-18  gauthierm
+
+	* [r16004] store/trunk/Store/admin/components/Item/Edit.php:
+	  Use new Swat::displayInlineJavaScript() method to display inline
+	  JavaScript.
+
+2007-03-17  steven
+
+	* [r15997] store/trunk/Store/admin/StoreAdminMenuView.php:
+	  fix typo (mike, this makes sense, right?)
+
+2007-03-17  gauthierm
+
+	* [r15994] store/trunk/Store/pages/StoreProductPage.php:
+	  extra conditional is no longer needed here.
+	* [r15991]
+	  store/trunk/Store/pages/StoreCheckoutBillingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php:
+	  fix method name
+	* [r15988] store/trunk/Store/pages/StoreQuickOrderPage.php,
+	  store/trunk/www/javascript/store-quick-order-page.js:
+	  Translate JavaScript string on quickorder finishing a TODO.
+	* [r15987]
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php,
+	  store/trunk/Store/pages/StoreCheckoutBillingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutFirstPage.php,
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php,
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php,
+	  store/trunk/Store/pages/StoreProductPage.php,
+	  store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Use new Swat::displayInlineJavaScript() method to normalize
+	  inline script tags for Store pages.
+	* [r15986] store/trunk/Store/admin/StoreAdminMenuView.php,
+	  store/trunk/Store/admin/components/Product/include/StoreItemGroupAction.php:
+	  
+	  respect Swat API change from r15984.
+	* [r15982]
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php,
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php:
+	  Fix references to renamed JavaScript.
+	* [r15981]
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php,
+	  store/trunk/Store/pages/StoreCheckoutBillingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php:
+	  Fix references to renamed JavaScript.
+	* [r15980]
+	  store/trunk/www/javascript/store-account-address-page.js,
+	  store/trunk/www/javascript/store-account-address.js,
+	  store/trunk/www/javascript/store-checkout-address-page.js,
+	  store/trunk/www/javascript/store-checkout-address.js,
+	  store/trunk/www/javascript/store-checkout-billing-address-page.js,
+	  store/trunk/www/javascript/store-checkout-billing-address.js,
+	  store/trunk/www/javascript/store-checkout-shipping-address-page.js,
+	  store/trunk/www/javascript/store-checkout-shipping-address.js:
+	  Rename page-level javascript with conventional page suffixes.
+	* [r15979] store/trunk/Store/pages/StoreProductPage.php,
+	  store/trunk/www/javascript/store-product-page.js:
+	  Refactor store product page javascript to use YUI and to
+	  proeprly translate strings.
+
+2007-03-16  nrf
+
+	* [r15966] store/trunk/Store/StoreCartModule.php:
+	  Update session IDs stored in the CartEntry table when a session
+	  ID gets regenerated.
+
+2007-03-16  gauthierm
+
+	* [r15944] store/trunk/Store/pages/StoreCheckoutFirstPage.php,
+	  store/trunk/www/javascript/store-checkout-first-page.js:
+	  Refactor checkout first page javascript to use YUI and to not
+	  break if some page components are missing.
+	* [r15937] store/trunk/Store/pages/StoreCheckoutFinalPage.php:
+	  These lines got commented out and comitted by accident.
+	* [r15936] store/trunk/Store/pages/StoreCheckoutFinalPage.php:
+	  These lines got commented out and comitted by accident.
+	* [r15935] store/trunk/Store/pages/StoreCheckoutFinalPage.php:
+	  These lines got commented out and comitted by accident.
+	* [r15934]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Fix folding
+	* [r15933]
+	  store/trunk/Store/pages/StoreCheckoutPaymentFailedPage.php,
+	  store/trunk/Store/pages/checkout-payment-failed.xml:
+	  Error page for when checkout payment processing fails.
+	* [r15932] store/trunk/Store/pages/StoreCheckoutThankYouPage.php:
+	  Capitalize heading.
+
+2007-03-15  steven
+
+	* [r15929]
+	  store/trunk/www/javascript/store-checkout-payment-method-page.js:
+	  
+	  insensitize a more specific container - goes along with r15928
+	  in Uppermost - veseys uses Store XML for paymeth page, so it's
+	  unaffected
+
+2007-03-15  gauthierm
+
+	* [r15920] store/trunk/Store/pages/StoreCheckoutFinalPage.php,
+	  store/trunk/Store/pages/StoreCheckoutThankYouPage.php,
+	  store/trunk/Store/pages/checkout-thank-you.xml:
+	  Clean up checkout thankyou page:
+	  - make it easier to change the note displayed at the top of the
+	  page
+	  - make it easier to change the note displayed about accounts and
+	  don't abuse swat message while we're at it
+	  - tidy method names and add some display-specific methods to
+	  ease subclassing
+	* [r15914] store/trunk/Store/pages/StoreCheckoutThankYouPage.php:
+	  require correct file
+	* [r15913] store/trunk/Store/pages/StoreCheckoutFinalPage.php,
+	  store/trunk/Store/pages/StoreCheckoutThankYouPage.php:
+	  Create an abstract base class for final checkout page and make
+	  the checkout thankyou page extend that class.
+
+2007-03-15  nrf
+
+	* [r15912]
+	  store/trunk/Store/admin/components/Product/ImageEdit.php,
+	  store/trunk/Store/dataobjects/StoreImage.php:
+	  Process manually resized images the same as we process
+	  automatically resized ones.
+
+2007-03-15  steven
+
+	* [r15910] store/trunk/www/styles/store-contact-page.css:
+	  Remove veseys-specific CSS
+	* [r15909] store/trunk/Store/pages/StoreContactPage.php,
+	  store/trunk/Store/pages/contact.xml,
+	  store/trunk/www/styles/store-contact-page.css:
+	  Make contact us page use 'to' and 'from' instead of 'email' for
+	  form field names (ticket #709)
+
+2007-03-15  gauthierm
+
+	* [r15908]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Redirect to a different page from the checkout confirmation if
+	  payment processing failed.
+
+2007-03-15  nrf
+
+	* [r15907]
+	  store/trunk/Store/pages/StoreCheckoutAggregateStepPage.php,
+	  store/trunk/Store/pages/StoreCheckoutFirstPage.php:
+	  Add new abstract class StoreCheckoutAggregateStepPage as an
+	  intermediate page class.
+	  
+	  StoreCheckoutStepPage - a base class for a step page in the
+	  checkout
+	  ---> StoreCheckoutAggregateStepPAge - a base class for a step
+	  page composed of embedded pages
+	  ---> StoreCheckoutFirstPage - a generic implementation of the
+	  first page of a one page checkout
+
+2007-03-15  gauthierm
+
+	* [r15905] store/trunk/Store/StorePaymentMethodCellRenderer.php:
+	  Only render payment methods if they are actually payment methods.
+	* [r15897]
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php,
+	  store/trunk/www/javascript/store-checkout-payment-method-page.js:
+	  
+	  Updates to Store to support selectively sensitizing issue number
+	  and inception date fields in JavaScript based on the selected
+	  payment type.
+
+2007-03-14  gauthierm
+
+	* [r15893] store/trunk/Store/dataobjects/StorePaymentType.php:
+	  remove duplicate isCard() method that got comitted accidentally.
+	* [r15892] store/trunk/Store/dataobjects/StorePaymentType.php:
+	  Two new payment type methods needed to fix ticket #711.
+	* [r15890] store/trunk/Store/dataobjects/StorePaymentType.php:
+	  Fix parse error
+	* [r15888] store/trunk/Store/dataobjects/StorePaymentType.php:
+	  Add isCard() method to StorePaymentType. Fixed ticket #713.
+
+2007-03-14  nrf
+
+	* [r15880] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  Allow use without a GPG ID. When there is no GPG ID, the card
+	  number is not saved in the database.
+
+2007-03-14  gauthierm
+
+	* [r15879] store/trunk/Store/StoreProtxPaymentRequest.php:
+	  When a status request is made on test or simulator, return a
+	  fake response that matches a real response.
+	* [r15878] store/trunk/Store/StoreProtxPaymentRequest.php:
+	  Handle case when status resquest is made on test or simulator
+	  site better.
+	* [r15868] store/trunk/Store/StorePaymentRequest.php,
+	  store/trunk/Store/StoreProtxPaymentRequest.php:
+	  Changes to payment request objects to support status requests.
+
+2007-03-14  nrf
+
+	* [r15859] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.7.1
+
 2007-03-14  gauthierm
 
 	* [r15858] store/trunk/Store/pages/StoreCartPage.php:
