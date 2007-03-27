@@ -2,7 +2,7 @@ create table OrderPaymentMethod (
 	id serial,
 	payment_type int not null references PaymentType(id),
 	card_fullname varchar(255),
-	card_lastdigits varchar(6),
+	card_preview varchar(6),
 	card_number text,
 	card_expiry date,
 	card_inception date,

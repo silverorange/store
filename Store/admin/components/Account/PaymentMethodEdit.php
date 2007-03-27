@@ -7,7 +7,7 @@ require_once 'Swat/SwatMessage.php';
 require_once 'Swat/SwatDate.php';
 require_once 'Store/dataobjects/StoreAccountPaymentMethod.php';
 
-//TODO: make the card_lastdigits more flexible, add newer fields to it,
+//TODO: make the card_preview more flexible, add newer fields to it,
 //      and possibly make work as a creator
 
 /**
@@ -40,7 +40,7 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 		$this->initAccount();
 
 		$this->fields = array('integer:payment_type','card_fullname',
-			'card_last4','date:card_expiry');
+			'card_preview','date:card_expiry');
 	}
 
 	// }}}
@@ -72,10 +72,10 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 
 		$values['card_expiry'] = $values['card_expiry']->getDate();
 
-		// do not overwrite card_lastdigits field, as we display it, but don't
+		// do not overwrite card_preview field, as we display it, but don't
 		// actually edit it
 		foreach ($this->fields as $key => $field)
-			if ($field == 'card_lastdigits')
+			if ($field == 'card_preview')
 				unset($this->fields[$key]);
 
 		SwatDB::updateRow($this->app->db, 'AccountPaymentMethod',
@@ -140,9 +140,9 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 				Store::_('Account payment method with id ‘%s’ not found.'),
 				$this->id));
 
-		$card_lastdigits = $this->ui->getWidget('card_lastdigits');
-		$card_lastdigits->content = StorePaymentMethod::formatCardNumber(
-			$row->card_lastdigits, '**** **** **** ####');
+		$card_preview = $this->ui->getWidget('card_preview');
+		$card_preview->content = StorePaymentMethod::formatCardNumber(
+			$row->card_preview, '**** **** **** ####');
 		//todo: pass right mask in
 
 		$row->card_expiry = new SwatDate($row->card_expiry);

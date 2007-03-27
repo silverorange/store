@@ -49,7 +49,7 @@ abstract class StorePaymentMethod extends StoreDataObject
 	 *
 	 * @var string
 	 */
-	public $card_lastdigits;
+	public $card_preview;
 
 	/**
 	 * Number of the card
@@ -149,7 +149,7 @@ abstract class StorePaymentMethod extends StoreDataObject
 	public function setCardNumber($number, $store_unencrypted = false)
 	{
 		//todo: make this smart based on card type
-		$this->card_lastdigits = substr($number, -4);
+		$this->card_preview = substr($number, -4);
 
 		if ($this->gpg_id !== null)
 			$this->card_number =
@@ -239,11 +239,11 @@ abstract class StorePaymentMethod extends StoreDataObject
 
 		echo SwatString::minimizeEntities($this->payment_type->title);
 
-		if ($this->card_lastdigits !== null) {
+		if ($this->card_preview !== null) {
 			echo ': ';
 			$span_tag->class = 'store-payment-method-card-number';
 			$span_tag->setContent(StorePaymentType::formatCardNumber(
-				$this->card_lastdigits,
+				$this->card_preview,
 				$this->payment_type->getCardMaskedFormat()));
 
 			$span_tag->display();
@@ -285,10 +285,10 @@ abstract class StorePaymentMethod extends StoreDataObject
 	{
 		echo $this->payment_type->title;
 
-		if ($this->card_lastdigits !== null) {
+		if ($this->card_preview !== null) {
 			echo "\n";
 			echo StorePaymentType::formatCardNumber(
-				$this->card_lastdigits,
+				$this->card_preview,
 				$this->payment_type->getCardMaskedFormat());
 		}
 
@@ -308,11 +308,11 @@ abstract class StorePaymentMethod extends StoreDataObject
 
 	public function copyFrom(StorePaymentMethod $method)
 	{
-		$this->card_fullname   = $method->card_fullname;
-		$this->card_lastdigits = $method->card_lastdigits;
-		$this->card_number     = $method->card_number;
-		$this->card_expiry     = $method->card_expiry;
-		$this->payment_type    = $method->getInternalValue('payment_type');
+		$this->card_fullname = $method->card_fullname;
+		$this->card_preview  = $method->card_preview;
+		$this->card_number   = $method->card_number;
+		$this->card_expiry   = $method->card_expiry;
+		$this->payment_type  = $method->getInternalValue('payment_type');
 	}
 
 	// }}}
