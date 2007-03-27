@@ -1,3 +1,4 @@
+-- Used by the StoreCacheTableUpdater application
 create table CacheFlag (
 	shortname varchar(255),
 	dirty boolean not null default false
