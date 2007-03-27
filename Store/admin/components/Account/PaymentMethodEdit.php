@@ -8,15 +8,14 @@ require_once 'Swat/SwatDate.php';
 require_once 'Store/dataobjects/StoreAccountPaymentMethod.php';
 require_once 'Store/dataobjects/StoreAccount.php';
 
-//TODO: make the card_preview more flexible, add newer fields to it,
-//      and possibly make work as a creator
-
 /**
  * Edit page for Account Payment Methods
  *
  * @package   Store
  * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ * @todo      Make this tool have the ability to enter new card numbers.
+ * @todo      Add card_inception and card_issue_number fields to this tool.
  */
 class StoreAccountPaymentMethodEdit extends AdminDBEdit
 {
