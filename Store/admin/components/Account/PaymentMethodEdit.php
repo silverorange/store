@@ -6,6 +6,7 @@ require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatMessage.php';
 require_once 'Swat/SwatDate.php';
 require_once 'Store/dataobjects/StoreAccountPaymentMethod.php';
+require_once 'Store/dataobjects/StoreAccount.php';
 
 //TODO: make the card_preview more flexible, add newer fields to it,
 //      and possibly make work as a creator
@@ -21,9 +22,8 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 {
 	// {{{ private properties
 
-	private $fields;
-	private $account_id;
-	private $account_fullname;
+	private $payment_method;
+	private $account;
 
 	// }}}
 
@@ -36,28 +36,54 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
 		$this->ui->loadFromXML(dirname(__FILE__).'/paymentmethodedit.xml');
-
-		$this->initAccount();
-
-		$this->fields = array('integer:payment_type','card_fullname',
-			'card_preview','date:card_expiry');
 	}
 
 	// }}}
-	// {{{ protected function initAccount()
+	// {{{ protected function getAccount()
 
-	protected function initAccount()
+	protected function getAccount()
 	{
-		if ($this->id === null)
-			$this->account_id = $this->app->initVar('account');
-		else
-			$this->account_id = SwatDB::queryOne($this->app->db, sprintf(
-				'select account from AccountPaymentMethod where id = %s',
-				$this->app->db->quote($this->id, 'integer')));
+		if ($this->account === null) {
+			if ($this->id === null)
+				$account_id = $this->app->initVar('account');
+			else
+				$account_id = SwatDB::queryOne($this->app->db, sprintf(
+					'select account from AccountPaymentMethod where id = %s',
+					$this->app->db->quote($this->id, 'integer')));
 
-		$this->account_fullname = SwatDB::queryOne($this->app->db,
-			sprintf('select fullname from Account where id = %s', 
-				$this->app->db->quote($this->account_id, 'integer')));
+			$class_map = StoreClassMap::instance();
+			$class_name = $class_map->resolveClass('StoreAccount');
+			$this->account = new $class_name();
+			$this->account->setDatabase($this->app->db);
+			$this->account->load($account_id);
+		}
+
+		return $this->account;
+	}
+
+	// }}}
+	// {{{ protected function getPaymentMethod()
+
+	protected function getPaymentMethod()
+	{
+		if ($this->payment_method === null) {
+			$class_map = StoreClassMap::instance();
+			$class_name = $class_map->resolveClass('StoreAccountPaymentMethod');
+			$this->payment_method = new $class_name();
+			$this->payment_method->setDatabase($this->app->db);
+
+			if ($this->id === null) {
+				$this->payment_method->account = $this->getAccount();
+			} else {
+				if (!$this->payment_method->load($this->id)) {
+					throw new AdminNotFoundException(sprintf(Store::_(
+						'Account payment method with id ‘%s’ not found.'),
+						$this->id));
+				}
+			}
+		}
+
+		return $this->payment_method;
 	}
 
 	// }}}
@@ -67,23 +93,21 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$values = $this->ui->getValues(array('payment_type', 'card_fullname',
-			'card_expiry'));
+		$payment_method = $this->getPaymentMethod();
+		$payment_method->payment_type =
+			$this->ui->getWidget('payment_type')->value;
 
-		$values['card_expiry'] = $values['card_expiry']->getDate();
+		$payment_method->card_fullname =
+			$this->ui->getWidget('card_fullname')->value;
 
-		// do not overwrite card_preview field, as we display it, but don't
-		// actually edit it
-		foreach ($this->fields as $key => $field)
-			if ($field == 'card_preview')
-				unset($this->fields[$key]);
+		$payment_method->card_expiry =
+			$this->ui->getWidget('card_expiry')->value;
 
-		SwatDB::updateRow($this->app->db, 'AccountPaymentMethod',
-			$this->fields, $values, 'id', $this->id);
+		$payment_method->save();
 
 		$message = new SwatMessage(sprintf(
 			Store::_('Payment method for “%s” has been saved.'),
-			$this->account_fullname));
+			$this->getAccount()->fullname));
 
 		$this->app->messages->add($message);
 	}
@@ -98,15 +122,16 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 		parent::buildInternal();
 
 		$frame = $this->ui->getWidget('edit_frame');
-		$frame->subtitle = $this->account_fullname;
+		$frame->subtitle = $this->getAccount()->fullname;
 
-		$provstate_flydown = $this->ui->getWidget('payment_type');
-		$provstate_flydown->show_blank = true;
-		$provstate_flydown->addOptionsByArray(SwatDB::getOptionArray(
-			$this->app->db, 'PaymentType', 'title', 'id', 'title'));
+		$payment_type_flydown = $this->ui->getWidget('payment_type');
+		$payment_type_flydown->show_blank = true;
+		$payment_type_flydown->addOptionsByArray(SwatDB::getOptionArray(
+			$this->app->db, 'PaymentType', 'title', 'id',
+			'displayorder, title'));
 
 		$form = $this->ui->getWidget('edit_form');
-		$form->addHiddenField('account', $this->account_id);
+		$form->addHiddenField('account', $this->getAccount()->id);
 	}
 
 	// }}}
@@ -119,12 +144,13 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 		$last_entry->title = sprintf(Store::_('%s Payment Method'),
 			$last_entry->title);
 
-		$this->navbar->addEntry(new SwatNavBarEntry($this->account_fullname,
-			sprintf('Account/Details?id=%s', $this->account_id)));
+		$this->navbar->addEntry(new SwatNavBarEntry(
+			$this->getAccount()->fullname,
+			sprintf('Account/Details?id=%s', $this->getAccount()->id)));
 
 		$this->navbar->addEntry($last_entry);
 		
-		$this->title = $this->account_fullname;
+		$this->title = $this->getAccount()->fullname;
 	}
 	
 	// }}}
@@ -132,24 +158,24 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$row = SwatDB::queryRowFromTable($this->app->db,
-			'AccountPaymentMethod', $this->fields, 'id', $this->id);
-
-		if ($row === null)
-			throw new AdminNotFoundException(sprintf(
-				Store::_('Account payment method with id ‘%s’ not found.'),
-				$this->id));
+		$payment_method = $this->getPaymentMethod();
 
 		$card_preview = $this->ui->getWidget('card_preview');
-		$card_preview->content = StorePaymentMethod::formatCardNumber(
-			$row->card_preview, '**** **** **** ####');
-		//todo: pass right mask in
+		$card_preview->content = StorePaymentType::formatCardNumber(
+			$payment_method->card_preview,
+			$payment_method->payment_type->getCardMaskedFormat());
 
-		$row->card_expiry = new SwatDate($row->card_expiry);
+		$this->ui->getWidget('payment_type')->value =
+			$payment_method->payment_type->id;
 
-		$this->ui->setValues(get_object_vars($row));
+		$this->ui->getWidget('card_fullname')->value =
+			$payment_method->card_fullname;
+
+		$this->ui->getWidget('card_expiry')->value =
+			$payment_method->card_expiry;
 	}
 
 	// }}}
 }
+
 ?>
