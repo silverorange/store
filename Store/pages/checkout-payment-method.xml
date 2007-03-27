@@ -13,7 +13,7 @@
 		</widget>
 		<widget class="SwatFormField" id="card_number_field">
 			<property name="title" translatable="yes">Card Number</property>
-			<widget class="StoreCreditCardNumberEntry" id="credit_card_number">
+			<widget class="StoreCardNumberEntry" id="card_number">
 				<property name="required" type="boolean">true</property>
 				<property name="maxlength" type="integer">50</property>
 			</widget>
@@ -36,7 +36,7 @@
 		</widget>
 		<widget class="SwatFormField" id="card_expiry_field">
 			<property name="title" translatable="yes">Expiry Date</property>
-			<widget class="StoreCardExpiryEntry" id="credit_card_expiry">
+			<widget class="StoreCardExpiryEntry" id="card_expiry">
 				<property name="required" type="boolean">true</property>
 			</widget>
 		</widget>
@@ -47,7 +47,7 @@
 		</widget>
 		<widget class="SwatFormField" id="card_fullname_field">
 			<property name="title" translatable="yes">Name on Card</property>
-			<widget class="SwatEntry" id="credit_card_fullname">
+			<widget class="SwatEntry" id="card_fullname">
 				<property name="required" type="boolean">true</property>
 				<property name="maxlength" type="integer">255</property>
 				<property name="size" type="integer">35</property>
@@ -55,13 +55,13 @@
 		</widget>
 		<widget class="SwatFormField" id="save_account_payment_method_field">
 			<property name="visible" type="boolean">false</property>
-			<property name="title" translatable="yes">Save my credit card information with my account for future web orders</property>
+			<property name="title" translatable="yes">Save my debit or credit card information with my account for future web orders</property>
 			<widget class="SwatCheckbox" id="save_account_payment_method">
 				<property name="value" type="boolean">true</property>
 			</widget>
 		</widget>
 		<widget class="SwatContentBlock" id="payment_method_note">
-			<property name="content" translatable="yes"><![CDATA[<p class="small-print">As you have opted to checkout as a guest, your credit card information will <em>not</em> be saved for future visits to the website. See our <a href="about/website/privacy">privacy &amp; security policy</a> for more information about how your information will be used.</p>]]></property>
+			<property name="content" translatable="yes"><![CDATA[<p class="small-print">As you have opted to checkout as a guest, your debit or credit card information will <em>not</em> be saved for future visits to the website. See our <a href="about/website/privacy">privacy &amp; security policy</a> for more information about how your information will be used.</p>]]></property>
 			<property name="content_type">text/xml</property>
 		</widget>
 	</widget>

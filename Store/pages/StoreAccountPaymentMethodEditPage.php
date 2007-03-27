@@ -155,20 +155,20 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 			$this->ui->getWidget('payment_type')->value;
 
 		if ($this->id === null)
-			$payment_method->setCreditCardNumber(
-				$this->ui->getWidget('credit_card_number')->value);
+			$payment_method->setCardNumber(
+				$this->ui->getWidget('card_number')->value);
 
 		$payment_method->card_issue_number =
 			$this->ui->getWidget('card_issue_number')->value;
 
-		$payment_method->credit_card_expiry =
-			$this->ui->getWidget('credit_card_expiry')->value;
+		$payment_method->card_expiry =
+			$this->ui->getWidget('card_expiry')->value;
 
 		$payment_method->card_inception =
 			$this->ui->getWidget('card_inception')->value;
 
-		$payment_method->credit_card_fullname =
-			$this->ui->getWidget('credit_card_fullname')->value;
+		$payment_method->card_fullname =
+			$this->ui->getWidget('card_fullname')->value;
 	}
 
 	// }}}
@@ -231,7 +231,7 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 
 		if (!$form->isProcessed()) {
 			if ($this->id === null) {
-				$this->ui->getWidget('credit_card_fullname')->value =
+				$this->ui->getWidget('card_fullname')->value =
 					$this->app->session->account->fullname;
 			} else {
 				$payment_method = $this->findPaymentMethod();
@@ -251,12 +251,12 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 		$this->buildLabels();
 
 		if ($this->id !== null) {
-			$this->ui->getWidget('credit_card_number')->visible = false;
-			$this->ui->getWidget('credit_card_number_last4')->visible = true;
+			$this->ui->getWidget('card_number')->visible = false;
+			$this->ui->getWidget('card_number_lastdigits')->visible = true;
 			$this->ui->getWidget('payment_type')->show_blank = false;
 		} else {
-			$this->ui->getWidget('credit_card_number')->visible = true;
-			$this->ui->getWidget('credit_card_number_last4')->visible = false;
+			$this->ui->getWidget('card_number')->visible = true;
+			$this->ui->getWidget('card_number_lastdigits')->visible = false;
 		}
 
 		$type_flydown = $this->ui->getWidget('payment_type');
@@ -307,19 +307,19 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 		$this->ui->getWidget('payment_type')->value =
 			$payment_method->payment_type->id;
 
-		$this->ui->getWidget('credit_card_number_last4')->content =
-			StorePaymentType::formatCreditCardNumber(
-				$payment_method->credit_card_last4,
-				$payment_method->payment_type->getCreditCardMaskedFormat());
+		$this->ui->getWidget('card_number_lastdigits')->content =
+			StorePaymentType::formatCardNumber(
+				$payment_method->card_lastdigits,
+				$payment_method->payment_type->getCardMaskedFormat());
 
 		$this->ui->getWidget('card_issue_number')->value =
 			$payment_method->card_issue_number;
 
-		$this->ui->getWidget('credit_card_expiry')->value =
-			$payment_method->credit_card_expiry;
+		$this->ui->getWidget('card_expiry')->value =
+			$payment_method->card_expiry;
 
-		if (!$this->ui->getWidget('credit_card_expiry')->isValid()) {
-			$expiry = $this->ui->getWidget('credit_card_expiry');
+		if (!$this->ui->getWidget('card_expiry')->isValid()) {
+			$expiry = $this->ui->getWidget('card_expiry');
 
 			$content = sprintf(Store::_('The expiry date that was entered '.
 				'(%s) is in the past. Please enter an updated date.'),
@@ -334,8 +334,8 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 		$this->ui->getWidget('card_inception')->value =
 			$payment_method->card_inception;
 
-		$this->ui->getWidget('credit_card_fullname')->value =
-			$payment_method->credit_card_fullname;
+		$this->ui->getWidget('card_fullname')->value =
+			$payment_method->card_fullname;
 	}
 
 	// }}}

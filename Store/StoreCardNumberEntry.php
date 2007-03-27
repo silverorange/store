@@ -4,12 +4,13 @@ require_once 'Swat/SwatEntry.php';
 require_once 'Validate/Finance/CreditCard.php';
 
 /**
- * A widget for basic validation of a credit card
+ * A widget for basic validation of a debit or credit card
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreCreditCardNumberEntry extends SwatEntry
+class StoreCardNumberEntry extends SwatEntry
 {
 	// {{{ public properties
 
@@ -21,7 +22,7 @@ class StoreCreditCardNumberEntry extends SwatEntry
 	public $show_blank_value = false;
 
 	/**
-	 * The value to display as place holder for the credit card number
+	 * The value to display as place holder for the card number
 	 *
 	 * @var string
 	 */
@@ -31,7 +32,7 @@ class StoreCreditCardNumberEntry extends SwatEntry
 	// {{{ public function __construct()
 
 	/**
-	 * Creates a new credit card entry widget
+	 * Creates a new card entry widget
 	 *
 	 * @param string $id a non-visible unique id for this widget.
 	 *
@@ -64,8 +65,8 @@ class StoreCreditCardNumberEntry extends SwatEntry
 		$value = str_replace(array('-', ' '), '', $this->value);
 
 		if (!Validate_Finance_CreditCard::number($value)) {
-			$message = Store::_('The %s field is not a valid credit card '.
-				'number. Please ensure it is entered correctly.');
+			$message = Store::_('The %s field is not a valid credit or debit '.
+				'card number. Please ensure it is entered correctly.');
 
 			$this->addMessage(new SwatMessage($message, SwatMessage::ERROR));
 		}

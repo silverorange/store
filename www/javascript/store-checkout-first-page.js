@@ -1,11 +1,11 @@
 /**
- * Fills name in billing address and credit card fullname when unfocusing
+ * Fills name in billing address and card fullname when unfocusing
  * basic info fullname
  */
 function StoreCheckoutFirstPage()
 {
 	this.fullname = document.getElementById('fullname');
-	this.credit_card_fullname = document.getElementById('credit_card_fullname');
+	this.card_fullname = document.getElementById('card_fullname');
 	this.billing_address_fullname =
 		document.getElementById('billing_address_fullname');
 
@@ -28,9 +28,9 @@ StoreCheckoutFirstPage.prototype.updateFields = function()
 			this.billing_address_fullname.value = this.fullname.value;
 		}
 
-		if (this.credit_card_fullname &&
-			this.credit_card_fullname.value == '') {
-			this.credit_card_fullname.value = this.fullname.value;
+		if (this.card_fullname &&
+			this.card_fullname.value == '') {
+			this.card_fullname.value = this.fullname.value;
 		}
 	}
 }

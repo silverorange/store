@@ -13,7 +13,7 @@ require_once 'SwatDB/SwatDB.php';
  */
 class StoreCategoryFeaturedProducts extends AdminIndex
 {
-	// {{{ private properties
+	// {{{ protected properties
 
 	protected $ui_xml = 'Store/admin/components/Category/featuredproducts.xml';
 
