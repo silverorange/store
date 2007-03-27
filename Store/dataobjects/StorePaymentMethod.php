@@ -343,42 +343,6 @@ abstract class StorePaymentMethod extends StoreDataObject
 	}
 
 	// }}}
-	// {{{  public static function formatCardNumber()
-
-	/**
-	 * Formats a card number according to a format string
-	 *
-	 * Format strings may contain spaces, hash marks or stars.
-	 * ' ' - inserts a space at this position
-	 * '*' - displays a * at this position
-	 * '#' - displays the number at this position
-	 *
-	 * For example:
-	 * <code>
-	 * // displays '*** **6 7890'
-	 * echo StorePaymentMethod::formatCardNumber(1234567890, '*** **# ####');
-	 * </code>
-	 *
-	 * @param string $number the card number to format.
-	 * @param string $format the format string to use.
-	 * @param boolean $zero_fill whether or not the prepend the card number
-	 *                            with zeros until it is as long as the format
-	 *                            string.
-	 *
-	 * @return string the formatted card number.
-	 *
-	 * @see StorePaymentType::formatCardNumber()
-	 *
-	 * @deprecated Use StorePaymentType::formatCardNumber() instead. This method
-	 *             will be removed in future versions of Store.
-	 */
-	public static function formatCardNumber($number,
-		$format = '#### #### #### ####', $zero_fill = true)
-	{
-		return StorePaymentType::formatCardNumber($number, $format, $zero_fill);
-	}
-
-	// }}}
 	// {{{ protected function init()
 
 	protected function init()
