@@ -15,7 +15,7 @@ require_once 'Store/StoreClassMap.php';
  * Details page for accounts
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountDetails extends AdminIndex
@@ -198,11 +198,13 @@ class StoreAccountDetails extends AdminIndex
 		$rs = SwatDB::query($this->app->db, $sql);
 		$ts = new SwatTableStore();
 
+		$class_map = StoreClassMap::instance();
+		$class_name = $class_map->resolveClass('StoreAccountAddress');
 		foreach ($rs as $row) {
 			$new_row = null;
 			$new_row->id = $row->id;
 			$new_row->default_address = $row->default_address;
-			$new_row->address = new StoreAccountAddress($row);
+			$new_row->address = new $class_name($row);
 			$new_row->address->setDatabase($this->app->db);
 			$ts->addRow($new_row);
 		}
@@ -215,11 +217,13 @@ class StoreAccountDetails extends AdminIndex
 
 	protected function getPaymentMethodsTableStore($view) 
 	{
+		$class_map = StoreClassMap::instance();
+		$wrapper = $class_map->resolveClass('StoreAccountPaymentMethodWrapper');
+
 		$sql = sprintf('select * from AccountPaymentMethod where account = %s',
 			$this->app->db->quote($this->id, 'integer'));
 
-		$payment_methods = SwatDB::query($this->app->db, $sql,
-				'StoreAccountPaymentMethodWrapper');
+		$payment_methods = SwatDB::query($this->app->db, $sql, $wrapper);
 
 		$store = new SwatTableStore();
 		foreach ($payment_methods as $method) {
@@ -227,6 +231,7 @@ class StoreAccountDetails extends AdminIndex
 			$ds->payment_method = $method;
 			$store->addRow($ds);
 		}
+
 		return $store;
 	}
 
