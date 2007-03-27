@@ -162,19 +162,19 @@ class StorePaymentType extends StoreDataObject
 	}
 
 	// }}}
-	// {{{ public function getCreditCardMaskedFormat()
+	// {{{ public function getCardMaskedFormat()
 
 	/**
 	 * Gets the masked format string for this payment type if this payment
-	 * type is a credit card
+	 * type is a credit or debit card
 	 *
 	 * @return string the masked format string for this payment type. If no
 	 *                 suitable mask is available (for example if this type is
-	 *                 not a credit card), null is returned.
+	 *                 "on account"), null is returned.
 	 *
-	 * @see StorePaymentType::formatCreditCardNumber()
+	 * @see StorePaymentType::formatCardNumber()
 	 */
-	public function getCreditCardMaskedFormat()
+	public function getCardMaskedFormat()
 	{
 		$mask = null;
 
@@ -202,19 +202,19 @@ class StorePaymentType extends StoreDataObject
 	}
 
 	// }}}
-	// {{{ public function getCreditCardFormat()
+	// {{{ public function getCardFormat()
 
 	/**
 	 * Gets the format string for this payment type if this payment type is a
-	 * credit card
+	 * debit or credit card
 	 *
 	 * @return string the format string for this payment type. If no suitable
 	 *                 suitable format is available (for example if this type
-	 *                 is not a credit card), null is returned.
+	 *                 is "on account"), null is returned.
 	 *
-	 * @see StorePaymentType::formatCreditCardNumber()
+	 * @see StorePaymentType::formatCardNumber()
 	 */
-	public function getCreditCardFormat()
+	public function getCardFormat()
 	{
 		$mask = null;
 
@@ -323,10 +323,10 @@ class StorePaymentType extends StoreDataObject
 	}
 
 	// }}}
-	// {{{  public static function formatCreditCardNumber()
+	// {{{  public static function formatCardNumber()
 
 	/**
-	 * Formats a credit card number according to a format string
+	 * Formats a card number according to a format string
 	 *
 	 * Format strings may contain spaces, hash marks or stars.
 	 * ' ' - inserts a space at this position
@@ -336,19 +336,18 @@ class StorePaymentType extends StoreDataObject
 	 * For example:
 	 * <code>
 	 * // displays '*** **6 7890'
-	 * echo StorePaymentType::formatCreditCardNumber(1234567890,
-	 *      '*** **# ####');
+	 * echo StorePaymentType::formatCardNumber(1234567890, '*** **# ####');
 	 * </code>
 	 *
-	 * @param string $number the creditcard number to format.
+	 * @param string $number the card number to format.
 	 * @param string $format the format string to use.
-	 * @param boolean $zero_fill whether or not the prepend the credit card
-	 *                            number with zeros until it is as long as the
-	 *                            format string.
+	 * @param boolean $zero_fill whether or not the prepend the card number
+	 *                            with zeros until it is as long as the format
+	 *                            string.
 	 *
-	 * @return string the formatted credit card number.
+	 * @return string the formatted card number.
 	 */
-	public static function formatCreditCardNumber($number,
+	public static function formatCardNumber($number,
 		$format = '#### #### #### ####', $zero_fill = true)
 	{
 		$number = trim((string)$number);

@@ -151,7 +151,7 @@ class StoreProduct extends StoreDataObject
 	/**
 	 * Loads item sub-data-objects for this product
 	 *
-	 * If you want to loead region-specific fields on the items, call the
+	 * If you want to load region-specific fields on the items, call the
 	 * {@link StoreProduct::setRegion()} method first.
 	 *
 	 * @see StoreProduct::setRegion()

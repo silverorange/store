@@ -69,7 +69,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	public function processCommon()
 	{
 		// make sure expiry date is after (or equal) to the inception date
-		$card_expiry = $this->ui->getWidget('credit_card_expiry');
+		$card_expiry = $this->ui->getWidget('card_expiry');
 		$card_inception = $this->ui->getWidget('card_inception');
 		if ($card_expiry->value !== null && $card_inception->value !== null &&
 			Date::compare($card_expiry->value, $card_inception->value) < 0) {
@@ -152,14 +152,14 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$payment_method->card_issue_number =
 			$this->ui->getWidget('card_issue_number')->value;
 
-		$payment_method->credit_card_expiry =
-			$this->ui->getWidget('credit_card_expiry')->value;
+		$payment_method->card_expiry =
+			$this->ui->getWidget('card_expiry')->value;
 
 		$payment_method->card_inception =
 			$this->ui->getWidget('card_inception')->value;
 
-		$payment_method->credit_card_fullname =
-			$this->ui->getWidget('credit_card_fullname')->value;
+		$payment_method->card_fullname =
+			$this->ui->getWidget('card_fullname')->value;
 	}
 
 	// }}}
@@ -177,9 +177,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	protected function updatePaymentMethodCardNumber(
 		StoreOrderPaymentMethod $payment_method)
 	{
-		$card_number = $this->ui->getWidget('credit_card_number')->value;
+		$card_number = $this->ui->getWidget('card_number')->value;
 		if ($card_number !== null)
-			$payment_method->setCreditCardNumber($card_number);
+			$payment_method->setCardNumber($card_number);
 	}
 
 	// }}}
@@ -228,7 +228,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$order = $this->app->session->order;
 
 		if ($order->payment_method === null) {
-			$this->ui->getWidget('credit_card_fullname')->value =
+			$this->ui->getWidget('card_fullname')->value =
 				$this->app->session->account->fullname;
 		} else {
 			if ($order->payment_method->getAccountPaymentMethodId() === null) {
@@ -237,12 +237,10 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 					$order->payment_method->getInternalValue('payment_type');
 
 				/*
-				 *  Note: We can't repopulate the credit card number entry
-				 *        since we only store the encrypted number in the
-				 *        dataobject.
+				 *  Note: We can't repopulate the card number entry since we
+				 *        only store the encrypted number in the dataobject.
 				 */
-				$this->ui->getWidget('credit_card_number')->show_blank_value =
-					true;
+				$this->ui->getWidget('card_number')->show_blank_value = true;
 
 				$this->ui->getWidget('card_verification_value')->value =
 					$order->payment_method->getCardVerificationValue();
@@ -250,14 +248,14 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				$this->ui->getWidget('card_issue_number')->value =
 					$order->payment_method->card_issue_number;
 
-				$this->ui->getWidget('credit_card_expiry')->value =
-					$order->payment_method->credit_card_expiry;
+				$this->ui->getWidget('card_expiry')->value =
+					$order->payment_method->card_expiry;
 
 				$this->ui->getWidget('card_inception')->value =
 					$order->payment_method->card_inception;
 
-				$this->ui->getWidget('credit_card_fullname')->value =
-					$order->payment_method->credit_card_fullname;
+				$this->ui->getWidget('card_fullname')->value =
+					$order->payment_method->card_fullname;
 			} else {
 				$this->ui->getWidget('payment_method_list')->value =
 					$order->payment_method->getAccountPaymentMethodId();

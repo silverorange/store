@@ -12,19 +12,19 @@
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Name on Credit Card</property>
-				<widget class="SwatEntry" id="credit_card_fullname">
+				<property name="title" translatable="yes">Name on Card</property>
+				<widget class="SwatEntry" id="card_fullname">
 					<property name="required" type="boolean">true</property>
 					<property name="maxlength" type="integer">255</property>
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Credit Card Number</property>
-				<widget class="SwatContentBlock" id="credit_card_last4" />
+				<property name="title" translatable="yes">Card Number</property>
+				<widget class="SwatContentBlock" id="card_lastdigits" />
 			</widget>
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Expiry Date</property>
-				<widget class="SwatDateEntry" id="credit_card_expiry">
+				<widget class="SwatDateEntry" id="card_expiry">
 					<property name="required" type="boolean">true</property>
 					<property name="display_parts" type="constant">YEAR|MONTH</property>
 					<property name="show_month_number" type="boolean">true</property>

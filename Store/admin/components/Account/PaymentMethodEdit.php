@@ -7,14 +7,14 @@ require_once 'Swat/SwatMessage.php';
 require_once 'Swat/SwatDate.php';
 require_once 'Store/dataobjects/StoreAccountPaymentMethod.php';
 
-//TODO: make the credit_card_last4 more flexible,
+//TODO: make the card_lastdigits more flexible, add newer fields to it,
 //      and possibly make work as a creator
 
 /**
  * Edit page for Account Payment Methods
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountPaymentMethodEdit extends AdminDBEdit
@@ -39,14 +39,14 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 
 		$this->initAccount();
 
-		$this->fields = array('integer:payment_type','credit_card_fullname',
-			'credit_card_last4','date:credit_card_expiry');
+		$this->fields = array('integer:payment_type','card_fullname',
+			'card_last4','date:card_expiry');
 	}
 
 	// }}}
 	// {{{ protected function initAccount()
 
-	protected function initAccount() 
+	protected function initAccount()
 	{
 		if ($this->id === null)
 			$this->account_id = $this->app->initVar('account');
@@ -67,15 +67,15 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$values = $this->ui->getValues(array('payment_type',
-			'credit_card_fullname', 'credit_card_expiry'));
+		$values = $this->ui->getValues(array('payment_type', 'card_fullname',
+			'card_expiry'));
 
-		$values['credit_card_expiry'] =
-			$values['credit_card_expiry']->getDate();
+		$values['card_expiry'] = $values['card_expiry']->getDate();
 
-		// do not overwrite last4 field
+		// do not overwrite card_lastdigits field, as we display it, but don't
+		// actually edit it
 		foreach ($this->fields as $key => $field)
-			if ($field == 'credit_card_last4')
+			if ($field == 'card_lastdigits')
 				unset($this->fields[$key]);
 
 		SwatDB::updateRow($this->app->db, 'AccountPaymentMethod',
@@ -119,7 +119,7 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 		$last_entry->title = sprintf(Store::_('%s Payment Method'),
 			$last_entry->title);
 
-		$this->navbar->addEntry(new SwatNavBarEntry($this->account_fullname, 
+		$this->navbar->addEntry(new SwatNavBarEntry($this->account_fullname,
 			sprintf('Account/Details?id=%s', $this->account_id)));
 
 		$this->navbar->addEntry($last_entry);
@@ -140,12 +140,12 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 				Store::_('Account payment method with id ‘%s’ not found.'),
 				$this->id));
 
-		$credit_card_last4 = $this->ui->getWidget('credit_card_last4');
-		$credit_card_last4->content =
-			StorePaymentMethod::formatCreditCardNumber(
-				$row->credit_card_last4, '**** **** **** ####');
+		$card_lastdigits = $this->ui->getWidget('card_lastdigits');
+		$card_lastdigits->content = StorePaymentMethod::formatCardNumber(
+			$row->card_lastdigits, '**** **** **** ####');
+		//todo: pass right mask in
 
-		$row->credit_card_expiry = new SwatDate($row->credit_card_expiry);
+		$row->card_expiry = new SwatDate($row->card_expiry);
 
 		$this->ui->setValues(get_object_vars($row));
 	}

@@ -170,7 +170,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	 * @return StorePaymentTransaction a transaction object representing the
 	 *                                  released transaction.
 	 */
-	public function release(StorePaymentTransaction $transaction) 
+	public function release(StorePaymentTransaction $transaction)
 	{
 		$request = new StoreProtxPaymentRequest(
 			StorePaymentRequest::TYPE_RELEASE, $this->mode);
@@ -322,7 +322,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	 * Voids a transaction
 	 *
 	 * Voiding cancels a transaction and prevents both both merchant fees and
-	 * charging the customer. 
+	 * charging the customer.
 	 *
 	 * A void must be performed before the merchant bank settles outstanding
 	 * transactions. Once settled, a transaction cannot be voided.
@@ -425,9 +425,9 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 
 		$payment_method = $order->payment_method;
 		$amount = SwatString::numberFormat($order->total, 2, null, false);
-		$card_holder = substr($payment_method->credit_card_fullname, 0, 50);
-		$card_number = substr($payment_method->credit_card_number, 0, 20);
-		$card_expiry = $payment_method->credit_card_expiry->format('%m%y');
+		$card_holder = substr($payment_method->card_fullname, 0, 50);
+		$card_number = substr($payment_method->card_number, 0, 20);
+		$card_expiry = $payment_method->card_expiry->format('%m%y');
 		$description = substr($order->getDescription(), 0, 100);
 
 		$billing_address = $this->getAddressString($order->billing_address);

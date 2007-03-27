@@ -9,13 +9,13 @@
 				<property name="required" type="boolean">true</property>
 			</widget>
 		</widget>
-		<widget class="SwatFormField" id="credit_card_number_field">
-			<property name="title" translatable="yes">Credit Card Number</property>
-			<widget class="StoreCreditCardNumberEntry" id="credit_card_number">
+		<widget class="SwatFormField" id="card_number_field">
+			<property name="title" translatable="yes">Card Number</property>
+			<widget class="StoreCardNumberEntry" id="card_number">
 				<property name="required" type="boolean">true</property>
 				<property name="maxlength" type="integer">50</property>
 			</widget>
-			<widget class="SwatContentBlock" id="credit_card_number_last4" />
+			<widget class="SwatContentBlock" id="card_number_lastdigits" />
 		</widget>
 		<widget class="SwatFormField" id="card_issue_number_field">
 			<property name="title" translatable="yes">Card Issue Number</property>
@@ -27,7 +27,7 @@
 		</widget>
 		<widget class="SwatFormField" id="card_expiry_field">
 			<property name="title" translatable="yes">Expiry Date</property>
-			<widget class="StoreCardExpiryEntry" id="credit_card_expiry">
+			<widget class="StoreCardExpiryEntry" id="card_expiry">
 				<property name="required" type="boolean">true</property>
 			</widget>
 		</widget>
@@ -38,7 +38,7 @@
 		</widget>
 		<widget class="SwatFormField">
 			<property name="title" translatable="yes">Name on Card</property>
-			<widget class="SwatEntry" id="credit_card_fullname">
+			<widget class="SwatEntry" id="card_fullname">
 				<property name="required" type="boolean">true</property>
 				<property name="maxlength" type="integer">255</property>
 				<property name="size" type="integer">35</property>

@@ -39,14 +39,14 @@ function StoreCheckoutPaymentMethodPage(id, inception_date_ids,
 
 	this.fields = [
 		'payment_type',
-		'credit_card_number',
+		'card_number',
 		'card_verification_value',
 		'card_issue_number',
-		'credit_card_expiry_month',
-		'credit_card_expiry_year',
+		'card_expiry_month',
+		'card_expiry_year',
 		'card_inception_month',
 		'card_inception_year',
-		'credit_card_fullname',
+		'card_fullname',
 		'save_account_payment_method'
 	];
 

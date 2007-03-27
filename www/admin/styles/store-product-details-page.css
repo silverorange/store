@@ -40,3 +40,8 @@
 	height: 1px;
 }
 
+span.item-disabled {
+	color: #999;
+	text-decoration: line-through;
+}
+
