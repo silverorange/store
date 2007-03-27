@@ -252,11 +252,11 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 
 		if ($this->id !== null) {
 			$this->ui->getWidget('card_number')->visible = false;
-			$this->ui->getWidget('card_number_lastdigits')->visible = true;
+			$this->ui->getWidget('card_preview')->visible = true;
 			$this->ui->getWidget('payment_type')->show_blank = false;
 		} else {
 			$this->ui->getWidget('card_number')->visible = true;
-			$this->ui->getWidget('card_number_lastdigits')->visible = false;
+			$this->ui->getWidget('card_preview')->visible = false;
 		}
 
 		$type_flydown = $this->ui->getWidget('payment_type');
@@ -307,9 +307,9 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 		$this->ui->getWidget('payment_type')->value =
 			$payment_method->payment_type->id;
 
-		$this->ui->getWidget('card_number_lastdigits')->content =
+		$this->ui->getWidget('card_preview')->content =
 			StorePaymentType::formatCardNumber(
-				$payment_method->card_lastdigits,
+				$payment_method->card_preview,
 				$payment_method->payment_type->getCardMaskedFormat());
 
 		$this->ui->getWidget('card_issue_number')->value =

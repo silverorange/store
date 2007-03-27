@@ -15,7 +15,7 @@
 				<property name="required" type="boolean">true</property>
 				<property name="maxlength" type="integer">50</property>
 			</widget>
-			<widget class="SwatContentBlock" id="card_number_lastdigits" />
+			<widget class="SwatContentBlock" id="card_number_preview" />
 		</widget>
 		<widget class="SwatFormField" id="card_issue_number_field">
 			<property name="title" translatable="yes">Card Issue Number</property>
