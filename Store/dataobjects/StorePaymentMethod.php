@@ -49,7 +49,7 @@ abstract class StorePaymentMethod extends StoreDataObject
 	 *
 	 * @var string
 	 */
-	public $card_preview;
+	public $card_number_preview;
 
 	/**
 	 * Number of the card
