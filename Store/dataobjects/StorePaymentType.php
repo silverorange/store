@@ -23,7 +23,7 @@ require_once 'Store/dataobjects/StoreDataObject.php';
  * unionpay     | China UnionPay      | credit card       | CH
  * paypal       | PayPal              | online payment    | Global
  * cheque       | cheque              | cheque            |
- * account      | on account          | on account        |
+ * invoice      | invoice             | printed invoice   |
  * cod          | cash on delivery    | cash on delivery  |
  * </pre>
  *
@@ -171,7 +171,7 @@ class StorePaymentType extends StoreDataObject
 	 *
 	 * @return string the masked format string for this payment type. If no
 	 *                 suitable mask is available (for example if this type is
-	 *                 "on account"), null is returned.
+	 *                 "invoice"), null is returned.
 	 *
 	 * @see StorePaymentType::formatCardNumber()
 	 */
@@ -211,7 +211,7 @@ class StorePaymentType extends StoreDataObject
 	 *
 	 * @return string the format string for this payment type. If no suitable
 	 *                 suitable format is available (for example if this type
-	 *                 is "on account"), null is returned.
+	 *                 is "invoice"), null is returned.
 	 *
 	 * @see StorePaymentType::formatCardNumber()
 	 */
