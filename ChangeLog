@@ -1,5 +1,124 @@
+2007-03-29  gauthierm
+
+	* [r16316] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  rename card_preview as card_number_preview
+	* [r16313] store/trunk/sql/tables/AccountPaymentMethod.sql,
+	  store/trunk/sql/tables/OrderPaymentMethod.sql:
+	  rename card_preview as card_number_preview
+	* [r16307]
+	  store/trunk/Store/admin/components/Account/PaymentMethodEdit.php,
+	  
+	  store/trunk/Store/admin/components/Account/paymentmethodedit.xml,
+	  store/trunk/Store/dataobjects/StorePaymentMethod.php,
+	  store/trunk/Store/dataobjects/StorePaymentType.php,
+	  store/trunk/Store/pages/StoreAccountPaymentMethodEditPage.php:
+	  Rename card_preview as card_number_preview.
+
+2007-03-29  isaac
+
+	* [r16305] store/trunk/Store/StoreCardNumberEntry.php:
+	  fix the error message on StoreCardNumberEntry so that it's more
+	  generic and can work on sites with or without debit cards
+
+2007-03-29  gauthierm
+
+	* [r16300] store/trunk/Store/dataobjects/StorePaymentType.php:
+	  Ticket #830: Remove ambiguous 'on account' conventional payment
+	  type and replace with 'invoice' conventional payment type. There
+	  is a separate ticket to update code related to this.
+	* [r16296] store/trunk/Store/admin/components/Item/edit.xml,
+	  store/trunk/www/admin/javascript/store-item-edit-page.js:
+	  Part of ticket #816: regeion enabled checkbox should gray out
+	  the price field labels when deselected.
+
+2007-03-28  nrf
+
+	* [r16293] store/trunk/Store/admin/components/Ad/Details.php:
+	  fix #850: one-letter typo
+	* [r16291] store/trunk/Store/admin/components/Ad/Index.php:
+	  Workaround MDB2 for now by casting. I patched MDB2 in CVS to
+	  handle "float8" types.
+
+2007-03-27  gauthierm
+
+	* [r16275] store/trunk/sql/tables/CacheFlag.sql:
+	  Add a note
+	* [r16274] store/trunk/sql/tables/CacheFlag.sql:
+	  Dirty cache table flag table used by the cache table updater
+	  application now in store.
+	* [r16272] store/trunk/Store/StoreCacheTableUpdater.php:
+	  #799: Push cache table udpater into store.
+	* [r16261] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  This deprecated method's day has come.
+	* [r16260] store/trunk/Store/admin/components/Account/Details.php:
+	  Use class map
+	* [r16257] store/trunk/Store/dataobjects/StorePaymentType.php:
+	  Add a todo
+	* [r16256]
+	  store/trunk/Store/admin/components/Account/PaymentMethodEdit.php:
+	  
+	  tidy todos
+	* [r16255]
+	  store/trunk/Store/admin/components/Account/PaymentMethodEdit.php:
+	  
+	  Use dataobjects when editing account payment methods in the
+	  admin. Fixes a couple of TODOs.
+
+2007-03-27  isaac
+
+	* [r16254]
+	  store/trunk/Store/admin/components/Account/PaymentMethodEdit.php,
+	  
+	  store/trunk/Store/admin/components/Account/paymentmethodedit.xml,
+	  store/trunk/Store/dataobjects/StorePaymentMethod.php,
+	  store/trunk/Store/pages/StoreAccountPaymentMethodEditPage.php,
+	  store/trunk/Store/pages/account-payment-method-edit.xml,
+	  store/trunk/sql/tables/AccountPaymentMethod.sql,
+	  store/trunk/sql/tables/OrderPaymentMethod.sql:
+	  card_lastdigits shall now be known as card_preview
+	* [r16252] store/trunk/Store/StoreCardNumberEntry.php,
+	  store/trunk/Store/StoreCreditCardNumberEntry.php,
+	  store/trunk/Store/StoreProtxPaymentProvider.php,
+	  store/trunk/Store/admin/components/Account/PaymentMethodEdit.php,
+	  
+	  store/trunk/Store/admin/components/Account/paymentmethodedit.xml,
+	  
+	  store/trunk/Store/admin/components/Category/FeaturedProducts.php,
+	  store/trunk/Store/dataobjects/StorePaymentMethod.php,
+	  store/trunk/Store/dataobjects/StorePaymentType.php,
+	  store/trunk/Store/dataobjects/StoreProduct.php,
+	  store/trunk/Store/pages/StoreAccountPaymentMethodEditPage.php,
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php,
+	  store/trunk/Store/pages/account-payment-method-edit.xml,
+	  store/trunk/Store/pages/checkout-payment-method.xml,
+	  store/trunk/www/admin/styles/store-product-details-page.css,
+	  store/trunk/www/javascript/store-checkout-first-page.js,
+	  store/trunk/www/javascript/store-checkout-payment-method-page.js,
+	  store/trunk/www/styles/store-checkout-first-page.css:
+	  closes #445 - will break both veseys and uppermost quite a bit,
+	  so svn up with caution - i'll add tickets for both sites to be
+	  updated to reflect the changes made in this commit
+
 2007-03-26  nrf
 
+	* [r16226]
+	  store/trunk/Store/admin/components/Product/ImageEdit.php:
+	  Save large size as original if no original is uploaded.
+	  Only validate width if a width dimension is specified.
+
+2007-03-26  gauthierm
+
+	* [r16225]
+	  store/trunk/Store/admin/components/Product/imageedit.xml:
+	  ticket
+	* [r16224] store/trunk/Store/admin/components/Product/Edit.php:
+	  Ticket #796: Catalogue flydown should not be displayed or should
+	  be defaulted (no show-blank) if ther eis only one catalogue.
+
+2007-03-26  nrf
+
+	* [r16199] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.7.2
 	* [r16198] store/trunk/Store/pages/StoreAccountOrderPage.php:
 	  Make sure we have a button
 
