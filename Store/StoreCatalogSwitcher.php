@@ -16,10 +16,19 @@ require_once 'StoreCatalogSelector.php';
  */
 class StoreCatalogSwitcher extends SwatControl
 {
+	// {{{ public properties
+
 	public $db;
+
+	// }}}
+	// {{{ private properties
 
 	private $catalog_selector;
 	private $switch_button;
+
+	// }}}
+
+	// {{{ public function __construct()
 
 	/**
 	 * Creates a new catalog selector widget
@@ -35,6 +44,9 @@ class StoreCatalogSwitcher extends SwatControl
 		$this->addStyleSheet('packages/store/admin/styles/store-catalog-switcher.css',
 			Store::PACKAGE_ID);
 	}
+
+	// }}}
+	// {{{ public function init()
 
 	public function init()
 	{
@@ -99,6 +111,9 @@ class StoreCatalogSwitcher extends SwatControl
 		$this->switch_button->init();
 	}
 
+	// }}}
+	// {{{ public function display()
+
 	public function display()
 	{
 		$div_tag = new SwatHtmlTag('div');
@@ -118,6 +133,9 @@ class StoreCatalogSwitcher extends SwatControl
 		$div_tag->close();
 	}
 
+	// }}}
+	// {{{ public function process()
+
 	public function process()
 	{
 		$this->switch_button->process();
@@ -127,10 +145,15 @@ class StoreCatalogSwitcher extends SwatControl
 			$_SESSION['catalog'] = $this->catalog_selector->getState();
 	}
 
+	// }}}
+	// {{{ public function getSubQuery()
+
 	public function getSubQuery()
 	{
 		return $this->catalog_selector->getSubQuery();
 	}
+
+	// }}}
 }
 
 ?>
