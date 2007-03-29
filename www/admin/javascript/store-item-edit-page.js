@@ -35,6 +35,8 @@ function StoreItemRegionReplicator(id)
 	this.id = id;
 	this.enabled = document.getElementById('enabled_price_replicator' + id);
 	this.price = document.getElementById('price_price_replicator' + id);
+	this.price_field = document.getElementById(
+		'price_field_price_replicator' + id);
 
 	YAHOO.util.Event.addListener(this.enabled, 'click',
 		StoreItemRegionReplicator.handleClick, this);
@@ -59,6 +61,7 @@ StoreItemRegionReplicator.prototype.sensitize = function(focus)
 	this.price.disabled = false;
 
 	if (focus) {
+		YAHOO.util.Dom.removeClass(this.price_field, 'swat-insensitive');
 		YAHOO.util.Dom.removeClass(this.price, 'swat-insensitive');
 		this.price.focus();
 	}
@@ -67,5 +70,6 @@ StoreItemRegionReplicator.prototype.sensitize = function(focus)
 StoreItemRegionReplicator.prototype.desensitize = function()
 {
 	this.price.disabled = true;
+	YAHOO.util.Dom.addClass(this.price_field, 'swat-insensitive');
 	YAHOO.util.Dom.addClass(this.price, 'swat-insensitive');
 }
