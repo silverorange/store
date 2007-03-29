@@ -28,7 +28,7 @@
 							<property name="value" type="boolean">true</property>
 						</widget>
 					</widget>
-					<widget class="SwatFormField">
+					<widget class="SwatFormField" id="price_field">
 						<property name="title" translatable="yes">Price</property>
 						<widget class="SwatMoneyEntry" id="price" />
 					</widget>
