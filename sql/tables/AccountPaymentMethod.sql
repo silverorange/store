@@ -4,7 +4,7 @@ create table AccountPaymentMethod (
 	account int not null references Account(id) on delete cascade,
 	payment_type int not null references PaymentType(id),
 	card_fullname varchar(255),
-	card_preview varchar(6),
+	card_number_preview varchar(6),
 	card_number text,
 	card_expiry date,
 	card_inception date,
