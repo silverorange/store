@@ -285,10 +285,10 @@ abstract class StorePaymentMethod extends StoreDataObject
 	{
 		echo $this->payment_type->title;
 
-		if ($this->card_preview !== null) {
+		if ($this->card_number_preview !== null) {
 			echo "\n";
 			echo StorePaymentType::formatCardNumber(
-				$this->card_preview,
+				$this->card_number_preview,
 				$this->payment_type->getCardMaskedFormat());
 		}
 
@@ -308,11 +308,11 @@ abstract class StorePaymentMethod extends StoreDataObject
 
 	public function copyFrom(StorePaymentMethod $method)
 	{
-		$this->card_fullname = $method->card_fullname;
-		$this->card_preview  = $method->card_preview;
-		$this->card_number   = $method->card_number;
-		$this->card_expiry   = $method->card_expiry;
-		$this->payment_type  = $method->getInternalValue('payment_type');
+		$this->card_fullname        = $method->card_fullname;
+		$this->card_number_preview  = $method->card_number_preview;
+		$this->card_number          = $method->card_number;
+		$this->card_expiry          = $method->card_expiry;
+		$this->payment_type         = $method->getInternalValue('payment_type');
 	}
 
 	// }}}
