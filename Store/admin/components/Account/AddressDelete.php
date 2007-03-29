@@ -75,7 +75,7 @@ class StoreAccountAddressDelete extends AdminDBDelete
 				ProvState.abbreviation as provstate, Country.title as country,
 				postal_code
 			from AccountAddress
-				inner join ProvState 
+				left outer join ProvState
 					on ProvState.id = AccountAddress.provstate
 				inner join Country 
 					on Country.id = AccountAddress.country
