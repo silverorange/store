@@ -120,13 +120,13 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 
 		if ($country->value !== null) {
 			$country_title = SwatDB::queryOne($this->app->db,
-				sprintf('select title from Country
-					where id = %s', $this->app->db->quote($country->value)));
+				sprintf('select title from Country where id = %s',
+				$this->app->db->quote($country->value)));
 		} else {
 			$country_title = null;
 		}
 
-		if ($provstate->value !== null) {
+		if ($provstate->value !== null && $provstate->value !== 'other') {
 			// validate provstate by country
 			$sql = sprintf('select count(id) from ProvState
 				where id = %s and country = %s',
@@ -185,10 +185,7 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 
 		if ($provstate->value === 'other') {
 			$this->ui->getWidget('provstate_other')->required = true;
-			$provstate->value = null;
-		}
-
-		if ($provstate->value !== null) {
+		} elseif ($provstate->value !== null) {
 			$sql = sprintf('select abbreviation from ProvState where id = %s',
 				$this->app->db->quote($provstate->value));
 
@@ -314,17 +311,21 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 	// }}}
 	// {{{ private function setWidgetValues()
 
-	private function setWidgetValues($address)
+	private function setWidgetValues(StoreAccountAddress $address)
 	{
 		$this->ui->getWidget('fullname')->value = $address->fullname;
 		$this->ui->getWidget('line1')->value = $address->line1;
 		$this->ui->getWidget('line2')->value = $address->line2;
 		$this->ui->getWidget('city')->value = $address->city;
-		$this->ui->getWidget('provstate')->value =
-			$address->getInternalValue('provstate');
 
-		$this->ui->getWidget('provstate_other')->value =
-			$address->provstate_other;
+		$provstate_other = $this->ui->getWidget('provstate_other');
+		if ($provstate_other->visible && $address->provstate === null)
+			$this->ui->getWidget('provstate')->value = 'other';
+		else
+			$this->ui->getWidget('provstate')->value =
+				$address->getInternalValue('provstate');
+
+		$provstate_other->value = $address->provstate_other;
 
 		$this->ui->getWidget('postal_code')->value = $address->postal_code;
 		$this->ui->getWidget('country')->value = $address->country->id;
