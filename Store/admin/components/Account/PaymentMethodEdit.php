@@ -159,9 +159,9 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 	{
 		$payment_method = $this->getPaymentMethod();
 
-		$card_preview = $this->ui->getWidget('card_preview');
-		$card_preview->content = StorePaymentType::formatCardNumber(
-			$payment_method->card_preview,
+		$card_number_preview = $this->ui->getWidget('card_number_preview');
+		$card_number_preview->content = StorePaymentType::formatCardNumber(
+			$payment_method->card_number_preview,
 			$payment_method->payment_type->getCardMaskedFormat());
 
 		$this->ui->getWidget('payment_type')->value =

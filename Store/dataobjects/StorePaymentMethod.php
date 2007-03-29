@@ -144,12 +144,12 @@ abstract class StorePaymentMethod extends StoreDataObject
 	 *                                    this object using the
 	 *                                    {@link StorePaymentMethod::getUnencryptedCardNumber()}
 	 *                                    method.
-	 *                                   
+	 *
+	 * @todo make this smart based on card type.
 	 */
 	public function setCardNumber($number, $store_unencrypted = false)
 	{
-		//todo: make this smart based on card type
-		$this->card_preview = substr($number, -4);
+		$this->card_number_preview = substr($number, -4);
 
 		if ($this->gpg_id !== null)
 			$this->card_number =
@@ -239,11 +239,11 @@ abstract class StorePaymentMethod extends StoreDataObject
 
 		echo SwatString::minimizeEntities($this->payment_type->title);
 
-		if ($this->card_preview !== null) {
+		if ($this->card_number_preview !== null) {
 			echo ': ';
 			$span_tag->class = 'store-payment-method-card-number';
 			$span_tag->setContent(StorePaymentType::formatCardNumber(
-				$this->card_preview,
+				$this->card_number_preview,
 				$this->payment_type->getCardMaskedFormat()));
 
 			$span_tag->display();
