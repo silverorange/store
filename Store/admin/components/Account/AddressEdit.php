@@ -4,12 +4,13 @@ require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatMessage.php';
+require_once 'Swat/SwatYUI.php';
 
 /**
- * Edit page for a Account Address
+ * Admin page for adding and editing addresses stored on accounts
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountAddressEdit extends AdminDBEdit
@@ -37,11 +38,25 @@ class StoreAccountAddressEdit extends AdminDBEdit
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
 		$this->ui->loadFromXML($this->ui_xml);
 
+		$yui = new SwatYUI(array('dom', 'event'));
+		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			'packages/store/admin/javascript/store-account-address-edit-page.js',
+			Store::PACKAGE_ID));
+
 		$this->initAccount();
 
-		$this->fields = array('fullname', 'line1', 'line2', 'city',
-			'integer:provstate', 'text:country', 'postal_code',
-			'boolean:default_address');
+		$this->fields = array(
+			'text:fullname',
+			'text:line1',
+			'text:line2',
+			'text:city',
+			'integer:provstate',
+			'text:provstate_other',
+			'text:country',
+			'text:postal_code',
+			'boolean:default_address',
+		);
 	}
 
 	// }}}
@@ -80,9 +95,12 @@ class StoreAccountAddressEdit extends AdminDBEdit
 			$country->process();
 			$provstate->process();
 
-			if ($provstate->value !== null) {
+			if ($provstate->value === 'other') {
+				$this->ui->getWidget('provstate_other')->required = true;
+			} elseif ($provstate->value !== null) {
 				$sql = sprintf('select abbreviation from ProvState
-					where id = %s', $this->app->db->quote($provstate->value));
+					where id = %s',
+					$this->app->db->quote($provstate->value));
 
 				$provstate_abbreviation =
 					SwatDB::queryOne($this->app->db, $sql);
@@ -100,8 +118,20 @@ class StoreAccountAddressEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$values = $this->ui->getValues(array('fullname', 'line1', 'line2',
-			'city', 'provstate', 'country', 'postal_code', 'default_address'));
+		$values = $this->ui->getValues(array(
+			'fullname',
+			'line1',
+			'line2',
+			'city',
+			'provstate',
+			'provstate_other',
+			'country',
+			'postal_code',
+			'default_address',
+		));
+
+		if ($values['provstate'] === 'other')
+			$values['provstate'] = null;
 
 		if ($this->id === null) {
 			$this->fields[] = 'date:createdate';
@@ -143,7 +173,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 			$country_title = null;
 		}
 
-		if ($provstate->value !== null) {
+		if ($provstate->value !== null && $provstate->value !== 'other') {
 			// validate provstate by country
 			$sql = sprintf('select count(id) from ProvState
 				where id = %s and country = %s',
@@ -154,14 +184,13 @@ class StoreAccountAddressEdit extends AdminDBEdit
 
 			if ($count == 0) {
 				if ($country_title === null) {
-					$message_content = Store::_('The selected '.
-						'<strong>%s</strong> is not a province or state of '.
-						'the selected country.');
+					$message_content = Store::_('The selected %s is '.
+						'not a province or state of the selected country.');
 				} else {
 					$message_content = sprintf(Store::_('The selected '.
-						'<strong>%%s</strong> is not a province or state of '.
-						'the selected country <strong>%s</strong>.'),
-						$country_title);
+						'%%s is not a province or state of the selected '.
+						'country %s%s%s.'),
+						'<strong>', $country_title, '</strong>');
 				}
 
 				$message = new SwatMessage($message_content,
@@ -176,6 +205,15 @@ class StoreAccountAddressEdit extends AdminDBEdit
 	// }}}
 
 	// build phase
+	// {{{ protected function display()
+
+	protected function display()
+	{
+		parent::display();
+		Swat::displayInlineJavaScript($this->getInlineJavaScript());
+	}
+
+	// }}}
 	// {{{ protected buildInternal()
 
 	protected function buildInternal()
@@ -186,12 +224,17 @@ class StoreAccountAddressEdit extends AdminDBEdit
 		$frame->subtitle = $this->account_fullname;
 
 		$provstate_flydown = $this->ui->getWidget('provstate');
-		$provstate_flydown->show_blank = true;
 		$provstate_flydown->addOptionsByArray(SwatDB::getOptionArray(
 			$this->app->db, 'ProvState', 'title', 'id', 'title'));
 
+		$provstate_other = $this->ui->getWidget('provstate_other');
+		if ($provstate_other->visible) {
+			$provstate_flydown->addDivider();
+			$option = new SwatOption('other', 'Other…');
+			$provstate_flydown->addOption($option);
+		}
+
 		$country_flydown = $this->ui->getWidget('country');
-		$country_flydown->show_blank = true;
 		$country_flydown->addOptionsByArray(SwatDB::getOptionArray(
 			$this->app->db, 'Country', 'title', 'id', 'title'));
 
@@ -230,7 +273,24 @@ class StoreAccountAddressEdit extends AdminDBEdit
 				sprintf(Store::_('account address with id ‘%s’ not found.'),
 				$this->id));
 
+		$provstate_other = $this->ui->getWidget('provstate_other');
+		if ($provstate_other->visible && $row->provstate === null)
+			$row->provstate = 'other';
+
 		$this->ui->setValues(get_object_vars($row));
+	}
+
+	// }}}
+	// {{{ protected function getInlineJavaScript()
+
+	protected function getInlineJavaScript()
+	{
+		$provstate = $this->ui->getWidget('provstate');
+		$provstate_other_index = count($provstate->options);
+		$id = 'account_address_page';
+		return sprintf(
+			"var %s_obj = new StoreAccountAddressEditPage('%s', %s);",
+			$id, $id, $provstate_other_index);
 	}
 
 	// }}}
