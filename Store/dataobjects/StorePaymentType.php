@@ -30,7 +30,8 @@ require_once 'Store/dataobjects/StoreDataObject.php';
  * @package   Store
  * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
- * @todo      Add method to get length of card_preview field based on shortname.
+ * @todo      Add method to get length of card_number_preview field based on
+ *            shortname.
  */
 class StorePaymentType extends StoreDataObject
 {
