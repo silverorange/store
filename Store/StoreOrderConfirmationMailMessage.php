@@ -133,6 +133,9 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
 		if ($this->order->phone === null)
 			$details_view->getField('phone')->visible = false;
 
+		if ($this->order->payment_method === null)
+			$details_view->getField('payment_method')->visible = false;
+
 		$items_view = $ui->getWidget('items_view');
 		$items_view->model = $this->order->getOrderDetailsTableStore();
 
@@ -198,9 +201,11 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
 				self::LINE_BREAK, self::LINE_BREAK;
 		}
 
-		echo 'Payment:', self::LINE_BREAK;
-		$this->order->payment_method->displayAsText();
-		echo self::LINE_BREAK, self::LINE_BREAK;
+		if ($this->order->payment_method !== null) {
+			echo 'Payment:', self::LINE_BREAK;
+			$this->order->payment_method->displayAsText();
+			echo self::LINE_BREAK, self::LINE_BREAK;
+		}
 
 		echo 'Billing Address:', self::LINE_BREAK;
 		$this->order->billing_address->displayCondensedAsText();
