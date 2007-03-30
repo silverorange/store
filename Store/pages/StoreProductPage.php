@@ -96,8 +96,10 @@ class StoreProductPage extends StoreStorePage
 		$this->cart_ui->getRoot()->addStyleSheet(
 			'packages/store/styles/store-cart.css', Store::PACKAGE_ID);
 
-		$cart_form = $this->cart_ui->getWidget('cart_form');
-		$cart_form->action = $this->source;
+		if ($this->cart_ui->hasWidget('cart_form')) {
+			$cart_form = $this->cart_ui->getWidget('cart_form');
+			$cart_form->action = $this->source;
+		}
 
 		$this->cart_ui->init();
 	}
@@ -286,6 +288,9 @@ class StoreProductPage extends StoreStorePage
 	protected function processCart()
 	{
 		$this->cart_ui->process();
+
+		if (!$this->cart_ui->hasWidget('cart_view'))
+			return;
 
 		$view = $this->cart_ui->getWidget('cart_view');
 
