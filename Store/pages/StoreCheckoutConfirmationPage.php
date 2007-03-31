@@ -251,7 +251,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			Store::_('There was a problem processing your payment.');
 
 		// TODO: review/mangle/replace error messages
-		$message->secondary_content = $e->getMessage();
+		$message->secondary_content = get_class($e).': '.$e->getMessage();
 
 		$this->ui->getWidget('message_display')->add($message);
 
