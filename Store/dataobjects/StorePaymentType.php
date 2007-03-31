@@ -30,8 +30,6 @@ require_once 'Store/dataobjects/StoreDataObject.php';
  * @package   Store
  * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
- * @todo      Add method to get length of card_number_preview field based on
- *            shortname.
  */
 class StorePaymentType extends StoreDataObject
 {
@@ -241,6 +239,43 @@ class StorePaymentType extends StoreDataObject
 		}
 
 		return $mask;
+	}
+
+	// }}}
+	// {{{ public function getCardNumberPreviewLength()
+
+	/**
+	 * Gets the length of the card number preview field for this payment type
+	 * if this payment type is a debit or credit card
+	 *
+	 * @return integer the length of the card number preview field for this
+	 *                  payment type. If this payment type is not a known debit
+	 *                  or credit card, the card number preview length is
+	 *                  returned as zero.
+	 */
+	public function getCardNumberPreviewLength()
+	{
+		$length = 0;
+
+		switch ($this->shortname) {
+		case 'visa':
+		case 'mastercard':
+		case 'discover':
+		case 'jcb':
+		case 'electron':
+		case 'unionpay':
+		case 'delta':
+		case 'switch':
+		case 'solo':
+		case 'dinersclub':
+			$length = 4;
+			break;
+		case 'amex':
+			$length = 5;
+			break;
+		}
+
+		return $length;
 	}
 
 	// }}}
