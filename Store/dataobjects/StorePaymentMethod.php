@@ -316,6 +316,24 @@ abstract class StorePaymentMethod extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ public function duplicate()
+
+	public function duplicate()
+	{
+		$new_payment_method = parent::duplicate();
+
+		$new_payment_method->setCardVerificationValue(
+			$this->getCardVerificationValue());
+
+		$card_number = $this->getUnencryptedCardNumber();
+
+		if ($card_number !== null)
+			$new_payment_method->setCardNumber($card_number, true);
+
+		return $new_payment_method;
+	}
+
+	// }}}
 	// {{{ public static function encryptCardNumber()
 
 	/**
