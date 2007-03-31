@@ -46,6 +46,7 @@
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Postal Code / ZIP Code</property>
 				<widget class="StorePostalCodeEntry" id="postal_code">
+					<property name="required" type="boolean">true</property>
 					<property name="size" type="integer">10</property>
 					<property name="maxlength" type="integer">50</property>
 				</widget>
