@@ -201,6 +201,19 @@ class StoreOrder extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ public function duplicate()
+
+	public function duplicate()
+	{
+		$new_order = parent::duplicate();
+
+		if ($this->shipping_address === $this->billing_address)
+			$new_order->shipping_address = $new_order->billing_address;
+
+		return $new_order;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
