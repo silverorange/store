@@ -65,89 +65,52 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 		$form = $this->ui->getWidget('form');
 
-		$message = new SwatMessage(Store::_('Please Review Your Order'));
-		$message->content_type= 'text/xml';
-		$message->secondary_content = sprintf(Store::_('Press the '.
-			'%sPlace Order%s button to complete your order.'),
-			'<em>', '</em>');
-
-		$this->ui->getWidget('message_display')->add($message);
-
 		if ($form->isProcessed()) {
 			$transaction = new SwatDBTransaction($this->app->db);
 			try {
-				$this->processAccount();
-				$this->processOrder();
+				$this->save();
 			} catch (Exception $e) {
 				$transaction->rollback();
 				throw $e;
 			}
 			$transaction->commit();
 
-			$this->updateProgress();
+			$message = null;
+			$payment_processing_successful = true;
+			try {
+				$this->processPayment();
+			} catch (StorePaymentException $e) {
+				$payment_processing_successful = false;
+				$message = new SwatMessage('', SwatMessage::ERROR);
+				$message->content_type= 'text/xml';
+				$message->primary_content =
+					Store::_('There was a problem processing you payment.');
 
-			if ($this->isPaymentSuccessful())
+				// TODO: review/mangle/replace error messages
+				$message->secondary_content = $e->getMessage();
+
+				// TODO: possibly relocate on some payment processing errors
+				//       and give no opportunity to edit the order
+				//$this->app->relocate('checkout/paymentfailed');
+			}
+
+			$order = $this->app->session->order;
+			$order->sendConfirmationEmail($this->app,
+				$payment_processing_successful);
+
+			if ($payment_processing_successful) {
+				$this->removeCartEntries();
+				$this->cleanupOnSuccess();
+				$this->updateProgress();
 				$this->app->relocate('checkout/thankyou');
-			else
-				$this->app->relocate('checkout/paymentfailed');
+			} else {
+				$new_order = $order->duplicate();
+				$this->app->session->order = $new_order;
+
+				if ($message !== null)
+					$this->ui->getWidget('message_display')->add($message);
+			}
 		}
-	}
-
-	// }}}
-	// {{{ protected function isPaymentSuccessful()
-
-	/**
-	 * Gets whether of not order payment processing was successful
-	 *
-	 * By default, payment processing is always successful since there is no
-	 * payment processing done by default.
-	 *
-	 * @return boolean true if the order payment was processed successfully and
-	 *                  false if there was a problem with order payment.
-	 *
-	 * @see StoreCheckoutConfirmationPage::processPayment()
-	 */
-	protected function isPaymentSuccessful()
-	{
-		return true;
-	}
-
-	// }}}
-	// {{{ protected function processOrder()
-
-	/**
-	 * @return StoreOrder the order object
-	 */
-	protected function processOrder()
-	{
-		$order = $this->app->session->order;
-
-		$this->saveOrder($order);
-		$this->processPayment($order);
-
-		// remove entries from cart that were ordered
-		$this->removeCartEntries($order);
-
-		unset($this->app->session->ad);
-
-		return $order;
-	}
-
-	// }}}
-	// {{{ protected function saveOrder()
-
-	protected function saveOrder(StoreOrder $order)
-	{
-		// attach order to account
-		if ($this->app->session->checkout_with_account)
-			$order->account = $this->app->session->account;
-
-		// set createdate to now
-		$order->createdate = new SwatDate();
-		$order->createdate->toUTC();
-
-		// save order
-		$order->save();
 	}
 
 	// }}}
@@ -159,36 +122,28 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	 * By default, no automatic payment processing is done. Subclasses should
 	 * override this method to perform automatic payment processing.
 	 *
-	 * @param StoreOrder $order the order for which payment processing is done.
-	 *
 	 * @see StorePaymentProvider
 	 */
-	protected function processPayment(StoreOrder $order)
+	protected function processPayment()
 	{
 	}
 
 	// }}}
-	// {{{ protected function processAccount()
+	// {{{ protected function save()
 
-	/**
-	 * @return StoreAccount the account object
-	 */
-	protected function processAccount()
+	protected function save()
 	{
-		$account = $this->app->session->account;
-
-		$this->saveAccount($account);
-
-		unset($this->app->session->save_account_payment_method);
-
-		return $account;
+		$this->saveAccount();
+		$this->saveOrder();
 	}
 
 	// }}}
 	// {{{ protected function saveAccount()
 
-	protected function saveAccount(StoreAccount $account)
+	protected function saveAccount()
 	{
+		$account = $this->app->session->account;
+
 		// if we are creating a new account, store new addresses and payment
 		// methods in account and set the createdate to now
 		if ($this->app->session->checkout_with_account) {
@@ -213,6 +168,25 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 		// save account
 		$account->save();
+	}
+
+	// }}}
+	// {{{ protected function saveOrder()
+
+	protected function saveOrder()
+	{
+		$order = $this->app->session->order;
+
+		// attach order to account
+		if ($this->app->session->checkout_with_account)
+			$order->account = $this->app->session->account;
+
+		// set createdate to now
+		$order->createdate = new SwatDate();
+		$order->createdate->toUTC();
+
+		// save order
+		$order->save();
 	}
 
 	// }}}
@@ -251,14 +225,27 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	// }}}
 	// {{{ protected function removeCartEntries()
 
-	protected function removeCartEntries($order)
+	protected function removeCartEntries()
 	{
+		$order = $this->app->session->order;
+
+		// remove entries from cart that were ordered
 		foreach ($order->items as $order_item) {
 			$entry_id = $order_item->getCartEntryId();
 			$this->app->cart->checkout->removeEntryById($entry_id);
 		}
 
 		$this->app->cart->save();
+	}
+
+	// }}}
+	// {{{ protected function cleanupOnSuccess()
+
+	protected function cleanupOnSuccess()
+	{
+		// unset session variable flags
+		unset($this->app->session->ad);
+		unset($this->app->session->save_account_payment_method);
 	}
 
 	// }}}
@@ -269,12 +256,20 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	protected function buildInternal()
 	{
 		parent::buildInternal();
-		$this->createOrder();
 
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
 			'packages/store/styles/store-checkout-confirmation-page.css',
 			Store::PACKAGE_ID));
 
+		$message = new SwatMessage(Store::_('Please Review Your Order'));
+		$message->content_type= 'text/xml';
+		$message->secondary_content = sprintf(Store::_('Press the '.
+			'%sPlace Order%s button to complete your order.'),
+			'<em>', '</em>');
+
+		$this->ui->getWidget('message_display')->add($message);
+
+		$this->createOrder();
 		$order = $this->app->session->order;
 
 		$this->buildItems($order);
