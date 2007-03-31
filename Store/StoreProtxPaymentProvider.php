@@ -85,8 +85,12 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	 *
 	 * @param StoreOrder $order the order to pay for.
 	 * @param string $card_number the card number to use for payment.
-	 * @param string $card_verification_value optional. Card verification value
-	 *                                         used for fraud prevention.
+	 * @param string $card_verification_value optional if AVS mode is set to
+	 *                                         off. The three-digit security
+	 *                                         code found on the reverse of
+	 *                                         cards or the four-digit security
+	 *                                         code found on the front of amex
+	 *                                         cards.
 	 *
 	 * @return StorePaymentTransaction the transaction object for the payment.
 	 *                                  this object contains information such
@@ -100,11 +104,13 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$request = new StoreProtxPaymentRequest(
 			StorePaymentRequest::TYPE_PAY, $this->mode);
 
-		$fields = $this->getOrderPaymentFields($order);
-		$request->setFields($fields);
-		$request->setField('CardNumber', $card_number);
-		if ($card_verification_value !== null)
-			$request->setField('CV2', $card_verification_value);
+		$payment_fields = $this->getOrderPaymentFields($order);
+		$request->setFields($payment_fields);
+
+		$card_fields = $this->getCardFields($order, $card_number,
+			$card_verification_value);
+
+		$request->setFields($card_fields);
 
 		$response = $request->process();
 		$this->checkResponse($response);
@@ -123,8 +129,12 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	 *
 	 * @param StoreOrder $order the order to hold funds for.
 	 * @param string $card_number the card number to place the hold on.
-	 * @param string $card_verification_value optional. Card verification value
-	 *                                         used for fraud prevention.
+	 * @param string $card_verification_value optional if AVS mode is set to
+	 *                                         off. The three-digit security
+	 *                                         code found on the reverse of
+	 *                                         cards or the four-digit security
+	 *                                         code found on the front of amex
+	 *                                         cards.
 	 *
 	 * @return StorePaymentTransaction the transaction object for the payment.
 	 *                                  this object contains information such
@@ -138,11 +148,13 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$request = new StoreProtxPaymentRequest(
 			StorePaymentRequest::TYPE_HOLD, $this->mode);
 
-		$fields = $this->getOrderPaymentFields($order);
-		$request->setFields($fields);
-		$request->setField('CardNumber', $card_number);
-		if ($card_verification_value !== null)
-			$request->setField('CV2', $card_verification_value);
+		$payment_fields = $this->getOrderPaymentFields($order);
+		$request->setFields($payment_fields);
+
+		$card_fields = $this->getCardFields($order, $card_number,
+			$card_verification_value);
+
+		$request->setFields($card_fields);
 
 		$response = $request->process();
 		$this->checkResponse($response);
@@ -370,6 +382,79 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
+	// {{{ private function getCardFields()
+
+	/**
+	 * Gets card-specific fields required for making a card-based request
+	 *
+	 * @param StoreOrder $order the order to use for the card-based request.
+	 * @param string $card_number the card number to use for the card-based
+	 *                             request.
+	 * @param string $card_verification_value optional if AVS mode is set to
+	 *                                         off. The three-digit security
+	 *                                         code found on the reverse of
+	 *                                         cards or the four-digit security
+	 *                                         code found on the front of amex
+	 *                                         cards.
+	 *
+	 * @return array an array of key-value pairs containing VSP direct
+	 *                card-specific fields used for card-based requests.
+	 *
+	 * @throws StoreException if the order has an unsupported card type.
+	 */
+	private function getCardFields(StoreOrder $order, $card_number,
+		$card_verification_value = null)
+	{
+		$payment_method = $order->payment_method;
+		$payment_type = $payment_method->payment_type;
+
+		$card_holder = substr($payment_method->card_fullname, 0, 50);
+		$card_number = substr($card_number, 0, 20);
+		$expiry_date = $payment_method->card_expiry->format('%m%y');
+
+		$payment_type_map = $this->getPaymentTypeMap();
+		if (array_key_exists($payment_type->shortname, $payment_type_map))
+			$card_type = $payment_type_map[$payment_type->shortname];
+		else
+			throw new StoreException('Unsupported card type in order.');
+
+		$fields = array(
+			'CardHolder' => $card_holder,
+			'CardNumber' => $card_number,
+			'CardType'   => $card_type,
+			'ExpiryDate' => $expiry_date,
+		);
+
+		// Start date is required for Solo, Switch and Amex
+		if (in_array($card_type, array('SWITCH', 'SOLO', 'AMEX'))) {
+			$start_date = $payment_method->card_inception->format('%m%y');
+			$fields['StartDate'] = $start_date;
+		}
+
+		// Issue number is required for Solo and Switch
+		if (in_array($card_type, array('SWITCH', 'SOLO'))) {
+			$issue_number = substr($payment_method->card_issue_number, 0, 2);
+			$fields['IssueNumber'] = $issue_number;
+		}
+
+		if ($card_verification_value !== null ||
+			$this->avs_mode == StorePaymentProvider::AVS_ON) {
+			// CV2 is 4 chars for amex and 3 chars for everything else
+			$length = ($card_type == 'AMEX') ? 4 : 3;
+			$cv2 = substr($card_verification_value, 0, $length);
+			$fields['CV2'] = $cv2;
+		}
+
+		// AVS/CV2 mode
+		if ($this->avs_mode == StorePaymentProvider::AVS_ON)
+			$fields['ApplyAVSCV2'] = 1; // Force checks
+		else
+			$fields['ApplyAVSCV2'] = 2; // Force NO checks
+
+		return $fields;
+	}
+
+	// }}}
 	// {{{ private function getOrderRequiredFields()
 
 	/**
@@ -377,7 +462,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	 *
 	 * @param StoreOrder $order the order to get fields from.
 	 *
-	 * @return array an array or key-value pairs containing VSP direct fields
+	 * @return array an array of key-value pairs containing VSP direct fields
 	 *                used for all transaction types for an order.
 	 */
 	private function getOrderRequiredFields(StoreOrder $order)
@@ -416,18 +501,14 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	 */
 	private function getOrderPaymentFields(StoreOrder $order)
 	{
-		$fields = $this->getOrderRequiredFields($order);
+		$required_fields = $this->getOrderRequiredFields($order);
 
 		if ($order->total > 100000) {
 			throw new StoreException('Protx payments can only be made for '.
 				'orders with total values of 100,000 or less.');
 		}
 
-		$payment_method = $order->payment_method;
 		$amount = SwatString::numberFormat($order->total, 2, null, false);
-		$card_holder = substr($payment_method->card_fullname, 0, 50);
-		$card_number = substr($payment_method->card_number, 0, 20);
-		$card_expiry = $payment_method->card_expiry->format('%m%y');
 		$description = substr($order->getDescription(), 0, 100);
 
 		$billing_address = $this->getAddressString($order->billing_address);
@@ -439,25 +520,9 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 			substr($order->shipping_address->postal_code, 0, 10);
 
 		$customer_name = substr($order->billing_address->fullname, 0, 100);
-		$contact_number = substr($order->phone, 0, 20);
-		$customer_email = substr($order->email, 0, 255);
-
-		$payment_type_map = $this->getPaymentTypeMap();
-		if (array_key_exists($payment_method->payment_type->shortname,
-			$payment_type_map)) {
-			$card_type =
-				$payment_type_map[$payment_method->payment_type->shortname];
-		} else {
-			throw new StoreException('Unsupported card type in order.');
-		}
 
 		$payment_fields = array(
 			'Amount'           => $amount,
-			'CardHolder'       => $card_holder,
-			'CardNumber'       => $card_number,
-			'ExpiryDate'       => $card_expiry,
-			'CardType'         => $card_type,
-			'ExpiryDate'       => $card_expiry,
 			'Currency'         => $this->currency,
 			'Description'      => $description,
 			'BillingAddress'   => $billing_address,
@@ -465,30 +530,19 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 			'DeliveryAddress'  => $delivery_address,
 			'DeliveryPostCode' => $delivery_post_code,
 			'CustomerName'     => $customer_name,
-			'ContactNumber'    => $contact_number,
-			'CustomerEMail'    => $customer_email,
 		);
 
-		$fields = array_merge($fields, $payment_fields);
-
-		// Start date is required for Solo, Switch and Amex
-		if (in_array($card_type, array('SWITCH', 'SOLO', 'AMEX'))) {
-			$card_inception = $payment_method->card_inception->format('%m%y');
-			$fields['StartDate'] = $card_inception;
+		if ($order->phone !== null) {
+			$contact_number = substr($order->phone, 0, 20);
+			$payment_fields['ContactNumber'] = $contact_number;
 		}
 
-		// Issue number is required for Solo and Switch
-		if (in_array($card_type, array('SWITCH', 'SOLO'))) {
-			$fields['IssueNumber'] = $payment_method->card_issue_number;
+		if ($order->email !== null) {
+			$customer_email = substr($order->email, 0, 255);
+			$payment_fields['CustomerEMail'] = $customer_email;
 		}
 
-		// AVS/CV2 mode
-		if ($this->avs_mode == StorePaymentProvider::AVS_ON) {
-			$fields['ApplyAVSCV2'] = 1; // Force checks
-			// TODO: include AVS/CV2 fields
-		} else {
-			$fields['ApplyAVSCV2'] = 2; // Force NO checks
-		}
+		$fields = array_merge($required_fields, $payment_fields);
 
 		return $fields;
 	}
