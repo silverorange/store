@@ -155,6 +155,10 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 
 	protected function buildAccountNote()
 	{
+		/* TODO: Possilble refactor this. Veseys displays an account note
+		 *       but does not use this mechanism to do it.  It is displayed
+		 *       in a SwatMessageDisplay instead.
+		 */	
 		$note = $this->ui->getWidget('account_note');
 		if ($note instanceof SwatContentBlock && 
 			$this->app->session->order->account !== null) {
