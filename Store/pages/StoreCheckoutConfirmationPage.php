@@ -100,32 +100,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	}
 
 	// }}}
-	// {{{ protected function handlePaymentException()
-
-	/**
-	 * Handles exceptions produced by automatic card payment processing
-	 *
-	 * @see StorePaymentProvider
-	 */
-	protected function handlePaymentException($e)
-	{
-		$message = new SwatMessage('', SwatMessage::ERROR);
-		$message->content_type= 'text/xml';
-
-		$message->primary_content =
-			Store::_('There was a problem processing your payment.');
-
-		// TODO: review/mangle/replace error messages
-		$message->secondary_content = $e->getMessage();
-
-		$this->ui->getWidget('message_display')->add($message);
-
-		// TODO: possibly relocate on some payment processing errors
-		//       and give no opportunity to edit the order
-		//$this->app->relocate('checkout/paymentfailed');
-	}
-
-	// }}}
 	// {{{ protected function processPayment()
 
 	/**
@@ -258,6 +232,32 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		// unset session variable flags
 		unset($this->app->session->ad);
 		unset($this->app->session->save_account_payment_method);
+	}
+
+	// }}}
+	// {{{ protected function handlePaymentException()
+
+	/**
+	 * Handles exceptions produced by automatic card payment processing
+	 *
+	 * @see StorePaymentProvider
+	 */
+	protected function handlePaymentException($e)
+	{
+		$message = new SwatMessage('', SwatMessage::ERROR);
+		$message->content_type= 'text/xml';
+
+		$message->primary_content =
+			Store::_('There was a problem processing your payment.');
+
+		// TODO: review/mangle/replace error messages
+		$message->secondary_content = $e->getMessage();
+
+		$this->ui->getWidget('message_display')->add($message);
+
+		// TODO: possibly relocate on some payment processing errors
+		//       and give no opportunity to edit the order
+		//$this->app->relocate('checkout/paymentfailed');
 	}
 
 	// }}}
