@@ -84,7 +84,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 				$message = new SwatMessage('', SwatMessage::ERROR);
 				$message->content_type= 'text/xml';
 				$message->primary_content =
-					Store::_('There was a problem processing you payment.');
+					Store::_('There was a problem processing your payment.');
 
 				// TODO: review/mangle/replace error messages
 				$message->secondary_content = $e->getMessage();
