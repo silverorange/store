@@ -268,8 +268,19 @@ class StoreAccountDetailsPage extends StoreAccountPage
 
 	protected function buildOrders() 
 	{
-		ob_start();
+		$block = $this->ui->getWidget('account_order');
+		$block->content_type = 'text/xml';
 
+		ob_start();
+		$this->displayOrders();
+		$block->content = ob_get_clean();
+	}
+
+	// }}}
+	// {{{ protected function displayOrders()
+
+	protected function displayOrders() 
+	{
 		$orders = $this->app->session->account->orders;
 
 		if (count($orders) > 0) {
@@ -290,9 +301,6 @@ class StoreAccountDetailsPage extends StoreAccountPage
 			$div_tag->setContent(Store::_('<none>'));
 			$div_tag->display();
 		}
-
-		$this->ui->getWidget('account_order')->content_type = 'text/xml';
-		$this->ui->getWidget('account_order')->content = ob_get_clean();
 	}
 
 	// }}}
