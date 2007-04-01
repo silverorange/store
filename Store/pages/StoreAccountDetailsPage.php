@@ -290,8 +290,9 @@ class StoreAccountDetailsPage extends StoreAccountPage
 			$ul->open();
 
 			foreach ($orders as $order) {
-				$li->setContent($this->getOrderSummary($order), 'text/xml');
-				$li->display();
+				$li->open();
+				$this->displayOrder($order);
+				$li->close();
 			}
 
 			$ul->close();
@@ -304,12 +305,10 @@ class StoreAccountDetailsPage extends StoreAccountPage
 	}
 
 	// }}}
-	// {{{ protected function getOrderSummary()
+	// {{{ protected function displayOrder()
 
-	protected function getOrderSummary($order)
+	protected function displayOrder($order)
 	{
-		ob_start();
-
 		$createdate = clone $order->createdate;
 		$createdate->convertTZ($this->app->default_time_zone);
 
@@ -318,9 +317,8 @@ class StoreAccountDetailsPage extends StoreAccountPage
 		$a->setContent($order->getTitle());
 		$a->display();
 
-		echo ' - ', $createdate->format(SwatDate::DF_DATE);
-
-		return ob_get_clean();
+		echo ' - ', SwatString::minimizeEntities(
+			$createdate->format(SwatDate::DF_DATE));
 	}
 
 	// }}}
