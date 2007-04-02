@@ -249,12 +249,15 @@ class StoreAccountDetailsPage extends StoreAccountPage
 		$count = $this->app->cart->saved->getEntryCount();
 
 		if ($count > 0) {
-			$message = new SwatMessage(sprintf(Store::ngettext(
-				'You have an item saved for later. View your '.
-				'%sShopping Cart%s to add this item to your order.',
-				'You have items saved for later. View your '.
-				'%sShopping Cart%s to add these items to your order.',
-				$count), '<a href="cart">', '</a>'));
+			$message = new SwatMessage(Store::ngettext(
+				'You have an item saved for later.',
+				'You have items saved for later.',
+				$count));
+
+			$message->secondary_content = sprintf(Store::ngettext(
+				'View your %sShopping Cart%s to add this item to your order.',
+				'View your %sShopping Cart%s to add these items to your order.',
+				$count), '<a href="cart">', '</a>');
 
 			$message->content_type = 'text/xml';
 
