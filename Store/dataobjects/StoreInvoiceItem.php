@@ -49,6 +49,14 @@ class StoreInvoiceItem extends StoreDataObject
 	public $description;
 
 	// }}}
+	// {{{ public function loadExtension()
+
+	public function loadExtension()
+	{
+		return $this->price * $this->quantity;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()

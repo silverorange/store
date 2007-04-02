@@ -2,7 +2,7 @@
 
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
-require_once 'Store/StoreInvoiceAnnouncementMailMessage.php';
+//TODO require_once 'Store/StoreInvoiceAnnouncementMailMessage.php';
 require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/dataobjects/StoreInvoiceItemWrapper.php';
