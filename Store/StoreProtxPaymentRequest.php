@@ -26,9 +26,9 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	// {{{ class constants
 
 	/**
-	 * URL of the simulator mode transaction processor
+	 * URL for processing simulator mode payment transactions
 	 */
-	const URL_SIMULATOR =
+	const URL_SIMULATOR_PAYMENT =
 		'https://ukvpstest.protx.com/VSPSimulator/VSPDirectGateway.asp';
 
 	/**
@@ -42,6 +42,13 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	 */
 	const URL_LIVE_PAYMENT =
 		'https://ukvps.protx.com/vpsDirectAuth/PaymentGateway3D.asp';
+
+	/**
+	 * URL for processing simulator mode transactions other than payment
+	 * transactions
+	 */
+	const URL_SIMULATOR =
+		'https://ukvpstest.protx.com/VSPSimulator/VSPServerGateway.asp?Service=Vendor%sTx';
 
 	/**
 	 * URL for processing test mode transactions other than payment
@@ -142,7 +149,9 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 		switch ($this->mode) {
 		case 'simulator':
 			if ($type != StorePaymentRequest::TYPE_STATUS)
-				$this->url = self::URL_SIMULATOR; 
+				$this->url = (in_array($type, $payment_types)) ?
+					self::URL_SIMULATOR_PAYMENT :
+					sprintf(self::URL_SIMULATOR, ucfirst(strtolower($tx_type)));
 
 			break;
 		case 'test':
