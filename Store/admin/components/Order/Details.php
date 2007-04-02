@@ -17,7 +17,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * Details page for Orders
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreOrderDetails extends AdminPage
