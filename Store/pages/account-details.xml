@@ -37,7 +37,7 @@
 					</object>
 				</object>
 				<object class="SwatDetailsViewField" id="phone">
-					<property name="title" translatable="yes">Phone #</property>
+					<property name="title" translatable="yes">Phone</property>
 					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">phone</property>
 					</object>
