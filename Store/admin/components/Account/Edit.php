@@ -36,6 +36,9 @@ class StoreAccountEdit extends AdminDBEdit
 		$this->ui->loadFromXML($this->ui_xml);
 
 		$this->fields = array('fullname', 'email', 'phone');
+
+		$this->ui->getWidget('submit_continue_button')->visible = 
+			($this->id === null);
 	}
 
 	// }}}
@@ -74,8 +77,8 @@ class StoreAccountEdit extends AdminDBEdit
 		$values = $this->getUIValues();
 
 		if ($this->id === null)
-			SwatDB::insertRow($this->app->db, 'Account', $this->fields,
-				$values);
+			$this->id = SwatDB::insertRow($this->app->db, 'Account',
+				$this->fields, $values, 'id');
 		else
 			SwatDB::updateRow($this->app->db, 'Account', $this->fields,
 				$values, 'id', $this->id);
@@ -95,22 +98,23 @@ class StoreAccountEdit extends AdminDBEdit
 	}
 
 	// }}}
+	// {{{ protected function relocate()
 
-	// build phase
-	// {{{ private function buildNavBar()
-
-	protected function buildNavBar() 
+	protected function relocate()
 	{
-		$account_fullname = SwatDB::queryOneFromTable($this->app->db,
-			'Account', 'text:fullname', 'id', $this->id);
-
-		$this->navbar->addEntry(new SwatNavBarEntry($account_fullname,
-			sprintf('Account/Details?id=%s', $this->id)));
-		$this->navbar->addEntry(new SwatNavBarEntry(Store::_('Edit')));
-		$this->title = $account_fullname;
+		$button = $this->ui->getWidget('submit_continue_button');
+		
+		if ($button->hasBeenClicked()) {
+			$this->app->relocate(
+				$this->app->getBaseHref().'Account/Details?id='.$this->id);
+		} else {
+			parent::relocate();
+		}
 	}
 
 	// }}}
+
+	// build phase
 	// {{{ protected function loadDBData()
 
 	protected function loadDBData()
@@ -124,6 +128,20 @@ class StoreAccountEdit extends AdminDBEdit
 				$this->id));
 
 		$this->ui->setValues(get_object_vars($row));
+	}
+
+	// }}}
+	// {{{ private function buildNavBar()
+
+	protected function buildNavBar() 
+	{
+		$account_fullname = SwatDB::queryOneFromTable($this->app->db,
+			'Account', 'text:fullname', 'id', $this->id);
+
+		$this->navbar->addEntry(new SwatNavBarEntry($account_fullname,
+			sprintf('Account/Details?id=%s', $this->id)));
+		$this->navbar->addEntry(new SwatNavBarEntry(Store::_('Edit')));
+		$this->title = $account_fullname;
 	}
 
 	// }}}
