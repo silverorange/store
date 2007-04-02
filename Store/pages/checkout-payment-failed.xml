@@ -4,7 +4,7 @@
 	<widget class="SwatContentBlock" id="final_note" />
 	<widget class="SwatContentBlock" id="account_note" />
 	<widget class="SwatFrame">
-		<property name="title" translatable="yes">Order Receipt</property>
+		<property name="title" translatable="yes">Order Details</property>
 		<widget class="SwatContentBlock" id="header" />
 		<!-- {{{ Order Details -->
 
