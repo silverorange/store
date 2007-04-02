@@ -137,14 +137,28 @@ class StoreAccountDetails extends AdminIndex
 		$toolbar = $this->ui->getWidget('address_details_toolbar');
 		$toolbar->setToolLinkValues($this->id);
 
-		// set default time zone for orders
+		// set default time zone for orders & invoices
+		$this->setTimeZone();
+
+		$this->buildNavBar();
+	}
+
+	// }}}
+	// {{{ protected function setTimeZone()
+
+	protected function setTimeZone()
+	{
 		$date_column =
 			$this->ui->getWidget('orders_view')->getColumn('createdate');
 
 		$date_renderer = $date_column->getRendererByPosition();
 		$date_renderer->display_time_zone = $this->app->default_time_zone;
 
-		$this->buildNavBar();
+		$date_column =
+			$this->ui->getWidget('invoices_view')->getColumn('createdate');
+
+		$date_renderer = $date_column->getRendererByPosition();
+		$date_renderer->display_time_zone = $this->app->default_time_zone;
 	}
 
 	// }}}
@@ -153,6 +167,8 @@ class StoreAccountDetails extends AdminIndex
 	protected function getTableStore($view) 
 	{
 		switch ($view->id) {
+			case 'invoices_view':
+				return $this->getInvoicesTableStore($view);
 			case 'orders_view':
 				return $this->getOrdersTableStore($view);
 			case  'addresses_view':
@@ -160,6 +176,27 @@ class StoreAccountDetails extends AdminIndex
 			case 'payment_methods_view':
 				return $this->getPaymentMethodsTableStore($view);
 		}
+	}
+
+	// }}}
+	// {{{ protected function getInvoicesTableStore()
+
+	protected function getInvoicesTableStore($view) 
+	{
+		$sql = 'select Invoice.id,
+					Invoice.account as account_id,
+					Invoice.total,
+					Invoice.createdate
+				from Invoice
+				where Invoice.account = %s
+				order by %s';
+
+		$sql = sprintf($sql,
+			$this->app->db->quote($this->id, 'integer'),
+			$this->getOrderByClause($view,
+				'Invoice.createdate desc, Invoice.id'));
+
+		return SwatDB::query($this->app->db, $sql, 'AdminTableStore');
 	}
 
 	// }}}
