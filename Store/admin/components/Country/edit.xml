@@ -25,6 +25,10 @@
 					<property name="maxlength" type="integer">255</property>
 				</widget>
 			</widget>
+			<widget class="SwatFormField">
+				<property name="title">Show on front-end?</property>
+				<widget class="SwatCheckbox" id="show" />
+			</widget>
 			<widget class="SwatFooterFormField">
 				<widget class="SwatButton" id="submit_button" />
 			</widget>

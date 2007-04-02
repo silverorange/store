@@ -27,6 +27,13 @@ class StoreCountry extends StoreDataObject
 	 */
 	public $title;
 
+	/**
+	 * Whether or not to show this country on the front-end
+	 *
+	 * @var boolean
+	 */
+	public $show;
+
 	// }}}
 	// {{{ protected function init()
 
