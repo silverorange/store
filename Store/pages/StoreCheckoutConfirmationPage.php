@@ -370,9 +370,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 		$order->locale = $this->app->getLocale();
 
-		if (isset($this->session->ad))
-			$order->ad = $this->session->ad;
-
 		$order->item_total = $cart->getItemTotal();
 
 		$order->shipping_total = $cart->getShippingTotal(
