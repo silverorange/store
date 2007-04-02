@@ -247,6 +247,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	 */
 	protected function handlePaymentException(StorePaymentException $e)
 	{
+		// log all payment exceptions
+		$e->process(false);
+
 		if ($e instanceof StorePaymentAddressException) {
 			$secondary_content = sprintf(Store::_(
 				'Billing address does not match card number. '.
@@ -269,9 +272,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 				'<em>', '</em>',
 				'<a href="checkout/confirmation/paymentmethod">', '</a>');
 		} else {
-			// log unknown payment exceptions
-			$e->process(false);
-
 			// relocate on fatal payment processing errors and give no
 			// opportunity to edit the order
 			$this->removeCartEntries();
