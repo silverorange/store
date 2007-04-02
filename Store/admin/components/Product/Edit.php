@@ -137,7 +137,7 @@ class StoreProductEdit extends AdminDBEdit
 	}
 
 	// }}}
-	// {{{ protected function addToSearchQueue()
+	// {{{ protected function getUIValues()
 
 	protected function getUIValues()
 	{
