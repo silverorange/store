@@ -76,22 +76,6 @@ abstract class StoreAddress extends StoreDataObject
 	public $postal_code;
 
 	// }}}
-	// {{{ protected function init()
-
-	protected function init()
-	{
-		$this->id_field = 'integer:id';
-
-		$this->registerInternalProperty('provstate',
-			$this->class_map->resolveClass('StoreProvState'));
-
-		$this->registerInternalProperty('country',
-			$this->class_map->resolveClass('StoreCountry'));
-
-		$this->registerDateProperty('createdate');
-	}
-
-	// }}}
 	// {{{ public function display()
 
 	/**
@@ -173,6 +157,22 @@ abstract class StoreAddress extends StoreDataObject
 		$this->provstate_other = $address->provstate_other;
 		$this->provstate       = $address->getInternalValue('provstate');
 		$this->country         = $address->getInternalValue('country');
+	}
+
+	// }}}
+	// {{{ protected function init()
+
+	protected function init()
+	{
+		$this->id_field = 'integer:id';
+
+		$this->registerInternalProperty('provstate',
+			$this->class_map->resolveClass('StoreProvState'));
+
+		$this->registerInternalProperty('country',
+			$this->class_map->resolveClass('StoreCountry'));
+
+		$this->registerDateProperty('createdate');
 	}
 
 	// }}}
