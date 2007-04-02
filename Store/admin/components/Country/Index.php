@@ -46,7 +46,7 @@ class StoreCountryIndex extends AdminIndex
 
 	protected function getTableStore($view)
 	{
-		$sql = sprintf('select id, title from Country order by %s',
+		$sql = sprintf('select id, title, show from Country order by %s',
 			$this->getOrderByClause($view, 'title'));
 
 		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');

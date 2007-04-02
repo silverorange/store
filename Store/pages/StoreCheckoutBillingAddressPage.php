@@ -291,9 +291,10 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 		$country_flydown->addOptionsByArray(SwatDB::getOptionArray(
 			$this->app->db, 'Country', 'title', 'id', 'title',
 			sprintf('id in (select country from RegionBillingCountryBinding
-				where region = %s)',
+				where region = %s) and show = %s',
 				$this->app->db->quote($this->app->getRegion()->id,
-				'integer'))));
+				'integer'),
+				$this->app->db->quote(true, 'boolean'))));
 	}
 
 	// }}}

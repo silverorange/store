@@ -36,9 +36,9 @@ class StoreCountryEdit extends AdminDBEdit
 		$this->ui->loadFromXML($this->ui_xml);
 
 		if ($this->id === null) {
-			$this->fields = array('title', 'id');
+			$this->fields = array('title', 'id', 'boolean:show');
 		} else {
-			$this->fields = array('title');
+			$this->fields = array('title', 'boolean:show');
 			$this->ui->getWidget('id_edit')->required = false;
 			$this->ui->getWidget('id_edit')->visible = false;
 			$this->ui->getWidget('id_non_edit')->visible = true;
@@ -102,6 +102,7 @@ class StoreCountryEdit extends AdminDBEdit
 			$values['id'] = $this->ui->getWidget('id_edit')->value;
 
 		$values['title'] = $this->ui->getWidget('title')->value;
+		$values['show'] = $this->ui->getWidget('show')->value;
 
 		return $values;
 	}

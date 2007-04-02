@@ -278,7 +278,8 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 
 		$country_flydown = $this->ui->getWidget('country');
 		$country_flydown->addOptionsByArray(SwatDB::getOptionArray(
-			$this->app->db, 'Country', 'title', 'id', 'title'));
+			$this->app->db, 'Country', 'title', 'id', 'title',
+			sprintf('show = %s', $this->app->db->quote(true, 'boolean'))));
 
 		if (!$form->isProcessed()) {
 			if ($this->id === null) {
