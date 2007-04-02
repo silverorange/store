@@ -134,6 +134,9 @@ class StoreAccountDetails extends AdminIndex
 		$toolbar = $this->ui->getWidget('details_toolbar');
 		$toolbar->setToolLinkValues($this->id);
 
+		$toolbar = $this->ui->getWidget('invoice_toolbar');
+		$toolbar->setToolLinkValues($this->id);
+
 		$toolbar = $this->ui->getWidget('address_details_toolbar');
 		$toolbar->setToolLinkValues($this->id);
 
