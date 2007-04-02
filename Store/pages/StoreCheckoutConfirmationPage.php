@@ -7,6 +7,9 @@ require_once 'Store/StoreClassMap.php';
 require_once 'Store/pages/StoreCheckoutUIPage.php';
 require_once 'Store/dataobjects/StoreOrderItemWrapper.php';
 require_once 'Store/dataobjects/StoreCartEntry.php';
+require_once 'Store/exceptions/StorePaymentAddressException.php';
+require_once 'Store/exceptions/StorePaymentPostalCodeException.php';
+require_once 'Store/exceptions/StorePaymentCvvException.php';
 
 /**
  * Confirmation page of checkout
@@ -89,7 +92,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 			if ($payment_processing_successful) {
 				$this->removeCartEntries();
-				$this->cleanupOnSuccess();
+				$this->cleanupSession();
 				$this->updateProgress();
 				$this->app->relocate('checkout/thankyou');
 			} else {
@@ -225,9 +228,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	}
 
 	// }}}
-	// {{{ protected function cleanupOnSuccess()
+	// {{{ protected function cleanupSession()
 
-	protected function cleanupOnSuccess()
+	protected function cleanupSession()
 	{
 		// unset session variable flags
 		unset($this->app->session->ad);
@@ -242,22 +245,52 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	 *
 	 * @see StorePaymentProvider
 	 */
-	protected function handlePaymentException($e)
+	protected function handlePaymentException(StorePaymentException $e)
 	{
-		$message = new SwatMessage('', SwatMessage::ERROR);
-		$message->content_type= 'text/xml';
+		if ($e instanceof StorePaymentAddressException) {
+			$secondary_content = sprintf(Store::_(
+				'Billing address does not match card number. '.
+				'Your order has %snot%s been placed. '.
+				'Please edit your %sbilling address%s and try again.'),
+				'<em>', '</em>',
+				'<a href="checkout/confirmation/billingaddress">', '</a>');
+		} elseif ($e instanceof StorePaymentPostalCodeException) {
+			$secondary_content = sprintf(Store::_(
+				'Billing postal code / ZIP code does not match card number. '.
+				'Your order has %snot%s been placed. '.
+				'Please edit your %sbilling address%s and try again.'),
+				'<em>', '</em>',
+				'<a href="checkout/confirmation/billingaddress">', '</a>');
+		} elseif ($e instanceof StorePaymentCvvException) {
+			$secondary_content = sprintf(Store::_(
+				'Card security code does not match card number. '.
+				'Your order has %snot%s been placed. '.
+				'Please edit your %spayment information%s and try again.'),
+				'<em>', '</em>',
+				'<a href="checkout/confirmation/paymentmethod">', '</a>');
+		} else {
+			// log unknown payment exceptions
+			$e->process(false);
 
-		$message->primary_content =
-			Store::_('There was a problem processing your payment.');
+			// relocate on fatal payment processing errors and give no
+			// opportunity to edit the order
+			$this->removeCartEntries();
+			$this->cleanupSession();
+			$this->updateProgress();
+			$this->app->relocate('checkout/paymentfailed');
+		}
 
-		// TODO: review/mangle/replace error messages
-		$message->secondary_content = get_class($e).': '.$e->getMessage();
+		// add friendly error message to message display and allow user to
+		// edit their order
+		$message = new SwatMessage(
+			Store::_('There was a problem processing your payment.'),
+			SwatMessage::ERROR);
 
+		$message->secondary_content = $secondary_content.' '.
+			Store::_('No funds have been removed from your card.');
+
+		$message->content_type = 'text/xml';
 		$this->ui->getWidget('message_display')->add($message);
-
-		// TODO: possibly relocate on some payment processing errors
-		//       and give no opportunity to edit the order
-		//$this->app->relocate('checkout/paymentfailed');
 	}
 
 	// }}}
@@ -273,13 +306,15 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			'packages/store/styles/store-checkout-confirmation-page.css',
 			Store::PACKAGE_ID));
 
-		$message = new SwatMessage(Store::_('Please Review Your Order'));
-		$message->content_type= 'text/xml';
-		$message->secondary_content = sprintf(Store::_('Press the '.
-			'%sPlace Order%s button to complete your order.'),
-			'<em>', '</em>');
+		if ($this->ui->getWidget('message_display')->getMessageCount() == 0) {
+			$message = new SwatMessage(Store::_('Please Review Your Order'));
+			$message->content_type= 'text/xml';
+			$message->secondary_content = sprintf(Store::_('Press the '.
+				'%sPlace Order%s button to complete your order.'),
+				'<em>', '</em>');
 
-		$this->ui->getWidget('message_display')->add($message);
+			$this->ui->getWidget('message_display')->add($message);
+		}
 
 		$this->createOrder();
 		$order = $this->app->session->order;
