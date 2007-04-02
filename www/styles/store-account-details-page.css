@@ -10,10 +10,9 @@
 	margin-right: 10px;
 }
 
-#account_order_container {
+#account_order_container, #account_invoice_container {
 	clear: left;
 }
-
 
 /* Addresses & Payment Methods */
 
@@ -40,12 +39,12 @@
 
 /* Order History */
 
-#account_order_container ul {
+#account_order_container ul, #account_invoice_container ul {
 	margin: 0;
 	padding: 0;
 	list-style-type: none;
 }
 
-#account_order_container li {
+#account_order_container li, #account_invoice_container li {
 	margin-bottom: 0.5em;
 }
