@@ -149,6 +149,12 @@ class StoreAccountInvoicePage extends StoreAccountPage
 		$items_view->model = $store;
 
 		$items_view->getRow('shipping')->value = $this->invoice->shipping_total;
+
+		if ($this->invoice->tax_total > 0)
+			$items_view->getRow('taxes')->value = $this->invoice->tax_total;
+		else
+			$items_view->getRow('taxes')->visible = false;
+
 		$items_view->getRow('subtotal')->value = $this->invoice->getSubtotal();
 		$items_view->getRow('total')->value = $this->invoice->total;
 	}
