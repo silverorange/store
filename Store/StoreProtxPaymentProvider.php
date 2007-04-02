@@ -6,6 +6,15 @@ require_once 'Store/dataobjects/StorePaymentTransaction.php';
 require_once 'Store/dataobjects/StoreOrder.php';
 require_once 'Store/exceptions/StoreException.php';
 
+require_once 'Store/exceptions/StorePaymentMalformedException.php';
+require_once 'Store/exceptions/StorePaymentInvalidException.php';
+require_once 'Store/exceptions/StorePaymentErrorException.php';
+require_once 'Store/exceptions/StorePaymentNotAuthorizedException.php';
+require_once 'Store/exceptions/StorePaymentRejectedException.php';
+
+require_once 'Store/exceptions/StorePaymentAddressException.php';
+require_once 'Store/exceptions/StorePaymentCvvException.php';
+
 /**
  * Payment provider driver for Protx VSP Direct payments
  *
@@ -576,29 +585,42 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 
 		switch ($status) {
 		case 'MALFORMED':
-			require_once 'Store/exceptions/StorePaymentMalformedException.php';
-			throw new StorePaymentMalformedException($status_detail);
+			switch ($status_detail) {
+			case 'Security code length is invalid.':
+				throw new StorePaymentCvvException($status_detail);
+				break;
+			default:
+				throw new StorePaymentMalformedException($status_detail);
+				break;
+			}
+
 			break;
 
 		case 'INVALID':
-			require_once 'Store/exceptions/StorePaymentInvalidException.php';
-			throw new StorePaymentInvalidException($status_detail);
+			switch ($status_detail) {
+			case 'The BillingPostCode you provided also appears to be '.
+				'included as part of the BillingAddress.  You should remove '.
+				'the Post Code from the Address field before submitting the '.
+				'address, or AVS checks will fail.':
+				throw new StorePaymentAddressException($status_detail);
+				break;
+			default:
+				throw new StorePaymentInvalidException($status_detail);
+				break;
+			}
+
 			break;
 
 		case 'ERROR':
-			require_once 'Store/exceptions/StorePaymentErrorException.php';
 			throw new StorePaymentErrorException($status_detail);
 			break;
 
 		case 'NOTAUTHED':
-			require_once
-				'Store/exceptions/StorePaymentNotAuthorizedException.php';
 
 			throw new StorePaymentNotAuthorizedException($status_detail);
 			break;
 
 		case 'REJECTED':
-			require_once 'Store/exceptions/StorePaymentRejectedException.php';
 			throw new StorePaymentRejectedException($status_detail);
 			break;
 		}
