@@ -278,6 +278,12 @@ class StoreAccountOrderPage extends StoreAccountPage
 		$items_view->model = $store;
 
 		$items_view->getRow('shipping')->value = $this->order->shipping_total;
+
+		if ($this->order->tax_total > 0)
+			$items_view->getRow('taxes')->value = $this->order->tax_total;
+		else
+			$items_view->getRow('taxes')->visible = false;
+
 		$items_view->getRow('subtotal')->value = $this->order->getSubtotal();
 		$items_view->getRow('total')->value = $this->order->total;
 	}
