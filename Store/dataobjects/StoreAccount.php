@@ -6,6 +6,7 @@ require_once 'Store/StoreResetPasswordMailMessage.php';
 require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreAccountAddressWrapper.php';
 require_once 'Store/dataobjects/StoreAccountPaymentMethodWrapper.php';
+require_once 'Store/dataobjects/StoreInvoiceWrapper.php';
 require_once 'Store/dataobjects/StoreOrderWrapper.php';
 require_once 'Store/dataobjects/StoreAccountWrapper.php';
 
@@ -372,6 +373,25 @@ abstract class StoreAccount extends StoreDataObject
 
 		return SwatDB::query($this->db, $sql,
 			$this->class_map->resolveClass('StoreOrderWrapper'));
+	}
+
+	// }}}
+	// {{{ protected function loadInvoices()
+
+	/**
+	 * Loads StoreInvoice sub-data-objects for this StoreAccount
+	 *
+	 * This represents a set of invoices associated with this account.
+	 */
+	protected function loadInvoices()
+	{
+		$sql = sprintf('select * from Invoice
+			where account = %s
+			order by id asc',
+			$this->db->quote($this->id, 'integer'));
+
+		return SwatDB::query($this->db, $sql,
+			$this->class_map->resolveClass('StoreInvoiceWrapper'));
 	}
 
 	// }}}

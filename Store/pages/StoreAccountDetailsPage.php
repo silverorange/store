@@ -217,6 +217,7 @@ class StoreAccountDetailsPage extends StoreAccountPage
 	{
 		$this->buildAccountDetails();
 		$this->buildSavedCartMessage();
+		$this->buildInvoices();
 		$this->buildOrders();
 
 		foreach ($this->app->messages->getAll() as $message)
@@ -264,6 +265,61 @@ class StoreAccountDetailsPage extends StoreAccountPage
 			$message_display = $this->ui->getWidget('saved_cart_message');
 			$message_display->add($message);
 		}
+	}
+
+	// }}}
+	// {{{ protected function buildInvoices()
+
+	protected function buildInvoices() 
+	{
+		$block = $this->ui->getWidget('account_invoice');
+		$block->content_type = 'text/xml';
+
+		ob_start();
+		$this->displayInvoices();
+		$block->content = ob_get_clean();
+	}
+
+	// }}}
+	// {{{ protected function displayInvoices()
+
+	protected function displayInvoices() 
+	{
+		$invoices = $this->app->session->account->invoices;
+
+		if (count($invoices) > 0) {
+			$ul = new SwatHtmlTag('ul');
+			$li = new SwatHtmlTag('li');
+
+			$ul->open();
+
+			foreach ($invoices as $invoice) {
+				$li->open();
+				$this->displayInvoice($invoice);
+				$li->close();
+			}
+
+			$ul->close();
+		} else {
+			$this->ui->getWidget('account_invoice_container')->visible = false;
+		}
+	}
+
+	// }}}
+	// {{{ protected function displayInvoice()
+
+	protected function displayInvoice($invoice)
+	{
+		$createdate = clone $invoice->createdate;
+		$createdate->convertTZ($this->app->default_time_zone);
+
+		$a = new SwatHtmlTag('a');
+		$a->href = sprintf('account/invoice%s', $invoice->id);
+		$a->setContent($invoice->getTitle());
+		$a->display();
+
+		echo ' - ', SwatString::minimizeEntities(
+			$createdate->format(SwatDate::DF_DATE));
 	}
 
 	// }}}

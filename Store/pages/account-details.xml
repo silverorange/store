@@ -72,11 +72,16 @@
 			<widget class="SwatContainer" id="account_payment_method_views" />
 		</widget>
 
+		<!-- Invoices -->
+		<widget class="SwatFrame" id="account_invoice_container">
+			<property name="title" translatable="yes">Pending Invoices</property>
+			<widget class="SwatContentBlock" id="account_invoice" />
+		</widget>
+
 		<!-- Orders -->
 		<widget class="SwatFrame" id="account_order_container">
 			<property name="title" translatable="yes">Past Orders</property>
 			<widget class="SwatContentBlock" id="account_order" />
 		</widget>
-
 	</widget>
 </swatml>
