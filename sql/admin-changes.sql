@@ -25,6 +25,8 @@ INSERT INTO AdminComponent (id, section, displayorder, shortname, title, descrip
 INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
 	VALUES (201, 102, 20, 'Order', 'Orders', NULL, true, true);
 INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
+	VALUES (202, 102, 30, 'Invoice', 'Invoices', NULL, true, false);
+INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
 	VALUES (204, 102, 50, 'Ad', 'Ads', NULL, true, true);
 
 -- Reports
