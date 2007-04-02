@@ -76,7 +76,7 @@ abstract class StoreAddress extends StoreDataObject
 	public $postal_code;
 
 	// }}}
-	// {{{ protection function init()
+	// {{{ protected function init()
 
 	protected function init()
 	{
