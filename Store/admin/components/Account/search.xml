@@ -4,6 +4,13 @@
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="search_frame">
 		<property name="title" translatable="yes">Search Accounts</property>
+		<widget class="SwatToolbar" id="index_toolbar">
+			<widget class="SwatToolLink">
+				<property name="title" translatable="yes">Add an Account</property>
+				<property name="link">Account/Edit</property>
+				<property name="stock_id">create</property>
+			</widget>
+		</widget>
 		<widget class="SwatForm" id="search_form">
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Name</property>

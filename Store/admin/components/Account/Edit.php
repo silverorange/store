@@ -73,8 +73,12 @@ class StoreAccountEdit extends AdminDBEdit
 	{
 		$values = $this->getUIValues();
 
-		SwatDB::updateRow($this->app->db, 'Account', $this->fields, $values,
-			'id', $this->id);
+		if ($this->id === null)
+			SwatDB::insertRow($this->app->db, 'Account', $this->fields,
+				$values);
+		else
+			SwatDB::updateRow($this->app->db, 'Account', $this->fields,
+				$values, 'id', $this->id);
 
 		$message = new SwatMessage(sprintf(
 			Store::_('Account “%s” has been saved.'), $values['fullname']));
