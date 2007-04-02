@@ -80,6 +80,9 @@
 					<object class="StoreTotalRow" id="shipping">
 						<property name="title" translatable="yes">Shipping</property>
 					</object>
+					<object class="storetotalrow" id="taxes">
+						<property name="title" translatable="yes">Taxes</property>
+					</object>
 					<object class="StoreTotalRow" id="total">
 						<property name="title" translatable="yes">Total</property>
 					</object>
