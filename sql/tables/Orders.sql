@@ -19,6 +19,7 @@ create table Orders (
 
 	ad integer null references Ad(id),
 	locale char(5) not null references Locale(id),
+	invoice integer null references Invoice(id),
 
 	primary key (id)
 );
