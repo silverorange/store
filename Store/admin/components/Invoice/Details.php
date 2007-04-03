@@ -10,6 +10,7 @@ require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'Store/StoreClassMap.php';
 require_once 'Store/StoreTotalRow.php';
 require_once 'Store/dataobjects/StoreInvoice.php';
+require_once 'Store/dataobjects/StoreOrderAddress.php';
 require_once 'Store/dataobjects/StoreInvoiceItemWrapper.php';
 
 /**
@@ -269,7 +270,7 @@ class StoreInvoiceDetails extends AdminIndex
 		$toolbar = $this->ui->getWidget('items_toolbar');
 		$toolbar->setToolLinkValues($this->id);
 
-		$locale_id = $invoice->region->getFirstLocale()->id;
+		$locale_id = $invoice->locale->id;
 
 		$view = $this->ui->getWidget('items_view');
 		$view->getRow('shipping')->value = $invoice->shipping_total;
@@ -283,7 +284,9 @@ class StoreInvoiceDetails extends AdminIndex
 		$view->getRow('taxes')->locale = $locale_id;
 		$view->getRow('subtotal')->value = $invoice->getSubtotal();
 		$view->getRow('subtotal')->locale = $locale_id;
-		$view->getRow('total')->value = $invoice->total;
+
+		$address = new StoreOrderAddress();
+		$view->getRow('total')->value = $invoice->getTotal($address, $address);
 		$view->getRow('total')->locale = $locale_id;
 
 		$view->getColumn('price')->getFirstRenderer()->locale = $locale_id;

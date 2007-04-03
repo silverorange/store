@@ -6,33 +6,37 @@
 		<property name="title" translatable="yes">Invoice</property>
 		<widget class="SwatForm" id="edit_form">
 			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Region</property>
-				<widget class="SwatFlydown" id="region" />
+				<property name="title" translatable="yes">Locale</property>
+				<widget class="SwatFlydown" id="locale" />
 			</widget>
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Comments</property>
 				<widget class="SwatTextarea" id="comments" />
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Item Total</property>
+				<property name="title" translatable="yes">Subtotal</property>
+				<property name="note" translatable="yes">Optional: if entered, this value will override the calculated subtotal</property>
 				<widget class="SwatMoneyEntry" id="item_total">
 					<property name="locale"></property>
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Shipping</property>
+				<property name="note" translatable="yes">Optional: if entered, this value will override the calculated shipping amount</property>
 				<widget class="SwatMoneyEntry" id="shipping_total">
 					<property name="locale"></property>
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Taxes</property>
+				<property name="note" translatable="yes">Optional: if entered, this value will override the tax amount</property>
 				<widget class="SwatMoneyEntry" id="tax_total">
 					<property name="locale"></property>
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Total</property>
+				<property name="note" translatable="yes">Optional: if entered, this value will override the calculated total</property>
 				<widget class="SwatMoneyEntry" id="total"> 
 					<property name="locale"></property>
 				</widget>

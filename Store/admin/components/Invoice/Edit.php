@@ -4,6 +4,7 @@ require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'Admin/exceptions/AdminNoAccessException.php';
 require_once 'SwatDB/SwatDB.php';
+require_once 'Store/dataobjects/StoreLocaleWrapper.php';
 require_once 'Date.php';
 
 /**
@@ -37,16 +38,22 @@ class StoreInvoiceEdit extends AdminDBEdit
 
 		$this->ui->loadFromXML($this->ui_xml);
 		
-		$this->fields = array('integer:region', 'comments',
+		$this->fields = array('text:locale', 'comments',
 			'float:item_total', 'float:shipping_total', 'float:tax_total',
 			'float:total');
 
 		$this->initAccount();
 		
-		$region_flydown = $this->ui->getWidget('region');
-		$region_flydown->show_blank = false;
-		$region_flydown->addOptionsByArray(SwatDB::getOptionArray($this->app->db, 
-			'Region', 'title', 'id', 'title'));
+		$locale_flydown = $this->ui->getWidget('locale');
+		$locale_flydown->show_blank = false;
+
+		$class_map = StoreClassMap::instance();
+		$locale_wrapper = $class_map->resolveClass('StoreLocaleWrapper');
+
+		$locales = SwatDB::query($this->app->db, 'select * from Locale', $locale_wrapper);
+
+		foreach ($locales as $locale)
+			$locale_flydown->addOption($locale->id, $locale->getTitle());
 	}
 
 	// }}}
@@ -103,7 +110,7 @@ class StoreInvoiceEdit extends AdminDBEdit
 
 	protected function getUIValues()
 	{
-		return $this->ui->getValues(array('region', 'comments', 'item_total',
+		return $this->ui->getValues(array('locale', 'comments', 'item_total',
 			'shipping_total', 'tax_total', 'total'));
 	}
 
