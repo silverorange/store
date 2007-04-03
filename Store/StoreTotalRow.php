@@ -17,6 +17,7 @@ class StoreTotalRow extends SwatTableViewRow
 	public $title = null;
 	public $link = null;
 	public $link_title = null;
+	public $locale = null;
 	public $value = null;
 	public $offset = 0;
 	public $note = null;
@@ -102,6 +103,9 @@ class StoreTotalRow extends SwatTableViewRow
 		$td_tag = new SwatHtmlTag('td');
 		$td_tag->class = $this->getCSSClassString();
 		$td_tag->open();
+
+		if ($this->locale !== null)
+			$this->money_cell_renderer->locale = $this->locale;
 
 		if ($this->value > 0) {
 			$this->money_cell_renderer->value = $this->value;
