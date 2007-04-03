@@ -207,7 +207,7 @@ class StoreAccountDetails extends AdminIndex
 				Invoice.account,
 				Invoice.total,
 				Invoice.createdate,
-				Invoice.region
+				Invoice.locale
 			from Invoice
 			where Invoice.account = %s
 			order by %s';
@@ -223,7 +223,6 @@ class StoreAccountDetails extends AdminIndex
 
 		foreach ($invoices as $invoice) {
 			$row = new SwatDetailsStore($invoice);
-			$row->locale = $invoice->region->getFirstLocale()->id;
 			$store->addRow($row);
 		}
 

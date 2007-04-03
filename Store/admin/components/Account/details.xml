@@ -83,7 +83,7 @@
 						<property name="title" translatable="yes">Total</property>
 						<object class="SwatMoneyCellRenderer">
 							<property name="value" type="data">total</property>
-							<property name="locale" type="data">locale</property>
+							<property name="locale" type="data">locale.id</property>
 						</object>
 					</object>
 				</widget>
