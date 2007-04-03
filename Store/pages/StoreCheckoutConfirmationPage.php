@@ -316,7 +316,11 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			$this->ui->getWidget('message_display')->add($message);
 		}
 
-		$this->createOrder();
+		if ($this->app->session->order->isFromInvoice())
+			$this->createOrderFromInvoice();
+		else
+			$this->createOrder();
+
 		$order = $this->app->session->order;
 
 		$this->buildItems($order);
@@ -398,6 +402,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		$items_view->getRow('subtotal')->value = $order->getSubtotal();
 
 		$items_view->getRow('total')->value = $order->total;
+
+		// invoice the items can not be edited
+		if ($this->app->session->order->isFromInvoice())
+			$this->ui->getWidget('item_link')->visible = false;
 	}
 
 	// }}}
@@ -438,6 +446,48 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 		foreach ($this->app->cart->checkout->getAvailableEntries() as $entry) {
 			$order_item = $entry->createOrderItem();
+			$order->items->add($order_item);
+		}
+	}
+
+	// }}}
+	// {{{ protected function createOrderFromInvoice()
+
+	protected function createOrderFromInvoice()
+	{
+		$order = $this->app->session->order;
+		$invoice = $order->invoice;
+
+		$this->createOrderItemsFromInvoice($order);
+
+		$order->locale = $this->app->getLocale();
+
+		$order->item_total = $invoice->getItemTotal();
+
+		$order->shipping_total = $invoice->getShippingTotal(
+			$order->billing_address, $order->shipping_address);
+
+		$order->tax_total = $invoice->getTaxTotal($order->billing_address,
+			 $order->shipping_address);
+
+		$order->total = $invoice->getTotal($order->billing_address,
+			$order->shipping_address);
+
+		if (isset($this->app->session->ad))
+			$order->ad = $this->app->session->ad;
+	}
+
+	// }}}
+	// {{{ protected function createOrderItemsFromInvoice()
+
+	protected function createOrderItemsFromInvoice($order)
+	{
+		$class_map = StoreClassMap::instance();
+		$wrapper = $class_map->resolveClass('StoreOrderItemWrapper');
+		$order->items = new $wrapper();
+
+		foreach ($order->invoice->items as $invoice_item) {
+			$order_item = $invoice_item->createOrderItem();
 			$order->items->add($order_item);
 		}
 	}

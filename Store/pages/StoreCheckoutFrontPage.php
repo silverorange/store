@@ -16,6 +16,26 @@ class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 	 * @var string
 	 */
 	protected $ui_xml = 'Store/pages/checkout-front.xml';
+
+	/**
+	 * @var integer
+	 */
+	protected $invoice_id = null;
+
+	// }}}
+	// {{{ public function __construct()
+
+	public function __construct(SiteApplication $app, SiteLayout $layout,
+		$invoice_id = 0)
+	{
+		parent::__construct($app, $layout);
+
+		$invoice_id = intval($invoice_id);
+
+		if ($invoice_id != 0)
+			$this->invoice_id = $invoice_id;
+	}
+
 	// }}}
 
 	// init phase
@@ -25,9 +45,20 @@ class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 	{
 		// skip the checkout front page if logged in
 		if ($this->app->session->isLoggedIn()) {
+			$this->app->session->checkout_with_account = true;
+			$this->initDataObjects();
 			$this->resetProgress();
 			$this->updateProgress();
-			$this->app->session->checkout_with_account = true;
+
+			// find the invoice if we have an invoice id
+			$this->app->session->order->invoice = null;
+			if ($this->invoice_id !== null) {
+				$account = $this->app->session->account;
+				$invoice = $account->invoices->getByIndex($this->invoice_id);
+				if ($invoice != null)
+					$this->app->session->order->invoice = $invoice;
+			}
+
 			$this->app->relocate('checkout/first');
 		}
 
