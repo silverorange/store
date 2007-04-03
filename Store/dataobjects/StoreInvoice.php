@@ -132,8 +132,8 @@ class StoreInvoice extends StoreDataObject
 		$this->registerInternalProperty('account',
 			$this->class_map->resolveClass('StoreAccount'));
 
-		$this->registerInternalProperty('region',
-			$this->class_map->resolveClass('StoreRegion'));
+		$this->registerInternalProperty('locale',
+			$this->class_map->resolveClass('StoreLocale'));
 
 		$this->registerDateProperty('createdate');
 
