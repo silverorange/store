@@ -16,7 +16,7 @@
 			</widget>
 		</widget>
 
-		<!-- Details -->
+		<!-- {{{ Details -->
 
 		<widget class="SwatDetailsView" id="details_view">
 			<object class="SwatDetailsViewField">
@@ -45,7 +45,8 @@
 			</object>
 		</widget>
 
-		<!-- Invoices -->
+		<!-- }}} -->
+		<!-- {{{ Invoices -->
 
 		<widget class="SwatFrame" id="invoices_frame">
 			<property name="title" translatable="yes">Invoices</property>
@@ -84,7 +85,8 @@
 			</widget>
 		</widget>
 
-		<!-- Orders -->
+		<!-- }}} -->
+		<!-- {{{ Orders -->
 
 		<widget class="SwatFrame" id="orders_frame">
 			<property name="title" translatable="yes">Orders</property>
@@ -116,7 +118,8 @@
 			</widget>
 		</widget>
 
-		<!-- Addresses -->
+		<!-- }}} -->
+		<!-- {{{ Addresses -->
 
 		<widget class="SwatFrame" id="account_addresses_frame">
 			<property name="title" translatable="yes">Addresses</property>
@@ -162,7 +165,8 @@
 			</widget>
 		</widget>
 
-		<!-- Payment Methods -->
+		<!-- }}} -->
+		<!-- {{{ Payment Methods -->
 
 		<widget class="SwatFrame" id="account_payment_methods_frame">
 			<property name="title" translatable="yes">Payment Methods</property>
@@ -193,5 +197,6 @@
 				</widget>
 			</widget>
 		</widget>
+		<!-- }}} -->
 	</widget>
 </swatml>
