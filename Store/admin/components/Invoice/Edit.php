@@ -146,6 +146,9 @@ class StoreInvoiceEdit extends AdminDBEdit
 		$last_entry->title = sprintf(Store::_('%s Invoice'),
 			$last_entry->title);
 
+		$this->navbar->replaceEntryByPosition(1,
+			new SwatNavBarEntry(Store::_('Customer Accounts'), 'Account'));
+
 		$this->navbar->addEntry(new SwatNavBarEntry($this->account_fullname,
 			sprintf('Account/Details?id=%s', $this->account_id)));
 

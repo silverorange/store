@@ -2,79 +2,27 @@
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
-	<!-- {{{ Product Details -->
+	<!-- {{{ Invoice Details -->
 	<widget class="SwatFrame" id="details_frame">
 		<widget class="SwatToolbar" id="details_toolbar">
 			<widget class="SwatToolLink">
-				<property name="title" translatable="yes">Edit Product</property>
-				<property name="link">Product/Edit?id=%s</property>
+				<property name="title" translatable="yes">Edit Invoice</property>
+				<property name="link">Invoice/Edit?id=%s</property>
 				<property name="stock_id">edit</property>
 			</widget>
 			<widget class="SwatToolLink">
-				<property name="title" translatable="yes">Delete Product</property>
-				<property name="link">Product/Delete?id=%s</property>
+				<property name="title" translatable="yes">Delete Invoice</property>
+				<property name="link">Invoice/Delete?id=%s</property>
 				<property name="stock_id">delete</property>
-			</widget>
-			<widget class="SwatToolLink" id="view_in_store">
-				<property name="title" translatable="yes">View in Store</property>
-				<property name="link">../%s</property>
 			</widget>
 		</widget>
 		<widget class="SwatDetailsView" id="details_view">
 			<object class="SwatDetailsViewField">
-				<property name="title" translatable="yes">Short Name</property>
-				<object class="SwatTextCellRenderer">
-					<property name="text" type="data">shortname</property>
-				</object>
-			</object>
-			<object class="SwatDetailsViewField">
-				<property name="title" translatable="yes">Belongs to Categories</property>
+				<property name="title" translatable="yes">Comments</property>
 				<object class="SwatNullTextCellRenderer">
-					<property name="text" type="data">categories</property>
-					<property name="content_type">text/xml</property>
+					<property name="text" type="data">comments</property>
 				</object>
 			</object>
-			<object class="SwatDetailsViewField">
-				<property name="title" translatable="yes">Featured in Categories</property>
-				<object class="SwatNullTextCellRenderer">
-					<property name="text" type="data">featured_categories</property>
-					<property name="content_type">text/xml</property>
-				</object>
-			</object>
-			<object class="SwatDetailsViewField">
-				<property name="title" translatable="yes">Catalog</property>
-				<object class="SwatLinkCellRenderer">
-					<property name="text" type="data">catalog.title</property>
-					<property name="link" type="string">Catalog/Details?id=%s</property>
-					<property name="link_value" type="data">catalog.id</property>
-				</object>
-			</object>
-			<object class="SwatDetailsViewVerticalField">
-				<property name="title" translatable="yes">Body Text</property>
-				<object class="SwatNullTextCellRenderer">
-					<property name="text" type="data">bodytext</property>
-				</object>
-			</object>
-		</widget>
-		<!-- }}} -->
-		<!-- {{{ Product Images -->
-		<widget class="SwatFrame">
-			<property name="title" translatable="yes">Product Images</property>
-			<widget class="SwatToolBar" id="product_images_toolbar">
-				<widget class="SwatToolLink" id="image_edit">
-					<property name="title" translatable="yes">Add an Image</property>
-					<property name="link">Product/ImageEdit?product=%s</property>
-					<property name="stock_id">create</property>
-				</widget>
-				<widget class="SwatToolLink" id="image_order">
-					<property name="title" translatable="yes">Change Image Order</property>
-					<property name="link">Product/ImageOrder?product=%s</property>
-					<property name="stock_id">change-order</property>
-				</widget>
-			</widget>
-			<widget class="SwatForm" id="product_images_form">
-				<property name="classes[]">store-product-images</property>
-			</widget>
 		</widget>
 		<!-- }}} -->
 		<!-- {{{ Items -->
@@ -83,39 +31,12 @@
 			<widget class="SwatToolbar" id="items_toolbar">
 				<widget class="SwatToolLink">
 					<property name="title" translatable="yes">New Item</property>
-					<property name="link">Item/Edit?product=%s</property>
+					<property name="link">Invoice/ItemEdit?invoice=%s</property>
 					<property name="stock_id">create</property>
-				</widget>
-				<widget class="SwatToolLink" id="items_order">
-					<property name="title" translatable="yes">Change Item Order</property>
-					<property name="link">Item/Order?product=%s</property>
-					<property name="stock_id">change-order</property>
 				</widget>
 			</widget>
 			<widget class="SwatForm" id="items_form">
-				<widget class="StoreItemTableView" id="items_view">
-					<object class="StoreItemGroupGroup" id="group">
-						<property name="group_by">item_group_id</property>
-						<object class="SwatTextCellRenderer" id="title">
-							<property name="text" type="data">item_group_title</property>
-						</object>
-						<object class="AdminGroupLinkCellRenderer">
-							<property name="text" translatable="yes">edit group</property>
-							<property name="link">ItemGroup/Edit?id=%s</property>
-							<property name="link_value" type="data">item_group_id</property>
-						</object>
-						<object class="AdminGroupLinkCellRenderer">
-							<property name="text" translatable="yes">remove group</property>
-							<property name="link">ItemGroup/Delete?id=%s</property>
-							<property name="link_value" type="data">item_group_id</property>
-						</object>
-						<object class="AdminGroupLinkCellRenderer" id="order">
-							<property name="text" translatable="yes">change item order</property>
-							<property name="link">Item/Order?item_group=%s&amp;product=%s</property>
-							<property name="link_value[]" type="data">item_group_id</property>
-							<property name="link_value[]" type="data">product.id</property>
-						</object>
-					</object>
+				<widget class="SwatTableView" id="items_view">
 					<object class="SwatTableViewCheckboxColumn" id="checkbox">
 						<object class="SwatCheckboxCellRenderer" id="items">
 							<property name="value" type="data">id</property>
@@ -126,13 +47,14 @@
 						<property name="title" translatable="yes">SKU</property>
 						<object class="AdminTitleLinkCellRenderer">
 							<property name="text" type="data">sku</property>
-							<property name="link">Item/Edit?id=%s</property>
+							<property name="link">Invoice/ItemEdit?id=%s</property>
 							<property name="link_value" type="data">id</property>
 							<property name="stock_id">edit</property>
 						</object>
 						<object class="SwatInputCell">
 							<widget class="SwatEntry" id="input_sku">
 								<property name="size" type="integer">7</property>
+								<property name="required" type="boolean">true</property>
 								<property name="required" type="boolean">true</property>
 							</widget>
 						</object>
@@ -144,31 +66,48 @@
 						</object>
 						<object class="SwatInputCell">
 							<widget class="SwatEntry" id="input_description">
-								<property name="size" type="integer">7</property>
+								<property name="size" type="integer">20</property>
 							</widget>
 						</object>
 					</object>
-					<object class="SwatTableViewColumn" id="quantity_discounts">
-						<property name="title" translatable="yes">Qty. Discounts</property>
-						<object class="StoreItemDiscountCellRenderer">
-							<property name="id" type="data">id</property>
-							<property name="text" translatable="yes">add</property>
-							<property name="edit_text" translatable="yes">edit</property>
-							<property name="link">Item/QuantityDiscount?id=%s</property>
-							<property name="link_value" type="data">id</property>
-						</object>
-					</object>
-					<object class="SwatTableViewColumn" id="status">
-						<property name="title" translatable="yes">Status</property>
-						<object class="StoreItemStatusCellRenderer">
-							<property name="status" type="data">status</property>
+					<object class="SwatTableViewColumn" id="quantity">
+						<property name="title" translatable="yes">Quantity</property>
+						<object class="SwatTextCellRenderer">
+							<property name="text" type="data">quantity</property>
 						</object>
 						<object class="SwatInputCell">
-							<widget class="SwatContentBlock" id="input_status" />
+							<widget class="SwatIntegerEntry" id="input_quantity">
+								<property name="size" type="integer">3</property>
+								<property name="required" type="boolean">true</property>
+							</widget>
+						</object>
+					</object>
+					<object class="SwatTableViewColumn" id="price">
+						<property name="title" translatable="yes">Price</property>
+						<object class="SwatMoneyCellRenderer">
+							<property name="value" type="data">price</property>
+						</object>
+						<object class="SwatInputCell">
+							<widget class="SwatMoneyEntry" id="input_price">
+								<property name="size" type="integer">5</property>
+								<property name="required" type="boolean">true</property>
+							</widget>
 						</object>
 					</object>
 					<object class="SwatTableViewInputRow" id="input_row">
 						<property name="number" type="integer">0</property>
+					</object>
+					<object class="StoreTotalRow" id="subtotal">
+						<property name="title" translatable="yes">Subtotal</property>
+					</object>
+					<object class="StoreTotalRow" id="shipping">
+						<property name="title" translatable="yes">Shipping</property>
+					</object>
+					<object class="storetotalrow" id="taxes">
+						<property name="title" translatable="yes">Taxes</property>
+					</object>
+					<object class="StoreTotalRow" id="total">
+						<property name="title" translatable="yes">Total</property>
 					</object>
 				</widget>
 				<widget class="SwatActions" id="index_actions">
@@ -179,79 +118,6 @@
 					<widget class="SwatActionItemDivider" />
 					<widget class="SwatActionItem" id="delete">
 						<property name="title" translatable="yes">delete…</property>
-					</widget>
-					<widget class="SwatActionItem" id="change_group">
-						<property name="title" translatable="yes">move to group…</property>
-						<widget class="SwatFormField">
-							<property name="title" translatable="yes">Group</property>
-							<widget class="StoreItemGroupAction" id="item_group" />
-						</widget>
-					</widget>
-					<widget class="SwatActionItem" id="change_status">
-						<property name="title" translatable="yes">change status…</property>
-						<widget class="SwatFormField">
-							<property name="title" translatable="yes">Status</property>
-							<widget class="SwatFlydown" id="status">
-								<property name="show_blank" type="boolean">false</property>
-							</widget>
-						</widget>
-					</widget>
-					<widget class="SwatActionItemDivider" />
-					<widget class="SwatActionItem" id="enable">
-						<property name="title" translatable="yes">enable…</property>
-						<widget class="SwatFormField">
-							<property name="title" translatable="yes">Region</property>
-							<widget class="SwatFlydown" id="enable_region">
-								<property name="show_blank" type="boolean">false</property>
-							</widget>
-						</widget>
-					</widget>
-					<widget class="SwatActionItem" id="disable">
-						<property name="title" translatable="yes">disable…</property>
-						<widget class="SwatFormField">
-							<property name="title" translatable="yes">Region</property>
-							<widget class="SwatFlydown" id="disable_region">
-								<property name="show_blank" type="boolean">false</property>
-							</widget>
-						</widget>
-					</widget>
-				</widget>
-			</widget>
-		</widget>
-		<!-- }}} -->
-		<!-- {{{ Related Products -->
-		<widget class="SwatFrame">
-			<property name="title" translatable="yes">Related Products</property>
-			<widget class="SwatToolBar" id="related_products_toolbar">
-				<widget class="SwatToolLink">
-					<property name="title" translatable="yes">Add a Related Product</property>
-					<property name="stock_id">create</property>
-					<property name="link">Product/RelatedProduct?product=%s</property>
-				</widget>
-			</widget>
-			<widget class="AdminNote">
-				<property name="content" translatable="yes">Related products are displayed at the bottom of this product’s page under the heading “You might also be interested in …”.</property>
-			</widget>
-			<widget class="SwatForm" id="related_products_form">
-				<widget class="SwatTableView" id="related_products_view">
-					<object class="SwatTableViewCheckboxColumn" id="checkbox">
-						<object class="SwatCheckboxCellRenderer" id="items">
-							<property name="value" type="data">id</property>
-						</object>
-					</object>
-					<object class="SwatTableViewColumn">
-						<property name="title" translatable="yes">Title</property>
-						<object class="AdminTitleLinkCellRenderer">
-							<property name="text" type="data">title</property>
-							<property name="link">Product/Details?id=%s</property>
-							<property name="link_value" type="data">id</property>
-							<property name="stock_id">product</property>
-						</object>
-					</object>
-				</widget>
-				<widget class="SwatFooterFormField" id="related_products_footer">
-					<widget class="SwatButton">
-						<property name="title" translatable="yes">Remove Checked Related Products</property>
 					</widget>
 				</widget>
 			</widget>
