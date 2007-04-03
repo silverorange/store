@@ -59,14 +59,18 @@
 					</widget>
 				</widget>
 				<widget class="SwatTableView" id="invoices_view">
+					<object class="SwatTableViewCheckboxColumn" id="checkbox">
+						<object class="SwatCheckboxCellRenderer" id="items">
+							<property name="value" type="data">id</property>
+						</object>
+					</object>
 					<object class="AdminTableViewOrderableColumn" id="id">
 						<property name="title" translatable="yes">Invoice #</property>
 						<object class="AdminTitleLinkCellRenderer">
 							<property name="text">%s</property>
 							<property name="value" type="data">id</property>
-							<property name="link">Invoice/Details?id=%s&amp;account=%s</property>
+							<property name="link">Invoice/Details?id=%s</property>
 							<property name="link_value[]" type="data">id</property>
-							<property name="link_value[]" type="data">account_id</property>
 						</object>
 					</object>
 					<object class="AdminTableViewOrderableColumn" id="createdate">
@@ -79,8 +83,14 @@
 						<property name="title" translatable="yes">Total</property>
 						<object class="SwatMoneyCellRenderer">
 							<property name="value" type="data">total</property>
+							<property name="locale" type="data">locale</property>
 						</object>
 					</object>
+				</widget>
+				<widget class="SwatActions" id="invoice_actions">
+					<widget class="SwatActionItem" id="invoice_delete">
+						<property name="title" translatable="yes">delete…</property>
+					</widget>
 				</widget>
 			</widget>
 		</widget>

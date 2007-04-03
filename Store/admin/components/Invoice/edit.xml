@@ -15,19 +15,27 @@
 			</widget>
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Item Total</property>
-				<widget class="SwatMoneyEntry" id="item_total" />
+				<widget class="SwatMoneyEntry" id="item_total">
+					<property name="locale"></property>
+				</widget>
 			</widget>
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Shipping</property>
-				<widget class="SwatMoneyEntry" id="shipping_total" />
+				<widget class="SwatMoneyEntry" id="shipping_total">
+					<property name="locale"></property>
+				</widget>
 			</widget>
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Taxes</property>
-				<widget class="SwatMoneyEntry" id="tax_total" />
+				<widget class="SwatMoneyEntry" id="tax_total">
+					<property name="locale"></property>
+				</widget>
 			</widget>
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Total</property>
-				<widget class="SwatMoneyEntry" id="total" />
+				<widget class="SwatMoneyEntry" id="total"> 
+					<property name="locale"></property>
+				</widget>
 			</widget>
 			<widget class="SwatFooterFormField">
 				<widget class="SwatButton" id="submit_button" />

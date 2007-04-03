@@ -84,6 +84,10 @@ class StoreAccountDetails extends AdminIndex
 	protected function processActions(SwatTableView $view, SwatActions $actions)
 	{
 		switch ($view->id) {
+		case 'invoices_view':
+			$this->processInvoiceActions($view, $actions);
+			return;
+
 		case 'addresses_view':
 			$this->processAddressActions($view, $actions);
 			return;
@@ -91,6 +95,19 @@ class StoreAccountDetails extends AdminIndex
 		case 'payment_methods_view':
 			$this->processPaymentMethodActions($view, $actions);
 			return;
+		}
+	}
+
+	// }}}
+	// {{{ private function processInvoiceActions()
+
+	private function processInvoiceActions($view, $actions)
+	{
+		switch ($actions->selected->id) {
+		case 'invoice_delete':
+			$this->app->replacePage('Invoice/Delete');
+			$this->app->getPage()->setItems($view->checked_items);
+			break;
 		}
 	}
 
@@ -187,19 +204,30 @@ class StoreAccountDetails extends AdminIndex
 	protected function getInvoicesTableStore($view) 
 	{
 		$sql = 'select Invoice.id,
-					Invoice.account as account_id,
-					Invoice.total,
-					Invoice.createdate
-				from Invoice
-				where Invoice.account = %s
-				order by %s';
+				Invoice.account,
+				Invoice.total,
+				Invoice.createdate,
+				Invoice.region
+			from Invoice
+			where Invoice.account = %s
+			order by %s';
 
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->id, 'integer'),
 			$this->getOrderByClause($view,
 				'Invoice.createdate desc, Invoice.id'));
 
-		return SwatDB::query($this->app->db, $sql, 'AdminTableStore');
+		$invoices =  SwatDB::query($this->app->db, $sql, 'StoreInvoiceWrapper');
+
+		$store = new SwatTableStore();
+
+		foreach ($invoices as $invoice) {
+			$row = new SwatDetailsStore($invoice);
+			$row->locale = $invoice->region->getFirstLocale()->id;
+			$store->addRow($row);
+		}
+
+		return $store;
 	}
 
 	// }}}
