@@ -49,11 +49,49 @@ class StoreInvoiceItem extends StoreDataObject
 	public $description;
 
 	// }}}
-	// {{{ public function loadExtension()
+	// {{{ public function getExtension()
 
-	public function loadExtension()
+	/**
+	 * Gets the extension price of this invoice item
+	 *
+	 * The cost is calculated as this invoice item's price multiplied
+	 * by the quantity. This value is called the extension.
+	 *
+	 * @return double the extension price of this invoice item.
+	 */
+	public function getExtension()
 	{
 		return $this->price * $this->quantity;
+	}
+
+	// }}}
+	// {{{ public function createOrderItem()
+
+	/**
+	 * Creates a new order item dataobject that corresponds to this invoice item
+	 *
+	 * @return StoreOrderItem a new StoreOrderItem object that corresponds to
+	 *                         this invoice item.
+	 */
+	public function createOrderItem()
+	{
+		$class = $this->class_map->resolveClass('StoreOrderItem');
+		$order_item = new $class();
+
+		$order_item->sku = $this->sku;
+		$order_item->price = $this->price;
+		$order_item->quantity = $this->quantity;
+		$order_item->extension = $this->getExtension();
+		$order_item->description = $this->description;
+		$order_item->product = null;
+		$order_item->product_title = null;
+		$order_item->quick_order = false;
+
+		// set database if it exists
+		if ($this->db !== null)
+			$order_item->setDatabase($this->db);
+
+		return $order_item;
 	}
 
 	// }}}

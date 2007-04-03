@@ -71,8 +71,8 @@ class StoreAccountInvoicePage extends StoreAccountPage
 
 	private function loadInvoice()
 	{
-		$this->invoice = $this->app->session->account->invoices->getByIndex(
-			$this->id);
+		$this->invoice =
+			$this->app->session->account->invoices->getByIndex($this->id);
 
 		if ($this->invoice === null)
 			throw new SiteNotFoundException(
@@ -94,7 +94,8 @@ class StoreAccountInvoicePage extends StoreAccountPage
 		$form->process();
 
 		if ($form->isProcessed()) {
-			// TODO: add processing here
+			$uri = sprintf('checkout/invoice%s', $this->invoice->id);
+			$this->app->relocate($uri);
 		}
 	}
 

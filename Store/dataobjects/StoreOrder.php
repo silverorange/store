@@ -13,6 +13,7 @@ require_once 'Store/dataobjects/StoreOrderItemWrapper.php';
 require_once 'Store/dataobjects/StorePaymentTransactionWrapper.php';
 require_once 'Store/dataobjects/StoreAd.php';
 require_once 'Store/dataobjects/StoreLocale.php';
+require_once 'Store/dataobjects/StoreInvoice.php';
 
 /**
  *
@@ -215,6 +216,19 @@ class StoreOrder extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ public function isFromInvoice()
+
+	/**
+	 * Whether this order is generated from an invoice
+	 *
+	 * @return boolean true if this order is from an invoice.
+	 */
+	public function isFromInvoice()
+	{
+		return ($this->getInternalValue('invoice') !== null);
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
@@ -237,6 +251,9 @@ class StoreOrder extends StoreDataObject
 
 		$this->registerInternalProperty('ad',
 			$this->class_map->resolveClass('StoreAd'), true);
+
+		$this->registerInternalProperty('invoice',
+			$this->class_map->resolveClass('StoreInvoice'));
 
 		$this->registerDateProperty('createdate');
 

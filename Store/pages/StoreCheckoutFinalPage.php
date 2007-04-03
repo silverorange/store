@@ -41,7 +41,8 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 
 	protected function checkCart()
 	{
-		// do nothing - cart should be empty now
+		// always return true - cart should be empty now
+		return true;
 	}
 
 	// }}}

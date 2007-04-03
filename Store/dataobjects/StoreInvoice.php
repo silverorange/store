@@ -68,22 +68,6 @@ class StoreInvoice extends StoreDataObject
 	public $tax_total;
 
 	// }}}
-	// {{{ public function getSubtotal()
-
-	/**
-	 * Gets the subtotal for this invoice
-	 *
-	 * By default this is defined as item_total. Site-specific sub-classes may
-	 * include other values in addition to item_total.
-	 *
-	 * @return integer this invoice's subtotal.
-	 */
-	public function getSubtotal()
-	{
-		return $this->item_total;
-	}
-
-	// }}}
 	// {{{ public function getInvoiceDetailsTableStore()
 
 	public function getInvoiceDetailsTableStore()
@@ -174,10 +158,129 @@ class StoreInvoice extends StoreDataObject
 	{
 		$ds = new SwatDetailsStore($item);
 		$ds->item = $item;
+		$ds->extension = $item->getExtension();
 
 		return $ds;
 	}
 
+	// }}}
+
+	// price calculation methods
+	// {{{ public function getTotal()
+
+	/**
+	 * Gets the total cost for this invoice
+	 *
+	 * By default, the total is calculated as item total + tax + shipping.
+	 * Subclasses may override this to calculate totals differently.
+	 *
+	 * @param StoreAddress $billing_address the billing address of the order.
+	 * @param StoreAddress $shipping_address the shipping address of the order.
+	 *
+	 * @return double the cost of this invoice.
+	 */
+	public function getTotal(StoreAddress $billing_address,
+		StoreAddress $shipping_address)
+	{
+		if ($this->total === null) {
+			$total = 0;
+			$total += $this->getItemTotal();
+
+			$total += $this->getTaxTotal(
+				$billing_address, $shipping_address);
+
+			$total += $this->getShippingTotal(
+				$billing_address, $shipping_address);
+		} else {
+			$total = $this->total;
+		}
+
+		return $total;
+	}
+
+	// }}}
+	// {{{ public function getSubtotal()
+
+	public function getSubtotal()
+	{
+		$total = 0;
+		$total += $this->getItemTotal();
+
+		return $total;
+	}
+
+	// }}}
+	// {{{ public function getItemTotal()
+
+	/**
+	 * Gets the cost of the invoice items on this invoice
+	 *
+	 * @return double the sum of the extensions of all InvoiceItem objects.
+	 */
+	public function getItemTotal()
+	{
+		if ($this->item_total === null) {
+			$total = 0;
+			foreach ($this->items as $item)
+				$total += $item->getExtension();
+
+		} else {
+			$total = $this->item_total;
+		}
+
+		return $total;
+	}
+
+	// }}}
+	// {{{ public function getShippingTotal()
+
+	/**
+	 * Gets the cost of shipping this invoice
+	 *
+	 * @param StoreAddress $billing_address the billing address.
+	 * @param StoreAddress $shipping_address the shipping address.
+	 *
+	 * @return double the cost of shipping this invoice.
+	 */
+	public function getShippingTotal(StoreAddress $billing_address,
+		StoreAddress $shipping_address)
+	{
+		if ($this->shipping_total === null) {
+			$total = 0;
+		} else {
+			$total = $this->shipping_total;
+		}
+
+		return $total;
+	}
+
+	// }}}
+	// {{{ public function getTaxTotal()
+
+	/**
+	 * Gets the total amount of taxes for this invoice
+	 *
+	 * Calculates applicable taxes based on the items in this invoice. Tax
+	 * calculations need to know where purchase is made in order to correctly
+	 * apply tax.
+	 *
+	 * @param StoreAddress $billing_address the billing address.
+	 * @param StoreAddress $shipping_address the shipping address.
+	 *
+	 * @return double the tax charged for the items of this invoice.
+	 */
+	public function getTaxTotal(StoreAddress $billing_address,
+		StoreAddress $shipping_address)
+	{
+		if ($this->tax_total === null) {
+			$total = 0;
+		} else {
+			$total = $this->tax_total;
+		}
+
+		return $total;
+	}
+	
 	// }}}
 
 	// loader methods

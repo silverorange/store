@@ -19,11 +19,12 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 	{
 		parent::init();
 
-		// relocate to cart if no session
 		if (!$this->app->session->isActive())
 			$this->app->relocate('cart');
 
-		$this->checkCart();
+		if (!$this->checkCart())
+			$this->app->relocate('cart');
+
 		$this->app->session->activate();
 
 		// initialize session variable to track checkout progress
@@ -81,9 +82,16 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 
 	protected function checkCart()
 	{
-		// relocate to cart if no items in the cart
+		// cart doesn't matter if we have an invoice
+		if (isset($this->app->session->order) &&
+			$this->app->session->order->isFromInvoice())
+			return true;
+
+		// no cart, no checkout
 		if (count($this->app->cart->checkout->getAvailableEntries()) <= 0)
-			$this->app->relocate('cart');
+			return false;
+
+		return true;
 	}
 
 	// }}}
@@ -96,7 +104,7 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 		if (!isset($this->app->session->checkout_progress))
 			$this->app->session->checkout_progress = new ArrayObject();
 
-		$this->app->session->checkout_progress[] = $this->source;
+		$this->app->session->checkout_progress[] = (string)($this->getPath());
 	}
 
 	// }}}
