@@ -185,7 +185,7 @@ abstract class StoreCheckoutCart extends StoreCart
 				$billing_address, $shipping_address);
 
 			$total += $this->getShippingTotal(
-				$shipping_address, $shipping_address);
+				$billing_address, $shipping_address);
 
 			$this->setCachedValue('store-total', $total);
 		}
