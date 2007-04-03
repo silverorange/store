@@ -1,7 +1,7 @@
 create table Invoice (
 	id serial,
 	account integer not null references Account(id) on delete cascade,
-	locale int not null references Locale(id) on delete cascade,
+	locale char(5) not null references Locale(id) on delete cascade,
 	comments text,
 	createdate timestamp not null,
 
