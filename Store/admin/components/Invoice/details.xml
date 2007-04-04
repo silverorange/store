@@ -54,8 +54,6 @@
 						<object class="SwatInputCell">
 							<widget class="SwatEntry" id="input_sku">
 								<property name="size" type="integer">7</property>
-								<property name="required" type="boolean">true</property>
-								<property name="required" type="boolean">true</property>
 							</widget>
 						</object>
 					</object>
