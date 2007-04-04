@@ -7,9 +7,7 @@
 		<widget class="SwatForm" id="edit_form">
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Sku</property>
-				<widget class="SwatEntry" id="sku">
-					<property name="required" type="boolean">true</property>
-				</widget>
+				<widget class="SwatEntry" id="sku" />
 			</widget>
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Description</property>
