@@ -35,14 +35,6 @@
 				<property name="title" translatable="yes">Items</property>
 				<widget class="SwatTableView" id="items_view">
 					<property name="classes[]">store-order-item-view</property>
-					<!--object class="SwatTableViewGroup">
-						<property name="group_by">product</property>
-						<object class="SwatLinkCellRenderer">
-							<property name="text" type="data">product_title</property>
-							<property name="link" type="data">path</property>
-							<property name="link_value" type="data">product</property>
-						</object>
-					</object-->
 					<object class="SwatTableViewColumn">
 						<property name="title" translatable="yes">Item #</property>
 						<object class="SwatTextCellRenderer">
@@ -80,8 +72,8 @@
 					<object class="StoreTotalRow" id="shipping">
 						<property name="title" translatable="yes">Shipping</property>
 					</object>
-					<object class="storetotalrow" id="taxes">
-						<property name="title" translatable="yes">Taxes</property>
+					<object class="StoreTotalRow" id="tax">
+						<property name="title" translatable="yes">Tax</property>
 					</object>
 					<object class="StoreTotalRow" id="total">
 						<property name="title" translatable="yes">Total</property>

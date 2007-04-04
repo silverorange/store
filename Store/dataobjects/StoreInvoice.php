@@ -40,20 +40,6 @@ class StoreInvoice extends StoreDataObject
 	public $createdate;
 
 	/**
-	 * Total amount
-	 *
-	 * @var float
-	 */
-	public $total;
-
-	/**
-	 * Item total
-	 *
-	 * @var float
-	 */
-	public $item_total;
-
-	/**
 	 * Shipping total
 	 *
 	 * @var float
@@ -182,18 +168,18 @@ class StoreInvoice extends StoreDataObject
 	public function getTotal(StoreAddress $billing_address = null,
 		StoreAddress $shipping_address = null)
 	{
-		if ($this->total === null) {
-			$total = 0;
-			$total += $this->getItemTotal();
+		$total = $this->getItemTotal();
 
-			$total += $this->getTaxTotal(
-				$billing_address, $shipping_address);
+		$tax = $this->getTaxTotal(
+			$billing_address, $shipping_address);
 
-			$total += $this->getShippingTotal(
-				$billing_address, $shipping_address);
-		} else {
-			$total = $this->total;
-		}
+		$shipping = $this->getShippingTotal(
+			$billing_address, $shipping_address);
+
+		if ($tax === null || $shipping === null)
+			$total = null;
+		else
+			$total+= $tax + $shipping;
 
 		return $total;
 	}
@@ -219,14 +205,9 @@ class StoreInvoice extends StoreDataObject
 	 */
 	public function getItemTotal()
 	{
-		if ($this->item_total === null) {
-			$total = 0;
-			foreach ($this->items as $item)
-				$total += $item->getExtension();
-
-		} else {
-			$total = $this->item_total;
-		}
+		$total = 0;
+		foreach ($this->items as $item)
+			$total += $item->getExtension();
 
 		return $total;
 	}

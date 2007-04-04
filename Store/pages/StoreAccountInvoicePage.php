@@ -149,15 +149,25 @@ class StoreAccountInvoicePage extends StoreAccountPage
 		$store = $this->getInvoiceDetailsTableStore();
 		$items_view->model = $store;
 
-		$items_view->getRow('shipping')->value = $this->invoice->shipping_total;
-
-		if ($this->invoice->tax_total > 0)
-			$items_view->getRow('taxes')->value = $this->invoice->tax_total;
-		else
-			$items_view->getRow('taxes')->visible = false;
-
 		$items_view->getRow('subtotal')->value = $this->invoice->getSubtotal();
-		$items_view->getRow('total')->value = $this->invoice->total;
+
+		$shipping = $this->invoice->getShippingTotal();
+		if ($shipping !== null)
+			$items_view->getRow('shipping')->value = $shipping;
+		else
+			$items_view->getRow('shipping')->visible = false;
+
+		$tax = $this->invoice->getTaxTotal();
+		if ($tax !== null && $tax > 0)
+			$items_view->getRow('tax')->value = $tax;
+		else
+			$items_view->getRow('tax')->visible = false;
+
+		$total = $this->invoice->getTotal();
+		if ($total !== null)
+			$items_view->getRow('total')->value = $total;
+		else
+			$items_view->getRow('total')->visible = false;
 	}
 
 	// }}}
