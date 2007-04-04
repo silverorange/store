@@ -14,13 +14,6 @@
 				<widget class="SwatTextarea" id="comments" />
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Subtotal</property>
-				<property name="note" translatable="yes">Optional: if entered, this value will override the calculated subtotal</property>
-				<widget class="SwatMoneyEntry" id="item_total">
-					<property name="locale"></property>
-				</widget>
-			</widget>
-			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Shipping</property>
 				<property name="note" translatable="yes">Optional: if entered, this value will override the calculated shipping amount</property>
 				<widget class="SwatMoneyEntry" id="shipping_total">
@@ -31,13 +24,6 @@
 				<property name="title" translatable="yes">Taxes</property>
 				<property name="note" translatable="yes">Optional: if entered, this value will override the tax amount</property>
 				<widget class="SwatMoneyEntry" id="tax_total">
-					<property name="locale"></property>
-				</widget>
-			</widget>
-			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Total</property>
-				<property name="note" translatable="yes">Optional: if entered, this value will override the calculated total</property>
-				<widget class="SwatMoneyEntry" id="total"> 
 					<property name="locale"></property>
 				</widget>
 			</widget>

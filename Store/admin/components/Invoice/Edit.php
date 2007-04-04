@@ -39,8 +39,7 @@ class StoreInvoiceEdit extends AdminDBEdit
 		$this->ui->loadFromXML($this->ui_xml);
 		
 		$this->fields = array('text:locale', 'comments',
-			'float:item_total', 'float:shipping_total', 'float:tax_total',
-			'float:total');
+			'float:shipping_total', 'float:tax_total');
 
 		$this->initAccount();
 		
@@ -110,8 +109,8 @@ class StoreInvoiceEdit extends AdminDBEdit
 
 	protected function getUIValues()
 	{
-		return $this->ui->getValues(array('locale', 'comments', 'item_total',
-			'shipping_total', 'tax_total', 'total'));
+		return $this->ui->getValues(array('locale', 'comments',
+			'shipping_total', 'tax_total'));
 	}
 
 	// }}}
