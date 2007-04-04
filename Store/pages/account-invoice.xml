@@ -6,7 +6,7 @@
 		<widget class="SwatForm" id="form">
 			<widget class="SwatHeaderFormField">
 				<widget class="SwatButton" id="order_invoice">
-					<property name="title" translatable="yes">Purchase Invoice</property>
+					<property name="title" translatable="yes">Proceed to Checkout</property>
 				</widget>
 			</widget>
 
@@ -14,7 +14,7 @@
 
 			<widget class="SwatDetailsView" id="invoice_details">
 				<object class="SwatDetailsViewField" id="createdate">
-					<property name="title" translatable="yes">Invoice Created</property>
+					<property name="title" translatable="yes">Date</property>
 					<object class="SwatDateCellRenderer">
 						<property name="date" type="data">createdate</property>
 						<property name="time_zone_format" type="constant">SwatDate::TZ_CURRENT_SHORT</property>
