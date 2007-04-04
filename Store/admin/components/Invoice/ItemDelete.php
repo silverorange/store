@@ -74,10 +74,11 @@ class StoreInvoiceItemDelete extends AdminDBDelete
 		$dep = new AdminListDependency();
 		$dep->setTitle(Store::_('invoice'), Store::_('invoices'));
 
-		$sql = sprintf('select id, sku, description
+		$sql = sprintf('select id, sku, description, price
 			from InvoiceItem where id in (%s)',
 			$item_list);
 
+		$invoice = $this->getInvoice();
 		$entries = array();
 		$rows = SwatDB::query($this->app->db, $sql);
 
@@ -85,10 +86,18 @@ class StoreInvoiceItemDelete extends AdminDBDelete
 			$entry = new AdminDependencyEntry();
 			$entry->id = $row->id;
 			$entry->status_level = AdminDependency::DELETE;
-			$entry->title = $row->sku;
+
+			$title = array();
+
+			if ($row->sku !== null)
+				$title[] = $row->sku;
 
 			if ($row->description !== null)
-				$entry->title.= ' - '.$row->description;
+				$title[] = $row->description;
+
+			$title[] = SwatString::moneyFormat($row->price, $invoice->locale->id);
+
+			$entry->title = implode(' - ', $title);
 
 			$entries[] = $entry;
 		}
