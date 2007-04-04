@@ -97,7 +97,10 @@ class StoreAccountForgotPasswordPage extends StoreAccountPage
 			$message->content_type = 'text/xml';
 			$this->ui->getWidget('email')->addMessage($message);
 		} else {
-			$account->resetPassword($this->app, $this->app->getBaseHref());
+			$password_tag = $account->resetPassword($this->app);
+			$password_link = $this->app->getBaseHref().
+				'account/resetpassword/'.$password_tag;
+			$account->sendResetPasswordMailMessage($this->app, $password_link);
 		}
 	}
 

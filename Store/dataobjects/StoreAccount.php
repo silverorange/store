@@ -224,15 +224,14 @@ abstract class StoreAccount extends StoreDataObject
 	 *
 	 * @param SiteApplication $app the application resetting this account's
 	 *                              password.
-	 * @param string $base_href the base of the tagged URL the account holder
-	 *                           is sent.
+	 *
+	 * @return string $password_tag a hashed tag to verify the account
 	 */
-	public function resetPassword(SiteApplication $app, $base_href = '')
+	public function resetPassword(SiteApplication $app)
 	{
 		$this->checkDB();
 
 		$password_tag = SwatString::hash(uniqid(rand(), true));
-		$password_link = $base_href.'account/resetpassword/'.$password_tag;
 
 		/*
 		 * Update the database with new password tag.
@@ -249,8 +248,7 @@ abstract class StoreAccount extends StoreDataObject
 
 		SwatDB::exec($this->db, $sql);
 
-		// email instructions to the account holder 
-		$this->sendResetPasswordMailMessage($app, $password_link);
+		return $password_tag;
 	}
 
 	// }}}
@@ -290,7 +288,7 @@ abstract class StoreAccount extends StoreDataObject
 	}
 
 	// }}}
-	// {{{ abstract protected function sendResetPasswordMailMessage()
+	// {{{ abstract public function sendResetPasswordMailMessage()
 
 	/**
 	 * Emails this account's holder with instructions on how to finish
@@ -303,7 +301,7 @@ abstract class StoreAccount extends StoreDataObject
 	 *
 	 * @see StoreAccount::resetPassword()
 	 */
-	abstract protected function sendResetPasswordMailMessage(
+	abstract public function sendResetPasswordMailMessage(
 		SiteApplication $app, $password_link);
 
 	// }}}
