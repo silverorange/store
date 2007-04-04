@@ -179,8 +179,8 @@ class StoreInvoice extends StoreDataObject
 	 *
 	 * @return double the cost of this invoice.
 	 */
-	public function getTotal(StoreAddress $billing_address,
-		StoreAddress $shipping_address)
+	public function getTotal(StoreAddress $billing_address = null,
+		StoreAddress $shipping_address = null)
 	{
 		if ($this->total === null) {
 			$total = 0;
@@ -242,11 +242,11 @@ class StoreInvoice extends StoreDataObject
 	 *
 	 * @return double the cost of shipping this invoice.
 	 */
-	public function getShippingTotal(StoreAddress $billing_address,
-		StoreAddress $shipping_address)
+	public function getShippingTotal(StoreAddress $billing_address = null,
+		StoreAddress $shipping_address = null)
 	{
 		if ($this->shipping_total === null) {
-			$total = 0;
+			$total = null;
 		} else {
 			$total = $this->shipping_total;
 		}
@@ -269,11 +269,11 @@ class StoreInvoice extends StoreDataObject
 	 *
 	 * @return double the tax charged for the items of this invoice.
 	 */
-	public function getTaxTotal(StoreAddress $billing_address,
-		StoreAddress $shipping_address)
+	public function getTaxTotal(StoreAddress $billing_address = null,
+		StoreAddress $shipping_address = null)
 	{
 		if ($this->tax_total === null) {
-			$total = 0;
+			$total = null;
 		} else {
 			$total = $this->tax_total;
 		}
