@@ -4,9 +4,6 @@
 	<widget class="StoreMessageDisplay" id="message_display" />
 	<widget class="SwatForm" id="account_form">
 
-		<!-- Saved Cart Message -->
-		<widget class="SwatMessageDisplay" id="saved_cart_message" />
-
 		<widget class="SwatFrame" id="details_frame">
 
 			<widget class="SwatToolbar" id="account_details_toolbar">
@@ -70,12 +67,6 @@
 				</widget>
 			</widget>
 			<widget class="SwatContainer" id="account_payment_method_views" />
-		</widget>
-
-		<!-- Invoices -->
-		<widget class="SwatFrame" id="account_invoice_container">
-			<property name="title" translatable="yes">Pending Invoices</property>
-			<widget class="SwatContentBlock" id="account_invoice" />
 		</widget>
 
 		<!-- Orders -->

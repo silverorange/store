@@ -264,7 +264,7 @@ class StoreAccountDetailsPage extends StoreAccountPage
 
 			$message->content_type = 'text/xml';
 
-			$message_display = $this->ui->getWidget('saved_cart_message');
+			$message_display = $this->ui->getWidget('message_display');
 			$message_display->add($message);
 		}
 	}
@@ -274,37 +274,44 @@ class StoreAccountDetailsPage extends StoreAccountPage
 
 	protected function buildInvoices() 
 	{
-		$block = $this->ui->getWidget('account_invoice');
-		$block->content_type = 'text/xml';
+		$invoices = $this->app->session->account->invoices;
+		$count = count($invoices);
 
-		ob_start();
-		$this->displayInvoices();
-		$block->content = ob_get_clean();
+		if ($count > 0) {
+			$message = new StoreMessage('Pending Invoices');
+			$message->content_type = 'text/xml';
+
+			$message->secondary_content = sprintf(Store::ngettext(
+				'Your account has a pending invoice:',
+				'View account has %s pending invoices:',
+				$count), $count);
+
+			ob_start();
+			$this->displayInvoices($invoices);
+			$message->secondary_content.= ob_get_clean();
+
+			$message_display = $this->ui->getWidget('message_display');
+			$message_display->add($message);
+		}
 	}
 
 	// }}}
 	// {{{ protected function displayInvoices()
 
-	protected function displayInvoices() 
+	protected function displayInvoices($invoices) 
 	{
-		$invoices = $this->app->session->account->invoices;
+		$ul = new SwatHtmlTag('ul');
+		$li = new SwatHtmlTag('li');
 
-		if (count($invoices) > 0) {
-			$ul = new SwatHtmlTag('ul');
-			$li = new SwatHtmlTag('li');
+		$ul->open();
 
-			$ul->open();
-
-			foreach ($invoices as $invoice) {
-				$li->open();
-				$this->displayInvoice($invoice);
-				$li->close();
-			}
-
-			$ul->close();
-		} else {
-			$this->ui->getWidget('account_invoice_container')->visible = false;
+		foreach ($invoices as $invoice) {
+			$li->open();
+			$this->displayInvoice($invoice);
+			$li->close();
 		}
+
+		$ul->close();
 	}
 
 	// }}}
