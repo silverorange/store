@@ -82,25 +82,6 @@ class StoreAccountInvoicePage extends StoreAccountPage
 
 	// }}}
 
-	// process phase
-	// {{{ public function process()
-
-	public function process()
-	{
-		parent::process();
-
-		$form = $this->ui->getWidget('form');
-
-		$form->process();
-
-		if ($form->isProcessed()) {
-			$uri = sprintf('checkout/invoice%s', $this->invoice->id);
-			$this->app->relocate($uri);
-		}
-	}
-
-	// }}}
-
 	// build phase
 	// {{{ public function build()
 
@@ -115,7 +96,8 @@ class StoreAccountInvoicePage extends StoreAccountPage
 			'packages/store/styles/store-account-order-page.css',
 			Store::PACKAGE_ID));
 
-		$this->ui->getWidget('form')->action = $this->source;
+		$this->ui->getWidget('header_checkout_link')->value =
+			$this->invoice->id;
 
 		$title = $this->invoice->getTitle();
 		$this->layout->data->title = $title;
