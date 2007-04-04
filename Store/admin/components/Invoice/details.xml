@@ -11,6 +11,11 @@
 				<property name="stock_id">edit</property>
 			</widget>
 			<widget class="SwatToolLink">
+				<property name="title" translatable="yes">Send Email Notification</property>
+				<property name="link">Invoice/EmailNotification?id=%s</property>
+				<property name="stock_id">email</property>
+			</widget>
+			<widget class="SwatToolLink">
 				<property name="title" translatable="yes">Delete Invoice</property>
 				<property name="link">Invoice/Delete?id=%s</property>
 				<property name="stock_id">delete</property>
