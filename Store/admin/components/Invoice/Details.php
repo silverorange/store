@@ -277,16 +277,15 @@ class StoreInvoiceDetails extends AdminIndex
 		$view->getRow('shipping')->locale = $locale_id;
 
 		if ($invoice->tax_total > 0)
-			$view->getRow('taxes')->value = $invoice->tax_total;
+			$view->getRow('tax')->value = $invoice->getTaxTotal();
 		else
-			$view->getRow('taxes')->visible = false;
+			$view->getRow('tax')->visible = false;
 
-		$view->getRow('taxes')->locale = $locale_id;
+		$view->getRow('tax')->locale = $locale_id;
 		$view->getRow('subtotal')->value = $invoice->getSubtotal();
 		$view->getRow('subtotal')->locale = $locale_id;
 
-		$address = new StoreOrderAddress();
-		$view->getRow('total')->value = $invoice->getTotal($address, $address);
+		$view->getRow('total')->value = $invoice->getTotal();
 		$view->getRow('total')->locale = $locale_id;
 
 		$view->getColumn('price')->getFirstRenderer()->locale = $locale_id;
