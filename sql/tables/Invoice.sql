@@ -6,8 +6,6 @@ create table Invoice (
 	createdate timestamp not null,
 
 	-- optional fields, all are nullable
-	total numeric(11, 2),
-	item_total numeric(11, 2),
 	shipping_total numeric(11, 2),
 	tax_total numeric(11, 2),
 
