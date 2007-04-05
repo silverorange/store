@@ -305,7 +305,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 				'</p><p>'.sprintf(
 				Store::_('If you are still unable to complete your order '.
 					'after confirming your payment information, please '.
-					'%scontact us%s. Your order details have not been lost.'),
+					'%scontact us%s. Your order details have been recorded.'),
 					'<a href="about/contact">', '</a>').
 				'</p>';
 
@@ -327,7 +327,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 				'</p><p>'.sprintf(
 				Store::_('If you are still unable to complete your order '.
 					'after confirming your payment information, please '.
-					'%scontact us%s. Your order details have not been lost.'),
+					'%scontact us%s. Your order details have been recorded.'),
 					'<a href="about/contact">', '</a>').
 				'</p>';
 
@@ -349,7 +349,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 				'</p><p>'.sprintf(
 				Store::_('If you are still unable to complete your order '.
 					'after confirming your payment information, please '.
-					'%scontact us%s. Your order details have not been lost.'),
+					'%scontact us%s. Your order details have been recorded.'),
 					'<a href="about/contact">', '</a>').
 				'</p>';
 
