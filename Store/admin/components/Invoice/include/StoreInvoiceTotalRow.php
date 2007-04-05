@@ -43,7 +43,9 @@ class StoreInvoiceTotalRow extends StoreTotalRow
 			$this->money_cell_renderer->locale = $this->locale;
 
 		if ($this->value === null) {
-			echo Store::_('TBD');
+			printf('<acronym title="%s">%s</acronym>',
+				Store::gettext('To Be Determined'),
+				Store::gettext('TBD'));
 		} else {
 			$this->money_cell_renderer->value = $this->value;
 			$this->money_cell_renderer->render();
