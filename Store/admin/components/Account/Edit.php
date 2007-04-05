@@ -24,6 +24,11 @@ class StoreAccountEdit extends AdminDBEdit
 	protected $ui_xml = 'Store/admin/components/Account/edit.xml';
 
 	// }}}
+	// {{{ private properties
+
+	private $new_account = false;
+
+	// }}}
 
 	// init phase
 	// {{{ protected function initInternal()
@@ -36,9 +41,6 @@ class StoreAccountEdit extends AdminDBEdit
 		$this->ui->loadFromXML($this->ui_xml);
 
 		$this->fields = array('fullname', 'email', 'phone');
-
-		$this->ui->getWidget('submit_continue_button')->visible = 
-			($this->id === null);
 	}
 
 	// }}}
@@ -76,12 +78,15 @@ class StoreAccountEdit extends AdminDBEdit
 	{
 		$values = $this->getUIValues();
 
-		if ($this->id === null)
+		if ($this->id === null) {
 			$this->id = SwatDB::insertRow($this->app->db, 'Account',
 				$this->fields, $values, 'id');
-		else
+
+			$this->new_account = true;
+		} else {
 			SwatDB::updateRow($this->app->db, 'Account', $this->fields,
 				$values, 'id', $this->id);
+		}
 
 		$message = new SwatMessage(sprintf(
 			Store::_('Account “%s” has been saved.'), $values['fullname']));
@@ -102,11 +107,8 @@ class StoreAccountEdit extends AdminDBEdit
 
 	protected function relocate()
 	{
-		$button = $this->ui->getWidget('submit_continue_button');
-		
-		if ($button->hasBeenClicked()) {
-			$this->app->relocate(
-				$this->app->getBaseHref().'Account/Details?id='.$this->id);
+		if ($this->new_account) {
+			$this->app->relocate('Account/Details?id='.$this->id);
 		} else {
 			parent::relocate();
 		}
@@ -119,7 +121,7 @@ class StoreAccountEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$row = SwatDB::queryRowFromTable($this->app->db, 'Account', 
+		$row = SwatDB::queryRowFromTable($this->app->db, 'Account',
 			$this->fields, 'id', $this->id);
 
 		if ($row === null)
@@ -133,15 +135,20 @@ class StoreAccountEdit extends AdminDBEdit
 	// }}}
 	// {{{ private function buildNavBar()
 
-	protected function buildNavBar() 
+	protected function buildNavBar()
 	{
-		$account_fullname = SwatDB::queryOneFromTable($this->app->db,
-			'Account', 'text:fullname', 'id', $this->id);
-
-		$this->navbar->addEntry(new SwatNavBarEntry($account_fullname,
-			sprintf('Account/Details?id=%s', $this->id)));
-		$this->navbar->addEntry(new SwatNavBarEntry(Store::_('Edit')));
-		$this->title = $account_fullname;
+		if ($this->id === null) {
+			$this->navbar->addEntry(new SwatNavBarEntry(Store::_('New Account')));
+			$this->title = Store::_('New Account');
+		} else {
+			$account_fullname = SwatDB::queryOneFromTable($this->app->db,
+				'Account', 'text:fullname', 'id', $this->id);
+	
+			$this->navbar->addEntry(new SwatNavBarEntry($account_fullname,
+				sprintf('Account/Details?id=%s', $this->id)));
+			$this->navbar->addEntry(new SwatNavBarEntry(Store::_('Edit')));
+			$this->title = $account_fullname;
+		}
 	}
 
 	// }}}
