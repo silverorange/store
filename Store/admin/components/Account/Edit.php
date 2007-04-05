@@ -24,11 +24,6 @@ class StoreAccountEdit extends AdminDBEdit
 	protected $ui_xml = 'Store/admin/components/Account/edit.xml';
 
 	// }}}
-	// {{{ private properties
-
-	private $new_account = false;
-
-	// }}}
 
 	// init phase
 	// {{{ protected function initInternal()
@@ -105,11 +100,7 @@ class StoreAccountEdit extends AdminDBEdit
 
 	protected function relocate()
 	{
-		if ($this->new_account) {
-			$this->app->relocate('Account/Details?id='.$this->id);
-		} else {
-			parent::relocate();
-		}
+		$this->app->relocate('Account/Details?id='.$this->id);
 	}
 
 	// }}}
