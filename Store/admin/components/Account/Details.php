@@ -203,12 +203,7 @@ class StoreAccountDetails extends AdminIndex
 
 	protected function getInvoicesTableStore($view) 
 	{
-		$sql = 'select Invoice.id,
-				Invoice.account,
-				Invoice.total,
-				Invoice.createdate,
-				Invoice.locale
-			from Invoice
+		$sql = 'select * from Invoice
 			where Invoice.account = %s
 			order by %s';
 
