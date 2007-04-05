@@ -59,8 +59,12 @@ class StoreNewPasswordMailMessage extends SiteMultipartMailMessage
 	/**
 	 * Creates a new password email
 	 *
+	 * @param SiteApplication $app the site application this email belongs
+	 *        to
 	 * @param StoreAccount $account the account to create the email for.
 	 * @param string $new_password the new password assigned to the account.
+	 * @param string $application_title The title of the application -
+	 *        displayed in the email as the site name.
 	 */
 	public function __construct(SiteApplication $app, StoreAccount $account,
 		$new_password, $application_title)
