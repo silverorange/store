@@ -120,7 +120,7 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
 
 	protected function buildOrderDetails(StoreUI $ui)
 	{
-		$ui->getRoot()->addStyleSheet('packages/store/styles/store-cart-page.css');
+		$ui->getRoot()->addStyleSheet('packages/store/styles/store-cart.css');
 
 		$details_view =  $ui->getWidget('order_details');
 		$details_view->data = new SwatDetailsStore($this->order);
