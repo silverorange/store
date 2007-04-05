@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Swat/SwatMessageDisplay.php';
+require_once 'StoreMessage.php';
 
 /**
  * A control to display page status messages  
