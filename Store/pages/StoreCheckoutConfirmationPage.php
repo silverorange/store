@@ -259,15 +259,15 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 				'<a href="checkout/confirmation/billingaddress">', '</a>');
 		} elseif ($e instanceof StorePaymentPostalCodeException) {
 			$secondary_content = sprintf(Store::_(
-				'Billing postal code / ZIP code does not correspond with the card number. '.
-				'Your order has %snot%s been placed. '.
+				'Billing postal code / ZIP code does not correspond with the '.
+				'card number. Your order has %snot%s been placed. '.
 				'Please edit your %sbilling address%s and try again.'),
 				'<em>', '</em>',
 				'<a href="checkout/confirmation/billingaddress">', '</a>');
 		} elseif ($e instanceof StorePaymentCvvException) {
 			$secondary_content = sprintf(Store::_(
-				'Card security code does not correspond with the card number. '.
-				'Your order has %snot%s been placed. '.
+				'Card security code does not correspond with the card '.
+				'number. Your order has %snot%s been placed. '.
 				'Please edit your %spayment information%s and try again.'),
 				'<em>', '</em>',
 				'<a href="checkout/confirmation/paymentmethod">', '</a>');
@@ -287,11 +287,11 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			SwatMessage::ERROR);
 
 		$message->secondary_content = '<p>'.$secondary_content.' '.
-			Store::_('No funds have been removed from your card.</p>'.
-			'<p>If you are still unable to complete your order after '.
-			'confirming your payment information, please '.
-			'<a href="about/contact">contact us</a>. Your order details '.
-			'have not been lost.</p>');
+			Store::_('No funds have been removed from your card.').'</p><p>'.
+			Store::_(sprintf('If you are still unable to complete your order '.
+			'after confirming your payment information, please '.
+			'%scontact us%s. Your order details have not been lost.'),
+			'<a href="about/contact">', '</a>').'</p>';
 
 		$message->content_type = 'text/xml';
 		$this->ui->getWidget('message_display')->add($message);
