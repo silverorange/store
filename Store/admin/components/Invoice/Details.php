@@ -131,7 +131,7 @@ class StoreInvoiceDetails extends AdminIndex
 		);
 
 		if ($this->validateItemRows($input_row)) {
-			$new_skus = array();
+			$new_skus = 0;
 			$replicators = $input_row->getReplicators();
 			foreach ($replicators as $replicator_id) {
 				if (!$input_row->rowHasMessage($replicator_id)) {
@@ -164,26 +164,15 @@ class StoreInvoiceDetails extends AdminIndex
 					// remove the row after we entered it
 					$input_row->removeReplicatedRow($replicator_id);
 
-					$new_skus[] = SwatString::minimizeEntities($sku);
+					$new_skus++;
 				}
 			}
 
-			if (count($new_skus) == 1) {
-				$message = new SwatMessage(sprintf(
-					Store::_('“%s” has been added.'), $new_skus[0]));
+			$message = new SwatMessage(sprintf(Store::ngettext(
+				'One item has been added.', '%d items have been added.',
+				$new_skus), SwatString::numberFormat($new_skus)));
 
-				$this->app->messages->add($message);
-			} elseif (count($new_skus) > 1) {
-				$sku_list = '<ul><li>'.implode('</li><li>', $new_skus).
-					'</li></ul>';
-
-				$message = new SwatMessage(
-					Store::_('The following items have been added:'));
-
-				$message->secondary_content = $sku_list;
-				$message->content_type = 'text/xml';
-				$this->app->messages->add($message);
-			}
+			$this->app->messages->add($message);
 		} else {
 			$message = new SwatMessage(Store::_('There was a problem adding '.
 				'the item(s). Please check the highlighted fields below.'),

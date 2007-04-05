@@ -26,6 +26,7 @@ class StoreInvoiceEdit extends AdminDBEdit
 
 	private $account_id;
 	private $account_fullname;
+	private $new_invoice = false;
 
 	// }}}
 
@@ -38,8 +39,8 @@ class StoreInvoiceEdit extends AdminDBEdit
 
 		$this->ui->loadFromXML($this->ui_xml);
 		
-		$this->fields = array('text:locale', 'comments',
-			'float:shipping_total', 'float:tax_total');
+		$this->fields = array('text:locale', 'comments', 'float:shipping_total',
+			'float:tax_total');
 
 		$this->initAccount();
 		
@@ -49,7 +50,8 @@ class StoreInvoiceEdit extends AdminDBEdit
 		$class_map = StoreClassMap::instance();
 		$locale_wrapper = $class_map->resolveClass('StoreLocaleWrapper');
 
-		$locales = SwatDB::query($this->app->db, 'select * from Locale', $locale_wrapper);
+		$locales = SwatDB::query($this->app->db, 'select * from Locale',
+			$locale_wrapper);
 
 		foreach ($locales as $locale)
 			$locale_flydown->addOption($locale->id, $locale->getTitle());
@@ -58,7 +60,7 @@ class StoreInvoiceEdit extends AdminDBEdit
 	// }}}
 	// {{{ protected function initAccount()
 
-	protected function initAccount() 
+	protected function initAccount()
 	{
 		if ($this->id === null)
 			$this->account_id = $this->app->initVar('account');
@@ -98,8 +100,8 @@ class StoreInvoiceEdit extends AdminDBEdit
 				'id', $this->id);
 		}
 
-		$message = new SwatMessage(sprintf(Store::_('Invoice %s has been saved.'),
-			$this->id));
+		$message = new SwatMessage(
+			sprintf(Store::_('Invoice %s has been saved.'), $this->id));
 
 		$this->app->messages->add($message);
 	}
@@ -118,15 +120,7 @@ class StoreInvoiceEdit extends AdminDBEdit
 
 	protected function relocate()
 	{
-		$button = $this->ui->getWidget('submit_continue_button');
-		
-		if ($button->hasBeenClicked()) {
-			// manage skus
-			$this->app->relocate(
-				$this->app->getBaseHref().'Invoice/Details?id='.$this->id);
-		} else {
-			parent::relocate();
-		}
+		$this->app->relocate('Invoice/Details?id='.$this->id);
 	}
 
 	// }}}
