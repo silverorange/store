@@ -217,8 +217,9 @@ class StoreAccountDetails extends AdminIndex
 		$store = new SwatTableStore();
 
 		foreach ($invoices as $invoice) {
-			$row = new SwatDetailsStore($invoice);
-			$store->addRow($row);
+			$ds = new SwatDetailsStore($invoice);
+			$ds->subtotal = $invoice->getSubtotal();
+			$store->addRow($ds);
 		}
 
 		return $store;

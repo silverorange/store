@@ -79,10 +79,10 @@
 							<property name="date" type="data">createdate</property>
 						</object>
 					</object>
-					<object class="AdminTableViewOrderableColumn" id="total">
-						<property name="title" translatable="yes">Total</property>
+					<object class="AdminTableViewOrderableColumn" id="subtotal">
+						<property name="title" translatable="yes">Subtotal</property>
 						<object class="SwatMoneyCellRenderer">
-							<property name="value" type="data">total</property>
+							<property name="value" type="data">subtotal</property>
 							<property name="locale" type="data">locale.id</property>
 						</object>
 					</object>
