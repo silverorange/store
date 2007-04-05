@@ -251,26 +251,14 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		$e->process(false);
 
 		if ($e instanceof StorePaymentAddressException) {
-			$secondary_content = sprintf(Store::_(
-				'Billing address does not correspond with the card number. '.
-				'Your order has %snot%s been placed. '.
-				'Please edit your %sbilling address%s and try again.'),
-				'<em>', '</em>',
-				'<a href="checkout/confirmation/billingaddress">', '</a>');
+			$this->ui->getWidget('message_display')->add(
+				$this->getPaymentErrorMessage('address'));
 		} elseif ($e instanceof StorePaymentPostalCodeException) {
-			$secondary_content = sprintf(Store::_(
-				'Billing postal code / ZIP code does not correspond with the '.
-				'card number. Your order has %snot%s been placed. '.
-				'Please edit your %sbilling address%s and try again.'),
-				'<em>', '</em>',
-				'<a href="checkout/confirmation/billingaddress">', '</a>');
+			$this->ui->getWidget('message_display')->add(
+				$this->getPaymentErrorMessage('postal-code'));
 		} elseif ($e instanceof StorePaymentCvvException) {
-			$secondary_content = sprintf(Store::_(
-				'Card security code does not correspond with the card '.
-				'number. Your order has %snot%s been placed. '.
-				'Please edit your %spayment information%s and try again.'),
-				'<em>', '</em>',
-				'<a href="checkout/confirmation/paymentmethod">', '</a>');
+			$this->ui->getWidget('message_display')->add(
+				$this->getPaymentErrorMessage('card-verification-value'));
 		} else {
 			// relocate on fatal payment processing errors and give no
 			// opportunity to edit the order
@@ -279,22 +267,96 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			$this->updateProgress();
 			$this->app->relocate('checkout/paymentfailed');
 		}
+	}
 
-		// add friendly error message to message display and allow user to
-		// edit their order
-		$message = new SwatMessage(
-			Store::_('There was a problem processing your payment.'),
-			SwatMessage::ERROR);
+	// }}}
+	// {{{ protected function getPaymentErrorMessage()
 
-		$message->secondary_content = '<p>'.$secondary_content.' '.
-			Store::_('No funds have been removed from your card.').'</p><p>'.
-			Store::_(sprintf('If you are still unable to complete your order '.
-			'after confirming your payment information, please '.
-			'%scontact us%s. Your order details have not been lost.',
-			'<a href="about/contact">', '</a>')).'</p>';
+	/**
+	 * Gets the error message for a payment error
+	 *
+	 * @param string $message_id the id of the message to get. Message ids
+	 *                            defined in this class are: 'address',
+	 *                            'postal-code' and 'card-verification-value'.
+	 *
+	 * @return SwatMessage the payment error message corresponding to the
+	 *                      specified <i>$message_id</i> or null if no such
+	 *                      message exists.
+	 */
+	protected function getPaymentErrorMessage($message_id)
+	{
+		$message = null;
 
-		$message->content_type = 'text/xml';
-		$this->ui->getWidget('message_display')->add($message);
+		switch ($message_id) {
+		case 'address':
+			$message = new SwatMessage(
+				Store::_('There was a problem processing your payment.'),
+				SwatMessage::ERROR);
+			
+			$message->content_type = 'text/xml';
+			$message->secondary_content =
+				'<p>'.sprintf(
+				Store::_('%sBilling address does not correspond with card '.
+					'number.%s Your order has %snot%s been placed. '.
+					'Please edit your %sbilling address%s and try again.'),
+					'<strong>', '</strong>', '<em>', '</em>',
+					'<a href="checkout/confirmation/billingaddress">', '</a>').
+				' '.Store::_('No funds have been removed from your card.').
+				'</p><p>'.sprintf(
+				Store::_('If you are still unable to complete your order '.
+					'after confirming your payment information, please '.
+					'%scontact us%s. Your order details have not been lost.'),
+					'<a href="about/contact">', '</a>').
+				'</p>';
+
+			break;
+		case 'postal-code':
+			$message = new SwatMessage(
+				Store::_('There was a problem processing your payment.'),
+				SwatMessage::ERROR);
+			
+			$message->content_type = 'text/xml';
+			$message->secondary_content =
+				'<p>'.sprintf(
+				Store::_('%sBilling postal code / ZIP code does not correspond '.
+					'with card number.%s Your order has %snot%s been placed. '.
+					'Please edit your %sbilling address%s and try again.'),
+					'<strong>', '</strong>', '<em>', '</em>',
+					'<a href="checkout/confirmation/billingaddress">', '</a>').
+				' '.Store::_('No funds have been removed from your card.').
+				'</p><p>'.sprintf(
+				Store::_('If you are still unable to complete your order '.
+					'after confirming your payment information, please '.
+					'%scontact us%s. Your order details have not been lost.'),
+					'<a href="about/contact">', '</a>').
+				'</p>';
+
+			break;
+		case 'card-verification-value':
+			$message = new SwatMessage(
+				Store::_('There was a problem processing your payment.'),
+				SwatMessage::ERROR);
+			
+			$message->content_type = 'text/xml';
+			$message->secondary_content =
+				'<p>'.sprintf(
+				Store::_('%sCard security code does not correspond with card '.
+					'number.%s Your order has %snot%s been placed. '.
+					'Please edit your %spayment information%s and try again.'),
+					'<strong>', '</strong>', '<em>', '</em>',
+					'<a href="checkout/confirmation/paymentmethod">', '</a>').
+				' '.Store::_('No funds have been removed from your card.').
+				'</p><p>'.sprintf(
+				Store::_('If you are still unable to complete your order '.
+					'after confirming your payment information, please '.
+					'%scontact us%s. Your order details have not been lost.'),
+					'<a href="about/contact">', '</a>').
+				'</p>';
+
+			break;
+		}
+
+		return $message;
 	}
 
 	// }}}
