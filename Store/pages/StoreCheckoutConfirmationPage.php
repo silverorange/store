@@ -290,8 +290,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			Store::_('No funds have been removed from your card.').'</p><p>'.
 			Store::_(sprintf('If you are still unable to complete your order '.
 			'after confirming your payment information, please '.
-			'%scontact us%s. Your order details have not been lost.'),
-			'<a href="about/contact">', '</a>').'</p>';
+			'%scontact us%s. Your order details have not been lost.',
+			'<a href="about/contact">', '</a>')).'</p>';
 
 		$message->content_type = 'text/xml';
 		$this->ui->getWidget('message_display')->add($message);
