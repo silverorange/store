@@ -50,24 +50,22 @@ class StoreAccountEdit extends AdminDBEdit
 
 	protected function validate()
 	{
-		if ($this->id !== null) {
-			$email = $this->ui->getWidget('email');
-			if ($email->hasMessage())
-				return;
-	
-			$query = SwatDB::query($this->app->db, sprintf('select email
-				from Account where lower(email) = lower(%s) and id %s %s',
-				$this->app->db->quote($email->value, 'text'),
-				SwatDB::equalityOperator($this->id, true),
-				$this->app->db->quote($this->id, 'integer')));
-	
-			if (count($query) > 0) {
-				$message = new SwatMessage(Store::_(
-					'An account already exists with this email address.'),
-					SwatMessage::ERROR);
-	
-				$email->addMessage($message);
-			}
+		$email = $this->ui->getWidget('email');
+		if ($email->hasMessage())
+			return;
+
+		$query = SwatDB::query($this->app->db, sprintf('select email
+			from Account where lower(email) = lower(%s) and id %s %s',
+			$this->app->db->quote($email->value, 'text'),
+			SwatDB::equalityOperator($this->id, true),
+			$this->app->db->quote($this->id, 'integer')));
+
+		if (count($query) > 0) {
+			$message = new SwatMessage(Store::_(
+				'An account already exists with this email address.'),
+				SwatMessage::ERROR);
+
+			$email->addMessage($message);
 		}
 	}
 
