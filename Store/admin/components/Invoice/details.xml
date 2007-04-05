@@ -100,16 +100,16 @@
 					<object class="SwatTableViewInputRow" id="input_row">
 						<property name="number" type="integer">0</property>
 					</object>
-					<object class="StoreTotalRow" id="subtotal">
+					<object class="StoreInvoiceTotalRow" id="subtotal">
 						<property name="title" translatable="yes">Subtotal</property>
 					</object>
-					<object class="StoreTotalRow" id="shipping">
+					<object class="StoreInvoiceTotalRow" id="shipping">
 						<property name="title" translatable="yes">Shipping</property>
 					</object>
-					<object class="storetotalrow" id="tax">
+					<object class="StoreInvoiceTotalRow" id="tax">
 						<property name="title" translatable="yes">Tax</property>
 					</object>
-					<object class="StoreTotalRow" id="total">
+					<object class="StoreInvoiceTotalRow" id="total">
 						<property name="title" translatable="yes">Total</property>
 					</object>
 				</widget>

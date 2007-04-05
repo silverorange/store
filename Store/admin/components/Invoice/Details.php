@@ -12,6 +12,7 @@ require_once 'Store/StoreTotalRow.php';
 require_once 'Store/dataobjects/StoreInvoice.php';
 require_once 'Store/dataobjects/StoreOrderAddress.php';
 require_once 'Store/dataobjects/StoreInvoiceItemWrapper.php';
+require_once 'Store/admin/components/Invoice/include/StoreInvoiceTotalRow.php';
 
 /**
  * Details page for Invoices
@@ -271,22 +272,16 @@ class StoreInvoiceDetails extends AdminIndex
 		$toolbar->setToolLinkValues($this->id);
 
 		$locale_id = $invoice->locale->id;
-
 		$view = $this->ui->getWidget('items_view');
-		$view->getRow('shipping')->value = $invoice->shipping_total;
-		$view->getRow('shipping')->locale = $locale_id;
 
-		if ($invoice->tax_total > 0)
-			$view->getRow('tax')->value = $invoice->getTaxTotal();
-		else
-			$view->getRow('tax')->visible = false;
-
-		$view->getRow('tax')->locale = $locale_id;
-		$view->getRow('subtotal')->value = $invoice->getSubtotal();
 		$view->getRow('subtotal')->locale = $locale_id;
-
-		$view->getRow('total')->value = $invoice->getTotal();
+		$view->getRow('subtotal')->value = $invoice->getSubtotal();
+		$view->getRow('shipping')->locale = $locale_id;
+		$view->getRow('shipping')->value = $invoice->getShippingTotal();
+		$view->getRow('tax')->locale = $locale_id;
+		$view->getRow('tax')->value = $invoice->getTaxTotal();
 		$view->getRow('total')->locale = $locale_id;
+		$view->getRow('total')->value = $invoice->getTotal();
 
 		$view->getColumn('price')->getFirstRenderer()->locale = $locale_id;
 
