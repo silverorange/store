@@ -2,7 +2,7 @@
 
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
-//TODO require_once 'Store/StoreInvoiceAnnouncementMailMessage.php';
+require_once 'Store/StoreInvoiceNotificationMailMessage.php';
 require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/dataobjects/StoreInvoiceItemWrapper.php';
@@ -69,18 +69,35 @@ class StoreInvoice extends StoreDataObject
 	}
 
 	// }}}
-	// {{{ public function sendConfirmationEmail()
+	// {{{ public function sendNotificationEmail()
 
-	public function sendAnnouncementEmail(SiteApplication $app)
+	public function sendNotificationEmail(SiteApplication $app)
 	{
 		// This is demo code. StoreInvoiveAnnouncmentMailMessage is
 		// abstract and the site-specific version must be used.
 
-		if ($this->email === null)
-			return;
+		$application_title = 'Store Name';
+
+		$account_link = $this->locale->getURLLocale().
+			'account/';
+
+		if ($this->account->password === null) {
+			$password_tag = $account->resetPassword($this->app);
+			$password_link = $this->locale->getURLLocale().
+				'account/resetpassword/'.$password_tag;
+		} else {
+			$password_link = null;
+		}
 
 		try {
-			$email = new StoreInvoiceAnnouncementMessage($app, $this);
+			$email = new StoreInvoiceNotificationMailMessage($app, $this,
+				$application_title, $account_link, $password_link);
+
+			$email->smtp_server = $app->config->email->smtp_server;
+			$email->from_address = $app->config->email->service_address;
+			$email->from_name = 'Store Name';
+			$email->subject = 'Your New Invoice Is Ready';
+
 			$email->send();
 		} catch (SiteMailException $e) {
 			$e->process(false);
