@@ -27,10 +27,6 @@
 			</widget>
 			<widget class="SwatFooterFormField">
 				<widget class="SwatButton" id="submit_button" />
-				<widget class="SwatButton" id="submit_continue_button">
-					<property name="title" translatable="yes">Create &amp; Manage Account</property>
-					<property name="visible" type="boolean">false</property>
-				</widget>
 			</widget>
 		</widget>
 	</widget>
