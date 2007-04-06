@@ -9,7 +9,7 @@ require_once 'Swat/SwatDate.php';
  * Edit page for Articles
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreArticleEdit extends AdminDBEdit
@@ -86,7 +86,7 @@ class StoreArticleEdit extends AdminDBEdit
 	protected function validateShortname($shortname)
 	{
 		$sql = 'select shortname from Article
-				where shortname = %s and parent %s %s and id %s %s';
+			where shortname = %s and parent %s %s and id %s %s';
 
 		$sql = sprintf($sql,
 			$this->app->db->quote($shortname, 'text'),
