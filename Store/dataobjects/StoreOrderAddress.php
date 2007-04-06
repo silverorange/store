@@ -52,6 +52,19 @@ class StoreOrderAddress extends StoreAddress
 	}
 
 	// }}}
+	// {{{ public function duplicate()
+
+	public function duplicate()
+	{
+		$new_address = parent::duplicate();
+
+		if ($this->account_address_id !== null)
+			$new_address->account_address_id = $this->account_address_id;
+
+		return $new_address;
+	}
+
+	// }}}
 	// {{{ protected function getSerializablePrivateProperties()
 
 	protected function getSerializablePrivateProperties()
