@@ -15,16 +15,16 @@ require_once 'Store/StoreClassMap.php';
  * removed from the images table and the file is deleted.
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-
 class StoreProductImageDelete extends AdminDBDelete
 {
 	// {{{ private properties
 
-	private $category_id = null;
-	private $product_title = null;
+	private $category_id;
+	private $product_id;
+	private $product_title;
 
 	// }}}
 
@@ -115,6 +115,12 @@ class StoreProductImageDelete extends AdminDBDelete
 			
 		$image = SwatDB::queryRow($this->app->db, $sql);
 
+		if ($image === null) {
+			throw new AdminNotFoundException(sprintf(
+				Store::_('A product image with an id of ‘%d’ does not exist.'),
+				$image_id));
+		}
+
 		ob_start();
 
 		$image_display->width = $image->thumb_width;
@@ -122,7 +128,9 @@ class StoreProductImageDelete extends AdminDBDelete
 		$image_display->image =
 			'../images/products/thumb/'.$image->id.'.jpg';
 
-		$image_display->alt = sprintf('Image of %s', $this->product_title);
+		$image_display->alt = sprintf(Store::_('Image of %s'),
+			$this->product_title);
+
 		$image_display->display();
 
 		$message->content = sprintf('<h3>%s</h3>',
