@@ -15,7 +15,7 @@ require_once 'Store/exceptions/StorePaymentCvvException.php';
  * Confirmation page of checkout
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  */
 class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 {
