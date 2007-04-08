@@ -2,10 +2,10 @@
 
 require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
-require_once 'Admin/exceptions/AdminNoAccessException.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Store/StoreClassMap.php';
 require_once 'Store/dataobjects/StoreInvoice.php';
+require_once 'Store/dataobjects/StoreInvoiceItem.php';
 
 /**
  * Edit page for invoice items
@@ -18,16 +18,17 @@ class StoreInvoiceItemEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
-	protected $fields;
 	protected $ui_xml = 'Store/admin/components/Invoice/itemedit.xml';
 
-	// }}}
-	// {{{ private properties
+	/**
+	 * @var StoreInvoiceItem
+	 */
+	protected $invoice_item;
 
 	/**
 	 * @var StoreInvoice
 	 */
-	private $invoice;
+	protected $invoice;
 
 	// }}}
 
@@ -39,36 +40,57 @@ class StoreInvoiceItemEdit extends AdminDBEdit
 		parent::initInternal();
 
 		$this->ui->loadFromXML($this->ui_xml);
-		
-		$this->fields = array('sku', 'description', 'integer:quantity',
-			'float:price');
-
-		$this->initInvoice();
 	}
 
 	// }}}
-	// {{{ protected function initInvoice()
+	// {{{ protected function getInvoiceItem()
 
-	protected function initInvoice() 
+	protected function getInvoiceItem()
 	{
-		if ($this->id === null)
-			$invoice_id = $this->app->initVar('invoice');
-		else
-			$invoice_id = SwatDB::queryOne($this->app->db,
-				sprintf('select invoice from InvoiceItem where id = %s',
-				$this->app->db->quote($this->id, 'integer')));
+		if ($this->invoice_item === null) {
+			$class_map = StoreClassMap::instance();
+			$class_name = $class_map->resolveClass('StoreInvoiceItem');
+			$this->invoice_item = new $class_name();
+			$this->invoice_item->setDatabase($this->app->db);
 
-		$class_map = StoreClassMap::instance();
-		$invoice_class = $class_map->resolveClass('StoreInvoice');
-		$invoice = new $invoice_class();
-		$invoice->setDatabase($this->app->db);
+			if ($this->id === null) {
+				$this->invoice_item->invoice = $this->getInvoice();
+			} else {
+				if (!$this->invoice_item->load($this->id)) {
+					throw new AdminNotFoundException(sprintf(
+						Store::_('Invoice item with id ‘%s’ not found.'),
+						$this->id));
+				}
+			}
+		}
 
-		if (!$invoice->load($invoice_id))
-			throw new AdminNotFoundException(sprintf(
-				Store::_('An invoice with an id of ‘%d’ does not exist.'),
-				$this->id));
+		return $this->invoice_item;
+	}
 
-		$this->invoice = $invoice;
+	// }}}
+	// {{{ protected function getInvoice()
+
+	protected function getInvoice() 
+	{
+		if ($this->invoice === null) {
+			if ($this->id === null) 
+				$invoice_id = $this->app->initVar('invoice');
+			else
+				$invoice_id = SwatDB::queryOne($this->app->db, sprintf(
+					'select invoice from InvoiceItem where id = %s',
+					$this->app->db->quote($this->id, 'integer')));
+
+			$class_map = StoreClassMap::instance();
+			$invoice_class = $class_map->resolveClass('StoreInvoice');
+			$this->invoice = new $invoice_class();
+			$this->invoice->setDatabase($this->app->db);
+			if (!$this->invoice->load($invoice_id))
+				throw new AdminNotFoundException(sprintf(
+					Store::_('Invoice with id ‘%d’ not found.'),
+					$this->id));
+		}
+
+		return $this->invoice;
 	}
 
 	// }}}
@@ -78,44 +100,41 @@ class StoreInvoiceItemEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$values = $this->getUIValues();
+		$invoice_item = $this->getInvoiceItem();
+		$invoice_item->sku = $this->ui->getWidget('sku')->value;
+		$invoice_item->description = $this->ui->getWidget('description')->value;
+		$invoice_item->quantity = $this->ui->getWidget('quantity')->value;
+		$invoice_item->price = $this->ui->getWidget('price')->value;
+		$invoice_item->save();
 
-		if ($this->id === null) {
-			$this->fields[] = 'integer:invoice';
-			$values['invoice'] = $this->invoice->id;
-
-			$this->id = SwatDB::insertRow($this->app->db, 'InvoiceItem',
-				$this->fields, $values, 'id');
-		} else {
-			SwatDB::updateRow($this->app->db, 'InvoiceItem', $this->fields,
-				$values, 'id', $this->id);
-		}
-
-		$message = new SwatMessage(sprintf(Store::_('“%s” has been saved.'),
-			$values['sku']));
+		$message = new SwatMessage(sprintf(
+			Store::_('“%s” has been saved.'),
+			$invoice_item->getDetailedDescription()));
 
 		$this->app->messages->add($message);
 	}
 
 	// }}}
-	// {{{ protected function getUIValues()
 
-	protected function getUIValues()
+	// build phase
+	// {{{ protected function buildInternal()
+
+	protected function buildInternal()
 	{
-		return $this->ui->getValues(array('sku', 'description',
-			'quantity', 'price'));
+		parent::buildInternal();
+		$frame = $this->ui->getWidget('edit_frame');
+		$frame->subtitle = sprintf(Store::_('Invoice %s'),
+			$this->getInvoice()->id);
 	}
 
 	// }}}
-
-	// build phase
 	// {{{ protected function buildForm()
 
 	protected function buildForm()
 	{
 		parent::buildForm();
 		$form = $this->ui->getWidget('edit_form');
-		$form->addHiddenField('invoice', $this->invoice->id);
+		$form->addHiddenField('invoice', $this->getInvoice()->id);
 	}
 
 	// }}}
@@ -125,18 +144,20 @@ class StoreInvoiceItemEdit extends AdminDBEdit
 	{
 		parent::buildNavBar();
 
+		$invoice = $this->getInvoice();
+
 		$this->navbar->popEntry();
 
 		$this->navbar->replaceEntryByPosition(1,
 			new SwatNavBarEntry(Store::_('Customer Accounts'), 'Account'));
 
 		$this->navbar->addEntry(new SwatNavBarEntry(
-			$this->invoice->account->fullname,
-			sprintf('Account/Details?id=%s', $this->invoice->account->id)));
+			$invoice->account->fullname,
+			sprintf('Account/Details?id=%s', $invoice->account->id)));
 
 		$this->navbar->addEntry(new SwatNavBarEntry(
-			sprintf(Store::_('Invoice %s'), $this->invoice->id),
-			sprintf('Invoice/Details?id=%s', $this->invoice->id)));
+			sprintf(Store::_('Invoice %s'), $invoice->id),
+			sprintf('Invoice/Details?id=%s', $invoice->id)));
 
 		$title = ($this->id === null) ?
 			Store::_('Add Invoice Item') : Store::_('Edit Invoice Item');
@@ -149,15 +170,12 @@ class StoreInvoiceItemEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$row = SwatDB::queryRowFromTable($this->app->db, 'InvoiceItem',
-			$this->fields, 'id', $this->id);
+		$invoice_item = $this->getInvoiceItem();
 
-		if ($row === null)
-			throw new AdminNotFoundException(sprintf(
-				Store::_('An invoice item with an id of ‘%d’ does not exist.'),
-				$this->id));
-
-		$this->ui->setValues(get_object_vars($row));
+		$this->ui->getWidget('sku')->value = $invoice_item->sku;
+		$this->ui->getWidget('description')->value = $invoice_item->description;
+		$this->ui->getWidget('quantity')->value = $invoice_item->quantity;
+		$this->ui->getWidget('price')->value = $invoice_item->price;
 	}
 
 	// }}}
