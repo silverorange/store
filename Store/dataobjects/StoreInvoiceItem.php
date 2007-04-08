@@ -56,6 +56,34 @@ class StoreInvoiceItem extends StoreDataObject
 	public $displayorder;
 
 	// }}}
+	// {{{ public function getDetailedDescription()
+
+	/**
+	 * Gets a detailed description of this invoice item
+	 *
+	 * In store, this is formatted as:
+	 *
+	 * SKU: Description
+	 *
+	 * @return string a detailed description of this invoice item.
+	 */
+	public function getDetailedDescription()
+	{
+		$description = '';
+
+		if ($this->sku !== null)
+			$description.= $this->sku;
+
+		if ($this->sku !== null && $this->description !== null)
+			$description.= ': ';
+
+		if ($this->description !== null)
+			$description.= $this->description;
+
+		return $description;
+	} 
+
+	// }}}
 	// {{{ public function getExtension()
 
 	/**
