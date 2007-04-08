@@ -287,8 +287,9 @@ class StoreInvoice extends StoreDataObject
 	protected function loadItems()
 	{
 		$sql = sprintf('select * from InvoiceItem
-			where invoice = %s
-			order by id asc',
+			where invoice %s %s
+			order by displayorder, id',
+			SwatDB::equalityOperator($this->id),
 			$this->db->quote($this->id, 'integer'));
 
 		return SwatDB::query($this->db, $sql,
