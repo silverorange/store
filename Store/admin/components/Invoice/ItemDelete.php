@@ -1,36 +1,57 @@
 <?php
 
 require_once 'Admin/pages/AdminDBDelete.php';
-require_once 'SwatDB/SwatDB.php';
 require_once 'Admin/AdminListDependency.php';
-require_once 'Admin/AdminSummaryDependency.php';
-require_once 'Store/dataobjects/StoreInvoiceItem.php';
+require_once 'SwatDB/SwatDB.php';
+require_once 'Store/StoreClassMap.php';
+require_once 'Store/dataobjects/StoreInvoiceWrapper.php';
+require_once 'Store/dataobjects/StoreInvoiceItemWrapper.php';
 
 /**
  * Delete confirmation page for invoice items
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreInvoiceItemDelete extends AdminDBDelete
 {
-	// init phase
-	// {{{ protected function getInvoice()
+	// {{{ private properties
 
-	protected function getInvoice()
+	/** 
+	 * @var StoreInvoiceItemWrapper
+	 */
+	private $invoice_items;
+
+	// }}}
+	// {{{ private function getInvoiceItems()
+
+	private function getInvoiceItems()
 	{
-		$class_map = StoreClassMap::instance();
-		$invoice_class = $class_map->resolveClass('StoreInvoiceItem');
-		$invoice_item = new $invoice_class();
-		$invoice_item->setDatabase($this->app->db);
+		if ($this->invoice_items === null) {
+			$item_list = $this->getItemList('integer');
 
-		if (!$invoice_item->load($this->getFirstItem()))
-			throw new AdminNotFoundException(sprintf(
-				Store::_('An invoice item with an id of ‘%d’ does not exist.'),
-				$this->id));
+			// get invoice items to be deleted
+			$sql = sprintf('select id, sku, description, price, invoice
+				from InvoiceItem where id in (%s)',
+				$item_list);
 
-		return $invoice_item->invoice;
+			$class_map = StoreClassMap::instance();
+			$wrapper = $class_map->resolveClass('StoreInvoiceItemWrapper');
+			$this->invoice_items =
+				SwatDB::query($this->app->db, $sql, $wrapper);
+
+			// original invoice for each item is needed for locale formatting
+			// and for navbar information
+			$invoice_sql = 'select id, locale, account from Invoice
+				where id in (%s)';
+
+			$invoices = $this->invoice_items->loadAllSubDataObjects(
+				'invoice', $this->app->db, $invoice_sql,
+				$class_map->resolveClass('StoreInvoiceWrapper'));
+		}
+
+		return $this->invoice_items;
 	}
 
 	// }}}
@@ -49,8 +70,9 @@ class StoreInvoiceItemDelete extends AdminDBDelete
 		$num = SwatDB::exec($this->app->db, $sql);
 
 		$message = new SwatMessage(sprintf(
-			Store::ngettext('One invoice item has been deleted.',
-			'%d invoice items have been deleted.', $num),
+			Store::ngettext(
+			'One invoice item has been deleted.',
+			'%s invoice items have been deleted.', $num),
 			SwatString::numberFormat($num)),
 			SwatMessage::NOTIFICATION);
 
@@ -69,36 +91,20 @@ class StoreInvoiceItemDelete extends AdminDBDelete
 
 		$form = $this->ui->getWidget('confirmation_form');
 
-		$item_list = $this->getItemList('integer');
-
 		$dep = new AdminListDependency();
 		$dep->setTitle(Store::_('invoice item'), Store::_('invoice items'));
 
-		$sql = sprintf('select id, sku, description, price
-			from InvoiceItem where id in (%s)',
-			$item_list);
-
-		$invoice = $this->getInvoice();
 		$entries = array();
-		$rows = SwatDB::query($this->app->db, $sql);
-
-		foreach ($rows as $row) {
+		foreach ($this->getInvoiceItems() as $item) {
 			$entry = new AdminDependencyEntry();
-			$entry->id = $row->id;
+			$entry->id = $item->id;
 			$entry->status_level = AdminDependency::DELETE;
 
-			$title = array();
+			$title = $item->getDetailedDescription();
+			$title.= ' — '.SwatString::moneyFormat($item->price,
+				$item->invoice->locale->id);
 
-			if ($row->sku !== null)
-				$title[] = $row->sku;
-
-			if ($row->description !== null)
-				$title[] = $row->description;
-
-			$title[] = SwatString::moneyFormat($row->price, $invoice->locale->id);
-
-			$entry->title = implode(' - ', $title);
-
+			$entry->title = $title;
 			$entries[] = $entry;
 		}
 
@@ -117,11 +123,10 @@ class StoreInvoiceItemDelete extends AdminDBDelete
 
 	private function buildNavBar() 
 	{
-		$invoice = $this->getInvoice();
+		$this->navbar->popEntry();
 
+		$invoice = $this->getInvoiceItems()->getFirst()->invoice;
 		$fullname = $invoice->account->fullname;
-
-		$last_entry = $this->navbar->popEntry();
 
 		$this->navbar->replaceEntryByPosition(1,
 			new SwatNavBarEntry(Store::_('Customer Accounts'), 'Account'));
@@ -130,10 +135,10 @@ class StoreInvoiceItemDelete extends AdminDBDelete
 			'Account/Details?id='.$invoice->account->id));
 
 		$this->navbar->addEntry(new SwatNavBarEntry(
-			sprintf('Invoice %s', $invoice->id),
+			sprintf(Store::_('Invoice %s'), $invoice->id),
 			sprintf('Invoice/Details?id=%s', $invoice->id)));
 
-		$this->navbar->addEntry($last_entry);
+		$this->navbar->addEntry(new SwatNavBarEntry(Store::_('Delete Items')));
 	}
 
 	// }}}
