@@ -11,7 +11,9 @@
 			</widget>
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Description</property>
-				<widget class="SwatTextarea" id="description" />
+				<widget class="SwatTextarea" id="description">
+					<property name="rows" type="integer">2</property>
+				</widget>
 			</widget>
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Quantity</property>
