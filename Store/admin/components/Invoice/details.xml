@@ -39,6 +39,10 @@
 					<property name="link">Invoice/ItemEdit?invoice=%s</property>
 					<property name="stock_id">create</property>
 				</widget>
+				<widget class="SwatToolLink">
+					<property name="title" translatable="yes">Order Items</property>
+					<property name="link">Invoice/ItemOrder?id=%s</property>
+				</widget>
 			</widget>
 			<widget class="SwatForm" id="items_form">
 				<widget class="SwatTableView" id="items_view">
