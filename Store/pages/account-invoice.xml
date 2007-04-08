@@ -18,7 +18,7 @@
 					<property name="time_zone_format" type="constant">SwatDate::TZ_CURRENT_SHORT</property>
 				</object>
 			</object>
-			<object class="SwatDetailsViewField" id="comments">
+			<object class="SwatDetailsViewVerticalField" id="comments">
 				<property name="title" translatable="yes">Comments</property>
 				<object class="SwatTextCellRenderer">
 					<property name="text" type="data">comments</property>
