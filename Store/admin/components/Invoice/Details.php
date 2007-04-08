@@ -336,7 +336,7 @@ class StoreInvoiceDetails extends AdminIndex
 
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->id, 'integer'),
-			$this->getOrderByClause($view, $this->getItemsOrderByClause()));
+			$this->getOrderByClause($view, 'displayorder, id'));
 
 		$items = SwatDB::query($this->app->db, $sql, 'StoreInvoiceItemWrapper');
 
@@ -349,14 +349,6 @@ class StoreInvoiceDetails extends AdminIndex
 		}
 
 		return $store;
-	}
-
-	// }}}
-	// {{{ protected function getItemsOrderByClause()
-
-	protected function getItemsOrderByClause()
-	{
-		return 'InvoiceItem.sku';
 	}
 
 	// }}}
