@@ -11,7 +11,6 @@ require_once 'Store/StoreClassMap.php';
 require_once 'Store/StoreTotalRow.php';
 require_once 'Store/dataobjects/StoreInvoice.php';
 require_once 'Store/dataobjects/StoreOrderAddress.php';
-require_once 'Store/dataobjects/StoreInvoiceItemWrapper.php';
 require_once 'Store/admin/components/Invoice/include/StoreInvoiceTotalRow.php';
 
 /**
@@ -330,24 +329,12 @@ class StoreInvoiceDetails extends AdminIndex
 
 	protected function getItemsTableStore($view)
 	{
-		$sql = 'select InvoiceItem.* from InvoiceItem
-			where InvoiceItem.invoice = %s
-			order by %s';
-
+		$sql = 'select * from InvoiceItem where invoice = %s order by %s';
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->id, 'integer'),
 			$this->getOrderByClause($view, 'displayorder, id'));
 
-		$items = SwatDB::query($this->app->db, $sql, 'StoreInvoiceItemWrapper');
-
-		$store = new SwatTableStore();
-
-		foreach ($items as $item) {
-			$ds = new SwatDetailsStore($item);
-			$ds->description = $item->description;
-			$store->addRow($ds);
-		}
-
+		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
 		return $store;
 	}
 
