@@ -339,8 +339,8 @@ class StoreInvoiceDetails extends AdminIndex
 
 	protected function getItemsTableStore($view)
 	{
-		$sql = 'select * from InvoiceItem where invoice = %s order by %s';
-		$sql = sprintf($sql,
+		$sql = sprintf('select *, price * quantity as total from InvoiceItem
+			where invoice = %s order by %s';
 			$this->app->db->quote($this->id, 'integer'),
 			$this->getOrderByClause($view, 'displayorder, id'));
 
