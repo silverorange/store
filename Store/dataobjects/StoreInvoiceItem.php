@@ -48,6 +48,13 @@ class StoreInvoiceItem extends StoreDataObject
 	 */
 	public $description;
 
+	/**
+	 * Order of display
+	 *
+	 * @var integer
+	 */
+	public $displayorder;
+
 	// }}}
 	// {{{ public function getExtension()
 
