@@ -4,13 +4,14 @@ require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'Admin/exceptions/AdminNoAccessException.php';
 require_once 'SwatDB/SwatDB.php';
+require_once 'Store/StoreClassMap.php';
 require_once 'Store/dataobjects/StoreInvoice.php';
 
 /**
- * Edit page for Invoice Items
+ * Edit page for invoice items
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreInvoiceItemEdit extends AdminDBEdit
@@ -23,6 +24,9 @@ class StoreInvoiceItemEdit extends AdminDBEdit
 	// }}}
 	// {{{ private properties
 
+	/**
+	 * @var StoreInvoice
+	 */
 	private $invoice;
 
 	// }}}
@@ -64,8 +68,7 @@ class StoreInvoiceItemEdit extends AdminDBEdit
 				Store::_('An invoice with an id of ‘%d’ does not exist.'),
 				$this->id));
 
-		$this->invoice =  $invoice;
-		
+		$this->invoice = $invoice;
 	}
 
 	// }}}
@@ -122,9 +125,7 @@ class StoreInvoiceItemEdit extends AdminDBEdit
 	{
 		parent::buildNavBar();
 
-		$last_entry = $this->navbar->popEntry();
-		$last_entry->title = sprintf(Store::_('%s Invoice'),
-			$last_entry->title);
+		$this->navbar->popEntry();
 
 		$this->navbar->replaceEntryByPosition(1,
 			new SwatNavBarEntry(Store::_('Customer Accounts'), 'Account'));
@@ -134,10 +135,13 @@ class StoreInvoiceItemEdit extends AdminDBEdit
 			sprintf('Account/Details?id=%s', $this->invoice->account->id)));
 
 		$this->navbar->addEntry(new SwatNavBarEntry(
-			sprintf('Invoice %s', $this->invoice->id),
+			sprintf(Store::_('Invoice %s'), $this->invoice->id),
 			sprintf('Invoice/Details?id=%s', $this->invoice->id)));
 
-		$this->navbar->addEntry($last_entry);
+		$title = ($this->id === null) ?
+			Store::_('Add Invoice Item') : Store::_('Edit Invoice Item');
+
+		$this->navbar->addEntry(new SwatNavBarEntry($title));
 	}
 	
 	// }}}
