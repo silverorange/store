@@ -72,7 +72,7 @@ class StoreInvoiceItemDelete extends AdminDBDelete
 		$item_list = $this->getItemList('integer');
 
 		$dep = new AdminListDependency();
-		$dep->setTitle(Store::_('invoice'), Store::_('invoices'));
+		$dep->setTitle(Store::_('invoice item'), Store::_('invoice items'));
 
 		$sql = sprintf('select id, sku, description, price
 			from InvoiceItem where id in (%s)',
