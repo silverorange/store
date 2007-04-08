@@ -1,10 +1,11 @@
 create table InvoiceItem (
 	id serial,
-	invoice int not null references Invoice(id) on delete cascade,
+	invoice integer not null references Invoice(id) on delete cascade,
 	sku varchar(20),
-	quantity int not null,
+	quantity integer not null,
 	price numeric(11, 2) not null,
 	description varchar(255),
+	displayorder integer not null default 0,
 	primary key (id)
 );
 
