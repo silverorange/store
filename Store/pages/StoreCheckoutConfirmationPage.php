@@ -87,10 +87,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			}
 
 			$order = $this->app->session->order;
-			$order->sendConfirmationEmail($this->app,
-				$payment_processing_successful);
 
 			if ($payment_processing_successful) {
+				$order->sendConfirmationEmail($this->app);
 				$this->removeCartEntries();
 				$this->cleanupSession();
 				$this->updateProgress();
@@ -262,6 +261,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		} else {
 			// relocate on fatal payment processing errors and give no
 			// opportunity to edit the order
+			$order = $this->app->session->order;
+			$order->sendPaymentFailedEmail($this->app);
 			$this->removeCartEntries();
 			$this->cleanupSession();
 			$this->updateProgress();
