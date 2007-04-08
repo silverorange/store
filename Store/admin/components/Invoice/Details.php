@@ -282,6 +282,7 @@ class StoreInvoiceDetails extends AdminIndex
 		$view->getRow('total')->value = $invoice->getTotal();
 
 		$view->getColumn('price')->getFirstRenderer()->locale = $locale_id;
+		$view->getColumn('total')->getFirstRenderer()->locale = $locale_id;
 
 		$this->buildNavBar($invoice);
 	}
