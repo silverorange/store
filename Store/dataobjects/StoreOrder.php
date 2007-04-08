@@ -150,8 +150,26 @@ class StoreOrder extends StoreDataObject
 	// }}}
 	// {{{ public function sendConfirmationEmail()
 
-	public function sendConfirmationEmail(SiteApplication $app,
-		$payment_successful = true)
+	public function sendConfirmationEmail(SiteApplication $app)
+	{
+		// This is demo code. StoreOrderConfirmationMailMessage is
+		// abstract and the site-specific version must be used.
+
+		if ($this->email === null)
+			return;
+
+		try {
+			$email = new StoreOrderConfirmationMailMessage($app, $this);
+			$email->send();
+		} catch (SiteMailException $e) {
+			$e->process(false);
+		}
+	}
+
+	// }}}
+	// {{{ public function sendPaymentFailedEmail()
+
+	public function sendPaymentFailedEmail(SiteApplication $app)
 	{
 		// This is demo code. StoreOrderConfirmationMailMessage is
 		// abstract and the site-specific version must be used.
