@@ -127,7 +127,16 @@ class StoreInvoiceDetails extends AdminIndex
 			'text:description',
 			'integer:quantity',
 			'float:price',
+			'integer:displayorder',
 		);
+
+		// get highest displayorder so newest items are always added at the
+		// bottom of the list
+		$displayorder_sql = sprintf('select max(displayorder) from InvoiceItem
+			where invoice = %s',
+			$this->app->db->quote($this->id, 'integer'));
+
+		$displayorder = SwatDB::queryOne($this->app->db, $displayorder_sql);
 
 		if ($this->validateItemRows($input_row)) {
 			$new_skus = 0;
@@ -148,11 +157,12 @@ class StoreInvoiceDetails extends AdminIndex
 
 					// Create new item
 					$values = array(
-						'invoice' => $this->id,
-						'sku' => $sku,
-						'description' => $description,
-						'price' => $price,
-						'quantity' => $quantity,
+						'invoice'      => $this->id,
+						'sku'          => $sku,
+						'description'  => $description,
+						'price'        => $price,
+						'quantity'     => $quantity,
+						'displayorder' => $displayorder,
 					);
 
 					$item_id = SwatDB::insertRow($this->app->db, 'InvoiceItem',
@@ -168,7 +178,7 @@ class StoreInvoiceDetails extends AdminIndex
 			}
 
 			$message = new SwatMessage(sprintf(Store::ngettext(
-				'One item has been added.', '%d items have been added.',
+				'One item has been added.', '%s items have been added.',
 				$new_skus), SwatString::numberFormat($new_skus)));
 
 			$this->app->messages->add($message);
