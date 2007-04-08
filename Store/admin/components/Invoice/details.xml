@@ -22,7 +22,7 @@
 			</widget>
 		</widget>
 		<widget class="SwatDetailsView" id="details_view">
-			<object class="SwatDetailsViewField">
+			<object class="SwatDetailsViewVerticalField">
 				<property name="title" translatable="yes">Comments</property>
 				<object class="SwatNullTextCellRenderer">
 					<property name="text" type="data">comments</property>
