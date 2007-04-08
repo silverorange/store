@@ -84,6 +84,18 @@
 							</widget>
 						</object>
 					</object>
+					<object class="SwatTableViewColumn" id="price">
+						<property name="title" translatable="yes">Price</property>
+						<object class="SwatMoneyCellRenderer">
+							<property name="value" type="data">price</property>
+						</object>
+						<object class="SwatInputCell">
+							<widget class="SwatMoneyEntry" id="input_price">
+								<property name="size" type="integer">5</property>
+								<property name="required" type="boolean">true</property>
+							</widget>
+						</object>
+					</object>
 					<object class="SwatTableViewColumn" id="quantity">
 						<property name="title" translatable="yes">Quantity</property>
 						<object class="SwatTextCellRenderer">
@@ -96,16 +108,10 @@
 							</widget>
 						</object>
 					</object>
-					<object class="SwatTableViewColumn" id="price">
-						<property name="title" translatable="yes">Price</property>
+					<object class="SwatTableViewColumn" id="total">
+						<property name="title" translatable="yes">Total</property>
 						<object class="SwatMoneyCellRenderer">
-							<property name="value" type="data">price</property>
-						</object>
-						<object class="SwatInputCell">
-							<widget class="SwatMoneyEntry" id="input_price">
-								<property name="size" type="integer">5</property>
-								<property name="required" type="boolean">true</property>
-							</widget>
+							<property name="value" type="data">total</property>
 						</object>
 					</object>
 					<object class="SwatTableViewInputRow" id="input_row">
