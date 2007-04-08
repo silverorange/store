@@ -48,13 +48,20 @@
 						</object>
 						<object class="SwatRemoveInputCell" />
 					</object>
-					<object class="AdminTableViewOrderableColumn" id="sku">
-						<property name="title" translatable="yes">SKU</property>
-						<object class="AdminTitleLinkCellRenderer">
-							<property name="text" type="data">sku</property>
+					<object class="SwatTableViewColumn">
+						<object class="SwatImageLinkCellRenderer">
+							<property name="image">packages/admin/images/admin-edit.png</property>
+							<property name="width" type="integer">22</property>
+							<property name="height" type="integer">22</property>
+							<property name="title" translatable="yes">Edit Item</property>
 							<property name="link">Invoice/ItemEdit?id=%s</property>
 							<property name="link_value" type="data">id</property>
-							<property name="stock_id">edit</property>
+						</object>
+					</object>
+					<object class="AdminTableViewOrderableColumn" id="sku">
+						<property name="title" translatable="yes">SKU</property>
+						<object class="SwatTextCellRenderer">
+							<property name="text" type="data">sku</property>
 						</object>
 						<object class="SwatInputCell">
 							<widget class="SwatEntry" id="input_sku">
