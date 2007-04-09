@@ -52,7 +52,6 @@ class StoreExchangeRateTable
 	private $exchange_rates = array();
 
 	// }}}
-
 	// {{{ public function __construct()
 
 	/**
@@ -168,6 +167,8 @@ class StoreExchangeRateTable
 
 		return $exchange_rates;
 	}
+
+	// }}}
 }
 
 ?>
