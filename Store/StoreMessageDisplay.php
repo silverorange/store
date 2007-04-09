@@ -30,6 +30,24 @@ class StoreMessageDisplay extends SwatMessageDisplay
 	}
 
 	// }}}
+	// {{{ protected function getDismissableMessageTypes()
+
+	/**
+	 * Gets an array of message types that are dismissable by default
+	 *
+	 * StoreMessageDisplay adds the {@link StoreMessage::CART_NOTIFICATION}
+	 * type to the default list.
+	 *
+	 * @return array message types that are dismissable by default.
+	 */
+	protected function getDismissableMessageTypes()
+	{
+		$types = parent::getDismissableMessageTypes();
+		$types[] = StoreMessage::CART_NOTIFICATION;
+		return $types;
+	}
+
+	// }}}
 }
 
 ?>
