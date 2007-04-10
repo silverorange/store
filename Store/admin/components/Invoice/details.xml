@@ -40,7 +40,7 @@
 					<property name="stock_id">create</property>
 				</widget>
 				<widget class="SwatToolLink">
-					<property name="title" translatable="yes">Order Items</property>
+					<property name="title" translatable="yes">Change Order</property>
 					<property name="link">Invoice/ItemOrder?id=%s</property>
 				</widget>
 			</widget>
