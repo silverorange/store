@@ -137,6 +137,8 @@ class StoreInvoiceDetails extends AdminIndex
 			$this->app->db->quote($this->id, 'integer'));
 
 		$displayorder = SwatDB::queryOne($this->app->db, $displayorder_sql);
+		if ($displayorder === null)
+			$displayorder = 0;
 
 		if ($this->validateItemRows($input_row)) {
 			$new_skus = 0;
