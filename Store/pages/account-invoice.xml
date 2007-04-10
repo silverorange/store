@@ -9,7 +9,7 @@
 				<property name="link">checkout/invoice%s</property>
 			</widget>
 		</widget>
-
+		<widget class="StoreMessageDisplay" id="cart_message" />
 		<!-- {{{ Invoice Details -->
 
 		<widget class="SwatDetailsView" id="invoice_details">
