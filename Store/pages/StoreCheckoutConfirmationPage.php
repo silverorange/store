@@ -130,11 +130,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 	protected function saveAccount()
 	{
-		$account = $this->app->session->account;
-
-		// if we are creating a new account, store new addresses and payment
-		// methods in account and set the createdate to now
+		// if we are checking out with an account, store new addresses and
+		// payment methods in the account
 		if ($this->app->session->checkout_with_account) {
+			$account = $this->app->session->account;
 			$order = $this->app->session->order;
 
 			$this->addAddressToAccount($order->billing_address);
@@ -147,15 +146,17 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			if ($this->app->session->save_account_payment_method)
 				$this->addPaymentMethodToAccount($order->payment_method);
 
-			// set createdate and last_login to now
-			$account->createdate = new SwatDate();
-			$account->createdate->toUTC();
-			$account->last_login = new SwatDate();
-			$account->last_login->toUTC();
-		}
+			// if this is a new account, set createdate and last_login to now
+			if ($account->id === null) {
+				$account->createdate = new SwatDate();
+				$account->createdate->toUTC();
+				$account->last_login = new SwatDate();
+				$account->last_login->toUTC();
+			}
 
-		// save account
-		$account->save();
+			// save account
+			$account->save();
+		}
 	}
 
 	// }}}
