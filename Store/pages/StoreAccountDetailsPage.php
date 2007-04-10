@@ -265,7 +265,7 @@ class StoreAccountDetailsPage extends StoreAccountPage
 			$message->content_type = 'text/xml';
 
 			$message_display = $this->ui->getWidget('message_display');
-			$message_display->add($message);
+			$message_display->add($message, SwatMessageDisplay::DISMISS_OFF);
 		}
 	}
 
@@ -278,7 +278,7 @@ class StoreAccountDetailsPage extends StoreAccountPage
 		$count = count($invoices);
 
 		if ($count > 0) {
-			$message = new StoreMessage('Pending Invoices');
+			$message = new StoreMessage(Store::_('Pending Invoices'));
 			$message->content_type = 'text/xml';
 
 			$message->secondary_content = sprintf(Store::ngettext(
@@ -291,7 +291,7 @@ class StoreAccountDetailsPage extends StoreAccountPage
 			$message->secondary_content.= ob_get_clean();
 
 			$message_display = $this->ui->getWidget('message_display');
-			$message_display->add($message);
+			$message_display->add($message, SwatMessageDisplay::DISMISS_OFF);
 		}
 	}
 
