@@ -146,8 +146,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			if ($this->app->session->save_account_payment_method)
 				$this->addPaymentMethodToAccount($order->payment_method);
 
+			$new_account = ($account->id === null);
+
 			// if this is a new account, set createdate and last_login to now
-			if ($account->id === null) {
+			if ($new_account) {
 				$account->createdate = new SwatDate();
 				$account->createdate->toUTC();
 				$account->last_login = new SwatDate();
@@ -156,6 +158,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 			// save account
 			$account->save();
+
+			if ($new_account)
+				$this->app->session->loginById($account->id);
 		}
 	}
 
