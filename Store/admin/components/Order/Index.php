@@ -220,9 +220,10 @@ class StoreOrderIndex extends AdminSearch
 				where %s
 				order by %s';
 
+		// Order by id and not createdate in case two createdates are the same.
 		$sql = sprintf($sql,
 			$this->getWhereClause(),
-			$this->getOrderByClause($view, 'Orders.createdate desc'));
+			$this->getOrderByClause($view, 'Orders.id desc'));
 
 		$this->app->db->setLimit($pager->page_size, $pager->current_record);
 
