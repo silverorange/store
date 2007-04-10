@@ -11,7 +11,7 @@ function StoreCheckoutShippingAddressPage(id, provstate_other_index)
 		provstate_other_index);
 }
 
-YAHOO.extend(StoreCheckoutShippingAddressPage, StoreCheckoutAddressPage, {
+YAHOO.lang.extend(StoreCheckoutShippingAddressPage, StoreCheckoutAddressPage, {
 
 getFieldNames: function()
 {
