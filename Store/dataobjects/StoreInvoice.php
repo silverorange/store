@@ -128,6 +128,29 @@ class StoreInvoice extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ public function isPending()
+
+	/** 
+	 * Whether or not this invoice is pending
+	 *
+	 * An invoice is pending it it is not attached to any orders and it has
+	 * invoice items.
+	 *
+	 * @return boolean true if this invoice is pending and false if it is not.
+	 */
+	public function isPending()
+	{
+		$this->checkDB();
+
+		$sql = sprintf('select count(id) from Orders where invoice = %s',
+			$this->db->quote($this->id, 'integer'));
+
+		$order_count = SwatDB::queryOne($this->db, $sql);
+
+		return (($order_count == 0) && count($this->items) > 0);
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
