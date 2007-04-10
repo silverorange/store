@@ -380,7 +380,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 				'%sPlace Order%s button to complete your order.'),
 				'<em>', '</em>');
 
-			$this->ui->getWidget('message_display')->add($message);
+			$this->ui->getWidget('message_display')->add($message,
+				SwatMessageDisplay::DISMISS_OFF);
 		}
 
 		if ($this->app->session->order->isFromInvoice())
