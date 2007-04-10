@@ -727,7 +727,7 @@ abstract class StoreCartPage extends StoreArticlePage
 				'the menu on the left and browsing for products.');
 
 			$messages = $this->ui->getWidget('message_display');
-			$messages->add($empty_message);
+			$messages->add($empty_message, SwatMessageDisplay::DISMISS_OFF);
 
 			$this->ui->getWidget('cart_frame')->visible = false;
 		} else {
@@ -853,7 +853,9 @@ abstract class StoreCartPage extends StoreArticlePage
 
 				$warning_message->content_type = 'text/xml';
 
-				$message_display->add($warning_message);
+				$message_display->add($warning_message,
+					SwatMessageDisplay::DISMISS_OFF);
+
 				$message_display->display();
 			}
 
