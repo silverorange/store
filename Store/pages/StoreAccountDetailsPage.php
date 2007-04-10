@@ -274,7 +274,7 @@ class StoreAccountDetailsPage extends StoreAccountPage
 
 	protected function buildInvoices() 
 	{
-		$invoices = $this->app->session->account->invoices;
+		$invoices = $this->app->session->account->getPendingInvoices();
 		$count = count($invoices);
 
 		if ($count > 0) {
