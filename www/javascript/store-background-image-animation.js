@@ -26,7 +26,7 @@
 		StoreBackgroundImageAnim.frame_images = [];
 	};
 
-	YAHOO.extend(StoreBackgroundImageAnim, YAHOO.util.Anim);
+	YAHOO.lang.extend(StoreBackgroundImageAnim, YAHOO.util.Anim);
 
 	// shorthand
 	var superclass = StoreBackgroundImageAnim.superclass;
