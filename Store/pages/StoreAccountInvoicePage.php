@@ -96,7 +96,7 @@ class StoreAccountInvoicePage extends StoreAccountPage
 			'packages/store/styles/store-account-order-page.css',
 			Store::PACKAGE_ID));
 
-		$this->ui->getWidget('header_checkout_link')->value =
+		$this->ui->getWidget('header_checkout_button')->value =
 			$this->invoice->id;
 
 		$title = $this->invoice->getTitle();
