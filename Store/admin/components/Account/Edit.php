@@ -4,6 +4,7 @@ require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatMessage.php';
+require_once 'Swat/SwatDate.php';
 
 /**
  * Edit page for Accounts
@@ -72,6 +73,11 @@ class StoreAccountEdit extends AdminDBEdit
 		$values = $this->getUIValues();
 
 		if ($this->id === null) {
+			$now = new SwatDate();
+			$now->toUTC();
+			$this->fields[] = 'date:createdate';
+			$values['createdate'] = $now->getDate();
+
 			$this->id = SwatDB::insertRow($this->app->db, 'Account',
 				$this->fields, $values, 'id');
 
