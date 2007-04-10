@@ -86,6 +86,12 @@
 							<property name="locale" type="data">locale.id</property>
 						</object>
 					</object>
+					<object class="SwatTableViewColumn" id="pending">
+						<property name="title" translatable="yes">Pending</property>
+						<object class="SwatBooleanCellRenderer">
+							<property name="value" type="data">is_pending</property>
+						</object>
+					</object>
 				</widget>
 				<widget class="SwatActions" id="invoice_actions">
 					<widget class="SwatActionItem" id="invoice_delete">
