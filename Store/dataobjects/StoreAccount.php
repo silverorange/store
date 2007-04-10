@@ -182,6 +182,31 @@ abstract class StoreAccount extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ public function getPendingInvoices()
+
+	/**
+	 * Gets order invoices for this account that have not yet been filled
+	 *
+	 * @return StoreInvoiceWrapper invoices for this account that have not
+	 *                              yet been filled.
+	 */
+	public function getPendingInvoices()
+	{
+		$this->checkDB();
+
+		$sql = sprintf('select * from Invoice
+			inner join InvoiceItemCount on
+				InvoiceItemCount.invoice = Invoice.id and
+				Invoice.account = %s
+			where Invoice.id not in (select invoice from Orders)
+			order by id asc',
+			$this->db->quote($this->id, 'integer'));
+
+		return SwatDB::query($this->db, $sql,
+			$this->class_map->resolveClass('StoreInvoiceWrapper'));
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
