@@ -26,6 +26,7 @@
 				<widget class="SwatMoneyEntry" id="price">
 					<property name="locale"></property>
 					<property name="required" type="boolean">true</property>
+					<property name="display_currency" type="boolean">true</property>
 				</widget>
 			</widget>
 			<widget class="SwatFooterFormField">
