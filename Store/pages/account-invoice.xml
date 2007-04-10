@@ -3,9 +3,11 @@
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="details_frame">
-		<widget class="SwatToolLink" id="header_checkout_link">
-			<property name="title">Proceed to Checkout</property>
-			<property name="link">checkout/invoice%s</property>
+		<widget class="SwatHeaderFormField" id="header_checkout">
+			<widget class="SwatToolLink" id="header_checkout_button">
+				<property name="title">Proceed to Checkout for this Invoice</property>
+				<property name="link">checkout/invoice%s</property>
+			</widget>
 		</widget>
 
 		<!-- {{{ Invoice Details -->
