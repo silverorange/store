@@ -5,7 +5,7 @@ require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'Admin/exceptions/AdminNoAccessException.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Store/dataobjects/StoreLocaleWrapper.php';
-require_once 'Date.php';
+require_once 'Swat/SwatDate.php';
 
 /**
  * Edit page for Invoices
@@ -18,15 +18,9 @@ class StoreInvoiceEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
-	protected $fields;
 	protected $ui_xml = 'Store/admin/components/Invoice/edit.xml';
-
-	// }}}
-	// {{{ private properties
-
-	private $account_id;
-	private $account_fullname;
-	private $new_invoice = false;
+	protected $invoice;
+	protected $account;
 
 	// }}}
 
@@ -38,12 +32,10 @@ class StoreInvoiceEdit extends AdminDBEdit
 		parent::initInternal();
 
 		$this->ui->loadFromXML($this->ui_xml);
-		
-		$this->fields = array('text:locale', 'comments', 'float:shipping_total',
-			'float:tax_total');
-
+	
 		$this->initAccount();
-		
+		$this->initInvoice();
+
 		$locale_flydown = $this->ui->getWidget('locale');
 		$locale_flydown->show_blank = false;
 
@@ -58,20 +50,52 @@ class StoreInvoiceEdit extends AdminDBEdit
 	}
 
 	// }}}
+	// {{{ protected function initInvoice()
+
+	protected function initInvoice()
+	{
+		$class_map = StoreClassMap::instance();
+		$class = $class_map->resolveClass('StoreInvoice');
+		$invoice = new $class();
+		$invoice->setDatabase($this->app->db);
+
+		if ($this->id === null) {
+			$invoice->account = $this->account;
+			$invoice->createdate = new SwatDate();
+			$invoice->createdate->toUTC();
+		} else {
+			if (!$invoice->load($this->id)) {
+				throw new AdminNotFoundException(sprintf(
+					Store::_('Invoice with id ‘%s’ not found.'),
+					$this->id));
+			}
+		}
+
+		$this->invoice = $invoice;
+	}
+
+	// }}}
 	// {{{ protected function initAccount()
 
-	protected function initAccount()
+	protected function initAccount() 
 	{
-		if ($this->id === null)
-			$this->account_id = $this->app->initVar('account');
+		if ($this->id === null) 
+			$account_id = $this->app->initVar('account');
 		else
-			$this->account_id = SwatDB::queryOne($this->app->db,
-				sprintf('select account from Invoice where id = %s',
+			$account_id = SwatDB::queryOne($this->app->db, sprintf(
+				'select account from Invoice where id = %s',
 				$this->app->db->quote($this->id, 'integer')));
 
-		$this->account_fullname = SwatDB::queryOne($this->app->db,
-			sprintf('select fullname from Account where id = %s',
-			$this->app->db->quote($this->account_id, 'integer')));
+		$class_map = StoreClassMap::instance();
+		$class = $class_map->resolveClass('StoreAccount');
+		$account = new $class();
+		$account->setDatabase($this->app->db);
+		if (!$account->load($account_id))
+			throw new AdminNotFoundException(sprintf(
+				Store::_('Account with id ‘%s’ not found.'),
+				$this->id));
+
+		$this->account = $account;
 	}
 
 	// }}}
@@ -81,38 +105,20 @@ class StoreInvoiceEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$values = $this->getUIValues();
+		$values = $this->ui->getValues(array('locale', 'comments',
+			'shipping_total', 'tax_total'));
 
-		if ($this->id === null) {
-			$this->fields[] = 'integer:account';
-			$values['account'] = $this->account_id;
+		$this->invoice->comments = $values['comments'];
+		$this->invoice->locale = $values['locale'];
+		$this->invoice->shipping_total = $values['shipping_total'];
+		$this->invoice->tax_total = $values['tax_total'];
+		$this->invoice->save();
 
-
-			$this->fields[] = 'date:createdate';
-			$date = new Date();
-			$date->toUTC();
-			$values['createdate'] = $date->getDate();
-					
-			$this->id = SwatDB::insertRow($this->app->db, 'Invoice',
-				$this->fields, $values, 'id');
-		} else {
-			SwatDB::updateRow($this->app->db, 'Invoice', $this->fields, $values,
-				'id', $this->id);
-		}
-
-		$message = new SwatMessage(
-			sprintf(Store::_('Invoice %s has been saved.'), $this->id));
+		$message = new SwatMessage(sprintf(
+			Store::_('Invoice %s has been saved.'),
+			$this->invoice->id));
 
 		$this->app->messages->add($message);
-	}
-
-	// }}}
-	// {{{ protected function getUIValues()
-
-	protected function getUIValues()
-	{
-		return $this->ui->getValues(array('locale', 'comments',
-			'shipping_total', 'tax_total'));
 	}
 
 	// }}}
@@ -120,7 +126,8 @@ class StoreInvoiceEdit extends AdminDBEdit
 
 	protected function relocate()
 	{
-		$this->app->relocate('Invoice/Details?id='.$this->id);
+		$this->app->relocate(
+			sprintf('Invoice/Details?id=%s', $this->invoice->id));
 	}
 
 	// }}}
@@ -132,7 +139,7 @@ class StoreInvoiceEdit extends AdminDBEdit
 	{
 		parent::buildForm();
 		$form = $this->ui->getWidget('edit_form');
-		$form->addHiddenField('account', $this->account_id);
+		$form->addHiddenField('account', $this->account->id);
 	}
 
 	// }}}
@@ -149,12 +156,12 @@ class StoreInvoiceEdit extends AdminDBEdit
 		$this->navbar->replaceEntryByPosition(1,
 			new SwatNavBarEntry(Store::_('Customer Accounts'), 'Account'));
 
-		$this->navbar->addEntry(new SwatNavBarEntry($this->account_fullname,
-			sprintf('Account/Details?id=%s', $this->account_id)));
+		$this->navbar->addEntry(new SwatNavBarEntry($this->account->fullname,
+			sprintf('Account/Details?id=%s', $this->account->id)));
 
 		$this->navbar->addEntry($last_entry);
 		
-		$this->title = $this->account_fullname;
+		$this->title = $this->account->fullname;
 	}
 	
 	// }}}
@@ -162,15 +169,7 @@ class StoreInvoiceEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$row = SwatDB::queryRowFromTable($this->app->db, 'Invoice',
-			$this->fields, 'id', $this->id);
-
-		if ($row === null)
-			throw new AdminNotFoundException(sprintf(
-				Store::_('An invoice with an id of ‘%d’ does not exist.'),
-				$this->id));
-
-		$this->ui->setValues(get_object_vars($row));
+		$this->ui->setValues(get_object_vars($this->invoice));
 	}
 
 	// }}}

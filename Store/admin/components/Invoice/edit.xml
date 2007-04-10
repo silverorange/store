@@ -20,7 +20,7 @@
 					<property name="locale"></property>
 				</widget>
 			</widget>
-			<widget class="SwatFormField">
+			<widget class="SwatFormField" id="tax_total_field">
 				<property name="title" translatable="yes">Taxes</property>
 				<property name="note" translatable="yes">Optional. This value will override the tax amount.</property>
 				<widget class="SwatMoneyEntry" id="tax_total">
