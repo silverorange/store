@@ -203,9 +203,7 @@ class StoreAccountDetails extends AdminIndex
 
 	protected function getInvoicesTableStore($view) 
 	{
-		$sql = 'select * from Invoice
-			where Invoice.account = %s
-			order by %s';
+		$sql = 'select * from Invoice where account = %s order by %s';
 
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->id, 'integer'),
@@ -219,6 +217,7 @@ class StoreAccountDetails extends AdminIndex
 		foreach ($invoices as $invoice) {
 			$ds = new SwatDetailsStore($invoice);
 			$ds->subtotal = $invoice->getSubtotal();
+			$ds->is_pending = $invoice->isPending();
 			$store->addRow($ds);
 		}
 
