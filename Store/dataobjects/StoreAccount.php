@@ -194,11 +194,12 @@ abstract class StoreAccount extends StoreDataObject
 	{
 		$this->checkDB();
 
-		$sql = sprintf('select * from Invoice
-			inner join InvoiceItemCount on
-				InvoiceItemCount.invoice = Invoice.id and
+		$sql = sprintf('select Invoice.* from Invoice
+			inner join InvoiceItemCountView on
+				InvoiceItemCountView.invoice = Invoice.id and
 				Invoice.account = %s
-			where Invoice.id not in (select invoice from Orders)
+			where Invoice.id not in
+				(select invoice from Orders where invoice is not null)
 			order by id asc',
 			$this->db->quote($this->id, 'integer'));
 
