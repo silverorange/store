@@ -152,8 +152,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			if ($new_account) {
 				$account->createdate = new SwatDate();
 				$account->createdate->toUTC();
-				$account->last_login = new SwatDate();
-				$account->last_login->toUTC();
 			}
 
 			// save account
