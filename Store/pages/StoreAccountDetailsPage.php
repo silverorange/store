@@ -278,13 +278,12 @@ class StoreAccountDetailsPage extends StoreAccountPage
 		$count = count($invoices);
 
 		if ($count > 0) {
-			$message = new StoreMessage(Store::_('Pending Invoices'));
-			$message->content_type = 'text/xml';
-
-			$message->secondary_content = sprintf(Store::ngettext(
+			$message = new StoreMessage(sprintf(Store::ngettext(
 				'Your account has a pending invoice:',
-				'View account has %s pending invoices:',
-				$count), $count);
+				'Your account has %s pending invoices:',
+				$count), $count));
+
+			$message->content_type = 'text/xml';
 
 			ob_start();
 			$this->displayInvoices($invoices);
