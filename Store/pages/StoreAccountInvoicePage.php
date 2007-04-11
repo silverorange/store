@@ -93,7 +93,7 @@ class StoreAccountInvoicePage extends StoreAccountPage
 			$this->ui->getRoot()->getHtmlHeadEntrySet());
 
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-account-order-page.css',
+			'packages/store/styles/store-account-invoice-page.css',
 			Store::PACKAGE_ID));
 
 		$this->ui->getWidget('header_checkout_button')->value =
