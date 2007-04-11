@@ -141,12 +141,12 @@ class StoreInvoiceNotificationMailMessage extends SiteMultipartMailMessage
 
 		if ($this->password_link === null)
 			$link_text = sprintf(Store::_('You can review and purchase the invoice '.
-				'by logging in to your account at %s.'),
+				'by logging in to your account at: %s'),
 				$account_link);
 		else
 			$link_text = sprintf(Store::_('You can review and purchase the invoice '.
 				'by logging in to your account. Because this is a new account, you will '.
-				'first be asked to create a password: %s.'),
+				'first be asked to create a password: %s'),
 				$password_link);
 
 		return sprintf($format_string, $text, $link_text);

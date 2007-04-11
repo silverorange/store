@@ -1,0 +1,10 @@
+@import url(store-cart.css);
+
+#items_view {
+	margin-top: 1em;
+}
+
+#items_view td,
+#items_view th {
+	padding: 0.5em;
+}
