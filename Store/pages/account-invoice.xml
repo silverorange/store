@@ -5,7 +5,7 @@
 	<widget class="SwatFrame" id="details_frame">
 		<widget class="SwatHeaderFormField" id="header_checkout">
 			<widget class="SwatToolLink" id="header_checkout_button">
-				<property name="title">Proceed to Checkout for this Invoice</property>
+				<property name="title">Pay for this Invoice</property>
 				<property name="link">checkout/invoice%s</property>
 			</widget>
 		</widget>
