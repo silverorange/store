@@ -99,18 +99,20 @@ class StoreAccountInvoicePage extends StoreAccountPage
 		$this->ui->getWidget('header_checkout_button')->value =
 			$this->invoice->id;
 
-		/* TODO: make this cart_message show only if you have items in your cart */
-		$cart_message = new StoreMessage(
-			Store::_('Items in your shopping cart will <em>not</em> be '.
-			'included in this order.'),	StoreMessage::CART_NOTIFICATION);
+		if ($this->app->cart->checkout->getEntryCount() > 0) {
+			$cart_message = new StoreMessage(Store::_(
+				'Items in your shopping cart will <em>not</em> be included '.
+				'in this order.'), StoreMessage::CART_NOTIFICATION);
 
-		$cart_message->content_type = 'text/xml';
-		$cart_message->secondary_content = Store::_(
-			'If you proceed to checkout for this invoice, the other items in '.
-			'your shopping cart will remain in your cart for later purchase.');
+			$cart_message->content_type = 'text/xml';
+			$cart_message->secondary_content = Store::_(
+				'If you proceed to checkout for this invoice, the other '.
+				'items in your shopping cart will remain in your cart for '.
+				'later purchase.');
 
-		$messages = $this->ui->getWidget('cart_message');
-		$messages->add($cart_message, SwatMessageDisplay::DISMISS_OFF);
+			$messages = $this->ui->getWidget('cart_message');
+			$messages->add($cart_message, SwatMessageDisplay::DISMISS_OFF);
+		}
 
 		$title = $this->invoice->getTitle();
 		$this->layout->data->title = $title;
