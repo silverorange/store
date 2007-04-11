@@ -110,7 +110,7 @@ class StoreAccountInvoicePage extends StoreAccountPage
 			'your shopping cart will remain in your cart for later purchase.');
 
 		$messages = $this->ui->getWidget('cart_message');
-		$messages->add($cart_message);
+		$messages->add($cart_message, SwatMessageDisplay::DISMISS_OFF);
 
 		$title = $this->invoice->getTitle();
 		$this->layout->data->title = $title;
