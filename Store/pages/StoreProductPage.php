@@ -617,7 +617,7 @@ class StoreProductPage extends StoreStorePage
 
 			$img_tag = $image->getImgTag('thumb');
 
-			if ($img_tag->alt === null)
+			if (strlen($img_tag->alt) == 0)
 				$img_tag->alt = sprintf(Store::_('Additional Photo of %s'),
 					$this->product->title);
 
