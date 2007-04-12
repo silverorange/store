@@ -8,14 +8,19 @@ require_once 'Swat/SwatString.php';
  * way
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCategoryTitleCellRenderer extends AdminTreeTitleLinkCellRenderer
 {
+	// {{{ public properties
+
 	public $product_count = 0;
 	public $currently_visible = true;
 	public $always_visible = false;
+
+	// }}}
+	// {{{ public function render()
 
 	public function render()
 	{
@@ -39,6 +44,9 @@ class StoreCategoryTitleCellRenderer extends AdminTreeTitleLinkCellRenderer
 		parent::render();
 	}
 
+	// }}}
+	// {{{ protected function getTitle()
+
 	protected function getTitle()
 	{
 		$out = array();
@@ -47,7 +55,7 @@ class StoreCategoryTitleCellRenderer extends AdminTreeTitleLinkCellRenderer
 			$out[] = Store::_('no sub-categories');
 		else
 			$out[] = sprintf(Store::ngettext('One sub-category',
-				'%d sub-categories', $this->child_count),
+				'%s sub-categories', $this->child_count),
 				SwatString::numberFormat($this->child_count));
 
 		if (intval($this->product_count) == 0)
@@ -55,12 +63,14 @@ class StoreCategoryTitleCellRenderer extends AdminTreeTitleLinkCellRenderer
 		else
 			$out[] = sprintf(Store::ngettext(
 				'One product in the selected catalog(s)',
-				'%d products in the selected catalog(s)',
+				'%s products in the selected catalog(s)',
 				$this->product_count),
 				SwatString::numberFormat($this->product_count));
 
 		return implode(', ', $out);
 	}
+
+	// }}}
 }
 
 ?>
