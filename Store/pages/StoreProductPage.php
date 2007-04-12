@@ -628,7 +628,7 @@ class StoreProductPage extends StoreStorePage
 			$li_tag->open();
 			$anchor->open();
 			$img_tag->display();
-			echo Store::_('<span>View Larger Image</span>');
+			echo '<span>', Store::_('View Larger Image'), '</span>';
 			$anchor->close();
 			$li_tag->close();
 		}
