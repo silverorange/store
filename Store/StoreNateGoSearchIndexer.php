@@ -99,7 +99,7 @@ abstract class StoreNateGoSearchIndexer extends SiteSearchIndexer
 	protected function checkQueue()
 	{
 		$sql = 'select count(document_id) from NateGoSearchQueue';
-		$count = SwatDB::queryOne($this->app->db, $sql);
+		$count = SwatDB::queryOne($this->db, $sql);
 		if ($count == 0) {
 			$this->output(Store::_('No entries in the search queue.')."\n",
 				self::VERBOSITY_ALL);
@@ -141,7 +141,7 @@ abstract class StoreNateGoSearchIndexer extends SiteSearchIndexer
 				self::VERBOSITY_ALL);
 
 			$sql = 'delete from NateGoSearchCache';
-			SwatBD::exec($this->app->db, $sql);
+			SwatDB::exec($this->db, $sql);
 
 			$this->output(Store::_('done')."\n",
 				self::VERBOSITY_ALL);
