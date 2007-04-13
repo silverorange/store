@@ -12,7 +12,7 @@ require_once 'NateGoSearch/NateGoSearchIndexer.php';
  * Subclasses may change how and what gets indexed.
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreNateGoSearchIndexer extends SiteSearchIndexer
@@ -28,6 +28,16 @@ abstract class StoreNateGoSearchIndexer extends SiteSearchIndexer
 	 * Verbosity level for showing all indexing actions
 	 */
 	const VERBOSITY_ALL = 1;
+
+	// }}}
+	// {{{ protected properties
+
+	/**
+	 * Whether or not the search cache should be cleared after indexing
+	 *
+	 * @see StoreNateGoSearchIndexer::checkQueue()
+	 */
+	protected $clear_cache = false;
 
 	// }}}
 	// {{{ public function __construct()
@@ -72,10 +82,70 @@ abstract class StoreNateGoSearchIndexer extends SiteSearchIndexer
 	{
 		$this->initModules();
 		$this->parseCommandLineArguments();
+		$this->checkQueue();
+		$this->index();
+		$this->clearCache();
+	}
 
+	// }}}
+	// {{{ protected function checkQueue()
+
+	/**
+	 * Checks to see if the search queue has any entries
+	 *
+	 * If the queue has entries, cached search results are cleared at the end
+	 * of teh idexing process.
+	 */
+	protected function checkQueue()
+	{
+		$sql = 'select count(document_id) from NateGoSearchQueue';
+		$count = SwatDB::queryOne($this->app->db, $sql);
+		if ($count == 0) {
+			$this->output(Store::_('No entries in the search queue.')."\n",
+				self::VERBOSITY_ALL);
+		} else {
+			$this->output(Store::_('Search queue has entries. Cached search '.
+				'results will be cleared after indexing is complete.')."\n",
+				self::VERBOSITY_ALL);
+
+			$this->clear_cache = true;
+		}
+	}
+
+	// }}}
+	// {{{ protected function index()
+
+	/**
+	 * Indexes documents
+	 *
+	 * Subclasses should override this method to add or remove additional
+	 * indexed tables.
+	 */
+	protected function index()
+	{
 		$this->indexArticles();
 		$this->indexProducts();
 		$this->indexCategories();
+	}
+
+	// }}}
+	// {{{ protected function clearCache()
+
+	/**
+	 * Clears cached search results
+	 */
+	protected function clearCache()
+	{
+		if ($this->clear_cache) {
+			$this->output(Store::_('Clearing cached search results ... '),
+				self::VERBOSITY_ALL);
+
+			$sql = 'delete from NateGoSearchCache';
+			SwatBD::exec($this->app->db, $sql);
+
+			$this->output(Store::_('done')."\n",
+				self::VERBOSITY_ALL);
+		}
 	}
 
 	// }}}
