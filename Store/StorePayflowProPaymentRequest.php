@@ -2,6 +2,20 @@
 
 require_once 'Store/StorePaymentRequest.php';
 
+/**
+ * Payment request for Verisign Payflow Pro payments
+ *
+ * WARNING
+ *
+ * This code is untested and out of date. It is certainly not production ready.
+ * You have been warned. Abandon hope all ye who enter here.
+ *
+ * WARNING
+ *
+ * @package   Store
+ * @copyright 2007 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ */
 class StorePayflowProPaymentRequest extends StorePaymentRequest
 {
 	// {{{ class constants
