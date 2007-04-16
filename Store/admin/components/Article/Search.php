@@ -19,7 +19,7 @@ require_once 'include/StoreArticleVisibilityCellRenderer.php';
  */
 class StoreArticleSearch extends AdminSearch
 {
-	// {{{ protected proeprties
+	// {{{ protected properties
 
 	protected $where_clause;
 	protected $join_clause;
