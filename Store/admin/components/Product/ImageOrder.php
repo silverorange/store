@@ -138,21 +138,26 @@ class StoreProductImageOrder extends AdminDBOrder
 		$last_entry = $this->navbar->popEntry();
 		$this->navbar->popEntry();
  
-		$this->navbar->addEntry(new SwatNavBarEntry(
-			Store::_('Product Categories'), 'Category'));
+		if ($this->category_id !== null) {
+			$this->navbar->addEntry(new SwatNavBarEntry(
+				Store::_('Product Categories'), 'Category'));
 
-		$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
-			'getCategoryNavbar', array($this->category_id));
+			$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
+				'getCategoryNavbar', array($this->category_id));
 
-		foreach ($cat_navbar_rs as $entry)
-			$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
-				'Category/Index?id='.$entry->id));
+			foreach ($cat_navbar_rs as $entry)
+				$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
+					'Category/Index?id='.$entry->id));
+		}
 
 		$product_title = SwatDB::queryOneFromTable($this->app->db, 'Product',
 			'text:title', 'id', $this->product_id);
 
-		$link = sprintf('Product/Details?id=%s&category=%s', $this->product_id, 
-			$this->category_id);
+		if ($this->category_id === null)
+			$link = sprintf('Product/Details?id=%s', $this->product_id);
+		else
+			$link = sprintf('Product/Details?id=%s&category=%s', 
+				$this->product_id, $this->category_id);
 
 		$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));
 		$this->navbar->addEntry($last_entry);
