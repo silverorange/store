@@ -412,7 +412,7 @@ class StoreCategory extends StoreDataObject
 
 		if (strlen($this->description)) {
 			$description_p = new SwatHtmlTag('p');
-			$description_p->class = 'category-desciption';
+			$description_p->class = 'category-description';
 			$description_p->setContent($this->description);
 		}
 
