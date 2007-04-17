@@ -12,10 +12,11 @@ require_once 'Site/SiteMultipartMailMessage.php';
  * An email messages for order confirmations
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessage
+abstract class StoreOrderConfirmationMailMessage
+	extends SiteMultipartMailMessage
 {
 	// {{{ protected properties
 
