@@ -56,10 +56,16 @@ class StorePaymentTypeIndex extends AdminIndex
 			$region_list = ($region > 0) ?
 				array($region) : array_flip($this->regions);
 
+			$sql = 'insert into PaymentTypeRegionBinding
+				(payment_type, region)
+				select %1$s, id from region where id in (%2$s) and
+					id not in (select region from PaymentTypeRegionBinding
+						where payment_type = %1$s)';
+
 			foreach ($view->checked_items as $item) {
-				SwatDB::updateBinding($this->app->db,
-					'PaymentTypeRegionBinding', 'payment_type', $item, 'region',
-					$region_list, 'Region', 'id');
+				SwatDB::exec($this->app->db,
+					sprintf($sql, $this->app->db->quote($item, 'integer'),
+						implode(',', $region_list)));
 			}
 
 			$num = count($view->checked_items);
@@ -73,14 +79,16 @@ class StorePaymentTypeIndex extends AdminIndex
 
 		case 'disable':
 			$region = $this->ui->getWidget('disable_region')->value;
-			$region_list = ($region > 0) ?
-				array($region) : array_flip($this->regions);
 
-			foreach ($view->checked_items as $item) {
-				SwatDB::updateBinding($this->app->db,
-					'PaymentTypeRegionBinding', 'payment_type', $item, 'region',
-					$region_list, 'Region', 'id');
-			}
+			$sql = 'delete from PaymentTypeRegionBinding
+				where %s payment_type in (%s)';
+
+			$region_sql = ($region > 0) ?
+				sprintf('region = %s and', $this->app->db->quote($region,
+					'integer')) : '';
+
+			SwatDB::exec($this->app->db,
+				sprintf($sql, $region_sql, implode(',', $view->checked_items)));
 
 			$num = count($view->checked_items);
 
