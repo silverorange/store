@@ -79,6 +79,16 @@ class StoreCategory extends StoreDataObject
 	public $title;
 
 	/**
+	 * Description of this category
+	 *
+	 * This text is intended to be displayed on the parent page of this
+	 * category.
+	 *
+	 * @var string 
+	 */
+	public $description;
+
+	/**
 	 * Body text of this category
 	 *
 	 * This text is intended to be displayed on a page dedicated to this

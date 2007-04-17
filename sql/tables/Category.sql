@@ -3,6 +3,7 @@ create table Category (
 	parent int,
 	shortname varchar(255),
 	title varchar(255),
+	description text,
 	bodytext text,
 	createdate timestamp,
 	displayorder int not null default 0,

@@ -20,6 +20,13 @@
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Description</property>
+				<widget class="SwatXHTMLTextarea" id="description">
+					<property name="allow_ignore_validation_errors" type="boolean">true</property>
+					<property name="rows" type="integer">4</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Body Text</property>
 				<widget class="SwatXHTMLTextarea" id="bodytext">
 					<property name="allow_ignore_validation_errors" type="boolean">true</property>
