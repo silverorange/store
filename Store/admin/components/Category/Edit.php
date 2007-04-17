@@ -35,7 +35,7 @@ class StoreCategoryEdit extends AdminDBEdit
 
 		$this->ui->loadFromXML($this->ui_xml);
 
-		$this->fields = array('title', 'shortname', 'bodytext',
+		$this->fields = array('title', 'shortname', 'description', 'bodytext',
 			'boolean:always_visible');
 
 		$this->parent = SiteApplication::initVar('parent');
@@ -122,7 +122,7 @@ class StoreCategoryEdit extends AdminDBEdit
 	protected function getUIValues()
 	{
 		return $this->ui->getValues(
-			array('title', 'shortname', 'bodytext', 'always_visible'));
+			array('title', 'shortname', 'description', 'bodytext', 'always_visible'));
 	}
 
 	// }}}

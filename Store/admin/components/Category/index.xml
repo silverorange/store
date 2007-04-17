@@ -60,6 +60,12 @@
 				</object>
 			</object>
 			<object class="SwatDetailsViewField"> 
+				<property name="title" translatable="yes">Description</property>
+				<object class="SwatNullTextCellRenderer">
+					<property name="text" type="data">description</property>
+				</object>
+			</object>
+			<object class="SwatDetailsViewField"> 
 				<property name="title" translatable="yes">Body Text</property>
 				<object class="SwatNullTextCellRenderer">
 					<property name="text" type="data">bodytext</property>
