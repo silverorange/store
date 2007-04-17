@@ -17,7 +17,7 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 	public function init()
 	{
 		parent::init();
-		$this->resetProgress();
+//		$this->resetProgress();
 	}
 
 	// }}}
@@ -69,7 +69,7 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 	public function build()
 	{
 		parent::build();
-		$this->app->session->logout();
+//		$this->app->session->logout();
 
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
 			'packages/store/styles/store-checkout-final-page.css',
@@ -100,6 +100,20 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 			$header->content_type = 'text/xml';
 			$header->content = SwatString::toXHTML(
 				$this->app->session->order->getReceiptHeader()).
+				'<div style="page-break-after: always"></div>';
+		}
+	}
+
+	// }}}
+	// {{{ protected function buildOrderFooter()
+
+	protected function buildOrderFooter()
+	{
+		$footer = $this->ui->getWidget('footer');
+		if ($footer instanceof SwatContentBlock) {
+			$footer->content_type = 'text/xml';
+			$footer->content = SwatString::toXHTML(
+				$this->app->session->order->getReceiptFooter()).
 				'<div style="page-break-after: always"></div>';
 		}
 	}
