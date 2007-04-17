@@ -109,8 +109,14 @@ abstract class StoreOrderConfirmationMailMessage
 			'SwatStyleSheetHtmlHeadEntry');
 
 		echo '</head><body id="order-confirmation-email">';
-		echo SwatString::toXHTML($this->order->getReceiptHeader());
+		echo SwatString::toXHTML(SwatString::linkify(
+			$this->order->getReceiptHeader()));
+
 		$ui->display();
+
+		echo SwatString::toXHTML(SwatString::linkify(
+			$this->order->getReceiptFooter()));
+
 		echo '</body></html>';
 
 		return ob_get_clean();
