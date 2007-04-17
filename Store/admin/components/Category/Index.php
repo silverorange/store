@@ -624,7 +624,7 @@ class StoreCategoryIndex extends AdminIndex
 
 
 		$sql = 'select category
-			from VisibleCategoryView 
+			from VisibleCategoryView
 			where category in (select id from Category where parent %s %s)';
 
 		$sql = sprintf($sql,

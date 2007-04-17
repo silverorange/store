@@ -20,10 +20,6 @@
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Enabled?</property>
-				<widget class="SwatCheckbox" id="enabled" />
-			</widget>
-			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Available to Customers in the following Regions</property>
 				<widget class="SwatCheckboxList" id="regions" />
 			</widget>

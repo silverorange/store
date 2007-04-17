@@ -29,7 +29,7 @@ class StorePaymentTypeEdit extends AdminDBEdit
 
 		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
 
-		$this->fields = array('title', 'boolean:enabled', 'shortname');
+		$this->fields = array('title', 'shortname');
 
 		$region_list = $this->ui->getWidget('regions');
 		$region_list->options = SwatDB::getOptionArray($this->app->db,
@@ -85,7 +85,7 @@ class StorePaymentTypeEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$values = $this->ui->getValues(array('title', 'enabled', 'shortname'));
+		$values = $this->ui->getValues(array('title', 'shortname'));
 
 		if ($this->id === null)
 			$this->id = SwatDB::insertRow($this->app->db, 'PaymentType',
@@ -95,6 +95,7 @@ class StorePaymentTypeEdit extends AdminDBEdit
 				$values, 'id', $this->id);
 
 		$region_list = $this->ui->getWidget('regions');
+		print_r($region_list->values); exit;
 
 		SwatDB::updateBinding($this->app->db, 'PaymentTypeRegionBinding',
 			'payment_type', $this->id, 'region', $region_list->values,

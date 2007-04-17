@@ -37,19 +37,31 @@
 						<property name="text" type="data">shortname</property>
 					</object>
 				</object>
-				<object class="AdminTableViewOrderableColumn" id="enabled">
-					<property name="title" translatable="yes">Enabled</property>
-					<object class="SwatBooleanCellRenderer">
-						<property name="value" type="data">enabled</property>
+				<object class="AdminTableViewOrderableColumn" id="status">
+					<property name="title" translatable="yes">Enabled for</property>
+					<object class="StorePaymentTypeStatusCellRenderer">
+						<property name="payment_type" type="data">id</property>
 					</object>
 				</object>
 			</widget>
 			<widget class="SwatActions" id="index_actions">
 				<widget class="SwatActionItem" id="enable">
-					<property name="title">enable</property>
+					<property name="title" translatable="yes">enable…</property>
+					<widget class="SwatFormField">
+						<property name="title" translatable="yes">Region</property>
+						<widget class="SwatFlydown" id="enable_region">
+							<property name="show_blank" type="boolean">false</property>
+						</widget>
+					</widget>
 				</widget>
 				<widget class="SwatActionItem" id="disable">
-					<property name="title">disable</property>
+					<property name="title" translatable="yes">disable…</property>
+					<widget class="SwatFormField">
+						<property name="title" translatable="yes">Region</property>
+						<widget class="SwatFlydown" id="disable_region">
+							<property name="show_blank" type="boolean">false</property>
+						</widget>
+					</widget>
 				</widget>
 				<widget class="SwatActionItem" id="delete">
 					<property name="title">delete…</property>

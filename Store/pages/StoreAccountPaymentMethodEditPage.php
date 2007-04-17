@@ -224,7 +224,7 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 		$form = $this->ui->getWidget('edit_form');
 		$form->action = $this->source;
 
-		$type_where_clause = 'enabled = true';
+		$type_where_clause = 'enabled = true'; 
 		$type_join_clause = sprintf('inner join PaymentTypeRegionBinding on '.
 			'payment_type = id and region = %s',
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
