@@ -203,6 +203,23 @@ class StoreOrder extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ public function getReceiptFooter()
+
+	/**
+	 * Gets the footer text for order receipts
+	 *
+	 * Subclasses should return a string from this method if they wish to
+	 * display a footer on all order receipts. By default, an empty string is
+	 * returned so no footer is displayed on order receipts.
+	 *
+	 * @return string the footer text for order receipts.
+	 */
+	public function getReceiptFooter()
+	{
+		return '';
+	}
+
+	// }}}
 	// {{{ public function getDescription()
 
 	/**
