@@ -165,11 +165,11 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
 
 		ob_start();
 
-		echo $this->order->getReceiptHeader();
-
+		$this->displayHeaderText();
 		$this->displayDetailsText();
 		$this->displayItemsText();
 		$this->displayTotalsText();
+		$this->displayFooterText();
 
 		return ob_get_clean();
 	}
@@ -179,9 +179,6 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
 
 	protected function displayDetailsText()
 	{
-		echo self::LINE_BREAK;
-		echo self::LINE_BREAK;
-
 		$createdate = clone $this->order->createdate;
 		$createdate->convertTZ($this->app->default_time_zone);
 		printf('Order Placed: %s',
@@ -299,6 +296,32 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
 
 		echo self::LINE_BREAK;
 		printf('Total: %s', SwatString::moneyFormat($order->total, $locale));
+	}
+
+	// }}}
+	// {{{ protected function displayHeaderText()
+
+	protected function displayHeaderText()
+	{
+		$header = $this->order->getReceiptHeader();
+		if (strlen($header) > 0) {
+			echo $header;
+			echo self::LINE_BREAK;
+			echo self::LINE_BREAK;
+		}
+	}
+
+	// }}}
+	// {{{ protected function displayFooterText()
+
+	protected function displayFooterText()
+	{
+		$footer = $this->order->getReceiptFooter();
+		if (strlen($footer) > 0) {
+			echo self::LINE_BREAK;
+			echo self::LINE_BREAK;
+			echo $footer;
+		}
 	}
 
 	// }}}
