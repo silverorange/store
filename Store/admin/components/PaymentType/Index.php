@@ -3,6 +3,9 @@
 require_once 'Admin/pages/AdminIndex.php';
 require_once 'Admin/AdminTableStore.php';
 require_once 'SwatDB/SwatDB.php';
+require_once 'Store/admin/components/PaymentType/include/'.
+	'StorePaymentTypeStatusCellRenderer.php';
+
 
 /**
  * Index page for payment types
@@ -13,6 +16,12 @@ require_once 'SwatDB/SwatDB.php';
  */
 class StorePaymentTypeIndex extends AdminIndex
 {
+	// {{{ private variables
+
+	private $regions;
+
+	// }}}
+
 	// init phase
 	// {{{ protected function initInternal()
 
@@ -21,6 +30,9 @@ class StorePaymentTypeIndex extends AdminIndex
 		parent::initInternal();
 
 		$this->ui->loadFromXML(dirname(__FILE__).'/index.xml');
+		$this->regions = SwatDB::getOptionArray($this->app->db, 'Region',
+			'title', 'id');
+
 	}
 
 	// }}}
@@ -40,8 +52,17 @@ class StorePaymentTypeIndex extends AdminIndex
 			break;
 
 		case 'enable':
-			SwatDB::updateColumn($this->app->db, 'PaymentType', 
-				'boolean:enabled', true, 'id', $view->checked_items);
+			$region = $this->ui->getWidget('enable_region')->value;
+			$region_list = ($region > 0) ?
+				array($region) : array_flip($this->regions);
+
+			foreach ($view->checked_items as $item) {
+				SwatDB::updateBinding($this->app->db,
+					'PaymentTypeRegionBinding', 'payment_type', $item, 'region',
+					$region_list, 'Region', 'id');
+			}
+
+			$num = count($view->checked_items);
 
 			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One payment type has been enabled.',
@@ -51,13 +72,24 @@ class StorePaymentTypeIndex extends AdminIndex
 			break;
 
 		case 'disable':
-			SwatDB::updateColumn($this->app->db, 'PaymentType', 
-				'boolean:enabled', false, 'id', $view->checked_items);
+			$region = $this->ui->getWidget('disable_region')->value;
+			$region_list = ($region > 0) ?
+				array($region) : array_flip($this->regions);
+
+			foreach ($view->checked_items as $item) {
+				SwatDB::updateBinding($this->app->db,
+					'PaymentTypeRegionBinding', 'payment_type', $item, 'region',
+					$region_list, 'Region', 'id');
+			}
+
+			$num = count($view->checked_items);
 
 			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One payment type has been disabled.',
 				'%d payment types have been disabled.', $num),
 				SwatString::numberFormat($num)));
+
+			break;
 		}
 		
 		if ($message !== null)
@@ -67,15 +99,35 @@ class StorePaymentTypeIndex extends AdminIndex
 	// }}}
 
 	// build phase
+	// {{{ protected function buildInternal()
+
+	protected function buildInternal()
+	{
+		parent::buildInternal();
+
+		// setup the flydowns for enabled/disabled actions
+		$regions = $this->regions;
+		$regions[0] = Store::_('All Regions');
+
+		$this->ui->getWidget('enable_region')->addOptionsByArray($regions);
+		$this->ui->getWidget('disable_region')->addOptionsByArray($regions);
+	}
+
+	// }}}
+
 	// {{{ protected function getTableStore()
 
 	protected function getTableStore($view)
 	{
-		$sql = sprintf('select id, title, enabled, shortname
+		$sql = sprintf('select id, title, shortname
 				from PaymentType order by %s',
 			$this->getOrderByClause($view, 'displayorder, title'));
 
 		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
+
+		$view = $this->ui->getWidget('index_view');
+		$view->getColumn('status')->getRendererByPosition()->db =
+			$this->app->db;
 
 		return $store;
 	}

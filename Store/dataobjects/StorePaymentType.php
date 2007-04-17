@@ -36,9 +36,9 @@ class StorePaymentType extends StoreDataObject
 	// {{{ public properties
 
 	/**
-	 * Unique identifier of this payment type 
+	 * Unique identifier of this payment type
 	 *
-	 * @var string 
+	 * @var string
 	 */
 	public $id;
 
@@ -50,13 +50,6 @@ class StorePaymentType extends StoreDataObject
 	 * @var string
 	 */
 	public $shortname;
-
-	/**
-	 * Whether or not this payment type is available
-	 *
-	 * @var boolean
-	 */
-	public $enabled;
 
 	/**
 	 * User visible title for this payment type
@@ -148,13 +141,10 @@ class StorePaymentType extends StoreDataObject
 			throw new StoreException('Payment type must have an id set '.
 				'before region availability can be determined.');
 
-		if (!$this->enabled)
-			return false;
-
 		$sql = sprintf('select count(id) from PaymentType
 			inner join PaymentTypeRegionBinding on payment_type = id and
 				region = %s
-			where enabled = true and id = %s',
+			where id = %s',
 			$this->db->quote($region->id, 'integer'),
 			$this->db->quote($this->id, 'integer'));
 

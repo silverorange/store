@@ -5,7 +5,7 @@ function StoreAccountPaymentMethodPage(id, inception_date_ids,
 	this.inception_date_types = [];
 	this.issue_number_types = [];
 
-	// set up event handlers for payment types 
+	// set up event handlers for payment types
 	var payment_types = document.getElementsByName('payment_type');
 	for (var i = 0; i < payment_types.length; i++) {
 		YAHOO.util.Event.addListener(payment_types[i], 'click',

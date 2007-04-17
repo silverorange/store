@@ -80,7 +80,7 @@ StoreCheckoutPaymentMethodPage.handlePaymentTypeClick = function(event, page)
 
 StoreCheckoutPaymentMethodPage.prototype.updateFields = function()
 {
-	if (this.isSensitive()) 
+	if (this.isSensitive())
 		this.sensitize();
 	else
 		this.desensitize();
@@ -96,7 +96,7 @@ StoreCheckoutPaymentMethodPage.prototype.updateFields = function()
 		this.desensitizeIssueNumber();
 }
 
-// payment method fields 
+// payment method fields
 
 StoreCheckoutPaymentMethodPage.prototype.isSensitive = function()
 {

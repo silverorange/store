@@ -134,7 +134,7 @@ class StoreProductDetails extends AdminIndex
 			$this->app->messages->add($message);
 			break;
 
-		case 'change_status' :
+		case 'change_status':
 			$new_status = $this->ui->getWidget('status')->value;
 			$this->changeStatus($view, $new_status);
 			break;
