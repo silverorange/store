@@ -411,9 +411,9 @@ class StoreCategory extends StoreDataObject
 		}
 
 		if (strlen($this->description)) {
-			$description_div = new SwatHtmlTag('div');
-			$description_div->class = 'category-desciption';
-			$description_div->setContent($this->description);
+			$description_p = new SwatHtmlTag('p');
+			$description_p->class = 'category-desciption';
+			$description_p->setContent($this->description);
 		}
 
 		if ($this->image !== null) {
@@ -438,7 +438,7 @@ class StoreCategory extends StoreDataObject
 			$details_span->display();
 
 		if (strlen($this->description))
-			$description_div->display();
+			$description_p->display();
 	}
 
 	// }}}
