@@ -160,10 +160,6 @@ abstract class StoreOrderConfirmationMailMessage
 
 	public function getTextBody()
 	{
-		$order = $this->order;
-
-		$locale = $this->order->locale->id;
-
 		ob_start();
 
 		$this->displayHeaderText();
