@@ -69,6 +69,9 @@ class StoreCategoryPage extends StoreStorePage
 		$this->layout->data->title = 
 			SwatString::minimizeEntities($category->title);
 
+		$this->layout->data->description = 
+			SwatString::minimizeEntities($category->description);
+
 		$this->layout->data->content= 
 			SwatString::toXHTML($category->bodytext);
 
@@ -96,7 +99,8 @@ class StoreCategoryPage extends StoreStorePage
 	protected function querySubCategories($category_id = null)
 	{
 		$sql = 'select Category.id, Category.title, Category.shortname,
-				Category.image, c.product_count, c.region as region_id
+				Category.description, Category.image,
+				c.product_count, c.region as region_id
 			from Category
 			left outer join CategoryVisibleProductCountByRegionCache as c
 				on c.category = Category.id and c.region = %s

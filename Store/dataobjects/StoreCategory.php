@@ -410,6 +410,12 @@ class StoreCategory extends StoreDataObject
 				$this->getProductCount()));
 		}
 
+		if (strlen($this->description)) {
+			$description_div = new SwatHtmlTag('div');
+			$description_div->class = 'category-desciption';
+			$description_div->setContent($this->description);
+		}
+
 		if ($this->image !== null) {
 			$img_tag = $this->image->getImgTag('thumb');
 		} else {
@@ -430,6 +436,9 @@ class StoreCategory extends StoreDataObject
 
 		if ($this->getProductCount() > 1)
 			$details_span->display();
+
+		if (strlen($this->description))
+			$description_div->display();
 	}
 
 	// }}}
