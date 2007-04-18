@@ -296,7 +296,7 @@ abstract class StorePaymentMethod extends StoreDataObject
 		echo $this->payment_type->title;
 
 		if ($this->card_number_preview !== null) {
-			echo ': ', StorePaymentType::formatCardNumber(
+			echo $line_break, StorePaymentType::formatCardNumber(
 				$this->card_number_preview,
 				$this->payment_type->getCardMaskedFormat());
 		}
