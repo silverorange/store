@@ -151,8 +151,10 @@ class StoreAccountDetails extends AdminIndex
 		$toolbar = $this->ui->getWidget('details_toolbar');
 		$toolbar->setToolLinkValues($this->id);
 
-		$toolbar = $this->ui->getWidget('invoice_toolbar');
-		$toolbar->setToolLinkValues($this->id);
+		if ($this->ui->hasWidget('invoice_toolbar')) {
+			$toolbar = $this->ui->getWidget('invoice_toolbar');
+			$toolbar->setToolLinkValues($this->id);
+		}
 
 		$toolbar = $this->ui->getWidget('address_details_toolbar');
 		$toolbar->setToolLinkValues($this->id);
@@ -174,11 +176,13 @@ class StoreAccountDetails extends AdminIndex
 		$date_renderer = $date_column->getRendererByPosition();
 		$date_renderer->display_time_zone = $this->app->default_time_zone;
 
-		$date_column =
-			$this->ui->getWidget('invoices_view')->getColumn('createdate');
+		if ($this->ui->hasWidget('invoice_toolbar')) {
+			$date_column =
+				$this->ui->getWidget('invoices_view')->getColumn('createdate');
 
-		$date_renderer = $date_column->getRendererByPosition();
-		$date_renderer->display_time_zone = $this->app->default_time_zone;
+			$date_renderer = $date_column->getRendererByPosition();
+			$date_renderer->display_time_zone = $this->app->default_time_zone;
+		}
 	}
 
 	// }}}
