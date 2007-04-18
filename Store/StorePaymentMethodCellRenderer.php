@@ -21,6 +21,13 @@ class StorePaymentMethodCellRenderer extends SwatCellRenderer
 	 */
 	public $payment_method;
 
+	/**
+	 * Whether or not to show additional details for card-type payment methods
+	 *
+	 * @var boolean
+	 */
+	public $display_details = true;
+
 	// }}}
 	// {{{ public function render()
 
@@ -30,7 +37,7 @@ class StorePaymentMethodCellRenderer extends SwatCellRenderer
 			return;
 
 		if ($this->payment_method instanceof StorePaymentMethod)
-			$this->payment_method->display();
+			$this->payment_method->display($this->display_details);
 	}
 
 	// }}}
