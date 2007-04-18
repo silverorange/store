@@ -44,7 +44,6 @@ abstract class StoreOrderConfirmationMailMessage
 	const LINE_BREAK = "\n";
 
 	// }}}
-
 	// {{{ public function __construct()
 
 	public function __construct(SiteApplication $app, StoreOrder $order)
