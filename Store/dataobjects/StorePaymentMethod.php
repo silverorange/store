@@ -234,7 +234,7 @@ abstract class StorePaymentMethod extends StoreDataObject
 	 * @param boolean $display_details optional. Include additional details
 	 *                                  for card-type payment methods.
 	 */
-	public function display()
+	public function display($display_details = true)
 	{
 		$span_tag = new SwatHtmlTag('span');
 		$span_tag->class = 'store-payment-method';
