@@ -83,7 +83,7 @@ abstract class StoreOrderConfirmationMailMessage
 	// }}}
 
 	// html email
-	// {{{ protected function getHtmlBody()
+	// {{{ public function getHtmlBody()
 
 	public function getHtmlBody()
 	{
