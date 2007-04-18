@@ -157,6 +157,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			// save account
 			$account->save();
 
+			// if this is a new account, log it in
 			if ($new_account)
 				$this->app->session->loginById($account->id);
 		}
