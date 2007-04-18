@@ -45,7 +45,7 @@ abstract class StorePaymentMethod extends StoreDataObject
 	 *
 	 * This value is stored unencrypted and is displayed to the customer to
 	 * allow the customer to identify his or her cards.  Field length in the
-	 * database is 6, but stored length is dependent on card type
+	 * database is 6, but stored length is dependent on card type.
 	 *
 	 * @var string
 	 */
@@ -229,7 +229,10 @@ abstract class StorePaymentMethod extends StoreDataObject
 	// {{{ public function display()
 
 	/**
-	 * Displays this payment method formatted
+	 * Displays this payment method
+	 *
+	 * @param boolean $display_details optional. Include additional details
+	 *                                  for card-type payment methods.
 	 */
 	public function display()
 	{
@@ -249,7 +252,8 @@ abstract class StorePaymentMethod extends StoreDataObject
 			$span_tag->display();
 		}
 
-		if ($this->card_expiry !== null || $this->card_fullname !== null) {
+		if ($display_details &&
+			($this->card_expiry !== null || $this->card_fullname !== null)) {
 
 			echo '<br />';
 
@@ -277,29 +281,35 @@ abstract class StorePaymentMethod extends StoreDataObject
 	// {{{ public function displayAsText()
 
 	/**
-	 * Displays this payment method formatted
+	 * Displays this payment method
 	 *
 	 * This method is ideal for email.
+	 *
+	 * @param boolean $display_details optional. Include additional details
+	 *                                  for card-type payment methods.
+	 * @param string $line_break optional. The character or characters used to
+	 *                            represent line-breaks in the text display of
+	 *                            this payment method.
 	 */
-	public function displayAsText()
+	public function displayAsText($display_details = true, $line_break = "\n")
 	{
 		echo $this->payment_type->title;
 
 		if ($this->card_number_preview !== null) {
-			echo "\n";
-			echo StorePaymentType::formatCardNumber(
+			echo ': ', StorePaymentType::formatCardNumber(
 				$this->card_number_preview,
 				$this->payment_type->getCardMaskedFormat());
 		}
 
-		if ($this->card_expiry !== null) {
-			echo "\nExpiry: ",
-				$this->card_expiry->format(SwatDate::DF_CC_MY);
-		}
+		if ($display_details) {
+			if ($this->card_expiry !== null) {
+				echo $line_break, 'Expiry: ',
+					$this->card_expiry->format(SwatDate::DF_CC_MY);
+			}
 
-		if ($this->card_fullname !== null) {
-			echo "\n",
-				$this->card_fullname;
+			if ($this->card_fullname !== null) {
+				echo $line_break, $this->card_fullname;
+			}
 		}
 	}
 
