@@ -205,7 +205,7 @@ abstract class StoreOrderConfirmationMailMessage
 
 		if ($this->order->payment_method !== null) {
 			echo 'Payment:', self::LINE_BREAK;
-			$this->order->payment_method->displayAsText();
+			$this->displayPaymentMethodText();
 			echo self::LINE_BREAK, self::LINE_BREAK;
 		}
 
@@ -325,6 +325,14 @@ abstract class StoreOrderConfirmationMailMessage
 			echo self::LINE_BREAK;
 			echo $footer;
 		}
+	}
+
+	// }}}
+	// {{{ protected function displayPaymentMethodText()
+
+	protected function displayPaymentMethodText()
+	{
+		$this->order->payment_method->displayAsText(true, self::LINE_BREAK);
 	}
 
 	// }}}
