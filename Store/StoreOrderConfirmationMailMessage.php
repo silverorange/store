@@ -108,17 +108,32 @@ abstract class StoreOrderConfirmationMailMessage
 			'SwatStyleSheetHtmlHeadEntry');
 
 		echo '</head><body id="order-confirmation-email">';
-		echo SwatString::toXHTML(SwatString::linkify(
-			$this->order->getReceiptHeader()));
-
 		$ui->display();
-
-		echo SwatString::toXHTML(SwatString::linkify(
-			$this->order->getReceiptFooter()));
-
 		echo '</body></html>';
 
 		return ob_get_clean();
+	}
+
+	// }}}
+	// {{{ protected function buildOrderHeader()
+
+	protected function buildOrderHeader(StoreUI $ui)
+	{
+		$header = $ui->getWidget('header');
+		$header->content_type = 'text/xml';
+		$header->content = SwatString::toXHTML(SwatString::linkify(
+			$this->order->getReceiptHeader()));
+	}
+
+	// }}}
+	// {{{ protected function buildOrderFooter()
+
+	protected function buildOrderFooter(StoreUI $ui)
+	{
+		$footer = $ui->getWidget('footer');
+		$footer->content_type = 'text/xml';
+		$footer->content = SwatString::toXHTML(SwatString::linkify(
+			$this->order->getReceiptFooter()));
 	}
 
 	// }}}
@@ -151,6 +166,9 @@ abstract class StoreOrderConfirmationMailMessage
 		$items_view->getRow('subtotal')->value = $this->order->getSubtotal();
 
 		$items_view->getRow('total')->value = $this->order->total;
+
+		$this->buildOrderHeader($ui);
+		$this->buildOrderFooter($ui);
 	}
 
 	// }}}
