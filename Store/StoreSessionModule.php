@@ -71,6 +71,7 @@ class StoreSessionModule extends SiteSessionModule
 			$this->activate();
 			$this->account = $account;
 
+			$this->session->regenerateId();
 			$this->setAccountCookie();
 			$this->runLoginCallbacks();
 
@@ -109,6 +110,7 @@ class StoreSessionModule extends SiteSessionModule
 			$this->activate();
 			$this->account = $account;
 
+			$this->session->regenerateId();
 			$this->setAccountCookie();
 			$this->runLoginCallbacks();
 
