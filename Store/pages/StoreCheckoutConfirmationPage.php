@@ -263,6 +263,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		} elseif ($e instanceof StorePaymentCvvException) {
 			$this->ui->getWidget('message_display')->add(
 				$this->getPaymentErrorMessage('card-verification-value'));
+		} elseif ($e instanceof StorePaymentCardTypeException) {
+			$this->ui->getWidget('message_display')->add(
+				$this->getPaymentErrorMessage('card-type'));
 		} else {
 			// relocate on fatal payment processing errors and give no
 			// opportunity to edit the order
@@ -347,6 +350,28 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			$message->secondary_content =
 				'<p>'.sprintf(
 				Store::_('%sCard security code does not correspond with card '.
+					'number.%s Your order has %snot%s been placed. '.
+					'Please edit your %spayment information%s and try again.'),
+					'<strong>', '</strong>', '<em>', '</em>',
+					'<a href="checkout/confirmation/paymentmethod">', '</a>').
+				' '.Store::_('No funds have been removed from your card.').
+				'</p><p>'.sprintf(
+				Store::_('If you are still unable to complete your order '.
+					'after confirming your payment information, please '.
+					'%scontact us%s. Your order details have been recorded.'),
+					'<a href="about/contact">', '</a>').
+				'</p>';
+
+			break;
+		case 'card-type':
+			$message = new SwatMessage(
+				Store::_('There was a problem processing your payment.'),
+				SwatMessage::ERROR);
+			
+			$message->content_type = 'text/xml';
+			$message->secondary_content =
+				'<p>'.sprintf(
+				Store::_('%sCard type does not correspond with card '.
 					'number.%s Your order has %snot%s been placed. '.
 					'Please edit your %spayment information%s and try again.'),
 					'<strong>', '</strong>', '<em>', '</em>',
