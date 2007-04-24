@@ -589,6 +589,9 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 			case 'Security code length is invalid.':
 				throw new StorePaymentCvvException($status_detail);
 				break;
+			switch 'The \'card type\' does not match the card number.':
+				throw new StorePaymentCardTypeException($status_detail);
+				break;
 			default:
 				throw new StorePaymentMalformedException($status_detail);
 				break;
