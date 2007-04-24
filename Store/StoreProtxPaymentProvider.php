@@ -604,6 +604,9 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 				'address, or AVS checks will fail.':
 				throw new StorePaymentAddressException($status_detail);
 				break;
+			case 'The card number given is invalid.':
+				throw new StorePaymentCardTypeException($status_detail);
+				break;
 			default:
 				throw new StorePaymentInvalidException($status_detail);
 				break;
