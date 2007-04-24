@@ -13,6 +13,7 @@ require_once 'Store/exceptions/StorePaymentNotAuthorizedException.php';
 require_once 'Store/exceptions/StorePaymentRejectedException.php';
 
 require_once 'Store/exceptions/StorePaymentAddressException.php';
+require_once 'Store/exceptions/StorePaymentCardTypeException.php';
 require_once 'Store/exceptions/StorePaymentCvvException.php';
 
 /**
