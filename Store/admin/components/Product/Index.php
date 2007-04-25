@@ -20,7 +20,7 @@ require_once
  * Index page for Products
  *
  * @package   Store 
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductIndex extends AdminSearch
@@ -85,11 +85,8 @@ class StoreProductIndex extends AdminSearch
 			$this->quickSKUSearch();
 		}
 
-		$index = $this->ui->getWidget('results_frame');
-		if ($this->hasState() && $index->visible === false) {
+		if ($this->hasState())
 			$this->loadState();
-			$index->visible = true;
-		}
 
 		$pager = $this->ui->getWidget('pager');
 		$pager->process();
@@ -147,6 +144,11 @@ class StoreProductIndex extends AdminSearch
 
 		$category_tree = SwatDB::getDataTree($rs, 'title', 'id', 'levelnum');
 		$tree->addTree($category_tree);
+
+		if (!$this->hasState()) {
+			$this->ui->getWidget('results_message')->content =
+				Store::_('No search has been performed yet.');
+		}
 	}
 
 	// }}}
@@ -203,6 +205,19 @@ class StoreProductIndex extends AdminSearch
 	protected function getProductSearch()
 	{
 		return new StoreProductSearch($this->ui, $this->app->db);
+	}
+
+	// }}}
+	// {{{ protected function buildViews()
+
+	protected function buildViews()
+	{
+		if (!$this->hasState()) {
+			$this->ui->getWidget('index_view')->visible = false;
+			$this->ui->getWidget('index_view')->model = new SwatTableStore();
+		}
+
+		parent::buildViews();
 	}
 
 	// }}}
