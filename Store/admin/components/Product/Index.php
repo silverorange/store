@@ -144,11 +144,6 @@ class StoreProductIndex extends AdminSearch
 
 		$category_tree = SwatDB::getDataTree($rs, 'title', 'id', 'levelnum');
 		$tree->addTree($category_tree);
-
-		if (!$this->hasState()) {
-			$this->ui->getWidget('results_message')->content =
-				Store::_('No search has been performed yet.');
-		}
 	}
 
 	// }}}
