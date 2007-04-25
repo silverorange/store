@@ -10,7 +10,7 @@ require_once 'Date.php';
  * Edit page for Products
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductEdit extends AdminDBEdit
@@ -21,7 +21,6 @@ class StoreProductEdit extends AdminDBEdit
 	protected $ui_xml = 'Store/admin/components/Product/edit.xml';
 
 	// }}}
-
 	// {{{ private properties
 
 	private $category_id;
@@ -41,16 +40,12 @@ class StoreProductEdit extends AdminDBEdit
 
 		$this->category_id = SiteApplication::initVar('category');
 
-		if ($this->category_id === null && $this->id === null)
-			throw new AdminNoAccessException(Store::_(
-				'A category ID or a product ID must be passed in the URL.'));
-
 		$catalog_flydown = $this->ui->getWidget('catalog');
 		$catalog_flydown->addOptionsByArray(SwatDB::getOptionArray(
 			$this->app->db, 'Catalog', 'title', 'id', 'title'));
 
-		// Only show blank option if there is more than one catalogue to choose
-		// from.
+		// Only show blank option in catalogue flydown if there is more than
+		// one catalogue to choose from.
 		$catalog_flydown->show_blank = (count($catalog_flydown->options) > 1);
 
 		if ($this->id === null) {
@@ -116,13 +111,14 @@ class StoreProductEdit extends AdminDBEdit
 			$this->id = SwatDB::insertRow($this->app->db, 'Product',
 				$this->fields, $values, 'id');
 
-			$category = 
-				$this->ui->getWidget('edit_form')->getHiddenField('category');
+			$form = $this->ui->getWidget('edit_form');
+			$category = $form->getHiddenField('category');
+			if ($category !== null) {
+				$sql = sprintf('insert into CategoryProductBinding
+					(category, product) values (%s, %s)', $category, $this->id);
 
-			$sql = sprintf('insert into CategoryProductBinding
-				(category, product) values (%s, %s)', $category, $this->id);
-
-			SwatDB::query($this->app->db, $sql);
+				SwatDB::query($this->app->db, $sql);
+			}
 		} else {
 			SwatDB::updateRow($this->app->db, 'Product', $this->fields, $values,
 				'id', $this->id);
@@ -190,13 +186,31 @@ class StoreProductEdit extends AdminDBEdit
 	{
 		parent::buildInternal();
 
+		// orphan product warning
+		if ($this->id === null && $this->category_id === null) {
+			$message = new SwatMessage(Store::_(
+				'This product is not being created inside a category.'),
+				SwatMessage::WARNING);
+
+			$message->secondary_content = Store::_(
+				'Though it may be possible to purchase from this product on '.
+				'the front-end, it will not be possible to browse to this '.
+				'product on the front-end.');
+
+			$this->ui->getWidget('orphan_note')->add($message, SwatMessageDisplay::DISMISS_OFF);
+		}
+
 		// smart defaulting of the catalog
 		if ($this->id === null) {
+			$catalog = null;
+
+			// check catalogue selector
 			// TODO: use $this->app->session
 			if (isset($_SESSION['catalog']) &&
 				is_numeric($_SESSION['catalog'])) {
 				$catalog = $_SESSION['catalog'];
-			} else {
+			// check catelogue used by most products in this cateorgy
+			} elseif ($this->category_id !== null) {
 				$sql = 'select count(catalog) as num_products, catalog 
 					from Product 
 					where id in (
@@ -207,10 +221,11 @@ class StoreProductEdit extends AdminDBEdit
 					limit 1';
 
 				$row = SwatDB::queryRow($this->app->db, sprintf($sql, 
-					$this->category_id));
+					$this->app->db->quote($this->category_id, 'integer')));
 
 				$catalog = ($row === null) ? null : $row->catalog;
 			}
+
 			$this->ui->getWidget('catalog')->value = $catalog;
 		}
 	}
