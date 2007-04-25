@@ -55,6 +55,7 @@
 		<widget class="SwatTextarea" id="comments">
 			<property name="rows" type="integer">4</property>
 			<property name="cols" type="integer">20</property>
+			<property name="resizeable" type="boolean">false</property>
 		</widget>
 	</widget>
 </swatml>
