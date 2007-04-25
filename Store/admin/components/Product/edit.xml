@@ -4,6 +4,7 @@
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="edit_frame">
 		<property name="title" translatable="yes">Product</property>
+		<widget class="SwatMessageDisplay" id="orphan_note" />
 		<widget class="SwatForm" id="edit_form">
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Title</property>
