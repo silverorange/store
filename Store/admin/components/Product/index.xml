@@ -3,9 +3,14 @@
 <swatml>
 	<widget class="SwatFrame" id="results_frame">
 		<property name="title" translatable="yes">Products</property>
-		<property name="visible" type="boolean">false</property>
+		<widget class="SwatToolbar">
+			<widget class="SwatToolLink">
+				<property name="title">Add Product</property>
+				<property name="link">Product/Edit</property>
+				<property name="stock_id">create</property>
+			</widget>
+		</widget>
 		<widget class="SwatContentBlock" id="results_message" />
-	
 		<widget class="SwatForm" id="index_form">
 			<widget class="StoreProductTableView" id="index_view">
 				<object class="SwatTableViewCheckboxColumn" id="checkbox">
