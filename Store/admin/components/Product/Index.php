@@ -85,8 +85,11 @@ class StoreProductIndex extends AdminSearch
 			$this->quickSKUSearch();
 		}
 
-		if ($this->hasState())
+		$index = $this->ui->getWidget('results_frame');
+		if ($this->hasState() && $index->visible === false) {
 			$this->loadState();
+			$index->visible = true;
+		}
 
 		$pager = $this->ui->getWidget('pager');
 		$pager->process();
@@ -132,6 +135,8 @@ class StoreProductIndex extends AdminSearch
 	protected function buildInternal()
 	{
 		parent::buildInternal();
+
+		$this->ui->getWidget('toolbar')->visible = true;
 
 		$category_flydown = $this->ui->getWidget('search_category');
 
@@ -200,19 +205,6 @@ class StoreProductIndex extends AdminSearch
 	protected function getProductSearch()
 	{
 		return new StoreProductSearch($this->ui, $this->app->db);
-	}
-
-	// }}}
-	// {{{ protected function buildViews()
-
-	protected function buildViews()
-	{
-		if (!$this->hasState()) {
-			$this->ui->getWidget('index_view')->visible = false;
-			$this->ui->getWidget('index_view')->model = new SwatTableStore();
-		}
-
-		parent::buildViews();
 	}
 
 	// }}}

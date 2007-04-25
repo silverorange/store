@@ -4,6 +4,14 @@
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="search_frame">
 		<property name="title" translatable="yes">Search Products</property>
+		<widget class="SwatToolbar" id="toolbar">
+			<property name="visible" type="boolean">false</property>
+			<widget class="SwatToolLink">
+				<property name="title">Add Product</property>
+				<property name="link">Product/Edit</property>
+				<property name="stock_id">create</property>
+			</widget>
+		</widget>
 		<widget class="SwatForm" id="search_form">
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Keywords</property>
