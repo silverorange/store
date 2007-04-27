@@ -162,10 +162,17 @@ abstract class StoreOrderConfirmationMailMessage
 		$items_view = $ui->getWidget('items_view');
 		$items_view->model = $this->order->getOrderDetailsTableStore();
 
+		$items_view->getColumn('price')->getFirstRenderer()->locale =
+			$this->order->locale->id;
+
 		$items_view->getRow('shipping')->value = $this->order->shipping_total;
+		$items_view->getRow('shipping')->locale = $this->order->locale->id;
+
 		$items_view->getRow('subtotal')->value = $this->order->getSubtotal();
+		$items_view->getRow('subtotal')->locale = $this->order->locale->id;
 
 		$items_view->getRow('total')->value = $this->order->total;
+		$items_view->getRow('total')->locale = $this->order->locale->id;
 
 		$this->buildOrderHeader($ui);
 		$this->buildOrderFooter($ui);
