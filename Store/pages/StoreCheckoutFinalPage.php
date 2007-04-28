@@ -87,6 +87,7 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 		$this->buildFinalNote();
 		$this->buildAccountNote();
 		$this->buildOrderHeader();
+		$this->buildOrderFooter();
 		$this->buildOrderDetails();
 	}
 
@@ -113,8 +114,7 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 		if ($footer instanceof SwatContentBlock) {
 			$footer->content_type = 'text/xml';
 			$footer->content = SwatString::toXHTML(
-				$this->app->session->order->getReceiptFooter()).
-				'<div style="page-break-after: always"></div>';
+				$this->app->session->order->getReceiptFooter());
 		}
 	}
 
