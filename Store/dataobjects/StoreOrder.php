@@ -19,7 +19,7 @@ require_once 'Store/dataobjects/StoreInvoice.php';
  *
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrder extends StoreDataObject
@@ -208,15 +208,16 @@ class StoreOrder extends StoreDataObject
 	/**
 	 * Gets the footer text for order receipts
 	 *
-	 * Subclasses should return a string from this method if they wish to
-	 * display a footer on all order receipts. By default, an empty string is
-	 * returned so no footer is displayed on order receipts.
+	 * This text will be displayed as footer on all order receipts. By default,
+	 * a note indicating in which currency prices are displayed is returned.
 	 *
 	 * @return string the footer text for order receipts.
 	 */
 	public function getReceiptFooter()
 	{
-		return '';
+		$locale_id = $this->getInternalValue('locale');
+		return sprintf(Store::_('All prices displayed in %s.'),
+			SwatString::getInternationalCurrencySymbol($locale_id));
 	}
 
 	// }}}
