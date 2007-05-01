@@ -162,6 +162,17 @@ class StoreTableViewButtonRow extends SwatTableViewRow
 	}
 
 	// }}}
+	// {{{ public function getHtmlHeadEntrySet()
+
+	public function getHtmlHeadEntrySet()
+	{
+		$this->createEmbeddedWidgets();
+		$set = parent::getHtmlHeadEntrySet();
+		$set->addEntrySet($this->button->getHtmlHeadEntrySet());
+		return $set;
+	}
+
+	// }}}
 	// {{{ protected function displayButton()
 
 	/**
