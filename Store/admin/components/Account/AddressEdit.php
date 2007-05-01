@@ -38,12 +38,6 @@ class StoreAccountAddressEdit extends AdminDBEdit
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
 		$this->ui->loadFromXML($this->ui_xml);
 
-		$yui = new SwatYUI(array('dom', 'event'));
-		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/admin/javascript/store-account-address-edit-page.js',
-			Store::PACKAGE_ID));
-
 		$this->initAccount();
 
 		$this->fields = array(
@@ -291,6 +285,26 @@ class StoreAccountAddressEdit extends AdminDBEdit
 		return sprintf(
 			"var %s_obj = new StoreAccountAddressEditPage('%s', %s);",
 			$id, $id, $provstate_other_index);
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		$yui = new SwatYUI(array('dom', 'event'));
+		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			'packages/store/admin/javascript/store-account-address-edit-page.js',
+			Store::PACKAGE_ID));
+
+		$yui = new SwatYUI(array('dom', 'event'));
+		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			'packages/store/admin/javascript/store-account-address-edit-page.js',
+			Store::PACKAGE_ID));
 	}
 
 	// }}}
