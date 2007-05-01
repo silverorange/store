@@ -198,13 +198,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	public function postBuildCommon()
 	{
-		$method_list = $this->ui->getWidget('payment_method_list');
-
-		if ($method_list->visible) {
-			$this->layout->startCapture('content');
-			Swat::displayInlineJavaScript($this->getInlineJavaScript());
-			$this->layout->endCapture();
-		}
+		$this->layout->startCapture('content');
+		Swat::displayInlineJavaScript($this->getInlineJavaScript());
+		$this->layout->endCapture();
 	}
 
 	// }}}
@@ -400,19 +396,19 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			'packages/store/styles/store-checkout-payment-method-page.css',
 			Store::PACKAGE_ID));
 
-		$method_list = $this->ui->getWidget('payment_method_list');
-		if ($method_list->isVisible()) {
-			$yui = new SwatYUI(array('dom', 'event'));
-			$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
+		$this->layout->addHtmlHeadEntrySet(
+			$this->ui->getRoot()->getHtmlHeadEntrySet());
 
-			$path = 'packages/store/javascript/';
-			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-				$path.'store-checkout-page.js', Store::PACKAGE_ID));
+		$yui = new SwatYUI(array('dom', 'event'));
+		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
 
-			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-				$path.'store-checkout-payment-method-page.js',
-				Store::PACKAGE_ID));
-		}
+		$path = 'packages/store/javascript/';
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			$path.'store-checkout-page.js', Store::PACKAGE_ID));
+
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			$path.'store-checkout-payment-method-page.js',
+			Store::PACKAGE_ID));
 	}
 
 	// }}}
