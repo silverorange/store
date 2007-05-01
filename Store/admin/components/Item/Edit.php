@@ -348,9 +348,9 @@ class StoreItemEdit extends AdminDBEdit
 	// }}}
 
 	// finalize phase
-	// {{{ public function fiaalize()
+	// {{{ public function finalize()
 
-	public function fiaalize()
+	public function finalize()
 	{
 		parent::finalize();
 		$yui = new SwatYUI(array('dom', 'event'));
