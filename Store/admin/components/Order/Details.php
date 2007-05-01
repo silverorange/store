@@ -163,6 +163,7 @@ abstract class StoreOrderDetails extends AdminPage
 
 	public function finalize()
 	{
+		parent::finalize();
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
 			'packages/store/admin/styles/store-order-details.css',
 			Store::PACKAGE_ID));
