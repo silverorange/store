@@ -41,18 +41,6 @@ class StoreItemEdit extends AdminDBEdit
 	{
 		parent::initInternal();
 
-		$yui = new SwatYUI(array('dom', 'event'));
-		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
-
-		$this->ui->loadFromXML($this->ui_xml);
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/admin/javascript/store-item-edit-page.js',
-			Store::PACKAGE_ID));
-
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/admin/styles/store-item-edit-page.css',
-			Store::PACKAGE_ID));
-
 		$this->fields = array('description', 'sku', 'integer:status');
 
 		$this->product_id = SiteApplication::initVar('product');
@@ -355,6 +343,26 @@ class StoreItemEdit extends AdminDBEdit
 			$price_replicator->getWidget('enabled', $row->region)->value =
 				$row->enabled;
 		}
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function fiaalize()
+
+	public function fiaalize()
+	{
+		$yui = new SwatYUI(array('dom', 'event'));
+		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
+
+		$this->ui->loadFromXML($this->ui_xml);
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			'packages/store/admin/javascript/store-item-edit-page.js',
+			Store::PACKAGE_ID));
+
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/admin/styles/store-item-edit-page.css',
+			Store::PACKAGE_ID));
 	}
 
 	// }}}
