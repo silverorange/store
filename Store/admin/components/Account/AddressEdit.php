@@ -294,6 +294,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 
 	public function finalize()
 	{
+		parent::finalize();
 		$yui = new SwatYUI(array('dom', 'event'));
 		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
 		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(

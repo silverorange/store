@@ -352,6 +352,7 @@ class StoreItemEdit extends AdminDBEdit
 
 	public function fiaalize()
 	{
+		parent::finalize();
 		$yui = new SwatYUI(array('dom', 'event'));
 		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
 
