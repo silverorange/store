@@ -125,10 +125,6 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 
 	public function buildCommon()
 	{
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-checkout-basic-info-page.css',
-			Store::PACKAGE_ID));
-
 		if ($this->app->session->isLoggedIn() ||
 			!$this->app->session->checkout_with_account) {
 
@@ -168,6 +164,19 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 			$this->ui->getWidget('phone')->value = $order->phone;
 
 		$this->ui->getWidget('comments')->value = $order->comments;
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/styles/store-checkout-basic-info-page.css',
+			Store::PACKAGE_ID));
 	}
 
 	// }}}

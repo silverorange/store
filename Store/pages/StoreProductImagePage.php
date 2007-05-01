@@ -50,9 +50,6 @@ class StoreProductImagePage extends StoreStorePage
 		$this->layout->data->title = sprintf(Store::_('%s: Image'),
 			$this->product->title);
 
-		$this->layout->addHtmlHeadEntrySet(
-			$this->back_link->getHtmlHeadEntrySet());
-
 		if ($this->image_id === null)
 			$this->image = $this->product->primary_image;
 		else
@@ -76,7 +73,6 @@ class StoreProductImagePage extends StoreStorePage
 	}
 
 	// }}}
-
 	// {{{ private function buildNavBar()
 
 	private function buildNavBar()
@@ -185,6 +181,18 @@ class StoreProductImagePage extends StoreStorePage
 		$source = implode('/', $source_exp);
 
 		return $source;
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$this->layout->addHtmlHeadEntrySet(
+			$this->back_link->getHtmlHeadEntrySet());
 	}
 
 	// }}}

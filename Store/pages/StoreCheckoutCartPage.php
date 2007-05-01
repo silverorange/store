@@ -285,10 +285,6 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 	{
 		$this->buildTableView();
 
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-checkout-cart-page.css',
-			Store::PACKAGE_ID));
-
 		parent::build();
 	}
 
@@ -343,6 +339,19 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 		$ds->extension = $entry->getExtension();
 
 		return $ds;
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/styles/store-checkout-cart-page.css',
+			Store::PACKAGE_ID));
 	}
 
 	// }}}

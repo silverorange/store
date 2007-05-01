@@ -168,13 +168,12 @@ class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 
 	// }}}
 
-	// build phase
-	// {{{ public function build()
+	// finalize phase
+	// {{{ public function finalize()
 
-	public function build()
+	public function finalize()
 	{
-		parent::build();
-	
+		parent::finalize();
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
 			'packages/store/styles/store-checkout-front-page.css',
 			Store::PACKAGE_ID));

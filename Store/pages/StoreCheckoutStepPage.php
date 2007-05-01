@@ -85,6 +85,18 @@ abstract class StoreCheckoutStepPage extends StoreCheckoutUIPage
 	}
 
 	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		foreach ($this->embedded_edit_pages as $page)
+			$page->finalize();
+	}
+
+	// }}}
 }
 
 ?>

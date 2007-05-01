@@ -72,18 +72,7 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 		$this->layout->data->title = Store::_('Checkout');
 		$this->layout->navbar->popEntry();
 
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-checkout-first-page.css',
-			Store::PACKAGE_ID));
-
-
 		if ($this->app->session->checkout_with_account) {
-			$yui = new SwatYUI(array('event'));
-			$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
-			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-				'packages/store/javascript/store-checkout-first-page.js',
-				Store::PACKAGE_ID));
-
 			$this->layout->startCapture('content');
 			Swat::displayInlineJavaScript($this->getInlineJavaScript());
 			$this->layout->endCapture();
@@ -134,6 +123,28 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 		$id = 'checkout_first_page';
 		return sprintf("var %s_obj = new StoreCheckoutFirstPage();",
 			$id);
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/styles/store-checkout-first-page.css',
+			Store::PACKAGE_ID));
+
+		if ($this->app->session->checkout_with_account) {
+			$yui = new SwatYUI(array('event'));
+			$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
+
+			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+				'packages/store/javascript/store-checkout-first-page.js',
+				Store::PACKAGE_ID));
+		}
 	}
 
 	// }}}

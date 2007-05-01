@@ -118,13 +118,6 @@ class StoreAccountResetPasswordPage extends StoreArticlePage
 		$form = $this->ui->getWidget('edit_form');
 		$form->action = $this->source;
 
-		$this->layout->addHtmlHeadEntrySet(
-			$this->ui->getRoot()->getHtmlHeadEntrySet());
-
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-account-reset-password-page.css',
-			Store::PACKAGE_ID));
-
 		if ($this->account_id === null) {
 			$text = sprintf('<p>%s</p><ul><li>%s</li><li>%s</li></ul>',
 				Store::_('Please verify that the link is exactly the same as '.
@@ -150,6 +143,22 @@ class StoreAccountResetPasswordPage extends StoreArticlePage
 		$this->layout->startCapture('content');
 		$this->ui->display();
 		$this->layout->endCapture();
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$this->layout->addHtmlHeadEntrySet(
+			$this->ui->getRoot()->getHtmlHeadEntrySet());
+
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/styles/store-account-reset-password-page.css',
+			Store::PACKAGE_ID));
 	}
 
 	// }}}

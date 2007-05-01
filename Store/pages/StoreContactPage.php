@@ -127,19 +127,28 @@ class StoreContactPage extends StoreArticlePage
 	{
 		parent::build();
 
-		$this->layout->addHtmlHeadEntrySet(
-			$this->ui->getRoot()->getHtmlHeadEntrySet());
-
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-contact-page.css',
-			Store::PACKAGE_ID));
-
 		$subject_flydown = $this->ui->getWidget('subject');
 		$subject_flydown->addOptionsByArray($this->getSubjects());
 
 		$this->layout->startCapture('content', true);
 		$this->ui->getWidget('contact_form')->display();
 		$this->layout->endCapture();
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$this->layout->addHtmlHeadEntrySet(
+			$this->ui->getRoot()->getHtmlHeadEntrySet());
+
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/styles/store-contact-page.css',
+			Store::PACKAGE_ID));
 	}
 
 	// }}}

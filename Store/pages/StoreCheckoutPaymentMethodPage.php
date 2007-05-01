@@ -189,11 +189,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	public function buildCommon()
 	{
-		$this->layout->addHtmlHeadEntry(
-			new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-checkout-payment-method-page.css',
-			Store::PACKAGE_ID));
-
 		$this->buildList();
 		$this->buildForm();
 	}
@@ -206,14 +201,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$method_list = $this->ui->getWidget('payment_method_list');
 
 		if ($method_list->visible) {
-			$path = 'packages/store/javascript/';
-			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-				$path.'store-checkout-page.js', Store::PACKAGE_ID));
-
-			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-				$path.'store-checkout-payment-method-page.js',
-				Store::PACKAGE_ID));
-
 			$this->layout->startCapture('content');
 			Swat::displayInlineJavaScript($this->getInlineJavaScript());
 			$this->layout->endCapture();
@@ -399,6 +386,33 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	protected function getNewPaymentMethodText()
 	{
 		return Store::_('Add a New Payment Method');
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/styles/store-checkout-payment-method-page.css',
+			Store::PACKAGE_ID));
+
+		$method_list = $this->ui->getWidget('payment_method_list');
+		if ($method_list->isVisible()) {
+			$yui = new SwatYUI(array('dom', 'event'));
+			$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
+
+			$path = 'packages/store/javascript/';
+			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+				$path.'store-checkout-page.js', Store::PACKAGE_ID));
+
+			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+				$path.'store-checkout-payment-method-page.js',
+				Store::PACKAGE_ID));
+		}
 	}
 
 	// }}}

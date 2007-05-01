@@ -113,9 +113,6 @@ class StoreAccountForgotPasswordPage extends StoreAccountPage
 	{
 		parent::build();
 
-		$this->layout->addHtmlHeadEntrySet(
-			$this->ui->getRoot()->getHtmlHeadEntrySet());
-
 		$email = $this->app->initVar('email');
 		if ($email !== null)
 			$this->ui->getWidget('email')->value = $email;
@@ -123,6 +120,18 @@ class StoreAccountForgotPasswordPage extends StoreAccountPage
 		$this->layout->startCapture('content', true);
 		$this->ui->display();
 		$this->layout->endCapture();
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$this->layout->addHtmlHeadEntrySet(
+			$this->ui->getRoot()->getHtmlHeadEntrySet());
 	}
 
 	// }}}

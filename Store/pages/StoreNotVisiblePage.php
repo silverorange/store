@@ -50,9 +50,6 @@ abstract class StoreNotVisiblePage extends StorePage
 
 		$this->buildAvailableRegions();
 
-		$this->layout->addHtmlHeadEntrySet(
-			$this->ui->getRoot()->getHtmlHeadEntrySet());
-
 		$this->layout->startCapture('content');
 		$this->ui->display();
 		$this->layout->endCapture();
@@ -150,6 +147,18 @@ abstract class StoreNotVisiblePage extends StorePage
 		$a_tag->display();
 
 		return ob_get_clean();
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$this->layout->addHtmlHeadEntrySet(
+			$this->ui->getRoot()->getHtmlHeadEntrySet());
 	}
 
 	// }}}

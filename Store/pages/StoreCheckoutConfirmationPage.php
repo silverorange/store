@@ -399,10 +399,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	{
 		parent::buildInternal();
 
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-checkout-confirmation-page.css',
-			Store::PACKAGE_ID));
-
 		if ($this->ui->getWidget('message_display')->getMessageCount() == 0) {
 			$message = new SwatMessage(Store::_('Please Review Your Order'));
 			$message->content_type= 'text/xml';
@@ -588,6 +584,19 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			$order_item = $invoice_item->createOrderItem();
 			$order->items->add($order_item);
 		}
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/styles/store-checkout-confirmation-page.css',
+			Store::PACKAGE_ID));
 	}
 
 	// }}}

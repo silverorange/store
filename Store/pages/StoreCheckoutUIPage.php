@@ -75,10 +75,8 @@ abstract class StoreCheckoutUIPage extends StoreCheckoutPage
 	public function build()
 	{
 		parent::build();
-		$this->buildInternal();
 
-		$this->layout->addHtmlHeadEntrySet(
-			$this->ui->getRoot()->getHtmlHeadEntrySet());
+		$this->buildInternal();
 
 		if ($this->app->session->order->isFromInvoice()) {
 			$entry = $this->layout->navbar->getEntryByPosition(1);
@@ -96,6 +94,18 @@ abstract class StoreCheckoutUIPage extends StoreCheckoutPage
 
 	protected function buildInternal()
 	{
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$this->layout->addHtmlHeadEntrySet(
+			$this->ui->getRoot()->getHtmlHeadEntrySet());
 	}
 
 	// }}}
