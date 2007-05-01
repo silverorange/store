@@ -77,8 +77,7 @@ abstract class StoreStorePage extends StorePage
 	public function build()
 	{
 		parent::build();
-
-		$this->layout->navbar->createEntry('Store', 'store');
+		$this->layout->navbar->createEntry(Store::_('Store'), 'store');
 	}
 
 	// }}}
