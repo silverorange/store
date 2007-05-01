@@ -110,12 +110,21 @@ class StoreAccountChangePasswordPage extends StoreAccountPage
 		$form = $this->ui->getWidget('edit_form');
 		$form->action = $this->source;
 
-		$this->layout->addHtmlHeadEntrySet(
-			$this->ui->getRoot()->getHtmlHeadEntrySet());
-
 		$this->layout->startCapture('content');
 		$this->ui->display();
 		$this->layout->endCapture();
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$this->layout->addHtmlHeadEntrySet(
+			$this->ui->getRoot()->getHtmlHeadEntrySet());
 	}
 
 	// }}}

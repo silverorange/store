@@ -70,11 +70,6 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 	{
 		parent::build();
 		$this->app->session->logout();
-
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-checkout-final-page.css',
-			Store::PACKAGE_ID));
-
 	}
 
 	// }}}
@@ -212,6 +207,19 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 
 		$header_tag->display();
 		$paragraph_tag->display();
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/styles/store-checkout-final-page.css',
+			Store::PACKAGE_ID));
 	}
 
 	// }}}

@@ -265,20 +265,6 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 	{
 		parent::build();
 
-		$this->layout->addHtmlHeadEntrySet(XML_RPCAjax::getHtmlHeadEntrySet());
-
-		$yui = new SwatYUI(array('event', 'animation'));
-		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
-
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/javascript/store-quick-order-page.js',
-			Store::PACKAGE_ID));
-
-		$this->layout->addHtmlHeadEntry(
-			new SwatStyleSheetHtmlHeadEntry(
-				'packages/store/styles/store-quick-order-page.css',
-				Store::PACKAGE_ID));
-
 		$this->buildCartView();
 		$this->buildQuickOrderView();
 
@@ -297,9 +283,6 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 
 	protected function buildCartView()
 	{
-		$this->layout->addHtmlHeadEntrySet(
-			$this->cart_ui->getRoot()->getHtmlHeadEntrySet());
-
 		$message_display = $this->cart_ui->getWidget('messages');
 		foreach ($this->app->cart->checkout->getMessages() as $message)
 			$message_display->add($message);
@@ -324,9 +307,6 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 
 	protected function buildQuickOrderView()
 	{
-		$this->layout->addHtmlHeadEntrySet(
-			$this->form_ui->getRoot()->getHtmlHeadEntrySet());
-
 		$view = $this->form_ui->getWidget('quick_order_view');
 
 		if ($view->model->getRowCount() == 0)
@@ -396,6 +376,34 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 			$id, $id, $item_selector_id, $this->num_rows);
 
 		return $javascript;
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$this->layout->addHtmlHeadEntrySet(XML_RPCAjax::getHtmlHeadEntrySet());
+
+		$yui = new SwatYUI(array('event', 'animation'));
+		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
+
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			'packages/store/javascript/store-quick-order-page.js',
+			Store::PACKAGE_ID));
+
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/styles/store-quick-order-page.css',
+			Store::PACKAGE_ID));
+
+		$this->layout->addHtmlHeadEntrySet(
+			$this->cart_ui->getRoot()->getHtmlHeadEntrySet());
+
+		$this->layout->addHtmlHeadEntrySet(
+			$this->form_ui->getRoot()->getHtmlHeadEntrySet());
 	}
 
 	// }}}

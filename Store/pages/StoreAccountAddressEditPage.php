@@ -240,15 +240,6 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 	{
 		parent::build();
 
-		$yui = new SwatYUI(array('dom', 'event'));
-		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/javascript/store-account-address-page.js',
-			Store::PACKAGE_ID));
-
-		$this->layout->addHtmlHeadEntrySet(
-			$this->ui->getRoot()->getHtmlHeadEntrySet());
-
 		$form = $this->ui->getWidget('edit_form');
 		$form->action = $this->source;
 
@@ -330,6 +321,24 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 
 		$this->ui->getWidget('postal_code')->value = $address->postal_code;
 		$this->ui->getWidget('country')->value = $address->country->id;
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$yui = new SwatYUI(array('dom', 'event'));
+		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			'packages/store/javascript/store-account-address-page.js',
+			Store::PACKAGE_ID));
+
+		$this->layout->addHtmlHeadEntrySet(
+			$this->ui->getRoot()->getHtmlHeadEntrySet());
 	}
 
 	// }}}

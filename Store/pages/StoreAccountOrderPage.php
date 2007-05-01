@@ -219,13 +219,6 @@ class StoreAccountOrderPage extends StoreAccountPage
 	{
 		parent::build();
 
-		$this->layout->addHtmlHeadEntrySet(
-			$this->ui->getRoot()->getHtmlHeadEntrySet());
-
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-account-order-page.css',
-			Store::PACKAGE_ID));
-
 		$this->ui->getWidget('form')->action = $this->source;
 
 		$this->buildCartMessages();
@@ -355,6 +348,22 @@ class StoreAccountOrderPage extends StoreAccountPage
 
 			$this->ui->getWidget('message_display')->add($message);
 		}
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$this->layout->addHtmlHeadEntrySet(
+			$this->ui->getRoot()->getHtmlHeadEntrySet());
+
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/styles/store-account-order-page.css',
+			Store::PACKAGE_ID));
 	}
 
 	// }}}

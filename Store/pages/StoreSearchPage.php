@@ -215,20 +215,6 @@ abstract class StoreSearchPage extends StoreArticlePage
 	// }}}
 	
 	// build phase
-	// {{{ public function build()
-
-	public function build()
-	{
-		parent::build();
-
-		$this->layout->addHtmlHeadEntrySet(
-			$this->ui->getRoot()->getHtmlHeadEntrySet());
-
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-search-page.css', Store::PACKAGE_ID));
-	}
-
-	// }}}
 	// {{{ protected function searchWasPerformed()
 
 	/**
@@ -386,6 +372,21 @@ abstract class StoreSearchPage extends StoreArticlePage
 		$message->content_type = 'text/xml';
 
 		return $message;
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$this->layout->addHtmlHeadEntrySet(
+			$this->ui->getRoot()->getHtmlHeadEntrySet());
+
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/styles/store-search-page.css', Store::PACKAGE_ID));
 	}
 
 	// }}}

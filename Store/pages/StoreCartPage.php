@@ -708,14 +708,6 @@ abstract class StoreCartPage extends StoreArticlePage
 	{
 		parent::build();
 
-		$this->layout->addHtmlHeadEntry(
-			new SwatStyleSheetHtmlHeadEntry(
-				'packages/store/styles/store-cart-page.css',
-				Store::PACKAGE_ID));
-
-		$this->layout->addHtmlHeadEntrySet(
-			$this->ui->getRoot()->getHtmlHeadEntrySet());
-
 		if ($this->app->cart->checkout->isEmpty()) {
 			$empty_message = new StoreMessage(
 				Store::_('Your Shopping Cart is Empty'),
@@ -978,6 +970,22 @@ abstract class StoreCartPage extends StoreArticlePage
 			$ds->product_link = 'store/'.$entry->item->product->path;
 
 		return $ds;
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/styles/store-cart-page.css',
+			Store::PACKAGE_ID));
+
+		$this->layout->addHtmlHeadEntrySet(
+			$this->ui->getRoot()->getHtmlHeadEntrySet());
 	}
 
 	// }}}

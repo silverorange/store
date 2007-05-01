@@ -97,16 +97,25 @@ class StoreAccountLoginPage extends StoreAccountPage
 	{
 		parent::build();
 
+		$this->layout->startCapture('content', true);
+		$this->ui->display();
+		$this->layout->endCapture();
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
 		$this->layout->addHtmlHeadEntrySet(
 			$this->ui->getRoot()->getHtmlHeadEntrySet());
 
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
 			'packages/store/styles/store-account-login-page.css',
 			Store::PACKAGE_ID));
-
-		$this->layout->startCapture('content', true);
-		$this->ui->display();
-		$this->layout->endCapture();
 	}
 
 	// }}}

@@ -336,15 +336,6 @@ class StoreProductPage extends StoreStorePage
 
 	protected function buildProduct()
 	{
-		$yui = new SwatYUI(array('event'));
-		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/javascript/store-product-page.js',
-			Store::PACKAGE_ID));
-
-		$this->layout->addHtmlHeadEntrySet(
-			$this->items_ui->getRoot()->getHtmlHeadEntrySet());
-
 		$this->layout->data->title =
 			SwatString::minimizeEntities($this->product->title);
 	}
@@ -354,16 +345,6 @@ class StoreProductPage extends StoreStorePage
 
 	protected function buildCart()
 	{
-		$this->layout->addHtmlHeadEntry(
-			new SwatStyleSheetHtmlHeadEntry(
-				'packages/store/styles/store-mini-cart.css', Store::PACKAGE_ID));
-
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/javascript/store-background-image-animation.js',
-			Store::PACKAGE_ID));
-
-		$this->layout->addHtmlHeadEntrySet(
-			$this->cart_ui->getRoot()->getHtmlHeadEntrySet());
 	}
 
 	// }}}
@@ -795,6 +776,35 @@ class StoreProductPage extends StoreStorePage
 			}
 		}
 		return $this->related_articles;
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$yui = new SwatYUI(array('event'));
+		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			'packages/store/javascript/store-product-page.js',
+			Store::PACKAGE_ID));
+
+		$this->layout->addHtmlHeadEntrySet(
+			$this->items_ui->getRoot()->getHtmlHeadEntrySet());
+
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/styles/store-mini-cart.css',
+			Store::PACKAGE_ID));
+
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			'packages/store/javascript/store-background-image-animation.js',
+			Store::PACKAGE_ID));
+
+		$this->layout->addHtmlHeadEntrySet(
+			$this->cart_ui->getRoot()->getHtmlHeadEntrySet());
 	}
 
 	// }}}

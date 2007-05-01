@@ -212,15 +212,6 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 	{
 		parent::build();
 
-		$yui = new SwatYUI(array('dom', 'event'));
-		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/javascript/store-account-payment-method-page.js',
-			Store::PACKAGE_ID));
-
-		$this->layout->addHtmlHeadEntrySet(
-			$this->ui->getRoot()->getHtmlHeadEntrySet());
-
 		$form = $this->ui->getWidget('edit_form');
 		$form->action = $this->source;
 
@@ -360,6 +351,24 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 			$id,
 			implode(', ', $inception_date_ids),
 			implode(', ', $issue_number_ids));
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$yui = new SwatYUI(array('dom', 'event'));
+		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			'packages/store/javascript/store-account-payment-method-page.js',
+			Store::PACKAGE_ID));
+
+		$this->layout->addHtmlHeadEntrySet(
+			$this->ui->getRoot()->getHtmlHeadEntrySet());
 	}
 
 	// }}}

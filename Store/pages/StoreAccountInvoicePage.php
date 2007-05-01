@@ -89,13 +89,6 @@ class StoreAccountInvoicePage extends StoreAccountPage
 	{
 		parent::build();
 
-		$this->layout->addHtmlHeadEntrySet(
-			$this->ui->getRoot()->getHtmlHeadEntrySet());
-
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-account-invoice-page.css',
-			Store::PACKAGE_ID));
-
 		$this->ui->getWidget('header_checkout_button')->value =
 			$this->invoice->id;
 
@@ -210,6 +203,22 @@ class StoreAccountInvoicePage extends StoreAccountPage
 
 		foreach ($store->getRows() as $row)
 			$row->path = (isset($paths[$row->id])) ? $paths[$row->id] : null;
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$this->layout->addHtmlHeadEntrySet(
+			$this->ui->getRoot()->getHtmlHeadEntrySet());
+
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/styles/store-account-invoice-page.css',
+			Store::PACKAGE_ID));
 	}
 
 	// }}}

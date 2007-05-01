@@ -191,14 +191,8 @@ class StoreAccountEditPage extends StoreAccountPage
 	public function build()
 	{
 		parent::build();
+
 		$this->buildInternal();
-
-		$this->layout->addHtmlHeadEntrySet(
-			$this->ui->getRoot()->getHtmlHeadEntrySet());
-
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-account-edit-page.css',
-			Store::PACKAGE_ID));
 
 		$this->layout->startCapture('content');
 		$this->ui->display();
@@ -244,6 +238,22 @@ class StoreAccountEditPage extends StoreAccountPage
 		$this->ui->getWidget('email')->value = $account->email;
 		$this->ui->getWidget('confirm_email')->value = $account->email;
 		$this->ui->getWidget('phone')->value = $account->phone;
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$this->layout->addHtmlHeadEntrySet(
+			$this->ui->getRoot()->getHtmlHeadEntrySet());
+
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/styles/store-account-edit-page.css',
+			Store::PACKAGE_ID));
 	}
 
 	// }}}
