@@ -41,6 +41,8 @@ class StoreItemEdit extends AdminDBEdit
 	{
 		parent::initInternal();
 
+		$this->ui->loadFromXML($this->ui_xml);
+
 		$this->fields = array('description', 'sku', 'integer:status');
 
 		$this->product_id = SiteApplication::initVar('product');
@@ -356,7 +358,6 @@ class StoreItemEdit extends AdminDBEdit
 		$yui = new SwatYUI(array('dom', 'event'));
 		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
 
-		$this->ui->loadFromXML($this->ui_xml);
 		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
 			'packages/store/admin/javascript/store-item-edit-page.js',
 			Store::PACKAGE_ID));
