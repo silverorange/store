@@ -62,7 +62,7 @@ class StoreCategoryTitleCellRenderer extends AdminTreeTitleLinkCellRenderer
 			$out[] = Store::_('no products in the selected catalog(s)');
 		else
 			$out[] = sprintf(Store::ngettext(
-				'One product in the selected catalog(s)',
+				'one product in the selected catalog(s)',
 				'%s products in the selected catalog(s)',
 				$this->product_count),
 				SwatString::numberFormat($this->product_count));
