@@ -168,6 +168,7 @@
 	<widget class="SwatForm" id="saved_cart_form">
 		<property name="visible" type="boolean">false</property>
 		<widget class="SwatFrame" id="saved_cart_frame">
+			<widget class="SwatMessageDisplay" id="saved_cart_message_display" />
 			<widget class="SwatContentBlock" id="saved_cart_message" />
 			<!-- {{{ saved cart -->
 			<widget class="SwatTableView" id="saved_cart_view">

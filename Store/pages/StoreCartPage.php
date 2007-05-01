@@ -820,7 +820,24 @@ abstract class StoreCartPage extends StoreArticlePage
 					true;
 
 			$this->ui->getWidget('saved_cart_form')->visible = true;
-			$this->ui->getWidget('saved_cart_frame')->title = Store::_('Saved Items');
+			$this->ui->getWidget('saved_cart_frame')->title =
+				Store::_('Saved Items');
+
+			if (!$this->app->session->isLoggedIn()) {
+				$message_display =
+					$this->ui->getWidget('saved_cart_message_display');
+
+				$warning_message = new SwatMessage(sprintf(Store::_(
+					'Items will not be saved unless you %screate an account '.
+					'or log in%s.'), '<a href="account">', '</a>'),
+					SwatMessage::WARNING);
+
+				$warning_message->content_type = 'text/xml';
+
+				$message_display->add($warning_message,
+					SwatMessageDisplay::DISMISS_OFF);
+			}
+
 			$message = $this->ui->getWidget('saved_cart_message');
 			$message->content_type = 'text/xml';
 
@@ -835,21 +852,6 @@ abstract class StoreCartPage extends StoreArticlePage
 				$count);
 
 			ob_start();
-
-			if (!$this->app->session->isLoggedIn()) {
-				$message_display = new SwatMessageDisplay('saved_cart_message');
-				$warning_message = new SwatMessage(sprintf(Store::_(
-					'Items will not be saved unless you %screate an account '.
-					'or log in%s.'), '<a href="account">', '</a>'),
-					SwatMessage::WARNING);
-
-				$warning_message->content_type = 'text/xml';
-
-				$message_display->add($warning_message,
-					SwatMessageDisplay::DISMISS_OFF);
-
-				$message_display->display();
-			}
 
 			$paragraph_tag = new SwatHtmlTag('p');
 			$paragraph_tag->id = 'saved_cart_description';
