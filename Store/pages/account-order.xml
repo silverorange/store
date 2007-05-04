@@ -60,10 +60,11 @@
 			</widget>
 
 			<!-- }}} -->
-			<!-- {{{ Items -->
 
 			<widget class="SwatFrame" id="items_frame">
 				<property name="title" translatable="yes">Items</property>
+
+				<!-- {{{ Items -->
 				<widget class="SwatTableView" id="items_view">
 					<property name="classes[]">store-order-item-view</property>
 					<object class="SwatTableViewGroup">
@@ -122,9 +123,10 @@
 						<property name="offset" type="integer">1</property>
 					</object>
 				</widget>
-			</widget>
+				<!-- }}} -->
 
-			<!-- }}} -->
+				<widget class="SwatContentBlock" id="currency_note" />
+			</widget>
 		</widget>
 	</widget>
 </swatml>

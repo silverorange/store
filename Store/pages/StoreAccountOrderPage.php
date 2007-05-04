@@ -279,6 +279,13 @@ class StoreAccountOrderPage extends StoreAccountPage
 
 		$items_view->getRow('subtotal')->value = $this->order->getSubtotal();
 		$items_view->getRow('total')->value = $this->order->total;
+
+		$locale_id = $this->order->getInternalValue('locale');
+		if ($this->app->getLocale() != $locale_id) {
+			$this->ui->getWidget('currency_note')->content = sprintf(
+				Store::_('Prices for this order are in %s.'),
+				SwatString::getInternationalCurrencySymbol($locale_id));
+		}
 	}
 
 	// }}}
