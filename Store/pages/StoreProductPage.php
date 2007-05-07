@@ -792,8 +792,9 @@ class StoreProductPage extends StoreStorePage
 			'packages/store/javascript/store-product-page.js',
 			Store::PACKAGE_ID));
 
-		$this->layout->addHtmlHeadEntrySet(
-			$this->items_ui->getRoot()->getHtmlHeadEntrySet());
+		if (isset($this->items_ui))
+			$this->layout->addHtmlHeadEntrySet(
+				$this->items_ui->getRoot()->getHtmlHeadEntrySet());
 
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
 			'packages/store/styles/store-mini-cart.css',
