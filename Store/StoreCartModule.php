@@ -280,11 +280,13 @@ class StoreCartModule extends SiteApplicationModule
 
 	/**
 	 * Updates the session ID in the database when it changes
+	 *
+	 * @param string $old_id the old session ID.
+	 * @param stirng $new_id the new session ID.
 	 */
 	public function handleRegenerateId($old_id, $new_id)
 	{
 		$sql = 'update CartEntry set sessionid = %s where sessionid = %s';
-
 		$sql = sprintf($sql,
 				$this->app->db->quote($new_id, 'text'),
 				$this->app->db->quote($old_id, 'text'));
