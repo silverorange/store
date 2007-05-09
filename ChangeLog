@@ -1,3 +1,121 @@
+2007-05-09  gauthierm
+
+	* [r17437]
+	  store/trunk/www/javascript/store-checkout-payment-method-page.js:
+	  
+	  Fix for StoreCheckoutPaymentMethodPage::isSensitive() when there
+	  is no list of predefined payment methods.
+
+2007-05-09  nrf
+
+	* [r17434] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.8.1
+
+2007-05-08  gauthierm
+
+	* [r17419] store/trunk/Store/StoreCartModule.php:
+	  Add docs
+
+2007-05-07  gauthierm
+
+	* [r17391] store/trunk/Store/pages/StoreProductPage.php:
+	  Check to see if items ui exists before gathering head entries.
+	  Some custom product pages don't use the items ui.
+
+2007-05-04  steven
+
+	* [r17362]
+	  store/trunk/www/admin/styles/store-catalog-switcher.css:
+	  remove broken image reference
+
+2007-05-04  gauthierm
+
+	* [r17354] store/trunk/Store/pages/StoreAccountOrderPage.php,
+	  store/trunk/Store/pages/account-order.xml:
+	  Fix ticket #973. If an account places orders in multiple
+	  currencies the account history has no way to display which is
+	  which.
+
+2007-05-01  gauthierm
+
+	* [r17311] store/trunk/Store/pages/StoreStorePage.php:
+	  translate string in Store package.
+	* [r17307]
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php:
+	  Always show payment method JavaScript. Some card types affect
+	  field sensitivity regardless of whether or not the list of
+	  payment methods is present.
+
+2007-05-01  nick
+
+	* [r17302] store/trunk/Store/admin/components/Item/Edit.php:
+	  loadFromXML should not be in finalize, fixes #979
+	* [r17301] store/trunk/Store/admin/components/Item/Edit.php:
+	  Nice typo mike.
+
+2007-05-01  gauthierm
+
+	* [r17300] store/trunk/Store/StoreTableViewButtonRow.php:
+	  Get head entries from embedded widgets in store table view
+	  button row.
+	* [r17295] store/trunk/Store/pages/StoreCartPage.php,
+	  store/trunk/Store/pages/cart.xml:
+	  Use message display affixed to the page ui instead of creating a
+	  temporary display object. This allows HTML head entries to be
+	  collected properly.
+	* [r17293]
+	  store/trunk/Store/admin/components/Account/AddressEdit.php,
+	  store/trunk/Store/admin/components/Item/Edit.php,
+	  store/trunk/Store/admin/components/Order/Details.php:
+	  Call parent::finalize() in finalize() methods.
+	* [r17292]
+	  store/trunk/Store/admin/components/Account/AddressEdit.php,
+	  store/trunk/Store/admin/components/Invoice/Edit.php,
+	  store/trunk/Store/admin/components/Item/Edit.php,
+	  store/trunk/Store/admin/components/Order/Details.php:
+	  Use finalize method in store admin components.
+	* [r17291]
+	  store/trunk/Store/admin/components/Category/include/StoreCategoryTitleCellRenderer.php:
+	  
+	  consistify capitalization within cell renderer.
+	* [r17290]
+	  store/trunk/Store/admin/components/Product/include/StoreProductImageDisplay.php:
+	  
+	  Fix store product image display.
+	* [r17287]
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php,
+	  store/trunk/Store/pages/StoreAccountChangePasswordPage.php,
+	  store/trunk/Store/pages/StoreAccountDetailsPage.php,
+	  store/trunk/Store/pages/StoreAccountEditPage.php,
+	  store/trunk/Store/pages/StoreAccountForgotPasswordPage.php,
+	  store/trunk/Store/pages/StoreAccountInvoicePage.php,
+	  store/trunk/Store/pages/StoreAccountLoginPage.php,
+	  store/trunk/Store/pages/StoreAccountOrderPage.php,
+	  store/trunk/Store/pages/StoreAccountPaymentMethodEditPage.php,
+	  store/trunk/Store/pages/StoreAccountResetPasswordPage.php,
+	  store/trunk/Store/pages/StoreCartPage.php,
+	  store/trunk/Store/pages/StoreCheckoutBasicInfoPage.php,
+	  store/trunk/Store/pages/StoreCheckoutBillingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutCartPage.php,
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php,
+	  store/trunk/Store/pages/StoreCheckoutFinalPage.php,
+	  store/trunk/Store/pages/StoreCheckoutFirstPage.php,
+	  store/trunk/Store/pages/StoreCheckoutFrontPage.php,
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php,
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutStepPage.php,
+	  store/trunk/Store/pages/StoreCheckoutUIPage.php,
+	  store/trunk/Store/pages/StoreContactPage.php,
+	  store/trunk/Store/pages/StoreNotVisiblePage.php,
+	  store/trunk/Store/pages/StoreProductImagePage.php,
+	  store/trunk/Store/pages/StoreProductPage.php,
+	  store/trunk/Store/pages/StoreQuickOrderPage.php,
+	  store/trunk/Store/pages/StoreSearchPage.php:
+	  Use new finalize method in SitePage to build HTML head entries
+	  after the build method has run. This will help fix ticket #968.
+	  There is still a known bug in Swat and site code needs to be
+	  updated before #968 is complete.
+
 2007-04-28  gauthierm
 
 	* [r17246] store/trunk/Store/pages/StoreCheckoutFinalPage.php:
