@@ -1,3 +1,100 @@
+2007-04-28  gauthierm
+
+	* [r17246] store/trunk/Store/pages/StoreCheckoutFinalPage.php:
+	  Don't display a page break after the footer and build the footer.
+	* [r17244] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Text cleanup.
+	* [r17243] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Return note about order currency as default order receipt footer
+	  text. Part of ticket #972.
+
+2007-04-27  gauthierm
+
+	* [r17226]
+	  store/trunk/Store/StoreOrderConfirmationMailMessage.php:
+	  Set locale on total column too if it exists. Ticket #970
+	* [r17222]
+	  store/trunk/Store/StoreOrderConfirmationMailMessage.php:
+	  Set locale on order confirmation mail message money fields. Part
+	  of ticket #970.
+
+2007-04-25  gauthierm
+
+	* [r17187] store/trunk/Store/pages/checkout-basic-info.xml:
+	  Turn off resizeability of comments field on checkout basic info
+	  page as part oc ticket #966.
+	* [r17179] store/trunk/Store/admin/components/Product/Index.php,
+	  store/trunk/Store/admin/components/Product/index.xml,
+	  store/trunk/Store/admin/components/Product/search.xml:
+	  Fix ticket #259 better. This pust the add link in the search
+	  frame like on the Account component.
+	* [r17172] store/trunk/Store/admin/components/Product/Index.php:
+	  In the words of Steven: empty b0x
+	* [r17170] store/trunk/Store/admin/components/Product/Index.php,
+	  store/trunk/Store/admin/components/Product/index.xml:
+	  Finish ticket #259.
+	* [r17168] store/trunk/Store/admin/components/Product/Edit.php,
+	  store/trunk/Store/admin/components/Product/edit.xml:
+	  Allow creating products that are not in a category. Part of
+	  ticket #259.
+
+2007-04-24  gauthierm
+
+	* [r17145] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Contrary to Protx documentation, this is the actual status
+	  message reported by Protx.
+
+2007-04-24  nrf
+
+	* [r17144] store/trunk/Store/StoreSessionModule.php:
+	  wrong scope
+
+2007-04-24  gauthierm
+
+	* [r17143] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Fix typo.
+	* [r17142] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Require exception class.
+	* [r17141] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Parse another error message that means the same thing for
+	  card-type errors.
+
+2007-04-24  nrf
+
+	* [r17140] store/trunk/Store/StoreSessionModule.php:
+	  Regenerate session ID on login in addition to entering SSL.
+
+2007-04-24  gauthierm
+
+	* [r17139]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Catch and handle new payment card type exceptions. This should
+	  finish #953.
+	* [r17138] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Throw a payment exception when processing a Protx payment
+	  request and the wrong card type is selected for the entered card
+	  number.
+	* [r17137]
+	  store/trunk/Store/exceptions/StorePaymentCardTypeException.php:
+	  New exception for card-type payment errors. Part of ticket #953.
+
+2007-04-20  gauthierm
+
+	* [r17040]
+	  store/trunk/Store/StoreOrderConfirmationMailMessage.php:
+	  Add protected methods for building the order header and footer
+	  for HTML order confirmation mail messages.
+
+2007-04-20  nick
+
+	* [r17038] store/trunk/sql/functions/getCategoryPath.sql:
+	  Bit rot
+
+2007-04-19  nrf
+
+	* [r17004] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.8.0
+
 2007-04-18  gauthierm
 
 	* [r16991] store/trunk/Store/StorePaymentMethodCellRenderer.php:
