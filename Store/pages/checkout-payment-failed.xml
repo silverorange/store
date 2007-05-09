@@ -112,5 +112,6 @@
 		</widget>
 
 		<!-- }}} -->
+		<widget class="SwatContentBlock" id="footer" />
 	</widget>
 </swatml>
