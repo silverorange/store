@@ -100,7 +100,11 @@ StoreCheckoutPaymentMethodPage.prototype.updateFields = function()
 
 StoreCheckoutPaymentMethodPage.prototype.isSensitive = function()
 {
-	return this.list_new.checked;
+	var sensitive = true;
+	if (this.list_new)
+		sensitive = this.list_new.checked;
+	
+	return sensitive;
 }
 
 StoreCheckoutPaymentMethodPage.prototype.sensitize = function()
