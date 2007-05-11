@@ -75,6 +75,10 @@ class StoreCategoryPage extends StoreStorePage
 		$this->layout->data->content= 
 			SwatString::toXHTML($category->bodytext);
 
+		$this->layout->data->meta_description =
+			SwatString::minimizeEntities(SwatString::condense(
+			SwatString::stripXHTMLTags($category->bodytext, 400)));
+
 		$this->layout->startCapture('content');
 		$this->displayRelatedArticles($category);
 		$this->layout->endCapture();

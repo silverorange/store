@@ -119,6 +119,10 @@ class StoreArticlePage extends StorePage
 		$this->layout->data->title =
 			SwatString::minimizeEntities((string)$this->article->title);
 
+		$this->layout->data->meta_description =
+			SwatString::minimizeEntities(SwatString::condense(
+			SwatString::stripXHTMLTags($this->article->bodytext, 400)));
+
 		$this->layout->startCapture('content');
 		$this->displayArticle($this->article);
 		$this->displaySubArticles($sub_articles);
