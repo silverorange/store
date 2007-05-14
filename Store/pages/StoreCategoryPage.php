@@ -9,27 +9,11 @@ require_once 'Store/dataobjects/StoreProductImageWrapper.php';
 
 /**
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2007 silverorange
  */
 class StoreCategoryPage extends StoreStorePage
 {
 	// init phase
-	// {{{ protected function getSelectedCategoryId()
-
-	protected function getSelectedCategoryId()
-	{
-		$category_id = null;
-
-		if ($this->path !== null) {
-			$path_entry = $this->path->getLast();
-			if ($path_entry !== null)
-				$category_id = $path_entry->id;
-		}
-
-		return $category_id;
-	}
-
-	// }}}
 	// {{{ public function isVisibleInRegion()
 
 	public function isVisibleInRegion(StoreRegion $region)
@@ -51,6 +35,22 @@ class StoreCategoryPage extends StoreStorePage
 		}
 
 		return ($category !== null);
+	}
+
+	// }}}
+	// {{{ protected function getSelectedCategoryId()
+
+	protected function getSelectedCategoryId()
+	{
+		$category_id = null;
+
+		if ($this->path !== null) {
+			$path_entry = $this->path->getLast();
+			if ($path_entry !== null)
+				$category_id = $path_entry->id;
+		}
+
+		return $category_id;
 	}
 
 	// }}}
@@ -344,9 +344,9 @@ class StoreCategoryPage extends StoreStorePage
 	}
 
 	// }}}
-	// {{{ private function buildNavBar()
+	// {{{ protected function buildNavBar()
 
-	private function buildNavBar()
+	protected function buildNavBar()
 	{
 		if ($this->path !== null) {
 			$link = 'store';
