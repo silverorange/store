@@ -38,17 +38,6 @@ class StoreOrderStatusCellRenderer extends SwatCellRenderer
 	public $show_summary = true;
 
 	// }}}
-	// {{{ public function __construct()
-
-	public function __construct()
-	{
-		parent::__construct();
-		$this->addStyleSheet(
-			'packages/store/styles/store-order-status-cell-renderer.css',
-			Store::PACKAGE_ID);
-	}
-
-	// }}}
 	// {{{ public function render()
 
 	public function render()
