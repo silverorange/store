@@ -1,3 +1,21 @@
+2007-05-11  nick
+
+	* [r17481] store/trunk/Store/pages/StoreArticlePage.php,
+	  store/trunk/Store/pages/StoreCategoryPage.php,
+	  store/trunk/Store/pages/StoreProductPage.php:
+	  Add dynamic meta description to category/article/product pages
+
+2007-05-09  gauthierm
+
+	* [r17452] store/trunk/Store/pages/checkout-payment-failed.xml,
+	  store/trunk/Store/pages/checkout-thank-you.xml:
+	  Add footer to checkout final page user-interfaces in store.
+
+2007-05-09  nrf
+
+	* [r17438] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.8.2
+
 2007-05-09  gauthierm
 
 	* [r17437]
