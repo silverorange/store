@@ -1,5 +1,6 @@
 <?php
 
+require_once 'Store/Store.php';
 require_once 'Store/StoreStatusList.php';
 require_once 'Store/StoreItemStatus.php';
 require_once 'Store/StoreClassMap.php';
