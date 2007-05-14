@@ -2,14 +2,16 @@
 
 require_once 'Site/SiteSessionModule.php';
 require_once 'Site/SiteDatabaseModule.php';
-
 require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDB.php';
+require_once 'Swat/SwatDate.php';
 
 /**
  * Web application module for store sessions
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreSessionModule extends SiteSessionModule
 {
@@ -52,13 +54,14 @@ class StoreSessionModule extends SiteSessionModule
 	// {{{ public function login()
 
 	/**
-	 * Logs in the current user
+	 * Logs the current session into a {@link StoreAccount}
 	 *
-	 * @param string $email the email address of the user to login.
-	 * @param string $password the password of the user to login.
+	 * @param string $email the email address of the account to login.
+	 * @param string $password the password of the account to login.
 	 *
-	 * @return boolean true if the user was successfully logged in and false if
-	 *                       the email/password pair did not match an account.
+	 * @return boolean true if the account was successfully logged in and false
+	 *                       if the email/password pair did not match an
+	 *                       account.
 	 */
 	public function login($email, $password)
 	{
@@ -92,12 +95,12 @@ class StoreSessionModule extends SiteSessionModule
 	// {{{ public function loginById()
 
 	/**
-	 * Logs in the current user with an account id
+	 * Logs the current session into a {@link StoreAccount} using an id
 	 *
-	 * @param integer $id The id of the Account to login
+	 * @param integer $id The id of the {@link StoreAccount} to log into.
 	 *
-	 * @return boolean true if the user was successfully logged in and false if
-	 *                       the id does not match an account.
+	 * @return boolean true if the account was successfully logged in and false
+	 *                       if the id does not match an account.
 	 */
 	public function loginById($id)
 	{
@@ -204,17 +207,14 @@ class StoreSessionModule extends SiteSessionModule
 	 *
 	 * @param callback $callback the callback to call when a successful login
 	 *                            is performed.
-	 * @param array $parameters the paramaters to pass to the callback. Use an
-	 *                           empty array for no parameters.
+	 * @param array $parameters optional. The paramaters to pass to the
+	 *                           callback. Use an empty array for no parameters.
 	 */
-	public function registerLoginCallback($callback, $parameters = array())
+	public function registerLoginCallback($callback,
+		array $parameters = array())
 	{
 		if (!is_callable($callback))
 			throw new StoreException('Cannot register invalid callback.');
-
-		if (!is_array($parameters))
-			throw new StoreException('Callback parameters must be specified '.
-				'in an array.');
 
 		$this->login_callbacks[] = array(
 			'callback' => $callback,
@@ -233,7 +233,7 @@ class StoreSessionModule extends SiteSessionModule
 		// make sure dataobject classes are loaded before starting the session
 		foreach ($this->data_object_classes as $name => $class) {
 			if (!class_exists($class))
-				throw new StoreException("Class $class does not exist. ".
+				throw new StoreException("Class {$class} does not exist. ".
 					'The class must be loaded before it can be registered '.
 					'in the session.');
 		}
