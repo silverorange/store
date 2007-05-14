@@ -5,6 +5,8 @@ require_once 'Site/SiteDatabaseModule.php';
 require_once 'Store/StoreClassMap.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatDate.php';
+require_once 'Swat/SwatForm.php';
+require_once 'Swat/SwatString.php';
 
 /**
  * Web application module for store sessions
@@ -46,6 +48,12 @@ class StoreSessionModule extends SiteSessionModule
 				'instantiating the session module, or specify the database '.
 				'module before the session module in the application’s '.
 				'getDefaultModuleList() method.');
+
+		$this->registerActivateCallback(
+			array($this, 'regenerateAuthenticationToken'));
+
+		$this->registerRegenerateIdCallback(
+			array($this, 'regenerateAuthenticationToken'));
 
 		parent::__construct($app);
 	}
@@ -139,6 +147,7 @@ class StoreSessionModule extends SiteSessionModule
 	public function logout()
 	{
 		unset($this->account);
+		unset($this->_authentication_token);
 		$this->removeAccountCookie();
 	}
 
@@ -223,6 +232,15 @@ class StoreSessionModule extends SiteSessionModule
 	}
 
 	// }}}
+	// {{{ protected function regerateAuthenticationToken()
+
+	protected function regenerateAuthenticationToken()
+	{
+		$this->_authentication_token = SwatString::hash(mt_rand());
+		SwatForm::setAuthenticationToken($this->_authentication_token);
+	}
+
+	// }}}
 	// {{{ protected function startSession()
 
 	/**
@@ -256,6 +274,9 @@ class StoreSessionModule extends SiteSessionModule
 				$this->$name = null;
 			}
 		}
+
+		if (isset($this->_authentication_token))
+			SwatForm::setAuthenticationToken($this->_authentication_token);
 	}
 
 	// }}}
