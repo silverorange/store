@@ -47,7 +47,7 @@ function StoreQuickOrderItem_keyUpEvent(event, item)
 			item.quantity.value = '1';
 
 		if (item.timer != null)
-			clearInterval(item.timer);
+			clearTimeout(item.timer);
 
 		item.timer = setTimeout(
 			'StoreQuickOrder_staticTimeOut(' + item.quick_order_id + '_obj, ' +
@@ -159,5 +159,5 @@ function StoreQuickOrder_staticTimeOut(quick_order, replicator_id)
 		[sku,      replicator_id, item.sequence],
 		['string', 'string',      'int']);
 
-	clearInterval(item.timer);
+	clearTimeout(item.timer);
 }
