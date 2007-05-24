@@ -7,7 +7,7 @@ require_once 'Swat/SwatNavBar.php';
 require_once 'Admin/AdminTableStore.php';
 require_once 'Admin/pages/AdminIndex.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/StoreTotalRow.php';
 require_once 'Store/dataobjects/StoreInvoice.php';
 require_once 'Store/dataobjects/StoreOrderAddress.php';
@@ -310,7 +310,7 @@ class StoreInvoiceDetails extends AdminIndex
 
 	private function loadInvoice()
 	{
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$invoice_class = $class_map->resolveClass('StoreInvoice');
 		$invoice = new $invoice_class();
 		$invoice->setDatabase($this->app->db);

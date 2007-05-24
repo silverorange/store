@@ -5,7 +5,7 @@ require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatMessage.php';
 require_once 'Store/dataobjects/StoreCatalog.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 
 /**
  * Change status page for Catalogs
@@ -51,7 +51,7 @@ abstract class StoreCatalogStatus extends AdminDBEdit
 		$status_flydown = $this->ui->getWidget('status');
 		$status_options = array();
 
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$catalog_class = $class_map->resolveClass('StoreCatalog');
 
 		foreach (call_user_func(array($catalog_class, 'getStatuses')) as 
@@ -173,7 +173,7 @@ abstract class StoreCatalogStatus extends AdminDBEdit
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->id, 'integer'));
 
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$catalog_class = $class_map->resolveClass('StoreCatalog');
 
 		$statuses = SwatDB::query($this->app->db, $sql);

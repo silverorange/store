@@ -39,7 +39,7 @@ class StoreItemWrapper extends StoreRecordsetWrapper
 
 		$sql = sprintf($sql, $id_set);
 
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		return SwatDB::query($db, $sql,
 			$class_map->resolveClass('StoreItemWrapper'));
 	}
@@ -87,7 +87,7 @@ class StoreItemWrapper extends StoreRecordsetWrapper
 			$db->quote($region->id, 'integer'),
 			$id_set);
 
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$items = SwatDB::query($db, $sql,
 			$class_map->resolveClass('StoreItemWrapper'));
 

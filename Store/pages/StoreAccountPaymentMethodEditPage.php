@@ -5,7 +5,7 @@ require_once 'Store/dataobjects/StoreAccountPaymentMethod.php';
 require_once 'Store/dataobjects/StorePaymentType.php';
 require_once 'Store/dataobjects/StorePaymentTypeWrapper.php';
 require_once 'Store/StoreUI.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Swat/SwatDate.php';
 require_once 'Swat/SwatYUI.php';
 
@@ -71,7 +71,7 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 
 		if ($this->id === null) {
 			// create a new payment method
-			$class_map = StoreClassMap::instance();
+			$class_map = SwatDBClassMap::instance();
 			$class = $class_map->resolveClass('StoreAccountPaymentMethod');
 			$payment_method = new $class();
 		} else {
@@ -105,7 +105,7 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 		$type_list->process();
 
 		if ($type_list->value !== null) {
-			$class_map = StoreClassMap::instance();
+			$class_map = SwatDBClassMap::instance();
 			$class_name = $class_map->resolveClass('StorePaymentType');
 			$payment_type = new $class_name();
 			$payment_type->setDatabase($this->app->db);
@@ -255,7 +255,7 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 			%s where %s order by title',
 			$type_join_clause, $type_where_clause);
 
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$wrapper = $class_map->resolveClass('StorePaymentTypeWrapper');
 		$types = SwatDB::query($this->app->db, $types_sql, $wrapper);
 		foreach ($types as $type)

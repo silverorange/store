@@ -2,7 +2,7 @@
 
 require_once 'Site/SiteSessionModule.php';
 require_once 'Site/SiteDatabaseModule.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatDate.php';
 require_once 'Swat/SwatForm.php';
@@ -284,7 +284,7 @@ class StoreSessionModule extends SiteSessionModule
 
 	protected function getNewAccountObject()
 	{
-		$class_mapper = StoreClassMap::instance();
+		$class_mapper = SwatDBClassMap::instance();
 		$class_name = $class_mapper->resolveClass('StoreAccount');
 		$account = new $class_name();
 		$account->setDatabase($this->app->db);

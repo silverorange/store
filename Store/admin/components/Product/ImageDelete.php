@@ -4,7 +4,7 @@ require_once 'Admin/pages/AdminDBDelete.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatImageDisplay.php';
 require_once 'Store/dataobjects/StoreProductImage.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 
 /**
  * Delete confirmation page for product images 
@@ -74,7 +74,7 @@ class StoreProductImageDelete extends AdminDBDelete
 			SwatDB::exec($this->app->db, $sql);
 
 			// delete the actual files
-			$class_map = StoreClassMap::instance();
+			$class_map = SwatDBClassMap::instance();
 			$product_image = $class_map->resolveClass('StoreProductImage');
 			$sizes = call_user_func(array($product_image, 'getSizes'));
 

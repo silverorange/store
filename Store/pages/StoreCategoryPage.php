@@ -120,7 +120,7 @@ class StoreCategoryPage extends StoreStorePage
 			$this->app->db->quote($category_id, 'integer'),
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$wrapper_class = $class_map->resolveClass('StoreCategoryWrapper');
 		$sub_categories = SwatDB::query($this->app->db, $sql, $wrapper_class);
 		$sub_categories->setRegion($this->app->getRegion());
@@ -200,7 +200,7 @@ class StoreCategoryPage extends StoreStorePage
 			$sub_query,
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$wrapper_class = $class_map->resolveClass('StoreProductWrapper');
 		$products = SwatDB::query($this->app->db, $sql, $wrapper_class);
 
@@ -262,7 +262,7 @@ class StoreCategoryPage extends StoreStorePage
 			$this->app->db->quote($category_id, 'integer'),
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$wrapper_class = $class_map->resolveClass('StoreProductWrapper');
 		$products = SwatDB::query($this->app->db, $sql, $wrapper_class);
 

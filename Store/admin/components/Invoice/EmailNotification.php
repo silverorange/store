@@ -3,7 +3,7 @@
 require_once 'Admin/pages/AdminConfirmation.php';
 require_once 'Admin/exceptions/AdminNoAccessException.php';
 require_once 'SwatDB/SwatDB.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/dataobjects/StoreInvoice.php';
 
 /**
@@ -112,7 +112,7 @@ class StoreInvoiceEmailNotification extends AdminConfirmation
 	protected function getInvoice() 
 	{
 		if ($this->invoice === null) {
-			$class_map = StoreClassMap::instance();
+			$class_map = SwatDBClassMap::instance();
 			$invoice_class = $class_map->resolveClass('StoreInvoice');
 			$this->invoice = new $invoice_class();
 

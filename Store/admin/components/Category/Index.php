@@ -7,7 +7,7 @@ require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatString.php';
 require_once 'Swat/SwatDetailsStore.php';
 require_once 'Store/StoreCatalogSwitcher.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/StoreItemStatusList.php';
 require_once 'Store/dataobjects/StoreCategory.php';
 require_once 'Store/dataobjects/StoreItem.php';
@@ -467,7 +467,7 @@ class StoreCategoryIndex extends AdminIndex
 
 	private function loadCategory()
 	{
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$category_class = $class_map->resolveClass('StoreCategory');
 
 		$category = new $category_class();

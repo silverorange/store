@@ -74,7 +74,7 @@ class StoreAccountForgotPasswordPage extends StoreAccountPage
 
 	private function generatePassword()
 	{
-		$class_mapper = StoreClassMap::instance();
+		$class_mapper = SwatDBClassMap::instance();
 		$email = $this->ui->getWidget('email')->value;
 
 		$account_sql = sprintf('select id, email, fullname from Account

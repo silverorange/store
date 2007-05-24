@@ -8,7 +8,7 @@ require_once 'Swat/SwatNavBar.php';
 require_once 'Admin/AdminTableStore.php';
 require_once 'Admin/pages/AdminIndex.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/StoreItemStatusList.php';
 require_once 'Store/dataobjects/StoreProduct.php';
 require_once 'Store/dataobjects/StoreRegionWrapper.php';
@@ -563,7 +563,7 @@ class StoreProductDetails extends AdminIndex
 
 	private function loadProduct()
 	{
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$product_class = $class_map->resolveClass('StoreProduct');
 		$product = new $product_class();
 		$product->setDatabase($this->app->db);

@@ -6,7 +6,7 @@ require_once 'SwatDB/SwatDB.php';
 require_once 'Date.php';
 require_once 'Image/Transform.php';
 require_once 'Store/dataobjects/StoreCategoryImage.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 
 /**
  * Edit page for Category images
@@ -113,7 +113,7 @@ class StoreCategoryImageEdit extends AdminPage
 		// this stores the temporary uploaded files that are deleted
 		$delete_files = array();
 
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$category_image = $class_map->resolveClass('StoreCategoryImage');
 		// name => max dimensions
 		$sizes = call_user_func(array($category_image, 'getSizes'));
@@ -351,7 +351,7 @@ class StoreCategoryImageEdit extends AdminPage
 		$frame->subtitle = $this->category_title;
 
 		//set the notes on the manual image fields
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$category_image = $class_map->resolveClass('StoreCategoryImage');
 		// name => max dimensions
 		$sizes = call_user_func(array($category_image, 'getSizes'));
