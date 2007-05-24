@@ -2,7 +2,7 @@
 
 require_once 'Swat/SwatCellRenderer.php';
 require_once 'Swat/SwatString.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/StoreItemStatusList.php';
 
 /**

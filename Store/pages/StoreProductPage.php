@@ -169,7 +169,7 @@ class StoreProductPage extends StoreStorePage
 
 	private function loadProduct($id)
 	{
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$product_class = $class_map->resolveClass('StoreProduct');
 		$this->product = new $product_class();
 		$this->product->setDatabase($this->app->db);
@@ -257,7 +257,7 @@ class StoreProductPage extends StoreStorePage
 
 	protected function createCartEntry($item_id)
 	{
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$cart_entry_class = $class_map->resolveClass('StoreCartEntry');
 		$cart_entry = new $cart_entry_class();
 
@@ -771,7 +771,7 @@ class StoreProductPage extends StoreStorePage
 		if ($this->related_articles === null) {
 			$last_entry = $this->path->getLast();
 			if ($last_entry !== null) {
-				$class_map = StoreClassMap::instance();
+				$class_map = SwatDBClassMap::instance();
 				$category_class = $class_map->resolveClass('StoreCategory');
 				$category = new $category_class();
 				$category->id = $last_entry->id;

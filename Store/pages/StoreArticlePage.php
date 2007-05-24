@@ -7,7 +7,7 @@ require_once 'Site/exceptions/SiteNotFoundException.php';
 require_once 'Store/pages/StorePage.php';
 require_once 'Store/dataobjects/StoreArticle.php';
 require_once 'Store/dataobjects/StoreArticleWrapper.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 
 /**
  * A page for loading and displaying articles
@@ -172,7 +172,7 @@ class StoreArticlePage extends StorePage
 			$this->app->db->quote($article_id, 'integer'),
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$wrapper = $class_map->resolveClass('StoreArticleWrapper');
 		$articles = SwatDB::query($this->app->db, $sql, $wrapper);
 		return $articles->getFirst();
@@ -274,7 +274,7 @@ class StoreArticlePage extends StorePage
 			$this->app->db->quote($article_id, 'integer'),
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$wrapper = $class_map->resolveClass('StoreArticleWrapper');
 		return SwatDB::query($this->app->db, $sql, $wrapper);
 	}

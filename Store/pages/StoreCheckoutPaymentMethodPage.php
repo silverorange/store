@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/pages/StoreCheckoutEditPage.php';
 require_once 'Store/dataobjects/StoreAccountPaymentMethodWrapper.php';
 require_once 'Store/dataobjects/StoreOrderPaymentMethod.php';
@@ -40,7 +40,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			$type_list->process();
 
 			if ($type_list->value !== null) {
-				$class_map = StoreClassMap::instance();
+				$class_map = SwatDBClassMap::instance();
 				$class_name = $class_map->resolveClass('StorePaymentType');
 				$payment_type = new $class_name();
 				$payment_type->setDatabase($this->app->db);
@@ -98,7 +98,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 					$order_payment_method = 
 						$this->app->session->order->payment_method;
 			} else {
-				$class_map = StoreClassMap::instance();
+				$class_map = SwatDBClassMap::instance();
 				$class_name =
 					$class_map->resolveClass('StoreOrderPaymentMethod');
 
@@ -117,7 +117,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				throw new StoreException('Account payment method not found. '.
 					"Method with id ‘{$method_id}’ not found.");
 
-			$class_map = StoreClassMap::instance();
+			$class_map = SwatDBClassMap::instance();
 			$class_name = $class_map->resolveClass('StoreOrderPaymentMethod');
 			$order_payment_method = new $class_name();
 			$order_payment_method->copyFrom($account_payment_method);
@@ -314,7 +314,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	 */
 	protected function getPaymentMethods()
 	{
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$wrapper = $class_map->resolveClass('StoreAccountPaymentMethodWrapper');
 		$payment_methods = new $wrapper();
 
@@ -347,7 +347,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			order by displayorder, title',
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$wrapper = $class_map->resolveClass('StorePaymentTypeWrapper');
 		return SwatDB::query($this->app->db, $payment_types_sql, $wrapper);
 	}

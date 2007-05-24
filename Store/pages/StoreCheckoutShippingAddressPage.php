@@ -71,7 +71,7 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 	protected function saveDataToSession()
 	{
 		$address_list = $this->ui->getWidget('shipping_address_list');
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$class_name = $class_map->resolveClass('StoreOrderAddress');
 		$order_address = new $class_name();
 

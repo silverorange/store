@@ -3,7 +3,7 @@
 require_once 'Admin/pages/AdminDBDelete.php';
 require_once 'Admin/AdminListDependency.php';
 require_once 'SwatDB/SwatDB.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/dataobjects/StoreInvoiceWrapper.php';
 require_once 'Store/dataobjects/StoreInvoiceItemWrapper.php';
 
@@ -36,7 +36,7 @@ class StoreInvoiceItemDelete extends AdminDBDelete
 				from InvoiceItem where id in (%s)',
 				$item_list);
 
-			$class_map = StoreClassMap::instance();
+			$class_map = SwatDBClassMap::instance();
 			$wrapper = $class_map->resolveClass('StoreInvoiceItemWrapper');
 			$this->invoice_items =
 				SwatDB::query($this->app->db, $sql, $wrapper);

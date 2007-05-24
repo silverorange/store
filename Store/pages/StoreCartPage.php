@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Store/pages/StoreArticlePage.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/StoreUI.php';
 require_once 'Store/StoreMessage.php';
 
@@ -746,7 +746,7 @@ abstract class StoreCartPage extends StoreArticlePage
 		$available_view->getRow('subtotal')->value =
 			$this->app->cart->checkout->getSubtotal();
 
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$class_name = $class_map->resolveClass('StoreOrderAddress');
 		$available_view->getRow('shipping')->value =
 			$this->app->cart->checkout->getShippingTotal(

@@ -2,7 +2,7 @@
 
 require_once 'Swat/SwatCellRenderer.php';
 require_once 'Store/dataobjects/StoreCatalog.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 
 /**
  * Cell renderer that displays a summary of the status of a catalog
@@ -18,7 +18,7 @@ class StoreCatalogStatusCellRenderer extends SwatCellRenderer
 
 	public function render()
 	{
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$catalog_class = $class_map->resolveClass('StoreCatalog');
 
 		$sql = 'select Region.title, available

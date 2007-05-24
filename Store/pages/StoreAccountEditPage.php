@@ -2,7 +2,7 @@
 
 require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/pages/StoreAccountPage.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/StoreUI.php';
 
 /**
@@ -53,7 +53,7 @@ class StoreAccountEditPage extends StoreAccountPage
 		if ($this->app->session->isLoggedIn()) {
 			return $this->app->session->account;
 		} else  {
-			$class_map = StoreClassMap::instance();
+			$class_map = SwatDBClassMap::instance();
 			$class = $class_map->resolveClass('StoreAccount');
 			return new $class();
 		}

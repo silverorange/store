@@ -40,7 +40,7 @@ class StoreProductImagePage extends StoreStorePage
 	{
 		parent::build();
 
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$product_class = $class_map->resolveClass('StoreProduct');
 		$this->product = new $product_class();
 		$this->product->setDatabase($this->app->db);

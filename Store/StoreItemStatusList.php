@@ -3,7 +3,7 @@
 require_once 'Store/Store.php';
 require_once 'Store/StoreStatusList.php';
 require_once 'Store/StoreItemStatus.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 
 /**
  * A list of {@link StoreItemStatus} objects
@@ -86,7 +86,7 @@ class StoreItemStatusList extends StoreStatusList
 	public static function statuses()
 	{
 		if (self::$instance === null) {
-			$class_map = StoreClassMap::instance();
+			$class_map = SwatDBClassMap::instance();
 			$list_class = $class_map->resolveClass('StoreItemStatusList');
 			self::$instance = new $list_class();
 		}
@@ -110,7 +110,7 @@ class StoreItemStatusList extends StoreStatusList
 		if (self::$defined_statuses === null) {
 			self::$defined_statuses = array();
 
-			$class_map = StoreClassMap::instance();
+			$class_map = SwatDBClassMap::instance();
 			$status_class = $class_map->resolveClass('StoreItemStatus');
 
 			$available_status =

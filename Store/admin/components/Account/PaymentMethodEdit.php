@@ -50,7 +50,7 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 					'select account from AccountPaymentMethod where id = %s',
 					$this->app->db->quote($this->id, 'integer')));
 
-			$class_map = StoreClassMap::instance();
+			$class_map = SwatDBClassMap::instance();
 			$class_name = $class_map->resolveClass('StoreAccount');
 			$this->account = new $class_name();
 			$this->account->setDatabase($this->app->db);
@@ -66,7 +66,7 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 	protected function getPaymentMethod()
 	{
 		if ($this->payment_method === null) {
-			$class_map = StoreClassMap::instance();
+			$class_map = SwatDBClassMap::instance();
 			$class_name = $class_map->resolveClass('StoreAccountPaymentMethod');
 			$this->payment_method = new $class_name();
 			$this->payment_method->setDatabase($this->app->db);

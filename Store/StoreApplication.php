@@ -8,7 +8,7 @@ require_once 'Site/SiteMessagesModule.php';
 require_once 'Store/Store.php';
 require_once 'Store/StoreSessionModule.php';
 require_once 'Store/StoreCartModule.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/dataobjects/StoreAdWrapper.php';
 
 /**
@@ -54,7 +54,7 @@ abstract class StoreApplication extends SiteWebApplication
 
 	protected function initModules()
 	{
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 
 		$this->session->registerDataObject('account',
 			$class_map->resolveClass('StoreAccount'));
@@ -112,7 +112,7 @@ abstract class StoreApplication extends SiteWebApplication
 			where shortname = %s',
 			$this->db->quote($ad_shortname, 'text'));
 
-		$class_mapper = StoreClassMap::instance();
+		$class_mapper = SwatDBClassMap::instance();
 		$wrapper = $class_mapper->resolveClass('StoreAdWrapper');
 		$ad = SwatDB::query($this->db, $sql, $wrapper)->getFirst();
 

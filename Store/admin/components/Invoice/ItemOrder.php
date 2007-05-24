@@ -3,7 +3,7 @@
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'Admin/pages/AdminDBOrder.php';
 require_once 'SwatDB/SwatDB.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/dataobjects/StoreInvoice.php';
 require_once 'Store/dataobjects/StoreInvoiceItemWrapper.php';
 
@@ -34,7 +34,7 @@ class StoreInvoiceItemOrder extends AdminDBOrder
 
 		$id = SiteApplication::initVar('id');
 
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$class_name = $class_map->resolveClass('StoreInvoice');
 		$this->invoice = new $class_name();
 		$this->invoice->setDatabase($this->app->db);

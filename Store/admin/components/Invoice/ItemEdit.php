@@ -3,7 +3,7 @@
 require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDB.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/dataobjects/StoreInvoice.php';
 require_once 'Store/dataobjects/StoreInvoiceItem.php';
 
@@ -50,7 +50,7 @@ class StoreInvoiceItemEdit extends AdminDBEdit
 
 	protected function initInvoiceItem()
 	{
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$class = $class_map->resolveClass('StoreInvoiceItem');
 		$invoice_item = new $class();
 		$invoice_item->setDatabase($this->app->db);
@@ -80,7 +80,7 @@ class StoreInvoiceItemEdit extends AdminDBEdit
 				'select invoice from InvoiceItem where id = %s',
 				$this->app->db->quote($this->id, 'integer')));
 
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$class = $class_map->resolveClass('StoreInvoice');
 		$invoice = new $class();
 		$invoice->setDatabase($this->app->db);

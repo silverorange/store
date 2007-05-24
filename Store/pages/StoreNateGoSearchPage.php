@@ -266,7 +266,7 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 			$this->app->db->quote($pagination->page_size, 'integer'),
 			$this->app->db->quote($pagination->current_record, 'integer'));
 
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$wrapper_class = $class_map->resolveClass('StoreArticleWrapper');
 		$articles = SwatDB::query($this->app->db, $sql, $wrapper_class);
 
@@ -308,7 +308,7 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 				$this->getDocumentType(StoreSearchPage::TYPE_CATEGORIES),
 				'integer'));
 
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$wrapper_class = $class_map->resolveClass('StoreCategoryWrapper');
 		$categories = SwatDB::query($this->app->db, $sql, $wrapper_class);
 		$categories->setRegion($this->app->getRegion());
@@ -418,7 +418,7 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 			$this->app->db->quote($pagination->current_record, 'integer'),
 			$this->getProductSelectClause());
 
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$wrapper_class = $class_map->resolveClass('StoreProductWrapper');
 		return SwatDB::query($this->app->db, $sql, $wrapper_class);
 	}
@@ -447,7 +447,7 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 		$products->loadAllSubDataObjects(
 			'tag', $this->app->db, $sql, 'TagWrapper');
 		*/
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 
 		$sql = 'select * from Image where id in (%s)';
 		$image_wrapper_class = $class_map->resolveClass(

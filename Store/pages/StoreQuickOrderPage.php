@@ -2,7 +2,7 @@
 
 require_once 'Store/dataobjects/StoreCartEntry.php';
 require_once 'Store/dataobjects/StoreItem.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/pages/StoreArticlePage.php';
 require_once 'Store/StoreUI.php';
 require_once 'Swat/SwatString.php';
@@ -218,7 +218,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 
 	protected function getCartEntry($item_id, $quantity, $sku)
 	{
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$cart_entry_class = $class_map->resolveClass('StoreCartEntry');
 		$cart_entry = new $cart_entry_class();
 

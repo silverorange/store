@@ -4,7 +4,7 @@ require_once 'Admin/pages/AdminDBDelete.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatImageDisplay.php';
 require_once 'Store/dataobjects/StoreCategoryImage.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 
 /**
  * Delete confirmation page for category images 
@@ -56,7 +56,7 @@ class StoreCategoryImageDelete extends AdminDBDelete
 			$num = SwatDB::exec($this->app->db, $sql);
 
 			// delete the actual files
-			$class_map = StoreClassMap::instance();
+			$class_map = SwatDBClassMap::instance();
 			$category_image = $class_map->resolveClass('StoreCategoryImage');
 			$sizes = call_user_func(array($category_image, 'getSizes'));
 

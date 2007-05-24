@@ -9,7 +9,7 @@ require_once 'Store/StoreAddressCellRenderer.php';
 require_once 'Store/StorePaymentMethodCellRenderer.php';
 require_once 'Store/dataobjects/StoreAccountPaymentMethodWrapper.php';
 require_once 'Store/dataobjects/StoreAccount.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 
 /**
  * Details page for accounts
@@ -61,7 +61,7 @@ class StoreAccountDetails extends AdminIndex
 	protected function getAccount()
 	{
 		if ($this->account === null) {
-			$class_map = StoreClassMap::instance();
+			$class_map = SwatDBClassMap::instance();
 			$account_class = $class_map->resolveClass('StoreAccount');
 
 			$this->account = new $account_class();
@@ -264,7 +264,7 @@ class StoreAccountDetails extends AdminIndex
 		$rs = SwatDB::query($this->app->db, $sql);
 		$ts = new SwatTableStore();
 
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$class_name = $class_map->resolveClass('StoreAccountAddress');
 		foreach ($rs as $row) {
 			$new_row = null;
@@ -283,7 +283,7 @@ class StoreAccountDetails extends AdminIndex
 
 	protected function getPaymentMethodsTableStore($view) 
 	{
-		$class_map = StoreClassMap::instance();
+		$class_map = SwatDBClassMap::instance();
 		$wrapper = $class_map->resolveClass('StoreAccountPaymentMethodWrapper');
 
 		$sql = sprintf('select * from AccountPaymentMethod where account = %s',

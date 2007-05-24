@@ -5,7 +5,7 @@ require_once 'SwatDB/SwatDBTransaction.php';
 require_once 'Site/SiteApplicationModule.php';
 
 require_once 'Store/StoreSessionModule.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/StoreCart.php';
 require_once 'Store/StoreSavedCart.php';
 require_once 'Store/StoreCheckoutCart.php';
@@ -370,7 +370,7 @@ class StoreCartModule extends SiteApplicationModule
 			return;
 		}
 
-		$class_mapper = StoreClassMap::instance();
+		$class_mapper = SwatDBClassMap::instance();
 
 		$entry_sql = $this->getEntrySql($where_clause);
 

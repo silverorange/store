@@ -3,7 +3,7 @@
 require_once 'Admin/pages/AdminConfirmation.php';
 require_once 'Admin/exceptions/AdminNoAccessException.php';
 require_once 'SwatDB/SwatDB.php';
-require_once 'Store/StoreClassMap.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/dataobjects/StoreOrder.php';
 
 /**
@@ -121,7 +121,7 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 	protected function getOrder() 
 	{
 		if ($this->order === null) {
-			$class_map = StoreClassMap::instance();
+			$class_map = SwatDBClassMap::instance();
 			$order_class = $class_map->resolveClass('StoreOrder');
 			$this->order = new $order_class();
 
