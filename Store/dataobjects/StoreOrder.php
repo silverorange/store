@@ -216,7 +216,7 @@ class StoreOrder extends StoreDataObject
 	public function getReceiptFooter()
 	{
 		$locale_id = $this->getInternalValue('locale');
-		return sprintf(Store::_('All displayed prices are in %s.'),
+		return sprintf(Store::_('All prices are in %s.'),
 			SwatString::getInternationalCurrencySymbol($locale_id));
 	}
 
