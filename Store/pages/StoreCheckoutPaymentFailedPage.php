@@ -36,7 +36,7 @@ class StoreCheckoutPaymentFailedPage extends StoreCheckoutFinalPage
 
 		$header_tag = new SwatHtmlTag('h3');
 		$header_tag->setContent(Store::_(
-			'There was an problem paying for your order.'));
+			'There was a problem paying for your order.'));
 
 		$paragraph_tag = new SwatHtmlTag('p');
 		$paragraph_tag->setContent(sprintf(Store::_(
