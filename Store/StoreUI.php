@@ -25,6 +25,7 @@ class StoreUI extends SwatUI
 		parent::__construct();
 
 		$this->class_map['Store'] = 'Store';
+		$this->class_map['Site'] = 'Site';
 	}
 
 	// }}}
