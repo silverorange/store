@@ -46,10 +46,6 @@ class StorePostalCodeEntry extends SwatEntry
 	{
 		parent::__construct($id);
 
-		$this->addStyleSheet(
-			'packages/store/styles/store-postal-code-entry.css',
-			Store::PACKAGE_ID);
-
 		$this->size = 10;
 	}
 
