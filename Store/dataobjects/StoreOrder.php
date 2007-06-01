@@ -102,7 +102,7 @@ class StoreOrder extends StoreDataObject
 	/**
 	 * Status of the order
 	 *
-	 * One of the StoreOrder::STATUS_* constants.
+	 * The id of the {@link StoreOrderStatus}.
 	 *
 	 * @var integer
 	 */
