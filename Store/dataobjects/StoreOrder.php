@@ -100,11 +100,11 @@ class StoreOrder extends StoreDataObject
 	// {{{ protected properties
 
 	/**
-	 * Status of the order
-	 *
-	 * The id of the {@link StoreOrderStatus}.
+	 * The id of the {@link StoreOrderStatus} of this order
 	 *
 	 * @var integer
+	 *
+	 * @see StoreOrder::getStatus()
 	 */
 	protected $status;
 
