@@ -1,5 +1,7 @@
 <?php
 
+require_once 'Swat/exceptions/SwatException.php';
+
 require_once 'Store/StorePaymentProvider.php';
 require_once 'Store/StoreProtxPaymentRequest.php';
 require_once 'Store/dataobjects/StorePaymentTransaction.php';
@@ -111,6 +113,9 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	public function pay(StoreOrder $order, $card_number,
 		$card_verification_value = null)
 	{
+		SwatException::addSensitiveParamater(
+			'card_number', __FUNCTION__, __CLASS__);
+
 		$request = new StoreProtxPaymentRequest(
 			StorePaymentRequest::TYPE_PAY, $this->mode);
 
@@ -155,6 +160,9 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	public function hold(StoreOrder $order, $card_number,
 		$card_verification_value = null)
 	{
+		SwatException::addSensitiveParamater(
+			'card_number', __FUNCTION__, __CLASS__);
+
 		$request = new StoreProtxPaymentRequest(
 			StorePaymentRequest::TYPE_HOLD, $this->mode);
 
@@ -415,6 +423,9 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	private function getCardFields(StoreOrder $order, $card_number,
 		$card_verification_value = null)
 	{
+		SwatException::addSensitiveParamater(
+			'card_number', __FUNCTION__, __CLASS__);
+
 		$payment_method = $order->payment_method;
 		$payment_type = $payment_method->payment_type;
 
