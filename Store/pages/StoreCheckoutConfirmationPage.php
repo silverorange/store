@@ -97,6 +97,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			} else {
 				$new_order = $order->duplicate();
 				$this->app->session->order = $new_order;
+
+				// cancel order if payment processing failed 
+				$order->cancelled = true;
+				$order->save();
 			}
 		}
 	}
