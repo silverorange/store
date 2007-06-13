@@ -42,6 +42,10 @@ class StoreOrderStatusCellRenderer extends SwatCellRenderer
 
 	public function render()
 	{
+		$title = $this->status->title;
+		if ($this->cancelled)
+			$title.=' ('.Store::_('cancelled').')';
+
 		$image_path = 'packages/store/images/';
 
 		$complete_img_tag = new SwatHtmlTag('img');
@@ -49,6 +53,7 @@ class StoreOrderStatusCellRenderer extends SwatCellRenderer
 			$image_path.'store-order-status-cell-renderer-complete.png';
 
 		$complete_img_tag->alt = Store::_('complete');
+		$complete_img_tag->title = $title;
 		$complete_img_tag->width = 20;
 		$complete_img_tag->height = 10;
 
@@ -57,6 +62,7 @@ class StoreOrderStatusCellRenderer extends SwatCellRenderer
 			$image_path.'store-order-status-cell-renderer-incomplete.png';
 
 		$incomplete_img_tag->alt = Store::_('incomplete');
+		$incomplete_img_tag->title = $title;
 		$incomplete_img_tag->width = 20;
 		$incomplete_img_tag->height = 10;
 
@@ -68,13 +74,10 @@ class StoreOrderStatusCellRenderer extends SwatCellRenderer
 				// ignore first status (initialized)
 				$first = false;
 			} else {
-				if ($completed) {
-					$complete_img_tag->title = $status->title;
+				if ($completed)
 					$complete_img_tag->display();
-				} else {
-					$incomplete_img_tag->title = $status->title;
+				else
 					$incomplete_img_tag->display();
-				}
 			}
 
 			// Order statuses are progressive. Once we reach the current
