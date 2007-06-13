@@ -622,6 +622,10 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 			case 'The card number given is invalid.':
 				throw new StorePaymentCardTypeException($status_detail);
 				break;
+			case 'The CV2 field should be a 3 digit number for all cards '.
+				'except American Express, where it contains 4 digits.':
+				throw new StorePaymentCvvException($status_detail);
+				break;
 			default:
 				throw new StorePaymentInvalidException($status_detail);
 				break;
