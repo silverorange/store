@@ -46,7 +46,7 @@ class StoreAdminMenuView extends AdminMenuView
 		$this->store = $store;
 
 		$entry = new SwatEntry('quick_search_item');
-		$entry->size = 5;
+		$entry->size = 2;
 		$this->item_entry = $entry;
 
 		$button = new SwatButton();
