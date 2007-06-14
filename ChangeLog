@@ -1,3 +1,163 @@
+2007-06-14  steven
+
+	* [r18004] store/trunk/Store/admin/StoreAdminMenuView.php:
+	  Keep item search input from wrapping Go button
+
+2007-06-13  gauthierm
+
+	* [r17994]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Cancel orders that had payment errors. Response to Uppermost
+	  ticket #1053.
+	* [r17991] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Ticket #1060: Handle incorrect CV2 length errors by throwing a
+	  CVVException.
+	* [r17986] store/trunk/Store/StoreOrderStatusCellRenderer.php:
+	  Make title attribute always represent the current status instead
+	  of the status of the image we're displaying.
+
+2007-06-12  steven
+
+	* [r17965] store/trunk/Store/pages/account-forgot-password.xml:
+	  Make the wording of the forgot-password page a bit more accurate
+
+2007-06-08  gauthierm
+
+	* [r17958] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Fix typo.
+	* [r17957] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Filter sensitive paramaters in StoreProtxPaymentProvider stack
+	  traces.
+	* [r17935] store/trunk/Store/admin/components/Order/Index.php:
+	  Docblock formatting fix.
+
+2007-06-01  gauthierm
+
+	* [r17848] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Followup to r17836.
+
+2007-06-01  nick
+
+	* [r17836] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Fix documentation (mike you might want to expand on this)
+
+2007-05-30  gauthierm
+
+	* [r17812] store/trunk/Store/StoreUI.php:
+	  Documentation and coding conventions fixes.
+
+2007-05-29  steven
+
+	* [r17791] store/trunk/Store/StorePostalCodeEntry.php,
+	  store/trunk/www/styles/store-postal-code-entry.css:
+	  Don't include empty CSS file for StorePostalCodeEntry
+
+2007-05-28  nick
+
+	* [r17732] store/trunk/Store/StoreUI.php:
+	  We're now using Site widgets in Store, need to class-map them
+	* [r17730] store/trunk/Store/StoreSearchForm.php:
+	  Moved to the Site package
+
+2007-05-27  steven
+
+	* [r17716]
+	  store/trunk/Store/pages/StoreCheckoutPaymentFailedPage.php:
+	  Fix typo "an problem" -> "a problem"
+
+2007-05-24  gauthierm
+
+	* [r17688] store/trunk/Store/StoreClassMap.php:
+	  Implement instance() method and get the SwatDBClassMap instance.
+	* [r17687] store/trunk/Store/StoreClassMap.php:
+	  We don't need to duplicate the implementation of a deprecated
+	  interface.
+
+2007-05-24  nick
+
+	* [r17678] store/trunk/Store/StoreClassMap.php:
+	  This should have been deprecated, not deleted.
+	* [r17672] store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/StoreCartModule.php,
+	  store/trunk/Store/StoreClassMap.php,
+	  store/trunk/Store/StoreItemStatusList.php,
+	  store/trunk/Store/StoreOrderStatusList.php,
+	  store/trunk/Store/StoreSessionModule.php,
+	  store/trunk/Store/admin/components/Account/Details.php,
+	  store/trunk/Store/admin/components/Account/PaymentMethodEdit.php,
+	  store/trunk/Store/admin/components/Catalog/Edit.php,
+	  store/trunk/Store/admin/components/Catalog/Status.php,
+	  store/trunk/Store/admin/components/Catalog/include/StoreCatalogStatusCellRenderer.php,
+	  
+	  store/trunk/Store/admin/components/Category/ChangeItemStatus.php,
+	  store/trunk/Store/admin/components/Category/ImageDelete.php,
+	  store/trunk/Store/admin/components/Category/ImageEdit.php,
+	  store/trunk/Store/admin/components/Category/Index.php,
+	  store/trunk/Store/admin/components/Invoice/Delete.php,
+	  store/trunk/Store/admin/components/Invoice/Details.php,
+	  store/trunk/Store/admin/components/Invoice/Edit.php,
+	  store/trunk/Store/admin/components/Invoice/EmailNotification.php,
+	  store/trunk/Store/admin/components/Invoice/ItemDelete.php,
+	  store/trunk/Store/admin/components/Invoice/ItemEdit.php,
+	  store/trunk/Store/admin/components/Invoice/ItemOrder.php,
+	  store/trunk/Store/admin/components/Item/Edit.php,
+	  store/trunk/Store/admin/components/Item/Order.php,
+	  store/trunk/Store/admin/components/Item/include/StoreItemStatusCellRenderer.php,
+	  store/trunk/Store/admin/components/Order/Details.php,
+	  store/trunk/Store/admin/components/Order/EmailConfirmation.php,
+	  store/trunk/Store/admin/components/Product/Details.php,
+	  store/trunk/Store/admin/components/Product/ImageDelete.php,
+	  store/trunk/Store/admin/components/Product/ImageEdit.php,
+	  store/trunk/Store/dataobjects/StoreDataObject.php,
+	  store/trunk/Store/dataobjects/StoreItemWrapper.php,
+	  store/trunk/Store/dataobjects/StoreRecordsetWrapper.php,
+	  store/trunk/Store/pages/StoreAccountEditPage.php,
+	  store/trunk/Store/pages/StoreAccountForgotPasswordPage.php,
+	  store/trunk/Store/pages/StoreAccountOrderPage.php,
+	  store/trunk/Store/pages/StoreAccountPaymentMethodEditPage.php,
+	  store/trunk/Store/pages/StoreArticlePage.php,
+	  store/trunk/Store/pages/StoreCartPage.php,
+	  store/trunk/Store/pages/StoreCategoryPage.php,
+	  store/trunk/Store/pages/StoreCheckoutBillingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutCartPage.php,
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php,
+	  store/trunk/Store/pages/StoreCheckoutPage.php,
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php,
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php,
+	  store/trunk/Store/pages/StoreNateGoSearchPage.php,
+	  store/trunk/Store/pages/StoreProductImagePage.php,
+	  store/trunk/Store/pages/StoreProductPage.php,
+	  store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Remove StoreClassMap and replace with SwatDBClassMap.
+	  
+	  For now, we've left StoreDataObject and StoreRecordsetWrapper,
+	  but they're both
+	  just empty parent classes for the dataobjects.
+
+2007-05-24  steven
+
+	* [r17663] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Change "All displayed prices are in X." to "All prices are in X."
+
+2007-05-19  gauthierm
+
+	* [r17623] store/trunk/www/javascript/store-quick-order-page.js:
+	  Use clearTimeout instead of clearInterval since item.time is a
+	  timeout not an interval.
+	* [r17622] store/trunk/www/javascript/store-quick-order-page.js:
+	  Remove useless window indirection from Store JavaScript.
+
+2007-05-17  steven
+
+	* [r17596]
+	  store/trunk/www/admin/styles/store-catalog-switcher.css:
+	  Revert margin change after grid change
+
+2007-05-17  nrf
+
+	* [r17577] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.8.4
+
 2007-05-16  nick
 
 	* [r17553] store/trunk/Store/StoreNateGoSearchIndexer.php:
