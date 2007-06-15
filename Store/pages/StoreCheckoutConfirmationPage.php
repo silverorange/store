@@ -78,28 +78,26 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			}
 			$transaction->commit();
 
-			try {
-				$this->processPayment();
-				$payment_processing_successful = true;
-			} catch (StorePaymentException $e) {
-				$payment_processing_successful = false;
-				$this->handlePaymentException($e);
-			}
-
 			$order = $this->app->session->order;
 
-			if ($payment_processing_successful) {
+			try {
+				$this->processPayment();
+
 				$order->sendConfirmationEmail($this->app);
 				$this->removeCartEntries();
 				$this->cleanupSession();
 				$this->updateProgress();
 				$this->app->relocate('checkout/thankyou');
-			} else {
+
+			} catch (StorePaymentException $e) {
+				$this->handlePaymentException($e);
+
+				// duplicate order
 				$new_order = $order->duplicate();
 				$this->app->session->order = $new_order;
 
-				// cancel order if payment processing failed 
-				$order->cancelled = true;
+				// mark order as a failed order attempt
+				$order->failed_attempt = true;
 				$order->save();
 			}
 		}
