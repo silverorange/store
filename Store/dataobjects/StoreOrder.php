@@ -96,6 +96,14 @@ class StoreOrder extends StoreDataObject
 	 */
 	public $cancelled = false;
 
+	/**
+	 * Whether or not this order is a failed order attempt stored only
+	 * for debugging and recordkeeping
+	 *
+	 * @var boolean
+	 */
+	public $failed_attempt = false;
+
 	// }}}
 	// {{{ protected properties
 

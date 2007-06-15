@@ -7,6 +7,7 @@ create table Orders (
 	createdate timestamp not null,
 	status integer not null default 1,
 	cancelled boolean not null default false,
+	failed_attempt boolean not null default false,
 
 	billing_address integer not null references OrderAddress(id),
 	shipping_address integer not null references OrderAddress(id),
