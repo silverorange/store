@@ -64,7 +64,7 @@ class StoreAccountChangePasswordPage extends StoreAccountPage
 
 			if (!$form->hasMessage()) {
 				$password = $this->ui->getWidget('password')->value;
-				$this->app->session->account->password = md5($password);
+				$this->app->session->account->setPassword($password);
 				$this->app->session->account->save();
 
 				$message = new SwatMessage(Store::_(
