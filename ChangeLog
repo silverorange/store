@@ -1,3 +1,22 @@
+2007-06-15  gauthierm
+
+	* [r18036] store/trunk/Store/admin/components/Order/Index.php:
+	  Set default odering on order index page to createdate.
+	* [r18033]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Simplify process logic and mark old orders as failed attempts
+	  when duplicating orders.
+	* [r18031] store/trunk/Store/admin/components/Order/Index.php:
+	  Don't list failed order attempts in the order index page.
+	* [r18030] store/trunk/Store/dataobjects/StoreOrder.php,
+	  store/trunk/sql/tables/Orders.sql:
+	  Add failed_attempt field to Order object.
+
+2007-06-14  nrf
+
+	* [r18007] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.8.5
+
 2007-06-14  steven
 
 	* [r18004] store/trunk/Store/admin/StoreAdminMenuView.php:
