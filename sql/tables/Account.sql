@@ -5,6 +5,7 @@ create table Account (
 	email varchar(255),
 	phone varchar(100),
 	password varchar(255),
+	password_salt varchar(50),
 	password_tag varchar(255),
 	createdate timestamp,
 	last_login timestamp,
