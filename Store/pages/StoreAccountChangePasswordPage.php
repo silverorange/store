@@ -82,10 +82,12 @@ class StoreAccountChangePasswordPage extends StoreAccountPage
 
 	private function validate()
 	{
-		$old_password = $this->ui->getWidget('old_password');
-		$value = md5($old_password->value);
+		$account = $this->app->session->account;
 
-		if ($value != $this->app->session->account->password) {
+		$old_password = $this->ui->getWidget('old_password');
+		$value = md5($old_password->value.$account->password_salt);
+
+		if ($value != $account->password) {
 			$message = new SwatMessage(Store::_('Your password is incorrect.'),
 				SwatMessage::ERROR);
 

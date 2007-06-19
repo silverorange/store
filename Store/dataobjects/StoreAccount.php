@@ -80,6 +80,15 @@ require_once 'Store/dataobjects/StoreAccountWrapper.php';
  */
 abstract class StoreAccount extends StoreDataObject
 {
+	// {{{ class constants
+
+	/**
+	 * Length of salt value used to protect accounts's passwords from
+	 * dictionary attacks
+	 */
+	const PASSWORD_SALT_LENGTH = 16;
+
+	// }}}
 	// {{{ public properties
 
 	/**
@@ -114,14 +123,23 @@ abstract class StoreAccount extends StoreDataObject
 	public $phone;
 
 	/**
-	 * The md5() of this account's password
+	 * Hashed version of this account's salted password
 	 *
 	 * By design, there is no way to get the actual password of this account
 	 * through the StoreAccount object.
 	 *
 	 * @var string
+	 *
+	 * @see StoreAccount::setPassword()
 	 */
 	public $password;
+
+	/**
+	 * The salt value used to protect this account's password
+	 *
+	 * @var string
+	 */
+	public $password_salt;
 
 	/**
 	 * Hashed password tag for reseting the account password
@@ -166,12 +184,21 @@ abstract class StoreAccount extends StoreDataObject
 	public function loadWithCredentials($email, $password)
 	{
 		$this->checkDB();
+		$sql = sprintf('select password_salt from %s
+			where lower(email) = lower(%s)',
+			$this->table,
+			$this->db->quote($email, 'text'));
+
+		$salt = SwatDB::queryOne($this->db, $sql);
+
+		if ($salt === null)
+			return false;
 
 		$sql = sprintf('select id from %s
 			where lower(email) = lower(%s) and password = %s',
 			$this->table,
 			$this->db->quote($email, 'text'),
-			$this->db->quote(md5($password), 'text'));
+			$this->db->quote(md5($password.$salt), 'text'));
 
 		$id = SwatDB::queryOne($this->db, $sql);
 
@@ -233,10 +260,16 @@ abstract class StoreAccount extends StoreDataObject
 
 	/**
 	 * Sets this account's password
+	 *
+	 * The password is salted with a 16-byte salt and encrypted with one-way
+	 * encryption.
+	 *
+	 * @param string $password the password for this account.
 	 */
 	public function setPassword($password)
 	{
-		$this->password = md5($password);
+		$this->password_salt = SwatString::getSalt(self::PASSWORD_SALT_LENGTH);
+		$this->password = md5($password.$this->password_salt);
 	}
 
 	// }}}
@@ -260,10 +293,8 @@ abstract class StoreAccount extends StoreDataObject
 		$password_tag = SwatString::hash(uniqid(rand(), true));
 
 		/*
-		 * Update the database with new password tag.
-		 *
-		 * Don't use the regular dataobject saving here in case other fields
-		 * have changed.
+		 * Update the database with new password tag. Don't use the regular
+		 * dataobject saving here in case other fields have changed.
 		 */
 		$id_field = new SwatDBField($this->id_field, 'integer');
 		$sql = sprintf('update %s set password_tag = %s where %s = %s',
@@ -293,17 +324,18 @@ abstract class StoreAccount extends StoreDataObject
 		require_once 'Text/Password.php';
 
 		$new_password = Text_Password::Create();
+		$new_password_salt = SwatString::getSalt(self::PASSWORD_SALT_LENGTH);
 
 		/*
-		 * Update the database with new password.
-		 *
-		 * Don't use the regular dataobject saving here in case other fields
-		 * have changed.
+		 * Update the database with new password. Don't use the regular
+		 * dataobject saving here in case other fields have changed.
 		 */
 		$id_field = new SwatDBField($this->id_field, 'integer');
-		$sql = sprintf('update %s set password = %s where %s = %s',
+		$sql = sprintf('update %s set password = %s, password_salt = %s
+			where %s = %s',
 			$this->table,
-			$app->db->quote(md5($new_password), 'text'),
+			$app->db->quote(md5($new_password.$new_password_salt), 'text'),
+			$app->db->quote($new_password_salt, 'text'),
 			$id_field->name,
 			$this->db->quote($this->{$id_field->name}, $id_field->type));
 
