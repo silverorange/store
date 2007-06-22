@@ -34,6 +34,7 @@ class StorePaymentTypeEdit extends AdminDBEdit
 		$region_list = $this->ui->getWidget('regions');
 		$region_list_options = SwatDB::getOptionArray($this->app->db,
 			'Region', 'title', 'id', 'title');
+
 		$region_list->addOptionsByArray($region_list_options);
 
 		if ($this->id === null)
