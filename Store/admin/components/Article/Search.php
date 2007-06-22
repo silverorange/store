@@ -42,7 +42,7 @@ class StoreArticleSearch extends AdminSearch
 		$search_regions = $this->ui->getWidget('search_regions');
 		foreach ($regions as $region) {
 			$search_regions->addOption($region->id, $region->title);
-			$search_regions->values[] = $region->id;			
+			$search_regions->values[] = $region->id;
 		}
 
 		$this->ui->getWidget('article_region_action')->db = $this->app->db;
