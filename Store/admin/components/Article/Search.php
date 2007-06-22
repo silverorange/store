@@ -41,8 +41,8 @@ class StoreArticleSearch extends AdminSearch
 		$regions = SwatDB::query($this->app->db, $regions_sql);
 		$search_regions = $this->ui->getWidget('search_regions');
 		foreach ($regions as $region) {
-			$search_regions->options[$region->id] = $region->title;
-			$search_regions->values[] = $region->id;
+			$search_regions->addOption($region->id, $region->title);
+			$search_regions->values[] = $region->id;			
 		}
 
 		$this->ui->getWidget('article_region_action')->db = $this->app->db;

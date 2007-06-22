@@ -182,8 +182,9 @@ class StoreArticleEdit extends AdminDBEdit
 		$form->addHiddenField('parent', $this->parent);
 
 		$regions = $this->ui->getWidget('regions');
-		$regions->options = SwatDB::getOptionArray($this->app->db,
+		$regions_options = SwatDB::getOptionArray($this->app->db,
 			'Region', 'text:title', 'integer:id');
+		$regions->addOptionsByArray($regions_options);
 
 		// default region visibility
 		if ($this->id === null)

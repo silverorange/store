@@ -32,8 +32,9 @@ class StorePaymentTypeEdit extends AdminDBEdit
 		$this->fields = array('title', 'shortname');
 
 		$region_list = $this->ui->getWidget('regions');
-		$region_list->options = SwatDB::getOptionArray($this->app->db,
+		$region_list_options = SwatDB::getOptionArray($this->app->db,
 			'Region', 'title', 'id', 'title');
+		$region_list->addOptionsByArray($region_list_options);
 
 		if ($this->id === null)
 			$this->ui->getWidget('shortname_field')->visible = false;
