@@ -36,12 +36,12 @@ class StoreRegionEdit extends AdminDBEdit
 		$region_billing_country_list =
 			$this->ui->getWidget('region_billing_country');
 
-		$region_billing_country_list->options = $countries;
+		$region_billing_country_list->addOptionsByArray($countries);
 
 		$region_shipping_country_list = 
 			$this->ui->getWidget('region_shipping_country');
 
-		$region_shipping_country_list->options = $countries;
+		$region_shipping_country_list->addOptionsByArray($countries);
 
 		$this->fields = array('title');
 	}
