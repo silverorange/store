@@ -24,7 +24,7 @@ abstract class StoreLocaleApplication extends StoreApplication
 		if ($locale === null)
 			$locale = $this->locale;
 
-		if ($locale === null)
+		if ($locale === false || $locale === null)
 			return parent::getBaseHref($secure);
 
 		$language = substr($locale, 0, 2);
