@@ -1,3 +1,46 @@
+2007-06-25  gauthierm
+
+	* [r18153] store/trunk/Store/StoreLocaleApplication.php:
+	  Make it possible to explicitly get a base href without a locale
+	  in StoreLocaleApplication.
+
+2007-06-22  gauthierm
+
+	* [r18120] store/trunk/Store/admin/components/Article/Edit.php,
+	  store/trunk/Store/admin/components/Article/Search.php,
+	  store/trunk/Store/admin/components/PaymentType/Edit.php:
+	  Small coding convention fixes. Add a line break after statements
+	  that span multiple lines.
+
+2007-06-22  charles
+
+	* [r18119] store/trunk/Store/admin/components/Article/Edit.php,
+	  store/trunk/Store/admin/components/Article/Search.php,
+	  store/trunk/Store/admin/components/PaymentType/Edit.php,
+	  store/trunk/Store/admin/components/Region/Edit.php:
+	  Part of ticket #1044, pages using old methods of adding options
+	  are now fixed and work with the new SwatCheckboEntryList
+
+2007-06-19  gauthierm
+
+	* [r18071] store/trunk/Store/dataobjects/StoreAccount.php,
+	  store/trunk/Store/pages/StoreAccountChangePasswordPage.php,
+	  store/trunk/sql/tables/Account.sql:
+	  Salt store account passwords. Finishes ticket #1059. Old
+	  passwords are backwards compatible with the new system.
+
+2007-06-18  gauthierm
+
+	* [r18070]
+	  store/trunk/Store/pages/StoreAccountChangePasswordPage.php:
+	  Use Account::setPassword() when setting password on store
+	  account change password page.
+
+2007-06-18  nrf
+
+	* [r18045] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.8.6
+
 2007-06-15  gauthierm
 
 	* [r18036] store/trunk/Store/admin/components/Order/Index.php:
