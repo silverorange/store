@@ -1,3 +1,20 @@
+2007-06-27  gauthierm
+
+	* [r18197] store/trunk/Store/admin/components/Order/search.xml:
+	  Fix field name.
+	* [r18190] store/trunk/Store/dataobjects/StoreOrder.php,
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php,
+	  store/trunk/sql/tables/Orders.sql:
+	  Ticket #1077: Previous order attempts should only be marked as
+	  attempts when a new order is saved in the database. These
+	  changes also have a nice side effect of chaining order attempts
+	  together in the database.
+
+2007-06-26  nrf
+
+	* [r18179] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.8.7
+
 2007-06-25  gauthierm
 
 	* [r18153] store/trunk/Store/StoreLocaleApplication.php:
