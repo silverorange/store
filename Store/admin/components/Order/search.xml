@@ -37,7 +37,7 @@
 					<widget class="SwatEntry" id="search_email" />
 				</widget>
 				<widget class="SwatFormField">
-					<property name="title" translatable="yes">Country</property>
+					<property name="title" translatable="yes">Region</property>
 					<widget class="SwatFlydown" id="search_region" />
 				</widget>
 			</widget>
