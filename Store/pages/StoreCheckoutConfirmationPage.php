@@ -94,11 +94,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 				// duplicate order
 				$new_order = $order->duplicate();
+				$new_order->previous_attempt = $order;
 				$this->app->session->order = $new_order;
-
-				// mark order as a failed order attempt
-				$order->failed_attempt = true;
-				$order->save();
 			}
 		}
 	}
@@ -171,6 +168,12 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	protected function saveOrder()
 	{
 		$order = $this->app->session->order;
+
+		// if there was a previous order attempt, mark it as failed
+		if ($order->previous_attempt !== null) {
+			$order->previous_attempt->failed_attempt = true;
+			$order->previous_attempt->save();
+		}
 
 		// attach order to account
 		if ($this->app->session->checkout_with_account)

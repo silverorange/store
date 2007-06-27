@@ -1,5 +1,7 @@
 create table Orders (
 	id serial,
+
+	previous_attempt integer, -- constraint added below
 	account integer default null references Account(id) on delete set null,
 	email varchar(255),
 	phone varchar(100),
@@ -24,6 +26,10 @@ create table Orders (
 
 	primary key (id)
 );
+
+ALTER TABLE Orders ADD CONSTRAINT Orders_previous_attempt_fk
+	FOREIGN KEY (previous_attempt) REFERENCES Orders(id) MATCH FULL
+	ON DELETE SET null;
 
 CREATE INDEX Orders_ad_index ON Orders(ad);
 CREATE INDEX Orders_payment_method_index ON Orders(payment_method);
