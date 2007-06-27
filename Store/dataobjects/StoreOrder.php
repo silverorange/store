@@ -299,6 +299,9 @@ class StoreOrder extends StoreDataObject
 		$this->registerInternalProperty('invoice',
 			$this->class_map->resolveClass('StoreInvoice'));
 
+		$this->registerInternalProperty('previous_attempt',
+			$this->class_map->resolveClass('StoreOrder'));
+
 		$this->registerDateProperty('createdate');
 
 		$this->table = 'Orders';
