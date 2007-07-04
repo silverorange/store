@@ -180,9 +180,9 @@ class StoreItemEdit extends AdminDBEdit
 	}
 
 	// }}}
-	// {{{ private function saveItemRegionFields()
+	// {{{ protected function saveItemRegionFields()
 
-	private function saveItemRegionFields()
+	protected function saveItemRegionFields()
 	{
 		/*
 		 * NOTE: This stuff is automatically wrapped in a transaction in
