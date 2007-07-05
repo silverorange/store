@@ -189,7 +189,7 @@ class StoreArticleEdit extends AdminDBEdit
 
 		// default region visibility
 		if ($this->id === null)
-			$regions->values = array_flip($regions->options);
+			$regions->values = array_flip($regions_options);
 	}
 
 	// }}}
