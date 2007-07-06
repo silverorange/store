@@ -43,7 +43,7 @@ class StoreProvStateIndex extends AdminIndex
 		switch ($actions->selected->id) {
 		case 'delete':
 			$this->app->replacePage('ProvState/Delete');
-			$this->app->getPage()->setItems($view->checked_items);
+			$this->app->getPage()->setItems($view->getSelection());
 			break;
 		}
 	}

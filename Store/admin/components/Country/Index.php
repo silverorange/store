@@ -34,7 +34,7 @@ class StoreCountryIndex extends AdminIndex
 		switch ($actions->selected->id) {
 		case 'delete':
 			$this->app->replacePage('Country/Delete');
-			$this->app->getPage()->setItems($view->checked_items);
+			$this->app->getPage()->setItems($view->getSelection());
 			break;
 		}
 	}

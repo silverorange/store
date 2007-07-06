@@ -232,7 +232,7 @@ class StoreItemQuantityDiscount extends AdminIndex
 
 				// If we're not adding rows and there are no checked items
 				// then we always want to relocate, even if delete is selected.
-				if (count($view->checked_items) == 0)
+				if (count($view->getSelection()) == 0)
 					$this->relocate();
 			}
 		}
@@ -243,12 +243,12 @@ class StoreItemQuantityDiscount extends AdminIndex
 
 	protected function processActions(SwatTableView $view, SwatActions $actions)
 	{
-		$num = count($view->checked_items);
+		$num = count($view->getSelection());
 
 		switch ($actions->selected->id) {
 		case 'delete':
 			$this->app->replacePage('Item/QuantityDiscountDelete');
-			$this->app->getPage()->setItems($view->checked_items);
+			$this->app->getPage()->setItems($view->getSelection());
 			$this->app->getPage()->setRelocateUrl($this->getProductDetailsUrl());
 			break;
 

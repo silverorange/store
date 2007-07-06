@@ -34,7 +34,7 @@ class StoreRegionIndex extends AdminIndex
 		switch ($actions->selected->id) {
 		case 'delete':
 			$this->app->replacePage('Region/Delete');
-			$this->app->getPage()->setItems($view->checked_items);
+			$this->app->getPage()->setItems($view->getSelection());
 			break;
 		}
 	}

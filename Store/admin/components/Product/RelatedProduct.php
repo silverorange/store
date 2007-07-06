@@ -60,9 +60,9 @@ class StoreProductRelatedProduct extends AdminSearch
 		$view = $this->ui->getWidget('index_view');
 
 		if ($form->isProcessed()) {
-			if (count($view->checked_items) != 0) {
+			if (count($view->getSelection()) != 0) {
 				$product_list = array();
-				foreach ($view->checked_items as $item)
+				foreach ($view->getSelection() as $item)
 					$product_list[] = $this->app->db->quote($item, 'integer');
 
 				// relate products

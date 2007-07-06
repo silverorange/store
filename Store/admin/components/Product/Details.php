@@ -94,7 +94,7 @@ class StoreProductDetails extends AdminIndex
 		$related_products_form = $this->ui->getWidget('related_products_form');
 		$related_products_view = $this->ui->getWidget('related_products_view');
 		if ($related_products_form->isProcessed() &&
-			count($related_products_view->checked_items) != 0)
+			count($related_products_view->getSelection()) != 0)
 			$this->processRelatedProducts($related_products_view);
 
 		// add new items
@@ -125,12 +125,12 @@ class StoreProductDetails extends AdminIndex
 		switch ($actions->selected->id) {
 		case 'delete':
 			$this->app->replacePage('Item/Delete');
-			$this->app->getPage()->setItems($view->checked_items);
+			$this->app->getPage()->setItems($view->getSelection());
 			break;
 
 		case 'change_group':
 			$item_group_action = $this->ui->getWidget('item_group');
-			$message = $item_group_action->processAction($view->checked_items);
+			$message = $item_group_action->processAction($view->getSelection());
 			$this->app->messages->add($message);
 			break;
 
@@ -152,9 +152,9 @@ class StoreProductDetails extends AdminIndex
 			SwatDB::exec($this->app->db, sprintf($sql,
 				$this->app->db->quote(true, 'boolean'),
 				$region_sql,
-				implode(',', $view->checked_items)));
+				implode(',', $view->getSelection())));
 
-			$num = count($view->checked_items);
+			$num = count($view->getSelection());
 
 			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One item has been enabled.',
@@ -177,9 +177,9 @@ class StoreProductDetails extends AdminIndex
 			SwatDB::exec($this->app->db, sprintf($sql,
 				$this->app->db->quote(false, 'boolean'),
 				$region_sql,
-				implode(',', $view->checked_items)));
+				implode(',', $view->getSelection())));
 
-			$num = count($view->checked_items);
+			$num = count($view->getSelection());
 
 			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One item has been disabled.',
@@ -231,10 +231,10 @@ class StoreProductDetails extends AdminIndex
 
 	protected final function changeStatus(SwatTableView $view, $status)
 	{
-		$num = count($view->checked_items);
+		$num = count($view->getSelection());
 
 		SwatDB::updateColumn($this->app->db, 'Item', 'integer:status', $status,
-			'id', $view->checked_items);
+			'id', $view->getSelection());
 
 		$message = new SwatMessage(sprintf(Store::ngettext(
 			'The status of one item has been changed.',
@@ -350,7 +350,7 @@ class StoreProductDetails extends AdminIndex
 	private function processRelatedProducts($view)
 	{
 		$this->app->replacePage('Product/RelatedProductDelete');
-		$this->app->getPage()->setItems($view->checked_items);
+		$this->app->getPage()->setItems($view->getSelection());
 		$this->app->getPage()->setId($this->id);
 		$this->app->getPage()->setCategory($this->category_id);
 	}
