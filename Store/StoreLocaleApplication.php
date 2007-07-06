@@ -13,7 +13,14 @@ abstract class StoreLocaleApplication extends StoreApplication
 {
 	// {{{ protected properties
 
+	/**
+	 * @var string
+	 */
 	protected $locale;
+
+	/**
+	 * @var StoreRegion
+	 */
 	protected $region;
 
 	// }}}
@@ -35,6 +42,9 @@ abstract class StoreLocaleApplication extends StoreApplication
 	// }}}
 	// {{{ public function getCountry()
 
+	/**
+	 * @return string
+	 */
 	public function getCountry($locale = null)
 	{
 		if ($locale === null)
@@ -84,9 +94,8 @@ abstract class StoreLocaleApplication extends StoreApplication
 	{
 		$uri = parent::getBaseHrefRelativeUri($secure);
 
-		// trim locale
-		if (preg_match('|^[a-z][a-z]/[a-z][a-z]/|', $uri) === 1)
-			$uri = substr($uri, 6);
+		// trim locale from beginning of relative uri
+		$uri = preg_replace('|^[a-z][a-z]/[a-z][a-z]/|', '', $uri);
 
 		return $uri;
 	}
@@ -100,7 +109,7 @@ abstract class StoreLocaleApplication extends StoreApplication
 		$this->region = null;
 
 		$matches = array();
-		if (preg_match('@([a-z][a-z])/([a-z][a-z])@', $locale, $matches) != 1)
+		if (preg_match('|([a-z][a-z])/([a-z][a-z])|', $locale, $matches) != 1)
 			return;
 
 		$this->locale = $matches[2].'_'.strtoupper($matches[1]);
