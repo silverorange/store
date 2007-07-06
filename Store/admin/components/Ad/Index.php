@@ -33,12 +33,12 @@ class StoreAdIndex extends AdminIndex
 
 	protected function processActions(SwatTableView $view, SwatActions $actions)
 	{
-		$num = count($view->checked_items);
+		$num = count($view->getSelection());
 
 		switch ($actions->selected->id) {
 		case 'delete':
 			$this->app->replacePage('Ad/Delete');
-			$this->app->getPage()->setItems($view->checked_items);
+			$this->app->getPage()->setItems($view->getSelection());
 			break;
 		}
 	}

@@ -54,10 +54,10 @@ class StoreCategoryAddProducts extends AdminSearch
 		if ($form->isProcessed()) {
 			$view = $this->ui->getWidget('index_view');
 
-			if (count($view->checked_items) != 0) {
+			if (count($view->getSelection()) != 0) {
 
 				$product_list = array();
-				foreach ($view->checked_items as $item)
+				foreach ($view->getSelection() as $item)
 					$product_list[] = $this->app->db->quote($item, 'integer');
 
 				$sql = sprintf('insert into CategoryProductBinding

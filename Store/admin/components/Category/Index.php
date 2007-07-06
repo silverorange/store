@@ -91,18 +91,18 @@ class StoreCategoryIndex extends AdminIndex
 		switch ($actions->selected->id) {
 		case 'categories_delete':
 			$this->app->replacePage('Category/Delete');
-			$this->app->getPage()->setItems($view->checked_items);
+			$this->app->getPage()->setItems($view->getSelection());
 			break;
 
 		case 'categories_remove_products':
 			$this->app->replacePage('Category/RemoveProducts');
-			$this->app->getPage()->setItems($view->checked_items);
+			$this->app->getPage()->setItems($view->getSelection());
 			$this->app->getPage()->setCategory($this->id);
 			break;
 
 		case 'categories_change_status':
 			$this->app->replacePage('Category/ChangeItemStatus');
-			$this->app->getPage()->setItems($view->checked_items);
+			$this->app->getPage()->setItems($view->getSelection());
 			$this->app->getPage()->setCategory($this->id);
 			$this->app->getPage()->setStatus(
 				$this->ui->getWidget('categories_status')->value);
@@ -111,7 +111,7 @@ class StoreCategoryIndex extends AdminIndex
 
 		case 'categories_enable_items':
 			$this->app->replacePage('Category/SetItemEnabled');
-			$this->app->getPage()->setItems($view->checked_items);
+			$this->app->getPage()->setItems($view->getSelection());
 			$this->app->getPage()->setCategory($this->id);
 			$this->app->getPage()->setEnabled(true);
 			$this->app->getPage()->setRegion(
@@ -121,7 +121,7 @@ class StoreCategoryIndex extends AdminIndex
 
 		case 'categories_disable_items':
 			$this->app->replacePage('Category/SetItemEnabled');
-			$this->app->getPage()->setItems($view->checked_items);
+			$this->app->getPage()->setItems($view->getSelection());
 			$this->app->getPage()->setCategory($this->id);
 			$this->app->getPage()->setEnabled(false);
 			$this->app->getPage()->setRegion(
@@ -136,17 +136,17 @@ class StoreCategoryIndex extends AdminIndex
 
 	private function processProductActions($view, $actions)
 	{
-		$num = count($view->checked_items);
+		$num = count($view->getSelection());
 		$message = null;
 
 		$item_list = array();
-		foreach ($view->checked_items as $item)
+		foreach ($view->getSelection() as $item)
 			$item_list[] = $this->app->db->quote($item, 'integer');
 
 		switch ($actions->selected->id) {
 		case 'products_delete':
 			$this->app->replacePage('Product/Delete');
-			$this->app->getPage()->setItems($view->checked_items);
+			$this->app->getPage()->setItems($view->getSelection());
 			$this->app->getPage()->setCategory($this->id);
 			break;
 
@@ -169,7 +169,7 @@ class StoreCategoryIndex extends AdminIndex
 
 			$num = SwatDB::queryOne($this->app->db, sprintf(
 				'select count(id) from Item where product in (%s)',
-				implode(',', $view->checked_items)));
+				implode(',', $view->getSelection())));
 
 			SwatDB::updateColumn($this->app->db, 'Item', 'integer:status',
 				$new_status, 'product', $item_list);
@@ -193,7 +193,7 @@ class StoreCategoryIndex extends AdminIndex
 
 			$sql = sprintf($sql,
 				$this->app->db->quote($minor, 'boolean'),
-				implode(',', $view->checked_items),
+				implode(',', $view->getSelection()),
 				$this->app->db->quote($this->id, 'integer'));
 
 			$num = SwatDB::exec($this->app->db, $sql);
@@ -210,7 +210,7 @@ class StoreCategoryIndex extends AdminIndex
 
 			$num = SwatDB::queryOne($this->app->db, sprintf(
 				'select count(id) from Item where product in (%s)',
-				implode(',', $view->checked_items)));
+				implode(',', $view->getSelection())));
 
 			$sql = 'update ItemRegionBinding set enabled = %s
 				where %s item in (select id from Item where product in (%s))';
@@ -223,7 +223,7 @@ class StoreCategoryIndex extends AdminIndex
 			SwatDB::exec($this->app->db, sprintf($sql,
 				$this->app->db->quote(true, 'boolean'),
 				$region_sql,
-				implode(',', $view->checked_items)));
+				implode(',', $view->getSelection())));
 
 			$message = new SwatMessage(sprintf(Store::ngettext(
 				'%s item has been enabled.',
@@ -237,7 +237,7 @@ class StoreCategoryIndex extends AdminIndex
 
 			$num = SwatDB::queryOne($this->app->db, sprintf(
 				'select count(id) from Item where product in (%s)',
-				implode(',', $view->checked_items)));
+				implode(',', $view->getSelection())));
 
 			$sql = 'update ItemRegionBinding set enabled = %s
 				where %s item in (select id from Item where product in (%s))';
@@ -250,7 +250,7 @@ class StoreCategoryIndex extends AdminIndex
 			SwatDB::exec($this->app->db, sprintf($sql,
 				$this->app->db->quote(false, 'boolean'),
 				$region_sql,
-				implode(',', $view->checked_items)));
+				implode(',', $view->getSelection())));
 
 			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One item has been disabled.',
@@ -269,13 +269,13 @@ class StoreCategoryIndex extends AdminIndex
 
 	private function processFeaturedProductActions($view, $actions)
 	{
-		$num = count($view->checked_items);
+		$num = count($view->getSelection());
 		$message = null;
 
 		switch ($actions->selected->id) {
 		case 'featured_products_remove':
 			$item_list = array();
-			foreach ($view->checked_items as $item)
+			foreach ($view->getSelection() as $item)
 				$item_list[] = $this->app->db->quote($item, 'integer');
 
 			SwatDB::query($this->app->db, sprintf('

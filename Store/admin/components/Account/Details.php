@@ -106,7 +106,7 @@ class StoreAccountDetails extends AdminIndex
 		switch ($actions->selected->id) {
 		case 'invoice_delete':
 			$this->app->replacePage('Invoice/Delete');
-			$this->app->getPage()->setItems($view->checked_items);
+			$this->app->getPage()->setItems($view->getSelection());
 			break;
 		}
 	}
@@ -119,7 +119,7 @@ class StoreAccountDetails extends AdminIndex
 		switch ($actions->selected->id) {
 		case 'address_delete':
 			$this->app->replacePage('Account/AddressDelete');
-			$this->app->getPage()->setItems($view->checked_items);
+			$this->app->getPage()->setItems($view->getSelection());
 			break;
 		}
 	}
@@ -132,7 +132,7 @@ class StoreAccountDetails extends AdminIndex
 		switch ($actions->selected->id) {
 		case 'payment_method_delete':
 			$this->app->replacePage('Account/PaymentMethodDelete');
-			$this->app->getPage()->setItems($view->checked_items);
+			$this->app->getPage()->setItems($view->getSelection());
 			break;
 		}
 	}

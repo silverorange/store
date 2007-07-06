@@ -42,13 +42,13 @@ class StorePaymentTypeIndex extends AdminIndex
 
 	protected function processActions(SwatTableView $view, SwatActions $actions)
 	{
-		$num = count($view->checked_items);
+		$num = count($view->getSelection());
 		$message = null;
 
 		switch ($actions->selected->id) {
 		case 'delete':
 			$this->app->replacePage('PaymentType/Delete');
-			$this->app->getPage()->setItems($view->checked_items);
+			$this->app->getPage()->setItems($view->getSelection());
 			break;
 
 		case 'enable':
@@ -62,13 +62,13 @@ class StorePaymentTypeIndex extends AdminIndex
 					id not in (select region from PaymentTypeRegionBinding
 						where payment_type = %1$s)';
 
-			foreach ($view->checked_items as $item) {
+			foreach ($view->getSelection() as $item) {
 				SwatDB::exec($this->app->db,
 					sprintf($sql, $this->app->db->quote($item, 'integer'),
 						implode(',', $region_list)));
 			}
 
-			$num = count($view->checked_items);
+			$num = count($view->getSelection());
 
 			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One payment type has been enabled.',
@@ -88,9 +88,9 @@ class StorePaymentTypeIndex extends AdminIndex
 					'integer')) : '';
 
 			SwatDB::exec($this->app->db,
-				sprintf($sql, $region_sql, implode(',', $view->checked_items)));
+				sprintf($sql, $region_sql, implode(',', $view->getSelection())));
 
-			$num = count($view->checked_items);
+			$num = count($view->getSelection());
 
 			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One payment type has been disabled.',
