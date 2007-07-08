@@ -293,15 +293,12 @@ class StoreItemEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$row = SwatDB::queryRowFromTable($this->app->db, 'Item',
-			$this->fields, 'id', $this->id);
+		$row = SwatDB::queryRowFromTable($this->app->db, 'Item', $this->fields,
+			'id', $this->id);
 
 		if ($row === null)
 			throw new AdminNotFoundException(
 				sprintf(Store::_('Item with id ‘%s’ not found.'), $this->id));
-
-		$row = SwatDB::queryRowFromTable($this->app->db, 'Item', $this->fields,
-			'id', $this->id);
 
 		$this->item_sku = $row->sku;
 		$this->ui->setValues(get_object_vars($row));
