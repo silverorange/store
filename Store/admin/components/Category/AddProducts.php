@@ -54,7 +54,7 @@ class StoreCategoryAddProducts extends AdminSearch
 		if ($form->isProcessed()) {
 			$view = $this->ui->getWidget('index_view');
 
-			if (count($view->getSelection()) != 0) {
+			if (count($view->getSelection()) > 0) {
 
 				$product_list = array();
 				foreach ($view->getSelection() as $item)
