@@ -151,9 +151,9 @@ class StoreArticleSearch extends AdminSearch
 	}
 
 	// }}}
-	// {{{ protected function getTableStore()
+	// {{{ protected function getTableModel()
 
-	protected function getTableStore($view)
+	protected function getTableModel(SwatTableView $view)
 	{
 		$this->searchArticles();
 
@@ -179,19 +179,19 @@ class StoreArticleSearch extends AdminSearch
 			$this->getOrderByClause($view, $this->order_by_clause));
 
 		$this->app->db->setLimit($pager->page_size, $pager->current_record);
-		$store = SwatDB::query($this->app->db, $sql);
+		$rs = SwatDB::query($this->app->db, $sql);
 
 		$this->ui->getWidget('results_frame')->visible = true;
 		$view = $this->ui->getWidget('index_view');
 		$view->getColumn('visibility')->getRendererByPosition()->db =
 			$this->app->db;
 
-		if (count($store) > 0)
+		if (count($rs) > 0)
 			$this->ui->getWidget('results_message')->content =
 				$pager->getResultsMessage(Store::_('result'), 
 					Store::_('results'));
 
-		return $store;
+		return $rs;
 	}
 
 	// }}}

@@ -45,9 +45,9 @@ class StoreAdIndex extends AdminIndex
 	// }}}
 
 	// build phase
-	// {{{ protected function getTableStore()
+	// {{{ protected function getTableModel()
 
-	protected function getTableStore($view)
+	protected function getTableModel(SwatTableView $view)
 	{
 		$sql = sprintf('select Ad.id, Ad.title, Ad.shortname,
 				Ad.total_referrers, OrderCountByAdView.order_count,
@@ -57,9 +57,9 @@ class StoreAdIndex extends AdminIndex
 			order by %s',
 			$this->getOrderByClause($view, 'createdate desc'));
 
-		$store = SwatDB::query($this->app->db, $sql);
+		$rs = SwatDB::query($this->app->db, $sql);
 
-		return $store;
+		return $rs;
 	}
 
 	// }}}

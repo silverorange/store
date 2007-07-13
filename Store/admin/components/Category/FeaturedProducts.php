@@ -107,9 +107,9 @@ class StoreCategoryFeaturedProducts extends AdminIndex
 	}
 
 	// }}}
-	// {{{ protected function getTableStore()
+	// {{{ protected function getTableModel()
 
-	protected function getTableStore($view)
+	protected function getTableModel(SwatTableView $view)
 	{
 		$sql = 'select distinct Product.id, Product.title
 				from Product
@@ -133,9 +133,9 @@ class StoreCategoryFeaturedProducts extends AdminIndex
 			$this->getOrderByClause($view,
 				'Product.title, Product.id'));
 
-		$store = SwatDB::query($this->app->db, $sql);
+		$rs = SwatDB::query($this->app->db, $sql);
 
-		return $store;
+		return $rs;
 	}
 
 	// }}}

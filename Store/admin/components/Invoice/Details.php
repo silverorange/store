@@ -222,13 +222,13 @@ class StoreInvoiceDetails extends AdminIndex
 	}
 
 	// }}}
-	// {{{ protected function getTableStore()
+	// {{{ protected function getTableModel()
 
-	protected function getTableStore($view)
+	protected function getTableModel(SwatTableView $view)
 	{
 		switch ($view->id) {
 			case 'items_view':
-				return $this->getItemsTableStore($view);
+				return $this->getItemsTableModel($view);
 		}
 	}
 
@@ -337,17 +337,18 @@ class StoreInvoiceDetails extends AdminIndex
 	}
 
 	// }}}
-	// {{{ protected function getItemsTableStore()
+	// {{{ protected function getItemsTableModel()
 
-	protected function getItemsTableStore($view)
+	protected function getItemsTableModel(SwatTableView $view)
 	{
 		$sql = sprintf('select *, price * quantity as total from InvoiceItem
 			where invoice = %s order by %s',
 			$this->app->db->quote($this->id, 'integer'),
 			$this->getOrderByClause($view, 'displayorder, id'));
 
-		$store = SwatDB::query($this->app->db, $sql);
-		return $store;
+		$rs = SwatDB::query($this->app->db, $sql);
+
+		return $rs;
 	}
 
 	// }}}

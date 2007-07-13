@@ -53,9 +53,9 @@ class StoreArticleIndex extends AdminIndex
 	// }}}
 
 	// build phase
-	// {{{ protected function getTableStore()
+	// {{{ protected function getTableModel()
 
-	protected function getTableStore($view) 
+	protected function getTableModel(SwatTableView $view)
 	{
 		$sql = 'select Article.id,
 					Article.title, 
@@ -74,16 +74,16 @@ class StoreArticleIndex extends AdminIndex
 			$this->getOrderByClause($view, 
 				'Article.displayorder, Article.title', 'Article'));
 		
-		$store = SwatDB::query($this->app->db, $sql);
+		$rs = SwatDB::query($this->app->db, $sql);
 
 		$view = $this->ui->getWidget('index_view');
 		$view->getColumn('visibility')->getFirstRenderer()->db =
 			$this->app->db;
 
-		if (count($store) < 2)
+		if (count($rs) < 2)
 			$this->ui->getWidget('articles_order')->sensitive = false;
 
-		return $store;
+		return $rs;
 	}
 
 	// }}}

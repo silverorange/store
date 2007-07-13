@@ -41,9 +41,9 @@ class StoreLocaleIndex extends AdminIndex
 	// }}}
 
 	// build phase
-	// {{{ protected function getTableStore()
+	// {{{ protected function getTableModel()
 
-	protected function getTableStore($view)
+	protected function getTableModel(SwatTableView $view)
 	{
 		$sql = 'select Locale.id, Region.title as region_title
 				from Locale
@@ -52,9 +52,9 @@ class StoreLocaleIndex extends AdminIndex
 
 		$sql = sprintf($sql, $this->getOrderByClause($view, 'id'));
 
-		$store = SwatDB::query($this->app->db, $sql);
+		$rs = SwatDB::query($this->app->db, $sql);
 
-		return $store;
+		return $rs;
 	}
 
 	// }}}

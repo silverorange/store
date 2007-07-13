@@ -453,9 +453,9 @@ class StoreItemQuantityDiscount extends AdminIndex
 	}
 
 	// }}}
-	// {{{ protected function getTableStore()
+	// {{{ protected function getTableModel()
 
-	protected function getTableStore($view)
+	protected function getTableModel(SwatTableView $view)
 	{
 		$regions = $this->queryRegions();
 
@@ -498,9 +498,9 @@ class StoreItemQuantityDiscount extends AdminIndex
 			$this->app->db->quote($this->id, 'integer'),
 			$this->getOrderByClause($view, 'quantity'));
 
-		$store = SwatDB::query($this->app->db, $sql);
+		$rs = SwatDB::query($this->app->db, $sql);
 
-		return $store;
+		return $rs;
 	}
 
 	// }}}

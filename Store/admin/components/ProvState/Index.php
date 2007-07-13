@@ -50,9 +50,9 @@ class StoreProvStateIndex extends AdminIndex
 	// }}}
 
 	// build phase
-	// {{{ protected function getTableStore()
+	// {{{ protected function getTableModel()
 
-	protected function getTableStore($view)
+	protected function getTableModel(SwatTableView $view)
 	{
 		$sql = 'select ProvState.id, ProvState.title,
 					Country.title as country_title, ProvState.abbreviation
@@ -63,9 +63,9 @@ class StoreProvStateIndex extends AdminIndex
 		$sql = sprintf($sql, $this->getOrderByClause($view,
 			'Country.title, ProvState.title'));
 
-		$store = SwatDB::query($this->app->db, $sql);
+		$rs = SwatDB::query($this->app->db, $sql);
 
-		return $store;
+		return $rs;
 	}
 
 	// }}}
