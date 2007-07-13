@@ -386,15 +386,15 @@ class StoreProductDetails extends AdminIndex
 	}
 
 	// }}}
-	// {{{ protected function getTableStore()
+	// {{{ protected function getTableModel()
 
-	protected function getTableStore($view)
+	protected function getTableModel(SwatTableView $view)
 	{
 		switch ($view->id) {
 			case 'items_view':
-				return $this->getItemsTableStore($view);
+				return $this->getItemsTableModel($view);
 			case  'related_products_view':
-				return $this->getRelatedProductsTableStore($view);
+				return $this->getRelatedProductsTableModel($view);
 		}
 	}
 
@@ -626,9 +626,9 @@ class StoreProductDetails extends AdminIndex
 	}
 
 	// }}}
-	// {{{ protected function getItemsTableStore()
+	// {{{ protected function getItemsTableModel()
 
-	protected function getItemsTableStore($view)
+	protected function getItemsTableModel(SwatTableView $view)
 	{
 		$sql = $this->getItemsSql($view);
 		$items = SwatDB::query($this->app->db, $sql, 'StoreItemWrapper');
@@ -928,9 +928,9 @@ class StoreProductDetails extends AdminIndex
 	}
 
 	// }}}
-	// {{{ private function getRelatedProductsTableStore()
+	// {{{ private function getRelatedProductsTableModel()
 
-	private function getRelatedProductsTableStore($view)
+	private function getRelatedProductsTableModel(SwatTableView $view)
 	{
 		$sql = 'select id, title
 			from Product
@@ -941,14 +941,14 @@ class StoreProductDetails extends AdminIndex
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->id, 'integer'));
 
-		$store = SwatDB::query($this->app->db, $sql);
+		$rs = SwatDB::query($this->app->db, $sql);
 
-		if (count($store) == 0) {
+		if (count($rs) == 0) {
 			$view->visible = false;
 			$this->ui->getWidget('related_products_footer')->visible = false;
 		}
 
-		return $store;
+		return $rs;
 	}
 
 	// }}}

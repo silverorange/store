@@ -63,22 +63,22 @@ class StoreAdDetails extends AdminIndex
 	// }}}
 
 	// build phase
-	// {{{ protected function getTableStore()
+	// {{{ protected function getTableModel()
 
-	protected function getTableStore($view) 
+	protected function getTableModel(SwatTableView $view)
 	{
 		switch ($view->id) {
 		case 'orders_view' :
-			return $this->getOrdersTableStore();
+			return $this->getOrdersTableModel();
 		case 'referrer_period_view' :
-			return $this->getRefererPeriodTableStore();
+			return $this->getRefererPeriodTableModel();
 		}
 	}
 
 	// }}}
-	// {{{ protected function getOrdersTableStore()
+	// {{{ protected function getOrdersTableModel()
 
-	protected function getOrdersTableStore()
+	protected function getOrdersTableModel()
 	{
 		$regions = $this->queryRegions();
 		$this->appendRegionColumns($regions);
@@ -90,6 +90,7 @@ class StoreAdDetails extends AdminIndex
 
 		$store = new SwatTableStore();
 
+		// TODO: Boo! Why is a variable named $myvar ?
 		foreach ($rs as $row) {
 			foreach ($this->periods as $key => $val) {
 				$myvar[$key]->period = $val;
@@ -113,9 +114,9 @@ class StoreAdDetails extends AdminIndex
 	}
 
 	// }}}
-	// {{{ protected function getRefererPeriodTableStore()
+	// {{{ protected function getRefererPeriodTableModel()
 
-	protected function getRefererPeriodTableStore()
+	protected function getRefererPeriodTableModel()
 	{
 		$sql = sprintf('select *from AdReferrerByPeriodView where ad = %s',
 			$this->app->db->quote($this->id, 'integer'));

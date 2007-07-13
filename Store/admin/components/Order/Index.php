@@ -191,9 +191,9 @@ class StoreOrderIndex extends AdminSearch
 	}
 
 	// }}}
-	// {{{ protected function getTableStore()
+	// {{{ protected function getTableModel()
 
-	protected function getTableStore($view)
+	protected function getTableModel(SwatTableView $view)
 	{
 		$sql = 'select count(Orders.id) from Orders
 					left outer join Account on Orders.account = Account.id
@@ -232,17 +232,17 @@ class StoreOrderIndex extends AdminSearch
 
 		$this->app->db->setLimit($pager->page_size, $pager->current_record);
 
-		$store = SwatDB::query($this->app->db, $sql);
+		$rs = SwatDB::query($this->app->db, $sql);
 
-		if (count($store) > 0)
+		if (count($rs) > 0)
 			$this->ui->getWidget('results_message')->content =
 				$pager->getResultsMessage('result', 'results');
 
 		// TODO: use a SwatTableStore instead of mangling the dataobjects
-		foreach ($store as $row)
+		foreach ($rs as $row)
 			$row->title = $this->getOrderTitle($row);
 
-		return $store;
+		return $rs;
 	}
 
 	// }}}

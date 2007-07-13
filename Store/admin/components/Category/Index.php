@@ -390,17 +390,17 @@ class StoreCategoryIndex extends AdminIndex
 	}
 
 	// }}}
-	// {{{ protected function getTableStore()
+	// {{{ protected function getTableModel()
 
-	protected function getTableStore($view)
+	protected function getTableModel(SwatTableView $view)
 	{
 		switch ($view->id) {
 		case 'categories_index_view':
-			return $this->getCategoryTableStore($view);
+			return $this->getCategoryTableModel($view);
 		case 'products_index_view':
-			return $this->getProductTableStore($view);
+			return $this->getProductTableModel($view);
 		case 'featured_products_index_view':
-			return $this->getFeaturedProductTableStore($view);
+			return $this->getFeaturedProductTableModel($view);
 		}
 	}
 
@@ -521,9 +521,9 @@ class StoreCategoryIndex extends AdminIndex
 	// }}}
 
 	// build phase - table views
-	// {{{ private function getCategoryTableStore()
+	// {{{ private function getCategoryTableModel()
 
-	private function getCategoryTableStore($view)
+	private function getCategoryTableModel(SwatTableView $view)
 	{
 		$sql = 'select Category.id,
 					Category.title,
@@ -543,11 +543,11 @@ class StoreCategoryIndex extends AdminIndex
 			$this->getOrderByClause($view,
 				'Category.displayorder, Category.title', 'Category'));
 
-		$store = SwatDB::query($this->app->db, $sql);
+		$rs = SwatDB::query($this->app->db, $sql);
 
-		$this->setCategoryVisibility($store);
+		$this->setCategoryVisibility($rs);
 
-		if (count($store) == 0) {
+		if (count($rs) == 0) {
 			$index_form = $this->ui->getWidget('categories_index_form');
 			$index_form->visible = false;
 
@@ -555,13 +555,13 @@ class StoreCategoryIndex extends AdminIndex
 			$change_order->visible = false;
 		}
 
-		return $store;
+		return $rs;
 	}
 
 	// }}}
-	// {{{ protected function getProductTableStore()
+	// {{{ protected function getProductTableModel()
 
-	protected function getProductTableStore($view)
+	protected function getProductTableModel(SwatTableView $view)
 	{
 		$sql = 'select Product.id,
 					Product.title,
@@ -589,20 +589,20 @@ class StoreCategoryIndex extends AdminIndex
 				'CategoryProductBinding.displayorder, Product.title',
 				'Product'));
 
-		$store = SwatDB::query($this->app->db, $sql);
+		$rs = SwatDB::query($this->app->db, $sql);
 
-		if (count($store) == 0) {
+		if (count($rs) == 0) {
 			$index_form = $this->ui->getWidget('products_index_form');
 			$index_form->visible = false;
 		}
 
-		return $store;
+		return $rs;
 	}
 
 	// }}}
 	// {{{ private function setCategoryVisibility()
 
-	private function setCategoryVisibility($store)
+	private function setCategoryVisibility($model)
 	{
 		$sql = 'select category, sum(product_count) as product_count
 			from CategoryProductCountByCatalogView
@@ -637,7 +637,7 @@ class StoreCategoryIndex extends AdminIndex
 			$visible_categories[$row->category] = true;
 
 
-		foreach ($store as $row) {
+		foreach ($model as $row) {
 			$row->product_count =
 				isset($product_count[$row->id]) ? $product_count[$row->id] : 0;
 
@@ -646,9 +646,9 @@ class StoreCategoryIndex extends AdminIndex
 	}
 
 	// }}}
-	// {{{ private function getFeaturedProductTableStore()
+	// {{{ private function getFeaturedProductTableModel()
 
-	private function getFeaturedProductTableStore($view)
+	private function getFeaturedProductTableModel(SwatTableView $view)
 	{
 		$sql = 'select Product.id,
 					Product.title,
@@ -665,14 +665,14 @@ class StoreCategoryIndex extends AdminIndex
 			$this->ui->getWidget('catalog_switcher')->getSubQuery(),
 			$this->getOrderByClause($view, 'Product.title', 'Product'));
 
-		$store = SwatDB::query($this->app->db, $sql);
+		$rs = SwatDB::query($this->app->db, $sql);
 
-		if (count($store) == 0) {
+		if (count($rs) == 0) {
 			$index_form = $this->ui->getWidget('featured_products_index_form');
 			$index_form->visible = false;
 		}
 
-		return $store;
+		return $rs;
 	}
 
 	// }}}

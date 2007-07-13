@@ -122,21 +122,21 @@ class StorePaymentTypeIndex extends AdminIndex
 
 	// }}}
 
-	// {{{ protected function getTableStore()
+	// {{{ protected function getTableModel()
 
-	protected function getTableStore($view)
+	protected function getTableModel(SwatTableView $view)
 	{
 		$sql = sprintf('select id, title, shortname
 				from PaymentType order by %s',
 			$this->getOrderByClause($view, 'displayorder, title'));
 
-		$store = SwatDB::query($this->app->db, $sql);
+		$rs = SwatDB::query($this->app->db, $sql);
 
 		$view = $this->ui->getWidget('index_view');
 		$view->getColumn('status')->getRendererByPosition()->db =
 			$this->app->db;
 
-		return $store;
+		return $rs;
 	}
 
 	// }}}

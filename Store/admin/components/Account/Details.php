@@ -185,26 +185,26 @@ class StoreAccountDetails extends AdminIndex
 	}
 
 	// }}}
-	// {{{ protected function getTableStore()
+	// {{{ protected function getTableModel()
 
-	protected function getTableStore($view) 
+	protected function getTableModel(SwatTableView $view)
 	{
 		switch ($view->id) {
 			case 'invoices_view':
-				return $this->getInvoicesTableStore($view);
+				return $this->getInvoicesTableModel($view);
 			case 'orders_view':
-				return $this->getOrdersTableStore($view);
+				return $this->getOrdersTableModel($view);
 			case  'addresses_view':
-				return $this->getAddressesTableStore($view);
+				return $this->getAddressesTableModel($view);
 			case 'payment_methods_view':
-				return $this->getPaymentMethodsTableStore($view);
+				return $this->getPaymentMethodsTableModel($view);
 		}
 	}
 
 	// }}}
-	// {{{ protected function getInvoicesTableStore()
+	// {{{ protected function getInvoicesTableModel()
 
-	protected function getInvoicesTableStore($view) 
+	protected function getInvoicesTableModel(SwatTableView $view) 
 	{
 		$sql = 'select * from Invoice where account = %s order by %s';
 
@@ -228,9 +228,9 @@ class StoreAccountDetails extends AdminIndex
 	}
 
 	// }}}
-	// {{{ protected function getOrdersTableStore()
+	// {{{ protected function getOrdersTableModel()
 
-	protected function getOrdersTableStore($view) 
+	protected function getOrdersTableModel(SwatTableView $view) 
 	{
 		$sql = 'select Orders.id,
 					Orders.account as account_id,
@@ -251,9 +251,9 @@ class StoreAccountDetails extends AdminIndex
 	}
 
 	// }}}
-	// {{{ protected function getAddressesTableStore()
+	// {{{ protected function getAddressesTableModel()
 
-	protected function getAddressesTableStore($view) 
+	protected function getAddressesTableModel(SwatTableView $view) 
 	{
 		$sql = 'select * from AccountAddress where AccountAddress.account = %s
 				order by %s';
@@ -280,9 +280,9 @@ class StoreAccountDetails extends AdminIndex
 	}
 
 	// }}}
-	// {{{ protected function getPaymentMethodsTableStore()
+	// {{{ protected function getPaymentMethodsTableModel()
 
-	protected function getPaymentMethodsTableStore($view) 
+	protected function getPaymentMethodsTableModel(SwatTableView $view) 
 	{
 		$class_map = SwatDBClassMap::instance();
 		$wrapper = $class_map->resolveClass('StoreAccountPaymentMethodWrapper');

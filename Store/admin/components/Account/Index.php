@@ -88,9 +88,9 @@ class StoreAccountIndex extends AdminSearch
 	}
 
 	// }}}
-	// {{{ protected function getTableStore()
+	// {{{ protected function getTableModel()
 
-	protected function getTableStore($view)
+	protected function getTableModel(SwatTableView $view)
 	{
 		$pager = $this->ui->getWidget('pager');
 
@@ -102,13 +102,13 @@ class StoreAccountIndex extends AdminSearch
 
 		$this->app->db->setLimit($pager->page_size, $pager->current_record);
 
-		$store = SwatDB::query($this->app->db, $sql);
+		$rs = SwatDB::query($this->app->db, $sql);
 
-		if (count($store) > 0)
+		if (count($rs) > 0)
 			$this->ui->getWidget('results_message')->content =
 				$pager->getResultsMessage('result', 'results');
 
-		return $store;
+		return $rs;
 	}
 
 	// }}}

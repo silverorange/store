@@ -134,9 +134,9 @@ class StoreProductRelatedProduct extends AdminSearch
 	}
 
 	// }}}
-	// {{{ protected function getTableStore()
+	// {{{ protected function getTableModel()
 
-	protected function getTableStore($view)
+	protected function getTableModel(SwatTableView $view)
 	{
 		$search = $this->getProductSearch();
 
@@ -155,9 +155,9 @@ class StoreProductRelatedProduct extends AdminSearch
 
 		$this->app->db->setLimit($pager->page_size, $pager->current_record);
 
-		$store = SwatDB::query($this->app->db, $sql);
+		$rs = SwatDB::query($this->app->db, $sql);
 
-		return $store;
+		return $rs;
 	}
 
 	// }}}
