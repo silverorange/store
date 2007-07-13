@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Admin/pages/AdminIndex.php';
-require_once 'Admin/AdminTableStore.php';
 require_once 'SwatDB/SwatDB.php';
 
 /**
@@ -64,7 +63,7 @@ class StoreProvStateIndex extends AdminIndex
 		$sql = sprintf($sql, $this->getOrderByClause($view,
 			'Country.title, ProvState.title'));
 
-		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
+		$store = SwatDB::query($this->app->db, $sql);
 
 		return $store;
 	}

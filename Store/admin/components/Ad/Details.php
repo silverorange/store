@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Admin/pages/AdminIndex.php';
-require_once 'Admin/AdminTableStore.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatMoneyCellRenderer.php';
 require_once 'Swat/SwatNumericCellRenderer.php';

@@ -4,7 +4,6 @@ require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatHtmlTag.php';
 require_once 'Swat/SwatDetailsStore.php';
 require_once 'Swat/SwatNavBar.php';
-require_once 'Admin/AdminTableStore.php';
 require_once 'Admin/pages/AdminIndex.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDBClassMap.php';
@@ -347,7 +346,7 @@ class StoreInvoiceDetails extends AdminIndex
 			$this->app->db->quote($this->id, 'integer'),
 			$this->getOrderByClause($view, 'displayorder, id'));
 
-		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
+		$store = SwatDB::query($this->app->db, $sql);
 		return $store;
 	}
 

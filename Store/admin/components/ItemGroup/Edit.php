@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Admin/pages/AdminDBEdit.php';
-require_once 'Admin/AdminTableStore.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDB.php';
 
@@ -104,7 +103,7 @@ class StoreItemGroupEdit extends AdminDBEdit
 			'select sku, description from Item where item_group = %s',
 			$this->id);
 
-		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
+		$store = SwatDB::query($this->app->db, $sql);
 
 		return $store;
 	}

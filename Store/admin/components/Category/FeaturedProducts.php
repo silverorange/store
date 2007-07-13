@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Admin/pages/AdminIndex.php';
-require_once 'Admin/AdminTableStore.php';
 require_once 'SwatDB/SwatDB.php';
 
 /**
@@ -134,7 +133,7 @@ class StoreCategoryFeaturedProducts extends AdminIndex
 			$this->getOrderByClause($view,
 				'Product.title, Product.id'));
 
-		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
+		$store = SwatDB::query($this->app->db, $sql);
 
 		return $store;
 	}
