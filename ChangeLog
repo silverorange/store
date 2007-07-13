@@ -1,3 +1,59 @@
+2007-07-13  gauthierm
+
+	* [r18388]
+	  store/trunk/Store/admin/components/Category/AddProducts.php:
+	  Use > instead of !=
+
+2007-07-08  gauthierm
+
+	* [r18314] store/trunk/Store/admin/components/Item/Edit.php:
+	  Don't query item row twice on item edit page.
+
+2007-07-06  gauthierm
+
+	* [r18302] store/trunk/Store/StoreLocaleApplication.php:
+	  Documentation and regular expression cleanups.
+
+2007-07-06  charles
+
+	* [r18282] store/trunk/Store/admin/components/Account/Details.php,
+	  store/trunk/Store/admin/components/Ad/Index.php,
+	  store/trunk/Store/admin/components/Category/AddProducts.php,
+	  store/trunk/Store/admin/components/Category/FeaturedProducts.php,
+	  store/trunk/Store/admin/components/Category/Index.php,
+	  store/trunk/Store/admin/components/Country/Index.php,
+	  store/trunk/Store/admin/components/Invoice/Details.php,
+	  store/trunk/Store/admin/components/Item/QuantityDiscount.php,
+	  store/trunk/Store/admin/components/Locale/Index.php,
+	  store/trunk/Store/admin/components/PaymentType/Index.php,
+	  store/trunk/Store/admin/components/Product/Details.php,
+	  store/trunk/Store/admin/components/Product/Index.php,
+	  store/trunk/Store/admin/components/Product/RelatedProduct.php,
+	  store/trunk/Store/admin/components/ProvState/Index.php,
+	  store/trunk/Store/admin/components/Region/Index.php:
+	  Part of ticket #1037, stores admin compoenets now use the new
+	  selection API.
+
+2007-07-05  isaac
+
+	* [r18266] store/trunk/Store/admin/components/Article/Edit.php:
+	  fix defaulting of regions - you can't flip an array of objects,
+	  which is what ->options is - noticed this with a real exception
+	  on the live site here:
+	  http://stage2.silverorange.com/exceptions/veseys2/2007-07-04/error-11d687ffc8d90ccea32b4746f8c1a660.html
+	  - this was accidently broken in r18119
+
+2007-07-04  gauthierm
+
+	* [r18253] store/trunk/Store/admin/components/Item/Edit.php:
+	  Make it possible for subclassed item edit pages to modify what
+	  gets saved in the item region fields.
+
+2007-06-27  nrf
+
+	* [r18213] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.8.8
+
 2007-06-27  gauthierm
 
 	* [r18197] store/trunk/Store/admin/components/Order/search.xml:
