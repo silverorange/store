@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Admin/pages/AdminPage.php';
-require_once 'Admin/AdminTableStore.php';
 require_once 'SwatDB/SwatDB.php';
 
 /**

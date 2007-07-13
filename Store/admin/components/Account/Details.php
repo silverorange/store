@@ -4,7 +4,6 @@ require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatDetailsStore.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'Admin/pages/AdminIndex.php';
-require_once 'Admin/AdminTableStore.php';
 require_once 'Store/StoreAddressCellRenderer.php';
 require_once 'Store/StorePaymentMethodCellRenderer.php';
 require_once 'Store/dataobjects/StoreAccountPaymentMethodWrapper.php';
@@ -246,7 +245,9 @@ class StoreAccountDetails extends AdminIndex
 			$this->getOrderByClause($view,
 				'Orders.createdate desc, Orders.id'));
 
-		return SwatDB::query($this->app->db, $sql, 'AdminTableStore');
+		$store = SwatDB::query($this->app->db, $sql);
+
+		return $store;
 	}
 
 	// }}}

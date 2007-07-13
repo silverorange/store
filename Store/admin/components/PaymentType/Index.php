@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Admin/pages/AdminIndex.php';
-require_once 'Admin/AdminTableStore.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Store/admin/components/PaymentType/include/'.
 	'StorePaymentTypeStatusCellRenderer.php';
@@ -131,7 +130,7 @@ class StorePaymentTypeIndex extends AdminIndex
 				from PaymentType order by %s',
 			$this->getOrderByClause($view, 'displayorder, title'));
 
-		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
+		$store = SwatDB::query($this->app->db, $sql);
 
 		$view = $this->ui->getWidget('index_view');
 		$view->getColumn('status')->getRendererByPosition()->db =

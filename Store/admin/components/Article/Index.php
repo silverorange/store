@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Admin/pages/AdminIndex.php';
-require_once 'Admin/AdminTableStore.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatString.php';
@@ -75,13 +74,13 @@ class StoreArticleIndex extends AdminIndex
 			$this->getOrderByClause($view, 
 				'Article.displayorder, Article.title', 'Article'));
 		
-		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
+		$store = SwatDB::query($this->app->db, $sql);
 
 		$view = $this->ui->getWidget('index_view');
 		$view->getColumn('visibility')->getFirstRenderer()->db =
 			$this->app->db;
 
-		if ($store->getRowCount() < 2)
+		if (count($store) < 2)
 			$this->ui->getWidget('articles_order')->sensitive = false;
 
 		return $store;

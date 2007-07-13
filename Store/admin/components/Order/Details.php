@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Admin/AdminTableStore.php';
 require_once 'Admin/pages/AdminIndex.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 

@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Admin/AdminTableStore.php';
 require_once 'Admin/pages/AdminIndex.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDB.php';
@@ -544,11 +543,11 @@ class StoreCategoryIndex extends AdminIndex
 			$this->getOrderByClause($view,
 				'Category.displayorder, Category.title', 'Category'));
 
-		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
+		$store = SwatDB::query($this->app->db, $sql);
 
 		$this->setCategoryVisibility($store);
 
-		if ($store->getRowCount() == 0) {
+		if (count($store) == 0) {
 			$index_form = $this->ui->getWidget('categories_index_form');
 			$index_form->visible = false;
 
@@ -590,9 +589,9 @@ class StoreCategoryIndex extends AdminIndex
 				'CategoryProductBinding.displayorder, Product.title',
 				'Product'));
 
-		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
+		$store = SwatDB::query($this->app->db, $sql);
 
-		if ($store->getRowCount() == 0) {
+		if (count($store) == 0) {
 			$index_form = $this->ui->getWidget('products_index_form');
 			$index_form->visible = false;
 		}
@@ -638,7 +637,7 @@ class StoreCategoryIndex extends AdminIndex
 			$visible_categories[$row->category] = true;
 
 
-		foreach ($store->getRows() as $row) {
+		foreach ($store as $row) {
 			$row->product_count =
 				isset($product_count[$row->id]) ? $product_count[$row->id] : 0;
 
@@ -666,9 +665,9 @@ class StoreCategoryIndex extends AdminIndex
 			$this->ui->getWidget('catalog_switcher')->getSubQuery(),
 			$this->getOrderByClause($view, 'Product.title', 'Product'));
 
-		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
+		$store = SwatDB::query($this->app->db, $sql);
 
-		if ($store->getRowCount() == 0) {
+		if (count($store) == 0) {
 			$index_form = $this->ui->getWidget('featured_products_index_form');
 			$index_form->visible = false;
 		}

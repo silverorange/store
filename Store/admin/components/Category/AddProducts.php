@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Admin/pages/AdminSearch.php';
-require_once 'Admin/AdminTableStore.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatTreeFlydownNode.php';
 require_once 'Swat/SwatFlydownDivider.php';
@@ -147,7 +146,7 @@ class StoreCategoryAddProducts extends AdminSearch
 
 		$this->app->db->setLimit($pager->page_size, $pager->current_record);
 
-		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
+		$store = SwatDB::query($this->app->db, $sql);
 
 		return $store;
 	}

@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Admin/pages/AdminIndex.php';
-require_once 'Admin/AdminTableStore.php';
 require_once 'Admin/exceptions/AdminNoAccessException.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatMoneyEntry.php';
@@ -499,7 +498,9 @@ class StoreItemQuantityDiscount extends AdminIndex
 			$this->app->db->quote($this->id, 'integer'),
 			$this->getOrderByClause($view, 'quantity'));
 
-		return SwatDB::query($this->app->db, $sql, 'AdminTableStore');
+		$store = SwatDB::query($this->app->db, $sql);
+
+		return $store;
 	}
 
 	// }}}

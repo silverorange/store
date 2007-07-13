@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Admin/pages/AdminIndex.php';
-require_once 'Admin/AdminTableStore.php';
 require_once 'SwatDB/SwatDB.php';
 
 /**
@@ -49,7 +48,7 @@ class StoreCountryIndex extends AdminIndex
 		$sql = sprintf('select id, title, show from Country order by %s',
 			$this->getOrderByClause($view, 'title'));
 
-		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
+		$store = SwatDB::query($this->app->db, $sql);
 
 		return $store;
 	}

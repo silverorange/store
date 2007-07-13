@@ -5,7 +5,6 @@ require_once 'Swat/SwatHtmlTag.php';
 require_once 'Swat/SwatDetailsStore.php';
 require_once 'Swat/SwatMoneyEntry.php';
 require_once 'Swat/SwatNavBar.php';
-require_once 'Admin/AdminTableStore.php';
 require_once 'Admin/pages/AdminIndex.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDBClassMap.php';
@@ -905,9 +904,9 @@ class StoreProductDetails extends AdminIndex
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->id, 'integer'));
 
-		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
+		$store = SwatDB::query($this->app->db, $sql);
 
-		foreach ($store->getRows() as $row) {
+		foreach ($store as $row) {
 			$row->image = '../images/products/thumb/'.$row->id.'.jpg';
 			$row->alt = '';
 		}
@@ -942,9 +941,9 @@ class StoreProductDetails extends AdminIndex
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->id, 'integer'));
 
-		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
+		$store = SwatDB::query($this->app->db, $sql);
 
-		if ($store->getRowCount() == 0) {
+		if (count($store) == 0) {
 			$view->visible = false;
 			$this->ui->getWidget('related_products_footer')->visible = false;
 		}

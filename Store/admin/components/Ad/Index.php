@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Admin/pages/AdminIndex.php';
-require_once 'Admin/AdminTableStore.php';
 require_once 'SwatDB/SwatDB.php';
 
 require_once 'include/StoreConversionRateCellRenderer.php';
@@ -58,7 +57,7 @@ class StoreAdIndex extends AdminIndex
 			order by %s',
 			$this->getOrderByClause($view, 'createdate desc'));
 
-		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
+		$store = SwatDB::query($this->app->db, $sql);
 
 		return $store;
 	}

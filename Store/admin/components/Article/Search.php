@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Admin/pages/AdminSearch.php';
-require_once 'Admin/AdminTableStore.php';
 require_once 'Admin/AdminSearchClause.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'NateGoSearch/NateGoSearchQuery.php';
@@ -180,7 +179,7 @@ class StoreArticleSearch extends AdminSearch
 			$this->getOrderByClause($view, $this->order_by_clause));
 
 		$this->app->db->setLimit($pager->page_size, $pager->current_record);
-		$store = SwatDB::query($this->app->db, $sql, 'AdminTableStore');
+		$store = SwatDB::query($this->app->db, $sql);
 
 		$this->ui->getWidget('results_frame')->visible = true;
 		$view = $this->ui->getWidget('index_view');
