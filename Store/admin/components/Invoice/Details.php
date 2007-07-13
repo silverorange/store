@@ -213,7 +213,7 @@ class StoreInvoiceDetails extends AdminIndex
 
 		// always show add new item action regardless of entries in item table
 		// but also keep all other actions hidden
-		if ($this->ui->getWidget('items_view')->model->getRowCount() == 0) {
+		if (count($this->ui->getWidget('items_view')->model) == 0) {
 			$index_actions = $this->ui->getWidget('index_actions');
 			$index_actions->visible = true;
 			foreach ($index_actions->getActionItems() as $id => $widget)

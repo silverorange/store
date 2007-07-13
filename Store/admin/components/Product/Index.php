@@ -186,7 +186,7 @@ class StoreProductIndex extends AdminSearch
 
 		$store = SwatDB::query($this->app->db, $sql);
 
-		if ($store->getRowCount() > 0)
+		if (count($store) > 0)
 			$this->ui->getWidget('results_message')->content =
 				$pager->getResultsMessage('result', 'results');
 

@@ -752,14 +752,14 @@ abstract class StoreCartPage extends StoreArticlePage
 			$this->app->cart->checkout->getShippingTotal(
 				new $class_name(), new $class_name);
 
-		if ($available_view->model->getRowCount() == 1)
+		if (count($available_view->model) == 1)
 			$available_view->getRow('subtotal')->button_visible = false;
 
 		// fall-through assignment of visiblity to both checkout buttons
 		$this->ui->getWidget('header_checkout_button')->visible =
 			$this->ui->getWidget('footer_checkout_button')->visible =
 			$available_view->visible =
-			($available_view->model->getRowCount() > 0);
+			(count($available_view->model) > 0);
 
 	}
 
@@ -771,7 +771,7 @@ abstract class StoreCartPage extends StoreArticlePage
 		$unavailable_view = $this->ui->getWidget('unavailable_cart_view');
 		$unavailable_view->model = $this->getUnavailableTableStore();
 
-		$count = $unavailable_view->model->getRowCount();
+		$count = count($unavailable_view->model);
 		if ($count > 0) {
 			$this->ui->getWidget('unavailable_cart')->visible = true;
 			$message = $this->ui->getWidget('unavailable_cart_message');
@@ -813,7 +813,7 @@ abstract class StoreCartPage extends StoreArticlePage
 		$saved_view = $this->ui->getWidget('saved_cart_view');
 		$saved_view->model = $this->getSavedTableStore();
 
-		$count = $saved_view->model->getRowCount();
+		$count = count($saved_view->model);
 		if ($count > 0) {
 			if ($count > 1)
 				$this->ui->getWidget('saved_cart_move_all_field')->visible =
@@ -874,7 +874,7 @@ abstract class StoreCartPage extends StoreArticlePage
 
 		$entries = $this->app->cart->checkout->getAvailableEntries();
 		foreach ($entries as $entry)
-			$store->addRow($this->getAvailableRow($entry));
+			$store->add($this->getAvailableRow($entry));
 
 		return $store;
 	}
@@ -908,7 +908,7 @@ abstract class StoreCartPage extends StoreArticlePage
 
 		$entries = $this->app->cart->checkout->getUnavailableEntries();
 		foreach ($entries as $entry)
-			$store->addRow($this->getUnavailableRow($entry));
+			$store->add($this->getUnavailableRow($entry));
 
 		return $store;
 	}
@@ -945,7 +945,7 @@ abstract class StoreCartPage extends StoreArticlePage
 
 		$entries = $this->app->cart->saved->getEntries();
 		foreach ($entries as $entry)
-			$store->addRow($this->getSavedRow($entry));
+			$store->add($this->getSavedRow($entry));
 
 		return $store;
 	}

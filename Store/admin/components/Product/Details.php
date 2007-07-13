@@ -377,7 +377,7 @@ class StoreProductDetails extends AdminIndex
 
 		// always show add new item action regardless of entries in item table
 		// but also keep all other actions hidden
-		if ($this->ui->getWidget('items_view')->model->getRowCount() == 0) {
+		if (count($this->ui->getWidget('items_view')->model) == 0) {
 			$index_actions = $this->ui->getWidget('index_actions');
 			$index_actions->visible = true;
 			foreach ($index_actions->getActionItems() as $id => $widget)
@@ -667,7 +667,7 @@ class StoreProductDetails extends AdminIndex
 			}
 			$ds->enabled = $enabled;
 
-			$store->addRow($ds);
+			$store->add($ds);
 		}
 
 		return $store;
@@ -873,9 +873,9 @@ class StoreProductDetails extends AdminIndex
 		$form = $this->ui->getWidget('product_images_form');
 
 		$order_link = $this->ui->getWidget('image_order');
-		$order_link->sensitive = ($images->getRowCount() > 1);
+		$order_link->sensitive = (count($images) > 1);
 
-		foreach ($images->getRows() as $image) {
+		foreach ($images as $image) {
 			$widget = new StoreProductImageDisplay();
 			$widget->image_id = $image->id;
 			$widget->category_id = $this->category_id;

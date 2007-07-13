@@ -62,7 +62,7 @@ class StoreInvoice extends StoreDataObject
 
 		foreach ($this->items as $item) {
 			$ds = $this->getInvoiceItemDetailsStore($item);
-			$store->addRow($ds);
+			$store->add($ds);
 		}
 
 		return $store;

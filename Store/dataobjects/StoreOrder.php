@@ -141,7 +141,7 @@ class StoreOrder extends StoreDataObject
 
 		foreach ($this->items as $item) {
 			$ds = $this->getOrderItemDetailsStore($item);
-			$store->addRow($ds);
+			$store->add($ds);
 		}
 
 		return $store;

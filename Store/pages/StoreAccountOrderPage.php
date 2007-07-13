@@ -327,7 +327,7 @@ class StoreAccountOrderPage extends StoreAccountPage
 			if ($row->path !== null)
 				$paths[$row->id] = 'store/'.$row->path.'/'.$row->shortname;
 
-		foreach ($store->getRows() as $row) {
+		foreach ($store as $row) {
 			if (isset($paths[$row->id])) {
 				$row->path = $paths[$row->id];
 				$row->show_add_button = true;

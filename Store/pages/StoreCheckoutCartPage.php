@@ -320,7 +320,7 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 		$entries = $this->app->cart->checkout->getAvailableEntries();
 		foreach ($entries as $entry) {
 			$ds = $this->getDetailsStore($entry);
-			$store->addRow($ds);
+			$store->add($ds);
 		}
 
 		return $store;
