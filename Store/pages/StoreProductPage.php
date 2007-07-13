@@ -129,7 +129,7 @@ class StoreProductPage extends StoreStorePage
 					'' : $item->sku;
 	
 				$last_sku = $item->sku;
-				$store->addRow($ds);
+				$store->add($ds);
 
 				if ($ds->is_available)
 					$view->getRow('add_button')->visible = true;
@@ -382,7 +382,7 @@ class StoreProductPage extends StoreStorePage
 			// filter entries by item
 			if ($this->isOnThisPage($entry->item)) {
 				$ds = $this->getCartDetailsStore($entry);
-				$store->addRow($ds);
+				$store->add($ds);
 			}
 		}
 
@@ -420,7 +420,7 @@ class StoreProductPage extends StoreStorePage
 	{
 		$cart_view = $this->cart_ui->getWidget('cart_view');
 		$cart_view->model = $this->getCartTableStore();
-		$count = $cart_view->model->getRowCount();
+		$count = count($cart_view->model);
 		if ($count > 0) {
 			$frame = $this->cart_ui->getWidget('cart_frame');
 			$frame->title = Store::ngettext(
@@ -691,7 +691,7 @@ class StoreProductPage extends StoreStorePage
 
 		$item_ids = array();
 		$model = $this->items_ui->getWidget('items_view')->model;
-		foreach ($model->getRows() as $item)
+		foreach ($model as $item)
 			$item_ids[] = $item->id;
 
 		$item_ids = "'".implode("', '", $item_ids)."'";

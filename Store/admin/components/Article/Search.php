@@ -186,7 +186,7 @@ class StoreArticleSearch extends AdminSearch
 		$view->getColumn('visibility')->getRendererByPosition()->db =
 			$this->app->db;
 
-		if ($store->getRowCount() != 0)
+		if (count($store) > 0)
 			$this->ui->getWidget('results_message')->content =
 				$pager->getResultsMessage(Store::_('result'), 
 					Store::_('results'));

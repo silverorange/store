@@ -107,7 +107,7 @@ class StoreAdDetails extends AdminIndex
 		}
 
 		foreach ($myvar as $row)
-			$store->addRow($row);
+			$store->add($row);
 
 		return $store;
 	}
@@ -128,7 +128,7 @@ class StoreAdDetails extends AdminIndex
 			$myvar->period = $val;
 			$myvar->referrers = intval($row->$key);
 
-			$store->addRow(clone $myvar);
+			$store->add(clone $myvar);
 		}
 
 		return $store;

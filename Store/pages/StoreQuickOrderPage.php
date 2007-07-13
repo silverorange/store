@@ -81,7 +81,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		for ($i = 0; $i < $this->num_rows; $i++) {
 			$row = null;
 			$row->id = $i;
-			$store->addRow($row);
+			$store->add($row);
 		}
 
 		return $store;
@@ -290,7 +290,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		$cart_view = $this->cart_ui->getWidget('cart_view');
 		$cart_view->model = $this->getCartTableStore();
 
-		$count = $cart_view->model->getRowCount();
+		$count = count($cart_view->model);
 		if ($count > 0) {
 			$frame = $this->cart_ui->getWidget('cart_frame');
 			$frame->title = Store::ngettext(
@@ -309,7 +309,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 	{
 		$view = $this->form_ui->getWidget('quick_order_view');
 
-		if ($view->model->getRowCount() == 0)
+		if (count($view->model) == 0)
 			$this->form_ui->getWidget('quick_order_form')->visible = false;
 	}
 
@@ -330,7 +330,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 			if (in_array($entry->item->id, $ids)) {
 				$row = $this->getCartTableStoreRow($entry);
 
-				$store->addRow($row, $entry->item->id);
+				$store->add($row, $entry->item->id);
 			}
 		}
 

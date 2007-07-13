@@ -201,7 +201,7 @@ class StoreAccountInvoicePage extends StoreAccountPage
 			if ($row->path !== null)
 				$paths[$row->id] = 'store/'.$row->path.'/'.$row->shortname;
 
-		foreach ($store->getRows() as $row)
+		foreach ($store as $row)
 			$row->path = (isset($paths[$row->id])) ? $paths[$row->id] : null;
 	}
 

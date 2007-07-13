@@ -221,7 +221,7 @@ class StoreAccountDetails extends AdminIndex
 			$ds = new SwatDetailsStore($invoice);
 			$ds->subtotal = $invoice->getSubtotal();
 			$ds->is_pending = $invoice->isPending();
-			$store->addRow($ds);
+			$store->add($ds);
 		}
 
 		return $store;
@@ -273,7 +273,7 @@ class StoreAccountDetails extends AdminIndex
 			$new_row->default_address = $row->default_address;
 			$new_row->address = new $class_name($row);
 			$new_row->address->setDatabase($this->app->db);
-			$ts->addRow($new_row);
+			$ts->add($new_row);
 		}
 
 		return $ts;
@@ -296,7 +296,7 @@ class StoreAccountDetails extends AdminIndex
 		foreach ($payment_methods as $method) {
 			$ds = new SwatDetailsStore($method);
 			$ds->payment_method = $method;
-			$store->addRow($ds);
+			$store->add($ds);
 		}
 
 		return $store;
