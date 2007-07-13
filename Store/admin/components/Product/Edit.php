@@ -66,9 +66,10 @@ class StoreProductEdit extends AdminDBEdit
 		if ($this->id === null && $shortname === null) {
 			$shortname = $this->generateShortname(
 				$this->ui->getWidget('title')->value, $this->id);
+
 			$this->ui->getWidget('shortname')->value = $shortname;
 
-		} elseif (!$this->validateShortname($shortname, $this->id)) {
+		} elseif (!$this->validateShortname()) {
 			$message = new SwatMessage(
 				Store::_('Shortname already exists and must be unique.'),
 				SwatMessage::ERROR);
@@ -80,19 +81,48 @@ class StoreProductEdit extends AdminDBEdit
 	// }}}
 	// {{{ protected function validateShortname()
 
-	protected function validateShortname($shortname)
+	protected function validateShortname()
 	{
-		$sql = 'select shortname from Product
-				where shortname = %s and id %s %s';
+		$valid = true;
 
-		$sql = sprintf($sql,
-			$this->app->db->quote($shortname, 'text'),
+		// get selected catalog
+		$catalog = $this->ui->getWidget('catalog');
+		$catalog->process();
+
+		$sql = sprintf('select clone_of from Catalog where id %s %s', 
+			SwatDB::equalityOperator($catalog->value, true),
+			$this->app->db->quote($catalog->value, 'integer'));
+
+		$clone_of = SwatDB::queryOne($this->app->db, $sql);
+		$catalog = $catalog->value;
+
+		// check shortname for uniqueness with selected catalog
+		$shortname = $this->ui->getWidget('shortname');
+		$sql = sprintf('select Catalog.id, Catalog.clone_of from Product
+			inner join Catalog on Product.catalog = Catalog.id
+			where Product.shortname = %s and Product.id %s %s',
+			$this->app->db->quote($shortname->value, 'text'),
 			SwatDB::equalityOperator($this->id, true),
 			$this->app->db->quote($this->id, 'integer'));
 
-		$query = SwatDB::query($this->app->db, $sql);
+		$catalogs = SwatDB::query($this->app->db, $sql);
+		foreach ($catalogs as $product_catalog) {
+			// shortname exists within same catalog
+			if ($catalog == $product_catalog->id) {
+				$valid = false;
+				break;
+			}
 
-		return (count($query) == 0);
+			// shortname exists in another catalog that is not a clone of the
+			// selected catalog
+			if ($clone_of != $product_catalog->id &&
+				$catalog != $product_catalog->clone_of) {
+				$valid = false;
+				break;
+			}
+		}
+
+		return $valid;
 	}
 
 	// }}}
