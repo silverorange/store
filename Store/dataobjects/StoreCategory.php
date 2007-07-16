@@ -281,7 +281,7 @@ class StoreCategory extends StoreDataObject
 
 		$this->registerInternalProperty('path');
 		$this->registerInternalProperty('image',
-			$this->class_map->resolveClass('StoreCategoryImage'));
+			SwatDBClassMap::get('StoreCategoryImage'));
 
 		$this->table = 'Category';
 		$this->id_field = 'integer:id';
@@ -361,7 +361,7 @@ class StoreCategory extends StoreDataObject
 			order by Article.displayorder asc';
 
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
-		$wrapper = $this->class_map->resolveClass('StoreArticleWrapper');
+		$wrapper = SwatDBClassMap::get('StoreArticleWrapper');
 		return SwatDB::query($this->db, $sql, $wrapper);
 	}
 

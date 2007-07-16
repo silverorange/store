@@ -38,8 +38,7 @@ class StoreInvoiceEdit extends AdminDBEdit
 		$locale_flydown = $this->ui->getWidget('locale');
 		$locale_flydown->show_blank = false;
 
-		$class_map = SwatDBClassMap::instance();
-		$locale_wrapper = $class_map->resolveClass('StoreLocaleWrapper');
+		$locale_wrapper = SwatDBClassMap::get('StoreLocaleWrapper');
 
 		$locales = SwatDB::query($this->app->db, 'select * from Locale',
 			$locale_wrapper);
@@ -53,8 +52,7 @@ class StoreInvoiceEdit extends AdminDBEdit
 
 	protected function initInvoice()
 	{
-		$class_map = SwatDBClassMap::instance();
-		$class = $class_map->resolveClass('StoreInvoice');
+		$class = SwatDBClassMap::get('StoreInvoice');
 		$invoice = new $class();
 		$invoice->setDatabase($this->app->db);
 
@@ -85,8 +83,7 @@ class StoreInvoiceEdit extends AdminDBEdit
 				'select account from Invoice where id = %s',
 				$this->app->db->quote($this->id, 'integer')));
 
-		$class_map = SwatDBClassMap::instance();
-		$class = $class_map->resolveClass('StoreAccount');
+		$class = SwatDBClassMap::get('StoreAccount');
 		$account = new $class();
 		$account->setDatabase($this->app->db);
 		if (!$account->load($account_id))

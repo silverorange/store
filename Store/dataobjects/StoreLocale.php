@@ -24,7 +24,7 @@ class StoreLocale extends StoreDataObject
 	protected function init()
 	{
 		$this->registerInternalProperty('region',
-			$this->class_map->resolveClass('StoreRegion'));
+			SwatDBClassMap::get('StoreRegion'));
 
 		$this->table = 'Locale';
 		$this->id_field = 'text:id';

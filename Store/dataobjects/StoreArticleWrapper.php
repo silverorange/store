@@ -44,8 +44,7 @@ class StoreArticleWrapper extends StoreRecordsetWrapper
 	protected function init()
 	{
 		parent::init();
-		$this->row_wrapper_class =
-			$this->class_map->resolveClass('StoreArticle');
+		$this->row_wrapper_class = SwatDBClassMap::get('StoreArticle');
 	}
 
 	// }}}

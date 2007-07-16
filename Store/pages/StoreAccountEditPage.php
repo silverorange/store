@@ -53,8 +53,7 @@ class StoreAccountEditPage extends StoreAccountPage
 		if ($this->app->session->isLoggedIn()) {
 			return $this->app->session->account;
 		} else  {
-			$class_map = SwatDBClassMap::instance();
-			$class = $class_map->resolveClass('StoreAccount');
+			$class = SwatDBClassMap::get('StoreAccount');
 			return new $class();
 		}
 	}

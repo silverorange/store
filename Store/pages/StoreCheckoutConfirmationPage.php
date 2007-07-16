@@ -194,8 +194,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	{
 		// check that address is not already in account
 		if ($order_address->getAccountAddressId() === null) {
-			$class_map = SwatDBClassMap::instance();
-			$class_name = $class_map->resolveClass('StoreAccountAddress');
+			$class_name = SwatDBClassMap::get('StoreAccountAddress');
 			$account_address = new $class_name();
 			$account_address->copyFrom($order_address);
 			$this->app->session->account->addresses->add($account_address);
@@ -210,8 +209,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	{
 		// check that payment method is not already in account
 		if ($order_payment_method->getAccountPaymentMethodId() === null) {
-			$class_map = SwatDBClassMap::instance();
-			$class_name = $class_map->resolveClass('StoreAccountPaymentMethod');
+			$class_name = SwatDBClassMap::get('StoreAccountPaymentMethod');
 			$account_payment_method = new $class_name();
 			$account_payment_method->copyFrom($order_payment_method);
 
@@ -539,8 +537,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 	protected function createOrderItems($order)
 	{
-		$class_map = SwatDBClassMap::instance();
-		$wrapper = $class_map->resolveClass('StoreOrderItemWrapper');
+		$wrapper = SwatDBClassMap::get('StoreOrderItemWrapper');
 		$order->items = new $wrapper();
 
 		foreach ($this->app->cart->checkout->getAvailableEntries() as $entry) {
@@ -581,8 +578,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 	protected function createOrderItemsFromInvoice($order)
 	{
-		$class_map = SwatDBClassMap::instance();
-		$wrapper = $class_map->resolveClass('StoreOrderItemWrapper');
+		$wrapper = SwatDBClassMap::get('StoreOrderItemWrapper');
 		$order->items = new $wrapper();
 
 		foreach ($order->invoice->items as $invoice_item) {

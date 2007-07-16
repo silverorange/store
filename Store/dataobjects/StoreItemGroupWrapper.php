@@ -17,8 +17,7 @@ class StoreItemGroupWrapper extends StoreRecordsetWrapper
 	protected function init()
 	{
 		parent::init();
-		$this->row_wrapper_class =
-			$this->class_map->resolveClass('StoreItemGroup');
+		$this->row_wrapper_class = SwatDBClassMap::get('StoreItemGroup');
 
 		$this->index_field = 'id';
 	}

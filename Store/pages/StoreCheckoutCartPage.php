@@ -301,8 +301,7 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 
 		$view->getRow('subtotal')->value = $cart->getSubtotal();
 
-		$class_map = SwatDBClassMap::instance();
-		$class_name = $class_map->resolveClass('StoreOrderAddress');
+		$class_name = SwatDBClassMap::get('StoreOrderAddress');
 		$view->getRow('shipping')->value = $cart->getShippingTotal(
 			new $class_name(), new $class_name());
 

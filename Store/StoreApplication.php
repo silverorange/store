@@ -54,16 +54,14 @@ abstract class StoreApplication extends SiteWebApplication
 
 	protected function initModules()
 	{
-		$class_map = SwatDBClassMap::instance();
-
 		$this->session->registerDataObject('account',
-			$class_map->resolveClass('StoreAccount'));
+			SwatDBClassMap::get('StoreAccount'));
 
 		$this->session->registerDataObject('order',
-			$class_map->resolveClass('StoreOrder'));
+			SwatDBClassMap::get('StoreOrder'));
 
 		$this->session->registerDataObject('ad',
-			$class_map->resolveClass('StoreAd'));
+			SwatDBClassMap::get('StoreAd'));
 
 		parent::initModules();
 
@@ -112,8 +110,7 @@ abstract class StoreApplication extends SiteWebApplication
 			where shortname = %s',
 			$this->db->quote($ad_shortname, 'text'));
 
-		$class_mapper = SwatDBClassMap::instance();
-		$wrapper = $class_mapper->resolveClass('StoreAdWrapper');
+		$wrapper = SwatDBClassMap::get('StoreAdWrapper');
 		$ad = SwatDB::query($this->db, $sql, $wrapper)->getFirst();
 
 		if ($ad !== null) {

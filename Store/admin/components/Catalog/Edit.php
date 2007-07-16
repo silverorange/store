@@ -44,8 +44,7 @@ abstract class StoreCatalogEdit extends AdminDBEdit
 		$status_flydown = $this->ui->getWidget('status');
 		$status_options = array();
 
-		$class_map = SwatDBClassMap::instance();
-		$catalog_class = $class_map->resolveClass('StoreCatalog');
+		$catalog_class = SwatDBClassMap::get('StoreCatalog');
 
 		foreach (call_user_func(array($catalog_class, 'getStatuses')) as 
 			$id => $title)

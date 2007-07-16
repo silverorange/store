@@ -218,8 +218,7 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 
 	protected function getCartEntry($item_id, $quantity, $sku)
 	{
-		$class_map = SwatDBClassMap::instance();
-		$cart_entry_class = $class_map->resolveClass('StoreCartEntry');
+		$cart_entry_class = SwatDBClassMap::get('StoreCartEntry');
 		$cart_entry = new $cart_entry_class();
 
 		$this->app->session->activate();
@@ -229,14 +228,14 @@ abstract class StoreQuickOrderPage extends StoreArticlePage
 		else
 			$cart_entry->sessionid = $this->app->session->getSessionId();
 
-		$item_class = $class_map->resolveClass('StoreItem');
+		$item_class = SwatDBClassMap::get('StoreItem');
 		$item = new $item_class();
 		$item->setDatabase($this->app->db);
 		$item->setRegion($this->app->getRegion(), false);
 		$item->load($item_id);
 
 		// explicitly load product to get product path information
-		$product_wrapper = $class_map->resolveClass('StoreProductWrapper');
+		$product_wrapper = SwatDBClassMap::get('StoreProductWrapper');
 		$sql = sprintf('select id, title, shortname,
 				getCategoryPath(primary_category) as path
 			from Product

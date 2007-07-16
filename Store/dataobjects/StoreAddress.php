@@ -167,10 +167,10 @@ abstract class StoreAddress extends StoreDataObject
 		$this->id_field = 'integer:id';
 
 		$this->registerInternalProperty('provstate',
-			$this->class_map->resolveClass('StoreProvState'));
+			SwatDBClassMap::get('StoreProvState'));
 
 		$this->registerInternalProperty('country',
-			$this->class_map->resolveClass('StoreCountry'));
+			SwatDBClassMap::get('StoreCountry'));
 
 		$this->registerDateProperty('createdate');
 	}

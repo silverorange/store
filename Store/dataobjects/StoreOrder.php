@@ -279,28 +279,28 @@ class StoreOrder extends StoreDataObject
 	{
 		$this->registerInternalProperty('status');
 		$this->registerInternalProperty('account',
-			$this->class_map->resolveClass('StoreAccount'));
+			SwatDBClassMap::get('StoreAccount'));
 
 		$this->registerInternalProperty('billing_address',
-			$this->class_map->resolveClass('StoreOrderAddress'), true);
+			SwatDBClassMap::get('StoreOrderAddress'), true);
 
 		$this->registerInternalProperty('shipping_address',
-			$this->class_map->resolveClass('StoreOrderAddress'), true);
+			SwatDBClassMap::get('StoreOrderAddress'), true);
 
 		$this->registerInternalProperty('payment_method',
-			$this->class_map->resolveClass('StoreOrderPaymentMethod'), true);
+			SwatDBClassMap::get('StoreOrderPaymentMethod'), true);
 
 		$this->registerInternalProperty('locale',
-			$this->class_map->resolveClass('StoreLocale'), true);
+			SwatDBClassMap::get('StoreLocale'), true);
 
 		$this->registerInternalProperty('ad',
-			$this->class_map->resolveClass('StoreAd'), true);
+			SwatDBClassMap::get('StoreAd'), true);
 
 		$this->registerInternalProperty('invoice',
-			$this->class_map->resolveClass('StoreInvoice'));
+			SwatDBClassMap::get('StoreInvoice'));
 
 		$this->registerInternalProperty('previous_attempt',
-			$this->class_map->resolveClass('StoreOrder'));
+			SwatDBClassMap::get('StoreOrder'));
 
 		$this->registerDateProperty('createdate');
 
@@ -411,7 +411,7 @@ class StoreOrder extends StoreDataObject
 			$this->db->quote($this->id, 'integer'));
 
 		return SwatDB::query($this->db, $sql,
-			$this->class_map->resolveClass('StoreOrderItemWrapper'));
+			SwatDBClassMap::get('StoreOrderItemWrapper'));
 	}
 
 	// }}}
@@ -425,7 +425,7 @@ class StoreOrder extends StoreDataObject
 			$this->db->quote($this->id, 'integer'));
 
 		return SwatDB::query($this->db, $sql,
-			$this->class_map->resolveClass('StorePaymentTransactionWrapper'));
+			SwatDBClassMap::get('StorePaymentTransactionWrapper'));
 	}
 
 	// }}}

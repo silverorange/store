@@ -108,7 +108,7 @@ class StoreOrderItem extends StoreDataObject
 	protected function init()
 	{
 		$this->registerInternalProperty('ordernum',
-			$this->class_map->resolveClass('StoreOrder'));
+			SwatDBClassMap::get('StoreOrder'));
 
 		$this->table = 'OrderItem';
 		$this->id_field = 'integer:id';

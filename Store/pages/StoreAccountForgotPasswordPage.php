@@ -74,7 +74,6 @@ class StoreAccountForgotPasswordPage extends StoreAccountPage
 
 	private function generatePassword()
 	{
-		$class_mapper = SwatDBClassMap::instance();
 		$email = $this->ui->getWidget('email')->value;
 
 		$account_sql = sprintf('select id, email, fullname from Account
@@ -82,7 +81,7 @@ class StoreAccountForgotPasswordPage extends StoreAccountPage
 			$this->app->db->quote($email, 'text'));
 
 		$account = SwatDB::query($this->app->db, $account_sql,
-			$class_mapper->resolveClass('StoreAccountWrapper'))->getFirst();
+			SwatDBClassMap::get('StoreAccountWrapper'))->getFirst();
 
 		if ($account === null) {
 			$message = new SwatMessage(Store::_(

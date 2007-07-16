@@ -19,8 +19,7 @@ class StoreAdWrapper extends StoreRecordsetWrapper
 	{
 		parent::init();
 
-		$this->row_wrapper_class =
-			$this->class_map->resolveClass('StoreAd');
+		$this->row_wrapper_class = SwatDBClassMap::get('StoreAd');
 
 		$this->index_field = 'id';
 	}

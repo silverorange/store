@@ -370,12 +370,10 @@ class StoreCartModule extends SiteApplicationModule
 			return;
 		}
 
-		$class_mapper = SwatDBClassMap::instance();
-
 		$entry_sql = $this->getEntrySql($where_clause);
 
 		$this->entries = SwatDB::query($this->app->db, $entry_sql,
-			$class_mapper->resolveClass('StoreCartEntryWrapper'));
+			SwatDBClassMap::get('StoreCartEntryWrapper'));
 
 		if (count($this->entries) == 0)
 			return;
@@ -383,7 +381,7 @@ class StoreCartModule extends SiteApplicationModule
 		// for implodeArray()
 		$this->app->db->loadModule('Datatype', null, true);
 		$item_ids = $this->entries->getInternalValues('item');
-		$class = $class_mapper->resolveClass('StoreItemWrapper');
+		$class = SwatDBClassMap::get('StoreItemWrapper');
 
 		$quoted_item_ids =
 			$this->app->db->datatype->implodeArray($item_ids, 'integer');
@@ -397,14 +395,14 @@ class StoreCartModule extends SiteApplicationModule
 			on product = id where id in (%s)';
 
 		$products = $items->loadAllSubDataObjects('product', $this->app->db,
-			$product_sql, $class_mapper->resolveClass('StoreProductWrapper'));
+			$product_sql, SwatDBClassMap::get('StoreProductWrapper'));
 
 		$category_sql = 'select id, getCategoryPath(id) as path
 			from Category where id in (%s)';
 
 		$categories = $products->loadAllSubDataObjects('primary_category',
 			$this->app->db, $category_sql,
-			$class_mapper->resolveClass('StoreCategoryWrapper'));
+			SwatDBClassMap::get('StoreCategoryWrapper'));
 
 		$this->entries->attachSubDataObjects('item', $items);
 	}

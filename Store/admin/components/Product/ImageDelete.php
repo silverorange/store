@@ -74,8 +74,7 @@ class StoreProductImageDelete extends AdminDBDelete
 			SwatDB::exec($this->app->db, $sql);
 
 			// delete the actual files
-			$class_map = SwatDBClassMap::instance();
-			$product_image = $class_map->resolveClass('StoreProductImage');
+			$product_image = SwatDBClassMap::get('StoreProductImage');
 			$sizes = call_user_func(array($product_image, 'getSizes'));
 
 			foreach ($sizes as $size => $dimensions)

@@ -39,9 +39,8 @@ class StoreItemWrapper extends StoreRecordsetWrapper
 
 		$sql = sprintf($sql, $id_set);
 
-		$class_map = SwatDBClassMap::instance();
 		return SwatDB::query($db, $sql,
-			$class_map->resolveClass('StoreItemWrapper'));
+			SwatDBClassMap::get('StoreItemWrapper'));
 	}
 
 	// }}}
@@ -87,9 +86,8 @@ class StoreItemWrapper extends StoreRecordsetWrapper
 			$db->quote($region->id, 'integer'),
 			$id_set);
 
-		$class_map = SwatDBClassMap::instance();
 		$items = SwatDB::query($db, $sql,
-			$class_map->resolveClass('StoreItemWrapper'));
+			SwatDBClassMap::get('StoreItemWrapper'));
 
 		if ($items !== null)
 			$items->setRegion($region, $limiting);
@@ -103,7 +101,7 @@ class StoreItemWrapper extends StoreRecordsetWrapper
 	protected function init()
 	{
 		parent::init();
-		$this->row_wrapper_class = $this->class_map->resolveClass('StoreItem');
+		$this->row_wrapper_class = SwatDBClassMap::get('StoreItem');
 		$this->index_field = 'id';
 	}
 

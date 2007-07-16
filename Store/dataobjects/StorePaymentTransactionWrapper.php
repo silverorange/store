@@ -20,7 +20,7 @@ class StorePaymentTransactionWrapper extends StoreRecordsetWrapper
 		parent::init();
 
 		$this->row_wrapper_class =
-			$this->class_map->resolveClass('StorePaymentTransaction');
+			SwatDBClassMap::get('StorePaymentTransaction');
 
 		$this->index_field = 'id';
 	}

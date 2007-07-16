@@ -117,8 +117,7 @@ class StoreItemOrder extends AdminDBOrder
 		$sql = sprintf('select id from Item where %s',
 			$where_clause);
 
-		$class_map = SwatDBClassMap::instance();
-		$item_wrapper_class = $class_map->resolveClass('StoreItemWrapper');
+		$item_wrapper_class = SwatDBClassMap::get('StoreItemWrapper');
 		$items = call_user_func(array($item_wrapper_class, 'loadSetFromDb'),
 			$this->app->db, $sql);
 

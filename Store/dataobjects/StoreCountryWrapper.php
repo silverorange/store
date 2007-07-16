@@ -18,8 +18,7 @@ class StoreCountryWrapper extends StoreRecordsetWrapper
 	protected function init()
 	{
 		parent::init();
-		$this->row_wrapper_class =
-			$this->class_map->resolveClass('StoreCountry');
+		$this->row_wrapper_class = SwatDBClassMap::get('StoreCountry');
 	}
 
 	// }}}

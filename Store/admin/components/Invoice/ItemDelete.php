@@ -36,8 +36,7 @@ class StoreInvoiceItemDelete extends AdminDBDelete
 				from InvoiceItem where id in (%s)',
 				$item_list);
 
-			$class_map = SwatDBClassMap::instance();
-			$wrapper = $class_map->resolveClass('StoreInvoiceItemWrapper');
+			$wrapper = SwatDBClassMap::get('StoreInvoiceItemWrapper');
 			$this->invoice_items =
 				SwatDB::query($this->app->db, $sql, $wrapper);
 
@@ -48,7 +47,7 @@ class StoreInvoiceItemDelete extends AdminDBDelete
 
 			$invoices = $this->invoice_items->loadAllSubDataObjects(
 				'invoice', $this->app->db, $invoice_sql,
-				$class_map->resolveClass('StoreInvoiceWrapper'));
+				SwatDBClassMap::get('StoreInvoiceWrapper'));
 		}
 
 		return $this->invoice_items;

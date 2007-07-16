@@ -29,8 +29,7 @@ class StoreRegionWrapper extends StoreRecordsetWrapper
 	{
 		parent::init();
 
-		$this->row_wrapper_class =
-			$this->class_map->resolveClass('StoreRegion');
+		$this->row_wrapper_class = SwatDBClassMap::get('StoreRegion');
 
 		$this->index_field = 'id';
 	}

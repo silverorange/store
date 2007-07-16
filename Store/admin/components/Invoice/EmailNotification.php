@@ -112,8 +112,7 @@ class StoreInvoiceEmailNotification extends AdminConfirmation
 	protected function getInvoice() 
 	{
 		if ($this->invoice === null) {
-			$class_map = SwatDBClassMap::instance();
-			$invoice_class = $class_map->resolveClass('StoreInvoice');
+			$invoice_class = SwatDBClassMap::get('StoreInvoice');
 			$this->invoice = new $invoice_class();
 
 			$this->invoice->setDatabase($this->app->db);

@@ -377,7 +377,7 @@ abstract class StorePaymentMethod extends StoreDataObject
 	{
 		$this->id_field = 'integer:id';
 		$this->registerInternalProperty('payment_type',
-			$this->class_map->resolveClass('StorePaymentType'));
+			SwatDBClassMap::get('StorePaymentType'));
 
 		$this->registerDateProperty('card_expiry');
 		$this->registerDateProperty('card_inception');

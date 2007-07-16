@@ -60,8 +60,7 @@ class StoreAccountDetails extends AdminIndex
 	protected function getAccount()
 	{
 		if ($this->account === null) {
-			$class_map = SwatDBClassMap::instance();
-			$account_class = $class_map->resolveClass('StoreAccount');
+			$account_class = SwatDBClassMap::get('StoreAccount');
 
 			$this->account = new $account_class();
 			$this->account->setDatabase($this->app->db);
@@ -265,8 +264,7 @@ class StoreAccountDetails extends AdminIndex
 		$rs = SwatDB::query($this->app->db, $sql);
 		$ts = new SwatTableStore();
 
-		$class_map = SwatDBClassMap::instance();
-		$class_name = $class_map->resolveClass('StoreAccountAddress');
+		$class_name = SwatDBClassMap::get('StoreAccountAddress');
 		foreach ($rs as $row) {
 			$new_row = null;
 			$new_row->id = $row->id;
@@ -284,8 +282,7 @@ class StoreAccountDetails extends AdminIndex
 
 	protected function getPaymentMethodsTableModel(SwatTableView $view) 
 	{
-		$class_map = SwatDBClassMap::instance();
-		$wrapper = $class_map->resolveClass('StoreAccountPaymentMethodWrapper');
+		$wrapper = SwatDBClassMap::get('StoreAccountPaymentMethodWrapper');
 
 		$sql = sprintf('select * from AccountPaymentMethod where account = %s',
 			$this->app->db->quote($this->id, 'integer'));
