@@ -466,8 +466,7 @@ class StoreCategoryIndex extends AdminIndex
 
 	private function loadCategory()
 	{
-		$class_map = SwatDBClassMap::instance();
-		$category_class = $class_map->resolveClass('StoreCategory');
+		$category_class = SwatDBClassMap::get('StoreCategory');
 
 		$category = new $category_class();
 		$category->setDatabase($this->app->db);

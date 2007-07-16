@@ -58,8 +58,7 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 	{
 		if (!isset($this->app->session->account) ||
 			$this->app->session->account === null) {
-				$class_map = SwatDBClassMap::instance();
-				$account_class = $class_map->resolveClass('StoreAccount');
+				$account_class = SwatDBClassMap::get('StoreAccount');
 				$this->app->session->account = new $account_class();
 				$this->app->session->account->setDatabase($this->app->db);
 				$this->resetProgress();
@@ -69,8 +68,7 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 			$this->app->session->order === null ||
 			$this->app->session->order->id !== null) {
 				unset($this->app->session->order);
-				$class_map = SwatDBClassMap::instance();
-				$order_class = $class_map->resolveClass('StoreOrder');
+				$order_class = SwatDBClassMap::get('StoreOrder');
 				$this->app->session->order = new $order_class();
 				$this->app->session->order->setDatabase($this->app->db);
 				$this->resetProgress();

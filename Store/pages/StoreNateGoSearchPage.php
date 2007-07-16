@@ -266,8 +266,7 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 			$this->app->db->quote($pagination->page_size, 'integer'),
 			$this->app->db->quote($pagination->current_record, 'integer'));
 
-		$class_map = SwatDBClassMap::instance();
-		$wrapper_class = $class_map->resolveClass('StoreArticleWrapper');
+		$wrapper_class = SwatDBClassMap::get('StoreArticleWrapper');
 		$articles = SwatDB::query($this->app->db, $sql, $wrapper_class);
 
 		if (count($articles) > 0) {
@@ -308,14 +307,13 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 				$this->getDocumentType(StoreSearchPage::TYPE_CATEGORIES),
 				'integer'));
 
-		$class_map = SwatDBClassMap::instance();
-		$wrapper_class = $class_map->resolveClass('StoreCategoryWrapper');
+		$wrapper_class = SwatDBClassMap::get('StoreCategoryWrapper');
 		$categories = SwatDB::query($this->app->db, $sql, $wrapper_class);
 		$categories->setRegion($this->app->getRegion());
 
 		if (count($categories) > 0) {
 			$sql = 'select * from Image where id in (%s)';
-			$image_wrapper_class = $class_map->resolveClass(
+			$image_wrapper_class = SwatDBClassMap::get(
 				'StoreCategoryImageWrapper');
 
 			$categories->loadAllSubDataObjects(
@@ -418,8 +416,7 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 			$this->app->db->quote($pagination->current_record, 'integer'),
 			$this->getProductSelectClause());
 
-		$class_map = SwatDBClassMap::instance();
-		$wrapper_class = $class_map->resolveClass('StoreProductWrapper');
+		$wrapper_class = SwatDBClassMap::get('StoreProductWrapper');
 		return SwatDB::query($this->app->db, $sql, $wrapper_class);
 	}
 
@@ -447,10 +444,9 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 		$products->loadAllSubDataObjects(
 			'tag', $this->app->db, $sql, 'TagWrapper');
 		*/
-		$class_map = SwatDBClassMap::instance();
 
 		$sql = 'select * from Image where id in (%s)';
-		$image_wrapper_class = $class_map->resolveClass(
+		$image_wrapper_class = SwatDBClassMap::get(
 			'StoreProductImageWrapper');
 
 		$products->loadAllSubDataObjects(

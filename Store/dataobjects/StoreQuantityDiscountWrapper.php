@@ -17,8 +17,7 @@ class StoreQuantityDiscountWrapper extends StoreRecordsetWrapper
 	protected function init()
 	{
 		parent::init();
-		$this->row_wrapper_class =
-			$this->class_map->resolveClass('StoreQuantityDiscount');
+		$this->row_wrapper_class = SwatDBClassMap::get('StoreQuantityDiscount');
 
 		$this->index_field = 'id';
 	}

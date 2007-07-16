@@ -34,8 +34,7 @@ class StoreInvoiceItemOrder extends AdminDBOrder
 
 		$id = SiteApplication::initVar('id');
 
-		$class_map = SwatDBClassMap::instance();
-		$class_name = $class_map->resolveClass('StoreInvoice');
+		$class_name = SwatDBClassMap::get('StoreInvoice');
 		$this->invoice = new $class_name();
 		$this->invoice->setDatabase($this->app->db);
 		if (!$this->invoice->load($id)) {

@@ -20,8 +20,7 @@ class StoreInvoiceDelete extends AdminDBDelete
 
 	protected function getAccount()
 	{
-		$class_map = SwatDBClassMap::instance();
-		$invoice_class = $class_map->resolveClass('StoreInvoice');
+		$invoice_class = SwatDBClassMap::get('StoreInvoice');
 		$invoice = new $invoice_class();
 		$invoice->setDatabase($this->app->db);
 

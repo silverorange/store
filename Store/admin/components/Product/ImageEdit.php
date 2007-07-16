@@ -126,8 +126,7 @@ class StoreProductImageEdit extends AdminPage
 		// this stores the temporary uploaded files that are deleted
 		$delete_files = array();
 
-		$class_map = SwatDBClassMap::instance();
-		$product_image = $class_map->resolveClass('StoreProductImage');
+		$product_image = SwatDBClassMap::get('StoreProductImage');
 		// name => max dimensions
 		$sizes = call_user_func(array($product_image, 'getSizes'));
 
@@ -448,8 +447,7 @@ class StoreProductImageEdit extends AdminPage
 		$frame->subtitle = $this->product_title;
 
 		//set the notes on the manual image fields
-		$class_map = SwatDBClassMap::instance();
-		$product_image = $class_map->resolveClass('StoreProductImage');
+		$product_image = SwatDBClassMap::get('StoreProductImage');
 		// name => max dimensions
 		$sizes = call_user_func(array($product_image, 'getSizes'));
 

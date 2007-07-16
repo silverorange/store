@@ -26,10 +26,10 @@ class StoreQuantityDiscountRegionBinding extends StoreDataObject
 	protected function init()
 	{
 		$this->registerInternalProperty('region',
-			$this->class_map->resolveClass('StoreRegion'));
+			SwatDBClassMap::get('StoreRegion'));
 
 		$this->registerInternalProperty('quantity_discount',
-			$this->class_map->resolveClass('StoreQuantityDiscount'));
+			SwatDBClassMap::get('StoreQuantityDiscount'));
 
 		$this->table = 'QuantityDiscountRegionBinding';
 	}

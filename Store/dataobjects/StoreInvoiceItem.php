@@ -110,7 +110,7 @@ class StoreInvoiceItem extends StoreDataObject
 	 */
 	public function createOrderItem()
 	{
-		$class = $this->class_map->resolveClass('StoreOrderItem');
+		$class = SwatDBClassMap::get('StoreOrderItem');
 		$order_item = new $class();
 
 		$order_item->sku = $this->sku;
@@ -135,7 +135,7 @@ class StoreInvoiceItem extends StoreDataObject
 	protected function init()
 	{
 		$this->registerInternalProperty('invoice',
-			$this->class_map->resolveClass('StoreInvoice'));
+			SwatDBClassMap::get('StoreInvoice'));
 
 		$this->table = 'InvoiceItem';
 		$this->id_field = 'integer:id';

@@ -139,13 +139,12 @@ class StoreAccountOrderPage extends StoreAccountPage
 	protected function addItem($item_id, StoreOrderItem $order_item)
 	{
 		if ($item_id !== null) {
-			$class_map = SwatDBClassMap::instance();
-			$cart_entry_class = $class_map->resolveClass('StoreCartEntry');
+			$cart_entry_class = SwatDBClassMap::get('StoreCartEntry');
 			$cart_entry = new $cart_entry_class();
 			$cart_entry->account = $this->app->session->getAccountId();
 
 			// load item manually here so we can specify region
-			$item_class = $class_map->resolveClass('StoreItem');
+			$item_class = SwatDBClassMap::get('StoreItem');
 			$item = new $item_class();
 			$item->setDatabase($this->app->db);
 			$item->setRegion($this->app->getRegion());

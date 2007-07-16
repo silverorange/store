@@ -128,16 +128,16 @@ class StoreProduct extends StoreDataObject
 	protected function init()
 	{
 		$this->registerInternalProperty('primary_category',
-			$this->class_map->resolveClass('StoreCategory'));
+			SwatDBClassMap::get('StoreCategory'));
 
 		$this->registerInternalProperty('path');
 		$this->registerDateProperty('createdate');
 
 		$this->registerInternalProperty('catalog',
-			$this->class_map->resolveClass('StoreCatalog'));
+			SwatDBClassMap::get('StoreCatalog'));
 
 		$this->registerInternalProperty('primary_image',
-			$this->class_map->resolveClass('StoreProductImage'));
+			SwatDBClassMap::get('StoreProductImage'));
 
 		$this->table = 'Product';
 		$this->id_field = 'integer:id';
@@ -159,7 +159,7 @@ class StoreProduct extends StoreDataObject
 	protected function loadItems()
 	{
 		$items = null;
-		$wrapper = $this->class_map->resolveClass('StoreItemWrapper');
+		$wrapper = SwatDBClassMap::get('StoreItemWrapper');
 
 		if ($this->region === null) {
 			$sql = 'select id from Item where product = %s';
@@ -222,7 +222,7 @@ class StoreProduct extends StoreDataObject
 
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 		return SwatDB::query($this->db, $sql,
-			$this->class_map->resolveClass('StoreItemGroupWrapper'));
+			SwatDBClassMap::get('StoreItemGroupWrapper'));
 	}
 
 	// }}}
@@ -236,7 +236,7 @@ class StoreProduct extends StoreDataObject
 
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 		return SwatDB::query($this->db, $sql,
-			$this->class_map->resolveClass('StoreCategoryWrapper'));
+			SwatDBClassMap::get('StoreCategoryWrapper'));
 	}
 
 	// }}}
@@ -250,7 +250,7 @@ class StoreProduct extends StoreDataObject
 
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 		return SwatDB::query($this->db, $sql,
-			$this->class_map->resolveClass('StoreCategoryWrapper'));
+			SwatDBClassMap::get('StoreCategoryWrapper'));
 	}
 
 	// }}}
@@ -279,7 +279,7 @@ class StoreProduct extends StoreDataObject
 
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 		return SwatDB::query($this->db, $sql,
-			$this->class_map->resolveClass('StoreProductWrapper'));
+			SwatDBClassMap::get('StoreProductWrapper'));
 	}
 
 	// }}}
@@ -315,7 +315,7 @@ class StoreProduct extends StoreDataObject
 				$this->db->quote($this->id, 'integer'));
 		}
 
-		$wrapper = $this->class_map->resolveClass('StoreProductImageWrapper');
+		$wrapper = SwatDBClassMap::get('StoreProductImageWrapper');
 		$rs = SwatDB::query($this->db, $sql, $wrapper);
 		$primary_image = $rs->getFirst();
 
@@ -340,7 +340,7 @@ class StoreProduct extends StoreDataObject
 
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 		return SwatDB::query($this->db, $sql,
-			$this->class_map->resolveClass('StoreProductImageWrapper'));
+			SwatDBClassMap::get('StoreProductImageWrapper'));
 	}
 
 	// }}}

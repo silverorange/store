@@ -156,10 +156,10 @@ class StoreInvoice extends StoreDataObject
 	protected function init()
 	{
 		$this->registerInternalProperty('account',
-			$this->class_map->resolveClass('StoreAccount'));
+			SwatDBClassMap::get('StoreAccount'));
 
 		$this->registerInternalProperty('locale',
-			$this->class_map->resolveClass('StoreLocale'));
+			SwatDBClassMap::get('StoreLocale'));
 
 		$this->registerDateProperty('createdate');
 
@@ -316,7 +316,7 @@ class StoreInvoice extends StoreDataObject
 			$this->db->quote($this->id, 'integer'));
 
 		return SwatDB::query($this->db, $sql,
-			$this->class_map->resolveClass('StoreInvoiceItemWrapper'));
+			SwatDBClassMap::get('StoreInvoiceItemWrapper'));
 	}
 
 	// }}}

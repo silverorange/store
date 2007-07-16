@@ -17,9 +17,7 @@ class StoreCategoryImageWrapper extends StoreRecordsetWrapper
 	protected function init()
 	{
 		parent::init();
-		$this->row_wrapper_class =
-			$this->class_map->resolveClass('StoreCategoryImage');
-
+		$this->row_wrapper_class = SwatDBClassMap::get('StoreCategoryImage');
 		$this->index_field = 'id';
 	}
 

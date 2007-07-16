@@ -33,10 +33,10 @@ class StoreItemRegionBinding extends StoreDataObject
 	protected function init()
 	{
 		$this->registerInternalProperty('region',
-			$this->class_map->resolveClass('StoreRegion'));
+			SwatDBClassMap::get('StoreRegion'));
 
 		$this->registerInternalProperty('item',
-			$this->class_map->resolveClass('StoreItem'));
+			SwatDBClassMap::get('StoreItem'));
 
 		$this->table = 'ItemRegionBinding';
 	}

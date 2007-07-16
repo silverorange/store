@@ -17,7 +17,7 @@ class StoreOrderWrapper extends StoreRecordsetWrapper
 	protected function init()
 	{
 		parent::init();
-		$this->row_wrapper_class = $this->class_map->resolveClass('StoreOrder');
+		$this->row_wrapper_class = SwatDBClassMap::get('StoreOrder');
 		$this->index_field = 'id';
 	}
 

@@ -171,7 +171,7 @@ class StoreQuantityDiscount extends StoreDataObject
 
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 
-		$wrapper = $this->class_map->resolveClass(
+		$wrapper = SwatDBClassMap::get(
 			'StoreQuantityDiscountRegionBindingWrapper');
 
 		return SwatDB::query($this->db, $sql, $wrapper);

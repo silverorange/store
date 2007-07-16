@@ -50,8 +50,7 @@ class StoreInvoiceItemEdit extends AdminDBEdit
 
 	protected function initInvoiceItem()
 	{
-		$class_map = SwatDBClassMap::instance();
-		$class = $class_map->resolveClass('StoreInvoiceItem');
+		$class = SwatDBClassMap::get('StoreInvoiceItem');
 		$invoice_item = new $class();
 		$invoice_item->setDatabase($this->app->db);
 
@@ -80,8 +79,7 @@ class StoreInvoiceItemEdit extends AdminDBEdit
 				'select invoice from InvoiceItem where id = %s',
 				$this->app->db->quote($this->id, 'integer')));
 
-		$class_map = SwatDBClassMap::instance();
-		$class = $class_map->resolveClass('StoreInvoice');
+		$class = SwatDBClassMap::get('StoreInvoice');
 		$invoice = new $class();
 		$invoice->setDatabase($this->app->db);
 		if (!$invoice->load($invoice_id))

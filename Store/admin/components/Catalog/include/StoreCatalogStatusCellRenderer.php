@@ -18,8 +18,7 @@ class StoreCatalogStatusCellRenderer extends SwatCellRenderer
 
 	public function render()
 	{
-		$class_map = SwatDBClassMap::instance();
-		$catalog_class = $class_map->resolveClass('StoreCatalog');
+		$catalog_class = SwatDBClassMap::get('StoreCatalog');
 
 		$sql = 'select Region.title, available
 			from Region

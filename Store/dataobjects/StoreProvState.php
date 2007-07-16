@@ -45,7 +45,7 @@ class StoreProvState extends StoreDataObject
 		$this->id_field = 'integer:id';
 
 		$this->registerInternalProperty('country',
-			$this->class_map->resolveClass('StoreCountry'));
+			SwatDBClassMap::get('StoreCountry'));
 	}
 
 	// }}}

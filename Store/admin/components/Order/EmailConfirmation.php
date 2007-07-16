@@ -121,8 +121,7 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 	protected function getOrder() 
 	{
 		if ($this->order === null) {
-			$class_map = SwatDBClassMap::instance();
-			$order_class = $class_map->resolveClass('StoreOrder');
+			$order_class = SwatDBClassMap::get('StoreOrder');
 			$this->order = new $order_class();
 
 			$this->order->setDatabase($this->app->db);

@@ -415,10 +415,10 @@ abstract class StoreItem extends StoreDataObject
 	{
 		$this->registerInternalProperty('status');
 		$this->registerInternalProperty('product',
-			$this->class_map->resolveClass('StoreProduct'));
+			SwatDBClassMap::get('StoreProduct'));
 
 		$this->registerInternalProperty('item_group',
-			$this->class_map->resolveClass('StoreItemGroup'));
+			SwatDBClassMap::get('StoreItemGroup'));
 
 		$this->table = 'Item';
 		$this->id_field = 'integer:id';
@@ -500,8 +500,7 @@ abstract class StoreItem extends StoreDataObject
 	protected function loadQuantityDiscounts()
 	{
 		$quantity_discounts = null;
-		$wrapper =
-			$this->class_map->resolveClass('StoreQuantityDiscountWrapper');
+		$wrapper = SwatDBClassMap::get('StoreQuantityDiscountWrapper');
 
 		if ($this->region === null) {
 			$sql = sprintf('select * from QuantityDiscount 
@@ -541,8 +540,7 @@ abstract class StoreItem extends StoreDataObject
 		$sql = 'select * from ItemRegionBinding where item = %s';
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 
-		$wrapper =
-			$this->class_map->resolveClass('StoreItemRegionBindingWrapper');
+		$wrapper = SwatDBClassMap::get('StoreItemRegionBindingWrapper');
 
 		return SwatDB::query($this->db, $sql, $wrapper);
 	}

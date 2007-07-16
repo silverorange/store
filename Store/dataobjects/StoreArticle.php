@@ -214,7 +214,7 @@ class StoreArticle extends StoreDataObject
 	protected function init()
 	{
 		$this->registerInternalProperty('parent',
-			$this->class_map->resolveClass('StoreArticle'));
+			SwatDBClassMap::get('StoreArticle'));
 
 		$this->registerDateProperty('createdate');
 
@@ -273,7 +273,7 @@ class StoreArticle extends StoreDataObject
 			order by Category.displayorder asc';
 
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
-		$wrapper = $this->class_map->resolveClass('StoreCategoryWrapper');
+		$wrapper = SwatDBClassMap::get('StoreCategoryWrapper');
 		return SwatDB::query($this->db, $sql, $wrapper);
 	}
 

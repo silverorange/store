@@ -562,8 +562,7 @@ class StoreProductDetails extends AdminIndex
 
 	private function loadProduct()
 	{
-		$class_map = SwatDBClassMap::instance();
-		$product_class = $class_map->resolveClass('StoreProduct');
+		$product_class = SwatDBClassMap::get('StoreProduct');
 		$product = new $product_class();
 		$product->setDatabase($this->app->db);
 

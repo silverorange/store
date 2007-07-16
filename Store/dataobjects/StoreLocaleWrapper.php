@@ -17,8 +17,7 @@ class StoreLocaleWrapper extends StoreRecordsetWrapper
 	protected function init()
 	{
 		parent::init();
-		$this->row_wrapper_class =
-			$this->class_map->resolveClass('StoreLocale');
+		$this->row_wrapper_class = SwatDBClassMap::get('StoreLocale');
 	}
 
 	// }}}

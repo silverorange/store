@@ -17,8 +17,8 @@ class StoreQuantityDiscountRegionBindingWrapper extends StoreRecordsetWrapper
 	protected function init()
 	{
 		parent::init();
-		$this->row_wrapper_class = $this->class_map->resolveClass(
-			'StoreQuantityDiscountRegionBinding');
+		$this->row_wrapper_class =
+			SwatDBClassMap::get('StoreQuantityDiscountRegionBinding');
 	}
 
 	// }}}

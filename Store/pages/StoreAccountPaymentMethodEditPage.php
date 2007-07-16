@@ -71,8 +71,7 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 
 		if ($this->id === null) {
 			// create a new payment method
-			$class_map = SwatDBClassMap::instance();
-			$class = $class_map->resolveClass('StoreAccountPaymentMethod');
+			$class = SwatDBClassMap::get('StoreAccountPaymentMethod');
 			$payment_method = new $class();
 		} else {
 			// edit existing payment method
@@ -105,8 +104,7 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 		$type_list->process();
 
 		if ($type_list->value !== null) {
-			$class_map = SwatDBClassMap::instance();
-			$class_name = $class_map->resolveClass('StorePaymentType');
+			$class_name = SwatDBClassMap::get('StorePaymentType');
 			$payment_type = new $class_name();
 			$payment_type->setDatabase($this->app->db);
 			$payment_type->load($type_list->value);
@@ -255,8 +253,7 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 			%s where %s order by title',
 			$type_join_clause, $type_where_clause);
 
-		$class_map = SwatDBClassMap::instance();
-		$wrapper = $class_map->resolveClass('StorePaymentTypeWrapper');
+		$wrapper = SwatDBClassMap::get('StorePaymentTypeWrapper');
 		$types = SwatDB::query($this->app->db, $types_sql, $wrapper);
 		foreach ($types as $type)
 			$type_flydown->addOption(

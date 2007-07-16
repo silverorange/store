@@ -18,8 +18,8 @@ class StoreOrderPaymentMethodWrapper extends StoreRecordsetWrapper
 	{
 		parent::init();
 		$this->index_field = 'id';
-		$this->row_wrapper_class =
-			$this->class_map->resolveClass('StoreOrderPaymentMethod');
+		$this->row_wrapper_class = 
+			SwatDBClassMap::get('StoreOrderPaymentMethod');
 	}
 
 	// }}}

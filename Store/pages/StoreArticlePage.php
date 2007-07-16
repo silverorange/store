@@ -171,8 +171,7 @@ class StoreArticlePage extends StorePage
 		$sql = sprintf($sql,
 			$this->app->db->quote($article_id, 'integer'));
 
-		$class_map = SwatDBClassMap::instance();
-		$wrapper = $class_map->resolveClass('StoreArticleWrapper');
+		$wrapper = SwatDBClassMap::get('StoreArticleWrapper');
 		$articles = SwatDB::query($this->app->db, $sql, $wrapper);
 		return $articles->getFirst();
 	}
@@ -277,8 +276,7 @@ class StoreArticlePage extends StorePage
 			SwatDB::equalityOperator($article_id),
 			$this->app->db->quote($article_id, 'integer'));
 
-		$class_map = SwatDBClassMap::instance();
-		$wrapper = $class_map->resolveClass('StoreArticleWrapper');
+		$wrapper = SwatDBClassMap::get('StoreArticleWrapper');
 		return SwatDB::query($this->app->db, $sql, $wrapper);
 	}
 

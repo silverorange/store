@@ -284,8 +284,7 @@ class StoreSessionModule extends SiteSessionModule
 
 	protected function getNewAccountObject()
 	{
-		$class_mapper = SwatDBClassMap::instance();
-		$class_name = $class_mapper->resolveClass('StoreAccount');
+		$class_name = SwatDBClassMap::get('StoreAccount');
 		$account = new $class_name();
 		$account->setDatabase($this->app->db);
 

@@ -231,7 +231,7 @@ abstract class StoreAccount extends StoreDataObject
 			$this->db->quote($this->id, 'integer'));
 
 		return SwatDB::query($this->db, $sql,
-			$this->class_map->resolveClass('StoreInvoiceWrapper'));
+			SwatDBClassMap::get('StoreInvoiceWrapper'));
 	}
 
 	// }}}
@@ -392,7 +392,7 @@ abstract class StoreAccount extends StoreDataObject
 			$this->db->quote($this->id, 'integer'));
 
 		return SwatDB::query($this->db, $sql,
-			$this->class_map->resolveClass('StoreAccountAddressWrapper'));
+			SwatDBClassMap::get('StoreAccountAddressWrapper'));
 	}
 
 	// }}}
@@ -409,7 +409,7 @@ abstract class StoreAccount extends StoreDataObject
 			$this->db->quote($this->id, 'integer'));
 
 		return SwatDB::query($this->db, $sql,
-			$this->class_map->resolveClass('StoreAccountPaymentMethodWrapper'));
+			SwatDBClassMap::get('StoreAccountPaymentMethodWrapper'));
 	}
 
 	// }}}
@@ -428,7 +428,7 @@ abstract class StoreAccount extends StoreDataObject
 			$this->db->quote($this->id, 'integer'));
 
 		return SwatDB::query($this->db, $sql,
-			$this->class_map->resolveClass('StoreOrderWrapper'));
+			SwatDBClassMap::get('StoreOrderWrapper'));
 	}
 
 	// }}}
@@ -447,7 +447,7 @@ abstract class StoreAccount extends StoreDataObject
 			$this->db->quote($this->id, 'integer'));
 
 		return SwatDB::query($this->db, $sql,
-			$this->class_map->resolveClass('StoreInvoiceWrapper'));
+			SwatDBClassMap::get('StoreInvoiceWrapper'));
 	}
 
 	// }}}

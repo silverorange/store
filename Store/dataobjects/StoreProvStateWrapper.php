@@ -18,8 +18,7 @@ class StoreProvStateWrapper extends StoreRecordsetWrapper
 	protected function init()
 	{
 		parent::init();
-		$this->row_wrapper_class =
-			$this->class_map->resolveClass('StoreProvState');
+		$this->row_wrapper_class = SwatDBClassMap::get('StoreProvState');
 	}
 
 	// }}}

@@ -74,8 +74,7 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 	protected function saveDataToSession()
 	{
 		$address_list = $this->ui->getWidget('billing_address_list');
-		$class_map = SwatDBClassMap::instance();
-		$class_name = $class_map->resolveClass('StoreOrderAddress');
+		$class_name = SwatDBClassMap::get('StoreOrderAddress');
 		$order_address = new $class_name();
 
 		if ($address_list->value === null || $address_list->value === 'new') {

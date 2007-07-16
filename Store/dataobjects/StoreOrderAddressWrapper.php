@@ -18,8 +18,7 @@ class StoreOrderAddressWrapper extends StoreRecordsetWrapper
 	protected function init()
 	{
 		parent::init();
-		$this->row_wrapper_class =
-			$this->class_map->resolveClass('StoreOrderAddress');
+		$this->row_wrapper_class = SwatDBClassMap::get('StoreOrderAddress');
 	}
 
 	// }}}
