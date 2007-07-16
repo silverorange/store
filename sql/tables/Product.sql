@@ -9,4 +9,3 @@ create table Product (
 );
 
 CREATE INDEX Product_catalog_index ON Product(catalog);
-CREATE INDEX Product_primary_image_index ON Product(primary_image);
