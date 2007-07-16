@@ -169,8 +169,7 @@ class StoreArticlePage extends StorePage
 		$sql = 'select * from Article where id = %s';
 
 		$sql = sprintf($sql,
-			$this->app->db->quote($article_id, 'integer'),
-			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+			$this->app->db->quote($article_id, 'integer'));
 
 		$class_map = SwatDBClassMap::instance();
 		$wrapper = $class_map->resolveClass('StoreArticleWrapper');
@@ -265,14 +264,18 @@ class StoreArticlePage extends StorePage
 	protected function querySubArticles($article_id)
 	{
 		$sql = 'select id, title, shortname, description from Article
-			where parent %s %s and id in
-				(select id from VisibleArticleView where region = %s)
-			order by displayorder, title';
+			where parent %s %s';
+
+		if ($this->app instanceof StoreLocaleApplication)
+			$sql.= sprintf(
+				' and id in (select id from VisibleArticleView where region = %s)',
+				$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+
+		$sql.= ' order by displayorder, title';
 
 		$sql = sprintf($sql,
 			SwatDB::equalityOperator($article_id),
-			$this->app->db->quote($article_id, 'integer'),
-			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+			$this->app->db->quote($article_id, 'integer'));
 
 		$class_map = SwatDBClassMap::instance();
 		$wrapper = $class_map->resolveClass('StoreArticleWrapper');

@@ -76,7 +76,9 @@ abstract class StoreArticlePageFactory extends SitePageFactory
 		$page->article_id = $article_id;
 		$page->setPath($article_path);
 
-		if (!$page->isVisibleInRegion($app->getRegion())) {
+		if ($app instanceof StoreLocaleApplication &&
+			!$page->isVisibleInRegion($app->getRegion())) {
+
 			$page = $this->instantiateNotVisiblePage($app, $layout);
 			$page->article_id = $article_id;
 			$page->setPath($article_path);
