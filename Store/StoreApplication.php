@@ -10,6 +10,7 @@ require_once 'Store/StoreSessionModule.php';
 require_once 'Store/StoreCartModule.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/dataobjects/StoreAdWrapper.php';
+require_once 'Store/dataobjects/StoreRegion.php';
 
 /**
  * Web application class for a store
@@ -33,6 +34,17 @@ abstract class StoreApplication extends SiteWebApplication
 	 * @var MDB2_Driver_Common
 	 */
 	public $db;
+
+	// }}}
+	// {{{ public function getRegion()
+
+	/**
+	 * @return StoreRegion
+	 */
+	public function getRegion()
+	{
+		return null;
+	}
 
 	// }}}
 	// {{{ protected function getDefaultModuleList()
