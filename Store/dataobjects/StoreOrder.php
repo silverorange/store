@@ -399,6 +399,23 @@ class StoreOrder extends StoreDataObject
 	}
 
 	// }}}
+	// {{{ public function isFinished()
+
+	/**
+	 * Gets whether or not this order is finished being processed
+	 *
+	 * This order is finished being processed if the order has been shipped and
+	 * is not cancelled.
+	 *
+	 * @return boolean true if this order is finished and false if it is not.
+	 */
+	public function isFinished()
+	{
+		return (!$this->failed_attempt && !$this->cancelled &&
+			$this->getStatus() === StoreOrderStatusList::status('shipped'));
+	}
+
+	// }}}
 
 	// loader methods
 	// {{{ protected function loadItems()
