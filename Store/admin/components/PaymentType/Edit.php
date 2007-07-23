@@ -97,8 +97,6 @@ class StorePaymentTypeEdit extends AdminDBEdit
 				$values, 'id', $this->id);
 
 		$region_list = $this->ui->getWidget('regions');
-		print_r($region_list->values); exit;
-
 		SwatDB::updateBinding($this->app->db, 'PaymentTypeRegionBinding',
 			'payment_type', $this->id, 'region', $region_list->values,
 			'Region', 'id');
