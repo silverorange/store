@@ -1,3 +1,245 @@
+2007-07-23  gauthierm
+
+	* [r18649] store/trunk/Store/dataobjects/StoreOrder.php:
+	  add new method isFinished() to StoreOrder.
+
+2007-07-23  nrf
+
+	* [r18647] store/trunk/Store/admin/components/Account/Details.php,
+	  store/trunk/Store/admin/components/Account/Index.php,
+	  store/trunk/Store/admin/components/Ad/Details.php,
+	  store/trunk/Store/admin/components/Ad/Index.php,
+	  store/trunk/Store/admin/components/Article/Index.php,
+	  store/trunk/Store/admin/components/Article/Search.php,
+	  store/trunk/Store/admin/components/Catalog/Index.php,
+	  store/trunk/Store/admin/components/Category/AddProducts.php,
+	  store/trunk/Store/admin/components/Category/FeaturedProducts.php,
+	  store/trunk/Store/admin/components/Category/Index.php,
+	  store/trunk/Store/admin/components/Country/Index.php,
+	  store/trunk/Store/admin/components/Invoice/Details.php,
+	  store/trunk/Store/admin/components/Item/QuantityDiscount.php,
+	  store/trunk/Store/admin/components/Locale/Index.php,
+	  store/trunk/Store/admin/components/Order/Index.php,
+	  store/trunk/Store/admin/components/PaymentType/Index.php,
+	  store/trunk/Store/admin/components/Product/Details.php,
+	  store/trunk/Store/admin/components/Product/Index.php,
+	  store/trunk/Store/admin/components/Product/RelatedProduct.php,
+	  store/trunk/Store/admin/components/ProvState/Index.php,
+	  store/trunk/Store/admin/components/Region/Index.php:
+	  change type-hinting to SwatView
+	* [r18646] store/trunk/Store/dataobjects/StoreAccount.php:
+	  Make email sending methods empty instead of abstract so the
+	  dataobject can be used without subclassing.
+
+2007-07-23  gauthierm
+
+	* [r18635] store/trunk/Store/dataobjects/StoreOrder.php:
+	  Failed orders are neither billable nor shippable.
+	* [r18630]
+	  store/trunk/Store/admin/components/PaymentType/Index.php:
+	  Make processing enabled/disables for payment types on the index
+	  page work again.
+	* [r18629]
+	  store/trunk/Store/admin/components/PaymentType/Edit.php:
+	  Remove debug code from payment type edit page.
+	* [r18627] store/trunk/Store/StoreProtxPaymentRequest.php:
+	  Live URL changes to Protx Payment Request. The new URLs go live
+	  on August 1st. In the meantime, Protx is forwarding the new URLs
+	  to the old URLs.
+
+2007-07-16  nrf
+
+	* [r18472] store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/StoreArticlePageFactory.php,
+	  store/trunk/Store/pages/StoreArticlePage.php:
+	  Revert my earlier commit and add an empty getRegion() to
+	  StoreApplication instead
+
+2007-07-16  charles
+
+	* [r18464] store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/StoreCartModule.php,
+	  store/trunk/Store/StoreItemStatusList.php,
+	  store/trunk/Store/StoreOrderStatusList.php,
+	  store/trunk/Store/StoreSessionModule.php,
+	  store/trunk/Store/admin/components/Account/Details.php,
+	  store/trunk/Store/admin/components/Account/PaymentMethodEdit.php,
+	  store/trunk/Store/admin/components/Catalog/Edit.php,
+	  store/trunk/Store/admin/components/Catalog/Status.php,
+	  store/trunk/Store/admin/components/Catalog/include/StoreCatalogStatusCellRenderer.php,
+	  store/trunk/Store/admin/components/Category/ImageDelete.php,
+	  store/trunk/Store/admin/components/Category/ImageEdit.php,
+	  store/trunk/Store/admin/components/Category/Index.php,
+	  store/trunk/Store/admin/components/Invoice/Delete.php,
+	  store/trunk/Store/admin/components/Invoice/Details.php,
+	  store/trunk/Store/admin/components/Invoice/Edit.php,
+	  store/trunk/Store/admin/components/Invoice/EmailNotification.php,
+	  store/trunk/Store/admin/components/Invoice/ItemDelete.php,
+	  store/trunk/Store/admin/components/Invoice/ItemEdit.php,
+	  store/trunk/Store/admin/components/Invoice/ItemOrder.php,
+	  store/trunk/Store/admin/components/Item/Order.php,
+	  store/trunk/Store/admin/components/Order/Details.php,
+	  store/trunk/Store/admin/components/Order/EmailConfirmation.php,
+	  store/trunk/Store/admin/components/Product/Details.php,
+	  store/trunk/Store/admin/components/Product/ImageDelete.php,
+	  store/trunk/Store/admin/components/Product/ImageEdit.php,
+	  store/trunk/Store/dataobjects/StoreAccount.php,
+	  store/trunk/Store/dataobjects/StoreAccountAddress.php,
+	  store/trunk/Store/dataobjects/StoreAccountAddressWrapper.php,
+	  store/trunk/Store/dataobjects/StoreAccountPaymentMethod.php,
+	  store/trunk/Store/dataobjects/StoreAccountPaymentMethodWrapper.php,
+	  store/trunk/Store/dataobjects/StoreAccountWrapper.php,
+	  store/trunk/Store/dataobjects/StoreAdWrapper.php,
+	  store/trunk/Store/dataobjects/StoreAddress.php,
+	  store/trunk/Store/dataobjects/StoreArticle.php,
+	  store/trunk/Store/dataobjects/StoreArticleWrapper.php,
+	  store/trunk/Store/dataobjects/StoreCartEntry.php,
+	  store/trunk/Store/dataobjects/StoreCartEntryWrapper.php,
+	  store/trunk/Store/dataobjects/StoreCategory.php,
+	  store/trunk/Store/dataobjects/StoreCategoryImageWrapper.php,
+	  store/trunk/Store/dataobjects/StoreCategoryWrapper.php,
+	  store/trunk/Store/dataobjects/StoreCountryWrapper.php,
+	  store/trunk/Store/dataobjects/StoreInvoice.php,
+	  store/trunk/Store/dataobjects/StoreInvoiceItem.php,
+	  store/trunk/Store/dataobjects/StoreInvoiceItemWrapper.php,
+	  store/trunk/Store/dataobjects/StoreInvoiceWrapper.php,
+	  store/trunk/Store/dataobjects/StoreItem.php,
+	  store/trunk/Store/dataobjects/StoreItemGroupWrapper.php,
+	  store/trunk/Store/dataobjects/StoreItemRegionBinding.php,
+	  store/trunk/Store/dataobjects/StoreItemRegionBindingWrapper.php,
+	  store/trunk/Store/dataobjects/StoreItemWrapper.php,
+	  store/trunk/Store/dataobjects/StoreLocale.php,
+	  store/trunk/Store/dataobjects/StoreLocaleWrapper.php,
+	  store/trunk/Store/dataobjects/StoreOrder.php,
+	  store/trunk/Store/dataobjects/StoreOrderAddressWrapper.php,
+	  store/trunk/Store/dataobjects/StoreOrderItem.php,
+	  store/trunk/Store/dataobjects/StoreOrderItemWrapper.php,
+	  store/trunk/Store/dataobjects/StoreOrderPaymentMethodWrapper.php,
+	  store/trunk/Store/dataobjects/StoreOrderWrapper.php,
+	  store/trunk/Store/dataobjects/StorePaymentMethod.php,
+	  store/trunk/Store/dataobjects/StorePaymentTransaction.php,
+	  store/trunk/Store/dataobjects/StorePaymentTransactionWrapper.php,
+	  store/trunk/Store/dataobjects/StorePaymentTypeWrapper.php,
+	  store/trunk/Store/dataobjects/StoreProduct.php,
+	  store/trunk/Store/dataobjects/StoreProductImageWrapper.php,
+	  store/trunk/Store/dataobjects/StoreProductWrapper.php,
+	  store/trunk/Store/dataobjects/StoreProvState.php,
+	  store/trunk/Store/dataobjects/StoreProvStateWrapper.php,
+	  store/trunk/Store/dataobjects/StoreQuantityDiscount.php,
+	  store/trunk/Store/dataobjects/StoreQuantityDiscountRegionBinding.php,
+	  
+	  store/trunk/Store/dataobjects/StoreQuantityDiscountRegionBindingWrapper.php,
+	  store/trunk/Store/dataobjects/StoreQuantityDiscountWrapper.php,
+	  store/trunk/Store/dataobjects/StoreRegionWrapper.php,
+	  store/trunk/Store/pages/StoreAccountEditPage.php,
+	  store/trunk/Store/pages/StoreAccountForgotPasswordPage.php,
+	  store/trunk/Store/pages/StoreAccountOrderPage.php,
+	  store/trunk/Store/pages/StoreAccountPaymentMethodEditPage.php,
+	  store/trunk/Store/pages/StoreArticlePage.php,
+	  store/trunk/Store/pages/StoreCartPage.php,
+	  store/trunk/Store/pages/StoreCategoryPage.php,
+	  store/trunk/Store/pages/StoreCheckoutBillingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutCartPage.php,
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php,
+	  store/trunk/Store/pages/StoreCheckoutPage.php,
+	  store/trunk/Store/pages/StoreCheckoutPaymentMethodPage.php,
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php,
+	  store/trunk/Store/pages/StoreNateGoSearchPage.php,
+	  store/trunk/Store/pages/StoreProductImagePage.php,
+	  store/trunk/Store/pages/StoreProductPage.php,
+	  store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Ticket #1101, the store package now uses the new SwatDBClassMap
+	  API.
+
+2007-07-16  nrf
+
+	* [r18461] store/trunk/Store/StoreArticlePageFactory.php,
+	  store/trunk/Store/pages/StoreArticlePage.php:
+	  These pages need to work with either StoreLocaleApplication or
+	  plain old StoreApplication.
+	* [r18452] store/trunk/sql/tables/Product.sql:
+	  Remove index for field that no longer exists
+	* [r18451] store/trunk/sql/tables/ProductImageBinding.sql:
+	  typo
+
+2007-07-13  gauthierm
+
+	* [r18436] store/trunk/Store/admin/components/Product/Edit.php:
+	  Better fix for 1103. Don't check uniquenes unless value has
+	  changed.
+	* [r18431] store/trunk/Store/admin/components/Product/Edit.php:
+	  Partial fix for ticket 1103: can't edit existing products. This
+	  doesn't fix the problem on Veseys where two products with the
+	  same shortname exist because of the tool catalogue.
+
+2007-07-13  nrf
+
+	* [r18430] store/trunk/Store/admin/components/Account/Details.php,
+	  store/trunk/Store/admin/components/Account/Index.php,
+	  store/trunk/Store/admin/components/Ad/Details.php,
+	  store/trunk/Store/admin/components/Ad/Index.php,
+	  store/trunk/Store/admin/components/Article/Index.php,
+	  store/trunk/Store/admin/components/Article/Search.php,
+	  store/trunk/Store/admin/components/Catalog/Index.php,
+	  store/trunk/Store/admin/components/Category/AddProducts.php,
+	  store/trunk/Store/admin/components/Category/FeaturedProducts.php,
+	  store/trunk/Store/admin/components/Category/Index.php,
+	  store/trunk/Store/admin/components/Country/Index.php,
+	  store/trunk/Store/admin/components/Invoice/Details.php,
+	  store/trunk/Store/admin/components/Item/QuantityDiscount.php,
+	  store/trunk/Store/admin/components/Locale/Index.php,
+	  store/trunk/Store/admin/components/Order/Index.php,
+	  store/trunk/Store/admin/components/PaymentType/Index.php,
+	  store/trunk/Store/admin/components/Product/Details.php,
+	  store/trunk/Store/admin/components/Product/Index.php,
+	  store/trunk/Store/admin/components/Product/RelatedProduct.php,
+	  store/trunk/Store/admin/components/ProvState/Index.php,
+	  store/trunk/Store/admin/components/Region/Index.php:
+	  Replace getTableStore() with getTableModel
+	  Add type-hinting.
+	* [r18424] store/trunk/Store/admin/components/Account/Details.php,
+	  store/trunk/Store/admin/components/Ad/Details.php,
+	  store/trunk/Store/admin/components/Article/Search.php,
+	  store/trunk/Store/admin/components/Invoice/Details.php,
+	  store/trunk/Store/admin/components/Product/Details.php,
+	  store/trunk/Store/admin/components/Product/Index.php,
+	  store/trunk/Store/dataobjects/StoreInvoice.php,
+	  store/trunk/Store/dataobjects/StoreOrder.php,
+	  store/trunk/Store/pages/StoreAccountInvoicePage.php,
+	  store/trunk/Store/pages/StoreAccountOrderPage.php,
+	  store/trunk/Store/pages/StoreCartPage.php,
+	  store/trunk/Store/pages/StoreCheckoutCartPage.php,
+	  store/trunk/Store/pages/StoreProductPage.php,
+	  store/trunk/Store/pages/StoreQuickOrderPage.php:
+	  Use new SwatTableStore API
+	* [r18420] store/trunk/Store/admin/components/Account/Details.php,
+	  store/trunk/Store/admin/components/Account/Index.php,
+	  store/trunk/Store/admin/components/Ad/Details.php,
+	  store/trunk/Store/admin/components/Ad/Index.php,
+	  store/trunk/Store/admin/components/Article/Index.php,
+	  store/trunk/Store/admin/components/Article/Search.php,
+	  store/trunk/Store/admin/components/Article/include/StoreArticleActionsProcessor.php,
+	  store/trunk/Store/admin/components/Catalog/Index.php,
+	  store/trunk/Store/admin/components/Category/AddProducts.php,
+	  store/trunk/Store/admin/components/Category/FeaturedProducts.php,
+	  store/trunk/Store/admin/components/Category/Index.php,
+	  store/trunk/Store/admin/components/Country/Index.php,
+	  store/trunk/Store/admin/components/Invoice/Details.php,
+	  store/trunk/Store/admin/components/Item/QuantityDiscount.php,
+	  store/trunk/Store/admin/components/ItemGroup/Edit.php,
+	  store/trunk/Store/admin/components/Locale/Index.php,
+	  store/trunk/Store/admin/components/Order/Details.php,
+	  store/trunk/Store/admin/components/Order/Index.php,
+	  store/trunk/Store/admin/components/PaymentType/Index.php,
+	  store/trunk/Store/admin/components/Product/Details.php,
+	  store/trunk/Store/admin/components/Product/Index.php,
+	  store/trunk/Store/admin/components/Product/RelatedProduct.php,
+	  store/trunk/Store/admin/components/ProvState/Index.php,
+	  store/trunk/Store/admin/components/Region/Index.php:
+	  Remove AdminTableStore
+	* [r18395] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.8.9
+
 2007-07-13  gauthierm
 
 	* [r18388]
