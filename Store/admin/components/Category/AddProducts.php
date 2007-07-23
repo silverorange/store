@@ -127,7 +127,7 @@ class StoreCategoryAddProducts extends AdminSearch
 	// }}}
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatTableView $view)
+	protected function getTableModel(SwatView $view)
 	{
 		$search = $this->getProductSearch();
 

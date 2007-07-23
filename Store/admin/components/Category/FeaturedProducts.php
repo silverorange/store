@@ -109,7 +109,7 @@ class StoreCategoryFeaturedProducts extends AdminIndex
 	// }}}
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatTableView $view)
+	protected function getTableModel(SwatView $view)
 	{
 		$sql = 'select distinct Product.id, Product.title
 				from Product

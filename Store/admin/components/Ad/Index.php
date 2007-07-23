@@ -47,7 +47,7 @@ class StoreAdIndex extends AdminIndex
 	// build phase
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatTableView $view)
+	protected function getTableModel(SwatView $view)
 	{
 		$sql = sprintf('select Ad.id, Ad.title, Ad.shortname,
 				Ad.total_referrers, OrderCountByAdView.order_count,

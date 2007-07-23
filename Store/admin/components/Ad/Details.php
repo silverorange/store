@@ -65,7 +65,7 @@ class StoreAdDetails extends AdminIndex
 	// build phase
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatTableView $view)
+	protected function getTableModel(SwatView $view)
 	{
 		switch ($view->id) {
 		case 'orders_view' :

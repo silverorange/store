@@ -388,7 +388,7 @@ class StoreProductDetails extends AdminIndex
 	// }}}
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatTableView $view)
+	protected function getTableModel(SwatView $view)
 	{
 		switch ($view->id) {
 			case 'items_view':

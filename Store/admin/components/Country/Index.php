@@ -43,7 +43,7 @@ class StoreCountryIndex extends AdminIndex
 	// build phase
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatTableView $view)
+	protected function getTableModel(SwatView $view)
 	{
 		$sql = sprintf('select id, title, show from Country order by %s',
 			$this->getOrderByClause($view, 'title'));

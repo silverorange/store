@@ -90,7 +90,7 @@ class StoreAccountIndex extends AdminSearch
 	// }}}
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatTableView $view)
+	protected function getTableModel(SwatView $view)
 	{
 		$pager = $this->ui->getWidget('pager');
 
