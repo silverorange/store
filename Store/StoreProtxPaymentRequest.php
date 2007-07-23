@@ -41,7 +41,7 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	 * URL for processing live mode payment transactions
 	 */
 	const URL_LIVE_PAYMENT =
-		'https://ukvps.protx.com/vpsDirectAuth/PaymentGateway3D.asp';
+		'https://ukvps.protx.com/vspgateway/service/vspdirect-register.vsp';
 
 	/**
 	 * URL for processing simulator mode transactions other than payment
@@ -62,7 +62,7 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	 * transactions
 	 */
 	const URL_LIVE =
-		'https://ukvps.protx.com/vps200/dotransaction.dll?Service=Vendor%sTx';
+		'https://ukvps.protx.com/vspgateway/service/%s.vsp';
 
 	/**
 	 * URL for getting live transaction status
@@ -167,7 +167,7 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 			else
 				$this->url = (in_array($type, $payment_types)) ?
 					self::URL_LIVE_PAYMENT :
-					sprintf(self::URL_LIVE, ucfirst(strtolower($tx_type)));
+					sprintf(self::URL_LIVE, strtolower($tx_type));
 
 			break;
 		}
