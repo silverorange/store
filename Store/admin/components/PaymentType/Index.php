@@ -5,12 +5,11 @@ require_once 'SwatDB/SwatDB.php';
 require_once 'Store/admin/components/PaymentType/include/'.
 	'StorePaymentTypeStatusCellRenderer.php';
 
-
 /**
  * Index page for payment types
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StorePaymentTypeIndex extends AdminIndex
@@ -55,23 +54,25 @@ class StorePaymentTypeIndex extends AdminIndex
 			$region_list = ($region > 0) ?
 				array($region) : array_flip($this->regions);
 
-			$sql = 'insert into PaymentTypeRegionBinding
+			$insert_sql = sprintf('insert into PaymentTypeRegionBinding
 				(payment_type, region)
-				select %1$s, id from region where id in (%2$s) and
+				select %%1$s, id from region where id in (%s) and
 					id not in (select region from PaymentTypeRegionBinding
-						where payment_type = %1$s)';
+						where payment_type = %%1$s)',
+				$this->app->db->datatype->implodeArray(
+					$region_list, 'integer'));
 
-			foreach ($view->getSelection() as $item) {
-				SwatDB::exec($this->app->db,
-					sprintf($sql, $this->app->db->quote($item, 'integer'),
-						implode(',', $region_list)));
+			foreach ($view->getSelection() as $payment_type_id) {
+				$sql = sprintf($insert_sql,
+					$this->app->db->quote($payment_type_id, 'integer'));
+
+				SwatDB::exec($this->app->db, $sql);
 			}
 
 			$num = count($view->getSelection());
-
 			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One payment type has been enabled.',
-				'%d payment types have been enabled.', $num),
+				'%s payment types have been enabled.', $num),
 				SwatString::numberFormat($num)));
 
 			break;
@@ -79,21 +80,25 @@ class StorePaymentTypeIndex extends AdminIndex
 		case 'disable':
 			$region = $this->ui->getWidget('disable_region')->value;
 
-			$sql = 'delete from PaymentTypeRegionBinding
-				where %s payment_type in (%s)';
+			$region_where_clause = ($region > 0) ?
+				sprintf('region = %s and',
+					$this->app->db->quote($region, 'integer')) : '';
 
-			$region_sql = ($region > 0) ?
-				sprintf('region = %s and', $this->app->db->quote($region,
-					'integer')) : '';
+			$delete_sql = sprintf('delete from PaymentTypeRegionBinding
+				where %s payment_type = %%s',
+				$region_where_clause);
 
-			SwatDB::exec($this->app->db,
-				sprintf($sql, $region_sql, implode(',', $view->getSelection())));
+			foreach ($view->getSelection() as $payment_type_id) {
+				$sql = sprintf($delete_sql,
+					$this->app->db->quote($payment_type_id, 'integer'));
+
+				SwatDB::exec($this->app->db, $sql);
+			}
 
 			$num = count($view->getSelection());
-
 			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One payment type has been disabled.',
-				'%d payment types have been disabled.', $num),
+				'%s payment types have been disabled.', $num),
 				SwatString::numberFormat($num)));
 
 			break;
@@ -121,7 +126,6 @@ class StorePaymentTypeIndex extends AdminIndex
 	}
 
 	// }}}
-
 	// {{{ protected function getTableModel()
 
 	protected function getTableModel(SwatTableView $view)
