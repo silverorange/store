@@ -46,7 +46,7 @@ class StoreCatalogIndex extends AdminIndex
 	// build phase
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatTableView $view)
+	protected function getTableModel(SwatView $view)
 	{
 		$sql = sprintf('select id, title, clone_of from Catalog order by %s',
 			$this->getOrderByClause($view, 'title'));

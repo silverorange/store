@@ -52,7 +52,7 @@ class StoreProvStateIndex extends AdminIndex
 	// build phase
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatTableView $view)
+	protected function getTableModel(SwatView $view)
 	{
 		$sql = 'select ProvState.id, ProvState.title,
 					Country.title as country_title, ProvState.abbreviation

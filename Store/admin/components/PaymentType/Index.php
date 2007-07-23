@@ -128,7 +128,7 @@ class StorePaymentTypeIndex extends AdminIndex
 	// }}}
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatTableView $view)
+	protected function getTableModel(SwatView $view)
 	{
 		$sql = sprintf('select id, title, shortname
 				from PaymentType order by %s',

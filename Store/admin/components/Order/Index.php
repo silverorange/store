@@ -193,7 +193,7 @@ class StoreOrderIndex extends AdminSearch
 	// }}}
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatTableView $view)
+	protected function getTableModel(SwatView $view)
 	{
 		$sql = 'select count(Orders.id) from Orders
 					left outer join Account on Orders.account = Account.id
