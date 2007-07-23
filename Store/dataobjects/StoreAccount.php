@@ -78,7 +78,7 @@ require_once 'Store/dataobjects/StoreAccountWrapper.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreAccountWrapper
  */
-abstract class StoreAccount extends StoreDataObject
+class StoreAccount extends StoreDataObject
 {
 	// {{{ class constants
 
@@ -346,7 +346,7 @@ abstract class StoreAccount extends StoreDataObject
 	}
 
 	// }}}
-	// {{{ abstract public function sendResetPasswordMailMessage()
+	// {{{ public function sendResetPasswordMailMessage()
 
 	/**
 	 * Emails this account's holder with instructions on how to finish
@@ -359,11 +359,13 @@ abstract class StoreAccount extends StoreDataObject
 	 *
 	 * @see StoreAccount::resetPassword()
 	 */
-	abstract public function sendResetPasswordMailMessage(
-		SiteApplication $app, $password_link);
+	public function sendResetPasswordMailMessage(
+		SiteApplication $app, $password_link)
+	{
+	}
 
 	// }}}
-	// {{{ abstract protected function sendNewPasswordMailMessage()
+	// {{{ protected function sendNewPasswordMailMessage()
 
 	/**
 	 * Emails this account's holder with his or her new generated password
@@ -373,8 +375,10 @@ abstract class StoreAccount extends StoreDataObject
 	 *
 	 * @see StoreAccount::generateNewPassword()
 	 */
-	abstract protected function sendNewPasswordMailMessage(
-		SiteApplication $app, $new_password);
+	protected function sendNewPasswordMailMessage(
+		SiteApplication $app, $new_password)
+	{
+	}
 
 	// }}}
 
