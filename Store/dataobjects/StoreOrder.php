@@ -376,7 +376,7 @@ class StoreOrder extends StoreDataObject
 	 */
 	public function isBillable()
 	{
-		return (!$this->cancelled &&
+		return (!$this->failed_attempt && !$this->cancelled &&
 			$this->getStatus() === StoreOrderStatusList::status('authorized'));
 	}
 
@@ -394,7 +394,7 @@ class StoreOrder extends StoreDataObject
 	 */
 	public function isShippable()
 	{
-		return (!$this->cancelled &&
+		return (!$this->failed_attempt && !$this->cancelled &&
 			$this->getStatus() === StoreOrderStatusList::status('billed'));
 	}
 
