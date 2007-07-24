@@ -209,7 +209,7 @@ class StoreCategoryIndex extends AdminIndex
 
 			$num = SwatDB::queryOne($this->app->db, sprintf(
 				'select count(id) from Item where product in (%s)',
-				implode(',', $view->getSelection())));
+				SwatDB::implodeSelection($db, $view->getSelection())));
 
 			$sql = 'update ItemRegionBinding set enabled = %s
 				where %s item in (select id from Item where product in (%s))';
