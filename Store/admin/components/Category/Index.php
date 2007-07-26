@@ -168,7 +168,7 @@ class StoreCategoryIndex extends AdminIndex
 
 			$num = SwatDB::queryOne($this->app->db, sprintf(
 				'select count(id) from Item where product in (%s)',
-				implode(',', $view->getSelection())));
+				SwatDB::implodeSelection($db, $view->getSelection())));
 
 			SwatDB::updateColumn($this->app->db, 'Item', 'integer:status',
 				$new_status, 'product', $item_list);
@@ -192,7 +192,7 @@ class StoreCategoryIndex extends AdminIndex
 
 			$sql = sprintf($sql,
 				$this->app->db->quote($minor, 'boolean'),
-				implode(',', $view->getSelection()),
+				SwatDB::implodeSelection($db, $view->getSelection()),
 				$this->app->db->quote($this->id, 'integer'));
 
 			$num = SwatDB::exec($this->app->db, $sql);
@@ -222,7 +222,7 @@ class StoreCategoryIndex extends AdminIndex
 			SwatDB::exec($this->app->db, sprintf($sql,
 				$this->app->db->quote(true, 'boolean'),
 				$region_sql,
-				implode(',', $view->getSelection())));
+				SwatDB::implodeSelection($db, $view->getSelection())));
 
 			$message = new SwatMessage(sprintf(Store::ngettext(
 				'%s item has been enabled.',
@@ -236,7 +236,7 @@ class StoreCategoryIndex extends AdminIndex
 
 			$num = SwatDB::queryOne($this->app->db, sprintf(
 				'select count(id) from Item where product in (%s)',
-				implode(',', $view->getSelection())));
+				SwatDB::implodeSelection($db, $view->getSelection())));
 
 			$sql = 'update ItemRegionBinding set enabled = %s
 				where %s item in (select id from Item where product in (%s))';
@@ -249,7 +249,7 @@ class StoreCategoryIndex extends AdminIndex
 			SwatDB::exec($this->app->db, sprintf($sql,
 				$this->app->db->quote(false, 'boolean'),
 				$region_sql,
-				implode(',', $view->getSelection())));
+				SwatDB::implodeSelection($db, $view->getSelection())));
 
 			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One item has been disabled.',
