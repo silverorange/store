@@ -1,5 +1,12 @@
+2007-07-26  nrf
+
+	* [r18770] store/trunk/Store/admin/components/Product/Details.php:
+	  Use new selection API
+
 2007-07-24  nrf
 
+	* [r18687] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.8.11
 	* [r18686] store/trunk/Store/admin/components/Product/Details.php:
 	  Add missing require()
 	* [r18685] store/trunk/Store/admin/components/Category/Index.php:
