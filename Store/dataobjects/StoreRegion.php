@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Store/dataobjects/StoreCountryWrapper.php';
 require_once 'Store/dataobjects/StoreLocaleWrapper.php';
 
@@ -19,7 +19,7 @@ require_once 'Store/dataobjects/StoreLocaleWrapper.php';
  * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreRegion extends StoreDataObject
+class StoreRegion extends SwatDBDataObject
 {
 	// {{{ public properties
 

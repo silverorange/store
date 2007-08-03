@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'SwatDB/SwatDBDataObject.php';
 
 /**
  * Dataobject to group {@link StoreItem} objects within a {@link StoreProduct}
@@ -9,7 +9,7 @@ require_once 'Store/dataobjects/StoreDataObject.php';
  * @copyright 2005-2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreItemGroup extends StoreDataObject
+class StoreItemGroup extends SwatDBDataObject
 {
 	// {{{ public properties
 

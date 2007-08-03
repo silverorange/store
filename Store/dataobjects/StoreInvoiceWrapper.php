@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/dataobjects/StoreRecordsetWrapper.php';
+require_once 'SwatDB/SwatDBRecordsetWrapper.php';
 require_once 'Store/dataobjects/StoreInvoice.php';
 
 /**
@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreInvoice.php';
  * @copyright 2007 silverorange
  * @see       StoreInvoice
  */
-class StoreInvoiceWrapper extends StoreRecordsetWrapper
+class StoreInvoiceWrapper extends SwatDBRecordsetWrapper
 {
 	// {{{ protected function init()
 

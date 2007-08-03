@@ -1,13 +1,13 @@
 <?php
 
-require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Store/dataobjects/StoreRegion.php';
 
 /**
  * @package   Store
  * @copyright 2006 silverorange
  */
-class StoreLocale extends StoreDataObject
+class StoreLocale extends SwatDBDataObject
 {
 	// {{{ public properties
 

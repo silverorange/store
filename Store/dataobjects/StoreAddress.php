@@ -2,7 +2,7 @@
 
 require_once 'Swat/SwatHtmlTag.php';
 require_once 'Swat/SwatString.php';
-require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Store/dataobjects/StoreCountry.php';
 require_once 'Store/dataobjects/StoreProvState.php';
 
@@ -18,7 +18,7 @@ require_once 'Store/dataobjects/StoreProvState.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreAccountAddress, StoreOrderAddress
  */
-abstract class StoreAddress extends StoreDataObject
+abstract class StoreAddress extends SwatDBDataObject
 {
 	// {{{ public properties
 

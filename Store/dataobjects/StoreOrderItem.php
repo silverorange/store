@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'SwatDB/SwatDBDataObject.php';
 
 /**
  * An item in an order
@@ -18,7 +18,7 @@ require_once 'Store/dataobjects/StoreDataObject.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreCartEntry::createOrderItem()
  */
-class StoreOrderItem extends StoreDataObject
+class StoreOrderItem extends SwatDBDataObject
 {
 	// {{{ public properties
 

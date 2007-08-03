@@ -5,7 +5,7 @@ require_once 'Swat/SwatDetailsStore.php';
 require_once 'Store/StoreOrderConfirmationMailMessage.php';
 require_once 'Store/StoreOrderStatus.php';
 require_once 'Store/StoreOrderStatusList.php';
-require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/dataobjects/StoreOrderAddress.php';
 require_once 'Store/dataobjects/StoreOrderPaymentMethod.php';
@@ -22,7 +22,7 @@ require_once 'Store/dataobjects/StoreInvoice.php';
  * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreOrder extends StoreDataObject
+class StoreOrder extends SwatDBDataObject
 {
 	// {{{ public properties
 

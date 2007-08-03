@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'SwatDB/SwatDBDataObject.php';
 
 /**
  * An item in an invoice
@@ -9,7 +9,7 @@ require_once 'Store/dataobjects/StoreDataObject.php';
  * @copyright 2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreInvoiceItem extends StoreDataObject
+class StoreInvoiceItem extends SwatDBDataObject
 {
 	// {{{ public properties
 

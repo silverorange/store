@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Store/dataobjects/StoreOrder.php';
 
 /**
@@ -15,7 +15,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StorePaymentProvider
  */
-class StorePaymentTransaction extends StoreDataObject
+class StorePaymentTransaction extends SwatDBDataObject
 {
 	// {{{ class constants
 

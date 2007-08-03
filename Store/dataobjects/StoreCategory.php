@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Swat/SwatNavBarEntry.php';
-require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Store/dataobjects/StoreCategoryImage.php';
 require_once 'Site/dataobjects/SiteArticleWrapper.php';
 require_once 'Store/dataobjects/StoreRegion.php';
@@ -29,7 +29,7 @@ require_once 'Store/dataobjects/StoreRegion.php';
  * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreCategory extends StoreDataObject
+class StoreCategory extends SwatDBDataObject
 {
 	// {{{ class constants
 

@@ -3,7 +3,7 @@
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
 require_once 'Store/StoreInvoiceNotificationMailMessage.php';
-require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/dataobjects/StoreInvoiceItemWrapper.php';
 
@@ -14,7 +14,7 @@ require_once 'Store/dataobjects/StoreInvoiceItemWrapper.php';
  * @copyright 2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreInvoice extends StoreDataObject
+class StoreInvoice extends SwatDBDataObject
 {
 	// {{{ public properties
 

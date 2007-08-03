@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/dataobjects/StoreRecordsetWrapper.php';
+require_once 'SwatDB/SwatDBRecordsetWrapper.php';
 require_once 'Store/dataobjects/StoreQuantityDiscount.php';
 
 /**
@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreQuantityDiscount.php';
  * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreQuantityDiscountWrapper extends StoreRecordsetWrapper
+class StoreQuantityDiscountWrapper extends SwatDBRecordsetWrapper
 {
 	// {{{ protected function init()
 
