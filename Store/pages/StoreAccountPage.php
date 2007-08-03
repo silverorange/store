@@ -4,7 +4,7 @@ require_once 'Site/pages/SiteArticlePage.php';
 
 /**
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  */
 abstract class StoreAccountPage extends SiteArticlePage
 {

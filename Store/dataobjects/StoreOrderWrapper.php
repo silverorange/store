@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * A recordset wrapper class for StoreOrder objects
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @see       StoreOrder
  */
 class StoreOrderWrapper extends SwatDBRecordsetWrapper

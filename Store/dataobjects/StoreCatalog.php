@@ -4,7 +4,7 @@ require_once 'SwatDB/SwatDBDataObject.php';
 
 /**
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2007 silverorange
  */
 abstract class StoreCatalog extends SwatDBDataObject
 {

@@ -8,7 +8,7 @@ require_once 'SwatDB/SwatDB.php';
  * Order page for product images
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductImageOrder extends AdminDBOrder

@@ -12,7 +12,7 @@ require_once 'SwatDB/SwatDBClassMap.php';
  * Edit page for Category images
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCategoryImageEdit extends AdminPage

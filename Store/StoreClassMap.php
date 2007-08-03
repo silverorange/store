@@ -9,7 +9,7 @@ require_once 'SwatDB/SwatDBClassMap.php';
  * Maps Store package class names to site-specific overridden class-names
  *
  * @package    Store
- * @copyright  2006 silverorange
+ * @copyright 2007 silverorange
  * @license    http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @deprecated This class was incorportated into SwatDB. Use
  *             {@link SwatDBClassMap} instead.

@@ -8,7 +8,7 @@ require_once 'SwatDB/SwatDB.php';
  * Delete confirmation page for Account Addresses
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountAddressDelete extends AdminDBDelete

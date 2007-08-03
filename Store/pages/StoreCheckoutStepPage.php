@@ -6,7 +6,7 @@ require_once 'Store/pages/StoreCheckoutUIPage.php';
  * Base class for a step page of checkout
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  */
 abstract class StoreCheckoutStepPage extends StoreCheckoutUIPage
 {

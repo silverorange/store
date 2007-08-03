@@ -6,7 +6,7 @@ require_once 'Store/pages/StoreNotVisiblePage.php';
  * A page for displaying a message if a article is not visible
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreArticleNotVisiblePage extends StoreNotVisiblePage

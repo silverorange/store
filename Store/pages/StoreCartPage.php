@@ -13,7 +13,7 @@ require_once 'Swat/SwatDetailsStore.php';
  * Shopping cart display page
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  */
 abstract class StoreCartPage extends SiteArticlePage
 {

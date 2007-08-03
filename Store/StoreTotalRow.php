@@ -8,7 +8,7 @@ require_once 'Swat/SwatMoneyCellRenderer.php';
  * Displays totals in a special row at the bottom of a table view.
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  */
 class StoreTotalRow extends SwatTableViewRow
 {

@@ -13,7 +13,7 @@ require_once 'include/StoreArticleVisibilityCellRenderer.php';
  * Search page for Articles
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreArticleSearch extends AdminSearch

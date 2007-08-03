@@ -13,7 +13,7 @@ require_once 'Store/exceptions/StoreException.php';
  * 4. get protocol-specific fields from the response object
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StorePaymentRequest

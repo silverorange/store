@@ -6,7 +6,7 @@ require_once 'Swat/SwatPercentageCellRenderer.php';
  * Displays conversion rates that are NaN as a none-styled dash
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreConversionRateCellRenderer extends SwatPercentageCellRenderer

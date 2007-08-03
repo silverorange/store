@@ -9,7 +9,7 @@ require_once 'Store/exceptions/StoreException.php';
  * If they don't have a password, a link will inform them of how to choose one.
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreAccount
  */

@@ -10,7 +10,7 @@ require_once 'Text/Password.php';
  * Page for requesting a new password for forgotten account passwords
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreAccount
  * @see       StoreAccountResetPasswordPage

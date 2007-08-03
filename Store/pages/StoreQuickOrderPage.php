@@ -15,7 +15,7 @@ require_once 'XML/RPCAjax.php';
  *
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  */
 abstract class StoreQuickOrderPage extends SiteArticlePage
 {

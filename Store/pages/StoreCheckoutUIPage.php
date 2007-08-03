@@ -7,7 +7,7 @@ require_once 'Store/StoreUI.php';
  * Base class for checkout pages with a UI
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  */
 abstract class StoreCheckoutUIPage extends StoreCheckoutPage
 {

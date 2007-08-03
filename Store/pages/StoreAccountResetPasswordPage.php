@@ -9,7 +9,7 @@ require_once 'Store/StoreUI.php';
  * Users are required to enter a new password.
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreAccount
  * @see       StoreAccountForgotPasswordPage
