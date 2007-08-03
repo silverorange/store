@@ -266,7 +266,7 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 			$this->app->db->quote($pagination->page_size, 'integer'),
 			$this->app->db->quote($pagination->current_record, 'integer'));
 
-		$wrapper_class = SwatDBClassMap::get('StoreArticleWrapper');
+		$wrapper_class = SwatDBClassMap::get('SiteArticleWrapper');
 		$articles = SwatDB::query($this->app->db, $sql, $wrapper_class);
 
 		if (count($articles) > 0) {

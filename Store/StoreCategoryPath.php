@@ -1,13 +1,12 @@
 <?php
 
-require_once 'Store/StorePath.php';
-require_once 'Store/StorePathEntry.php';
+require_once 'Site/SitePath.php';
 
 /**
  * @package   Store
  * @copyright 2005-2007 silverorange
  */
-class StoreCategoryPath extends StorePath
+class StoreCategoryPath extends SitePath
 {
 	// {{{ protected function loadFromId()
 
@@ -16,10 +15,10 @@ class StoreCategoryPath extends StorePath
 	 *
 	 * @param integer $category_id.
 	 */
-	public function loadFromId(StoreApplication $app, $category_id)
+	public function loadFromId(SiteWebApplication $app, $category_id)
 	{
 		foreach ($this->queryPath($app, $category_id) as $row)
-			$this->addEntry(new StorePathEntry(
+			$this->addEntry(new SitePathEntry(
 				$row->id, $row->parent, $row->shortname, $row->title));
 	}
 

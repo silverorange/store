@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Swat/SwatString.php';
-require_once 'Store/pages/StoreStorePage.php';
+require_once 'Store/pages/StorePage.php';
 require_once 'Store/dataobjects/StoreLocaleWrapper.php';
 require_once 'Store/dataobjects/StoreCategoryWrapper.php';
 require_once 'Store/dataobjects/StoreProductWrapper.php';
@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreProductImageWrapper.php';
  * @package   Store
  * @copyright 2005-2007 silverorange
  */
-class StoreCategoryPage extends StoreStorePage
+class StoreCategoryPage extends StorePage
 {
 	// init phase
 	// {{{ public function isVisibleInRegion()

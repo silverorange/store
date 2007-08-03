@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/pages/StoreArticlePage.php';
+require_once 'Site/pages/SiteArticlePage.php';
 require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/dataobjects/StoreOrder.php';
 
@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * @package   Store
  * @copyright 2006 silverorange
  */
-abstract class StoreCheckoutPage extends StoreArticlePage
+abstract class StoreCheckoutPage extends SiteArticlePage
 {
 	// init phase
 	// {{{ public function init()

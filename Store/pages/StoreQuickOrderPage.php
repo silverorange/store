@@ -3,7 +3,7 @@
 require_once 'Store/dataobjects/StoreCartEntry.php';
 require_once 'Store/dataobjects/StoreItem.php';
 require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Store/pages/StoreArticlePage.php';
+require_once 'Site/pages/SiteArticlePage.php';
 require_once 'Store/StoreUI.php';
 require_once 'Swat/SwatString.php';
 require_once 'Swat/SwatTableStore.php';
@@ -17,7 +17,7 @@ require_once 'XML/RPCAjax.php';
  * @package   Store
  * @copyright 2006 silverorange
  */
-abstract class StoreQuickOrderPage extends StoreArticlePage
+abstract class StoreQuickOrderPage extends SiteArticlePage
 {
 	// {{{ protected properties
 

@@ -1,7 +1,6 @@
 <?php
 
-require_once 'Swat/SwatNavBarEntry.php';
-require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'Site/dataobjects/SiteArticle.php';
 require_once 'Store/dataobjects/StoreCategoryWrapper.php';
 
 /**
@@ -12,149 +11,14 @@ require_once 'Store/dataobjects/StoreCategoryWrapper.php';
  * an "about us" page, a newsletter signup page and a shipping policy page.
  *
  * StoreArticle objects themselves may represent a tree structure by accessing
- * the {@link StoreAddress::$parent} property. 
+ * the {@link StoreArticle::$parent} property. 
  *
  * @package   Store
  * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreArticle extends StoreDataObject
+class StoreArticle extends SiteArticle
 {
-	// {{{ class constants
-
-	/**
-	 * The maximum depth of articles in the article tree
-	 *
-	 * Objects that interact with articles may choose not to respect articles
-	 * with a depth greater than this value.
-	 *
-	 * The root article is the zero-th level article. 
-	 */
-	const MAX_DEPTH = 8;
-
-	// }}}
-	// {{{ public properties
-
-	/**
-	 * Unique identifier
-	 *
-	 * @var integer
-	 */
-	public $id;
-
-	/**
-	 * User visible title
-	 *
-	 * @var string
-	 */
-	public $title;
-
-	/**
-	 * User visible description
-	 *
-	 * @var string
-	 */
-	public $description;
-
-	/**
-	 * User visible content
-	 *
-	 * @var string
-	 */
-	public $bodytext;
-
-	/**
-	 * Create date
-	 *
-	 * @var Date
-	 */
-	public $createdate;
-
-	/**
-	 * Order of display
-	 *
-	 * @var integer
-	 */
-	public $displayorder;
-
-	/**
-	 * Whether article can be loaded on the front-end (customer visible)
-	 *
-	 * @var boolean
-	 */
-	public $enabled;
-
-	/**
-	 * Whether article is listed in sub-article lists
-	 *
-	 * @var boolean
-	 */
-	public $show;
-
-	/**
-	 * Weather article is included in search results
-	 *
-	 * @var boolean
-	 */
-	public $searchable;
-
-	/**
-	 * Short, textual identifer for this article
-	 *
-	 * The shortname must be unique among siblings and is intended for use
-	 * in URL's.
-	 *
-	 * @var string
-	 */
-	public $shortname;
-
-	// }}}
-	// {{{ protected properties
-
-	/**
-	 * @var array
-	 *
-	 * @see StoreArticle::getNavBarEntries()
-	 */
-	protected $navbar_entries;
-
-	// }}}
-	// {{{ public function getNavBarEntries()
-
-	/**
-	 * Gets the set of {@link SwatNavBarEntry} objects for this article
-	 *
-	 * @return array the set of SwatNavBarEntry objects for this article.
-	 */
-	public function getNavBarEntries()
-	{
-		if ($this->navbar_entries === null) {
-			$this->navbar_entries = array();
-
-			$sql = sprintf('select * from getArticleNavbar(%s)',
-				$this->db->quote($this->id, 'integer'));
-
-			$navbar_rows = SwatDB::query($this->db, $sql);
-
-			$path = '';
-			$first = true;
-			foreach ($navbar_rows as $row) {
-				if ($first) {
-					$path.= $row->shortname;
-					$first = false;
-				} else {
-					$path.= '/'.$row->shortname;
-				}
-
-				$this->navbar_entries[] =
-					new SwatNavBarEntry($row->title, $path);
-			}
-		}
-
-		return $this->navbar_entries;
-	}
-
-	// }}}
 	// {{{ public function loadWithPath()
 
 	/**
@@ -209,51 +73,8 @@ class StoreArticle extends StoreDataObject
 	}
 
 	// }}}
-	// {{{ protected function init()
-
-	protected function init()
-	{
-		$this->registerInternalProperty('parent',
-			SwatDBClassMap::get('StoreArticle'));
-
-		$this->registerDateProperty('createdate');
-
-		$this->table = 'Article';
-		$this->id_field = 'integer:id';
-	}
-
-	// }}}
 
 	// loader methods
-	// {{{ protected function loadPath()
-
-	/**
-	 * Loads the URL fragment of this article
-	 *
-	 * If the path was part of the initial query to load this article, that
-	 * value is returned. Otherwise, a separate query gets the path of this
-	 * article. If you are calling this method frequently during a single
-	 * request, it is more efficient to include the path in the initial
-	 * article query.
-	 */
-	protected function loadPath()
-	{
-		$path = '';
-
-		if ($this->hasInternalValue('path') &&
-			$this->getInternameValue('path') !== null) {
-			$path = $this->getInternalValue('path');
-		} else {
-			$sql = sprintf('select getArticlePath(%s)',
-				$this->db->quote($this->id, 'integer'));
-
-			$path = SwatDB::queryOne($this->db, $sql);
-		}
-
-		return $path;
-	}
-
-	// }}}
 	// {{{ protected function loadRelatedCategories()
 
 	/**

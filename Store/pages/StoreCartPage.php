@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/pages/StoreArticlePage.php';
+require_once 'Site/pages/SiteArticlePage.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/StoreUI.php';
 require_once 'Store/StoreMessage.php';
@@ -15,7 +15,7 @@ require_once 'Swat/SwatDetailsStore.php';
  * @package   Store
  * @copyright 2006 silverorange
  */
-abstract class StoreCartPage extends StoreArticlePage
+abstract class StoreCartPage extends SiteArticlePage
 {
 	// {{{ protected properties
 

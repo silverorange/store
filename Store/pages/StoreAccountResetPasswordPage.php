@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/pages/StoreArticlePage.php';
+require_once 'Site/pages/SiteArticlePage.php';
 require_once 'Store/StoreUI.php';
 
 /**
@@ -14,7 +14,7 @@ require_once 'Store/StoreUI.php';
  * @see       StoreAccount
  * @see       StoreAccountForgotPasswordPage
  */
-class StoreAccountResetPasswordPage extends StoreArticlePage
+class StoreAccountResetPasswordPage extends SiteArticlePage
 {
 	// {{{ protected properties
 
