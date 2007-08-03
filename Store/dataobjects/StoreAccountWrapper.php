@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/dataobjects/StoreRecordsetWrapper.php';
+require_once 'SwatDB/SwatDBRecordsetWrapper.php';
 require_once 'Store/dataobjects/StoreAccount.php';
 
 /**
@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreAccount.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreAccount
  */
-class StoreAccountWrapper extends StoreRecordsetWrapper
+class StoreAccountWrapper extends SwatDBRecordsetWrapper
 {
 	// {{{ protected function init()
 

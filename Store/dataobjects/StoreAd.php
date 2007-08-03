@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'SwatDB/SwatDBDataObject.php';
 
 /**
  * Advertisements that are tracked on an e-commerce web applcation
@@ -13,7 +13,7 @@ require_once 'Store/dataobjects/StoreDataObject.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreAdReferer
  */
-class StoreAd extends StoreDataObject
+class StoreAd extends SwatDBDataObject
 {
 	// {{{ public properties
 

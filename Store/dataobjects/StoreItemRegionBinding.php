@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'SwatDB/SwatDBDataObject.php';
 
 /**
  * Dataobject for item region bindings
@@ -8,7 +8,7 @@ require_once 'Store/dataobjects/StoreDataObject.php';
  * @package   Store
  * @copyright silverorange 2006
  */
-class StoreItemRegionBinding extends StoreDataObject
+class StoreItemRegionBinding extends SwatDBDataObject
 {
 	// {{{ public properties
 

@@ -3,7 +3,7 @@
 require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatString.php';
 require_once 'Store/StoreResetPasswordMailMessage.php';
-require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Store/dataobjects/StoreAccountAddressWrapper.php';
 require_once 'Store/dataobjects/StoreAccountPaymentMethodWrapper.php';
 require_once 'Store/dataobjects/StoreInvoiceWrapper.php';
@@ -78,7 +78,7 @@ require_once 'Store/dataobjects/StoreAccountWrapper.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreAccountWrapper
  */
-class StoreAccount extends StoreDataObject
+class StoreAccount extends SwatDBDataObject
 {
 	// {{{ class constants
 

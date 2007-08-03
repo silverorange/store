@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Swat/SwatHtmlTag.php';
-require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Image/Transform.php';
 
 /**
@@ -10,7 +10,7 @@ require_once 'Image/Transform.php';
  * @package   Store
  * @copyright 2005-2006 silverorange
  */
-abstract class StoreImage extends StoreDataObject
+abstract class StoreImage extends SwatDBDataObject
 {
 	// {{{ constants
 

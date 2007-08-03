@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Store/dataobjects/StoreQuantityDiscountWrapper.php';
 require_once 'Store/dataobjects/StoreItemRegionBindingWrapper.php';
 require_once 'Store/dataobjects/StoreItemGroup.php';
@@ -41,7 +41,7 @@ require_once 'Store/StoreItemStatusList.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreItemWrapper
  */
-abstract class StoreItem extends StoreDataObject
+abstract class StoreItem extends SwatDBDataObject
 {
 	// {{{ public properties
 

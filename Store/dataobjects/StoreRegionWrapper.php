@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/dataobjects/StoreRecordsetWrapper.php';
+require_once 'SwatDB/SwatDBRecordsetWrapper.php';
 require_once 'Store/dataobjects/StoreRegion.php';
 
 /**
@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreRegion.php';
  * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreRegionWrapper extends StoreRecordsetWrapper
+class StoreRegionWrapper extends SwatDBRecordsetWrapper
 {
 	// {{{ public static function loadSetFromDB()
 

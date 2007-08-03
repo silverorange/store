@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Store/dataobjects/StorePaymentType.php';
 require_once 'Crypt/GPG.php';
 
@@ -22,7 +22,7 @@ require_once 'Crypt/GPG.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StorePaymentType
  */
-abstract class StorePaymentMethod extends StoreDataObject
+abstract class StorePaymentMethod extends SwatDBDataObject
 {
 	// {{{ public properties
 

@@ -1,12 +1,12 @@
 <?php
 
-require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'SwatDB/SwatDBDataObject.php';
 
 /**
  * @package   Store
  * @copyright 2005-2006 silverorange
  */
-abstract class StoreCatalog extends StoreDataObject
+abstract class StoreCatalog extends SwatDBDataObject
 {
 	// {{{ public properties
 

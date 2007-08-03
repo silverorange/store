@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/dataobjects/StoreDataObject.php';
+require_once 'SwatDB/SwatDBDataObject.php';
 
 /**
  * Dataobject for quantity-discount region bindings
@@ -9,7 +9,7 @@ require_once 'Store/dataobjects/StoreDataObject.php';
  * @copyright silverorange 2006
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreQuantityDiscountRegionBinding extends StoreDataObject
+class StoreQuantityDiscountRegionBinding extends SwatDBDataObject
 {
 	// {{{ public properties
 
