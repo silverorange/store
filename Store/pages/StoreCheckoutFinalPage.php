@@ -6,7 +6,7 @@ require_once 'Store/pages/StoreCheckoutUIPage.php';
  * Abstract base class for final page of the checkout
  *
  * @package   Store
- * @copyright 2007 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage

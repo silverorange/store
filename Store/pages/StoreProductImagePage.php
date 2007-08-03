@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreProduct.php';
 
 /**
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  */
 class StoreProductImagePage extends StorePage
 {

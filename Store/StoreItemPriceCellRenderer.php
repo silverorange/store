@@ -6,7 +6,7 @@ require_once 'StorePriceCellRenderer.php';
  * Renders item prices, including any quantity discounts
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemPriceCellRenderer extends StorePriceCellRenderer

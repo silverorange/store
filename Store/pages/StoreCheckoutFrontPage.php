@@ -6,7 +6,7 @@ require_once 'Store/pages/StoreCheckoutUIPage.php';
  * Front page of checkout
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  */
 class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 {

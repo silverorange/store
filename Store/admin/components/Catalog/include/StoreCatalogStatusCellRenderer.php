@@ -8,7 +8,7 @@ require_once 'SwatDB/SwatDBClassMap.php';
  * Cell renderer that displays a summary of the status of a catalog
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCatalogStatusCellRenderer extends SwatCellRenderer

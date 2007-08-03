@@ -5,7 +5,7 @@ require_once 'Store/dataobjects/StoreRegion.php';
 
 /**
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  */
 class StoreLocale extends SwatDBDataObject
 {

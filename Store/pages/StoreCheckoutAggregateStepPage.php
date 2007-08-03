@@ -6,7 +6,7 @@ require_once 'Store/pages/StoreCheckoutStepPage.php';
  * Base class for a step page of checkout that is composed of other pages.
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  */
 abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 {

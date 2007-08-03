@@ -6,7 +6,7 @@ require_once 'Site/SiteArticlePageFactory.php';
  * Resolves and creates article pages in a store web application
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreArticlePageFactory extends SiteArticlePageFactory

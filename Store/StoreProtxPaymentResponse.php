@@ -10,7 +10,7 @@ require_once 'StorePaymentResponse.php';
  * {@link http://www.protx.com/downloads/docs/VSPDirectProtocolandIntegrationGuideline.pdf}.
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreProtxPaymentRequest
  */

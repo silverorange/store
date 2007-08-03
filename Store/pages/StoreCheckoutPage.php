@@ -8,7 +8,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * Base class for checkout pages
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  */
 abstract class StoreCheckoutPage extends SiteArticlePage
 {

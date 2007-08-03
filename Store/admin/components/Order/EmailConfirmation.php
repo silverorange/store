@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * Page to resend the confirmation email for an order
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderEmailConfirmation extends AdminConfirmation

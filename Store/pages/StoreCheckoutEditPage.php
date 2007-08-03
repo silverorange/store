@@ -6,7 +6,7 @@ require_once 'Store/pages/StoreCheckoutUIPage.php';
  * Base class for edit pages in the checkout
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  */
 abstract class StoreCheckoutEditPage extends StoreCheckoutUIPage
 {

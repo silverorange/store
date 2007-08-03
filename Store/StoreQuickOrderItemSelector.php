@@ -12,7 +12,7 @@ require_once 'Swat/SwatInputControl.php';
  * groups
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  */
 class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 {

@@ -8,7 +8,7 @@ require_once 'Image/Transform.php';
  * An image data object
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2007 silverorange
  */
 abstract class StoreImage extends SwatDBDataObject
 {

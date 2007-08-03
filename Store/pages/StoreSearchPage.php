@@ -16,7 +16,7 @@ require_once 'SwatDB/SwatDB.php';
  * Page for performing complex searches and displaying search results
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  */
 abstract class StoreSearchPage extends SiteArticlePage
 {

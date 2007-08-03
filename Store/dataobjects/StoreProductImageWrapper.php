@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreProductImage.php';
  * A recordset wrapper class for StoreProductImage objects
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @see       StoreProductImage
  */
 class StoreProductImageWrapper extends SwatDBRecordsetWrapper

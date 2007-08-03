@@ -6,7 +6,7 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * Dataobject to group {@link StoreItem} objects within a {@link StoreProduct}
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemGroup extends SwatDBDataObject

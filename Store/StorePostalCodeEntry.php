@@ -12,7 +12,7 @@ require_once 'Store.php';
  * validate postal codes for a particular country.
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  */
 class StorePostalCodeEntry extends SwatEntry
 {

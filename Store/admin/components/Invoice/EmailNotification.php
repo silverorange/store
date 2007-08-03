@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreInvoice.php';
  * Page to resend the notification email for an invoice
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreInvoiceEmailNotification extends AdminConfirmation

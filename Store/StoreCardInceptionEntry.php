@@ -6,7 +6,7 @@ require_once 'Swat/SwatDateEntry.php';
  * A widget for entry of payment card inception dates
  *
  * @package   Store
- * @copyright 2007 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCardInceptionEntry extends SwatDateEntry

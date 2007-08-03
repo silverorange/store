@@ -11,7 +11,7 @@ require_once 'Swat/SwatDetailsStore.php';
  * Cart edit page of checkout
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  */
 class StoreCheckoutCartPage extends StoreCheckoutUIPage
 {

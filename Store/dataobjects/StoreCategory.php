@@ -26,7 +26,7 @@ require_once 'Store/dataobjects/StoreRegion.php';
  * multiple categories so categories do not represent a tree structure.
  * 
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCategory extends SwatDBDataObject

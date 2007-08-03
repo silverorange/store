@@ -10,7 +10,7 @@ require_once 'SwatDB/SwatDB.php';
  * tree.
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreArticleActionsProcessor
