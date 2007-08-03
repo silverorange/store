@@ -4,7 +4,6 @@ require_once 'Swat/SwatMessage.php';
 require_once 'Swat/SwatHtmlTag.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Store/StoreUI.php';
-require_once 'Store/StorePath.php';
 require_once 'Store/pages/StorePage.php';
 require_once 'Site/exceptions/SiteNotFoundException.php';
 

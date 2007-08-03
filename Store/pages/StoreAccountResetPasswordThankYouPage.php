@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/pages/StoreArticlePage.php';
+require_once 'Site/pages/SiteArticlePage.php';
 require_once 'Store/StoreUI.php';
 
 /**
@@ -10,7 +10,7 @@ require_once 'Store/StoreUI.php';
  * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreAccountResetPasswordThankyouPage extends StoreArticlePage
+class StoreAccountResetPasswordThankyouPage extends SiteArticlePage
 {
 	// build phase
 	// {{{ public function build()

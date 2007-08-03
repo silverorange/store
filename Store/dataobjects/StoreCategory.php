@@ -3,7 +3,7 @@
 require_once 'Swat/SwatNavBarEntry.php';
 require_once 'Store/dataobjects/StoreDataObject.php';
 require_once 'Store/dataobjects/StoreCategoryImage.php';
-require_once 'Store/dataobjects/StoreArticleWrapper.php';
+require_once 'Site/dataobjects/SiteArticleWrapper.php';
 require_once 'Store/dataobjects/StoreRegion.php';
 
 /**
@@ -361,7 +361,7 @@ class StoreCategory extends StoreDataObject
 			order by Article.displayorder asc';
 
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
-		$wrapper = SwatDBClassMap::get('StoreArticleWrapper');
+		$wrapper = SwatDBClassMap::get('SiteArticleWrapper');
 		return SwatDB::query($this->db, $sql, $wrapper);
 	}
 

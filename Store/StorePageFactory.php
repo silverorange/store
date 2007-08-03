@@ -11,7 +11,7 @@ require_once 'Store/StoreCategoryPath.php';
  * @package   Store
  * @copyright 2005-2006 silverorange
  */
-class StoreStorePageFactory
+class StorePageFactory
 {
 	// {{{ protected properties
 

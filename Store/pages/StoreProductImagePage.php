@@ -2,14 +2,14 @@
 
 require_once 'Swat/SwatHtmlTag.php';
 require_once 'Swat/SwatToolLink.php';
-require_once 'Store/pages/StoreStorePage.php';
+require_once 'Store/pages/StorePage.php';
 require_once 'Store/dataobjects/StoreProduct.php';
 
 /**
  * @package   Store
  * @copyright 2006 silverorange
  */
-class StoreProductImagePage extends StoreStorePage
+class StoreProductImagePage extends StorePage
 {
 	// {{{ public properties
 

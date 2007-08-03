@@ -1,12 +1,12 @@
 <?php
 
-require_once 'Store/pages/StoreArticlePage.php';
+require_once 'Site/pages/SiteArticlePage.php';
 
 /**
  * @package   Store
  * @copyright 2006 silverorange
  */
-abstract class StoreAccountPage extends StoreArticlePage
+abstract class StoreAccountPage extends SiteArticlePage
 {
 	// {{{ public function init()
 

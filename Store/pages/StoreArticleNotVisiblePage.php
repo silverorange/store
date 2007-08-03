@@ -33,7 +33,7 @@ class StoreArticleNotVisiblePage extends StoreNotVisiblePage
 			$this->app->db->quote($this->article_id, 'integer'));
 
 		$articles = SwatDB::query($this->app->db, $sql,
-			'StoreArticleWrapper');
+			'SiteArticleWrapper');
 
 		$this->article = $articles->getFirst();
 

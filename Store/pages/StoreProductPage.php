@@ -5,7 +5,7 @@ require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
 require_once 'Swat/SwatYUI.php';
 require_once 'Store/StoreUI.php';
-require_once 'Store/pages/StoreStorePage.php';
+require_once 'Store/pages/StorePage.php';
 require_once 'Store/dataobjects/StoreCartEntry.php';
 require_once 'Store/dataobjects/StoreProduct.php';
 require_once 'Store/dataobjects/StoreCategory.php';
@@ -17,7 +17,7 @@ require_once 'Store/StoreMessage.php';
  * @package   Store
  * @copyright 2005-2007 silverorange
  */
-class StoreProductPage extends StoreStorePage
+class StoreProductPage extends StorePage
 {
 	// {{{ public properties
 
@@ -36,7 +36,7 @@ class StoreProductPage extends StoreStorePage
 	protected $added_entry_ids = array();
 
 	/**
-	 * @var StoreArticleWrapper
+	 * @var SiteArticleWrapper
 	 */
 	protected $related_articles;
 

@@ -1,11 +1,11 @@
 <?php
 
-require_once 'Store/dataobjects/StoreArticleWrapper.php';
+require_once 'Site/dataobjects/SiteArticleWrapper.php';
 require_once 'Store/dataobjects/StoreCategoryWrapper.php';
 require_once 'Store/dataobjects/StoreCategoryImageWrapper.php';
 require_once 'Store/dataobjects/StoreProductWrapper.php';
 require_once 'Store/dataobjects/StoreProductImageWrapper.php';
-require_once 'Store/pages/StoreArticlePage.php';
+require_once 'Site/pages/SiteArticlePage.php';
 require_once 'Store/StoreUI.php';
 
 require_once 'Swat/SwatNavBar.php';
@@ -18,7 +18,7 @@ require_once 'SwatDB/SwatDB.php';
  * @package   Store
  * @copyright 2006 silverorange
  */
-abstract class StoreSearchPage extends StoreArticlePage
+abstract class StoreSearchPage extends SiteArticlePage
 {
 	// {{{ class constants
 
@@ -251,10 +251,10 @@ abstract class StoreSearchPage extends StoreArticlePage
 	/**
 	 * Displays search results for a collection of articles 
 	 *
-	 * @param StoreArticleWrapper $articles the articles to display search
+	 * @param SiteArticleWrapper $articles the articles to display search
 	 *                                       results for.
 	 */
-	protected function displayArticles(StoreArticleWrapper $articles)
+	protected function displayArticles(SiteArticleWrapper $articles)
 	{
 		echo '<ul class="search-results">';
 		$paragraph_tag = new SwatHtmlTag('p');

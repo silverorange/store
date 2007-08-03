@@ -1,60 +1,99 @@
 <?php
 
-require_once 'Site/pages/SitePage.php';
-require_once 'Store/StorePath.php';
+require_once 'SwatDB/SwatDB.php';
+require_once 'Site/pages/SitePathPage.php';
+require_once 'Store/StoreCategoryPath.php';
+require_once 'Store/dataobjects/StoreCategoryWrapper.php';
+require_once 'Store/dataobjects/StoreCategoryImageWrapper.php';
 
 /**
  * @package   Store
  * @copyright 2005-2007 silverorange
+ * @see       StorePageFactory
  */
-abstract class StorePage extends SitePage
+abstract class StorePage extends SitePathPage
 {
-	// {{{ protected properties
+	// init phase
+	// {{{ public function init()
 
-	/**
-	 * @var StoreCategoryPath
-	 */
-	protected $path;
-
-	// }}}
-	// {{{ public function getPath()
-
-	/**
-	 * Gets the path of this page
-	 *
-	 * @return StorePath the path of this page.
-	 */
-	public function getPath()
+	public function init()
 	{
-		return $this->path;
+		parent::init();
+
+		$this->layout->selected_top_category_id = 
+			$this->getSelectedTopCategoryId();
+
+		$this->layout->selected_secondary_category_id = 
+			$this->getSelectedSecondaryCategoryId();
+
+		$this->layout->selected_category_id = $this->getSelectedCategoryId();
 	}
 
 	// }}}
-	// {{{ public function setPath()
+	// {{{ protected function getSelectedTopCategoryId()
 
-	/**
-	 * Sets the path of this page
-	 *
-	 * @param StorePath $path
-	 */
-	public function setPath(StorePath $path)
+	protected function getSelectedTopCategoryId()
 	{
-		$this->path = $path;
+		$category_id = null;
+
+		if ($this->path !== null) {
+			$top_category = $this->path->getFirst();
+			if ($top_category !== null)
+				$category_id = $top_category->id;
+		}
+
+		return $category_id;
 	}
 
 	// }}}
-	// {{{ public function isVisibleInRegion()
+	// {{{ protected function getSelectedSecondaryCategoryId()
 
-	/**
-	 * Whether or not the page is available in the given region 
-	 *
-	 * @param StoreRegion Region to check the visibility for.
-	 *
-	 * @return boolean True if the page is visible, false if not.
-	 */
-	public function isVisibleInRegion(StoreRegion $region)
+	protected function getSelectedSecondaryCategoryId()
 	{
-		return true;
+		$secondary_category_id = null;
+
+		if ($this->path !== null) {
+			$secondary_category = $this->path->get(1);
+			if ($secondary_category !== null)
+				$secondary_category_id = $secondary_category->id;
+		}
+
+		return $secondary_category_id;
+	}
+
+	// }}}
+	// {{{ protected function getSelectedCategoryId()
+
+	protected function getSelectedCategoryId()
+	{
+		return null;
+	}
+
+	// }}}
+
+	// build phase
+	// {{{ public function build()
+
+	public function build()
+	{
+		parent::build();
+		$this->layout->navbar->createEntry(Store::_('Store'), 'store');
+	}
+
+	// }}}
+	// {{{ protected function queryCategory()
+
+	protected function queryCategory($category_id)
+	{
+		$sql = 'select * from Category where id = %s';
+
+		$sql = sprintf($sql,
+			$this->app->db->quote($category_id, 'integer'));
+
+		$categories = SwatDB::query($this->app->db, $sql,
+			'StoreCategoryWrapper');
+
+		return $categories->getFirst();
 	}
 
 	// }}}
