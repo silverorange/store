@@ -100,6 +100,13 @@ abstract class StorePaymentRequest
 	 */
 	const TYPE_STATUS      = 8;
 
+	/**
+	 * A Three Domain Secure (3-DS) authentication request
+	 *
+	 * Gets authentication information from an existing 3-DS transaction.
+	 */
+	const TYPE_3DS_AUTH    = 9;
+
 	// }}}
 	// {{{ protected properties
 

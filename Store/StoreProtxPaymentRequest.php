@@ -20,6 +20,7 @@ require_once 'Store/StoreProtxPaymentResponse.php';
  * @package   Store
  * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ * @todo      TYPE_VERIFY and TYPE_VERIFIEDPAY are not implemented.
  */
 class StoreProtxPaymentRequest extends StorePaymentRequest
 {
@@ -70,6 +71,24 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	 * No such feature exists for the test or simulator modes.
 	 */
 	const URL_LIVE_STATUS = 'https://ukvps.protx.com/txstatus/txstatus.asp';
+
+	/**
+	 * URL for processing simulator mode 3-DS authentication transactions
+	 */
+	const URL_SIMULATOR_3DS_AUTH =
+		'https://ukvpstest.protx.com/VSPSimulator/VSPDirectCallback.asp';
+
+	/**
+	 * URL for processing test mode 3-DS authentication transactions
+	 */
+	const URL_TEST_3DS_AUTH =
+		'https://ukvpstest.protx.com/vspgateway/service/direct3dcallback.vsp';
+
+	/**
+	 * URL for processing live mode 3-DS authentication transactions
+	 */
+	const URL_LIVE_3DS_AUTH =
+		'https://ukvps.protx.com/vspgateway/service/direct3dcallback.vsp';
 
 	// }}}
 	// {{{ public properties
@@ -130,7 +149,11 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 
 		parent::__construct($type, $mode);
 
-		if ($type != StorePaymentRequest::TYPE_STATUS) {
+		$this->url = $this->getUrl($this->mode, $type);
+
+		if ($type != StorePaymentRequest::TYPE_STATUS &&
+			$type != StorePaymentRequest::TYPE_3DS_AUTH) {
+
 			$type_map = $this->getTypeMap();
 			$tx_type = $type_map[$type];
 
@@ -138,38 +161,6 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 			// '2.22'.
 			$this->setField('VPSProtocol', '2.22');
 			$this->setField('TxType', $tx_type);
-		}
-
-		$payment_types = array(
-			StorePaymentRequest::TYPE_VERIFY,
-			StorePaymentRequest::TYPE_HOLD,
-			StorePaymentRequest::TYPE_PAY,
-		);
-
-		switch ($this->mode) {
-		case 'simulator':
-			if ($type != StorePaymentRequest::TYPE_STATUS)
-				$this->url = (in_array($type, $payment_types)) ?
-					self::URL_SIMULATOR_PAYMENT :
-					sprintf(self::URL_SIMULATOR, ucfirst(strtolower($tx_type)));
-
-			break;
-		case 'test':
-			if ($type != StorePaymentRequest::TYPE_STATUS)
-				$this->url = (in_array($type, $payment_types)) ?
-					self::URL_TEST_PAYMENT :
-					sprintf(self::URL_TEST, ucfirst(strtolower($tx_type)));
-
-			break;
-		case 'live':
-			if ($type == StorePaymentRequest::TYPE_STATUS)
-				$this->url = self::URL_LIVE_STATUS;
-			else
-				$this->url = (in_array($type, $payment_types)) ?
-					self::URL_LIVE_PAYMENT :
-					sprintf(self::URL_LIVE, strtolower($tx_type));
-
-			break;
 		}
 
 		// make additional fields required based on request type
@@ -192,6 +183,9 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 			break;
 		case StorePaymentRequest::TYPE_STATUS:
 			$this->makeFieldsRequired($this->getStatusRequiredFields());
+			break;
+		case StorePaymentRequest::TYPE_3DS_AUTH:
+			$this->makeFieldsRequired($this->get3dsAuthRequiredFields());
 			break;
 		}
 
@@ -343,15 +337,16 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	{
 		static $type_map = array(
 			StorePaymentRequest::TYPE_PAY           => 'PAYMENT',
-			StorePaymentRequest::TYPE_VERIFY        => 'AUTHORIZE',
-			StorePaymentRequest::TYPE_REFUND        => 'CREDIT',
-			StorePaymentRequest::TYPE_VERIFIEDPAY   => 'REPEAT', // TODO
+			StorePaymentRequest::TYPE_VERIFY        => 'AUTHENTICATE',
+			StorePaymentRequest::TYPE_REFUND        => 'REFUND',
+			StorePaymentRequest::TYPE_VERIFIEDPAY   => 'AUTHORISE',
 			StorePaymentRequest::TYPE_VOID          => 'VOID',
 			StorePaymentRequest::TYPE_HOLD          => 'DEFERRED',
 			StorePaymentRequest::TYPE_RELEASE       => 'RELEASE',
 			StorePaymentRequest::TYPE_ABORT         => 'ABORT',
-			// no protocol-specific type exists for status
+			// no protocol-specific type exists for status or 3-DS auth
 			StorePaymentRequest::TYPE_STATUS        => '',
+			StorePaymentRequest::TYPE_3DS_AUTH      => '',
 		);
 
 		return $type_map;
@@ -363,19 +358,14 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	/**
 	 * Gets a list of protocol-specific fields that are required by default
 	 *
-	 * See the VSP Direct Integration Guidelines document for details.
+	 * No fields are required since the request types are so disparate. See
+	 * the VSP Direct Integration Guidelines document for details.
 	 *
-	 * @return array a list of protocol-specific fields that are required by
-	 *                default.
+	 * @return array an empty array.
 	 */
 	protected function getDefaultRequiredFields()
 	{
-		static $default_required_fields = array(
-			'Vendor',
-			'VendorTxCode',
-		);
-
-		return $default_required_fields;
+		return array();
 	}
 
 	// }}}
@@ -392,6 +382,8 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	protected function getPaymentRequiredFields()
 	{
 		static $payment_required_fields = array(
+			'Vendor',
+			'VendorTxCode',
 			'VPSProtocol',
 			'TxType',
 			'Amount',
@@ -420,6 +412,8 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	protected function getReleaseRequiredFields()
 	{
 		static $release_required_fields = array(
+			'Vendor',
+			'VendorTxCode',
 			'VPSProtocol',
 			'TxType',
 			'VPSTxId',
@@ -444,6 +438,8 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	protected function getAbortRequiredFields()
 	{
 		static $abort_required_fields = array(
+			'Vendor',
+			'VendorTxCode',
 			'VPSProtocol',
 			'TxType',
 			'VPSTxId',
@@ -468,6 +464,8 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	protected function getRefundRequiredFields()
 	{
 		static $refund_required_fields = array(
+			'Vendor',
+			'VendorTxCode',
 			'VPSProtocol',
 			'TxType',
 			'Amount',
@@ -496,6 +494,8 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	protected function getVoidRequiredFields()
 	{
 		static $void_required_fields = array(
+			'Vendor',
+			'VendorTxCode',
 			'VPSProtocol',
 			'TxType',
 			'VPSTxId',
@@ -521,7 +521,118 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	 */
 	protected function getStatusRequiredFields()
 	{
-		return array();
+		return array(
+			'Vendor',
+			'VendorTxCode',
+		);
+	}
+
+	// }}}
+	// {{{ protected function get3dsAuthRequiredFields()
+
+	/**
+	 * Gets a list of protocol-specific fields that are required for a 3-DS
+	 * authentication request
+	 *
+	 * See Appendix 3 in the VSP Direct Protocol and Integration Guidelines.
+	 *
+	 * @return array a list of protocol-specific fields that are required for
+	 *                a 3-DS authentication request.
+	 */
+	protected function get3dsAuthRequiredFields()
+	{
+		return array(
+			'MD',
+			'PARes',
+		);
+	}
+
+	// }}}
+	// {{{ private function getUrl()
+
+	private function getUrl($mode, $type)
+	{
+		$url = null;
+
+		switch ($mode) {
+		case 'simulator':
+			switch ($type) {
+				case StorePaymentRequest::TYPE_VERIFY:
+				case StorePaymentRequest::TYPE_HOLD:
+				case StorePaymentRequest::TYPE_PAY:
+					$url = self::URL_SIMULATOR_PAYMENT;
+					break;
+
+				case StorePaymentRequest::TYPE_STATUS:
+					break;
+
+				case StorePaymentRequest::TYPE_3DS_AUTH:
+					$url = self::URL_SIMULATOR_3DS_AUTH;
+					break;
+
+				default:
+					$type_map = $this->getTypeMap();
+					$tx_type = $type_map[$type];
+					$url = sprintf(self::URL_SIMULATOR,
+						ucfirst(strtolower($tx_type)));
+
+					break;
+			}
+			break;
+
+		case 'test':
+			switch ($type) {
+				case StorePaymentRequest::TYPE_VERIFY:
+				case StorePaymentRequest::TYPE_HOLD:
+				case StorePaymentRequest::TYPE_PAY:
+					$url = self::URL_TEST_PAYMENT;
+					break;
+
+				case StorePaymentRequest::TYPE_STATUS:
+					break;
+
+				case StorePaymentRequest::TYPE_3DS_AUTH:
+					$url = self::URL_TEST_3DS_AUTH;
+					break;
+
+				default:
+					$type_map = $this->getTypeMap();
+					$tx_type = $type_map[$type];
+					$url = sprintf(self::URL_TEST,
+						ucfirst(strtolower($tx_type)));
+
+					break;
+			}
+			break;
+
+		case 'live':
+			switch ($type) {
+				case StorePaymentRequest::TYPE_VERIFY:
+				case StorePaymentRequest::TYPE_HOLD:
+				case StorePaymentRequest::TYPE_PAY:
+					$url = self::URL_LIVE_PAYMENT;
+					break;
+
+				case StorePaymentRequest::TYPE_STATUS:
+					$url = self::URL_LIVE_STATUS;
+					break;
+
+				case StorePaymentRequest::TYPE_3DS_AUTH:
+					$url = self::URL_LIVE_3DS_AUTH;
+					break;
+
+				default:
+					$type_map = $this->getTypeMap();
+					$tx_type = $type_map[$type];
+					$url = sprintf(self::URL_LIVE,
+						ucfirst(strtolower($tx_type)));
+
+					break;
+			}
+			break;
+		}
+
+		return $url;
 	}
 
 	// }}}
