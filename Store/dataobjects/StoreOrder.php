@@ -55,6 +55,13 @@ class StoreOrder extends SwatDBDataObject
 	public $comments;
 
 	/**
+	 * Admin Notes
+	 *
+	 * @var string
+	 */
+	public $notes;
+
+	/**
 	 * Creation date
 	 *
 	 * @var date
