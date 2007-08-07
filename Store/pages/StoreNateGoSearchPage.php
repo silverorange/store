@@ -251,7 +251,7 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 		$pagination->link = sprintf('search?keywords=%s&type=articles&page=%%s',
 			$this->getKeywordsField());
 			
-		$pagination->setCurrentPage(SiteApplication::initVar('page', 0,
+		$pagination->setCurrentPage(SiteApplication::initVar('page', 1,
 			SiteApplication::VAR_GET));
 
 		$sql = sprintf('select Article.*
@@ -374,7 +374,7 @@ abstract class StoreNateGoSearchPage extends StoreSearchPage
 		$pagination->link = sprintf('search?keywords=%s&type=products&page=%%s',
 			$this->getKeywordsField());
 
-		$pagination->setCurrentPage(SiteApplication::initVar('page', 0,
+		$pagination->setCurrentPage(SiteApplication::initVar('page', 1,
 			SiteApplication::VAR_GET));
 	}
 
