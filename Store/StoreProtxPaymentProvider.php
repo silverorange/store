@@ -175,7 +175,6 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$request->setFields($card_fields);
 
 		$response = $request->process();
-		echo $response;
 		$this->checkResponse($response);
 
 		$transaction = $this->getPaymentTransaction($response, $order->id,
@@ -472,6 +471,13 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 			$fields['ApplyAVSCV2'] = 3; // Force checks but don't apply rules
 		else
 			$fields['ApplyAVSCV2'] = 2; // Force NO checks
+
+		// 3-DS mode
+		if ($this->three_domain_secure_mode ==
+			StorePaymentProvider::THREE_DOMAIN_SECURE_ON)
+			$fields['Apply3DSecure'] = 3; // Force use of 3-D Secure if enabled
+		else
+			$fields['Apply3DSecure'] = 2; // Do not use 3-D Secure checks
 
 		return $fields;
 	}
