@@ -45,6 +45,16 @@ abstract class StorePaymentProvider
 	 */
 	const AVS_OFF = false;
 
+	/**
+	 * Use Three Domain Secure (3-DS)
+	 */
+	const THREE_DOMAIN_SECURE_ON  = true;
+
+	/**
+	 * Don't use Three Domain Secure (3-DS)
+	 */
+	const THREE_DOMAIN_SECURE_OFF = false;
+
 	// }}}
 	// {{{ protected properties
 
@@ -55,8 +65,20 @@ abstract class StorePaymentProvider
 	 * StorePaymentProvider::AVS_OFF.
 	 *
 	 * @var boolean
+	 * @see StorePaymentProvider::setAvsMode()
 	 */
 	protected $avs_mode = self::AVS_OFF;
+
+	/**
+	 * The Three Domain Secure (3-DS) mode
+	 *
+	 * One of either StorePaymentProvider::THREE_DOMAIN_SECURE_ON or
+	 * StorePaymentProvider::THREE_DOMAIN_SECURE_OFF.
+	 *
+	 * @var boolean
+	 * @see StorePaymentProvider::setThreeDomainSecureMode()
+	 */
+	protected $three_domain_secure_mode = self::THREE_DOMAIN_SECURE_OFF;
 
 	// }}}
 	// {{{ public static function factory()
@@ -134,6 +156,36 @@ abstract class StorePaymentProvider
 	public function setAvsMode($mode = self::AVS_ON)
 	{
 		$this->avs_mode = (boolean)$mode;
+	}
+
+	// }}}
+	// {{{ public function setThreeDomainSecureMode()
+
+	/**
+	 * Set the Three Domain Secure (3-DS) mode
+	 *
+	 * Using 3-DS (implemented by VISA as Verified by VISA and by MasterCard as
+	 * MasterCard SecureCode) provides an additional level of card verification
+	 * that usually causes a liability shift from the merchant to the credit-
+	 * card company. Using 3-DS requires additional pages to be added to the
+	 * checkout process. 3-DS never prevents transactions, it allows site code
+	 * to decided whether or not to procede with the transaction if 3-DS is
+	 * either not supported or failed for the card. 3-DS is not used by
+	 * default.
+	 *
+	 * Not all payment providers support 3-DS transactions. If this is the
+	 * case, setting the mode has no effect.
+	 *
+	 * @param boolean $mode optional. The 3-DS mode to use. One of either
+	 *                       {@link StorePaymentProvider::THREE_DOMAIN_SECURE_ON} or
+	 *                       {@link StorePaymentProvider::THREE_DOMAIN_SECURE_OFF}.
+	 *                       If not specified, defaults to
+	 *                       THREE_DOMAIN_SECURE_ON.
+	 */
+	public function setThreeDomainSecureMode(
+		$mode = self::THREE_DOMAIN_SECURE_ON)
+	{
+		$this->three_domain_secure_mode = (boolean)$mode;
 	}
 
 	// }}}
