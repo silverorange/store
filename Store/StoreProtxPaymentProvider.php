@@ -175,6 +175,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$request->setFields($card_fields);
 
 		$response = $request->process();
+		echo $response;
 		$this->checkResponse($response);
 
 		$transaction = $this->getPaymentTransaction($response, $order->id,
@@ -468,7 +469,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 
 		// AVS/CV2 mode
 		if ($this->avs_mode == StorePaymentProvider::AVS_ON)
-			$fields['ApplyAVSCV2'] = 1; // Force checks
+			$fields['ApplyAVSCV2'] = 3; // Force checks but don't apply rules
 		else
 			$fields['ApplyAVSCV2'] = 2; // Force NO checks
 
