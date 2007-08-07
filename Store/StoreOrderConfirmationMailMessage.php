@@ -107,9 +107,9 @@ abstract class StoreOrderConfirmationMailMessage
 			$this->getWebRoot(),
 			'SwatStyleSheetHtmlHeadEntry');
 
-		echo '</head><body id="order-confirmation-email">';
+		echo '</head><body><div id="frame">';
 		$ui->display();
-		echo '</body></html>';
+		echo '</div></body></html>';
 
 		return ob_get_clean();
 	}
