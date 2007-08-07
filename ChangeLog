@@ -1,5 +1,14 @@
+2007-08-07  nrf
+
+	* [r19200] store/branches/1.8.x:
+	  Make a branch
+
 2007-07-26  nrf
 
+	* [r18773] store/tags/release-1.8.12:
+	  tag release 1.8.12
+	* [r18772] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.8.12
 	* [r18770] store/trunk/Store/admin/components/Product/Details.php:
 	  Use new selection API
 
