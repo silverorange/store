@@ -55,6 +55,13 @@ class StoreOrder extends StoreDataObject
 	public $comments;
 
 	/**
+	 * Admin Notes
+	 *
+	 * @var string
+	 */
+	public $notes;
+
+	/**
 	 * Creation date
 	 *
 	 * @var date
