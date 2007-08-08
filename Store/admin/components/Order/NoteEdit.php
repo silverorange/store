@@ -30,7 +30,13 @@ class StoreOrderNoteEdit extends AdminDBEdit
 
 		$this->order = new Order();
 		$this->order->setDatabase($this->app->db);
-		$this->order->load($this->id);
+
+		if ($this->id !== null) {
+			if (!$this->order->load($this->id))
+				throw new AdminNotFoundException(
+					sprintf(Store::_('Order with id “%s” not found.'),
+					$this->id));
+		}
 	}
 
 	// }}}
@@ -44,7 +50,7 @@ class StoreOrderNoteEdit extends AdminDBEdit
 		$this->order->notes = $notes->value;
 		$this->order->save();
 
-		$message = new SwatMessage('The Admin Note has been saved.');
+		$message = new SwatMessage(Store::_('Admin Note has been saved.'));
 		$this->app->messages->add($message);
 	}
 
