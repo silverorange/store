@@ -6,6 +6,7 @@ create table Orders (
 	email varchar(255),
 	phone varchar(100),
 	comments text,
+	notes text,
 	createdate timestamp not null,
 	status integer not null default 1,
 	cancelled boolean not null default false,
