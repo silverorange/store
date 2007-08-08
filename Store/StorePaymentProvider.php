@@ -6,8 +6,8 @@ require_once 'Store/dataobjects/StoreOrder.php';
 /**
  * Class to manage automated card transactions for e-commerce stores
  *
- * This class implements the factory pattern to make it easy to change payment
- * providers without needing to alter your site code.
+ * This class implements the factory pattern to make it possible to change
+ * payment providers with minimal alterations to site code.
  *
  * Example usage:
  * <code>
@@ -16,6 +16,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  *     'Vendor' => 'my-vendor-id',
  * );
  * $provider = StorePaymentProvider::factory('Protx', $paramaters);
+ * $provider->setAvsMode();
  * $transaction = $provider->hold($order);
  * if ($transaction->address_status == StorePaymentTransaction::STATUS_FAILED) {
  *     echo 'Invalid billing address detected!';
@@ -28,7 +29,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * @package   Store
  * @copyright 2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
- * @see       StorePaymentProvider::factory();
+ * @see       StorePaymentProvider::factory()
  * @see       StorePaymentTransaction
  */
 abstract class StorePaymentProvider
@@ -46,12 +47,12 @@ abstract class StorePaymentProvider
 	const AVS_OFF = false;
 
 	/**
-	 * Use Three Domain Secure (3-DS)
+	 * Use Three Domain Secure (3-D Secure)
 	 */
 	const THREE_DOMAIN_SECURE_ON  = true;
 
 	/**
-	 * Don't use Three Domain Secure (3-DS)
+	 * Don't use Three Domain Secure (3-D Secure)
 	 */
 	const THREE_DOMAIN_SECURE_OFF = false;
 
@@ -70,7 +71,7 @@ abstract class StorePaymentProvider
 	protected $avs_mode = self::AVS_OFF;
 
 	/**
-	 * The Three Domain Secure (3-DS) mode
+	 * The Three Domain Secure (3-D Secure) mode
 	 *
 	 * One of either StorePaymentProvider::THREE_DOMAIN_SECURE_ON or
 	 * StorePaymentProvider::THREE_DOMAIN_SECURE_OFF.
@@ -162,21 +163,25 @@ abstract class StorePaymentProvider
 	// {{{ public function setThreeDomainSecureMode()
 
 	/**
-	 * Set the Three Domain Secure (3-DS) mode
+	 * Set the Three Domain Secure (3-D Secure) mode
 	 *
-	 * Using 3-DS (implemented by VISA as Verified by VISA and by MasterCard as
-	 * MasterCard SecureCode) provides an additional level of card verification
-	 * that usually causes a liability shift from the merchant to the credit-
-	 * card company. Using 3-DS requires additional pages to be added to the
-	 * checkout process. 3-DS never prevents transactions, it allows site code
-	 * to decided whether or not to procede with the transaction if 3-DS is
-	 * either not supported or failed for the card. 3-DS is not used by
-	 * default.
+	 * Using 3-D Secure (implemented by VISA as Verified by VISA and by
+	 * MasterCard as MasterCard SecureCode) provides an additional level of
+	 * card verification that usually causes a liability shift from the
+	 * merchant to the credit-card company. Using 3-D Secure requires
+	 * additional pages to be added to the checkout process. 3-D Secure never
+	 * prevents transactions, it allows site code to decided whether or not to
+	 * procede with the transaction if 3-D Secure is either not supported or
+	 * failed for the card. 3-D Secure is not used by default.
 	 *
-	 * Not all payment providers support 3-DS transactions. If this is the
-	 * case, setting the mode has no effect.
+	 * Not all payment providers support 3-D Secure transactions. If this is
+	 * the case, setting the mode has no effect.
 	 *
-	 * @param boolean $mode optional. The 3-DS mode to use. One of either
+	 * See the Wikipedia article on
+	 * {@link http://en.wikipedia.org/wiki/3-D_Secure 3-D Secure} for aditional
+	 * details.
+	 *
+	 * @param boolean $mode optional. The 3-D Secure mode to use. One of either
 	 *                       {@link StorePaymentProvider::THREE_DOMAIN_SECURE_ON} or
 	 *                       {@link StorePaymentProvider::THREE_DOMAIN_SECURE_OFF}.
 	 *                       If not specified, defaults to
@@ -408,6 +413,29 @@ abstract class StorePaymentProvider
 	 *                                  voided transaction.
 	 */
 	public function void(StorePaymentTransaction $transaction)
+	{
+		require_once 'Store/exceptions/StoreUnimplementedException.php';
+		throw new StoreUnimplementedException(sprintf(
+			'%s does not implement the %s() method.',
+			get_class($this), __FUNCTION__));
+	}
+
+	// }}}
+	// {{{ public function threeDomainSecureAuth()
+
+	/**
+	 * Authenticates an existing 3-D Secure transaction
+	 *
+	 * @param string $merchant_data the merchant data of the 3-D Secure
+	 *                               transaction used to identify the
+	 *                               transaction on the merchant's system.
+	 * @param string $pares payer authentication response. The base64 encoded,
+	 *                       encrypted message retrieved from the issuing bank
+	 *                       for the transaction.
+	 *
+	 * @return StorePaymentTransaction the authenticated transation.
+	 */
+	public function threeDomainSecureAuth($merchant_data, $pares)
 	{
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
