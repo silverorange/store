@@ -5,7 +5,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
 require_once 'SwatDB/SwatDB.php';
 
 /**
- * Edit page for admin notes on orders
+ * Edit page for notes on orders
  *
  * @package   Store
  * @copyright 2007 silverorange
@@ -55,8 +55,17 @@ class StoreOrderNoteEdit extends AdminDBEdit
 		$this->order->notes = $notes->value;
 		$this->order->save();
 
-		$message = new SwatMessage(Store::_('Admin Note has been saved.'));
-		$this->app->messages->add($message);
+		$this->app->messages->add($this->getSaveMessage());
+	}
+
+	// }}}
+	// {{{ protected function getSaveMessage()
+
+	protected function getSaveMessage()
+	{
+		$message = new SwatMessage(Store::_('Note has been saved.'));
+
+		return $message;
 	}
 
 	// }}}

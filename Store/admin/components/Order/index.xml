@@ -36,9 +36,15 @@
 					</object>
 				</object>
 				<object class="AdminTableViewOrderableColumn" id="has_comments">
-					<property name="title" translatable="yes">Comments?</property>
+					<property name="title" translatable="yes">Customer Comments?</property>
 					<object class="SwatBooleanCellRenderer">
 						<property name="value" type="data">has_comments</property>
+					</object>
+				</object>
+				<object class="AdminTableViewOrderableColumn" id="has_notes">
+					<property name="title" translatable="yes">Notes?</property>
+					<object class="SwatBooleanCellRenderer">
+						<property name="value" type="data">has_notes</property>
 					</object>
 				</object>
 			</widget>
