@@ -3,7 +3,7 @@
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="edit_frame">
-		<property name="title">Admin Note</property>
+		<property name="title" translatable="yes">Admin Note</property>
 		<widget class="SwatForm" id="edit_form">
 			<widget class="SwatTextarea" id="notes" />
 			<widget class="SwatFooterFormField">
