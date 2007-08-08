@@ -122,6 +122,17 @@ class StorePaymentTransaction extends SwatDBDataObject
 	public $three_domain_secure_status;
 
 	/**
+	 * Cardholder authentication verification value
+	 *
+	 * This value is used by card providers to prove an authentication occured
+	 * for this transaction. It is returned from authenticated 3-D Secure
+	 * transactions.
+	 *
+	 * @var string
+	 */
+	public $cavv;
+
+	/**
 	 * The type of request used to create this transaction
 	 *
 	 * This should be one of the {@link StorePaymentRequest}::TYPE_* constants.
