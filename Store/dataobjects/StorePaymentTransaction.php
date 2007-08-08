@@ -113,6 +113,15 @@ class StorePaymentTransaction extends SwatDBDataObject
 	public $card_verification_value_status;
 
 	/**
+	 * Status of 3-D Secure authentication
+	 *
+	 * One of StorePaymentTransaction::STATUS_*.
+	 *
+	 * @var integer
+	 */
+	public $three_domain_secure_status;
+
+	/**
 	 * The type of request used to create this transaction
 	 *
 	 * This should be one of the {@link StorePaymentRequest}::TYPE_* constants.
