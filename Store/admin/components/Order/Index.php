@@ -213,6 +213,7 @@ class StoreOrderIndex extends AdminSearch
 		$sql = 'select Orders.id, Orders.total, Orders.createdate,
 					Orders.locale,
 					char_length(Orders.comments) > 0 as has_comments,
+					char_length(Orders.notes) > 0 as has_notes,
 					BillingAddress.fullname
 				from Orders
 					left outer join Account on Orders.account = Account.id

@@ -10,7 +10,7 @@
 				<property name="stock_id">email</property>
 			</widget>
 			<widget class="SwatToolLink">
-				<property name="title" translatable-"yes">Add/Edit the Admin Note</property>
+				<property name="title" translatable-"yes">Add/Edit a Note</property>
 				<property name="link">Order/NoteEdit?id=%s</property>
 				<property name="stock_id">edit</property>
 			</widget>
