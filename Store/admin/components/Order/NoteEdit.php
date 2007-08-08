@@ -24,8 +24,9 @@ class StoreOrderNoteEdit extends AdminDBEdit
 
 	protected function initInternal()
 	{
-		$this->ui->loadFromXML(dirname(__FILE__).'/noteedit.xml');
 		parent::initInternal();
+
+		$this->ui->loadFromXML(dirname(__FILE__).'/noteedit.xml');
 
 		$this->order = new Order();
 		$this->order->setDatabase($this->app->db);
@@ -35,17 +36,8 @@ class StoreOrderNoteEdit extends AdminDBEdit
 	// }}}
 
 	// process phase
-	// {{{ protected function processInternal()
-	protected function processInternal()
-	{
-		$edit_form = $this->ui->getWidget('edit_form');
+	// {{{ protected function saveDBData()
 
-		if ($edit_form->isSubmitted())
-			$this->saveDBData();
-	}
-
-	// }}}
-	// {{{ protected function savdDBData()
 	protected function saveDBData()
 	{
 		$notes = $this->ui->getWidget('notes');
@@ -55,6 +47,7 @@ class StoreOrderNoteEdit extends AdminDBEdit
 		$message = new SwatMessage('The Admin Note has been saved.');
 		$this->app->messages->add($message);
 	}
+
 	// }}}
 
 	// build phase
