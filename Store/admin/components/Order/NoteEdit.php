@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Admin/pages/AdminDBEdit.php';
-require_once '../../include/dataobjects/Order.php';
+require_once 'Store/dataobjects/StoreOrder.php';
 require_once 'SwatDB/SwatDB.php';
 
 /**
@@ -15,6 +15,9 @@ class StoreOrderNoteEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
+	/**
+	 * @var StoreOrder
+	 */
 	protected $order;
 
 	// }}}
@@ -24,37 +27,38 @@ class StoreOrderNoteEdit extends AdminDBEdit
 
 	protected function initInternal()
 	{
-		$this->ui->loadFromXML(dirname(__FILE__).'/noteedit.xml');
 		parent::initInternal();
 
-		$this->order = new Order();
+		$this->ui->loadFromXML(dirname(__FILE__).'/noteedit.xml');
+
+		// initialize order object
+		$class_name = SwatDBClassMap::get('StoreOrder');
+		$this->order = new $class_name();
 		$this->order->setDatabase($this->app->db);
-		$this->order->load($this->id);
+
+		if ($this->id !== null) {
+			if (!$this->order->load($this->id))
+				throw new AdminNotFoundException(
+					sprintf(Store::_('Order with id “%s” not found.'),
+					$this->id));
+		}
 	}
 
 	// }}}
 
 	// process phase
-	// {{{ protected function processInternal()
-	protected function processInternal()
-	{
-		$edit_form = $this->ui->getWidget('edit_form');
+	// {{{ protected function saveDBData()
 
-		if ($edit_form->isSubmitted())
-			$this->saveDBData();
-	}
-
-	// }}}
-	// {{{ protected function savdDBData()
 	protected function saveDBData()
 	{
 		$notes = $this->ui->getWidget('notes');
 		$this->order->notes = $notes->value;
 		$this->order->save();
 
-		$message = new SwatMessage('The Admin Note has been saved.');
+		$message = new SwatMessage(Store::_('Admin Note has been saved.'));
 		$this->app->messages->add($message);
 	}
+
 	// }}}
 
 	// build phase
