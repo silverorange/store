@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Admin/pages/AdminDBEdit.php';
-require_once '../../include/dataobjects/Order.php';
+require_once 'Store/dataobjects/StoreOrder.php';
 require_once 'SwatDB/SwatDB.php';
 
 /**
@@ -15,6 +15,9 @@ class StoreOrderNoteEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
+	/**
+	 * @var StoreOrder
+	 */
 	protected $order;
 
 	// }}}
@@ -28,7 +31,9 @@ class StoreOrderNoteEdit extends AdminDBEdit
 
 		$this->ui->loadFromXML(dirname(__FILE__).'/noteedit.xml');
 
-		$this->order = new Order();
+		// initialize order object
+		$class_name = SwatDBClassMap::get('StoreOrder');
+		$this->order = new $class_name();
 		$this->order->setDatabase($this->app->db);
 
 		if ($this->id !== null) {
