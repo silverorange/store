@@ -173,6 +173,8 @@ class StorePaymentTransaction extends SwatDBDataObject
 	 */
 	public function loadFromMerchantData($merchant_data)
 	{
+		$this->checkDB();
+
 		$row = null;
 
 		if ($this->table !== null) {
