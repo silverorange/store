@@ -60,9 +60,6 @@ class StoreProductRelatedProduct extends AdminSearch
 
 		if ($form->isProcessed()) {
 			if (count($view->getSelection()) != 0) {
-				$product_list = array();
-				foreach ($view->getSelection() as $item)
-					$product_list[] = $this->app->db->quote($item, 'integer');
 
 				// relate products
 				$sql = 'insert into ProductRelatedProductBinding
@@ -76,14 +73,14 @@ class StoreProductRelatedProduct extends AdminSearch
 
 				$sql = sprintf($sql,
 					$this->app->db->quote($this->product_id, 'integer'),
-					implode(',', $product_list));
-
+					SwatDB::implodeSelection(
+						$this->app->db, $view->getSelection(), 'integer'));
 
 				$num = SwatDB::exec($this->app->db, $sql);
 
 				$message = new SwatMessage(sprintf(Store::ngettext(
 					'One product has been related to this product.',
-					'%d products have been related to this product.', $num),
+					'%s products have been related to this product.', $num),
 					SwatString::numberFormat($num)),
 					SwatMessage::NOTIFICATION);
 
