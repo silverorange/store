@@ -8,7 +8,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  *
  * Payment transactions are usually tied to {@link StoreOrder} objects. The
  * set of {@link StorePaymentProvider} classes return StorePaymentTransaction
- * objects for most transactions.
+ * objects for most transaction methods.
  *
  * @package   Store
  * @copyright 2007 silverorange
@@ -79,6 +79,17 @@ class StorePaymentTransaction extends SwatDBDataObject
 	public $authorization_code;
 
 	/**
+	 * Unique identifier for this transaction supplied by payment provider
+	 *
+	 * This use used for 3-D Secure transactions. For non-3-D Secure
+	 * transactions, this field will be null.
+	 *
+	 * @var string
+	 * @see StorePaymentTransaction::loadFromMerchantData()
+	 */
+	public $merchant_data;
+
+	/**
 	 * The date this transaction was created on
 	 *
 	 * @var Date
@@ -140,6 +151,47 @@ class StorePaymentTransaction extends SwatDBDataObject
 	 * @var integer
 	 */
 	public $request_type;
+
+	// }}}
+	// {{{ public function loadFromMerchantData()
+
+	/**
+	 * Loads this transaction from merchant data
+	 *
+	 * This method is used to get the appropriate transaction object for a
+	 * 3-D Secure authentication response from the cardholder's bank. This is
+	 * needed, for example, to get order information from the 3-D Secure
+	 * authentication response. Merchant data uniquely identifies a 3-D Secure
+	 * transaction. If there is more than one transaction in the database with
+	 * the specified merchant data, the most recent transaction is loaded.
+	 *
+	 * @param string $merchant_data the merchant data of the transaction to
+	 *                               load.
+	 *
+	 * @return boolean true if this transaction could be loaded from the
+	 *                  specified merchant data and false if it could not.
+	 */
+	public function loadFromMerchantData($merchant_data)
+	{
+		$row = null;
+
+		if ($this->table !== null) {
+			$sql = sprintf('select * from %s where merchant_data = %s
+				order by createdate desc limit 1',
+				$this->table,
+				$this->db->quote($merchant_data, 'text'));
+
+			$rs = SwatDB::query($this->db, $sql, null);
+			$row = $rs->fetchRow(MDB2_FETCHMODE_ASSOC);
+		}
+
+		if ($row === null)
+			return false;
+
+		$this->initFromRow($row);
+		$this->generatePropertyHashes();
+		return true;
+	}
 
 	// }}}
 	// {{{ protected function init()
