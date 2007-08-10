@@ -16,8 +16,7 @@ require_once
 require_once 'Store/admin/components/Item/include/'.
 	'StoreItemQuantityDiscountTableView.php';
 
-require_once 'Store/admin/components/Product/include/'.
-	'StoreItemRegionPriceCellRenderer.php';
+require_once 'Store/admin/StoreItemRegionPriceCellRenderer.php';
 
 /**
  * Quantity discounts tool
