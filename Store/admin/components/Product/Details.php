@@ -633,7 +633,9 @@ class StoreProductDetails extends AdminIndex
 	protected function getItemsTableModel(SwatTableView $view)
 	{
 		$sql = $this->getItemsSql($view);
-		$items = SwatDB::query($this->app->db, $sql, 'StoreItemWrapper');
+		$items = SwatDB::query($this->app->db, $sql,
+			SwatDBClassMap::get('StoreItemWrapper'));
+
 		$store = new SwatTableStore();
 
 		foreach ($items as $item) {
@@ -743,8 +745,8 @@ class StoreProductDetails extends AdminIndex
 		if ($this->regions === null) {
 			$sql = 'select id, title from Region order by id';
 
-			$this->regions =
-				SwatDB::query($this->app->db, $sql, 'StoreRegionWrapper');
+			$this->regions = SwatDB::query($this->app->db, $sql,
+				SwatDBClassMap::get('StoreRegionWrapper'));
 		}
 
 		return $this->regions;

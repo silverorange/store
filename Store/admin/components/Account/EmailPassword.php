@@ -34,7 +34,7 @@ class StoreAccountEmailPassword extends AdminConfirmation
 			$this->app->db->quote($this->id, 'integer'));
 
 		$this->account = SwatDB::query($this->app->db, $sql,
-			'StoreAccountWrapper')->getFirst();
+			SwatDBClassMap::get('StoreAccountWrapper'))->getFirst();
 
 		if ($this->account === null)
 			throw new AdminNoAccessException();

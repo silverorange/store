@@ -68,7 +68,7 @@ class StoreRegionDelete extends AdminDBDelete
 			AdminDependency::NODELETE, $item_list);
 
 		$summaries = SwatDB::query($this->app->db, $sql,
-			'AdminDependencySummaryWrapper');
+			SwatDBClassMap::get('AdminDependencySummaryWrapper'));
 
 		$dep_products->summaries = $summaries->getArray();
 
