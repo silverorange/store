@@ -52,6 +52,11 @@ class StoreArticleRegionAction extends SwatControl
 		$this->accessibility_selector->addOption(
 			new SwatOption(false, Store::_('not accessible')));
 
+		echo '<br />';
+
+		$span_tag = new SwatHtmlTag('span');
+		$span_tag->setContent(Store::_('Set Accessibility:'));
+		$span_tag->display();
 		$this->accessibility_selector->display();
 	}
 

@@ -120,7 +120,6 @@
 				<widget class="SwatActionItem" id="accessibility_action">
 					<property name="title" translatable="yes">set accessibility…</property>
 					<widget class="SwatFormField">
-						<property name="title" translatable="yes">Accessibility</property>
 						<widget class="StoreArticleRegionAction" id="article_region_action" />
 					</widget>
 				</widget>
