@@ -1,3 +1,16 @@
+2007-08-10  nrf
+
+	* [r19303] store/branches/1.8.x/ChangeLog,
+	  store/branches/1.8.x/package.php:
+	  prepare for release of 1.8.16
+	* [r19302]
+	  store/branches/1.8.x/Store/admin/components/Category/Index.php,
+	  store/branches/1.8.x/Store/admin/components/Item/QuantityDiscount.php,
+	  
+	  store/branches/1.8.x/Store/admin/components/Product/RelatedProduct.php:
+	  
+	  merge 19274, 19293, and 19301 to branch
+
 2007-08-08  nrf
 
 	* [r19238] store/branches/1.8.x/package.php:
