@@ -2,7 +2,11 @@
 
 require_once 'Admin/pages/AdminSearch.php';
 require_once 'Admin/AdminSearchClause.php';
+require_once 'Store/dataobjects/StoreOrderWrapper.php';
+require_once 'Swat/SwatTableStore.php';
+require_once 'Swat/SwatDetailsStore.php';
 require_once 'SwatDB/SwatDB.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 
 /**
  * Index page for Orders
@@ -227,22 +231,19 @@ class StoreOrderIndex extends AdminSearch
 
 		$this->app->db->setLimit($pager->page_size, $pager->current_record);
 
-		$rs = SwatDB::query($this->app->db, $sql, 'StoreOrderWrapper');
+		$orders = SwatDB::query($this->app->db, $sql,
+			SwatDBClassMap::get('StoreOrderWrapper'));
 
-		if (count($rs) > 0)
+		if (count($orders) > 0)
 			$this->ui->getWidget('results_message')->content =
 				$pager->getResultsMessage('result', 'results');
 
 		$store = new SwatTableStore();	
-		foreach ($rs as $row) {
-			$ds = new SwatDetailsStore($row);
-			$ds->title = $this->getOrderTitle($row);
-			$ds->has_notes = (strlen($row->notes) > 0);
-			$ds->has_comments = (strlen($row->comments) > 0);
-			$ds->fullname = $row->billing_address->fullname;
-			$ds->billint_address = $row->billing_address->id;
-			$ds->locale = $row->locale->id;
-			$ds->region = $row->locale->region->id;
+		foreach ($orders as $order) {
+			$ds = new SwatDetailsStore($order);
+			$ds->title = $this->getOrderTitle($order);
+			$ds->has_notes = (strlen($order->notes) > 0);
+			$ds->has_comments = (strlen($order->comments) > 0);
 
 			$store->add($ds);
 		}
