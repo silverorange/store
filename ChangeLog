@@ -1,5 +1,39 @@
+2007-08-08  nrf
+
+	* [r19238] store/branches/1.8.x/package.php:
+	  prepare for release of 1.8.15
+	* [r19237]
+	  store/branches/1.8.x/Store/admin/components/Order/NoteEdit.php,
+	  store/branches/1.8.x/Store/admin/components/Order/noteedit.xml:
+	  merge 19232, 19233, 19234, and 19235 into branch
+	* [r19227] store/branches/1.8.x/package.php:
+	  prepare for release of 1.8.14
+	* [r19226]
+	  store/branches/1.8.x/Store/admin/components/Order/NoteEdit.php,
+	  store/branches/1.8.x/Store/admin/components/Order/details.xml,
+	  store/branches/1.8.x/Store/admin/components/Order/noteedit.xml,
+	  store/branches/1.8.x/sql/tables/Orders.sql:
+	  Merge into branch
+
 2007-08-07  nrf
 
+	* [r19205] store/branches/1.8.x/ChangeLog,
+	  store/branches/1.8.x/package.php:
+	  prepare for release of 1.8.13
+	* [r19204]
+	  store/branches/1.8.x/Store/pages/StoreNateGoSearchPage.php:
+	  Merge [19199] into branch
+	* [r19203]
+	  store/branches/1.8.x/Store/admin/components/Order/details.xml,
+	  store/branches/1.8.x/Store/dataobjects/StoreOrder.php:
+	  Merge [19184] and [19185] into branch
+	* [r19202]
+	  store/branches/1.8.x/Store/StoreOrderConfirmationMailMessage.php,
+	  store/branches/1.8.x/www/admin/styles/store-quick-search.css:
+	  Merge [19041] and [19112] into branch
+	* [r19201]
+	  store/branches/1.8.x/Store/admin/components/Category/Index.php:
+	  Merge [18777] into branch
 	* [r19200] store/branches/1.8.x:
 	  Make a branch
 
