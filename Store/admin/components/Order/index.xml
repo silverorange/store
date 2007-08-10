@@ -41,10 +41,10 @@
 						<property name="value" type="data">has_comments</property>
 					</object>
 				</object>
-				<object class="AdminTableViewOrderableColumn" id="has_notes">
-					<property name="title" translatable="yes">Notes?</property>
-					<object class="SwatBooleanCellRenderer">
-						<property name="value" type="data">has_notes</property>
+				<object class="SwatTableViewSpanningColumn" id="has_notes">
+					<object class="SwatTextCellRenderer">
+						<property name="visible" type="data">has_notes</property>
+						<property name="text" type="data">notes</property>
 					</object>
 				</object>
 			</widget>
