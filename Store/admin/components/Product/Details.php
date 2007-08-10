@@ -152,7 +152,8 @@ class StoreProductDetails extends AdminIndex
 			SwatDB::exec($this->app->db, sprintf($sql,
 				$this->app->db->quote(true, 'boolean'),
 				$region_sql,
-				SwatDB::implodeSelection($db, $view->getSelection())));
+				SwatDB::implodeSelection($this->app->db,
+					$view->getSelection())));
 
 			$num = count($view->getSelection());
 
@@ -177,7 +178,8 @@ class StoreProductDetails extends AdminIndex
 			SwatDB::exec($this->app->db, sprintf($sql,
 				$this->app->db->quote(false, 'boolean'),
 				$region_sql,
-				SwatDB::implodeSelection($db, $view->getSelection())));
+				SwatDB::implodeSelection($this->app->db,
+					$view->getSelection())));
 
 			$num = count($view->getSelection());
 
