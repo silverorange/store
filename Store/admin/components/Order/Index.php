@@ -211,18 +211,12 @@ class StoreOrderIndex extends AdminSearch
 		$pager->total_records = SwatDB::queryOne($this->app->db, $sql);
 	
 		$sql = 'select Orders.id, Orders.total, Orders.createdate,
-					Orders.locale,
-					char_length(Orders.comments) > 0 as has_comments,
-					char_length(Orders.notes) > 0 as has_notes,
-					BillingAddress.fullname
+					Orders.locale, Orders.notes, Orders.comments,
+					Orders.billing_address
 				from Orders
 					left outer join Account on Orders.account = Account.id
-					inner join OrderAddress as BillingAddress
-						on Orders.billing_address = BillingAddress.id
 					inner join OrderAddress as ShippingAddress 
 						on Orders.shipping_address = ShippingAddress.id
-					inner join Locale on Orders.locale = Locale.id
-					inner join Region on Locale.region = Region.id
 				where %s
 				order by %s';
 
@@ -233,17 +227,27 @@ class StoreOrderIndex extends AdminSearch
 
 		$this->app->db->setLimit($pager->page_size, $pager->current_record);
 
-		$rs = SwatDB::query($this->app->db, $sql);
+		$rs = SwatDB::query($this->app->db, $sql, 'StoreOrderWrapper');
 
 		if (count($rs) > 0)
 			$this->ui->getWidget('results_message')->content =
 				$pager->getResultsMessage('result', 'results');
 
-		// TODO: use a SwatTableStore instead of mangling the dataobjects
-		foreach ($rs as $row)
-			$row->title = $this->getOrderTitle($row);
+		$store = new SwatTableStore();	
+		foreach ($rs as $row) {
+			$ds = new SwatDetailsStore($row);
+			$ds->title = $this->getOrderTitle($row);
+			$ds->has_notes = (strlen($row->notes) > 0);
+			$ds->has_comments = (strlen($row->comments) > 0);
+			$ds->fullname = $row->billing_address->fullname;
+			$ds->billint_address = $row->billing_address->id;
+			$ds->locale = $row->locale->id;
+			$ds->region = $row->locale->region->id;
 
-		return $rs;
+			$store->add($ds);
+		}
+
+		return $store;
 	}
 
 	// }}}
