@@ -42,6 +42,7 @@
 					</object>
 				</object>
 				<object class="SwatTableViewSpanningColumn" id="has_notes">
+					<property name="offset" type="integer">1</property>
 					<object class="SwatTextCellRenderer">
 						<property name="visible" type="data">has_notes</property>
 						<property name="text" type="data">notes</property>
