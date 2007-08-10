@@ -192,7 +192,7 @@ class StoreCategoryIndex extends AdminIndex
 
 			$sql = sprintf($sql,
 				$this->app->db->quote($minor, 'boolean'),
-				SwatDB::implodeSelection($db, $view->getSelection()),
+				SwatDB::implodeSelection($this->app->db, $view->getSelection()),
 				$this->app->db->quote($this->id, 'integer'));
 
 			$num = SwatDB::exec($this->app->db, $sql);
