@@ -144,7 +144,8 @@ class StoreAdDetails extends AdminIndex
 			$sql = 'select id, title from Region order by Region.id';
 
 			$this->regions =
-				SwatDB::query($this->app->db, $sql, 'StoreRegionWrapper');
+				SwatDB::query($this->app->db, $sql,
+					SwatDBClassMap::get('StoreRegionWrapper'));
 		}
 
 		return $this->regions;

@@ -79,7 +79,7 @@ class StoreAccountPaymentMethodDelete extends AdminDBDelete
 			$item_list);
 
 		$methods = SwatDB::query($this->app->db, $sql,
-			'StoreAccountPaymentMethodWrapper');
+			SwatDBClassMap::get('StoreAccountPaymentMethodWrapper'));
 
 		$entries = array();
 		$title = '%s<br />%s<br />%s<br />%s';

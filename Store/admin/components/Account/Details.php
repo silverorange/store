@@ -212,7 +212,8 @@ class StoreAccountDetails extends AdminIndex
 			$this->getOrderByClause($view,
 				'Invoice.createdate desc, Invoice.id'));
 
-		$invoices =  SwatDB::query($this->app->db, $sql, 'StoreInvoiceWrapper');
+		$invoices =  SwatDB::query($this->app->db, $sql,
+			SwatDBClassMap::get('StoreInvoiceWrapper'));
 
 		$store = new SwatTableStore();
 

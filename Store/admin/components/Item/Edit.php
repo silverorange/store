@@ -83,7 +83,8 @@ class StoreItemEdit extends AdminDBEdit
 		 * entries.  Also set correct locale on the Price Entry.
 		 */
 		$sql = 'select id, title from Region order by Region.id';
-		$regions = SwatDB::query($this->app->db, $sql, 'StoreRegionWrapper');
+		$regions = SwatDB::query($this->app->db, $sql,
+			SwatDBClassMap::get('StoreRegionWrapper'));
 
 		$replicator = $this->ui->getWidget('price_replicator');
 
