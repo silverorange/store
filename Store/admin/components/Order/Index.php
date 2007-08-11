@@ -2,7 +2,11 @@
 
 require_once 'Admin/pages/AdminSearch.php';
 require_once 'Admin/AdminSearchClause.php';
+require_once 'Store/dataobjects/StoreOrderWrapper.php';
+require_once 'Swat/SwatTableStore.php';
+require_once 'Swat/SwatDetailsStore.php';
 require_once 'SwatDB/SwatDB.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 
 /**
  * Index page for Orders
@@ -211,17 +215,12 @@ class StoreOrderIndex extends AdminSearch
 		$pager->total_records = SwatDB::queryOne($this->app->db, $sql);
 	
 		$sql = 'select Orders.id, Orders.total, Orders.createdate,
-					Orders.locale,
-					char_length(Orders.comments) > 0 as has_comments,
-					BillingAddress.fullname
+					Orders.locale, Orders.notes, Orders.comments,
+					Orders.billing_address
 				from Orders
 					left outer join Account on Orders.account = Account.id
-					inner join OrderAddress as BillingAddress
-						on Orders.billing_address = BillingAddress.id
 					inner join OrderAddress as ShippingAddress 
 						on Orders.shipping_address = ShippingAddress.id
-					inner join Locale on Orders.locale = Locale.id
-					inner join Region on Locale.region = Region.id
 				where %s
 				order by %s';
 
@@ -232,17 +231,24 @@ class StoreOrderIndex extends AdminSearch
 
 		$this->app->db->setLimit($pager->page_size, $pager->current_record);
 
-		$rs = SwatDB::query($this->app->db, $sql);
+		$orders = SwatDB::query($this->app->db, $sql,
+			SwatDBClassMap::get('StoreOrderWrapper'));
 
-		if (count($rs) > 0)
+		if (count($orders) > 0)
 			$this->ui->getWidget('results_message')->content =
 				$pager->getResultsMessage('result', 'results');
 
-		// TODO: use a SwatTableStore instead of mangling the dataobjects
-		foreach ($rs as $row)
-			$row->title = $this->getOrderTitle($row);
+		$store = new SwatTableStore();	
+		foreach ($orders as $order) {
+			$ds = new SwatDetailsStore($order);
+			$ds->title = $this->getOrderTitle($order);
+			$ds->has_notes = (strlen($order->notes) > 0);
+			$ds->has_comments = (strlen($order->comments) > 0);
 
-		return $rs;
+			$store->add($ds);
+		}
+
+		return $store;
 	}
 
 	// }}}

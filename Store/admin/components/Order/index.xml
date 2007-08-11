@@ -18,7 +18,7 @@
 				<object class="AdminTableViewOrderableColumn" id="fullname">
 					<property name="title" translatable="yes">Customer</property>
 					<object class="SwatTextCellRenderer">
-						<property name="text" type="data">fullname</property>
+						<property name="text" type="data">billing_address.fullname</property>
 					</object>
 				</object>
 				<object class="AdminTableViewOrderableColumn" id="createdate">
@@ -31,14 +31,21 @@
 					<property name="title" translatable="yes">Total</property>
 					<object class="SwatMoneyCellRenderer">
 						<property name="value" type="data">total</property>
-						<property name="locale" type="data">locale</property>
+						<property name="locale" type="data">locale.id</property>
 						<property name="display_currency" type="boolean">true</property>
 					</object>
 				</object>
 				<object class="AdminTableViewOrderableColumn" id="has_comments">
-					<property name="title" translatable="yes">Comments?</property>
+					<property name="title" translatable="yes">Customer Comments?</property>
 					<object class="SwatBooleanCellRenderer">
 						<property name="value" type="data">has_comments</property>
+					</object>
+				</object>
+				<object class="SwatTableViewSpanningColumn" id="has_notes">
+					<property name="offset" type="integer">1</property>
+					<object class="SwatTextCellRenderer">
+						<property name="visible" type="data">has_notes</property>
+						<property name="text" type="data">notes</property>
 					</object>
 				</object>
 			</widget>
