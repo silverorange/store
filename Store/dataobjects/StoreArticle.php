@@ -42,8 +42,7 @@ class StoreArticle extends SiteArticle
 		$this->region = $region;
 
 		if ($this->hasSubDataObject('sub_articles'))
-			foreach ($this->sub_articles as $article)
-				$article->setRegion($region);
+			$this->sub_articles->setRegion($region);
 	}
 
 	// }}}
