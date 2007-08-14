@@ -153,6 +153,29 @@ class StorePaymentTransaction extends SwatDBDataObject
 	public $request_type;
 
 	// }}}
+	// {{{ protected properties
+
+	/**
+	 * The payer authentication request of this transaction
+	 *
+	 * @var string
+	 *
+	 * @see StorePaymentTransaction::setPayerAuthenticationRequest()
+	 * @see StorePaymentTransaction::getPayerAuthenticationRequest()
+	 */
+	protected $pareq;
+
+	/**
+	 * The access control system URL of this transaction
+	 *
+	 * @var string
+	 *
+	 * @see StorePaymentTransaction::setAccessControlSystemUrl()
+	 * @see StorePaymentTransaction::getAccessControlSystemUrl()
+	 */
+	protected $acs_url;
+
+	// }}}
 	// {{{ public function loadFromMerchantData()
 
 	/**
@@ -193,6 +216,93 @@ class StorePaymentTransaction extends SwatDBDataObject
 		$this->initFromRow($row);
 		$this->generatePropertyHashes();
 		return true;
+	}
+
+	// }}}
+	// {{{ public function setPayerAuthenticationRequest()
+
+	/**
+	 * Sets the payer authentication request of this transaction
+	 *
+	 * The payer authentication request (PAReq) is returned from a 3-D Secure
+	 * transaction initiation. It is required to proceed with the 3-D Secure
+	 * authentication system. The Payer authentication request should never be
+	 * saved in the database.
+	 *
+	 * @param string $pareq the payer authentication request string.
+	 *
+	 * @see StorePaymentTransaction::getPayerAuthenticationRequest()
+	 */
+	public function setPayerAuthenticationRequest($pareq)
+	{
+		$this->pareq = (string)$pareq;
+	}
+
+	// }}}
+	// {{{ public function getPayerAuthenticationRequest()
+
+	/**
+	 * Gets the payer authentication request of this transaction
+	 *
+	 * The payer authentication request (PARes) must have been previously set
+	 * with a call to
+	 * {@link StorePaymentTransaction::setPayerAuthenticationRequest()}. The
+	 * payer authentication request is never saved in the database and cannot
+	 * be retrieved for stored transactions.
+	 *
+	 * @return string the payer authentication request for this transaction or
+	 *                 null if this transaction does not have a payer
+	 *                 authentication request set.
+	 *
+	 * @see StorePaymentTransaction::setPayerAuthenticationRequest()
+	 */
+	public function getPayerAuthenticationRequest()
+	{
+		return $this->pareq;
+	}
+
+	// }}}
+	// {{{ public function setAccessControlSystemUrl()
+
+	/**
+	 * Sets the access control system URL for this transaction
+	 *
+	 * The access control system URL (ACSURL) is returned from a 3-D Secure
+	 * transaction initiation. The payer authentication request, merchant data
+	 * and terminal URL should be POSTed to this URL to proceed with 3-D Secure
+	 * authentication. The access control system URL should not be stored in
+	 * the database.
+	 *
+	 * @param string $acs_url the access control URL of this transaction.
+	 *
+	 * @see StorePaymentTransaction::getAccessControlSystemUrl()
+	 */
+	public function setAccessControlSystemUrl($acs_url)
+	{
+		$this->acs_url = (string)$acs_url;
+	}
+
+	// }}}
+	// {{{ public function getAccessControlSystemUrl()
+
+	/**
+	 * Gets the payer authentication request of this transaction
+	 *
+	 * The access control system URL (ACSURL) must have been previously set
+	 * with a call to
+	 * {@link StorePaymentTransaction::setAccessControlSystemUrl()}. The
+	 * access control system URL is never saved in the database and cannot be
+	 * retrieved for stored transactions.
+	 *
+	 * @return string the access control system URL for this transaction or
+	 *                 null if this transaction does not have an access control
+	 *                 system URL set.
+	 *
+	 * @see StorePaymentTransaction::setAccessControlSystemUrl()
+	 */
+	public function getAccessControlSystemUrl(Crypt_GPG $gpg, $passphrase)
+	{
+		return $this->acs_url;
 	}
 
 	// }}}
