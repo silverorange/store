@@ -300,7 +300,7 @@ class StorePaymentTransaction extends SwatDBDataObject
 	 *
 	 * @see StorePaymentTransaction::setAccessControlSystemUrl()
 	 */
-	public function getAccessControlSystemUrl(Crypt_GPG $gpg, $passphrase)
+	public function getAccessControlSystemUrl()
 	{
 		return $this->acs_url;
 	}
