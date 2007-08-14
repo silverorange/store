@@ -19,6 +19,34 @@ require_once 'Store/dataobjects/StoreCategoryWrapper.php';
  */
 class StoreArticle extends SiteArticle
 {
+	// {{{ protected properties
+
+	/**
+	 * The region to use when loading region-specific sub-articles
+	 *
+	 * @var StoreRegion
+	 * @see StoreProduct::setRegion()
+	 */ 
+	protected $region = null;
+
+	// }}}
+	// {{{ public function setRegion()
+
+	/**
+	 * Sets the region to use when loading region-specific sub-articles
+	 *
+	 * @param StoreRegion $region the region to use.
+	 */
+	public function setRegion(StoreRegion $region)
+	{
+		$this->region = $region;
+
+		if ($this->hasSubDataObject('sub_articles'))
+			foreach ($this->sub_articles as $article)
+				$article->setRegion($region);
+	}
+
+	// }}}
 	// {{{ public function loadWithPath()
 
 	/**
@@ -96,6 +124,39 @@ class StoreArticle extends SiteArticle
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 		$wrapper = SwatDBClassMap::get('StoreCategoryWrapper');
 		return SwatDB::query($this->db, $sql, $wrapper);
+	}
+
+	// }}}
+	// {{{ protected function loadSubArticles()
+
+	/**
+	 * Loads the sub-articles of this article
+	 *
+	 * @return SiteArticleWrapper a recordset of sub-articles of the
+	 *                              specified article.
+	 */
+	protected function loadSubArticles()
+	{
+		$sql = 'select id, title, shortname, description from Article
+			where parent = %s and id in 
+			(select id from VisibleArticleView where region = %s)
+			order by displayorder, title';
+
+		if ($this->region === null)
+			throw new StoreException('Region not set on article dataobject; '.
+				'call the setRegion() method.');
+
+		$sql = sprintf($sql,
+			$this->db->quote($this->id, 'integer'),
+			$this->db->quote($this->region->id, 'integer'));
+
+		$wrapper = SwatDBClassMap::get('SiteArticleWrapper');
+		$articles = SwatDB::query($this->db, $sql, $wrapper);
+
+		foreach ($articles as $article)
+			$article->setRegion($this->region);
+
+		return $articles;
 	}
 
 	// }}}

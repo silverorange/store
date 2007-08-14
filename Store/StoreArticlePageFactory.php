@@ -63,6 +63,25 @@ abstract class StoreArticlePageFactory extends SiteArticlePageFactory
 	}
 
 	// }}}
+	// {{{ protected function getArticle()
+
+	/**
+	 * Gets an article object from the database
+	 *
+	 * @param integer $id the database identifier of the article to get.
+	 *
+	 * @return SiteArticle the specified article or null if no such article
+	 *                       exists.
+	 */
+	protected function getArticle($app, $article_id, $path)
+	{
+		$article = parent::getArticle($app, $article_id, $path);
+		$article->setRegion($app->getRegion());
+
+		return $article;
+	}
+
+	// }}}
 }
 
 ?>
