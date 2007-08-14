@@ -400,6 +400,57 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
+	// {{{ public function threeDomainSecureAuth()
+
+	/**
+	 * Authenticates an existing 3-D Secure transaction
+	 *
+	 * After successful completion of the 3-D Secure transaction, both the
+	 * original transaction object and the returned transaction object should
+	 * be saved. The original transaction object will be updated by this
+	 * method.
+	 *
+	 * @param StorePaymentTransaction $transaction the original transaction
+	 *                                              initiated by the 3-D Secure
+	 *                                              authentication process.
+	 *                                              This transaction must
+	 *                                              contain the order id and
+	 *                                              merchant data of the
+	 *                                              original transaction.
+	 * @param string $pares payer authentication response. The base64 encoded,
+	 *                       encrypted message retrieved from the issuing bank
+	 *                       for the transaction.
+	 *
+	 * @return StorePaymentTransaction the authenticated transation.
+	 */
+	public function threeDomainSecureAuth(StorePaymentTransaction $transaction,
+		$pares)
+	{
+		$request = new StoreProtxPaymentRequest(
+			StorePaymentRequest::TYPE_3DS_AUTH, $this->mode);
+
+		$fields = array(
+			'MD'    => $transaction->merchant_data,
+			'PARes' => $pares,
+		);
+
+		$request->setFields($fields);
+		$response = $request->process();
+		$this->checkResponse($response);
+
+		// create final transaction (this one can be RELEASE'd if the original
+		// transaction was a HOLD).
+		$authed_transaction = $this->getPaymentTransaction($response,
+			$transaction->getInternalValue('ordernum'),
+			$transaction->request_type);
+
+		// set original transaction type to 3-D Secure auth
+		$transaction->request_type = StorePaymentRequest::TYPE_3DS_AUTH;
+
+		return $authed_transaction;
+	}
+
+	// }}}
 	// {{{ private function getCardFields()
 
 	/**
@@ -713,13 +764,17 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	/**
 	 * Builds a payment transaction object from a Protx payment response
 	 *
-	 * @param StoreProtxPaymentResponse $response the response object to
-	 *                                             build the transaction object
-	 *                                             from.
+	 * This is a helper method for constructing transaction objects for
+	 * PAY, HOLD and 3DS_AUTH requests.
+	 *
+	 * @param StoreProtxPaymentResponse $response the response object from
+	 *                                             which to build the
+	 *                                             transaction object.
 	 * @param integer $order_id the id of the order used to make the
 	 *                           transaction.
 	 * @param integer $request_type the type of request used to make the
-	 *                               transaction.
+	 *                               transaction. Should be one of the
+	 *                               StorePaymentRequest::TYPE_* constants.
 	 *
 	 * @return StorePaymentTransaction the payment transaction object.
 	 */
@@ -730,81 +785,123 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$transaction->createdate = new SwatDate();
 		$transaction->createdate->toUTC();
 		$transaction->ordernum = $order_id;
-		$transaction->transaction_id = $response->getField('VPSTxId');
-		$transaction->security_key = $response->getField('SecurityKey');
-		$transaction->authorization_code = $response->getField('TxAuthNo');
 		$transaction->request_type = $request_type;
 
-		// address
-		switch ($response->getField('AddressResult')) {
-		case 'NOTPROVIDED':
-			$transaction->address_status =
-				StorePaymentTransaction::STATUS_MISSING;
+		if ($response->getField('Status') == '3DAUTH') {
+			$transaction->merchant_data = $response->getField('MD');
+			$transaction->setPayerAuthenticationRequest(
+				$response->getField('PAReq'));
 
-			break;
-		case 'NOTCHECKED':
-			$transaction->address_status =
-				StorePaymentTransaction::STATUS_NOTCHECKED;
+			$transaction->setAccessControlSystemUrl(
+				$response->getField('ACSURL'));
+		} else {
+			$transaction->transaction_id = $response->getField('VPSTxId');
+			$transaction->security_key = $response->getField('SecurityKey');
+			$transaction->authorization_code = $response->getField('TxAuthNo');
 
-			break;
-		case 'MATCHED':
-			$transaction->address_status =
-				StorePaymentTransaction::STATUS_PASSED;
+			// cardholder authentication verification value
+			if ($response->hasField('CAVV'))
+				$transaction->cavv = $response->getField('CAVV');
 
-			break;
-		case 'NOTMATCHED':
-			$transaction->address_status =
-				StorePaymentTransaction::STATUS_FAILED;
+			// address
+			switch ($response->getField('AddressResult')) {
+			case 'NOTPROVIDED':
+				$transaction->address_status =
+					StorePaymentTransaction::STATUS_MISSING;
 
-			break;
-		}
+				break;
+			case 'NOTCHECKED':
+				$transaction->address_status =
+					StorePaymentTransaction::STATUS_NOTCHECKED;
 
-		// postal/zip code
-		switch ($response->getField('PostCodeResult')) {
-		case 'NOTPROVIDED':
-			$transaction->postal_code_status =
-				StorePaymentTransaction::STATUS_MISSING;
+				break;
+			case 'MATCHED':
+				$transaction->address_status =
+					StorePaymentTransaction::STATUS_PASSED;
 
-			break;
-		case 'NOTCHECKED':
-			$transaction->postal_code_status =
-				StorePaymentTransaction::STATUS_NOTCHECKED;
+				break;
+			case 'NOTMATCHED':
+				$transaction->address_status =
+					StorePaymentTransaction::STATUS_FAILED;
 
-			break;
-		case 'MATCHED':
-			$transaction->postal_code_status =
-				StorePaymentTransaction::STATUS_PASSED;
+				break;
+			}
 
-			break;
-		case 'NOTMATCHED':
-			$transaction->postal_code_status =
-				StorePaymentTransaction::STATUS_FAILED;
+			// postal/zip code
+			switch ($response->getField('PostCodeResult')) {
+			case 'NOTPROVIDED':
+				$transaction->postal_code_status =
+					StorePaymentTransaction::STATUS_MISSING;
 
-			break;
-		}
+				break;
+			case 'NOTCHECKED':
+				$transaction->postal_code_status =
+					StorePaymentTransaction::STATUS_NOTCHECKED;
 
-		// card verification value
-		switch ($response->getField('CV2Result')) {
-		case 'NOTPROVIDED':
-			$transaction->card_verification_value_status =
-				StorePaymentTransaction::STATUS_MISSING;
+				break;
+			case 'MATCHED':
+				$transaction->postal_code_status =
+					StorePaymentTransaction::STATUS_PASSED;
 
-			break;
-		case 'NOTCHECKED':
-			$transaction->card_verification_value_status =
-				StorePaymentTransaction::STATUS_NOTCHECKED;
+				break;
+			case 'NOTMATCHED':
+				$transaction->postal_code_status =
+					StorePaymentTransaction::STATUS_FAILED;
 
-			break;
-		case 'MATCHED':
-			$transaction->card_verification_value_status =
-				StorePaymentTransaction::STATUS_PASSED;
+				break;
+			}
 
-			break;
-		case 'NOTMATCHED':
-			$transaction->card_verification_value_status =
-				StorePaymentTransaction::STATUS_FAILED;
+			// card verification value
+			switch ($response->getField('CV2Result')) {
+			case 'NOTPROVIDED':
+				$transaction->card_verification_value_status =
+					StorePaymentTransaction::STATUS_MISSING;
 
-			break;
+				break;
+			case 'NOTCHECKED':
+				$transaction->card_verification_value_status =
+					StorePaymentTransaction::STATUS_NOTCHECKED;
+
+				break;
+			case 'MATCHED':
+				$transaction->card_verification_value_status =
+					StorePaymentTransaction::STATUS_PASSED;
+
+				break;
+			case 'NOTMATCHED':
+				$transaction->card_verification_value_status =
+					StorePaymentTransaction::STATUS_FAILED;
+
+				break;
+			}
+
+			// 3-D Secure authentication status
+			if ($response->hasField('3DSecureStatus')) {
+				switch ($response->getField('3DSecureStatus')) {
+				case 'NOAUTH':
+				case 'CANTAUTH':
+				case 'ATTEMPTONLY':
+					$transaction->three_domain_secure_status =
+						StorePaymentTransaction::STATUS_MISSING;
+
+					break;
+				case 'NOTCHECKED':
+					$transaction->three_domain_secure_status =
+						StorePaymentTransaction::STATUS_NOTCHECKED;
+
+					break;
+				case 'OK':
+					$transaction->three_domain_secure_status =
+						StorePaymentTransaction::STATUS_PASSED;
+
+					break;
+				case 'NOTAUTHED':
+					$transaction->three_domain_secure_status =
+						StorePaymentTransaction::STATUS_FAILED;
+
+					break;
+				}
+			}
 		}
 
 		return $transaction;
