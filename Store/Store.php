@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Swat/Swat.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Site/Site.php';
 
 /**
@@ -73,5 +74,8 @@ class Store
 }
 
 Store::setupGettext();
+
+SwatDBClassMap::addPath('Store/dataobjects');
+SwatDBClassMap::add('SiteArticle', 'StoreArticle');
 
 ?>
