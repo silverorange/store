@@ -262,45 +262,45 @@ class StorePaymentTransaction extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ public function setAccessControlSystemUrl()
+	// {{{ public function setAccessControlServerUrl()
 
 	/**
-	 * Sets the access control system URL for this transaction
+	 * Sets the access control server URL for this transaction
 	 *
-	 * The access control system URL (ACSURL) is returned from a 3-D Secure
+	 * The access control server URL (ACSURL) is returned from a 3-D Secure
 	 * transaction initiation. The payer authentication request, merchant data
 	 * and terminal URL should be POSTed to this URL to proceed with 3-D Secure
-	 * authentication. The access control system URL should not be stored in
+	 * authentication. The access control server URL should not be stored in
 	 * the database.
 	 *
 	 * @param string $acs_url the access control URL of this transaction.
 	 *
-	 * @see StorePaymentTransaction::getAccessControlSystemUrl()
+	 * @see StorePaymentTransaction::getAccessControlServerUrl()
 	 */
-	public function setAccessControlSystemUrl($acs_url)
+	public function setAccessControlServerUrl($acs_url)
 	{
 		$this->acs_url = (string)$acs_url;
 	}
 
 	// }}}
-	// {{{ public function getAccessControlSystemUrl()
+	// {{{ public function getAccessControlServerUrl()
 
 	/**
 	 * Gets the payer authentication request of this transaction
 	 *
-	 * The access control system URL (ACSURL) must have been previously set
+	 * The access control server URL (ACSURL) must have been previously set
 	 * with a call to
-	 * {@link StorePaymentTransaction::setAccessControlSystemUrl()}. The
-	 * access control system URL is never saved in the database and cannot be
+	 * {@link StorePaymentTransaction::setAccessControlServerUrl()}. The
+	 * access control server URL is never saved in the database and cannot be
 	 * retrieved for stored transactions.
 	 *
-	 * @return string the access control system URL for this transaction or
+	 * @return string the access control server URL for this transaction or
 	 *                 null if this transaction does not have an access control
-	 *                 system URL set.
+	 *                 server URL set.
 	 *
-	 * @see StorePaymentTransaction::setAccessControlSystemUrl()
+	 * @see StorePaymentTransaction::setAccessControlServerUrl()
 	 */
-	public function getAccessControlSystemUrl()
+	public function getAccessControlServerUrl()
 	{
 		return $this->acs_url;
 	}
@@ -316,6 +316,24 @@ class StorePaymentTransaction extends SwatDBDataObject
 		$this->registerInternalProperty('ordernum',
 			SwatDBClassMap::get('StoreOrder'));
 
+	}
+
+	// }}}
+	// {{{ protected function getSerializablePrivateProperties()
+
+	/**
+	 * Gets private and protected properties of this transaction that should
+	 * be preserved when this transaction is serialized
+	 *
+	 * @return array an array of private and protected property names that
+	 *                should be preserved when this transaction is serialized.
+	 */
+	protected function getSerializablePrivateProperties()
+	{
+		$properties = parent::getSerializablePrivateProperties();
+		$properties[] = 'pareq';
+		$properties[] = 'acs_url';
+		return $properties;
 	}
 
 	// }}}
