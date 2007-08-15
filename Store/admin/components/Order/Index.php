@@ -219,8 +219,12 @@ class StoreOrderIndex extends AdminSearch
 					Orders.billing_address
 				from Orders
 					left outer join Account on Orders.account = Account.id
+					inner join OrderAddress as BillingAddress
+						on Orders.billing_address = BillingAddress.id
 					inner join OrderAddress as ShippingAddress 
 						on Orders.shipping_address = ShippingAddress.id
+					inner join Locale on Orders.locale = Locale.id
+					inner join Region on Locale.region = Region.id
 				where %s
 				order by %s';
 
