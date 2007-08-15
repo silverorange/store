@@ -1,5 +1,27 @@
+2007-08-11  nrf
+
+	* [r19330] store/branches/1.8.x/package.php:
+	  prepare for release of 1.8.18
+	* [r19329]
+	  store/branches/1.8.x/Store/admin/components/Order/EmailConfirmation.php,
+	  store/branches/1.8.x/Store/admin/components/Order/Index.php,
+	  store/branches/1.8.x/Store/admin/components/Order/NoteEdit.php,
+	  store/branches/1.8.x/Store/admin/components/Order/details.xml,
+	  store/branches/1.8.x/Store/admin/components/Order/index.xml,
+	  store/branches/1.8.x/Store/admin/components/Order/noteedit.xml:
+	  Merge to branch
+
 2007-08-10  nrf
 
+	* [r19311] store/branches/1.8.x/ChangeLog,
+	  store/branches/1.8.x/package.php:
+	  prepare for release of 1.8.17
+	* [r19310]
+	  store/branches/1.8.x/Store/admin/components/Category/Index.php:
+	  merge 19309 to branch
+	* [r19308]
+	  store/branches/1.8.x/Store/admin/components/Product/Details.php:
+	  merge 19307 to branch
 	* [r19303] store/branches/1.8.x/ChangeLog,
 	  store/branches/1.8.x/package.php:
 	  prepare for release of 1.8.16
