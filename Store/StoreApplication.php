@@ -149,9 +149,11 @@ abstract class StoreApplication extends SiteWebApplication
 				}
 			}
 
-			$source = self::initVar('source');
+			$regexp = sprintf('/&?\??ad=%s/u',
+				preg_quote($ad_shortname, '/'));
 
-			$this->relocate($source);
+			$uri = preg_replace($regexp, '', $_SERVER['REQUEST_URI']);
+			$this->relocate($uri);
 		}
 	}
 
