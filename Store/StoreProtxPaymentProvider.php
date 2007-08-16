@@ -792,7 +792,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 			$transaction->setPayerAuthenticationRequest(
 				$response->getField('PAReq'));
 
-			$transaction->setAccessControlSystemUrl(
+			$transaction->setAccessControlServerUrl(
 				$response->getField('ACSURL'));
 		} else {
 			$transaction->transaction_id = $response->getField('VPSTxId');
