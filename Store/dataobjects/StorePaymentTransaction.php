@@ -166,6 +166,16 @@ class StorePaymentTransaction extends SwatDBDataObject
 	protected $pareq;
 
 	/**
+	 * The payer authentication response of this transaction
+	 *
+	 * @var string
+	 *
+	 * @see StorePaymentTransaction::setPayerAuthenticationResponse()
+	 * @see StorePaymentTransaction::getPayerAuthenticationResponse()
+	 */
+	protected $pares;
+
+	/**
 	 * The access control system URL of this transaction
 	 *
 	 * @var string
@@ -244,7 +254,7 @@ class StorePaymentTransaction extends SwatDBDataObject
 	/**
 	 * Gets the payer authentication request of this transaction
 	 *
-	 * The payer authentication request (PARes) must have been previously set
+	 * The payer authentication request (PAReq) must have been previously set
 	 * with a call to
 	 * {@link StorePaymentTransaction::setPayerAuthenticationRequest()}. The
 	 * payer authentication request is never saved in the database and cannot
@@ -259,6 +269,49 @@ class StorePaymentTransaction extends SwatDBDataObject
 	public function getPayerAuthenticationRequest()
 	{
 		return $this->pareq;
+	}
+
+	// }}}
+	// {{{ public function setPayerAuthenticationResponse()
+
+	/**
+	 * Sets the payer authentication response of this transaction
+	 *
+	 * The payer authentication response (PARes) is returned from the
+	 * cardholder's bank during the 3-D Secure authentication process. It is
+	 * It is required to proceed with the 3-D Secure authentication system.
+	 * The Payer authentication response should never be saved in the database.
+	 *
+	 * @param string $pares the payer authentication response string.
+	 *
+	 * @see StorePaymentTransaction::getPayerAuthenticationResponse()
+	 */
+	public function setPayerAuthenticationResponse($pares)
+	{
+		$this->pares = (string)$pares;
+	}
+
+	// }}}
+	// {{{ public function getPayerAuthenticationResponse()
+
+	/**
+	 * Gets the payer authentication response of this transaction
+	 *
+	 * The payer authentication response (PARes) must have been previously set
+	 * with a call to
+	 * {@link StorePaymentTransaction::setPayerAuthenticationResponse()}. The
+	 * payer authentication response is never saved in the database and cannot
+	 * be retrieved for stored transactions.
+	 *
+	 * @return string the payer authentication response for this transaction or
+	 *                 null if this transaction does not have a payer
+	 *                 authentication response set.
+	 *
+	 * @see StorePaymentTransaction::setPayerAuthenticationResponse()
+	 */
+	public function getPayerAuthenticationResponse()
+	{
+		return $this->pares;
 	}
 
 	// }}}
@@ -332,6 +385,7 @@ class StorePaymentTransaction extends SwatDBDataObject
 	{
 		$properties = parent::getSerializablePrivateProperties();
 		$properties[] = 'pareq';
+		$properties[] = 'pares';
 		$properties[] = 'acs_url';
 		return $properties;
 	}
