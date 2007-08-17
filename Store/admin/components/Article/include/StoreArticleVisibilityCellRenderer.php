@@ -11,6 +11,8 @@ require_once 'Swat/SwatCellRenderer.php';
  */
 class StoreArticleVisibilityCellRenderer extends SwatCellRenderer
 {
+	// {{{ public properties 
+
 	public $article = false;
 	public $db = false;
 
@@ -19,6 +21,9 @@ class StoreArticleVisibilityCellRenderer extends SwatCellRenderer
 
 	public $display_positive_states = false;
 	public $separator = ', ';
+
+	// }}}
+	// {{{ public function render()
 
 	public function render()
 	{
@@ -58,6 +63,8 @@ class StoreArticleVisibilityCellRenderer extends SwatCellRenderer
 		}
 
 	}
+
+	// }}}
 }
 
 ?>
