@@ -56,22 +56,20 @@ abstract class StoreCheckoutPage extends SiteArticlePage
 
 	protected function initDataObjects()
 	{
-		if (!isset($this->app->session->account) ||
-			$this->app->session->account === null) {
-				$account_class = SwatDBClassMap::get('StoreAccount');
-				$this->app->session->account = new $account_class();
-				$this->app->session->account->setDatabase($this->app->db);
-				$this->resetProgress();
+		if (!isset($this->app->session->account)) {
+			$account_class = SwatDBClassMap::get('StoreAccount');
+			$this->app->session->account = new $account_class();
+			$this->app->session->account->setDatabase($this->app->db);
+			$this->resetProgress();
 		}
 
 		if (!isset($this->app->session->order) ||
-			$this->app->session->order === null ||
 			$this->app->session->order->id !== null) {
-				unset($this->app->session->order);
-				$order_class = SwatDBClassMap::get('StoreOrder');
-				$this->app->session->order = new $order_class();
-				$this->app->session->order->setDatabase($this->app->db);
-				$this->resetProgress();
+			unset($this->app->session->order);
+			$order_class = SwatDBClassMap::get('StoreOrder');
+			$this->app->session->order = new $order_class();
+			$this->app->session->order->setDatabase($this->app->db);
+			$this->resetProgress();
 		}
 	}
 
