@@ -44,6 +44,9 @@ class StorePaymentRequestTypeCellRenderer extends SwatCellRenderer
 		case StorePaymentRequest::TYPE_REFUND:
 			$title = 'refund';
 			break;
+		case StorePaymentRequest::TYPE_3DS_AUTH:
+			$title = 'authentication';
+			break;
 		default:
 			$title = 'unknown';
 			break;
