@@ -15,12 +15,17 @@ require_once 'SwatDB/SwatDB.php';
  */
 class StoreArticleActionsProcessor
 {
+	// {{{ private properties
+
 	/**
 	 * A reference to the page that is using this action processor
 	 *
 	 * @var AdminPage
 	 */
 	private $page;
+
+	// }}}
+	// {{{ public function __construct()
 
 	/**
 	 * Creates a new article action processor
@@ -31,6 +36,9 @@ class StoreArticleActionsProcessor
 	{
 		$this->page = $page;
 	}
+
+	// }}}
+	// {{{ public function process()
 
 	/**
 	 * Processes actions on articles
@@ -140,6 +148,9 @@ class StoreArticleActionsProcessor
 			$this->page->app->messages->add($message);
 	}
 
+	// }}}
+	// {{{ public static function getActions()
+
 	public static function getActions()
 	{
 		return array(
@@ -149,6 +160,8 @@ class StoreArticleActionsProcessor
 			'hide_from_search' => Store::_('hide from search'),
 		);
 	}
+
+	// }}}
 }
 
 ?>
