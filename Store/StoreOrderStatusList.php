@@ -8,10 +8,13 @@ require_once 'SwatDB/SwatDBClassMap.php';
 /**
  * A list of {@link StoreOrderStatus} objects
  *
- * Order statuses are progressive. That means if one status is greater than
- * another, the lesser status is included in the greated status. For example,
- * if shipped is greater than billed then an order that is shipped is also
- * billed.
+ * Order statuses are progressive. That means if the id of one status is
+ * greater than another, the lesser status is included in the greated status.
+ * For example, if shipped is greater than billed then an order that is shipped
+ * is also billed.
+ *
+ * Iteration of the order status list starts with the lowest status and
+ * proceeds in order until the greatest status is reached.
  *
  * The order of order statuses are defined in the
  * {@link StoreOrderStatusList::getDefinedStatuses()} method.
@@ -140,6 +143,17 @@ class StoreOrderStatusList extends StoreStatusList
 		}
 
 		return self::$defined_statuses;
+	}
+
+	// }}}
+	// {{{ protected function __construct()
+
+	protected function __construct()
+	{
+		parent::__construct();
+
+		// sort statuses since order statuses need to be iterated in order
+		usort($this->statuses, array('StoreOrderStatus', 'compare'));
 	}
 
 	// }}}

@@ -91,7 +91,7 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
 	}
 
 	// }}}
-	// {{{ public function current()
+	// {{{ public final function current()
 
 	/**
 	 * Returns the current status
@@ -104,7 +104,7 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
 	}
 
 	// }}}
-	// {{{ public function key()
+	// {{{ public final function key()
 
 	/**
 	 * Returns the key of the current status
@@ -117,7 +117,7 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
 	}
 
 	// }}}
-	// {{{ public function next()
+	// {{{ public final function next()
 
 	/**
 	 * Moves forward to the next status
@@ -128,7 +128,7 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
 	}
 
 	// }}}
-	// {{{ public function prev()
+	// {{{ public final function prev()
 
 	/**
 	 * Moves forward to the previous status
@@ -139,7 +139,7 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
 	}
 
 	// }}}
-	// {{{ public function rewind()
+	// {{{ public final function rewind()
 
 	/**
 	 * Rewinds this iterator to the first status
@@ -150,7 +150,7 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
 	}
 
 	// }}}
-	// {{{ public function valid()
+	// {{{ public final function valid()
 
 	/**
 	 * Checks is there is a current status after calls to rewind() and next()
@@ -208,9 +208,9 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
 	abstract protected function getDefinedStatuses();
 
 	// }}}
-	// {{{ protected final function __construct()
+	// {{{ protected function __construct()
 
-	protected final function __construct()
+	protected function __construct()
 	{
 		foreach ($this->getDefinedStatuses() as $status) {
 			$this->add($status);
