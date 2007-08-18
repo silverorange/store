@@ -91,66 +91,66 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
 	}
 
 	// }}}
-	// {{{ public final function current()
+	// {{{ public function current()
 
 	/**
 	 * Returns the current status
 	 *
 	 * @return mixed the current status.
 	 */
-	public final function current()
+	public function current()
 	{
 		return $this->statuses[$this->current_index];
 	}
 
 	// }}}
-	// {{{ public final function key()
+	// {{{ public function key()
 
 	/**
 	 * Returns the key of the current status
 	 *
 	 * @return integer the key of the current status
 	 */
-	public final function key()
+	public function key()
 	{
 		return $this->current_index;
 	}
 
 	// }}}
-	// {{{ public final function next()
+	// {{{ public function next()
 
 	/**
 	 * Moves forward to the next status
 	 */
-	public final function next()
+	public function next()
 	{
 		$this->current_index++;
 	}
 
 	// }}}
-	// {{{ public final function prev()
+	// {{{ public function prev()
 
 	/**
 	 * Moves forward to the previous status
 	 */
-	public final function prev()
+	public function prev()
 	{
 		$this->current_index--;
 	}
 
 	// }}}
-	// {{{ public final function rewind()
+	// {{{ public function rewind()
 
 	/**
 	 * Rewinds this iterator to the first status
 	 */
-	public final function rewind()
+	public function rewind()
 	{
 		$this->current_index = 0;
 	}
 
 	// }}}
-	// {{{ public final function valid()
+	// {{{ public function valid()
 
 	/**
 	 * Checks is there is a current status after calls to rewind() and next()
@@ -158,7 +158,7 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
 	 * @return boolean true if there is a current status and false if there
 	 *                  is not.
 	 */
-	public final function valid()
+	public function valid()
 	{
 		return isset($this->statuses[$this->current_index]);
 	}
