@@ -443,7 +443,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		// transaction was a HOLD).
 		$authed_transaction = $this->getPaymentTransaction($response,
 			$transaction->getInternalValue('ordernum'),
-			$transaction->request_type);
+			$transaction->original_request_type);
 
 		return $authed_transaction;
 	}
