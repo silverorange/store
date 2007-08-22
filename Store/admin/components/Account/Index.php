@@ -18,12 +18,12 @@ class StoreAccountIndex extends AdminSearch
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/Account/index.xml';
+	protected $ui_xml = 'Store/admin/components/Account/admin-account-index.xml';
 
 	/**
 	 * @var string
 	 */
-	protected $search_xml = 'Store/admin/components/Account/search.xml';
+	protected $search_xml = 'Store/admin/components/Account/admin-account-search.xml';
 
 	// }}}
 

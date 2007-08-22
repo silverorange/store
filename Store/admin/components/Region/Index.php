@@ -20,7 +20,7 @@ class StoreRegionIndex extends AdminIndex
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML(dirname(__FILE__).'/index.xml');
+		$this->ui->loadFromXML(dirname(__FILE__).'/admin-region-index.xml');
 	}
 
 	// }}}

@@ -38,7 +38,7 @@ class StoreCategoryIndex extends AdminIndex
 {
 	// {{{ protected properties
 
-	protected $ui_xml = 'Store/admin/components/Category/index.xml';
+	protected $ui_xml = 'Store/admin/components/Category/admin-category-index.xml';
 	protected $id = null;
 
 	// }}}

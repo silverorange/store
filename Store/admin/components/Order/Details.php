@@ -37,7 +37,7 @@ abstract class StoreOrderDetails extends AdminPage
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/Order/details.xml';
+	protected $ui_xml = 'Store/admin/components/Order/admin-order-details.xml';
 
 	// }}}
 

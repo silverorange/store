@@ -28,7 +28,7 @@ class StoreAdEdit extends AdminDBEdit
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
+		$this->ui->loadFromXML(dirname(__FILE__).'/admin-ad-edit.xml');
 
 		$this->fields = array('title', 'shortname');
 	}

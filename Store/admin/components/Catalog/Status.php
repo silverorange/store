@@ -21,7 +21,7 @@ abstract class StoreCatalogStatus extends AdminDBEdit
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/Catalog/status.xml';
+	protected $ui_xml = 'Store/admin/components/Catalog/admin-catalog-status.xml';
 
 	// }}}
 	// {{{ private properties

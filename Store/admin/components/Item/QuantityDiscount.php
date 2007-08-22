@@ -53,7 +53,7 @@ class StoreItemQuantityDiscount extends AdminIndex
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML(dirname(__FILE__).'/quantity-discount.xml');
+		$this->ui->loadFromXML(dirname(__FILE__).'/admin-item-quantity-discount.xml');
 
 		$this->id = SiteApplication::initVar('id');
 
