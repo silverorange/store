@@ -18,7 +18,7 @@ class StoreProductRelatedProduct extends AdminSearch
 {
 	// {{{ protected properties
 
-	protected $ui_xml = 'Store/admin/components/Product/relatedproduct.xml';
+	protected $ui_xml = 'Store/admin/components/Product/related-product.xml';
 	protected $search_xml = 'Store/admin/components/Product/search.xml';
 
 	// }}}

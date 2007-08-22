@@ -18,7 +18,7 @@ class StoreInvoiceItemEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
-	protected $ui_xml = 'Store/admin/components/Invoice/itemedit.xml';
+	protected $ui_xml = 'Store/admin/components/Invoice/item-edit.xml';
 
 	/**
 	 * @var StoreInvoiceItem

@@ -32,7 +32,7 @@ class StoreCategoryImageEdit extends AdminPage
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML(dirname(__FILE__).'/imageedit.xml');
+		$this->ui->loadFromXML(dirname(__FILE__).'/image-edit.xml');
 
 		$this->category_id = SiteApplication::initVar('category');
 
