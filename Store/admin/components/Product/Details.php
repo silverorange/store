@@ -37,7 +37,7 @@ class StoreProductDetails extends AdminIndex
 {
 	// {{{ protected properties
 
-	protected $ui_xml = 'Store/admin/components/Product/admin-product-details.xml';
+	protected $ui_xml = 'Store/admin/components/Product/details.xml';
 	protected $id;
 	protected $category_id;
 

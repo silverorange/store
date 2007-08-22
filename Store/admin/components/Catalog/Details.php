@@ -22,7 +22,7 @@ class StoreCatalogDetails extends AdminPage
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/Catalog/admin-catalog-details.xml';
+	protected $ui_xml = 'Store/admin/components/Catalog/details.xml';
 
 	// }}}
 	// {{{ private properties

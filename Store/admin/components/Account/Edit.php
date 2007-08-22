@@ -22,7 +22,7 @@ class StoreAccountEdit extends AdminDBEdit
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/Account/admin-account-edit.xml';
+	protected $ui_xml = 'Store/admin/components/Account/edit.xml';
 
 	// }}}
 

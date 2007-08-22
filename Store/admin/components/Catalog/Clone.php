@@ -20,7 +20,7 @@ class StoreCatalogClone extends AdminDBEdit
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/Catalog/admin-catalog-clone.xml';
+	protected $ui_xml = 'Store/admin/components/Catalog/clone.xml';
 
 	// }}}
 

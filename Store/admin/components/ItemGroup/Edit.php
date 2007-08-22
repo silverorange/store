@@ -26,7 +26,7 @@ class StoreItemGroupEdit extends AdminDBEdit
 	protected function initInternal()
 	{
 		parent::initInternal();
-		$this->ui->loadFromXML(dirname(__FILE__).'/admin-itemgroup-edit.xml');
+		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
 		$this->fields = array('title');
 		$this->category_id = SiteApplication::initVar('category');
 

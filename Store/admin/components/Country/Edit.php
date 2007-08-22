@@ -21,7 +21,7 @@ class StoreCountryEdit extends AdminDBEdit
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/Country/admin-country-edit.xml';
+	protected $ui_xml = 'Store/admin/components/Country/edit.xml';
 
 	// }}}
 

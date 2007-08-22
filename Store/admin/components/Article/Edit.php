@@ -16,7 +16,7 @@ class StoreArticleEdit extends SiteArticleEdit
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/Article/admin-article-edit.xml';
+	protected $ui_xml = 'Store/admin/components/Article/edit.xml';
 
 	// }}}
 

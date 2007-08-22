@@ -19,7 +19,7 @@ class StoreCatalogIndex extends AdminIndex
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/Catalog/admin-catalog-index.xml';
+	protected $ui_xml = 'Store/admin/components/Catalog/index.xml';
 
 	// }}}
 
@@ -40,6 +40,8 @@ class StoreCatalogIndex extends AdminIndex
 	}
 
 	// }}}
+
+	// process phase
 
 	// build phase
 	// {{{ protected function getTableModel()

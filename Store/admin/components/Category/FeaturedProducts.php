@@ -14,7 +14,7 @@ class StoreCategoryFeaturedProducts extends AdminIndex
 {
 	// {{{ protected properties
 
-	protected $ui_xml = 'Store/admin/components/Category/admin-category-featuredproducts.xml';
+	protected $ui_xml = 'Store/admin/components/Category/featuredproducts.xml';
 
 	// }}}
 	// {{{ private properties

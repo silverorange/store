@@ -16,7 +16,7 @@ class StoreCategoryEdit extends AdminDBEdit
 {
 	// {{{ private properties
 
-	protected $ui_xml = 'Store/admin/components/Category/admin-category-edit.xml';
+	protected $ui_xml = 'Store/admin/components/Category/edit.xml';
 	protected $fields;
 
 	// }}}
