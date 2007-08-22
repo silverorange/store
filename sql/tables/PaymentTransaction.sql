@@ -15,6 +15,7 @@ create table PaymentTransaction (
 	three_domain_secure_status integer,
 	cavv varchar(255), -- card authentication verification value
 	request_type integer not null,
+	original_request_type integer,
 	ordernum integer not null references Orders(id) on delete cascade,
 	primary key (id)
 );
