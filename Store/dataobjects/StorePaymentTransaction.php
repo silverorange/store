@@ -144,13 +144,27 @@ class StorePaymentTransaction extends SwatDBDataObject
 	public $cavv;
 
 	/**
-	 * The type of request used to create this transaction
+	 * The type of request of this transaction
 	 *
 	 * This should be one of the {@link StorePaymentRequest}::TYPE_* constants.
 	 *
 	 * @var integer
 	 */
 	public $request_type;
+
+	/**
+	 * The type of request orinally made with this transaction
+	 *
+	 * This should be one of the {@link StorePaymentRequest}::TYPE_* constants.
+	 * This should only set if this payment transaction's request type is
+	 * a 3-D Secure authentication request. If so, this holds the original
+	 * request type of the transaction that initiated the 3-D Secure request.
+	 *
+	 * If 3-D Secure is not used, this property will always be null.
+	 *
+	 * @var integer
+	 */
+	public $original_request_type;
 
 	// }}}
 	// {{{ protected properties

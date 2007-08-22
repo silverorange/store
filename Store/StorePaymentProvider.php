@@ -426,16 +426,27 @@ abstract class StorePaymentProvider
 	/**
 	 * Authenticates an existing 3-D Secure transaction
 	 *
-	 * @param string $merchant_data the merchant data of the 3-D Secure
-	 *                               transaction used to identify the
-	 *                               transaction on the merchant's system.
+	 * After successful completion of the 3-D Secure transaction, the
+	 * returned transaction object should be saved.
+	 *
+	 * @param StorePaymentTransaction $transaction the original transaction
+	 *                                              initiated by the 3-D Secure
+	 *                                              authentication process.
+	 *                                              This transaction must
+	 *                                              contain the order id and
+	 *                                              merchant data of the
+	 *                                              original transaction.
 	 * @param string $pares payer authentication response. The base64 encoded,
 	 *                       encrypted message retrieved from the issuing bank
 	 *                       for the transaction.
 	 *
-	 * @return StorePaymentTransaction the authenticated transation.
+	 * @return StorePaymentTransaction the authenticated transaction. The
+	 *                                  authenticated transaction can be
+	 *                                  released if the initial request was a
+	 *                                  hold request.
 	 */
-	public function threeDomainSecureAuth($merchant_data, $pares)
+	public function threeDomainSecureAuth(StorePaymentTransaction $transaction,
+		$pares)
 	{
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(

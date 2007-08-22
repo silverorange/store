@@ -405,10 +405,8 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	/**
 	 * Authenticates an existing 3-D Secure transaction
 	 *
-	 * After successful completion of the 3-D Secure transaction, both the
-	 * original transaction object and the returned transaction object should
-	 * be saved. The original transaction object will be updated by this
-	 * method.
+	 * After successful completion of the 3-D Secure transaction, the
+	 * returned transaction object should be saved.
 	 *
 	 * @param StorePaymentTransaction $transaction the original transaction
 	 *                                              initiated by the 3-D Secure
@@ -421,7 +419,10 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	 *                       encrypted message retrieved from the issuing bank
 	 *                       for the transaction.
 	 *
-	 * @return StorePaymentTransaction the authenticated transation.
+	 * @return StorePaymentTransaction the authenticated transaction. The
+	 *                                  authenticated transaction can be
+	 *                                  released if the initial request was a
+	 *                                  hold request.
 	 */
 	public function threeDomainSecureAuth(StorePaymentTransaction $transaction,
 		$pares)
@@ -443,9 +444,6 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$authed_transaction = $this->getPaymentTransaction($response,
 			$transaction->getInternalValue('ordernum'),
 			$transaction->request_type);
-
-		// set original transaction type to 3-D Secure auth
-		$transaction->request_type = StorePaymentRequest::TYPE_3DS_AUTH;
 
 		return $authed_transaction;
 	}
@@ -785,9 +783,10 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$transaction->createdate = new SwatDate();
 		$transaction->createdate->toUTC();
 		$transaction->ordernum = $order_id;
-		$transaction->request_type = $request_type;
 
 		if ($response->getField('Status') == '3DAUTH') {
+			$transaction->request_type = StorePaymentRequest::TYPE_3DS_AUTH;
+			$transaction->original_request_type = $request_type;
 			$transaction->merchant_data = $response->getField('MD');
 			$transaction->setPayerAuthenticationRequest(
 				$response->getField('PAReq'));
@@ -795,6 +794,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 			$transaction->setAccessControlServerUrl(
 				$response->getField('ACSURL'));
 		} else {
+			$transaction->request_type = $request_type;
 			$transaction->transaction_id = $response->getField('VPSTxId');
 			$transaction->security_key = $response->getField('SecurityKey');
 			$transaction->authorization_code = $response->getField('TxAuthNo');
