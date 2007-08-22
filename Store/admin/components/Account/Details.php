@@ -24,7 +24,7 @@ class StoreAccountDetails extends AdminIndex
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/Account/admin-account-details.xml';
+	protected $ui_xml = 'Store/admin/components/Account/details.xml';
 
 	/**
 	 * @var integer

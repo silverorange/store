@@ -19,7 +19,7 @@ class StoreAdDetails extends AdminIndex
 	// {{{ protected properties
 
 	protected $id;
-	protected $ui_xml = 'Store/admin/components/Ad/admin-ad-details.xml';
+	protected $ui_xml = 'Store/admin/components/Ad/details.xml';
 	protected $periods;
 
 	// }}}}

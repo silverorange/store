@@ -18,7 +18,7 @@ class StoreProductEdit extends AdminDBEdit
 	// {{{ protected properties
 
 	protected $fields;
-	protected $ui_xml = 'Store/admin/components/Product/admin-product-edit.xml';
+	protected $ui_xml = 'Store/admin/components/Product/edit.xml';
 
 	// }}}
 	// {{{ private properties

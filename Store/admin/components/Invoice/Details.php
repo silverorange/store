@@ -23,7 +23,7 @@ class StoreInvoiceDetails extends AdminIndex
 {
 	// {{{ protected properties
 
-	protected $ui_xml = 'Store/admin/components/Invoice/admin-invoice-details.xml';
+	protected $ui_xml = 'Store/admin/components/Invoice/details.xml';
 	protected $id;
 
 	// }}}

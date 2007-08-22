@@ -27,7 +27,7 @@ class StorePaymentTypeEdit extends AdminDBEdit
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML(dirname(__FILE__).'/admin-paymenttype-edit.xml');
+		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
 
 		$this->fields = array('title', 'shortname');
 

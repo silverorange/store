@@ -27,7 +27,7 @@ class StorePaymentTypeIndex extends AdminIndex
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML(dirname(__FILE__).'/admin-paymenttype-index.xml');
+		$this->ui->loadFromXML(dirname(__FILE__).'/index.xml');
 		$this->regions = SwatDB::getOptionArray($this->app->db, 'Region',
 			'title', 'id');
 

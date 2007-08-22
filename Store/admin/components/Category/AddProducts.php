@@ -29,10 +29,9 @@ class StoreCategoryAddProducts extends AdminSearch
 	{
 		parent::initInternal();
 
+		$this->ui->loadFromXML('Store/admin/components/Product/search.xml');
 		$this->ui->loadFromXML(
-			'Store/admin/components/Product/admin-product-search.xml');
-		$this->ui->loadFromXML(
-			'Store/admin/components/Category/admin-category-addproducts.xml');
+			'Store/admin/components/Category/addproducts.xml');
 
 		$catalog_selector = $this->ui->getWidget('catalog_selector');
 		$catalog_selector->db = $this->app->db;
