@@ -19,7 +19,7 @@ class StoreArticleSearch extends SiteArticleSearch
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/Article/search.xml';
+	protected $ui_xml = 'Store/admin/components/Article/admin-article-search.xml';
 
 	// }}}
 

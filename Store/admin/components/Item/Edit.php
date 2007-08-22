@@ -22,7 +22,7 @@ class StoreItemEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
-	protected $ui_xml = 'Store/admin/components/Item/edit.xml';
+	protected $ui_xml = 'Store/admin/components/Item/admin-item-edit.xml';
 	protected $fields;
 	protected $product_id;
 

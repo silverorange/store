@@ -19,7 +19,7 @@ class StoreArticleIndex extends SiteArticleIndex
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/Article/index.xml';
+	protected $ui_xml = 'Store/admin/components/Article/admin-article-index.xml';
 
 	// }}}
 

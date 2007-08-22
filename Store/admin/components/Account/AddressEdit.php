@@ -17,7 +17,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
-	protected $ui_xml = 'Store/admin/components/Account/addressedit.xml';
+	protected $ui_xml = 'Store/admin/components/Account/admin-account-addressedit.xml';
 
 	// }}}
 	// {{{ private properties

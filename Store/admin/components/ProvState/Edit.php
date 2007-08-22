@@ -21,7 +21,7 @@ class StoreProvStateEdit extends AdminDBEdit
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/ProvState/edit.xml';
+	protected $ui_xml = 'Store/admin/components/ProvState/admin-provstate-edit.xml';
 
 	// }}}
 

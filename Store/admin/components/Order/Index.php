@@ -22,12 +22,12 @@ class StoreOrderIndex extends AdminSearch
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/Order/index.xml';
+	protected $ui_xml = 'Store/admin/components/Order/admin-order-index.xml';
 
 	/**
 	 * @var string
 	 */
-	protected $search_xml = 'Store/admin/components/Order/search.xml';
+	protected $search_xml = 'Store/admin/components/Order/admin-order-search.xml';
 
 	// }}}
 

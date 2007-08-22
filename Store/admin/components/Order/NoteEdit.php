@@ -29,7 +29,7 @@ class StoreOrderNoteEdit extends AdminDBEdit
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML(dirname(__FILE__).'/noteedit.xml');
+		$this->ui->loadFromXML(dirname(__FILE__).'/admin-order-noteedit.xml');
 
 		// initialize order object
 		$class_name = SwatDBClassMap::get('StoreOrder');

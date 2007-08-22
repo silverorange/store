@@ -19,7 +19,7 @@ class StoreProductImageEdit extends AdminPage
 {
 	// {{{ protected properties
 
-	protected $ui_xml = 'Store/admin/components/Product/imageedit.xml';
+	protected $ui_xml = 'Store/admin/components/Product/admin-product-imageedit.xml';
 
 	// }}}
 	// {{{ private properties
