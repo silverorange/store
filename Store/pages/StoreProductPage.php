@@ -269,7 +269,8 @@ class StoreProductPage extends StorePage
 				$this->app->session->getSessionId();
 
 		// load item manually here so we can specify region
-		$item = new Item();
+		$item_class = SwatDBClassMap::get('StoreItem');
+		$item = new $item_class();
 		$item->setDatabase($this->app->db);
 		$item->setRegion($this->app->getRegion());
 		$item->load($item_id);
