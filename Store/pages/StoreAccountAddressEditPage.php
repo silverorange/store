@@ -225,7 +225,7 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 		$address->city = $this->ui->getWidget('city')->value;
 
 		$provstate = $this->ui->getWidget('provstate')->value;
-		$address->provstate = ($provstate == 'other') ? null : $provstate;
+		$address->provstate = ($provstate === 'other') ? null : $provstate;
 
 		$address->provstate_other =
 			$this->ui->getWidget('provstate_other')->value;
