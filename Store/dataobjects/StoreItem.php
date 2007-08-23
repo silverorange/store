@@ -41,7 +41,7 @@ require_once 'Store/StoreItemStatusList.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreItemWrapper
  */
-abstract class StoreItem extends SwatDBDataObject
+class StoreItem extends SwatDBDataObject
 {
 	// {{{ public properties
 
@@ -307,7 +307,7 @@ abstract class StoreItem extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ abstract public function getDescription()
+	// {{{ public function getDescription()
 
 	/**
 	 * Gets a description for this item
@@ -322,19 +322,39 @@ abstract class StoreItem extends SwatDBDataObject
 	 *
 	 * @see StoreItem::getDetailedDescription()
 	 */
-	abstract public function getDescription($include_item_group = true);
+	public function getDescription($include_item_group = true)
+	{
+		$description = '';
+
+		if ($include_item_group && $this->item_group !== null &&
+			strlen($this->item_group->title) > 0)
+			$description.= sprintf('(%s) ', $this->item_group->title);
+
+		$description.= $this->description;
+
+		return $description;
+	}
 
 	// }}}
-	// {{{ abstract public function getDetailedDescription()
+	// {{{ public function getDetailedDescription()
 
-	/**
-	 * Gets a detailed description for this item
-	 *
-	 * @return string a detailed description for this item.
-	 *
-	 * @see StoreItem::getDescription()
-	 */
-	abstract public function getDetailedDescription();
+	public function getDetailedDescription()
+	{
+		$description = '';
+
+		if ($this->sku !== null)
+			$description .= $this->sku.': ';
+
+		if ($this->product->title !== null)
+			$description.= $this->product->title.' ';
+
+		if (strlen($description))
+			$description.=' - ';
+
+		$description.= $this->getDescription().'';
+
+		return $description;
+	}
 
 	// }}}
 	// {{{ public static function validateSku()
