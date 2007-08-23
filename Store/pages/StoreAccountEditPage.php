@@ -117,8 +117,8 @@ class StoreAccountEditPage extends StoreAccountPage
 	protected function updateAccount(StoreAccount $account)
 	{
 		if (!$this->app->session->isLoggedIn()) {
-			$account->password = 
-				md5($this->ui->getWidget('password')->value);
+			$account->setPassword(
+				$this->ui->getWidget('password')->value);
 		}
 
 		$account->fullname = $this->ui->getWidget('fullname')->value;
