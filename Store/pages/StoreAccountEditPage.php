@@ -81,7 +81,6 @@ class StoreAccountEditPage extends StoreAccountPage
 			if (!$form->hasMessage()) {
 				$account = $this->findAccount();
 
-				$this->updateNewsletterSubscriber($account);
 				$this->updateAccount($account);
 
 				if (!$this->app->session->isLoggedIn()) {
@@ -124,27 +123,6 @@ class StoreAccountEditPage extends StoreAccountPage
 		$account->fullname = $this->ui->getWidget('fullname')->value;
 		$account->email = $this->ui->getWidget('email')->value;
 		$account->phone = $this->ui->getWidget('phone')->value;
-	}
-
-	// }}}
-	// {{{ private function updateNewsletterSubscriber()
-
-	private function updateNewsletterSubscriber(StoreAccount $account)
-	{
-		$new_email = $this->ui->getWidget('email')->value;
-
-		if (!$this->app->session->isLoggedIn() ||
-			$new_email === $account->email)
-			return;
-
-		$sql = 'update NewsletterSubscriber set
-			email = %s where email = %s';
-
-		$sql = sprintf($sql,
-			$this->app->db->quote($new_email, 'text'),
-			$this->app->db->quote($account->email, 'text'));
-
-		SwatDB::query($this->app->db, $sql);
 	}
 
 	// }}}
