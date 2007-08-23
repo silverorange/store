@@ -223,7 +223,10 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 		$address->line1 = $this->ui->getWidget('line1')->value;
 		$address->line2 = $this->ui->getWidget('line2')->value;
 		$address->city = $this->ui->getWidget('city')->value;
-		$address->provstate = $this->ui->getWidget('provstate')->value;
+
+		$provstate = $this->ui->getWidget('provstate')->value;
+		$address->provstate = ($provstate == 'other') ? null : $provstate;
+
 		$address->provstate_other =
 			$this->ui->getWidget('provstate_other')->value;
 
