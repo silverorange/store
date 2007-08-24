@@ -416,20 +416,8 @@ class StoreCategory extends SwatDBDataObject
 			$description_p->setContent($this->description);
 		}
 
-		if ($this->image !== null) {
-			$img_tag = $this->image->getImgTag('thumb');
-		} else {
-			$img_tag = new SwatHtmlTag('img');
-			$img_tag->src = 'images/elements/category-place-holder.png';
-			$img_tag->width = CategoryImage::THUMB_WIDTH;
-			$img_tag->height = CategoryImage::THUMB_HEIGHT;
-			$img_tag->class = 'store-border-on';
-		}
-
-		$img_tag->alt = 'Photo of '.$this->title;
-
 		$anchor_tag->open();
-		$img_tag->display();
+		$this->displayTileImage();
 		$title_span->display();
 		$anchor_tag->close();
 		echo ' ';
@@ -439,6 +427,18 @@ class StoreCategory extends SwatDBDataObject
 
 		if (strlen($this->description))
 			$description_p->display();
+	}
+
+	// }}}
+	// {{{ protected function displayTileImage()
+
+	protected function displayTileImage()
+	{
+		if ($this->image !== null) {
+			$img_tag = $this->image->getImgTag('thumb');
+			$img_tag->alt = 'Photo of '.$this->title;
+			$img_tag->display();
+		}
 	}
 
 	// }}}
