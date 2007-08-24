@@ -134,13 +134,13 @@ class StoreArticleSearch extends AdminSearch
 
 			$clause = new AdminSearchClause('boolean:show');
 			$clause->value = 
-				$this->ui->getWidget('search_show')->getValueAsBoolean();
+				$this->ui->getWidget('search_show')->value;
 
 			$where.= $clause->getClause($this->app->db);
 
 			$clause = new AdminSearchClause('boolean:searchable');
 			$clause->value = 
-				$this->ui->getWidget('search_searchable')->getValueAsBoolean();
+				$this->ui->getWidget('search_searchable')->value;
 
 			$where.= $clause->getClause($this->app->db);
 
