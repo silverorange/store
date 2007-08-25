@@ -10,7 +10,7 @@ require_once 'Store/StoreQuickOrderItemSelector.php';
  * @package   Store
  * @copyright 2006-2007 silverorange
  */
-abstract class StoreQuickOrderServer extends SiteXMLRPCServer
+class StoreQuickOrderServer extends SiteXMLRPCServer
 {
 	// {{{ public function init()
 
