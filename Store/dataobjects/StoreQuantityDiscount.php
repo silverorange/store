@@ -30,13 +30,6 @@ class StoreQuantityDiscount extends SwatDBDataObject
 	public $id;
 
 	/**
-	 * Identifier of the item this discount applies to
-	 *
-	 * @var integer
-	 */
-	public $item;
-
-	/**
 	 * Quantity required for this discount to apply
 	 *
 	 * @var integer
@@ -143,6 +136,9 @@ class StoreQuantityDiscount extends SwatDBDataObject
 	{
 		$this->table = 'QuantityDiscount';
 		$this->id_field = 'integer:id';
+
+		$this->registerInternalProperty('item',
+			SwatDBClassMap::get('StoreItem'));
 	}
 
 	// }}}
@@ -161,7 +157,10 @@ class StoreQuantityDiscount extends SwatDBDataObject
 		}
 	}
 
+
 	// }}}
+
+	// loader methods
 	// {{{ protected function loadRegionBindings()
 
 	protected function loadRegionBindings()
@@ -175,6 +174,24 @@ class StoreQuantityDiscount extends SwatDBDataObject
 			'StoreQuantityDiscountRegionBindingWrapper');
 
 		return SwatDB::query($this->db, $sql, $wrapper);
+	}
+
+	// }}}
+
+	// saver methods
+	// {{{ protected function saveRegionBindings()
+
+	/**
+	 * Automatically saves StoreQuantityDiscountRegionBinding sub-data-objects when this
+	 * StoreQuantityDiscount object is saved
+	 */
+	protected function saveRegionBindings()
+	{
+		foreach ($this->region_bindings as $binding)
+			$binding->quantity_discount = $this;
+
+		$this->region_bindings->setDatabase($this->db);
+		$this->region_bindings->save();
 	}
 
 	// }}}
