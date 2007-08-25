@@ -566,6 +566,40 @@ class StoreItem extends SwatDBDataObject
 	}
 
 	// }}}
+
+	// saver methods
+	// {{{ protected function saveQuantityDiscounts()
+
+	/**
+	 * Automatically saves StoreQuantityDiscount sub-data-objects when this
+	 * StoreItem object is saved
+	 */
+	protected function saveQuantityDiscounts()
+	{
+		foreach ($this->quantity_discounts as $discount)
+			$discount->item = $this;
+
+		$this->quantity_discounts->setDatabase($this->db);
+		$this->quantity_discounts->save();
+	}
+
+	// }}}
+	// {{{ protected function saveRegionBindings()
+
+	/**
+	 * Automatically saves StoreItemRegionBinding sub-data-objects when this
+	 * StoreItem object is saved
+	 */
+	protected function saveRegionBindings()
+	{
+		foreach ($this->region_bindings as $binding)
+			$binding->item = $this;
+
+		$this->region_bindings->setDatabase($this->db);
+		$this->region_bindings->save();
+	}
+
+	// }}}
 }
 
 ?>

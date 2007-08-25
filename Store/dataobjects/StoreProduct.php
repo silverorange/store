@@ -344,6 +344,24 @@ class StoreProduct extends SwatDBDataObject
 	}
 
 	// }}}
+
+	// saver methods
+	// {{{ protected function saveItems()
+
+	/**
+	 * Automatically saves StoreItem sub-data-objects when this
+	 * StoreProduct object is saved
+	 */
+	protected function saveItems()
+	{
+		foreach ($this->items as $item)
+			$item->product = $this;
+
+		$this->items->setDatabase($this->db);
+		$this->items->save();
+	}
+
+	// }}}
 }
 
 ?>
