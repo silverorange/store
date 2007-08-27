@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Store/pages/StoreArticlePage.php';
+require_once 'Store/StorePaymentRequest.php';
 require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/dataobjects/StoreOrder.php';
 
@@ -56,22 +57,34 @@ abstract class StoreCheckoutPage extends StoreArticlePage
 
 	protected function initDataObjects()
 	{
-		if (!isset($this->app->session->account) ||
-			$this->app->session->account === null) {
-				$account_class = SwatDBClassMap::get('StoreAccount');
-				$this->app->session->account = new $account_class();
-				$this->app->session->account->setDatabase($this->app->db);
-				$this->resetProgress();
+		// Clear existing transaction from session unless it is a 3-D Secure
+		// transaction
+		if (isset($this->app->session->transaction) &&
+			$this->app->session->transaction->request_type !=
+			StorePaymentRequest::TYPE_3DS_AUTH) {
+
+			unset($this->app->session->transaction);
 		}
 
+		if (!isset($this->app->session->account)) {
+			unset($this->app->session->account);
+			$account_class = SwatDBClassMap::get('StoreAccount');
+			$this->app->session->account = new $account_class();
+			$this->app->session->account->setDatabase($this->app->db);
+			$this->resetProgress();
+		}
+
+		// Clear placed order from the session if there is no 3-D Secure
+		// transaction in progress.
 		if (!isset($this->app->session->order) ||
-			$this->app->session->order === null ||
-			$this->app->session->order->id !== null) {
-				unset($this->app->session->order);
-				$order_class = SwatDBClassMap::get('StoreOrder');
-				$this->app->session->order = new $order_class();
-				$this->app->session->order->setDatabase($this->app->db);
-				$this->resetProgress();
+			($this->app->session->order->id !== null &&
+			!isset($this->app->session->transaction))) {
+
+			unset($this->app->session->order);
+			$order_class = SwatDBClassMap::get('StoreOrder');
+			$this->app->session->order = new $order_class();
+			$this->app->session->order->setDatabase($this->app->db);
+			$this->resetProgress();
 		}
 	}
 

@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Swat/SwatCellRenderer.php';
+require_once 'Store/Store.php';
 require_once 'Store/StorePaymentRequest.php';
 
 /**
@@ -12,45 +13,59 @@ require_once 'Store/StorePaymentRequest.php';
  */
 class StorePaymentRequestTypeCellRenderer extends SwatCellRenderer
 {
+	// {{{ public properties
+
 	/**
+	 * Request type to renderer
+	 *
+	 * Should be one of the StorePaymentRequest::TYPE_* constants.
+	 *
 	 * @var integer
 	 */
 	public $type;
+
+	// }}}
+	// {{{ public function render()
 
 	public function render()
 	{
 		switch ($this->type) {
 		case StorePaymentRequest::TYPE_PAY:
-			$title = 'payment';
+			$title = Store::_('payment');
 			break;
 		case StorePaymentRequest::TYPE_VERIFY:
-			$title = 'verify';
+			$title = Store::_('verify');
 			break;
 		case StorePaymentRequest::TYPE_VERIFIEDPAY:
-			$title = 'verified payment';
+			$title = Store::_('verified payment');
 			break;
 		case StorePaymentRequest::TYPE_HOLD:
-			$title = 'hold';
+			$title = Store::_('hold');
 			break;
 		case StorePaymentRequest::TYPE_RELEASE:
-			$title = 'release';
+			$title = Store::_('release');
 			break;
 		case StorePaymentRequest::TYPE_ABORT:
-			$title = 'abort';
+			$title = Store::_('abort');
 			break;
 		case StorePaymentRequest::TYPE_VOID:
-			$title = 'void';
+			$title = Store::_('void');
 			break;
 		case StorePaymentRequest::TYPE_REFUND:
-			$title = 'refund';
+			$title = Store::_('refund');
+			break;
+		case StorePaymentRequest::TYPE_3DS_AUTH:
+			$title = Store::_('authentication');
 			break;
 		default:
-			$title = 'unknown';
+			$title = Store::_('unknown');
 			break;
 		}
 
 		echo SwatString::minimizeEntities($title);
 	}
+
+	// }}}
 }
 
 ?>

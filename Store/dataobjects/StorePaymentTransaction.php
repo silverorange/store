@@ -8,10 +8,10 @@ require_once 'Store/dataobjects/StoreOrder.php';
  *
  * Payment transactions are usually tied to {@link StoreOrder} objects. The
  * set of {@link StorePaymentProvider} classes return StorePaymentTransaction
- * objects for most transactions.
+ * objects for most transaction methods.
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StorePaymentProvider
  */
@@ -79,6 +79,17 @@ class StorePaymentTransaction extends StoreDataObject
 	public $authorization_code;
 
 	/**
+	 * Unique identifier for this transaction supplied by payment provider
+	 *
+	 * This use used for 3-D Secure transactions. For non-3-D Secure
+	 * transactions, this field will be null.
+	 *
+	 * @var string
+	 * @see StorePaymentTransaction::loadFromMerchantData()
+	 */
+	public $merchant_data;
+
+	/**
 	 * The date this transaction was created on
 	 *
 	 * @var Date
@@ -113,13 +124,253 @@ class StorePaymentTransaction extends StoreDataObject
 	public $card_verification_value_status;
 
 	/**
-	 * The type of request used to create this transaction
+	 * Status of 3-D Secure authentication
+	 *
+	 * One of StorePaymentTransaction::STATUS_*.
+	 *
+	 * @var integer
+	 */
+	public $three_domain_secure_status;
+
+	/**
+	 * Cardholder authentication verification value
+	 *
+	 * This value is used by card providers to prove an authentication occured
+	 * for this transaction. It is returned from authenticated 3-D Secure
+	 * transactions.
+	 *
+	 * @var string
+	 */
+	public $cavv;
+
+	/**
+	 * The type of request of this transaction
 	 *
 	 * This should be one of the {@link StorePaymentRequest}::TYPE_* constants.
 	 *
 	 * @var integer
 	 */
 	public $request_type;
+
+	/**
+	 * The type of request orinally made with this transaction
+	 *
+	 * This should be one of the {@link StorePaymentRequest}::TYPE_* constants.
+	 * This should only set if this payment transaction's request type is
+	 * a 3-D Secure authentication request. If so, this holds the original
+	 * request type of the transaction that initiated the 3-D Secure request.
+	 *
+	 * If 3-D Secure is not used, this property will always be null.
+	 *
+	 * @var integer
+	 */
+	public $original_request_type;
+
+	// }}}
+	// {{{ protected properties
+
+	/**
+	 * The payer authentication request of this transaction
+	 *
+	 * @var string
+	 *
+	 * @see StorePaymentTransaction::setPayerAuthenticationRequest()
+	 * @see StorePaymentTransaction::getPayerAuthenticationRequest()
+	 */
+	protected $pareq;
+
+	/**
+	 * The payer authentication response of this transaction
+	 *
+	 * @var string
+	 *
+	 * @see StorePaymentTransaction::setPayerAuthenticationResponse()
+	 * @see StorePaymentTransaction::getPayerAuthenticationResponse()
+	 */
+	protected $pares;
+
+	/**
+	 * The access control system URL of this transaction
+	 *
+	 * @var string
+	 *
+	 * @see StorePaymentTransaction::setAccessControlSystemUrl()
+	 * @see StorePaymentTransaction::getAccessControlSystemUrl()
+	 */
+	protected $acs_url;
+
+	// }}}
+	// {{{ public function loadFromMerchantData()
+
+	/**
+	 * Loads this transaction from merchant data
+	 *
+	 * This method is used to get the appropriate transaction object for a
+	 * 3-D Secure authentication response from the cardholder's bank. This is
+	 * needed, for example, to get order information from the 3-D Secure
+	 * authentication response. Merchant data uniquely identifies a 3-D Secure
+	 * transaction. If there is more than one transaction in the database with
+	 * the specified merchant data, the most recent transaction is loaded.
+	 *
+	 * @param string $merchant_data the merchant data of the transaction to
+	 *                               load.
+	 *
+	 * @return boolean true if this transaction could be loaded from the
+	 *                  specified merchant data and false if it could not.
+	 */
+	public function loadFromMerchantData($merchant_data)
+	{
+		$this->checkDB();
+
+		$row = null;
+
+		if ($this->table !== null) {
+			$sql = sprintf('select * from %s where merchant_data = %s
+				order by createdate desc limit 1',
+				$this->table,
+				$this->db->quote($merchant_data, 'text'));
+
+			$rs = SwatDB::query($this->db, $sql, null);
+			$row = $rs->fetchRow(MDB2_FETCHMODE_ASSOC);
+		}
+
+		if ($row === null)
+			return false;
+
+		$this->initFromRow($row);
+		$this->generatePropertyHashes();
+		return true;
+	}
+
+	// }}}
+	// {{{ public function setPayerAuthenticationRequest()
+
+	/**
+	 * Sets the payer authentication request of this transaction
+	 *
+	 * The payer authentication request (PAReq) is returned from a 3-D Secure
+	 * transaction initiation. It is required to proceed with the 3-D Secure
+	 * authentication system. The Payer authentication request should never be
+	 * saved in the database.
+	 *
+	 * @param string $pareq the payer authentication request string.
+	 *
+	 * @see StorePaymentTransaction::getPayerAuthenticationRequest()
+	 */
+	public function setPayerAuthenticationRequest($pareq)
+	{
+		$this->pareq = (string)$pareq;
+	}
+
+	// }}}
+	// {{{ public function getPayerAuthenticationRequest()
+
+	/**
+	 * Gets the payer authentication request of this transaction
+	 *
+	 * The payer authentication request (PAReq) must have been previously set
+	 * with a call to
+	 * {@link StorePaymentTransaction::setPayerAuthenticationRequest()}. The
+	 * payer authentication request is never saved in the database and cannot
+	 * be retrieved for stored transactions.
+	 *
+	 * @return string the payer authentication request for this transaction or
+	 *                 null if this transaction does not have a payer
+	 *                 authentication request set.
+	 *
+	 * @see StorePaymentTransaction::setPayerAuthenticationRequest()
+	 */
+	public function getPayerAuthenticationRequest()
+	{
+		return $this->pareq;
+	}
+
+	// }}}
+	// {{{ public function setPayerAuthenticationResponse()
+
+	/**
+	 * Sets the payer authentication response of this transaction
+	 *
+	 * The payer authentication response (PARes) is returned from the
+	 * cardholder's bank during the 3-D Secure authentication process. It is
+	 * It is required to proceed with the 3-D Secure authentication system.
+	 * The Payer authentication response should never be saved in the database.
+	 *
+	 * @param string $pares the payer authentication response string.
+	 *
+	 * @see StorePaymentTransaction::getPayerAuthenticationResponse()
+	 */
+	public function setPayerAuthenticationResponse($pares)
+	{
+		$this->pares = (string)$pares;
+	}
+
+	// }}}
+	// {{{ public function getPayerAuthenticationResponse()
+
+	/**
+	 * Gets the payer authentication response of this transaction
+	 *
+	 * The payer authentication response (PARes) must have been previously set
+	 * with a call to
+	 * {@link StorePaymentTransaction::setPayerAuthenticationResponse()}. The
+	 * payer authentication response is never saved in the database and cannot
+	 * be retrieved for stored transactions.
+	 *
+	 * @return string the payer authentication response for this transaction or
+	 *                 null if this transaction does not have a payer
+	 *                 authentication response set.
+	 *
+	 * @see StorePaymentTransaction::setPayerAuthenticationResponse()
+	 */
+	public function getPayerAuthenticationResponse()
+	{
+		return $this->pares;
+	}
+
+	// }}}
+	// {{{ public function setAccessControlServerUrl()
+
+	/**
+	 * Sets the access control server URL for this transaction
+	 *
+	 * The access control server URL (ACSURL) is returned from a 3-D Secure
+	 * transaction initiation. The payer authentication request, merchant data
+	 * and terminal URL should be POSTed to this URL to proceed with 3-D Secure
+	 * authentication. The access control server URL should not be stored in
+	 * the database.
+	 *
+	 * @param string $acs_url the access control URL of this transaction.
+	 *
+	 * @see StorePaymentTransaction::getAccessControlServerUrl()
+	 */
+	public function setAccessControlServerUrl($acs_url)
+	{
+		$this->acs_url = (string)$acs_url;
+	}
+
+	// }}}
+	// {{{ public function getAccessControlServerUrl()
+
+	/**
+	 * Gets the payer authentication request of this transaction
+	 *
+	 * The access control server URL (ACSURL) must have been previously set
+	 * with a call to
+	 * {@link StorePaymentTransaction::setAccessControlServerUrl()}. The
+	 * access control server URL is never saved in the database and cannot be
+	 * retrieved for stored transactions.
+	 *
+	 * @return string the access control server URL for this transaction or
+	 *                 null if this transaction does not have an access control
+	 *                 server URL set.
+	 *
+	 * @see StorePaymentTransaction::setAccessControlServerUrl()
+	 */
+	public function getAccessControlServerUrl()
+	{
+		return $this->acs_url;
+	}
 
 	// }}}
 	// {{{ protected function init()
@@ -132,6 +383,25 @@ class StorePaymentTransaction extends StoreDataObject
 		$this->registerInternalProperty('ordernum',
 			SwatDBClassMap::get('StoreOrder'));
 
+	}
+
+	// }}}
+	// {{{ protected function getSerializablePrivateProperties()
+
+	/**
+	 * Gets private and protected properties of this transaction that should
+	 * be preserved when this transaction is serialized
+	 *
+	 * @return array an array of private and protected property names that
+	 *                should be preserved when this transaction is serialized.
+	 */
+	protected function getSerializablePrivateProperties()
+	{
+		$properties = parent::getSerializablePrivateProperties();
+		$properties[] = 'pareq';
+		$properties[] = 'pares';
+		$properties[] = 'acs_url';
+		return $properties;
 	}
 
 	// }}}

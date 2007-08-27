@@ -69,14 +69,19 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		$form = $this->ui->getWidget('form');
 
 		if ($form->isProcessed()) {
-			$transaction = new SwatDBTransaction($this->app->db);
-			try {
-				$this->save();
-			} catch (Exception $e) {
-				$transaction->rollback();
-				throw $e;
+
+			// If there is no transaction in progress, save the order
+			// otherwise it has already been saved.
+			if ($this->app->session->transaction === null) {
+				$db_transaction = new SwatDBTransaction($this->app->db);
+				try {
+					$this->save();
+				} catch (Exception $e) {
+					$db_transaction->rollback();
+					throw $e;
+				}
+				$db_transaction->commit();
 			}
-			$transaction->commit();
 
 			$order = $this->app->session->order;
 
