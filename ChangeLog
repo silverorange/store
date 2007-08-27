@@ -1,3 +1,30 @@
+2007-08-24  nrf
+
+	* [r19645] store/branches/1.8.x/package.php:
+	  prepare for release of 1.8.21
+	* [r19644]
+	  store/branches/1.8.x/Store/pages/StoreAccountAddressEditPage.php,
+	  store/branches/1.8.x/Store/pages/StoreAccountEditPage.php,
+	  store/branches/1.8.x/Store/pages/StoreProductPage.php:
+	  merge [19599], [19600], [19603], [19619] into branch
+	* [r19643]
+	  store/branches/1.8.x/Store/admin/components/Article/Search.php:
+	  Fix directly in branch; in trunk this has been moved to Site and
+	  fixed already.
+
+2007-08-15  nrf
+
+	* [r19433] store/branches/1.8.x/package.php:
+	  prepare for release of 1.8.20
+	* [r19432]
+	  store/branches/1.8.x/Store/admin/components/Order/Index.php:
+	  merge 19431 to branch
+	* [r19427] store/branches/1.8.x/ChangeLog,
+	  store/branches/1.8.x/package.php:
+	  prepare for release of 1.8.19
+	* [r19426] store/branches/1.8.x/Store/StoreApplication.php:
+	  merge into branch
+
 2007-08-11  nrf
 
 	* [r19330] store/branches/1.8.x/package.php:
