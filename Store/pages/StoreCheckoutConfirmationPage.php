@@ -277,6 +277,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		} else {
 			// relocate on fatal payment processing errors and give no
 			// opportunity to edit the order
+			if (isset($this->app->session->transaction))
+				unset($this->app->session->transaction);
+
 			$order = $this->app->session->order;
 			$order->sendPaymentFailedEmail($this->app);
 			$this->removeCartEntries();
