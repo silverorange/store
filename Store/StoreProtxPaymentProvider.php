@@ -694,7 +694,6 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 			break;
 
 		case 'NOTAUTHED':
-
 			throw new StorePaymentNotAuthorizedException($status_detail);
 			break;
 
