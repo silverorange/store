@@ -40,15 +40,6 @@ class StoreSessionModule extends SiteSessionModule
 	 */
 	public function __construct(SiteApplication $app)
 	{
-		if (!(isset($app->database) &&
-			$app->database instanceof SiteDatabaseModule))
-			throw new StoreException('The StoreSessionModule requires a '.
-				'SiteDatabaseModule to be loaded. Please either explicitly '.
-				'add a database module to the application before '.
-				'instantiating the session module, or specify the database '.
-				'module before the session module in the application’s '.
-				'getDefaultModuleList() method.');
-
 		$this->registerActivateCallback(
 			array($this, 'regenerateAuthenticationToken'));
 
@@ -56,6 +47,21 @@ class StoreSessionModule extends SiteSessionModule
 			array($this, 'regenerateAuthenticationToken'));
 
 		parent::__construct($app);
+	}
+
+	// }}}
+	// {{{ public function depends()
+
+	/**
+	 * Gets the module features this module depends on
+	 *
+	 * The store session module depends on the SiteDatabaseModule feature.
+	 *
+	 * @return array an array of features this module depends on.
+	 */
+	public function depends()
+	{
+		return array('SiteDatabaseModule');
 	}
 
 	// }}}
