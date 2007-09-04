@@ -81,9 +81,10 @@ class StoreProductPage extends StorePage
 		$items_form = $this->items_ui->getWidget('form');
 		$items_form->action = $this->source;
 
-		$quantity = $this->items_ui->getWidget('quantity');
-		if ($quantity !== null)
+		if ($this->items_ui->hasWidget('quantity')) {
+			$quantity = $this->items_ui->getWidget('quantity');
 			$this->default_quantity = $quantity->value;
+		}
 
 		$view = $this->items_ui->getWidget('items_view');
 
