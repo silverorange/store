@@ -1,5 +1,1024 @@
+2007-09-04  gauthierm
+
+	* [r19833] store/trunk/Store/StoreCartModule.php,
+	  store/trunk/Store/StoreSessionModule.php:
+	  Add StoreSessionModule => SiteDatabaseModule, StoreCartModule =>
+	  StoreSessionModule, StoreCartModule => SiteDatabaseModule
+	  dependencies to Store for r19831.
+
+2007-08-31  gauthierm
+
+	* [r19816]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Clear transaction from session when payment fails. This ensures
+	  the order is cleared out if/when the checkout process is
+	  restarted.
+	* [r19815] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Whitespace
+
+2007-08-25  nrf
+
+	* [r19677] store/trunk/Store/dataobjects/StoreItem.php,
+	  store/trunk/Store/dataobjects/StoreProduct.php,
+	  store/trunk/Store/dataobjects/StoreQuantityDiscount.php:
+	  Add saver methods so that this objects can be used to create new
+	  products and items.
+	* [r19672] store/trunk/Store/StoreXMLRPCServerFactory.php,
+	  store/trunk/Store/pages/StoreQuickOrderServer.php:
+	  Add a StoreXMLRPCServerFactory so that the quick order xml rpc
+	  server can work directly from Store without sub-classing.
+
+2007-08-24  nrf
+
+	* [r19668] store/trunk/Store/dataobjects/StoreCategory.php:
+	  Refactor for easier sub-classing and to remove bad reference to
+	  CategoryImage.
+
+2007-08-23  nrf
+
+	* [r19628] store/trunk/Store/dataobjects/StoreItem.php:
+	  Include default implementations in Store
+	* [r19619] store/trunk/Store/pages/StoreProductPage.php:
+	  Use the class map!
+
+2007-08-23  nick
+
+	* [r19605] store/trunk/Store/pages/StoreAccountEditPage.php:
+	  Remove NewsletterSubscriber references from Store, and push back
+	  up to Veseys
+	  (this change involves and update of Veseys commit 19604)
+	* [r19603] store/trunk/Store/pages/StoreAccountEditPage.php:
+	  Setting a password needs to be done using the Account dataobject
+	  method or else
+	  the salt isn't set and you can't log into the account. I'm not
+	  sure if the
+	  current veseys or uppermost sites won't let users login because
+	  of this... they
+	  don't override either the Account::loadWithCredentials() or this
+	  current
+	  method.
+	* [r19602] store/trunk/sql/triggers/AccountDeleteTrigger.sql:
+	  Newsletter isn't a Store package table, so this trigger is not
+	  needed.
+
+2007-08-23  nrf
+
+	* [r19600]
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php:
+	  Use the identity operator.
+
+2007-08-23  nick
+
+	* [r19599]
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php:
+	  Handle 'other' provstate properly. The old method would set the
+	  provstate
+	  value to 'other' which fails as an integer insert. This was
+	  never a problem
+	  before because our current sites override this flydown.
+
+2007-08-22  gauthierm
+
+	* [r19595] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  When authing a 3-d secure transaction set request type to the
+	  original request for the returned transaction.
+	* [r19593]
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Don't save the order multiple times if we are processing a 3-d
+	  secure transaction.
+	* [r19592] store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/pages/StoreCheckoutPage.php:
+	  Allow storing of transaction object in application session for
+	  processing of 3-d secure transactions. If no 3-d secure
+	  transaction is in the session this works the same as before.
+	* [r19591] store/trunk/Store/StorePaymentProvider.php,
+	  store/trunk/Store/StoreProtxPaymentProvider.php,
+	  store/trunk/Store/dataobjects/StorePaymentTransaction.php,
+	  store/trunk/sql/tables/PaymentTransaction.sql:
+	  Save original request type when creating 3ds transaction
+	  objects. This removes the need to save 3ds transactions twice
+	  and makes it easier to tell if a 3ds auth process is in progress.
+
+2007-08-22  charles
+
+	* [r19584]
+	  store/trunk/Store/admin/components/Account/PaymentMethodEdit.php,
+	  
+	  store/trunk/Store/admin/components/Account/payment-method-edit.xml,
+	  
+	  store/trunk/Store/admin/components/Account/paymentmethodedit.xml,
+	  store/trunk/Store/admin/components/Category/AddProducts.php,
+	  store/trunk/Store/admin/components/Category/FeaturedProducts.php,
+	  store/trunk/Store/admin/components/Category/ImageEdit.php,
+	  store/trunk/Store/admin/components/Category/add-products.xml,
+	  store/trunk/Store/admin/components/Category/addproducts.xml,
+	  store/trunk/Store/admin/components/Category/featured-products.xml,
+	  
+	  store/trunk/Store/admin/components/Category/featuredproducts.xml,
+	  store/trunk/Store/admin/components/Category/image-edit.xml,
+	  store/trunk/Store/admin/components/Category/imageedit.xml,
+	  store/trunk/Store/admin/components/Invoice/ItemEdit.php,
+	  store/trunk/Store/admin/components/Invoice/item-edit.xml,
+	  store/trunk/Store/admin/components/Invoice/itemedit.xml,
+	  store/trunk/Store/admin/components/Order/NoteEdit.php,
+	  store/trunk/Store/admin/components/Order/note-edit.xml,
+	  store/trunk/Store/admin/components/Order/noteedit.xml,
+	  store/trunk/Store/admin/components/Product/ImageEdit.php,
+	  store/trunk/Store/admin/components/Product/RelatedProduct.php,
+	  store/trunk/Store/admin/components/Product/image-edit.xml,
+	  store/trunk/Store/admin/components/Product/imageedit.xml,
+	  store/trunk/Store/admin/components/Product/related-product.xml,
+	  store/trunk/Store/admin/components/Product/relatedproduct.xml:
+	  New xml naming scheme that makes much more sense.
+
+2007-08-22  gauthierm
+
+	* [r19580]
+	  store/trunk/Store/admin/components/Account/AddressEdit.php,
+	  store/trunk/Store/admin/components/Account/Details.php,
+	  store/trunk/Store/admin/components/Account/Edit.php,
+	  store/trunk/Store/admin/components/Account/Index.php,
+	  store/trunk/Store/admin/components/Account/PaymentMethodEdit.php,
+	  store/trunk/Store/admin/components/Account/addressedit.xml,
+	  store/trunk/Store/admin/components/Account/admin-account-addressedit.xml,
+	  
+	  store/trunk/Store/admin/components/Account/admin-account-details.xml,
+	  
+	  store/trunk/Store/admin/components/Account/admin-account-edit.xml,
+	  
+	  store/trunk/Store/admin/components/Account/admin-account-index.xml,
+	  
+	  store/trunk/Store/admin/components/Account/admin-account-paymentmethodedit.xml,
+	  
+	  store/trunk/Store/admin/components/Account/admin-account-search.xml,
+	  store/trunk/Store/admin/components/Account/details.xml,
+	  store/trunk/Store/admin/components/Account/edit.xml,
+	  store/trunk/Store/admin/components/Account/index.xml,
+	  store/trunk/Store/admin/components/Account/paymentmethodedit.xml,
+	  store/trunk/Store/admin/components/Account/search.xml,
+	  store/trunk/Store/admin/components/Ad/Details.php,
+	  store/trunk/Store/admin/components/Ad/Edit.php,
+	  store/trunk/Store/admin/components/Ad/Index.php,
+	  store/trunk/Store/admin/components/Ad/admin-ad-details.xml,
+	  store/trunk/Store/admin/components/Ad/admin-ad-edit.xml,
+	  store/trunk/Store/admin/components/Ad/admin-ad-index.xml,
+	  store/trunk/Store/admin/components/Ad/details.xml,
+	  store/trunk/Store/admin/components/Ad/edit.xml,
+	  store/trunk/Store/admin/components/Ad/index.xml,
+	  store/trunk/Store/admin/components/Article/Edit.php,
+	  store/trunk/Store/admin/components/Article/Index.php,
+	  store/trunk/Store/admin/components/Article/Search.php,
+	  store/trunk/Store/admin/components/Article/admin-article-edit.xml,
+	  
+	  store/trunk/Store/admin/components/Article/admin-article-index.xml,
+	  
+	  store/trunk/Store/admin/components/Article/admin-article-search.xml,
+	  store/trunk/Store/admin/components/Article/edit.xml,
+	  store/trunk/Store/admin/components/Article/index.xml,
+	  store/trunk/Store/admin/components/Article/search.xml,
+	  store/trunk/Store/admin/components/Catalog/Clone.php,
+	  store/trunk/Store/admin/components/Catalog/Details.php,
+	  store/trunk/Store/admin/components/Catalog/Edit.php,
+	  store/trunk/Store/admin/components/Catalog/Index.php,
+	  store/trunk/Store/admin/components/Catalog/Status.php,
+	  store/trunk/Store/admin/components/Catalog/admin-catalog-clone.xml,
+	  
+	  store/trunk/Store/admin/components/Catalog/admin-catalog-details.xml,
+	  
+	  store/trunk/Store/admin/components/Catalog/admin-catalog-edit.xml,
+	  
+	  store/trunk/Store/admin/components/Catalog/admin-catalog-index.xml,
+	  
+	  store/trunk/Store/admin/components/Catalog/admin-catalog-status.xml,
+	  store/trunk/Store/admin/components/Catalog/clone.xml,
+	  store/trunk/Store/admin/components/Catalog/details.xml,
+	  store/trunk/Store/admin/components/Catalog/edit.xml,
+	  store/trunk/Store/admin/components/Catalog/index.xml,
+	  store/trunk/Store/admin/components/Catalog/status.xml,
+	  store/trunk/Store/admin/components/Category/AddProducts.php,
+	  store/trunk/Store/admin/components/Category/Edit.php,
+	  store/trunk/Store/admin/components/Category/FeaturedProducts.php,
+	  store/trunk/Store/admin/components/Category/ImageEdit.php,
+	  store/trunk/Store/admin/components/Category/Index.php,
+	  store/trunk/Store/admin/components/Category/addproducts.xml,
+	  store/trunk/Store/admin/components/Category/admin-category-addproducts.xml,
+	  
+	  store/trunk/Store/admin/components/Category/admin-category-edit.xml,
+	  
+	  store/trunk/Store/admin/components/Category/admin-category-featuredproducts.xml,
+	  
+	  store/trunk/Store/admin/components/Category/admin-category-imageedit.xml,
+	  
+	  store/trunk/Store/admin/components/Category/admin-category-index.xml,
+	  store/trunk/Store/admin/components/Category/edit.xml,
+	  store/trunk/Store/admin/components/Category/featuredproducts.xml,
+	  store/trunk/Store/admin/components/Category/imageedit.xml,
+	  store/trunk/Store/admin/components/Category/index.xml,
+	  store/trunk/Store/admin/components/Country/Edit.php,
+	  store/trunk/Store/admin/components/Country/Index.php,
+	  store/trunk/Store/admin/components/Country/admin-country-edit.xml,
+	  
+	  store/trunk/Store/admin/components/Country/admin-country-index.xml,
+	  store/trunk/Store/admin/components/Country/edit.xml,
+	  store/trunk/Store/admin/components/Country/index.xml,
+	  store/trunk/Store/admin/components/Invoice/Details.php,
+	  store/trunk/Store/admin/components/Invoice/Edit.php,
+	  store/trunk/Store/admin/components/Invoice/ItemEdit.php,
+	  store/trunk/Store/admin/components/Invoice/admin-invoice-details.xml,
+	  
+	  store/trunk/Store/admin/components/Invoice/admin-invoice-edit.xml,
+	  
+	  store/trunk/Store/admin/components/Invoice/admin-invoice-itemedit.xml,
+	  store/trunk/Store/admin/components/Invoice/details.xml,
+	  store/trunk/Store/admin/components/Invoice/edit.xml,
+	  store/trunk/Store/admin/components/Invoice/itemedit.xml,
+	  store/trunk/Store/admin/components/Item/Edit.php,
+	  store/trunk/Store/admin/components/Item/QuantityDiscount.php,
+	  store/trunk/Store/admin/components/Item/admin-item-edit.xml,
+	  store/trunk/Store/admin/components/Item/admin-item-quantity-discount.xml,
+	  store/trunk/Store/admin/components/Item/edit.xml,
+	  store/trunk/Store/admin/components/Item/quantity-discount.xml,
+	  store/trunk/Store/admin/components/ItemGroup/Edit.php,
+	  store/trunk/Store/admin/components/ItemGroup/admin-itemgroup-edit.xml,
+	  store/trunk/Store/admin/components/ItemGroup/edit.xml,
+	  store/trunk/Store/admin/components/Locale/Edit.php,
+	  store/trunk/Store/admin/components/Locale/Index.php,
+	  store/trunk/Store/admin/components/Locale/admin-locale-edit.xml,
+	  store/trunk/Store/admin/components/Locale/admin-locale-index.xml,
+	  store/trunk/Store/admin/components/Locale/edit.xml,
+	  store/trunk/Store/admin/components/Locale/index.xml,
+	  store/trunk/Store/admin/components/Order/Details.php,
+	  store/trunk/Store/admin/components/Order/Index.php,
+	  store/trunk/Store/admin/components/Order/NoteEdit.php,
+	  store/trunk/Store/admin/components/Order/admin-order-deails.xml,
+	  store/trunk/Store/admin/components/Order/admin-order-index.xml,
+	  store/trunk/Store/admin/components/Order/admin-order-noteedit.xml,
+	  
+	  store/trunk/Store/admin/components/Order/admin-order-search.xml,
+	  store/trunk/Store/admin/components/Order/details.xml,
+	  store/trunk/Store/admin/components/Order/index.xml,
+	  store/trunk/Store/admin/components/Order/noteedit.xml,
+	  store/trunk/Store/admin/components/Order/search.xml,
+	  store/trunk/Store/admin/components/PaymentType/Edit.php,
+	  store/trunk/Store/admin/components/PaymentType/Index.php,
+	  store/trunk/Store/admin/components/PaymentType/admin-paymenttype-edit.xml,
+	  
+	  store/trunk/Store/admin/components/PaymentType/admin-paymenttype-index.xml,
+	  store/trunk/Store/admin/components/PaymentType/edit.xml,
+	  store/trunk/Store/admin/components/PaymentType/index.xml,
+	  store/trunk/Store/admin/components/Product/Details.php,
+	  store/trunk/Store/admin/components/Product/Edit.php,
+	  store/trunk/Store/admin/components/Product/ImageEdit.php,
+	  store/trunk/Store/admin/components/Product/Index.php,
+	  store/trunk/Store/admin/components/Product/RelatedProduct.php,
+	  store/trunk/Store/admin/components/Product/admin-product-details.xml,
+	  
+	  store/trunk/Store/admin/components/Product/admin-product-edit.xml,
+	  
+	  store/trunk/Store/admin/components/Product/admin-product-imageedit.xml,
+	  
+	  store/trunk/Store/admin/components/Product/admin-product-index.xml,
+	  
+	  store/trunk/Store/admin/components/Product/admin-product-relatedproduct.xml,
+	  
+	  store/trunk/Store/admin/components/Product/admin-product-search.xml,
+	  store/trunk/Store/admin/components/Product/details.xml,
+	  store/trunk/Store/admin/components/Product/edit.xml,
+	  store/trunk/Store/admin/components/Product/imageedit.xml,
+	  store/trunk/Store/admin/components/Product/index.xml,
+	  store/trunk/Store/admin/components/Product/relatedproduct.xml,
+	  store/trunk/Store/admin/components/Product/search.xml,
+	  store/trunk/Store/admin/components/ProvState/Edit.php,
+	  store/trunk/Store/admin/components/ProvState/Index.php,
+	  store/trunk/Store/admin/components/ProvState/admin-provstate-edit.xml,
+	  
+	  store/trunk/Store/admin/components/ProvState/admin-provstate-index.xml,
+	  store/trunk/Store/admin/components/ProvState/edit.xml,
+	  store/trunk/Store/admin/components/ProvState/index.xml,
+	  store/trunk/Store/admin/components/Region/Edit.php,
+	  store/trunk/Store/admin/components/Region/Index.php,
+	  store/trunk/Store/admin/components/Region/admin-region-edit.xml,
+	  store/trunk/Store/admin/components/Region/admin-region-index.xml,
+	  store/trunk/Store/admin/components/Region/edit.xml,
+	  store/trunk/Store/admin/components/Region/index.xml:
+	  Undo r19573.
+
+2007-08-22  charles
+
+	* [r19573]
+	  store/trunk/Store/admin/components/Account/AddressEdit.php,
+	  store/trunk/Store/admin/components/Account/Details.php,
+	  store/trunk/Store/admin/components/Account/Edit.php,
+	  store/trunk/Store/admin/components/Account/Index.php,
+	  store/trunk/Store/admin/components/Account/PaymentMethodEdit.php,
+	  store/trunk/Store/admin/components/Account/addressedit.xml,
+	  store/trunk/Store/admin/components/Account/admin-account-addressedit.xml,
+	  
+	  store/trunk/Store/admin/components/Account/admin-account-details.xml,
+	  
+	  store/trunk/Store/admin/components/Account/admin-account-edit.xml,
+	  
+	  store/trunk/Store/admin/components/Account/admin-account-index.xml,
+	  
+	  store/trunk/Store/admin/components/Account/admin-account-paymentmethodedit.xml,
+	  
+	  store/trunk/Store/admin/components/Account/admin-account-search.xml,
+	  store/trunk/Store/admin/components/Account/details.xml,
+	  store/trunk/Store/admin/components/Account/edit.xml,
+	  store/trunk/Store/admin/components/Account/index.xml,
+	  store/trunk/Store/admin/components/Account/paymentmethodedit.xml,
+	  store/trunk/Store/admin/components/Account/search.xml,
+	  store/trunk/Store/admin/components/Ad/Details.php,
+	  store/trunk/Store/admin/components/Ad/Edit.php,
+	  store/trunk/Store/admin/components/Ad/Index.php,
+	  store/trunk/Store/admin/components/Ad/admin-ad-details.xml,
+	  store/trunk/Store/admin/components/Ad/admin-ad-edit.xml,
+	  store/trunk/Store/admin/components/Ad/admin-ad-index.xml,
+	  store/trunk/Store/admin/components/Ad/details.xml,
+	  store/trunk/Store/admin/components/Ad/edit.xml,
+	  store/trunk/Store/admin/components/Ad/index.xml,
+	  store/trunk/Store/admin/components/Article/Edit.php,
+	  store/trunk/Store/admin/components/Article/Index.php,
+	  store/trunk/Store/admin/components/Article/Search.php,
+	  store/trunk/Store/admin/components/Article/admin-article-edit.xml,
+	  
+	  store/trunk/Store/admin/components/Article/admin-article-index.xml,
+	  
+	  store/trunk/Store/admin/components/Article/admin-article-search.xml,
+	  store/trunk/Store/admin/components/Article/edit.xml,
+	  store/trunk/Store/admin/components/Article/index.xml,
+	  store/trunk/Store/admin/components/Article/search.xml,
+	  store/trunk/Store/admin/components/Catalog/Clone.php,
+	  store/trunk/Store/admin/components/Catalog/Details.php,
+	  store/trunk/Store/admin/components/Catalog/Edit.php,
+	  store/trunk/Store/admin/components/Catalog/Index.php,
+	  store/trunk/Store/admin/components/Catalog/Status.php,
+	  store/trunk/Store/admin/components/Catalog/admin-catalog-clone.xml,
+	  
+	  store/trunk/Store/admin/components/Catalog/admin-catalog-details.xml,
+	  
+	  store/trunk/Store/admin/components/Catalog/admin-catalog-edit.xml,
+	  
+	  store/trunk/Store/admin/components/Catalog/admin-catalog-index.xml,
+	  
+	  store/trunk/Store/admin/components/Catalog/admin-catalog-status.xml,
+	  store/trunk/Store/admin/components/Catalog/clone.xml,
+	  store/trunk/Store/admin/components/Catalog/details.xml,
+	  store/trunk/Store/admin/components/Catalog/edit.xml,
+	  store/trunk/Store/admin/components/Catalog/index.xml,
+	  store/trunk/Store/admin/components/Catalog/status.xml,
+	  store/trunk/Store/admin/components/Category/AddProducts.php,
+	  store/trunk/Store/admin/components/Category/Edit.php,
+	  store/trunk/Store/admin/components/Category/FeaturedProducts.php,
+	  store/trunk/Store/admin/components/Category/ImageEdit.php,
+	  store/trunk/Store/admin/components/Category/Index.php,
+	  store/trunk/Store/admin/components/Category/addproducts.xml,
+	  store/trunk/Store/admin/components/Category/admin-category-addproducts.xml,
+	  
+	  store/trunk/Store/admin/components/Category/admin-category-edit.xml,
+	  
+	  store/trunk/Store/admin/components/Category/admin-category-featuredproducts.xml,
+	  
+	  store/trunk/Store/admin/components/Category/admin-category-imageedit.xml,
+	  
+	  store/trunk/Store/admin/components/Category/admin-category-index.xml,
+	  store/trunk/Store/admin/components/Category/edit.xml,
+	  store/trunk/Store/admin/components/Category/featuredproducts.xml,
+	  store/trunk/Store/admin/components/Category/imageedit.xml,
+	  store/trunk/Store/admin/components/Category/index.xml,
+	  store/trunk/Store/admin/components/Country/Edit.php,
+	  store/trunk/Store/admin/components/Country/Index.php,
+	  store/trunk/Store/admin/components/Country/admin-country-edit.xml,
+	  
+	  store/trunk/Store/admin/components/Country/admin-country-index.xml,
+	  store/trunk/Store/admin/components/Country/edit.xml,
+	  store/trunk/Store/admin/components/Country/index.xml,
+	  store/trunk/Store/admin/components/Invoice/Details.php,
+	  store/trunk/Store/admin/components/Invoice/Edit.php,
+	  store/trunk/Store/admin/components/Invoice/ItemEdit.php,
+	  store/trunk/Store/admin/components/Invoice/admin-invoice-details.xml,
+	  
+	  store/trunk/Store/admin/components/Invoice/admin-invoice-edit.xml,
+	  
+	  store/trunk/Store/admin/components/Invoice/admin-invoice-itemedit.xml,
+	  store/trunk/Store/admin/components/Invoice/details.xml,
+	  store/trunk/Store/admin/components/Invoice/edit.xml,
+	  store/trunk/Store/admin/components/Invoice/itemedit.xml,
+	  store/trunk/Store/admin/components/Item/Edit.php,
+	  store/trunk/Store/admin/components/Item/QuantityDiscount.php,
+	  store/trunk/Store/admin/components/Item/admin-item-edit.xml,
+	  store/trunk/Store/admin/components/Item/admin-item-quantity-discount.xml,
+	  store/trunk/Store/admin/components/Item/edit.xml,
+	  store/trunk/Store/admin/components/Item/quantity-discount.xml,
+	  store/trunk/Store/admin/components/ItemGroup/Edit.php,
+	  store/trunk/Store/admin/components/ItemGroup/admin-itemgroup-edit.xml,
+	  store/trunk/Store/admin/components/ItemGroup/edit.xml,
+	  store/trunk/Store/admin/components/Locale/Edit.php,
+	  store/trunk/Store/admin/components/Locale/Index.php,
+	  store/trunk/Store/admin/components/Locale/admin-locale-edit.xml,
+	  store/trunk/Store/admin/components/Locale/admin-locale-index.xml,
+	  store/trunk/Store/admin/components/Locale/edit.xml,
+	  store/trunk/Store/admin/components/Locale/index.xml,
+	  store/trunk/Store/admin/components/Order/Details.php,
+	  store/trunk/Store/admin/components/Order/Index.php,
+	  store/trunk/Store/admin/components/Order/NoteEdit.php,
+	  store/trunk/Store/admin/components/Order/admin-order-deails.xml,
+	  store/trunk/Store/admin/components/Order/admin-order-index.xml,
+	  store/trunk/Store/admin/components/Order/admin-order-noteedit.xml,
+	  
+	  store/trunk/Store/admin/components/Order/admin-order-search.xml,
+	  store/trunk/Store/admin/components/Order/details.xml,
+	  store/trunk/Store/admin/components/Order/index.xml,
+	  store/trunk/Store/admin/components/Order/noteedit.xml,
+	  store/trunk/Store/admin/components/Order/search.xml,
+	  store/trunk/Store/admin/components/PaymentType/Edit.php,
+	  store/trunk/Store/admin/components/PaymentType/Index.php,
+	  store/trunk/Store/admin/components/PaymentType/admin-paymenttype-edit.xml,
+	  
+	  store/trunk/Store/admin/components/PaymentType/admin-paymenttype-index.xml,
+	  store/trunk/Store/admin/components/PaymentType/edit.xml,
+	  store/trunk/Store/admin/components/PaymentType/index.xml,
+	  store/trunk/Store/admin/components/Product/Details.php,
+	  store/trunk/Store/admin/components/Product/Edit.php,
+	  store/trunk/Store/admin/components/Product/ImageEdit.php,
+	  store/trunk/Store/admin/components/Product/Index.php,
+	  store/trunk/Store/admin/components/Product/RelatedProduct.php,
+	  store/trunk/Store/admin/components/Product/admin-product-details.xml,
+	  
+	  store/trunk/Store/admin/components/Product/admin-product-edit.xml,
+	  
+	  store/trunk/Store/admin/components/Product/admin-product-imageedit.xml,
+	  
+	  store/trunk/Store/admin/components/Product/admin-product-index.xml,
+	  
+	  store/trunk/Store/admin/components/Product/admin-product-relatedproduct.xml,
+	  
+	  store/trunk/Store/admin/components/Product/admin-product-search.xml,
+	  store/trunk/Store/admin/components/Product/details.xml,
+	  store/trunk/Store/admin/components/Product/edit.xml,
+	  store/trunk/Store/admin/components/Product/imageedit.xml,
+	  store/trunk/Store/admin/components/Product/index.xml,
+	  store/trunk/Store/admin/components/Product/relatedproduct.xml,
+	  store/trunk/Store/admin/components/Product/search.xml,
+	  store/trunk/Store/admin/components/ProvState/Edit.php,
+	  store/trunk/Store/admin/components/ProvState/Index.php,
+	  store/trunk/Store/admin/components/ProvState/admin-provstate-edit.xml,
+	  
+	  store/trunk/Store/admin/components/ProvState/admin-provstate-index.xml,
+	  store/trunk/Store/admin/components/ProvState/edit.xml,
+	  store/trunk/Store/admin/components/ProvState/index.xml,
+	  store/trunk/Store/admin/components/Region/Edit.php,
+	  store/trunk/Store/admin/components/Region/Index.php,
+	  store/trunk/Store/admin/components/Region/admin-region-edit.xml,
+	  store/trunk/Store/admin/components/Region/admin-region-index.xml,
+	  store/trunk/Store/admin/components/Region/edit.xml,
+	  store/trunk/Store/admin/components/Region/index.xml:
+	  Changed the naming shceme for the xml.
+
+2007-08-21  nick
+
+	* [r19568] store/trunk/Store/admin/components/Article/Delete.php,
+	  store/trunk/Store/admin/components/Article/Edit.php,
+	  store/trunk/Store/admin/components/Article/Index.php,
+	  store/trunk/Store/admin/components/Article/Order.php,
+	  store/trunk/Store/admin/components/Article/Search.php,
+	  store/trunk/Store/admin/components/Article/include/StoreArticleActionsProcessor.php,
+	  
+	  store/trunk/Store/admin/components/Article/include/StoreArticleVisibilityCellRenderer.php,
+	  store/trunk/Store/admin/components/Article/index.xml,
+	  store/trunk/Store/admin/components/Article/search.xml:
+	  A simplified Article component derived from site. All remaining
+	  code here is
+	  concerned with Region.
+
+2007-08-18  gauthierm
+
+	* [r19455] store/trunk/Store/StoreStatusList.php:
+	  There is no reason these methods should be final.
+	* [r19454] store/trunk/Store/StoreOrderStatus.php,
+	  store/trunk/Store/StoreOrderStatusList.php,
+	  store/trunk/Store/StoreStatusList.php:
+	  Fix iteration order problem with order statuses. Order statueses
+	  should always iterate in the order of order completion. Also,
+	  fix folding and add documentation.
+
+2007-08-17  gauthierm
+
+	* [r19453]
+	  store/trunk/Store/StorePaymentRequestTypeCellRenderer.php:
+	  Translate strings and add folding and documentation.
+	* [r19452]
+	  store/trunk/Store/StorePaymentRequestTypeCellRenderer.php:
+	  Add 3ds auth request type to request type cell renderer.
+
+2007-08-17  charles
+
+	* [r19451]
+	  store/trunk/Store/admin/components/Article/include/StoreArticleActionsProcessor.php,
+	  
+	  store/trunk/Store/admin/components/Article/include/StoreArticleRegionAction.php,
+	  
+	  store/trunk/Store/admin/components/Article/include/StoreArticleVisibilityCellRenderer.php:
+	  
+	  Added folding.
+
+2007-08-17  gauthierm
+
+	* [r19450] store/trunk/Store/pages/StoreCheckoutPage.php:
+	  Using (!isset(obj)) means we do not have to also check (obj ===
+	  null).
+
+2007-08-17  charles
+
+	* [r19449] store/trunk/Store/admin/components/Article/Search.php:
+	  The method getValueAsBoolean was removed in r17616, replaced
+	  with value. Article searching should now work.
+
+2007-08-16  gauthierm
+
+	* [r19448]
+	  store/trunk/Store/dataobjects/StorePaymentTransaction.php:
+	  Add getter and setter for payer authentication response for 3-D
+	  secure transactions to StorePaymentTransaction.
+	* [r19447] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Fix method name.
+
+2007-08-15  gauthierm
+
+	* [r19436]
+	  store/trunk/Store/dataobjects/StorePaymentTransaction.php:
+	  s/system/server and serialize acs_url and pareq properties in
+	  StorePaymentTransaction.
+
+2007-08-15  charles
+
+	* [r19431] store/trunk/Store/admin/components/Order/Index.php:
+	  This fixes the exceptions caused on Vesey when you search for
+	  orders, I believe it would be wise to look into this more deeply
+	  later.
+
+2007-08-15  nrf
+
+	* [r19425] store/trunk/Store/StoreApplication.php:
+	  Preserve other URL variables when stripping ad.
+
+2007-08-14  nrf
+
+	* [r19406] store/trunk/Store/Store.php,
+	  store/trunk/Store/dataobjects/StoreArticle.php,
+	  store/trunk/Store/dataobjects/StoreArticleWrapper.php:
+	  More overriding in Store dataobjects for regions.
+	* [r19403] store/trunk/Store/Store.php:
+	  Add class map entry for Store to override Site dataobject.
+	* [r19402] store/trunk/Store/StoreArticlePageFactory.php,
+	  store/trunk/Store/dataobjects/StoreArticle.php:
+	  Reflect changes to Site API. Override to add regions.
+
+2007-08-14  gauthierm
+
+	* [r19382] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Add threeDomainSecureAuth() support to Protx paymenr provider
+	  and make payment provider handle authentication requests.
+	* [r19381]
+	  store/trunk/Store/dataobjects/StorePaymentTransaction.php:
+	  Remove unnecessary parameters.
+	* [r19380]
+	  store/trunk/Store/dataobjects/StorePaymentTransaction.php:
+	  Add methods to get and set unsavable ACSURL and PAReq fields on
+	  transaction objects. Part of 3-D Secure payment processing.
+
+2007-08-10  gauthierm
+
+	* [r19328]
+	  store/trunk/Store/admin/components/Article/include/StoreArticleRegionAction.php,
+	  store/trunk/Store/admin/components/Article/index.xml:
+	  Clean up article actions widget display.
+
+2007-08-10  nrf
+
+	* [r19320] store/trunk/Store/admin/components/Account/Details.php,
+	  store/trunk/Store/admin/components/Account/EmailPassword.php,
+	  store/trunk/Store/admin/components/Account/PaymentMethodDelete.php,
+	  store/trunk/Store/admin/components/Ad/Details.php,
+	  store/trunk/Store/admin/components/Item/Edit.php,
+	  store/trunk/Store/admin/components/Item/QuantityDiscount.php,
+	  store/trunk/Store/admin/components/Product/Details.php,
+	  store/trunk/Store/admin/components/Region/Delete.php:
+	  Use the class map
+
+2007-08-10  charles
+
+	* [r19318] store/trunk/Store/admin/components/Order/Index.php,
+	  store/trunk/Store/admin/components/Order/index.xml:
+	  Cleanup the SQL query and use the properties built into the
+	  dataobject for the xml.
+
+2007-08-10  steven
+
+	* [r19315] store/trunk/Store/admin/components/Order/index.xml:
+	  Indent the spanning column with admin notes
+
+2007-08-10  charles
+
+	* [r19313] store/trunk/Store/admin/components/Order/Index.php,
+	  store/trunk/Store/admin/components/Order/index.xml:
+	  Fixed a TODO and now the the order index page uses a spanning
+	  table column to display the note for the order.
+
+2007-08-10  gauthierm
+
+	* [r19309] store/trunk/Store/admin/components/Category/Index.php:
+	  Fix more implodeSelection() bugs.
+	* [r19307] store/trunk/Store/admin/components/Product/Details.php:
+	  Fix more implodeSelection() bugs.
+	* [r19301]
+	  store/trunk/Store/admin/components/Item/QuantityDiscount.php:
+	  Fix require path. Doesn't anyone grep for these things when they
+	  change them?
+	* [r19293] store/trunk/Store/admin/components/Category/Index.php:
+	  Fix fatal error on Category index page.
+
+2007-08-09  gauthierm
+
+	* [r19278]
+	  store/trunk/Store/dataobjects/StorePaymentTransaction.php:
+	  don't load from merchant data if there is no database for this
+	  object.
+	* [r19277]
+	  store/trunk/Store/dataobjects/StorePaymentTransaction.php,
+	  store/trunk/sql/tables/PaymentTransaction.sql:
+	  Add merchant data field to payment transaction object and allow
+	  loading transactions by merchant data.
+	* [r19274]
+	  store/trunk/Store/admin/components/Product/RelatedProduct.php:
+	  Use SwatDB::implodeSelection() and small string fix.
+
+2007-08-08  charles
+
+	* [r19268] store/trunk/Store/admin/components/Order/Index.php,
+	  store/trunk/Store/admin/components/Order/NoteEdit.php,
+	  store/trunk/Store/admin/components/Order/details.xml,
+	  store/trunk/Store/admin/components/Order/index.xml,
+	  store/trunk/Store/admin/components/Order/noteedit.xml:
+	  Naming convention for store package.
+
+2007-08-08  gauthierm
+
+	* [r19266]
+	  store/trunk/Store/dataobjects/StorePaymentTransaction.php,
+	  store/trunk/sql/tables/PaymentTransaction.sql:
+	  Add cavv field to payment transaction.
+	* [r19265]
+	  store/trunk/Store/dataobjects/StorePaymentTransaction.php,
+	  store/trunk/sql/tables/PaymentTransaction.sql:
+	  Add three domain secure field to payment transaction object.
+	* [r19263] store/trunk/Store/StorePaymentProvider.php:
+	  Add StorePaymentProvider::threeDomainSecureAuth() and update
+	  some documentation.
+	* [r19235] store/trunk/Store/admin/components/Order/noteedit.xml:
+	  Translate string in store package XML.
+	* [r19234] store/trunk/Store/admin/components/Order/NoteEdit.php:
+	  Use SwatDBClassMap to load correct order class.
+	* [r19233] store/trunk/Store/admin/components/Order/NoteEdit.php:
+	  Throw a not found exception if we try to load an order note for
+	  an invalid order id. Also, translate string in store package.
+	* [r19232] store/trunk/Store/admin/components/Order/NoteEdit.php:
+	  Remove overridden processInternal(). the parent implementation
+	  is fine here and does the relocates properly.
+
+2007-08-08  nrf
+
+	* [r19219] store/trunk/Store/admin/components/Order/details.xml:
+	  Add a stock icon
+
+2007-08-08  charles
+
+	* [r19212] store/trunk/sql/tables/Orders.sql:
+	  Forgot to commit this yesterday, this goes with admin notes.
+
+2007-08-07  gauthierm
+
+	* [r19208] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Add ability to set 3-DS mode in protx payment provider and
+	  remove debug code. This still needs an additional payment
+	  processing page which doesn't exist yet.
+	* [r19207] store/trunk/Store/StorePaymentRequest.php,
+	  store/trunk/Store/StoreProtxPaymentRequest.php:
+	  Add 3-DS authentication transaction support to
+	  StoreProtxPaymentRequest and fix several protocol-specified
+	  payment type strings. Also, move URL creation into its own
+	  method since it's getting a bit complicated.
+
+2007-08-07  nrf
+
+	* [r19199] store/trunk/Store/pages/StoreNateGoSearchPage.php:
+	  I'm not sure what was so wrong with zero-based pagination...
+	  switching to one-based broke this.
+
+2007-08-07  gauthierm
+
+	* [r19198] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Don't apply auto transaction rejection rules when avs is used.
+	  Let site code decide.
+	* [r19197] store/trunk/Store/StorePaymentProvider.php:
+	  Add API to store payment provider to set 3-DS mode. This doesn't
+	  actually do anything yet since no payment providers use this API.
+
+2007-08-07  charles
+
+	* [r19185] store/trunk/Store/admin/components/Order/NoteEdit.php,
+	  store/trunk/Store/admin/components/Order/details.xml,
+	  store/trunk/Store/admin/components/Order/noteedit.xml:
+	  The note edit is now part of the store package.
+	* [r19184] store/trunk/Store/dataobjects/StoreOrder.php:
+	  The notes property has been moved to the dataobject that is part
+	  of the store package.
+
+2007-08-06  nrf
+
+	* [r19162] store/trunk/sql/functions/findArticle.sql,
+	  store/trunk/sql/functions/getArticleNavBar.sql,
+	  store/trunk/sql/functions/getArticlePath.sql,
+	  store/trunk/sql/functions/getArticlePathInfo.sql,
+	  store/trunk/sql/tables/Article.sql,
+	  store/trunk/sql/views/ArticleChildCountView.sql:
+	  push Article sql up to Site
+
+2007-08-03  nrf
+
+	* [r19123] store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/StoreArticlePageFactory.php,
+	  store/trunk/Store/StoreCardInceptionEntry.php,
+	  store/trunk/Store/StoreCart.php,
+	  store/trunk/Store/StoreCartModule.php,
+	  store/trunk/Store/StoreCatalogSwitcher.php,
+	  store/trunk/Store/StoreCheckoutCart.php,
+	  store/trunk/Store/StoreClassMap.php,
+	  store/trunk/Store/StoreExchangeRateTable.php,
+	  store/trunk/Store/StoreFroogleFeedEntry.php,
+	  store/trunk/Store/StoreInvoiceNotificationMailMessage.php,
+	  store/trunk/Store/StoreItemPriceCellRenderer.php,
+	  store/trunk/Store/StoreLocaleApplication.php,
+	  store/trunk/Store/StoreMessageDisplay.php,
+	  store/trunk/Store/StoreNewPasswordMailMessage.php,
+	  store/trunk/Store/StorePayflowProPaymentRequest.php,
+	  store/trunk/Store/StorePaymentRequest.php,
+	  store/trunk/Store/StorePostalCodeEntry.php,
+	  store/trunk/Store/StoreProtxPaymentRequest.php,
+	  store/trunk/Store/StoreProtxPaymentResponse.php,
+	  store/trunk/Store/StoreQuickOrderItemSelector.php,
+	  store/trunk/Store/StoreTableViewButtonRow.php,
+	  store/trunk/Store/StoreTotalRow.php,
+	  store/trunk/Store/StoreYeOldePriceCellRenderer.php,
+	  store/trunk/Store/admin/StoreAdminMenuView.php,
+	  store/trunk/Store/admin/StoreItemRegionPriceCellRenderer.php,
+	  store/trunk/Store/admin/components/Account/AddressDelete.php,
+	  store/trunk/Store/admin/components/Account/Edit.php,
+	  store/trunk/Store/admin/components/Account/Index.php,
+	  store/trunk/Store/admin/components/Ad/Delete.php,
+	  store/trunk/Store/admin/components/Ad/Details.php,
+	  store/trunk/Store/admin/components/Ad/Index.php,
+	  store/trunk/Store/admin/components/Ad/include/StoreConversionRateCellRenderer.php,
+	  store/trunk/Store/admin/components/Article/Index.php,
+	  store/trunk/Store/admin/components/Article/Order.php,
+	  store/trunk/Store/admin/components/Article/Search.php,
+	  store/trunk/Store/admin/components/Article/include/StoreArticleActionsProcessor.php,
+	  
+	  store/trunk/Store/admin/components/Article/include/StoreArticleRegionAction.php,
+	  
+	  store/trunk/Store/admin/components/Article/include/StoreArticleVisibilityCellRenderer.php,
+	  store/trunk/Store/admin/components/Catalog/Edit.php,
+	  store/trunk/Store/admin/components/Catalog/Index.php,
+	  store/trunk/Store/admin/components/Catalog/Status.php,
+	  store/trunk/Store/admin/components/Catalog/include/StoreCatalogStatusCellRenderer.php,
+	  store/trunk/Store/admin/components/Category/AddProducts.php,
+	  store/trunk/Store/admin/components/Category/Edit.php,
+	  store/trunk/Store/admin/components/Category/FeaturedProducts.php,
+	  store/trunk/Store/admin/components/Category/ImageDelete.php,
+	  store/trunk/Store/admin/components/Category/ImageEdit.php,
+	  store/trunk/Store/admin/components/Country/Edit.php,
+	  store/trunk/Store/admin/components/Country/Index.php,
+	  store/trunk/Store/admin/components/Invoice/Delete.php,
+	  store/trunk/Store/admin/components/Invoice/Details.php,
+	  store/trunk/Store/admin/components/Invoice/Edit.php,
+	  store/trunk/Store/admin/components/Invoice/EmailNotification.php,
+	  store/trunk/Store/admin/components/Item/Order.php,
+	  store/trunk/Store/admin/components/Item/QuantityDiscount.php,
+	  store/trunk/Store/admin/components/ItemGroup/Delete.php,
+	  store/trunk/Store/admin/components/ItemGroup/Edit.php,
+	  store/trunk/Store/admin/components/Locale/Index.php,
+	  store/trunk/Store/admin/components/Order/EmailConfirmation.php,
+	  store/trunk/Store/admin/components/PaymentType/Delete.php,
+	  store/trunk/Store/admin/components/PaymentType/Edit.php,
+	  store/trunk/Store/admin/components/PaymentType/Order.php,
+	  store/trunk/Store/admin/components/Product/ImageEdit.php,
+	  store/trunk/Store/admin/components/Product/ImageOrder.php,
+	  store/trunk/Store/admin/components/Product/RelatedProduct.php,
+	  store/trunk/Store/admin/components/Product/RelatedProductDelete.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/StoreItemGroupAction.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/StoreProductItemDependency.php,
+	  
+	  store/trunk/Store/admin/components/Product/include/StoreProductSearch.php,
+	  store/trunk/Store/admin/components/ProvState/Index.php,
+	  store/trunk/Store/admin/components/Region/Edit.php,
+	  store/trunk/Store/admin/components/Region/Index.php,
+	  store/trunk/Store/dataobjects/StoreAccount.php,
+	  store/trunk/Store/dataobjects/StoreAccountAddressWrapper.php,
+	  store/trunk/Store/dataobjects/StoreAccountPaymentMethod.php,
+	  store/trunk/Store/dataobjects/StoreAccountPaymentMethodWrapper.php,
+	  store/trunk/Store/dataobjects/StoreAccountWrapper.php,
+	  store/trunk/Store/dataobjects/StoreAd.php,
+	  store/trunk/Store/dataobjects/StoreAdWrapper.php,
+	  store/trunk/Store/dataobjects/StoreAddress.php,
+	  store/trunk/Store/dataobjects/StoreCartEntry.php,
+	  store/trunk/Store/dataobjects/StoreCartEntryWrapper.php,
+	  store/trunk/Store/dataobjects/StoreCatalog.php,
+	  store/trunk/Store/dataobjects/StoreCategory.php,
+	  store/trunk/Store/dataobjects/StoreCategoryImageWrapper.php,
+	  store/trunk/Store/dataobjects/StoreCategoryWrapper.php,
+	  store/trunk/Store/dataobjects/StoreCountry.php,
+	  store/trunk/Store/dataobjects/StoreCountryWrapper.php,
+	  store/trunk/Store/dataobjects/StoreImage.php,
+	  store/trunk/Store/dataobjects/StoreItem.php,
+	  store/trunk/Store/dataobjects/StoreItemGroup.php,
+	  store/trunk/Store/dataobjects/StoreItemGroupWrapper.php,
+	  store/trunk/Store/dataobjects/StoreItemRegionBindingWrapper.php,
+	  store/trunk/Store/dataobjects/StoreItemWrapper.php,
+	  store/trunk/Store/dataobjects/StoreLocale.php,
+	  store/trunk/Store/dataobjects/StoreLocaleWrapper.php,
+	  store/trunk/Store/dataobjects/StoreOrderAddress.php,
+	  store/trunk/Store/dataobjects/StoreOrderAddressWrapper.php,
+	  store/trunk/Store/dataobjects/StoreOrderItem.php,
+	  store/trunk/Store/dataobjects/StoreOrderItemWrapper.php,
+	  store/trunk/Store/dataobjects/StoreOrderPaymentMethodWrapper.php,
+	  store/trunk/Store/dataobjects/StoreOrderWrapper.php,
+	  store/trunk/Store/dataobjects/StorePaymentTransaction.php,
+	  store/trunk/Store/dataobjects/StorePaymentType.php,
+	  store/trunk/Store/dataobjects/StorePaymentTypeWrapper.php,
+	  store/trunk/Store/dataobjects/StoreProduct.php,
+	  store/trunk/Store/dataobjects/StoreProductImageWrapper.php,
+	  store/trunk/Store/dataobjects/StoreProductWrapper.php,
+	  store/trunk/Store/dataobjects/StoreProvState.php,
+	  store/trunk/Store/dataobjects/StoreProvStateWrapper.php,
+	  store/trunk/Store/dataobjects/StoreQuantityDiscount.php,
+	  store/trunk/Store/dataobjects/StoreQuantityDiscountRegionBindingWrapper.php,
+	  store/trunk/Store/dataobjects/StoreQuantityDiscountWrapper.php,
+	  store/trunk/Store/dataobjects/StoreRegion.php,
+	  store/trunk/Store/exceptions/StorePaymentErrorException.php,
+	  store/trunk/Store/exceptions/StorePaymentException.php,
+	  store/trunk/Store/exceptions/StorePaymentInvalidException.php,
+	  store/trunk/Store/exceptions/StorePaymentMalformedException.php,
+	  store/trunk/Store/exceptions/StorePaymentNotAuthorizedException.php,
+	  store/trunk/Store/exceptions/StorePaymentRejectedException.php,
+	  store/trunk/Store/exceptions/StoreUnimplementedException.php,
+	  store/trunk/Store/pages/StoreAccountDetailsPage.php,
+	  store/trunk/Store/pages/StoreAccountForgotPasswordPage.php,
+	  store/trunk/Store/pages/StoreAccountLoginPage.php,
+	  store/trunk/Store/pages/StoreAccountPage.php,
+	  store/trunk/Store/pages/StoreAccountResetPasswordPage.php,
+	  store/trunk/Store/pages/StoreAccountResetPasswordThankYouPage.php,
+	  store/trunk/Store/pages/StoreArticleNotVisiblePage.php,
+	  store/trunk/Store/pages/StoreCartPage.php,
+	  store/trunk/Store/pages/StoreCategoryNotVisiblePage.php,
+	  store/trunk/Store/pages/StoreCheckoutAggregateStepPage.php,
+	  store/trunk/Store/pages/StoreCheckoutBasicInfoPage.php,
+	  store/trunk/Store/pages/StoreCheckoutBillingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutCartPage.php,
+	  store/trunk/Store/pages/StoreCheckoutEditPage.php,
+	  store/trunk/Store/pages/StoreCheckoutFinalPage.php,
+	  store/trunk/Store/pages/StoreCheckoutFrontPage.php,
+	  store/trunk/Store/pages/StoreCheckoutPage.php,
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutStepPage.php,
+	  store/trunk/Store/pages/StoreCheckoutUIPage.php,
+	  store/trunk/Store/pages/StoreContactPage.php,
+	  store/trunk/Store/pages/StoreNateGoSearchPage.php,
+	  store/trunk/Store/pages/StoreNotVisiblePage.php,
+	  store/trunk/Store/pages/StoreProductImagePage.php,
+	  store/trunk/Store/pages/StoreProductNotVisiblePage.php,
+	  store/trunk/Store/pages/StoreQuickOrderPage.php,
+	  store/trunk/Store/pages/StoreQuickOrderServer.php,
+	  store/trunk/Store/pages/StoreSearchPage.php:
+	  Update copyright dates from SVN logs.
+	* [r19119] store/trunk/Store/dataobjects/StoreAccount.php,
+	  store/trunk/Store/dataobjects/StoreAccountAddressWrapper.php,
+	  store/trunk/Store/dataobjects/StoreAccountPaymentMethodWrapper.php,
+	  store/trunk/Store/dataobjects/StoreAccountWrapper.php,
+	  store/trunk/Store/dataobjects/StoreAd.php,
+	  store/trunk/Store/dataobjects/StoreAdWrapper.php,
+	  store/trunk/Store/dataobjects/StoreAddress.php,
+	  store/trunk/Store/dataobjects/StoreCartEntry.php,
+	  store/trunk/Store/dataobjects/StoreCartEntryWrapper.php,
+	  store/trunk/Store/dataobjects/StoreCatalog.php,
+	  store/trunk/Store/dataobjects/StoreCategory.php,
+	  store/trunk/Store/dataobjects/StoreCategoryImageWrapper.php,
+	  store/trunk/Store/dataobjects/StoreCategoryWrapper.php,
+	  store/trunk/Store/dataobjects/StoreCountry.php,
+	  store/trunk/Store/dataobjects/StoreCountryWrapper.php,
+	  store/trunk/Store/dataobjects/StoreDataObject.php,
+	  store/trunk/Store/dataobjects/StoreImage.php,
+	  store/trunk/Store/dataobjects/StoreInvoice.php,
+	  store/trunk/Store/dataobjects/StoreInvoiceItem.php,
+	  store/trunk/Store/dataobjects/StoreInvoiceItemWrapper.php,
+	  store/trunk/Store/dataobjects/StoreInvoiceWrapper.php,
+	  store/trunk/Store/dataobjects/StoreItem.php,
+	  store/trunk/Store/dataobjects/StoreItemGroup.php,
+	  store/trunk/Store/dataobjects/StoreItemGroupWrapper.php,
+	  store/trunk/Store/dataobjects/StoreItemRegionBinding.php,
+	  store/trunk/Store/dataobjects/StoreItemRegionBindingWrapper.php,
+	  store/trunk/Store/dataobjects/StoreItemWrapper.php,
+	  store/trunk/Store/dataobjects/StoreLocale.php,
+	  store/trunk/Store/dataobjects/StoreLocaleWrapper.php,
+	  store/trunk/Store/dataobjects/StoreOrder.php,
+	  store/trunk/Store/dataobjects/StoreOrderAddressWrapper.php,
+	  store/trunk/Store/dataobjects/StoreOrderItem.php,
+	  store/trunk/Store/dataobjects/StoreOrderItemWrapper.php,
+	  store/trunk/Store/dataobjects/StoreOrderPaymentMethodWrapper.php,
+	  store/trunk/Store/dataobjects/StoreOrderWrapper.php,
+	  store/trunk/Store/dataobjects/StorePaymentMethod.php,
+	  store/trunk/Store/dataobjects/StorePaymentTransaction.php,
+	  store/trunk/Store/dataobjects/StorePaymentTransactionWrapper.php,
+	  store/trunk/Store/dataobjects/StorePaymentType.php,
+	  store/trunk/Store/dataobjects/StorePaymentTypeWrapper.php,
+	  store/trunk/Store/dataobjects/StoreProduct.php,
+	  store/trunk/Store/dataobjects/StoreProductImageWrapper.php,
+	  store/trunk/Store/dataobjects/StoreProductWrapper.php,
+	  store/trunk/Store/dataobjects/StoreProvState.php,
+	  store/trunk/Store/dataobjects/StoreProvStateWrapper.php,
+	  store/trunk/Store/dataobjects/StoreQuantityDiscount.php,
+	  store/trunk/Store/dataobjects/StoreQuantityDiscountRegionBinding.php,
+	  
+	  store/trunk/Store/dataobjects/StoreQuantityDiscountRegionBindingWrapper.php,
+	  store/trunk/Store/dataobjects/StoreQuantityDiscountWrapper.php,
+	  store/trunk/Store/dataobjects/StoreRecordsetWrapper.php,
+	  store/trunk/Store/dataobjects/StoreRegion.php,
+	  store/trunk/Store/dataobjects/StoreRegionWrapper.php:
+	  Remove unused class StoreDataObject and StoreRecordsetWrapper.
+	  
+	  sed -i
+	  's|Store/dataobjects/StoreDataObject|SwatDB/SwatDBDataObject|'
+	  `find -name \*.php`
+	  sed -i
+	  's|Store/dataobjects/StoreRecordsetWrapper|SwatDB/SwatDBRecordsetWrapper|'
+	  `find -name \*.php`
+	  sed -i 's|StoreDataObject|SwatDBDataObject|' `find -name \*.php`
+	  sed -i 's|StoreRecordsetWrapper|SwatDBRecordsetWrapper|' `find
+	  -name \*.php`
+	* [r19114] store/trunk/Store/StoreArticlePageFactory.php,
+	  store/trunk/Store/StoreArticlePath.php,
+	  store/trunk/Store/StoreCategoryPath.php,
+	  store/trunk/Store/StorePageFactory.php,
+	  store/trunk/Store/StorePath.php,
+	  store/trunk/Store/StorePathEntry.php,
+	  store/trunk/Store/StoreStorePageFactory.php,
+	  store/trunk/Store/dataobjects/StoreArticle.php,
+	  store/trunk/Store/dataobjects/StoreArticleWrapper.php,
+	  store/trunk/Store/dataobjects/StoreCategory.php,
+	  store/trunk/Store/dataobjects/StoreRecordsetWrapper.php,
+	  store/trunk/Store/pages/StoreAccountPage.php,
+	  store/trunk/Store/pages/StoreAccountResetPasswordPage.php,
+	  store/trunk/Store/pages/StoreAccountResetPasswordThankYouPage.php,
+	  store/trunk/Store/pages/StoreArticleNotVisiblePage.php,
+	  store/trunk/Store/pages/StoreArticlePage.php,
+	  store/trunk/Store/pages/StoreCartPage.php,
+	  store/trunk/Store/pages/StoreCategoryPage.php,
+	  store/trunk/Store/pages/StoreCheckoutPage.php,
+	  store/trunk/Store/pages/StoreContactPage.php,
+	  store/trunk/Store/pages/StoreNateGoSearchPage.php,
+	  store/trunk/Store/pages/StoreNotVisiblePage.php,
+	  store/trunk/Store/pages/StorePage.php,
+	  store/trunk/Store/pages/StoreProductImagePage.php,
+	  store/trunk/Store/pages/StoreProductPage.php,
+	  store/trunk/Store/pages/StoreQuickOrderPage.php,
+	  store/trunk/Store/pages/StoreSearchPage.php,
+	  store/trunk/Store/pages/StoreSiteMapPage.php,
+	  store/trunk/Store/pages/StoreStorePage.php:
+	  Push article system up from Store package to Site package.
+
+2007-08-03  steven
+
+	* [r19112]
+	  store/trunk/Store/StoreOrderConfirmationMailMessage.php:
+	  Add new wrapper DIV to order confirmation email - this
+	  correlates with changes in Uppermost and they should go live
+	  together
+
+2007-08-02  steven
+
+	* [r19041] store/trunk/www/admin/styles/store-quick-search.css:
+	  Fixed ticket #1104 (sku quick search lamely small)
+
+2007-07-26  charles
+
+	* [r18777] store/trunk/Store/admin/components/Category/Index.php:
+	  Use new selection API.
+
 2007-07-26  nrf
 
+	* [r18772] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.8.12
 	* [r18770] store/trunk/Store/admin/components/Product/Details.php:
 	  Use new selection API
 
