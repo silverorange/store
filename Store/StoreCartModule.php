@@ -86,17 +86,7 @@ class StoreCartModule extends SiteApplicationModule
 	 */
 	public function __construct(SiteApplication $app)
 	{
-		if (!(isset($app->session) &&
-			$app->session instanceof StoreSessionModule))
-			throw new StoreException('The StoreCartModule requires a '.
-				'StoreSessionModule to be loaded. Please either explicitly '.
-				'add a session module to the application before instantiating '.
-				'the cart module, or specify the session module before the '.
-				'cart module in the application’s getDefaultModuleList() '.
-				'method.');
-
 		parent::__construct($app);
-
 		$this->entries = new ArrayIterator(array());
 	}
 
@@ -122,6 +112,22 @@ class StoreCartModule extends SiteApplicationModule
 			$this->app->session->registerRegenerateIdCallback(
 				array($this, 'handleRegenerateId'));
 		}
+	}
+
+	// }}}
+	// {{{ public function depends()
+
+	/**
+	 * Gets the module features this module depends on
+	 *
+	 * The cart module depends on the StoreSessionModule and SiteDatabaseModule
+	 * features.
+	 *
+	 * @return array an array of features this module depends on.
+	 */
+	public function depends()
+	{
+		return array('StoreSessionModule', 'SiteDatabaseModule');
 	}
 
 	// }}}
