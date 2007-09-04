@@ -34,6 +34,7 @@ class StoreProductPage extends StorePage
 	protected $cart_ui_xml = 'Store/pages/product-cart.xml';
 	protected $item_removed = false;
 	protected $added_entry_ids = array();
+	protected $default_quantity = 0;
 
 	/**
 	 * @var SiteArticleWrapper
@@ -79,6 +80,10 @@ class StoreProductPage extends StorePage
 
 		$items_form = $this->items_ui->getWidget('form');
 		$items_form->action = $this->source;
+
+		$quantity = $this->items_ui->getWidget('quantity');
+		if ($quantity !== null)
+			$this->default_quantity = $quantity->value;
 
 		$view = $this->items_ui->getWidget('items_view');
 
@@ -228,7 +233,7 @@ class StoreProductPage extends StorePage
 					}
 
 					// reset quantity entry value (no persistance)
-					$widget->value = 0;
+					$widget->value = $this->default_quantity;
 				}
 			}
 
