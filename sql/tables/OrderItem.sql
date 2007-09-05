@@ -6,8 +6,8 @@ create table OrderItem (
 	price numeric(11, 2) not null,
 	description varchar(255),
 	extension numeric(11, 2) not null,
-	product int not null,
-	product_title varchar(255) not null,
+	product int null,
+	product_title varchar(255) null,
 	catalog int,
 	quick_order boolean not null default false,
 	primary key (id)
