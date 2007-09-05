@@ -202,11 +202,12 @@ class StoreInvoice extends SwatDBDataObject
 	 *
 	 * @param StoreAddress $billing_address the billing address of the order.
 	 * @param StoreAddress $shipping_address the shipping address of the order.
+	 * @param StoreRegion $region the current region.
 	 *
 	 * @return double the cost of this invoice.
 	 */
 	public function getTotal(StoreAddress $billing_address = null,
-		StoreAddress $shipping_address = null)
+		StoreAddress $shipping_address = null, StoreRegion $region = null)
 	{
 		$total = $this->getItemTotal();
 
@@ -214,7 +215,7 @@ class StoreInvoice extends SwatDBDataObject
 			$billing_address, $shipping_address);
 
 		$shipping = $this->getShippingTotal(
-			$billing_address, $shipping_address);
+			$billing_address, $shipping_address, $region);
 
 		if ($tax === null || $shipping === null)
 			$total = null;
@@ -260,11 +261,12 @@ class StoreInvoice extends SwatDBDataObject
 	 *
 	 * @param StoreAddress $billing_address the billing address.
 	 * @param StoreAddress $shipping_address the shipping address.
+	 * @param StoreRegion $region the current region.
 	 *
 	 * @return double the cost of shipping this invoice.
 	 */
 	public function getShippingTotal(StoreAddress $billing_address = null,
-		StoreAddress $shipping_address = null)
+		StoreAddress $shipping_address = null, StoreRegion $region = null)
 	{
 		if ($this->shipping_total === null) {
 			$total = null;

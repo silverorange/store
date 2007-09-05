@@ -569,13 +569,14 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		$order->item_total = $invoice->getItemTotal();
 
 		$order->shipping_total = $invoice->getShippingTotal(
-			$order->billing_address, $order->shipping_address);
+			$order->billing_address, $order->shipping_address,
+			$this->app->getRegion());
 
 		$order->tax_total = $invoice->getTaxTotal($order->billing_address,
 			 $order->shipping_address);
 
 		$order->total = $invoice->getTotal($order->billing_address,
-			$order->shipping_address);
+			$order->shipping_address, $this->app->getRegion());
 
 		if (isset($this->app->session->ad))
 			$order->ad = $this->app->session->ad;
