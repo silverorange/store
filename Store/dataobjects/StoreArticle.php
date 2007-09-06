@@ -136,7 +136,8 @@ class StoreArticle extends SiteArticle
 	 */
 	protected function loadSubArticles()
 	{
-		$sql = 'select id, title, shortname, description from Article
+		$sql = 'select id, title, shortname, description, createdate
+			from Article
 			where parent = %s and id in 
 			(select id from VisibleArticleView where region = %s)
 			order by displayorder, title';
