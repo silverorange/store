@@ -29,8 +29,11 @@ class StoreArticleEdit extends SiteArticleEdit
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
 
-		$index = array_search('boolean:enabled', $this->fields);
-		unset($this->fields[$index]);
+		$unused_fields = array(
+			'boolean:enabled',
+		);
+
+		$this->fields = array_diff($this->fields, $unused_fields);
 	}
 
 	// }}}
