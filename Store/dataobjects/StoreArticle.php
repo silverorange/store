@@ -46,6 +46,42 @@ class StoreArticle extends SiteArticle
 	}
 
 	// }}}
+	// {{{ public function getVisibleSubArticles()
+
+	/**
+	 * Get the sub-articles of this article that are both shown and enabled
+	 * in the current region.
+	 *
+	 * @return SiteArticleWrapper a recordset of sub-articles of the
+	 *                              specified article.
+	 */
+	public function getVisibleSubArticles()
+	{
+		$sql = 'select id, title, shortname, description, createdate
+			from Article
+			where parent = %s and show = %s and id in 
+			(select id from VisibleArticleView where region = %s)
+			order by displayorder, title';
+
+		if ($this->region === null)
+			throw new StoreException('Region not set on article dataobject; '.
+				'call the setRegion() method.');
+
+		$sql = sprintf($sql,
+			$this->db->quote($this->id, 'integer'),
+			$this->db->quote(true, 'boolean'),
+			$this->db->quote($this->region->id, 'integer'));
+
+		$wrapper = SwatDBClassMap::get('SiteArticleWrapper');
+		$articles = SwatDB::query($this->db, $sql, $wrapper);
+
+		foreach ($articles as $article)
+			$article->setRegion($this->region);
+
+		return $articles;
+	}
+
+	// }}}
 	// {{{ public function loadWithPath()
 
 	/**
