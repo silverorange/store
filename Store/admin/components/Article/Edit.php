@@ -28,6 +28,8 @@ class StoreArticleEdit extends SiteArticleEdit
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
+
+		unset($this->fields['enabled']);
 	}
 
 	// }}}
@@ -52,6 +54,15 @@ class StoreArticleEdit extends SiteArticleEdit
 		SwatDB::updateBinding($this->app->db, 'ArticleRegionBinding',
 			'article', $this->id, 'region', $region_list->values, 'Region',
 			'id');
+	}
+
+	// }}}
+	// {{{ protected function getUIValues()
+
+	protected function getUIValues()
+	{
+		return $this->ui->getValues(array('title', 'shortname', 'bodytext',
+			'description', 'show', 'searchable'));
 	}
 
 	// }}}
