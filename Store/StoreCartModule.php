@@ -4,7 +4,7 @@ require_once 'SwatDB/SwatDBTransaction.php';
 
 require_once 'Site/SiteApplicationModule.php';
 
-require_once 'Store/StoreSessionModule.php';
+require_once 'Site/SiteAccountSessionModule.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/StoreCart.php';
 require_once 'Store/StoreSavedCart.php';
@@ -21,8 +21,8 @@ require_once 'Store/dataobjects/StoreCategoryWrapper.php';
  * Most web stores will have at least two carts. This class handles loading
  * carts and moving objects between carts.
  *
- * Depends on the StoreSessionModule module and thus should be specified after
- * the StoreSessionModule in the application's
+ * Depends on the SiteAccountSessionModule module and thus should be specified after
+ * the SiteAccountSessionModule in the application's
  * {@link SiteApplication::getDefaultModuleList()} method.
  *
  * @package   Store
@@ -120,14 +120,14 @@ class StoreCartModule extends SiteApplicationModule
 	/**
 	 * Gets the module features this module depends on
 	 *
-	 * The cart module depends on the StoreSessionModule and SiteDatabaseModule
+	 * The cart module depends on the SiteAccountSessionModule and SiteDatabaseModule
 	 * features.
 	 *
 	 * @return array an array of features this module depends on.
 	 */
 	public function depends()
 	{
-		return array('StoreSessionModule', 'SiteDatabaseModule');
+		return array('SiteAccountSessionModule', 'SiteDatabaseModule');
 	}
 
 	// }}}
