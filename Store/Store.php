@@ -76,6 +76,7 @@ class Store
 Store::setupGettext();
 
 SwatDBClassMap::addPath('Store/dataobjects');
+SwatDBClassMap::add('SiteAccount', 'StoreAccount');
 SwatDBClassMap::add('SiteArticle', 'StoreArticle');
 SwatDBClassMap::add('SiteArticleWrapper', 'StoreArticleWrapper');
 
