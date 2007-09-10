@@ -1,3 +1,32 @@
+2007-09-10  nrf
+
+	* [r20069] store/branches/1.9.x:
+	  make a branch
+
+2007-09-05  nrf
+
+	* [r19922] store/tags/release-1.9.1:
+	  tag release 1.9.1
+	* [r19921] store/trunk/package.php:
+	  prepare for release of 1.9.1
+	* [r19919] store/trunk/Store/dataobjects/StoreInvoice.php,
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Pass the region to getShippingTotal() in addtion to addresses so
+	  that it can be used to determine the shipping.
+	* [r19918] store/trunk/sql/tables/OrderItem.sql:
+	  Allow order_item product fields to be nullable so that order
+	  items can be created from invoice items.
+
+2007-09-04  nrf
+
+	* [r19887] store/trunk/Store/pages/StoreProductPage.php:
+	  this works better
+	* [r19884] store/trunk/Store/pages/StoreProductPage.php:
+	  Reset quantity entry value to the same value as it was initally
+	  set to in the UI XML.
+	* [r19861] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.9.0
+
 2007-09-04  gauthierm
 
 	* [r19833] store/trunk/Store/StoreCartModule.php,
