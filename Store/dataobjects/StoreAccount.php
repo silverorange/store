@@ -2,7 +2,6 @@
 
 require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatString.php';
-require_once 'Store/StoreResetPasswordMailMessage.php';
 require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Store/dataobjects/StoreAccountAddressWrapper.php';
 require_once 'Store/dataobjects/StoreAccountPaymentMethodWrapper.php';
