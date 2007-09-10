@@ -64,40 +64,6 @@ class StoreArticleIndex extends SiteArticleIndex
 	}
 
 	// }}}
-	// {{{ protected function getTableModel()
-
-	protected function getTableModel(SwatView $view)
-	{
-		$sql = 'select Article.id,
-					Article.title, 
-					Article.show,
-					Article.searchable,
-					ArticleChildCountView.child_count
-				from Article
-					left outer join ArticleChildCountView on
-						ArticleChildCountView.article = Article.id
-				where Article.parent %s %s
-				order by %s';
-
-		$sql = sprintf($sql,
-			SwatDB::equalityOperator($this->id),
-			$this->app->db->quote($this->id, 'integer'),
-			$this->getOrderByClause($view, 
-				'Article.displayorder, Article.title', 'Article'));
-		
-		$rs = SwatDB::query($this->app->db, $sql);
-
-		$view = $this->ui->getWidget('index_view');
-		$view->getColumn('visibility')->getFirstRenderer()->db =
-			$this->app->db;
-
-		if (count($rs) < 2)
-			$this->ui->getWidget('articles_order')->sensitive = false;
-
-		return $rs;
-	}
-
-	// }}}
 }
 
 ?>
