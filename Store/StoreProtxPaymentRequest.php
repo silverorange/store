@@ -598,8 +598,7 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 				default:
 					$type_map = $this->getTypeMap();
 					$tx_type = $type_map[$type];
-					$url = sprintf(self::URL_TEST,
-						ucfirst(strtolower($tx_type)));
+					$url = sprintf(self::URL_TEST, strtolower($tx_type));
 
 					break;
 			}
@@ -624,8 +623,7 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 				default:
 					$type_map = $this->getTypeMap();
 					$tx_type = $type_map[$type];
-					$url = sprintf(self::URL_LIVE,
-						ucfirst(strtolower($tx_type)));
+					$url = sprintf(self::URL_LIVE, strtolower($tx_type));
 
 					break;
 			}
