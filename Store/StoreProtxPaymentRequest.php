@@ -238,19 +238,15 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 				$this->getPostFields());
 
 			$response_text = curl_exec($this->curl_handle);
+			$response_code = curl_getinfo($this->curl_handle,
+				CURLINFO_HTTP_CODE);
 
-			set_error_handler(create_function('$errno, $errstr', ''),
-				E_NOTICE | E_WARNING);
-
-			$document = new DOMDocument();
-			$document->loadHTML($response_text);
-
-			restore_error_handler();
-
-			if ($document->nodeName == 'html') {
-				throw new StoreException(sprintf('Received an error page as a '.
-					"response. Error contents are: '%s'.",
-					$this->parseErrorPage($document)));
+			// check for HTTP OK
+			if ($response_code != 200) {
+				throw new StoreException(sprintf(
+					"Request was not successful. HTTP code is: %s\n".
+					"Response text is:\n%s",
+					$response_code, $response_text));
 			}
 
 			$response = new StoreProtxPaymentResponse($response_text);
@@ -655,33 +651,6 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 		$post_data = substr($post_data, 1);
 
 		return $post_data;
-	}
-
-	// }}}
-	// {{{ private function parseErrorPage()
-
-	/**
-	 * Parses a Protx VSP Direct HTML error page to get the error message
-	 * contents
-	 *
-	 * This method is used to generate helpful error messages in the event that
-	 * something goes wrong.
-	 *
-	 * @param DOMDocument $document
-	 *
-	 * @return string the error message contained in the error page.
-	 */
-	private function parseErrorPage(DOMDocument $document)
-	{
-		$error = '';
-
-		$blockquotes = $document->getElementsByTagName('blockquote');
-		if ($blockquotes->length > 0) {
-			$value = (string)$blockquotes->item(0)->nodeValue;
-			$error = trim(preg_replace('/\s+/s', ' ', $value));
-		}
-
-		return $error;
 	}
 
 	// }}}
