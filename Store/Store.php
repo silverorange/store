@@ -74,6 +74,7 @@ class Store
 }
 
 Store::setupGettext();
+SwatUI::mapClassPrefixToPath('Store', 'Store');
 
 SwatDBClassMap::addPath('Store/dataobjects');
 SwatDBClassMap::add('SiteAccount', 'StoreAccount');

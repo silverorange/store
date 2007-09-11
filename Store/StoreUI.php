@@ -3,6 +3,8 @@
 require_once 'Swat/SwatUI.php';
 
 /**
+ * This is a deprecated equivalent of {@link SwatUI}.
+ *
  * UI manager for the store package
  *
  * Subclass of {@link SwatUI} for use with the Store package.  This can be used
@@ -12,24 +14,11 @@ require_once 'Swat/SwatUI.php';
  *
  * @package   Store
  * @copyright 2006-2007 silverorange
+ * @deprecated The parent of this class, {@link SwatUI}, can now be used directly.
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreUI extends SwatUI
 {
-	// {{{ public function __construct()
-
-	/**
-	 * Creates a new StoreUI object
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->class_map['Store'] = 'Store';
-		$this->class_map['Site'] = 'Site';
-	}
-
-	// }}}
 }
 
 ?>
