@@ -46,6 +46,7 @@ class StoreArticleEdit extends SiteArticleEdit
 		parent::saveDBData();
 
 		$this->saveRegions();
+		$this->addToSearchQueue();
 	}
 
 	// }}}
@@ -58,6 +59,26 @@ class StoreArticleEdit extends SiteArticleEdit
 		SwatDB::updateBinding($this->app->db, 'ArticleRegionBinding',
 			'article', $this->id, 'region', $region_list->values, 'Region',
 			'id');
+	}
+
+	// }}}
+	// {{{ protected function addToSearchQueue()
+
+	protected function addToSearchQueue()
+	{
+		$sql = sprintf('delete from NateGoSearchQueue
+			where document_id = %s and document_type = %s',
+			$this->app->db->quote($this->id, 'integer'),
+			$this->app->db->quote(1, 'integer'));
+
+		SwatDB::exec($this->app->db, $sql);
+
+		$sql = sprintf('insert into NateGoSearchQueue
+			(document_id, document_type) values (%s, %s)',
+			$this->app->db->quote($this->id, 'integer'),
+			$this->app->db->quote(1, 'integer'));
+
+		SwatDB::exec($this->app->db, $sql);
 	}
 
 	// }}}
