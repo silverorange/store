@@ -1,14 +1,11 @@
 <?php
 
-require_once 'SwatDB/SwatDB.php';
-require_once 'Swat/SwatDetailsStore.php';
-require_once 'Admin/exceptions/AdminNotFoundException.php';
-require_once 'Admin/pages/AdminIndex.php';
+require_once 'Site/admin/components/Account/Details.php';
 require_once 'Store/StoreAddressCellRenderer.php';
 require_once 'Store/StorePaymentMethodCellRenderer.php';
 require_once 'Store/dataobjects/StoreAccountPaymentMethodWrapper.php';
 require_once 'Store/dataobjects/StoreAccount.php';
-require_once 'SwatDB/SwatDBClassMap.php';
+require_once 'Store/dataobjects/StoreInvoiceWrapper.php';
 
 /**
  * Details page for accounts
@@ -17,7 +14,7 @@ require_once 'SwatDB/SwatDBClassMap.php';
  * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreAccountDetails extends AdminIndex
+class StoreAccountDetails extends SiteAccountDetails
 {
 	// {{{ protected properties
 
@@ -25,54 +22,6 @@ class StoreAccountDetails extends AdminIndex
 	 * @var string
 	 */
 	protected $ui_xml = 'Store/admin/components/Account/details.xml';
-
-	/**
-	 * @var integer
-	 */
-	protected $id;
-
-	// }}}
-	// {{{ private propeties
-
-	/**
-	 * @var StoreAccount
-	 */
-	private $account;
-
-	// }}}
-
-	// init phase
-	// {{{ protected function initInternal()
-
-	protected function initInternal()
-	{
-		parent::initInternal();
-
-		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML($this->ui_xml);
-
-		$this->id = SiteApplication::initVar('id');
-	}
-
-	// }}}
-	// {{{ protected function getAccount()
-
-	protected function getAccount()
-	{
-		if ($this->account === null) {
-			$account_class = SwatDBClassMap::get('StoreAccount');
-
-			$this->account = new $account_class();
-			$this->account->setDatabase($this->app->db);
-
-			if (!$this->account->load($this->id))
-				throw new AdminNotFoundException(sprintf(
-					Store::_('A account with an id of ‘%d’ does not exist.'),
-					$this->id));
-		}
-
-		return $this->account;
-	}
 
 	// }}}
 
@@ -144,11 +93,6 @@ class StoreAccountDetails extends AdminIndex
 	{
 		parent::buildInternal();
 
-		$this->buildAccountDetails();
-
-		$toolbar = $this->ui->getWidget('details_toolbar');
-		$toolbar->setToolLinkValues($this->id);
-
 		if ($this->ui->hasWidget('invoice_toolbar')) {
 			$toolbar = $this->ui->getWidget('invoice_toolbar');
 			$toolbar->setToolLinkValues($this->id);
@@ -159,8 +103,6 @@ class StoreAccountDetails extends AdminIndex
 
 		// set default time zone for orders & invoices
 		$this->setTimeZone();
-
-		$this->buildNavBar();
 	}
 
 	// }}}
@@ -298,44 +240,6 @@ class StoreAccountDetails extends AdminIndex
 		}
 
 		return $store;
-	}
-
-	// }}}
-	// {{{ protected function getAccountDetailsStore()
-
-	protected function getAccountDetailsStore()
-	{
-		return new SwatDetailsStore($this->getAccount());
-	}
-
-	// }}}
-	// {{{ protected function buildAccountDetails()
-
-	protected function buildAccountDetails() 
-	{
-		$ds = $this->getAccountDetailsStore();
-
-		$details_frame = $this->ui->getWidget('details_frame');
-		$details_frame->title = Store::_('Account');
-		$details_frame->subtitle = $ds->fullname;
-
-		$details_view = $this->ui->getWidget('details_view');
-
-		$date_field = $details_view->getField('createdate');
-		$date_renderer = $date_field->getRendererByPosition();
-		$date_renderer->display_time_zone = $this->app->default_time_zone;
-
-		$details_view->data = $ds;
-	}
-
-	// }}}
-	// {{{ private function buildNavBar()
-
-	private function buildNavBar()
-	{
-		$fullname = $this->getAccount()->fullname;
-		$this->navbar->addEntry(new SwatNavBarEntry($fullname));
-		$this->title = $fullname;
 	}
 
 	// }}}
