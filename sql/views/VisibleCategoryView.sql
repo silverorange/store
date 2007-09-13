@@ -10,6 +10,6 @@
 create or replace view VisibleCategoryView as
 	select Category.id as category, region
 		from Category
-			left outer join CategoryVisibleProductCountByRegionCache on
-				Category.id = CategoryVisibleProductCountByRegionCache.category
+			left outer join CategoryVisibleMajorProductCountByRegionCache on
+				Category.id = CategoryVisibleMajorProductCountByRegionCache.category
 		where product_count > 0 or always_visible = true;
