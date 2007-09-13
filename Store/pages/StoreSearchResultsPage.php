@@ -40,21 +40,10 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 		if ($this->hasSearchDataValue('type')) {
 			$type = $this->getSearchDataValue('type');
 
-			if ($type === 'article') {
+			if ($type === 'article')
 				$this->buildArticles($fulltext_result);
-
-				// set the article frame to use the whole width
-				$frame = $this->results_ui->getWidget('article_results_frame');
-				$frame->classes[] = 'full-width';
-
-				$pager = $this->results_ui->getWidget('article_pager');
-				$pager->display_parts = 
-					SwatPagination::NEXT | SwatPagination::PREV |
-					SwatPagination::PAGES | SwatPagination::POSITION;
-
-			} elseif ($type === 'product') {
+			elseif ($type === 'product')
 				$this->buildProducts($fulltext_result);
-			}
 	
 		} elseif (count($this->getSearchDataValues()) === 1 &&
 			$this->hasSearchDataValue('keywords')) {
@@ -69,6 +58,19 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 
 		if ($fulltext_result !== null)
 			$this->buildMisspellings($fulltext_result);
+
+		if (count($this->has_results) === 1 &&
+			in_array('article', $this->has_results)) {
+
+			// set the article frame to use the whole width
+			$frame = $this->results_ui->getWidget('article_results_frame');
+			$frame->classes[] = 'full-width';
+
+			$pager = $this->results_ui->getWidget('article_pager');
+			$pager->display_parts = 
+				SwatPagination::NEXT | SwatPagination::PREV |
+				SwatPagination::PAGES | SwatPagination::POSITION;
+		}
 	}
 
 	// }}}
