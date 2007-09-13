@@ -437,8 +437,14 @@ class StoreCategory extends SwatDBDataObject
 		if ($this->image !== null) {
 			$img_tag = $this->image->getImgTag('thumb');
 			$img_tag->alt = 'Photo of '.$this->title;
-			$img_tag->display();
+		} else {
+			$img_tag = new SwatHtmlTag('img');
+			$img_tag->width = '100';
+			$img_tag->height = '100';
+			$img_tag->src = 'packages/store/images/category-placeholder.png';
+			$img_tag->alt = '';
 		}
+		$img_tag->display();
 	}
 
 	// }}}
