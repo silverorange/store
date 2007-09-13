@@ -22,6 +22,37 @@ class StoreProductSearchEngine extends SiteSearchEngine
 
 	// }}}
 
+	// {{{ protected function search()
+
+	public function search($limit = null, $offset = null)
+	{
+		$products = parent::search($limit, $offset);
+
+		if (count($products) > 0)
+			$this->loadSubDataObjects($products);
+
+		return $products;
+	}
+
+	// }}}
+	// {{{ protected function loadSubDataObjects()
+
+	/**
+	 * Load sub dataobjects for the StoreProductWrapper results
+	 *
+	 * @param StoreProductWrapper $products A collection of StoreProduct
+	 *                                       dataobjects.
+	 */
+	protected function loadSubDataObjects(StoreProductWrapper $products)
+	{
+		$sql = 'select * from Image where id in (%s)';
+		$image_wrapper_class = SwatDBClassMap::get('StoreProductImageWrapper');
+
+		$products->loadAllSubDataObjects(
+			'primary_image', $this->app->db, $sql, $image_wrapper_class);
+	}
+
+	// }}}
 	// {{{ protected function getResultWrapperClass()
 
 	protected function getResultWrapperClass()

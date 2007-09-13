@@ -240,7 +240,6 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 
 		if (count($products) > 0) {
 			$this->has_results[] = 'product';
-			$this->loadProductSubDataObjects($products);
 
 			$frame = $this->results_ui->getWidget('product_results_frame');
 			$results = $this->results_ui->getWidget('product_results');
@@ -262,24 +261,6 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 		$engine->category = $this->getCategory();
 
 		return $engine;
-	}
-
-	// }}}
-	// {{{ protected function loadProductSubDataObjects()
-
-	/**
-	 * Load sub dataobjects for the StoreProductWrapper results
-	 *
-	 * @param StoreProductWrapper $products A collection of StoreProduct
-	 *                                       dataobjects.
-	 */
-	protected function loadProductSubDataObjects(StoreProductWrapper $products)
-	{
-		$sql = 'select * from Image where id in (%s)';
-		$image_wrapper_class = SwatDBClassMap::get('StoreProductImageWrapper');
-
-		$products->loadAllSubDataObjects(
-			'primary_image', $this->app->db, $sql, $image_wrapper_class);
 	}
 
 	// }}}
