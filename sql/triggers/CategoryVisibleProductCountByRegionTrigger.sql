@@ -26,24 +26,69 @@
  * in the VisibleProductCache triggers.
  */
 CREATE OR REPLACE FUNCTION updateCategoryVisibleProductCountByRegion () RETURNS INTEGER AS $$ 
+	DECLARE
+		local_row record;
+		local_product_count integer;
     BEGIN
-		truncate CategoryVisibleProductCountByRegionCache;
-		insert into CategoryVisibleProductCountByRegionCache (category, region, product_count)
-			select category, region, product_count from CategoryVisibleProductCountByRegionView
-			where category is not null;
+		-- 1) Count all products in the category
 
+		for local_row in select * from CategoryVisibleProductCountByRegionView where category is not null loop
+
+			-- check if row in view exists in cache and get the product count
+			select into local_product_count product_count from CategoryVisibleProductCountByRegionCache
+			where category = local_row.category and region = local_row.region;
+
+			if FOUND then
+				-- exists, update the product count
+				update CategoryVisibleProductCountByRegionCache
+					set product_count = local_row.product_count
+				where category = local_row.category and region = local_row.region;
+			else
+				-- doesn't exist, add the row
+				insert into CategoryVisibleProductCountByRegionCache (category, region, product_count)
+				values (local_row.category, local_row.region, local_row.product_count);
+			end if;
+		end loop;
+
+		-- 2) Count only major products in the category (CategoryProductBinding.minor = false)
+
+		for local_row in select * from CategoryVisibleMajorProductCountByRegionView where category is not null loop
+
+			-- check if row in view exists in cache and get the product count
+			select into local_product_count product_count from CategoryVisibleMajorProductCountByRegionCache
+			where category = local_row.category and region = local_row.region;
+
+			if FOUND then
+				-- exists, update the product count
+				update CategoryVisibleMajorProductCountByRegionCache
+					set product_count = local_row.product_count
+				where category = local_row.category and region = local_row.region;
+			else
+				-- doesn't exist, add the row
+				insert into CategoryVisibleMajorProductCountByRegionCache (category, region, product_count)
+				values (local_row.category, local_row.region, local_row.product_count);
+			end if;
+		end loop;
+
+		-- delete all rows in cache that are not in the view
+		delete from CategoryVisibleProductCountByRegionCache
+		where array[coalesce(category, 0), region] not in
+			(select array[coalesce(category, 0), region] from CategoryVisibleProductCountByRegionView);
+
+		-- set cache as clean
+		update CacheFlag set dirty = false where shortname = 'CategoryVisibleProductCountByRegion';
         RETURN NULL;
     END;
 $$ LANGUAGE 'plpgsql';
 
-CREATE OR REPLACE FUNCTION runUpdateCategoryVisibleProductCountByRegion () RETURNS trigger AS $$ 
+CREATE OR REPLACE FUNCTION runUpdateCategoryVisibleProductCountByRegion () RETURNS trigger AS $$
     BEGIN
-		perform updateCategoryVisibleProductCountByRegion();
+		update CacheFlag set dirty = true where shortname = 'CategoryVisibleProductCountByRegion';
         RETURN NULL;
     END;
 $$ LANGUAGE 'plpgsql';
 
-CREATE TRIGGER CategoryVisibleProductCountByRegionTrigger AFTER INSERT ON VisibleProductCache
+CREATE TRIGGER CategoryVisibleProductCountByRegionTrigger AFTER INSERT OR DELETE ON VisibleProductCache
     FOR EACH STATEMENT EXECUTE PROCEDURE runUpdateCategoryVisibleProductCountByRegion();
 
 CREATE TRIGGER CategoryVisibleProductCountByRegionTrigger AFTER INSERT OR UPDATE OR DELETE ON Category 
