@@ -1,0 +1,27 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SiteSearchForm" id="search_form">
+		<widget class="SwatFrame" id="search_frame">
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Keywords</property>
+				<widget class="StoreKeywordEntry" id="keywords">
+					<property name="maxlength" type="integer">255</property>
+					<property name="name">keywords</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField" id="category_field">
+				<property name="title">Category</property>
+				<widget class="SwatFlydown" id="category">
+					<property name="blank_title">All Categories</property>
+					<property name="serialize_values" type="boolean">false</property>
+				</widget>
+			</widget>
+			<widget class="SwatFooterFormField">
+				<widget class="StoreUnnamedButton" id="submit">
+					<property name="title" translatable="yes">Search</property>
+				</widget>
+			</widget>
+		</widget>
+	</widget>
+</swatml>
