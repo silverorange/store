@@ -299,8 +299,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 		foreach ($products as $product) {
 			echo '<li class="product-tile">';
 			$link_href = 'store/'.$product->path;
-			//$product->displayAsTile($link_href);
-			$product->displayAsIcon($link_href);
+			$product->displayAsTile($link_href);
 			echo '</li>';
 		}
 
