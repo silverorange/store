@@ -50,6 +50,26 @@ class StoreSearchPage extends StoreSearchResultsPage
 	}
 
 	// }}}
+	// {{{ protected function getCategories()
+
+	protected function getCategories()
+	{
+		$sql = 'select id, title, subtitle, shortname from Category
+			where parent is null and id in 
+				(select category from VisibleCategoryView
+				where region = %s or region is null)
+			order by displayorder, title';
+
+		$sql = sprintf($sql,
+			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+
+		$categories = SwatDB::query($this->app->db, $sql,
+			'StoreCategoryWrapper');
+
+		return $categories;
+	}
+
+	// }}}
 
 	// process phase
 	// {{{ public function process
@@ -79,26 +99,6 @@ class StoreSearchPage extends StoreSearchResultsPage
 		$this->layout->endCapture();
 
 		parent::build();
-	}
-
-	// }}}
-	// {{{ protected function getCategories()
-
-	protected function getCategories()
-	{
-		$sql = 'select id, title, subtitle, shortname from Category
-			where parent is null and id in 
-				(select category from VisibleCategoryView
-				where region = %s or region is null)
-			order by displayorder, title';
-
-		$sql = sprintf($sql,
-			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
-
-		$categories = SwatDB::query($this->app->db, $sql,
-			'StoreCategoryWrapper');
-
-		return $categories;
 	}
 
 	// }}}
