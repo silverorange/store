@@ -14,7 +14,7 @@ require_once 'Store/pages/StoreSearchPage.php';
  * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-abstract class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
+class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 {
 	// {{{ public function queue()
 	
@@ -55,19 +55,19 @@ abstract class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 		$this->output(Store::_('Repopulating article search queue ... '),
 			self::VERBOSITY_ALL);
 
+		$type = NateGoSearch::getDocumentType($this->db, 'article');
+
 		// clear queue 
 		$sql = sprintf('delete from NateGoSearchQueue
 			where document_type = %s',
-			$this->db->quote($this->getDocumentType(
-				StoreSearchPage::TYPE_ARTICLES), 'integer'));
+			$this->db->quote($type, 'integer'));
 
 		SwatDB::exec($this->db, $sql);
 
 		// fill queue 
 		$sql = sprintf('insert into NateGoSearchQueue
 			(document_type, document_id) select %s, id from Article',
-			$this->db->quote($this->getDocumentType(
-				StoreSearchPage::TYPE_ARTICLES), 'integer'));
+			$this->db->quote($type, 'integer'));
 
 		SwatDB::exec($this->db, $sql);
 
@@ -85,19 +85,19 @@ abstract class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 		$this->output(Store::_('Repopulating product search queue ... '),
 			self::VERBOSITY_ALL);
 
+		$type = NateGoSearch::getDocumentType($this->db, 'product');
+
 		// clear queue 
 		$sql = sprintf('delete from NateGoSearchQueue
 			where document_type = %s',
-			$this->db->quote($this->getDocumentType(
-				StoreSearchPage::TYPE_PRODUCTS), 'integer'));
+			$this->db->quote($type, 'integer'));
 
 		SwatDB::exec($this->db, $sql);
 
 		// fill queue 
 		$sql = sprintf('insert into NateGoSearchQueue
 			(document_type, document_id) select %s, id from Product',
-			$this->db->quote($this->getDocumentType(
-				StoreSearchPage::TYPE_PRODUCTS), 'integer'));
+			$this->db->quote($type, 'integer'));
 
 		SwatDB::exec($this->db, $sql);
 
@@ -115,19 +115,19 @@ abstract class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 		$this->output(Store::_('Repopulating category search queue ... '),
 			self::VERBOSITY_ALL);
 
+		$type = NateGoSearch::getDocumentType($this->db, 'category');
+
 		// clear queue 
 		$sql = sprintf('delete from NateGoSearchQueue
 			where document_type = %s',
-			$this->db->quote($this->getDocumentType(
-				StoreSearchPage::TYPE_CATEGORIES), 'integer'));
+			$this->db->quote($type, 'integer'));
 
 		SwatDB::exec($this->db, $sql);
 
 		// fill queue
 		$sql = sprintf('insert into NateGoSearchQueue
 			(document_type, document_id) select %s, id from Category',
-			$this->db->quote($this->getDocumentType(
-				StoreSearchPage::TYPE_CATEGORIES), 'integer'));
+			$this->db->quote($type, 'integer'));
 
 		SwatDB::exec($this->db, $sql);
 
@@ -146,9 +146,7 @@ abstract class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 	 */
 	protected function indexArticles()
 	{
-		$indexer = new NateGoSearchIndexer(
-			$this->getDocumentType(StoreSearchPage::TYPE_ARTICLES),
-				$this->db);
+		$indexer = new NateGoSearchIndexer('article', $this->db);
 
 		$indexer->addTerm(new NateGoSearchTerm('title', 5));
 		$indexer->addTerm(new NateGoSearchTerm('bodytext'));
@@ -156,12 +154,13 @@ abstract class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 		$indexer->addUnindexedWords(
 			NateGoSearchIndexer::getDefaultUnindexedWords());
 
+		$type = NateGoSearch::getDocumentType($this->db, 'article');
+
 		$sql = sprintf('select id, shortname, title, bodytext from Article
 			inner join NateGoSearchQueue
 				on Article.id = NateGoSearchQueue.document_id
 				and NateGoSearchQueue.document_type = %s',
-			$this->db->quote($this->getDocumentType(
-				StoreSearchPage::TYPE_ARTICLES), 'integer'));
+			$this->db->quote($type, 'integer'));
 
 		$this->output(Store::_('Indexing articles ... ').'   ',
 			self::VERBOSITY_ALL);
@@ -191,8 +190,7 @@ abstract class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 		unset($indexer);
 
 		$sql = sprintf('delete from NateGoSearchQueue where document_type = %s',
-			$this->db->quote($this->getDocumentType(
-				StoreSearchPage::TYPE_ARTICLES), 'integer'));
+			$this->db->quote($type, 'integer'));
 
 		SwatDB::exec($this->db, $sql);
 	}
@@ -209,22 +207,21 @@ abstract class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 	 */
 	protected function indexCategories()
 	{
-		$indexer = new NateGoSearchIndexer(
-			$this->getDocumentType(StoreSearchPage::TYPE_CATEGORIES),
-				$this->db);
+		$indexer = new NateGoSearchIndexer('category', $this->db);
 
 		$indexer->addTerm(new NateGoSearchTerm('title'));
 		$indexer->setMaximumWordLength(32);
 		$indexer->addUnindexedWords(
 			NateGoSearchIndexer::getDefaultUnindexedWords());
 
+		$type = NateGoSearch::getDocumentType($this->db, 'category');
+
 		$sql = sprintf('select Category.id, Category.title, Category.bodytext
 			from Category
 			inner join NateGoSearchQueue
 				on Category.id = NateGoSearchQueue.document_id
 				and NateGoSearchQueue.document_type = %s',
-			$this->db->quote($this->getDocumentType(
-				StoreSearchPage::TYPE_CATEGORIES), 'integer'));
+			$this->db->quote($type, 'integer'));
 
 		$this->output(Store::_('Indexing categories ... ').'   ',
 			self::VERBOSITY_ALL);
@@ -254,8 +251,7 @@ abstract class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 		unset($indexer);
 
 		$sql = sprintf('delete from NateGoSearchQueue where document_type = %s',
-			$this->db->quote($this->getDocumentType(
-				StoreSearchPage::TYPE_CATEGORIES), 'integer'));
+			$this->db->quote($type, 'integer'));
 
 		SwatDB::exec($this->db, $sql);
 	}
@@ -265,9 +261,7 @@ abstract class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 
 	protected function indexProducts()
 	{
-		$product_indexer = new NateGoSearchIndexer(
-			$this->getDocumentType(StoreSearchPage::TYPE_PRODUCTS),
-				$this->db);
+		$product_indexer = new NateGoSearchIndexer('product', $this->db);
 
 		$product_indexer->addTerm(new NateGoSearchTerm('title', 5));
 		$product_indexer->addTerm(new NateGoSearchTerm('bodytext'));
@@ -276,14 +270,14 @@ abstract class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 			NateGoSearchIndexer::getDefaultUnindexedWords());
 
 		// the item indexer appends, it gets called after the product indexer
-		$item_indexer = new NateGoSearchIndexer(
-			$this->getDocumentType(StoreSearchPage::TYPE_PRODUCTS),
-				$this->db, false, true);
+		$item_indexer = new NateGoSearchIndexer('product', $this->db, false, true);
 
 		$item_indexer->addTerm(new NateGoSearchTerm('sku', 3));
 		$item_indexer->addTerm(new NateGoSearchTerm('description'));
 		$item_indexer->addUnindexedWords(
 			NateGoSearchIndexer::getDefaultUnindexedWords());
+
+		$type = NateGoSearch::getDocumentType($this->db, 'product');
 
 		$sql = sprintf('select Product.id, Product.title,
 				Product.bodytext, Item.sku, Item.description
@@ -293,8 +287,7 @@ abstract class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 					on Product.id = NateGoSearchQueue.document_id
 					and NateGoSearchQueue.document_type = %s
 			order by Product.id',
-			$this->db->quote($this->getDocumentType(
-				StoreSearchPage::TYPE_PRODUCTS), 'integer'));
+			$this->db->quote($type, 'integer'));
 
 		$this->output(Store::_('Indexing products ... ').'   ',
 			self::VERBOSITY_ALL);
@@ -335,25 +328,10 @@ abstract class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 		unset($item_indexer);
 
 		$sql = sprintf('delete from NateGoSearchQueue where document_type = %s',
-			$this->db->quote($this->getDocumentType(
-				StoreSearchPage::TYPE_PRODUCTS), 'integer'));
+			$this->db->quote($type, 'integer'));
 
 		SwatDB::exec($this->db, $sql);
 	}
-
-	// }}}
-	// {{{ abstract protected function getDocumentType()
-
-	/**
-	 * Gets the NateGo document type based on a content search type
-	 *
-	 * @param string $search_type the type of content to search. One of the
-	 *                             StoreSearchPage::TYPE_* constants.
-	 *
-	 * @return integer the NateGo document type that corresponds to the content
-	 *                  search type or null if no document type exists.
-	 */
-	abstract protected function getDocumentType($search_type);
 
 	// }}}
 }
