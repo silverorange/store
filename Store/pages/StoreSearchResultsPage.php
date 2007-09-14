@@ -106,17 +106,13 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 		if ($fulltext_result !== null)
 			$this->buildMisspellings($fulltext_result);
 
-		if (count($this->has_results) === 1 &&
-			in_array('article', $this->has_results)) {
-
+		if (count($this->has_results) > 1) {
+			$pager = $this->ui->getWidget('article_pager');
+			$pager->display_parts = SwatPagination::NEXT | SwatPagination::PREV;
+		} else {
 			// set the article frame to use the whole width
 			$frame = $this->ui->getWidget('article_results_frame');
-			$frame->classes[] = 'full-width';
-
-			$pager = $this->ui->getWidget('article_pager');
-			$pager->display_parts = 
-				SwatPagination::NEXT | SwatPagination::PREV |
-				SwatPagination::PAGES | SwatPagination::POSITION;
+			$frame->classes[] = 'store-article-results-full-width';
 		}
 	}
 
@@ -130,7 +126,8 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 		$messages = $this->ui->getWidget('results_message');
 
 		// display no product results message
-		if ($messages->getMessageCount() == 0 &&
+		if (count($this->has_results) > 1 &&
+			 $messages->getMessageCount() == 0 &&
 			!in_array('product', $this->has_results)) {
 
 			$message = $this->getNoResultsMessage();
@@ -240,14 +237,14 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 	 */
 	protected function displayCategories(StoreCategoryWrapper $categories)
 	{
-		echo '<ul class="search-results">';
+		echo '<ul class="site-search-results">';
 
 		foreach ($categories as $category) {
 			$navbar = new SwatNavBar();
 			$navbar->addEntries($category->getNavBarEntries());
 			$path = $navbar->getLastEntry()->link;
 
-			echo '<li class="category-tile">';
+			echo '<li class="store-category-tile">';
 			$category->displayAsTile($path);
 			$navbar->display();
 			echo '</li>';
@@ -333,11 +330,11 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 	 */
 	protected function displayProducts(StoreProductWrapper $products)
 	{
-		echo '<ul>';
+		echo '<ul class="site-search-results">';
 		$li_tag = new SwatHtmlTag('li');
 
 		foreach ($products as $product) {
-			echo '<li class="product-tile">';
+			echo '<li class="store-product-tile">';
 			$link_href = 'store/'.$product->path;
 			$product->displayAsTile($link_href);
 			echo '</li>';
