@@ -4,6 +4,7 @@ require_once 'Site/pages/SiteSearchResultsPage.php';
 require_once 'Store/StoreArticleSearchEngine.php';
 require_once 'Store/StoreProductSearchEngine.php';
 require_once 'Store/StoreCategorySearchEngine.php';
+require_once 'Store/dataobjects/StoreProductWrapper.php';
 require_once 'Store/dataobjects/StoreCategoryImageWrapper.php';
 require_once 'Store/dataobjects/StoreProductImageWrapper.php';
 require_once 'Store/StoreUI.php';
@@ -26,6 +27,52 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 		$this->addSearchDataField('category');
 
 		parent::init();
+
+		if ($this->hasSearchDataValue('keywords')) {
+			$keywords = $this->getSearchDataValue('keywords');
+
+			if (count(explode(' ', $keywords)) === 1)
+				$this->searchItem($keywords);
+		}
+	}
+
+	// }}}
+	// {{{ protected function searchItem()
+
+	/**
+	 * Searches for a direct SKU match and if found, relocates directly to the
+	 * coresponding product page
+	 *
+	 * Only SKUs attached to items in products belonging to at least one
+	 * category are automatically redirected.
+	 *
+	 * @param string $keywords the item SKU to search for.
+	 */
+	protected function searchItem($keywords)
+	{
+		$sql = 'select Product.id, Product.shortname,
+				ProductPrimaryCategoryView.primary_category
+			from Product
+				inner join VisibleProductCache on
+					VisibleProductCache.product = Product.id
+				left outer join ProductPrimaryCategoryView
+					on ProductPrimaryCategoryView.product = Product.id
+			where VisibleProductCache.region = %s and
+				Product.id in
+				(select Item.product from Item
+					where lower(Item.sku) like %s)';
+
+		$sql = sprintf($sql,
+			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
+			$this->app->db->quote(strtolower($keywords).'%', 'text'));
+
+		$products = SwatDB::query($this->app->db, $sql, 'StoreProductWrapper');
+
+		if (count($products) == 1) {
+			$first_product = $products->getFirst();
+			$path = 'store/'.$first_product->path;
+			$this->app->relocate($path);
+		}
 	}
 
 	// }}}
