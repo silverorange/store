@@ -21,7 +21,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 
 	public function init()
 	{
-		$this->results_ui_xml = 'Store/pages/search-results.xml';
+		$this->ui_xml = 'Store/pages/search-results.xml';
 		$this->addSearchDataField('type');
 		$this->addSearchDataField('category');
 
@@ -63,10 +63,10 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 			in_array('article', $this->has_results)) {
 
 			// set the article frame to use the whole width
-			$frame = $this->results_ui->getWidget('article_results_frame');
+			$frame = $this->ui->getWidget('article_results_frame');
 			$frame->classes[] = 'full-width';
 
-			$pager = $this->results_ui->getWidget('article_pager');
+			$pager = $this->ui->getWidget('article_pager');
 			$pager->display_parts = 
 				SwatPagination::NEXT | SwatPagination::PREV |
 				SwatPagination::PAGES | SwatPagination::POSITION;
@@ -80,7 +80,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 	{
 		parent::buildMessages();
 
-		$messages = $this->results_ui->getWidget('results_message');
+		$messages = $this->ui->getWidget('results_message');
 
 		// display no product results message
 		if ($messages->getMessageCount() == 0 &&
@@ -88,7 +88,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 
 			$message = $this->getNoResultsMessage();
 			$message->primary_content = Store::_('No product results found.');
-			$messages = $this->results_ui->getWidget('results_message');
+			$messages = $this->ui->getWidget('results_message');
 			$messages->add($message);
 		}
 	}
@@ -150,8 +150,8 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 		if (count($categories) > 0) {
 			$this->has_results[] = 'category';
 
-			$frame = $this->results_ui->getWidget('category_results_frame');
-			$results = $this->results_ui->getWidget('category_results');
+			$frame = $this->ui->getWidget('category_results_frame');
+			$results = $this->ui->getWidget('category_results');
 			$frame->visible = true;
 
 			ob_start();
@@ -228,7 +228,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 
 	protected function buildProducts($fulltext_result)
 	{
-		$pager = $this->results_ui->getWidget('product_pager');
+		$pager = $this->ui->getWidget('product_pager');
 		$engine = $this->instantiateProductSearchEngine();
 		$engine->setFulltextResult($fulltext_result);
 		$products = $engine->search($pager->page_size, $pager->current_record);
@@ -241,8 +241,8 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 		if (count($products) > 0) {
 			$this->has_results[] = 'product';
 
-			$frame = $this->results_ui->getWidget('product_results_frame');
-			$results = $this->results_ui->getWidget('product_results');
+			$frame = $this->ui->getWidget('product_results_frame');
+			$results = $this->ui->getWidget('product_results');
 			$frame->visible = true;
 
 			ob_start();
@@ -296,7 +296,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 	{
 		parent::finalize();
 		$this->layout->addHtmlHeadEntrySet(
-			$this->results_ui->getRoot()->getHtmlHeadEntrySet());
+			$this->ui->getRoot()->getHtmlHeadEntrySet());
 
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
 			'packages/store/styles/store-search-results-page.css', Store::PACKAGE_ID));
