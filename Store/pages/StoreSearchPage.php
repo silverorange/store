@@ -41,10 +41,12 @@ class StoreSearchPage extends StoreSearchResultsPage
 		$form = $this->form_ui->getWidget('search_form');
 		$form->action = $this->source;
 
-		$category_flydown = $this->form_ui->getWidget('category');
-		$categories = $this->getCategories();
-		foreach ($categories as $category)
-			$category_flydown->addOption($category->shortname, $category->title);
+		if ($this->form_ui->hasWidget('category')) {
+			$category_flydown = $this->form_ui->getWidget('category');
+			$categories = $this->getCategories();
+			foreach ($categories as $category)
+				$category_flydown->addOption($category->shortname, $category->title);
+		}
 
 		$this->form_ui->init();
 	}
