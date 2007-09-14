@@ -145,10 +145,10 @@ class StoreCategoryPage extends StorePage
 		if (count($sub_categories) == 0)
 			return;
 
-		echo '<ul class="category-list">';
+		echo '<ul class="store-category-list">';
 
 		foreach ($sub_categories as $category) {
-			echo '<li class="category-tile">';
+			echo '<li class="store-category-tile">';
 			$link = $this->source.'/'.$category->shortname;
 			$category->displayAsTile($link);
 			echo '</li>';
@@ -165,10 +165,10 @@ class StoreCategoryPage extends StorePage
 		if ($path === null)
 			$path = $this->source;
 
-		echo '<ul class="product-list">';
+		echo '<ul class="store-product-list">';
 
 		foreach ($products as $product) {
-			echo '<li class="product-icon">';
+			echo '<li class="store-product-icon">';
 			$link = $path.'/'.$product->shortname;
 			$product->displayAsIcon($link);
 			echo '</li>';
@@ -285,11 +285,11 @@ class StoreCategoryPage extends StorePage
 		$header_tag->display();
 
 		$ul_tag = new SwatHtmlTag('ul');
-		$ul_tag->class = 'product-list';
+		$ul_tag->class = 'store-product-list';
 		$ul_tag->open();
 
 		$li_tag = new SwatHtmlTag('li');
-		$li_tag->class = 'product-text';
+		$li_tag->class = 'store-product-text';
 
 		foreach ($products as $product) {
 			$li_tag->open();

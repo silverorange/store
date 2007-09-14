@@ -12,7 +12,6 @@
 			<property name="page_size" type="integer">10</property>
 			<property name="unset_get_vars[]">locale</property>
 			<property name="type">article</property>
-			<property name="display_parts" type="constant">NEXT|PREV</property>
 		</widget>
 	</widget>
 	<widget class="SwatFrame" id="category_results_frame">

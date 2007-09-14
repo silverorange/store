@@ -395,16 +395,18 @@ class StoreCategory extends SwatDBDataObject
 	public function displayAsTile($link)
 	{
 		$anchor_tag = new SwatHtmlTag('a');
-		$anchor_tag->class = 'category-tile-link';
+		$anchor_tag->class = 'store-category-tile-link';
 		$anchor_tag->href = $link;
 
 		$title_span = new SwatHtmlTag('span');
-		$title_span->class = 'category-tile-title';
+		$title_span->class = 'store-category-tile-title';
 		$title_span->setContent($this->title);
+
+		$img_tag = $this->getThumbnailImgTag();
 
 		if ($this->getProductCount() > 1) {
 			$details_span = new SwatHtmlTag('span');
-			$details_span->class = 'category-tile-details';
+			$details_span->class = 'store-category-tile-details';
 			$details_span->setContent(sprintf(
 				ngettext('%s product', '%s products', $this->getProductCount()),
 				$this->getProductCount()));
@@ -412,12 +414,12 @@ class StoreCategory extends SwatDBDataObject
 
 		if (strlen($this->description)) {
 			$description_p = new SwatHtmlTag('p');
-			$description_p->class = 'category-description';
+			$description_p->class = 'store-category-description';
 			$description_p->setContent($this->description);
 		}
 
 		$anchor_tag->open();
-		$this->displayTileImage();
+		$img_tag->display();
 		$title_span->display();
 		$anchor_tag->close();
 		echo ' ';
@@ -430,21 +432,33 @@ class StoreCategory extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ protected function displayTileImage()
+	// {{{ protected function getThumbnailImgTag()
 
-	protected function displayTileImage()
+	protected function getThumbnailImgTag()
 	{
 		if ($this->image !== null) {
 			$img_tag = $this->image->getImgTag('thumb');
-			$img_tag->alt = 'Photo of '.$this->title;
+			$img_tag->alt = sprintf(Store::_('Photo of %s'), $this->title);
 		} else {
 			$img_tag = new SwatHtmlTag('img');
-			$img_tag->width = '100';
-			$img_tag->height = '100';
-			$img_tag->src = 'packages/store/images/category-placeholder.png';
+			$class = SwatDBClassMap::get('StoreCategoryImage');
+			$sizes = call_user_func(array($class, 'getSizes'));
+			$dimensions = $sizes['thumb'];
+			$img_tag->width = $dimensions[0];
+			$img_tag->height = $dimensions[1];
+			$img_tag->src = $this->getPlaceholderImageFilename();
 			$img_tag->alt = '';
 		}
-		$img_tag->display();
+
+		return $img_tag;
+	}
+
+	// }}}
+	// {{{ protected function getPlaceholderImageFilename()
+
+	protected function getPlaceholderImageFilename()
+	{
+		return 'packages/store/images/category-placeholder.png';
 	}
 
 	// }}}

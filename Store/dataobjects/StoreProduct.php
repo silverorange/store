@@ -362,6 +362,124 @@ class StoreProduct extends SwatDBDataObject
 	}
 
 	// }}}
+
+	// display methods
+	// {{{ public function displayAsIcon()
+
+	/**
+	 * Displays this product as:
+	 *
+	 * [IMAGE]
+	 * _Title_
+	 */
+	public function displayAsIcon($link)
+	{
+		$anchor_tag = new SwatHtmlTag('a');
+		$anchor_tag->href = $link;
+		$span_tag = new SwatHtmlTag('span');
+		$span_tag->setContent(SwatString::ellipsizeRight($this->title, 30));
+		$img_tag = $this->getThumbnailImgTag();
+
+		$anchor_tag->open();
+		$img_tag->display();
+		$span_tag->display();
+		$anchor_tag->close();
+	}
+
+	// }}}
+	// {{{ public function displayAsTile()
+
+	/**
+	 * Displays the product as:
+	 *
+	 * [ IMAGE ] _Title_
+	 *           Summarized description ... _more >>_
+	 */
+	public function displayAsTile($link)
+	{
+		require_once 'Swat/SwatString.php';
+
+		$anchor_tag = new SwatHtmlTag('a');
+		$anchor_tag->href = $link;
+		$anchor_tag->setContent('more&nbsp;»');
+
+		$title_span = new SwatHtmlTag('span');
+		$title_span->class = 'store-product-tile-title';
+		$title_span->setContent($this->title);
+
+		$img_tag = $this->getThumbnailImgTag();
+
+		$paragraph_tag = new SwatHtmltag('p');
+		$summary = SwatString::condense($this->bodytext, 200);
+		$paragraph_tag->setContent($summary);
+
+		$anchor_tag->open();
+		$img_tag->display();
+		$title_span->display();
+		$anchor_tag->close();
+
+		$paragraph_tag->open();
+		$paragraph_tag->displayContent();
+		echo ' ';
+		$anchor_tag->display();
+		$paragraph_tag->close();
+	}
+
+	// }}}
+	// {{{ public function displayAsText()
+
+	/**
+	 * Displays this product as:
+	 *
+	 * _Title_
+	 */
+	public function displayAsText($link)
+	{
+		$anchor_tag = new SwatHtmlTag('a');
+		$anchor_tag->href = $link;
+		$span_tag = new SwatHtmlTag('span');
+		$span_tag->setContent($this->title);
+
+		$anchor_tag->open();
+		$span_tag->display();
+		$anchor_tag->close();
+	}
+
+	// }}}
+	// {{{ protected function getThumbnailImgTag()
+
+	protected function getThumbnailImgTag()
+	{
+		$img_tag = new SwatHtmlTag('img');
+
+		if ($this->primary_image !== null) {
+			$img_tag->src = $this->primary_image->getURI('thumb');
+			$img_tag->width = $this->primary_image->thumb_width;
+			$img_tag->height = $this->primary_image->thumb_height;
+			$img_tag->alt = sprintf(Store::_('Photo of %s'), $this->title);
+		} else {
+			$class = SwatDBClassMap::get('StoreProductImage');
+			$sizes = call_user_func(array($class, 'getSizes'));
+			$dimensions = $sizes['thumb'];
+			$img_tag->width = $dimensions[0];
+			$img_tag->height = $dimensions[1];
+			$img_tag->src = $this->getPlaceholderImageFilename();
+			$img_tag->alt = '';
+		}
+
+		return $img_tag;
+	}
+
+	// }}}
+	// {{{ protected function getPlaceholderImageFilename()
+
+	protected function getPlaceholderImageFilename()
+	{
+		return 'packages/store/images/product-placeholder.png';
+	}
+
+	// }}}
+
 }
 
 ?>
