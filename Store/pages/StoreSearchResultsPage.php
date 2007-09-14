@@ -141,11 +141,23 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 	}
 
 	// }}}
-	// {{{ protected function getQuerySummary()
+	// {{{ protected function getSearchTips()
 
-	protected function getQuerySummary()
+	protected function getSearchTips()
 	{
-		$summary = parent::getQuerySummary();
+		$tips = parent::getSearchTips();
+
+		$tips[] = Site::_('You can search by an item’s number');
+
+		return $tips;
+	}
+
+	// }}}
+	// {{{ protected function getSearchSummary()
+
+	protected function getSearchSummary()
+	{
+		$summary = parent::getSearchSummary();
 
 		if ($this->hasSearchDataValue('category')) {
 			$category = $this->getCategory();
