@@ -5,7 +5,7 @@
 		<widget class="SwatFrame" id="search_frame">
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Keywords</property>
-				<widget class="StoreKeywordEntry" id="keywords">
+				<widget class="SwatEntry" id="keywords">
 					<property name="maxlength" type="integer">255</property>
 					<property name="name">keywords</property>
 				</widget>
@@ -18,7 +18,7 @@
 				</widget>
 			</widget>
 			<widget class="SwatFooterFormField">
-				<widget class="StoreUnnamedButton" id="submit">
+				<widget class="SiteUnnamedButton" id="submit">
 					<property name="title" translatable="yes">Search</property>
 				</widget>
 			</widget>
