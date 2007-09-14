@@ -23,7 +23,8 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 	 */
 	public function queue()
 	{
-		$this->queueArticles();
+		parent::queue();
+
 		$this->queueProducts();
 		$this->queueCategories();
 	}
@@ -39,39 +40,10 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 	 */
 	protected function index()
 	{
-		$this->indexArticles();
+		parent::index();
+
 		$this->indexProducts();
 		$this->indexCategories();
-	}
-
-	// }}}
-	// {{{ protected function queueArticles()
-
-	/**
-	 * Repopulates the articles queue
-	 */
-	protected function queueArticles()
-	{
-		$this->output(Store::_('Repopulating article search queue ... '),
-			self::VERBOSITY_ALL);
-
-		$type = NateGoSearch::getDocumentType($this->db, 'article');
-
-		// clear queue 
-		$sql = sprintf('delete from NateGoSearchQueue
-			where document_type = %s',
-			$this->db->quote($type, 'integer'));
-
-		SwatDB::exec($this->db, $sql);
-
-		// fill queue 
-		$sql = sprintf('insert into NateGoSearchQueue
-			(document_type, document_id) select %s, id from Article',
-			$this->db->quote($type, 'integer'));
-
-		SwatDB::exec($this->db, $sql);
-
-		$this->output(Store::_('done')."\n", self::VERBOSITY_ALL);
 	}
 
 	// }}}
@@ -132,67 +104,6 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 		SwatDB::exec($this->db, $sql);
 
 		$this->output(Store::_('done')."\n", self::VERBOSITY_ALL);
-	}
-
-	// }}}
-	// {{{ protected function indexArticles()
-
-	/**
-	 * Indexes articles
-	 *
-	 * Articles are visible if they are enabled. Articles may not be shown in
-	 * the menu but are still visible. Articles also have an explicit
-	 * searchable field.
-	 */
-	protected function indexArticles()
-	{
-		$indexer = new NateGoSearchIndexer('article', $this->db);
-
-		$indexer->addTerm(new NateGoSearchTerm('title', 5));
-		$indexer->addTerm(new NateGoSearchTerm('bodytext'));
-		$indexer->setMaximumWordLength(32);
-		$indexer->addUnindexedWords(
-			NateGoSearchIndexer::getDefaultUnindexedWords());
-
-		$type = NateGoSearch::getDocumentType($this->db, 'article');
-
-		$sql = sprintf('select id, shortname, title, bodytext from Article
-			inner join NateGoSearchQueue
-				on Article.id = NateGoSearchQueue.document_id
-				and NateGoSearchQueue.document_type = %s',
-			$this->db->quote($type, 'integer'));
-
-		$this->output(Store::_('Indexing articles ... ').'   ',
-			self::VERBOSITY_ALL);
-
-		$articles = SwatDB::query($this->db, $sql);
-		$total = count($articles);
-		$count = 0;
-		foreach ($articles as $article) {
-
-			if ($count % 10 == 0) {
-				$indexer->commit();
-				$this->output(str_repeat(chr(8), 3), self::VERBOSITY_ALL);
-				$this->output(sprintf('%2d%%', ($count / $total) * 100),
-					self::VERBOSITY_ALL);
-			}
-
-			$document = new NateGoSearchDocument($article, 'id');
-			$indexer->index($document);
-
-			$count++;
-		}
-
-		$this->output(str_repeat(chr(8), 3).Store::_('done')."\n",
-			self::VERBOSITY_ALL);
-
-		$indexer->commit();
-		unset($indexer);
-
-		$sql = sprintf('delete from NateGoSearchQueue where document_type = %s',
-			$this->db->quote($type, 'integer'));
-
-		SwatDB::exec($this->db, $sql);
 	}
 
 	// }}}
