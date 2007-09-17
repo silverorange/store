@@ -109,13 +109,12 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	 *                                  as the transaction identifier and
 	 *                                  Address Verification Service (AVS)
 	 *                                  results.
+	 *
+	 * @sensitive $card_number
 	 */
 	public function pay(StoreOrder $order, $card_number,
 		$card_verification_value = null)
 	{
-		SwatException::addSensitiveParameter(
-			'card_number', __FUNCTION__, __CLASS__);
-
 		$request = new StoreProtxPaymentRequest(
 			StorePaymentRequest::TYPE_PAY, $this->mode);
 
@@ -156,13 +155,12 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	 *                                  as the transaction identifier and
 	 *                                  Address Verification Service (AVS)
 	 *                                  results.
+	 *
+	 * @sensitive $card_number
 	 */
 	public function hold(StoreOrder $order, $card_number,
 		$card_verification_value = null)
 	{
-		SwatException::addSensitiveParameter(
-			'card_number', __FUNCTION__, __CLASS__);
-
 		$request = new StoreProtxPaymentRequest(
 			StorePaymentRequest::TYPE_HOLD, $this->mode);
 
@@ -468,13 +466,12 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	 *                card-specific fields used for card-based requests.
 	 *
 	 * @throws StoreException if the order has an unsupported card type.
+	 *
+	 * @sensitive $card_number
 	 */
 	private function getCardFields(StoreOrder $order, $card_number,
 		$card_verification_value = null)
 	{
-		SwatException::addSensitiveParameter(
-			'card_number', __FUNCTION__, __CLASS__);
-
 		$payment_method = $order->payment_method;
 		$payment_type = $payment_method->payment_type;
 
