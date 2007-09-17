@@ -204,7 +204,11 @@ class StoreProductPage extends StorePage
 
 		if ($form->isProcessed()) {
 			$view = $this->items_ui->getWidget('items_view');
-			$column = $view->getColumn('quantity_column');
+			if ($view->hasSpanningColumn('quantity_column'))
+				$column = $view->getSpanningColumn('quantity_column');
+			else
+				$column = $view->getColumn('quantity_column');
+
 			$renderer = $column->getRenderer('quantity_renderer');
 
 			if ($form->hasMessage()) {
