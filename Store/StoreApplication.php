@@ -47,6 +47,17 @@ abstract class StoreApplication extends SiteWebApplication
 	}
 
 	// }}}
+	// {{{ public function getCountry()
+
+	/**
+	 * @return string
+	 */
+	public function getCountry()
+	{
+		return null;
+	}
+
+	// }}}
 	// {{{ protected function getDefaultModuleList()
 
 	protected function getDefaultModuleList()
