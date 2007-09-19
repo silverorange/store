@@ -98,6 +98,33 @@ class StoreAccount extends SiteAccount
 
 	// }}}
 
+	// {{{ public function getPendingInvoices() 
+ 		 
+	/** 
+	 * Gets order invoices for this account that have not yet been filled 
+	 * 
+	 * @return StoreInvoiceWrapper invoices for this account that have not 
+	 *                              yet been filled. 
+	 */ 
+	public function getPendingInvoices()
+	{
+		$this->checkDB();
+
+		$sql = sprintf('select Invoice.* from Invoice
+			inner join InvoiceItemCountView on
+				InvoiceItemCountView.invoice = Invoice.id and
+				Invoice.account = %s
+			where Invoice.id not in
+				(select invoice from Orders where invoice is not null)
+			order by id asc',
+			$this->db->quote($this->id, 'integer'));
+
+		return SwatDB::query($this->db, $sql, 
+			SwatDBClassMap::get('StoreInvoiceWrapper'));
+	}
+
+	// }}} 
+
 	// loader methods
 	// {{{ protected function loadAddresses()
 
