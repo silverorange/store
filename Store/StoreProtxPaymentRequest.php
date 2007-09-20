@@ -36,7 +36,7 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	 * URL for processing test mode payment transactions
 	 */
 	const URL_TEST_PAYMENT =
-		'https://ukvpstest.protx.com/vpsDirectAuth/PaymentGateway3D.asp';
+		'https://ukvpstest.protx.com/vspgateway/service/vspdirect-register.vsp';
 
 	/**
 	 * URL for processing live mode payment transactions
@@ -56,7 +56,7 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	 * transactions
 	 */
 	const URL_TEST =
-		'https://ukvpstest.protx.com/vps200/dotransaction.dll?Service=Vendor%sTx';
+		'https://ukvpstest.protx.com/vspgateway/service/%s.vsp';
 
 	/**
 	 * URL for processing live mode transactions other than payment
