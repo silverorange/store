@@ -103,7 +103,7 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 		// if there are no saved payment methods, add a side-by-side class
 		// if there are saved payment methods, add a stacked class
 		$payment_method_list = $this->ui->getWidget('payment_method_list');
-		$payment_method_container = 
+		$payment_method_container =
 			$this->ui->getWidget('payment_method_container');
 
 		if (!$payment_method_list->visible)
