@@ -553,75 +553,75 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 		switch ($mode) {
 		case 'simulator':
 			switch ($type) {
-				case StorePaymentRequest::TYPE_VERIFY:
-				case StorePaymentRequest::TYPE_HOLD:
-				case StorePaymentRequest::TYPE_PAY:
-					$url = self::URL_SIMULATOR_PAYMENT;
-					break;
+			case StorePaymentRequest::TYPE_VERIFY:
+			case StorePaymentRequest::TYPE_HOLD:
+			case StorePaymentRequest::TYPE_PAY:
+				$url = self::URL_SIMULATOR_PAYMENT;
+				break;
 
-				case StorePaymentRequest::TYPE_STATUS:
-					break;
+			case StorePaymentRequest::TYPE_STATUS:
+				break;
 
-				case StorePaymentRequest::TYPE_3DS_AUTH:
-					$url = self::URL_SIMULATOR_3DS_AUTH;
-					break;
+			case StorePaymentRequest::TYPE_3DS_AUTH:
+				$url = self::URL_SIMULATOR_3DS_AUTH;
+				break;
 
-				default:
-					$type_map = $this->getTypeMap();
-					$tx_type = $type_map[$type];
-					$url = sprintf(self::URL_SIMULATOR,
-						ucfirst(strtolower($tx_type)));
+			default:
+				$type_map = $this->getTypeMap();
+				$tx_type = $type_map[$type];
+				$url = sprintf(self::URL_SIMULATOR,
+					ucfirst(strtolower($tx_type)));
 
-					break;
+				break;
 			}
 			break;
 
 		case 'test':
 			switch ($type) {
-				case StorePaymentRequest::TYPE_VERIFY:
-				case StorePaymentRequest::TYPE_HOLD:
-				case StorePaymentRequest::TYPE_PAY:
-					$url = self::URL_TEST_PAYMENT;
-					break;
+			case StorePaymentRequest::TYPE_VERIFY:
+			case StorePaymentRequest::TYPE_HOLD:
+			case StorePaymentRequest::TYPE_PAY:
+				$url = self::URL_TEST_PAYMENT;
+				break;
 
-				case StorePaymentRequest::TYPE_STATUS:
-					break;
+			case StorePaymentRequest::TYPE_STATUS:
+				break;
 
-				case StorePaymentRequest::TYPE_3DS_AUTH:
-					$url = self::URL_TEST_3DS_AUTH;
-					break;
+			case StorePaymentRequest::TYPE_3DS_AUTH:
+				$url = self::URL_TEST_3DS_AUTH;
+				break;
 
-				default:
-					$type_map = $this->getTypeMap();
-					$tx_type = $type_map[$type];
-					$url = sprintf(self::URL_TEST, strtolower($tx_type));
+			default:
+				$type_map = $this->getTypeMap();
+				$tx_type = $type_map[$type];
+				$url = sprintf(self::URL_TEST, strtolower($tx_type));
 
-					break;
+				break;
 			}
 			break;
 
 		case 'live':
 			switch ($type) {
-				case StorePaymentRequest::TYPE_VERIFY:
-				case StorePaymentRequest::TYPE_HOLD:
-				case StorePaymentRequest::TYPE_PAY:
-					$url = self::URL_LIVE_PAYMENT;
-					break;
+			case StorePaymentRequest::TYPE_VERIFY:
+			case StorePaymentRequest::TYPE_HOLD:
+			case StorePaymentRequest::TYPE_PAY:
+				$url = self::URL_LIVE_PAYMENT;
+				break;
 
-				case StorePaymentRequest::TYPE_STATUS:
-					$url = self::URL_LIVE_STATUS;
-					break;
+			case StorePaymentRequest::TYPE_STATUS:
+				$url = self::URL_LIVE_STATUS;
+				break;
 
-				case StorePaymentRequest::TYPE_3DS_AUTH:
-					$url = self::URL_LIVE_3DS_AUTH;
-					break;
+			case StorePaymentRequest::TYPE_3DS_AUTH:
+				$url = self::URL_LIVE_3DS_AUTH;
+				break;
 
-				default:
-					$type_map = $this->getTypeMap();
-					$tx_type = $type_map[$type];
-					$url = sprintf(self::URL_LIVE, strtolower($tx_type));
+			default:
+				$type_map = $this->getTypeMap();
+				$tx_type = $type_map[$type];
+				$url = sprintf(self::URL_LIVE, strtolower($tx_type));
 
-					break;
+				break;
 			}
 			break;
 		}
