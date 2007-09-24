@@ -156,6 +156,26 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 	}
 
 	// }}}
+	// {{{ protected function updateAddress()
+
+	protected function updateAddress($address)
+	{
+		$address->fullname =  $this->ui->getWidget('fullname')->value;
+		$address->line1 = $this->ui->getWidget('line1')->value;
+		$address->line2 = $this->ui->getWidget('line2')->value;
+		$address->city = $this->ui->getWidget('city')->value;
+
+		$provstate = $this->ui->getWidget('provstate')->value;
+		$address->provstate = ($provstate === 'other') ? null : $provstate;
+
+		$address->provstate_other =
+			$this->ui->getWidget('provstate_other')->value;
+
+		$address->postal_code = $this->ui->getWidget('postal_code')->value;
+		$address->country = $this->ui->getWidget('country')->value;
+	}
+
+	// }}}
 	// {{{ private function addMessage()
 
 	private function addMessage($text, $address)
@@ -214,26 +234,6 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 				$this->id));
 
 		return $address;
-	}
-
-	// }}}
-	// {{{ private function updateAddress()
-
-	private function updateAddress($address)
-	{
-		$address->fullname =  $this->ui->getWidget('fullname')->value;
-		$address->line1 = $this->ui->getWidget('line1')->value;
-		$address->line2 = $this->ui->getWidget('line2')->value;
-		$address->city = $this->ui->getWidget('city')->value;
-
-		$provstate = $this->ui->getWidget('provstate')->value;
-		$address->provstate = ($provstate === 'other') ? null : $provstate;
-
-		$address->provstate_other =
-			$this->ui->getWidget('provstate_other')->value;
-
-		$address->postal_code = $this->ui->getWidget('postal_code')->value;
-		$address->country = $this->ui->getWidget('country')->value;
 	}
 
 	// }}}
@@ -306,9 +306,9 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 	}
 
 	// }}}
-	// {{{ private function setWidgetValues()
+	// {{{ protected function setWidgetValues()
 
-	private function setWidgetValues(StoreAccountAddress $address)
+	protected function setWidgetValues(StoreAccountAddress $address)
 	{
 		$this->ui->getWidget('fullname')->value = $address->fullname;
 		$this->ui->getWidget('line1')->value = $address->line1;
