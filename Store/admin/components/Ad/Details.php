@@ -2,6 +2,7 @@
 
 require_once 'Admin/pages/AdminIndex.php';
 require_once 'SwatDB/SwatDB.php';
+require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatMoneyCellRenderer.php';
 require_once 'Swat/SwatNumericCellRenderer.php';
 require_once 'Store/dataobjects/StoreRegionWrapper.php';
@@ -90,25 +91,24 @@ class StoreAdDetails extends AdminIndex
 
 		$store = new SwatTableStore();
 
-		// TODO: Boo! Why is a variable named $myvar ?
 		foreach ($rs as $row) {
-			foreach ($this->periods as $key => $val) {
-				$myvar[$key]->period = $val;
+			foreach ($this->periods as $key => $value) {
+				$periods[$key]->period = $value;
 
 				$col1 = 'subtotal_'.$row->region;
 				$col2 = $key.'_sales';
-				$myvar[$key]->$col1 = $row->$col2;
+				$periods[$key]->$col1 = $row->$col2;
 
 				$col1 = 'orders_'.$row->region;
 				$col2 = $key.'_orders';
-				$myvar[$key]->$col1 = $row->$col2;
+				$periods[$key]->$col1 = $row->$col2;
 
-				$myvar[$key]->total_orders += $row->$col2;
+				$periods[$key]->total_orders += $row->$col2;
 			}
 		}
 
-		foreach ($myvar as $row)
-			$store->add($row);
+		foreach ($periods as $period)
+			$store->add($period);
 
 		return $store;
 	}
