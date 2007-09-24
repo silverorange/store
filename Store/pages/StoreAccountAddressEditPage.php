@@ -200,8 +200,10 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 
 	private function findAddress()
 	{
-		if ($this->id === null)
-			return new StoreAccountAddress();
+		if ($this->id === null) {
+			$class = SwatDBClassMap::get('StoreAccountAddress');
+			return new $class;
+		}
 
 		$address =
 			$this->app->session->account->addresses->getByIndex($this->id);
