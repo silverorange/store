@@ -65,11 +65,11 @@ class StoreProductEdit extends AdminDBEdit
 
 		if ($this->id === null && $shortname === null) {
 			$shortname = $this->generateShortname(
-				$this->ui->getWidget('title')->value, $this->id);
+				$this->ui->getWidget('title')->value);
 
 			$this->ui->getWidget('shortname')->value = $shortname;
 
-		} elseif (!$this->validateShortname()) {
+		} elseif (!$this->validateShortname($shortname)) {
 			$message = new SwatMessage(
 				Store::_('Shortname already exists and must be unique.'),
 				SwatMessage::ERROR);
@@ -81,7 +81,7 @@ class StoreProductEdit extends AdminDBEdit
 	// }}}
 	// {{{ protected function validateShortname()
 
-	protected function validateShortname()
+	protected function validateShortname($shortname)
 	{
 		$valid = true;
 
@@ -90,37 +90,46 @@ class StoreProductEdit extends AdminDBEdit
 			$this->app->db->quote($this->id, 'integer'));
 
 		$old_shortname = SwatDB::queryOne($this->app->db, $sql);
-		$shortname = $this->ui->getWidget('shortname');
 
-		/*
-		 * Validate if shortname has changed. In the words of Creative Director
-		 * Steven Garrity, "Allow weird data to stay weird."
-		 */
-		if ($old_shortname != $shortname->value) {
 
-			// get selected catalog
-			$catalog = $this->ui->getWidget('catalog');
-			$catalog->process();
+		// get selected catalog
+		$catalog = $this->ui->getWidget('catalog');
+		$catalog->process();
+		$catalog_id = $catalog->value;
+
+		if ($this->id === null) {
+			$sql = sprintf('select Product.id from Product
+				where shortname = %s and Product.catalog = %s',
+				$this->app->db->quote($shortname, 'text'),
+				$this->app->db->quote($catalog_id, 'integer'));
+
+			$products = SwatDB::query($this->app->db, $sql);
+			return (count($products) == 0);
+
+		} elseif ($old_shortname != $shortname) {
+			/*
+			 * Validate if shortname has changed. In the words of Creative Director
+			 * Steven Garrity, "Allow weird data to stay weird."
+			 */
 
 			$sql = sprintf('select clone_of from Catalog where id %s %s', 
-				SwatDB::equalityOperator($catalog->value, true),
-				$this->app->db->quote($catalog->value, 'integer'));
+				SwatDB::equalityOperator($catalog_id, true),
+				$this->app->db->quote($catalog_id, 'integer'));
 
 			$clone_of = SwatDB::queryOne($this->app->db, $sql);
-			$catalog = $catalog->value;
 
 			// check shortname for uniqueness with selected catalog
 			$sql = sprintf('select Catalog.id, Catalog.clone_of from Product
 				inner join Catalog on Product.catalog = Catalog.id
 				where Product.shortname = %s and Product.id %s %s',
-				$this->app->db->quote($shortname->value, 'text'),
+				$this->app->db->quote($shortname, 'text'),
 				SwatDB::equalityOperator($this->id, true),
 				$this->app->db->quote($this->id, 'integer'));
 
 			$catalogs = SwatDB::query($this->app->db, $sql);
 			foreach ($catalogs as $product_catalog) {
 				// shortname exists within same catalog
-				if ($catalog == $product_catalog->id) {
+				if ($catalog_id == $product_catalog->id) {
 					$valid = false;
 					break;
 				}
@@ -128,7 +137,7 @@ class StoreProductEdit extends AdminDBEdit
 				// shortname exists in another catalog that is not a clone of
 				// the selected catalog
 				if ($clone_of != $product_catalog->id &&
-					$catalog != $product_catalog->clone_of) {
+					$catalog_id != $product_catalog->clone_of) {
 					$valid = false;
 					break;
 				}
