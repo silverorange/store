@@ -1,5 +1,11 @@
 2007-09-10  nrf
 
+	* [r20071] store/branches/1.9.x/ChangeLog,
+	  store/branches/1.9.x/package.php:
+	  prepare for release of 1.9.2
+	* [r20070]
+	  store/branches/1.9.x/Store/StoreProtxPaymentRequest.php:
+	  merge [20065] and [20068] into branch
 	* [r20069] store/branches/1.9.x:
 	  make a branch
 
