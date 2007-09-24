@@ -97,21 +97,12 @@ class StoreProductEdit extends AdminDBEdit
 		$catalog->process();
 		$catalog_id = $catalog->value;
 
-		if ($this->id === null) {
-			$sql = sprintf('select Product.id from Product
-				where shortname = %s and Product.catalog = %s',
-				$this->app->db->quote($shortname, 'text'),
-				$this->app->db->quote($catalog_id, 'integer'));
+		/*
+		 * Validate if shortname has changed. In the words of Creative Director
+		 * Steven Garrity, "Allow weird data to stay weird."
+		 */
 
-			$products = SwatDB::query($this->app->db, $sql);
-			return (count($products) == 0);
-
-		} elseif ($old_shortname != $shortname) {
-			/*
-			 * Validate if shortname has changed. In the words of Creative Director
-			 * Steven Garrity, "Allow weird data to stay weird."
-			 */
-
+		if ($this->id === null || $old_shortname != $shortname) {
 			$sql = sprintf('select clone_of from Catalog where id %s %s', 
 				SwatDB::equalityOperator($catalog_id, true),
 				$this->app->db->quote($catalog_id, 'integer'));
