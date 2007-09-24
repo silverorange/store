@@ -46,7 +46,7 @@
 				</widget>
 			</widget>
 		</widget>
-		<widget class="SwatFormField">
+		<widget class="SwatFormField" id="phone_field">
 			<property name="title" translatable="yes">Phone</property>
 			<widget class="SwatEntry" id="phone">
 				<property name="size" type="integer">15</property>
