@@ -182,7 +182,7 @@ abstract class StoreAddress extends SwatDBDataObject
 	 * Displays this address in postal format
 	 *
 	 * Canadian address format rules are taken from {@link Canada Post
-	 * http://canadapost.ca/personal/tools/pg/manual/b03-e.asp}
+	 * http://www.canadapost.ca/personal/offerings/address_management/can/addressing_guide-e.asp}
 	 */
 	protected function displayCA()
 	{
