@@ -37,6 +37,13 @@ abstract class StoreAddress extends SwatDBDataObject
 	public $fullname;
 
 	/**
+	 * The company of the address
+	 *
+	 * @var text
+	 */
+	public $company;
+
+	/**
 	 * Line 1 of the address
 	 *
 	 * This usually corresponds to the street name and number.
@@ -74,6 +81,13 @@ abstract class StoreAddress extends SwatDBDataObject
 	 * @var string
 	 */
 	public $postal_code;
+
+	/**
+	 * Phone number for this address
+	 *
+	 * @var text
+	 */
+	public $phone;
 
 	// }}}
 	// {{{ public function display()
@@ -186,8 +200,12 @@ abstract class StoreAddress extends SwatDBDataObject
 	 */
 	protected function displayCA()
 	{
-		echo SwatString::minimizeEntities($this->fullname), '<br />',
-			SwatString::minimizeEntities($this->line1), '<br />';
+		echo SwatString::minimizeEntities($this->fullname), '<br />';
+
+		if (strlen($this->company) > 0)
+			echo SwatString::minimizeEntities($this->company), '<br />';
+
+		echo SwatString::minimizeEntities($this->line1), '<br />';
 
 		if (strlen($this->line2) > 0)
 			echo SwatString::minimizeEntities($this->line2), '<br />';
@@ -203,6 +221,10 @@ abstract class StoreAddress extends SwatDBDataObject
 		echo SwatString::minimizeEntities($this->postal_code);
 		echo '<br />';
 		echo SwatString::minimizeEntities($this->country->title), '<br />';
+
+		if (strlen($this->phone) > 0)
+			printf(Store::_('Phone: %s'),
+				SwatString::minimizeEntities($this->phone));
 	}
 
 	// }}}
@@ -213,8 +235,12 @@ abstract class StoreAddress extends SwatDBDataObject
 	 */
 	protected function displayGB()
 	{
-		echo SwatString::minimizeEntities($this->fullname), '<br />',
-			SwatString::minimizeEntities($this->line1), '<br />';
+		echo SwatString::minimizeEntities($this->fullname), '<br />';
+
+		if (strlen($this->company) > 0)
+			echo SwatString::minimizeEntities($this->company), '<br />';
+
+		echo SwatString::minimizeEntities($this->line1), '<br />';
 
 		if (strlen($this->line2) > 0)
 			echo SwatString::minimizeEntities($this->line2), '<br />';
@@ -227,6 +253,10 @@ abstract class StoreAddress extends SwatDBDataObject
 		echo SwatString::minimizeEntities($this->postal_code);
 		echo '<br />';
 		echo SwatString::minimizeEntities($this->country->title), '<br />';
+
+		if (strlen($this->phone) > 0)
+			printf('Phone: %s',
+				SwatString::minimizeEntities($this->phone));
 	}
 
 	// }}}
@@ -238,6 +268,10 @@ abstract class StoreAddress extends SwatDBDataObject
 	protected function displayCondensedCA()
 	{
 		echo SwatString::minimizeEntities($this->fullname), ', ';
+
+		if (strlen($this->company) > 0)
+			echo SwatString::minimizeEntities($this->company), ', ';
+
 		echo SwatString::minimizeEntities($this->line1);
 		if (strlen($this->line2) > 0)
 			echo ', ', SwatString::minimizeEntities($this->line2);
@@ -258,6 +292,12 @@ abstract class StoreAddress extends SwatDBDataObject
 		echo ', ';
 
 		echo SwatString::minimizeEntities($this->country->title);
+
+		if (strlen($this->phone) > 0) {
+			echo '<br />';
+			printf(Store::_('Phone: %s'),
+				SwatString::minimizeEntities($this->phone));
+		}
 	}
 
 	// }}}
@@ -269,6 +309,10 @@ abstract class StoreAddress extends SwatDBDataObject
 	protected function displayCondensedGB()
 	{
 		echo SwatString::minimizeEntities($this->fullname), ', ';
+
+		if (strlen($this->company) > 0)
+			echo SwatString::minimizeEntities($this->company), ', ';
+
 		echo SwatString::minimizeEntities($this->line1);
 		if (strlen($this->line2) > 0)
 			echo ', ', SwatString::minimizeEntities($this->line2);
@@ -283,6 +327,12 @@ abstract class StoreAddress extends SwatDBDataObject
 			echo ', ', SwatString::minimizeEntities($this->postal_code);
 
 		echo ', ', SwatString::minimizeEntities($this->country->title);
+
+		if (strlen($this->phone) > 0) {
+			echo '<br />';
+			printf(Store::_('Phone: %s'),
+				SwatString::minimizeEntities($this->phone));
+		}
 	}
 
 	// }}}
@@ -294,6 +344,10 @@ abstract class StoreAddress extends SwatDBDataObject
 	protected function displayCondensedAsTextCA()
 	{
 		echo $this->fullname, ', ';
+
+		if (strlen($this->company) > 0)
+			echo $this->company, ', ';
+
 		echo $this->line1;
 		if (strlen($this->line2) > 0)
 			echo ', ', $this->line2;
@@ -314,6 +368,12 @@ abstract class StoreAddress extends SwatDBDataObject
 		echo ', ';
 
 		echo $this->country->title;
+
+		if (strlen($this->phone) > 0) {
+			echo "\n";
+			printf(Store::_('Phone: %s'),
+				SwatString::minimizeEntities($this->phone));
+		}
 	}
 
 	// }}}
@@ -325,6 +385,10 @@ abstract class StoreAddress extends SwatDBDataObject
 	protected function displayCondensedAsTextGB()
 	{
 		echo $this->fullname, ', ';
+
+		if (strlen($this->company) > 0)
+			echo $this->company, ', ';
+
 		echo $this->line1;
 		if (strlen($this->line2) > 0)
 			echo ', ', $this->line2;
@@ -339,6 +403,12 @@ abstract class StoreAddress extends SwatDBDataObject
 			echo ', ', $this->postal_code;
 
 		echo ', ', $this->country->title;
+
+		if (strlen($this->phone) > 0) {
+			echo "\n";
+			printf(Store::_('Phone: %s'),
+				SwatString::minimizeEntities($this->phone));
+		}
 	}
 
 	// }}}

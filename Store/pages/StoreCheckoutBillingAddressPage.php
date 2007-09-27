@@ -81,6 +81,9 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 			$order_address->fullname =
 				$this->ui->getWidget('billing_address_fullname')->value;
 
+			$order_address->company =
+				$this->ui->getWidget('billing_address_company')->value;
+
 			$order_address->line1 = 
 				$this->ui->getWidget('billing_address_line1')->value;
 
@@ -101,6 +104,9 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 
 			$order_address->country =
 				$this->ui->getWidget('billing_address_country')->value;
+
+			$order_address->phone =
+				$this->ui->getWidget('billing_address_phone')->value;
 
 		} else {
 			$address_id = intval($address_list->value);
@@ -197,6 +203,9 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 				$this->ui->getWidget('billing_address_fullname')->value =
 					$order->billing_address->fullname;
 
+				$this->ui->getWidget('billing_address_company')->value =
+					$order->billing_address->getInternalValue('company');
+
 				$this->ui->getWidget('billing_address_line1')->value =
 					$order->billing_address->line1;
 
@@ -217,6 +226,9 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 
 				$this->ui->getWidget('billing_address_country')->value =
 					$order->billing_address->getInternalValue('country');
+
+				$this->ui->getWidget('billing_address_phone')->value =
+					$order->billing_address->getInternalValue('phone');
 			} else {
 				$this->ui->getWidget('billing_address_list')->value =
 					$order->billing_address->getAccountAddressId();

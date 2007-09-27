@@ -16,6 +16,12 @@
 				<property name="size" type="integer">35</property>
 			</widget>
 		</widget>
+		<widget class="SwatFormField" id="billing_address_company_field">
+			<property name="title">Company</property>
+			<widget class="SwatEntry" id="billing_address_company">
+				<property name="maxlength" type="integer">255</property>
+			</widget>
+		</widget>
 		<widget class="SwatFormField" id="billing_address_address_line1_field">
 			<property name="title" translatable="yes">Address Line 1</property>
 			<widget class="SwatEntry" id="billing_address_line1">
@@ -63,6 +69,13 @@
 			<widget class="SwatFlydown" id="billing_address_country">
 				<property name="required" type="boolean">false</property>
 				<property name="show_blank" type="boolean">false</property>
+			</widget>
+		</widget>
+		<widget class="SwatFormField" id="billing_address_phone_field">
+			<property name="title">Phone</property>
+			<widget class="SwatEntry" id="billing_address_phone">
+				<property name="maxlength" type="integer">100</property>
+				<property name="required" type="boolean">true</property>
 			</widget>
 		</widget>
 	</widget>

@@ -161,6 +161,8 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 	protected function updateAddress($address)
 	{
 		$address->fullname =  $this->ui->getWidget('fullname')->value;
+		$address->company =  $this->ui->getWidget('company')->value;
+		$address->phone =  $this->ui->getWidget('phone')->value;
 		$address->line1 = $this->ui->getWidget('line1')->value;
 		$address->line2 = $this->ui->getWidget('line2')->value;
 		$address->city = $this->ui->getWidget('city')->value;
@@ -311,6 +313,8 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 	protected function setWidgetValues(StoreAccountAddress $address)
 	{
 		$this->ui->getWidget('fullname')->value = $address->fullname;
+		$this->ui->getWidget('company')->value = $address->company;
+		$this->ui->getWidget('phone')->value = $address->phone;
 		$this->ui->getWidget('line1')->value = $address->line1;
 		$this->ui->getWidget('line2')->value = $address->line2;
 		$this->ui->getWidget('city')->value = $address->city;
