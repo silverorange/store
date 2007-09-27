@@ -78,6 +78,9 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 			$order_address->fullname =
 				$this->ui->getWidget('shipping_address_fullname')->value;
 
+			$order_address->company =
+				$this->ui->getWidget('shipping_address_company')->value;
+
 			$order_address->line1 = 
 				$this->ui->getWidget('shipping_address_line1')->value;
 
@@ -98,6 +101,9 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 
 			$order_address->country =
 				$this->ui->getWidget('shipping_address_country')->value;
+
+			$order_address->phone =
+				$this->ui->getWidget('shipping_address_phone')->value;
 
 		} elseif ($address_list->value === 'billing') {
 			$order_address = $this->app->session->order->billing_address;
@@ -187,6 +193,9 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 				$this->ui->getWidget('shipping_address_fullname')->value =
 					$order->shipping_address->fullname;
 
+				$this->ui->getWidget('shipping_address_company')->value =
+					$order->shipping_address->getInternalValue('company');
+
 				$this->ui->getWidget('shipping_address_line1')->value =
 					$order->shipping_address->line1;
 
@@ -207,6 +216,9 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 
 				$this->ui->getWidget('shipping_address_country')->value =
 					$order->shipping_address->getInternalValue('country');
+
+				$this->ui->getWidget('shipping_address_phone')->value =
+					$order->shipping_address->getInternalValue('phone');
 
 				$this->ui->getWidget('shipping_address_list')->value = 'new';
 

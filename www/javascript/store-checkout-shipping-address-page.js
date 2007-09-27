@@ -17,11 +17,13 @@ getFieldNames: function()
 {
 	return [
 		'shipping_address_fullname',
+		'shipping_address_company',
 		'shipping_address_line1',
 		'shipping_address_line2',
 		'shipping_address_city',
 		'shipping_address_provstate',
 		'shipping_address_postalcode',
+		'shipping_address_phone',
 		'shipping_address_country'];
 }
 
