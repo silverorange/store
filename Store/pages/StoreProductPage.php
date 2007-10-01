@@ -171,9 +171,9 @@ class StoreProductPage extends StorePage
 	}
 
 	// }}}
-	// {{{ private function loadProduct()
+	// {{{ protected function loadProduct()
 
-	private function loadProduct($id)
+	protected function loadProduct($id)
 	{
 		$product_class = SwatDBClassMap::get('StoreProduct');
 		$this->product = new $product_class();
