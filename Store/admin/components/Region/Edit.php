@@ -4,6 +4,7 @@ require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatMessage.php';
+require_once 'Store/dataobjects/StoreRegion.php';
 
 /**
  * Edit page for Regions
@@ -26,24 +27,42 @@ class StoreRegionEdit extends AdminDBEdit
 	protected function initInternal()
 	{
 		parent::initInternal();
+		$this->initRegion();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
 		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
 
 		$countries = SwatDB::getOptionArray($this->app->db, 'Country', 'title',
 			'text:id', 'title');
-	
+
 		$region_billing_country_list =
 			$this->ui->getWidget('region_billing_country');
 
 		$region_billing_country_list->addOptionsByArray($countries);
 
-		$region_shipping_country_list = 
+		$region_shipping_country_list =
 			$this->ui->getWidget('region_shipping_country');
 
 		$region_shipping_country_list->addOptionsByArray($countries);
 
 		$this->fields = array('title');
+	}
+
+	// }}}
+	// {{{ protected function initRegion()
+
+	protected function initRegion()
+	{
+		$this->region = new StoreRegion();
+		$this->region->setDatabase($this->app->db);
+
+		if ($this->id !== null) {
+			if (!$this->region->load($this->id)) {
+				throw new AdminNotFoundException(
+					sprintf(Admin::_('Region with id %s not found.'),
+						$this->id));
+			}
+		}
 	}
 
 	// }}}
@@ -54,22 +73,17 @@ class StoreRegionEdit extends AdminDBEdit
 	protected function saveDBData()
 	{
 		$values = $this->ui->getValues(array('title'));
+		$this->region->title = $values['title'];
+		$this->region->save();
 
-		if ($this->id === null)
-			$this->id = SwatDB::insertRow($this->app->db, 'Region',
-				$this->fields, $values);
-		else
-			SwatDB::updateRow($this->app->db, 'Region', $this->fields, $values,
-				'id', $this->id);
-
-		$region_billing_country_list = 
+		$region_billing_country_list =
 			$this->ui->getWidget('region_billing_country');
 
 		SwatDB::updateBinding($this->app->db, 'RegionBillingCountryBinding',
 			'region', $this->id, 'text:country',
 			$region_billing_country_list->values, 'Country', 'text:id');
 
-		$region_shipping_country_list = 
+		$region_shipping_country_list =
 			$this->ui->getWidget('region_shipping_country');
 
 		SwatDB::updateBinding($this->app->db, 'RegionShippingCountryBinding',
@@ -89,23 +103,16 @@ class StoreRegionEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$row = SwatDB::queryRowFromTable($this->app->db, 'Region',
-			$this->fields, 'id', $this->id);
+		$this->ui->setValues(get_object_vars($this->region));
 
-		if ($row === null)
-			throw new AdminNotFoundException(
-				sprintf(Store::_('Region with id ‘%s’ not found.'), $this->id));
-
-		$this->ui->setValues(get_object_vars($row));
-
-		$region_billing_country_list = 
+		$region_billing_country_list =
 			$this->ui->getWidget('region_billing_country');
 
 		$region_billing_country_list->values = SwatDB::queryColumn(
 			$this->app->db, 'RegionBillingCountryBinding', 'text:country',
 			'region', $this->id);
 
-		$region_shipping_country_list = 
+		$region_shipping_country_list =
 			$this->ui->getWidget('region_shipping_country');
 
 		$region_shipping_country_list->values = SwatDB::queryColumn(
