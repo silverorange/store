@@ -18,6 +18,7 @@ class StoreRegionEdit extends AdminDBEdit
 	// {{{ protected properties
 
 	protected $fields;
+	protected $region;
 
 	// }}}
 
@@ -59,7 +60,7 @@ class StoreRegionEdit extends AdminDBEdit
 		if ($this->id !== null) {
 			if (!$this->region->load($this->id)) {
 				throw new AdminNotFoundException(
-					sprintf(Admin::_('Region with id %s not found.'),
+					sprintf(Admin::_('Region with an id "%s" not found.'),
 						$this->id));
 			}
 		}
