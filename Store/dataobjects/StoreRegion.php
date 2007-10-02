@@ -72,11 +72,11 @@ class StoreRegion extends SwatDBDataObject
 
 		return SwatDB::query($this->db, $sql, 'StoreLocaleWrapper');
 	}
-	
+
 	// }}}
 	// {{{ protected function loadBillingCountries()
 
-	/** 
+	/**
 	 * Gets countries that orders may be billed to in this region
 	 *
 	 * @return StoreCountryWrapper a recordset of StoreCountry objects that
@@ -100,7 +100,7 @@ class StoreRegion extends SwatDBDataObject
 	// }}}
 	// {{{ protected function loadShippingCountries()
 
-	/** 
+	/**
 	 * Gets countries that orders may be shipped to in this region
 	 *
 	 * @return StoreCountryWrapper a recordset of StoreCountry objects that
