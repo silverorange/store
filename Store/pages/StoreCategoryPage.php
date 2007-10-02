@@ -66,14 +66,18 @@ class StoreCategoryPage extends StorePage
 		$category_id = $this->path->getLast()->id;
 		$category = $this->queryCategory($category_id);
 
-		$this->layout->data->title = 
+		$this->layout->data->title =
 			SwatString::minimizeEntities($category->title);
 
-		$this->layout->data->description = 
+		$this->layout->data->description =
 			SwatString::minimizeEntities($category->description);
 
-		$this->layout->data->content= 
-			SwatString::toXHTML($category->bodytext);
+		if (strlen($category->bodytext) > 0)
+			$this->layout->data->content=
+				'<div class="store-category-bodytext">'.
+				SwatString::toXHTML($category->bodytext).'</div>';
+		else
+			$this->layout->data->content= '';
 
 		$this->layout->data->meta_description =
 			SwatString::minimizeEntities(SwatString::condense(
