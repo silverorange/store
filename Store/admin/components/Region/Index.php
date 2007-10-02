@@ -2,6 +2,7 @@
 
 require_once 'Admin/pages/AdminIndex.php';
 require_once 'SwatDB/SwatDB.php';
+require_once 'Store/dataobjects/StoreRegionWrapper.php';
 
 /**
  * Index page for Regions
@@ -48,9 +49,9 @@ class StoreRegionIndex extends AdminIndex
 		$sql = sprintf('select id, title from Region order by %s',
 			$this->getOrderByClause($view, 'title'));
 
-		$rs = SwatDB::query($this->app->db, $sql);
+		$regions = SwatDB::query($this->app->db, $sql, 'StoreRegionWrapper');
 
-		return $rs;
+		return $regions;
 	}
 
 	// }}}

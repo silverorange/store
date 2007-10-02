@@ -60,7 +60,7 @@ class StoreRegionDelete extends AdminDBDelete
 
 		$sql = sprintf('select count(distinct Item.product) as count,
 				ItemRegionBinding.region as parent, %s::integer as status_level
-			from Product 
+			from Product
 				inner join Item on Item.product = Product.id
 				inner join ItemRegionBinding on ItemRegionBinding.item = Item.id
 					and ItemRegionBinding.region in (%s)
