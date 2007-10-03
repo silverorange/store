@@ -4,6 +4,7 @@ require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Store/dataobjects/StoreQuantityDiscountWrapper.php';
 require_once 'Store/dataobjects/StoreItemRegionBindingWrapper.php';
 require_once 'Store/dataobjects/StoreItemGroup.php';
+require_once 'Store/dataobjects/StoreProduct.php';
 require_once 'Store/dataobjects/StoreRegion.php';
 require_once 'Store/StoreItemStatus.php';
 require_once 'Store/StoreItemStatusList.php';
