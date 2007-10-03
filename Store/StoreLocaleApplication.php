@@ -11,19 +11,6 @@ require_once 'Store/dataobjects/StoreRegionWrapper.php';
  */
 abstract class StoreLocaleApplication extends StoreApplication
 {
-	// {{{ protected properties
-
-	/**
-	 * @var string
-	 */
-	protected $locale;
-
-	/**
-	 * @var StoreRegion
-	 */
-	protected $region;
-
-	// }}}
 	// {{{ public function getBaseHref()
 
 	public function getBaseHref($secure = null, $locale = null)
@@ -123,8 +110,6 @@ abstract class StoreLocaleApplication extends StoreApplication
 
 		if ($this->region === null)
 			$this->locale = null;
-		else
-			setlocale(LC_ALL, $this->locale.'.UTF-8');
 	}
 
 	// }}}
