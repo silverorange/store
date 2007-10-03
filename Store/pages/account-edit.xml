@@ -3,7 +3,7 @@
 <swatml>
 	<widget class="SwatForm" id="edit_form">
 		<widget class="SwatMessageDisplay" id="message_display" />
-		<widget class="SwatFormField">
+		<widget class="SwatFormField" id="fullname_field">
 			<property name="title" translatable="yes">First &amp; Last Name</property>
 			<widget class="SwatEntry" id="fullname">
 				<property name="size" type="integer">35</property>
@@ -11,7 +11,7 @@
 				<property name="maxlength" type="integer">255</property>
 			</widget>
 		</widget>
-		<widget class="SwatFormField">
+		<widget class="SwatFormField" id="email_field">
 			<property name="title" translatable="yes">Email</property>
 			<property name="note" translatable="yes">Rest assured, we will neither sell nor share your email address.</property>
 			<widget class="SwatEmailEntry" id="email">
@@ -20,7 +20,7 @@
 				<property name="maxlength" type="integer">255</property>
 			</widget>
 		</widget>
-		<widget class="SwatFormField">
+		<widget class="SwatFormField" id="confirm_email_field">
 			<property name="title" translatable="yes">Re-type Email</property>
 			<widget class="SwatConfirmEmailEntry" id="confirm_email">
 				<property name="maxlength" type="integer">255</property>
