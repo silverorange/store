@@ -63,6 +63,6 @@ class StoreAdIndex extends AdminIndex
 	}
 
 	// }}}
-}	
+}
 
 ?>
