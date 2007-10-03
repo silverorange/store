@@ -9,7 +9,7 @@ require_once 'Store/StoreCatalogSelector.php';
 require_once 'Store/admin/components/Product/include/StoreProductTableView.php';
 require_once 'Store/admin/components/Product/include/StoreProductSearch.php';
 
-require_once 
+require_once
 	'Store/admin/components/Product/include/StoreProductTitleCellRenderer.php';
 
 require_once
@@ -18,7 +18,7 @@ require_once
 /**
  * Index page for Products
  *
- * @package   Store 
+ * @package   Store
  * @copyright 2005-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
@@ -143,7 +143,7 @@ class StoreProductIndex extends AdminSearch
 		$tree->addChild(new SwatTreeFlydownNode(-1, '<uncategorized>'));
 		$tree->addChild(new SwatTreeFlydownNode(new SwatFlydownDivider()));
 
-		$rs = SwatDB::executeStoredProc($this->app->db, 'getCategoryTree', 
+		$rs = SwatDB::executeStoredProc($this->app->db, 'getCategoryTree',
 			'null');
 
 		$category_tree = SwatDB::getDataTree($rs, 'title', 'id', 'levelnum');

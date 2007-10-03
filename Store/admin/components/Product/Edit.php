@@ -35,7 +35,7 @@ class StoreProductEdit extends AdminDBEdit
 		parent::initInternal();
 
 		$this->ui->loadFromXML($this->ui_xml);
-		
+
 		$this->fields = array('title', 'shortname', 'catalog', 'bodytext');
 
 		$this->category_id = SiteApplication::initVar('category');
@@ -103,7 +103,7 @@ class StoreProductEdit extends AdminDBEdit
 		 */
 
 		if ($this->id === null || $old_shortname != $shortname) {
-			$sql = sprintf('select clone_of from Catalog where id %s %s', 
+			$sql = sprintf('select clone_of from Catalog where id %s %s',
 				SwatDB::equalityOperator($catalog_id, true),
 				$this->app->db->quote($catalog_id, 'integer'));
 
@@ -150,7 +150,7 @@ class StoreProductEdit extends AdminDBEdit
 			$date = new Date();
 			$date->toUTC();
 			$values['createdate'] = $date->getDate();
-					
+
 			$this->id = SwatDB::insertRow($this->app->db, 'Product',
 				$this->fields, $values, 'id');
 
@@ -210,7 +210,7 @@ class StoreProductEdit extends AdminDBEdit
 	protected function relocate()
 	{
 		$button = $this->ui->getWidget('submit_continue_button');
-		
+
 		if ($button->hasBeenClicked()) {
 			// manage skus
 			$this->app->relocate(
@@ -254,16 +254,16 @@ class StoreProductEdit extends AdminDBEdit
 				$catalog = $_SESSION['catalog'];
 			// check catelogue used by most products in this cateorgy
 			} elseif ($this->category_id !== null) {
-				$sql = 'select count(catalog) as num_products, catalog 
-					from Product 
+				$sql = 'select count(catalog) as num_products, catalog
+					from Product
 					where id in (
-						select product from CategoryProductBinding 
-						where category = %s) 
-					group by catalog 
+						select product from CategoryProductBinding
+						where category = %s)
+					group by catalog
 					order by num_products desc
 					limit 1';
 
-				$row = SwatDB::queryRow($this->app->db, sprintf($sql, 
+				$row = SwatDB::queryRow($this->app->db, sprintf($sql,
 					$this->app->db->quote($this->category_id, 'integer')));
 
 				$catalog = ($row === null) ? null : $row->catalog;
@@ -286,7 +286,7 @@ class StoreProductEdit extends AdminDBEdit
 	// }}}
 	// {{{ protected function buildNavBar()
 
-	protected function buildNavBar() 
+	protected function buildNavBar()
 	{
 		if ($this->category_id !== null) {
 			$this->navbar->popEntry();
@@ -307,7 +307,7 @@ class StoreProductEdit extends AdminDBEdit
 				Store::_('New Product')));
 
 		} else {
-			$product_title = SwatDB::queryOneFromTable($this->app->db, 
+			$product_title = SwatDB::queryOneFromTable($this->app->db,
 				'Product', 'text:title', 'id', $this->id);
 
 			if ($this->category_id === null)

@@ -21,7 +21,7 @@ require_once
 require_once
 	'Store/admin/components/Item/include/StoreItemStatusCellRenderer.php';
 
-require_once 
+require_once
 	'Store/admin/components/Product/include/StoreItemDiscountCellRenderer.php';
 
 require_once 'Store/admin/StoreItemRegionPriceCellRenderer.php';
@@ -67,7 +67,7 @@ class StoreProductDetails extends AdminIndex
 
 		$this->ui->getRoot()->addStyleSheet(
 			'packages/store/admin/styles/store-image-preview.css');
-	
+
 		$this->id = SiteApplication::initVar('id');
 		$this->category_id = SiteApplication::initVar('category', null,
 			SiteApplication::VAR_GET);
@@ -145,8 +145,8 @@ class StoreProductDetails extends AdminIndex
 			$sql = 'update ItemRegionBinding set enabled = %s
 				where %s item in (%s)';
 
-			$region_sql = ($region > 0) ? 
-				sprintf('region = %s and', $this->app->db->quote($region, 
+			$region_sql = ($region > 0) ?
+				sprintf('region = %s and', $this->app->db->quote($region,
 					'integer')) : '';
 
 			SwatDB::exec($this->app->db, sprintf($sql,
@@ -171,8 +171,8 @@ class StoreProductDetails extends AdminIndex
 			$sql = 'update ItemRegionBinding set enabled = %s
 				where %s item in (%s)';
 
-			$region_sql = ($region > 0) ? 
-				sprintf('region = %s and', $this->app->db->quote($region, 
+			$region_sql = ($region > 0) ?
+				sprintf('region = %s and', $this->app->db->quote($region,
 					'integer')) : '';
 
 			SwatDB::exec($this->app->db, sprintf($sql,
@@ -302,7 +302,7 @@ class StoreProductDetails extends AdminIndex
 						if ($price->getState() !== null) {
 							// Create new item_region binding
 							$item_region_values = array('item' => $item_id,
-								'region' => $region->id, 
+								'region' => $region->id,
 								'price' => $price->getState(),
 								'enabled' => true);
 
@@ -524,7 +524,7 @@ class StoreProductDetails extends AdminIndex
 		// multiple categories, show in list
 		} elseif (count($categories) > 1) {
 			echo '<ul>';
-				
+
 			foreach ($categories as $category) {
 				$navbar = new SwatNavBar();
 				$navbar->addEntries($category->getAdminNavBarEntries());
@@ -659,10 +659,10 @@ class StoreProductDetails extends AdminIndex
 
 			$enabled = false;
 			foreach ($item->region_bindings as $binding) {
-				$price_field_name = 
+				$price_field_name =
 					sprintf('price_%s', $binding->getInternalValue('region'));
 
-				$enabled_field_name = 
+				$enabled_field_name =
 					sprintf('enabled_%s', $binding->getInternalValue('region'));
 
 				$ds->$price_field_name = $binding->price;
@@ -777,7 +777,7 @@ class StoreProductDetails extends AdminIndex
 		$group_info = array();
 		foreach ($groups as $group)
 			$group_info[$group->item_group] = $group->num_items;
-		
+
 		$group_header->group_info = $group_info;
 
 		$order_link = $this->ui->getWidget('items_order');
@@ -821,7 +821,7 @@ class StoreProductDetails extends AdminIndex
 				group by item_group
 				-- make sure the empty group is first
 				order by item_group desc';
-				
+
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->id, 'integer'),
 			$this->app->db->quote($this->id, 'integer'));
