@@ -35,6 +35,58 @@ abstract class StoreApplication extends SiteWebApplication
 	 */
 	public $db;
 
+	/**
+	 * Default locale
+	 *
+	 * This locale is used for translations, collation and locale-specific
+	 * formatting. The locale is a five character identifier composed of a
+	 * language code (ISO 639) an underscore and a country code (ISO 3166). For
+	 * example, use 'en_CA' for Canadian English.
+	 *
+	 * @var string
+	 */
+	public $default_locale = null;
+
+	// }}}
+	// {{{ protected properties
+
+	/**
+	 * @var string
+	 */
+	protected $locale;
+
+	/**
+	 * @var StoreRegion
+	 */
+	protected $region;
+
+	// }}}
+	// {{{ public function getCountry()
+
+	/**
+	 * @return string
+	 */
+	public function getCountry($locale = null)
+	{
+		if ($locale === null)
+			$locale = $this->locale;
+
+		$country = substr($locale, 3, 2);
+
+		return $country;
+	}
+
+	// }}}
+	// {{{ public function getLocale()
+
+	/**
+	 * @return string
+	 */
+	public function getLocale()
+	{
+		return $this->locale;
+	}
+
 	// }}}
 	// {{{ public function getRegion()
 
@@ -43,26 +95,7 @@ abstract class StoreApplication extends SiteWebApplication
 	 */
 	public function getRegion()
 	{
-		return null;
-	}
-
-	// }}}
-	// {{{ public function getLocale()
-
-	public function getLocale()
-	{
-		return null;
-	}
-
-	// }}}
-	// {{{ public function getCountry()
-
-	/**
-	 * @return string
-	 */
-	public function getCountry()
-	{
-		return null;
+		return $this->region;
 	}
 
 	// }}}
@@ -197,6 +230,12 @@ abstract class StoreApplication extends SiteWebApplication
 
 	protected function loadPage()
 	{
+		if ($this->locale === null)
+			$this->locale = $this->default_locale;
+
+		if ($this->locale !== null)
+			setlocale(LC_ALL, $this->locale.'.UTF-8');
+
 		$ad_shortname = self::initVar('ad');
 		if ($ad_shortname !== null)
 			$this->parseAd($ad_shortname);
