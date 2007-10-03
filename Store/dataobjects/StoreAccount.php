@@ -83,7 +83,14 @@ class StoreAccount extends SiteAccount
 	// {{{ public properties
 
 	/**
-	 * The phone number of this account
+	 * Optional company name for this account
+	 *
+	 * @var string
+	 */
+	public $company;
+
+	/**
+	 * Phone number of this account
 	 *
 	 * @var string
 	 */

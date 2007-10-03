@@ -41,7 +41,14 @@ class StoreOrder extends SwatDBDataObject
 	public $email;
 
 	/**
-	 * Snapshot of the customer's Phone Number
+	 * Snapshot of the customer's company name
+	 *
+	 * @var string
+	 */
+	public $company;
+
+	/**
+	 * Snapshot of the customer's phone number
 	 *
 	 * @var string
 	 */

@@ -25,6 +25,12 @@
 					<property name="maxlength" type="integer">100</property>
 				</widget>
 			</widget>
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Company</property>
+				<widget class="SwatEntry" id="company">
+					<property name="maxlength" type="integer">255</property>
+				</widget>
+			</widget>
 			<widget class="SwatFooterFormField">
 				<widget class="SwatButton" id="submit_button" />
 			</widget>

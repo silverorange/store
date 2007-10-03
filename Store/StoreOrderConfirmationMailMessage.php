@@ -156,6 +156,9 @@ abstract class StoreOrderConfirmationMailMessage
 		if ($this->order->phone === null)
 			$details_view->getField('phone')->visible = false;
 
+		if ($this->order->company === null)
+			$details_view->getField('company')->visible = false;
+
 		if ($this->order->payment_method === null)
 			$details_view->getField('payment_method')->visible = false;
 
@@ -225,6 +228,11 @@ abstract class StoreOrderConfirmationMailMessage
 
 		if ($this->order->phone !== null) {
 			printf('Phone: %s', $this->order->phone);
+			echo self::LINE_BREAK;
+		}
+
+		if ($this->order->company !== null) {
+			printf('Company: %s', $this->order->company);
 			echo self::LINE_BREAK;
 		}
 

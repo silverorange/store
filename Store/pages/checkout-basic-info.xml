@@ -49,6 +49,13 @@
 			<property name="size" type="integer">15</property>
 		</widget>
 	</widget>
+	<widget class="SwatFormField" id="company_field">
+		<property name="title" translatable="yes">Company</property>
+		<widget class="SwatEntry" id="company">
+			<property name="maxlength" type="integer">255</property>
+			<property name="size" type="integer">15</property>
+		</widget>
+	</widget>
 	<widget class="SwatFormField" id="comments_field">
 		<property name="title" translatable="yes">Comments</property>
 		<property name="note" translatable="yes">Use this space for more detailed shipping instructions, comments about our site, etc.</property>
