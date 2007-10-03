@@ -14,14 +14,14 @@ class StoreCountry extends SwatDBDataObject
 	// {{{ public properties
 
 	/**
-	 * Unique identifier of this country 
+	 * Unique identifier of this country
 	 *
-	 * @var string 
+	 * @var string
 	 */
 	public $id;
 
 	/**
-	 * User visible title of this country 
+	 * User visible title of this country
 	 *
 	 * @var string
 	 */
