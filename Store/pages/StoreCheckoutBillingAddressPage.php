@@ -197,6 +197,10 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 		if ($order->billing_address === null) {
 			$this->ui->getWidget('billing_address_fullname')->value =
 				$this->app->session->account->fullname;
+			$this->ui->getWidget('billing_address_phone')->value =
+				$this->app->session->account->phone;
+			$this->ui->getWidget('billing_address_company')->value =
+				$this->app->session->account->company;
 		} else {
 			if ($order->billing_address->getAccountAddressId() === null) {
 
