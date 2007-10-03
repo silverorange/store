@@ -17,6 +17,8 @@ getFieldNames: function()
 {
 	return [
 		'billing_address_fullname',
+		'billing_address_phone',
+		'billing_address_company',
 		'billing_address_line1',
 		'billing_address_line2',
 		'billing_address_city',
