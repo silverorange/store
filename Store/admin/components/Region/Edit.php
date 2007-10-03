@@ -3,8 +3,8 @@
 require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDB.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Swat/SwatMessage.php';
-require_once 'Store/dataobjects/StoreRegion.php';
 
 /**
  * Edit page for Regions
@@ -54,7 +54,8 @@ class StoreRegionEdit extends AdminDBEdit
 
 	protected function initRegion()
 	{
-		$this->region = new StoreRegion();
+		$class_name = SwatDBClassMap::get('StoreRegion');
+		$this->region = new $class_name();
 		$this->region->setDatabase($this->app->db);
 
 		if ($this->id !== null) {
