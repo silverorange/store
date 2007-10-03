@@ -600,34 +600,38 @@ class StoreProductPage extends StorePage
 
 	protected function displaySecondaryImages()
 	{
-		$li_tag = new SwatHtmlTag('li');
-		$img_tag = new SwatHtmlTag('img');
-
 		echo '<ul id="product_secondary_images">';
 
-		foreach ($this->product->images as $image) {
-			if ($this->product->primary_image->id === $image->id)
-				continue;
-
-			$img_tag = $image->getImgTag('thumb');
-
-			if (strlen($img_tag->alt) == 0)
-				$img_tag->alt = sprintf(Store::_('Additional Photo of %s'),
-					$this->product->title);
-
-			$anchor = new SwatHtmlTag('a');
-			$anchor->href = sprintf('%s/image%s', $this->source, $image->id);
-			$anchor->title = Store::_('View Larger Image');
-
-			$li_tag->open();
-			$anchor->open();
-			$img_tag->display();
-			echo '<span>', Store::_('View Larger Image'), '</span>';
-			$anchor->close();
-			$li_tag->close();
-		}
+		foreach ($this->product->images as $image)
+			if ($this->product->primary_image->id !== $image->id)
+				$this->displaySecondaryImage($image);
 
 		echo '</ul>';
+	}
+
+	// }}}
+	// {{{ protected function displaySecondaryImage()
+
+	protected function displaySecondaryImage($image)
+	{
+		$li_tag = new SwatHtmlTag('li');
+		$img_tag = new SwatHtmlTag('img');
+		$img_tag = $image->getImgTag('thumb');
+
+		if (strlen($img_tag->alt) == 0)
+			$img_tag->alt = sprintf(Store::_('Additional Photo of %s'),
+				$this->product->title);
+
+		$anchor = new SwatHtmlTag('a');
+		$anchor->href = sprintf('%s/image%s', $this->source, $image->id);
+		$anchor->title = Store::_('View Larger Image');
+
+		$li_tag->open();
+		$anchor->open();
+		$img_tag->display();
+		echo '<span>', Store::_('View Larger Image'), '</span>';
+		$anchor->close();
+		$li_tag->close();
 	}
 
 	// }}}
