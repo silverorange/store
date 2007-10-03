@@ -283,6 +283,12 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 			if ($this->id === null) {
 				$this->ui->getWidget('fullname')->value =
 					$this->app->session->account->fullname;
+
+				$this->ui->getWidget('company')->value =
+					$this->app->session->account->company;
+
+				$this->ui->getWidget('phone')->value =
+					$this->app->session->account->phone;
 			} else {
 				$address = $this->findAddress();
 				$this->setWidgetValues($address);
