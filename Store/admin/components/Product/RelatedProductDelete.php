@@ -141,7 +141,7 @@ class StoreProductRelatedProductDelete extends AdminDBDelete
 		if ($this->category_id === null)
 			$link = sprintf('Product/Details?id=%s', $this->id);
 		else
-			$link = sprintf('Product/Details?id=%s&category=%s', $this->id, 
+			$link = sprintf('Product/Details?id=%s&category=%s', $this->id,
 				$this->category_id);
 
 		$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));

@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreProductImage.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 
 /**
- * Delete confirmation page for product images 
+ * Delete confirmation page for product images
  *
  * This delete page only deletes (removes) one image from a single product.
  * Multiple deletes are not supported. If the product image is present in more
@@ -111,7 +111,7 @@ class StoreProductImageDelete extends AdminDBDelete
 
 		$sql = sprintf('select * from Image where id = %s',
 			$this->app->db->quote($image_id, 'integer'));
-			
+
 		$image = SwatDB::queryRow($this->app->db, $sql);
 
 		if ($image === null) {
@@ -142,7 +142,7 @@ class StoreProductImageDelete extends AdminDBDelete
 	// }}}
 	// {{{ private function buildNavBar()
 
-	private function buildNavBar() 
+	private function buildNavBar()
 	{
 		$last_entry = $this->navbar->popEntry();
 		$last_entry->title = Store::_('Remove Image');
@@ -170,7 +170,7 @@ class StoreProductImageDelete extends AdminDBDelete
 			if ($this->category_id === null)
 				$link = sprintf('Product/Details?id=%s', $id);
 			else
-				$link = sprintf('Product/Details?id=%s&category=%s', $id, 
+				$link = sprintf('Product/Details?id=%s&category=%s', $id,
 					$this->category_id);
 
 			$this->navbar->addEntry(new SwatNavBarEntry($this->product_title,

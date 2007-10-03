@@ -126,7 +126,7 @@ class StoreProductDelete extends AdminDBDelete
 	// }}}
 	// {{{ private function buildNavBar()
 
-	private function buildNavBar() 
+	private function buildNavBar()
 	{
 		$last_entry = $this->navbar->popEntry();
 
@@ -147,13 +147,13 @@ class StoreProductDelete extends AdminDBDelete
 
 		if ($this->single_delete) {
 			$id = $this->getFirstItem();
-			$product_title = SwatDB::queryOneFromTable($this->app->db, 
+			$product_title = SwatDB::queryOneFromTable($this->app->db,
 				'Product', 'text:title', 'id', $id);
 
 			if ($this->category_id === null)
 				$link = sprintf('Product/Details?id=%s', $id);
 			else
-				$link = sprintf('Product/Details?id=%s&category=%s', $id, 
+				$link = sprintf('Product/Details?id=%s&category=%s', $id,
 					$this->category_id);
 
 			$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));

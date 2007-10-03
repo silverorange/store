@@ -103,7 +103,7 @@ class StoreProductImageOrder extends AdminDBOrder
 	// {{{ protected function loadData()
 
 	protected function loadData()
-	{ 
+	{
 		$order_widget = $this->ui->getWidget('order');
 
 		$sql = sprintf('select id, thumb_width, thumb_height
@@ -132,12 +132,12 @@ class StoreProductImageOrder extends AdminDBOrder
 	// }}}
 	// {{{ protected function buildNavBar()
 
-	protected function buildNavBar() 
+	protected function buildNavBar()
 	{
 		parent::buildNavBar();
 		$last_entry = $this->navbar->popEntry();
 		$this->navbar->popEntry();
- 
+
 		if ($this->category_id !== null) {
 			$this->navbar->addEntry(new SwatNavBarEntry(
 				Store::_('Product Categories'), 'Category'));
@@ -156,7 +156,7 @@ class StoreProductImageOrder extends AdminDBOrder
 		if ($this->category_id === null)
 			$link = sprintf('Product/Details?id=%s', $this->product_id);
 		else
-			$link = sprintf('Product/Details?id=%s&category=%s', 
+			$link = sprintf('Product/Details?id=%s&category=%s',
 				$this->product_id, $this->category_id);
 
 		$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));

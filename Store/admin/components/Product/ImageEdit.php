@@ -45,7 +45,7 @@ class StoreProductImageEdit extends AdminPage
 		$this->category_id = SiteApplication::initVar('category');
 
 		$sql = 'select title from Product where id = %s';
-		$sql = sprintf($sql, 
+		$sql = sprintf($sql,
 			$this->app->db->quote($this->product_id, 'integer'));
 
 		$row = SwatDB::queryRow($this->app->db, $sql);
@@ -286,7 +286,7 @@ class StoreProductImageEdit extends AdminPage
 	/**
 	 * Inserts new image data into the database and updates products
 	 *
-	 * @param 
+	 * TODO: add the parameters @param
 	 *
 	 * @return array image files that were replaced and should be deleted.
 	 */
@@ -349,7 +349,7 @@ class StoreProductImageEdit extends AdminPage
 						$old_id.'.jpg';
 			}
 		}
-			
+
 		// save images
 		foreach ($sizes as $size => $dimensions) {
 			if (isset($images[$size])) {
@@ -398,7 +398,7 @@ class StoreProductImageEdit extends AdminPage
 
 		// if we're adding an image make sure enough images were uploaded
 		// for all the sizes
-		if ($this->id === null && !($image->isUploaded() || 
+		if ($this->id === null && !($image->isUploaded() ||
 			($thumb->isUploaded() && $small->isUploaded() &&
 			$large->isUploaded()))) {
 
@@ -426,7 +426,7 @@ class StoreProductImageEdit extends AdminPage
 		if ($this->id !== null) {
 			$this->loadDBData();
 
-			$this->ui->getWidget('submit_button')->title = 
+			$this->ui->getWidget('submit_button')->title =
 				Store::_('Update');
 		}
 
@@ -475,7 +475,7 @@ class StoreProductImageEdit extends AdminPage
 			'integer:small_width', 'integer:small_height',
 			'integer:large_width', 'integer:large_height');
 
-		$row = SwatDB::queryRowFromTable($this->app->db, 'Image', 
+		$row = SwatDB::queryRowFromTable($this->app->db, 'Image',
 			$fields, 'id', $this->id);
 
 		// the product references an undefined image
@@ -541,7 +541,7 @@ class StoreProductImageEdit extends AdminPage
 	// }}}
 	// {{{ private function buildNavBar()
 
-	private function buildNavBar() 
+	private function buildNavBar()
 	{
 		if ($this->category_id !== null) {
 			$this->navbar->popEntry();
@@ -559,10 +559,10 @@ class StoreProductImageEdit extends AdminPage
 		if ($this->category_id === null)
 			$link = sprintf('Product/Details?id=%s', $this->product_id);
 		else
-			$link = sprintf('Product/Details?id=%s&category=%s', 
+			$link = sprintf('Product/Details?id=%s&category=%s',
 				$this->product_id, $this->category_id);
 
-		$this->navbar->addEntry(new SwatNavBarEntry($this->product_title, 
+		$this->navbar->addEntry(new SwatNavBarEntry($this->product_title,
 			$link));
 
 		if ($this->id === null)
