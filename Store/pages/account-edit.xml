@@ -53,6 +53,13 @@
 				<property name="maxlength" type="integer">100</property>
 			</widget>
 		</widget>
+		<widget class="SwatFormField" id="company_field">
+			<property name="title" translatable="yes">Company</property>
+			<widget class="SwatEntry" id="company">
+				<property name="size" type="integer">15</property>
+				<property name="maxlength" type="integer">100</property>
+			</widget>
+		</widget>
 		<widget class="SwatFooterFormField">
 			<widget class="SwatButton" id="submit_button">
 				<property name="title" translatable="yes">Sign up for an account</property>

@@ -30,6 +30,7 @@ class StoreAccountEdit extends SiteAccountEdit
 		parent::initInternal();
 
 		$this->fields[] = 'phone';
+		$this->fields[] = 'company';
 	}
 
 	// }}}
@@ -41,7 +42,7 @@ class StoreAccountEdit extends SiteAccountEdit
 	{
 		$values = parent::getUIValues();
 		$values = array_merge($values,
-			$this->ui->getValues(array('phone')));
+			$this->ui->getValues(array('phone', 'company')));
 
 		return $values;
 	}

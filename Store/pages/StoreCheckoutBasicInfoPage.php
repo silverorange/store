@@ -60,6 +60,7 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 		$order = $this->app->session->order;
 
 		$order->email =	$this->getOptionalStringValue('email');
+		$order->company = $this->getOptionalStringValue('company');
 		$order->phone = $this->getOptionalStringValue('phone');
 		$order->comments = $this->getOptionalStringValue('comments');
 
@@ -68,6 +69,7 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 			$account->fullname = $this->getOptionalStringValue('fullname');
 			$account->email = $order->email;
 			$account->phone = $order->phone;
+			$account->company = $order->company;
 
 			// only set password on new accounts
 			if (!$this->app->session->isLoggedIn()) {
@@ -151,6 +153,7 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 			$this->ui->getWidget('email')->value = $account->email;
 			$this->ui->getWidget('confirm_email')->value = $account->email;
 			$this->ui->getWidget('phone')->value = $account->phone;
+			$this->ui->getWidget('company')->value = $account->company;
 		}
 
 		$order = $this->app->session->order;
@@ -159,6 +162,9 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 			$this->ui->getWidget('email')->value = $order->email;
 			$this->ui->getWidget('confirm_email')->value = $order->email;
 		}
+
+		if ($order->company != null)
+			$this->ui->getWidget('company')->value = $order->company;
 
 		if ($order->phone != null)
 			$this->ui->getWidget('phone')->value = $order->phone;

@@ -234,6 +234,9 @@ class StoreAccountDetailsPage extends StoreAccountPage
 
 		if ($account->phone === null)
 			$details_view->getField('phone')->visible = false;
+
+		if ($account->company === null)
+			$details_view->getField('company')->visible = false;
 	}
 
 	// }}}

@@ -123,6 +123,7 @@ class StoreAccountEditPage extends StoreAccountPage
 		$account->fullname = $this->ui->getWidget('fullname')->value;
 		$account->email = $this->ui->getWidget('email')->value;
 		$account->phone = $this->ui->getWidget('phone')->value;
+		$account->company = $this->ui->getWidget('company')->value;
 	}
 
 	// }}}
@@ -215,6 +216,7 @@ class StoreAccountEditPage extends StoreAccountPage
 		$this->ui->getWidget('email')->value = $account->email;
 		$this->ui->getWidget('confirm_email')->value = $account->email;
 		$this->ui->getWidget('phone')->value = $account->phone;
+		$this->ui->getWidget('company')->value = $account->company;
 	}
 
 	// }}}
