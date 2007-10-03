@@ -178,9 +178,9 @@ class StoreProductImagePage extends StorePage
 	}
 
 	// }}}
-	// {{{ private function getProductPageSource()
+	// {{{ protected function getProductPageSource()
 
-	private function getProductPageSource()
+	protected function getProductPageSource()
 	{
 		$source_exp = explode('/', $this->source);
 		array_pop($source_exp);
