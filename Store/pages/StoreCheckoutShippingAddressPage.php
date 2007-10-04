@@ -194,7 +194,7 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 					$order->shipping_address->fullname;
 
 				$this->ui->getWidget('shipping_address_company')->value =
-					$order->shipping_address->getInternalValue('company');
+					$order->shipping_address->company;
 
 				$this->ui->getWidget('shipping_address_line1')->value =
 					$order->shipping_address->line1;
@@ -218,7 +218,7 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 					$order->shipping_address->getInternalValue('country');
 
 				$this->ui->getWidget('shipping_address_phone')->value =
-					$order->shipping_address->getInternalValue('phone');
+					$order->shipping_address->phone;
 
 				$this->ui->getWidget('shipping_address_list')->value = 'new';
 

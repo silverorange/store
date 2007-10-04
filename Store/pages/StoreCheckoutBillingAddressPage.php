@@ -199,6 +199,7 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 				$this->app->session->account->fullname;
 			$this->ui->getWidget('billing_address_phone')->value =
 				$this->app->session->account->phone;
+
 			$this->ui->getWidget('billing_address_company')->value =
 				$this->app->session->account->company;
 		} else {
@@ -208,7 +209,7 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 					$order->billing_address->fullname;
 
 				$this->ui->getWidget('billing_address_company')->value =
-					$order->billing_address->getInternalValue('company');
+					$order->billing_address->company;
 
 				$this->ui->getWidget('billing_address_line1')->value =
 					$order->billing_address->line1;
@@ -232,7 +233,7 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 					$order->billing_address->getInternalValue('country');
 
 				$this->ui->getWidget('billing_address_phone')->value =
-					$order->billing_address->getInternalValue('phone');
+					$order->billing_address->phone;
 			} else {
 				$this->ui->getWidget('billing_address_list')->value =
 					$order->billing_address->getAccountAddressId();
