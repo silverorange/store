@@ -37,6 +37,41 @@ class StoreProvState extends SwatDBDataObject
 	public $abbreviation;
 
 	// }}}
+	// {{{ public function loadFromAbbreviation()
+
+	/**
+	 * Loads this province/state from an abbreviation
+	 *
+	 * @param string $abbreviation the abbreviation of this province/state.
+	 *
+	 * @return boolean true if this province/state was loaded and false if it
+	 *                  was not.
+	 */
+	public function loadFromAbbreviation($abbreviation)
+	{
+		$this->checkDB();
+
+		$row = null;
+		$loaded = false;
+
+		if ($this->table !== null) {
+			$sql = sprintf('select * from ProvState where abbreviation = %s',
+				$this->db->quote($abbreviation, 'text'));
+
+			$rs = SwatDB::query($this->db, $sql, null);
+			$row = $rs->fetchRow(MDB2_FETCHMODE_ASSOC);
+		}
+
+		if ($row !== null) {
+			$this->initFromRow($row);
+			$this->generatePropertyHashes();
+			$loaded = true;
+		}
+
+		return $loaded;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
