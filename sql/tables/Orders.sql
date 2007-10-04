@@ -5,6 +5,7 @@ create table Orders (
 	account integer default null references Account(id) on delete set null,
 	email varchar(255),
 	phone varchar(100),
+	company varchar(255),
 	comments text,
 	notes text,
 	createdate timestamp not null,
