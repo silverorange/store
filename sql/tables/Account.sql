@@ -2,6 +2,7 @@
 create table Account (
 	id serial,
 	fullname varchar(255),
+	company varchar(255),
 	email varchar(255),
 	phone varchar(100),
 	password varchar(255),
