@@ -32,7 +32,7 @@
 	</widget>
 	<widget class="SwatFrame" id="login_frame">
 		<property name="title" translatable="yes">Returning Customers</property>
-		<widget class="SwatContentBlock">
+		<widget class="SwatContentBlock" id="returning_customer_info">
 			<property name="content" translatable="yes"><![CDATA[<p>If you have created an account before on our website, login here to checkout.</p>]]></property>
 			<property name="content_type">text/xml</property>
 		</widget>
