@@ -14,21 +14,21 @@ class StoreProvState extends SwatDBDataObject
 	// {{{ public properties
 
 	/**
-	 * Unique identifier of this province or state 
+	 * Unique identifier of this province or state
 	 *
 	 * @var integer
 	 */
 	public $id;
 
 	/**
-	 * User visible title of this province or state 
+	 * User visible title of this province or state
 	 *
 	 * @var string
 	 */
 	public $title;
 
 	/**
-	 * A two letter abbreviation used to identify this province of state 
+	 * A two letter abbreviation used to identify this province of state
 	 *
 	 * This is also used for displaying addresses.
 	 *
