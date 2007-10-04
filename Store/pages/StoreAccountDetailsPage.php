@@ -2,7 +2,7 @@
 
 require_once 'Swat/SwatDetailsStore.php';
 
-require_once 'Store/StoreUI.php';
+require_once 'Swat/SwatUI.php';
 require_once 'Store/pages/StoreAccountPage.php';
 require_once 'Store/StoreAddressView.php';
 require_once 'Store/StorePaymentMethodView.php';
@@ -36,7 +36,7 @@ class StoreAccountDetailsPage extends StoreAccountPage
 	{
 		parent::init();
 
-		$this->ui = new StoreUI();
+		$this->ui = new SwatUI();
 		$this->ui->loadFromXML($this->ui_xml);
 
 		$this->initInternal($this->app->session->account);

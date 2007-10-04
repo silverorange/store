@@ -70,7 +70,7 @@ class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 
 	protected function loadUI()
 	{
-		$this->ui = new StoreUI();
+		$this->ui = new SwatUI();
 		$this->ui->loadFromXML($this->ui_xml);
 	}
 

@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Site/pages/SiteArticlePage.php';
-require_once 'Store/StoreUI.php';
+require_once 'Swat/SwatUI.php';
 require_once 'Swat/SwatString.php';
 require_once 'Site/SiteMultipartMailMessage.php';
 
@@ -41,7 +41,7 @@ class StoreContactPage extends SiteArticlePage
 	{
 		parent::init();
 
-		$this->ui = new StoreUI();
+		$this->ui = new SwatUI();
 		$this->ui->loadFromXML('Store/pages/contact.xml');
 
 		$form = $this->ui->getWidget('contact_form');

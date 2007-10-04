@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Store/pages/StoreAccountPage.php';
-require_once 'Store/StoreUI.php';
+require_once 'Swat/SwatUI.php';
 
 /**
  * Page for changing the password of an account
@@ -34,7 +34,7 @@ class StoreAccountChangePasswordPage extends StoreAccountPage
 	{
 		parent::init();
 
-		$this->ui = new StoreUI();
+		$this->ui = new SwatUI();
 		$this->ui->loadFromXML($this->ui_xml);
 
 		$form = $this->ui->getWidget('edit_form');

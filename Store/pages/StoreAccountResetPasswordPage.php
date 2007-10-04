@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Site/pages/SiteArticlePage.php';
-require_once 'Store/StoreUI.php';
+require_once 'Swat/SwatUI.php';
 
 /**
  * Page to reset the password for an account
@@ -58,7 +58,7 @@ class StoreAccountResetPasswordPage extends SiteArticlePage
 	{
 		parent::init();
 
-		$this->ui = new StoreUI();
+		$this->ui = new SwatUI();
 		$this->ui->loadFromXML($this->ui_xml);
 
 		$form = $this->ui->getWidget('edit_form');

@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreCartEntry.php';
 require_once 'Store/dataobjects/StoreItem.php';
 require_once 'Store/pages/StoreAccountPage.php';
 require_once 'Store/StoreShippingAddressCellRenderer.php';
-require_once 'Store/StoreUI.php';
+require_once 'Swat/SwatUI.php';
 
 /**
  * Page to display old orders placed using an account
@@ -62,7 +62,7 @@ class StoreAccountOrderPage extends StoreAccountPage
 
 		$this->loadOrder();
 
-		$this->ui = new StoreUI();
+		$this->ui = new SwatUI();
 		$this->ui->loadFromXML($this->ui_xml);
 		$this->ui->init();
 

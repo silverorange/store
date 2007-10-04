@@ -4,7 +4,7 @@ require_once 'Swat/SwatString.php';
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
 require_once 'Swat/SwatYUI.php';
-require_once 'Store/StoreUI.php';
+require_once 'Swat/SwatUI.php';
 require_once 'Store/pages/StorePage.php';
 require_once 'Store/dataobjects/StoreCartEntry.php';
 require_once 'Store/dataobjects/StoreProduct.php';
@@ -75,7 +75,7 @@ class StoreProductPage extends StorePage
 	{
 		$this->loadProduct($this->product_id);
 
-		$this->items_ui = new StoreUI();
+		$this->items_ui = new SwatUI();
 		$this->items_ui->loadFromXML($this->items_ui_xml);
 
 		$items_form = $this->items_ui->getWidget('form');
@@ -97,7 +97,7 @@ class StoreProductPage extends StorePage
 
 	protected function initCart()
 	{
-		$this->cart_ui = new StoreUI();
+		$this->cart_ui = new SwatUI();
 		$this->cart_ui->loadFromXML($this->cart_ui_xml);
 		$this->cart_ui->getRoot()->addStyleSheet(
 			'packages/store/styles/store-cart.css', Store::PACKAGE_ID);
