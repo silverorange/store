@@ -7,7 +7,6 @@ require_once 'Store/StoreCategorySearchEngine.php';
 require_once 'Store/dataobjects/StoreProductWrapper.php';
 require_once 'Store/dataobjects/StoreCategoryImageWrapper.php';
 require_once 'Store/dataobjects/StoreProductImageWrapper.php';
-require_once 'Store/StoreUI.php';
 
 /**
  * Page for displaying search results

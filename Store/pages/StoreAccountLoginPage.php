@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/StoreUI.php';
+require_once 'Swat/SwatUI.php';
 require_once 'Store/pages/StoreAccountPage.php';
 
 /**
@@ -38,7 +38,7 @@ class StoreAccountLoginPage extends StoreAccountPage
 		if ($this->app->session->isLoggedIn())
 			$this->app->relocate('account');
 
-		$this->ui = new StoreUI();
+		$this->ui = new SwatUI();
 		$this->ui->loadFromXML($this->ui_xml);
 
 		$form = $this->ui->getWidget('login_form');

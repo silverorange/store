@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Site/pages/SiteArticlePage.php';
-require_once 'Store/StoreUI.php';
 
 /**
  * Confirmation page for resetting an account password

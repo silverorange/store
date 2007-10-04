@@ -4,7 +4,7 @@ require_once 'Store/dataobjects/StoreCartEntry.php';
 require_once 'Store/dataobjects/StoreItem.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Site/pages/SiteArticlePage.php';
-require_once 'Store/StoreUI.php';
+require_once 'Swat/SwatUI.php';
 require_once 'Swat/SwatString.php';
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
@@ -39,7 +39,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 	{
 		parent::init();
 
-		$this->form_ui = new StoreUI();
+		$this->form_ui = new SwatUI();
 		$this->form_ui->loadFromXML($this->form_xml);
 
 		$form = $this->form_ui->getWidget('quick_order_form');
@@ -58,7 +58,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 
 		$this->form_ui->init();
 
-		$this->cart_ui = new StoreUI();
+		$this->cart_ui = new SwatUI();
 		$this->cart_ui->loadFromXML($this->cart_xml);
 
 		$cart_form = $this->cart_ui->getWidget('cart_form');

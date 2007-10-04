@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Store/pages/StoreCheckoutPage.php';
-require_once 'Store/StoreUI.php';
+require_once 'Swat/SwatUI.php';
 
 /**
  * Base class for checkout pages with a UI
@@ -51,7 +51,7 @@ abstract class StoreCheckoutUIPage extends StoreCheckoutPage
 
 	protected function loadUI()
 	{
-		$this->ui = new StoreUI();
+		$this->ui = new SwatUI();
 		$this->ui->loadFromXML('Store/pages/checkout.xml');
 
 		$form = $this->ui->getWidget('form');

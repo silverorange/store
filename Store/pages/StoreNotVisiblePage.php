@@ -3,7 +3,7 @@
 require_once 'Swat/SwatMessage.php';
 require_once 'Swat/SwatHtmlTag.php';
 require_once 'SwatDB/SwatDB.php';
-require_once 'Store/StoreUI.php';
+require_once 'Swat/SwatUI.php';
 require_once 'Store/pages/StorePage.php';
 require_once 'Site/exceptions/SiteNotFoundException.php';
 
@@ -20,7 +20,7 @@ abstract class StoreNotVisiblePage extends StorePage
 	// {{{ protected properties
 
 	/**
-	 * @var StoreUI
+	 * @var SwatUI
 	 */
 	protected $ui;
 
@@ -31,7 +31,7 @@ abstract class StoreNotVisiblePage extends StorePage
 	{
 		parent::init();
 
-		$this->ui = new StoreUI();
+		$this->ui = new SwatUI();
 		$this->ui->loadFromXML('Store/pages/not-visible-page.xml');
 	}
 

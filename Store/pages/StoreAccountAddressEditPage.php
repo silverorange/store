@@ -3,7 +3,7 @@
 require_once 'Swat/SwatYUI.php';
 require_once 'Store/pages/StoreAccountPage.php';
 require_once 'Store/dataobjects/StoreAccountAddress.php';
-require_once 'Store/StoreUI.php';
+require_once 'Swat/SwatUI.php';
 
 /**
  * Page for adding and editing addresses stored on accounts
@@ -54,7 +54,7 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 	{
 		parent::init();
 
-		$this->ui = new StoreUI();
+		$this->ui = new SwatUI();
 		$this->ui->loadFromXML($this->ui_xml);
 
 		$form = $this->ui->getWidget('edit_form');

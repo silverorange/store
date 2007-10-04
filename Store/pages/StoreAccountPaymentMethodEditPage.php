@@ -4,7 +4,7 @@ require_once 'Store/pages/StoreAccountPage.php';
 require_once 'Store/dataobjects/StoreAccountPaymentMethod.php';
 require_once 'Store/dataobjects/StorePaymentType.php';
 require_once 'Store/dataobjects/StorePaymentTypeWrapper.php';
-require_once 'Store/StoreUI.php';
+require_once 'Swat/SwatUI.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Swat/SwatDate.php';
 require_once 'Swat/SwatYUI.php';
@@ -50,7 +50,7 @@ class StoreAccountPaymentMethodEditPage extends StoreAccountPage
 	{
 		parent::init();
 
-		$this->ui = new StoreUI();
+		$this->ui = new SwatUI();
 		$this->ui->loadFromXML($this->ui_xml);
 
 		$form = $this->ui->getWidget('edit_form');

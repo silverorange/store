@@ -15,7 +15,7 @@ class StoreSearchPage extends StoreSearchResultsPage
 	/**
 	 * The user-interface of the search form
 	 *
-	 * @var StoreUI
+	 * @var SwatUI
 	 */
 	protected $form_ui;
 

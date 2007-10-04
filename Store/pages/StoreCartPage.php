@@ -2,7 +2,7 @@
 
 require_once 'Site/pages/SiteArticlePage.php';
 require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Store/StoreUI.php';
+require_once 'Swat/SwatUI.php';
 require_once 'Store/StoreMessage.php';
 
 require_once 'Swat/SwatString.php';
@@ -25,7 +25,7 @@ abstract class StoreCartPage extends SiteArticlePage
 	protected $ui_xml = 'Store/pages/cart.xml';
 
 	/**
-	 * @var StoreUI
+	 * @var SwatUI
 	 */
 	protected $ui;
 
@@ -58,7 +58,7 @@ abstract class StoreCartPage extends SiteArticlePage
 		if (!isset($this->app->cart->saved))
 			throw new StoreException('Store has no saved cart.');
 
-		$this->ui = new StoreUI();
+		$this->ui = new SwatUI();
 		$this->ui->loadFromXML($this->ui_xml);
 
 		// set table store for widget validation

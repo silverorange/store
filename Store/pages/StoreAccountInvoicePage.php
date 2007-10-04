@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreItem.php';
 require_once 'Store/dataobjects/StoreInvoiceWrapper.php';
 require_once 'Store/pages/StoreAccountPage.php';
 require_once 'Store/StoreShippingAddressCellRenderer.php';
-require_once 'Store/StoreUI.php';
+require_once 'Swat/SwatUI.php';
 
 /**
  * Page to display invoices attached to this account
@@ -61,7 +61,7 @@ class StoreAccountInvoicePage extends StoreAccountPage
 
 		$this->loadInvoice();
 
-		$this->ui = new StoreUI();
+		$this->ui = new SwatUI();
 		$this->ui->loadFromXML($this->ui_xml);
 		$this->ui->init();
 	}

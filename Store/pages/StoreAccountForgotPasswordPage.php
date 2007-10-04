@@ -2,7 +2,7 @@
 
 require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/pages/StoreAccountPage.php';
-require_once 'Store/StoreUI.php';
+require_once 'Swat/SwatUI.php';
 require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Text/Password.php';
 
@@ -38,7 +38,7 @@ class StoreAccountForgotPasswordPage extends StoreAccountPage
 	{
 		parent::init();
 
-		$this->ui = new StoreUI();
+		$this->ui = new SwatUI();
 		$this->ui->loadFromXML($this->ui_xml);
 
 		$form = $this->ui->getWidget('password_form');
