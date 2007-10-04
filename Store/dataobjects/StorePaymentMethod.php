@@ -240,7 +240,8 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		$span_tag->class = 'store-payment-method';
 		$span_tag->open();
 
-		echo SwatString::minimizeEntities($this->payment_type->title);
+		echo SwatString::minimizeEntities(
+			$this->payment_type->title);
 
 		if ($this->card_number_preview !== null) {
 			echo ': ';
