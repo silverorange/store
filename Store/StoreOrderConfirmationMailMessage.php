@@ -4,12 +4,12 @@ require_once 'Swat/SwatDetailsStore.php';
 require_once 'Swat/SwatTableStore.php';
 
 require_once 'Store/exceptions/StoreException.php';
-require_once 'Store/StoreUI.php';
+require_once 'Swat/SwatUI.php';
 require_once 'Store/StoreShippingAddressCellRenderer.php';
 require_once 'Site/SiteMultipartMailMessage.php';
 
 /**
- * An email messages for order confirmations
+ * An email message for order confirmations
  *
  * @package   Store
  * @copyright 2006-2007 silverorange
@@ -90,7 +90,7 @@ abstract class StoreOrderConfirmationMailMessage
 		if ($this->ui_xml === null)
 			throw new StoreException('A UI XML file is required ');
 
-		$ui = new StoreUI();
+		$ui = new SwatUI();
 		$ui->loadFromXML($this->ui_xml);
 		$ui->init();
 
@@ -117,7 +117,7 @@ abstract class StoreOrderConfirmationMailMessage
 	// }}}
 	// {{{ protected function buildOrderHeader()
 
-	protected function buildOrderHeader(StoreUI $ui)
+	protected function buildOrderHeader(SwatUI $ui)
 	{
 		$header = $ui->getWidget('header');
 		$header->content_type = 'text/xml';
@@ -128,7 +128,7 @@ abstract class StoreOrderConfirmationMailMessage
 	// }}}
 	// {{{ protected function buildOrderFooter()
 
-	protected function buildOrderFooter(StoreUI $ui)
+	protected function buildOrderFooter(SwatUI $ui)
 	{
 		$footer = $ui->getWidget('footer');
 		$footer->content_type = 'text/xml';
@@ -139,7 +139,7 @@ abstract class StoreOrderConfirmationMailMessage
 	// }}}
 	// {{{ protected function buildOrderDetails()
 
-	protected function buildOrderDetails(StoreUI $ui)
+	protected function buildOrderDetails(SwatUI $ui)
 	{
 		$ui->getRoot()->addStyleSheet('packages/store/styles/store-cart.css');
 
