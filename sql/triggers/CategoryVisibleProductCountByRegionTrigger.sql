@@ -4,11 +4,13 @@
  * The category product-count by region cache is used to make category
  * visiblility queries fast. Any updates to tables that would change the
  * visible product count of a category should trigger a call to the
- * updateCategoryVisibilityProductCountRegion() function.
+ * updateCategoryVisibilityProductCountByRegion() function.
  *
  * The fields and tables considered are:
  *
  * - VisibleProductCache insert
+ * - VisibleProductCache update
+ * - VisibleProductCache delete
  *
  * - CategoryProductBinding insert
  * - CategoryProductBinding update
@@ -50,6 +52,11 @@ CREATE OR REPLACE FUNCTION updateCategoryVisibleProductCountByRegion () RETURNS 
 			end if;
 		end loop;
 
+		-- delete all rows in cache that are not in the view
+		delete from CategoryVisibleProductCountByRegionCache
+		where array[coalesce(category, 0), region] not in
+			(select array[coalesce(category, 0), region] from CategoryVisibleProductCountByRegionView);
+
 		-- 2) Count only major products in the category (CategoryProductBinding.minor = false)
 
 		for local_row in select * from CategoryVisibleMajorProductCountByRegionView where category is not null loop
@@ -71,9 +78,9 @@ CREATE OR REPLACE FUNCTION updateCategoryVisibleProductCountByRegion () RETURNS 
 		end loop;
 
 		-- delete all rows in cache that are not in the view
-		delete from CategoryVisibleProductCountByRegionCache
+		delete from CategoryVisibleMajorProductCountByRegionCache
 		where array[coalesce(category, 0), region] not in
-			(select array[coalesce(category, 0), region] from CategoryVisibleProductCountByRegionView);
+			(select array[coalesce(category, 0), region] from CategoryVisibleMajorProductCountByRegionView);
 
 		-- set cache as clean
 		update CacheFlag set dirty = false where shortname = 'CategoryVisibleProductCountByRegion';
