@@ -414,7 +414,7 @@ class StorePaymentType extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{  public function getShortnameFromCardNumber()
+	// {{{  public static function getShortnameFromCardNumber()
 
 	/**
 	 * Looks up a credit card shortname based on the prefix used by the
@@ -430,7 +430,7 @@ class StorePaymentType extends SwatDBDataObject
 	 * @return StorePaymentType A dataobject for the matched payment type,
 	 *                          or false if no match is found. 
 	 */
-	public function getShortnameFromCardNumber($number)
+	public static function getShortnameFromCardNumber($number)
 	{
 		$number = trim((string)$number);
 
