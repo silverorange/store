@@ -56,7 +56,7 @@ class StoreProvStateEdit extends AdminDBEdit
 		$this->prov_state = new $class_name();
 		$this->prov_state->setDatabase($this->app->db);
 
-		if (!$this->id !== null) {
+		if ($this->id !== null) {
 			if (!$this->prov_state->load($this->id)) {
 				throw new AdminNotFoundException(
 					sprintf(Admin::_('Province/State with an id "%s"'.
