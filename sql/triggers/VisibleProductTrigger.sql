@@ -34,7 +34,7 @@
 CREATE OR REPLACE FUNCTION updateVisibleProduct () RETURNS INTEGER AS $$
 	DECLARE
 		locale_row record;
-    BEGIN
+	BEGIN
 		-- for all rows in view
 		for local_row in select * from VisibleProductView where product is not null loop
 
@@ -57,25 +57,25 @@ CREATE OR REPLACE FUNCTION updateVisibleProduct () RETURNS INTEGER AS $$
 
 		-- set cache as clean
 		update CacheFlag set dirty = false where shortname = 'VisibleProduct';
-        RETURN NULL;
-    END;
+		RETURN NULL;
+	END;
 $$ LANGUAGE 'plpgsql';
 
 CREATE OR REPLACE FUNCTION runUpdateVisibleProduct () RETURNS trigger AS $$
-    BEGIN
+	BEGIN
 		update CacheFlag set dirty = true where shortname = 'VisibleProduct';
-        RETURN NULL;
-    END;
+		RETURN NULL;
+	END;
 $$ LANGUAGE 'plpgsql';
 
 CREATE TRIGGER VisibleProductTrigger AFTER INSERT OR DELETE OR UPDATE ON CatalogRegionBinding
-    FOR EACH STATEMENT EXECUTE PROCEDURE runUpdateVisibleProduct();
+	FOR EACH STATEMENT EXECUTE PROCEDURE runUpdateVisibleProduct();
 
 CREATE TRIGGER VisibleProductTrigger AFTER INSERT OR DELETE OR UPDATE ON CategoryProductBinding
-    FOR EACH STATEMENT EXECUTE PROCEDURE runUpdateVisibleProduct();
+	FOR EACH STATEMENT EXECUTE PROCEDURE runUpdateVisibleProduct();
 
 CREATE TRIGGER VisibleProductTrigger AFTER UPDATE ON Item
-    FOR EACH STATEMENT EXECUTE PROCEDURE runUpdateVisibleProduct();
+	FOR EACH STATEMENT EXECUTE PROCEDURE runUpdateVisibleProduct();
 
 CREATE TRIGGER VisibleProductTrigger AFTER INSERT OR DELETE OR UPDATE ON ItemRegionBinding
-    FOR EACH STATEMENT EXECUTE PROCEDURE runUpdateVisibleProduct();
+	FOR EACH STATEMENT EXECUTE PROCEDURE runUpdateVisibleProduct();
