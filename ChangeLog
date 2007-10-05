@@ -1,3 +1,492 @@
+2007-10-04  gauthierm
+
+	* [r20979] store/trunk/Store/dataobjects/StoreProvState.php:
+	  Add StoreProvState::loadFromAbbreviation()
+	* [r20978] store/trunk/Store/dataobjects/StoreProvState.php:
+	  Whitespace
+
+2007-10-04  nick
+
+	* [r20972] store/trunk/Store/pages/checkout-front.xml:
+	  Add id for referencing
+	* [r20964]
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php,
+	  store/trunk/Store/pages/StoreAccountChangePasswordPage.php,
+	  store/trunk/Store/pages/StoreAccountDetailsPage.php,
+	  store/trunk/Store/pages/StoreAccountEditPage.php,
+	  store/trunk/Store/pages/StoreAccountForgotPasswordPage.php,
+	  store/trunk/Store/pages/StoreAccountInvoicePage.php,
+	  store/trunk/Store/pages/StoreAccountLoginPage.php,
+	  store/trunk/Store/pages/StoreAccountOrderPage.php,
+	  store/trunk/Store/pages/StoreAccountPaymentMethodEditPage.php,
+	  store/trunk/Store/pages/StoreAccountResetPasswordPage.php,
+	  store/trunk/Store/pages/StoreAccountResetPasswordThankYouPage.php,
+	  store/trunk/Store/pages/StoreCartPage.php,
+	  store/trunk/Store/pages/StoreCheckoutFinalPage.php,
+	  store/trunk/Store/pages/StoreCheckoutFrontPage.php,
+	  store/trunk/Store/pages/StoreCheckoutUIPage.php,
+	  store/trunk/Store/pages/StoreContactPage.php,
+	  store/trunk/Store/pages/StoreNotVisiblePage.php,
+	  store/trunk/Store/pages/StoreProductPage.php,
+	  store/trunk/Store/pages/StoreQuickOrderPage.php,
+	  store/trunk/Store/pages/StoreSearchPage.php,
+	  store/trunk/Store/pages/StoreSearchResultsPage.php:
+	  %s/StoreUI/SwatUI
+	* [r20960]
+	  store/trunk/Store/StoreOrderConfirmationMailMessage.php:
+	  Use SwatUI rather than StoreUI. Veseys and Uppermost need this
+	  file synced at
+	  the same time so that type-hinting will work for their methods.
+	* [r20937] store/trunk/Store/dataobjects/StorePaymentMethod.php:
+	  line break
+	* [r20936] store/trunk/sql/tables/Account.sql,
+	  store/trunk/sql/tables/Orders.sql:
+	  Add company to account and orders
+	* [r20934]
+	  store/trunk/Store/pages/StoreCheckoutBillingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php:
+	  Fix the way the phone and company widget values are set
+
+2007-10-03  nick
+
+	* [r20932]
+	  store/trunk/www/javascript/store-checkout-billing-address-page.js:
+	  
+	  Include phone and company for enabling/disabling fields
+	* [r20926] store/trunk/Store/pages/account-edit.xml:
+	  Add id names to fields
+
+2007-10-03  nrf
+
+	* [r20921] store/trunk/Store/pages/StoreProductImagePage.php:
+	  Make protected for subclassability
+	* [r20918] store/trunk/Store/pages/StoreProductImagePage.php,
+	  store/trunk/Store/pages/StoreProductPage.php:
+	  Refactor for subclassability
+
+2007-10-03  nick
+
+	* [r20911]
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php:
+	  Default phone and company from account values
+	* [r20906]
+	  store/trunk/Store/pages/StoreCheckoutBillingAddressPage.php:
+	  Default company and phone from account values
+
+2007-10-03  gauthierm
+
+	* [r20897] store/trunk/Store/dataobjects/StoreCountry.php:
+	  Whitespace
+
+2007-10-03  charles
+
+	* [r20895] store/trunk/Store/admin/components/Product/Delete.php,
+	  store/trunk/Store/admin/components/Product/Details.php,
+	  store/trunk/Store/admin/components/Product/Edit.php,
+	  store/trunk/Store/admin/components/Product/ImageDelete.php,
+	  store/trunk/Store/admin/components/Product/ImageEdit.php,
+	  store/trunk/Store/admin/components/Product/ImageOrder.php,
+	  store/trunk/Store/admin/components/Product/Index.php,
+	  store/trunk/Store/admin/components/Product/RelatedProductDelete.php:
+	  
+	  Whitespace
+
+2007-10-03  nrf
+
+	* [r20892] store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/StoreLocaleApplication.php:
+	  Push some locale and region support up from
+	  StoreLocaleApplication to StoreApplication. All of Store is
+	  region and locale aware, but there is a distinct difference
+	  between StoreLocaleApplication and StoreApplication.
+	  StoreLocalApplication generates and parses URL for multiple
+	  locale sites.
+	* [r20889] store/trunk/Store/dataobjects/StoreItem.php:
+	  Missing require
+
+2007-10-03  charles
+
+	* [r20887] store/trunk/Store/admin/components/Region/Edit.php:
+	  This should use SwatDBClassMap.
+	* [r20885] store/trunk/Store/admin/components/ProvState/Edit.php:
+	  Part of ticket #1321, the ProvState admin component now uses
+	  dataobjects.
+
+2007-10-03  nick
+
+	* [r20882]
+	  store/trunk/Store/StoreOrderConfirmationMailMessage.php,
+	  store/trunk/Store/admin/components/Account/Edit.php,
+	  store/trunk/Store/admin/components/Account/details.xml,
+	  store/trunk/Store/admin/components/Account/edit.xml,
+	  store/trunk/Store/dataobjects/StoreAccount.php,
+	  store/trunk/Store/dataobjects/StoreOrder.php,
+	  store/trunk/Store/pages/StoreAccountDetailsPage.php,
+	  store/trunk/Store/pages/StoreAccountEditPage.php,
+	  store/trunk/Store/pages/StoreCheckoutBasicInfoPage.php,
+	  store/trunk/Store/pages/account-details.xml,
+	  store/trunk/Store/pages/account-edit.xml,
+	  store/trunk/Store/pages/checkout-basic-info.xml,
+	  store/trunk/Store/pages/checkout-confirmation.xml:
+	  Add company to Account and Order. This commit relies on updates
+	  to admin
+	  accounts, checkout, and accounts on both uppermost and veseys.
+	  uppermost and veseys.
+
+2007-10-03  gauthierm
+
+	* [r20864] store/trunk/Store/admin/components/Ad/Index.php:
+	  Whitespace
+
+2007-10-02  charles
+
+	* [r20814] store/trunk/Store/admin/components/Region/Edit.php:
+	  Added a protected property for the region dataobject and fixed
+	  the error message.
+	* [r20811] store/trunk/Store/dataobjects/StoreRegion.php,
+	  store/trunk/Store/dataobjects/StoreRegionWrapper.php:
+	  Whitespace.
+	* [r20810] store/trunk/Store/admin/components/Region/Delete.php,
+	  store/trunk/Store/admin/components/Region/Edit.php,
+	  store/trunk/Store/admin/components/Region/Index.php:
+	  Part of ticket #1321, the region admin compoents now use
+	  dataobjects. Also trailing whitespace was removed from many of
+	  these files.
+
+2007-10-02  steven
+
+	* [r20783] store/trunk/Store/pages/StoreCategoryPage.php:
+	  Wrap category descriptions in a div for a CSS hook
+
+2007-10-01  nick
+
+	* [r20732] store/trunk/Store/pages/StoreProductPage.php:
+	  Make loadProduct() protected so dutch-bulbs can over-ride it.
+
+2007-09-27  nick
+
+	* [r20641] store/trunk/Store/dataobjects/StoreAddress.php,
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php,
+	  store/trunk/Store/pages/StoreCheckoutBillingAddressPage.php,
+	  store/trunk/Store/pages/StoreCheckoutShippingAddressPage.php,
+	  store/trunk/Store/pages/account-address-edit.xml,
+	  store/trunk/Store/pages/checkout-billing-address.xml,
+	  store/trunk/Store/pages/checkout-shipping-address.xml,
+	  store/trunk/sql/tables/AccountAddress.sql,
+	  store/trunk/www/javascript/store-checkout-shipping-address-page.js:
+	  
+	  Add company and phone number to Store Address. Syncing this live
+	  will have to
+	  coincide with changes to the following files in veseys and
+	  uppermost to hide
+	  both new fields:
+	  - pages/CheckoutShippingAddressPage.php
+	  - pages/CheckoutBillingAddressPage.php
+	  - pages/AccountAddressEditPage.php
+
+2007-09-25  nick
+
+	* [r20604] store/trunk/Store/StoreTextRow.php:
+	  A custom row for just displaying text. It also supports all the
+	  same display
+	  properties as the Tax and Total rows.
+
+2007-09-24  nick
+
+	* [r20540] store/trunk/Store/pages/account-edit.xml:
+	  Set id on phone-field for referencing in derivative classes
+	* [r20528] store/trunk/Store/admin/components/Ad/Details.php:
+	  Fix require of SwatTableStore and fix TODO that was easily TODONE
+	* [r20526]
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php:
+	  private to protected
+	* [r20525]
+	  store/trunk/Store/pages/StoreAccountAddressEditPage.php:
+	  We should be instansiating this class through a class-map
+	* [r20518] store/trunk/Store/dataobjects/StoreAddress.php:
+	  The old URL was a 404
+	* [r20515] store/trunk/Store/admin/components/Product/Edit.php:
+	  My last commit (20504) was a little too ambitious. The only
+	  problem with the
+	  old code was that the parameters for validateShortname() were
+	  wrong.
+	* [r20504] store/trunk/Store/admin/components/Product/Edit.php:
+	  Fix for duplicate shortnames being inserted
+	  - new products were not being checked at all
+	  - validateShortname didn't have the right properties
+
+2007-09-21  nick
+
+	* [r20484] store/trunk/Store/pages/checkout-billing-address.xml,
+	  store/trunk/Store/pages/checkout-shipping-address.xml:
+	  Finish naming all the field ids so they can be used to nest
+	  other widgets in
+	  for other sites.
+
+2007-09-20  gauthierm
+
+	* [r20463] store/trunk/Store/StoreProtxPaymentRequest.php:
+	  Coding conventions.
+	* [r20462] store/trunk/Store/StoreProtxPaymentRequest.php:
+	  Fix test URLs. Taken from VSP Direct Protocol and Integration
+	  Guidelines and VSP Server and Direct Shared Protocols.
+	* [r20451] store/trunk/Store/pages/StoreCheckoutFirstPage.php:
+	  Whitespace
+
+2007-09-19  nick
+
+	* [r20418] store/trunk/Store/dataobjects/StoreAccount.php:
+	  Restore getPendingInvoices method that was removed in rev 20074
+
+2007-09-19  gauthierm
+
+	* [r20413]
+	  store/trunk/Store/exceptions/StorePayment3DSecureUnsupportedException.php:
+	  
+	  New excetion thrown when 3-D Secure is unsupported.
+
+2007-09-17  nrf
+
+	* [r20356] store/trunk/Store/pages/StoreProductPage.php:
+	  Too bad spanning columns are not treated as regular columns that
+	  just display differently.
+	* [r20346] store/trunk/Store/StoreApplication.php:
+	  Same with this method. Alternatively we could use instanceof
+	  conditionals on these checkout pages...
+	* [r20344] store/trunk/Store/StoreApplication.php:
+	  Implement this method from StoreLocaleApplication in
+	  StoreApplicaion too since Store checkout pages expect it.
+
+2007-09-17  gauthierm
+
+	* [r20329] store/trunk/Store/StoreProtxPaymentProvider.php:
+	  Remove use of addSensitiveParamete() which has been removed from
+	  SwatException and add method-level @sensitive tags to filter
+	  sensitive parameters instead.
+
+2007-09-14  nrf
+
+	* [r20293] store/trunk/Store/dataobjects/StoreCategory.php,
+	  store/trunk/Store/dataobjects/StoreProduct.php,
+	  store/trunk/Store/pages/StoreCategoryPage.php,
+	  store/trunk/Store/pages/StoreProductPage.php,
+	  store/trunk/Store/pages/StoreSearchResultsPage.php,
+	  store/trunk/Store/pages/search-results.xml,
+	  store/trunk/www/styles/store-search-results-page.css:
+	  Push search results styles into Site with Steven's help.
+	  Push tile styles into Store from uppermost/veseys with Steven's
+	  help.
+	  Refactor display methods of StoreProduct and StoreCategory.
+	* [r20285] store/trunk/Store/pages/StoreNateGoSearchPage.php:
+	  Remove old search page.
+	* [r20281] store/trunk/Store/StoreNateGoSearchIndexer.php:
+	  Push article indexing up into Site.
+	* [r20277] store/trunk/Store/StoreKeywordEntry.php,
+	  store/trunk/Store/StoreUnnamedButton.php,
+	  store/trunk/Store/pages/search-form.xml:
+	  Push StoreUnnamedButton up Site.
+	  Remove StoreKeywordEntry which is no longer needed.
+	* [r20271] store/trunk/Store/pages/StoreSearchResultsPage.php:
+	  Reflect changes to Site API
+	* [r20265] store/trunk/Store/pages/StoreSearchResultsPage.php:
+	  Push sku search relocate into Store.
+	  Veseys overrides this but Uppermost can use it directly.
+	* [r20263] store/trunk/Store/pages/StoreSearchPage.php:
+	  Populate category flydown only if it exists in UI.
+	* [r20257] store/trunk/Store/pages/StoreSearchResultsPage.php:
+	  Rename $ui class variable
+
+2007-09-13  nrf
+
+	* [r20253] store/trunk/Store/StoreProductSearchEngine.php,
+	  store/trunk/Store/pages/StoreSearchResultsPage.php:
+	  Move sub-dataobject loading into search engine.
+	* [r20252] store/trunk/Store/pages/StoreSearchResultsPage.php:
+	  Remove code that was mistakenly committed.
+	* [r20251] store/trunk/Store/StoreProductSearchEngine.php:
+	  Remove veseys-ism
+	* [r20248] store/trunk/Store/pages/StoreSearchResultsPage.php:
+	  Make article results full-width anytime there are only article
+	  results to display.
+	* [r20244] store/trunk/Store/pages/StoreSearchPage.php:
+	  reorder methods
+	* [r20242] store/trunk/Store/pages/StoreSearchPage.php,
+	  store/trunk/Store/pages/StoreSearchResultsPage.php,
+	  store/trunk/Store/pages/search-form.xml,
+	  store/trunk/Store/pages/search-results.xml,
+	  store/trunk/Store/pages/search.xml,
+	  store/trunk/www/styles/store-search-page.css,
+	  store/trunk/www/styles/store-search-results-page.css:
+	  Refactored search pages.
+	  - Uses new *SearchEngine objects
+	  - Searches articles, categories, and products.
+	  - StoreSearchResultsPage performs a search and displays results.
+	  - StoreSearchPage is a sub-class of the results page and adds a
+	  search form at the top of the page.
+	* [r20228] store/trunk/Store/StoreNateGoSearchIndexer.php:
+	  Reflect changes to NateGoSearch API.
+	  TODO: parts of this need to be pushed up into a Site indexer.
+	* [r20226] store/trunk/Store/StoreCategorySearchEngine.php:
+	  A search engine for categories.
+	* [r20225] store/trunk/Store/StoreProductSearchEngine.php:
+	  A search engine for products.
+	* [r20224] store/trunk/Store/StoreArticleSearchEngine.php:
+	  An article search engine for Store that is region-aware.
+
+2007-09-13  nick
+
+	* [r20216]
+	  store/trunk/sql/tables/CategoryVisibleMajorProductCountByRegionCache.sql,
+	  
+	  store/trunk/sql/tables/CategoryVisibleProductCountByRegionCache.sql,
+	  
+	  store/trunk/sql/triggers/CategoryVisibleProductCountByRegionTrigger.sql,
+	  
+	  store/trunk/sql/views/CategoryVisibleMajorProductCountByRegionView.sql,
+	  
+	  store/trunk/sql/views/CategoryVisibleProductCountByRegionView.sql,
+	  store/trunk/sql/views/VisibleCategoryView.sql:
+	  Updated sql views/tables/trigger for handling product counts
+
+2007-09-13  nrf
+
+	* [r20186] store/trunk/Store/dataobjects/StoreCategory.php,
+	  store/trunk/www/images/category-placeholder.png,
+	  store/trunk/www/images/product-placeholder.png:
+	  Add default placeholder images.
+
+2007-09-11  nrf
+
+	* [r20124] store/trunk/Store/pages/StoreSiteMapPage.php:
+	  Sub-class in Store to set regions.
+
+2007-09-11  nick
+
+	* [r20103] store/trunk/Store/admin/components/Account/Edit.php,
+	  store/trunk/Store/admin/components/Account/EmailPassword.php,
+	  store/trunk/Store/admin/components/Account/Index.php:
+	  Store Account component now inherets from Site
+	* [r20097] store/trunk/Store/admin/components/Account/Details.php:
+	  Veseys doesn't need to override these Invoice methods. Store
+	  already takes care
+	  of checking whether or not invoices are displayed.
+	* [r20095] store/trunk/Store/dataobjects/StoreAccount.php:
+	  Fix require of parent class
+	* [r20093] store/trunk/Store/admin/components/Article/Edit.php:
+	  Undo commit 20090
+	* [r20090] store/trunk/Store/admin/components/Article/Edit.php:
+	  Add back NateGoSearch
+
+2007-09-11  nrf
+
+	* [r20086] store/trunk/Store/Store.php,
+	  store/trunk/Store/StoreUI.php:
+	  Deprcate StoreUI. Add Store to the SwatUI class map.
+
+2007-09-10  nick
+
+	* [r20076] store/trunk/Store/StoreNewPasswordMailMessage.php,
+	  store/trunk/Store/StoreResetPasswordMailMessage.php,
+	  store/trunk/Store/dataobjects/StoreAccount.php:
+	  These MailMessage classes have been moved back to Site
+	* [r20074] store/trunk/Store/Store.php,
+	  store/trunk/Store/StoreApplication.php,
+	  store/trunk/Store/StoreCartModule.php,
+	  store/trunk/Store/StoreSessionModule.php,
+	  store/trunk/Store/dataobjects/StoreAccount.php:
+	  Move from StoreAccount and StoreSessionModule to SiteAccount and
+	  SiteAccountSessionModule. This will allow non-store sites to use
+	  accounts and
+	  have all of the password/login/logout/data-object tools that
+	  were built into
+	  Store.
+	* [r20073] store/trunk/Store/StoreSessionModule.php:
+	  typo
+
+2007-09-10  gauthierm
+
+	* [r20068] store/trunk/Store/StoreProtxPaymentRequest.php:
+	  Fix error page parsing. This code never worked and was never
+	  tested.
+	* [r20065] store/trunk/Store/StoreProtxPaymentRequest.php:
+	  Fix live and test URLs for additional transaction types. I could
+	  swear I copied these out of an email but I can't find the email
+	  any more. These updates are from the Shared Protocols
+	  integration guide.
+
+2007-09-10  nick
+
+	* [r20063]
+	  store/trunk/Store/pages/StoreAccountResetPasswordPage.php:
+	  This shouldn't be setting password directly - the password_salt
+	  will be
+	  incorrect.
+	* [r20056] store/trunk/Store/admin/components/Article/Index.php:
+	  No need to over-ride getTableModel now that enabled is included
+	  in Store.
+	* [r20053] store/trunk/sql/tables/Article.sql:
+	  After discussing things with Nathan, we're adding 'enabled' to
+	  the Store
+	  package to keep it inline with Site. Store will always have
+	  enabled = true and
+	  rely on the Region bindings to control access.
+	* [r20049] store/trunk/Store/admin/components/Article/Index.php:
+	  Over-ride default TableStore to load without 'enabled'
+
+2007-09-07  gauthierm
+
+	* [r20029] store/trunk/Store/admin/components/Article/Edit.php:
+	  Do this better.
+
+2007-09-07  nick
+
+	* [r20028] store/trunk/Store/admin/components/Article/Edit.php:
+	  'enabled' is the value, not the key
+	* [r20027] store/trunk/Store/admin/components/Article/Edit.php,
+	  store/trunk/Store/admin/components/Article/Index.php,
+	  store/trunk/Store/admin/components/Article/include/StoreArticleVisibilityCellRenderer.php,
+	  store/trunk/Store/admin/components/Article/index.xml:
+	  Remove 'enabled' from the Store package article pages
+	* [r20012] store/trunk/Store/dataobjects/StoreArticle.php:
+	  A getVisibleSubArticles() method for Store that respects both
+	  "show" and region
+	  bindings.
+	* [r20010] store/trunk/sql/tables/Article.sql:
+	  A copy of the Article.sql file from Site, but with 'enabled'
+	  removed.
+
+2007-09-06  nick
+
+	* [r19963] store/trunk/Store/dataobjects/StoreArticle.php:
+	  Add createdate to loading of sub articles
+
+2007-09-05  nick
+
+	* [r19928] store/trunk/Store/pages/StoreArticleNotVisiblePage.php:
+	  This wrapper is needed and wasn't required.
+
+2007-09-05  nrf
+
+	* [r19921] store/trunk/package.php:
+	  prepare for release of 1.9.1
+	* [r19919] store/trunk/Store/dataobjects/StoreInvoice.php,
+	  store/trunk/Store/pages/StoreCheckoutConfirmationPage.php:
+	  Pass the region to getShippingTotal() in addtion to addresses so
+	  that it can be used to determine the shipping.
+	* [r19918] store/trunk/sql/tables/OrderItem.sql:
+	  Allow order_item product fields to be nullable so that order
+	  items can be created from invoice items.
+
+2007-09-04  nrf
+
+	* [r19887] store/trunk/Store/pages/StoreProductPage.php:
+	  this works better
+	* [r19884] store/trunk/Store/pages/StoreProductPage.php:
+	  Reset quantity entry value to the same value as it was initally
+	  set to in the UI XML.
+	* [r19861] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.9.0
+
 2007-09-04  gauthierm
 
 	* [r19833] store/trunk/Store/StoreCartModule.php,
