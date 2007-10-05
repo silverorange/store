@@ -47,11 +47,9 @@ class StoreAdEdit extends AdminDBEdit
 		$this->ad->setDatabase($this->app->db);
 
 		if ($this->id !== null) {
-			if (!$this->ad->load($this->id)) {
 				throw new AdminNotFoundException(
-					sprintf(Admin::_('Ad with the id "%s" not found'),
+					sprintf(Admin::_('You aren\'t allowed to edit Ads.'),
 						$this->id));
-			}
 		}
 	}
 
@@ -142,7 +140,6 @@ class StoreAdEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$this->ui->setValues(get_object_vars($this->id));
 	}
 
 	// }}}
