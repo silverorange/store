@@ -25,11 +25,11 @@
  * Of these relationships, the CategoryProductBinding is already included
  * in the VisibleProductCache triggers.
  */
-CREATE OR REPLACE FUNCTION updateCategoryVisibleProductCountByRegion () RETURNS INTEGER AS $$ 
+CREATE OR REPLACE FUNCTION updateCategoryVisibleProductCountByRegion () RETURNS INTEGER AS $$
 	DECLARE
 		local_row record;
 		local_product_count integer;
-    BEGIN
+	BEGIN
 		-- 1) Count all products in the category
 
 		for local_row in select * from CategoryVisibleProductCountByRegionView where category is not null loop
@@ -77,19 +77,19 @@ CREATE OR REPLACE FUNCTION updateCategoryVisibleProductCountByRegion () RETURNS 
 
 		-- set cache as clean
 		update CacheFlag set dirty = false where shortname = 'CategoryVisibleProductCountByRegion';
-        RETURN NULL;
-    END;
+		RETURN NULL;
+	END;
 $$ LANGUAGE 'plpgsql';
 
 CREATE OR REPLACE FUNCTION runUpdateCategoryVisibleProductCountByRegion () RETURNS trigger AS $$
-    BEGIN
+	BEGIN
 		update CacheFlag set dirty = true where shortname = 'CategoryVisibleProductCountByRegion';
-        RETURN NULL;
-    END;
+		RETURN NULL;
+	END;
 $$ LANGUAGE 'plpgsql';
 
 CREATE TRIGGER CategoryVisibleProductCountByRegionTrigger AFTER INSERT OR DELETE ON VisibleProductCache
-    FOR EACH STATEMENT EXECUTE PROCEDURE runUpdateCategoryVisibleProductCountByRegion();
+	FOR EACH STATEMENT EXECUTE PROCEDURE runUpdateCategoryVisibleProductCountByRegion();
 
-CREATE TRIGGER CategoryVisibleProductCountByRegionTrigger AFTER INSERT OR UPDATE OR DELETE ON Category 
-    FOR EACH STATEMENT EXECUTE PROCEDURE runUpdateCategoryVisibleProductCountByRegion();
+CREATE TRIGGER CategoryVisibleProductCountByRegionTrigger AFTER INSERT OR UPDATE OR DELETE ON Category
+	FOR EACH STATEMENT EXECUTE PROCEDURE runUpdateCategoryVisibleProductCountByRegion();
