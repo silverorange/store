@@ -160,7 +160,7 @@ class StorePaymentType extends SwatDBDataObject
 	 *
 	 * @return string the masked format string for this payment type. If no
 	 *                 suitable mask is available (for example if this type is
-	 *                 "invoice"), null is returned.
+	 *                 "invoice"); null is returned.
 	 *
 	 * @see StorePaymentType::formatCardNumber()
 	 */
@@ -200,7 +200,7 @@ class StorePaymentType extends SwatDBDataObject
 	 *
 	 * @return string the format string for this payment type. If no suitable
 	 *                 suitable format is available (for example if this type
-	 *                 is "invoice"), null is returned.
+	 *                 is "invoice"); null is returned.
 	 *
 	 * @see StorePaymentType::formatCardNumber()
 	 */
@@ -258,10 +258,10 @@ class StorePaymentType extends SwatDBDataObject
 		case 'switch':
 		case 'solo':
 		case 'dinersclub':
-			$length = 4;
+			$length = 16;
 			break;
 		case 'amex':
-			$length = 5;
+			$length = 15;
 			break;
 		}
 
@@ -411,6 +411,117 @@ class StorePaymentType extends SwatDBDataObject
 			}
 		}
 		return $output;
+	}
+
+	// }}}
+	// {{{  public function getShortnameFromCardNumber()
+
+	/**
+	 * Looks up a credit card shortname based on the prefix used by the
+	 * payment type. 
+	 *
+	 * Each credit card company has a unique prefix to their card numbers.
+	 * This method looks up the company based on the prefix information
+	 * available from {@link
+	 * http://en.wikipedia.org/wiki/Credit_card_number}
+	 *
+	 * @param string $number the card number to format.
+	 *
+	 * @return StorePaymentType A dataobject for the matched payment type,
+	 *                          or false if no match is found. 
+	 */
+	public function getShortnameFromCardNumber($number)
+	{
+		$number = trim((string)$number);
+
+		$types = array();
+
+		$type = new stdClass();
+		$type->shortname = 'amex';
+		$type->prefixes = array(34, 37);
+		$type->length = array(15);
+		$types[] = $type;
+
+		$type = new stdClass();
+		$type->shortname = 'dinersclub';
+		$type->prefixes = array(36);
+		$type->length = array(14);
+		$types[] = $type;
+
+		$type = new stdClass();
+		$type->shortname = 'unionpay';
+		$type->prefixes = array(622);
+		$type->length = array(16, 17, 18, 19);
+		$types[] = $type;
+
+		$type = new stdClass();
+		$type->shortname = 'jcb';
+		$type->prefixes = array(35);
+		$type->length = array(16);
+		$types[] = $type;
+
+		$type = new stdClass();
+		$type->shortname = 'jcb';
+		$type->prefixes = array(1800, 2131);
+		$type->length = array(15);
+		$types[] = $type;
+
+		$type = new stdClass();
+		$type->shortname = 'mastercard';
+		$type->prefixes = array(51, 52, 53, 54, 55);
+		$type->length = array(16);
+		$types[] = $type;
+
+		$type = new stdClass();
+		$type->shortname = 'solo';
+		$type->prefixes = array(6334, 6767);
+		$type->length = array(16, 18, 19);
+		$types[] = $type;
+
+		$type = new stdClass();
+		$type->shortname = 'switch';
+		$type->prefixes = array(4903, 4905, 4911, 4936,
+			564182, 633110, 6333, 6759);
+		$type->length = array(16, 18, 19);
+		$types[] = $type;
+
+		$type = new stdClass();
+		$type->shortname = 'delta';
+		$type->prefixes = array(); //missing data for visa delta
+		$type->length = array(16);
+		$types[] = $type;
+
+		$type = new stdClass();
+		$type->shortname = 'electron';
+		$type->prefixes = array(417500, 4917, 4913, 4508, 4844);
+		$type->length = array(16);
+		$types[] = $type;
+
+		$type = new stdClass();
+		$type->shortname = 'visa';
+		$type->prefixes = array(4);
+		$type->length = array(13, 16);
+		$types[] = $type;
+
+		$class_name = SwatDBClassMap::get('StorePaymentType');
+
+		$number_length = strlen($number);
+
+		foreach ($types as $type) {
+			if (!in_array($number_length, $type->length))
+				continue;
+
+			foreach ($type->prefixes as $prefix) {
+				$sub_string = substr($number, 0,
+					strlen((string) $prefix));
+
+				if ($sub_string == (string) $prefix) {
+					return $type->shortname;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	// }}}
