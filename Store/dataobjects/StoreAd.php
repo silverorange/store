@@ -8,7 +8,7 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * This class is for tracking advertisements, not for displaying
  * advertisements.
  *
- * @package   Store 
+ * @package   Store
  * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreAdReferer
@@ -41,7 +41,7 @@ class StoreAd extends SwatDBDataObject
 	/**
 	 * The date this advertisement was created
 	 *
-	 * @var Date 
+	 * @var Date
 	 */
 	public $createdate;
 
