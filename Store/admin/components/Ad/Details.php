@@ -195,9 +195,9 @@ class StoreAdDetails extends AdminIndex
 			'total_orders', 'value');
 
 		$view->appendColumn($orders_column);
-		
+
 	}
 	// }}}
-}	
+}
 
 ?>
