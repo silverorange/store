@@ -11,7 +11,7 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * Shortname    | Description         | Type              | Region
  * -------------+---------------------+-------------------+--------
  * visa         | Visa                | credit card       | Global
- * mastercard   | Master Card         | credit card       | Global
+ * mastercard   | Mastercard          | credit card       | Global
  * delta        | Visa Debit/Delta    | debit card        | UK
  * solo         | Solo                | debit card        | UK
  * switch       | Switch              | debit card        | UK
@@ -414,11 +414,12 @@ class StorePaymentType extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{  public static function getShortnameFromCardNumber()
+	// {{{  public static function getInfoFromCardNumber()
 
 	/**
-	 * Looks up a credit card shortname based on the prefix used by the
-	 * payment type. 
+	 * Looks up details about a credit card based on the prefix used by the
+	 * payment type. Returns information about the credit card name,
+	 * length, and prefixes.
 	 *
 	 * Each credit card company has a unique prefix to their card numbers.
 	 * This method looks up the company based on the prefix information
@@ -427,58 +428,67 @@ class StorePaymentType extends SwatDBDataObject
 	 *
 	 * @param string $number the card number to format.
 	 *
-	 * @return StorePaymentType A dataobject for the matched payment type,
-	 *                          or false if no match is found. 
+	 * @return stdClass A class with the following properties:
+	 *         (string) description, (string) shortname, (array) prefixes,
+	 *         (array) length
 	 */
-	public static function getShortnameFromCardNumber($number)
+	public static function getInfoFromCardNumber($number)
 	{
 		$number = trim((string)$number);
 
 		$types = array();
 
 		$type = new stdClass();
+		$type->description = Store::_('American Express');
 		$type->shortname = 'amex';
 		$type->prefixes = array(34, 37);
 		$type->length = array(15);
 		$types[] = $type;
 
 		$type = new stdClass();
+		$type->description = Store::_('Diners Club');
 		$type->shortname = 'dinersclub';
 		$type->prefixes = array(36);
 		$type->length = array(14);
 		$types[] = $type;
 
 		$type = new stdClass();
+		$type->description = Store::_('China Union Pay');
 		$type->shortname = 'unionpay';
 		$type->prefixes = array(622);
 		$type->length = array(16, 17, 18, 19);
 		$types[] = $type;
 
 		$type = new stdClass();
+		$type->description = Store::_('JCB');
 		$type->shortname = 'jcb';
 		$type->prefixes = array(35);
 		$type->length = array(16);
 		$types[] = $type;
 
 		$type = new stdClass();
+		$type->description = Store::_('JCB');
 		$type->shortname = 'jcb';
 		$type->prefixes = array(1800, 2131);
 		$type->length = array(15);
 		$types[] = $type;
 
 		$type = new stdClass();
+		$type->description = Store::_('MasterCard');
 		$type->shortname = 'mastercard';
 		$type->prefixes = array(51, 52, 53, 54, 55);
 		$type->length = array(16);
 		$types[] = $type;
 
 		$type = new stdClass();
+		$type->description = Store::_('Solo');
 		$type->shortname = 'solo';
 		$type->prefixes = array(6334, 6767);
 		$type->length = array(16, 18, 19);
 		$types[] = $type;
 
 		$type = new stdClass();
+		$type->description = Store::_('Switch');
 		$type->shortname = 'switch';
 		$type->prefixes = array(4903, 4905, 4911, 4936,
 			564182, 633110, 6333, 6759);
@@ -486,18 +496,21 @@ class StorePaymentType extends SwatDBDataObject
 		$types[] = $type;
 
 		$type = new stdClass();
+		$type->description = Store::_('Visa Delta');
 		$type->shortname = 'delta';
 		$type->prefixes = array(); //missing data for visa delta
 		$type->length = array(16);
 		$types[] = $type;
 
 		$type = new stdClass();
+		$type->description = Store::_('Visa Electron');
 		$type->shortname = 'electron';
 		$type->prefixes = array(417500, 4917, 4913, 4508, 4844);
 		$type->length = array(16);
 		$types[] = $type;
 
 		$type = new stdClass();
+		$type->description = Store::_('Visa');
 		$type->shortname = 'visa';
 		$type->prefixes = array(4);
 		$type->length = array(13, 16);
@@ -515,9 +528,8 @@ class StorePaymentType extends SwatDBDataObject
 				$sub_string = substr($number, 0,
 					strlen((string) $prefix));
 
-				if ($sub_string == (string) $prefix) {
-					return $type->shortname;
-				}
+				if ($sub_string == (string) $prefix)
+					return $type;
 			}
 		}
 
