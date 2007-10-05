@@ -2,6 +2,7 @@
 
 require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
+require_once 'Store/dataobjects/StoreProvState.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Swat/SwatMessage.php';
@@ -10,7 +11,7 @@ require_once 'Swat/SwatMessage.php';
  * Edit page for ProvStates
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProvStateEdit extends AdminDBEdit
@@ -99,6 +100,7 @@ class StoreProvStateEdit extends AdminDBEdit
 	protected function loadDBData()
 	{
 		$this->ui->setValues(get_object_vars($this->prov_state));
+		$this->ui->getWidget('country')->value = $this->prov_state->country->id;
 	}
 
 	// }}}
