@@ -3,7 +3,9 @@
 require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDB.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Swat/SwatMessage.php';
+require_once 'Store/dataobjects/StoreAd.php';
 
 /**
  * Edit page for Ads
@@ -17,6 +19,7 @@ class StoreAdEdit extends AdminDBEdit
 	// {{{ protected properties
 
 	protected $fields;
+	protected $ad;
 
 	// }}}
 
@@ -26,11 +29,30 @@ class StoreAdEdit extends AdminDBEdit
 	protected function initInternal()
 	{
 		parent::initInternal();
+		$this->initAd();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
 		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
 
 		$this->fields = array('title', 'shortname');
+	}
+
+	// }}}
+	// {{{ protected function initAd()
+
+	protected function initAd()
+	{
+		$class_name = SwatDBClassMap::get('StoreAd');
+		$this->ad = new $class_name();
+		$this->ad->setDatabase($this->app->db);
+
+		if ($this->id !== null) {
+			if (!$this->ad->load($this->id)) {
+				throw new AdminNotFoundException(
+					sprintf(Admin::_('Ad with the id "%s" not found'),
+						$this->id));
+			}
+		}
 	}
 
 	// }}}
@@ -79,32 +101,38 @@ class StoreAdEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$values = $this->ui->getValues(array('title', 'shortname'));
-
 		if ($this->id === null) {
-			$this->fields[] = 'date:createdate';
 			$date = new SwatDate();
 			$date->toUTC();
-			$values['createdate'] = $date->getDate();
-
-			$this->id = SwatDB::insertRow($this->app->db, 'Ad', $this->fields,
-				$values, 'iteger:id');
+			$this->ad->createdate = $date->getDate();
+			$this->saveAd();
 
 			// create ad locale bindings
 			$sql = sprintf('insert into AdLocaleBinding (ad, locale)
 				select %s, Locale.id as locale from Locale',
-				$this->app->db->quote($this->id, 'integer'));
+				$this->app->db->quote($this->ad->id, 'integer'));
 
 			SwatDB::exec($this->app->db, $sql);
 		} else {
-			SwatDB::updateRow($this->app->db, 'Ad', $this->fields, $values,
-				'id', $this->id);
+			$this->saveAd();
 		}
 
 		$message = new SwatMessage(
-			sprintf(Store::_('“%s” has been saved.'), $values['title']));
+			sprintf(Store::_('“%s” has been saved.'), $this->ad->title));
 
 		$this->app->messages->add($message);
+	}
+
+	// }}}
+	// {{{ protected function saveAd()
+
+	protected function saveAd()
+	{
+		$values = $this->ui->getValues(array('title', 'shortname'));
+
+		$this->ad->title = $values['title'];
+		$this->ad->shortname = $values['shortname'];
+		$this->ad->save();
 	}
 
 	// }}}
@@ -114,14 +142,7 @@ class StoreAdEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$row = SwatDB::queryRowFromTable($this->app->db, 'Ad', 
-			$this->fields, 'id', $this->id);
-
-		if ($row === null)
-			throw new AdminNotFoundException(
-				sprintf(Store::_('Ad with id ‘%s’ not found.'), $this->id));
-
-		$this->ui->setValues(get_object_vars($row));
+		$this->ui->setValues(get_object_vars($this->id));
 	}
 
 	// }}}
