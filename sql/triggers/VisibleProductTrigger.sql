@@ -33,14 +33,14 @@
  */
 CREATE OR REPLACE FUNCTION updateVisibleProduct () RETURNS INTEGER AS $$
 	DECLARE
-		locale_row record;
+		local_row record;
 	BEGIN
 		-- for all rows in view
 		for local_row in select * from VisibleProductView where product is not null loop
 
 			-- check if row in view exists in cache
 			perform product from VisibleProductCache
-			where product = locale_row.product and region = local_row.region;
+			where product = local_row.product and region = local_row.region;
 
 			if not FOUND then
 				-- doesn't exist, add the row
