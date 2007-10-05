@@ -160,7 +160,7 @@ class StorePaymentType extends SwatDBDataObject
 	 *
 	 * @return string the masked format string for this payment type. If no
 	 *                 suitable mask is available (for example if this type is
-	 *                 "invoice"); null is returned.
+	 *                 "invoice"), null is returned.
 	 *
 	 * @see StorePaymentType::formatCardNumber()
 	 */
@@ -200,7 +200,7 @@ class StorePaymentType extends SwatDBDataObject
 	 *
 	 * @return string the format string for this payment type. If no suitable
 	 *                 suitable format is available (for example if this type
-	 *                 is "invoice"); null is returned.
+	 *                 is "invoice"), null is returned.
 	 *
 	 * @see StorePaymentType::formatCardNumber()
 	 */
