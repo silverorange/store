@@ -40,14 +40,16 @@ class StoreProvState extends SwatDBDataObject
 	// {{{ public function loadFromAbbreviation()
 
 	/**
-	 * Loads this province/state from an abbreviation
+	 * Loads this province/state from an abbreviation and country code
 	 *
 	 * @param string $abbreviation the abbreviation of this province/state.
+	 * @param string $country the ISO-3166-1 alpha-2 code for the country of
+	 *                         the province/state to load.
 	 *
 	 * @return boolean true if this province/state was loaded and false if it
 	 *                  was not.
 	 */
-	public function loadFromAbbreviation($abbreviation)
+	public function loadFromAbbreviation($abbreviation, $country)
 	{
 		$this->checkDB();
 
@@ -55,8 +57,10 @@ class StoreProvState extends SwatDBDataObject
 		$loaded = false;
 
 		if ($this->table !== null) {
-			$sql = sprintf('select * from ProvState where abbreviation = %s',
-				$this->db->quote($abbreviation, 'text'));
+			$sql = sprintf('select * from ProvState
+				where abbreviation = %s and country = %s',
+				$this->db->quote($abbreviation, 'text'),
+				$this->db->quote($country, 'text'));
 
 			$rs = SwatDB::query($this->db, $sql, null);
 			$row = $rs->fetchRow(MDB2_FETCHMODE_ASSOC);
