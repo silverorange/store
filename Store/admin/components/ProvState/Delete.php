@@ -41,7 +41,8 @@ class StoreProvStateDelete extends AdminDBDelete
 	protected function getProcessSQL()
 	{
 		return 'delete from ProvState where id in (%s)
-			and id not in (select provstate from OrderAddress)';
+			and id not in
+			(select provstate from OrderAddress where provstate is not null)';
 	}
 
 	// }}}
