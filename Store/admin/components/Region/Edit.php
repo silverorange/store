@@ -82,14 +82,14 @@ class StoreRegionEdit extends AdminDBEdit
 			$this->ui->getWidget('region_billing_country');
 
 		SwatDB::updateBinding($this->app->db, 'RegionBillingCountryBinding',
-			'region', $this->id, 'text:country',
+			'region', $this->region->id, 'text:country',
 			$region_billing_country_list->values, 'Country', 'text:id');
 
 		$region_shipping_country_list =
 			$this->ui->getWidget('region_shipping_country');
 
 		SwatDB::updateBinding($this->app->db, 'RegionShippingCountryBinding',
-			'region', $this->id, 'text:country',
+			'region', $this->region->id, 'text:country',
 			$region_shipping_country_list->values, 'Country', 'text:id');
 
 		$message = new SwatMessage(
