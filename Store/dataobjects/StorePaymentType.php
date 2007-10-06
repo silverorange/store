@@ -442,90 +442,104 @@ class StorePaymentType extends SwatDBDataObject
 	 */
 	public static function getInfoFromCardNumber($number)
 	{
+		static $types = null;
+
+		// {{{ static card type data
+
+		if ($types === null) {
+			$types = array();
+
+			$type = new stdClass();
+			$type->description = Store::_('American Express');
+			$type->shortname = 'amex';
+			$type->prefixes = array(34, 37);
+			$type->length = array(15);
+			$types[] = $type;
+
+			$type = new stdClass();
+			$type->description = Store::_('Diners Club');
+			$type->shortname = 'dinersclub';
+			$type->prefixes = array(36);
+			$type->length = array(14);
+			$types[] = $type;
+
+			$type = new stdClass();
+			$type->description = Store::_('China Union Pay');
+			$type->shortname = 'unionpay';
+			$type->prefixes = array(622);
+			$type->length = array(16, 17, 18, 19);
+			$types[] = $type;
+
+			$type = new stdClass();
+			$type->description = Store::_('JCB');
+			$type->shortname = 'jcb';
+			$type->prefixes = array(35);
+			$type->length = array(16);
+			$types[] = $type;
+
+			$type = new stdClass();
+			$type->description = Store::_('JCB');
+			$type->shortname = 'jcb';
+			$type->prefixes = array(1800, 2131);
+			$type->length = array(15);
+			$types[] = $type;
+
+			$type = new stdClass();
+			$type->description = Store::_('Maestro');
+			$type->shortname = 'maestro';
+			$type->prefixes = array(5020, 5038, 6304, 6759);
+			$type->length = array(16, 18);
+			$types[] = $type;
+
+			$type = new stdClass();
+			$type->description = Store::_('MasterCard');
+			$type->shortname = 'mastercard';
+			$type->prefixes = array(51, 52, 53, 54, 55);
+			$type->length = array(16);
+			$types[] = $type;
+
+			$type = new stdClass();
+			$type->description = Store::_('Solo');
+			$type->shortname = 'solo';
+			$type->prefixes = array(6334, 6767);
+			$type->length = array(16, 18, 19);
+			$types[] = $type;
+
+			$type = new stdClass();
+			$type->description = Store::_('UK Maestro');
+			$type->shortname = 'switch';
+			$type->prefixes = array(4903, 4905, 4911, 4936,
+				564182, 633110, 6333, 6759);
+
+			$type->length = array(16, 18, 19);
+			$types[] = $type;
+
+			$type = new stdClass();
+			$type->description = Store::_('Visa Debit');
+			$type->shortname = 'delta';
+			$type->prefixes = array(); // TODO: missing data for Visa Debit
+			$type->length = array(16);
+			$types[] = $type;
+
+			$type = new stdClass();
+			$type->description = Store::_('Visa Electron');
+			$type->shortname = 'electron';
+			$type->prefixes = array(417500, 4917, 4913, 4508, 4844);
+			$type->length = array(16);
+			$types[] = $type;
+
+			$type = new stdClass();
+			$type->description = Store::_('Visa');
+			$type->shortname = 'visa';
+			$type->prefixes = array(4);
+			$type->length = array(13, 16);
+			$types[] = $type;
+		}
+
+		// }}}
+
+		$info = null;
 		$number = str_replace(' ', '', $number);
-
-		$types = array();
-
-		$type = new stdClass();
-		$type->description = Store::_('American Express');
-		$type->shortname = 'amex';
-		$type->prefixes = array(34, 37);
-		$type->length = array(15);
-		$types[] = $type;
-
-		$type = new stdClass();
-		$type->description = Store::_('Diners Club');
-		$type->shortname = 'dinersclub';
-		$type->prefixes = array(36);
-		$type->length = array(14);
-		$types[] = $type;
-
-		$type = new stdClass();
-		$type->description = Store::_('China Union Pay');
-		$type->shortname = 'unionpay';
-		$type->prefixes = array(622);
-		$type->length = array(16, 17, 18, 19);
-		$types[] = $type;
-
-		$type = new stdClass();
-		$type->description = Store::_('JCB');
-		$type->shortname = 'jcb';
-		$type->prefixes = array(35);
-		$type->length = array(16);
-		$types[] = $type;
-
-		$type = new stdClass();
-		$type->description = Store::_('JCB');
-		$type->shortname = 'jcb';
-		$type->prefixes = array(1800, 2131);
-		$type->length = array(15);
-		$types[] = $type;
-
-		$type = new stdClass();
-		$type->description = Store::_('MasterCard');
-		$type->shortname = 'mastercard';
-		$type->prefixes = array(51, 52, 53, 54, 55);
-		$type->length = array(16);
-		$types[] = $type;
-
-		$type = new stdClass();
-		$type->description = Store::_('Solo');
-		$type->shortname = 'solo';
-		$type->prefixes = array(6334, 6767);
-		$type->length = array(16, 18, 19);
-		$types[] = $type;
-
-		$type = new stdClass();
-		$type->description = Store::_('Switch');
-		$type->shortname = 'switch';
-		$type->prefixes = array(4903, 4905, 4911, 4936,
-			564182, 633110, 6333, 6759);
-		$type->length = array(16, 18, 19);
-		$types[] = $type;
-
-		$type = new stdClass();
-		$type->description = Store::_('Visa Delta');
-		$type->shortname = 'delta';
-		$type->prefixes = array(); //missing data for visa delta
-		$type->length = array(16);
-		$types[] = $type;
-
-		$type = new stdClass();
-		$type->description = Store::_('Visa Electron');
-		$type->shortname = 'electron';
-		$type->prefixes = array(417500, 4917, 4913, 4508, 4844);
-		$type->length = array(16);
-		$types[] = $type;
-
-		$type = new stdClass();
-		$type->description = Store::_('Visa');
-		$type->shortname = 'visa';
-		$type->prefixes = array(4);
-		$type->length = array(13, 16);
-		$types[] = $type;
-
-		$class_name = SwatDBClassMap::get('StorePaymentType');
-
 		$number_length = strlen($number);
 
 		foreach ($types as $type) {
@@ -533,15 +547,14 @@ class StorePaymentType extends SwatDBDataObject
 				continue;
 
 			foreach ($type->prefixes as $prefix) {
-				$sub_string = substr($number, 0,
-					strlen((string) $prefix));
-
-				if ($sub_string == (string) $prefix)
-					return $type;
+				if (strncmp($number, $prefix, strlen($prefix) == 0) {
+					$info = clone $type;
+					break 2;
+				}
 			}
 		}
 
-		return null;
+		return $info;
 	}
 
 	// }}}
