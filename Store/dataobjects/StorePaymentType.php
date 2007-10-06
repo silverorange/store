@@ -12,9 +12,10 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * -------------+---------------------+-------------------+--------
  * visa         | Visa                | credit card       | Global
  * mastercard   | MasterCard          | credit card       | Global
+ * maestro      | Maestro             | debit card        | Global
  * delta        | Visa Debit/Delta    | debit card        | UK
  * solo         | Solo                | debit card        | UK
- * switch       | Switch              | debit card        | UK
+ * switch       | UK Maestro (Switch) | debit card        | UK
  * electron     | Visa Electron       | credit/debit card | Outside US+CA+AU
  * amex         | American Express    | credit card       | Global
  * dinersclub   | Diners Club         | credit card       | US+CA
