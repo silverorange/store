@@ -11,7 +11,7 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * Shortname    | Description         | Type              | Region
  * -------------+---------------------+-------------------+--------
  * visa         | Visa                | credit card       | Global
- * mastercard   | Mastercard          | credit card       | Global
+ * mastercard   | MasterCard          | credit card       | Global
  * delta        | Visa Debit/Delta    | debit card        | UK
  * solo         | Solo                | debit card        | UK
  * switch       | Switch              | debit card        | UK
