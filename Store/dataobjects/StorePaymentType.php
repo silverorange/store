@@ -447,6 +447,13 @@ class StorePaymentType extends SwatDBDataObject
 		// {{{ static card type data
 
 		if ($types === null) {
+
+			/*
+			 * Note: The order of types is important. Types are checked in
+			 * order so a Visa Electron card with prefix 4917 will be detected
+			 * before a Visa card with prefix 4.
+			 */
+
 			$types = array();
 
 			$type = new stdClass();
