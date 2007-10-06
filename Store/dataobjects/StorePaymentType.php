@@ -418,24 +418,31 @@ class StorePaymentType extends SwatDBDataObject
 	// {{{  public static function getInfoFromCardNumber()
 
 	/**
-	 * Looks up details about a credit card based on the prefix used by the
-	 * payment type. Returns information about the credit card name,
-	 * length, and prefixes.
+	 * Looks up details about a card based on the card number
 	 *
-	 * Each credit card company has a unique prefix to their card numbers.
-	 * This method looks up the company based on the prefix information
-	 * available from {@link
-	 * http://en.wikipedia.org/wiki/Credit_card_number}
+	 * Information about the card type, card length, and card number prefixes
+	 * is returned.
 	 *
-	 * @param string $number the card number to format.
+	 * Each card type has a unique set of prefix for their card numbers. This
+	 * method gets card information based on the number prefix data from
+	 * {@link http://en.wikipedia.org/wiki/Credit_card_number}.
 	 *
-	 * @return stdClass A class with the following properties:
-	 *         (string) description, (string) shortname, (array) prefixes,
-	 *         (array) length
+	 * @param string $number the card number for which to get card details.
+	 *                        Space characters in the number are ignored,
+	 *                        allowing formatted numbers to be checked.
+	 *
+	 * @return stdClass an object describing the card type containing the
+	 *                   following properties:
+	 *                    - (string) description
+	 *                    - (string) shortname
+	 *                    - (array)  prefixes
+	 *                    - (array)  length
+	 *                   If no suitable card information is available, null is
+	 *                   returned.
 	 */
 	public static function getInfoFromCardNumber($number)
 	{
-		$number = trim((string)$number);
+		$number = str_replace(' ', '', $number);
 
 		$types = array();
 
@@ -534,7 +541,7 @@ class StorePaymentType extends SwatDBDataObject
 			}
 		}
 
-		return false;
+		return null;
 	}
 
 	// }}}
