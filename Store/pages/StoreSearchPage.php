@@ -45,7 +45,8 @@ class StoreSearchPage extends StoreSearchResultsPage
 			$category_flydown = $this->form_ui->getWidget('category');
 			$categories = $this->getCategories();
 			foreach ($categories as $category)
-				$category_flydown->addOption($category->shortname, $category->title);
+				$category_flydown->addOption($category->shortname,
+					$category->title);
 		}
 
 		$this->form_ui->init();

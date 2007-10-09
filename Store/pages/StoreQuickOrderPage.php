@@ -325,7 +325,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 
 		$entries = $this->app->cart->checkout->getEntries();
 		foreach ($entries as $entry) {
-			// filter entries by added items 
+			// filter entries by added items
 			if (in_array($entry->item->id, $ids)) {
 				$row = $this->getCartTableStoreRow($entry);
 
