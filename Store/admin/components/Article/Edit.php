@@ -11,7 +11,7 @@ require_once 'Site/admin/components/Article/Edit.php';
  */
 class StoreArticleEdit extends SiteArticleEdit
 {
-	// {{{ protected properties 
+	// {{{ protected properties
 
 	/**
 	 * @var string
