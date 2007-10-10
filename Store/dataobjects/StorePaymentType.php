@@ -554,7 +554,7 @@ class StorePaymentType extends SwatDBDataObject
 				continue;
 
 			foreach ($type->prefixes as $prefix) {
-				if (strncmp($number, $prefix, strlen($prefix) == 0)) {
+				if (strncmp($number, $prefix, strlen($prefix)) == 0) {
 					$info = clone $type;
 					break 2;
 				}
