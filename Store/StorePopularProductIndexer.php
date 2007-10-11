@@ -81,7 +81,7 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 
 		SwatDB::exec($this->db, 'truncate ProductPopularProductBinding');
 		SwatDB::exec($this->db, sprintf('update Orders set
-			processed_popular_products = %s',
+			popular_products_processed = %s',
 			$this->db->quote(false, 'boolean')));
 	}
 
@@ -161,7 +161,7 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 
 		if (count($order_ids) > 0)
 			SwatDB::updateColumn($this->db, 'Orders',
-				'boolean:processed_popular_products',
+				'boolean:popular_products_processed',
 				true, $order_ids);
 	}
 
@@ -195,7 +195,7 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 				and ProductPopularProductBinding.related_product
 					= RelatedOrderItem.product
 			where RelatedOrderItem.product != OrderItem.product
-				and Orders.processed_popular_products = %s',
+				and Orders.popular_products_processed = %s',
 			$this->db->quote(false, 'boolean'));
 
 		return SwatDB::query($this->db, $sql);
