@@ -283,6 +283,9 @@ class StoreProduct extends SwatDBDataObject
 		$sql = 'select Product.*, ProductPrimaryCategoryView.primary_category,
 			getCategoryPath(ProductPrimaryCategoryView.primary_category) as path
 			from Product
+				inner join VisibleProductCache
+					on VisibleProductCache.product = Product.id
+						and VisibleProductCache.region = %s
 				inner join ProductRelatedProductBinding
 					on Product.id = ProductRelatedProductBinding.related_product
 						and ProductRelatedProductBinding.source_product = %s
@@ -290,7 +293,10 @@ class StoreProduct extends SwatDBDataObject
 					on Product.id = ProductPrimaryCategoryView.product
 			order by ProductRelatedProductBinding.displayorder asc';
 
-		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+		$sql = sprintf($sql,
+			$this->db->quote($this->region->id, 'integer'),
+			$this->db->quote($this->id, 'integer'));
+
 		return SwatDB::query($this->db, $sql,
 			SwatDBClassMap::get('StoreProductWrapper'));
 	}
@@ -309,6 +315,9 @@ class StoreProduct extends SwatDBDataObject
 		$sql = 'select Product.*, ProductPrimaryCategoryView.primary_category,
 			getCategoryPath(ProductPrimaryCategoryView.primary_category) as path
 			from Product
+				inner join VisibleProductCache
+					on VisibleProductCache.product = Product.id
+						and VisibleProductCache.region = %s
 				inner join ProductPopularProductBinding
 					on Product.id = ProductPopularProductBinding.related_product
 						and ProductPopularProductBinding.source_product = %s
@@ -316,7 +325,9 @@ class StoreProduct extends SwatDBDataObject
 					on Product.id = ProductPrimaryCategoryView.product
 			order by ProductPopularProductBinding.order_count desc';
 
-		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+		$sql = sprintf($sql,
+			$this->db->quote($this->region->id, 'integer'),
+			$this->db->quote($this->id, 'integer'));
 
 		$this->db->setLimit(self::POPULAR_PRODUCT_LIMIT);
 
