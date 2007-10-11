@@ -26,6 +26,9 @@ create table Orders (
 	locale char(5) not null references Locale(id),
 	invoice integer null references Invoice(id),
 
+	-- whether this order has been processed by the cron job that inserts popular products
+	processed_popular_products boolean not null default false,
+
 	primary key (id)
 );
 
@@ -39,3 +42,4 @@ CREATE INDEX Orders_account_index ON Orders(account);
 CREATE INDEX Orders_createdate_index ON Orders(createdate);
 CREATE INDEX Orders_billing_address_index ON Orders(billing_address);
 CREATE INDEX Orders_shipping_address_index ON Orders(shipping_address);
+CREATE INDEX Orders_processed_popular_products_index ON Orders(processed_popular_products);
