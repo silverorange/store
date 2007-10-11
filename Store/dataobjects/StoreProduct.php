@@ -39,6 +39,19 @@ require_once 'Store/dataobjects/StoreRegion.php';
  */
 class StoreProduct extends SwatDBDataObject
 {
+	// {{{ constants
+
+	/**
+	 * Popular product limit
+	 *
+	 * The maximim number of popular products to load.
+	 * @see StoreProduct::loadPopularProducts()
+	 *
+	 * @var integer
+	 */
+	const POPULAR_PRODUCT_LIMIT = 5;
+
+	// }}}
 	// {{{ public properties
 
 	/**
@@ -278,6 +291,35 @@ class StoreProduct extends SwatDBDataObject
 			order by ProductRelatedProductBinding.displayorder asc';
 
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+		return SwatDB::query($this->db, $sql,
+			SwatDBClassMap::get('StoreProductWrapper'));
+	}
+
+	// }}}
+	// {{{ protected function loadPopularProducts()
+
+	/**
+	 * Loads popular products
+	 *
+	 * Popular products are loaded with primary categories and ordered by
+	 * their popularity.
+	 */
+	protected function loadPopularProducts()
+	{
+		$sql = 'select Product.*, ProductPrimaryCategoryView.primary_category,
+			getCategoryPath(ProductPrimaryCategoryView.primary_category) as path
+			from Product
+				inner join ProductPopularProductBinding
+					on Product.id = ProductPopularProductBinding.related_product
+						and ProductPopularProductBinding.source_product = %s
+				left outer join ProductPrimaryCategoryView
+					on Product.id = ProductPrimaryCategoryView.product
+			order by ProductPopularProductBinding.order_count desc';
+
+		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+
+		$this->db->setLimit(self::POPULAR_PRODUCT_LIMIT);
+
 		return SwatDB::query($this->db, $sql,
 			SwatDBClassMap::get('StoreProductWrapper'));
 	}

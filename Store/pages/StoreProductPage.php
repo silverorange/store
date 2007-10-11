@@ -549,6 +549,8 @@ class StoreProductPage extends StorePage
 
 		$this->displayRelatedProducts();
 
+		$this->displayPopularProducts();
+
 		echo '</div>';
 	}
 
@@ -685,6 +687,43 @@ class StoreProductPage extends StorePage
 		$ul_tag->open();
 
 		foreach ($this->product->related_products as $product) {
+			$li_tag->open();
+			$path = 'store/'.$product->path;
+			$product->displayAsIcon($path);
+			$li_tag->close();
+		}
+
+		$ul_tag->close();
+		$div->close();
+	}
+
+	// }}}
+	// {{{ protected function displayPopularProducts()
+
+	protected function displayPopularProducts()
+	{
+		if (count($this->product->popular_products) == 0)
+			return;
+
+		$div = new SwatHtmlTag('div');
+		$div->id = 'popular_products';
+
+		$header_tag = new SwatHtmlTag('h4');
+		$header_tag->setContent(sprintf(Store::_('Customers who bought %s, '.
+			'also bought...'),
+			$this->product->title));
+
+		$ul_tag = new SwatHtmlTag('ul');
+		$ul_tag->class = 'store-product-list clearfix';
+
+		$li_tag = new SwatHtmlTag('li');
+		$li_tag->class = 'store-product-icon';
+
+		$div->open();
+		$header_tag->display();
+		$ul_tag->open();
+
+		foreach ($this->product->popular_products as $product) {
 			$li_tag->open();
 			$path = 'store/'.$product->path;
 			$product->displayAsIcon($path);
