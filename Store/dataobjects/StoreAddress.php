@@ -186,6 +186,22 @@ abstract class StoreAddress extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function getFullName()
+
+	/**
+	 * Gets the full name of the person at this address
+	 *
+	 * Having this method allows subclasses to split the full name into an
+	 * arbitrary number of fields. For example, first name and last name.
+	 *
+	 * @return string the full name of the person at this address.
+	 */
+	public function getFullName()
+	{
+		return $this->fullname;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
@@ -214,7 +230,7 @@ abstract class StoreAddress extends SwatDBDataObject
 	{
 		$span_tag = new SwatHtmlTag('span');
 		$span_tag->class = 'fn';
-		$span_tag->setContent($this->fullname);
+		$span_tag->setContent($this->getFullName());
 		$span_tag->display();
 		echo '<br />';
 
@@ -291,7 +307,7 @@ abstract class StoreAddress extends SwatDBDataObject
 	 */
 	protected function displayGB()
 	{
-		echo SwatString::minimizeEntities($this->fullname), '<br />';
+		echo SwatString::minimizeEntities($this->getFullName()), '<br />';
 
 		if (strlen($this->company) > 0)
 			echo SwatString::minimizeEntities($this->company), '<br />';
@@ -326,7 +342,7 @@ abstract class StoreAddress extends SwatDBDataObject
 	 */
 	protected function displayUS()
 	{
-		echo SwatString::minimizeEntities($this->fullname), '<br />';
+		echo SwatString::minimizeEntities($this->getFullName()), '<br />';
 
 		if (strlen($this->company) > 0)
 			echo SwatString::minimizeEntities($this->company), '<br />';
@@ -362,7 +378,7 @@ abstract class StoreAddress extends SwatDBDataObject
 	 */
 	protected function displayCondensedCA()
 	{
-		echo SwatString::minimizeEntities($this->fullname), ', ';
+		echo SwatString::minimizeEntities($this->getFullName()), ', ';
 
 		if (strlen($this->company) > 0)
 			echo SwatString::minimizeEntities($this->company), ', ';
@@ -403,7 +419,7 @@ abstract class StoreAddress extends SwatDBDataObject
 	 */
 	protected function displayCondensedGB()
 	{
-		echo SwatString::minimizeEntities($this->fullname), ', ';
+		echo SwatString::minimizeEntities($this->getFullName()), ', ';
 
 		if (strlen($this->company) > 0)
 			echo SwatString::minimizeEntities($this->company), ', ';
@@ -438,7 +454,7 @@ abstract class StoreAddress extends SwatDBDataObject
 	 */
 	protected function displayCondensedUS()
 	{
-		echo SwatString::minimizeEntities($this->fullname), ', ';
+		echo SwatString::minimizeEntities($this->getFullName()), ', ';
 
 		if (strlen($this->company) > 0)
 			echo SwatString::minimizeEntities($this->company), ', ';
@@ -479,7 +495,7 @@ abstract class StoreAddress extends SwatDBDataObject
 	 */
 	protected function displayCondensedAsTextCA()
 	{
-		echo $this->fullname, ', ';
+		echo $this->getFullName(), ', ';
 
 		if (strlen($this->company) > 0)
 			echo $this->company, ', ';
@@ -520,7 +536,7 @@ abstract class StoreAddress extends SwatDBDataObject
 	 */
 	protected function displayCondensedAsTextGB()
 	{
-		echo $this->fullname, ', ';
+		echo $this->getFullName(), ', ';
 
 		if (strlen($this->company) > 0)
 			echo $this->company, ', ';
@@ -555,7 +571,7 @@ abstract class StoreAddress extends SwatDBDataObject
 	 */
 	protected function displayCondensedAsTextUS()
 	{
-		echo $this->fullname, ', ';
+		echo $this->getFullName(), ', ';
 
 		if (strlen($this->company) > 0)
 			echo $this->company, ', ';
