@@ -101,11 +101,14 @@ abstract class StoreAddress extends SwatDBDataObject
 		$address_tag->open();
 
 		switch ($this->country->id) {
+		case 'CA':
+			$this->displayCA();
+			break;
 		case 'GB':
 			$this->displayGB();
 			break;
 		default:
-			$this->displayCA();
+			$this->displayUS();
 		}
 
 		$address_tag->close();
@@ -129,11 +132,14 @@ abstract class StoreAddress extends SwatDBDataObject
 		 */
 
 		switch ($this->country->id) {
+		case 'CA':
+			$this->displayCondensedCA();
+			break;
 		case 'GB':
 			$this->displayCondensedGB();
 			break;
 		default:
-			$this->displayCondensedCA();
+			$this->displayCondensedUS();
 		}
 	}
 
@@ -150,11 +156,14 @@ abstract class StoreAddress extends SwatDBDataObject
 	public function displayCondensedAsText()
 	{
 		switch ($this->country->id) {
+		case 'CA':
+			$this->displayCondensedAsTextCA();
+			break;
 		case 'GB':
 			$this->displayCondensedAsTextGB();
 			break;
 		default:
-			$this->displayCondensedAsTextCA();
+			$this->displayCondensedAsTextUS();
 		}
 	}
 
@@ -195,10 +204,10 @@ abstract class StoreAddress extends SwatDBDataObject
 	// {{{ protected function displayCA()
 
 	/**
-	 * Displays this address in postal format
+	 * Displays this address in Canada Post format
 	 *
 	 * Canadian address format rules are taken from {@link Canada Post
-	 * http://www.canadapost.ca/personal/offerings/address_management/can/addressing_guide-e.asp}
+	 * http://www.canadapost.ca/personal/tools/pg/manual/PGaddress-e.asp#1383571}
 	 */
 	protected function displayCA()
 	{
@@ -212,7 +221,7 @@ abstract class StoreAddress extends SwatDBDataObject
 		if (strlen($this->line2) > 0)
 			echo SwatString::minimizeEntities($this->line2), '<br />';
 
-		echo SwatString::minimizeEntities($this->city), ', ';
+		echo SwatString::minimizeEntities($this->city), ' ';
 
 		if ($this->provstate !== null)
 			echo SwatString::minimizeEntities($this->provstate->abbreviation);
@@ -220,8 +229,9 @@ abstract class StoreAddress extends SwatDBDataObject
 			echo SwatString::minimizeEntities($this->provstate_other);
 
 		echo '&nbsp;&nbsp;';
-		echo SwatString::minimizeEntities($this->postal_code);
-		echo '<br />';
+
+		echo SwatString::minimizeEntities($this->postal_code), '<br />';
+
 		echo SwatString::minimizeEntities($this->country->title), '<br />';
 
 		if (strlen($this->phone) > 0)
@@ -233,7 +243,10 @@ abstract class StoreAddress extends SwatDBDataObject
 	// {{{ protected function displayGB()
 
 	/**
-	 * Displays this address in postal format
+	 * Displays this address in Royal Mail format
+	 *
+	 * Formatting rules for UK addresses are taken from
+	 * {@link http://www.royalmail.com/portal/rm/content1?catId=400126&mediaId=32700664}.
 	 */
 	protected function displayGB()
 	{
@@ -252,12 +265,51 @@ abstract class StoreAddress extends SwatDBDataObject
 		if (strlen($this->provstate_other) > 0)
 			echo SwatString::minimizeEntities($this->provstate_other), '<br />';
 
-		echo SwatString::minimizeEntities($this->postal_code);
-		echo '<br />';
+		echo SwatString::minimizeEntities($this->postal_code), '<br />';
+
 		echo SwatString::minimizeEntities($this->country->title), '<br />';
 
 		if (strlen($this->phone) > 0)
 			printf('Phone: %s',
+				SwatString::minimizeEntities($this->phone));
+	}
+
+	// }}}
+	// {{{ protected function displayUS()
+
+	/**
+	 * Displays this address in US Postal Service format
+	 *
+	 * American address format rules are taken from
+	 * {@link http://pe.usps.gov/text/pub28/28c2_007.html}.
+	 */
+	protected function displayUS()
+	{
+		echo SwatString::minimizeEntities($this->fullname), '<br />';
+
+		if (strlen($this->company) > 0)
+			echo SwatString::minimizeEntities($this->company), '<br />';
+
+		echo SwatString::minimizeEntities($this->line1), '<br />';
+
+		if (strlen($this->line2) > 0)
+			echo SwatString::minimizeEntities($this->line2), '<br />';
+
+		echo SwatString::minimizeEntities($this->city), ' ';
+
+		if ($this->provstate !== null)
+			echo SwatString::minimizeEntities($this->provstate->abbreviation);
+		elseif (strlen($this->provstate_other) > 0)
+			echo SwatString::minimizeEntities($this->provstate_other);
+
+		echo '&nbsp;&nbsp;';
+
+		echo SwatString::minimizeEntities($this->postal_code), '<br />';
+
+		echo SwatString::minimizeEntities($this->country->title), '<br />';
+
+		if (strlen($this->phone) > 0)
+			printf(Store::_('Phone: %s'),
 				SwatString::minimizeEntities($this->phone));
 	}
 
@@ -338,6 +390,47 @@ abstract class StoreAddress extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ protected function displayCondensedUS()
+
+	/**
+	 * Displays this address in a two-line condensed form
+	 */
+	protected function displayCondensedUS()
+	{
+		echo SwatString::minimizeEntities($this->fullname), ', ';
+
+		if (strlen($this->company) > 0)
+			echo SwatString::minimizeEntities($this->company), ', ';
+
+		echo SwatString::minimizeEntities($this->line1);
+		if (strlen($this->line2) > 0)
+			echo ', ', SwatString::minimizeEntities($this->line2);
+
+		echo '<br />';
+
+		echo SwatString::minimizeEntities($this->city), ' ';
+
+		if ($this->provstate !== null)
+			echo SwatString::minimizeEntities($this->provstate->abbreviation);
+		elseif (strlen($this->provstate_other) > 0)
+			echo SwatString::minimizeEntities($this->provstate_other);
+
+		if ($this->postal_code !== null) {
+			echo '&nbsp;&nbsp;';
+			echo SwatString::minimizeEntities($this->postal_code);
+		}
+		echo ', ';
+
+		echo SwatString::minimizeEntities($this->country->title);
+
+		if (strlen($this->phone) > 0) {
+			echo '<br />';
+			printf(Store::_('Phone: %s'),
+				SwatString::minimizeEntities($this->phone));
+		}
+	}
+
+	// }}}
 	// {{{ protected function displayCondensedAsTextCA()
 
 	/**
@@ -405,6 +498,47 @@ abstract class StoreAddress extends SwatDBDataObject
 			echo ', ', $this->postal_code;
 
 		echo ', ', $this->country->title;
+
+		if (strlen($this->phone) > 0) {
+			echo "\n";
+			printf(Store::_('Phone: %s'),
+				SwatString::minimizeEntities($this->phone));
+		}
+	}
+
+	// }}}
+	// {{{ protected function displayCondensedAsTextUS()
+
+	/**
+	 * Displays this address in a two-line condensed form
+	 */
+	protected function displayCondensedAsTextUS()
+	{
+		echo $this->fullname, ', ';
+
+		if (strlen($this->company) > 0)
+			echo $this->company, ', ';
+
+		echo $this->line1;
+		if (strlen($this->line2) > 0)
+			echo ', ', $this->line2;
+
+		echo "\n";
+
+		echo $this->city, ' ';
+
+		if ($this->provstate !== null)
+			echo $this->provstate->abbreviation;
+		elseif (strlen($this->provstate_other) > 0)
+			echo $this->provstate_other;
+
+		if ($this->postal_code !== null) {
+			echo '  ';
+			echo $this->postal_code;
+		}
+		echo ', ';
+
+		echo $this->country->title;
 
 		if (strlen($this->phone) > 0) {
 			echo "\n";
