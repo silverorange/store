@@ -576,24 +576,43 @@ class StoreProductPage extends StorePage
 
 	protected function displayImage()
 	{
+		$image = $this->product->primary_image;
 		$div = new SwatHtmlTag('div');
 		$div->id = 'product_image';
 
-		$img_tag = $this->product->primary_image->getImgTag('small');
+		$img_tag = $image->getImgTag('small');
 
 		if ($img_tag->alt === '')
 			$img_tag->alt = sprintf(Store::_('Photo of %s'),
 				$this->product->title);
 
-		$anchor = new SwatHtmlTag('a');
-		$anchor->href = $this->source.'/image';
-		$anchor->title = Store::_('View Larger Image');
+		$link_to_large = true;
+		if ($image->small_width > 0) {
+			$percentage_larger = ($image->large_width / $image->small_width) - 1;
+			// large must be at least 10% larger
+			if ($percentage_larger < 0.10)
+				$link_to_large = false;
+		}
+
+		if ($link_to_large) {
+			$anchor = new SwatHtmlTag('a');
+			$anchor->href = $this->source.'/image';
+			$anchor->title = Store::_('View Larger Image');
+		}
 
 		$div->open();
-		$anchor->open();
-		$img_tag->display();
-		echo Store::_('<span>View Larger Image</span>');
-		$anchor->close();
+
+		if ($link_to_large) {
+			$anchor->open();
+			$img_tag->display();
+			echo '<span>', Store::_('View Larger Image'), '</span>';
+			$anchor->close();
+		} else {
+			echo '<span>';
+			$img_tag->display();
+			echo '</span>';
+		}
+
 		$div->close();
 	}
 
