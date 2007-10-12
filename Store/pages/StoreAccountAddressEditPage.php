@@ -158,10 +158,10 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 	// }}}
 	// {{{ protected function updateAddress()
 
-	protected function updateAddress($address)
+	protected function updateAddress(StoreAccountAddress $address)
 	{
-		$address->fullname =  $this->ui->getWidget('fullname')->value;
-		$address->company =  $this->ui->getWidget('company')->value;
+		$address->fullname = $this->ui->getWidget('fullname')->value;
+		$address->company = $this->ui->getWidget('company')->value;
 		$address->phone =  $this->ui->getWidget('phone')->value;
 		$address->line1 = $this->ui->getWidget('line1')->value;
 		$address->line2 = $this->ui->getWidget('line2')->value;
