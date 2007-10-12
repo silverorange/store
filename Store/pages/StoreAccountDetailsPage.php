@@ -81,7 +81,7 @@ class StoreAccountDetailsPage extends StoreAccountPage
 			if ($payment_type->isAvailableInRegion($this->app->getRegion())) {
 				$view_id = 'payment_method'.$payment_method->id;
 				$view = new StorePaymentMethodView($view_id);
-				$view->paymentMethodConfirmText = 
+				$view->paymentMethodConfirmText =
 					$this->getPaymentMethodText('confirm');
 
 				$view->classes[] = 'compact-button';
@@ -168,7 +168,7 @@ class StoreAccountDetailsPage extends StoreAccountPage
 	{
 		$container = $this->ui->getWidget('account_payment_method_container');
 		$views = $container->getDescendants('StorePaymentMethodView');
-		
+
 		foreach ($views as $view) {
 			if ($view->hasBeenClicked()) {
 				ob_start();
@@ -223,7 +223,7 @@ class StoreAccountDetailsPage extends StoreAccountPage
 	// }}}
 	// {{{ protected function buildAccountDetails()
 
-	protected function buildAccountDetails() 
+	protected function buildAccountDetails()
 	{
 		$account = $this->app->session->account;
 
@@ -269,7 +269,7 @@ class StoreAccountDetailsPage extends StoreAccountPage
 	// }}}
 	// {{{ protected function buildInvoices()
 
-	protected function buildInvoices() 
+	protected function buildInvoices()
 	{
 		$invoices = $this->app->session->account->getPendingInvoices();
 		$count = count($invoices);
@@ -294,7 +294,7 @@ class StoreAccountDetailsPage extends StoreAccountPage
 	// }}}
 	// {{{ protected function displayInvoices()
 
-	protected function displayInvoices($invoices) 
+	protected function displayInvoices($invoices)
 	{
 		$ul = new SwatHtmlTag('ul');
 		$li = new SwatHtmlTag('li');
@@ -330,7 +330,7 @@ class StoreAccountDetailsPage extends StoreAccountPage
 	// }}}
 	// {{{ protected function buildOrders()
 
-	protected function buildOrders() 
+	protected function buildOrders()
 	{
 		$block = $this->ui->getWidget('account_order');
 		$block->content_type = 'text/xml';
@@ -343,7 +343,7 @@ class StoreAccountDetailsPage extends StoreAccountPage
 	// }}}
 	// {{{ protected function displayOrders()
 
-	protected function displayOrders() 
+	protected function displayOrders()
 	{
 		$orders = $this->app->session->account->orders;
 
