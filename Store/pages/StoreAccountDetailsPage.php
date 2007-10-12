@@ -396,6 +396,7 @@ class StoreAccountDetailsPage extends StoreAccountPage
 	protected function getAccountDetailsStore(StoreAccount $account)
 	{
 		$ds = new SwatDetailsStore($account);
+		$ds->fullname = $account->getFullName();
 		return $ds;
 	}
 
