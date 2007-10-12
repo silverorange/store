@@ -193,7 +193,7 @@ class StoreProduct extends SwatDBDataObject
 	// {{{ protected function loadPath()
 
 	/**
-	 * Loads the URL fragment of this product 
+	 * Loads the URL fragment of this product
 	 *
 	 * If the path was part of the initial query to load this product, that
 	 * value is returned. Otherwise, a separate query gets the path of this
@@ -339,7 +339,7 @@ class StoreProduct extends SwatDBDataObject
 	// {{{ protected function loadPrimaryImage()
 
 	/**
-	 * Loads the primary image of this product 
+	 * Loads the primary image of this product
 	 *
 	 * If the primary image was part of the initial query to load this product,
 	 * that value is returned. Otherwise, a separate query gets the primary
@@ -386,7 +386,7 @@ class StoreProduct extends SwatDBDataObject
 	protected function loadImages()
 	{
 		$sql = 'select Image.* from Image
-			inner join ProductImageBinding 
+			inner join ProductImageBinding
 				on ProductImageBinding.image = Image.id
 			where ProductImageBinding.product = %s
 			order by ProductImageBinding.displayorder';
