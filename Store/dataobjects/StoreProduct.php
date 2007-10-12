@@ -39,19 +39,6 @@ require_once 'Store/dataobjects/StoreRegion.php';
  */
 class StoreProduct extends SwatDBDataObject
 {
-	// {{{ constants
-
-	/**
-	 * Popular product limit
-	 *
-	 * The maximim number of popular products to load.
-	 * @see StoreProduct::loadPopularProducts()
-	 *
-	 * @var integer
-	 */
-	const POPULAR_PRODUCT_LIMIT = 5;
-
-	// }}}
 	// {{{ public properties
 
 	/**
@@ -133,6 +120,92 @@ class StoreProduct extends SwatDBDataObject
 		if ($this->hasSubDataObject('items'))
 			foreach ($this->items as $item)
 				$item->setRegion($region, $limiting);
+	}
+
+	// }}}
+	// {{{ public function getVisibleRelatedProducts()
+
+	/**
+	 * Retrieve related products in the current region
+	 *
+	 * Related products are retrieved with primary categories and ordered by
+	 * their popularity. Only products visible in the current region are
+	 * returned.
+	 *
+	 * @param integer $limit the limit of this range.
+	 * @param integer $offset optional. The offset of this range. If not
+	 *                         specified, defaults to 0.
+	 *
+	 * @return StoreProductWrapper Related products to the current product
+	 */
+	public function getVisibleRelatedProducts($limit = null, $offset = null)
+	{
+		$sql = 'select Product.*, ProductPrimaryCategoryView.primary_category,
+			getCategoryPath(ProductPrimaryCategoryView.primary_category) as path
+			from Product
+				inner join VisibleProductCache
+					on VisibleProductCache.product = Product.id
+						and VisibleProductCache.region = %s
+				inner join ProductRelatedProductBinding
+					on Product.id = ProductRelatedProductBinding.related_product
+						and ProductRelatedProductBinding.source_product = %s
+				left outer join ProductPrimaryCategoryView
+					on Product.id = ProductPrimaryCategoryView.product
+			order by ProductRelatedProductBinding.displayorder asc';
+
+		$sql = sprintf($sql,
+			$this->db->quote($this->region->id, 'integer'),
+			$this->db->quote($this->id, 'integer'));
+
+		if ($limit !== null)
+			$this->db->setLimit($limit, $offset);
+
+		return SwatDB::query($this->db, $sql,
+			SwatDBClassMap::get('StoreProductWrapper'));
+	}
+
+	// }}}
+	// {{{ public function getVisiblePopularProducts()
+
+	/**
+	 * Retrieve popular products visible in the current region
+	 *
+	 * Popular products are the most frequently ordered products in orders
+	 * that include the current product.
+	 * Popular products are retrieved with primary categories and ordered by
+	 * their popularity. Only products visible in the current region are
+	 * returned.
+	 *
+	 * @param integer $limit the limit of this range.
+	 * @param integer $offset optional. The offset of this range. If not
+	 *                         specified, defaults to 0.
+	 *
+	 * @return StoreProductWrapper Popular products of the current product
+	 */
+	public function getVisiblePopularProducts($limit = null, $offset = null)
+	{
+		$sql = 'select Product.*, ProductPrimaryCategoryView.primary_category,
+			getCategoryPath(ProductPrimaryCategoryView.primary_category) as path
+			from Product
+				inner join VisibleProductCache
+					on VisibleProductCache.product = Product.id
+						and VisibleProductCache.region = %s
+				inner join ProductPopularProductBinding
+					on Product.id = ProductPopularProductBinding.related_product
+						and ProductPopularProductBinding.source_product = %s
+				left outer join ProductPrimaryCategoryView
+					on Product.id = ProductPrimaryCategoryView.product
+			order by ProductPopularProductBinding.order_count desc';
+
+		$sql = sprintf($sql,
+			$this->db->quote($this->region->id, 'integer'),
+			$this->db->quote($this->id, 'integer'));
+
+		if ($limit !== null)
+			$this->db->setLimit($limit, $offset);
+
+		return SwatDB::query($this->db, $sql,
+			SwatDBClassMap::get('StoreProductWrapper'));
 	}
 
 	// }}}
@@ -275,17 +348,14 @@ class StoreProduct extends SwatDBDataObject
 	 * Related products are loaded with primary categories and ordered by the
 	 * binding table's display order.
 	 *
-	 * @todo: Make this method region aware and remove site-specific overridden
-	 *        versions.
+	 * For a region-aware way to load related products, see {@link
+	 * StoreProduct::getRelatedProducts()}
 	 */
 	protected function loadRelatedProducts()
 	{
 		$sql = 'select Product.*, ProductPrimaryCategoryView.primary_category,
 			getCategoryPath(ProductPrimaryCategoryView.primary_category) as path
 			from Product
-				inner join VisibleProductCache
-					on VisibleProductCache.product = Product.id
-						and VisibleProductCache.region = %s
 				inner join ProductRelatedProductBinding
 					on Product.id = ProductRelatedProductBinding.related_product
 						and ProductRelatedProductBinding.source_product = %s
@@ -294,7 +364,6 @@ class StoreProduct extends SwatDBDataObject
 			order by ProductRelatedProductBinding.displayorder asc';
 
 		$sql = sprintf($sql,
-			$this->db->quote($this->region->id, 'integer'),
 			$this->db->quote($this->id, 'integer'));
 
 		return SwatDB::query($this->db, $sql,
@@ -309,15 +378,15 @@ class StoreProduct extends SwatDBDataObject
 	 *
 	 * Popular products are loaded with primary categories and ordered by
 	 * their popularity.
+	 *
+	 * For a region-aware way to load popular products, see {@link
+	 * StoreProduct::getPopularProducts()}
 	 */
 	protected function loadPopularProducts()
 	{
 		$sql = 'select Product.*, ProductPrimaryCategoryView.primary_category,
 			getCategoryPath(ProductPrimaryCategoryView.primary_category) as path
 			from Product
-				inner join VisibleProductCache
-					on VisibleProductCache.product = Product.id
-						and VisibleProductCache.region = %s
 				inner join ProductPopularProductBinding
 					on Product.id = ProductPopularProductBinding.related_product
 						and ProductPopularProductBinding.source_product = %s
@@ -326,10 +395,7 @@ class StoreProduct extends SwatDBDataObject
 			order by ProductPopularProductBinding.order_count desc';
 
 		$sql = sprintf($sql,
-			$this->db->quote($this->region->id, 'integer'),
 			$this->db->quote($this->id, 'integer'));
-
-		$this->db->setLimit(self::POPULAR_PRODUCT_LIMIT);
 
 		return SwatDB::query($this->db, $sql,
 			SwatDBClassMap::get('StoreProductWrapper'));
