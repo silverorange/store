@@ -686,7 +686,9 @@ class StoreProductPage extends StorePage
 
 	protected function displayRelatedProducts()
 	{
-		if (count($this->product->related_products) == 0)
+		$related_products = $this->product->getVisibleRelatedProducts();
+
+		if (count($related_products) == 0)
 			return;
 
 		$div = new SwatHtmlTag('div');
@@ -705,7 +707,7 @@ class StoreProductPage extends StorePage
 		$header_tag->display();
 		$ul_tag->open();
 
-		foreach ($this->product->related_products as $product) {
+		foreach ($related_products as $product) {
 			$li_tag->open();
 			$path = 'store/'.$product->path;
 			$product->displayAsIcon($path);
@@ -721,7 +723,9 @@ class StoreProductPage extends StorePage
 
 	protected function displayPopularProducts()
 	{
-		if (count($this->product->popular_products) == 0)
+		$popular_products = $this->product->getVisiblePopularProducts(5);
+
+		if (count($popular_products) == 0)
 			return;
 
 		$div = new SwatHtmlTag('div');
@@ -742,7 +746,7 @@ class StoreProductPage extends StorePage
 		$header_tag->display();
 		$ul_tag->open();
 
-		foreach ($this->product->popular_products as $product) {
+		foreach ($popular_products as $product) {
 			$li_tag->open();
 			$path = 'store/'.$product->path;
 			$product->displayAsIcon($path);
