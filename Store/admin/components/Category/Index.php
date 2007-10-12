@@ -83,9 +83,9 @@ class StoreCategoryIndex extends AdminIndex
 	}
 
 	// }}}
-	// {{{ private function processCategoryActions()
+	// {{{ protected function processCategoryActions()
 
-	private function processCategoryActions($view, $actions)
+	protected function processCategoryActions($view, $actions)
 	{
 		switch ($actions->selected->id) {
 		case 'categories_delete':
@@ -525,9 +525,9 @@ class StoreCategoryIndex extends AdminIndex
 	// }}}
 
 	// build phase - table views
-	// {{{ private function getCategoryTableModel()
+	// {{{ protected function getCategoryTableModel()
 
-	private function getCategoryTableModel(SwatTableView $view)
+	protected function getCategoryTableModel(SwatTableView $view)
 	{
 		$sql = 'select Category.id,
 					Category.title,
@@ -604,9 +604,9 @@ class StoreCategoryIndex extends AdminIndex
 	}
 
 	// }}}
-	// {{{ private function setCategoryVisibility()
+	// {{{ protected function setCategoryVisibility()
 
-	private function setCategoryVisibility($model)
+	protected function setCategoryVisibility($model)
 	{
 		$sql = 'select category, sum(product_count) as product_count
 			from CategoryProductCountByCatalogView
