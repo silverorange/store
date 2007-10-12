@@ -227,7 +227,7 @@ class StoreAccountDetailsPage extends StoreAccountPage
 	{
 		$account = $this->app->session->account;
 
-		$ds = new SwatDetailsStore($account);
+		$ds = $this->getAccountDetailsStore($account);
 
 		$details_view = $this->ui->getWidget('account_details_view');
 		$details_view->data = $ds;
@@ -383,6 +383,20 @@ class StoreAccountDetailsPage extends StoreAccountPage
 
 		echo ' - ', SwatString::minimizeEntities(
 			$createdate->format(SwatDate::DF_DATE));
+	}
+
+	// }}}
+	// {{{ protected function getAccountDetailsStore()
+
+	/**
+	 * Gets the details store for the account to display on this details page
+	 *
+	 * @return SwatDetailsStore the details store for the account.
+	 */
+	protected function getAccountDetailsStore(StoreAccount $account)
+	{
+		$ds = new SwatDetailsStore($account);
+		return $ds;
 	}
 
 	// }}}
