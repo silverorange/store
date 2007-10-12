@@ -14,7 +14,7 @@ require_once 'Store/dataobjects/StoreAccountWrapper.php';
  * A account for an e-commerce web application
  *
  * StoreAccount objects contain data like name and email that correspond
- * directly to database fields. StoreAccount objects may have one or more 
+ * directly to database fields. StoreAccount objects may have one or more
  * StoreAccountAddress objects, one or more StoreAccountPaymentMethod objects
  * and one or more StoreOrder objects all accessed as sub-data-objects.
  *
@@ -104,15 +104,14 @@ class StoreAccount extends SiteAccount
 	public $default_payment_method;
 
 	// }}}
+	// {{{ public function getPendingInvoices()
 
-	// {{{ public function getPendingInvoices() 
- 		 
-	/** 
-	 * Gets order invoices for this account that have not yet been filled 
-	 * 
-	 * @return StoreInvoiceWrapper invoices for this account that have not 
-	 *                              yet been filled. 
-	 */ 
+	/**
+	 * Gets order invoices for this account that have not yet been filled
+	 *
+	 * @return StoreInvoiceWrapper invoices for this account that have not
+	 *                              yet been filled.
+	 */
 	public function getPendingInvoices()
 	{
 		$this->checkDB();
@@ -126,11 +125,11 @@ class StoreAccount extends SiteAccount
 			order by id asc',
 			$this->db->quote($this->id, 'integer'));
 
-		return SwatDB::query($this->db, $sql, 
+		return SwatDB::query($this->db, $sql,
 			SwatDBClassMap::get('StoreInvoiceWrapper'));
 	}
 
-	// }}} 
+	// }}}
 
 	// loader methods
 	// {{{ protected function loadAddresses()
