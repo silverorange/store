@@ -116,7 +116,6 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 	{
 		$count = 0;
 		$inserted_pairs = array();
-		$order_ids = array();
 
 		$orders = $this->getOrders();
 		$total = count($orders);
@@ -156,13 +155,10 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 				$count++;
 			}
 
-			$order_ids[] = $order->id;
-		}
-
-		if (count($order_ids) > 0)
 			SwatDB::updateColumn($this->db, 'Orders',
 				'boolean:popular_products_processed',
-				true, $order_ids);
+				true, array($order->id));
+		}
 	}
 
 	// }}}
