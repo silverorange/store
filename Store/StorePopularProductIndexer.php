@@ -120,13 +120,17 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 		$orders = $this->getOrders();
 		$total = count($orders);
 
+		$this->output(Store::_('Indexing orders ... ').'   ',
+			self::VERBOSITY_ALL);
+
 		foreach ($orders as $order) {
+			if ($count % 10 == 0) {
+				$this->output(str_repeat(chr(8), 3), self::VERBOSITY_ALL);
+				$this->output(sprintf('%2d%%', ($count / $total) * 100),
+					self::VERBOSITY_ALL);
+			}
+
 			foreach ($this->getProducts($order->id) as $product) {
-				if ($count % 10 == 0) {
-					$this->output(str_repeat(chr(8), 3), self::VERBOSITY_ALL);
-					$this->output(sprintf('%2d%%', ($count / $total) * 100),
-						self::VERBOSITY_ALL);
-				}
 
 				$value = array($product->source_product,
 					$product->related_product);
@@ -152,12 +156,13 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 						$this->db->quote($product->related_product, 'integer')));
 				}
 
-				$count++;
 			}
 
 			SwatDB::updateColumn($this->db, 'Orders',
 				'boolean:popular_products_processed',
 				true, 'id', array($order->id));
+
+			$count++;
 		}
 	}
 
