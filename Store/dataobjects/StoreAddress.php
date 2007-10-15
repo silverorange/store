@@ -284,12 +284,11 @@ abstract class StoreAddress extends SwatDBDataObject
 		$span_tag->class = 'country-name';
 		$span_tag->setContent($this->country->title);
 		$span_tag->display();
-		echo '<br />';
 
 		$address_span_tag->close();
 
 		if (strlen($this->phone) > 0) {
-			echo Store::_('Phone: ');
+			echo '<br />', Store::_('Phone: ');
 			$span_tag->class = 'tel';
 			$span_tag->setContent($this->phone);
 			$span_tag->display();
@@ -342,32 +341,71 @@ abstract class StoreAddress extends SwatDBDataObject
 	 */
 	protected function displayUS()
 	{
-		echo SwatString::minimizeEntities($this->getFullName()), '<br />';
+		$span_tag = new SwatHtmlTag('span');
+		$span_tag->class = 'fn';
+		$span_tag->setContent($this->getFullName());
+		$span_tag->display();
+		echo '<br />';
 
-		if (strlen($this->company) > 0)
-			echo SwatString::minimizeEntities($this->company), '<br />';
+		if (strlen($this->company) > 0) {
+			$span_tag->class = 'fn org';
+			$span_tag->setContent($this->company);
+			$span_tag->display();
+			echo '<br />';
+		}
 
-		echo SwatString::minimizeEntities($this->line1), '<br />';
+		$address_span_tag = new SwatHtmlTag('span');
+		$address_span_tag->class = 'adr';
+		$address_span_tag->open();
 
-		if (strlen($this->line2) > 0)
-			echo SwatString::minimizeEntities($this->line2), '<br />';
+		$span_tag->class = 'street-address';
+		$span_tag->setContent($this->line1);
+		$span_tag->display();
+		echo '<br />';
 
-		echo SwatString::minimizeEntities($this->city), ' ';
+		if (strlen($this->line2) > 0) {
+			$span_tag->class = 'extended-address';
+			$span_tag->setContent($this->line2);
+			$span_tag->display();
+			echo '<br />';
+		}
 
-		if ($this->provstate !== null)
-			echo SwatString::minimizeEntities($this->provstate->abbreviation);
-		elseif (strlen($this->provstate_other) > 0)
-			echo SwatString::minimizeEntities($this->provstate_other);
+		$span_tag->class = 'locality';
+		$span_tag->setContent($this->city);
+		$span_tag->display();
+		echo ' ';
+
+		if ($this->provstate !== null) {
+			$abbr_tag = new SwatHtmlTag('abbr');
+			$abbr_tag->class = 'region';
+			$abbr_tag->title = $this->provstate->title;
+			$abbr_tag->setContent($this->provstate->abbreviation);
+			$abbr_tag->display();
+		} elseif (strlen($this->provstate_other) > 0) {
+			$span_tag->class = 'region';
+			$span_tag->setContent($this->provstate_other);
+			$span_tag->display();
+		}
 
 		echo '&nbsp;&nbsp;';
 
-		echo SwatString::minimizeEntities($this->postal_code), '<br />';
+		$span_tag->class = 'postal-code';
+		$span_tag->setContent($this->postal_code);
+		$span_tag->display();
+		echo '<br />';
 
-		echo SwatString::minimizeEntities($this->country->title), '<br />';
+		$span_tag->class = 'country-name';
+		$span_tag->setContent($this->country->title);
+		$span_tag->display();
 
-		if (strlen($this->phone) > 0)
-			printf(Store::_('Phone: %s'),
-				SwatString::minimizeEntities($this->phone));
+		$address_span_tag->close();
+
+		if (strlen($this->phone) > 0) {
+			echo '<br />', Store::_('Phone: ');
+			$span_tag->class = 'tel';
+			$span_tag->setContent($this->phone);
+			$span_tag->display();
+		}
 	}
 
 	// }}}
@@ -378,36 +416,73 @@ abstract class StoreAddress extends SwatDBDataObject
 	 */
 	protected function displayCondensedCA()
 	{
-		echo SwatString::minimizeEntities($this->getFullName()), ', ';
+		$span_tag = new SwatHtmlTag('span');
+		$span_tag->class = 'fn';
+		$span_tag->setContent($this->getFullName());
+		$span_tag->display();
+		echo ', ';
 
-		if (strlen($this->company) > 0)
-			echo SwatString::minimizeEntities($this->company), ', ';
+		if (strlen($this->company) > 0) {
+			$span_tag->class = 'fn org';
+			$span_tag->setContent($this->company);
+			$span_tag->display();
+			echo ', ';
+		}
 
-		echo SwatString::minimizeEntities($this->line1);
-		if (strlen($this->line2) > 0)
-			echo ', ', SwatString::minimizeEntities($this->line2);
+		$address_span_tag = new SwatHtmlTag('span');
+		$address_span_tag->class = 'adr';
+		$address_span_tag->open();
+
+		$span_tag->class = 'street-address';
+		$span_tag->setContent($this->line1);
+		$span_tag->display();
+
+		if (strlen($this->line2) > 0) {
+			echo ', ';
+			$span_tag->class = 'extended-address';
+			$span_tag->setContent($this->line2);
+			$span_tag->display();
+		}
 
 		echo '<br />';
 
-		echo SwatString::minimizeEntities($this->city), ' ';
+		$span_tag->class = 'locality';
+		$span_tag->setContent($this->city);
+		$span_tag->display();
+		echo ' ';
 
-		if ($this->provstate !== null)
-			echo SwatString::minimizeEntities($this->provstate->abbreviation);
-		elseif (strlen($this->provstate_other) > 0)
-			echo SwatString::minimizeEntities($this->provstate_other);
+		if ($this->provstate !== null) {
+			$abbr_tag = new SwatHtmlTag('abbr');
+			$abbr_tag->class = 'region';
+			$abbr_tag->title = $this->provstate->title;
+			$abbr_tag->setContent($this->provstate->abbreviation);
+			$abbr_tag->display();
+		} elseif (strlen($this->provstate_other) > 0) {
+			$span_tag->class = 'region';
+			$span_tag->setContent($this->provstate_other);
+			$span_tag->display();
+		}
 
 		if ($this->postal_code !== null) {
 			echo '&nbsp;&nbsp;';
-			echo SwatString::minimizeEntities($this->postal_code);
+			$span_tag->class = 'postal-code';
+			$span_tag->setContent($this->postal_code);
+			$span_tag->display();
 		}
+
 		echo ', ';
 
-		echo SwatString::minimizeEntities($this->country->title);
+		$span_tag->class = 'country-name';
+		$span_tag->setContent($this->country->title);
+		$span_tag->display();
+
+		$address_span_tag->close();
 
 		if (strlen($this->phone) > 0) {
-			echo '<br />';
-			printf(Store::_('Phone: %s'),
-				SwatString::minimizeEntities($this->phone));
+			echo '<br />', Store::_('Phone: ');
+			$span_tag->class = 'tel';
+			$span_tag->setContent($this->phone);
+			$span_tag->display();
 		}
 	}
 
@@ -454,36 +529,73 @@ abstract class StoreAddress extends SwatDBDataObject
 	 */
 	protected function displayCondensedUS()
 	{
-		echo SwatString::minimizeEntities($this->getFullName()), ', ';
+		$span_tag = new SwatHtmlTag('span');
+		$span_tag->class = 'fn';
+		$span_tag->setContent($this->getFullName());
+		$span_tag->display();
+		echo ', ';
 
-		if (strlen($this->company) > 0)
-			echo SwatString::minimizeEntities($this->company), ', ';
+		if (strlen($this->company) > 0) {
+			$span_tag->class = 'fn org';
+			$span_tag->setContent($this->company);
+			$span_tag->display();
+			echo ', ';
+		}
 
-		echo SwatString::minimizeEntities($this->line1);
-		if (strlen($this->line2) > 0)
-			echo ', ', SwatString::minimizeEntities($this->line2);
+		$address_span_tag = new SwatHtmlTag('span');
+		$address_span_tag->class = 'adr';
+		$address_span_tag->open();
+
+		$span_tag->class = 'street-address';
+		$span_tag->setContent($this->line1);
+		$span_tag->display();
+
+		if (strlen($this->line2) > 0) {
+			echo ', ';
+			$span_tag->class = 'extended-address';
+			$span_tag->setContent($this->line2);
+			$span_tag->display();
+		}
 
 		echo '<br />';
 
-		echo SwatString::minimizeEntities($this->city), ' ';
+		$span_tag->class = 'locality';
+		$span_tag->setContent($this->city);
+		$span_tag->display();
+		echo ' ';
 
-		if ($this->provstate !== null)
-			echo SwatString::minimizeEntities($this->provstate->abbreviation);
-		elseif (strlen($this->provstate_other) > 0)
-			echo SwatString::minimizeEntities($this->provstate_other);
+		if ($this->provstate !== null) {
+			$abbr_tag = new SwatHtmlTag('abbr');
+			$abbr_tag->class = 'region';
+			$abbr_tag->title = $this->provstate->title;
+			$abbr_tag->setContent($this->provstate->abbreviation);
+			$abbr_tag->display();
+		} elseif (strlen($this->provstate_other) > 0) {
+			$span_tag->class = 'region';
+			$span_tag->setContent($this->provstate_other);
+			$span_tag->display();
+		}
 
 		if ($this->postal_code !== null) {
 			echo '&nbsp;&nbsp;';
-			echo SwatString::minimizeEntities($this->postal_code);
+			$span_tag->class = 'postal-code';
+			$span_tag->setContent($this->postal_code);
+			$span_tag->display();
 		}
+
 		echo ', ';
 
-		echo SwatString::minimizeEntities($this->country->title);
+		$span_tag->class = 'country-name';
+		$span_tag->setContent($this->country->title);
+		$span_tag->display();
+
+		$address_span_tag->close();
 
 		if (strlen($this->phone) > 0) {
-			echo '<br />';
-			printf(Store::_('Phone: %s'),
-				SwatString::minimizeEntities($this->phone));
+			echo '<br />', Store::_('Phone: ');
+			$span_tag->class = 'tel';
+			$span_tag->setContent($this->phone);
+			$span_tag->display();
 		}
 	}
 
