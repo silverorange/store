@@ -69,7 +69,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 			$items = $this->getItems();
 
 			if (count($items) > 0)
-				$this->form_field->title = $items->getFirst()->product->title;
+				$this->buildFormField($items->getFirst()->product);
 
 			$this->buildItemsFlydown($items);
 			$this->form_field->init();
@@ -166,6 +166,14 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 			$this->db->quote($sku, 'text'));
 
 		return $sql;
+	}
+
+	// }}}
+	// {{{ protected function buildFormField()
+
+	protected function buildFormField($product)
+	{
+		$this->form_field->title = $product->title;
 	}
 
 	// }}}
