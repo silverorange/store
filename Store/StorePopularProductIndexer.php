@@ -157,7 +157,7 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 
 			SwatDB::updateColumn($this->db, 'Orders',
 				'boolean:popular_products_processed',
-				true, array($order->id));
+				true, 'id', array($order->id));
 		}
 	}
 

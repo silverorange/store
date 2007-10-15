@@ -176,13 +176,19 @@ class StoreProduct extends SwatDBDataObject
 	 * their popularity. Only products visible in the current region are
 	 * returned.
 	 *
+	 * @param integer $threshold the number of times the popular product
+	 *                must have been ordered with the current product.
+	 *                Having a threshold of 1 (the minimum value) is
+	 *                usually not very relevent and may be a privacy issue
+	 *                as it can reveal exactly what one person ordered.
 	 * @param integer $limit the limit of this range.
 	 * @param integer $offset optional. The offset of this range. If not
 	 *                         specified, defaults to 0.
 	 *
 	 * @return StoreProductWrapper Popular products of the current product
 	 */
-	public function getVisiblePopularProducts($limit = null, $offset = null)
+	public function getVisiblePopularProducts($threshold = 2,
+		$limit = null, $offset = null)
 	{
 		$sql = 'select Product.*, ProductPrimaryCategoryView.primary_category,
 			getCategoryPath(ProductPrimaryCategoryView.primary_category) as path
@@ -195,11 +201,13 @@ class StoreProduct extends SwatDBDataObject
 						and ProductPopularProductBinding.source_product = %s
 				left outer join ProductPrimaryCategoryView
 					on Product.id = ProductPrimaryCategoryView.product
+			where ProductPopularProductBinding.order_count > %s
 			order by ProductPopularProductBinding.order_count desc';
 
 		$sql = sprintf($sql,
 			$this->db->quote($this->region->id, 'integer'),
-			$this->db->quote($this->id, 'integer'));
+			$this->db->quote($this->id, 'integer'),
+			$this->db->quote($threshold, 'integer'));
 
 		if ($limit !== null)
 			$this->db->setLimit($limit, $offset);

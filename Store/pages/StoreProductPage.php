@@ -724,7 +724,7 @@ class StoreProductPage extends StorePage
 
 	protected function displayPopularProducts()
 	{
-		$popular_products = $this->product->getVisiblePopularProducts(5);
+		$popular_products = $this->product->getVisiblePopularProducts(2, 5);
 
 		if (count($popular_products) == 0)
 			return;
