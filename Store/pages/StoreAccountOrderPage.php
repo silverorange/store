@@ -32,13 +32,27 @@ class StoreAccountOrderPage extends StoreAccountPage
 	 */
 	protected $ui_xml = 'Store/pages/account-order.xml';
 
+	/**
+	 * @var StoreOrder
+	 */
 	protected $order = null;
+
+	/**
+	 * @var SwatUI
+	 */
 	protected $ui;
 
 	// }}}
 	// {{{ private properties
 
+	/**
+	 * @var integer
+	 */
 	private $id;
+
+	/**
+	 * @var array
+	 */
 	private $items_added = array();
 
 	// }}}
