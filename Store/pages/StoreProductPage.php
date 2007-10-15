@@ -597,6 +597,7 @@ class StoreProductPage extends StorePage
 		if ($link_to_large) {
 			$anchor = new SwatHtmlTag('a');
 			$anchor->href = $this->source.'/image';
+			$anchor->class = 'large-image-wrapper';
 			$anchor->title = Store::_('View Larger Image');
 		}
 
@@ -608,7 +609,7 @@ class StoreProductPage extends StorePage
 			echo '<span>', Store::_('View Larger Image'), '</span>';
 			$anchor->close();
 		} else {
-			echo '<span>';
+			echo '<span class="large-image-wrapper">';
 			$img_tag->display();
 			echo '</span>';
 		}
