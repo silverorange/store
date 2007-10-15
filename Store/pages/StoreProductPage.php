@@ -152,21 +152,21 @@ class StoreProductPage extends StorePage
 	protected function getItemDetailsStore(StoreItem $item)
 	{
 		$ds = new SwatDetailsStore($item);
-	
+
 		$ds->description = $item->getDescription(false);
-	
+
 		if (strlen($ds->description) > 0)
 			$this->has_description = true;
-	
+
 		$ds->is_available = $item->isAvailableInRegion($this->app->getRegion());
-				
+
 		$ds->status = '';
 		if (!$ds->is_available)
 			$ds->status = sprintf('<span class="item-status">%s</span>',
 				$item->getStatus()->title);
 
 		$ds->price = $item->getPrice();
-		
+
 		return $ds;
 	}
 
