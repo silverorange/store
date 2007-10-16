@@ -12,7 +12,7 @@
  * See VisibleProductTrigger.sql for details.
  */
 create table VisibleProductCache (
-	product int not null references Product(id),
-	region int not null references Region(id),
+	product int not null references Product(id) on delete cascade,
+	region int not null references Region(id) on delete cascade,
 	primary key (product, region)
 );
