@@ -179,6 +179,19 @@ class StoreCartEntry extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function getDescription()
+
+	/**
+	 * Gets the description for this cart entry
+	 *
+	 * @return string the description for this cart entry.
+	 */
+	public function getDescription()
+	{
+		return $this->item->getDescription();
+	}
+
+	// }}}
 	// {{{ public function compare()
 
 	/**

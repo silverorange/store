@@ -889,7 +889,7 @@ abstract class StoreCartPage extends SiteArticlePage
 		$ds = new SwatDetailsStore($entry);
 
 		$ds->quantity = $entry->getQuantity();
-		$ds->description = $entry->item->getDescription();
+		$ds->description = $entry->getDescription();
 		$ds->price = $entry->getCalculatedItemPrice();
 		$ds->extension = $entry->getExtension();
 		$ds->message = null;
@@ -922,7 +922,7 @@ abstract class StoreCartPage extends SiteArticlePage
 	{
 		$ds = new SwatDetailsStore($entry);
 
-		$ds->description = $entry->item->getDescription();
+		$ds->description = $entry->getDescription();
 		$ds->message = null;
 
 		if ($entry->item->product->primary_category === null)
@@ -960,7 +960,7 @@ abstract class StoreCartPage extends SiteArticlePage
 		$ds = new SwatDetailsStore($entry);
 
 		$ds->quantity = $entry->getQuantity();
-		$ds->description = $entry->item->getDescription();
+		$ds->description = $entry->getDescription();
 		$ds->price = $entry->getCalculatedItemPrice();
 		$ds->extension = $entry->getExtension();
 		$ds->message = null;
