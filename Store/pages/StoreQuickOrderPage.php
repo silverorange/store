@@ -344,7 +344,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 		$ds = new SwatDetailsStore($entry);
 
 		$ds->quantity = $entry->getQuantity();
-		$ds->description = $entry->item->getDescription();
+		$ds->description = $entry->getDescription();
 		$ds->price = $entry->getCalculatedItemPrice();
 		$ds->extension = $entry->getExtension();
 		$ds->product_link = 'store/'.$entry->item->product->path;
