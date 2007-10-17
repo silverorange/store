@@ -54,7 +54,7 @@ class StoreQuickOrderServer extends SiteXMLRPCServer
 		$form->init();
 
 		ob_start();
-		$selector->display();
+		$selector->displayContent();
 
 		$response = array();
 		$response['description'] = ob_get_clean();
