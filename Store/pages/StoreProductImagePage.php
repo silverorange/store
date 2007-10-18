@@ -164,7 +164,7 @@ class StoreProductImagePage extends StorePage
 				$this->product->title);
 
 		$anchor = new SwatHtmlTag('a');
-		$anchor->href = sprintf('%s/image%s', 
+		$anchor->href = sprintf('%s/image%s',
 			$this->getProductPageSource(), $image->id);
 
 		$anchor->title = Store::_('View Larger Image');

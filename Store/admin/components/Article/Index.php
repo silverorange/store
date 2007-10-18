@@ -14,7 +14,7 @@ require_once 'include/StoreArticleVisibilityCellRenderer.php';
  * @copyright 2005-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreArticleIndex extends SiteArticleIndex 
+class StoreArticleIndex extends SiteArticleIndex
 {
 	// {{{ protected properties
 
@@ -54,7 +54,7 @@ class StoreArticleIndex extends SiteArticleIndex
 	// build phase
 	// {{{ protected function buildInternal()
 
-	protected function buildInternal() 
+	protected function buildInternal()
 	{
 		parent::buildInternal();
 
