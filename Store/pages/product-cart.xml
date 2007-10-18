@@ -4,8 +4,9 @@
 	<widget class="SwatForm" id="cart_form">
 		<widget class="SwatTableView" id="cart_view">
 			<property name="classes[]">store-cart-entry-view</property>
-			<object class="StoreItemColumn" id="entry">
-				<property name="title" translatable="yes">Item #</property>
+			<object class="StoreItemColumn">
+				<property name="title" translatable="yes">Item Number</property>
+				<property name="abbreviated_title" translatable="yes">Item #</property>
 				<object class="StoreItemDescriptionCellRenderer">
 					<property name="sku" type="data">item.sku</property>
 					<property name="description" type="data">description</property>

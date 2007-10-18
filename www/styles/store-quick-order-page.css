@@ -56,3 +56,23 @@ td.store-quick-order-item-selector {
 #quick_order_frame .swat-table-view .sku-column .swat-entry {
 	width: 3.5em;
 }
+
+#cart_view.swat-table-view {
+	width: auto;
+	margin: 0.5em 0;
+}
+
+#cart_view.swat-table-view .store-cart-description {
+	width: auto;
+}
+
+#cart_view.swat-table-view .swat-table-view-group {
+	padding-top: 0.5em;
+}
+
+#cart_view.swat-table-view th,
+#cart_view.swat-table-view td {
+	color: #555;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+}

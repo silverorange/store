@@ -383,7 +383,8 @@ class StoreProductPage extends StorePage
 
 			printf(Store::_('%sView your shopping cart%s '.
 					'or %sproceed to the checkout%s.'),
-					'<a href="cart">', '</a>', '<a href="checkout">', '</a>.');
+					'<a href="cart"><strong>', '</strong></a>',
+					'<a href="checkout">', '</a>.');
 
 			$this->cart_message->secondary_content = ob_get_clean();
 			$this->cart_message->content_type = 'text/xml';
@@ -883,7 +884,7 @@ class StoreProductPage extends StorePage
 				$this->items_ui->getRoot()->getHtmlHeadEntrySet());
 
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-mini-cart.css',
+			'packages/store/styles/store-product-page.css',
 			Store::PACKAGE_ID));
 
 		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
