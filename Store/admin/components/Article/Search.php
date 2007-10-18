@@ -65,17 +65,17 @@ class StoreArticleSearch extends SiteArticleSearch
 			$where = parent::getWhereClause();
 
 			$search_regions = $this->ui->getWidget('search_regions');
-			foreach ($search_regions->options as $value => $title) {
-				if (in_array($value, $search_regions->values)) {
+			foreach ($search_regions->options as $option) {
+				if (in_array($option->value, $search_regions->values)) {
 					$where.= sprintf(' and id in
 						(select article from ArticleRegionBinding
 						where region = %s)',
-						$this->app->db->quote($value, 'integer'));
+						$this->app->db->quote($option->value, 'integer'));
 				} else {
 					$where.= sprintf(' and id not in
 						(select article from ArticleRegionBinding
 						where region = %s)',
-						$this->app->db->quote($value, 'integer'));
+						$this->app->db->quote($option->value, 'integer'));
 				}
 			}
 
