@@ -335,10 +335,13 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 			ob_start();
 			$this->cart_ui->display();
 
+			echo '<div class="cart-message-links">';
 			printf(Store::_('%sView your shopping cart%s '.
 					'or %sproceed to the checkout%s.'),
-					'<a href="cart"><strong>', '</strong></a>',
-					'<a href="checkout">', '</a>.');
+					'<a href="cart">', '</a>',
+					'<a href="checkout">', '</a>');
+
+			echo '</div>';
 
 			$message->secondary_content = ob_get_clean();
 			$message->content_type = 'text/xml';
