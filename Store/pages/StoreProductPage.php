@@ -52,6 +52,11 @@ class StoreProductPage extends StorePage
 	public function init()
 	{
 		parent::init();
+
+		$this->message_display = new StoreMessageDisplay();
+		$this->message_display->id = 'cart_message_display';
+		$this->message_display->init();
+
 		$this->initProduct();
 		$this->initCart();
 	}
@@ -100,9 +105,6 @@ class StoreProductPage extends StorePage
 
 	protected function initCart()
 	{
-		$this->message_display = new StoreMessageDisplay();
-		$this->message_display->id = 'cart_message_display';
-
 		$this->cart_ui = new SwatUI();
 		$this->cart_ui->loadFromXML($this->cart_ui_xml);
 		$this->cart_ui->getRoot()->addStyleSheet(
@@ -113,7 +115,6 @@ class StoreProductPage extends StorePage
 			$cart_form->action = $this->source;
 		}
 
-		$this->message_display->init();
 		$this->cart_ui->init();
 	}
 
@@ -197,6 +198,7 @@ class StoreProductPage extends StorePage
 	public function process()
 	{
 		parent::process();
+		$this->message_display->process();
 		$this->processProduct();
 		$this->processCart();
 	}
@@ -297,7 +299,6 @@ class StoreProductPage extends StorePage
 
 	protected function processCart()
 	{
-		$this->message_display->process();
 		$this->cart_ui->process();
 
 		if (!$this->cart_ui->hasWidget('cart_view'))
@@ -307,7 +308,7 @@ class StoreProductPage extends StorePage
 
 		// check for removed items
 		$remove_column = $view->getColumn('remove_column');
-		$remove_renderer = $remove_column->getRendererByPosition(); 
+		$remove_renderer = $remove_column->getRendererByPosition();
 		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
 			if ($widget->hasBeenClicked()) {
 				$this->item_removed = true;
