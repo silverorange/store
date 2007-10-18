@@ -72,13 +72,13 @@ function StoreQuickOrderItem(quick_order_id, item_selector_id, id)
 	this.sequence = 0;
 	this.displayed_sequence = 0;
 
-	this.out_effect = new YAHOO.util.Anim(this.div,
+	this.out_effect = new StoreOpacityAnimation(this.div,
 		{ opacity: { from: 1, to: 0 } }, 0.5);
-	
+
 	this.out_effect.onComplete.subscribe(StoreQuickOrderItem.handleFadeOut,
 		this);
 
-	this.in_effect = new YAHOO.util.Anim(this.div,
+	this.in_effect = new StoreOpacityAnimation(this.div,
 		{ opacity: { from: 0, to: 1 } }, 1);
 
 	this.sku = document.getElementById('sku_' + id);
