@@ -10,6 +10,7 @@ require_once 'Store/dataobjects/StoreCartEntry.php';
 require_once 'Store/dataobjects/StoreProduct.php';
 require_once 'Store/dataobjects/StoreCategory.php';
 require_once 'Store/StoreMessage.php';
+require_once 'Store/StoreMessageDisplay.php';
 
 /**
  * A product page
@@ -32,6 +33,8 @@ class StoreProductPage extends StorePage
 	protected $items_ui_xml = 'Store/pages/product-items-view.xml';
 	protected $cart_ui;
 	protected $cart_ui_xml = 'Store/pages/product-cart.xml';
+	protected $message_display;
+	protected $cart_message;
 	protected $item_removed = false;
 	protected $added_entry_ids = array();
 	protected $default_quantity = 0;
@@ -97,6 +100,9 @@ class StoreProductPage extends StorePage
 
 	protected function initCart()
 	{
+		$this->message_display = new StoreMessageDisplay();
+		$this->message_display->id = 'cart_message_display';
+
 		$this->cart_ui = new SwatUI();
 		$this->cart_ui->loadFromXML($this->cart_ui_xml);
 		$this->cart_ui->getRoot()->addStyleSheet(
@@ -107,6 +113,7 @@ class StoreProductPage extends StorePage
 			$cart_form->action = $this->source;
 		}
 
+		$this->message_display->init();
 		$this->cart_ui->init();
 	}
 
@@ -133,7 +140,7 @@ class StoreProductPage extends StorePage
 
 				$ds->sku = ($last_sku === $item->sku) ?
 					'' : $item->sku;
-	
+
 				$last_sku = $item->sku;
 				$store->add($ds);
 
@@ -219,7 +226,7 @@ class StoreProductPage extends StorePage
 				$message->secondary_content = Store::_('Please address the '.
 					'fields highlighted below and re-submit the form.');
 
-				$this->items_ui->getWidget('message_display')->add($message);
+				$this->message_display->add($message);
 			}
 
 			$num_items_added = 0;
@@ -243,21 +250,15 @@ class StoreProductPage extends StorePage
 			}
 
 			if ($num_items_added) {
-				
-				$message = new StoreMessage(
+				$this->cart_message = new StoreMessage(
 					Store::_('Your shopping cart has been updated.'),
 					StoreMessage::CART_NOTIFICATION);
-
-				$message->secondary_content = Store::_('You may continue '.
-					'shopping by following any of the links on this page.');
-
-				$this->cart_ui->getWidget('messages')->add($message);
 			}
 
 			// add cart messages
-			$messages = $this->app->cart->checkout->getMessages(); 
+			$messages = $this->app->cart->checkout->getMessages();
 			foreach ($messages as $message)
-				$this->cart_ui->getWidget('messages')->add($message);
+				$this->message_display->add($message);
 		}
 	}
 
@@ -296,6 +297,7 @@ class StoreProductPage extends StorePage
 
 	protected function processCart()
 	{
+		$this->message_display->process();
 		$this->cart_ui->process();
 
 		if (!$this->cart_ui->hasWidget('cart_view'))
@@ -310,7 +312,7 @@ class StoreProductPage extends StorePage
 			if ($widget->hasBeenClicked()) {
 				$this->item_removed = true;
 				$this->app->cart->checkout->removeEntryById($id);
-				$this->cart_ui->getWidget('messages')->add(new StoreMessage(
+				$this->message_display->add(new StoreMessage(
 					Store::_('An item has been removed from your shopping '.
 					'cart.'), StoreMessage::CART_NOTIFICATION));
 
@@ -333,7 +335,7 @@ class StoreProductPage extends StorePage
 		$this->buildNavBar();
 
 		$this->layout->startCapture('content');
-		$this->displayCart();
+		$this->message_display->display();
 		$this->displayProduct();
 		Swat::displayInlineJavaScript($this->getProductInlineJavaScript());
 		Swat::displayInlineJavaScript($this->getCartInlineJavaScript());
@@ -358,6 +360,35 @@ class StoreProductPage extends StorePage
 
 	protected function buildCart()
 	{
+		$cart_view = $this->cart_ui->getWidget('cart_view');
+		$cart_view->model = $this->getCartTableStore();
+		$count = count($cart_view->model);
+
+		if ($count > 0) {
+			if ($this->cart_message === null) {
+				$this->cart_message = new StoreMessage(null,
+					StoreMessage::CART_NOTIFICATION);
+
+				$this->cart_message->primary_content = Store::ngettext(
+					'The following item on this page is in your shopping cart.',
+					'The following items on this page are in your shopping cart.',
+					$count);
+
+				$this->cart_message->secondary_content =
+					Store::_('You may continue shopping by following any of the links on this page.');
+			}
+
+			ob_start();
+			$this->cart_ui->display();
+
+			printf(Store::_('%sView your shopping cart%s '.
+					'or %sproceed to the checkout%s.'),
+					'<a href="cart">', '</a>', '<a href="checkout">', '</a>.');
+
+			$this->cart_message->secondary_content = ob_get_clean();
+			$this->cart_message->content_type = 'text/xml';
+			$this->message_display->add($this->cart_message);
+		}
 	}
 
 	// }}}
@@ -419,30 +450,6 @@ class StoreProductPage extends StorePage
 	protected function isOnThisPage(StoreItem $item)
 	{
 		return ($item->product->id === $this->product_id);
-	}
-
-	// }}}
-	// {{{ protected function displayCart()
-
-	// mini cart will display if items on this product are in the cart
-	protected function displayCart()
-	{
-		$cart_view = $this->cart_ui->getWidget('cart_view');
-		$cart_view->model = $this->getCartTableStore();
-		$count = count($cart_view->model);
-		if ($count > 0) {
-			$frame = $this->cart_ui->getWidget('cart_frame');
-			$frame->title = Store::ngettext(
-				'The following item on this page is in your shopping cart:',
-				'The following items on this page are in your shopping cart:',
-				$count);
-
-			$this->cart_ui->getWidget('cart_form')->visible = true;
-			$this->cart_ui->display();
-
-		} elseif ($this->item_removed || count($this->added_entry_ids) > 0) {
-			$this->cart_ui->getWidget('messages')->display();
-		}
 	}
 
 	// }}}
@@ -882,6 +889,9 @@ class StoreProductPage extends StorePage
 		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
 			'packages/store/javascript/store-background-image-animation.js',
 			Store::PACKAGE_ID));
+
+		$this->layout->addHtmlHeadEntrySet(
+			$this->message_display->getHtmlHeadEntrySet());
 
 		$this->layout->addHtmlHeadEntrySet(
 			$this->cart_ui->getRoot()->getHtmlHeadEntrySet());

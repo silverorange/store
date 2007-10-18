@@ -2,60 +2,45 @@
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
 	<widget class="SwatForm" id="cart_form">
-		<property name="visible" type="boolean">false</property>
-		<widget class="StoreMessageDisplay" id="messages" />
-		<widget class="SwatFrame" id="cart_frame">
-			<property name="classes[]">store-mini-cart-frame</property>
-			<widget class="SwatTableView" id="cart_view">
-				<property name="classes[]">store-cart-entry-view</property>
-				<object class="StoreItemColumn" id="entry">
-					<property name="title" translatable="yes">Item</property>
-					<object class="StoreItemDescriptionCellRenderer">
-						<property name="sku" type="data">item.sku</property>
-						<property name="description" type="data">description</property>
-						<property name="classes[]">store-cart-description</property>
-					</object>
+		<widget class="SwatTableView" id="cart_view">
+			<property name="classes[]">store-cart-entry-view</property>
+			<object class="StoreItemColumn" id="entry">
+				<property name="title" translatable="yes">Item #</property>
+				<object class="StoreItemDescriptionCellRenderer">
+					<property name="sku" type="data">item.sku</property>
+					<property name="description" type="data">description</property>
+					<property name="classes[]">store-cart-description</property>
 				</object>
-				<object class="SwatTableViewColumn">
-					<property name="title" translatable="yes">Price</property>
-					<object class="StorePriceCellRenderer">
-						<property name="value" type="data">price</property>
-					</object>
+			</object>
+			<object class="SwatTableViewColumn">
+				<property name="title" translatable="yes">Price</property>
+				<object class="StorePriceCellRenderer">
+					<property name="value" type="data">price</property>
 				</object>
-				<object class="SwatTableViewColumn">
-					<property name="title" translatable="yes">Quantity</property>
-					<property name="abbreviated_title" translatable="yes">Qty.</property>
-					<object class="SwatNumericCellRenderer">
-						<property name="value" type="data">quantity</property>
-					</object>
+			</object>
+			<object class="SwatTableViewColumn">
+				<property name="title" translatable="yes">Quantity</property>
+				<property name="abbreviated_title" translatable="yes">Qty.</property>
+				<object class="SwatNumericCellRenderer">
+					<property name="value" type="data">quantity</property>
 				</object>
-				<object class="SwatTableViewColumn">
-					<property name="title" translatable="yes">Total</property>
-					<object class="StoreMoneyCellRenderer">
-						<property name="value" type="data">extension</property>
-					</object>
+			</object>
+			<object class="SwatTableViewColumn">
+				<property name="title" translatable="yes">Total</property>
+				<object class="StoreMoneyCellRenderer">
+					<property name="value" type="data">extension</property>
 				</object>
-				<object class="SwatTableViewColumn" id="remove_column">
-					<object class="SwatWidgetCellRenderer" id="remove_renderer">
-						<property name="replicator_id" type="data">id</property>
-						<widget class="SwatButton" id="remove_button">
-							<property name="title" translatable="yes">Remove</property>
-							<property name="classes[]">compact-button</property>
-							<property name="classes[]">store-remove</property>
-						</widget>
-					</object>
+			</object>
+			<object class="SwatTableViewColumn" id="remove_column">
+				<object class="SwatWidgetCellRenderer" id="remove_renderer">
+					<property name="replicator_id" type="data">id</property>
+					<widget class="SwatButton" id="remove_button">
+						<property name="title" translatable="yes">Remove</property>
+						<property name="classes[]">compact-button</property>
+						<property name="classes[]">store-remove</property>
+					</widget>
 				</object>
-			</widget>
-			<widget class="SwatToolbar" id="checkout_bottom_field">
-				<widget class="SwatToolLink" id="cart">
-					<property name="title" translatable="yes">View Entire Cart »</property>
-					<property name="link">cart</property>
-				</widget>
-				<widget class="SwatToolLink" id="checkout">
-					<property name="title" translatable="yes">Proceed to Checkout »</property>
-					<property name="link">checkout</property>
-				</widget>
-			</widget>
+			</object>
 		</widget>
 	</widget>
 </swatml>
