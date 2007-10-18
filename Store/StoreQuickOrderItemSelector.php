@@ -181,6 +181,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	protected function buildFormField($product)
 	{
 		$this->form_field->title = $product->title;
+		$this->form_field->show_colon = false;
 	}
 
 	// }}}
