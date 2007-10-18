@@ -26,7 +26,11 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 
 	public function render()
 	{
+		ob_start();
 		parent::render();
+		$price = ob_get_clean();
+
+		printf(Store::_('%s each'), $price);
 
 		if ($this->quantity_discounts !== null)
 			foreach ($this->quantity_discounts as $quantity_discount)
