@@ -102,6 +102,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 	{
 		parent::process();
 		$this->message_display->process();
+		$this->processCart();
 		$this->processForm();
 	}
 
@@ -258,6 +259,34 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 		$cart_entry->quick_order = true;
 
 		return $cart_entry;
+	}
+
+	// }}}
+	// {{{ protected function processCart()
+
+	protected function processCart()
+	{
+		$this->cart_ui->process();
+
+		if (!$this->cart_ui->hasWidget('cart_view'))
+			return;
+
+		$view = $this->cart_ui->getWidget('cart_view');
+
+		// check for removed items
+		$remove_column = $view->getColumn('remove_column');
+		$remove_renderer = $remove_column->getRendererByPosition();
+		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
+			if ($widget->hasBeenClicked()) {
+				$this->item_removed = true;
+				$this->app->cart->checkout->removeEntryById($id);
+				$this->message_display->add(new StoreMessage(
+					Store::_('An item has been removed from your shopping '.
+					'cart.'), StoreMessage::CART_NOTIFICATION));
+
+				break;
+			}
+		}
 	}
 
 	// }}}
