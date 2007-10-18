@@ -11,7 +11,7 @@ abstract class StoreCatalog extends SwatDBDataObject
 	// {{{ public properties
 
 	/**
-	 * Unique identifier 
+	 * Unique identifier
 	 *
 	 * @var integer
 	 */
@@ -41,13 +41,11 @@ abstract class StoreCatalog extends SwatDBDataObject
 	abstract static public function getStatusTitle($status);
 
 	// }}}
-
 	// {{{ abstract static public function getStatuses()
 
 	abstract static public function getStatuses();
 
 	// }}}
-
 	// {{{ abstract static public function getStatusConstant()
 
 	abstract static public function getStatusConstant($status);
