@@ -12,7 +12,7 @@
 					<property name="maxlength" type="integer">255</property>
 				</widget>
 			</widget>
-			<widget class="SwatFieldset">
+			<widget class="SwatFieldset" id="status_fieldset">
 				<property name="title" translatable="yes">Status</property>
 				<widget class="SwatReplicableFormField" id="status_replicator">
 					<widget class="SwatFlydown" id="status">
