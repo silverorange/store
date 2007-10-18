@@ -382,10 +382,13 @@ class StoreProductPage extends StorePage
 			ob_start();
 			$this->cart_ui->display();
 
+			echo '<div class="cart-message-links">';
 			printf(Store::_('%sView your shopping cart%s '.
 					'or %sproceed to the checkout%s.'),
-					'<a href="cart"><strong>', '</strong></a>',
-					'<a href="checkout">', '</a>.');
+					'<a href="cart">', '</a>',
+					'<a href="checkout">', '</a>');
+
+			echo '</div>';
 
 			$this->cart_message->secondary_content = ob_get_clean();
 			$this->cart_message->content_type = 'text/xml';

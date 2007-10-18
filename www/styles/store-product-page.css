@@ -17,3 +17,7 @@
 	padding-left: 0.5em;
 	padding-right: 0.5em;
 }
+
+.cart-message-links a {
+	font-weight: bold;
+}
