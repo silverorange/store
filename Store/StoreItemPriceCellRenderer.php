@@ -1,6 +1,7 @@
 <?php
 
-require_once 'StorePriceCellRenderer.php';
+require_once 'Store/StorePriceCellRenderer.php';
+require_once 'Store/StoreSavingsCellRenderer.php';
 
 /**
  * Renders item prices, including any quantity discounts
@@ -37,12 +38,24 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 
 	private function renderDiscount(StoreQuantityDiscount $quantity_discount)
 	{
+		$original_price = $this->value;
 		$this->value = $quantity_discount->getPrice();
-		$div = new SwatHtmlTag('div');
+		$savings_renderer = new StoreSavingsCellRenderer();
+		$savings_renderer->value = 1 - ($this->value / $original_price);
 
-		$div->open();
-		printf(Store::_('%s or more: '), $quantity_discount->quantity);
+		ob_start();
 		parent::render();
+		$price = ob_get_clean();
+
+		$this->value = $original_price;
+
+		$div = new SwatHtmlTag('div');
+		$div->open();
+		printf(Store::_('%s or more: %s each'),
+			$quantity_discount->quantity, $price);
+
+		$savings_renderer->render();
+
 		$div->close();
 	}
 
