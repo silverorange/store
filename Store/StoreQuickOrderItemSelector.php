@@ -86,6 +86,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 
 		$div_tag = new SwatHtmlTag('div');
 		$div_tag->id = $this->id;
+		$div_tag->class = 'store-quick-order-description';
 		$div_tag->open();
 		$this->displayContent();
 		$div_tag->close();
