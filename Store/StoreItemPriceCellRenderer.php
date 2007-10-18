@@ -54,6 +54,7 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 		printf(Store::_('%s or more: %s each'),
 			$quantity_discount->quantity, $price);
 
+		echo ' ';
 		$savings_renderer->render();
 
 		$div->close();
