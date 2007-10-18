@@ -1,9 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
-	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatForm" id="form">
-
 		<widget class="SwatTableView" id="items_view">
 			<object class="SwatTableViewGroup">
 				<property name="group_by">item_group.id</property>
