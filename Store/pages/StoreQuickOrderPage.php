@@ -10,6 +10,7 @@ require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
 require_once 'Swat/SwatYUI.php';
 require_once 'XML/RPCAjax.php';
+require_once 'Store/StoreMessageDisplay.php';
 
 /**
  *
@@ -23,6 +24,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 
 	protected $form_xml = 'Store/pages/quick-order.xml';
 	protected $cart_xml = 'Store/pages/quick-order-cart.xml';
+	protected $message_display;
 
 	protected $form_ui;
 	protected $cart_ui;
@@ -65,6 +67,10 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 		$cart_form->action = $this->source;
 
 		$this->cart_ui->init();
+
+		$this->message_display = new StoreMessageDisplay();
+		$this->message_display->id = 'cart_message_display';
+		$this->message_display->init();
 	}
 
 	// }}}
@@ -95,6 +101,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 	public function process()
 	{
 		parent::process();
+		$this->message_display->process();
 		$this->processForm();
 	}
 
@@ -117,8 +124,6 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 
 		$sku_column = $view->getColumn('sku_column');
 		$sku_renderer = $sku_column->getRenderer('renderer');
-
-		$message_display = $this->cart_ui->getWidget('messages');
 
 		if ($form->isProcessed()) {
 			foreach ($sku_renderer->getClonedWidgets() as $id => $sku_widget) {
@@ -167,7 +172,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 				$message->secondary_content = Store::_('Please address the '.
 					'fields highlighted below and re-submit the form.');
 
-				$this->cart_ui->getWidget('messages')->add($message);
+				$this->message_display->add($message);
 			}
 		}
 	}
@@ -268,7 +273,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 		$this->buildQuickOrderView();
 
 		$this->layout->startCapture('content', true);
-		$this->cart_ui->display();
+		$this->message_display->display();
 		$this->layout->endCapture();
 
 		$this->layout->startCapture('content');
@@ -282,22 +287,33 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 
 	protected function buildCartView()
 	{
-		$message_display = $this->cart_ui->getWidget('messages');
 		foreach ($this->app->cart->checkout->getMessages() as $message)
-			$message_display->add($message);
+			$this->message_display->add($message);
 
 		$cart_view = $this->cart_ui->getWidget('cart_view');
 		$cart_view->model = $this->getCartTableStore();
 
 		$count = count($cart_view->model);
 		if ($count > 0) {
-			$frame = $this->cart_ui->getWidget('cart_frame');
-			$frame->title = Store::ngettext(
+			$message = new StoreMessage(null,
+				StoreMessage::CART_NOTIFICATION);
+
+			$message->primary_content = Store::ngettext(
 				'The following item was added to your cart:',
 				'The following items were added to your cart:',
 				$count);
 
-			$this->cart_ui->getWidget('cart_form')->visible = true;
+			ob_start();
+			$this->cart_ui->display();
+
+			printf(Store::_('%sView your shopping cart%s '.
+					'or %sproceed to the checkout%s.'),
+					'<a href="cart"><strong>', '</strong></a>',
+					'<a href="checkout">', '</a>.');
+
+			$message->secondary_content = ob_get_clean();
+			$message->content_type = 'text/xml';
+			$this->message_display->add($message);
 		}
 	}
 
@@ -397,6 +413,9 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
 			'packages/store/styles/store-quick-order-page.css',
 			Store::PACKAGE_ID));
+
+		$this->layout->addHtmlHeadEntrySet(
+			$this->message_display->getHtmlHeadEntrySet());
 
 		$this->layout->addHtmlHeadEntrySet(
 			$this->cart_ui->getRoot()->getHtmlHeadEntrySet());
