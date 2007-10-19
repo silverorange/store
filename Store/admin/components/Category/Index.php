@@ -662,7 +662,7 @@ class StoreCategoryIndex extends AdminIndex
 			// get product visibility (does not depend on current catalogue)
 			$quoted_ids = array();
 			foreach ($model as $row)
-				$quoted_ids[] = $this->app->db->quote($row->id);
+				$quoted_ids[] = $this->app->db->quote($row->id, 'integer');
 
 			$sql = sprintf('select product from VisibleProductView
 				where product in (%s)',
