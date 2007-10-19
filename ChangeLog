@@ -1,5 +1,14 @@
+2007-10-19  nrf
+
+	* [r21681] store/branches/1.10.x:
+	  make a branch
+
 2007-10-12  nrf
 
+	* [r21352] store/tags/release-1.10.4:
+	  tag release 1.10.4
+	* [r21351] store/trunk/ChangeLog, store/trunk/package.php:
+	  prepare for release of 1.10.4
 	* [r21349] store/trunk/ChangeLog, store/trunk/package.php:
 	  prepare for release of 1.10.3
 
