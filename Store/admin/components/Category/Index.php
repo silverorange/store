@@ -629,20 +629,31 @@ class StoreCategoryIndex extends AdminIndex
 		foreach ($rs as $row)
 			$product_count[$row->category] = $row->product_count;
 
-		// get category visibility (does not depend on current catalogue)
-		$sql = 'select category
-			from VisibleCategoryView
-			where category in (select id from Category where parent %s %s)';
+		/*
+		 * Get category visibility (does not depend on current catalogue).
+		 *
+		 * Not using the VisibleCategoryView here because it depends on a cache
+		 * table that may not be updated yet.
+		 */
+		$sql = 'select v.category,
+				sum(v.product_count) as product_count,
+				Category.always_visible
+			from CategoryVisibleProductCountByRegionView as v
+				inner join Category on Category.id = v.category
+			where Category.parent %s %s
+			group by category, always_visible';
 
 		$sql = sprintf($sql,
 			SwatDB::equalityOperator($this->id),
 			$this->app->db->quote($this->id, 'integer'));
 
 		$rs = SwatDB::query($this->app->db, $sql);
-		$visbile_categories = array();
 
-		foreach ($rs as $row)
-			$visible_categories[$row->category] = true;
+		$visbile_categories = array();
+		foreach ($rs as $row) {
+			if ($row->product_count > 0 || $row->always_visible)
+				$visible_categories[$row->category] = true;
+		}
 
 		// set product count and visibility for categories
 		foreach ($model as $row) {
