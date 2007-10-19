@@ -46,7 +46,7 @@ abstract class StoreCatalogEdit extends AdminDBEdit
 
 		$catalog_class = SwatDBClassMap::get('StoreCatalog');
 
-		foreach (call_user_func(array($catalog_class, 'getStatuses')) as 
+		foreach (call_user_func(array($catalog_class, 'getStatuses')) as
 			$id => $title)
 				$status_options[] = new SwatOption($id, $title);
 
@@ -61,6 +61,7 @@ abstract class StoreCatalogEdit extends AdminDBEdit
 					'title');
 		} else {
 			$status_replicator->visible = false;
+			$this->ui->getWidget('status_fieldset')->visible = false;
 		}
 	}
 

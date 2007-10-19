@@ -391,6 +391,10 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
 
 		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			'packages/store/javascript/store-opacity-animation.js',
+			Store::PACKAGE_ID));
+
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
 			'packages/store/javascript/store-quick-order-page.js',
 			Store::PACKAGE_ID));
 
