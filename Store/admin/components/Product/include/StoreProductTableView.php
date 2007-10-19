@@ -6,7 +6,7 @@ require_once 'Swat/SwatTableView.php';
  * A table view that displays products with no items in a special way
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductTableView extends SwatTableView
@@ -22,6 +22,9 @@ class StoreProductTableView extends SwatTableView
 
 		if ($row->count_disabled == $row->item_count)
 			$classes[] = 'product-disabled';
+
+		if (!$row->currently_visible)
+			$classes[] = 'product-not-visible';
 
 		return $classes;
 	}

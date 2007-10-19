@@ -585,6 +585,7 @@ class StoreCategoryIndex extends AdminIndex
 					and Product.catalog in (%s)
 				order by %s';
 
+		// only products from the currently selected catalogue(s) are selected
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->id, 'integer'),
 			$this->app->db->quote($this->id, 'integer'),
@@ -594,6 +595,8 @@ class StoreCategoryIndex extends AdminIndex
 				'Product'));
 
 		$rs = SwatDB::query($this->app->db, $sql);
+
+		$this->setProductVisibility($rs);
 
 		if (count($rs) == 0) {
 			$index_form = $this->ui->getWidget('products_index_form');
@@ -606,8 +609,9 @@ class StoreCategoryIndex extends AdminIndex
 	// }}}
 	// {{{ protected function setCategoryVisibility()
 
-	protected function setCategoryVisibility($model)
+	protected function setCategoryVisibility(SwatTableModel $model)
 	{
+		// get category product count (depends on current catalogue)
 		$sql = 'select category, sum(product_count) as product_count
 			from CategoryProductCountByCatalogView
 			where category in (select id from Category where parent %s %s)
@@ -625,7 +629,7 @@ class StoreCategoryIndex extends AdminIndex
 		foreach ($rs as $row)
 			$product_count[$row->category] = $row->product_count;
 
-
+		// get category visibility (does not depend on current catalogue)
 		$sql = 'select category
 			from VisibleCategoryView
 			where category in (select id from Category where parent %s %s)';
@@ -640,12 +644,39 @@ class StoreCategoryIndex extends AdminIndex
 		foreach ($rs as $row)
 			$visible_categories[$row->category] = true;
 
-
+		// set product count and visibility for categories
 		foreach ($model as $row) {
-			$row->product_count =
-				isset($product_count[$row->id]) ? $product_count[$row->id] : 0;
+			$row->product_count = (isset($product_count[$row->id])) ?
+				$product_count[$row->id] : 0;
 
 			$row->currently_visible = (isset($visible_categories[$row->id]));
+		}
+	}
+
+	// }}}
+	// {{{ protected function setProductVisibility()
+
+	protected function setProductVisibility(SwatTableModel $model)
+	{
+		if (count($model) > 0) {
+			// get product visibility (does not depend on current catalogue)
+			$quoted_ids = array();
+			foreach ($model as $row)
+				$quoted_ids[] = $this->app->db->quote($row->id);
+
+			$sql = sprintf('select product from VisibleProductView
+				where product in (%s)',
+				implode(', ', $quoted_ids));
+
+			$rs = SwatDB::query($this->app->db, $sql);
+			$visbile_products = array();
+
+			foreach ($rs as $row)
+				$visible_products[$row->product] = true;
+
+			// set visibility for products
+			foreach ($model as $row)
+				$row->currently_visible = (isset($visible_products[$row->id]));
 		}
 	}
 
