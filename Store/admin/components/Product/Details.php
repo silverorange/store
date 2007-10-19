@@ -486,9 +486,8 @@ class StoreProductDetails extends AdminIndex
 	// }}}
 	// {{{ private function buildViewInStoreToolLinks()
 
-	private function buildViewInStoreToolLinks($product)
+	private function buildViewInStoreToolLinks(StoreProduct $product)
 	{
-		//TODO: only make link when the product is actually available (maybe)
 		$some_category = $product->categories->getFirst();
 		if ($some_category !== null) {
 			$prototype_tool_link = $this->ui->getWidget('view_in_store');
@@ -497,13 +496,25 @@ class StoreProductDetails extends AdminIndex
 			$path = $some_category->path;
 
 			foreach ($this->queryRegions() as $region) {
+
 				$locale = $region->getFirstLocale();
 				if ($locale !== null) {
+					$sql = sprintf('select product from VisibleProductView
+						where region = %s and product = %s',
+						$this->app->db->quote($region->id, 'integer'),
+						$this->app->db->quote($product->id, 'integer'));
+
+					$visible_in_region =
+						(SwatDB::queryOne($this->app->db, $sql) !== null);
+
 					$tool_link = clone $prototype_tool_link;
 					$tool_link->id.= '_'.$region->id;
 					$tool_link->value = $locale->getURLLocale();
 					$tool_link->value.= 'store/'.$path.'/'.$product->shortname;
 					$tool_link->title.= sprintf(' (%s)', $region->title);
+					if (!$visible_in_region)
+						$tool_link->sensitive = false;
+
 					$toolbar->packEnd($tool_link);
 				}
 			}
