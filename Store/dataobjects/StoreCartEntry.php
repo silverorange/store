@@ -120,7 +120,7 @@ class StoreCartEntry extends SwatDBDataObject
 	/**
 	 * Gets the unit cost of the StoreItem for this cart entry
 	 *
-	 * The unit cost is caucluated based on discounts.
+	 * The unit cost is calculated based on discounts.
 	 *
 	 * @return double the unit cost of the StoreItem for this cart entry.
 	 */
