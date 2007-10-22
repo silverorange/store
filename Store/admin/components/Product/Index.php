@@ -186,11 +186,40 @@ class StoreProductIndex extends AdminSearch
 
 		$rs = SwatDB::query($this->app->db, $sql);
 
+		$this->setProductVisibility($rs);
+
 		if (count($rs) > 0)
 			$this->ui->getWidget('results_message')->content =
 				$pager->getResultsMessage('result', 'results');
 
 		return $rs;
+	}
+
+	// }}}
+	// {{{ protected function setProductVisibility()
+
+	protected function setProductVisibility(SwatTableModel $model)
+	{
+		if (count($model) > 0) {
+			// get product visibility (does not depend on current catalogue)
+			$quoted_ids = array();
+			foreach ($model as $row)
+				$quoted_ids[] = $this->app->db->quote($row->id, 'integer');
+
+			$sql = sprintf('select product from VisibleProductView
+				where product in (%s)',
+				implode(', ', $quoted_ids));
+
+			$rs = SwatDB::query($this->app->db, $sql);
+			$visbile_products = array();
+
+			foreach ($rs as $row)
+				$visible_products[$row->product] = true;
+
+			// set visibility for products
+			foreach ($model as $row)
+				$row->currently_visible = (isset($visible_products[$row->id]));
+		}
 	}
 
 	// }}}
