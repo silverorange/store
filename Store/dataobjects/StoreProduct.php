@@ -286,14 +286,24 @@ class StoreProduct extends SwatDBDataObject
 	{
 		$path = '';
 
-		if ($this->hasInternalValue('path') &&
-			$this->getInternalValue('path') !== null) {
-			$path = $this->getInternalValue('path').'/'.$this->shortname;
-		} elseif ($this->hasInternalValue('primary_category') &&
-			$this->getInternalValue('primary_category') !== null) {
+		$internal_path = ($this->hasInternalValue('path') ||
+			$this->getInternalValue('path') !== null) ?
+			$this->getInternalValue('path') : null;
 
-			$primary_category = $this->getInternalValue('primary_category');
+		$primary_category = ($this->hasInternalValue('primary_category') ||
+			$this->getInternalValue('primary_category') !== null) ?
+			$this->getInternalValue('primary_category') : null;
 
+		if ($internal_path === null && $primary_category === null)
+			$internal_path = SwatDB::queryOne($this->db,
+				sprintf('select getCategoryPath(primary_category)
+					from ProductPrimaryCategoryView
+					where product = %s',
+					$this->db->quote($this->id, 'integer')));
+
+		if ($internal_path !== null) {
+			$path = $internal_path.'/'.$this->shortname;
+		} elseif ($primary_category !== null) {
 			$sql = sprintf('select getCategoryPath(%s)',
 				$this->db->quote($primary_category, 'integer'));
 
