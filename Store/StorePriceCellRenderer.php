@@ -63,7 +63,7 @@ class StorePriceCellRenderer extends SwatMoneyCellRenderer
 
 		$formatted_discount = ob_get_clean();
 
-		echo '<div class="store-discount">';
+		echo '<div class="store-cart-discount">';
 
 		printf(Store::_('You save %s'),
 			$formatted_discount);
