@@ -5,8 +5,7 @@
 		<widget class="SwatTableView" id="cart_view">
 			<property name="classes[]">store-cart-entry-view</property>
 			<object class="StoreItemColumn">
-				<property name="title" translatable="yes">Item Number</property>
-				<property name="abbreviated_title" translatable="yes">Item #</property>
+				<property name="title" translatable="yes">Item #</property>
 				<object class="StoreItemDescriptionCellRenderer">
 					<property name="sku" type="data">item.sku</property>
 					<property name="description" type="data">description</property>
@@ -21,7 +20,6 @@
 			</object>
 			<object class="SwatTableViewColumn">
 				<property name="title" translatable="yes">Quantity</property>
-				<property name="abbreviated_title" translatable="yes">Qty.</property>
 				<object class="SwatNumericCellRenderer">
 					<property name="value" type="data">quantity</property>
 				</object>

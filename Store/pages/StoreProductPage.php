@@ -371,22 +371,25 @@ class StoreProductPage extends StorePage
 					StoreMessage::CART_NOTIFICATION);
 
 				$this->cart_message->primary_content = Store::ngettext(
-					'The following item on this page is in your shopping cart.',
-					'The following items on this page are in your shopping cart.',
+					'The following item on this page is in your shopping cart:',
+					'The following items on this page are in your shopping '.
+					'cart:',
 					$count);
 
 				$this->cart_message->secondary_content =
-					Store::_('You may continue shopping by following any of the links on this page.');
+					Store::_('You may continue shopping by following any of '.
+						'the links on this page.');
 			}
 
 			ob_start();
 			$this->cart_ui->display();
 
 			echo '<div class="cart-message-links">';
-			printf(Store::_('%sView your shopping cart%s '.
-					'or %sproceed to the checkout%s.'),
-					'<a href="cart">', '</a>',
-					'<a href="checkout">', '</a>');
+
+			printf(Store::_(
+				'%sView your shopping cart%s or %sproceed to the checkout%s.'),
+				'<a href="cart">', '</a>',
+				'<a href="checkout">', '</a>');
 
 			echo '</div>';
 
