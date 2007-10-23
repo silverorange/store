@@ -110,9 +110,9 @@ class StoreAccountOrderPage extends StoreAccountPage
 	}
 
 	// }}}
-	// {{{ private function loadOrder()
+	// {{{ protected function loadOrder()
 
-	private function loadOrder()
+	protected function loadOrder()
 	{
 		$this->order = $this->app->session->account->orders->getByIndex(
 			$this->id);
