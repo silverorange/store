@@ -41,7 +41,6 @@
 					<property name="title" translatable="yes">Price</property>
 					<object class="StorePriceCellRenderer">
 						<property name="value" type="data">price</property>
-						<property name="discount" type="data">discount</property>
 					</object>
 				</object>
 				<object class="SwatTableViewColumn" id="quantity_column">
@@ -61,6 +60,7 @@
 					<property name="title" translatable="yes">Total</property>
 					<object class="StorePriceCellRenderer">
 						<property name="value" type="data">extension</property>
+						<property name="discount" type="data">discount_extension</property>
 					</object>
 				</object>
 				<object class="SwatTableViewColumn" id="remove_column">
