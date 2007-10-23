@@ -345,7 +345,7 @@ class StoreAccountDetailsPage extends StoreAccountPage
 
 	protected function displayOrders()
 	{
-		$orders = $this->app->session->account->orders;
+		$orders = $this->getOrders();
 
 		if (count($orders) > 0) {
 			$ul = new SwatHtmlTag('ul');
@@ -398,6 +398,20 @@ class StoreAccountDetailsPage extends StoreAccountPage
 		$ds = new SwatDetailsStore($account);
 		$ds->fullname = $account->getFullName();
 		return $ds;
+	}
+
+	// }}}
+	// {{{ protected function getOrders()
+
+	/**
+	 * Gets the orders of the account to display on this account details page
+	 *
+	 * @return StoreOrderWrapper the orders to display on this account details
+	 *                           page.
+	 */
+	protected function getOrders()
+	{
+		return $this->app->session->account->orders;
 	}
 
 	// }}}
