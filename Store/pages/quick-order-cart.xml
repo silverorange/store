@@ -28,7 +28,6 @@
 			</object>
 			<object class="SwatTableViewColumn">
 				<property name="title" translatable="yes">Quantity</property>
-				<property name="abbreviated_title" translatable="yes">Qty.</property>
 				<object class="SwatNumericCellRenderer">
 					<property name="value" type="data">quantity</property>
 				</object>
