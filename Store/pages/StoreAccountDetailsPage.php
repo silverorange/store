@@ -371,7 +371,7 @@ class StoreAccountDetailsPage extends StoreAccountPage
 	// }}}
 	// {{{ protected function displayOrder()
 
-	protected function displayOrder($order)
+	protected function displayOrder(StoreOrder $order)
 	{
 		$createdate = clone $order->createdate;
 		$createdate->convertTZ($this->app->default_time_zone);
