@@ -153,13 +153,23 @@ class StoreCartEntry extends SwatDBDataObject
 	 */
 	public function getDiscount()
 	{
-		$base_extension = $this->item->getPrice() * $this->getQuantity();
-		$discounted_extension =
-			$this->getCalculatedItemPrice() * $this->getQuantity();
+		return $this->item->getPrice() - $this->getCalculatedItemPrice();
+	}
 
-		$discount = $base_extension - $discounted_extension;
+	// }}}
+	// {{{ public function getDiscountExtension()
 
-		return $discount;
+	/**
+	 * Gets how much total money is saved by discounts
+	 *
+	 * @return double how much money is saved from discounts or zero if no
+	 *                 discount applies.
+	 *
+	 * @see StoreCartEntry::getDiscount()
+	 */
+	public function getDiscountExtension()
+	{
+		return $this->getDiscount() * $this->getQuantity();
 	}
 
 	// }}}

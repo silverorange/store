@@ -891,6 +891,8 @@ abstract class StoreCartPage extends SiteArticlePage
 		$ds->quantity = $entry->getQuantity();
 		$ds->description = $entry->getDescription();
 		$ds->price = $entry->getCalculatedItemPrice();
+		$ds->discount = $entry->getDiscount();
+		$ds->discount_extension = $entry->getDiscountExtension();
 		$ds->extension = $entry->getExtension();
 		$ds->message = null;
 		$ds->product_link = 'store/'.$entry->item->product->path;

@@ -41,6 +41,7 @@
 					<property name="title" translatable="yes">Price</property>
 					<object class="StorePriceCellRenderer">
 						<property name="value" type="data">price</property>
+						<property name="discount" type="data">discount</property>
 					</object>
 				</object>
 				<object class="SwatTableViewColumn" id="quantity_column">
