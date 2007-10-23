@@ -637,7 +637,7 @@ class StoreProductPage extends StorePage
 
 	protected function displaySecondaryImages()
 	{
-		echo '<ul id="product_secondary_images">';
+		echo '<ul id="product_secondary_images" class="clearfix">';
 
 		foreach ($this->product->images as $image)
 			if ($this->product->primary_image->id !== $image->id)
