@@ -14,6 +14,11 @@ require_once 'Swat/SwatMoneyCellRenderer.php';
  */
 class StorePriceCellRenderer extends SwatMoneyCellRenderer
 {
+	// {{{ public properties
+
+	public $discount = 0;
+
+	// }}}
 	// {{{ public function render()
 
 	public function render()
@@ -24,11 +29,46 @@ class StorePriceCellRenderer extends SwatMoneyCellRenderer
 		if ($this->value === null)
 			return;
 
-		if ($this->isFree())
+		if ($this->isFree()) {
 			echo Store::_('Free!');
-		else
+		} else {
 			parent::render();
 
+			if ($this->discount > 0)
+				$this->displayDiscount();
+		}
+	}
+
+	// }}}
+	// {{{ public function displayDiscount()
+
+	public function displayDiscount()
+	{
+		if ($this->discount == 0)
+			return;
+
+		$locale = SwatI18NLocale::get($this->locale);
+
+		ob_start();
+
+		echo SwatString::minimizeEntities(
+			$locale->formatCurrency($this->discount,
+				$this->international,
+				array('fractional_digits' =>
+				$this->decimal_places)));
+
+		if (!$this->international && $this->display_currency)
+			echo '&nbsp;', SwatString::minimizeEntities(
+				$locale->getInternationalCurrencySymbol());
+
+		$formatted_discount = ob_get_clean();
+
+		echo '<div class="store-discount">';
+
+		printf(Store::_('You save %s'),
+			$formatted_discount);
+
+		echo '</div>';
 	}
 
 	// }}}
