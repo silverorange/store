@@ -28,6 +28,11 @@ class StoreAccountOrderPage extends StoreAccountPage
 	// {{{ protected properties
 
 	/**
+	 * @var integer
+	 */
+	protected $id;
+
+	/**
 	 * @var string
 	 */
 	protected $ui_xml = 'Store/pages/account-order.xml';
@@ -44,11 +49,6 @@ class StoreAccountOrderPage extends StoreAccountPage
 
 	// }}}
 	// {{{ private properties
-
-	/**
-	 * @var integer
-	 */
-	private $id;
 
 	/**
 	 * @var array
