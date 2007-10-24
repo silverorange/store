@@ -281,14 +281,7 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 
 		if (!$form->isProcessed()) {
 			if ($this->id === null) {
-				$this->ui->getWidget('fullname')->value =
-					$this->app->session->account->fullname;
-
-				$this->ui->getWidget('company')->value =
-					$this->app->session->account->company;
-
-				$this->ui->getWidget('phone')->value =
-					$this->app->session->account->phone;
+				$this->setDefaultValues($this->app->session->account);
 			} else {
 				$address = $this->findAddress();
 				$this->setWidgetValues($address);
@@ -336,6 +329,21 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 
 		$this->ui->getWidget('postal_code')->value = $address->postal_code;
 		$this->ui->getWidget('country')->value = $address->country->id;
+	}
+
+	// }}}
+	// {{{ protected function setDefaultValues()
+
+	/**
+	 * Sets default values of this address based on values from the account
+	 *
+	 * @param StoreAccount $account the account to set default values from.
+	 */
+	protected function setDefaultValues(StoreAccount $account)
+	{
+		$this->ui->getWidget('fullname')->value = $account->fullname;
+		$this->ui->getWidget('company')->value = $account->company;
+		$this->ui->getWidget('phone')->value = $account->phone;
 	}
 
 	// }}}
