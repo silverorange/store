@@ -177,7 +177,7 @@ class StoreAccount extends SiteAccount
 	{
 		$sql = sprintf('select * from Orders
 			where account = %s
-			order by id asc',
+			order by id desc',
 			$this->db->quote($this->id, 'integer'));
 
 		return SwatDB::query($this->db, $sql,
