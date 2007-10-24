@@ -313,6 +313,25 @@ class StoreAccountOrderPage extends StoreAccountPage
 	}
 
 	// }}}
+	// {{{ protected function buildCartMessages()
+
+	protected function buildCartMessages()
+	{
+		$num = count($this->items_added);
+		if ($num > 0) {
+			$message = new SwatMessage(sprintf(Store::ngettext(
+				'“%1$s” added to %3$sshopping cart%4$s.',
+				'%2$s items added to %3$sshopping cart%4$s.', $num),
+				current($this->items_added)->sku, $num,
+				'<a href="cart">', '</a>'));
+
+			$message->content_type = 'text/xml';
+
+			$this->ui->getWidget('message_display')->add($message);
+		}
+	}
+
+	// }}}
 	// {{{ private function setItemPaths()
 
 	private function setItemPaths($store)
@@ -348,25 +367,6 @@ class StoreAccountOrderPage extends StoreAccountPage
 				$row->path = null;
 				$row->show_add_button = false;
 			}
-		}
-	}
-
-	// }}}
-	// {{{ private function buildCartMessages()
-
-	private function buildCartMessages()
-	{
-		$num = count($this->items_added);
-		if ($num > 0) {
-			$message = new SwatMessage(sprintf(Store::ngettext(
-				'“%1$s” added to %3$sshopping cart%4$s.',
-				'%2$s items added to %3$sshopping cart%4$s.', $num),
-				current($this->items_added)->sku, $num,
-				'<a href="cart">', '</a>'));
-
-			$message->content_type = 'text/xml';
-
-			$this->ui->getWidget('message_display')->add($message);
 		}
 	}
 
