@@ -49,7 +49,7 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 		$original_price = $this->value;
 		$this->value = $quantity_discount->getPrice();
 		$savings_renderer = new StoreSavingsCellRenderer();
-		$savings_renderer->value = 1 - ($this->value / $original_price);
+		$savings_renderer->value = round(1 - ($this->value / $original_price), 2);
 
 		ob_start();
 		parent::render();
