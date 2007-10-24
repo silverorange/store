@@ -262,16 +262,26 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 
 	protected function getItemNode($item, $show_item_group = false)
 	{
-		$renderer = new StoreItemPriceCellRenderer();
+		$renderer = $this->getItemPriceCellRenderer($item);
 		$description = $item->getDescription($show_item_group);
-		$renderer->value = $item->getPrice();
-		$renderer->quantity_discounts = $item->quantity_discounts;
 
 		ob_start();
 		$renderer->render();
 		$description.= ' '.ob_get_clean();
 
 		return new SwatTreeFlydownNode($item->id, $description);
+	}
+
+	// }}}
+	// {{{ protected function getItemPriceCellRenderer()
+
+	protected function getItemPriceCellRenderer($item)
+	{
+		$renderer = new StoreItemPriceCellRenderer();
+		$renderer->value = $item->getPrice();
+		$renderer->quantity_discounts = $item->quantity_discounts;
+
+		return $renderer;
 	}
 
 	// }}}
