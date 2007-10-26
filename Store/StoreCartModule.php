@@ -367,7 +367,7 @@ class StoreCartModule extends SiteApplicationModule
 		if (!$this->app->session->isActive())
 			return;
 
-		$entry_sql = $this->getEntrySql($this->getCartEntryWhereClause());
+		$entry_sql = $this->getEntrySql($this->getEntryWhereClause());
 
 		$this->entries = SwatDB::query($this->app->db, $entry_sql,
 			SwatDBClassMap::get('StoreCartEntryWrapper'));
