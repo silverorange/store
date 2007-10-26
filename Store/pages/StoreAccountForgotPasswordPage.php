@@ -70,18 +70,33 @@ class StoreAccountForgotPasswordPage extends StoreAccountPage
 	}
 
 	// }}}
+	// {{{ protected function getAccount()
+
+	/**
+	 * Gets the account to which to sent the forgot password email
+	 *
+	 * @param string $email the email address of the account.
+	 *
+	 * @return StoreAccount the account or null if no such account exists.
+	 */
+	protected function getAccount($email)
+	{
+		$account_sql = sprintf('select id, email, fullname from Account
+			where lower(email) = lower(%s)',
+			$this->app->db->quote($email, 'text'));
+
+		return SwatDB::query($this->app->db, $account_sql,
+			SwatDBClassMap::get('StoreAccountWrapper'))->getFirst();
+	}
+
+	// }}}
 	// {{{ private function generatePassword()
 
 	private function generatePassword()
 	{
 		$email = $this->ui->getWidget('email')->value;
 
-		$account_sql = sprintf('select id, email, fullname from Account
-			where lower(email) = lower(%s)',
-			$this->app->db->quote($email, 'text'));
-
-		$account = SwatDB::query($this->app->db, $account_sql,
-			SwatDBClassMap::get('StoreAccountWrapper'))->getFirst();
+		$account = $this->getAccount($email);
 
 		if ($account === null) {
 			$message = new SwatMessage(Store::_(
@@ -99,6 +114,7 @@ class StoreAccountForgotPasswordPage extends StoreAccountPage
 			$password_tag = $account->resetPassword($this->app);
 			$password_link = $this->app->getBaseHref().
 				'account/resetpassword/'.$password_tag;
+
 			$account->sendResetPasswordMailMessage($this->app, $password_link);
 		}
 	}
