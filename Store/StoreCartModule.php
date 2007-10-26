@@ -363,17 +363,20 @@ class StoreCartModule extends SiteApplicationModule
 		if ($this->app->getRegion() === null)
 			return;
 
+		// no active session, so no cart entries
+		if (!$this->app->session->isActive())
+			return;
+
 		if ($this->app->session->isLoggedIn()) {
 			$account_id = $this->app->session->getAccountId();
 			$where_clause = sprintf('account = %s or sessionid = %s',
 				$this->app->db->quote($account_id, 'integer'),
-				$this->app->db->quote($this->app->session->getSessionId(), 'text'));
-		} elseif ($this->app->session->isActive()) {
-			$where_clause = sprintf('sessionid = %s',
-				$this->app->db->quote($this->app->session->getSessionId(), 'text'));
+				$this->app->db->quote(
+					$this->app->session->getSessionId(), 'text'));
 		} else {
-			// not logged in, and no active session, so no cart entries
-			return;
+			$where_clause = sprintf('sessionid = %s',
+				$this->app->db->quote(
+					$this->app->session->getSessionId(), 'text'));
 		}
 
 		$entry_sql = $this->getEntrySql($where_clause);
@@ -414,8 +417,36 @@ class StoreCartModule extends SiteApplicationModule
 	}
 
 	// }}}
+	// {{{ protected function getEntryWhereClause()
+
+	/**
+	 * Gets the SQL where clause of cart entries
+	 *
+	 * @return string the SQL where clause of cart entries. If no cart entries
+	 *                 can be loaded, null is returned.
+	 */
+	protected function getEntryWhereClause()
+	{
+		$where_clause = null;
+
+		if ($this->app->session->isLoggedIn()) {
+			$account_id = $this->app->session->getAccountId();
+			$where_clause = sprintf('account = %s or sessionid = %s',
+				$this->app->db->quote($account_id, 'integer'),
+				$this->app->db->quote(
+					$this->app->session->getSessionId(), 'text'));
+		} elseif ($this->app->session->isActive()) {
+			$where_clause = sprintf('sessionid = %s',
+				$this->app->db->quote(
+					$this->app->session->getSessionId(), 'text'));
+		}
+
+		return $where_clause;
+	}
+
+	// }}}
 	// {{{ protected function getEntrySql()
-	
+
 	protected function getEntrySql($where_clause)
 	{
 		$entry_sql = 'select CartEntry.*
