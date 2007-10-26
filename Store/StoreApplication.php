@@ -7,6 +7,7 @@ require_once 'Site/SiteConfigModule.php';
 require_once 'Site/SiteMessagesModule.php';
 require_once 'Site/SiteAccountSessionModule.php';
 require_once 'Store/Store.php';
+require_once 'Store/StoreMessage.php';
 require_once 'Store/StoreCartModule.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/dataobjects/StoreAdWrapper.php';
