@@ -128,7 +128,7 @@ class StoreAccountEditPage extends StoreAccountPage
 	// {{{ protected function createNewAccount()
 
 	/**
-	 * Creates a new account object when a new account is creates
+	 * Creates a new account object when a new account is created
 	 *
 	 * @return StoreAccount the new account object.
 	 */
