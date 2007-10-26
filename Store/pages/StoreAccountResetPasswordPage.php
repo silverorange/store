@@ -67,11 +67,27 @@ class StoreAccountResetPasswordPage extends SiteArticlePage
 		$confirm = $this->ui->getWidget('confirm_password');
 		$confirm->password_widget = $this->ui->getWidget('password');;
 
-		$this->account_id = SwatDB::queryOne($this->app->db, sprintf('
-			select id from Account where password_tag = %s',
-			$this->app->db->quote($this->password_tag, 'text')));
+		$this->account_id = $this->getAccountId($this->password_tag);
 
 		$this->ui->init();
+	}
+
+	// }}}
+	// {{{ protected function getAccountId()
+
+	/**
+	 * Gets the account id of the account associated with the password tag
+	 *
+	 * @param string $password_tag the password tag.
+	 *
+	 * @return integer the account id of the account associated with the
+	 *                  password tag or null if no such account id exists.
+	 */
+	protected function getAccountId($password_tag)
+	{
+		return SwatDB::queryOne($this->app->db, sprintf(
+			'select id from Account where password_tag = %s',
+			$this->app->db->quote($password_tag, 'text')));
 	}
 
 	// }}}
