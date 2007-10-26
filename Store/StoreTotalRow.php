@@ -22,6 +22,7 @@ class StoreTotalRow extends SwatTableViewRow
 	public $offset = 0;
 	public $note = null;
 	public $note_content_type = 'text/plain';
+	public $show_free = true;
 
 	// }}}
 	// {{{ protected properties
@@ -107,11 +108,11 @@ class StoreTotalRow extends SwatTableViewRow
 		if ($this->locale !== null)
 			$this->money_cell_renderer->locale = $this->locale;
 
-		if ($this->value > 0) {
+		if ($this->show_free && $this->value <= 0) {
+			echo Store::_('FREE');
+		} else {
 			$this->money_cell_renderer->value = $this->value;
 			$this->money_cell_renderer->render();
-		} else {
-			echo Store::_('FREE');
 		}
 
 		$td_tag->close();
