@@ -139,9 +139,9 @@ class StoreAccountEditPage extends StoreAccountPage
 	}
 
 	// }}}
-	// {{{ private function validateEmail()
+	// {{{ protected function validateEmail()
 
-	private function validateEmail()
+	protected function validateEmail()
 	{
 		$email = $this->ui->getWidget('email');
 		if ($email->hasMessage())
