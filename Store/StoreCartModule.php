@@ -367,19 +367,7 @@ class StoreCartModule extends SiteApplicationModule
 		if (!$this->app->session->isActive())
 			return;
 
-		if ($this->app->session->isLoggedIn()) {
-			$account_id = $this->app->session->getAccountId();
-			$where_clause = sprintf('account = %s or sessionid = %s',
-				$this->app->db->quote($account_id, 'integer'),
-				$this->app->db->quote(
-					$this->app->session->getSessionId(), 'text'));
-		} else {
-			$where_clause = sprintf('sessionid = %s',
-				$this->app->db->quote(
-					$this->app->session->getSessionId(), 'text'));
-		}
-
-		$entry_sql = $this->getEntrySql($where_clause);
+		$entry_sql = $this->getEntrySql($this->getCartEntryWhereClause());
 
 		$this->entries = SwatDB::query($this->app->db, $entry_sql,
 			SwatDBClassMap::get('StoreCartEntryWrapper'));
