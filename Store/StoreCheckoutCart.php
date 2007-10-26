@@ -143,7 +143,7 @@ abstract class StoreCheckoutCart extends StoreCart
 					$sql = sprintf($sql,
 						$this->app->db->quote($current_session, 'text'),
 						$this->app->db->quote($previous_session, 'text'));
-					
+
 					SwatDB::exec($this->app->db, $sql);
 				}
 			}
