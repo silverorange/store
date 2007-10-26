@@ -67,8 +67,8 @@ class StoreProductSearchEngine extends SiteSearchEngine
 
 	protected function getSelectClause()
 	{
-		$clause = 'select Product.title, Product.shortname, Product.bodytext,
-			ProductPrimaryCategoryView.primary_category,
+		$clause = 'select Product.id, Product.title, Product.shortname,
+			Product.bodytext, ProductPrimaryCategoryView.primary_category,
 			ProductPrimaryImageView.image as primary_image,
 			getCategoryPath(ProductPrimaryCategoryView.primary_category) as path';
 
