@@ -50,12 +50,10 @@ class StoreAccountEditPage extends StoreAccountPage
 
 	private function findAccount()
 	{
-		if ($this->app->session->isLoggedIn()) {
+		if ($this->app->session->isLoggedIn())
 			return $this->app->session->account;
-		} else  {
-			$class = SwatDBClassMap::get('StoreAccount');
-			return new $class();
-		}
+
+		return $this->createNewAccount();
 	}
 
 	// }}}
@@ -124,6 +122,20 @@ class StoreAccountEditPage extends StoreAccountPage
 		$account->email = $this->ui->getWidget('email')->value;
 		$account->phone = $this->ui->getWidget('phone')->value;
 		$account->company = $this->ui->getWidget('company')->value;
+	}
+
+	// }}}
+	// {{{ protected function createNewAccount()
+
+	/**
+	 * Creates a new account object when a new account is creates
+	 *
+	 * @return StoreAccount the new account object.
+	 */
+	protected function createNewAccount()
+	{
+		$class = SwatDBClassMap::get('StoreAccount');
+		return new $class();
 	}
 
 	// }}}
