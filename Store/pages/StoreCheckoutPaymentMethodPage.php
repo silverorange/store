@@ -94,7 +94,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 			if ($this->app->session->order->payment_method !== null &&
 				$this->app->session->order->payment_method->getAccountPaymentMethodId() === null) {
-					$order_payment_method = 
+					$order_payment_method =
 						$this->app->session->order->payment_method;
 			} else {
 				$class_name =
@@ -107,7 +107,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		} else {
 			$method_id = intval($method_list->value);
 
-			$account_payment_method = 
+			$account_payment_method =
 				$this->app->session->account->payment_methods->getByIndex(
 					$method_id);
 
