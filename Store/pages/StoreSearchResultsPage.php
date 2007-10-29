@@ -90,7 +90,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 				$this->buildArticles($fulltext_result);
 			elseif ($type === 'product')
 				$this->buildProducts($fulltext_result);
-	
+
 		} elseif (count($this->getSearchDataValues()) === 1 &&
 			$this->hasSearchDataValue('keywords')) {
 
