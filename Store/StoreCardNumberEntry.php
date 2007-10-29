@@ -46,7 +46,7 @@ class StoreCardNumberEntry extends SwatEntry
 
 	// }}}
 	// {{{ public function process()
-	
+
 	public function process()
 	{
 		parent::process();
