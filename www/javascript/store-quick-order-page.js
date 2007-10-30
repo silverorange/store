@@ -1,17 +1,17 @@
 /**
  * Controls the asynchronous loading of item descriptions for items on a
- * catalogue quick-order page
+ * catalog quick-order page
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  */
 
 /**
  * Creates a new quick-order page controller object
  *
- * @param string id
- * @param string item_selector_id
- * @param number num_rows
+ * @param String id
+ * @param String item_selector_id
+ * @param Number num_rows
  */
 function StoreQuickOrder(id, item_selector_id, num_rows)
 {
@@ -25,44 +25,26 @@ function StoreQuickOrder(id, item_selector_id, num_rows)
 	}
 }
 
-StoreQuickOrder.loading_text = 'loading …';
+/**
+ * How long before the server call is made after you press a key
+ *
+ * @var Number
+ */
+StoreQuickOrder.timeout_delay = 250;
 
 /**
- * Handles keyup events on the sku field
+ * Text to display when loading item description
  *
- * When a keyup event is received, the timeout timer is reset. If the sku field
- * has content and the quantity field is empty, the quantity field is set to 1.
- *
- * @param Event event
- * @param StoreQuickOrderItem item
+ * @var String
  */
-function StoreQuickOrderItem_keyUpEvent(event, item)
-{
-	var target = YAHOO.util.Event.getTarget(event);
-
-	if (target.value != item.old_value) {
-		var sku = target.value;
-
-		if (!item.quantity.value && sku.length > 0)
-			item.quantity.value = '1';
-
-		if (item.timer != null)
-			clearTimeout(item.timer);
-
-		item.timer = setTimeout(
-			'StoreQuickOrder_staticTimeOut(' + item.quick_order_id + '_obj, ' +
-				item.id + ');', StoreQuickOrder.timeout_delay);
-
-		item.old_value = target.value;
-	}
-}
+StoreQuickOrder.loading_text = 'loading …';
 
 /**
  * Creates a new item-row controller for the quick-order page
  *
- * @param string quick_order_id
- * @param string item_selector_id
- * @param string id
+ * @param String quick_order_id
+ * @param String item_selector_id
+ * @param String id
  */
 function StoreQuickOrderItem(quick_order_id, item_selector_id, id)
 {
@@ -75,8 +57,7 @@ function StoreQuickOrderItem(quick_order_id, item_selector_id, id)
 	this.out_effect = new StoreOpacityAnimation(this.div,
 		{ opacity: { from: 1, to: 0 } }, 0.5);
 
-	this.out_effect.onComplete.subscribe(StoreQuickOrderItem.handleFadeOut,
-		this);
+	this.out_effect.onComplete.subscribe(this.handleFadeOut, this, true);
 
 	this.in_effect = new StoreOpacityAnimation(this.div,
 		{ opacity: { from: 0, to: 1 } }, 1);
@@ -84,8 +65,11 @@ function StoreQuickOrderItem(quick_order_id, item_selector_id, id)
 	this.sku = document.getElementById('sku_' + id);
 	this.old_value = this.sku.value;
 
-	YAHOO.util.Event.addListener(this.sku, 'keyup',
-		StoreQuickOrderItem_keyUpEvent, this);
+	YAHOO.util.Event.addListener(this.sku, 'keyup', this.handleSkuChange,
+		this, true);
+
+	YAHOO.util.Event.addListener(this.sku, 'blur', this.handleSkuChange,
+		this, true);
 
 	this.timer = null;
 	this.new_description = null;
@@ -105,27 +89,52 @@ function StoreQuickOrderItem(quick_order_id, item_selector_id, id)
 }
 
 /**
+ * Handles keyup and blur events on this item's sku field
+ *
+ * When a keyup or blur event is received and the content has changed, the
+ * timeout timer is reset. If the sku field has content and the quantity field
+ * is empty, the quantity field is set to 1.
+ *
+ * @param Event e
+ */
+StoreQuickOrderItem.prototype.handleSkuChange = function(e)
+{
+	var target = YAHOO.util.Event.getTarget(e);
+	if (target.value != this.old_value) {
+		var sku = target.value;
+
+		if (!this.quantity.value && sku.length > 0)
+			this.quantity.value = '1';
+
+		if (this.timer != null)
+			clearTimeout(this.timer);
+
+		this.timer = setTimeout(
+			'StoreQuickOrder_staticTimeOut(' + this.quick_order_id + '_obj, ' +
+				this.id + ');', StoreQuickOrder.timeout_delay);
+
+		this.old_value = target.value;
+	}
+}
+
+/**
  * Handles the completing of fadeout animations on the item-selector field
  * of a StoreQuickOrderItem object
  *
  * After the fadeout is complete, the item-selector content is replaced and
  * faded-in.
- */
-StoreQuickOrderItem.handleFadeOut = function(type, args, quick_order_item)
-{
-	if (quick_order_item.new_description != null)
-		quick_order_item.div.innerHTML = quick_order_item.new_description;
-
-	quick_order_item.new_description = null;
-	quick_order_item.in_effect.animate();
-}
-
-/**
- * How long before the server call is made after you press a key
  *
- * @var integer
+ * @param String type
+ * @param Array args
  */
-StoreQuickOrder.timeout_delay = 250;
+StoreQuickOrderItem.prototype.handleFadeOut = function(type, args)
+{
+	if (this.new_description != null)
+		this.div.innerHTML = this.new_description;
+
+	this.new_description = null;
+	this.in_effect.animate();
+}
 
 /**
  * Handles a timeout on the sku field timer
@@ -134,7 +143,7 @@ StoreQuickOrder.timeout_delay = 250;
  * entered sku.
  *
  * @param StoreQuickOrder quick_order
- * @param string replicator_id
+ * @param String replicator_id
  */
 function StoreQuickOrder_staticTimeOut(quick_order, replicator_id)
 {
