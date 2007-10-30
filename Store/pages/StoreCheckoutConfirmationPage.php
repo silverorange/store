@@ -64,44 +64,51 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	public function process()
 	{
 		parent::process();
+
 		$this->ui->process();
 
 		$form = $this->ui->getWidget('form');
 
-		if ($form->isProcessed()) {
+		if ($form->isProcessed())
+			$this->processOrder();
+	}
 
-			// If there is no transaction in progress, save the order
-			// otherwise it has already been saved.
-			if ($this->app->session->transaction === null) {
-				$db_transaction = new SwatDBTransaction($this->app->db);
-				try {
-					$this->save();
-				} catch (Exception $e) {
-					$db_transaction->rollback();
-					throw $e;
-				}
-				$db_transaction->commit();
-			}
+	// }}}
+	// {{{ protected function processOrder()
 
-			$order = $this->app->session->order;
-
+	protected function processOrder()
+	{
+		// If there is no transaction in progress, save the order
+		// otherwise it has already been saved.
+		if ($this->app->session->transaction === null) {
+			$db_transaction = new SwatDBTransaction($this->app->db);
 			try {
-				$this->processPayment();
-
-				$order->sendConfirmationEmail($this->app);
-				$this->removeCartEntries();
-				$this->cleanupSession();
-				$this->updateProgress();
-				$this->app->relocate('checkout/thankyou');
-
-			} catch (StorePaymentException $e) {
-				$this->handlePaymentException($e);
-
-				// duplicate order
-				$new_order = $order->duplicate();
-				$new_order->previous_attempt = $order;
-				$this->app->session->order = $new_order;
+				$this->save();
+			} catch (Exception $e) {
+				$db_transaction->rollback();
+				throw $e;
 			}
+			$db_transaction->commit();
+		}
+
+		$order = $this->app->session->order;
+
+		try {
+			$this->processPayment();
+
+			$order->sendConfirmationEmail($this->app);
+			$this->removeCartEntries();
+			$this->cleanupSession();
+			$this->updateProgress();
+			$this->app->relocate('checkout/thankyou');
+
+		} catch (StorePaymentException $e) {
+			$this->handlePaymentException($e);
+
+			// duplicate order
+			$new_order = $order->duplicate();
+			$new_order->previous_attempt = $order;
+			$this->app->session->order = $new_order;
 		}
 	}
 
