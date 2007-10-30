@@ -387,12 +387,8 @@ class StoreCartModule extends SiteApplicationModule
 			$this->app->db, $quoted_item_ids, $this->app->getRegion(),
 			false);
 
-		$product_sql = 'select id, shortname, title, primary_category, catalog
-			from Product left outer join ProductPrimaryCategoryView
-			on product = id where id in (%s)';
-
 		$products = $items->loadAllSubDataObjects('product', $this->app->db,
-			$product_sql, SwatDBClassMap::get('StoreProductWrapper'));
+			$this->getProductSql(), SwatDBClassMap::get('StoreProductWrapper'));
 
 		$category_sql = 'select id, getCategoryPath(id) as path
 			from Category where id in (%s)';
@@ -402,6 +398,18 @@ class StoreCartModule extends SiteApplicationModule
 			SwatDBClassMap::get('StoreCategoryWrapper'));
 
 		$this->entries->attachSubDataObjects('item', $items);
+	}
+
+	// }}}
+	// {{{ protected function getProductSql()
+
+	protected function getProductSql()
+	{
+		$product_sql = 'select id, shortname, title, primary_category, catalog
+			from Product left outer join ProductPrimaryCategoryView
+			on product = id where id in (%s)';
+
+		return $product_sql;
 	}
 
 	// }}}
