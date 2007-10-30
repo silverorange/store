@@ -21,6 +21,25 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	public $category;
 
 	// }}}
+	// {{{ public function getSearchSummary()
+
+	/**
+	 * Get a summary of the criteria that was used to perform the search
+	 *
+	 * @return array an array of summary strings.
+	 */
+	public function getSearchSummary()
+	{
+		$summary = parent::getSearchSummary();
+
+		if ($this->category !== null)
+			$summary[] = sprintf('Category: <b>%s</b>',
+				SwatString::minimizeEntities($this->category->title));
+
+		return $summary;
+	}
+
+	// }}}
 
 	// {{{ protected function search()
 

@@ -151,14 +151,18 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 	// }}}
 	// {{{ protected function getSearchSummary()
 
+	/**
+	 * Get a summary of the criteria that was used to perform the search
+	 *
+	 * @return array an array of summary strings.
+	 */
 	protected function getSearchSummary()
 	{
-		$summary = parent::getSearchSummary();
+		$summary = array();
 
-		if ($this->hasSearchDataValue('category')) {
-			$category = $this->getCategory();
-			$summary[] = sprintf('Category: <b>%s</b>',
-				SwatString::minimizeEntities($category->title));
+		if ($this->hasSearchEngine('product')) {
+			$engine = $this->getSearchEngine('product');
+			$summary = $engine->getSearchSummary();
 		}
 
 		return $summary;
@@ -184,6 +188,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 	protected function instantiateArticleSearchEngine()
 	{
 		$engine = new StoreArticleSearchEngine($this->app);
+		$this->setSearchEngine('article', $engine);
 
 		return $engine;
 	}
@@ -221,6 +226,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 	protected function instantiateCategorySearchEngine()
 	{
 		$engine = new StoreCategorySearchEngine($this->app);
+		$this->setSearchEngine('category', $engine);
 
 		return $engine;
 	}
@@ -312,6 +318,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 	protected function instantiateProductSearchEngine()
 	{
 		$engine = new StoreProductSearchEngine($this->app);
+		$this->setSearchEngine('product', $engine);
 
 		$engine->category = $this->getCategory();
 
