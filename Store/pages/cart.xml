@@ -64,9 +64,9 @@
 					</object>
 				</object>
 				<object class="SwatTableViewColumn" id="remove_column">
-					<object class="SwatWidgetCellRenderer" id="remove_available_renderer">
+					<object class="SwatWidgetCellRenderer" id="available_remove_renderer">
 						<property name="replicator_id" type="data">id</property>
-						<widget class="SwatButton" id="remove_available_button">
+						<widget class="SwatButton" id="available_remove_button">
 							<property name="title" translatable="yes">Remove</property>
 							<property name="classes[]">compact-button</property>
 							<property name="classes[]">store-remove</property>
@@ -74,9 +74,9 @@
 					</object>
 				</object>
 				<object class="SwatTableViewColumn" id="move_column">
-					<object class="SwatWidgetCellRenderer" id="move_available_renderer">
+					<object class="SwatWidgetCellRenderer" id="available_move_renderer">
 						<property name="replicator_id" type="data">id</property>
-						<widget class="SwatButton" id="move_available_button">
+						<widget class="SwatButton" id="available_move_button">
 							<property name="title" translatable="yes">Save for Later</property>
 							<property name="classes[]">compact-button</property>
 						</widget>
@@ -86,11 +86,16 @@
 					<property name="offset" type="integer">2</property>
 					<property name="title" translatable="yes">Shipping Total</property>
 				</object>
-				<object class="StoreTotalConfirmationButtonRow" id="subtotal">
+				<object class="StoreTotalRow" id="subtotal">
 					<property name="offset" type="integer">2</property>
-					<property name="title">Subtotal</property>
-					<property name="button_title">Remove All Items</property>
-					<property name="button_confirmation_message">Remove all items from cart?</property>
+					<property name="title" translatable="yes">Subtotal</property>
+				</object>
+				<object class="SwatTableViewWidgetRow">
+					<property name="position" type="constant">POSITION_RIGHT</property>
+					<widget class="SwatConfirmationButton" id="available_remove_all_button">
+						<property name="title">Remove All Items</property>
+						<property name="confirmation_message">Remove all items from cart?</property>
+					</widget>
 				</object>
 			</widget>
 			<!-- }}} -->
@@ -127,9 +132,9 @@
 						</object>
 					</object>
 					<object class="SwatTableViewColumn" id="remove_column">
-						<object class="SwatWidgetCellRenderer" id="remove_unavailable_renderer">
+						<object class="SwatWidgetCellRenderer" id="unavailable_remove_renderer">
 							<property name="replicator_id" type="data">id</property>
-							<widget class="SwatButton" id="remove_unavailable_button">
+							<widget class="SwatButton" id="unavailable_remove_button">
 								<property name="title" translatable="yes">Remove</property>
 								<property name="classes[]">compact-button</property>
 								<property name="classes[]">store-remove</property>
@@ -137,19 +142,20 @@
 						</object>
 					</object>
 					<object class="SwatTableViewColumn" id="move_column">
-						<object class="SwatWidgetCellRenderer" id="move_unavailable_renderer">
+						<object class="SwatWidgetCellRenderer" id="unavailable_move_renderer">
 							<property name="replicator_id" type="data">id</property>
-							<widget class="SwatButton" id="move_unavailable_button">
+							<widget class="SwatButton" id="unavailable_move_button">
 								<property name="title" translatable="yes">Save for Later</property>
 								<property name="classes[]">compact-button</property>
 							</widget>
 						</object>
 					</object>
-					<object class="StoreTableViewConfirmationButtonRow" id="remove_all">
-						<property name="offset" type="integer">2</property>
+					<object class="SwatTableViewWidgetRow">
 						<property name="position" type="constant">POSITION_RIGHT</property>
-						<property name="title">Remove All Unavailable Items</property>
-						<property name="confirmation_message">Remove all items from unavailable items?</property>
+						<widget class="SwatConfirmationButton" id="unavailable_remove_all_button">
+							<property name="title">Remove All Unavailable Items</property>
+							<property name="confirmation_message">Remove all items from unavailable items?</property>
+						</widget>
 					</object>
 				</widget>
 			</widget>
@@ -213,9 +219,9 @@
 					</object>
 				</object>
 				<object class="SwatTableViewColumn" id="remove_column">
-					<object class="SwatWidgetCellRenderer" id="remove_saved_renderer">
+					<object class="SwatWidgetCellRenderer" id="saved_remove_renderer">
 						<property name="replicator_id" type="data">id</property>
-						<widget class="SwatButton" id="remove_saved_button">
+						<widget class="SwatButton" id="saved_remove_button">
 							<property name="title" translatable="yes">Remove</property>
 							<property name="classes[]">compact-button</property>
 							<property name="classes[]">store-remove</property>
@@ -223,24 +229,25 @@
 					</object>
 				</object>
 				<object class="SwatTableViewColumn" id="move_column">
-					<object class="SwatWidgetCellRenderer" id="move_saved_renderer">
+					<object class="SwatWidgetCellRenderer" id="saved_move_renderer">
 						<property name="replicator_id" type="data">id</property>
-						<widget class="SwatButton" id="move_saved_button">
+						<widget class="SwatButton" id="saved_move_button">
 							<property name="title" translatable="yes">Move to Cart</property>
 							<property name="classes[]">compact-button</property>
 						</widget>
 					</object>
 				</object>
-				<object class="StoreTableViewConfirmationButtonRow" id="remove_all">
-					<property name="offset" type="integer">2</property>
+				<object class="SwatTableViewWidgetRow">
 					<property name="position" type="constant">POSITION_RIGHT</property>
-					<property name="title">Remove All Saved Items</property>
-					<property name="confirmation_message">Remove all items from saved items?</property>
+					<widget class="SwatConfirmationButton" id="saved_remove_all_button">
+						<property name="title">Remove All Saved Items</property>
+						<property name="confirmation_message">Remove all items from saved items?</property>
+					</widget>
 				</object>
 			</widget>
 			<!-- }}} -->
 			<widget class="SwatFooterFormField" id="saved_cart_move_all_field">
-				<widget class="SwatButton" id="saved_cart_move_all_button">
+				<widget class="SwatButton" id="saved_move_all_button">
 					<property name="title" translatable="yes">Move All Saved Items to Cart</property>
 				</widget>
 			</widget>
