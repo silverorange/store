@@ -40,6 +40,8 @@ class StoreTransactionStatusCellRenderer extends SwatCellRenderer
 
 	public function render()
 	{
+		parent::render();
+
 		switch (true) {
 		case ($this->status === StorePaymentTransaction::STATUS_PASSED):
 			$css_class = 'store-transaction-status-cell-renderer-passed';
