@@ -60,7 +60,7 @@ abstract class StoreOrderConfirmationMailMessage
 		$this->to_address = $order->email;
 		$this->to_name = $order->billing_address->fullname;
 
-		$this->subject = $this->getSubject(); 
+		$this->subject = $this->getSubject();
 
 		$this->html_body = $this->getHtmlBody();
 		$this->text_body = $this->getTextBody();
