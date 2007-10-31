@@ -26,6 +26,8 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * cheque       | cheque              | cheque            |
  * invoice      | invoice             | printed invoice   |
  * cod          | cash on delivery    | cash on delivery  |
+ * gift         | gift certificate    | gift certificate  |
+ * credit       | merchandise credit  | merchandise credit|
  * </pre>
  *
  * @package   Store
