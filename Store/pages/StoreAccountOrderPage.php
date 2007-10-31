@@ -260,10 +260,7 @@ class StoreAccountOrderPage extends StoreAccountPage
 		$createdate_renderer->display_time_zone =
 			$this->app->default_time_zone;
 
-		$order_is_blank =
-			(strlen($this->order->billing_address->fullname) == 0);
-
-		if ($order_is_blank) {
+		if ($this->orderIsBlank()) {
 			$details_view->getField('email')->visible = false;
 			$details_view->getField('phone')->visible = false;
 			$details_view->getField('comments')->visible = false;
@@ -329,6 +326,14 @@ class StoreAccountOrderPage extends StoreAccountPage
 
 			$this->ui->getWidget('message_display')->add($message);
 		}
+	}
+
+	// }}}
+	// {{{ protected function orderIsBlank()
+
+	protected function orderIsBlank()
+	{
+		return (strlen($this->order->billing_address->fullname) == 0);
 	}
 
 	// }}}
