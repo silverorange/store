@@ -15,7 +15,7 @@ require_once 'Swat/SwatDetailsStore.php';
  * @package   Store
  * @copyright 2006-2007 silverorange
  */
-abstract class StoreCartPage extends SiteArticlePage
+class StoreCartPage extends SiteArticlePage
 {
 	// {{{ protected properties
 
@@ -83,185 +83,49 @@ abstract class StoreCartPage extends SiteArticlePage
 	{
 		parent::process();
 
-		$this->processCheckoutCartForm();
-		$this->processSavedCartForm();
+		$this->processCheckoutCart();
+		$this->processSavedCart();
 	}
 
 	// }}}
-	// {{{ protected function processCheckoutCartForm()
 
-	protected function processCheckoutCartForm()
-	{
-		$form = $this->ui->getWidget('form');
-		$form->process();
+	// process phase - checkout cart
+// {{{ protected function processCheckoutCart()
 
-		if ($form->isProcessed()) {
-			$available_view = $this->ui->getWidget('available_cart_view');
-			$available_remove_all = $available_view->getRow('subtotal');
+protected function processCheckoutCart()
+{
+	$form = $this->ui->getWidget('form');
+	$form->process();
 
-			$unavailable_view = $this->ui->getWidget('unavailable_cart_view');
-			$unavailable_remove_all = $unavailable_view->getRow('remove_all');
+	if ($form->isProcessed()) {
+		if ($this->getAvailableRemoveAllButton()->hasBeenClicked())
+			$this->removeAllAvailableCheckoutCart();
 
-			if ($available_remove_all->hasBeenClicked())
-				$this->removeAllAvailableCheckoutCart();
+		if ($this->getUnavailableRemoveAllButton()->hasBeenClicked())
+			$this->removeAllUnavailableCheckoutCart();
 
-			if ($unavailable_remove_all->hasBeenClicked())
-				$this->removeAllUnavailableCheckoutCart();
+		if ($form->hasMessage()) {
+			//TODO: this message can show after all items are removed
+			$message = new SwatMessage(Store::_(
+				'There is a problem with the information submitted.'),
+				SwatMessage::ERROR);
 
-			if ($form->hasMessage()) {
-				//TODO: this message can show after all items are removed
-				$message = new SwatMessage(Store::_(
-					'There is a problem with the information submitted.'),
-					SwatMessage::ERROR);
+			$message->secondary_content = Store::_('Please address the '.
+				'fields highlighted below and re-submit the form.');
 
-				$message->secondary_content = Store::_('Please address the '.
-					'fields highlighted below and re-submit the form.');
-
-				$this->ui->getWidget('message_display')->add($message);
-			} else {
-				$this->updateCheckoutCart();
-				if (!$form->hasMessage() &&
-					$this->continueButtonHasBeenClicked()) {
-					$this->app->cart->save();
-					$this->app->relocate('checkout');
-				}
+			$this->ui->getWidget('message_display')->add($message);
+		} else {
+			$this->updateCheckoutCart();
+			if (!$form->hasMessage() &&
+				$this->continueButtonHasBeenClicked()) {
+				$this->app->cart->save();
+				$this->app->relocate('checkout');
 			}
 		}
 	}
+}
 
-	// }}}
-	// {{{ protected function continueButtonHasBeenClicked()
-
-	/**
-	 * Whether or not a button has been clicked indicating the customer
-	 * wants to proceed to the checkout
-	 *
-	 * @return boolean true if the customer is to proceed to the checkout
-	 *                  and false if the customer is to stay on the cart
-	 *                  page.
-	 */
-	protected function continueButtonHasBeenClicked()
-	{
-		$continue_button_ids =
-			array('header_checkout_button', 'footer_checkout_button');
-
-		$continue_button_clicked = false;
-		foreach ($continue_button_ids as $id) {
-			$button = $this->ui->getWidget($id);
-			if ($button->hasBeenClicked()) {
-				$continue_button_clicked = true;
-				break;
-			}
-		}
-
-		return $continue_button_clicked;
-	}
-
-	// }}}
-	// {{{ protected function processSavedCartForm()
-
-	protected function processSavedCartForm()
-	{
-		$form = $this->ui->getWidget('saved_cart_form');
-		$form->process();
-
-		if ($form->isProcessed()) {
-			if ($form->hasMessage()) {
-				$message = new SwatMessage(Store::_(
-					'There is a problem with the information submitted.'),
-					SwatMessage::ERROR);
-
-				$message->secondary_content = Store::_('Please address the '.
-					'fields highlighted below and re-submit the form.');
-
-				$this->ui->getWidget('message_display')->add($message);
-			} else {
-				$saved_view = $this->ui->getWidget('saved_cart_view');
-				$remove_button = $saved_view->getRow('remove_all');
-				$move_button =
-					$this->ui->getWidget('saved_cart_move_all_button');
-
-				if ($move_button->hasBeenClicked())
-					$this->moveAllSavedCart();
-				elseif ($remove_button->hasBeenClicked())
-					$this->removeAllSavedCart();
-				else
-					$this->updateSavedCart();
-			}
-		}
-	}
-
-	// }}}
-	// {{{ protected function getAvailableMoveRenderer()
-
-	protected function getAvailableMoveRenderer()
-	{
-		$view = $this->ui->getWidget('available_cart_view');
-		$column = $view->getColumn('move_column');
-		return $column->getRendererByPosition(); 
-	}
-
-	// }}}
-	// {{{ protected function getAvailableRemoveRenderer()
-
-	protected function getAvailableRemoveRenderer()
-	{
-		$view = $this->ui->getWidget('available_cart_view');
-		$column = $view->getColumn('remove_column');
-		return $column->getRendererByPosition(); 
-	}
-
-	// }}}
-	// {{{ protected function getAvailableQuantityRenderer()
-
-	protected function getAvailableQuantityRenderer()
-	{
-		$view = $this->ui->getWidget('available_cart_view');
-		$column = $view->getColumn('quantity_column');
-		return $column->getRendererByPosition(); 
-	}
-
-	// }}}
-	// {{{ protected function getUnavailableRemoveRenderer()
-
-	protected function getUnavailableRemoveRenderer()
-	{
-		$view = $this->ui->getWidget('unavailable_cart_view');
-		$column = $view->getColumn('remove_column');
-		return $column->getRendererByPosition(); 
-	}
-
-	// }}}
-	// {{{ protected function getUnavailableMoveRenderer()
-
-	protected function getUnavailableMoveRenderer()
-	{
-		$view = $this->ui->getWidget('unavailable_cart_view');
-		$column = $view->getColumn('move_column');
-		return $column->getRendererByPosition(); 
-	}
-
-	// }}}
-	// {{{ protected function getSavedMoveRenderer()
-
-	protected function getSavedMoveRenderer()
-	{
-		$view = $this->ui->getWidget('saved_cart_view');
-		$column = $view->getColumn('move_column');
-		return $column->getRendererByPosition(); 
-	}
-
-	// }}}
-	// {{{ protected function getSavedRemoveRenderer()
-
-	protected function getSavedRemoveRenderer()
-	{
-		$view = $this->ui->getWidget('saved_cart_view');
-		$column = $view->getColumn('remove_column');
-		return $column->getRendererByPosition(); 
-	}
-
-	// }}}
+// }}}
 	// {{{ protected function updateCheckoutCart()
 
 	protected function updateCheckoutCart()
@@ -292,7 +156,7 @@ abstract class StoreCartPage extends SiteArticlePage
 		if ($num_entries_removed > 0)
 			$message_display->add(new StoreMessage(sprintf(Store::ngettext(
 				'One item has been removed from shopping cart.',
-				'%s items have been removed from shopping cart.', 
+				'%s items have been removed from shopping cart.',
 				$num_entries_removed),
 				SwatString::numberFormat($num_entries_removed)),
 				StoreMessage::CART_NOTIFICATION));
@@ -325,6 +189,203 @@ abstract class StoreCartPage extends SiteArticlePage
 	}
 
 	// }}}
+	// {{{ protected function continueButtonHasBeenClicked()
+
+	/**
+	 * Whether or not a button has been clicked indicating the customer
+	 * wants to proceed to the checkout
+	 *
+	 * @return boolean true if the customer is to proceed to the checkout
+	 *                  and false if the customer is to stay on the cart
+	 *                  page.
+	 */
+	protected function continueButtonHasBeenClicked()
+	{
+		$continue_button_clicked = false;
+
+		foreach ($this->getContinueButtons() as $button) {
+			if ($button->hasBeenClicked()) {
+				$continue_button_clicked = true;
+				break;
+			}
+		}
+
+		return $continue_button_clicked;
+	}
+
+	// }}}
+	// {{{ protected function getContinueButtons()
+
+	protected function getContinueButtons()
+	{
+		$buttons = array();
+		$continue_button_ids =
+			array('header_checkout_button', 'footer_checkout_button');
+
+		foreach ($continue_button_ids as $id)
+			$buttons[]= $this->ui->getWidget($id);
+
+		return $buttons;
+	}
+
+	// }}}
+
+	// process phase - checkout cart - available entries
+	// {{{ protected function getAvailableQuantityWidgets()
+
+	protected function getAvailableQuantityWidgets()
+	{
+		$view = $this->ui->getWidget('available_cart_view');
+		$column = $view->getColumn('quantity_column');
+		$renderer = $column->getRendererByPosition();
+		$widgets = $renderer->getClonedWidgets();
+
+		return $widgets;
+	}
+
+	// }}}
+	// {{{ protected function getAvailableQuantityWidget()
+
+	protected function getAvailableQuantityWidget($id)
+	{
+		$view = $this->ui->getWidget('available_cart_view');
+		$column = $view->getColumn('quantity_column');
+		$renderer = $column->getRendererByPosition();
+		$widget = $renderer->getWidget($id);
+
+		return $widget;
+	}
+
+	// }}}
+	// {{{ protected function getAvailableMoveButtons()
+
+	protected function getAvailableMoveButtons()
+	{
+		$view = $this->ui->getWidget('available_cart_view');
+		$column = $view->getColumn('move_column');
+		$renderer = $column->getRendererByPosition();
+		$buttons = $renderer->getClonedWidgets();
+
+		return $buttons;
+	}
+
+	// }}}
+	// {{{ protected function getAvailableRemoveButtons()
+
+	protected function getAvailableRemoveButtons()
+	{
+		$view = $this->ui->getWidget('available_cart_view');
+		$column = $view->getColumn('remove_column');
+		$renderer = $column->getRendererByPosition();
+		$buttons = $renderer->getClonedWidgets();
+
+		return $buttons;
+	}
+
+	// }}}
+	// {{{ protected function getAvailableRemoveAllButton()
+
+	protected function getAvailableRemoveAllButton()
+	{
+		$button = $this->ui->getWidget('available_remove_all_button');
+
+		return $button;
+	}
+
+	// }}}
+	// {{{ protected function moveAvailableEntries()
+
+	/**
+	 * @return integer the number of entries that were moved.
+	 */
+	protected function moveAvailableEntries()
+	{
+		$num_entries_moved = 0;
+
+		foreach ($this->getAvailableMoveButtons() as $id => $button) {
+			if ($button->hasBeenClicked()) {
+				$entry = $this->app->cart->checkout->getEntryById($id);
+
+				// make sure entry wasn't already moved
+				// (i.e. a page resubmit)
+				if ($entry === null)
+					break;
+
+				$quantity = $this->getAvailableQuantityWidget($id)->value;
+
+				$this->added_entry_ids[] = $id;
+				$num_entries_moved++;
+
+				$entry->setQuantity($quantity);
+				$this->app->cart->checkout->removeEntry($entry);
+				$this->app->cart->saved->addEntry($entry);
+
+				break;
+			}
+		}
+
+		return $num_entries_moved;
+	}
+
+	// }}}
+	// {{{ protected function removeAvailableEntries()
+
+	/**
+	 * @return integer the number of entries that were removed.
+	 */
+	protected function removeAvailableEntries()
+	{
+		$num_entries_removed = 0;
+
+		foreach ($this->getAvailableRemoveButtons() as $id => $button) {
+			if ($button->hasBeenClicked()) {
+				if ($this->app->cart->checkout->removeEntryById($id) !== null)
+					$num_entries_removed++;
+
+				break;
+			}
+		}
+
+		return $num_entries_removed;
+	}
+
+	// }}}
+	// {{{ protected function updateAvailableEntries()
+
+	/**
+	 * @return integer the number of entries that were updated.
+	 */
+	protected function updateAvailableEntries()
+	{
+		$num_entries_updated = 0;
+		$num_entries_removed = 0;
+
+		foreach ($this->getAvailableQuantityWidgets() as $id => $widget) {
+			if (!$widget->hasMessage()) {
+				$entry = $this->app->cart->checkout->getEntryById($id);
+				if ($entry !== null &&
+					$entry->getQuantity() !== $widget->value) {
+					$this->updated_entry_ids[] = $id;
+					$this->app->cart->checkout->setEntryQuantity($entry,
+						$widget->value);
+
+					if ($widget->value > 0)
+						$num_entries_updated++;
+					else
+						$num_entries_removed++;
+
+					$widget->value = $entry->getQuantity();
+				}
+			}
+		}
+
+		return array(
+			'num_entries_updated' => $num_entries_updated,
+			'num_entries_removed' => $num_entries_removed,
+		);
+	}
+
+	// }}}
 	// {{{ protected function removeAllAvailableCheckoutCart()
 
 	/**
@@ -336,9 +397,8 @@ abstract class StoreCartPage extends SiteArticlePage
 
 		$num_removed_items = 0;
 
-		// pick an arbitrary renderer to iterate existing entry ids
-		$remove_renderer = $this->getAvailableRemoveRenderer();
-		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
+		// use individual remove buttons to iterate entry ids
+		foreach ($this->getAvailableRemoveButtons() as $id => $button) {
 			$entry = $this->app->cart->checkout->getEntryById($id);
 
 			// make sure entry wasn't already removed
@@ -359,6 +419,98 @@ abstract class StoreCartPage extends SiteArticlePage
 	}
 
 	// }}}
+
+	// process phase - checkout cart - unavailable entries
+	// {{{ protected function getUnavailableMoveButtons()
+
+	protected function getUnavailableMoveButtons()
+	{
+		$view = $this->ui->getWidget('unavailable_cart_view');
+		$column = $view->getColumn('move_column');
+		$renderer = $column->getRendererByPosition();
+		$buttons = $renderer->getClonedWidgets();
+
+		return $buttons;
+	}
+
+	// }}}
+	// {{{ protected function getUnavailableRemoveButtons()
+
+	protected function getUnavailableRemoveButtons()
+	{
+		$view = $this->ui->getWidget('unavailable_cart_view');
+		$column = $view->getColumn('remove_column');
+		$renderer = $column->getRendererByPosition();
+		$buttons = $renderer->getClonedWidgets();
+
+		return $buttons;
+	}
+
+	// }}}
+	// {{{ protected function getUnavailableRemoveAllButton()
+
+	protected function getUnavailableRemoveAllButton()
+	{
+		$button = $this->ui->getWidget('unavailable_remove_all_button');
+
+		return $button;
+	}
+
+	// }}}
+	// {{{ protected function moveUnavailableEntries()
+
+	/**
+	 * @return integer the number of entries that were moved.
+	 */
+	protected function moveUnavailableEntries()
+	{
+		$num_entries_moved = 0;
+
+		foreach ($this->getUnavailableMoveButtons() as $id => $button) {
+			if ($button->hasBeenClicked()) {
+				$entry = $this->app->cart->checkout->getEntryById($id);
+
+				// make sure entry wasn't already moved
+				// (i.e. a page resubmit)
+				if ($entry === null)
+					break;
+
+				$this->added_entry_ids[] = $id;
+				$num_entries_moved++;
+
+				$this->app->cart->checkout->removeEntry($entry);
+				$this->app->cart->saved->addEntry($entry);
+
+				break;
+			}
+		}
+
+		return $num_entries_moved;
+	}
+
+	// }}}
+	// {{{ protected function removeUnavailableEntries()
+
+	/**
+	 * @return integer the number of entries that were removed.
+	 */
+	protected function removeUnavailableEntries()
+	{
+		$num_entries_removed = 0;
+
+		foreach ($this->getUnavailableRemoveButtons() as $id => $button) {
+			if ($button->hasBeenClicked()) {
+				if ($this->app->cart->checkout->removeEntryById($id) !== null)
+					$num_entries_removed++;
+
+				break;
+			}
+		}
+
+		return $num_entries_removed;
+	}
+
+	// }}}
 	// {{{ protected function removeAllUnavailableCheckoutCart()
 
 	/**
@@ -370,9 +522,8 @@ abstract class StoreCartPage extends SiteArticlePage
 
 		$num_removed_items = 0;
 
-		// pick an arbitrary renderer to iterate existing entry ids
-		$remove_renderer = $this->getUnavailableRemoveRenderer();
-		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
+		// use individual remove buttons to iterate entry ids
+		foreach ($this->getUnavailableRemoveButtons() as $id => $button) {
 			$entry = $this->app->cart->checkout->getEntryById($id);
 
 			// make sure entry wasn't already removed
@@ -391,6 +542,83 @@ abstract class StoreCartPage extends SiteArticlePage
 				$num_removed_items),
 				SwatString::numberFormat($num_removed_items)),
 				StoreMessage::CART_NOTIFICATION));
+	}
+
+	// }}}
+
+	// process phase - saved cart
+	// {{{ protected function processSavedCart()
+
+	protected function processSavedCart()
+	{
+		$form = $this->ui->getWidget('saved_cart_form');
+		$form->process();
+
+		if ($form->isProcessed()) {
+			if ($form->hasMessage()) {
+				$message = new SwatMessage(Store::_(
+					'There is a problem with the information submitted.'),
+					SwatMessage::ERROR);
+
+				$message->secondary_content = Store::_('Please address the '.
+					'fields highlighted below and re-submit the form.');
+
+				$this->ui->getWidget('message_display')->add($message);
+			} else {
+				if ($this->getSavedMoveAllButton()->hasBeenClicked())
+					$this->moveAllSavedCart();
+				elseif ($this->getSavedRemoveAllButton()->hasBeenClicked())
+					$this->removeAllSavedCart();
+				else
+					$this->updateSavedCart();
+			}
+		}
+	}
+
+	// }}}
+	// {{{ protected function getSavedMoveButtons()
+
+	protected function getSavedMoveButtons()
+	{
+		$view = $this->ui->getWidget('saved_cart_view');
+		$column = $view->getColumn('move_column');
+		$renderer = $column->getRendererByPosition();
+		$buttons = $renderer->getClonedWidgets();
+
+		return $buttons;
+	}
+
+	// }}}
+	// {{{ protected function getSavedMoveAllButton()
+
+	protected function getSavedMoveAllButton()
+	{
+		$button = $this->ui->getWidget('saved_move_all_button');
+
+		return $button;
+	}
+
+	// }}}
+	// {{{ protected function getSavedRemoveButtons()
+
+	protected function getSavedRemoveButtons()
+	{
+		$view = $this->ui->getWidget('saved_cart_view');
+		$column = $view->getColumn('remove_column');
+		$renderer = $column->getRendererByPosition();
+		$buttons = $renderer->getClonedWidgets();
+
+		return $buttons;
+	}
+
+	// }}}
+	// {{{ protected function getSavedRemoveAllButton()
+
+	protected function getSavedRemoveAllButton()
+	{
+		$button = $this->ui->getWidget('saved_remove_all_button');
+
+		return $button;
 	}
 
 	// }}}
@@ -420,6 +648,60 @@ abstract class StoreCartPage extends SiteArticlePage
 	}
 
 	// }}}
+	// {{{ protected function moveSavedEntries()
+
+	/**
+	 * @return integer the number of entries that were moved.
+	 */
+	protected function moveSavedEntries()
+	{
+		$num_entries_moved = 0;
+
+		foreach ($this->getSavedMoveButtons() as $id => $button) {
+			if ($button->hasBeenClicked()) {
+				$entry = $this->app->cart->saved->getEntryById($id);
+
+				// make sure entry wasn't already moved
+				// (i.e. a page resubmit)
+				if ($entry === null)
+					break;
+
+				$this->added_entry_ids[] = $id;
+				$num_entries_moved++;
+
+				$this->app->cart->saved->removeEntry($entry);
+				$this->app->cart->checkout->addEntry($entry);
+
+				break;
+			}
+		}
+
+		return $num_entries_moved;
+	}
+
+	// }}}
+	// {{{ protected function removeSavedEntries()
+
+	/**
+	 * @return integer the number of entries that were removed.
+	 */
+	protected function removeSavedEntries()
+	{
+		$num_entries_removed = 0;
+
+		foreach ($this->getSavedRemoveButtons() as $id => $button) {
+			if ($button->hasBeenClicked()) {
+				if ($this->app->cart->saved->removeEntryById($id) !== null)
+					$num_entries_removed++;
+
+				break;
+			}
+		}
+
+		return $num_entries_removed;
+	}
+
+	// }}}
 	// {{{ protected function moveAllSavedCart()
 
 	/**
@@ -431,9 +713,8 @@ abstract class StoreCartPage extends SiteArticlePage
 
 		$num_moved_items = 0;
 
-		// pick an arbitrary renderer to iterate existing entry ids
-		$move_renderer = $this->getSavedMoveRenderer();
-		foreach ($move_renderer->getClonedWidgets() as $id => $widget) {
+		// use individual move buttons to iterate entry ids
+		foreach ($this->getSavedMoveButtons() as $id => $button) {
 			$entry = $this->app->cart->saved->getEntryById($id);
 
 			// make sure entry wasn't already moved
@@ -467,9 +748,8 @@ abstract class StoreCartPage extends SiteArticlePage
 
 		$num_removed_items = 0;
 
-		// pick an arbitrary renderer to iterate existing entry ids
-		$remove_renderer = $this->getSavedRemoveRenderer();
-		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
+		// use individual remove buttons to iterate entry ids
+		foreach ($this->getSavedRemoveButtons() as $id => $button) {
 			$entry = $this->app->cart->saved->getEntryById($id);
 
 			// make sure entry wasn't already removed
@@ -488,215 +768,6 @@ abstract class StoreCartPage extends SiteArticlePage
 				$num_removed_items),
 				SwatString::numberFormat($num_removed_items)),
 				StoreMessage::CART_NOTIFICATION));
-	}
-
-	// }}}
-	// {{{ protected function moveAvailableEntries()
-
-	/**
-	 * @return integer the number of entries that were moved.
-	 */
-	protected function moveAvailableEntries()
-	{
-		$num_entries_moved = 0;
-
-		$quantity_renderer = $this->getAvailableQuantityRenderer();
-		$move_renderer = $this->getAvailableMoveRenderer();
-		foreach ($move_renderer->getClonedWidgets() as $id => $widget) {
-			if ($widget->hasBeenClicked()) {
-				$entry = $this->app->cart->checkout->getEntryById($id);
-
-				// make sure entry wasn't already moved
-				// (i.e. a page resubmit)
-				if ($entry === null)
-					break;
-
-				$quantity = $quantity_renderer->getWidget($id)->value;
-
-				$this->added_entry_ids[] = $id;
-				$num_entries_moved++;
-
-				$entry->setQuantity($quantity);
-				$this->app->cart->checkout->removeEntry($entry);
-				$this->app->cart->saved->addEntry($entry);
-
-				break;
-			}
-		}
-
-		return $num_entries_moved;
-	}
-
-	// }}}
-	// {{{ protected function removeAvailableEntries()
-
-	/**
-	 * @return integer the number of entries that were removed.
-	 */
-	protected function removeAvailableEntries()
-	{
-		$num_entries_removed = 0;
-
-		$remove_renderer = $this->getAvailableRemoveRenderer();
-		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
-			if ($widget->hasBeenClicked()) {
-				if ($this->app->cart->checkout->removeEntryById($id) !== null)
-					$num_entries_removed++;
-
-				break;
-			}
-		}
-
-		return $num_entries_removed;
-	}
-
-	// }}}
-	// {{{ protected function updateAvailableEntries()
-
-	/**
-	 * @return integer the number of entries that were updated.
-	 */
-	protected function updateAvailableEntries()
-	{
-		$num_entries_updated = 0;
-		$num_entries_removed = 0;
-
-		$quantity_renderer = $this->getAvailableQuantityRenderer();
-		foreach ($quantity_renderer->getClonedWidgets() as $id => $widget) {
-			if (!$widget->hasMessage()) {
-				$entry = $this->app->cart->checkout->getEntryById($id);
-				if ($entry !== null &&
-					$entry->getQuantity() !== $widget->value) {
-					$this->updated_entry_ids[] = $id;
-					$this->app->cart->checkout->setEntryQuantity($entry,
-						$widget->value);
-					
-					if ($widget->value > 0)
-						$num_entries_updated++;
-					else
-						$num_entries_removed++;
-
-					$widget->value = $entry->getQuantity();
-				}
-			}
-		}
-
-		return array(
-			'num_entries_updated' => $num_entries_updated,
-			'num_entries_removed' => $num_entries_removed,
-		);
-	}
-
-	// }}}
-	// {{{ protected function moveUnavailableEntries()
-
-	/**
-	 * @return integer the number of entries that were moved.
-	 */
-	protected function moveUnavailableEntries()
-	{
-		$num_entries_moved = 0;
-
-		$move_renderer = $this->getUnavailableMoveRenderer();
-		foreach ($move_renderer->getClonedWidgets() as $id => $widget) {
-			if ($widget->hasBeenClicked()) {
-				$entry = $this->app->cart->checkout->getEntryById($id);
-
-				// make sure entry wasn't already moved
-				// (i.e. a page resubmit)
-				if ($entry === null)
-					break;
-
-				$this->added_entry_ids[] = $id;
-				$num_entries_moved++;
-
-				$this->app->cart->checkout->removeEntry($entry);
-				$this->app->cart->saved->addEntry($entry);
-
-				break;
-			}
-		}
-
-		return $num_entries_moved;
-	}
-
-	// }}}
-	// {{{ protected function removeUnavailableEntries()
-
-	/**
-	 * @return integer the number of entries that were removed.
-	 */
-	protected function removeUnavailableEntries()
-	{
-		$num_entries_removed = 0;
-
-		$remove_renderer = $this->getUnavailableRemoveRenderer();
-		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
-			if ($widget->hasBeenClicked()) {
-				if ($this->app->cart->checkout->removeEntryById($id) !== null)
-					$num_entries_removed++;
-
-				break;
-			}
-		}
-
-		return $num_entries_removed;
-	}
-
-	// }}}
-	// {{{ protected function moveSavedEntries()
-
-	/**
-	 * @return integer the number of entries that were moved.
-	 */
-	protected function moveSavedEntries()
-	{
-		$num_entries_moved = 0;
-
-		$move_renderer = $this->getSavedMoveRenderer();
-		foreach ($move_renderer->getClonedWidgets() as $id => $widget) {
-			if ($widget->hasBeenClicked()) {
-				$entry = $this->app->cart->saved->getEntryById($id);
-
-				// make sure entry wasn't already moved
-				// (i.e. a page resubmit)
-				if ($entry === null)
-					break;
-
-				$this->added_entry_ids[] = $id;
-				$num_entries_moved++;
-
-				$this->app->cart->saved->removeEntry($entry);
-				$this->app->cart->checkout->addEntry($entry);
-
-				break;
-			}
-		}
-
-		return $num_entries_moved;
-	}
-
-	// }}}
-	// {{{ protected function removeSavedEntries()
-
-	/**
-	 * @return integer the number of entries that were removed.
-	 */
-	protected function removeSavedEntries()
-	{
-		$num_entries_removed = 0;
-
-		$remove_renderer = $this->getSavedRemoveRenderer();
-		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
-			if ($widget->hasBeenClicked()) {
-				if ($this->app->cart->saved->removeEntryById($id) !== null)
-					$num_entries_removed++;
-
-				break;
-			}
-		}
-
-		return $num_entries_removed;
 	}
 
 	// }}}
@@ -751,8 +822,13 @@ abstract class StoreCartPage extends SiteArticlePage
 			$this->app->cart->checkout->getShippingTotal(
 				new $class_name(), new $class_name);
 
-		if (count($available_view->model) == 1)
-			$available_view->getRow('subtotal')->button_visible = false;
+		if (count($available_view->model) == 1) {
+			$remove_all_button = $this->getAvailableRemoveAllButton();
+			if ($remove_all_button->parent instanceof SwatTableViewRow)
+				$remove_all_button->parent->visible = false;
+			else
+				$remove_all_button->visible = false;
+		}
 
 		// fall-through assignment of visiblity to both checkout buttons
 		$this->ui->getWidget('header_checkout_button')->visible =
@@ -799,8 +875,13 @@ abstract class StoreCartPage extends SiteArticlePage
 
 			$message->content = ob_get_clean();
 
-			if ($count == 1)
-				$unavailable_view->getRow('remove_all')->visible = false;
+			if ($count == 1) {
+				$remove_all_button = $this->getUnavailableRemoveAllButton();
+				if ($remove_all_button->parent instanceof SwatTableViewRow)
+					$remove_all_button->parent->visible = false;
+				else
+					$remove_all_button->visible = false;
+			}
 		}
 	}
 
@@ -859,8 +940,19 @@ abstract class StoreCartPage extends SiteArticlePage
 
 			$message->content = ob_get_clean();
 
-			if ($count == 1)
-				$saved_view->getRow('remove_all')->visible = false;
+			if ($count == 1) {
+				$remove_all_button = $this->getSavedRemoveAllButton();
+				if ($remove_all_button->parent instanceof SwatTableViewRow)
+					$remove_all_button->parent->visible = false;
+				else
+					$remove_all_button->visible = false;
+
+				$move_all_button = $this->getSavedMoveAllButton();
+				if ($move_all_button->parent instanceof SwatTableViewRow)
+					$move_all_button->parent->visible = false;
+				else
+					$move_all_button->visible = false;
+			}
 		}
 	}
 
