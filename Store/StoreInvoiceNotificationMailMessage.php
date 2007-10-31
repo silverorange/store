@@ -86,13 +86,12 @@ class StoreInvoiceNotificationMailMessage extends SiteMultipartMailMessage
 				'send notification. Make sure email is loaded on the account '.
 				'object.');
 
-		if ($this->invoice->account->fullname === null)
+		if ($this->invoice->account->getFullName() === null)
 			throw new StoreException('Account requires a fullname to send '.
-				'notification. Make sure fullname is loaded on the account '.
-				'object.');
+				'notification. Make sure getFullName() is returning a name.');
 
 		$this->to_address = $this->invoice->account->email;
-		$this->to_name = $this->invoice->account->fullname;
+		$this->to_name = $this->invoice->account->getFullName();
 		$this->text_body = $this->getTextBody();
 		$this->html_body = $this->getHtmlBody();
 
