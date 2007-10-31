@@ -118,7 +118,7 @@ class StoreAdDetails extends AdminIndex
 
 	protected function getRefererPeriodTableModel()
 	{
-		$sql = sprintf('select *from AdReferrerByPeriodView where ad = %s',
+		$sql = sprintf('select * from AdReferrerByPeriodView where ad = %s',
 			$this->app->db->quote($this->id, 'integer'));
 
 		$row = SwatDB::queryRow($this->app->db, $sql);
