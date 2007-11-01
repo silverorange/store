@@ -95,6 +95,7 @@
 					<widget class="SwatConfirmationButton" id="available_remove_all_button">
 						<property name="title">Remove All Items</property>
 						<property name="confirmation_message">Remove all items from cart?</property>
+						<property name="classes[]">compact-button</property>
 					</widget>
 				</object>
 			</widget>
@@ -129,6 +130,7 @@
 						<property name="title" translatable="yes">Status</property>
 						<object class="SwatTextCellRenderer">
 							<property name="text" type="data">status</property>
+							<property name="content_type">text/xml</property>
 						</object>
 					</object>
 					<object class="SwatTableViewColumn" id="remove_column">
@@ -155,6 +157,7 @@
 						<widget class="SwatConfirmationButton" id="unavailable_remove_all_button">
 							<property name="title">Remove All Unavailable Items</property>
 							<property name="confirmation_message">Remove all items from unavailable items?</property>
+							<property name="classes[]">compact-button</property>
 						</widget>
 					</object>
 				</widget>
@@ -204,6 +207,7 @@
 					<property name="title" translatable="yes">Status</property>
 					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">status</property>
+						<property name="content_type">text/xml</property>
 					</object>
 				</object>
 				<object class="SwatTableViewColumn" id="price">
@@ -248,6 +252,7 @@
 					<widget class="SwatConfirmationButton" id="saved_remove_all_button">
 						<property name="title">Remove All Saved Items</property>
 						<property name="confirmation_message">Remove all items from saved items?</property>
+						<property name="classes[]">compact-button</property>
 					</widget>
 				</object>
 			</widget>
