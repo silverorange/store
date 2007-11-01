@@ -1060,6 +1060,7 @@ protected function processCheckoutCart()
 		$ds->price = $entry->getCalculatedItemPrice();
 		$ds->extension = $entry->getExtension();
 		$ds->message = null;
+		$ds->status = $entry->item->getStatus()->title;
 
 		if ($entry->item->product->primary_category === null)
 			$ds->product_link = null;
