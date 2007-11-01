@@ -99,12 +99,12 @@ class StoreAdDetails extends AdminIndex
 		ob_start();
 		echo Store::_('Examples:'), '<ul>';
 
+		$base_href = $this->app->getFrontendBaseHref();
 		printf(
-			'<li>http://my-site.com/<strong>?ad=%1$s</strong></li>'.
-			'<li>http://my-site.com/?othervar=otherval'.
-				'<strong>&ad=%1$s</strong></li>'.
-			'<li>http://my-site.com/us/en/category/product'.
-				'<strong>?ad=%1$s</strong></li>',
+			'<li>%1$s<strong>?ad=%2$s</strong></li>'.
+			'<li>%1$s?othervar=otherval<strong>&ad=%2$s</strong></li>'.
+			'<li>%1$sus/en/category/product<strong>?ad=%2$s</strong></li>',
+			SwatString::minimizeEntities($base_href),
 			SwatString::minimizeEntities($this->ad->shortname));
 
 		echo '</ul>';
