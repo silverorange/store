@@ -200,6 +200,12 @@
 						<property name="classes[]">store-cart-description</property>
 					</object>
 				</object>
+				<object class="SwatTableViewColumn">
+					<property name="title" translatable="yes">Status</property>
+					<object class="SwatTextCellRenderer">
+						<property name="text" type="data">status</property>
+					</object>
+				</object>
 				<object class="SwatTableViewColumn" id="price">
 					<property name="title" translatable="yes">Price</property>
 					<object class="StorePriceCellRenderer">
