@@ -133,6 +133,24 @@
 							<property name="content_type">text/xml</property>
 						</object>
 					</object>
+					<object class="SwatTableViewColumn" id="price">
+						<property name="title" translatable="yes">Price</property>
+						<object class="StorePriceCellRenderer">
+							<property name="value" type="data">price</property>
+						</object>
+					</object>
+					<object class="SwatTableViewColumn" id="quantity_column">
+						<property name="title" translatable="yes">Quantity</property>
+						<object class="SwatNumericCellRenderer">
+							<property name="value" type="data">quantity</property>
+						</object>
+					</object>
+					<object class="SwatTableViewColumn">
+						<property name="title" translatable="yes">Total</property>
+						<object class="StoreMoneyCellRenderer">
+							<property name="value" type="data">extension</property>
+						</object>
+					</object>
 					<object class="SwatTableViewColumn" id="remove_column">
 						<object class="SwatWidgetCellRenderer" id="unavailable_remove_renderer">
 							<property name="replicator_id" type="data">id</property>

@@ -1018,7 +1018,10 @@ protected function processCheckoutCart()
 	{
 		$ds = new SwatDetailsStore($entry);
 
+		$ds->quantity = $entry->getQuantity();
 		$ds->description = $this->getRowDescription($entry);
+		$ds->price = $entry->getCalculatedItemPrice();
+		$ds->extension = $entry->getExtension();
 		$ds->message = null;
 
 		if ($entry->item->product->primary_category === null)
