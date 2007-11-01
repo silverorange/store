@@ -5,6 +5,7 @@ require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatMoneyCellRenderer.php';
 require_once 'Swat/SwatNumericCellRenderer.php';
+require_once 'Store/dataobjects/StoreAd.php';
 require_once 'Store/dataobjects/StoreRegionWrapper.php';
 
 
@@ -19,8 +20,13 @@ class StoreAdDetails extends AdminIndex
 {
 	// {{{ protected properties
 
-	protected $id;
+	/**
+	 * @var StoreAd
+	 */
+	protected $ad;
+
 	protected $ui_xml = 'Store/admin/components/Ad/details.xml';
+
 	protected $periods;
 
 	// }}}}
@@ -32,6 +38,7 @@ class StoreAdDetails extends AdminIndex
 	 * @var RegionsWrapper
 	 */
 	private $regions = null;
+
 	// }}}
 
 	// init phase
@@ -41,29 +48,73 @@ class StoreAdDetails extends AdminIndex
 	{
 		parent::initInternal();
 
-		$this->ui->mapClassPrefixToPath('Store', 'Store');
+		$id = SiteApplication::initVar('id');
+		if (!$this->initAd($id)) {
+			throw new AdminNotFoundException(
+				sprintf('Ad with an id of ‘%s’ not found.', $id));
+		}
+
 		$this->ui->loadFromXML($this->ui_xml);
-
-		$this->id = SiteApplication::initVar('id');
-
-		$title =  SwatDB::queryOne($this->app->db,
-			sprintf('select title from Ad where id = %s',
-			$this->app->db->quote($this->id, 'integer')));
-
-		$this->ui->getWidget('index_frame')->subtitle = $title;
+		$this->ui->getWidget('index_frame')->subtitle = $this->ad->title;
 
 		$this->periods = array(
-			'day' => Store::_('Day'),
-			'week' => Store::_('Week'),
+			'day'      => Store::_('Day'),
+			'week'     => Store::_('Week'),
 			'two_week' => Store::_('2 Weeks'),
-			'month' => Store::_('Month'),
-			'total' => Store::_('Total')
+			'month'    => Store::_('Month'),
+			'total'    => Store::_('Total'),
 		);
+	}
+
+	// }}}
+	// {{{ protected function initAd()
+
+	/**
+	 * @var integer $id
+	 *
+	 * @return boolean
+	 */
+	protected function initAd($id)
+	{
+		$class_name = SwatDBClassMap::get('StoreAd');
+		$this->ad = new $class_name();
+		$this->ad->setDatabase($this->app->db);
+		return $this->ad->load($id);
 	}
 
 	// }}}
 
 	// build phase
+	// {{{ protected function buildInternal()
+
+	protected function buildInternal()
+	{
+		parent::buildInternal();
+
+		$help_note = $this->ui->getWidget('ad_tag_help');
+		$help_note->title = sprintf(Store::_(
+			'To track this ad, append the variable “ad=%s” to incoming links.'),
+			SwatString::minimizeEntities($this->ad->shortname));
+
+		ob_start();
+		echo Store::_('Examples:'), '<ul>';
+
+		printf(
+			'<li>http://my-site.com/<strong>?ad=%1$s</strong></li>'.
+			'<li>http://my-site.com/?othervar=otherval'.
+				'<strong>&ad=%1$s</strong></li>'.
+			'<li>http://my-site.com/us/en/category/page'.
+				'<strong>?ad=%1$s</strong></li>',
+			SwatString::minimizeEntities($this->ad->shortname));
+
+		echo '</ul>';
+		$help_note->content = ob_get_clean();
+		$help_note->content_type = 'text/xml';
+
+		$this->buildNavBar();
+	}
+
+	// }}}
 	// {{{ protected function getTableModel()
 
 	protected function getTableModel(SwatView $view)
@@ -85,7 +136,7 @@ class StoreAdDetails extends AdminIndex
 		$this->appendRegionColumns($regions);
 
 		$sql = sprintf('select * from RegionSalesByAdView where ad = %s',
-			$this->app->db->quote($this->id, 'integer'));
+			$this->app->db->quote($this->ad->id, 'integer'));
 
 		$rs = SwatDB::query($this->app->db, $sql);
 
@@ -119,7 +170,7 @@ class StoreAdDetails extends AdminIndex
 	protected function getRefererPeriodTableModel()
 	{
 		$sql = sprintf('select * from AdReferrerByPeriodView where ad = %s',
-			$this->app->db->quote($this->id, 'integer'));
+			$this->app->db->quote($this->ad->id, 'integer'));
 
 		$row = SwatDB::queryRow($this->app->db, $sql);
 
@@ -133,22 +184,6 @@ class StoreAdDetails extends AdminIndex
 		}
 
 		return $store;
-	}
-
-	// }}}
-	// {{{ private function queryRegions()
-
-	private function queryRegions()
-	{
-		if ($this->regions === null) {
-			$sql = 'select id, title from Region order by Region.id';
-
-			$this->regions =
-				SwatDB::query($this->app->db, $sql,
-					SwatDBClassMap::get('StoreRegionWrapper'));
-		}
-
-		return $this->regions;
 	}
 
 	// }}}
@@ -197,6 +232,30 @@ class StoreAdDetails extends AdminIndex
 		$view->appendColumn($orders_column);
 
 	}
+	// }}}
+	// {{{ private function buildNavBar()
+
+	private function buildNavBar()
+	{
+		$this->navbar->addEntry(new SwatNavBarEntry($this->ad->title));
+	}
+
+	// }}}
+	// {{{ private function queryRegions()
+
+	private function queryRegions()
+	{
+		if ($this->regions === null) {
+			$sql = 'select id, title from Region order by Region.id';
+
+			$this->regions =
+				SwatDB::query($this->app->db, $sql,
+					SwatDBClassMap::get('StoreRegionWrapper'));
+		}
+
+		return $this->regions;
+	}
+
 	// }}}
 }
 

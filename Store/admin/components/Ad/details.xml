@@ -3,7 +3,8 @@
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="index_frame">
-		<property name="title" translatable="yes">Ads Details</property>
+		<property name="title" translatable="yes">Ad Details</property>
+		<widget class="AdminNote" id="ad_tag_help" />
 		<widget class="SwatFieldset">
 			<property name="title" translatable="yes">Referrers in the Last</property>
 			<widget class="SwatTableView" id="referrer_period_view">
