@@ -103,7 +103,7 @@ class StoreAdDetails extends AdminIndex
 			'<li>http://my-site.com/<strong>?ad=%1$s</strong></li>'.
 			'<li>http://my-site.com/?othervar=otherval'.
 				'<strong>&ad=%1$s</strong></li>'.
-			'<li>http://my-site.com/us/en/category/page'.
+			'<li>http://my-site.com/us/en/category/product'.
 				'<strong>?ad=%1$s</strong></li>',
 			SwatString::minimizeEntities($this->ad->shortname));
 
