@@ -1,5 +1,40 @@
+2007-10-22  nrf
+
+	* [r21751] store/branches/1.10.x/package.php:
+	  prepare for release of 1.10.7
+	* [r21749]
+	  store/branches/1.10.x/Store/admin/components/Product/Index.php:
+	  merge 21733 into branch
+
 2007-10-19  nrf
 
+	* [r21694] store/branches/1.10.x/package.php:
+	  prepare for release of 1.10.6
+	* [r21693]
+	  store/branches/1.10.x/Store/admin/components/Category/Index.php:
+	  merge 21692 to branch
+	* [r21684] store/branches/1.10.x/ChangeLog,
+	  store/branches/1.10.x/package.php:
+	  prepare for release of 1.10.5
+	* [r21683]
+	  store/branches/1.10.x/www/javascript/store-opacity-animation.js:
+	  missed in last commit
+	* [r21682]
+	  store/branches/1.10.x/Store/admin/components/Article/Index.php,
+	  store/branches/1.10.x/Store/admin/components/Article/Search.php,
+	  store/branches/1.10.x/Store/admin/components/Catalog/Edit.php,
+	  store/branches/1.10.x/Store/admin/components/Catalog/edit.xml,
+	  store/branches/1.10.x/Store/admin/components/Category/Index.php,
+	  store/branches/1.10.x/Store/admin/components/Category/include/StoreCategoryTableView.php,
+	  
+	  store/branches/1.10.x/Store/admin/components/Product/Details.php,
+	  
+	  store/branches/1.10.x/Store/admin/components/Product/include/StoreProductTableView.php,
+	  store/branches/1.10.x/Store/pages/StoreProductImagePage.php,
+	  store/branches/1.10.x/Store/pages/StoreQuickOrderPage.php,
+	  store/branches/1.10.x/www/admin/styles/disabled-rows.css,
+	  store/branches/1.10.x/www/javascript/store-quick-order-page.js:
+	  merge 21581, 21601, 21624, 21630, 21633, 21634 into branch
 	* [r21681] store/branches/1.10.x:
 	  make a branch
 
