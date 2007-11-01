@@ -103,12 +103,16 @@ abstract class StoreOrderConfirmationMailMessage
 		echo '#order-confirmation-email { font-family: sans-serif; }';
 		echo '</style>';
 
+		ob_start();
+		$ui->display();
+		$ui_content = ob_get_clean();
+
 		$ui->getRoot()->getHtmlHeadEntrySet()->displayInline(
 			$this->getWebRoot(),
 			'SwatStyleSheetHtmlHeadEntry');
 
 		echo '</head><body><div id="frame">';
-		$ui->display();
+		echo $ui_content;
 		echo '</div></body></html>';
 
 		return ob_get_clean();

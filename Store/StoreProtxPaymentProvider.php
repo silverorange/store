@@ -876,7 +876,6 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 				switch ($response->getField('3DSecureStatus')) {
 				case 'NOAUTH':
 				case 'CANTAUTH':
-				case 'ATTEMPTONLY':
 					$transaction->three_domain_secure_status =
 						StorePaymentTransaction::STATUS_MISSING;
 
@@ -887,6 +886,8 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 
 					break;
 				case 'OK':
+				case 'ATTEMPTONLY':
+					// attempting 3-DS is enough for a liability shift
 					$transaction->three_domain_secure_status =
 						StorePaymentTransaction::STATUS_PASSED;
 
