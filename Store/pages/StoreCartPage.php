@@ -866,10 +866,12 @@ protected function processCheckoutCart()
 			ob_start();
 
 			$header_tag = new SwatHtmlTag('h3');
+			$header_tag->id = 'unavailable_cart_title';
 			$header_tag->setContent($title);
 			$header_tag->display();
 
 			$paragraph_tag = new SwatHtmlTag('p');
+			$header_tag->id = 'unavailable_cart_description';
 			$paragraph_tag->setContent($text);
 			$paragraph_tag->display();
 
