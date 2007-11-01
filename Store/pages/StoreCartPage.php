@@ -1026,7 +1026,9 @@ protected function processCheckoutCart()
 		else
 			$ds->product_link = 'store/'.$entry->item->product->path;
 
-		$ds->status = $entry->item->getStatus()->title;
+		$status = $entry->item->getStatus();
+		$ds->status = sprintf('<spen class="status-%s">%s</span>',
+			$status->shortname, SwatString::minimizeEntities($status->title));
 
 		return $ds;
 	}
@@ -1060,7 +1062,9 @@ protected function processCheckoutCart()
 		$ds->price = $entry->getCalculatedItemPrice();
 		$ds->extension = $entry->getExtension();
 		$ds->message = null;
-		$ds->status = $entry->item->getStatus()->title;
+		$status = $entry->item->getStatus();
+		$ds->status = sprintf('<spen class="status-%s">%s</span>',
+			$status->shortname, SwatString::minimizeEntities($status->title));
 
 		if ($entry->item->product->primary_category === null)
 			$ds->product_link = null;
