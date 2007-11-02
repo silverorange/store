@@ -65,9 +65,9 @@
 				</object>
 			</object>
 			<object class="SwatTableViewColumn" id="move_column">
-				<object class="SwatWidgetCellRenderer" id="move_available_renderer">
+				<object class="SwatWidgetCellRenderer" id="move_renderer">
 					<property name="replicator_id" type="data">id</property>
-					<widget class="SwatButton" id="move_available_button">
+					<widget class="SwatButton" id="move_button">
 						<property name="title" translatable="yes">Save for Later</property>
 						<property name="classes[]">compact-button</property>
 						<property name="classes[]">cart-move</property>
