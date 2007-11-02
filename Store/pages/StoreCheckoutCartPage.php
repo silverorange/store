@@ -84,14 +84,10 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 	 */
 	protected function continueButtonHasBeenClicked()
 	{
-		$continue_button_ids =
-			array('header_continue_button', 'footer_continue_button');
-
 		$continue_button_clicked = false;
-		foreach ($continue_button_ids as $id) {
-			$button = $this->ui->getWidget($id);
-			if ($button !== null && $button instanceof SwatButton &&
-				$button->hasBeenClicked()) {
+
+		foreach ($this->getContinueButtons() as $button) {
+			if ($button->hasBeenClicked()) {
 				$continue_button_clicked = true;
 				break;
 			}
@@ -101,33 +97,70 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 	}
 
 	// }}}
-	// {{{ protected function getMoveRenderer()
+	// {{{ protected function getContinueButtons()
 
-	protected function getMoveRenderer()
+	protected function getContinueButtons()
 	{
-		$view = $this->ui->getWidget('cart_view');
-		$column = $view->getColumn('move_column');
-		return $column->getRendererByPosition(); 
+		$buttons = array();
+		$continue_button_ids =
+			array('header_continue_button', 'footer_continue_button');
+
+		foreach ($continue_button_ids as $id)
+			$buttons[]= $this->ui->getWidget($id);
+
+		return $buttons;
 	}
 
 	// }}}
-	// {{{ protected function getRemoveRenderer()
+	// {{{ protected function getQuantityWidgets()
 
-	protected function getRemoveRenderer()
-	{
-		$view = $this->ui->getWidget('cart_view');
-		$column = $view->getColumn('remove_column');
-		return $column->getRendererByPosition(); 
-	}
-
-	// }}}
-	// {{{ protected function getQuantityRenderer()
-
-	protected function getQuantityRenderer()
+	protected function getQuantityWidgets()
 	{
 		$view = $this->ui->getWidget('cart_view');
 		$column = $view->getColumn('quantity_column');
-		return $column->getRendererByPosition(); 
+		$renderer = $column->getRendererByPosition();
+		$widgets = $renderer->getWidgets('quantity_entry');
+
+		return $widgets;
+	}
+
+	// }}}
+	// {{{ protected function getQuantityWidget()
+
+	protected function getQuantityWidget($id)
+	{
+		$view = $this->ui->getWidget('cart_view');
+		$column = $view->getColumn('quantity_column');
+		$renderer = $column->getRendererByPosition();
+		$widget = $renderer->getWidget($id);
+
+		return $widget;
+	}
+
+	// }}}
+	// {{{ protected function getMoveButtons()
+
+	protected function getMoveButtons()
+	{
+		$view = $this->ui->getWidget('cart_view');
+		$column = $view->getColumn('move_column');
+		$renderer = $column->getRendererByPosition();
+		$buttons = $renderer->getWidgets('move_button');
+
+		return $buttons;
+	}
+
+	// }}}
+	// {{{ protected function getRemoveButtons()
+
+	protected function getRemoveButtons()
+	{
+		$view = $this->ui->getWidget('cart_view');
+		$column = $view->getColumn('remove_column');
+		$renderer = $column->getRendererByPosition();
+		$buttons = $renderer->getWidgets('remove_button');
+
+		return $buttons;
 	}
 
 	// }}}
@@ -159,12 +192,10 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 
 	protected function processRemovedEntries()
 	{
-		$remove_renderer = $this->getRemoveRenderer();
-
 		$num_entries_removed = 0;
 
-		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
-			if ($widget->hasBeenClicked()) {
+		foreach ($this->getRemoveButtons() as $id => $button) {
+			if ($button->hasBeenClicked()) {
 				$num_entries_removed++;
 				$this->app->cart->checkout->removeEntryById($id);
 				break;
@@ -179,13 +210,10 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 
 	protected function processMovedEntries()
 	{
-		$quantity_renderer = $this->getQuantityRenderer();
-		$move_renderer = $this->getMoveRenderer();
-
 		$num_entries_moved = 0;
 
-		foreach ($move_renderer->getClonedWidgets() as $id => $widget) {
-			if ($widget->hasBeenClicked()) {
+		foreach ($this->getMoveButtons() as $id => $button) {
+			if ($button->hasBeenClicked()) {
 				$entry = $this->app->cart->checkout->getEntryById($id);
 
 				// make sure entry wasn't already moved
@@ -193,7 +221,7 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 				if ($entry === null)
 					break;
 
-				$quantity = $quantity_renderer->getWidget($id)->value;
+				$quantity = $this->getQuantityWidget($id)->value;
 				$entry->setQuantity($quantity);
 				$this->app->cart->checkout->removeEntry($entry);
 				$this->app->cart->saved->addEntry($entry);
@@ -210,12 +238,10 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 
 	protected function processUpdatedEntries()
 	{
-		$quantity_renderer = $this->getQuantityRenderer();
-
 		$num_entries_removed = 0;
 		$num_entries_updated = 0;
 
-		foreach ($quantity_renderer->getClonedWidgets() as $id => $widget) {
+		foreach ($this->getQuantityWidgets() as $id => $widget) {
 			if (!$widget->hasMessage()) {
 				$entry = $this->app->cart->checkout->getEntryById($id);
 				if ($entry !== null &&
@@ -223,7 +249,7 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 					$this->updated_entry_ids[] = $id;
 					$this->app->cart->checkout->setEntryQuantity($entry,
 						$widget->value);
-					
+
 					if ($widget->value > 0)
 						$num_entries_updated++;
 					else
