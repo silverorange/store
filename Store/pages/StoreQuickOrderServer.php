@@ -12,18 +12,6 @@ require_once 'Store/StoreQuickOrderItemSelector.php';
  */
 class StoreQuickOrderServer extends SiteXMLRPCServer
 {
-	// {{{ public function init()
-
-	/**
-	 * @xmlrpc.hidden
-	 */
-	public function init()
-	{
-		if (!isset($GLOBALS['HTTP_RAW_POST_DATA']))
-			throw new SiteNotFoundException('Page not found.');
-	}
-
-	// }}}
 	// {{{ public function getItemDescription()
 
 	/**
