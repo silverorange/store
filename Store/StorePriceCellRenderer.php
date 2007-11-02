@@ -33,10 +33,10 @@ class StorePriceCellRenderer extends SwatMoneyCellRenderer
 			echo Store::_('Free!');
 		} else {
 			parent::render();
-
-			if ($this->discount > 0)
-				$this->displayDiscount();
 		}
+
+		if ($this->discount > 0)
+			$this->displayDiscount();
 	}
 
 	// }}}
