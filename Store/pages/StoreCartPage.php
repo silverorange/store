@@ -238,7 +238,7 @@ protected function processCheckoutCart()
 		$view = $this->ui->getWidget('available_cart_view');
 		$column = $view->getColumn('quantity_column');
 		$renderer = $column->getRendererByPosition();
-		$widgets = $renderer->getClonedWidgets();
+		$widgets = $renderer->getWidgets('quantity_entry');
 
 		return $widgets;
 	}
@@ -264,7 +264,7 @@ protected function processCheckoutCart()
 		$view = $this->ui->getWidget('available_cart_view');
 		$column = $view->getColumn('move_column');
 		$renderer = $column->getRendererByPosition();
-		$buttons = $renderer->getClonedWidgets();
+		$buttons = $renderer->getWidgets('available_move_button');
 
 		return $buttons;
 	}
@@ -277,7 +277,7 @@ protected function processCheckoutCart()
 		$view = $this->ui->getWidget('available_cart_view');
 		$column = $view->getColumn('remove_column');
 		$renderer = $column->getRendererByPosition();
-		$buttons = $renderer->getClonedWidgets();
+		$buttons = $renderer->getWidgets('available_remove_button');
 
 		return $buttons;
 	}
@@ -428,7 +428,7 @@ protected function processCheckoutCart()
 		$view = $this->ui->getWidget('unavailable_cart_view');
 		$column = $view->getColumn('move_column');
 		$renderer = $column->getRendererByPosition();
-		$buttons = $renderer->getClonedWidgets();
+		$buttons = $renderer->getWidgets('unavailable_move_button');
 
 		return $buttons;
 	}
@@ -441,7 +441,7 @@ protected function processCheckoutCart()
 		$view = $this->ui->getWidget('unavailable_cart_view');
 		$column = $view->getColumn('remove_column');
 		$renderer = $column->getRendererByPosition();
-		$buttons = $renderer->getClonedWidgets();
+		$buttons = $renderer->getWidgets('unavailable_remove_button');
 
 		return $buttons;
 	}
@@ -583,7 +583,7 @@ protected function processCheckoutCart()
 		$view = $this->ui->getWidget('saved_cart_view');
 		$column = $view->getColumn('move_column');
 		$renderer = $column->getRendererByPosition();
-		$buttons = $renderer->getClonedWidgets();
+		$buttons = $renderer->getWidgets('saved_move_button');
 
 		return $buttons;
 	}
@@ -606,7 +606,7 @@ protected function processCheckoutCart()
 		$view = $this->ui->getWidget('saved_cart_view');
 		$column = $view->getColumn('remove_column');
 		$renderer = $column->getRendererByPosition();
-		$buttons = $renderer->getClonedWidgets();
+		$buttons = $renderer->getWidgets('saved_remove_button');
 
 		return $buttons;
 	}
