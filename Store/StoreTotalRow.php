@@ -74,7 +74,16 @@ class StoreTotalRow extends SwatTableViewRow
 		$th_tag->colspan = $colspan - 1 - $this->offset;
 
 		$th_tag->open();
+		$this->displayTitle();
+		$this->displayNote();
+		$th_tag->close();
+	}
 
+	// }}}
+	// {{{ protected function displayTitle()
+
+	protected function displayTitle()
+	{
 		if ($this->link === null) {
 			echo SwatString::minimizeEntities($this->title);
 		} else {
@@ -85,15 +94,19 @@ class StoreTotalRow extends SwatTableViewRow
 			$anchor_tag->display();
 		}
 		echo ':';
+	}
 
+	// }}}
+	// {{{ protected function displayNote()
+
+	protected function displayNote()
+	{
 		if ($this->note !== null) {
 			$div = new SwatHtmlTag('div');
 			$div->class = 'note';
 			$div->setContent($this->note, $this->note_content_type);
 			$div->display();
 		}
-
-		$th_tag->close();
 	}
 
 	// }}}
@@ -104,7 +117,15 @@ class StoreTotalRow extends SwatTableViewRow
 		$td_tag = new SwatHtmlTag('td');
 		$td_tag->class = $this->getCSSClassString();
 		$td_tag->open();
+		$this->displayValue();
+		$td_tag->close();
+	}
 
+	// }}}
+	// {{{ protected function displayValue()
+
+	protected function displayValue()
+	{
 		if ($this->locale !== null)
 			$this->money_cell_renderer->locale = $this->locale;
 
@@ -114,8 +135,6 @@ class StoreTotalRow extends SwatTableViewRow
 			$this->money_cell_renderer->value = $this->value;
 			$this->money_cell_renderer->render();
 		}
-
-		$td_tag->close();
 	}
 
 	// }}}
