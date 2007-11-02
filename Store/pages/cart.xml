@@ -265,17 +265,14 @@
 						</widget>
 					</object>
 				</object>
-				<object class="SwatTableViewWidgetRow">
-					<property name="position" type="constant">POSITION_RIGHT</property>
-					<widget class="SwatConfirmationButton" id="saved_remove_all_button">
-						<property name="title">Remove All Saved Items</property>
-						<property name="confirmation_message">Remove all items from saved items?</property>
-						<property name="classes[]">compact-button</property>
-					</widget>
-				</object>
 			</widget>
 			<!-- }}} -->
 			<widget class="SwatFooterFormField" id="saved_cart_move_all_field">
+				<widget class="SwatConfirmationButton" id="saved_remove_all_button">
+					<property name="title">Remove All Saved Items</property>
+					<property name="confirmation_message">Remove all items from saved items?</property>
+					<property name="classes[]">compact-button</property>
+				</widget>
 				<widget class="SwatButton" id="saved_move_all_button">
 					<property name="title" translatable="yes">Move All Saved Items to Cart</property>
 				</widget>
