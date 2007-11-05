@@ -70,9 +70,9 @@ class StoreOrderIndex extends AdminSearch
 	// }}}
 
 	// build phase
-	// {{{ protected function buildInternal() 
+	// {{{ protected function buildInternal()
 
-	protected function buildInternal() 
+	protected function buildInternal()
 	{
 		parent::buildInternal();
 
@@ -82,6 +82,7 @@ class StoreOrderIndex extends AdminSearch
 
 		$date_renderer = $date_column->getRendererByPosition();
 		$date_renderer->display_time_zone = $this->app->default_time_zone;
+		$date_renderer->time_zone_format = SwatDate::TZ_CURRENT_SHORT;
 	}
 
 	// }}}
@@ -120,13 +121,13 @@ class StoreOrderIndex extends AdminSearch
 			$clause->value = $fullname;
 			$clause->operator = AdminSearchClause::OP_CONTAINS;
 			$where.= $clause->getClause($this->app->db, '');
-	
+
 			$clause = new AdminSearchClause('fullname');
 			$clause->table = 'BillingAddress';
 			$clause->value = $fullname;
 			$clause->operator = AdminSearchClause::OP_CONTAINS;
 			$where.= $clause->getClause($this->app->db, 'or');
-	
+
 			$clause = new AdminSearchClause('fullname');
 			$clause->table = 'ShippingAddress';
 			$clause->value = $fullname;
@@ -144,7 +145,7 @@ class StoreOrderIndex extends AdminSearch
 			$clause->value = $email;
 			$clause->operator = AdminSearchClause::OP_CONTAINS;
 			$where.= $clause->getClause($this->app->db, '');
-	
+
 			$clause = new AdminSearchClause('email');
 			$clause->table = 'Orders';
 			$clause->value = $email;
@@ -213,7 +214,7 @@ class StoreOrderIndex extends AdminSearch
 
 		$pager = $this->ui->getWidget('pager');
 		$pager->total_records = SwatDB::queryOne($this->app->db, $sql);
-	
+
 		$sql = 'select Orders.id, Orders.total, Orders.createdate,
 					Orders.locale, Orders.notes, Orders.comments,
 					Orders.billing_address
@@ -242,7 +243,7 @@ class StoreOrderIndex extends AdminSearch
 			$this->ui->getWidget('results_message')->content =
 				$pager->getResultsMessage('result', 'results');
 
-		$store = new SwatTableStore();	
+		$store = new SwatTableStore();
 		foreach ($orders as $order) {
 			$ds = new SwatDetailsStore($order);
 			$ds->title = $this->getOrderTitle($order);
