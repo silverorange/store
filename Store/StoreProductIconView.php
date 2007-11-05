@@ -11,6 +11,20 @@ require_once 'Store/StoreProductView.php';
  */
 class StoreProductIconView extends StoreProductView
 {
+	// {{{ public properties
+
+	/**
+	 * The image size shortname of product icon images for this product icon
+	 * view
+	 *
+	 * Image size shortnames are site-specific. Most sites define a 'thumb'
+	 * size.
+	 *
+	 * @var string
+	 */
+	public $image_size = 'thumb';
+
+	// }}}
 	// {{{ public function display()
 
 	/**
@@ -34,7 +48,7 @@ class StoreProductIconView extends StoreProductView
 			else
 				$link = $this->path.'/'.$product->shortname;
 
-			$product->displayAsIcon($link);
+			$product->displayAsIcon($link, $this->image_size);
 			echo '</li>';
 		}
 

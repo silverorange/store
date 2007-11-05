@@ -13,6 +13,21 @@ require_once 'Store/dataobjects/StoreProductWrapper.php';
  */
 abstract class StoreProductView extends SwatControl
 {
+	// {{{ public properties
+
+	/**
+	 * The category path of products displayed in this product view
+	 *
+	 * This category path is prepended to the shortname of every product
+	 * displayed by this view and then used in links to products. If no path
+	 * is specified or the path is specified as null, the product path is
+	 * loaded for each product object prior to displaying the product.
+	 *
+	 * @var string
+	 */
+	public $path;
+
+	// }}}
 	// {{{ protected properties
 
 	/**
@@ -21,13 +36,6 @@ abstract class StoreProductView extends SwatControl
 	 * @var StoreProductWrapper
 	 */
 	protected $products;
-
-	/**
-	 * The category path of products displayed in this product view
-	 *
-	 * @var string
-	 */
-	protected $path;
 
 	// }}}
 	// {{{ public function setProducts()
@@ -40,27 +48,6 @@ abstract class StoreProductView extends SwatControl
 	public function setProducts(StoreProductWrapper $products)
 	{
 		$this->products = $products;
-	}
-
-	// }}}
-	// {{{ public function setPath()
-
-	/**
-	 * Sets the category path of this product view
-	 *
-	 * This category path is prepended to the shortname of every product
-	 * displayed by this view and then used in links to products. If not path
-	 * is specified for this view or is specified as null, the product path is
-	 * loaded for each product object prior to displaying the product.
-	 *
-	 * @param string $path the category path of products in this product view.
-	 */
-	public function setPath($path)
-	{
-		if ($path === null)
-			$this->path = null;
-		else
-			$this->path = (string)$path;
 	}
 
 	// }}}
