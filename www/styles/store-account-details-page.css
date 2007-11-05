@@ -47,4 +47,5 @@
 
 #account_order_container li, #account_invoice_container li {
 	margin-bottom: 0.5em;
+	list-style-type: none;
 }
