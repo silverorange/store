@@ -108,9 +108,9 @@ class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 	}
 
 	// }}}
-	// {{{ private function processCreateAccount()
+	// {{{ protected function processCreateAccount()
 
-	private function processCreateAccount()
+	protected function processCreateAccount()
 	{
 		$this->initDataObjects();
 		$this->resetProgress();
@@ -120,9 +120,9 @@ class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 	}
 
 	// }}}
-	// {{{ private function processJustPlace()
+	// {{{ protected function processJustPlace()
 
-	private function processJustPlace()
+	protected function processJustPlace()
 	{
 		$this->app->session->checkout_with_account = false;
 		$this->initDataObjects();
@@ -132,9 +132,9 @@ class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 	}
 
 	// }}}
-	// {{{ private function processLogin()
+	// {{{ protected function processLogin()
 
-	private function processLogin($login_form)
+	protected function processLogin($login_form)
 	{
 		if (!$login_form->hasMessage()) {
 			$email = $this->ui->getWidget('email_address')->value;
