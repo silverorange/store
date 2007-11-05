@@ -214,7 +214,7 @@ class StoreOrderIndex extends AdminSearch
 
 		$pager = $this->ui->getWidget('pager');
 		$pager->total_records = SwatDB::queryOne($this->app->db, $sql);
-	
+
 		$sql = 'select Orders.id, Orders.total, Orders.createdate,
 					Orders.locale, Orders.notes, Orders.comments,
 					Orders.billing_address
@@ -243,7 +243,7 @@ class StoreOrderIndex extends AdminSearch
 			$this->ui->getWidget('results_message')->content =
 				$pager->getResultsMessage('result', 'results');
 
-		$store = new SwatTableStore();	
+		$store = new SwatTableStore();
 		foreach ($orders as $order) {
 			$ds = new SwatDetailsStore($order);
 			$ds->title = $this->getOrderTitle($order);
