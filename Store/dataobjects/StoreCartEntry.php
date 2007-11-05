@@ -274,6 +274,7 @@ class StoreCartEntry extends SwatDBDataObject
 		$order_item->quantity = $this->getQuantity();
 		$order_item->extension = $this->getExtension();
 		$order_item->description = $this->item->getDescription();
+		$order_item->item = $this->item->id;
 		$order_item->product = $this->item->product->id;
 		$order_item->product_title = $this->item->product->title;
 		$order_item->quick_order = $this->quick_order;

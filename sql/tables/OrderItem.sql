@@ -6,6 +6,7 @@ create table OrderItem (
 	price numeric(11, 2) not null,
 	description varchar(255),
 	extension numeric(11, 2) not null,
+	item int null,
 	product int null,
 	product_title varchar(255) null,
 	catalog int,
