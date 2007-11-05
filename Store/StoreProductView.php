@@ -30,14 +30,6 @@ abstract class StoreProductView extends SwatControl
 	protected $path;
 
 	// }}}
-	// {{{ abstract public function display()
-
-	/**
-	 * Displays this product view
-	 */
-	abstract public function display();
-
-	// }}}
 	// {{{ public function setProducts()
 
 	/**
