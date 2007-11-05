@@ -362,6 +362,8 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 		$ds->description = $entry->getDescription();
 		$ds->price = $entry->getCalculatedItemPrice();
 		$ds->extension = $entry->getExtension();
+		$ds->discount = $entry->getDiscount();
+		$ds->discount_extension = $entry->getDiscountExtension();
 
 		return $ds;
 	}
