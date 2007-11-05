@@ -65,6 +65,13 @@ class StoreOrderItem extends SwatDBDataObject
 	public $extension;
 
 	/**
+	 * Item identifier
+	 *
+	 * @var integer
+	 */
+	public $item;
+
+	/**
 	 * Product identifier
 	 *
 	 * @var integer
