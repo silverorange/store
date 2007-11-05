@@ -19,11 +19,7 @@ class StoreAccountChangePasswordPage extends StoreAccountPage
 	 * @var string
 	 */
 	protected $ui_xml = 'Store/pages/account-change-password.xml';
-
-	// }}}
-	// {{{ private properties
-
-	private $ui;
+	protected $ui;
 
 	// }}}
 
