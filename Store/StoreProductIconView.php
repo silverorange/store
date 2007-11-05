@@ -29,7 +29,11 @@ class StoreProductIconView extends StoreProductView
 
 		foreach ($this->products as $product) {
 			echo '<li class="store-product-icon">';
-			$link = $this->path.'/'.$product->shortname;
+			if ($this->path === null)
+				$link = 'store/'.$product->path;
+			else
+				$link = $this->path.'/'.$product->shortname;
+
 			$product->displayAsIcon($link);
 			echo '</li>';
 		}
