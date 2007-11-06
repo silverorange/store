@@ -6,6 +6,3 @@ create table Locale (
 
 CREATE INDEX Locale_region_index ON Locale(region);
 
-INSERT INTO Locale (id, region) VALUES ('en_CA', 1);
-INSERT INTO Locale (id, region) VALUES ('en_US', 2);
-
