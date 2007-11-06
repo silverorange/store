@@ -79,9 +79,14 @@ class StoreCategoryPage extends StorePage
 		else
 			$this->layout->data->content= '';
 
-		$this->layout->data->meta_description =
-			SwatString::minimizeEntities(SwatString::condense(
-			SwatString::stripXHTMLTags($category->bodytext, 400)));
+		if ($category->description === null) {
+			$this->layout->data->meta_description =
+				SwatString::minimizeEntities(SwatString::condense(
+				SwatString::stripXHTMLTags($category->bodytext, 400)));
+		} else {
+			$this->layout->data->meta_description =
+				SwatString::minimizeEntities($category->description);
+		}
 
 		$this->layout->startCapture('content');
 		$this->displayRelatedArticles($category);
