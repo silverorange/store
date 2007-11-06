@@ -180,7 +180,7 @@ abstract class StoreAddress extends SwatDBDataObject
 		$this->city            = $address->city;
 		$this->postal_code     = $address->postal_code;
 		$this->provstate_other = $address->provstate_other;
-		$this->phone         = $address->phone;
+		$this->phone           = $address->phone;
 		$this->provstate       = $address->getInternalValue('provstate');
 		$this->country         = $address->getInternalValue('country');
 	}
