@@ -2,6 +2,6 @@
 -- this is soley for the use of ProductItemCountByStatusView
 create or replace view ProductImageMinimumDisplayorderView as
 
-select min(displayorder) as displayorder, product 
+select min(displayorder) as displayorder, product
 	from ProductImageBinding
-	group by ProductImageBinding.product
+	group by ProductImageBinding.product;

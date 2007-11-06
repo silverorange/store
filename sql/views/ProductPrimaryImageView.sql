@@ -8,6 +8,6 @@ select min(ProductImageBinding.image) as image,
 	inner join ProductImageMinimumDisplayorderView
 		on ProductImageMinimumDisplayorderView.product =
 			ProductImageBinding.product
-		and ProductImageMinimumDisplayorderView.displayorder = 
+		and ProductImageMinimumDisplayorderView.displayorder =
 			ProductImageBinding.displayorder
-	group by ProductImageBinding.product
+	group by ProductImageBinding.product;

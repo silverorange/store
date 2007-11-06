@@ -5,6 +5,3 @@ create table Country (
 	show boolean not null default true,
 	primary key(id)
 );
-
-INSERT INTO Country (id, title) VALUES ('CA', 'Canada');
-INSERT INTO Country (id, title) VALUES ('US', 'United States');

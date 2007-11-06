@@ -4,5 +4,3 @@ create table RegionBillingCountryBinding (
 	primary key (region, country)
 );
 
-INSERT INTO RegionBillingCountryBinding (region, country) VALUES (1, 'CA');
-INSERT INTO RegionBillingCountryBinding (region, country) VALUES (2, 'US');
