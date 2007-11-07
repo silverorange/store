@@ -40,7 +40,7 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 	public function processCommon()
 	{
 		if ($this->app->session->checkout_with_account)
-			$this->validateEmailAddress();
+			$this->validateAccount();
 
 		if ($this->ui->getWidget('form')->hasMessage())
 			return;
@@ -83,29 +83,17 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
-	// {{{ protected function validateEmailAddress()
+	// {{{ protected function validateAccount()
 
 	/**
 	 * Verifies entered email address is not a duplicate of an existing account
 	 */
-	protected function validateEmailAddress()
+	protected function validateAccount()
 	{
 		$email_entry = $this->ui->getWidget('email');
 		$email_address = $email_entry->value;
 
-		$account_id = ($this->app->session->isLoggedIn()) ?
-			$this->app->session->account->id : null;
-
-		$sql = 'select email from Account where email = %s and id %s %s';
-
-		$sql = sprintf($sql,
-			$this->app->db->quote($email_address, 'text'),
-			SwatDB::equalityOperator($account_id, true),
-			$this->app->db->quote($account_id, 'integer'));
-
-		$rs = SwatDB::query($this->app->db, $sql);
-
-		if (count($rs) > 0) {
+		if (!$this->validEmailAddress($email_address)) {
 			$message = new SwatMessage(
 				Store::_('An account already exists with this email address.'),
 				SwatMessage::ERROR);
@@ -118,6 +106,28 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 			$message->content_type = 'text/xml';
 			$email_entry->addMessage($message);
 		}
+	}
+
+	// }}}
+	// {{{ protected function validEmailAddress()
+
+	protected function validEmailAddress($email)
+	{
+		if ($this->app->session->isLoggedIn())
+			return;
+
+		$class_name = new SwatDBClassMap('SiteAccount');
+		$account = new $class_name();
+		$account->setDatabase();
+		$account->loadWithEmail($email);
+
+		$account_id = ($this->app->session->isLoggedIn()) ?
+			$this->app->session->account->id : null;
+
+		if ($account === null || $account_id === $account->id)
+			return false;
+		else
+			return true;
 	}
 
 	// }}}
