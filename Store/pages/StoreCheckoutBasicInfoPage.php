@@ -124,7 +124,7 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 		$account_id = ($this->app->session->isLoggedIn()) ?
 			$this->app->session->account->id : null;
 
-		if ($account === null || $account_id === $account->id)
+		if ($account === false || $account_id === $account->id)
 			return false;
 		else
 			return true;
