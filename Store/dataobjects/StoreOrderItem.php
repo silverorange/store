@@ -110,6 +110,19 @@ class StoreOrderItem extends SwatDBDataObject
 	protected $cart_entry_id = null;
 
 	// }}}
+	// {{{ public function getDescription()
+
+	/**
+	 * Gets the description for this order item
+	 *
+	 * @return string the description for this order item.
+	 */
+	public function getDescription()
+	{
+		return $this->description;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()

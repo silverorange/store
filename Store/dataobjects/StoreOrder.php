@@ -342,6 +342,7 @@ class StoreOrder extends SwatDBDataObject
 	{
 		$ds = new SwatDetailsStore($item);
 		$ds->item = $item;
+		$ds->description = $item->getDescription();
 
 		return $ds;
 	}
