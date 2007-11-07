@@ -557,6 +557,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 		foreach ($this->app->cart->checkout->getAvailableEntries() as $entry) {
 			$order_item = $entry->createOrderItem();
+			$order_item->setDatabase($this->app->db);
 			$order->items->add($order_item);
 		}
 	}
@@ -599,6 +600,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 		foreach ($order->invoice->items as $invoice_item) {
 			$order_item = $invoice_item->createOrderItem();
+			$order_item->setDatabase($this->app->db);
 			$order->items->add($order_item);
 		}
 	}
