@@ -81,12 +81,15 @@ class StoreAccountForgotPasswordPage extends StoreAccountPage
 	 */
 	protected function getAccount($email)
 	{
-		$account_sql = sprintf('select id, email, fullname from Account
-			where lower(email) = lower(%s)',
-			$this->app->db->quote($email, 'text'));
+		$class_name = SwatDBClassMap::get('SiteAccount');
+		$account = new $class_name();
+		$account->setDatabase($this->app->db);
+		$found = $account->loadWithEmail($email);
 
-		return SwatDB::query($this->app->db, $account_sql,
-			SwatDBClassMap::get('StoreAccountWrapper'))->getFirst();
+		if ($found === false)
+				$account = null;
+
+		return $account;
 	}
 
 	// }}}
