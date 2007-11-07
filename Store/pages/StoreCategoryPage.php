@@ -193,7 +193,7 @@ class StoreCategoryPage extends StorePage
 	{
 		$sql = 'select Product.id, Product.shortname, Product.title,
 				ProductPrimaryImageView.image as primary_image
-			from Product 
+			from Product
 			inner join CategoryProductBinding
 				on CategoryProductBinding.product = Product.id
 			inner join VisibleProductCache
