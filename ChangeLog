@@ -1,3 +1,30 @@
+2007-11-08  gauthierm
+
+	* [r22839]
+	  store/branches/1.10.x/Store/pages/StoreAccountDetailsPage.php:
+	  Remove feature from trunk that is not ready for this branch of
+	  Store.
+
+2007-11-05  nrf
+
+	* [r22612] store/branches/1.10.x/package.php:
+	  prepare for release of 1.10.9
+	* [r22611]
+	  store/branches/1.10.x/Store/admin/components/Order/Index.php:
+	  merge [22584] and [22590] into branch
+
+2007-11-01  nrf
+
+	* [r22400] store/branches/1.10.x/ChangeLog,
+	  store/branches/1.10.x/package.php:
+	  prepare for release of 1.10.8
+	* [r22399]
+	  store/branches/1.10.x/Store/StoreOrderConfirmationMailMessage.php,
+	  store/branches/1.10.x/Store/StoreProtxPaymentProvider.php,
+	  store/branches/1.10.x/Store/StoreTransactionStatusCellRenderer.php,
+	  store/branches/1.10.x/www/javascript/store-quick-order-page.js:
+	  merge [22267] and [22347] and [22352] and [22353] into branch
+
 2007-10-22  nrf
 
 	* [r21751] store/branches/1.10.x/package.php:
