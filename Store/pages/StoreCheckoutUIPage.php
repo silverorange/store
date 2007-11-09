@@ -15,6 +15,7 @@ abstract class StoreCheckoutUIPage extends StoreCheckoutPage
 
 	protected $ui = null;
 	protected $ui_xml = null;
+	protected $base_ui_xml = 'Store/pages/checkout.xml';
 
 	// }}}
 	// {{{ public function setUI()
@@ -52,7 +53,7 @@ abstract class StoreCheckoutUIPage extends StoreCheckoutPage
 	protected function loadUI()
 	{
 		$this->ui = new SwatUI();
-		$this->ui->loadFromXML('Store/pages/checkout.xml');
+		$this->ui->loadFromXML($this->base_ui_xml);
 
 		$form = $this->ui->getWidget('form');
 		$this->ui->loadFromXML($this->ui_xml, $form);
