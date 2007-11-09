@@ -114,11 +114,10 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 	 */
 	protected function index()
 	{
-		$count = 0;
-		$inserted_pairs = array();
-
 		$orders = $this->getOrders();
-		$total = count($orders);
+		$total_orders = count($orders);
+		$inserted_pairs = array();
+		$count = 0;
 
 		$this->output(Store::_('Indexing orders ... ').'   ',
 			self::VERBOSITY_ALL);
@@ -126,17 +125,24 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 		foreach ($orders as $order) {
 			if ($count % 10 == 0) {
 				$this->output(str_repeat(chr(8), 3), self::VERBOSITY_ALL);
-				$this->output(sprintf('%2d%%', ($count / $total) * 100),
+				$this->output(sprintf('%2d%%', ($count / $total_orders) * 100),
 					self::VERBOSITY_ALL);
 			}
 
-			foreach ($this->getProducts($order->id) as $product) {
+			$products_inserted = array();
 
-				$value = array($product->source_product,
+			foreach ($this->getProductCrossList($order->id) as $product) {
+
+				if (!in_array($product->source_product, $products_inserted)) {
+					$this->insertPopularProduct($product);
+					$products_inserted[] = $product->source_product;
+				}
+
+				$pair = array($product->source_product,
 					$product->related_product);
 
 				if ($product->order_count === null &&
-					!in_array($value, $inserted_pairs)) {
+					!in_array($pair, $inserted_pairs)) {
 					SwatDB::insertRow($this->db, 'ProductPopularProductBinding',
 						array('integer:source_product',
 							'integer:related_product',
@@ -145,7 +151,7 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 							'related_product' => $product->related_product,
 							'order_count' => 1));
 
-					$inserted_pairs[] = $value;
+					$inserted_pairs[] = $pair;
 				} else {
 					SwatDB::query($this->db, sprintf('
 						update ProductPopularProductBinding
@@ -155,7 +161,6 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 						$this->db->quote($product->source_product, 'integer'),
 						$this->db->quote($product->related_product, 'integer')));
 				}
-
 			}
 
 			SwatDB::updateColumn($this->db, 'Orders',
@@ -164,6 +169,26 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 
 			$count++;
 		}
+	}
+
+	// }}}
+	// {{{ protected function insertPopularProduct()
+
+	protected function insertPopularProduct($product)
+	{
+		if ($product->popularity === null)
+			SwatDB::insertRow($this->db, 'ProductPopularity',
+				array('integer:product',
+					'integer:order_count'),
+				array('product' => $product->source_product,
+					'order_count' => 1));
+		else
+			SwatDB::query($this->db, sprintf('
+				update ProductPopularity
+				set order_count = order_count + 1
+				where product = %s',
+				$this->db->quote($product->source_product,
+					'integer')));
 	}
 
 	// }}}
@@ -185,7 +210,7 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 	}
 
 	// }}}
-	// {{{ protected function getProducts()
+	// {{{ protected function getProductCrossList()
 
 	/**
 	 * Gets a list of related products
@@ -194,29 +219,30 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 	 * a relation aleady exists between the products in the popular
 	 * products binding table
 	 */
-	protected function getProducts($order_id)
+	protected function getProductCrossList($order_id)
 	{
 		$sql = sprintf('select distinct
 				OrderItem.product as source_product,
 				RelatedOrderItem.product as related_product,
-				ProductPopularProductBinding.order_count
+				ProductPopularProductBinding.order_count, 
+				ProductPopularity.order_count as popularity
 			from OrderItem
 			inner join Orders on OrderItem.ordernum = Orders.id
-			inner join OrderItem as RelatedOrderItem 
+			inner join OrderItem as RelatedOrderItem
 				on OrderItem.ordernum = RelatedOrderItem.ordernum
 			left outer join ProductPopularProductBinding on
-				ProductPopularProductBinding.source_product
-					= OrderItem.product
-				and ProductPopularProductBinding.related_product
-					= RelatedOrderItem.product
+				ProductPopularProductBinding.source_product =
+					OrderItem.product
+				and ProductPopularProductBinding.related_product =
+					RelatedOrderItem.product
+			left outer join ProductPopularity on
+				ProductPopularity.product = OrderItem.product
 			inner join Product on OrderItem.product = Product.id
 			inner join Product as RelatedProduct
 				on RelatedOrderItem.product = RelatedProduct.id
 			where OrderItem.ordernum = %s
-				and RelatedOrderItem.product != OrderItem.product
-				and Orders.popular_products_processed = %s',
-			$this->db->quote($order_id, 'integer'),
-			$this->db->quote(false, 'boolean'));
+				and RelatedOrderItem.product != OrderItem.product',
+			$this->db->quote($order_id, 'integer'));
 
 		return SwatDB::query($this->db, $sql);
 	}
