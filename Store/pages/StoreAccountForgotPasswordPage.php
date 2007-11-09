@@ -23,11 +23,7 @@ class StoreAccountForgotPasswordPage extends StoreAccountPage
 	 * @var string
 	 */
 	protected $ui_xml = 'Store/pages/account-forgot-password.xml';
-
-	// }}}
-	// {{{ private properties
-
-	private $ui;
+	protected $ui;
 
 	// }}}
 
