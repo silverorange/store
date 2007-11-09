@@ -3,7 +3,6 @@ create table ProvState (
 	country char(2) not null references Country(id) on delete cascade,
 	title varchar(100),
 	abbreviation varchar(10),
-	contiguous boolean not null default true,
 	primary key (id)
 );
 
