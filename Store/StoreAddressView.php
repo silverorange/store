@@ -30,33 +30,6 @@ class StoreAddressView extends SwatControl
 	protected $edit_address_link = 'account/address%s';
 
 	// }}}
-	// {{{ private properties
-
-	/**
-	 * @var SwatButton
-	 */
-	private $remove_button;
-
-	// }}}
-	// {{{ public function init()
-
-	public function init()
-	{
-		$this->remove_button =
-			new SwatConfirmationButton($this->id);
-
-		$this->remove_button->parent = $this;
-	}
-
-	// }}}
-	// {{{ public function process()
-
-	public function process()
-	{
-		$this->remove_button->process();
-	}
-
-	// }}}
 	// {{{ public function hasBeenClicked()
 
 	/**
@@ -67,7 +40,8 @@ class StoreAddressView extends SwatControl
 	 */
 	public function hasBeenClicked()
 	{
-		return $this->remove_button->hasBeenClicked();
+		$remove_button = $this->getCompositeWidget('remove_button');
+		return $remove_button->hasBeenClicked();
 	}
 
 	// }}}
@@ -76,7 +50,9 @@ class StoreAddressView extends SwatControl
 	public function getHtmlHeadEntrySet()
 	{
 		$set = parent::getHtmlHeadEntrySet();
-		$set->addEntrySet($this->remove_button->getHtmlHeadEntrySet());
+
+		$remove_button = $this->getCompositeWidget('remove_button');
+		$set->addEntrySet($remove_button->getHtmlHeadEntrySet());
 		return $set;
 	}
 
@@ -105,9 +81,10 @@ class StoreAddressView extends SwatControl
 		$edit_link->title = Store::_('Edit Address');
 		$edit_link->setFromStock('edit');
 
-		$this->remove_button->title = Store::_('Remove');
-		$this->remove_button->classes[] = 'store-remove';
-		$this->remove_button->confirmation_message = sprintf(Store::_(
+		$remove_button = $this->getCompositeWidget('remove_button');
+		$remove_button->title = Store::_('Remove');
+		$remove_button->classes[] = 'store-remove';
+		$remove_button->confirmation_message = sprintf(Store::_(
 			"Are you sure you want to remove the following address?\n\n%s"),
 			$address_text);
 
@@ -115,9 +92,21 @@ class StoreAddressView extends SwatControl
 		$this->address->displayCondensed();
 		$controls->open();
 		$edit_link->display();
-		$this->remove_button->display();
+		$remove_button->display();
 		$controls->close();
 		$div->close();
+	}
+
+	// }}}
+	// {{{ protected function createCompositeWidgets()
+
+	/**
+	 * Creates and adds composite widgets of this widget
+	 */
+	protected function createCompositeWidgets()
+	{
+		$remove_button = new SwatConfirmationButton($this->id);
+		$this->addCompositeWidget($remove_button, 'remove_button');
 	}
 
 	// }}}
