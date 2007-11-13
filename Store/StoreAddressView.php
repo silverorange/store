@@ -45,18 +45,6 @@ class StoreAddressView extends SwatControl
 	}
 
 	// }}}
-	// {{{ public function getHtmlHeadEntrySet()
-
-	public function getHtmlHeadEntrySet()
-	{
-		$set = parent::getHtmlHeadEntrySet();
-
-		$remove_button = $this->getCompositeWidget('remove_button');
-		$set->addEntrySet($remove_button->getHtmlHeadEntrySet());
-		return $set;
-	}
-
-	// }}}
 	// {{{ public function display()
 
 	public function display()
