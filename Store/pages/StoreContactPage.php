@@ -78,9 +78,9 @@ class StoreContactPage extends SiteArticlePage
 	}
 
 	// }}}
-	// {{{ private function sendEmail()
+	// {{{ protected function sendEmail()
 
-	private function sendEmail()
+	protected function sendEmail()
 	{
 		$message = new SiteMultipartMailMessage($this->app);
 		$message->smtp_server = $this->app->config->email->smtp_server;
