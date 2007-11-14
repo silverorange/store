@@ -54,7 +54,7 @@ class StoreArticleEdit extends SiteArticleEdit
 	protected function saveRegions()
 	{
 		$region_list = $this->ui->getWidget('regions');
-		
+
 		SwatDB::updateBinding($this->app->db, 'ArticleRegionBinding',
 			'article', $this->id, 'region', $region_list->values, 'Region',
 			'id');
