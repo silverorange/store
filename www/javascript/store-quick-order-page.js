@@ -50,7 +50,9 @@ function StoreQuickOrderItem(quick_order_id, item_selector_id, id)
 {
 	this.id = id;
 	this.quick_order_id = quick_order_id;
-	this.div = document.getElementById(item_selector_id + '_' + id);
+	this.div = document.getElementById(
+		'renderer_' + id + '_' + item_selector_id);
+
 	this.sequence = 0;
 	this.displayed_sequence = 0;
 
@@ -62,7 +64,7 @@ function StoreQuickOrderItem(quick_order_id, item_selector_id, id)
 	this.in_effect = new StoreOpacityAnimation(this.div,
 		{ opacity: { from: 0, to: 1 } }, 1);
 
-	this.sku = document.getElementById('sku_' + id);
+	this.sku = document.getElementById('renderer_' + id + '_sku');
 	this.old_value = this.sku.value;
 
 	YAHOO.util.Event.addListener(this.sku, 'keyup', this.handleSkuChange,
@@ -75,7 +77,7 @@ function StoreQuickOrderItem(quick_order_id, item_selector_id, id)
 	this.new_description = null;
 
 	// clear default quantities if JavaScript is enabled
-	this.quantity = document.getElementById('quantity_' + id);
+	this.quantity = document.getElementById('renderer_' + id + '_quantity');
 	if (this.quantity.value == '1') {
 		// find containing TR tag
 		var parent = this.quantity.parentNode;
