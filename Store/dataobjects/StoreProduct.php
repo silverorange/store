@@ -334,6 +334,8 @@ class StoreProduct extends SwatDBDataObject
 
 	protected function loadCategories()
 	{
+		require_once 'Store/dataobjects/StoreCategoryWrapper.php';
+
 		$sql = 'select id, title, shortname from Category where id in
 			(select category from CategoryProductBinding
 			where product = %s)';
