@@ -498,13 +498,13 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	{
 		ob_start();
 
-		if ($order->payment_method === null) {
+		if ($order->payment_method instanceof StorePaymentMethod) {
+			$order->payment_method->display();
+		} else {
 			$span_tag = new SwatHtmlTag('span');
 			$span_tag->class = 'swat-none';
 			$span_tag->setContent(Store::_('<none>'));
 			$span_tag->display();
-		} else {
-			$order->payment_method->display();
 		}
 
 		$this->ui->getWidget('payment_method')->content = ob_get_clean();
