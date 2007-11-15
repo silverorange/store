@@ -104,6 +104,10 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			}
 
 			$this->updatePaymentMethod($order_payment_method);
+
+			if ($order_payment_method->payment_type === null)
+				$order_payment_method = null;
+
 		} else {
 			$method_id = intval($method_list->value);
 

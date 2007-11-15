@@ -154,7 +154,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 				$this->addAddressToAccount($order->shipping_address);
 
 	 		// new payment methods are only added if a session flag is set
-			if ($this->app->session->save_account_payment_method)
+			if ($this->app->session->save_account_payment_method &&
+				$order->payment_method !== null)
 				$this->addPaymentMethodToAccount($order->payment_method);
 
 			$new_account = ($account->id === null);
@@ -495,8 +496,16 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 	protected function buildPaymentMethod($order)
 	{
-		ob_start();	
-		$order->payment_method->display();
+		ob_start();
+
+		if ($order->payment_method === null) {
+			$span_tag = new SwatHtmlTag('span');
+			$span_tag->class = 'swat-none';
+			$span_tag->setContent(Store::_('<none>'));
+			$span_tag->display();
+		} else {
+			$order->payment_method->display();
+		}
 
 		$this->ui->getWidget('payment_method')->content = ob_get_clean();
 		$this->ui->getWidget('payment_method')->content_type = 'text/xml';
