@@ -86,7 +86,7 @@ abstract class StoreOrderDetails extends AdminPage
 	// }}}
 	// {{{ protected function getOrder()
 
-	protected function getOrder() 
+	protected function getOrder()
 	{
 		if ($this->order === null) {
 			$order_class = SwatDBClassMap::get('StoreOrder');
@@ -105,7 +105,7 @@ abstract class StoreOrderDetails extends AdminPage
 	// }}}
 	// {{{ protected function getOrderTitle()
 
-	protected function getOrderTitle() 
+	protected function getOrderTitle()
 	{
 		return sprintf(Store::_('Order %s'), $this->order->id);
 	}
@@ -113,7 +113,7 @@ abstract class StoreOrderDetails extends AdminPage
 	// }}}
 	// {{{ protected function buildNavBar()
 
-	protected function buildNavBar() 
+	protected function buildNavBar()
 	{
 		if ($this->account !== null) {
 			// use account navbar
@@ -122,7 +122,7 @@ abstract class StoreOrderDetails extends AdminPage
 				Store::_('Customer Accounts'), 'Account'));
 
 			$this->navbar->addEntry(new SwatNavBarEntry(
-				$this->order->account->fullname, 
+				$this->order->account->fullname,
 				'Account/Details?id='.$this->order->account->id));
 
 			$this->title = $this->order->account->fullname;
