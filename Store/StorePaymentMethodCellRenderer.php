@@ -1,5 +1,6 @@
 <?php
 
+require_once 'Swat/SwatHtmlTag.php';
 require_once 'Swat/SwatCellRenderer.php';
 require_once 'Store/dataobjects/StorePaymentMethod.php';
 
@@ -36,8 +37,14 @@ class StorePaymentMethodCellRenderer extends SwatCellRenderer
 		if (!$this->visible)
 			return;
 
-		if ($this->payment_method instanceof StorePaymentMethod)
+		if ($this->payment_method instanceof StorePaymentMethod) {
 			$this->payment_method->display($this->display_details);
+		} else {
+			$span_tag = new SwatHtmlTag('span');
+			$span_tag->class = 'swat-none';
+			$span_tag->setContent(Store::_('<none>'));
+			$span_tag->display();
+		}
 	}
 
 	// }}}
