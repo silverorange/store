@@ -105,7 +105,6 @@ abstract class StoreApplication extends SiteWebApplication
 	protected function getDefaultModuleList()
 	{
 		return array(
-			'config'   => 'SiteConfigModule',
 			'database' => 'SiteDatabaseModule',
 			'session'  => 'SiteAccountSessionModule',
 			'cookie'   => 'SiteCookieModule',
