@@ -11,7 +11,7 @@ require_once 'Site/Site.php';
  * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class Store 
+class Store
 {
 	// {{{ constants
 
@@ -68,6 +68,46 @@ class Store
 	public static function getDependencies()
 	{
 		return array(Swat::PACKAGE_ID, Site::PACKAGE_ID);
+	}
+
+	// }}}
+	// {{{ public static function getConfigurationDefinitions()
+
+	/**
+	 * Gets configuration definitions used by the Store package
+	 *
+	 * Applications should add these definitions to their config module before
+	 * loading the application configuration.
+	 *
+	 * @return array the configuration definitions used by the Store package.
+	 *
+	 * @see SiteConfigModule::addDefinitions()
+	 */
+	public static function getConfigurationDefinitions()
+	{
+		return array(
+			// smtp server name (ex: smtp.mail.silverorange.com)
+			'email.smtp_server' => null,
+
+			// to address for contact-us emails
+			'email.contact_address' => null,
+
+			// from address for automated emails sent by orders or accounrs
+			'email.service_address' => null,
+
+			// from address for contact-us emails (from "the website" to client)
+			'email.website_address' => null,
+		);
+	}
+
+	// }}}
+	// {{{ private function __construct()
+
+	/**
+	 * Prevent instantiation of this static class
+	 */
+	private function __construct()
+	{
 	}
 
 	// }}}
