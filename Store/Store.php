@@ -71,7 +71,7 @@ class Store
 	}
 
 	// }}}
-	// {{{ public static function getConfigurationDefinitions()
+	// {{{ public static function getConfigDefinitions()
 
 	/**
 	 * Gets configuration definitions used by the Store package
@@ -83,7 +83,7 @@ class Store
 	 *
 	 * @see SiteConfigModule::addDefinitions()
 	 */
-	public static function getConfigurationDefinitions()
+	public static function getConfigDefinitions()
 	{
 		return array(
 			// smtp server name (ex: smtp.mail.silverorange.com)
