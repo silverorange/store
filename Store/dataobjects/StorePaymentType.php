@@ -103,6 +103,7 @@ class StorePaymentType extends SwatDBDataObject
 	 */
 	public function loadFromShortname($shortname)
 	{
+		$this->checkDB();
 		$row = null;
 
 		if ($this->table !== null) {
@@ -140,6 +141,8 @@ class StorePaymentType extends SwatDBDataObject
 	 */
 	public function isAvailableInRegion(StoreRegion $region)
 	{
+		$this->checkDB();
+
 		if ($this->id === null)
 			throw new StoreException('Payment type must have an id set '.
 				'before region availability can be determined.');
