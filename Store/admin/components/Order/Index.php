@@ -217,12 +217,13 @@ class StoreOrderIndex extends AdminSearch
 
 		$sql = 'select Orders.id, Orders.total, Orders.createdate,
 					Orders.locale, Orders.notes, Orders.comments,
-					Orders.billing_address
+					Orders.billing_address,
+					(Orders.comments is not null and Orders.comments != %s) as has_comments
 				from Orders
 					left outer join Account on Orders.account = Account.id
 					inner join OrderAddress as BillingAddress
 						on Orders.billing_address = BillingAddress.id
-					inner join OrderAddress as ShippingAddress 
+					inner join OrderAddress as ShippingAddress
 						on Orders.shipping_address = ShippingAddress.id
 					inner join Locale on Orders.locale = Locale.id
 					inner join Region on Locale.region = Region.id
@@ -231,6 +232,7 @@ class StoreOrderIndex extends AdminSearch
 
 		// Order by id and not createdate in case two createdates are the same.
 		$sql = sprintf($sql,
+			$this->app->db->quote('', 'text'),
 			$this->getWhereClause(),
 			$this->getOrderByClause($view, 'Orders.id desc'));
 
