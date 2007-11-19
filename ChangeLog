@@ -1,3 +1,9 @@
+2007-11-08  nrf
+
+	* [r22840] store/branches/1.10.x/ChangeLog,
+	  store/branches/1.10.x/package.php:
+	  prepare for release of 1.10.10
+
 2007-11-08  gauthierm
 
 	* [r22839]
