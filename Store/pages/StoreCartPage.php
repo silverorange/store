@@ -155,8 +155,8 @@ protected function processCheckoutCart()
 
 		if ($num_entries_removed > 0)
 			$message_display->add(new StoreMessage(sprintf(Store::ngettext(
-				'One item has been removed from your shopping cart.',
-				'%s items have been removed from your shopping cart.',
+				'One item has been removed from your cart.',
+				'%s items have been removed from your cart.',
 				$num_entries_removed),
 				SwatString::numberFormat($num_entries_removed)),
 				StoreMessage::CART_NOTIFICATION));
@@ -643,7 +643,7 @@ protected function processCheckoutCart()
 
 		if ($num_entries_moved > 0)
 			$message_display->add(new StoreMessage(
-				Store::_('One item has been moved to your shopping cart.'),
+				Store::_('One item has been moved to your cart.'),
 				StoreMessage::CART_NOTIFICATION));
 	}
 
@@ -730,8 +730,8 @@ protected function processCheckoutCart()
 		if ($num_moved_items > 0)
 			$message_display->add(new StoreMessage(
 				sprintf(Store::ngettext(
-				'One item has been moved to your shopping cart.',
-				'%s items have been moved to your shopping cart.', $num_moved_items),
+				'One item has been moved to your cart.',
+				'%s items have been moved to your cart.', $num_moved_items),
 				SwatString::numberFormat($num_moved_items)),
 				StoreMessage::CART_NOTIFICATION));
 	}
@@ -786,7 +786,7 @@ protected function processCheckoutCart()
 
 			$empty_message->content_type = 'text/xml';
 			$empty_message->secondary_content = Store::_(
-				'You can add items to your shopping cart by selecting from '.
+				'You can add items to your cart by selecting from '.
 				'the menu on the left and browsing for products.');
 
 			$messages = $this->ui->getWidget('message_display');
@@ -856,10 +856,10 @@ protected function processCheckoutCart()
 				$count);
 
 			$text = Store::ngettext(
-				'The item below is in your shopping cart but is not '.
+				'The item below is in your cart but is not '.
 				'currently available for purchasing and will not be included '.
 				'in your order.',
-				'The items below are in your shopping cart but are not '.
+				'The items below are in your cart but are not '.
 				'currently available for purchasing and will not be included '.
 				'in your order.', $count);
 
@@ -925,11 +925,11 @@ protected function processCheckoutCart()
 
 			$text = Store::ngettext(
 				'The item below is saved for later and will not be included '.
-				'in your order. You may move the item to your shopping cart '.
+				'in your order. You may move the item to your cart '.
 				'by clicking the “Move to Cart” button.',
 				'The items below are saved for later and will not be included '.
 				'in your order. You may move any of the items to your '.
-				'shopping cart by clicking the “Move to Cart” button next to '.
+				'cart by clicking the “Move to Cart” button next to '.
 				'the item.',
 				$count);
 
