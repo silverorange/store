@@ -155,8 +155,8 @@ protected function processCheckoutCart()
 
 		if ($num_entries_removed > 0)
 			$message_display->add(new StoreMessage(sprintf(Store::ngettext(
-				'One item has been removed from shopping cart.',
-				'%s items have been removed from shopping cart.',
+				'One item has been removed from your shopping cart.',
+				'%s items have been removed from your shopping cart.',
 				$num_entries_removed),
 				SwatString::numberFormat($num_entries_removed)),
 				StoreMessage::CART_NOTIFICATION));
@@ -412,8 +412,8 @@ protected function processCheckoutCart()
 		if ($num_removed_items > 0)
 			$message_display->add(new StoreMessage(
 				sprintf(Store::ngettext(
-				'One item has been removed from cart.',
-				'%s items have been removed from cart.', $num_removed_items),
+				'One item has been removed from your cart.',
+				'%s items have been removed from your cart.', $num_removed_items),
 				SwatString::numberFormat($num_removed_items)),
 				StoreMessage::CART_NOTIFICATION));
 	}
@@ -537,8 +537,8 @@ protected function processCheckoutCart()
 		if ($num_removed_items > 0)
 			$message_display->add(new StoreMessage(
 				sprintf(Store::ngettext(
-				'One item has been removed from unavailable items.',
-				'%s items have been removed from unavailable items.',
+				'One item has been removed from your unavailable items.',
+				'%s items have been removed from your unavailable items.',
 				$num_removed_items),
 				SwatString::numberFormat($num_removed_items)),
 				StoreMessage::CART_NOTIFICATION));
@@ -638,12 +638,12 @@ protected function processCheckoutCart()
 
 		if ($num_entries_removed > 0)
 			$message_display->add(new StoreMessage(
-				Store::_('One item has been removed from saved items.'),
+				Store::_('One item has been removed from your saved items.'),
 				StoreMessage::CART_NOTIFICATION));
 
 		if ($num_entries_moved > 0)
 			$message_display->add(new StoreMessage(
-				Store::_('One item has been moved to shopping cart.'),
+				Store::_('One item has been moved to your shopping cart.'),
 				StoreMessage::CART_NOTIFICATION));
 	}
 
@@ -730,8 +730,8 @@ protected function processCheckoutCart()
 		if ($num_moved_items > 0)
 			$message_display->add(new StoreMessage(
 				sprintf(Store::ngettext(
-				'One item moved to shopping cart.',
-				'%s items moved to shopping cart.', $num_moved_items),
+				'One item has been moved to your shopping cart.',
+				'%s items have been moved to your shopping cart.', $num_moved_items),
 				SwatString::numberFormat($num_moved_items)),
 				StoreMessage::CART_NOTIFICATION));
 	}
@@ -763,8 +763,8 @@ protected function processCheckoutCart()
 		if ($num_removed_items > 0)
 			$message_display->add(new StoreMessage(
 				sprintf(Store::ngettext(
-				'One item has been removed from saved items.',
-				'%s items have been removed from saved items.',
+				'One item has been removed from your saved items.',
+				'%s items have been removed from your saved items.',
 				$num_removed_items),
 				SwatString::numberFormat($num_removed_items)),
 				StoreMessage::CART_NOTIFICATION));
