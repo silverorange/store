@@ -253,7 +253,7 @@ class StoreProductPage extends StorePage
 
 			if ($num_items_added) {
 				$this->cart_message = new StoreMessage(
-					Store::_('Your shopping cart has been updated.'),
+					Store::_('Your cart has been updated.'),
 					StoreMessage::CART_NOTIFICATION);
 			}
 
@@ -314,9 +314,8 @@ class StoreProductPage extends StorePage
 				$this->item_removed = true;
 				$this->app->cart->checkout->removeEntryById($id);
 				$this->message_display->add(new StoreMessage(
-					Store::_('An item has been removed from your shopping '.
-					'cart.'), StoreMessage::CART_NOTIFICATION));
-
+					Store::_('An item has been removed from your cart.'),
+						StoreMessage::CART_NOTIFICATION));
 				break;
 			}
 		}
@@ -371,9 +370,8 @@ class StoreProductPage extends StorePage
 					StoreMessage::CART_NOTIFICATION);
 
 				$this->cart_message->primary_content = Store::ngettext(
-					'The following item on this page is in your shopping cart:',
-					'The following items on this page are in your shopping '.
-					'cart:',
+					'The following item on this page is in your cart:',
+					'The following items on this page are in your cart:',
 					$count);
 
 				$this->cart_message->secondary_content =
