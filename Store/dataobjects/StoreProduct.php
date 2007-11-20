@@ -1,7 +1,6 @@
 <?php
 
 require_once 'SwatDB/SwatDBDataObject.php';
-require_once 'Store/dataobjects/StoreCategoryWrapper.php';
 require_once 'Store/dataobjects/StoreItemWrapper.php';
 require_once 'Store/dataobjects/StoreItemGroupWrapper.php';
 require_once 'Store/dataobjects/StoreCatalog.php';
