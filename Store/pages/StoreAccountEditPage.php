@@ -210,7 +210,7 @@ class StoreAccountEditPage extends StoreAccountPage
 			$this->layout->navbar->createEntry(
 				Store::_('Create a New Account'));
 
-			$this->layout->data->title = Store::_('Create a New account');
+			$this->layout->data->title = Store::_('Create a New Account');
 		}
 
 		if ($this->app->session->isLoggedIn() && !$form->isProcessed()) {
