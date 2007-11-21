@@ -91,6 +91,8 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 			elseif ($type === 'product')
 				$this->buildProducts($fulltext_result);
 
+			$this->ui->getWidget('product_results_frame')->title = null;
+
 		} elseif (count($this->getSearchDataValues()) === 1 &&
 			$this->hasSearchDataValue('keywords')) {
 
@@ -100,6 +102,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 			$this->buildProducts($fulltext_result);
 		} else {
 			$this->buildProducts($fulltext_result);
+			$this->ui->getWidget('product_results_frame')->title = null;
 		}
 
 		if ($fulltext_result !== null)
@@ -267,7 +270,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 
 		if ($this->hasSearchDataValue('category')) {
 			$sql = 'select id, shortname, title from Category
-				where parent is null and shortname = %s and id in 
+				where id = findCategory(%s) and id in
 					(select category from VisibleCategoryView
 					where region = %s or region is null)';
 
