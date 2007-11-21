@@ -110,6 +110,7 @@ abstract class StoreApplication extends SiteWebApplication
 			'cookie'   => 'SiteCookieModule',
 			'cart'     => 'StoreCartModule',
 			'messages' => 'SiteMessagesModule',
+			'config'   => 'SiteConfigModule',
 		);
 	}
 
