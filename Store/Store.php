@@ -92,7 +92,7 @@ class Store
 			// to address for contact-us emails
 			'email.contact_address' => null,
 
-			// from address for automated emails sent by orders or accounrs
+			// from address for automated emails sent by orders or accounts
 			'email.service_address' => null,
 
 			// from address for contact-us emails (from "the website" to client)
