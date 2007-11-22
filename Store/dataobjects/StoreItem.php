@@ -350,9 +350,9 @@ class StoreItem extends SwatDBDataObject
 			$description.= $this->product->title.' ';
 
 		if (strlen($description))
-			$description.=' - ';
+			$description.= ' - ';
 
-		$description.= $this->getDescription().'';
+		$description.= $this->getDescription();
 
 		return $description;
 	}
