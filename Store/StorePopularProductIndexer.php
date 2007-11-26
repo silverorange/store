@@ -68,7 +68,7 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 
 	// }}}
 	// {{{ public function run()
-	
+
 	public function run()
 	{
 		$this->initModules();
@@ -78,7 +78,7 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 
 	// }}}
 	// {{{ public function reindex()
-	
+
 	public function reindex()
 	{
 		$this->output(Store::_('Reindexing all orders ... '),
