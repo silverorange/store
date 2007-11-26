@@ -55,7 +55,7 @@ StoreCheckoutAddressPage.prototype.desensitize = function()
 	var fields = [];
 	for (var i = 0; i < this.fields.length; i++)
 		fields.push(this.fields[i]);
-	
+
 	fields.push(this.provstate_other_id);
 
 	StoreCheckoutPage_desensitizeFields(fields);
