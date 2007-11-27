@@ -143,6 +143,7 @@ class StoreProductSearch
 
 		// keywords are included in the where clause if fulltext searching is
 		// turned off
+		$keywords = $this->ui->getWidget('search_keywords')->value;
 		if ($this->fulltext_result === null && strlen(trim($keywords)) > 0) {
 			$where.= ' and (';
 
