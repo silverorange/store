@@ -1,6 +1,6 @@
 <?php
 
-require_once 'NateGoSearch/NateGoSearchQuery.php'; 
+require_once 'Site/SiteNateGoFulltextSearchEngine.php';
 require_once 'Swat/SwatUI.php';
 
 /**
@@ -18,8 +18,21 @@ class StoreProductSearch
 {
 	// {{{ protected properties
 
+	/**
+	 * @var MDB2_Driver_Common
+	 */
 	protected $db;
+
+	/**
+	 * @var SwatUI
+	 */
 	protected $ui;
+
+	/**
+	 * @var SiteNateGoFulltextSearchResult
+	 */
+	protected $fulltext_result;
+
 	protected $order_by_clause;
 	protected $join_clause;
 	protected $where_clause;
@@ -43,35 +56,20 @@ class StoreProductSearch
 		$this->db = $db;
 
 		$keywords = $ui->getWidget('search_keywords')->value;
-		if (strlen(trim($keywords)) > 0 &&
-			$this->getProductSearchType() !== null) {
+		if (strlen(trim($keywords)) > 0 && $this->getSearchType() !== null) {
 
-			$query = new NateGoSearchQuery($db);
-			$query->addDocumentType($this->getProductSearchType());
-			$query->addBlockedWords(
-				NateGoSearchQuery::getDefaultBlockedWords());
+			$fulltext_engine = new SiteNateGoFulltextSearchEngine($this->db);
 
-			$result = $query->query($keywords);
+			$fulltext_engine->setTypes(array(
+				$this->getSearchType(),
+			));
 
-			$this->join_clause = sprintf(
-				'inner join %1$s on
-					%1$s.document_id = Product.id and
-					%1$s.unique_id = %2$s and %1$s.document_type = %3$s',
-				$result->getResultTable(),
-				$db->quote($result->getUniqueId(), 'text'),
-				$db->quote($this->getProductSearchType(), 'integer'));
-
-			$this->order_by_clause = sprintf(
-				'%1$s.displayorder1, %1$s.displayorder2,
-					Product.title, Product.id',
-				$result->getResultTable());
-
-		} else {
-			$this->join_clause = '';
-			$this->order_by_clause = 'Product.title, Product.id';
+			$this->fulltext_result = $fulltext_engine->search($keywords);
 		}
 
+		$this->buildJoinClause();
 		$this->buildWhereClause();
+		$this->buildOrderByClause();
 	}
 
 	// }}}
@@ -99,18 +97,36 @@ class StoreProductSearch
 	}
 
 	// }}}
-	// {{{ protected function getProductSearchType()
+	// {{{ protected function getSearchType()
 
 	/**
 	 * Gets the search type for products for this web-application
 	 *
-	 * @return integer the search type for products for this web-application or
-	 *                  null if fulltext searching is not implemented for the
-	 *                  current application.
+	 * @return string the search type for products for this web-application or
+	 *                 null if fulltext searching is not implemented for the
+	 *                 current application.
 	 */
-	protected function getProductSearchType()
+	protected function getSearchType()
 	{
-		return null;
+		return 'product';
+	}
+
+	// }}}
+	// {{{ protected function buildJoinClause()
+
+	/**
+	 * Builds the SQL join clause for a product search
+	 *
+	 * @see StoreProductSearch::getJoinClause()
+	 */
+	protected function buildJoinClause()
+	{
+		if ($this->fulltext_result === null) {
+			$this->join_clause = '';
+		} else {
+			$this->join_clause = $this->fulltext_result->getJoinClause(
+				'id', $this->getSearchType());
+		}
 	}
 
 	// }}}
@@ -126,22 +142,19 @@ class StoreProductSearch
 		$where = '1 = 1';
 
 		// keywords are included in the where clause if fulltext searching is
-		// turned off, we need to check length of the trimmed value because if
-		// its thats what AdminSearchClause does to it
-		$keywords_value = $this->ui->getWidget('search_keywords')->value;
-		if ($this->getProductSearchType() === null &&
-			strlen(trim($keywords_value)) > 0) {
+		// turned off
+		if ($this->fulltext_result === null && strlen(trim($keywords)) > 0) {
 			$where.= ' and (';
 
 			$clause = new AdminSearchClause('title');
 			$clause->table = 'Product';
-			$clause->value = $keywords_value;
+			$clause->value = $keywords;
 			$clause->operator = AdminSearchClause::OP_CONTAINS;
 			$where.= $clause->getClause($this->db, '');
 
 			$clause = new AdminSearchClause('bodytext');
 			$clause->table = 'Product';
-			$clause->value = $keywords_value;
+			$clause->value = $keywords;
 			$clause->operator = AdminSearchClause::OP_CONTAINS;
 			$where.= $clause->getClause($this->db, 'or');
 
@@ -191,6 +204,25 @@ class StoreProductSearch
 			$catalog_selector->getSubQuery());
 
 		$this->where_clause = $where;
+	}
+
+	// }}}
+	// {{{ protected function buildOrderByClause()
+
+	/**
+	 * Builds the SQL join clause for a product search
+	 *
+	 * @see StoreProductSearch::getOrderByClause()
+	 */
+	protected function buildOrderByClause()
+	{
+		if ($this->fulltext_result === null) {
+			$this->order_by_clause = 'Product.title, Product.id';
+		} else {
+			$this->order_by_clause = str_replace('order by ', '',
+				$this->fulltext_result->getOrderByClause(
+					'Product.title, Product.id'));
+		}
 	}
 
 	// }}}
