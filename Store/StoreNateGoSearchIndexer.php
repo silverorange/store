@@ -17,7 +17,7 @@ require_once 'Store/pages/StoreSearchPage.php';
 class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 {
 	// {{{ public function queue()
-	
+
 	/**
 	 * Repopulates the entire search queue
 	 */
@@ -59,14 +59,14 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 
 		$type = NateGoSearch::getDocumentType($this->db, 'product');
 
-		// clear queue 
+		// clear queue
 		$sql = sprintf('delete from NateGoSearchQueue
 			where document_type = %s',
 			$this->db->quote($type, 'integer'));
 
 		SwatDB::exec($this->db, $sql);
 
-		// fill queue 
+		// fill queue
 		$sql = sprintf('insert into NateGoSearchQueue
 			(document_type, document_id) select %s, id from Product',
 			$this->db->quote($type, 'integer'));
@@ -89,7 +89,7 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 
 		$type = NateGoSearch::getDocumentType($this->db, 'category');
 
-		// clear queue 
+		// clear queue
 		$sql = sprintf('delete from NateGoSearchQueue
 			where document_type = %s',
 			$this->db->quote($type, 'integer'));
