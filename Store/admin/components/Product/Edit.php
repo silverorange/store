@@ -190,7 +190,7 @@ class StoreProductEdit extends AdminDBEdit
 
 	protected function addToSearchQueue()
 	{
-		$type = NateGoSearch::getDocumentType('product');
+		$type = NateGoSearch::getDocumentType($this->app->db, 'product');
 
 		$sql = sprintf('delete from NateGoSearchQueue
 			where document_id = %s and document_type = %s',
