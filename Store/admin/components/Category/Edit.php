@@ -42,7 +42,7 @@ class StoreCategoryEdit extends AdminDBEdit
 	}
 
 	// }}}
-	
+
 	// process phase
 	// {{{ protected function validate()
 
@@ -90,17 +90,17 @@ class StoreCategoryEdit extends AdminDBEdit
 	protected function saveDBData()
 	{
 		$values = $this->getUIValues();
-		
+
 		if ($this->id === null) {
 			$this->fields[] = 'date:createdate';
 			$date = new Date();
 			$date->toUTC();
 			$values['createdate'] = $date->getDate();
-			
+
 			$this->fields[] = 'integer:parent';
-			$values['parent'] = 
+			$values['parent'] =
 				$this->ui->getWidget('edit_form')->getHiddenField('parent');
-			
+
 			$this->id = SwatDB::insertRow($this->app->db, 'Category',
 				$this->fields, $values, 'integer:id');
 		} else {
@@ -194,9 +194,9 @@ class StoreCategoryEdit extends AdminDBEdit
 		$category_id = ($this->id === null) ? $this->parent : $this->id;
 
 		if ($category_id !== null) {
-			$navbar_rs = SwatDB::executeStoredProc($this->app->db, 
+			$navbar_rs = SwatDB::executeStoredProc($this->app->db,
 				'getCategoryNavbar', array($category_id));
-			
+
 			foreach ($navbar_rs as $row)
 				$this->navbar->addEntry(new SwatNavBarEntry($row->title,
 					'Category/Index?id='.$row->id));
