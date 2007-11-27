@@ -79,10 +79,10 @@ class StoreArticleSearch extends SiteArticleSearch
 				}
 			}
 
-			$this->where = $where;
+			$this->where_clause = $where;
 		}
 
-		return $this->where;
+		return $this->where_clause;
 	}
 
 	// }}}
