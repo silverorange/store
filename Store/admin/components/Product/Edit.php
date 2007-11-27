@@ -3,6 +3,7 @@
 require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'Admin/exceptions/AdminNoAccessException.php';
+require_once 'NateGoSearch/NateGoSearch.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Date.php';
 
@@ -189,17 +190,19 @@ class StoreProductEdit extends AdminDBEdit
 
 	protected function addToSearchQueue()
 	{
+		$type = NateGoSearch::getDocumentType('product');
+
 		$sql = sprintf('delete from NateGoSearchQueue
 			where document_id = %s and document_type = %s',
 			$this->app->db->quote($this->id, 'integer'),
-			$this->app->db->quote(2, 'integer'));
+			$this->app->db->quote($type, 'integer'));
 
 		SwatDB::exec($this->app->db, $sql);
 
 		$sql = sprintf('insert into NateGoSearchQueue
 			(document_id, document_type) values (%s, %s)',
 			$this->app->db->quote($this->id, 'integer'),
-			$this->app->db->quote(2, 'integer'));
+			$this->app->db->quote($type, 'integer'));
 
 		SwatDB::exec($this->app->db, $sql);
 	}
