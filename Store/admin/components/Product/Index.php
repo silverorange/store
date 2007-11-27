@@ -188,9 +188,10 @@ class StoreProductIndex extends AdminSearch
 
 		$this->setProductVisibility($rs);
 
-		if (count($rs) > 0)
+		if (count($rs) > 0) {
 			$this->ui->getWidget('results_message')->content =
 				$pager->getResultsMessage('result', 'results');
+		}
 
 		return $rs;
 	}
