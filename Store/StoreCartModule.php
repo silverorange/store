@@ -21,8 +21,8 @@ require_once 'Store/dataobjects/StoreCategoryWrapper.php';
  * Most web stores will have at least two carts. This class handles loading
  * carts and moving objects between carts.
  *
- * Depends on the SiteAccountSessionModule module and thus should be specified after
- * the SiteAccountSessionModule in the application's
+ * Depends on the SiteAccountSessionModule module and thus should be specified
+ * after the SiteAccountSessionModule in the application's
  * {@link SiteApplication::getDefaultModuleList()} method.
  *
  * @package   Store
