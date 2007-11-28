@@ -98,10 +98,10 @@ class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 		$login_form = $this->ui->getWidget('login_form');
 
 		if ($create_account_form->isProcessed())
-			$this->processCreateAccount();
+			$this->processCreateAccount($create_account_form);
 
 		if ($just_place_form->isProcessed())
-			$this->processJustPlace();
+			$this->processJustPlace($just_place_form);
 
 		if ($login_form->isProcessed())
 			$this->processLogin($login_form);
@@ -110,7 +110,7 @@ class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 	// }}}
 	// {{{ protected function processCreateAccount()
 
-	protected function processCreateAccount()
+	protected function processCreateAccount($create_account_form)
 	{
 		$this->initDataObjects();
 		$this->resetProgress();
@@ -122,7 +122,7 @@ class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 	// }}}
 	// {{{ protected function processJustPlace()
 
-	protected function processJustPlace()
+	protected function processJustPlace($just_place_form)
 	{
 		$this->app->session->checkout_with_account = false;
 		$this->initDataObjects();
