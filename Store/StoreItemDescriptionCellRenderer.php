@@ -14,25 +14,45 @@ require_once 'Swat/SwatString.php';
  *    <span>SKU</span> - Desc
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2007 silverorange
  */
 class StoreItemDescriptionCellRenderer extends SwatCellRenderer
 {
+	// {{{ public properties
+
 	public $sku = null;
+
 	public $description = null;
+	public $description_content_type = 'text/plain';
+
+	// }}}
+	// {{{ public function render()
 
 	public function render()
 	{
-		if (strlen($this->description) == 0)
+		if (!$this->visible)
+			return;
+
+		parent::render();
+
+		if (strlen($this->description) == 0) {
 			echo '<span class="item-sku">',
 				SwatString::minimizeEntities($this->sku),
 				'</span>';
-		else
+		} else {
 			echo '<span class="item-sku">',
 				SwatString::minimizeEntities($this->sku),
-				'</span> - ',
-				SwatString::minimizeEntities($this->description);
+				'</span> - ';
+
+			if ($this->description_content_type == 'text/xml') {
+				echo $this->description;
+			} else {
+				echo SwatString::minimizeEntities($this->description);
+			}
+		}
 	}
+
+	// }}}
 }
 
 ?>
