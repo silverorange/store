@@ -35,7 +35,7 @@ abstract class StoreImage extends SwatDBDataObject
 	public $border = true;
 
 	/**
-	 * Title 
+	 * Title
 	 *
 	 * @var string
 	 */
