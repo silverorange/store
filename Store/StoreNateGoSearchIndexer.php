@@ -118,8 +118,13 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 	 */
 	protected function indexCategories()
 	{
+		$spell_checker = new NateGoSearchPSpellSpellChecker('en');
+		$spell_checker->setCustomWordList($this->getCustomWordList());
+		$spell_checker->loadCustomContent();
+
 		$indexer = new NateGoSearchIndexer('category', $this->db);
 
+		$indexer->setSpellChecker($spell_checker);
 		$indexer->addTerm(new NateGoSearchTerm('title'));
 		$indexer->setMaximumWordLength(32);
 		$indexer->addUnindexedWords(
@@ -172,8 +177,13 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 
 	protected function indexProducts()
 	{
+		$spell_checker = new NateGoSearchPSpellSpellChecker('en');
+		$spell_checker->setCustomWordList($this->getCustomWordList());
+		$spell_checker->loadCustomContent();
+
 		$product_indexer = new NateGoSearchIndexer('product', $this->db);
 
+		$product_indexer->setSpellChecker($spell_checker);
 		$product_indexer->addTerm(new NateGoSearchTerm('title', 5));
 		$product_indexer->addTerm(new NateGoSearchTerm('bodytext'));
 		$product_indexer->setMaximumWordLength(32);
