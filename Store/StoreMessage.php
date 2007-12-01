@@ -3,7 +3,7 @@
 require_once 'Swat/SwatMessage.php';
 
 /**
- * A data class to store a message  
+ * A data class to store a message
  *
  * StoreMessage is an extension of {@link SwatMessage}.
  *
@@ -17,7 +17,7 @@ class StoreMessage extends SwatMessage
 
 	/**
 	 * Cart notification message type
-	 * 
+	 *
 	 * An informative message about the cart.
 	 */
 	const CART_NOTIFICATION = 100;
