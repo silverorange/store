@@ -22,7 +22,7 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
 	// }}}
 	// {{{ protected function displayFinalNote()
 
-	protected function displayFinalNote()
+	protected function displayFinalNote(StoreOrder $order)
 	{
 		$header_tag = new SwatHtmlTag('h3');
 		$header_tag->setContent(Store::_('Your order has been placed.'));
