@@ -128,7 +128,7 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 		$createdate_renderer->display_time_zone =
 			$this->app->default_time_zone;
 
-		if ($order->email=== null)
+		if ($order->email === null)
 			$details_view->getField('email')->visible = false;
 
 		if ($order->comments === null)
@@ -170,7 +170,7 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 		 *       in a SwatMessageDisplay instead.
 		 */
 		$note = $this->ui->getWidget('account_note');
-		if ($note instanceof SwatContentBlock && 
+		if ($note instanceof SwatContentBlock &&
 			$this->app->session->order->account !== null) {
 			$note->content_type = 'text/xml';
 			ob_start();
