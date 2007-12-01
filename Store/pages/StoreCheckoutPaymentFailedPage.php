@@ -22,7 +22,7 @@ class StoreCheckoutPaymentFailedPage extends StoreCheckoutFinalPage
 	// }}}
 	// {{{ protected function buildOrderHeader()
 
-	protected function buildOrderHeader()
+	protected function buildOrderHeader(StoreOrder $order)
 	{
 		// don't display order receipt header
 	}
@@ -30,10 +30,8 @@ class StoreCheckoutPaymentFailedPage extends StoreCheckoutFinalPage
 	// }}}
 	// {{{ protected function displayFinalNote()
 
-	protected function displayFinalNote()
+	protected function displayFinalNote(StoreOrder $order)
 	{
-		$order = $this->app->session->order;
-
 		$header_tag = new SwatHtmlTag('h3');
 		$header_tag->setContent(Store::_(
 			'There was a problem paying for your order.'));

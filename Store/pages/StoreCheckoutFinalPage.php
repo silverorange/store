@@ -79,23 +79,25 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 	{
 		parent::buildInternal();
 
-		$this->buildFinalNote();
-		$this->buildAccountNote();
-		$this->buildOrderHeader();
-		$this->buildOrderFooter();
-		$this->buildOrderDetails();
+		$order = $this->getOrder();
+
+		$this->buildOrderHeader($order);
+		$this->buildOrderDetails($order);
+		$this->buildOrderFooter($order);
+
+		$this->buildFinalNote($order);
+		$this->buildAccountNote($order);
 	}
 
 	// }}}
 	// {{{ protected function buildOrderHeader()
 
-	protected function buildOrderHeader()
+	protected function buildOrderHeader(StoreOrder $order)
 	{
 		$header = $this->ui->getWidget('header');
 		if ($header instanceof SwatContentBlock) {
 			$header->content_type = 'text/xml';
-			$header->content = SwatString::toXHTML(
-				$this->app->session->order->getReceiptHeader()).
+			$header->content = SwatString::toXHTML($order->getReceiptHeader()).
 				'<div style="page-break-after: always"></div>';
 		}
 	}
@@ -103,23 +105,20 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 	// }}}
 	// {{{ protected function buildOrderFooter()
 
-	protected function buildOrderFooter()
+	protected function buildOrderFooter(StoreOrder $order)
 	{
 		$footer = $this->ui->getWidget('footer');
 		if ($footer instanceof SwatContentBlock) {
 			$footer->content_type = 'text/xml';
-			$footer->content = SwatString::toXHTML(
-				$this->app->session->order->getReceiptFooter());
+			$footer->content = SwatString::toXHTML($order->getReceiptFooter());
 		}
 	}
 
 	// }}}
 	// {{{ protected function buildOrderDetails()
 
-	protected function buildOrderDetails()
+	protected function buildOrderDetails(StoreOrder $order)
 	{
-		$order = $this->app->session->order;
-
 		$details_view =  $this->ui->getWidget('order_details');
 		$details_view->data = new SwatDetailsStore($order);
 
@@ -149,13 +148,13 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 	// }}}
 	// {{{ protected function buildFinalNote()
 
-	protected function buildFinalNote()
+	protected function buildFinalNote(StoreOrder $order)
 	{
 		$note = $this->ui->getWidget('final_note');
 		if ($note instanceof SwatContentBlock) {
 			$note->content_type = 'text/xml';
 			ob_start();
-			$this->displayFinalNote();
+			$this->displayFinalNote($order);
 			$note->content = ob_get_clean();
 		}
 	}
@@ -163,15 +162,14 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 	// }}}
 	// {{{ protected function buildAccountNote()
 
-	protected function buildAccountNote()
+	protected function buildAccountNote(StoreOrder $order)
 	{
 		/* TODO: Possilble refactor this. Veseys displays an account note
 		 *       but does not use this mechanism to do it.  It is displayed
 		 *       in a SwatMessageDisplay instead.
 		 */
 		$note = $this->ui->getWidget('account_note');
-		if ($note instanceof SwatContentBlock &&
-			$this->app->session->order->account !== null) {
+		if ($note instanceof SwatContentBlock && $order->account !== null) {
 			$note->content_type = 'text/xml';
 			ob_start();
 			$this->displayAccountNote();
@@ -187,8 +185,10 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 	 *
 	 * This note indicated whether or not the checkout was successful and may
 	 * contain additional instructions depending on the particular store.
+	 *
+	 * @param StoreOrder $order the order for which to display the final note.
 	 */
-	abstract protected function displayFinalNote();
+	abstract protected function displayFinalNote(StoreOrder $order);
 
 	// }}}
 	// {{{ protected function displayAccountNote()
@@ -207,6 +207,17 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 
 		$header_tag->display();
 		$paragraph_tag->display();
+	}
+
+	// }}}
+	// {{{ protected function getOrder()
+
+	/**
+	 * @return StoreOrder
+	 */
+	protected function getOrder()
+	{
+		return $this->app->session->order;
 	}
 
 	// }}}
