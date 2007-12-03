@@ -127,7 +127,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 			$clause.= sprintf(' and Product.id in (
 				select product from	CategoryProductBinding
 				inner join getCategoryDescendents(%s) as category_descendents
-					on category_descendents.descendent = 
+					on category_descendents.descendent =
 					CategoryProductBinding.category)',
 				$this->app->db->quote($this->category->id, 'integer'));
 
@@ -142,7 +142,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 		if ($this->fulltext_result === null)
 			$clause = sprintf('order by Product.title');
 		else
-			$clause = 
+			$clause =
 				$this->fulltext_result->getOrderByClause('Product.title');
 
 		return $clause;
