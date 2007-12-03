@@ -40,7 +40,6 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	}
 
 	// }}}
-
 	// {{{ protected function search()
 
 	public function search($limit = null, $offset = null)
@@ -57,9 +56,9 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	// {{{ protected function loadSubDataObjects()
 
 	/**
-	 * Load sub dataobjects for the StoreProductWrapper results
+	 * Load sub-dataobjects for the StoreProductWrapper results
 	 *
-	 * @param StoreProductWrapper $products A collection of StoreProduct
+	 * @param StoreProductWrapper $products a recordset of StoreProduct
 	 *                                       dataobjects.
 	 */
 	protected function loadSubDataObjects(StoreProductWrapper $products)
