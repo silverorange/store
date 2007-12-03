@@ -2,7 +2,7 @@
 
 require_once 'Store/StoreCart.php';
 
-/** 
+/**
  * A saved-cart object
  *
  * The saved cart is a cart object that is saved for later. Saved carts are not
