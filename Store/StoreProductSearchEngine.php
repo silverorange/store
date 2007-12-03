@@ -65,10 +65,9 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	protected function loadSubDataObjects(StoreProductWrapper $products)
 	{
 		$sql = 'select * from Image where id in (%s)';
-		$image_wrapper_class = SwatDBClassMap::get('StoreProductImageWrapper');
-
+		$wrapper_class = SwatDBClassMap::get('StoreProductImageWrapper');
 		$products->loadAllSubDataObjects(
-			'primary_image', $this->app->db, $sql, $image_wrapper_class);
+			'primary_image', $this->app->db, $sql, $wrapper_class);
 	}
 
 	// }}}
