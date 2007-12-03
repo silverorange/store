@@ -211,13 +211,12 @@ class StoreCategoryPage extends StorePage
 		$wrapper_class = SwatDBClassMap::get('StoreProductWrapper');
 		$products = SwatDB::query($this->app->db, $sql, $wrapper_class);
 
-		if (count($products) == 0)
-			return $products;
-
-		$sql = 'select * from Image where id in (%s)';
-		$wrapper_class = SwatDBClassMap::get('StoreProductImageWrapper');
-		$products->loadAllSubDataObjects(
-			'primary_image', $this->app->db, $sql, $wrapper_class);
+		if (count($products) > 0) {
+			$sql = 'select * from Image where id in (%s)';
+			$wrapper_class = SwatDBClassMap::get('StoreProductImageWrapper');
+			$products->loadAllSubDataObjects(
+				'primary_image', $this->app->db, $sql, $wrapper_class);
+		}
 
 		return $products;
 	}
