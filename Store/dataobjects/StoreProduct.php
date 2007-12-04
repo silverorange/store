@@ -88,7 +88,7 @@ class StoreProduct extends SwatDBDataObject
 	 *
 	 * @var StoreRegion
 	 * @see StoreProduct::setRegion()
-	 */ 
+	 */
 	protected $region = null;
 
 	/**
