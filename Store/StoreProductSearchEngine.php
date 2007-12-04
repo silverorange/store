@@ -30,6 +30,13 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	 */
 	public $include_category_descendants = true;
 
+	/**
+	 * An optional category that products are featured within
+	 *
+	 * @var StoreCategory
+	 */
+	public $featured_category;
+
 	// }}}
 	// {{{ public function __construct()
 
@@ -157,6 +164,13 @@ class StoreProductSearchEngine extends SiteSearchEngine
 				CategoryProductBinding.product = Product.id and
 				CategoryProductBinding.category in (%s)',
 				$quoted_category_ids);
+		}
+
+		if ($this->featured_category instanceof StoreCategory) {
+			$clause.= sprintf(' inner join CategoryFeaturedProductBinding on
+				CategoryFeaturedProductBinding.product = Product.id and
+				CategoryFeaturedProductBinding.category = %s',
+				$this->app->db->quote($this->featured_category->id, 'integer'));
 		}
 
 		return $clause;
