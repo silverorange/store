@@ -195,11 +195,13 @@ class StoreProductSearchEngine extends SiteSearchEngine
 
 	protected function getOrderByClause()
 	{
-		if ($this->fulltext_result === null)
-			$clause = sprintf('order by Product.title');
-		else
-			$clause =
-				$this->fulltext_result->getOrderByClause('Product.title');
+		if ($this->fulltext_result === null) {
+			$clause = parent::getOrderByClause();
+		} else {
+			$default_order_by = implode(', ', $this->order_by_clauses);
+			$clause = $this->fulltext_result->getOrderByClause(
+				$default_order_by);
+		}
 
 		return $clause;
 	}
