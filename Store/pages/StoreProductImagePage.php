@@ -129,6 +129,7 @@ class StoreProductImagePage extends StorePage
 			$description = SwatString::toXHTML(
 				SwatString::minimizeEntities(
 				$this->image->description));
+
 			$div_tag->setContent($description, 'text/xml');
 			$div_tag->id = null;
 			$div_tag->display();
