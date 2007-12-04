@@ -127,7 +127,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 
 			if ($this->category instanceof StoreCategory) {
 				$quoted_category_ids = $this->app->db->quote(
-					$this->category->id, 'integer'));
+					$this->category->id, 'integer');
 			} else {
 				$quoted_category_ids = array();
 				foreach ($this->category as $category)
