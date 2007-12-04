@@ -31,6 +31,22 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	public $include_category_descendants = true;
 
 	// }}}
+	// {{{ public function __construct()
+
+	/**
+	 * Creates a new product search engine
+	 *
+	 * Adds default order by fields.
+	 *
+	 * @param SiteApplication $app the application object.
+	 */
+	public function __construct(SiteApplication $app)
+	{
+		parent::__construct($app);
+		$this->addOrderByField('Product.title');
+	}
+
+	// }}}
 	// {{{ public function getSearchSummary()
 
 	/**
