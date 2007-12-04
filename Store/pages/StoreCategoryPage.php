@@ -124,10 +124,12 @@ class StoreCategoryPage extends StorePage
 				where region = %s or region is null)
 			order by displayorder, title';
 
+		$category_id = ($category === null) ? null : $category->id;
+
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
-			SwatDB::equalityOperator($category->id),
-			$this->app->db->quote($category->id, 'integer'),
+			SwatDB::equalityOperator($category_id),
+			$this->app->db->quote($category_id, 'integer'),
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
 		$wrapper_class = SwatDBClassMap::get('StoreCategoryWrapper');
