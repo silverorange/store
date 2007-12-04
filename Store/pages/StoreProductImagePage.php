@@ -155,7 +155,7 @@ class StoreProductImagePage extends StorePage
 	// }}}
 	// {{{ protected function displayOtherImage()
 
-	protected function displayOtherImage($image)
+	protected function displayOtherImage(StoreImage $image)
 	{
 		$li_tag = new SwatHtmlTag('li');
 
