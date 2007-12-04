@@ -227,35 +227,14 @@ class StoreCategoryPage extends StorePage
 	}
 
 	// }}}
-	// {{{ protected function queryFeaturedProducts()
+	// {{{ protected function getFeaturedProducts()
 
-	protected function queryFeaturedProducts(StoreCategory $category)
+	protected function getFeaturedProducts(StoreCategory $category)
 	{
-		$sql = 'select Product.id, shortname, title, primary_category,
-				ProductPrimaryImageView.image as primary_image,
-				getCategoryPath(primary_category) as path
-			from Product
-				inner join CategoryFeaturedProductBinding
-					on Product.id = CategoryFeaturedProductBinding.product
-						and category = %s
-				inner join VisibleProductCache
-					on Product.id = VisibleProductCache.product
-						and VisibleProductCache.region = %s
-				left outer join ProductPrimaryCategoryView
-					on ProductPrimaryCategoryView.product = Product.id
-				left outer join ProductPrimaryImageView
-					on ProductPrimaryImageView.product = Product.id
-			order by CategoryFeaturedProductBinding.displayorder,
-				Product.title';
-
-		$sql = sprintf($sql,
-			$this->app->db->quote($category->id, 'integer'),
-			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
-
-		$wrapper_class = SwatDBClassMap::get('StoreProductWrapper');
-		$products = SwatDB::query($this->app->db, $sql, $wrapper_class);
-
-		return $products;
+		$engine = $this->instantiateProductSearchEngine();
+		$engine->featured_category = $category;
+		$engine->addOrderByField('CategoryFeaturedProductBinding.displayorder');
+		return $engine->search();
 	}
 
 	// }}}
@@ -263,37 +242,35 @@ class StoreCategoryPage extends StorePage
 
 	protected function displayFeaturedProducts(StoreCategory $category)
 	{
-		$products = $this->queryFeaturedProducts($category);
+		$products = $this->getFeaturedProducts($category);
+		if (count($products) > 0) {
+			$div = new SwatHtmlTag('div');
+			$div->id = 'featured_products';
+			$div->open();
 
-		if (count($products) == 0)
-			return;
+			$header_tag = new SwatHtmlTag('h4');
+			$header_tag->setContent(Store::_('Featuring:'));
+			$header_tag->display();
 
-		$div = new SwatHtmlTag('div');
-		$div->id = 'featured_products';
-		$div->open();
+			$ul_tag = new SwatHtmlTag('ul');
+			$ul_tag->class = 'store-product-list';
+			$ul_tag->open();
 
-		$header_tag = new SwatHtmlTag('h4');
-		$header_tag->setContent(Store::_('Featuring:'));
-		$header_tag->display();
+			$li_tag = new SwatHtmlTag('li');
+			$li_tag->class = 'store-product-text';
 
-		$ul_tag = new SwatHtmlTag('ul');
-		$ul_tag->class = 'store-product-list';
-		$ul_tag->open();
+			foreach ($products as $product) {
+				$li_tag->open();
+				$path = 'store/'.$product->path;
+				$product->displayAsText($path);
+				$li_tag->close();
+				echo ' ';
+			}
 
-		$li_tag = new SwatHtmlTag('li');
-		$li_tag->class = 'store-product-text';
-
-		foreach ($products as $product) {
-			$li_tag->open();
-			$path = 'store/'.$product->path;
-			$product->displayAsText($path);
-			$li_tag->close();
-			echo ' ';
+			$ul_tag->close();
+			echo '<div class="clear"></div>';
+			$div->close();
 		}
-
-		$ul_tag->close();
-		echo '<div class="clear"></div>';
-		$div->close();
 	}
 
 	// }}}
