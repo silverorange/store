@@ -174,7 +174,7 @@ class StoreProductImagePage extends StorePage
 		$img_tag = $image->getImgTag($size);
 
 		if ($selected) {
-			$img->class = 'store-image-selected';
+			$img_tag->class.= ' store-image-selected';
 		}
 
 		if ($img_tag->alt === null) {
