@@ -28,7 +28,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	 *
 	 * @var boolean
 	 */
-	public $category_descendants = true;
+	public $include_category_descendants = true;
 
 	// }}}
 	// {{{ public function getSearchSummary()
@@ -121,7 +121,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 			$clause.= ' '.
 				$this->fulltext_result->getJoinClause('Product.id', 'product');
 
-		if (!$this->category_descendants &&
+		if (!$this->include_category_descendants &&
 			($this->category instanceof StoreCategory ||
 			$this->category instanceof StoreCategoryWrapper)) {
 
@@ -153,7 +153,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	{
 		$clause = parent::getWhereClause();
 
-		if ($this->category_descendants &&
+		if ($this->include_category_descendants &&
 			($this->category instanceof StoreCategory ||
 			$this->category instanceof StoreCategoryWrapper)) {
 
