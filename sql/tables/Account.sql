@@ -10,5 +10,7 @@ create table Account (
 	password_tag varchar(255),
 	createdate timestamp,
 	last_login timestamp,
+	default_billing_address integer references AccountAddress(id),
+	default_shipping_address integer references AccountAddress(id),
 	primary key (id)
 );
