@@ -20,6 +20,16 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	 */
 	public $category;
 
+	/**
+	 * Whether or not to search category descendants whem a category is
+	 * selected
+	 *
+	 * Defaults to true.
+	 *
+	 * @var boolean
+	 */
+	public $category_descendants = true;
+
 	// }}}
 	// {{{ public function getSearchSummary()
 
@@ -111,6 +121,14 @@ class StoreProductSearchEngine extends SiteSearchEngine
 			$clause.= ' '.
 				$this->fulltext_result->getJoinClause('Product.id', 'product');
 
+		if (!$this->category_descendants &&
+			$this->category instanceof StoreCategory) {
+			$clause.= sprintf(' inner join CategoryProductBinding on
+				CategoryProductBinding.product = Product.id and
+				CategoryProductBinding.category = %s',
+				$thos->app->db->quote($this->category->id, 'integer'));
+		}
+
 		return $clause;
 	}
 
@@ -121,13 +139,16 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	{
 		$clause = parent::getWhereClause();
 
-		if ($this->category instanceof StoreCategory)
+		if ($this->category_descendants &&
+			$this->category instanceof StoreCategory) {
 			$clause.= sprintf(' and Product.id in (
 				select product from	CategoryProductBinding
-				inner join getCategoryDescendents(%s) as category_descendents
-					on category_descendents.descendent =
-					CategoryProductBinding.category)',
+				inner join getCategoryDescendents(%s) as
+					category_descendents on
+						category_descendents.descendent =
+						CategoryProductBinding.category)',
 				$this->app->db->quote($this->category->id, 'integer'));
+		}
 
 		return $clause;
 	}
