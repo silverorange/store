@@ -188,26 +188,6 @@ class StoreCategoryPage extends StorePage
 	}
 
 	// }}}
-	// {{{ protected function getProducts()
-
-	protected function getProducts(StoreCategory $category)
-	{
-		$engine = $this->instantiateProductSearchEngine();
-		$engine->category = $category;
-		$engine->include_category_descendants = false;
-		$engine->addOrderByField('CategoryProductBinding.displayorder');
-		return $engine->search();
-	}
-
-	// }}}
-	// {{{ protected function instantiateProductSearchEngine()
-
-	protected function instantiateProductSearchEngine()
-	{
-		return new StoreProductSearchEngine($this->app);
-	}
-
-	// }}}
 	// {{{ protected function displayCategory()
 
 	protected function displayCategory(StoreCategory $category)
@@ -224,17 +204,6 @@ class StoreCategoryPage extends StorePage
 
 			$this->displayProducts($products);
 		}
-	}
-
-	// }}}
-	// {{{ protected function getFeaturedProducts()
-
-	protected function getFeaturedProducts(StoreCategory $category)
-	{
-		$engine = $this->instantiateProductSearchEngine();
-		$engine->featured_category = $category;
-		$engine->addOrderByField('CategoryFeaturedProductBinding.displayorder');
-		return $engine->search();
 	}
 
 	// }}}
@@ -307,6 +276,37 @@ class StoreCategoryPage extends StorePage
 	protected function displayRelatedArticlesTitle()
 	{
 		echo Store::_('Related Articles: ');
+	}
+
+	// }}}
+	// {{{ protected function instantiateProductSearchEngine()
+
+	protected function instantiateProductSearchEngine()
+	{
+		return new StoreProductSearchEngine($this->app);
+	}
+
+	// }}}
+	// {{{ protected function getProducts()
+
+	protected function getProducts(StoreCategory $category)
+	{
+		$engine = $this->instantiateProductSearchEngine();
+		$engine->category = $category;
+		$engine->include_category_descendants = false;
+		$engine->addOrderByField('CategoryProductBinding.displayorder');
+		return $engine->search();
+	}
+
+	// }}}
+	// {{{ protected function getFeaturedProducts()
+
+	protected function getFeaturedProducts(StoreCategory $category)
+	{
+		$engine = $this->instantiateProductSearchEngine();
+		$engine->featured_category = $category;
+		$engine->addOrderByField('CategoryFeaturedProductBinding.displayorder');
+		return $engine->search();
 	}
 
 	// }}}
