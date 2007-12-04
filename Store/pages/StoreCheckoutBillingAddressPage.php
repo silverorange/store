@@ -84,7 +84,7 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 			$order_address->company =
 				$this->ui->getWidget('billing_address_company')->value;
 
-			$order_address->line1 = 
+			$order_address->line1 =
 				$this->ui->getWidget('billing_address_line1')->value;
 
 			$order_address->line2 =
