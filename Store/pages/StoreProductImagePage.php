@@ -172,9 +172,15 @@ class StoreProductImagePage extends StorePage
 		}
 
 		$img_tag = $image->getImgTag($size);
-		if ($img_tag->alt === null)
+
+		if ($selected) {
+			$img->class = 'store-image-selected';
+		}
+
+		if ($img_tag->alt === null) {
 			$img_tag->alt = sprintf(Store::_('Additional Photo of %s'),
 				$this->product->title);
+		}
 
 		$img_tag->display();
 
