@@ -81,7 +81,14 @@ class StoreAccountChangePasswordPage extends StoreAccountPage
 		$account = $this->app->session->account;
 
 		$old_password = $this->ui->getWidget('old_password');
-		$value = md5($old_password->value.$account->password_salt);
+
+		$salt = $account->password_salt;
+		// salt might be base-64 encoded
+		$decoded_salt = base64_decode($salt, true);
+		if ($decoded_salt !== false)
+			$salt = $decoded_salt;
+
+		$value = md5($old_password->value.$salt);
 
 		if ($value != $account->password) {
 			$message = new SwatMessage(Store::_('Your password is incorrect.'),
@@ -90,7 +97,6 @@ class StoreAccountChangePasswordPage extends StoreAccountPage
 			$message->content_type = 'text/xml';
 			$old_password->addMessage($message);
 		}
-		
 	}
 
 	// }}}
