@@ -37,6 +37,7 @@ class StoreProductPage extends StorePage
 	protected $cart_message;
 	protected $item_removed = false;
 	protected $added_entry_ids = array();
+	protected $saved_entry_ids = array();
 	protected $default_quantity = 0;
 
 	/**
@@ -251,7 +252,7 @@ class StoreProductPage extends StorePage
 				}
 			}
 
-			if ($num_items_added) {
+			if ($num_items_added > 0) {
 				$this->cart_message = new StoreMessage(
 					Store::_('Your cart has been updated.'),
 					StoreMessage::CART_NOTIFICATION);
@@ -393,6 +394,9 @@ class StoreProductPage extends StorePage
 
 			$this->cart_message->secondary_content = ob_get_clean();
 			$this->cart_message->content_type = 'text/xml';
+			$this->message_display->add($this->cart_message);
+
+		} elseif ($this->cart_message !== null) {
 			$this->message_display->add($this->cart_message);
 		}
 	}
