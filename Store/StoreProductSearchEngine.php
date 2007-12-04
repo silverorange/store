@@ -228,7 +228,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 		if ($this->fulltext_result === null) {
 			$clause = parent::getOrderByClause();
 		} else {
-			$default_order_by = implode(', ', $this->order_by_clauses);
+			$default_order_by = implode(', ', $this->order_by_fields);
 			$clause = $this->fulltext_result->getOrderByClause(
 				$default_order_by);
 		}
