@@ -367,7 +367,8 @@ class StoreCartModule extends SiteApplicationModule
 		if (!$this->app->session->isActive())
 			return;
 
-		$entry_sql = $this->getEntrySql($this->getEntryWhereClause());
+		$entry_sql = $this->getEntrySql($this->getEntryWhereClause(),
+			$this->getEntryOrderByClause());
 
 		$this->entries = SwatDB::query($this->app->db, $entry_sql,
 			SwatDBClassMap::get('StoreCartEntryWrapper'));
@@ -441,17 +442,31 @@ class StoreCartModule extends SiteApplicationModule
 	}
 
 	// }}}
+	// {{{ protected function getEntryOrderByClause()
+
+	/**
+	 * Gets the SQL order by clause of cart entries
+	 *
+	 * @return string the SQL order by clause of cart entries.
+	 */
+	protected function getEntryOrderByClause()
+	{
+		return 'Item.product, Item.displayorder';
+	}
+
+	// }}}
 	// {{{ protected function getEntrySql()
 
-	protected function getEntrySql($where_clause)
+	protected function getEntrySql($where_clause,
+		$order_by_clause = 'Item.product, Item.displayorder')
 	{
 		$entry_sql = 'select CartEntry.*
 			from CartEntry
 				inner join Item on CartEntry.item = Item.id
 			where %s
-			order by Item.product, Item.displayorder';
+			order by %s';
 
-		return sprintf($entry_sql, $where_clause);
+		return sprintf($entry_sql, $where_clause, $order_by_clause);
 	}
 
 	// }}}
