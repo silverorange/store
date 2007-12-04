@@ -64,7 +64,7 @@ class StoreProductImagePage extends StorePage
 		$this->displayImage();
 
 		if (count($this->product->images) > 1)
-			$this->displayOtherImages();
+			$this->displayThumbnails();
 
 		echo '</div>';
 
@@ -137,25 +137,60 @@ class StoreProductImagePage extends StorePage
 	}
 
 	// }}}
-	// {{{ protected function displayOtherImages()
+	// {{{ protected function displayThumbnails()
 
-	protected function displayOtherImages()
+	protected function displayThumbnails()
 	{
 		$li_tag = new SwatHtmlTag('li');
 
 		echo '<ul id="product_secondary_images">';
 
-		foreach ($this->product->images as $image)
-			if ($this->image->id !== $image->id)
-				$this->displayOtherImage($image);
+		foreach ($this->product->images as $image) {
+			$selected = ($this->image->id === $image->id);
+			$this->displayThumbnail($image, 'thumb', $selected);
+		}
 
 		echo '</ul>';
 	}
 
 	// }}}
-	// {{{ protected function displayOtherImage()
+	// {{{ protected function displayThumbnail()
 
-	protected function displayOtherImage(StoreImage $image)
+	protected function displayThumbnail(StoreImage $image, $size = 'thumb',
+		$selected = false)
+	{
+		$li_tag = new SwatHtmlTag('li');
+		$li_tag->open();
+
+		if (!$selected) {
+			$anchor = new SwatHtmlTag('a');
+			$anchor->href = sprintf('%s/image%s',
+				$this->getProductPageSource(), $image->id);
+
+			$anchor->title = Store::_('View Larger Image');
+			$anchor->open();
+		}
+
+		$img_tag = $image->getImgTag($size);
+		if ($img_tag->alt === null)
+			$img_tag->alt = sprintf(Store::_('Additional Photo of %s'),
+				$this->product->title);
+
+		$img_tag->display();
+
+		echo Store::_('<span>View Larger Image</span>');
+
+		if (!$selected) {
+			$anchor->close();
+		}
+
+		$li_tag->close();
+	}
+
+	// }}}
+	// {{{ protected function displaySelectedImage()
+
+	protected function displaySelectedImage(StoreImage $image)
 	{
 		$li_tag = new SwatHtmlTag('li');
 
