@@ -27,33 +27,6 @@ abstract class StoreLocaleApplication extends StoreApplication
 	}
 
 	// }}}
-	// {{{ public function getCountry()
-
-	/**
-	 * @return string
-	 */
-	public function getCountry($locale = null)
-	{
-		if ($locale === null)
-			$locale = $this->locale;
-
-		$country = substr($locale, 3, 2);
-
-		return $country;
-	}
-
-	// }}}
-	// {{{ public function getLocale()
-
-	/**
-	 * @return string
-	 */
-	public function getLocale()
-	{
-		return $this->locale;
-	}
-
-	// }}}
 	// {{{ public function getRegion()
 
 	/**
