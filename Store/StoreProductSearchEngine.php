@@ -14,15 +14,15 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	// {{{ public properties
 
 	/**
-	 * An optional category to search within
+	 * An optional category or categories to search within
 	 *
-	 * @var StoreCategory
+	 * @var StoreCategory|StoreCategoryWrapper
 	 */
 	public $category;
 
 	/**
-	 * Whether or not to search category descendants whem a category is
-	 * selected
+	 * Whether or not to search category descendants when a category or
+	 * categories is selected
 	 *
 	 * Defaults to true.
 	 *
@@ -122,11 +122,25 @@ class StoreProductSearchEngine extends SiteSearchEngine
 				$this->fulltext_result->getJoinClause('Product.id', 'product');
 
 		if (!$this->category_descendants &&
-			$this->category instanceof StoreCategory) {
+			($this->category instanceof StoreCategory ||
+			$this->category instanceof StoreCategoryWrapper)) {
+
+			if ($this->category instanceof StoreCategory) {
+				$quoted_category_ids = $this->app->db->quote(
+					$this->category->id, 'integer'));
+			} else {
+				$quoted_category_ids = array();
+				foreach ($this->category as $category)
+					$quoted_category_ids[] =
+						$this->app->db->quote($category->id, 'integer');
+
+				$quoted_category_ids = implode(', ', $quoted_category_ids);
+			}
+
 			$clause.= sprintf(' inner join CategoryProductBinding on
 				CategoryProductBinding.product = Product.id and
-				CategoryProductBinding.category = %s',
-				$thos->app->db->quote($this->category->id, 'integer'));
+				CategoryProductBinding.category in (%s)',
+				$quoted_category_ids);
 		}
 
 		return $clause;
@@ -140,14 +154,37 @@ class StoreProductSearchEngine extends SiteSearchEngine
 		$clause = parent::getWhereClause();
 
 		if ($this->category_descendants &&
-			$this->category instanceof StoreCategory) {
-			$clause.= sprintf(' and Product.id in (
-				select product from	CategoryProductBinding
-				inner join getCategoryDescendents(%s) as
-					category_descendents on
-						category_descendents.descendent =
-						CategoryProductBinding.category)',
-				$this->app->db->quote($this->category->id, 'integer'));
+			($this->category instanceof StoreCategory ||
+			$this->category instanceof StoreCategoryWrapper)) {
+
+			if ($this->category instanceof StoreCategory) {
+				$clause.= sprintf(' and Product.id in (
+					select product from	CategoryProductBinding
+					inner join getCategoryDescendents(%s) as
+						category_descendents on
+							category_descendents.descendent =
+							CategoryProductBinding.category)',
+					$this->app->db->quote($this->category->id, 'integer'));
+			} else {
+				if (count($this->category) > 0) {
+					$clause.= ' and ';
+					$first = true;
+					foreach ($this->category as $category) {
+						if ($first)
+							$first = false;
+						else
+							$clause.= ' or ';
+
+						$clause.= sprintf('(Product.id in (
+							select product from CategoryProductBinding
+							inner join getCategoryDescendents(%1$s) as
+								category_descendents_%1$s on
+									category_descendents_%1$s.descendent =
+									CategoryProductBinding.category))',
+							$this->app->db->quote($category->id, 'integer'));
+					}
+				}
+			}
 		}
 
 		return $clause;
