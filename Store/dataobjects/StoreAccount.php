@@ -130,6 +130,20 @@ class StoreAccount extends SiteAccount
 	}
 
 	// }}}
+	// {{{ protected function init()
+
+	protected function init()
+	{
+		parent::init();
+
+		$this->registerInternalProperty('default_billing_address',
+			SwatDBClassMap::get('StoreAccountAddress'));
+
+		$this->registerInternalProperty('default_shipping_address',
+			SwatDBClassMap::get('StoreAccountAddress'));
+	}
+
+	// }}}
 
 	// loader methods
 	// {{{ protected function loadAddresses()
