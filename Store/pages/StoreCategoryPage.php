@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Swat/SwatString.php';
+require_once 'Store/StoreProductSearchEngine.php';
 require_once 'Store/pages/StorePage.php';
 require_once 'Store/dataobjects/StoreLocaleWrapper.php';
 require_once 'Store/dataobjects/StoreCategoryWrapper.php';
@@ -73,11 +74,11 @@ class StoreCategoryPage extends StorePage
 			SwatString::minimizeEntities($category->description);
 
 		if (strlen($category->bodytext) > 0)
-			$this->layout->data->content=
+			$this->layout->data->content =
 				'<div class="store-category-bodytext">'.
 				SwatString::toXHTML($category->bodytext).'</div>';
 		else
-			$this->layout->data->content= '';
+			$this->layout->data->content = '';
 
 		if ($category->description === null) {
 			$this->layout->data->meta_description =
@@ -98,18 +99,18 @@ class StoreCategoryPage extends StorePage
 	// }}}
 	// {{{ protected function buildPage()
 
-	protected function buildPage($category)
+	protected function buildPage(StoreCategory $category)
 	{
 		$this->layout->startCapture('content');
-		$this->displayFeaturedProducts($category->id);
-		$this->displayCategory($category->id);
+		$this->displayFeaturedProducts($category);
+		$this->displayCategory($category);
 		$this->layout->endCapture();
 	}
 
 	// }}}
 	// {{{ protected function querySubCategories()
 
-	protected function querySubCategories($category_id = null)
+	protected function querySubCategories(StoreCategory $category = null)
 	{
 		$sql = 'select Category.id, Category.title, Category.shortname,
 				Category.description, Category.image,
@@ -118,15 +119,15 @@ class StoreCategoryPage extends StorePage
 			left outer join CategoryVisibleProductCountByRegionCache as c
 				on c.category = Category.id and c.region = %s
 			where parent %s %s
-			and id in 
+			and id in
 				(select Category from VisibleCategoryView
 				where region = %s or region is null)
 			order by displayorder, title';
 
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
-			SwatDB::equalityOperator($category_id),
-			$this->app->db->quote($category_id, 'integer'),
+			SwatDB::equalityOperator($category->id),
+			$this->app->db->quote($category->id, 'integer'),
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
 		$wrapper_class = SwatDBClassMap::get('StoreCategoryWrapper');
@@ -147,9 +148,9 @@ class StoreCategoryPage extends StorePage
 	// }}}
 	// {{{ protected function displaySubCategories()
 
-	protected function displaySubCategories($category_id = null)
+	protected function displaySubCategories(StoreCategory $category = null)
 	{
-		$sub_categories = $this->querySubCategories($category_id);
+		$sub_categories = $this->querySubCategories($category);
 
 		if (count($sub_categories) == 0)
 			return;
@@ -187,65 +188,47 @@ class StoreCategoryPage extends StorePage
 	}
 
 	// }}}
-	// {{{ protected function queryProducts()
+	// {{{ protected function getProducts()
 
-	protected function queryProducts($sub_query)
+	protected function getProducts(StoreCategory $category)
 	{
-		$sql = 'select Product.id, Product.shortname, Product.title,
-				ProductPrimaryImageView.image as primary_image
-			from Product
-			inner join CategoryProductBinding
-				on CategoryProductBinding.product = Product.id
-			inner join VisibleProductCache
-				on VisibleProductCache.product = Product.id
-			left outer join ProductPrimaryImageView
-				on ProductPrimaryImageView.product = Product.id
-			where CategoryProductBinding.category in (%s)
-				and VisibleProductCache.region = %s
-			order by displayorder, title';
+		$engine = $this->instantiateProductSearchEngine();
+		$engine->category = $category;
+		$engine->include_category_descendants = false;
+		return $engine->search();
+	}
 
-		$sql = sprintf($sql,
-			$sub_query,
-			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+	// }}}
+	// {{{ protected function instantiateProductSearchEngine()
 
-		$wrapper_class = SwatDBClassMap::get('StoreProductWrapper');
-		$products = SwatDB::query($this->app->db, $sql, $wrapper_class);
-
-		if (count($products) > 0) {
-			$sql = 'select * from Image where id in (%s)';
-			$wrapper_class = SwatDBClassMap::get('StoreProductImageWrapper');
-			$products->loadAllSubDataObjects(
-				'primary_image', $this->app->db, $sql, $wrapper_class);
-		}
-
-		return $products;
+	protected function instantiateProductSearchEngine()
+	{
+		return new StoreProductSearchEngine($this->app);
 	}
 
 	// }}}
 	// {{{ protected function displayCategory()
 
-	protected function displayCategory($category_id)
+	protected function displayCategory(StoreCategory $category)
 	{
-		$this->displaySubCategories($category_id);
+		$this->displaySubCategories($category);
 
-		$products = $this->queryProducts(
-			$this->app->db->quote($category_id, 'integer'));
+		$products = $this->getProducts($category);
 
-		if (count($products) == 0)
-			return;
+		if (count($products) > 0) {
+			if (count($products) == 1) {
+				$link = $this->source.'/'.$products->getFirst()->shortname;
+				$this->app->relocate($link);
+			}
 
-		if (count($products) == 1) {
-			$link = $this->source.'/'.$products->getFirst()->shortname;
-			$this->app->relocate($link);
+			$this->displayProducts($products);
 		}
-
-		$this->displayProducts($products);
 	}
 
 	// }}}
 	// {{{ protected function queryFeaturedProducts()
 
-	protected function queryFeaturedProducts($category_id)
+	protected function queryFeaturedProducts(StoreCategory $category)
 	{
 		$sql = 'select Product.id, shortname, title, primary_category,
 				ProductPrimaryImageView.image as primary_image,
@@ -265,7 +248,7 @@ class StoreCategoryPage extends StorePage
 				Product.title';
 
 		$sql = sprintf($sql,
-			$this->app->db->quote($category_id, 'integer'),
+			$this->app->db->quote($category->id, 'integer'),
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
 		$wrapper_class = SwatDBClassMap::get('StoreProductWrapper');
@@ -277,9 +260,9 @@ class StoreCategoryPage extends StorePage
 	// }}}
 	// {{{ protected function displayFeaturedProducts()
 
-	protected function displayFeaturedProducts($category_id)
+	protected function displayFeaturedProducts(StoreCategory $category)
 	{
-		$products = $this->queryFeaturedProducts($category_id);
+		$products = $this->queryFeaturedProducts($category);
 
 		if (count($products) == 0)
 			return;
