@@ -147,20 +147,26 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			$account = $this->app->session->account;
 			$order = $this->app->session->order;
 
-			$this->addAddressToAccount($order->billing_address);
+			$address = $this->addAddressToAccount($order->billing_address);
+			$account->setDefaultBillingAddress($address);
 
 	 		// shipping address is only added if it differs from billing address
-			if ($order->shipping_address->id !== $order->billing_address->id)
-				$this->addAddressToAccount($order->shipping_address);
+			if ($order->shipping_address->getAccountAddressId() !==
+				$order->billing_address->getAccountAddressId()) {
+				$address = $this->addAddressToAccount($order->shipping_address);
+			}
+
+			$account->setDefaultShippingAddress($address);
 
 	 		// new payment methods are only added if a session flag is set
 			if ($this->app->session->save_account_payment_method &&
-				$order->payment_method !== null)
+				$order->payment_method !== null) {
 				$this->addPaymentMethodToAccount($order->payment_method);
+			}
 
 			$new_account = ($account->id === null);
 
-			// if this is a new account, set createdate and last_login to now
+			// if this is a new account, set createdate to now
 			if ($new_account) {
 				$account->createdate = new SwatDate();
 				$account->createdate->toUTC();
@@ -170,8 +176,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			$account->save();
 
 			// if this is a new account, log it in
-			if ($new_account)
+			if ($new_account) {
 				$this->app->session->loginById($account->id);
+			}
 		}
 	}
 
@@ -203,15 +210,25 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	// }}}
 	// {{{ protected function addAddressToAccount()
 
+	/**
+	 * @return StoreAccountAddress the account address used for this order.
+	 */
 	protected function addAddressToAccount(StoreOrderAddress $order_address)
 	{
+		$account = $this->app->session->account;
+
 		// check that address is not already in account
 		if ($order_address->getAccountAddressId() === null) {
 			$class_name = SwatDBClassMap::get('StoreAccountAddress');
 			$account_address = new $class_name();
 			$account_address->copyFrom($order_address);
-			$this->app->session->account->addresses->add($account_address);
+			$account->addresses->add($account_address);
+		} else {
+			$account_address = $account->addresses->getByIndex(
+				$order_address->getAccountAddressId());
 		}
+
+		return $account_address;
 	}
 
 	// }}}
