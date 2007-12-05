@@ -77,10 +77,13 @@ class StoreAccountForgotPasswordPage extends StoreAccountPage
 	 */
 	protected function getAccount($email)
 	{
+		$instance = ($this->app->hasModule('SiteMultipleInstanceModule')) ?
+			$this->app->instance->getInstance() : null;
+
 		$class_name = SwatDBClassMap::get('SiteAccount');
 		$account = new $class_name();
 		$account->setDatabase($this->app->db);
-		$found = $account->loadWithEmail($email);
+		$found = $account->loadWithEmail($email, $instance);
 
 		if ($found === false)
 				$account = null;
