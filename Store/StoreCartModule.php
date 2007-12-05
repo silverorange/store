@@ -5,6 +5,7 @@ require_once 'SwatDB/SwatDBTransaction.php';
 require_once 'Site/SiteApplicationModule.php';
 
 require_once 'Site/SiteAccountSessionModule.php';
+require_once 'Site/SiteModuleDependency.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/StoreCart.php';
 require_once 'Store/StoreSavedCart.php';
@@ -127,7 +128,10 @@ class StoreCartModule extends SiteApplicationModule
 	 */
 	public function depends()
 	{
-		return array('SiteAccountSessionModule', 'SiteDatabaseModule');
+		$depends = array();
+		$depends[] = new SiteModuleDependency('SiteAccountSessionModule');
+		$depends[] = new SiteModuleDependency('SiteDatabaseModule');
+		return $depends;
 	}
 
 	// }}}
