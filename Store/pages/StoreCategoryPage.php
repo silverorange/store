@@ -150,16 +150,14 @@ class StoreCategoryPage extends StorePage
 	// }}}
 	// {{{ protected function displaySubCategories()
 
-	protected function displaySubCategories(StoreCategory $category = null)
+	protected function displaySubCategories(StoreCategoryWrapper $categories)
 	{
-		$sub_categories = $this->querySubCategories($category);
-
-		if (count($sub_categories) == 0)
+		if (count($categories) == 0)
 			return;
 
 		echo '<ul class="store-category-list">';
 
-		foreach ($sub_categories as $category) {
+		foreach ($categories as $category) {
 			echo '<li class="store-category-tile">';
 			$link = $this->source.'/'.$category->shortname;
 			$category->displayAsTile($link);
@@ -194,7 +192,8 @@ class StoreCategoryPage extends StorePage
 
 	protected function displayCategory(StoreCategory $category)
 	{
-		$this->displaySubCategories($category);
+		$sub_categories = $this->querySubCategories($category);
+		$this->displaySubCategories($sub_categories);
 
 		$products = $this->getProducts($category);
 
@@ -205,6 +204,9 @@ class StoreCategoryPage extends StorePage
 			}
 
 			$this->displayProducts($products);
+		} elseif (count($sub_categories) === 1) {
+			$link = $this->source.'/'.$sub_categories->getFirst()->shortname;
+			$this->app->relocate($link);
 		}
 	}
 
