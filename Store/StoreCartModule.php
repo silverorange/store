@@ -128,7 +128,7 @@ class StoreCartModule extends SiteApplicationModule
 	 */
 	public function depends()
 	{
-		$depends = array();
+		$depends = parent::depends();
 		$depends[] = new SiteApplicationModuleDependency(
 			'SiteAccountSessionModule');
 
