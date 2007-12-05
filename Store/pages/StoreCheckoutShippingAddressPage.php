@@ -186,7 +186,13 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 	{
 		$order = $this->app->session->order;
 
-		if ($order->shipping_address !== null) {
+		if ($order->shipping_address === null) {
+			$default_address = $this->getDefaultShippingAddress();
+			if ($default_address !== null) {
+				$this->ui->getWidget('shipping_address_list')->value =
+					$default_address->id;
+			}
+		} else {
 			if ($order->shipping_address->getAccountAddressId() === null &&
 				$order->shipping_address !== $order->billing_address) {
 
@@ -225,7 +231,7 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 			} else {
 				// compare references since these are not saved yet
 				if ($order->billing_address === $order->shipping_address) {
-					$this->ui->getWidget('shipping_address_list')->value = 
+					$this->ui->getWidget('shipping_address_list')->value =
 						'billing';
 
 				} else {
@@ -234,6 +240,31 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 				}
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function getDefaultShippingAddress()
+
+	protected function getDefaultShippingAddress()
+	{
+		$address = null;
+
+		if ($this->app->session->isLoggedIn()) {
+			$shipping_country_ids = array();
+			foreach ($this->app->getRegion()->shipping_countries as $country)
+				$shipping_country_ids[] = $country->id;
+
+			$default_address =
+				$this->app->session->account->getDefaultShippingAddress();
+
+			if ($default_address !== null &&
+				in_array($default_address->getInternalValue('country'),
+				$shipping_country_ids)) {
+				$address = $default_address;
+			}
+		}
+
+		return $address;
 	}
 
 	// }}}
