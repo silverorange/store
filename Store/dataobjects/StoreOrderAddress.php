@@ -43,15 +43,6 @@ class StoreOrderAddress extends StoreAddress
 	}
 
 	// }}}
-	// {{{ protected function init()
-
-	protected function init()
-	{
-		parent::init();
-		$this->table = 'OrderAddress';
-	}
-
-	// }}}
 	// {{{ public function duplicate()
 
 	public function duplicate()
@@ -62,6 +53,15 @@ class StoreOrderAddress extends StoreAddress
 			$new_address->account_address_id = $this->account_address_id;
 
 		return $new_address;
+	}
+
+	// }}}
+	// {{{ protected function init()
+
+	protected function init()
+	{
+		parent::init();
+		$this->table = 'OrderAddress';
 	}
 
 	// }}}
