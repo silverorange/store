@@ -197,11 +197,18 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 		if ($order->billing_address === null) {
 			$this->ui->getWidget('billing_address_fullname')->value =
 				$this->app->session->account->fullname;
+
 			$this->ui->getWidget('billing_address_phone')->value =
 				$this->app->session->account->phone;
 
 			$this->ui->getWidget('billing_address_company')->value =
 				$this->app->session->account->company;
+
+			$default_address = $this->getDefaultBillingAddress();
+			if ($default_address !== null) {
+				$this->ui->getWidget('billing_address_list')->value =
+					$default_address->id;
+			}
 		} else {
 			if ($order->billing_address->getAccountAddressId() === null) {
 
@@ -239,6 +246,31 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 					$order->billing_address->getAccountAddressId();
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function getDefaultBillingAddress()
+
+	protected function getDefaultBillingAddress()
+	{
+		$address = null;
+
+		if ($this->app->session->isLoggedIn()) {
+			$billing_country_ids = array();
+			foreach ($this->app->getRegion()->billing_countries as $country)
+				$billing_country_ids[] = $country->id;
+
+			$default_address =
+				$this->app->session->account->getDefaultBillingAddress();
+
+			if ($default_address !== null &&
+				in_array($default_address->getInternalValue('country'),
+				$billing_country_ids)) {
+				$address = $default_address;
+			}
+		}
+
+		return $address;
 	}
 
 	// }}}
