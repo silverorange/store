@@ -130,6 +130,84 @@ class StoreAccount extends SiteAccount
 	}
 
 	// }}}
+	// {{{ public function setDefaultBillingAddress()
+
+	public function setDefaultBillingAddress(StoreAccountAddress $address)
+	{
+		if ($address->getId() === null) {
+			$this->addresses->add($address);
+		} else {
+			$actual_address = $this->addresses->getByIndex($address->getId());
+			if ($actual_address === null) {
+				throw new SwatObjectNotFoundException(
+					'Address does not belong to this account and cannot be '.
+					'set as the default address.');
+			}
+		}
+
+		$this->setSubDataObject('default_billing_address', $address);
+		$this->setInternalValue('default_billing_address', $address->getId());
+	}
+
+	// }}}
+	// {{{ public function getDefaultBillingAddress()
+
+	public function getDefaultBillingAddress()
+	{
+		$address = null;
+
+		if ($this->hasSubDataObject('default_billing_address')) {
+			$address = $this->getSubDataObject('default_billing_address');
+		} else {
+			$id = $this->getInternalValue('default_billing_address');
+			if ($id !== null) {
+				$address = $this->addresses->getByIndex($id);
+			}
+		}
+
+		return $address;
+	}
+
+	// }}}
+	// {{{ public function setDefaultShippingAddress()
+
+	public function setDefaultShippingAddress(StoreAccountAddress $address)
+	{
+		if ($address->getId() === null) {
+			$this->addresses->add($address);
+		} else {
+			$actual_address = $this->addresses->getByIndex($address->getId());
+			if ($actual_address === null) {
+				throw new SwatObjectNotFoundException(
+					'Address does not belong to this account and cannot be '.
+					'set as the default address.');
+			}
+		}
+
+		$this->setSubDataObject('default_shipping_address', $address);
+		$this->setInternalValue('default_shipping_address', $address->getId());
+	}
+
+	// }}}
+	// {{{ public function getDefaultShippingAddress()
+
+	public function getDefaultShippingAddress()
+	{
+		$address = null;
+
+		if ($this->hasSubDataObject('default_shipping_address')) {
+			$address = $this->getSubDataObject('default_shipping_address');
+		} else {
+			$id = $this->getInternalValue('default_shipping_address');
+			if ($id !== null) {
+				$address = $this->addresses->getByIndex($id);
+			}
+		}
+
+		return $address;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
@@ -137,10 +215,10 @@ class StoreAccount extends SiteAccount
 		parent::init();
 
 		$this->registerInternalProperty('default_billing_address',
-			SwatDBClassMap::get('StoreAccountAddress'));
+			SwatDBClassMap::get('StoreAccountAddress'), false, false);
 
 		$this->registerInternalProperty('default_shipping_address',
-			SwatDBClassMap::get('StoreAccountAddress'));
+			SwatDBClassMap::get('StoreAccountAddress'), false, false);
 	}
 
 	// }}}
