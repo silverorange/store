@@ -85,9 +85,14 @@ class StoreAccountResetPasswordPage extends SiteArticlePage
 	 */
 	protected function getAccountId($password_tag)
 	{
-		return SwatDB::queryOne($this->app->db, sprintf(
-			'select id from Account where password_tag = %s',
-			$this->app->db->quote($password_tag, 'text')));
+		$sql = sprintf('select id from Account where password_tag = %s',
+			$this->app->db->quote($password_tag, 'text'));
+
+		if ($this->app->hasModule('SiteMultipleInstanceModule'))
+			$sql.= sprintf(' and instance = %s', $this->app->db->quote(
+				$this->app->instance->getInstance()->id), 'integer');
+
+		return SwatDB::queryOne($this->app->db, $sql);
 	}
 
 	// }}}

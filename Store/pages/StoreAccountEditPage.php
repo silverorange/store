@@ -135,6 +135,14 @@ class StoreAccountEditPage extends StoreAccountPage
 	protected function createNewAccount()
 	{
 		$class = SwatDBClassMap::get('StoreAccount');
+
+		if ($this->app->hasModule('SiteMultipleInstanceModule'))
+			$class->instance = $this->app->instance->getInstance();
+
+		$class->instance = ($this->app->hasModule(
+			'SiteMultipleInstanceModule')) ?
+			$this->app->instance->getInstance() : null;
+
 		return new $class();
 	}
 
@@ -150,11 +158,17 @@ class StoreAccountEditPage extends StoreAccountPage
 		$account_id = ($this->app->session->isLoggedIn()) ?
 			$this->app->session->account->id : null;
 
-		$query = SwatDB::query($this->app->db, sprintf('select email
-			from Account where lower(email) = lower(%s) and id %s %s',
+		$sql = sprintf('select email from Account
+			where lower(email) = lower(%s) and id %s %s',
 			$this->app->db->quote($email->value, 'text'),
 			SwatDB::equalityOperator($account_id, true),
-			$this->app->db->quote($account_id, 'integer')));
+			$this->app->db->quote($account_id, 'integer'));
+
+		if ($this->app->hasModule('SiteMultipleInstanceModule'))
+			$sql.= sprintf(' and instance = %s', $this->app->db->quote(
+				$this->app->instance->getInstance()->id), 'integer');
+
+		$query = SwatDB::query($this->app->db, $sql);
 
 		if (count($query) > 0) {
 			$email_link = sprintf('<a href="account/forgotpassword?email=%s">',
