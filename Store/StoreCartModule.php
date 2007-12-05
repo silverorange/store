@@ -5,7 +5,6 @@ require_once 'SwatDB/SwatDBTransaction.php';
 require_once 'Site/SiteApplicationModule.php';
 
 require_once 'Site/SiteAccountSessionModule.php';
-require_once 'Site/SiteModuleDependency.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/StoreCart.php';
 require_once 'Store/StoreSavedCart.php';
@@ -121,16 +120,19 @@ class StoreCartModule extends SiteApplicationModule
 	/**
 	 * Gets the module features this module depends on
 	 *
-	 * The cart module depends on the SiteAccountSessionModule and SiteDatabaseModule
-	 * features.
+	 * The cart module depends on the SiteAccountSessionModule and
+	 * SiteDatabaseModule features.
 	 *
-	 * @return array an array of features this module depends on.
+	 * @return array an array of {@link SiteModuleDependency} objects defining
+	 *                        the features this module depends on.
 	 */
 	public function depends()
 	{
 		$depends = array();
-		$depends[] = new SiteModuleDependency('SiteAccountSessionModule');
-		$depends[] = new SiteModuleDependency('SiteDatabaseModule');
+		$depends[] = new SiteApplicationModuleDependency(
+			'SiteAccountSessionModule');
+
+		$depends[] = new SiteApplicationModuleDependency('SiteDatabaseModule');
 		return $depends;
 	}
 
