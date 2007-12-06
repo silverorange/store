@@ -10,9 +10,16 @@ create table Account (
 	password_tag varchar(255),
 	createdate timestamp,
 	last_login timestamp,
-	default_billing_address integer references AccountAddress(id)
-		on delete set null,
-	default_shipping_address integer references AccountAddress(id)
-		on delete set null,
+	default_billing_address integer,
+	default_shipping_address integer,
 	primary key (id)
 );
+
+alter table Account
+	add constraint Accountfk foreign key (default_billing_address)
+	references AccountAddress(id) match full on delete set null;
+
+alter table Account
+	add constraint Accountfk foreign key (default_shipping_address)
+	references AccountAddress(id) match full on delete set null;
+
