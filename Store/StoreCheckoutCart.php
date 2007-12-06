@@ -108,6 +108,8 @@ abstract class StoreCheckoutCart extends StoreCart
 	 */
 	protected function preSaveEntry(StoreCartEntry $entry)
 	{
+		parent::preSaveEntry($entry);
+
 		$entry->saved = false;
 	}
 

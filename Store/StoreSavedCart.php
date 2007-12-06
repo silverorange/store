@@ -45,10 +45,9 @@ class StoreSavedCart extends StoreCart
 	 */
 	protected function preSaveEntry(StoreCartEntry $entry)
 	{
-		$entry->saved = true;
+		parent::preSaveEntry($entry);
 
-		if ($this->app->hasModule('SiteMultipleInstanceModule'))
-			$entry->instance = $this->app->instance->getInstance();
+		$entry->saved = true;
 	}
 
 	// }}}
