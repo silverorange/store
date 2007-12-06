@@ -113,18 +113,18 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 
 	protected function validEmailAddress($email)
 	{
-		if ($this->app->session->isLoggedIn())
-			return;
+		$instance = ($this->app->hasModule('SiteMultipleInstanceModule')) ?
+			$this->app->instance->getInstance() : null;
 
-		$class_name = new SwatDBClassMap('SiteAccount');
+		$class_name = SwatDBClassMap::get('SiteAccount');
 		$account = new $class_name();
-		$account->setDatabase();
-		$account->loadWithEmail($email);
+		$account->setDatabase($this->app->db);
+		$account->loadWithEmail($email, $instance);
 
 		$account_id = ($this->app->session->isLoggedIn()) ?
 			$this->app->session->account->id : null;
 
-		if ($account === false || $account_id === $account->id)
+		if ($account !== false && $account_id !== $account->id)
 			return false;
 		else
 			return true;
