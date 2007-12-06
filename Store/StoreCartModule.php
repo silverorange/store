@@ -133,6 +133,11 @@ class StoreCartModule extends SiteApplicationModule
 			'SiteAccountSessionModule');
 
 		$depends[] = new SiteApplicationModuleDependency('SiteDatabaseModule');
+
+		if ($this->app->hasModule('SiteMultipleInstanceModule'))
+			$depends[] = new SiteApplicationModuleDependency(
+				'SiteMultipleInstanceModule');
+
 		return $depends;
 	}
 
@@ -434,7 +439,7 @@ class StoreCartModule extends SiteApplicationModule
 
 		if ($this->app->session->isLoggedIn()) {
 			$account_id = $this->app->session->getAccountId();
-			$where_clause = sprintf('account = %s or sessionid = %s',
+			$where_clause = sprintf('(account = %s or sessionid = %s)',
 				$this->app->db->quote($account_id, 'integer'),
 				$this->app->db->quote(
 					$this->app->session->getSessionId(), 'text'));
@@ -442,6 +447,13 @@ class StoreCartModule extends SiteApplicationModule
 			$where_clause = sprintf('sessionid = %s',
 				$this->app->db->quote(
 					$this->app->session->getSessionId(), 'text'));
+		}
+
+		if ($this->app->hasModule('SiteMultipleInstanceModule') &&
+			($where_clause !== null)) {
+			$where_clause.= sprintf(' and instance = %s',
+				$this->app->db->quote(
+					$this->app->instance->getInstance()->id, 'integer'));
 		}
 
 		return $where_clause;
