@@ -573,6 +573,8 @@ abstract class StoreCart extends SwatObject
 	 */
 	protected function preSaveEntry(StoreCartEntry $entry)
 	{
+		if ($this->app->hasModule('SiteMultipleInstanceModule'))
+			$entry->instance = $this->app->instance->getInstance();
 	}
 
 	// }}}
