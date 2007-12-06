@@ -119,12 +119,12 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 		$class_name = SwatDBClassMap::get('SiteAccount');
 		$account = new $class_name();
 		$account->setDatabase($this->app->db);
-		$account->loadWithEmail($email, $instance);
+		$found = $account->loadWithEmail($email, $instance);
 
 		$account_id = ($this->app->session->isLoggedIn()) ?
 			$this->app->session->account->id : null;
 
-		if ($account !== false && $account_id !== $account->id)
+		if ($found && $account_id !== $account->id)
 			return false;
 		else
 			return true;
