@@ -170,6 +170,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			if ($new_account) {
 				$account->createdate = new SwatDate();
 				$account->createdate->toUTC();
+
+				if ($this->app->hasModule('SiteMultipleInstanceModule'))
+					$account->instance = $this->app->instance->getInstance();
 			}
 
 			// save account
@@ -188,6 +191,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	protected function saveOrder()
 	{
 		$order = $this->app->session->order;
+
+		if ($this->app->hasModule('SiteMultipleInstanceModule'))
+			$order->instance = $this->app->instance->getInstance();
 
 		// if there was a previous order attempt, mark it as failed
 		if ($order->previous_attempt !== null) {
