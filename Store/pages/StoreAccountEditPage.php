@@ -9,12 +9,13 @@ require_once 'Site/pages/SiteAccountEditPage.php';
  */
 class StoreAccountEditPage extends SiteAccountEditPage
 {
-	// init phase
-	// {{{ protected function getUiXml()
+	// {{{ public function __construct()
 
-	protected function getUiXml()
+	public function __construct(SiteApplication $app, SiteLayout $layout = null)
 	{
-		return dirname(__FILE__).'/account-edit.xml';
+		parent::__construct($app, $layout);
+
+		$this->ui_xml = dirname(__FILE__).'/account-edit.xml';
 	}
 
 	// }}}
