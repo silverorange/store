@@ -231,6 +231,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			$class_name = SwatDBClassMap::get('StoreAccountAddress');
 			$account_address = new $class_name();
 			$account_address->copyFrom($order_address);
+			$account_address->createdate = new SwatDate();
+			$account_address->createdate->toUTC();
 			$account->addresses->add($account_address);
 		} else {
 			$account_address = $account->addresses->getByIndex(
