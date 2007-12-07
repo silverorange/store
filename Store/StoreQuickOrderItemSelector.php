@@ -141,6 +141,9 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	// }}}
 	// {{{ protected function getItems()
 
+	/**
+	 * @return StoreItemWrapper
+	 */
 	protected function getItems()
 	{
 		$sql = $this->getItemSql();
@@ -179,7 +182,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	// }}}
 	// {{{ protected function buildFormField()
 
-	protected function buildFormField($product)
+	protected function buildFormField(StoreProduct $product)
 	{
 		$this->form_field->title = $product->title;
 		$this->form_field->show_colon = false;
@@ -188,7 +191,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	// }}}
 	// {{{ protected function buildItemsFlydown()
 
-	protected function buildItemsFlydown($items)
+	protected function buildItemsFlydown(StoreItemWrapper $items)
 	{
 		$tree = new SwatTreeFlydownNode(null, 'root');
 
@@ -260,7 +263,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	// }}}
 	// {{{ protected function getItemNode()
 
-	protected function getItemNode($item, $show_item_group = false)
+	protected function getItemNode(StoreItem $item, $show_item_group = false)
 	{
 		$renderer = $this->getItemPriceCellRenderer($item);
 		$description = $item->getDescription($show_item_group);
@@ -275,7 +278,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	// }}}
 	// {{{ protected function getItemPriceCellRenderer()
 
-	protected function getItemPriceCellRenderer($item)
+	protected function getItemPriceCellRenderer(StoreItem $item)
 	{
 		$renderer = new StoreItemPriceCellRenderer();
 		$renderer->value = $item->getPrice();
