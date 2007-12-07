@@ -12,14 +12,28 @@ require_once 'Store/dataobjects/StoreAddress.php';
  */
 class StoreAccountAddress extends StoreAddress
 {
+	// {{{ public properties
+
+	/**
+	 * Creation date
+	 *
+	 * @var date
+	 */
+	public $createdate;
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
 	{
 		parent::init();
+
 		$this->table = 'AccountAddress';
+
 		$this->registerInternalProperty('account',
 			SwatDBClassMap::get('StoreAccount'));
+
+		$this->registerDateProperty('createdate');
 	}
 
 	// }}}

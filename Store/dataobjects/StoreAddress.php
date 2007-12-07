@@ -213,8 +213,6 @@ abstract class StoreAddress extends SwatDBDataObject
 
 		$this->registerInternalProperty('country',
 			SwatDBClassMap::get('StoreCountry'));
-
-		$this->registerDateProperty('createdate');
 	}
 
 	// }}}
