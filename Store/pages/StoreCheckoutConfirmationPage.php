@@ -151,8 +151,11 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			$account->setDefaultBillingAddress($address);
 
 	 		// shipping address is only added if it differs from billing address
-			if ($order->shipping_address->getAccountAddressId() !==
-				$order->billing_address->getAccountAddressId()) {
+			$shipping_id = $order->shipping_address->getAccountAddressId();
+			$billing_id = $order->billing_address->getAccountAddressId();
+
+			if (($shipping_id !== $billing_id) ||
+				($shipping_id === null && $billing_id === null)) {
 				$address = $this->addAddressToAccount($order->shipping_address);
 			}
 
