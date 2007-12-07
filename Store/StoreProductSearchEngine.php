@@ -136,18 +136,18 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	protected function getFromClause()
 	{
 		$clause = sprintf('from Product
-				left outer join ProductPrimaryCategoryView on
-					ProductPrimaryCategoryView.product = Product.id
-				left outer join ProductPrimaryImageView
-					on ProductPrimaryImageView.product = Product.id
-				left outer join AvailableProductView on
-					AvailableProductView.product = Product.id and
-					AvailableProductView.region = %s
-				inner join VisibleProductCache on
-					VisibleProductCache.product = Product.id and
-					VisibleProductCache.region = %s',
-				$this->app->db->quote($this->app->getRegion()->id, 'integer'),
-				$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+			left outer join ProductPrimaryCategoryView on
+				ProductPrimaryCategoryView.product = Product.id
+			left outer join ProductPrimaryImageView
+				on ProductPrimaryImageView.product = Product.id
+			left outer join AvailableProductView on
+				AvailableProductView.product = Product.id and
+				AvailableProductView.region = %s
+			inner join VisibleProductCache on
+				VisibleProductCache.product = Product.id and
+				VisibleProductCache.region = %s',
+			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
+			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
 		if ($this->fulltext_result !== null)
 			$clause.= ' '.
