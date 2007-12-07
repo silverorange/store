@@ -5,8 +5,8 @@ require_once 'Site/SiteDatabaseModule.php';
 require_once 'Site/SiteCookieModule.php';
 require_once 'Site/SiteConfigModule.php';
 require_once 'Site/SiteMessagesModule.php';
-require_once 'Site/SiteAccountSessionModule.php';
 require_once 'Store/Store.php';
+require_once 'Store/StoreAccountSessionModule.php';
 require_once 'Store/StoreMessage.php';
 require_once 'Store/StoreCartModule.php';
 require_once 'SwatDB/SwatDBClassMap.php';
@@ -106,7 +106,7 @@ abstract class StoreApplication extends SiteWebApplication
 	{
 		return array(
 			'database' => 'SiteDatabaseModule',
-			'session'  => 'SiteAccountSessionModule',
+			'session'  => 'StoreAccountSessionModule',
 			'cookie'   => 'SiteCookieModule',
 			'cart'     => 'StoreCartModule',
 			'messages' => 'SiteMessagesModule',
