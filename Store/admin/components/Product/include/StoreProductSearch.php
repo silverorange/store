@@ -182,19 +182,19 @@ class StoreProductSearch
 		} else {
 			$clause = new AdminSearchClause('category');
 			$clause->value = $category;
-			$clause->table = 'category_descendents';
-			$category_descendent_where = $clause->getClause($this->db, '');
+			$clause->table = 'category_descendants';
+			$category_descendant_where = $clause->getClause($this->db, '');
 
-			if (strlen($category_descendent_where)) {
+			if (strlen($category_descendant_where)) {
 				$where.= sprintf(' and Product.id in (select product from
 					CategoryProductBinding
-					inner join getCategoryDescendents(%s) as
-						category_descendents
-						on category_descendents.descendent =
+					inner join getCategoryDescendants(%s) as
+						category_descendants
+						on category_descendants.descendant =
 							CategoryProductBinding.category
 					where %s)',
 					$this->db->quote($category, 'integer'),
-					$category_descendent_where);
+					$category_descendant_where);
 			}
 		}
 
