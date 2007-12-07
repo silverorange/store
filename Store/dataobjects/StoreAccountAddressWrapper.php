@@ -18,10 +18,8 @@ class StoreAccountAddressWrapper extends SwatDBRecordsetWrapper
 	protected function init()
 	{
 		parent::init();
-
-		$this->row_wrapper_class = SwatDBClassMap::get('StoreAccountAddress');
-
 		$this->index_field = 'id';
+		$this->row_wrapper_class = SwatDBClassMap::get('StoreAccountAddress');
 	}
 
 	// }}}
