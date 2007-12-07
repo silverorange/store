@@ -1,6 +1,6 @@
 create or replace view CategoryCatalogView as
-	select CategoryDescendents.category, Product.catalog
+	select CategoryDescendants.category, Product.catalog
 	from Product 
 	inner join CategoryProductBinding on Product.id = CategoryProductBinding.product
-	inner join getCategoryDescendents(NULL) as CategoryDescendents on CategoryDescendents.descendent = CategoryProductBinding.category
-	group by CategoryDescendents.category, Product.catalog;
+	inner join getCategoryDescendants(NULL) as CategoryDescendants on CategoryDescendants.descendant = CategoryProductBinding.category
+	group by CategoryDescendants.category, Product.catalog;
