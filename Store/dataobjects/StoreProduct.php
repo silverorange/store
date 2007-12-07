@@ -100,6 +100,16 @@ class StoreProduct extends SwatDBDataObject
 	 */
 	protected $limit_by_region = true;
 
+	/**
+	 * Cache of availability of this product indexed by region id
+	 *
+	 * This is an array of boolean values.
+	 *
+	 * @var array
+	 * @see StoreProduct::isAvailableInRegion()
+	 */
+	protected $is_available = array();
+
 	// }}}
 	// {{{ public function setRegion()
 
@@ -217,6 +227,56 @@ class StoreProduct extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function isAvailableInRegion()
+
+	/**
+	 * Gets whether or not this product is available in a particular region
+	 *
+	 * A product is available in a region if it has one or more avaialable
+	 * items in the region.
+	 *
+	 * If you are calling this method frequently during a single request, it is
+	 * more efficient to include 'is_available' and 'region_id' in the initial
+	 * product query by left outer joining the AvailableProductView. Otherwise,
+	 * an additional query needs to be performed to get region availablilty.
+	 *
+	 * @param StoreRegion $region the region in which to check if this product
+	 *                             is available.
+	 *
+	 * @return boolean true if and only if this product is available in the
+	 *                  specified region.
+	 */
+	public function isAvailableInRegion(StoreRegion $region)
+	{
+		$available = '';
+
+		if (isset($this->is_available[$region->id])) {
+			$available = $this->is_available[$region->id];
+		} else {
+			$this->checkDB();
+
+			if ($this->id === null)
+				throw new StoreException('Product must have an id set before '.
+					'availability can be determined for this region.');
+
+			if ($region->id === null)
+				throw new StoreException('Region have an id set before '.
+					'availability can be determined for this product.');
+
+			$sql = sprintf('select count(item) from AvailableProductView
+				where AvailableProductView.product = %s
+					and AvailableProductView.region = %s',
+				$this->db->quote($this->id, 'integer'),
+				$this->db->quote($region->id, 'integer'));
+
+			$available = (SwatDB::queryOne($this->db, $sql) > 0);
+			$this->is_available[$region->id] = $available;
+		}
+
+		return $available;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
@@ -235,6 +295,37 @@ class StoreProduct extends SwatDBDataObject
 
 		$this->table = 'Product';
 		$this->id_field = 'integer:id';
+	}
+
+	// }}}
+	// {{{ protected function initFromRow()
+
+	/**
+	 * Initializes this product from a row object
+	 *
+	 * If the row object has a 'region_id' field and an 'is_available' field,
+	 * the 'is_available' field is cached for subsequent calls to the
+	 * {@link StoreProduct::isAvailableInRegion()} method.
+	 *
+	 * @param mixed $row an MDB2 result row.
+	 */
+	protected function initFromRow($row)
+	{
+		parent::initFromRow($row);
+
+		if (is_object($row))
+			$row = get_object_vars($row);
+
+		if (isset($row['region_id'])) {
+			if (isset($row['price']))
+				$this->price[$row['region_id']] = $row['price'];
+
+			if (isset($row['enabled']))
+				$this->is_enabled[$row['region_id']] = $row['enabled'];
+
+			if (isset($row['is_available']))
+				$this->is_available[$row['region_id']] = $row['is_available'];
+		}
 	}
 
 	// }}}
