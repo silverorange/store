@@ -146,12 +146,17 @@ class StoreProduct extends SwatDBDataObject
 	 * @param integer $offset optional. The offset of this range. If not
 	 *                         specified, defaults to 0.
 	 *
-	 * @return StoreProductWrapper Related products to the current product
+	 * @return StoreProductWrapper related products to the current product.
 	 */
 	public function getVisibleRelatedProducts($limit = null, $offset = null)
 	{
 		$sql = 'select Product.*, ProductPrimaryCategoryView.primary_category,
-			getCategoryPath(ProductPrimaryCategoryView.primary_category) as path
+			getCategoryPath(ProductPrimaryCategoryView.primary_category) as
+				path,
+			case when AvailableProductView.product is null then false
+				else true
+				end as is_available,
+			VisibleProductCache.region as region_id
 			from Product
 				inner join VisibleProductCache
 					on VisibleProductCache.product = Product.id
@@ -159,19 +164,26 @@ class StoreProduct extends SwatDBDataObject
 				inner join ProductRelatedProductBinding
 					on Product.id = ProductRelatedProductBinding.related_product
 						and ProductRelatedProductBinding.source_product = %s
+				left outer join AvailableProductView on
+					AvailableProductView.product = Product.id and
+					AvailableProductView.region = %s
 				left outer join ProductPrimaryCategoryView
 					on Product.id = ProductPrimaryCategoryView.product
 			order by ProductRelatedProductBinding.displayorder asc';
 
 		$sql = sprintf($sql,
 			$this->db->quote($this->region->id, 'integer'),
-			$this->db->quote($this->id, 'integer'));
+			$this->db->quote($this->id, 'integer'),
+			$this->db->quote($this->region->id, 'integer'));
 
 		if ($limit !== null)
 			$this->db->setLimit($limit, $offset);
 
-		return SwatDB::query($this->db, $sql,
+		$related_products = SwatDB::query($this->db, $sql,
 			SwatDBClassMap::get('StoreProductWrapper'));
+
+		$related_products->setRegion($this->region);
+		return $related_products;
 	}
 
 	// }}}
@@ -195,13 +207,18 @@ class StoreProduct extends SwatDBDataObject
 	 * @param integer $offset optional. The offset of this range. If not
 	 *                         specified, defaults to 0.
 	 *
-	 * @return StoreProductWrapper Popular products of the current product
+	 * @return StoreProductWrapper popular products of the current product.
 	 */
 	public function getVisiblePopularProducts($threshold = 2,
 		$limit = null, $offset = null)
 	{
 		$sql = 'select Product.*, ProductPrimaryCategoryView.primary_category,
-			getCategoryPath(ProductPrimaryCategoryView.primary_category) as path
+			getCategoryPath(ProductPrimaryCategoryView.primary_category) as
+				path,
+			case when AvailableProductView.product is null then false
+				else true
+				end as is_available,
+			VisibleProductCache.region as region_id
 			from Product
 				inner join VisibleProductCache
 					on VisibleProductCache.product = Product.id
@@ -209,6 +226,9 @@ class StoreProduct extends SwatDBDataObject
 				inner join ProductPopularProductBinding
 					on Product.id = ProductPopularProductBinding.related_product
 						and ProductPopularProductBinding.source_product = %s
+				left outer join AvailableProductView on
+					AvailableProductView.product = Product.id and
+					AvailableProductView.region = %s
 				left outer join ProductPrimaryCategoryView
 					on Product.id = ProductPrimaryCategoryView.product
 			where ProductPopularProductBinding.order_count > %s
@@ -217,13 +237,17 @@ class StoreProduct extends SwatDBDataObject
 		$sql = sprintf($sql,
 			$this->db->quote($this->region->id, 'integer'),
 			$this->db->quote($this->id, 'integer'),
+			$this->db->quote($this->region->id, 'integer'),
 			$this->db->quote($threshold, 'integer'));
 
 		if ($limit !== null)
 			$this->db->setLimit($limit, $offset);
 
-		return SwatDB::query($this->db, $sql,
+		$popular_products = SwatDB::query($this->db, $sql,
 			SwatDBClassMap::get('StoreProductWrapper'));
+
+		$popular_products->setRegion($this->region);
+		return $popular_products;
 	}
 
 	// }}}
