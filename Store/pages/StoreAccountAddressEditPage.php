@@ -175,6 +175,11 @@ class StoreAccountAddressEditPage extends StoreAccountPage
 
 		$address->postal_code = $this->ui->getWidget('postal_code')->value;
 		$address->country = $this->ui->getWidget('country')->value;
+
+		if ($this->id === null) {
+			$address->createdate = new SwatDate();
+			$address->createdate->toUTC();
+		}
 	}
 
 	// }}}
