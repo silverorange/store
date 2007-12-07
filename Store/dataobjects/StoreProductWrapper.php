@@ -10,6 +10,22 @@ require_once 'Store/dataobjects/StoreProduct.php';
  */
 class StoreProductWrapper extends SwatDBRecordsetWrapper
 {
+	// {{{ public function setRegion()
+
+	/**
+	 * Sets the region for all products in this record set
+	 *
+	 * @param StoreRegion $region the region to use.
+	 * @param boolean $limiting whether or not to not load this product if it is
+	 *                           not available in the given region.
+	 */
+	public function setRegion(StoreRegion $region, $limiting = true)
+	{
+		foreach ($this as $product)
+			$product->setRegion($region, $limiting);
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
