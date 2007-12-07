@@ -82,6 +82,8 @@ class StoreProductSearchEngine extends SiteSearchEngine
 		if (count($products) > 0)
 			$this->loadSubDataObjects($products);
 
+		$products->setRegion($this->app->getRegion());
+
 		return $products;
 	}
 
