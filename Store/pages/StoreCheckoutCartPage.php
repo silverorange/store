@@ -31,6 +31,18 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 	// }}}
 
 	// init phase
+	// {{{ public function init()
+
+	public function init()
+	{
+		parent::init();
+
+		// set table store for widget validation
+		$view = $this->ui->getWidget('cart_view');
+		$view->model = $this->getTableStore();
+	}
+
+	// }}}
 	// {{{ protected function getProgressDependencies()
 
 	protected function getProgressDependencies()
