@@ -35,7 +35,7 @@
 			</widget>
 		</widget>
 		<widget class="SwatFormField" id="card_expiry_field">
-			<property name="title" translatable="yes">Expiry Date</property>
+			<property name="title" translatable="yes">Expiration Date</property>
 			<widget class="StoreCardExpiryEntry" id="card_expiry">
 				<property name="required" type="boolean">true</property>
 			</widget>
