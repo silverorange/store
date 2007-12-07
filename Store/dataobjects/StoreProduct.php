@@ -298,7 +298,7 @@ class StoreProduct extends SwatDBDataObject
 				throw new StoreException('Product must have an id set before '.
 					'availability can be determined for this region.');
 
-			$sql = sprintf('select count(item) from AvailableProductView
+			$sql = sprintf('select count(product) from AvailableProductView
 				where AvailableProductView.product = %s
 					and AvailableProductView.region = %s',
 				$this->db->quote($this->id, 'integer'),
