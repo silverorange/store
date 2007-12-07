@@ -10,5 +10,6 @@ create table Item (
 );
 
 CREATE INDEX Item_sku_index ON Item(sku);
+CREATE INDEX Item_status_index ON Item(status);
 CREATE INDEX Item_product_index ON Item(product);
 CREATE INDEX Item_item_group_index ON Item(item_group);
