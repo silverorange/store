@@ -120,7 +120,12 @@ class StoreProductSearchEngine extends SiteSearchEngine
 		$clause = 'select Product.id, Product.title, Product.shortname,
 			Product.bodytext, ProductPrimaryCategoryView.primary_category,
 			ProductPrimaryImageView.image as primary_image,
-			getCategoryPath(ProductPrimaryCategoryView.primary_category) as path';
+			getCategoryPath(ProductPrimaryCategoryView.primary_category) as
+				path,
+			case when AvailableProductView.product is null then false
+				else true
+				end as is_available,
+			VisibleProductCache.region as region_id';
 
 		return $clause;
 	}
@@ -135,9 +140,13 @@ class StoreProductSearchEngine extends SiteSearchEngine
 					ProductPrimaryCategoryView.product = Product.id
 				left outer join ProductPrimaryImageView
 					on ProductPrimaryImageView.product = Product.id
+				left outer join AvailableProductView on
+					AvailableProductView.product = Product.id and
+					AvailableProductView.region = %s
 				inner join VisibleProductCache on
 					VisibleProductCache.product = Product.id and
 					VisibleProductCache.region = %s',
+				$this->app->db->quote($this->app->getRegion()->id, 'integer'),
 				$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
 		if ($this->fulltext_result !== null)
