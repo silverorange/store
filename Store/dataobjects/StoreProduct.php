@@ -240,14 +240,29 @@ class StoreProduct extends SwatDBDataObject
 	 * product query by left outer joining the AvailableProductView. Otherwise,
 	 * an additional query needs to be performed to get region availablilty.
 	 *
-	 * @param StoreRegion $region the region in which to check if this product
-	 *                             is available.
+	 * @param StoreRegion $region optional. The region in which to check if this
+	 *                             product is available. If not specified, the
+	 *                             last region specified by the
+	 *                             {@link StoreProduct::setRegion()} method is
+	 *                             used.
 	 *
 	 * @return boolean true if and only if this product is available in the
 	 *                  specified region.
 	 */
-	public function isAvailableInRegion(StoreRegion $region)
+	public function isAvailableInRegion(StoreRegion $region = null)
 	{
+		if ($region === null) {
+			$region = $this->region;
+		}
+
+		if ($region === null)
+			throw new SwatException('Region must be specified or region must '.
+				'be set on this product before availability is known.');
+
+		if ($region->id === null)
+			throw new StoreException('Region have an id set before '.
+				'availability can be determined for this product.');
+
 		$available = '';
 
 		if (isset($this->is_available[$region->id])) {
@@ -258,10 +273,6 @@ class StoreProduct extends SwatDBDataObject
 			if ($this->id === null)
 				throw new StoreException('Product must have an id set before '.
 					'availability can be determined for this region.');
-
-			if ($region->id === null)
-				throw new StoreException('Region have an id set before '.
-					'availability can be determined for this product.');
 
 			$sql = sprintf('select count(item) from AvailableProductView
 				where AvailableProductView.product = %s
