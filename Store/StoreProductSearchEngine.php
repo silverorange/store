@@ -180,7 +180,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 		if ($this->category instanceof StoreCategory) {
 			if ($this->include_category_descendants)
 				$clause.= sprintf(' and CategoryProductBinding.category in (
-					select descendent from getCategoryDescendents(%s))',
+					select descendant from getCategoryDescendants(%s))',
 					$this->app->db->quote($this->category->id, 'integer'));
 			else
 				$clause.= sprintf(' and CategoryProductBinding.category = %s',

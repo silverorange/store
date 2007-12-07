@@ -156,11 +156,11 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 					inner join Product on Product.id = Item.product
 					inner join CategoryProductBinding on 
 						CategoryProductBinding.product = Product.id
-					inner join getCategoryDescendents(null) as
-						category_descendents on
-						category_descendents.descendent =
+					inner join getCategoryDescendants(null) as
+						category_descendants on
+						category_descendants.descendant =
 							CategoryProductBinding.category
-				where category_descendents.category in (%s)
+				where category_descendants.category in (%s)
 					and Product.catalog in (%s)';
 
 		$sql = sprintf($sql,

@@ -115,11 +115,11 @@ class StoreCategoryFeaturedProducts extends AdminIndex
 				from Product
 				inner join CategoryProductBinding on
 					Product.id = CategoryProductBinding.product
-				inner join getCategoryDescendents(%s) as
-					category_descendents on
-					category_descendents.descendent =
+				inner join getCategoryDescendants(%s) as
+					category_descendants on
+					category_descendants.descendant =
 						CategoryProductBinding.category
-				where category_descendents.category = %s
+				where category_descendants.category = %s
 				order by %s';
 
 		$category_flydown = $this->ui->getWidget('category_flydown');
