@@ -130,6 +130,32 @@ class StoreQuantityDiscount extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function getDisplayPrice()
+
+	/**
+	 * Gets the displayable price of this quantity discount including any
+	 * sale discounts
+	 *
+	 * @param StoreRegion $region optional. Region for which to get price. If
+	 *                             no region is specified, the region set using
+	 *                             {@link StoreItem::setRegion()} is used.
+	 *
+	 * @return double the displayable price of this quanitity discount in the
+	 *                given region or null if this quantity discount has no
+	 *                price in the given region.
+	 */
+	public function getDisplayPrice($region = null)
+	{
+		$price = $this->getPrice($region);
+
+		$sale = $this->item->sale_discount;
+		if ($sale !== null)
+			$price -= ($price * $sale->discount_percentage);
+
+		return $price;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()

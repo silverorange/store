@@ -292,6 +292,29 @@ class StoreItem extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function getDisplayPrice()
+
+	/**
+	 * Gets the displayable price of this item including any sale discounts
+	 *
+	 * @param StoreRegion $region optional. Region for which to get price. If
+	 *                             no region is specified, the region set using
+	 *                             {@link StoreItem::setRegion()} is used.
+	 *
+	 * @return double the displayable price of this item in the given region or
+	 *                 null if this item has no price in the given region.
+	 */
+	public function getDisplayPrice($region = null)
+	{
+		$price = $this->getPrice($region);
+
+		if ($this->sale_discount !== null)
+			$price -= ($price * $this->sale_discount->discount_percentage);
+
+		return $price;
+	}
+
+	// }}}
 	// {{{ public function hasAvailableStatus()
 
 	/**
