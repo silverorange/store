@@ -135,7 +135,6 @@ class StoreCartEntry extends SwatDBDataObject
 				$price = $quantity_discount->getPrice();
 		}
 
-
 		$sale = $this->item->sale_discount;
 		if ($sale !== null)
 			$price -= ($price * $sale->discount_percentage);
