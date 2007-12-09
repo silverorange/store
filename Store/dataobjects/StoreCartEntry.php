@@ -35,7 +35,7 @@ class StoreCartEntry extends SwatDBDataObject
 	 *
 	 * The unique identifier is not always present on every cart entry.
 	 *
-	 * @var integer 
+	 * @var integer
 	 */
 	public $id;
 
@@ -134,6 +134,11 @@ class StoreCartEntry extends SwatDBDataObject
 			if ($this->getQuantity() >= $quantity_discount->quantity)
 				$price = $quantity_discount->getPrice();
 		}
+
+
+		$sale = $this->item->sale_discount;
+		if ($sale !== null)
+			$price -= ($price * $sale->discount_percentage);
 
 		return $price;
 	}
@@ -278,6 +283,13 @@ class StoreCartEntry extends SwatDBDataObject
 		$order_item->product = $this->item->product->id;
 		$order_item->product_title = $this->item->product->title;
 		$order_item->quick_order = $this->quick_order;
+
+		$order_item->discount = $this->getDiscount();
+		$order_item->discount_extension =
+			$this->getDiscountExtension();
+
+		if ($this->item->sale_discount !== null)
+			$order_item->sale_discount = $this->item->sale_discount->id;
 
 		// set database if it exists
 		if ($this->db !== null)

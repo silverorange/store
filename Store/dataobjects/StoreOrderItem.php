@@ -99,6 +99,27 @@ class StoreOrderItem extends SwatDBDataObject
 	 */
 	public $quick_order;
 
+	/**
+	 * Sale discount identifier
+	 *
+	 * @var integer
+	 */
+	public $sale_discount;
+
+	/**
+	 * Discount off normal price
+	 *
+	 * @float
+	 */
+	public $discount;
+
+	/**
+	 * Discount extension
+	 *
+	 * @float
+	 */
+	public $discount_extension;
+
 	// }}}
 	// {{{ protected properties
 
