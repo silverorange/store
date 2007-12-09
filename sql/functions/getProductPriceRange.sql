@@ -15,11 +15,14 @@ CREATE OR REPLACE FUNCTION getProductPriceRange(INTEGER) RETURNS SETOF type_prod
 		returned_row type_product_price_range%ROWTYPE;
 	BEGIN
 	FOR returned_row IN
-		SELECT Product.id AS product, param_region AS region, min(price) AS min_price, max(price) AS max_price,
+		SELECT Product.id AS product, param_region AS region,
+				min(price - (price * coalesce(SaleDiscount.discount_percentage, 0))) AS min_price,
+				max(price - (price * coalesce(SaleDiscount.discount_percentage, 0))) AS max_price,
 			count(Item.id) AS num_items
 			FROM ItemRegionBinding
 			inner join Item ON ItemRegionBinding.item = Item.id AND ItemRegionBinding.region = param_region
 			inner join Product ON Item.product = Product.id
+			left outer join SaleDiscount on SaleDiscount.id = Item.sale_discount
 		GROUP BY product.id
 	LOOP
 		RETURN NEXT returned_row;
