@@ -6,6 +6,7 @@ create table Item (
 	description varchar(255),
 	status int not null default 0,
 	item_group int references ItemGroup(id) on delete set null,
+	sale_discount int references SaleDiscount(id) on delete set null,
 	primary key (id)
 );
 

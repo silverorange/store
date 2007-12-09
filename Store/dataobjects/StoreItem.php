@@ -6,6 +6,7 @@ require_once 'Store/dataobjects/StoreItemRegionBindingWrapper.php';
 require_once 'Store/dataobjects/StoreItemGroup.php';
 require_once 'Store/dataobjects/StoreProduct.php';
 require_once 'Store/dataobjects/StoreRegion.php';
+require_once 'Store/dataobjects/StoreSaleDiscount.php';
 require_once 'Store/StoreItemStatus.php';
 require_once 'Store/StoreItemStatusList.php';
 
@@ -441,6 +442,9 @@ class StoreItem extends SwatDBDataObject
 		$this->registerInternalProperty('item_group',
 			SwatDBClassMap::get('StoreItemGroup'));
 
+		$this->registerInternalProperty('sale_discount',
+			SwatDBClassMap::get('StoreSaleDiscount'));
+
 		$this->table = 'Item';
 		$this->id_field = 'integer:id';
 	}
@@ -524,7 +528,7 @@ class StoreItem extends SwatDBDataObject
 		$wrapper = SwatDBClassMap::get('StoreQuantityDiscountWrapper');
 
 		if ($this->region === null) {
-			$sql = sprintf('select * from QuantityDiscount 
+			$sql = sprintf('select * from QuantityDiscount
 				where QuantityDiscount.item = %s
 				order by QuantityDiscount.quantity asc',
 				$this->db->quote($this->id, 'integer'));
