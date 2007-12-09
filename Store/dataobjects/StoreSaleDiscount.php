@@ -29,6 +29,13 @@ class StoreSaleDiscount extends SwatDBDataObject
 	public $shortname;
 
 	/**
+	 * Discount percentage
+	 *
+	 * @var float
+	 */
+	public $discount_percentage;
+
+	/**
 	 * A title for describing this sale
 	 *
 	 * @var string
