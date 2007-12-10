@@ -577,7 +577,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		$order->total = $cart->getTotal($order->billing_address,
 			$order->shipping_address);
 
-		$order->ad = $this->app->app->analytics->getAd();
+		$order->ad = $this->app->analytics->getAd();
 	}
 
 	// }}}
