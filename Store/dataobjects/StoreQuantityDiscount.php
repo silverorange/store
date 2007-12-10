@@ -14,7 +14,7 @@ require_once 'Store/dataobjects/StoreRegion.php';
  * - 5  items at $4.00 each
  * - 10 items at $3.00 each
  *
- * @package   Store 
+ * @package   Store
  * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
