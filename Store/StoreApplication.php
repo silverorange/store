@@ -6,6 +6,7 @@ require_once 'Site/SiteCookieModule.php';
 require_once 'Site/SiteConfigModule.php';
 require_once 'Site/SiteMessagesModule.php';
 require_once 'Site/SiteAccountSessionModule.php';
+require_once 'Site/SiteAnalyticsModule.php';
 require_once 'Store/Store.php';
 require_once 'Store/StoreMessage.php';
 require_once 'Store/StoreCartModule.php';
