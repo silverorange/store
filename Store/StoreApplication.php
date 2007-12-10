@@ -129,9 +129,6 @@ abstract class StoreApplication extends SiteWebApplication
 		$this->session->registerDataObject('transaction',
 			SwatDBClassMap::get('StorePaymentTransaction'));
 
-//		$this->session->registerDataObject('ad',
-//			SwatDBClassMap::get('StoreAd'));
-
 		parent::initModules();
 
 		// set up convenience references
