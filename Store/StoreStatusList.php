@@ -2,6 +2,7 @@
 
 require_once 'Swat/SwatObject.php';
 require_once 'Store/StoreStatus.php';
+require_once 'Store/exceptions/StoreException.php';
 
 /**
  * Abstract base class for a list of {@link StoreStatus} objects
@@ -58,16 +59,18 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
 	 *
 	 * @param integer $id the id of the status to get.
 	 *
-	 * @return StoreStatus the status with the given id or null if no such
-	 *                      status exists.
+	 * @return StoreStatus the status with the given id.
+	 *
+	 * @throws StoreException if no status with the specified id exists.
 	 */
 	public function getById($id)
 	{
-		$status = null;
-		if (array_key_exists($id, $this->statuses_by_id))
-			$status = $this->statuses_by_id[$id];
+		if (!array_key_exists($id, $this->statuses_by_id)) {
+			throw new StoreException(sprintf(
+				"Status with id '%s' does not exist.", $id));
+		}
 
-		return $status;
+		return $this->statuses_by_id[$id];
 	}
 
 	// }}}
