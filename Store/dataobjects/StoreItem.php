@@ -428,7 +428,7 @@ class StoreItem extends SwatDBDataObject
 	// }}}
 	// {{{ public function getStatus()
 
-	/** 
+	/**
 	 * Gets the status of this item
 	 *
 	 * @return StoreItemStatus the status of this item or null if this item's
