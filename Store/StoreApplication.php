@@ -10,7 +10,6 @@ require_once 'Store/Store.php';
 require_once 'Store/StoreMessage.php';
 require_once 'Store/StoreCartModule.php';
 require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Store/dataobjects/StoreAdWrapper.php';
 require_once 'Store/dataobjects/StoreRegion.php';
 
 /**
@@ -111,6 +110,7 @@ abstract class StoreApplication extends SiteWebApplication
 			'cart'     => 'StoreCartModule',
 			'messages' => 'SiteMessagesModule',
 			'config'   => 'SiteConfigModule',
+			'analytics' => 'SiteAnalyticsModule',
 		);
 	}
 
@@ -128,8 +128,8 @@ abstract class StoreApplication extends SiteWebApplication
 		$this->session->registerDataObject('transaction',
 			SwatDBClassMap::get('StorePaymentTransaction'));
 
-		$this->session->registerDataObject('ad',
-			SwatDBClassMap::get('StoreAd'));
+//		$this->session->registerDataObject('ad',
+//			SwatDBClassMap::get('StoreAd'));
 
 		parent::initModules();
 
@@ -161,72 +161,6 @@ abstract class StoreApplication extends SiteWebApplication
 	}
 
 	// }}}
-	// {{{ protected function parseAd()
-
-	/**
-	 * Parses an ad shortname into an ad object and stores a row in the
-	 * ad referral table
-	 *
-	 * After the referral is logged, the ad is removed from the URL through
-	 * a relocate.
-	 *
-	 * @param string $ad_shortname the shortname of the ad.
-	 */
-	protected function parseAd($ad_shortname)
-	{
-		$sql = sprintf('select id, title, shortname from Ad
-			where shortname = %s',
-			$this->db->quote($ad_shortname, 'text'));
-
-		$wrapper = SwatDBClassMap::get('StoreAdWrapper');
-		$ad = SwatDB::query($this->db, $sql, $wrapper)->getFirst();
-
-		if ($ad !== null) {
-			if (!$this->session->isActive())
-				$this->session->activate();
-
-			$this->session->ad = $ad;
-
-			/*
-			 * Do to mass mailings, large numbers of people follow links with
-			 * ads which can lead to database deadlock when inserting the ad
-			 * referrer. Here we make five attempts before giving up and 
-			 * throwing the exception.
-			 */
-			$attempt = 0;
-			while (true) {
-				try {
-					$attempt++;
-					$this->insertAdReferrer($ad);
-					break;
-				} catch (SwatDBException $e) {
-					if ($attempt > 5)
-						throw $e;
-				}
-			}
-
-			$regexp = sprintf('/&?\??ad=%s/u',
-				preg_quote($ad_shortname, '/'));
-
-			$uri = preg_replace($regexp, '', $_SERVER['REQUEST_URI']);
-			$this->relocate($uri);
-		}
-	}
-
-	// }}}
-	// {{{ private function insertAdReferrer()
-
-	private function insertAdReferrer($ad)
-	{
-		$now = new SwatDate();
-		$now->toUTC();
-
-		SwatDB::insertRow($this->db, 'AdReferrer',
-			array('date:createdate', 'integer:ad'),
-			array('createdate' => $now->getDate(), 'ad' => $ad->id));
-	}
-
-	// }}}
 	// {{{ protected function loadPage()
 
 	protected function loadPage()
@@ -236,10 +170,6 @@ abstract class StoreApplication extends SiteWebApplication
 
 		if ($this->locale !== null)
 			setlocale(LC_ALL, $this->locale.'.UTF-8');
-
-		$ad_shortname = self::initVar('ad');
-		if ($ad_shortname !== null)
-			$this->parseAd($ad_shortname);
 
 		parent::loadPage();
 	}
