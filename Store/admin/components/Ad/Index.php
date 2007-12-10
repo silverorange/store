@@ -1,45 +1,26 @@
 <?php
 
-require_once 'Admin/pages/AdminIndex.php';
 require_once 'SwatDB/SwatDB.php';
-
-require_once 'include/StoreConversionRateCellRenderer.php';
+require_once 'Site/admin/components/Ad/Index.php';
+require_once 'Store/admin/components/Ad/include/StoreConversionRateCellRenderer.php';
 
 /**
  * Report page for Ad
+ *
+ * Store also displays order conversion rate.
  *
  * @package   Store
  * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreAdIndex extends AdminIndex
+class StoreAdIndex extends SiteAdIndex
 {
-	// init phase
-	// {{{ protected function initInternal()
+	// {{{ public function __construct()
 
-	protected function initInternal()
+	public function __construct(SiteApplication $app, SiteLayout $layout = null)
 	{
-		parent::initInternal();
-
-		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML(dirname(__FILE__).'/index.xml');
-	}
-
-	// }}}
-
-	// process phase
-	// {{{ protected function processActions()
-
-	protected function processActions(SwatTableView $view, SwatActions $actions)
-	{
-		$num = count($view->getSelection());
-
-		switch ($actions->selected->id) {
-		case 'delete':
-			$this->app->replacePage('Ad/Delete');
-			$this->app->getPage()->setItems($view->getSelection());
-			break;
-		}
+		parent::__construct($app, $layout);
+		$this->ui_xml = dirname(__FILE__).'/index.xml';
 	}
 
 	// }}}
