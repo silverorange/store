@@ -278,7 +278,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	protected function cleanupSession()
 	{
 		// unset session variable flags
-		unset($this->app->session->ad);
+		$this->app->analytics->clearAd();
 		unset($this->app->session->save_account_payment_method);
 	}
 
@@ -577,8 +577,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		$order->total = $cart->getTotal($order->billing_address,
 			$order->shipping_address);
 
-		if (isset($this->app->session->ad))
-			$order->ad = $this->app->session->ad;
+		$order->ad = $this->app->app->analytics->getAd();
 	}
 
 	// }}}
@@ -620,8 +619,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		$order->total = $invoice->getTotal($order->billing_address,
 			$order->shipping_address, $this->app->getRegion());
 
-		if (isset($this->app->session->ad))
-			$order->ad = $this->app->session->ad;
+		$order->ad = $this->app->app->analytics->getAd();
 	}
 
 	// }}}
