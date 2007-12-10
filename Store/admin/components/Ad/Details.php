@@ -1,35 +1,24 @@
 <?php
 
-require_once 'Admin/pages/AdminIndex.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatMoneyCellRenderer.php';
 require_once 'Swat/SwatNumericCellRenderer.php';
-require_once 'Store/dataobjects/StoreAd.php';
+require_once 'Site/admin/components/Ad/Details.php';
 require_once 'Store/dataobjects/StoreRegionWrapper.php';
 
 
 /**
  * Report page for Ads
  *
+ * Store also reports order conversion rates.
+ *
  * @package   Store
  * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreAdDetails extends AdminIndex
+class StoreAdDetails extends SiteAdDetails
 {
-	// {{{ protected properties
-
-	/**
-	 * @var StoreAd
-	 */
-	protected $ad;
-
-	protected $ui_xml = 'Store/admin/components/Ad/details.xml';
-
-	protected $periods;
-
-	// }}}}
 	// {{{ private properties
 
 	/**
@@ -40,81 +29,17 @@ class StoreAdDetails extends AdminIndex
 	private $regions = null;
 
 	// }}}
+	// {{{ public function __construct()
 
-	// init phase
-	// {{{ protected function initInternal()
-
-	protected function initInternal()
+	public function __construct(SiteApplication $app, SiteLayout $layout = null)
 	{
-		parent::initInternal();
-
-		$id = SiteApplication::initVar('id');
-		if (!$this->initAd($id)) {
-			throw new AdminNotFoundException(
-				sprintf('Ad with an id of ‘%s’ not found.', $id));
-		}
-
-		$this->ui->loadFromXML($this->ui_xml);
-		$this->ui->getWidget('index_frame')->subtitle = $this->ad->title;
-
-		$this->periods = array(
-			'day'      => Store::_('Day'),
-			'week'     => Store::_('Week'),
-			'two_week' => Store::_('2 Weeks'),
-			'month'    => Store::_('Month'),
-			'total'    => Store::_('Total'),
-		);
-	}
-
-	// }}}
-	// {{{ protected function initAd()
-
-	/**
-	 * @var integer $id
-	 *
-	 * @return boolean
-	 */
-	protected function initAd($id)
-	{
-		$class_name = SwatDBClassMap::get('StoreAd');
-		$this->ad = new $class_name();
-		$this->ad->setDatabase($this->app->db);
-		return $this->ad->load($id);
+		parent::__construct($app, $layout);
+		$this->ui_xml = 'Store/admin/components/Ad/details.xml';
 	}
 
 	// }}}
 
 	// build phase
-	// {{{ protected function buildInternal()
-
-	protected function buildInternal()
-	{
-		parent::buildInternal();
-
-		$help_note = $this->ui->getWidget('ad_tag_help');
-		$help_note->title = sprintf(Store::_(
-			'To track this ad, append the variable “ad=%s” to incoming links.'),
-			SwatString::minimizeEntities($this->ad->shortname));
-
-		ob_start();
-		echo Store::_('Examples:'), '<ul>';
-
-		$base_href = $this->app->getFrontendBaseHref();
-		printf(
-			'<li>%1$s<strong>?ad=%2$s</strong></li>'.
-			'<li>%1$s?othervar=otherval<strong>&ad=%2$s</strong></li>'.
-			'<li>%1$sus/en/category/product<strong>?ad=%2$s</strong></li>',
-			SwatString::minimizeEntities($base_href),
-			SwatString::minimizeEntities($this->ad->shortname));
-
-		echo '</ul>';
-		$help_note->content = ob_get_clean();
-		$help_note->content_type = 'text/xml';
-
-		$this->buildNavBar();
-	}
-
-	// }}}
 	// {{{ protected function getTableModel()
 
 	protected function getTableModel(SwatView $view)
@@ -122,8 +47,8 @@ class StoreAdDetails extends AdminIndex
 		switch ($view->id) {
 		case 'orders_view' :
 			return $this->getOrdersTableModel();
-		case 'referrer_period_view' :
-			return $this->getRefererPeriodTableModel();
+		default:
+			return parent::getTableModel($view);
 		}
 	}
 
@@ -160,28 +85,6 @@ class StoreAdDetails extends AdminIndex
 
 		foreach ($periods as $period)
 			$store->add($period);
-
-		return $store;
-	}
-
-	// }}}
-	// {{{ protected function getRefererPeriodTableModel()
-
-	protected function getRefererPeriodTableModel()
-	{
-		$sql = sprintf('select * from AdReferrerByPeriodView where ad = %s',
-			$this->app->db->quote($this->ad->id, 'integer'));
-
-		$row = SwatDB::queryRow($this->app->db, $sql);
-
-		$store = new SwatTableStore();
-
-		foreach ($this->periods as $key => $val) {
-			$myvar->period = $val;
-			$myvar->referrers = intval($row->$key);
-
-			$store->add(clone $myvar);
-		}
 
 		return $store;
 	}
@@ -232,14 +135,6 @@ class StoreAdDetails extends AdminIndex
 		$view->appendColumn($orders_column);
 
 	}
-	// }}}
-	// {{{ private function buildNavBar()
-
-	private function buildNavBar()
-	{
-		$this->navbar->addEntry(new SwatNavBarEntry($this->ad->title));
-	}
-
 	// }}}
 	// {{{ private function queryRegions()
 
