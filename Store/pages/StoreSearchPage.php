@@ -91,7 +91,7 @@ class StoreSearchPage extends StoreSearchResultsPage
 	}
 
 	// }}}
-	
+
 	// build phase
 	// {{{ public function build()
 
