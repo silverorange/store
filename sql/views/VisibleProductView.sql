@@ -16,5 +16,5 @@ create or replace view VisibleProductView as
 				CatalogRegionBinding.region = ItemRegionBinding.region
 			inner join CatalogPrimaryProductView on Product.id = CatalogPrimaryProductView.product and
 				Product.catalog = CatalogPrimaryProductView.catalog
-		where CatalogRegionBinding.available = true and ItemRegionBinding.enabled = true
+		where ItemRegionBinding.enabled = true
 		group by Product.id, ItemRegionBinding.region;
