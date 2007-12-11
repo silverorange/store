@@ -150,7 +150,7 @@ class StoreQuantityDiscount extends SwatDBDataObject
 
 		$sale = $this->item->sale_discount;
 		if ($sale !== null)
-			$price -= round($price * $sale->discount_percentage, 2);
+			$price = round($price * (1 - $sale->discount_percentage), 2);
 
 		return $price;
 	}
