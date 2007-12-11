@@ -310,7 +310,7 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 		$provstate_other = $this->ui->getWidget('billing_address_provstate_other');
 		if ($provstate_other->visible) {
 			$provstate_flydown->addDivider();
-			$option = new SwatOption('other', 'Other…');
+			$option = new SwatOption('other', Store::_('Other…'));
 			$provstate_flydown->addOption($option);
 		}
 
