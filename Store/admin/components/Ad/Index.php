@@ -34,7 +34,8 @@ class StoreAdIndex extends SiteAdIndex
 				Ad.total_referrers, OrderCountByAdView.order_count,
 				cast(OrderCountByAdView.conversion_rate as numeric(5,2))
 			from Ad
-				inner join OrderCountByAdView on OrderCountByAdView.ad = Ad.id
+				left outer join OrderCountByAdView on
+					OrderCountByAdView.ad = Ad.id
 			order by %s',
 			$this->getOrderByClause($view, 'createdate desc'));
 
