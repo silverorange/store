@@ -75,7 +75,7 @@ class StoreSearchPage extends StoreSearchResultsPage
 	// }}}
 
 	// process phase
-	// {{{ public function process
+	// {{{ public function process()
 
 	public function process()
 	{
@@ -83,8 +83,8 @@ class StoreSearchPage extends StoreSearchResultsPage
 
 		$this->form_ui->process();
 
-		/* 
-		 * Nothing else to do... 
+		/*
+		 * Nothing else to do...
 		 * the parent class result page is driven by the GET variables this
 		 * form provided.
 		 */
