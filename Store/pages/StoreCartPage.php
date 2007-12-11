@@ -780,17 +780,9 @@ protected function processCheckoutCart()
 		parent::build();
 
 		if ($this->app->cart->checkout->isEmpty()) {
-			$empty_message = new StoreMessage(
-				Store::_('Your Shopping Cart is Empty'),
-				StoreMessage::CART_NOTIFICATION);
-
-			$empty_message->content_type = 'text/xml';
-			$empty_message->secondary_content = Store::_(
-				'You can add items to your cart by selecting from '.
-				'the menu on the left and browsing for products.');
-
 			$messages = $this->ui->getWidget('message_display');
-			$messages->add($empty_message, SwatMessageDisplay::DISMISS_OFF);
+			$messages->add($this->getEmptyCartMessage(),
+				SwatMessageDisplay::DISMISS_OFF);
 
 			$this->ui->getWidget('cart_frame')->visible = false;
 		} else {
@@ -804,6 +796,23 @@ protected function processCheckoutCart()
 		$this->layout->startCapture('content');
 		$this->ui->display();
 		$this->layout->endCapture();
+	}
+
+	// }}}
+	// {{{ protected function getEmptyCartMessage()
+
+	protected function getEmptyCartMessage()
+	{
+		$empty_message = new StoreMessage(
+			Store::_('Your Shopping Cart is Empty'),
+			StoreMessage::CART_NOTIFICATION);
+
+		$empty_message->content_type = 'text/xml';
+		$empty_message->secondary_content = Store::_(
+			'You can add items to your cart by selecting from '.
+			'the menu on the left and browsing for products.');
+
+		return $empty_message;
 	}
 
 	// }}}
