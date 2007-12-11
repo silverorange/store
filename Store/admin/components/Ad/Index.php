@@ -30,9 +30,9 @@ class StoreAdIndex extends SiteAdIndex
 
 	protected function getTableModel(SwatView $view)
 	{
-		$sql = sprintf('select Ad.id, Ad.title, Ad.shortname,
-				Ad.total_referrers, OrderCountByAdView.order_count,
-				cast(OrderCountByAdView.conversion_rate as numeric(5,2))
+		$sql = sprintf('select Ad.*,
+				coalesce(OrderCountByAdView.order_count, 0) as order_count,
+				cast(OrderCountByAdView.conversion_rate as numeric(5, 2))
 			from Ad
 				left outer join OrderCountByAdView on
 					OrderCountByAdView.ad = Ad.id
