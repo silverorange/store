@@ -6,8 +6,15 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * @package   Store
  * @copyright 2005-2007 silverorange
  */
-abstract class StoreCatalog extends SwatDBDataObject
+class StoreCatalog extends SwatDBDataObject
 {
+	// {{{ constants
+
+	const STATUS_IN_SEASON = 0;
+	const STATUS_OUT_OF_SEASON = 1;
+	const STATUS_DISABLED = 2;
+
+	// }}}
 	// {{{ public properties
 
 	/**
@@ -24,6 +31,16 @@ abstract class StoreCatalog extends SwatDBDataObject
 	 */
 	public $title;
 
+	/**
+	 * In season
+	 *
+	 * Whether the current catalog is in season. The property can be used to
+	 * either hide the product, or control how it is displayed.
+	 *
+	 * @var boolean
+	 */
+	public $in_season;
+
 	// }}}
 	// {{{ protected function init()
 
@@ -34,21 +51,6 @@ abstract class StoreCatalog extends SwatDBDataObject
 		$this->table = 'Catalog';
 		$this->id_field = 'integer:id';
 	}
-
-	// }}}
-	// {{{ abstract static public function getStatusTitle()
-
-	abstract static public function getStatusTitle($status);
-
-	// }}}
-	// {{{ abstract static public function getStatuses()
-
-	abstract static public function getStatuses();
-
-	// }}}
-	// {{{ abstract static public function getStatusConstant()
-
-	abstract static public function getStatusConstant($status);
 
 	// }}}
 }
