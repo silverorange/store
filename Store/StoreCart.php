@@ -364,7 +364,7 @@ abstract class StoreCart extends SwatObject
 	}
 
 	// }}}
-	// {{{ public function getEntryCount()	
+	// {{{ public function getEntryCount()
 
 	/**
 	 * Gets the number of StoreCartEntry objects in this cart

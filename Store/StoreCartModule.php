@@ -256,7 +256,7 @@ class StoreCartModule extends SiteApplicationModule
 	/**
 	 * Manages moving around cart entries when a user logs into an account
 	 *
-	 * By default, if the uses has cart entries before logging in, any entries
+	 * By default, if the user has cart entries before logging in, any entries
 	 * in the user's account cart are moved to the user's saved cart and
 	 * entries from the user's session cart are moved to the logged-in account
 	 * cart.
@@ -267,7 +267,7 @@ class StoreCartModule extends SiteApplicationModule
 		$saved_cart = $this->getSavedCart();
 
 		if ($checkout_cart !== null && $saved_cart !== null &&
-			$this->checkout->getEntryCount() > 0) {
+			$this->getEntryCount()) {
 
 			// reload to get account cart entries
 			$this->load();
@@ -286,7 +286,6 @@ class StoreCartModule extends SiteApplicationModule
 					$checkout_cart->addEntry($entry);
 				}
 			}
-
 		} else {
 			$this->load();
 		}
@@ -329,6 +328,25 @@ class StoreCartModule extends SiteApplicationModule
 	public function getEntries()
 	{
 		return $this->entries;
+	}
+
+	// }}}
+	// {{{ public function getEntryCount()
+
+	/**
+	 * Gets the number of StoreCartEntry objects in all carts
+	 *
+	 * This is <em>not</em> guaranteed to be the count of all the cart entries
+	 * of all the carts managed by this cart module.
+	 *
+	 * If no entries were set in the loadEntries() method, this will return a
+	 * value of zero.
+	 *
+	 * @return integer the number of StoreCartEntry objects in all carts
+	 */
+	public function getEntryCount()
+	{
+		return count($this->entries);
 	}
 
 	// }}}
