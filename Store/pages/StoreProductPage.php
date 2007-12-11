@@ -384,12 +384,7 @@ class StoreProductPage extends StorePage
 			$this->cart_ui->display();
 
 			echo '<div class="cart-message-links">';
-
-			printf(Store::_(
-				'%sView your shopping cart%s or %sproceed to the checkout%s.'),
-				'<a href="cart">', '</a>',
-				'<a href="checkout">', '</a>');
-
+			$this->displayCartLinks();
 			echo '</div>';
 
 			$this->cart_message->secondary_content = ob_get_clean();
@@ -399,6 +394,17 @@ class StoreProductPage extends StorePage
 		} elseif ($this->cart_message !== null) {
 			$this->message_display->add($this->cart_message);
 		}
+	}
+
+	// }}}
+	// {{{ protected function displayCartLinks()
+
+	protected function displayCartLinks()
+	{
+		printf(Store::_(
+			'%sView your shopping cart%s or %sproceed to the checkout%s.'),
+			'<a href="cart">', '</a>',
+			'<a href="checkout">', '</a>');
 	}
 
 	// }}}
