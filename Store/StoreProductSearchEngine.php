@@ -120,7 +120,8 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	protected function getSelectClause()
 	{
 		$clause = 'select Product.id, Product.title, Product.shortname,
-			Product.bodytext, ProductPrimaryCategoryView.primary_category,
+			Product.bodytext, Product.catalog,
+			ProductPrimaryCategoryView.primary_category,
 			ProductPrimaryImageView.image as primary_image,
 			getCategoryPath(ProductPrimaryCategoryView.primary_category) as
 				path,
@@ -138,6 +139,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	protected function getFromClause()
 	{
 		$clause = sprintf('from Product
+			inner join Catalog on Product.catalog = Catalog.id
 			inner join VisibleProductCache on
 				VisibleProductCache.product = Product.id and
 				VisibleProductCache.region = %s
