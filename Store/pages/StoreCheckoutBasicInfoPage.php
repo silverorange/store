@@ -59,7 +59,7 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 	{
 		$order = $this->app->session->order;
 
-		$order->email =	$this->getOptionalStringValue('email');
+		$order->email = $this->getOptionalStringValue('email');
 		$order->company = $this->getOptionalStringValue('company');
 		$order->phone = $this->getOptionalStringValue('phone');
 		$order->comments = $this->getOptionalStringValue('comments');
