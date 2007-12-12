@@ -49,6 +49,11 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 	 */
 	protected function searchItem($keywords)
 	{
+		$sku = trim(strtolower($keywords));
+
+		if (substr($sku, 0, 1) === '#' && strlen($sku) > 1)
+			$sku = substr($sku, 1);
+
 		$sql = 'select Product.id, Product.shortname,
 				ProductPrimaryCategoryView.primary_category
 			from Product
@@ -63,7 +68,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
-			$this->app->db->quote(strtolower($keywords).'%', 'text'));
+			$this->app->db->quote($sku.'%', 'text'));
 
 		$products = SwatDB::query($this->app->db, $sql, 'StoreProductWrapper');
 
