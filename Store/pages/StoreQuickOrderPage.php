@@ -130,6 +130,13 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 			foreach ($sku_renderer->getClonedWidgets() as $id => $sku_widget) {
 				$item_selector = $item_selector_renderer->getWidget($id);
 				$sku = $sku_widget->value;
+
+				if ($sku !== null) {
+					$sku = trim($sku);
+					if (substr($sku, 0, 1) === '#' && strlen($sku) > 1)
+						$sku = substr($sku, 1);
+				}
+
 				$quantity_widget = $quantity_renderer->getWidget($id);
 				$quantity = $quantity_widget->value;
 
@@ -191,6 +198,8 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 	 */
 	protected function getItemId($sku)
 	{
+		$sku = strtolower($sku);
+
 		$sql = sprintf('select id from Item
 			inner join VisibleProductCache on
 				Item.product = VisibleProductCache.product and
