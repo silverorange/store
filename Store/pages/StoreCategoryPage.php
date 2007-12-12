@@ -14,6 +14,13 @@ require_once 'Store/dataobjects/StoreProductImageWrapper.php';
  */
 class StoreCategoryPage extends StorePage
 {
+	// {{{ protected properties
+
+	protected $category;
+	protected $products;
+
+	// }}}
+
 	// init phase
 	// {{{ public function isVisibleInRegion()
 
@@ -65,45 +72,43 @@ class StoreCategoryPage extends StorePage
 
 		$this->buildNavBar();
 		$category_id = $this->path->getLast()->id;
-		$category = $this->queryCategory($category_id);
+		$this->category = $this->queryCategory($category_id);
 
 		$this->layout->data->title =
-			SwatString::minimizeEntities($category->title);
+			SwatString::minimizeEntities($this->category->title);
 
 		$this->layout->data->description =
-			SwatString::minimizeEntities($category->description);
+			SwatString::minimizeEntities($this->category->description);
 
-		if (strlen($category->bodytext) > 0)
+		if (strlen($this->category->bodytext) > 0)
 			$this->layout->data->content =
 				'<div class="store-category-bodytext">'.
-				SwatString::toXHTML($category->bodytext).'</div>';
+				SwatString::toXHTML($this->category->bodytext).'</div>';
 		else
 			$this->layout->data->content = '';
 
-		if ($category->description === null) {
+		if ($this->category->description === null) {
 			$this->layout->data->meta_description =
 				SwatString::minimizeEntities(SwatString::condense(
-				SwatString::stripXHTMLTags($category->bodytext, 400)));
+				SwatString::stripXHTMLTags($this->category->bodytext, 400)));
 		} else {
 			$this->layout->data->meta_description =
-				SwatString::minimizeEntities($category->description);
+				SwatString::minimizeEntities($this->category->description);
 		}
 
-		$this->layout->startCapture('content');
-		$this->displayRelatedArticles($category);
-		$this->layout->endCapture();
-
-		$this->buildPage($category);
+		$this->products = $this->getProducts();
+		$this->buildPage();
 	}
 
 	// }}}
 	// {{{ protected function buildPage()
 
-	protected function buildPage(StoreCategory $category)
+	protected function buildPage()
 	{
 		$this->layout->startCapture('content');
-		$this->displayFeaturedProducts($category);
-		$this->displayCategory($category);
+		$this->displayRelatedArticles($this->category);
+		$this->displayFeaturedProducts($this->category);
+		$this->displayPage();
 		$this->layout->endCapture();
 	}
 
@@ -188,22 +193,20 @@ class StoreCategoryPage extends StorePage
 	}
 
 	// }}}
-	// {{{ protected function displayCategory()
+	// {{{ protected function displayPage()
 
-	protected function displayCategory(StoreCategory $category)
+	protected function displayPage()
 	{
-		$sub_categories = $this->querySubCategories($category);
+		$sub_categories = $this->querySubCategories($this->category);
 		$this->displaySubCategories($sub_categories);
 
-		$products = $this->getProducts($category);
-
-		if (count($products) > 0) {
-			if (count($products) == 1) {
+		if (count($this->products) > 0) {
+			if (count($this->products) == 1) {
 				$link = $this->source.'/'.$products->getFirst()->shortname;
 				$this->app->relocate($link);
 			}
 
-			$this->displayProducts($products);
+			$this->displayProducts($this->products);
 		} elseif (count($sub_categories) === 1) {
 			$link = $this->source.'/'.$sub_categories->getFirst()->shortname;
 			$this->app->relocate($link);
@@ -293,13 +296,16 @@ class StoreCategoryPage extends StorePage
 	// }}}
 	// {{{ protected function getProducts()
 
-	protected function getProducts(StoreCategory $category)
+	protected function getProducts()
 	{
 		$engine = $this->instantiateProductSearchEngine();
-		$engine->category = $category;
+		$engine->category = $this->category;
 		$engine->include_category_descendants = false;
 		$engine->addOrderByField('CategoryProductBinding.displayorder');
-		return $engine->search();
+
+		$products = $engine->search();
+
+		return $products;
 	}
 
 	// }}}
