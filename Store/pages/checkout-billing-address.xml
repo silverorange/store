@@ -22,7 +22,7 @@
 				<property name="maxlength" type="integer">255</property>
 			</widget>
 		</widget>
-		<widget class="SwatFormField" id="billing_address_address_line1_field">
+		<widget class="SwatFormField" id="billing_address_line1_field">
 			<property name="title" translatable="yes">Address Line 1</property>
 			<widget class="SwatEntry" id="billing_address_line1">
 				<property name="required" type="boolean">true</property>
@@ -30,7 +30,7 @@
 				<property name="size" type="integer">35</property>
 			</widget>
 		</widget>
-		<widget class="SwatFormField" id="billing_address_address_line2_field">
+		<widget class="SwatFormField" id="billing_address_line2_field">
 			<property name="title" translatable="yes">Address Line 2</property>
 			<widget class="SwatEntry" id="billing_address_line2">
 				<property name="maxlength" type="integer">255</property>
