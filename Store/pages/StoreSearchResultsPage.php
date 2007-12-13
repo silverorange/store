@@ -329,6 +329,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 		$this->setSearchEngine('product', $engine);
 
 		$engine->category = $this->getCategory();
+		$engine->addOrderByField('is_available desc');
 
 		return $engine;
 	}
