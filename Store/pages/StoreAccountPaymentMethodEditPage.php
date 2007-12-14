@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/pages/StoreAccountPage.php';
+require_once 'Site/pages/SiteAccountPage.php';
 require_once 'Store/dataobjects/StoreAccountPaymentMethod.php';
 require_once 'Store/dataobjects/StorePaymentType.php';
 require_once 'Store/dataobjects/StorePaymentTypeWrapper.php';
@@ -16,7 +16,7 @@ require_once 'Swat/SwatYUI.php';
  * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreAccountPaymentMethodEditPage extends StoreAccountPage
+class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 {
 	// {{{ protected properties
 

@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Swat/SwatYUI.php';
-require_once 'Store/pages/StoreAccountPage.php';
+require_once 'Site/pages/SiteAccountPage.php';
 require_once 'Store/dataobjects/StoreAccountAddress.php';
 require_once 'Swat/SwatUI.php';
 
@@ -13,7 +13,7 @@ require_once 'Swat/SwatUI.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreAccount
  */
-class StoreAccountAddressEditPage extends StoreAccountPage
+class StoreAccountAddressEditPage extends SiteAccountPage
 {
 	// {{{ protected properties
 

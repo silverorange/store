@@ -1,9 +1,8 @@
 <?php
 
 require_once 'Swat/SwatDetailsStore.php';
-
 require_once 'Swat/SwatUI.php';
-require_once 'Store/pages/StoreAccountPage.php';
+require_once 'Site/pages/SiteAccountPage.php';
 require_once 'Store/StoreAddressView.php';
 require_once 'Store/StorePaymentMethodView.php';
 require_once 'Store/dataobjects/StoreAccount.php';
@@ -16,7 +15,7 @@ require_once 'Store/dataobjects/StoreAccount.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreAccount
  */
-class StoreAccountDetailsPage extends StoreAccountPage
+class StoreAccountDetailsPage extends SiteAccountPage
 {
 	// {{{ protected properties
 
