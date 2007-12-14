@@ -202,7 +202,7 @@ class StoreCategoryPage extends StorePage
 
 		if (count($this->products) > 0) {
 			if (count($this->products) == 1) {
-				$link = $this->source.'/'.$products->getFirst()->shortname;
+				$link = $this->source.'/'.$this->products->getFirst()->shortname;
 				$this->app->relocate($link);
 			}
 
