@@ -4,11 +4,11 @@ require_once 'Swat/SwatDetailsStore.php';
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatWidgetCellRenderer.php';
 
+require_once 'Site/pages/SiteAccountPage.php';
 require_once 'Site/exceptions/SiteNotFoundException.php';
 
 require_once 'Store/dataobjects/StoreItem.php';
 require_once 'Store/dataobjects/StoreInvoiceWrapper.php';
-require_once 'Store/pages/StoreAccountPage.php';
 require_once 'Store/StoreShippingAddressCellRenderer.php';
 require_once 'Swat/SwatUI.php';
 
@@ -23,7 +23,7 @@ require_once 'Swat/SwatUI.php';
  * @see       StoreAccount
  * @see       StoreInvoice
  */
-class StoreAccountInvoicePage extends StoreAccountPage
+class StoreAccountInvoicePage extends SiteAccountPage
 {
 	// {{{ protected properties
 
