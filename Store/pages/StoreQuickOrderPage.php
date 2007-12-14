@@ -10,6 +10,7 @@ require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
 require_once 'Swat/SwatYUI.php';
 require_once 'XML/RPCAjax.php';
+require_once 'Numbers/Words.php';
 require_once 'Store/StoreMessageDisplay.php';
 
 /**
