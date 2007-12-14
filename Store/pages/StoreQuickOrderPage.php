@@ -31,6 +31,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 
 	protected $num_rows = 10;
 	protected $items_added = array();
+	protected $items_saved = array();
 
 	// }}}
 
@@ -218,14 +219,22 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 
 	protected function addItem($item_id, $quantity, $sku)
 	{
+		$cart = $this->app->cart;
 		$cart_entry = $this->getCartEntry($item_id, $quantity, $sku);
 
-		$added = $this->app->cart->checkout->addEntry($cart_entry);
+		if ($cart_entry->item->hasAvailableStatus()) {
+			$added_entry = $cart->checkout->addEntry($cart_entry);
 
-		if ($added)
-			$this->items_added[] = $cart_entry->item;
+			if ($added_entry !== null)
+				$this->items_added[] = $added_entry->item;
+		} else {
+			$added_entry = $cart->saved->addEntry($cart_entry);
 
-		return $added;
+			if ($added_entry !== null)
+				$this->items_saved[] = $added_entry->item;
+		}
+
+		return $added_entry;
 	}
 
 	// }}}
@@ -357,6 +366,18 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 			$message->content_type = 'text/xml';
 			$this->message_display->add($message);
 		}
+
+		if (count($this->items_saved) > 0) {
+			$items = ngettext('item', 'items', count($this->items_saved));
+			$number = SwatString::minimizeEntities(ucwords(
+						Numbers_Words::toWords(count($this->items_saved))));
+
+			$message = new StoreMessage(
+				sprintf('%s %s has been saved for later.', $number, $items),
+				StoreMessage::CART_NOTIFICATION);
+
+			$this->message_display->add($message);
+		}
 	}
 
 	// }}}
@@ -382,6 +403,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 		$store = new SwatTableStore();
 
 		$entries = $this->app->cart->checkout->getEntries();
+
 		foreach ($entries as $entry) {
 			// filter entries by added items
 			if (in_array($entry->item->id, $ids)) {
