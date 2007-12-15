@@ -420,7 +420,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 	// }}}
 	// {{{ protected function getCartTableStoreRow()
 
-	protected function getCartTableStoreRow($entry)
+	protected function getCartTableStoreRow(StoreCartEntry $entry)
 	{
 		$ds = new SwatDetailsStore($entry);
 
