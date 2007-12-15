@@ -23,7 +23,7 @@ class StoreQuantityDiscount extends SwatDBDataObject
 	// {{{ public properties
 
 	/**
-	 * Unique identifier of this quantity discount 
+	 * Unique identifier of this quantity discount
 	 *
 	 * @var integer
 	 */
