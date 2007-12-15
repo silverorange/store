@@ -273,6 +273,11 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 		$description = $item->getDescription($show_item_group);
 
 		ob_start();
+
+		if (!$item->hasAvailableStatus())
+			printf('<div class="item-status">%s</div>',
+				$item->getStatus()->title);
+
 		$renderer->render();
 		$description.= ' '.ob_get_clean();
 
