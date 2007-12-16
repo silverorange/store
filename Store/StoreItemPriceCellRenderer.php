@@ -103,12 +103,11 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 		$savings_renderer->value =
 			round(1 - ($this->value / $this->original_value), 2);
 
-		$div = new SwatHtmlTag('div');
-		$div->open();
+		$span = new SwatHtmlTag('span');
+		$span->open();
 		echo ' ';
 		$savings_renderer->render();
-
-		$div->close();
+		$span->close();
 	}
 
 	// }}}
