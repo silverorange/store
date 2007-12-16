@@ -577,6 +577,10 @@ class StoreItem extends SwatDBDataObject
 					$discount->setRegion($this->region, $this->limit_by_region);
 		}
 
+		if ($quantity_discounts !== null)
+			foreach ($quantity_discounts as $discount)
+				$discount->item = $this;
+
 		return $quantity_discounts;
 	}
 
