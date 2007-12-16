@@ -290,7 +290,8 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	protected function getItemPriceCellRenderer(StoreItem $item)
 	{
 		$renderer = new StoreItemPriceCellRenderer();
-		$renderer->value = $item->getPrice();
+		$renderer->value = $item->getDisplayPrice();
+		$renderer->original_value = $item->getPrice();
 		$renderer->quantity_discounts = $item->quantity_discounts;
 
 		return $renderer;
