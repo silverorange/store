@@ -74,9 +74,6 @@ class StoreQuantityDiscount extends SwatDBDataObject
 	{
 		$this->region = $region;
 		$this->limit_by_region = $limiting;
-
-		if ($this->item instanceof StoreItem)
-			$this->item->setRegion($region);
 	}
 
 	// }}}
