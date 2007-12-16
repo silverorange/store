@@ -483,6 +483,10 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 			'packages/store/styles/store-quick-order-page.css',
 			Store::PACKAGE_ID));
 
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/styles/store-item-price-cell-renderer.css',
+			Store::PACKAGE_ID));
+
 		$this->layout->addHtmlHeadEntrySet(
 			$this->message_display->getHtmlHeadEntrySet());
 
