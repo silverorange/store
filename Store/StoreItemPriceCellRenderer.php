@@ -99,15 +99,17 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 
 		printf(Store::_('%s each'), $price);
 
-		$savings_renderer = new StoreSavingsCellRenderer();
-		$savings_renderer->value =
-			round(1 - ($this->value / $this->original_value), 2);
+		if ($this->value > 0) {
+			$savings_renderer = new StoreSavingsCellRenderer();
+			$savings_renderer->value =
+				round(1 - ($this->value / $this->original_value), 2);
 
-		$span = new SwatHtmlTag('span');
-		$span->open();
-		echo ' ';
-		$savings_renderer->render();
-		$span->close();
+			$span = new SwatHtmlTag('span');
+			$span->open();
+			echo ' ';
+			$savings_renderer->render();
+			$span->close();
+		}
 	}
 
 	// }}}
