@@ -11,7 +11,6 @@ create table AccountAddress (
 	country char(2) not null references Country(id),
 	postal_code varchar(50) not null,
 	phone varchar(100),
-	default_address boolean not null default false,
 	createdate timestamp,
 	primary key (id)
 );
