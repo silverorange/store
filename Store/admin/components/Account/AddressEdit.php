@@ -42,6 +42,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 		$this->ui->loadFromXML($this->ui_xml);
 
 		$this->initAccount();
+		$this->initDefaultAddressFields();
 
 		$this->fields = array(
 			'text:fullname',
@@ -81,6 +82,37 @@ class StoreAccountAddressEdit extends AdminDBEdit
 		if ($this->id === null) {
 			$fullname_widget = $this->ui->getWidget('fullname');
 			$fullname_widget->value = $this->account->fullname();
+		}
+	}
+
+	// }}}
+	// {{{ protected function initDefaultAddressFields()
+
+	protected function initDefaultAddressFields()
+	{
+		// if this address is already the default billing address, desensitize
+		// the checkbox
+		$account = $this->account;
+		$billing_id = $account->getInternalValue('default_billing_address');
+		if ($this->id === $billing_id) {
+			$billing_field =
+				$this->ui->getWidget('default_billing_address')->parent;
+
+			$billing_field->sensitive = false;
+			$billing_field->note = Store::_(
+				'This address is already the default billing address.');
+		}
+
+		// if this address is already the default shipping address, desensitize
+		// the checkbox
+		$shipping_id = $account->getInternalValue('default_shipping_address');
+		if ($this->id === $shipping_id) {
+			$shipping_field =
+				$this->ui->getWidget('default_shipping_address')->parent;
+
+			$shipping_field->sensitive = false;
+			$shipping_field->note = Store::_(
+				'This address is already the default shipping address.');
 		}
 	}
 
@@ -146,11 +178,31 @@ class StoreAccountAddressEdit extends AdminDBEdit
 			$this->fields[] = 'integer:account';
 			$values['account'] = $this->account->id;
 
-			SwatDB::insertRow($this->app->db, 'AccountAddress', $this->fields,
-				$values);
+			$this->id = SwatDB::insertRow($this->app->db, 'AccountAddress',
+				$this->fields, $values);
 		} else {
 			SwatDB::updateRow($this->app->db, 'AccountAddress', $this->fields,
 				$values, 'id', $this->id);
+		}
+
+		// save default billing address
+		if ($this->ui->getWidget('default_billing_address')->value) {
+			$sql = sprintf('update Account set default_billing_address = %s
+				where id = %s',
+				$this->app->db->quote($this->id, 'integer'),
+				$this->app->db->quote($this->account->id, 'integer'));
+
+			SwatDB::exec($this->app->db, $sql);
+		}
+
+		// save default shipping address
+		if ($this->ui->getWidget('default_shipping_address')->value) {
+			$sql = sprintf('update Account set default_shipping_address = %s
+				where id = %s',
+				$this->app->db->quote($this->id, 'integer'),
+				$this->app->db->quote($this->account->id, 'integer'));
+
+			SwatDB::exec($this->app->db, $sql);
 		}
 
 		$message = new SwatMessage(sprintf(

@@ -58,9 +58,16 @@
 					<property name="show_blank" type="boolean">true</property>
 				</widget>
 			</widget>
-			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Default Address</property>
-				<widget class="SwatCheckbox" id="default_address" />
+			<widget class="SwatFieldset">
+				<property name="title">Address Defaults</property>
+				<widget class="SwatFormField">
+					<property name="title" translatable="yes">Make this address the default billing address</property>
+					<widget class="SwatCheckbox" id="default_billing_address" />
+				</widget>
+				<widget class="SwatFormField">
+					<property name="title" translatable="yes">Make this address the default shipping address</property>
+					<widget class="SwatCheckbox" id="default_shipping_address" />
+				</widget>
 			</widget>
 			<widget class="SwatFooterFormField">
 				<widget class="SwatButton" id="submit_button" />
