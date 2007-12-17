@@ -195,26 +195,20 @@ class StoreAccountDetails extends SiteAccountDetails
 	// }}}
 	// {{{ protected function getAddressesTableModel()
 
-	protected function getAddressesTableModel(SwatTableView $view) 
+	protected function getAddressesTableModel(SwatTableView $view)
 	{
-		$sql = 'select * from AccountAddress where AccountAddress.account = %s
-				order by %s';
+		$account = $this->getAccount();
+		$billing_id = $account->getInternalValue('default_billing_address');
+		$shipping_id = $account->getInternalValue('default_shipping_address');
 
-		$sql = sprintf($sql,
-			$this->app->db->quote($this->id, 'integer'),
-			$this->getOrderByClause($view, 'AccountAddress.createdate desc'));
-
-		$rs = SwatDB::query($this->app->db, $sql);
 		$ts = new SwatTableStore();
 
-		$class_name = SwatDBClassMap::get('StoreAccountAddress');
-		foreach ($rs as $row) {
-			$new_row = null;
-			$new_row->id = $row->id;
-			$new_row->default_address = $row->default_address;
-			$new_row->address = new $class_name($row);
-			$new_row->address->setDatabase($this->app->db);
-			$ts->add($new_row);
+		foreach ($account->addresses as $address) {
+			$ds = new SwatDetailsStore($address);
+			$ds->address = $address;
+			$ds->default_billing_address = ($address->id == $billing_id);
+			$ds->default_shipping_address = ($address->id == $shipping_id);
+			$ts->add($ds);
 		}
 
 		return $ts;
