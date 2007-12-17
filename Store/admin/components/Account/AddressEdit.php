@@ -23,8 +23,11 @@ class StoreAccountAddressEdit extends AdminDBEdit
 	// {{{ private properties
 
 	private $fields;
-	private $account_id;
-	private $account_fullname;
+
+	/**
+	 * @var StoreAccount
+	 */
+	private $account;
 
 	// }}}
 
@@ -49,7 +52,6 @@ class StoreAccountAddressEdit extends AdminDBEdit
 			'text:provstate_other',
 			'text:country',
 			'text:postal_code',
-			'boolean:default_address',
 		);
 	}
 
@@ -58,19 +60,28 @@ class StoreAccountAddressEdit extends AdminDBEdit
 
 	protected function initAccount()
 	{
-		if ($this->id === null)
-			$this->account_id = $this->app->initVar('account');
-		else
-			$this->account_id = SwatDB::queryOne($this->app->db,
+		if ($this->id === null) {
+			$account_id = $this->app->initVar('account');
+		} else {
+			$account_id = SwatDB::queryOne($this->app->db,
 				sprintf('select account from AccountAddress where id = %s',
 				$this->app->db->quote($this->id, 'integer')));
+		}
 
-		$this->account_fullname = SwatDB::queryOne($this->app->db,
-			sprintf('select fullname from Account where id = %s',
-			$this->app->db->quote($this->account_id, 'integer')));
+		$class_name = SwatDBClassMap::get('StoreAccount');
+		$this->account = new $class_name();
+		$this->account->setDatabase($this->app->db);
 
-		$fullname_widget = $this->ui->getWidget('fullname');
-		$fullname_widget->value = $this->account_fullname;
+		if (!$this->account->load($account_id)) {
+			throw new AdminNotFoundException(sprintf("Address cannot be ".
+				"edited because an account with id '%s' does not exist.",
+				$account_id));
+		}
+
+		if ($this->id === null) {
+			$fullname_widget = $this->ui->getWidget('fullname');
+			$fullname_widget->value = $this->account->fullname();
+		}
 	}
 
 	// }}}
@@ -121,7 +132,6 @@ class StoreAccountAddressEdit extends AdminDBEdit
 			'provstate_other',
 			'country',
 			'postal_code',
-			'default_address',
 		));
 
 		if ($values['provstate'] === 'other')
@@ -134,7 +144,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 			$values['createdate'] = $date->getDate();
 
 			$this->fields[] = 'integer:account';
-			$values['account'] = $this->account_id;
+			$values['account'] = $this->account->id;
 
 			SwatDB::insertRow($this->app->db, 'AccountAddress', $this->fields,
 				$values);
@@ -145,7 +155,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 
 		$message = new SwatMessage(sprintf(
 			Store::_('Address for “%s” has been saved.'),
-			$this->account_fullname));
+			$this->account->getFullName()));
 
 		$this->app->messages->add($message);
 	}
@@ -215,7 +225,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 		parent::buildInternal();
 
 		$frame = $this->ui->getWidget('edit_frame');
-		$frame->subtitle = $this->account_fullname;
+		$frame->subtitle = $this->account->getFullName();
 
 		$provstate_flydown = $this->ui->getWidget('provstate');
 		$provstate_flydown->addOptionsByArray(SwatDB::getOptionArray(
@@ -233,7 +243,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 			$this->app->db, 'Country', 'title', 'id', 'title'));
 
 		$form = $this->ui->getWidget('edit_form');
-		$form->addHiddenField('account', $this->account_id);
+		$form->addHiddenField('account', $this->account->id);
 	}
 
 	// }}}
@@ -246,12 +256,13 @@ class StoreAccountAddressEdit extends AdminDBEdit
 		$last_entry->title = sprintf(Store::_('%s Address'),
 			$last_entry->title);
 
-		$this->navbar->addEntry(new SwatNavBarEntry($this->account_fullname,
-			sprintf('Account/Details?id=%s', $this->account_id)));
+		$this->navbar->addEntry(new SwatNavBarEntry(
+			$this->account->getFullName(),
+			sprintf('Account/Details?id=%s', $this->account->id)));
 
 		$this->navbar->addEntry($last_entry);
 
-		$this->title = $this->account_fullname;
+		$this->title = $this->account->getFullName();
 	}
 
 	// }}}
