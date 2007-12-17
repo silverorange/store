@@ -56,7 +56,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 	// }}}
 	// {{{ protected function initAccount()
 
-	protected function initAccount() 
+	protected function initAccount()
 	{
 		if ($this->id === null)
 			$this->account_id = $this->app->initVar('account');
@@ -103,7 +103,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 				$postal_code->provstate = $provstate_abbreviation;
 			}
 		}
-			
+
 		parent::process();
 	}
 
@@ -236,7 +236,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 		$form->addHiddenField('account', $this->account_id);
 	}
 
-	// }}}	
+	// }}}
 	// {{{ protected buildNavBar()
 
 	protected function buildNavBar()
@@ -250,10 +250,10 @@ class StoreAccountAddressEdit extends AdminDBEdit
 			sprintf('Account/Details?id=%s', $this->account_id)));
 
 		$this->navbar->addEntry($last_entry);
-		
+
 		$this->title = $this->account_fullname;
 	}
-	
+
 	// }}}
 	// {{{ protected function loadDBData()
 
