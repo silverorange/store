@@ -89,7 +89,7 @@ class StoreAccountDetails extends SiteAccountDetails
 	// build phase
 	// {{{ protected function buildInternal()
 
-	public function buildInternal() 
+	public function buildInternal()
 	{
 		parent::buildInternal();
 
