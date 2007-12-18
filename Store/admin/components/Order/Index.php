@@ -41,7 +41,7 @@ class StoreOrderIndex extends AdminSearch
 		$this->ui->loadFromXML($this->search_xml);
 		$this->ui->loadFromXML($this->ui_xml);
 		$this->ui->getRoot()->addStyleSheet('styles/orders-index.css');
-		
+
 		$search_region = $this->ui->getWidget('search_region');
 		$search_region->show_blank = true;
 		$search_region->addOptionsByArray(SwatDB::getOptionArray($this->app->db,
