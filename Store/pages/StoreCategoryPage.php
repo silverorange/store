@@ -200,14 +200,14 @@ class StoreCategoryPage extends StorePage
 		$sub_categories = $this->querySubCategories($this->category);
 		$this->displaySubCategories($sub_categories);
 
-		if (count($this->products) > 0) {
+		if (count($this->products) > 0 && count($sub_categories) == 0) {
 			if (count($this->products) == 1) {
 				$link = $this->source.'/'.$this->products->getFirst()->shortname;
 				$this->app->relocate($link);
 			}
 
 			$this->displayProducts($this->products);
-		} elseif (count($sub_categories) === 1) {
+		} elseif (count($sub_categories) == 1) {
 			$link = $this->source.'/'.$sub_categories->getFirst()->shortname;
 			$this->app->relocate($link);
 		}
