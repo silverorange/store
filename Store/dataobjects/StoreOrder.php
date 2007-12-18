@@ -2,16 +2,16 @@
 
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
+require_once 'SwatDB/SwatDBDataObject.php';
+require_once 'Site/dataobjects/SiteAd.php';
 require_once 'Store/StoreOrderConfirmationMailMessage.php';
 require_once 'Store/StoreOrderStatus.php';
 require_once 'Store/StoreOrderStatusList.php';
-require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/dataobjects/StoreOrderAddress.php';
 require_once 'Store/dataobjects/StoreOrderPaymentMethod.php';
 require_once 'Store/dataobjects/StoreOrderItemWrapper.php';
 require_once 'Store/dataobjects/StorePaymentTransactionWrapper.php';
-require_once 'Store/dataobjects/StoreAd.php';
 require_once 'Store/dataobjects/StoreLocale.php';
 require_once 'Store/dataobjects/StoreInvoice.php';
 
@@ -308,7 +308,7 @@ class StoreOrder extends SwatDBDataObject
 			SwatDBClassMap::get('StoreLocale'), true);
 
 		$this->registerInternalProperty('ad',
-			SwatDBClassMap::get('StoreAd'), true);
+			SwatDBClassMap::get('SiteAd'), true);
 
 		$this->registerInternalProperty('invoice',
 			SwatDBClassMap::get('StoreInvoice'));
