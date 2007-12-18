@@ -172,10 +172,16 @@
 							<property name="address" type="data">address</property>
 						</object>
 					</object>
-					<object class="AdminTableViewOrderableColumn" id="default_address">
-						<property name="title" translatable="yes">Default Address</property>
+					<object class="AdminTableViewOrderableColumn" id="default_billing_address">
+						<property name="title" translatable="yes">Default Billing Address</property>
 						<object class="SwatBooleanCellRenderer">
-							<property name="value" type="data">default_address</property>
+							<property name="value" type="data">default_billing_address</property>
+						</object>
+					</object>
+					<object class="AdminTableViewOrderableColumn" id="default_shipping_address">
+						<property name="title" translatable="yes">Default Shipping Address</property>
+						<object class="SwatBooleanCellRenderer">
+							<property name="value" type="data">default_shipping_address</property>
 						</object>
 					</object>
 				</widget>
