@@ -40,7 +40,6 @@ class StoreOrderIndex extends AdminSearch
 
 		$this->ui->loadFromXML($this->search_xml);
 		$this->ui->loadFromXML($this->ui_xml);
-		$this->ui->getRoot()->addStyleSheet('styles/orders-index.css');
 
 		$search_region = $this->ui->getWidget('search_region');
 		$search_region->show_blank = true;
@@ -264,6 +263,20 @@ class StoreOrderIndex extends AdminSearch
 	protected function getOrderTitle($order) 
 	{
 		return sprintf(Store::_('Order %s'), $order->id);
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/admin/styles/store-order-index.css',
+			Store::PACKAGE_ID));
 	}
 
 	// }}}
