@@ -135,7 +135,7 @@ class StoreAccountDetails extends SiteAccountDetails
 				return $this->getInvoicesTableModel($view);
 			case 'orders_view':
 				return $this->getOrdersTableModel($view);
-			case  'addresses_view':
+			case 'addresses_view':
 				return $this->getAddressesTableModel($view);
 			case 'payment_methods_view':
 				return $this->getPaymentMethodsTableModel($view);
