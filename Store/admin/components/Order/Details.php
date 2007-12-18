@@ -62,7 +62,7 @@ abstract class StoreOrderDetails extends AdminPage
 	// build phase
 	// {{{ protected function buildInternal()
 
-	public function buildInternal() 
+	public function buildInternal()
 	{
 		parent::buildInternal();
 
@@ -122,10 +122,10 @@ abstract class StoreOrderDetails extends AdminPage
 				Store::_('Customer Accounts'), 'Account'));
 
 			$this->navbar->addEntry(new SwatNavBarEntry(
-				$this->order->account->fullname,
+				$this->order->account->getFullname(),
 				'Account/Details?id='.$this->order->account->id));
 
-			$this->title = $this->order->account->fullname;
+			$this->title = $this->order->account->getFullname();
 		}
 
 		$this->navbar->addEntry(new SwatNavBarEntry($this->getOrderTitle()));

@@ -13,6 +13,12 @@
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Phone</property>
+				<widget class="SwatEntry" id="phone">
+					<property name="maxlength" type="integer">100</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Line 1</property>
 				<widget class="SwatEntry" id="line1">
 					<property name="required" type="boolean">true</property>
@@ -56,6 +62,12 @@
 				<widget class="SwatFlydown" id="country">
 					<property name="required" type="boolean">true</property>
 					<property name="show_blank" type="boolean">true</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Phone</property>
+				<widget class="SwatEntry" id="phone">
+					<property name="maxlength" type="integer">255</property>
 				</widget>
 			</widget>
 			<widget class="SwatFieldset">

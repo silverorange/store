@@ -19,10 +19,10 @@ class StoreAccountAddressEdit extends AdminDBEdit
 
 	protected $ui_xml = 'Store/admin/components/Account/addressedit.xml';
 
+	protected $fields;
+
 	// }}}
 	// {{{ private properties
-
-	private $fields;
 
 	/**
 	 * @var StoreAccount
@@ -53,6 +53,8 @@ class StoreAccountAddressEdit extends AdminDBEdit
 			'text:provstate_other',
 			'text:country',
 			'text:postal_code',
+			'text:phone',
+			'text:company',
 		);
 	}
 
@@ -81,7 +83,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 
 		if ($this->id === null) {
 			$fullname_widget = $this->ui->getWidget('fullname');
-			$fullname_widget->value = $this->account->fullname();
+			$fullname_widget->value = $this->account->getFullname();
 		}
 	}
 
@@ -155,19 +157,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$values = $this->ui->getValues(array(
-			'fullname',
-			'line1',
-			'line2',
-			'city',
-			'provstate',
-			'provstate_other',
-			'country',
-			'postal_code',
-		));
-
-		if ($values['provstate'] === 'other')
-			$values['provstate'] = null;
+		$values = $this->getUIValues();
 
 		if ($this->id === null) {
 			$this->fields[] = 'date:createdate';
@@ -210,6 +200,30 @@ class StoreAccountAddressEdit extends AdminDBEdit
 			$this->account->getFullName()));
 
 		$this->app->messages->add($message);
+	}
+
+	// }}}
+	// {{{ protected function getUIValues()
+
+	protected function getUIValues()
+	{
+		$values = $this->ui->getValues(array(
+			'fullname',
+			'line1',
+			'line2',
+			'city',
+			'provstate',
+			'provstate_other',
+			'country',
+			'postal_code',
+			'phone',
+			'company',
+		));
+
+		if ($values['provstate'] === 'other')
+			$values['provstate'] = null;
+
+		return $values;
 	}
 
 	// }}}
