@@ -1,0 +1,25 @@
+#order_numbers {
+	float: left;
+	margin-right: 1em;
+	position: relative;
+}
+
+#customer_info {
+	float: left;
+	position: relative;
+}
+
+#veseys_number {
+	float: left;
+	margin-right: 2em;
+	margin-bottom: 0;
+}
+
+#date_range {
+	clear: left;
+}
+
+#date_after {
+	float: left;
+	margin-right: 2em;
+}
