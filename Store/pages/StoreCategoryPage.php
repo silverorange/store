@@ -198,19 +198,20 @@ class StoreCategoryPage extends StorePage
 	protected function displayPage()
 	{
 		$sub_categories = $this->querySubCategories($this->category);
-		$this->displaySubCategories($sub_categories);
 
-		if (count($this->products) > 0 && count($sub_categories) == 0) {
-			if (count($this->products) == 1) {
-				$link = $this->source.'/'.$this->products->getFirst()->shortname;
-				$this->app->relocate($link);
-			}
-
-			$this->displayProducts($this->products);
-		} elseif (count($sub_categories) == 1) {
+		if (count($this->products) == 1 && count($sub_categories) == 0) {
+			$link = $this->source.'/'.$this->products->getFirst()->shortname;
+			$this->app->relocate($link);
+		} elseif (count($this->products) == 0 && count($sub_categories) == 1) {
 			$link = $this->source.'/'.$sub_categories->getFirst()->shortname;
 			$this->app->relocate($link);
 		}
+
+		if (count($sub_categories) > 0)
+			$this->displaySubCategories($sub_categories);
+
+		if (count($this->products) > 0)
+			$this->displayProducts($this->products);
 	}
 
 	// }}}
