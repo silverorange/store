@@ -468,11 +468,27 @@ class StorePaymentType extends SwatDBDataObject
 			$type->length = array(15);
 			$types[] = $type;
 
+			// This will not match US & Canada Diners Club cards
 			$type = new stdClass();
 			$type->description = Store::_('Diners Club');
 			$type->shortname = 'dinersclub';
-			$type->prefixes = array(36);
+			$type->prefixes = array(36); // International only
 			$type->length = array(14);
+			$types[] = $type;
+
+			// Diners Club intentionally listed twice
+			$type = new stdClass();
+			$type->description = Store::_('Diners Club');
+			$type->shortname = 'dinersclub';
+			$type->prefixes = array(55); // US & Canada only
+			$type->length = array(16);
+			$types[] = $type;
+
+			$type = new stdClass();
+			$type->description = Store::_('Discover Card');
+			$type->shortname = 'discover';
+			$type->prefixes = array(6011, 65);
+			$type->length = array(16);
 			$types[] = $type;
 
 			$type = new stdClass();
@@ -489,6 +505,7 @@ class StorePaymentType extends SwatDBDataObject
 			$type->length = array(16);
 			$types[] = $type;
 
+			// JCB listed twice intentionally
 			$type = new stdClass();
 			$type->description = Store::_('JCB');
 			$type->shortname = 'jcb';
@@ -517,6 +534,7 @@ class StorePaymentType extends SwatDBDataObject
 			$type->length = array(16, 18, 19);
 			$types[] = $type;
 
+			// Also known as Switch
 			$type = new stdClass();
 			$type->description = Store::_('UK Maestro');
 			$type->shortname = 'switch';
@@ -526,12 +544,15 @@ class StorePaymentType extends SwatDBDataObject
 			$type->length = array(16, 18, 19);
 			$types[] = $type;
 
+			/*
+			// TODO: missing prefix data for Visa Debit
 			$type = new stdClass();
 			$type->description = Store::_('Visa Debit');
 			$type->shortname = 'delta';
-			$type->prefixes = array(); // TODO: missing data for Visa Debit
+			$type->prefixes = array();
 			$type->length = array(16);
 			$types[] = $type;
+			*/
 
 			$type = new stdClass();
 			$type->description = Store::_('Visa Electron');
