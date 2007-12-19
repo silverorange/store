@@ -98,6 +98,11 @@ abstract class StoreOrderDetails extends AdminPage
 				throw new AdminNotFoundException(sprintf(
 					Store::_('An order with an id of ‘%d’ does not exist.'),
 					$this->id));
+			elseif ($this->app->hasModule('SiteMultipleInstanceModule') &&
+				$this->order->instance != $this->app->instance->getInstance())
+				throw new AdminNotFoundException(sprintf(
+					Store::_('Incorrect instance for order ‘%d’.'),
+						$this->id));
 		}
 		return $this->order;
 	}
