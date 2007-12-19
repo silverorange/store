@@ -91,6 +91,11 @@ class StoreOrderIndex extends AdminSearch
 	{
 		$where = 'Orders.failed_attempt = false';
 
+		if ($this->app->hasModule('SiteMultipleInstanceModule'))
+			$where.= sprintf(' and Orders.instance = %s',
+				$this->app->db->quote(
+					$this->app->instance->getInstance()->id, 'integer'));
+
 		// Order #
 		$clause = new AdminSearchClause('integer:id');
 		$clause->table = 'Orders';
@@ -112,28 +117,7 @@ class StoreOrderIndex extends AdminSearch
 		$where.= $clause->getClause($this->app->db);
 
 		// fullname, check accounts, and both order addresses
-		$fullname = $this->ui->getWidget('search_fullname')->value;
-		if (strlen(trim($fullname)) > 0) {
-			$where.= ' and (';
-			$clause = new AdminSearchClause('fullname');
-			$clause->table = 'Account';
-			$clause->value = $fullname;
-			$clause->operator = AdminSearchClause::OP_CONTAINS;
-			$where.= $clause->getClause($this->app->db, '');
-
-			$clause = new AdminSearchClause('fullname');
-			$clause->table = 'BillingAddress';
-			$clause->value = $fullname;
-			$clause->operator = AdminSearchClause::OP_CONTAINS;
-			$where.= $clause->getClause($this->app->db, 'or');
-
-			$clause = new AdminSearchClause('fullname');
-			$clause->table = 'ShippingAddress';
-			$clause->value = $fullname;
-			$clause->operator = AdminSearchClause::OP_CONTAINS;
-			$where.= $clause->getClause($this->app->db, 'or');
-			$where.= ')';
-		}
+		$where.= $this->getFullnameWhereClause();
 
 		// email, check accounts and order
 		$email = $this->ui->getWidget('search_email')->value;
@@ -195,6 +179,40 @@ class StoreOrderIndex extends AdminSearch
 	}
 
 	// }}}
+	// {{{ protected function getFullnameWhereClause()
+
+	protected function getFullnameWhereClause()
+	{
+		$where = '';
+
+		// fullname, check accounts, and both order addresses
+		$fullname = $this->ui->getWidget('search_fullname')->value;
+		if (strlen(trim($fullname)) > 0) {
+			$where.= ' and (';
+			$clause = new AdminSearchClause('fullname');
+			$clause->table = 'Account';
+			$clause->value = $fullname;
+			$clause->operator = AdminSearchClause::OP_CONTAINS;
+			$where.= $clause->getClause($this->app->db, '');
+
+			$clause = new AdminSearchClause('fullname');
+			$clause->table = 'BillingAddress';
+			$clause->value = $fullname;
+			$clause->operator = AdminSearchClause::OP_CONTAINS;
+			$where.= $clause->getClause($this->app->db, 'or');
+
+			$clause = new AdminSearchClause('fullname');
+			$clause->table = 'ShippingAddress';
+			$clause->value = $fullname;
+			$clause->operator = AdminSearchClause::OP_CONTAINS;
+			$where.= $clause->getClause($this->app->db, 'or');
+			$where.= ')';
+		}
+
+		return $where;
+	}
+
+	// }}}
 	// {{{ protected function getTableModel()
 
 	protected function getTableModel(SwatView $view)
@@ -247,6 +265,7 @@ class StoreOrderIndex extends AdminSearch
 		$store = new SwatTableStore();
 		foreach ($orders as $order) {
 			$ds = new SwatDetailsStore($order);
+			$ds->fullname = $order->billing_address->getFullname();
 			$ds->title = $this->getOrderTitle($order);
 			$ds->has_notes = (strlen($order->notes) > 0);
 			$ds->has_comments = (strlen($order->comments) > 0);
