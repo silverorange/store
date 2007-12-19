@@ -33,15 +33,32 @@ class StoreOrderNoteEdit extends AdminDBEdit
 
 		// initialize order object
 		$class_name = SwatDBClassMap::get('StoreOrder');
-		$this->order = new $class_name();
-		$this->order->setDatabase($this->app->db);
+		$this->order = $this->getOrder();
+	}
 
-		if ($this->id !== null) {
+	// }}}
+	// {{{ protected function getOrder()
+
+	protected function getOrder()
+	{
+		if ($this->order === null) {
+			$order_class = SwatDBClassMap::get('StoreOrder');
+			$this->order = new $order_class();
+
+			$this->order->setDatabase($this->app->db);
+
 			if (!$this->order->load($this->id))
-				throw new AdminNotFoundException(
-					sprintf(Store::_('Order with id “%s” not found.'),
+				throw new AdminNotFoundException(sprintf(
+					Store::_('An order with an id of ‘%d’ does not exist.'),
 					$this->id));
+			elseif ($this->app->hasModule('SiteMultipleInstanceModule') &&
+				$this->order->instance != $this->app->instance->getInstance())
+				throw new AdminNotFoundException(sprintf(
+					Store::_('Incorrect instance for order ‘%d’.'),
+						$this->id));
+
 		}
+		return $this->order;
 	}
 
 	// }}}
