@@ -468,20 +468,13 @@ class StorePaymentType extends SwatDBDataObject
 			$type->length = array(15);
 			$types[] = $type;
 
-			// This will not match US & Canada Diners Club cards
+			// This will not match US & Canada Diners Club cards. They will
+			// match as Mastercard since they share the same prefix and length.
 			$type = new stdClass();
 			$type->description = Store::_('Diners Club');
 			$type->shortname = 'dinersclub';
 			$type->prefixes = array(36); // International only
 			$type->length = array(14);
-			$types[] = $type;
-
-			// Diners Club intentionally listed twice
-			$type = new stdClass();
-			$type->description = Store::_('Diners Club');
-			$type->shortname = 'dinersclub';
-			$type->prefixes = array(55); // US & Canada only
-			$type->length = array(16);
 			$types[] = $type;
 
 			$type = new stdClass();
