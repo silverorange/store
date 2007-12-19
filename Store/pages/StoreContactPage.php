@@ -103,9 +103,9 @@ class StoreContactPage extends SiteArticlePage
 	}
 
 	// }}}
-	// {{{ private function browserInfo()
+	// {{{ protected function browserInfo()
 
-	private function browserInfo()
+	protected function browserInfo()
 	{
 		$info = "\n\n-------------------------\n";
 		$info.= "User Information\n";
