@@ -28,23 +28,19 @@ class StoreAccountEdit extends SiteAccountEdit
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
 
 		parent::initInternal();
-
-		$this->fields[] = 'phone';
-		$this->fields[] = 'company';
 	}
 
 	// }}}
 
 	// process phase
-	// {{{ protected function getUIValues()
+	// {{{ protected function updateAccount()
 
-	protected function getUIValues()
+	protected function updateAccount()
 	{
-		$values = parent::getUIValues();
-		$values = array_merge($values,
-			$this->ui->getValues(array('phone', 'company')));
+		parent::updateAccount();
 
-		return $values;
+		$this->account->phone = $this->ui->getWidget('phone')->value;
+		$this->account->company = $this->ui->getWidget('company')->value;
 	}
 
 	// }}}
