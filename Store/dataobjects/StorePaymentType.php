@@ -291,7 +291,7 @@ class StorePaymentType extends SwatDBDataObject
 		$card_types = array(
 			'visa',
 			'mastercard',
-			'delta', 
+			'delta',
 			'solo',
 			'switch',
 			'electron',
