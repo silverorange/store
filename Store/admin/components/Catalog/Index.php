@@ -48,7 +48,8 @@ class StoreCatalogIndex extends AdminIndex
 
 	protected function getTableModel(SwatView $view)
 	{
-		$sql = sprintf('select id, title, clone_of from Catalog order by %s',
+		$sql = sprintf('select id, title, clone_of, in_season
+			from Catalog order by %s',
 			$this->getOrderByClause($view, 'title'));
 
 		$rs = SwatDB::query($this->app->db, $sql);

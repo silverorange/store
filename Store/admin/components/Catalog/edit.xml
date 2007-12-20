@@ -12,15 +12,9 @@
 					<property name="maxlength" type="integer">255</property>
 				</widget>
 			</widget>
-			<widget class="SwatFieldset" id="status_fieldset">
-				<property name="title" translatable="yes">Status</property>
-				<widget class="SwatReplicableFormField" id="status_replicator">
-					<widget class="SwatFlydown" id="status">
-						<property name="show_blank" type="boolean">false</property>
-						<property name="required" type="boolean">true</property>
-						<property name="value" type="constant">Catalog::STATUS_DISABLED</property>
-					</widget>
-				</widget>
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">In Season?</property>
+				<widget class="SwatCheckbox" id="in_season" />
 			</widget>
 			<widget class="SwatFooterFormField">
 				<widget class="SwatButton" id="submit_button" />

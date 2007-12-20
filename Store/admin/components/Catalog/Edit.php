@@ -14,7 +14,7 @@ require_once 'SwatDB/SwatDBClassMap.php';
  * @copyright 2005-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-abstract class StoreCatalogEdit extends AdminDBEdit
+class StoreCatalogEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
@@ -37,32 +37,7 @@ abstract class StoreCatalogEdit extends AdminDBEdit
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
 		$this->ui->loadFromXML($this->ui_xml);
 
-		$this->fields = array('title');
-
-		$id = SiteApplication::initVar('id', null);
-
-		$status_flydown = $this->ui->getWidget('status');
-		$status_options = array();
-
-		$catalog_class = SwatDBClassMap::get('StoreCatalog');
-
-		foreach (call_user_func(array($catalog_class, 'getStatuses')) as
-			$id => $title)
-				$status_options[] = new SwatOption($id, $title);
-
-		$status_flydown->options = $status_options;
-
-		$status_replicator = $this->ui->getWidget('status_replicator');
-
-		$id = SiteApplication::initVar('id', null);
-		if ($id === null) {
-			$status_replicator->replicators =
-				SwatDB::getOptionArray($this->app->db, 'Region', 'title', 'id',
-					'title');
-		} else {
-			$status_replicator->visible = false;
-			$this->ui->getWidget('status_fieldset')->visible = false;
-		}
+		$this->fields = array('title', 'boolean:in_season');
 	}
 
 	// }}}
@@ -72,7 +47,7 @@ abstract class StoreCatalogEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$values = $this->ui->getValues(array('title'));
+		$values = $this->ui->getValues(array('title', 'in_season'));
 
 		if ($this->id === null)
 			$this->id = SwatDB::insertRow($this->app->db, 'Catalog',
@@ -81,18 +56,11 @@ abstract class StoreCatalogEdit extends AdminDBEdit
 			SwatDB::updateRow($this->app->db, 'Catalog', $this->fields, $values,
 				'id', $this->id);
 
-		$this->saveStatus();
-
 		$message = new SwatMessage(
 			sprintf(Store::_('“%s” has been saved.'), $values['title']));
 
 		$this->app->messages->add($message);
 	}
-
-	// }}}
-	// {{{ abstract protected function saveStatus()
-
-	abstract protected function saveStatus();
 
 	// }}}
 
@@ -110,14 +78,7 @@ abstract class StoreCatalogEdit extends AdminDBEdit
 				Store::_('Catalog'), $this->id));
 
 		$this->ui->setValues(get_object_vars($row));
-
-		$this->loadStatus();
 	}
-
-	// }}}
-	// {{{ abstract protected function loadStatus()
-
-	abstract protected function loadStatus();
 
 	// }}}
 	// {{{ protected function buildNavBar()

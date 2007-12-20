@@ -14,7 +14,7 @@ require_once 'SwatDB/SwatDBClassMap.php';
  * @copyright 2005-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-abstract class StoreCatalogStatus extends AdminDBEdit
+class StoreCatalogStatus extends AdminDBEdit
 {
 	// {{{ protected properties
 
@@ -48,19 +48,7 @@ abstract class StoreCatalogStatus extends AdminDBEdit
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
 		$this->ui->loadFromXML($this->ui_xml);
 
-		$status_flydown = $this->ui->getWidget('status');
-		$status_options = array();
-
-		$catalog_class = SwatDBClassMap::get('StoreCatalog');
-
-		foreach (call_user_func(array($catalog_class, 'getStatuses')) as 
-			$id => $title)
-				$status_options[] = new SwatOption($id, $title);
-
-		$status_flydown->options = $status_options;
-
 		$status_replicator = $this->ui->getWidget('status_replicator');
-
 		$status_replicator->replicators = SwatDB::getOptionArray($this->app->db,
 			'Region', 'title', 'id', 'title');
 
@@ -104,11 +92,13 @@ abstract class StoreCatalogStatus extends AdminDBEdit
 
 	protected function disableClone()
 	{
-		$sql = 'delete from CatalogRegionBinding
+		$sql = 'update CatalogRegionBinding
+			set available = %s
 			where catalog in
 				(select clone from CatalogCloneView where catalog = %s)';
 
 		$sql = sprintf($sql,
+			$this->app->db->quote(false, 'boolean'),
 			$this->app->db->quote($this->id, 'integer'));
 
 		SwatDB::exec($this->app->db, $sql);
@@ -119,14 +109,43 @@ abstract class StoreCatalogStatus extends AdminDBEdit
 	}
 
 	// }}}
-	// {{{ abstract protected function saveStatus()
+	// {{{ protected function saveStatus()
 
-	/**
-	 * Each subclass must do its own saving of status
-	 * 
-	 * @return boolean true if a catalog has been enabled in any region.
-	 */
-	abstract protected function saveStatus();
+	protected function saveStatus()
+	{
+		$regions = array();
+		$available_regions = array();
+		$unavailable_regions = array();
+
+		$status_replicator = $this->ui->getWidget('status_replicator');
+		foreach ($status_replicator->replicators as $region => $dummy) {
+			$available = $status_replicator->getWidget(
+				'available', $region)->value;
+
+			if ($available)
+				$available_regions[] = $region;
+			else
+				$unavailable_regions[] = $region;
+
+			$regions[] = $region;
+		}
+
+    	SwatDB::updateBinding($this->app->db, 'CatalogRegionBinding', 'catalog',
+			$this->id, 'region', $regions, 'Region', 'id');
+
+		$where_clause = sprintf('catalog = %s',
+			$this->app->db->quote($this->id, 'integer'));
+
+		SwatDB::updateColumn($this->app->db, 'CatalogRegionBinding',
+			'boolean:available', true, 'region', $available_regions,
+			$where_clause);
+
+		SwatDB::updateColumn($this->app->db, 'CatalogRegionBinding',
+			'boolean:available', false, 'region', $unavailable_regions,
+			$where_clause);
+
+		return (count($available_regions) > 0);
+	}
 
 	// }}}
 
@@ -165,25 +184,15 @@ abstract class StoreCatalogStatus extends AdminDBEdit
 				'changes to the live website.</p>'), Store::_('catalog'));
 		}
 
+		$statuses = SwatDB::getOptionArray($this->app->db,
+			'CatalogRegionBinding',	'available', 'region', null,
+			sprintf('catalog = %s',
+				$this->app->db->quote($this->id, 'integer')));
+
 		$status_replicator = $this->ui->getWidget('status_replicator');
-		$sql = 'select region, available from CatalogRegionBinding
-			where catalog = %s';
-
-		$sql = sprintf($sql,
-			$this->app->db->quote($this->id, 'integer'));
-
-		$catalog_class = SwatDBClassMap::get('StoreCatalog');
-
-		$statuses = SwatDB::query($this->app->db, $sql);
-
-		foreach ($statuses as $status) {
-			$status_flydown = $status_replicator->getWidget('status',
-				$status->region);
-
-			$status_constant = call_user_func(array($catalog_class,
-				'getStatusConstant'), $status->available);
-
-			$status_flydown->value = $status_constant;
+		foreach ($status_replicator->replicators as $region => $dummy) {
+			$available = $status_replicator->getWidget(
+				'available', $region)->value = $statuses[$region];
 		}
 	}
 
@@ -192,13 +201,9 @@ abstract class StoreCatalogStatus extends AdminDBEdit
 
 	protected function buildNavBar()
 	{
-		$sql = sprintf('select title from Catalog where id = %s',
-			$this->app->db->quote($this->id, 'integer'));
-
-		$title = SwatDB::queryOne($this->app->db, $sql);
 		$link = sprintf('Catalog/Details?id=%s', $this->id);
 
-		$this->navbar->createEntry($title, $link);
+		$this->navbar->createEntry($this->catalog->title, $link);
 		$this->navbar->createEntry(Store::_('Change Status'));
 	}
 

@@ -13,8 +13,13 @@ require_once 'SwatDB/SwatDBClassMap.php';
  */
 class StoreCatalogStatusCellRenderer extends SwatCellRenderer
 {
+	// {{{ public properties
+
 	public $catalog;
 	public $db;
+
+	// }}}
+	// {{{ public function render()
 
 	public function render()
 	{
@@ -30,18 +35,18 @@ class StoreCatalogStatusCellRenderer extends SwatCellRenderer
 		$catalog_statuses = SwatDB::query($this->db, $sql);
 
 		foreach ($catalog_statuses as $row) {
-			echo SwatString::minimizeEntities($row->title);
-			echo ': ';
+			$status = ($row->available === true) ?
+				Site::_('Available') : Site::_('Unavailable');
 
-			$status_constant = call_user_func(array($catalog_class,
-				'getStatusConstant'), $row->available);
-
-			echo call_user_func(array($catalog_class, 'getStatusTitle'),
-				$status_constant);
+			printf('%s: %s',
+				SwatString::minimizeEntities($row->title),
+				SwatString::minimizeEntities($status));
 
 			echo '<br />';
 		}
 	}
+
+	// }}}
 }
 
 ?>
