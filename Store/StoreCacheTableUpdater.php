@@ -54,20 +54,11 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
 	}
 
 	// }}}
-	// {{{ public function init()
-
-	public function init()
-	{
-		$this->session_save_path = session_save_path();
-		$this->initModules();
-	}
-
-	// }}}
 	// {{{ public function run()
 
 	public function run()
 	{
-		$this->init();
+		$this->initModules();
 		$this->parseCommandLineArguments();
 
 		$this->updateCacheTables();
