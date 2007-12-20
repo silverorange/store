@@ -5,3 +5,9 @@ create table CacheFlag (
 );
 
 create index CacheFlag_shortname_index on CacheFlag(shortname);
+
+insert into CacheFlag (shortname, dirty) values
+	('CategoryVisibleProductCountByRegion', false);
+
+insert into CacheFlag (shortname, dirty) values
+	('VisibleProduct', false);
