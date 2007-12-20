@@ -61,9 +61,15 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
 		$this->initModules();
 		$this->parseCommandLineArguments();
 
+		$this->output(Store::_('Pass 1/2:')."\n\n",
+			self::VERBOSITY_MESSAGES, true);
+
 		$this->updateCacheTables();
 
 		// run twice to handle two-level dependencies
+		$this->output("\n".Store::_('Pass 2/2:')."\n\n",
+			self::VERBOSITY_MESSAGES, true);
+
 		$this->updateCacheTables();
 	}
 
