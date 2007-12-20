@@ -3,7 +3,7 @@
 require_once 'Store/dataobjects/StorePaymentMethod.php';
 
 /**
- * A payment method for an account for an e-commerce web application 
+ * A payment method for an account for an e-commerce web application
  *
  * @package   Store
  * @copyright 2006-2007 silverorange
