@@ -53,6 +53,7 @@ class StoreCatalogDetails extends AdminPage
 		parent::buildInternal();
 
 		$sql = 'select Catalog1.id, Catalog1.title,
+					Catalog1.in_season,
 					Catalog2.title as parent_title,
 					Catalog1.clone_of as parent_id
 				from Catalog as Catalog1
@@ -99,7 +100,7 @@ class StoreCatalogDetails extends AdminPage
 			$this->app->db->quote($this->id, 'integer')));
 
 		// check to see if Catalog is enabled
-		$sql = 'select count(region) from CatalogRegionBinding 
+		$sql = 'select count(region) from CatalogRegionBinding
 			where catalog = %s';
 		$enabled = (SwatDB::queryOne($this->app->db, sprintf($sql,
 			$this->app->db->quote($this->id, 'integer'))) > 0);
@@ -108,12 +109,12 @@ class StoreCatalogDetails extends AdminPage
 		if (!$enabled || $row->num_products == 0)
 			$this->ui->getWidget('delete')->sensitive = true;
 
-		// sensitize the clone button 
+		// sensitize the clone button
 		if ($row->clone_id === null && $row->parent_id === null)
 			$this->ui->getWidget('clone')->sensitive = true;
 
 		// setup status renderer
-		$status_renderer = 
+		$status_renderer =
 			$component_details->getField('status')->getRendererByPosition();
 
 		$status_renderer->db = $this->app->db;
