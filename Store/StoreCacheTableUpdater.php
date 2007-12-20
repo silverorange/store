@@ -109,7 +109,7 @@ abstract class StoreCacheTableUpdater extends SiteCommandLineApplication
 	}
 
 	// }}}
-	// {{{ abstract protected function getCacheTableUpdateFunction()
+	// {{{ protected function getCacheTableUpdateFunction()
 
 	/**
 	 * Gets the SQL function to run for a dirty cache table entry
@@ -123,10 +123,25 @@ abstract class StoreCacheTableUpdater extends SiteCommandLineApplication
 	 */
 	protected function getCacheTableUpdateFunction($table_name)
 	{
-		$this->output(sprintf(Store::_('Unknown dirty cache table %s.')."\n",
-			$table_name), self::VERBOSITY_ERRORS);
+		switch ($table_name) {
+		case 'CategoryVisibleProductCountByRegion':
+			$update_function = 'updateCategoryVisibleProductCountByRegion';
+			break;
 
-		exit(1);
+		case 'VisibleProduct':
+			$update_function = 'updateVisibleProduct';
+			break;
+
+		default:
+			$this->terminate(sprintf(
+				Store::_('Unknown dirty cache table %s.')."\n",
+				$table_name), self::VERBOSITY_ERRORS);
+
+			break;
+
+		}
+
+		return $update_function;
 	}
 
 	// }}}
