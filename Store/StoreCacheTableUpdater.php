@@ -16,7 +16,7 @@ require_once 'SwatDB/SwatDB.php';
  * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-abstract class StoreCacheTableUpdater extends SiteCommandLineApplication
+class StoreCacheTableUpdater extends SiteCommandLineApplication
 {
 	// {{{ class constants
 
