@@ -23,7 +23,7 @@ create table Orders (
 	shipping_total numeric(11, 2) not null,
 	tax_total numeric(11, 2) not null,
 
-	ad integer null references Ad(id),
+	ad integer null references Ad(id) on delete set null,
 	locale char(5) not null references Locale(id),
 	invoice integer null references Invoice(id),
 
