@@ -45,7 +45,7 @@ class StoreAdDetails extends SiteAdDetails
 	protected function getTableModel(SwatView $view)
 	{
 		switch ($view->id) {
-		case 'orders_view' :
+		case 'orders_view':
 			return $this->getOrdersTableModel();
 		default:
 			return parent::getTableModel($view);
