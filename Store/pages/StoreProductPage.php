@@ -9,6 +9,7 @@ require_once 'Store/pages/StorePage.php';
 require_once 'Store/dataobjects/StoreCartEntry.php';
 require_once 'Store/dataobjects/StoreProduct.php';
 require_once 'Store/dataobjects/StoreCategory.php';
+require_once 'Store/StoreItemsView.php';
 require_once 'Store/StoreMessage.php';
 require_once 'Store/StoreMessageDisplay.php';
 
@@ -24,13 +25,12 @@ class StoreProductPage extends StorePage
 
 	public $product_id;
 	public $product = null;
-	public $has_description = false;
 
 	// }}}
 	// {{{ protected properties
 
-	protected $items_ui;
-	protected $items_ui_xml = 'Store/pages/product-items-view.xml';
+	protected $items_view;
+	protected $items_view_xml = 'Store/pages/product-items-view.xml';
 	protected $cart_ui;
 	protected $cart_ui_xml = 'Store/pages/product-cart.xml';
 	protected $message_display;
@@ -59,6 +59,7 @@ class StoreProductPage extends StorePage
 		$this->message_display->init();
 
 		$this->initProduct();
+		$this->initItemsView();
 		$this->initCart();
 	}
 
@@ -83,22 +84,20 @@ class StoreProductPage extends StorePage
 	protected function initProduct()
 	{
 		$this->loadProduct($this->product_id);
+	}
 
-		$this->items_ui = new SwatUI();
-		$this->items_ui->loadFromXML($this->items_ui_xml);
+	// }}}
+	// {{{ protected function initItemsView()
 
-		$items_form = $this->items_ui->getWidget('form');
-		$items_form->action = $this->source;
+	protected function initItemsView()
+	{
+		$this->items_view = new StoreItemsView();
+		$this->items_view->setDatabase($this->app->db);
+		$this->items_view->setProduct($this->product);
+		$this->items_view->setSource($this->source);
+		$this->items_view->setRegion($this->app->getRegion());
 
-		if ($this->items_ui->hasWidget('quantity')) {
-			$quantity = $this->items_ui->getWidget('quantity');
-			$this->default_quantity = $quantity->value;
-		}
-
-		$view = $this->items_ui->getWidget('items_view');
-
-		$this->items_ui->init();
-		$view->model = $this->getItemTableStore($view);
+		$this->items_view->init();
 	}
 
 	// }}}
@@ -117,66 +116,6 @@ class StoreProductPage extends StorePage
 		}
 
 		$this->cart_ui->init();
-	}
-
-	// }}}
-	// {{{ protected function getItemTableStore()
-
-	protected function getItemTableStore(SwatTableView $view)
-	{
-		$store = new SwatTableStore();
-		$last_sku = null;
-		$tab_index = 1;
-
-		$sql = 'select id, title from ItemGroup where product = %s';
-		$sql = sprintf($sql,
-			$this->app->db->quote($this->product->id, 'integer'));
-
-		$this->product->items->loadAllSubDataObjects('item_group',
-			$this->app->db, $sql, 'StoreItemGroupWrapper');
-
-		foreach ($this->product->items as $item) {
-			if ($item->isEnabled()) {
-				$ds = $this->getItemDetailsStore($item);
-				$ds->tab_index = $tab_index++;
-
-				$ds->sku = ($last_sku === $item->sku) ?
-					'' : $item->sku;
-
-				$last_sku = $item->sku;
-				$store->add($ds);
-
-				if ($ds->is_available)
-					$view->getRow('add_button')->visible = true;
-			}
-		}
-
-		$view->getRow('add_button')->tab_index = $tab_index;
-		return $store;
-	}
-
-	// }}}
-	// {{{ protected function getItemDetailsStore()
-
-	protected function getItemDetailsStore(StoreItem $item)
-	{
-		$ds = new SwatDetailsStore($item);
-
-		$ds->description = $item->getDescription(false);
-
-		if (strlen($ds->description) > 0)
-			$this->has_description = true;
-
-		$ds->is_available = $item->isAvailableInRegion($this->app->getRegion());
-
-		$ds->status = '';
-		if (!$ds->is_available)
-			$ds->status = sprintf('<span class="item-status">%s</span>',
-				$item->getStatus()->title);
-
-		$ds->price = $item->getPrice();
-
-		return $ds;
 	}
 
 	// }}}
@@ -209,47 +148,31 @@ class StoreProductPage extends StorePage
 
 	protected function processProduct()
 	{
-		$this->items_ui->process();
-		$form = $this->items_ui->getWidget('form');
+		$this->items_view->process();
 
-		if ($form->isProcessed()) {
-			$view = $this->items_ui->getWidget('items_view');
-			if ($view->hasSpanningColumn('quantity_column'))
-				$column = $view->getSpanningColumn('quantity_column');
-			else
-				$column = $view->getColumn('quantity_column');
+		if ($this->items_view->hasMessage()) {
+			$message = new SwatMessage(Store::_('There is a problem with '.
+				'one or more of the items you requested.'),
+				SwatMessage::ERROR);
 
-			$renderer = $column->getRenderer('quantity_renderer');
+			$message->secondary_content = Store::_('Please address the '.
+				'fields highlighted below and re-submit the form.');
 
-			if ($form->hasMessage()) {
-				$message = new SwatMessage(Store::_('There is a problem with '.
-					'one or more of the items you requested.'),
-					SwatMessage::ERROR);
+			$this->message_display->add($message);
+		}
 
-				$message->secondary_content = Store::_('Please address the '.
-					'fields highlighted below and re-submit the form.');
+		$items = $this->items_view->getItemsToAdd();
+		$num_items_added = 0;
 
-				$this->message_display->add($message);
-			}
+		foreach ($items as $item) {
+			$cart_entry = $this->createCartEntry($item->item_id);
+			$cart_entry->quantity = $item->quantity;
 
-			$num_items_added = 0;
-			foreach ($renderer->getClonedWidgets() as $id => $widget) {
-				if (!$renderer->hasMessage($id) && $widget->value > 0) {
+			$added_entry = $this->app->cart->checkout->addEntry($cart_entry);
 
-					$cart_entry = $this->createCartEntry($id);
-					$cart_entry->quantity = $widget->value;
-
-					$added_entry =
-						$this->app->cart->checkout->addEntry($cart_entry);
-
-					if ($added_entry !== null) {
-						$this->added_entry_ids[] = $added_entry->id;
-						$num_items_added++;
-					}
-
-					// reset quantity entry value (no persistance)
-					$widget->value = $this->default_quantity;
-				}
+			if ($added_entry !== null) {
+				$this->added_entry_ids[] = $added_entry->id;
+				$num_items_added++;
 			}
 
 			if ($num_items_added > 0) {
@@ -699,12 +622,7 @@ class StoreProductPage extends StorePage
 
 	protected function displayItems()
 	{
-		$view = $this->items_ui->getWidget('items_view');
-
-		if (!$this->has_description)
-			$view->getColumn('description_column')->visible = false;
-
-		$this->items_ui->display();
+		$this->items_view->display();
 	}
 
 	// }}}
@@ -791,9 +709,9 @@ class StoreProductPage extends StorePage
 		static $translations_displayed = false;
 
 		$item_ids = array();
-		$model = $this->items_ui->getWidget('items_view')->model;
-		foreach ($model as $item)
-			$item_ids[] = $item->id;
+		foreach ($this->product->items as $item)
+			if ($item->isEnabled())
+				$item_ids[] = $item->id;
 
 		$item_ids = "'".implode("', '", $item_ids)."'";
 
@@ -896,9 +814,9 @@ class StoreProductPage extends StorePage
 			'packages/store/javascript/store-product-page.js',
 			Store::PACKAGE_ID));
 
-		if (isset($this->items_ui))
+		if (isset($this->items_view))
 			$this->layout->addHtmlHeadEntrySet(
-				$this->items_ui->getRoot()->getHtmlHeadEntrySet());
+				$this->items_view->getHtmlHeadEntrySet());
 
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
 			'packages/store/styles/store-product-page.css',
