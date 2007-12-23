@@ -90,13 +90,21 @@ class StoreProductPage extends StorePage
 
 	protected function initItemsView()
 	{
-		$this->items_view = new StoreItemsView();
+		$this->items_view = $this->getItemsView();
 		$this->items_view->setDatabase($this->app->db);
 		$this->items_view->setProduct($this->product);
 		$this->items_view->setSource($this->source);
 		$this->items_view->setRegion($this->app->getRegion());
 
 		$this->items_view->init();
+	}
+
+	// }}}
+	// {{{ protected function getItemsView()
+
+	protected function getItemsView()
+	{
+		return new StoreItemsView();
 	}
 
 	// }}}
