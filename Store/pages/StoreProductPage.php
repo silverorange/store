@@ -30,7 +30,6 @@ class StoreProductPage extends StorePage
 	// {{{ protected properties
 
 	protected $items_view;
-	protected $items_view_xml = 'Store/pages/product-items-view.xml';
 	protected $cart_ui;
 	protected $cart_ui_xml = 'Store/pages/product-cart.xml';
 	protected $message_display;
