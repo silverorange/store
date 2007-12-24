@@ -13,7 +13,9 @@ function StoreProductPage(item_ids)
 	for (var i = 0; i < item_ids.length; i++) {
 		quantity_box = document.getElementById(
 			'quantity_renderer_' + item_ids[i] + '_quantity');
-		this.quantity_boxes.push(quantity_box);
+
+		if (quantity_box)
+			this.quantity_boxes.push(quantity_box);
 	}
 
 	if (this.form)
@@ -35,7 +37,7 @@ StoreProductPage.handleFormSubmit = function(event, page)
 		}
 	}
 
-	if (no_quantities) {
+	if (page.quantity_boxes.length > 0 && no_quantities) {
 		YAHOO.util.Event.preventDefault(event);
 		alert(StoreProductPage.enter_quantity_message);
 	}
