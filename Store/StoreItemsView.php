@@ -170,7 +170,7 @@ class StoreItemsView extends SwatControl
 
 	public function display()
 	{
-		SwatWidget::display();
+		$this->displayed = true;
 
 		$view = $this->ui->getWidget('items_view');
 
