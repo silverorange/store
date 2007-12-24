@@ -7,11 +7,12 @@
 function StoreProductPage(item_ids)
 {
 	this.form = document.getElementById('form');
-	this.quantity_boxes = [];
+	this.quantity_boxes = new Array();
 
 	var quantity_box;
 	for (var i = 0; i < item_ids.length; i++) {
-		quantity_box = document.getElementById('quantity_' + item_ids[i]);
+		quantity_box = document.getElementById(
+			'quantity_renderer_' + item_ids[i] + '_quantity');
 		this.quantity_boxes.push(quantity_box);
 	}
 
