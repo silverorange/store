@@ -101,6 +101,8 @@ class StoreItemsView extends SwatControl
 
 	public function init()
 	{
+		parent::init();
+
 		$this->ui = new SwatUI();
 		$this->ui->loadFromXML($this->ui_xml);
 
@@ -170,7 +172,7 @@ class StoreItemsView extends SwatControl
 
 	public function display()
 	{
-		$this->displayed = true;
+		parent::display();
 
 		$view = $this->ui->getWidget('items_view');
 
