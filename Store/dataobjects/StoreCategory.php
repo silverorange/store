@@ -101,8 +101,7 @@ class StoreCategory extends SwatDBDataObject
 	/**
 	 * Always visible
 	 *
-	 * If true, this category is displayed even when it doesn't have an entry
-	 * in the region binding table.
+	 * Always display this category, even when it contains no enabled products.
 	 *
 	 * @var boolean
 	 */
