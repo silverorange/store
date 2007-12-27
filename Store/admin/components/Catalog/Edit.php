@@ -1,11 +1,11 @@
 <?php
 
+require_once 'SwatDB/SwatDB.php';
+require_once 'SwatDB/SwatDBClassMap.php';
+require_once 'Swat/SwatMessage.php';
 require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'Swat/SwatMessage.php';
 require_once 'Store/dataobjects/StoreCatalog.php';
-require_once 'SwatDB/SwatDBClassMap.php';
 
 /**
  * Edit page for Catalogs
@@ -37,7 +37,24 @@ class StoreCatalogEdit extends AdminDBEdit
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
 		$this->ui->loadFromXML($this->ui_xml);
 
-		$this->fields = array('title', 'boolean:in_season');
+		$this->initCatalog();
+	}
+
+	// }}}
+	// {{{ protected function initCatalog()
+
+	protected function initCatalog()
+	{
+		$class_name = SwatDBClassMap::get('StoreCatalog');
+		$this->catalog = new $class_name();
+		$this->catalog->setDatabase($this->app->db);
+
+		if ($this->id !== null) {
+			if (!$this->catalog->load($this->id))
+				throw new AdminNotFoundException(
+					sprintf(Pinhole::_('Catalog with id “%s” not found.'),
+						$this->id));
+		}
 	}
 
 	// }}}
@@ -47,17 +64,16 @@ class StoreCatalogEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$values = $this->ui->getValues(array('title', 'in_season'));
+		$values = $this->ui->getValues(array(
+			'title', 'in_season'));
 
-		if ($this->id === null)
-			$this->id = SwatDB::insertRow($this->app->db, 'Catalog',
-				$this->fields, $values, 'id');
-		else
-			SwatDB::updateRow($this->app->db, 'Catalog', $this->fields, $values,
-				'id', $this->id);
+		$this->catalog->title     = $values['title'];
+		$this->catalog->in_season = $values['in_season'];
+		$this->catalog->save();
 
-		$message = new SwatMessage(
-			sprintf(Store::_('“%s” has been saved.'), $values['title']));
+		$message = new SwatMessage(sprintf(
+			Store::_('“%s” has been saved.'),
+			$this->catalog->title));
 
 		$this->app->messages->add($message);
 	}
@@ -69,15 +85,7 @@ class StoreCatalogEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$row = SwatDB::queryRowFromTable($this->app->db, 'Catalog',
-			$this->fields, 'id', $this->id);
-
-		if ($row === null)
-			throw new AdminNotFoundException(
-				sprintf(Store::_('%s with id ‘%s’ not found.'),
-				Store::_('Catalog'), $this->id));
-
-		$this->ui->setValues(get_object_vars($row));
+		$this->ui->setValues(get_object_vars($this->catalog));
 	}
 
 	// }}}
@@ -85,14 +93,9 @@ class StoreCatalogEdit extends AdminDBEdit
 
 	protected function buildNavBar()
 	{
-		$sql = sprintf('select title from Catalog where id = %s',
-			$this->app->db->quote($this->id, 'integer'));
-
-		$title = SwatDB::queryOne($this->app->db, $sql);
-		if ($title !== null) {
-			$link = sprintf('Catalog/Details?id=%s', $this->id);
-			$this->navbar->createEntry($title, $link);
-		}
+		if ($this->catalog->title !== null)
+			$this->navbar->createEntry($this->catalog->title,
+				sprintf('Catalog/Details?id=%s', $this->catalog->id));
 
 		parent::buildNavBar();
 	}
