@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreCategoryImage.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 
 /**
- * Delete confirmation page for category images 
+ * Delete confirmation page for category images
  *
  * @package   Store
  * @copyright 2006-2007 silverorange
@@ -90,7 +90,7 @@ class StoreCategoryImageDelete extends AdminDBDelete
 		$sql = sprintf('select * from Image where id in
 			(select image from Category where id in (%s))',
 			$this->getItemList('integer'));
-			
+
 		$images = SwatDB::query($this->app->db, $sql);
 
 		ob_start();
@@ -118,7 +118,7 @@ class StoreCategoryImageDelete extends AdminDBDelete
 	// }}}
 	// {{{ private function buildNavBar()
 
-	private function buildNavBar() 
+	private function buildNavBar()
 	{
 		$last_entry = $this->navbar->popEntry();
 		$last_entry->title = Store::_('Remove Image');
