@@ -166,32 +166,32 @@ class StoreProductPage extends StorePage
 				'fields highlighted below and re-submit the form.');
 
 			$this->message_display->add($message);
-		}
+		} else {
+			$items = $this->items_view->getItemsToAdd();
+			$num_items_added = 0;
 
-		$items = $this->items_view->getItemsToAdd();
-		$num_items_added = 0;
+			foreach ($items as $item) {
+				$cart_entry = $this->createCartEntry($item->item_id);
+				$cart_entry->quantity = $item->quantity;
 
-		foreach ($items as $item) {
-			$cart_entry = $this->createCartEntry($item->item_id);
-			$cart_entry->quantity = $item->quantity;
+				$added_entry = $this->app->cart->checkout->addEntry($cart_entry);
 
-			$added_entry = $this->app->cart->checkout->addEntry($cart_entry);
+				if ($added_entry !== null) {
+					$this->added_entry_ids[] = $added_entry->id;
+					$num_items_added++;
+				}
 
-			if ($added_entry !== null) {
-				$this->added_entry_ids[] = $added_entry->id;
-				$num_items_added++;
+				if ($num_items_added > 0) {
+					$this->cart_message = new StoreMessage(
+						Store::_('Your cart has been updated.'),
+						StoreMessage::CART_NOTIFICATION);
+				}
+
+				// add cart messages
+				$messages = $this->app->cart->checkout->getMessages();
+				foreach ($messages as $message)
+					$this->message_display->add($message);
 			}
-
-			if ($num_items_added > 0) {
-				$this->cart_message = new StoreMessage(
-					Store::_('Your cart has been updated.'),
-					StoreMessage::CART_NOTIFICATION);
-			}
-
-			// add cart messages
-			$messages = $this->app->cart->checkout->getMessages();
-			foreach ($messages as $message)
-				$this->message_display->add($message);
 		}
 	}
 
