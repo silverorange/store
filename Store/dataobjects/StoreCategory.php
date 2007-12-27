@@ -24,7 +24,7 @@ require_once 'Store/dataobjects/StoreRegion.php';
  * One category may belong to another category and may contain multiple
  * categories. There is no restriction on placing a single category into
  * multiple categories so categories do not represent a tree structure.
- * 
+ *
  * @package   Store
  * @copyright 2006-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
@@ -39,7 +39,7 @@ class StoreCategory extends SwatDBDataObject
 	 * Objects that interact with categories may choose not to respect
 	 * categories with a depth greater than this value.
 	 *
-	 * The root category is the zero-th level category. 
+	 * The root category is the zero-th level category.
 	 */
 	const MAX_DEPTH = 8;
 
@@ -74,7 +74,7 @@ class StoreCategory extends SwatDBDataObject
 	/**
 	 * User visible title
 	 *
-	 * @var string 
+	 * @var string
 	 */
 	public $title;
 
@@ -84,7 +84,7 @@ class StoreCategory extends SwatDBDataObject
 	 * This text is intended to be displayed on the parent page of this
 	 * category.
 	 *
-	 * @var string 
+	 * @var string
 	 */
 	public $description;
 
@@ -94,14 +94,24 @@ class StoreCategory extends SwatDBDataObject
 	 * This text is intended to be displayed on a page dedicated to this
 	 * category.
 	 *
-	 * @var string 
+	 * @var string
 	 */
 	public $bodytext;
 
 	/**
+	 * Always visible
+	 *
+	 * If true, this category is displayed even when it doesn't have an entry
+	 * in the region binding table.
+	 *
+	 * @var boolean
+	 */
+	public $always_visible;
+
+	/**
 	 * The date this category was created
 	 *
-	 * @var Date 
+	 * @var Date
 	 */
 	public $createdate;
 
@@ -354,7 +364,7 @@ class StoreCategory extends SwatDBDataObject
 	protected function loadRelatedArticles()
 	{
 		$sql = 'select Article.*, getArticlePath(id) as path
-			from Article 
+			from Article
 				inner join ArticleCategoryBinding
 					on Article.id = ArticleCategoryBinding.article
 						and ArticleCategoryBinding.category = %s
