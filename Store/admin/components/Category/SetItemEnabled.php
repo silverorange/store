@@ -45,7 +45,7 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 	}
 
 	// }}}
-	
+
 	// init phase
 	// {{{ protected function initInternal()
 
@@ -86,7 +86,7 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 	}
 
 	// }}}
-	
+
 	// build phase
 	// {{{ protected function buildInternal()
 
@@ -132,9 +132,9 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 		$this->navbar->popEntry();
 
 		if ($this->category_id !== null) {
-			$navbar_rs = SwatDB::executeStoredProc($this->app->db, 
+			$navbar_rs = SwatDB::executeStoredProc($this->app->db,
 				'getCategoryNavbar', array($this->category_id));
-			
+
 			foreach ($navbar_rs as $row)
 				$this->navbar->addEntry(new SwatNavBarEntry($row->title,
 					'Category/Index?id='.$row->id));
@@ -154,7 +154,7 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 		$sql = 'select distinct Item.id
 				from Item
 					inner join Product on Product.id = Item.product
-					inner join CategoryProductBinding on 
+					inner join CategoryProductBinding on
 						CategoryProductBinding.product = Product.id
 					inner join getCategoryDescendants(null) as
 						category_descendants on
@@ -178,7 +178,7 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 		$sql = '';
 
 		if ($this->region > 0)
-			$sql = sprintf('region = %s and', 
+			$sql = sprintf('region = %s and',
 				$this->app->db->quote($this->region, 'integer'));
 
 		return $sql;
@@ -191,9 +191,9 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 	{
 		if ($this->region > 0)
 			$region_title = SwatDB::queryOne($this->app->db,
-				sprintf('select title from Region where id = %s', 
+				sprintf('select title from Region where id = %s',
 					$this->region));
-		else 
+		else
 			$region_title = Store::_('All Regions');
 
 		return $region_title;
@@ -209,7 +209,7 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 			case 'button':
 				return Store::ngettext('Set Item as Enabled',
 					'Set Items as Enabled', $count);
-	
+
 			case 'confirmation':
 				return '<h3>'.sprintf(Store::ngettext(
 				'If you proceed, one item will be enabled for “%2$s”.',
@@ -234,7 +234,7 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 			case 'button':
 				return Store::ngettext('Set Item as Disabled',
 					'Set Items as Disabled', $count);
-	
+
 			case 'confirmation':
 				return '<h3>'.sprintf(Store::ngettext(
 				'If you proceed, one item will be disabled for “%2$s”.',

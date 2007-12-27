@@ -35,11 +35,25 @@ class StoreCategoryEdit extends AdminDBEdit
 		parent::initInternal();
 
 		$this->ui->loadFromXML($this->ui_xml);
-
-		$this->fields = array('title', 'shortname', 'description', 'bodytext',
-			'boolean:always_visible');
-
 		$this->parent = SiteApplication::initVar('parent');
+		$this->initCategory();
+	}
+
+	// }}}
+	// {{{ protected function initCategory()
+
+	protected function initCategory()
+	{
+		$class_name = SwatDBClassMap::get('StoreCategory');
+		$this->category = new $class_name();
+		$this->category->setDatabase($this->app->db);
+
+		if ($this->id !== null) {
+			if (!$this->category->load($this->id))
+				throw new AdminNotFoundException(
+					sprintf(Pinhole::_('Category with id “%s” not found.'),
+						$this->id));
+		}
 	}
 
 	// }}}
@@ -90,40 +104,42 @@ class StoreCategoryEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$values = $this->getUIValues();
+		$this->updateCatalog();
 
-		if ($this->id === null) {
-			$this->fields[] = 'date:createdate';
-			$date = new Date();
-			$date->toUTC();
-			$values['createdate'] = $date->getDate();
-
-			$this->fields[] = 'integer:parent';
-			$values['parent'] =
-				$this->ui->getWidget('edit_form')->getHiddenField('parent');
-
-			$this->id = SwatDB::insertRow($this->app->db, 'Category',
-				$this->fields, $values, 'integer:id');
-		} else {
-			SwatDB::updateRow($this->app->db, 'Category', $this->fields,
-				$values, 'integer:id', $this->id);
-		}
-
+		$this->category->save();
 		$this->addToSearchQueue();
 
-		$message = new SwatMessage(sprintf(Store::_('“%s” has been saved.'),
-			$values['title']));
+		$message = new SwatMessage(sprintf(
+			Store::_('“%s” has been saved.'),
+			$this->category->title));
 
 		$this->app->messages->add($message);
 	}
 
 	// }}}
-	// {{{ protected function getUIValues()
+	// {{{ protected function updateCatalog()
 
-	protected function getUIValues()
+	protected function updateCatalog()
 	{
-		return $this->ui->getValues(
-			array('title', 'shortname', 'description', 'bodytext', 'always_visible'));
+		$this->category->title =
+			$this->ui->getWidget('title')->value;
+		$this->category->shortname =
+			$this->ui->getWidget('shortname')->value;
+		$this->category->description =
+			$this->ui->getWidget('description')->value;
+		$this->category->bodytext =
+			$this->ui->getWidget('bodytext')->value;
+		$this->category->always_visible =
+			$this->ui->getWidget('always_visible')->value;
+
+		if ($this->id === null) {
+			$date = new Date();
+			$date->toUTC();
+			$this->category->createdate = $date->getDate();
+
+			$this->category->parent = $this->ui->getWidget(
+				'edit_form')->getHiddenField('parent');
+		}
 	}
 
 	// }}}
@@ -176,15 +192,7 @@ class StoreCategoryEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$row = SwatDB::queryRowFromTable($this->app->db, 'Category',
-			$this->fields, 'integer:id', $this->id);
-
-		if ($row === null)
-			throw new AdminNotFoundException(
-				sprintf(Store::_('Category with id ‘%s’ not found.'),
-				$this->id));
-
-		$this->ui->setValues(get_object_vars($row));
+		$this->ui->setValues(get_object_vars($this->category));
 	}
 
 	// }}}
