@@ -191,9 +191,19 @@ class StoreCatalogStatus extends AdminDBEdit
 
 		$status_replicator = $this->ui->getWidget('status_replicator');
 		foreach ($status_replicator->replicators as $region => $dummy) {
-			$available = $status_replicator->getWidget(
-				'available', $region)->value = $statuses[$region];
+			if (isset($statuses[$region]))
+				$status_replicator->getWidget('available',
+					$region)->value = $statuses[$region];
 		}
+	}
+
+	// }}}
+	// {{{ protected function buildFrame()
+
+	protected function buildFrame()
+	{
+		$this->ui->getWidget('edit_frame')->title =
+			Store::_('Change Catalog Status');
 	}
 
 	// }}}
@@ -201,10 +211,9 @@ class StoreCatalogStatus extends AdminDBEdit
 
 	protected function buildNavBar()
 	{
-		$link = sprintf('Catalog/Details?id=%s', $this->id);
-
-		$this->navbar->createEntry($this->catalog->title, $link);
-		$this->navbar->createEntry(Store::_('Change Status'));
+		$this->navbar->createEntry($this->catalog->title,
+			sprintf('Catalog/Details?id=%s', $this->id));
+		$this->navbar->createEntry(Store::_('Change Catalog Status'));
 	}
 
 	// }}}
