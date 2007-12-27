@@ -146,10 +146,10 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 			sprintf('Account/Details?id=%s', $this->getAccount()->id)));
 
 		$this->navbar->addEntry($last_entry);
-		
+
 		$this->title = $this->getAccount()->fullname;
 	}
-	
+
 	// }}}
 	// {{{ protected function loadDBData()
 
