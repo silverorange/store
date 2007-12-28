@@ -97,12 +97,12 @@ class StoreItemsView extends SwatControl
 	}
 
 	// }}}
-	// {{{ public function getItemsToAdd()
+	// {{{ public function getCartEntries()
 
-	public function getItemsToAdd()
+	public function getCartEntries()
 	{
 		$form = $this->ui->getWidget('form');
-		$items = array();
+		$entries = array();
 
 		if ($form->isProcessed()) {
 			$view = $this->ui->getWidget('items_view');
@@ -115,15 +115,17 @@ class StoreItemsView extends SwatControl
 
 			foreach ($renderer->getClonedWidgets() as $id => $widget) {
 				if (!$renderer->hasMessage($id) && $widget->value > 0) {
-					$item = new StdClass();
-					$item->item_id = $id;
-					$item->quantity = $widget->value;
-					$items[] = $item;
+					$cart_entry = $this->createCartEntry($id);
+					$cart_entry->quantity = $widget->value;
+					$entries[] = $cart_entry;
+
+					// reset qauntity - not persistent
+					$widget->value = $this->default_quantity;
 				}
 			}
 		}
 
-		return $items;
+		return $entries;
 	}
 
 	// }}}
@@ -167,6 +169,24 @@ class StoreItemsView extends SwatControl
 			$set = new SwatHtmlHeadEntrySet();
 
 		return $set;
+	}
+
+	// }}}
+	// {{{ protected function createCartEntry()
+
+	protected function createCartEntry($item_id)
+	{
+		$cart_entry_class = SwatDBClassMap::get('StoreCartEntry');
+		$cart_entry = new $cart_entry_class();
+
+		$item_class = SwatDBClassMap::get('StoreItem');
+		$item = new $item_class();
+		$item->id = $item_id;
+
+		$cart_entry->item = $item;
+		$cart_entry->quick_order = false;
+
+		return $cart_entry;
 	}
 
 	// }}}

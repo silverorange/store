@@ -172,12 +172,11 @@ class StoreProductPage extends StorePage
 
 			$this->message_display->add($message);
 		} else {
-			$items = $this->items_view->getItemsToAdd();
+			$entries = $this->items_view->getCartEntries();
 			$num_items_added = 0;
 
-			foreach ($items as $item) {
-				$cart_entry = $this->createCartEntry($item->item_id);
-				$cart_entry->quantity = $item->quantity;
+			foreach ($entries as $cart_entry) {
+				$this->setupCartEntry($cart_entry);
 
 				$added_entry = $this->app->cart->checkout->addEntry($cart_entry);
 
@@ -185,29 +184,26 @@ class StoreProductPage extends StorePage
 					$this->added_entry_ids[] = $added_entry->id;
 					$num_items_added++;
 				}
-
-				if ($num_items_added > 0) {
-					$this->cart_message = new StoreMessage(
-						Store::_('Your cart has been updated.'),
-						StoreMessage::CART_NOTIFICATION);
-				}
-
-				// add cart messages
-				$messages = $this->app->cart->checkout->getMessages();
-				foreach ($messages as $message)
-					$this->message_display->add($message);
 			}
+
+			if ($num_items_added > 0) {
+				$this->cart_message = new StoreMessage(
+					Store::_('Your cart has been updated.'),
+					StoreMessage::CART_NOTIFICATION);
+			}
+
+			// add cart messages
+			$messages = $this->app->cart->checkout->getMessages();
+			foreach ($messages as $message)
+				$this->message_display->add($message);
 		}
 	}
 
 	// }}}
-	// {{{ protected function createCartEntry()
+	// {{{ protected function setupCartEntry()
 
-	protected function createCartEntry($item_id)
+	protected function setupCartEntry(StoreCartEntry $cart_entry)
 	{
-		$cart_entry_class = SwatDBClassMap::get('StoreCartEntry');
-		$cart_entry = new $cart_entry_class();
-
 		$this->app->session->activate();
 
 		if ($this->app->session->isLoggedIn())
@@ -217,17 +213,9 @@ class StoreProductPage extends StorePage
 			$cart_entry->sessionid =
 				$this->app->session->getSessionId();
 
-		// load item manually here so we can specify region
-		$item_class = SwatDBClassMap::get('StoreItem');
-		$item = new $item_class();
-		$item->setDatabase($this->app->db);
-		$item->setRegion($this->app->getRegion());
-		$item->load($item_id);
-
-		$cart_entry->item = $item;
-		$cart_entry->quick_order = false;
-
-		return $cart_entry;
+		$cart_entry->item->setDatabase($this->app->db);
+		$cart_entry->item->setRegion($this->app->getRegion());
+		$cart_entry->item->load($cart_entry->item->id);
 	}
 
 	// }}}
