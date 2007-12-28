@@ -94,8 +94,6 @@ class StoreProductPage extends StorePage
 		$this->items_view = $this->getItemsView();
 		$this->items_view->setProduct($this->product);
 		$this->items_view->setSource($this->source);
-		$this->items_view->setRegion($this->app->getRegion());
-
 		$this->items_view->init();
 	}
 
