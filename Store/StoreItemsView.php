@@ -184,7 +184,6 @@ class StoreItemsView extends SwatControl
 		$item->id = $item_id;
 
 		$cart_entry->item = $item;
-		$cart_entry->quick_order = false;
 
 		return $cart_entry;
 	}

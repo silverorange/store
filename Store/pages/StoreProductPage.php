@@ -213,6 +213,7 @@ class StoreProductPage extends StorePage
 			$cart_entry->sessionid =
 				$this->app->session->getSessionId();
 
+		$cart_entry->quick_order = false;
 		$cart_entry->item->setDatabase($this->app->db);
 		$cart_entry->item->setRegion($this->app->getRegion());
 		$cart_entry->item->load($cart_entry->item->id);
