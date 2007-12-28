@@ -36,8 +36,6 @@ class StoreItemsView extends SwatControl
 
 	protected $ui;
 
-	protected $region;
-
 	protected $has_description = false;
 
 	// }}}
@@ -64,19 +62,6 @@ class StoreItemsView extends SwatControl
 	public function setSource($source)
 	{
 		$this->source = $source;
-	}
-
-	// }}}
-	// {{{ public function setRegion()
-
-	/**
-	 * Sets the region to use
-	 *
-	 * @param StoreRegion $region the region to use.
-	 */
-	public function setRegion(StoreRegion $region)
-	{
-		$this->region = $region;
 	}
 
 	// }}}
@@ -225,7 +210,7 @@ class StoreItemsView extends SwatControl
 		if (strlen($ds->description) > 0)
 			$this->has_description = true;
 
-		$ds->is_available = $item->isAvailableInRegion($this->region);
+		$ds->is_available = $item->isAvailableInRegion();
 
 		$ds->status = '';
 		if (!$ds->is_available)

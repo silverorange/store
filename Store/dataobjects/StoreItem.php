@@ -153,19 +153,34 @@ class StoreItem extends SwatDBDataObject
 	 *
 	 * The item needs to have an id before this method will work.
 	 *
-	 * @param StoreRegion $region the region to check the availability of this
-	 *                             item for.
+	 * @param StoreRegion $region optional. The region in which to check if this
+	 *                             item is available. If not specified, the
+	 *                             last region specified by the
+	 *                             {@link StoreItem::setRegion()} method is
+	 *                             used.
 	 *
 	 * @return boolean true if this item is available for purchase in the
 	 *                  given region and false if it is not.
 	 *
 	 * @throws StoreException if this item has no id defined.
 	 */
-	public function isAvailableInRegion(StoreRegion $region)
+	public function isAvailableInRegion(StoreRegion $region = null)
 	{
 		if ($this->id === null)
 			throw new StoreException('Item must have an id set before region '.
 				'availability can be determined.');
+
+		if ($region === null) {
+			$region = $this->region;
+		}
+
+		if ($region === null)
+			throw new SwatException('Region must be specified or region must '.
+				'be set on this item before availability is known.');
+
+		if ($region->id === null)
+			throw new StoreException('Region have an id set before '.
+				'availability can be determined for this item.');
 
 		// if this item has an is_available value set for the given region use
 		// it instead of performing another query
@@ -173,6 +188,12 @@ class StoreItem extends SwatDBDataObject
 			isset($this->is_available[$region->id])) {
 			$available = $this->is_available[$region->id];
 		} else {
+			$this->checkDB();
+
+			if ($this->id === null)
+				throw new StoreException('Item must have an id set before '.
+					'availability can be determined for this region.');
+
 			$sql = 'select count(item) from AvailableItemView
 					where AvailableItemView.item = %s
 					and AvailableItemView.region = %s';
