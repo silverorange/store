@@ -91,10 +91,15 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 		if (count($items) > 0) {
 			$this->displayProduct($items->getFirst()->product);
 
+			$item_div_tag = new SwatHtmlTag('div');
+			$item_div_tag->open();
+
 			if (count($items) > 1)
 				$this->displayItems();
 			else
 				$this->displayItem();
+
+			$item_div_tag->close();
 		}
 
 		$div_tag->close();
@@ -184,6 +189,8 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 				$item->getStatus()->title);
 
 		$locale = SwatI18NLocale::get();
+
+		echo (strlen($description) > 0) ? ' - ' : '';
 		echo  $locale->formatCurrency($item->getDisplayPrice());
 
 		return SwatString::minimizeEntities(ob_get_clean());
@@ -304,6 +311,8 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 		$renderer->value = $item->getDisplayPrice();
 		$renderer->original_value = $item->getPrice();
 		$renderer->quantity_discounts = $item->quantity_discounts;
+		$renderer->singular_unit = $item->singular_unit;
+		$renderer->plural_unit = $item->plural_unit;
 
 		return $renderer;
 	}
