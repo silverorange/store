@@ -5,13 +5,14 @@ require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
 require_once 'Swat/SwatYUI.php';
 require_once 'Swat/SwatUI.php';
+require_once 'Store/StoreItemsView.php';
+require_once 'Store/StoreMessage.php';
+require_once 'Store/StoreMessageDisplay.php';
 require_once 'Store/pages/StorePage.php';
 require_once 'Store/dataobjects/StoreCartEntry.php';
 require_once 'Store/dataobjects/StoreProduct.php';
 require_once 'Store/dataobjects/StoreCategory.php';
-require_once 'Store/StoreItemsView.php';
-require_once 'Store/StoreMessage.php';
-require_once 'Store/StoreMessageDisplay.php';
+require_once 'Store/dataobjects/StoreItemGroupWrapper.php';
 
 /**
  * A product page
@@ -91,7 +92,6 @@ class StoreProductPage extends StorePage
 	protected function initItemsView()
 	{
 		$this->items_view = $this->getItemsView();
-		$this->items_view->setDatabase($this->app->db);
 		$this->items_view->setProduct($this->product);
 		$this->items_view->setSource($this->source);
 		$this->items_view->setRegion($this->app->getRegion());
@@ -135,6 +135,13 @@ class StoreProductPage extends StorePage
 		$this->product->setDatabase($this->app->db);
 		$this->product->setRegion($this->app->getRegion());
 		$this->product->load($id);
+
+		$sql = 'select id, title from ItemGroup where product = %s';
+		$sql = sprintf($sql,
+			$this->app->db->quote($this->product->id, 'integer'));
+
+		$this->product->items->loadAllSubDataObjects('item_group',
+			$this->app->db, $sql, 'StoreItemGroupWrapper');
 	}
 
 	// }}}
