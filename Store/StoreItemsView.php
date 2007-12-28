@@ -20,7 +20,7 @@ class StoreItemsView extends SwatControl
 {
 	// {{{ public properties
 
-	public $ui_xml = 'Store/pages/product-items-view.xml';
+	public $ui_xml = 'Store/items-view.xml';
 
 	// }}}
 	// {{{ protected properties
