@@ -7,7 +7,6 @@ require_once 'Swat/SwatDetailsStore.php';
 require_once 'Swat/SwatUI.php';
 require_once 'Swat/SwatHtmlHeadEntrySet.php';
 require_once 'Store/dataobjects/StoreProduct.php';
-require_once 'Store/dataobjects/StoreItemGroupWrapper.php';
 require_once 'Store/StoreMessage.php';
 
 /**
@@ -35,8 +34,6 @@ class StoreItemsView extends SwatControl
 
 	protected $default_quantity;
 
-	protected $db;
-
 	protected $ui;
 
 	protected $region;
@@ -54,20 +51,6 @@ class StoreItemsView extends SwatControl
 	public function setProduct(StoreProduct $product)
 	{
 		$this->product = $product;
-	}
-
-	// }}}
-	// {{{ public function setDatabase()
-
-	/**
-	 * Sets the database driver for this view
-	 *
-	 * @param MDB2_Driver_Common $db the database driver to use for this
-	 *                                data-object.
-	 */
-	public function setDatabase(MDB2_Driver_Common $db)
-	{
-		$this->db = $db;
 	}
 
 	// }}}
@@ -209,13 +192,6 @@ class StoreItemsView extends SwatControl
 		$store = new SwatTableStore();
 		$last_sku = null;
 		$tab_index = 1;
-
-		$sql = 'select id, title from ItemGroup where product = %s';
-		$sql = sprintf($sql,
-			$this->db->quote($this->product->id, 'integer'));
-
-		$this->product->items->loadAllSubDataObjects('item_group',
-			$this->db, $sql, 'StoreItemGroupWrapper');
 
 		foreach ($this->product->items as $item) {
 			if ($item->isEnabled()) {
