@@ -171,19 +171,22 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	protected function getNodeDescription(StoreItem $item,
 		$show_item_group = false)
 	{
-		$renderer = $this->getItemPriceCellRenderer($item);
-		$description = $item->getDescription($show_item_group);
-
 		ob_start();
+
+		if ($show_item_group && $item->item_group !== null &&
+			strlen($item->item_group->title) > 0)
+			printf('(%s) ', $item->item_group->title);
+
+		echo $item->description;
 
 		if (!$item->hasAvailableStatus())
 			printf('(%s)',
 				$item->getStatus()->title);
 
-		$renderer->render();
-		$description.= ' '.ob_get_clean();
+		$locale = SwatI18NLocale::get();
+		echo  $locale->formatCurrency($item->getDisplayPrice());
 
-		return $description;
+		return SwatString::minimizeEntities(ob_get_clean());
 	}
 
 	// }}}
