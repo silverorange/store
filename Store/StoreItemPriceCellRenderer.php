@@ -30,6 +30,20 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 	 */
 	public $quantity_discounts;
 
+	/**
+	 * User visible singular unit
+	 *
+	 * @var string
+	 */
+	public $singular_unit;
+
+	/**
+	 * User visible plural unit
+	 *
+	 * @var string
+	 */
+	public $plural_unit;
+
 	// }}}
 	// {{{ public function __construct()
 
@@ -58,7 +72,10 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 			parent::render();
 			$price = ob_get_clean();
 
-			printf(Store::_('%s each'), $price);
+			if ($this->singular_unit === null)
+				printf(Store::_('%s each'), $price);
+			else
+				printf(Store::_('%s per %s'), $price, $this->singular_unit);
 		}
 
 		if ($this->quantity_discounts !== null)
@@ -97,7 +114,10 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 		$this->renderValue($this->value, $this->original_value);
 		$price = ob_get_clean();
 
-		printf(Store::_('%s each'), $price);
+		if ($this->singular_unit === null)
+			printf(Store::_('%s each'), $price);
+		else
+			printf(Store::_('%s per %s'), $price, $this->singular_unit);
 
 		if ($this->value > 0) {
 			$savings_renderer = new StoreSavingsCellRenderer();
@@ -126,8 +146,13 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 
 		$div = new SwatHtmlTag('div');
 		$div->open();
-		printf(Store::_('%s or more: %s each'),
-			$quantity_discount->quantity, $price);
+
+		if ($this->plural_unit === null)
+			printf(Store::_('%s or more: %s each'),
+				$quantity_discount->quantity, $price);
+		else
+			printf(Store::_('%s or more %s: %s each'),
+				$quantity_discount->quantity, $this->plural_unit, $price);
 
 		echo ' ';
 
