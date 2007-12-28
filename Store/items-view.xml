@@ -27,6 +27,8 @@
 				<property name="title" translatable="yes">Price</property>
 				<object class="StoreItemPriceCellRenderer">
 					<property name="value" type="data">price</property>
+					<property name="singular_unit" type="data">singular_unit</property>
+					<property name="plural_unit" type="data">plural_unit</property>
 					<property name="quantity_discounts" type="data">quantity_discounts</property>
 				</object>
 			</object>
