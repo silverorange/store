@@ -75,6 +75,20 @@ class StoreItem extends SwatDBDataObject
 	 */
 	public $displayorder;
 
+	/**
+	 * User visible singular unit
+	 *
+	 * @var string
+	 */
+	public $singular_unit;
+
+	/**
+	 * User visible plural unit
+	 *
+	 * @var string
+	 */
+	public $plural_unit;
+
 	// }}}
 	// {{{ protected properties
 
