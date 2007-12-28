@@ -53,7 +53,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	{
 		if ($this->sku === null)
 			$this->clearItems();
-		else
+		elseif (count($this->getItems()) > 1)
 			$this->buildItemsFlydown($this->getItems());
 	}
 
@@ -83,18 +83,21 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 
 		$items = $this->getItems();
 
-		$title_tag = new SwatHtmlTag('div');
-		$title_tag->id = $this->id;
-		$title_tag->class = 'store-quick-order-product';
-		$title_tag->open();
+		$div_tag = new SwatHtmlTag('div');
+		$div_tag->id = $this->id;
+		$div_tag->class = 'store-quick-order-product';
+		$div_tag->open();
 
-		if (count($items) > 0)
+		if (count($items) > 0) {
 			$this->displayProduct($items->getFirst()->product);
 
+			if (count($items) > 1)
+				$this->displayItems();
+			else
+				$this->displayItem();
+		}
 
-		$this->displayItems();
-
-		$title_tag->close();
+		$div_tag->close();
 	}
 
 	// }}}
@@ -154,6 +157,57 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	}
 
 	// }}}
+	// {{{ protected function displayItem()
+
+	protected function displayItem()
+	{
+		$item = $this->getItems()->getFirst();
+		echo $this->getItemDescription($item);
+	}
+
+	// }}}
+	// {{{ protected function getNodeDescription()
+
+	protected function getNodeDescription(StoreItem $item,
+		$show_item_group = false)
+	{
+		$renderer = $this->getItemPriceCellRenderer($item);
+		$description = $item->getDescription($show_item_group);
+
+		ob_start();
+
+		if (!$item->hasAvailableStatus())
+			printf('(%s)',
+				$item->getStatus()->title);
+
+		$renderer->render();
+		$description.= ' '.ob_get_clean();
+
+		return $description;
+	}
+
+	// }}}
+	// {{{ protected function getItemDescription()
+
+	protected function getItemDescription(StoreItem $item,
+		$show_item_group = false)
+	{
+		$renderer = $this->getItemPriceCellRenderer($item);
+		$description = $item->getDescription($show_item_group);
+
+		ob_start();
+
+		if (!$item->hasAvailableStatus())
+			printf('<div class="item-status">%s</div>',
+				$item->getStatus()->title);
+
+		$renderer->render();
+		$description.= ' '.ob_get_clean();
+
+		return $description;
+	}
+
+	// }}}
 	// {{{ protected function getItems()
 
 	/**
@@ -207,40 +261,48 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	{
 		$tree = new SwatTreeFlydownNode(null, 'root');
 
-		if (count($items) <= 1) {
-			foreach ($items as $item)
-				$tree->addChild($this->getItemNode($item, true));
-		} else {
-			$item_group = false;
-			$num_item_groups = 0;
-			foreach ($items as $item) {
-				if ($item->getInternalValue('item_group') !== $item_group) {
-					$item_group = $item->getInternalValue('item_group');
+		$item_group = false;
+		$num_item_groups = 0;
+		foreach ($items as $item) {
+			if ($item->getInternalValue('item_group') !== $item_group) {
+				$item_group = $item->getInternalValue('item_group');
 
-					if ($item_group === null) {
-						$group_title = Store::_('[ungrouped]');
-					} else {
-						$group_title = $item->item_group->title;
-						$num_item_groups++;
-					}
-
-					$item_group_node =
-						new SwatTreeFlydownNode(null, $group_title);
-
-					$tree->addChild($item_group_node);
+				if ($item_group === null) {
+					$group_title = Store::_('[ungrouped]');
+				} else {
+					$group_title = $item->item_group->title;
+					$num_item_groups++;
 				}
 
-				$item_group_node->addChild($this->getItemNode($item));
+				$item_group_node =
+					new SwatTreeFlydownNode(null, $group_title);
+
+				$tree->addChild($item_group_node);
 			}
 
-			// flatten tree is there are no item groups
-			if ($num_item_groups == 0) {
-				$item_group_node->parent = null;
-				$tree = $item_group_node;
-			}
+			$item_group_node->addChild($this->getItemNode($item));
+		}
+
+		// flatten tree is there are no item groups
+		if ($num_item_groups == 0) {
+			$item_group_node->parent = null;
+			$tree = $item_group_node;
 		}
 
 		$this->getCompositeWidget('items_flydown')->setTree($tree);
+	}
+
+	// }}}
+	// {{{ protected function getItemPriceCellRenderer()
+
+	protected function getItemPriceCellRenderer(StoreItem $item)
+	{
+		$renderer = new StoreItemPriceCellRenderer();
+		$renderer->value = $item->getDisplayPrice();
+		$renderer->original_value = $item->getPrice();
+		$renderer->quantity_discounts = $item->quantity_discounts;
+
+		return $renderer;
 	}
 
 	// }}}
@@ -255,36 +317,12 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	}
 
 	// }}}
-	// {{{ protected function getItemNode()
+	// {{{ private function getItemNode()
 
-	protected function getItemNode(StoreItem $item, $show_item_group = false)
+	private function getItemNode(StoreItem $item, $show_item_group = false)
 	{
-		$renderer = $this->getItemPriceCellRenderer($item);
-		$description = $item->getDescription($show_item_group);
-
-		ob_start();
-
-		if (!$item->hasAvailableStatus())
-			printf('<div class="item-status">%s</div>',
-				$item->getStatus()->title);
-
-		$renderer->render();
-		$description.= ' '.ob_get_clean();
-
-		return new SwatTreeFlydownNode($item->id, $description);
-	}
-
-	// }}}
-	// {{{ protected function getItemPriceCellRenderer()
-
-	protected function getItemPriceCellRenderer(StoreItem $item)
-	{
-		$renderer = new StoreItemPriceCellRenderer();
-		$renderer->value = $item->getDisplayPrice();
-		$renderer->original_value = $item->getPrice();
-		$renderer->quantity_discounts = $item->quantity_discounts;
-
-		return $renderer;
+		return new SwatTreeFlydownNode($item->id,
+			$this->getNodeDescription($item, $show_item_group));
 	}
 
 	// }}}
