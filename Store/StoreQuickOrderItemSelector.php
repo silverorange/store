@@ -39,41 +39,22 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	public $value;
 
 	// }}}
-	// {{{ protected properties
+	// {{{ private properties
 
 	/**
-	 * @var SwatFlydown
+	 * @var StoreItemWrapper
 	 */
-	protected $items_flydown = null;
-
-	/**
-	 * @var SwatFormField
-	 */
-	protected $form_field = null;
-
-	/**
-	 * @var boolean
-	 */
-	protected $widgets_created = false;
+	private $items;
 
 	// }}}
 	// {{{ public function init()
 
 	public function init()
 	{
-		$this->createEmbeddedWidgets();
-
-		if ($this->sku === null) {
+		if ($this->sku === null)
 			$this->clearItems();
-		} else {
-			$items = $this->getItems();
-
-			if (count($items) > 0)
-				$this->buildFormField($items->getFirst()->product);
-
-			$this->buildItemsFlydown($items);
-			$this->form_field->init();
-		}
+		else
+			$this->buildItemsFlydown($this->getItems());
 	}
 
 	// }}}
@@ -97,8 +78,23 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 
 	public function displayContent()
 	{
-		$this->createEmbeddedWidgets();
-		$this->form_field->display();
+		if (!$this->visible)
+			return;
+
+		$items = $this->getItems();
+
+		$title_tag = new SwatHtmlTag('div');
+		$title_tag->id = $this->id;
+		$title_tag->class = 'store-quick-order-product';
+		$title_tag->open();
+
+		if (count($items) > 0)
+			$this->displayProduct($items->getFirst()->product);
+
+
+		$this->displayItems();
+
+		$title_tag->close();
 	}
 
 	// }}}
@@ -106,25 +102,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 
 	public function process()
 	{
-		$this->createEmbeddedWidgets();
-		$this->form_field->process();
-		$this->value = $this->items_flydown->value;
-	}
-
-	// }}}
-	// {{{ public function getState()
-
-	public function getState()
-	{
-		return $this->items_flydown->getState();
-	}
-
-	// }}}
-	// {{{ public function setState()
-
-	public function setState($state)
-	{
-		$this->items_flydown->setState($state);
+		$this->value = $this->getCompositeWidget('items_flydown')->value;
 	}
 
 	// }}}
@@ -132,10 +110,47 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 
 	public function __clone()
 	{
-		// re-create widgets incase our id changed before clone is called
+		// TODO: think about adding a resetCompositeWidgets() method to
+		// SwatWidget
+
+		/*
+		// re-create widgets in case our id changed before clone is called
 		$this->widgets_created = false;
 		$this->form_field = null;
 		$this->items_flydown = null;
+		*/
+	}
+
+	// }}}
+	// {{{ public function getState()
+
+	public function getState()
+	{
+		return $this->getCompositeWidget('items_flydown')->getState();
+	}
+
+	// }}}
+	// {{{ public function setState()
+
+	public function setState($state)
+	{
+		$this->getCompositeWidget('items_flydown')->setState($state);
+	}
+
+	// }}}
+	// {{{ protected function displayProduct()
+
+	protected function displayProduct(StoreProduct $product)
+	{
+		echo SwatString::minimizeEntities($product->title);
+	}
+
+	// }}}
+	// {{{ protected function displayItems()
+
+	protected function displayItems()
+	{
+		$this->getCompositeWidget('items_flydown')->display();
 	}
 
 	// }}}
@@ -146,11 +161,13 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	 */
 	protected function getItems()
 	{
-		$sql = $this->getItemSql();
-		$items = StoreItemWrapper::loadSetFromDBWithRegion(
-			$this->db, $sql, $this->region, false);
+		if ($this->items === null) {
+			$sql = $this->getItemSql();
+			$this->items = StoreItemWrapper::loadSetFromDBWithRegion(
+				$this->db, $sql, $this->region, false);
+		}
 
-		return $items;
+		return $this->items;
 	}
 
 	// }}}
@@ -158,8 +175,8 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 
 	protected function clearItems()
 	{
-		$this->form_field->title = null;
-		$this->items_flydown->setTree(new SwatTreeFlydownNode(null, 'root'));
+		$flydown = $this->getCompositeWidget('items_flydown');
+		$flydown->setTree(new SwatTreeFlydownNode(null, 'root'));
 	}
 
 	// }}}
@@ -181,15 +198,6 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 			$this->db->quote($sku, 'text'));
 
 		return $sql;
-	}
-
-	// }}}
-	// {{{ protected function buildFormField()
-
-	protected function buildFormField(StoreProduct $product)
-	{
-		$this->form_field->title = $product->title;
-		$this->form_field->show_colon = false;
 	}
 
 	// }}}
@@ -232,36 +240,18 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 			}
 		}
 
-		$this->items_flydown->setTree($tree);
+		$this->getCompositeWidget('items_flydown')->setTree($tree);
 	}
 
 	// }}}
-	// {{{ protected function createEmbeddedWidgets()
+	// {{{ protected function createCompositeWidgets()
 
-	protected function createEmbeddedWidgets()
+	protected function createCompositeWidgets()
 	{
-		if (!$this->widgets_created) {
-			$this->items_flydown = $this->getItemsFlydown();
+		$items_flydown = new SwatGroupedFlydown($this->id.'_items');
+		$items_flydown->show_blank = false;
 
-			$this->form_field = new SwatFormField($this->id.'_field');
-			$this->form_field->parent = $this;
-			$this->form_field->add($this->items_flydown);
-
-			$this->widgets_created = true;
-		}
-	}
-
-	// }}}
-	// {{{ protected function getItemsFlydown()
-
-	protected function getItemsFlydown()
-	{
-		if ($this->items_flydown === null) {
-			$this->items_flydown = new SwatGroupedFlydown($this->id.'_items');
-			$this->items_flydown->show_blank = false;
-		}
-
-		return $this->items_flydown;
+		$this->addCompositeWidget($items_flydown, 'items_flydown');
 	}
 
 	// }}}
