@@ -12,7 +12,7 @@ function StoreCheckoutBillingAddressPage(id, provstate_other_index)
 }
 
 YAHOO.lang.extend(StoreCheckoutBillingAddressPage, StoreCheckoutAddressPage, {
-	
+
 getFieldNames: function()
 {
 	return [

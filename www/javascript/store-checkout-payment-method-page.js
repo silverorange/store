@@ -14,7 +14,7 @@ function StoreCheckoutPaymentMethodPage(id, inception_date_ids,
 			StoreCheckoutPaymentMethodPage.handlePaymentMethodClick, this);
 	}
 
-	// set up event handlers for payment types 
+	// set up event handlers for payment types
 	var payment_types = document.getElementsByName('payment_type');
 	for (var i = 0; i < payment_types.length; i++) {
 		YAHOO.util.Event.addListener(payment_types[i], 'click',
@@ -103,7 +103,7 @@ StoreCheckoutPaymentMethodPage.prototype.isSensitive = function()
 	var sensitive = true;
 	if (this.list_new)
 		sensitive = this.list_new.checked;
-	
+
 	return sensitive;
 }
 
