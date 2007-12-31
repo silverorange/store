@@ -810,7 +810,7 @@ protected function processCheckoutCart()
 		$empty_message->content_type = 'text/xml';
 		$empty_message->secondary_content = Store::_(
 			'You can add items to your cart by selecting from '.
-			'the menu on the left and browsing for products.');
+			'the menu on the left and browsing for items.');
 
 		return $empty_message;
 	}
