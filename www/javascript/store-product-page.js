@@ -7,7 +7,7 @@
 function StoreProductPage(item_ids)
 {
 	this.form = document.getElementById('form');
-	this.quantity_boxes = new Array();
+	this.quantity_boxes = [];
 
 	var quantity_box;
 	for (var i = 0; i < item_ids.length; i++) {
