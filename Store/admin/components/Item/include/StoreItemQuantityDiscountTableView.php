@@ -18,7 +18,7 @@ class StoreItemQuantityDiscountTableView extends SwatTableView
 		echo '<thead>';
 		echo '<tr>';
 
-		foreach ($this->getColumns() as $column)
+		foreach ($this->columns as $column)
 			$column->displayHeaderCell();
 
 		echo '</tr>';
@@ -35,7 +35,7 @@ class StoreItemQuantityDiscountTableView extends SwatTableView
 
 		echo '<tr>';
 
-		foreach ($this->getColumns() as $column) {
+		foreach ($this->columns as $column) {
 			if ($column->id == 'checkbox') {
 				$td_tag = new SwatHtmlTag('td', $column->getTdAttributes());
 				$td_tag->open();
