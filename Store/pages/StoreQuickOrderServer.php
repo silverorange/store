@@ -31,8 +31,8 @@ class StoreQuickOrderServer extends SiteXMLRPCServer
 	{
 		$form = new SwatForm();
 
-		$selector =
-			new StoreQuickOrderItemSelector('item_selector_'.$replicator_id);
+		$selector = new StoreQuickOrderItemSelector(
+			'item_selector_renderer_'.$replicator_id);
 
 		$selector->db = $this->app->db;
 		$selector->region = $this->app->getRegion();
