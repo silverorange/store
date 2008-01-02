@@ -114,22 +114,6 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	}
 
 	// }}}
-	// {{{ public function __clone()
-
-	public function __clone()
-	{
-		// TODO: think about adding a resetCompositeWidgets() method to
-		// SwatWidget
-
-		/*
-		// re-create widgets in case our id changed before clone is called
-		$this->widgets_created = false;
-		$this->form_field = null;
-		$this->items_flydown = null;
-		*/
-	}
-
-	// }}}
 	// {{{ public function getState()
 
 	public function getState()
@@ -167,6 +151,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	protected function displayItem()
 	{
 		$item = $this->getItems()->getFirst();
+		// TODO: this should be entity escaped by default
 		echo $this->getItemDescription($item);
 	}
 
@@ -176,6 +161,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	protected function getNodeDescription(StoreItem $item,
 		$show_item_group = false)
 	{
+		// TODO: escape entities inline rather than at the end
 		ob_start();
 
 		if ($show_item_group && $item->item_group !== null &&
@@ -207,6 +193,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 
 		ob_start();
 
+		// TODO: escape entities
 		if (!$item->hasAvailableStatus())
 			printf('<div class="item-status">%s</div>',
 				$item->getStatus()->title);
