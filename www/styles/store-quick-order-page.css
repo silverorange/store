@@ -32,10 +32,6 @@ td.store-quick-order-item-selector {
 	font-weight: normal;
 }
 
-#quick_order_form td.store-quick-order-item-selector select {
-	font-size: 80%;
-}
-
 #quick_order_frame .swat-frame-contents {
 	padding-left: 6px;
 	padding-right: 4px;
