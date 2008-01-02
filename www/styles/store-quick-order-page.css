@@ -24,6 +24,10 @@ td.store-quick-order-item-selector {
 	padding-bottom: 1em;
 }
 
+#quick_order_form .store-quick-order-product-title {
+	font-weight: bold;
+}
+
 #quick_order_form td.store-quick-order-item-selector label {
 	font-weight: normal;
 }

@@ -92,6 +92,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 			$this->displayProduct($items->getFirst()->product);
 
 			$item_div_tag = new SwatHtmlTag('div');
+			$item_div_tag->class = 'store-quick-order-item';
 			$item_div_tag->open();
 
 			if (count($items) > 1)
@@ -134,7 +135,10 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 
 	protected function displayProduct(StoreProduct $product)
 	{
-		echo SwatString::minimizeEntities($product->title);
+		$product_title_tag = new SwatHtmlTag('span');
+		$product_title_tag->class = 'store-quick-order-product-title';
+		$product_title_tag->setContent($product->title);
+		$product_title_tag->display();
 	}
 
 	// }}}
