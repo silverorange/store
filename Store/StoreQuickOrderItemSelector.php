@@ -8,11 +8,11 @@ require_once 'Swat/SwatState.php';
 require_once 'Swat/SwatInputControl.php';
 
 /**
- * Item selector that puts items into optgroups based on item
- * groups
+ * Item selector that puts items into optgroups based on item groups
  *
  * @package   Store
  * @copyright 2006-2007 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 {
@@ -63,10 +63,8 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 
 	public function init()
 	{
-		if ($this->sku === null)
-			$this->clearItems();
-		elseif (count($this->getItems()) > 1)
-			$this->buildItemsFlydown($this->getItems());
+		$items_flydown = $this->getCompositeWidget('items_flydown');
+		$items_flydown->setTree($this->getItemTree());
 
 		parent::init();
 	}
@@ -184,7 +182,116 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	}
 
 	// }}}
-	// {{{ protected function getNodeDescription()
+	// {{{ protected function getItems()
+
+	/**
+	 * Gets the list of items selectable by this selector based on this
+	 * selector's sku
+	 *
+	 * The results are cached across multiple calls to this method as long as
+	 * the sku remains the same.
+	 *
+	 * @return StoreItemWrapper
+	 */
+	protected function getItems()
+	{
+		if ($this->items_sku !== $this->sku) {
+			$sql = $this->getItemSql();
+			$this->items = StoreItemWrapper::loadSetFromDBWithRegion(
+				$this->db, $sql, $this->region, false);
+
+			$this->items_sku = $this->sku;
+		}
+
+		return $this->items;
+	}
+
+	// }}}
+	// {{{ protected function getItemSql()
+
+	protected function getItemSql()
+	{
+		$sku = trim(strtolower($this->sku));
+
+		if (substr($sku, 0, 1) === '#' && strlen($sku) > 1)
+			$sku = substr($sku, 1);
+
+		$sql = sprintf('select id from Item
+			inner join VisibleProductCache on
+				Item.product = VisibleProductCache.product and
+					VisibleProductCache.region = %s
+			where lower(sku) = %s',
+			$this->db->quote($this->region->id, 'integer'),
+			$this->db->quote($sku, 'text'));
+
+		return $sql;
+	}
+
+	// }}}
+	// {{{ protected function getItemTree()
+
+	protected function getItemTree()
+	{
+		$items = $this->getItems();
+
+		$tree = new SwatTreeFlydownNode(null, 'root');
+
+		if ($items !== null) {
+			$item_group = false; // set to false to initialize loop
+			$item_group_node = null;
+			$num_item_groups = 0;
+			foreach ($items as $item) {
+				if ($item->getInternalValue('item_group') !== $item_group) {
+					$item_group = $item->getInternalValue('item_group');
+
+					if ($item_group === null) {
+						$group_title = Store::_('[ungrouped]');
+					} else {
+						$group_title = $item->item_group->title;
+						$num_item_groups++;
+					}
+
+					$item_group_node =
+						new SwatTreeFlydownNode(null, $group_title);
+
+					$tree->addChild($item_group_node);
+				}
+
+				$item_group_node->addChild($this->getItemTreeNode($item));
+			}
+
+			// flatten tree if there are no item groups
+			if ($num_item_groups == 0 && $item_group_node !== null) {
+				$item_group_node->parent = null;
+				$tree = $item_group_node;
+			}
+		}
+
+		return $tree;
+	}
+
+	// }}}
+	// {{{ protected function getItemTreeNode()
+
+	/**
+	 * Gets an item tree node for the item selector flydown
+	 *
+	 * @param StoreItem the item for which to get the tree node.
+	 * @param boolean $show_item_group optional. Whether or not to include the
+	 *                                  item group (if it exists) in the
+	 *                                  display value of tree node.
+	 *
+	 * @return SwatTreeFlydownNode a tree flydown node for the specified item.
+	 */
+	protected function getItemTreeNode(StoreItem $item,
+		$show_item_group = false)
+	{
+		return new SwatTreeFlydownNode($item->id,
+			$this->getItemTreeNodeDescription($item, $show_item_group));
+	}
+
+	// }}}
+	// {{{ protected function getItemTreeNodeDescription()
 
 	/**
 	 * Gets a string containing the item description for an item intended to
@@ -197,7 +304,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	 *
 	 * @return string a string containing the description of the item.
 	 */
-	protected function getNodeDescription(StoreItem $item,
+	protected function getItemTreeNodeDescription(StoreItem $item,
 		$show_item_group = false)
 	{
 		/*
@@ -261,99 +368,6 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	}
 
 	// }}}
-	// {{{ protected function getItems()
-
-	/**
-	 * Gets the list of items selectable by this selector based on this
-	 * selector's sku
-	 *
-	 * The results are cached across multiple calls to this method as long as
-	 * the sku remains the same.
-	 *
-	 * @return StoreItemWrapper
-	 */
-	protected function getItems()
-	{
-		if ($this->items_sku !== $this->sku) {
-			$sql = $this->getItemSql();
-			$this->items = StoreItemWrapper::loadSetFromDBWithRegion(
-				$this->db, $sql, $this->region, false);
-
-			$this->items_sku = $this->sku;
-		}
-
-		return $this->items;
-	}
-
-	// }}}
-	// {{{ protected function clearItems()
-
-	protected function clearItems()
-	{
-		$flydown = $this->getCompositeWidget('items_flydown');
-		$flydown->setTree(new SwatTreeFlydownNode(null, 'root'));
-	}
-
-	// }}}
-	// {{{ protected function getItemSql()
-
-	protected function getItemSql()
-	{
-		$sku = trim(strtolower($this->sku));
-
-		if (substr($sku, 0, 1) === '#' && strlen($sku) > 1)
-			$sku = substr($sku, 1);
-
-		$sql = sprintf('select id from Item
-			inner join VisibleProductCache on
-				Item.product = VisibleProductCache.product and
-					VisibleProductCache.region = %s
-			where lower(sku) = %s',
-			$this->db->quote($this->region->id, 'integer'),
-			$this->db->quote($sku, 'text'));
-
-		return $sql;
-	}
-
-	// }}}
-	// {{{ protected function buildItemsFlydown()
-
-	protected function buildItemsFlydown(StoreItemWrapper $items)
-	{
-		$tree = new SwatTreeFlydownNode(null, 'root');
-
-		$item_group = false;
-		$num_item_groups = 0;
-		foreach ($items as $item) {
-			if ($item->getInternalValue('item_group') !== $item_group) {
-				$item_group = $item->getInternalValue('item_group');
-
-				if ($item_group === null) {
-					$group_title = Store::_('[ungrouped]');
-				} else {
-					$group_title = $item->item_group->title;
-					$num_item_groups++;
-				}
-
-				$item_group_node =
-					new SwatTreeFlydownNode(null, $group_title);
-
-				$tree->addChild($item_group_node);
-			}
-
-			$item_group_node->addChild($this->getItemNode($item));
-		}
-
-		// flatten tree if there are no item groups
-		if ($num_item_groups == 0) {
-			$item_group_node->parent = null;
-			$tree = $item_group_node;
-		}
-
-		$this->getCompositeWidget('items_flydown')->setTree($tree);
-	}
-
-	// }}}
 	// {{{ protected function getItemPriceCellRenderer()
 
 	protected function getItemPriceCellRenderer(StoreItem $item)
@@ -378,25 +392,6 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 		$items_flydown->show_blank = false;
 
 		$this->addCompositeWidget($items_flydown, 'items_flydown');
-	}
-
-	// }}}
-	// {{{ private function getItemNode()
-
-	/**
-	 * Gets an item tree node for the item selector flydown
-	 *
-	 * @param StoreItem the item for which to get the tree node.
-	 * @param boolean $show_item_group optional. Whether or not to include the
-	 *                                  item group (if it exists) in the
-	 *                                  display value of tree node.
-	 *
-	 * @return SwatTreeFlydownNode a tree flydown node for the specified item.
-	 */
-	private function getItemNode(StoreItem $item, $show_item_group = false)
-	{
-		return new SwatTreeFlydownNode($item->id,
-			$this->getNodeDescription($item, $show_item_group));
 	}
 
 	// }}}
