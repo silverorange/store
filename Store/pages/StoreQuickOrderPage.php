@@ -148,10 +148,13 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 					$item_selector->db = $this->app->db;
 					$item_selector->region = $this->app->getRegion();
 					$item_selector->init();
+					$item_selector->process();
 				}
 
 				$item_id = $item_selector->value;
 
+				// item selector did not load using ajax so try to guess the
+				// id based on the sku entered by the user
 				if ($item_id === null && $sku !== null) {
 					$item_id = $this->getItemId($sku);
 					if ($item_id === null) {
