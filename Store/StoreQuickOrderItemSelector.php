@@ -111,10 +111,10 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 			$item_div_tag->class = 'store-quick-order-item';
 			$item_div_tag->open();
 
-			if (count($items) > 1)
-				$this->displayItems();
-			else
+			if (count($items) == 1)
 				$this->displayItem();
+			else
+				$this->displayItems();
 
 			$item_div_tag->close();
 		}
@@ -161,6 +161,10 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	// }}}
 	// {{{ protected function displayItems()
 
+	/**
+	 * Displays this item selector when there are multiple items for the given
+	 * sku
+	 */
 	protected function displayItems()
 	{
 		$this->getCompositeWidget('items_flydown')->display();
@@ -169,56 +173,87 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	// }}}
 	// {{{ protected function displayItem()
 
+	/**
+	 * Displays this item selector when there is onlt one item for the given
+	 * sku
+	 */
 	protected function displayItem()
 	{
 		$item = $this->getItems()->getFirst();
-		// TODO: this should be entity escaped by default
 		echo $this->getItemDescription($item);
 	}
 
 	// }}}
 	// {{{ protected function getNodeDescription()
 
+	/**
+	 * Gets a string containing the item description for an item intended to
+	 * be used inside a tree flydown node
+	 *
+	 * @param StoreItem $item the item to get the description for.
+	 * @param boolean $show_item_group optional. Whether or not to include the
+	 *                                  item group (if it exists) in the
+	 *                                  description.
+	 *
+	 * @return string a string containing the description of the item.
+	 */
 	protected function getNodeDescription(StoreItem $item,
 		$show_item_group = false)
 	{
-		// TODO: escape entities inline rather than at the end
-		ob_start();
+		/*
+		 * Note: Entities don't need to be escaped here because the resulting
+		 * string is used in a tree flydown and the tree flydown automatically
+		 * escapes all entities.
+		 */
+
+		$description = '';
 
 		if ($show_item_group && $item->item_group !== null &&
-			strlen($item->item_group->title) > 0)
-			printf('(%s) ', $item->item_group->title);
+			strlen($item->item_group->title) > 0) {
+			$description.= '('.$item->item_group->title.')';
+		}
 
-		echo $item->description;
+		$description.= $item->description;
 
-		if (!$item->hasAvailableStatus())
-			printf('(%s)',
-				$item->getStatus()->title);
+		if (!$item->hasAvailableStatus()) {
+			$description.= '('.$item->getStatus()->title.')';
+		}
+
+		if (strlen($description) > 0) {
+			$description.= ' - ';
+		}
 
 		$locale = SwatI18NLocale::get();
+		$description.= $locale->formatCurrency($item->getDisplayPrice());
 
-		echo (strlen($description) > 0) ? ' - ' : '';
-		echo  $locale->formatCurrency($item->getDisplayPrice());
-
-		return SwatString::minimizeEntities(ob_get_clean());
+		return $description;
 	}
 
 	// }}}
 	// {{{ protected function getItemDescription()
 
+	/**
+	 * Gets an XHTML fragment containing the item description for an item
+	 *
+	 * @param StoreItem $item the item to get the description for.
+	 * @param boolean $show_item_group optional. Whether or not to include the
+	 *                                  item group (if it exists) in the
+	 *                                  description.
+	 *
+	 * @return string an XHTML fragment containing the description of the item.
+	 */
 	protected function getItemDescription(StoreItem $item,
 		$show_item_group = false)
 	{
-		$renderer = $this->getItemPriceCellRenderer($item);
 		$description = $item->getDescription($show_item_group);
 
+		if (!$item->hasAvailableStatus()) {
+			$description.= sprintf('<div class="item-status">%s</div>',
+				SwatString::minimizeEntities($item->getStatus()->title));
+		}
+
+		$renderer = $this->getItemPriceCellRenderer($item);
 		ob_start();
-
-		// TODO: escape entities
-		if (!$item->hasAvailableStatus())
-			printf('<div class="item-status">%s</div>',
-				$item->getStatus()->title);
-
 		$renderer->render();
 		$description.= ' '.ob_get_clean();
 
@@ -229,6 +264,12 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	// {{{ protected function getItems()
 
 	/**
+	 * Gets the list of items selectable by this selector based on this
+	 * selector's sku
+	 *
+	 * The results are cached across multiple calls to this method as long as
+	 * the sku remains the same.
+	 *
 	 * @return StoreItemWrapper
 	 */
 	protected function getItems()
@@ -303,7 +344,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 			$item_group_node->addChild($this->getItemNode($item));
 		}
 
-		// flatten tree is there are no item groups
+		// flatten tree if there are no item groups
 		if ($num_item_groups == 0) {
 			$item_group_node->parent = null;
 			$tree = $item_group_node;
@@ -318,6 +359,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	protected function getItemPriceCellRenderer(StoreItem $item)
 	{
 		$renderer = new StoreItemPriceCellRenderer();
+
 		$renderer->value = $item->getDisplayPrice();
 		$renderer->original_value = $item->getPrice();
 		$renderer->quantity_discounts = $item->quantity_discounts;
@@ -341,6 +383,16 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	// }}}
 	// {{{ private function getItemNode()
 
+	/**
+	 * Gets an item tree node for the item selector flydown
+	 *
+	 * @param StoreItem the item for which to get the tree node.
+	 * @param boolean $show_item_group optional. Whether or not to include the
+	 *                                  item group (if it exists) in the
+	 *                                  display value of tree node.
+	 *
+	 * @return SwatTreeFlydownNode a tree flydown node for the specified item.
+	 */
 	private function getItemNode(StoreItem $item, $show_item_group = false)
 	{
 		return new SwatTreeFlydownNode($item->id,
