@@ -42,9 +42,21 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	// {{{ private properties
 
 	/**
+	 * Cached items
+	 *
 	 * @var StoreItemWrapper
 	 */
 	private $items;
+
+	/**
+	 * Item SKU used to get list of cached items
+	 *
+	 * If this is different than the {@Link StoreQuickOrderItemSelector::$sku},
+	 * the cached items are cleared and regenerated for the new sku.
+	 *
+	 * @var string
+	 */
+	private $items_sku;
 
 	// }}}
 	// {{{ public function init()
@@ -216,10 +228,12 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	 */
 	protected function getItems()
 	{
-		if ($this->items === null) {
+		if ($this->items_sku !== $this->sku) {
 			$sql = $this->getItemSql();
 			$this->items = StoreItemWrapper::loadSetFromDBWithRegion(
 				$this->db, $sql, $this->region, false);
+
+			$this->items_sku = $this->sku;
 		}
 
 		return $this->items;
