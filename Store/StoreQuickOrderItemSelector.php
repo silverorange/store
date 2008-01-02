@@ -67,6 +67,8 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 			$this->clearItems();
 		elseif (count($this->getItems()) > 1)
 			$this->buildItemsFlydown($this->getItems());
+
+		parent::init();
 	}
 
 	// }}}
@@ -76,6 +78,8 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	{
 		if (!$this->visible)
 			return;
+
+		parent::display();
 
 		$div_tag = new SwatHtmlTag('div');
 		$div_tag->id = $this->id;
@@ -123,6 +127,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 
 	public function process()
 	{
+		parent::process();
 		$this->value = $this->getCompositeWidget('items_flydown')->value;
 	}
 
