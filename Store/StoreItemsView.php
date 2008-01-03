@@ -93,6 +93,7 @@ class StoreItemsView extends SwatControl
 
 	public function process()
 	{
+		parent::process();
 		$this->ui->process();
 	}
 
