@@ -146,6 +146,8 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	 *                                    method.
 	 *
 	 * @todo make this smart based on card type.
+	 *
+	 * @sensitive $number
 	 */
 	public function setCardNumber($number, $store_unencrypted = false)
 	{
@@ -354,6 +356,8 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	 * @param string $gpg_id the GPG id to encrypt with.
 	 *
 	 * @return string the encrypted card number.
+	 *
+	 * @sensitive $number
 	 */
 	public static function encryptCardNumber($number, $gpg_id)
 	{
