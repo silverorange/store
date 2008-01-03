@@ -145,7 +145,7 @@ class StoreAccountDetails extends SiteAccountDetails
 	// }}}
 	// {{{ protected function getInvoicesTableModel()
 
-	protected function getInvoicesTableModel(SwatTableView $view) 
+	protected function getInvoicesTableModel(SwatTableView $view)
 	{
 		$sql = 'select * from Invoice where account = %s order by %s';
 
@@ -172,7 +172,7 @@ class StoreAccountDetails extends SiteAccountDetails
 	// }}}
 	// {{{ protected function getOrdersTableModel()
 
-	protected function getOrdersTableModel(SwatTableView $view) 
+	protected function getOrdersTableModel(SwatTableView $view)
 	{
 		$sql = 'select Orders.id,
 					Orders.account as account_id,
@@ -217,7 +217,7 @@ class StoreAccountDetails extends SiteAccountDetails
 	// }}}
 	// {{{ protected function getPaymentMethodsTableModel()
 
-	protected function getPaymentMethodsTableModel(SwatTableView $view) 
+	protected function getPaymentMethodsTableModel(SwatTableView $view)
 	{
 		$wrapper = SwatDBClassMap::get('StoreAccountPaymentMethodWrapper');
 
