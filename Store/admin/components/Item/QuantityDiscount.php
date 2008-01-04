@@ -7,6 +7,7 @@ require_once 'Swat/SwatMoneyEntry.php';
 require_once 'Swat/SwatBooleanCellRenderer.php';
 require_once 'Swat/SwatCheckbox.php';
 require_once 'Store/dataobjects/StoreRegionWrapper.php';
+require_once 'Store/admin/StoreItemRegionPriceCellRenderer.php';
 require_once 
 	'Store/admin/components/Item/include/StoreItemQuantityDiscountActions.php';
 
@@ -15,8 +16,6 @@ require_once
 
 require_once 'Store/admin/components/Item/include/'.
 	'StoreItemQuantityDiscountTableView.php';
-
-require_once 'Store/admin/StoreItemRegionPriceCellRenderer.php';
 
 /**
  * Quantity discounts tool
@@ -101,11 +100,11 @@ class StoreItemQuantityDiscount extends AdminIndex
 		if ($this->item === null) {
 			$regions = $this->queryRegions();
 
-			$regions_join_base = 
+			$regions_join_base =
 				'left outer join ItemRegionBinding as ItemRegionBinding_%s
 					on ItemRegionBinding_%s.item = Item.id
 						and ItemRegionBinding_%s.region = %s';
-								
+
 			$regions_select_base = 'ItemRegionBinding_%s.price as price_%s';
 
 			$regions_join = '';
@@ -458,7 +457,7 @@ class StoreItemQuantityDiscount extends AdminIndex
 	{
 		$regions = $this->queryRegions();
 
-		$regions_join_base = 
+		$regions_join_base =
 			'left outer join QuantityDiscountRegionBinding as
 					QuantityDiscountRegionBinding_%s
 				on QuantityDiscountRegionBinding_%s.quantity_discount =
@@ -505,7 +504,7 @@ class StoreItemQuantityDiscount extends AdminIndex
 	// }}}
 	// {{{ protected function buildNavBar()
 
-	protected function buildNavBar() 
+	protected function buildNavBar()
 	{
 		$item_row = $this->getItemRow();
 		$this->navbar->popEntry();
