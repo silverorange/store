@@ -652,7 +652,7 @@ class StoreProductDetails extends AdminIndex
 		foreach ($items as $item) {
 			$ds = new SwatDetailsStore($item);
 
-			$ds->description = $item->getDescription();
+			$ds->description = $this->getItemDescription($item);
 			$ds->status = $item->getStatus();
 
 			$ds->item_group_title = ($item->item_group === null) ?
@@ -746,6 +746,25 @@ class StoreProductDetails extends AdminIndex
 	protected function getItemsOrderByClause()
 	{
 		return 'Item.displayorder, Item.sku';
+	}
+
+	// }}}
+	// {{{ protected function getItemDescription()
+
+	protected function getItemDescription(StoreItem $item)
+	{
+		$description = array();
+
+		if ($item->description !== null)
+			$description[] = $entry->item->description;
+
+		if ($item->getGroupDescription() !== null)
+			$description[] = $item->getGroupDescription();
+
+		if ($item->getPartCountDescription() !== null)
+			$description[] = $item->getPartCountDescription();
+
+		return implode(' - ', $description);
 	}
 
 	// }}}

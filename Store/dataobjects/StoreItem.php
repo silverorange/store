@@ -76,6 +76,20 @@ class StoreItem extends SwatDBDataObject
 	public $displayorder;
 
 	/**
+	 * The number of parts a single unit of this item contains
+	 *
+	 * @var integer
+	 */
+	public $part_count;
+
+	/**
+	 * A user visible unit for each part of this item
+	 *
+	 * @var string
+	 */
+	public $part_unit;
+
+	/**
 	 * User visible singular unit
 	 *
 	 * @var string
@@ -367,51 +381,41 @@ class StoreItem extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ public function getDescription()
+	// {{{ public function getGroupDescription()
 
 	/**
-	 * Gets a description for this item
+	 * Gets a displayable description for this item's group
 	 *
-	 * @param boolean $include_item_group an optional paramater that specifies
-	 *                                     whether or not to include item-group
-	 *                                     information in the description. By
-	 *                                     default, item-group information is
-	 *                                     included.
-	 *
-	 * @return string a description for this item.
-	 *
-	 * @see StoreItem::getDetailedDescription()
+	 * @return string a group description for this item.
 	 */
-	public function getDescription($include_item_group = true)
+	public function getGroupDescription()
 	{
-		$description = '';
+		$description = null;
 
-		if ($include_item_group && $this->item_group !== null &&
-			strlen($this->item_group->title) > 0)
-			$description.= sprintf('(%s) ', $this->item_group->title);
-
-		$description.= $this->description;
+		if ($this->item_group !== null && strlen($this->item_group->title) > 0)
+			$description = sprintf('(%s) ', $this->item_group->title);
 
 		return $description;
 	}
 
 	// }}}
-	// {{{ public function getDetailedDescription()
+	// {{{ public function getPartCountDescription()
 
-	public function getDetailedDescription()
+	/**
+	 * Gets a displayable description for this item's part count
+	 *
+	 * @return string a part count description for this item.
+	 */
+	public function getPartCountDescription()
 	{
-		$description = '';
+		$description = null;
 
-		if ($this->sku !== null)
-			$description .= $this->sku.': ';
-
-		if ($this->product->title !== null)
-			$description.= $this->product->title.' ';
-
-		if (strlen($description))
-			$description.= ' - ';
-
-		$description.= $this->getDescription();
+		if ($this->part_count > 1) {
+			$description = sprintf(
+				'Packed %s %s per bag',
+				SwatString::minimizeEntities($this->part_count),
+				SwatString::minimizeEntities($this->part_unit));
+		}
 
 		return $description;
 	}

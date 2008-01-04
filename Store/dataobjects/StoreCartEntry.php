@@ -226,19 +226,6 @@ class StoreCartEntry extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ public function getDescription()
-
-	/**
-	 * Gets the description for this cart entry
-	 *
-	 * @return string the description for this cart entry.
-	 */
-	public function getDescription()
-	{
-		return $this->item->getDescription();
-	}
-
-	// }}}
 	// {{{ public function compare()
 
 	/**
@@ -310,7 +297,7 @@ class StoreCartEntry extends SwatDBDataObject
 		$order_item->price = $this->getCalculatedItemPrice();
 		$order_item->quantity = $this->getQuantity();
 		$order_item->extension = $this->getExtension();
-		$order_item->description = $this->getDescription();
+		$order_item->description = $this->getOrderItemDescription();
 		$order_item->item = $this->item->id;
 		$order_item->product = $this->item->product->id;
 		$order_item->product_title = $this->item->product->title;
@@ -328,6 +315,27 @@ class StoreCartEntry extends SwatDBDataObject
 			$order_item->setDatabase($this->db);
 
 		return $order_item;
+	}
+
+	// }}}
+	// {{{ protected function getOrderItemDescription()
+
+	protected function getOrderItemDescription()
+	{
+		$description = null;
+
+		if ($this->item->description !== null)
+			$description.= '<div>'.$this->item->description.'</div>';
+
+		if ($this->item->getGroupDescription() !== null)
+			$description.= '<div>'.$this->item->getGroupDescription().
+				'</div>';
+
+		if ($this->item->getPartCountDescription() !== null)
+			$description.= '<div>'.$this->item->getPartCountDescription().
+				'</div>';
+
+		return $description;
 	}
 
 	// }}}

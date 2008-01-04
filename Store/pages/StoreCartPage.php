@@ -992,7 +992,7 @@ protected function processCheckoutCart()
 		$ds = new SwatDetailsStore($entry);
 
 		$ds->quantity = $entry->getQuantity();
-		$ds->description = $this->getRowDescription($entry);
+		$ds->description = $this->getEntryDescription($entry);
 		$ds->price = $entry->getCalculatedItemPrice();
 		$ds->discount = $entry->getDiscount();
 		$ds->discount_extension = $entry->getDiscountExtension();
@@ -1028,7 +1028,7 @@ protected function processCheckoutCart()
 		$ds = new SwatDetailsStore($entry);
 
 		$ds->quantity = $entry->getQuantity();
-		$ds->description = $this->getRowDescription($entry);
+		$ds->description = $this->getEntryDescription($entry);
 		$ds->price = $entry->getCalculatedItemPrice();
 		$ds->extension = $entry->getExtension();
 		$ds->message = null;
@@ -1070,7 +1070,7 @@ protected function processCheckoutCart()
 		$ds = new SwatDetailsStore($entry);
 
 		$ds->quantity = $entry->getQuantity();
-		$ds->description = $this->getRowDescription($entry);
+		$ds->description = $this->getEntryDescription($entry);
 		$ds->price = $entry->getCalculatedItemPrice();
 		$ds->extension = $entry->getExtension();
 		$ds->message = null;
@@ -1087,13 +1087,22 @@ protected function processCheckoutCart()
 	}
 
 	// }}}
-	// {{{ protected function getRowDescription()
+	// {{{ protected function getEntryDescription()
 
-	protected function getRowDescription(StoreCartEntry $entry)
+	protected function getEntryDescription(StoreCartEntry $entry)
 	{
-		$description = $entry->getDescription();
+		$description = array();
 
-		return $description;
+		if ($entry->item->description !== null)
+			$description[] = $entry->item->description;
+
+		if ($entry->item->getGroupDescription() !== null)
+			$description[] = $entry->item->getGroupDescription();
+
+		if ($entry->item->getPartCountDescription() !== null)
+			$description[] = $entry->item->getPartCountDescription();
+
+		return implode('<br />', $description);
 	}
 
 	// }}}
