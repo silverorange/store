@@ -7,6 +7,8 @@ create table Item (
 	status int not null default 0,
 	item_group int references ItemGroup(id) on delete set null,
 	sale_discount int references SaleDiscount(id) on delete set null,
+	part_unit varchar(100),
+	part_count integer not null default 1,
 	singular_unit varchar(100),
 	plural_unit varchar(100),
 	primary key (id)
