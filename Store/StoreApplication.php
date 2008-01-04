@@ -11,6 +11,7 @@ require_once 'Store/Store.php';
 require_once 'Store/StoreCartModule.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/dataobjects/StoreRegion.php';
+require_once 'Store/dataobjects/StoreAd.php';
 
 /**
  * Web application class for a store
