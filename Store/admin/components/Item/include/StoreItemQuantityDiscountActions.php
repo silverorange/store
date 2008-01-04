@@ -35,9 +35,9 @@ class StoreItemQuantityDiscountActions extends SwatActions
 		$this->done_button->display();
 	}
 
-	protected function createEmbeddedWidgets()
+	protected function createCompositeWidgets()
 	{
-		parent::createEmbeddedWidgets();
+		parent::createCompositeWidgets();
 		$this->done_button = new SwatButton($this->id.'_done_button');
 		$this->done_button->parent = $this;
 		$this->done_button->setFromStock('submit');
