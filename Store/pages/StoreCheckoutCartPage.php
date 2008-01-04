@@ -371,13 +371,32 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 		$ds = new SwatDetailsStore($entry);
 
 		$ds->quantity = $entry->getQuantity();
-		$ds->description = $entry->getDescription();
+		$ds->description = $this->getEntryDescription($entry);
 		$ds->price = $entry->getCalculatedItemPrice();
 		$ds->extension = $entry->getExtension();
 		$ds->discount = $entry->getDiscount();
 		$ds->discount_extension = $entry->getDiscountExtension();
 
 		return $ds;
+	}
+
+	// }}}
+	// {{{ protected function getEntryDescription()
+
+	protected function getEntryDescription(StoreCartEntry $entry)
+	{
+		$description = array();
+
+		if ($entry->item->description !== null)
+			$description[] = $entry->item->description;
+
+		if ($entry->item->getGroupDescription() !== null)
+			$description[] = $entry->item->getGroupDescription();
+
+		if ($entry->item->getPartCountDescription() !== null)
+			$description[] = $entry->item->getPartCountDescription();
+
+		return implode('<br />', $description);
 	}
 
 	// }}}

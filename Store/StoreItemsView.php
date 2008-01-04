@@ -225,7 +225,7 @@ class StoreItemsView extends SwatControl
 	{
 		$ds = new SwatDetailsStore($item);
 
-		$ds->description = $item->getDescription(false);
+		$ds->description = $this->getItemDescription($item);
 
 		if (strlen($ds->description) > 0)
 			$this->has_description = true;
@@ -240,6 +240,22 @@ class StoreItemsView extends SwatControl
 		$ds->price = $item->getPrice();
 
 		return $ds;
+	}
+
+	// }}}
+	// {{{ protected function getItemDescription()
+
+	protected function getItemDescription(StoreItem $item)
+	{
+		$description = array();
+
+		if ($item->description !== null)
+			$description[] = $item->description;
+
+		if ($item->getPartCountDescription() !== null)
+			$description[] = $item->getPartCountDescription();
+
+		return implode(' - ', $description);
 	}
 
 	// }}}

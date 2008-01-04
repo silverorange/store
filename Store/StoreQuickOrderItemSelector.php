@@ -316,19 +316,16 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 		$description = '';
 
 		if ($show_item_group && $item->item_group !== null &&
-			strlen($item->item_group->title) > 0) {
+			strlen($item->item_group->title) > 0)
 			$description.= '('.$item->item_group->title.')';
-		}
 
 		$description.= $item->description;
 
-		if (!$item->hasAvailableStatus()) {
+		if (!$item->hasAvailableStatus())
 			$description.= '('.$item->getStatus()->title.')';
-		}
 
-		if (strlen($description) > 0) {
+		if (strlen($description) > 0)
 			$description.= ' - ';
-		}
 
 		$locale = SwatI18NLocale::get();
 		$description.= $locale->formatCurrency($item->getDisplayPrice());
@@ -343,16 +340,23 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	 * Gets an XHTML fragment containing the item description for an item
 	 *
 	 * @param StoreItem $item the item to get the description for.
-	 * @param boolean $show_item_group optional. Whether or not to include the
-	 *                                  item group (if it exists) in the
-	 *                                  description.
 	 *
 	 * @return string an XHTML fragment containing the description of the item.
 	 */
-	protected function getItemDescription(StoreItem $item,
-		$show_item_group = false)
+	protected function getItemDescription(StoreItem $item)
 	{
-		$description = $item->getDescription($show_item_group);
+		$description = '';
+
+		if ($item->description !== null)
+			$description.= '<div>'.$item->description.'</div>';
+
+		if ($item->getGroupDescription() !== null)
+			$description.= '<div>'.$item->getGroupDescription().
+				'</div>';
+
+		if ($item->getPartCountDescription() !== null)
+			$description.= '<div>'.$item->getPartCountDescription().
+				'</div>';
 
 		if (!$item->hasAvailableStatus()) {
 			$description.= sprintf('<div class="item-status">%s</div>',
