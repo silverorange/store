@@ -44,6 +44,13 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 	 */
 	public $plural_unit;
 
+	/**
+	 * Show savings
+	 *
+	 * @var boolean
+	 */
+	public $show_savings = true;
+
 	// }}}
 	// {{{ public function __construct()
 
@@ -119,7 +126,7 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 		else
 			printf(Store::_('%s per %s'), $price, $this->singular_unit);
 
-		if ($this->value > 0) {
+		if ($this->value > 0 && $this->show_savings) {
 			$savings_renderer = new StoreSavingsCellRenderer();
 			$savings_renderer->value =
 				round(1 - ($this->value / $this->original_value), 2);
