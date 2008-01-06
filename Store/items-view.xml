@@ -1,57 +1,62 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
-	<widget class="SwatForm" id="form">
-		<widget class="SwatTableView" id="items_view">
-			<object class="SwatTableViewGroup">
-				<property name="group_by">item_group.id</property>
-				<object class="SwatTextCellRenderer">
-					<property name="text" type="data">item_group.title</property>
+	<widget class="SwatFrame" id="item_frame">
+		<widget class="SwatContentBlock" id="product_description">
+			<property name="content_type">text/xml</property>
+		</widget>
+		<widget class="SwatForm" id="form">
+			<widget class="SwatTableView" id="items_view">
+				<object class="SwatTableViewGroup">
+					<property name="group_by">item_group.id</property>
+					<object class="SwatTextCellRenderer">
+						<property name="text" type="data">item_group.title</property>
+					</object>
 				</object>
-			</object>
-			<object class="SwatTableViewColumn" id="sku_column">
-				<property name="title" translatable="yes">Item #</property>
-				<object class="SwatTextCellRenderer">
-					<property name="text" type="data">sku</property>
-					<property name="classes[]">item-sku</property>
+				<object class="SwatTableViewColumn" id="sku_column">
+					<property name="title" translatable="yes">Item #</property>
+					<object class="SwatTextCellRenderer">
+						<property name="text" type="data">sku</property>
+						<property name="classes[]">item-sku</property>
+					</object>
 				</object>
-			</object>
-			<object class="SwatTableViewColumn" id="description_column">
-				<property name="title" translatable="yes">Description</property>
-				<object class="SwatTextCellRenderer">
-					<property name="text" type="data">description</property>
-					<property name="classes[]">store-cart-description</property>
+				<object class="SwatTableViewColumn" id="description_column">
+					<property name="title" translatable="yes">Description</property>
+					<object class="SwatTextCellRenderer">
+						<property name="text" type="data">description</property>
+						<property name="classes[]">store-cart-description</property>
+					</object>
 				</object>
-			</object>
-			<object class="SwatTableViewColumn" id="price_column">
-				<property name="title" translatable="yes">Price</property>
-				<object class="StoreItemPriceCellRenderer">
-					<property name="value" type="data">price</property>
-					<property name="singular_unit" type="data">singular_unit</property>
-					<property name="plural_unit" type="data">plural_unit</property>
-					<property name="quantity_discounts" type="data">quantity_discounts</property>
+				<object class="SwatTableViewColumn" id="price_column">
+					<property name="title" translatable="yes">Price</property>
+					<object class="StoreItemPriceCellRenderer">
+						<property name="value" type="data">price</property>
+						<property name="singular_unit" type="data">singular_unit</property>
+						<property name="plural_unit" type="data">plural_unit</property>
+						<property name="quantity_discounts" type="data">quantity_discounts</property>
+					</object>
 				</object>
-			</object>
-			<object class="SwatTableViewColumn" id="quantity_column">
-				<property name="title" translatable="yes">Quantity</property>
-				<property name="classes[]">item-quantity</property>
-				<object class="SwatWidgetCellRenderer" id="quantity_renderer">
-					<property name="replicator_id" type="data">id</property>
-					<widget class="StoreQuantityEntry" id="quantity">
-						<property name="value" type="integer">0</property>
-						<property name="visible" type="data">is_available</property>
-						<property name="tab_index" type="data">tab_index</property>
-					</widget>
+				<object class="SwatTableViewColumn" id="quantity_column">
+					<property name="title" translatable="yes">Quantity</property>
+					<property name="classes[]">item-quantity</property>
+					<object class="SwatWidgetCellRenderer" id="quantity_renderer">
+						<property name="replicator_id" type="data">id</property>
+						<widget class="StoreQuantityEntry" id="quantity">
+							<property name="value" type="integer">0</property>
+							<property name="visible" type="data">is_available</property>
+							<property name="tab_index" type="data">tab_index</property>
+						</widget>
+					</object>
+					<object class="SwatTextCellRenderer" id="status_renderer">
+						<property name="text" type="data">status</property>
+						<property name="content_type">text/xml</property>
+					</object>
 				</object>
-				<object class="SwatTextCellRenderer" id="status_renderer">
-					<property name="text" type="data">status</property>
-					<property name="content_type">text/xml</property>
+				<object class="StoreTableViewButtonRow" id="add_button">
+					<property name="visible" type="boolean">false</property>
+					<property name="title" translatable="yes">Add to Cart</property>
 				</object>
-			</object>
-			<object class="StoreTableViewButtonRow" id="add_button">
-				<property name="visible" type="boolean">false</property>
-				<property name="title" translatable="yes">Add to Cart</property>
-			</object>
+			</widget>
 		</widget>
 	</widget>
 </swatml>
