@@ -133,9 +133,9 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 	}
 
 	// }}}
-	// {{{ private function renderDiscount()
+	// {{{ protected function renderDiscount()
 
-	private function renderDiscount(StoreQuantityDiscount $quantity_discount)
+	protected function renderDiscount(StoreQuantityDiscount $quantity_discount)
 	{
 		$value = $quantity_discount->getDisplayPrice();
 		$original_value = $quantity_discount->getPrice();
