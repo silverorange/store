@@ -237,7 +237,9 @@ class StoreItemsView extends SwatControl
 			$ds->status = sprintf('<span class="item-status">%s</span>',
 				$item->getStatus()->title);
 
-		$ds->price = $item->getPrice();
+		$ds->price = $item->getDisplayPrice();
+		$ds->original_price = $item->getPrice();
+		$ds->discount = ($item->getPrice() - $item->getDisplayPrice());
 
 		return $ds;
 	}
