@@ -104,6 +104,8 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 			$span->open();
 			parent::render();
 			$span->close();
+
+			echo ' ';
 		}
 
 		$this->value = $value;
@@ -118,6 +120,7 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 	protected function renderOriginalValue()
 	{
 		ob_start();
+
 		$this->renderValue($this->value, $this->original_value);
 		$price = ob_get_clean();
 
