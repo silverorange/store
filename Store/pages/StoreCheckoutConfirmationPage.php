@@ -577,7 +577,18 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		$order->total = $cart->getTotal($order->billing_address,
 			$order->shipping_address);
 
-		$order->ad = $this->app->analytics->getAd();
+		// Reload ad from the databaes to esure it exists before trying to save
+		// the order. This prevents order failure when a deleted ad ends up in
+		// the session.
+		$session_ad = $this->app->analytics->getAd();
+		if ($session_ad !== null) {
+			$ad_class = SwatDBClassMap::get('SiteAd');
+			$ad = new $order_ad_class();
+			$ad->setDatabase($this->app->db);
+			if ($ad->load($session_ad->id)) {
+				$order->ad = $ad;
+			}
+		}
 	}
 
 	// }}}
