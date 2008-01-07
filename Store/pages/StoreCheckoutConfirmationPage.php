@@ -583,7 +583,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		$session_ad = $this->app->analytics->getAd();
 		if ($session_ad !== null) {
 			$ad_class = SwatDBClassMap::get('SiteAd');
-			$ad = new $order_ad_class();
+			$ad = new $ad_class();
 			$ad->setDatabase($this->app->db);
 			if ($ad->load($session_ad->id)) {
 				$order->ad = $ad;
