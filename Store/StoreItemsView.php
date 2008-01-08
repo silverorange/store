@@ -251,8 +251,9 @@ class StoreItemsView extends SwatControl
 	{
 		$description = array();
 
-		if ($item->description !== null &&
-			$item->description != $item->product->title)
+		$item_description = $item->getDescription();
+
+		if ($item_description !== null)
 			$description[] = $item->description;
 
 		if ($item->getPartCountDescription() !== null)
