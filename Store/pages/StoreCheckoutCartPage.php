@@ -388,8 +388,8 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 	{
 		$description = array();
 
-		if ($entry->item->description !== null)
-			$description[] = $entry->item->description;
+		if ($entry->item->getDescription() !== null)
+			$description[] = $entry->item->getDescription();
 
 		if ($entry->item->getGroupDescription() !== null)
 			$description[] = $entry->item->getGroupDescription();

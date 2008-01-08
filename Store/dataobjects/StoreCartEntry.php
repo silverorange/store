@@ -324,8 +324,8 @@ class StoreCartEntry extends SwatDBDataObject
 	{
 		$description = null;
 
-		if ($this->item->description !== null)
-			$description.= '<div>'.$this->item->description.'</div>';
+		if ($this->item->getDescription() !== null)
+			$description.= '<div>'.$this->item->getDescription().'</div>';
 
 		if ($this->item->getGroupDescription() !== null)
 			$description.= '<div>'.$this->item->getGroupDescription().
