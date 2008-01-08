@@ -409,7 +409,7 @@ class StoreItem extends SwatDBDataObject
 	public function getDescription()
 	{
 		return ($this->description == $this->product->title) ?
-			'' : $this->description;
+			null : $this->description;
 	}
 
 	// }}}
