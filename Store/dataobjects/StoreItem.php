@@ -399,6 +399,20 @@ class StoreItem extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function getDescription()
+
+	/**
+	 * Gets the description for this item
+	 *
+	 * @return string a description for this item.
+	 */
+	public function getDescription()
+	{
+		return ($this->description == $this->product->title) ?
+			'' : $this->description;
+	}
+
+	// }}}
 	// {{{ public function getPartCountDescription()
 
 	/**
