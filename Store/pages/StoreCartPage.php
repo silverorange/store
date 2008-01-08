@@ -994,9 +994,9 @@ protected function processCheckoutCart()
 		$ds->quantity = $entry->getQuantity();
 		$ds->description = $this->getEntryDescription($entry);
 		$ds->price = $entry->getCalculatedItemPrice();
+		$ds->extension = $entry->getExtension();
 		$ds->discount = $entry->getDiscount();
 		$ds->discount_extension = $entry->getDiscountExtension();
-		$ds->extension = $entry->getExtension();
 		$ds->message = null;
 		$ds->product_link = 'store/'.$entry->item->product->path;
 
