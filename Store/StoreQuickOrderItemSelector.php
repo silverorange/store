@@ -319,7 +319,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 			strlen($item->item_group->title) > 0)
 			$description.= '('.$item->item_group->title.')';
 
-		$description.= $item->description;
+		$description.= $item->getDescription();
 
 		if (!$item->hasAvailableStatus())
 			$description.= '('.$item->getStatus()->title.')';
@@ -347,8 +347,8 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	{
 		$description = '';
 
-		if ($item->description !== null)
-			$description.= '<div>'.$item->description.'</div>';
+		if ($item->getDescription() !== null)
+			$description.= '<div>'.$item->getDescription().'</div>';
 
 		if ($item->getGroupDescription() !== null)
 			$description.= '<div>'.$item->getGroupDescription().
