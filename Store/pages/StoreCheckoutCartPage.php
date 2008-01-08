@@ -376,6 +376,7 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 		$ds->extension = $entry->getExtension();
 		$ds->discount = $entry->getDiscount();
 		$ds->discount_extension = $entry->getDiscountExtension();
+		$ds->product_link = 'store/'.$entry->item->product->path;
 
 		return $ds;
 	}
