@@ -19,6 +19,11 @@
 	padding-bottom: 0.1em;
 }
 
+#header_checkout_button.swat-insensitive,
+#footer_checkout_button.swat-insensitive {
+	color: #999;
+}
+
 #header_update_button,
 #footer_update_button {
 	font-size: 80%;
