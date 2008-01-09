@@ -103,7 +103,16 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 		$div_tag->open();
 
 		if (count($items) > 0) {
-			$this->displayProduct($items->getFirst()->product);
+			$product = $items->getFirst()->product;
+
+			if ($product->primary_image !== null)
+				$this->displayProductImage($product);
+
+			$content_div_tag = new SwatHtmlTag('div');
+			$content_div_tag->class = 'store-quick-order-product-content';
+			$content_div_tag->open();
+
+			$this->displayProduct($product);
 
 			$item_div_tag = new SwatHtmlTag('div');
 			$item_div_tag->class = 'store-quick-order-item';
@@ -115,6 +124,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 				$this->displayItems();
 
 			$item_div_tag->close();
+			$content_div_tag->close();
 		}
 
 		$div_tag->close();
@@ -143,6 +153,15 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	public function setState($state)
 	{
 		$this->getCompositeWidget('items_flydown')->setState($state);
+	}
+
+	// }}}
+	// {{{ protected function displayProductImage()
+
+	protected function displayProductImage(StoreProduct $product)
+	{
+		// TODO add a default image display here once product image sizes are
+		// normalized. For now, sites can implement this themselves.
 	}
 
 	// }}}
