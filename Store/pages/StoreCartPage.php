@@ -1094,15 +1094,15 @@ protected function processCheckoutCart()
 		$description = array();
 
 		if ($entry->item->getDescription() !== null)
-			$description[] = $entry->item->getDescription();
+			$description[] = '<div>'.$entry->item->getDescription().'</div>';
 
 		if ($entry->item->getGroupDescription() !== null)
-			$description[] = $entry->item->getGroupDescription();
+			$description[] = '<div>'.$entry->item->getGroupDescription().'</div>';
 
 		if ($entry->item->getPartCountDescription() !== null)
-			$description[] = $entry->item->getPartCountDescription();
+			$description[] = '<div>'.$entry->item->getPartCountDescription().'</div>';
 
-		return implode('<br />', $description);
+		return implode("\n", $description);
 	}
 
 	// }}}
