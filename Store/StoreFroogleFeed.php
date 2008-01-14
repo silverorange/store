@@ -6,7 +6,7 @@ require_once 'Store/StoreFroogleFeedEntry.php';
 /**
  * A class for constructing Froogle Atom feeds
  *
- * @package   Store 
+ * @package   Store
  * @copyright 2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
@@ -15,7 +15,7 @@ class StoreFroogleFeed extends AtomFeed
 	// {{{ public function __construct()
 
 	/**
-	 * Creates a new Atom feed 
+	 * Creates a new Atom feed
 	 */
 	public function __construct()
 	{
@@ -51,7 +51,7 @@ class StoreFroogleFeed extends AtomFeed
 			if ($date === null || !$date instanceof Date)
 				throw new PEAR_Exception(sprintf('%s is not a Date', $name));
 
-			return self::getTextNode($document, 
+			return self::getTextNode($document,
 				$name,
 				$date->format('%Y-%m-%d'));
 		} else {
