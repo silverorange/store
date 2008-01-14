@@ -4,6 +4,8 @@ require_once 'Swat/SwatNavBarEntry.php';
 require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Store/dataobjects/StoreCategoryImage.php';
 require_once 'Site/dataobjects/SiteArticleWrapper.php';
+require_once 'Store/dataobjects/StoreCategoryWrapper.php';
+require_once 'Store/dataobjects/StoreProductWrapper.php';
 require_once 'Store/dataobjects/StoreRegion.php';
 
 /**
@@ -189,18 +191,11 @@ class StoreCategory extends SwatDBDataObject
 	 * @return integer the count of visible products in this category in the
 	 *                 given region.
 	 */
-	public function getProductCount($region = null)
+	public function getProductCount(StoreRegion $region = null)
 	{
-		if ($region !== null && !($region instanceof StoreRegion))
-			throw new StoreException(
-				'$region must be an instance of StoreRegion.');
-
-		// If region is not specified but is set through setRegion() use
-		// that region instead.
-		if ($region === null && $this->region !== null)
+		if ($region === null)
 			$region = $this->region;
 
-		// A region is required.
 		if ($region === null)
 			throw new StoreException(
 				'$region must be specified unless setRegion() is called '.
@@ -231,6 +226,87 @@ class StoreCategory extends SwatDBDataObject
 		}
 
 		return $product_count;
+	}
+
+	// }}}
+	// {{{ public function getVisibleSubCategories()
+
+	public function getVisibleSubCategories(StoreRegion $region = null)
+	{
+		if ($region === null)
+			$region = $this->region;
+
+		if ($region === null)
+			throw new StoreException(
+				'Region must be specified unless setRegion() is called '.
+				'beforehand.');
+
+		$sql = 'select Category.*,
+				c.product_count, c.region as region_id
+			from Category
+			left outer join CategoryVisibleProductCountByRegionCache as c
+				on c.category = Category.id and c.region = %1$s
+			where parent = %2$s
+			and id in
+				(select Category from VisibleCategoryView
+				where region = %1$s or region is null)
+			order by displayorder, title';
+
+
+		$sql = sprintf($sql,
+			$this->db->quote($region->id, 'integer'),
+			$this->db->quote($this->id, 'integer'));
+
+		$wrapper_class = SwatDBClassMap::get('StoreCategoryWrapper');
+		$sub_categories = SwatDB::query($this->db, $sql, $wrapper_class);
+		$sub_categories->setRegion($region);
+
+		return $sub_categories;
+	}
+
+	// }}}
+	// {{{ public function getVisibleProducts()
+
+	public function getVisibleProducts(StoreRegion $region = null)
+	{
+		if ($region === null)
+			$region = $this->region;
+
+		if ($region === null)
+			throw new StoreException(
+				'Region must be specified unless setRegion() is called '.
+				'beforehand.');
+
+		$sql = 'select Product.*,
+				ProductPrimaryCategoryView.primary_category,
+				ProductPrimaryImageView.image as primary_image,
+				getCategoryPath(ProductPrimaryCategoryView.primary_category) as
+					path
+			from Product
+			inner join CategoryProductBinding
+				on CategoryProductBinding.product = Product.id
+			inner join VisibleProductCache on
+				VisibleProductCache.product = Product.id and
+				VisibleProductCache.region = %1$s
+			left outer join ProductPrimaryCategoryView on
+				ProductPrimaryCategoryView.product = Product.id
+			left outer join ProductPrimaryImageView
+				on ProductPrimaryImageView.product = Product.id
+			inner join AvailableProductView on
+				AvailableProductView.product = Product.id and
+				AvailableProductView.region = %1$s
+			where CategoryProductBinding.category = %2$s
+			order by CategoryProductBinding.displayorder, Product.title';
+
+		$sql = sprintf($sql,
+			$this->db->quote($region->id, 'integer'),
+			$this->db->quote($this->id, 'integer'));
+
+		$wrapper_class = SwatDBClassMap::get('StoreProductWrapper');
+		$products = SwatDB::query($this->db, $sql, $wrapper_class);
+		$products->setRegion($region);
+
+		return $products;
 	}
 
 	// }}}
