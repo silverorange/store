@@ -226,11 +226,13 @@ abstract class StoreAddress extends SwatDBDataObject
 	 */
 	protected function displayCA()
 	{
-		$span_tag = new SwatHtmlTag('span');
-		$span_tag->class = 'fn';
-		$span_tag->setContent($this->getFullName());
-		$span_tag->display();
-		echo '<br />';
+		if (strlen($this->getFullName()) > 0) {
+			$span_tag = new SwatHtmlTag('span');
+			$span_tag->class = 'fn';
+			$span_tag->setContent($this->getFullName());
+			$span_tag->display();
+			echo '<br />';
+		}
 
 		if (strlen($this->company) > 0) {
 			$span_tag->class = 'fn org';
@@ -243,22 +245,26 @@ abstract class StoreAddress extends SwatDBDataObject
 		$address_span_tag->class = 'adr';
 		$address_span_tag->open();
 
-		$span_tag->class = 'street-address';
-		$span_tag->setContent($this->line1);
-		$span_tag->display();
-		echo '<br />';
-
-		if (strlen($this->line2) > 0) {
-			$span_tag->class = 'extended-address';
-			$span_tag->setContent($this->line2);
+		if (strlen($this->line1) > 0) {
+			$span_tag->class = 'street-address';
+			$span_tag->setContent($this->line1);
 			$span_tag->display();
 			echo '<br />';
+
+			if (strlen($this->line2) > 0) {
+				$span_tag->class = 'extended-address';
+				$span_tag->setContent($this->line2);
+				$span_tag->display();
+				echo '<br />';
+			}
 		}
 
-		$span_tag->class = 'locality';
-		$span_tag->setContent($this->city);
-		$span_tag->display();
-		echo ' ';
+		if (strlen($this->city) > 0) {
+			$span_tag->class = 'locality';
+			$span_tag->setContent($this->city);
+			$span_tag->display();
+			echo ' ';
+		}
 
 		if ($this->provstate !== null) {
 			$abbr_tag = new SwatHtmlTag('abbr');
@@ -339,11 +345,13 @@ abstract class StoreAddress extends SwatDBDataObject
 	 */
 	protected function displayUS()
 	{
-		$span_tag = new SwatHtmlTag('span');
-		$span_tag->class = 'fn';
-		$span_tag->setContent($this->getFullName());
-		$span_tag->display();
-		echo '<br />';
+		if (strlen($this->getFullName()) > 0) {
+			$span_tag = new SwatHtmlTag('span');
+			$span_tag->class = 'fn';
+			$span_tag->setContent($this->getFullName());
+			$span_tag->display();
+			echo '<br />';
+		}
 
 		if (strlen($this->company) > 0) {
 			$span_tag->class = 'fn org';
@@ -356,22 +364,26 @@ abstract class StoreAddress extends SwatDBDataObject
 		$address_span_tag->class = 'adr';
 		$address_span_tag->open();
 
-		$span_tag->class = 'street-address';
-		$span_tag->setContent($this->line1);
-		$span_tag->display();
-		echo '<br />';
-
-		if (strlen($this->line2) > 0) {
-			$span_tag->class = 'extended-address';
-			$span_tag->setContent($this->line2);
+		if (strlen($this->line1) > 0) {
+			$span_tag->class = 'street-address';
+			$span_tag->setContent($this->line1);
 			$span_tag->display();
 			echo '<br />';
+
+			if (strlen($this->line2) > 0) {
+				$span_tag->class = 'extended-address';
+				$span_tag->setContent($this->line2);
+				$span_tag->display();
+				echo '<br />';
+			}
 		}
 
-		$span_tag->class = 'locality';
-		$span_tag->setContent($this->city);
-		$span_tag->display();
-		echo ' ';
+		if (strlen($this->city) > 0) {
+			$span_tag->class = 'locality';
+			$span_tag->setContent($this->city);
+			$span_tag->display();
+			echo ' ';
+		}
 
 		if ($this->provstate !== null) {
 			$abbr_tag = new SwatHtmlTag('abbr');
