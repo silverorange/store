@@ -39,7 +39,7 @@ class StorePageFactory
 		if (preg_match($regexp, end($path), $regs)) {
 			array_pop($path);
 
-			list($product_id, $category_id) = 
+			list($product_id, $category_id) =
 				$this->findProduct($path);
 
 			if ($product_id === null)
@@ -47,7 +47,7 @@ class StorePageFactory
 
 			if (isset($regs[1]))
 				$image_id = intval($regs[1]);
-			else 
+			else
 				$image_id = null;
 
 			return $this->resolveProductImagePage($path, $category_id,
@@ -60,7 +60,7 @@ class StorePageFactory
 		if ($category_id !== null)
 			return $this->resolveCategoryPage($path, $category_id);
 
-		list($product_id, $category_id) = 
+		list($product_id, $category_id) =
 			$this->findProduct($path);
 
 		// if path is a valid product, load product page
@@ -166,7 +166,7 @@ class StorePageFactory
 
 			if ($category_id !== null) {
 				$sql = 'select id from Product where shortname = %s
-					and id in 
+					and id in
 					(select product from CategoryProductBinding
 					where category = %s)
 					and id in
@@ -188,7 +188,7 @@ class StorePageFactory
 			$category_id = null;
 
 			$sql = 'select id from Product where shortname = %s
-				and id not in 
+				and id not in
 				(select product from CategoryProductBinding)
 				and id in
 				(select product from VisibleProductCache where region = %s)';
@@ -205,7 +205,8 @@ class StorePageFactory
 
 	// }}}
 
-// categories
+
+	// categories
 	// {{{ protected function resolveCategoryPage()
 
 	protected function resolveCategoryPage($path, $category_id)
