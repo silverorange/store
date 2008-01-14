@@ -571,7 +571,7 @@ abstract class StoreAddress extends SwatDBDataObject
 		$address_span_tag->class = 'adr';
 		$address_span_tag->open();
 
-		if (strlen($this->line1)) {
+		if (strlen($this->line1) > 0) {
 			$span_tag->class = 'street-address';
 			$span_tag->setContent($this->line1);
 			$span_tag->display();
