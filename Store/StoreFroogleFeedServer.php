@@ -17,7 +17,7 @@ abstract class StoreFroogleFeedServer extends SiteAtomFeedServer
 	/**
 	 * Instasiates a Froogle Feed object
 	 *
-	 * @return StoreFroogleFeed 
+	 * @return StoreFroogleFeed
 	 */
 	protected function getFeed()
 	{
