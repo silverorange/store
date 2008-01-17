@@ -32,7 +32,32 @@ CREATE OR REPLACE FUNCTION updateCategoryVisibleProductCountByRegion () RETURNS 
 		local_row record;
 		local_product_count integer;
 	BEGIN
-		-- 1) Count all products in the category
+		-- 1) Count all available products in the category
+
+		for local_row in select * from CategoryAvailableProductCountByRegionView where category is not null loop
+
+			-- check if row in view exists in cache and get the product count
+			select into local_product_count product_count from CategoryAvailableProductCountByRegionCache
+			where category = local_row.category and region = local_row.region;
+
+			if FOUND then
+				-- exists, update the product count
+				update CategoryAvailableProductCountByRegionCache
+					set product_count = local_row.product_count
+				where category = local_row.category and region = local_row.region;
+			else
+				-- doesn't exist, add the row
+				insert into CategoryAvailableProductCountByRegionCache (category, region, product_count)
+				values (local_row.category, local_row.region, local_row.product_count);
+			end if;
+		end loop;
+
+		-- delete all rows in cache that are not in the view
+		delete from CategoryAvailableProductCountByRegionCache
+		where array[coalesce(category, 0), region] not in
+			(select array[coalesce(category, 0), region] from CategoryAvailableProductCountByRegionView);
+
+		-- 2) Count all visible products in the category
 
 		for local_row in select * from CategoryVisibleProductCountByRegionView where category is not null loop
 
@@ -57,7 +82,7 @@ CREATE OR REPLACE FUNCTION updateCategoryVisibleProductCountByRegion () RETURNS 
 		where array[coalesce(category, 0), region] not in
 			(select array[coalesce(category, 0), region] from CategoryVisibleProductCountByRegionView);
 
-		-- 2) Count only major products in the category (CategoryProductBinding.minor = false)
+		-- 3) Count only visible major products in the category (CategoryProductBinding.minor = false)
 
 		for local_row in select * from CategoryVisibleMajorProductCountByRegionView where category is not null loop
 
