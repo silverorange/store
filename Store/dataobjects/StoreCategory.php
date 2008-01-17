@@ -146,6 +146,15 @@ class StoreCategory extends SwatDBDataObject
 	protected $product_count = array();
 
 	/**
+	 * Cache of available product counts for this category indexed by region id
+	 *
+	 * This is an array of integers.
+	 *
+	 * @var array
+	 */
+	protected $available_product_count = array();
+
+	/**
 	 * @var array
 	 *
 	 * @see StoreCategory::getNavBarEntries()
@@ -223,6 +232,61 @@ class StoreCategory extends SwatDBDataObject
 				$product_count = 0;
 
 			$this->product_count[$region->id] = $product_count;
+		}
+
+		return $product_count;
+	}
+
+	// }}}
+	// {{{ public function getAvailableProductCount()
+
+	/**
+	 * Loads the count of available products in this category in a region
+	 *
+	 * If you are calling this method frequently during a single request, it is
+	 * more efficient to include the 'available_product_count' and 'region_id' fields in
+	 * the initial category query.
+	 *
+	 * @param StoreRegion $region optional. Region for which to get product
+	 *                             count. If no region is specified, the region
+	 *                             set using {@link StoreItem::setRegion()}
+	 *                             is used.
+	 *
+	 * @return integer the count of available products in this category in the
+	 *                 given region.
+	 */
+	public function getAvailableProductCount(StoreRegion $region = null)
+	{
+		if ($region === null)
+			$region = $this->region;
+
+		if ($region === null)
+			throw new StoreException(
+				'$region must be specified unless setRegion() is called '.
+				'beforehand.');
+
+		// We can set this to zero because if there is a null result in the
+		// CategoryAvailableProductCountByRegionCache this is the same as having
+		// no products.
+		$product_count = 0;
+
+		if ($this->region->id == $region->id &&
+			isset($this->available_product_count[$region->id])) {
+			$product_count = $this->available_product_count[$region->id];
+		} else {
+			$sql = 'select product_count
+				from CategoryAvailableProductCountByRegionCache
+				where region = %s and category = %s';
+
+			$sql = sprintf($sql,
+				$this->db->quote($region->id, 'integer'),
+				$this->db->quote($this->id, 'integer'));
+
+			$product_count = SwatDB::queryOne($this->db, $sql);
+			if ($product_count === null)
+				$product_count = 0;
+
+			$this->available_product_count[$region->id] = $product_count;
 		}
 
 		return $product_count;
@@ -392,6 +456,10 @@ class StoreCategory extends SwatDBDataObject
 		if (isset($row['region_id'])) {
 			if (isset($row['product_count']))
 				$this->product_count[$row['region_id']] = $row['product_count'];
+
+			if (isset($row['available_product_count']))
+				$this->available_product_count[$row['region_id']] =
+					$row['available_product_count'];
 		}
 	}
 
@@ -505,6 +573,13 @@ class StoreCategory extends SwatDBDataObject
 
 		$anchor_tag->open();
 		$img_tag->display();
+
+		if ($this->getAvailableProductCount() == 0) {
+			$unavailable_span_tag = $this->getUnavailableSpan();
+			if ($unavailable_span_tag !== null)
+				$unavailable_span_tag->display();
+		}
+
 		$title_span->display();
 		$anchor_tag->close();
 		echo ' ';
@@ -544,6 +619,18 @@ class StoreCategory extends SwatDBDataObject
 	protected function getPlaceholderImageFilename()
 	{
 		return 'packages/store/images/category-placeholder.png';
+	}
+
+	// }}}
+	// {{{ protected function getUnavailableSpan()
+
+	protected function getUnavailableSpan()
+	{
+		$span = new SwatHtmlTag('span');
+		$span->setContent('');
+		$span->title = 'Out of Stock';
+		$span->class = 'category-unavailable';
+		return $span;
 	}
 
 	// }}}
