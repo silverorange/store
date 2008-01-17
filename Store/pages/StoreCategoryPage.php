@@ -119,14 +119,17 @@ class StoreCategoryPage extends StorePage
 	{
 		$sql = 'select Category.id, Category.title, Category.shortname,
 				Category.description, Category.image,
+				a.product_count as available_product_count,
 				c.product_count, c.region as region_id
 			from Category
+			left outer join CategoryAvailableProductCountByRegionCache as a
+				on a.category = Category.id and a.region = %1$s
 			left outer join CategoryVisibleProductCountByRegionCache as c
-				on c.category = Category.id and c.region = %s
-			where parent %s %s
+				on c.category = Category.id and c.region = %1$s
+			where parent %2$s %3$s
 			and id in
 				(select Category from VisibleCategoryView
-				where region = %s or region is null)
+				where region = %4$s or region is null)
 			order by displayorder, title';
 
 		$category_id = ($category === null) ? null : $category->id;
