@@ -1,7 +1,6 @@
 create table Orders (
 	id serial,
 
-	instance integer references Instance(id),
 	previous_attempt integer, -- constraint added below
 	account integer default null references Account(id) on delete set null,
 	email varchar(255),
