@@ -493,7 +493,7 @@ class StoreCategory extends SwatDBDataObject
 			$details_span = new SwatHtmlTag('span');
 			$details_span->class = 'store-category-tile-details';
 			$details_span->setContent(sprintf(
-				ngettext('%s product', '%s products', $this->getProductCount()),
+				ngettext('%s item', '%s items', $this->getProductCount()),
 				$this->getProductCount()));
 		}
 
