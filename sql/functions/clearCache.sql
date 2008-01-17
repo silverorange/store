@@ -4,6 +4,10 @@ CREATE OR REPLACE FUNCTION clearCache () RETURNS INTEGER AS $$
 		insert into VisibleProductCache
 			select * from VisibleProductView;
 
+		truncate CategoryAvailableProductCountByRegionCache;
+		insert into CategoryAvailableProductCountByRegionCache
+			select *  from CategoryAvailableProductCountByRegionView  where category is not null;
+
 		truncate CategoryVisibleProductCountByRegionCache;
 		insert into CategoryVisibleProductCountByRegionCache
 			select *  from CategoryVisibleProductCountByRegionView  where category is not null;
