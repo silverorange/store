@@ -3,7 +3,7 @@ create or replace view CategoryVisibleProductCountByRegionView as
 		CategoryDescendants.category,
 		VisibleProductView.region,
 		count(distinct VisibleProductView.product) as product_count
-	from VisibleProductView 
+	from VisibleProductView
 		inner join CategoryProductBinding on
 			VisibleProductView.product = CategoryProductBinding.product
 		inner join getCategoryDescendants(NULL) as CategoryDescendants on
