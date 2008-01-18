@@ -2,7 +2,7 @@
 
 require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Store/dataobjects/StorePaymentType.php';
-require_once 'Crypt/GPG/Driver/Php.php';
+require_once 'Crypt/GPG.php';
 
 /**
  * A payment method for an ecommerce web application
@@ -164,7 +164,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	// }}}
 	// {{{ public function getCardNumber()
 
-	public function getCardNumber(Crypt_GPG_Driver_Php $gpg, $passphrase)
+	public function getCardNumber(Crypt_GPG $gpg, $passphrase)
 	{
 		$card_number = $this->card_number;
 
@@ -361,7 +361,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	 */
 	public static function encryptCardNumber($number, $gpg_id)
 	{
-		$gpg = new Crypt_GPG_Driver_Php();
+		$gpg = Crypt_GPG::factory('php');
 		return $gpg->encrypt($gpg_id, $number);
 	}
 
@@ -369,7 +369,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	// {{{ public static function decryptCardNumber()
 
 	public static function decryptCardNumber($encrypted_number,
-		Crypt_GPG_Driver_Php $gpg, $passphrase)
+		Crypt_GPG $gpg, $passphrase)
 	{
 		$decrypted_data = $gpg->decrypt($encrypted_number, $passphrase);
 		return $decrypted_data;
