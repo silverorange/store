@@ -77,7 +77,9 @@ abstract class StorePage extends SitePathPage
 	public function build()
 	{
 		parent::build();
-		$this->layout->navbar->createEntry(Store::_('Store'), 'store');
+
+		if (property_exists($this->layout, 'navbar'))
+			$this->layout->navbar->createEntry(Store::_('Store'), 'store');
 	}
 
 	// }}}
