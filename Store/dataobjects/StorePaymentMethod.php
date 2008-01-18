@@ -357,8 +357,8 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	 */
 	public static function encryptCardNumber($number, $gpg_id)
 	{
-		$gpg = new Crypt_GPG();
-		return $gpg->encrypt($number, $gpg_id);
+		$gpg = new Crypt_GPG::factory('php');
+		return $gpg->encrypt($gpg_id, $number);
 	}
 
 	// }}}
