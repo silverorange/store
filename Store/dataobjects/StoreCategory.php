@@ -603,13 +603,13 @@ class StoreCategory extends SwatDBDataObject
 				$img_tag->alt = sprintf(Store::_('Image of %s'), $this->title);
 
 		} else {
-			$class = SwatDBClassMap::get('StoreCategoryImage');
-			$image = new $class();
-			$image->setDatabase($this->db);
-			$dimension = $image->set->getDimensionByShortname('thumb');
+			$class = SwatDBClassMap::get('SiteImageDimension');
+			$dimension = new $class();
+			$dimension->setDatabase($this->db);
+			$dimension->loadByShortname('categories', 'thumb');
 			$img_tag = new SwatHtmlTag('img');
-			$img_tag->width = $dimension->width;
-			$img_tag->height = $dimension->height;
+			$img_tag->width = $dimension->max_width;
+			$img_tag->height = $dimension->max_height;
 			$img_tag->src = $this->getPlaceholderImageFilename();
 			$img_tag->alt = '';
 		}
