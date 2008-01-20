@@ -550,13 +550,15 @@ class StoreProductPage extends StorePage
 
 		$img_tag = $image->getImgTag('small');
 
-		if ($img_tag->alt === '')
-			$img_tag->alt = sprintf(Store::_('Photo of %s'),
+		if (strlen($img_tag->alt) == 0)
+			$img_tag->alt = sprintf(Store::_('Image of %s'),
 				$this->product->title);
 
 		$link_to_large = true;
-		if ($image->small_width > 0) {
-			$percentage_larger = ($image->large_width / $image->small_width) - 1;
+		$small_width = $image->getWidth('small');
+		$large_width = $image->getWidth('large');
+		if ($small_width > 0) {
+			$percentage_larger = ($large_width / $small_width) - 1;
 			// large must be at least 10% larger
 			if ($percentage_larger < 0.10)
 				$link_to_large = false;
@@ -609,7 +611,7 @@ class StoreProductPage extends StorePage
 		$img_tag = $image->getImgTag('thumb');
 
 		if (strlen($img_tag->alt) == 0)
-			$img_tag->alt = sprintf(Store::_('Additional Photo of %s'),
+			$img_tag->alt = sprintf(Store::_('Additional Image of %s'),
 				$this->product->title);
 
 		$anchor = new SwatHtmlTag('a');

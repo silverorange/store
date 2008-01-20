@@ -104,8 +104,8 @@ class StoreProductImagePage extends StorePage
 
 		$img_tag = $this->image->getImgTag('large');
 
-		if ($img_tag->alt == '')
-			$img_tag->alt = sprintf(Store::_('Photo of %s'),
+		if (strlen($img_tag->alt) == 0)
+			$img_tag->alt = sprintf(Store::_('Image of %s'),
 				$this->product->title);
 
 		$div_tag->open();
@@ -177,8 +177,8 @@ class StoreProductImagePage extends StorePage
 			$img_tag->class.= ' store-image-selected';
 		}
 
-		if ($img_tag->alt === null) {
-			$img_tag->alt = sprintf(Store::_('Additional Photo of %s'),
+		if ($img_tag->alt == '')
+			$img_tag->alt = sprintf(Store::_('Additional Image of %s'),
 				$this->product->title);
 		}
 
@@ -201,8 +201,8 @@ class StoreProductImagePage extends StorePage
 		$li_tag = new SwatHtmlTag('li');
 
 		$img_tag = $image->getImgTag('thumb');
-		if ($img_tag->alt === null)
-			$img_tag->alt = sprintf(Store::_('Additional Photo of %s'),
+		if (strlen($img_tag->alt) == 0)
+			$img_tag->alt = sprintf(Store::_('Additional Image of %s'),
 				$this->product->title);
 
 		$anchor = new SwatHtmlTag('a');

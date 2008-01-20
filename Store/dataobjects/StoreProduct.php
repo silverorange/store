@@ -593,7 +593,7 @@ class StoreProduct extends SwatDBDataObject
 	/**
 	 * Loads images for this product
 	 *
-	 * @return StoreImageWrapper
+	 * @return StoreProductImageWrapper
 	 */
 	protected function loadImages()
 	{
@@ -715,19 +715,19 @@ class StoreProduct extends SwatDBDataObject
 
 	protected function getThumbnailImgTag()
 	{
-		$img_tag = new SwatHtmlTag('img');
-
 		if ($this->primary_image !== null) {
-			$img_tag->src = $this->primary_image->getURI('thumb');
-			$img_tag->width = $this->primary_image->thumb_width;
-			$img_tag->height = $this->primary_image->thumb_height;
-			$img_tag->alt = sprintf(Store::_('Photo of %s'), $this->title);
+			$img_tag = $this->primary_image->getImgTag('thumb');
+
+			if (strlen($img_tag->alt) == 0)
+				$img_tag->alt = sprintf(Store::_('Image of %s'), $this->title);
 		} else {
 			$class = SwatDBClassMap::get('StoreProductImage');
-			$sizes = call_user_func(array($class, 'getSizes'));
-			$dimensions = $sizes['thumb'];
-			$img_tag->width = $dimensions[0];
-			$img_tag->height = $dimensions[1];
+			$image = new $class();
+			$image->setDatabase($this->db);
+			$dimension = $image->set->getDimensionByShortname('thumb');
+			$img_tag = new SwatHtmlTag('img');
+			$img_tag->width = $dimension->width;
+			$img_tag->height = $dimension->height;
 			$img_tag->src = $this->getPlaceholderImageFilename();
 			$img_tag->alt = '';
 		}
