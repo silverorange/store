@@ -1,16 +1,16 @@
 <?php
 
-require_once 'SwatDB/SwatDBRecordsetWrapper.php';
+require_once 'Site/dataobjects/SiteImageWrapper.php';
 require_once 'Store/dataobjects/StoreCategoryImage.php';
 
 /**
  * A recordset wrapper class for StoreCategoryImage objects
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2008 silverorange
  * @see       StoreCategoryImage
  */
-class StoreCategoryImageWrapper extends SwatDBRecordsetWrapper
+class StoreCategoryImageWrapper extends SiteImageWrapper
 {
 	// {{{ protected function init()
 
@@ -18,7 +18,6 @@ class StoreCategoryImageWrapper extends SwatDBRecordsetWrapper
 	{
 		parent::init();
 		$this->row_wrapper_class = SwatDBClassMap::get('StoreCategoryImage');
-		$this->index_field = 'id';
 	}
 
 	// }}}
