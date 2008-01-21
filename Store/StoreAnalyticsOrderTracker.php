@@ -16,9 +16,12 @@ class StoreAnalyticsOrderTracker
 	 */
 	protected $order;
 
-	public function __construct(StoreOrder $order)
+	protected $affiliation;
+
+	public function __construct(StoreOrder $order, $affiliation = null)
 	{
 		$this->order = $order;
+		$this->affiliation = $affiliation;
 	}
 
 	public function getInlineJavaScript()
@@ -28,35 +31,35 @@ class StoreAnalyticsOrderTracker
 
 		ob_start();
 
-		echo "pageTracker._addTrans(\n",
-			"\t", SwatString::quoteJavaScriptString($order->id), "\n",
-			"\t", SwatString::quoteJavaScriptString($order->id), "\n", // TODO
-			"\t", SwatString::quoteJavaScriptString($order->total), "\n",
-			"\t", SwatString::quoteJavaScriptString($order->tax_total), "\n",
+		echo "\npageTracker._addTrans(\n",
+			"\t", SwatString::quoteJavaScriptString($order->id), ",\n",
+			"\t", SwatString::quoteJavaScriptString($this->affiliation), ",\n",
+			"\t", SwatString::quoteJavaScriptString($order->total), ",\n",
+			"\t", SwatString::quoteJavaScriptString($order->tax_total), ",\n",
 			"\t", SwatString::quoteJavaScriptString(
-				$order->shipping_total), "\n",
+				$order->shipping_total), ",\n",
 			"\t", SwatString::quoteJavaScriptString(
-				$billing_address->city), "\n";
+				$billing_address->city), ",\n";
 
 		if ($billing_address->provstate === null)
 			echo "\t", SwatString::quoteJavaScriptString(
-				$billing_address->provstate_other), "\n";
+				$billing_address->provstate_other), ",\n";
 		else
 			echo "\t", SwatString::quoteJavaScriptString(
-				$billing_address->provstate->title), "\n";
+				$billing_address->provstate->title), ",\n";
 
 		echo "\t", SwatString::quoteJavaScriptString(
 			$billing_address->country->title), "\n);\n";
 
 		foreach ($order->items as $item) {
 			echo "\npageTracker._addItem(\n",
-				"\t", SwatString::quoteJavaScriptString($order->id), "\n",
-				"\t", SwatString::quoteJavaScriptString($item->sku), "\n",
+				"\t", SwatString::quoteJavaScriptString($order->id), ",\n",
+				"\t", SwatString::quoteJavaScriptString($item->sku), ",\n",
 				"\t", SwatString::quoteJavaScriptString(
-					$item->product_title), "\n",
+					$item->product_title), ",\n",
 				"\t", SwatString::quoteJavaScriptString(
-					$item->product_title), "\n", // TODO
-				"\t", SwatString::quoteJavaScriptString($item->price), "\n",
+					SwatString::condense($item->getDescription())), ",\n",
+				"\t", SwatString::quoteJavaScriptString($item->price), ",\n",
 				"\t", SwatString::quoteJavaScriptString($item->quantity), "\n",
 				");\n";
 		}
