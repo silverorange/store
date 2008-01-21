@@ -31,7 +31,7 @@ class StoreAnalyticsOrderTracker
 
 		ob_start();
 
-		echo "\npageTracker._addTrans(\n",
+		echo "\n\npageTracker._addTrans(\n",
 			"\t", SwatString::quoteJavaScriptString($order->id), ",\n",
 			"\t", SwatString::quoteJavaScriptString($this->affiliation), ",\n",
 			"\t", SwatString::quoteJavaScriptString($order->total), ",\n",
