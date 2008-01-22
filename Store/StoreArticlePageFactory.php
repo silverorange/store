@@ -11,12 +11,12 @@ require_once 'Site/SiteArticlePageFactory.php';
  */
 abstract class StoreArticlePageFactory extends SiteArticlePageFactory
 {
-	// {{{ protected function __construct()
+	// {{{ public function __construct()
 
 	/**
 	 * Creates a StoreArticlePageFactory
 	 */
-	protected function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 
