@@ -8,10 +8,11 @@
 			<widget class="SwatGroupingFormField">
 				<property name="title">Top Searches With Results</property>
 				<widget class="SwatTableView" id="results_view">
-					<object class="SwatTableViewColumn">
+					<object class="SwatTableViewColumn" id="keywords">
 						<property name="title">Keywords</property>
-						<object class="SwatTextCellRenderer">
+						<object class="SwatLinkCellRenderer">
 							<property name="text" type="data">keywords</property>
+							<property name="link_value" type="data">keywords</property>
 						</object>
 					</object>
 					<object class="SwatTableViewColumn">
@@ -25,10 +26,11 @@
 			<widget class="SwatGroupingFormField">
 				<property name="title">Top Searches With No Results</property>
 				<widget class="SwatTableView" id="no_results_view">
-					<object class="SwatTableViewColumn">
+					<object class="SwatTableViewColumn" id="keywords">
 						<property name="title">Keywords</property>
-						<object class="SwatTextCellRenderer">
+						<object class="SwatLinkCellRenderer">
 							<property name="text" type="data">keywords</property>
+							<property name="link_value" type="data">keywords</property>
 						</object>
 					</object>
 					<object class="SwatTableViewColumn">

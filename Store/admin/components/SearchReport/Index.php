@@ -23,6 +23,16 @@ class StoreSearchReportIndex extends AdminIndex
 		parent::initInternal();
 
 		$this->ui->loadFromXML(dirname(__FILE__).'/index.xml');
+
+		$view = $this->ui->getWidget('results_view');
+		$renderer = $view->getColumn('keywords')->getFirstRenderer();
+		$renderer->link = sprintf('%ssearch?keywords=%%s',
+			str_replace('%', '%%', $this->app->getFrontendBaseHref()));
+
+		$view = $this->ui->getWidget('no_results_view');
+		$renderer = $view->getColumn('keywords')->getFirstRenderer();
+		$renderer->link = sprintf('%ssearch?keywords=%%s',
+			str_replace('%', '%%', $this->app->getFrontendBaseHref()));
 	}
 
 	// }}}
