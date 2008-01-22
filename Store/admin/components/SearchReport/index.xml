@@ -16,7 +16,7 @@
 						</object>
 					</object>
 					<object class="SwatTableViewColumn">
-						<property name="title">Number of Searches</property>
+						<property name="title">Search Requests</property>
 						<object class="SwatNumericCellRenderer">
 							<property name="value" type="data">count</property>
 						</object>
@@ -34,7 +34,7 @@
 						</object>
 					</object>
 					<object class="SwatTableViewColumn">
-						<property name="title">Number of Searches</property>
+						<property name="title">Search Requests</property>
 						<object class="SwatNumericCellRenderer">
 							<property name="value" type="data">count</property>
 						</object>
