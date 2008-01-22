@@ -18,8 +18,6 @@ abstract class StoreArticlePageFactory extends SiteArticlePageFactory
 	 */
 	public function __construct()
 	{
-		parent::__construct();
-
 		// set location to load Store page classes from
 		$this->class_map['Store'] = 'Store/pages';
 	}
