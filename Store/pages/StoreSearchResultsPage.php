@@ -110,8 +110,10 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 			$this->ui->getWidget('product_results_frame')->title = null;
 		}
 
-		if ($fulltext_result !== null)
+		if ($fulltext_result !== null) {
 			$this->buildMisspellings($fulltext_result);
+			$fulltext_result->saveHistory();
+		}
 
 		if (count($this->has_results) > 1) {
 			$pager = $this->ui->getWidget('article_pager');
