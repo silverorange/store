@@ -8,22 +8,9 @@ require_once 'Site/SiteXMLRPCServerFactory.php';
  */
 class StoreXMLRPCServerFactory extends SiteXMLRPCServerFactory
 {
-	// {{{ public static function instance()
+	// {{{ public function __construct()
 
-	public static function instance()
-	{
-		static $instance = null;
-
-		if ($instance === null)
-			$instance = new self();
-
-		return $instance;
-	}
-
-	// }}}
-	// {{{ protected function __construct()
-
-	protected function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 
