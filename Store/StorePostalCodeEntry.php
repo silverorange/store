@@ -160,7 +160,7 @@ class StorePostalCodeEntry extends SwatEntry
 			return;
 
 		// matches ZIP or ZIP+4 codes
-		if (preg_match('/^\d{5}((-| )\d{4})?$/u', $value) == 0) {
+		if (preg_match('/^\d{5}((-| )?\d{4})?$/u', $value) == 0) {
 			$message = new SwatMessage(Store::_('The %s field is not a valid '.
 				'US ZIP Code.'), SwatMessage::ERROR);
 
