@@ -1,0 +1,46 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<widget class="SwatFrame" id="index_frame">
+		<property name="title">Keyword Searches</property>
+		<widget class="SwatForm" id="index_form">
+			<widget class="SwatGroupingFormField">
+				<property name="title">Top Searches With Results</property>
+				<widget class="SwatTableView" id="results_view">
+					<object class="SwatTableViewColumn" id="keywords">
+						<property name="title">Keywords</property>
+						<object class="SwatLinkCellRenderer">
+							<property name="text" type="data">keywords</property>
+							<property name="link_value" type="data">keywords</property>
+						</object>
+					</object>
+					<object class="SwatTableViewColumn">
+						<property name="title">Search Requests</property>
+						<object class="SwatNumericCellRenderer">
+							<property name="value" type="data">count</property>
+						</object>
+					</object>
+				</widget>
+			</widget>
+			<widget class="SwatGroupingFormField">
+				<property name="title">Top Searches With No Results</property>
+				<widget class="SwatTableView" id="no_results_view">
+					<object class="SwatTableViewColumn" id="keywords">
+						<property name="title">Keywords</property>
+						<object class="SwatLinkCellRenderer">
+							<property name="text" type="data">keywords</property>
+							<property name="link_value" type="data">keywords</property>
+						</object>
+					</object>
+					<object class="SwatTableViewColumn">
+						<property name="title">Search Requests</property>
+						<object class="SwatNumericCellRenderer">
+							<property name="value" type="data">count</property>
+						</object>
+					</object>
+				</widget>
+			</widget>
+		</widget>
+	</widget>
+</swatml>
