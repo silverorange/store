@@ -15,6 +15,11 @@ require_once 'Store/dataobjects/StoreRegionWrapper.php';
  */
 class StoreSearchReportIndex extends AdminIndex
 {
+	// {{{ class constants
+
+	const MAX_RESULTS = 50;
+
+	// }}}
 	// init phase
 	// {{{ protected function initInternal()
 
@@ -44,19 +49,21 @@ class StoreSearchReportIndex extends AdminIndex
 	{
 		switch ($view->id) {
 		case 'results_view':
-			$sql = 'select count(id) as count, keywords
+			$sql = sprintf('select count(id) as count, keywords
 				from NateGoSearchHistory
 				where document_count > 0 group by keywords
 				order by count desc
-				limit 20';
+				limit %s',
+				$this->app->db->quote(self::MAX_RESULTS, 'integer'));
 
 			$store = SwatDB::query($this->app->db, $sql);
 			break;
 		case 'no_results_view':
-			$sql = 'select count(id) as count, keywords
+			$sql = sprintf('select count(id) as count, keywords
 				from NateGoSearchHistory
 				where document_count = 0 group by keywords
-				order by count desc limit 20';
+				order by count desc limit %';
+				$this->app->db->quote(self::MAX_RESULTS, 'integer'));
 
 			$store = SwatDB::query($this->app->db, $sql);
 			break;
