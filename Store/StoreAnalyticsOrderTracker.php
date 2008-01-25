@@ -29,27 +29,33 @@ class StoreAnalyticsOrderTracker
 		$order = $this->order;
 		$billing_address = $order->billing_address;
 
+		$provstate_title = ($billing_address->provstate === null) ?
+			$billing_address->provstate_other :
+			$billing_address->provstate->title;
+
+		/*
+		 * Shipping and tax fields cannot be 0 according to Google Analytics
+		 * support article:
+		 * http://www.google.com/support/analytics/bin/answer.py?answer=72291
+		 * This is a workaround.
+		 */
+		$tax_total = ($order->tax_total == 0) ? '' : $order->tax_total;
+		$shipping_total = ($order->shipping_total == 0) ?
+			'' : $order->shipping_total;
+
 		ob_start();
 
 		echo "\n\npageTracker._addTrans(\n",
 			"\t", SwatString::quoteJavaScriptString($order->id), ",\n",
 			"\t", SwatString::quoteJavaScriptString($this->affiliation), ",\n",
-			"\t", SwatString::quoteJavaScriptString($order->total), ",\n",
-			"\t", SwatString::quoteJavaScriptString($order->tax_total), ",\n",
+			"\t", SwatString::quoteJavaScriptString($order->total), ",\n";
+			"\t", SwatString::quoteJavaScriptString($tax_total), ",\n",
+			"\t", SwatString::quoteJavaScriptString($shipping_total), ",\n",
 			"\t", SwatString::quoteJavaScriptString(
-				$order->shipping_total), ",\n",
+				$billing_address->city), ",\n",
+			"\t", SwatString::quoteJavaScriptString($provstate_title), ",\n",
 			"\t", SwatString::quoteJavaScriptString(
-				$billing_address->city), ",\n";
-
-		if ($billing_address->provstate === null)
-			echo "\t", SwatString::quoteJavaScriptString(
-				$billing_address->provstate_other), ",\n";
-		else
-			echo "\t", SwatString::quoteJavaScriptString(
-				$billing_address->provstate->title), ",\n";
-
-		echo "\t", SwatString::quoteJavaScriptString(
-			$billing_address->country->title), "\n);\n";
+				$billing_address->country->title), "\n);\n";
 
 		foreach ($order->items as $item) {
 			echo "\npageTracker._addItem(\n",
