@@ -22,10 +22,12 @@
  * - CategoryProductBinding delete
  *
  * - Item update
- *   - catalog field
  *   - product field
  *   - status field
  *   - enabled field
+ *
+ * - Product update
+ *   - catalog field
  *
  * - ItemRegionBinding insert
  * - ItemRegionBinding update
@@ -75,6 +77,9 @@ CREATE TRIGGER VisibleProductTrigger AFTER INSERT OR DELETE OR UPDATE ON Categor
 	FOR EACH STATEMENT EXECUTE PROCEDURE runUpdateVisibleProduct();
 
 CREATE TRIGGER VisibleProductTrigger AFTER UPDATE ON Item
+	FOR EACH STATEMENT EXECUTE PROCEDURE runUpdateVisibleProduct();
+
+CREATE TRIGGER VisibleProductTrigger AFTER UPDATE ON Product
 	FOR EACH STATEMENT EXECUTE PROCEDURE runUpdateVisibleProduct();
 
 CREATE TRIGGER VisibleProductTrigger AFTER INSERT OR DELETE OR UPDATE ON ItemRegionBinding
