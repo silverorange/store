@@ -48,7 +48,7 @@ class StoreAnalyticsOrderTracker
 		echo "\n\npageTracker._addTrans(\n",
 			"\t", SwatString::quoteJavaScriptString($order->id), ",\n",
 			"\t", SwatString::quoteJavaScriptString($this->affiliation), ",\n",
-			"\t", SwatString::quoteJavaScriptString($order->total), ",\n";
+			"\t", SwatString::quoteJavaScriptString($order->total), ",\n",
 			"\t", SwatString::quoteJavaScriptString($tax_total), ",\n",
 			"\t", SwatString::quoteJavaScriptString($shipping_total), ",\n",
 			"\t", SwatString::quoteJavaScriptString(
