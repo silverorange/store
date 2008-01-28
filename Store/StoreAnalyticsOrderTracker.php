@@ -26,7 +26,39 @@ class StoreAnalyticsOrderTracker
 
 	public function getInlineJavaScript()
 	{
-		$order = $this->order;
+		$utm_content = $this->getOrder($this->order);
+		foreach ($this->order->items as $item) {
+			$utm_content.= "\n".$this->getOrderItem($this->order, $item);
+		}
+		$utm_content = SwatString::quoteJavaScriptString($utm_content);
+
+		// {{{ returned JavasSript
+		return <<<JAVASCRIPT
+	var transaction_text = document.createTextNode($utm_content);
+
+	var utm_trans = document.createElement('textarea');
+	utm_trans.id = 'utmtrans';
+	utm_trans.appendChild(transaction_text);
+
+	var utm_form = document.createElement('form');
+	utm_form.id = 'utmform';
+	utm_form.name = 'utmform';
+	utm_form.style.display = 'none';
+	utm_form.appendChild(utm_trans);
+
+	var body = document.getElementsByTagName('body')[0];
+	body.appendChild(utm_form);
+
+	YAHOO.util.Event.onAvailable('utmform', __utmSetTrans);
+
+JAVASCRIPT;
+		// }}}
+	}
+
+	// {{{ protected function getOrder()
+
+	protected function getOrder(StoreOrder $order)
+	{
 		$billing_address = $order->billing_address;
 
 		$provstate_title = ($billing_address->provstate === null) ?
@@ -43,37 +75,33 @@ class StoreAnalyticsOrderTracker
 		$shipping_total = ($order->shipping_total == 0) ?
 			'' : $order->shipping_total;
 
-		ob_start();
-
-		echo "\n\npageTracker._addTrans(\n",
-			"\t", SwatString::quoteJavaScriptString($order->id), ",\n",
-			"\t", SwatString::quoteJavaScriptString($this->affiliation), ",\n",
-			"\t", SwatString::quoteJavaScriptString($order->total), ",\n",
-			"\t", SwatString::quoteJavaScriptString($tax_total), ",\n",
-			"\t", SwatString::quoteJavaScriptString($shipping_total), ",\n",
-			"\t", SwatString::quoteJavaScriptString(
-				$billing_address->city), ",\n",
-			"\t", SwatString::quoteJavaScriptString($provstate_title), ",\n",
-			"\t", SwatString::quoteJavaScriptString(
-				$billing_address->country->title), "\n);\n";
-
-		foreach ($order->items as $item) {
-			echo "\npageTracker._addItem(\n",
-				"\t", SwatString::quoteJavaScriptString($order->id), ",\n",
-				"\t", SwatString::quoteJavaScriptString($item->sku), ",\n",
-				"\t", SwatString::quoteJavaScriptString(
-					$item->product_title), ",\n",
-				"\t", SwatString::quoteJavaScriptString(
-					SwatString::condense($item->getDescription())), ",\n",
-				"\t", SwatString::quoteJavaScriptString($item->price), ",\n",
-				"\t", SwatString::quoteJavaScriptString($item->quantity), "\n",
-				");\n";
-		}
-
-		echo "\n\npageTracker._trackTrans();";
-
-		return ob_get_clean();
+		return sprintf('UTM:T|%s|%s|%s|%s|%s|%s|%s|%s',
+			str_replace('|', '_', $order->id),
+			str_replace('|', '_', $this->affiliation),
+			str_replace('|', '_', $order->total),
+			str_replace('|', '_', $tax_total),
+			str_replace('|', '_', $shipping_total),
+			str_replace('|', '_', $billing_address->city),
+			str_replace('|', '_', $provstate_title),
+			str_replace('|', '_', $billing_address->country->title));
 	}
+
+	// }}}
+	// {{{ protected function getOrderItem()
+
+	protected function getOrderItem(StoreOrder $order, StoreOrderItem $item)
+	{
+		return sprintf('UTM:I|%s|%s|%s|%s|%s|%s',
+			str_replace('|', '_', $order->id),
+			str_replace('|', '_', $item->sku),
+			str_replace('|', '_', $item->product_title),
+			str_replace('|', '_',
+				SwatString::condense($item->getDescription())),
+			str_replace('|', '_', $item->price),
+			str_replace('|', '_', $item->quantity));
+	}
+
+	// }}}
 }
 
 ?>
