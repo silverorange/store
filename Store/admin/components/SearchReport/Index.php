@@ -52,7 +52,8 @@ class StoreSearchReportIndex extends AdminIndex
 		case 'results_view':
 			$sql = sprintf('select count(id) as count, keywords
 				from NateGoSearchHistory
-				where document_count > 0 group by keywords
+				where document_count > 0
+				group by keywords
 				order by count desc
 				limit %s',
 				$this->app->db->quote(self::MAX_RESULTS, 'integer'));
@@ -62,8 +63,10 @@ class StoreSearchReportIndex extends AdminIndex
 		case 'no_results_view':
 			$sql = sprintf('select count(id) as count, keywords
 				from NateGoSearchHistory
-				where document_count = 0 group by keywords
-				order by count desc limit %',
+				where document_count = 0
+				group by keywords
+				order by count desc
+				limit %s',
 				$this->app->db->quote(self::MAX_RESULTS, 'integer'));
 
 			$store = SwatDB::query($this->app->db, $sql);
