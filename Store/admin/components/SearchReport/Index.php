@@ -20,6 +20,7 @@ class StoreSearchReportIndex extends AdminIndex
 	const MAX_RESULTS = 50;
 
 	// }}}
+
 	// init phase
 	// {{{ protected function initInternal()
 
@@ -62,7 +63,7 @@ class StoreSearchReportIndex extends AdminIndex
 			$sql = sprintf('select count(id) as count, keywords
 				from NateGoSearchHistory
 				where document_count = 0 group by keywords
-				order by count desc limit %';
+				order by count desc limit %',
 				$this->app->db->quote(self::MAX_RESULTS, 'integer'));
 
 			$store = SwatDB::query($this->app->db, $sql);
