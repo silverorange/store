@@ -713,10 +713,10 @@ class StoreProduct extends SwatDBDataObject
 	// }}}
 	// {{{ protected function getThumbnailImgTag()
 
-	protected function getThumbnailImgTag()
+	protected function getThumbnailImgTag($size = 'thumb')
 	{
 		if ($this->primary_image !== null) {
-			$img_tag = $this->primary_image->getImgTag('thumb');
+			$img_tag = $this->primary_image->getImgTag($size);
 
 			if (strlen($img_tag->alt) == 0)
 				$img_tag->alt = sprintf(Store::_('Image of %s'), $this->title);
@@ -724,7 +724,7 @@ class StoreProduct extends SwatDBDataObject
 			$class = SwatDBClassMap::get('SiteImageDimension');
 			$dimension = new $class();
 			$dimension->setDatabase($this->db);
-			$dimension->loadByShortname('products', 'thumb');
+			$dimension->loadByShortname('products', $size);
 			$img_tag = new SwatHtmlTag('img');
 			$img_tag->width = $dimension->max_width;
 			$img_tag->height = $dimension->max_height;
