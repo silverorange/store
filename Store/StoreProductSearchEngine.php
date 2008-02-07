@@ -37,6 +37,15 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	 */
 	public $featured_category;
 
+	/**
+	 * Whether or not to search for only available products
+	 *
+	 * Defaults to false and searchs all visible products.
+	 *
+	 * @var boolean
+	 */
+	public $available_only = false;
+
 	// }}}
 	// {{{ public function __construct()
 
@@ -147,26 +156,32 @@ class StoreProductSearchEngine extends SiteSearchEngine
 				ProductPrimaryCategoryView.product = Product.id
 			left outer join ProductPrimaryImageView
 				on ProductPrimaryImageView.product = Product.id
-			left outer join AvailableProductView on
+			%s join AvailableProductView on
 				AvailableProductView.product = Product.id and
 				AvailableProductView.region = %s',
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
+			$this->available_only ? 'inner' : 'left outer',
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
 		if ($this->fulltext_result !== null)
 			$clause.= ' '.
 				$this->fulltext_result->getJoinClause('Product.id', 'product');
 
-		if ($this->category instanceof StoreCategory) {
+		if ($this->category !== null) {
 			$clause.= ' inner join CategoryProductBinding
 				on CategoryProductBinding.product = Product.id';
 		}
 
-		if ($this->featured_category instanceof StoreCategory) {
+		if ($this->featured_category !== null) {
+			if ($this->featured_category instanceof StoreCategory)
+				$category_id = $this->featured_category->id;
+			else
+				$category_id = intval($this->featured_category);
+
 			$clause.= sprintf(' inner join CategoryFeaturedProductBinding on
 				CategoryFeaturedProductBinding.product = Product.id and
 				CategoryFeaturedProductBinding.category = %s',
-				$this->app->db->quote($this->featured_category->id, 'integer'));
+				$this->app->db->quote($category_id, 'integer'));
 		}
 
 		return $clause;
@@ -179,14 +194,19 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	{
 		$clause = parent::getWhereClause();
 
-		if ($this->category instanceof StoreCategory) {
+		if ($this->category !== null) {
+			if ($this->category instanceof StoreCategory)
+				$category_id = $this->category->id;
+			else
+				$category_id = intval($this->category);
+
 			if ($this->include_category_descendants)
 				$clause.= sprintf(' and CategoryProductBinding.category in (
 					select descendant from getCategoryDescendants(%s))',
-					$this->app->db->quote($this->category->id, 'integer'));
+					$this->app->db->quote($category_id, 'integer'));
 			else
 				$clause.= sprintf(' and CategoryProductBinding.category = %s',
-					$this->app->db->quote($this->category->id, 'integer'));
+					$this->app->db->quote($category_id, 'integer'));
 		}
 
 		return $clause;
