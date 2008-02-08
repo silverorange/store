@@ -756,7 +756,7 @@ class StoreProductDetails extends AdminIndex
 		$description = array();
 
 		if ($item->description !== null)
-			$description[] = $entry->item->description;
+			$description[] = $item->description;
 
 		if ($item->getGroupDescription() !== null)
 			$description[] = $item->getGroupDescription();
