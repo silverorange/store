@@ -306,6 +306,7 @@ class StoreCategoryPage extends StorePage
 		$engine->category = $this->category;
 		$engine->include_category_descendants = false;
 		$engine->addOrderByField('CategoryProductBinding.displayorder');
+		$engine->addOrderByField('is_available desc');
 
 		$products = $engine->search();
 
