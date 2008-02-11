@@ -22,7 +22,7 @@ class StorePaymentTypeDelete extends AdminDBDelete
 		parent::processDBData();
 
 		$item_list = $this->getItemList('text');
-		
+
 		$sql = sprintf('delete from PaymentType where id in (%s)
 			and id not in (select payment_type from OrderPaymentMethod)
 			and id not in (select payment_type from AccountPaymentMethod)',
@@ -68,7 +68,7 @@ class StorePaymentTypeDelete extends AdminDBDelete
 			AdminDependency::NODELETE);
 
 		$dep->addDependency($dep_orders);
-		
+
 		// dependent account payment methods
 		$dep_account = new AdminSummaryDependency();
 		$dep_account->setTitle(
