@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreCategoryWrapper.php';
  * an "about us" page, a newsletter signup page and a shipping policy page.
  *
  * StoreArticle objects themselves may represent a tree structure by accessing
- * the {@link StoreArticle::$parent} property. 
+ * the {@link StoreArticle::$parent} property.
  *
  * @package   Store
  * @copyright 2006-2007 silverorange
@@ -26,7 +26,7 @@ class StoreArticle extends SiteArticle
 	 *
 	 * @var StoreRegion
 	 * @see StoreProduct::setRegion()
-	 */ 
+	 */
 	protected $region = null;
 
 	// }}}
@@ -59,7 +59,7 @@ class StoreArticle extends SiteArticle
 	{
 		$sql = 'select id, title, shortname, description, createdate
 			from Article
-			where parent = %s and show = %s and id in 
+			where parent = %s and show = %s and id in
 			(select id from VisibleArticleView where region = %s)
 			order by displayorder, title';
 
@@ -141,7 +141,7 @@ class StoreArticle extends SiteArticle
 	// {{{ protected function loadRelatedCategories()
 
 	/**
-	 * Loads related cateogries 
+	 * Loads related cateogries
 	 *
 	 * Related categories are ordered by the category table's display order.
 	 *
@@ -150,7 +150,7 @@ class StoreArticle extends SiteArticle
 	protected function loadRelatedCategories()
 	{
 		$sql = 'select Category.*, getCategoryPath(id) as path
-			from Category 
+			from Category
 				inner join ArticleCategoryBinding
 					on Category.id = ArticleCategoryBinding.category
 						and ArticleCategoryBinding.article = %s
@@ -174,7 +174,7 @@ class StoreArticle extends SiteArticle
 	{
 		$sql = 'select id, title, shortname, description, createdate
 			from Article
-			where parent = %s and id in 
+			where parent = %s and id in
 			(select id from VisibleArticleView where region = %s)
 			order by displayorder, title';
 
