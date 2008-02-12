@@ -55,12 +55,28 @@ class StoreCatalogClone extends AdminDBEdit
 				Store::_('catalog'), $title), SwatMessage::SYSTEM_ERROR);
 
 		} else {
+			// add all new products to search queue
+			$this->addToSearchQueue($clone_id);
 			$message = new SwatMessage(
 				sprintf(Store::_('The %s “%s” has been cloned.'),
 				Store::_('catalog'), $title));
 		}
 
 		$this->app->messages->add($message);
+	}
+
+	// }}}
+	// {{{ protected function addToSearchQueue()
+
+	protected function addToSearchQueue($catalog_id)
+	{
+		$sql = sprintf('insert into NateGoSearchQueue
+			(document_id, document_type) select id, %s from Product
+			where catalog = %s',
+			$this->app->db->quote(2, 'integer'),
+			$this->app->db->quote($catalog_id, 'integer'));
+
+		SwatDB::exec($this->app->db, $sql);
 	}
 
 	// }}}
