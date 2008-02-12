@@ -11,6 +11,16 @@ require_once 'Swat/SwatYUI.php';
  */
 class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 {
+	// {{{ protected properties
+
+	/**
+	 * @var StoreOrderAddress
+	 *
+	 * @see StoreCheckoutShippingAddress::getShippingAddress()
+	 */
+	protected $shipping_address;
+
+	// }}}
 	// {{{ public function __construct()
 
 	public function __construct(SiteApplication $app, SiteLayout $layout)
@@ -59,69 +69,17 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 
 	public function processCommon()
 	{
-		if ($this->ui->getWidget('form')->hasMessage())
-			return;
-
-		$this->saveDataToSession();
-	}
-
-	// }}}
-	// {{{ protected function saveDataToSession()
-
-	protected function saveDataToSession()
-	{
-		$address_list = $this->ui->getWidget('shipping_address_list');
-		$class_name = SwatDBClassMap::get('StoreOrderAddress');
-		$order_address = new $class_name();
-
-		if ($address_list->value === null || $address_list->value === 'new') {
-			$order_address->fullname =
-				$this->ui->getWidget('shipping_address_fullname')->value;
-
-			$order_address->company =
-				$this->ui->getWidget('shipping_address_company')->value;
-
-			$order_address->line1 = 
-				$this->ui->getWidget('shipping_address_line1')->value;
-
-			$order_address->line2 =
-				$this->ui->getWidget('shipping_address_line2')->value;
-
-			$order_address->city =
-				$this->ui->getWidget('shipping_address_city')->value;
-
-			$order_address->provstate =
-				$this->ui->getWidget('shipping_address_provstate')->value;
-
-			$order_address->provstate_other =
-				$this->ui->getWidget('shipping_address_provstate_other')->value;
-
-			$order_address->postal_code =
-				$this->ui->getWidget('shipping_address_postalcode')->value;
-
-			$order_address->country =
-				$this->ui->getWidget('shipping_address_country')->value;
-
-			$order_address->phone =
-				$this->ui->getWidget('shipping_address_phone')->value;
-
-		} elseif ($address_list->value === 'billing') {
-			$order_address = $this->app->session->order->billing_address;
-		} else {
-			$address_id = intval($address_list->value);
-
-			$account_address = 
-				$this->app->session->account->addresses->getByIndex(
-				$address_id);
-
-			if (!($account_address instanceof StoreAccountAddress))
-				throw new StoreException('Account address not found. Address '.
-					"with id ‘{$address_id}’ not found.");
-
-			$order_address->copyFrom($account_address);
+		// if form validated, perform additional checks on generated address
+		// object.
+		if (!$this->ui->getWidget('form')->hasMessage()) {
+			$this->validateShippingAddress();
 		}
 
-		$this->app->session->order->shipping_address = $order_address;
+		// only save address in session if above validation didn't cause other
+		// validation messages to be generated.
+		if (!$this->ui->getWidget('form')->hasMessage()) {
+			$this->saveDataToSession();
+		}
 	}
 
 	// }}}
@@ -153,6 +111,99 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 			$postal_code->country = $country->value;
 			$postal_code->provstate = $provstate_abbreviation;
 		}
+	}
+
+	// }}}
+	// {{{ protected function saveDataToSession()
+
+	protected function saveDataToSession()
+	{
+		$this->app->session->order->shipping_address =
+			$this->getShippingAddress();
+	}
+
+	// }}}
+	// {{{ protected function validateShippingAddress()
+
+	protected function validateShippingAddress()
+	{
+		$address = $this->getShippingAddress();
+
+		$shipping_country_ids = array();
+		foreach ($this->app->getRegion()->shipping_countries as $country)
+			$shipping_country_ids[] = $country->id;
+
+		if (!in_array($address->getInternalValue('country'),
+			$shipping_country_ids)) {
+			$field = $this->ui->getWidget('shipping_address_list_field');
+			$field->addMessage(new SwatMessage('Orders can not be shipped to '.
+				'the country of the selected address. Select a different '.
+				'shipping address or enter a new shipping address.'));
+		}
+	}
+
+	// }}}
+	// {{{ protected function getShippingAddress()
+
+	protected function getShippingAddress()
+	{
+		if ($this->shipping_address instanceof StoreOrderAddress)
+			return $this->shipping_address;
+
+		$address_list = $this->ui->getWidget('shipping_address_list');
+		$class_name = SwatDBClassMap::get('StoreOrderAddress');
+		$address = new $class_name();
+
+		if ($address_list->value === null || $address_list->value === 'new') {
+			$address->fullname =
+				$this->ui->getWidget('shipping_address_fullname')->value;
+
+			$address->company =
+				$this->ui->getWidget('shipping_address_company')->value;
+
+			$address->line1 =
+				$this->ui->getWidget('shipping_address_line1')->value;
+
+			$address->line2 =
+				$this->ui->getWidget('shipping_address_line2')->value;
+
+			$address->city =
+				$this->ui->getWidget('shipping_address_city')->value;
+
+			$address->provstate =
+				$this->ui->getWidget('shipping_address_provstate')->value;
+
+			$address->provstate_other =
+				$this->ui->getWidget('shipping_address_provstate_other')->value;
+
+			$address->postal_code =
+				$this->ui->getWidget('shipping_address_postalcode')->value;
+
+			$address->country =
+				$this->ui->getWidget('shipping_address_country')->value;
+
+			$address->phone =
+				$this->ui->getWidget('shipping_address_phone')->value;
+
+		} elseif ($address_list->value === 'billing') {
+			$address = $this->app->session->order->billing_address;
+		} else {
+			$address_id = intval($address_list->value);
+
+			$account_address =
+				$this->app->session->account->addresses->getByIndex(
+				$address_id);
+
+			if (!($account_address instanceof StoreAccountAddress))
+				throw new StoreException('Account address not found. Address '.
+					"with id ‘{$address_id}’ not found.");
+
+			$address->copyFrom($account_address);
+		}
+
+		$this->shipping_address = $address;
+
+		return $this->shipping_address;
 	}
 
 	// }}}
@@ -294,7 +345,7 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 		// TODO: it is possible to select a billing address that is not
 		// shippable and then select "ship to billing address".
 		if ($this->app->session->checkout_with_account) {
-			$address_list->addOption('new', 
+			$address_list->addOption('new',
 				sprintf($span, Store::_('Add a New Address')), 'text/xml');
 
 			$address_list->addOption('billing',
