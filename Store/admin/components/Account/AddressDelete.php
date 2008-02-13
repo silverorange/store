@@ -19,7 +19,7 @@ class StoreAccountAddressDelete extends AdminDBDelete
 	private $account_fullname;
 
 	// }}}
-	
+
 	// process phase
 	// {{{ protected function processDBData()
 
@@ -29,7 +29,7 @@ class StoreAccountAddressDelete extends AdminDBDelete
 		$this->buildAccount();
 
 		$item_list = $this->getItemList('integer');
-		
+
 		$sql = sprintf('delete from AccountAddress where id in (%s)',
 			$item_list);
 
@@ -77,7 +77,7 @@ class StoreAccountAddressDelete extends AdminDBDelete
 			from AccountAddress
 				left outer join ProvState
 					on ProvState.id = AccountAddress.provstate
-				inner join Country 
+				inner join Country
 					on Country.id = AccountAddress.country
 			where AccountAddress.id in ('.$item_list.')
 			order by createdate desc');
@@ -145,13 +145,13 @@ class StoreAccountAddressDelete extends AdminDBDelete
 	{
 		$item_list = $this->getItemList('integer');
 
-		$row = SwatDB::queryRow($this->app->db, 
+		$row = SwatDB::queryRow($this->app->db,
 			sprintf('select Account.id, Account.fullname from Account
 				inner join AccountAddress
 					on Account.id = AccountAddress.account
 				where AccountAddress.id in (%s)',
 				$item_list));
-		
+
 		$this->account_id = $row->id;
 		$this->account_fullname = $row->fullname;
 	}
