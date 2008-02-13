@@ -144,6 +144,6 @@ class StorePaymentTypeIndex extends AdminIndex
 	}
 
 	// }}}
-}	
+}
 
 ?>
