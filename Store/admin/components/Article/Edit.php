@@ -6,7 +6,7 @@ require_once 'Site/admin/components/Article/Edit.php';
  * Edit page for Articles
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2008 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreArticleEdit extends SiteArticleEdit
@@ -28,12 +28,6 @@ class StoreArticleEdit extends SiteArticleEdit
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-
-		$unused_fields = array(
-			'boolean:enabled',
-		);
-
-		$this->fields = array_diff($this->fields, $unused_fields);
 	}
 
 	// }}}
@@ -56,17 +50,26 @@ class StoreArticleEdit extends SiteArticleEdit
 		$region_list = $this->ui->getWidget('regions');
 
 		SwatDB::updateBinding($this->app->db, 'ArticleRegionBinding',
-			'article', $this->id, 'region', $region_list->values, 'Region',
-			'id');
+			'article', $this->edit_article->id, 'region', $region_list->values,
+			'Region', 'id');
 	}
 
 	// }}}
-	// {{{ protected function getUIValues()
+	// {{{ protected function saveArticle()
 
-	protected function getUIValues()
+	protected function saveArticle()
 	{
-		return $this->ui->getValues(array('title', 'shortname', 'bodytext',
+		$values = $this->ui->getValues(array('title', 'shortname', 'bodytext',
 			'description', 'show', 'searchable'));
+
+		$this->edit_article->title       = $values['title'];
+		$this->edit_article->shortname   = $values['shortname'];
+		$this->edit_article->bodytext    = $values['bodytext'];
+		$this->edit_article->description = $values['description'];
+		$this->edit_article->show        = $values['show'];
+		$this->edit_article->searchable  = $values['searchable'];
+
+		$this->edit_article->save();
 	}
 
 	// }}}
