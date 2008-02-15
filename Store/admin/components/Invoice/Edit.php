@@ -31,7 +31,7 @@ class StoreInvoiceEdit extends AdminDBEdit
 		parent::initInternal();
 
 		$this->ui->loadFromXML($this->ui_xml);
-	
+
 		$this->initAccount();
 		$this->initInvoice();
 
@@ -74,9 +74,9 @@ class StoreInvoiceEdit extends AdminDBEdit
 	// }}}
 	// {{{ protected function initAccount()
 
-	protected function initAccount() 
+	protected function initAccount()
 	{
-		if ($this->id === null) 
+		if ($this->id === null)
 			$account_id = $this->app->initVar('account');
 		else
 			$account_id = SwatDB::queryOne($this->app->db, sprintf(
@@ -156,7 +156,7 @@ class StoreInvoiceEdit extends AdminDBEdit
 			sprintf('Account/Details?id=%s', $this->account->id)));
 
 		$this->navbar->addEntry($last_entry);
-		
+
 		$this->title = $this->account->fullname;
 	}
 	
