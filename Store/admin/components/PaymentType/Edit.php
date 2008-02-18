@@ -3,20 +3,22 @@
 require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDB.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Swat/SwatMessage.php';
+require_once 'Store/dataobjects/StorePaymentType.php';
 
 /**
  * Edit page for payment types
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2008 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StorePaymentTypeEdit extends AdminDBEdit
 {
-	// {{{ private properties
+	// {{{ protected properties
 
-	private $fields;
+	protected $payment_type;
 
 	// }}}
 
@@ -28,8 +30,7 @@ class StorePaymentTypeEdit extends AdminDBEdit
 		parent::initInternal();
 
 		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
-
-		$this->fields = array('title', 'shortname');
+		$this->initPaymentType();
 
 		$region_list = $this->ui->getWidget('regions');
 		$region_list_options = SwatDB::getOptionArray($this->app->db,
@@ -42,25 +43,42 @@ class StorePaymentTypeEdit extends AdminDBEdit
 	}
 
 	// }}}
+	// {{{ protected function initPaymentType()
+
+	protected function initPaymentType()
+	{
+		$class_name = SwatDBClassMap::get('StorePaymentType');
+		$this->payment_type = new $class_name();
+		$this->payment_type->setDatabase($this->app->db);
+
+		if ($this->id !==null) {
+			if (!$this->payment_type->load($this->id)) {
+				throw new AdminNotFoundException(
+					sprintf(Admin::_('Payment Type with an id "%s" not found'),
+						$this->id));
+			}
+		}
+	}
+
+	// }}}
 
 	// process phase
 	// {{{ protected function validate()
 
 	protected function validate()
 	{
-		$shortname = $this->ui->getWidget('shortname')->value;
+		$shortname = $this->ui->getWidget('shortname');
+		$title = $this->ui->getWidget('title');
 
-		if ($this->id === null && $shortname === null) {
-			$shortname = $this->generateShortname(
-				$this->ui->getWidget('title')->value, $this->id);
-			$this->ui->getWidget('shortname')->value = $shortname;
-
+		if ($this->id === null && $shortname->value === null) {
+			$new_shortname = $this->generateShortname($title->value);
+			$shortname->value = $new_shortname;
 		} elseif (!$this->validateShortname($shortname)) {
 			$message = new SwatMessage(Store::_(
 				'Shortname already exists and must be unique.'),
 				SwatMessage::ERROR);
 
-			$this->ui->getWidget('shortname')->addMessage($message);
+			$shortname->addMessage($message);
 		}
 	}
 
@@ -69,17 +87,18 @@ class StorePaymentTypeEdit extends AdminDBEdit
 
 	protected function validateShortname($shortname)
 	{
-		$sql = 'select shortname from PaymentType where shortname = %s
-			and id %s %s';
+		$valid = true;
 
-		$sql = sprintf($sql,
-			$this->app->db->quote($shortname, 'text'),
-			SwatDB::equalityOperator($this->id, true),
-			$this->app->db->quote($this->id, 'integer'));
+		$class_name = SwatDBClassMap::get('StorePaymentType');
+		$payment_type = new $class_name();
+		$payment_type->setDatabase($this->app->db);
 
-		$query = SwatDB::query($this->app->db, $sql);
+		if ($payment_type->loadByShortname($shortname)) {
+			if ($payment_type->id !== $this->payment_type->id)
+				$valid = false;
+		}
 
-		return (count($query) == 0);
+		return $valid
 	}
 
 	// }}}
@@ -87,14 +106,8 @@ class StorePaymentTypeEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$values = $this->ui->getValues(array('title', 'shortname'));
-
-		if ($this->id === null)
-			$this->id = SwatDB::insertRow($this->app->db, 'PaymentType',
-				$this->fields, $values, 'integer:id');
-		else
-			SwatDB::updateRow($this->app->db, 'PaymentType', $this->fields,
-				$values, 'id', $this->id);
+		$this->updatePaymentType();
+		$this->payment_type->save();
 
 		$region_list = $this->ui->getWidget('regions');
 		SwatDB::updateBinding($this->app->db, 'PaymentTypeRegionBinding',
@@ -108,20 +121,24 @@ class StorePaymentTypeEdit extends AdminDBEdit
 	}
 
 	// }}}
+	// {{{ protected function updatePaymentType()
+
+	protected function updatePaymentType()
+	{
+		$values = $this->ui->getValues(array('title', 'shortname'));
+
+		$this->payment_type->title     = $values['title'];
+		$this->payment_type->shortname = $values['shortname'];
+	}
+
+	// }}}
 
 	// build phase
 	// {{{ protected function loadDBData()
 
 	protected function loadDBData()
 	{
-		$row = SwatDB::queryRowFromTable($this->app->db, 'PaymentType',
-			$this->fields, 'id', $this->id);
-
-		if ($row === null)
-			throw new AdminNotFoundException(
-				sprintf('Payment Type with id ‘%s’ not found.', $this->id));
-
-		$this->ui->setValues(get_object_vars($row));
+		$this->ui->setValues(get_object_vars($this->payment_type));
 
 		$region_list = $this->ui->getWidget('regions');
 		$region_list->values = SwatDB::queryColumn($this->app->db,
