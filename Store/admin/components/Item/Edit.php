@@ -15,7 +15,7 @@ require_once 'Store/dataobjects/StoreRegionWrapper.php';
  * Edit page for Items
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2008 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemEdit extends AdminDBEdit
@@ -23,14 +23,22 @@ class StoreItemEdit extends AdminDBEdit
 	// {{{ protected properties
 
 	protected $ui_xml = 'Store/admin/components/Item/edit.xml';
-	protected $fields;
-	protected $product_id;
+	protected $parent;
+	protected $item;
 
 	// }}}
 	// {{{ private properties
 
+	/**
+	 * Used to build the navbar.
+	 *
+	 * If the user navigated to this page from the Product Categories page then
+	 *  then this variable will be set and will cause the navbar to display
+	 *  differently.
+	 *
+	 * @var integer
+	 */
 	private $category_id;
-	private $item_sku;
 
 	// }}}
 
@@ -43,20 +51,14 @@ class StoreItemEdit extends AdminDBEdit
 
 		$this->ui->loadFromXML($this->ui_xml);
 
-		$this->fields = array('description', 'sku', 'integer:status');
-
-		$this->product_id = SiteApplication::initVar('product');
+		$this->parent      = SiteApplication::initVar('parent');
 		$this->category_id = SiteApplication::initVar('category');
-		$this->item_sku = SiteApplication::initVar('item_sku');
 
-		if ($this->product_id === null && $this->id === null) {
+		$this->initItem();
+
+		if ($this->parent === null && $this->item->id === null)
 			throw new AdminNoAccessException(Store::_(
-				'A product ID or an item ID must be passed in the URL.'));
-		} elseif ($this->product_id === null) {
-			$this->product_id = SwatDB::queryOne($this->app->db,
-				sprintf('select product from Item where id = %s',
-				$this->app->db->quote($this->id, 'integer')));
-		}
+				'Must supply a Product ID for newly created Items.'));
 
 		$status_radiolist = $this->ui->getWidget('status');
 		foreach (StoreItemStatusList::statuses() as $status) {
@@ -69,6 +71,23 @@ class StoreItemEdit extends AdminDBEdit
 
 		$price_replicator = $this->ui->getWidget('price_replicator');
 		$price_replicator->replicators = $regions;
+	}
+
+	// }}}
+	// {{{ protected function initItem()
+
+	protected function initItem()
+	{
+		$class_name = SwatDBClassMap::get('StoreItem');
+		$this->item = new $class_name();
+		$this->item->setDatabase($this->app->db);
+
+		if ($this->id !== null) {
+			if (!$this->item->load($this->id))
+				throw new AdminNotFoundException(
+					sprintf(Store::_('Item with id "%s" not found.'),
+						$this->id));
+		}
 	}
 
 	// }}}
@@ -91,7 +110,7 @@ class StoreItemEdit extends AdminDBEdit
 		foreach ($regions as $region) {
 			$enabled_widget = $replicator->getWidget('enabled', $region->id);
 			$enabled_widget->process();
-			
+
 			$price_widget = $replicator->getWidget('price', $region->id);
 			$price_widget->required = $enabled_widget->value;
 			$price_widget->locale = $region->getFirstLocale()->id;
@@ -105,20 +124,8 @@ class StoreItemEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$values = $this->getUIValues();
-
-		if ($this->id === null) {
-			$this->fields[] = 'product';
-			$values['product'] =
-				$this->ui->getWidget('edit_form')->getHiddenField('product');
-
-			$this->id = SwatDB::insertRow($this->app->db, 'Item',
-				$this->fields, $values, 'id');
-		} else {
-			SwatDB::updateRow($this->app->db, 'Item', $this->fields, $values,
-				'id', $this->id);
-		}
-
+		$this->UpdateItem();
+		$this->item->save();
 		$this->addToSearchQueue();
 		$this->saveItemRegionFields();
 
@@ -129,11 +136,16 @@ class StoreItemEdit extends AdminDBEdit
 	}
 
 	// }}}
-	// {{{ protected function getUIValues()
+	// {{{ protected function UpdateItem()
 
 	protected function getUIValues()
 	{
-		return $this->ui->getValues(array('description', 'sku', 'status'));
+		$values = $this->ui->getValues(array('description', 'sku', 'status'));
+
+		$this->item->sku         = $values['sku'];
+		$this->item->status      = $values['status'];
+		$this->item->description = $values['description'];
+		$this->item->product     = $this->parent;
 	}
 
 	// }}}
@@ -151,7 +163,9 @@ class StoreItemEdit extends AdminDBEdit
 
 		// validate main sku
 		$sku = $this->ui->getWidget('sku');
-		$valid = ($this->item_sku !== null) ? array($this->item_sku) : array();
+		$valid =
+			($this->item->sku !== null) ? array($this->item->sku) : array();
+
 		if (!StoreItem::validateSku($this->app->db, $sku->value, $catalog,
 			$this->product_id, $valid)) {
 			$sku->addMessage(new SwatMessage(
@@ -199,16 +213,16 @@ class StoreItemEdit extends AdminDBEdit
 
 		$delete_sql = 'delete from ItemRegionBinding where item = %s';
 		$delete_sql = sprintf($delete_sql,
-			$this->app->db->quote($this->id, 'integer'));
+			$this->app->db->quote($this->item->id, 'integer'));
 
 		SwatDB::exec($this->app->db, $delete_sql);
 
-		$insert_sql = 'insert into ItemRegionBinding 
+		$insert_sql = 'insert into ItemRegionBinding
 			(item, region, price, enabled)
 			values (%s, %%s, %%s, %%s)';
 
 		$insert_sql = sprintf($insert_sql,
-			$this->app->db->quote($this->id, 'integer'));
+			$this->app->db->quote($this->item->id, 'integer'));
 
 		$price_replicator = $this->ui->getWidget('price_replicator');
 
@@ -234,18 +248,6 @@ class StoreItemEdit extends AdminDBEdit
 	{
 		parent::display();
 		Swat::displayInlineJavaScript($this->getInlineJavaScript());
-	}
-
-	// }}}
-	// {{{ protected function buildForm()
-
-	protected function buildForm()
-	{
-		parent::buildForm();
-		$form = $this->ui->getWidget('edit_form');
-		$form->addHiddenField('product', $this->product_id);
-		$form->addHiddenField('category', $this->category_id);
-		$form->addHiddenField('item_sku', $this->item_sku);
 	}
 
 	// }}}
@@ -294,15 +296,12 @@ class StoreItemEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$row = SwatDB::queryRowFromTable($this->app->db, 'Item', $this->fields,
-			'id', $this->id);
+		$this->ui->setValues(get_object_vars($this->item));
 
-		if ($row === null)
-			throw new AdminNotFoundException(
-				sprintf(Store::_('Item with id ‘%s’ not found.'), $this->id));
+		$this->parent = $this->item->getInternalValue('product');
+		$form = $this->ui->getWidget('edit_form');
+		$form->addHiddenField('parent', $this->parent);
 
-		$this->item_sku = $row->sku;
-		$this->ui->setValues(get_object_vars($row));
 		$this->loadReplicators();
 	}
 
