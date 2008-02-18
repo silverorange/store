@@ -3,19 +3,19 @@
 require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDB.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 
 /**
  * Edit page for Item Groups
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2008 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemGroupEdit extends AdminDBEdit
 {
 	// {{{ private properties
 
-	private $fields;
 	private $category_id;
 
 	// }}}
@@ -27,12 +27,27 @@ class StoreItemGroupEdit extends AdminDBEdit
 	{
 		parent::initInternal();
 		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
-		$this->fields = array('title');
 		$this->category_id = SiteApplication::initVar('category');
 
 		if ($this->id === null)
 			throw new AdminNotFoundException(sprintf(
 				Store::_('Item Group with id ‘%s’ not found.'), $this->id));
+	}
+
+	// }}}
+	// {{{ protected function initItemGroup()
+
+	{
+		$class_name = SwatDBClassMap::get('StoreItemGroup');
+		$this->item_group = new $class_name();
+		$this->item_group->setDatabase($this->app->db);
+
+		if ($this->id !== null) {
+			if (!$this->item_group->load($this->id))
+				throw new AdminNotFoundException(sprintf(
+					Store::_('An item group with id "%s" not found'),
+					$this->id));
+		}
 	}
 
 	// }}}
@@ -42,19 +57,23 @@ class StoreItemGroupEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$values = $this->ui->getValues(array('title'));
-
-		if ($this->id === null)
-			$this->id = SwatDB::insertRow($this->app->db, 'ItemGroup',
-				$this->fields, $values, 'id');
-		else
-			SwatDB::updateRow($this->app->db, 'ItemGroup', $this->fields,
-				$values, 'id', $this->id);
+		$this->updateItemGroup();
+		$this->item_group->save();
 
 		$message = new SwatMessage(sprintf(Store::_('“%s” has been saved.'),
-			$values['title']));
+			$this->item_group->title));
 
 		$this->app->messages->add($message);
+	}
+
+	// }}}
+	// {{{ protected function updateItemGroup()
+
+	protected function updateItemGroup()
+	{
+		$values = $this->ui->getValues(array('title'));
+
+		$this->item_group->title = $values['title'];
 	}
 
 	// }}}
@@ -64,19 +83,12 @@ class StoreItemGroupEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$row = SwatDB::queryRowFromTable($this->app->db, 'ItemGroup',
-			$this->fields, 'id', $this->id);
-
-		if ($row === null)
-			throw new AdminNotFoundException(sprintf(
-				Store::_('Item Group with id ‘%s’ not found.', $this->id)));
-
-		$this->ui->setValues(get_object_vars($row));
+		$this->ui->setValues(get_object_vars($this->item_group));
 	}
 
 	// }}}
 	// {{{ protected function buildInternal()
-	
+
 	protected function buildInternal()
 	{
 		parent::buildInternal();
@@ -101,7 +113,7 @@ class StoreItemGroupEdit extends AdminDBEdit
 	{
 		$sql = sprintf(
 			'select sku, description from Item where item_group = %s',
-			$this->id);
+			$this->app->db->quote($this->id, 'integer'));
 
 		$store = SwatDB::query($this->app->db, $sql);
 
@@ -111,7 +123,7 @@ class StoreItemGroupEdit extends AdminDBEdit
 	// }}}
 	// {{{ protected function buildNavBar()
 
-	protected function buildNavBar() 
+	protected function buildNavBar()
 	{
 		$this->navbar->popEntry();
 
@@ -150,4 +162,5 @@ class StoreItemGroupEdit extends AdminDBEdit
 
 	// }}}
 }
+
 ?>
