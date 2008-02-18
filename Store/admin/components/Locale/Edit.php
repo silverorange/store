@@ -2,6 +2,7 @@
 
 require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'SwatDB/SwatDB.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Swat/SwatMessage.php';
 
 /**
@@ -15,7 +16,7 @@ class StoreLocaleEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
-	protected $fields;
+	protected $locale;
 
 	// }}}
 
@@ -29,12 +30,24 @@ class StoreLocaleEdit extends AdminDBEdit
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
 		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
 
+		$this->initLocale();
+
 		$this->fields = array('text:id', 'integer:region');
-		
+
 		$id_flydown = $this->ui->getWidget('region');
 		$id_flydown->show_blank = false;
-		$id_flydown->addOptionsByArray(SwatDB::getOptionArray($this->app->db, 
+		$id_flydown->addOptionsByArray(SwatDB::getOptionArray($this->app->db,
 			'Region', 'title', 'id', 'title'));
+	}
+
+	// }}}
+	// {{{ protected function initLocale()
+
+	protected function initLocale()
+	{
+		$class_name = SwatDBClassMap::get('StoreLocale');
+		$this->locale = new $class_name();
+		$this->locale->setDatabase($this->app->db);
 	}
 
 	// }}}
@@ -57,15 +70,24 @@ class StoreLocaleEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$values = $this->ui->getValues(array('id', 'region'));
-
-		SwatDB::insertRow($this->app->db, 'Locale', $this->fields,
-			$values);
+		$this->updateLocale();
+		$this->locale->save();
 
 		$message = new SwatMessage(
-			sprintf(Store::_('“%s” has been saved.'), $values['id']));
+			sprintf(Store::_('“%s” has been saved.'), $this->locale->id));
 
 		$this->app->messages->add($message);
+	}
+
+	// }}}
+	// {{{ protected function updateLocale()
+
+	protected function updateLocale()
+	{
+		$values = $this->ui->getValues(array('id', 'region'));
+
+		$this->locale->id     = $values['id'];
+		$this->locale->region = $values['region'];
 	}
 
 	// }}}
