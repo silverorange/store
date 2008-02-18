@@ -19,6 +19,11 @@ class StoreItemGroupEdit extends AdminDBEdit
 	private $category_id;
 
 	// }}}
+	// {{{ protected properties
+
+	protected $item_group;
+
+	// }}}
 
 	// init phase
 	// {{{ protected function initInternal()
