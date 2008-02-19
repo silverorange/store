@@ -42,21 +42,6 @@ class StoreCatalogDelete extends AdminDBDelete
 	}
 
 	// }}}
-	// {{{  protected function relocate()
-
-	protected function relocate()
-	{
-		$form = $this->ui->getWidget('confirmation_form');
-
-		if ($form->button->id == 'no_button') {
-			// single delete that was cancelled, go back to details page
-			parent::relocate();
-		} else {
-			$this->app->relocate('Catalog');
-		}
-	}
-
-	// }}}
 
 	// build phase
 	// {{{ protected function buildInternal()
