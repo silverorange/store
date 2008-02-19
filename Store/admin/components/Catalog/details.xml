@@ -10,17 +10,17 @@
 				<property name="link">Catalog/Edit?id=%s</property>
 				<property name="stock_id" type="string">edit</property>
 			</widget>
-			<widget class="SwatToolLink" id="clone">
+			<widget class="SwatToolLink" id="clone_link">
 				<property name="title" translatable="yes">Clone Catalog</property>
 				<property name="link">Catalog/Clone?id=%s</property>
 				<property name="sensitive" type="boolean">false</property>
 			</widget>
-			<widget class="SwatToolLink" id="status">
+			<widget class="SwatToolLink" id="status_link">
 				<property name="title" translatable="yes">Change Catalog Status</property>
 				<property name="link">Catalog/Status?id=%s</property>
 				<property name="sensitive" type="boolean">true</property>
 			</widget>
-			<widget class="SwatToolLink" id="delete">
+			<widget class="SwatToolLink" id="delete_link">
 				<property name="title" translatable="yes">Delete Catalog</property>
 				<property name="link">Catalog/Delete?id=%s</property>
 				<property name="stock_id">delete</property>
@@ -34,7 +34,7 @@
 					<property name="text" type="data">title</property>
 				</object>
 			</object>
-			<object class="SwatDetailsViewField" id="title">
+			<object class="SwatDetailsViewField" id="in_season">
 				<property name="title" translatable="yes">In Season</property>
 				<object class="SwatBooleanCellRenderer" id="in_season_renderer">
 					<property name="value" type="data">in_season</property>
@@ -64,7 +64,7 @@
 					<property name="catalog" type="data">id</property>
 				</object>
 			</object>
-			<object class="SwatDetailsViewField" id="status">
+			<object class="SwatDetailsViewField" id="number_of_products">
 				<property name="title" translatable="yes">Number of Products</property>
 				<object class="SwatNumericCellRenderer">
 					<property name="value" type="data">num_products</property>

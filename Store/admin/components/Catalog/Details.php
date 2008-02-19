@@ -61,8 +61,8 @@ class StoreCatalogDetails extends AdminPage
 						on Catalog1.clone_of = Catalog2.id
 				where Catalog1.id = %s';
 
-		$row = SwatDB::queryRow($this->app->db, sprintf($sql,
-			$this->app->db->quote($this->id, 'integer')));
+		$row = SwatDB::queryRow($this->app->db,
+			sprintf($sql, $this->app->db->quote($this->id, 'integer')));
 
 		if ($row === null)
 			throw new AdminNotFoundException(
@@ -82,8 +82,8 @@ class StoreCatalogDetails extends AdminPage
 
 		// see if the Catalog is a clone
 		$sql = 'select id, title from Catalog where clone_of = %s';
-		$clone = SwatDB::queryRow($this->app->db, sprintf($sql,
-			$this->app->db->quote($this->id, 'integer')));
+		$clone = SwatDB::queryRow($this->app->db,
+			sprintf($sql, $this->app->db->quote($this->id, 'integer')));
 
 		if ($clone !== null) {
 			$component_details->getField('clone')->visible = true;
@@ -96,22 +96,22 @@ class StoreCatalogDetails extends AdminPage
 
 		// get number of products
 		$sql = 'select count(id) from Product where catalog = %s';
-		$row->num_products = SwatDB::queryOne($this->app->db, sprintf($sql,
-			$this->app->db->quote($this->id, 'integer')));
+		$row->num_products = SwatDB::queryOne($this->app->db,
+			sprintf($sql, $this->app->db->quote($this->id, 'integer')));
 
 		// check to see if Catalog is enabled
 		$sql = 'select count(region) from CatalogRegionBinding
 			where catalog = %s';
-		$enabled = (SwatDB::queryOne($this->app->db, sprintf($sql,
-			$this->app->db->quote($this->id, 'integer'))) > 0);
+		$enabled = (SwatDB::queryOne($this->app->db,
+			sprintf($sql, $this->app->db->quote($this->id, 'integer'))) > 0);
 
 		// sensitize the delete button
 		if (!$enabled || $row->num_products == 0)
-			$this->ui->getWidget('delete')->sensitive = true;
+			$this->ui->getWidget('delete_link')->sensitive = true;
 
 		// sensitize the clone button
 		if ($row->clone_id === null && $row->parent_id === null)
-			$this->ui->getWidget('clone')->sensitive = true;
+			$this->ui->getWidget('clone_link')->sensitive = true;
 
 		// setup status renderer
 		$status_renderer =
