@@ -915,8 +915,6 @@ class StoreProductDetails extends AdminIndex
 			$widget->category_id = $this->category_id;
 			$widget->product_id = $this->id;
 			$widget->image = $image->image;
-			$widget->width = $image->thumb_width;
-			$widget->height = $image->thumb_height;
 			$widget->alt = $image->alt;
 
 			$form->addChild($widget);
@@ -928,7 +926,7 @@ class StoreProductDetails extends AdminIndex
 
 	private function getProductImages()
 	{
-		$sql = 'select Image.id, thumb_width, thumb_height
+		$sql = 'select Image.id
 			from Image
 			inner join ProductImageBinding on
 				ProductImageBinding.image = Image.id
