@@ -915,7 +915,7 @@ class StoreProductDetails extends AdminIndex
 			$widget->image_id = $image->id;
 			$widget->category_id = $this->category_id;
 			$widget->product_id = $this->id;
-			$widget->image = $image->getFilePath('thumb');
+			$widget->image = $image->getUri('thumb', '../');
 			$widget->width = $image->getWidth('thumb');
 			$widget->height = $image->getHeight('thumb');
 			$widget->alt = '';
@@ -938,13 +938,7 @@ class StoreProductDetails extends AdminIndex
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->id, 'integer'));
 
-		$store = SwatDB::query($this->app->db, $sql,
-			'StoreProductImageWrapper');
-
-		foreach ($store as $image)
-			$image->setFileBase('../images');
-
-		return $store;
+		return SwatDB::query($this->app->db, $sql, 'StoreProductImageWrapper');
 	}
 
 	// }}}
