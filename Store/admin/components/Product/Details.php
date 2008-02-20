@@ -13,6 +13,7 @@ require_once 'Store/StoreItemStatusList.php';
 require_once 'Store/dataobjects/StoreProduct.php';
 require_once 'Store/dataobjects/StoreRegionWrapper.php';
 require_once 'Store/dataobjects/StoreItemWrapper.php';
+require_once 'Store/dataobjects/StoreProductImageWrapper.php';
 require_once 'Store/admin/components/Product/include/StoreItemTableView.php';
 require_once 'Store/admin/components/Product/include/StoreItemGroupGroup.php';
 require_once 'Store/admin/components/Product/include/StoreItemGroupAction.php';
@@ -914,8 +915,10 @@ class StoreProductDetails extends AdminIndex
 			$widget->image_id = $image->id;
 			$widget->category_id = $this->category_id;
 			$widget->product_id = $this->id;
-			$widget->image = $image->image;
-			$widget->alt = $image->alt;
+			$widget->image = $image->getFilePath('thumb');
+			$widget->width = $image->getWidth('thumb');
+			$widget->height = $image->getHeight('thumb');
+			$widget->alt = '';
 
 			$form->addChild($widget);
 		}
@@ -926,8 +929,7 @@ class StoreProductDetails extends AdminIndex
 
 	private function getProductImages()
 	{
-		$sql = 'select Image.id
-			from Image
+		$sql = 'select * from Image
 			inner join ProductImageBinding on
 				ProductImageBinding.image = Image.id
 			where ProductImageBinding.product = %s
@@ -936,12 +938,11 @@ class StoreProductDetails extends AdminIndex
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->id, 'integer'));
 
-		$store = SwatDB::query($this->app->db, $sql);
+		$store = SwatDB::query($this->app->db, $sql,
+			'StoreProductImageWrapper');
 
-		foreach ($store as $row) {
-			$row->image = '../images/products/thumb/'.$row->id.'.jpg';
-			$row->alt = '';
-		}
+		foreach ($store as $image)
+			$image->setFileBase('../images');
 
 		return $store;
 	}
