@@ -110,6 +110,8 @@ class StoreProductEdit extends AdminDBEdit
 
 		// get selected catalog
 		$catalog = $this->ui->getWidget('catalog');
+		// calling this twice will cause 2 error messages to dispay if this
+		// field is null
 		$catalog->process();
 		$catalog_id = $catalog->value;
 
