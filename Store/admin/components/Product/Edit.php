@@ -18,8 +18,8 @@ class StoreProductEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
-	protected $fields;
 	protected $ui_xml = 'Store/admin/components/Product/edit.xml';
+	protected $product;
 
 	// }}}
 	// {{{ private properties
@@ -37,9 +37,9 @@ class StoreProductEdit extends AdminDBEdit
 
 		$this->ui->loadFromXML($this->ui_xml);
 
-		$this->fields = array('title', 'shortname', 'catalog', 'bodytext');
-
 		$this->category_id = SiteApplication::initVar('category');
+
+		$this->initProduct();
 
 		$catalog_flydown = $this->ui->getWidget('catalog');
 		$catalog_flydown->addOptionsByArray(SwatDB::getOptionArray(
@@ -56,21 +56,36 @@ class StoreProductEdit extends AdminDBEdit
 	}
 
 	// }}}
+	// {{{ protected function initProduct()
+
+	protected function initProduct()
+	{
+		$class_name = SwatDBClassMap::get('StoreProduct');
+		$this->product = new $class_name();
+		$this->product->setDatabase($this->app->db);
+
+		if ($this->id !== null) {
+			if (!$this->product->load($this->id))
+				throw new AdminNotFoundException(sprintf(
+					Store::_('A product with an id of ‘%d’ does not exist.'),
+					$this->id));
+		}
+	}
+
+	// }}}
 
 	// process phase
 	// {{{ protected function validate()
 
 	protected function validate()
 	{
-		$shortname = $this->ui->getWidget('shortname')->value;
+		$shortname = $this->ui->getWidget('shortname');
+		$title = $this->ui->getWidget('title');
 
-		if ($this->id === null && $shortname === null) {
-			$shortname = $this->generateShortname(
-				$this->ui->getWidget('title')->value);
-
-			$this->ui->getWidget('shortname')->value = $shortname;
-
-		} elseif (!$this->validateShortname($shortname)) {
+		if ($this->id === null && $shortname->value === null) {
+			$new_shortname = $this->generateShortname($title->value);
+			$shortname->value = $new_shortname;
+		} elseif (!$this->validateShortname($shortname->value)) {
 			$message = new SwatMessage(
 				Store::_('Shortname already exists and must be unique.'),
 				SwatMessage::ERROR);
@@ -144,45 +159,46 @@ class StoreProductEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$values = $this->getUIValues();
+		$this->updateProduct();
+		$this->product->save();
 
-		if ($this->id === null) {
-			$this->fields[] = 'date:createdate';
-			$date = new Date();
-			$date->toUTC();
-			$values['createdate'] = $date->getDate();
+		$form = $this->ui->getWidget('edit_form');
+		$category = $form->getHiddenField('category');
 
-			$this->id = SwatDB::insertRow($this->app->db, 'Product',
-				$this->fields, $values, 'id');
+		if ($category !== null) {
+			$sql = sprintf('insert into CategoryProductBinding
+				(category, product) values (%s, %s)', $category,
+					$this->product->id);
 
-			$form = $this->ui->getWidget('edit_form');
-			$category = $form->getHiddenField('category');
-			if ($category !== null) {
-				$sql = sprintf('insert into CategoryProductBinding
-					(category, product) values (%s, %s)', $category, $this->id);
-
-				SwatDB::query($this->app->db, $sql);
-			}
-		} else {
-			SwatDB::updateRow($this->app->db, 'Product', $this->fields, $values,
-				'id', $this->id);
+			SwatDB::query($this->app->db, $sql);
 		}
 
 		$this->addToSearchQueue();
 
 		$message = new SwatMessage(sprintf(Store::_('“%s” has been saved.'),
-			$values['title']));
+			$this->product->title));
 
 		$this->app->messages->add($message);
 	}
 
 	// }}}
-	// {{{ protected function getUIValues()
+	// {{{ protected function updateProduct()
 
-	protected function getUIValues()
+	protected function updateProduct()
 	{
-		return $this->ui->getValues(array('title', 'shortname', 'catalog',
+		$values = $this->ui->getValues(array('title', 'shortname', 'catalog',
 			'bodytext'));
+
+		if ($this->id === null) {
+			$now = new Date();
+			$now->toUTC();
+			$this->product->createdate = $now->getDate();
+		}
+
+		$this->product->title     = $values['title'];
+		$this->product->shortname = $values['shortname'];
+		$this->product->catalog   = $values['catalog'];
+		$this->product->bodytext  = $values['bodytext'];
 	}
 
 	// }}}
@@ -330,15 +346,11 @@ class StoreProductEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$row = SwatDB::queryRowFromTable($this->app->db, 'Product',
-			$this->fields, 'id', $this->id);
+		$this->ui->setValues(get_object_vars($this->product));
 
-		if ($row === null)
-			throw new AdminNotFoundException(sprintf(
-				Store::_('A product with an id of ‘%d’ does not exist.'),
-				$this->id));
-
-		$this->ui->setValues(get_object_vars($row));
+		// make sure that the catalog defaults correctly
+		$this->ui->getWidget('catalog')->value =
+			$this->product->getInternalValue('catalog');
 	}
 
 	// }}}
