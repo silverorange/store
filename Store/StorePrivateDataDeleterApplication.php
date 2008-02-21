@@ -32,12 +32,12 @@ class StorePrivateDataDeleterApplication extends SiteCommandLineApplication
 	protected $deleters = array();
 
 	/**
-	 * @var boolean 
+	 * @var boolean
 	 */
 	protected $debug = false;
 
 	/**
-	 * @var boolean 
+	 * @var boolean
 	 */
 	protected $dry_run = false;
 
