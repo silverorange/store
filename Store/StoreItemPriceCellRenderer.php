@@ -68,6 +68,14 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 
 	public function render()
 	{
+		$this->renderPrice();
+	}
+
+	// }}}
+	// {{{ protected function renderPrice()
+
+	protected function renderPrice()
+	{
 		if ($this->original_value !== null &&
 			$this->original_value != $this->value) {
 			$this->renderOriginalValue();
