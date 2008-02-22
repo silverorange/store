@@ -458,19 +458,19 @@ class StoreItem extends SwatDBDataObject
 	public static function validateSku($db, $sku, $catalog_id, $product_id,
 		$valid_skus = array())
 	{
-		$sql = 'select count(ItemView.id) from itemView 
-			inner join Product on ItemView.product = Product.id 
-			inner join Catalog on Product.catalog = Catalog.id 
-			where Catalog.id not in 
-				(select clone from CatalogCloneView where catalog = %s) 
-				and Product.id != %s 
+		$sql = 'select count(ItemView.id) from itemView
+			inner join Product on ItemView.product = Product.id
+			inner join Catalog on Product.catalog = Catalog.id
+			where Catalog.id not in
+				(select clone from CatalogCloneView where catalog = %s)
+				and Product.id != %s
 			and ItemView.sku = %s';
 
 		$sql = sprintf($sql,
 			$db->quote($catalog_id, 'integer'),
 			$db->quote($product_id, 'integer'),
 			$db->quote($sku, 'text'));
-		
+
 		if (count($valid_skus) > 0) {
 			$sql.= sprintf(' and ItemView.sku not in (%s)',
 				$db->implodeArray($valid_skus, 'text'));
