@@ -316,17 +316,17 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 		$address = null;
 
 		if ($this->app->session->isLoggedIn()) {
-			$shipping_country_ids = array();
-			foreach ($this->app->getRegion()->shipping_countries as $country)
-				$shipping_country_ids[] = $country->id;
-
 			$default_address =
 				$this->app->session->account->getDefaultShippingAddress();
 
-			if ($default_address !== null &&
-				in_array($default_address->getInternalValue('country'),
-				$shipping_country_ids)) {
-				$address = $default_address;
+			if ($default_address !== null) {
+				// only default to addresses that actually appear in the list
+				$address_list = $this->ui->getWidget('shipping_address_list');
+				$options =
+					$address_list->getOptionsByValue($default_address->id);
+
+				if (count($options) > 0)
+					$address = $default_address;
 			}
 		}
 
