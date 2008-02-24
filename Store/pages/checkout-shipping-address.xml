@@ -4,6 +4,7 @@
 	<widget class="SwatDisplayableContainer" id="shipping_address_list_container">
 		<widget class="SwatFormField" id="shipping_address_list_field">
 			<widget class="SwatRadioTable" id="shipping_address_list">
+				<property name="required" type="boolean">true</property>
 				<property name="value">billing</property>
 			</widget>
 		</widget>
