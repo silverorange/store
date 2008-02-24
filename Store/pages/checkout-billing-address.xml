@@ -3,6 +3,7 @@
 <swatml>
 	<widget class="SwatDisplayableContainer" id="billing_address_list_container">
 		<widget class="SwatRadioTable" id="billing_address_list">
+			<property name="required" type="boolean">true</property>
 			<property name="value">new</property>
 		</widget>
 		<widget class="SwatContentBlock" id="account_billing_address_region_message" />
