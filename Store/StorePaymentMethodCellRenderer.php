@@ -15,7 +15,7 @@ class StorePaymentMethodCellRenderer extends SwatCellRenderer
 	// {{{ public properties
 
 	/**
-	 * The StorePaymentMethod dataobject to display 
+	 * The StorePaymentMethod dataobject to display
 	 *
 	 * @var StorePaymentMethod
 	 */
@@ -28,6 +28,20 @@ class StorePaymentMethodCellRenderer extends SwatCellRenderer
 	 */
 	public $display_details = true;
 
+	/**
+	 * The Crypt_GPG object to use for decryption
+	 *
+	 * @var Crypt_GPG
+	 */
+	public $gpg;
+
+	/**
+	 * The passphrase to decrypt with
+	 *
+	 * @var string
+	 */
+	public $passphrase;
+
 	// }}}
 	// {{{ public function render()
 
@@ -36,8 +50,16 @@ class StorePaymentMethodCellRenderer extends SwatCellRenderer
 		if (!$this->visible)
 			return;
 
-		if ($this->payment_method instanceof StorePaymentMethod)
-			$this->payment_method->display($this->display_details);
+		if ($this->payment_method instanceof StorePaymentMethod) {
+			$this->payment_method->display($this->display_details, $gpg,
+				$passphrase);
+
+		} else {
+			$span_tag = new SwatHtmlTag('span');
+			$span_tag->class = 'swat-none';
+			$span_tag->setContent(Store::_('<none>'));
+			$span_tag->display();
+		}
 	}
 
 	// }}}
