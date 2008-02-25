@@ -52,8 +52,8 @@ class StorePaymentMethodCellRenderer extends SwatCellRenderer
 			return;
 
 		if ($this->payment_method instanceof StorePaymentMethod) {
-			$this->payment_method->display($this->display_details, $gpg,
-				$passphrase);
+			$this->payment_method->display($this->display_details, $this->gpg,
+				$this->passphrase);
 
 		} else {
 			$span_tag = new SwatHtmlTag('span');
