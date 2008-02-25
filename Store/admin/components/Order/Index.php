@@ -279,7 +279,7 @@ class StoreOrderIndex extends AdminSearch
 	// }}}
 	// {{{ protected function getOrderTitle()
 
-	protected function getOrderTitle($order) 
+	protected function getOrderTitle($order)
 	{
 		return sprintf(Store::_('Order %s'), $order->id);
 	}
