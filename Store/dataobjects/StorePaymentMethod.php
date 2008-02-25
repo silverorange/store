@@ -242,21 +242,26 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		$span_tag->open();
 
 		echo SwatString::minimizeEntities($this->payment_type->title);
-		echo ': ';
-		$span_tag->class = 'store-payment-method-card-number';
 
+		$display_card = false;
 		if ($gpg !== null && $passphrase !== null) {
+			$display_card = true;
 			$card_number = $this->getCardNumber($gpg, $passphrase);
 			$span_tag->setContent(StorePaymentType::formatCardNumber(
 				$card_number));
 
 		} elseif ($this->card_number_preview !== null) {
+			$display_card = true;
 			$span_tag->setContent(StorePaymentType::formatCardNumber(
 				$this->card_number_preview,
 				$this->payment_type->getCardMaskedFormat()));
 		}
 
-		$span_tag->display();
+		if ($display_card) {
+			$span_tag->class = 'store-payment-method-card-number';
+			echo ': ';
+			$span_tag->display();
+		}
 
 		if ($display_details &&
 			($this->card_expiry !== null || $this->card_fullname !== null)) {
