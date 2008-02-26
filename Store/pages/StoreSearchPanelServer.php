@@ -1,0 +1,123 @@
+<?php
+
+require_once 'Site/pages/SiteXMLRPCServer.php';
+require_once 'Store/dataobjects/StoreCategoryWrapper.php';
+require_once 'Store/dataobjects/StorePriceRange.php';
+require_once 'Store/StoreSearchPanel.php';
+
+/**
+ * @package   Store
+ * @copyright 2007 silverorange
+ */
+class StoreSearchPanelServer extends SiteXMLRPCServer
+{
+	// {{{ public function getContent()
+
+	/**
+	 * Returns the XHTML required to display the search panel for the
+	 * Van Bourgondien advanced search
+	 *
+	 * @param string $query_string the query string containg the state of the
+	 *                              search panel.
+	 *
+	 * @return string the XHTML required to display the search panel.
+	 */
+	public function getContent($query_string)
+	{
+		$query_string_exp = explode('&', $query_string);
+		$args = array();
+		foreach ($query_string_exp as $parameter) {
+			if (strpos($parameter, '=')) {
+				list($key, $value) = explode('=', $parameter, 2);
+			} else {
+				$key = $parameter;
+				$value = null;
+			}
+
+			$key = urldecode($key);
+			$value = urldecode($value);
+
+			$regs = array();
+			if (preg_match('/^(.+)\[(.*)\]$/', $key, $regs)) {
+				$key = $regs[1];
+				$array_key = (strlen($regs[2]) == 0) ? null : $regs[2];
+				if (!isset($args[$key]))
+					$args[$key] = array();
+
+				if ($array_key === null) {
+					$args[$key][] = $value;
+				} else {
+					$args[$key][$array_key] = $value;
+				}
+			} else {
+				$args[$key] = $value;
+			}
+		}
+
+		foreach ($args as $key => $value) {
+			$_GET[$key] = $value;
+		}
+
+		ob_start();
+
+		$panel = new StoreSearchPanel(
+			$this->app->db, $this->app->getRegion());
+
+		$panel->init();
+		$panel->process();
+		$panel->setPriceRange($this->getPriceRange());
+		$panel->setCategory($this->getCategory());
+		$panel->display();
+
+		return ob_get_clean();
+	}
+
+	// }}}
+	// {{{ protected function getPriceRange()
+
+	/**
+	 * @xmlrpc.hidden
+	 */
+	protected function getPriceRange()
+	{
+		$range = null;
+
+		if (isset($_GET['price'])) {
+			$range = new StorePriceRange($_GET['price']);
+			$range->normalize();
+		}
+
+		return $range;
+	}
+
+	// }}}
+	// {{{ protected function getCategory()
+
+	/**
+	 * @xmlrpc.hidden
+	 */
+	protected function getCategory()
+	{
+		$category = null;
+
+		if (isset($_GET['category'])) {
+			$sql = 'select id, shortname, title from Category
+				where id = findCategory(%s) and id in
+					(select category from VisibleCategoryView
+					where region = %s or region is null)';
+
+			$sql = sprintf($sql,
+				$this->app->db->quote($_GET['category'], 'text'),
+				$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+
+			$category = SwatDB::query($this->app->db, $sql,
+				'StoreCategoryWrapper')->getFirst();
+		}
+
+		return $category;
+	}
+
+	// }}}
+}
+
+?>

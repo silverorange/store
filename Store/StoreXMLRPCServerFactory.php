@@ -25,6 +25,7 @@ class StoreXMLRPCServerFactory extends SiteXMLRPCServerFactory
 	{
 		return array(
 			'quickorder' => 'StoreQuickOrderServer',
+			'search-panel' => 'StoreSearchPanelServer',
 		);
 	}
 

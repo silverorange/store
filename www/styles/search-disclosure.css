@@ -1,0 +1,106 @@
+.search-disclosure-loading {
+	padding: 5em 0 3em 0;
+	height: 5em;
+	text-align: center;
+}
+
+.search-disclosure-loading img {
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+}
+
+.search-disclosure-search-controls .swat-form,
+.search-disclosure-search-controls .swat-form-field,
+.search-disclosure-search-controls label,
+.search-disclosure-search-controls .swat-form-field-contents {
+	display: inline;
+	margin: 0;
+}
+
+.search-disclosure-search-controls label {
+	margin: 0 5px 0 0;
+}
+
+.search-disclosure .search-disclosure-search-controls {
+	position: absolute;
+	top: 0;
+	right: 17px;
+	width: 17em;
+	text-align: right;
+}
+
+.search-disclosure .no-js .search-disclosure-search-controls {
+	width: 21em;
+}
+
+.search-disclosure {
+	min-height: 0;
+}
+
+.search-disclosure .swat-disclosure-container {
+	clear: both;
+}
+
+.search-disclosure .search-disclosure-header .swat-disclosure-anchor-closed,
+.search-disclosure .search-disclosure-header .swat-disclosure-anchor-opened {
+	background-image: none;
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 0;
+	margin: 0;
+	/* IE6 hack */	_top: 1px;
+	/* IE7 hack */	.top: 1px;
+}
+
+.search-disclosure .search-disclosure-header a.swat-disclosure-anchor-closed:hover,
+.search-disclosure .search-disclosure-header a.swat-disclosure-anchor-opened:hover {
+	color: #333;
+}
+
+.search-disclosure .search-disclosure-header .swat-disclosure-anchor-closed img,
+.search-disclosure .search-disclosure-header .swat-disclosure-anchor-opened img {
+	border-top: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #999;
+	border-bottom: 1px solid #999;
+	background-color: #faf9f2;
+	color: #444;
+	padding: 4px 2px;
+	margin: 0;
+	display: block;
+	height: 12px;
+	width: 12px;
+}
+
+.search-disclosure .search-disclosure-header {
+	float: right;
+	height: 28px;
+	margin-right: 10px;
+	position: relative;
+}
+
+.search-disclosure .no-js {
+	margin-right: 0;
+	float: none;
+}
+
+.search-disclosure .search-disclosure-header .swat-button {
+	height: 22px;
+	font-size: 85%;
+	vertical-align: middle;
+}
+
+.search-disclosure .search-disclosure-header .swat-entry {
+	height: 12px;
+	padding: 4px;
+	font-size: 85%;
+	vertical-align: middle;
+}
+
+.swat-disclosure-span,
+.swat-disclosure-anchor-opened,
+.swat-disclosure-anchor-closed {
+	background-color: transparent;
+}
