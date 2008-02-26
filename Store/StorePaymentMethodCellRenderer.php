@@ -39,6 +39,8 @@ class StorePaymentMethodCellRenderer extends SwatCellRenderer
 	 * The passphrase to decrypt with
 	 *
 	 * @var string
+	 *
+	 * @sensitive
 	 */
 	public $passphrase;
 
