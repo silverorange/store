@@ -18,7 +18,7 @@ CREATE OR REPLACE FUNCTION findCategory (VARCHAR(255)) RETURNS INTEGER AS $$
 		-- Find the first forward slash in the source string.
 		local_source := param_source || '/';
 		local_pos := POSITION('/' IN local_source);
-		
+
 		local_id := NULL;
 
 		WHILE local_pos != 0 LOOP
@@ -32,7 +32,7 @@ CREATE OR REPLACE FUNCTION findCategory (VARCHAR(255)) RETURNS INTEGER AS $$
 				SELECT INTO local_id id
 					FROM Category
 					WHERE (
-						Category.parent = local_id OR 
+						Category.parent = local_id OR
 						(Category.parent is null AND local_id is null)
 						) AND shortname = local_shortname;
 
