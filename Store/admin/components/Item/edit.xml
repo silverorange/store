@@ -19,6 +19,14 @@
 					<property name="maxlength" type="integer">255</property>
 				</widget>
 			</widget>
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Alias SKUs</property>
+				<property name="note" translatable="yes"><![CDATA[Separate multiple Alias SKUs with a comma. For example: <em>SKU1, SKU2, SKU3</em>]]></property>
+				<property name="note_content_type">text/xml</property>
+				<widget class="SwatListEntry" id="aliases">
+					<property name="maxlength" type="integer">20</property>
+				</widget>
+			</widget>
 			<widget class="SwatFieldset" id="availability_fieldset">
 				<property name="title" translatable="yes">Availability &amp; Pricing</property>
 				<widget class="SwatReplicableFieldset" id="price_replicator">

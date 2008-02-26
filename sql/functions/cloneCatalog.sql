@@ -24,6 +24,9 @@
  *    +- items
  *       |
  *       + item_region
+ *       |
+ *       +- ItemAlias
+
  *
  *
  * @param_id INTEGER: the id of the catalogue to clone.
@@ -111,6 +114,10 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 				-- clone region binding
 				insert into ItemRegionBinding (item, region, price)
 				select local_new_item_id, region, price from ItemRegionBinding where item = local_old_item_id;
+
+				-- clone aliases
+				insert into ItemAlias (item, sku)
+				select local_new_item_id, sku from ItemAlias where item = local_old_item_id;
 
 			end loop;
 			-- items

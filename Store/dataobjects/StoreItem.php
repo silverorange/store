@@ -7,6 +7,7 @@ require_once 'Store/dataobjects/StoreItemGroup.php';
 require_once 'Store/dataobjects/StoreProduct.php';
 require_once 'Store/dataobjects/StoreRegion.php';
 require_once 'Store/dataobjects/StoreSaleDiscount.php';
+require_once 'Store/dataobjects/StoreItemAliasWrapper.php';
 require_once 'Store/StoreItemStatus.php';
 require_once 'Store/StoreItemStatusList.php';
 
@@ -652,6 +653,17 @@ class StoreItem extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ protected function loadItemAlias()
+
+	protected function loadItemAliases()
+	{
+		$sql = 'select * from ItemAlias where item = %s';
+		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+		return SwatDB::query($this->db, $sql, 'StoreItemAliasWrapper');
+	}
+
+	// }}}
+
 
 	// saver methods
 	// {{{ protected function saveQuantityDiscounts()
@@ -683,6 +695,22 @@ class StoreItem extends SwatDBDataObject
 
 		$this->region_bindings->setDatabase($this->db);
 		$this->region_bindings->save();
+	}
+
+	// }}}
+	// {{{ protected function saveItemAliases()
+
+	/**
+	 * Automatically saves StoreItemAlias sub-data-objects when this StoreItem
+	 * object is saved
+	 */
+	protected function saveItemAliases()
+	{
+		foreach ($this->item_aliases as $alias)
+			$alias->item = $this;
+
+		$this->item_aliases->setDatabase($this->db);
+		$this->item_aliases->save();
 	}
 
 	// }}}
