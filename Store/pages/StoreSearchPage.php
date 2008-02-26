@@ -58,7 +58,7 @@ class StoreSearchPage extends StoreSearchResultsPage
 	protected function getCategories()
 	{
 		$sql = 'select id, title, subtitle, shortname from Category
-			where parent is null and id in 
+			where parent is null and id in
 				(select category from VisibleCategoryView
 				where region = %s or region is null)
 			order by displayorder, title';
