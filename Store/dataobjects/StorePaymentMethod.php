@@ -237,6 +237,8 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	 *                                  for card-type payment methods.
 	 * @param Crypt_GPG $gpg
 	 * @param string $passphrase
+	 *
+	 * @sensitive $passphrase
 	 */
 	public function display($display_details = true, Crypt_GPG $gpg = null,
 		$passphrase = null)
