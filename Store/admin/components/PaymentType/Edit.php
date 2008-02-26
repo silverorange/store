@@ -98,7 +98,7 @@ class StorePaymentTypeEdit extends AdminDBEdit
 				$valid = false;
 		}
 
-		return $valid
+		return $valid;
 	}
 
 	// }}}
