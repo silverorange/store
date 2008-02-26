@@ -4,7 +4,7 @@
  * @param_parent INTEGER: the id of the cateogry to search from.
  *
  * Returns a VARCHAR containing the path string for the given cateogry. If the
- * cateogry does not exist, NULL is returned.
+ * category does not exist, NULL is returned.
  */
 CREATE OR REPLACE FUNCTION getCategoryPath(INTEGER) RETURNS VARCHAR(255) AS $$
 	DECLARE
@@ -13,7 +13,7 @@ CREATE OR REPLACE FUNCTION getCategoryPath(INTEGER) RETURNS VARCHAR(255) AS $$
 		local_shortname VARCHAR(255);
 		local_path VARCHAR(255);
 	BEGIN
-		local_path = NULL; 
+		local_path = NULL;
 
 		-- get current category results
 		SELECT INTO local_parent, local_shortname parent, shortname
