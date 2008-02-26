@@ -2,6 +2,7 @@
 
 require_once 'Site/SiteSearchEngine.php';
 require_once 'Store/dataobjects/StoreProductWrapper.php';
+require_once 'Store/dataobjects/StorePriceRangeWrapper.php';
 
 /**
  * A product search engine
@@ -19,6 +20,13 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	 * @var StoreCategory
 	 */
 	public $category;
+
+	/**
+	 * Optional price range to search with
+	 *
+	 * @var StorePriceRange
+	 */
+	public $price_range;
 
 	/**
 	 * Whether or not to search category descendants when a category
@@ -75,8 +83,12 @@ class StoreProductSearchEngine extends SiteSearchEngine
 		$summary = parent::getSearchSummary();
 
 		if ($this->category !== null)
-			$summary[] = sprintf('Category: <b>%s</b>',
+			$summary[] = sprintf(Store::_('Category: <b>%s</b>'),
 				SwatString::minimizeEntities($this->category->title));
+
+		if ($this->price_range !== null)
+			$summary[] = sprintf(Store::_('Price: <b>%s</b>'),
+				SwatString::minimizeEntities($this->price_range->getTitle()));
 
 		return $summary;
 	}
@@ -184,6 +196,13 @@ class StoreProductSearchEngine extends SiteSearchEngine
 				$this->app->db->quote($category_id, 'integer'));
 		}
 
+		if ($this->price_range instanceof VanBourgondienPriceRange)
+			$clause.= sprintf(' inner join getProductPriceRange(%s, %s) on
+				getProductPriceRange.product = Product.id',
+				$this->app->db->quote($this->app->getRegion()->id, 'integer'),
+				$this->app->db->quote(
+					$this->price_range->original_price, 'boolean'));
+
 		return $clause;
 	}
 
@@ -207,6 +226,22 @@ class StoreProductSearchEngine extends SiteSearchEngine
 			else
 				$clause.= sprintf(' and CategoryProductBinding.category = %s',
 					$this->app->db->quote($category_id, 'integer'));
+		}
+
+		if ($this->price_range instanceof StorePriceRange) {
+			if ($this->price_range->end_price === null) {
+				$clause.= sprintf(' and (getProductPriceRange.min_price >= %1$s)',
+					$this->app->db->quote($this->price_range->start_price, 'integer'));
+			} elseif ($this->price_range->start_price === null) {
+				$clause.= sprintf(' and (getProductPriceRange.max_price <= %1$s)',
+					$this->app->db->quote($this->price_range->end_price, 'integer'));
+			} else {
+				$clause.= sprintf(' and (
+					(getProductPriceRange.min_price >= %1$s and getProductPriceRange.min_price <= %2$s) or
+					(getProductPriceRange.max_price >= %1$s and getProductPriceRange.max_price <= %2$s))',
+					$this->app->db->quote($this->price_range->start_price, 'integer'),
+					$this->app->db->quote($this->price_range->end_price, 'integer'));
+			}
 		}
 
 		return $clause;
