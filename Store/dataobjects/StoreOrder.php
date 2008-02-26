@@ -344,6 +344,9 @@ class StoreOrder extends SwatDBDataObject
 		$ds->item = $item;
 		$ds->description = $item->getDescription();
 
+		if ($item->alias_sku !== null && strlen($item->alias_sku) > 0)
+			$ds->sku.= sprintf(' (%s)', $item->alias_sku);
+
 		return $ds;
 	}
 

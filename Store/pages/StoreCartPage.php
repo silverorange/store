@@ -13,7 +13,8 @@ require_once 'Swat/SwatDetailsStore.php';
  * Shopping cart display page
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2008 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCartPage extends SiteArticlePage
 {
@@ -991,14 +992,20 @@ protected function processCheckoutCart()
 	{
 		$ds = new SwatDetailsStore($entry);
 
-		$ds->quantity = $entry->getQuantity();
-		$ds->description = $this->getEntryDescription($entry);
-		$ds->price = $entry->getCalculatedItemPrice();
-		$ds->extension = $entry->getExtension();
-		$ds->discount = $entry->getDiscount();
+		$ds->quantity           = $entry->getQuantity();
+		$ds->description        = $this->getEntryDescription($entry);
+		$ds->price              = $entry->getCalculatedItemPrice();
+		$ds->extension          = $entry->getExtension();
+		$ds->discount           = $entry->getDiscount();
 		$ds->discount_extension = $entry->getDiscountExtension();
-		$ds->message = null;
-		$ds->product_link = 'store/'.$entry->item->product->path;
+		$ds->message            = null;
+		$ds->product_link       = 'store/'.$entry->item->product->path;
+
+		if ($entry->alias === null)
+			$ds->alias_sku = null;
+		else
+			$ds->alias_sku = sprintf('<span class="item-alias-sku">(%s)</span>',
+				SwatString::minimizeEntities($entry->alias->sku));
 
 		return $ds;
 	}

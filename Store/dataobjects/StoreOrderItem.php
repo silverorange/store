@@ -14,7 +14,7 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * objects using the {@link StoreCartEntry::createOrderItem()} method.
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2008 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreCartEntry::createOrderItem()
  */
@@ -35,6 +35,13 @@ class StoreOrderItem extends SwatDBDataObject
 	 * @var string
 	 */
 	public $sku;
+
+	/**
+	 * Sku Alias
+	 *
+	 * @var string
+	 */
+	public $alias_sku;
 
 	/**
 	 * Quantity

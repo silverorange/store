@@ -4,6 +4,7 @@ require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Store/dataobjects/StoreItem.php';
 require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/dataobjects/StoreOrderItem.php';
+require_once 'Store/dataobjects/StoreItemAlias.php';
 
 /**
  * An entry in a shopping cart for an e-commerce web application
@@ -293,19 +294,20 @@ class StoreCartEntry extends SwatDBDataObject
 		$order_item = new $class();
 
 		$order_item->setCartEntryId($this->id);
-		$order_item->sku = $this->item->sku;
-		$order_item->price = $this->getCalculatedItemPrice();
-		$order_item->quantity = $this->getQuantity();
-		$order_item->extension = $this->getExtension();
-		$order_item->description = $this->getOrderItemDescription();
-		$order_item->item = $this->item->id;
-		$order_item->product = $this->item->product->id;
-		$order_item->product_title = $this->item->product->title;
-		$order_item->quick_order = $this->quick_order;
+		$order_item->sku                = $this->item->sku;
+		$order_item->price              = $this->getCalculatedItemPrice();
+		$order_item->quantity           = $this->getQuantity();
+		$order_item->extension          = $this->getExtension();
+		$order_item->description        = $this->getOrderItemDescription();
+		$order_item->item               = $this->item->id;
+		$order_item->product            = $this->item->product->id;
+		$order_item->product_title      = $this->item->product->title;
+		$order_item->quick_order        = $this->quick_order;
+		$order_item->discount           = $this->getDiscount();
+		$order_item->discount_extension = $this->getDiscountExtension();
 
-		$order_item->discount = $this->getDiscount();
-		$order_item->discount_extension =
-			$this->getDiscountExtension();
+		if ($this->alias !== null)
+			$order_item->alias_sku = $this->alias->sku;
 
 		if ($this->item->sale_discount !== null)
 			$order_item->sale_discount = $this->item->sale_discount->id;
@@ -351,6 +353,9 @@ class StoreCartEntry extends SwatDBDataObject
 
 		$this->registerInternalProperty('account',
 			SwatDBClassMap::get('StoreAccount'));
+
+		$this->registerInternalProperty('alias',
+			SwatDBClassMap::get('StoreItemAlias'));
 
 		$this->table = 'CartEntry';
 		$this->id_field = 'integer:id';

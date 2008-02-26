@@ -235,13 +235,13 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 		if (substr($sku, 0, 1) === '#' && strlen($sku) > 1)
 			$sku = substr($sku, 1);
 
-		$sql = sprintf('select id from Item
-			inner join VisibleProductCache on
-				Item.product = VisibleProductCache.product and
-					VisibleProductCache.region = %s
-			where lower(sku) = %s',
-			$this->db->quote($this->region->id, 'integer'),
-			$this->db->quote($sku, 'text'));
+			$sql = sprintf('select Item.id from Item
+				inner join VisibleProductCache on
+					Item.product = VisibleProductCache.product and
+						VisibleProductCache.region = %1$s
+				where lower(Item.sku) = %2$s
+					or Item.id in (select item from ItemAlias where
+					lower(ItemAlias.sku) = %2$s)',
 
 		return $sql;
 	}

@@ -2,6 +2,7 @@ create table OrderItem (
 	id serial,
 	ordernum int not null references Orders(id) on delete cascade,
 	sku varchar(20) not null,
+	alias_sku varchar(20),
 	quantity int not null,
 	price numeric(11, 2) not null,
 	description varchar(255),

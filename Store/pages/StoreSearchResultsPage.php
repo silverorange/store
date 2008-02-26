@@ -61,10 +61,12 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 					VisibleProductCache.product = Product.id
 				left outer join ProductPrimaryCategoryView
 					on ProductPrimaryCategoryView.product = Product.id
-			where VisibleProductCache.region = %s and
+			where VisibleProductCache.region = %1$s and
 				Product.id in
-				(select Item.product from Item
-					where lower(Item.sku) like %s)';
+				(select Item.product from Item where lower(Item.sku) like %2$s
+					or Item.id in (select ItemAlias.item from ItemAlias
+					where (lower(ItemAlias.sku) like %2$s)) 
+				)';
 
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
