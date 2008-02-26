@@ -10,6 +10,14 @@ require_once 'Store/dataobjects/StoreImage.php';
  */
 class StoreCategoryImage extends StoreImage
 {
+	// {{{ public function getURI()
+
+	public function getURI($set = 'thumb')
+	{
+		return 'images/categories/'.$set.'/'.$this->id.'.jpg';
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
