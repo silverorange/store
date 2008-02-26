@@ -2,6 +2,7 @@
 
 require_once 'Store/dataobjects/StoreCartEntry.php';
 require_once 'Store/dataobjects/StoreItem.php';
+require_once 'Store/dataobjects/StoreItemAliasWrapper.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Site/pages/SiteArticlePage.php';
 require_once 'Swat/SwatUI.php';
@@ -205,11 +206,14 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 	{
 		$sku = strtolower($sku);
 
-		$sql = sprintf('select id from Item
+		$sql = sprintf('select Item.id from Item
 			inner join VisibleProductCache on
 				Item.product = VisibleProductCache.product and
-					VisibleProductCache.region = %s
-			where lower(sku) = %s
+					VisibleProductCache.region = %1$s
+			where lower(Item.sku) = %2$s
+				or Item.id in (select item from ItemAlias where
+				lower(ItemAlias.sku) = %2$s)
+			order by part_count asc
 			limit 1',
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
 			$this->app->db->quote($sku, 'text'));
@@ -280,6 +284,17 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 		$cart_entry->item = $item;
 		$cart_entry->quantity = $quantity;
 		$cart_entry->quick_order = true;
+
+		if ($sku != $cart_entry->item->sku) {
+			$sql = sprintf('select * from ItemAlias where sku = %s',
+				$this->app->db->quote($sku, 'text'));
+
+			$item_alias = SwatDB::query($this->app->db, $sql,
+				'ItemAliasWrapper');
+
+			if ($item_alias !== null)
+				$cart_entry->alias = $item_alias->getFirst();
+		}
 
 		return $cart_entry;
 	}
@@ -427,11 +442,16 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 	{
 		$ds = new SwatDetailsStore($entry);
 
-		$ds->quantity = $entry->getQuantity();
-		$ds->description = $this->getEntryDescription($entry);
-		$ds->price = $entry->getCalculatedItemPrice();
-		$ds->extension = $entry->getExtension();
+		$ds->quantity     = $entry->getQuantity();
+		$ds->description  = $this->getEntryDescription($entry);
+		$ds->price        = $entry->getCalculatedItemPrice();
+		$ds->extension    = $entry->getExtension();
 		$ds->product_link = 'store/'.$entry->item->product->path;
+
+		if ($entry->alias !== null) {
+			$ds->item->sku = $entry->item->sku;
+			$ds->item->sku.= ' ('.$entry->alias->sku.')';
+		}
 
 		return $ds;
 	}
