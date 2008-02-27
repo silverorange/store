@@ -381,7 +381,7 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 		if ($entry->alias === null)
 			$ds->alias_sku = null;
 		else
-			$ds->alias_sku = sprintf('<span class="item-alias-sku">(%s)</span>',
+			$ds->alias_sku = sprintf('(%s)',
 				SwatString::minimizeEntities($entry->alias->sku));
 
 		return $ds;

@@ -27,7 +27,7 @@
 				</object>
 				<object class="SwatTextCellRenderer">
 					<property name="text" type="data">alias_sku</property>
-					<property name="content_type">text/html</property>
+					<property name="classes[]">item-alias-sku</property>
 				</object>
 			</object>
 			<object class="SwatTableViewColumn">
