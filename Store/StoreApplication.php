@@ -7,6 +7,7 @@ require_once 'Site/SiteConfigModule.php';
 require_once 'Site/SiteMessagesModule.php';
 require_once 'Site/SiteAccountSessionModule.php';
 require_once 'Site/SiteAnalyticsModule.php';
+require_once 'Admin/Admin.php';
 require_once 'Store/Store.php';
 require_once 'Store/StoreMessage.php';
 require_once 'Store/StoreCartModule.php';
@@ -148,6 +149,7 @@ abstract class StoreApplication extends SiteWebApplication
 	{
 		parent::addConfigDefinitions($config);
 		$config->addDefinitions(Store::getConfigDefinitions());
+		$config->addDefinitions(Admin::getConfigDefinitions());
 	}
 
 	// }}}
