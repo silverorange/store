@@ -1034,11 +1034,11 @@ protected function processCheckoutCart()
 	{
 		$ds = new SwatDetailsStore($entry);
 
-		$ds->quantity = $entry->getQuantity();
+		$ds->quantity    = $entry->getQuantity();
 		$ds->description = $this->getEntryDescription($entry);
-		$ds->price = $entry->getCalculatedItemPrice();
-		$ds->extension = $entry->getExtension();
-		$ds->message = null;
+		$ds->price       = $entry->getCalculatedItemPrice();
+		$ds->extension   = $entry->getExtension();
+		$ds->message     = null;
 
 		if ($entry->item->product->primary_category === null)
 			$ds->product_link = null;
@@ -1048,6 +1048,12 @@ protected function processCheckoutCart()
 		$status = $entry->item->getStatus();
 		$ds->status = sprintf('<spen class="status-%s">%s</span>',
 			$status->shortname, SwatString::minimizeEntities($status->title));
+
+		if ($entry->alias === null)
+			$ds->alias_sku = null;
+		else
+			$ds->alias_sku = sprintf('<span class="item-alias-sku">(%s)</span>',
+				SwatString::minimizeEntities($entry->alias->sku));
 
 		return $ds;
 	}
@@ -1076,19 +1082,25 @@ protected function processCheckoutCart()
 	{
 		$ds = new SwatDetailsStore($entry);
 
-		$ds->quantity = $entry->getQuantity();
+		$ds->quantity    = $entry->getQuantity();
 		$ds->description = $this->getEntryDescription($entry);
-		$ds->price = $entry->getCalculatedItemPrice();
-		$ds->extension = $entry->getExtension();
-		$ds->message = null;
-		$status = $entry->item->getStatus();
-		$ds->status = sprintf('<spen class="status-%s">%s</span>',
+		$ds->price       = $entry->getCalculatedItemPrice();
+		$ds->extension   = $entry->getExtension();
+		$ds->message     = null;
+		$status          = $entry->item->getStatus();
+		$ds->status      = sprintf('<spen class="status-%s">%s</span>',
 			$status->shortname, SwatString::minimizeEntities($status->title));
 
 		if ($entry->item->product->primary_category === null)
 			$ds->product_link = null;
 		else
 			$ds->product_link = 'store/'.$entry->item->product->path;
+
+		if ($entry->alias === null)
+			$ds->alias_sku = null;
+		else
+			$ds->alias_sku = sprintf('<span class="item-alias-sku">(%s)</span>',
+				SwatString::minimizeEntities($entry->alias->sku));
 
 		return $ds;
 	}
