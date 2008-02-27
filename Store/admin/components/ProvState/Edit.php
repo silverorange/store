@@ -18,7 +18,6 @@ class StoreProvStateEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
-	protected $fields;
 	protected $prov_state;
 
 	/**
@@ -38,8 +37,6 @@ class StoreProvStateEdit extends AdminDBEdit
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
 		$this->ui->loadFromXML($this->ui_xml);
-
-		$this->fields = array('title', 'abbreviation', 'country');
 
 		$country_flydown = $this->ui->getWidget('country');
 		$country_flydown->show_blank = false;
@@ -72,24 +69,29 @@ class StoreProvStateEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$values = $this->getUIValues();
-		$this->prov_state->title        = $values['title'];
-		$this->prov_state->abbreviation = $values['abbreviation'];
-		$this->prov_state->country      = $values['country'];
+		$this->updateProvState();
 		$this->prov_state->save();
 
-		$message = new SwatMessage(
-			sprintf(Store::_('“%s” has been saved.'), $values['title']));
+		$message = new SwatMessage(sprintf(Store::_('“%s” has been saved.'),
+			$this->prov_state->title));
 
 		$this->app->messages->add($message);
 	}
 
 	// }}}
-	// {{{ protected function getUIValues()
+	// {{{ protected function updateProvState()
 
-	protected function getUIValues()
+	protected function updateProvState()
 	{
-		return $this->ui->getValues(array('title', 'abbreviation', 'country'));
+		$values = $this->ui->getValues(array(
+			'title',
+			'abbreviation',
+			'country'
+		));
+
+		$this->prov_state->title        = $values['title'];
+		$this->prov_state->abbreviation = $values['abbreviation'];
+		$this->prov_state->country      = $values['country'];
 	}
 
 	// }}}
