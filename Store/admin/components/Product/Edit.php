@@ -212,14 +212,14 @@ class StoreProductEdit extends AdminDBEdit
 
 		$sql = sprintf('delete from NateGoSearchQueue
 			where document_id = %s and document_type = %s',
-			$this->app->db->quote($this->id, 'integer'),
+			$this->app->db->quote($this->product->id, 'integer'),
 			$this->app->db->quote($type, 'integer'));
 
 		SwatDB::exec($this->app->db, $sql);
 
 		$sql = sprintf('insert into NateGoSearchQueue
 			(document_id, document_type) values (%s, %s)',
-			$this->app->db->quote($this->id, 'integer'),
+			$this->app->db->quote($this->product->id, 'integer'),
 			$this->app->db->quote($type, 'integer'));
 
 		SwatDB::exec($this->app->db, $sql);
