@@ -1004,7 +1004,7 @@ protected function processCheckoutCart()
 		if ($entry->alias === null)
 			$ds->alias_sku = null;
 		else
-			$ds->alias_sku = sprintf('<span class="item-alias-sku">(%s)</span>',
+			$ds->alias_sku = sprintf('(%s)',
 				SwatString::minimizeEntities($entry->alias->sku));
 
 		return $ds;
@@ -1046,13 +1046,13 @@ protected function processCheckoutCart()
 			$ds->product_link = 'store/'.$entry->item->product->path;
 
 		$status = $entry->item->getStatus();
-		$ds->status = sprintf('<spen class="status-%s">%s</span>',
+		$ds->status = sprintf('<span class="status-%s">%s</span>',
 			$status->shortname, SwatString::minimizeEntities($status->title));
 
 		if ($entry->alias === null)
 			$ds->alias_sku = null;
 		else
-			$ds->alias_sku = sprintf('<span class="item-alias-sku">(%s)</span>',
+			$ds->alias_sku = sprintf('(%s)',
 				SwatString::minimizeEntities($entry->alias->sku));
 
 		return $ds;
@@ -1088,7 +1088,7 @@ protected function processCheckoutCart()
 		$ds->extension   = $entry->getExtension();
 		$ds->message     = null;
 		$status          = $entry->item->getStatus();
-		$ds->status      = sprintf('<spen class="status-%s">%s</span>',
+		$ds->status      = sprintf('<span class="status-%s">%s</span>',
 			$status->shortname, SwatString::minimizeEntities($status->title));
 
 		if ($entry->item->product->primary_category === null)
@@ -1099,7 +1099,7 @@ protected function processCheckoutCart()
 		if ($entry->alias === null)
 			$ds->alias_sku = null;
 		else
-			$ds->alias_sku = sprintf('<span class="item-alias-sku">(%s)</span>',
+			$ds->alias_sku = sprintf('(%s)',
 				SwatString::minimizeEntities($entry->alias->sku));
 
 		return $ds;
