@@ -6,7 +6,7 @@ require_once 'Site/admin/components/Account/Index.php';
  * Index page for Accounts
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2008 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountIndex extends SiteAccountIndex
@@ -30,13 +30,50 @@ class StoreAccountIndex extends SiteAccountIndex
 
 	protected function getSQL()
 	{
-		return 'select Account.id, Account.fullname, Account.email,
-				coalesce(AccountOrderCountView.order_count, 0) as order_count
-			from Account
-				left outer join AccountOrderCountView on
-					Account.id = AccountOrderCountView.account
+		return 'select Account.id, Account.fullname, Account.email
 			where %s
 			order by %s';
+	}
+
+	// }}}
+	// {{{ protected function getTableModel()
+
+	protected function getTableModel(SwatView $view)
+	{
+		$accounts = parent::getTableModel($view);
+
+		$order_count = $this->getOrderCount($accounts);
+
+		$store = new SwatTableStore();
+		foreach ($accounts as $account) {
+			$ds = new SwatDetailsStore($account);
+			$ds->order_count = $order_count[$ds->id];
+			$store->add($ds);
+		}
+
+		return $store;
+	}
+
+	// }}}
+	// {{{ protected function getOrderCount()
+
+	private function getOrderCount(SwatTableStore $accounts)
+	{
+		// default to zero, some accounts aren't in AccountOrderCountView
+		$count_array = array();
+		foreach ($accounts as $account) {
+			$count_array[$account->id] = 0;
+		}
+
+		$account_ids = implode(', ', array_keys($count_array));
+		$sql = sprintf('select account, order_count from
+			AccountOrderCountView where account in (%s)', $account_ids);
+
+		$counts = SwatDB::query($this->app->db, $sql);
+		foreach ($counts as $count)
+			$count_array[$count->account] = $count->order_count;
+
+		return $count_array;
 	}
 
 	// }}}
