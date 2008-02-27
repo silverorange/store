@@ -4,6 +4,7 @@ require_once 'Site/SiteCommandLineApplication.php';
 require_once 'Site/SiteDatabaseModule.php';
 require_once 'Site/SiteConfigModule.php';
 require_once 'Store/Store.php';
+require_once 'Admin/Admin.php';
 require_once 'SwatDB/SwatDB.php';
 
 /**
@@ -106,6 +107,22 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 			'config'   => 'SiteConfigModule',
 			'database' => 'SiteDatabaseModule',
 		);
+	}
+
+	// }}}
+	// {{{ protected function addConfigDefinitions()
+
+	/**
+	 * Adds configuration definitions to the config module of this application
+	 *
+	 * @param SiteConfigModule $config the config module of this application to
+	 *                                  witch to add the config definitions.
+	 */
+	protected function addConfigDefinitions(SiteConfigModule $config)
+	{
+		parent::addConfigDefinitions($config);
+		$config->addDefinitions(Store::getConfigDefinitions());
+		$config->addDefinitions(Admin::getConfigDefinitions());
 	}
 
 	// }}}

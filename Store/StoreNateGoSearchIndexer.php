@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Site/SiteNateGoSearchIndexer.php';
+require_once 'Admin/Admin.php';
 require_once 'Store/Store.php';
 require_once 'Store/pages/StoreSearchPage.php';
 
@@ -27,6 +28,22 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 
 		$this->queueProducts();
 		$this->queueCategories();
+	}
+
+	// }}}
+	// {{{ protected function addConfigDefinitions()
+
+	/**
+	 * Adds configuration definitions to the config module of this application
+	 *
+	 * @param SiteConfigModule $config the config module of this application to
+	 *                                  witch to add the config definitions.
+	 */
+	protected function addConfigDefinitions(SiteConfigModule $config)
+	{
+		parent::addConfigDefinitions($config);
+		$config->addDefinitions(Admin::getConfigDefinitions());
+		$config->addDefinitions(Store::getConfigDefinitions());
 	}
 
 	// }}}
