@@ -366,17 +366,23 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 	// }}}
 	// {{{ protected function getDetailsStore()
 
-	protected function getDetailsStore($entry)
+	protected function getDetailsStore(StoreCartEntry $entry)
 	{
 		$ds = new SwatDetailsStore($entry);
 
-		$ds->quantity = $entry->getQuantity();
-		$ds->description = $this->getEntryDescription($entry);
-		$ds->price = $entry->getCalculatedItemPrice();
-		$ds->extension = $entry->getExtension();
-		$ds->discount = $entry->getDiscount();
+		$ds->quantity           = $entry->getQuantity();
+		$ds->description        = $this->getEntryDescription($entry);
+		$ds->price              = $entry->getCalculatedItemPrice();
+		$ds->extension          = $entry->getExtension();
+		$ds->discount           = $entry->getDiscount();
 		$ds->discount_extension = $entry->getDiscountExtension();
-		$ds->product_link = 'store/'.$entry->item->product->path;
+		$ds->product_link       = 'store/'.$entry->item->product->path;
+
+		if ($entry->alias === null)
+			$ds->alias_sku = null;
+		else
+			$ds->alias_sku = sprintf('<span class="item-alias-sku">(%s)</span>',
+				SwatString::minimizeEntities($entry->alias->sku));
 
 		return $ds;
 	}

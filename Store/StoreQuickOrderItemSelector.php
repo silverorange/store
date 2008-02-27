@@ -242,6 +242,8 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 				where lower(Item.sku) = %2$s
 					or Item.id in (select item from ItemAlias where
 					lower(ItemAlias.sku) = %2$s)',
+			$this->db->quote($this->region->id, 'integer'),
+			$this->db->quote($sku, 'text'));
 
 		return $sql;
 	}
