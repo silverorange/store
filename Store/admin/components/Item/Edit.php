@@ -23,7 +23,7 @@ class StoreItemEdit extends AdminDBEdit
 	// {{{ protected properties
 
 	protected $ui_xml = 'Store/admin/components/Item/edit.xml';
-	protected $parent;
+	protected $product;
 	protected $item;
 
 	// }}}
@@ -51,14 +51,14 @@ class StoreItemEdit extends AdminDBEdit
 
 		$this->ui->loadFromXML($this->ui_xml);
 
-		$this->parent      = SiteApplication::initVar('parent');
+		$this->product     = SiteApplication::initVar('product');
 		$this->category_id = SiteApplication::initVar('category');
 
 		$this->initItem();
 
-		if ($this->parent === null && $this->item->id === null)
+		if ($this->product === null && $this->item->id === null)
 			throw new AdminNoAccessException(Store::_(
-				'Must supply a Product ID for newly created Items.'));
+				'A product ID or an item ID must be passed in the URL.'));
 
 		$status_radiolist = $this->ui->getWidget('status');
 		foreach (StoreItemStatusList::statuses() as $status) {
@@ -145,7 +145,7 @@ class StoreItemEdit extends AdminDBEdit
 		$this->item->sku         = $values['sku'];
 		$this->item->status      = $values['status'];
 		$this->item->description = $values['description'];
-		$this->item->product     = $this->parent;
+		$this->item->product     = $this->product;
 	}
 
 	// }}}
@@ -167,7 +167,7 @@ class StoreItemEdit extends AdminDBEdit
 			($this->item->sku !== null) ? array($this->item->sku) : array();
 
 		if (!StoreItem::validateSku($this->app->db, $sku->value, $catalog,
-			$this->product_id, $valid)) {
+			$this->product, $valid)) {
 			$sku->addMessage(new SwatMessage(
 				Store::_('%s must be unique amongst all catalogs unless '.
 				'catalogs are clones of each other.')));
@@ -181,14 +181,14 @@ class StoreItemEdit extends AdminDBEdit
 	{
 		$sql = sprintf('delete from NateGoSearchQueue
 			where document_id = %s and document_type = %s',
-			$this->app->db->quote($this->product_id, 'integer'),
+			$this->app->db->quote($this->product, 'integer'),
 			$this->app->db->quote(2, 'integer'));
 
 		SwatDB::exec($this->app->db, $sql);
 
 		$sql = sprintf('insert into NateGoSearchQueue
 			(document_id, document_type) values (%s, %s)',
-			$this->app->db->quote($this->product_id, 'integer'),
+			$this->app->db->quote($this->product, 'integer'),
 			$this->app->db->quote(2, 'integer'));
 
 		SwatDB::exec($this->app->db, $sql);
@@ -274,13 +274,13 @@ class StoreItemEdit extends AdminDBEdit
 		}
 
 		$product_title = SwatDB::queryOneFromTable($this->app->db, 'Product',
-			'text:title', 'id', $this->product_id);
+			'text:title', 'id', $this->product);
 
 		if ($this->category_id === null)
-			$link = sprintf('Product/Details?id=%s', $this->product_id);
+			$link = sprintf('Product/Details?id=%s', $this->product);
 		else
 			$link = sprintf('Product/Details?id=%s&category=%s',
-				$this->product_id, $this->category_id);
+				$this->product, $this->category_id);
 
 		$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));
 		$this->title = $product_title;
@@ -298,9 +298,9 @@ class StoreItemEdit extends AdminDBEdit
 	{
 		$this->ui->setValues(get_object_vars($this->item));
 
-		$this->parent = $this->item->getInternalValue('product');
+		$this->product = $this->item->getInternalValue('product');
 		$form = $this->ui->getWidget('edit_form');
-		$form->addHiddenField('parent', $this->parent);
+		$form->addHiddenField('product', $this->product);
 
 		$this->loadReplicators();
 	}
