@@ -64,12 +64,6 @@
 					<property name="show_blank" type="boolean">true</property>
 				</widget>
 			</widget>
-			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Phone</property>
-				<widget class="SwatEntry" id="phone">
-					<property name="maxlength" type="integer">255</property>
-				</widget>
-			</widget>
 			<widget class="SwatFieldset">
 				<property name="title">Address Defaults</property>
 				<widget class="SwatFormField">
