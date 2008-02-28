@@ -167,7 +167,7 @@ class StoreProductEdit extends AdminDBEdit
 		$form = $this->ui->getWidget('edit_form');
 		$category = $form->getHiddenField('category');
 
-		if ($category !== null) {
+		if ($category !== null && $this->id === null) {
 			$sql = sprintf('insert into CategoryProductBinding
 				(category, product) values (%s, %s)', $category,
 					$this->product->id);
