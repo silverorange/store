@@ -124,7 +124,7 @@ class StoreItemEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$this->UpdateItem();
+		$this->updateItem();
 		$this->item->save();
 		$this->addToSearchQueue();
 		$this->saveItemRegionFields();
@@ -136,9 +136,9 @@ class StoreItemEdit extends AdminDBEdit
 	}
 
 	// }}}
-	// {{{ protected function UpdateItem()
+	// {{{ protected function updateItem()
 
-	protected function getUIValues()
+	protected function updateItem()
 	{
 		$values = $this->ui->getValues(array('description', 'sku', 'status'));
 
@@ -297,6 +297,8 @@ class StoreItemEdit extends AdminDBEdit
 	protected function loadDBData()
 	{
 		$this->ui->setValues(get_object_vars($this->item));
+		// TODO: descriptions aren't getting set the same as the table in
+		// Product/Details becasue they aren't both using $item->description
 
 		$this->product = $this->item->getInternalValue('product');
 		$form = $this->ui->getWidget('edit_form');
