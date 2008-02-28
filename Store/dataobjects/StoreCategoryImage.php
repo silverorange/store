@@ -12,9 +12,14 @@ class StoreCategoryImage extends StoreImage
 {
 	// {{{ public function getURI()
 
-	public function getURI($set = 'thumb')
+	public function getURI($set = 'thumb', $prefix = null)
 	{
-		return 'images/categories/'.$set.'/'.$this->id.'.jpg';
+		$uri = 'images/categories/'.$set.'/'.$this->id.'.jpg';
+
+		if ($prefix != null)
+			$uri = $prefix.$uri;
+
+		return $uri;
 	}
 
 	// }}}
