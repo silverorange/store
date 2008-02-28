@@ -374,11 +374,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 			$this->cart_ui->display();
 
 			echo '<div class="cart-message-links">';
-			printf(Store::_('%sView your shopping cart%s '.
-					'or %sproceed to the checkout%s.'),
-					'<a href="cart">', '</a>',
-					'<a href="checkout">', '</a>');
-
+			$this->displayCartLinks();
 			echo '</div>';
 
 			$message->secondary_content = ob_get_clean();
@@ -397,6 +393,17 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 
 			$this->message_display->add($message);
 		}
+	}
+
+	// }}}
+	// {{{ protected function displayCartLinks()
+
+	protected function displayCartLinks()
+	{
+		printf(Store::_('%sView your shopping cart%s or %sproceed to the '.
+			'checkout%s.'),
+			'<a href="cart">', '</a>',
+			'<a href="checkout">', '</a>');
 	}
 
 	// }}}
