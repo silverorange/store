@@ -39,6 +39,13 @@
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Company</property>
+				<widget class="SwatEntry" id="company">
+					<property name="required" type="boolean">true</property>
+					<property name="maxlength" type="integer">255</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Province / State</property>
 				<widget class="SwatFlydown" id="provstate">
 					<property name="required" type="boolean">true</property>
