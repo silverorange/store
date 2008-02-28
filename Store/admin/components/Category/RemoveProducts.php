@@ -25,7 +25,7 @@ class StoreCategoryRemoveProducts extends AdminDBConfirmation
 	}
 
 	// }}}
-	
+
 	// init phase
 	// {{{ protected function initInternal()
 
@@ -44,7 +44,7 @@ class StoreCategoryRemoveProducts extends AdminDBConfirmation
 	{
 		parent::processDBData();
 
-		$sql = 'select count(distinct category) from CategoryProductBinding 
+		$sql = 'select count(distinct category) from CategoryProductBinding
 			where category in (%s)';
 		$item_list = $this->getItemList('integer');
 		$sql = sprintf($sql, $item_list);
@@ -65,7 +65,7 @@ class StoreCategoryRemoveProducts extends AdminDBConfirmation
 	}
 
 	// }}}
-	
+
 	// build phase
 	// {{{ protected function buildInternal()
 
@@ -75,10 +75,10 @@ class StoreCategoryRemoveProducts extends AdminDBConfirmation
 
 		$item_list = $this->getItemList('integer');
 
-		$sql = sprintf('select Category.id, max(Category.title) as title, 
+		$sql = sprintf('select Category.id, max(Category.title) as title,
 				count(CategoryProductBinding.product) as num_products
 			from Category
-			left outer join CategoryProductBinding on 
+			left outer join CategoryProductBinding on
 				Category.id = CategoryProductBinding.category
 			where Category.id in (%s)
 			group by Category.id
@@ -104,7 +104,7 @@ class StoreCategoryRemoveProducts extends AdminDBConfirmation
 			foreach ($valid_rows as $row)
 				$message_text.= sprintf(Store::_('<li>%s - %s product(s)</li>'),
 					$row->title, $row->num_products);
-			
+
 			$message_text.= '</ul>';
 			$this->ui->getWidget('yes_button')->title = Store::_('Remove');
 		} else {
@@ -149,7 +149,7 @@ class StoreCategoryRemoveProducts extends AdminDBConfirmation
 		if ($this->category_id !== null) {
 			$navbar_rs = SwatDB::executeStoredProc($this->app->db,
 				'getCategoryNavbar', array($this->category_id));
-			
+
 			foreach ($navbar_rs as $row)
 				$this->navbar->addEntry(new SwatNavBarEntry($row->title,
 					'Category/Index?id='.$row->id));
