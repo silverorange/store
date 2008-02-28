@@ -18,8 +18,6 @@ class StoreCatalogEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
-	protected $fields;
-
 	/**
 	 * @var string
 	 */
@@ -64,11 +62,7 @@ class StoreCatalogEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$values = $this->ui->getValues(array(
-			'title', 'in_season'));
-
-		$this->catalog->title     = $values['title'];
-		$this->catalog->in_season = $values['in_season'];
+		$this->updateCatalog();
 		$this->catalog->save();
 
 		$message = new SwatMessage(sprintf(
@@ -76,6 +70,18 @@ class StoreCatalogEdit extends AdminDBEdit
 			$this->catalog->title));
 
 		$this->app->messages->add($message);
+	}
+
+	// }}}
+	// {{{ protected function updateCatalog()
+
+	protected function updateCatalog()
+	{
+		$values = $this->ui->getValues(array(
+			'title', 'in_season'));
+
+		$this->catalog->title     = $values['title'];
+		$this->catalog->in_season = $values['in_season'];
 	}
 
 	// }}}
