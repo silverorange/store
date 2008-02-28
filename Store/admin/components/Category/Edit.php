@@ -15,10 +15,9 @@ require_once 'Date.php';
  */
 class StoreCategoryEdit extends AdminDBEdit
 {
-	// {{{ private properties
+	// {{{ protected properties
 
 	protected $ui_xml = 'Store/admin/components/Category/edit.xml';
-	protected $fields;
 
 	// }}}
 	// {{{ private properties
@@ -104,7 +103,16 @@ class StoreCategoryEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$this->updateCatalog();
+		$this->updateCategory();
+
+		if ($this->id === null) {
+			$date = new Date();
+			$date->toUTC();
+			$this->category->createdate = $date->getDate();
+
+			$this->category->parent = $this->ui->getWidget(
+				'edit_form')->getHiddenField('parent');
+		}
 
 		$this->category->save();
 		$this->addToSearchQueue();
@@ -117,9 +125,9 @@ class StoreCategoryEdit extends AdminDBEdit
 	}
 
 	// }}}
-	// {{{ protected function updateCatalog()
+	// {{{ protected function updateCategory()
 
-	protected function updateCatalog()
+	protected function updateCategory()
 	{
 		$this->category->title =
 			$this->ui->getWidget('title')->value;
@@ -131,15 +139,6 @@ class StoreCategoryEdit extends AdminDBEdit
 			$this->ui->getWidget('bodytext')->value;
 		$this->category->always_visible =
 			$this->ui->getWidget('always_visible')->value;
-
-		if ($this->id === null) {
-			$date = new Date();
-			$date->toUTC();
-			$this->category->createdate = $date->getDate();
-
-			$this->category->parent = $this->ui->getWidget(
-				'edit_form')->getHiddenField('parent');
-		}
 	}
 
 	// }}}
