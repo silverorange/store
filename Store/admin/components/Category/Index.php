@@ -732,11 +732,9 @@ class StoreCategoryIndex extends AdminIndex
 			$image = $this->ui->getWidget('image');
 
 			// thumbnail width and height are always 60
-			$image->image =
-				'../images/categories/thumb/'.$category->image->id.'.jpg';
-
-			$image->width = $category->image->thumb_width;
-			$image->height = $category->image->thumb_height;
+			$image->image = $category->image->getUri('thumb', '../');
+			$image->width = $category->image->getWidth('thumb');
+			$image->height = $category->image->getHeight('thumb');
 			$image->alt = sprintf(Store::_('Image of %s'), $category->title);
 
 			$this->ui->getWidget('image_delete')->visible = true;
