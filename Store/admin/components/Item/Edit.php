@@ -130,7 +130,6 @@ class StoreItemEdit extends AdminDBEdit
 		$this->updateItem();
 		$this->item->save();
 		$this->addToSearchQueue();
-		$this->saveItemRegionFields();
 
 		$message = new SwatMessage(
 			sprintf(Store::_('“%s” has been saved.'), $this->item->sku));
@@ -146,9 +145,13 @@ class StoreItemEdit extends AdminDBEdit
 		$values = $this->ui->getValues(array('description', 'sku', 'status'));
 
 		$this->item->sku         = $values['sku'];
-		$this->item->status      = $values['status'];
 		$this->item->description = $values['description'];
 		$this->item->product     = $this->product;
+		$this->item->setStatus(
+			StoreItemStatusList::statuses()->getById($values['status']));
+
+		$this->updateRegionBindings();
+		$this->updateItemAliases();
 	}
 
 	// }}}
@@ -175,6 +178,39 @@ class StoreItemEdit extends AdminDBEdit
 				Store::_('%s must be unique amongst all catalogs unless '.
 				'catalogs are clones of each other.')));
 		}
+
+		// validate alias skus
+		$aliases = $this->ui->getWidget('aliases');
+		if (count($aliases->values)) {
+			$invalid_skus = array();
+			$valid_skus = array();
+
+			foreach ($aliases->values as $alias) {
+				/*
+				 * Checks the following:
+				 * - alias is valid wrt catalogue
+				 * - alias is not the same as current item sku
+				 * - two of the same aliases are not entered at once
+				 */
+				if (!Item::validateSKU($this->app->db, $alias, $catalog,
+					$this->product, $aliases->values) ||
+					$alias == $sku->value || in_array($alias, $valid_skus))
+						$invalid_skus[] = $alias;
+				else
+					$valid_skus[] = $alias;
+			}
+	
+			if (count($invalid_skus) > 0) {
+				$message = new SwatMessage(sprintf(Store::ngettext(
+					'The following alias SKU already exists: %s',
+					'The following alias SKUs already exist: %s',
+					count($invalid_skus)), implode(', ', $invalid_skus)),
+					SwatMessage::ERROR);
+	
+				$aliases->addMessage($message);
+			}
+		}
+
 	}
 
 	// }}}
@@ -198,47 +234,51 @@ class StoreItemEdit extends AdminDBEdit
 	}
 
 	// }}}
-	// {{{ protected function saveItemRegionFields()
+	// {{{ private function updateRegionBindings()
 
-	protected function saveItemRegionFields()
+	private function updateRegionBindings()
 	{
-		/*
-		 * NOTE: This stuff is automatically wrapped in a transaction in
-		 *       AdminDBEdit::saveData()
-		 *
-		 * Once upon a time, we checked to see if there was an entry in the
-		 * ItemRegionBinding table per region to see if the item was enabled in
-		 * the region, but realized this meant we dropped any pricing data
-		 * upon disabling, which sucks.  So now we use the enabled bit on the
-		 * row, and hence we always insert the row, regardless of whether price
-		 * is null
-		 */
-
+		// Due to SwatDBDataObject not being able to delete when there is no id
+		// like the binding table below, this has to use manual sql to do its
+		// delete, and can't use the nice removeAll() method.
 		$delete_sql = 'delete from ItemRegionBinding where item = %s';
 		$delete_sql = sprintf($delete_sql,
 			$this->app->db->quote($this->item->id, 'integer'));
 
 		SwatDB::exec($this->app->db, $delete_sql);
 
-		$insert_sql = 'insert into ItemRegionBinding
-			(item, region, price, enabled)
-			values (%s, %%s, %%s, %%s)';
-
-		$insert_sql = sprintf($insert_sql,
-			$this->app->db->quote($this->item->id, 'integer'));
-
 		$price_replicator = $this->ui->getWidget('price_replicator');
+		$class_name = SwatDBClassMap::get('StoreItemRegionBinding');
 
 		foreach ($price_replicator->replicators as $region => $title) {
 			$price_field = $price_replicator->getWidget('price', $region);
 			$enabled_field = $price_replicator->getWidget('enabled', $region);
 
-			$sql = sprintf($insert_sql,
-				$this->app->db->quote($region, 'integer'),
-				$this->app->db->quote($price_field->value, 'decimal'),
-				$this->app->db->quote($enabled_field->value, 'boolean'));
+			$region_binding = new $class_name();
+			$region_binding->region  = $region;
+			$region_binding->enabled = $enabled_field->value;
+			$region_binding->price   = $price_field->value;
 
-			SwatDB::query($this->app->db, $sql);
+			$this->item->region_bindings->add($region_binding);
+		}
+	}
+
+	// }}}
+	// {{{ private function updateItemAliases()
+
+	private function updateItemAliases()
+	{
+		$this->item->item_aliases->removeAll();
+
+		$aliases = $this->ui->getWidget('aliases');
+		if (count($aliases->values)) {
+			$class_name = SwatDBClassMap::get('StoreItemAlias');
+
+			foreach ($aliases->values as $alias) {
+				$item_alias = new $class_name();
+				$item_alias->sku = $alias;
+				$this->item->item_aliases->add($item_alias);
+			}
 		}
 	}
 
@@ -300,14 +340,13 @@ class StoreItemEdit extends AdminDBEdit
 	protected function loadDBData()
 	{
 		$this->ui->setValues(get_object_vars($this->item));
-		// TODO: descriptions aren't getting set the same as the table in
-		// Product/Details becasue they aren't both using $item->description
+		$this->ui->getWidget('status')->value = $this->item->getStatus()->id;
+		$this->loadRegionBindings();
+		$this->loadItemAliases();
 
 		$this->product = $this->item->getInternalValue('product');
 		$form = $this->ui->getWidget('edit_form');
 		$form->addHiddenField('product', $this->product);
-
-		$this->loadReplicators();
 	}
 
 	// }}}
@@ -326,27 +365,30 @@ class StoreItemEdit extends AdminDBEdit
 	}
 
 	// }}}
-	// {{{ private function loadReplicators()
+	// {{{ private function loadRegionBindings()
 
-	private function loadReplicators()
+	private function loadRegionBindings()
 	{
 		$price_replicator = $this->ui->getWidget('price_replicator');
 
-		$sql = sprintf('select Region.id as region, price, enabled
-			from Region
-			left outer join ItemRegionBinding on
-				ItemRegionBinding.region = Region.id
-				and item = %s',
-			$this->app->db->quote($this->id, 'integer'));
+		foreach ($this->item->region_bindings as $binding) {
+			$region_id = $binding->region->id;
+			$price_replicator->getWidget('price', $region_id)->value =
+				$binding->price;
 
-		$rs = SwatDB::query($this->app->db, $sql);
-		foreach ($rs as $row) {
-			$price_replicator->getWidget('price', $row->region)->value =
-				$row->price;
-
-			$price_replicator->getWidget('enabled', $row->region)->value =
-				$row->enabled;
+			$price_replicator->getWidget('enabled', $region_id)->value =
+				$binding->enabled;
 		}
+	}
+
+	// }}}
+	// {{{ private function loadItemAliases()
+
+	private function loadItemAliases()
+	{
+		$aliases = $this->ui->getWidget('aliases');
+		foreach ($this->item->item_aliases as $alias)
+			$aliases->values[] = $alias->sku;
 	}
 
 	// }}}
