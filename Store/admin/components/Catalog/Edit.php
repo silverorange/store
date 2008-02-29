@@ -50,7 +50,7 @@ class StoreCatalogEdit extends AdminDBEdit
 		if ($this->id !== null) {
 			if (!$this->catalog->load($this->id))
 				throw new AdminNotFoundException(
-					sprintf(Pinhole::_('Catalog with id “%s” not found.'),
+					sprintf(Store::_('Catalog with id “%s” not found.'),
 						$this->id));
 		}
 	}
