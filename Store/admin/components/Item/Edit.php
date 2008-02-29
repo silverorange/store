@@ -71,6 +71,9 @@ class StoreItemEdit extends AdminDBEdit
 
 		$price_replicator = $this->ui->getWidget('price_replicator');
 		$price_replicator->replicators = $regions;
+
+		$form = $this->ui->getWidget('edit_form');
+		$form->addHiddenField('product', $this->product);
 	}
 
 	// }}}
@@ -130,7 +133,7 @@ class StoreItemEdit extends AdminDBEdit
 		$this->saveItemRegionFields();
 
 		$message = new SwatMessage(
-			sprintf(Store::_('“%s” has been saved.'), $values['sku']));
+			sprintf(Store::_('“%s” has been saved.'), $this->item->sku));
 
 		$this->app->messages->add($message);
 	}
