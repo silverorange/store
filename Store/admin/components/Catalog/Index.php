@@ -41,8 +41,6 @@ class StoreCatalogIndex extends AdminIndex
 
 	// }}}
 
-	// process phase
-
 	// build phase
 	// {{{ protected function getTableModel()
 
