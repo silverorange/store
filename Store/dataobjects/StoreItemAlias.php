@@ -22,13 +22,6 @@ class StoreItemAlias extends SwatDBDataObject
 	public $id;
 
 	/**
-	 * not null references items(id) on delete cascade,
-	 *
-	 * @var integer
-	 */
-	public $item;
-
-	/**
 	 * not null,
 	 *
 	 * @var string
@@ -43,6 +36,9 @@ class StoreItemAlias extends SwatDBDataObject
 	 */
 	protected function init()
 	{
+		$this->registerInternalProperty('item',
+			SwatDBClassMap::get('StoreItem'));
+
 		$this->table = 'ItemAlias';
 		$this->id_field = 'integer:id';
 	}

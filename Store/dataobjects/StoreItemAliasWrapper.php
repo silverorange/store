@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreItemAlias.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreItemAlias
  */
-class ItemAliasWrapper extends SwatDBRecordsetWrapper
+class StoreItemAliasWrapper extends SwatDBRecordsetWrapper
 {
 	// {{{ protected function init()
 
