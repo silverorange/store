@@ -234,9 +234,9 @@ class StoreItemEdit extends AdminDBEdit
 	}
 
 	// }}}
-	// {{{ private function updateRegionBindings()
+	// {{{ protected function updateRegionBindings()
 
-	private function updateRegionBindings()
+	protected function updateRegionBindings()
 	{
 		// Due to SwatDBDataObject not being able to delete when there is no id
 		// like the binding table below, this has to use manual sql to do its
@@ -365,9 +365,9 @@ class StoreItemEdit extends AdminDBEdit
 	}
 
 	// }}}
-	// {{{ private function loadRegionBindings()
+	// {{{ protected function loadRegionBindings()
 
-	private function loadRegionBindings()
+	protected function loadRegionBindings()
 	{
 		$price_replicator = $this->ui->getWidget('price_replicator');
 
