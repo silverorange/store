@@ -19,6 +19,8 @@ abstract class StoreFroogleUploader extends SiteCommandLineApplication
 	// {{{ private property
 
 	private $path;
+	private $upload = false;
+	private $display = true;
 
 	// }}}
 	// {{{ class constants
@@ -69,14 +71,15 @@ abstract class StoreFroogleUploader extends SiteCommandLineApplication
 
 	public function run()
 	{
-		parent::run();
+		$this->initModules();
+		$this->parseCommandLineArguments();
 
 		$filename = $this->config->froogle->filename;
 
 		$generator = $this->getGenerator();
 
 		$this->output(sprintf(
-			Store::_('Generating Froogle feed for %s ... ')."\n",
+			Store::_('Generating Froogle feed for %s')."\n",
 			$this->config->site->title), self::VERBOSITY_ALL);
 
  		$xml = $generator->generate();
@@ -86,36 +89,48 @@ abstract class StoreFroogleUploader extends SiteCommandLineApplication
 
 		$this->output(Store::_('done')."\n\n", self::VERBOSITY_ALL);
 
-		$this->output(Store::_('Logging into Froogle FTP ... '),
-			self::VERBOSITY_ALL);
+		if ($this->display) {
+			$this->output(Store::_('Generated XML:')."\n\n",
+				self::VERBOSITY_ALL);
 
-		$ftp_connection = ftp_connect($this->config->froogle->server);
-		$login_result = ftp_login($ftp_connection,
-			$this->config->froogle->username,
-			$this->config->froogle->password);
+			echo $xml;
 
-		if ($ftp_connection == null || $login_result == null) {
-			$this->terminate(Store::_('failed to log in')."\n\n",
-				self::VERBOSITY_ERRORS);
-		} else {
-			$this->output(Store::_('done')."\n\n", self::VERBOSITY_ALL);
+			$this->output("\n\n", self::VERBOSITY_ALL);
 		}
 
-		$this->output(Store::_('Uploading Froogle file ... '),
-			self::VERBOSITY_ALL);
+		if ($this->upload) {
+			$this->output(Store::_('Logging into Froogle FTP ... '),
+				self::VERBOSITY_ALL);
 
-		$upload_result = ftp_put($ftp_connection, $filename,
-			$this->path.$filename, FTP_BINARY);
+			$ftp_connection = ftp_connect($this->config->froogle->server);
+			$login_result = ftp_login($ftp_connection,
+				$this->config->froogle->username,
+				$this->config->froogle->password);
 
-		if (!$upload_result) {
-			$this->terminate(Store::_('failed uploading')."\n",
-				self::VERBOSITY_ERRORS);
-		} else {
-			$this->output(Store::_('done')."\n\n", self::VERBOSITY_ALL);
+			if ($ftp_connection == null || $login_result == null) {
+				$this->terminate(Store::_('failed to log in')."\n\n",
+					self::VERBOSITY_ERRORS);
+			} else {
+				$this->output(Store::_('done')."\n\n", self::VERBOSITY_ALL);
+			}
+
+			$this->output(Store::_('Uploading Froogle file ... '),
+				self::VERBOSITY_ALL);
+
+			$upload_result = ftp_put($ftp_connection, $filename,
+				$this->path.$filename, FTP_BINARY);
+
+			if (!$upload_result) {
+				$this->terminate(Store::_('failed uploading')."\n",
+					self::VERBOSITY_ERRORS);
+			} else {
+				$this->output(Store::_('done')."\n\n", self::VERBOSITY_ALL);
+			}
+
+			ftp_close($ftp_connection);
 		}
 
-		ftp_close($ftp_connection);
-		$this->output(Store::('All done.')."\n", self::VERBOSITY_ALL);
+		$this->output(Store::_('All done.')."\n", self::VERBOSITY_ALL);
 	}
 
 	// }}}
