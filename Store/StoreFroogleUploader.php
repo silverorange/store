@@ -5,7 +5,6 @@ require_once 'Site/SiteDatabaseModule.php';
 require_once 'Store/Store.php';
 require_once 'Store/StoreFroogleGenerator.php';
 require_once 'Store/StoreCommandLineConfigModule.php';
-require_once 'VanBourgondien/VanBourgondienCommandLineApplication.php';
 
 /**
  * Application to upload Froogle files to Google
