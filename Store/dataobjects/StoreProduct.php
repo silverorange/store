@@ -7,6 +7,7 @@ require_once 'Store/dataobjects/StoreCatalog.php';
 require_once 'Store/dataobjects/StoreProductImage.php';
 require_once 'Store/dataobjects/StoreProductImageWrapper.php';
 require_once 'Store/dataobjects/StoreRegion.php';
+require_once 'Store/dataobjects/StoreAttributeWrapper.php';
 
 /**
  * A product for an e-commerce web application
@@ -469,6 +470,21 @@ class StoreProduct extends SwatDBDataObject
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 		return SwatDB::query($this->db, $sql,
 			SwatDBClassMap::get('StoreCategoryWrapper'));
+	}
+
+	// }}}
+	// {{{ protected function loadAttributes()
+
+	protected function loadAttributes()
+	{
+		$sql = sprintf('select * from Attribute
+			where id in (
+			select attribute from ProductAttributeBinding where product = %s)
+			order by displayorder asc',
+			$this->db->quote($this->id, 'integer'));
+
+		return SwatDB::query($this->db, $sql,
+			SwatDBClassMap::get('StoreAttributeWrapper'));
 	}
 
 	// }}}

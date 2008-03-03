@@ -5,6 +5,7 @@ require_once 'Store/StoreArticleSearchEngine.php';
 require_once 'Store/StoreProductSearchEngine.php';
 require_once 'Store/StoreCategorySearchEngine.php';
 require_once 'Store/dataobjects/StoreProductWrapper.php';
+require_once 'Store/dataobjects/StoreAttributeWrapper.php';
 require_once 'Store/dataobjects/StoreCategoryImageWrapper.php';
 require_once 'Store/dataobjects/StoreProductImageWrapper.php';
 
@@ -295,6 +296,36 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 	}
 
 	// }}}
+	// {{{ protected function getAttributes()
+
+	protected function getAttributes()
+	{
+		$attributes = null;
+		$attribute_shortnames = array();
+
+		if ($this->hasSearchDataValue('attr')) {
+			$value = $this->getSearchDataValue('attr');
+			if (is_array($value))
+				$attribute_shortnames = $value;
+		}
+
+		if (count($attribute_shortnames) > 0) {
+			$sql = 'select * from Attribute
+				where shortname in (%s)';
+
+			foreach ($attribute_shortnames as &$shortname)
+				$shortname = $this->app->db->quote($shortname);
+
+			$sql = sprintf($sql, implode(',', $attribute_shortnames));
+
+			$attributes = SwatDB::query($this->app->db, $sql,
+				SwatDBClassMap::get('StoreAttributeWrapper'));
+		}
+
+		return $attributes;
+	}
+
+	// }}}
 
 	// build phase - products
 	// {{{ protected function buildProducts()
@@ -332,6 +363,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 		$engine = new StoreProductSearchEngine($this->app);
 		$this->setSearchEngine('product', $engine);
 
+		$engine->attributes = $this->getAttributes();
 		$engine->category = $this->getCategory();
 		$engine->addOrderByField('is_available desc');
 

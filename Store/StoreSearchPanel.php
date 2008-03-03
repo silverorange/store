@@ -5,6 +5,7 @@ require_once 'SwatDB/SwatDB.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/dataobjects/StorePriceRangeWrapper.php';
 require_once 'Store/dataobjects/StoreCategoryWrapper.php';
+require_once 'Store/dataobjects/StoreAttributeWrapper.php';
 
 /**
  * Advanced search controls panel for Store
@@ -99,6 +100,7 @@ class StoreSearchPanel extends SwatObject
 		$this->buildKeywords();
 		$this->buildCategories();
 		$this->buildPriceRanges();
+		$this->buildAttributes();
 	}
 
 	// }}}
@@ -208,6 +210,30 @@ class StoreSearchPanel extends SwatObject
 	}
 
 	// }}}
+	// {{{ protected function buildAttributes()
+
+	protected function buildAttributes()
+	{
+		$attributes = $this->getAttributes();
+
+		$attr_checkbox_list = $this->ui->getWidget('attr');
+
+		foreach ($attributes as $attribute) {
+			ob_start();
+			$attribute->display();
+			$title = ob_get_clean();
+			$attr_checkbox_list->addOption($attribute->shortname, $title, 'text/xml');
+		}
+
+		if (array_key_exists('attr', $this->init_search_state) &&
+			array_key_exists('attr', $this->process_search_state)) {
+				$attr_checkbox_list->highlight_values = array_diff(
+					$this->process_search_state['attr'],
+					$this->init_search_state['attr']);
+		}
+	}
+
+	// }}}
 	// {{{ protected function getPriceRanges()
 
 	protected function getPriceRanges()
@@ -237,6 +263,27 @@ class StoreSearchPanel extends SwatObject
 			SwatDBClassMap::get('StoreCategoryWrapper'));
 
 		return $categories;
+	}
+
+	// }}}
+	// {{{ protected function getAttributes()
+
+	protected function getAttributes($type = null)
+	{
+		$sql = 'select id, shortname, title, attribute_type from Attribute';
+
+		if ($type !== null)
+			$sql.= ' where (attribute_type & %s) != 0';
+
+		$sql.= ' order by attribute_type, displayorder, id';
+
+		if ($type !== null)
+			$sql = sprintf($sql, $this->db->quote($type, 'integer'));
+
+		$attributes = SwatDB::query($this->db, $sql,
+			SwatDBClassMap::get('StoreAttributeWrapper'));
+
+		return $attributes;
 	}
 
 	// }}}
