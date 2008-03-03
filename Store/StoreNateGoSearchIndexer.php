@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Site/SiteNateGoSearchIndexer.php';
-require_once 'Admin/Admin.php';
 require_once 'Store/Store.php';
 require_once 'Store/pages/StoreSearchPage.php';
 
@@ -42,7 +41,6 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 	protected function addConfigDefinitions(SiteConfigModule $config)
 	{
 		parent::addConfigDefinitions($config);
-		$config->addDefinitions(Admin::getConfigDefinitions());
 		$config->addDefinitions(Store::getConfigDefinitions());
 	}
 
