@@ -1,11 +1,10 @@
 <?php
 
-require_once 'Admin/Admin.php';
+require_once 'SwatDB/SwatDB.php';
 require_once 'Store/Store.php';
 require_once 'Site/SiteCommandLineApplication.php';
-require_once 'Site/SiteConfigModule.php';
 require_once 'Site/SiteDatabaseModule.php';
-require_once 'SwatDB/SwatDB.php';
+require_once 'Store/StoreCommandLineConfigModule.php';
 
 /**
  * Cache table updater application
@@ -148,7 +147,7 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
 	protected function getDefaultModuleList()
 	{
 		return array(
-			'config'   => 'SiteConfigModule',
+			'config'   => 'StoreCommandLineConfigModule',
 			'database' => 'SiteDatabaseModule',
 		);
 	}
@@ -165,7 +164,6 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
 	protected function addConfigDefinitions(SiteConfigModule $config)
 	{
 		parent::addConfigDefinitions($config);
-		$config->addDefinitions(Admin::getConfigDefinitions());
 		$config->addDefinitions(Store::getConfigDefinitions());
 	}
 
