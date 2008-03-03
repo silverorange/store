@@ -50,15 +50,13 @@ abstract class StoreFroogleGenerator extends SwatObject
 	{
 		$feed = new StoreFroogleFeed();
 
-		$base_href = $this->config->uri->absolute_base;
-
 		$feed->title = sprintf(Store::_('%s Products'),
 			$this->config->site->title);
 
 		$feed->addAuthor(new AtomFeedAuthor($this->config->site->title));
-		$feed->link = new AtomFeedLink($base_href, 'self');
+		$feed->link = new AtomFeedLink($this->getBaseHref(), 'self');
 		$feed->id = sprintf('tag:%s,%s:/products/',
-			substr($base_href, 7),
+			substr($this->config->absolute_base, 7), // get domain
 			$this->getSiteInceptionDate());
 
 		$this->addEntries($feed);
@@ -66,6 +64,14 @@ abstract class StoreFroogleGenerator extends SwatObject
 		ob_start();
 		$feed->display();
 		return ob_get_clean();
+	}
+
+	// }}}
+	// {{{ protected function getBaseHref()
+
+	protected function getBaseHref()
+	{
+		return $this->config->uri->absolute_base;
 	}
 
 	// }}}
