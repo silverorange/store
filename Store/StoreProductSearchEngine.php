@@ -164,6 +164,8 @@ class StoreProductSearchEngine extends SiteSearchEngine
 			inner join VisibleProductCache on
 				VisibleProductCache.product = Product.id and
 				VisibleProductCache.region = %s
+			inner join getProductPriceRange(%s, false) as getProductPriceRange
+				on getProductPriceRange.product = Product.id
 			left outer join ProductPrimaryCategoryView on
 				ProductPrimaryCategoryView.product = Product.id
 			left outer join ProductPrimaryImageView
@@ -171,6 +173,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 			%s join AvailableProductView on
 				AvailableProductView.product = Product.id and
 				AvailableProductView.region = %s',
+			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
 			$this->available_only ? 'inner' : 'left outer',
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
