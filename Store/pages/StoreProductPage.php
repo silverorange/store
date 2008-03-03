@@ -575,12 +575,16 @@ class StoreProductPage extends StorePage
 
 		if ($link_to_large) {
 			$anchor->open();
+			echo '<span class="large-image">';
 			$img_tag->display();
+			echo '</span>';
 			echo '<span>', Store::_('View Larger Image'), '</span>';
 			$anchor->close();
 		} else {
 			echo '<span class="large-image-wrapper">';
+			echo '<span class="large-image">';
 			$img_tag->display();
+			echo '</span>';
 			echo '</span>';
 		}
 
