@@ -38,9 +38,9 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
 	// }}}
 	// {{{ public function __construct()
 
-	public function __construct($id, $title, $documentation)
+	public function __construct($id, $config_filename, $title, $documentation)
 	{
-		parent::__construct($id, $title, $documentation);
+		parent::__construct($id, $config_filename, $title, $documentation);
 
 		$verbosity = new SiteCommandLineArgument(array('-v', '--verbose'),
 			'setVerbosity', 'Sets the level of verbosity of the updater. '.
