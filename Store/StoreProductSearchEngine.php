@@ -3,6 +3,7 @@
 require_once 'Site/SiteSearchEngine.php';
 require_once 'Store/dataobjects/StoreProductWrapper.php';
 require_once 'Store/dataobjects/StorePriceRangeWrapper.php';
+require_once 'Store/dataobjects/StoreAttributeWrapper.php';
 
 /**
  * A product search engine
@@ -27,6 +28,13 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	 * @var StorePriceRange
 	 */
 	public $price_range;
+
+	/**
+	 * Optional set of attributes to search with
+	 *
+	 * @var StoreAttributeWrapper
+	 */
+	public $attributes;
 
 	/**
 	 * Whether or not to search category descendants when a category
@@ -89,6 +97,22 @@ class StoreProductSearchEngine extends SiteSearchEngine
 		if ($this->price_range !== null)
 			$summary[] = sprintf(Store::_('Price: <b>%s</b>'),
 				SwatString::minimizeEntities($this->price_range->getTitle()));
+
+		if ($this->attributes !== null) {
+			if (count($this->attributes)) {
+				ob_start();
+				echo '<ul>';
+
+				foreach ($this->attributes as $attribute) {
+					echo '<li>';
+					$attribute->display();
+					echo '</li>';
+				}
+
+				echo '</ul>';
+				$summary[] = sprintf('Attributes: <b>%s</b>', ob_get_clean());
+			}
+		}
 
 		return $summary;
 	}
@@ -245,6 +269,15 @@ class StoreProductSearchEngine extends SiteSearchEngine
 					$this->app->db->quote($this->price_range->start_price, 'integer'),
 					$this->app->db->quote($this->price_range->end_price, 'integer'));
 			}
+		}
+
+		if ($this->attributes instanceof StoreAttributeWrapper) {
+			$attribute_ids = array();
+			foreach ($this->attributes as $attribute)
+				$clause.= sprintf(' and Product.id in (
+					select product from ProductAttributeBinding
+					where attribute = %s)',
+					$this->app->db->quote($attribute->id, 'integer'));
 		}
 
 		return $clause;
