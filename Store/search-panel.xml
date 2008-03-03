@@ -6,6 +6,12 @@
 		<property name="classes[]">clearfix</property>
 		<widget class="SwatDisplayableContainer">
 			<widget class="SwatFormField">
+				<widget class="SiteSearchCheckboxList" id="attr">
+					<property name="serialize_values" type="boolean">false</property>
+					<property name="show_check_all" type="boolean">false</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Keywords</property>
 				<widget class="SwatEntry" id="keywords">
 					<property name="maxlength" type="integer">255</property>
