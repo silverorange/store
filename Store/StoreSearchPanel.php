@@ -28,6 +28,11 @@ class StoreSearchPanel extends SwatObject
 	protected $region;
 
 	/**
+	 * @ StorePriceRange
+	 */
+	protected $price_range;
+
+	/**
 	 * @var StoreCategory
 	 */
 	protected $category;
@@ -42,18 +47,15 @@ class StoreSearchPanel extends SwatObject
 	 */
 	protected $ui;
 
-	// }}}
-	// {{{ private properties
+	/**
+	 * @var array
+	 */
+	protected $init_search_state = array();
 
 	/**
 	 * @var array
 	 */
-	private $init_search_state = array();
-
-	/**
-	 * @var array
-	 */
-	private $process_search_state = array();
+	protected $process_search_state = array();
 
 	// }}}
 	// {{{ public function __construct()
@@ -238,9 +240,9 @@ class StoreSearchPanel extends SwatObject
 	}
 
 	// }}}
-	// {{{ private function hasInitialState()
+	// {{{ protected function hasInitialState()
 
-	private function hasInitialState($name)
+	protected function hasInitialState($name)
 	{
 		if (!array_key_exists($name, $this->init_search_state) ||
 			!array_key_exists($name, $this->process_search_state))

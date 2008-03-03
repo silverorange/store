@@ -60,16 +60,31 @@ class StoreSearchPanelServer extends SiteXMLRPCServer
 
 		ob_start();
 
-		$panel = new StoreSearchPanel(
-			$this->app->db, $this->app->getRegion());
-
+		$panel = $this->getPanel();
 		$panel->init();
 		$panel->process();
-		$panel->setPriceRange($this->getPriceRange());
-		$panel->setCategory($this->getCategory());
+		$this->setValues($panel);
 		$panel->display();
 
 		return ob_get_clean();
+	}
+
+	// }}}
+	// {{{ protected function getPanel()
+
+	protected function getPanel()
+	{
+		return new StoreSearchPanel(
+			$this->app->db, $this->app->getRegion());
+	}
+
+	// }}}
+	// {{{ protected function setValues()
+
+	protected function setValues(StoreSearchPanel $panel)
+	{
+		$panel->setPriceRange($this->getPriceRange());
+		$panel->setCategory($this->getCategory());
 	}
 
 	// }}}
