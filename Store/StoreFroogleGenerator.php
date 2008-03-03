@@ -15,17 +15,17 @@ require_once 'AtomFeed/AtomFeedLink.php';
  */
 abstract class StoreFroogleGenerator extends SwatObject
 {
-	// {{{ private properties
+	// {{{ protected properties
 
 	/**
 	 * @var MDB2_Driver_Common
 	 */
-	private $db;
+	protected $db;
 
 	/**
 	 * @var SiteConfigModule
 	 */
-	private $config;
+	protected $config;
 
 	// }}}
 	// {{{ public function __construct()
