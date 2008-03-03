@@ -18,9 +18,9 @@ abstract class StoreFroogleUploader extends SiteCommandLineApplication
 {
 	// {{{ private property
 
-	private $path;
-	private $upload = false;
-	private $display = true;
+	private $path    = '';
+	private $upload  = true;
+	private $display = false;
 
 	// }}}
 	// {{{ class constants
@@ -49,13 +49,24 @@ abstract class StoreFroogleUploader extends SiteCommandLineApplication
 
 		$verbosity = new SiteCommandLineArgument(array('-v', '--verbose'),
 			'setVerbosity', 'Sets the level of verbosity of the uploader. '.
-			'Pass 0 to turn off all output.');
+			'Pass 0 to turn off all output. The --display option is not '.
+			'affected by this option.');
 
 		$verbosity->addParameter('integer',
 			'--verbose expects a level between 0 and 2.',
 			self::VERBOSITY_ALL);
 
 		$this->addCommandLineArgument($verbosity);
+
+		$display = new SiteCommandLineArgument(array('-d', '--display'),
+			'setDisplay', 'Display the generated XML.');
+
+		$this->addCommandLineArgument($display);
+
+		$no_upload = new SiteCommandLineArgument(array('-n', '--no-upload'),
+			'setNoUpload', 'Do not upload the generated XML to Google.');
+
+		$this->addCommandLineArgument($no_upload);
 	}
 
 	// }}}
@@ -64,6 +75,22 @@ abstract class StoreFroogleUploader extends SiteCommandLineApplication
 	public function setPath($path)
 	{
 		$this->path = $path;
+	}
+
+	// }}}
+	// {{{ public function setDisplay()
+
+	public function setDisplay()
+	{
+		$this->display = true;
+	}
+
+	// }}}
+	// {{{ public function setNoUpload()
+
+	public function setNoUpload()
+	{
+		$this->upload = false;
 	}
 
 	// }}}
