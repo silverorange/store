@@ -56,7 +56,7 @@ abstract class StoreFroogleGenerator extends SwatObject
 		$feed->addAuthor(new AtomFeedAuthor($this->config->site->title));
 		$feed->link = new AtomFeedLink($this->getBaseHref(), 'self');
 		$feed->id = sprintf('tag:%s,%s:/products/',
-			substr($this->config->absolute_base, 7), // get domain
+			substr($this->config->uri->absolute_base, 7), // get domain
 			$this->getSiteInceptionDate());
 
 		$this->addEntries($feed);
