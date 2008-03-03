@@ -18,13 +18,15 @@ require_once 'Store/dataobjects/StoreProductImageWrapper.php';
 class StoreSearchResultsPage extends SiteSearchResultsPage
 {
 	// init phase
-	// {{{ public function init
+	// {{{ public function init()
 
 	public function init()
 	{
 		$this->ui_xml = 'Store/pages/search-results.xml';
 		$this->addSearchDataField('type');
 		$this->addSearchDataField('category');
+		$this->addSearchDataField('attr', true);
+		$this->addSearchDataField('price');
 
 		parent::init();
 
@@ -66,14 +68,15 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 				Product.id in
 				(select Item.product from Item where lower(Item.sku) like %2$s
 					or Item.id in (select ItemAlias.item from ItemAlias
-					where (lower(ItemAlias.sku) like %2$s)) 
+					where (lower(ItemAlias.sku) like %2$s))
 				)';
 
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
 			$this->app->db->quote($sku.'%', 'text'));
 
-		$products = SwatDB::query($this->app->db, $sql, 'StoreProductWrapper');
+		$products = SwatDB::query($this->app->db, $sql,
+			SwatDBClassMap::get('StoreProductWrapper'));
 
 		if (count($products) == 1) {
 			$first_product = $products->getFirst();

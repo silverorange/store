@@ -67,6 +67,7 @@ class StoreSearchPanel extends SwatObject
 		$this->db = $db;
 		$this->region = $region;
 		$this->ui = new SwatUI($root);
+
 		$this->ui->loadFromXML($this->ui_xml);
 	}
 
