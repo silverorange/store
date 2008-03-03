@@ -8,7 +8,7 @@ require_once 'Site/Site.php';
  * Container for package wide static methods
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2008 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class Store
@@ -86,8 +86,14 @@ class Store
 	public static function getConfigDefinitions()
 	{
 		return array(
+			// Froogle
+			'froogle.filename'      => null,
+			'froogle.server'        => null,
+			'froogle.username'      => null,
+			'froogle.password'      => null,
+
 			// smtp server name (ex: smtp.mail.silverorange.com)
-			'email.smtp_server' => null,
+			'email.smtp_server'     => null,
 
 			// to address for contact-us emails
 			'email.contact_address' => null,
