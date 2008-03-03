@@ -2,7 +2,7 @@
 
 require_once 'Site/SiteCommandLineApplication.php';
 require_once 'Site/SiteDatabaseModule.php';
-require_once 'Site/SiteConfigModule.php';
+require_once 'Store/StoreCommandLineConfigModule.php';
 require_once 'Store/Store.php';
 require_once 'Store/StorePrivateDataDeleter.php';
 
@@ -48,14 +48,16 @@ class StorePrivateDataDeleterApplication extends SiteCommandLineApplication
 	 * Creates a new private data deleter application
 	 *
 	 * @param string $id
+	 * @param string $config_filename
 	 * @param string $title
 	 * @param string $documentation
 	 *
 	 * @see SiteCommandLineApplication::__construct()
 	 */
-	public function __construct($id, $title, $documentation)
+	public function __construct($id, $config_filename, $title, $documentation)
 	{
-		parent::__construct($id, $title, $documentation);
+		parent::__construct($id, $config_filename, $title, $documentation);
+
 		$debug = new SiteCommandLineArgument(array('-D', '--debug'),
 			'setDebug', Store::_('Turns on debugging mode which causes '.
 			'output for each action to be sent to stdout.'));
@@ -155,9 +157,24 @@ class StorePrivateDataDeleterApplication extends SiteCommandLineApplication
 	protected function getDefaultModuleList()
 	{
 		return array(
-			'config'   => 'SiteConfigModule',
+			'config'   => 'StoreCommandLineConfigModule',
 			'database' => 'SiteDatabaseModule',
 		);
+	}
+
+	// }}}
+	// {{{ protected function addConfigDefinitions()
+
+	/**
+	 * Adds configuration definitions to the config module of this application
+	 *
+	 * @param SiteConfigModule $config the config module of this application to
+	 *                                  witch to add the config definitions.
+	 */
+	protected function addConfigDefinitions(SiteConfigModule $config)
+	{
+		parent::addConfigDefinitions($config);
+		$config->addDefinitions(Store::getConfigDefinitions());
 	}
 
 	// }}}
