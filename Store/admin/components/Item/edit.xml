@@ -27,6 +27,42 @@
 					<property name="maxlength" type="integer">20</property>
 				</widget>
 			</widget>
+			<widget class="SwatFieldset">
+				<property name="title" translatable="yes">Units</property>
+				<widget class="SwatFormField">
+					<property name="title" translatable="yes">Singular Unit</property>
+					<widget class="SwatEntry" id="singular_unit">
+						<property name="size" type="integer">20</property>
+						<property name="maxlength" type="integer">100</property>
+					</widget>
+				</widget>
+				<widget class="SwatFormField">
+					<property name="title" translatable="yes">Plural Unit</property>
+					<widget class="SwatEntry" id="plural_unit">
+						<property name="size" type="integer">20</property>
+						<property name="maxlength" type="integer">100</property>
+					</widget>
+				</widget>
+				<widget class="SwatFormField">
+					<property name="title" translatable="yes">Number of Parts</property>
+					<property name="note" translatable="yes"><![CDATA[If this item is composed of multiple parts enter the number of parts in the item here. For example, a <em>package of 3 items</em> would have 3 parts]]></property>
+					<property name="note_content_type">text/xml</property>
+					<widget class="SwatIntegerEntry" id="part_count">
+						<property name="value" type="integer">1</property>
+						<property name="minimum_value" type="integer">1</property>
+						<property name="required" type="boolean">true</property>
+					</widget>
+				</widget>
+				<widget class="SwatFormField">
+					<property name="title" translatable="yes">Part Unit</property>
+					<property name="note" translatable="yes"><![CDATA[If this item is composed of multiple parts enter the unit of a part here. For example, a <em>package of 3 items</em> would have a part unit of <em>items</em>.  This unit should always be plural.]]></property>
+					<property name="note_content_type">text/xml</property>
+					<widget class="SwatEntry" id="part_unit">
+						<property name="size" type="integer">20</property>
+						<property name="maxlength" type="integer">100</property>
+					</widget>
+				</widget>
+			</widget>
 			<widget class="SwatFieldset" id="availability_fieldset">
 				<property name="title" translatable="yes">Availability &amp; Pricing</property>
 				<widget class="SwatReplicableFieldset" id="price_replicator">

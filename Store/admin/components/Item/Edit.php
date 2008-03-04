@@ -142,11 +142,16 @@ class StoreItemEdit extends AdminDBEdit
 
 	protected function updateItem()
 	{
-		$values = $this->ui->getValues(array('description', 'sku', 'status'));
+		$values = $this->ui->getValues(array('description', 'sku', 'status',
+			'part_unit', 'part_count', 'singular_unit', 'plural_unit'));
 
-		$this->item->sku         = $values['sku'];
-		$this->item->description = $values['description'];
-		$this->item->product     = $this->product;
+		$this->item->sku           = $values['sku'];
+		$this->item->description   = $values['description'];
+		$this->item->part_unit     = $values['part_unit'];
+		$this->item->part_count    = $values['part_count'];
+		$this->item->singular_unit = $values['singular_unit'];
+		$this->item->plural_unit   = $values['plural_unit'];
+		$this->item->product       = $this->product;
 		$this->item->setStatus(
 			StoreItemStatusList::statuses()->getById($values['status']));
 
