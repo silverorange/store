@@ -290,7 +290,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 				$this->app->db->quote($sku, 'text'));
 
 			$item_alias = SwatDB::query($this->app->db, $sql,
-				'ItemAliasWrapper');
+				SwatDBClassMap::get('StoreItemAliasWrapper'));
 
 			if ($item_alias !== null)
 				$cart_entry->alias = $item_alias->getFirst();
