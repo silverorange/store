@@ -109,7 +109,7 @@ class StoreAccountDeleter extends StorePrivateDataDeleter
 
 	protected function getAccounts()
 	{
-		$sql = sprintf('select * from Account %s %s',
+		$sql = sprintf('select * from Account %s',
 			$this->getWhereClause());
 
 		$this->app->db->setLimit(self::DATA_BATCH_SIZE);
