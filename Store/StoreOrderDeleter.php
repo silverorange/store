@@ -1,14 +1,19 @@
 <?php
 
-require_once 'Store/StorePrivateDataDeleter.php';
-require_once 'Store/dataobjects/StoreOrderWrapper.php';
 require_once 'SwatDB/SwatDB.php';
+require_once 'SwatDB/SwatDBClassMap.php';
+require_once 'Store/Store.php';
+require_once 'Store/StorePrivateDataDeleter.php';
+require_once 'Store/dataobjects/StoreAddress.php';
+require_once 'Store/dataobjects/StoreOrder.php';
+require_once 'Store/dataobjects/StoreOrderWrapper.php';
 
 /**
  * Removes personal data from expired orders
  *
  * @package   Store
  * @copyright 2007-2008 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderDeleter extends StorePrivateDataDeleter
 {
@@ -149,6 +154,7 @@ class StoreOrderDeleter extends StorePrivateDataDeleter
 
 	protected function getOrders()
 	{
+		// join billing address for where clause
 		$sql = 'select Orders.* from Orders
 			inner join OrderAddress on Orders.billing_address = OrderAddress.id
 			%s';
