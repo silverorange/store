@@ -235,7 +235,8 @@ class StoreProductEdit extends AdminDBEdit
 		if ($button->hasBeenClicked()) {
 			// manage skus
 			$this->app->relocate(
-				$this->app->getBaseHref().'Product/Details?id='.$this->id);
+				$this->app->getBaseHref().'Product/Details?id='.
+					$this->product->id);
 		} else {
 			parent::relocate();
 		}
