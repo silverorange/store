@@ -1,8 +1,10 @@
 <?php
 
+require_once 'SwatDB/SwatDB.php';
+require_once 'SwatDB/SwatDBClassMap.php';
+require_once 'Store/Store.php';
 require_once 'Store/StorePrivateDataDeleter.php';
 require_once 'Store/dataobjects/StoreAccountWrapper.php';
-require_once 'SwatDB/SwatDB.php';
 require_once 'Store/dataobjects/StoreAccount.php';
 
 /**
@@ -27,16 +29,16 @@ class StoreAccountDeleter extends StorePrivateDataDeleter
 
 	public function run()
 	{
-		$this->app->debug("\nAccounts\n--------\n");
+		$this->app->debug("\n".Store::_('Accounts')."\n--------\n");
 
 		$total = $this->getTotal();
 		if ($total == 0) {
-			$this->app->debug("No inactive accounts found. ".
-				"No private data removed.\n");
+			$this->app->debug(Store::_('No inactive accounts found. '.
+				'No private data removed.')."\n");
 		} else {
-			$this->app->debug(
-				sprintf("Found %s inactive accounts for cleaning:\n\n",
-				$total));
+			$this->app->debug(sprintf(
+				Store::_('Found %s inactive accounts for cleaning:')."\n\n",
+				$total)));
 
 			if (!$this->app->isDryRun()) {
 
@@ -50,12 +52,12 @@ class StoreAccountDeleter extends StorePrivateDataDeleter
 				while ($count > 0) {
 					foreach ($accounts as $account) {
 						$this->app->debug(
-							sprintf("=> cleaning account #%s ... ",
-							$account->id));
+							sprintf('=> '.Store::_('cleaning account #%s ... '),
+								$account->id));
 
 						$this->cleanAccount($account);
 						$account->save();
-						$this->app->debug("done\n");
+						$this->app->debug(Store::_('done')."\n");
 					}
 
 					// get next batch of accounts
@@ -64,10 +66,12 @@ class StoreAccountDeleter extends StorePrivateDataDeleter
 				}
 
 			} else {
-				$this->app->debug("=> not cleaning because dry-run is on\n");
+				$this->app->debug('=> '.
+					Store::_('not cleaning because dry-run is on')."\n");
 			}
 
-			$this->app->debug("\nFinished cleaning inactive accounts.\n");
+			$this->app->debug("\n".
+				Store::_('Finished cleaning inactive accounts.')."\n");
 		}
 	}
 
@@ -85,8 +89,10 @@ class StoreAccountDeleter extends StorePrivateDataDeleter
 			$this->app->db->quote($account->id, 'integer'));
 
 		$addresses = SwatDB::exec($this->app->db, $sql);
-		if ($addresses > 0)
-			$this->app->debug(sprintf("%s addresses ... ", $addresses));
+		if ($addresses > 0) {
+			$this->app->debug(sprintf(Store::_('%s addresses ... '),
+				$addresses));
+		}
 
 		$account->fullname = null;
 		$account->email = null;
@@ -103,10 +109,12 @@ class StoreAccountDeleter extends StorePrivateDataDeleter
 	protected function getAccounts()
 	{
 		$sql = sprintf('select * from Account %s %s',
-			$this->getWhereClause(),
-			$this->getLimitClause());
+			$this->getWhereClause());
 
-		$accounts = SwatDB::query($this->app->db, $sql, 'StoreAccountWrapper');
+		$this->app->db->setLimit(self::DATA_BATCH_SIZE);
+
+		$wrapper_class = SwatDBClassMap::get('StoreAccountWrapper');
+		$accounts = SwatDB::query($this->app->db, $sql, $wrapper_class);
 
 		return $accounts;
 	}
@@ -151,17 +159,6 @@ class StoreAccountDeleter extends StorePrivateDataDeleter
 		$sql = sprintf($sql,
 			$this->app->db->quote($expiry_date->getDate(), 'date'),
 			$this->app->db->quote($instance_id, 'integer'));
-
-		return $sql;
-	}
-
-	// }}}
-	// {{{ protected function getLimitClause()
-
-	protected function getLimitClause()
-	{
-		$sql = sprintf('limit %s',
-			$this->app->db->quote(self::DATA_BATCH_SIZE, 'integer'));
 
 		return $sql;
 	}
