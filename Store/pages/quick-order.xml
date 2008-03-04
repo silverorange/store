@@ -3,9 +3,14 @@
 <swatml>
 	<widget class="SwatForm" id="quick_order_form">
 		<widget class="SwatFrame" id="quick_order_frame">
+			<widget class="SwatHeaderFormField">
+				<widget class="SwatButton">
+					<property name="title">Add to Cart</property>
+				</widget>
+			</widget>
 			<widget class="SwatTableView" id="quick_order_view">
 				<object class="SwatTableViewColumn" id="sku_column">
-					<property name="title" translatable="yes">Catalog Item Number</property>
+					<property name="title">Item #</property>
 					<object class="SwatWidgetCellRenderer" id="renderer">
 						<property name="replicator_id" type="data">id</property>
 						<widget class="SwatEntry" id="sku">
@@ -14,16 +19,8 @@
 						</widget>
 					</object>
 				</object>
-				<object class="SwatTableViewColumn" id="item_selector_column">
-					<property name="title" translatable="yes">Description</property>
-					<object class="SwatWidgetCellRenderer" id="item_selector_renderer">
-						<property name="replicator_id" type="data">id</property>
-						<property name="classes[]">store-quick-order-item-selector</property>
-						<widget class="StoreQuickOrderItemSelector" id="item_selector" />
-					</object>
-				</object>
 				<object class="SwatTableViewColumn" id="quantity_column">
-					<property name="title" translatable="yes">Quantity</property>
+					<property name="title">Quantity</property>
 					<object class="SwatWidgetCellRenderer" id="renderer">
 						<property name="replicator_id" type="data">id</property>
 						<widget class="StoreQuantityEntry" id="quantity">
@@ -35,10 +32,19 @@
 						</widget>
 					</object>
 				</object>
+				<object class="SwatTableViewColumn" id="item_selector_column">
+					<property name="title">Description</property>
+					<object class="SwatWidgetCellRenderer" id="renderer">
+						<property name="replicator_id" type="data">id</property>
+						<property name="classes[]">store-quick-order-item-selector</property>
+						<widget class="StoreQuickOrderItemSelector" id="item_selector" />
+					</object>
+				</object>
 			</widget>
 			<widget class="SwatFooterFormField">
 				<widget class="SwatButton">
-					<property name="title" translatable="yes">Add to Cart</property>
+					<property name="title">Add to Cart</property>
+					<property name="classes[]">swat-primary</property>
 				</widget>
 			</widget>
 		</widget>
