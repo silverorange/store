@@ -98,7 +98,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 		$items = $this->getItems();
 
 		$div_tag = new SwatHtmlTag('div');
-		$div_tag->id = $this->id;
+		$div_tag->id = $this->id.'_product';
 		$div_tag->class = 'store-quick-order-product';
 		$div_tag->open();
 
@@ -160,8 +160,20 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 
 	protected function displayProductImage(StoreProduct $product)
 	{
-		// TODO add a default image display here once product image sizes are
-		// normalized. For now, sites can implement this themselves.
+		$span_tag = new SwatHtmlTag('span');
+		$span_tag->open();
+
+		$img_tag = $product->primary_image->getImgTag('pinky');
+		$img_tag->display();
+
+		if (!$product->isAvailableInRegion($this->region)) {
+			$span_tag = new SwatHtmlTag('span');
+			$span_tag->class = 'out-of-stock';
+			$span_tag->setContent('');
+			$span_tag->display();
+		}
+
+		$span_tag->close();
 	}
 
 	// }}}
