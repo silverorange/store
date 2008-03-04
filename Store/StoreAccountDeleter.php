@@ -12,6 +12,7 @@ require_once 'Store/dataobjects/StoreAccount.php';
  *
  * @package   Store
  * @copyright 2007-2008 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountDeleter extends StorePrivateDataDeleter
 {
