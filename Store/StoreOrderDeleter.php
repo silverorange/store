@@ -193,6 +193,7 @@ class StoreOrderDeleter extends StorePrivateDataDeleter
 	protected function getExpiryDate()
 	{
 		$expiry_date = new SwatDate(strtotime('-1 year'));
+		$expiry_date->toUTC();
 		return $expiry_date;
 	}
 
@@ -202,13 +203,12 @@ class StoreOrderDeleter extends StorePrivateDataDeleter
 	protected function getWhereClause()
 	{
 		$expiry_date = $this->getExpiryDate();
-		$expiry_date->toUTC();
 
 		if ($this->app->hasModule('SiteInstanceModule')) {
 			$instance = $this->app->getModule('SiteInstanceModule');
 			$instance_id = $instance->getId();
 
-			$sql = 'where length(OrderAddress.first_name) > 0
+			$sql = 'where length(OrderAddress.fullname) > 0
 				and createdate < %s
 				and instance %s %s';
 
@@ -217,7 +217,7 @@ class StoreOrderDeleter extends StorePrivateDataDeleter
 				SwatDB::equalityOperator($instance_id),
 				$this->app->db->quote($instance_id, 'integer'));
 		} else {
-			$sql = 'where length(OrderAddress.first_name) > 0
+			$sql = 'where length(OrderAddress.fullname) > 0
 				and createdate < %s';
 
 			$sql = sprintf($sql,
