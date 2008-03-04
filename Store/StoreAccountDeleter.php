@@ -38,7 +38,7 @@ class StoreAccountDeleter extends StorePrivateDataDeleter
 		} else {
 			$this->app->debug(sprintf(
 				Store::_('Found %s inactive accounts for cleaning:')."\n\n",
-				$total)));
+				$total));
 
 			if (!$this->app->isDryRun()) {
 
@@ -150,16 +150,25 @@ class StoreAccountDeleter extends StorePrivateDataDeleter
 		$expiry_date = $this->getExpiryDate();
 		$expiry_date->toUTC();
 
-		$instance_id = $this->app->instance->getId();
+		if ($this->app->hasModule('SiteInstanceModule')) {
+			$instance = $this->app->getModule('SiteInstanceModule');
+			$instance_id = $instance->getId();
 
-		$sql = 'where last_login < %s
-			and fullname is not null
-			and instance %s %s';
+			$sql = 'where last_login < %s
+				and fullname is not null
+				and instance %s %s';
 
-		$sql = sprintf($sql,
-			$this->app->db->quote($expiry_date->getDate(), 'date'),
-			SwatDB::equalityOperator($instance_id),
-			$this->app->db->quote($instance_id, 'integer'));
+			$sql = sprintf($sql,
+				$this->app->db->quote($expiry_date->getDate(), 'date'),
+				SwatDB::equalityOperator($instance_id),
+				$this->app->db->quote($instance_id, 'integer'));
+		} else {
+			$sql = 'where last_login < %s
+				and fullname is not null';
+
+			$sql = sprintf($sql,
+				$this->app->db->quote($expiry_date->getDate(), 'date'));
+		}
 
 		return $sql;
 	}
