@@ -139,7 +139,7 @@ class StoreAccountDeleter extends StorePrivateDataDeleter
 	protected function getExpiryDate()
 	{
 		$expiry_date = new SwatDate(strtotime('-3 year'));
-
+		$expiry_date->toUTC();
 		return $expiry_date;
 	}
 
@@ -149,7 +149,6 @@ class StoreAccountDeleter extends StorePrivateDataDeleter
 	protected function getWhereClause()
 	{
 		$expiry_date = $this->getExpiryDate();
-		$expiry_date->toUTC();
 
 		if ($this->app->hasModule('SiteInstanceModule')) {
 			$instance = $this->app->getModule('SiteInstanceModule');
