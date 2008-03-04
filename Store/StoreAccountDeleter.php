@@ -150,14 +150,15 @@ class StoreAccountDeleter extends StorePrivateDataDeleter
 		$expiry_date = $this->getExpiryDate();
 		$expiry_date->toUTC();
 
-		$instance_id = $this->app->instance->getInstance()->id;
+		$instance_id = $this->app->instance->getId();
 
 		$sql = 'where last_login < %s
 			and fullname is not null
-			and instance = %s';
+			and instance %s %s';
 
 		$sql = sprintf($sql,
 			$this->app->db->quote($expiry_date->getDate(), 'date'),
+			SwatDB::equalityOperator($instance_id),
 			$this->app->db->quote($instance_id, 'integer'));
 
 		return $sql;
