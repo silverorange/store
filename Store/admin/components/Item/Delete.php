@@ -36,6 +36,17 @@ class StoreItemDelete extends AdminDBDelete
 	}
 
 	// }}}
+	// {{{ protected function relocate()
+
+	protected function relocate()
+	{
+		// we don't want to relocate to the Item Index page that doesn't exist
+		$form = $this->ui->getWidget('confirmation_form');
+		$url = $form->getHiddenField(self::RELOCATE_URL_FIELD);
+		$this->app->relocate($url);
+	}
+
+	// }}}
 
 	// build phase
 	// {{{ public function buildInternal()
