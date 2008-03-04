@@ -26,15 +26,15 @@ class StoreOrderDeleter extends StorePrivateDataDeleter
 
 	public function run()
 	{
-		$this->app->debug("\nOrders\n------\n");
+		$this->app->debug("\n".Store::_('Orders')."\n------\n");
 
 		$total = $this->getTotal();
 		if ($total == 0) {
-			$this->app->debug("No expired orders found. ".
-				"No private data removed.\n");
+			$this->app->debug(Store::_('No expired orders found. '.
+				'No private data removed.')."\n");
 		} else {
 			$this->app->debug(
-				sprintf("Found %s expired orders for deletion:\n",
+				sprintf(Store::_('Found %s expired orders for deletion:')."\n",
 				$total));
 
 			if (!$this->app->isDryRun()) {
@@ -48,8 +48,8 @@ class StoreOrderDeleter extends StorePrivateDataDeleter
 				$count = count($orders);
 				while ($count > 0) {
 					foreach ($orders as $order) {
-						$this->app->debug(
-							sprintf("=> cleaning order %s ... ",
+						$this->app->debug(sprintf(
+							'=> '.Store::_('cleaning order %s ... '),
 							$order->id));
 
 						$this->cleanOrder($order);
@@ -63,10 +63,12 @@ class StoreOrderDeleter extends StorePrivateDataDeleter
 				}
 
 			} else {
-				$this->app->debug("=> not cleaning because dry-run is on\n");
+				$this->app->debug('=> '.
+					Store::_('not cleaning because dry-run is on')."\n");
 			}
 
-			$this->app->debug("Finished cleaning expired orders.\n");
+			$this->app->debug(
+				Store::_('Finished cleaning expired orders.')."\n");
 		}
 	}
 
@@ -149,13 +151,15 @@ class StoreOrderDeleter extends StorePrivateDataDeleter
 	{
 		$sql = 'select Orders.* from Orders
 			inner join OrderAddress on Orders.billing_address = OrderAddress.id
-			%s %s';
+			%s';
 
 		$sql = sprintf($sql,
-			$this->getWhereClause(),
-			$this->getLimitClause());
+			$this->getWhereClause());
 
-		$orders = SwatDB::query($this->app->db, $sql, 'StoreOrderWrapper');
+		$this->app->db->setLimit(self::DATA_BATCH_SIZE);
+
+		$wrapper_class = SwatDBClassMap::get('StoreOrderWrapper');
+		$orders = SwatDB::query($this->app->db, $sql, $wrapper_class);
 
 		return $orders;
 	}
@@ -183,7 +187,6 @@ class StoreOrderDeleter extends StorePrivateDataDeleter
 	protected function getExpiryDate()
 	{
 		$expiry_date = new SwatDate(strtotime('-1 year'));
-
 		return $expiry_date;
 	}
 
@@ -195,26 +198,25 @@ class StoreOrderDeleter extends StorePrivateDataDeleter
 		$expiry_date = $this->getExpiryDate();
 		$expiry_date->toUTC();
 
-		$instance_id = $this->app->instance->getInstance()->id;
+		if ($this->app->hasModule('SiteInstanceModule')) {
+			$instance = $this->app->getModule('SiteInstanceModule');
+			$instance_id = $instance->getId();
 
-		$sql = 'where length(OrderAddress.first_name) > 0
-			and createdate < %s
-			and instance = %s';
+			$sql = 'where length(OrderAddress.first_name) > 0
+				and createdate < %s
+				and instance %s %s';
 
-		$sql = sprintf($sql,
-			$this->app->db->quote($expiry_date->getDate(), 'date'),
-			$this->app->db->quote($instance_id, 'integer'));
+			$sql = sprintf($sql,
+				$this->app->db->quote($expiry_date->getDate(), 'date'),
+				SwatDB::equalityOperator($instance_id),
+				$this->app->db->quote($instance_id, 'integer'));
+		} else {
+			$sql = 'where length(OrderAddress.first_name) > 0
+				and createdate < %s';
 
-		return $sql;
-	}
-
-	// }}}
-	// {{{ protected function getLimitClause()
-
-	protected function getLimitClause()
-	{
-		$sql = sprintf('limit %s',
-			$this->app->db->quote(self::DATA_BATCH_SIZE, 'integer'));
+			$sql = sprintf($sql,
+				$this->app->db->quote($expiry_date->getDate(), 'date'));
+		}
 
 		return $sql;
 	}
