@@ -77,7 +77,8 @@
 			</widget>
 		</widget>
 		<widget class="SwatFormField" id="shipping_address_phone_field">
-			<property name="title">Phone</property>
+			<property name="title" translatable="yes">Phone</property>
+			<property name="note" translatable="yes">Please include area code.</property>
 			<widget class="SwatEntry" id="shipping_address_phone">
 				<property name="maxlength" type="integer">100</property>
 				<property name="required" type="boolean">true</property>
