@@ -183,7 +183,7 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 				array('product' => $product->source_product,
 					'order_count' => 1));
 		else
-			SwatDB::query($this->db, sprintf('
+			SwatDB::exec($this->db, sprintf('
 				update ProductPopularity
 				set order_count = order_count + 1
 				where product = %s',
@@ -213,7 +213,7 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 
 			$this->inserted_pairs[] = $pair;
 		} else {
-			SwatDB::query($this->db, sprintf('
+			SwatDB::exec($this->db, sprintf('
 				update ProductPopularProductBinding
 				set order_count = order_count + 1
 				where source_product = %s and
@@ -256,7 +256,7 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 		$sql = sprintf('select distinct
 				OrderItem.product as source_product,
 				RelatedOrderItem.product as related_product,
-				ProductPopularProductBinding.order_count, 
+				ProductPopularProductBinding.order_count,
 				ProductPopularity.order_count as popularity
 			from OrderItem
 			inner join Orders on OrderItem.ordernum = Orders.id
