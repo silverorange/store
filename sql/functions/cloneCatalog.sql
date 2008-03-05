@@ -99,15 +99,15 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 
 			-- clone items
 			for record_item in
-				select id, sku, displayorder, description, status, item_group
+				select id, sku, displayorder, description, status, item_group, singular_unit, plural_unit
 				from Item
 				where product = local_old_product_id
 			loop
 				local_old_item_id := record_item.id;
 
-				insert into Item(sku, product, displayorder, description, status, item_group)
+				insert into Item(sku, product, displayorder, description, status, item_group, singular_unit, plural_unit)
 				values (record_item.sku, local_new_product_id, record_item.displayorder, record_item.description,
-					record_item.status, record_item.item_group);
+					record_item.status, record_item.item_group, record_item.singular_unit, record_item.plural_unit);
 
 				local_new_item_id := currval('item_id_seq');
 
