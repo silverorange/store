@@ -253,27 +253,9 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 	 */
 	protected function getProductCrossList($order_id)
 	{
-		$sql = sprintf('select distinct
-				OrderItem.product as source_product,
-				RelatedOrderItem.product as related_product,
-				ProductPopularProductBinding.order_count,
-				ProductPopularity.order_count as popularity
-			from OrderItem
-			inner join Orders on OrderItem.ordernum = Orders.id
-			inner join OrderItem as RelatedOrderItem
-				on OrderItem.ordernum = RelatedOrderItem.ordernum
-			left outer join ProductPopularProductBinding on
-				ProductPopularProductBinding.source_product =
-					OrderItem.product
-				and ProductPopularProductBinding.related_product =
-					RelatedOrderItem.product
-			left outer join ProductPopularity on
-				ProductPopularity.product = OrderItem.product
-			inner join Product on OrderItem.product = Product.id
-			inner join Product as RelatedProduct
-				on RelatedOrderItem.product = RelatedProduct.id
-			where OrderItem.ordernum = %s
-				and RelatedOrderItem.product != OrderItem.product',
+		$sql = sprintf('select * from
+			OrderProductCrossListView
+			where ordernum = %s',
 			$this->db->quote($order_id, 'integer'));
 
 		return SwatDB::query($this->db, $sql);
