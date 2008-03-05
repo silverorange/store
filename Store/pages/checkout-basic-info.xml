@@ -44,6 +44,7 @@
 	</widget>
 	<widget class="SwatFormField" id="phone_field">
 		<property name="title" translatable="yes">Phone</property>
+		<property name="note" translatable="yes">Please include area code.</property>
 		<widget class="SwatEntry" id="phone">
 			<property name="maxlength" type="integer">100</property>
 			<property name="size" type="integer">15</property>
