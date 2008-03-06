@@ -350,9 +350,12 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 
 		if ($show_item_group && $item->item_group !== null &&
 			strlen($item->item_group->title) > 0)
-			$description.= '('.$item->item_group->title.')';
+			$description.= '('.$item->item_group->title.') ';
 
 		$description.= $item->getDescription();
+
+		if ($item->getPartCountDescription() !== null)
+			$description.= ' '.$item->getPartCountDescription();
 
 		if (!$item->hasAvailableStatus())
 			$description.= '('.$item->getStatus()->title.')';
