@@ -17,3 +17,17 @@
 	padding-left: 0.5em;
 	padding-right: 0.5em;
 }
+
+#cart_view.swat-table-view thead th {
+	border-color: #eeeabc;
+}
+
+#cart_view.swat-table-view tbody tr {
+	background-image: url(../images/elements/swat-table-view-cell-background-message.png);
+	background-color: #fffbc9;
+}
+
+#cart_view.swat-table-view tbody td {
+	vertical-align: top;
+	padding: 0.5em;
+}
