@@ -555,40 +555,29 @@ class StoreCategory extends SwatDBDataObject
 		$title_span->class = 'store-category-tile-title';
 		$title_span->setContent($this->title);
 
-		$img_tag = $this->getThumbnailImgTag();
-
-		if ($this->getProductCount() > 1) {
-			$details_span = new SwatHtmlTag('span');
-			$details_span->class = 'store-category-tile-details';
-			$details_span->setContent(sprintf(
-				ngettext('%s item', '%s items', $this->getProductCount()),
-				$this->getProductCount()));
-		}
-
-		if (strlen($this->description)) {
-			$description_p = new SwatHtmlTag('p');
-			$description_p->class = 'store-category-description';
-			$description_p->setContent($this->description);
-		}
-
 		$anchor_tag->open();
+
+		$img_tag = $this->getThumbnailImgTag();
 		$img_tag->display();
 
-		if ($this->getAvailableProductCount() == 0) {
-			$unavailable_span_tag = $this->getUnavailableSpan();
-			if ($unavailable_span_tag !== null)
-				$unavailable_span_tag->display();
-		}
+		$unavailable_span = $this->getUnavailableSpan();
+		if ($unavailable_span !== null)
+			$unavailable_span->display();
 
 		$title_span->display();
 		$anchor_tag->close();
 		echo ' ';
 
-		if ($this->getProductCount() > 1)
+		$details_span = $this->getDetailsSpan();
+		if ($details_span !== null)
 			$details_span->display();
 
-		if (strlen($this->description))
+		if (strlen($this->description)) {
+			$description_p = new SwatHtmlTag('p');
+			$description_p->class = 'store-category-description';
+			$description_p->setContent($this->description);
 			$description_p->display();
+		}
 	}
 
 	// }}}
@@ -630,10 +619,33 @@ class StoreCategory extends SwatDBDataObject
 
 	protected function getUnavailableSpan()
 	{
-		$span = new SwatHtmlTag('span');
-		$span->setContent('');
-		$span->title = 'Out of Stock';
-		$span->class = 'category-unavailable';
+		$span = null;
+
+		if ($this->getAvailableProductCount() == 0) {
+			$span = new SwatHtmlTag('span');
+			$span->setContent('');
+			$span->title = 'Out of Stock';
+			$span->class = 'category-unavailable';
+		}
+
+		return $span;
+	}
+
+	// }}}
+	// {{{ protected function getDetailsSpan()
+
+	protected function getDetailsSpan()
+	{
+		$span = null;
+
+		if ($this->getProductCount() > 1) {
+			$span = new SwatHtmlTag('span');
+			$span->class = 'store-category-tile-details';
+			$span->setContent(sprintf(
+				ngettext('%s item', '%s items', $this->getProductCount()),
+				$this->getProductCount()));
+		}
+
 		return $span;
 	}
 

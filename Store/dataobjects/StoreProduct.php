@@ -653,17 +653,24 @@ class StoreProduct extends SwatDBDataObject
 	 * [IMAGE]
 	 * _Title_
 	 */
-	public function displayAsIcon($link)
+	public function displayAsIcon($link, $image_size = 'thumb')
 	{
 		$anchor_tag = new SwatHtmlTag('a');
+		$anchor_tag->class = sprintf('product-icon-%s', $image_size);
 		$anchor_tag->href = $link;
-		$span_tag = new SwatHtmlTag('span');
-		$span_tag->setContent(SwatString::ellipsizeRight($this->title, 30));
-		$img_tag = $this->getThumbnailImgTag();
-
 		$anchor_tag->open();
+
+		$img_tag = $this->getThumbnailImgTag($image_size);
 		$img_tag->display();
-		$span_tag->display();
+
+		$unavailable_span = $this->getUnavailableSpan();
+		if ($unavailable_span !== null)
+			$unavailable_span->display();
+
+		$span = new SwatHtmlTag('span');
+		$span->setContent(SwatString::ellipsizeRight($this->title, 40));
+		$span->display();
+
 		$anchor_tag->close();
 	}
 
@@ -683,22 +690,25 @@ class StoreProduct extends SwatDBDataObject
 		$anchor_tag = new SwatHtmlTag('a');
 		$anchor_tag->href = $link;
 		$anchor_tag->setContent('more&nbsp;»');
+		$anchor_tag->open();
+
+		$img_tag = $this->getThumbnailImgTag();
+		$img_tag->display();
+
+		$unavailable_span = $this->getUnavailableSpan();
+		if ($unavailable_span !== null)
+			$unavailable_span->display();
 
 		$title_span = new SwatHtmlTag('span');
 		$title_span->class = 'store-product-tile-title';
 		$title_span->setContent($this->title);
+		$title_span->display();
 
-		$img_tag = $this->getThumbnailImgTag();
+		$anchor_tag->close();
 
 		$paragraph_tag = new SwatHtmltag('p');
 		$summary = SwatString::condense($this->bodytext, 200);
 		$paragraph_tag->setContent($summary);
-
-		$anchor_tag->open();
-		$img_tag->display();
-		$title_span->display();
-		$anchor_tag->close();
-
 		$paragraph_tag->open();
 		$paragraph_tag->displayContent();
 		echo ' ';
@@ -718,11 +728,11 @@ class StoreProduct extends SwatDBDataObject
 	{
 		$anchor_tag = new SwatHtmlTag('a');
 		$anchor_tag->href = $link;
-		$span_tag = new SwatHtmlTag('span');
-		$span_tag->setContent($this->title);
+		$span = new SwatHtmlTag('span');
+		$span->setContent($this->title);
 
 		$anchor_tag->open();
-		$span_tag->display();
+		$span->display();
 		$anchor_tag->close();
 	}
 
@@ -752,6 +762,23 @@ class StoreProduct extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ protected function getUnavailableSpan()
+
+	protected function getUnavailableSpan()
+	{
+		$span = null;
+
+		if (!$this->isAvailableInRegion()) {
+			$span = new SwatHtmlTag('span');
+			$span->setContent('');
+			$span->title = 'Out of Stock';
+			$span->class = 'product-unavailable';
+		}
+
+		return $span;
+	}
+
+	// }}}
 	// {{{ protected function getPlaceholderImageFilename()
 
 	protected function getPlaceholderImageFilename()
@@ -760,7 +787,6 @@ class StoreProduct extends SwatDBDataObject
 	}
 
 	// }}}
-
 }
 
 ?>
