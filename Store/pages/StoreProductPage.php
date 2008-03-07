@@ -612,7 +612,7 @@ class StoreProductPage extends StorePage
 	{
 		$li_tag = new SwatHtmlTag('li');
 		$img_tag = new SwatHtmlTag('img');
-		$img_tag = $image->getImgTag('thumb');
+		$img_tag = $image->getImgTag('pinky');
 
 		if (strlen($img_tag->alt) == 0)
 			$img_tag->alt = sprintf(Store::_('Additional Image of %s'),
@@ -665,7 +665,7 @@ class StoreProductPage extends StorePage
 		$div->id = 'related_products';
 
 		$header_tag = new SwatHtmlTag('h4');
-		$header_tag->setContent(Store::_('You might also be interested in...'));
+		$header_tag->setContent(Store::_('You might also be interested in…'));
 
 		$ul_tag = new SwatHtmlTag('ul');
 		$ul_tag->class = 'store-product-list clearfix';
@@ -680,7 +680,7 @@ class StoreProductPage extends StorePage
 		foreach ($related_products as $product) {
 			$li_tag->open();
 			$path = 'store/'.$product->path;
-			$product->displayAsIcon($path);
+			$product->displayAsIcon($path, 'pinky');
 			$li_tag->close();
 		}
 
@@ -702,8 +702,8 @@ class StoreProductPage extends StorePage
 		$div->id = 'popular_products';
 
 		$header_tag = new SwatHtmlTag('h4');
-		$header_tag->setContent(sprintf(Store::_('Customers who bought %s, '.
-			'also bought...'),
+		$header_tag->setContent(sprintf(Store::_('Customers who bought %s '.
+			'also bought…'),
 			$this->product->title));
 
 		$ul_tag = new SwatHtmlTag('ul');
@@ -719,7 +719,7 @@ class StoreProductPage extends StorePage
 		foreach ($popular_products as $product) {
 			$li_tag->open();
 			$path = 'store/'.$product->path;
-			$product->displayAsIcon($path);
+			$product->displayAsIcon($path, 'pinky');
 			$li_tag->close();
 		}
 
