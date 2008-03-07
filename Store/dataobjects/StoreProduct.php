@@ -276,9 +276,8 @@ class StoreProduct extends SwatDBDataObject
 	 */
 	public function isAvailableInRegion(StoreRegion $region = null)
 	{
-		if ($region === null) {
+		if ($region === null)
 			$region = $this->region;
-		}
 
 		if ($region === null)
 			throw new SwatException('Region must be specified or region must '.
