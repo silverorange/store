@@ -1,3 +1,5 @@
+@import url("store-cart.css");
+
 .store-quick-order-item-loading {
 	font-family: sans-serif;
 	font-size: 80%;
@@ -32,14 +34,14 @@ td.store-quick-order-item-selector {
 }
 
 #quick_order_frame .swat-frame-contents {
-	padding-left: 6px;
-	padding-right: 4px;
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
 #quick_order_frame .swat-header-form-field,
 #quick_order_frame .swat-footer-form-field {
-	margin-left: -5px;
-	margin-right: -3px;
+	margin-left: -4px;
+	margin-right: -4px;
 }
 
 #quick_order_frame .store-quantity-entry {
@@ -52,7 +54,7 @@ td.store-quick-order-item-selector {
 }
 
 #quick_order_frame .swat-table-view .sku-column .swat-entry {
-	width: 3.5em;
+	width: 3.7em;
 }
 
 #cart_view.swat-table-view {
@@ -73,4 +75,16 @@ td.store-quick-order-item-selector {
 	color: #555;
 	padding-left: 0.5em;
 	padding-right: 0.5em;
+}
+
+#quick_order_frame .swat-table-view img.store-border-on {
+	float: left;
+	margin: 0 6px 0 0;
+	display: block;
+}
+
+#quick_order_frame .swat-table-view td.sku-column,
+#quick_order_frame .swat-table-view td.quantity-column {
+	vertical-align: top;
+	padding-top: 8px;
 }

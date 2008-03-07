@@ -64,7 +64,7 @@ class StoreProductImagePage extends StorePage
 		$this->displayImage();
 
 		if (count($this->product->images) > 1)
-			$this->displayThumbnails();
+			$this->displayThumbnails('pinky');
 
 		echo '</div>';
 
@@ -139,7 +139,7 @@ class StoreProductImagePage extends StorePage
 	// }}}
 	// {{{ protected function displayThumbnails()
 
-	protected function displayThumbnails()
+	protected function displayThumbnails($size = 'thumb')
 	{
 		$li_tag = new SwatHtmlTag('li');
 
@@ -147,7 +147,7 @@ class StoreProductImagePage extends StorePage
 
 		foreach ($this->product->images as $image) {
 			$selected = ($this->image->id === $image->id);
-			$this->displayThumbnail($image, 'thumb', $selected);
+			$this->displayThumbnail($image, $size, $selected);
 		}
 
 		echo '</ul>';
@@ -183,9 +183,8 @@ class StoreProductImagePage extends StorePage
 
 		$img_tag->display();
 
-		echo Store::_('<span>View Larger Image</span>');
-
 		if (!$selected) {
+			echo Store::_('<span>View Larger Image</span>');
 			$anchor->close();
 		}
 
