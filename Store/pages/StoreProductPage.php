@@ -1,5 +1,6 @@
 <?php
 
+require_once 'Numbers/Words.php';
 require_once 'Swat/SwatString.php';
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
@@ -36,8 +37,8 @@ class StoreProductPage extends StorePage
 	protected $message_display;
 	protected $cart_message;
 	protected $item_removed = false;
-	protected $added_entry_ids = array();
-	protected $saved_entry_ids = array();
+	protected $items_added = array();
+	protected $items_saved = array();
 	protected $default_quantity = 0;
 
 	/**
@@ -173,20 +174,10 @@ class StoreProductPage extends StorePage
 			$this->message_display->add($message);
 		} else {
 			$entries = $this->items_view->getCartEntries();
-			$num_items_added = 0;
 
-			foreach ($entries as $cart_entry) {
-				$this->setupCartEntry($cart_entry);
+			$this->addEntriesToCart($entries);
 
-				$added_entry = $this->app->cart->checkout->addEntry($cart_entry);
-
-				if ($added_entry !== null) {
-					$this->added_entry_ids[] = $added_entry->id;
-					$num_items_added++;
-				}
-			}
-
-			if ($num_items_added > 0) {
+			if (count($this->items_added) > 0) {
 				$this->cart_message = new StoreMessage(
 					Store::_('Your cart has been updated.'),
 					StoreMessage::CART_NOTIFICATION);
@@ -196,6 +187,33 @@ class StoreProductPage extends StorePage
 			$messages = $this->app->cart->checkout->getMessages();
 			foreach ($messages as $message)
 				$this->message_display->add($message);
+
+			if (count($this->items_saved) > 0)
+				$this->message_display->add($this->getSavedCartMessage());
+		}
+	}
+
+	// }}}
+	// {{{ protected function addEntriesToCart()
+
+	protected function addEntriesToCart($entries)
+	{
+		$cart = $this->app->cart;
+
+		foreach ($entries as $cart_entry) {
+			$this->setupCartEntry($cart_entry);
+
+			if ($cart_entry->item->hasAvailableStatus()) {
+				$added_entry = $cart->checkout->addEntry($cart_entry);
+
+				if ($added_entry !== null)
+					$this->items_added[] = $added_entry->item;
+			} else {
+				$added_entry = $cart->saved->addEntry($cart_entry);
+
+				if ($added_entry !== null)
+					$this->items_saved[] = $added_entry->item;
+			}
 		}
 	}
 
@@ -244,6 +262,32 @@ class StoreProductPage extends StorePage
 				break;
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function getSavedCartMessage()
+
+	protected function getSavedCartMessage()
+	{
+		$num_items_saved = count($this->items_saved);
+
+		if ($num_items_saved == 0)
+			return null;
+
+		$items = ngettext('item', 'items', $num_items_saved);
+		$number = SwatString::minimizeEntities(ucwords(
+					Numbers_Words::toWords($num_items_saved)));
+
+		$cart_message = new StoreMessage(
+			sprintf('%s %s has been saved for later.', $number, $items),
+			StoreMessage::CART_NOTIFICATION);
+
+		$cart_message->content_type = 'text/xml';
+		$cart_message->secondary_content = sprintf('Saved '.
+			'items are displayed at the bottom of the %scart page%s.',
+			'<a href="cart">', '</a>');
+
+		return $cart_message;
 	}
 
 	// }}}
@@ -773,13 +817,13 @@ class StoreProductPage extends StorePage
 		if (count($frames) > 0) {
 			$frames_list = "['".implode("', '", $frames)."']";
 
-			foreach ($this->added_entry_ids as $id) {
+			foreach ($this->items_added as $item) {
 				$javascript.= sprintf(
 					"var animation_%1\$s = new StoreBackgroundImageAnim(".
 					"'entry_%1\$s', { frames: { from: 1, to: %2\$s } }, 2);\n".
 					"animation_%1\$s.addFrameImages(%3\$s);\n".
 					"animation_%1\$s.animate();\n",
-					$id, count($frames), $frames_list);
+					$item->id, count($frames), $frames_list);
 			}
 		}
 
