@@ -199,9 +199,8 @@ class StoreItem extends SwatDBDataObject
 			throw new StoreException('Item must have an id set before region '.
 				'availability can be determined.');
 
-		if ($region === null) {
+		if ($region === null)
 			$region = $this->region;
-		}
 
 		if ($region === null)
 			throw new SwatException('Region must be specified or region must '.
