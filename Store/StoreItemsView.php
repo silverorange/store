@@ -233,7 +233,7 @@ class StoreItemsView extends SwatControl
 		$ds->is_available = $item->isAvailableInRegion();
 
 		$ds->status = '';
-		if (!$ds->is_available)
+		if (!$item->hasAvailableStatus())
 			$ds->status = sprintf('<span class="item-status">%s</span>',
 				$item->getStatus()->title);
 
