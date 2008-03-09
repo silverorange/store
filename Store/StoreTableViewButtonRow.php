@@ -62,7 +62,7 @@ class StoreTableViewButtonRow extends SwatTableViewRow
 	 *
 	 * By default, the vutton displays in the left cell. Use the POSITION_*
 	 * constants to control the button position.
-	 * 
+	 *
 	 * @var integer
 	 */
 	public $position = self::POSITION_LEFT;
