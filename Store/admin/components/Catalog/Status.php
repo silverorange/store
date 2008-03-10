@@ -113,9 +113,9 @@ class StoreCatalogStatus extends AdminDBEdit
 		if ($this->catalog->clone !== null) {
 			$note = $this->ui->getWidget('clone_note');
 			$note->visible = true;
-			$note->title = Store::_('Catalog is a Clone');
 			$note->content_type = 'text/xml';
 			if ($this->catalog->clone_of === null) {
+				$note->title = Store::_('Catalog has a Clone');
 				$note->content = sprintf(Store::_(
 					'<p>The catalog <strong>%1$s</strong> has a clone. Making '.
 					'the catalog <strong>%1$s</strong> available in any '.
@@ -125,6 +125,7 @@ class StoreCatalogStatus extends AdminDBEdit
 					SwatString::minimizeEntities(
 						$this->catalog->clone->title));
 			} else {
+				$note->title = Store::_('Catalog is a Clone');
 				$note->content = sprintf(Store::_(
 					'<p>The catalog <strong>%1$s</strong> is a cloned '.
 					'catalog. Making the catalog <strong>%1$s</strong> '.
