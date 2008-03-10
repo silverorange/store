@@ -1,15 +1,16 @@
 <?php
 
-require_once 'Admin/pages/AdminIndex.php';
 require_once 'SwatDB/SwatDB.php';
-
-require_once 'include/StoreCatalogStatusCellRenderer.php';
+require_once 'SwatDB/SwatDBClassMap.php';
+require_once 'Admin/pages/AdminIndex.php';
+require_once 'Store/dataobjects/StoreRegionWrapper.php';
+require_once 'Store/admin/components/Catalog/include/StoreCatalogStatusCellRenderer.php';
 
 /**
  * Index page for Catalogs
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2008 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCatalogIndex extends AdminIndex
@@ -20,6 +21,16 @@ class StoreCatalogIndex extends AdminIndex
 	 * @var string
 	 */
 	protected $ui_xml = 'Store/admin/components/Catalog/index.xml';
+
+	// }}}
+	// {{{ private properties
+
+	/**
+	 * Cache of regions used by queryRegions()
+	 *
+	 * @var RegionsWrapper
+	 */
+	private $regions = null;
 
 	// }}}
 
@@ -37,6 +48,21 @@ class StoreCatalogIndex extends AdminIndex
 		$index_view = $this->ui->getWidget('index_view');
 		$index_view->getColumn('title')->setDirection(
 			SwatTableViewOrderableColumn::ORDER_BY_DIR_ASCENDING);
+
+		foreach ($this->queryRegions() as $region) {
+			$renderer = new SwatBooleanCellRenderer();
+			$renderer->id = 'available_'.$region->id;
+
+			$column = new SwatTableViewOrderableColumn(
+				'available_'.$region->id);
+
+			$column->title = $region->title;
+			$column->addRenderer($renderer);
+			$column->addMappingToRenderer($renderer, 'available_'.$region->id,
+				'value');
+
+			$index_view->appendColumn($column);
+		}
 	}
 
 	// }}}
@@ -46,17 +72,55 @@ class StoreCatalogIndex extends AdminIndex
 
 	protected function getTableModel(SwatView $view)
 	{
-		$sql = sprintf('select id, title, clone_of, in_season
-			from Catalog order by %s',
+		/*
+		 * This dynamic SQL is needed to make the table orderable by the
+		 * availability columns.
+		 */
+		$regions_join_base =
+			'left outer join CatalogRegionBinding as CatalogRegionBinding_%1$s
+				on CatalogRegionBinding_%1$s.Catalog = Catalog.id
+					and CatalogRegionBinding_%1$s.region = %2$s';
+
+		$regions_select_base =
+			'CatalogRegionBinding_%s.catalog is not null as available_%s';
+
+		$regions_join = '';
+		$regions_select = '';
+		foreach ($this->queryRegions() as $region) {
+			$regions_join.= sprintf($regions_join_base,
+				$region->id,
+				$this->app->db->quote($region->id, 'integer')).' ';
+
+			$regions_select.= sprintf($regions_select_base,
+				$region->id,
+				$this->app->db->quote($region->id, 'integer')).', ';
+		}
+
+		$sql = sprintf('select %s id, title, clone_of, in_season
+			from Catalog %s
+			order by %s',
+			$regions_select,
+			$regions_join,
 			$this->getOrderByClause($view, 'title'));
 
 		$rs = SwatDB::query($this->app->db, $sql);
 
-		$view = $this->ui->getWidget('index_view');
-		$view->getColumn('status')->getRendererByPosition()->db =
-			$this->app->db;
-
 		return $rs;
+	}
+
+	// }}}
+	// {{{ protected final function queryRegions()
+
+	protected final function queryRegions()
+	{
+		if ($this->regions === null) {
+			$sql = 'select id, title from Region order by id';
+
+			$this->regions = SwatDB::query($this->app->db, $sql,
+				SwatDBClassMap::get('StoreRegionWrapper'));
+		}
+
+		return $this->regions;
 	}
 
 	// }}}
