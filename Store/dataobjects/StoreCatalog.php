@@ -65,6 +65,32 @@ class StoreCatalog extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ protected function loadClone()
+
+	/**
+	 * Loads the clone of this catalog
+	 *
+	 * This is different than clone_of in that it will load a child clone or a
+	 * parent clone depending on what exists for this catalog. The clone_of
+	 * field only loads the parent catalog.
+	 *
+	 * @return StoreCatalog
+	 */
+	protected function loadClone()
+	{
+		require_once 'Store/dataobjects/StoreCatalogWrapper.php';
+
+		$sql = sprintf('select * from Catalog where id =
+			(select clone from CatalogCloneView where catalog = %s)',
+			$this->db->quote($this->id, 'integer'));
+
+		$wrapper_class = SwatDBClassMap::get('StoreCatalogWrapper');
+		$clones = SwatDB::query($this->db, $sql, $wrapper_class);
+
+		return $clones->getFirst();
+	}
+
+	// }}}
 }
 
 ?>
