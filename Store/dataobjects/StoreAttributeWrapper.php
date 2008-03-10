@@ -23,12 +23,12 @@ class StoreAttributeWrapper extends SwatDBRecordsetWrapper
 	// }}}
 	// {{{ public function getByType()
 
-	public function getByType($type)
+	public function getByType($shortname)
 	{
 		$attributes = new StoreAttributeWrapper();
 
 		foreach ($this as $attribute)
-			if (($attribute->attribute_type & $type) > 0)
+			if ($attribute->attribute_type->shortname === $shortname)
 				$attributes->add($attribute);
 
 		return $attributes;
