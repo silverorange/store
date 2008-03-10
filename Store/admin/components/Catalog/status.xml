@@ -9,7 +9,7 @@
 				<property name="visible" type="boolean">false</property>
 			</widget>
 			<widget class="SwatGroupingFormField" id="regions_field">
-				<property name="title" translatable="yes">Region Availability</property>
+				<property name="title" translatable="yes">Enabled For</property>
 				<widget class="SwatCheckboxList" id="regions" />
 			</widget>
 			<widget class="SwatFooterFormField">

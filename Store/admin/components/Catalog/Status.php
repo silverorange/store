@@ -117,8 +117,8 @@ class StoreCatalogStatus extends AdminDBEdit
 			if ($this->catalog->clone_of === null) {
 				$note->title = Store::_('Catalog has a Clone');
 				$note->content = sprintf(Store::_(
-					'<p>The catalog <strong>%1$s</strong> has a clone. Making '.
-					'the catalog <strong>%1$s</strong> available in any '.
+					'<p>The catalog <strong>%1$s</strong> has a clone. '.
+					'Enabling the catalog <strong>%1$s</strong> in any '.
 					'region will disable the clone catalog '.
 					'<strong>%2$s</strong> in all regions.</p>'),
 					SwatString::minimizeEntities($this->catalog->title),
@@ -128,18 +128,17 @@ class StoreCatalogStatus extends AdminDBEdit
 				$note->title = Store::_('Catalog is a Clone');
 				$note->content = sprintf(Store::_(
 					'<p>The catalog <strong>%1$s</strong> is a cloned '.
-					'catalog. Making the catalog <strong>%1$s</strong> '.
-					'available in any region will disable the parent catalog '.
+					'catalog. Enabling the catalog <strong>%1$s</strong> '.
+					'in any region will disable the parent catalog '.
 					'<strong>%2$s</strong> in all regions.</p>'),
 					SwatString::minimizeEntities($this->catalog->title),
 					SwatString::minimizeEntities(
 						$this->catalog->clone->title));
 			}
 
-			$note->content.= sprintf(Store::_('<p>Make this catalog '.
-				'available only if you are done making catalog changes, and '.
-				'want to apply the changes in <strong>%s</strong> to the '.
-				'live website.</p>'),
+			$note->content.= sprintf(Store::_('<p>Only enable this catalog '.
+				'if you are done making catalog changes, and want to apply '.
+				'the changes in <strong>%s</strong> to the live website.</p>'),
 				$this->catalog->title);
 		}
 
