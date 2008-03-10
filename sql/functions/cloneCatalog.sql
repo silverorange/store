@@ -64,8 +64,8 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 
 		-- clone region binding
 		-- cloned catalogues are unavailable by default
-		--insert into CatalogRegionBinding (region, catalog, available)
-		--select region, local_id, false from CatalogRegionBinding where catalog = param_id; 
+		--insert into CatalogRegionBinding (region, catalog)
+		--select region, local_id from CatalogRegionBinding where catalog = param_id; 
 
 		-- clone products
 		for record_product in
