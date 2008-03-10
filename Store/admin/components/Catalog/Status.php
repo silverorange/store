@@ -1,17 +1,17 @@
 <?php
 
+require_once 'Swat/SwatMessage.php';
+require_once 'SwatDB/SwatDB.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'Swat/SwatMessage.php';
 require_once 'Store/dataobjects/StoreCatalog.php';
-require_once 'SwatDB/SwatDBClassMap.php';
 
 /**
- * Change status page for Catalogs
+ * Change status page for catalogs
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2008 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCatalogStatus extends AdminDBEdit
@@ -26,6 +26,9 @@ class StoreCatalogStatus extends AdminDBEdit
 	// }}}
 	// {{{ private properties
 
+	/**
+	 * @var StoreCatalog
+	 */
 	private $catalog;
 
 	// }}}
@@ -37,34 +40,35 @@ class StoreCatalogStatus extends AdminDBEdit
 	{
 		parent::initInternal();
 
-		$id = SwatDB::queryOneFromTable($this->app->db, 'Catalog',
-			'title', 'id', $this->id);
-
-		if ($id === null)
-			throw new AdminNotFoundException(sprintf(
-				Store::_('%s with id ‘%s’ not found.'), Store::_('Catalog'),
-				$this->id));
-
-		$this->ui->mapClassPrefixToPath('Store', 'Store');
 		$this->ui->loadFromXML($this->ui_xml);
+		$this->initCatalog();
 
-		$status_replicator = $this->ui->getWidget('status_replicator');
-		$status_replicator->replicators = SwatDB::getOptionArray($this->app->db,
+		$region_list = $this->ui->getWidget('regions');
+		$region_list_options = SwatDB::getOptionArray($this->app->db,
 			'Region', 'title', 'id', 'title');
 
-		$sql = 'select Catalog.id, Catalog.title, clone, is_parent,
-				CloneCatalog.title as clone_title
-			from Catalog
-				left outer join CatalogCloneView on
-					Catalog.id = CatalogCloneView.catalog
-				left outer join Catalog as CloneCatalog on
-					CatalogCloneView.clone = CloneCatalog.id
-			where Catalog.id = %s';
+		$region_list->addOptionsByArray($region_list_options);
+	}
 
-		$sql = sprintf($sql,
-			$this->app->db->quote($this->id, 'integer'));
+	// }}}
+	// {{{ protected function initCatalog()
 
-		$this->catalog = SwatDB::queryRow($this->app->db, $sql);
+	protected function initCatalog()
+	{
+		$class_name = SwatDBClassMap::get('StoreCatalog');
+		$this->catalog = new $class_name();
+		$this->catalog->setDatabase($this->app->db);
+
+		if ($this->id === null) {
+			throw new AdminNotFoundException(
+				Store::_('Catalog id is required to edit status.'));
+		}
+
+		if (!$this->catalog->load($this->id)) {
+			throw new AdminNotFoundException(
+				sprintf(Store::_('Catalog with an id "%s" not found'),
+					$this->id));
+		}
 	}
 
 	// }}}
@@ -74,77 +78,29 @@ class StoreCatalogStatus extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$catalog_enabled = $this->saveStatus();
-
-		// disable clone
-		if ($catalog_enabled && $this->catalog->clone !== null)
-			$this->disableClone();
+		$region_list = $this->ui->getWidget('regions');
+		SwatDB::updateBinding($this->app->db, 'CatalogRegionBinding',
+			'catalog', $this->catalog->id, 'region', $region_list->values,
+			'Region', 'id');
 
 		$message = new SwatMessage(
 			sprintf(Store::_('The status of “%s” has been updated.'),
 				$this->catalog->title));
 
-		$this->app->messages->add($message);
-	}
+		// disable clone
+		if (count($region_list->values) > 0 && $this->catalog->clone !== null) {
+			$sql = sprintf('delete from CatalogRegionBinding
+				where catalog = %s',
+				$this->app->db->quote($this->catalog->clone->id, 'integer'));
 
-	// }}}
-	// {{{ protected function disableClone()
+			SwatDB::exec($this->app->db, $sql);
 
-	protected function disableClone()
-	{
-		$sql = 'update CatalogRegionBinding
-			set available = %s
-			where catalog in
-				(select clone from CatalogCloneView where catalog = %s)';
-
-		$sql = sprintf($sql,
-			$this->app->db->quote(false, 'boolean'),
-			$this->app->db->quote($this->id, 'integer'));
-
-		SwatDB::exec($this->app->db, $sql);
-
-		$message->secondary_content = sprintf(Store::_(
-			'“%s” has been automatically disabled in all regions.'),
-			$this->catalog->clone_title);
-	}
-
-	// }}}
-	// {{{ protected function saveStatus()
-
-	protected function saveStatus()
-	{
-		$regions = array();
-		$available_regions = array();
-		$unavailable_regions = array();
-
-		$status_replicator = $this->ui->getWidget('status_replicator');
-		foreach ($status_replicator->replicators as $region => $dummy) {
-			$available = $status_replicator->getWidget(
-				'available', $region)->value;
-
-			if ($available)
-				$available_regions[] = $region;
-			else
-				$unavailable_regions[] = $region;
-
-			$regions[] = $region;
+			$message->secondary_content = sprintf(Store::_(
+				'“%s” has been automatically disabled in all regions.'),
+				$this->catalog->clone->title);
 		}
 
-    	SwatDB::updateBinding($this->app->db, 'CatalogRegionBinding', 'catalog',
-			$this->id, 'region', $regions, 'Region', 'id');
-
-		$where_clause = sprintf('catalog = %s',
-			$this->app->db->quote($this->id, 'integer'));
-
-		SwatDB::updateColumn($this->app->db, 'CatalogRegionBinding',
-			'boolean:available', true, 'region', $available_regions,
-			$where_clause);
-
-		SwatDB::updateColumn($this->app->db, 'CatalogRegionBinding',
-			'boolean:available', false, 'region', $unavailable_regions,
-			$where_clause);
-
-		return (count($available_regions) > 0);
+		$this->app->messages->add($message);
 	}
 
 	// }}}
@@ -157,44 +113,38 @@ class StoreCatalogStatus extends AdminDBEdit
 		if ($this->catalog->clone !== null) {
 			$note = $this->ui->getWidget('clone_note');
 			$note->visible = true;
-			$note->title = Store::_('Warning');
+			$note->title = Store::_('Catalog is a Clone');
 			$note->content_type = 'text/xml';
-			if ($this->catalog->is_parent) {
+			if ($this->catalog->clone_of === null) {
 				$note->content = sprintf(Store::_(
-					'<p>The %1$s <strong>%2$s</strong> has a clone. Enabling '.
-					'the %1$s <strong>%2$s</strong> in any region will '.
-					'disable the %1$s <strong>%3$s</strong> in all '.
-					'regions.</p>'),
-					Store::_('catalog'),
+					'<p>The catalog <strong>%1$s</strong> has a clone. Making '.
+					'the catalog <strong>%1$s</strong> available in any '.
+					'region will disable the catalog <strong>%2$s</strong> '.
+					'in all regions.</p>'),
 					SwatString::minimizeEntities($this->catalog->title),
-					SwatString::minimizeEntities($this->catalog->clone_title));
+					SwatString::minimizeEntities(
+						$this->catalog->clone->title));
 			} else {
 				$note->content = sprintf(Store::_(
-					'<p>The %1$s <strong>%2$s</strong> is a cloned  %1$s. '.
-					'Enabling the %1$s <strong>%2$s</strong> in any region '.
-					'will disable the %1$s <strong>%3$s</strong> in all '.
-					'regions.</p>'),
-					Store::_('catalog'),
+					'<p>The catalog <strong>%1$s</strong> is a cloned '.
+					'catalog. Making the catalog <strong>%1$s</strong> '.
+					'available in any region will disable the catalog '.
+					'<strong>%2$s</strong> in all regions.</p>'),
 					SwatString::minimizeEntities($this->catalog->title),
-					SwatString::minimizeEntities($this->catalog->clone_title));
+					SwatString::minimizeEntities(
+						$this->catalog->clone->title));
 			}
 
-			$note->content.= sprintf(Store::_('<p>Enable this %1$s only if '.
-				'you are done making %1$s changes, and you want to apply the '.
-				'changes to the live website.</p>'), Store::_('catalog'));
+			$note->content.= Store::_('<p>Make this catalog '.
+				'available only if you are done making catalog changes, and '.
+				'you want to apply the changes to the live website.</p>');
 		}
 
-		$statuses = SwatDB::getOptionArray($this->app->db,
-			'CatalogRegionBinding',	'available', 'region', null,
-			sprintf('catalog = %s',
-				$this->app->db->quote($this->id, 'integer')));
-
-		$status_replicator = $this->ui->getWidget('status_replicator');
-		foreach ($status_replicator->replicators as $region => $dummy) {
-			if (isset($statuses[$region]))
-				$status_replicator->getWidget('available',
-					$region)->value = $statuses[$region];
-		}
+		// load region bindings
+		$region_list = $this->ui->getWidget('regions');
+		$region_list->values = SwatDB::queryColumn($this->app->db,
+			'CatalogRegionBinding', 'region', 'catalog',
+			$this->catalog->id);
 	}
 
 	// }}}
@@ -204,6 +154,8 @@ class StoreCatalogStatus extends AdminDBEdit
 	{
 		$this->ui->getWidget('edit_frame')->title =
 			Store::_('Change Catalog Status');
+
+		$this->ui->getWidget('edit_frame')->subtitle = $this->catalog->title;
 	}
 
 	// }}}
@@ -212,7 +164,8 @@ class StoreCatalogStatus extends AdminDBEdit
 	protected function buildNavBar()
 	{
 		$this->navbar->createEntry($this->catalog->title,
-			sprintf('Catalog/Details?id=%s', $this->id));
+			sprintf('Catalog/Details?id=%s', $this->catalog->id));
+
 		$this->navbar->createEntry(Store::_('Change Catalog Status'));
 	}
 
