@@ -9,9 +9,9 @@ require_once 'SwatDB/SwatDBDataObject.php';
  *
  * Every individual product belong to exactly one catalog.
  *
- * A catalog is available in a region if it has a region binding in the
- * CatalogRegionBinding table for the region. Products in unavailable
- * catalogs are not visible on the front-end.
+ * A catalog is enabled in a region if it has a region binding in the
+ * CatalogRegionBinding table for the region. Products in disabled
+ * catalogs are not visible on the front-end for the disabled regions.
  *
  * Orthogonal to availability, catalogs are in season or out of season
  * based on the in_season boolean.
