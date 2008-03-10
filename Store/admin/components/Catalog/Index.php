@@ -50,14 +50,14 @@ class StoreCatalogIndex extends AdminIndex
 
 		foreach ($this->queryRegions() as $region) {
 			$renderer = new SwatBooleanCellRenderer();
-			$renderer->id = 'available_'.$region->id;
+			$renderer->id = 'enabled_'.$region->id;
 
 			$column = new SwatTableViewOrderableColumn(
-				'available_'.$region->id);
+				'enabled_'.$region->id);
 
-			$column->title = $region->title;
+			$column->title = sprintf(Store::_('Enabled in %s'), $region->title);
 			$column->addRenderer($renderer);
-			$column->addMappingToRenderer($renderer, 'available_'.$region->id,
+			$column->addMappingToRenderer($renderer, 'enabled_'.$region->id,
 				'value');
 
 			$index_view->appendColumn($column);
@@ -73,7 +73,7 @@ class StoreCatalogIndex extends AdminIndex
 	{
 		/*
 		 * This dynamic SQL is needed to make the table orderable by the
-		 * availability columns.
+		 * enabled columns.
 		 */
 		$regions_join_base =
 			'left outer join CatalogRegionBinding as CatalogRegionBinding_%1$s
@@ -81,7 +81,7 @@ class StoreCatalogIndex extends AdminIndex
 					and CatalogRegionBinding_%1$s.region = %2$s';
 
 		$regions_select_base =
-			'CatalogRegionBinding_%s.catalog is not null as available_%s';
+			'CatalogRegionBinding_%s.catalog is not null as enabled_%s';
 
 		$regions_join = '';
 		$regions_select = '';
