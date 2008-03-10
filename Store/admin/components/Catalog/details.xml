@@ -60,7 +60,7 @@
 				</object>
 			</object>
 			<object class="SwatDetailsViewField" id="status">
-				<property name="title" translatable="yes">Status</property>
+				<property name="title" translatable="yes">Enabled For</property>
 				<object class="StoreCatalogStatusCellRenderer" id="status_renderer">
 					<property name="catalog" type="data">id</property>
 				</object>
