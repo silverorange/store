@@ -25,18 +25,19 @@ class StoreCatalogStatusCellRenderer extends SwatCellRenderer
 	{
 		$catalog_class = SwatDBClassMap::get('StoreCatalog');
 
-		$sql = 'select Region.title, available
+		$sql = sprintf('select Region.title,
+				CatalogRegionBinding.catalog is not null as available
 			from Region
 				left outer join CatalogRegionBinding on
 					Region.id = region and catalog = %s
-			order by Region.title';
+			order by Region.title',
+			$this->db->quote($this->catalog, 'integer'));
 
-		$sql = sprintf($sql, $this->db->quote($this->catalog, 'integer'));
 		$catalog_statuses = SwatDB::query($this->db, $sql);
 
 		foreach ($catalog_statuses as $row) {
 			$status = ($row->available === true) ?
-				Site::_('Available') : Site::_('Unavailable');
+				Store::_('Available') : Store::_('Unavailable');
 
 			printf('%s: %s',
 				SwatString::minimizeEntities($row->title),
