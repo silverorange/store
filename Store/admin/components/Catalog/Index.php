@@ -4,7 +4,6 @@ require_once 'SwatDB/SwatDB.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Admin/pages/AdminIndex.php';
 require_once 'Store/dataobjects/StoreRegionWrapper.php';
-require_once 'Store/admin/components/Catalog/include/StoreCatalogStatusCellRenderer.php';
 
 /**
  * Index page for Catalogs
