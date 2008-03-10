@@ -57,7 +57,9 @@ class StoreCatalog extends SwatDBDataObject
 
 	protected function init()
 	{
-		$this->registerInternalProperty('clone_of', 'Catalog');
+		$this->registerInternalProperty('clone_of',
+			SwatDBClassMap::get('StoreCatalog'));
+
 		$this->table = 'Catalog';
 		$this->id_field = 'integer:id';
 	}
