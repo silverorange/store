@@ -2,6 +2,7 @@
 
 require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Swat/SwatString.php';
+require_once 'Store/dataobjects/StoreAttributeType.php';
 
 /*
  * @package   Store
@@ -40,13 +41,10 @@ class StoreAttribute extends SwatDBDataObject
 	 */
 	public $displayorder;
 
-	/**
-	 * Attribute Type
-	 * not null default 0
-	 *
-	 * @var integer
-	 */
-	public $attribute_type;
+	// }}}
+	// {{{ private properties
+
+	private static $attribute_type_cache = array();
 
 	// }}}
 	// {{{ public function getSearchAnchorTag()
@@ -67,6 +65,42 @@ class StoreAttribute extends SwatDBDataObject
 	{
 		$this->table = 'Attribute';
 		$this->id_field = 'integer:id';
+
+		$this->registerInternalProperty('attribute_type',
+			SwatDBClassMap::get('StoreAttributeType'));
+	}
+
+	// }}}
+	// {{{ protected function hasSubDataObject()
+
+	protected function hasSubDataObject($key)
+	{
+		$found = parent::hasSubDataObject($key);
+
+		if ($key === 'attribute_type' && !$found) {
+			$attribute_type_id = $this->getInternalValue('attribute_type');
+
+			if ($attribute_type_id !== null &&
+				array_key_exists($attribute_type_id, self::$attribute_type_cache)) {
+				$this->setSubDataObject('attribute_type',
+					self::$attribute_type_cache[$attribute_type_id]);
+
+				$found = true;
+			}
+		}
+
+		return $found;
+	}
+
+	// }}}
+	// {{{ protected function setSubDataObject()
+
+	protected function setSubDataObject($name, $value)
+	{
+		if ($name === 'attribute_type')
+			self::$attribute_type_cache[$value->id] = $value;
+
+		parent::setSubDataObject($name, $value);
 	}
 
 	// }}}
