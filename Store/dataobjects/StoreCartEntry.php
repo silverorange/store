@@ -308,6 +308,7 @@ class StoreCartEntry extends SwatDBDataObject
 		$order_item->setCartEntryId($this->id);
 		$order_item->sku                = $this->item->sku;
 		$order_item->price              = $this->getCalculatedItemPrice();
+		$order_item->custom_price       = ($this->custom_price !== null);
 		$order_item->quantity           = $this->getQuantity();
 		$order_item->extension          = $this->getExtension();
 		$order_item->description        = $this->getOrderItemDescription();

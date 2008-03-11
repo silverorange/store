@@ -154,10 +154,6 @@ class StoreAccountOrderPage extends SiteAccountPage
 	protected function addItem($item_id, StoreOrderItem $order_item)
 	{
 		if ($item_id !== null) {
-			$cart_entry_class = SwatDBClassMap::get('StoreCartEntry');
-			$cart_entry = new $cart_entry_class();
-			$cart_entry->account = $this->app->session->getAccountId();
-
 			// load item manually here so we can specify region
 			$item_class = SwatDBClassMap::get('StoreItem');
 			$item = new $item_class();
@@ -165,8 +161,7 @@ class StoreAccountOrderPage extends SiteAccountPage
 			$item->setRegion($this->app->getRegion());
 			$item->load($item_id);
 
-			$cart_entry->item = $item;
-			$cart_entry->quantity = $order_item->quantity;
+			$cart_entry = $this->createCartEntry($item, $order_item);
 
 			if ($this->app->cart->checkout->addEntry($cart_entry)) {
 				$this->items_added[] = $item;
@@ -181,6 +176,29 @@ class StoreAccountOrderPage extends SiteAccountPage
 		$this->ui->getWidget('message_display')->add($message);
 
 		return null;
+	}
+
+	// }}}
+	// {{{ protected function createCartEntry()
+
+	/**
+	 * @return StoreCartEntry the entry that was created.
+	 */
+	protected function createCartEntry(StoreItem $item,
+			StoreOrderItem $order_item)
+	{
+		$cart_entry_class = SwatDBClassMap::get('StoreCartEntry');
+		$cart_entry = new $cart_entry_class();
+		$cart_entry->account = $this->app->session->getAccountId();
+
+		$cart_entry->item = $item;
+		$cart_entry->quantity = $order_item->quantity;
+		$cart_entry->quick_order = false;
+
+		if ($order_item->custom_price)
+			$cart_entry->custom_price = $order_item->price;
+
+		return $cart_entry;
 	}
 
 	// }}}

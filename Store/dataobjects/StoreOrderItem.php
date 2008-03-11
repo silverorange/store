@@ -58,6 +58,13 @@ class StoreOrderItem extends SwatDBDataObject
 	public $price;
 
 	/**
+	 * Whether or not this item has a custom-overide price
+	 *
+	 * @var boolean
+	 */
+	public $custom_price;
+
+	/**
 	 * Description
 	 *
 	 * @var string
