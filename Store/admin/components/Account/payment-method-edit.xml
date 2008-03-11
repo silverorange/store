@@ -23,7 +23,7 @@
 				<widget class="SwatContentBlock" id="card_number_preview" />
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Expiry Date</property>
+				<property name="title" translatable="yes">Expiration Date</property>
 				<widget class="SwatDateEntry" id="card_expiry">
 					<property name="required" type="boolean">true</property>
 					<property name="display_parts" type="constant">YEAR|MONTH</property>
