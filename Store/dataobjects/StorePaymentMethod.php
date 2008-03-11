@@ -278,7 +278,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 			$span_tag->open();
 
 			if ($this->card_expiry !== null) {
-				echo 'Expiry: ',
+				echo 'Expiration Date: ',
 					$this->card_expiry->format(SwatDate::DF_CC_MY);
 
 				if ($this->card_fullname !== null)
@@ -320,7 +320,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 
 		if ($display_details) {
 			if ($this->card_expiry !== null) {
-				echo $line_break, 'Expiry: ',
+				echo $line_break, 'Expiration Date: ',
 					$this->card_expiry->format(SwatDate::DF_CC_MY);
 			}
 
