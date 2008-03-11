@@ -83,8 +83,6 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 		end if;
 
 		-- clone catalog
-		-- Veseys defines an additional Catalog field 'end_ship_date' that
-		-- should not be set on the clone.
 		insert into Catalog (title, clone_of, in_season)
 		select param_title, id, in_season from Catalog where id = param_id;
 
