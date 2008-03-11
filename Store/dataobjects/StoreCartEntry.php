@@ -76,6 +76,14 @@ class StoreCartEntry extends SwatDBDataObject
 	 */
 	public $quick_order;
 
+	/*
+	 * A custom override price for item's without a fixed price like gift
+	 * certificates
+	 *
+	 * @var float
+	 */
+	public $custom_price;
+
 	// }}}
 	// {{{ public function getQuantity()
 
@@ -167,11 +175,15 @@ class StoreCartEntry extends SwatDBDataObject
 	 */
 	public function getCalculatedItemPrice()
 	{
-		$price = $this->getQuantityDiscountedItemPrice();
+		if ($this->custom_price !== null) {
+			$price = $this->custom_price;
+		} else {
+			$price = $this->getQuantityDiscountedItemPrice();
 
-		$sale = $this->item->sale_discount;
-		if ($sale !== null)
-			$price = round($price * (1 - $sale->discount_percentage), 2);
+			$sale = $this->item->sale_discount;
+			if ($sale !== null)
+				$price = round($price * (1 - $sale->discount_percentage), 2);
+		}
 
 		return $price;
 	}
