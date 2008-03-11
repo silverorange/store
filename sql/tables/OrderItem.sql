@@ -5,6 +5,7 @@ create table OrderItem (
 	alias_sku varchar(20),
 	quantity int not null,
 	price numeric(11, 2) not null,
+	custom_price boolean not null default false,
 	description varchar(255),
 	extension numeric(11, 2) not null,
 	item int null,
