@@ -17,6 +17,7 @@
 				<object class="StoreItemDescriptionCellRenderer">
 					<property name="sku" type="data">item.sku</property>
 					<property name="description" type="data">description</property>
+					<property name="description_content_type">text/xml</property>
 					<property name="classes[]">store-cart-description</property>
 				</object>
 			</object>
