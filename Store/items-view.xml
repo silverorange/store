@@ -43,7 +43,6 @@
 						<property name="replicator_id" type="data">id</property>
 						<widget class="StoreQuantityEntry" id="quantity">
 							<property name="value" type="integer">0</property>
-							<property name="visible" type="data">is_available</property>
 							<property name="tab_index" type="data">tab_index</property>
 						</widget>
 					</object>
