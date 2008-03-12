@@ -32,7 +32,7 @@
 					<object class="StorePriceCellRenderer">
 						<property name="value" type="data">original_price</property>
 						<property name="visible" type="data">is_on_sale</property>
-						<property name="classes[]">original-price</property>
+						<property name="classes[]">store-original-price</property>
 					</object>
 					<object class="StoreItemPriceCellRenderer">
 						<property name="value" type="data">price</property>
