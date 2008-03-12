@@ -29,6 +29,11 @@
 				</object>
 				<object class="SwatTableViewColumn" id="price_column">
 					<property name="title" translatable="yes">Price</property>
+					<object class="StorePriceCellRenderer">
+						<property name="value" type="data">original_price</property>
+						<property name="visible" type="data">is_on_sale</property>
+						<property name="classes[]">original-price</property>
+					</object>
 					<object class="StoreItemPriceCellRenderer">
 						<property name="value" type="data">price</property>
 						<property name="singular_unit" type="data">singular_unit</property>
