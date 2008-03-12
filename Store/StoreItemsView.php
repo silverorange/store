@@ -210,7 +210,8 @@ class StoreItemsView extends SwatControl
 				$store->add($ds);
 
 				if ($ds->is_available)
-					$view->getRow('add_button')->visible = true;
+					$view->getRow('add_button')->title =
+						Store::_('Add to Cart');
 			}
 		}
 
