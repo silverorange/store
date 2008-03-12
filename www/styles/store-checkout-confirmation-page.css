@@ -17,7 +17,8 @@
 	font-style: normal;
 }
 
-#item_container {
+#item_container,
+#payment_method_container {
 	clear: left;
 }
 

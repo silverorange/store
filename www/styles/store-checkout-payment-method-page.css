@@ -1,7 +1,6 @@
 #payment_method_form {
 	border: 0;
 	padding: 0;
-	margin: 1em;
 }
 
 .add-new {
@@ -11,4 +10,11 @@
 
 .swat-form #payment_method_save_field label {
 	font-weight: normal;
+}
+
+.checkout-no-column #payment_method_list_container,
+.checkout-no-column #payment_method_form {
+	float: left;
+	width: 45%;
+	display: inline;
 }

@@ -19,3 +19,16 @@
 .swat-form #mailing_subscriber_field label {
 	font-weight: normal;
 }
+
+.checkout-no-column #billing_address_list_container,
+.checkout-no-column #shipping_address_list_container {
+	float: left;
+	width: 45%;
+	display: inline;
+}
+
+.checkout-no-column #billing_address_form,
+.checkout-no-column #shipping_address_form {
+	width: 46%;
+}
+
