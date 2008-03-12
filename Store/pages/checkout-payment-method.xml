@@ -1,8 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
-	<widget class="SwatRadioTable" id="payment_method_list">
-		<property name="value">new</property>
+	<widget class="SwatDisplayableContainer" id="payment_method_list_container">
+		<widget class="SwatRadioTable" id="payment_method_list">
+			<property name="value">new</property>
+		</widget>
 	</widget>
 	<widget class="SwatFieldset" id="payment_method_form">
 		<widget class="SwatFormField" id="payment_type_field">
