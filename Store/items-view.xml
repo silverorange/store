@@ -52,7 +52,7 @@
 					</object>
 				</object>
 				<object class="StoreTableViewButtonRow" id="add_button">
-					<property name="title" translatable="yes">Add to Saved Cart</property>
+					<property name="title" translatable="yes">Save for Later</property>
 				</object>
 			</widget>
 		</widget>
