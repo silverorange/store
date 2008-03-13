@@ -15,6 +15,7 @@ class StoreContactPage extends SiteArticlePage
 	// {{{ protected properties
 
 	protected $ui;
+	protected $ui_xml = 'Store/pages/contact.xml';
 
 	// }}}
 	// {{{ protected function getSubjects()
@@ -42,7 +43,7 @@ class StoreContactPage extends SiteArticlePage
 		parent::init();
 
 		$this->ui = new SwatUI();
-		$this->ui->loadFromXML('Store/pages/contact.xml');
+		$this->ui->loadFromXML($this->ui_xml);
 
 		$form = $this->ui->getWidget('contact_form');
 		$form->action = $this->source;
