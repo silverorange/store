@@ -51,10 +51,10 @@ class StorePaymentTypeEdit extends AdminDBEdit
 		$this->payment_type = new $class_name();
 		$this->payment_type->setDatabase($this->app->db);
 
-		if ($this->id !==null) {
+		if ($this->id !== null) {
 			if (!$this->payment_type->load($this->id)) {
 				throw new AdminNotFoundException(
-					sprintf(Admin::_('Payment Type with an id "%s" not found'),
+					sprintf(Store::_('Payment Type with an id "%s" not found'),
 						$this->id));
 			}
 		}
