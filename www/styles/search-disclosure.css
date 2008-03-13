@@ -1,4 +1,6 @@
 .search-disclosure-loading {
+	/* vertical padding + height must add up to panel height */
+	/* padding is used to center the loading image */
 	padding: 5em 0 3em 0;
 	height: 5em;
 	text-align: center;
