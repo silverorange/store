@@ -58,6 +58,10 @@ class StoreProductIndex extends AdminSearch
 
 		if ($quick_search_form->isProcessed())
 			$this->clearState();
+
+		$sale_discount_flydown = $this->ui->getWidget('sale_discount_flydown');
+		$sale_discount_flydown->addOptionsByArray(SwatDB::getOptionArray(
+			$this->app->db, 'SaleDiscount', 'title', 'id', 'title'));
 	}
 
 	// }}}
@@ -99,10 +103,37 @@ class StoreProductIndex extends AdminSearch
 
 	protected function processActions(SwatTableView $view, SwatActions $actions)
 	{
+		$item_list = array();
+		foreach ($view->getSelection() as $item)
+			$item_list[] = $this->app->db->quote($item, 'integer');
+
 		switch ($actions->selected->id) {
 		case 'delete':
 			$this->app->replacePage('Product/Delete');
 			$this->app->getPage()->setItems($view->getSelection());
+			break;
+		case 'sale_discount' :
+			$sale_discount =
+				$this->ui->getWidget('sale_discount_flydown')->value;
+
+			if ($sale_discount === null)
+				break;
+
+			$num = SwatDB::queryOne($this->app->db, sprintf(
+				'select count(id) from Item where product in (%s)',
+				SwatDB::implodeSelection($this->app->db,
+					$view->getSelection())));
+
+			SwatDB::updateColumn($this->app->db, 'Item', 'integer:sale_discount',
+				$sale_discount, 'product', $item_list);
+
+			$message = new SwatMessage(sprintf(Store::ngettext(
+				'A sale discount has been applied to one item.',
+				'A sale discount has been applied to %s items.', $num),
+				SwatString::numberFormat($num)));
+
+			$this->app->messages->add($message);
+
 			break;
 		}
 	}

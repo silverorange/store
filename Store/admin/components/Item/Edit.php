@@ -69,6 +69,10 @@ class StoreItemEdit extends AdminDBEdit
 		$regions = SwatDB::getOptionArray($this->app->db, 'Region', 'title',
 			'id', 'title');
 
+		$sale_discount_flydown = $this->ui->getWidget('sale_discount');
+		$sale_discount_flydown->addOptionsByArray(SwatDB::getOptionArray(
+			$this->app->db, 'SaleDiscount', 'title', 'id', 'title'));
+
 		$price_replicator = $this->ui->getWidget('price_replicator');
 		$price_replicator->replicators = $regions;
 
@@ -143,7 +147,8 @@ class StoreItemEdit extends AdminDBEdit
 	protected function updateItem()
 	{
 		$values = $this->ui->getValues(array('description', 'sku', 'status',
-			'part_unit', 'part_count', 'singular_unit', 'plural_unit'));
+			'part_unit', 'part_count', 'singular_unit', 'plural_unit',
+			'sale_discount'));
 
 		$this->item->sku           = $values['sku'];
 		$this->item->description   = $values['description'];
@@ -151,6 +156,7 @@ class StoreItemEdit extends AdminDBEdit
 		$this->item->part_count    = $values['part_count'];
 		$this->item->singular_unit = $values['singular_unit'];
 		$this->item->plural_unit   = $values['plural_unit'];
+		$this->item->sale_discount = $values['sale_discount'];
 		$this->item->product       = $this->product;
 		$this->item->setStatus(
 			StoreItemStatusList::statuses()->getById($values['status']));
@@ -346,6 +352,8 @@ class StoreItemEdit extends AdminDBEdit
 	{
 		$this->ui->setValues(get_object_vars($this->item));
 		$this->ui->getWidget('status')->value = $this->item->getStatus()->id;
+		$this->ui->getWidget('sale_discount')->value =
+			$this->item->sale_discount->id;
 		$this->loadRegionBindings();
 		$this->loadItemAliases();
 
