@@ -38,6 +38,13 @@ class StoreSearchDisclosure extends SwatDisclosure
 	 */
 	public $input_text;
 
+	/**
+	 * Panel height in ems
+	 *
+	 * @var integer
+	 */
+	public $panel_height = 13;
+
 	// }}}
 	// {{{ public function __construct()
 
@@ -170,9 +177,9 @@ class StoreSearchDisclosure extends SwatDisclosure
 	protected function getInlineJavaScript()
 	{
 		$open = ($this->open) ? 'true' : 'false';
-		return sprintf("var %s_obj = new %s('%s', %s, %s_entry_obj, '%s');",
+		return sprintf("var %s_obj = new %s('%s', %s, %s_entry_obj, '%s', %s);",
 			$this->id, $this->getJavaScriptClass(), $this->id, $open,
-			$this->id, $this->keywords_id);
+			$this->id, $this->keywords_id, $this->panel_height);
 	}
 
 	// }}}

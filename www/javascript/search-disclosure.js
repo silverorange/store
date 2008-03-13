@@ -1,10 +1,15 @@
-function StoreSearchDisclosure(id, open, entry, keywords_id)
+function StoreSearchDisclosure(id, open, entry, keywords_id, panel_height)
 {
 	this.search_controls = document.getElementById(id + '_search_controls');
 	this.fade_animation = null;
 	this.entry = entry;
 	this.keywords_id = keywords_id;
 	this.initial_open = open;
+	if (panel_height) {
+		this.panel_height = panel_height;
+	} else {
+		this.panel_height = 13; // default height in ems
+	}
 	StoreSearchDisclosure.superclass.constructor.call(this, id, open);
 	YAHOO.util.Dom.removeClass(this.div.firstChild, 'no-js');
 }
@@ -14,7 +19,7 @@ function StoreSearchDisclosure(id, open, entry, keywords_id)
  *
  * @var Number
  */
-StoreSearchDisclosure.panel_height = 13;
+StoreSearchDisclosure.panel_height = 14;
 
 /**
  * Preload images
@@ -123,11 +128,10 @@ openWithAnimation: function()
 	this.animate_div.style.position = 'relative';
 	this.animate_div.parentNode.style.overflow = 'visible';
 	this.animate_div.firstChild.style.position = 'relative';
-	this.animate_div.firstChild.style.height =
-		StoreSearchDisclosure.panel_height + 'em';
+	this.animate_div.firstChild.style.height = this.panel_height + 'em';
 
 	var attributes = { height: {
-		to: StoreSearchDisclosure.panel_height,
+		to: this.panel_height,
 		from: 0,
 		unit: 'em'
 	}};
@@ -136,7 +140,7 @@ openWithAnimation: function()
 		YAHOO.util.Easing.easeOut);
 
 	var attributes = { top: {
-		from: -StoreSearchDisclosure.panel_height,
+		from: -this.panel_height,
 		to: 0,
 		unit: 'em'
 	}};
@@ -173,7 +177,7 @@ closeWithAnimation: function()
 	this.animate_div.style.position = 'relative';
 
 	var attributes = { height: {
-		from: StoreSearchDisclosure.panel_height,
+		from: this.panel_height,
 		to: 0,
 		unit: 'em'
 	}};
@@ -183,7 +187,7 @@ closeWithAnimation: function()
 
 	var attributes = { top: {
 		from: 0,
-		to: -StoreSearchDisclosure.panel_height,
+		to: -this.panel_height,
 		unit: 'em'
 	}};
 
