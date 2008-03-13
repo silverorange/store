@@ -1112,14 +1112,8 @@ protected function processCheckoutCart()
 	{
 		$description = array();
 
-		if ($entry->item->getDescription() !== null)
-			$description[] = '<div>'.$entry->item->getDescription().'</div>';
-
-		if ($entry->item->getGroupDescription() !== null)
-			$description[] = '<div>'.$entry->item->getGroupDescription().'</div>';
-
-		if ($entry->item->getPartCountDescription() !== null)
-			$description[] = '<div>'.$entry->item->getPartCountDescription().'</div>';
+		foreach ($entry->item->getDescriptionArray() as $element)
+			$description[] = '<div>'.$element.'</div>';
 
 		return implode("\n", $description);
 	}

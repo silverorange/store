@@ -258,13 +258,13 @@ class StoreItemsView extends SwatControl
 
 	protected function getItemDescription(StoreItem $item)
 	{
-		$description = array();
+		$parts = $item->getDescriptionArray();
 
-		if ($item->getDescription() !== null)
-			$description[] = $item->description;
+		if (strlen($parts['description']) > 0)
+			$description[] = $parts['description'];
 
-		if ($item->getPartCountDescription() !== null)
-			$description[] = $item->getPartCountDescription();
+		if (strlen($parts['part_count']) > 0)
+			$description[] = $parts['part_count'];
 
 		return implode(' - ', $description);
 	}

@@ -392,18 +392,7 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 
 	protected function getEntryDescription(StoreCartEntry $entry)
 	{
-		$description = array();
-
-		if ($entry->item->getDescription() !== null)
-			$description[] = $entry->item->getDescription();
-
-		if ($entry->item->getGroupDescription() !== null)
-			$description[] = $entry->item->getGroupDescription();
-
-		if ($entry->item->getPartCountDescription() !== null)
-			$description[] = $entry->item->getPartCountDescription();
-
-		return implode('<br />', $description);
+		return implode('<br />', $entry->item->getDescriptionArray());
 	}
 
 	// }}}

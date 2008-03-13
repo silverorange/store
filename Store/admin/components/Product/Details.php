@@ -779,18 +779,7 @@ class StoreProductDetails extends AdminIndex
 
 	protected function getItemDescription(StoreItem $item)
 	{
-		$description = array();
-
-		if ($item->description !== null)
-			$description[] = $item->description;
-
-		if ($item->getGroupDescription() !== null)
-			$description[] = $item->getGroupDescription();
-
-		if ($item->getPartCountDescription() !== null)
-			$description[] = $item->getPartCountDescription();
-
-		return implode(' - ', $description);
+		return implode(' - ', $item->getDescriptionArray());
 	}
 
 	// }}}

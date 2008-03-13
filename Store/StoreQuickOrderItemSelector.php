@@ -348,23 +348,36 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 
 		$description = '';
 
-		if ($show_item_group && $item->item_group !== null &&
-			strlen($item->item_group->title) > 0)
-			$description.= '('.$item->item_group->title.') ';
+		$parts = $item->getDescriptionArray();
 
-		$description.= $item->getDescription();
+		if (isset($parts['description']))
+			$description.= $parts['description'];
 
-		if ($item->getPartCountDescription() !== null)
-			$description.= ' '.$item->getPartCountDescription();
+		if (!$item->hasAvailableStatus()) {
+			if (strlen($description) > 0)
+				$description.= ' ';
 
-		if (!$item->hasAvailableStatus())
 			$description.= '('.$item->getStatus()->title.')';
+		}
 
-		if (strlen($description) > 0)
-			$description.= ' - ';
+		if (strlen($description))
+			$description.= ' ';
 
 		$locale = SwatI18NLocale::get();
 		$description.= $locale->formatCurrency($item->getDisplayPrice());
+
+		$extras = array();
+
+		if (isset($parts['group']))
+			$extras[] = $parts['group'];
+
+		if (isset($parts['part_count']))
+			$extras[] = $parts['part_count'];
+
+		if (strlen($description) && count($extras) > 0)
+			$description.= ' - ';
+
+		$description.= implode(', ', $extras);
 
 		return $description;
 	}
@@ -381,18 +394,10 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	 */
 	protected function getItemDescription(StoreItem $item)
 	{
-		$description = '';
+		foreach ($item->getDescriptionArray() as $element)
+			$description[] = '<div>'.$element.'</div>';
 
-		if ($item->getDescription() !== null)
-			$description.= '<div>'.$item->getDescription().'</div>';
-
-		if ($item->getGroupDescription() !== null)
-			$description.= '<div>'.$item->getGroupDescription().
-				'</div>';
-
-		if ($item->getPartCountDescription() !== null)
-			$description.= '<div>'.$item->getPartCountDescription().
-				'</div>';
+		$description = implode("\n", $description);
 
 		if (!$item->hasAvailableStatus()) {
 			$description.= sprintf('<div class="item-status">%s</div>',
