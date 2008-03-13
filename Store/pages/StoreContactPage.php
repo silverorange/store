@@ -79,9 +79,9 @@ class StoreContactPage extends SiteArticlePage
 	}
 
 	// }}}
-	// {{{ private function sendEmail()
+	// {{{ protected function getMessage()
 
-	private function sendEmail()
+	protected function getMessage()
 	{
 		$message = new SiteMultipartMailMessage($this->app);
 		$message->smtp_server = $this->app->config->email->smtp_server;
@@ -95,6 +95,16 @@ class StoreContactPage extends SiteArticlePage
 
 		$message->text_body = $this->ui->getWidget('message')->value;
 		$message->text_body.= $this->browserInfo();
+
+		return $message;
+	}
+
+	// }}}
+	// {{{ private function sendEmail()
+
+	private function sendEmail()
+	{
+		$message = $this->getMessage();
 
 		try {
 			$message->send();
