@@ -1,12 +1,12 @@
 <?php
 
-require_once 'Admin/pages/AdminPage.php';
+require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDB.php';
-require_once 'Date.php';
-require_once 'Image/Transform.php';
-require_once 'Store/dataobjects/StoreProductImage.php';
 require_once 'SwatDB/SwatDBClassMap.php';
+require_once 'Store/dataobjects/StoreProduct.php';
+require_once 'Store/dataobjects/StoreProductImage.php';
+require_once 'Site/dataobjects/SiteImageSet.php';
 
 /**
  * Edit page for product images
@@ -15,19 +15,37 @@ require_once 'SwatDB/SwatDBClassMap.php';
  * @copyright 2005-2007 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreProductImageEdit extends AdminPage
+class StoreProductImageEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
+	protected $id;
 	protected $ui_xml = 'Store/admin/components/Product/image-edit.xml';
 
 	// }}}
 	// {{{ private properties
 
-	private $id;
-	private $product_id;
-	private $product_title;
+	/**
+	 * @var StoreProductImage
+	 */
+	private $image;
+
+	/**
+	 * @var StoreProduct
+	 */
+	private $product;
+
+	/**
+	 * Optional id of the product's current category. This is only used to
+	 * maintain the proper navbar breadcrumbs when getting to this page by
+	 * browsing the categories.
+	 *
+	 * @var integer
+	 */
 	private $category_id;
+
+	private $dimensions;
+	private $dimension_files;
 
 	// }}}
 
@@ -41,223 +59,114 @@ class StoreProductImageEdit extends AdminPage
 		$this->ui->loadFromXML($this->ui_xml);
 
 		$this->id = $this->app->initVar('id');
-		$this->product_id = $this->app->initVar('product');
 		$this->category_id = SiteApplication::initVar('category');
 
-		$sql = 'select title from Product where id = %s';
-		$sql = sprintf($sql,
-			$this->app->db->quote($this->product_id, 'integer'));
+		$this->initProduct();
+		$this->initImage();
+		$this->initDimensions();
+	}
 
-		$row = SwatDB::queryRow($this->app->db, $sql);
+	// }}}
+	// {{{ protected function initProduct()
 
-		if ($row === null)
-			throw new AdminNotFoundException(sprintf(
-				Store::_('There is no image associated with product ‘%d’.'),
-				$this->product_id));
+	protected function initProduct()
+	{
+		$product_id = $this->app->initVar('product');
+		$class_name = SwatDBClassMap::get('StoreProduct');
+		$this->product = new $class_name();
+		$this->product->setDatabase($this->app->db);
 
-		$this->product_title = $row->title;
+		if (!$this->product->load($product_id)) {
+			throw new AdminNotFoundException(
+				sprintf('Product with id ‘%s’ not found.', $product_id));
+		}
+	}
+
+	// }}}
+	// {{{ protected function initImage()
+
+	protected function initImage()
+	{
+		$class_name = SwatDBClassMap::get('StoreProductImage');
+		$this->image = new $class_name();
+		$this->image->setDatabase($this->app->db);
+
+		if ($this->id !== null && !$this->image->load($this->id)) {
+			throw new AdminNotFoundException(
+				sprintf('Product image with id ‘%s’ not found.', $this->id));
+		}
+	}
+
+	// }}}
+	// {{{ protected function initDimensions()
+
+	protected function initDimensions()
+	{
+		if ($this->id !== null) {
+			$this->dimensions = $this->image->image_set->dimensions;
+		} else {
+			$class_name = SwatDBClassMap::get('SiteImageSet');
+			$image_set = new $class_name();
+			$image_set->setDatabase($this->app->db);
+			$image_set->loadByShortname('products');
+			$this->dimensions = $image_set->dimensions;
+		}
+
+		$manual_fieldset = $this->ui->getWidget('manual_fieldset');
+		$note = Store::_('Maximum Dimensions: %s px');
+		foreach ($this->dimensions as $dimension) {
+			$dimension_text = $dimension->max_width;
+			if ($dimension->max_height !== null)
+				$dimension_text = sprintf('%s x %s', $dimension->max_width,
+					$dimension->max_height);
+
+			$form_field = new SwatFormField();
+			$form_field->title = $dimension->title;
+			$form_field->note  = sprintf($note, $dimension_text);
+			$file_widget = new SwatFileEntry($dimension->shortname);
+			$form_field->addChild($file_widget);
+			$manual_fieldset->addChild($form_field);
+
+			$this->dimension_files[$dimension->shortname] = $file_widget;
+		}
 	}
 
 	// }}}
 
 	// process phase
-	// {{{ protected function processInternal()
+	// {{{ protected function validate()
 
-	protected function processInternal()
+	protected function validate()
 	{
-		parent::processInternal();
+		// if we're adding an image either the automatic image is uploaded, or
+		// all sizes of manual uploads
 
-		$form = $this->ui->getWidget('edit_form');
+		$automatic = $this->ui->getWidget('original_image');
+		if ($automatic->isUploaded()) return true;
 
-		if ($form->isProcessed()) {
-			$message_text = Store::_('There is a problem with the one of the '.
-				'files submitted below.');
+		if ($this->id === null && !$this->checkManualUploads()) {
 
-			if (!$this->validate()) {
-				$message = new SwatMessage($message_text, SwatMessage::ERROR);
-				$this->app->messages->add($message);
-			} else {
-				if ($this->processImages()) {
-					$this->saveDBData();
-					$this->relocate();
-				} else {
-					$message = new SwatMessage($message_text,
-						SwatMessage::ERROR);
+			$message = new SwatMessage(Store::_('You need to specify all '.
+				'image sizes when creating a new image or upload an image to '.
+				'be automatically resized.'), SwatMessage::ERROR);
 
-					$this->app->messages->add($message);
-				}
-			}
+			$this->ui->getWidget('message')->add($message);
+			return false;
 		}
 	}
 
 	// }}}
-	// {{{ protected function processImages()
+	// {{{ private function validate()
 
-	/**
-	 * This resizes and renames images and updates the database
-	 *
-	 * If invalid dimensions are uploaded this returns false and the database
-	 * is not updated.
-	 */
-	protected function processImages()
+	protected function checkManualUploads()
 	{
-		$fields = array(
-			'integer:thumb_width', 'integer:thumb_height',
-			'integer:small_width', 'integer:small_height',
-			'integer:large_width', 'integer:large_height',
-		);
-
-		// stores new fields and dimensions
-		$data = array();
-
-		$old_row = SwatDB::queryRowFromTable($this->app->db, 'Image',
-			$fields, 'id', $this->id);
-
-		if ($old_row !== null)
-			foreach ($old_row as $field => $value)
-				$data[$field] = $value;
-
-		$validated = true;
-		$changed = false;
-
-		// this stores images that have been processed before they are saved
-		$images = array();
-
-		// this stores the temporary uploaded files that are deleted
-		$delete_files = array();
-
-		$product_image = SwatDBClassMap::get('StoreProductImage');
-		// name => max dimensions
-		$sizes = call_user_func(array($product_image, 'getSizes'));
-
-		// automatically resize images
-		$image = $this->ui->getWidget('orig_image');
-		if ($image->isUploaded()) {
-
-			foreach ($sizes as $size => $dimensions) {
-				$file = $this->ui->getWidget($size.'_image');
-				if (!$file->isUploaded()) {
-
-					$transformer = Image_Transform::factory('Imagick2');
-					if (PEAR::isError($transformer))
-						throw new AdminException($transformer);
-
-					$transformer->load($image->getTempFileName());
-					switch ($size) {
-					case 'thumb':
-						call_user_func(
-							array($product_image, 'processThumbnail'),
-							$transformer);
-
-						break;
-					case 'small':
-						call_user_func(
-							array($product_image, 'processSmall'),
-							$transformer);
-
-						break;
-					case 'large':
-						call_user_func(
-							array($product_image, 'processLarge'),
-							$transformer);
-
-						break;
-					}
-
-					$images[$size] = $transformer;
-
-					$data[$size.'_width'] = $transformer->new_x;
-					$data[$size.'_height'] = $transformer->new_y;
-
-					$changed = true;
-				}
-			}
-			$delete_files[] = $image->getTempFileName();
+		$uploaded = true;
+		foreach ($this->dimensions as $dimension) {
+			$uploaded = $uploaded &&
+				$this->dimension_files[$dimension->shortname]->isUploaded();
 		}
 
-		// manually sized images
-		foreach ($sizes as $size => $dimensions) {
-			$file = $this->ui->getWidget($size.'_image');
-
-			// if original size is not uploaded, use large size as the original
-			if ($size === 'original' && !$file->isUploaded())
-					$file = $this->ui->getWidget('large_image');
-
-			if ($file->isUploaded()) {
-				$transformer = Image_Transform::factory('Imagick2');
-				$transformer->load($file->getTempFileName());
-
-				$images[$size] = $transformer;
-
-				// check for invalid dimensions here
-				if ($size == 'thumb' &&
-					($transformer->img_x != $dimensions[0] ||
-					$transformer->img_y != $dimensions[1])) {
-
-					$validated = false;
-					$message = new SwatMessage(sprintf(
-						Store::_('The %%s must be %1$s × %2$s pixels.'),
-						$dimensions[0], $dimensions[1]), SwatMessage::ERROR);
-
-					$file->addMessage($message);
-				} elseif ($dimensions[0] !== null &&
-					$transformer->img_x > $dimensions[0]) {
-					$validated = false;
-
-					$message = new SwatMessage(sprintf(Store::_(
-						'The %%s can be at most %1$s pixels wide.'),
-						$dimensions[0]), SwatMessage::ERROR);
-
-					$file->addMessage($message);
-				} else {
-					$data[$size.'_width'] = $transformer->img_x;
-					$data[$size.'_height'] = $transformer->img_y;
-				}
-
-				$delete_files[] = $file->getTempFileName();
-
-				$changed = true;
-
-				call_user_func(
-					array($product_image, 'processManualImage'),
-					$transformer, $size);
-			}
-		}
-
-		// write to database
-		if ($changed && $validated) {
-
-			$transaction = new SwatDBTransaction($this->app->db);
-			try {
-				$old_image_files = $this->saveImages($fields, $data, $images,
-					$sizes);
-
-				// remove old images
-				foreach ($old_image_files as $filename)
-					if (file_exists($filename))
-						unlink($filename);
-
-			} catch (SwatDBException $e) {
-				$transaction->rollback();
-
-				$message = new SwatMessage(Store::_('A database error has '.
-					'occurred. The image was not changed.'),
-					SwatMessage::SYSTEM_ERROR);
-
-				$this->app->messages->add($message);
-				$e->process();
-
-				$validated = true;
-			}
-			$transaction->commit();
-		}
-
-		// remove temporary images
-		foreach ($delete_files as $filename)
-			if (file_exists($filename))
-				unlink($filename);
-
-		return $validated;
+		return $uploaded;
 	}
 
 	// }}}
@@ -265,153 +174,49 @@ class StoreProductImageEdit extends AdminPage
 
 	protected function saveDBData()
 	{
-		$fields = array('text:title', 'boolean:border', 'text:description');
-		$values = array(
-			'title' => $this->ui->getWidget('title')->value,
-			'border' => $this->ui->getWidget('border')->value,
-			'description' => $this->ui->getWidget('description')->value
-			);
+		$this->processImage();
+		$values = $this->ui->getValues(array('title', 'border', 'description'));
 
-		SwatDB::updateRow($this->app->db, 'Image', $fields, $values,
-			'id', $this->id);
+		$this->image->title       = $values['title'];
+		$this->image->border      = $values['border'];
+		$this->image->description = $values['description'];
 
-		$message = new SwatMessage(Store::_('Image has been saved.'));
+		$this->image->save();
+
+		if ($this->id == null) {
+			$sql = sprintf('insert into ProductImageBinding
+				(product, image) values (%s, %s)',
+				$this->app->db->quote($this->product->id, 'integer'),
+				$this->app->db->quote($this->image->id, 'integer'));
+
+			SwatDB::exec($this->app->db, $sql);
+		}
+
+		$message = new SwatMessage(Store::_('Product Image has been saved.'));
 
 		$this->app->messages->add($message);
 	}
 
 	// }}}
-	// {{{ private function saveImages()
+	// {{{ protected function processImage()
 
-	/**
-	 * Inserts new image data into the database and updates products
-	 *
-	 * TODO: add the parameters @param
-	 *
-	 * @return array image files that were replaced and should be deleted.
-	 */
-	private function saveImages($fields, $data, $images, $sizes)
+	protected function processImage()
 	{
-		$old_id = $this->id;
-		$delete_files = array();
+		$file = $this->ui->getWidget('original_image');
 
-		// create a row for the new image
-		$new_id = SwatDB::insertRow($this->app->db, 'Image',
-			$fields, $data, 'integer:id');
-
-		// bind the new image to the product
-		if ($old_id === null) {
-			$sql = sprintf('select max(displayorder) from ProductImageBinding
-					where product = %s',
-					$this->app->db->quote($this->product_id, 'integer'));
-			$displayorder = SwatDB::queryOne($this->app->db, $sql);
-			$displayorder = ($displayorder === null) ? 0 : $displayorder + 1;
-
-			$fields = array('integer:product',
-					'integer:image',
-					'integer:displayorder');
-
-			$values = array('product' => $this->product_id,
-					'image' => $new_id,
-					'displayorder' => $displayorder);
-
-			SwatDB::insertRow($this->app->db, 'ProductImageBinding',
-				$fields, $values);
-		} else {
-			$sql = sprintf('update ProductImageBinding set image = %s
-				where image = %s and product = %s',
-				$this->app->db->quote($new_id, 'integer'),
-				$this->app->db->quote($old_id, 'integer'),
-				$this->app->db->quote($this->product_id, 'integer'));
-
-			SwatDB::exec($this->app->db, $sql);
+		if ($file->isUploaded()) {
+			$this->image->setFileBase('../images');
+			$this->image->process($file->getTempFileName());
 		}
 
-		// no more products reference the image so delete it
-		if ($old_id !== null) {
-			$sql = 'select count(product) from ProductImageBinding
-				where image = %s';
-			$sql = sprintf($sql,
-				$this->app->db->quote($old_id, 'integer'));
-
-			$old_image_products = SwatDB::queryOne($this->app->db, $sql);
-
-			if ($old_image_products == 0) {
-				$sql = 'delete from Image where id = %s';
-				$sql = sprintf($sql,
-					$this->app->db->quote($old_id, 'integer'));
-
-				SwatDB::query($this->app->db, $sql);
-
-				// delete old files
-				foreach ($sizes as $size => $dimensions)
-					$delete_files[] = '../images/products/'.$size.'/'.
-						$old_id.'.jpg';
+		foreach ($this->dimensions as $dimension) {
+			$file = $this->dimension_files[$dimension->shortname];
+			if ($file->isUploaded()) {
+				$this->image->setFileBase('../images');
+				$this->image->processManual($file->getTempFileName(),
+					$dimension->shortname);
 			}
 		}
-
-		// save images
-		foreach ($sizes as $size => $dimensions) {
-			if (isset($images[$size])) {
-				$transformer = $images[$size];
-				$filename = '../images/products/'.$size.'/'.$new_id.'.jpg';
-				$transformer->save($filename, false,
-					StoreImage::COMPRESSION_QUALITY);
-
-				unset($transformer);
-			} else {
-				// move images sizes that were not uploaded
-				$old_filename = '../images/products/'.$size.'/'.$old_id.'.jpg';
-				$new_filename = '../images/products/'.$size.'/'.$new_id.'.jpg';
-				if (file_exists($old_filename))
-					rename($old_filename, $new_filename);
-			}
-		}
-
-		$this->id = $new_id;
-
-		return $delete_files;
-	}
-
-	// }}}
-	// {{{ private function relocate()
-
-	private function relocate()
-	{
-		$form = $this->ui->getWidget('edit_form');
-		$url = $form->getHiddenField(self::RELOCATE_URL_FIELD);
-		$this->app->relocate($url);
-	}
-
-	// }}}
-	// {{{ protected function validate()
-
-	protected function validate()
-	{
-		$form = $this->ui->getWidget('edit_form');
-		$message = $this->ui->getWidget('message');
-
-		$image = $this->ui->getWidget('orig_image');
-		$thumb = $this->ui->getWidget('thumb_image');
-		$small = $this->ui->getWidget('small_image');
-		$large = $this->ui->getWidget('large_image');
-
-		// if we're adding an image make sure enough images were uploaded
-		// for all the sizes
-		if ($this->id === null && !($image->isUploaded() ||
-			($thumb->isUploaded() && $small->isUploaded() &&
-			$large->isUploaded()))) {
-
-			$message_text = new SwatMessage(Store::_('You need to specify all '.
-				'image sizes when creating a new image or upload an image to '.
-				'be automatically resized.'), SwatMessage::ERROR);
-
-			$message->add($message_text);
-
-			return false;
-		}
-
-		return !$form->hasMessage();
 	}
 
 	// }}}
@@ -423,96 +228,18 @@ class StoreProductImageEdit extends AdminPage
 	{
 		parent::buildInternal();
 
-		if ($this->id !== null) {
-			$this->loadDBData();
-
-			$this->ui->getWidget('submit_button')->title =
-				Store::_('Update');
-		}
-
-		$this->buildImage();
-		$this->buildForm();
-		$this->buildNavBar();
-
 		$frame = $this->ui->getWidget('edit_frame');
+		$frame->subtitle = $this->product->title;
 
-		if ($this->id === null) {
+		if ($this->id === null)
 			$frame->title = Store::_('Add Product Image for');
+		else
+			$this->ui->getWidget('image')->visible = true;
 
-			// don't show image preview if we are adding an image
-			$image = $this->ui->getWidget('image');
-			$image->visible = false;
-		}
-
-		$frame->subtitle = $this->product_title;
-
-		//set the notes on the manual image fields
-		$product_image = SwatDBClassMap::get('StoreProductImage');
-		// name => max dimensions
-		$sizes = call_user_func(array($product_image, 'getSizes'));
-
-		//set the notes on the manual image fields
-		$message = Store::_('Maximum Dimensions: %s px');
-		$this->ui->getWidget('thumbnail_field')->note = sprintf($message,
-			sprintf('%s × %s', $sizes['thumb'][0], $sizes['thumb'][1]));
-
-		$this->ui->getWidget('small_field')->note = sprintf($message,
-			$sizes['small'][0]);
-
-		$this->ui->getWidget('large_field')->note = sprintf($message,
-			$sizes['large'][0]);
-
-		$this->buildMessages();
-	}
-
-	// }}}
-	// {{{ protected function buildImage()
-
-	protected function buildImage()
-	{
-		$fields = array('integer:id',
-			'integer:thumb_width', 'integer:thumb_height',
-			'integer:small_width', 'integer:small_height',
-			'integer:large_width', 'integer:large_height');
-
-		$row = SwatDB::queryRowFromTable($this->app->db, 'Image',
-			$fields, 'id', $this->id);
-
-		// the product references an undefined image
-		if ($row === null) {
-			$this->id = null;
-		} else {
-			$image = $this->ui->getWidget('image');
-			$image->alt = $this->product_title;
-
-			$image->width = $row->thumb_width;
-			$image->height = $row->thumb_height;
-			$image->image = '../images/products/thumb/'.$row->id.'.jpg';
-
-			$image->small_width = $row->small_width;
-			$image->small_height = $row->small_height;
-			$image->small_image = '../images/products/small/'.$row->id.'.jpg';
-
-			$image->large_width = $row->large_width;
-			$image->large_height = $row->large_height;
-		}
-	}
-
-	// }}}
-	// {{{ protected function buildForm()
-
-	protected function buildForm()
-	{
 		$form = $this->ui->getWidget('edit_form');
-		$form->action = $this->source;
-		$form->addHiddenField('product', $this->product_id);
+		$form->addHiddenField('product', $this->product->id);
 		$form->addHiddenField('id', $this->id);
 		$form->addHiddenField('category', $this->category_id);
-
-		if ($form->getHiddenField(self::RELOCATE_URL_FIELD) === null) {
-			$url = $this->getRefererURL();
-			$form->addHiddenField(self::RELOCATE_URL_FIELD, $url);
-		}
 	}
 
 	// }}}
@@ -520,28 +247,21 @@ class StoreProductImageEdit extends AdminPage
 
 	protected function loadDBData()
 	{
-		$sql = 'select title, border, description from Image
-			inner join ProductImageBinding on image = id
-			where id = %s and product = %s';
+		$this->ui->setValues(get_object_vars($this->image));
 
-		$sql = sprintf($sql,
-			$this->app->db->quote($this->id, 'integer'),
-			$this->app->db->quote($this->product_id, 'integer'));
-
-		$row = SwatDB::queryRow($this->app->db, $sql);
-
-		if ($row === null)
-			throw new AdminNotFoundException(sprintf(
-				Store::_('An image with an id of ‘%d’ does not exist.'),
-				$this->id));
-
-		$this->ui->setValues(get_object_vars($row));
+		$image = $this->ui->getWidget('image');
+		$image->image          = $this->image->getUri('thumb', '../');
+		$image->width          = $this->image->getWidth('thumb');
+		$image->height         = $this->image->getHeight('thumb');
+		$image->preview_image  = $this->image->getUri('large', '../');
+		$image->preview_width  = $this->image->getWidth('large');
+		$image->preview_height = $this->image->getHeight('large');
 	}
 
 	// }}}
-	// {{{ private function buildNavBar()
+	// {{{ protected function buildNavBar()
 
-	private function buildNavBar()
+	protected function buildNavBar()
 	{
 		if ($this->category_id !== null) {
 			$this->navbar->popEntry();
@@ -557,12 +277,12 @@ class StoreProductImageEdit extends AdminPage
 		}
 
 		if ($this->category_id === null)
-			$link = sprintf('Product/Details?id=%s', $this->product_id);
+			$link = sprintf('Product/Details?id=%s', $this->product->id);
 		else
 			$link = sprintf('Product/Details?id=%s&category=%s',
-				$this->product_id, $this->category_id);
+				$this->product->id, $this->category_id);
 
-		$this->navbar->addEntry(new SwatNavBarEntry($this->product_title,
+		$this->navbar->addEntry(new SwatNavBarEntry($this->product->title,
 			$link));
 
 		if ($this->id === null)
@@ -571,7 +291,7 @@ class StoreProductImageEdit extends AdminPage
 			$last_entry = new SwatNavBarEntry(Store::_('Change Product Image'));
 
 		$this->navbar->addEntry($last_entry);
-		$this->title = $this->product_title;
+		$this->title = $this->product->title;
 	}
 
 	// }}}

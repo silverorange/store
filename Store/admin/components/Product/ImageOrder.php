@@ -3,19 +3,32 @@
 require_once 'Admin/pages/AdminDBOrder.php';
 require_once 'Swat/SwatImageDisplay.php';
 require_once 'SwatDB/SwatDB.php';
+require_once 'Store/dataobjects/StoreProduct.php';
+
 
 /**
  * Order page for product images
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2008 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductImageOrder extends AdminDBOrder
 {
 	// {{{ private properties
 
-	private $product_id;
+	/**
+	 * @var StoreProduct
+	 */
+	private $product;
+
+	/**
+	 * Optional id of the product's current category. This is only used to
+	 * maintain the proper navbar breadcrumbs when getting to this page by
+	 * browsing the categories.
+	 *
+	 * @var integer
+	 */
 	private $category_id;
 
 	// }}}
@@ -27,8 +40,16 @@ class StoreProductImageOrder extends AdminDBOrder
 	{
 		parent::initInternal();
 
-		$this->product_id = SiteApplication::initVar('product');
 		$this->category_id = SiteApplication::initVar('category');
+
+		$product_id = SiteApplication::initVar('product');
+		$class_name = SwatDBClassMap::get('StoreProduct');
+		$this->product = new $class_name();
+		$this->product->setDatabase($this->app->db);
+
+		if (!$this->product->load($product_id))
+			throw new AdminNotFoundException(
+				sprintf('Product with id ‘%s’ not found.', $product_id));
 	}
 
 	// }}}
@@ -83,8 +104,9 @@ class StoreProductImageOrder extends AdminDBOrder
 		$frame->title = Store::_('Order Product Images');
 
 		$this->ui->getWidget('options_field')->visible = false;
-
-		$this->ui->getWidget('order')->height = '400px';
+		$this->ui->getWidget('order')->height = '350px';
+		// TODO: load this from the ImageDimension so it always fits
+		$this->ui->getWidget('order')->width = '105px';
 	}
 
 	// }}}
@@ -95,7 +117,7 @@ class StoreProductImageOrder extends AdminDBOrder
 		parent::buildForm();
 
 		$form = $this->ui->getWidget('order_form');
-		$form->addHiddenField('product', $this->product_id);
+		$form->addHiddenField('product', $this->product->id);
 		$form->addHiddenField('category', $this->category_id);
 	}
 
@@ -106,26 +128,10 @@ class StoreProductImageOrder extends AdminDBOrder
 	{
 		$order_widget = $this->ui->getWidget('order');
 
-		$sql = sprintf('select id, thumb_width, thumb_height
-			from Image
-			inner join ProductImageBinding
-				on ProductImageBinding.image = Image.id
-			where product = %s
-			order by displayorder',
-			$this->app->db->quote($this->product_id, 'integer'));
-
-		$images = SwatDB::query($this->app->db, $sql);
-		foreach ($images as $image) {
-			$widget = new SwatImageDisplay();
-			$widget->image = '../images/products/thumb/'.$image->id.'.jpg';
-			$widget->width = $image->thumb_width;
-			$widget->height = $image->thumb_height;
-
-			ob_start();
-			$widget->display();
-			$image_tag = ob_get_clean();
-
-			$order_widget->addOption($image->id, $image_tag, 'text/xhtml');
+		foreach ($this->product->images as $image) {
+			$order_widget->addOption($image->id,
+				$image->getImgTag('thumb', '../'),
+				'text/xml');
 		}
 	}
 
@@ -135,7 +141,6 @@ class StoreProductImageOrder extends AdminDBOrder
 	protected function buildNavBar()
 	{
 		parent::buildNavBar();
-		$last_entry = $this->navbar->popEntry();
 		$this->navbar->popEntry();
 
 		if ($this->category_id !== null) {
@@ -150,18 +155,19 @@ class StoreProductImageOrder extends AdminDBOrder
 					'Category/Index?id='.$entry->id));
 		}
 
-		$product_title = SwatDB::queryOneFromTable($this->app->db, 'Product',
-			'text:title', 'id', $this->product_id);
-
 		if ($this->category_id === null)
-			$link = sprintf('Product/Details?id=%s', $this->product_id);
+			$link = sprintf('Product/Details?id=%s', $this->product->id);
 		else
 			$link = sprintf('Product/Details?id=%s&category=%s',
-				$this->product_id, $this->category_id);
+				$this->product->id, $this->category_id);
 
-		$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));
-		$this->navbar->addEntry($last_entry);
-		$this->title = $product_title;
+		$this->navbar->addEntry(
+			new SwatNavBarEntry($this->product->title, $link));
+
+		$this->navbar->addEntry(
+			new SwatNavBarEntry(Store::_('Order Product Images')));
+
+		$this->title = $this->product->title;
 	}
 
 	// }}}
