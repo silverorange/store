@@ -468,18 +468,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 
 	protected function getEntryDescription(StoreCartEntry $entry)
 	{
-		$description = array();
-
-		if ($entry->item->getDescription() !== null)
-			$description[] = $entry->item->getDescription();
-
-		if ($entry->item->getGroupDescription() !== null)
-			$description[] = $entry->item->getGroupDescription();
-
-		if ($entry->item->getPartCountDescription() !== null)
-			$description[] = $entry->item->getPartCountDescription();
-
-		return implode(' - ', $description);
+		return implode(' - ', $entry->item->getDescriptionArray());
 	}
 
 	// }}}

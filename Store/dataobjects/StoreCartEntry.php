@@ -337,20 +337,10 @@ class StoreCartEntry extends SwatDBDataObject
 
 	protected function getOrderItemDescription()
 	{
-		$description = null;
+		foreach ($this->item->getDescriptionArray() as $element)
+			$description[] = '<div>'.$element.'</div>';
 
-		if ($this->item->getDescription() !== null)
-			$description.= '<div>'.$this->item->getDescription().'</div>';
-
-		if ($this->item->getGroupDescription() !== null)
-			$description.= '<div>'.$this->item->getGroupDescription().
-				'</div>';
-
-		if ($this->item->getPartCountDescription() !== null)
-			$description.= '<div>'.$this->item->getPartCountDescription().
-				'</div>';
-
-		return $description;
+		return implode("\n", $description);
 	}
 
 	// }}}

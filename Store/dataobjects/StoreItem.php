@@ -381,24 +381,6 @@ class StoreItem extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ public function getGroupDescription()
-
-	/**
-	 * Gets a displayable description for this item's group
-	 *
-	 * @return string a group description for this item.
-	 */
-	public function getGroupDescription()
-	{
-		$description = null;
-
-		if ($this->item_group !== null && strlen($this->item_group->title) > 0)
-			$description = sprintf('(%s) ', $this->item_group->title);
-
-		return $description;
-	}
-
-	// }}}
 	// {{{ public function getDescription()
 
 	/**
@@ -413,24 +395,34 @@ class StoreItem extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ public function getPartCountDescription()
+	// {{{ public function getDescriptionArray()
 
 	/**
-	 * Gets a displayable description for this item's part count
+	 * Get an array of descriptive elements for this item.
 	 *
-	 * @return string a part count description for this item.
+	 * The array is indexed by identifiers for each description type. Possible
+	 * keys are: description, part_count, group.
+	 *
+	 * @return array descriptive elements for this item.
 	 */
-	public function getPartCountDescription()
+	public function getDescriptionArray()
 	{
-		$description = null;
+		$description = array();
 
-		if ($this->part_count > 1) {
-			$description = sprintf(
+		$item_description = $this->getDescription();
+
+		if (strlen($item_description) > 0)
+			$description['description'] = $item_description;
+
+		if ($this->part_count > 1)
+			$description['part_count'] = sprintf(
 				'Packed %s %s per %s',
 				SwatString::minimizeEntities($this->part_count),
 				SwatString::minimizeEntities($this->part_unit),
 				SwatString::minimizeEntities($this->singular_unit));
-		}
+
+		if ($this->item_group !== null && strlen($this->item_group->title) > 0)
+			$description['group'] = sprintf('(%s) ', $this->item_group->title);
 
 		return $description;
 	}

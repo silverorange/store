@@ -435,18 +435,7 @@ class StoreProductPage extends StorePage
 
 	protected function getEntryDescription(StoreCartEntry $entry)
 	{
-		$description = array();
-
-		if ($entry->item->description !== null)
-			$description[] = $entry->item->description;
-
-		if ($entry->item->getGroupDescription() !== null)
-			$description[] = $entry->item->getGroupDescription();
-
-		if ($entry->item->getPartCountDescription() !== null)
-			$description[] = $entry->item->getPartCountDescription();
-
-		return implode(' - ', $description);
+		return implode(' - ', $entry->item->getDescriptionArray());
 	}
 
 	// }}}
