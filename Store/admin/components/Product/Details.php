@@ -81,6 +81,10 @@ class StoreProductDetails extends AdminIndex
 
 		// add dynamic columns to items view
 		$this->appendPriceColumns($view, $regions);
+
+		$sale_discount_flydown = $this->ui->getWidget('sale_discount_flydown');
+		$sale_discount_flydown->addOptionsByArray(SwatDB::getOptionArray(
+			$this->app->db, 'SaleDiscount', 'title', 'id', 'title'));
 	}
 
 	// }}}
@@ -190,6 +194,27 @@ class StoreProductDetails extends AdminIndex
 				SwatString::numberFormat($num)));
 
 			$this->app->messages->add($message);
+			break;
+
+		case 'sale_discount' :
+			$sale_discount =
+				$this->ui->getWidget('sale_discount_flydown')->value;
+
+			if ($sale_discount === null)
+				break;
+
+			SwatDB::updateColumn($this->app->db, 'Item',
+				'integer:sale_discount', $sale_discount, 'id',
+					$view->getSelection());
+
+			$num = count($view->getSelection());
+			$message = new SwatMessage(sprintf(Store::ngettext(
+				'A sale discount has been applied to one item.',
+				'A sale discount has been applied to %s items.', $num),
+				SwatString::numberFormat($num)));
+
+			$this->app->messages->add($message);
+
 			break;
 		}
 	}

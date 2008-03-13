@@ -81,6 +81,10 @@
 					<property name="content" translatable="yes"><![CDATA[<div class="swat-note" id="pricing_note">The enabled checkbox must be set for the this item to appear on the site in that region. The enabled flag overrides all other item statuses. The price is required if the item is enabled in that region.</div>]]></property>
 					<property name="content_type">text/xml</property>
 				</widget>
+				<widget class="SwatFormField" id="sale_discount_field">
+					<property name="title">Sale Discount</property>
+					<widget class="SwatFlydown" id="sale_discount" />
+				</widget>
 			</widget>
 			<widget class="SwatFieldset">
 				<property name="title" translatable="yes">Status</property>
