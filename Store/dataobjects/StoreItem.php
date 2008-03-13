@@ -416,13 +416,13 @@ class StoreItem extends SwatDBDataObject
 
 		if ($this->part_count > 1)
 			$description['part_count'] = sprintf(
-				'Packed %s %s per %s',
+				Store::_('Packed %s %s per %s'),
 				SwatString::minimizeEntities($this->part_count),
 				SwatString::minimizeEntities($this->part_unit),
 				SwatString::minimizeEntities($this->singular_unit));
 
 		if ($this->item_group !== null && strlen($this->item_group->title) > 0)
-			$description['group'] = sprintf('(%s) ', $this->item_group->title);
+			$description['group'] = $this->item_group->title;
 
 		return $description;
 	}
