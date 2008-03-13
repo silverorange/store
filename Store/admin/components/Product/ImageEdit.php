@@ -193,7 +193,6 @@ class StoreProductImageEdit extends AdminDBEdit
 		}
 
 		$message = new SwatMessage(Store::_('Product Image has been saved.'));
-
 		$this->app->messages->add($message);
 	}
 
