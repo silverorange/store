@@ -30,7 +30,7 @@
 		<widget class="SwatFrame" id="category_image_frame">
 			<property name="classes[]">image-frame</property>
 			<widget class="SwatImageDisplay" id="image">
-				<property name="image">../images/elements/category-place-holder.png</property>
+				<property name="image">../images/elements/category-placeholder.png</property>
 				<property name="width" type="integer">60</property>
 				<property name="height" type="integer">60</property>
 				<property name="alt" translatable="yes">No Image Available</property>
@@ -42,7 +42,7 @@
 					<property name="stock_id">create</property>
 				</widget>
 				<widget class="SwatToolLink" id="image_delete">
-					<property name="title" translatable="yes">Remove Image</property>
+					<property name="title" translatable="yes">Delete Image</property>
 					<property name="visible" type="boolean">false</property>
 					<property name="link">Category/ImageDelete?id=%s</property>
 					<property name="stock_id">delete</property>
