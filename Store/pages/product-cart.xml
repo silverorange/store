@@ -4,12 +4,16 @@
 	<widget class="SwatForm" id="cart_form">
 		<widget class="SwatTableView" id="cart_view">
 			<property name="classes[]">store-cart-entry-view</property>
-			<object class="StoreItemColumn">
+			<object class="SwatTableViewColumn" id="sku">
 				<property name="title" translatable="yes">Item #</property>
-				<object class="StoreItemDescriptionCellRenderer">
-					<property name="sku" type="data">item.sku</property>
-					<property name="description" type="data">description</property>
-					<property name="classes[]">store-cart-description</property>
+				<object class="SwatTextCellRenderer">
+					<property name="text" type="data">item.sku</property>
+				</object>
+			</object>
+			<object class="SwatTableViewColumn" id="description">
+				<property name="title" translatable="yes">Description</property>
+				<object class="SwatTextCellRenderer">
+					<property name="text" type="data">description</property>
 				</object>
 			</object>
 			<object class="SwatTableViewColumn">
