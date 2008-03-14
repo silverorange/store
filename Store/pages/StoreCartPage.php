@@ -570,7 +570,7 @@ abstract class StoreCartPage extends SiteArticlePage
 					$this->updated_entry_ids[] = $id;
 					$this->app->cart->checkout->setEntryQuantity($entry,
 						$widget->value);
-					
+
 					if ($widget->value > 0)
 						$num_entries_updated++;
 					else
