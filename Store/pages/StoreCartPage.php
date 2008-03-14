@@ -198,7 +198,7 @@ abstract class StoreCartPage extends SiteArticlePage
 	{
 		$view = $this->ui->getWidget('available_cart_view');
 		$column = $view->getColumn('move_column');
-		return $column->getRendererByPosition(); 
+		return $column->getRendererByPosition();
 	}
 
 	// }}}
@@ -208,7 +208,7 @@ abstract class StoreCartPage extends SiteArticlePage
 	{
 		$view = $this->ui->getWidget('available_cart_view');
 		$column = $view->getColumn('remove_column');
-		return $column->getRendererByPosition(); 
+		return $column->getRendererByPosition();
 	}
 
 	// }}}
@@ -218,7 +218,7 @@ abstract class StoreCartPage extends SiteArticlePage
 	{
 		$view = $this->ui->getWidget('available_cart_view');
 		$column = $view->getColumn('quantity_column');
-		return $column->getRendererByPosition(); 
+		return $column->getRendererByPosition();
 	}
 
 	// }}}
@@ -228,7 +228,7 @@ abstract class StoreCartPage extends SiteArticlePage
 	{
 		$view = $this->ui->getWidget('unavailable_cart_view');
 		$column = $view->getColumn('remove_column');
-		return $column->getRendererByPosition(); 
+		return $column->getRendererByPosition();
 	}
 
 	// }}}
@@ -238,7 +238,7 @@ abstract class StoreCartPage extends SiteArticlePage
 	{
 		$view = $this->ui->getWidget('unavailable_cart_view');
 		$column = $view->getColumn('move_column');
-		return $column->getRendererByPosition(); 
+		return $column->getRendererByPosition();
 	}
 
 	// }}}
@@ -248,7 +248,7 @@ abstract class StoreCartPage extends SiteArticlePage
 	{
 		$view = $this->ui->getWidget('saved_cart_view');
 		$column = $view->getColumn('move_column');
-		return $column->getRendererByPosition(); 
+		return $column->getRendererByPosition();
 	}
 
 	// }}}
@@ -258,7 +258,7 @@ abstract class StoreCartPage extends SiteArticlePage
 	{
 		$view = $this->ui->getWidget('saved_cart_view');
 		$column = $view->getColumn('remove_column');
-		return $column->getRendererByPosition(); 
+		return $column->getRendererByPosition();
 	}
 
 	// }}}
