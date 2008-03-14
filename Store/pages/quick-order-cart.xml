@@ -4,21 +4,20 @@
 	<widget class="SwatForm" id="cart_form">
 		<widget class="SwatTableView" id="cart_view">
 			<property name="classes[]">store-cart-entry-view</property>
-			<object class="SwatTableViewGroup">
-				<property name="group_by">item.product.id</property>
+			<object class="StoreItemColumn">
+				<property name="title" translatable="yes">Item #</property>
+				<object class="SwatTextCellRenderer">
+					<property name="text" type="data">item.sku</property>
+				</object>
+			</object>
+			<object class="SwatTableViewColumn">
+				<property name="title" translatable="yes">Description</property>
 				<object class="SwatLinkCellRenderer">
 					<property name="text" type="data">item.product.title</property>
 					<property name="link" type="data">product_link</property>
 				</object>
-			</object>
-			<object class="StoreItemColumn">
-				<property name="title" translatable="yes">Item Number</property>
-				<property name="abbreviated_title" translatable="yes">Item #</property>
-				<object class="StoreItemDescriptionCellRenderer">
-					<property name="sku" type="data">item.sku</property>
-					<property name="description" type="data">description</property>
-					<property name="description_content_type">text/xml</property>
-					<property name="classes[]">store-cart-description</property>
+				<object class="SwatTextCellRenderer">
+					<property name="text" type="data">description</property>
 				</object>
 			</object>
 			<object class="SwatTableViewColumn">
@@ -35,7 +34,7 @@
 			</object>
 			<object class="SwatTableViewColumn">
 				<property name="title" translatable="yes">Total</property>
-				<object class="StoreMoneyCellRenderer">
+				<object class="StorePriceCellRenderer">
 					<property name="value" type="data">extension</property>
 				</object>
 			</object>
