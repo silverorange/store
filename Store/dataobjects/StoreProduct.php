@@ -479,7 +479,7 @@ class StoreProduct extends SwatDBDataObject
 		$sql = sprintf('select * from Attribute
 			where id in (
 			select attribute from ProductAttributeBinding where product = %s)
-			order by attribute_type, displayorder, id',
+			order by displayorder asc',
 			$this->db->quote($this->id, 'integer'));
 
 		return SwatDB::query($this->db, $sql,
