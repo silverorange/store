@@ -51,6 +51,8 @@ class StoreTotalRow extends SwatTableViewRow
 		if (!$this->visible)
 			return;
 
+		parent::display();
+
 		$tr_tag = new SwatHtmlTag('tr');
 		$tr_tag->class = 'store-total-row';
 		$tr_tag->id = $this->id;
