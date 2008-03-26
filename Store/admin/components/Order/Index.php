@@ -232,31 +232,8 @@ class StoreOrderIndex extends AdminSearch
 		$pager = $this->ui->getWidget('pager');
 		$pager->total_records = SwatDB::queryOne($this->app->db, $sql);
 
-		$sql = 'select Orders.id, Orders.total, Orders.createdate,
-					Orders.locale, Orders.notes, Orders.comments,
-					Orders.billing_address,
-					(Orders.comments is not null and Orders.comments != %s) as has_comments
-				from Orders
-					left outer join Account on Orders.account = Account.id
-					inner join OrderAddress as BillingAddress
-						on Orders.billing_address = BillingAddress.id
-					inner join OrderAddress as ShippingAddress
-						on Orders.shipping_address = ShippingAddress.id
-					inner join Locale on Orders.locale = Locale.id
-					inner join Region on Locale.region = Region.id
-				where %s
-				order by %s';
-
-		// Order by id and not createdate in case two createdates are the same.
-		$sql = sprintf($sql,
-			$this->app->db->quote('', 'text'),
-			$this->getWhereClause(),
-			$this->getOrderByClause($view, 'Orders.id desc'));
-
-		$this->app->db->setLimit($pager->page_size, $pager->current_record);
-
-		$orders = SwatDB::query($this->app->db, $sql,
-			SwatDBClassMap::get('StoreOrderWrapper'));
+		$orders = $this->getOrders($view,
+			$pager->page_size, $pager->current_record);
 
 		if (count($orders) > 0)
 			$this->ui->getWidget('results_message')->content =
@@ -274,6 +251,39 @@ class StoreOrderIndex extends AdminSearch
 		}
 
 		return $store;
+	}
+
+	// }}}
+	// {{{ protected function getOrders()
+
+	protected function getOrders($view, $limit, $offset)
+	{
+		$sql = 'select Orders.id, Orders.total, Orders.createdate,
+					Orders.locale, Orders.notes, Orders.comments,
+					Orders.billing_address,
+					(Orders.comments is not null and Orders.comments != %s) as has_comments
+				from Orders
+					left outer join Account on Orders.account = Account.id
+					inner join OrderAddress as BillingAddress
+						on Orders.billing_address = BillingAddress.id
+					inner join OrderAddress as ShippingAddress
+						on Orders.shipping_address = ShippingAddress.id
+					inner join Locale on Orders.locale = Locale.id
+					inner join Region on Locale.region = Region.id
+				where %s
+				order by %s';
+
+		$sql = sprintf($sql,
+			$this->app->db->quote('', 'text'),
+			$this->getWhereClause(),
+			$this->getOrderByClause($view, 'Orders.id desc'));
+
+		$this->app->db->setLimit($limit, $offset);
+
+		$orders = SwatDB::query($this->app->db, $sql,
+			SwatDBClassMap::get('StoreOrderWrapper'));
+
+		return $orders;
 	}
 
 	// }}}
