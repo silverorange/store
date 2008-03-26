@@ -215,6 +215,32 @@ class StoreOrderIndex extends AdminSearch
 		$pager = $this->ui->getWidget('pager');
 		$pager->total_records = SwatDB::queryOne($this->app->db, $sql);
 
+		$orders = $this->getOrders($view,
+			$pager->page_size, $pager->current_record);
+
+		if (count($orders) > 0)
+			$this->ui->getWidget('results_message')->content =
+				$pager->getResultsMessage('result', 'results');
+
+		$store = new SwatTableStore();
+		foreach ($orders as $order) {
+			$ds = new SwatDetailsStore($order);
+			$ds->fullname = $order->billing_address->getFullname();
+			$ds->title = $this->getOrderTitle($order);
+			$ds->has_notes = (strlen($order->notes) > 0);
+			$ds->has_comments = (strlen($order->comments) > 0);
+
+			$store->add($ds);
+		}
+
+		return $store;
+	}
+
+	// }}}
+	// {{{ protected function getOrders()
+
+	protected function getOrders($view, $limit, $offset)
+	{
 		$sql = 'select Orders.id, Orders.total, Orders.createdate,
 					Orders.locale, Orders.notes, Orders.comments,
 					Orders.billing_address,
@@ -230,32 +256,17 @@ class StoreOrderIndex extends AdminSearch
 				where %s
 				order by %s';
 
-		// Order by id and not createdate in case two createdates are the same.
 		$sql = sprintf($sql,
 			$this->app->db->quote('', 'text'),
 			$this->getWhereClause(),
 			$this->getOrderByClause($view, 'Orders.id desc'));
 
-		$this->app->db->setLimit($pager->page_size, $pager->current_record);
+		$this->app->db->setLimit($limit, $offset);
 
 		$orders = SwatDB::query($this->app->db, $sql,
 			SwatDBClassMap::get('StoreOrderWrapper'));
 
-		if (count($orders) > 0)
-			$this->ui->getWidget('results_message')->content =
-				$pager->getResultsMessage('result', 'results');
-
-		$store = new SwatTableStore();
-		foreach ($orders as $order) {
-			$ds = new SwatDetailsStore($order);
-			$ds->title = $this->getOrderTitle($order);
-			$ds->has_notes = (strlen($order->notes) > 0);
-			$ds->has_comments = (strlen($order->comments) > 0);
-
-			$store->add($ds);
-		}
-
-		return $store;
+		return $orders;
 	}
 
 	// }}}
