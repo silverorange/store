@@ -260,10 +260,10 @@ class StoreItemsView extends SwatControl
 	{
 		$parts = $item->getDescriptionArray();
 
-		if (strlen($parts['description']) > 0)
+		if (isset($parts['description']))
 			$description[] = $parts['description'];
 
-		if (strlen($parts['part_count']) > 0)
+		if (isset($parts['part_count']))
 			$description[] = $parts['part_count'];
 
 		return implode(' - ', $description);
