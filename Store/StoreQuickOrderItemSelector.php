@@ -394,6 +394,8 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	 */
 	protected function getItemDescription(StoreItem $item)
 	{
+		$description = array();
+
 		foreach ($item->getDescriptionArray() as $element)
 			$description[] = '<div>'.$element.'</div>';
 
