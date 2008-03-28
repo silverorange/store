@@ -337,6 +337,8 @@ class StoreCartEntry extends SwatDBDataObject
 
 	protected function getOrderItemDescription()
 	{
+		$description = array();
+
 		foreach ($this->item->getDescriptionArray() as $element)
 			$description[] = '<div>'.$element.'</div>';
 
