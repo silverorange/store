@@ -1,0 +1,8 @@
+#index_actions_sale_discount .swat-note {
+	display: inline;
+	margin-left: 1em;
+}
+
+#index_actions_sale_discount .swat-form-field-contents {
+	display: inline;
+}
