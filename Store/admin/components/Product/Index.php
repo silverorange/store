@@ -124,8 +124,8 @@ class StoreProductIndex extends AdminSearch
 				SwatDB::implodeSelection($this->app->db,
 					$view->getSelection())));
 
-			SwatDB::updateColumn($this->app->db, 'Item', 'integer:sale_discount',
-				$sale_discount, 'product', $item_list);
+			SwatDB::updateColumn($this->app->db, 'Item',
+				'integer:sale_discount', $sale_discount, 'product', $item_list);
 
 			$message = new SwatMessage(sprintf(Store::ngettext(
 				'A sale discount has been applied to one item.',
