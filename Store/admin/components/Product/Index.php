@@ -268,6 +268,19 @@ class StoreProductIndex extends AdminSearch
 	}
 
 	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/admin/styles/store-product-index.css',
+			Store::PACKAGE_ID));
+	}
+
+	// }}}
 }
 
 ?>

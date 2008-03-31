@@ -40,11 +40,9 @@
 				</widget>
 				<widget class="SwatActionItem" id="sale_discount">
 					<property name="title" translatable="yes">add sale discount…</property>
-					<widget class="SwatContainer">
+					<widget class="SwatFormField">
+						<property name="note" translatable="yes">The sale will apply to all items of the product. To apply to individual items, use the item editor.</property>
 						<widget class="SwatFlydown" id="sale_discount_flydown" />
-						<widget class="SwatContentBlock" id="sale_discount_note">
-							<property name="content" translatable="yes">The sale will apply to all items of the product. To apply to individual items, use the item editor.</property>
-						</widget>
 					</widget>
 				</widget>
 			</widget>
