@@ -2,3 +2,11 @@ div.store-original-price {
 	text-decoration: line-through;
 	color: #666;
 }
+
+#items_view .price-column {
+	white-space: nowrap;
+}
+
+div.store-sale-discount {
+	color: #990000;
+}
