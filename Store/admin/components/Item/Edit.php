@@ -352,8 +352,11 @@ class StoreItemEdit extends AdminDBEdit
 	{
 		$this->ui->setValues(get_object_vars($this->item));
 		$this->ui->getWidget('status')->value = $this->item->getStatus()->id;
-		$this->ui->getWidget('sale_discount')->value =
-			$this->item->sale_discount->id;
+
+		if ($this->item->sale_discount !== null)
+			$this->ui->getWidget('sale_discount')->value =
+				$this->item->sale_discount->id;
+
 		$this->loadRegionBindings();
 		$this->loadItemAliases();
 
