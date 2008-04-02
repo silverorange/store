@@ -29,6 +29,16 @@
 				</object>
 				<object class="SwatTableViewColumn" id="price_column">
 					<property name="title" translatable="yes">Price</property>
+					<object class="SwatPercentageCellRenderer">
+						<property name="value" type="data">sale_discount.discount_percentage</property>
+						<property name="classes[]">store-sale-discount</property>
+						<property name="visible" type="data">is_on_sale</property>
+					</object>
+					<object class="SwatTextCellRenderer">
+						<property name="text" translatable="yes"> Off!</property>
+						<property name="classes[]">store-sale-discount</property>
+						<property name="visible" type="data">is_on_sale</property>
+					</object>
 					<object class="StorePriceCellRenderer">
 						<property name="value" type="data">original_price</property>
 						<property name="visible" type="data">is_on_sale</property>
