@@ -30,6 +30,12 @@
 					<property name="required" type="boolean">true</property>
 				</widget>
 			</widget>
+			<widget class="SwatGroupingFormField">
+				<property name="title">Attributes</property>
+				<widget class="SwatReplicableFormField" id="attributes_form_field">
+					<widget class="SwatCheckboxList" id="attributes" />
+				</widget>
+			</widget>
 			<widget class="SwatFooterFormField">
 				<widget class="SwatButton" id="submit_button" />
 				<widget class="SwatButton" id="submit_continue_button">

@@ -5,6 +5,8 @@ require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'Admin/exceptions/AdminNoAccessException.php';
 require_once 'NateGoSearch/NateGoSearch.php';
 require_once 'SwatDB/SwatDB.php';
+require_once 'Store/dataobjects/StoreAttributeTypeWrapper.php';
+require_once 'Store/dataobjects/StoreAttributeWrapper.php';
 require_once 'Date.php';
 
 /**
@@ -40,6 +42,7 @@ class StoreProductEdit extends AdminDBEdit
 		$this->category_id = SiteApplication::initVar('category');
 
 		$this->initProduct();
+		$this->initAttributeList();
 
 		$catalog_flydown = $this->ui->getWidget('catalog');
 		$catalog_flydown->addOptionsByArray(SwatDB::getOptionArray(
@@ -70,6 +73,27 @@ class StoreProductEdit extends AdminDBEdit
 					Store::_('A product with an id of ‘%d’ does not exist.'),
 					$this->id));
 		}
+	}
+
+	// }}}
+	// {{{ private function initAttributeList()
+
+	/**
+	 * Builds the list of attributes using an image and a title
+	 */
+	private function initAttributeList()
+	{
+		$replicators = array();
+
+		$attribute_types = SwatDB::query($this->app->db,
+			'select * from attributetype order by shortname',
+			SwatDBClassMap::get('StoreAttributeTypeWrapper'));
+
+		foreach ($attribute_types as $type)
+			$replicators[$type->id] = ucfirst($type->shortname);
+
+		$attributes_field = $this->ui->getWidget('attributes_form_field');
+		$attributes_field->replicators = $replicators;
 	}
 
 	// }}}
@@ -175,6 +199,7 @@ class StoreProductEdit extends AdminDBEdit
 			SwatDB::query($this->app->db, $sql);
 		}
 
+		$this->saveAttributes();
 		$this->addToSearchQueue();
 
 		$message = new SwatMessage(sprintf(Store::_('“%s” has been saved.'),
@@ -243,6 +268,23 @@ class StoreProductEdit extends AdminDBEdit
 	}
 
 	// }}}
+	// {{{ private function saveAttributes()
+
+	private function saveAttributes()
+	{
+		$attributes_field = $this->ui->getWidget('attributes_form_field');
+		$attribute_array = array();
+
+		foreach ($attributes_field->replicators as $id => $title)
+			$attribute_array = array_merge($attribute_array,
+				$attributes_field->getWidget('attributes', $id)->values);
+
+		SwatDB::updateBinding($this->app->db, 'ProductAttributeBinding',
+			'product', $this->product->id, 'attribute',
+			$attribute_array, 'Attribute', 'id');
+	}
+
+	// }}}
 
 	// build phase
 	// {{{ protected function buildInternal()
@@ -293,6 +335,8 @@ class StoreProductEdit extends AdminDBEdit
 
 			$this->ui->getWidget('catalog')->value = $catalog;
 		}
+
+		$this->buildAttributes();
 	}
 
 	// }}}
@@ -354,6 +398,67 @@ class StoreProductEdit extends AdminDBEdit
 		// make sure that the catalog defaults correctly
 		$this->ui->getWidget('catalog')->value =
 			$this->product->getInternalValue('catalog');
+	}
+
+	// }}}
+	// {{{ protected function buildAttributes()
+
+	protected function buildAttributes()
+	{
+		$sql = 'select id, shortname, title, attribute_type from Attribute
+			order by attribute_type, displayorder, id';
+
+		$attributes = SwatDB::query($this->app->db, $sql,
+			SwatDBClassMap::get('StoreAttributeWrapper'));
+		$attributes_field = $this->ui->getWidget('attributes_form_field');
+
+		foreach ($attributes as $attribute) {
+			ob_start();
+			$this->displayAttribute($attribute);
+			$option = ob_get_clean();
+
+			$attributes_field->getWidget('attributes',
+				$attribute->attribute_type->id)->addOption(
+					$attribute->id, $option, 'text/xml');
+		}
+	}
+
+	// }}}
+	// {{{ protected function displayAttribute()
+
+	protected function displayAttribute(StoreAttribute $attribute)
+	{
+		$attribute->display();
+	}
+
+	// }}}
+	// {{{ protected function loadAttributes()
+
+	protected function loadAttributes()
+	{
+		$attribute_values = SwatDB::queryColumn($this->app->db,
+			'ProductAttributeBinding', 'attribute', 'product', $this->id);
+
+		$attributes_field = $this->ui->getWidget('attributes_form_field');
+		$attribute_array = array();
+
+		foreach ($attributes_field->replicators as $id => $title)
+			$attributes_field->getWidget('attributes', $id)->values =
+				$attribute_values;
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/admin/styles/store-product-edit-page.css',
+			Store::PACKAGE_ID));
 	}
 
 	// }}}
