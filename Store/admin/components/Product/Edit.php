@@ -389,18 +389,6 @@ class StoreProductEdit extends AdminDBEdit
 	}
 
 	// }}}
-	// {{{ protected function loadDBData()
-
-	protected function loadDBData()
-	{
-		$this->ui->setValues(get_object_vars($this->product));
-
-		// make sure that the catalog defaults correctly
-		$this->ui->getWidget('catalog')->value =
-			$this->product->getInternalValue('catalog');
-	}
-
-	// }}}
 	// {{{ protected function buildAttributes()
 
 	protected function buildAttributes()
@@ -429,6 +417,20 @@ class StoreProductEdit extends AdminDBEdit
 	protected function displayAttribute(StoreAttribute $attribute)
 	{
 		$attribute->display();
+	}
+
+	// }}}
+	// {{{ protected function loadDBData()
+
+	protected function loadDBData()
+	{
+		$this->ui->setValues(get_object_vars($this->product));
+
+		// make sure that the catalog defaults correctly
+		$this->ui->getWidget('catalog')->value =
+			$this->product->getInternalValue('catalog');
+
+		$this->loadAttributes();
 	}
 
 	// }}}
