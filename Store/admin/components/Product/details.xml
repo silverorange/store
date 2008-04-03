@@ -55,6 +55,13 @@
 					<property name="text" type="data">bodytext</property>
 				</object>
 			</object>
+			<object class="SwatDetailsViewField" id="attributes">
+				<property name="title">Attributes</property>
+				<object class="SwatNullTextCellRenderer">
+					<property name="text" type="data">attributes</property>
+					<property name="content_type">text/xml</property>
+				</object>
+			</object>
 		</widget>
 		<!-- }}} -->
 		<!-- {{{ Product Images -->

@@ -14,6 +14,7 @@ require_once 'Store/dataobjects/StoreProduct.php';
 require_once 'Store/dataobjects/StoreRegionWrapper.php';
 require_once 'Store/dataobjects/StoreItemWrapper.php';
 require_once 'Store/dataobjects/StoreProductImageWrapper.php';
+require_once 'Store/dataobjects/StoreAttributeTypeWrapper.php';
 require_once 'Store/admin/components/Product/include/StoreItemTableView.php';
 require_once 'Store/admin/components/Product/include/StoreItemGroupGroup.php';
 require_once 'Store/admin/components/Product/include/StoreItemGroupAction.php';
@@ -484,7 +485,56 @@ class StoreProductDetails extends AdminIndex
 		$ds->bodytext = SwatString::condense(SwatString::toXHTML(
 			$product->bodytext));
 
+		$ds->attributes = $this->buildAttributes($product);
+
 		return $ds;
+	}
+
+	// }}}
+	// {{{ protected function buildAttributes()
+
+	protected function buildAttributes($product)
+	{
+		if ($product->attributes === null)
+			return;
+
+		$types = SwatDB::query($this->app->db,
+			'select * from attributetype order by shortname',
+			SwatDBClassMap::get('StoreAttributeTypeWrapper'));
+
+		$count = 0;
+		ob_start();
+
+		foreach ($types as $type) {
+			$attributes = $product->attributes->getByType($type->shortname);
+
+			if (count($attributes) > 0) {
+				if ($count > 0)
+					echo '</ul>';
+
+				echo ucfirst($type->shortname), ':';
+				echo '<ul>';
+
+				foreach ($attributes as $attribute) {
+					echo '<li>';
+					$this->displayAttribute($attribute);
+					echo '</li>';
+				}
+
+				echo '</ul>';
+			}
+			$count++;
+		}
+
+		return ob_get_clean();
+	}
+
+	// }}}
+	// {{{ protected function displayAttribute()
+
+	protected function displayAttribute(StoreAttribute $attribute)
+	{
+		$attribute->display();
 	}
 
 	// }}}
