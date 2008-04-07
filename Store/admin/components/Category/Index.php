@@ -10,6 +10,8 @@ require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/StoreItemStatusList.php';
 require_once 'Store/dataobjects/StoreCategory.php';
 require_once 'Store/dataobjects/StoreItem.php';
+require_once 'Store/dataobjects/StoreAttributeTypeWrapper.php';
+require_once 'Store/dataobjects/StoreAttributeWrapper.php';
 
 //TODO - move some of these into better locations
 require_once 'Store/admin/components/Category/include/'.
@@ -58,6 +60,36 @@ class StoreCategoryIndex extends AdminIndex
 		$this->ui->getWidget('catalog_switcher')->db = $this->app->db;
 		$this->id = SiteApplication::initVar('id', null,
 			SiteApplication::VAR_GET);
+
+		$this->initAttributeList();
+	}
+
+	// }}}
+	// {{{ private function initAttributeList()
+
+	/**
+	 * Builds the list of attributes using an image and a title
+	 */
+	private function initAttributeList()
+	{
+		$replicators = array();
+
+		$attribute_types = SwatDB::query($this->app->db,
+			'select * from attributetype order by shortname',
+			SwatDBClassMap::get('StoreAttributeTypeWrapper'));
+
+		foreach ($attribute_types as $type)
+			$replicators[$type->id] = ucfirst($type->shortname);
+
+		$attributes_field =
+			$this->ui->getWidget('product_attributes_form_field');
+
+		$attributes_field->replicators = $replicators;
+
+		$attributes_field =
+			$this->ui->getWidget('category_attributes_form_field');
+
+		$attributes_field->replicators = $replicators;
 	}
 
 	// }}}
@@ -125,6 +157,35 @@ class StoreCategoryIndex extends AdminIndex
 			$this->app->getPage()->setEnabled(false);
 			$this->app->getPage()->setRegion(
 				$this->ui->getWidget('categories_disable_region')->value);
+
+			break;
+
+		case 'categories_attributes' :
+			$attribute_array = array();
+			$attributes_field =
+				$this->ui->getWidget('category_attributes_form_field');
+
+			foreach ($attributes_field->replicators as $id => $title)
+				$attribute_array = array_merge($attribute_array,
+					$attributes_field->getWidget(
+						'category_attributes', $id)->values);
+
+			$sql = sprintf('select descendant from
+				getCategoryDescendants(null) where category in (%s)',
+				SwatDB::implodeSelection($this->app->db,
+					$view->getSelection()));
+
+			$categories = SwatDB::query($this->app->db, $sql);
+
+			foreach ($categories as $category)
+				$category_ids[] = $this->app->db->quote(
+					$category->descendant, 'integer');
+
+			$product_array = SwatDB::getOptionArray($this->app->db,
+				'CategoryProductBinding', 'product', 'product', null,
+				sprintf('category in (%s)', implode(',', $category_ids)));
+
+			$this->addProductAttributes($product_array, $attribute_array);
 
 			break;
 		}
@@ -216,8 +277,8 @@ class StoreCategoryIndex extends AdminIndex
 			$sql = 'update ItemRegionBinding set enabled = %s
 				where %s item in (select id from Item where product in (%s))';
 
-			$region_sql = ($region > 0) ? 
-				sprintf('region = %s and', $this->app->db->quote($region, 
+			$region_sql = ($region > 0) ?
+				sprintf('region = %s and', $this->app->db->quote($region,
 					'integer')) :
 				'';
 
@@ -245,8 +306,8 @@ class StoreCategoryIndex extends AdminIndex
 			$sql = 'update ItemRegionBinding set enabled = %s
 				where %s item in (select id from Item where product in (%s))';
 
-			$region_sql = ($region > 0) ? 
-				sprintf('region = %s and', $this->app->db->quote($region, 
+			$region_sql = ($region > 0) ?
+				sprintf('region = %s and', $this->app->db->quote($region,
 					'integer')) :
 				'';
 
@@ -260,6 +321,21 @@ class StoreCategoryIndex extends AdminIndex
 				'One item has been disabled.',
 				'%s items have been disabled.', $num),
 				SwatString::numberFormat($num)));
+
+			break;
+
+		case 'products_attributes' :
+			$attribute_array = array();
+			$attributes_field =
+				$this->ui->getWidget('product_attributes_form_field');
+
+			foreach ($attributes_field->replicators as $id => $title)
+				$attribute_array = array_merge($attribute_array,
+					$attributes_field->getWidget(
+						'product_attributes', $id)->values);
+
+			$this->addProductAttributes($view->getSelection(),
+				$attribute_array);
 
 			break;
 		}
@@ -296,6 +372,50 @@ class StoreCategoryIndex extends AdminIndex
 
 		if ($message !== null)
 			$this->app->messages->add($message);
+	}
+
+	// }}}
+	// {{{ private function addProductAttributes()
+
+	private function addProductAttributes($products, $attributes)
+	{
+		if (count($products) == 0 || count($attributes) == 0)
+			return;
+
+		$product_array = array();
+		$attribute_array = array();
+
+		foreach ($products as $product)
+			$product_array[] = $this->app->db->quote($product, 'integer');
+
+		foreach ($attributes as $attribute)
+			$attribute_array[] = $this->app->db->quote($attribute, 'integer');
+
+		$sql = sprintf('delete from ProductAttributeBinding
+			where product in (%s) and attribute in (%s)',
+			implode(',', $product_array), implode(',', $attribute_array));
+
+		SwatDB::exec($this->app->db, $sql);
+
+		$sql = sprintf('insert into ProductAttributeBinding
+			(product, attribute)
+			select Product.id, Attribute.id
+			from Product cross join Attribute
+			where Product.id in (%s) and Attribute.id in (%s)',
+			implode(',', $product_array), implode(',', $attribute_array));
+
+		SwatDB::exec($this->app->db, $sql);
+
+		$message = new SwatMessage(sprintf(
+			'%s %s been given %s %s.',
+			SwatString::numberFormat(count($product_array)),
+			Store::ngettext('product has', 'products have',
+				count($product_array)),
+			SwatString::numberFormat(count($attribute_array)),
+			Store::ngettext('atrribute', 'attributes',
+				count($attribute_array))));
+
+		$this->app->messages->add($message);
 	}
 
 	// }}}
@@ -391,6 +511,12 @@ class StoreCategoryIndex extends AdminIndex
 		$this->ui->getWidget('categories_disable_region')->addOptionsByArray(
 			$regions);
 
+		$this->buildAttributes('product_attributes_form_field',
+			'product_attributes');
+
+		$this->buildAttributes('category_attributes_form_field',
+			'category_attributes');
+
 		$this->buildMessages();
 	}
 
@@ -415,6 +541,14 @@ class StoreCategoryIndex extends AdminIndex
 	protected function getItemStatuses()
 	{
 		return StoreItemStatusList::statuses();
+	}
+
+	// }}}
+	// {{{ protected function displayAttribute()
+
+	protected function displayAttribute(StoreAttribute $attribute)
+	{
+		$attribute->display();
 	}
 
 	// }}}
@@ -445,6 +579,30 @@ class StoreCategoryIndex extends AdminIndex
 			 $this->app->db->quote($this->id, 'integer'));
 
 		return SwatDB::queryOne($this->app->db, $sql);
+	}
+
+	// }}}
+	// {{{ private function buildAttributes()
+
+	private function buildAttributes($form_field_id, $check_list_id)
+	{
+		$sql = 'select id, shortname, title, attribute_type from Attribute
+			order by attribute_type, displayorder, id';
+
+		$attributes = SwatDB::query($this->app->db, $sql,
+			SwatDBClassMap::get('StoreAttributeWrapper'));
+
+		$attributes_field = $this->ui->getWidget($form_field_id);
+
+		foreach ($attributes as $attribute) {
+			ob_start();
+			$this->displayAttribute($attribute);
+			$option = ob_get_clean();
+
+			$attributes_field->getWidget($check_list_id,
+				$attribute->attribute_type->id)->addOption(
+					$attribute->id, $option, 'text/xml');
+		}
 	}
 
 	// }}}
@@ -739,6 +897,19 @@ class StoreCategoryIndex extends AdminIndex
 			$this->ui->getWidget('image_edit')->title =
 				Store::_('Replace Image');
 		}
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/admin/styles/store-category-index.css',
+			Store::PACKAGE_ID));
 	}
 
 	// }}}

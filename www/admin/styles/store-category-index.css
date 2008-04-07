@@ -1,0 +1,8 @@
+#category_attributes_form_field .swat-form-field,
+#product_attributes_form_field .swat-form-field {
+	float: left;
+}
+
+div.swat-actions-note {
+	clear: both;
+}
