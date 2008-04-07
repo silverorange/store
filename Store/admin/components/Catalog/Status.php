@@ -154,9 +154,6 @@ class StoreCatalogStatus extends AdminDBEdit
 
 	protected function buildFrame()
 	{
-		$this->ui->getWidget('edit_frame')->title =
-			Store::_('Change Catalog Status');
-
 		$this->ui->getWidget('edit_frame')->subtitle = $this->catalog->title;
 	}
 
