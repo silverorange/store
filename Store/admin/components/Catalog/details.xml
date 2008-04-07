@@ -16,7 +16,7 @@
 				<property name="sensitive" type="boolean">false</property>
 			</widget>
 			<widget class="SwatToolLink" id="status_link">
-				<property name="title" translatable="yes">Change Catalog Status</property>
+				<property name="title" translatable="yes">Change Catalog Availablity</property>
 				<property name="link">Catalog/Status?id=%s</property>
 				<property name="sensitive" type="boolean">true</property>
 			</widget>
