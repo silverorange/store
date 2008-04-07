@@ -132,10 +132,10 @@
 					</widget>
 				</widget>
 				<widget class="SwatActionItemDivider" />
-				<widget class="SwatActionItem" id="category_attributes">
+				<widget class="SwatActionItem" id="categories_attributes">
 					<property name="title" translatable="yes">add product attributes…</property>
 					<widget class="SwatReplicableFormField" id="category_attributes_form_field">
-						<widget class="SwatCheckboxList" id="attributes" />
+						<widget class="SwatCheckboxList" id="category_attributes" />
 					</widget>
 				</widget>
 				<widget class="SwatActionItem" id="categories_enable_items">
@@ -235,7 +235,7 @@
 					<widget class="SwatActionItem" id="products_attributes">
 						<property name="title" translatable="yes">add product attributes…</property>
 						<widget class="SwatReplicableFormField" id="product_attributes_form_field">
-							<widget class="SwatCheckboxList" id="attributes" />
+							<widget class="SwatCheckboxList" id="product_attributes" />
 						</widget>
 					</widget>
 					<widget class="SwatActionItemDivider" />
