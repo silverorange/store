@@ -132,6 +132,12 @@
 					</widget>
 				</widget>
 				<widget class="SwatActionItemDivider" />
+				<widget class="SwatActionItem" id="category_attributes">
+					<property name="title" translatable="yes">add product attributes…</property>
+					<widget class="SwatReplicableFormField" id="category_attributes_form_field">
+						<widget class="SwatCheckboxList" id="attributes" />
+					</widget>
+				</widget>
 				<widget class="SwatActionItem" id="categories_enable_items">
 					<property name="title" translatable="yes">enable items…</property>
 					<widget class="SwatFormField">
@@ -223,6 +229,13 @@
 							<widget class="SwatFlydown" id="products_status">
 								<property name="show_blank" type="boolean">false</property>
 							</widget>
+						</widget>
+					</widget>
+					<widget class="SwatActionItemDivider" />
+					<widget class="SwatActionItem" id="products_attributes">
+						<property name="title" translatable="yes">add product attributes…</property>
+						<widget class="SwatReplicableFormField" id="product_attributes_form_field">
+							<widget class="SwatCheckboxList" id="attributes" />
 						</widget>
 					</widget>
 					<widget class="SwatActionItemDivider" />
