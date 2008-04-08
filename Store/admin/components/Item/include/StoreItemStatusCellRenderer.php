@@ -19,7 +19,26 @@ class StoreItemStatusCellRenderer extends SwatCellRenderer
 	 */
 	public $status;
 
+	/**
+	 * @var boolean
+	 */
+	public $available;
+
 	public function render()
+	{
+		if (!$this->available) {
+			$span_tag = new SwatHtmlTag('span');
+			$span_tag->style = 'text-decoration: line-through;';
+			$span_tag->open();
+		}
+
+		$this->displayTitle();
+
+		if (!$this->available)
+			$span_tag->close();
+	}
+
+	protected function displayTitle()
 	{
 		echo SwatString::minimizeEntities($this->status->title);
 	}
