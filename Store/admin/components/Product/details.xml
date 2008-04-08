@@ -169,6 +169,7 @@
 						<property name="title" translatable="yes">Status</property>
 						<object class="StoreItemStatusCellRenderer">
 							<property name="status" type="data">status</property>
+							<property name="available" type="data">enabled</property>
 						</object>
 						<object class="SwatInputCell">
 							<widget class="SwatContentBlock" id="input_status" />
