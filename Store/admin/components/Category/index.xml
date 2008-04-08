@@ -156,6 +156,12 @@
 						<widget class="SwatCheckboxList" id="category_attributes" />
 					</widget>
 				</widget>
+				<widget class="SwatActionItem" id="categories_remove_attributes">
+					<property name="title" translatable="yes">remove product attributes…</property>
+					<widget class="SwatReplicableFormField" id="category_remove_attributes_form_field">
+						<widget class="SwatCheckboxList" id="category_remove_attributes" />
+					</widget>
+				</widget>
 				<widget class="SwatActionItem" id="categories_add_sale_discount">
 					<property name="title" translatable="yes">add sale discount…</property>
 					<widget class="SwatFormField">
@@ -274,6 +280,12 @@
 						<property name="title" translatable="yes">add product attributes…</property>
 						<widget class="SwatReplicableFormField" id="product_attributes_form_field">
 							<widget class="SwatCheckboxList" id="product_attributes" />
+						</widget>
+					</widget>
+					<widget class="SwatActionItem" id="products_remove_attributes">
+						<property name="title" translatable="yes">remove product attributes…</property>
+						<widget class="SwatReplicableFormField" id="product_remove_attributes_form_field">
+							<widget class="SwatCheckboxList" id="product_remove_attributes" />
 						</widget>
 					</widget>
 					<widget class="SwatActionItem" id="products_add_sale_discount">

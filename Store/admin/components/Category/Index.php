@@ -81,15 +81,15 @@ class StoreCategoryIndex extends AdminIndex
 		foreach ($attribute_types as $type)
 			$replicators[$type->id] = ucfirst($type->shortname);
 
-		$attributes_field =
-			$this->ui->getWidget('product_attributes_form_field');
+		$fields = array(
+			'product_attributes_form_field',
+			'category_attributes_form_field',
+			'product_remove_attributes_form_field',
+			'category_remove_attributes_form_field',
+		);
 
-		$attributes_field->replicators = $replicators;
-
-		$attributes_field =
-			$this->ui->getWidget('category_attributes_form_field');
-
-		$attributes_field->replicators = $replicators;
+		foreach ($fields as $id)
+			$this->ui->getWidget($id)->replicators = $replicators;
 	}
 
 	// }}}
@@ -177,6 +177,23 @@ class StoreCategoryIndex extends AdminIndex
 
 			break;
 
+		case 'categories_remove_attributes' :
+			$attribute_array = array();
+			$attributes_field =
+				$this->ui->getWidget('category_remove_attributes_form_field');
+
+			foreach ($attributes_field->replicators as $id => $title)
+				$attribute_array = array_merge($attribute_array,
+					$attributes_field->getWidget(
+						'category_remove_attributes', $id)->values);
+
+			$product_array = $this->getProductsByCategories(
+				$view->getSelection());
+
+			$this->removeProductAttributes($product_array, $attribute_array);
+
+			break;
+
 		case 'categories_add_sale_discount' :
 			$sale_discount = $this->ui->getWidget(
 				'categories_sale_discount_flydown')->value;
@@ -199,7 +216,7 @@ class StoreCategoryIndex extends AdminIndex
 	}
 
 	// }}}
-	// {{{ protected function getProductsFromCategoryView()
+	// {{{ protected function getProductsByCategories()
 
 	protected function getProductsByCategories($category_array)
 	{
@@ -372,6 +389,21 @@ class StoreCategoryIndex extends AdminIndex
 
 			break;
 
+		case 'products_remove_attributes' :
+			$attribute_array = array();
+			$attributes_field =
+				$this->ui->getWidget('product_remove_attributes_form_field');
+
+			foreach ($attributes_field->replicators as $id => $title)
+				$attribute_array = array_merge($attribute_array,
+					$attributes_field->getWidget(
+						'product_remove_attributes', $id)->values);
+
+			$this->removeProductAttributes($view->getSelection(),
+				$attribute_array);
+
+			break;
+
 		case 'products_add_sale_discount' :
 			$sale_discount = $this->ui->getWidget(
 				'products_sale_discount_flydown')->value;
@@ -452,6 +484,41 @@ class StoreCategoryIndex extends AdminIndex
 
 		$message = new SwatMessage(sprintf(
 			'%s %s been given %s %s.',
+			SwatString::numberFormat(count($product_array)),
+			Store::ngettext('product has', 'products have',
+				count($product_array)),
+			SwatString::numberFormat(count($attribute_array)),
+			Store::ngettext('atrribute', 'attributes',
+				count($attribute_array))));
+
+		$this->app->messages->add($message);
+	}
+
+	// }}}
+	// {{{ private function removeProductAttributes()
+
+	private function removeProductAttributes($products, $attributes)
+	{
+		if (count($products) == 0 || count($attributes) == 0)
+			return;
+
+		$product_array = array();
+		$attribute_array = array();
+
+		foreach ($products as $product)
+			$product_array[] = $this->app->db->quote($product, 'integer');
+
+		foreach ($attributes as $attribute)
+			$attribute_array[] = $this->app->db->quote($attribute, 'integer');
+
+		$sql = sprintf('delete from ProductAttributeBinding
+			where product in (%s) and attribute in (%s)',
+			implode(',', $product_array), implode(',', $attribute_array));
+
+		SwatDB::exec($this->app->db, $sql);
+
+		$message = new SwatMessage(sprintf(
+			'%s %s had %s %s removed.',
 			SwatString::numberFormat(count($product_array)),
 			Store::ngettext('product has', 'products have',
 				count($product_array)),
@@ -633,6 +700,12 @@ class StoreCategoryIndex extends AdminIndex
 
 		$this->buildAttributes('category_attributes_form_field',
 			'category_attributes');
+
+		$this->buildAttributes('product_remove_attributes_form_field',
+			'product_remove_attributes');
+
+		$this->buildAttributes('category_remove_attributes_form_field',
+			'category_remove_attributes');
 
 		// sale discounts
 		$sale_discounts = SwatDB::getOptionArray($this->app->db,
