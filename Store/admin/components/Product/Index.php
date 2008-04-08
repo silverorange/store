@@ -5,6 +5,8 @@ require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatTreeFlydownNode.php';
 require_once 'Swat/SwatFlydownDivider.php';
 require_once 'Store/StoreCatalogSelector.php';
+require_once 'Store/dataobjects/StoreAttributeTypeWrapper.php';
+require_once 'Store/dataobjects/StoreAttributeWrapper.php';
 
 require_once 'Store/admin/components/Product/include/StoreProductTableView.php';
 require_once 'Store/admin/components/Product/include/StoreProductSearch.php';
@@ -46,6 +48,8 @@ class StoreProductIndex extends AdminSearch
 		$this->ui->loadFromXML($this->search_xml);
 		$this->ui->loadFromXML($this->index_xml);
 
+		$this->initAttributeList();
+
 		$catalog_selector = $this->ui->getWidget('catalog_selector');
 		$catalog_selector->db = $this->app->db;
 
@@ -62,6 +66,29 @@ class StoreProductIndex extends AdminSearch
 		$sale_discount_flydown = $this->ui->getWidget('sale_discount_flydown');
 		$sale_discount_flydown->addOptionsByArray(SwatDB::getOptionArray(
 			$this->app->db, 'SaleDiscount', 'title', 'id', 'title'));
+	}
+
+	// }}}
+	// {{{ private function initAttributeList()
+
+	/**
+	 * Builds the list of attributes using an image and a title
+	 */
+	private function initAttributeList()
+	{
+		$replicators = array();
+
+		$attribute_types = SwatDB::query($this->app->db,
+			'select * from attributetype order by shortname',
+			SwatDBClassMap::get('StoreAttributeTypeWrapper'));
+
+		foreach ($attribute_types as $type)
+			$replicators[$type->id] = ucfirst($type->shortname);
+
+		$attributes_field =
+			$this->ui->getWidget('attributes_form_field');
+
+		$attributes_field->replicators = $replicators;
 	}
 
 	// }}}
@@ -112,6 +139,21 @@ class StoreProductIndex extends AdminSearch
 			$this->app->replacePage('Product/Delete');
 			$this->app->getPage()->setItems($view->getSelection());
 			break;
+
+		case 'add_attributes' :
+			$attribute_array = array();
+			$attributes_field =
+				$this->ui->getWidget('attributes_form_field');
+
+			foreach ($attributes_field->replicators as $id => $title)
+				$attribute_array = array_merge($attribute_array,
+					$attributes_field->getWidget(
+						'attributes', $id)->values);
+
+			$this->addProductAttributes($view->getSelection(),
+				$attribute_array);
+
+			break;
 		case 'sale_discount' :
 			$sale_discount =
 				$this->ui->getWidget('sale_discount_flydown')->value;
@@ -158,6 +200,50 @@ class StoreProductIndex extends AdminSearch
 	}
 
 	// }}}
+	// {{{ private function addProductAttributes()
+
+	private function addProductAttributes($products, $attributes)
+	{
+		if (count($products) == 0 || count($attributes) == 0)
+			return;
+
+		$product_array = array();
+		$attribute_array = array();
+
+		foreach ($products as $product)
+			$product_array[] = $this->app->db->quote($product, 'integer');
+
+		foreach ($attributes as $attribute)
+			$attribute_array[] = $this->app->db->quote($attribute, 'integer');
+
+		$sql = sprintf('delete from ProductAttributeBinding
+			where product in (%s) and attribute in (%s)',
+			implode(',', $product_array), implode(',', $attribute_array));
+
+		SwatDB::exec($this->app->db, $sql);
+
+		$sql = sprintf('insert into ProductAttributeBinding
+			(product, attribute)
+			select Product.id, Attribute.id
+			from Product cross join Attribute
+			where Product.id in (%s) and Attribute.id in (%s)',
+			implode(',', $product_array), implode(',', $attribute_array));
+
+		SwatDB::exec($this->app->db, $sql);
+
+		$message = new SwatMessage(sprintf(
+			'%s %s been given %s %s.',
+			SwatString::numberFormat(count($product_array)),
+			Store::ngettext('product has', 'products have',
+				count($product_array)),
+			SwatString::numberFormat(count($attribute_array)),
+			Store::ngettext('atrribute', 'attributes',
+				count($attribute_array))));
+
+		$this->app->messages->add($message);
+	}
+
+	// }}}
 
 	// build phase
 	// {{{ protected function buildInternal()
@@ -179,6 +265,8 @@ class StoreProductIndex extends AdminSearch
 
 		$category_tree = SwatDB::getDataTree($rs, 'title', 'id', 'levelnum');
 		$tree->addTree($category_tree);
+
+		$this->buildAttributes();
 	}
 
 	// }}}
@@ -265,6 +353,38 @@ class StoreProductIndex extends AdminSearch
 	protected function getProductSearch()
 	{
 		return new StoreProductSearch($this->ui, $this->app->db);
+	}
+
+	// }}}
+	// {{{ protected function displayAttribute()
+
+	protected function displayAttribute(StoreAttribute $attribute)
+	{
+		$attribute->display();
+	}
+
+	// }}}
+	// {{{ private function buildAttributes()
+
+	private function buildAttributes()
+	{
+		$sql = 'select id, shortname, title, attribute_type from Attribute
+			order by attribute_type, displayorder, id';
+
+		$attributes = SwatDB::query($this->app->db, $sql,
+			SwatDBClassMap::get('StoreAttributeWrapper'));
+
+		$attributes_field = $this->ui->getWidget('attributes_form_field');
+
+		foreach ($attributes as $attribute) {
+			ob_start();
+			$this->displayAttribute($attribute);
+			$option = ob_get_clean();
+
+			$attributes_field->getWidget('attributes',
+				$attribute->attribute_type->id)->addOption(
+					$attribute->id, $option, 'text/xml');
+		}
 	}
 
 	// }}}

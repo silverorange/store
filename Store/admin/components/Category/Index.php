@@ -170,25 +170,36 @@ class StoreCategoryIndex extends AdminIndex
 					$attributes_field->getWidget(
 						'category_attributes', $id)->values);
 
-			$sql = sprintf('select descendant from
-				getCategoryDescendants(null) where category in (%s)',
-				SwatDB::implodeSelection($this->app->db,
-					$view->getSelection()));
-
-			$categories = SwatDB::query($this->app->db, $sql);
-
-			foreach ($categories as $category)
-				$category_ids[] = $this->app->db->quote(
-					$category->descendant, 'integer');
-
-			$product_array = SwatDB::getOptionArray($this->app->db,
-				'CategoryProductBinding', 'product', 'product', null,
-				sprintf('category in (%s)', implode(',', $category_ids)));
+			$product_array = $this->getProductsByCategories(
+				$view->getSelection());
 
 			$this->addProductAttributes($product_array, $attribute_array);
 
 			break;
 		}
+	}
+
+	// }}}
+	// {{{ protected function getProductsFromCategoryView()
+
+	protected function getProductsByCategories($category_array)
+	{
+		$sql = sprintf('select descendant from
+			getCategoryDescendants(null) where category in (%s)',
+			SwatDB::implodeSelection($this->app->db,
+				$category_array));
+
+		$categories = SwatDB::query($this->app->db, $sql);
+
+		foreach ($categories as $category)
+			$category_ids[] = $this->app->db->quote(
+				$category->descendant, 'integer');
+
+		$product_array = SwatDB::getOptionArray($this->app->db,
+			'CategoryProductBinding', 'product', 'product', null,
+			sprintf('category in (%s)', implode(',', $category_ids)));
+
+		return $product_array();
 	}
 
 	// }}}
@@ -552,6 +563,30 @@ class StoreCategoryIndex extends AdminIndex
 	}
 
 	// }}}
+	// {{{ private function buildAttributes()
+
+	private function buildAttributes($form_field_id, $check_list_id)
+	{
+		$sql = 'select id, shortname, title, attribute_type from Attribute
+			order by attribute_type, displayorder, id';
+
+		$attributes = SwatDB::query($this->app->db, $sql,
+			SwatDBClassMap::get('StoreAttributeWrapper'));
+
+		$attributes_field = $this->ui->getWidget($form_field_id);
+
+		foreach ($attributes as $attribute) {
+			ob_start();
+			$this->displayAttribute($attribute);
+			$option = ob_get_clean();
+
+			$attributes_field->getWidget($check_list_id,
+				$attribute->attribute_type->id)->addOption(
+					$attribute->id, $option, 'text/xml');
+		}
+	}
+
+	// }}}
 	// {{{ private function getCategoryCount()
 
 	/**
@@ -579,30 +614,6 @@ class StoreCategoryIndex extends AdminIndex
 			 $this->app->db->quote($this->id, 'integer'));
 
 		return SwatDB::queryOne($this->app->db, $sql);
-	}
-
-	// }}}
-	// {{{ private function buildAttributes()
-
-	private function buildAttributes($form_field_id, $check_list_id)
-	{
-		$sql = 'select id, shortname, title, attribute_type from Attribute
-			order by attribute_type, displayorder, id';
-
-		$attributes = SwatDB::query($this->app->db, $sql,
-			SwatDBClassMap::get('StoreAttributeWrapper'));
-
-		$attributes_field = $this->ui->getWidget($form_field_id);
-
-		foreach ($attributes as $attribute) {
-			ob_start();
-			$this->displayAttribute($attribute);
-			$option = ob_get_clean();
-
-			$attributes_field->getWidget($check_list_id,
-				$attribute->attribute_type->id)->addOption(
-					$attribute->id, $option, 'text/xml');
-		}
 	}
 
 	// }}}
