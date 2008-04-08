@@ -1,5 +1,5 @@
 .category-not-visible td,
-.product-not-visible td,
+.product-not-visible td, span.product-not-visible,
 .item-disabled td {
 	filter: alpha(opacity = 40);
 	opacity: 0.40;
