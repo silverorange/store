@@ -12,9 +12,14 @@ require_once 'Swat/SwatString.php';
  */
 class StoreItemStatusCellRenderer extends SwatNullTextCellRenderer
 {
+	// {{{ public properties
+
 	public $count_available = 0;
 	public $count_outofstock = 0;
 	public $count_disabled = 0;
+
+	// }}}
+	// {{{ public function render()
 
 	public function render()
 	{
@@ -26,11 +31,17 @@ class StoreItemStatusCellRenderer extends SwatNullTextCellRenderer
 		echo implode(', ', $this->getDescriptions());
 	}
 
+	// }}}
+	// {{{ public function isSensitive()
+
 	public function isSensitive()
 	{
 		return ($this->count_available + $this->count_outofstock +
 			$this->count_disabled == 0) ? false : true;
 	}
+
+	// }}}
+	// {{{ public function getDescriptions()
 
 	public function getDescriptions()
 	{
@@ -50,6 +61,8 @@ class StoreItemStatusCellRenderer extends SwatNullTextCellRenderer
 
 		return $descriptions;
 	}
+
+	// }}}
 }
 
 ?>
