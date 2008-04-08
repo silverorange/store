@@ -927,16 +927,13 @@ class StoreCategoryIndex extends AdminIndex
 					Product.title,
 					Product.shortname,
 					%s::integer as category_id,
-					statuses.count_total as item_count,
-					statuses.count_available,
-					statuses.count_outofstock,
-					statuses.count_disabled,
+					ProductItemCountByStatusView.*,
 					CategoryProductBinding.minor
 				from Product
 					inner join CategoryProductBinding on
 						Product.id = CategoryProductBinding.product
-					inner join ProductItemCountByStatusView as statuses on
-						statuses.product = Product.id
+					inner join ProductItemCountByStatusView on
+						ProductItemCountByStatusView.product = Product.id
 				where CategoryProductBinding.category = %s
 					and Product.catalog in (%s)
 				order by %s';

@@ -15,8 +15,15 @@ class StoreItemStatusCellRenderer extends SwatNullTextCellRenderer
 	// {{{ public properties
 
 	public $count_available = 0;
-	public $count_outofstock = 0;
-	public $count_disabled = 0;
+	public $count_available_instock = 0;
+	public $count_available_outofstock = 0;
+	public $count_available_limitedstock = 0;
+	public $count_available_backordered = 0;
+	public $count_unavailable = 0;
+	public $count_unavailable_instock = 0;
+	public $count_unavailable_outofstock = 0;
+	public $count_unavailable_limitedstock = 0;
+	public $count_unavailable_backordered = 0;
 
 	// }}}
 	// {{{ public function render()
@@ -28,7 +35,23 @@ class StoreItemStatusCellRenderer extends SwatNullTextCellRenderer
 			return;
 		}
 
-		echo implode(', ', $this->getDescriptions());
+		$div_tag = new SwatHtmlTag('div');
+
+		if ($this->count_available > 0) {
+			$div_tag->setContent(sprintf(Store::_('Available: (%s)'),
+				implode(', ', $this->getAvailableDescriptions())),
+				'text/xml');
+
+			$div_tag->display();
+		}
+
+		if ($this->count_unavailable > 0) {
+			$div_tag->setContent(sprintf(Store::_('Unavailable: (%s)'),
+				implode(', ', $this->getUnavailableDescriptions())),
+				'text/xml');
+
+			$div_tag->display();
+		}
 	}
 
 	// }}}
@@ -36,28 +59,57 @@ class StoreItemStatusCellRenderer extends SwatNullTextCellRenderer
 
 	public function isSensitive()
 	{
-		return ($this->count_available + $this->count_outofstock +
-			$this->count_disabled == 0) ? false : true;
+		return ($this->count_available + $this->count_unavailable > 0);
 	}
 
 	// }}}
-	// {{{ public function getDescriptions()
+	// {{{ protected function getAvailableDescriptions()
 
-	public function getDescriptions()
+	protected function getAvailableDescriptions()
 	{
 		$descriptions = array();
 
-		if ($this->count_available > 0)
-			$descriptions[] = sprintf(Store::_('%s available'),
-				SwatString::numberFormat($this->count_available));
+		if ($this->count_available_instock > 0)
+			$descriptions[] = sprintf(Store::_('%s in-stock'),
+				SwatString::numberFormat($this->count_available_instock));
 
-		if ($this->count_outofstock > 0)
-			$descriptions[] = sprintf(Store::_('%s out of stock'),
-				SwatString::numberFormat($this->count_outofstock));
+		if ($this->count_available_outofstock > 0)
+			$descriptions[] = sprintf(Store::_('%s out-of-stock'),
+				SwatString::numberFormat($this->count_available_outofstock));
 
-		if ($this->count_disabled > 0)
-			$descriptions[] = sprintf(Store::_('%s disabled'),
-				SwatString::numberFormat($this->count_disabled));
+		if ($this->count_available_limitedstock > 0)
+			$descriptions[] = sprintf(Store::_('%s limited-stock'),
+				SwatString::numberFormat($this->count_available_limitedstock));
+
+		if ($this->count_available_backordered > 0)
+			$descriptions[] = sprintf(Store::_('%s back-ordered'),
+				SwatString::numberFormat($this->count_available_backordered));
+
+		return $descriptions;
+	}
+
+	// }}}
+	// {{{ protected function getUnavailableDescriptions()
+
+	protected function getUnavailableDescriptions()
+	{
+		$descriptions = array();
+
+		if ($this->count_unavailable_instock > 0)
+			$descriptions[] = sprintf(Store::_('%s in-stock'),
+				SwatString::numberFormat($this->count_unavailable_instock));
+
+		if ($this->count_unavailable_outofstock > 0)
+			$descriptions[] = sprintf(Store::_('%s out-of-stock'),
+				SwatString::numberFormat($this->count_unavailable_outofstock));
+
+		if ($this->count_unavailable_limitedstock > 0)
+			$descriptions[] = sprintf(Store::_('%s limited-stock'),
+				SwatString::numberFormat($this->count_unavailable_limitedstock));
+
+		if ($this->count_unavailable_backordered > 0)
+			$descriptions[] = sprintf(Store::_('%s back-ordered'),
+				SwatString::numberFormat($this->count_unavailable_backordered));
 
 		return $descriptions;
 	}
