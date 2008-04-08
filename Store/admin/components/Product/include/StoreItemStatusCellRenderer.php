@@ -38,7 +38,7 @@ class StoreItemStatusCellRenderer extends SwatNullTextCellRenderer
 		$div_tag = new SwatHtmlTag('div');
 
 		if ($this->count_available > 0) {
-			$div_tag->setContent(sprintf(Store::_('Available: (%s)'),
+			$div_tag->setContent(sprintf(Store::_('Available: %s'),
 				implode(', ', $this->getAvailableDescriptions())),
 				'text/xml');
 
@@ -46,7 +46,7 @@ class StoreItemStatusCellRenderer extends SwatNullTextCellRenderer
 		}
 
 		if ($this->count_unavailable > 0) {
-			$div_tag->setContent(sprintf(Store::_('Unavailable: (%s)'),
+			$div_tag->setContent(sprintf(Store::_('Unavailable: %s'),
 				implode(', ', $this->getUnavailableDescriptions())),
 				'text/xml');
 
