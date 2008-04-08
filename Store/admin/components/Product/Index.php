@@ -364,13 +364,10 @@ class StoreProductIndex extends AdminSearch
 
 		$sql = 'select Product.id,
 					Product.title,
-					statuses.count_total as item_count,
-					statuses.count_available,
-					statuses.count_outofstock,
-					statuses.count_disabled
+					ProductItemCountByStatusView.*
 				from Product
-					inner join ProductItemCountByStatusView as statuses on
-						statuses.product = Product.id
+					inner join ProductItemCountByStatusView on
+						ProductItemCountByStatusView.product = Product.id
 					%s
 				where %s
 				order by %s';
