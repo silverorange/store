@@ -131,13 +131,6 @@
 						</widget>
 					</widget>
 				</widget>
-				<widget class="SwatActionItemDivider" />
-				<widget class="SwatActionItem" id="categories_attributes">
-					<property name="title" translatable="yes">add product attributes…</property>
-					<widget class="SwatReplicableFormField" id="category_attributes_form_field">
-						<widget class="SwatCheckboxList" id="category_attributes" />
-					</widget>
-				</widget>
 				<widget class="SwatActionItem" id="categories_enable_items">
 					<property name="title" translatable="yes">enable items…</property>
 					<widget class="SwatFormField">
@@ -154,6 +147,26 @@
 						<widget class="SwatFlydown" id="categories_disable_region">
 							<property name="show_blank" type="boolean">false</property>
 						</widget>
+					</widget>
+				</widget>
+				<widget class="SwatActionItemDivider" />
+				<widget class="SwatActionItem" id="categories_add_attributes">
+					<property name="title" translatable="yes">add product attributes…</property>
+					<widget class="SwatReplicableFormField" id="category_attributes_form_field">
+						<widget class="SwatCheckboxList" id="category_attributes" />
+					</widget>
+				</widget>
+				<widget class="SwatActionItem" id="categories_add_sale_discount">
+					<property name="title" translatable="yes">add sale discount…</property>
+					<widget class="SwatFormField">
+						<property name="note" translatable="yes">The sale will apply to all items under this category. To apply to individual items, use the item editor.</property>
+						<widget class="SwatFlydown" id="categories_sale_discount_flydown" />
+					</widget>
+				</widget>
+				<widget class="SwatActionItem" id="categories_remove_sale_discount">
+					<property name="title" translatable="yes">remove sale discount</property>
+					<widget class="SwatContentBlock">
+						<property name="content" translatable="yes">This will remove any sale discounts for items under this category.</property>
 					</widget>
 				</widget>
 			</widget>
@@ -231,14 +244,6 @@
 							</widget>
 						</widget>
 					</widget>
-					<widget class="SwatActionItemDivider" />
-					<widget class="SwatActionItem" id="products_attributes">
-						<property name="title" translatable="yes">add product attributes…</property>
-						<widget class="SwatReplicableFormField" id="product_attributes_form_field">
-							<widget class="SwatCheckboxList" id="product_attributes" />
-						</widget>
-					</widget>
-					<widget class="SwatActionItemDivider" />
 					<widget class="SwatActionItem" id="products_enable_items">
 						<property name="title" translatable="yes">enable items…</property>
 						<widget class="SwatFormField">
@@ -263,6 +268,26 @@
 					</widget>
 					<widget class="SwatActionItem" id="products_unset_minor">
 						<property name="title" translatable="yes">unset minor member</property>
+					</widget>
+					<widget class="SwatActionItemDivider" />
+					<widget class="SwatActionItem" id="products_add_attributes">
+						<property name="title" translatable="yes">add product attributes…</property>
+						<widget class="SwatReplicableFormField" id="product_attributes_form_field">
+							<widget class="SwatCheckboxList" id="product_attributes" />
+						</widget>
+					</widget>
+					<widget class="SwatActionItem" id="products_add_sale_discount">
+						<property name="title" translatable="yes">add sale discount…</property>
+						<widget class="SwatFormField">
+							<property name="note" translatable="yes">The sale will apply to all items of the product. To apply to individual items, use the item editor.</property>
+							<widget class="SwatFlydown" id="products_sale_discount_flydown" />
+						</widget>
+					</widget>
+					<widget class="SwatActionItem" id="products_remove_sale_discount">
+						<property name="title" translatable="yes">remove sale discount</property>
+						<widget class="SwatContentBlock">
+							<property name="content" translatable="yes">This will remove any sale discounts for items belonging to the checked products.</property>
+						</widget>
 					</widget>
 				</widget>
 			</widget>

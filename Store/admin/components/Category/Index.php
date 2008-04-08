@@ -160,7 +160,7 @@ class StoreCategoryIndex extends AdminIndex
 
 			break;
 
-		case 'categories_attributes' :
+		case 'categories_add_attributes' :
 			$attribute_array = array();
 			$attributes_field =
 				$this->ui->getWidget('category_attributes_form_field');
@@ -174,6 +174,25 @@ class StoreCategoryIndex extends AdminIndex
 				$view->getSelection());
 
 			$this->addProductAttributes($product_array, $attribute_array);
+
+			break;
+
+		case 'categories_add_sale_discount' :
+			$sale_discount = $this->ui->getWidget(
+				'categories_sale_discount_flydown')->value;
+
+			$product_array = $this->getProductsByCategories(
+				$view->getSelection());
+
+			$this->addSaleDiscount($product_array, $sale_discount);
+
+			break;
+
+		case 'categories_remove_sale_discount' :
+			$product_array = $this->getProductsByCategories(
+				$view->getSelection());
+
+			$this->removeSaleDiscount($product_array);
 
 			break;
 		}
@@ -190,16 +209,19 @@ class StoreCategoryIndex extends AdminIndex
 				$category_array));
 
 		$categories = SwatDB::query($this->app->db, $sql);
+		$category_ids = array();
 
 		foreach ($categories as $category)
 			$category_ids[] = $this->app->db->quote(
 				$category->descendant, 'integer');
 
-		$product_array = SwatDB::getOptionArray($this->app->db,
-			'CategoryProductBinding', 'product', 'product', null,
-			sprintf('category in (%s)', implode(',', $category_ids)));
+		if (count($category_ids) > 0) {
+			$product_array = SwatDB::getOptionArray($this->app->db,
+				'CategoryProductBinding', 'product', 'product', null,
+				sprintf('category in (%s)', implode(',', $category_ids)));
+		}
 
-		return $product_array();
+		return $product_array;
 	}
 
 	// }}}
@@ -335,7 +357,7 @@ class StoreCategoryIndex extends AdminIndex
 
 			break;
 
-		case 'products_attributes' :
+		case 'products_add_attributes' :
 			$attribute_array = array();
 			$attributes_field =
 				$this->ui->getWidget('product_attributes_form_field');
@@ -348,6 +370,17 @@ class StoreCategoryIndex extends AdminIndex
 			$this->addProductAttributes($view->getSelection(),
 				$attribute_array);
 
+			break;
+
+		case 'products_add_sale_discount' :
+			$sale_discount = $this->ui->getWidget(
+				'products_sale_discount_flydown')->value;
+
+			$this->addSaleDiscount($view->getSelection(), $sale_discount);
+			break;
+
+		case 'products_remove_sale_discount' :
+			$this->removeSaleDiscount($view->getSelection());
 			break;
 		}
 
@@ -430,6 +463,69 @@ class StoreCategoryIndex extends AdminIndex
 	}
 
 	// }}}
+	// {{{ private function addSaleDiscount()
+
+	private function addSaleDiscount($products, $sale_discount)
+	{
+		if (count($products) == 0 || $sale_discount === null)
+			return;
+
+		$product_array = array();
+
+		foreach ($products as $product)
+			$product_array[] = $this->app->db->quote($product, 'integer');
+
+		$num = SwatDB::queryOne($this->app->db, sprintf(
+			'select count(id) from Item where product in (%s)',
+			implode(', ', $product_array)));
+
+		SwatDB::updateColumn($this->app->db, 'Item',
+			'integer:sale_discount', $sale_discount, 'product',
+			$product_array);
+
+		$message = new SwatMessage(sprintf(Store::ngettext(
+			'A sale discount has been applied to one item.',
+			'A sale discount has been applied to %s items.', $num),
+			SwatString::numberFormat($num)));
+
+		$this->app->messages->add($message);
+	}
+
+	// }}}
+	// {{{ private function removeSaleDiscount()
+
+	private function removeSaleDiscount($products)
+	{
+		if (count($products) == 0)
+			return;
+
+		$product_array = array();
+
+		foreach ($products as $product)
+			$product_array[] = $this->app->db->quote($product, 'integer');
+
+		$num = SwatDB::queryOne($this->app->db, sprintf(
+			'select count(id) from Item where product in (%s)
+			and sale_discount is not null',
+			implode(', ', $product_array)));
+
+		if ($num > 0) {
+			SwatDB::updateColumn($this->app->db, 'Item',
+				'integer:sale_discount', null, 'product', $product_array);
+
+			$message = new SwatMessage(sprintf(Store::ngettext(
+				'A sale discount has been removed from one item.',
+				'A sale discount has been removed from %s items.', $num),
+				SwatString::numberFormat($num)));
+
+			$this->app->messages->add($message);
+		} else {
+			$this->app->messages->add(new SwatMessage(Store::_(
+				'None of the items selected had a sale discount.')));
+		}
+	}
+
+	// }}}
 
 	// build phase
 	// {{{ protected function buildInternal()
@@ -490,6 +586,15 @@ class StoreCategoryIndex extends AdminIndex
 		$this->ui->getWidget('categories_toolbar')->setToolLinkValues(
 			$tool_value);
 
+		$this->buildActions();
+		$this->buildMessages();
+	}
+
+	// }}}
+	// {{{ protected function buildActions()
+
+	public function buildActions()
+	{
 		// setup the flydowns for status actions
 		$products_status = $this->ui->getWidget('products_status');
 		$categories_status = $this->ui->getWidget('categories_status');
@@ -522,13 +627,22 @@ class StoreCategoryIndex extends AdminIndex
 		$this->ui->getWidget('categories_disable_region')->addOptionsByArray(
 			$regions);
 
+		// attributes
 		$this->buildAttributes('product_attributes_form_field',
 			'product_attributes');
 
 		$this->buildAttributes('category_attributes_form_field',
 			'category_attributes');
 
-		$this->buildMessages();
+		// sale discounts
+		$sale_discounts = SwatDB::getOptionArray($this->app->db,
+			'SaleDiscount', 'title', 'id', 'title');
+
+		$flydown = $this->ui->getWidget('categories_sale_discount_flydown');
+		$flydown->addOptionsByArray($sale_discounts);
+
+		$flydown = $this->ui->getWidget('products_sale_discount_flydown');
+		$flydown->addOptionsByArray($sale_discounts);
 	}
 
 	// }}}

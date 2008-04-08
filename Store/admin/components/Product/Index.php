@@ -154,7 +154,7 @@ class StoreProductIndex extends AdminSearch
 				$attribute_array);
 
 			break;
-		case 'sale_discount' :
+		case 'add_sale_discount' :
 			$sale_discount =
 				$this->ui->getWidget('sale_discount_flydown')->value;
 
@@ -175,6 +175,29 @@ class StoreProductIndex extends AdminSearch
 				SwatString::numberFormat($num)));
 
 			$this->app->messages->add($message);
+
+			break;
+		case 'remove_sale_discount' :
+			$num = SwatDB::queryOne($this->app->db, sprintf(
+				'select count(id) from Item where product in (%s)
+					and sale_discount is not null',
+				SwatDB::implodeSelection($this->app->db,
+					$view->getSelection())));
+
+			if ($num > 0) {
+				SwatDB::updateColumn($this->app->db, 'Item',
+					'integer:sale_discount', null, 'product', $item_list);
+
+				$message = new SwatMessage(sprintf(Store::ngettext(
+					'A sale discount has been removed from one item.',
+					'A sale discount has been removed from %s items.', $num),
+					SwatString::numberFormat($num)));
+
+				$this->app->messages->add($message);
+			} else {
+				$this->app->messages->add(new SwatMessage(Store::_(
+					'None of the items selected had a sale discount.')));
+			}
 
 			break;
 		}
