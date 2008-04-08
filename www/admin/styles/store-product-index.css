@@ -6,3 +6,12 @@
 #index_actions_sale_discount .swat-form-field-contents {
 	display: inline;
 }
+
+#attributes_form_field .swat-form-field,
+#remove_attributes_form_field .swat-form-field {
+	float: left;
+}
+
+div.swat-actions-note {
+	clear: both;
+}
