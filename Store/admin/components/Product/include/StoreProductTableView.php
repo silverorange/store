@@ -20,7 +20,7 @@ class StoreProductTableView extends SwatTableView
 		if ($row->item_count == 0)
 			$classes[] = 'product-no-items';
 
-		if ($row->count_disabled == $row->item_count)
+		if ($row->count_unavailable == $row->item_count)
 			$classes[] = 'product-disabled';
 
 		if (!$row->currently_visible)
