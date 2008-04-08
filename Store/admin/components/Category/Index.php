@@ -225,9 +225,9 @@ class StoreCategoryIndex extends AdminIndex
 	}
 
 	// }}}
-	// {{{ private function processProductActions()
+	// {{{ protected function processProductActions()
 
-	private function processProductActions($view, $actions)
+	protected function processProductActions($view, $actions)
 	{
 		$num = count($view->getSelection());
 		$message = null;
