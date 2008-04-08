@@ -96,8 +96,10 @@ class StoreItemStatusCellRenderer extends SwatNullTextCellRenderer
 		$descriptions = array();
 
 		if ($this->count_unavailable_instock > 0)
-			$descriptions[] = sprintf(Store::_('%s in-stock'),
-				SwatString::numberFormat($this->count_unavailable_instock));
+			$descriptions[] = '<span class="product-not-visible">'.
+				sprintf(Store::_('%s disabled'),
+					SwatString::numberFormat(
+						$this->count_unavailable_instock)).'</span>';
 
 		if ($this->count_unavailable_outofstock > 0)
 			$descriptions[] = sprintf(Store::_('%s out-of-stock'),
