@@ -44,6 +44,12 @@
 						<widget class="SwatCheckboxList" id="attributes" />
 					</widget>
 				</widget>
+				<widget class="SwatActionItem" id="remove_attributes_action">
+					<property name="title" translatable="yes">remove product attributes…</property>
+					<widget class="SwatReplicableFormField" id="remove_attributes_form_field">
+						<widget class="SwatCheckboxList" id="remove_attributes" />
+					</widget>
+				</widget>
 				<widget class="SwatActionItem" id="add_sale_discount">
 					<property name="title" translatable="yes">add sale discount…</property>
 					<widget class="SwatFormField">
