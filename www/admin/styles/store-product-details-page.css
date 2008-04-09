@@ -21,10 +21,10 @@
 	border: 0;
 }
 .store-product-images:after {
-	content: "."; 
-	display: block; 
-	height: 0; 
-	clear: both; 
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
 	visibility: hidden;
 }
 
@@ -45,3 +45,7 @@ span.item-disabled {
 	text-decoration: line-through;
 }
 
+div.store-sale-discount-original-price {
+	color: #999;
+	text-decoration: line-through;
+}
