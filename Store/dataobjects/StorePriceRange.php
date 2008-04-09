@@ -67,7 +67,7 @@ class StorePriceRange extends SwatDBDataObject
 	{
 		$locale = SwatI18NLocale::get();
 
-		if ($this->start_price === null)
+		if ($this->start_price === null || $this->start_price == 0)
 			$title = sprintf(Store::_('%s or less'),
 				$locale->formatCurrency($this->end_price));
 		elseif ($this->end_price === null)
