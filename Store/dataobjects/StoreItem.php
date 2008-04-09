@@ -270,7 +270,7 @@ class StoreItem extends SwatDBDataObject
 
 		$enabled = null;
 
-		if ($this->region->id == $region->id &&
+		if ($this->region !== null && $this->region->id == $region->id &&
 			isset($this->is_enabled[$region->id])) {
 			$enabled = $this->is_enabled[$region->id];
 		} else {
@@ -321,7 +321,7 @@ class StoreItem extends SwatDBDataObject
 
 		$price = null;
 
-		if ($this->region->id == $region->id &&
+		if ($this->region !== null && $this->region->id == $region->id &&
 			isset($this->price[$region->id])) {
 			$price = $this->price[$region->id];
 		} else {
