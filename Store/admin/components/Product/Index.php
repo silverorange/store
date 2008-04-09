@@ -364,8 +364,10 @@ class StoreProductIndex extends AdminSearch
 
 		$sql = 'select Product.id,
 					Product.title,
+					Catalog.title as catalog_title,
 					ProductItemCountByStatusView.*
 				from Product
+					inner join Catalog on Product.catalog = Catalog.id
 					inner join ProductItemCountByStatusView on
 						ProductItemCountByStatusView.product = Product.id
 					%s
