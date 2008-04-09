@@ -21,7 +21,7 @@ require_once 'Store/admin/components/Category/include/'.
 	'StoreCategoryTitleCellRenderer.php';
 
 require_once 'Store/admin/components/Product/include/'.
-	'StoreItemStatusCellRenderer.php';
+	'StoreProductStatusCellRenderer.php';
 
 require_once 'Store/admin/components/Product/include/'.
 	'StoreProductTableView.php';
