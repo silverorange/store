@@ -24,7 +24,7 @@
 				</object>
 				<object class="SwatTableViewColumn">
 					<property name="title" translatable="yes">Items</property>
-					<object class="StoreItemStatusCellRenderer">
+					<object class="StoreProductStatusCellRenderer">
 						<property name="count_available" type="data">count_available</property>
 						<property name="count_available_instock" type="data">count_available_instock</property>
 						<property name="count_available_outofstock" type="data">count_available_outofstock</property>

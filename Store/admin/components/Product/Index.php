@@ -15,7 +15,7 @@ require_once
 	'Store/admin/components/Product/include/StoreProductTitleCellRenderer.php';
 
 require_once
-	'Store/admin/components/Product/include/StoreItemStatusCellRenderer.php';
+	'Store/admin/components/Product/include/StoreProductStatusCellRenderer.php';
 
 /**
  * Index page for Products
