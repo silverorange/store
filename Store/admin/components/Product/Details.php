@@ -26,7 +26,7 @@ require_once
 require_once
 	'Store/admin/components/Product/include/StoreItemDiscountCellRenderer.php';
 
-require_once 'Store/admin/StoreItemRegionPriceCellRenderer.php';
+require_once 'Store/StoreItemPriceCellRenderer.php';
 
 /**
  * Details page for Products
@@ -737,25 +737,26 @@ class StoreProductDetails extends AdminIndex
 			$ds->item_group_id = ($item->item_group === null) ?
 				0 : $item->item_group->id;
 
+			$enabled = false;
+
 			foreach ($this->queryRegions() as $region) {
 				$price_field_name = sprintf('price_%s', $region->id);
 				$enabled_field_name = sprintf('enabled_%s', $region->id);
-				$ds->$price_field_name = null;
-				$ds->$enabled_field_name = false;
+				$is_on_sale_field_name = sprintf('is_on_sale_%s',
+					$region->id);
+
+				$original_price_field_name = sprintf('original_price_%s',
+					$region->id);
+
+				$ds->$price_field_name = $item->getDisplayPrice($region);
+				$ds->$original_price_field_name = $item->getPrice($region);
+				$ds->$enabled_field_name = $item->isEnabled($region);
+				$ds->$is_on_sale_field_name =
+					$ds->$price_field_name != $ds->$original_price_field_name;
+
+				$enabled = $enabled || $ds->$enabled_field_name;
 			}
 
-			$enabled = false;
-			foreach ($item->region_bindings as $binding) {
-				$price_field_name =
-					sprintf('price_%s', $binding->getInternalValue('region'));
-
-				$enabled_field_name =
-					sprintf('enabled_%s', $binding->getInternalValue('region'));
-
-				$ds->$price_field_name = $binding->price;
-				$ds->$enabled_field_name = $binding->enabled;
-				$enabled = $enabled || $binding->enabled;
-			}
 			$ds->enabled = $enabled;
 
 			$store->add($ds);
@@ -930,17 +931,56 @@ class StoreProductDetails extends AdminIndex
 	private function appendPriceColumns(SwatTableView $view, $regions)
 	{
 		foreach ($regions as $region) {
-			$renderer = new StoreItemRegionPriceCellRenderer();
-			$renderer->locale = $region->getFirstLocale()->id;
-
 			$column = new SwatTableViewOrderableColumn('price_'.$region->id);
 			$column->title = sprintf(Store::_('%s Price'), $region->title);
-			$column->addRenderer($renderer);
-			$column->addMappingToRenderer($renderer,
+
+			// discount renderer (only displayed if sale-discount is set)
+			$discount_renderer = new SwatPercentageCellRenderer();
+			$discount_renderer->locale = $region->getFirstLocale()->id;
+			$column->addrenderer($discount_renderer);
+
+			$column->addmappingtorenderer($discount_renderer,
+				'sale_discount.discount_percentage', 'value');
+
+			$column->addMappingToRenderer($discount_renderer,
+				'is_on_sale_'.$region->id, 'visible');
+
+			// " Off" cell renderer (only displayed if sale-discount is set)
+			$off_renderer = new SwatTextCellRenderer();
+			$off_renderer->text = Store::_(' Off');
+			$column->addrenderer($off_renderer);
+			$column->addMappingToRenderer($off_renderer,
+				'is_on_sale_'.$region->id, 'visible');
+
+			// original price renderer (only displayed if sale-discount is set)
+			$sale_renderer = new StorePriceCellRenderer();
+			$sale_renderer->locale = $region->getFirstLocale()->id;
+			$sale_renderer->classes[] = 'store-sale-discount-original-price';
+			$column->addrenderer($sale_renderer);
+
+			$column->addmappingtorenderer($sale_renderer,
+				'original_price_'.$region->id, 'value');
+
+			$column->addMappingToRenderer($sale_renderer,
+				'is_on_sale_'.$region->id, 'visible');
+
+			// price renderer
+			$price_renderer = new StoreItemPriceCellRenderer();
+			$price_renderer->locale = $region->getFirstLocale()->id;
+			$column->addRenderer($price_renderer);
+
+			$column->addMappingToRenderer($price_renderer,
 				'price_'.$region->id, 'value');
 
-			$column->addMappingToRenderer($renderer,
+			$column->addMappingToRenderer($price_renderer,
+				'singular_unit', 'singular_unit');
+
+			$column->addMappingToRenderer($price_renderer,
+				'plural_unit', 'plural_unit');
+
+			$column->addMappingToRenderer($price_renderer,
 				'enabled_'.$region->id, 'enabled');
+
 
 			$money_entry = new SwatMoneyEntry('input_price_'.$region->id);
 			$money_entry->locale = $region->getFirstLocale()->id;
