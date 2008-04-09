@@ -36,6 +36,8 @@ class StoreItemGroupAction extends SwatControl
 
 	public function init()
 	{
+		parent::init();
+
 		$this->groups = new SwatFlydown($this->id.'_groups');
 		$this->groups->show_blank = false;
 		$this->groups->parent = $this;
@@ -51,6 +53,8 @@ class StoreItemGroupAction extends SwatControl
 
 	public function display()
 	{
+		parent::display();
+
 		if (count($this->options)) {
 			$this->groups->addOptionsByArray($this->options);
 			$this->groups->addDivider();
