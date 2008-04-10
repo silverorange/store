@@ -112,10 +112,10 @@ class StoreItemStatusList extends StoreStatusList
 			$status_class = SwatDBClassMap::get('StoreItemStatus');
 
 			$available_status =
-				new $status_class(0, 'available', Store::_('Available'));
+				new $status_class(0, 'available', Store::_('In-stock'));
 
 			$out_of_stock_status =
-				new $status_class(1, 'outofstock', Store::_('Out of Stock'));
+				new $status_class(1, 'outofstock', Store::_('Out-of-stock'));
 
 			self::$defined_statuses[] = $available_status;
 			self::$defined_statuses[] = $out_of_stock_status;
