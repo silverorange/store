@@ -59,19 +59,22 @@ class StoreAccountIndex extends SiteAccountIndex
 
 	private function getOrderCount(SwatTableStore $accounts)
 	{
-		// default to zero, some accounts aren't in AccountOrderCountView
 		$count_array = array();
-		foreach ($accounts as $account) {
-			$count_array[$account->id] = 0;
+
+		if (count($accounts) > 0) {
+			// default to zero, some accounts aren't in AccountOrderCountView
+			foreach ($accounts as $account) {
+				$count_array[$account->id] = 0;
+			}
+
+			$account_ids = implode(', ', array_keys($count_array));
+			$sql = sprintf('select account, order_count from
+				AccountOrderCountView where account in (%s)', $account_ids);
+
+			$counts = SwatDB::query($this->app->db, $sql);
+			foreach ($counts as $count)
+				$count_array[$count->account] = $count->order_count;
 		}
-
-		$account_ids = implode(', ', array_keys($count_array));
-		$sql = sprintf('select account, order_count from
-			AccountOrderCountView where account in (%s)', $account_ids);
-
-		$counts = SwatDB::query($this->app->db, $sql);
-		foreach ($counts as $count)
-			$count_array[$count->account] = $count->order_count;
 
 		return $count_array;
 	}
