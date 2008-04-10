@@ -22,7 +22,7 @@
 						<property name="text" type="data">email</property>
 					</object>
 				</object>
-				<object class="AdminTableViewOrderableColumn" id="order_count">
+				<object class="SwatTableViewColumn" id="order_count">
 					<property name="title" translatable="yes"># of Orders</property>
 					<object class="SwatNumericCellRenderer">
 						<property name="value" type="data">order_count</property>
