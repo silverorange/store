@@ -42,6 +42,7 @@ class StoreItemGroupEdit extends AdminDBEdit
 	// }}}
 	// {{{ protected function initItemGroup()
 
+	protected function initItemGroup()
 	{
 		$class_name = SwatDBClassMap::get('StoreItemGroup');
 		$this->item_group = new $class_name();
