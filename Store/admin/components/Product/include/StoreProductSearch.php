@@ -125,7 +125,7 @@ class StoreProductSearch
 			$this->join_clause = '';
 		} else {
 			$this->join_clause = $this->fulltext_result->getJoinClause(
-				'id', $this->getSearchType());
+				'Product.id', $this->getSearchType());
 		}
 	}
 
