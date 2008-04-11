@@ -56,6 +56,7 @@ class StoreSearchDisclosure extends SwatDisclosure
 		$this->html_head_entry_set->addEntrySet($ajax->getHtmlHeadEntrySet());
 		$this->addJavaScript('packages/store/javascript/search-disclosure.js',
 			Store::PACKAGE_ID);
+
 		$this->addStyleSheet('packages/store/styles/search-disclosure.css',
 			Store::PACKAGE_ID);
 	}
@@ -221,6 +222,7 @@ class StoreSearchDisclosure extends SwatDisclosure
 		$entry_field->id = $this->id.'_keywords_field';
 		$entry_field->title = ($this->input_text === null) ?
 			Store::_('Keywords or Item #') : $this->input_text;
+
 		$entry_field->add($entry);
 		$entry_field->add($button);
 
