@@ -4,7 +4,6 @@ require_once 'Admin/pages/AdminPage.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Date.php';
-require_once 'Image/Transform.php';
 require_once 'Store/dataobjects/StoreProductImage.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 
@@ -137,37 +136,33 @@ class StoreProductImageEdit extends AdminPage
 			foreach ($sizes as $size => $dimensions) {
 				$file = $this->ui->getWidget($size.'_image');
 				if (!$file->isUploaded()) {
+					$imagick = new Imagick($image->getTempFileName());
 
-					$transformer = Image_Transform::factory('Imagick2');
-					if (PEAR::isError($transformer))
-						throw new AdminException($transformer);
-
-					$transformer->load($image->getTempFileName());
 					switch ($size) {
 					case 'thumb':
 						call_user_func(
 							array($product_image, 'processThumbnail'),
-							$transformer);
+							$imagick);
 
 						break;
 					case 'small':
 						call_user_func(
 							array($product_image, 'processSmall'),
-							$transformer);
+							$imagick);
 
 						break;
 					case 'large':
 						call_user_func(
 							array($product_image, 'processLarge'),
-							$transformer);
+							$imagick);
 
 						break;
 					}
 
-					$images[$size] = $transformer;
+					$images[$size] = $imagick;
 
-					$data[$size.'_width'] = $transformer->new_x;
-					$data[$size.'_height'] = $transformer->new_y;
+					$data[$size.'_width'] = $imagick->getImageWidth();
+					$data[$size.'_height'] = $imagick->getImageHeight();
 
 					$changed = true;
 				}
@@ -184,15 +179,13 @@ class StoreProductImageEdit extends AdminPage
 					$file = $this->ui->getWidget('large_image');
 
 			if ($file->isUploaded()) {
-				$transformer = Image_Transform::factory('Imagick2');
-				$transformer->load($file->getTempFileName());
-
-				$images[$size] = $transformer;
+				$imagick = new Imagick($file->getTempFileName());
+				$images[$size] = $imagick;
 
 				// check for invalid dimensions here
 				if ($size == 'thumb' &&
-					($transformer->img_x != $dimensions[0] ||
-					$transformer->img_y != $dimensions[1])) {
+					($imagick->getImageWidth() != $dimensions[0] ||
+					$imagick->getImageHeight() != $dimensions[1])) {
 
 					$validated = false;
 					$message = new SwatMessage(sprintf(
@@ -201,7 +194,7 @@ class StoreProductImageEdit extends AdminPage
 
 					$file->addMessage($message);
 				} elseif ($dimensions[0] !== null &&
-					$transformer->img_x > $dimensions[0]) {
+					$imagick->getImageWidth() > $dimensions[0]) {
 					$validated = false;
 
 					$message = new SwatMessage(sprintf(Store::_(
@@ -210,8 +203,8 @@ class StoreProductImageEdit extends AdminPage
 
 					$file->addMessage($message);
 				} else {
-					$data[$size.'_width'] = $transformer->img_x;
-					$data[$size.'_height'] = $transformer->img_y;
+					$data[$size.'_width'] = $imagick->getImageWidth();
+					$data[$size.'_height'] = $imagick->getImageHeight();
 				}
 
 				$delete_files[] = $file->getTempFileName();
@@ -220,7 +213,7 @@ class StoreProductImageEdit extends AdminPage
 
 				call_user_func(
 					array($product_image, 'processManualImage'),
-					$transformer, $size);
+					$imagick, $size);
 			}
 		}
 
@@ -353,12 +346,13 @@ class StoreProductImageEdit extends AdminPage
 		// save images
 		foreach ($sizes as $size => $dimensions) {
 			if (isset($images[$size])) {
-				$transformer = $images[$size];
+				$imagick = $images[$size];
 				$filename = '../images/products/'.$size.'/'.$new_id.'.jpg';
-				$transformer->save($filename, false,
-					StoreImage::COMPRESSION_QUALITY);
-
-				unset($transformer);
+				$imagick->setCompressionQuality(StoreImage::COMPRESSION_QUALITY);
+				$imagick->setResolution(72, 72);
+				$imagick->stripImage();
+				$imagick->writeImage($filename);
+				unset($imagick);
 			} else {
 				// move images sizes that were not uploaded
 				$old_filename = '../images/products/'.$size.'/'.$old_id.'.jpg';

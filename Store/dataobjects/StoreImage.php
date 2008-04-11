@@ -2,7 +2,6 @@
 
 require_once 'Swat/SwatHtmlTag.php';
 require_once 'SwatDB/SwatDBDataObject.php';
-require_once 'Image/Transform.php';
 
 /**
  * An image data object
@@ -150,51 +149,45 @@ abstract class StoreImage extends SwatDBDataObject
 	 * Thumbnail images are always a fixed size. This resizes and crops the
 	 * image so that the largest portion from the center image used.
 	 *
-	 * @param Image_Transform $image the image transformer to work with. The
-	 *                                tranformer should already have an image
-	 *                                loaded.
+	 * @param Imagick $imagick the imagick instance to work with. The instance
+	 *                          should already have an image loaded.
 	 *
 	 * @param integer $width the width of a thumbnail image.
 	 * @param integer $height the height of a thumbnail image, if null
 	 *                         thumbnail is square.
-	 *
-	 * @throws SwatException if no image is loaded in the transformer.
 	 */
 	public static function processThumbnail(
-		Image_Transform $image, $width, $height = null)
+		Imagick $imagick, $width, $height = null)
 	{
-		if ($image->image === null)
-			throw new SwatException('No image loaded.');
-
 		if ($height === null)
 			$height = $width;
 
-		if ($image->img_x / $width > $image->img_y / $height) {
+		if ($imagick->getImageWidth() / $width > $imagick->getImageHeight() / $height) {
 			$new_y = $height;
-			$new_x = ceil(($new_y / $image->img_y) * $image->img_x);
+			$new_x = ceil(($new_y / $imagick->getImageHeight()) * $imagick->getImageWidth());
 		} else {
 			$new_x = $width;
-			$new_y = ceil(($new_x / $image->img_x) * $image->img_y);
+			$new_y = ceil(($new_x / $imagick->getImageWidth()) * $imagick->getImageHeight());
 		}
 
-		$image->resize($new_x, $new_y);
+		$imagick->resizeImage($new_x, $new_y, Imagick::FILTER_LANCZOS, 1);
 
 		// crop to fit
-		if ($image->new_x != $width || $image->new_y != $height) {
+		if ($imagick->getImageWidth() != $width || $imagick->getImageHeight() != $height) {
 			$offset_x = 0;
 			$offset_y = 0;
 
-			if ($image->new_x > $width)
-				$offset_x = ceil(($image->new_x - $width) / 2);
+			if ($imagick->getImageWidth() > $width)
+				$offset_x = ceil(($imagick->getImageWidth() - $width) / 2);
 
-			if ($image->new_y > $height)
-				$offset_y = ceil(($image->new_y - $height) / 2);
+			if ($imagick->getImageHeight() > $height)
+				$offset_y = ceil(($imagick->getImageHeight() - $height) / 2);
 
-			$image->crop($width, $height, $offset_x, $offset_y);
+			$imagick->cropImage($width, $height, $offset_x, $offset_y);
 		}
 
-		$image->setDpi(self::DPI, self::DPI);
-		$image->strip();
+		$imagick->setResolution(self::DPI, self::DPI);
+		$imagick->stripImage();
 	}
 
 	// }}}
@@ -205,29 +198,53 @@ abstract class StoreImage extends SwatDBDataObject
 	 *
 	 * The image is resized to fit within a maximum width.
 	 *
-	 * @param Image_Transform $image the image transformer to work with. The
-	 *                                tranformer should already have an image
-	 *                                loaded.
+	 * @param Imagick $imagick the imagick instance to work with. The instance
+	 *                          should already have an image loaded.
 	 *
 	 * @param integer $max_width the max width for the image.
 	 * @param integer $max_height the max height for the image.
-	 *
-	 * @throws SwatException if no image is loaded in the transformer.
 	 */
-	public static function processImage(Image_Transform $image,
+	public static function processImage(Imagick $imagick,
 		$max_width = null, $max_height = null)
 	{
-		if ($image->image === null)
-			throw new SwatException('No image loaded.');
-
 		if ($max_width !== null)
-			$image->fitX($max_width);
+			self::fitX($imagick, $max_width);
 
 		if ($max_height !== null)
-			$image->fitY($max_height);
+			self::fitY($imagick, $max_height);
 
-		$image->setDpi(self::DPI, self::DPI);
-		$image->strip();
+		$imagick->setResolution(self::DPI, self::DPI);
+		$imagick->stripImage();
+	}
+
+	// }}}
+	// {{{ protected static function fitX()
+
+	protected static function fitX(Imagick $imagick, $max_width)
+	{
+		if ($imagick->getImageWidth() > $max_width) {
+
+			$new_height = ceil($imagick->getImageHeight() *
+				($max_width / $imagick->getImageWidth()));
+
+			$imagick->resizeImage($max_width, $new_height,
+				Imagick::FILTER_LANCZOS, 1);
+		}
+	}
+
+	// }}}
+	// {{{ protected static function fitY()
+
+	protected static function fitY(Imagick $imagick, $max_height)
+	{
+		if ($imagick->getImageHeight() > $max_height) {
+
+			$new_width = ceil($imagick->getImageWidth() *
+				($max_height / $imagick->getImageHeight()));
+
+			$imagick->resizeImage($new_width, $max_height,
+				Imagick::FILTER_LANCZOS, 1);
+		}
 	}
 
 	// }}}
@@ -236,21 +253,15 @@ abstract class StoreImage extends SwatDBDataObject
 	/**
 	 * Processing for manually resized images
 	 *
-	 * @param Image_Transform $image the image transformer to work with. The
-	 *                                tranformer should already have an image
-	 *                                loaded.
+	 * @param Imagick $imagick the imagick instance to work with. The instance
+	 *                          should already have an image loaded.
 	 *
 	 * @param string $size the size tag.
-	 *
-	 * @throws SwatException if no image is loaded in the transformer.
 	 */
-	public static function processManualImage(Image_Transform $image, $size)
+	public static function processManualImage(Imagick $imagick, $size)
 	{
-		if ($image->image === null)
-			throw new SwatException('No image loaded.');
-
-		$image->setDpi(self::DPI, self::DPI);
-		$image->strip();
+		$imagick->setResolution(self::DPI, self::DPI);
+		$imagick->stripImage();
 	}
 
 	// }}}
