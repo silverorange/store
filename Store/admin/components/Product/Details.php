@@ -26,7 +26,8 @@ require_once
 require_once
 	'Store/admin/components/Product/include/StoreItemDiscountCellRenderer.php';
 
-require_once 'Store/StoreItemPriceCellRenderer.php';
+require_once
+	'Store/admin/components/Product/include/StoreAdminItemPriceCellRenderer.php';
 
 /**
  * Details page for Products
@@ -965,7 +966,7 @@ class StoreProductDetails extends AdminIndex
 				'is_on_sale_'.$region->id, 'visible');
 
 			// price renderer
-			$price_renderer = new StoreItemPriceCellRenderer();
+			$price_renderer = new StoreAdminItemPriceCellRenderer();
 			$price_renderer->locale = $region->getFirstLocale()->id;
 			$column->addRenderer($price_renderer);
 
