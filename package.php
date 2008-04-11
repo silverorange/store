@@ -60,8 +60,8 @@ $package->addPackageDepWithChannel('required', 'XML_RPCAjax', 'pear.silverorange
 $package->addPackageDepWithChannel('required', 'Yui', 'pear.silverorange.com', '1.0.4');
 $package->addPackageDepWithChannel('required', 'Crypt_GPG', 'pear.php.net', '0.3.11');
 $package->addPackageDepWithChannel('required', 'Text_Password', 'pear.php.net', '1.1.0');
-$package->addPackageDepWithChannel('required', 'Image_Transform', 'pear.silverorange.com', '0.9.0so2');
 $package->addPackageDepWithChannel('required', 'Validate_Finance_CreditCard', 'pear.php.net', '0.5.2');
+$package->addExtensionDep('required', 'imagick', '2.0.0');
 $package->generateContents();
 
 if (isset($_GET['make']) || (isset($_SERVER['argv']) && @$_SERVER['argv'][1] == 'make')) {
