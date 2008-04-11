@@ -45,6 +45,13 @@ class StoreSearchDisclosure extends SwatDisclosure
 	 */
 	public $panel_height = 13;
 
+	/**
+	 * Access key used by the entry control within this disclosure's header
+	 *
+	 * @var string
+	 */
+	public $access_key;
+
 	// }}}
 	// {{{ public function __construct()
 
@@ -216,6 +223,7 @@ class StoreSearchDisclosure extends SwatDisclosure
 		$entry->id = $this->id.'_entry';
 		$entry->name = 'keywords';
 		$entry->size = 20;
+		$entry->access_key = $this->access_key;
 		$entry->maxlength = 255;
 
 		$entry_field = new SwatFormField();
