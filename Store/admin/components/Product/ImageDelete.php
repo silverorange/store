@@ -100,7 +100,7 @@ class StoreProductImageDelete extends AdminDBDelete
 		$sql = sprintf('delete from ProductImageBinding where image = %s
 			and product = %s',
 			$this->app->db->quote($this->image->id, 'integer'),
-			$this->app->db->quote($this->product_id, 'integer'));
+			$this->app->db->quote($this->product->id, 'integer'));
 
 		SwatDB::exec($this->app->db, $sql);
 
