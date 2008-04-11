@@ -51,6 +51,7 @@
 			</widget>
 			<widget class="AdminPagination" id="pager">
 				<property name="link">Order</property>
+				<property name="page_size" type="integer">100</property>
 			</widget>
 		</widget>
 	</widget>
