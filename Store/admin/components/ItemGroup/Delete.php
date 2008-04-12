@@ -38,7 +38,7 @@ class StoreItemGroupDelete extends AdminDBDelete
 		parent::processDBData();
 
 		$item_list = $this->getItemList('integer');
-		
+
 		$sql = sprintf(
 			'update Item set item_group = NULL where item_group in (%s)',
 			$item_list);
@@ -96,7 +96,7 @@ class StoreItemGroupDelete extends AdminDBDelete
 	// }}}
 	// {{{ private function buildNavBar()
 
-	private function buildNavBar() 
+	private function buildNavBar()
 	{
 		$this->navbar->popEntry();
 
