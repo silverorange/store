@@ -4,6 +4,7 @@ require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'SwatDB/SwatDBClassMap.php';
+require_once 'Store/dataobjects/StoreItemGroup.php';
 
 /**
  * Edit page for Item Groups
@@ -33,10 +34,7 @@ class StoreItemGroupEdit extends AdminDBEdit
 		parent::initInternal();
 		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
 		$this->category_id = SiteApplication::initVar('category');
-
-		if ($this->id === null)
-			throw new AdminNotFoundException(sprintf(
-				Store::_('Item Group with id ‘%s’ not found.'), $this->id));
+		$this->initItemGroup();
 	}
 
 	// }}}
