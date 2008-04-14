@@ -20,10 +20,10 @@ abstract class StorePage extends SitePathPage
 	{
 		parent::init();
 
-		$this->layout->selected_top_category_id = 
+		$this->layout->selected_top_category_id =
 			$this->getSelectedTopCategoryId();
 
-		$this->layout->selected_secondary_category_id = 
+		$this->layout->selected_secondary_category_id =
 			$this->getSelectedSecondaryCategoryId();
 
 		$this->layout->selected_category_id = $this->getSelectedCategoryId();
