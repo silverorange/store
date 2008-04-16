@@ -57,11 +57,13 @@ class StoreProductIndex extends AdminSearch
 		$products_frame->addStyleSheet(
 			'packages/store/admin/styles/disabled-rows.css');
 
-		$quick_search_form = $this->layout->menu->getForm();
-		$quick_search_form->process();
+		if ($this->layout->menu instanceof StoreAdminMenuView) {
+			$quick_search_form = $this->layout->menu->getForm();
+			$quick_search_form->process();
 
-		if ($quick_search_form->isProcessed())
-			$this->clearState();
+			if ($quick_search_form->isProcessed())
+				$this->clearState();
+		}
 
 		$sale_discount_flydown = $this->ui->getWidget('sale_discount_flydown');
 		$sale_discount_flydown->addOptionsByArray(SwatDB::getOptionArray(
@@ -105,19 +107,21 @@ class StoreProductIndex extends AdminSearch
 	{
 		parent::processInternal();
 
-		$quick_search_form = $this->layout->menu->getForm();
+		if ($this->layout->menu instanceof StoreAdminMenuView) {
+			$quick_search_form = $this->layout->menu->getForm();
 
-		if ($quick_search_form->isProcessed()) {
-			$sku = $this->layout->menu->getItemEntry();
-			$search_item = $this->ui->getWidget('search_item');
-			$search_item->value = $sku->value;
-			$search_item_op = $this->ui->getWidget('search_item_op');
-			$search_item_op->value = AdminSearchClause::OP_CONTAINS;
-			$this->quick_sku_search = true;
+			if ($quick_search_form->isProcessed()) {
+				$sku = $this->layout->menu->getItemEntry();
+				$search_item = $this->ui->getWidget('search_item');
+				$search_item->value = $sku->value;
+				$search_item_op = $this->ui->getWidget('search_item_op');
+				$search_item_op->value = AdminSearchClause::OP_CONTAINS;
+				$this->quick_sku_search = true;
 
-			$this->saveState();
+				$this->saveState();
 
-			$this->quickSKUSearch();
+				$this->quickSKUSearch();
+			}
 		}
 
 		$index = $this->ui->getWidget('results_frame');
