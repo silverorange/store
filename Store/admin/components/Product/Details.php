@@ -677,7 +677,7 @@ class StoreProductDetails extends AdminIndex
 		$form = $this->ui->getWidget('items_form');
 		$view->addStyleSheet('packages/store/admin/styles/disabled-rows.css');
 		$form->action = $this->getRelativeURL();
-		$this->ui->getWidget('index_actions')->setViewSelector($view);
+		//$this->ui->getWidget('index_actions')->setViewSelector($view);
 
 		$this->buildItemGroups();
 
