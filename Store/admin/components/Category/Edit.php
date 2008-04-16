@@ -2,6 +2,7 @@
 
 require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
+require_once 'Store/dataobjects/StoreCategory.php';
 require_once 'NateGoSearch/NateGoSearch.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Date.php';
