@@ -259,6 +259,7 @@ class StoreItemsView extends SwatControl
 	protected function getItemDescription(StoreItem $item)
 	{
 		$parts = $item->getDescriptionArray();
+		$description = array();
 
 		if (isset($parts['description']))
 			$description[] = $parts['description'];
