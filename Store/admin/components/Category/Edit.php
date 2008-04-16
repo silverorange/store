@@ -149,6 +149,9 @@ class StoreCategoryEdit extends AdminDBEdit
 	{
 		$type = NateGoSearch::getDocumentType($this->app->db, 'category');
 
+		if ($type === null)
+			return;
+
 		$sql = sprintf('delete from NateGoSearchQueue
 			where document_id = %s and document_type = %s',
 			$this->app->db->quote($this->id, 'integer'),
