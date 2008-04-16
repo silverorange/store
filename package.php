@@ -61,6 +61,7 @@ $package->addPackageDepWithChannel('required', 'Yui', 'pear.silverorange.com', '
 $package->addPackageDepWithChannel('required', 'Crypt_GPG', 'pear.php.net', '0.3.11');
 $package->addPackageDepWithChannel('required', 'Text_Password', 'pear.php.net', '1.1.0');
 $package->addPackageDepWithChannel('required', 'Validate_Finance_CreditCard', 'pear.php.net', '0.5.2');
+$package->addPackageDepWithChannel('required', 'Numbers_Words', 'pear.php.net', '0.15.0');
 $package->addExtensionDep('required', 'imagick', '2.0.0');
 $package->generateContents();
 
