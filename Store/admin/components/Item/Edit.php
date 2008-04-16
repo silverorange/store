@@ -229,17 +229,22 @@ class StoreItemEdit extends AdminDBEdit
 
 	protected function addToSearchQueue()
 	{
+		$type = NateGoSearch::getDocumentType($this->app->db, 'product');
+
+		if ($type === null)
+			return;
+
 		$sql = sprintf('delete from NateGoSearchQueue
 			where document_id = %s and document_type = %s',
 			$this->app->db->quote($this->product, 'integer'),
-			$this->app->db->quote(2, 'integer'));
+			$this->app->db->quote($type, 'integer'));
 
 		SwatDB::exec($this->app->db, $sql);
 
 		$sql = sprintf('insert into NateGoSearchQueue
 			(document_id, document_type) values (%s, %s)',
 			$this->app->db->quote($this->product, 'integer'),
-			$this->app->db->quote(2, 'integer'));
+			$this->app->db->quote($type, 'integer'));
 
 		SwatDB::exec($this->app->db, $sql);
 	}
