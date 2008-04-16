@@ -70,10 +70,15 @@ class StoreCatalogClone extends AdminDBEdit
 
 	protected function addToSearchQueue($catalog_id)
 	{
+		$type = NateGoSearch::getDocumentType($this->app->db, 'product');
+
+		if ($type === null)
+			return;
+
 		$sql = sprintf('insert into NateGoSearchQueue
 			(document_id, document_type) select id, %s from Product
 			where catalog = %s',
-			$this->app->db->quote(2, 'integer'),
+			$this->app->db->quote($type, 'integer'),
 			$this->app->db->quote($catalog_id, 'integer'));
 
 		SwatDB::exec($this->app->db, $sql);
