@@ -10,6 +10,7 @@ require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/StoreItemStatusList.php';
 require_once 'Store/dataobjects/StoreItem.php';
 require_once 'Store/dataobjects/StoreRegionWrapper.php';
+require_once 'NateGoSearch/NateGoSearch.php';
 
 /**
  * Edit page for Items
