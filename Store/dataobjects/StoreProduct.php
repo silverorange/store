@@ -736,9 +736,9 @@ class StoreProduct extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ protected function getThumbnailImgTag()
+	// {{{ public function getThumbnailImgTag()
 
-	protected function getThumbnailImgTag($size = 'thumb')
+	public function getThumbnailImgTag($size = 'thumb')
 	{
 		if ($this->primary_image !== null) {
 			$img_tag = $this->primary_image->getImgTag($size);
