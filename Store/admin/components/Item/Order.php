@@ -122,7 +122,7 @@ class StoreItemOrder extends AdminDBOrder
 			$this->app->db, $sql);
 
 		foreach ($items as $item) {
-			$order_widget->addOption($item->id, $item->getDescription());
+			$order_widget->addOption($item->id, $this->getItemDescription($item));
 		}
 
 		$sql = 'select sum(displayorder) from Item where '.$where_clause;
@@ -174,6 +174,21 @@ class StoreItemOrder extends AdminDBOrder
 		$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));
 		$this->navbar->addEntry($last_entry);
 		$this->title = $product_title;
+	}
+
+	// }}}
+	// {{{ protected function getItemDescription()
+
+	protected function getItemDescription(StoreItem $item)
+	{
+		$text = $item->sku;
+
+		$description = implode(' - ', $item->getDescriptionArray());
+
+		if (strlen($description) > 0)
+			$text.= ': '.$description;
+
+		return $text;
 	}
 
 	// }}}
