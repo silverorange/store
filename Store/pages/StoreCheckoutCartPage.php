@@ -392,7 +392,12 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 
 	protected function getEntryDescription(StoreCartEntry $entry)
 	{
-		return implode('<br />', $entry->item->getDescriptionArray());
+		$description = array();
+		foreach ($entry->item->getDescriptionArray() as $element)
+			$description[] = '<div>'.SwatString::minimizeEntities($element).
+				'</div>';
+
+		return implode("\n", $description);
 	}
 
 	// }}}

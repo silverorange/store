@@ -435,7 +435,11 @@ class StoreProductPage extends StorePage
 
 	protected function getEntryDescription(StoreCartEntry $entry)
 	{
-		return implode(' - ', $entry->item->getDescriptionArray());
+		$description = array();
+		foreach ($entry->item->getDescriptionArray() as $element)
+			$description[] = SwatString::minimizeEntities($element);
+
+		return implode(' - ', $description);
 	}
 
 	// }}}
