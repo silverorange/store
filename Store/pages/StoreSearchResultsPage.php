@@ -129,6 +129,8 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 			$frame = $this->ui->getWidget('article_results_frame');
 			$frame->classes[] = 'store-article-results-full-width';
 		}
+
+		return true;
 	}
 
 	// }}}
