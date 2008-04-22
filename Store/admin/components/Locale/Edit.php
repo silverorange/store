@@ -32,8 +32,6 @@ class StoreLocaleEdit extends AdminDBEdit
 
 		$this->initLocale();
 
-		$this->fields = array('text:id', 'integer:region');
-
 		$id_flydown = $this->ui->getWidget('region');
 		$id_flydown->show_blank = false;
 		$id_flydown->addOptionsByArray(SwatDB::getOptionArray($this->app->db,
