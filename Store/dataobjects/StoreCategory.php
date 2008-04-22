@@ -621,7 +621,9 @@ class StoreCategory extends SwatDBDataObject
 	{
 		$span = null;
 
-		if ($this->getAvailableProductCount() == 0) {
+		if (!$this->always_visible &&
+			$this->getAvailableProductCount() == 0) {
+
 			$span = new SwatHtmlTag('span');
 			$span->setContent('');
 			$span->title = 'Out of Stock';
