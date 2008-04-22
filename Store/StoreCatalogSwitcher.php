@@ -3,8 +3,7 @@
 require_once 'Swat/SwatHtmlTag.php';
 require_once 'Swat/SwatButton.php';
 require_once 'Swat/SwatControl.php';
-
-require_once 'StoreCatalogSelector.php';
+require_once 'Store/StoreCatalogSelector.php';
 
 /**
  * A widget to switch the active catalog(s) in the admin
@@ -12,22 +11,31 @@ require_once 'StoreCatalogSelector.php';
  * The active catalog(s) is used for category pages.
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2008 silverorange
  */
 class StoreCatalogSwitcher extends SwatControl
 {
 	// {{{ public properties
 
+	/**
+	 * @var MDB2_Driver_Common
+	 */
 	public $db;
 
 	// }}}
 	// {{{ private properties
 
+	/**
+	 * @var StoreCatalogSelector
+	 */
 	private $catalog_selector;
+
+	/**
+	 * @var SwatButton
+	 */
 	private $switch_button;
 
 	// }}}
-
 	// {{{ public function __construct()
 
 	/**
@@ -40,8 +48,8 @@ class StoreCatalogSwitcher extends SwatControl
 	public function __construct($id = null)
 	{
 		parent::__construct($id);
-
-		$this->addStyleSheet('packages/store/admin/styles/store-catalog-switcher.css',
+		$this->addStyleSheet(
+			'packages/store/admin/styles/store-catalog-switcher.css',
 			Store::PACKAGE_ID);
 	}
 
@@ -50,12 +58,14 @@ class StoreCatalogSwitcher extends SwatControl
 
 	public function init()
 	{
+		parent::init();
+
 		$this->catalog_selector = new StoreCatalogSelector($this->id.'_selector');
 		$this->catalog_selector->parent = $this;
 		$this->catalog_selector->db = $this->db;
 		$this->catalog_selector->init();
 
-		$state = SiteApplication::initVar('catalog', null, 
+		$state = SiteApplication::initVar('catalog', null,
 			SiteApplication::VAR_SESSION);
 
 		if ($state === null) {
@@ -112,10 +122,26 @@ class StoreCatalogSwitcher extends SwatControl
 	}
 
 	// }}}
+	// {{{ public function process()
+
+	public function process()
+	{
+		parent::process();
+
+		$this->switch_button->process();
+		$this->catalog_selector->process();
+
+		if ($this->switch_button->hasBeenClicked())
+			$_SESSION['catalog'] = $this->catalog_selector->getState();
+	}
+
+	// }}}
 	// {{{ public function display()
 
 	public function display()
 	{
+		parent::display();
+
 		$div_tag = new SwatHtmlTag('div');
 		$div_tag->class = 'catalog-switcher';
 		$div_tag->open();
@@ -124,25 +150,13 @@ class StoreCatalogSwitcher extends SwatControl
 		$label_tag->for = $this->id.'_selector';
 		$label_tag->setContent(sprintf('%s:', Store::_('Catalog')));
 		$label_tag->display();
-		
+
 		echo '&nbsp;';
 		$this->catalog_selector->display();
 		echo '&nbsp;';
 		$this->switch_button->display();
 
 		$div_tag->close();
-	}
-
-	// }}}
-	// {{{ public function process()
-
-	public function process()
-	{
-		$this->switch_button->process();
-		$this->catalog_selector->process();
-
-		if ($this->switch_button->hasBeenClicked())
-			$_SESSION['catalog'] = $this->catalog_selector->getState();
 	}
 
 	// }}}
