@@ -1111,9 +1111,9 @@ protected function processCheckoutCart()
 	protected function getEntryDescription(StoreCartEntry $entry)
 	{
 		$description = array();
-
 		foreach ($entry->item->getDescriptionArray() as $element)
-			$description[] = '<div>'.$element.'</div>';
+			$description[] = '<div>'.SwatString::minimizeEntities($element).
+				'</div>';
 
 		return implode("\n", $description);
 	}

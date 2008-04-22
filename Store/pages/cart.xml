@@ -38,6 +38,7 @@
 					<property name="title" translatable="yes">Description</property>
 					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">description</property>
+						<property name="content_type">text/xml</property>
 						<property name="classes[]">store-cart-description</property>
 					</object>
 				</object>
@@ -131,6 +132,7 @@
 						<property name="title">Description</property>
 						<object class="SwatTextCellRenderer">
 							<property name="text" type="data">description</property>
+							<property name="content_type">text/xml</property>
 							<property name="classes[]">store-cart-description</property>
 						</object>
 					</object>
@@ -230,6 +232,7 @@
 					<property name="title" translatable="yes">Description</property>
 					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">description</property>
+						<property name="content_type">text/xml</property>
 						<property name="classes[]">store-cart-description</property>
 					</object>
 				</object>

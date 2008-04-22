@@ -262,10 +262,12 @@ class StoreItemsView extends SwatControl
 		$description = array();
 
 		if (isset($parts['description']))
-			$description[] = $parts['description'];
+			$description[] =
+				SwatString::minimizeEntities($parts['description']);
 
 		if (isset($parts['part_count']))
-			$description[] = $parts['part_count'];
+			$description[] =
+				SwatString::minimizeEntities($parts['part_count']);
 
 		return implode(' - ', $description);
 	}
