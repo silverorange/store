@@ -794,9 +794,18 @@ protected function processCheckoutCart()
 		// always show saved cart if it has items
 		$this->buildSavedTableView();
 
+		$this->buildInternal();
+
 		$this->layout->startCapture('content');
 		$this->ui->display();
 		$this->layout->endCapture();
+	}
+
+	// }}}
+	// {{{ protected function buildInternal()
+
+	protected function buildInternal()
+	{
 	}
 
 	// }}}
