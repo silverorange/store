@@ -72,7 +72,16 @@ class StoreCartPage extends SiteArticlePage
 		$form = $this->ui->getWidget('saved_cart_form');
 		$form->action = $this->source;
 
+		$this->initInternal();
+
 		$this->ui->init();
+	}
+
+	// }}}
+	// {{{ protected function initInternal()
+
+	protected function initInternal()
+	{
 	}
 
 	// }}}
