@@ -88,7 +88,10 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 			$price = ob_get_clean();
 
 			if ($this->singular_unit === null)
-				printf(Store::_('%s each'), $price);
+				if ($this->hasQuantityDiscounts())
+					printf(Store::_('%s each'), $price);
+				else
+					echo $price;
 			else
 				printf(Store::_('%s per %s'), $price, $this->singular_unit);
 		}
@@ -133,7 +136,10 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 		$price = ob_get_clean();
 
 		if ($this->singular_unit === null)
-			printf(Store::_('%s each'), $price);
+			if ($this->hasQuantityDiscounts())
+				printf(Store::_('%s each'), $price);
+			else
+				echo $price;
 		else
 			printf(Store::_('%s per %s'), $price, $this->singular_unit);
 
@@ -180,6 +186,15 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 		$savings_renderer->render();
 
 		$div->close();
+	}
+
+	// }}}
+	// {{{ private function hasQuantityDiscounts()
+
+	private function hasQuantityDiscounts()
+	{
+		return ($this->quantity_discounts !== null &&
+			count($this->quantity_discounts) > 0);
 	}
 
 	// }}}
