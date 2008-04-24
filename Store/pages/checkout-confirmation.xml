@@ -71,7 +71,7 @@
 	<!-- {{{ payment method -->
 	<widget class="SwatFieldset" id="payment_method_container">
 		<property name="classes[]">checkout-no-column</property>
-		<property name="title" translatable="yes">Credit Card</property>
+		<property name="title" translatable="yes">Payment Method</property>
 		<widget class="SwatToolLink">
 			<property name="title" translatable="yes">Edit</property>
 			<property name="link">checkout/confirmation/paymentmethod</property>
