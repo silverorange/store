@@ -5,7 +5,7 @@
 	<widget class="SwatFieldset" id="basic_info_container">
 		<property name="classes[]">checkout-no-column</property>
 		<property name="title" translatable="yes">Basic Information</property>
-		<widget class="SwatToolLink">
+		<widget class="SwatToolLink" id="basic_info_edit">
 			<property name="title" translatable="yes">Edit Basic Information</property>
 			<property name="link">checkout/confirmation/basicinfo</property>
 			<property name="stock_id">edit</property>
@@ -48,7 +48,7 @@
 	<widget class="SwatFieldset" id="billing_address_container">
 		<property name="classes[]">checkout-column-left</property>
 		<property name="title" translatable="yes">Billing Address</property>
-		<widget class="SwatToolLink">
+		<widget class="SwatToolLink" id="billing_address_edit">
 			<property name="title" translatable="yes">Edit</property>
 			<property name="link">checkout/confirmation/billingaddress</property>
 			<property name="stock_id">edit</property>
@@ -60,7 +60,7 @@
 	<widget class="SwatFieldset" id="shipping_address_container">
 		<property name="classes[]">checkout-column-right</property>
 		<property name="title" translatable="yes">Shipping Address</property>
-		<widget class="SwatToolLink">
+		<widget class="SwatToolLink" id="shipping_address_edit">
 			<property name="title" translatable="yes">Edit</property>
 			<property name="link">checkout/confirmation/shippingaddress</property>
 			<property name="stock_id">edit</property>
@@ -72,7 +72,7 @@
 	<widget class="SwatFieldset" id="payment_method_container">
 		<property name="classes[]">checkout-no-column</property>
 		<property name="title" translatable="yes">Payment Method</property>
-		<widget class="SwatToolLink">
+		<widget class="SwatToolLink" id="payment_method_edit">
 			<property name="title" translatable="yes">Edit</property>
 			<property name="link">checkout/confirmation/paymentmethod</property>
 			<property name="stock_id">edit</property>
