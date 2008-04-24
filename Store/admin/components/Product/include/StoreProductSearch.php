@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Site/SiteNateGoFulltextSearchEngine.php';
+require_once 'NateGoSearch/NateGoSearch.php';
 require_once 'Swat/SwatUI.php';
 
 /**
@@ -56,10 +57,11 @@ class StoreProductSearch
 		$this->db = $db;
 
 		$keywords = $ui->getWidget('search_keywords')->value;
-		if (strlen(trim($keywords)) > 0 && $this->getSearchType() !== null) {
+		$type = NateGoSearch::getDocumentType($this->db,
+			$this->getSearchType());
 
+		if (strlen(trim($keywords)) > 0 && $type !== null) {
 			$fulltext_engine = new SiteNateGoFulltextSearchEngine($this->db);
-
 			$fulltext_engine->setTypes(array(
 				$this->getSearchType(),
 			));
