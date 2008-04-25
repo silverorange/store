@@ -34,19 +34,19 @@
 					<property name="text" type="data">comments</property>
 				</object>
 			</object>
-			<object class="SwatDetailsViewField">
+			<object class="SwatDetailsViewField" id="payment_method">
 				<property name="title" translatable="yes">Payment</property>
 				<object class="StorePaymentMethodCellRenderer">
 					<property name="payment_method" type="data">payment_method</property>
 				</object>
 			</object>
-			<object class="SwatDetailsViewField">
+			<object class="SwatDetailsViewField" id="billing_address">
 				<property name="title" translatable="yes">Billing Address</property>
 				<object class="StoreAddressCellRenderer">
 					<property name="address" type="data">billing_address</property>
 				</object>
 			</object>
-			<object class="SwatDetailsViewField">
+			<object class="SwatDetailsViewField" id="shipping_address">
 				<property name="title" translatable="yes">Shipping Address</property>
 				<object class="StoreShippingAddressCellRenderer">
 					<property name="billing_address" type="data">billing_address</property>
@@ -78,6 +78,7 @@
 					<property name="title" translatable="yes">Description</property>
 					<object class="SwatTextCellRenderer">
 						<property name="text" type="data">description</property>
+						<property name="content_type">text/xml</property>
 						<property name="classes[]">store-cart-description</property>
 					</object>
 				</object>
