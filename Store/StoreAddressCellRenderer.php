@@ -22,7 +22,7 @@ class StoreAddressCellRenderer extends SwatCellRenderer
 	public $address;
 
 	// }}}
-	// {{{ public function render
+	// {{{ public function render()
 
 	/**
 	 * Renders an address
