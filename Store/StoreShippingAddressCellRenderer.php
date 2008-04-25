@@ -20,7 +20,8 @@ class StoreShippingAddressCellRenderer extends StoreAddressCellRenderer
 
 	public function render()
 	{
-		if ($this->address->id == $this->billing_address->id) {
+		if ($this->billing_address !== null &&
+			$this->address->id == $this->billing_address->id) {
 			$span_tag = new SwatHtmlTag('span');
 			$span_tag->class = 'swat-null-text-cell-renderer';
 			$span_tag->setContent(Store::_('<ship to billing address>'));
