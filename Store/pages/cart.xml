@@ -4,7 +4,7 @@
 	<widget class="SwatForm" id="form">
 		<widget class="StoreMessageDisplay" id="message_display" />
 		<widget class="SwatFrame" id="cart_frame">
-			<widget class="SwatHeaderFormField">
+			<widget class="SwatHeaderFormField" id="header_form_field">
 				<property name="classes[]">store-cart-entry-view-header</property>
 				<widget class="SwatButton" id="header_update_button">
 					<property name="title" translatable="yes">Update Cart</property>
@@ -191,7 +191,7 @@
 				</widget>
 			</widget>
 			<!-- }}} -->
-			<widget class="SwatFooterFormField">
+			<widget class="SwatFooterFormField" id="footer_form_field">
 				<property name="classes[]">store-cart-entry-view-footer</property>
 				<widget class="SwatButton" id="footer_update_button">
 					<property name="title" translatable="yes">Update Cart</property>
