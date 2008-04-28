@@ -97,8 +97,7 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 		$header = $this->ui->getWidget('header');
 		if ($header instanceof SwatContentBlock) {
 			$header->content_type = 'text/xml';
-			$header->content = SwatString::toXHTML($order->getReceiptHeader()).
-				'<div style="page-break-after: always"></div>';
+			$header->content = SwatString::toXHTML($order->getReceiptHeader());
 		}
 	}
 
