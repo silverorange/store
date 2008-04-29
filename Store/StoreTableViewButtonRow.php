@@ -130,7 +130,7 @@ class StoreTableViewButtonRow extends SwatTableViewRow
 			$td_tag->close();
 		} else {
 			$td_tag->open();
-			echo '&nbsp;';
+			$this->displayEmptyCell();
 			$td_tag->close();
 		}
 
@@ -144,7 +144,7 @@ class StoreTableViewButtonRow extends SwatTableViewRow
 				$td_tag->close();
 			} else {
 				$td_tag->open();
-				echo '&nbsp;';
+				$this->displayEmptyCell();
 				$td_tag->close();
 			}
 		}
@@ -184,6 +184,17 @@ class StoreTableViewButtonRow extends SwatTableViewRow
 		$this->button->title = $this->title;
 		$this->button->tab_index = $this->tab_index;
 		$this->button->display();
+	}
+
+	// }}}
+	// {{{ protected function displayEmptyCell()
+
+	/**
+	 * Displays the empty cell in this row
+	 */
+	protected function displayEmptyCell()
+	{
+		echo '&nbsp;';
 	}
 
 	// }}}
