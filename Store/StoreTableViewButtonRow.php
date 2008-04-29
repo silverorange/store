@@ -146,7 +146,7 @@ class StoreTableViewButtonRow extends SwatTableViewRow
 				$td_tag->open();
 				echo '&nbsp;';
 				$td_tag->close();
-			}	
+			}
 		}
 
 		$tr_tag->close();
