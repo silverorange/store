@@ -15,10 +15,15 @@
 				</widget>
 			</widget>
 			<!-- {{{ available cart -->
-			<widget class="SwatTableView" id="available_cart_view">
+			<widget class="StoreCartTableView" id="available_cart_view">
 				<property name="classes[]">store-cart-entry-view</property>
-				<object class="SwatTableViewGroup">
+				<object class="StoreCartImageTableViewGroup" id="cart_image">
 					<property name="group_by">item.product.id</property>
+					<object class="SwatImageCellRenderer">
+						<property name="image" type="data">image</property>
+						<property name="width" type="data">image_width</property>
+						<property name="height" type="data">image_height</property>
+					</object>
 					<object class="SwatLinkCellRenderer">
 						<property name="text" type="data">item.product.title</property>
 						<property name="link" type="data">product_link</property>
