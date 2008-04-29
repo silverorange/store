@@ -58,12 +58,8 @@
 					<property name="title" translatable="yes">Quantity</property>
 					<object class="SwatWidgetCellRenderer" id ="quantity_renderer">
 						<property name="replicator_id" type="data">id</property>
-						<widget class="SwatIntegerEntry" id="quantity_entry">
-							<property name="size" type="integer">3</property>
-							<property name="maxlength" type="integer">8</property>
+						<widget class="StoreQuantityEntry" id="quantity_entry">
 							<property name="value" type="data">quantity</property>
-							<property name="minimum_value" type="integer">0</property>
-							<property name="show_thousands_separator" type="boolean">false</property>
 						</widget>
 					</object>
 				</object>
