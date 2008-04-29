@@ -121,8 +121,16 @@ class StoreProductPage extends StorePage
 			$cart_form->action = $this->source;
 		}
 
+		$this->initCartInternal();
 		$this->cart_ui->init();
 	}
+	// {{{ protected function initCartInternal()
+
+	protected function initCartInternal()
+	{
+	}
+
+	// }}}
 
 	// }}}
 	// {{{ protected function loadProduct()
