@@ -297,8 +297,7 @@ protected function processCheckoutCart()
 
 	protected function getAvailableRemoveAllButton()
 	{
-		$original_button= $this->ui->getWidget('available_remove_all_button');
-		$button = $original_button->parent->getWidget();
+		$button = $this->ui->getWidget('available_remove_all_button');
 
 		return $button;
 	}
@@ -462,8 +461,7 @@ protected function processCheckoutCart()
 
 	protected function getUnavailableRemoveAllButton()
 	{
-		$original_button= $this->ui->getWidget('unavailable_remove_all_button');
-		$button = $original_button->parent->getWidget();
+		$button = $this->ui->getWidget('unavailable_remove_all_button');
 
 		return $button;
 	}
