@@ -19,7 +19,7 @@
 					<property name="text" type="data">item.product.title</property>
 				</object>
 			</object>
-			<object class="StoreItemColumn" id="entry">
+			<object class="StoreItemColumn" id="sku_column">
 				<property name="title" translatable="yes">Item #</property>
 				<object class="SwatTextCellRenderer">
 					<property name="text" type="data">item.sku</property>
