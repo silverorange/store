@@ -119,7 +119,7 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 	protected function buildOrderDetails(StoreOrder $order)
 	{
 		$details_view =  $this->ui->getWidget('order_details');
-		$details_view->data = new SwatDetailsStore($order);
+		$details_view->data = $this->getOrderDetailsStore($order);
 
 		$createdate_column = $details_view->getField('createdate');
 		$createdate_renderer = $createdate_column->getFirstRenderer();
@@ -145,6 +145,16 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 	}
 
 	// }}}
+	// {{{ protected function getOrderDetailsStore()
+
+	protected function getOrderDetailsStore(StoreOrder $order)
+	{
+		$ds = new SwatDetailsStore($order);
+
+		return $ds;
+	}
+
+	// }}}
 	// {{{ protected function buildFinalNote()
 
 	protected function buildFinalNote(StoreOrder $order)
@@ -167,6 +177,9 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 		 *       but does not use this mechanism to do it.  It is displayed
 		 *       in a SwatMessageDisplay instead.
 		 */
+		if (!$this->ui->hasWidget('account_note'))
+			return;
+
 		$note = $this->ui->getWidget('account_note');
 		if ($note instanceof SwatContentBlock && $order->account !== null) {
 			$note->content_type = 'text/xml';
