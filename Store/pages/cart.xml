@@ -89,14 +89,6 @@
 						</widget>
 					</object>
 				</object>
-				<object class="StoreTotalRow" id="shipping">
-					<property name="offset" type="integer">2</property>
-					<property name="title" translatable="yes">Shipping Total</property>
-				</object>
-				<object class="StoreTotalRow" id="subtotal">
-					<property name="offset" type="integer">2</property>
-					<property name="title" translatable="yes">Subtotal</property>
-				</object>
 				<object class="SwatTableViewWidgetRow">
 					<property name="position" type="constant">POSITION_RIGHT</property>
 					<widget class="SwatConfirmationButton" id="available_remove_all_button">
@@ -104,6 +96,14 @@
 						<property name="confirmation_message" translatable="yes">Remove all items from cart?</property>
 						<property name="classes[]">compact-button</property>
 					</widget>
+				</object>
+				<object class="StoreTotalRow" id="shipping">
+					<property name="offset" type="integer">2</property>
+					<property name="title" translatable="yes">Shipping Total</property>
+				</object>
+				<object class="StoreTotalRow" id="subtotal">
+					<property name="offset" type="integer">2</property>
+					<property name="title" translatable="yes">Subtotal</property>
 				</object>
 			</widget>
 			<!-- }}} -->
