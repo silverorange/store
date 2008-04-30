@@ -27,10 +27,17 @@ class StoreCartImageTableViewGroup extends SwatTableViewGroup
 
 		$td_tag = new SwatHtmlTag('td');
 		$td_tag->rowspan = $row->item_count + 1;
+
+		// add a rowspan for each error message row
+		$model = clone($this->view->model);
+		foreach ($model as $model_row)
+			if ($model_row->item->product->id == $row->item->product->id)
+				foreach ($this->view->getColumns() as $column)
+					if ($column->hasMessage($model_row))
+						$td_tag->rowspan++;
+
 		$td_tag->open();
-
 		$this->getFirstDescendant('SwatImageCellRenderer')->render();
-
 		$td_tag->close();
 
 		$td_tag = new SwatHtmlTag('td', $this->getTdAttributes());
