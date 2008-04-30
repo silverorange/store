@@ -46,8 +46,6 @@ class StoreProductImagePage extends StorePage
 		$this->product->setRegion($this->app->getRegion());
 		$this->product->load($this->product_id);
 		$this->buildNavBar();
-		$this->layout->data->title = sprintf(Store::_('%s: Image'),
-			$this->product->title);
 
 		if ($this->image_id === null)
 			$this->image = $this->product->primary_image;
@@ -56,6 +54,13 @@ class StoreProductImagePage extends StorePage
 
 		if ($this->image === null)
 			throw new SiteNotFoundException();
+
+		if (strlen($this->image->title) > 0)
+			$this->layout->data->title = sprintf(Store::_('%s: %s'),
+				$this->product->title, $this->image->title);
+		else
+			$this->layout->data->title = sprintf(Store::_('%s: Image'),
+				$this->product->title);
 
 		$this->layout->startCapture('content');
 
@@ -119,12 +124,6 @@ class StoreProductImagePage extends StorePage
 			$download_link->display();
 		}
 
-		if ($this->image->title !== null) {
-			$h3_tag = new SwatHtmlTag('h3');
-			$h3_tag->setContent($this->image->title);
-			$h3_tag->display();
-		}
-
 		if ($this->image->description !== null) {
 			$description = SwatString::toXHTML(
 				SwatString::minimizeEntities(
@@ -183,9 +182,10 @@ class StoreProductImagePage extends StorePage
 
 		$img_tag->display();
 
-		if (!$selected) {
-			echo Store::_('<span>View Larger Image</span>');
-			$anchor->close();
+		if (strlen($image->title) > 0) {
+			echo '<span class="image-title">';
+			echo SwatString::minimizeEntities($image->title);
+			echo '</span> ';
 		}
 
 		$li_tag->close();

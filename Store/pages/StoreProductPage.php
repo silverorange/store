@@ -618,18 +618,25 @@ class StoreProductPage extends StorePage
 
 		$div->open();
 
-		if ($link_to_large) {
+		if ($link_to_large)
 			$anchor->open();
-			echo '<span class="large-image">';
-			$img_tag->display();
-			echo '</span>';
+		else
+			echo '<span class="large-image-wrapper">';
+
+		echo '<span class="large-image">';
+		$img_tag->display();
+		echo '</span>';
+
+		if (strlen($image->title) > 0) {
+			echo '<span class="large-image-title">';
+			echo SwatString::minimizeEntities($image->title);
+			echo '</span> ';
+		}
+
+		if ($link_to_large) {
 			echo '<span>', Store::_('View Larger Image'), '</span>';
 			$anchor->close();
 		} else {
-			echo '<span class="large-image-wrapper">';
-			echo '<span class="large-image">';
-			$img_tag->display();
-			echo '</span>';
 			echo '</span>';
 		}
 
@@ -670,7 +677,13 @@ class StoreProductPage extends StorePage
 		$li_tag->open();
 		$anchor->open();
 		$img_tag->display();
-		echo '<span>', Store::_('View Larger Image'), '</span>';
+
+		if (strlen($image->title) > 0) {
+			echo '<span class="image-title">';
+			echo SwatString::minimizeEntities($image->title);
+			echo '</span> ';
+		}
+
 		$anchor->close();
 		$li_tag->close();
 	}
