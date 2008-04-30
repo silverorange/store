@@ -66,11 +66,9 @@ class StoreCartPage extends SiteArticlePage
 		$available_view = $this->ui->getWidget('available_cart_view');
 		$available_view->model = $this->getAvailableTableStore();
 
-		$form = $this->ui->getWidget('form');
-		$form->action = $this->source;
-
-		$form = $this->ui->getWidget('saved_cart_form');
-		$form->action = $this->source;
+		$forms = $this->ui->getRoot()->getDescendants('SwatForm');
+		foreach ($forms as $form)
+			$form->action = $this->source;
 
 		$this->initInternal();
 
@@ -233,7 +231,8 @@ protected function processCheckoutCart()
 			array('header_checkout_button', 'footer_checkout_button');
 
 		foreach ($continue_button_ids as $id)
-			$buttons[]= $this->ui->getWidget($id);
+			if ($this->ui->hasWidget($id))
+				$buttons[]= $this->ui->getWidget($id);
 
 		return $buttons;
 	}
@@ -271,10 +270,14 @@ protected function processCheckoutCart()
 
 	protected function getAvailableMoveButtons()
 	{
+		$buttons = array();
 		$view = $this->ui->getWidget('available_cart_view');
-		$column = $view->getColumn('move_column');
-		$renderer = $column->getRendererByPosition();
-		$buttons = $renderer->getWidgets('available_move_button');
+
+		if ($view->hasColumn('move_column')) {
+			$column = $view->getColumn('move_column');
+			$renderer = $column->getRendererByPosition();
+			$buttons = $renderer->getWidgets('available_move_button');
+		}
 
 		return $buttons;
 	}
@@ -284,10 +287,14 @@ protected function processCheckoutCart()
 
 	protected function getAvailableRemoveButtons()
 	{
+		$buttons = array();
 		$view = $this->ui->getWidget('available_cart_view');
-		$column = $view->getColumn('remove_column');
-		$renderer = $column->getRendererByPosition();
-		$buttons = $renderer->getWidgets('available_remove_button');
+
+		if ($view->hasColumn('remove_column')) {
+			$column = $view->getColumn('remove_column');
+			$renderer = $column->getRendererByPosition();
+			$buttons = $renderer->getWidgets('available_remove_button');
+		}
 
 		return $buttons;
 	}
@@ -435,10 +442,14 @@ protected function processCheckoutCart()
 
 	protected function getUnavailableMoveButtons()
 	{
+		$buttons = array();
 		$view = $this->ui->getWidget('unavailable_cart_view');
-		$column = $view->getColumn('move_column');
-		$renderer = $column->getRendererByPosition();
-		$buttons = $renderer->getWidgets('unavailable_move_button');
+
+		if ($view->hasColumn('move_column')) {
+			$column = $view->getColumn('move_column');
+			$renderer = $column->getRendererByPosition();
+			$buttons = $renderer->getWidgets('unavailable_move_button');
+		}
 
 		return $buttons;
 	}
@@ -448,10 +459,14 @@ protected function processCheckoutCart()
 
 	protected function getUnavailableRemoveButtons()
 	{
+		$buttons = array();
 		$view = $this->ui->getWidget('unavailable_cart_view');
-		$column = $view->getColumn('remove_column');
-		$renderer = $column->getRendererByPosition();
-		$buttons = $renderer->getWidgets('unavailable_remove_button');
+
+		if ($view->hasColumn('remove_column')) {
+			$column = $view->getColumn('remove_column');
+			$renderer = $column->getRendererByPosition();
+			$buttons = $renderer->getWidgets('unavailable_remove_button');
+		}
 
 		return $buttons;
 	}
@@ -561,6 +576,9 @@ protected function processCheckoutCart()
 
 	protected function processSavedCart()
 	{
+		if (!$this->ui->hasWidget('saved_cart_form'))
+			return;
+
 		$form = $this->ui->getWidget('saved_cart_form');
 		$form->process();
 
@@ -800,9 +818,7 @@ protected function processCheckoutCart()
 			$this->buildUnavailableTableView();
 		}
 
-		// always show saved cart if it has items
 		$this->buildSavedTableView();
-
 		$this->buildInternal();
 
 		$this->layout->startCapture('content');
@@ -858,12 +874,10 @@ protected function processCheckoutCart()
 				$remove_all_button->visible = false;
 		}
 
-		// fall-through assignment of visiblity to both checkout buttons
-		$this->ui->getWidget('header_checkout_button')->visible =
-			$this->ui->getWidget('footer_checkout_button')->visible =
-			$available_view->visible =
-			(count($available_view->model) > 0);
+		$available_view->visible = (count($available_view->model) > 0);
 
+		foreach ($this->getContinueButtons() as $button)
+			$button->visible = $available_view->visible;
 	}
 
 	// }}}
@@ -920,6 +934,9 @@ protected function processCheckoutCart()
 
 	protected function buildSavedTableView()
 	{
+		if (!$this->ui->hasWidget('saved_cart_view'))
+			return;
+
 		$saved_view = $this->ui->getWidget('saved_cart_view');
 		$saved_view->model = $this->getSavedTableStore();
 
