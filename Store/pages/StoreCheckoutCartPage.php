@@ -118,7 +118,8 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 			array('header_continue_button', 'footer_continue_button');
 
 		foreach ($continue_button_ids as $id)
-			$buttons[]= $this->ui->getWidget($id);
+			if ($this->ui->hasWidget($id))
+				$buttons[]= $this->ui->getWidget($id);
 
 		return $buttons;
 	}
@@ -154,10 +155,14 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 
 	protected function getMoveButtons()
 	{
+		$buttons = array();
 		$view = $this->ui->getWidget('cart_view');
-		$column = $view->getColumn('move_column');
-		$renderer = $column->getRendererByPosition();
-		$buttons = $renderer->getWidgets('move_button');
+
+		if ($view->hasColumn('move_column')) {
+			$column = $view->getColumn('move_column');
+			$renderer = $column->getRendererByPosition();
+			$buttons = $renderer->getWidgets('move_button');
+		}
 
 		return $buttons;
 	}
@@ -167,10 +172,14 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 
 	protected function getRemoveButtons()
 	{
+		$buttons = array();
 		$view = $this->ui->getWidget('cart_view');
-		$column = $view->getColumn('remove_column');
-		$renderer = $column->getRendererByPosition();
-		$buttons = $renderer->getWidgets('remove_button');
+
+		if ($view->hasColumn('remove_column')) {
+			$column = $view->getColumn('remove_column');
+			$renderer = $column->getRendererByPosition();
+			$buttons = $renderer->getWidgets('remove_button');
+		}
 
 		return $buttons;
 	}
