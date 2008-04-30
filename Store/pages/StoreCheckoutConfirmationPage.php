@@ -441,8 +441,22 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 	protected function buildInternal()
 	{
-		parent::buildInternal();
+		$this->buildMessage();
+		$this->buildOrder();
 
+		$order = $this->app->session->order;
+		$this->buildItems($order);
+		$this->buildBasicInfo($order);
+		$this->buildBillingAddress($order);
+		$this->buildShippingAddress($order);
+		$this->buildPaymentMethod($order);
+	}
+
+	// }}}
+	// {{{ protected function buildMessage()
+
+	protected function buildMessage()
+	{
 		if ($this->ui->getWidget('message_display')->getMessageCount() == 0) {
 			$message = new SwatMessage(Store::_('Please Review Your Order'));
 			$message->content_type= 'text/xml';
@@ -453,19 +467,17 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			$this->ui->getWidget('message_display')->add($message,
 				SwatMessageDisplay::DISMISS_OFF);
 		}
+	}
 
+	// }}}
+	// {{{ protected function buildOrder()
+
+	protected function buildOrder()
+	{
 		if ($this->app->session->order->isFromInvoice())
 			$this->createOrderFromInvoice();
 		else
 			$this->createOrder();
-
-		$order = $this->app->session->order;
-
-		$this->buildItems($order);
-		$this->buildBasicInfo($order);
-		$this->buildBillingAddress($order);
-		$this->buildShippingAddress($order);
-		$this->buildPaymentMethod($order);
 	}
 
 	// }}}
