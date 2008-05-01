@@ -60,11 +60,16 @@
 
 		<widget class="SwatFrame" id="items_frame">
 			<property name="title" translatable="yes">Items</property>
-			<widget class="SwatTableView" id="items_view">
+			<widget class="StoreCartImageTableView" id="items_view">
 				<property name="classes[]">store-order-item-view</property>
-				<object class="SwatTableViewGroup">
+				<object class="StoreCartImageTableViewGroup" id="cart_image">
 					<property name="group_by">product</property>
-					<object class="SwatTextCellRenderer">
+					<object class="SwatImageCellRenderer" id="product_image">
+						<property name="image" type="data">image</property>
+						<property name="width" type="data">image_width</property>
+						<property name="height" type="data">image_height</property>
+					</object>
+					<object class="SwatTextCellRenderer" id="product_title">
 						<property name="text" type="data">product_title</property>
 					</object>
 				</object>

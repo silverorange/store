@@ -15,7 +15,7 @@
 				</widget>
 			</widget>
 			<!-- {{{ available cart -->
-			<widget class="StoreCartTableView" id="available_cart_view">
+			<widget class="StoreCartImageTableView" id="available_cart_view">
 				<property name="classes[]">store-cart-entry-view</property>
 				<object class="StoreCartImageTableViewGroup" id="cart_image">
 					<property name="group_by">item.product.id</property>

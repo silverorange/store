@@ -31,13 +31,19 @@ class StoreCartImageTableViewGroup extends SwatTableViewGroup
 		// add a rowspan for each error message row
 		$model = clone($this->view->model);
 		foreach ($model as $model_row)
-			if ($model_row->item->product->id == $row->item->product->id)
+			if ($row->item instanceof StoreItem &&
+				$model_row->item->product->id == $row->item->product->id)
 				foreach ($this->view->getColumns() as $column)
 					if ($column->hasMessage($model_row))
 						$td_tag->rowspan++;
 
 		$td_tag->open();
-		$this->getFirstDescendant('SwatImageCellRenderer')->render();
+
+		if ($row->image === null)
+			echo '&nbsp;';
+		else
+			$this->getRenderer('product_image')->render();
+
 		$td_tag->close();
 
 		$td_tag = new SwatHtmlTag('td', $this->getTdAttributes());
@@ -54,7 +60,7 @@ class StoreCartImageTableViewGroup extends SwatTableViewGroup
 
 	protected function displayRenderersInternal($data)
 	{
-		$this->getFirstDescendant('SwatLinkCellRenderer')->render();
+		$this->getRenderer('product_title')->render();
 	}
 
 	// }}}
