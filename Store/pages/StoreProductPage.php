@@ -604,8 +604,8 @@ class StoreProductPage extends StorePage
 		$large_width = $image->getWidth('large');
 		if ($small_width > 0) {
 			$percentage_larger = ($large_width / $small_width) - 1;
-			// large must be at least 10% larger
-			if ($percentage_larger < 0.10)
+			// large must be at least 20% larger
+			if ($percentage_larger < 0.20)
 				$link_to_large = false;
 		}
 
