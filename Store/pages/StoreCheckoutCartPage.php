@@ -387,6 +387,13 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 		$ds->discount_extension = $entry->getDiscountExtension();
 		$ds->product_link       = 'store/'.$entry->item->product->path;
 
+		$image = $entry->item->product->primary_image;
+		$ds->image        = $image->getUri('pinky');
+		$ds->image_width  = $image->getWidth('pinky');
+		$ds->image_height = $image->getHeight('pinky');
+		$ds->item_count   = $this->getProductItemCount($entry->item->product,
+			$this->app->cart->checkout->getAvailableEntries());
+
 		if ($entry->alias === null)
 			$ds->alias_sku = null;
 		else
@@ -407,6 +414,20 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 				'</div>';
 
 		return implode("\n", $description);
+	}
+
+	// }}}
+	// {{{ private function getProductItemCount()
+
+	private function getProductItemCount(StoreProduct $product, $cart_entries)
+	{
+		$count = 0;
+
+		foreach ($cart_entries as $entry)
+			if ($entry->item->product->id == $product->id)
+				$count++;
+
+		return $count;
 	}
 
 	// }}}

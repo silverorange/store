@@ -221,6 +221,37 @@ class StoreOrderItem extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function getAvailableItem()
+
+	/**
+	 * Gets StoreItem belonging to this order item if the item is
+	 * still available on the site
+	 *
+	 * @param StoreRegion $region the region to get the item in.
+	 *
+	 * @return StoreItem The currently available item related to this order
+	 *                   item.
+	 */
+	public function getAvailableItem(StoreRegion $region)
+	{
+		$sql = sprintf('select Item.* from Item
+				inner join AvailableItemView
+					on AvailableItemView.item = Item.id
+					and AvailableItemView.region = %s
+				where Item.sku = %s',
+			$this->db->quote($region->id, 'integer'),
+			$this->db->quote($this->sku, 'text'));
+
+		$items = SwatDB::query($this->db, $sql,
+			SwatDBClassMap::get('StoreItemWrapper'));
+
+		if (count($items) > 0)
+			return $items->getFirst();
+		else
+			return null;
+	}
+
+	// }}}
 }
 
 ?>

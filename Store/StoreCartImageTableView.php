@@ -7,10 +7,15 @@ require_once 'Swat/SwatHtmlTag.php';
  * A custom table view for the cart which allows for a column for product
  * images.
  *
+ * This class is meant to me used in conjunction with a {@see
+ * SwatCartImageTableViewGroup}.
+ *
+ * @see SwatCartImageTableViewGroup
+ *
  * @package   Store
  * @copyright 2004-2008 silverorange
  */
-class StoreCartTableView extends SwatTableView
+class StoreCartImageTableView extends SwatTableView
 {
 	// {{{ public function getVisibleColumnCount()
 

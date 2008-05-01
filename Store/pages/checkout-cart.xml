@@ -11,11 +11,16 @@
 				<property name="title" translatable="yes">Update and Return to Checkout</property>
 			</widget>
 		</widget>
-		<widget class="SwatTableView" id="cart_view">
+		<widget class="StoreCartImageTableView" id="cart_view">
 			<property name="classes[]">store-cart-entry-view</property>
-			<object class="SwatTableViewGroup">
+			<object class="StoreCartImageTableViewGroup" id="cart_image">
 				<property name="group_by">item.product.id</property>
-				<object class="SwatTextCellRenderer">
+				<object class="SwatImageCellRenderer" id="product_image">
+					<property name="image" type="data">image</property>
+					<property name="width" type="data">image_width</property>
+					<property name="height" type="data">image_height</property>
+				</object>
+				<object class="SwatTextCellRenderer" id="product_title">
 					<property name="text" type="data">item.product.title</property>
 				</object>
 			</object>
