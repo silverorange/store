@@ -39,9 +39,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	}
 
 	// }}}
-	// {{{ private function checkOrder()
+	// {{{ protected function checkOrder()
 
-	private function checkOrder()
+	protected function checkOrder()
 	{
 		$order = $this->app->session->order;
 
