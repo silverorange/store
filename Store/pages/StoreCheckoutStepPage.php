@@ -57,15 +57,22 @@ abstract class StoreCheckoutStepPage extends StoreCheckoutUIPage
 
 		$form = $this->ui->getWidget('form');
 
-		if ($form->isSubmitted())
+		if ($form->isSubmitted()) {
 			foreach ($this->embedded_edit_pages as $page)
 				$page->preProcessCommon();
+		}
 
 		$this->ui->process();
 
-		if ($form->isProcessed())
+		if ($form->isProcessed()) {
 			foreach ($this->embedded_edit_pages as $page)
-				$page->processCommon();
+				$page->validateCommon();
+
+			if (!$form->hasMessage()) {
+				foreach ($this->embedded_edit_pages as $page)
+					$page->processCommon();
+			}
+		}
 	}
 
 	// }}}

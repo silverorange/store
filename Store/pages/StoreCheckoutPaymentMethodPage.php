@@ -63,9 +63,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
-	// {{{ public function processCommon()
+	// {{{ public function validateCommon()
 
-	public function processCommon()
+	public function validateCommon()
 	{
 		// make sure expiry date is after (or equal) to the inception date
 		$card_expiry = $this->ui->getWidget('card_expiry');
@@ -76,10 +76,13 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				'The card expiry date must be after the card inception date.'),
 				SwatMessage::ERROR));
 		}
+	}
 
-		if ($this->ui->getWidget('form')->hasMessage())
-			return;
+	// }}}
+	// {{{ public function processCommon()
 
+	public function processCommon()
+	{
 		$this->saveDataToSession();
 	}
 
