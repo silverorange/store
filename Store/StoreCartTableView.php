@@ -41,7 +41,7 @@ class StoreCartTableView extends SwatTableView
 		echo '<thead>';
 		echo '<tr>';
 
-		echo '<td>&nbsp;</td>';
+		echo '<th>&nbsp;</th>';
 
 		foreach ($this->columns as $column)
 			$column->displayHeaderCell();
