@@ -59,9 +59,6 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 
 	public function processCommon()
 	{
-		if ($this->ui->getWidget('form')->hasMessage())
-			return;
-
 		$this->saveDataToSession();
 
 		if ($this->app->session->isLoggedIn())

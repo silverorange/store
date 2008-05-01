@@ -123,8 +123,7 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 
 		$createdate_column = $details_view->getField('createdate');
 		$createdate_renderer = $createdate_column->getFirstRenderer();
-		$createdate_renderer->display_time_zone =
-			$this->app->default_time_zone;
+		$createdate_renderer->display_time_zone = $this->app->default_time_zone;
 
 		if ($order->email === null)
 			$details_view->getField('email')->visible = false;

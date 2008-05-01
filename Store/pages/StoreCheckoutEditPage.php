@@ -80,9 +80,10 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutUIPage
 		$this->ui->process();
 
 		if ($form->isProcessed()) {
-			$this->processCommon();
+			$this->validateCommon();
 
 			if (!$form->hasMessage()) {
+				$this->processCommon();
 				$this->updateProgress();
 				$this->app->relocate('checkout/confirmation');
 			}
@@ -110,13 +111,28 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutUIPage
 	}
 
 	// }}}
+	// {{{ public function validateCommon()
+
+	/**
+	 * Validates the data submitted by this edit page
+	 *
+	 * Subclasses may add additional validation code here by overriding and
+	 * implementing this method.
+	 *
+	 * By default, no additional validating is performed.
+	 */
+	public function validateCommon()
+	{
+	}
+
+	// }}}
 	// {{{ public function processCommon()
 
 	/**
 	 * Processes the data submitted by this checkout edit page
 	 *
-	 * Subclasses may add additional validation code here and update checkout
-	 * objects by overriding and implementing this method.
+	 * Subclasses may add additional code here to update checkout objects by
+	 * overriding and implementing this method.
 	 *
 	 * By default, no additional processing is performed.
 	 */

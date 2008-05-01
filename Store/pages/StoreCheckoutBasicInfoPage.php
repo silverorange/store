@@ -35,16 +35,19 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 	// }}}
 
 	//process phase
+	// {{{ public function validateCommon()
+
+	public function validateCommon()
+	{
+		if ($this->app->session->checkout_with_account)
+			$this->validateAccount();
+	}
+
+	// }}}
 	// {{{ public function processCommon()
 
 	public function processCommon()
 	{
-		if ($this->app->session->checkout_with_account)
-			$this->validateAccount();
-
-		if ($this->ui->getWidget('form')->hasMessage())
-			return;
-
 		$this->saveDataToSession();
 
 		if ($this->app->session->checkout_with_account)
