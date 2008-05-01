@@ -86,11 +86,12 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 	{
 		parent::buildInternal();
 
-		// if there are no saved addresses, add a side-by-side class to the frame
-		// if there are saved addresses, add a stacked class to the frame
+		// if there are no saved addresses, add a side-by-side class to the
+		// frame, if there are saved addresses, add a stacked class to the frame
 		$address_list = $this->ui->getWidget('billing_address_list');
 		$billing_container = $this->ui->getWidget('billing_address_container');
-		$shipping_container = $this->ui->getWidget('shipping_address_container');
+		$shipping_container =
+			$this->ui->getWidget('shipping_address_container');
 
 		if (!$address_list->visible) {
 			$billing_container->classes[]  = 'checkout-column-left';
