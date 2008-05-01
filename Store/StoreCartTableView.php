@@ -12,6 +12,22 @@ require_once 'Swat/SwatHtmlTag.php';
  */
 class StoreCartTableView extends SwatTableView
 {
+	// {{{ public function getVisibleColumnCount()
+
+	public function getVisibleColumnCount()
+	{
+		return parent::getVisibleColumnCount() + 1;
+	}
+
+	// }}}
+	// {{{ public function getXhtmlColspan()
+
+	public function getXhtmlColspan()
+	{
+		return parent::getXhtmlColspan() + 1;
+	}
+
+	// }}}
 	// {{{ protected function displayHeader()
 
 	/**
@@ -32,22 +48,6 @@ class StoreCartTableView extends SwatTableView
 
 		echo '</tr>';
 		echo '</thead>';
-	}
-
-	// }}}
-	// {{{ public function getVisibleColumnCount()
-
-	public function getVisibleColumnCount()
-	{
-		return parent::getVisibleColumnCount() + 1;
-	}
-
-	// }}}
-	// {{{ public function getXhtmlColspan()
-
-	public function getXhtmlColspan()
-	{
-		return parent::getXhtmlColspan() + 1;
 	}
 
 	// }}}
