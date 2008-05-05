@@ -65,23 +65,21 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
-	// {{{ public function validateCommon()
-
-	public function validateCommon()
-	{
-		// if form validated, perform additional checks on generated address
-		// object.
-		if (!$this->ui->getWidget('form')->hasMessage()) {
-			$this->validateShippingAddress();
-		}
-	}
-
-	// }}}
 	// {{{ public function processCommon()
 
 	public function processCommon()
 	{
-		$this->saveDataToSession();
+		// if form validated, perform additional checks on generated address
+		// object. This is dependent on Billing Address already having been
+		// saved to the session, so we can't perform this check in
+		// validateCommon
+		if (!$this->ui->getWidget('form')->hasMessage())
+			$this->validateShippingAddress();
+
+		// only save address in session if above validation didn't cause other
+		// validation messages to be generated.
+		if (!$this->ui->getWidget('form')->hasMessage())
+			$this->saveDataToSession();
 	}
 
 	// }}}
