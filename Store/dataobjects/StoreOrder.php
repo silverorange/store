@@ -372,8 +372,9 @@ class StoreOrder extends SwatDBDataObject
 	private function getProductItemCount($product_id)
 	{
 		$count = 0;
+		$items = clone $this->items;
 
-		foreach ($this->items as $item)
+		foreach ($items as $item)
 			if ($product_id == $item->product)
 				$count++;
 
