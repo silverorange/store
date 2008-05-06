@@ -139,7 +139,9 @@ class StoreCartCleaner extends SiteCommandLineApplication
 	protected function validateSessionId($session_id)
 	{
 		$valid = true;
-		if (!file_exists($this->session->getSavePath().'sess_'.$session_id))
+
+		$filename = $this->session->getSavePath().'/sess_'.$session_id;
+		if (!file_exists($filename))
 			$valid = false;
 
 		return $valid;
