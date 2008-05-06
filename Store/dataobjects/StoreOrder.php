@@ -350,7 +350,7 @@ class StoreOrder extends SwatDBDataObject
 
 		$item = $order_item->getAvailableItem($this->locale->region);
 
-		if ($item !== null) {
+		if ($item !== null && $item->product->primary_image !== null) {
 			$image = $item->product->primary_image;
 			$ds->image = $image->getUri('pinky');
 			$ds->image_width = $image->getWidth('pinky');
