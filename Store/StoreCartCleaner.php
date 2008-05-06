@@ -2,6 +2,7 @@
 
 require_once 'Site/SiteCommandLineApplication.php';
 require_once 'Site/SiteDatabaseModule.php';
+require_once 'Site/SiteSessionModule.php';
 require_once 'Store/Store.php';
 require_once 'Store/StoreCommandLineConfigModule.php';
 require_once 'SwatDB/SwatDB.php';
@@ -53,7 +54,6 @@ class StoreCartCleaner extends SiteCommandLineApplication
 
 	public function init()
 	{
-		$this->session_save_path = session_save_path();
 		$this->initModules();
 		$this->db->loadModule('Datatype', null, true);
 	}
@@ -66,7 +66,7 @@ class StoreCartCleaner extends SiteCommandLineApplication
 		$this->init();
 		$this->parseCommandLineArguments();
 
-		if (strpos($this->session_save_path, ';') !== false) {
+		if (strpos($this->session->getSavePath(), ';') !== false) {
 			$this->output("Cannot automatically clean cart entries " .
 				"when using multiple levels of session files. See " .
 				"session.save_path documentation.\n",
@@ -139,7 +139,7 @@ class StoreCartCleaner extends SiteCommandLineApplication
 	protected function validateSessionId($session_id)
 	{
 		$valid = true;
-		if (!file_exists($this->session_save_path.'sess_'.$session_id))
+		if (!file_exists($this->session->getSavePath().'sess_'.$session_id))
 			$valid = false;
 
 		return $valid;
@@ -153,6 +153,7 @@ class StoreCartCleaner extends SiteCommandLineApplication
 		return array(
 			'config'   => 'StoreCommandLineConfigModule',
 			'database' => 'SiteDatabaseModule',
+			'session'  => 'SiteSessionModule',
 		);
 	}
 
