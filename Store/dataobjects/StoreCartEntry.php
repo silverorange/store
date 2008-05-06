@@ -180,7 +180,7 @@ class StoreCartEntry extends SwatDBDataObject
 		} else {
 			$price = $this->getQuantityDiscountedItemPrice();
 
-			$sale = $this->item->sale_discount;
+			$sale = $this->item->getActiveSaleDiscount();
 			if ($sale !== null)
 				$price = round($price * (1 - $sale->discount_percentage), 2);
 		}
@@ -322,8 +322,9 @@ class StoreCartEntry extends SwatDBDataObject
 		if ($this->alias !== null)
 			$order_item->alias_sku = $this->alias->sku;
 
-		if ($this->item->sale_discount !== null)
-			$order_item->sale_discount = $this->item->sale_discount->id;
+		$sale = $this->item->getActiveSaleDiscount();
+		if ($sale !== null)
+			$order_item->sale_discount = $sale->id;
 
 		// set database if it exists
 		if ($this->db !== null)

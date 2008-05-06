@@ -357,8 +357,9 @@ class StoreItem extends SwatDBDataObject
 	{
 		$price = $this->getPrice($region);
 
-		if ($this->sale_discount !== null)
-			$price -= ($price * $this->sale_discount->discount_percentage);
+		$sale = $this->getActiveSaleDiscount();
+		if ($sale !== null)
+			$price -= ($price * $sale->discount_percentage);
 
 		return $price;
 	}
@@ -495,6 +496,24 @@ class StoreItem extends SwatDBDataObject
 	{
 		$this->status = $status;
 		$this->setInternalValue('status', $status->id);
+	}
+
+	// }}}
+	// {{{ public function getActiveSaleDiscount()
+
+	/**
+	 * Gets an active sale discount if one exists on this item
+	 *
+	 * @return SaleDiscount
+	 */
+	public function getActiveSaleDiscount()
+	{
+		$sale_discount = null;
+
+		if ($this->sale_discount !== null && $this->sale_discount->isActive())
+			$sale_discount = $this->sale_discount;
+
+		return $sale_discount;
 	}
 
 	// }}}
