@@ -55,10 +55,10 @@ class StoreProductWrapper extends SwatDBRecordsetWrapper
 
 			$attributes = SwatDB::query($this->db, $sql, $wrapper_class);
 
-			foreach ($attributes as $attribute) {
+			foreach ($this as $product) {
 				foreach ($bindings as $binding) {
-					if ($binding->attribute === $attribute->id) {
-						$product = $this->getByIndex($binding->product);
+					if ($binding->product === $product->id) {
+						$attribute = $attributes->getByIndex($binding->attribute);
 						$product->attributes->add($attribute);
 					}
 				}
