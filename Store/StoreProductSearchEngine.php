@@ -164,18 +164,54 @@ class StoreProductSearchEngine extends SiteSearchEngine
 
 	protected function getSelectClause()
 	{
-		$clause = 'select Product.id, Product.title, Product.shortname,
-			Product.bodytext, Product.catalog,
-			ProductPrimaryCategoryView.primary_category,
-			ProductPrimaryImageView.image as primary_image,
-			getCategoryPath(ProductPrimaryCategoryView.primary_category) as
-				path,
-			case when AvailableProductView.product is null then false
-				else true
-				end as is_available,
-			VisibleProductCache.region as region_id';
+		$clause = 'select';
+		$first = true;
+
+		foreach ($this->getSelectClauseTerms() as $name => $term) {
+			if ($first)
+				$first = false;
+			else
+				$clause.= ',';
+
+			$clause.= sprintf(' %s as %s', $term, $name);
+		}
 
 		return $clause;
+	}
+
+	// }}}
+	// {{{ protected function getSelectClauseTerms()
+
+	protected function getSelectClauseTerms()
+	{
+		$terms = array(
+			'id'            => 'Product.id',
+			'title'         => 'Product.title',
+			'shortname'     => 'Product.shortname',
+			'bodytext'      => 'Product.bodytext',
+			'catalog'       => 'Product.catalog',
+			'primary_image' => 'ProductPrimaryImageView.image',
+			'region_id'     => 'VisibleProductCache.region',
+			'is_available'  =>
+				'case when AvailableProductView.product is null then
+					false else true end',
+		);
+
+		if ($this->category === null) {
+			$terms['primary_category'] =
+				'ProductPrimaryCategoryView.primary_category';
+
+			$terms['path'] =
+				'getCategoryPath(ProductPrimaryCategoryView.primary_category)';
+
+		} else {
+			$terms['primary_category'] = 'CategoryProductBinding.category';
+
+			$terms['path'] =
+				'getCategoryPath(CategoryProductBinding.category)';
+		}
+
+		return $terms;
 	}
 
 	// }}}
