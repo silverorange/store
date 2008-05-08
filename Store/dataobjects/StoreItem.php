@@ -517,6 +517,33 @@ class StoreItem extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function getSaleDiscountNote()
+
+	/**
+	 * Gets a note about the active sale discount if one exists
+	 *
+	 * @return string
+	 */
+	public function getSaleDiscountNote()
+	{
+		$note = null;
+
+		$sale = $this->getActiveSaleDiscount();
+		if ($sale !== null && $sale->end_date !== null) {
+			$now = new SwatDate();
+			$span = new Date_Span();
+			$span->setFromDateDiff($now, $sale->end_date);
+
+			if ($span->toHours() < 2)
+				$note = sprintf('%s sale on this item ends in %s',
+					$sale->title,
+					$span->format('%i hours and %m minutes'));
+		}
+
+		return $note;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
