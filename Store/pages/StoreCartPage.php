@@ -1162,8 +1162,12 @@ protected function processCheckoutCart()
 	{
 		$description = array();
 		foreach ($entry->item->getDescriptionArray() as $element)
-			$description[] = '<div>'.SwatString::minimizeEntities($element).
-				'</div>';
+			$description[] =
+				'<div>'.SwatString::minimizeEntities($element).'</div>';
+
+		$sale_note = $entry->item->getSaleDiscountNote();
+		if ($sale_note !== null)
+			$description[] = $sale_note;
 
 		return implode("\n", $description);
 	}
