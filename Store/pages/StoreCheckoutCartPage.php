@@ -388,9 +388,17 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 		$ds->product_link       = 'store/'.$entry->item->product->path;
 
 		$image = $entry->item->product->primary_image;
-		$ds->image        = $image->getUri('pinky');
-		$ds->image_width  = $image->getWidth('pinky');
-		$ds->image_height = $image->getHeight('pinky');
+
+		if ($image === null) {
+			$ds->image        = null;
+			$ds->image_width  = null;
+			$ds->image_height = null;
+		} else {
+			$ds->image        = $image->getUri('pinky');
+			$ds->image_width  = $image->getWidth('pinky');
+			$ds->image_height = $image->getHeight('pinky');
+		}
+
 		$ds->item_count   = $this->getProductItemCount($entry->item->product,
 			$this->app->cart->checkout->getAvailableEntries());
 
