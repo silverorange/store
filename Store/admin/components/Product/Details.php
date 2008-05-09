@@ -693,12 +693,11 @@ class StoreProductDetails extends AdminIndex
 		// setup the flydowns for enabled/disabled actions
 		$regions = SwatDB::getOptionArray($this->app->db, 'Region', 'title',
 			'id');
+
 		$regions[0] = Store::_('All Regions');
 
-		$this->ui->getWidget('enable_region')->addOptionsByArray(
-			$regions);
-		$this->ui->getWidget('disable_region')->addOptionsByArray(
-			$regions);
+		$this->ui->getWidget('enable_region')->addOptionsByArray($regions);
+		$this->ui->getWidget('disable_region')->addOptionsByArray($regions);
 
 		$view->getColumn('quantity_discounts')->getRendererByPosition()->db =
 			$this->app->db;
