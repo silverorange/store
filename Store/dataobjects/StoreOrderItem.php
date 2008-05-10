@@ -1,6 +1,8 @@
 <?php
 
 require_once 'SwatDB/SwatDBDataObject.php';
+require_once 'Store/dataobjects/StoreRegion.php';
+require_once 'Store/dataobjects/StoreItemWrapper.php';
 
 /**
  * An item in an order
