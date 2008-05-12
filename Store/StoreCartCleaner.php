@@ -7,6 +7,20 @@ require_once 'Store/Store.php';
 require_once 'Store/StoreCommandLineConfigModule.php';
 require_once 'SwatDB/SwatDB.php';
 
+/**
+ * Command-line application to clear abandoned carts from the database
+ *
+ * Abandoned carts are based on expired sessions. If a cart entry is session-
+ * based and the sessino identifier no longer exists in the sessions directory,
+ * the cart is considered abandoned and remvoed from the database.
+ *
+ * This relies on some asumptions about the session storage mechanism. Sessions
+ * must uses files in a flat directory.
+ *
+ * @package   Store
+ * @copyright 2005-2008 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ */
 class StoreCartCleaner extends SiteCommandLineApplication
 {
 	// {{{ class constants
