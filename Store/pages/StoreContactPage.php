@@ -94,7 +94,10 @@ class StoreContactPage extends SiteArticlePage
 		$subjects = $this->getSubjects();
 		$message->subject = $subjects[$subject_index];
 
-		$message->text_body = $this->ui->getWidget('message')->value;
+		$message->text_body = sprintf(Store::_('Email From: %s'),
+			$this->ui->getWidget('email')->value)."\n\n";
+
+		$message->text_body.= $this->ui->getWidget('message')->value;
 		$message->text_body.= $this->browserInfo();
 
 		return $message;
