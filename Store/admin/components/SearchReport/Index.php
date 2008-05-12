@@ -10,8 +10,8 @@ require_once 'Store/dataobjects/StoreRegionWrapper.php';
 /**
  * Search report index page
  *
- * @package   VanBourgondien
- * @copyright 2007 silverorange
+ * @package   Store
+ * @copyright 2007-2008 silverorange
  */
 class StoreSearchReportIndex extends AdminIndex
 {
