@@ -7,7 +7,7 @@ create table CartEntry (
 	quantity integer default 0,
 	quick_order boolean not null default false,
 	saved boolean not null default false,
-	custom_price numeric(11, 2); -- used by items like gift certificates to over-ride price
+	custom_price numeric(11, 2), -- used by items like gift certificates to over-ride price
 	primary key(id)
 );
 
