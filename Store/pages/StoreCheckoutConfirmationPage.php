@@ -78,24 +78,15 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 	protected function processOrder()
 	{
-		// If there is no transaction in progress, save the order
-		// otherwise it has already been saved.
-		if ($this->app->session->transaction === null) {
-			$db_transaction = new SwatDBTransaction($this->app->db);
-			try {
-				$this->save();
-			} catch (Exception $e) {
-				$db_transaction->rollback();
-				throw $e;
-			}
-			$db_transaction->commit();
-		}
+		$saved = $this->save();
 
-		$order = $this->app->session->order;
+		if (!$saved)
+			return;
 
 		try {
 			$this->processPayment();
 
+			$order = $this->app->session->order;
 			$order->sendConfirmationEmail($this->app);
 			$this->removeCartEntries();
 			$this->cleanupSession();
@@ -132,8 +123,76 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 	protected function save()
 	{
-		$this->saveAccount();
-		$this->saveOrder();
+		// If there is no transaction in progress, save the order
+		// otherwise it has already been saved.
+		if ($this->app->session->transaction === null) {
+			if ($this->app->session->checkout_with_account) {
+				$db_transaction = new SwatDBTransaction($this->app->db);
+				$duplicate_account = $this->app->session->account->duplicate();
+				try {
+					// Save account
+					$this->saveAccount();
+					$db_transaction->commit();
+				} catch (Exception $e) {
+					$db_transaction->rollback();
+					$this->app->session->account = $duplicate_account;
+
+					if (!($e instanceof SwatException))
+						$e = new SwatException($e);
+
+					$e->log();
+
+					$message = new SwatMessage(Store::_('A system error '.
+						'occured while processing your order'),
+						SwatMessage::SYSTEM_ERROR);
+
+					$message->content_type = 'text/xml';
+					$message->secondary_content = Store::_(
+						'Your account was not created, '.
+						'your order was <em>not</em> placed, and you have '.
+						'<em>not</em> be billed. The error has been logged '.
+						'and we will attempt to fix it as quickly as '.
+						'possible.');
+
+					$this->app->messages->add($message);
+					$this->ui->getWidget('message_display')->add($message);
+					return false;
+				}
+			}
+
+			$db_transaction = new SwatDBTransaction($this->app->db);
+			$duplicate_order = $this->app->session->order->duplicate();
+			try {
+				// Save order
+				$this->saveOrder();
+				$db_transaction->commit();
+			} catch (Exception $e) {
+				$db_transaction->rollback();
+				$this->app->session->order = $duplicate_order;
+
+				if (!($e instanceof SwatException))
+					$e = new SwatException($e);
+
+				$e->log();
+
+				$message = new SwatMessage(Store::_('A system error '.
+					'occured while processing your order'),
+					SwatMessage::SYSTEM_ERROR);
+
+				$message->content_type = 'text/xml';
+				$message->secondary_content = Store::_(
+					'Your account was created, but your order was '.
+					'<em>not</em> placed and you have '.
+					'<em>not</em> be billed. The error has been logged '.
+					'and we will attempt to fix it as quickly as '.
+					'possible.');
+
+				$this->ui->getWidget('message_display')->add($message);
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	// }}}
@@ -143,46 +202,43 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	{
 		// if we are checking out with an account, store new addresses and
 		// payment methods in the account
-		if ($this->app->session->checkout_with_account) {
-			$account = $this->app->session->account;
-			$order = $this->app->session->order;
+		$account = $this->app->session->account;
+		$order = $this->app->session->order;
 
-			$address = $this->addAddressToAccount($order->billing_address);
-			$account->setDefaultBillingAddress($address);
+		$address = $this->addAddressToAccount($order->billing_address);
+		$account->setDefaultBillingAddress($address);
 
-	 		// shipping address is only added if it differs from billing address
-			if ($order->shipping_address !== $order->billing_address &&
-				$order->shipping_address->getAccountAddressId() === null) {
-				$address = $this->addAddressToAccount($order->shipping_address);
-			}
-
-			$account->setDefaultShippingAddress($address);
-
-	 		// new payment methods are only added if a session flag is set
-			if ($this->app->session->save_account_payment_method &&
-				$order->payment_method !== null) {
-				$this->addPaymentMethodToAccount($order->payment_method);
-			}
-
-			$new_account = ($account->id === null);
-
-			// if this is a new account, set createdate to now
-			if ($new_account) {
-				$account->createdate = new SwatDate();
-				$account->createdate->toUTC();
-
-				if ($this->app->hasModule('SiteMultipleInstanceModule'))
-					$account->instance = $this->app->instance->getInstance();
-			}
-
-			// save account
-			$account->save();
-
-			// if this is a new account, log it in
-			if ($new_account) {
-				$this->app->session->loginById($account->id);
-			}
+		// shipping address is only added if it differs from billing address
+		if ($order->shipping_address !== $order->billing_address &&
+			$order->shipping_address->getAccountAddressId() === null) {
+			$address = $this->addAddressToAccount($order->shipping_address);
 		}
+
+		$account->setDefaultShippingAddress($address);
+
+		// new payment methods are only added if a session flag is set
+		if ($this->app->session->save_account_payment_method &&
+			$order->payment_method !== null) {
+			$this->addPaymentMethodToAccount($order->payment_method);
+		}
+
+		$new_account = ($account->id === null);
+
+		// if this is a new account, set createdate to now
+		if ($new_account) {
+			$account->createdate = new SwatDate();
+			$account->createdate->toUTC();
+
+			if ($this->app->hasModule('SiteMultipleInstanceModule'))
+				$account->instance = $this->app->instance->getInstance();
+		}
+
+		// save account
+		$account->save();
+
+		// if this is a new account, log it in
+		if ($new_account)
+			$this->app->session->loginById($account->id);
 	}
 
 	// }}}
