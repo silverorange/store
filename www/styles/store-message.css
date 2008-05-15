@@ -8,3 +8,9 @@
 }
 
 .store-message-cart-notification .swat-message-secondary-content { color: #947140; }
+
+#main-content .swat-message-display
+.swat-message-system-error
+h3.swat-message-primary-content {
+	color: #ffcccc;
+}
