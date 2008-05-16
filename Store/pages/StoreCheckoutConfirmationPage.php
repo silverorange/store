@@ -150,7 +150,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 					$message->secondary_content = Store::_(
 						'Your account was not created, '.
 						'your order was <em>not</em> placed, and you have '.
-						'<em>not</em> be billed. The error has been logged '.
+						'<em>not</em> been billed. The error has been logged '.
 						'and we will attempt to fix it as quickly as '.
 						'possible.');
 
@@ -162,6 +162,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 			$db_transaction = new SwatDBTransaction($this->app->db);
 			$duplicate_order = $this->app->session->order->duplicate();
+
 			try {
 				// Save order
 				$this->saveOrder();
@@ -183,7 +184,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 				$message->secondary_content = Store::_(
 					'Your account was created, but your order was '.
 					'<em>not</em> placed and you have '.
-					'<em>not</em> be billed. The error has been logged '.
+					'<em>not</em> been billed. The error has been logged '.
 					'and we will attempt to fix it as quickly as '.
 					'possible.');
 
