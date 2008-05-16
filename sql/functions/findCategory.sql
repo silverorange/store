@@ -36,6 +36,10 @@ CREATE OR REPLACE FUNCTION findCategory (VARCHAR(255)) RETURNS INTEGER AS $$
 						(Category.parent is null AND local_id is null)
 						) AND shortname = local_shortname;
 
+				IF local_id is null THEN
+					RETURN null;
+				END IF;
+
 				-- Find next forward slash in the source string.
 				local_pos := POSITION('/' IN local_source);
 			END;
