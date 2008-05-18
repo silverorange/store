@@ -168,8 +168,8 @@ function StoreQuickOrder_staticTimeOut(quick_order, replicator_id)
 	}
 
 	client.callProcedure('getItemDescription', callBack,
-		[sku,      replicator_id, item.sequence],
-		['string', 'string',      'int']);
+		[sku, replicator_id, item.sequence],
+		['string', 'string', 'int']);
 
 	clearTimeout(item.timer);
 }
