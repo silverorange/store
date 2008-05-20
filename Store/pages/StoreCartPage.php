@@ -98,42 +98,42 @@ class StoreCartPage extends SiteArticlePage
 	// }}}
 
 	// process phase - checkout cart
-// {{{ protected function processCheckoutCart()
+	// {{{ protected function processCheckoutCart()
 
-protected function processCheckoutCart()
-{
-	$form = $this->ui->getWidget('form');
-	$form->process();
+	protected function processCheckoutCart()
+	{
+		$form = $this->ui->getWidget('form');
+		$form->process();
 
-	if ($form->isProcessed()) {
-		if ($this->getAvailableRemoveAllButton()->hasBeenClicked())
-			$this->removeAllAvailableCheckoutCart();
+		if ($form->isProcessed()) {
+			if ($this->getAvailableRemoveAllButton()->hasBeenClicked())
+				$this->removeAllAvailableCheckoutCart();
 
-		if ($this->getUnavailableRemoveAllButton()->hasBeenClicked())
-			$this->removeAllUnavailableCheckoutCart();
+			if ($this->getUnavailableRemoveAllButton()->hasBeenClicked())
+				$this->removeAllUnavailableCheckoutCart();
 
-		if ($form->hasMessage()) {
-			//TODO: this message can show after all items are removed
-			$message = new SwatMessage(Store::_(
-				'There is a problem with the information submitted.'),
-				SwatMessage::ERROR);
+			if ($form->hasMessage()) {
+				//TODO: this message can show after all items are removed
+				$message = new SwatMessage(Store::_(
+					'There is a problem with the information submitted.'),
+					SwatMessage::ERROR);
 
-			$message->secondary_content = Store::_('Please address the '.
-				'fields highlighted below and re-submit the form.');
+				$message->secondary_content = Store::_('Please address the '.
+					'fields highlighted below and re-submit the form.');
 
-			$this->ui->getWidget('message_display')->add($message);
-		} else {
-			$this->updateCheckoutCart();
-			if (!$form->hasMessage() &&
-				$this->continueButtonHasBeenClicked()) {
-				$this->app->cart->save();
-				$this->app->relocate('checkout');
+				$this->ui->getWidget('message_display')->add($message);
+			} else {
+				$this->updateCheckoutCart();
+				if (!$form->hasMessage() &&
+					$this->continueButtonHasBeenClicked()) {
+					$this->app->cart->save();
+					$this->app->relocate('checkout');
+				}
 			}
 		}
 	}
-}
 
-// }}}
+	// }}}
 	// {{{ protected function updateCheckoutCart()
 
 	protected function updateCheckoutCart()
