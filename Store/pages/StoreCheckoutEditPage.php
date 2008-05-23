@@ -84,8 +84,12 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutUIPage
 
 			if (!$form->hasMessage()) {
 				$this->processCommon();
-				$this->updateProgress();
-				$this->app->relocate('checkout/confirmation');
+				// check again here in case processing the form revealed
+				// additional errors
+				if (!$form->hasMessage()) {
+					$this->updateProgress();
+					$this->app->relocate('checkout/confirmation');
+				}
 			}
 		}
 	}
