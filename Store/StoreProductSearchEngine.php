@@ -62,6 +62,20 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	 */
 	public $available_only = false;
 
+	/**
+	 * Whether or not to supress duplicate products
+	 *
+	 * When searching within a category, the primary category view is not used
+	 * and it is possible get duplicate product results if a product belongs
+	 * to multiple categories within the search category.  This option will
+	 * suppress these dupes by choosing a primary category within the subtree.
+	 *
+	 * Defaults to false.
+	 *
+	 * @var boolean
+	 */
+	public $supress_duplicate_products = false;
+
 	// }}}
 	// {{{ public function __construct()
 
@@ -224,10 +238,10 @@ class StoreProductSearchEngine extends SiteSearchEngine
 			inner join VisibleProductCache on
 				VisibleProductCache.product = Product.id and
 				VisibleProductCache.region = %s
-			left outer join ProductPrimaryCategoryView on
-				ProductPrimaryCategoryView.product = Product.id
 			left outer join ProductPrimaryImageView
 				on ProductPrimaryImageView.product = Product.id
+			left outer join CategoryProductBinding
+				on CategoryProductBinding.product = Product.id
 			%s join AvailableProductView on
 				AvailableProductView.product = Product.id and
 				AvailableProductView.region = %s',
@@ -240,8 +254,19 @@ class StoreProductSearchEngine extends SiteSearchEngine
 				$this->fulltext_result->getJoinClause('Product.id', 'product');
 
 		if ($this->category !== null) {
-			$clause.= ' inner join CategoryProductBinding
-				on CategoryProductBinding.product = Product.id';
+			if ($this->supress_duplicate_products)
+				$clause.= sprintf('
+					inner join getProductPrimaryCategoryInSubTree(%s)
+						as ProductPrimaryCategoryView
+					on ProductPrimaryCategoryView.product = Product.id and
+						CategoryProductBinding.category =
+							ProductPrimaryCategoryView.primary_category',
+					$this->app->db->quote($this->category->id, 'integer'));
+			else
+				$clause.= 'left outer join ProductPrimaryCategoryView
+					on ProductPrimaryCategoryView.product = Product.id and
+						CategoryProductBinding.category =
+							ProductPrimaryCategoryView.primary_category';
 		}
 
 		if ($this->featured_category !== null) {

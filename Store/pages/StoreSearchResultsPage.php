@@ -370,6 +370,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 
 		$engine->attributes = $this->getAttributes();
 		$engine->category = $this->getCategory();
+		$engine->supress_duplicate_products = true;
 		$engine->addOrderByField('is_available desc');
 
 		return $engine;
