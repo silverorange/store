@@ -240,8 +240,6 @@ class StoreProductSearchEngine extends SiteSearchEngine
 				VisibleProductCache.region = %s
 			left outer join ProductPrimaryImageView
 				on ProductPrimaryImageView.product = Product.id
-			left outer join CategoryProductBinding
-				on CategoryProductBinding.product = Product.id
 			%s join AvailableProductView on
 				AvailableProductView.product = Product.id and
 				AvailableProductView.region = %s',
@@ -253,9 +251,14 @@ class StoreProductSearchEngine extends SiteSearchEngine
 			$clause.= ' '.
 				$this->fulltext_result->getJoinClause('Product.id', 'product');
 
-		if ($this->category !== null) {
+		if ($this->category === null) {
+			$clause.= ' left outer join ProductPrimaryCategoryView
+				on ProductPrimaryCategoryView.product = Product.id';
+		} else {
 			if ($this->supress_duplicate_products)
 				$clause.= sprintf('
+					inner join CategoryProductBinding
+						on CategoryProductBinding.product = Product.id
 					inner join getProductPrimaryCategoryInSubTree(%s)
 						as ProductPrimaryCategoryView
 					on ProductPrimaryCategoryView.product = Product.id and
@@ -263,10 +266,13 @@ class StoreProductSearchEngine extends SiteSearchEngine
 							ProductPrimaryCategoryView.primary_category',
 					$this->app->db->quote($this->category->id, 'integer'));
 			else
-				$clause.= 'left outer join ProductPrimaryCategoryView
-					on ProductPrimaryCategoryView.product = Product.id and
-						CategoryProductBinding.category =
-							ProductPrimaryCategoryView.primary_category';
+				$clause.= '
+					inner join CategoryProductBinding
+						on CategoryProductBinding.product = Product.id
+					left outer join ProductPrimaryCategoryView
+						on ProductPrimaryCategoryView.product = Product.id and
+							CategoryProductBinding.category =
+								ProductPrimaryCategoryView.primary_category';
 		}
 
 		if ($this->featured_category !== null) {
