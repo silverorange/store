@@ -2,7 +2,7 @@
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
 	<widget class="SwatContainer" id="container" />
-	<widget class="SwatFooterFormField">
+	<widget class="SwatFooterFormField" id="footer_field">
 		<widget class="SwatButton">
 			<property name="title" translatable="yes">Update</property>
 		</widget>
