@@ -534,10 +534,15 @@ class StoreItem extends SwatDBDataObject
 			$span = new Date_Span();
 			$span->setFromDateDiff($now, $sale->end_date);
 
-			if ($span->toHours() < 2)
+			if ($span->toHours() < 2) {
+				if ($span->toHours() < 1)
+					$format = '%m minutes';
+				else
+					$format = '%h hours and %m minutes';
+
 				$note = sprintf('%s sale on this item ends in %s',
-					$sale->title,
-					$span->format('%i hours and %m minutes'));
+					$sale->title, $span->format($format));
+			}
 		}
 
 		return $note;
