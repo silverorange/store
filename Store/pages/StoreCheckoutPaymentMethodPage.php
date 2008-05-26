@@ -303,11 +303,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	protected function buildForm()
 	{
-		$payment_types = $this->getPaymentTypes();
-		$payment_type_flydown = $this->ui->getWidget('payment_type');
-		foreach ($payment_types as $payment_type)
-			$payment_type_flydown->addOption(
-				new SwatOption($payment_type->id, $payment_type->title));
+		$this->buildPaymentTypes();
 
 		if (!$this->ui->getWidget('form')->isProcessed())
 			$this->loadDataFromSession();
@@ -348,6 +344,18 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		}
 
 		return $payment_methods;
+	}
+
+	// }}}
+	// {{{ protected function buildPaymentTypes()
+
+	protected function buildPaymentTypes()
+	{
+		$payment_types = $this->getPaymentTypes();
+		$payment_type_flydown = $this->ui->getWidget('payment_type');
+		foreach ($payment_types as $payment_type)
+			$payment_type_flydown->addOption(
+				new SwatOption($payment_type->id, $payment_type->title));
 	}
 
 	// }}}
