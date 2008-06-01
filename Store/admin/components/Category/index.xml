@@ -224,13 +224,9 @@
 							<property name="count_available" type="data">count_available</property>
 							<property name="count_available_instock" type="data">count_available_instock</property>
 							<property name="count_available_outofstock" type="data">count_available_outofstock</property>
-							<property name="count_available_limitedstock" type="data">count_available_limitedstock</property>
-							<property name="count_available_backordered" type="data">count_available_backordered</property>
 							<property name="count_unavailable" type="data">count_unavailable</property>
 							<property name="count_unavailable_instock" type="data">count_unavailable_instock</property>
 							<property name="count_unavailable_outofstock" type="data">count_unavailable_outofstock</property>
-							<property name="count_unavailable_limitedstock" type="data">count_unavailable_limitedstock</property>
-							<property name="count_unavailable_backordered" type="data">count_unavailable_backordered</property>
 						</object>
 					</object>
 					<object class="SwatTableViewColumn">
