@@ -33,13 +33,6 @@ class StoreSaleDiscountEdit extends AdminDBEdit
 		$this->ui->loadFromXML($this->ui_xml);
 
 		$this->initSaleDiscount();
-
-		$this->fields = array(
-			'text:title',
-			'text:shortname',
-			'float:discount_percentage',
-			'date:start_date',
-			'date:end_date');
 	}
 
 	// }}}
