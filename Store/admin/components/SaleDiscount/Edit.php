@@ -10,13 +10,14 @@ require_once 'Store/dataobjects/StoreSaleDiscount.php';
  * Edit page for SaleDiscount
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2008 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreSaleDiscountEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
+	protected $ui_xml = 'Store/admin/components/SaleDiscount/edit.xml';
 	protected $sale_discount;
 
 	// }}}
@@ -29,11 +30,12 @@ class StoreSaleDiscountEdit extends AdminDBEdit
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
+		$this->ui->loadFromXML($this->ui_xml);
 
 		$this->initSaleDiscount();
 
-		$this->fields = array('text:title',
+		$this->fields = array(
+			'text:title',
 			'text:shortname',
 			'float:discount_percentage',
 			'date:start_date',
@@ -69,6 +71,7 @@ class StoreSaleDiscountEdit extends AdminDBEdit
 		if ($this->id === null && $shortname === null) {
 			$shortname = $this->generateShortname(
 				$this->ui->getWidget('title')->value, $this->id);
+
 			$this->ui->getWidget('shortname')->value = $shortname;
 
 		} elseif (!$this->validateShortname($shortname, $this->id)) {
@@ -107,7 +110,8 @@ class StoreSaleDiscountEdit extends AdminDBEdit
 		$this->sale_discount->save();
 
 		$message = new SwatMessage(
-			sprintf(Store::_('“%s” has been saved.'), $this->sale_discount->title));
+			sprintf(Store::_('“%s” has been saved.'),
+				$this->sale_discount->title));
 
 		$this->app->messages->add($message);
 	}
@@ -117,8 +121,12 @@ class StoreSaleDiscountEdit extends AdminDBEdit
 
 	protected function updateSaleDiscount()
 	{
-		$values = $this->ui->getValues(array('title', 'discount_percentage',
-			'start_date', 'end_date', 'shortname'));
+		$values = $this->ui->getValues(array(
+			'title',
+			'discount_percentage',
+			'start_date',
+			'end_date',
+			'shortname'));
 
 		if ($values['start_date'] !== null) {
 			$values['start_date']->setTZ($this->app->default_time_zone);
@@ -130,16 +138,12 @@ class StoreSaleDiscountEdit extends AdminDBEdit
 			$values['end_date']->toUTC();
 		}
 
-		$this->sale_discount->title =
-			$values['title'];
-		$this->sale_discount->shortname =
-			$values['shortname'];
+		$this->sale_discount->title      = $values['title'];
+		$this->sale_discount->shortname  = $values['shortname'];
+		$this->sale_discount->start_date = $values['start_date'];
+		$this->sale_discount->end_date   = $values['end_date'];
 		$this->sale_discount->discount_percentage =
 			$values['discount_percentage'];
-		$this->sale_discount->start_date =
-			$values['start_date'];
-		$this->sale_discount->end_date =
-			$values['end_date'];
 	}
 
 	// }}}
