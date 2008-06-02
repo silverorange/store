@@ -308,7 +308,8 @@ class StoreProductEdit extends AdminDBEdit
 				'the front-end, it will not be possible to browse to this '.
 				'product on the front-end.');
 
-			$this->ui->getWidget('orphan_note')->add($message, SwatMessageDisplay::DISMISS_OFF);
+			$this->ui->getWidget('orphan_note')->add($message,
+				SwatMessageDisplay::DISMISS_OFF);
 		}
 
 		// smart defaulting of the catalog
