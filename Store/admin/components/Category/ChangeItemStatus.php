@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreItem.php';
 
 /**
  * Item status change confirmation page for changing item status within the
- * category component 
+ * category component
  *
  * @package   Store
  * @copyright 2006-2007 silverorange
@@ -44,7 +44,7 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 	}
 
 	// }}}
-	
+
 	// init phase
 	// {{{ protected function initInternal()
 
@@ -54,7 +54,7 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 		$this->category_id = SiteApplication::initVar('category');
 		$this->setStatus(SiteApplication::initVar('status'));
 
-		// catalog switcher is used to filter items that status is set on 
+		// catalog switcher is used to filter items that status is set on
 		$this->catalog_switcher = new StoreCatalogSwitcher();
 		$this->catalog_switcher->db = $this->app->db;
 		$this->catalog_switcher->init();
@@ -87,7 +87,7 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 	}
 
 	// }}}
-	
+
 	// build phase
 	// {{{ protected function buildInternal()
 
