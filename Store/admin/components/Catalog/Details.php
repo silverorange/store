@@ -24,10 +24,7 @@ class StoreCatalogDetails extends AdminPage
 	 */
 	protected $ui_xml = 'Store/admin/components/Catalog/details.xml';
 
-	// }}}
-	// {{{ private properties
-
-	private $id;
+	protected $id;
 
 	// }}}
 
@@ -52,6 +49,70 @@ class StoreCatalogDetails extends AdminPage
 	{
 		parent::buildInternal();
 
+		$ds = $this->getDetailsStore();
+
+		$component_details = $this->ui->getWidget('component_details');
+		$component_details->data = $ds;
+
+		if ($ds->parent_id !== null)
+			$component_details->getField('parent')->visible = true;
+
+		$frame = $this->ui->getWidget('frame');
+		$frame->subtitle = $ds->title;
+
+		$this->ui->getWidget('toolbar')->setToolLinkValues($this->id);
+
+		// see if the Catalog is a clone
+		$sql = 'select id, title from Catalog where clone_of = %s';
+		$clone = SwatDB::queryRow($this->app->db,
+			sprintf($sql, $this->app->db->quote($this->id, 'integer')));
+
+		if ($clone !== null) {
+			$component_details->getField('clone')->visible = true;
+			$ds->clone_title = $clone->title;
+			$ds->clone_id = $clone->id;
+		} else {
+			$ds->clone_title = null;
+			$ds->clone_id = null;
+		}
+
+		// get number of products
+		$sql = 'select count(id) from Product where catalog = %s';
+		$ds->num_products = SwatDB::queryOne($this->app->db,
+			sprintf($sql, $this->app->db->quote($this->id, 'integer')));
+
+		// check to see if Catalog is enabled
+		$sql = 'select count(region) from CatalogRegionBinding
+			where catalog = %s';
+
+		$enabled = (SwatDB::queryOne($this->app->db,
+			sprintf($sql, $this->app->db->quote($this->id, 'integer'))) > 0);
+
+		// sensitize the delete button
+		if (!$enabled || $ds->num_products == 0)
+			$this->ui->getWidget('delete_link')->sensitive = true;
+
+		// sensitize the clone button
+		if ($ds->clone_id === null && $ds->parent_id === null)
+			$this->ui->getWidget('clone_link')->sensitive = true;
+
+		// setup status renderer
+		$status_renderer =
+			$component_details->getField('status')->getRendererByPosition();
+
+		$status_renderer->db = $this->app->db;
+		$status_renderer->regions = SwatDB::getOptionArray($this->app->db,
+			'Region', 'title', 'id', 'title');
+
+		$this->navbar->createEntry($ds->title);
+		$this->buildMessages();
+	}
+
+	// }}}
+	// {{{ protected function getDetailsStore()
+
+	protected function getDetailsStore()
+	{
 		$sql = 'select Catalog1.id, Catalog1.title,
 					Catalog1.in_season,
 					Catalog2.title as parent_title,
@@ -69,60 +130,7 @@ class StoreCatalogDetails extends AdminPage
 				sprintf(Store::_("%s with id ‘%s’ not found."),
 				Store::_('Catalog'), $this->id));
 
-		$component_details = $this->ui->getWidget('component_details');
-		$component_details->data = $row;
-
-		if ($row->parent_id !== null)
-			$component_details->getField('parent')->visible = true;
-
-		$frame = $this->ui->getWidget('frame');
-		$frame->subtitle = $row->title;
-
-		$this->ui->getWidget('toolbar')->setToolLinkValues($this->id);
-
-		// see if the Catalog is a clone
-		$sql = 'select id, title from Catalog where clone_of = %s';
-		$clone = SwatDB::queryRow($this->app->db,
-			sprintf($sql, $this->app->db->quote($this->id, 'integer')));
-
-		if ($clone !== null) {
-			$component_details->getField('clone')->visible = true;
-			$row->clone_title = $clone->title;
-			$row->clone_id = $clone->id;
-		} else {
-			$row->clone_title = null;
-			$row->clone_id = null;
-		}
-
-		// get number of products
-		$sql = 'select count(id) from Product where catalog = %s';
-		$row->num_products = SwatDB::queryOne($this->app->db,
-			sprintf($sql, $this->app->db->quote($this->id, 'integer')));
-
-		// check to see if Catalog is enabled
-		$sql = 'select count(region) from CatalogRegionBinding
-			where catalog = %s';
-		$enabled = (SwatDB::queryOne($this->app->db,
-			sprintf($sql, $this->app->db->quote($this->id, 'integer'))) > 0);
-
-		// sensitize the delete button
-		if (!$enabled || $row->num_products == 0)
-			$this->ui->getWidget('delete_link')->sensitive = true;
-
-		// sensitize the clone button
-		if ($row->clone_id === null && $row->parent_id === null)
-			$this->ui->getWidget('clone_link')->sensitive = true;
-
-		// setup status renderer
-		$status_renderer =
-			$component_details->getField('status')->getRendererByPosition();
-
-		$status_renderer->db = $this->app->db;
-		$status_renderer->regions = SwatDB::getOptionArray($this->app->db,
-			'Region', 'title', 'id', 'title');
-
-		$this->navbar->createEntry($row->title);
-		$this->buildMessages();
+		return $row;
 	}
 
 	// }}}
