@@ -52,7 +52,6 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 	{
 		parent::initInternal();
 		$this->category_id = SiteApplication::initVar('category');
-		$this->setStatus(SiteApplication::initVar('status'));
 
 		// catalog switcher is used to filter items that status is set on
 		$this->catalog_switcher = new StoreCatalogSwitcher();
@@ -68,6 +67,8 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 	protected function processDBData()
 	{
 		parent::processDBData();
+
+		$this->setStatus(SiteApplication::initVar('status'));
 
 		$item_list = $this->getItemList('integer');
 
