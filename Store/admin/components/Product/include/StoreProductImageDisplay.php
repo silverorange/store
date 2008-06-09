@@ -41,30 +41,22 @@ class StoreProductImageDisplay extends SwatImageDisplay
 	 */
 	public $category_id;
 
-	// }}}
-	// {{{ private properties
-
 	/**
-	 * @var SwatToolbar
-	 */
-	private $toolbar;
-
-	/**
+	 * Whether or not to show the edit tool link.
+	 *
 	 * @var boolean
 	 */
-	private $widgets_created = false;
+	public $show_edit_link = true;
+
+	/**
+	 * Whether or not to show the delete tool link.
+	 *
+	 * @var boolean
+	 */
+	public $show_delete_link = true;
 
 	// }}}
 
-	// {{{ public function init()
-
-	public function init()
-	{
-		parent::init();
-		$this->createEmbeddedWidgets();
-	}
-
-	// }}}
 	// {{{ public function display()
 
 	/**
@@ -74,8 +66,6 @@ class StoreProductImageDisplay extends SwatImageDisplay
 	{
 		if (!$this->visible)
 			return;
-
-		$this->createEmbeddedWidgets();
 
 		$div_tag = new SwatHtmlTag('div');
 		$div_tag->class = 'store-product-image-display';
@@ -90,55 +80,53 @@ class StoreProductImageDisplay extends SwatImageDisplay
 				$this->product_id, $this->category_id);
 		}
 
-		$this->toolbar->setToolLinkValues(
+		$toolbar = $this->getCompositeWidget('toolbar');
+		$toolbar->setToolLinkValues(
 			sprintf('%s&%s', $this->image_id, $get_vars));
 
-		$this->toolbar->display();
+		$toolbar->display();
 
 		$div_tag->close();
 	}
 
 	// }}}
-	// {{{ public function getHtmlHeadEntrySet()
+	// {{{ public function showEditLink()
 
-	public function getHtmlHeadEntrySet()
+	public function showEditLink($show)
 	{
-		$set = parent::getHtmlHeadEntrySet();
-		$set->addEntrySet($this->toolbar->getHtmlHeadEntrySet());
-
-		return $set;
+		$this->show_edit_link = $show;
 	}
 
 	// }}}
-	// {{{ public function getToolbar()
+	// {{{ public function showDeleteLink()
 
-	public function getToolbar()
+	public function showDeleteLink($show)
 	{
-		return $this->toolbar;
+		$this->show_delete_link = $show;
 	}
 
 	// }}}
-	// {{{ private function createEmbeddedWidgets()
+	// {{{ protected function createCompositeWidgets()
 
-	private function createEmbeddedWidgets()
+	protected function createCompositeWidgets()
 	{
-		if (!$this->widgets_created) {
-			$this->toolbar = new SwatToolbar();
+		$toolbar = new SwatToolbar();
 
-			$edit = new SwatToolLink();
-			$edit->link = 'Product/ImageEdit?id=%s';
-			$edit->setFromStock('edit');
-			$edit->title = Store::_('Edit');
-			$this->toolbar->addChild($edit);
-	
-			$delete = new SwatToolLink();
-			$delete->link = 'Product/ImageDelete?id=%s';
-			$delete->setFromStock('delete');
-			$delete->title = Store::_('Remove');
-			$this->toolbar->addChild($delete);
+		$edit = new SwatToolLink();
+		$edit->link = 'Product/ImageEdit?id=%s';
+		$edit->setFromStock('edit');
+		$edit->title = Store::_('Edit');
+		$edit->visible = $this->show_edit_link;
+		$toolbar->addChild($edit);
 
-			$this->widgets_created = true;
-		}
+		$delete = new SwatToolLink();
+		$delete->link = 'Product/ImageDelete?id=%s';
+		$delete->setFromStock('delete');
+		$delete->title = Store::_('Remove');
+		$delete->visible = $this->show_delete_link;
+		$toolbar->addChild($delete);
+
+		$this->addCompositeWidget($toolbar, 'toolbar');
 	}
 
 	// }}}
