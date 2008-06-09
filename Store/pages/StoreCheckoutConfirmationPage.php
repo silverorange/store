@@ -165,8 +165,13 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 			try {
 				// Save order
-				$this->saveOrder();
-				$db_transaction->commit();
+				if ($this->saveOrder() !== false) {
+					$db_transaction->commit();
+				} else {
+					$db_transaction->rollback();
+					$this->app->session->order = $duplicate_order;
+					return false;
+				}
 			} catch (Exception $e) {
 				$db_transaction->rollback();
 				$this->app->session->order = $duplicate_order;
@@ -268,6 +273,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 		// save order
 		$order->save();
+
+		return true;
 	}
 
 	// }}}
