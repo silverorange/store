@@ -55,6 +55,16 @@ class StoreProductImageDisplay extends SwatImageDisplay
 	private $widgets_created = false;
 
 	// }}}
+
+	// {{{ public function init()
+
+	public function init()
+	{
+		parent::init();
+		$this->createEmbeddedWidgets();
+	}
+
+	// }}}
 	// {{{ public function display()
 
 	/**
@@ -73,30 +83,15 @@ class StoreProductImageDisplay extends SwatImageDisplay
 
 		parent::display();
 
-		if ($this->category_id === null)
-			$get_vars = sprintf('product=%s',
-				$this->product_id);
-		else
+		if ($this->category_id === null) {
+			$get_vars = sprintf('product=%s', $this->product_id);
+		} else {
 			$get_vars = sprintf('product=%s&category=%s',
 				$this->product_id, $this->category_id);
+		}
 
-		$edit = new SwatToolLink();
-		$edit->link = sprintf('Product/ImageEdit?id=%s&%s',
-			$this->image_id,
-			$get_vars);
-
-		$edit->setFromStock('edit');
-		$edit->title = Store::_('Edit');
-		$this->toolbar->addChild($edit);
-
-		$delete = new SwatToolLink();
-		$delete->link = sprintf('Product/ImageDelete?id=%s&%s',
-			$this->image_id,
-			$get_vars);
-
-		$delete->setFromStock('delete');
-		$delete->title = Store::_('Remove');
-		$this->toolbar->addChild($delete);
+		$this->toolbar->setToolLinkValues(
+			sprintf('%s&%s', $this->image_id, $get_vars));
 
 		$this->toolbar->display();
 
@@ -108,11 +103,18 @@ class StoreProductImageDisplay extends SwatImageDisplay
 
 	public function getHtmlHeadEntrySet()
 	{
-		$this->createEmbeddedWidgets();
 		$set = parent::getHtmlHeadEntrySet();
 		$set->addEntrySet($this->toolbar->getHtmlHeadEntrySet());
 
 		return $set;
+	}
+
+	// }}}
+	// {{{ public function getToolbar()
+
+	public function getToolbar()
+	{
+		return $this->toolbar;
 	}
 
 	// }}}
@@ -122,6 +124,19 @@ class StoreProductImageDisplay extends SwatImageDisplay
 	{
 		if (!$this->widgets_created) {
 			$this->toolbar = new SwatToolbar();
+
+			$edit = new SwatToolLink();
+			$edit->link = 'Product/ImageEdit?id=%s';
+			$edit->setFromStock('edit');
+			$edit->title = Store::_('Edit');
+			$this->toolbar->addChild($edit);
+	
+			$delete = new SwatToolLink();
+			$delete->link = 'Product/ImageDelete?id=%s';
+			$delete->setFromStock('delete');
+			$delete->title = Store::_('Remove');
+			$this->toolbar->addChild($delete);
+
 			$this->widgets_created = true;
 		}
 	}
