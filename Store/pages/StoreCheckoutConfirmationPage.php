@@ -140,7 +140,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 					if (!($e instanceof SwatException))
 						$e = new SwatException($e);
 
-					$e->log();
+					$e->process();
 
 					$message = new SwatMessage(Store::_('A system error '.
 						'occured while processing your order'),
@@ -179,7 +179,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 				if (!($e instanceof SwatException))
 					$e = new SwatException($e);
 
-				$e->log();
+				$e->process();
 
 				$message = new SwatMessage(Store::_('A system error '.
 					'occured while processing your order'),
