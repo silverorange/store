@@ -218,7 +218,7 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 		$sql = sprintf('select Product.id, Product.title,
 				Product.bodytext, Item.sku, Item.description
 			from Item
-				inner join Product on Item.product = Product.id
+				right outer join Product on Item.product = Product.id
 				inner join NateGoSearchQueue
 					on Product.id = NateGoSearchQueue.document_id
 					and NateGoSearchQueue.document_type = %s
