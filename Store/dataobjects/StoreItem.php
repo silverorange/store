@@ -704,7 +704,6 @@ class StoreItem extends SwatDBDataObject
 
 	// }}}
 
-
 	// saver methods
 	// {{{ protected function saveQuantityDiscounts()
 
