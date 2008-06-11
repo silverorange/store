@@ -35,7 +35,7 @@ class StoreItemDescriptionCellRenderer extends SwatCellRenderer
 
 		parent::render();
 
-		if (strlen($this->description) == 0) {
+		if ($this->description == '') {
 			echo '<span class="item-sku">',
 				SwatString::minimizeEntities($this->sku),
 				'</span>';

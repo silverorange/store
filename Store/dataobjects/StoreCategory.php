@@ -572,7 +572,7 @@ class StoreCategory extends SwatDBDataObject
 		if ($details_span !== null)
 			$details_span->display();
 
-		if (strlen($this->description)) {
+		if ($this->description != '') {
 			$description_p = new SwatHtmlTag('p');
 			$description_p->class = 'store-category-description';
 			$description_p->setContent($this->description);
@@ -588,7 +588,7 @@ class StoreCategory extends SwatDBDataObject
 		if ($this->image !== null) {
 			$img_tag = $this->image->getImgTag('thumb');
 
-			if (strlen($img_tag->alt) == 0)
+			if ($img_tag->alt == '')
 				$img_tag->alt = sprintf(Store::_('Image of %s'), $this->title);
 
 		} else {

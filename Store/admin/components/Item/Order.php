@@ -185,7 +185,7 @@ class StoreItemOrder extends AdminDBOrder
 
 		$description = implode(' - ', $item->getDescriptionArray());
 
-		if (strlen($description) > 0)
+		if ($description != '')
 			$text.= ': '.$description;
 
 		return $text;

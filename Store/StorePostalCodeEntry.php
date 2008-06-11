@@ -102,7 +102,7 @@ class StorePostalCodeEntry extends SwatEntry
 	{
 		$value = trim($this->value);
 
-		if (strlen($value) == 0)
+		if ($value == '')
 			return;
 
 		// common mis-written/mis-typped letter translations taken from
@@ -156,7 +156,7 @@ class StorePostalCodeEntry extends SwatEntry
 	{
 		$value = trim($this->value);
 
-		if (strlen($value) == 0)
+		if ($value == '')
 			return;
 
 		// matches ZIP or ZIP+4 codes
@@ -190,7 +190,7 @@ class StorePostalCodeEntry extends SwatEntry
 	{
 		$value = trim($this->value);
 
-		if (strlen($value) == 0)
+		if ($value == '')
 			return;
 
 		// taken from Wikipedia (http://en.wikipedia.org/wiki/UK_postcodes)

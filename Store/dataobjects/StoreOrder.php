@@ -345,7 +345,7 @@ class StoreOrder extends SwatDBDataObject
 		$ds->description = $order_item->getDescription();
 
 		if ($order_item->alias_sku !== null &&
-			strlen($order_item->alias_sku) > 0)
+			$order_item->alias_sku != '')
 			$ds->sku.= sprintf(' (%s)', $order_item->alias_sku);
 
 		$item = $order_item->getAvailableItem($this->locale->region);

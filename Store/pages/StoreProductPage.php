@@ -595,7 +595,7 @@ class StoreProductPage extends StorePage
 
 		$img_tag = $image->getImgTag('small');
 
-		if (strlen($img_tag->alt) == 0)
+		if ($img_tag->alt == '')
 			$img_tag->alt = sprintf(Store::_('Image of %s'),
 				$this->product->title);
 
@@ -627,7 +627,7 @@ class StoreProductPage extends StorePage
 		$img_tag->display();
 		echo '</span>';
 
-		if (strlen($image->title) > 0) {
+		if ($image->title != '') {
 			echo '<span class="large-image-title">';
 			echo SwatString::minimizeEntities($image->title);
 			echo '</span> ';
@@ -666,7 +666,7 @@ class StoreProductPage extends StorePage
 		$img_tag = new SwatHtmlTag('img');
 		$img_tag = $image->getImgTag('pinky');
 
-		if (strlen($img_tag->alt) == 0)
+		if ($img_tag->alt == '')
 			$img_tag->alt = sprintf(Store::_('Additional Image of %s'),
 				$this->product->title);
 
@@ -678,7 +678,7 @@ class StoreProductPage extends StorePage
 		$anchor->open();
 		$img_tag->display();
 
-		if (strlen($image->title) > 0) {
+		if ($image->title != '') {
 			echo '<span class="image-title">';
 			echo SwatString::minimizeEntities($image->title);
 			echo '</span> ';

@@ -121,7 +121,7 @@ class StoreOrderIndex extends AdminSearch
 
 		// email, check accounts and order
 		$email = $this->ui->getWidget('search_email')->value;
-		if (strlen(trim($email)) > 0) {
+		if (trim($email) != '') {
 			$where.= ' and (';
 			$clause = new AdminSearchClause('email');
 			$clause->table = 'Account';
@@ -187,7 +187,7 @@ class StoreOrderIndex extends AdminSearch
 
 		// fullname, check accounts, and both order addresses
 		$fullname = $this->ui->getWidget('search_fullname')->value;
-		if (strlen(trim($fullname)) > 0) {
+		if (trim($fullname) != '') {
 			$where.= ' and (';
 			$clause = new AdminSearchClause('fullname');
 			$clause->table = 'Account';
@@ -244,8 +244,8 @@ class StoreOrderIndex extends AdminSearch
 			$ds = new SwatDetailsStore($order);
 			$ds->fullname = $order->billing_address->getFullname();
 			$ds->title = $this->getOrderTitle($order);
-			$ds->has_notes = (strlen($order->notes) > 0);
-			$ds->has_comments = (strlen($order->comments) > 0);
+			$ds->has_notes = ($order->notes != '');
+			$ds->has_comments = ($order->comments != '');
 
 			$store->add($ds);
 		}

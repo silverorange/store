@@ -353,7 +353,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 			$this->getCardVerificationValue());
 
 		$card_number = $this->getUnencryptedCardNumber();
-		if (strlen($card_number) > 0)
+		if ($card_number != '')
 			$new_payment_method->setCardNumber($card_number, true);
 
 		return $new_payment_method;

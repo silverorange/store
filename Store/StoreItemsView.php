@@ -227,7 +227,7 @@ class StoreItemsView extends SwatControl
 
 		$ds->description = $this->getItemDescription($item);
 
-		if (strlen($ds->description) > 0)
+		if ($ds->description != '')
 			$this->has_description = true;
 
 		$ds->is_available = $item->isAvailableInRegion();
