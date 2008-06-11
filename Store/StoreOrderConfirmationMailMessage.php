@@ -350,7 +350,7 @@ abstract class StoreOrderConfirmationMailMessage
 	protected function displayHeaderText()
 	{
 		$header = $this->order->getReceiptHeader();
-		if (strlen($header) > 0) {
+		if ($header != '') {
 			echo $header;
 			echo self::LINE_BREAK;
 			echo self::LINE_BREAK;
@@ -363,7 +363,7 @@ abstract class StoreOrderConfirmationMailMessage
 	protected function displayFooterText()
 	{
 		$footer = $this->order->getReceiptFooter();
-		if (strlen($footer) > 0) {
+		if ($footer != '') {
 			echo self::LINE_BREAK;
 			echo self::LINE_BREAK;
 			echo $footer;

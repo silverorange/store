@@ -55,7 +55,7 @@ class StoreProductImagePage extends StorePage
 		if ($this->image === null)
 			throw new SiteNotFoundException();
 
-		if (strlen($this->image->title) > 0)
+		if ($this->image->title != '')
 			$this->layout->data->title = sprintf(Store::_('%s: %s'),
 				$this->product->title, $this->image->title);
 		else
@@ -109,7 +109,7 @@ class StoreProductImagePage extends StorePage
 
 		$img_tag = $this->image->getImgTag('large');
 
-		if (strlen($img_tag->alt) == 0)
+		if ($img_tag->alt == '')
 			$img_tag->alt = sprintf(Store::_('Image of %s'),
 				$this->product->title);
 
@@ -176,13 +176,13 @@ class StoreProductImagePage extends StorePage
 			$img_tag->class.= ' store-image-selected';
 		}
 
-		if (strlen($img_tag->alt) == 0)
+		if ($img_tag->alt == '')
 			$img_tag->alt = sprintf(Store::_('Additional Image of %s'),
 				$this->product->title);
 
 		$img_tag->display();
 
-		if (strlen($image->title) > 0) {
+		if ($image->title != '') {
 			echo '<span class="image-title">';
 			echo SwatString::minimizeEntities($image->title);
 			echo '</span> ';
@@ -199,7 +199,7 @@ class StoreProductImagePage extends StorePage
 		$li_tag = new SwatHtmlTag('li');
 
 		$img_tag = $image->getImgTag('thumb');
-		if (strlen($img_tag->alt) == 0)
+		if ($img_tag->alt == '')
 			$img_tag->alt = sprintf(Store::_('Additional Image of %s'),
 				$this->product->title);
 

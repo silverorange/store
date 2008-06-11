@@ -60,7 +60,7 @@ class StoreProductSearch
 		$type = NateGoSearch::getDocumentType($this->db,
 			$this->getSearchType());
 
-		if (strlen(trim($keywords)) > 0 && $type !== null) {
+		if (trim($keywords) != '' && $type !== null) {
 			$fulltext_engine = new SiteNateGoFulltextSearchEngine($this->db);
 			$fulltext_engine->setTypes(array(
 				$this->getSearchType(),
@@ -146,7 +146,7 @@ class StoreProductSearch
 		// keywords are included in the where clause if fulltext searching is
 		// turned off
 		$keywords = $this->ui->getWidget('search_keywords')->value;
-		if ($this->fulltext_result === null && strlen(trim($keywords)) > 0) {
+		if ($this->fulltext_result === null && trim($keywords) != '') {
 			$where.= ' and (';
 
 			$clause = new AdminSearchClause('title');
@@ -171,7 +171,7 @@ class StoreProductSearch
 		$clause->operator = $this->ui->getWidget('search_item_op')->value;
 		$item_where = $clause->getClause($this->db, '');
 
-		if (strlen($item_where))
+		if ($item_where != '')
 			$where.= sprintf(' and Product.id in (
 				select ItemView.product from ItemView where %s)', $item_where);
 
@@ -187,7 +187,7 @@ class StoreProductSearch
 			$clause->table = 'category_descendants';
 			$category_descendant_where = $clause->getClause($this->db, '');
 
-			if (strlen($category_descendant_where)) {
+			if ($category_descendant_where != '') {
 				$where.= sprintf(' and Product.id in (select product from
 					CategoryProductBinding
 					inner join getCategoryDescendants(%s) as

@@ -352,7 +352,7 @@ class StoreAccountOrderPage extends SiteAccountPage
 
 	protected function orderIsBlank()
 	{
-		return (strlen($this->order->billing_address->fullname) == 0);
+		return ($this->order->billing_address->fullname == '');
 	}
 
 	// }}}

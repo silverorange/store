@@ -353,14 +353,14 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 			$description.= SwatString::minimizeEntities($parts['description']);
 
 		if (!$item->hasAvailableStatus()) {
-			if (strlen($description) > 0)
+			if ($description != '')
 				$description.= ' ';
 
 			$description.= '('.SwatString::minimizeEntities(
 				$item->getStatus()->title).')';
 		}
 
-		if (strlen($description))
+		if ($description != '')
 			$description.= ' ';
 
 		$locale = SwatI18NLocale::get();
@@ -375,7 +375,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 		if (isset($parts['part_count']))
 			$extras[] = SwatString::minimizeEntities($parts['part_count']);
 
-		if (strlen($description) && count($extras) > 0)
+		if ($description != '' && count($extras) > 0)
 			$description.= ' - ';
 
 		$description.= implode(', ', $extras);

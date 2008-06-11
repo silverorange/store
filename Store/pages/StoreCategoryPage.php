@@ -80,7 +80,7 @@ class StoreCategoryPage extends StorePage
 		$this->layout->data->description =
 			SwatString::minimizeEntities($this->category->description);
 
-		if (strlen($this->category->bodytext) > 0)
+		if ($this->category->bodytext != '')
 			$this->layout->data->content =
 				'<div class="store-category-bodytext">'.
 				SwatString::toXHTML($this->category->bodytext).'</div>';

@@ -40,7 +40,7 @@ class StoreSearchPanelServer extends SiteXMLRPCServer
 			$regs = array();
 			if (preg_match('/^(.+)\[(.*)\]$/', $key, $regs)) {
 				$key = $regs[1];
-				$array_key = (strlen($regs[2]) == 0) ? null : $regs[2];
+				$array_key = ($regs[2] == '') ? null : $regs[2];
 				if (!isset($args[$key]))
 					$args[$key] = array();
 

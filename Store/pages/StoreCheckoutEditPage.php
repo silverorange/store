@@ -17,7 +17,7 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutUIPage
 		$widget = $this->ui->getWidget($id);
 		$value = trim($widget->value);
 
-		if (strlen($value) === 0)
+		if ($value == '')
 			$value = null;
 
 		return $value;

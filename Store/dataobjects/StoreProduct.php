@@ -743,7 +743,7 @@ class StoreProduct extends SwatDBDataObject
 		if ($this->primary_image !== null) {
 			$img_tag = $this->primary_image->getImgTag($size);
 
-			if (strlen($img_tag->alt) == 0)
+			if ($img_tag->alt == '')
 				$img_tag->alt = sprintf(Store::_('Image of %s'), $this->title);
 		} else {
 			$class = SwatDBClassMap::get('SiteImageDimension');
