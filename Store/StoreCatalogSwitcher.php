@@ -23,19 +23,6 @@ class StoreCatalogSwitcher extends SwatControl
 	public $db;
 
 	// }}}
-	// {{{ private properties
-
-	/**
-	 * @var StoreCatalogSelector
-	 */
-	private $catalog_selector;
-
-	/**
-	 * @var SwatButton
-	 */
-	private $switch_button;
-
-	// }}}
 	// {{{ public function __construct()
 
 	/**
@@ -60,17 +47,12 @@ class StoreCatalogSwitcher extends SwatControl
 	{
 		parent::init();
 
-		$this->catalog_selector = new StoreCatalogSelector($this->id.'_selector');
-		$this->catalog_selector->parent = $this;
-		$this->catalog_selector->db = $this->db;
-		$this->catalog_selector->init();
-
+		$selector = $this->getCompositeWidget('selector');
 		$state = SiteApplication::initVar('catalog', null,
 			SiteApplication::VAR_SESSION);
 
 		if ($state === null) {
-			$this->catalog_selector->scope =
-				StoreCatalogSelector::ALL_ENABLED_CATALOGS;
+			$selector->scope = StoreCatalogSelector::ALL_ENABLED_CATALOGS;
 		} else {
 			$valid_state = true;
 			$state_exp = explode('_', $state);
@@ -85,9 +67,9 @@ class StoreCatalogSwitcher extends SwatControl
 				if (SwatDB::queryOne($this->db, $sql) == 0) {
 					$valid_state = false;
 
-					$this->catalog_selector->region = null;
-					$this->catalog_selector->catalog= null;
-					$this->catalog_selector->scope =
+					$selector->region = null;
+					$selector->catalog= null;
+					$selector->scope =
 						StoreCatalogSelector::ALL_ENABLED_CATALOGS;
 
 					unset($_SESSION['catalog']);
@@ -102,23 +84,19 @@ class StoreCatalogSwitcher extends SwatControl
 				if (SwatDB::queryOne($this->db, $sql) == 0) {
 					$valid_state = false;
 
-					$this->catalog_selector->region = null;
-					$this->catalog_selector->catalog= null;
-					$this->catalog_selector->scope =
+					$selector->region = null;
+					$selector->catalog= null;
+					$selector->scope =
 						StoreCatalogSelector::ALL_ENABLED_CATALOGS;
 
 					unset($_SESSION['catalog']);
 				}
 				break;
 			}
-			if ($valid_state)
-				$this->catalog_selector->setState($state);
-		}
 
-		$this->switch_button = new SwatButton($this->id.'_switch_button');
-		$this->switch_button->parent = $this;
-		$this->switch_button->title = Store::_('Switch');
-		$this->switch_button->init();
+			if ($valid_state)
+				$selector->setState($state);
+		}
 	}
 
 	// }}}
@@ -128,11 +106,10 @@ class StoreCatalogSwitcher extends SwatControl
 	{
 		parent::process();
 
-		$this->switch_button->process();
-		$this->catalog_selector->process();
-
-		if ($this->switch_button->hasBeenClicked())
-			$_SESSION['catalog'] = $this->catalog_selector->getState();
+		if ($this->getCompositeWidget('button')->hasBeenClicked()) {
+			$_SESSION['catalog'] =
+				$this->getCompositeWidget('selector')->getState();
+		}
 	}
 
 	// }}}
@@ -152,9 +129,9 @@ class StoreCatalogSwitcher extends SwatControl
 		$label_tag->display();
 
 		echo '&nbsp;';
-		$this->catalog_selector->display();
+		$this->getCompositeWidget('selector')->display();
 		echo '&nbsp;';
-		$this->switch_button->display();
+		$this->getCompositeWidget('button')->display();
 
 		$div_tag->close();
 	}
@@ -164,7 +141,21 @@ class StoreCatalogSwitcher extends SwatControl
 
 	public function getSubQuery()
 	{
-		return $this->catalog_selector->getSubQuery();
+		return $this->getCompositeWidget('selector')->getSubQuery();
+	}
+
+	// }}}
+	// {{{ protected function createCompositeWidgets()
+
+	protected function createCompositeWidgets()
+	{
+		$selector = new StoreCatalogSelector($this->id.'_selector');
+		$selector->db = $this->db;
+		$this->addCompositeWidget($selector, 'selector');
+
+		$button = new SwatButton($this->id.'_switch_button');
+		$button->title = Store::_('Switch');
+		$this->addCompositeWidget($button, 'button');
 	}
 
 	// }}}
