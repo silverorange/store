@@ -60,13 +60,13 @@ class StoreArticleEdit extends SiteArticleEdit
 	protected function saveArticle()
 	{
 		$values = $this->ui->getValues(array('title', 'shortname', 'bodytext',
-			'description', 'show', 'searchable'));
+			'description', 'visible', 'searchable'));
 
 		$this->edit_article->title       = $values['title'];
 		$this->edit_article->shortname   = $values['shortname'];
 		$this->edit_article->bodytext    = $values['bodytext'];
 		$this->edit_article->description = $values['description'];
-		$this->edit_article->show        = $values['show'];
+		$this->edit_article->visible     = $values['visible'];
 		$this->edit_article->searchable  = $values['searchable'];
 
 		$this->edit_article->save();

@@ -59,7 +59,7 @@ class StoreArticle extends SiteArticle
 	{
 		$sql = 'select id, title, shortname, description, createdate
 			from Article
-			where parent = %s and show = %s and id in
+			where parent = %s and visible = %s and id in
 			(select id from VisibleArticleView where region = %s)
 			order by displayorder, title';
 
