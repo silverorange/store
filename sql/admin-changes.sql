@@ -2,60 +2,60 @@
 -- template for a local sites version of admin-changes.sql
 
 -- Product Management
-INSERT INTO AdminSection (id, displayorder, title, description, show)
+INSERT INTO AdminSection (id, displayorder, title, description, visible)
 	VALUES (101, 10, 'Product Management', NULL, true);
 
-INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
+INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, visible)
 	VALUES (100, 101, 10, 'Category', 'Product Categories', NULL, true, true);
-INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
+INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, visible)
 	VALUES (101, 101, 20, 'Product', 'Product Search', NULL, true, true);
-INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
+INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, visible)
 	VALUES (102, 101, 30, 'Catalog', 'Catalogues', NULL, true, true);
-INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
+INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, visible)
 	VALUES (103, 101, 0, 'Item', 'Items', NULL, true, false);
-INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
+INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, visible)
 	VALUES (104, 101, 0, 'ItemGroup', 'Item Groups', NULL, true, false);
 
 -- Sales
-INSERT INTO AdminSection (id, displayorder, title, description, show)
+INSERT INTO AdminSection (id, displayorder, title, description, visible)
 	VALUES (102, 20, 'Sales', NULL, true);
 
-INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
+INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, visible)
 	VALUES (200, 102, 10, 'Account', 'Customer Accounts', NULL, true, true);
-INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
+INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, visible)
 	VALUES (201, 102, 20, 'Order', 'Orders', NULL, true, true);
-INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
+INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, visible)
 	VALUES (202, 102, 30, 'Invoice', 'Invoices', NULL, true, false);
-INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
+INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, visible)
 	VALUES (204, 102, 50, 'Ad', 'Ads', NULL, true, true);
 
 -- Reports
-INSERT INTO AdminSection (id, displayorder, title, description, show)
+INSERT INTO AdminSection (id, displayorder, title, description, visible)
 	VALUES (103, 30, 'Reports', NULL, true);
 
-INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
+INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, visible)
 	VALUES (300, 103, 20, 'WebStat', 'Web Stats', NULL, true, true);
 
 -- Site Content
-INSERT INTO AdminSection (id, displayorder, title, description, show)
+INSERT INTO AdminSection (id, displayorder, title, description, visible)
 	VALUES (104, 40, 'Site Content', null, true);
 
-INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
+INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, visible)
 	VALUES (400, 104, 10, 'Article', 'Articles', NULL, true, true);
-INSERT INTO AdminSubComponent (id, component, title, shortname, show, displayorder)
+INSERT INTO AdminSubComponent (id, component, title, shortname, visible, displayorder)
 	VALUES (400, 400, 'Search', 'Search', true, 0);
 
 -- Store Settings
-INSERT INTO AdminSection (id, displayorder, title, description, show)
+INSERT INTO AdminSection (id, displayorder, title, description, visible)
 	VALUES (105, 50, 'Store Settings', null, true);
 
-INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
+INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, visible)
 	VALUES (501, 105, 70, 'Locale', 'Locales', NULL, true, true);
-INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
+INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, visible)
 	VALUES (502, 105, 80, 'ProvState', 'Provinces & States', NULL, true, true);
-INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
+INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, visible)
 	VALUES (503, 105, 90, 'Region', 'Regions', NULL, true, true);
-INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, show)
+INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, visible)
 	VALUES (504, 105, 120, 'Country', 'Countries', NULL, true, true);
 
 SELECT setval('adminsection_id_seq', max(id)) FROM AdminSection;

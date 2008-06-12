@@ -3,4 +3,4 @@ create or replace view VisibleArticleView as
 		from Article
 			inner join ArticleRegionBinding on
 				Article.id = ArticleRegionBinding.article
-		where show = true;
+		where visible = true;

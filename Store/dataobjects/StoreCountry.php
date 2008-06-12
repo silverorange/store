@@ -32,7 +32,7 @@ class StoreCountry extends SwatDBDataObject
 	 *
 	 * @var boolean
 	 */
-	public $show;
+	public $visible;
 
 	// }}}
 	// {{{ protected function init()
