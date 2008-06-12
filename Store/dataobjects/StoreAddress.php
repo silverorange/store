@@ -461,7 +461,7 @@ abstract class StoreAddress extends SwatDBDataObject
 			}
 		}
 
-		if ($this->getFullName()) != '' || $this->company != '' ||
+		if ($this->getFullName() != '' || $this->company != '' ||
 			$this->line1 != '') {
 			echo '<br />';
 		}
