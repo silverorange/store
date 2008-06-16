@@ -33,7 +33,7 @@ class StoreArticleIndex extends SiteArticleIndex
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		
+
 		$view = $this->ui->getWidget('index_view');
 		$this->ui->getWidget('article_region_action')->db = $this->app->db;
 	}
