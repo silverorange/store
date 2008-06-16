@@ -8,7 +8,7 @@ require_once 'SwatDB/SwatDB.php';
  * Edit page for notes on orders
  *
  * @package   Store
- * @copyright 2007 silverorange
+ * @copyright 2007-2008 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderNoteEdit extends AdminDBEdit
@@ -47,16 +47,11 @@ class StoreOrderNoteEdit extends AdminDBEdit
 
 			$this->order->setDatabase($this->app->db);
 
-			if (!$this->order->load($this->id))
+			if (!$this->order->load($this->id)) {
 				throw new AdminNotFoundException(sprintf(
 					Store::_('An order with an id of ‘%d’ does not exist.'),
 					$this->id));
-			elseif ($this->app->hasModule('SiteMultipleInstanceModule') &&
-				$this->order->instance != $this->app->instance->getInstance())
-				throw new AdminNotFoundException(sprintf(
-					Store::_('Incorrect instance for order ‘%d’.'),
-						$this->id));
-
+			}
 		}
 		return $this->order;
 	}

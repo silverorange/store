@@ -12,7 +12,7 @@ require_once 'SwatDB/SwatDBClassMap.php';
  * Index page for Orders
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2008 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderIndex extends AdminSearch
@@ -90,11 +90,6 @@ class StoreOrderIndex extends AdminSearch
 	protected function getWhereClause()
 	{
 		$where = 'Orders.failed_attempt = false';
-
-		if ($this->app->hasModule('SiteMultipleInstanceModule'))
-			$where.= sprintf(' and Orders.instance = %s',
-				$this->app->db->quote(
-					$this->app->instance->getInstance()->id, 'integer'));
 
 		// Order #
 		$clause = new AdminSearchClause('integer:id');
@@ -261,7 +256,8 @@ class StoreOrderIndex extends AdminSearch
 		$sql = 'select Orders.id, Orders.total, Orders.createdate,
 					Orders.locale, Orders.notes, Orders.comments,
 					Orders.billing_address,
-					(Orders.comments is not null and Orders.comments != %s) as has_comments
+					(Orders.comments is not null and Orders.comments != %s)
+						as has_comments
 				from Orders
 					left outer join Account on Orders.account = Account.id
 					inner join OrderAddress as BillingAddress

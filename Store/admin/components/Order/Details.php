@@ -58,6 +58,27 @@ abstract class StoreOrderDetails extends AdminPage
 	}
 
 	// }}}
+	// {{{ protected function getOrder()
+
+	protected function getOrder()
+	{
+		if ($this->order === null) {
+			$order_class = SwatDBClassMap::get('StoreOrder');
+			$this->order = new $order_class();
+
+			$this->order->setDatabase($this->app->db);
+
+			if (!$this->order->load($this->id)) {
+				throw new AdminNotFoundException(sprintf(
+					Store::_('An order with an id of ‘%d’ does not exist.'),
+					$this->id));
+			}
+		}
+
+		return $this->order;
+	}
+
+	// }}}
 
 	// build phase
 	// {{{ protected function buildInternal()
@@ -81,35 +102,6 @@ abstract class StoreOrderDetails extends AdminPage
 		$this->buildMessages();
 		$this->buildToolBar();
 		$this->buildNavBar();
-	}
-
-	// }}}
-	// {{{ protected function getOrder()
-
-	protected function getOrder()
-	{
-		if ($this->order === null) {
-			$order_class = SwatDBClassMap::get('StoreOrder');
-			$this->order = new $order_class();
-
-			$this->order->setDatabase($this->app->db);
-
-			if (!$this->order->load($this->id)) {
-				throw new AdminNotFoundException(sprintf(
-					Store::_('An order with an id of ‘%d’ does not exist.'),
-					$this->id));
-			}
-
-			if ($this->app->hasModule('SiteMultipleInstanceModule') &&
-				$this->order->getInternalValue('instance') !=
-				$this->app->instance->getInstance()->id) {
-				throw new AdminNotFoundException(sprintf(
-					Store::_('Incorrect instance for order ‘%d’.'),
-					$this->id));
-			}
-		}
-
-		return $this->order;
 	}
 
 	// }}}

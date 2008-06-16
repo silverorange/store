@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * Page to resend the confirmation email for an order
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2008 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderEmailConfirmation extends AdminConfirmation
@@ -41,6 +41,26 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 		$this->account = SiteApplication::initVar('account');
 
 		$this->getOrder();
+	}
+
+	// }}}
+	// {{{ protected function getOrder()
+
+	protected function getOrder()
+	{
+		if ($this->order === null) {
+			$order_class = SwatDBClassMap::get('StoreOrder');
+			$this->order = new $order_class();
+
+			$this->order->setDatabase($this->app->db);
+
+			if (!$this->order->load($this->id)) {
+				throw new AdminNotFoundException(sprintf(
+					Store::_('An order with an id of ‘%d’ does not exist.'),
+					$this->id));
+			}
+		}
+		return $this->order;
 	}
 
 	// }}}
@@ -96,7 +116,7 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 
 		$confirmation_title->setContent(
 			sprintf(Store::_('Are you sure you want to resend the '.
-				'order confirmation email for %s?'), 
+				'order confirmation email for %s?'),
 				$this->getOrderTitle()));
 
 		$confirmation_title->display();
@@ -116,34 +136,9 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 	}
 
 	// }}}
-	// {{{ protected function getOrder()
-
-	protected function getOrder()
-	{
-		if ($this->order === null) {
-			$order_class = SwatDBClassMap::get('StoreOrder');
-			$this->order = new $order_class();
-
-			$this->order->setDatabase($this->app->db);
-
-			if (!$this->order->load($this->id))
-				throw new AdminNotFoundException(sprintf(
-					Store::_('An order with an id of ‘%d’ does not exist.'),
-					$this->id));
-			elseif ($this->app->hasModule('SiteMultipleInstanceModule') &&
-				$this->order->instance != $this->app->instance->getInstance())
-				throw new AdminNotFoundException(sprintf(
-					Store::_('Incorrect instance for order ‘%d’.'),
-						$this->id));
-
-		}
-		return $this->order;
-	}
-
-	// }}}
 	// {{{ protected function buildNavBar()
 
-	protected function buildNavBar() 
+	protected function buildNavBar()
 	{
 		if ($this->account === null) {
 			$this->navbar->createEntry($this->getOrderTitle(),
@@ -171,7 +166,7 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 	// }}}
 	// {{{ protected function getOrderTitle()
 
-	protected function getOrderTitle() 
+	protected function getOrderTitle()
 	{
 		return sprintf(Store::_('Order %s'), $this->order->id);
 	}
