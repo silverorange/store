@@ -135,9 +135,9 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 		$this->navbar->popEntry();
 
 		if ($this->category_id !== null) {
-			$navbar_rs = SwatDB::executeStoredProc($this->app->db, 
+			$navbar_rs = SwatDB::executeStoredProc($this->app->db,
 				'getCategoryNavbar', array($this->category_id));
-			
+
 			foreach ($navbar_rs as $row)
 				$this->navbar->addEntry(new SwatNavBarEntry($row->title,
 					'Category/Index?id='.$row->id));
