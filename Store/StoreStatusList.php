@@ -30,7 +30,7 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
 	// {{{ protected properties
 
 	/**
-	 * An array of statuses indexed by id 
+	 * An array of statuses indexed by id
 	 *
 	 * @var array
 	 */
@@ -77,7 +77,7 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
 	// {{{ public function getByShortname()
 
 	/**
-	 * Gets an status by its shortname 
+	 * Gets an status by its shortname
 	 *
 	 * @param stirng $shortname the shortname of the status to get.
 	 *
