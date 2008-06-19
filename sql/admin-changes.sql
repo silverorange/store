@@ -57,6 +57,11 @@ INSERT INTO AdminComponent (id, section, displayorder, shortname, title, descrip
 	VALUES (503, 105, 90, 'Region', 'Regions', NULL, true, true);
 INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, visible)
 	VALUES (504, 105, 120, 'Country', 'Countries', NULL, true, true);
+INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, visible)
+	VALUES (504, 105, 130, 'AttributeType', 'Attribute Types', NULL, true, true);
+INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, visible)
+	VALUES (504, 105, 140, 'Attribute', 'Attributes', NULL, true, true);
+
 
 SELECT setval('adminsection_id_seq', max(id)) FROM AdminSection;
 SELECT setval('admincomponent_id_seq', max(id)) FROM AdminComponent;
