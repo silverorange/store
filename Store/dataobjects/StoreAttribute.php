@@ -47,12 +47,49 @@ class StoreAttribute extends SwatDBDataObject
 	private static $attribute_type_cache = array();
 
 	// }}}
+	// {{{ public function loadFromShortname()
+
+	/**
+	 * Loads an attribute by its shortname
+	 *
+	 * @param string $shortname the shortname of the attribute to load.
+	 *
+	 * @return boolean true if loading this attribute was successful and false
+	 *                  if an attribute with the given shortname does not exist.
+	 */
+	public function loadFromShortname($shortname)
+	{
+		$this->checkDB();
+
+		$row = null;
+
+		if ($this->table !== null) {
+			$sql = sprintf('select * from %s where shortname = %s',
+				$this->table,
+				$this->db->quote($shortname, 'text'));
+
+			$rs = SwatDB::query($this->db, $sql, null);
+			$row = $rs->fetchRow(MDB2_FETCHMODE_ASSOC);
+		}
+
+		if ($row === null)
+			return false;
+
+		$this->initFromRow($row);
+		$this->generatePropertyHashes();
+
+		return true;
+	}
+
+	// }}}
 	// {{{ public function getSearchAnchorTag()
 
 	public function getSearchAnchorTag()
 	{
 		$anchor = new SwatHtmlTag('a');
-		$anchor->title = sprintf('Search for items with attribute %s…', $this->title);
+		$anchor->title = sprintf('Search for items with attribute %s…',
+			$this->title);
+
 		$anchor->href = sprintf('search?attr=%s', $this->shortname);
 
 		return $anchor;
