@@ -86,6 +86,10 @@ class Store
 	public static function getConfigDefinitions()
 	{
 		return array(
+			// Expiry dates for the privateer data deleter
+			'expiry.accounts'       => '3 years',
+			'expiry.orders'         => '1 year',
+
 			// Froogle
 			'froogle.filename'      => null,
 			'froogle.server'        => null,
