@@ -300,10 +300,11 @@ class StoreCategory extends SwatDBDataObject
 		if ($region === null)
 			$region = $this->region;
 
-		if ($region === null)
+		if ($region === null) {
 			throw new StoreException(
 				'Region must be specified unless setRegion() is called '.
 				'beforehand.');
+		}
 
 		$sql = 'select Category.*,
 				c.product_count, c.region as region_id
@@ -315,7 +316,6 @@ class StoreCategory extends SwatDBDataObject
 				(select Category from VisibleCategoryView
 				where region = %1$s or region is null)
 			order by displayorder, title';
-
 
 		$sql = sprintf($sql,
 			$this->db->quote($region->id, 'integer'),
@@ -336,10 +336,11 @@ class StoreCategory extends SwatDBDataObject
 		if ($region === null)
 			$region = $this->region;
 
-		if ($region === null)
+		if ($region === null) {
 			throw new StoreException(
 				'Region must be specified unless setRegion() is called '.
 				'beforehand.');
+		}
 
 		$sql = 'select Product.*,
 				ProductPrimaryCategoryView.primary_category,
