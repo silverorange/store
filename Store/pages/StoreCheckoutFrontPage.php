@@ -168,6 +168,20 @@ class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 
 	// }}}
 
+
+	/// build phase
+	// {{{ protected function buildInternal()
+
+	protected function buildInternal()
+	{
+		parent::buildInternal();
+		foreach ($this->app->messages->getAll() as $message) {
+			$this->ui->getWidget('message_display')->add($message);
+		}
+	}
+
+	// }}}
+
 	// finalize phase
 	// {{{ public function finalize()
 
