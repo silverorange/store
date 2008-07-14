@@ -171,16 +171,18 @@ abstract class StoreCart extends SwatObject
 	 * Adds a StoreCartEntry to this cart
 	 *
 	 * If an equivalent entry already exists in the cart, the two entries are
-	 * combined. Validity of an entry is defined in the {@link validateEntry()}
-	 * method. The entry is only added if it is valid. Equivalency is
-	 * determined by the {@link StoreCartEntry::compare()} method.
+	 * combined. Validity of an entry is defined in the
+	 * {@link StoreCart::validateEntry()} method. The entry is only added if
+	 * it is valid. Equivalency is determined by the
+	 * {@link StoreCartEntry::compare()} method.
 	 *
 	 * @param StoreCartEntry $entry the StoreCartEntry to add.
 	 *
 	 * @return StoreCartEntry the added entry. If the entry to be added is not
 	 *                         valid, null is returned.
 	 *
-	 * @see StoreCart::validateEntry() StoreCart::validateCombinedEntry()
+	 * @see StoreCart::validateEntry()
+	 * @see StoreCart::validateCombinedEntry()
 	 */
 	public function addEntry(StoreCartEntry $entry)
 	{
