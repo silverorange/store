@@ -35,14 +35,24 @@ class StoreAccountAddressEditPage extends SiteAccountPage
 	// }}}
 	// {{{ public function __construct()
 
-	public function __construct(SiteApplication $app, SiteLayout $layout,
-		$id = null)
+	public function __construct(SiteAbstractPage $page)
 	{
-		parent::__construct($app, $layout);
-		$this->id = intval($id);
+		parent::__construct($page);
+
+		$this->id = intval($this->getArgument('id'));
 
 		if ($this->id === 0)
 			$this->id = null;
+	}
+
+	// }}}
+	// {{{ protected function getArgumentMap()
+
+	protected function getArgumentMap()
+	{
+		return array(
+			'id' => array(0, 0),
+		);
 	}
 
 	// }}}

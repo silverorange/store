@@ -59,11 +59,21 @@ class StoreAccountOrderPage extends SiteAccountPage
 	// }}}
 	// {{{ public function __construct()
 
-	public function __construct(SiteApplication $app, SiteLayout $layout,
-		$id = 0)
+	public function __construct(SiteAbstractPage $page)
 	{
-		parent::__construct($app, $layout);
-		$this->id = intval($id);
+		parent::__construct($page);
+
+		$this->id = intval($this->getArgument('id'));
+	}
+
+	// }}}
+	// {{{ protected function getArgumentMap()
+
+	protected function getArgumentMap()
+	{
+		return array(
+			'id' => array(0, 0),
+		);
 	}
 
 	// }}}
