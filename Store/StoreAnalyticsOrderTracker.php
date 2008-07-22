@@ -32,7 +32,7 @@ class StoreAnalyticsOrderTracker
 		}
 		$utm_content = SwatString::quoteJavaScriptString($utm_content);
 
-		// {{{ returned JavasSript
+		// {{{ returned JavaScript
 		return <<<JAVASCRIPT
 	var transaction_text = document.createTextNode($utm_content);
 
