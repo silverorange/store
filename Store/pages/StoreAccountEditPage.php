@@ -11,10 +11,9 @@ class StoreAccountEditPage extends SiteAccountEditPage
 {
 	// {{{ public function __construct()
 
-	public function __construct(SiteApplication $app, SiteLayout $layout = null)
+	public function __construct(SiteAbstractPage $page)
 	{
-		parent::__construct($app, $layout);
-
+		parent::__construct($page);
 		$this->ui_xml = dirname(__FILE__).'/account-edit.xml';
 	}
 
