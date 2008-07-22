@@ -6,7 +6,7 @@ require_once 'Site/SiteArticlePageFactory.php';
  * Resolves and creates article pages in a store web application
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2008 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreArticlePageFactory extends SiteArticlePageFactory
@@ -16,48 +16,36 @@ abstract class StoreArticlePageFactory extends SiteArticlePageFactory
 	/**
 	 * Creates a StoreArticlePageFactory
 	 */
-	public function __construct()
+	public function __construct(SiteApplication $app)
 	{
+		parent::__construct($app);
+
 		// set location to load Store page classes from
 		$this->class_map['Store'] = 'Store/pages';
 	}
 
 	// }}}
-	// {{{ protected function checkVisibilty()
+	// {{{ protected function isVisible()
 
-	protected function checkVisibilty($page)
+	protected function isVisible($source, SiteArticle $article)
 	{
-		$article = null;
-		$path = $page->getPath();
+		$region = $this->app->getRegion();
+		$sql = sprintf('select count(id) from EnabledArticleView
+			where id = %s and region = %s',
+			$this->app->db->quote($article->id, 'integer'),
+			$this->app->db->quote($region->id, 'integer'));
 
-		if ($path !== null) {
-			$path_entry = $path->getLast();
-			if ($path_entry !== null) {
-				$article_id = $path_entry->id;
-				$region = $page->app->getRegion();
-
-				$sql = sprintf('select id from EnabledArticleView
-					where id = %s and region = %s',
-					$page->app->db->quote($article_id, 'integer'),
-					$page->app->db->quote($region->id, 'integer'));
-
-				$article = SwatDB::queryOne($page->app->db, $sql);
-			}
-		}
-
-		return ($article !== null);
+		$count = SwatDB::queryOne($this->app->db, $sql);
+		return ($count !== 0);
 	}
 
 	// }}}
-	// {{{ protected function instantiateNotVisiblePage()
+	// {{{ protected function getNotVisiblePage()
 
-	protected function instantiateNotVisiblePage(StoreApplication $app,
-		SiteLayout $layout)
+	protected function getNotVisiblePage(SiteLayout $layout)
 	{
 		require_once 'Store/pages/StoreArticleNotVisiblePage.php';
-		$page = new StoreArticleNotVisiblePage($app, $layout);
-
-		return $page;
+		return new StoreArticleNotVisiblePage($this->app, $layout);
 	}
 
 	// }}}
@@ -66,16 +54,15 @@ abstract class StoreArticlePageFactory extends SiteArticlePageFactory
 	/**
 	 * Gets an article object from the database
 	 *
-	 * @param integer $id the database identifier of the article to get.
+	 * @param string $path
 	 *
 	 * @return SiteArticle the specified article or null if no such article
 	 *                       exists.
 	 */
-	protected function getArticle($app, $article_id, $path)
+	protected function getArticle($path)
 	{
-		$article = parent::getArticle($app, $article_id, $path);
-		$article->setRegion($app->getRegion());
-
+		$article = parent::getArticle($path);
+		$article->setRegion($this->app->getRegion());
 		return $article;
 	}
 
