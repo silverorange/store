@@ -25,15 +25,22 @@ class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 	// }}}
 	// {{{ public function __construct()
 
-	public function __construct(SiteApplication $app, SiteLayout $layout,
-		$invoice_id = 0)
+	public function __construct(SiteAbstractPage $page)
 	{
-		parent::__construct($app, $layout);
+		parent::__construct($page);
 
-		$invoice_id = intval($invoice_id);
-
-		if ($invoice_id != 0)
+		if (intval($this->getArgument('invoice_id')) != 0)
 			$this->invoice_id = $invoice_id;
+	}
+
+	// }}}
+	// {{{ protected function getArgumentMap()
+
+	protected function getArgumentMap()
+	{
+		return array(
+			'invoice_id' => array(0, 0),
+		);
 	}
 
 	// }}}

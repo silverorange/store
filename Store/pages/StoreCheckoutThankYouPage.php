@@ -13,9 +13,9 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
 {
 	// {{{ public function __construct()
 
-	public function __construct(SiteApplication $app, SiteLayout $layout)
+	public function __construct(SiteAbstractPage $page)
 	{
-		parent::__construct($app, $layout);
+		parent::__construct($page);
 		$this->ui_xml = 'Store/pages/checkout-thank-you.xml';
 	}
 
