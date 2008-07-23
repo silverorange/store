@@ -21,7 +21,7 @@ abstract class StoreArticlePageFactory extends SiteArticlePageFactory
 		parent::__construct($app);
 
 		// set location to load Store page classes from
-		$this->class_map['Store'] = 'Store/pages';
+		$this->page_class_map['Store'] = 'Store/pages';
 	}
 
 	// }}}
