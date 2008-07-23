@@ -25,9 +25,9 @@ class StoreProductImagePage extends StorePage
 	// }}}
 	// {{{ public function __construct()
 
-	public function __construct(SiteApplication $app, SiteLayout $layout)
+	public function __construct(SiteAbstractPage $page)
 	{
-		parent::__construct($app, $layout);
+		parent::__construct($page);
 		$this->back_link = new SwatToolLink();
 	}
 
