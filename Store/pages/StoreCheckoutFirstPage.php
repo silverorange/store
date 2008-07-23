@@ -17,10 +17,10 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 {
 	// {{{ public function __construct()
 
-	public function __construct(SiteApplication $app, SiteLayout $layout)
+	public function __construct(SiteAbstractPage $page)
 	{
 		$this->ui_xml = dirname(__FILE__).'/checkout-first.xml';
-		parent::__construct($app, $layout);
+		parent::__construct($page);
 	}
 
 	// }}}
@@ -29,10 +29,10 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 	protected function instantiateEmbeddedEditPages()
 	{
 		$pages = array(
-			new StoreCheckoutBasicInfoPage($this->app, $this->layout),
-			new StoreCheckoutBillingAddressPage($this->app, $this->layout),
-			new StoreCheckoutShippingAddressPage($this->app, $this->layout),
-			new StoreCheckoutPaymentMethodPage($this->app, $this->layout),
+			new StoreCheckoutBasicInfoPage($this->page),
+			new StoreCheckoutBillingAddressPage($this->page),
+			new StoreCheckoutShippingAddressPage($this->page),
+			new StoreCheckoutPaymentMethodPage($this->page),
 		);
 
 		return $pages;
