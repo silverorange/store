@@ -4,18 +4,18 @@ require_once 'Site/SiteXMLRPCServerFactory.php';
 
 /**
  * @package   Store
- * @copyright 2007 silverorange
+ * @copyright 2007-2008 silverorange
  */
 class StoreXMLRPCServerFactory extends SiteXMLRPCServerFactory
 {
 	// {{{ public function __construct()
 
-	public function __construct()
+	public function __construct(SiteApplication $app)
 	{
-		parent::__construct();
+		parent::__construct($app);
 
 		// set location to load Store page classes from
-		$this->class_map['Store'] = 'Store/pages';
+		$this->page_class_map['Store'] = 'Store/pages';
 	}
 
 	// }}}
