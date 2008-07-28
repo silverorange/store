@@ -70,7 +70,6 @@ class StoreCategoryPage extends StorePage
 	{
 		parent::build();
 
-		$this->buildNavBar();
 		$category_id = $this->path->getLast()->id;
 		$this->category = $this->queryCategory($category_id);
 

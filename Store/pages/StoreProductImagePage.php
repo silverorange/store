@@ -33,18 +33,27 @@ class StoreProductImagePage extends StorePage
 
 	// }}}
 
-	// build phase
-	// {{{ public function build()
+	// init phase
+	// {{{ public function init()
 
-	public function build()
+	public function init()
 	{
+		parent::init();
+
 		$product_class = SwatDBClassMap::get('StoreProduct');
 		$this->product = new $product_class();
 		$this->product->setDatabase($this->app->db);
 		$this->product->setRegion($this->app->getRegion());
 		$this->product->load($this->product_id);
-		$this->buildNavBar();
+	}
 
+	// }}}
+
+	// build phase
+	// {{{ public function build()
+
+	public function build()
+	{
 		parent::build();
 
 		if ($this->image_id === null)
