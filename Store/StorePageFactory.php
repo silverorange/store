@@ -1,7 +1,9 @@
 <?php
 
 require_once 'SwatDB/SwatDB.php';
+require_once 'Swat/SwatString.php';
 require_once 'Site/exceptions/SiteNotFoundException.php';
+require_once 'Site/SitePageFactory.php';
 require_once 'Store/dataobjects/StoreCategory.php';
 require_once 'Store/StoreCategoryPath.php';
 
@@ -9,80 +11,78 @@ require_once 'Store/StoreCategoryPath.php';
  * Resolves pages below the 'store' tag in the URL.
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2008 silverorange
  */
-class StorePageFactory
+class StorePageFactory extends SitePageFactory
 {
-	// {{{ protected properties
+	// {{{ public function __construct()
 
-	protected $app;
-
-	// }}}
-	// {{{ public __construct()
-
+	/**
+	 * Creates a StoreArticlePageFactory
+	 */
 	public function __construct(SiteApplication $app)
 	{
-		$this->app = $app;
+		parent::__construct($app);
+
+		// set location to load Store page classes from
+		$this->page_class_map['Store'] = 'Store/pages';
 	}
 
 	// }}}
 	// {{{ public function resolvePage()
 
-	public function resolvePage($path)
+	public function resolvePage($source, SiteLayout $layout = null)
 	{
+		$layout = ($layout === null) ? $this->resolveLayout($source) : $layout;
+
 		// if path is empty, load front page of store
-		if (count($path) == 0)
-			return $this->resolveFrontPage($path);
+		if ($source == '')
+			return $this->resolveFrontPage($source, $layout);
 
 		// if path ends with 'image', try to load product image page
-		$regexp = '@^image([0-9]+)?$@u';
-		if (preg_match($regexp, end($path), $regs)) {
-			array_pop($path);
+		$regexp = '/\/image(\d+)?$/u';
+		if (preg_match($regexp, $source, $regs)) {
 
-			list($product_id, $category_id) =
-				$this->findProduct($path);
+			$source_exp = explode('/', $source);
+			array_pop($source_exp);
+			$source = implode('/', $source_exp);
+
+			$product_info = $this->getProductInfo($source);
+			$product_id   = $product_info['product_id'];
+			$category_id  = $product_info['category_id'];
 
 			if ($product_id === null)
 				throw new SiteNotFoundException();
 
-			if (isset($regs[1]))
-				$image_id = intval($regs[1]);
-			else
-				$image_id = null;
+			$image_id = (isset($regs[1])) ? intval($regs[1]) : null;
 
-			return $this->resolveProductImagePage($path, $category_id,
-				$product_id, $image_id);
+			return $this->resolveProductImagePage($source, $layout,
+				$category_id, $product_id, $image_id);
 		}
 
-		$category_id = $this->findCategory($path);
+		$category_id = $this->getCategoryId($source);
 
 		// if path is a valid category, load category page
 		if ($category_id !== null)
-			return $this->resolveCategoryPage($path, $category_id);
+			return $this->resolveCategoryPage($source, $layout, $category_id);
 
-		list($product_id, $category_id) =
-			$this->findProduct($path);
+		$product_info = $this->getProductInfo($source);
+		$product_id   = $product_info['product_id'];
+		$category_id  = $product_info['category_id'];
 
 		// if path is a valid product, load product page
 		if ($product_id !== null)
-			return $this->resolveProductPage($path, $category_id, $product_id);
+			return $this->resolveProductPage($source, $layout, $category_id,
+				$product_id);
 
 		// we wern't able to resolve a product or a category
 		throw new SiteNotFoundException();
 	}
 
 	// }}}
-	// {{{ protected function resolveLayout()
-
-	protected function resolveLayout($path)
-	{
-		return null;
-	}
-
-	// }}}
 	// {{{ protected function resolveFrontPage()
 
-	protected function resolveFrontPage($path)
+	protected function resolveFrontPage($source, SiteLayout $layout)
 	{
 		throw new SiteNotFoundException();
 	}
@@ -92,18 +92,20 @@ class StorePageFactory
 	// products
 	// {{{ protected function resolveProductPage()
 
-	protected function resolveProductPage($path, $category_id, $product_id)
+	protected function resolveProductPage($source, SiteLayout $layout,
+		$category_id, $product_id)
 	{
-		$layout = $this->resolveLayout($path);
-		$page = $this->instantiateProductPage($layout);
-		$page->setPath(new StoreCategoryPath($this->app, $category_id));
+		$path = $this->getCategoryPath($category_id);
+
+		$base_page = $this->instantiatePage($this->default_page_class, $layout);
+
+		$page = $this->decorateProductPage($base_page);
+		$page->setPath($path);
 		$page->product_id = $product_id;
 
-		$region = $this->app->getRegion();
-
-		if (!$page->isVisibleInRegion($region)) {
-			$page = $this->instantiateProductNotVisiblePage($layout);
-			$page->setPath(new StoreCategoryPath($this->app, $category_id));
+		if (!$page->isVisibleInRegion($this->app->getRegion())) {
+			$page = $this->decorateProductNotVisiblePage($base_page);
+			$page->setPath($path);
 			$page->product_id = $product_id;
 		}
 
@@ -113,56 +115,61 @@ class StorePageFactory
 	// }}}
 	// {{{ protected function resolveProductImagePage()
 
-	protected function resolveProductImagePage($path, $category_id,
-		$product_id, $image_id = null)
+	protected function resolveProductImagePage($source, SiteLayout $layout,
+		$category_id, $product_id, $image_id = null)
 	{
-		$layout = $this->resolveLayout($path);
-		require_once 'Store/pages/StoreProductImagePage.php';
-		$page = new StoreProductImagePage($this->app, $layout);
-		$page->setPath(new StoreCategoryPath($this->app, $category_id));
+		$page = $this->instantiatePage($this->default_page_class, $layout);
+		$page = $this->decorateProductImagePage($page);
+		$page->setPath($this->getCategoryPath($category_id));
 		$page->product_id = $product_id;
 		$page->image_id = $image_id;
-
 		return $page;
 	}
 
 	// }}}
-	// {{{ protected function instantiateProductPage()
+	// {{{ protected function decorateProductPage()
 
-	protected function instantiateProductPage($layout)
+	protected function decorateProductPage(SiteAbstractPage $page)
 	{
 		require_once 'Store/pages/StoreProductPage.php';
-		$page = new StoreProductPage($this->app, $layout);
-
-		return $page;
+		return $this->decorate($page, 'StoreProductPage');
 	}
 
 	// }}}
-	// {{{ protected function instantiateProductNotVisiblePage()
+	// {{{ protected function decorateProductNotVisiblePage()
 
-	protected function instantiateProductNotVisiblePage($layout)
+	protected function decorateProductNotVisiblePage(SiteAbstractPage $page)
 	{
 		require_once 'Store/pages/StoreProductNotVisiblePage.php';
-		$page = new StoreProductNotVisiblePage($this->app, $layout);
-
-		return $page;
+		return $this->decorate($page, 'StoreProductNotVisiblePage');
 	}
 
 	// }}}
-	// {{{ protected function findProduct()
+	// {{{ protected function decorateProductImagePage()
+
+	protected function decorateProductImagePage(SiteAbstractPage $page)
+	{
+		require_once 'Store/pages/StoreProductImagePage.php';
+		return $this->decorate($page, 'StoreProductImagePage');
+	}
+
+	// }}}
+	// {{{ protected function getProductInfo()
 
 	/**
-	 * @param array $path an array of shortnames representing the current path.
+	 * @param string $source
 	 */
-	protected function findProduct($path)
+	protected function getProductInfo($source)
 	{
-		$product_id = null;
-		$db = $this->app->db;
-		$region_id = $this->app->getRegion()->id;
+		$source_exp  = explode('/', $source);
+		$db          = $this->app->db;
+		$region_id   = $this->app->getRegion()->id;
+		$product_id  = null;
+		$category_id = null;
 
-		if (count($path) > 1) {
-			$product_shortname = array_pop($path);
-			$category_id = $this->findCategory($path);
+		if (count($source_exp) > 1) {
+			$product_shortname = array_pop($source_exp);
+			$category_id = $this->getCategoryId(implode('/', $source_exp));
 
 			if ($category_id !== null) {
 				$sql = 'select id from Product where shortname = %s
@@ -175,7 +182,7 @@ class StorePageFactory
 				$sql = sprintf($sql,
 					$db->quote($product_shortname, 'text'),
 					$db->quote($category_id, 'integer'),
-					$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+					$db->quote($region_id, 'integer'));
 
 				$product_id = SwatDB::queryOne($db, $sql);
 			}
@@ -184,8 +191,7 @@ class StorePageFactory
 			 * Last chance: look for uncategorized products that are visible
 			 * due to the site-specific implementation of VisibleProductView.
 			 */
-			$product_shortname = current($path);
-			$category_id = null;
+			$product_shortname = array_shift($source_exp);
 
 			$sql = 'select id from Product where shortname = %s
 				and id not in
@@ -195,31 +201,36 @@ class StorePageFactory
 
 			$sql = sprintf($sql,
 				$db->quote($product_shortname, 'text'),
-				$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+				$db->quote($region_id, 'integer'));
 
 			$product_id = SwatDB::queryOne($db, $sql);
 		}
 
-		return array($product_id, $category_id);
+		return array(
+			'product_id'  => $product_id,
+			'category_id' => $category_id,
+		);
 	}
 
 	// }}}
 
-
 	// categories
 	// {{{ protected function resolveCategoryPage()
 
-	protected function resolveCategoryPage($path, $category_id)
+	protected function resolveCategoryPage($source, SiteLayout $layout,
+		$category_id)
 	{
-		$layout = $this->resolveLayout($path);
-		$page = $this->instantiateCategoryPage($layout);
-		$page->setPath(new StoreCategoryPath($this->app, $category_id));
+		$path = $this->getCategoryPath($category_id);
 
-		$region = $this->app->getRegion();
+		$base_page = $this->instantiatePage($this->default_page_class, $layout);
 
-		if (!$page->isVisibleInRegion($region)) {
-			$page = $this->instantiateCategoryNotVisiblePage($layout);
-			$page->setPath(new StoreCategoryPath($this->app, $category_id));
+		$page = $this->decorateCategoryPage($base_page);
+		$page->setPath($path);
+		$page->category_id = $category_id;
+
+		if (!$page->isVisibleInRegion($this->app->getRegion())) {
+			$page = $this->decorateCategoryNotVisiblePage($base_page);
+			$page->setPath($path);
 			$page->category_id = $category_id;
 		}
 
@@ -227,61 +238,60 @@ class StorePageFactory
 	}
 
 	// }}}
-	// {{{ protected function instantiateCategoryPage()
+	// {{{ protected function decorateCategoryPage()
 
-	protected function instantiateCategoryPage($layout)
+	protected function decorateCategoryPage(SiteAbstractPage $page)
 	{
 		require_once 'Store/pages/StoreCategoryPage.php';
-		$page = new StoreCategoryPage($this->app, $layout);
-
-		return $page;
+		return $this->decorate($page, 'StoreCategoryPage');
 	}
 
 	// }}}
-	// {{{ protected function instantiateCategoryNotVisiblePage()
+	// {{{ protected function decorateCategoryNotVisiblePage()
 
-	protected function instantiateCategoryNotVisiblePage($layout)
+	protected function decorateCategoryNotVisiblePage(SiteAbstractPage $page)
 	{
 		require_once 'Store/pages/StoreCategoryNotVisiblePage.php';
-		$page = new StoreCategoryNotVisiblePage($this->app, $layout);
-
-		return $page;
+		return $this->decorate($page, 'StoreCategoryNotVisiblePage');
 	}
 
 	// }}}
-	// {{{ protected function findCategory()
+	// {{{ protected function getCategoryId()
 
 	/**
-	 * @param array $path an array of shortnames representing the current path.
+	 * @param string $path
 	 */
-	protected function findCategory($path)
+	protected function getCategoryId($path)
 	{
-		$category_id = null;
-		$db = $this->app->db;
-		$region_id = $this->app->getRegion()->id;
-
 		// don't try to resolve categories that are deeper than the max depth
-		if (count($path) <= StoreCategory::MAX_DEPTH) {
-
-			// trim at 254 to prevent database errors
-			$path_str = substr(implode('/', $path), 0, 254);
-
-			/*
-			 * Region is null in VisibleCategoryView for categories with
-			 * always_visible = true and no products.  Categories with the
-			 * always_visible flag set and no products therefore must always
-			 * be visible in both regions.  This is the reason for the
-			 * "region is null" clause below.
-			 */
-			$sql = 'select findCategory from findCategory(%s)';
-
-			$sql = sprintf($sql,
-				$db->quote($path_str, 'text'));
-
-			$category_id = SwatDB::queryOne($db, $sql);
+		if (substr_count($path, '/') >= StoreCategory::MAX_DEPTH) {
+			throw new SiteNotFoundException(
+				sprintf('Category not found for path ‘%s’', $path));
 		}
 
-		return $category_id;
+		// don't try to find categories with invalid UTF-8 in the path
+		if (!SwatString::validateUtf8($path)) {
+			throw new SiteException(
+				sprintf('Category path is not valid UTF-8: ‘%s’', $path));
+		}
+
+		// don't try to find catrgories with more than 254 characters in the
+		// path
+		if (strlen($path) > 254) {
+			throw new SiteException(
+				sprintf('Category path is too long: ‘%s’', $path));
+		}
+
+		return SwatDB::executeStoredProcOne($this->app->db,
+			'findCategory', array($this->app->db->quote($path, 'text')));
+	}
+
+	// }}}
+	// {{{ protected function getCategoryPath()
+
+	protected function getCategoryPath($category_id = null)
+	{
+		return new StoreCategoryPath($this->app, $category_id);
 	}
 
 	// }}}
