@@ -86,7 +86,6 @@ class StoreInvoiceItemDelete extends AdminDBDelete
 	protected function buildInternal()
 	{
 		parent::buildInternal();
-		$this->buildNavBar();
 
 		$form = $this->ui->getWidget('confirmation_form');
 
@@ -118,10 +117,11 @@ class StoreInvoiceItemDelete extends AdminDBDelete
 	}
 
 	// }}}
-	// {{{ private function buildNavBar()
+	// {{{ protected function buildNavBar()
 
-	private function buildNavBar() 
+	protected function buildNavBar()
 	{
+		parent::buildNavBar();
 		$this->navbar->popEntry();
 
 		$invoice = $this->getInvoiceItems()->getFirst()->invoice;

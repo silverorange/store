@@ -104,6 +104,8 @@ class StoreInvoiceItemOrder extends AdminDBOrder
 
 	protected function buildNavBar()
 	{
+		parent::buildNavBar();
+
 		$fullname = $this->invoice->account->fullname;
 		$title = sprintf(Store::_('Invoice %s'),
 			$this->invoice->id);

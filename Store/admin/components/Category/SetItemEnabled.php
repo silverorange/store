@@ -94,8 +94,6 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 	{
 		parent::buildInternal();
 
-		$this->buildNavBar();
-
 		$rs = SwatDB::query($this->app->db, $this->getItemQuerySQL());
 		$count = count($rs);
 
@@ -125,10 +123,12 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 	}
 
 	// }}}
-	// {{{ private function buildNavBar()
+	// {{{ protected function buildNavBar()
 
-	private function buildNavBar()
+	protected function buildNavBar()
 	{
+		parent::buildNavBar();
+
 		$this->navbar->popEntry();
 
 		if ($this->category_id !== null) {

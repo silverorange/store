@@ -102,8 +102,6 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 
 		$this->ui->getWidget('yes_button')->title =
 			Store::_('Resend Confirmation');
-
-		$this->buildNavBar();
 	}
 
 	// }}}
@@ -140,6 +138,8 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 
 	protected function buildNavBar()
 	{
+		parent::buildNavBar();
+
 		if ($this->account === null) {
 			$this->navbar->createEntry($this->getOrderTitle(),
 				sprintf('Order/Details?id=%s', $this->id));

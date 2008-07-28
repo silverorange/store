@@ -557,7 +557,7 @@ class StoreProductDetails extends AdminIndex
 		$toolbar = $this->ui->getWidget('details_toolbar');
 		$this->buildCategoryToolBarLinks($toolbar);
 		$this->buildViewInStoreToolLinks($product);
-		$this->buildNavBar($product);
+		$this->buildProductNavBar($product);
 	}
 
 	// }}}
@@ -627,9 +627,9 @@ class StoreProductDetails extends AdminIndex
 	}
 
 	// }}}
-	// {{{ private function buildNavBar()
+	// {{{ protected function buildProductNavBar()
 
-	private function buildNavBar($product)
+	protected function buildProductNavBar($product)
 	{
 		if ($this->category_id !== null) {
 			// use category navbar

@@ -84,7 +84,6 @@ class StoreInvoiceDelete extends AdminDBDelete
 	protected function buildInternal()
 	{
 		parent::buildInternal();
-		$this->buildNavBar();
 
 		$form = $this->ui->getWidget('confirmation_form');
 
@@ -122,12 +121,12 @@ class StoreInvoiceDelete extends AdminDBDelete
 	// }}}
 	// {{{ private function buildNavBar()
 
-	private function buildNavBar() 
+	private function buildNavBar()
 	{
+		parent::buildNavBar();
+
 		$account = $this->getAccount();
-
 		$fullname = $account->fullname;
-
 		$last_entry = $this->navbar->popEntry();
 
 		$this->navbar->replaceEntryByPosition(1,

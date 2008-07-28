@@ -71,7 +71,7 @@ class StoreCatalogDelete extends AdminDBDelete
 		if ($dep->getStatusLevelCount(AdminDependency::DELETE) == 0)
 			$this->switchToCancelButton();
 
-		$this->buildNavBar($id);
+		$this->buildCatalogNavBar($id);
 	}
 
 	// }}}
@@ -106,9 +106,9 @@ class StoreCatalogDelete extends AdminDBDelete
 	}
 
 	// }}}
-	// {{{ private function buildNavBar()
+	// {{{ private function buildCatalogNavBar()
 
-	private function buildNavBar($id)
+	private function buildCatalogNavBar($id)
 	{
 		$last_entry = $this->navbar->popEntry();
 		$link = sprintf('Catalog/Details?id=%s', $id);

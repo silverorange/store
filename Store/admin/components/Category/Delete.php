@@ -82,7 +82,7 @@ class StoreCategoryDelete extends AdminDBDelete
 	}
 
 	// }}}
-	
+
 	// build phase
 	// {{{ protected function buildInternal()
 
@@ -113,8 +113,6 @@ class StoreCategoryDelete extends AdminDBDelete
 
 		if ($dep->getStatusLevelCount(AdminDependency::DELETE) == 0)
 			$this->switchToCancelButton();
-
-		$this->buildNavBar();
 	}
 
 	// }}}
@@ -161,16 +159,18 @@ class StoreCategoryDelete extends AdminDBDelete
 	}
 
 	// }}}
-	// {{{ private function buildNavBar()
+	// {{{ protected function buildNavBar()
 
-	private function buildNavBar()
+	protected function buildNavBar()
 	{
+		parent::buildNavBar();
+
 		$id = $this->getFirstItem();
 		$delete_entry = $this->navbar->popEntry();
 
-		$navbar_rs = SwatDB::executeStoredProc($this->app->db, 
+		$navbar_rs = SwatDB::executeStoredProc($this->app->db,
 			'getCategoryNavbar', array($id));
-			
+
 		foreach ($navbar_rs as $row)
 			$this->navbar->addEntry(new SwatNavBarEntry($row->title,
 				'Category/Index?id='.$row->id));

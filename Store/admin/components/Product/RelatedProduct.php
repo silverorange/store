@@ -106,7 +106,6 @@ class StoreProductRelatedProduct extends AdminSearch
 	protected function buildInternal()
 	{
 		parent::buildInternal();
-		$this->buildNavBar();
 
 		$category_flydown = $this->ui->getWidget('search_category');
 
@@ -171,10 +170,12 @@ class StoreProductRelatedProduct extends AdminSearch
 	}
 
 	// }}}
-	// {{{ private function buildNavBar()
+	// {{{ protected function buildNavBar()
 
-	private function buildNavBar()
+	protected function buildNavBar()
 	{
+		parent::buildNavBar();
+
 		if ($this->category_id !== null) {
 			$this->navbar->popEntry();
 			$this->navbar->addEntry(new SwatNavBarEntry(

@@ -315,6 +315,8 @@ class StoreItemEdit extends AdminDBEdit
 
 	protected function buildNavBar()
 	{
+		parent::buildNavBar();
+
 		$this->navbar->popEntry();
 
 		if ($this->category_id === null) {

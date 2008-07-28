@@ -446,8 +446,6 @@ class StoreItemQuantityDiscount extends AdminIndex
 			$this->ui->getWidget('index_frame')->subtitle = sprintf(
 				Store::_('for %s (%s)'), $item_row->description,
 				$item_row->sku);
-
-		$this->buildNavBar();
 	}
 
 	// }}}
@@ -506,6 +504,8 @@ class StoreItemQuantityDiscount extends AdminIndex
 
 	protected function buildNavBar()
 	{
+		parent::buildNavBar();
+
 		$item_row = $this->getItemRow();
 		$this->navbar->popEntry();
 

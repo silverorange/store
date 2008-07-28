@@ -815,7 +815,7 @@ class StoreCategoryIndex extends AdminIndex
 		$category = $this->loadCategory();
 
 		$this->buildCategoryDetails($category);
-		$this->buildNavBar($category);
+		$this->buildCategoryNavBar($category);
 
 		$details_frame = $this->ui->getWidget('details_frame');
 		$details_frame->title = Store::_('Category');
@@ -841,9 +841,9 @@ class StoreCategoryIndex extends AdminIndex
 	}
 
 	// }}}
-	// {{{ private function buildNavBar()
+	// {{{ private function buildCategoryNavBar()
 
-	private function buildNavBar($category)
+	private function buildCategoryNavBar($category)
 	{
 		$this->navbar->popEntry();
 		$this->navbar->addEntry(new SwatNavBarEntry(
