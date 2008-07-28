@@ -134,12 +134,13 @@ class StoreItemOrder extends AdminDBOrder
 	// }}}
 	// {{{ protected function buildNavBar()
 
-	protected function buildNavBar() 
+	protected function buildNavBar()
 	{
 		parent::buildNavBar();
+
 		$last_entry = $this->navbar->popEntry();
 		$this->navbar->popEntry();
- 
+
 		if ($this->category_id === null) {
 			$this->navbar->addEntry(new SwatNavBarEntry(
 				Store::_('Product Search'), 'Product'));
@@ -168,7 +169,7 @@ class StoreItemOrder extends AdminDBOrder
 		if ($this->category_id === null)
 			$link = sprintf('Product/Details?id=%s', $product_id);
 		else
-			$link = sprintf('Product/Details?id=%s&category=%s', $product_id, 
+			$link = sprintf('Product/Details?id=%s&category=%s', $product_id,
 				$this->category_id);
 
 		$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));

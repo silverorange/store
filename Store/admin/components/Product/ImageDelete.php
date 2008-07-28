@@ -138,8 +138,6 @@ class StoreProductImageDelete extends AdminDBDelete
 	{
 		parent::buildInternal();
 
-		$this->buildNavBar();
-
 		$form = $this->ui->getWidget('confirmation_form');
 		$form->addHiddenField('category', $this->category_id);
 		$form->addHiddenField('product', $this->product->id);
@@ -163,10 +161,11 @@ class StoreProductImageDelete extends AdminDBDelete
 	}
 
 	// }}}
-	// {{{ private function buildNavBar()
+	// {{{ protected function buildNavBar()
 
-	private function buildNavBar()
+	protected function buildNavBar()
 	{
+		parent::buildNavBar();
 		$this->navbar->popEntry();
 
 		if ($this->category_id !== null) {

@@ -101,7 +101,6 @@ abstract class StoreOrderDetails extends AdminPage
 		$this->buildOrderDetails();
 		$this->buildMessages();
 		$this->buildToolBar();
-		$this->buildNavBar();
 	}
 
 	// }}}
@@ -117,6 +116,8 @@ abstract class StoreOrderDetails extends AdminPage
 
 	protected function buildNavBar()
 	{
+		parent::buildNavBar();
+
 		if ($this->account !== null) {
 			// use account navbar
 			$this->navbar->popEntry();

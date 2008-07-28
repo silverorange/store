@@ -73,8 +73,6 @@ class StoreInvoiceEmailNotification extends AdminConfirmation
 
 		$this->ui->getWidget('yes_button')->title =
 			Store::_('Send Notification');
-
-		$this->buildNavBar();
 	}
 
 	// }}}
@@ -135,14 +133,14 @@ class StoreInvoiceEmailNotification extends AdminConfirmation
 	}
 
 	// }}}
-	// {{{ private function buildNavBar()
+	// {{{ protected function buildNavBar()
 
-	private function buildNavBar() 
+	protected function buildNavBar()
 	{
+		parent::buildNavBar();
+
 		$account = $this->invoice->account;
-
 		$fullname = $account->fullname;
-
 		$last_entry = $this->navbar->popEntry();
 
 		$this->navbar->addEntry(new SwatNavBarEntry(

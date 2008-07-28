@@ -58,8 +58,6 @@ class StoreAccountAddressDelete extends AdminDBDelete
 		$form = $this->ui->getWidget('confirmation_form');
 		$form->addHiddenField('account', $this->account_id);
 
-		$this->buildNavBar();
-
 		$item_list = $this->getItemList('integer');
 		$num = $this->getItemCount();
 
@@ -125,10 +123,12 @@ class StoreAccountAddressDelete extends AdminDBDelete
 	}
 
 	// }}}
-	// {{{ private function buildNavBar()
+	// {{{ protected function buildNavBar()
 
-	private function buildNavBar()
+	protected function buildNavBar()
 	{
+		parent::buildNavBar();
+
 		$this->navbar->popEntry();
 		$this->navbar->addEntry(new SwatNavBarEntry($this->account_fullname,
 			sprintf('Account/Details?id=%s', $this->account_id)));

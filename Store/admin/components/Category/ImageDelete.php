@@ -90,8 +90,6 @@ class StoreCategoryImageDelete extends AdminDBDelete
 	{
 		parent::buildInternal();
 
-		$this->buildNavBar();
-
 		$form = $this->ui->getWidget('confirmation_form');
 		$form->addHiddenField('id', $this->category->id);
 
@@ -114,10 +112,12 @@ class StoreCategoryImageDelete extends AdminDBDelete
 	}
 
 	// }}}
-	// {{{ private function buildNavBar()
+	// {{{ protected function buildNavBar()
 
-	private function buildNavBar()
+	protected function buildNavBar()
 	{
+		parent::buildNavBar();
+
 		$this->navbar->popEntry();
 
 		$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,

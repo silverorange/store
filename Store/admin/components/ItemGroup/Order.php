@@ -88,6 +88,8 @@ class StoreItemGroupOrder extends AdminDBOrder
 
 	protected function buildNavBar()
 	{
+		parent::buildNavBar();
+
 		$this->navbar->popEntries(2);
 
 		if ($this->category_id === null) {

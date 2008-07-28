@@ -285,13 +285,13 @@ class StoreInvoiceDetails extends AdminIndex
 		$view->getColumn('price')->getFirstRenderer()->locale = $locale_id;
 		$view->getColumn('total')->getFirstRenderer()->locale = $locale_id;
 
-		$this->buildNavBar($invoice);
+		$this->buildInvoiceNavBar($invoice);
 	}
 
 	// }}}
-	// {{{ private function buildNavBar()
+	// {{{ private function buildInvoiceNavBar()
 
-	private function buildNavBar($invoice)
+	private function buildInvoiceNavBar($invoice)
 	{
 		$fullname = $invoice->account->fullname;
 

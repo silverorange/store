@@ -232,6 +232,10 @@ class StoreCategoryImageEdit extends AdminDBEdit
 
 	protected function buildNavBar()
 	{
+		parent::buildNavBar();
+
+		$this->navbar->popEntry();
+
 		$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
 			'getCategoryNavbar', array($this->category->id));
 

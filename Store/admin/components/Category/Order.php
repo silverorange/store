@@ -90,17 +90,18 @@ class StoreCategoryOrder extends AdminDBOrder
 	}
 
 	// }}}
-	// {{{ private function buildNavBar()
+	// {{{ protected function buildNavBar()
 
 	protected function buildNavBar()
 	{
 		parent::buildNavBar();
+
 		$order_entry = $this->navbar->popEntry();
 
 		if ($this->parent !== null) {
-			$navbar_rs = SwatDB::executeStoredProc($this->app->db, 
+			$navbar_rs = SwatDB::executeStoredProc($this->app->db,
 				'getCategoryNavbar', array($this->parent));
-			
+
 			foreach ($navbar_rs as $row)
 				$this->navbar->addEntry(new SwatNavBarEntry($row->title,
 					'Category/Index?id='.$row->id));

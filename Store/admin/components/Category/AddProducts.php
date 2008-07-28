@@ -96,8 +96,6 @@ class StoreCategoryAddProducts extends AdminSearch
 	{
 		parent::buildInternal();
 
-		$this->buildNavBar();
-
 		$category_flydown = $this->ui->getWidget('search_category');
 		$tree = $category_flydown->getTree();
 
@@ -165,14 +163,16 @@ class StoreCategoryAddProducts extends AdminSearch
 	}
 
 	// }}}
-	// {{{ private function buildNavBar()
+	// {{{ protected function buildNavBar()
 
-	private function buildNavBar()
+	protected function buildNavBar()
 	{
+		parent::buildNavBar();
+
 		if ($this->category_id !== null) {
 			$navbar_rs = SwatDB::executeStoredProc($this->app->db,
 				'getCategoryNavbar', array($this->category_id));
-			
+
 			foreach ($navbar_rs as $row) {
 				$this->title = $row->title;
 				$this->navbar->addEntry(new SwatNavBarEntry($row->title,

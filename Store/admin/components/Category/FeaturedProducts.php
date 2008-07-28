@@ -84,7 +84,6 @@ class StoreCategoryFeaturedProducts extends AdminIndex
 	protected function buildInternal()
 	{
 		parent::buildInternal();
-		$this->buildNavBar();
 
 		$parent = $this->app->db->quote($this->parent, 'integer');
 
@@ -139,10 +138,12 @@ class StoreCategoryFeaturedProducts extends AdminIndex
 	}
 
 	// }}}
-	// {{{ private function buildNavBar()
+	// {{{ protected function buildNavBar()
 
-	private function buildNavBar()
+	protected function buildNavBar()
 	{
+		parent::buildNavBar();
+
 		if ($this->parent !== null) {
 			$navbar_rs = SwatDB::executeStoredProc($this->app->db,
 				'getCategoryNavbar', array($this->parent));

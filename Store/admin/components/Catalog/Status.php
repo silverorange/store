@@ -162,6 +162,8 @@ class StoreCatalogStatus extends AdminDBEdit
 
 	protected function buildNavBar()
 	{
+		parent::buildNavBar();
+
 		$this->navbar->createEntry($this->catalog->title,
 			sprintf('Catalog/Details?id=%s', $this->catalog->id));
 
