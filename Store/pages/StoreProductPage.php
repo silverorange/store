@@ -309,7 +309,6 @@ class StoreProductPage extends StorePage
 
 		$this->buildCart();
 		$this->buildProduct();
-		$this->buildNavBar();
 
 		$this->layout->startCapture('content');
 		$this->message_display->display();
