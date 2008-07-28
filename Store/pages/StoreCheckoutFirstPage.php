@@ -28,11 +28,13 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 
 	protected function instantiateEmbeddedEditPages()
 	{
+		$page = new SitePage($this->app);
+
 		$pages = array(
-			new StoreCheckoutBasicInfoPage($this->page),
-			new StoreCheckoutBillingAddressPage($this->page),
-			new StoreCheckoutShippingAddressPage($this->page),
-			new StoreCheckoutPaymentMethodPage($this->page),
+			new StoreCheckoutBasicInfoPage($page),
+			new StoreCheckoutBillingAddressPage($page),
+			new StoreCheckoutShippingAddressPage($page),
+			new StoreCheckoutPaymentMethodPage($page),
 		);
 
 		return $pages;
