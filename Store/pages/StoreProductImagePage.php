@@ -38,14 +38,14 @@ class StoreProductImagePage extends StorePage
 
 	public function build()
 	{
-		parent::build();
-
 		$product_class = SwatDBClassMap::get('StoreProduct');
 		$this->product = new $product_class();
 		$this->product->setDatabase($this->app->db);
 		$this->product->setRegion($this->app->getRegion());
 		$this->product->load($this->product_id);
 		$this->buildNavBar();
+
+		parent::build();
 
 		if ($this->image_id === null)
 			$this->image = $this->product->primary_image;
@@ -77,9 +77,9 @@ class StoreProductImagePage extends StorePage
 	}
 
 	// }}}
-	// {{{ private function buildNavBar()
+	// {{{ protected function buildNavBar()
 
-	private function buildNavBar()
+	protected function buildNavBar()
 	{
 		$link = 'store';
 
@@ -91,48 +91,6 @@ class StoreProductImagePage extends StorePage
 		$link .= '/'.$this->product->shortname;
 		$this->layout->navbar->createEntry($this->product->title, $link);
 		$this->layout->navbar->createEntry(Store::_('Image'));
-	}
-
-	// }}}
-	// {{{ private function displayImage()
-
-	private function displayImage()
-	{
-		$this->back_link->title = Store::_('Back to Product Page');
-		$this->back_link->link =
-			$this->layout->navbar->getEntryByPosition(-1)->link;
-
-		$this->back_link->display();
-
-		$div_tag = new SwatHtmlTag('div');
-		$div_tag->id = 'product_image_large';
-
-		$img_tag = $this->image->getImgTag('large');
-
-		if ($img_tag->alt == '')
-			$img_tag->alt = sprintf(Store::_('Image of %s'),
-				$this->product->title);
-
-		$div_tag->open();
-		$img_tag->display();
-		$div_tag->close();
-
-		if ($this->image->hasOriginal()) {
-			$download_link = new SwatToolLink();
-			$download_link->link = $this->image->getURI('original');
-			$download_link->title = Store::_('Download High Resolution Image');
-			$download_link->display();
-		}
-
-		if ($this->image->description !== null) {
-			$description = SwatString::toXHTML(
-				SwatString::minimizeEntities(
-				$this->image->description));
-
-			$div_tag->setContent($description, 'text/xml');
-			$div_tag->id = null;
-			$div_tag->display();
-		}
 	}
 
 	// }}}
@@ -227,6 +185,48 @@ class StoreProductImagePage extends StorePage
 		$source = implode('/', $source_exp);
 
 		return $source;
+	}
+
+	// }}}
+	// {{{ private function displayImage()
+
+	private function displayImage()
+	{
+		$this->back_link->title = Store::_('Back to Product Page');
+		$this->back_link->link =
+			$this->layout->navbar->getEntryByPosition(-1)->link;
+
+		$this->back_link->display();
+
+		$div_tag = new SwatHtmlTag('div');
+		$div_tag->id = 'product_image_large';
+
+		$img_tag = $this->image->getImgTag('large');
+
+		if ($img_tag->alt == '')
+			$img_tag->alt = sprintf(Store::_('Image of %s'),
+				$this->product->title);
+
+		$div_tag->open();
+		$img_tag->display();
+		$div_tag->close();
+
+		if ($this->image->hasOriginal()) {
+			$download_link = new SwatToolLink();
+			$download_link->link = $this->image->getURI('original');
+			$download_link->title = Store::_('Download High Resolution Image');
+			$download_link->display();
+		}
+
+		if ($this->image->description !== null) {
+			$description = SwatString::toXHTML(
+				SwatString::minimizeEntities(
+				$this->image->description));
+
+			$div_tag->setContent($description, 'text/xml');
+			$div_tag->id = null;
+			$div_tag->display();
+		}
 	}
 
 	// }}}
