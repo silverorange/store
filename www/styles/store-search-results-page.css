@@ -11,7 +11,6 @@ ul.site-search-results li.store-category-tile a span.store-category-tile-title {
 	margin-top: 0;
 }
 
-
 #product_results_frame,
 #category_results_frame {
 	border: none;
@@ -48,6 +47,8 @@ ul.site-search-results li.store-category-tile a span.store-category-tile-title {
 	float: right;
 	width: 220px;
 	margin-left: 20px;
+	position: relative;
+	z-index: 99;
 }
 
 #article_results_frame.store-article-results-full-width {
