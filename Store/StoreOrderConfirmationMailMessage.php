@@ -125,8 +125,8 @@ abstract class StoreOrderConfirmationMailMessage
 	{
 		$header = $ui->getWidget('header');
 		$header->content_type = 'text/xml';
-		$header->content = SwatString::toXHTML(SwatString::linkify(
-			$this->order->getReceiptHeader()));
+		$header->content = SwatString::toXHTML(
+			$this->order->getReceiptHeaderXml());
 	}
 
 	// }}}
@@ -349,7 +349,7 @@ abstract class StoreOrderConfirmationMailMessage
 
 	protected function displayHeaderText()
 	{
-		$header = $this->order->getReceiptHeader();
+		$header = $this->order->getReceiptHeaderText();
 		if ($header != '') {
 			echo $header;
 			echo self::LINE_BREAK;

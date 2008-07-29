@@ -208,7 +208,7 @@ class StoreOrder extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ public function getReceiptHeader()
+	// {{{ public function getReceiptHeaderXml()
 
 	/**
 	 * Gets the header text for order receipts
@@ -219,7 +219,24 @@ class StoreOrder extends SwatDBDataObject
 	 *
 	 * @return string the header text for order receipts.
 	 */
-	public function getReceiptHeader()
+	public function getReceiptHeaderXml()
+	{
+		return '';
+	}
+
+	// }}}
+	// {{{ public function getReceiptHeaderText()
+
+	/**
+	 * Gets the header text for order receipts
+	 *
+	 * Subclasses should return a string from this method if they wish to
+	 * display a header on all order receipts. By default, an empty string is
+	 * returned so no header is displayed on order receipts.
+	 *
+	 * @return string the header text for order receipts.
+	 */
+	public function getReceiptHeaderText()
 	{
 		return '';
 	}
