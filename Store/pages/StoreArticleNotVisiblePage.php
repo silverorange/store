@@ -12,13 +12,19 @@ require_once 'Store/dataobjects/StoreRegionWrapper.php';
  */
 class StoreArticleNotVisiblePage extends StoreNotVisiblePage
 {
-	// {{{ public properties
+	// {{{ public function setArticle()
 
-	public $article_id;
+	public function setArticle(SiteArticle $article)
+	{
+		$this->article = $article;
+	}
 
 	// }}}
 	// {{{ protected properties
 
+	/**
+	 * @var SiteArticle
+	 */
 	protected $article;
 
 	// }}}
@@ -28,16 +34,6 @@ class StoreArticleNotVisiblePage extends StoreNotVisiblePage
 
 	protected function buildInternal()
 	{
-		$sql = 'select * from Article where id = %s';
-
-		$sql = sprintf($sql,
-			$this->app->db->quote($this->article_id, 'integer'));
-
-		$articles = SwatDB::query($this->app->db, $sql,
-			'SiteArticleWrapper');
-
-		$this->article = $articles->getFirst();
-
 		$this->layout->data->title =
 			SwatString::minimizeEntities((string)$this->article->title);
 
@@ -59,7 +55,7 @@ class StoreArticleNotVisiblePage extends StoreNotVisiblePage
 			where EnabledArticleView.id = %s';
 
 		$sql = sprintf($sql,
-			$this->app->db->quote($this->article_id, 'integer'));
+			$this->app->db->quote($this->article->id, 'integer'));
 
 		return SwatDB::query($this->app->db, $sql,
 			'StoreRegionWrapper');
