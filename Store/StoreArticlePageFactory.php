@@ -27,7 +27,7 @@ abstract class StoreArticlePageFactory extends SiteArticlePageFactory
 	// }}}
 	// {{{ protected function isVisible()
 
-	protected function isVisible($source, SiteArticle $article)
+	protected function isVisible(SiteArticle $article, $source)
 	{
 		$region = $this->app->getRegion();
 		$sql = sprintf('select count(id) from EnabledArticleView
@@ -42,11 +42,14 @@ abstract class StoreArticlePageFactory extends SiteArticlePageFactory
 	// }}}
 	// {{{ protected function getNotVisiblePage()
 
-	protected function getNotVisiblePage(SiteLayout $layout)
+	protected function getNotVisiblePage(SiteArticle $article,
+		SiteLayout $layout)
 	{
 		require_once 'Store/pages/StoreArticleNotVisiblePage.php';
 		$page = new SitePage($this->app, $layout);
-		return new StoreArticleNotVisiblePage($page);
+		$page = $this->decorate($page, 'StoreArticleNotVisiblePage');
+		$page->setArticle($article);
+		return $page;
 	}
 
 	// }}}
