@@ -45,7 +45,8 @@ abstract class StoreArticlePageFactory extends SiteArticlePageFactory
 	protected function getNotVisiblePage(SiteLayout $layout)
 	{
 		require_once 'Store/pages/StoreArticleNotVisiblePage.php';
-		return new StoreArticleNotVisiblePage($this->app, $layout);
+		$page = new SitePage($this->app, $layout);
+		return new StoreArticleNotVisiblePage($page);
 	}
 
 	// }}}
