@@ -101,7 +101,7 @@ abstract class StoreNotVisiblePage extends StorePage
 		} elseif (count($locales) == 1) {
 			$primary_content = sprintf(Store::_('It is
 				available on our %s store.'),
-				$this->getLocaleLink(current($locales)));	
+				$this->getLocaleLink(current($locales)));
 
 		} else {
 			$primary_content = Store::_('It is available
