@@ -161,7 +161,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 	{
 		$tips = parent::getSearchTips();
 
-		$tips[] = Site::_('You can search by an item’s number');
+		$tips[] = Store::_('You can search by an item’s number');
 
 		return $tips;
 	}
