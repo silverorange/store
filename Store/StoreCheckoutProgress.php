@@ -1,13 +1,13 @@
 <?php
 
 require_once 'Swat/SwatControl.php';
-require_once 'VanBourgondien/VanBourgondien.php';
+require_once 'Store/Store.php';
 
 /**
- * @package   VanBourgondien
+ * @package   Store
  * @copyright 2007 silverorange
  */
-class VanBorgondienCheckoutProgress extends SwatControl
+class StoreCheckoutProgress extends SwatControl
 {
 	// {{{ public properties
 
@@ -23,8 +23,8 @@ class VanBorgondienCheckoutProgress extends SwatControl
 	{
 		parent::__construct($id);
 		$this->addStyleSheet(
-			'packages/van-bourgondien/styles/checkout-progress.css',
-			VanBourgondien::PACKAGE_ID);
+			'packages/store/styles/store-checkout-progress.css',
+			Store::PACKAGE_ID);
 	}
 
 	// }}}
@@ -38,13 +38,13 @@ class VanBorgondienCheckoutProgress extends SwatControl
 		parent::display();
 
 		$ol_tag = new SwatHtmlTag('ol');
-		$ol_tag->class = 'checkout-progress';
+		$ol_tag->class = 'store-checkout-progress';
 		$ol_tag->id = $this->id;
 		$ol_tag->open();
 
 		foreach ($this->getSteps() as $id => $step) {
 			$li_tag = new SwatHtmlTag('li');
-			$li_tag->class = 'checkout-progress-step'.$id;
+			$li_tag->class = 'store-checkout-progress-step'.$id;
 			$li_tag->setContent($step);
 			$li_tag->display();
 		}
@@ -58,9 +58,9 @@ class VanBorgondienCheckoutProgress extends SwatControl
 	private static function getSteps()
 	{
 		return array(
-			'1' => 'Your Information',
-			'2' => 'Review Order',
-			'3' => 'Order Completed',
+			'1' => Store::_('Your Information'),
+			'2' => Store::_('Review Order'),
+			'3' => Store::_('Order Completed'),
 		);
 	}
 
