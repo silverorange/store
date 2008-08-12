@@ -6,6 +6,7 @@ require_once 'Store/Store.php';
 /**
  * @package   Store
  * @copyright 2007 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutProgress extends SwatControl
 {
