@@ -1,0 +1,34 @@
+.store-checkout-progress {
+	margin: 0;
+	padding: 0;
+	float: right;
+	position: relative;
+	top: -21px;
+}
+
+.store-checkout-progress li {
+	float: left;
+	display: block;
+	list-style-type: none;
+	background: #eee;
+	margin: 0 3px;
+	padding: 0 5px 0 36px;
+	width: 94px;
+	background: url('../images/store-checkout-steps.png') top left;
+	font-size: 85%;
+	min-height: 24px;
+	line-height: 24px;
+	color: #afa499;
+}
+
+.store-checkout-progress li.store-checkout-progress-step1 { background-position: 0 -40px; }
+.store-checkout-progress li.store-checkout-progress-step2 { background-position: -160px -40px; }
+.store-checkout-progress li.store-checkout-progress-step3 { background-position: -320px -40px; }
+
+.store-checkout-progress-step1 li.store-checkout-progress-step1 { background-position: 0 0; color: #5f5851; }
+.store-checkout-progress-step2 li.store-checkout-progress-step2 { background-position: -160px 0;  color: #5f5851; }
+.store-checkout-progress-step3 li.store-checkout-progress-step3 { background-position: -320px 0;  color: #5f5851; }
+
+#basic_info_container {
+	clear: both;
+}
