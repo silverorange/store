@@ -39,8 +39,13 @@ class StoreCheckoutProgress extends SwatControl
 		parent::display();
 
 		$ol_tag = new SwatHtmlTag('ol');
-		$ol_tag->class = 'store-checkout-progress';
 		$ol_tag->id = $this->id;
+		$ol_tag->class = 'store-checkout-progress';
+
+		if ($this->current_step > 0) {
+			$ol_tag->class .= ' store-checkout-progress-step'.$this->current_step;
+		}
+
 		$ol_tag->open();
 
 		foreach ($this->getSteps() as $id => $step) {
