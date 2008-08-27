@@ -15,7 +15,7 @@ class StoreCheckoutProgress extends SwatControl
 	/**
 	 * @var integer
 	 */
-	public $current_step = 1;
+	public $current_step = 0;
 
 	// }}}
 	// {{{ public function __construct()
@@ -40,12 +40,11 @@ class StoreCheckoutProgress extends SwatControl
 
 		$ol_tag = new SwatHtmlTag('ol');
 		$ol_tag->id = $this->id;
-		$ol_tag->class = 'store-checkout-progress';
+		if ($this->current_step > 0)
+			$ol_tag->class = ' store-checkout-progress-step'.$this->current_step;
 
-		if ($this->current_step > 0) {
-			$ol_tag->class .= ' store-checkout-progress-step'.$this->current_step;
-		}
 
+		echo '<div class="store-checkout-progress">';
 		$ol_tag->open();
 
 		foreach ($this->getSteps() as $id => $step) {
@@ -56,6 +55,9 @@ class StoreCheckoutProgress extends SwatControl
 		}
 
 		$ol_tag->close();
+		echo '<div class="store-checkout-progress-clear"></div>';
+		echo '</div>';
+
 	}
 
 	// }}}
