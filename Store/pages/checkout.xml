@@ -1,6 +1,9 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
+	<widget class="StoreCheckoutProgress" id="checkout_progress">
+		<property name="visible" type="boolean">false</property>
+	</widget>
 	<widget class="StoreMessageDisplay" id="message_display" />
 	<widget class="SwatForm" id="form" />
 </swatml>
