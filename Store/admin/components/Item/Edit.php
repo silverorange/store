@@ -211,14 +211,14 @@ class StoreItemEdit extends AdminDBEdit
 				else
 					$valid_skus[] = $alias;
 			}
-	
+
 			if (count($invalid_skus) > 0) {
 				$message = new SwatMessage(sprintf(Store::ngettext(
 					'The following alias SKU already exists: %s',
 					'The following alias SKUs already exist: %s',
 					count($invalid_skus)), implode(', ', $invalid_skus)),
 					SwatMessage::ERROR);
-	
+
 				$aliases->addMessage($message);
 			}
 		}
