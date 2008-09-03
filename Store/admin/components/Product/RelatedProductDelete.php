@@ -82,6 +82,16 @@ class StoreProductRelatedProductDelete extends AdminDBDelete
 	}
 
 	// }}}
+	// {{{ protected function relocate()
+
+	protected function relocate()
+	{
+		// don't use the AdminDBDelete relocate as its too smart for its own
+		// good, and takes us back to the index page
+		AdminConfirmation::relocate();
+	}
+
+	// }}}
 
 	// build phase
 	// {{{ protected function buildInternal()
@@ -89,7 +99,6 @@ class StoreProductRelatedProductDelete extends AdminDBDelete
 	protected function buildInternal()
 	{
 		parent::buildInternal();
-		$this->buildNavBar();
 
 		$form = $this->ui->getWidget('confirmation_form');
 		$form->addHiddenField('id', $this->id);
@@ -114,13 +123,15 @@ class StoreProductRelatedProductDelete extends AdminDBDelete
 	}
 
 	// }}}
-	// {{{ private function buildNavBar()
+	// {{{ protected function buildNavBar()
 
-	private function buildNavBar()
+	protected function buildNavBar()
 	{
+		// Take "Delete" off the navbar
 		$this->navbar->popEntry();
 
 		if ($this->category_id !== null) {
+			// Take the "Product Search" off the navbar & show the category tree
 			$this->navbar->popEntry();
 			$this->navbar->addEntry(new SwatNavBarEntry(
 				Store::_('Product Categories'), 'Category'));
