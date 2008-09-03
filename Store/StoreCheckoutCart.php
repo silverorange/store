@@ -269,7 +269,7 @@ abstract class StoreCheckoutCart extends StoreCart
 	 */
 	abstract public function getTaxTotal(StoreAddress $billing_address,
 		StoreAddress $shipping_address);
-	
+
 	// }}}
 	// {{{ abstract public function getTaxProvState()
 
