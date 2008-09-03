@@ -95,6 +95,8 @@ class StoreItemEdit extends AdminDBEdit
 				throw new AdminNotFoundException(
 					sprintf(Store::_('Item with id "%s" not found.'),
 						$this->id));
+			else
+				$this->product = $this->item->getInternalValue('product');
 		}
 	}
 
@@ -367,10 +369,6 @@ class StoreItemEdit extends AdminDBEdit
 
 		$this->loadRegionBindings();
 		$this->loadItemAliases();
-
-		$this->product = $this->item->getInternalValue('product');
-		$form = $this->ui->getWidget('edit_form');
-		$form->addHiddenField('product', $this->product);
 	}
 
 	// }}}
