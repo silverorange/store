@@ -69,7 +69,7 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 	public function build()
 	{
 		parent::build();
-		$this->app->session->logout();
+		$this->logoutSession();
 	}
 
 	// }}}
@@ -230,6 +230,14 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 	protected function getOrder()
 	{
 		return $this->app->session->order;
+	}
+
+	// }}}
+	// {{{ protected function logoutSession()
+
+	protected function logoutSession()
+	{
+		$this->app->session->logout();
 	}
 
 	// }}}
