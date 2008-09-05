@@ -207,12 +207,12 @@ abstract class StoreAddress extends SwatDBDataObject
 	/**
 	 * Compares this address to another address
 	 *
-	 * @param StoreOrderAddress $address the address to compare this entry to.
+	 * @param StoreAddress $address the address to compare this entry to.
 	 *
 	 * @return boolean True if all internal values match, and false if any
 	 *                  don't match.
 	 */
-	public function compare(StoreOrderAddress $address)
+	public function compare(StoreAddress $address)
 	{
 		$equal = true;
 
