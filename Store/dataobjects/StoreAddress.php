@@ -202,6 +202,48 @@ abstract class StoreAddress extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function compare()
+
+	/**
+	 * Compares this address to another address
+	 *
+	 * @param StoreOrderAddress $address the address to compare this entry to.
+	 *
+	 * @return boolean True if all internal values match, and false if any
+	 *                  don't match.
+	 */
+	public function compare(StoreOrderAddress $address)
+	{
+		$equal = true;
+
+		if ($this->fullname !== $address->fullname)
+			$equal = false;
+
+		if ($this->company !== $address->company)
+			$equal = false;
+
+		if ($this->line1 !== $address->line1)
+			$equal = false;
+
+		if ($this->line2 !== $address->line2)
+			$equal = false;
+
+		if ($this->city !== $address->city)
+			$equal = false;
+
+		if ($this->provstate_other !== $address->provstate_other)
+			$equal = false;
+
+		if ($this->postal_code !== $address->postal_code)
+			$equal = false;
+
+		if ($this->phone !== $address->phone)
+			$equal = false;
+
+		return $equal;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
