@@ -1,10 +1,12 @@
 .store-checkout-progress {
-	position: relative;
-	top: -21px;
+	padding: 3px 0;
+	background: #f5ede5;
+	border: 1px solid #f5ede5;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
 }
 
 .store-checkout-progress ol {
-	float: right;
 	margin: 0;
 	padding: 0;
 }
@@ -12,25 +14,49 @@
 .store-checkout-progress-clear { clear: both; line-height: 0; }
 
 .store-checkout-progress li {
-	position: relative;
-	float: left;
-	display: block;
 	list-style-type: none;
-	background: #eee;
-	margin: 0 3px;
-	padding: 0 5px 0 36px;
-	width: 94px;
-	background: url('../images/store-checkout-steps.png') top left;
+	float: left;
+	margin: 0%;
+	padding: 0;
+	width: 33.333%;
 	font-size: 85%;
-	min-height: 24px;
-	line-height: 24px;
 	color: #afa499;
 }
 
-.store-checkout-progress li.store-checkout-progress-step1 { background-position: 0 -40px; }
-.store-checkout-progress li.store-checkout-progress-step2 { background-position: -160px -40px; }
-.store-checkout-progress li.store-checkout-progress-step3 { background-position: -320px -40px; }
+.store-checkout-progress li span {
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	background-color: #f9f5f1;
+	background-image: url(../images/store-checkout-progress.png);
+	background-position: 0 0;
+	background-repeat: no-repeat;
+	padding: 5px 5px 5px 25px;
+	margin: 0 3px;
+	display: block;
+	border: 1px solid #d2c7ba;
+}
 
-.store-checkout-progress-step1 li.store-checkout-progress-step1 { background-position: 0 0; color: #5f5851; }
-.store-checkout-progress-step2 li.store-checkout-progress-step2 { background-position: -160px 0;  color: #5f5851; }
-.store-checkout-progress-step3 li.store-checkout-progress-step3 { background-position: -320px 0;  color: #5f5851; }
+.store-checkout-progress li.store-checkout-progress-step1 span { background-position: 0 -50px; }
+.store-checkout-progress li.store-checkout-progress-step2 span { background-position: 0 -150px; }
+.store-checkout-progress li.store-checkout-progress-step3 span { background-position: 0 -250px; }
+
+.store-checkout-progress-step1 li.store-checkout-progress-step1 span {
+	background-position: 0 0;
+	background-color: #fff;
+	border-color: #b4ab9f;
+	color: #5f5851;
+}
+
+.store-checkout-progress-step2 li.store-checkout-progress-step2 span {
+	background-position: 0 -100px;
+	background-color: #fff;
+	border-color: #b4ab9f;
+	color: #5f5851;
+}
+
+.store-checkout-progress-step3 li.store-checkout-progress-step3 span {
+	background-position: 0 -200px;
+	background-color: #fff;
+	border-color: #b4ab9f;
+	color: #5f5851;
+}

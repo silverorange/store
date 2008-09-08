@@ -38,6 +38,21 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
 	}
 
 	// }}}
+
+	// init phase
+	// {{{ protected function initInternal()
+
+	protected function initInternal()
+	{
+		parent::initInternal();
+
+		if ($this->ui->hasWidget('checkout_progress')) {
+			$checkout_progress = $this->ui->getWidget('checkout_progress');
+			$checkout_progress->current_step = 3;
+		}
+	}
+
+	// }}}
 }
 
 ?>

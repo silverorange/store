@@ -7,6 +7,11 @@
 	margin: 1em;
 }
 
+.checkout-no-column #billing_address_form,
+.checkout-no-column #shipping_address_form {
+	margin: 0;
+}
+
 .add-new {
 	font-family: sans-serif;
 	font-weight: bold;
