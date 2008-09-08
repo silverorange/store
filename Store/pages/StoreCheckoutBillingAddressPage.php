@@ -291,6 +291,7 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 	protected function buildList()
 	{
 		$address_list = $this->ui->getWidget('billing_address_list');
+		$address_list_container = $this->ui->getWidget('billing_address_list_container');
 		$address_list->addOption('new', sprintf(
 			'<span class="add-new">%s</span>', Store::_('Add a New Address')),
 			'text/xml');
@@ -303,7 +304,8 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 			$this->buildAccountBillingAddressRegionMessage($content_block);
 		}
 
-		$address_list->visible = (count($address_list->options) > 1);
+		$address_list->visible           = (count($address_list->options) > 1);
+		$address_list_container->visible = (count($address_list->options) > 1);
 	}
 
 	// }}}

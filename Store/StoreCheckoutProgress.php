@@ -50,7 +50,7 @@ class StoreCheckoutProgress extends SwatControl
 		foreach ($this->getSteps() as $id => $step) {
 			$li_tag = new SwatHtmlTag('li');
 			$li_tag->class = 'store-checkout-progress-step'.$id;
-			$li_tag->setContent($step);
+			$li_tag->setContent('<span>'.$step.'</span>', 'text/xml');
 			$li_tag->display();
 		}
 

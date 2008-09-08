@@ -32,6 +32,11 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutUIPage
 	{
 		parent::initInternal();
 		$this->initCommon();
+
+		if ($this->ui->hasWidget('checkout_progress')) {
+			$checkout_progress = $this->ui->getWidget('checkout_progress');
+			$checkout_progress->current_step = 1;
+		}
 	}
 
 	// }}}
