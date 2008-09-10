@@ -58,7 +58,9 @@ abstract class StoreOrderConfirmationMailMessage
 		$this->from_name = $this->getFromName();
 
 		$this->to_address = $order->email;
-		$this->to_name = $order->billing_address->fullname;
+
+		if ($order->billing_address !== null)
+			$this->to_name = $order->billing_address->fullname;
 
 		$this->subject = $this->getSubject();
 
@@ -146,50 +148,66 @@ abstract class StoreOrderConfirmationMailMessage
 	protected function buildOrderDetails(SwatUI $ui)
 	{
 		$ui->getRoot()->addStyleSheet('packages/store/styles/store-cart.css');
+		$order = $this->order;
 
 		$details_view =  $ui->getWidget('order_details');
-		$details_view->data = new SwatDetailsStore($this->order);
+		$details_view->data = new SwatDetailsStore($order);
 
 		$date_field = $details_view->getField('createdate');
 		$date_renderer = $date_field->getFirstRenderer();
 		$date_renderer->display_time_zone = $this->app->default_time_zone;
 
-		if ($this->order->comments === null)
+		if ($order->comments === null)
 			$details_view->getField('comments')->visible = false;
 
-		if ($this->order->phone === null)
+		if ($order->phone === null)
 			$details_view->getField('phone')->visible = false;
 
-		if ($this->order->company === null)
+		if ($order->company === null)
 			$details_view->getField('company')->visible = false;
 
-		if ($this->order->payment_method === null)
+		if ($order->payment_method === null)
 			$details_view->getField('payment_method')->visible = false;
 
 		$items_view = $ui->getWidget('items_view');
-		$items_view->model = $this->order->getOrderDetailsTableStore();
+		$items_view->model = $order->getOrderDetailsTableStore();
 
-		if ($items_view->hasColumn('price')) {
-			$items_view->getColumn('price')->getFirstRenderer()->locale =
-				$this->order->locale->id;
-		}
-
-		if ($items_view->hasColumn('total')) {
-			$items_view->getColumn('total')->getFirstRenderer()->locale =
-				$this->order->locale->id;
-		}
-
-		$items_view->getRow('shipping')->value = $this->order->shipping_total;
-		$items_view->getRow('shipping')->locale = $this->order->locale->id;
-
-		$items_view->getRow('subtotal')->value = $this->order->getSubtotal();
-		$items_view->getRow('subtotal')->locale = $this->order->locale->id;
-
-		$items_view->getRow('total')->value = $this->order->total;
-		$items_view->getRow('total')->locale = $this->order->locale->id;
+		if ($items_view instanceof SwatTableView)
+			$this->setupTableData($items_view, $this->order);
 
 		$this->buildOrderHeader($ui);
 		$this->buildOrderFooter($ui);
+	}
+
+	// }}}
+	// {{{ protected function setupTableData()
+
+	protected function setupTableData(SwatTableView $view, StoreOrder $order)
+	{
+		if ($view->hasColumn('price')) {
+			$view->getColumn('price')->getFirstRenderer()->locale =
+				$order->locale->id;
+		}
+
+		if ($view->hasColumn('total')) {
+			$view->getColumn('total')->getFirstRenderer()->locale =
+				$order->locale->id;
+		}
+
+		if ($view->hasRow('shipping')) {
+			$view->getRow('shipping')->value = $order->shipping_total;
+			$view->getRow('shipping')->locale = $order->locale->id;
+		}
+
+		if ($view->hasRow('subtotal')) {
+			$view->getRow('subtotal')->value = $order->getSubtotal();
+			$view->getRow('subtotal')->locale = $order->locale->id;
+		}
+
+		if ($view->hasRow('total')) {
+			$view->getRow('total')->value = $order->total;
+			$view->getRow('total')->locale = $order->locale->id;
+		}
 	}
 
 	// }}}
