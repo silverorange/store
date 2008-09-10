@@ -4,6 +4,7 @@ create table Orders (
 	previous_attempt integer, -- constraint added below
 	account integer default null references Account(id) on delete set null,
 	email varchar(255),
+	cc_email varchar(255),
 	phone varchar(100),
 	company varchar(255),
 	comments text,

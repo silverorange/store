@@ -41,6 +41,13 @@ class StoreOrder extends SwatDBDataObject
 	public $email;
 
 	/**
+	 * Extra email address to which the order confirmation email is CC'd
+	 *
+	 * @var string
+	 */
+	public $cc_email;
+
+	/**
 	 * Snapshot of the customer's company name
 	 *
 	 * @var string
