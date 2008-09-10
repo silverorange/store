@@ -52,7 +52,7 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 
 		if ($this->ui->hasWidget('checkout_progress')) {
 			$checkout_progress = $this->ui->getWidget('checkout_progress');
-			$checkout_progress->current_step = 1;
+			$checkout_progress->current_step = 2;
 		}
 	}
 
