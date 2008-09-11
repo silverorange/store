@@ -82,7 +82,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 		$form = $this->ui->getWidget('form');
 
-		if ($form->isProcessed())
+		if ($form->isProcessed() && !$form->hasMessage())
 			$this->processOrder();
 	}
 
