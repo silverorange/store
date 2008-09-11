@@ -59,6 +59,9 @@ abstract class StoreOrderConfirmationMailMessage
 
 		$this->to_address = $order->email;
 
+		if ($order->cc_email !== null)
+			$this->cc_list = array($order->cc_email);
+
 		if ($order->billing_address !== null)
 			$this->to_name = $order->billing_address->fullname;
 
