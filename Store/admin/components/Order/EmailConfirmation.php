@@ -75,12 +75,17 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 		if ($form->button->id == 'yes_button') {
 			$this->order->sendConfirmationEmail($this->app);
 
+			$cc = ($this->order->cc_email !== null) ?
+				' and cc’d to '.$this->order->cc_email : '';
+
 			$message = new SwatMessage(sprintf(
-				Store::_('A confirmation of %s has been emailed to %s.'),
-				$this->getOrderTitle(), $this->order->email),
+				Store::_('A confirmation of %s has been emailed to %s%s.'),
+				$this->getOrderTitle(), $this->order->email, $cc),
 					SwatMessage::NOTIFICATION);
 
 			$this->app->messages->add($message);
+
+			exit;
 		}
 	}
 
@@ -126,7 +131,17 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 		printf(Store::_('A confirmation of %s will be sent to '),
 			$this->getOrderTitle());
 
+
 		$email_anchor->display();
+
+		if ($this->order->cc_email !== null) {
+			$email_anchor = new SwatHtmlTag('a');
+			$email_anchor->href = sprintf('mailto:%s', $this->order->cc_email);
+			$email_anchor->setContent($this->order->cc_email);
+
+			echo Store::_(' and cc’d to ');
+			$email_anchor->display();
+		}
 
 		echo '.';
 
