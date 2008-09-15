@@ -63,6 +63,19 @@ class StoreCategorySearchEngine extends SiteSearchEngine
 	}
 
 	// }}}
+	// {{{ protected function getWhereClause()
+
+	protected function getWhereClause()
+	{
+		$clause = sprintf('where id in
+			(select Category from VisibleCategoryView
+			where region = %s or region is null)',
+			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+
+		return $clause;
+	}
+
+	// }}}
 }
 
 ?>
