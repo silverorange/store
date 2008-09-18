@@ -101,8 +101,8 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 				Store::_('An account already exists with this email address.'),
 				SwatMessage::ERROR);
 
-			$message->secondary_content = sprintf(Store::_('Please %slog in to your '.
-				'account%s.'),
+			$message->secondary_content = sprintf(Store::_('Please %slog in '.
+				'to your account%s.'),
 				sprintf('<a href="checkout">',
 				$email_address), '</a>');
 
