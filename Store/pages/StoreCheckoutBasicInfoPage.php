@@ -181,6 +181,9 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 		if ($order->email !== null) {
 			$this->ui->getWidget('email')->value = $order->email;
 			$this->ui->getWidget('confirm_email')->value = $order->email;
+		} elseif ($this->app->session->checkout_email !== null) {
+			$this->ui->getWidget('email')->value =
+				$this->app->session->checkout_email;
 		}
 
 		if ($order->company !== null)
