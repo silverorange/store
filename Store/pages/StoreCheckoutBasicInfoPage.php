@@ -116,9 +116,9 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 
 	protected function validEmailAddress($email)
 	{
-		// don't even bother checking validity of the email is the same as the
-		// account email. Allows fringe case where two accounts have the same
-		// email (in theory this isn't possible).
+		// don't bother checking validity of the entered email if it is the same
+		// as the account email. Allows fringe case where two accounts have the
+		// same email (in theory this isn't possible).
 		if ($this->app->session->isLoggedIn() &&
 			$email == $this->app->session->account->email)
 			return true;
