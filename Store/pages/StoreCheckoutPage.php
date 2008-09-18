@@ -125,6 +125,7 @@ abstract class StoreCheckoutPage extends SiteArticlePage
 	{
 		$this->app->session->checkout_progress = new ArrayObject();
 		$this->app->session->checkout_with_account = false;
+		$this->app->session->checkout_email = null;
 	}
 
 	// }}}
