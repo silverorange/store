@@ -91,10 +91,16 @@
 				</object>
 				<object class="SwatTableViewWidgetRow">
 					<property name="position" type="constant">POSITION_RIGHT</property>
-					<widget class="SwatConfirmationButton" id="available_remove_all_button">
-						<property name="title" translatable="yes">Remove All Items</property>
-						<property name="confirmation_message" translatable="yes">Remove all items from cart?</property>
-						<property name="classes[]">compact-button</property>
+					<widget class="SwatContainer">
+						<widget class="SwatConfirmationButton" id="available_remove_all_button">
+							<property name="title" translatable="yes">Remove All Items</property>
+							<property name="confirmation_message" translatable="yes">Remove all items from cart?</property>
+							<property name="classes[]">compact-button</property>
+						</widget>
+						<widget class="SwatButton" id="available_move_all_button">
+							<property name="title" translatable="yes">Save All Items</property>
+							<property name="classes[]">compact-button</property>
+						</widget>
 					</widget>
 				</object>
 				<object class="StoreTotalRow" id="shipping">
