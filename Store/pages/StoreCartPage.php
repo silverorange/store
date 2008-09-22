@@ -106,6 +106,9 @@ class StoreCartPage extends SiteArticlePage
 		$form->process();
 
 		if ($form->isProcessed()) {
+			if ($this->getAvailableMoveAllButton()->hasBeenClicked())
+				$this->moveAllAvailableCheckoutCart();
+
 			if ($this->getAvailableRemoveAllButton()->hasBeenClicked())
 				$this->removeAllAvailableCheckoutCart();
 
@@ -283,6 +286,16 @@ class StoreCartPage extends SiteArticlePage
 	}
 
 	// }}}
+	// {{{ protected function getAvailableMoveAllButton()
+
+	protected function getAvailableMoveAllButton()
+	{
+		$button = $this->ui->getWidget('available_move_all_button');
+
+		return $button;
+	}
+
+	// }}}
 	// {{{ protected function getAvailableRemoveButtons()
 
 	protected function getAvailableRemoveButtons()
@@ -403,6 +416,56 @@ class StoreCartPage extends SiteArticlePage
 	}
 
 	// }}}
+	// {{{ protected function moveAllAvailableCheckoutCart()
+
+	/**
+	 * moves all available cart items
+	 */
+	protected function moveAllAvailableCheckoutCart()
+	{
+		$message_display = $this->ui->getWidget('message_display');
+
+		$num_entries_moved = 0;
+
+		// use individual move buttons to iterate entry ids
+		foreach ($this->getAvailableMoveButtons() as $id => $button) {
+			$entry = $this->app->cart->checkout->getEntryById($id);
+
+			// make sure entry wasn't already moved
+			// (i.e. a page resubmit)
+			if ($entry !== null) {
+				$quantity = $this->getAvailableQuantityWidget($id)->value;
+
+				$this->added_entry_ids[] = $id;
+				$num_entries_moved++;
+
+				$entry->setQuantity($quantity);
+				$this->app->cart->checkout->removeEntry($entry);
+				$this->app->cart->saved->addEntry($entry);
+			}
+		}
+
+		if ($num_entries_moved > 0) {
+			$moved_message = new StoreMessage(
+				sprintf(Store::ngettext(
+				'One item has been saved for later.',
+				'%s items have been saved for later.', $num_entries_moved),
+				SwatString::numberFormat($num_entries_moved)),
+				StoreMessage::CART_NOTIFICATION);
+
+			$moved_message->content_type = 'text/xml';
+
+			if (!$this->app->session->isLoggedIn())
+				$moved_message->secondary_content = sprintf(Store::_(
+					'Items will not be saved unless you %screate an account '.
+					'or log in%s.'), '<a href="account">', '</a>');
+
+			$message_display->add($moved_message);
+		}
+
+	}
+
+	// }}}
 	// {{{ protected function removeAllAvailableCheckoutCart()
 
 	/**
@@ -430,7 +493,8 @@ class StoreCartPage extends SiteArticlePage
 			$message_display->add(new StoreMessage(
 				sprintf(Store::ngettext(
 				'One item has been removed from your cart.',
-				'%s items have been removed from your cart.', $num_removed_items),
+				'%s items have been removed from your cart.',
+				$num_removed_items),
 				SwatString::numberFormat($num_removed_items)),
 				StoreMessage::CART_NOTIFICATION));
 	}
@@ -872,6 +936,12 @@ class StoreCartPage extends SiteArticlePage
 				$remove_all_button->parent->visible = false;
 			else
 				$remove_all_button->visible = false;
+
+			$move_all_button = $this->getAvailableMoveAllButton();
+			if ($move_all_button->parent instanceof SwatTableViewRow)
+				$move_all_button->parent->visible = false;
+			else
+				$move_all_button->visible = false;
 		}
 
 		$available_view->visible = (count($available_view->model) > 0);
