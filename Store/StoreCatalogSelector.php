@@ -87,10 +87,10 @@ class StoreCatalogSelector extends SwatFlydown
 
 		switch ($this->scope) {
 		case self::ONE_CATALOG:
-			$this->catalog = $value_exp[1];
+			$this->catalog = (integer)$value_exp[1];
 			break;
 		case self::ALL_ENABLED_CATALOGS_IN_REGION:
-			$this->region = $value_exp[1];
+			$this->region = (integer)$value_exp[1];
 			break;
 		case self::ALL_ENABLED_CATALOGS:
 			break;
@@ -110,7 +110,7 @@ class StoreCatalogSelector extends SwatFlydown
 			self::constructValue(self::ALL_CATALOGS), Store::_('All'));
 
 		$options[] = new SwatOption(
-			self::constructValue(self::ALL_ENABLED_CATALOGS), 
+			self::constructValue(self::ALL_ENABLED_CATALOGS),
 				Store::_('All Enabled'));
 
 		$regions = SwatDB::getOptionArray($this->db, 'Region', 'title', 'id',
@@ -119,7 +119,8 @@ class StoreCatalogSelector extends SwatFlydown
 		foreach ($regions as $id => $title)
 			$options[] = new SwatOption(
 				self::constructValue(self::ALL_ENABLED_CATALOGS_IN_REGION, null,
-				$id), sprintf(Store::_('All Enabled in %s'), $title));
+					$id),
+				sprintf(Store::_('All Enabled in %s'), $title));
 
 		$options[] = new SwatFlydownDivider('');
 
