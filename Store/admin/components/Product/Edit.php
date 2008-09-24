@@ -8,6 +8,7 @@ require_once 'SwatDB/SwatDB.php';
 require_once 'Store/dataobjects/StoreProduct.php';
 require_once 'Store/dataobjects/StoreAttributeTypeWrapper.php';
 require_once 'Store/dataobjects/StoreAttributeWrapper.php';
+require_once 'Store/StoreCatalogSelector.php';
 require_once 'Date.php';
 
 /**
@@ -87,7 +88,7 @@ class StoreProductEdit extends AdminDBEdit
 		$replicators = array();
 
 		$attribute_types = SwatDB::query($this->app->db,
-			'select * from attributetype order by shortname',
+			'select * from AttributeType order by shortname',
 			SwatDBClassMap::get('StoreAttributeTypeWrapper'));
 
 		foreach ($attribute_types as $type)
@@ -108,8 +109,11 @@ class StoreProductEdit extends AdminDBEdit
 		$title = $this->ui->getWidget('title');
 
 		if ($this->id === null && $shortname->value === null) {
-			$new_shortname = $this->generateShortname($title->value);
-			$shortname->value = $new_shortname;
+			// only generate a shortname if there is a title to generate it from
+			if ($title->value !== null) {
+				$new_shortname = $this->generateShortname($title->value);
+				$shortname->value = $new_shortname;
+			}
 		} elseif (!$this->validateShortname($shortname->value)) {
 			$message = new SwatMessage(
 				Store::_('Shortname already exists and must be unique.'),
@@ -132,12 +136,13 @@ class StoreProductEdit extends AdminDBEdit
 
 		$old_shortname = SwatDB::queryOne($this->app->db, $sql);
 
-
 		// get selected catalog
 		$catalog = $this->ui->getWidget('catalog');
-		// calling this twice will cause 2 error messages to dispay if this
-		// field is null
-		$catalog->process();
+		// calling process more than once caused multiple error messages on this
+		// field if it is currently null
+		if (!$catalog->isProcessed())
+			$catalog->process();
+
 		$catalog_id = $catalog->value;
 
 		/*
@@ -312,36 +317,45 @@ class StoreProductEdit extends AdminDBEdit
 				SwatMessageDisplay::DISMISS_OFF);
 		}
 
-		// smart defaulting of the catalog
-		if ($this->id === null) {
-			$catalog = null;
-
-			// check catalogue selector
-			// TODO: use $this->app->session
-			if (isset($_SESSION['catalog']) &&
-				is_numeric($_SESSION['catalog'])) {
-				$catalog = $_SESSION['catalog'];
-			// check catelogue used by most products in this cateorgy
-			} elseif ($this->category_id !== null) {
-				$sql = 'select count(catalog) as num_products, catalog
-					from Product
-					where id in (
-						select product from CategoryProductBinding
-						where category = %s)
-					group by catalog
-					order by num_products desc
-					limit 1';
-
-				$row = SwatDB::queryRow($this->app->db, sprintf($sql,
-					$this->app->db->quote($this->category_id, 'integer')));
-
-				$catalog = ($row === null) ? null : $row->catalog;
-			}
-
-			$this->ui->getWidget('catalog')->value = $catalog;
-		}
+		$form = $this->ui->getWidget('edit_form');
+		if ($this->id === null && !$form->isProcessed())
+			$this->smartDefaultCatalog();
 
 		$this->buildAttributes();
+	}
+
+	// }}}
+	// {{{ protected function smartDefaultCatalog()
+
+	protected function smartDefaultCatalog()
+	{
+		$catalog = null;
+
+		// check catalogue selector
+		$catalog_selector = new StoreCatalogSelector();
+		$catalog_selector->setState(SiteApplication::initVar('catalog', null,
+			SiteApplication::VAR_SESSION));
+
+		if ($catalog_selector->catalog !== null) {
+			$catalog = $catalog_selector->catalog;
+		} elseif ($this->category_id !== null) {
+			// check catelogue used by most products in this cateorgy
+			$sql = 'select count(catalog) as num_products, catalog
+				from Product
+				where id in (
+					select product from CategoryProductBinding
+					where category = %s)
+				group by catalog
+				order by num_products desc
+				limit 1';
+
+			$row = SwatDB::queryRow($this->app->db, sprintf($sql,
+				$this->app->db->quote($this->category_id, 'integer')));
+
+			$catalog = ($row === null) ? null : $row->catalog;
+		}
+
+		$this->ui->getWidget('catalog')->value = $catalog;
 	}
 
 	// }}}
@@ -359,8 +373,6 @@ class StoreProductEdit extends AdminDBEdit
 
 	protected function buildNavBar()
 	{
-		parent::buildNavBar();
-
 		if ($this->category_id !== null) {
 			$this->navbar->popEntry();
 			$this->navbar->addEntry(new SwatNavBarEntry(
