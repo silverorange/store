@@ -4,11 +4,11 @@ require_once 'Numbers/Words.php';
 require_once 'Swat/SwatString.php';
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
+require_once 'Swat/SwatMessage.php';
+require_once 'Swat/SwatMessageDisplay.php';
 require_once 'Swat/SwatYUI.php';
 require_once 'Swat/SwatUI.php';
 require_once 'Store/StoreItemsView.php';
-require_once 'Store/StoreMessage.php';
-require_once 'Store/StoreMessageDisplay.php';
 require_once 'Store/pages/StorePage.php';
 require_once 'Store/dataobjects/StoreCartEntry.php';
 require_once 'Store/dataobjects/StoreProduct.php';
@@ -55,7 +55,7 @@ class StoreProductPage extends StorePage
 	{
 		parent::init();
 
-		$this->message_display = new StoreMessageDisplay();
+		$this->message_display = new SwatMessageDisplay();
 		$this->message_display->id = 'cart_message_display';
 		$this->message_display->init();
 
@@ -186,9 +186,9 @@ class StoreProductPage extends StorePage
 			$this->addEntriesToCart($entries);
 
 			if (count($this->items_added) > 0) {
-				$this->cart_message = new StoreMessage(
+				$this->cart_message = new SwatMessage(
 					Store::_('Your cart has been updated.'),
-					StoreMessage::CART_NOTIFICATION);
+					'swat');
 			}
 
 			// add cart messages
@@ -264,9 +264,9 @@ class StoreProductPage extends StorePage
 			if ($widget->hasBeenClicked()) {
 				$this->item_removed = true;
 				$this->app->cart->checkout->removeEntryById($id);
-				$this->message_display->add(new StoreMessage(
+				$this->message_display->add(new SwatMessage(
 					Store::_('An item has been removed from your cart.'),
-						StoreMessage::CART_NOTIFICATION));
+						'cart'));
 				break;
 			}
 		}
@@ -286,9 +286,9 @@ class StoreProductPage extends StorePage
 		$number = SwatString::minimizeEntities(ucwords(
 					Numbers_Words::toWords($num_items_saved)));
 
-		$cart_message = new StoreMessage(
+		$cart_message = new SwatMessage(
 			sprintf('%s %s has been saved for later.', $number, $items),
-			StoreMessage::CART_NOTIFICATION);
+			'cart');
 
 		$cart_message->content_type = 'text/xml';
 		$cart_message->secondary_content = sprintf('Saved '.
@@ -342,8 +342,8 @@ class StoreProductPage extends StorePage
 
 		if ($count > 0) {
 			if ($this->cart_message === null) {
-				$this->cart_message = new StoreMessage(null,
-					StoreMessage::CART_NOTIFICATION);
+				$this->cart_message = new SwatMessage(null,
+					'cart');
 
 				$this->cart_message->primary_content = Store::ngettext(
 					'The following item on this page is in your cart:',

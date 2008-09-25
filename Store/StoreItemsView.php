@@ -7,7 +7,6 @@ require_once 'Swat/SwatDetailsStore.php';
 require_once 'Swat/SwatUI.php';
 require_once 'Swat/SwatHtmlHeadEntrySet.php';
 require_once 'Store/dataobjects/StoreProduct.php';
-require_once 'Store/StoreMessage.php';
 
 /**
  * Control to display and process items on a product page

@@ -3,8 +3,8 @@
 require_once 'Site/pages/SiteArticlePage.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Swat/SwatUI.php';
-require_once 'Store/StoreMessage.php';
 
+require_once 'Swat/SwatMessage.php';
 require_once 'Swat/SwatString.php';
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
@@ -165,25 +165,25 @@ class StoreCartPage extends SiteArticlePage
 		}
 
 		if ($num_entries_removed > 0)
-			$message_display->add(new StoreMessage(sprintf(Store::ngettext(
+			$message_display->add(new SwatMessage(sprintf(Store::ngettext(
 				'One item has been removed from your cart.',
 				'%s items have been removed from your cart.',
 				$num_entries_removed),
 				SwatString::numberFormat($num_entries_removed)),
-				StoreMessage::CART_NOTIFICATION));
+				'cart'));
 
 		if ($num_entries_updated > 0)
-			$message_display->add(new StoreMessage(sprintf(Store::ngettext(
+			$message_display->add(new SwatMessage(sprintf(Store::ngettext(
 				'One item quantity has been updated.',
 				'%s item quantities have been updated.',
 				$num_entries_updated),
 				SwatString::numberFormat($num_entries_updated)),
-				StoreMessage::CART_NOTIFICATION));
+				'cart'));
 
 		if ($num_entries_moved > 0) {
-			$moved_message = new StoreMessage(
+			$moved_message = new SwatMessage(
 				Store::_('One item has been saved for later.'),
-				StoreMessage::CART_NOTIFICATION);
+				cart);
 
 			$moved_message->content_type = 'text/xml';
 
@@ -446,12 +446,12 @@ class StoreCartPage extends SiteArticlePage
 		}
 
 		if ($num_entries_moved > 0) {
-			$moved_message = new StoreMessage(
+			$moved_message = new SwatMessage(
 				sprintf(Store::ngettext(
 				'One item has been saved for later.',
 				'%s items have been saved for later.', $num_entries_moved),
 				SwatString::numberFormat($num_entries_moved)),
-				StoreMessage::CART_NOTIFICATION);
+				'cart');
 
 			$moved_message->content_type = 'text/xml';
 
@@ -490,13 +490,13 @@ class StoreCartPage extends SiteArticlePage
 		}
 
 		if ($num_removed_items > 0)
-			$message_display->add(new StoreMessage(
+			$message_display->add(new SwatMessage(
 				sprintf(Store::ngettext(
 				'One item has been removed from your cart.',
 				'%s items have been removed from your cart.',
 				$num_removed_items),
 				SwatString::numberFormat($num_removed_items)),
-				StoreMessage::CART_NOTIFICATION));
+				'cart'));
 	}
 
 	// }}}
@@ -624,13 +624,13 @@ class StoreCartPage extends SiteArticlePage
 		}
 
 		if ($num_removed_items > 0)
-			$message_display->add(new StoreMessage(
+			$message_display->add(new SwatMessage(
 				sprintf(Store::ngettext(
 				'One item has been removed from your unavailable items.',
 				'%s items have been removed from your unavailable items.',
 				$num_removed_items),
 				SwatString::numberFormat($num_removed_items)),
-				StoreMessage::CART_NOTIFICATION));
+				'cart'));
 	}
 
 	// }}}
@@ -729,14 +729,14 @@ class StoreCartPage extends SiteArticlePage
 			$num_entries_moved += $this->moveSavedEntries();
 
 		if ($num_entries_removed > 0)
-			$message_display->add(new StoreMessage(
+			$message_display->add(new SwatMessage(
 				Store::_('One item has been removed from your saved items.'),
-				StoreMessage::CART_NOTIFICATION));
+				'cart'));
 
 		if ($num_entries_moved > 0)
-			$message_display->add(new StoreMessage(
+			$message_display->add(new SwatMessage(
 				Store::_('One item has been moved to your cart.'),
-				StoreMessage::CART_NOTIFICATION));
+				'cart'));
 	}
 
 	// }}}
@@ -820,12 +820,12 @@ class StoreCartPage extends SiteArticlePage
 		}
 
 		if ($num_moved_items > 0)
-			$message_display->add(new StoreMessage(
+			$message_display->add(new SwatMessage(
 				sprintf(Store::ngettext(
 				'One item has been moved to your cart.',
 				'%s items have been moved to your cart.', $num_moved_items),
 				SwatString::numberFormat($num_moved_items)),
-				StoreMessage::CART_NOTIFICATION));
+				'cart'));
 	}
 
 	// }}}
@@ -853,13 +853,13 @@ class StoreCartPage extends SiteArticlePage
 		}
 
 		if ($num_removed_items > 0)
-			$message_display->add(new StoreMessage(
+			$message_display->add(new SwatMessage(
 				sprintf(Store::ngettext(
 				'One item has been removed from your saved items.',
 				'%s items have been removed from your saved items.',
 				$num_removed_items),
 				SwatString::numberFormat($num_removed_items)),
-				StoreMessage::CART_NOTIFICATION));
+				'cart'));
 	}
 
 	// }}}
@@ -902,9 +902,9 @@ class StoreCartPage extends SiteArticlePage
 
 	protected function getEmptyCartMessage()
 	{
-		$empty_message = new StoreMessage(
+		$empty_message = new SwatMessage(
 			Store::_('Your Shopping Cart is Empty'),
-			StoreMessage::CART_NOTIFICATION);
+			'cart');
 
 		$empty_message->content_type = 'text/xml';
 		$empty_message->secondary_content = Store::_(
