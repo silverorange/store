@@ -1,8 +1,8 @@
 <?php
 
 require_once 'Store/pages/StoreCheckoutUIPage.php';
-require_once 'Store/StoreMessage.php';
 require_once 'SwatDB/SwatDBClassMap.php';
+require_once 'Swat/SwatMessage.php';
 require_once 'Swat/SwatString.php';
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
@@ -310,27 +310,24 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 		$message_display = $this->ui->getWidget('message_display');
 
 		if ($num_entries_removed > 0) {
-			$message_display->add(new StoreMessage(sprintf(Store::ngettext(
+			$message_display->add(new SwatMessage(sprintf(Store::ngettext(
 				'One item has been removed from shopping cart.',
 				'%s items have been removed form shopping cart.',
 				$num_entries_removed),
-				SwatString::numberFormat($num_entries_removed)),
-				StoreMessage::CART_NOTIFICATION));
+				SwatString::numberFormat($num_entries_removed)), 'cart');
 		}
 
 		if ($num_entries_moved > 0) {
-			$message_display->add(new StoreMessage(
-				Store::_('One item has been saved for later.'),
-				StoreMessage::CART_NOTIFICATION));
+			$message_display->add(new SwatMessage(
+				Store::_('One item has been saved for later.'), 'cart'));
 		}
 
 		if ($num_entries_updated > 0) {
-			$message_display->add(new StoreMessage(sprintf(Store::ngettext(
+			$message_display->add(new SwatMessage(sprintf(Store::ngettext(
 				'One item quantity has been updated.',
 				'%s item quantities have been updated.',
 				$num_entries_updated),
-				SwatString::numberFormat($num_entries_removed)),
-				StoreMessage::CART_NOTIFICATION));
+				SwatString::numberFormat($num_entries_removed)), 'cart'));
 		}
 
 		foreach ($this->app->cart->checkout->getMessages() as $message)

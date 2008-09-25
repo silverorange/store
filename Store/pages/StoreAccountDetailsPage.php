@@ -246,7 +246,7 @@ class StoreAccountDetailsPage extends SiteAccountPage
 		$count = $this->app->cart->saved->getEntryCount();
 
 		if ($count > 0) {
-			$message = new StoreMessage('', StoreMessage::CART_NOTIFICATION);
+			$message = new SwatMessage('', 'cart');
 
 			$message->primary_content = Store::ngettext(
 				'You have an item saved for later.',
@@ -274,7 +274,7 @@ class StoreAccountDetailsPage extends SiteAccountPage
 		$count = count($invoices);
 
 		if ($count > 0) {
-			$message = new StoreMessage(sprintf(Store::ngettext(
+			$message = new SwatMessage(sprintf(Store::ngettext(
 				'Your account has a pending invoice:',
 				'Your account has %s pending invoices:',
 				$count), $count));

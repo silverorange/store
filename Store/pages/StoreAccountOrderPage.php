@@ -3,13 +3,13 @@
 require_once 'Swat/SwatDetailsStore.php';
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatWidgetCellRenderer.php';
+require_once 'Swat/SwatMessage.php';
 
 require_once 'Site/exceptions/SiteNotFoundException.php';
 require_once 'Site/pages/SiteAccountPage.php';
 
 require_once 'Store/dataobjects/StoreCartEntry.php';
 require_once 'Store/dataobjects/StoreItem.php';
-require_once 'Store/StoreMessage.php';
 require_once 'Store/StoreShippingAddressCellRenderer.php';
 require_once 'Swat/SwatUI.php';
 
@@ -345,11 +345,11 @@ class StoreAccountOrderPage extends SiteAccountPage
 	{
 		$num = count($this->items_added);
 		if ($num > 0) {
-			$message = new StoreMessage(sprintf(Store::ngettext(
+			$message = new SwatMessage(sprintf(Store::ngettext(
 				'“%1$s” added to %3$sshopping cart%4$s.',
 				'%2$s items added to %3$sshopping cart%4$s.', $num),
 				current($this->items_added)->sku, $num,
-				'<a href="cart">', '</a>'), StoreMessage::CART_NOTIFICATION);
+				'<a href="cart">', '</a>'), 'cart');
 
 			$message->content_type = 'text/xml';
 

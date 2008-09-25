@@ -10,9 +10,9 @@ require_once 'Swat/SwatString.php';
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
 require_once 'Swat/SwatYUI.php';
+require_once 'Swat/SwatMessageDisplay.php';
 require_once 'XML/RPCAjax.php';
 require_once 'Numbers/Words.php';
-require_once 'Store/StoreMessageDisplay.php';
 
 /**
  *
@@ -71,7 +71,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 
 		$this->cart_ui->init();
 
-		$this->message_display = new StoreMessageDisplay();
+		$this->message_display = new SwatMessageDisplay();
 		$this->message_display->id = 'cart_message_display';
 		$this->message_display->init();
 	}
@@ -318,9 +318,9 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 			if ($widget->hasBeenClicked()) {
 				$this->item_removed = true;
 				$this->app->cart->checkout->removeEntryById($id);
-				$this->message_display->add(new StoreMessage(
+				$this->message_display->add(new SwatMessage(
 					Store::_('An item has been removed from your shopping '.
-					'cart.'), StoreMessage::CART_NOTIFICATION));
+					'cart.'), 'cart');
 
 				break;
 			}
@@ -362,8 +362,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 
 		$count = count($cart_view->model);
 		if ($count > 0) {
-			$message = new StoreMessage(null,
-				StoreMessage::CART_NOTIFICATION);
+			$message = new SwatMessage(null, 'cart');
 
 			$message->primary_content = Store::ngettext(
 				'The following item was added to your cart:',
@@ -387,9 +386,9 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 			$number = SwatString::minimizeEntities(ucwords(
 						Numbers_Words::toWords(count($this->items_saved))));
 
-			$message = new StoreMessage(
+			$message = new SwatMessage(
 				sprintf('%s %s has been saved for later.', $number, $items),
-				StoreMessage::CART_NOTIFICATION);
+				'cart');
 
 			$this->message_display->add($message);
 		}

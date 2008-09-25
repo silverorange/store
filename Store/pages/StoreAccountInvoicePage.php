@@ -103,9 +103,9 @@ class StoreAccountInvoicePage extends SiteAccountPage
 			$this->invoice->id;
 
 		if ($this->app->cart->checkout->getEntryCount() > 0) {
-			$cart_message = new StoreMessage(Store::_(
+			$cart_message = new SwatMessage(Store::_(
 				'Items in your shopping cart will <em>not</em> be included '.
-				'in this order.'), StoreMessage::CART_NOTIFICATION);
+				'in this order.'), 'cart');
 
 			$cart_message->content_type = 'text/xml';
 			$cart_message->secondary_content = Store::_(
