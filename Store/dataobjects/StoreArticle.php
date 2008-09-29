@@ -154,9 +154,19 @@ class StoreArticle extends SiteArticle
 				inner join ArticleCategoryBinding
 					on Category.id = ArticleCategoryBinding.category
 						and ArticleCategoryBinding.article = %s
+			where Category.id in
+				(select Category from VisibleCategoryView
+				where region = %s or region is null)
 			order by Category.displayorder asc';
 
-		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+		if ($this->region === null)
+			throw new StoreException('Region not set on article dataobject; '.
+				'call the setRegion() method.');
+
+		$sql = sprintf($sql,
+			$this->db->quote($this->id, 'integer'),
+			$this->db->quote($this->region->id, 'integer'));
+
 		$wrapper = SwatDBClassMap::get('StoreCategoryWrapper');
 		return SwatDB::query($this->db, $sql, $wrapper);
 	}
