@@ -173,8 +173,7 @@ class StoreProductPage extends StorePage
 
 		if ($this->items_view->hasMessage()) {
 			$message = new SwatMessage(Store::_('There is a problem with '.
-				'one or more of the items you requested.'),
-				SwatMessage::ERROR);
+				'one or more of the items you requested.'), 'error');
 
 			$message->secondary_content = Store::_('Please address the '.
 				'fields highlighted below and re-submit the form.');
@@ -187,8 +186,7 @@ class StoreProductPage extends StorePage
 
 			if (count($this->items_added) > 0) {
 				$this->cart_message = new SwatMessage(
-					Store::_('Your cart has been updated.'),
-					'swat');
+					Store::_('Your cart has been updated.'), 'cart');
 			}
 
 			// add cart messages
@@ -267,6 +265,7 @@ class StoreProductPage extends StorePage
 				$this->message_display->add(new SwatMessage(
 					Store::_('An item has been removed from your cart.'),
 						'cart'));
+
 				break;
 			}
 		}
@@ -342,9 +341,7 @@ class StoreProductPage extends StorePage
 
 		if ($count > 0) {
 			if ($this->cart_message === null) {
-				$this->cart_message = new SwatMessage(null,
-					'cart');
-
+				$this->cart_message = new SwatMessage(null, 'cart');
 				$this->cart_message->primary_content = Store::ngettext(
 					'The following item on this page is in your cart:',
 					'The following items on this page are in your cart:',
