@@ -160,8 +160,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 					$item_id = $this->getItemId($sku);
 					if ($item_id === null) {
 						$message = new SwatMessage(sprintf(Store::_(
-							'“%s” is not an available %%s.'),
-							$sku), SwatMessage::ERROR);
+							'“%s” is not an available %%s.'), $sku), 'error');
 
 						$sku_widget->addMessage($message);
 					}
@@ -180,8 +179,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 
 			if ($form->hasMessage()) {
 				$message = new SwatMessage(Store::_('There is a problem with '.
-					'one or more of the items you requested.'),
-					SwatMessage::ERROR);
+					'one or more of the items you requested.'), 'error');
 
 				$message->secondary_content = Store::_('Please address the '.
 					'fields highlighted below and re-submit the form.');
@@ -318,9 +316,9 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 			if ($widget->hasBeenClicked()) {
 				$this->item_removed = true;
 				$this->app->cart->checkout->removeEntryById($id);
-				$this->message_display->add(new SwatMessage(
-					Store::_('An item has been removed from your shopping '.
-					'cart.'), 'cart');
+				$this->message_display->add(new SwatMessage(Store::_(
+					'An item has been removed from your shopping cart.'),
+					'cart'));
 
 				break;
 			}
@@ -363,7 +361,6 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 		$count = count($cart_view->model);
 		if ($count > 0) {
 			$message = new SwatMessage(null, 'cart');
-
 			$message->primary_content = Store::ngettext(
 				'The following item was added to your cart:',
 				'The following items were added to your cart:',
