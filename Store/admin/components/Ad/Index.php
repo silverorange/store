@@ -32,7 +32,7 @@ class StoreAdIndex extends SiteAdIndex
 	{
 		$sql = sprintf('select Ad.*,
 				coalesce(OrderCountByAdView.order_count, 0) as order_count,
-				cast(OrderCountByAdView.conversion_rate as numeric(5, 2))
+				OrderCountByAdView.conversion_rate
 			from Ad
 				left outer join OrderCountByAdView on
 					OrderCountByAdView.ad = Ad.id
