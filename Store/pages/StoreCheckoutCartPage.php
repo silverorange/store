@@ -314,7 +314,7 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 				'One item has been removed from shopping cart.',
 				'%s items have been removed form shopping cart.',
 				$num_entries_removed),
-				SwatString::numberFormat($num_entries_removed)), 'cart');
+				SwatString::numberFormat($num_entries_removed)), 'cart'));
 		}
 
 		if ($num_entries_moved > 0) {
