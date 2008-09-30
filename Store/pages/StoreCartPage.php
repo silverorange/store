@@ -181,9 +181,12 @@ class StoreCartPage extends SiteArticlePage
 				'cart'));
 
 		if ($num_entries_moved > 0) {
-			$moved_message = new SwatMessage(
-				Store::_('One item has been saved for later.'),
-				cart);
+			$moved_message = new SwatMessage(sprintf(Store::ngettext(
+				'One item has been saved for later.',
+				'%s items have been saved for later.',
+				$num_entries_updated),
+				SwatString::numberFormat($num_entries_moved)),
+				'cart');
 
 			$moved_message->content_type = 'text/xml';
 
