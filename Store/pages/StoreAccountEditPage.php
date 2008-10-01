@@ -4,17 +4,16 @@ require_once 'Site/pages/SiteAccountEditPage.php';
 
 /**
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2008 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountEditPage extends SiteAccountEditPage
 {
-	// {{{ public function __construct()
+	// {{{ protected function getUiXml()
 
-	public function __construct(SiteAbstractPage $page)
+	protected function getUiXml()
 	{
-		parent::__construct($page);
-		$this->ui_xml = dirname(__FILE__).'/account-edit.xml';
+		return 'Store/pages/account-edit.xml';
 	}
 
 	// }}}
@@ -22,25 +21,27 @@ class StoreAccountEditPage extends SiteAccountEditPage
 	// process phase
 	// {{{ protected function updateAccount()
 
-	protected function updateAccount(StoreAccount $account)
+	protected function updateAccount(SwatForm $form)
 	{
-		parent::updateAccount($account);
-
-		$account->phone = $this->ui->getWidget('phone')->value;
-		$account->company = $this->ui->getWidget('company')->value;
+		parent::updateAccount($form);
+		$this->assignUiValuesToObject($this->account, array(
+			'phone',
+			'company',
+		));
 	}
 
 	// }}}
 
 	// build phase
-	// {{{ protected function setWidgetValues()
+	// {{{ protected function load()
 
-	protected function setWidgetValues(StoreAccount $account)
+	protected function load(SwatForm $form)
 	{
-		parent::setWidgetValues($account);
-
-		$this->ui->getWidget('phone')->value = $account->phone;
-		$this->ui->getWidget('company')->value = $account->company;
+		parent::load($form);
+		$this->assignObjectValuesToUi($this->account, array(
+			'phone',
+			'company',
+		));
 	}
 
 	// }}}
