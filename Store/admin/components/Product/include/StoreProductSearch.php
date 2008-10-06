@@ -182,7 +182,7 @@ class StoreProductSearch
 			$where.= ' and Product.id not in (
 				select product from CategoryProductBinding)';
 		} else {
-			$clause = new AdminSearchClause('category');
+			$clause = new AdminSearchClause('integer:category');
 			$clause->value = $category;
 			$clause->table = 'category_descendants';
 			$category_descendant_where = $clause->getClause($this->db, '');
