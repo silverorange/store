@@ -67,7 +67,8 @@ class StoreCategoryNotVisiblePage extends StoreNotVisiblePage
 
 	protected function buildNavBar()
 	{
-		$this->layout->navbar->createEntry('Store', 'store');
+		if (isset($this->layout->navbar))
+			$this->layout->navbar->createEntry('Store', 'store');
 
 		parent::buildNavBar('store');
 	}

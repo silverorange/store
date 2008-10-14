@@ -71,6 +71,9 @@ abstract class StoreNotVisiblePage extends StorePage
 
 	protected function buildNavBar($link_prefix = '')
 	{
+		if (!isset($this->layout->navbar))
+			return;
+
 		if ($link_prefix !== '')
 			$link_prefix = $link_prefix.'/';
 
