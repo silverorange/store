@@ -17,7 +17,7 @@ abstract class StoreCheckoutStepPage extends StoreCheckoutUIPage
 	// }}}
 	// {{{ public function registerEmbeddedEditPage()
 
-	public function registerEmbeddedEditPage($page)
+	public function registerEmbeddedEditPage(SiteAbstractPage $page)
 	{
 		$this->embedded_edit_pages[] = $page;
 	}
