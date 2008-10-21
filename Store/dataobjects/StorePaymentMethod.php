@@ -94,7 +94,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	// {{{ protected properties
 
 	/**
-	 * The GPG id used to encrypt card numbers for this payment method
+	 * The GPG key id used to encrypt card numbers for this payment method
 	 *
 	 * Subclasses should set this value in their
 	 * {@link StorePaymentMethod::init()} or
@@ -122,6 +122,16 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	 */
 	protected $unencrypted_card_number = '';
 
+	/**
+	 * The GPG object used to encrypt and decrypt card numbers
+	 *
+	 * @var Crypt_GPG
+	 *
+	 * @see StorePaymentMethod::getGPG()
+	 * @see StorePaymentMethod::setGPG()
+	 */
+	protected $gpg = null;
+
 	// }}}
 	// {{{ public function setCardNumber()
 
@@ -131,9 +141,9 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	 * When setting the card number, use this method rather than modifying
 	 * the public {@link StorePaymentMethod::$card_number} property.
 	 *
-	 * Card numbers are stored encrypted. There is no way to retrieve the actual
-	 * card number after setting it without knowing the GPG private key needed
-	 * to decrypt the card number.
+	 * Card numbers are stored encrypted. There is no way to retrieve the
+	 * actual card number after setting it without knowing the GPG private key
+	 * needed to decrypt the card number.
 	 *
 	 * @param string $number the new card number.
 	 * @param boolean $store_unencrypted optional flag to store an uncrypted
@@ -153,26 +163,37 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	{
 		$this->card_number_preview = substr($number, -4);
 
-		if ($this->gpg_id !== null)
-			$this->card_number =
-				self::encryptCardNumber($number, $this->gpg_id);
+		if ($this->gpg_id !== null) {
+			$gpg = $this->getGPG();
+			$this->card_number = self::encryptCardNumber($gpg, $number,
+				$this->gpg_id);
+		}
 
-		if ($store_unencrypted)
+		if ($store_unencrypted) {
 			$this->unencrypted_card_number = (string)$number;
+		}
 	}
 
 	// }}}
 	// {{{ public function getCardNumber()
 
-	public function getCardNumber(Crypt_GPG $gpg, $passphrase)
+	/**
+	 * @param $passphrase the passphrase required for decrypting the card
+	 *                     number.
+	 *
+	 * @return string the unencrypted card number
+	 *
+	 * @sensitive $passphrase
+	 */
+	public function getCardNumber($passphrase)
 	{
-		$card_number = $this->card_number;
+		if ($this->card_number !== null) {
+			$gpg = $this->getGPG();
+			$number = self::decryptCardNumber($gpg, $this->card_number,
+				$this->gpg_id, $passphrase);
+		}
 
-		if ($card_number !== null)
-			$card_number = self::decryptCardNumber(
-				$card_number, $gpg, $passphrase);
-
-		return $card_number;
+		return $number;
 	}
 
 	// }}}
@@ -235,13 +256,11 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	 *
 	 * @param boolean $display_details optional. Include additional details
 	 *                                  for card-type payment methods.
-	 * @param Crypt_GPG $gpg
 	 * @param string $passphrase
 	 *
 	 * @sensitive $passphrase
 	 */
-	public function display($display_details = true, Crypt_GPG $gpg = null,
-		$passphrase = null)
+	public function display($display_details = true, $passphrase = null)
 	{
 		$span_tag = new SwatHtmlTag('span');
 		$span_tag->class = 'store-payment-method';
@@ -250,9 +269,9 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		echo SwatString::minimizeEntities($this->payment_type->title);
 
 		$display_card = false;
-		if ($gpg !== null && $passphrase !== null) {
+		if ($this->gpg_id !== null && $passphrase !== null) {
 			$display_card = true;
-			$card_number = $this->getCardNumber($gpg, $passphrase);
+			$card_number = $this->getCardNumber($this->gpg_id, $passphrase);
 			$span_tag->setContent(StorePaymentType::formatCardNumber(
 				$card_number));
 
@@ -360,31 +379,60 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function setGPG()
+
+	public function setGPG(Crypt_GPG $gpg)
+	{
+		$this->gpg = $gpg;
+	}
+
+	// }}}
 	// {{{ public static function encryptCardNumber()
 
 	/**
 	 * Encrypts a card number using GPG encryption
 	 *
+	 * @param Crypt_GPG $gpg the GPG object with which to encrypt.
 	 * @param string $number the card number to encrypt.
-	 * @param string $gpg_id the GPG id to encrypt with.
+	 * @param string $key_id the key id to encrypt with.
 	 *
 	 * @return string the encrypted card number.
 	 *
 	 * @sensitive $number
 	 */
-	public static function encryptCardNumber($number, $gpg_id)
+	public static function encryptCardNumber(Crypt_GPG $gpg, $number, $key_id)
 	{
-		$gpg = Crypt_GPG::factory('php');
-		return $gpg->encrypt($gpg_id, $number);
+		$gpg->clearEncryptKeys();
+		$gpg->addEncryptKey($key_id);
+		$encrypted_card_number = $gpg->encrypt($number);
+		$gpg->clearEncryptKeys();
+
+		return $encrypted_card_number;
 	}
 
 	// }}}
 	// {{{ public static function decryptCardNumber()
 
-	public static function decryptCardNumber($encrypted_number,
-		Crypt_GPG $gpg, $passphrase)
+	/**
+	 * Decrypts a card number using GPG decryption
+	 *
+	 * @param Crypt_GPG $gpg the GPG object with which to decrypt.
+	 * @param string $encrypted_number the card number to decrypt.
+	 * @param string $key_id the key id to decrypt with.
+	 * @param string $passphrase the passphrase of the private key.
+	 *
+	 * @return string the decrypted card number.
+	 *
+	 * @sensitive $passphrase
+	 */
+	public static function decryptCardNumber(Crypt_GPG $gpg, $encrypted_number,
+		$key_id, $passphrase)
 	{
-		$decrypted_data = $gpg->decrypt($encrypted_number, $passphrase);
+		$gpg->clearDecryptKeys();
+		$gpg->addDecryptKey($key_id, $passphrase);
+		$decrypted_data = $gpg->decrypt($encrypted_number);
+		$gpg->clearDecryptKeys();
+
 		return $decrypted_data;
 	}
 
@@ -410,6 +458,18 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		$properties[] = 'card_verification_value';
 		$properties[] = 'unencrypted_card_number';
 		return $properties;
+	}
+
+	// }}}
+	// {{{ protected function getGPG()
+
+	protected function getGPG()
+	{
+		if (!($this->gpg instanceof Crypt_GPG)) {
+			$this->gpg = new Crypt_GPG();
+		}
+
+		return $this->gpg;
 	}
 
 	// }}}
