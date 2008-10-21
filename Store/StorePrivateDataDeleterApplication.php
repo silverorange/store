@@ -34,11 +34,6 @@ class StorePrivateDataDeleterApplication extends SiteCommandLineApplication
 	/**
 	 * @var boolean
 	 */
-	protected $debug = false;
-
-	/**
-	 * @var boolean
-	 */
 	protected $dry_run = false;
 
 	// }}}
@@ -90,16 +85,20 @@ class StorePrivateDataDeleterApplication extends SiteCommandLineApplication
 	{
 		$this->parseCommandLineArguments();
 		$this->initModules();
-		if ($this->dry_run)
-			$this->debug("Dry Run: ".
-				"No data will actually be deleted.\n");
 
-		foreach ($this->deleters as $deleter)
+		if ($this->dry_run) {
+			$this->debug(
+				Store::_("Dry Run. No data will actually be deleted.\n"));
+		}
+
+		foreach ($this->deleters as $deleter) {
 			$deleter->run();
+		}
 
-		if ($this->dry_run)
-			$this->debug("\nDry Run: ".
-				"No data was actually deleted.\n\n");
+		if ($this->dry_run) {
+			$this->debug(
+				Store::_("\nDry Run. No data was actually deleted.\n\n"));
+		}
 	}
 
 	// }}}
@@ -107,7 +106,11 @@ class StorePrivateDataDeleterApplication extends SiteCommandLineApplication
 
 	public function setDebug($debug)
 	{
-		$this->debug = (boolean)$debug;
+		$verbosity = ($debug) ?
+			SiteCommandLineApplication::VERBOSITY_ALL :
+			SiteCommandLineApplication::VERBOSITY_NONE;
+
+		$this->setVerbosity($verbosity);
 	}
 
 	// }}}
@@ -138,10 +141,19 @@ class StorePrivateDataDeleterApplication extends SiteCommandLineApplication
 	// }}}
 	// {{{ public function debug()
 
-	public function debug($string)
+	/**
+	 * Displays debug output
+	 *
+	 * This method is made public so individual deleters can use it.
+	 *
+	 * @param string $string the string to display.
+	 * @param boolean $bold optional. Whether or not to display the string
+	 *                       using a bold font on supported terminals. Defaults
+	 *                       to false.
+	 */
+	public function debug($string, $bold = false)
 	{
-		if ($this->debug)
-			echo $string;
+		parent::debug($string, $bold);
 	}
 
 	// }}}

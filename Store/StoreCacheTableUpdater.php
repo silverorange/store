@@ -18,42 +18,6 @@ require_once 'Store/StoreCommandLineConfigModule.php';
  */
 class StoreCacheTableUpdater extends SiteCommandLineApplication
 {
-	// {{{ class constants
-
-	/**
-	 * Verbosity level for showing nothing.
-	 */
-	const VERBOSITY_NONE = 0;
-
-	/**
-	 * Verbosity level for showing errors.
-	 */
-	const VERBOSITY_ERRORS = 1;
-
-	/**
-	 * Verbosity level for showing normal messages.
-	 */
-	const VERBOSITY_MESSAGES = 2;
-
-	// }}}
-	// {{{ public function __construct()
-
-	public function __construct($id, $config_filename, $title, $documentation)
-	{
-		parent::__construct($id, $config_filename, $title, $documentation);
-
-		$verbosity = new SiteCommandLineArgument(array('-v', '--verbose'),
-			'setVerbosity', 'Sets the level of verbosity of the updater. '.
-			'Pass 0 to turn off all output.');
-
-		$verbosity->addParameter('integer',
-			'--verbose expects a level between 0 and 2.',
-			self::VERBOSITY_MESSAGES);
-
-		$this->addCommandLineArgument($verbosity);
-	}
-
-	// }}}
 	// {{{ public function run()
 
 	public function run()
@@ -61,14 +25,12 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
 		$this->initModules();
 		$this->parseCommandLineArguments();
 
-		$this->output(Store::_('Pass 1/2:')."\n\n",
-			self::VERBOSITY_MESSAGES, true);
+		$this->debug(Store::_('Pass 1/2:')."\n\n", true);
 
 		$this->updateCacheTables();
 
 		// run twice to handle two-level dependencies
-		$this->output("\n".Store::_('Pass 2/2:')."\n\n",
-			self::VERBOSITY_MESSAGES, true);
+		$this->debug("\n".Store::_('Pass 2/2:')."\n\n", true);
 
 		$this->updateCacheTables();
 	}
@@ -82,12 +44,12 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
 		$tables = SwatDB::query($this->db, $sql);
 		$total = count($tables);
 		if ($total > 0) {
-			$this->output(sprintf(Store::_('Found %s dirty cache tables:')."\n",
-				$total), self::VERBOSITY_MESSAGES);
+			$this->debug(sprintf(Store::_('Found %s dirty cache tables:')."\n",
+				$total));
 
 			foreach ($tables as $row) {
-				$this->output(sprintf('=> '.Store::_('updating %s ... '),
-					$row->shortname), self::VERBOSITY_MESSAGES);
+				$this->debug(sprintf('=> '.Store::_('updating %s ... '),
+					$row->shortname));
 
 				$update_function =
 					$this->getCacheTableUpdateFunction($row->shortname);
@@ -95,13 +57,12 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
 				$sql = sprintf('select * from %s()', $update_function);
 				SwatDB::exec($this->db, $sql);
 
-				$this->output(Store::_('done')."\n", self::VERBOSITY_MESSAGES);
+				$this->debug(Store::_('done')."\n");
 			}
 
-			$this->output(Store::_('Done.')."\n", self::VERBOSITY_MESSAGES);
+			$this->debug(Store::_('Done.')."\n");
 		} else {
-			$this->output(Store::_('No dirty cache tables found.')."\n",
-				self::VERBOSITY_MESSAGES);
+			$this->debug(Store::_('No dirty cache tables found.')."\n");
 		}
 	}
 
@@ -131,11 +92,9 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
 
 		default:
 			$this->terminate(sprintf(
-				Store::_('Unknown dirty cache table %s.')."\n",
-				$table_name), self::VERBOSITY_ERRORS);
+				Store::_('Unknown dirty cache table %s.')."\n", $table_name);
 
 			break;
-
 		}
 
 		return $update_function;

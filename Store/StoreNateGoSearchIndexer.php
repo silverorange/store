@@ -11,7 +11,7 @@ require_once 'Store/pages/StoreSearchPage.php';
  * Subclasses may change how and what gets indexed.
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2008 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
@@ -69,8 +69,7 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 	 */
 	protected function queueProducts()
 	{
-		$this->output(Store::_('Repopulating product search queue ... '),
-			self::VERBOSITY_ALL);
+		$this->debug(Store::_('Repopulating product search queue ... '));
 
 		$type = NateGoSearch::getDocumentType($this->db, 'product');
 
@@ -88,7 +87,7 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 
 		SwatDB::exec($this->db, $sql);
 
-		$this->output(Store::_('done')."\n", self::VERBOSITY_ALL);
+		$this->debug(Store::_('done')."\n");
 	}
 
 	// }}}
@@ -99,8 +98,7 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 	 */
 	protected function queueCategories()
 	{
-		$this->output(Store::_('Repopulating category search queue ... '),
-			self::VERBOSITY_ALL);
+		$this->debug(Store::_('Repopulating category search queue ... '));
 
 		$type = NateGoSearch::getDocumentType($this->db, 'category');
 
@@ -118,7 +116,7 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 
 		SwatDB::exec($this->db, $sql);
 
-		$this->output(Store::_('done')."\n", self::VERBOSITY_ALL);
+		$this->debug(Store::_('done')."\n");
 	}
 
 	// }}}
@@ -154,8 +152,7 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 				and NateGoSearchQueue.document_type = %s',
 			$this->db->quote($type, 'integer'));
 
-		$this->output(Store::_('Indexing categories ... ').'   ',
-			self::VERBOSITY_ALL);
+		$this->debug(Store::_('Indexing categories ... ').'   ');
 
 		$categories = SwatDB::query($this->db, $sql);
 		$total = count($categories);
@@ -164,9 +161,8 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 
 			if ($count % 10 == 0) {
 				$indexer->commit();
-				$this->output(str_repeat(chr(8), 3), self::VERBOSITY_ALL);
-				$this->output(sprintf('%2d%%', ($count / $total) * 100),
-					self::VERBOSITY_ALL);
+				$this->debug(str_repeat(chr(8), 3));
+				$this->debug(sprintf('%2d%%', ($count / $total) * 100));
 			}
 
 			$document = new NateGoSearchDocument($category, 'id');
@@ -175,8 +171,7 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 			$count++;
 		}
 
-		$this->output(str_repeat(chr(8), 3).Store::_('done')."\n",
-			self::VERBOSITY_ALL);
+		$this->debug(str_repeat(chr(8), 3).Store::_('done')."\n");
 
 		$indexer->commit();
 		unset($indexer);
@@ -225,8 +220,7 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 			order by Product.id',
 			$this->db->quote($type, 'integer'));
 
-		$this->output(Store::_('Indexing products ... ').'   ',
-			self::VERBOSITY_ALL);
+		$this->debug(Store::_('Indexing products ... ').'   ');
 
 		$products = SwatDB::query($this->db, $sql);
 		$total = count($products);
@@ -237,9 +231,8 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 			if ($count % 10 == 0) {
 				$product_indexer->commit();
 				$item_indexer->commit();
-				$this->output(str_repeat(chr(8), 3), self::VERBOSITY_ALL);
-				$this->output(sprintf('%2d%%', ($count / $total) * 100),
-					self::VERBOSITY_ALL);
+				$this->debug(str_repeat(chr(8), 3));
+				$this->debug(sprintf('%2d%%', ($count / $total) * 100));
 			}
 
 			$document = new NateGoSearchDocument($product, 'id');
@@ -255,8 +248,7 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 			$count++;
 		}
 
-		$this->output(str_repeat(chr(8), 3).Store::_('done')."\n",
-			self::VERBOSITY_ALL);
+		$this->debug(str_repeat(chr(8), 3).Store::_('done')."\n");
 
 		$product_indexer->commit();
 		$item_indexer->commit();

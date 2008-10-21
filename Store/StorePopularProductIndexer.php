@@ -17,19 +17,6 @@ require_once 'SwatDB/SwatDB.php';
  */
 class StorePopularProductIndexer extends SiteCommandLineApplication
 {
-	// {{{ class constants
-
-	/**
-	 * Verbosity level for showing nothing.
-	 */
-	const VERBOSITY_NONE = 0;
-
-	/**
-	 * Verbosity level for showing all indexing actions
-	 */
-	const VERBOSITY_ALL = 1;
-
-	// }}}
 	// {{{ public properties
 
 	/**
@@ -51,19 +38,11 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 	{
 		parent::__construct($id, $title, $documentation);
 
-		$verbosity = new SiteCommandLineArgument(array('-v', '--verbose'),
-			'setVerbosity', 'Sets the level of verbosity of the indexer. '.
-			'Pass 0 to turn off all output.');
+		$all = new SiteCommandLineArgument(
+			array('-A', '--all'), 'reindex',
+			Store::_('Re-indexes all orders rather than just updating '.
+				'indexes for new orders.'));
 
-		$verbosity->addParameter('integer',
-			'--verbose expects a level between 0 and 1.',
-			self::VERBOSITY_ALL);
-
-		$all = new SiteCommandLineArgument(array('-A', '--all'),
-			'reindex', 'Re-indexes all orders rather than just '.
-			'updating indexes for new orders ');
-
-		$this->addCommandLineArgument($verbosity);
 		$this->addCommandLineArgument($all);
 	}
 
@@ -82,8 +61,7 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 
 	public function reindex()
 	{
-		$this->output(Store::_('Reindexing all orders ... '),
-			self::VERBOSITY_ALL);
+		$this->debug(Store::_('Reindexing all orders ... '));
 
 		SwatDB::exec($this->db, 'truncate ProductPopularProductBinding');
 		SwatDB::exec($this->db, sprintf('update Orders set
@@ -140,14 +118,12 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 		$total_orders = count($orders);
 		$count = 0;
 
-		$this->output(Store::_('Indexing orders ... ').'   ',
-			self::VERBOSITY_ALL);
+		$this->debug(Store::_('Indexing orders ... ').'   ');
 
 		foreach ($orders as $order) {
 			if ($count % 10 == 0) {
-				$this->output(str_repeat(chr(8), 3), self::VERBOSITY_ALL);
-				$this->output(sprintf('%2d%%', ($count / $total_orders) * 100),
-					self::VERBOSITY_ALL);
+				$this->debug(str_repeat(chr(8), 3));
+				$this->debug(sprintf('%2d%%', ($count / $total_orders) * 100));
 			}
 
 			$products_inserted = array();
@@ -169,6 +145,9 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 
 			$count++;
 		}
+
+		$this->debug(str_repeat(chr(8), 3));
+		$this->debug(Store::_('done')."\n\n");
 	}
 
 	// }}}
@@ -231,14 +210,17 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 	 */
 	protected function getOrders()
 	{
-		$this->output(Store::_('Querying orders ... ').'   ',
-			self::VERBOSITY_ALL);
+		$this->debug(Store::_('Querying orders ... '));
 
 		$sql = sprintf('select Orders.id from Orders
-				where Orders.popular_products_processed = %s',
+			where Orders.popular_products_processed = %s',
 			$this->db->quote(false, 'boolean'));
 
-		return SwatDB::query($this->db, $sql);
+		$orders = SwatDB::query($this->db, $sql);
+
+		$this->debug(Store::_('done')."\n\n");
+
+		return $orders;
 	}
 
 	// }}}
