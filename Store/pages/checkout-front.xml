@@ -38,7 +38,7 @@
 		</widget>
 		<widget class="SwatForm" id="login_form">
 			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Email Address</property>
+				<property name="title" translatable="yes">Email</property>
 				<widget class="SwatEmailEntry" id="email_address">
 					<property name="maxlength" type="integer">255</property>
 				</widget>
