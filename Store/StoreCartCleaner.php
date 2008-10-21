@@ -23,47 +23,6 @@ require_once 'SwatDB/SwatDB.php';
  */
 class StoreCartCleaner extends SiteCommandLineApplication
 {
-	// {{{ class constants
-
-	/**
-	 * Verbosity level for showing nothing.
-	 */
-	const VERBOSITY_NONE = 0;
-
-	/**
-	 * Verbosity level for showing errors.
-	 */
-	const VERBOSITY_ERRORS = 1;
-
-	/**
-	 * Verbosity level for showing normal messages.
-	 */
-	const VERBOSITY_MESSAGES = 2;
-
-	/**
-	 * Verbosity level for showing all output.
-	 */
-	const VERBOSITY_ALL = 3;
-
-	// }}}
-	// {{{ public function __construct()
-
-	public function __construct($id, $config_filename, $title, $documentation)
-	{
-		parent::__construct($id, $config_filename, $title, $documentation);
-
-		$verbosity = new SiteCommandLineArgument(array('-v', '--verbose'),
-			'setVerbosity', 'Sets the level of verbosity of the cleaner. '.
-			'Pass 0 to turn off all output.');
-
-		$verbosity->addParameter('integer',
-			'--verbose expects a level between 0 and 3.',
-			self::VERBOSITY_ALL);
-
-		$this->addCommandLineArgument($verbosity);
-	}
-
-	// }}}
 	// {{{ public function init()
 
 	public function init()
@@ -81,35 +40,29 @@ class StoreCartCleaner extends SiteCommandLineApplication
 		$this->parseCommandLineArguments();
 
 		if (strpos($this->session->getSavePath(), ';') !== false) {
-			$this->output("Cannot automatically clean cart entries " .
-				"when using multiple levels of session files. See " .
-				"session.save_path documentation.\n",
-				self::VERBOSITY_ERRORS);
-
-			exit(1);
+			$this->terminate(Store::_("Cannot automatically clean cart " .
+				"entries when using multiple levels of session files. See " .
+				"session.save_path documentation.\n"));
 		}
 
 		if (ini_get('session.save_handler') !== 'files') {
-			$this->output("Cannot automatically clean cart entries " .
-				"when not using the files session backend. See " .
-				"session.save_handler documentation.\n",
-				self::VERBOSITY_ERRORS);
-
-			exit(1);
+			$this->terminate(Store::_("Cannot automatically clean cart " .
+				"entries when not using the files session backend. See " .
+				"session.save_handler documentation.\n"));
 		}
 
-		$this->output("Finding expired sessions:\n", self::VERBOSITY_MESSAGES);
+		$this->debug(Store::_("Finding expired sessions:\n"));
 		$expired_sessions = array();
 		foreach ($this->getSessionIds() as $session_id) {
 			if (!$this->validateSessionId($session_id)) {
-				$this->output("=> session {$session_id} is expired\n",
-					self::VERBOSITY_ALL);
+				$this->debug('=> '.sprintf(Store::_("session %s is expired\n"),
+					$session_id));
 
 				$expired_sessions[] = $session_id;
 			}
 		}
-		$this->output(sprintf("Found %s expired sessions.\n\n",
-			count($expired_sessions)), self::VERBOSITY_MESSAGES);
+		$this->debug(sprintf(Store::_("Found %s expired sessions.\n\n"),
+			count($expired_sessions)));
 
 		$expired_sessions_sql =
 			$this->db->datatype->implodeArray($expired_sessions, 'text');
@@ -119,8 +72,8 @@ class StoreCartCleaner extends SiteCommandLineApplication
 			$expired_sessions_sql);
 
 		$total = SwatDB::queryOne($this->db, $sql);
-		$this->output(sprintf("Deleting %s expired cart entries ... ",
-			$total), self::VERBOSITY_MESSAGES);
+		$this->debug(sprintf(Store::_("Deleting %s expired cart entries ... "),
+			$total));
 
 		$sql = sprintf('delete from CartEntry
 			where sessionid in (%s)',
@@ -128,7 +81,7 @@ class StoreCartCleaner extends SiteCommandLineApplication
 
 		SwatDB::exec($this->db, $sql);
 
-		$this->output("done\n", self::VERBOSITY_MESSAGES);
+		$this->debug(Store::_("done\n"));
 	}
 
 	// }}}

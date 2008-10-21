@@ -22,48 +22,23 @@ abstract class StoreFroogleUploader extends SiteCommandLineApplication
 	private $display = false;
 
 	// }}}
-	// {{{ class constants
-
-	/**
-	 * Verbosity level for showing nothing.
-	 */
-	const VERBOSITY_NONE   = 0;
-
-	/**
-	 * Verbosity level for showing errors.
-	 */
-	const VERBOSITY_ERRORS = 1;
-
-	/**
-	 * Verbosity level for all messages.
-	 */
-	const VERBOSITY_ALL    = 2;
-
-	// }}}
 	// {{{ public function __construct()
 
 	public function __construct($id, $filename, $title, $documentation)
 	{
 		parent::__construct($id, $filename, $title, $documentation);
 
-		$verbosity = new SiteCommandLineArgument(array('-v', '--verbose'),
-			'setVerbosity', 'Sets the level of verbosity of the uploader. '.
-			'Pass 0 to turn off all output. The --display option is not '.
-			'affected by this option.');
-
-		$verbosity->addParameter('integer',
-			'--verbose expects a level between 0 and 2.',
-			self::VERBOSITY_ALL);
-
-		$this->addCommandLineArgument($verbosity);
-
-		$display = new SiteCommandLineArgument(array('-d', '--display'),
-			'setDisplay', 'Display the generated XML.');
+		// add display argument
+		$display = new SiteCommandLineArgument(
+			array('-d', '--display'), 'setDisplay',
+			Store::('Display the generated XML.'));
 
 		$this->addCommandLineArgument($display);
 
-		$no_upload = new SiteCommandLineArgument(array('-n', '--no-upload'),
-			'setNoUpload', 'Do not upload the generated XML to Google.');
+		// add no-upload argument
+		$no_upload = new SiteCommandLineArgument(
+			array('-n', '--no-upload'), 'setNoUpload',
+			Store::('Do not upload the generated XML to Google.'));
 
 		$this->addCommandLineArgument($no_upload);
 	}
@@ -104,29 +79,27 @@ abstract class StoreFroogleUploader extends SiteCommandLineApplication
 
 		$generator = $this->getGenerator();
 
-		$this->output(sprintf(
+		$this->debug(sprintf(
 			Store::_('Generating Froogle feed for %s')."\n",
-			$this->config->site->title), self::VERBOSITY_ALL);
+			$this->config->site->title));
 
  		$xml = $generator->generate();
 		$file = fopen($this->path.$filename, 'w');
  		fwrite($file, $xml);
 		fclose($file);
 
-		$this->output(Store::_('done')."\n\n", self::VERBOSITY_ALL);
+		$this->debug(Store::_('done')."\n\n");
 
 		if ($this->display) {
-			$this->output(Store::_('Generated XML:')."\n\n",
-				self::VERBOSITY_ALL);
+			$this->debug(Store::_('Generated XML:')."\n\n");
 
 			echo $xml;
 
-			$this->output("\n\n", self::VERBOSITY_ALL);
+			$this->debug("\n\n");
 		}
 
 		if ($this->upload) {
-			$this->output(Store::_('Logging into Froogle FTP ... '),
-				self::VERBOSITY_ALL);
+			$this->debug(Store::_('Logging into Froogle FTP ... '));
 
 			$ftp_connection = ftp_connect($this->config->froogle->server);
 			$login_result = ftp_login($ftp_connection,
@@ -134,29 +107,26 @@ abstract class StoreFroogleUploader extends SiteCommandLineApplication
 				$this->config->froogle->password);
 
 			if ($ftp_connection == null || $login_result == null) {
-				$this->terminate(Store::_('failed to log in')."\n\n",
-					self::VERBOSITY_ERRORS);
+				$this->terminate(Store::_('failed to log in')."\n\n");
 			} else {
-				$this->output(Store::_('done')."\n\n", self::VERBOSITY_ALL);
+				$this->debug(Store::_('done')."\n\n");
 			}
 
-			$this->output(Store::_('Uploading Froogle file ... '),
-				self::VERBOSITY_ALL);
+			$this->debug(Store::_('Uploading Froogle file ... '));
 
 			$upload_result = ftp_put($ftp_connection, $filename,
 				$this->path.$filename, FTP_BINARY);
 
 			if (!$upload_result) {
-				$this->terminate(Store::_('failed uploading')."\n",
-					self::VERBOSITY_ERRORS);
+				$this->terminate(Store::_('failed uploading')."\n");
 			} else {
-				$this->output(Store::_('done')."\n\n", self::VERBOSITY_ALL);
+				$this->debug(Store::_('done')."\n\n");
 			}
 
 			ftp_close($ftp_connection);
 		}
 
-		$this->output(Store::_('All done.')."\n", self::VERBOSITY_ALL);
+		$this->debug(Store::_('All done.')."\n");
 	}
 
 	// }}}
