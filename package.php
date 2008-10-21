@@ -58,7 +58,7 @@ $package->addPackageDepWithChannel('required', 'Site', 'pear.silverorange.com', 
 $package->addPackageDepWithChannel('required', 'Admin', 'pear.silverorange.com', '1.3.19');
 $package->addPackageDepWithChannel('required', 'XML_RPCAjax', 'pear.silverorange.com', '1.0.9');
 $package->addPackageDepWithChannel('required', 'Yui', 'pear.silverorange.com', '1.0.6');
-$package->addPackageDepWithChannel('required', 'Crypt_GPG', 'pear.php.net', '0.3.11');
+$package->addPackageDepWithChannel('required', 'Crypt_GPG', 'pear.php.net', '0.7.0');
 $package->addPackageDepWithChannel('required', 'Text_Password', 'pear.php.net', '1.1.0');
 $package->addPackageDepWithChannel('required', 'Validate_Finance_CreditCard', 'pear.php.net', '0.5.2');
 $package->addPackageDepWithChannel('required', 'Numbers_Words', 'pear.php.net', '0.15.0');
