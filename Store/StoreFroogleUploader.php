@@ -102,6 +102,12 @@ abstract class StoreFroogleUploader extends SiteCommandLineApplication
 			$this->debug(Store::_('Logging into Froogle FTP ... '));
 
 			$ftp_connection = ftp_connect($this->config->froogle->server);
+
+			if ($ftp_connection === false) {
+				throw new SwatException('Unable to connect to FTP server: '.
+					$this->config->froogle->server);
+			}
+
 			$login_result = ftp_login($ftp_connection,
 				$this->config->froogle->username,
 				$this->config->froogle->password);
