@@ -25,7 +25,7 @@
 						<property name="height" type="data">image_height</property>
 						<property name="link" type="data">product_link</property>
 					</object>
-					<object class="SwatLinkCellRenderer">
+					<object class="SwatLinkCellRenderer" id="product_title">
 						<property name="text" type="data">item.product.title</property>
 						<property name="link" type="data">product_link</property>
 					</object>
