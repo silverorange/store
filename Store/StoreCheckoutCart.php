@@ -73,7 +73,8 @@ abstract class StoreCheckoutCart extends StoreCart
 	 */
 	public function &getAvailableEntries()
 	{
-		return $this->getEntries();
+		$entries = $this->getEntries();
+		return $entries;
 	}
 
 	// }}}
