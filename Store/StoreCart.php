@@ -585,7 +585,7 @@ abstract class StoreCart extends SwatObject
 	/**
 	 * Adds a new entry to this cart
 	 *
-	 * This performs maintennance tasks required when adding an actual new
+	 * This performs maintenance tasks required when adding an actual new
 	 * entry object to this cart.
 	 *
 	 * @param StoreCartEntry $entry the entry to add.
