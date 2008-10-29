@@ -92,7 +92,7 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
 
 		default:
 			$this->terminate(sprintf(
-				Store::_('Unknown dirty cache table %s.')."\n", $table_name);
+				Store::_('Unknown dirty cache table %s.')."\n", $table_name));
 
 			break;
 		}
