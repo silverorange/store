@@ -254,10 +254,15 @@ class StoreCartEntry extends SwatDBDataObject
 	 */
 	public function compare(StoreCartEntry $entry)
 	{
-		if ($this->getItemId() === $entry->getItemId())
-			return 0;
+		$product_id1 = $this->item->product->id;
+		$product_id2 = $entry->item->product->id;
 
-		return ($this->getItemId() < $entry->getItemId()) ? -1 : 1;
+		if ($product_id1 != $product_id2)
+			return ($product_id1 < $product_id2) ? -1 : 1;
+		elseif ($this->getItemId() != $entry->getItemId())
+			return ($this->getItemId() < $entry->getItemId()) ? -1 : 1;
+
+		return 0;
 	}
 
 	// }}}
