@@ -104,10 +104,18 @@ class StoreCategoryPage extends StorePage
 
 	protected function buildPage()
 	{
+		$last_entry = $this->path->getLast();
+
 		$this->layout->startCapture('content');
-		$this->displayRelatedArticles($this->category);
-		$this->displayFeaturedProducts($this->category);
-		$this->displayPage();
+
+		if ($last_entry->twig) {
+			$this->displayTwigPage();
+		} else {
+			$this->displayRelatedArticles($this->category);
+			$this->displayFeaturedProducts($this->category);
+			$this->displayPage();
+		}
+
 		$this->layout->endCapture();
 	}
 
@@ -217,6 +225,58 @@ class StoreCategoryPage extends StorePage
 	}
 
 	// }}}
+	// {{{ protected function displayTwigPage()
+
+	protected function displayTwigPage()
+	{
+		$products = $this->getProductsByCategory();
+
+		$twig_has_products = isset($products[$this->category->id]);
+
+		if ($twig_has_products)
+			$this->displayProducts($products[$this->category->id]);
+
+		$sub_categories = $this->category->getVisibleSubCategories(
+			$this->app->getRegion());
+
+		if (count($sub_categories) == 0) {
+			return;
+		} elseif (!$twig_has_products && count($sub_categories) == 1) {
+			$link = $this->source.'/'.$sub_categories->getFirst()->shortname;
+			$this->app->relocate($link);
+		}
+
+		foreach ($sub_categories as $sub_category) {
+			if (array_key_exists($sub_category->id, $products) == true) {
+				$twig_category_div = new SwatHtmlTag('div');
+				$twig_category_div->class = 'category-twig';
+				$twig_category_div->open();
+
+				$title_header = new SwatHtmlTag('h3');
+				$title_header->id = $sub_category->shortname;
+				$title_header->class = 'category-twig-subtitle';
+				$title_header->setContent($sub_category->title);
+				$title_header->display();
+
+				if ($sub_category->bodytext != '') {
+					$twig_bodytext = new SwatHtmlTag('div');
+					$twig_bodytext->class = 'category-twig-bodytext';
+					$twig_bodytext->setContent(
+						SwatString::toXHTML($sub_category->bodytext),
+							'text/xml');
+
+					$twig_bodytext->display();
+				}
+
+				$path = $this->source.'/'.$sub_category->shortname;
+				$this->displayProducts($products[$sub_category->id], $path);
+
+				$twig_category_div->close();
+			}
+		}
+	}
+
+	// }}}
 	// {{{ protected function displayFeaturedProducts()
 
 	protected function displayFeaturedProducts(StoreCategory $category)
@@ -303,11 +363,31 @@ class StoreCategoryPage extends StorePage
 	{
 		$engine = $this->instantiateProductSearchEngine();
 		$engine->category = $this->category;
-		$engine->include_category_descendants = false;
 		$engine->addOrderByField('CategoryProductBinding.displayorder');
 		$engine->addOrderByField('is_available desc');
 
+		$last_entry = $this->path->getLast();
+		$engine->include_category_descendants = $last_entry->twig;
+
 		$products = $engine->search();
+
+		return $products;
+	}
+
+	// }}}
+	// {{{ protected function getProductsByCategory()
+
+	protected function getProductsByCategory()
+	{
+		$products = array();
+
+		foreach ($this->products as $product) {
+			$category_id = $product->getInternalValue('primary_category');
+			if (!array_key_exists($category_id, $products))
+				$products[$category_id] = array();
+
+			$products[$category_id][] = $product;
+		}
 
 		return $products;
 	}
