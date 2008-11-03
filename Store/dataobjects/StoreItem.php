@@ -387,12 +387,17 @@ class StoreItem extends SwatDBDataObject
 	/**
 	 * Gets the description for this item
 	 *
+	 * @param boolean $check_if_description_matches_title Whether to check
+	 *        product title and suppress it if it matches item description.
+	 *
 	 * @return string a description for this item.
 	 */
-	public function getDescription()
+	public function getDescription(
+		$check_if_description_matches_title = true)
 	{
-		return ($this->description == $this->product->title) ?
-			null : $this->description;
+		return ($check_if_description_matches_title &&
+			$this->description == $this->product->title) ?
+				null : $this->description;
 	}
 
 	// }}}
@@ -404,13 +409,18 @@ class StoreItem extends SwatDBDataObject
 	 * The array is indexed by identifiers for each description type. Possible
 	 * keys are: description, part_count, group.
 	 *
+	 * @param boolean $check_if_description_matches_title Whether to check
+	 *        product title and suppress it if it matches item description.
+	 *
 	 * @return array descriptive elements for this item.
 	 */
-	public function getDescriptionArray()
+	public function getDescriptionArray(
+		$check_if_description_matches_title = true)
 	{
 		$description = array();
 
-		$item_description = $this->getDescription();
+		$item_description =
+			$this->getDescription($check_if_description_matches_title);
 
 		if (strlen($item_description) > 0)
 			$description['description'] = $item_description;
