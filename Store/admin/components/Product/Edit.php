@@ -413,7 +413,7 @@ class StoreProductEdit extends AdminDBEdit
 	protected function buildAttributes()
 	{
 		$sql = 'select id, shortname, title, attribute_type from Attribute
-			order by attribute_type, displayorder, id';
+			order by attribute_type, displayorder, title, id';
 
 		$attributes = SwatDB::query($this->app->db, $sql,
 			SwatDBClassMap::get('StoreAttributeWrapper'));
