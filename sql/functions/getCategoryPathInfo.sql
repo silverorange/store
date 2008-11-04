@@ -2,21 +2,23 @@
  * Returns path information for a category.
  *
  * @param_id INTEGER: the id of the category.
- * @param_twig_threshold INTEGER: the maximum number of products in the subtree for the category to be considered a twig.
+ * @param_twig_product_threshold INTEGER: the maximum number of products in the subtree for the category to be considered a twig.
+ * @param_twig_category_threshold INTEGER: the maximum number of products in the subtree for the category to be considered a twig.
  *
  * @returned_row type_category_path_info: a row containing id, parent, shortname, title, and twig.
  *
  * Returns a set of type_category_path_info. The set is ordered from the leaf category to the root category.
  * If the category is not found, an empty record set is returned.
  * A catgeory is a twig category if the total number of products in the subtree below it is below the
- * param_twigcount threshold.
+ * param_twig_product_threshold and the number of sub categories is below param_twig_category_threshold.
  */
 CREATE TYPE type_category_path_info AS (id INTEGER, parent INTEGER, shortname VARCHAR(255), title VARCHAR(255), twig BOOLEAN);
 
-CREATE OR REPLACE FUNCTION getCategoryPathInfo(INTEGER, INTEGER) RETURNS SETOF type_category_path_info AS $$
+CREATE OR REPLACE FUNCTION getCategoryPathInfo(INTEGER, INTEGER, INTEGER) RETURNS SETOF type_category_path_info AS $$
 	DECLARE
 		param_id ALIAS FOR $1;
-		param_twig_threshold ALIAS FOR $2;
+		param_twig_product_threshold ALIAS FOR $2;
+		param_twig_category_threshold ALIAS FOR $3;
 		local_id INTEGER;
 		local_count INTEGER;
 		local_twig BOOLEAN;
@@ -34,10 +36,13 @@ CREATE OR REPLACE FUNCTION getCategoryPathInfo(INTEGER, INTEGER) RETURNS SETOF t
 					SELECT INTO local_count count(id) FROM Category WHERE parent IN (SELECT id FROM Category WHERE parent = local_id);
 
 					IF local_count = 0 THEN
-						SELECT INTO local_count count(product) FROM CategoryProductBinding WHERE category IN (SELECT id FROM Category WHERE parent = local_id);
+						SELECT INTO local_count count(id) FROM Category WHERE parent = local_id;
+						IF local_count < param_twig_category_threshold THEN
+							SELECT INTO local_count count(product) FROM CategoryProductBinding WHERE category IN (SELECT id FROM Category WHERE parent = local_id);
 
-						IF local_count < param_twig_threshold THEN
-							local_twig = TRUE;
+							IF local_count < param_twig_product_threshold THEN
+								local_twig = TRUE;
+							END IF;
 						END IF;
 					END IF;
 				END IF;

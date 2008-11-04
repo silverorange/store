@@ -11,7 +11,8 @@ class StoreCategoryPath extends SitePath
 {
 	// {{{ public properties
 
-	public static $twig_threshold = 60;
+	public static $twig_product_threshold = 60;
+	public static $twig_category_threshold = 5;
 
 	// }}}
 	// {{{ public function __construct()
@@ -51,9 +52,10 @@ class StoreCategoryPath extends SitePath
 
 	protected function queryPath(StoreApplication $app, $category_id)
 	{
-		$sql = sprintf('select * from getCategoryPathInfo(%s, %s)',
+		$sql = sprintf('select * from getCategoryPathInfo(%s, %s, %s)',
 			$app->db->quote($category_id, 'integer'),
-			$app->db->quote(self::$twig_threshold, 'integer'));
+			$app->db->quote(self::$twig_product_threshold, 'integer'),
+			$app->db->quote(self::$twig_category_threshold, 'integer'));
 
 		return SwatDB::query($app->db, $sql);
 	}
