@@ -325,7 +325,8 @@ class StoreCategoryIndex extends AdminIndex
 					$view->getSelection())));
 
 			$sql = 'update ItemRegionBinding set enabled = %s
-				where %s item in (select id from Item where product in (%s))';
+				where price is not null
+					and %s item in (select id from Item where product in (%s))';
 
 			$region_sql = ($region > 0) ?
 				sprintf('region = %s and', $this->app->db->quote($region,
