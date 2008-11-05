@@ -270,15 +270,19 @@ class StoreItemEdit extends AdminDBEdit
 		$class_name = SwatDBClassMap::get('StoreItemRegionBinding');
 
 		foreach ($price_replicator->replicators as $region => $title) {
-			$price_field = $price_replicator->getWidget('price', $region);
+			$price_field   = $price_replicator->getWidget('price', $region);
 			$enabled_field = $price_replicator->getWidget('enabled', $region);
 
-			$region_binding = new $class_name();
-			$region_binding->region  = $region;
-			$region_binding->enabled = $enabled_field->value;
-			$region_binding->price   = $price_field->value;
+			// only create new binding if price exists, otherwise there is no
+			// use for the binding, and it can lead to bad data on the site
+			if ($price_field->getState() !== null) {
+				$region_binding = new $class_name();
+				$region_binding->region  = $region;
+				$region_binding->enabled = $enabled_field->value;
+				$region_binding->price   = $price_field->value;
 
-			$this->item->region_bindings->add($region_binding);
+				$this->item->region_bindings->add($region_binding);
+			}
 		}
 	}
 
