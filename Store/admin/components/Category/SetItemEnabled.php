@@ -70,9 +70,11 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 	{
 		parent::processDBData();
 
-		$sql = sprintf('update ItemRegionBinding set enabled = %s where %s
-			item in (%s)', $this->app->db->quote($this->enabled, 'boolean'),
-			$this->getRegionQuerySQL(), $this->getItemQuerySQL());
+		$sql = sprintf('update ItemRegionBinding set enabled = %s
+			where price is not null and %s item in (%s)',
+			$this->app->db->quote($this->enabled, 'boolean'),
+			$this->getRegionQuerySQL(),
+			$this->getItemQuerySQL());
 
 		SwatDB::exec($this->app->db, $sql);
 

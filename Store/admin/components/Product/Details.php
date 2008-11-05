@@ -150,7 +150,7 @@ class StoreProductDetails extends AdminIndex
 			$region = $this->ui->getWidget('enable_region')->value;
 
 			$sql = 'update ItemRegionBinding set enabled = %s
-				where %s item in (%s)';
+				where price is not null and %s item in (%s)';
 
 			$region_sql = ($region > 0) ?
 				sprintf('region = %s and', $this->app->db->quote($region,
@@ -573,7 +573,6 @@ class StoreProductDetails extends AdminIndex
 			$path = $some_category->path;
 
 			foreach ($this->queryRegions() as $region) {
-
 				$locale = $region->getFirstLocale();
 				if ($locale !== null) {
 					$sql = sprintf('select product from VisibleProductView
