@@ -111,6 +111,10 @@ class StoreCategoryIndex extends AdminIndex
 		case 'featured_products_index_view':
 			$this->processFeaturedProductActions($view, $actions);
 			return;
+
+		case 'related_articles_index_view':
+			$this->processRelatedArticles($view, $actions);
+			return;
 		}
 	}
 
@@ -452,6 +456,36 @@ class StoreCategoryIndex extends AdminIndex
 	}
 
 	// }}}
+	// {{{ private function processRelatedArticles()
+
+	private function processRelatedArticles($view, $actions)
+	{
+		$num = count($view->getSelection());
+		$message = null;
+
+		switch ($actions->selected->id) {
+		case 'related_article_remove':
+			$item_list = array();
+			foreach ($view->getSelection() as $item)
+				$item_list[] = $this->app->db->quote($item, 'integer');
+
+			$num = SwatDB::exec($this->app->db, sprintf('
+				delete from ArticleCategoryBinding
+				where category = %s and article in (%s)',
+				$this->app->db->quote($this->id, 'integer'),
+				implode(',', $item_list)));
+
+			$message = new SwatMessage(sprintf(Store::ngettext(
+				'One related article has been removed from this category.',
+				'%s related articles have been removed from this category.',
+				$num), SwatString::numberFormat($num)));
+		}
+
+		if ($message !== null)
+			$this->app->messages->add($message);
+	}
+
+	// }}}
 	// {{{ private function addProductAttributes()
 
 	private function addProductAttributes($products, $attributes)
@@ -647,6 +681,10 @@ class StoreCategoryIndex extends AdminIndex
 			$this->ui->getWidget('category_change_order')->visible =
 				($category_count > 1);
 
+			$this->ui->getWidget('related_articles_frame')->visible = true;
+			$this->ui->getWidget('related_articles_toolbar')->setToolLinkValues(
+				$this->id);
+
 			$this->buildDetails();
 		}
 
@@ -731,6 +769,8 @@ class StoreCategoryIndex extends AdminIndex
 			return $this->getProductTableModel($view);
 		case 'featured_products_index_view':
 			return $this->getFeaturedProductTableModel($view);
+		case 'related_articles_index_view':
+			return $this->getRelatedArticleTableModel($view);
 		}
 	}
 
@@ -1069,6 +1109,33 @@ class StoreCategoryIndex extends AdminIndex
 
 		if (count($rs) == 0) {
 			$index_form = $this->ui->getWidget('featured_products_index_form');
+			$index_form->visible = false;
+		}
+
+		return $rs;
+	}
+
+	// }}}
+	// {{{ private function getRelatedArticleTableModel()
+
+	private function getRelatedArticleTableModel(SwatTableView $view)
+	{
+		$sql = 'select Article.id,
+					Article.title
+				from Article
+				inner join ArticleCategoryBinding
+					on Article.id = ArticleCategoryBinding.article
+				where ArticleCategoryBinding.category = %s
+				order by %s';
+
+		$sql = sprintf($sql,
+			$this->app->db->quote($this->id, 'integer'),
+			$this->getOrderByClause($view, 'Article.title', 'Article'));
+
+		$rs = SwatDB::query($this->app->db, $sql);
+
+		if (count($rs) == 0) {
+			$index_form = $this->ui->getWidget('related_articles_index_form');
 			$index_form->visible = false;
 		}
 

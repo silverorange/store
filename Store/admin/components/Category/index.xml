@@ -354,5 +354,43 @@
 			</widget>
 		</widget>
 		<!-- }}} -->
+		<!-- {{{ Related Articles -->
+		<widget class="SwatFrame" id="related_articles_frame">
+			<property name="visible" type="boolean">false</property>
+			<property name="title" translatable="yes">Related Articles</property>
+			<widget class="SwatToolbar" id="related_articles_toolbar">
+				<widget class="SwatToolLink" id="add_related_article">
+					<property name="title" translatable="yes">Add a Related Article</property>
+					<property name="link">Category/RelatedArticles?category=%s</property>
+					<property name="stock_id">add</property>
+				</widget>
+			</widget>
+			<widget class="AdminNote">
+				<property name="content" translatable="yes">Related articles are displayed in the content area of categories.</property>
+			</widget>
+			<widget class="SwatForm" id="related_articles_index_form">
+				<widget class="SwatTableView" id="related_articles_index_view">
+					<object class="SwatTableViewCheckboxColumn" id="checkbox">
+						<object class="SwatCheckboxCellRenderer" id="items">
+							<property name="value" type="data">id</property>
+						</object>
+					</object>
+					<object class="SwatTableViewColumn" id="title">
+						<property name="title" translatable="yes">Title</property>
+						<object class="AdminTitleLinkCellRenderer">
+							<property name="text" type="data">title</property>
+							<property name="link">Article/Index?id=%s</property>
+							<property name="link_value" type="data">id</property>
+						</object>
+					</object>
+				</widget>
+				<widget class="SwatActions" id="related_articles_index_actions">
+					<widget class="SwatActionItem" id="related_article_remove">
+						<property name="title" translatable="yes">remove related articles from this category</property>
+					</widget>
+				</widget>
+			</widget>
+		</widget>
+		<!-- }}} -->
 	</widget>
 </swatml>
