@@ -22,18 +22,15 @@ class StoreProductImageEdit extends AdminDBEdit
 	protected $id;
 	protected $ui_xml = 'Store/admin/components/Product/image-edit.xml';
 
-	// }}}
-	// {{{ private properties
-
 	/**
 	 * @var StoreProductImage
 	 */
-	private $image;
+	protected $image;
 
 	/**
 	 * @var StoreProduct
 	 */
-	private $product;
+	protected $product;
 
 	/**
 	 * Optional id of the product's current category. This is only used to
@@ -42,10 +39,10 @@ class StoreProductImageEdit extends AdminDBEdit
 	 *
 	 * @var integer
 	 */
-	private $category_id;
+	protected $category_id;
 
-	private $dimensions;
-	private $dimension_files;
+	protected $dimensions;
+	protected $dimension_files;
 
 	// }}}
 
