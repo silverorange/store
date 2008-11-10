@@ -72,16 +72,7 @@ class StoreProductImagePage extends StorePage
 				$this->product->title);
 
 		$this->layout->startCapture('content');
-
-		echo '<div id="product_images" class="large-image-page">';
-
-		$this->displayImage();
-
-		if (count($this->product->images) > 1)
-			$this->displayThumbnails('pinky');
-
-		echo '</div>';
-
+		$this->display();
 		$this->layout->endCapture();
 	}
 
@@ -100,6 +91,24 @@ class StoreProductImagePage extends StorePage
 		$link .= '/'.$this->product->shortname;
 		$this->layout->navbar->createEntry($this->product->title, $link);
 		$this->layout->navbar->createEntry(Store::_('Image'));
+	}
+
+	// }}}
+	// {{{ protected function display()
+
+	protected function display()
+	{
+		echo '<div id="product_images" class="large-image-page">';
+
+		$this->displayBackLink();
+		$this->displayImage();
+
+		if (count($this->product->images) > 1)
+			$this->displayThumbnails('pinky');
+
+		$this->displayDownloadLink();
+		$this->displayDescription();
+		echo '</div>';
 	}
 
 	// }}}
@@ -197,16 +206,22 @@ class StoreProductImagePage extends StorePage
 	}
 
 	// }}}
-	// {{{ private function displayImage()
+	// {{{ protected function displayBackLink()
 
-	private function displayImage()
+	protected function displayBackLink()
 	{
 		$this->back_link->title = Store::_('Back to Product Page');
 		$this->back_link->link =
 			$this->layout->navbar->getEntryByPosition(-1)->link;
 
 		$this->back_link->display();
+	}
 
+	// }}}
+	// {{{ protected function displayImage()
+
+	protected function displayImage()
+	{
 		$div_tag = new SwatHtmlTag('div');
 		$div_tag->id = 'product_image_large';
 
@@ -219,14 +234,26 @@ class StoreProductImagePage extends StorePage
 		$div_tag->open();
 		$img_tag->display();
 		$div_tag->close();
+	}
 
+	// }}}
+	// {{{ protected function displayDownloadLink()
+
+	protected function displayDownloadLink()
+	{
 		if ($this->image->hasOriginal()) {
 			$download_link = new SwatToolLink();
 			$download_link->link = $this->image->getURI('original');
 			$download_link->title = Store::_('Download High Resolution Image');
 			$download_link->display();
 		}
+	}
 
+	// }}}
+	// {{{ protected function displayDescription()
+
+	protected function displayDescription()
+	{
 		if ($this->image->description !== null) {
 			$description = SwatString::toXHTML(
 				SwatString::minimizeEntities(
