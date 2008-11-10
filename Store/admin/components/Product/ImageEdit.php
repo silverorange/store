@@ -156,7 +156,7 @@ class StoreProductImageEdit extends AdminDBEdit
 	}
 
 	// }}}
-	// {{{ private function validate()
+	// {{{ private function checkManualUploads()
 
 	protected function checkManualUploads()
 	{
