@@ -239,6 +239,22 @@ class StoreCartEntry extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function isEqual()
+
+	/**
+	 * Compares this entry with another entry by item
+	 *
+	 * @param StoreCartEntry $entry the entry to compare this entry to.
+	 *
+	 * @return boolean True if the two items are the same, false if they're
+	 *                 not.
+	 */
+	public function isEqual(StoreCartEntry $entry)
+	{
+		return ($this->getItemId() === $entry->getItemId());
+	}
+
+	// }}}
 	// {{{ public function compare()
 
 	/**
@@ -254,10 +270,25 @@ class StoreCartEntry extends SwatDBDataObject
 	 */
 	public function compare(StoreCartEntry $entry)
 	{
-		if ($this->getItemId() === $entry->getItemId())
-			return 0;
+		// order by product-title, product-id, item-displayorder, item-id
 
-		return ($this->getItemId() < $entry->getItemId()) ? -1 : 1;
+		$item1 = $this->item;
+		$item2 = $entry->item;
+		$product1 = $this->item->product;
+		$product2 = $entry->item->product;
+
+		$title_cmp = strcmp($product1->title, $product2->title);
+
+		if ($title_cmp != 0)
+			return $title_cmp;
+		elseif ($product1->id != $product1->id)
+			return ($product1->id < $product2->id) ? -1 : 1;
+		elseif ($item1->displayorder != $item2->displayorder)
+			return ($item1->displayorder < $item2->displayorder) ? -1 : 1;
+		elseif ($this->getItemId() != $entry->getItemId())
+			return ($this->getItemId() < $entry->getItemId()) ? -1 : 1;
+
+		return 0;
 	}
 
 	// }}}
@@ -274,7 +305,7 @@ class StoreCartEntry extends SwatDBDataObject
 	 */
 	public function combine(StoreCartEntry $entry)
 	{
-		if ($this->compare($entry) == 0)
+		if ($this->isEqual($entry))
 			$this->quantity += $entry->getQuantity();
 	}
 
