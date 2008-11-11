@@ -371,6 +371,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 		$engine->attributes = $this->getAttributes();
 		$engine->category = $this->getCategory();
 		$engine->supress_duplicate_products = true;
+		$engine->price_range = $this->getPriceRange();
 		$engine->addOrderByField('is_available desc');
 
 		return $engine;
@@ -398,6 +399,32 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 		}
 
 		echo '</ul>';
+	}
+
+	// }}}
+	// {{{ protected function getPriceRange()
+
+	protected function getPriceRange()
+	{
+		$range = null;
+
+		if ($this->hasSearchDataValue('price')) {
+			$price = $this->getSearchDataValue('price');
+			$range = new StorePriceRange($price);
+
+			if ($range->normalize()) {
+				$uri = sprintf('%s?price=%s', $this->source,
+					$range->getShortname());
+
+				$query_string = $this->getQueryString('price');
+				if ($query_string != '')
+					$uri.='&'.$query_string;
+
+				$this->app->relocate($uri);
+			}
+		}
+
+		return $range;
 	}
 
 	// }}}
