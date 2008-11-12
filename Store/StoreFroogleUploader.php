@@ -31,14 +31,14 @@ abstract class StoreFroogleUploader extends SiteCommandLineApplication
 		// add display argument
 		$display = new SiteCommandLineArgument(
 			array('-d', '--display'), 'setDisplay',
-			Store::('Display the generated XML.'));
+			Store::_('Display the generated XML.'));
 
 		$this->addCommandLineArgument($display);
 
 		// add no-upload argument
 		$no_upload = new SiteCommandLineArgument(
 			array('-n', '--no-upload'), 'setNoUpload',
-			Store::('Do not upload the generated XML to Google.'));
+			Store::_('Do not upload the generated XML to Google.'));
 
 		$this->addCommandLineArgument($no_upload);
 	}
