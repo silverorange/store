@@ -259,8 +259,8 @@ class StoreProductImagePage extends StorePage
 				SwatString::minimizeEntities(
 				$this->image->description));
 
+			$div_tag = new SwatHtmlTag('div');
 			$div_tag->setContent($description, 'text/xml');
-			$div_tag->id = null;
 			$div_tag->display();
 		}
 	}
