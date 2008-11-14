@@ -63,6 +63,33 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	public $available_only = false;
 
 	/**
+	 * Whether or not to search for only popular products
+	 *
+	 * Defaults to false and searchs all products.
+	 *
+	 * @var boolean
+	 */
+	public $popular_only = false;
+
+	/**
+	 * Optional product
+	 *
+	 * Search will find products in this collection product.
+	 *
+	 * @var VanBourgondienProduct
+	 */
+	public $popular_source_product;
+
+	/**
+	 * Optional popularity threshold
+	 *
+	 * Search will find products that have been ordered more than this amount
+	 *
+	 * @var integer
+	 */
+	public $popular_threshold;
+
+	/**
 	 * Whether or not to supress duplicate products
 	 *
 	 * When searching within a category, the primary category view is not used
@@ -251,6 +278,14 @@ class StoreProductSearchEngine extends SiteSearchEngine
 			$clause.= ' '.
 				$this->fulltext_result->getJoinClause('Product.id', 'product');
 
+		if ($this->popular_only ||
+			$this->popular_source_product instanceof StoreProduct) {
+			$clause.= sprintf('
+				%s join ProductPopularProductBinding
+				on Product.id = ProductPopularProductBinding.related_product',
+				$this->popular_only ? 'inner' : 'left outer');
+		}
+
 		if ($this->category === null) {
 			$clause.= ' left outer join ProductPrimaryCategoryView
 				on ProductPrimaryCategoryView.product = Product.id';
@@ -303,6 +338,16 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	protected function getWhereClause()
 	{
 		$clause = parent::getWhereClause();
+
+		if ($this->popular_source_product instanceof StoreProduct) {
+			$clause.= sprintf(' and ProductPopularProductBinding.source_product = %s',
+				$this->app->db->quote($this->popular_source_product->id, 'integer'));
+		}
+
+		if ($this->popular_threshold !== null) {
+			$clause.= sprintf(' and ProductPopularProductBinding.order_count > %s',
+				$this->app->db->quote($this->popular_threshold, 'integer'));
+		}
 
 		if ($this->category !== null) {
 			if ($this->category instanceof StoreCategory)
