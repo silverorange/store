@@ -747,8 +747,7 @@ class StoreProductPage extends StorePage
 
 	protected function displayPopularProducts()
 	{
-		$popular_products = $this->product->getVisiblePopularProducts(2, 5);
-
+		$popular_products = $this->getPopularProducts();
 		if (count($popular_products) == 0)
 			return;
 
@@ -756,9 +755,9 @@ class StoreProductPage extends StorePage
 		$div->id = 'popular_products';
 
 		$header_tag = new SwatHtmlTag('h4');
-		$header_tag->setContent(sprintf(Store::_('Customers who bought %s '.
-			'also bought…'),
-			$this->product->title));
+		$header_tag->setContent(
+			sprintf(Store::_('Customers who bought %s also bought…'),
+				$this->product->title));
 
 		$ul_tag = new SwatHtmlTag('ul');
 		$ul_tag->class = 'store-product-list clearfix';
@@ -779,6 +778,24 @@ class StoreProductPage extends StorePage
 
 		$ul_tag->close();
 		$div->close();
+	}
+
+	// }}}
+	// {{{ protected function getPopularProducts()
+
+	protected function getPopularProducts()
+	{
+		$engine = new StoreProductSearchEngine($this->app);
+		$engine->popular_only = true;
+		$engine->available_only = true;
+		$engine->popular_source_product = $this->product;
+		$engine->popular_threshold = 2;
+		$engine->addOrderByField('ProductPopularProductBinding.order_count
+			desc');
+
+		$products = $engine->search(3);
+
+		return $products;
 	}
 
 	// }}}
