@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Site/pages/SiteArticlePage.php';
+require_once 'Site/pages/SitePage.php';
 require_once 'Swat/SwatUI.php';
 require_once 'Swat/SwatString.php';
 require_once 'Site/SiteMultipartMailMessage.php';
@@ -10,7 +10,7 @@ require_once 'Site/SiteMultipartMailMessage.php';
  * @package   Store
  * @copyright 2006-2007 silverorange
  */
-class StoreContactPage extends SiteArticlePage
+class StoreContactPage extends SitePage
 {
 	// {{{ protected properties
 
