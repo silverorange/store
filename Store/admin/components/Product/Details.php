@@ -1002,9 +1002,9 @@ class StoreProductDetails extends AdminIndex
 	// }}}
 
 	// build phase - product images
-	// {{{ private function buildProductImages()
+	// {{{ protected function buildProductImages()
 
-	private function buildProductImages()
+	protected function buildProductImages()
 	{
 		$toolbar = $this->ui->getWidget('product_images_toolbar');
 		$this->buildCategoryToolBarLinks($toolbar);
@@ -1016,7 +1016,7 @@ class StoreProductDetails extends AdminIndex
 		$order_link->sensitive = (count($images) > 1);
 
 		foreach ($images as $image) {
-			$widget = new StoreProductImageDisplay();
+			$widget = $this->getProductImageDisplay();
 			$widget->image_id = $image->id;
 			$widget->category_id = $this->category_id;
 			$widget->product_id = $this->id;
@@ -1027,6 +1027,14 @@ class StoreProductDetails extends AdminIndex
 
 			$form->addChild($widget);
 		}
+	}
+
+	// }}}
+	// {{{ protected function getProductImageDisplay()
+
+	protected function getProductImageDisplay()
+	{
+		return new StoreProductImageDisplay();
 	}
 
 	// }}}
