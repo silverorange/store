@@ -19,7 +19,7 @@
 					<property name="maxlength" type="integer">255</property>
 				</widget>
 			</widget>
-			<widget class="SwatFieldset">
+			<widget class="SwatFieldset" id="article_visiblity">
 				<property name="title" translatable="yes">Article Visibility</property>
 				<widget class="SwatGroupingFormField">
 					<property name="title" translatable="yes">Accessible to</property>
