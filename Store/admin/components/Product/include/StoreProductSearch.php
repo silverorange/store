@@ -143,6 +143,20 @@ class StoreProductSearch
 	{
 		$where = '1 = 1';
 
+		$where.= $this->buildKeywordsWhereClause();
+		$where.= $this->buildSkuWhereClause();
+		$where.= $this->buildCategoryWhereClause();
+		$where.= $this->buildCatalogWhereClause();
+
+		$this->where_clause = $where;
+	}
+
+	// }}}
+	// {{{ protected function buildKeywordsWhereClause()
+
+	protected function buildKeywordsWhereClause()
+	{
+		$where = '';
 		// keywords are included in the where clause if fulltext searching is
 		// turned off
 		$keywords = $this->ui->getWidget('search_keywords')->value;
@@ -164,18 +178,35 @@ class StoreProductSearch
 			$where.= ') ';
 		}
 
-		// sku
+		return $where;
+	}
+
+	// }}}
+	// {{{ protected function buildSkuWhereClause()
+
+	protected function buildSkuWhereClause()
+	{
+		$where = '';
 		$clause = new AdminSearchClause('sku');
 		$clause->table = 'ItemView';
 		$clause->value = $this->ui->getWidget('search_item')->value;
 		$clause->operator = $this->ui->getWidget('search_item_op')->value;
 		$item_where = $clause->getClause($this->db, '');
 
-		if ($item_where != '')
+		if ($item_where != '') {
 			$where.= sprintf(' and Product.id in (
 				select ItemView.product from ItemView where %s)', $item_where);
+		}
 
-		// category
+		return $where;
+	}
+
+	// }}}
+	// {{{ protected function buildCategoryWhereClause()
+
+	protected function buildCategoryWhereClause()
+	{
+		$where = '';
 		$category = $this->ui->getWidget('search_category')->value;
 
 		if ($category == -1) {
@@ -200,13 +231,21 @@ class StoreProductSearch
 			}
 		}
 
-		// catalog
+		return $where;
+	}
+
+	// }}}
+	// {{{ protected function buildCatalogWhereClause()
+
+	protected function buildCatalogWhereClause()
+	{
+		$where = '';
 		$catalog_selector = $this->ui->getWidget('catalog_selector');
 
 		$where.= sprintf(' and Product.catalog in (%s)',
 			$catalog_selector->getSubQuery());
 
-		$this->where_clause = $where;
+		return $where;
 	}
 
 	// }}}
