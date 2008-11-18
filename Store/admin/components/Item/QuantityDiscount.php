@@ -65,37 +65,20 @@ class StoreItemQuantityDiscount extends AdminIndex
 		$regions = $this->queryRegions();
 		$view = $this->ui->getWidget('index_view');
 
-		//TODO: add this back to veseys
 		$item_row = $this->getItemRow();
 		$quantity =
 			$view->getColumn('quantity')->getInputCell()->getPrototypeWidget();
 
 		$quantity->minimum_value = $item_row->quantity;
-		//$quantity->minimum_value = 1;
 
 		// add dynamic columns to view
 		$this->appendPriceColumns($view, $regions);
 	}
 
 	// }}}
-	// {{{ private function queryRegions()
+	// {{{ protected function getItemRow()
 
-	private function queryRegions()
-	{
-		if ($this->regions === null) {
-			$sql = 'select id, title from Region order by id';
-
-			$this->regions = SwatDB::query($this->app->db, $sql,
-				SwatDBClassMap::get('StoreRegionWrapper'));
-		}
-
-		return $this->regions;
-	}
-
-	// }}}
-	// {{{ private function getItemRow()
-
-	private function getItemRow()
+	protected function getItemRow()
 	{
 		if ($this->item === null) {
 			$regions = $this->queryRegions();
@@ -121,17 +104,7 @@ class StoreItemQuantityDiscount extends AdminIndex
 					$region->id).', ';
 			}
 
-			$sql = 'select sku, product, description,
-						-- minimum_quantity as quantity, TODO: this needs to go back in for veseys
-						-- regions select piece goes here
-						%s
-						-- unit TODO: this needs to go back in for veseys
-						1 as quantity
-					from Item
-						-- regions join piece goes here
-						%s
-					where Item.id = %s';
-
+			$sql = $this->getItemSql();
 			$this->item = SwatDB::queryRow($this->app->db, sprintf($sql,
 				$regions_select,
 				$regions_join,
@@ -139,6 +112,36 @@ class StoreItemQuantityDiscount extends AdminIndex
 		}
 
 		return $this->item;
+	}
+
+	// }}}
+	// {{{ protected function getItemSql()
+
+	protected function getItemSql()
+	{
+		return 'select sku, product, description,
+				-- regions select piece goes here
+				%s
+				1 as quantity
+			from Item
+				-- regions join piece goes here
+				%s
+			where Item.id = %s';
+	}
+
+	// }}}
+	// {{{ private function queryRegions()
+
+	private function queryRegions()
+	{
+		if ($this->regions === null) {
+			$sql = 'select id, title from Region order by id';
+
+			$this->regions = SwatDB::query($this->app->db, $sql,
+				SwatDBClassMap::get('StoreRegionWrapper'));
+		}
+
+		return $this->regions;
 	}
 
 	// }}}
@@ -306,7 +309,6 @@ class StoreItemQuantityDiscount extends AdminIndex
 
 		foreach ($replicators as $replicator_id) {
 			if ($this->validateRow($input_row, $replicator_id)) {
-
 				$quantity = $input_row->getWidget('quantity', 
 					$replicator_id)->getState();
 
@@ -387,42 +389,44 @@ class StoreItemQuantityDiscount extends AdminIndex
 	{
 		$valid = !$input_row->rowHasMessage($replicator_id);
 
-		// validate quantity (must be unique per item)
-		$quantity = $input_row->getWidget('quantity', $replicator_id);
-		$sql = sprintf('select count(id) from QuantityDiscount
-				where item = %s and quantity %s %s',
-			$this->app->db->quote($this->id),
-			SwatDB::equalityOperator($quantity->getState()),
-			$this->app->db->quote($quantity->getState()));
-		
-		$unique = (SwatDB::queryOne($this->app->db, $sql) == 0);
-		if (!$unique) {
-			$quantity->addMessage(new SwatMessage(Store::_('%s must be unique '.
-				'for each item. If you want to update the prices for a '.
-				'quantity discount, first delete the old quantity discount.')));
-
-			$valid = false;
-		}
-
-		// validate prices (must enter at least one)
-		$regions = $this->queryRegions();
-		$has_price = false;
-		foreach ($regions as $region) {
-			$price = $input_row->getWidget('price_'.$region->id,
-				$replicator_id);
-
-			if ($price->getState() !== null) {
-				$has_price = true;
-				break;
+		if ($valid) {
+			// validate quantity (must be unique per item)
+			$quantity = $input_row->getWidget('quantity', $replicator_id);
+			$sql = sprintf('select count(id) from QuantityDiscount
+					where item = %s and quantity %s %s',
+				$this->app->db->quote($this->id),
+				SwatDB::equalityOperator($quantity->getState()),
+				$this->app->db->quote($quantity->getState()));
+			
+			$unique = (SwatDB::queryOne($this->app->db, $sql) == 0);
+			if (!$unique) {
+				$quantity->addMessage(new SwatMessage(Store::_('%s must be '.
+					'unique for each item. If you want to update the prices '.
+					'for a quantity discount, first delete the old quantity '.
+					'discount.')));
+	
+				$valid = false;
+			}
+	
+			// validate prices (must enter at least one)
+			$regions = $this->queryRegions();
+			$has_price = false;
+			foreach ($regions as $region) {
+				$price = $input_row->getWidget('price_'.$region->id,
+					$replicator_id);
+	
+				if ($price->getState() !== null) {
+					$has_price = true;
+					break;
+				}
+			}
+			if (!$has_price) {
+				$price->addMessage(new SwatMessage(
+					Store::_('At least one price is required')));
+	
+				$valid = false;
 			}
 		}
-		if (!$has_price) {
-			$price->addMessage(new SwatMessage(
-				Store::_('At least one price is required')));
-
-			$valid = false;
-		}
-
 		return $valid;
 	}
 
