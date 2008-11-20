@@ -239,7 +239,7 @@ class StoreCartEntry extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ public function isEqual()
+	// {{{ public function hasSameItem()
 
 	/**
 	 * Compares this entry with another entry by item
@@ -249,7 +249,7 @@ class StoreCartEntry extends SwatDBDataObject
 	 * @return boolean True if the two items are the same, false if they're
 	 *                 not.
 	 */
-	public function isEqual(StoreCartEntry $entry)
+	public function hasSameItem(StoreCartEntry $entry)
 	{
 		return ($this->getItemId() === $entry->getItemId());
 	}
@@ -305,7 +305,7 @@ class StoreCartEntry extends SwatDBDataObject
 	 */
 	public function combine(StoreCartEntry $entry)
 	{
-		if ($this->isEqual($entry))
+		if ($this->hasSameItem($entry))
 			$this->quantity += $entry->getQuantity();
 	}
 
