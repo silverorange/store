@@ -114,8 +114,7 @@ class StoreItemsView extends SwatControl
 
 			foreach ($renderer->getClonedWidgets() as $id => $widget) {
 				if (!$renderer->hasMessage($id) && $widget->value > 0) {
-					$cart_entry = $this->createCartEntry($id);
-					$cart_entry->quantity = $widget->value;
+					$cart_entry = $this->createCartEntry($id, $widget->value);
 					$entries[] = $cart_entry;
 
 					// reset qauntity - not persistent
@@ -173,10 +172,11 @@ class StoreItemsView extends SwatControl
 	// }}}
 	// {{{ protected function createCartEntry()
 
-	protected function createCartEntry($item_id)
+	protected function createCartEntry($item_id, $quantity)
 	{
 		$cart_entry_class = SwatDBClassMap::get('StoreCartEntry');
 		$cart_entry = new $cart_entry_class();
+		$cart_entry->quantity = $quantity;
 
 		$item_class = SwatDBClassMap::get('StoreItem');
 		$item = new $item_class();
