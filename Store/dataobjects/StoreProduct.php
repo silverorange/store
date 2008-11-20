@@ -329,6 +329,9 @@ class StoreProduct extends SwatDBDataObject
 				$this->db, $sql, $this->region, $this->limit_by_region);
 		}
 
+		foreach ($items as $item)
+			$item->product = $this;
+
 		return $items;
 	}
 
