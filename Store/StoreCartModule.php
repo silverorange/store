@@ -496,7 +496,7 @@ class StoreCartModule extends SiteApplicationModule
 	protected function getEntrySql($where_clause,
 		$order_by_clause = 'Item.product, Item.displayorder')
 	{
-		$entry_sql = 'select CartEntry.*
+		$entry_sql = 'select CartEntry.*, Item.sku
 			from CartEntry
 				inner join Item on CartEntry.item = Item.id
 			where %s
