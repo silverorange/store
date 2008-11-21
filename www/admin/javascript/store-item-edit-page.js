@@ -33,10 +33,9 @@ StoreItemEditPage.handleSubmit = function(event, page)
 function StoreItemRegionReplicator(id)
 {
 	this.id = id;
-	this.enabled = document.getElementById('enabled_price_replicator' + id);
-	this.price = document.getElementById('price_price_replicator' + id);
-	this.price_field = document.getElementById(
-		'price_field_price_replicator' + id);
+	this.enabled = document.getElementById('enabled_' + id);
+	this.price = document.getElementById('price_' + id);
+	this.price_field = document.getElementById('price_field_' + id);
 
 	YAHOO.util.Event.addListener(this.enabled, 'click',
 		StoreItemRegionReplicator.handleClick, this);
