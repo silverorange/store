@@ -652,35 +652,10 @@ class StoreItem extends SwatDBDataObject
 
 	protected function loadQuantityDiscounts()
 	{
-		$quantity_discounts = null;
-		$wrapper = SwatDBClassMap::get('StoreQuantityDiscountWrapper');
-
-		if ($this->region === null) {
-			$sql = sprintf('select * from QuantityDiscount
-				where QuantityDiscount.item = %s
-				order by QuantityDiscount.quantity asc',
-				$this->db->quote($this->id, 'integer'));
-
-			$quantity_discounts = SwatDB::query($this->db, $sql, $wrapper);
-		} else {
-			$sql = sprintf('select QuantityDiscount.*,
-					QuantityDiscountRegionBinding.price,
-					QuantityDiscountRegionBinding.region as region_id
-				from QuantityDiscount
-					%s QuantityDiscountRegionBinding on
-					quantity_discount = QuantityDiscount.id and
-					region = %s
-				where QuantityDiscount.item = %s
-				order by QuantityDiscount.quantity asc',
-				$this->limit_by_region ? 'inner join' : 'left outer join',
-				$this->db->quote($this->region->id, 'integer'),
-				$this->db->quote($this->id, 'integer'));
-
-			$quantity_discounts = SwatDB::query($this->db, $sql, $wrapper);
-			if ($quantity_discounts !== null)
-				foreach ($quantity_discounts as $discount)
-					$discount->setRegion($this->region, $this->limit_by_region);
-		}
+		$wrapper_class = SwatDBClassMap::get('StoreQuantityDiscountWrapper');
+		$wrapper = new $wrapper_class();
+		$quantity_discounts = $wrapper->loadSetFromDB($this->db,
+			array($this->id), $this->region, $this->limit_by_region);
 
 		if ($quantity_discounts !== null)
 			foreach ($quantity_discounts as $discount)
