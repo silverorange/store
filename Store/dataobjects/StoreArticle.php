@@ -59,7 +59,7 @@ class StoreArticle extends SiteArticle
 	{
 		$sql = 'select id, title, shortname, description, createdate
 			from Article
-			where parent = %s and visible = %s and id in
+			where parent = %s and visible = true and id in
 			(select id from VisibleArticleView where region = %s)
 			order by displayorder, title';
 
@@ -69,7 +69,6 @@ class StoreArticle extends SiteArticle
 
 		$sql = sprintf($sql,
 			$this->db->quote($this->id, 'integer'),
-			$this->db->quote(true, 'boolean'),
 			$this->db->quote($this->region->id, 'integer'));
 
 		$wrapper = SwatDBClassMap::get('SiteArticleWrapper');
