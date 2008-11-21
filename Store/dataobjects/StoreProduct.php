@@ -368,33 +368,35 @@ class StoreProduct extends SwatDBDataObject
 	 */
 	protected function loadPath()
 	{
-		$path = '';
+		$path = $this->shortname;
 
-		$internal_path = ($this->hasInternalValue('path') ||
-			$this->getInternalValue('path') !== null) ?
-			$this->getInternalValue('path') : null;
+		if ($this->hasInternalValue('path') &&
+			$this->getInternalValue('path') !== null) {
+				$path = $this->getInternalValue('path').'/'.$this->shortname;
 
-		$primary_category = ($this->hasInternalValue('primary_category') ||
-			$this->getInternalValue('primary_category') !== null) ?
-			$this->getInternalValue('primary_category') : null;
+		} elseif ($this->hasSubDataObject('primary_category')) {
+			$path = $this->primary_category->path.'/'.$this->shortname;
 
-		if ($internal_path === null && $primary_category === null)
-			$internal_path = SwatDB::queryOne($this->db,
-				sprintf('select getCategoryPath(primary_category)
+		} elseif ($this->hasInternalValue('primary_category') &&
+			$this->getInternalValue('primary_category') !== null) {
+
+			$sql = sprintf('select getCategoryPath(%s)',
+				$this->db->quote($this->getInternalValue(
+					'primary_category'), 'integer'));
+
+			$category_path = SwatDB::queryOne($this->db, $sql);
+			if ($category_path !== null)
+				$path = $category_path.'/'.$this->shortname;
+
+		} else {
+			$sql = sprintf('select getCategoryPath(primary_category)
 					from ProductPrimaryCategoryView
 					where product = %s',
-					$this->db->quote($this->id, 'integer')));
+					$this->db->quote($this->id, 'integer'));
 
-		if ($internal_path !== null) {
-			$path = $internal_path.'/'.$this->shortname;
-		} elseif ($primary_category !== null) {
-			$sql = sprintf('select getCategoryPath(%s)',
-				$this->db->quote($primary_category, 'integer'));
-
-			$path = SwatDB::queryOne($this->db, $sql);
-			$path.= '/'.$this->shortname;
-		} else {
-			$path = $this->shortname;
+			$category_path = SwatDB::queryOne($this->db, $sql);
+			if ($category_path !== null)
+				$path = $category_path.'/'.$this->shortname;
 		}
 
 		return $path;
