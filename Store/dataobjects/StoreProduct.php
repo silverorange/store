@@ -339,7 +339,7 @@ class StoreProduct extends SwatDBDataObject
 				array($item_ids), $this->region, $this->limit_by_region);
 
 			foreach ($items as $item) {
-				$discounts = new $class;
+				$discounts = new $class();
 				foreach ($quantity_discounts as $discount)
 					if ($discount->getInternalValue('item') == $item->id)
 						$discounts->add($discount);
