@@ -340,10 +340,14 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 		$pager = $this->ui->getWidget('product_pager');
 		$engine = $this->instantiateProductSearchEngine();
 		$engine->setFulltextResult($fulltext_result);
-		$products = $engine->search($pager->page_size, $pager->current_record);
 
-		$pager->total_records = $engine->getResultCount();
-		$pager->link = $this->source;
+		if ($pager->visible) {
+			$products = $engine->search($pager->page_size, $pager->current_record);
+			$pager->total_records = $engine->getResultCount();
+			$pager->link = $this->source;
+		} else {
+			$products = $engine->search();
+		}
 
 		$this->result_count['product'] = count($products);
 
