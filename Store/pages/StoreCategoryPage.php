@@ -380,9 +380,7 @@ class StoreCategoryPage extends StorePage
 		$engine->category = $this->category;
 		$engine->addOrderByField('CategoryProductBinding.displayorder');
 		$engine->addOrderByField('is_available desc');
-
-		$last_entry = $this->path->getLast();
-		$engine->include_category_descendants = $last_entry->twig;
+		$engine->include_category_descendants = $this->isTwigPage();
 
 		$products = $engine->search();
 
