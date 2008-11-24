@@ -1,0 +1,47 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<widget class="SwatFrame" id="edit_frame">
+		<property name="title" translatable="yes">Product Review</property>
+		<widget class="SwatForm" id="edit_form">
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Reviewer Name</property>
+				<widget class="SwatEntry" id="fullname">
+					<property name="maxlength" type="integer">255</property>
+					<property name="required" type="boolean">true</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Email</property>
+				<property name="note" translatable="yes">Email address will not be displayed on the website. It is stored for reference purposes only.</property>
+				<widget class="SwatEmailEntry" id="email">
+					<property name="maxlength" type="integer">255</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Enabled</property>
+				<widget class="SwatCheckbox" id="enabled">
+					<property name="value" type="boolean">true</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Short Review</property>
+				<widget class="SwatTextarea" id="description">
+					<property name="rows" type="integer">5</property>
+					<property name="required" type="boolean">true</property>
+					<property name="maxlength" type="integer">255</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Long Review</property>
+				<widget class="SwatTextarea" id="bodytext">
+					<property name="rows" type="integer">10</property>
+				</widget>
+			</widget>
+			<widget class="SwatFooterFormField">
+				<widget class="SwatButton" id="submit_button" />
+			</widget>
+		</widget>
+	</widget>
+</swatml>

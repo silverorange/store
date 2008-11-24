@@ -121,6 +121,10 @@ class StoreProductDetails extends AdminIndex
 		case 'items_view':
 			$this->processItemsActions($view, $actions);
 			break;
+
+		case 'product_reviews_view':
+			$this->processProductReviewsActions($view, $actions);
+			break;
 		}
 	}
 
@@ -386,6 +390,54 @@ class StoreProductDetails extends AdminIndex
 	}
 
 	// }}}
+	// {{{ private function processProductReviewsActions()
+
+	private function processProductReviewsActions($view, $actions)
+	{
+		switch ($actions->selected->id) {
+		case 'product_reviews_delete':
+			$this->app->replacePage('Product/ReviewDelete');
+			$this->app->getPage()->setItems($view->getSelection());
+			break;
+
+		case 'product_reviews_enable':
+			$sql = 'update ProductReview set enabled = %s
+				where id in (%s)';
+
+			SwatDB::exec($this->app->db, sprintf($sql,
+				$this->app->db->quote(true, 'boolean'),
+				SwatDB::implodeSelection($db, $view->getSelection())));
+
+			$num = count($view->getSelection());
+
+			$message = new SwatMessage(sprintf(Store::ngettext(
+				'One product review has been enabled.',
+				'%d product reviews have been enabled.', $num),
+				SwatString::numberFormat($num)));
+
+			$this->app->messages->add($message);
+			break;
+
+		case 'product_reviews_disable':
+			$sql = 'update ProductReview set enabled = %s
+				where id in (%s)';
+
+			SwatDB::exec($this->app->db, sprintf($sql,
+				$this->app->db->quote(false, 'boolean'),
+				SwatDB::implodeSelection($db, $view->getSelection())));
+
+			$num = count($view->getSelection());
+
+			$message = new SwatMessage(Store::sprintf(ngettext(
+				'One product review has been disabled.',
+				'%d product reviews have been disabled.', $num),
+				SwatString::numberFormat($num)));
+
+			$this->app->messages->add($message);
+			break;
+		}
+	}
+	// }}}
 
 	// build phase
 	// {{{ protected function buildInternal()
@@ -397,6 +449,7 @@ class StoreProductDetails extends AdminIndex
 		$this->buildItems();
 		$this->buildProductImages();
 		$this->buildRelatedProducts();
+		$this->buildProductReviews();
 	}
 
 	// }}}
@@ -426,6 +479,8 @@ class StoreProductDetails extends AdminIndex
 				return $this->getItemsTableModel($view);
 			case  'related_products_view':
 				return $this->getRelatedProductsTableModel($view);
+			case  'product_reviews_view':
+				return $this->getProductReviewsTableModel($view);
 		}
 	}
 
@@ -1087,6 +1142,39 @@ class StoreProductDetails extends AdminIndex
 			$view->visible = false;
 			$this->ui->getWidget('related_products_footer')->visible = false;
 		}
+
+		return $rs;
+	}
+
+	// }}}
+
+	// build phase - product reviews
+	// {{{ private function buildProductReviews()
+
+	private function buildProductReviews()
+	{
+		$toolbar = $this->ui->getWidget('product_reviews_toolbar');
+		$view = $this->ui->getWidget('product_reviews_view');
+		$this->buildCategoryToolBarLinks($toolbar);
+		$this->buildCategoryTableViewLinks($view);
+	}
+
+	// }}}
+	// {{{ private function getProductReviewsTableModel()
+
+	private function getProductReviewsTableModel($view)
+	{
+		$sql = 'select id, description, createdate, fullname, email, enabled
+			from ProductReview where product = %s order by createdate';
+
+		$sql = sprintf($sql, $this->app->db->quote($this->id, 'integer'));
+
+		$rs = SwatDB::query($this->app->db, $sql);
+
+		// TODO: use a SwatTableStore instead of mangling the dataobjects
+		foreach ($rs as $row)
+			$row->description = SwatString::ellipsizeRight(
+				$row->description, 50);
 
 		return $rs;
 	}
