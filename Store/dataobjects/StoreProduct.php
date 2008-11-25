@@ -8,6 +8,7 @@ require_once 'Store/dataobjects/StoreProductImage.php';
 require_once 'Store/dataobjects/StoreProductImageWrapper.php';
 require_once 'Store/dataobjects/StoreRegion.php';
 require_once 'Store/dataobjects/StoreAttributeWrapper.php';
+require_once 'Store/dataobjects/StoreProductReviewWrapper.php';
 
 /**
  * A product for an e-commerce web application
@@ -584,6 +585,43 @@ class StoreProduct extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ protected function loadProductReviews()
+
+	/**
+	 * Loads product reviews
+	 *
+	 * @return StoreProductReviewWrapper
+	 */
+	protected function loadProductReviews()
+	{
+		$sql = 'select * from ProductReview where product = %s';
+		$sql = sprintf($sql,
+			$this->db->quote($this->id, 'integer'));
+
+		return SwatDB::query($this->db, $sql,
+			SwatDBClassMap::get('StoreProductReviewWrapper'));
+	}
+
+	// }}}
+	// {{{ protected function loadVisibleProductReviews()
+
+	/**
+	 * Loads product reviews that are visible
+	 *
+	 * @return StoreProductReviewWrapper
+	 */
+	protected function loadVisibleProductReviews()
+	{
+		$sql = 'select * from ProductReview where product = %s and status = %s';
+		$sql = sprintf($sql,
+			$this->db->quote($this->id, 'integer'),
+			$this->db->quote(SiteComment::STATUS_PUBLISHED, 'integer'));
+
+		return SwatDB::query($this->db, $sql,
+			SwatDBClassMap::get('StoreProductReviewWrapper'));
+	}
+
+	// }}}
 
 	// saver methods
 	// {{{ protected function saveItems()
@@ -599,6 +637,22 @@ class StoreProduct extends SwatDBDataObject
 
 		$this->items->setDatabase($this->db);
 		$this->items->save();
+	}
+
+	// }}}
+	// {{{ protected function saveProductReviews()
+
+	/**
+	 * Automatically saves StoreProductReview sub-data-objects when this
+	 * StoreProduct object is saved
+	 */
+	protected function saveProductReviews()
+	{
+		foreach ($this->product_reviews as $review)
+			$review->product = $this;
+
+		$this->product_reviews->setDatabase($this->db);
+		$this->product_reviews->save();
 	}
 
 	// }}}
