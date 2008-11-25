@@ -35,6 +35,7 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 			new StoreCheckoutBillingAddressPage($page),
 			new StoreCheckoutShippingAddressPage($page),
 			new StoreCheckoutPaymentMethodPage($page),
+			new StoreCheckoutShippingTypePage($page),
 		);
 
 		return $pages;
