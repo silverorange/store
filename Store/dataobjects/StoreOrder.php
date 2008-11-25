@@ -10,6 +10,7 @@ require_once 'Store/StoreOrderStatusList.php';
 require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/dataobjects/StoreOrderAddress.php';
 require_once 'Store/dataobjects/StoreOrderPaymentMethod.php';
+require_once 'Store/dataobjects/StoreOrderShippingType.php';
 require_once 'Store/dataobjects/StoreOrderItemWrapper.php';
 require_once 'Store/dataobjects/StorePaymentTransactionWrapper.php';
 require_once 'Store/dataobjects/StoreLocale.php';

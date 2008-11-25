@@ -24,18 +24,11 @@ class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
 	// }}}
 
 	// process phase
-	// {{{ protected function updateShippingType()
+	// {{{ public function processCommon()
 
-	/**
-	 * Updates session order shipping type properties from form values
-	 *
-	 * @param StoreOrderShippingType $shipping_type
-	 */
-	protected function updateShippingType(
-		StoreOrderShippingType $shipping_type)
+	public function processCommon()
 	{
-		$shipping_type->payment_type =
-			$this->ui->getWidget('shipping_type')->value;
+		$this->saveDataToSession();
 	}
 
 	// }}}
