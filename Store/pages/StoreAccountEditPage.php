@@ -17,6 +17,22 @@ class StoreAccountEditPage extends SiteAccountEditPage
 	}
 
 	// }}}
+	// {{{ private function getAdditionalFields()
+
+	private function getAdditionalFields()
+	{
+		$fields = array();
+
+		if ($this->ui->hasWidget('phone'))
+			$fields[] = 'phone';
+
+		if ($this->ui->hasWidget('company'))
+			$fields[] = 'company';
+
+		return $fields;
+	}
+
+	// }}}
 
 	// process phase
 	// {{{ protected function updateAccount()
@@ -24,10 +40,11 @@ class StoreAccountEditPage extends SiteAccountEditPage
 	protected function updateAccount(SwatForm $form)
 	{
 		parent::updateAccount($form);
-		$this->assignUiValuesToObject($this->account, array(
-			'phone',
-			'company',
-		));
+
+		$fields = $this->getAdditionalFields();
+
+		if (count($fields) > 0)
+			$this->assignUiValuesToObject($this->account, $fields);
 	}
 
 	// }}}
@@ -38,10 +55,11 @@ class StoreAccountEditPage extends SiteAccountEditPage
 	protected function load(SwatForm $form)
 	{
 		parent::load($form);
-		$this->assignObjectValuesToUi($this->account, array(
-			'phone',
-			'company',
-		));
+
+		$fields = $this->getAdditionalFields();
+
+		if (count($fields) > 0)
+			$this->assignObjectValuesToUi($this->account, $fields);
 	}
 
 	// }}}
