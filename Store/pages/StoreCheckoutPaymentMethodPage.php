@@ -368,14 +368,18 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	 */
 	protected function getPaymentTypes()
 	{
-		$payment_types_sql = sprintf('select id, title from PaymentType
+		$sql = 'select PaymentType.* from PaymentType
 			inner join PaymentTypeRegionBinding on
 				payment_type = id and region = %s
-			order by displayorder, title',
+			order by displayorder, title';
+
+		$sql = sprintf($sql,
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
 		$wrapper = SwatDBClassMap::get('StorePaymentTypeWrapper');
-		return SwatDB::query($this->app->db, $payment_types_sql, $wrapper);
+		$types = SwatDB::query($this->app->db, $sql, $wrapper);
+
+		return $types;
 	}
 
 	// }}}
