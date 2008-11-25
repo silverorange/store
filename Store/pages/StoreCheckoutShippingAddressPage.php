@@ -93,6 +93,8 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 		$provstate = $this->ui->getWidget('shipping_address_provstate');
 
 		$country->process();
+		$provstate->country = $country->value;
+		$provstate->setDatabase($this->app->db);
 		$provstate->process();
 
 		if ($provstate->value === 'other') {
