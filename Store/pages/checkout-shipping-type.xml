@@ -1,0 +1,9 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatContainer" id="shipping_type_form">
+		<widget class="SwatRadioList" id="shipping_type">
+			<property name="required" type="boolean">true</property>
+		</widget>
+	</widget>
+</swatml>

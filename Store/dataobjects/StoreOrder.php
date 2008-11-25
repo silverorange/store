@@ -328,6 +328,9 @@ class StoreOrder extends SwatDBDataObject
 		$this->registerInternalProperty('payment_method',
 			SwatDBClassMap::get('StoreOrderPaymentMethod'), true);
 
+		$this->registerInternalProperty('shipping_type',
+			SwatDBClassMap::get('StoreOrderShippingType'), true);
+
 		$this->registerInternalProperty('locale',
 			SwatDBClassMap::get('StoreLocale'), true);
 
@@ -355,6 +358,7 @@ class StoreOrder extends SwatDBDataObject
 			'shipping_address',
 			'billing_address',
 			'payment_method',
+			'shipping_type',
 			'items',
 		);
 	}
