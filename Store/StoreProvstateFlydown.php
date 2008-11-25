@@ -27,8 +27,9 @@ class StoreProvstateFlydown extends SwatFlydown
 	{
 		parent::process();
 
-		if ($this->db !== null && $this->country !== null)
-			$this->validate();
+		if ($this->db !== null && $this->country !== null &&
+			$this->value !== null)
+				$this->validate();
 	}
 
 	// }}}
