@@ -49,6 +49,7 @@ class StoreOrderShippingType extends SwatDBDataObject
 	{
 		parent::init();
 		$this->table = 'OrderShippingType';
+		$this->id_field = 'integer:id';
 	}
 
 	// }}}
