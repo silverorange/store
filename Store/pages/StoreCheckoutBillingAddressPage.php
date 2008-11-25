@@ -140,6 +140,8 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 		$provstate = $this->ui->getWidget('billing_address_provstate');
 
 		$country->process();
+		$provstate->country = $country->value;
+		$provstate->setDatabase($this->app->db);
 		$provstate->process();
 
 		if ($provstate->value === 'other') {
