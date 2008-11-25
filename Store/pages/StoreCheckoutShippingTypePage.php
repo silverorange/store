@@ -95,12 +95,19 @@ class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
 
 	protected function buildShippingTypes()
 	{
-		$shipping_types = $this->getShippingTypes();
-		$shipping_type_flydown = $this->ui->getWidget('shipping_type');
-		foreach ($shipping_types as $shipping_type)
-			$shipping_type_flydown->addOption(
-				new SwatOption($shipping_type->shortname,
-				$shipping_type->title));
+		$types = $this->getShippingTypes();
+		$type_flydown = $this->ui->getWidget('shipping_type');
+
+		foreach ($types as $type) {
+			$title = $type->title;
+
+			if (strlen($type->note) > 0)
+				$title.= sprintf('<br /><span class="swat-note">%s</span>',
+					$type->note);
+
+			$type_flydown->addOption(
+				new SwatOption($type->shortname, $title));
+		}
 	}
 
 	// }}}
@@ -126,15 +133,19 @@ class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
 	 */
 	protected function getShippingTypes()
 	{
-		$sql = sprintf('select ShippingType.*
+		$sql = 'select ShippingType.*
 			from ShippingType
 			inner join ShippingTypeRegionBinding on
 				shipping_type = id and region = %s
-			order by displayorder, title',
+			order by displayorder, title';
+
+		$sql = sprintf($sql,
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
 		$wrapper = SwatDBClassMap::get('StoreShippingTypeWrapper');
-		return SwatDB::query($this->app->db, $sql, $wrapper);
+		$types = SwatDB::query($this->app->db, $sql, $wrapper);
+
+		return $types;
 	}
 
 	// }}}
