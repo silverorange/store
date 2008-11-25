@@ -231,10 +231,10 @@ class StoreAccountDetailsPage extends SiteAccountPage
 		$details_view = $this->ui->getWidget('account_details_view');
 		$details_view->data = $ds;
 
-		if ($account->phone === null)
+		if ($account->phone === null && $details_view->hasField('phone'))
 			$details_view->getField('phone')->visible = false;
 
-		if ($account->company === null)
+		if ($account->company === null && $details_view->hasField('company'))
 			$details_view->getField('company')->visible = false;
 	}
 
