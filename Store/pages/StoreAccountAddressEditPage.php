@@ -147,6 +147,13 @@ class StoreAccountAddressEditPage extends SiteAccountPage
 	}
 
 	// }}}
+	// {{{ protected function validate()
+
+	protected function validate()
+	{
+	}
+
+	// }}}
 	// {{{ private function addMessage()
 
 	private function addMessage($text, $address)
