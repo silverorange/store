@@ -24,15 +24,14 @@ class StoreImage extends SiteImage
 	// }}}
 	// {{{ public function hasOriginal()
 
+	/**
+	 * Whether dimension exists for this image
+	 *
+ 	 * @deprecated Use {@link SiteImage::hasDimension()} instead.
+	 */
 	public function hasOriginal()
 	{
 		return false;
-
-		/*
-		TODO: handle this without stating files
-		$filename = $this->getFilePath('original');
-		return (file_exists($filename));
-		*/
 	}
 
 	// }}}
