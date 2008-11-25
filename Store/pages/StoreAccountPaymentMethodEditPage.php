@@ -63,10 +63,17 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 		$this->ui = new SwatUI();
 		$this->ui->loadFromXML($this->ui_xml);
 
+		$this->initInternal();
+		$this->ui->init();
+	}
+
+	// }}}
+	// {{{ protected function initInternal()
+
+	protected function initInternal()
+	{
 		$form = $this->ui->getWidget('edit_form');
 		$form->action = $this->source;
-
-		$this->ui->init();
 	}
 
 	// }}}
