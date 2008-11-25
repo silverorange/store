@@ -244,6 +244,7 @@ class StoreProductImagePage extends StorePage
 		if ($this->image->hasDimension('huge')) {
 			$download_link = new SwatToolLink();
 			$download_link->link = $this->image->getURI('huge');
+			$download_link->id = 'huge_link';
 			$download_link->title = Store::_('Download High Resolution Image');
 			$download_link->display();
 		}
