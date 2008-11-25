@@ -230,11 +230,6 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 		$form = $this->ui->getWidget('edit_form');
 		$form->action = $this->source;
 
-		$type_where_clause = '1 = 1';
-		$type_join_clause = sprintf('inner join PaymentTypeRegionBinding on '.
-			'payment_type = id and region = %s',
-			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
-
 		if (!$form->isProcessed()) {
 			if ($this->id === null) {
 				$this->ui->getWidget('card_fullname')->value =
@@ -265,21 +260,59 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 			$this->ui->getWidget('card_number_preview')->visible = false;
 		}
 
-		$type_flydown = $this->ui->getWidget('payment_type');
-		$types_sql = sprintf('select id, title from PaymentType
-			%s where %s order by title',
-			$type_join_clause, $type_where_clause);
-
-		$wrapper = SwatDBClassMap::get('StorePaymentTypeWrapper');
-		$types = SwatDB::query($this->app->db, $types_sql, $wrapper);
-		foreach ($types as $type)
-			$type_flydown->addOption(
-				new SwatOption($type->id, $type->title));
+		$this->buildPaymentTypes();
 
 		$this->layout->startCapture('content');
 		$this->ui->display();
+		$this->layout->endCapture();
+	}
+
+	// }}}
+	// {{{ protected function buildPaymentTypes()
+
+	protected function buildPaymentTypes()
+	{
+		$types = $this->getPaymentTypes();
+		$type_flydown = $this->ui->getWidget('payment_type');
+
+		foreach ($types as $type) {
+			if (strlen($type->note) > 0)
+				$title = sprintf('%s<br /><span class="swat-note">%s</span>',
+					$type->title, $type->note);
+			else
+				$title = $type->title;
+
+			$type_flydown->addOption(
+				new SwatOption($type->id, $title, 'text/xml'));
+		}
+
+		$this->layout->startCapture('content');
 		Swat::displayInlineJavaScript($this->getInlineJavaScript($types));
 		$this->layout->endCapture();
+	}
+
+	// }}}
+	// {{{ protected function getPaymentTypes()
+
+	/**
+	 * Gets available payment types for new payment methods
+	 *
+	 * @return StorePaymentTypeWrapper
+	 */
+	protected function getPaymentTypes()
+	{
+		$sql = 'select PaymentType.* from PaymentType
+			inner join PaymentTypeRegionBinding on
+				payment_type = id and region = %s
+			order by displayorder, title';
+
+		$sql = sprintf($sql,
+			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+
+		$wrapper = SwatDBClassMap::get('StorePaymentTypeWrapper');
+		$types = SwatDB::query($this->app->db, $sql, $wrapper);
+
+		return $types;
 	}
 
 	// }}}
