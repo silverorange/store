@@ -120,52 +120,6 @@ class StoreAccountAddressEditPage extends SiteAccountPage
 	}
 
 	// }}}
-	// {{{ protected function validate()
-
-	protected function validate()
-	{
-		$provstate = $this->ui->getWidget('provstate');
-		$country = $this->ui->getWidget('country');
-		$postal_code = $this->ui->getWidget('postal_code');
-
-		if ($country->value !== null) {
-			$country_title = SwatDB::queryOne($this->app->db,
-				sprintf('select title from Country where id = %s',
-				$this->app->db->quote($country->value)));
-		} else {
-			$country_title = null;
-		}
-
-		if ($provstate->value !== null && $provstate->value !== 'other') {
-			// validate provstate by country
-			$sql = sprintf('select count(id) from ProvState
-				where id = %s and country = %s',
-				$this->app->db->quote($provstate->value, 'integer'),
-				$this->app->db->quote($country->value, 'text'));
-
-			$count = SwatDB::queryOne($this->app->db, $sql);
-
-			if ($count == 0) {
-				if ($country_title === null) {
-					$message_content = Store::_('The selected %s is '.
-						'not a province or state of the selected country.');
-				} else {
-					$message_content = sprintf(Store::_('The selected '.
-						'%%s is not a province or state of the selected '.
-						'country %s%s%s.'),
-						'<strong>', $country_title, '</strong>');
-				}
-
-				$message = new SwatMessage($message_content,
-					SwatMessage::ERROR);
-
-				$message->content_type = 'text/xml';
-				$provstate->addMessage($message);
-			}
-		}
-	}
-
-	// }}}
 	// {{{ protected function updateAddress()
 
 	protected function updateAddress(StoreAccountAddress $address)
@@ -218,6 +172,8 @@ class StoreAccountAddressEditPage extends SiteAccountPage
 		$provstate = $this->ui->getWidget('provstate');
 
 		$country->process();
+		$provstate->country = $country->value;
+		$provstate->setDatabase($this->app->db);
 		$provstate->process();
 
 		if ($provstate->value === 'other') {
