@@ -269,13 +269,15 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		echo SwatString::minimizeEntities($this->payment_type->title);
 
 		$display_card = false;
-		if ($this->gpg_id !== null && $passphrase !== null) {
+		if ($this->payment_type->credit_card &&
+			$this->gpg_id !== null && $passphrase !== null) {
 			$display_card = true;
 			$card_number = $this->getCardNumber($passphrase);
 			$span_tag->setContent(StorePaymentType::formatCardNumber(
 				$card_number));
 
-		} elseif ($this->card_number_preview !== null) {
+		} elseif ($this->payment_type->credit_card &&
+			$this->card_number_preview !== null) {
 			$display_card = true;
 			$span_tag->setContent(StorePaymentType::formatCardNumber(
 				$this->card_number_preview,
