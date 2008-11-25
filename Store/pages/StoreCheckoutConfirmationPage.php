@@ -526,6 +526,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		$this->buildBasicInfo($order);
 		$this->buildBillingAddress($order);
 		$this->buildShippingAddress($order);
+		$this->buildShippingType($order);
 		$this->buildPaymentMethod($order);
 	}
 
@@ -623,6 +624,29 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 		$this->ui->getWidget('payment_method')->content = ob_get_clean();
 		$this->ui->getWidget('payment_method')->content_type = 'text/xml';
+	}
+
+	// }}}
+	// {{{ protected function buildShippingType()
+
+	protected function buildShippingType($order)
+	{
+		if (!$this->ui->hasWidget('shipping_type'))
+			return;
+
+		ob_start();
+
+		if ($order->shipping_type instanceof StoreOrderShippingType) {
+			$order->shipping_type->display();
+		} else {
+			$span_tag = new SwatHtmlTag('span');
+			$span_tag->class = 'swat-none';
+			$span_tag->setContent(Store::_('<none>'));
+			$span_tag->display();
+		}
+
+		$this->ui->getWidget('shipping_type')->content = ob_get_clean();
+		$this->ui->getWidget('shipping_type')->content_type = 'text/xml';
 	}
 
 	// }}}
