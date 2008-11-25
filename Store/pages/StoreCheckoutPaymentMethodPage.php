@@ -351,11 +351,19 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	protected function buildPaymentTypes()
 	{
-		$payment_types = $this->getPaymentTypes();
-		$payment_type_flydown = $this->ui->getWidget('payment_type');
-		foreach ($payment_types as $payment_type)
-			$payment_type_flydown->addOption(
-				new SwatOption($payment_type->id, $payment_type->title));
+		$types = $this->getPaymentTypes();
+		$type_flydown = $this->ui->getWidget('payment_type');
+
+		foreach ($types as $type) {
+			if (strlen($type->note) > 0)
+				$title = sprintf('%s<br /><span class="swat-note">%s</span>',
+					$type->title, $type->note);
+			else
+				$title = $type->title;
+
+			$type_flydown->addOption(
+				new SwatOption($type->id, $title, 'text/xml'));
+		}
 	}
 
 	// }}}
