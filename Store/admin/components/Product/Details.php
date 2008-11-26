@@ -1164,7 +1164,7 @@ class StoreProductDetails extends AdminIndex
 
 	private function getProductReviewsTableModel($view)
 	{
-		$sql = 'select id, description, createdate, fullname, email, enabled
+		$sql = 'select *
 			from ProductReview where product = %s order by createdate';
 
 		$sql = sprintf($sql, $this->app->db->quote($this->id, 'integer'));
