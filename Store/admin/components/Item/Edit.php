@@ -149,18 +149,29 @@ class StoreItemEdit extends AdminDBEdit
 
 	protected function updateItem()
 	{
-		$values = $this->ui->getValues(array('description', 'sku', 'status',
-			'part_unit', 'part_count', 'singular_unit', 'plural_unit',
-			'sale_discount'));
+		$values = $this->ui->getValues(array(
+			'description',
+			'sku',
+			'status',
+			'part_unit',
+			'part_count',
+			'singular_unit',
+			'plural_unit',
+			'sale_discount',
+			'minimum_quantity',
+			'minimum_multiple',
+			));
 
-		$this->item->sku           = $values['sku'];
-		$this->item->description   = $values['description'];
-		$this->item->part_unit     = $values['part_unit'];
-		$this->item->part_count    = $values['part_count'];
-		$this->item->singular_unit = $values['singular_unit'];
-		$this->item->plural_unit   = $values['plural_unit'];
-		$this->item->sale_discount = $values['sale_discount'];
-		$this->item->product       = $this->product;
+		$this->item->sku              = $values['sku'];
+		$this->item->description      = $values['description'];
+		$this->item->part_unit        = $values['part_unit'];
+		$this->item->part_count       = $values['part_count'];
+		$this->item->singular_unit    = $values['singular_unit'];
+		$this->item->plural_unit      = $values['plural_unit'];
+		$this->item->sale_discount    = $values['sale_discount'];
+		$this->item->minimum_quantity = $values['minimum_quantity'];
+		$this->item->minimum_multiple = $values['minimum_multiple'];
+		$this->item->product          = $this->product;
 		$this->item->setStatus(
 			StoreItemStatusList::statuses()->getById($values['status']));
 
