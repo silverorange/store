@@ -2,7 +2,6 @@
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
 	<widget class="StoreSearchDisclosure" id="search_disclosure">
-		<property name="title" translatable="yes">Advanced</property>
 		<property name="open" type="boolean">false</property>
 		<property name="keywords_id">keywords</property>
 		<property name="form_action">search</property>
