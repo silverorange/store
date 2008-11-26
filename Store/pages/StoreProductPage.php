@@ -907,6 +907,7 @@ class StoreProductPage extends StorePage
 				$category = new $category_class();
 				$category->id = $entry->id;
 				$category->setDatabase($this->app->db);
+				$category->setRegion($this->app->getRegion());
 
 				foreach ($category->related_articles as $article)
 					$related_articles[$article->id] = $article;

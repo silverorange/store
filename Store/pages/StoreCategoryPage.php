@@ -332,6 +332,7 @@ class StoreCategoryPage extends StorePage
 
 	protected function displayRelatedArticles(StoreCategory $category)
 	{
+		$category->setRegion($this->app->getRegion());
 		if (count($category->related_articles) > 0) {
 			$div = new SwatHtmlTag('div');
 			$div->id = 'related_articles';
