@@ -18,11 +18,6 @@ class StoreCategoryImageDelete extends AdminDBDelete
 {
 	// {{{ private properties
 
-	protected $ui_xml = 'Store/admin/components/Product/image-delete.xml';
-
-	// }}}
-	// {{{ private properties
-
 	/**
 	 * @var StoreCategory
 	 */
@@ -35,9 +30,8 @@ class StoreCategoryImageDelete extends AdminDBDelete
 
 	protected function initInternal()
 	{
+		$this->ui_xml = 'Store/admin/components/Product/image-delete.xml';
 		parent::initInternal();
-
-		$this->ui_xml = $this->ui_xml;
 
 		$id = SiteApplication::initVar('id');
 
