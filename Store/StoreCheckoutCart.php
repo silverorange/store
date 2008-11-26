@@ -142,7 +142,7 @@ abstract class StoreCheckoutCart extends StoreCart
 					$entry->item->minimum_quantity;
 
 				if ($remainder !== 0) {
-					$entry->setQuantity($entry->getQuantity() + 
+					$entry->setQuantity($entry->getQuantity() +
 						$entry->item->minimum_quantity - $remainder);
 
 					$message = sprintf('“%s” item #%s is only available in '.
