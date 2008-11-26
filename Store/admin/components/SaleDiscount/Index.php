@@ -12,6 +12,15 @@ require_once 'SwatDB/SwatDB.php';
  */
 class StoreSaleDiscountIndex extends AdminIndex
 {
+	// {{{ protected properties
+
+	/**
+	 * @var string
+	 */
+	protected $ui_xml = 'Store/admin/components/SaleDiscount/index.xml';
+
+	// }}}
+
 	// init phase
 	// {{{ protected function initInternal()
 
@@ -20,7 +29,7 @@ class StoreSaleDiscountIndex extends AdminIndex
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML(dirname(__FILE__).'/index.xml');
+		$this->ui->loadFromXML($this->ui_xml);
 	}
 
 	// }}}
