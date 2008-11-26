@@ -335,6 +335,9 @@ class StoreProductIndex extends AdminSearch
 
 		$this->ui->getWidget('toolbar')->visible = true;
 
+		$this->ui->getWidget('search_items_disclosure')->open =
+			($this->ui->getWidget('search_items')->value != '');
+
 		$category_flydown = $this->ui->getWidget('search_category');
 
 		$tree = $category_flydown->getTree();
