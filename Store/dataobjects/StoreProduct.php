@@ -499,6 +499,8 @@ class StoreProduct extends SwatDBDataObject
 	 * Loads related articles
 	 *
 	 * Related articles are ordered by the article table's display order.
+	 *
+	 * @see StoreArticle::loadRelatedProducts()
 	 */
 	protected function loadRelatedArticles()
 	{

@@ -171,6 +171,40 @@ class StoreArticle extends SiteArticle
 	}
 
 	// }}}
+	// {{{ protected function loadRelatedProducts()
+
+	/**
+	 * Loads related products
+	 *
+	 * Related products are ordered by the product table's display order.
+	 *
+	 * @see StoreProduct::loadRelatedArticles()
+	 */
+	protected function loadRelatedProducts()
+	{
+		$sql = 'select Product.*
+			from Product
+				inner join ArticleProductBinding
+					on Category.id = ArticleProductBinding.product
+						and ArticleProductBinding.article = %s
+			where Product.id in
+				(select Product from VisibleProductView
+				where region = %s or region is null)
+			order by Product.displayorder asc';
+
+		if ($this->region === null)
+			throw new StoreException('Region not set on article dataobject; '.
+				'call the setRegion() method.');
+
+		$sql = sprintf($sql,
+			$this->db->quote($this->id, 'integer'),
+			$this->db->quote($this->region->id, 'integer'));
+
+		$wrapper = SwatDBClassMap::get('StoreProductWrapper');
+		return SwatDB::query($this->db, $sql, $wrapper);
+	}
+
+	// }}}
 	// {{{ protected function loadSubArticles()
 
 	/**
