@@ -30,7 +30,7 @@
 		<widget class="SwatFrame" id="category_image_frame">
 			<property name="classes[]">image-frame</property>
 			<widget class="SwatImageDisplay" id="image">
-				<property name="image">../images/elements/category-placeholder.png</property>
+				<property name="image">../images/elements/category-place-holder.png</property>
 				<property name="width" type="integer">60</property>
 				<property name="height" type="integer">60</property>
 				<property name="alt" translatable="yes">No Image Available</property>
