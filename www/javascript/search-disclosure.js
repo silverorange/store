@@ -1,25 +1,22 @@
-function StoreSearchDisclosure(id, open, entry, keywords_id, panel_height)
+function StoreSearchDisclosure(id, open, entry, keywords_id, panel_height,
+	title)
 {
 	this.search_controls = document.getElementById(id + '_search_controls');
-	this.fade_animation = null;
-	this.entry = entry;
-	this.keywords_id = keywords_id;
-	this.initial_open = open;
+	this.fade_animation  = null;
+	this.entry           = entry;
+	this.keywords_id     = keywords_id;
+	this.initial_open    = open;
+	this.title           = title;
+
 	if (panel_height) {
 		this.panel_height = panel_height;
 	} else {
 		this.panel_height = 13; // default height in ems
 	}
+
 	StoreSearchDisclosure.superclass.constructor.call(this, id, open);
 	YAHOO.util.Dom.removeClass(this.div.firstChild, 'no-js');
 }
-
-/**
- * Panel height in ems
- *
- * @var Number
- */
-StoreSearchDisclosure.panel_height = 14;
 
 /**
  * Preload images
@@ -31,14 +28,6 @@ StoreSearchDisclosure.down_image.src =
 StoreSearchDisclosure.up_image = new Image();
 StoreSearchDisclosure.up_image.src =
 	'packages/store/images/search-disclosure-arrow-up.png';
-
-/**
- * Text to show on the disclosure link instead of an image
- *
- * If no text is specified, an img tag is displayed. Otherwise, the specified
- * text is displayed. Appropriate CSS styles are applied for either case.
- */
-StoreSearchDisclosure.advanced_text  = '';
 
 YAHOO.lang.extend(StoreSearchDisclosure, SwatDisclosure, {
 
@@ -73,9 +62,8 @@ drawDisclosureLink: function()
 	this.anchor = document.createElement('a');
 	this.anchor.href = '#';
 
-	if (StoreSearchDisclosure.advanced_text.length > 0) {
-		this.anchor.appendChild(document.createTextNode(
-			StoreSearchDisclosure.advanced_text));
+	if (this.title.length > 0) {
+		this.anchor.appendChild(document.createTextNode(this.title));
 	} else {
 		this.img = document.createElement('img');
 		this.img.src = StoreSearchDisclosure.down_image.src;
