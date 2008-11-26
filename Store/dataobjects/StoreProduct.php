@@ -502,18 +502,32 @@ class StoreProduct extends SwatDBDataObject
 	 *
 	 * @see StoreArticle::loadRelatedProducts()
 	 */
-	protected function loadRelatedArticles()
+	protected function loadRelatedArticles(StoreRegion $region = null)
 	{
-		$sql = 'select Article.*, getArticlePath(id) as path
+		if ($region === null)
+			$region = $this->region;
+
+		if ($region === null)
+			throw new StoreException(
+				'$region must be specified unless setRegion() is called '.
+				'beforehand.');
+
+		$sql = 'select Article.*, getArticlePath(article.id) as path
 			from Article
 				inner join ArticleProductBinding
 					on Article.id = ArticleProductBinding.article
 						and ArticleProductBinding.product = %s
+				inner join EnabledArticleView
+					on Article.id = EnabledArticleView.id
+						and EnabledArticleView.region = %s
 			order by Article.displayorder asc';
 
-		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
-		$wrapper = SwatDBClassMap::get('SiteArticleWrapper');
-		return SwatDB::query($this->db, $sql, $wrapper);
+		$sql = sprintf($sql,
+			$this->db->quote($this->id, 'integer'),
+			$this->db->quote($region->id, 'integer'));
+
+		return SwatDB::query($this->db, $sql,
+			SwatDBClassMap::get('SiteArticleWrapper'));
 	}
 
 	// }}}
