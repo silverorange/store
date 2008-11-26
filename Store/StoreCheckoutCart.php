@@ -115,6 +115,53 @@ abstract class StoreCheckoutCart extends StoreCart
 	}
 
 	// }}}
+	// {{{ protected function validateCombinedEntry()
+
+	protected function validateCombinedEntry(StoreCartEntry $entry)
+	{
+		$valid = parent::validateCombinedEntry($entry);
+
+		// Check minimum quantity
+		if ($entry->item->minimum_quantity > 1) {
+			if ($entry->getQuantity() < $entry->item->minimum_quantity) {
+				$entry->setQuantity($entry->item->minimum_quantity);
+
+				$message = sprintf('“%s” item #%s is only available in a '.
+					'minimum quantity of %s. The quantity in your cart has '.
+					'been increased to %s.',
+					$entry->item->product->title,
+					$entry->item->sku,
+					$entry->item->minimum_quantity,
+					$entry->getQuantity());
+
+				$this->addMessage(new SwatMessage($message));
+			}
+
+			if ($entry->item->minimum_multiple) {
+				$remainder = $entry->getQuantity() %
+					$entry->item->minimum_quantity;
+
+				if ($remainder !== 0) {
+					$entry->setQuantity($entry->getQuantity() + 
+						$entry->item->minimum_quantity - $remainder);
+
+					$message = sprintf('“%s” item #%s is only available in '.
+						'multiples of %s. The quantity in your cart has been '.
+						'increased to %s.',
+						$entry->item->product->title,
+						$entry->item->sku,
+						$entry->item->minimum_quantity,
+						$entry->getQuantity());
+
+					$this->addMessage(new SwatMessage($message));
+				}
+			}
+		}
+
+		return $valid;
+	}
+
+	// }}}
 	// {{{ protected function restoreAbandonedCartEntries()
 
 	/**

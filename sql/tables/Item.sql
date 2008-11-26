@@ -11,6 +11,8 @@ create table Item (
 	part_count integer not null default 1,
 	singular_unit varchar(100),
 	plural_unit varchar(100),
+	minimum_quantity int not null default 1,
+	minimum_multiple boolean not null default false,
 	primary key (id)
 );
 
