@@ -4,6 +4,16 @@
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="index_frame">
 		<property name="title">Keyword Searches</property>
+		<widget class="SwatForm" id="search_form">
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Limit Results to</property>
+				<widget class="SwatFlydown" id="search_month" />
+				<widget class="SwatFlydown" id="search_year" />
+			</widget>
+			<widget class="SwatButton" id="submit_button">
+				<property name="title" translatable="yes">Search</property>
+			</widget>
+		</widget>
 		<widget class="SwatForm" id="index_form">
 			<widget class="SwatGroupingFormField">
 				<property name="title">Top Searches With Results</property>
