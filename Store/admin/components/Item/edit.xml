@@ -28,7 +28,22 @@
 				</widget>
 			</widget>
 			<widget class="SwatFieldset">
-				<property name="title" translatable="yes">Units</property>
+				<property name="title" translatable="yes">Quantity &amp; Units</property>
+				<widget class="SwatFormField">
+					<property name="title" translatable="yes">Minimum Quantity</property>
+					<property name="note" translatable="yes">Require that a quantity of at least this many must be ordered.</property>
+					<widget class="SwatIntegerEntry" id="minimum_quantity">
+						<property name="value" type="integer">1</property>
+						<property name="required" type="boolean">true</property>
+					</widget>
+				</widget>
+				<widget class="SwatFormField">
+					<property name="title" translatable="yes">Minimum Multiple</property>
+					<property name="note" translatable="yes">Require that only multiples of the minimum quantity can be ordered.</property>
+					<widget class="SwatCheckbox" id="minimum_multiple">
+						<property name="value" type="boolean">true</property>
+					</widget>
+				</widget>
 				<widget class="SwatFormField">
 					<property name="title" translatable="yes">Singular Unit</property>
 					<widget class="SwatEntry" id="singular_unit">

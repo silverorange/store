@@ -21,7 +21,7 @@ require_once 'Store/admin/components/Item/include/'.
  * Quantity discounts tool
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2008 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemQuantityDiscount extends AdminIndex
@@ -122,7 +122,7 @@ class StoreItemQuantityDiscount extends AdminIndex
 		return 'select sku, product, description,
 				-- regions select piece goes here
 				%s
-				1 as quantity
+				minimum_quantity as quantity
 			from Item
 				-- regions join piece goes here
 				%s
