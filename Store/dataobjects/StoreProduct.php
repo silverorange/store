@@ -493,6 +493,28 @@ class StoreProduct extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ protected function loadRelatedArticles()
+
+	/**
+	 * Loads related articles
+	 *
+	 * Related articles are ordered by the article table's display order.
+	 */
+	protected function loadRelatedArticles()
+	{
+		$sql = 'select Article.*, getArticlePath(id) as path
+			from Article
+				inner join ArticleProductBinding
+					on Article.id = ArticleProductBinding.article
+						and ArticleProductBinding.product = %s
+			order by Article.displayorder asc';
+
+		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+		$wrapper = SwatDBClassMap::get('SiteArticleWrapper');
+		return SwatDB::query($this->db, $sql, $wrapper);
+	}
+
+	// }}}
 	// {{{ protected function loadPopularProducts()
 
 	/**

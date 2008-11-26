@@ -879,20 +879,40 @@ class StoreProductPage extends StorePage
 	// {{{ protected function getRelatedArticles()
 
 	/**
-	 * Gets related articles from the direct parent category of the product
-	 * on this page
+	 * Gets related articles from the product, and combines them with the
+	 * related articles from the direct parent category of the product
+	 * on this page, as well as any twigs.
 	 */
 	protected function getRelatedArticles()
 	{
 		if ($this->related_articles === null) {
+			// product related articles
+			$related_articles = array();
+			foreach ($this->product->related_articles as $article)
+				$related_articles[$article->id] = $article;
+
+			// add category and twig related articles
 			$last_entry = $this->path->getLast();
-			if ($last_entry !== null) {
+			$entries_to_relate = array();
+			foreach ($this->path as $entry) {
+				if ($entry->twig && $entry !== $last_entry)
+					$entries_to_relate[] = $entry;
+			}
+
+			if ($last_entry !== null)
+				$entries_to_relate[] = $last_entry;
+
+			foreach ($entries_to_relate as $entry) {
 				$category_class = SwatDBClassMap::get('StoreCategory');
 				$category = new $category_class();
-				$category->id = $last_entry->id;
+				$category->id = $entry->id;
 				$category->setDatabase($this->app->db);
-				$this->related_articles = $category->related_articles;
+
+				foreach ($category->related_articles as $article)
+					$related_articles[$article->id] = $article;
 			}
+
+			$this->related_articles = $related_articles;
 		}
 		return $this->related_articles;
 	}
