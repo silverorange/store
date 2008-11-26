@@ -32,6 +32,14 @@ StoreSearchDisclosure.up_image = new Image();
 StoreSearchDisclosure.up_image.src =
 	'packages/store/images/search-disclosure-arrow-up.png';
 
+/**
+ * Text to show on the disclosure link instead of an image
+ *
+ * If no text is specified, an img tag is displayed. Otherwise, the specified
+ * text is displayed. Appropriate CSS styles are applied for either case.
+ */
+StoreSearchDisclosure.advanced_text  = '';
+
 YAHOO.lang.extend(StoreSearchDisclosure, SwatDisclosure, {
 
 init: function()
@@ -64,9 +72,15 @@ drawDisclosureLink: function()
 
 	this.anchor = document.createElement('a');
 	this.anchor.href = '#';
-	this.img = document.createElement('img');
-	this.img.src = StoreSearchDisclosure.down_image.src;
-	this.anchor.appendChild(this.img);
+
+	if (StoreSearchDisclosure.advanced_text.length > 0) {
+		this.anchor.appendChild(document.createTextNode(
+			StoreSearchDisclosure.advanced_text));
+	} else {
+		this.img = document.createElement('img');
+		this.img.src = StoreSearchDisclosure.down_image.src;
+		this.anchor.appendChild(this.img);
+	}
 
 	if (this.opened)
 		YAHOO.util.Dom.addClass(this.anchor, 'swat-disclosure-anchor-opened');
@@ -88,10 +102,13 @@ open: function()
 	if (this.semaphore)
 		return;
 
-	this.img.src = StoreSearchDisclosure.up_image.src;
+	if (this.img) {
+		this.img.src = StoreSearchDisclosure.up_image.src;
+	}
 
-	if (this.loading_container)
+	if (this.loading_container) {
 		this.loadSearchPanel();
+	}
 
 	StoreSearchDisclosure.superclass.open.call(this);
 	this.closeSearchControls();
@@ -99,7 +116,10 @@ open: function()
 
 close: function()
 {
-	this.img.src = StoreSearchDisclosure.down_image.src;
+	if (this.img) {
+		this.img.src = StoreSearchDisclosure.down_image.src;
+	}
+
 	StoreSearchDisclosure.superclass.close.call(this);
 	this.openSearchControls();
 },
@@ -110,12 +130,16 @@ openWithAnimation: function()
 		return;
 
 
-	if (this.loading_container)
+	if (this.loading_container) {
 		this.loadSearchPanel();
+	}
 
 	var time = 0.5;
 
-	this.img.src = StoreSearchDisclosure.up_image.src;
+	if (this.img) {
+		this.img.src = StoreSearchDisclosure.up_image.src;
+	}
+
 	YAHOO.util.Dom.removeClass(this.div, 'swat-disclosure-control-closed');
 	YAHOO.util.Dom.addClass(this.div, 'swat-disclosure-control-opened');
 
@@ -131,7 +155,7 @@ openWithAnimation: function()
 	this.animate_div.firstChild.style.height = this.panel_height + 'em';
 
 	var attributes = { height: {
-		to: this.panel_height,
+		to:   this.panel_height,
 		from: 0,
 		unit: 'em'
 	}};
@@ -140,8 +164,8 @@ openWithAnimation: function()
 		YAHOO.util.Easing.easeOut);
 
 	var attributes = { top: {
+		to:   0,
 		from: -this.panel_height,
-		to: 0,
 		unit: 'em'
 	}};
 
@@ -167,7 +191,10 @@ closeWithAnimation: function()
 
 	var time = 0.25
 
-	this.img.src = StoreSearchDisclosure.down_image.src;
+	if (this.img) {
+		this.img.src = StoreSearchDisclosure.down_image.src;
+	}
+
 	YAHOO.util.Dom.removeClass(this.anchor, 'swat-disclosure-anchor-opened');
 	YAHOO.util.Dom.addClass(this.anchor, 'swat-disclosure-anchor-closed');
 
@@ -177,8 +204,8 @@ closeWithAnimation: function()
 	this.animate_div.style.position = 'relative';
 
 	var attributes = { height: {
+		to:   0,
 		from: this.panel_height,
-		to: 0,
 		unit: 'em'
 	}};
 
@@ -186,8 +213,8 @@ closeWithAnimation: function()
 		YAHOO.util.Easing.easeOut);
 
 	var attributes = { top: {
+		to:   -this.panel_height,
 		from: 0,
-		to: -this.panel_height,
 		unit: 'em'
 	}};
 
