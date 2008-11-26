@@ -152,7 +152,6 @@ class StoreSearchDisclosure extends SwatDisclosure
 		$span = new SwatHtmlTag('span');
 		$span->id = $this->id.'_span';
 		$span->setContent('');
-		$span->title = $this->title;
 		return $span;
 	}
 
@@ -185,9 +184,17 @@ class StoreSearchDisclosure extends SwatDisclosure
 	protected function getInlineJavaScript()
 	{
 		$open = ($this->open) ? 'true' : 'false';
-		return sprintf("var %s_obj = new %s('%s', %s, %s_entry_obj, '%s', %s);",
-			$this->id, $this->getJavaScriptClass(), $this->id, $open,
-			$this->id, $this->keywords_id, $this->panel_height);
+		$title = SwatString::quoteJavaScriptString($this->title);
+		return sprintf(
+			"var %s_obj = new %s('%s', %s, %s_entry_obj, '%s', %s, %s);",
+			$this->id,
+			$this->getJavaScriptClass(),
+			$this->id,
+			$open,
+			$this->id,
+			$this->keywords_id,
+			$this->panel_height,
+			$title);
 	}
 
 	// }}}
