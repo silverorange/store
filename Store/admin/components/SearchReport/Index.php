@@ -20,6 +20,11 @@ class StoreSearchReportIndex extends AdminIndex
 	const MAX_RESULTS = 50;
 
 	// }}}
+	// {{{ protected properties
+
+	protected $ui_xml = 'Store/admin/components/SearchReport/index.xml';
+
+	// }}}
 
 	// init phase
 	// {{{ protected function initInternal()
@@ -28,7 +33,7 @@ class StoreSearchReportIndex extends AdminIndex
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML(dirname(__FILE__).'/index.xml');
+		$this->ui->loadFromXML($this->ui_xml);
 
 		$date = new SwatDate();
 		$months = array();
