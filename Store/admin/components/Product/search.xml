@@ -23,6 +23,15 @@
 				<widget class="SwatEntry" id="search_item">
 					<property name="size" type="integer">10</property>
 				</widget>
+				<widget class="SwatDisclosure" id="search_items_disclosure">
+					<property name="title" translatable="yes">search for multiple skus</property>
+					<widget class="SwatFormField">
+						<property name="note" translatable="yes">separate skus with a comma or space</property>
+						<widget class="SwatTextarea" id="search_items">
+							<property name="rows" type="integer">2</property>
+						</widget>
+					</widget>
+				</widget>
 			</widget>
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Category</property>

@@ -192,10 +192,22 @@ class StoreProductSearch
 		$clause->value = $this->ui->getWidget('search_item')->value;
 		$clause->operator = $this->ui->getWidget('search_item_op')->value;
 		$item_where = $clause->getClause($this->db, '');
-
 		if ($item_where != '') {
 			$where.= sprintf(' and Product.id in (
 				select ItemView.product from ItemView where %s)', $item_where);
+		}
+
+		// multiple items
+		$value = $this->ui->getWidget('search_items')->value;
+		$items = array();
+		if ($value != '') {
+			$items = preg_split('/[ ,\s]/u', $value, -1, PREG_SPLIT_NO_EMPTY);
+			if (count($items) > 0) {
+				$where.= sprintf(' and Product.id in (
+					select ItemView.product from ItemView
+					where ItemView.sku in (%s))',
+					$this->db->implodeArray($items, 'text'));
+			}
 		}
 
 		return $where;
