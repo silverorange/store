@@ -65,21 +65,24 @@
 			</widget>
 			<widget class="SwatFieldset" id="availability_fieldset">
 				<property name="title" translatable="yes">Availability &amp; Pricing</property>
-				<widget class="SwatReplicableFieldset" id="price_replicator">
-					<widget class="SwatFormField">
-						<property name="title" translatable="yes">Enabled</property>
-						<widget class="SwatCheckbox" id="enabled">
-							<property name="value" type="boolean">true</property>
+				<widget class="SwatDisplayableContainer" id="availability_wrapper">
+					<property name="classes[]>">clearfix</property>
+					<widget class="SwatReplicableFieldset" id="price_replicator">
+						<widget class="SwatFormField">
+							<property name="title" translatable="yes">Enabled</property>
+							<widget class="SwatCheckbox" id="enabled">
+								<property name="value" type="boolean">true</property>
+							</widget>
+						</widget>
+						<widget class="SwatFormField" id="price_field">
+							<property name="title" translatable="yes">Price</property>
+							<widget class="SwatMoneyEntry" id="price" />
 						</widget>
 					</widget>
-					<widget class="SwatFormField" id="price_field">
-						<property name="title" translatable="yes">Price</property>
-						<widget class="SwatMoneyEntry" id="price" />
+					<widget class="SwatContentBlock">
+						<property name="content" translatable="yes"><![CDATA[<div class="swat-note clearfix" id="pricing_note">The enabled checkbox must be set for the this item to appear on the site in that region. The enabled flag overrides all other item statuses. The price is required if the item is enabled in that region.</div>]]></property>
+						<property name="content_type">text/xml</property>
 					</widget>
-				</widget>
-				<widget class="SwatContentBlock">
-					<property name="content" translatable="yes"><![CDATA[<div class="swat-note clearfix" id="pricing_note">The enabled checkbox must be set for the this item to appear on the site in that region. The enabled flag overrides all other item statuses. The price is required if the item is enabled in that region.</div>]]></property>
-					<property name="content_type">text/xml</property>
 				</widget>
 				<widget class="SwatFormField" id="sale_discount_field">
 					<property name="title">Sale Discount</property>
