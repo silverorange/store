@@ -104,6 +104,20 @@ class StoreItem extends SwatDBDataObject
 	 */
 	public $plural_unit;
 
+	/**
+	 * Minimum quantity that can be ordered
+	 *
+	 * @var integer
+	 */
+	public $minimum_quantity;
+
+	/**
+	 * Whether ordering a multiple of minquantity is required
+	 *
+	 * @var boolean
+	 */
+	public $minimum_multiple;
+
 	// }}}
 	// {{{ protected properties
 
