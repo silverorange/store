@@ -122,8 +122,12 @@ class StoreProductDetails extends AdminIndex
 			$this->processItemsActions($view, $actions);
 			break;
 
+		case 'related_articles_view':
+			$this->processRelatedArticleActions($view, $actions);
+			break;
+
 		case 'product_reviews_view':
-			$this->processProductReviewsActions($view, $actions);
+			$this->processProductReviewActions($view, $actions);
 			break;
 		}
 	}
@@ -390,9 +394,39 @@ class StoreProductDetails extends AdminIndex
 	}
 
 	// }}}
-	// {{{ private function processProductReviewsActions()
+	// {{{ private function processRelatedArticleActions()
 
-	private function processProductReviewsActions($view, $actions)
+	private function processRelatedArticleActions($view, $actions)
+	{
+		$num = count($view->getSelection());
+		$message = null;
+
+		switch ($actions->selected->id) {
+		case 'related_article_remove':
+			$item_list = array();
+			foreach ($view->getSelection() as $item)
+				$item_list[] = $this->app->db->quote($item, 'integer');
+
+			$num = SwatDB::exec($this->app->db, sprintf('
+				delete from ArticleProductBinding
+				where product = %s and article in (%s)',
+				$this->app->db->quote($this->id, 'integer'),
+				implode(',', $item_list)));
+
+			$message = new SwatMessage(sprintf(Store::ngettext(
+				'One related article has been removed from this product.',
+				'%s related articles have been removed from this product.',
+				$num), SwatString::numberFormat($num)));
+		}
+
+		if ($message !== null)
+			$this->app->messages->add($message);
+	}
+
+	// }}}
+	// {{{ private function processProductReviewActions()
+
+	private function processProductReviewActions($view, $actions)
 	{
 		switch ($actions->selected->id) {
 		case 'product_reviews_delete':
@@ -449,6 +483,7 @@ class StoreProductDetails extends AdminIndex
 		$this->buildItems();
 		$this->buildProductImages();
 		$this->buildRelatedProducts();
+		$this->buildRelatedArticles();
 		$this->buildProductReviews();
 	}
 
@@ -479,6 +514,8 @@ class StoreProductDetails extends AdminIndex
 				return $this->getItemsTableModel($view);
 			case  'related_products_view':
 				return $this->getRelatedProductsTableModel($view);
+			case  'related_articles_view':
+				return $this->getRelatedArticlesTableModel($view);
 			case  'product_reviews_view':
 				return $this->getProductReviewsTableModel($view);
 		}
@@ -1141,6 +1178,46 @@ class StoreProductDetails extends AdminIndex
 		if (count($rs) == 0) {
 			$view->visible = false;
 			$this->ui->getWidget('related_products_footer')->visible = false;
+		}
+
+		return $rs;
+	}
+
+	// }}}
+
+	// build phase - related articles
+	// {{{ private function buildRelatedArticles()
+
+	private function buildRelatedArticles()
+	{
+		$toolbar = $this->ui->getWidget('related_articles_toolbar');
+		$view = $this->ui->getWidget('related_articles_view');
+		$this->buildCategoryToolBarLinks($toolbar);
+		$this->buildCategoryTableViewLinks($view);
+	}
+
+	// }}}
+	// {{{ private function getRelatedArticlesTableModel()
+
+	private function getRelatedArticlesTableModel(SwatTableView $view)
+	{
+		$sql = 'select Article.id,
+					Article.title
+				from Article
+				inner join ArticleProductBinding
+					on Article.id = ArticleProductBinding.article
+				where ArticleProductBinding.product = %s
+				order by %s';
+
+		$sql = sprintf($sql,
+			$this->app->db->quote($this->id, 'integer'),
+			$this->getOrderByClause($view, 'Article.title', 'Article'));
+
+		$rs = SwatDB::query($this->app->db, $sql);
+
+		if (count($rs) == 0) {
+			$index_form = $this->ui->getWidget('related_articles_form');
+			$index_form->visible = false;
 		}
 
 		return $rs;
