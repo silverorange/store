@@ -1,6 +1,7 @@
 <?php
 
 require_once 'SwatDB/SwatDBDataObject.php';
+require_once 'Store/dataobjects/StoreShippingRateWrapper.php';
 
 /**
  * A shiping type data object
@@ -51,6 +52,30 @@ class StoreShippingType extends SwatDBDataObject
 	public $displayorder;
 
 	// }}}
+	// {{{ protected properties
+
+	/**
+	 * The region to use when loading shipping rates
+	 *
+	 * @var StoreRegion
+	 * @see StoreShippingType::setRegion()
+	 */
+	protected $region = null;
+
+	// }}}
+	// {{{ public function setRegion()
+
+	/**
+	 * Sets the region to use when loading shipping rates
+	 *
+	 * @param StoreRegion $region the region to use.
+	 */
+	public function setRegion(StoreRegion $region)
+	{
+		$this->region = $region;
+	}
+
+	// }}}
 	// {{{ public function loadByShortname()
 
 	/**
@@ -61,23 +86,95 @@ class StoreShippingType extends SwatDBDataObject
 	public function loadByShortname($shortname)
 	{
 		$this->checkDB();
-		$row = null;
 
-		if ($this->table !== null) {
-			$sql = sprintf('select * from %s where shortname = %s',
-				$this->table,
-				$this->db->quote($shortname, 'text'));
+		$sql = sprintf('select id from ShippingType
+			where ShippingType.shortname = %s',
+			$this->db->quote($shortname, 'text'));
 
-			$rs = SwatDB::query($this->db, $sql, null);
-			$row = $rs->fetchRow(MDB2_FETCHMODE_ASSOC);
-		}
+		$id = SwatDB::queryOne($this->db, $sql);
 
-		if ($row === null)
+		if ($id === null)
 			return false;
 
-		$this->initFromRow($row);
-		$this->generatePropertyHashes();
-		return true;
+		return $this->load($id);
+	}
+
+	// }}}
+	// {{{ public function loadShippingRates(StoreRegion $region)
+
+	public function loadShippingRates(StoreRegion $region = null)
+	{
+		if ($region === null)
+			$region = $this->region;
+
+		if ($region === null)
+			throw new StoreException(
+				'$region must be specified unless setRegion() is called '.
+				'beforehand.');
+
+		$sql = 'select * from ShippingRate
+			where shipping_type = %s and region = %s
+			order by threshold, id';
+
+		$sql = sprintf($sql,
+			$this->db->quote($this->id, 'integer'),
+			$this->db->quote($region->id, 'integer'));
+
+		return SwatDB::query($this->db, $sql,
+			SwatDBClassMap::get('StoreShippingRateWrapper'));
+	}
+
+	// }}}
+	// {{{ public function calculateShippingRate()
+
+	public function calculateShippingRate($item_total,
+		StoreRegion $region = null)
+	{
+		if ($region === null)
+			$region = $this->region;
+
+		if ($region === null)
+			throw new StoreException(
+				'$region must be specified unless setRegion() is called '.
+				'beforehand.');
+
+		$this->checkDB();
+
+		// get applicable rate based on price threshold
+		$sql = 'select amount, percentage
+			from ShippingRate
+			where threshold <= %s and shipping_type = %s and region = %s
+			order by amount desc, percentage';
+
+		$sql = sprintf($sql,
+			$this->db->quote($item_total, 'float'),
+			$this->db->quote($this->id, 'integer'),
+			$this->db->quote($region->id, 'integer'));
+
+		$this->db->setLimit(1);
+
+		$rate = SwatDB::query($this->db, $sql,
+			SwatDBClassMap::get('StoreShippingRateWrapper'))->getFirst();
+
+		$total = 0;
+
+		if ($rate !== null) {
+			$percentage = 0;
+			$amount = 0;
+
+			if ($rate->amount === null)
+				$percentage+= $rate->percentage;
+			else
+				$amount+= $rate->amount;
+
+			if ($percentage > 0)
+				$total+= round($item_total * $percentage, 2);
+
+			if ($amount > 0)
+				$total+= $amount;
+		}
+
+		return $total;
 	}
 
 	// }}}
@@ -96,6 +193,8 @@ class StoreShippingType extends SwatDBDataObject
 	 */
 	public function isAvailableInRegion(StoreRegion $region)
 	{
+		// TODO: rewrite since ShippingTypeRegionBinding is gone
+		/*
 		$this->checkDB();
 
 		if ($this->id === null)
@@ -110,38 +209,7 @@ class StoreShippingType extends SwatDBDataObject
 			$this->db->quote($this->id, 'integer'));
 
 		return (SwatDB::queryOne($this->db, $sql) > 0);
-	}
-
-	// }}}
-	// {{{ public function getSurcharge()
-
-	/**
-	 * Get the shipping surcharge for the item in the given region
-	 *
-	 * @param StoreRegion $region the region to check the availability of this
-	 *                             type for.
-	 *
-	 * @return float The shipping surcharge in the given region.
-	 *
-	 * @throws StoreException if this dataobject has no id defined.
-	 */
-	public function getSurcharge(StoreRegion $region)
-	{
-		$this->checkDB();
-
-		if ($this->id === null)
-			throw new StoreException('Shipping type must have an id set '.
-				'before region availability can be determined.');
-
-		$sql = sprintf('select ShippingTypeRegionBinding.price
-			from ShippingType
-			inner join ShippingTypeRegionBinding on shipping_type = id and
-				region = %s
-			where id = %s',
-			$this->db->quote($region->id, 'integer'),
-			$this->db->quote($this->id, 'integer'));
-
-		return SwatDB::queryOne($this->db, $sql);
+		*/
 	}
 
 	// }}}
