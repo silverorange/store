@@ -636,7 +636,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 		ob_start();
 
-		if ($order->shipping_type instanceof StoreOrderShippingType) {
+		if ($order->shipping_type instanceof StoreShippingType) {
 			$order->shipping_type->display();
 		} else {
 			$span_tag = new SwatHtmlTag('span');
@@ -682,7 +682,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		$order->item_total = $cart->getItemTotal();
 
 		$order->shipping_total = $cart->getShippingTotal(
-			$order->billing_address, $order->shipping_address);
+			$order->billing_address, $order->shipping_address,
+			$order->shipping_type);
 
 		$order->tax_total = $cart->getTaxTotal($order->billing_address,
 			 $order->shipping_address);
