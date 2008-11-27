@@ -2,6 +2,7 @@
 
 require_once 'Store/StoreCart.php';
 require_once 'Store/dataobjects/StoreAddress.php';
+require_once 'Store/dataobjects/StoreShippingType.php';
 
 /**
  * A checkout cart object
@@ -284,6 +285,34 @@ abstract class StoreCheckoutCart extends StoreCart
 		}
 
 		return $total;
+	}
+
+	// }}}
+	// {{{ protected function calculateShippingRate()
+
+	protected function calculateShippingRate($item_total,
+		StoreShippingType $shipping_type = null)
+	{
+		if ($shipping_type === null)
+			$shipping_type = $this->getShippingType();
+
+		return $shipping_type->calculateShippingRate($item_total,
+			$this->app->getRegion());
+	}
+
+	// }}}
+	// {{{ protected function getShippingType()
+
+	protected function getShippingType()
+	{
+		$class_name = SwatDBClassMap::get('StoreShippingType');
+		$shipping_type = new $class_name();
+		$shipping_type->setDatabase($this->app->db);
+		$found = $shipping_type->loadByShortname('default');
+		if (!$found)
+			throw new StoreException('Default shipping rate type missing!');
+
+		return $shipping_type;
 	}
 
 	// }}}
