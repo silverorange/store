@@ -14,6 +14,7 @@ require_once 'Store/dataobjects/StoreCartEntry.php';
 require_once 'Store/dataobjects/StoreProduct.php';
 require_once 'Store/dataobjects/StoreCategory.php';
 require_once 'Store/dataobjects/StoreItemGroupWrapper.php';
+require_once 'Store/StoreProductSearchEngine.php';
 
 /**
  * A product page
