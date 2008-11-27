@@ -15,11 +15,9 @@ class StoreImage extends SiteImage
 	/**
 	 * Whether to display with a border
 	 *
-	 * not null default true,
-	 *
 	 * @var integer
 	 */
-	public $border = true;
+	public $border;
 
 	// }}}
 	// {{{ public function hasOriginal()
