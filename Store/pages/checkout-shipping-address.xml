@@ -52,7 +52,7 @@
 		</widget>
 		<widget class="SwatFormField" id="shipping_address_provstate_field">
 			<property name="title" translatable="yes">Province/State</property>
-			<widget class="StoreProvstateFlydown" id="shipping_address_provstate">
+			<widget class="StoreProvStateFlydown" id="shipping_address_provstate">
 				<property name="required" type="boolean">true</property>
 				<property name="show_blank" type="boolean">true</property>
 			</widget>
