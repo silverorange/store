@@ -381,9 +381,9 @@ class StoreOrder extends SwatDBDataObject
 
 		if ($item !== null && $item->product->primary_image !== null) {
 			$image = $item->product->primary_image;
-			$ds->image = $image->getUri('pinky');
-			$ds->image_width = $image->getWidth('pinky');
-			$ds->image_height = $image->getHeight('pinky');
+			$ds->image = $image->getUri($this->getImageDimension());
+			$ds->image_width = $image->getWidth($this->getImageDimension());
+			$ds->image_height = $image->getHeight($this->getImageDimension());
 		} else {
 			$ds->image = null;
 			$ds->image_width = null;
@@ -393,6 +393,17 @@ class StoreOrder extends SwatDBDataObject
 		$ds->item_count = $this->getProductItemCount($order_item->product);
 
 		return $ds;
+	}
+
+	// }}}
+	// {{{ protected function getImageDimension()
+
+	/**
+	 * @return string Image dimension shortname
+	 */
+	protected function getImageDimension()
+	{
+		return 'pinky';
 	}
 
 	// }}}

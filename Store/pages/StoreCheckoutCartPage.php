@@ -405,9 +405,9 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 			$ds->image_width  = null;
 			$ds->image_height = null;
 		} else {
-			$ds->image        = $image->getUri('pinky');
-			$ds->image_width  = $image->getWidth('pinky');
-			$ds->image_height = $image->getHeight('pinky');
+			$ds->image        = $image->getUri($this->getImageDimension());
+			$ds->image_width  = $image->getWidth($this->getImageDimension());
+			$ds->image_height = $image->getHeight($this->getImageDimension());
 		}
 
 		$ds->item_count   = $this->getProductItemCount($entry->item->product,
@@ -433,6 +433,17 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 				'</div>';
 
 		return implode("\n", $description);
+	}
+
+	// }}}
+	// {{{ protected function getImageDimension()
+
+	/**
+	 * @return string Image dimension shortname
+	 */
+	protected function getImageDimension()
+	{
+		return 'pinky';
 	}
 
 	// }}}
