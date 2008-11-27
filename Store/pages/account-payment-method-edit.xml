@@ -3,7 +3,7 @@
 <swatml>
 	<widget class="SwatForm" id="edit_form">
 		<widget class="SwatMessageDisplay" id="message_display" />
-		<widget class="SwatFormField" id="payment_method_field">
+		<widget class="SwatFormField" id="payment_type_field">
 			<property name="title" translatable="yes">Payment Type</property>
 			<widget class="SwatRadioList" id="payment_type">
 				<property name="required" type="boolean">true</property>
