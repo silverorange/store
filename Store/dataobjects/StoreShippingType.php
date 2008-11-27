@@ -186,6 +186,11 @@ class StoreShippingType extends SwatDBDataObject
 	public function display()
 	{
 		echo SwatString::minimizeEntities($this->title);
+
+		if (strlen($this->note) > 0) {
+			printf('<br /><span class="swat-note">%s</span>',
+				$this->note);
+		}
 	}
 
 	// }}}
