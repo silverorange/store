@@ -48,7 +48,8 @@ class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
 
 		$order_shipping_type->shortname = $shipping_type->shortname;
 		$order_shipping_type->title = $shipping_type->title;
-		$order_shipping_type->price = $shipping_type->getSurcharge(
+		$order_shipping_type->price = $shipping_type->calculateShippingRate(
+			$this->app->cart->checkout->getItemTotal(),
 			$this->app->getRegion());
 
 		$this->app->session->order->shipping_type = $order_shipping_type;
@@ -135,8 +136,8 @@ class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
 	{
 		$sql = 'select ShippingType.*
 			from ShippingType
-			inner join ShippingTypeRegionBinding on
-				shipping_type = id and region = %s
+			where id in (
+				select shipping_type from ShippingRate where region = %s)
 			order by displayorder, title';
 
 		$sql = sprintf($sql,
