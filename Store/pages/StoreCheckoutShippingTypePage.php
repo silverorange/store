@@ -90,15 +90,25 @@ class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
 		$type_flydown = $this->ui->getWidget('shipping_type');
 
 		foreach ($types as $type) {
-			$title = $type->title;
-
-			if (strlen($type->note) > 0)
-				$title.= sprintf('<br /><span class="swat-note">%s</span>',
-					$type->note);
-
+			$title = $this->getShippingTypeTitle($type);
 			$type_flydown->addOption(
-				new SwatOption($type->shortname, $title));
+				new SwatOption($type->shortname, $title, 'text/xml'));
 		}
+	}
+
+	// }}}
+	// {{{ protected function getShippingTypeTitle()
+
+	protected function getShippingTypeTitle(StoreShippingType $shipping_type)
+	{
+		$title = $shipping_type->title;
+
+		if (strlen($shipping_type->note) > 0) {
+			$title.= sprintf('<br /><span class="swat-note">%s</span>',
+				$shipping_type->note);
+		}
+
+		return $title;
 	}
 
 	// }}}
@@ -110,7 +120,7 @@ class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
 
 		if ($order->shipping_type !== null) {
 			$this->ui->getWidget('shipping_type')->value =
-					$order->shipping_type->shortname;
+				$order->shipping_type->shortname;
 		}
 	}
 
