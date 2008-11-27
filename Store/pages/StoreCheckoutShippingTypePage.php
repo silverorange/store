@@ -39,20 +39,10 @@ class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
 		$class_name = SwatDBClassMap::get('StoreShippingType');
 		$shipping_type = new $class_name();
 		$shipping_type->setDatabase($this->app->db);
-
-		$class_name = SwatDBClassMap::get('StoreOrderShippingType');
-		$order_shipping_type = new $class_name();
-
 		$shortname = $this->ui->getWidget('shipping_type')->value;
 		$shipping_type->loadByShortname($shortname);
 
-		$order_shipping_type->shortname = $shipping_type->shortname;
-		$order_shipping_type->title = $shipping_type->title;
-		$order_shipping_type->price = $shipping_type->calculateShippingRate(
-			$this->app->cart->checkout->getItemTotal(),
-			$this->app->getRegion());
-
-		$this->app->session->order->shipping_type = $order_shipping_type;
+		$this->app->session->order->shipping_type = $shipping_type;
 	}
 
 	// }}}
