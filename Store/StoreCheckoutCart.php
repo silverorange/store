@@ -305,14 +305,25 @@ abstract class StoreCheckoutCart extends StoreCart
 
 	protected function getShippingType()
 	{
+		$shortname = $this->getShippingTypeDefaultShortname();
 		$class_name = SwatDBClassMap::get('StoreShippingType');
 		$shipping_type = new $class_name();
 		$shipping_type->setDatabase($this->app->db);
-		$found = $shipping_type->loadByShortname('default');
-		if (!$found)
-			throw new StoreException('Default shipping rate type missing!');
+		$found = $shipping_type->loadByShortname($shortname);
+		if (!$found) {
+			throw new StoreException(sprintf('%s shipping rate type missing!',
+				$shortname));
+		}
 
 		return $shipping_type;
+	}
+
+	// }}}
+	// {{{ protected function getShippingTypeDefaultShortname()
+
+	protected function getShippingTypeDefaultShortname()
+	{
+		return 'default';
 	}
 
 	// }}}
