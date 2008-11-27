@@ -334,11 +334,13 @@ abstract class StoreCheckoutCart extends StoreCart
 	 *
 	 * @param StoreAddress $billing_address the billing address of the order.
 	 * @param StoreAddress $shipping_address the shipping address of the order.
+	 * @param StoreShippingType $shipping_type the shipping type of the order.
 	 *
 	 * @return double the cost of shipping this order.
 	 */
 	abstract public function getShippingTotal(StoreAddress $billing_address,
-		StoreAddress $shipping_address);
+		StoreAddress $shipping_address,
+		StoreShippingType $shipping_type = null);
 
 	// }}}
 	// {{{ abstract public function getTaxTotal()
