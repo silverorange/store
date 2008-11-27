@@ -178,6 +178,17 @@ class StoreShippingType extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function display()
+
+	/**
+	 * Displays this shipping type
+	 */
+	public function display()
+	{
+		echo SwatString::minimizeEntities($this->title);
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()

@@ -17,7 +17,7 @@ create table Orders (
 	billing_address integer not null references OrderAddress(id),
 	shipping_address integer not null references OrderAddress(id),
 	payment_method integer not null references OrderPaymentMethod(id),
-	shipping_type integer references OrderShippingType(id),
+	shipping_type integer null references ShippingType(id),
 
 	total numeric(11, 2) not null,
 	item_total numeric(11, 2) not null,
