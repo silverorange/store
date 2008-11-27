@@ -156,7 +156,7 @@ class StoreShippingType extends SwatDBDataObject
 		$rate = SwatDB::query($this->db, $sql,
 			SwatDBClassMap::get('StoreShippingRateWrapper'))->getFirst();
 
-		$total = 0;
+		$total = null;
 
 		if ($rate !== null) {
 			$percentage = 0;
@@ -189,6 +189,7 @@ class StoreShippingType extends SwatDBDataObject
 	}
 
 	// }}}
+
 	// {{{ protected function init()
 
 	protected function init()
