@@ -10,7 +10,7 @@ require_once 'Store/StoreOrderStatusList.php';
 require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/dataobjects/StoreOrderAddress.php';
 require_once 'Store/dataobjects/StoreOrderPaymentMethod.php';
-require_once 'Store/dataobjects/StoreOrderShippingType.php';
+require_once 'Store/dataobjects/StoreShippingType.php';
 require_once 'Store/dataobjects/StoreOrderItemWrapper.php';
 require_once 'Store/dataobjects/StorePaymentTransactionWrapper.php';
 require_once 'Store/dataobjects/StoreLocale.php';
@@ -330,7 +330,7 @@ class StoreOrder extends SwatDBDataObject
 			SwatDBClassMap::get('StoreOrderPaymentMethod'), true);
 
 		$this->registerInternalProperty('shipping_type',
-			SwatDBClassMap::get('StoreOrderShippingType'), true);
+			SwatDBClassMap::get('StoreShippingType'));
 
 		$this->registerInternalProperty('locale',
 			SwatDBClassMap::get('StoreLocale'), true);
@@ -359,7 +359,6 @@ class StoreOrder extends SwatDBDataObject
 			'shipping_address',
 			'billing_address',
 			'payment_method',
-			'shipping_type',
 			'items',
 		);
 	}
