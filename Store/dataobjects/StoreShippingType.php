@@ -194,6 +194,21 @@ class StoreShippingType extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function displayAsText()
+
+	/**
+	 * Displays this shipping type as text
+	 */
+	public function displayAsText()
+	{
+		echo $this->title;
+
+		if (strlen($this->note) > 0) {
+			echo ' - '.$this->note;
+		}
+	}
+
+	// }}}
 
 	// {{{ protected function init()
 
