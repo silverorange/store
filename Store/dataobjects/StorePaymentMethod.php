@@ -267,25 +267,40 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		$span_tag->class = 'store-payment-method';
 		$span_tag->open();
 
-		if ($this->payment_type->isCard())
+		if ($this->payment_type->isCard()) {
 			$this->card_type->display();
-		else
-			$this->payment_type->display();
+			$this->displayCard($passphrase);
 
+			if ($display_details)
+				$this->displayCardDetails();
+		} else {
+			$this->payment_type->display();
+		}
+
+		$span_tag->close();
+	}
+
+	// }}}
+	// {{{ protected function displayCard()
+
+	protected function displayCard($passphrase)
+	{
+		$span_tag = new SwatHtmlTag('span');
 		$display_card = false;
+
 		if ($this->payment_type->isCard() &&
 			$this->gpg_id !== null && $passphrase !== null) {
 			$display_card = true;
 			$card_number = $this->getCardNumber($passphrase);
-			$span_tag->setContent(StorePaymentType::formatCardNumber(
+			$span_tag->setContent(StoreCardType::formatCardNumber(
 				$card_number));
 
 		} elseif ($this->payment_type->isCard() &&
 			$this->card_number_preview !== null) {
 			$display_card = true;
-			$span_tag->setContent(StorePaymentType::formatCardNumber(
+			$span_tag->setContent(StoreCardType::formatCardNumber(
 				$this->card_number_preview,
-				$this->payment_type->getCardMaskedFormat()));
+				$this->card_type->getMaskedFormat()));
 		}
 
 		if ($display_card) {
@@ -293,12 +308,17 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 			echo ': ';
 			$span_tag->display();
 		}
+	}
 
-		if ($display_details &&
-			($this->card_expiry !== null || $this->card_fullname !== null)) {
+	// }}}
+	// {{{ protected function displayCardDetails()
 
+	protected function displayCardDetails()
+	{
+		if ($this->card_expiry !== null || $this->card_fullname !== null) {
 			echo '<br />';
 
+			$span_tag = new SwatHtmlTag('span');
 			$span_tag->class = 'store-payment-method-info';
 			$span_tag->open();
 
@@ -315,8 +335,6 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 
 			$span_tag->close();
 		}
-
-		$span_tag->close();
 	}
 
 	// }}}
@@ -338,9 +356,9 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		echo $this->payment_type->title;
 
 		if ($this->card_number_preview !== null) {
-			echo $line_break, StorePaymentType::formatCardNumber(
+			echo $line_break, StoreCardType::formatCardNumber(
 				$this->card_number_preview,
-				$this->payment_type->getCardMaskedFormat());
+				$this->payment_type->getMaskedFormat());
 		}
 
 		if ($display_details) {
