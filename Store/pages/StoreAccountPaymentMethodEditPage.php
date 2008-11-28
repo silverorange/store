@@ -348,7 +348,7 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 		$this->ui->getWidget('card_number_preview')->content =
 			StorePaymentType::formatCardNumber(
 				$payment_method->card_number_preview,
-				$payment_method->payment_type->getCardMaskedFormat());
+				$payment_method->payment_type->getMaskedFormat());
 
 		$this->ui->getWidget('card_issue_number')->value =
 			$payment_method->card_issue_number;

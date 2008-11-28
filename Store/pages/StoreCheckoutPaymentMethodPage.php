@@ -35,21 +35,29 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$method_list->process();
 
 		if ($method_list->value === null || $method_list->value === 'new') {
-			// set debit card fields as required when a debit card is used
-			$type_list = $this->ui->getWidget('card_type');
-			$type_list->process();
+			$payment_type = $this->getPaymentType();
 
-			if ($type_list->value !== null) {
-				$class_name = SwatDBClassMap::get('StoreCardType');
-				$card_type = new $class_name();
-				$card_type->setDatabase($this->app->db);
-				$card_type->load($type_list->value);
+			if ($payment_type !== null) {
+				if ($payment_type->isCard()) {
 
-				$this->ui->getWidget('card_inception')->required =
-					$card_type->hasInceptionDate();
+					// set debit card fields as required when a debit card is used
+					$card_type = $this->getCardType();
+					if ($card_type !== null) {
+						$this->ui->getWidget('card_inception')->required =
+							$card_type->hasInceptionDate();
 
-				$this->ui->getWidget('card_issue_number')->required =
-					$card_type->hasIssueNumber();
+						$this->ui->getWidget('card_issue_number')->required =
+							$card_type->hasIssueNumber();
+					}
+				} else {
+					$this->ui->getWidget('card_type')->required = false;
+					$this->ui->getWidget('card_number')->required = false;
+					$this->ui->getWidget('card_expiry')->required = false;
+					$this->ui->getWidget('card_verification_value')->required = false;
+					$this->ui->getWidget('card_fullname')->required = false;
+					$this->ui->getWidget('card_inception')->required = false;
+					$this->ui->getWidget('card_issue_number')->required = false;
+				}
 			}
 		} else {
 			// set all fields as not required when an existing payment method
@@ -59,7 +67,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			foreach ($controls as $control)
 				$control->required = false;
 		}
-
 	}
 
 	// }}}
@@ -83,7 +90,52 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	public function processCommon()
 	{
+		$payment_type = $this->getPaymentType();
+		if ($payment_type !== null && $payment_type->isCard()) {
+			$card_type_list = $this->ui->getWidget('card_type');
+			// determine card type automatically if type flydown is hidden
+			if (!$card_type->visible)
+				$this->processCardType();
+		}
+
 		$this->saveDataToSession();
+	}
+
+	// }}}
+	// {{{ private function processCardType()
+
+	private function processCardType()
+	{
+		$card_number = $this->ui->getWidget('card_number');
+		if ($card_number->show_blank_value)
+			return;
+
+		$card_type = $this->ui->getWidget('card_type');
+		$message = null;
+
+		$info = StoreCardType::getInfoFromCardNumber($card_number->value);
+
+		if ($info !== null) {
+			$class_name = SwatDBClassMap::get('StoreCardType');
+			$type = new $class_name();
+			$type->setDatabase($this->app->db);
+			$found = $type->loadFromShortname($info->shortname);
+
+			if ($found)
+				$card_type->value = $type->id;
+			else
+				$message = sprintf('Sorry, we don’t accept %s payments.',
+					SwatString::minimizeEntities($info->description));
+		} else {
+			$message = 'Sorry, we don’t accept your card type.';
+		}
+
+		if ($message !== null) {
+			$message = new SwatMessage(sprintf('%s %s', $message,
+				$this->getAcceptedCardTypesMessage()), SwatMessage::ERROR);
+
+			$card_number->addMessage($message);
+		}
 	}
 
 	// }}}
@@ -188,6 +240,64 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$card_number = $this->ui->getWidget('card_number')->value;
 		if ($card_number !== null)
 			$payment_method->setCardNumber($card_number);
+	}
+
+	// }}}
+	// {{{ protected function getAcceptedCardTypesMessage()
+
+	protected function getAcceptedCardTypesMessage()
+	{
+		$types = SwatDB::getOptionArray($this->app->db,
+			'CardType', 'title', 'shortname', 'title');
+
+		if (count($types) > 2) {
+			array_push($types, sprintf('and %s',
+				array_pop($types)));
+
+			$type_list = implode(', ', $types);
+		} else {
+			$type_list = implode(' and ', $types);
+		}
+
+		return sprintf('We accept %s.', $type_list);
+	}
+
+	// }}}
+	// {{{ protected function getPaymentType()
+
+	protected function getPaymentType()
+	{
+		static $type = null;
+
+		if ($type === null) {
+			$type_list = $this->ui->getWidget('payment_type');
+			$type_list->process();
+			$class_name = SwatDBClassMap::get('StorePaymentType');
+			$type = new $class_name();
+			$type->setDatabase($this->app->db);
+			$type->load($type_list->value);
+		}
+
+		return $type;
+	}
+
+	// }}}
+	// {{{ protected function getCardType()
+
+	protected function getCardType()
+	{
+		static $type = null;
+
+		if ($type === null) {
+			$type_list = $this->ui->getWidget('card_type');
+			$type_list->process();
+			$class_name = SwatDBClassMap::get('StoreCardType');
+			$type = new $class_name();
+			$type->setDatabase($this->app->db);
+			$type->load($type_list->value);
+		}
+
+		return $type;
 	}
 
 	// }}}
