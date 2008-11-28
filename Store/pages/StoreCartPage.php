@@ -397,7 +397,7 @@ class StoreCartPage extends SiteArticlePage
 			if (!$widget->hasMessage()) {
 				$entry = $this->app->cart->checkout->getEntryById($id);
 				if ($entry !== null &&
-					$entry->getQuantity() !== $widget->value) {
+					$entry->getQuantity() != $widget->value) {
 					$this->updated_entry_ids[] = $id;
 					$this->app->cart->checkout->setEntryQuantity($entry,
 						$widget->value);
