@@ -202,6 +202,11 @@ abstract class StoreOrderConfirmationMailMessage
 			$view->getRow('shipping')->locale = $order->locale->id;
 		}
 
+		if ($view->hasRow('tax')) {
+			$view->getRow('tax')->value = $order->tax_total;
+			$view->getRow('tax')->locale = $order->locale->id;
+		}
+
 		if ($view->hasRow('subtotal')) {
 			$view->getRow('subtotal')->value = $order->getSubtotal();
 			$view->getRow('subtotal')->locale = $order->locale->id;
@@ -357,6 +362,13 @@ abstract class StoreOrderConfirmationMailMessage
 		} else {
 			printf('Shipping Total: %s',
 				SwatString::moneyFormat($order->shipping_total, $locale));
+
+			echo self::LINE_BREAK;
+		}
+
+		if ($order->tax_total > 0) {
+			printf('Tax Total: %s',
+				SwatString::moneyFormat($order->tax_total, $locale));
 
 			echo self::LINE_BREAK;
 		}
