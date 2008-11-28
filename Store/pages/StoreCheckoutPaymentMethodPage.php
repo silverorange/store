@@ -355,15 +355,26 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$type_flydown = $this->ui->getWidget('payment_type');
 
 		foreach ($types as $type) {
-			if (strlen($type->note) > 0)
-				$title = sprintf('%s<br /><span class="swat-note">%s</span>',
-					$type->title, $type->note);
-			else
-				$title = $type->title;
+			$title = $this->getPaymentTypeTitle($type);
 
 			$type_flydown->addOption(
 				new SwatOption($type->id, $title, 'text/xml'));
 		}
+	}
+
+	// }}}
+	// {{{ protected function getPaymentTypeTitle()
+
+	protected function getPaymentTypeTitle(StorePaymentType $type)
+	{
+		$title = $type->title;
+
+		if (strlen($type->note) > 0) {
+			$title.= sprintf('<br /><span class="swat-note">%s</span>',
+				$type->note);
+		}
+
+		return $title;
 	}
 
 	// }}}

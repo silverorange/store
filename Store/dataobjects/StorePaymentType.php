@@ -593,6 +593,22 @@ class StorePaymentType extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function display()
+
+	/**
+	 * Displays this payment type
+	 */
+	public function display()
+	{
+		echo SwatString::minimizeEntities($this->title);
+
+		if (strlen($this->note) > 0) {
+			printf('<br /><span class="swat-note">%s</span>',
+				$this->note);
+		}
+	}
+
+	// }}}
 }
 
 ?>
