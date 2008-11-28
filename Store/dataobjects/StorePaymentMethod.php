@@ -2,6 +2,7 @@
 
 require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Store/dataobjects/StorePaymentType.php';
+require_once 'Store/dataobjects/StoreCardType.php';
 require_once 'Crypt/GPG.php';
 
 /**
@@ -266,17 +267,20 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		$span_tag->class = 'store-payment-method';
 		$span_tag->open();
 
-		$this->payment_type->display();
+		if ($this->payment_type->isCard())
+			$this->card_type->display();
+		else
+			$this->payment_type->display();
 
 		$display_card = false;
-		if ($this->payment_type->credit_card &&
+		if ($this->payment_type->isCard() &&
 			$this->gpg_id !== null && $passphrase !== null) {
 			$display_card = true;
 			$card_number = $this->getCardNumber($passphrase);
 			$span_tag->setContent(StorePaymentType::formatCardNumber(
 				$card_number));
 
-		} elseif ($this->payment_type->credit_card &&
+		} elseif ($this->payment_type->isCard() &&
 			$this->card_number_preview !== null) {
 			$display_card = true;
 			$span_tag->setContent(StorePaymentType::formatCardNumber(
@@ -360,6 +364,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		$this->card_number_preview  = $method->card_number_preview;
 		$this->card_number          = $method->card_number;
 		$this->card_expiry          = $method->card_expiry;
+		$this->card_type            = $method->getInternalValue('card_type');
 		$this->payment_type         = $method->getInternalValue('payment_type');
 	}
 
@@ -446,6 +451,9 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		$this->id_field = 'integer:id';
 		$this->registerInternalProperty('payment_type',
 			SwatDBClassMap::get('StorePaymentType'));
+
+		$this->registerInternalProperty('card_type',
+			SwatDBClassMap::get('StoreCardType'));
 
 		$this->registerDateProperty('card_expiry');
 		$this->registerDateProperty('card_inception');
