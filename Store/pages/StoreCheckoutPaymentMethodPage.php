@@ -5,7 +5,7 @@ require_once 'Store/pages/StoreCheckoutEditPage.php';
 require_once 'Store/dataobjects/StoreAccountPaymentMethodWrapper.php';
 require_once 'Store/dataobjects/StoreOrderPaymentMethod.php';
 require_once 'Store/dataobjects/StorePaymentTypeWrapper.php';
-require_once 'Store/dataobjects/StorePaymentType.php';
+require_once 'Store/dataobjects/StoreCardTypeWrapper.php';
 
 /**
  * Payment method edit page of checkout
@@ -36,20 +36,20 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 		if ($method_list->value === null || $method_list->value === 'new') {
 			// set debit card fields as required when a debit card is used
-			$type_list = $this->ui->getWidget('payment_type');
+			$type_list = $this->ui->getWidget('card_type');
 			$type_list->process();
 
 			if ($type_list->value !== null) {
-				$class_name = SwatDBClassMap::get('StorePaymentType');
-				$payment_type = new $class_name();
-				$payment_type->setDatabase($this->app->db);
-				$payment_type->load($type_list->value);
+				$class_name = SwatDBClassMap::get('StoreCardType');
+				$card_type = new $class_name();
+				$card_type->setDatabase($this->app->db);
+				$card_type->load($type_list->value);
 
 				$this->ui->getWidget('card_inception')->required =
-					$payment_type->hasInceptionDate();
+					$card_type->hasInceptionDate();
 
 				$this->ui->getWidget('card_issue_number')->required =
-					$payment_type->hasIssueNumber();
+					$card_type->hasIssueNumber();
 			}
 		} else {
 			// set all fields as not required when an existing payment method
@@ -151,6 +151,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 		$this->updatePaymentMethodCardNumber($payment_method);
 
+		$payment_method->card_type =
+			$this->ui->getWidget('card_type')->value;
+
 		$payment_method->setCardVerificationValue(
 			$this->ui->getWidget('card_verification_value')->value);
 
@@ -239,6 +242,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				$this->ui->getWidget('payment_type')->value =
 					$order->payment_method->getInternalValue('payment_type');
 
+				$this->ui->getWidget('card_type')->value =
+					$order->payment_method->getInternalValue('card_type');
+
 				/*
 				 *  Note: We can't repopulate the card number entry since we
 				 *        only store the encrypted number in the dataobject.
@@ -304,6 +310,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	protected function buildForm()
 	{
 		$this->buildPaymentTypes();
+		$this->buildCardTypes();
 
 		if (!$this->ui->getWidget('form')->isProcessed())
 			$this->loadDataFromSession();
@@ -338,8 +345,10 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			$account = $this->app->session->account;
 			foreach ($account->payment_methods as $method) {
 				$payment_type = $method->payment_type;
-				if ($payment_type->isAvailableInRegion($region))
-					$payment_methods->add($method);
+				$card_type = $method->card_type;
+				if ($payment_type->isAvailableInRegion($region) &&
+					($card_type === null || $card_type->isAvailableInRegion($region)))
+						$payment_methods->add($method);
 			}
 		}
 
@@ -402,6 +411,56 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
+	// {{{ protected function buildCardTypes()
+
+	protected function buildCardTypes()
+	{
+		$types = $this->getCardTypes();
+		$type_flydown = $this->ui->getWidget('card_type');
+
+		foreach ($types as $type) {
+			$title = $this->getCardTypeTitle($type);
+
+			$type_flydown->addOption(
+				new SwatOption($type->id, $title, 'text/xml'));
+		}
+	}
+
+	// }}}
+	// {{{ protected function getCardTypeTitle()
+
+	protected function getCardTypeTitle(StoreCardType $type)
+	{
+		$title = $type->title;
+
+		return $title;
+	}
+
+	// }}}
+	// {{{ protected function getCardTypes()
+
+	/**
+	 * Gets available card types for new payment methods
+	 *
+	 * @return StoreCardTypeWrapper
+	 */
+	protected function getCardTypes()
+	{
+		$sql = 'select CardType.* from CardType
+			inner join CardTypeRegionBinding on
+				card_type = id and region = %s
+			order by displayorder, title';
+
+		$sql = sprintf($sql,
+			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+
+		$wrapper = SwatDBClassMap::get('StoreCardTypeWrapper');
+		$types = SwatDB::query($this->app->db, $sql, $wrapper);
+
+		return $types;
+	}
+
+	// }}}
 	// {{{ protected function getInlineJavaScript()
 
 	protected function getInlineJavaScript()
@@ -409,7 +468,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$id = 'checkout_payment_method';
 		$inception_date_ids = array();
 		$issue_number_ids = array();
-		foreach ($this->getPaymentTypes() as $type) {
+		foreach ($this->getCardTypes() as $type) {
 			if ($type->hasInceptionDate())
 				$inception_date_ids[] = $type->id;
 

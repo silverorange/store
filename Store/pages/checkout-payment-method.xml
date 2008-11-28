@@ -13,6 +13,12 @@
 				<property name="required" type="boolean">true</property>
 			</widget>
 		</widget>
+		<widget class="SwatFormField" id="card_type_field">
+			<property name="title" translatable="yes">Card Type</property>
+			<widget class="SwatFlydown" id="card_type">
+				<property name="required" type="boolean">true</property>
+			</widget>
+		</widget>
 		<widget class="SwatFormField" id="card_number_field">
 			<property name="title" translatable="yes">Card Number</property>
 			<widget class="StoreCardNumberEntry" id="card_number">
