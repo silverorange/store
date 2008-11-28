@@ -166,7 +166,7 @@ abstract class StoreOrderConfirmationMailMessage
 		if ($order->phone === null)
 			$details_view->getField('phone')->visible = false;
 
-		if ($order->company === null)
+		if ($order->company === null && $details_view->hasField('company'))
 			$details_view->getField('company')->visible = false;
 
 		if ($order->payment_method === null)
