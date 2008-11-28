@@ -99,13 +99,13 @@ class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
 	// }}}
 	// {{{ protected function getShippingTypeTitle()
 
-	protected function getShippingTypeTitle(StoreShippingType $shipping_type)
+	protected function getShippingTypeTitle(StoreShippingType $type)
 	{
-		$title = $shipping_type->title;
+		$title = $type->title;
 
-		if (strlen($shipping_type->note) > 0) {
+		if (strlen($type->note) > 0) {
 			$title.= sprintf('<br /><span class="swat-note">%s</span>',
-				$shipping_type->note);
+				$type->note);
 		}
 
 		return $title;
