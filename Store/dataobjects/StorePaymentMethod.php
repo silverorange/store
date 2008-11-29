@@ -358,7 +358,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		if ($this->card_number_preview !== null) {
 			echo $line_break, StoreCardType::formatCardNumber(
 				$this->card_number_preview,
-				$this->payment_type->getMaskedFormat());
+				$this->card_type->getMaskedFormat());
 		}
 
 		if ($display_details) {
