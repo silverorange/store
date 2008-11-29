@@ -2,8 +2,7 @@
 
 require_once 'Site/pages/SiteAccountPage.php';
 require_once 'Store/dataobjects/StoreAccountPaymentMethod.php';
-require_once 'Store/dataobjects/StorePaymentType.php';
-require_once 'Store/dataobjects/StorePaymentTypeWrapper.php';
+require_once 'Store/dataobjects/StoreCardTypeWrapper.php';
 require_once 'Swat/SwatUI.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Swat/SwatDate.php';
@@ -37,7 +36,7 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 
 		$this->id = intval($this->getArgument('id'));
 
-		if ($this->id === 0)
+		if ($this->id == 0)
 			$this->id = null;
 	}
 
@@ -90,6 +89,12 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 			// create a new payment method
 			$class = SwatDBClassMap::get('StoreAccountPaymentMethod');
 			$payment_method = new $class();
+			$payment_method->payment_type = $this->getPaymentType();
+
+			// this page currently only supports editing of payment methods
+			// with payment type is "card"
+			if ($payment_method->payment_type === null)
+				throw new StoreException('Payment type with shortname of \'card\' not found.');
 		} else {
 			// edit existing payment method
 			$payment_method = $account->payment_methods->getByIndex($this->id);
@@ -97,6 +102,11 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 			// go back to account page if payment type is disabled
 			$payment_type = $payment_method->payment_type;
 			if (!$payment_type->isAvailableInRegion($this->app->getRegion()))
+				$this->app->relocate('account');
+
+			// go back to account page if card type is disabled
+			$card_type = $payment_method->card_type;
+			if (!$card_type->isAvailableInRegion($this->app->getRegion()))
 				$this->app->relocate('account');
 		}
 
@@ -117,23 +127,26 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 	{
 		parent::process();
 
-		$type_list = $this->ui->getWidget('payment_type');
-		$type_list->process();
+		$type = $this->getCardType();
 
-		if ($type_list->value !== null) {
-			$class_name = SwatDBClassMap::get('StorePaymentType');
-			$payment_type = new $class_name();
-			$payment_type->setDatabase($this->app->db);
-			$payment_type->load($type_list->value);
+		if ($type !== null) {
 			$this->ui->getWidget('card_inception')->required =
-				$payment_type->hasInceptionDate();
+				$type->hasInceptionDate();
 
 			$this->ui->getWidget('card_issue_number')->required =
-				$payment_type->hasIssueNumber();
+				$type->hasIssueNumber();
 		}
 
 		$form = $this->ui->getWidget('edit_form');
 		$form->process();
+
+		$payment_type = $this->getPaymentType();
+		if ($payment_type !== null && $payment_type->isCard()) {
+			$card_type_list = $this->ui->getWidget('card_type');
+			// determine card type automatically if type flydown is hidden
+			if (!$card_type_list->visible)
+				$this->processCardType();
+		}
 
 		if ($form->isProcessed()) {
 			if (!$form->hasMessage()) {
@@ -156,6 +169,42 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 	}
 
 	// }}}
+	// {{{ protected function processCardType()
+
+	protected function processCardType()
+	{
+		$card_number = $this->ui->getWidget('card_number');
+		if ($card_number->show_blank_value)
+			return;
+
+		$message = null;
+
+		$info = StoreCardType::getInfoFromCardNumber($card_number->value);
+
+		if ($info !== null) {
+			$class_name = SwatDBClassMap::get('StoreCardType');
+			$type = new $class_name();
+			$type->setDatabase($this->app->db);
+			$found = $type->loadFromShortname($info->shortname);
+
+			if ($found)
+				$this->ui->getWidget('card_type')->value = $type->id;
+			else
+				$message = sprintf('Sorry, we don’t accept %s payments.',
+					SwatString::minimizeEntities($info->description));
+		} else {
+			$message = 'Sorry, we don’t accept your card type.';
+		}
+
+		if ($message !== null) {
+			$message = new SwatMessage(sprintf('%s %s', $message,
+				$this->getAcceptedCardTypesMessage()), SwatMessage::ERROR);
+
+			$card_number->addMessage($message);
+		}
+	}
+
+	// }}}
 	// {{{ protected function updatePaymentMethod()
 
 	/**
@@ -166,8 +215,10 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 	protected function updatePaymentMethod(
 		StoreAccountPaymentMethod $payment_method)
 	{
-		$payment_method->payment_type =
-			$this->ui->getWidget('payment_type')->value;
+		$card_number = $this->ui->getWidget('card_number');
+		if ($card_number->show_blank_value)
+			$payment_method->card_type =
+				$this->ui->getWidget('card_type')->value;
 
 		if ($this->id === null)
 			$payment_method->setCardNumber(
@@ -199,6 +250,40 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 		default:
 			return $text;
 		}
+	}
+
+	// }}}
+	// {{{ protected function getPaymentType()
+
+	protected function getPaymentType()
+	{
+		// this page currently only supports editing of payment methods
+		// with payment type is "card"
+		$class_name = SwatDBClassMap::get('StorePaymentType');
+		$type = new $class_name();
+		$type->setDatabase($this->app->db);
+		$type->loadFromShortname('card');
+
+		return $type;
+	}
+
+	// }}}
+	// {{{ protected function getCardType()
+
+	protected function getCardType()
+	{
+		static $type = null;
+
+		if ($type === null) {
+			$type_list = $this->ui->getWidget('card_type');
+			$type_list->process();
+			$class_name = SwatDBClassMap::get('StoreCardType');
+			$type = new $class_name();
+			$type->setDatabase($this->app->db);
+			$type->load($type_list->value);
+		}
+
+		return $type;
 	}
 
 	// }}}
@@ -237,30 +322,21 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 			} else {
 				$payment_method = $this->findPaymentMethod();
 				$this->setWidgetValues($payment_method);
-
-				if ($payment_method !== null) {
-					// allow disabled types
-					$type_where_clause = sprintf('id = %s',
-						$this->app->db->quote(
-							$payment_method->payment_type->id, 'integer'));
-
-					$join_clause = '';
-				}
 			}
 		}
 
 		$this->buildLabels();
 
-		if ($this->id !== null) {
-			$this->ui->getWidget('card_number')->visible = false;
-			$this->ui->getWidget('card_number_preview')->visible = true;
-			$this->ui->getWidget('payment_type')->show_blank = false;
-		} else {
+		if ($this->id === null) {
 			$this->ui->getWidget('card_number')->visible = true;
 			$this->ui->getWidget('card_number_preview')->visible = false;
+		} else {
+			$this->ui->getWidget('card_number')->visible = false;
+			$this->ui->getWidget('card_number_preview')->visible = true;
+			$this->ui->getWidget('card_type')->show_blank = false;
 		}
 
-		$this->buildPaymentTypes();
+		$this->buildCardTypes();
 
 		$this->layout->startCapture('content');
 		$this->ui->display();
@@ -268,12 +344,12 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 	}
 
 	// }}}
-	// {{{ protected function buildPaymentTypes()
+	// {{{ protected function buildCardTypes()
 
-	protected function buildPaymentTypes()
+	protected function buildCardTypes()
 	{
-		$types = $this->getPaymentTypes();
-		$type_flydown = $this->ui->getWidget('payment_type');
+		$types = $this->getCardTypes();
+		$type_list = $this->ui->getWidget('card_type');
 
 		foreach ($types as $type) {
 			if (strlen($type->note) > 0)
@@ -282,7 +358,7 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 			else
 				$title = $type->title;
 
-			$type_flydown->addOption(
+			$type_list->addOption(
 				new SwatOption($type->id, $title, 'text/xml'));
 		}
 
@@ -292,24 +368,24 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 	}
 
 	// }}}
-	// {{{ protected function getPaymentTypes()
+	// {{{ protected function getCardTypes()
 
 	/**
 	 * Gets available payment types for new payment methods
 	 *
 	 * @return StorePaymentTypeWrapper
 	 */
-	protected function getPaymentTypes()
+	protected function getCardTypes()
 	{
-		$sql = 'select PaymentType.* from PaymentType
-			inner join PaymentTypeRegionBinding on
-				payment_type = id and region = %s
+		$sql = 'select CardType.* from CardType
+			inner join CardTypeRegionBinding on
+				card_type = id and region = %s
 			order by displayorder, title';
 
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
-		$wrapper = SwatDBClassMap::get('StorePaymentTypeWrapper');
+		$wrapper = SwatDBClassMap::get('StoreCardTypeWrapper');
 		$types = SwatDB::query($this->app->db, $sql, $wrapper);
 
 		return $types;
@@ -342,13 +418,13 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 	protected function setWidgetValues(
 		StoreAccountPaymentMethod $payment_method)
 	{
-		$this->ui->getWidget('payment_type')->value =
-			$payment_method->payment_type->id;
+		$this->ui->getWidget('card_type')->value =
+			$payment_method->card_type->id;
 
 		$this->ui->getWidget('card_number_preview')->content =
-			StorePaymentType::formatCardNumber(
+			StoreCardType::formatCardNumber(
 				$payment_method->card_number_preview,
-				$payment_method->payment_type->getMaskedFormat());
+				$payment_method->card_type->getMaskedFormat());
 
 		$this->ui->getWidget('card_issue_number')->value =
 			$payment_method->card_issue_number;
@@ -379,7 +455,7 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 	// }}}
 	// {{{ protected function getInlineJavaScript()
 
-	protected function getInlineJavaScript(StorePaymentTypeWrapper $types)
+	protected function getInlineJavaScript(StoreCardTypeWrapper $types)
 	{
 		$id = 'account_payment_method';
 		$inception_date_ids = array();

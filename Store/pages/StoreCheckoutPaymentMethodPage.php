@@ -94,7 +94,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		if ($payment_type !== null && $payment_type->isCard()) {
 			$card_type_list = $this->ui->getWidget('card_type');
 			// determine card type automatically if type flydown is hidden
-			if (!$card_type->visible)
+			if (!$card_type_list->visible)
 				$this->processCardType();
 		}
 
@@ -102,9 +102,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
-	// {{{ private function processCardType()
+	// {{{ protected function processCardType()
 
-	private function processCardType()
+	protected function processCardType()
 	{
 		$card_number = $this->ui->getWidget('card_number');
 		if ($card_number->show_blank_value)

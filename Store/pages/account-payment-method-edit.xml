@@ -3,9 +3,9 @@
 <swatml>
 	<widget class="SwatForm" id="edit_form">
 		<widget class="SwatMessageDisplay" id="message_display" />
-		<widget class="SwatFormField" id="payment_type_field">
-			<property name="title" translatable="yes">Payment Type</property>
-			<widget class="SwatRadioList" id="payment_type">
+		<widget class="SwatFormField" id="card_type_field">
+			<property name="title" translatable="yes">Card Type</property>
+			<widget class="SwatRadioList" id="card_type">
 				<property name="required" type="boolean">true</property>
 			</widget>
 		</widget>
@@ -16,6 +16,14 @@
 				<property name="maxlength" type="integer">50</property>
 			</widget>
 			<widget class="SwatContentBlock" id="card_number_preview" />
+		</widget>
+		<widget class="SwatFormField" id="card_verification_value_field">
+			<property name="title" translatable="yes">Card Verification Value</property>
+			<widget class="SwatEntry" id="card_verification_value">
+				<property name="required" type="boolean">true</property>
+				<property name="maxlength" type="integer">4</property>
+				<property name="size" type="integer">4</property>
+			</widget>
 		</widget>
 		<widget class="SwatFormField" id="card_issue_number_field">
 			<property name="title" translatable="yes">Card Issue Number</property>
