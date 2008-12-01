@@ -212,6 +212,10 @@ abstract class StoreOrderConfirmationMailMessage
 			$view->getRow('subtotal')->locale = $order->locale->id;
 		}
 
+		if ($order->surcharge_total > 0) {
+			$view->getRow('surcharge')->value = $order->surcharge_total;
+		}
+
 		if ($view->hasRow('total')) {
 			$view->getRow('total')->value = $order->total;
 			$view->getRow('total')->locale = $order->locale->id;
