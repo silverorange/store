@@ -161,9 +161,14 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 			$this->updatePaymentMethod($order_payment_method);
 
-			if ($order_payment_method->payment_type === null)
+			if ($order_payment_method->payment_type === null) {
 				$order_payment_method = null;
-
+			} else {
+				if ($order_payment_method->payment_type->isCard() &&
+					$order_payment_method->card_type === null)
+						throw new StoreException('Order payment method must '.
+							'a card_type when isCard() is true.');
+			}
 		} else {
 			$method_id = intval($method_list->value);
 
