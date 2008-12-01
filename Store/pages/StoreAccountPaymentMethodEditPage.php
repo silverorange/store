@@ -203,7 +203,7 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 			$message = 'Sorry, we don’t accept your card type.';
 		}
 
-		if ($message !== null) {
+		if ($message !== null && !$card_number->hasMessage()) {
 			$message = new SwatMessage(sprintf('%s %s', $message,
 				$this->getAcceptedCardTypesMessage()), SwatMessage::ERROR);
 
