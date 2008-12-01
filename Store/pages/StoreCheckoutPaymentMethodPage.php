@@ -201,6 +201,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$payment_method->payment_type =
 			$this->ui->getWidget('payment_type')->value;
 
+		$payment_method->surcharge =
+			$payment_method->payment_type->surcharge;
+
 		$this->updatePaymentMethodCardNumber($payment_method);
 
 		$payment_method->card_type =
@@ -359,7 +362,8 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				 *  Note: We can't repopulate the card number entry since we
 				 *        only store the encrypted number in the dataobject.
 				 */
-				$this->ui->getWidget('card_number')->show_blank_value = true;
+				if ($order->payment_method->card_number !== null)
+					$this->ui->getWidget('card_number')->show_blank_value = true;
 
 				$this->ui->getWidget('card_verification_value')->value =
 					$order->payment_method->getCardVerificationValue();

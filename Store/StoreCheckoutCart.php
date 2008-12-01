@@ -232,6 +232,8 @@ abstract class StoreCheckoutCart extends StoreCart
 			$total = 0;
 			$total += $this->getItemTotal();
 
+			$total += $this->getSurchargeTotal();
+
 			$total += $this->getTaxTotal(
 				$billing_address, $shipping_address);
 
@@ -282,6 +284,34 @@ abstract class StoreCheckoutCart extends StoreCart
 				$total += $entry->getExtension();
 
 			$this->setCachedValue('store-item-total', $total);
+		}
+
+		return $total;
+	}
+
+	// }}}
+	// {{{ public function getSurchargeTotal()
+
+	/**
+	 * Gets the total of any surcharges.
+	 *
+	 * @return double the sum of all surcharges.
+	 */
+	public function getSurchargeTotal()
+	{
+		if ($this->cachedValueExists('store-surcharge-total')) {
+			$total = $this->getCachedValue('store-surcharge-total');
+		} else {
+			$total = 0;
+
+			if ($this->app->session->order !== null &&
+				$this->app->session->order->payment_method !== null) {
+					$payment_method = $this->app->session->order->payment_method;
+					if ($payment_method->surcharge !== null)
+						$total+= $payment_method->surcharge;
+			}
+
+			$this->setCachedValue('store-surcharge-total', $total);
 		}
 
 		return $total;

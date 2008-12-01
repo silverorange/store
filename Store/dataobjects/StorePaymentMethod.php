@@ -35,6 +35,13 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	public $id;
 
 	/**
+	 * Optional surcharge
+	 *
+	 * @var float
+	 */
+	public $surcharge;
+
+	/**
 	 * Full name on the card
 	 *
 	 * @var string

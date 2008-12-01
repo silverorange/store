@@ -98,6 +98,13 @@ class StoreOrder extends SwatDBDataObject
 	public $item_total;
 
 	/**
+	 * Surcharge total
+	 *
+	 * @var float
+	 */
+	public $surcharge_total;
+
+	/**
 	 * Shipping total
 	 *
 	 * @var float
