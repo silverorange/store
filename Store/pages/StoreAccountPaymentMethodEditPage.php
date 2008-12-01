@@ -153,6 +153,11 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 				$payment_method = $this->findPaymentMethod();
 				$this->updatePaymentMethod($payment_method);
 
+				if ($payment_method->payment_type->isCard() &&
+					$payment_method->card_type === null)
+						throw new StoreException('Payment method must '.
+							'a card_type when isCard() is true.');
+
 				if ($this->id === null) {
 					$this->app->session->account->payment_methods->add(
 						$payment_method);
