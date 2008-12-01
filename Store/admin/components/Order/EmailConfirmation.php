@@ -84,8 +84,6 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 					SwatMessage::NOTIFICATION);
 
 			$this->app->messages->add($message);
-
-			exit;
 		}
 	}
 
