@@ -140,21 +140,23 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 		$form = $this->ui->getWidget('edit_form');
 		$form->process();
 
-		$payment_type = $this->getPaymentType();
-		if ($payment_type !== null && $payment_type->isCard()) {
-			$card_type_list = $this->ui->getWidget('card_type');
-			// determine card type automatically if type flydown is hidden
-			if (!$card_type_list->visible)
-				$this->processCardType();
-		}
-
 		if ($form->isProcessed()) {
+			if ($this->id === null) {
+				$payment_type = $this->getPaymentType();
+				if ($payment_type !== null && $payment_type->isCard()) {
+					$card_type_list = $this->ui->getWidget('card_type');
+					// determine card type automatically if type flydown is hidden
+					if (!$card_type_list->visible)
+						$this->processCardType();
+				}
+			}
+
 			if (!$form->hasMessage()) {
 				$payment_method = $this->findPaymentMethod();
 				$this->updatePaymentMethod($payment_method);
 
 				if ($payment_method->payment_type->isCard() &&
-					$payment_method->card_type === null)
+					$payment_method->getInternalValue('card_type') === null)
 						throw new StoreException('Payment method must '.
 							'a card_type when isCard() is true.');
 
@@ -220,14 +222,13 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 	protected function updatePaymentMethod(
 		StoreAccountPaymentMethod $payment_method)
 	{
-		$card_number = $this->ui->getWidget('card_number');
-		if ($card_number->show_blank_value)
+		if ($this->id === null) {
 			$payment_method->card_type =
 				$this->ui->getWidget('card_type')->value;
 
-		if ($this->id === null)
 			$payment_method->setCardNumber(
 				$this->ui->getWidget('card_number')->value);
+		}
 
 		$payment_method->card_issue_number =
 			$this->ui->getWidget('card_issue_number')->value;
@@ -289,6 +290,26 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 		}
 
 		return $type;
+	}
+
+	// }}}
+	// {{{ protected function getAcceptedCardTypesMessage()
+
+	protected function getAcceptedCardTypesMessage()
+	{
+		$types = SwatDB::getOptionArray($this->app->db,
+			'CardType', 'title', 'shortname', 'title');
+
+		if (count($types) > 2) {
+			array_push($types, sprintf('and %s',
+				array_pop($types)));
+
+			$type_list = implode(', ', $types);
+		} else {
+			$type_list = implode(' and ', $types);
+		}
+
+		return sprintf('We accept %s.', $type_list);
 	}
 
 	// }}}
