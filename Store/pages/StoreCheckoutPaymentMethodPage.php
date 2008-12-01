@@ -497,6 +497,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			$type_flydown->addOption(
 				new SwatOption($type->id, $title, 'text/xml'));
 		}
+
+		if ($type_flydown->value === null)
+			$type_flydown->value = $types->getFirst()->id;
 	}
 
 	// }}}
@@ -552,6 +555,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			$type_flydown->addOption(
 				new SwatOption($type->id, $title, 'text/xml'));
 		}
+
+		if ($type_flydown->value === null)
+			$type_flydown->value = $types->getFirst()->id;
 	}
 
 	// }}}
