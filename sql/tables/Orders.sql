@@ -22,6 +22,7 @@ create table Orders (
 	total numeric(11, 2) not null,
 	item_total numeric(11, 2) not null,
 	shipping_total numeric(11, 2) null, -- null when shipping was not calculated
+	surcharge_total numeric(11, 2) not null,
 	tax_total numeric(11, 2) not null,
 
 	ad integer null references Ad(id),

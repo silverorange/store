@@ -93,6 +93,10 @@
 				<property name="offset" type="integer">2</property>
 				<property name="title" translatable="yes">Shipping Total</property>
 			</object>
+			<object class="StoreTotalRow" id="surcharge">
+				<property name="title" translatable="yes">Surcharge</property>
+				<property name="show_free" type="boolean">false</property>
+			</object>
 			<object class="StoreTotalRow" id="total">
 				<property name="offset" type="integer">2</property>
 				<property name="title" translatable="yes">Total</property>

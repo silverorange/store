@@ -592,7 +592,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 	protected function buildShippingAddress($order)
 	{
-		ob_start();	
+		ob_start();
 		// compare references since these are not saved yet
 		if ($order->shipping_address === $order->billing_address) {
 			$span_tag = new SwatHtmlTag('span');
@@ -658,8 +658,11 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		$items_view = $this->ui->getWidget('items_view');
 		$items_view->model = $order->getOrderDetailsTableStore();
 
-		$items_view->getRow('shipping')->value = $order->shipping_total;
 		$items_view->getRow('subtotal')->value = $order->getSubtotal();
+		$items_view->getRow('shipping')->value = $order->shipping_total;
+
+		if ($order->surcharge_total > 0)
+			$items_view->getRow('surcharge')->value = $order->surcharge_total;
 
 		$items_view->getRow('total')->value = $order->total;
 
@@ -681,6 +684,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		$order->locale = $this->app->getLocale();
 
 		$order->item_total = $cart->getItemTotal();
+
+		$order->surcharge_total = $cart->getSurchargeTotal();
 
 		$order->shipping_total = $cart->getShippingTotal(
 			$order->billing_address, $order->shipping_address,
