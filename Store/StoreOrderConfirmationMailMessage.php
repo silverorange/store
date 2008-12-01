@@ -322,14 +322,18 @@ abstract class StoreOrderConfirmationMailMessage
 
 	protected function displayItemHeader($item)
 	{
+		$locale = SwatI18NLocale::get($this->app->getLocale());
+
 		printf('   Item #: %s, Quantity: %s',
 			$item->sku,
-			$item->quantity);
+			$locale->formatNumber($item->quantity));
 
 		echo self::LINE_BREAK;
 
-		if ($item->description !== null)
-			echo '   Description: ', $item->description, self::LINE_BREAK;
+		$description = SwatString::condense($item->description);
+
+		if ($description != '')
+			echo '   Description: ', $description, self::LINE_BREAK;
 	}
 
 	// }}}
@@ -353,28 +357,38 @@ abstract class StoreOrderConfirmationMailMessage
 		$locale = $this->order->locale->id;
 
 		$subtotal = $order->getSubtotal();
-		printf('Subtotal: %s', SwatString::moneyFormat($subtotal, $locale));
+		printf(Store::_('Subtotal: %s'),
+			SwatString::moneyFormat($subtotal, $locale));
+
 		echo self::LINE_BREAK;
 
 		if ($order->shipping_total == 0) {
-			echo 'Shipping Total: Free!',
+			echo Store::_('Shipping: Free!'),
 				self::LINE_BREAK;
 		} else {
-			printf('Shipping Total: %s',
+			printf(Store::_('Shipping: %s'),
 				SwatString::moneyFormat($order->shipping_total, $locale));
 
 			echo self::LINE_BREAK;
 		}
 
+		if ($order->surcharge_total > 0) {
+			printf(Store::_('Surcharge: %s'),
+				SwatString::moneyFormat($order->surcharge_total, $locale));
+
+			echo self::LINE_BREAK;
+		}
+
 		if ($order->tax_total > 0) {
-			printf('Tax Total: %s',
+			printf(Store::_('Tax: %s'),
 				SwatString::moneyFormat($order->tax_total, $locale));
 
 			echo self::LINE_BREAK;
 		}
 
 		echo self::LINE_BREAK;
-		printf('Total: %s', SwatString::moneyFormat($order->total, $locale));
+		printf(Store::_('Total: %s'),
+			SwatString::moneyFormat($order->total, $locale));
 	}
 
 	// }}}
