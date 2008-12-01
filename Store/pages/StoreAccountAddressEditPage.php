@@ -250,7 +250,7 @@ class StoreAccountAddressEditPage extends SiteAccountPage
 
 		$provstate_flydown = $this->ui->getWidget('provstate');
 		$provstate_flydown->addOptionsByArray(SwatDB::getOptionArray(
-			$this->app->db, 'ProvState', 'title', 'id', 'country, title'));
+			$this->app->db, 'ProvState', 'title', 'id', 'title'));
 
 		$provstate_other = $this->ui->getWidget('provstate_other');
 		if ($provstate_other->visible) {
