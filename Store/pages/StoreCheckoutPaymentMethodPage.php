@@ -496,8 +496,13 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 			$type_flydown->addOption(
 				new SwatOption($type->id, $title, 'text/xml'));
+
+			// default to 'card' if it exists
+			if ($type_flydown->value === null && $type->shortname === 'card')
+				$type_flydown->value = $type->id;
 		}
 
+		// otherwise default to first
 		if ($type_flydown->value === null)
 			$type_flydown->value = $types->getFirst()->id;
 	}
