@@ -141,6 +141,9 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 		$items_view->getRow('shipping')->value = $order->shipping_total;
 		$items_view->getRow('subtotal')->value = $order->getSubtotal();
 
+		if ($order->surcharge_total > 0)
+			$items_view->getRow('surcharge')->value = $order->surcharge_total;
+
 		$items_view->getRow('total')->value = $order->total;
 	}
 
