@@ -20,7 +20,7 @@ function StoreQuickOrder(id, item_selector_id, num_rows)
 
 	var item;
 	for (var i = 0; i < num_rows; i++) {
-		item = new StoreQuickOrderItem(this.id, item_selector_id, i);
+		item = new StoreQuickOrderItem(this, item_selector_id, i);
 		this.items.push(item);
 	}
 }
@@ -42,14 +42,15 @@ StoreQuickOrder.loading_text = 'loading …';
 /**
  * Creates a new item-row controller for the quick-order page
  *
- * @param String quick_order_id
+ * @param StoreQuickOrder quick_order
  * @param String item_selector_id
  * @param String id
  */
-function StoreQuickOrderItem(quick_order_id, item_selector_id, id)
+function StoreQuickOrderItem(quick_order, item_selector_id, id)
 {
 	this.id = id;
-	this.quick_order_id = quick_order_id;
+	this.quick_order = quick_order;
+	this.quick_order_id = quick_order.id;
 	this.div = document.getElementById(
 		item_selector_id + '_renderer_' + id);
 
@@ -112,7 +113,7 @@ StoreQuickOrderItem.prototype.handleSkuChange = function(e)
 			clearTimeout(this.timer);
 
 		this.timer = setTimeout(
-			'StoreQuickOrder_staticTimeOut(' + this.quick_order_id + '_obj, ' +
+			'StoreQuickOrder_staticTimeOut(' + this.quick_order.id + '_obj, ' +
 				this.id + ');', StoreQuickOrder.timeout_delay);
 
 		this.old_value = target.value;
