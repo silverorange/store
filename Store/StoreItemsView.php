@@ -174,15 +174,12 @@ class StoreItemsView extends SwatControl
 
 	protected function createCartEntry($item_id, $quantity)
 	{
+
 		$cart_entry_class = SwatDBClassMap::get('StoreCartEntry');
 		$cart_entry = new $cart_entry_class();
-		$cart_entry->quantity = $quantity;
-
-		$item_class = SwatDBClassMap::get('StoreItem');
-		$item = new $item_class();
-		$item->id = $item_id;
-
+		$item = $this->product->items->getByIndex($item_id);
 		$cart_entry->item = $item;
+		$cart_entry->setQuantity($quantity);
 
 		return $cart_entry;
 	}
