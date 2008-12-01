@@ -610,12 +610,20 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				$issue_number_ids[] = $type->id;
 		}
 
+		$card_ids = array();
+		foreach ($this->getPaymentTypes() as $type) {
+			if ($type->isCard()) {
+				$card_ids[] = $type->id;
+			}
+		}
+
 		return sprintf("var %s_obj = ".
-			"new StoreCheckoutPaymentMethodPage('%s', [%s], [%s]);",
+			"new StoreCheckoutPaymentMethodPage('%s', [%s], [%s], [%s]);",
 			$id,
 			$id,
 			implode(', ', $inception_date_ids),
-			implode(', ', $issue_number_ids));
+			implode(', ', $issue_number_ids),
+			implode(', ', $card_ids));
 	}
 
 	// }}}
