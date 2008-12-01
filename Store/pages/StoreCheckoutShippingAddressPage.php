@@ -192,15 +192,25 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 		} else {
 			$address_id = intval($address_list->value);
 
-			$account_address =
-				$this->app->session->account->addresses->getByIndex(
-				$address_id);
+			/* If we are already using the selected address for billing, then
+			 * use the existing OrderAddress, else copy into the new one.
+			 */
+			$other_address = $this->app->session->order->billing_address;
+			if ($other_address !== null &&
+				$other_address->getAccountAddressId() == $address_id) {
+					$address = $other_address;
+			} else {
 
-			if (!($account_address instanceof StoreAccountAddress))
-				throw new StoreException('Account address not found. Address '.
-					"with id ‘{$address_id}’ not found.");
+				$account_address =
+					$this->app->session->account->addresses->getByIndex(
+					$address_id);
 
-			$address->copyFrom($account_address);
+				if (!($account_address instanceof StoreAccountAddress))
+					throw new StoreException('Account address not found. '.
+						"Address with id ‘{$address_id}’ not found.");
+
+				$address->copyFrom($account_address);
+			}
 		}
 
 		$this->shipping_address = $address;
