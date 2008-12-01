@@ -1,44 +1,71 @@
 function StoreCheckoutPaymentMethodPage(id, inception_date_ids,
-	issue_number_ids)
+	issue_number_ids, card_ids)
 {
 	this.id = id;
 	this.container = document.getElementById('payment_method_form');
+	this.card_container = document.getElementById('card_container');
 	this.list_new = document.getElementById('payment_method_list_new');
 	this.inception_date_types = [];
 	this.issue_number_types = [];
+	this.card_types = [];
 
 	// set up event handlers for payment methods
 	var payment_methods = document.getElementsByName('payment_method_list');
 	for (var i = 0; i < payment_methods.length; i++) {
-		YAHOO.util.Event.addListener(payment_methods[i], 'click',
-			StoreCheckoutPaymentMethodPage.handlePaymentMethodClick, this);
+		YAHOO.util.Event.on(payment_methods[i], 'click',
+			this.handlePaymentMethodClick, this, true);
 	}
 
 	// set up event handlers for payment types
 	var payment_types = document.getElementsByName('payment_type');
 	for (var i = 0; i < payment_types.length; i++) {
-		YAHOO.util.Event.addListener(payment_types[i], 'click',
-			StoreCheckoutPaymentMethodPage.handlePaymentTypeClick, this);
+		YAHOO.util.Event.on(payment_types[i], 'click',
+			this.handlePaymentTypeClick, this, true);
 	}
 
 	for (var i = 0; i < inception_date_ids.length; i++) {
 		var type = document.getElementById(
 			'payment_type_' + inception_date_ids[i]);
 
-		if (type)
+		if (type) {
 			this.inception_date_types.push(type);
+		}
 	}
 
 	for (var i = 0; i < issue_number_ids.length; i++) {
 		var type = document.getElementById(
 			'payment_type_' + issue_number_ids[i]);
 
-		if (type)
+		if (type) {
 			this.issue_number_types.push(type);
+		}
+	}
+
+	for (var i = 0; i < card_ids.length; i++) {
+		var type = document.getElementById(
+			'payment_type_' + card_ids[i]);
+
+		if (type) {
+			this.card_types.push(type);
+		}
 	}
 
 	this.fields = [
 		'payment_type',
+		'card_type',
+		'card_number',
+		'card_verification_value',
+		'card_issue_number',
+		'card_expiry_month',
+		'card_expiry_year',
+		'card_inception_month',
+		'card_inception_year',
+		'card_fullname',
+		'save_account_payment_method'
+	];
+
+	this.card_fields = [
+		'card_type',
 		'card_number',
 		'card_verification_value',
 		'card_issue_number',
@@ -68,22 +95,31 @@ function StoreCheckoutPaymentMethodPage(id, inception_date_ids,
 	this.updateFields();
 }
 
-StoreCheckoutPaymentMethodPage.handlePaymentMethodClick = function(event, page)
+StoreCheckoutPaymentMethodPage.prototype.handlePaymentMethodClick = function(e)
 {
-	page.updateFields();
+	this.updateFields();
 }
 
-StoreCheckoutPaymentMethodPage.handlePaymentTypeClick = function(event, page)
+StoreCheckoutPaymentMethodPage.prototype.handlePaymentTypeClick = function(e)
 {
-	page.updateFields();
+	this.updateFields();
 }
 
 StoreCheckoutPaymentMethodPage.prototype.updateFields = function()
 {
-	if (this.isSensitive())
-		this.sensitize();
-	else
+	if (!this.isSensitive()) {
 		this.desensitize();
+		return;
+	}
+
+	this.sensitize();
+
+	if (!this.isCardSensitive()) {
+		this.desensitizeCard();
+		return;
+	}
+
+	this.sensitizeCard();
 
 	if (this.isInceptionDateSensitive())
 		this.sensitizeInceptionDate();
@@ -121,6 +157,38 @@ StoreCheckoutPaymentMethodPage.prototype.desensitize = function()
 		YAHOO.util.Dom.addClass(this.container, 'swat-insensitive');
 
 	StoreCheckoutPage_desensitizeFields(this.fields);
+}
+
+// card fields
+
+StoreCheckoutPaymentMethodPage.prototype.isCardSensitive = function()
+{
+	var sensitive = false;
+
+	for (var i = 0; i < this.card_types.length; i++) {
+		if (this.card_types[i].checked) {
+			sensitive = true;
+			break;
+		}
+	}
+
+	return sensitive;
+}
+
+StoreCheckoutPaymentMethodPage.prototype.sensitizeCard = function()
+{
+	if (this.card_container)
+		YAHOO.util.Dom.removeClass(this.card_container, 'swat-insensitive');
+
+	StoreCheckoutPage_sensitizeFields(this.card_fields);
+}
+
+StoreCheckoutPaymentMethodPage.prototype.desensitizeCard = function()
+{
+	if (this.card_container)
+		YAHOO.util.Dom.addClass(this.card_container, 'swat-insensitive');
+
+	StoreCheckoutPage_desensitizeFields(this.card_fields);
 }
 
 // inception date fields
