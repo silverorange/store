@@ -311,6 +311,9 @@ class StoreAccountOrderPage extends SiteAccountPage
 
 		$items_view->getRow('shipping')->value = $this->order->shipping_total;
 
+		if ($this->order->surcharge_total > 0)
+			$items_view->getRow('surcharge')->value = $this->order->surcharge_total;
+
 		if ($this->order->tax_total > 0)
 			$items_view->getRow('taxes')->value = $this->order->tax_total;
 		else

@@ -114,6 +114,10 @@
 						<property name="title" translatable="yes">Shipping</property>
 						<property name="offset" type="integer">1</property>
 					</object>
+					<object class="storetotalrow" id="surcharge">
+						<property name="title" translatable="yes">Surcharge</property>
+						<property name="offset" type="integer">1</property>
+					</object>
 					<object class="storetotalrow" id="taxes">
 						<property name="title" translatable="yes">Taxes</property>
 						<property name="offset" type="integer">1</property>
