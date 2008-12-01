@@ -235,7 +235,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			$payment_method->card_issue_number = null;
 			$payment_method->card_type = null;
 			$payment_method->card_number = null;
-			$payment_method->card_verification_value = null;
+			$payment_method->card_number_preview = null;
 		}
 	}
 
