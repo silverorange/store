@@ -181,7 +181,7 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 	protected function processCardType()
 	{
 		$card_number = $this->ui->getWidget('card_number');
-		if ($card_number->show_blank_value)
+		if ($card_number->show_blank_value || $card_number->value == null)
 			return;
 
 		$message = null;
