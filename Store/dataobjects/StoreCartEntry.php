@@ -247,11 +247,13 @@ class StoreCartEntry extends SwatDBDataObject
 	 * @param StoreCartEntry $entry the entry to compare this entry to.
 	 *
 	 * @return boolean True if the two items are the same, false if they're
-	 *                 not.
+	 *                  not. Items are considered the same if they have the same
+	 *                  id and the same custom price.
 	 */
 	public function hasSameItem(StoreCartEntry $entry)
 	{
-		return ($this->getItemId() === $entry->getItemId());
+		return (($this->custom_price == $entry->custom_price) &&
+			($this->getItemId() === $entry->getItemId()));
 	}
 
 	// }}}
