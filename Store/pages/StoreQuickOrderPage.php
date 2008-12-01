@@ -136,16 +136,20 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 
 				if ($sku !== null) {
 					$sku = trim($sku);
-					if (substr($sku, 0, 1) === '#' && strlen($sku) > 1)
-						$sku = substr($sku, 1);
+					$normalized_sku = $this->normalizeSku($sku);
+					if ($normalized_sku == '') {
+						$normalized_sku = null;
+					}
+				} else {
+					$normalized_sku = null;
 				}
 
 				$quantity_widget = $quantity_renderer->getWidget($id);
 				$quantity = $quantity_widget->value;
 
 				// populate item flydown
-				if ($sku !== null) {
-					$item_selector->sku = $sku;
+				if ($nurmalized_sku !== null) {
+					$item_selector->sku = $normalized_sku;
 					$item_selector->db = $this->app->db;
 					$item_selector->region = $this->app->getRegion();
 					$item_selector->init();
@@ -156,8 +160,8 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 
 				// item selector did not load using ajax so try to guess the
 				// id based on the sku entered by the user
-				if ($item_id === null && $sku !== null) {
-					$item_id = $this->getItemId($sku);
+				if ($item_id === null && $normailzed_sku !== null) {
+					$item_id = $this->getItemId($normalized_sku);
 					if ($item_id === null) {
 						$message = new SwatMessage(sprintf(Store::_(
 							'“%s” is not an available %%s.'), $sku), 'error');
@@ -168,7 +172,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 
 				if ($item_id !== null && !$sku_renderer->hasMessage($id) &&
 					!$quantity_renderer->hasMessage($id) &&
-					$this->addItem($item_id, $quantity, $sku)) {
+					$this->addItem($item_id, $quantity, $normalized_sku)) {
 					// clear fields after a successful add
 					$sku_widget->value = '';
 					$quantity_widget->value = 1;
@@ -203,6 +207,8 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 	protected function getItemId($sku)
 	{
 		$sku = strtolower($sku);
+		if (substr($sku, 0, 1) === '#' && strlen($sku) > 1)
+			$sku = substr($sku, 1);
 
 		$sql = sprintf('select Item.id from Item
 			inner join VisibleProductCache on
@@ -323,6 +329,17 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 				break;
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function normalizeSku()
+
+	protected function normalizeSku($sku)
+	{
+		if (substr($sku, 0, 1) === '#' && strlen($sku) > 1)
+			$sku = substr($sku, 1);
+
+		return $sku;
 	}
 
 	// }}}
