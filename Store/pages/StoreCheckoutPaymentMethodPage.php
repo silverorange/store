@@ -203,31 +203,40 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	protected function updatePaymentMethod(
 		StoreOrderPaymentMethod $payment_method)
 	{
-		$payment_method->payment_type =
-			$this->ui->getWidget('payment_type')->value;
+		$payment_type = $this->getPaymentType();
 
-		$payment_method->surcharge =
-			$payment_method->payment_type->surcharge;
+		$payment_method->payment_type = $payment_type;
+		$payment_method->surcharge = $payment_type->surcharge;
 
-		$this->updatePaymentMethodCardNumber($payment_method);
+		if ($payment_type->isCard()) {
+			$this->updatePaymentMethodCardNumber($payment_method);
 
-		$payment_method->card_type =
-			$this->ui->getWidget('card_type')->value;
+			$payment_method->card_type =
+				$this->ui->getWidget('card_type')->value;
 
-		$payment_method->setCardVerificationValue(
-			$this->ui->getWidget('card_verification_value')->value);
+			$payment_method->setCardVerificationValue(
+				$this->ui->getWidget('card_verification_value')->value);
 
-		$payment_method->card_issue_number =
-			$this->ui->getWidget('card_issue_number')->value;
+			$payment_method->card_issue_number =
+				$this->ui->getWidget('card_issue_number')->value;
 
-		$payment_method->card_expiry =
-			$this->ui->getWidget('card_expiry')->value;
+			$payment_method->card_expiry =
+				$this->ui->getWidget('card_expiry')->value;
 
-		$payment_method->card_inception =
-			$this->ui->getWidget('card_inception')->value;
+			$payment_method->card_inception =
+				$this->ui->getWidget('card_inception')->value;
 
-		$payment_method->card_fullname =
-			$this->ui->getWidget('card_fullname')->value;
+			$payment_method->card_fullname =
+				$this->ui->getWidget('card_fullname')->value;
+		} else {
+			$payment_method->card_fullname = null;
+			$payment_method->card_inception = null;
+			$payment_method->card_expiry = null;
+			$payment_method->card_issue_number = null;
+			$payment_method->card_type = null;
+			$payment_method->card_number = null;
+			$payment_method->card_verification_value = null;
+		}
 	}
 
 	// }}}
