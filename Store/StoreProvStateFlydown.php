@@ -37,14 +37,6 @@ class StoreProvStateFlydown extends SwatFlydown
 	// {{{ public properties
 
 	/**
-	 * @var MDB2_Driver_Common
-	 */
-	protected $db;
-
-	// {{{ public properties
-	// }}}
-
-	/**
 	 * The country to validate the provstate in
 	 *
 	 * This should be a valid ISO-3611 two-digit country code.
@@ -52,6 +44,14 @@ class StoreProvStateFlydown extends SwatFlydown
 	 * @var string
 	 */
 	public $country;
+
+	// }}}
+	// {{{ protected properties
+
+	/**
+	 * @var MDB2_Driver_Common
+	 */
+	protected $db;
 
 	// }}}
 	// {{{ public function setDatabase()
