@@ -237,8 +237,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 		// new payment methods are only added if a session flag is set
 		if ($this->app->session->save_account_payment_method &&
-			$order->payment_method !== null) {
-			$this->addPaymentMethodToAccount($order->payment_method);
+			$order->payment_method !== null &&
+			$order->payment_method->isSaveableWithAccount()) {
+				$this->addPaymentMethodToAccount($order->payment_method);
 		}
 
 		$new_account = ($account->id === null);

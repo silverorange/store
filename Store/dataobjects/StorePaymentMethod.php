@@ -462,6 +462,26 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function isSaveableWithAccount()
+
+	/**
+	 * Whether or not this payment method should be saved with accounts
+	 *
+	 * @return boolean true if this payment method should be saved with
+	 *                  accounts.
+	 */
+	public function isSaveableWithAccount()
+	{
+		$saveable = false;
+
+		if ($this->payment_type !== null &&
+			$this->payment_type->isCard())
+				$saveable = true;
+
+		return $saveable;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
