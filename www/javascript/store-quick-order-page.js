@@ -103,8 +103,11 @@ function StoreQuickOrderItem(quick_order, item_selector_id, id)
 StoreQuickOrderItem.prototype.handleSkuChange = function(e)
 {
 	var target = YAHOO.util.Event.getTarget(e);
-	if (target.value != this.old_value) {
-		var sku = target.value;
+
+	var value = target.value.replace(/^\s+|\s+$/g, ''); // trim whitespace
+
+	if (value != this.old_value) {
+		var sku = value;
 
 		if (!this.quantity.value && sku.length > 0)
 			this.quantity.value = '1';
@@ -116,7 +119,7 @@ StoreQuickOrderItem.prototype.handleSkuChange = function(e)
 			'StoreQuickOrder_staticTimeOut(' + this.quick_order.id + '_obj, ' +
 				this.id + ');', StoreQuickOrder.timeout_delay);
 
-		this.old_value = target.value;
+		this.old_value = value;
 	}
 }
 

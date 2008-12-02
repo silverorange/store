@@ -203,7 +203,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	// {{{ protected function displayItem()
 
 	/**
-	 * Displays this item selector when there is onlt one item for the given
+	 * Displays this item selector when there is only one item for the given
 	 * sku
 	 */
 	protected function displayItem()
@@ -227,9 +227,14 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	protected function getItems()
 	{
 		if ($this->items_sku !== $this->sku) {
-			$sql = $this->getItemSql();
-			$this->items = StoreItemWrapper::loadSetFromDBWithRegion(
-				$this->db, $sql, $this->region, false);
+			$sku = $this->normalizeSku($this->sku);
+			if ($sku != '') {
+				$sql = $this->getItemSql();
+				$this->items = StoreItemWrapper::loadSetFromDBWithRegion(
+					$this->db, $sql, $this->region, false);
+			} else {
+				$this->items = null;
+			}
 
 			$this->items_sku = $this->sku;
 		}
@@ -242,20 +247,17 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 
 	protected function getItemSql()
 	{
-		$sku = trim(strtolower($this->sku));
+		$sku = $this->normalizeSku();
 
-		if (substr($sku, 0, 1) === '#' && strlen($sku) > 1)
-			$sku = substr($sku, 1);
-
-			$sql = sprintf('select Item.id from Item
-				inner join VisibleProductCache on
-					Item.product = VisibleProductCache.product and
-						VisibleProductCache.region = %1$s
-				where lower(Item.sku) = %2$s
-					or Item.id in (select item from ItemAlias where
-					lower(ItemAlias.sku) = %2$s)',
-			$this->db->quote($this->region->id, 'integer'),
-			$this->db->quote($sku, 'text'));
+		$sql = sprintf('select Item.id from Item
+			inner join VisibleProductCache on
+				Item.product = VisibleProductCache.product and
+					VisibleProductCache.region = %1$s
+			where lower(Item.sku) = %2$s
+				or Item.id in (select item from ItemAlias where
+				lower(ItemAlias.sku) = %2$s)',
+		$this->db->quote($this->region->id, 'integer'),
+		$this->db->quote($sku, 'text'));
 
 		return $sql;
 	}
@@ -430,6 +432,19 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 		$renderer->plural_unit = $item->plural_unit;
 
 		return $renderer;
+	}
+
+	// }}}
+	// {{{ protected function normalizeSku()
+
+	protected function normalizeSku($sku)
+	{
+		$sku = trim(strtolower($sku));
+
+		if (strlen($sku) > 1 && $sku[0] === '#')
+			$sku = substr($sku, 1);
+
+		return $sku;
 	}
 
 	// }}}
