@@ -65,10 +65,6 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 
 		$this->cart_ui = new SwatUI();
 		$this->cart_ui->loadFromXML($this->cart_xml);
-
-		$cart_form = $this->cart_ui->getWidget('cart_form');
-		$cart_form->action = $this->source;
-
 		$this->cart_ui->init();
 
 		$this->message_display = new SwatMessageDisplay();
@@ -105,7 +101,6 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 	{
 		parent::process();
 		$this->message_display->process();
-		$this->processCart();
 		$this->processForm();
 	}
 
@@ -301,34 +296,6 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 		}
 
 		return $cart_entry;
-	}
-
-	// }}}
-	// {{{ protected function processCart()
-
-	protected function processCart()
-	{
-		$this->cart_ui->process();
-
-		if (!$this->cart_ui->hasWidget('cart_view'))
-			return;
-
-		$view = $this->cart_ui->getWidget('cart_view');
-
-		// check for removed items
-		$remove_column = $view->getColumn('remove_column');
-		$remove_renderer = $remove_column->getRendererByPosition();
-		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
-			if ($widget->hasBeenClicked()) {
-				$this->item_removed = true;
-				$this->app->cart->checkout->removeEntryById($id);
-				$this->message_display->add(new SwatMessage(Store::_(
-					'An item has been removed from your shopping cart.'),
-					'cart'));
-
-				break;
-			}
-		}
 	}
 
 	// }}}
