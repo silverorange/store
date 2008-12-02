@@ -224,7 +224,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 		if ($type === null) {
 			$type_list = $this->ui->getWidget('payment_type');
-			if ($type_list->isVisible()) {
+			if (isset($_POST['payment_type'])) {
 				$type_list->process();
 				$class_name = SwatDBClassMap::get('StorePaymentType');
 				$type = new $class_name();
@@ -248,7 +248,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		if ($type === null) {
 			$type_list = $this->ui->getWidget('card_type');
 
-			if ($type_list->isVisible()) {
+			if (isset($_POST['card_type'])) {
 				$type_list->process();
 				$card_type_id = $type_list->value;
 			} else {
@@ -454,6 +454,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		// otherwise default to first
 		if ($type_flydown->value === null)
 			$type_flydown->value = $types->getFirst()->id;
+
+		if (count($types) == 1)
+			$type_flydown->parent->visible = false;
 	}
 
 	// }}}

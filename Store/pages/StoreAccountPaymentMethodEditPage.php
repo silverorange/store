@@ -239,7 +239,7 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 		if ($type === null) {
 			$type_list = $this->ui->getWidget('card_type');
 
-			if ($type_list->isVisible()) {
+			if (isset($_POST['card_type'])) {
 				$type_list->process();
 				$card_type_id = $type_list->value;
 			} else {
