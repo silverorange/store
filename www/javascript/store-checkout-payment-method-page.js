@@ -2,6 +2,7 @@ function StoreCheckoutPaymentMethodPage(id, inception_date_ids,
 	issue_number_ids, card_ids)
 {
 	this.id = id;
+	this.card_ids = card_ids;
 	this.container = document.getElementById('payment_method_form');
 	this.card_container = document.getElementById('card_container');
 	this.list_new = document.getElementById('payment_method_list_new');
@@ -165,11 +166,17 @@ StoreCheckoutPaymentMethodPage.prototype.isCardSensitive = function()
 {
 	var sensitive = false;
 
-	for (var i = 0; i < this.card_types.length; i++) {
-		if (this.card_types[i].checked) {
-			sensitive = true;
-			break;
+	if (document.getElementsByName('payment_type').length > 1) {
+		// radio list of payment types
+		for (var i = 0; i < this.card_types.length; i++) {
+			if (this.card_types[i].checked) {
+				sensitive = true;
+				break;
+			}
 		}
+	} else if (this.card_ids.length == 1) {
+		// only one payment type and it's a card
+		sensitive = true;
 	}
 
 	return sensitive;
