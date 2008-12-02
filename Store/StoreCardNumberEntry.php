@@ -60,6 +60,9 @@ class StoreCardNumberEntry extends SwatEntry
 
 	public function process()
 	{
+		if ($this->isProcessed())
+			return;
+
 		parent::process();
 
 		$data = &$this->getForm()->getFormData();
