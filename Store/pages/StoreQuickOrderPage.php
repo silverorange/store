@@ -281,7 +281,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 		$item->product = $product;
 
 		$cart_entry->item = $item;
-		$cart_entry->quantity = $quantity;
+		$cart_entry->setQuantity($quantity);
 		$cart_entry->quick_order = true;
 
 		if ($sku != $cart_entry->item->sku) {
