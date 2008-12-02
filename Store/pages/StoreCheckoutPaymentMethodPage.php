@@ -124,7 +124,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				if ($order_payment_method->payment_type->isCard() &&
 					$order_payment_method->card_type === null)
 						throw new StoreException('Order payment method must '.
-							'a card_type when isCard() is true.');
+							'be a card_type when isCard() is true.');
 			}
 		} else {
 			$method_id = intval($method_list->value);
@@ -168,9 +168,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		if ($payment_type->isCard()) {
 			$this->updatePaymentMethodCardNumber($payment_method);
 
-			$payment_method->card_type =
-				$this->ui->getWidget('card_number')->getCardType();
-
 			$payment_method->setCardVerificationValue(
 				$this->ui->getWidget('card_verification_value')->value);
 
@@ -212,8 +209,10 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		StoreOrderPaymentMethod $payment_method)
 	{
 		$card_number = $this->ui->getWidget('card_number')->value;
-		if ($card_number !== null)
+		if ($card_number !== null) {
 			$payment_method->setCardNumber($card_number);
+			$payment_method->card_type = $this->getCardType();
+		}
 	}
 
 	// }}}
@@ -225,11 +224,15 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 		if ($type === null) {
 			$type_list = $this->ui->getWidget('payment_type');
-			$type_list->process();
-			$class_name = SwatDBClassMap::get('StorePaymentType');
-			$type = new $class_name();
-			$type->setDatabase($this->app->db);
-			$type->load($type_list->value);
+			if ($type_list->isVisible()) {
+				$type_list->process();
+				$class_name = SwatDBClassMap::get('StorePaymentType');
+				$type = new $class_name();
+				$type->setDatabase($this->app->db);
+				$type->load($type_list->value);
+			} else {
+				$type = $this->getPaymentTypes()->getFirst();
+			}
 		}
 
 		return $type;
@@ -245,12 +248,13 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		if ($type === null) {
 			$type_list = $this->ui->getWidget('card_type');
 
-			if ($type_list->visible) {
+			if ($type_list->isVisible()) {
 				$type_list->process();
 				$card_type_id = $type_list->value;
 			} else {
-				$card_type_id =
-					$this->ui->getWidget('card_type')->value;
+				$card_number = $this->ui->getWidget('card_number');
+				$card_number->process();
+				$card_type_id = $card_number->getCardType();
 			}
 
 			$class_name = SwatDBClassMap::get('StoreCardType');
