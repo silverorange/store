@@ -125,6 +125,8 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 
 	public function process()
 	{
+		$this->ui->getWidget('card_number')->setDatabase($this->app->db);
+
 		parent::process();
 
 		$type = $this->getCardType();
@@ -141,23 +143,13 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 		$form->process();
 
 		if ($form->isProcessed()) {
-			if ($this->id === null) {
-				$payment_type = $this->getPaymentType();
-				if ($payment_type !== null && $payment_type->isCard()) {
-					$card_type_list = $this->ui->getWidget('card_type');
-					// determine card type automatically if type flydown is hidden
-					if (!$card_type_list->visible)
-						$this->processCardType();
-				}
-			}
-
 			if (!$form->hasMessage()) {
 				$payment_method = $this->findPaymentMethod();
 				$this->updatePaymentMethod($payment_method);
 
 				if ($payment_method->payment_type->isCard() &&
-					$payment_method->getInternalValue('card_type') === null)
-						throw new StoreException('Payment method must '.
+					$payment_method->card_type === null)
+						throw new StoreException('Payment method must have '.
 							'a card_type when isCard() is true.');
 
 				if ($this->id === null) {
@@ -176,42 +168,6 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 	}
 
 	// }}}
-	// {{{ protected function processCardType()
-
-	protected function processCardType()
-	{
-		$card_number = $this->ui->getWidget('card_number');
-		if ($card_number->show_blank_value || $card_number->value == null)
-			return;
-
-		$message = null;
-
-		$info = StoreCardType::getInfoFromCardNumber($card_number->value);
-
-		if ($info !== null) {
-			$class_name = SwatDBClassMap::get('StoreCardType');
-			$type = new $class_name();
-			$type->setDatabase($this->app->db);
-			$found = $type->loadFromShortname($info->shortname);
-
-			if ($found)
-				$this->ui->getWidget('card_type')->value = $type->id;
-			else
-				$message = sprintf('Sorry, we don’t accept %s payments.',
-					SwatString::minimizeEntities($info->description));
-		} else {
-			$message = 'Sorry, we don’t accept your card type.';
-		}
-
-		if ($message !== null && !$card_number->hasMessage()) {
-			$message = new SwatMessage(sprintf('%s %s', $message,
-				$this->getAcceptedCardTypesMessage()), SwatMessage::ERROR);
-
-			$card_number->addMessage($message);
-		}
-	}
-
-	// }}}
 	// {{{ protected function updatePaymentMethod()
 
 	/**
@@ -224,7 +180,7 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 	{
 		if ($this->id === null) {
 			$payment_method->card_type =
-				$this->ui->getWidget('card_type')->value;
+				$this->getCardType();
 
 			$payment_method->setCardNumber(
 				$this->ui->getWidget('card_number')->value);
@@ -282,34 +238,23 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 
 		if ($type === null) {
 			$type_list = $this->ui->getWidget('card_type');
-			$type_list->process();
+
+			if ($type_list->visible) {
+				$type_list->process();
+				$card_type_id = $type_list->value;
+			} else {
+				$card_number = $this->ui->getWidget('card_number');
+				$card_number->process();
+				$card_type_id = $card_number->getCardType();
+			}
+
 			$class_name = SwatDBClassMap::get('StoreCardType');
 			$type = new $class_name();
 			$type->setDatabase($this->app->db);
-			$type->load($type_list->value);
+			$type->load($card_type_id);
 		}
 
 		return $type;
-	}
-
-	// }}}
-	// {{{ protected function getAcceptedCardTypesMessage()
-
-	protected function getAcceptedCardTypesMessage()
-	{
-		$types = SwatDB::getOptionArray($this->app->db,
-			'CardType', 'title', 'shortname', 'title');
-
-		if (count($types) > 2) {
-			array_push($types, sprintf('and %s',
-				array_pop($types)));
-
-			$type_list = implode(', ', $types);
-		} else {
-			$type_list = implode(' and ', $types);
-		}
-
-		return sprintf('We accept %s.', $type_list);
 	}
 
 	// }}}
