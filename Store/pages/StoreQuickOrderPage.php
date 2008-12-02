@@ -446,9 +446,8 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 		foreach ($entries as $entry) {
 			// filter entries by added items
 			if (in_array($entry->item->id, $ids)) {
-				$row = $this->getCartTableStoreRow($entry);
-
-				$store->add($row, $entry->item->id);
+				$ds = $this->getCartDetailsStore($entry);
+				$store->add($ds, $entry->item->id);
 			}
 		}
 
@@ -456,9 +455,9 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 	}
 
 	// }}}
-	// {{{ protected function getCartTableStoreRow()
+	// {{{ protected function getCartDetailsStore()
 
-	protected function getCartTableStoreRow(StoreCartEntry $entry)
+	protected function getCartDetailsStore(StoreCartEntry $entry)
 	{
 		$ds = new SwatDetailsStore($entry);
 
@@ -474,6 +473,17 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 		}
 
 		return $ds;
+	}
+
+	//}}}
+	// {{{ protected function getCartTableStoreRow()
+
+	/**
+	 * @deprecated Use StoreQuickOrderPage::getCartDetailsStore()
+	 */
+	protected function getCartTableStoreRow(StoreCartEntry $entry)
+	{
+		return $this->getCartDetailsStore($entry);
 	}
 
 	//}}}
