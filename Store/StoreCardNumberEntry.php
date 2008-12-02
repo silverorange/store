@@ -111,30 +111,11 @@ class StoreCardNumberEntry extends SwatEntry
 
 		if ($message !== null) {
 			$message = new SwatMessage(sprintf('%s %s', $message,
-				$this->getAcceptedCardTypesMessage()), SwatMessage::ERROR);
+				StoreCardType::getAcceptedCardTypesMessage($this->db)),
+				SwatMessage::ERROR);
 
 			$this->addMessage($message);
 		}
-	}
-
-	// }}}
-	// {{{ protected function getAcceptedCardTypesMessage()
-
-	protected function getAcceptedCardTypesMessage()
-	{
-		$types = SwatDB::getOptionArray($this->db,
-			'CardType', 'title', 'shortname', 'title');
-
-		if (count($types) > 2) {
-			array_push($types, sprintf('and %s',
-				array_pop($types)));
-
-			$type_list = implode(', ', $types);
-		} else {
-			$type_list = implode(' and ', $types);
-		}
-
-		return sprintf('We accept %s.', $type_list);
 	}
 
 	// }}}
