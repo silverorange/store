@@ -155,7 +155,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 
 				// item selector did not load using ajax so try to guess the
 				// id based on the sku entered by the user
-				if ($item_id === null && $normailzed_sku !== null) {
+				if ($item_id === null && $normalized_sku !== null) {
 					$item_id = $this->getItemId($normalized_sku);
 					if ($item_id === null) {
 						$message = new SwatMessage(sprintf(Store::_(
