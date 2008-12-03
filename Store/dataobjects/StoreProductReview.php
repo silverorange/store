@@ -12,13 +12,18 @@ require_once 'Store/dataobjects/StoreProduct.php';
  */
 class StoreProductReview extends SiteComment
 {
+
 	// {{{ protected function init()
 
 	protected function init()
 	{
 		parent::init();
 
-		$this->registerInternalProperty('product', 'Product');
+		$this->registerInternalProperty('product',
+			SwatDBClassMap::get('StoreProduct'));
+
+		$this->registerInternalProperty('parent',
+			SwatDBClassMap::get('StoreProductReview'));
 
 		$this->table = 'ProductReview';
 	}
