@@ -664,7 +664,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 		$items_view->getRow('subtotal')->value = $order->getSubtotal();
 		$items_view->getRow('shipping')->value = $order->shipping_total;
-
 		if ($order->surcharge_total > 0)
 			$items_view->getRow('surcharge')->value = $order->surcharge_total;
 
@@ -691,9 +690,15 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 		$order->surcharge_total = $cart->getSurchargeTotal();
 
+		// hack to prevent killing sessions that exist before shipping type was added
+		if (isset($order->shipping_type))
+			$shipping_type = $order->shipping_type;
+		else
+			$shipping_type = null;
+
 		$order->shipping_total = $cart->getShippingTotal(
 			$order->billing_address, $order->shipping_address,
-			$order->shipping_type);
+			$shipping_type);
 
 		$order->tax_total = $cart->getTaxTotal($order->billing_address,
 			 $order->shipping_address);
