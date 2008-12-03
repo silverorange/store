@@ -270,8 +270,12 @@ class StoreCategoryPage extends StorePage
 				$title_header = new SwatHtmlTag('h3');
 				$title_header->id = $sub_category->shortname;
 				$title_header->class = 'category-twig-subtitle';
-				$title_header->setContent($sub_category->title);
-				$title_header->display();
+				$title_span   = new SwatHtmlTag('span');
+				$title_span->setContent($sub_category->title);
+
+				$title_header->open();
+				$title_span->display();
+				$title_header->close();
 
 				if ($sub_category->bodytext != '') {
 					$twig_bodytext = new SwatHtmlTag('div');
