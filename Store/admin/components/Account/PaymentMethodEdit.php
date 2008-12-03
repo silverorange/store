@@ -157,19 +157,21 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 	{
 		$payment_method = $this->getPaymentMethod();
 
-		$card_number_preview = $this->ui->getWidget('card_number_preview');
-		$card_number_preview->content = StoreCardType::formatCardNumber(
-			$payment_method->card_number_preview,
-			$payment_method->payment_type->getCardMaskedFormat());
-
 		$this->ui->getWidget('payment_type')->value =
 			$payment_method->payment_type->id;
 
-		$this->ui->getWidget('card_fullname')->value =
-			$payment_method->card_fullname;
+		if ($payment_method->payment_type->isCard()) {
+			$card_number_preview = $this->ui->getWidget('card_number_preview');
+			$card_number_preview->content = StoreCardType::formatCardNumber(
+				$payment_method->card_number_preview,
+				$payment_method->card_type->getMaskedFormat());
 
-		$this->ui->getWidget('card_expiry')->value =
-			$payment_method->card_expiry;
+			$this->ui->getWidget('card_fullname')->value =
+				$payment_method->card_fullname;
+
+			$this->ui->getWidget('card_expiry')->value =
+				$payment_method->card_expiry;
+		}
 	}
 
 	// }}}
