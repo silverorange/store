@@ -247,7 +247,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 
 	protected function getItemSql()
 	{
-		$sku = $this->normalizeSku();
+		$sku = $this->normalizeSku($this->sku);
 
 		$sql = sprintf('select Item.id from Item
 			inner join VisibleProductCache on
