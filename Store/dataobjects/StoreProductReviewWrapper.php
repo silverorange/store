@@ -9,7 +9,7 @@ require_once 'Store/dataobjects/StoreProductReview.php';
  * @package   Store
  * @copyright 2006-2008 silverorange
  */
-class ProductReviewWrapper extends SwatDBRecordsetWrapper
+class StoreProductReviewWrapper extends SwatDBRecordsetWrapper
 {
 	// {{{ protected function init()
 
@@ -17,7 +17,7 @@ class ProductReviewWrapper extends SwatDBRecordsetWrapper
 	{
 		parent::init();
 
-		$this->row_wrapper_class = 'ProductReview';
+		$this->row_wrapper_class = SwatDBClassMap::get('StoreProductReview');
 		$this->index_field = 'id';
 	}
 

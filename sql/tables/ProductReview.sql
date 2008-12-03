@@ -1,6 +1,8 @@
 create table ProductReview (
 	id serial,
 	product integer not null references Product(id) on delete cascade,
+	parent integer references ProductReview(id) on delete cascade,
+	instance int references Instance(id) on delete cascade,
 	fullname varchar(255),
 	link varchar(255),
 	email varchar(255),
@@ -14,5 +16,6 @@ create table ProductReview (
 );
 
 create index ProductReview_product_index on ProductReview(product);
+create index ProductReview_parent_index on ProductReview(parent);
 create index ProductReview_spam_index on ProductReview(spam);
 create index ProductReview_status_index on ProductReview(status);

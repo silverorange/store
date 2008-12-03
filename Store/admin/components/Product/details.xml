@@ -313,7 +313,7 @@
 				<widget class="SwatToolLink">
 					<property name="title" translatable="yes">Add a Product Review</property>
 					<property name="stock_id">create</property>
-					<property name="link">Product/Review?product=%s</property>
+					<property name="link">Product/ReviewEdit?product=%s</property>
 				</widget>
 			</widget>
 			<widget class="SwatForm" id="product_reviews_form">
@@ -323,37 +323,52 @@
 							<property name="value" type="data">id</property>
 						</object>
 					</object>
-					<object class="SwatTableViewColumn">
-						<property name="title" translatable="yes">Review</property>
+					<object class="AdminTableViewOrderableColumn" id="fullname">
+						<property name="title" translatable="yes">Posted By</property>
 						<object class="AdminTitleLinkCellRenderer">
-							<property name="text" type="data">description</property>
-							<property name="link">Product/Review?id=%s</property>
+							<property name="text" type="data">fullname</property>
+							<property name="link">Product/ReviewEdit?id=%s</property>
 							<property name="link_value" type="data">id</property>
 							<property name="stock_id">edit</property>
 						</object>
 					</object>
-					<object class="SwatTableViewColumn">
-						<property name="title" translatable="yes">Enabled</property>
-						<object class="SwatBooleanCellRenderer">
-							<property name="value" type="data">enabled</property>
-						</object>
-					</object>
-					<object class="SwatTableViewColumn">
-						<property name="title" translatable="yes">Created</property>
+					<object class="AdminTableViewOrderableColumn" id="createdate">
+						<property name="title" translatable="yes">Date</property>
 						<object class="SwatDateCellRenderer">
 							<property name="date" type="data">createdate</property>
+							<property name="format" type="constant">SwatDate::DF_DATE_TIME</property>
+						</object>
+					</object>
+					<object class="SwatTableViewColumn" id="visibility">
+						<property name="title" translatable="yes">Visiblility</property>
+						<object class="SiteCommentVisibilityCellRenderer">
+							<property name="status" type="data">status</property>
+							<property name="spam" type="data">spam</property>
+						</object>
+					</object>
+					<object class="SwatTableViewSpanningColumn" id="bodytext">
+						<property name="offset" type="integer">1</property>
+						<object class="SwatTextCellRenderer">
+							<property name="text" type="data">bodytext</property>
 						</object>
 					</object>
 				</widget>
+				<widget class="AdminPagination" id="pager">
+					<property name="link">Product/Details</property>
+				</widget>
 				<widget class="SwatActions" id="product_reviews_actions">
-					<widget class="SwatActionItem" id="product_reviews_delete">
+					<widget class="SwatActionItem" id="product_review_approve">
+						<property name="title" translatable="yes">publish</property>
+					</widget>
+					<widget class="SwatActionItem" id="product_review_deny">
+						<property name="title" translatable="yes">unpublish</property>
+					</widget>
+					<widget class="SwatActionItem" id="product_review_spam">
+						<property name="title" translatable="yes">mark as spam</property>
+					</widget>
+					<widget class="SwatActionItemDivider" />
+					<widget class="SwatActionItem" id="product_review_delete">
 						<property name="title" translatable="yes">delete…</property>
-					</widget>
-					<widget class="SwatActionItem" id="product_reviews_enabled">
-						<property name="title" translatable="yes">enable</property>
-					</widget>
-					<widget class="SwatActionItem" id="product_reviews_disable">
-						<property name="title" translatable="yes">disable</property>
 					</widget>
 				</widget>
 			</widget>

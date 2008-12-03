@@ -9,6 +9,7 @@ require_once 'Swat/SwatNavBar.php';
 require_once 'Admin/pages/AdminIndex.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDBClassMap.php';
+require_once 'Site/admin/SiteCommentVisibilityCellRenderer.php';
 require_once 'Store/StoreItemStatusList.php';
 require_once 'Store/dataobjects/StoreProduct.php';
 require_once 'Store/dataobjects/StoreRegionWrapper.php';
@@ -33,7 +34,7 @@ require_once
  * Details page for Products
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2008 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductDetails extends AdminIndex
@@ -429,42 +430,67 @@ class StoreProductDetails extends AdminIndex
 	private function processProductReviewActions($view, $actions)
 	{
 		switch ($actions->selected->id) {
-		case 'product_reviews_delete':
+		case 'product_review_delete':
 			$this->app->replacePage('Product/ReviewDelete');
 			$this->app->getPage()->setItems($view->getSelection());
+			$this->app->getPage()->setProduct($this->id);
+			$this->app->getPage()->setCategory($this->category_id);
 			break;
 
-		case 'product_reviews_enable':
-			$sql = 'update ProductReview set enabled = %s
+		case 'product_review_approve':
+			$sql = 'update ProductReview set status = %s, spam = %s
 				where id in (%s)';
 
 			SwatDB::exec($this->app->db, sprintf($sql,
-				$this->app->db->quote(true, 'boolean'),
-				SwatDB::implodeSelection($db, $view->getSelection())));
+				$this->app->db->quote(SiteComment::STATUS_PUBLISHED, 'integer'),
+				$this->app->db->quote(false, 'boolean'),
+				SwatDB::implodeSelection($this->app->db,
+					$view->getSelection())));
 
 			$num = count($view->getSelection());
 
 			$message = new SwatMessage(sprintf(Store::ngettext(
-				'One product review has been enabled.',
-				'%d product reviews have been enabled.', $num),
+				'One product review has been published.',
+				'%d product reviews have been published.', $num),
 				SwatString::numberFormat($num)));
 
 			$this->app->messages->add($message);
 			break;
 
-		case 'product_reviews_disable':
-			$sql = 'update ProductReview set enabled = %s
+		case 'product_review_deny':
+			$sql = 'update ProductReview set status = %s
 				where id in (%s)';
 
 			SwatDB::exec($this->app->db, sprintf($sql,
-				$this->app->db->quote(false, 'boolean'),
-				SwatDB::implodeSelection($db, $view->getSelection())));
+				$this->app->db->quote(SiteComment::STATUS_UNPUBLISHED,
+					'integer'),
+				SwatDB::implodeSelection($this->app->db,
+					$view->getSelection())));
 
 			$num = count($view->getSelection());
 
-			$message = new SwatMessage(Store::sprintf(ngettext(
-				'One product review has been disabled.',
-				'%d product reviews have been disabled.', $num),
+			$message = new SwatMessage(sprintf(Store::ngettext(
+				'One product review has been unpushlished.',
+				'%d product reviews have been unpushlished.', $num),
+				SwatString::numberFormat($num)));
+
+			$this->app->messages->add($message);
+			break;
+
+		case 'product_review_spam':
+			$sql = 'update ProductReview set spam = %s
+				where id in (%s)';
+
+			SwatDB::exec($this->app->db, sprintf($sql,
+				$this->app->db->quote(true, 'boolean'),
+				SwatDB::implodeSelection($this->app->db,
+					$view->getSelection())));
+
+			$num = count($view->getSelection());
+
+			$message = new SwatMessage(sprintf(Store::ngettext(
+				'One product review has been marked as spam.',
+				'%d product reviews have been marked as spam.', $num),
 				SwatString::numberFormat($num)));
 
 			$this->app->messages->add($message);
@@ -1250,8 +1276,8 @@ class StoreProductDetails extends AdminIndex
 
 		// TODO: use a SwatTableStore instead of mangling the dataobjects
 		foreach ($rs as $row)
-			$row->description = SwatString::ellipsizeRight(
-				$row->description, 50);
+			$row->bodytext = SwatString::ellipsizeRight(
+				$row->bodytext, 50);
 
 		return $rs;
 	}
