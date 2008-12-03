@@ -143,7 +143,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 				$quantity = $quantity_widget->value;
 
 				// populate item flydown
-				if ($nurmalized_sku !== null) {
+				if ($normalized_sku !== null) {
 					$item_selector->sku = $normalized_sku;
 					$item_selector->db = $this->app->db;
 					$item_selector->region = $this->app->getRegion();
