@@ -734,7 +734,7 @@ class StoreProduct extends SwatDBDataObject
 	 * [ IMAGE ] _Title_
 	 *           Summarized description ... _more >>_
 	 */
-	public function displayAsTile($link)
+	public function displayAsTile($link, $image_size = 'thumb')
 	{
 		require_once 'Swat/SwatString.php';
 
@@ -743,8 +743,14 @@ class StoreProduct extends SwatDBDataObject
 		$anchor_tag->setContent('more&nbsp;»');
 		$anchor_tag->open();
 
-		$img_tag = $this->getThumbnailImgTag();
+		$img_span = new SwatHtmlTag('span');
+		$img_span->class = 'tile-image-wrapper';
+
+		$img_tag = $this->getThumbnailImgTag($image_size);
+
+		$img_span->open();
 		$img_tag->display();
+		$img_span->close();
 
 		$unavailable_span = $this->getUnavailableSpan();
 		if ($unavailable_span !== null)
