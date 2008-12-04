@@ -561,6 +561,8 @@ class StoreProductPage extends StorePage
 
 		$this->displayPopularProducts();
 
+		$this->displayProductReviews();
+
 		echo '</div>';
 	}
 
@@ -797,6 +799,30 @@ class StoreProductPage extends StorePage
 		$products = $engine->search(3);
 
 		return $products;
+	}
+
+	// }}}
+	// {{{ protected function displayProductReviews()
+
+	protected function displayProductReviews()
+	{
+		$reviews = $this->product->visible_product_reviews;
+		if (count($reviews) == 0)
+			return;
+
+		$div = new SwatHtmlTag('div');
+		$div->id = 'product_reviews';
+
+		$header_tag = new SwatHtmlTag('h4');
+		$header_tag->setContent(Store::_('Customer Comments and Reviews'));
+
+		$div->open();
+		$header_tag->display();
+
+		foreach ($reviews as $review)
+			$review->display($this->app);
+
+		$div->close();
 	}
 
 	// }}}
