@@ -72,6 +72,9 @@ class StoreProductReviewEdit extends AdminDBEdit
 				sprintf(Store::_('Product review with id ‘%s’ not found.'),
 					$this->id));
 		}
+
+		if ($this->product_id === null)
+			$this->product_id = $this->review->product->id;
 	}
 
 	// }}}
