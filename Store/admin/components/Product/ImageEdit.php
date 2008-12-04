@@ -261,6 +261,7 @@ class StoreProductImageEdit extends AdminDBEdit
 	{
 		parent::buildNavBar();
 
+		$this->navbar->popEntry();
 		if ($this->category_id !== null) {
 			$this->navbar->popEntry();
 			$this->navbar->addEntry(new SwatNavBarEntry(
