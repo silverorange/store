@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatForm" id="form">
+		<widget class="StoreMessageDisplay" id="message_display" />
+		<widget class="SwatFormField" id="amount_field">
+			<property name="title">Choose an Amount</property>
+			<widget class="StoreGiftCertificateRadioList" id="items">
+				<property name="required" type="boolean">true</property>
+			</widget>
+		</widget>
+		<widget class="SwatFormField" id="quantity_field">
+			<property name="title">Quantity</property>
+			<widget class="SwatIntegerEntry" id="quantity">
+				<property name="value" type="integer">1</property>
+				<property name="minimum_value" type="integer">1</property>
+				<property name="required" type="boolean">true</property>
+			</widget>
+		</widget>
+		<widget class="SwatFooterFormField" id="button_container">
+			<widget class="SwatButton" id="submit">
+				<property name="title">Add to Cart</property>
+			</widget>
+		</widget>
+	</widget>
+</swatml>
