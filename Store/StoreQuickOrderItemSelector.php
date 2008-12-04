@@ -105,8 +105,9 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 		if (count($items) > 0) {
 			$product = $items->getFirst()->product;
 
-			if ($product->primary_image !== null)
-				$this->displayProductImage($product);
+			$image = $this->getImage($items);
+			if ($image !== null)
+				$this->displayImage($image, $product);
 
 			$content_div_tag = new SwatHtmlTag('div');
 			$content_div_tag->class = 'store-quick-order-product-content';
@@ -156,14 +157,25 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	}
 
 	// }}}
-	// {{{ protected function displayProductImage()
+	// {{{ protected function getImage()
 
-	protected function displayProductImage(StoreProduct $product)
+	protected function getImage(StoreItemWrapper $items)
+	{
+		$product = $items->getFirst()->product;
+		$image = $product->primary_image;
+
+		return $image;
+	}
+
+	// }}}
+	// {{{ protected function displayImage()
+
+	protected function displayImage(SiteImage $image, StoreProduct $product)
 	{
 		$span_tag = new SwatHtmlTag('span');
 		$span_tag->open();
 
-		$img_tag = $product->primary_image->getImgTag('pinky');
+		$img_tag = $image->getImgTag('pinky');
 		$img_tag->display();
 
 		if (!$product->isAvailableInRegion($this->region)) {
