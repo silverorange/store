@@ -1,0 +1,42 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatForm" id="product_reviews_form">
+		<widget class="SwatFrame" id="product_reviews">
+			<property name="title" translatable="yes">Customer Comments and Reviews</property>
+			<property name="classes[]">store-product-reviews</property>
+
+			<!-- existing reviews -->
+			<widget class="SwatReplicableContainer" id="reviews_replicator">
+				<widget class="StoreProductReviewView" id="review" />
+			</widget>
+
+			<!-- new review controls -->
+			<widget class="SwatDisclosure" id="product_review_disclosure">
+				<property name="title" translatable="yes">Add New Comment</property>
+				<widget class="SwatFormField">
+					<property name="title" translatable="yes">Name</property>
+					<property name="required" type="boolean">true</property>
+					<widget class="SwatEntry" id="product_review_name" />
+				</widget>
+				<widget class="SwatFormField">
+					<property name="title" translatable="yes">Email</property>
+					<property name="required" type="boolean">true</property>
+					<widget class="SwatEmailEntry" id="product_review_email" />
+				</widget>
+				<widget class="SwatFormField">
+					<property name="required" type="boolean">true</property>
+					<widget class="SwatTextarea" id="product_review_bodytext" />
+				</widget>
+				<widget class="SwatFooterFormField">
+					<widget class="SwatButton" id="product_review_preview">
+						<property name="title" translatable="yes">Preview Comment</property>
+					</widget>
+					<widget class="SwatButton" id="product_review_add">
+						<property name="title" translatable="yes">Add Comment</property>
+					</widget>
+				</widget>
+			</widget>
+		</widget>
+	</widget>
+</swatml>
