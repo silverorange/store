@@ -14,6 +14,17 @@
 			<property name="type">article</property>
 		</widget>
 	</widget>
+	<widget class="SwatFrame" id="post_results_frame">
+		<property name="title" translatable="yes">Post Search Results</property>
+		<property name="visible" type="boolean">false</property>
+		<widget class="SwatContentBlock" id="post_results">
+			<property name="content_type">text/xml</property>
+		</widget>
+		<widget class="SiteSearchPagination" id="post_pager">
+			<property name="page_size" type="integer">20</property>
+			<property name="type">post</property>
+		</widget>
+	</widget>
 	<widget class="SwatFrame" id="category_results_frame">
 		<property name="title" translatable="yes">Category Search Results</property>
 		<property name="visible" type="boolean">false</property>
