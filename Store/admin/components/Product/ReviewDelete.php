@@ -76,7 +76,7 @@ class StoreProductReviewDelete extends AdminDBDelete
 		$instance_id = $this->app->getInstanceId();
 
 		$dep = new AdminListDependency();
-		$dep->setTitle(Blorg::_('review'), Blorg::_('reviews'));
+		$dep->setTitle(Store::_('review'), Store::_('reviews'));
 
 		$sql = sprintf(
 			'select ProductReview.id, ProductReview.bodytext from ProductReview
