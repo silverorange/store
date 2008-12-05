@@ -6,6 +6,7 @@ require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
 require_once 'Swat/SwatMessage.php';
 require_once 'Swat/SwatMessageDisplay.php';
+require_once 'Swat/SwatReplicableContainer.php';
 require_once 'Swat/SwatYUI.php';
 require_once 'Swat/SwatUI.php';
 require_once 'Store/StoreItemsView.php';
@@ -15,6 +16,7 @@ require_once 'Store/dataobjects/StoreProduct.php';
 require_once 'Store/dataobjects/StoreCategory.php';
 require_once 'Store/dataobjects/StoreItemGroupWrapper.php';
 require_once 'Store/StoreProductSearchEngine.php';
+require_once 'Store/StoreProductReviewView.php';
 
 /**
  * A product page
@@ -35,6 +37,8 @@ class StoreProductPage extends StorePage
 	protected $items_view;
 	protected $cart_ui;
 	protected $cart_ui_xml = 'Store/pages/product-cart.xml';
+	protected $reviews_ui;
+	protected $reviews_ui_xml = 'Store/pages/product-reviews.xml';
 	protected $message_display;
 	protected $cart_message;
 	protected $item_removed = false;
@@ -100,6 +104,45 @@ class StoreProductPage extends StorePage
 	}
 
 	// }}}
+	// {{{ protected function initReviews()
+
+	protected function initReviews()
+	{
+		$this->reviews_ui = new SwatUI();
+		$this->reviews_ui->loadFromXML($this->reviews_ui_xml);
+		$this->initReviewsInternal();
+		$this->reviews_ui->init();
+
+		// set reviews on replicated views
+		$reviews = $this->product->visible_product_reviews;
+		foreach ($reviews as $review) {
+			$view = $this->reviews_ui
+				->getWidget('reviews_replicator')
+				->getWidget('review', $review->id);
+
+			$view->review = $review;
+		}
+	}
+
+	// }}}
+	// {{{ protected function initReviewsInternal()
+
+	protected function initReviewsInternal()
+	{
+		$reviews = $this->product->visible_product_reviews;
+		$review_ids = array();
+		foreach ($reviews as $review) {
+			$review_ids[] = $review->id;
+		}
+
+		// set view replicator ids
+		$this->reviews_ui->getWidget('reviews_replicator')
+			->replication_ids = $review_ids;
+
+		$this->reviews_ui->getWidget('review')->app = $this->app;
+	}
+
+	// }}}
 	// {{{ protected function getItemsView()
 
 	protected function getItemsView()
@@ -125,13 +168,13 @@ class StoreProductPage extends StorePage
 		$this->initCartInternal();
 		$this->cart_ui->init();
 	}
+
+	// }}}
 	// {{{ protected function initCartInternal()
 
 	protected function initCartInternal()
 	{
 	}
-
-	// }}}
 
 	// }}}
 	// {{{ protected function loadProduct()
@@ -806,23 +849,9 @@ class StoreProductPage extends StorePage
 
 	protected function displayProductReviews()
 	{
-		$reviews = $this->product->visible_product_reviews;
-		if (count($reviews) == 0)
-			return;
-
-		$div = new SwatHtmlTag('div');
-		$div->id = 'product_reviews';
-
-		$header_tag = new SwatHtmlTag('h4');
-		$header_tag->setContent(Store::_('Customer Comments and Reviews'));
-
-		$div->open();
-		$header_tag->display();
-
-		foreach ($reviews as $review)
-			$review->display($this->app);
-
-		$div->close();
+		if ($this->reviews_ui instanceof SwatUI) {
+			$this->reviews_ui->display();
+		}
 	}
 
 	// }}}
@@ -976,6 +1005,11 @@ class StoreProductPage extends StorePage
 
 		$this->layout->addHtmlHeadEntrySet(
 			$this->cart_ui->getRoot()->getHtmlHeadEntrySet());
+
+		if ($this->reviews_ui instanceof SwatUI) {
+			$this->layout->addHtmlHeadEntrySet(
+				$this->reviews_ui->getRoot()->getHtmlHeadEntrySet());
+		}
 	}
 
 	// }}}
