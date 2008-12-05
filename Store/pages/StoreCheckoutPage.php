@@ -86,27 +86,6 @@ abstract class StoreCheckoutPage extends SiteArticlePage
 			$this->app->session->order->setDatabase($this->app->db);
 			$this->resetProgress();
 		}
-
-		// TEMP: magic temporary code to conver to new payment methods
-		//       in existing sessions on vanb & veseys
-		$order = $this->app->session->order;
-
-		if ($order->payment_method !== null) {
-			$class = SwatDBClassMap::get('StoreOrderPaymentMethod');
-			$new_method = new $class();
-			$new_method->copyFrom($order->payment_method);
-			$order->payment_method = $new_method;
-
-			if ($order->payment_method->card_type === null &&
-				$order->payment_method->payment_type !== null) {
-					$order->payment_method->card_type =
-						$order->payment_method->getInternalValue('payment_type');
-
-					$order->payment_method->payment_type = 1;
-			}
-		}
-		// end temp code
-
 	}
 
 	// }}}
