@@ -9,6 +9,12 @@ require_once 'Store/dataobjects/StoreAttributeWrapper.php';
 require_once 'Store/dataobjects/StoreCategoryImageWrapper.php';
 require_once 'Store/dataobjects/StoreProductImageWrapper.php';
 
+if (class_exists('Blorg')) {
+	require_once 'Blorg/BlorgViewFactory.php';
+	require_once 'Blorg/BlorgPostSearchEngine.php';
+	require_once 'Blorg/dataobjects/BlorgPostWrapper.php';
+}
+
 /**
  * Page for displaying search results
  *
@@ -101,6 +107,8 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 				$this->buildArticles($fulltext_result);
 			elseif ($type === 'product')
 				$this->buildProducts($fulltext_result);
+			elseif (class_exists('Blorg') && $type === 'post')
+				$this->buildPosts($fulltext_result);
 
 			$this->ui->getWidget('product_results_frame')->title = null;
 
@@ -111,6 +119,9 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 			$this->buildArticles($fulltext_result);
 			$this->buildCategories($fulltext_result);
 			$this->buildProducts($fulltext_result);
+
+			if (class_exists('Blorg'))
+				$this->buildPosts($fulltext_result);
 		} else {
 			$this->buildProducts($fulltext_result);
 			$this->ui->getWidget('product_results_frame')->title = null;
@@ -195,6 +206,9 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 		$types[] = 'product';
 		$types[] = 'category';
 
+		if (class_exists('Blorg'))
+			$types[] = 'post';
+
 		return $types;
 	}
 
@@ -209,6 +223,65 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 		$this->setSearchEngine('article', $engine);
 
 		return $engine;
+	}
+
+	// }}}
+
+	// build phase - posts
+	// {{{ protected function buildPosts()
+
+	protected function buildPosts($fulltext_result)
+	{
+		$pager = $this->ui->getWidget('post_pager');
+		$engine = $this->instantiatePostSearchEngine();
+		$engine->setFulltextResult($fulltext_result);
+		$posts = $engine->search($pager->page_size, $pager->current_record);
+
+		$pager->total_records = $engine->getResultCount();
+		$pager->link = $this->source;
+
+		$this->result_count['post'] = count($posts);
+
+		if (count($posts) > 0) {
+			$this->has_results[] = 'post';
+
+			$frame = $this->ui->getWidget('post_results_frame');
+			$results = $this->ui->getWidget('post_results');
+			$frame->visible = true;
+
+			ob_start();
+			$this->displayPosts($posts);
+			$results->content = ob_get_clean();
+		}
+	}
+
+	// }}}
+	// {{{ protected function instantiatePostSearchEngine()
+
+	protected function instantiatePostSearchEngine()
+	{
+		$engine = new BlorgPostSearchEngine($this->app);
+		$this->setSearchEngine('post', $engine);
+		return $engine;
+	}
+
+	// }}}
+	// {{{ protected function displayPosts()
+
+	/**
+	 * Displays search results for a collection of posts
+	 *
+	 * @param BlorgPostWrapper $posts the posts to display
+	 *                                          search results for.
+	 */
+	protected function displayPosts(BlorgPostWrapper $posts)
+	{
+		$view = BlorgViewFactory::get($this->app, 'post');
+		$view->setPartMode('bodytext', BlorgView::MODE_SUMMARY);
+		$view->setPartMode('extended_bodytext', BlorgView::MODE_NONE);
+		foreach ($posts as $post) {
+			$view->display($post);
+		}
 	}
 
 	// }}}
