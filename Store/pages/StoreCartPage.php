@@ -923,7 +923,6 @@ class StoreCartPage extends SiteArticlePage
 	protected function buildAvailableTableView()
 	{
 		$available_view = $this->ui->getWidget('available_cart_view');
-		$available_view->model = $this->getAvailableTableStore();
 
 		$available_view->getRow('subtotal')->value =
 			$this->app->cart->checkout->getSubtotal();
