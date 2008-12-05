@@ -190,9 +190,14 @@ class StoreProductReviewView extends SwatControl
 
 		if (!$translations_displayed) {
 			$javascript.= sprintf(
-				"StoreProductReviewView.view_all_text = %s;\n",
+				"StoreProductReviewView.open_text = %s;\n",
 					SwatString::quoteJavaScriptString(
 					Store::_('read full comment')));
+
+			$javascript.= sprintf(
+				"StoreProductReviewView.close_text = %s;\n",
+					SwatString::quoteJavaScriptString(
+					Store::_('show less')));
 
 			$translations_displayed = true;
 		}
