@@ -14,6 +14,7 @@
 			<!-- new review controls -->
 			<widget class="SwatDisclosure" id="product_review_disclosure">
 				<property name="title" translatable="yes">Add New Comment</property>
+				<property name="open" type="boolean">false</property>
 				<widget class="SwatFormField">
 					<property name="title" translatable="yes">Name</property>
 					<property name="required" type="boolean">true</property>
