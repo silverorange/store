@@ -1,0 +1,31 @@
+.product-review-item {
+	display: none;
+}
+
+.product-review-summary {
+	display: none;
+}
+
+.product-review {
+	border-top: 1px solid #dbd8cf;
+	clear: both;
+}
+
+.product-review-description,
+.product-review-summary {
+	margin-left: 150px;
+	padding: 1em 1em 0em 0;
+}
+
+span.product-review-author {
+	display: block;
+}
+
+span.product-review-date {
+	display:block;
+}
+
+.product-review-title {
+	float: left;
+	padding: 1em 0 1em 1em;
+}
