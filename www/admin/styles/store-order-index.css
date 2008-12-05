@@ -9,12 +9,6 @@
 	position: relative;
 }
 
-#veseys_number {
-	float: left;
-	margin-right: 2em;
-	margin-bottom: 0;
-}
-
 #date_range {
 	clear: left;
 }
