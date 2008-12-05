@@ -77,7 +77,8 @@ td.store-quick-order-item-selector {
 	padding-right: 0.5em;
 }
 
-#quick_order_frame .swat-table-view img.store-border-on {
+#quick_order_frame .swat-table-view img.store-border-on,
+#quick_order_frame .swat-table-view img.store-border-off {
 	float: left;
 	margin: 0 6px 0 0;
 	display: block;
