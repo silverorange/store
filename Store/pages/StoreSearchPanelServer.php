@@ -19,10 +19,11 @@ class StoreSearchPanelServer extends SiteXMLRPCServer
 	 *
 	 * @param string $query_string the query string containg the state of the
 	 *                              search panel.
+	 * @param string $uri the URI of the page making the request.
 	 *
 	 * @return string the XHTML required to display the search panel.
 	 */
-	public function getContent($query_string)
+	public function getContent($query_string, $uri)
 	{
 		$query_string_exp = explode('&', $query_string);
 		$args = array();
@@ -55,6 +56,15 @@ class StoreSearchPanelServer extends SiteXMLRPCServer
 		}
 
 		foreach ($args as $key => $value) {
+			$_GET[$key] = $value;
+		}
+
+		// parse uri components from special seach pages into GET vars
+		$uri = substr($uri, strlen($this->app->getBaseHref()));
+		$uri_exp = explode('/', $uri);
+		if (count($uri_exp) == 3) {
+			$key = $uri_exp[1];
+			$value = $uri_exp[2];
 			$_GET[$key] = $value;
 		}
 
