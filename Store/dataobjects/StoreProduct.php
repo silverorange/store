@@ -651,7 +651,8 @@ class StoreProduct extends SwatDBDataObject
 	protected function loadVisibleProductReviews()
 	{
 		$sql = 'select * from ProductReview
-			where product = %s and spam = %s and status = %s';
+			where product = %s and spam = %s and status = %s
+			order by createdate desc, id';
 
 		$sql = sprintf($sql,
 			$this->db->quote($this->id, 'integer'),
