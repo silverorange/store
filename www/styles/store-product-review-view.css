@@ -11,10 +11,32 @@
 	clear: both;
 }
 
+.product-review-animation {
+	overflow: hidden;
+	margin-left: 150px;
+}
+
+.product-review-animation-padding {
+	padding: 0.5em 0;
+}
+
 .product-review-description,
 .product-review-summary {
 	margin-left: 150px;
-	padding: 1em 1em 0em 0;
+	padding: 0.5em 1em 0.5em 0;
+}
+
+.product-review-animation .product-review-description,
+.product-review-animation .product-review-summary {
+	margin-left: 0;
+	padding: 0 1em 0 0;
+}
+
+.product-review-description p,
+.product-review-summary p {
+	padding: 0.5em 0; /* padding works, margins cause animation */
+	                  /* heights to be calculated incorrectly */
+	margin: 0;
 }
 
 span.product-review-author {
