@@ -255,7 +255,10 @@ StoreSearchDisclosure.prototype.loadSearchPanel = function()
 	if (query.length > 0)
 		query = query.substr(1);
 
-	client.callProcedure('getContent', callback, [query], ['string']);
+	var uri = location.href;
+
+	client.callProcedure('getContent', callback,
+		[query, uri], ['string', 'string']);
 }
 
 /**
