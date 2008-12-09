@@ -3,6 +3,8 @@
 require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Site/dataobjects/SiteComment.php';
 require_once 'Store/dataobjects/StoreProduct.php';
+if (class_exists('Blorg'))
+	require_once 'Blorg/dataobjects/BlorgAuthor.php';
 
 /**
  * Product review for a product
@@ -12,6 +14,16 @@ require_once 'Store/dataobjects/StoreProduct.php';
  */
 class StoreProductReview extends SiteComment
 {
+	// {{{ public properties
+
+	/**
+	 * Whether or not this review was posted by an author on the site
+	 *
+	 * @var boolean
+	 */
+	public $author_review = false;
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
@@ -23,6 +35,11 @@ class StoreProductReview extends SiteComment
 
 		$this->registerInternalProperty('parent',
 			SwatDBClassMap::get('StoreProductReview'));
+
+		if (class_exists('Blorg')) {
+			$this->registerInternalProperty('author',
+				SwatDBClassMap::get('BlorgAuthor'));
+		}
 
 		$this->table = 'ProductReview';
 	}

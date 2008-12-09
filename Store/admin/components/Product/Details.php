@@ -1267,19 +1267,39 @@ class StoreProductDetails extends AdminIndex
 
 	private function getProductReviewsTableModel($view)
 	{
-		$sql = 'select *
-			from ProductReview where product = %s order by createdate';
+		$sql = sprintf('select count(id) from ProductReview
+			where product = %s and spam = %s',
+			$this->app->db->quote($this->id, 'integer'),
+			$this->app->db->quote(false, 'boolean'));
 
-		$sql = sprintf($sql, $this->app->db->quote($this->id, 'integer'));
+		$pager = $this->ui->getWidget('pager');
+		$pager->total_records = SwatDB::queryOne($this->app->db, $sql);
 
-		$rs = SwatDB::query($this->app->db, $sql);
+		$sql = 'select * from ProductReview
+			where product = %s and spam = %s order by %s';
 
-		// TODO: use a SwatTableStore instead of mangling the dataobjects
-		foreach ($rs as $row)
-			$row->bodytext = SwatString::ellipsizeRight(
-				$row->bodytext, 50);
+		$sql = sprintf($sql,
+			$this->app->db->quote($this->id, 'integer'),
+			$this->app->db->quote(false, 'boolean'),
+			$this->getOrderByClause($view, 'createdate'));
 
-		return $rs;
+		$this->app->db->setLimit($pager->page_size, $pager->current_record);
+		$reviews = SwatDB::query($this->app->db, $sql,
+			SwatDBClassMap::get('StoreProductReviewWrapper'));
+
+		$store = new SwatTableStore();
+		foreach ($reviews as $review) {
+			$ds = new SwatDetailsStore($review);
+			if (class_exists('Blorg') && $review->author !== null)
+				$ds->fullname = $review->author->name;
+
+			$ds->bodytext = SwatString::condense(
+				SwatString::ellipsizeRight($review->bodytext, 500));
+
+			$store->add($ds);
+		}
+
+		return $store;
 	}
 
 	// }}}

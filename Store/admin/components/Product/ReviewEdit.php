@@ -6,6 +6,8 @@ require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatMessage.php';
 require_once 'Swat/SwatString.php';
 require_once 'Store/dataobjects/StoreProductReview.php';
+if (class_exists('Blorg'))
+	require_once 'Blorg/dataobjects/BlorgAuthorWrapper.php';
 
 /**
  * Edit page for Product reviews
@@ -43,6 +45,14 @@ class StoreProductReviewEdit extends AdminDBEdit
 		$this->product_id  = SiteApplication::initVar('product');
 
 		$this->initProductReview();
+
+		if (class_exists('Blorg') &&
+			($this->id === null || $this->review->author !== null)) {
+			$this->ui->getWidget('author_field')->visible   = true;
+			$this->ui->getWidget('fullname_field')->visible = false;
+			$this->ui->getWidget('email_field')->visible    = false;
+			$this->ui->getWidget('status_field')->visible   = false;
+		}
 	}
 
 	// }}}
@@ -104,23 +114,26 @@ class StoreProductReviewEdit extends AdminDBEdit
 	{
 		$values = $this->ui->getValues(array(
 			'fullname',
-			'link',
 			'email',
 			'bodytext',
 			'status',
+			'author',
 		));
 
 		if ($this->review->id === null) {
 			$now = new SwatDate();
 			$now->toUTC();
 			$this->review->createdate = $now;
+
+			// all new reviews posted in the admin are tagged as author reviews
+			$this->review->author_review = true;
 		}
 
 		$this->review->fullname = $values['fullname'];
-		$this->review->link     = $values['link'];
 		$this->review->email    = $values['email'];
 		$this->review->bodytext = $values['bodytext'];
 		$this->review->status   = $values['status'];
+		$this->review->author   = $values['author'];
 
 		if ($this->review->status === null) {
 			$this->review->status = SiteComment::STATUS_PUBLISHED;
@@ -139,6 +152,35 @@ class StoreProductReviewEdit extends AdminDBEdit
 		$form = $this->ui->getWidget('edit_form');
 		$form->addHiddenField('category', $this->category_id);
 		$form->addHiddenField('product', $this->product_id);
+
+		if (class_exists('Blorg') &&
+			($this->id === null || $this->review->author !== null)) {
+
+			$instance_id = $this->app->getInstanceId();
+			$sql = sprintf('select BlorgAuthor.*,
+					AdminUserInstanceBinding.usernum
+				from BlorgAuthor
+				left outer join AdminUserInstanceBinding on
+					AdminUserInstanceBinding.default_author = BlorgAuthor.id
+				where BlorgAuthor.instance %s %s and BlorgAuthor.visible = %s
+				order by displayorder',
+				SwatDB::equalityOperator($instance_id),
+				$this->app->db->quote($instance_id, 'integer'),
+				$this->app->db->quote(true, 'boolean'));
+
+			$rs = SwatDB::query($this->app->db, $sql);
+
+			$authors = array();
+			foreach ($rs as $row) {
+				$authors[$row->id] = $row->name;
+
+				if ($this->id === null &&
+					$row->usernum == $this->app->session->user->id)
+					$this->ui->getWidget('author')->value = $row->id;
+			}
+
+			$this->ui->getWidget('author')->addOptionsByArray($authors);
+		}
 
 		$statuses = SiteComment::getStatusArray();
 		$this->ui->getWidget('status')->addOptionsByArray($statuses);
