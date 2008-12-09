@@ -393,6 +393,13 @@ class StoreProductPage extends StorePage
 						'#submit_review');
 				}
 			}
+
+			if ($form->hasMessage()) {
+				$disclosure =
+					$this->reviews_ui->getWidget('product_review_disclosure');
+
+				$disclosure->open = true;
+			}
 		}
 	}
 
@@ -561,7 +568,6 @@ class StoreProductPage extends StorePage
 	{
 		$ui             = $this->reviews_ui;
 		$form           = $ui->getWidget('product_reviews_form');
-		$show_thank_you = false;
 		$show_thank_you = array_key_exists(self::THANK_YOU_ID, $_GET);
 
 		$form->action = $this->source.'#submit_review';
@@ -1049,12 +1055,8 @@ class StoreProductPage extends StorePage
 	protected function displayProductReviews()
 	{
 		if ($this->reviews_ui instanceof SwatUI) {
-			$form   = $this->reviews_ui->getWidget('product_reviews_form');
-			$button = $this->reviews_ui->getWidget('product_review_preview');
-			if ($form->hasMessage() || $button->hasBeenClicked()) {
-				echo '<div id="submit_review"></div>';
-			}
-
+			echo '<div id="submit_review"></div>';
+ 
 			$this->reviews_ui->display();
 		}
 	}
