@@ -249,6 +249,32 @@ class StoreProduct extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function getVisibleProductReviews()
+
+	/**
+	 * Gets product reviews that are visible
+	 *
+	 * @return StoreProductReviewWrapper
+	 */
+	public function getVisibleProductReviews($limit = null, $offset = 0)
+	{
+		$sql = 'select * from ProductReview
+			where product = %s and spam = %s and status = %s
+			order by createdate desc, id';
+
+		$sql = sprintf($sql,
+			$this->db->quote($this->id, 'integer'),
+			$this->db->quote(false, 'boolean'),
+			$this->db->quote(SiteComment::STATUS_PUBLISHED, 'integer'));
+
+		if ($limit !== null)
+			$this->db->setLimit($limit, $offset);
+
+		return SwatDB::query($this->db, $sql,
+			SwatDBClassMap::get('StoreProductReviewWrapper'));
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
@@ -635,29 +661,6 @@ class StoreProduct extends SwatDBDataObject
 		$sql = 'select * from ProductReview where product = %s';
 		$sql = sprintf($sql,
 			$this->db->quote($this->id, 'integer'));
-
-		return SwatDB::query($this->db, $sql,
-			SwatDBClassMap::get('StoreProductReviewWrapper'));
-	}
-
-	// }}}
-	// {{{ protected function loadVisibleProductReviews()
-
-	/**
-	 * Loads product reviews that are visible
-	 *
-	 * @return StoreProductReviewWrapper
-	 */
-	protected function loadVisibleProductReviews()
-	{
-		$sql = 'select * from ProductReview
-			where product = %s and spam = %s and status = %s
-			order by createdate desc, id';
-
-		$sql = sprintf($sql,
-			$this->db->quote($this->id, 'integer'),
-			$this->db->quote(false, 'boolean'),
-			$this->db->quote(SiteComment::STATUS_PUBLISHED, 'integer'));
 
 		return SwatDB::query($this->db, $sql,
 			SwatDBClassMap::get('StoreProductReviewWrapper'));
