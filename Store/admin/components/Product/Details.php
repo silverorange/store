@@ -88,6 +88,9 @@ class StoreProductDetails extends AdminIndex
 		$sale_discount_flydown = $this->ui->getWidget('sale_discount_flydown');
 		$sale_discount_flydown->addOptionsByArray(SwatDB::getOptionArray(
 			$this->app->db, 'SaleDiscount', 'title', 'id', 'title'));
+
+		if ($this->ui->hasWidget('review_pager'))
+			$this->ui->getWidget('review_pager')->page_size = 10;
 	}
 
 	// }}}
@@ -111,6 +114,9 @@ class StoreProductDetails extends AdminIndex
 
 			$this->addNewItems();
 		}
+
+		if ($this->ui->hasWidget('review_pager'))
+			$this->ui->getWidget('review_pager')->process();
 	}
 
 	// }}}
@@ -1272,7 +1278,7 @@ class StoreProductDetails extends AdminIndex
 			$this->app->db->quote($this->id, 'integer'),
 			$this->app->db->quote(false, 'boolean'));
 
-		$pager = $this->ui->getWidget('pager');
+		$pager = $this->ui->getWidget('review_pager');
 		$pager->total_records = SwatDB::queryOne($this->app->db, $sql);
 
 		$sql = 'select * from ProductReview

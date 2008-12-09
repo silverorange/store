@@ -353,7 +353,7 @@
 						</object>
 					</object>
 				</widget>
-				<widget class="AdminPagination" id="pager">
+				<widget class="AdminPagination" id="review_pager">
 					<property name="link">Product/Details</property>
 				</widget>
 				<widget class="SwatActions" id="product_reviews_actions">
