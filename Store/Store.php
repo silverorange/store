@@ -107,6 +107,9 @@ class Store
 
 			// from address for contact-us emails (from "the website" to client)
 			'email.website_address' => null,
+
+			// Optional Wordpress API key for Akismet spam filtering.
+			'store.akismet_key'     => null,
 		);
 	}
 

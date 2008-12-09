@@ -14,7 +14,9 @@ require_once 'Store/dataobjects/StoreCartEntry.php';
 require_once 'Store/dataobjects/StoreProduct.php';
 require_once 'Store/dataobjects/StoreCategory.php';
 require_once 'Store/dataobjects/StoreItemGroupWrapper.php';
+require_once 'Store/dataobjects/StoreProductReview.php';
 require_once 'Store/StoreProductSearchEngine.php';
+require_once 'Services/Akismet.php';
 
 /**
  * A product page
@@ -24,6 +26,11 @@ require_once 'Store/StoreProductSearchEngine.php';
  */
 class StoreProductPage extends StorePage
 {
+	// {{{ class constants
+
+	const THANK_YOU_ID = 'thank-you';
+
+	// }}}
 	// {{{ public properties
 
 	public $product_id;
@@ -43,6 +50,11 @@ class StoreProductPage extends StorePage
 	protected $items_added = array();
 	protected $items_saved = array();
 	protected $default_quantity = 0;
+
+	/**
+	 * @var StoreProductReview
+	 */
+	protected $review;
 
 	/**
 	 * @var SiteArticleWrapper
@@ -216,6 +228,7 @@ class StoreProductPage extends StorePage
 		$this->message_display->process();
 		$this->processProduct();
 		$this->processCart();
+		$this->processReviewUi();
 	}
 
 	// }}}
@@ -337,7 +350,7 @@ class StoreProductPage extends StorePage
 
 		$items = ngettext('item', 'items', $num_items_saved);
 		$number = SwatString::minimizeEntities(ucwords(
-					Numbers_Words::toWords($num_items_saved)));
+			Numbers_Words::toWords($num_items_saved)));
 
 		$cart_message = new SwatMessage(
 			sprintf('%s %s has been saved for later.', $number, $items),
@@ -352,6 +365,111 @@ class StoreProductPage extends StorePage
 	}
 
 	// }}}
+	// {{{ protected function processReview()
+
+	protected function processReviewUi()
+	{
+		if ($this->reviews_ui instanceof SwatUI) {
+			$form = $this->reviews_ui->getWidget('product_reviews_form');
+
+			// wrap form processing in try/catch to catch bad input from 
+			// spambots
+			try {
+				$form->process();
+			} catch (SwatInvalidSerializedDataException $e) {
+				$this->app->replacePage('httperror');
+				$this->app->getPage()->setStatus(400);
+				return;
+			}
+
+			if ($form->isProcessed() && !$form->hasMessage()) {
+				$this->processReview();
+
+				$button = $this->reviews_ui->getWidget('product_review_add');
+				if ($button->hasBeenClicked()) {
+					$this->saveReview();
+
+					$this->app->relocate($this->source.'?'.self::THANK_YOU_ID.
+						'#submit_review');
+				}
+			}
+		}
+	}
+
+	// }}}
+	// {{{ protected function processReview()
+
+	protected function processReview()
+	{
+		$now = new SwatDate();
+		$now->toUTC();
+
+		$fullname   = $this->reviews_ui->getWidget('product_review_fullname');
+		$email      = $this->reviews_ui->getWidget('product_review_email');
+		$bodytext   = $this->reviews_ui->getWidget('product_review_bodytext');
+
+		if (isset($_SERVER['REMOTE_ADDR'])) {
+			$ip_address = substr($_SERVER['REMOTE_ADDR'], 0, 15);
+		} else {
+			$ip_address = null;
+		}
+
+		if (isset($_SERVER['HTTP_USER_AGENT'])) {
+			$user_agent = substr($_SERVER['HTTP_USER_AGENT'], 0, 255);
+		} else {
+			$user_agent = null;
+		}
+
+		$class_name = SwatDBClassMap::get('StoreProductReview');
+		$this->review = new $class_name();
+
+		$this->review->fullname   = $fullname->value;
+		$this->review->email      = $email->value;
+		$this->review->bodytext   = $bodytext->value;
+		$this->review->createdate = $now;
+		$this->review->ip_address = $ip_address;
+		$this->review->user_agent = $user_agent;
+		$this->review->status     = SiteComment::STATUS_PENDING;
+		$this->review->product    = $this->product;
+	}
+
+	// }}}
+	// {{{ protected function saveReview()
+
+	protected function saveReview()
+	{
+		$this->review->spam = $this->isReviewSpam($this->review);
+		$this->review->setDatabase($this->app->db);
+		$this->review->save();
+	}
+
+	// }}}
+	// {{{ protected function isReviewSpam()
+
+	protected function isReviewSpam(StoreProductReview $review)
+	{
+		$is_spam = false;
+
+		if ($this->app->config->store->akismet_key !== null) {
+			try {
+				$akismet = new Services_Akismet($this->app->getBaseHref(),
+					$this->app->config->store->akismet_key);
+
+				$akismet_review = new Services_Akismet_Comment();
+				$akismet_review->setAuthor($review->fullname);
+				$akismet_review->setAuthorEmail($review->email);
+				$akismet_review->setContent($review->bodytext);
+
+				$is_spam = $akismet->isSpam($akismet_review);
+			} catch (Exception $e) {
+				throw($e);
+			}
+		}
+
+		return $is_spam;
+	}
+
+	// }}}
 
 	// build phase
 	// {{{ public function build()
@@ -362,6 +480,7 @@ class StoreProductPage extends StorePage
 
 		$this->buildCart();
 		$this->buildProduct();
+		$this->buildReviewUi();
 
 		$this->layout->startCapture('content');
 		$this->message_display->display();
@@ -431,6 +550,74 @@ class StoreProductPage extends StorePage
 			'%sView your shopping cart%s or %sproceed to the checkout%s.'),
 			'<a href="cart">', '</a>',
 			'<a href="checkout">', '</a>');
+	}
+
+	// }}}
+	// {{{ protected function buildReviewUi()
+
+	protected function buildReviewUi()
+	{
+		$ui             = $this->reviews_ui;
+		$form           = $ui->getWidget('product_reviews_form');
+		$show_thank_you = false;
+		$show_thank_you = array_key_exists(self::THANK_YOU_ID, $_GET);
+
+		$form->action = $this->source.'#submit_review';
+
+		if ($show_thank_you) {
+			$message = new SwatMessage(
+				Store::_('Your review has been submitted.'));
+
+			$message->secondary_content =
+				Store::_('Your review will be published after being approved '.
+					'by the site moderator.');
+
+			$this->reviews_ui->getWidget('product_review_message_display')->add(
+				$message, SwatMessageDisplay::DISMISS_OFF);
+		}
+
+		$this->buildReviewPreview();
+	}
+
+	// }}}
+	// {{{ protected function buildReviewPreview()
+
+	protected function buildReviewPreview()
+	{
+		if ($this->review instanceof StoreProductReview &&
+			$this->reviews_ui->getWidget('product_review_preview')
+				->hasBeenClicked()) {
+
+			$button_tag = new SwatHtmlTag('input');
+			$button_tag->type = 'submit';
+			$button_tag->name = 'product_review_add';
+			$button_tag->value = Store::_('Post');
+
+			$message = new SwatMessage(
+				Store::_('Your review has not yet been published.'));
+
+			$message->secondary_content = sprintf(Store::_(
+				'Review your review and press the <em>Post</em> button when '.
+				'it’s ready to publish. %s'),
+				$button_tag);
+
+			$message->content_type = 'text/xml';
+
+			$message_display =
+				$this->reviews_ui->getWidget('product_review_message_display');
+
+			$message_display->add($message, SwatMessageDisplay::DISMISS_OFF);
+
+			$review_preview = $this->reviews_ui->getWidget('review_preview');
+			$review_preview->review = $this->review;
+			$review_preview->app    = $this->app;
+			$container = $this->reviews_ui->getWidget(
+				'product_review_preview_container');
+
+			$container->visible = true;
+			$this->reviews_ui->getWidget('product_review_disclosure')->open =
+				true;
+		}
 	}
 
 	// }}}
@@ -860,6 +1047,12 @@ class StoreProductPage extends StorePage
 	protected function displayProductReviews()
 	{
 		if ($this->reviews_ui instanceof SwatUI) {
+			$form   = $this->reviews_ui->getWidget('product_reviews_form');
+			$button = $this->reviews_ui->getWidget('product_review_preview');
+			if ($form->hasMessage() || $button->hasBeenClicked()) {
+				echo '<div id="submit_review"></div>';
+			}
+
 			$this->reviews_ui->display();
 		}
 	}
