@@ -36,6 +36,7 @@
 				<property name="title" translatable="yes">Status</property>
 				<widget class="SwatFlydown" id="status">
 					<property name="show_blank" type="boolean">false</property>
+					<property name="value" type="constant">SiteComment::STATUS_PUBLISHED</property>
 				</widget>
 			</widget>
 			<widget class="SwatFooterFormField">
