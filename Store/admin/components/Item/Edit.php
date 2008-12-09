@@ -334,7 +334,8 @@ class StoreItemEdit extends AdminDBEdit
 	{
 		parent::buildNavBar();
 
-		$this->navbar->popEntry();
+		// get rid of the items component, and the edit navbar entries
+		$this->navbar->popEntries(2);
 
 		if ($this->category_id === null) {
 			$this->navbar->addEntry(new SwatNavBarEntry(
