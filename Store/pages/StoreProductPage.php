@@ -106,13 +106,28 @@ class StoreProductPage extends StorePage
 
 	protected function initReviews()
 	{
+		$reviews = $this->product->getVisibleProductReviews(
+			$this->getMaxProductReviews());
+
 		$this->reviews_ui = new SwatUI();
 		$this->reviews_ui->loadFromXML($this->reviews_ui_xml);
+
+		$review_ids = array();
+		foreach ($reviews as $review) {
+			$review_ids[] = $review->id;
+		}
+
+		// set view replicator ids
+		$this->reviews_ui->getWidget('reviews_replicator')
+			->replication_ids = $review_ids;
+
+		$this->reviews_ui->getWidget('review')->app = $this->app;
+
 		$this->initReviewsInternal();
+
 		$this->reviews_ui->init();
 
 		// set reviews on replicated views
-		$reviews = $this->product->visible_product_reviews;
 		foreach ($reviews as $review) {
 			$view = $this->reviews_ui
 				->getWidget('reviews_replicator')
@@ -127,17 +142,6 @@ class StoreProductPage extends StorePage
 
 	protected function initReviewsInternal()
 	{
-		$reviews = $this->product->visible_product_reviews;
-		$review_ids = array();
-		foreach ($reviews as $review) {
-			$review_ids[] = $review->id;
-		}
-
-		// set view replicator ids
-		$this->reviews_ui->getWidget('reviews_replicator')
-			->replication_ids = $review_ids;
-
-		$this->reviews_ui->getWidget('review')->app = $this->app;
 	}
 
 	// }}}
@@ -191,6 +195,14 @@ class StoreProductPage extends StorePage
 
 		$this->product->items->loadAllSubDataObjects('item_group',
 			$this->app->db, $sql, 'StoreItemGroupWrapper');
+	}
+
+	// }}}
+	// {{{ protected function getMaxProductReviews()
+
+	protected function getMaxProductReviews()
+	{
+		return 3;
 	}
 
 	// }}}
