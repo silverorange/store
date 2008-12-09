@@ -134,10 +134,6 @@ class StoreProductReviewEdit extends AdminDBEdit
 		$this->review->bodytext = $values['bodytext'];
 		$this->review->status   = $values['status'];
 		$this->review->author   = $values['author'];
-
-		if ($this->review->status === null) {
-			$this->review->status = SiteComment::STATUS_PUBLISHED;
-		}
 	}
 
 	// }}}

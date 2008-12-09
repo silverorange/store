@@ -108,7 +108,15 @@ class StoreProductReviewView extends SwatControl
 	{
 		$span_tag = new SwatHtmlTag('span');
 		$span_tag->class = 'product-review-author fn';
-		$span_tag->setContent($this->review->fullname);
+		if ($this->review->author_review)
+			$span_tag->class.= ' system-product-review-author';
+
+		if (class_exists('Blorg') && $this->review->author != null)
+			$fullname = $this->review->author->name;
+		else
+			$fullname = $this->review->fullname;
+
+		$span_tag->setContent($fullname);
 		$span_tag->display();
 	}
 

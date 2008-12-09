@@ -23,17 +23,21 @@
 				<property name="open" type="boolean">false</property>
 				<widget class="SwatFormField">
 					<property name="title" translatable="yes">Name</property>
-					<property name="required" type="boolean">true</property>
-					<widget class="SwatEntry" id="product_review_fullname" />
+					<widget class="SwatEntry" id="product_review_fullname">
+						<property name="required" type="boolean">true</property>
+					</widget>
 				</widget>
 				<widget class="SwatFormField">
 					<property name="title" translatable="yes">Email</property>
-					<property name="required" type="boolean">true</property>
-					<widget class="SwatEmailEntry" id="product_review_email" />
+					<widget class="SwatEmailEntry" id="product_review_email">
+						<property name="required" type="boolean">true</property>
+					</widget>
 				</widget>
 				<widget class="SwatFormField">
 					<property name="required" type="boolean">true</property>
-					<widget class="SwatTextarea" id="product_review_bodytext" />
+					<widget class="SwatTextarea" id="product_review_bodytext">
+						<property name="required" type="boolean">true</property>
+					</widget>
 				</widget>
 				<widget class="SwatFooterFormField">
 					<widget class="SwatButton" id="product_review_preview">

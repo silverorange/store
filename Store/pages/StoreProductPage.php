@@ -118,11 +118,11 @@ class StoreProductPage extends StorePage
 
 	protected function initReviews()
 	{
-		$reviews = $this->product->getVisibleProductReviews(
-			$this->getMaxProductReviews());
-
 		$this->reviews_ui = new SwatUI();
 		$this->reviews_ui->loadFromXML($this->reviews_ui_xml);
+
+		$reviews = $this->product->getVisibleProductReviews(
+			$this->getMaxProductReviews());
 
 		$review_ids = array();
 		foreach ($reviews as $review) {
@@ -135,9 +135,9 @@ class StoreProductPage extends StorePage
 
 		$this->reviews_ui->getWidget('review')->app = $this->app;
 
-		$this->initReviewsInternal();
-
 		$this->reviews_ui->init();
+
+		$this->initReviewsInternal();
 
 		// set reviews on replicated views
 		foreach ($reviews as $review) {
@@ -372,7 +372,7 @@ class StoreProductPage extends StorePage
 		if ($this->reviews_ui instanceof SwatUI) {
 			$form = $this->reviews_ui->getWidget('product_reviews_form');
 
-			// wrap form processing in try/catch to catch bad input from 
+			// wrap form processing in try/catch to catch bad input from
 			// spambots
 			try {
 				$form->process();
@@ -459,6 +459,8 @@ class StoreProductPage extends StorePage
 				$akismet_review->setAuthor($review->fullname);
 				$akismet_review->setAuthorEmail($review->email);
 				$akismet_review->setContent($review->bodytext);
+				$akismet_review->setPostPermalink(
+					$this->app->getBaseHref().$this->source);
 
 				$is_spam = $akismet->isSpam($akismet_review);
 			} catch (Exception $e) {
