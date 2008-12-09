@@ -471,7 +471,6 @@ class StoreProductPage extends StorePage
 
 				$is_spam = $akismet->isSpam($akismet_review);
 			} catch (Exception $e) {
-				throw($e);
 			}
 		}
 
