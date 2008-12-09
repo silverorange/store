@@ -69,6 +69,9 @@ class StoreProductReviewView extends SwatControl
 		$div_tag = new SwatHtmlTag('div');
 		$div_tag->id = $this->id;
 		$div_tag->class = 'product-review hreview';
+		if ($this->review->author_review)
+			$div_tag->class.= ' system-product-review';
+
 		$div_tag->open();
 
 		$this->displayHeader();
@@ -108,8 +111,6 @@ class StoreProductReviewView extends SwatControl
 	{
 		$span_tag = new SwatHtmlTag('span');
 		$span_tag->class = 'product-review-author fn';
-		if ($this->review->author_review)
-			$span_tag->class.= ' system-product-review-author';
 
 		if (class_exists('Blorg') && $this->review->author != null)
 			$fullname = $this->review->author->name;
