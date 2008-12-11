@@ -10,9 +10,13 @@ create or replace view OrderProductCrosslistView as
 select distinct
 	OrderItem.ordernum,
 	OrderItem.product as source_product,
+	OrderItem.extension,
+	OrderItem.quantity,
 	RelatedOrderItem.product as related_product,
 	ProductPopularProductBinding.order_count,
-	ProductPopularity.order_count as popularity
+	ProductPopularity.order_count as popularity,
+	ProductPopularity.total_quantity,
+	ProductPopularity.total_sales
 from OrderItem
 inner join Orders on OrderItem.ordernum = Orders.id
 inner join OrderItem as RelatedOrderItem
