@@ -9,7 +9,7 @@
 	<widget class="SwatFieldset" id="payment_method_form">
 		<widget class="SwatFormField" id="payment_type_field">
 			<property name="title" translatable="yes">Payment Type</property>
-			<widget class="SwatRadioList" id="payment_type">
+			<widget class="SwatRadioTable" id="payment_type">
 				<property name="required" type="boolean">true</property>
 			</widget>
 		</widget>
