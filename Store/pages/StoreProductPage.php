@@ -16,15 +16,7 @@ require_once 'Store/dataobjects/StoreCategory.php';
 require_once 'Store/dataobjects/StoreItemGroupWrapper.php';
 require_once 'Store/dataobjects/StoreProductReview.php';
 require_once 'Store/StoreProductSearchEngine.php';
-require_once 'PEAR/Config.php';
-
-// TODO: rework to not hardcode the rc files (also, should it check against theater
-// system rc as well)?
-$config = new PEAR_Config('pearrc');
-$registry = $config->getRegistry();
-// true if installed, false if not
-if ($registry->packageExists('Services_Akismet', 'pear.silverorange.com'))
-	require_once 'Services/Akismet.php';
+@include 'Services/Aksimet.php';
 
 /**
  * A product page
@@ -465,7 +457,8 @@ class StoreProductPage extends StorePage
 	{
 		$is_spam = false;
 
-		if ($this->app->config->store->akismet_key !== null) {
+		if ($this->app->config->store->akismet_key !== null &&
+			class_exists('Services_Akismet')) {
 			try {
 				$akismet = new Services_Akismet($this->app->getBaseHref(),
 					$this->app->config->store->akismet_key);
