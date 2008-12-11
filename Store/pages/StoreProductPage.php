@@ -147,6 +147,11 @@ class StoreProductPage extends StorePage
 
 			$view->review = $review;
 		}
+
+		if (count($reviews) == 0) {
+			$this->reviews_ui->getWidget('product_review_disclosure')->title =
+				Store::_('Be the first to review this product');
+		}
 	}
 
 	// }}}
@@ -570,21 +575,21 @@ class StoreProductPage extends StorePage
 			$ui             = $this->reviews_ui;
 			$form           = $ui->getWidget('product_reviews_form');
 			$show_thank_you = array_key_exists(self::THANK_YOU_ID, $_GET);
-	
+
 			$form->action = $this->source.'#submit_review';
-	
+
 			if ($show_thank_you) {
 				$message = new SwatMessage(
 					Store::_('Your review has been submitted.'));
-	
+
 				$message->secondary_content =
 					Store::_('Your review will be published after being '.
 						'approved by the site moderator.');
-	
+
 				$this->reviews_ui->getWidget('product_review_message_display')
 					->add($message, SwatMessageDisplay::DISMISS_OFF);
 			}
-	
+
 			$this->buildReviewPreview();
 		}
 	}
