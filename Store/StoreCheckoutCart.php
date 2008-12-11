@@ -318,22 +318,9 @@ abstract class StoreCheckoutCart extends StoreCart
 	}
 
 	// }}}
-	// {{{ protected function calculateShippingRate()
+	// {{{ public function getDefaultShippingType()
 
-	protected function calculateShippingRate($item_total,
-		StoreShippingType $shipping_type = null)
-	{
-		if ($shipping_type === null)
-			$shipping_type = $this->getShippingType();
-
-		return $shipping_type->calculateShippingRate($item_total,
-			$this->app->getRegion());
-	}
-
-	// }}}
-	// {{{ protected function getShippingType()
-
-	protected function getShippingType()
+	public function getDefaultShippingType()
 	{
 		$shortname = $this->getShippingTypeDefaultShortname();
 		$class_name = SwatDBClassMap::get('StoreShippingType');
@@ -346,6 +333,19 @@ abstract class StoreCheckoutCart extends StoreCart
 		}
 
 		return $shipping_type;
+	}
+
+	// }}}
+	// {{{ protected function calculateShippingRate()
+
+	protected function calculateShippingRate($item_total,
+		StoreShippingType $shipping_type = null)
+	{
+		if ($shipping_type === null)
+			$shipping_type = $this->getDefaultShippingType();
+
+		return $shipping_type->calculateShippingRate($item_total,
+			$this->app->getRegion());
 	}
 
 	// }}}
