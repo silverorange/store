@@ -158,16 +158,23 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 		if ($product->popularity === null)
 			SwatDB::insertRow($this->db, 'ProductPopularity',
 				array('integer:product',
-					'integer:order_count'),
+					'integer:order_count',
+					'float:total_quantity',
+					'float:total_sales'),
 				array('product' => $product->source_product,
-					'order_count' => 1));
+					'order_count' => 1,
+					'total_quantity' => $product->quantity,
+					'total_sales' => $product->extension));
 		else
 			SwatDB::exec($this->db, sprintf('
 				update ProductPopularity
-				set order_count = order_count + 1
+				set order_count = order_count + 1,
+					total_quantity = total_quantity + %s,
+					total_sales = total_sales + %s
 				where product = %s',
-				$this->db->quote($product->source_product,
-					'integer')));
+				$this->db->quote($product->quantity, 'integer'),
+				$this->db->quote($product->extension, 'float'),
+				$this->db->quote($product->source_product, 'integer')));
 	}
 
 	// }}}
@@ -185,18 +192,26 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 			SwatDB::insertRow($this->db, 'ProductPopularProductBinding',
 				array('integer:source_product',
 					'integer:related_product',
-					'integer:order_count'),
+					'integer:order_count',
+					'float:total_quantity',
+					'float:total_sales'),
 				array('source_product' => $product->source_product,
 					'related_product' => $product->related_product,
-					'order_count' => 1));
+					'order_count' => 1,
+					'total_quantity' => $product->quantity,
+					'total_sales' => $product->extension));
 
 			$this->inserted_pairs[] = $pair;
 		} else {
 			SwatDB::exec($this->db, sprintf('
 				update ProductPopularProductBinding
-				set order_count = order_count + 1
+				set order_count = order_count + 1,
+					total_quantity = total_quantity + %s,
+					total_sales = total_sales + %s
 				where source_product = %s and
 					related_product = %s',
+				$this->db->quote($product->quantity, 'integer'),
+				$this->db->quote($product->extension, 'float'),
 				$this->db->quote($product->source_product, 'integer'),
 				$this->db->quote($product->related_product, 'integer')));
 		}
