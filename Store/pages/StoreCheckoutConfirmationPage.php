@@ -706,7 +706,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		$order->total = $cart->getTotal($order->billing_address,
 			$order->shipping_address);
 
-		// Reload ad from the databaes to esure it exists before trying to save
+		// Reload ad from the database to esure it exists before trying to save
 		// the order. This prevents order failure when a deleted ad ends up in
 		// the session.
 		$session_ad = $this->app->analytics->getAd();
