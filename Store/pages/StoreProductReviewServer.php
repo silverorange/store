@@ -27,9 +27,10 @@ class StoreProductReviewServer extends SiteXMLRPCServer
 	 *                        returned.
 	 * @param integer $offset offset return reviews at the specified offset.
 	 *
-	 * @return array a two element array containing the markup and inline
-	 *                JavaScript for the product reviews. The array contains
-	 *                elements named 'content' and 'javascript'.
+	 * @return array an array of reviews. Each review is a two element array
+	 *                containing the markup and inline JavaScript for the
+	 *                product reviews. The array contains elements named
+	 *                'content' and 'javascript'.
 	 */
 	public function getReviews($product_id, $limit, $offset)
 	{
@@ -41,25 +42,25 @@ class StoreProductReviewServer extends SiteXMLRPCServer
 
 		// get views
 		$reviews = $this->getProductReviews($product_id, $limit, $offset);
-		$views   = array();
 		foreach ($reviews as $review) {
-			$views[] = $this->getProductReviewView($review);
-		}
+			$view = $this->getProductReviewView($review);
 
-		// display content
-		ob_start();
-		foreach ($views as $view) {
+			$response_review = array();
+
+			// display content
+			ob_start();
 			$view->display();
-		}
-		$response['content'] = ob_get_clean();
+			$response_review['content'] = ob_get_clean();
 
-		// display javascript
-		ob_start();
-		foreach ($views as $view) {
+			// display javascript
+			ob_start();
 			echo $view->getInlineJavaScript();
 			echo "\n";
+			$response_review['javascript'] = ob_get_clean();
+
+			// add review
+			$response[] = $response_review;
 		}
-		$response['javascript'] = ob_get_clean();
 
 		return $response;
 	}
