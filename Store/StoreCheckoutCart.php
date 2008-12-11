@@ -318,9 +318,9 @@ abstract class StoreCheckoutCart extends StoreCart
 	}
 
 	// }}}
-	// {{{ public function getDefaultShippingType()
+	// {{{ public function getShippingType()
 
-	public function getDefaultShippingType()
+	public function getShippingType()
 	{
 		$shortname = $this->getShippingTypeDefaultShortname();
 		$class_name = SwatDBClassMap::get('StoreShippingType');
@@ -342,7 +342,7 @@ abstract class StoreCheckoutCart extends StoreCart
 		StoreShippingType $shipping_type = null)
 	{
 		if ($shipping_type === null)
-			$shipping_type = $this->getDefaultShippingType();
+			$shipping_type = $this->getShippingType();
 
 		return $shipping_type->calculateShippingRate($item_total,
 			$this->app->getRegion());
