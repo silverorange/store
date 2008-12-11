@@ -11,6 +11,10 @@
 	clear: both;
 }
 
+.product-review .reviewer {
+	width: 145px;
+}
+
 .product-review-animation {
 	overflow: hidden;
 	margin-left: 150px;
