@@ -16,7 +16,15 @@ require_once 'Store/dataobjects/StoreCategory.php';
 require_once 'Store/dataobjects/StoreItemGroupWrapper.php';
 require_once 'Store/dataobjects/StoreProductReview.php';
 require_once 'Store/StoreProductSearchEngine.php';
-require_once 'Services/Akismet.php';
+require_once 'PEAR/Config.php';
+
+// TODO: rework to not hardcode the rc files (also, should it check against theater
+// system rc as well)?
+$config = new PEAR_Config('pearrc');
+$registry = $config->getRegistry();
+// true if installed, false if not
+if ($registry->packageExists('Services_Akismet', 'pear.silverorange.com'))
+	require_once 'Services/Akismet.php';
 
 /**
  * A product page
@@ -565,25 +573,27 @@ class StoreProductPage extends StorePage
 
 	protected function buildReviewUi()
 	{
-		$ui             = $this->reviews_ui;
-		$form           = $ui->getWidget('product_reviews_form');
-		$show_thank_you = array_key_exists(self::THANK_YOU_ID, $_GET);
-
-		$form->action = $this->source.'#submit_review';
-
-		if ($show_thank_you) {
-			$message = new SwatMessage(
-				Store::_('Your review has been submitted.'));
-
-			$message->secondary_content =
-				Store::_('Your review will be published after being approved '.
-					'by the site moderator.');
-
-			$this->reviews_ui->getWidget('product_review_message_display')->add(
-				$message, SwatMessageDisplay::DISMISS_OFF);
+		if ($this->reviews_ui instanceof SwatUI) {
+			$ui             = $this->reviews_ui;
+			$form           = $ui->getWidget('product_reviews_form');
+			$show_thank_you = array_key_exists(self::THANK_YOU_ID, $_GET);
+	
+			$form->action = $this->source.'#submit_review';
+	
+			if ($show_thank_you) {
+				$message = new SwatMessage(
+					Store::_('Your review has been submitted.'));
+	
+				$message->secondary_content =
+					Store::_('Your review will be published after being '.
+						'approved by the site moderator.');
+	
+				$this->reviews_ui->getWidget('product_review_message_display')
+					->add($message, SwatMessageDisplay::DISMISS_OFF);
+			}
+	
+			$this->buildReviewPreview();
 		}
-
-		$this->buildReviewPreview();
 	}
 
 	// }}}
