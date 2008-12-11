@@ -24,8 +24,9 @@ class StoreXMLRPCServerFactory extends SiteXMLRPCServerFactory
 	protected function getPageMap()
 	{
 		return array(
-			'quickorder'   => 'StoreQuickOrderServer',
-			'search-panel' => 'StoreSearchPanelServer',
+			'quickorder'      => 'StoreQuickOrderServer',
+			'product-reviews' => 'StoreProductReviewServer',
+			'search-panel'    => 'StoreSearchPanelServer',
 		);
 	}
 
