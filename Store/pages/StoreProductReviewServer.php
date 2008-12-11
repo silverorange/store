@@ -40,7 +40,7 @@ class StoreProductReviewServer extends SiteXMLRPCServer
 		$response = array();
 
 		// get views
-		$reviews = $this->getReviews($product_id, $limit, $offset);
+		$reviews = $this->getProductReviews($product_id, $limit, $offset);
 		$views   = array();
 		foreach ($reviews as $review) {
 			$views[] = $this->getProductReviewView($review);
@@ -57,6 +57,7 @@ class StoreProductReviewServer extends SiteXMLRPCServer
 		ob_start();
 		foreach ($views as $view) {
 			echo $view->getInlineJavaScript();
+			echo "\n";
 		}
 		$response['javascript'] = ob_get_clean();
 
@@ -90,15 +91,15 @@ class StoreProductReviewServer extends SiteXMLRPCServer
 		$offset = 0)
 	{
 		$sql = sprintf('select * from ProductReview
-			where product = %s and spam = %s and status = %s and id not in (%s)
+			where product = %s and spam = %s and status = %s
 			order by createdate desc, id',
 			$this->app->db->quote($product_id, 'integer'),
 			$this->app->db->quote(false, 'boolean'),
-			$this->db->quote(SiteComment::STATUS_PUBLISHED, 'integer'));
+			$this->app->db->quote(SiteComment::STATUS_PUBLISHED, 'integer'));
 
-		$this->db->setLimit($limit, $offset);
+		$this->app->db->setLimit($limit, $offset);
 
-		return SwatDB::query($this->db, $sql,
+		return SwatDB::query($this->app->db, $sql,
 			SwatDBClassMap::get('StoreProductReviewWrapper'));
 	}
 }
