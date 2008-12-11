@@ -27,10 +27,10 @@ class StoreProductReviewServer extends SiteXMLRPCServer
 	 *                        returned.
 	 * @param integer $offset offset return reviews at the specified offset.
 	 *
-	 * @return array an array of reviews. Each review is a two element array
+	 * @return array an array of reviews. Each review is a three element array
 	 *                containing the markup and inline JavaScript for the
 	 *                product reviews. The array contains elements named
-	 *                'content' and 'javascript'.
+	 *                'id', 'content' and 'javascript'.
 	 */
 	public function getReviews($product_id, $limit, $offset)
 	{
@@ -46,6 +46,9 @@ class StoreProductReviewServer extends SiteXMLRPCServer
 			$view = $this->getProductReviewView($review);
 
 			$response_review = array();
+
+			// display id
+			$response_review['id'] = $view->id;
 
 			// display content
 			ob_start();
@@ -98,11 +101,24 @@ class StoreProductReviewServer extends SiteXMLRPCServer
 			$this->app->db->quote(false, 'boolean'),
 			$this->app->db->quote(SiteComment::STATUS_PUBLISHED, 'integer'));
 
-		$this->app->db->setLimit($limit, $offset);
+		// Don't use db->setLimit here because it doesn't allow an offset
+		// with no limit.
+
+		if ($limit !== null) {
+			$sql.= sprintf(' limit %s',
+				$this->app->db->quote($limit, 'integer'));
+		}
+
+		if ($offset > 0) {
+			$sql.= sprintf(' offset %s',
+				$this->app->db->quote($offset, 'integer'));
+		}
 
 		return SwatDB::query($this->app->db, $sql,
 			SwatDBClassMap::get('StoreProductReviewWrapper'));
 	}
+
+	// }}}
 }
 
 ?>
