@@ -38,9 +38,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 
 		if ($this->hasSearchDataValue('keywords')) {
 			$keywords = $this->getSearchDataValue('keywords');
-
-			if (count(explode(' ', $keywords)) === 1)
-				$this->searchItem($keywords);
+			$this->searchItem($keywords);
 		}
 	}
 
@@ -58,6 +56,9 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 	 */
 	protected function searchItem($keywords)
 	{
+		if (count(explode(' ', $keywords)) > 1)
+			return;
+
 		$sku = trim(strtolower($keywords));
 
 		if (substr($sku, 0, 1) === '#' && strlen($sku) > 1)
