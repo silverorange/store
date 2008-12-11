@@ -7,6 +7,8 @@ require_once 'Site/SiteApplication.php';
 require_once 'Store/dataobjects/StoreProductReview.php';
 
 /**
+ * Reviews are displayed using the hReview microformat.
+ *
  * @package   Store
  * @copyright 2008 silverorange
  */
@@ -17,6 +19,8 @@ class StoreProductReviewView extends SwatControl
 	public $review;
 
 	public $app;
+
+	public $show_javascript = true;
 
 	// }}}
 	// {{{ protected properties
@@ -79,9 +83,42 @@ class StoreProductReviewView extends SwatControl
 		$this->displayDescription();
 		$this->displaySummary();
 
-		Swat::displayInlineJavaScript($this->getInlineJavaScript());
+		if ($this->show_javascript) {
+			Swat::displayInlineJavaScript($this->getInlineJavaScript());
+		}
 
 		$div_tag->close();
+	}
+
+	// }}}
+	// {{{ public function getInlineJavaScript()
+
+	public function getInlineJavaScript()
+	{
+		static $translations_displayed = false;
+
+		$javascript = '';
+
+		if (!$translations_displayed) {
+			$javascript.= sprintf(
+				"StoreProductReviewView.open_text = %s;\n",
+					SwatString::quoteJavaScriptString(
+					Store::_('read full comment')));
+
+			$javascript.= sprintf(
+				"StoreProductReviewView.close_text = %s;\n",
+					SwatString::quoteJavaScriptString(
+					Store::_('show less')));
+
+			$translations_displayed = true;
+		}
+
+		$javascript.= sprintf(
+			"var %s_obj = new StoreProductReviewView(%s);",
+			$this->id,
+			SwatString::quoteJavaScriptString($this->id));
+
+		return $javascript;
 	}
 
 	// }}}
@@ -186,37 +223,6 @@ class StoreProductReviewView extends SwatControl
 			$div_tag->setContent($summary, 'text/xml');
 			$div_tag->display();
 		}
-	}
-
-	// }}}
-	// {{{ protected function getInlineJavaScript()
-
-	protected function getInlineJavaScript()
-	{
-		static $translations_displayed = false;
-
-		$javascript = '';
-
-		if (!$translations_displayed) {
-			$javascript.= sprintf(
-				"StoreProductReviewView.open_text = %s;\n",
-					SwatString::quoteJavaScriptString(
-					Store::_('read full comment')));
-
-			$javascript.= sprintf(
-				"StoreProductReviewView.close_text = %s;\n",
-					SwatString::quoteJavaScriptString(
-					Store::_('show less')));
-
-			$translations_displayed = true;
-		}
-
-		$javascript.= sprintf(
-			"var %s_obj = new StoreProductReviewView(%s);",
-			$this->id,
-			SwatString::quoteJavaScriptString($this->id));
-
-		return $javascript;
 	}
 
 	// }}}
