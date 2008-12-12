@@ -310,7 +310,7 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 			}
 
 			// flatten tree if there are no item groups
-			if ($num_item_groups == 0 && $item_group_node !== null) {
+			if ($num_item_groups < 2 && $item_group_node !== null) {
 				$item_group_node->parent = null;
 				$tree = $item_group_node;
 			}
