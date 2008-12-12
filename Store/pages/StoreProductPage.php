@@ -495,13 +495,16 @@ class StoreProductPage extends StorePage
 
 		$this->buildCart();
 		$this->buildProduct();
-		$this->buildReviewUi();
+		$this->buildReviewsUi();
 
 		$this->layout->startCapture('content');
 		$this->message_display->display();
 		$this->displayProduct();
 		Swat::displayInlineJavaScript($this->getProductInlineJavaScript());
 		Swat::displayInlineJavaScript($this->getCartInlineJavaScript());
+		if ($this->reviews_ui instanceof SwatUI) {
+			Swat::displayInlineJavaScript($this->getReviewsInlineJavaScript());
+		}
 		$this->layout->endCapture();
 	}
 
@@ -568,9 +571,9 @@ class StoreProductPage extends StorePage
 	}
 
 	// }}}
-	// {{{ protected function buildReviewUi()
+	// {{{ protected function buildReviewsUi()
 
-	protected function buildReviewUi()
+	protected function buildReviewsUi()
 	{
 		if ($this->reviews_ui instanceof SwatUI) {
 			$ui             = $this->reviews_ui;
@@ -817,7 +820,7 @@ class StoreProductPage extends StorePage
 
 		$this->displayPopularProducts();
 
-		$this->displayProductReviews();
+		$this->displayReviews();
 
 		echo '</div>';
 	}
@@ -1040,6 +1043,18 @@ class StoreProductPage extends StorePage
 	}
 
 	// }}}
+	// {{{ protected function displayReviews()
+
+	protected function displayReviews()
+	{
+		if ($this->reviews_ui instanceof SwatUI) {
+			echo '<div id="submit_review"></div>';
+
+			$this->reviews_ui->display();
+		}
+	}
+
+	// }}}
 	// {{{ protected function getPopularProducts()
 
 	protected function getPopularProducts()
@@ -1055,18 +1070,6 @@ class StoreProductPage extends StorePage
 		$products = $engine->search(3);
 
 		return $products;
-	}
-
-	// }}}
-	// {{{ protected function displayProductReviews()
-
-	protected function displayProductReviews()
-	{
-		if ($this->reviews_ui instanceof SwatUI) {
-			echo '<div id="submit_review"></div>';
- 
-			$this->reviews_ui->display();
-		}
 	}
 
 	// }}}
@@ -1097,6 +1100,33 @@ class StoreProductPage extends StorePage
 			$item_ids);
 
 		return $javascript;
+	}
+
+	// }}}
+	// {{{ protected function getReviewsInlineJavaScript()
+
+	protected function getReviewsInlineJavaScript()
+	{
+		$locale = SwatI18NLocale::get();
+
+		$review_count = $this->product->getVisibleProductReviewCount();
+
+		$message = sprintf(Store::_('Read All %s Comments'),
+			$locale->formatNumber($review_count));
+
+		$message       = SwatString::quoteJavaScriptString($message);
+		$replicator_id = "'reviews_replicator'";
+
+		$show_more = ($review_count > $this->getMaxProductReviews()) ?
+			'true' : 'false';
+
+		return sprintf("var product_review_page = ".
+			"new StoreProductReviewPage(%s, %s, %s, %s, %s);",
+			$this->product->id,
+			$this->getMaxProductReviews(),
+			$replicator_id,
+			$message,
+			$show_more);
 	}
 
 	// }}}
@@ -1222,6 +1252,9 @@ class StoreProductPage extends StorePage
 			$this->cart_ui->getRoot()->getHtmlHeadEntrySet());
 
 		if ($this->reviews_ui instanceof SwatUI) {
+			$this->layout->addHtmlHeadEntrySet(
+				XML_RPCAjax::getHtmlHeadEntrySet());
+
 			$this->layout->addHtmlHeadEntrySet(
 				$this->reviews_ui->getRoot()->getHtmlHeadEntrySet());
 		}
