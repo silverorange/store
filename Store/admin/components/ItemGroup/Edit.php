@@ -5,6 +5,7 @@ require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/dataobjects/StoreItemGroup.php';
+require_once 'Store/dataobjects/StoreItemWrapper.php';
 
 /**
  * Edit page for Item Groups
@@ -15,14 +16,15 @@ require_once 'Store/dataobjects/StoreItemGroup.php';
  */
 class StoreItemGroupEdit extends AdminDBEdit
 {
-	// {{{ private properties
-
-	private $category_id;
-
-	// }}}
 	// {{{ protected properties
 
 	protected $item_group;
+	protected $ui_xml = 'Store/admin/components/ItemGroup/edit.xml';
+
+	// }}}
+	// {{{ private properties
+
+	private $category_id;
 
 	// }}}
 
@@ -32,7 +34,7 @@ class StoreItemGroupEdit extends AdminDBEdit
 	protected function initInternal()
 	{
 		parent::initInternal();
-		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
+		$this->ui->loadFromXML($this->ui_xml);
 		$this->category_id = SiteApplication::initVar('category');
 		$this->initItemGroup();
 	}
@@ -101,6 +103,21 @@ class StoreItemGroupEdit extends AdminDBEdit
 	}
 
 	// }}}
+	// {{{ protected function getItemsTableStore()
+
+	protected function getItemsTableStore()
+	{
+		$sql = sprintf(
+			'select sku, description from Item where item_group = %s',
+			$this->app->db->quote($this->id, 'integer'));
+
+		$items = SwatDB::query($this->app->db, $sql,
+			SwatDBClassMap::get('StoreItemWrapper'));
+
+		return $items;
+	}
+
+	// }}}
 	// {{{ protected function buildForm()
 
 	protected function buildForm()
@@ -108,20 +125,6 @@ class StoreItemGroupEdit extends AdminDBEdit
 		parent::buildForm();
 		$form = $this->ui->getWidget('edit_form');
 		$form->addHiddenField('category', $this->category_id);
-	}
-
-	// }}}
-	// {{{ private function getItemsTableStore()
-
-	private function getItemsTableStore()
-	{
-		$sql = sprintf(
-			'select sku, description from Item where item_group = %s',
-			$this->app->db->quote($this->id, 'integer'));
-
-		$store = SwatDB::query($this->app->db, $sql);
-
-		return $store;
 	}
 
 	// }}}
