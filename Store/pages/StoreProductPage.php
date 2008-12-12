@@ -206,12 +206,13 @@ class StoreProductPage extends StorePage
 		$this->product->setRegion($this->app->getRegion());
 		$this->product->load($id);
 
-		$sql = 'select id, title from ItemGroup where product = %s';
+		$sql = 'select * from ItemGroup where product = %s';
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->product->id, 'integer'));
 
+		$wrapper = SwatDBClassMap::get('StoreItemGroupWrapper');
 		$this->product->items->loadAllSubDataObjects('item_group',
-			$this->app->db, $sql, 'StoreItemGroupWrapper');
+			$this->app->db, $sql, $wrapper);
 	}
 
 	// }}}
