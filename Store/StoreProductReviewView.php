@@ -44,10 +44,6 @@ class StoreProductReviewView extends SwatControl
 		$this->addJavaScript(
 			'packages/store/javascript/store-product-review-view.js',
 			Store::PACKAGE_ID);
-
-		$this->addStyleSheet(
-			'packages/store/styles/store-product-review-view.css',
-			Store::PACKAGE_ID);
 	}
 
 	// }}}

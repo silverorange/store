@@ -10,3 +10,100 @@ div.store-original-price {
 div.store-sale-discount {
 	color: #990000;
 }
+
+/* {{{ Review Display */
+.product-review-item {
+	display: none;
+}
+
+.product-review-summary {
+	display: none;
+}
+
+.product-review {
+	border-bottom: 1px solid #eee;
+	width: 100%;
+	float: left;
+	clear: both;
+}
+
+.product-review .reviewer {
+	width: 145px;
+}
+
+.product-review-animation {
+	overflow: hidden;
+	margin-left: 150px;
+}
+
+.product-review-animation-padding {
+	padding: 0.5em 0;
+}
+
+.product-review-description,
+.product-review-summary {
+	margin-left: 150px;
+	padding: 0.5em 1em 0.5em 0;
+}
+
+.product-review-animation .product-review-description,
+.product-review-animation .product-review-summary {
+	margin-left: 0;
+	padding: 0 1em 0 0;
+}
+
+.product-review-description p,
+.product-review-summary p {
+	padding: 0.5em 0; /* padding works, margins cause animation */
+	                  /* heights to be calculated incorrectly */
+	margin: 0;
+}
+
+span.product-review-author {
+	display: block;
+}
+
+span.product-review-date {
+	display:block;
+}
+
+.product-review-title {
+	float: left;
+	padding: 1em 0 1em 1em;
+}
+
+.store-product-reviews .swat-disclosure {
+	clear: both;
+}
+
+.store-product-reviews .swat-message-display {
+	clear: both;
+	padding-top: 1em;
+}
+
+/* }}} */
+/* {{{ Review Edit Form */
+
+#product_reviews_form .swat-entry,
+#product_reviews_form .swat-textarea {
+	width: 98%;
+}
+
+#review_edit_details {
+	width: 35%;
+	float: left;
+	position: relative;
+}
+
+#review_bodytext_field {
+	width: 62%;
+	float: right;
+	position: relative;
+}
+
+#product_reviews_frame .swat-footer-form-field {
+	clear: both;
+}
+
+
+/* }}} */
