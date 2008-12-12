@@ -1116,15 +1116,17 @@ class StoreProductPage extends StorePage
 
 		$message       = SwatString::quoteJavaScriptString($message);
 		$replicator_id = "'reviews_replicator'";
+		$disclosure_id = "'product_review_disclosure'";
 
 		$show_more = ($review_count > $this->getMaxProductReviews()) ?
 			'true' : 'false';
 
 		return sprintf("var product_review_page = ".
-			"new StoreProductReviewPage(%s, %s, %s, %s, %s);",
+			"new StoreProductReviewPage(%s, %s, %s, %s, %s, %s);",
 			$this->product->id,
 			$this->getMaxProductReviews(),
 			$replicator_id,
+			$disclosure_id,
 			$message,
 			$show_more);
 	}
