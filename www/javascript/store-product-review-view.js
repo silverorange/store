@@ -31,22 +31,6 @@ function StoreProductReviewView(id)
 		var paragraph = YAHOO.util.Dom.getLastChild(this.summary);
 		paragraph.appendChild(this.open_link);
 
-		this.close_link = document.createElement('a');
-		this.close_link.href = '#';
-		this.close_link.className = 'product-review-less';
-		this.close_link.appendChild(document.createTextNode(
-			StoreProductReviewView.close_text));
-
-		YAHOO.util.Event.on(this.close_link, 'click', function(e)
-		{
-			YAHOO.util.Event.preventDefault(e);
-			this.toggle();
-		}, this, true);
-
-		var paragraph = document.createElement('p');
-		paragraph.appendChild(this.close_link);
-		this.description.appendChild(paragraph);
-
 		this.animate_div = document.createElement('div');
 		this.animate_div.className = 'product-review-animation';
 		this.container.appendChild(this.animate_div);
@@ -66,7 +50,6 @@ function StoreProductReviewView(id)
 }
 
 StoreProductReviewView.open_text = 'read full comment';
-StoreProductReviewView.close_text = 'show less';
 
 StoreProductReviewView.prototype.toggle = function()
 {
