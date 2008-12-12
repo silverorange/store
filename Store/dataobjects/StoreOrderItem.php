@@ -211,15 +211,33 @@ class StoreOrderItem extends SwatDBDataObject
 	 */
 	public function getAvailableItemId(StoreRegion $region)
 	{
-		$sql = sprintf('select Item.id from Item
-				inner join AvailableItemView
-					on AvailableItemView.item = Item.id
-					and AvailableItemView.region = %s
-				where Item.sku = %s',
+		$sql = 'select Item.id from Item
+			inner join AvailableItemView
+				on AvailableItemView.item = Item.id
+				and AvailableItemView.region = %s
+			where Item.sku = %s';
+
+		$sql = sprintf($sql,
 			$this->db->quote($region->id, 'integer'),
 			$this->db->quote($this->sku, 'text'));
 
-		return SwatDB::queryOne($this->db, $sql);
+		$id = SwatDB::queryOne($this->db, $sql);
+
+		if ($id === null) {
+			$sql = 'select Item.id from Item
+				inner join AvailableItemView
+					on AvailableItemView.item = Item.id
+					and AvailableItemView.region = %s
+				where Item.id = %s';
+
+			$sql = sprintf($sql,
+				$this->db->quote($region->id, 'integer'),
+				$this->db->quote($this->item, 'integer'));
+
+			$id = SwatDB::queryOne($this->db, $sql);
+		}
+
+		return $id;
 	}
 
 	// }}}
@@ -236,11 +254,15 @@ class StoreOrderItem extends SwatDBDataObject
 	 */
 	public function getAvailableItem(StoreRegion $region)
 	{
-		$sql = sprintf('select Item.* from Item
-				inner join AvailableItemView
-					on AvailableItemView.item = Item.id
-					and AvailableItemView.region = %s
-				where Item.sku = %s',
+		$item = null;
+
+		$sql = 'select Item.* from Item
+			inner join AvailableItemView
+				on AvailableItemView.item = Item.id
+				and AvailableItemView.region = %s
+			where Item.sku = %s';
+
+		$sql = sprintf($sql,
 			$this->db->quote($region->id, 'integer'),
 			$this->db->quote($this->sku, 'text'));
 
@@ -248,9 +270,27 @@ class StoreOrderItem extends SwatDBDataObject
 			SwatDBClassMap::get('StoreItemWrapper'));
 
 		if (count($items) > 0)
-			return $items->getFirst();
-		else
-			return null;
+			$item = $items->getFirst();
+
+		if ($item === null) {
+			$sql = 'select Item.* from Item
+				inner join AvailableItemView
+					on AvailableItemView.item = Item.id
+					and AvailableItemView.region = %s
+				where Item.id = %s';
+
+			$sql = sprintf($sql,
+				$this->db->quote($region->id, 'integer'),
+				$this->db->quote($this->item, 'integer'));
+
+			$items = SwatDB::query($this->db, $sql,
+				SwatDBClassMap::get('StoreItemWrapper'));
+
+			if (count($items) > 0)
+				$item = $items->getFirst();
+		}
+
+		return $item;
 	}
 
 	// }}}
