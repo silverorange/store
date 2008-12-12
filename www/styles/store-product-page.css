@@ -81,6 +81,31 @@ span.product-review-date {
 	padding-top: 1em;
 }
 
+.store-product-review-all {
+	background: #fff;
+	text-decoration: none;
+	display: inline-block;
+	margin: 0 10px 0 5px;
+	padding: 0 5px 0 22px;
+	position: relative;
+	top: 0.7em;
+	background-position: 2px 0;
+	background-repeat: no-repeat;
+}
+
+a.store-product-review-all {
+/*	background-image:url(../../swat/images/swat-disclosure-open.png);*/
+}
+
+.store-product-review-all-insensitive {
+	color: #aba38c;
+/*	background-image:url(../../swat/images/swat-disclosure-closed.png);*/
+}
+
+span.store-product-review-all-loading {
+/*	background-image:url(../../swat/images/swat-disclosure-open.png);*/
+}
+
 /* }}} */
 /* {{{ Review Edit Form */
 

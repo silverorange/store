@@ -74,14 +74,14 @@ StoreProductReviewPage.prototype.initReviews = function()
 
 	// create show-all link
 	this.show_all_link = document.createElement('a');
-	this.show_all_link.className = 'product-review-all';
+	this.show_all_link.className = 'store-product-review-all';
 	this.show_all_link.href = '#';
 	this.show_all_link.appendChild(document.createTextNode(this.message));
 
 	// create show-all span
 	this.show_all_span = document.createElement('span');
-	this.show_all_span.className = 'product-review-all ' +
-		'product-review-all-insensitive';
+	this.show_all_span.className = 'store-product-review-all ' +
+		'store-product-review-all-insensitive';
 
 	this.show_all_span.appendChild(document.createTextNode(this.message));
 
@@ -106,7 +106,8 @@ StoreProductReviewPage.prototype.loadAllReviews = function()
 	this.review_disclosure.replaceChild(this.show_all_span,
 		this.show_all_link);
 
-	YAHOO.util.Dom.addClass(this.show_all_span, 'product-reviews-loading');
+	YAHOO.util.Dom.addClass(this.show_all_span,
+		'store-product-review-all-loading');
 
 	var that = this;
 	function callBack(response)
@@ -150,7 +151,7 @@ StoreProductReviewPage.prototype.loadAllReviews = function()
 
 		// remove loading style from show-all span
 		YAHOO.util.Dom.removeClass(that.show_all_span,
-			'product-reviews-loading');
+			'store-product-review-all-loading');
 	}
 
 	// Make remote call to get more reviews for the product at the specified
