@@ -35,7 +35,7 @@ class StoreItemWrapper extends SwatDBRecordsetWrapper
 				left outer join ItemGroup on Item.item_group = ItemGroup.id
 			where Item.id in (%s)
 			order by coalesce(ItemGroup.displayorder, -1), ItemGroup.title,
-				Item.displayorder, Item.sku';
+				ItemGroup.id, Item.displayorder, Item.sku';
 
 		$sql = sprintf($sql, $id_set);
 
