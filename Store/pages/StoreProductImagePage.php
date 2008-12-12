@@ -101,12 +101,12 @@ class StoreProductImagePage extends StorePage
 		echo '<div id="product_images" class="large-image-page">';
 
 		$this->displayBackLink();
+		$this->displayDownloadLink();
 		$this->displayImage();
 
 		if (count($this->product->images) > 1)
 			$this->displayThumbnails('pinky');
 
-		$this->displayDownloadLink();
 		$this->displayDescription();
 		echo '</div>';
 	}
