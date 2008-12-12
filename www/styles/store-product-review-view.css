@@ -59,6 +59,15 @@ span.product-review-date {
 	padding: 1em 0 1em 1em;
 }
 
+.store-product-reviews .swat-disclosure {
+	clear: both;
+}
+
+.store-product-reviews .swat-message-display {
+	clear: both;
+	padding-top: 1em;
+}
+
 /* }}} */
 /* {{{ Review Edit Form */
 
