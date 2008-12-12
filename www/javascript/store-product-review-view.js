@@ -46,7 +46,11 @@ function StoreProductReviewView(id)
 
 	// initial state
 	this.opened = false;
-	this.close();
+
+	if (this.summary) {
+		this.summary.style.display = 'block';
+		this.description.style.display = 'none';
+	}
 }
 
 StoreProductReviewView.open_text = 'read full comment';
