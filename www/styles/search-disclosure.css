@@ -101,8 +101,8 @@
 	vertical-align: middle;
 }
 
-.swat-disclosure-span,
-.swat-disclosure-anchor-opened,
-.swat-disclosure-anchor-closed {
+.search-disclosure .swat-disclosure-span,
+.search-disclosure .swat-disclosure-anchor-opened,
+.search-disclosure .swat-disclosure-anchor-closed {
 	background-color: transparent;
 }
