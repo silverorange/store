@@ -275,6 +275,22 @@ class StoreProduct extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function getVisibleProductReviewCount()
+
+	public function getVisibleProductReviewCount()
+	{
+		$sql = 'select count(1) from ProductReview
+			where product = %s and spam = %s and status = %s';
+
+		$sql = sprintf($sql,
+			$this->db->quote($this->id, 'integer'),
+			$this->db->quote(false, 'boolean'),
+			$this->db->quote(SiteComment::STATUS_PUBLISHED, 'integer'));
+
+		return SwatDB::queryOne($this->db, $sql);
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
