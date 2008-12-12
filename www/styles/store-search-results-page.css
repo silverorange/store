@@ -43,15 +43,26 @@ ul.site-search-results li.store-category-tile a span.store-category-tile-title {
 	padding-bottom: 1em;
 }
 
-#article_results_frame.swat-frame {
+#right_column {
 	float: right;
-	width: 220px;
 	margin-left: 20px;
 	position: relative;
+	width: 220px;
 	z-index: 99;
 }
 
-#article_results_frame.store-article-results-full-width {
+#post_results_frame {
+	clear: right;
+}
+
+#article_results_frame.swat-frame,
+#post_results_frame.swat-frame {
+	float: right;
+	position: relative;
+}
+
+#article_results_frame.store-article-results-full-width,
+#post_results_frame.store-article-results-full-width {
 	background: none;
 	border: none;
 	float: none;
@@ -59,7 +70,8 @@ ul.site-search-results li.store-category-tile a span.store-category-tile-title {
 	margin-left: 0;
 }
 
-#main-content #article_results_frame p {
+#main-content #article_results_frame p,
+#main-content #post_results_frame p {
 	margin: 0 0 1em 0;
 	line-height: 1.2;
 }
