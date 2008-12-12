@@ -25,7 +25,7 @@ function StoreProductReviewView(id)
 		YAHOO.util.Event.on(this.open_link, 'click', function(e)
 		{
 			YAHOO.util.Event.preventDefault(e);
-			this.toggle();
+			this.openWithAnimation();
 		}, this, true);
 
 		var paragraph = YAHOO.util.Dom.getLastChild(this.summary);
@@ -50,15 +50,6 @@ function StoreProductReviewView(id)
 }
 
 StoreProductReviewView.open_text = 'read full comment';
-
-StoreProductReviewView.prototype.toggle = function()
-{
-	if (this.opened) {
-		this.closeWithAnimation();
-	} else {
-		this.openWithAnimation();
-	}
-}
 
 StoreProductReviewView.prototype.openWithAnimation = function()
 {
@@ -96,54 +87,6 @@ StoreProductReviewView.prototype.openWithAnimation = function()
 	this.opened = true;
 }
 
-StoreProductReviewView.prototype.closeWithAnimation = function()
-{
-	if (this.semaphore)
-		return;
-
-	this.summary.parentNode.insertBefore(this.description, this.summary);
-
-	// get current height
-	this.animate_div.style.overflow = '';
-	var old_height = this.animate_div.offsetHeight;
-
-	// get new display height
-	this.summary.parentNode.style.overflow = 'hidden';
-	this.summary.parentNode.style.height = old_height + 'px';
-	this.summary.style.visibility = 'hidden';
-	this.summary.style.overflow = 'hidden';
-	this.summary.style.display = 'block';
-	this.summary.style.height = 'auto';
-	var new_height = this.summary.offsetHeight;
-	this.description.style.height = old_height + 'px';
-	this.summary.style.visibility = 'visible';
-	this.summary.style.display = 'none';
-	this.summary.parentNode.style.height = '';
-
-	var attributes = { height: { to: new_height, from: old_height } };
-	var animation = new YAHOO.util.Anim(this.description, attributes, 0.5,
-		YAHOO.util.Easing.easeOut);
-
-	this.semaphore = true;
-	animation.onComplete.subscribe(this.handleClose, this, true);
-	animation.animate();
-
-	this.opened = false;
-}
-
-StoreProductReviewView.prototype.close = function()
-{
-	if (this.semaphore)
-		return;
-
-	if (this.summary) {
-		this.summary.style.display = 'block';
-		this.description.style.display = 'none';
-	}
-
-	this.opened = false;
-}
-
 StoreProductReviewView.prototype.open = function()
 {
 	if (this.semaphore)
@@ -155,18 +98,6 @@ StoreProductReviewView.prototype.open = function()
 	}
 
 	this.opened = true;
-}
-
-StoreProductReviewView.prototype.handleClose= function()
-{
-	// allow font resizing to work again
-	this.summary.style.height = 'auto';
-
-	// re-set overflow to visible for styles that might depend on it
-	this.summary.style.display = 'block';
-	this.description.style.display = 'none';
-
-	this.semaphore = false;
 }
 
 StoreProductReviewView.prototype.handleOpen = function()
