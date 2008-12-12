@@ -294,7 +294,9 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 					if ($item_group === null) {
 						$group_title = Store::_('[ungrouped]');
 					} else {
-						$group_title = $item->item_group->title;
+						$group_title = ($item->item_group->title === null) ?
+							'—' : $item->item_group->title;
+
 						$num_item_groups++;
 					}
 
