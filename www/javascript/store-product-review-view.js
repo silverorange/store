@@ -18,6 +18,7 @@ function StoreProductReviewView(id)
 
 		this.open_link = document.createElement('a');
 		this.open_link.href = '#';
+		this.open_link.className = 'product-review-more';
 		this.open_link.appendChild(document.createTextNode(
 			StoreProductReviewView.open_text));
 
@@ -32,6 +33,7 @@ function StoreProductReviewView(id)
 
 		this.close_link = document.createElement('a');
 		this.close_link.href = '#';
+		this.close_link.className = 'product-review-less';
 		this.close_link.appendChild(document.createTextNode(
 			StoreProductReviewView.close_text));
 
