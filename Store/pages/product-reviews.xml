@@ -21,22 +21,27 @@
 			<widget class="SwatDisclosure" id="product_review_disclosure">
 				<property name="title" translatable="yes">Add New Comment</property>
 				<property name="open" type="boolean">false</property>
-				<widget class="SwatFormField">
-					<property name="title" translatable="yes">Name</property>
-					<widget class="SwatEntry" id="product_review_fullname">
-						<property name="required" type="boolean">true</property>
+				<widget class="SwatDisplayableContainer" id="review_edit_details">
+					<widget class="SwatFormField">
+						<property name="title" translatable="yes">Name</property>
+						<widget class="SwatEntry" id="product_review_fullname">
+							<property name="required" type="boolean">true</property>
+						</widget>
+					</widget>
+					<widget class="SwatFormField">
+						<property name="title" translatable="yes">Email</property>
+						<property name="note">Email addresses are not displayed with your comment and will not be shared.</property>
+						<widget class="SwatEmailEntry" id="product_review_email">
+							<property name="required" type="boolean">true</property>
+						</widget>
 					</widget>
 				</widget>
-				<widget class="SwatFormField">
-					<property name="title" translatable="yes">Email</property>
-					<widget class="SwatEmailEntry" id="product_review_email">
-						<property name="required" type="boolean">true</property>
-					</widget>
-				</widget>
-				<widget class="SwatFormField">
+				<widget class="SwatFormField" id="review_bodytext_field">
+					<property name="title" translatable="yes">Comment</property>
 					<property name="required" type="boolean">true</property>
 					<widget class="SwatTextarea" id="product_review_bodytext">
 						<property name="required" type="boolean">true</property>
+						<property name="rows" type="integer">5</property>
 					</widget>
 				</widget>
 				<widget class="SwatFooterFormField">

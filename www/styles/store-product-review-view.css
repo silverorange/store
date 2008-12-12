@@ -1,3 +1,4 @@
+/* {{{ Review Display */
 .product-review-item {
 	display: none;
 }
@@ -8,6 +9,8 @@
 
 .product-review {
 	border-top: 1px solid #dbd8cf;
+	width: 100%;
+	float: left;
 	clear: both;
 }
 
@@ -55,3 +58,30 @@ span.product-review-date {
 	float: left;
 	padding: 1em 0 1em 1em;
 }
+
+/* }}} */
+/* {{{ Review Edit Form */
+
+#product_reviews_form .swat-entry,
+#product_reviews_form .swat-textarea {
+	width: 98%;
+}
+
+#review_edit_details {
+	width: 35%;
+	float: left;
+	position: relative;
+}
+
+#review_bodytext_field {
+	width: 62%;
+	float: right;
+	position: relative;
+}
+
+#product_reviews_frame .swat-footer-form-field {
+	clear: both;
+}
+
+
+/* }}} */
