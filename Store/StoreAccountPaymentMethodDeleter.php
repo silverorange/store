@@ -55,7 +55,7 @@ class StoreAccountPaymentMethodDeleter extends StorePrivateDataDeleter
 						$this->app->debug(
 							sprintf('=> %s #%s ...',
 								Store::_('cleaning payment method'),
-								$account->id));
+								$payment_method->id));
 
 						$payment_method->delete();
 						$this->app->debug(Store::_('done')."\n");
