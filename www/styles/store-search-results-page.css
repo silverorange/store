@@ -51,6 +51,10 @@ ul.site-search-results li.store-category-tile a span.store-category-tile-title {
 	z-index: 99;
 }
 
+#right_column .swat-frame {
+	width: 100%;
+}
+
 #post_results_frame {
 	clear: right;
 }
