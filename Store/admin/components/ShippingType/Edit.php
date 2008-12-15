@@ -35,7 +35,7 @@ class StoreShippingTypeEdit extends AdminDBEdit
 	}
 
 	// }}}
-	// {{{ private function initSpotlight()
+	// {{{ private function initShippingType()
 
 	private function initShippingType()
 	{
