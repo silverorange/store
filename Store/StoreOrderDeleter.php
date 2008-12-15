@@ -91,7 +91,6 @@ class StoreOrderDeleter extends StorePrivateDataDeleter
 		$order->phone = null;
 		$order->comments = null;
 		$order->notes = null;
-		$order->gift_message = null;
 
 		if ($order->payment_method !== null) {
 			$order->payment_method->card_fullname = null;
