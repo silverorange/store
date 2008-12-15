@@ -285,8 +285,14 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 		$view->setPartMode('author', BlorgView::MODE_NONE);
 		$view->setPartMode('comment_count', BlorgView::MODE_NONE);
 
-		foreach ($posts as $post) {
-			$view->display($post);
+		if (count($posts) > 0) {
+			echo '<ul class="site-search-results">';
+			foreach ($posts as $post) {
+				echo '<li>';
+				$view->display($post);
+				echo '</li>';
+			}
+			echo '</ul>';
 		}
 	}
 
