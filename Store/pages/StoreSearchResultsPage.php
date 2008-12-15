@@ -278,8 +278,13 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 	protected function displayPosts(BlorgPostWrapper $posts)
 	{
 		$view = BlorgViewFactory::get($this->app, 'post');
+
 		$view->setPartMode('bodytext', BlorgView::MODE_SUMMARY);
 		$view->setPartMode('extended_bodytext', BlorgView::MODE_NONE);
+		$view->setPartMode('tags', BlorgView::MODE_NONE);
+		$view->setPartMode('author', BlorgView::MODE_NONE);
+		$view->setPartMode('comment_count', BlorgView::MODE_NONE);
+
 		foreach ($posts as $post) {
 			$view->display($post);
 		}
