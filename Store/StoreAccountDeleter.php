@@ -95,6 +95,15 @@ class StoreAccountDeleter extends StorePrivateDataDeleter
 				$addresses));
 		}
 
+		$sql = sprintf('delete from AccountPaymentMethod where account = %s',
+			$this->app->db->quote($account->id, 'integer'));
+
+		$payment_methods = SwatDB::exec($this->app->db, $sql);
+		if ($payment_methods > 0) {
+			$this->app->debug(sprintf(Store::_('%s payment methods ... '),
+				$addresses));
+		}
+
 		$account->fullname = null;
 		$account->email = null;
 		$account->phone = null;
