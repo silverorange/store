@@ -277,7 +277,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 	 */
 	protected function displayPosts(BlorgPostWrapper $posts)
 	{
-		$view = BlorgViewFactory::get($this->app, 'post');
+		$view = BlorgViewFactory::get($this->app, 'post-search');
 
 		$view->setPartMode('bodytext', BlorgView::MODE_SUMMARY);
 		$view->setPartMode('extended_bodytext', BlorgView::MODE_NONE);
