@@ -1,11 +1,15 @@
-#basic_info_container .swat-form-field {
-	margin-right: 250px;
+#basic_info_container #basic_column_1 {
+	float: left;
+	width: 60%;
 }
 
-#basic_info_container #comments_field {
-	position: absolute;
-	top: 2em;
-	right: 2em;
-	margin: 0;
-	width: 200px;
+#basic_info_container #basic_column_2 {
+	float: left;
+	width: 38%;
+	margin-left: 2%;
+	display: block;
+}
+
+#basic_info_container #basic_column_2 #comments {
+	width: 98%;
 }
