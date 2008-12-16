@@ -431,7 +431,11 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 			$pager->total_records = $engine->getResultCount();
 			$pager->link = $this->source;
 		} else {
-			$products = $engine->search();
+			$limit = $this->getProductLimit();
+			if ($limit === null)
+				$products = $engine->search();
+			else
+				$products = $engine->search($limit);
 		}
 
 		$this->result_count['product'] = count($products);
@@ -447,6 +451,14 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 			$this->displayProducts($products);
 			$results->content = ob_get_clean();
 		}
+	}
+
+	// }}}
+	// {{{ protected function getProductLimit()
+
+	protected function getProductLimit()
+	{
+		return null;
 	}
 
 	// }}}
