@@ -12,6 +12,7 @@ div.store-sale-discount {
 }
 
 /* {{{ Review Display */
+
 .product-review-item {
 	display: none;
 }
@@ -94,16 +95,16 @@ span.product-review-date {
 }
 
 a.store-product-review-all {
-/*	background-image:url(../../swat/images/swat-disclosure-open.png);*/
+	background-image:url(../../swat/images/swat-disclosure-closed.png);
 }
 
 .store-product-review-all-insensitive {
 	color: #aba38c;
-/*	background-image:url(../../swat/images/swat-disclosure-closed.png);*/
+	background-image: none;
 }
 
 span.store-product-review-all-loading {
-/*	background-image:url(../../swat/images/swat-disclosure-open.png);*/
+	background-image:url(../../swat/images/swat-disclosure-open.png);
 }
 
 /* }}} */
