@@ -256,13 +256,13 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 		// save account
 		$account->save();
 
+		// clear account from session so we appear to not be logged in now that
+		// the account is saved
+		$this->app->session->account = null;
+
 		// if this is a new account, log it in
-		if ($new_account) {
-			// clear account from session so we appear to not be logged in now that
-			// the account is saved
-			$this->app->session->account = null;
+		if ($new_account)
 			$this->app->session->loginById($account->id);
-		}
 	}
 
 	// }}}
