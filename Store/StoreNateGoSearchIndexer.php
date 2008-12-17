@@ -146,9 +146,8 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 	 */
 	protected function indexCategories()
 	{
-		$spell_checker = new NateGoSearchPSpellSpellChecker('en');
-		$spell_checker->setCustomWordList($this->getCustomWordList());
-		$spell_checker->loadCustomContent();
+		$spell_checker = new NateGoSearchPSpellSpellChecker('en_US', '', '',
+			$this->getCustomWordList());
 
 		$indexer = new NateGoSearchIndexer('category', $this->db);
 
@@ -202,12 +201,10 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 
 	protected function indexProducts()
 	{
-		$spell_checker = new NateGoSearchPSpellSpellChecker('en');
-		$spell_checker->setCustomWordList($this->getCustomWordList());
-		$spell_checker->loadCustomContent();
+		$spell_checker = new NateGoSearchPSpellSpellChecker('en_US', '', '',
+			$this->getCustomWordList());
 
 		$product_indexer = new NateGoSearchIndexer('product', $this->db);
-
 		$product_indexer->setSpellChecker($spell_checker);
 		$product_indexer->addTerm(new NateGoSearchTerm('title', 5));
 		$product_indexer->addTerm(new NateGoSearchTerm('bodytext'));
@@ -310,13 +307,11 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 
 	protected function indexPosts()
 	{
-		$spell_checker = new NateGoSearchPSpellSpellChecker('en');
-		$spell_checker->setCustomWordList($this->getCustomWordList());
-		$spell_checker->loadCustomContent();
+		$spell_checker = new NateGoSearchPSpellSpellChecker('en_US', '', '',
+			$this->getCustomWordList());
 
 		$post_indexer = new NateGoSearchIndexer('post', $this->db);
 		$post_indexer->setSpellChecker($spell_checker);
-
 		$post_indexer->addTerm(new NateGoSearchTerm('title', 30));
 		$post_indexer->addTerm(new NateGoSearchTerm('bodytext', 20));
 		$post_indexer->addTerm(new NateGoSearchTerm('extended_bodytext', 18));
@@ -409,14 +404,11 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 	protected function indexComments()
 	{
 		$type_shortname = 'comment';
-
-		$spell_checker = new NateGoSearchPSpellSpellChecker('en');
-		$spell_checker->setCustomWordList($this->getCustomWordList());
-		$spell_checker->loadCustomContent();
+		$spell_checker = new NateGoSearchPSpellSpellChecker('en_US', '', '',
+			$this->getCustomWordList());
 
 		$comment_indexer = new NateGoSearchIndexer($type_shortname, $this->db);
 		$comment_indexer->setSpellChecker($spell_checker);
-
 		$comment_indexer->addTerm(new NateGoSearchTerm('fullname', 30));
 		$comment_indexer->addTerm(new NateGoSearchTerm('email', 20));
 		$comment_indexer->addTerm(new NateGoSearchTerm('bodytext', 1));
