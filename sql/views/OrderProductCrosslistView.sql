@@ -11,5 +11,5 @@ from OrderItem
 inner join OrderItem as RelatedOrderItem
     on OrderItem.ordernum = RelatedOrderItem.ordernum
 
-where RelatedItem.product != OrderItem.product
+where RelatedOrderItem.product != OrderItem.product
 group by OrderItem.ordernum, source_product, related_product;
