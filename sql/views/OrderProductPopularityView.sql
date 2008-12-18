@@ -5,4 +5,5 @@ select
     sum(OrderItem.extension) as extension,
     sum(OrderItem.quantity) as quantity
 from OrderItem
+where OrderItem.product is not null
 group by OrderItem.ordernum, OrderItem.product;
