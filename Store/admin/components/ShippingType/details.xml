@@ -1,0 +1,88 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<widget class="SwatFrame" id="details_frame">
+		<property name="title" translatable="yes">Shipping Type</property>
+		<widget class="SwatToolbar" id="details_toolbar">
+			<widget class="SwatToolLink">
+				<property name="title" translatable="yes">Edit Shipping Type</property>
+				<property name="link">ShippingType/Edit?id=%s</property>
+				<property name="stock_id">edit</property>
+			</widget>
+		</widget>
+		<widget class="SwatDetailsView" id="details_view">
+			<object class="SwatDetailsViewField">
+				<property name="title" translatable="yes">Title</property>
+				<object class="SwatTextCellRenderer">
+					<property name="text" type="data">title</property>
+				</object>
+			</object>
+			<object class="SwatDetailsViewField">
+				<property name="title" translatable="yes">Shortname</property>
+				<object class="SwatTextCellRenderer">
+					<property name="text" type="data">shortname</property>
+				</object>
+			</object>
+			<object class="SwatDetailsViewField">
+				<property name="title" translatable="yes">Note</property>
+				<object class="SwatNullTextCellRenderer">
+					<property name="text" type="data">note</property>
+				</object>
+			</object>
+		</widget>
+		<!-- {{{ Shipping Rates View -->
+		<widget class="SwatFrame" id="rate_frame">
+			<property name="title" translatable="yes">Shipping Rates</property>
+			<widget class="SwatToolbar" id="rate_toolbar">
+				<widget class="SwatToolLink">
+					<property name="title" translatable="yes">Add Shipping Rate</property>
+					<property name="link">ShippingType/RateEdit?parent=%s</property>
+					<property name="stock_id">add</property>
+				</widget>
+			</widget>
+			<widget class="SwatForm" id="edit_form">
+				<widget class="SwatTableView" id="rate_view">
+					<object class="SwatTableViewCheckboxColumn" id="checkbox">
+						<object class="SwatCheckboxCellRenderer" id="items">
+							<property name="value" type="data">id</property>
+						</object>
+					</object>
+					<object class="SwatTableViewColumn">
+						<property name="title" translatable="yes">Title</property>
+						<object class="AdminTitleLinkCellRenderer">
+							<property name="text" type="data">region.title</property>
+							<property name="link">ShippingType/RateEdit?id=%s</property>
+							<property name="link_value" type="data">id</property>
+							<property name="stock_id">edit</property>
+						</object>
+					</object>
+					<object class="SwatTableViewColumn">
+						<property name="title" translatable="yes">Amount</property>
+						<object class="SwatMoneyCellRenderer">
+							<property name="value" type="data">amount</property>
+						</object>
+					</object>
+					<object class="SwatTableViewColumn">
+						<property name="title" translatable="yes">Percentage</property>
+						<object class="SwatPercentageCellRenderer">
+							<property name="value" type="data">percentage</property>
+						</object>
+					</object>
+					<object class="SwatTableViewColumn">
+						<property name="title" translatable="yes">Threshold</property>
+						<object class="SwatMoneyCellRenderer">
+							<property name="value" type="data">threshold</property>
+						</object>
+					</object>
+				</widget>
+				<widget class="SwatActions" id="index_actions">
+					<widget class="SwatActionItem" id="delete">
+						<property name="title" translatable="yes">delete…</property>
+					</widget>
+				</widget>
+			</widget>
+		</widget>
+		<!-- }}} -->
+	</widget>
+</swatml>

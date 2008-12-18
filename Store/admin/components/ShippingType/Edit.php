@@ -88,6 +88,23 @@ class StoreShippingTypeEdit extends AdminDBEdit
 	// }}}
 
 	// build phase
+	// {{{ protected function buildNavBar()
+
+	protected function buildNavBar()
+	{
+		parent::buildNavBar();
+
+		$final_entry = $this->navbar->popEntry();
+
+		if ($this->id !== null) {
+			$this->navbar->addEntry(new SwatNavBarEntry(Store::_('Details'),
+				sprintf('ShippingType/Details?id=%s', $this->id)));
+		}
+
+		$this->navbar->addEntry($final_entry);
+	}
+
+	// }}}
 	// {{{ protected function loadDBData()
 
 	protected function loadDBData()

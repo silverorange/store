@@ -27,7 +27,7 @@
 					<property name="title" translatable="yes">Title</property>
 					<object class="AdminTitleLinkCellRenderer">
 						<property name="text" type="data">title</property>
-						<property name="link">ShippingType/Edit?id=%s</property>
+						<property name="link">ShippingType/Details?id=%s</property>
 						<property name="link_value" type="data">id</property>
 						<property name="stock_id">edit</property>
 					</object>
