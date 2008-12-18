@@ -3,15 +3,18 @@
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="index_frame">
-		<property name="title">Keyword Searches</property>
+		<property name="title">Filter Results</property>
 		<widget class="SwatForm" id="search_form">
 			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Limit Results to</property>
-				<widget class="SwatFlydown" id="search_month" />
-				<widget class="SwatFlydown" id="search_year" />
+				<property name="title" translatable="yes">On or After</property>
+				<widget class="SwatDateEntry" id="start_date" />
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Before</property>
+				<widget class="SwatDateEntry" id="end_date" />
 			</widget>
 			<widget class="SwatButton" id="submit_button">
-				<property name="title" translatable="yes">Search</property>
+				<property name="title" translatable="yes">Filter</property>
 			</widget>
 		</widget>
 		<widget class="SwatForm" id="index_form">

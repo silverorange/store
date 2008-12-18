@@ -35,27 +35,18 @@ class StoreSearchReportIndex extends AdminIndex
 
 		$this->ui->loadFromXML($this->ui_xml);
 
-		$date = new SwatDate();
-		$months = array();
-		for ($i = 1; $i <= 12; $i++) {
-			$date->setMonth($i);
-			$months[$i] = $date->format('%B');
-		}
+		$date = SwatDB::queryOne($this->app->db,
+				"select min(creation_date) from NateGoSearchHistory");
 
-		$this->ui->getWidget('search_month')->addOptionsByArray($months);
-		$first_year = SwatDB::queryOne($this->app->db, sprintf(
-				"select date_part('year', min(convertTZ(creation_date, %s))) ".
-				"from NateGoSearchHistory",
-				$this->app->db->quote($this->app->config->date->time_zone,
-					'text')));
+		$start = new SwatDate($date);
+		$start->convertTZById($this->app->config->date->time_zone);
+		$this->ui->getWidget('start_date')->valid_range_start = $start;
+		$this->ui->getWidget('end_date')->valid_range_start = $start;
 
-		$date = new SwatDate();
-		$years = array();
-		for ($i = $first_year; $i <= $date->getYear(); $i++) {
-			$years[$i] = $i;
-		}
-
-		$this->ui->getWidget('search_year')->addOptionsByArray($years);
+		$now = new SwatDate();
+		$now->convertTZById($this->app->config->date->time_zone);
+		$this->ui->getWidget('start_date')->valid_range_end = $now;
+		$this->ui->getWidget('end_date')->valid_range_end = $now;
 
 		$view = $this->ui->getWidget('results_view');
 		$renderer = $view->getColumn('keywords')->getFirstRenderer();
@@ -77,20 +68,25 @@ class StoreSearchReportIndex extends AdminIndex
 	{
 		$where_clause = '1 = 1';
 
-		$month = $this->ui->getWidget('search_month')->value;
-		if ($month !== null) {
-			$where_clause.= sprintf(" and date_part('month', ".
-				"convertTZ(creation_date, %s)) = %s",
-				$this->app->db->quote($this->app->config->date->time_zone, 'text'),
-				$this->app->db->quote($month, 'integer'));
+		$start = $this->ui->getWidget('start_date')->value;
+		$end = $this->ui->getWidget('end_date')->value;
+
+		if ($start !== null) {
+			$date = new SwatDate($start);
+			$date->setTzById($this->app->config->date->time_zone);
+			$date->toUTC();
+
+			$where_clause.= sprintf(" and creation_date >= %s",
+				$this->app->db->quote($date->getDate(), 'date'));
 		}
 
-		$year = $this->ui->getWidget('search_year')->value;
-		if ($year !== null) {
-			$where_clause.= sprintf(" and date_part('year', ".
-				"convertTZ(creation_date, %s)) = %s",
-				$this->app->db->quote($this->app->config->date->time_zone, 'text'),
-				$this->app->db->quote($year, 'integer'));
+		if ($end !== null) {
+			$date = new SwatDate($end);
+			$date->setTzById($this->app->config->date->time_zone);
+			$date->toUTC();
+
+			$where_clause.= sprintf(" and creation_date < %s",
+				$this->app->db->quote($date->getDate(), 'date'));
 		}
 
 		switch ($view->id) {
