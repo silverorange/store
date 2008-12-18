@@ -54,6 +54,17 @@ class StoreShippingTypeDelete extends AdminDBDelete
 			'ShippingType', 'integer:id', null, 'text:title', 'id',
 			'id in ('.$item_list.')', AdminDependency::DELETE);
 
+		$dep_rates = new AdminSummaryDependency();
+		$dep_rates->setTitle(
+			Store::_('shipping rate'), Store::_('shipping rates'));
+
+		$dep_rates->summaries = AdminSummaryDependency::querySummaries(
+			$this->app->db, 'ShippingRate', 'integer:id',
+			'integer:shipping_type', 'shipping_type in ('.$item_list.')',
+			AdminDependency::DELETE);
+
+		$dep->addDependency($dep_rates);
+
 		$message = $this->ui->getWidget('confirmation_message');
 		$message->content = $dep->getMessage();
 		$message->content_type = 'text/xml';
