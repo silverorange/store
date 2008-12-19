@@ -24,7 +24,7 @@
 					<property name="text" type="data">shortname</property>
 				</object>
 			</object>
-			<object class="SwatDetailsViewField">
+			<object class="SwatDetailsViewVerticalField">
 				<property name="title" translatable="yes">Note</property>
 				<object class="SwatNullTextCellRenderer">
 					<property name="text" type="data">note</property>
