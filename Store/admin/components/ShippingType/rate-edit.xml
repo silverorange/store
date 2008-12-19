@@ -12,14 +12,14 @@
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Amount</property>
-				<widget class="SwatMoneyEntry" id="amount">
+				<property name="title" translatable="yes">Threshold</property>
+				<widget class="SwatMoneyEntry" id="threshold">
 					<property name="required" type="boolean">true</property>
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Threshold</property>
-				<widget class="SwatMoneyEntry" id="threshold">
+				<property name="title" translatable="yes">Amount</property>
+				<widget class="SwatMoneyEntry" id="amount">
 					<property name="required" type="boolean">true</property>
 				</widget>
 			</widget>

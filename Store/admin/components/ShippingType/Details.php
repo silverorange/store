@@ -95,7 +95,7 @@ class StoreShippingTypeDetails extends AdminIndex
 	protected function getTableModel(SwatView $view)
 	{
 		$sql = sprintf('select * from ShippingRate where shipping_type = %s
-			order by region, amount',
+			order by region, threshold',
 			$this->app->db->quote($this->shipping_type->id, 'integer'));
 
 		$rows = SwatDB::query($this->app->db, $sql,

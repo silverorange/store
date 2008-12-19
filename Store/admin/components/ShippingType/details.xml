@@ -58,6 +58,12 @@
 						</object>
 					</object>
 					<object class="SwatTableViewColumn">
+						<property name="title" translatable="yes">Threshold</property>
+						<object class="SwatMoneyCellRenderer">
+							<property name="value" type="data">threshold</property>
+						</object>
+					</object>
+					<object class="SwatTableViewColumn">
 						<property name="title" translatable="yes">Amount</property>
 						<object class="SwatMoneyCellRenderer">
 							<property name="value" type="data">amount</property>
@@ -67,12 +73,6 @@
 						<property name="title" translatable="yes">Percentage</property>
 						<object class="SwatPercentageCellRenderer">
 							<property name="value" type="data">percentage</property>
-						</object>
-					</object>
-					<object class="SwatTableViewColumn">
-						<property name="title" translatable="yes">Threshold</property>
-						<object class="SwatMoneyCellRenderer">
-							<property name="value" type="data">threshold</property>
 						</object>
 					</object>
 				</widget>
