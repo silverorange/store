@@ -383,9 +383,12 @@ class StoreProduct extends SwatDBDataObject
 
 			foreach ($items as $item) {
 				$discounts = new $class();
-				foreach ($quantity_discounts as $discount)
-					if ($discount->getInternalValue('item') == $item->id)
+				foreach ($quantity_discounts as $discount) {
+					if ($discount->getInternalValue('item') == $item->id) {
+						$discount->item = $item;
 						$discounts->add($discount);
+					}
+				}
 
 				$item->quantity_discounts = $discounts;
 			}
