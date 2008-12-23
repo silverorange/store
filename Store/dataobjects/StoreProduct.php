@@ -379,7 +379,7 @@ class StoreProduct extends SwatDBDataObject
 			$class = SwatDBClassMap::get('StoreQuantityDiscountWrapper');
 			$wrapper = new $class();
 			$quantity_discounts = $wrapper->loadSetFromDB($this->db,
-				array($item_ids), $this->region, $this->limit_by_region);
+				$item_ids, $this->region, $this->limit_by_region);
 
 			foreach ($items as $item) {
 				$discounts = new $class();
