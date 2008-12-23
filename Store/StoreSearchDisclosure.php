@@ -41,7 +41,7 @@ class StoreSearchDisclosure extends SwatDisclosure
 	/**
 	 * Panel height in ems
 	 *
-	 * @var integer
+	 * @var float
 	 */
 	public $panel_height = 13;
 
