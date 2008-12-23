@@ -760,6 +760,36 @@ class StoreProductPage extends StorePage
 	}
 
 	// }}}
+	// {{{ protected function displayRelatedArticlesAsUnorderedList()
+
+	/**
+	 * Displays related articles from the parent category on this product page
+	 */
+	protected function displayRelatedArticlesAsUnorderedList()
+	{
+		$related_articles = $this->getRelatedArticles();
+		if (count($related_articles) > 0) {
+			$ul_tag = new SwatHtmlTag('ul');
+			$ul_tag->id = 'related_articles';
+			$ul_tag->open();
+
+			$anchor_tag = new SwatHtmlTag('a');
+			$li_tag = new SwatHtmlTag('li');
+			foreach ($related_articles as $article) {
+				$li_tag->open();
+
+				$anchor_tag->href = $article->path;
+				$anchor_tag->setContent($article->title);
+				$anchor_tag->display();
+
+				$li_tag->close();
+			}
+
+			$ul_tag->close();
+		}
+	}
+
+	// }}}
 	// {{{ protected function displayRelatedArticleLinks()
 
 	/**
