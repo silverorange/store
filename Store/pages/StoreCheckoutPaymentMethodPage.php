@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreCardTypeWrapper.php';
  * Payment method edit page of checkout
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2008 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
@@ -83,7 +83,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			Date::compare($card_expiry->value, $card_inception->value) < 0) {
 			$card_expiry->addMessage(new SwatMessage(Store::_(
 				'The card expiry date must be after the card inception date.'),
-				SwatMessage::ERROR));
+				'error'));
 		}
 	}
 
@@ -220,6 +220,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	protected function getPaymentType()
 	{
+		// note: this only works for a single instance
 		static $type = null;
 
 		if ($type === null) {
@@ -303,55 +304,23 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
-	// {{{ protected function loadDataFromSession()
+	// {{{ protected function buildPaymentTypes()
 
-	protected function loadDataFromSession()
+	protected function buildPaymentTypes(StorePaymentTypeWrapper $types)
 	{
-		$order = $this->app->session->order;
+		$type_flydown = $this->ui->getWidget('payment_type');
 
-		if ($order->payment_method === null) {
-			$this->ui->getWidget('card_fullname')->value =
-				$this->app->session->account->fullname;
-		} else {
-			if ($order->payment_method->getAccountPaymentMethodId() === null) {
+		// payment types will determine whether or not the flydown is visible
+		$type_flydown->parent->visible = false;
 
-				$this->ui->getWidget('payment_type')->value =
-					$order->payment_method->getInternalValue('payment_type');
-
-				$this->ui->getWidget('card_type')->value =
-					$order->payment_method->getInternalValue('card_type');
-
-				/*
-				 *  Note: We can't repopulate the card number entry since we
-				 *        only store the encrypted number in the dataobject.
-				 */
-				if ($order->payment_method->card_number !== null)
-					$this->ui->getWidget('card_number')->show_blank_value = true;
-
-				$this->ui->getWidget('card_verification_value')->value =
-					$order->payment_method->getCardVerificationValue();
-
-				$this->ui->getWidget('card_issue_number')->value =
-					$order->payment_method->card_issue_number;
-
-				$this->ui->getWidget('card_expiry')->value =
-					$order->payment_method->card_expiry;
-
-				$this->ui->getWidget('card_inception')->value =
-					$order->payment_method->card_inception;
-
-				$this->ui->getWidget('card_fullname')->value =
-					$order->payment_method->card_fullname;
-			} else {
-				$this->ui->getWidget('payment_method_list')->value =
-					$order->payment_method->getAccountPaymentMethodId();
-			}
+		// build payment types
+		foreach ($types as $type) {
+			$this->buildPaymentType($type, $type_flydown);
 		}
 
-		if ($this->app->session->checkout_with_account &&
-			isset($this->app->session->save_account_payment_method)) {
-			$this->ui->getWidget('save_account_payment_method')->value =
-				$this->app->session->save_account_payment_method;
+		// If no value was set, default to first payment type
+		if ($type_flydown->value === null) {
+			$type_flydown->value = $types->getFirst()->id;
 		}
 	}
 
@@ -386,8 +355,16 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	protected function buildForm()
 	{
-		$this->buildPaymentTypes();
-		$this->buildCardTypes();
+		$types = $this->getPaymentTypes();
+		$this->buildPaymentTypes($types);
+
+		if (count($types) === 1) {
+			$types_flydown = $this->ui->getWidget('payment_type');
+			$parent = $types_flydown->parent->getFirstAncestor(
+				'SwatDisplayableContainer');
+
+			$parent->classes[] = 'store-payment-method-single';
+		}
 
 		if (!$this->ui->getWidget('form')->isProcessed())
 			$this->loadDataFromSession();
@@ -402,6 +379,68 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				'<p class="small-print">', '<a href="about/website/privacy">',
 				'</a>', '</p>');
 		}
+	}
+
+	// }}}
+	// {{{ protected function buildPaymentType()
+
+	protected function buildPaymentType(StorePaymentType $type,
+		SwatFlydown $flydown)
+	{
+		switch ($type->shortname) {
+		case 'card':
+			$this->buildPaymentTypeCard($type, $flydown);
+			break;
+
+		default:
+			$this->buildPaymentTypeDefault($type, $flydown);
+			break;
+		}
+	}
+
+	// }}}
+	// {{{ protected function buildPaymentTypeDefault()
+
+	protected function buildPaymentTypeDefault(StorePaymentType $type,
+		SwatFlydown $flydown)
+	{
+		$title = $this->getPaymentTypeTitle($type);
+		$flydown->addOption(new SwatOption($type->id, $title, 'text/xml'));
+		$flydown->parent->visible = true;
+	}
+
+	// }}}
+	// {{{ protected function buildPaymentTypeCard()
+
+	protected function buildPaymentTypeCard(StorePaymentType $type,
+		SwatFlydown $flydown)
+	{
+		$title = $this->getPaymentTypeTitle($type);
+		$flydown->addOption(new SwatOption($type->id, $title, 'text/xml'));
+
+		// default to 'card' if it exists
+		if ($flydown->value === null) {
+			$flydown->value = $type->id;
+		}
+
+		// set up card types flydown
+		$types = $this->getCardTypes();
+
+		$type_flydown = $this->ui->getWidget('card_type');
+
+		foreach ($types as $type) {
+			$title = $this->getCardTypeTitle($type);
+
+			$type_flydown->addOption(
+				new SwatOption($type->id, $title, 'text/xml'));
+		}
+
+		if ($type_flydown->value === null) {
+			$type_flydown->value = $types->getFirst()->id;
+		}
+
+		// make card fields visible
+		$this->ui->getWidget('card_container')->visible = true;
 	}
 
 	// }}}
@@ -430,33 +469,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		}
 
 		return $payment_methods;
-	}
-
-	// }}}
-	// {{{ protected function buildPaymentTypes()
-
-	protected function buildPaymentTypes()
-	{
-		$types = $this->getPaymentTypes();
-		$type_flydown = $this->ui->getWidget('payment_type');
-
-		foreach ($types as $type) {
-			$title = $this->getPaymentTypeTitle($type);
-
-			$type_flydown->addOption(
-				new SwatOption($type->id, $title, 'text/xml'));
-
-			// default to 'card' if it exists
-			if ($type_flydown->value === null && $type->shortname === 'card')
-				$type_flydown->value = $type->id;
-		}
-
-		// otherwise default to first
-		if ($type_flydown->value === null)
-			$type_flydown->value = $types->getFirst()->id;
-
-		if (count($types) == 1)
-			$type_flydown->parent->visible = false;
 	}
 
 	// }}}
@@ -496,25 +508,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$types = SwatDB::query($this->app->db, $sql, $wrapper);
 
 		return $types;
-	}
-
-	// }}}
-	// {{{ protected function buildCardTypes()
-
-	protected function buildCardTypes()
-	{
-		$types = $this->getCardTypes();
-		$type_flydown = $this->ui->getWidget('card_type');
-
-		foreach ($types as $type) {
-			$title = $this->getCardTypeTitle($type);
-
-			$type_flydown->addOption(
-				new SwatOption($type->id, $title, 'text/xml'));
-		}
-
-		if ($type_flydown->value === null)
-			$type_flydown->value = $types->getFirst()->id;
 	}
 
 	// }}}
@@ -589,6 +582,59 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	protected function getNewPaymentMethodText()
 	{
 		return Store::_('Add a New Payment Method');
+	}
+
+	// }}}
+	// {{{ protected function loadDataFromSession()
+
+	protected function loadDataFromSession()
+	{
+		$order = $this->app->session->order;
+
+		if ($order->payment_method === null) {
+			$this->ui->getWidget('card_fullname')->value =
+				$this->app->session->account->fullname;
+		} else {
+			if ($order->payment_method->getAccountPaymentMethodId() === null) {
+
+				$this->ui->getWidget('payment_type')->value =
+					$order->payment_method->getInternalValue('payment_type');
+
+				$this->ui->getWidget('card_type')->value =
+					$order->payment_method->getInternalValue('card_type');
+
+				/*
+				 *  Note: We can't repopulate the card number entry since we
+				 *        only store the encrypted number in the dataobject.
+				 */
+				if ($order->payment_method->card_number !== null)
+					$this->ui->getWidget('card_number')->show_blank_value = true;
+
+				$this->ui->getWidget('card_verification_value')->value =
+					$order->payment_method->getCardVerificationValue();
+
+				$this->ui->getWidget('card_issue_number')->value =
+					$order->payment_method->card_issue_number;
+
+				$this->ui->getWidget('card_expiry')->value =
+					$order->payment_method->card_expiry;
+
+				$this->ui->getWidget('card_inception')->value =
+					$order->payment_method->card_inception;
+
+				$this->ui->getWidget('card_fullname')->value =
+					$order->payment_method->card_fullname;
+			} else {
+				$this->ui->getWidget('payment_method_list')->value =
+					$order->payment_method->getAccountPaymentMethodId();
+			}
+		}
+
+		if ($this->app->session->checkout_with_account &&
+			isset($this->app->session->save_account_payment_method)) {
+			$this->ui->getWidget('save_account_payment_method')->value =
+				$this->app->session->save_account_payment_method;
+		}
 	}
 
 	// }}}

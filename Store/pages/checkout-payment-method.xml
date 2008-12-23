@@ -14,6 +14,7 @@
 			</widget>
 		</widget>
 		<widget class="SwatDisplayableContainer" id="card_container">
+			<property name="visible" type="boolean">false</property>
 			<widget class="SwatFormField" id="card_type_field">
 				<property name="title" translatable="yes">Card Type</property>
 				<widget class="SwatFlydown" id="card_type">
