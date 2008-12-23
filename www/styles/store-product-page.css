@@ -74,7 +74,7 @@ span.product-review-date {
 }
 
 .store-product-reviews .swat-disclosure {
-	clear: both;
+	clear: left;
 }
 
 .store-product-reviews .swat-message-display {
@@ -125,6 +125,11 @@ span.store-product-review-all-loading {
 	width: 62%;
 	float: right;
 	position: relative;
+}
+
+.swat-form-field-with-messages#review_bodytext_field {
+	padding: 0.5em 2%;
+	width: 58%;
 }
 
 #product_reviews_frame .swat-footer-form-field {
