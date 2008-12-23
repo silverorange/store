@@ -36,6 +36,11 @@ class StoreItemsView extends SwatControl
 
 	protected $has_description = false;
 
+	/**
+	 * @var boolean
+	 */
+	protected $has_same_part_count = null;
+
 	// }}}
 	// {{{ public function setProduct()
 
@@ -266,6 +271,38 @@ class StoreItemsView extends SwatControl
 				SwatString::minimizeEntities($parts['part_count']);
 
 		return implode(' - ', $description);
+	}
+
+	// }}}
+	// {{{ protected function hasSamePartCount()
+
+	/**
+	 * Gets whether all the items in the product have the same part count
+	 *
+	 * @return boolean true if all the items in the product have the same
+	 *                  part count and false if they do not.
+	 */
+	protected function hasSamePartCount()
+	{
+		if ($this->has_same_part_count === null) {
+			$this->has_same_part_count = true;
+
+			// Clone to work around poor implementation of iterators in SwatDB
+			// and PHP SPL. This iteration can happen inside another iteration
+			// of the same recordset.
+			$items = clone $this->product->items;
+			$last_item = $items->getFirst();
+
+			foreach ($items as $item) {
+				if ($item->part_count !== $last_item->part_count ||
+					$item->part_unit !== $last_item->part_unit) {
+					$this->has_same_part_count = false;
+					break;
+				}
+			}
+		}
+
+		return $this->has_same_part_count;
 	}
 
 	// }}}
