@@ -7,7 +7,7 @@ require_once 'SwatDB/SwatDB.php';
  * Index page for SaleDiscounts
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreSaleDiscountIndex extends AdminIndex
@@ -50,6 +50,27 @@ class StoreSaleDiscountIndex extends AdminIndex
 	// }}}
 
 	// build phase
+	// {{{ protected function buildInternal()
+
+	protected function buildInternal()
+	{
+		parent::buildInternal();
+
+		// set the default time zone
+		$start_column =
+			$this->ui->getWidget('index_view')->getColumn('start_date');
+
+		$end_column =
+			$this->ui->getWidget('index_view')->getColumn('end_date');
+
+		$start_renderer = $start_column->getRendererByPosition();
+		$start_renderer->display_time_zone = $this->app->default_time_zone;
+
+		$end_renderer = $end_column->getRendererByPosition();
+		$end_renderer->display_time_zone = $this->app->default_time_zone;
+	}
+
+	// }}}
 	// {{{ protected function getTableModel()
 
 	protected function getTableModel(SwatView $view)
