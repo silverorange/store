@@ -179,9 +179,7 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 		StoreAccountPaymentMethod $payment_method)
 	{
 		if ($this->id === null) {
-			$payment_method->card_type =
-				$this->getCardType();
-
+			$payment_method->card_type = $this->getCardType();
 			$payment_method->setCardNumber(
 				$this->ui->getWidget('card_number')->value);
 		}
