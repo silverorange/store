@@ -470,7 +470,7 @@ class StoreCartModule extends SiteApplicationModule
 		if ($this->app->hasModule('SiteMultipleInstanceModule') &&
 			($where_clause !== null)) {
 
-			$instance_id = $this->app->instance->getInstance()->id;
+			$instance_id = $this->app->getInstanceId();
 			$where_clause.= sprintf(' and instance %s %s',
 				SwatDB::equalityOperator($instance_id),
 				$this->app->db->quote($instance_id, 'integer'));
