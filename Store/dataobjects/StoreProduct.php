@@ -35,7 +35,7 @@ require_once 'Store/dataobjects/StoreProductReviewWrapper.php';
  * load the objects.
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreProductWrapper
  */
@@ -256,16 +256,26 @@ class StoreProduct extends SwatDBDataObject
 	 *
 	 * @return StoreProductReviewWrapper
 	 */
-	public function getVisibleProductReviews($limit = null, $offset = 0)
+	public function getVisibleProductReviews(SiteInstance $instance = null,
+		$limit = null, $offset = 0)
 	{
+		$instance_where = '';
+		$instance_id = ($instance === null) ? null : $instance->id;
+		if ($instance_id !== null) {
+			$instance_where = sprintf(' and instance %s %s',
+				SwatDB::equalityOperator($instance_id),
+				$this->db->quote($instance_id, 'integer'));
+		}
+
 		$sql = 'select * from ProductReview
-			where product = %s and spam = %s and status = %s
-			order by createdate desc, id';
+			where product = %s and spam = %s and status = %s %s
+			order by createdate, id';
 
 		$sql = sprintf($sql,
 			$this->db->quote($this->id, 'integer'),
 			$this->db->quote(false, 'boolean'),
-			$this->db->quote(SiteComment::STATUS_PUBLISHED, 'integer'));
+			$this->db->quote(SiteComment::STATUS_PUBLISHED, 'integer'),
+			$instance_where);
 
 		if ($limit !== null)
 			$this->db->setLimit($limit, $offset);
@@ -277,15 +287,24 @@ class StoreProduct extends SwatDBDataObject
 	// }}}
 	// {{{ public function getVisibleProductReviewCount()
 
-	public function getVisibleProductReviewCount()
+	public function getVisibleProductReviewCount(SiteInstance $instance = null)
 	{
+		$instance_where = '';
+		$instance_id = ($instance === null) ? null : $instance->id;
+		if ($instance_id !== null) {
+			$instance_where = sprintf(' and instance %s %s',
+				SwatDB::equalityOperator($instance_id),
+				$this->db->quote($instance_id, 'integer'));
+		}
+
 		$sql = 'select count(1) from ProductReview
-			where product = %s and spam = %s and status = %s';
+			where product = %s and spam = %s and status = %s %s';
 
 		$sql = sprintf($sql,
 			$this->db->quote($this->id, 'integer'),
 			$this->db->quote(false, 'boolean'),
-			$this->db->quote(SiteComment::STATUS_PUBLISHED, 'integer'));
+			$this->db->quote(SiteComment::STATUS_PUBLISHED, 'integer'),
+			$instance_where);
 
 		return SwatDB::queryOne($this->db, $sql);
 	}
