@@ -34,7 +34,7 @@ require_once
  * Details page for Products
  *
  * @package   Store
- * @copyright 2005-2008 silverorange
+ * @copyright 2005-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductDetails extends AdminIndex
@@ -1273,20 +1273,27 @@ class StoreProductDetails extends AdminIndex
 
 	private function getProductReviewsTableModel($view)
 	{
+		$instance_id = $this->app->getInstanceId();
+
 		$sql = sprintf('select count(id) from ProductReview
-			where product = %s and spam = %s',
+			where product = %s and spam = %s and instance %s %s',
 			$this->app->db->quote($this->id, 'integer'),
-			$this->app->db->quote(false, 'boolean'));
+			$this->app->db->quote(false, 'boolean'),
+			SwatDB::equalityOperator($instance_id),
+			$this->app->db->quote($instance_id, 'integer'));
 
 		$pager = $this->ui->getWidget('review_pager');
 		$pager->total_records = SwatDB::queryOne($this->app->db, $sql);
 
 		$sql = 'select * from ProductReview
-			where product = %s and spam = %s order by %s';
+			where product = %s and spam = %s and instance %s %s
+			order by %s';
 
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->id, 'integer'),
 			$this->app->db->quote(false, 'boolean'),
+			SwatDB::equalityOperator($instance_id),
+			$this->app->db->quote($instance_id, 'integer'),
 			$this->getOrderByClause($view, 'createdate'));
 
 		$this->app->db->setLimit($pager->page_size, $pager->current_record);

@@ -75,7 +75,8 @@ class StoreProductReviewEdit extends AdminDBEdit
 						$product_id));
 			}
 
-			$this->review->product = $product;
+			$this->review->product  = $product;
+			$this->review->instance = $this->app->getInstance();
 
 		} elseif (!$this->review->load($this->id, $this->app->getInstance())) {
 			throw new AdminNotFoundException(

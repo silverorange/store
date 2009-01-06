@@ -22,7 +22,7 @@ require_once 'Store/StoreProductSearchEngine.php';
  * A product page
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2009 silverorange
  */
 class StoreProductPage extends StorePage
 {
@@ -122,6 +122,7 @@ class StoreProductPage extends StorePage
 		$this->reviews_ui->loadFromXML($this->reviews_ui_xml);
 
 		$reviews = $this->product->getVisibleProductReviews(
+			$this->app->getInstance(),
 			$this->getMaxProductReviews());
 
 		$review_ids = array();
@@ -436,6 +437,7 @@ class StoreProductPage extends StorePage
 		$class_name = SwatDBClassMap::get('StoreProductReview');
 		$this->review = new $class_name();
 
+		$this->review->instance   = $this->app->getInstance();
 		$this->review->fullname   = $fullname->value;
 		$this->review->email      = $email->value;
 		$this->review->bodytext   = $bodytext->value;
@@ -1139,7 +1141,8 @@ class StoreProductPage extends StorePage
 	{
 		$locale = SwatI18NLocale::get();
 
-		$review_count = $this->product->getVisibleProductReviewCount();
+		$review_count = $this->product->getVisibleProductReviewCount(
+			$this->app->getInstance());
 
 		$message = sprintf(Store::_('Read All %s Comments'),
 			$locale->formatNumber($review_count));

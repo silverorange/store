@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreProductReviewWrapper.php';
  * Handles XML-RPC requests to view more product reviews
  *
  * @package   Store
- * @copyright 2008 silverorange
+ * @copyright 2008-2009 silverorange
  */
 class StoreProductReviewServer extends SiteXMLRPCServer
 {
@@ -94,12 +94,15 @@ class StoreProductReviewServer extends SiteXMLRPCServer
 	protected function getProductReviews($product_id, $limit = null,
 		$offset = 0)
 	{
+		$instance_id = $this->app->getInstanceId();
 		$sql = sprintf('select * from ProductReview
-			where product = %s and spam = %s and status = %s
-			order by createdate desc, id',
+			where product = %s and spam = %s and status = %s and instance %s %s
+			order by createdate, id',
 			$this->app->db->quote($product_id, 'integer'),
 			$this->app->db->quote(false, 'boolean'),
-			$this->app->db->quote(SiteComment::STATUS_PUBLISHED, 'integer'));
+			$this->app->db->quote(SiteComment::STATUS_PUBLISHED, 'integer'),
+			SwatDB::equalityOperator($instance_id),
+			$this->app->db->quote($instance_id, 'integer'));
 
 		// Don't use db->setLimit here because it doesn't allow an offset
 		// with no limit.
