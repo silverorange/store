@@ -3,14 +3,12 @@
 require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Site/dataobjects/SiteComment.php';
 require_once 'Store/dataobjects/StoreProduct.php';
-if (class_exists('Blorg'))
-	require_once 'Blorg/dataobjects/BlorgAuthor.php';
 
 /**
  * Product review for a product
  *
  * @package   Store
- * @copyright 2006-2008 silverorange
+ * @copyright 2006-2009 silverorange
  */
 class StoreProductReview extends SiteComment
 {
@@ -37,6 +35,7 @@ class StoreProductReview extends SiteComment
 			SwatDBClassMap::get('StoreProductReview'));
 
 		if (class_exists('Blorg')) {
+			require_once 'Blorg/dataobjects/BlorgAuthor.php';
 			$this->registerInternalProperty('author',
 				SwatDBClassMap::get('BlorgAuthor'));
 		}
