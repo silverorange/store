@@ -25,7 +25,7 @@ div.store-sale-discount {
 	border-bottom: 1px solid #eee;
 	width: 100%;
 	float: left;
-	clear: both;
+	clear: left;
 }
 
 .product-review .reviewer {
@@ -78,7 +78,7 @@ span.product-review-date {
 }
 
 .store-product-reviews .swat-message-display {
-	clear: both;
+	clear: left;
 	padding-top: 1em;
 }
 
