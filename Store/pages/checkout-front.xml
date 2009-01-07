@@ -25,7 +25,6 @@
 			<widget class="SwatFormField">
 				<widget class="SwatButton" id="checkout_as_guest_button">
 					<property name="title" translatable="yes">Checkout as a Guest</property>
-					<property name="classes[]">compact-button</property>
 				</widget>
 			</widget>
 		</widget>
