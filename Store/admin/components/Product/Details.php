@@ -437,7 +437,7 @@ class StoreProductDetails extends AdminIndex
 	{
 		switch ($actions->selected->id) {
 		case 'product_review_delete':
-			$this->app->replacePage('Product/ReviewDelete');
+			$this->app->replacePage('ProductReview/Delete');
 			$this->app->getPage()->setItems($view->getSelection());
 			$this->app->getPage()->setProduct($this->id);
 			$this->app->getPage()->setCategory($this->category_id);
