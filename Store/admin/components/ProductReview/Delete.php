@@ -122,33 +122,39 @@ class StoreProductReviewDelete extends AdminDBDelete
 		// Take "Delete" off the navbar
 		$this->navbar->popEntry();
 
-		if ($this->category_id !== null) {
+		if ($this->product_id !== null) {
 			$this->navbar->popEntry();
-			$this->navbar->addEntry(new SwatNavBarEntry(
-				Store::_('Product Categories'), 'Category'));
+			if ($this->category_id !== null) {
+				$this->navbar->addEntry(new SwatNavBarEntry(
+					Store::_('Product Categories'), 'Category'));
 
-			$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
-				'getCategoryNavbar', array($this->category_id));
+				$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
+					'getCategoryNavbar', array($this->category_id));
 
-			foreach ($cat_navbar_rs as $entry)
-				$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
-					'Category/Index?id='.$entry->id));
+				foreach ($cat_navbar_rs as $entry)
+					$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
+						'Category/Index?id='.$entry->id));
+			} else {
+				$this->navbar->addEntry(new SwatNavBarEntry(
+					Store::_('Product Search'), 'Product'));
+			}
+
+			if ($this->category_id === null)
+				$link = sprintf('Product/Details?id=%s', $this->product_id);
+			else
+				$link = sprintf('Product/Details?id=%s&category=%s',
+					$this->product_id, $this->category_id);
+
+			$product_title = SwatDB::queryOneFromTable($this->app->db,
+				'Product', 'text:title', 'id', $this->product_id);
+
+			$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));
+			$this->title = $product_title;
 		}
 
-		if ($this->category_id === null)
-			$link = sprintf('Product/Details?id=%s', $this->product_id);
-		else
-			$link = sprintf('Product/Details?id=%s&category=%s',
-				$this->product_id, $this->category_id);
-
-		$product_title = SwatDB::queryOneFromTable($this->app->db, 'Product',
-			'text:title', 'id', $this->product_id);
-
-		$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));
-		$this->navbar->addEntry(new SwatNavBarEntry(
-			Store::_('Delete Product Review')));
-
-		$this->title = $product_title;
+		$this->navbar->addEntry(new SwatNavBarEntry(Store::ngettext(
+			'Delete Product Review','Delete Product Reviews',
+			count($this->items))));
 	}
 
 	// }}}

@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreProductReview.php';
  * @copyright 2008-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class ProductReviewApproval extends AdminApproval
+class StoreProductReviewApproval extends AdminApproval
 {
 	// init phase
 	// {{{ protected function initInternal()
@@ -45,10 +45,11 @@ class ProductReviewApproval extends AdminApproval
 	protected function getPendingIds()
 	{
 		$sql = sprintf('select id from ProductReview
-			where status = %s and spam = %s
+			where status = %s and spam = %s and instance = %s
 			order by createdate asc',
 			$this->app->db->quote(SiteComment::STATUS_PENDING, 'integer'),
-			$this->app->db->quote(false, 'boolean'));
+			$this->app->db->quote(false, 'boolean'),
+			$this->app->db->quote($this->app->getInstanceId(), 'integer'));
 
 		$rows = SwatDB::query($this->app->db, $sql);
 

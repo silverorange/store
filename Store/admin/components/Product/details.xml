@@ -313,7 +313,7 @@
 				<widget class="SwatToolLink">
 					<property name="title" translatable="yes">Add a Product Review</property>
 					<property name="stock_id">create</property>
-					<property name="link">Product/ReviewEdit?product=%s</property>
+					<property name="link">ProductReview/Edit?product=%s</property>
 				</widget>
 			</widget>
 			<widget class="SwatForm" id="product_reviews_form">
@@ -327,7 +327,7 @@
 						<property name="title" translatable="yes">Posted By</property>
 						<object class="AdminTitleLinkCellRenderer">
 							<property name="text" type="data">fullname</property>
-							<property name="link">Product/ReviewEdit?id=%s</property>
+							<property name="link">ProductReview/Edit?id=%s</property>
 							<property name="link_value" type="data">id</property>
 							<property name="stock_id">edit</property>
 						</object>

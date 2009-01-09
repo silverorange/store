@@ -20,7 +20,7 @@ class StoreProductReviewEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
-	protected $ui_xml = 'Store/admin/components/Product/review-edit.xml';
+	protected $ui_xml = 'Store/admin/components/ProductReview/edit.xml';
 
 	/**
 	 * @var StoreProductReview
@@ -181,6 +181,9 @@ class StoreProductReviewEdit extends AdminDBEdit
 
 		$statuses = SiteComment::getStatusArray();
 		$this->ui->getWidget('status')->addOptionsByArray($statuses);
+
+		$this->ui->getWidget('edit_frame')->subtitle =
+			$this->review->product->title;
 	}
 
 	// }}}
