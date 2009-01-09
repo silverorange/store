@@ -185,8 +185,10 @@ class StoreProductReviewIndex extends AdminSearch
 
 	protected function getWhereClause()
 	{
-		$where = sprintf('instance = %s',
-			$this->app->db->quote($this->app->getInstanceId(), 'integer'));
+		$instance_id = $this->app->getInstanceId();
+		$where = sprintf('instance %s %s',
+			SwatDB::equalityOperator($instance_id),
+			$this->app->db->quote($instance_id, 'integer'));
 
 		// keywords
 		$keywords = $this->ui->getWidget('search_keywords')->value;
@@ -259,12 +261,14 @@ class StoreProductReviewIndex extends AdminSearch
 
 	protected function buildPendingProductReviews()
 	{
+		$instance_id = $this->app->getInstanceId();
 		$sql = sprintf('select count(id) from ProductReview
 			where status = %1$s and spam = %2$s and author_review = %2$s
-				and instance = %3$s',
+				and instance %3$s %4$s',
 			$this->app->db->quote(SiteComment::STATUS_PENDING, 'integer'),
 			$this->app->db->quote(false, 'boolean'),
-			$this->app->db->quote($this->app->getInstanceId(), 'integer'));
+			SwatDB::equalityOperator($instance_id),
+			$this->app->db->quote($instance_id, 'integer'));
 
 		$count = SwatDB::queryOne($this->app->db, $sql);
 

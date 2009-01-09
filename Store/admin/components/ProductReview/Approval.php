@@ -44,12 +44,14 @@ class StoreProductReviewApproval extends AdminApproval
 
 	protected function getPendingIds()
 	{
+		$instance_id = $this->app->getInstanceId();
 		$sql = sprintf('select id from ProductReview
-			where status = %s and spam = %s and instance = %s
+			where status = %s and spam = %s and instance %s %s
 			order by createdate asc',
 			$this->app->db->quote(SiteComment::STATUS_PENDING, 'integer'),
 			$this->app->db->quote(false, 'boolean'),
-			$this->app->db->quote($this->app->getInstanceId(), 'integer'));
+			SwatDB::equalityOperator($instance_id),
+			$this->app->db->quote($instance_id, 'integer'));
 
 		$rows = SwatDB::query($this->app->db, $sql);
 
