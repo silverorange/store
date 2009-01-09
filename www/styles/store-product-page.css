@@ -30,6 +30,7 @@ div.store-sale-discount {
 
 .product-review .reviewer {
 	width: 145px;
+	float: left;
 }
 
 .product-review-animation {
@@ -69,7 +70,6 @@ span.product-review-date {
 }
 
 .product-review-title {
-	float: left;
 	padding: 1em 0 1em 1em;
 }
 
