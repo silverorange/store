@@ -44,6 +44,8 @@ INSERT INTO AdminComponent (id, section, displayorder, shortname, title, descrip
 	VALUES (400, 104, 10, 'Article', 'Articles', NULL, true, true);
 INSERT INTO AdminSubComponent (id, component, title, shortname, visible, displayorder)
 	VALUES (400, 400, 'Search', 'Search', true, 0);
+INSERT INTO AdminComponent (id, section, displayorder, shortname, title, description, enabled, visible)
+	VALUES (401, 104, 20, 'ProductReview', 'Product Reviews', NULL, true, true);
 
 -- Store Settings
 INSERT INTO AdminSection (id, displayorder, title, description, visible)
