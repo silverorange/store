@@ -26,6 +26,210 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	// }}}
 
+	// init phase
+	// {{{ public function initCommon()
+
+	public function initCommon()
+	{
+		parent::initCommon();
+		$types = $this->getPaymentTypes();
+		$this->initPaymentTypes($types);
+	}
+
+	// }}}
+	// {{{ protected function initPaymentTypes()
+
+	protected function initPaymentTypes(StorePaymentTypeWrapper $types)
+	{
+		$type_flydown = $this->ui->getWidget('payment_type');
+
+		// payment types will determine whether or not the flydown is visible
+		$type_flydown->parent->visible = false;
+
+		// init payment types
+		foreach ($types as $type) {
+			$this->initPaymentType($type, $type_flydown);
+		}
+
+		// If no value was set, default to first payment type
+		if ($type_flydown->value === null) {
+			$type_flydown->value = $types->getFirst()->id;
+		}
+	}
+
+	// }}}
+	// {{{ protected function initPaymentType()
+
+	protected function initPaymentType(StorePaymentType $type,
+		SwatFlydown $flydown)
+	{
+		switch ($type->shortname) {
+		case 'card':
+			$this->initPaymentTypeCard($type, $flydown);
+			break;
+
+		default:
+			$this->initPaymentTypeDefault($type, $flydown);
+			break;
+		}
+	}
+
+	// }}}
+	// {{{ protected function initPaymentTypeDefault()
+
+	protected function initPaymentTypeDefault(StorePaymentType $type,
+		SwatFlydown $flydown)
+	{
+		$title = $this->getPaymentTypeTitle($type);
+		$flydown->addOption(new SwatOption($type->id, $title, 'text/xml'));
+		$flydown->parent->visible = true;
+	}
+
+	// }}}
+	// {{{ protected function initPaymentTypeCard()
+
+	protected function initPaymentTypeCard(StorePaymentType $type,
+		SwatFlydown $flydown)
+	{
+		$title = $this->getPaymentTypeTitle($type);
+		$flydown->addOption(new SwatOption($type->id, $title, 'text/xml'));
+
+		// default to 'card' if it exists
+		if ($flydown->value === null) {
+			$flydown->value = $type->id;
+		}
+
+		// set up card types flydown
+		$types = $this->getCardTypes();
+
+		$type_flydown = $this->ui->getWidget('card_type');
+
+		foreach ($types as $type) {
+			$title = $this->getCardTypeTitle($type);
+
+			$type_flydown->addOption(
+				new SwatOption($type->id, $title, 'text/xml'));
+		}
+
+		if ($type_flydown->value === null) {
+			$type_flydown->value = $types->getFirst()->id;
+		}
+
+		// make card fields visible
+		$this->ui->getWidget('card_container')->visible = true;
+	}
+
+	// }}}
+	// {{{ protected function getPaymentMethods()
+
+	/**
+	 * Gets available payment methods
+	 *
+	 * @return StoreAccountPaymentMethodWrapper
+	 */
+	protected function getPaymentMethods()
+	{
+		$wrapper = SwatDBClassMap::get('StoreAccountPaymentMethodWrapper');
+		$payment_methods = new $wrapper();
+
+		if ($this->app->session->isLoggedIn()) {
+			$region = $this->app->getRegion();
+			$account = $this->app->session->account;
+			foreach ($account->payment_methods as $method) {
+				$payment_type = $method->payment_type;
+				$card_type = $method->card_type;
+				if ($payment_type->isAvailableInRegion($region) &&
+					($card_type === null || $card_type->isAvailableInRegion($region)))
+						$payment_methods->add($method);
+			}
+		}
+
+		return $payment_methods;
+	}
+
+	// }}}
+	// {{{ protected function getPaymentTypeTitle()
+
+	protected function getPaymentTypeTitle(StorePaymentType $type)
+	{
+		$title = $type->title;
+
+		if (strlen($type->note) > 0) {
+			$title.= sprintf('<br /><span class="swat-note">%s</span>',
+				$type->note);
+		}
+
+		return $title;
+	}
+
+	// }}}
+	// {{{ protected function getPaymentTypes()
+
+	/**
+	 * Gets available payment types for new payment methods
+	 *
+	 * @return StorePaymentTypeWrapper
+	 */
+	protected function getPaymentTypes()
+	{
+		static $types = null;
+
+		if ($types === null) {
+			$sql = 'select PaymentType.* from PaymentType
+				inner join PaymentTypeRegionBinding on
+					payment_type = id and region = %s
+				order by displayorder, title';
+
+			$sql = sprintf($sql,
+				$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+
+			$wrapper = SwatDBClassMap::get('StorePaymentTypeWrapper');
+			$types = SwatDB::query($this->app->db, $sql, $wrapper);
+		}
+
+		return $types;
+	}
+
+	// }}}
+	// {{{ protected function getCardTypeTitle()
+
+	protected function getCardTypeTitle(StoreCardType $type)
+	{
+		$title = $type->title;
+
+		return $title;
+	}
+
+	// }}}
+	// {{{ protected function getCardTypes()
+
+	/**
+	 * Gets available card types for new payment methods
+	 *
+	 * @return StoreCardTypeWrapper
+	 */
+	protected function getCardTypes()
+	{
+		static $types = null;
+
+		if ($types === null) {
+			$sql = 'select CardType.* from CardType
+				inner join CardTypeRegionBinding on
+					card_type = id and region = %s
+				order by displayorder, title';
+
+			$sql = sprintf($sql,
+				$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+
+			$wrapper = SwatDBClassMap::get('StoreCardTypeWrapper');
+			$types = SwatDB::query($this->app->db, $sql, $wrapper);
+		}
+
+		return $types;
+	}
+
+	// }}}
+
 	// process phase
 	// {{{ public function preProcessCommon()
 
@@ -304,27 +508,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
-	// {{{ protected function buildPaymentTypes()
-
-	protected function buildPaymentTypes(StorePaymentTypeWrapper $types)
-	{
-		$type_flydown = $this->ui->getWidget('payment_type');
-
-		// payment types will determine whether or not the flydown is visible
-		$type_flydown->parent->visible = false;
-
-		// build payment types
-		foreach ($types as $type) {
-			$this->buildPaymentType($type, $type_flydown);
-		}
-
-		// If no value was set, default to first payment type
-		if ($type_flydown->value === null) {
-			$type_flydown->value = $types->getFirst()->id;
-		}
-	}
-
-	// }}}
 	// {{{ protected function buildList()
 
 	protected function buildList()
@@ -356,7 +539,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	protected function buildForm()
 	{
 		$types = $this->getPaymentTypes();
-		$this->buildPaymentTypes($types);
+//		$this->buildPaymentTypes($types);
 
 		if (count($types) === 1) {
 			$types_flydown = $this->ui->getWidget('payment_type');
@@ -379,169 +562,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				'<p class="small-print">', '<a href="about/website/privacy">',
 				'</a>', '</p>');
 		}
-	}
-
-	// }}}
-	// {{{ protected function buildPaymentType()
-
-	protected function buildPaymentType(StorePaymentType $type,
-		SwatFlydown $flydown)
-	{
-		switch ($type->shortname) {
-		case 'card':
-			$this->buildPaymentTypeCard($type, $flydown);
-			break;
-
-		default:
-			$this->buildPaymentTypeDefault($type, $flydown);
-			break;
-		}
-	}
-
-	// }}}
-	// {{{ protected function buildPaymentTypeDefault()
-
-	protected function buildPaymentTypeDefault(StorePaymentType $type,
-		SwatFlydown $flydown)
-	{
-		$title = $this->getPaymentTypeTitle($type);
-		$flydown->addOption(new SwatOption($type->id, $title, 'text/xml'));
-		$flydown->parent->visible = true;
-	}
-
-	// }}}
-	// {{{ protected function buildPaymentTypeCard()
-
-	protected function buildPaymentTypeCard(StorePaymentType $type,
-		SwatFlydown $flydown)
-	{
-		$title = $this->getPaymentTypeTitle($type);
-		$flydown->addOption(new SwatOption($type->id, $title, 'text/xml'));
-
-		// default to 'card' if it exists
-		if ($flydown->value === null) {
-			$flydown->value = $type->id;
-		}
-
-		// set up card types flydown
-		$types = $this->getCardTypes();
-
-		$type_flydown = $this->ui->getWidget('card_type');
-
-		foreach ($types as $type) {
-			$title = $this->getCardTypeTitle($type);
-
-			$type_flydown->addOption(
-				new SwatOption($type->id, $title, 'text/xml'));
-		}
-
-		if ($type_flydown->value === null) {
-			$type_flydown->value = $types->getFirst()->id;
-		}
-
-		// make card fields visible
-		$this->ui->getWidget('card_container')->visible = true;
-	}
-
-	// }}}
-	// {{{ protected function getPaymentMethods()
-
-	/**
-	 * Gets available payment methods
-	 *
-	 * @return StoreAccountPaymentMethodWrapper
-	 */
-	protected function getPaymentMethods()
-	{
-		$wrapper = SwatDBClassMap::get('StoreAccountPaymentMethodWrapper');
-		$payment_methods = new $wrapper();
-
-		if ($this->app->session->isLoggedIn()) {
-			$region = $this->app->getRegion();
-			$account = $this->app->session->account;
-			foreach ($account->payment_methods as $method) {
-				$payment_type = $method->payment_type;
-				$card_type = $method->card_type;
-				if ($payment_type->isAvailableInRegion($region) &&
-					($card_type === null || $card_type->isAvailableInRegion($region)))
-						$payment_methods->add($method);
-			}
-		}
-
-		return $payment_methods;
-	}
-
-	// }}}
-	// {{{ protected function getPaymentTypeTitle()
-
-	protected function getPaymentTypeTitle(StorePaymentType $type)
-	{
-		$title = $type->title;
-
-		if (strlen($type->note) > 0) {
-			$title.= sprintf('<br /><span class="swat-note">%s</span>',
-				$type->note);
-		}
-
-		return $title;
-	}
-
-	// }}}
-	// {{{ protected function getPaymentTypes()
-
-	/**
-	 * Gets available payment types for new payment methods
-	 *
-	 * @return StorePaymentTypeWrapper
-	 */
-	protected function getPaymentTypes()
-	{
-		$sql = 'select PaymentType.* from PaymentType
-			inner join PaymentTypeRegionBinding on
-				payment_type = id and region = %s
-			order by displayorder, title';
-
-		$sql = sprintf($sql,
-			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
-
-		$wrapper = SwatDBClassMap::get('StorePaymentTypeWrapper');
-		$types = SwatDB::query($this->app->db, $sql, $wrapper);
-
-		return $types;
-	}
-
-	// }}}
-	// {{{ protected function getCardTypeTitle()
-
-	protected function getCardTypeTitle(StoreCardType $type)
-	{
-		$title = $type->title;
-
-		return $title;
-	}
-
-	// }}}
-	// {{{ protected function getCardTypes()
-
-	/**
-	 * Gets available card types for new payment methods
-	 *
-	 * @return StoreCardTypeWrapper
-	 */
-	protected function getCardTypes()
-	{
-		$sql = 'select CardType.* from CardType
-			inner join CardTypeRegionBinding on
-				card_type = id and region = %s
-			order by displayorder, title';
-
-		$sql = sprintf($sql,
-			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
-
-		$wrapper = SwatDBClassMap::get('StoreCardTypeWrapper');
-		$types = SwatDB::query($this->app->db, $sql, $wrapper);
-
-		return $types;
 	}
 
 	// }}}
