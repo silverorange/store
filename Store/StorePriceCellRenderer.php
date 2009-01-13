@@ -48,14 +48,13 @@ class StorePriceCellRenderer extends SwatMoneyCellRenderer
 			return;
 
 		$locale = SwatI18NLocale::get($this->locale);
+		$format = $this->getCurrencyFormat();
 
 		ob_start();
 
 		echo SwatString::minimizeEntities(
 			$locale->formatCurrency($this->discount,
-				$this->international,
-				array('fractional_digits' =>
-				$this->decimal_places)));
+				$this->international, $format));
 
 		if (!$this->international && $this->display_currency)
 			echo '&nbsp;', SwatString::minimizeEntities(
