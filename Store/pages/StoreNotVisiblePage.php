@@ -45,10 +45,6 @@ abstract class StoreNotVisiblePage extends StorePage
 		parent::build();
 
 		$this->buildInternal();
-
-		if (property_exists($this->layout, 'navbar'))
-			$this->buildNavBar();
-
 		$this->buildAvailableRegions();
 
 		$this->layout->startCapture('content');
