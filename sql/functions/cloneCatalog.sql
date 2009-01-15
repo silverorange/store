@@ -196,7 +196,7 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 				(
 					product,
 					parent,
-					instance
+					instance,
 					author,
 					author_review,
 					fullname,
@@ -211,7 +211,7 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 				) values (
 					local_new_product_id,
 					record_product_review.parent,
-					record_product_review.instance
+					record_product_review.instance,
 					record_product_review.author,
 					record_product_review.author_review,
 					record_product_review.fullname,
@@ -250,7 +250,7 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 			loop
 				update ProductReview set
 					parent = record_cloned_product_review.new_id
-				where id = record_cloned_product_review.id
+				where id = record_cloned_product_review.id;
 			end loop;
 			-- end update product review parent relations
 
