@@ -122,7 +122,7 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 		create temporary table ClonedProductReviewMap (
 			old_id integer,
 			new_id integer,
-			prmiary key (old_id, new_id)
+			primary key (old_id, new_id)
 		);
 
 		-- clone products
@@ -226,7 +226,7 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 				);
 
 				-- store cloned product-review in map
-				insert into ClonedProductReview (new_id, old_id)
+				insert into ClonedProductReviewMap (new_id, old_id)
 				values (currval('productreview_id_seq'),
 					record_product_review.id);
 			end loop;
@@ -244,9 +244,9 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 					id,
 					parent
 				from ProductReview
-					inner join ClonedProductReview on
-						ProductReview.parent = ClonedProductReview.old_id
-				where id in (select new_id from ClonedProductReview)
+					inner join ClonedProductReviewMap on
+						ProductReview.parent = ClonedProductReviewMap.old_id
+				where id in (select new_id from ClonedProductReviewMap)
 			loop
 				update ProductReview set
 					parent = record_cloned_product_review.new_id
