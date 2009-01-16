@@ -242,11 +242,23 @@ class StoreProductImagePage extends StorePage
 	protected function displayDownloadLink()
 	{
 		if ($this->image->hasDimension('huge')) {
-			$download_link = new SwatToolLink();
-			$download_link->link = $this->image->getURI('huge');
-			$download_link->id = 'huge_link';
-			$download_link->title = Store::_('Download High Resolution Image');
-			$download_link->display();
+
+			$large_width = $this->image->getWidth('large');
+			$huge_width  = $this->image->getWidth('huge');
+
+			if ($large_width > 0) {
+				$percentage_larger = ($huge_width / $large_width) - 1;
+				// large must be at least 20% larger
+				if ($percentage_larger > 0.20) {
+					$download_link = new SwatToolLink();
+					$download_link->link  = $this->image->getURI('huge');
+					$download_link->id    = 'huge_link';
+					$download_link->title =
+						Store::_('Download High Resolution Image');
+
+					$download_link->display();
+				}
+			}
 		}
 	}
 
