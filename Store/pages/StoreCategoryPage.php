@@ -112,7 +112,7 @@ class StoreCategoryPage extends StorePage
 			$this->displayFeaturedProducts($this->category);
 			$this->displayTwigPage();
 		} else {
-			$this->displayRelatedArticles($this->category);
+			$this->displayRelatedContent($this->category);
 			$this->displayFeaturedProducts($this->category);
 			$this->displayPage();
 		}
@@ -329,6 +329,14 @@ class StoreCategoryPage extends StorePage
 			echo '<div class="clear"></div>';
 			$div->close();
 		}
+	}
+
+	// }}}
+	// {{{ protected function displayRelatedContent()
+
+	protected function displayRelatedContent(StoreCategory $category)
+	{
+		$this->displayRelatedArticles($category);
 	}
 
 	// }}}
