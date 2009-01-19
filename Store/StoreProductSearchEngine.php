@@ -115,6 +115,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	 */
 	public function __construct(SiteApplication $app)
 	{
+
 		parent::__construct($app);
 		$this->addOrderByField('Product.title');
 	}
@@ -159,22 +160,26 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	}
 
 	// }}}
+	// {{{ protected function getMemcacheNs()
+
+	protected function getMemcacheNs()
+	{
+		return 'product';
+	}
+
+	// }}}
 	// {{{ protected function search()
 
 	public function search($limit = null, $offset = null)
 	{
 		$products = parent::search($limit, $offset);
-
-		if (count($products) > 0)
-			$this->loadSubDataObjects($products);
-
 		$products->setRegion($this->app->getRegion());
 
 		return $products;
 	}
 
 	// }}}
-	// {{{ protected function loadSubDataObjects()
+	// {{{ protected function loadSubObjects()
 
 	/**
 	 * Load sub-dataobjects for the StoreProductWrapper results
@@ -182,8 +187,10 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	 * @param StoreProductWrapper $products a recordset of StoreProduct
 	 *                                       dataobjects.
 	 */
-	protected function loadSubDataObjects(StoreProductWrapper $products)
+	protected function loadSubObjects(StoreProductWrapper $products)
 	{
+		parent::loadSubObjects($products);
+
 		$sql = 'select * from Image where id in (%s)';
 		$wrapper_class = SwatDBClassMap::get('StoreProductImageWrapper');
 		$products->loadAllSubDataObjects(

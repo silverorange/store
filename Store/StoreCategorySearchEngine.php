@@ -76,6 +76,14 @@ class StoreCategorySearchEngine extends SiteSearchEngine
 	}
 
 	// }}}
+	// {{{ protected function getMemcacheNs()
+
+	protected function getMemcacheNs()
+	{
+		return 'product';
+	}
+
+	// }}}
 }
 
 ?>
