@@ -90,7 +90,6 @@ class StoreProductPage extends StorePage
 			$this->app->db->quote($region->id, 'integer'));
 
 		$product = SwatDB::queryOne($this->app->db, $sql);
-
 		return ($product !== null);
 	}
 
@@ -201,6 +200,17 @@ class StoreProductPage extends StorePage
 
 	protected function loadProduct($id)
 	{
+		if (isset($this->app->memcache)) {
+			$key = 'StoreProductPage.product.'.$id;
+			$product = $this->app->memcache->getNs('product', $key);
+			if ($product !== false) {
+				$this->product = $product;
+				$this->product->setDatabase($this->app->db);
+				$this->product->setRegion($this->app->getRegion());
+				return;
+			}
+		}
+
 		$product_class = SwatDBClassMap::get('StoreProduct');
 		$this->product = new $product_class();
 		$this->product->setDatabase($this->app->db);
@@ -507,6 +517,7 @@ class StoreProductPage extends StorePage
 		if ($this->reviews_ui instanceof SwatUI) {
 			Swat::displayInlineJavaScript($this->getReviewsInlineJavaScript());
 		}
+
 		$this->layout->endCapture();
 	}
 
@@ -1292,6 +1303,11 @@ class StoreProductPage extends StorePage
 
 			$this->layout->addHtmlHeadEntrySet(
 				$this->reviews_ui->getRoot()->getHtmlHeadEntrySet());
+		}
+
+		if (isset($this->app->memcache)) {
+			$key = 'StoreProductPage.product.'.$this->product->id;
+			$this->app->memcache->setNs('product', $key, $this->product);
 		}
 	}
 
