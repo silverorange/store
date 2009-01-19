@@ -4,6 +4,7 @@ require_once 'SwatDB/SwatDB.php';
 require_once 'Store/Store.php';
 require_once 'Site/SiteCommandLineApplication.php';
 require_once 'Site/SiteDatabaseModule.php';
+require_once 'Site/SiteMemcacheModule.php';
 require_once 'Store/StoreCommandLineConfigModule.php';
 
 /**
@@ -60,6 +61,10 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
 				$this->debug(Store::_('done')."\n");
 			}
 
+			if (isset($this->memcache)) {
+				$this->memcache->flushNs('product');
+			}
+
 			$this->debug(Store::_('Done.')."\n");
 		} else {
 			$this->debug(Store::_('No dirty cache tables found.')."\n");
@@ -108,6 +113,7 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
 		return array(
 			'config'   => 'StoreCommandLineConfigModule',
 			'database' => 'SiteDatabaseModule',
+			'memcache' => 'SiteMemcacheModule',
 		);
 	}
 
@@ -127,6 +133,26 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
 	}
 
 	// }}}
+	// {{{ protected function configure()
+
+	/**
+	 * Configures modules of this application before they are initialized
+	 *
+	 * @param SiteConfigModule $config the config module of this application to
+	 *                                  use for configuration other modules.
+	 */
+	protected function configure(SiteConfigModule $config)
+	{
+		parent::configure($config);
+
+		if ($this->hasModule('SiteMemcacheModule')) {
+			$this->memcache->server = $config->memcache->server;
+			$this->memcache->app_ns = $config->memcache->app_ns;
+		}
+	}
+
+	// }}}
+
 }
 
 ?>

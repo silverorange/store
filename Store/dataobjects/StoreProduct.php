@@ -362,6 +362,28 @@ class StoreProduct extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ protected function getSerializableSubDataObjects()
+
+	protected function getSerializableSubDataObjects()
+	{
+		return array_merge(parent::getSerializableSubDataObjects(),
+			array('primary_category', 'primary_image',
+				'items', 'item_groups', 'categories', 'attributes',
+				'featured_categories', 'related_products',
+				'related_articles', 'popular_products',
+				'images', 'product_reviews', 'catalog', 'path'));
+	}
+
+	// }}}
+	// {{{ protected function getSerializablePrivateProperties()
+
+	protected function getSerializablePrivateProperties()
+	{
+		return array_merge(parent::getSerializablePrivateProperties(),
+			array('region', 'limit_by_region', 'is_available'));
+	}
+
+	// }}}
 
 	// loader methods
 	// {{{ protected function loadItems()
