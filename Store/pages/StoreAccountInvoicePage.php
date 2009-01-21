@@ -4,7 +4,7 @@ require_once 'Swat/SwatDetailsStore.php';
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatWidgetCellRenderer.php';
 
-require_once 'Site/pages/SiteAccountPage.php';
+require_once 'Site/pages/SitePage.php';
 require_once 'Site/exceptions/SiteNotFoundException.php';
 
 require_once 'Store/dataobjects/StoreItem.php';
@@ -23,7 +23,7 @@ require_once 'Swat/SwatUI.php';
  * @see       StoreAccount
  * @see       StoreInvoice
  */
-class StoreAccountInvoicePage extends SiteAccountPage
+class StoreAccountInvoicePage extends SitePage
 {
 	// {{{ protected properties
 
@@ -67,6 +67,10 @@ class StoreAccountInvoicePage extends SiteAccountPage
 
 	public function init()
 	{
+		// redirect to login page if not logged in
+		if (!$this->app->session->isLoggedIn())
+				$this->app->relocate('account/login');
+
 		parent::init();
 
 		$this->loadInvoice();

@@ -1,43 +1,51 @@
 <?php
 
-require_once 'Site/pages/SiteAccountPage.php';
-require_once 'Store/dataobjects/StoreAccountPaymentMethod.php';
-require_once 'Store/dataobjects/StoreCardTypeWrapper.php';
 require_once 'Swat/SwatUI.php';
-require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Swat/SwatDate.php';
 require_once 'Swat/SwatYUI.php';
+require_once 'SwatDB/SwatDBClassMap.php';
+require_once 'Site/pages/SiteDBEditPage.php';
+require_once 'Store/dataobjects/StoreAccountPaymentMethod.php';
+require_once 'Store/dataobjects/StoreCardTypeWrapper.php';
 
 /**
  * Page to allow customers to add or edit payment methods on their account
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreAccountPaymentMethodEditPage extends SiteAccountPage
+class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
 {
 	// {{{ protected properties
 
 	/**
-	 * @var string
+	 * @var StoreAccountPaymentMethod
 	 */
-	protected $ui_xml = 'Store/pages/account-payment-method-edit.xml';
-
-	protected $ui;
-	protected $id;
+	protected $payment_method;
 
 	// }}}
-	// {{{ public function __construct()
+	// {{{ private properties
 
-	public function __construct(SiteAbstractPage $page)
+	/**
+	 * @var integer
+	 */
+	private $id;
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
 	{
-		parent::__construct($page);
+		return 'Store/pages/account-payment-method-edit.xml';
+	}
 
-		$this->id = intval($this->getArgument('id'));
+	// }}}
+	// {{{ protected function isNew()
 
-		if ($this->id == 0)
-			$this->id = null;
+	protected function isNew(SwatForm $form)
+	{
+		return (!$this->id);
 	}
 
 	// }}}
@@ -53,51 +61,42 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 	// }}}
 
 	// init phase
-	// {{{ public function init()
-
-	public function init()
-	{
-		parent::init();
-
-		$this->ui = new SwatUI();
-		$this->ui->loadFromXML($this->ui_xml);
-
-		$this->initInternal();
-		$this->ui->init();
-	}
-
-	// }}}
 	// {{{ protected function initInternal()
 
 	protected function initInternal()
 	{
-		$form = $this->ui->getWidget('edit_form');
-		$form->action = $this->source;
+		// redirect to login page if not logged in
+		if (!$this->app->session->isLoggedIn())
+			$this->app->relocate('account/login');
+
+		parent::initInternal();
+
+		$this->id = intval($this->getArgument('id'));
+		$this->initPaymentMethod();
 	}
 
 	// }}}
-	// {{{ private function findPaymentMethod()
+	// {{{ protected function initPaymentMethod()
 
-	/**
-	 * @return StoreAccountPaymentMethod
-	 */
-	private function findPaymentMethod()
+	protected function initPaymentMethod()
 	{
-		$account = $this->app->session->account;
-
-		if ($this->id === null) {
-			// create a new payment method
+		$form = $this->ui->getWidget('edit_form');
+		if ($this->isNew($form)) {
 			$class = SwatDBClassMap::get('StoreAccountPaymentMethod');
 			$payment_method = new $class();
-			$payment_method->payment_type = $this->getPaymentType();
-
-			// this page currently only supports editing of payment methods
-			// with payment type is "card"
-			if ($payment_method->payment_type === null)
-				throw new StoreException('Payment type with shortname of \'card\' not found.');
+			$payment_method->setDatabase($this->app->db);
+			$payment_method->payment_type = $this->initPaymentType();
 		} else {
 			// edit existing payment method
-			$payment_method = $account->payment_methods->getByIndex($this->id);
+			$payment_method =
+				$this->app->session->account->payment_methods->getByIndex(
+					$this->id);
+
+			if ($payment_method === null) {
+				throw new SiteNotFoundException(sprintf(
+					'A payment method with an id of ‘%d’ does not exist.',
+					$this->id));
+			}
 
 			// go back to account page if payment type is disabled
 			$payment_type = $payment_method->payment_type;
@@ -110,12 +109,29 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 				$this->app->relocate('account');
 		}
 
-		if ($payment_method === null)
-			throw new SiteNotFoundException(
-				sprintf('A payment method with an id of ‘%d’ does not exist.',
-				$this->id));
+		$this->payment_method = $payment_method;
+	}
 
-		return $payment_method;
+	// }}}
+	// {{{ protected function initPaymentType()
+
+	protected function initPaymentType()
+	{
+		// this page currently only supports editing of payment methods
+		// with payment type is "card"
+		$class_name = SwatDBClassMap::get('StorePaymentType');
+		$type = new $class_name();
+		$type->setDatabase($this->app->db);
+		$type->loadFromShortname('card');
+
+		// this page currently only supports editing of payment methods
+		// with payment type is "card"
+		if ($type === null) {
+			throw new StoreException(
+				'Payment type with shortname of ‘card’ not found.');
+		}
+
+		return $type;
 	}
 
 	// }}}
@@ -126,7 +142,6 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 	public function process()
 	{
 		$this->ui->getWidget('card_number')->setDatabase($this->app->db);
-
 		parent::process();
 
 		$type = $this->getCardType();
@@ -138,93 +153,29 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 			$this->ui->getWidget('card_issue_number')->required =
 				$type->hasIssueNumber();
 		}
-
-		$form = $this->ui->getWidget('edit_form');
-		$form->process();
-
-		if ($form->isProcessed()) {
-			if (!$form->hasMessage()) {
-				$payment_method = $this->findPaymentMethod();
-				$this->updatePaymentMethod($payment_method);
-
-				if ($payment_method->payment_type->isCard() &&
-					$payment_method->card_type === null)
-						throw new StoreException('Payment method must have '.
-							'a card_type when isCard() is true.');
-
-				if ($this->id === null) {
-					$this->app->session->account->payment_methods->add(
-						$payment_method);
-
-					$this->addMessage('add', $payment_method);
-				} elseif ($payment_method->isModified()) {
-					$this->addMessage('update', $payment_method);
-				}
-
-				$this->app->session->account->save();
-				$this->app->relocate('account');
-			}
-		}
 	}
 
 	// }}}
 	// {{{ protected function updatePaymentMethod()
 
-	/**
-	 * Updates an account payment method's properties from form values
-	 *
-	 * @param StoreAccountPaymentMethod $payment_method
-	 */
-	protected function updatePaymentMethod(
-		StoreAccountPaymentMethod $payment_method)
+	protected function updatePaymentMethod(SwatForm $form)
 	{
-		if ($this->id === null) {
-			$payment_method->card_type = $this->getCardType();
-			$payment_method->setCardNumber(
-				$this->ui->getWidget('card_number')->value);
-		}
+		$this->assignUiValuesToObject($this->payment_method, array(
+			'card_issue_number',
+			'card_inception',
+			'card_fullname',
+		));
 
-		$payment_method->card_issue_number =
-			$this->ui->getWidget('card_issue_number')->value;
-
-		$payment_method->card_expiry =
+		// this can't be in assignUiValuesToObject because we don't convert
+		// expiry date to UTC and assignUiValuesToObject automagically converts.
+		$this->payment_method->card_expiry =
 			$this->ui->getWidget('card_expiry')->value;
 
-		$payment_method->card_inception =
-			$this->ui->getWidget('card_inception')->value;
-
-		$payment_method->card_fullname =
-			$this->ui->getWidget('card_fullname')->value;
-	}
-
-	// }}}
-	// {{{ protected function getMessageText()
-
-	protected function getMessageText($text)
-	{
-		switch ($text) {
-		case 'add':
-			return Store::_('One payment method has been added.');
-		case 'update':
-			return Store::_('One payment method has been updated.');
-		default:
-			return $text;
+		if ($this->isNew($form)) {
+			$this->payment_method->card_type = $this->getCardType();
+			$this->payment_method->setCardNumber(
+				$this->ui->getWidget('card_number')->value);
 		}
-	}
-
-	// }}}
-	// {{{ protected function getPaymentType()
-
-	protected function getPaymentType()
-	{
-		// this page currently only supports editing of payment methods
-		// with payment type is "card"
-		$class_name = SwatDBClassMap::get('StorePaymentType');
-		$type = new $class_name();
-		$type->setDatabase($this->app->db);
-		$type->loadFromShortname('card');
-
-		return $type;
 	}
 
 	// }}}
@@ -256,18 +207,64 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 	}
 
 	// }}}
+	// {{{ protected function saveData()
+
+	protected function saveData(SwatForm $form)
+	{
+		$this->updatePaymentMethod($form);
+
+		if ($this->payment_method->payment_type->isCard() &&
+			$this->payment_method->card_type === null) {
+				throw new StoreException('Payment method must have '.
+					'a card_type when isCard() is true.');
+		}
+
+		if ($this->isNew($form)) {
+			$this->payment_method->account = $this->app->session->account;
+			$this->payment_method->save();
+
+			$this->addMessage($this->getMessageText('add'));
+		} elseif ($this->payment_method->isModified()) {
+			$this->payment_method->save();
+
+			$this->addMessage($this->getMessageText('update'));
+		}
+	}
+
+	// }}}
+	// {{{ protected function getMessageText()
+
+	protected function getMessageText($text)
+	{
+		switch ($text) {
+		case 'add':
+			return Store::_('One payment method has been added.');
+		case 'update':
+			return Store::_('One payment method has been updated.');
+		default:
+			return $text;
+		}
+	}
+
+	// }}}
+	// {{{ protected function relocate()
+
+	protected function relocate(SwatForm $form)
+	{
+		$this->app->relocate('account');
+	}
+
+	// }}}
 	// {{{ private function addMessage()
 
-	private function addMessage($text, StorePaymentMethod $payment_method)
+	private function addMessage($text)
 	{
-		$text = $this->getMessageText($text);
-
 		ob_start();
-		$payment_method->display();
-		$payment_display = ob_get_clean();
+		$this->payment_method->display();
+		$payment_method_condensed = ob_get_clean();
 
 		$message = new SwatMessage($text, SwatMessage::NOTIFICATION);
-		$message->secondary_content = $payment_display;
+		$message->secondary_content = $payment_method_condensed;
 		$message->content_type = 'text/xml';
 		$this->app->messages->add($message);
 	}
@@ -275,28 +272,17 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 	// }}}
 
 	// build phase
-	// {{{ public function build()
+	// {{{ protected function buildInternal()
 
-	public function build()
+	protected function buildInternal()
 	{
-		parent::build();
+		parent::buildInternal();
 
 		$form = $this->ui->getWidget('edit_form');
-		$form->action = $this->source;
+		if ($this->isNew($form)) {
+			if (!$form->isProcessed())
+				$this->setDefaultValues($this->app->session->account);
 
-		if (!$form->isProcessed()) {
-			if ($this->id === null) {
-				$this->ui->getWidget('card_fullname')->value =
-					$this->app->session->account->fullname;
-			} else {
-				$payment_method = $this->findPaymentMethod();
-				$this->setWidgetValues($payment_method);
-			}
-		}
-
-		$this->buildLabels();
-
-		if ($this->id === null) {
 			$this->ui->getWidget('card_number')->visible = true;
 			$this->ui->getWidget('card_number_preview')->visible = false;
 		} else {
@@ -305,11 +291,27 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 			$this->ui->getWidget('card_type')->show_blank = false;
 		}
 
+		$this->buildLabels($form);
 		$this->buildCardTypes();
+	}
 
-		$this->layout->startCapture('content');
-		$this->ui->display();
-		$this->layout->endCapture();
+	// }}}
+	// {{{ protected function buildLabels()
+
+	protected function buildLabels(SwatForm $form)
+	{
+		if ($this->isNew($form)) {
+			$this->layout->data->title = Store::_('Add a New Payment Method');
+			$this->layout->navbar->createEntry(
+				Store::_('Add a New Payment Method'));
+		} else {
+			$this->layout->data->title = Store::_('Edit a Payment Method');
+			$this->layout->navbar->createEntry(
+				Store::_('Edit a Payment Method'));
+
+			$this->ui->getWidget('submit_button')->title =
+				Store::_('Update Payment Method');
+		}
 	}
 
 	// }}}
@@ -323,7 +325,8 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 		foreach ($types as $type) {
 			if (strlen($type->note) > 0)
 				$title = sprintf('%s<br /><span class="swat-note">%s</span>',
-					$type->title, $type->note);
+					$type->title,
+					$type->note);
 			else
 				$title = $type->title;
 
@@ -354,56 +357,37 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
 
-		$wrapper = SwatDBClassMap::get('StoreCardTypeWrapper');
-		$types = SwatDB::query($this->app->db, $sql, $wrapper);
+		$types = SwatDB::query($this->app->db, $sql,
+			SwatDBClassMap::get('StoreCardTypeWrapper'));
 
 		return $types;
 	}
 
 	// }}}
-	// {{{ protected function buildLabels()
+	// {{{ protected function load()
 
-	protected function buildLabels()
+	protected function load(SwatForm $form)
 	{
-		if ($this->id === null) {
-			$this->layout->navbar->createEntry(
-				Store::_('Add a New Payment Method'));
+		$this->assignObjectValuesToUi($this->payment_method, array(
+			'card_type',
+			'card_issue_number',
+			'card_inception',
+			'card_fullname',
+		));
 
-			$this->layout->data->title = Store::_('Add a New Payment Method');
-		} else {
-			$this->layout->navbar->createEntry(
-				Store::_('Edit a Payment Method'));
-
-			$this->ui->getWidget('submit_button')->title =
-				Store::_('Update Payment Method');
-
-			$this->layout->data->title = Store::_('Edit a Payment Method');
-		}
-	}
-
-	// }}}
-	// {{{ protected function setWidgetValues()
-
-	protected function setWidgetValues(
-		StoreAccountPaymentMethod $payment_method)
-	{
-		$this->ui->getWidget('card_type')->value =
-			$payment_method->card_type->id;
+		// this can't be in assignObjectValuesToUi because we don't convert
+		// expiry date to UTC, and assignObjectValuesToUi automagically
+		// converts.
+		$this->ui->getWidget('card_expiry')->value =
+			$this->payment_method->card_expiry;
 
 		$this->ui->getWidget('card_number_preview')->content =
 			StoreCardType::formatCardNumber(
-				$payment_method->card_number_preview,
-				$payment_method->card_type->getMaskedFormat());
+				$this->payment_method->card_number_preview,
+				$this->payment_method->card_type->getMaskedFormat());
 
-		$this->ui->getWidget('card_issue_number')->value =
-			$payment_method->card_issue_number;
-
-		$this->ui->getWidget('card_expiry')->value =
-			$payment_method->card_expiry;
-
-		if (!$this->ui->getWidget('card_expiry')->isValid()) {
-			$expiry = $this->ui->getWidget('card_expiry');
-
+		$expiry = $this->ui->getWidget('card_expiry');
+		if (!$expiry->isValid()) {
 			$content = sprintf(Store::_('The expiry date that was entered '.
 				'(%s) is in the past. Please enter an updated date.'),
 				$expiry->value->format(SwatDate::DF_CC_MY));
@@ -413,15 +397,24 @@ class StoreAccountPaymentMethodEditPage extends SiteAccountPage
 
 			$expiry->value = null;
 		}
-
-		$this->ui->getWidget('card_inception')->value =
-			$payment_method->card_inception;
-
-		$this->ui->getWidget('card_fullname')->value =
-			$payment_method->card_fullname;
 	}
 
 	// }}}
+	// {{{ protected function setDefaultValues()
+
+	/**
+	 * Sets default values of this payment method based on values from the
+	 * account
+	 *
+	 * @param StoreAccount $account the account to set default values from.
+	 */
+	protected function setDefaultValues(StoreAccount $account)
+	{
+		$this->ui->getWidget('card_fullname')->value = $account->fullname;
+	}
+
+	// }}}
+
 	// {{{ protected function getInlineJavaScript()
 
 	protected function getInlineJavaScript(StoreCardTypeWrapper $types)
