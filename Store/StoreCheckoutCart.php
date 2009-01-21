@@ -220,11 +220,12 @@ abstract class StoreCheckoutCart extends StoreCart
 	 *
 	 * @param StoreAddress $billing_address the billing address of the order.
 	 * @param StoreAddress $shipping_address the shipping address of the order.
+	 * @param StoreShippingType $shipping_type the shipping type of the order.
 	 *
 	 * @return double the cost of this cart's contents.
 	 */
 	public function getTotal(StoreAddress $billing_address,
-		StoreAddress $shipping_address)
+		StoreAddress $shipping_address, StoreShippingType $shipping_type = null)
 	{
 		if ($this->cachedValueExists('store-total')) {
 			$total = $this->getCachedValue('store-total');
@@ -238,7 +239,7 @@ abstract class StoreCheckoutCart extends StoreCart
 				$billing_address, $shipping_address);
 
 			$total += $this->getShippingTotal(
-				$billing_address, $shipping_address);
+				$billing_address, $shipping_address, $shipping_type);
 
 			$this->setCachedValue('store-total', $total);
 		}
