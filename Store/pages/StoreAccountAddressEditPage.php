@@ -1,48 +1,50 @@
 <?php
 
 require_once 'Swat/SwatYUI.php';
-require_once 'Site/pages/SiteAccountPage.php';
-require_once 'Store/dataobjects/StoreAccountAddress.php';
 require_once 'Swat/SwatUI.php';
+require_once 'SwatDB/SwatDBClassMap.php';
+require_once 'Site/pages/SiteDBEditPage.php';
+require_once 'Store/dataobjects/StoreAccountAddress.php';
 
 /**
  * Page for adding and editing addresses stored on accounts
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreAccount
  */
-class StoreAccountAddressEditPage extends SiteAccountPage
+class StoreAccountAddressEditPage extends SiteDBEditPage
 {
 	// {{{ protected properties
 
 	/**
-	 * @var string
+	 * @var StoreAccountAddress
 	 */
-	protected $ui_xml = 'Store/pages/account-address-edit.xml';
-
-	/**
-	 * @var SwatUI
-	 */
-	protected $ui;
+	protected $address;
 
 	// }}}
 	// {{{ private properties
 
+	/**
+	 * @var integer
+	 */
 	private $id;
 
 	// }}}
-	// {{{ public function __construct()
+	// {{{ protected function getUiXml()
 
-	public function __construct(SiteAbstractPage $page)
+	protected function getUiXml()
 	{
-		parent::__construct($page);
+		return 'Store/pages/account-address-edit.xml';
+	}
 
-		$this->id = intval($this->getArgument('id'));
+	// }}}
+	// {{{ protected function isNew()
 
-		if ($this->id === 0)
-			$this->id = null;
+	protected function isNew(SwatForm $form)
+	{
+		return (!$this->id);
 	}
 
 	// }}}
@@ -58,26 +60,42 @@ class StoreAccountAddressEditPage extends SiteAccountPage
 	// }}}
 
 	// init phase
-	// {{{ public function init()
-
-	public function init()
-	{
-		parent::init();
-
-		$this->ui = new SwatUI();
-		$this->ui->loadFromXML($this->ui_xml);
-
-		$this->initInternal();
-		$this->ui->init();
-	}
-
-	// }}}
 	// {{{ protected function initInternal()
 
 	protected function initInternal()
 	{
+		// redirect to login page if not logged in
+		if (!$this->app->session->isLoggedIn())
+			$this->app->relocate('account/login');
+
+		parent::initInternal();
+
+		$this->id = intval($this->getArgument('id'));
+		$this->initAddress();
+	}
+
+	// }}}
+	// {{{ protected function initAddress()
+
+	protected function initAddress()
+	{
 		$form = $this->ui->getWidget('edit_form');
-		$form->action = $this->source;
+		if ($this->isNew($form)) {
+			$class   = SwatDBClassMap::get('StoreAccountAddress');
+			$address = new $class();
+			$address->setDatabase($this->app->db);
+		} else {
+			$address = $this->app->session->account->addresses->getByIndex(
+				$this->id);
+
+			if ($address === null) {
+				throw new SiteNotFoundException(
+					sprintf('An address with an id of ‘%d’ does not exist.',
+					$this->id));
+			}
+		}
+
+		$this->address = $address;
 	}
 
 	// }}}
@@ -93,86 +111,57 @@ class StoreAccountAddressEditPage extends SiteAccountPage
 			$this->setupPostalCode();
 
 		parent::process();
-		$form->process();
-
-		if ($form->isProcessed()) {
-			$this->validate();
-
-			if ($form->hasMessage()) {
-				$message = new SwatMessage(Store::_('There is a problem with '.
-					'the information submitted.'), SwatMessage::ERROR);
-
-				$message->secondary_content = Store::_('Please address the '.
-					'fields highlighted below and re-submit the form.');
-
-				$this->ui->getWidget('message_display')->add($message);
-			} else {
-				$address = $this->findAddress();
-				$this->updateAddress($address);
-
-				if ($this->id === null) {
-					$this->app->session->account->addresses->add($address);
-					$this->addMessage(Store::_('One address has been added.'),
-						$address);
-
-				} elseif ($address->isModified()) {
-					$this->addMessage(Store::_('One address has been updated.'),
-						$address);
-				}
-
-				$this->app->session->account->save();
-				$this->app->relocate('account');
-			}
-		}
 	}
 
 	// }}}
 	// {{{ protected function updateAddress()
 
-	protected function updateAddress(StoreAccountAddress $address)
+	protected function updateAddress(SwatForm $form)
 	{
-		$address->fullname = $this->ui->getWidget('fullname')->value;
-		$address->company = $this->ui->getWidget('company')->value;
-		$address->phone =  $this->ui->getWidget('phone')->value;
-		$address->line1 = $this->ui->getWidget('line1')->value;
-		$address->line2 = $this->ui->getWidget('line2')->value;
-		$address->city = $this->ui->getWidget('city')->value;
+		$this->assignUiValuesToObject($this->address, array(
+			'fullname',
+			'company',
+			'phone',
+			'line1',
+			'line2',
+			'city',
+			'provstate',
+			'provstate_other',
+			'postal_code',
+			'country',
+		));
 
-		$provstate = $this->ui->getWidget('provstate')->value;
-		$address->provstate = ($provstate === 'other') ? null : $provstate;
+		if ($this->address->provstate === 'other')
+			$this->address->provstate = null;
+	}
 
-		$address->provstate_other =
-			$this->ui->getWidget('provstate_other')->value;
+	// }}}
+	// {{{ protected function saveData()
 
-		$address->postal_code = $this->ui->getWidget('postal_code')->value;
-		$address->country = $this->ui->getWidget('country')->value;
+	protected function saveData(SwatForm $form)
+	{
+		$this->updateAddress($form);
 
-		if ($this->id === null) {
-			$address->createdate = new SwatDate();
-			$address->createdate->toUTC();
+		if ($this->isNew($form)) {
+			$this->address->account    = $this->app->session->account;
+			$this->address->createdate = new SwatDate();
+			$this->address->createdate->toUTC();
+			$this->address->save();
+
+			$this->addMessage(Store::_('One address has been added.'));
+
+		} elseif ($this->address->isModified()) {
+			$this->address->save();
+			$this->addMessage(Store::_('One address has been updated.'));
 		}
 	}
 
 	// }}}
-	// {{{ protected function validate()
+	// {{{ protected function relocate()
 
-	protected function validate()
+	protected function relocate(SwatForm $form)
 	{
-	}
-
-	// }}}
-	// {{{ private function addMessage()
-
-	private function addMessage($text, $address)
-	{
-		ob_start();
-		$address->displayCondensed();
-		$address_condensed = ob_get_clean();
-
-		$message = new SwatMessage($text, SwatMessage::NOTIFICATION);
-		$message->secondary_content = $address_condensed;
-		$message->content_type = 'text/xml';
-		$this->app->messages->add($message);
+		$this->app->relocate('account');
 	}
 
 	// }}}
@@ -182,8 +171,8 @@ class StoreAccountAddressEditPage extends SiteAccountPage
 	{
 		// set provsate and country on postal code entry
 		$postal_code = $this->ui->getWidget('postal_code');
-		$country = $this->ui->getWidget('country');
-		$provstate = $this->ui->getWidget('provstate');
+		$country     = $this->ui->getWidget('country');
+		$provstate   = $this->ui->getWidget('provstate');
 
 		$country->process();
 		$provstate->country = $country->value;
@@ -194,58 +183,44 @@ class StoreAccountAddressEditPage extends SiteAccountPage
 			$this->ui->getWidget('provstate_other')->required = true;
 		} elseif ($provstate->value !== null) {
 			$sql = sprintf('select abbreviation from ProvState where id = %s',
-				$this->app->db->quote($provstate->value));
+				$this->app->db->quote($provstate->value, 'text'));
 
 			$provstate_abbreviation = SwatDB::queryOne($this->app->db, $sql);
-			$postal_code->country = $country->value;
+			$postal_code->country   = $country->value;
 			$postal_code->provstate = $provstate_abbreviation;
 		}
 	}
 
 	// }}}
-	// {{{ private function findAddress()
+	// {{{ private function addMessage()
 
-	private function findAddress()
+	private function addMessage($text)
 	{
-		if ($this->id === null) {
-			$class = SwatDBClassMap::get('StoreAccountAddress');
-			return new $class;
-		}
+		ob_start();
+		$this->address->displayCondensed();
+		$address_condensed = ob_get_clean();
 
-		$address =
-			$this->app->session->account->addresses->getByIndex($this->id);
-
-		if ($address === null)
-			throw new SiteNotFoundException(
-				sprintf('An address with an id of ‘%d’ does not exist.',
-				$this->id));
-
-		return $address;
+		$message = new SwatMessage($text, SwatMessage::NOTIFICATION);
+		$message->secondary_content = $address_condensed;
+		$message->content_type = 'text/xml';
+		$this->app->messages->add($message);
 	}
 
 	// }}}
 
 	// build phase
-	// {{{ public function build()
+	// {{{ protected function buildInternal()
 
-	public function build()
+	protected function buildInternal()
 	{
-		parent::build();
+		parent::buildInternal();
 
 		$form = $this->ui->getWidget('edit_form');
-		$form->action = $this->source;
-
-		if ($this->id === null) {
-			$this->layout->navbar->createEntry(Store::_('Add a New Address'));
-			$this->layout->data->title = Store::_('Add a New Address');
-		} else {
-			$this->layout->navbar->createEntry(
-				Store::_('Edit an Existing Address'));
-
+		if (!$this->isNew($form)) {
 			$this->ui->getWidget('submit_button')->title =
 				Store::_('Update Address');
-
-			$this->layout->data->title = Store::_('Edit an Exisiting Address');
+		} elseif (!$form->isProcessed()) {
+			$this->setDefaultValues($this->app->session->account);
 		}
 
 		$provstate_flydown = $this->ui->getWidget('provstate');
@@ -264,19 +239,64 @@ class StoreAccountAddressEditPage extends SiteAccountPage
 			$this->app->db, 'Country', 'title', 'id', 'title',
 			sprintf('visible = %s', $this->app->db->quote(true, 'boolean'))));
 
-		if (!$form->isProcessed()) {
-			if ($this->id === null) {
-				$this->setDefaultValues($this->app->session->account);
-			} else {
-				$address = $this->findAddress();
-				$this->setWidgetValues($address);
-			}
-		}
-
 		$this->layout->startCapture('content');
-		$this->ui->display();
 		Swat::displayInlineJavaScript($this->getInlineJavaScript());
 		$this->layout->endCapture();
+	}
+
+	// }}}
+	// {{{ protected function buildNavBar()
+
+	protected function buildNavBar()
+	{
+		parent::buildNavBar();
+
+		$form = $this->ui->getWidget('edit_form');
+		if ($this->isNew($form)) {
+			$this->layout->navbar->createEntry(Store::_('Add a New Address'));
+		} else {
+			$this->layout->navbar->createEntry(
+				Store::_('Edit an Existing Address'));
+		}
+	}
+
+	// }}}
+	// {{{ protected function buildTitle()
+
+	protected function buildTitle()
+	{
+		parent::buildTitle();
+
+		$form = $this->ui->getWidget('edit_form');
+		if ($this->isNew($form)) {
+			$this->layout->data->title = Store::_('Add a New Address');
+		} else {
+			$this->layout->data->title = Store::_('Edit an Existing Address');
+		}
+	}
+
+	// }}}
+	// {{{ protected function load()
+
+	protected function load(SwatForm $form)
+	{
+		$this->assignObjectValuesToUi($this->address, array(
+			'fullname',
+			'company',
+			'phone',
+			'line1',
+			'line2',
+			'city',
+			'provstate',
+			'provstate_other',
+			'postal_code',
+			'country',
+		));
+
+		if ($this->ui->getWidget('provstate_other')->visible &&
+			$this->address->provstate === null) {
+			$this->ui->getWidget('provstate')->value = 'other';
+		}
 	}
 
 	// }}}
@@ -292,31 +312,6 @@ class StoreAccountAddressEditPage extends SiteAccountPage
 	}
 
 	// }}}
-	// {{{ protected function setWidgetValues()
-
-	protected function setWidgetValues(StoreAccountAddress $address)
-	{
-		$this->ui->getWidget('fullname')->value = $address->fullname;
-		$this->ui->getWidget('company')->value = $address->company;
-		$this->ui->getWidget('phone')->value = $address->phone;
-		$this->ui->getWidget('line1')->value = $address->line1;
-		$this->ui->getWidget('line2')->value = $address->line2;
-		$this->ui->getWidget('city')->value = $address->city;
-
-		$provstate_other = $this->ui->getWidget('provstate_other');
-		if ($provstate_other->visible && $address->provstate === null)
-			$this->ui->getWidget('provstate')->value = 'other';
-		else
-			$this->ui->getWidget('provstate')->value =
-				$address->getInternalValue('provstate');
-
-		$provstate_other->value = $address->provstate_other;
-
-		$this->ui->getWidget('postal_code')->value = $address->postal_code;
-		$this->ui->getWidget('country')->value = $address->country->id;
-	}
-
-	// }}}
 	// {{{ protected function setDefaultValues()
 
 	/**
@@ -327,8 +322,8 @@ class StoreAccountAddressEditPage extends SiteAccountPage
 	protected function setDefaultValues(StoreAccount $account)
 	{
 		$this->ui->getWidget('fullname')->value = $account->fullname;
-		$this->ui->getWidget('company')->value = $account->company;
-		$this->ui->getWidget('phone')->value = $account->phone;
+		$this->ui->getWidget('company')->value  = $account->company;
+		$this->ui->getWidget('phone')->value    = $account->phone;
 	}
 
 	// }}}

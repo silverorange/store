@@ -2,7 +2,7 @@
 
 require_once 'Swat/SwatDetailsStore.php';
 require_once 'Swat/SwatUI.php';
-require_once 'Site/pages/SiteAccountPage.php';
+require_once 'Site/pages/SiteUiPage.php';
 require_once 'Store/StoreAddressView.php';
 require_once 'Store/StorePaymentMethodView.php';
 require_once 'Store/dataobjects/StoreAccount.php';
@@ -15,16 +15,14 @@ require_once 'Store/dataobjects/StoreAccount.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreAccount
  */
-class StoreAccountDetailsPage extends SiteAccountPage
+class StoreAccountDetailsPage extends SiteUiPage
 {
-	// {{{ protected properties
+	// {{{ protected function getUiXml()
 
-	/**
-	 * @var string
-	 */
-	protected $ui_xml = 'Store/pages/account-details.xml';
-
-	protected $ui;
+	protected function getUiXml()
+	{
+		return 'Site/pages/account-details.xml';
+	}
 
 	// }}}
 
@@ -33,21 +31,20 @@ class StoreAccountDetailsPage extends SiteAccountPage
 
 	public function init()
 	{
+		// redirect to login page if not logged in
+		if (!$this->app->session->isLoggedIn())
+				$this->app->relocate('account/login');
+
 		parent::init();
-
-		$this->ui = new SwatUI();
-		$this->ui->loadFromXML($this->ui_xml);
-
-		$this->initInternal($this->app->session->account);
-
-		$this->ui->init();
 	}
 
 	// }}}
 	// {{{ protected function initInternal()
 
-	protected function initInternal(StoreAccount $account)
+	protected function initInternal()
 	{
+		$account = $this->app->session->account;
+
 		$this->initPaymentMethodViews($account);
 		$this->initAddressViews($account);
 	}
@@ -108,29 +105,21 @@ class StoreAccountDetailsPage extends SiteAccountPage
 	// }}}
 
 	// process phase
-	// {{{ public function process()
+	// {{{ public function processInternal()
 
-	public function process()
+	protected function processInternal()
 	{
-		parent::process();
-		$this->ui->process();
+		parent::processInternal();
 
 		$account = $this->app->session->account;
-		$this->processInternal($account);
+
+		$this->processAddressViews($account);
+		$this->processPaymentMethodViews($account);
 
 		if ($account->isModified()) {
 			$account->save();
 			$this->app->relocate('account');
 		}
-	}
-
-	// }}}
-	// {{{ protected function processInternal()
-
-	protected function processInternal(StoreAccount $account)
-	{
-		$this->processAddressViews($account);
-		$this->processPaymentMethodViews($account);
 	}
 
 	// }}}
@@ -190,20 +179,6 @@ class StoreAccountDetailsPage extends SiteAccountPage
 	// }}}
 
 	// build phase
-	// {{{ public function build()
-
-	public function build()
-	{
-		parent::build();
-
-		$this->buildInternal();
-
-		$this->layout->startCapture('content');
-		$this->ui->display();
-		$this->layout->endCapture();
-	}
-
-	// }}}
 	// {{{ protected function buildInternal()
 
 	protected function buildInternal()
@@ -421,8 +396,6 @@ class StoreAccountDetailsPage extends SiteAccountPage
 	public function finalize()
 	{
 		parent::finalize();
-		$this->layout->addHtmlHeadEntrySet(
-			$this->ui->getRoot()->getHtmlHeadEntrySet());
 
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
 			'packages/store/styles/store-account-details-page.css',

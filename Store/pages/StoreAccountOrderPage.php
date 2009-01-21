@@ -6,7 +6,7 @@ require_once 'Swat/SwatWidgetCellRenderer.php';
 require_once 'Swat/SwatMessage.php';
 
 require_once 'Site/exceptions/SiteNotFoundException.php';
-require_once 'Site/pages/SiteAccountPage.php';
+require_once 'Site/pages/SiteUiPage.php';
 
 require_once 'Store/dataobjects/StoreCartEntry.php';
 require_once 'Store/dataobjects/StoreItem.php';
@@ -24,29 +24,14 @@ require_once 'Swat/SwatUI.php';
  * @see       StoreAccount
  * @see       StoreOrder
  */
-class StoreAccountOrderPage extends SiteAccountPage
+class StoreAccountOrderPage extends SiteUiPage
 {
 	// {{{ protected properties
-
-	/**
-	 * @var integer
-	 */
-	protected $id;
-
-	/**
-	 * @var string
-	 */
-	protected $ui_xml = 'Store/pages/account-order.xml';
 
 	/**
 	 * @var StoreOrder
 	 */
 	protected $order = null;
-
-	/**
-	 * @var SwatUI
-	 */
-	protected $ui;
 
 	// }}}
 	// {{{ private properties
@@ -57,13 +42,11 @@ class StoreAccountOrderPage extends SiteAccountPage
 	private $items_added = array();
 
 	// }}}
-	// {{{ public function __construct()
+	// {{{ protected function getUiXml()
 
-	public function __construct(SiteAbstractPage $page)
+	protected function getUiXml()
 	{
-		parent::__construct($page);
-
-		$this->id = intval($this->getArgument('id'));
+		return 'Site/pages/account-order.xml';
 	}
 
 	// }}}
@@ -72,7 +55,7 @@ class StoreAccountOrderPage extends SiteAccountPage
 	protected function getArgumentMap()
 	{
 		return array(
-			'id' => array(0, 0),
+			'order' => array(0, 0),
 		);
 	}
 
@@ -83,13 +66,20 @@ class StoreAccountOrderPage extends SiteAccountPage
 
 	public function init()
 	{
+		// redirect to login page if not logged in
+		if (!$this->app->session->isLoggedIn())
+				$this->app->relocate('account/login');
+
 		parent::init();
+	}
 
-		$this->loadOrder();
+	// }}}
+	// {{{ protected function initInternal()
 
-		$this->ui = new SwatUI();
-		$this->ui->loadFromXML($this->ui_xml);
-		$this->ui->init();
+	protected function initInternal()
+	{
+		$order_id = intval($this->getArgument('order'));
+		$this->loadOrder($order_id);
 
 		$this->initAddButtonColumn();
 	}
@@ -123,30 +113,23 @@ class StoreAccountOrderPage extends SiteAccountPage
 	// }}}
 	// {{{ protected function loadOrder()
 
-	protected function loadOrder()
+	protected function loadOrder($id)
 	{
-		$this->order = $this->app->session->account->orders->getByIndex(
-			$this->id);
+		$this->order = $this->app->session->account->orders->getByIndex($id);
 
 		if ($this->order === null)
 			throw new SiteNotFoundException(
-				sprintf('An order with an id of ‘%d’ does not exist.',
-				$this->id));
+				sprintf('An order with an id of ‘%d’ does not exist.', $id));
 	}
 
 	// }}}
 
 	// process phase
-	// {{{ public function process()
+	// {{{ public function processInternal()
 
-	public function process()
+	protected function processInternal()
 	{
-		parent::process();
-
 		$form = $this->ui->getWidget('form');
-
-		$form->process();
-
 		if ($form->isProcessed()) {
 			if ($this->ui->getWidget('add_all_items')->hasBeenClicked())
 				$this->addAllItems();
@@ -255,12 +238,10 @@ class StoreAccountOrderPage extends SiteAccountPage
 	// }}}
 
 	// build phase
-	// {{{ public function build()
+	// {{{ protected function buildInternal()
 
-	public function build()
+	protected function buildInternal()
 	{
-		parent::build();
-
 		$this->ui->getWidget('form')->action = $this->source;
 
 		$this->buildCartMessages();
@@ -270,10 +251,6 @@ class StoreAccountOrderPage extends SiteAccountPage
 		$this->layout->navbar->createEntry($title);
 
 		$this->buildOrderDetails();
-
-		$this->layout->startCapture('content');
-		$this->ui->display();
-		$this->layout->endCapture();
 	}
 
 	// }}}
@@ -415,8 +392,6 @@ class StoreAccountOrderPage extends SiteAccountPage
 	public function finalize()
 	{
 		parent::finalize();
-		$this->layout->addHtmlHeadEntrySet(
-			$this->ui->getRoot()->getHtmlHeadEntrySet());
 
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
 			'packages/store/styles/store-account-order-page.css',
