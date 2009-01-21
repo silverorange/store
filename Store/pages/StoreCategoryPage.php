@@ -142,12 +142,15 @@ class StoreCategoryPage extends StorePage
 		$sql = 'select Category.id, Category.title, Category.shortname,
 				Category.description, Category.image,
 				a.product_count as available_product_count,
-				c.product_count, c.region as region_id, always_visible
+				c.product_count, c.region as region_id, always_visible,
+				i.item_count
 			from Category
 			left outer join CategoryAvailableProductCountByRegionCache as a
 				on a.category = Category.id and a.region = %1$s
 			left outer join CategoryVisibleProductCountByRegionCache as c
 				on c.category = Category.id and c.region = %1$s
+			left outer join CategoryVisibleItemCountByRegionCache as i
+				on i.category = Category.id and i.region = %1$s
 			where parent %2$s %3$s
 			and id in
 				(select Category from VisibleCategoryView
