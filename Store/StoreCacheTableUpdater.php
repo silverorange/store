@@ -95,6 +95,10 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
 			$update_function = 'updateVisibleProduct';
 			break;
 
+		case 'CategoryVisibleItemCountByRegion':
+			$update_function = 'updateCategoryVisibleItemCountByRegion';
+			break;
+
 		default:
 			$this->terminate(sprintf(
 				Store::_('Unknown dirty cache table %s.')."\n", $table_name));
