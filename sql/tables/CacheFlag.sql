@@ -11,3 +11,6 @@ insert into CacheFlag (shortname, dirty) values
 
 insert into CacheFlag (shortname, dirty) values
 	('VisibleProduct', false);
+
+insert into CacheFlag (shortname, dirty) values
+	('CategoryVisibleItemCountByRegion', false);
