@@ -584,7 +584,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 	protected function buildBillingAddress($order)
 	{
-		ob_start();	
+		ob_start();
 		$order->billing_address->display();
 
 		$this->ui->getWidget('billing_address')->content = ob_get_clean();
@@ -690,21 +690,15 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 		$order->surcharge_total = $cart->getSurchargeTotal();
 
-		// hack to prevent killing sessions that exist before shipping type was added
-		if (isset($order->shipping_type))
-			$shipping_type = $order->shipping_type;
-		else
-			$shipping_type = null;
-
 		$order->shipping_total = $cart->getShippingTotal(
 			$order->billing_address, $order->shipping_address,
-			$shipping_type);
+			$order->shipping_type);
 
 		$order->tax_total = $cart->getTaxTotal($order->billing_address,
 			 $order->shipping_address);
 
 		$order->total = $cart->getTotal($order->billing_address,
-			$order->shipping_address);
+			$order->shipping_address, $order->shipping_type);
 
 		// Reload ad from the database to esure it exists before trying to save
 		// the order. This prevents order failure when a deleted ad ends up in

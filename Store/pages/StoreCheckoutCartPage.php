@@ -368,7 +368,8 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 			$view->getRow('surcharge')->value = $surcharge_total;
 
 		$view->getRow('total')->value = $cart->getTotal(
-			$order->billing_address, $order->shipping_address);
+			$order->billing_address, $order->shipping_address,
+			$order->shipping_type);
 	}
 
 	// }}}
