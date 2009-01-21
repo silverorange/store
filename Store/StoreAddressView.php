@@ -103,7 +103,7 @@ class StoreAddressView extends SwatControl
 	/**
 	 * Gets the array of CSS classes that are applied to this address view
 	 *
-	 * @return array the array of CSS classes that are applied to this address 
+	 * @return array the array of CSS classes that are applied to this address
 	 *                view.
 	 */
 	protected function getCSSClassNames()
