@@ -117,7 +117,6 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
 		return array(
 			'config'   => 'StoreCommandLineConfigModule',
 			'database' => 'SiteDatabaseModule',
-			'memcache' => 'SiteMemcacheModule',
 		);
 	}
 
