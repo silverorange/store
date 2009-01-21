@@ -155,6 +155,15 @@ class StoreCategory extends SwatDBDataObject
 	protected $available_product_count = array();
 
 	/**
+	 * Cache of item counts for this category indexed by region id
+	 *
+	 * This is an array of integers.
+	 *
+	 * @var array
+	 */
+	protected $item_count = array();
+
+	/**
 	 * @var array
 	 *
 	 * @see StoreCategory::getNavBarEntries()
@@ -290,6 +299,61 @@ class StoreCategory extends SwatDBDataObject
 		}
 
 		return $product_count;
+	}
+
+	// }}}
+	// {{{ public function getItemCount()
+
+	/**
+	 * Loads the count of visible items in this category in a region
+	 *
+	 * If you are calling this method frequently during a single request, it is
+	 * more efficient to include the 'item_count' and 'region_id' fields in
+	 * the initial category query.
+	 *
+	 * @param StoreRegion $region optional. Region for which to get item
+	 *                             count. If no region is specified, the region
+	 *                             set using {@link StoreItem::setRegion()}
+	 *                             is used.
+	 *
+	 * @return integer the count of visible items in this category in the
+	 *                 given region.
+	 */
+	public function getItemCount(StoreRegion $region = null)
+	{
+		if ($region === null)
+			$region = $this->region;
+
+		if ($region === null)
+			throw new StoreException(
+				'$region must be specified unless setRegion() is called '.
+				'beforehand.');
+
+		// We can set this to zero because if there is a null result in the
+		// CategoryVisibleItemCountByRegionCache this is the same as having
+		// no products.
+		$item_count = 0;
+
+		if ($this->region->id == $region->id &&
+			isset($this->item_count[$region->id])) {
+			$item_count = $this->item_count[$region->id];
+		} else {
+			$sql = 'select item_count
+				from CategoryVisibleItemCountByRegionCache
+				where region = %s and category = %s';
+
+			$sql = sprintf($sql,
+				$this->db->quote($region->id, 'integer'),
+				$this->db->quote($this->id, 'integer'));
+
+			$product_count = SwatDB::queryOne($this->db, $sql);
+			if ($item_count === null)
+				$item_count = 0;
+
+			$this->item_count[$region->id] = $item_count;
+		}
+
+		return $item_count;
 	}
 
 	// }}}
@@ -457,6 +521,9 @@ class StoreCategory extends SwatDBDataObject
 		if (isset($row['region_id'])) {
 			if (isset($row['product_count']))
 				$this->product_count[$row['region_id']] = $row['product_count'];
+
+			if (isset($row['item_count']))
+				$this->item_count[$row['region_id']] = $row['item_count'];
 
 			if (isset($row['available_product_count']))
 				$this->available_product_count[$row['region_id']] =
