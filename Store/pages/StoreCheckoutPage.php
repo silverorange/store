@@ -38,10 +38,12 @@ abstract class StoreCheckoutPage extends SiteArticlePage
 		$this->initDataObjects();
 
 		// enforce dependencies for progressing through the checkout
-		foreach ($this->getProgressDependencies() as $dependency)
+		foreach ($this->getProgressDependencies() as $dependency) {
 			if (!in_array($dependency,
-				$this->app->session->checkout_progress->getArrayCopy()))
+				$this->app->session->checkout_progress->getArrayCopy())) {
 				$this->app->relocate($dependency);
+			}
+		}
 	}
 
 	// }}}
@@ -112,8 +114,9 @@ abstract class StoreCheckoutPage extends SiteArticlePage
 
 	protected function updateProgress()
 	{
-		if (!isset($this->app->session->checkout_progress))
+		if (!isset($this->app->session->checkout_progress)) {
 			$this->app->session->checkout_progress = new ArrayObject();
+		}
 
 		$this->app->session->checkout_progress[] = (string)($this->getPath());
 	}
