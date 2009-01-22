@@ -236,7 +236,7 @@ abstract class StoreCheckoutCart extends StoreCart
 			$total += $this->getSurchargeTotal();
 
 			$total += $this->getTaxTotal(
-				$billing_address, $shipping_address);
+				$billing_address, $shipping_address, $shipping_type);
 
 			$total += $this->getShippingTotal(
 				$billing_address, $shipping_address, $shipping_type);
@@ -385,11 +385,13 @@ abstract class StoreCheckoutCart extends StoreCart
 	 *
 	 * @param StoreAddress $billing_address the billing address of the order.
 	 * @param StoreAddress $shipping_address the shipping address of the order.
+	 * @param StoreShippingType $shipping_type the shipping type of the order.
 	 *
 	 * @return double the tax charged for the contents of this cart.
 	 */
 	abstract public function getTaxTotal(StoreAddress $billing_address,
-		StoreAddress $shipping_address);
+		StoreAddress $shipping_address,
+		StoreShippingType $shipping_type = null);
 
 	// }}}
 	// {{{ abstract public function getTaxProvState()

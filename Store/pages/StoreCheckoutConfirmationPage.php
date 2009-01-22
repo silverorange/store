@@ -695,7 +695,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 			$order->shipping_type);
 
 		$order->tax_total = $cart->getTaxTotal($order->billing_address,
-			 $order->shipping_address);
+			 $order->shipping_address, $order->shipping_type);
 
 		$order->total = $cart->getTotal($order->billing_address,
 			$order->shipping_address, $order->shipping_type);
