@@ -235,8 +235,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 
 		$account->setDefaultShippingAddress($address);
 
-		// new payment methods are only added if a session flag is set
-		if ($this->app->session->save_account_payment_method &&
+		// new payment methods are only added if a session flag is set and true
+		if (isset($this->app->session->save_account_payment_method) &&
+			$this->app->session->save_account_payment_method &&
 			$order->payment_method !== null &&
 			$order->payment_method->isSaveableWithAccount()) {
 				$this->addPaymentMethodToAccount($order->payment_method);
