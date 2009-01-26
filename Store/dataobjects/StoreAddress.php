@@ -301,12 +301,13 @@ abstract class StoreAddress extends SwatDBDataObject
 		if ($this->country->id != $address->country->id)
 			$equal = false;
 
-		if ($this->country->id === 'US')
+		if ($this->country->id === 'US') {
 			if (substr($this->postal_code, 0, 5) != substr($address->postal_code, 0, 5))
 				$equal = false;
-		else
+		} else {
 			if ($this->postal_code != $address->postal_code)
 				$equal = false;
+		}
 
 		if ($this->phone != $address->phone)
 			$equal = false;
