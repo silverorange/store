@@ -326,7 +326,7 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 				'One item quantity has been updated.',
 				'%s item quantities have been updated.',
 				$num_entries_updated),
-				SwatString::numberFormat($num_entries_removed)), 'cart'));
+				SwatString::numberFormat($num_entries_updated)), 'cart'));
 		}
 
 		foreach ($this->app->cart->checkout->getMessages() as $message)
