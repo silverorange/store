@@ -23,6 +23,11 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 	 */
 	protected $address;
 
+	protected $show_invalid_message = true;
+	protected $verified_address;
+	protected $button1;
+	protected $button2;
+
 	// }}}
 	// {{{ private properties
 
@@ -72,6 +77,12 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 
 		$this->id = intval($this->getArgument('id'));
 		$this->initAddress();
+
+		$form = $this->ui->getWidget('edit_form');
+		$this->button1 = new SwatButton('button1');
+		$this->button1->parent = $form;
+		$this->button2 = new SwatButton('button2');
+		$this->button2->parent = $form;
 	}
 
 	// }}}
@@ -110,15 +121,97 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 		if ($form->isSubmitted())
 			$this->setupPostalCode();
 
+		$this->button1->process();
+		$this->button2->process();
+
+		if ($this->button1->hasBeenClicked())
+			$this->verified_address = $form->getHiddenField('verified_address');
+
 		parent::process();
+	}
+
+	// }}}
+	// {{{ protected function validate()
+
+	protected function validate(SwatForm $form)
+	{
+		if (!$this->button2->hasBeenClicked() &&
+			!$this->button1->hasBeenClicked() &&
+			$this->isValid($form))
+				$this->verifyAddress($form);
+	}
+
+	// }}}
+	// {{{ protected function verifyAddress()
+
+	protected function verifyAddress(SwatForm $form)
+	{
+		$entered_address = clone $this->address;
+		$entered_address->setDatabase($this->app->db);
+		$this->updateAddress($form, $entered_address);
+		$verified_address = clone $entered_address;
+		$valid = $verified_address->verify($this->app);
+		$equal = $verified_address->mostlyEqual($entered_address);
+
+		if ($valid && $equal) {
+			$this->verified_address = $verified_address;
+			return;
+		}
+
+		$message = new SwatMessage('', 'notification');
+		$message->secondary_content =
+			'<p>To deliver to you more efficiently, we compared the address '.
+			'you entered to information in a postal address database. The '.
+			'database contains a record of all addresses that receive mail, '.
+			'formatted in the preferred style.</p>';
+
+		if ($valid) {
+			$form->addHiddenField('verified_address', $verified_address);
+
+			$message->primary_content = Store::_('Is this your address?');
+			$this->button1->title = 'Yes, this is my address';
+			$this->button2->title = 'No, use my address as entered below';
+
+			ob_start();
+			$verified_address->display();
+			$this->button1->display();
+			$this->button2->display();
+			$message->secondary_content.= ob_get_clean();
+		} else {
+			$message->primary_content = Store::_('Address not found');
+			$this->button2->title = 'Yes, use my address as entered below';
+
+			ob_start();
+			echo 'Please confirm the address entered below is correct.<br />';
+			$this->button2->display();
+			$message->secondary_content.= ob_get_clean();
+		}
+
+		$message->content_type = 'text/xml';
+		$form->addMessage($message);
+		$this->ui->getWidget('message_display')->add($message);
+		$this->show_invalid_message = false;
+	}
+
+	// }}}
+	// {{{ protected function getInvalidMessage()
+
+	protected function getInvalidMessage(SwatForm $form)
+	{
+		$message = null;
+
+		if ($this->show_invalid_message)
+			$message = parent::getInvalidMessage($form);
+
+		return $message;
 	}
 
 	// }}}
 	// {{{ protected function updateAddress()
 
-	protected function updateAddress(SwatForm $form)
+	protected function updateAddress(SwatForm $form, StoreAddress $address)
 	{
-		$this->assignUiValuesToObject($this->address, array(
+		$this->assignUiValuesToObject($address, array(
 			'fullname',
 			'company',
 			'phone',
@@ -140,7 +233,10 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 
 	protected function saveData(SwatForm $form)
 	{
-		$this->updateAddress($form);
+		if ($this->verified_address !== null)
+			$this->address->copyFrom($this->verified_address);
+		else
+			$this->updateAddress($form, $this->address);
 
 		if ($this->isNew($form)) {
 			$this->address->account    = $this->app->session->account;
