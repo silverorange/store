@@ -76,6 +76,45 @@ class StoreProvState extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function loadFromAbbreviation()
+
+	/**
+	 * Loads this province/state from a title and country code
+	 *
+	 * @param string $title the full title of this province/state
+	 * @param string $country the ISO-3166-1 alpha-2 code for the country of
+	 *                         the province/state to load.
+	 *
+	 * @return boolean true if this province/state was loaded and false if it
+	 *                  was not.
+	 */
+	public function loadFromTitle($title, $country)
+	{
+		$this->checkDB();
+
+		$row = null;
+		$loaded = false;
+
+		if ($this->table !== null) {
+			$sql = sprintf('select * from ProvState
+				where title = %s and country = %s',
+				$this->db->quote($title, 'text'),
+				$this->db->quote($country, 'text'));
+
+			$rs = SwatDB::query($this->db, $sql, null);
+			$row = $rs->fetchRow(MDB2_FETCHMODE_ASSOC);
+		}
+
+		if ($row !== null) {
+			$this->initFromRow($row);
+			$this->generatePropertyHashes();
+			$loaded = true;
+		}
+
+		return $loaded;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
