@@ -63,6 +63,7 @@ $package->addPackageDepWithChannel('required', 'Text_Password', 'pear.php.net', 
 $package->addPackageDepWithChannel('required', 'Validate_Finance_CreditCard', 'pear.php.net', '0.5.2');
 $package->addPackageDepWithChannel('required', 'Numbers_Words', 'pear.php.net', '0.15.0');
 $package->addPackageDepWithChannel('required', 'Date', 'pear.silverorange.com', '1.5.0so6');
+$package->addPackageDepWithChannel('optional', 'Services_StrikeIron', 'pear.silverorange.com', '0.1.0');
 $package->addExtensionDep('required', 'imagick', '2.0.0');
 $package->generateContents();
 

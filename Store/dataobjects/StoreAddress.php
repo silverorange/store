@@ -244,6 +244,77 @@ abstract class StoreAddress extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function verify()
+
+	/**
+	 * Verify this address
+	 */
+	public function verify(SiteApplication $app, $modify = true)
+	{
+		$valid = false;
+
+		switch ($this->country->id) {
+		case 'CA':
+			$valid = $this->verifyCA($app, $modify);
+			break;
+		case 'US':
+		default:
+			$valid = $this->verifyUS($app, $modify);
+		}
+
+		return $valid;
+	}
+
+	// }}}
+	// {{{ public function mostlyEqual()
+
+	/**
+	 * Compares this address to another address
+	 *
+	 * @param StoreAddress $address the address to compare this entry to.
+	 *
+	 * @return boolean True if all internal values loosely match, and false if
+	 *                  any don't match.
+	 */
+	public function mostlyEqual(StoreAddress $address)
+	{
+		$equal = true;
+
+		if ($this->fullname != $address->fullname)
+			$equal = false;
+
+		if ($this->company != $address->company)
+			$equal = false;
+
+		if (strtolower($this->line1) != strtolower($address->line1))
+			$equal = false;
+
+		if (strtolower($this->line2) != strtolower($address->line2))
+			$equal = false;
+
+		if (strtolower($this->city) != strtolower($address->city))
+			$equal = false;
+
+		if (strtolower($this->provstate_other) != strtolower($address->provstate_other))
+			$equal = false;
+
+		if ($this->country->id != $address->country->id)
+			$equal = false;
+
+		if ($this->country->id === 'US')
+			if (substr($this->postal_code, 0, 5) != substr($address->postal_code, 0, 5))
+				$equal = false;
+		else
+			if ($this->postal_code != $address->postal_code)
+				$equal = false;
+
+		if ($this->phone != $address->phone)
+			$equal = false;
+
+		return $equal;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
@@ -788,6 +859,67 @@ abstract class StoreAddress extends SwatDBDataObject
 			printf(Store::_('Phone: %s'),
 				SwatString::minimizeEntities($this->phone));
 		}
+	}
+
+	// }}}
+	// {{{ protected function verifyUS()
+
+	protected function verifyUS(SiteApplication $app, $modify)
+	{
+		$valid = false;
+		$key = $app->config->strikeiron->verify_address_usa_key;
+
+		if ($key === null)
+			return $valid;
+
+		require_once 'Services/StrikeIron/VerifyAddressUsa.php';
+		$options = array('timeout' => 1);
+
+		$strikeiron = new Services_StrikeIron_VerifyAddressUsa(
+			$key, '', $options);
+
+		$address = array(
+			'addressLine1'   => $this->line1,
+			'addressLine2'   => $this->line2,
+			'city_state_zip' => sprintf('%s %s %s',
+				$this->city,
+				$this->provstate->abbreviation,
+				$this->postal_code),
+			'firm'           => $this->company,
+			'urbanization'   => '',
+			'casing'         => 'Proper'
+		);
+
+		try {
+			$result = $strikeiron->VerifyAddressUSA($address);
+			$valid = $result->VerifyAddressUSAResult->AddressStatus === 'Valid';
+
+			if ($modify) {
+				$this->line1 = $result->VerifyAddressUSAResult->AddressLine1;
+				$this->line2 = $result->VerifyAddressUSAResult->AddressLine2;
+				$this->city = $result->VerifyAddressUSAResult->City;
+				$this->company = $result->VerifyAddressUSAResult->Firm;
+				$this->postal_code = $result->VerifyAddressUSAResult->ZipPlus4;
+
+				if ($this->provstate->abbreviation !== $result->VerifyAddressUSAResult->State) {
+					$class = SwatDBClassMap::get('StoreProvState');
+					$this->provstate = new $class;
+					$this->provstate->setDatabase($app->db);
+					$this->provstate->loadFromAbbreviation(
+						$result->VerifyAddressUSAResult->State, 'US');
+				}
+			}
+		} catch (SoapFault $e) {
+			$e = new SwatException($e);
+			$e->process();
+			$valid = true;
+		} catch (Services_StrikeIron_SoapException $e) {
+			$e = new SwatException($e);
+			$e->process();
+			$valid = true;
+		}
+
+		return $valid;
 	}
 
 	// }}}
