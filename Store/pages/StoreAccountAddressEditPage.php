@@ -159,18 +159,18 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 		}
 
 		$message = new SwatMessage('', 'notification');
-		$message->secondary_content =
-			'<p>To deliver to you more efficiently, we compared the address '.
+		$message->secondary_content = '<p>'.Store::_(
+			'To deliver to you more efficiently, we compared the address '.
 			'you entered to information in a postal address database. The '.
 			'database contains a record of all addresses that receive mail, '.
-			'formatted in the preferred style.</p>';
+			'formatted in the preferred style.').'</p>';
 
 		if ($valid) {
 			$form->addHiddenField('verified_address', $verified_address);
 
 			$message->primary_content = Store::_('Is this your address?');
-			$this->button1->title = 'Yes, this is my address';
-			$this->button2->title = 'No, use my address as entered below';
+			$this->button1->title = Store::_('Yes, this is my address');
+			$this->button2->title = Store::_('No, use my address as entered below');
 
 			ob_start();
 			$verified_address->display();
@@ -179,10 +179,12 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 			$message->secondary_content.= ob_get_clean();
 		} else {
 			$message->primary_content = Store::_('Address not found');
-			$this->button2->title = 'Yes, use my address as entered below';
+			$this->button2->title = Store::_('Yes, use my address as entered below');
+			$message->secondary_content.= Store::_(
+				'Please confirm the address below is correct.').
+				'<br />';
 
 			ob_start();
-			echo 'Please confirm the address entered below is correct.<br />';
 			$this->button2->display();
 			$message->secondary_content.= ob_get_clean();
 		}
