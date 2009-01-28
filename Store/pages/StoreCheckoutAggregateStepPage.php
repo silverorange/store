@@ -73,7 +73,7 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 	public function process()
 	{
 		parent::process();
-exit;
+
 		$form = $this->ui->getWidget('form');
 		if ($form->isProcessed()) {
 			if ($form->hasMessage()) {
