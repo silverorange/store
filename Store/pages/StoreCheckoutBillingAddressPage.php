@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/pages/StoreCheckoutEditPage.php';
+require_once 'Store/pages/StoreCheckoutAddressPage.php';
 require_once 'Swat/SwatYUI.php';
 
 /**
@@ -10,7 +10,7 @@ require_once 'Swat/SwatYUI.php';
  * @copyright 2005-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
+class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 {
 	// {{{ public function getUiXml()
 
@@ -70,72 +70,19 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 
 	protected function saveDataToSession()
 	{
-		$address_list = $this->ui->getWidget('billing_address_list');
-		$class_name = SwatDBClassMap::get('StoreOrderAddress');
-		$order_address = new $class_name();
+		$address = $this->getAddress();
 
-		if ($address_list->value === null || $address_list->value === 'new') {
-			$order_address->fullname =
-				$this->ui->getWidget('billing_address_fullname')->value;
-
-			$order_address->company =
-				$this->ui->getWidget('billing_address_company')->value;
-
-			$order_address->line1 =
-				$this->ui->getWidget('billing_address_line1')->value;
-
-			$order_address->line2 =
-				$this->ui->getWidget('billing_address_line2')->value;
-
-			$order_address->city =
-				$this->ui->getWidget('billing_address_city')->value;
-
-			$order_address->provstate =
-				$this->ui->getWidget('billing_address_provstate')->value;
-
-			$order_address->provstate_other =
-				$this->ui->getWidget('billing_address_provstate_other')->value;
-
-			$order_address->postal_code =
-				$this->ui->getWidget('billing_address_postalcode')->value;
-
-			$order_address->country =
-				$this->ui->getWidget('billing_address_country')->value;
-
-			$order_address->phone =
-				$this->ui->getWidget('billing_address_phone')->value;
-
-		} else {
-			$address_id = intval($address_list->value);
-
-			/* If we are already using the selected address for shipping, then
-			 * use the existing OrderAddress, else copy into the new one.
-			 */
-			$other_address = $this->app->session->order->shipping_address;
-			if ($other_address !== null &&
-				$other_address->getAccountAddressId() == $address_id) {
-					$order_address = $other_address;
-			} else {
-				$account_address =
-					$this->app->session->account->addresses->getByIndex(
-					$address_id);
-
-				if (!($account_address instanceof StoreAccountAddress))
-					throw new StoreException('Account address not found. '.
-						"Address with id ‘{$address_id}’ not found.");
-
-				$order_address->copyFrom($account_address);
-			}
-		}
+		if ($this->verified_address !== null)
+			$address->copyFrom($this->verified_address);
 
 		/* If we are currently shipping to the billing address,
 		 * change the shipping address too.
 		 */
 		if ($this->app->session->order->shipping_address ===
 			$this->app->session->order->billing_address)
-				$this->app->session->order->shipping_address = $order_address;
+				$this->app->session->order->shipping_address = $address;
 
-		$this->app->session->order->billing_address = $order_address;
+		$this->app->session->order->billing_address = $address;
 	}
 
 	// }}}
@@ -169,6 +116,77 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 			$postal_code->country = $country->value;
 			$postal_code->provstate = $provstate_abbreviation;
 		}
+	}
+
+	// }}}
+	// {{{ protected function getAddress()
+
+	protected function getAddress()
+	{
+		if ($this->address instanceof StoreOrderAddress)
+			return $this->address;
+
+		$address_list = $this->ui->getWidget('billing_address_list');
+		$class_name = SwatDBClassMap::get('StoreOrderAddress');
+		$address = new $class_name();
+
+		if ($address_list->value === null || $address_list->value === 'new') {
+			$address->fullname =
+				$this->ui->getWidget('billing_address_fullname')->value;
+
+			$address->company =
+				$this->ui->getWidget('billing_address_company')->value;
+
+			$address->line1 =
+				$this->ui->getWidget('billing_address_line1')->value;
+
+			$address->line2 =
+				$this->ui->getWidget('billing_address_line2')->value;
+
+			$address->city =
+				$this->ui->getWidget('billing_address_city')->value;
+
+			$address->provstate =
+				$this->ui->getWidget('billing_address_provstate')->value;
+
+			$address->provstate_other =
+				$this->ui->getWidget('billing_address_provstate_other')->value;
+
+			$address->postal_code =
+				$this->ui->getWidget('billing_address_postalcode')->value;
+
+			$address->country =
+				$this->ui->getWidget('billing_address_country')->value;
+
+			$address->phone =
+				$this->ui->getWidget('billing_address_phone')->value;
+
+		} else {
+			$address_id = intval($address_list->value);
+
+			/* If we are already using the selected address for shipping, then
+			 * use the existing OrderAddress, else copy into the new one.
+			 */
+			$other_address = $this->app->session->order->shipping_address;
+			if ($other_address !== null &&
+				$other_address->getAccountAddressId() == $address_id) {
+					$address = $other_address;
+			} else {
+				$account_address =
+					$this->app->session->account->addresses->getByIndex(
+					$address_id);
+
+				if (!($account_address instanceof StoreAccountAddress))
+					throw new StoreException('Account address not found. '.
+						"Address with id ‘{$address_id}’ not found.");
+
+				$address->copyFrom($account_address);
+			}
+		}
+
+		$this->address = $address;
+
+		return $this->address;
 	}
 
 	// }}}
@@ -407,24 +425,9 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 	public function finalize()
 	{
 		parent::finalize();
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-checkout-address-page.css',
-			Store::PACKAGE_ID));
-
-		$yui = new SwatYUI(array('dom', 'event'));
-		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
-
-		$path = 'packages/store/javascript/';
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			$path.'store-checkout-page.js',
-			Store::PACKAGE_ID));
 
 		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			$path.'store-checkout-address-page.js',
-			Store::PACKAGE_ID));
-
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			$path.'store-checkout-billing-address-page.js',
+			'packages/store/javascript/store-checkout-billing-address-page.js',
 			Store::PACKAGE_ID));
 	}
 
