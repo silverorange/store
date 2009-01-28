@@ -11,16 +11,16 @@ require_once 'Store/pages/StoreCheckoutPaymentMethodPage.php';
  * First step of checkout
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2009 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 {
-	// {{{ public function __construct()
+	// {{{ public function getUiXml()
 
-	public function __construct(SiteAbstractPage $page)
+	public function getUiXml()
 	{
-		$this->ui_xml = dirname(__FILE__).'/checkout-first.xml';
-		parent::__construct($page);
+		return 'Store/pages/checkout-first.xml';
 	}
 
 	// }}}

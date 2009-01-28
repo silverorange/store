@@ -1,15 +1,15 @@
 <?php
 
-require_once 'Store/pages/StoreCheckoutUIPage.php';
+require_once 'Store/pages/StoreCheckoutPage.php';
 
 /**
  * Abstract base class for final page of the checkout
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
+abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
 {
 	// init phase
 	// {{{ public function init()
@@ -23,6 +23,7 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 	// }}}
 	// {{{ protected function initInternal()
 
+	// subclassed to avoid setting form that doesn't exist
 	protected function initInternal()
 	{
 	}
@@ -30,10 +31,11 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutUIPage
 	// }}}
 	// {{{ protected function loadUI()
 
+	// subclassed to avoid loading form xml that doesn't exist
 	protected function loadUI()
 	{
 		$this->ui = new SwatUI();
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 	}
 
 	// }}}

@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/pages/StoreCheckoutUIPage.php';
+require_once 'Store/pages/StoreCheckoutPage.php';
 require_once 'Swat/SwatMessage.php';
 require_once 'Swat/SwatString.php';
 require_once 'Swat/SwatTableStore.php';
@@ -10,44 +10,35 @@ require_once 'Swat/SwatDetailsStore.php';
  * Cart edit page of checkout
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2009 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreCheckoutCartPage extends StoreCheckoutUIPage
+class StoreCheckoutCartPage extends StoreCheckoutPage
 {
 	// {{{ protected properties
 
 	protected $updated_entry_ids = array();
 
 	// }}}
-	// {{{ public function __construct()
+	// {{{ public function getUiXml()
 
-	public function __construct(SiteAbstractPage $page)
+	public function getUiXml()
 	{
-		parent::__construct($page);
-		$this->ui_xml = 'Store/pages/checkout-cart.xml';
-
+		return 'Store/pages/checkout-cart.xml';
 	}
 
 	// }}}
 
 	// init phase
-	// {{{ public function init()
-
-	public function init()
-	{
-		parent::init();
-
-		// set table store for widget validation
-		$view = $this->ui->getWidget('cart_view');
-		$view->model = $this->getTableStore();
-	}
-
-	// }}}
 	// {{{ protected function initInternal()
 
 	protected function initInternal()
 	{
 		parent::initInternal();
+
+		// set table store for widget validation
+		$view = $this->ui->getWidget('cart_view');
+		$view->model = $this->getTableStore();
 
 		if ($this->ui->hasWidget('checkout_progress')) {
 			$checkout_progress = $this->ui->getWidget('checkout_progress');
@@ -336,13 +327,11 @@ class StoreCheckoutCartPage extends StoreCheckoutUIPage
 	// }}}
 
 	// build phase
-	// {{{ public function build()
+	// {{{ protected function buildInternal()
 
-	public function build()
+	protected function buildInternal()
 	{
 		$this->buildTableView();
-
-		parent::build();
 	}
 
 	// }}}

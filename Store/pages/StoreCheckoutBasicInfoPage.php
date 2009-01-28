@@ -6,16 +6,16 @@ require_once 'Store/pages/StoreCheckoutEditPage.php';
  * Basic information edit page of checkout
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2009 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 {
-	// {{{ public function __construct()
+	// {{{ public function getUiXml()
 
-	public function __construct(SiteAbstractPage $page)
+	public function getUiXml()
 	{
-		parent::__construct($page);
-		$this->ui_xml = 'Store/pages/checkout-basic-info.xml';
+		return 'Store/pages/checkout-basic-info.xml';
 	}
 
 	// }}}

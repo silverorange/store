@@ -6,9 +6,10 @@ require_once 'Store/pages/StoreCheckoutUIPage.php';
  * Base class for a step page of checkout
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2009 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-abstract class StoreCheckoutStepPage extends StoreCheckoutUIPage
+abstract class StoreCheckoutStepPage extends StoreCheckoutPage
 {
 	// {{{ private properties
 
@@ -58,8 +59,6 @@ abstract class StoreCheckoutStepPage extends StoreCheckoutUIPage
 
 	public function process()
 	{
-		parent::process();
-
 		$form = $this->ui->getWidget('form');
 
 		if ($form->isSubmitted()) {
@@ -67,7 +66,7 @@ abstract class StoreCheckoutStepPage extends StoreCheckoutUIPage
 				$page->preProcessCommon();
 		}
 
-		$this->ui->process();
+		parent::process();
 
 		if ($form->isProcessed()) {
 			foreach ($this->embedded_edit_pages as $page)
@@ -78,6 +77,7 @@ abstract class StoreCheckoutStepPage extends StoreCheckoutUIPage
 					$page->processCommon();
 			}
 		}
+
 	}
 
 	// }}}
