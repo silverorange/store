@@ -2,6 +2,7 @@
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
 	<widget class="StoreCheckoutProgress" id="checkout_progress" />
-	<widget class="SwatMessageDisplay" id="message_display" />
-	<widget class="SwatForm" id="form" />
+	<widget class="SwatForm" id="form">
+		<widget class="SwatMessageDisplay" id="message_display" />
+	</widget>
 </swatml>

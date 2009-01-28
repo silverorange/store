@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/pages/StoreCheckoutEditPage.php';
+require_once 'Store/pages/StoreCheckoutAddressPage.php';
 require_once 'Swat/SwatYUI.php';
 
 /**
@@ -10,18 +10,8 @@ require_once 'Swat/SwatYUI.php';
  * @copyright 2005-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
+class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 {
-	// {{{ protected properties
-
-	/**
-	 * @var StoreOrderAddress
-	 *
-	 * @see StoreCheckoutShippingAddress::getShippingAddress()
-	 */
-	protected $shipping_address;
-
-	// }}}
 	// {{{ public function getUiXml()
 
 	public function getUiXml()
@@ -74,7 +64,7 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 		// saved to the session, so we can't perform this check in
 		// validateCommon
 		if (!$this->ui->getWidget('form')->hasMessage())
-			$this->validateShippingAddress();
+			$this->validateAddress();
 
 		// only save address in session if above validation didn't cause other
 		// validation messages to be generated.
@@ -120,16 +110,20 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 
 	protected function saveDataToSession()
 	{
-		$this->app->session->order->shipping_address =
-			$this->getShippingAddress();
+		$address = $this->getAddress();
+
+		if ($this->verified_address !== null)
+			$address->copyFrom($this->verified_address);
+
+		$this->app->session->order->shipping_address = $address;
 	}
 
 	// }}}
-	// {{{ protected function validateShippingAddress()
+	// {{{ protected function validateAddress()
 
-	protected function validateShippingAddress()
+	protected function validateAddress()
 	{
-		$address = $this->getShippingAddress();
+		$address = $this->getAddress();
 
 		$shipping_country_ids = array();
 		foreach ($this->app->getRegion()->shipping_countries as $country)
@@ -145,12 +139,12 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
-	// {{{ protected function getShippingAddress()
+	// {{{ protected function getAddress()
 
-	protected function getShippingAddress()
+	protected function getAddress()
 	{
-		if ($this->shipping_address instanceof StoreOrderAddress)
-			return $this->shipping_address;
+		if ($this->address instanceof StoreOrderAddress)
+			return $this->address;
 
 		$address_list = $this->ui->getWidget('shipping_address_list');
 		$class_name = SwatDBClassMap::get('StoreOrderAddress');
@@ -213,51 +207,14 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 			}
 		}
 
-		$this->shipping_address = $address;
+		$this->address = $address;
 
-		return $this->shipping_address;
+		return $this->address;
 	}
 
 	// }}}
 
 	// build phase
-	// {{{ public function buildCommon()
-
-	public function buildCommon()
-	{
-		$this->buildList();
-		$this->buildForm();
-
-		if (!$this->ui->getWidget('form')->isProcessed())
-			$this->loadDataFromSession();
-	}
-
-	// }}}
-	// {{{ public function postBuildCommon()
-
-	public function postBuildCommon()
-	{
-		$this->layout->startCapture('content');
-		Swat::displayInlineJavaScript($this->getInlineJavaScript());
-		$this->layout->endCapture();
-	}
-
-	// }}}
-	// {{{ protected function buildInternal()
-
-	protected function buildInternal()
-	{
-		parent::buildInternal();
-
-		/*
-		 * Set page to two-column layout when page is stand-alone even when
-		 * there is no address list. The narrower layout of the form fields
-		 * looks better even withour a select list on the left.
-		 */
-		$this->ui->getWidget('form')->classes[] = 'checkout-no-column';
-	}
-
-	// }}}
 	// {{{ protected function loadDataFromSession()
 
 	protected function loadDataFromSession()
@@ -460,24 +417,9 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 	public function finalize()
 	{
 		parent::finalize();
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-checkout-address-page.css',
-			Store::PACKAGE_ID));
-
-		$yui = new SwatYUI(array('dom', 'event'));
-		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
-
-		$path = 'packages/store/javascript/';
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			$path.'store-checkout-page.js',
-			Store::PACKAGE_ID));
 
 		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			$path.'store-checkout-address-page.js',
-			Store::PACKAGE_ID));
-
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			$path.'store-checkout-shipping-address-page.js',
+			'packages/store/javascript/store-checkout-shipping-address-page.js',
 			Store::PACKAGE_ID));
 	}
 
