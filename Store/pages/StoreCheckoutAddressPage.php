@@ -117,6 +117,11 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
+	// {{{ protected function getAddress()
+
+	abstract protected function getAddress();
+
+	// }}}
 
 	// build phase
 	// {{{ public function buildCommon()
