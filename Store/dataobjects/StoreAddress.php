@@ -824,8 +824,8 @@ abstract class StoreAddress extends SwatDBDataObject
 			$equal = false;
 
 		if (strtoupper($this->line1) != strtoupper($address->line1) &&
-			!$this->differByStreetSuffixOnly($this->line1, $address->line1) &&
-			!$this->differByStreetAbbreviationOnly($this->line1, $address->line1))
+			!self::differByStreetSuffixOnly($this->line1, $address->line1) &&
+			!self::differByStreetAbbreviationOnly($this->line1, $address->line1))
 				$equal = false;
 
 		if (strtoupper($this->line2) != strtoupper($address->line2))
@@ -1463,9 +1463,9 @@ abstract class StoreAddress extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ private function differByStreetSuffixOnly()
+	// {{{ private static function differByStreetSuffixOnly()
 
-	private function differByStreetSuffixOnly($a, $b)
+	private static function differByStreetSuffixOnly($a, $b)
 	{
 		$result = false;
 
@@ -1489,9 +1489,9 @@ abstract class StoreAddress extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ private function differByStreetAbbreviationOnly()
+	// {{{ private static function differByStreetAbbreviationOnly()
 
-	private function differByStreetAbbreviationOnly($a, $b)
+	private static function differByStreetAbbreviationOnly($a, $b)
 	{
 		$result = false;
 
