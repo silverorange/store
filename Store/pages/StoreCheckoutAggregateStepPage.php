@@ -11,6 +11,11 @@ require_once 'Store/pages/StoreCheckoutStepPage.php';
  */
 abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 {
+	// {{{ private properties
+
+	private $embedded_edit_pages = array();
+
+	// }}}
 	// {{{ public function __construct()
 
 	public function __construct(SiteAbstractPage $page)
@@ -23,6 +28,22 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 	}
 
 	// }}}
+	// {{{ public function registerEmbeddedEditPage()
+
+	public function registerEmbeddedEditPage(SiteAbstractPage $page)
+	{
+		$this->embedded_edit_pages[] = $page;
+	}
+
+	// }}}
+	// {{{ public function getEmbeddedEditPages()
+
+	public function getEmbeddedEditPages()
+	{
+		return $this->embedded_edit_pages;
+	}
+
+	// }}}
 	// {{{ abstract protected function instantiateEmbeddedEditPages()
 
 	abstract protected function instantiateEmbeddedEditPages();
@@ -30,6 +51,20 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 	// }}}
 
 	// init phase
+	// {{{ protected function initInternal()
+
+	protected function initInternal()
+	{
+		parent::initInternal();
+
+		foreach ($this->embedded_edit_pages as $page)
+			$page->setUI($this->ui);
+
+		foreach ($this->embedded_edit_pages as $page)
+			$page->initCommon();
+	}
+
+	// }}}
 	// {{{ protected function loadUI()
 
 	protected function loadUI()
@@ -72,31 +107,53 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 
 	public function process()
 	{
+		$form = $this->ui->getWidget('form');
+
+		if ($form->isSubmitted()) {
+			foreach ($this->embedded_edit_pages as $page)
+				$page->preProcessCommon();
+		}
+
 		parent::process();
 
-		$form = $this->ui->getWidget('form');
 		if ($form->isProcessed()) {
-			if ($form->hasMessage()) {
-				$message = new SwatMessage(Store::_('There is a problem with '.
-					'the information submitted.'), SwatMessage::ERROR);
+			foreach ($this->embedded_edit_pages as $page)
+				$page->validateCommon();
 
-				$message->secondary_content = Store::_('Please address the '.
-					'fields highlighted below and re-submit the form.');
-
-				$this->ui->getWidget('message_display')->add($message);
-			} else {
-				$this->updateProgress();
-				$this->relocate();
+			if (!$form->hasMessage()) {
+				foreach ($this->embedded_edit_pages as $page)
+					$page->processCommon();
 			}
 		}
+
 	}
 
 	// }}}
-	// {{{ protected function relocate()
 
-	protected function relocate()
+	// build phase
+	// {{{ public function build()
+
+	public function build()
 	{
-		$this->app->relocate('checkout/confirmation');
+		foreach ($this->embedded_edit_pages as $page)
+			$page->buildCommon();
+
+		parent::build();
+
+		foreach ($this->embedded_edit_pages as $page)
+			$page->postBuildCommon();
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+		foreach ($this->embedded_edit_pages as $page)
+			$page->finalize();
 	}
 
 	// }}}

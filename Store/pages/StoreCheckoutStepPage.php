@@ -11,40 +11,12 @@ require_once 'Store/pages/StoreCheckoutUIPage.php';
  */
 abstract class StoreCheckoutStepPage extends StoreCheckoutPage
 {
-	// {{{ private properties
-
-	private $embedded_edit_pages = array();
-
-	// }}}
-	// {{{ public function registerEmbeddedEditPage()
-
-	public function registerEmbeddedEditPage(SiteAbstractPage $page)
-	{
-		$this->embedded_edit_pages[] = $page;
-	}
-
-	// }}}
-	// {{{ public function getEmbeddedEditPages()
-
-	public function getEmbeddedEditPages()
-	{
-		return $this->embedded_edit_pages;
-	}
-
-	// }}}
-
 	// init phase
 	// {{{ protected function initInternal()
 
 	protected function initInternal()
 	{
 		parent::initInternal();
-
-		foreach ($this->embedded_edit_pages as $page)
-			$page->setUI($this->ui);
-
-		foreach ($this->embedded_edit_pages as $page)
-			$page->initCommon();
 
 		if ($this->ui->hasWidget('checkout_progress')) {
 			$checkout_progress = $this->ui->getWidget('checkout_progress');
@@ -55,57 +27,35 @@ abstract class StoreCheckoutStepPage extends StoreCheckoutPage
 	// }}}
 
 	// process phase
-	// {{{ public function process()
+	// {{{ protected function processInternal()
 
-	public function process()
+	protected function processInternal()
 	{
+		parent::processInternal();
+
 		$form = $this->ui->getWidget('form');
-
-		if ($form->isSubmitted()) {
-			foreach ($this->embedded_edit_pages as $page)
-				$page->preProcessCommon();
-		}
-
-		parent::process();
-
 		if ($form->isProcessed()) {
-			foreach ($this->embedded_edit_pages as $page)
-				$page->validateCommon();
+			if ($form->hasMessage()) {
+				$message = new SwatMessage(Store::_('There is a problem with '.
+					'the information submitted.'), SwatMessage::ERROR);
 
-			if (!$form->hasMessage()) {
-				foreach ($this->embedded_edit_pages as $page)
-					$page->processCommon();
+				$message->secondary_content = Store::_('Please address the '.
+					'fields highlighted below and re-submit the form.');
+
+				$this->ui->getWidget('message_display')->add($message);
+			} else {
+				$this->updateProgress();
+				$this->relocate();
 			}
 		}
-
 	}
 
 	// }}}
+	// {{{ protected function relocate()
 
-	// build phase
-	// {{{ public function build()
-
-	public function build()
+	protected function relocate()
 	{
-		foreach ($this->embedded_edit_pages as $page)
-			$page->buildCommon();
-
-		parent::build();
-
-		foreach ($this->embedded_edit_pages as $page)
-			$page->postBuildCommon();
-	}
-
-	// }}}
-
-	// finalize phase
-	// {{{ public function finalize()
-
-	public function finalize()
-	{
-		parent::finalize();
-		foreach ($this->embedded_edit_pages as $page)
-			$page->finalize();
+		$this->app->relocate('checkout/confirmation');
 	}
 
 	// }}}
