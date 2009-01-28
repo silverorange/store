@@ -16,7 +16,7 @@ require_once 'NateGoSearch/NateGoSearch.php';
  * Edit page for Items
  *
  * @package   Store
- * @copyright 2005-2008 silverorange
+ * @copyright 2005-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemEdit extends AdminDBEdit
@@ -67,12 +67,12 @@ class StoreItemEdit extends AdminDBEdit
 				new SwatOption($status->id, $status->title));
 		}
 
-		$regions = SwatDB::getOptionArray($this->app->db, 'Region', 'title',
-			'id', 'title');
-
 		$sale_discount_flydown = $this->ui->getWidget('sale_discount');
 		$sale_discount_flydown->addOptionsByArray(SwatDB::getOptionArray(
 			$this->app->db, 'SaleDiscount', 'title', 'id', 'title'));
+
+		$regions = SwatDB::getOptionArray($this->app->db, 'Region', 'title',
+			'id', 'title');
 
 		$price_replicator = $this->ui->getWidget('price_replicator');
 		$price_replicator->replicators = $regions;
@@ -407,15 +407,23 @@ class StoreItemEdit extends AdminDBEdit
 
 	protected function loadRegionBindings()
 	{
-		$price_replicator = $this->ui->getWidget('price_replicator');
+		if ($this->id !== null) {
+			$price_replicator = $this->ui->getWidget('price_replicator');
 
-		foreach ($this->item->region_bindings as $binding) {
-			$region_id = $binding->region->id;
-			$price_replicator->getWidget('price', $region_id)->value =
-				$binding->price;
+			// set all enabled to false on edits, as each region will set its
+			// own enabled state in the next foreach loop.
+			foreach ($price_replicator->replicators as $region => $title) {
+				$price_replicator->getWidget('enabled', $region)->value = false;
+			}
 
-			$price_replicator->getWidget('enabled', $region_id)->value =
-				$binding->enabled;
+			foreach ($this->item->region_bindings as $binding) {
+				$region_id = $binding->region->id;
+				$price_replicator->getWidget('price', $region_id)->value =
+					$binding->price;
+
+				$price_replicator->getWidget('enabled', $region_id)->value =
+					$binding->enabled;
+			}
 		}
 	}
 
