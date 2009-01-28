@@ -154,7 +154,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$title = $type->title;
 
 		if (strlen($type->note) > 0) {
-			$title.= sprintf('<div class="swat-note">%s</div>',
+			$title.= sprintf('<br /><span class="swat-note">%s</span>',
 				$type->note);
 		}
 
