@@ -71,8 +71,16 @@ abstract class StoreCheckoutPage extends SiteUiPage
 		$this->ui = new SwatUI();
 		$this->ui->loadFromXML($this->base_ui_xml);
 
+		/**
+		 * only load the page's xml if it actually exists. This allows
+		 * subclasses to use StoreCheckoutPage, but not define any extra xml
+		 * (for example: a payment processing landing page that executes some
+		 * code and then relocates).
+		 */
 		$form = $this->ui->getWidget('form');
-		$this->ui->loadFromXML($this->getUiXml(), $form);
+		$xml  = $this->getUiXml();
+		if ($xml !== null)
+			$this->ui->loadFromXML($xml, $form);
 	}
 
 	// }}}
