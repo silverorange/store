@@ -6,17 +6,16 @@ require_once 'Store/pages/StoreCheckoutFinalPage.php';
  * Page displayed when an order is processed successfully on the checkout
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
 {
-	// {{{ public function __construct()
+	// {{{ public function getUiXml()
 
-	public function __construct(SiteAbstractPage $page)
+	public function getUiXml()
 	{
-		parent::__construct($page);
-		$this->ui_xml = 'Store/pages/checkout-thank-you.xml';
+		return 'Store/pages/checkout-thank-you.xml';
 	}
 
 	// }}}

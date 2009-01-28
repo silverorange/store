@@ -6,7 +6,8 @@ require_once 'Store/pages/StoreCheckoutStepPage.php';
  * Base class for a step page of checkout that is composed of other pages.
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2009 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 {
@@ -38,7 +39,7 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 		$pages = $this->getEmbeddedEditPages();
 		foreach ($pages as $page) {
 			$container = $this->getContainer($page);
-			$this->ui->loadFromXML($page->getXml(), $container);
+			$this->ui->loadFromXML($page->getUiXml(), $container);
 		}
 	}
 
@@ -72,7 +73,7 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 	public function process()
 	{
 		parent::process();
-
+exit;
 		$form = $this->ui->getWidget('form');
 		if ($form->isProcessed()) {
 			if ($form->hasMessage()) {

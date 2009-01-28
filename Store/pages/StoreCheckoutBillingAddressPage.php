@@ -7,16 +7,16 @@ require_once 'Swat/SwatYUI.php';
  * Billing address edit page of checkout
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2009 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 {
-	// {{{ public function __construct()
+	// {{{ public function getUiXml()
 
-	public function __construct(SiteAbstractPage $page)
+	public function getUiXml()
 	{
-		parent::__construct($page);
-		$this->ui_xml = 'Store/pages/checkout-billing-address.xml';
+		return 'Store/pages/checkout-billing-address.xml';
 	}
 
 	// }}}
@@ -302,7 +302,9 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 	protected function buildList()
 	{
 		$address_list = $this->ui->getWidget('billing_address_list');
-		$address_list_container = $this->ui->getWidget('billing_address_list_container');
+		$address_list_container =
+			$this->ui->getWidget('billing_address_list_container');
+
 		$address_list->addOption('new', sprintf(
 			'<span class="add-new">%s</span>', Store::_('Add a New Address')),
 			'text/xml');
@@ -332,7 +334,9 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutEditPage
 				$this->app->db->quote($this->app->getRegion()->id,
 				'integer'))));
 
-		$provstate_other = $this->ui->getWidget('billing_address_provstate_other');
+		$provstate_other =
+			$this->ui->getWidget('billing_address_provstate_other');
+
 		if ($provstate_other->visible) {
 			$provstate_flydown->addDivider();
 			$option = new SwatOption('other', Store::_('Other…'));

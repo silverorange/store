@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Site/pages/SiteArticlePage.php';
+require_once 'Site/pages/SiteUiPage.php';
 require_once 'Store/StorePaymentRequest.php';
 require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/dataobjects/StoreOrder.php';
@@ -9,17 +9,30 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * Base class for checkout pages
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2009 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-abstract class StoreCheckoutPage extends SiteArticlePage
+abstract class StoreCheckoutPage extends SiteUiPage
 {
+	// {{{ protected properties
+
+	protected $base_ui_xml = 'Store/pages/checkout.xml';
+
+	// }}}
+	// {{{ public function setUI()
+
+	public function setUI($ui = null)
+	{
+		$this->ui = $ui;
+	}
+
+	// }}}
+
 	// init phase
 	// {{{ public function init()
 
 	public function init()
 	{
-		parent::init();
-
 		if (!$this->app->session->isActive())
 			$this->app->relocate('cart');
 
@@ -44,6 +57,31 @@ abstract class StoreCheckoutPage extends SiteArticlePage
 				$this->app->relocate($dependency);
 			}
 		}
+
+		$this->loadUI();
+		$this->initInternal();
+		$this->ui->init();
+	}
+
+	// }}}
+	// {{{ protected function loadUI()
+
+	protected function loadUI()
+	{
+		$this->ui = new SwatUI();
+		$this->ui->loadFromXML($this->base_ui_xml);
+
+		$form = $this->ui->getWidget('form');
+		$this->ui->loadFromXML($this->getUiXml(), $form);
+	}
+
+	// }}}
+	// {{{ protected function initInternal()
+
+	protected function initInternal()
+	{
+		$form = $this->ui->getWidget('form');
+		$form->action = $this->source;
 	}
 
 	// }}}
@@ -118,7 +156,7 @@ abstract class StoreCheckoutPage extends SiteArticlePage
 			$this->app->session->checkout_progress = new ArrayObject();
 		}
 
-		$this->app->session->checkout_progress[] = (string)($this->getPath());
+		$this->app->session->checkout_progress[] = $this->getSource();
 	}
 
 	// }}}
@@ -129,6 +167,22 @@ abstract class StoreCheckoutPage extends SiteArticlePage
 		$this->app->session->checkout_progress = new ArrayObject();
 		$this->app->session->checkout_with_account = false;
 		$this->app->session->checkout_email = null;
+	}
+
+	// }}}
+
+	// build phase
+	// {{{ protected function buildInternal()
+
+	protected function buildInternal()
+	{
+		parent::buildInternal();
+
+		if ($this->app->session->order->isFromInvoice()) {
+			$entry = $this->layout->navbar->getEntryByPosition(1);
+			$entry->link = sprintf('checkout/invoice%s',
+				$this->app->session->order->invoice->id);
+		}
 	}
 
 	// }}}

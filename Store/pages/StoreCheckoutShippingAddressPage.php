@@ -7,7 +7,8 @@ require_once 'Swat/SwatYUI.php';
  * Shipping address edit page of checkout
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2009 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 {
@@ -21,12 +22,11 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutEditPage
 	protected $shipping_address;
 
 	// }}}
-	// {{{ public function __construct()
+	// {{{ public function getUiXml()
 
-	public function __construct(SiteAbstractPage $page)
+	public function getUiXml()
 	{
-		parent::__construct($page);
-		$this->ui_xml = 'Store/pages/checkout-shipping-address.xml';
+		return 'Store/pages/checkout-shipping-address.xml';
 	}
 
 	// }}}

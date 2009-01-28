@@ -4,7 +4,7 @@ require_once 'Swat/SwatDate.php';
 require_once 'Swat/SwatDetailsStore.php';
 require_once 'SwatDB/SwatDBTransaction.php';
 require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Store/pages/StoreCheckoutUIPage.php';
+require_once 'Store/pages/StoreCheckoutPage.php';
 require_once 'Store/dataobjects/StoreOrderItemWrapper.php';
 require_once 'Store/dataobjects/StoreCartEntry.php';
 require_once 'Store/exceptions/StorePaymentAddressException.php';
@@ -15,35 +15,28 @@ require_once 'Store/exceptions/StorePaymentCvvException.php';
  * Confirmation page of checkout
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2009 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
+class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 {
-	// {{{ public function __construct()
+	// {{{ public function getUiXml()
 
-	public function __construct(SiteAbstractPage $page)
+	public function getUiXml()
 	{
-		parent::__construct($page);
-		$this->ui_xml = 'Store/pages/checkout-confirmation.xml';
+		return 'Store/pages/checkout-confirmation.xml';
 	}
 
 	// }}}
 
 	// init phase
-	// {{{ public function init()
-
-	public function init()
-	{
-		parent::init();
-		$this->checkOrder();
-	}
-
-	// }}}
-	// {{{ protected function initInternal()
+	// {{{ protected function init()
 
 	protected function initInternal()
 	{
 		parent::initInternal();
+		$this->checkOrder();
+
 
 		if ($this->ui->hasWidget('checkout_progress')) {
 			$checkout_progress = $this->ui->getWidget('checkout_progress');
@@ -72,14 +65,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutUIPage
 	// }}}
 
 	// process phase
-	// {{{ public function process()
+	// {{{ protected function processInternal()
 
-	public function process()
+	protected function processInternal()
 	{
-		parent::process();
-
-		$this->ui->process();
-
 		$form = $this->ui->getWidget('form');
 
 		if ($form->isProcessed() && !$form->hasMessage())

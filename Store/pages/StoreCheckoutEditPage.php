@@ -1,14 +1,15 @@
 <?php
 
-require_once 'Store/pages/StoreCheckoutUIPage.php';
+require_once 'Store/pages/StoreCheckoutPage.php';
 
 /**
  * Base class for edit pages in the checkout
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2009 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-abstract class StoreCheckoutEditPage extends StoreCheckoutUIPage
+abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 {
 	// {{{ protected function getOptionalStringValue()
 
@@ -44,13 +45,14 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutUIPage
 
 	protected function loadUI()
 	{
-		$page_xml = $this->ui_xml;
-		$this->ui_xml = dirname(__FILE__).'/checkout-edit.xml';
-		parent::loadUI();
-		$this->ui_xml = $page_xml;
+		$this->ui = new SwatUI();
+		$this->ui->loadFromXML($this->base_ui_xml);
+
+		$form = $this->ui->getWidget('form');
+		$this->ui->loadFromXML('Store/pages/checkout-edit.xml', $form);
 
 		$container = $this->ui->getWidget('container');
-		$this->ui->loadFromXML($this->ui_xml, $container);
+		$this->ui->loadFromXML($this->getUiXml(), $container);
 	}
 
 	// }}}
@@ -75,14 +77,12 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutUIPage
 
 	public function process()
 	{
-		parent::process();
-
 		$form = $this->ui->getWidget('form');
-
 		if ($form->isSubmitted())
 			$this->preProcessCommon();
 
-		$this->ui->process();
+		parent::process();
+		$this->processInternal();
 
 		if ($form->isProcessed()) {
 			$this->validateCommon();
@@ -146,6 +146,21 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutUIPage
 	 * By default, no additional processing is performed.
 	 */
 	public function processCommon()
+	{
+	}
+
+	// }}}
+	// {{{ protected function processInternal()
+
+	/**
+	 * Processes the data submitted by this checkout edit page
+	 *
+	 * Subclasses may add additional code here to update checkout objects by
+	 * overriding and implementing this method.
+	 *
+	 * By default, no additional processing is performed.
+	 */
+	protected function processInternal()
 	{
 	}
 

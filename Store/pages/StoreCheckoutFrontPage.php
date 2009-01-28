@@ -1,21 +1,17 @@
 <?php
 
-require_once 'Store/pages/StoreCheckoutUIPage.php';
+require_once 'Store/pages/StoreCheckoutPage.php';
 
 /**
  * Front page of checkout
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2009 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreCheckoutFrontPage extends StoreCheckoutUIPage
+class StoreCheckoutFrontPage extends StoreCheckoutPage
 {
 	// {{{ protected properties
-
-	/**
-	 * @var string
-	 */
-	protected $ui_xml = 'Store/pages/checkout-front.xml';
 
 	/**
 	 * @var integer
@@ -23,14 +19,11 @@ class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 	protected $invoice_id = null;
 
 	// }}}
-	// {{{ public function __construct()
+	// {{{ public function getUiXml()
 
-	public function __construct(SiteAbstractPage $page)
+	public function getUiXml()
 	{
-		parent::__construct($page);
-
-		if (intval($this->getArgument('invoice_id')) != 0)
-			$this->invoice_id = $invoice_id;
+		return 'Store/pages/checkout-front.xml';
 	}
 
 	// }}}
@@ -69,16 +62,20 @@ class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 			$this->app->relocate('checkout/first');
 		}
 
+		if (intval($this->getArgument('invoice_id')) != 0)
+			$this->invoice_id = $invoice_id;
+
 		parent::init();
 	}
 
 	// }}}
 	// {{{ protected function loadUI()
 
+	// subclassed to avoid loading xml from a form that doesn't exist
 	protected function loadUI()
 	{
 		$this->ui = new SwatUI();
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 	}
 
 	// }}}
@@ -93,16 +90,15 @@ class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 	// }}}
 
 	// process phase
-	// {{{ public function process()
+	// {{{ protected function processInternal()
 
-	public function process()
+	protected function processInternal()
 	{
-		parent::process();
-		$this->ui->process();
+		parent::processInternal();
 
 		$create_account_form = $this->ui->getWidget('create_account_form');
-		$just_place_form = $this->ui->getWidget('just_place_form');
-		$login_form = $this->ui->getWidget('login_form');
+		$just_place_form     = $this->ui->getWidget('just_place_form');
+		$login_form          = $this->ui->getWidget('login_form');
 
 		if ($create_account_form->isProcessed())
 			$this->processCreateAccount($create_account_form);
@@ -115,15 +111,23 @@ class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 	}
 
 	// }}}
-	// {{{ protected function processCreateAccount()
+	// {{{ protected function processForm()
 
-	protected function processCreateAccount($create_account_form)
+	protected function processForm($form, $checkout_with_account)
 	{
 		$this->initDataObjects();
 		$this->resetProgress();
 		$this->updateProgress();
-		$this->app->session->checkout_with_account = true;
+		$this->app->session->checkout_with_account = $checkout_with_account;
 		$this->app->relocate('checkout/first');
+	}
+
+	// }}}
+	// {{{ protected function processCreateAccount()
+
+	protected function processCreateAccount($create_account_form)
+	{
+		$this->processForm($create_account_form, true);
 	}
 
 	// }}}
@@ -131,11 +135,7 @@ class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 
 	protected function processJustPlace($just_place_form)
 	{
-		$this->app->session->checkout_with_account = false;
-		$this->initDataObjects();
-		$this->resetProgress();
-		$this->updateProgress();
-		$this->app->relocate('checkout/first');
+		$this->processForm($just_place_form, false);
 	}
 
 	// }}}
@@ -148,11 +148,7 @@ class StoreCheckoutFrontPage extends StoreCheckoutUIPage
 			$password = $this->ui->getWidget('password')->value;
 
 			if ($this->app->session->login($email, $password)) {
-				$this->app->session->checkout_with_account = true;
-				$this->initDataObjects();
-				$this->resetProgress();
-				$this->updateProgress();
-				$this->app->relocate('checkout/first');
+				$this->processForm($login_form, true);
 			} else {
 				$message = new SwatMessage(Store::_('Login Incorrect'),
 					SwatMessage::WARNING);
