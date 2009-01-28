@@ -117,7 +117,7 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
-	// {{{ protected function getAddress()
+	// {{{ abstract protected function getAddress()
 
 	abstract protected function getAddress();
 
@@ -159,6 +159,11 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 		 */
 		$this->ui->getWidget('form')->classes[] = 'checkout-no-column';
 	}
+
+	// }}}
+	// {{{ abstarct rotected function getInlineJavaScript()
+
+	abstract protected function getInlineJavaScript();
 
 	// }}}
 

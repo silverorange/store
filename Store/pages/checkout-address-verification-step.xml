@@ -1,0 +1,29 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatContentBlock">
+		<property name="content"><![CDATA[
+			<p>To deliver to you more efficiently, we compared the address
+			you entered to information in a postal address database. The
+			database contains a record of all addresses that receive mail,
+			formatted in the preferred style.</p>
+		]]></property>
+		<property name="content_type">text/xml</property>
+	</widget>
+	<widget class="SwatFieldset" id="billing_address_verification_container">
+		<property name="title">Billing Address</property>
+	</widget>
+	<widget class="SwatFieldset" id="shipping_address_verification_container">
+		<property name="title">Shipping Address</property>
+	</widget>
+	<widget class="SwatFooterFormField" id="checkout_footer">
+		<property name="note"><![CDATA[
+		<p>You will have a chance to review your order on the next step before
+		purchasing.</p>
+		]]></property>
+		<property name="note_content_type">text/xml</property>
+		<widget class="SwatButton" id="submit">
+			<property name="title">Next Step</property>
+		</widget>
+	</widget>
+</swatml>

@@ -204,16 +204,6 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 	}
 
 	// }}}
-	// {{{ public function postBuildCommon()
-
-	public function postBuildCommon()
-	{
-		$this->layout->startCapture('content');
-		Swat::displayInlineJavaScript($this->getInlineJavaScript());
-		$this->layout->endCapture();
-	}
-
-	// }}}
 	// {{{ protected function buildInternal()
 
 	protected function buildInternal()

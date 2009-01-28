@@ -1,0 +1,10 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatContentBlock" id="billing_verification_message" />
+	<widget class="SwatRadioTable" id="billing_verification_list">
+		<property name="value">verified</property>
+	</widget>
+	<widget class="SwatContentBlock" id="billing_verification_message_bottom" />
+</swatml>
+
