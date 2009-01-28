@@ -114,7 +114,10 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 				$page->preProcessCommon();
 		}
 
-		parent::process();
+		// skip StoreCheckoutStepPage::process as we don't want to update
+		// progress and relocate until after we've validated and run all
+		// embedded page's processCommon
+		StoreCheckoutPage::process();
 
 		if ($form->isProcessed()) {
 			foreach ($this->embedded_edit_pages as $page)
@@ -126,10 +129,23 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 			}
 		}
 
+		if ($form->isProcessed()) {
+			if ($form->hasMessage()) {
+				$message = new SwatMessage(Store::_('There is a problem with '.
+					'the information submitted.'), SwatMessage::ERROR);
+
+				$message->secondary_content = Store::_('Please address the '.
+					'fields highlighted below and re-submit the form.');
+
+				$this->ui->getWidget('message_display')->add($message);
+			} else {
+				$this->updateProgress();
+				$this->relocate();
+			}
+		}
 	}
 
 	// }}}
-
 	// build phase
 	// {{{ public function build()
 
