@@ -651,9 +651,9 @@ abstract class StoreAddress extends SwatDBDataObject
 	 */
 	public function display()
 	{
-		$address_tag = new SwatHtmlTag('address');
-		$address_tag->class = 'vcard';
-		$address_tag->open();
+		$span_tag = new SwatHtmlTag('span');
+		$span_tag->class = 'vcard address';
+		$span_tag->open();
 
 		switch ($this->country->id) {
 		case 'CA':
@@ -666,7 +666,7 @@ abstract class StoreAddress extends SwatDBDataObject
 			$this->displayUS();
 		}
 
-		$address_tag->close();
+		$span_tag->close();
 	}
 
 	// }}}
