@@ -137,8 +137,10 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 	{
 		if (!$this->button2->hasBeenClicked() &&
 			!$this->button1->hasBeenClicked() &&
-			$this->isValid($form))
+			$this->isValid($form) &&
+			StoreAddress::isVerificationAvailable($this->app)) {
 				$this->verifyAddress($form);
+		}
 	}
 
 	// }}}
