@@ -627,6 +627,23 @@ abstract class StoreAddress extends SwatDBDataObject
 	);
 
 	// }}}
+	// {{{ public static function isVerificationAvailable()
+
+	/**
+	 * Checks the application's config and returns whether a key to a
+	 * verification service exists or not.
+	 *
+	 * @param StoreApplication $app the application that you want to check the
+	 *                               config for verification key.
+	 *
+	 * @return boolean True if there is a key for verification.
+	 */
+	public static function isVerificationAvailable(StoreApplication $app)
+	{
+		return isset($app->config->strikeiron->verify_address_usa_key);
+	}
+
+	// }}}
 	// {{{ public function display()
 
 	/**
@@ -1460,6 +1477,15 @@ abstract class StoreAddress extends SwatDBDataObject
 		}
 
 		return $valid;
+	}
+
+	// }}}
+	// {{{ protected function verifyCA()
+
+	protected function verifyCA(SiteApplication $app, $modify)
+	{
+		// TODO: actually verify canadian addresses.
+		return true;
 	}
 
 	// }}}

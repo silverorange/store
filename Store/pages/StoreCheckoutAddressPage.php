@@ -59,8 +59,10 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 		if ($form->isProcessed() &&
 			!$this->button2->hasBeenClicked() &&
 			!$this->button1->hasBeenClicked() &&
-			!$form->hasMessage())
+			!$form->hasMessage() &&
+			StoreAddress::isVerificationAvailable($this->app)) {
 				$this->verifyAddress($form);
+		}
 	}
 
 	// }}}
