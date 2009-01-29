@@ -62,7 +62,7 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
 			}
 
 			if (isset($this->memcache)) {
-				$this->memcache->flushNs('product');
+				$this->flushMemcache();
 			}
 
 			$this->debug(Store::_('Done.')."\n");
@@ -151,6 +151,25 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
 		if ($this->hasModule('SiteMemcacheModule')) {
 			$this->memcache->server = $config->memcache->server;
 			$this->memcache->app_ns = $config->memcache->app_ns;
+		}
+	}
+
+	// }}}
+	// {{{ protected function flushMemcache()
+
+	protected function flushMemcache()
+	{
+		$instances = SwatDB::queryColumn($this->db, 'Instance', 'text:shortname');
+
+		if (count($instances) == 0) {
+			$this->memcache->flushNs('product');
+			$this->debug('Memcache Flushed');
+		} else {
+			foreach ($instances as $shortname) {
+				$this->memcache->setInstance($shortname);
+				$this->memcache->flushNs('product');
+				$this->debug('Memcache Flushed ('.$shortname.')');
+			}
 		}
 	}
 
