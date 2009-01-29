@@ -145,17 +145,17 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 
 	protected function insertPopularProduct($row)
 	{
-		if ($row->popularity === null)
+		if ($row->popularity === null) {
 			SwatDB::insertRow($this->db, 'ProductPopularity',
 				array('integer:product',
 					'integer:order_count',
 					'float:total_quantity',
 					'float:total_sales'),
-				array('product' => $row->product,
-					'order_count' => 1,
+				array('product'      => $row->product,
+					'order_count'    => 1,
 					'total_quantity' => $row->quantity,
-					'total_sales' => $row->extension));
-		else
+					'total_sales'    => $row->extension));
+		} else {
 			SwatDB::exec($this->db, sprintf('
 				update ProductPopularity
 				set order_count = order_count + 1,
@@ -165,6 +165,7 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 				$this->db->quote($row->quantity, 'integer'),
 				$this->db->quote($row->extension, 'float'),
 				$this->db->quote($row->product, 'integer')));
+		}
 	}
 
 	// }}}
@@ -180,10 +181,10 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 					'float:total_quantity',
 					'float:total_sales'),
 				array('source_product' => $row->source_product,
-					'related_product' => $row->related_product,
-					'order_count' => 1,
-					'total_quantity' => $row->quantity,
-					'total_sales' => $row->extension));
+					'related_product'  => $row->related_product,
+					'order_count'      => 1,
+					'total_quantity'   => $row->quantity,
+					'total_sales'      => $row->extension));
 		} else {
 			SwatDB::exec($this->db, sprintf('
 				update ProductPopularProductBinding
