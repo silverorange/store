@@ -1527,12 +1527,8 @@ abstract class StoreAddress extends SwatDBDataObject
 		$a = explode(' ', trim(strtoupper($a)));
 		$b = explode(' ', trim(strtoupper($b)));
 
-		for ($i = 0; $i < min(count($a), count($b)); $i++)
-			if ($a[$i] !== $b[$i])
-				break;
-
-		$suffix1 = $a[$i];
-		$suffix2 = $b[$i];
+		$suffix1 = implode(' ', array_diff_assoc($a, $b));
+		$suffix2 = implode(' ', array_diff_assoc($b, $a));
 
 		if (array_key_exists($suffix1, self::$street_suffixes) &&
 			self::$street_suffixes[$suffix1] === $suffix2)
