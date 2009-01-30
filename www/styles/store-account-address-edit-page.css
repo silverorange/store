@@ -1,8 +1,14 @@
 /* {{{ Address Verification */
 
-.swat-message-display span.address {
+span.address {
 	display: block;
-	padding: 0.5em 0.5em 0.5em 2em;
+	padding: 0 0.5em 1em 2em;
 }
+
+.swat-message-display .address-verification-yes {
+	margin-right: 0.5em;
+	font-weight: bold;
+}
+
 
 /* }}} */
