@@ -1,0 +1,8 @@
+/* {{{ Address Verification */
+
+.swat-message-display span.address {
+	display: block;
+	padding: 0.5em 0.5em 0.5em 2em;
+}
+
+/* }}} */
