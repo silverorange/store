@@ -81,7 +81,7 @@
 			<widget class="SwatFieldset" id="availability_fieldset">
 				<property name="title" translatable="yes">Availability &amp; Pricing</property>
 				<widget class="SwatDisplayableContainer" id="availability_wrapper">
-					<property name="classes[]>">clearfix</property>
+					<property name="classes[]">clearfix</property>
 					<widget class="SwatReplicableFieldset" id="price_replicator">
 						<widget class="SwatFormField">
 							<property name="title" translatable="yes">Enabled</property>
