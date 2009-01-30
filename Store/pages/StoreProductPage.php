@@ -1298,6 +1298,8 @@ class StoreProductPage extends StorePage
 			$this->cart_ui->getRoot()->getHtmlHeadEntrySet());
 
 		if ($this->reviews_ui instanceof SwatUI) {
+			require_once 'XML/RPCAjax.php';
+
 			$this->layout->addHtmlHeadEntrySet(
 				XML_RPCAjax::getHtmlHeadEntrySet());
 
