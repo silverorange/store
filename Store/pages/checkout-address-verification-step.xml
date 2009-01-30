@@ -3,10 +3,10 @@
 <swatml>
 	<widget class="SwatContentBlock">
 		<property name="content"><![CDATA[
-			<p>To deliver to you more efficiently, we compared the address
-			you entered to information in a postal address database. The
-			database contains a record of all addresses that receive mail,
-			formatted in the preferred style.</p>
+			<h3>Address Verification</h3>
+			<p>To ensure effective delivery, we have compared your address to 
+			our postal addresses database for formatting and style. Please 
+			review the recommendations below:</p>
 		]]></property>
 		<property name="content_type">text/xml</property>
 	</widget>
