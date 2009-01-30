@@ -6,6 +6,7 @@ require_once 'Store/pages/StoreCheckoutBasicInfoPage.php';
 require_once 'Store/pages/StoreCheckoutBillingAddressPage.php';
 require_once 'Store/pages/StoreCheckoutShippingAddressPage.php';
 require_once 'Store/pages/StoreCheckoutPaymentMethodPage.php';
+require_once 'Store/pages/StoreCheckoutShippingTypePage.php';
 
 /**
  * First step of checkout
