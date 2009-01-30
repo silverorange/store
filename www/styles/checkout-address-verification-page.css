@@ -1,0 +1,37 @@
+.address-verification-list label:hover {
+	color: #31210a;
+}
+
+.address-verification-list li {
+	float: left;
+	margin-right: 2em;
+	padding-bottom: 1em;
+	display: block;
+}
+
+
+.address-verification-list label span.address-option {
+	font-weight: bold;
+	margin-left: 0.3em;
+}
+
+.address-verification-list label span.address {
+	display: block;
+	padding: 0.5em 0.5em 0.5em 2em;
+}
+
+/* {{{ Checkout Footer */
+
+#checkout_footer .swat-note {
+	font-size: 100%;
+	margin-top: 0.5em;
+}
+
+#checkout_footer .swat-primary {
+	font-weight: bold;
+	color: #333;
+	font-size: 120%;
+	margin: 0;
+}
+
+/* }}} */
