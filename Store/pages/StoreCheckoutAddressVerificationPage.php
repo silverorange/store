@@ -129,7 +129,7 @@ abstract class StoreCheckoutAddressVerificationPage extends StoreCheckoutEditPag
 			$form->addHiddenField('verified_address', $verified_address);
 		} else {
 			ob_start();
-			echo '<p>This address was not found.  If there is a mistake, <a href="checkout/first">please return to the previous step</a> to change the address, otherwise continue to the next step.</p>';
+			echo '<p><strong>This address was not found.</strong><br />If there is a mistake, <a href="checkout/first">please return to the previous step</a> to change the address, otherwise continue to the next step.</p>';
 			$this->address->display();
 			$block_bottom->content = ob_get_clean();
 		}
