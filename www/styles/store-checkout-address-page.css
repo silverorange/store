@@ -38,3 +38,17 @@
 }
 
 .swat-footer-form-field { clear: both; }
+
+/* {{{ Address Verification */
+
+.swat-message-display span.address {
+	display: block;
+	padding: 0 0 1em 0.5em;
+}
+
+.swat-message-display .address-verification-yes {
+	margin-right: 0.5em;
+	font-weight: bold;
+}
+
+/* }}} */

@@ -83,17 +83,18 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 
 		$message = new SwatMessage('', 'notification');
 		$message->secondary_content = '<p>'.Store::_(
-			'To deliver to you more efficiently, we compared the address '.
-			'you entered to information in a postal address database. The '.
-			'database contains a record of all addresses that receive mail, '.
-			'formatted in the preferred style.').'</p>';
+			'To ensure effective delivery, we have compared your address to '.
+			'our postal addresses database for formatting and style. Please '.
+			'review the recommendations below:').'</p>';
 
 		if ($valid) {
 			$form->addHiddenField('verified_address', $verified_address);
 
 			$message->primary_content = Store::_('Is this your address?');
 			$this->button1->title = Store::_('Yes, this is my address');
+			$this->button1->classes[] = 'address-verification-yes';
 			$this->button2->title = Store::_('No, use my address as entered below');
+			$this->button2->classes[] = 'address-verification-no';
 
 			ob_start();
 			$verified_address->display();
