@@ -41,7 +41,7 @@
 
 /* {{{ Address Verification */
 
-.swat-message-display span.address {
+span.address {
 	display: block;
 	padding: 0 0 1em 0.5em;
 }
