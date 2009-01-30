@@ -8,7 +8,6 @@
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">SKU</property>
 				<widget class="SwatEntry" id="sku">
-					<property name="required" type="boolean">true</property>
 					<property name="size" type="integer">15</property>
 					<property name="maxlength" type="integer">20</property>
 				</widget>
