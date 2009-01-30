@@ -163,7 +163,7 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 		$message = new SwatMessage('', 'notification');
 		$message->secondary_content = '<p>'.Store::_(
 			'To ensure effective delivery, we have compared your address to '.
-			'our postal addresses database for formatting and style. Please '.
+			'our postal address database for formatting and style. Please '.
 			'review the recommendations below:').'</p>';
 
 		if ($valid) {
