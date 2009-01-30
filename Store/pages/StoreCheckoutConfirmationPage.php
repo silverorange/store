@@ -35,8 +35,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	protected function initInternal()
 	{
 		parent::initInternal();
-		$this->checkOrder();
 
+		$this->checkOrder();
 
 		if ($this->ui->hasWidget('checkout_progress')) {
 			$checkout_progress = $this->ui->getWidget('checkout_progress');
@@ -248,8 +248,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		// if this is a new account, log it in
 		if ($new_account) {
-			// clear account from session so we appear to not be logged in now that
-			// the account is saved
+			// clear account from session so we appear to not be logged in now
+			// that the account is saved
 			$this->app->session->account = null;
 			$this->app->session->loginById($account->id);
 		}
