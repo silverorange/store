@@ -112,17 +112,17 @@ abstract class StoreCheckoutAddressVerificationPage extends StoreCheckoutEditPag
 			$block->content = ob_get_clean();
 
 			ob_start();
-			echo '<span><b>Yes</b>, this is my address:</span>';
+			echo '<span class="address-option">Yes, this is my address:</span>';
 			$verified_address->display();
 			$list->addOption('verified', ob_get_clean(), 'text/xml');
 
 			ob_start();
-			echo '<span><b>No</b>, use the address I entered:</span>';
+			echo '<span class="address-option">No, use the address I entered:</span>';
 			$this->address->display();
 			$list->addOption('entered', ob_get_clean(), 'text/xml');
 
 			ob_start();
-			echo '<p>Or, <a href="checkout/first">return to the previous step</a> to change your address.</p>';
+			echo '<div>Or, <a href="checkout/first">return to the previous step</a> to change your address.</div>';
 			$block_bottom->content = ob_get_clean();
 
 			$form = $this->ui->getWidget('form');
@@ -143,11 +143,10 @@ abstract class StoreCheckoutAddressVerificationPage extends StoreCheckoutEditPag
 	public function finalize()
 	{
 		parent::finalize();
-		/*
+
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
 			'packages/store/styles/checkout-address-verification-page.css',
 			Store::PACKAGE_ID));
-		*/
 
 		$yui = new SwatYUI(array('dom', 'event'));
 		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());

@@ -55,15 +55,19 @@
 	clear: left;
 }
 
+.swat-footer-form-field {
+	clear: both;
+}
+
+#payment_method_container p.small-print {
+	margin: 0;
+}
+
+/* {{{ Checkout Footer */
 
 #checkout_footer .swat-note {
 	font-size: 100%;
 	margin-top: 0.5em;
-}
-
-
-.swat-footer-form-field {
-	clear: both;
 }
 
 #checkout_footer .swat-primary {
@@ -73,6 +77,4 @@
 	margin: 0;
 }
 
-#payment_method_container p.small-print {
-	margin: 0;
-}
+/* }}} */
