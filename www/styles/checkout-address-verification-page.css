@@ -14,7 +14,7 @@
 	margin-left: 0.3em;
 }
 
-.address-verification-list label span.address {
+span.address {
 	display: block;
 	padding: 0.5em 0.5em 0.5em 2em;
 }
