@@ -133,7 +133,7 @@ span.store-product-review-all-loading {
 }
 
 #product_reviews_frame .swat-footer-form-field {
-	clear: both;
+	clear: left;
 }
 
 
