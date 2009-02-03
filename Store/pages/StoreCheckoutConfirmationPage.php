@@ -229,7 +229,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$this->app->session->save_account_payment_method &&
 			$order->payment_method !== null &&
 			$order->payment_method->isSaveableWithAccount()) {
-				$this->addPaymentMethodToAccount($order->payment_method);
+				$payment_method =
+					$this->addPaymentMethodToAccount($order->payment_method);
+
+				$account->setDefaultPaymentMethod($payment_method);
 		}
 
 		$new_account = ($account->id === null);
@@ -317,15 +320,20 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	protected function addPaymentMethodToAccount(
 		StoreOrderPaymentMethod $order_payment_method)
 	{
+		$account = $this->app->session->account;
+
 		// check that payment method is not already in account
 		if ($order_payment_method->getAccountPaymentMethodId() === null) {
 			$class_name = SwatDBClassMap::get('StoreAccountPaymentMethod');
 			$account_payment_method = new $class_name();
 			$account_payment_method->copyFrom($order_payment_method);
-
-			$this->app->session->account->payment_methods->add(
-				$account_payment_method);
+			$account->payment_methods->add($account_payment_method);
+		} else {
+			$account_payment_method = $account->payment_methods->getByIndex(
+				$order_payment_method->getAccountPaymentMethodId());
 		}
+
+		return $account_payment_method;
 	}
 
 	// }}}

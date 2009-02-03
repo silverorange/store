@@ -329,6 +329,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 						throw new StoreException('Order payment method must '.
 							'be a card_type when isCard() is true.');
 			}
+
+			$save_payment_method =
+				$this->ui->getWidget('save_account_payment_method')->value;
 		} else {
 			$method_id = intval($method_list->value);
 
@@ -343,13 +346,19 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			$class_name = SwatDBClassMap::get('StoreOrderPaymentMethod');
 			$order_payment_method = new $class_name();
 			$order_payment_method->copyFrom($account_payment_method);
+
+			// if its a saved method, we want the confirmation page to use the
+			// save code-path so that default payment method gets set
+			$save_payment_method = true;
 		}
 
 		$this->app->session->order->payment_method = $order_payment_method;
 
-		if ($this->app->session->checkout_with_account)
+		if ($this->app->session->checkout_with_account) {
 			$this->app->session->save_account_payment_method =
-				$this->ui->getWidget('save_account_payment_method')->value;
+				$save_payment_method;
+
+		}
 	}
 
 	// }}}
@@ -523,12 +532,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			$method_list->addOption($method->id, $method_display, 'text/xml');
 		}
 
-		if ($this->app->session->isLoggedIn()) {
-			if ($this->app->session->account->default_payment_method !== null)
-				$method_list->value =
-					$this->app->session->account->default_payment_method;
-		}
-
 		$method_list->visible = (count($method_list->options) > 1);
 	}
 
@@ -613,6 +616,12 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		if ($order->payment_method === null) {
 			$this->ui->getWidget('card_fullname')->value =
 				$this->app->session->account->fullname;
+
+			$default_payment_method = $this->getDefaultPaymentMethod();
+			if ($default_payment_method !== null) {
+				$this->ui->getWidget('payment_method_list')->value =
+					$default_payment_method->id;
+			}
 		} else {
 			if ($order->payment_method->getAccountPaymentMethodId() === null) {
 
@@ -654,6 +663,33 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			$this->ui->getWidget('save_account_payment_method')->value =
 				$this->app->session->save_account_payment_method;
 		}
+	}
+
+	// }}}
+	// {{{ protected function getDefaultPaymentMethod()
+
+	protected function getDefaultPaymentMethod()
+	{
+		$payment_method = null;
+
+		if ($this->app->session->isLoggedIn()) {
+			$default_payment_method =
+				$this->app->session->account->getDefaultPaymentMethod();
+
+			if ($default_payment_method !== null) {
+				// only default to a payment method that appears in the list
+				$payment_method_list =
+					$this->ui->getWidget('payment_method_list');
+
+				$options = $payment_method_list->getOptionsByValue(
+					$default_payment_method->id);
+
+				if (count($options) > 0)
+					$payment_method = $default_payment_method;
+			}
+		}
+
+		return $payment_method;
 	}
 
 	// }}}
