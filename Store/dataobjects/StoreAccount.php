@@ -74,7 +74,7 @@ require_once 'Store/dataobjects/StoreAccountWrapper.php';
  * </code>
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreAccountWrapper
  */
@@ -95,13 +95,6 @@ class StoreAccount extends SiteAccount
 	 * @var string
 	 */
 	public $phone;
-
-	/**
-	 * Id of the default payment method
-	 *
-	 * @var integer
-	 */
-	public $default_payment_method;
 
 	// }}}
 	// {{{ public function getPendingInvoices()
@@ -208,6 +201,49 @@ class StoreAccount extends SiteAccount
 	}
 
 	// }}}
+	// {{{ public function setDefaultPaymentMethod()
+
+	public function setDefaultPaymentMethod(
+		StoreAccountPaymentMethod $payment_method)
+	{
+		if ($payment_method->getId() === null) {
+			$this->payment_methods->add($payment_method);
+		} else {
+			$actual_payment_method = $this->payment_methods->getByIndex(
+				$payment_method->getId());
+
+			if ($actual_payment_method === null) {
+				throw new SwatObjectNotFoundException(
+					'Payment method does not belong to this account and '.
+					'cannot be set as the default payment method.');
+			}
+		}
+
+		$this->setSubDataObject('default_payment_method', $payment_method);
+		$this->setInternalValue('default_payment_method',
+			$payment_method->getId());
+	}
+
+	// }}}
+	// {{{ public function getDefaultPaymentMethod()
+
+	public function getDefaultPaymentMethod()
+	{
+		$payment_method = null;
+
+		if ($this->hasSubDataObject('default_payment_method')) {
+			$payment_method = $this->getSubDataObject('default_payment_method');
+		} else {
+			$id = $this->getInternalValue('default_payment_method');
+			if ($id !== null) {
+				$payment_method = $this->payment_methods->getByIndex($id);
+			}
+		}
+
+		return $payment_method;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
@@ -219,6 +255,9 @@ class StoreAccount extends SiteAccount
 
 		$this->registerInternalProperty('default_shipping_address',
 			SwatDBClassMap::get('StoreAccountAddress'), false, false);
+
+		$this->registerInternalProperty('default_payment_method',
+			SwatDBClassMap::get('StoreAccountPaymentMethod'), false, false);
 	}
 
 	// }}}
