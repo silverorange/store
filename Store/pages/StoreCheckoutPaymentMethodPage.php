@@ -357,7 +357,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		if ($this->app->session->checkout_with_account) {
 			$this->app->session->save_account_payment_method =
 				$save_payment_method;
-
 		}
 	}
 
