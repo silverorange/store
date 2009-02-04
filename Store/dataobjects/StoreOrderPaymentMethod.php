@@ -3,12 +3,15 @@
 require_once 'Store/dataobjects/StorePaymentMethod.php';
 
 /**
- * A payment method for an order for an e-commerce web application
+ * A payment method for an order for an e-commerce Web application
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StorePaymentMethod
+ * @see       StorePaymentMethodTransaction
+ * @see       StorePaymentType
+ * @see       StoreCardType
  */
 class StoreOrderPaymentMethod extends StorePaymentMethod
 {
@@ -48,6 +51,8 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	{
 		parent::init();
 		$this->table = 'OrderPaymentMethod';
+		$this->registerInternalProperty('ordernum',
+			SwatDBClassMap::get('StoreOrder'));
 	}
 
 	// }}}

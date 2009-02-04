@@ -10,9 +10,10 @@ require_once 'Store/StoreOrderStatusList.php';
 require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/dataobjects/StoreOrderAddress.php';
 require_once 'Store/dataobjects/StoreOrderPaymentMethod.php';
+require_once 'Store/dataobjects/StoreOrderPaymentMethodWrapper.php';
+require_once 'Store/dataobjects/StorePaymentMethodTransactionWrapper.php';
 require_once 'Store/dataobjects/StoreShippingType.php';
 require_once 'Store/dataobjects/StoreOrderItemWrapper.php';
-require_once 'Store/dataobjects/StorePaymentTransactionWrapper.php';
 require_once 'Store/dataobjects/StoreLocale.php';
 require_once 'Store/dataobjects/StoreInvoice.php';
 
@@ -333,6 +334,7 @@ class StoreOrder extends SwatDBDataObject
 		$this->registerInternalProperty('shipping_address',
 			SwatDBClassMap::get('StoreOrderAddress'), true);
 
+		// TODO: remove this field
 		$this->registerInternalProperty('payment_method',
 			SwatDBClassMap::get('StoreOrderPaymentMethod'), true);
 
@@ -365,7 +367,8 @@ class StoreOrder extends SwatDBDataObject
 		return array(
 			'shipping_address',
 			'billing_address',
-			'payment_method',
+			'payment_method', // TODO: remove this field
+			'payment_methods',
 			'items',
 		);
 	}
@@ -527,17 +530,26 @@ class StoreOrder extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ protected function loadTransactions()
+	// {{{ protected function loadPaymentMethods()
 
-	protected function loadTransactions()
+	protected function loadPaymentMethods()
 	{
-		$sql = sprintf('select * from PaymentTransaction
+		$sql = sprintf('select * from OrderPaymentMethod
+			inner join PaymentType on
+				OrderPaymentMethod.payment_type = PaymentType.id
 			where ordernum = %s
-			order by createdate asc',
+			order by PaymentType.displayorder, PaymentType.title',
 			$this->db->quote($this->id, 'integer'));
 
-		return SwatDB::query($this->db, $sql,
-			SwatDBClassMap::get('StorePaymentTransactionWrapper'));
+		$payment_methods = SwatDB::query($this->db, $sql,
+			SwatDBClassMap::get('StoreOrderPaymentMethodWrapper'));
+
+		// efficiently load transactions for all payment methods
+		$payment_methods->loadAllSubRecordsets('transactions',
+			SwatDBClassMap::get('StorePaymentMethodTransactionWrapper'),
+			'PaymentMethodTransaction', 'payment_method', '', 'createdate, id');
+
+		return $payment_methods;
 	}
 
 	// }}}
