@@ -12,7 +12,7 @@ require_once 'Site/SiteMultipartMailMessage.php';
  * An email message for order confirmations
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreOrderConfirmationMailMessage
@@ -153,8 +153,11 @@ abstract class StoreOrderConfirmationMailMessage
 		$ui->getRoot()->addStyleSheet('packages/store/styles/store-cart.css');
 		$order = $this->order;
 
+		$ds = new SwatDetailsStore($order);
+		$ds->payment_method = $order->payment_methods->getFirst();
+
 		$details_view =  $ui->getWidget('order_details');
-		$details_view->data = new SwatDetailsStore($order);
+		$details_view->data = $ds;
 
 		$date_field = $details_view->getField('createdate');
 		$date_renderer = $date_field->getFirstRenderer();
@@ -169,7 +172,7 @@ abstract class StoreOrderConfirmationMailMessage
 		if ($order->company === null && $details_view->hasField('company'))
 			$details_view->getField('company')->visible = false;
 
-		if ($order->payment_method === null)
+		if (count($order->payment_methods) == 0)
 			$details_view->getField('payment_method')->visible = false;
 
 		$items_view = $ui->getWidget('items_view');
@@ -276,9 +279,10 @@ abstract class StoreOrderConfirmationMailMessage
 				self::LINE_BREAK, self::LINE_BREAK;
 		}
 
-		if ($this->order->payment_method !== null) {
+		if (count($this->order->payment_methods)) {
+			$payment_method = $this->order->payment_methods->getFirst();
 			echo 'Payment:', self::LINE_BREAK;
-			$this->displayPaymentMethodText();
+			$this->displayPaymentMethodText($payment_method);
 			echo self::LINE_BREAK, self::LINE_BREAK;
 		}
 
@@ -287,10 +291,12 @@ abstract class StoreOrderConfirmationMailMessage
 		echo self::LINE_BREAK, self::LINE_BREAK;
 
 		echo 'Shipping Address:', self::LINE_BREAK;
-		if ($this->order->billing_address->id == $this->order->shipping_address->id)
+		if ($this->order->billing_address->id ==
+			$this->order->shipping_address->id) {
 			echo '<ship to billing address>';
-		else
+		} else {
 			$this->order->shipping_address->displayCondensedAsText();
+		}
 
 		echo self::LINE_BREAK, self::LINE_BREAK;
 	}
@@ -424,9 +430,10 @@ abstract class StoreOrderConfirmationMailMessage
 	// }}}
 	// {{{ protected function displayPaymentMethodText()
 
-	protected function displayPaymentMethodText()
+	protected function displayPaymentMethodText(
+		StoreOrderPaymentMethod $payment_method)
 	{
-		$this->order->payment_method->displayAsText(true, self::LINE_BREAK);
+		$payment_method->displayAsText(true, self::LINE_BREAK);
 	}
 
 	// }}}

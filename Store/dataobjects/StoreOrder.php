@@ -335,8 +335,11 @@ class StoreOrder extends SwatDBDataObject
 			SwatDBClassMap::get('StoreOrderAddress'), true);
 
 		// TODO: remove this field
+		$this->registerDeprecatedProperty('payment_method');
+		/*
 		$this->registerInternalProperty('payment_method',
 			SwatDBClassMap::get('StoreOrderPaymentMethod'), true);
+		*/
 
 		$this->registerInternalProperty('shipping_type',
 			SwatDBClassMap::get('StoreShippingType'));
@@ -435,7 +438,7 @@ class StoreOrder extends SwatDBDataObject
 	// order status methods
 	// {{{ public function getStatus()
 
-	/** 
+	/**
 	 * Gets the status of this order
 	 *
 	 * @return StoreOrderStatus the status of this order or null if this
@@ -482,7 +485,7 @@ class StoreOrder extends SwatDBDataObject
 	// {{{ public function isShippable()
 
 	/**
-	 * Gets whether or not this order is ready to ship 
+	 * Gets whether or not this order is ready to ship
 	 *
 	 * This order is ready to ship if payment is completed and this order is
 	 * not cancelled.
@@ -568,6 +571,22 @@ class StoreOrder extends SwatDBDataObject
 
 		$this->items->setDatabase($this->db);
 		$this->items->save();
+	}
+
+	// }}}
+	// {{{ protected function savePaymentMethods()
+
+	/**
+	 * Automatically saves StoreOrderPaymentMethod sub-data-objects when this
+	 * StoreOrder object is saved
+	 */
+	protected function savePaymentMethods()
+	{
+		foreach ($this->payment_methods as $payment_method)
+			$payment_method->ordernum = $this;
+
+		$this->payment_methods->setDatabase($this->db);
+		$this->payment_methods->save();
 	}
 
 	// }}}

@@ -306,15 +306,13 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$method_list = $this->ui->getWidget('payment_method_list');
 
 		if ($method_list->value === null || $method_list->value === 'new') {
+			$order_payment_method =
+				$this->app->session->order->payment_methods->getFirst();
 
-			if ($this->app->session->order->payment_method !== null &&
-				$this->app->session->order->payment_method->getAccountPaymentMethodId() === null) {
-					$order_payment_method =
-						$this->app->session->order->payment_method;
-			} else {
-				$class_name =
-					SwatDBClassMap::get('StoreOrderPaymentMethod');
+			if ($order_payment_method === null ||
+				$order_payment_method->getAccountPaymentMethodId() !== null) {
 
+				$class_name = SwatDBClassMap::get('StoreOrderPaymentMethod');
 				$order_payment_method = new $class_name();
 				$order_payment_method->setDatabase($this->app->db);
 			}
@@ -352,7 +350,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			$save_payment_method = true;
 		}
 
-		$this->app->session->order->payment_method = $order_payment_method;
+		$class_name = SwatDBClassMap::get('StoreOrderPaymentMethodWrapper');
+		$this->app->session->order->payment_methods = new $class_name();
+		$this->app->session->order->payment_methods->add($order_payment_method);
 
 		if ($this->app->session->checkout_with_account) {
 			$this->app->session->save_account_payment_method =
@@ -611,8 +611,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	protected function loadDataFromSession()
 	{
 		$order = $this->app->session->order;
+		$order_payment_method = $order->payment_methods->getFirst();
 
-		if ($order->payment_method === null) {
+		if ($order_payment_method === null) {
 			$this->ui->getWidget('card_fullname')->value =
 				$this->app->session->account->fullname;
 
@@ -622,38 +623,38 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 					$default_payment_method->id;
 			}
 		} else {
-			if ($order->payment_method->getAccountPaymentMethodId() === null) {
+			if ($order_payment_method->getAccountPaymentMethodId() === null) {
 
 				$this->ui->getWidget('payment_type')->value =
-					$order->payment_method->getInternalValue('payment_type');
+					$order_payment_method->getInternalValue('payment_type');
 
 				$this->ui->getWidget('card_type')->value =
-					$order->payment_method->getInternalValue('card_type');
+					$order_payment_method->getInternalValue('card_type');
 
 				/*
 				 *  Note: We can't repopulate the card number entry since we
 				 *        only store the encrypted number in the dataobject.
 				 */
-				if ($order->payment_method->card_number !== null)
+				if ($order_payment_method->card_number !== null)
 					$this->ui->getWidget('card_number')->show_blank_value = true;
 
 				$this->ui->getWidget('card_verification_value')->value =
-					$order->payment_method->getCardVerificationValue();
+					$order_payment_method->getCardVerificationValue();
 
 				$this->ui->getWidget('card_issue_number')->value =
-					$order->payment_method->card_issue_number;
+					$order_payment_method->card_issue_number;
 
 				$this->ui->getWidget('card_expiry')->value =
-					$order->payment_method->card_expiry;
+					$order_payment_method->card_expiry;
 
 				$this->ui->getWidget('card_inception')->value =
-					$order->payment_method->card_inception;
+					$order_payment_method->card_inception;
 
 				$this->ui->getWidget('card_fullname')->value =
-					$order->payment_method->card_fullname;
+					$order_payment_method->card_fullname;
 			} else {
 				$this->ui->getWidget('payment_method_list')->value =
-					$order->payment_method->getAccountPaymentMethodId();
+					$order_payment_method->getAccountPaymentMethodId();
 			}
 		}
 
