@@ -105,25 +105,29 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 			$shipping_container->classes[] = 'checkout-no-column';
 		}
 
-		// if there are no saved payment methods, add a side-by-side class
-		// if there are saved payment methods, add a stacked class
-
-		// if paymenth methods are side-by-side, and there is a shipping
-		// type container, don't put the shipping type in a right-column
+		/*
+		 * if there are no saved payment methods, add a side-by-side class
+		 * if there are saved payment methods, add a stacked class
+		 *
+		 * if payment methods are side-by-side, and there is a shipping-type
+		 * container, don't put the shipping type in a right-column
+		 */
 
 		$payment_method_list = $this->ui->getWidget('payment_method_list');
 		$payment_method_container =
 			$this->ui->getWidget('payment_method_container');
 
-		if ($this->ui->hasWidget('shipping_type_container'))
-			$shipping_type_container = $this->ui->getWidget('shipping_type_container');
+		if ($this->ui->hasWidget('shipping_type_container')) {
+			$shipping_type_container =
+				$this->ui->getWidget('shipping_type_container');
+		}
 
 		if (!$payment_method_list->visible) {
-			$payment_method_container->classes[]  = 'checkout-column-left';
-			$shipping_type_container->classes[]   = 'checkout-column-right';
+			$payment_method_container->classes[] = 'checkout-column-left';
+			$shipping_type_container->classes[]  = 'checkout-column-right';
 		} else {
-			$payment_method_container->classes[]  = 'checkout-no-column';
-			$shipping_type_container->classes[]   = 'checkout-no-column';
+			$payment_method_container->classes[] = 'checkout-no-column';
+			$shipping_type_container->classes[]  = 'checkout-no-column';
 		}
 
 		// note in XML only applies when editing basic info off confirmation
