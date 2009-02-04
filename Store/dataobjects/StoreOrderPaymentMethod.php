@@ -67,6 +67,24 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	}
 
 	// }}}
+
+	// loader methods
+	// {{{ protected function loadTransactions()
+
+	protected function loadTransactions()
+	{
+		$sql = sprintf('select * from PaymentMethodTransaction
+			where payment_method = %s
+			order by createdate, id',
+			$this->db->quote($this->id, 'integer'));
+
+		$transactions = SwatDB::query($this->db, $sql,
+			SwatDBClassMap::get('StorePaymentMethodTransactionWrapper'));
+
+		return $transactions;
+	}
+
+	// }}}
 }
 
 ?>

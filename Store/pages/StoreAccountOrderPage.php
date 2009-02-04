@@ -259,7 +259,9 @@ class StoreAccountOrderPage extends SiteUiPage
 	protected function buildOrderDetails()
 	{
 		$details_view =  $this->ui->getWidget('order_details');
-		$details_view->data = new SwatDetailsStore($this->order);
+		$ds = new SwatDetailsStore($this->order);
+		$ds->payment_method = $this->order->payment_methods->getFirst();
+		$details_view->data = $ds;
 
 		$createdate_column = $details_view->getField('createdate');
 		$createdate_renderer = $createdate_column->getFirstRenderer();

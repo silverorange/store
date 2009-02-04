@@ -305,11 +305,14 @@ abstract class StoreCheckoutCart extends StoreCart
 		} else {
 			$total = 0;
 
-			if ($this->app->session->order !== null &&
-				$this->app->session->order->payment_method !== null) {
-					$payment_method = $this->app->session->order->payment_method;
+			if ($this->app->session->order !== null) {
+				$payment_method =
+					$this->app->session->order->payment_methods->getFirst();
+
+				if ($payment_method !== null) {
 					if ($payment_method->surcharge !== null)
 						$total+= $payment_method->surcharge;
+				}
 			}
 
 			$this->setCachedValue('store-surcharge-total', $total);

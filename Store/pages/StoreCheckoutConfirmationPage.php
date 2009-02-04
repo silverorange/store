@@ -226,13 +226,16 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		// new payment methods are only added if a session flag is set and true
 		if (isset($this->app->session->save_account_payment_method) &&
-			$this->app->session->save_account_payment_method &&
-			$order->payment_method !== null &&
-			$order->payment_method->isSaveableWithAccount()) {
-				$payment_method =
-					$this->addPaymentMethodToAccount($order->payment_method);
+			$this->app->session->save_account_payment_method) {
 
-				$account->setDefaultPaymentMethod($payment_method);
+			foreach ($order->payment_methods as $payment_method) {
+				if ($payment_method->isSaveableWithAccount()) {
+					$payment_method =
+						$this->addPaymentMethodToAccount($payment_method);
+
+					$account->setDefaultPaymentMethod($payment_method);
+				}
+			}
 		}
 
 		$new_account = ($account->id === null);
@@ -616,8 +619,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		ob_start();
 
-		if ($order->payment_method instanceof StorePaymentMethod) {
-			$order->payment_method->display();
+		$payment_method = $order->payment_methods->getFirst();
+
+		if ($payment_method instanceof StorePaymentMethod) {
+			$payment_method->display();
 		} else {
 			$span_tag = new SwatHtmlTag('span');
 			$span_tag->class = 'swat-none';
