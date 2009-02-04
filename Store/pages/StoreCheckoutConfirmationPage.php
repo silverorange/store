@@ -127,7 +127,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		// If there is no transaction in progress, save the order
 		// otherwise it has already been saved.
-		if ($this->app->session->transaction === null) {
+		if (isset($this->app->session->transaction)) {
 			if ($this->app->session->checkout_with_account) {
 				$db_transaction = new SwatDBTransaction($this->app->db);
 				$duplicate_account = $this->app->session->account->duplicate();
