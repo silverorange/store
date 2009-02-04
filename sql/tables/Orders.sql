@@ -16,8 +16,10 @@ create table Orders (
 
 	billing_address integer not null references OrderAddress(id),
 	shipping_address integer not null references OrderAddress(id),
-	payment_method integer not null references OrderPaymentMethod(id),
 	shipping_type integer null references ShippingType(id),
+
+	-- TODO: drop this field
+	payment_method integer not null references OrderPaymentMethod(id),
 
 	total numeric(11, 2) not null,
 	item_total numeric(11, 2) not null,
@@ -40,9 +42,11 @@ ALTER TABLE Orders ADD CONSTRAINT Orders_previous_attempt_fk
 	ON DELETE SET null;
 
 CREATE INDEX Orders_ad_index ON Orders(ad);
-CREATE INDEX Orders_payment_method_index ON Orders(payment_method);
 CREATE INDEX Orders_account_index ON Orders(account);
 CREATE INDEX Orders_createdate_index ON Orders(createdate);
 CREATE INDEX Orders_billing_address_index ON Orders(billing_address);
 CREATE INDEX Orders_shipping_address_index ON Orders(shipping_address);
 CREATE INDEX Orders_popular_products_processed_index ON Orders(popular_products_processed);
+
+-- TODO: drop this index
+CREATE INDEX Orders_payment_method_index ON Orders(payment_method);
