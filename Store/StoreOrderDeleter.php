@@ -92,11 +92,13 @@ class StoreOrderDeleter extends StorePrivateDataDeleter
 		$order->comments = null;
 		$order->notes = null;
 
-		if ($order->payment_method !== null) {
-			$order->payment_method->card_fullname = null;
-			$order->payment_method->card_number_preview = null;
-			$order->payment_method->card_number = null;
-			$order->payment_method->card_expiry = null;
+		if (count($order->payment_methods)) {
+			foreach ($order->payment_methods as $payment_method) {
+				$payment_method->card_fullname = null;
+				$payment_method->card_number_preview = null;
+				$payment_method->card_number = null;
+				$payment_method->card_expiry = null;
+			}
 		}
 
 		$order->billing_address->fullname = '';
