@@ -320,27 +320,6 @@ class StoreOrder extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ public function unserialize()
-
-	public function unserialize($data)
-	{
-		parent::unserialize($data);
-
-		// TODO: remove this
-		// temp to migrate payment methods in sessions
-		if ($this->hasSubDataObject('payment_method') &&
-			!$this->hasSubDataObject('payment_methods')) {
-
-			$payment_method = $this->getSubDataObject('payment_method');
-
-			if ($payment_method !== null) {
-				$this->payment_methods = new StoreOrderPaymentMethodWrapper();
-				$this->payment_methods->add($payment_method);
-			}
-		}
-	}
-
-	// }}}
 	// {{{ protected function init()
 
 	protected function init()
@@ -354,13 +333,6 @@ class StoreOrder extends SwatDBDataObject
 
 		$this->registerInternalProperty('shipping_address',
 			SwatDBClassMap::get('StoreOrderAddress'), true);
-
-		// TODO: remove this field
-		$this->registerDeprecatedProperty('payment_method');
-		/*
-		$this->registerInternalProperty('payment_method',
-			SwatDBClassMap::get('StoreOrderPaymentMethod'), true);
-		*/
 
 		$this->registerInternalProperty('shipping_type',
 			SwatDBClassMap::get('StoreShippingType'));
@@ -436,30 +408,6 @@ class StoreOrder extends SwatDBDataObject
 	protected function getImageDimension()
 	{
 		return 'pinky';
-	}
-
-	// }}}
-	// {{{ protected function setDeprecatedProperty()
-
-	protected function setDeprecatedProperty($key, $value)
-	{
-		// TODO: remove this
-		// temp to migrate payment methods in sessions
-		if ($key === 'payment_method' && $this->payment_methods === null) {
-			$this->payment_methods = new StoreOrderPaymentMethodWrapper();
-			$this->payment_methods->add($value);
-		}
-	}
-
-	// }}}
-	// {{{ protected function getDeprecatedProperty()
-
-	protected function getDeprecatedProperty($key)
-	{
-		// TODO: remove this
-		// temp to migrate payment methods in sessions
-		if ($key === 'payment_method')
-			return $this->payment_methods->getFirst();
 	}
 
 	// }}}

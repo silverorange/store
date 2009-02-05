@@ -1,7 +1,7 @@
 create table OrderPaymentMethod (
 	id serial,
 
-	ordernum integer references Orders(id) -- TODO: make not null
+	ordernum integer references Orders(id) not null,
 
 	payment_type integer not null references PaymentType(id),
 	surcharge numeric(11, 2),
