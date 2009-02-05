@@ -16,7 +16,7 @@ require_once 'Store/dataobjects/StoreCategory.php';
 require_once 'Store/dataobjects/StoreItemGroupWrapper.php';
 require_once 'Store/dataobjects/StoreProductReview.php';
 require_once 'Store/StoreProductSearchEngine.php';
-@include 'Services/Aksimet.php';
+@include 'Services/Akismet.php';
 
 /**
  * A product page
