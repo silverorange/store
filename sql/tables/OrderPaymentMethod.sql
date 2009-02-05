@@ -16,3 +16,5 @@ create table OrderPaymentMethod (
 
 	primary key (id)
 );
+
+CREATE INDEX OrderPaymentMethod_ordernum ON OrderPaymentMethod(ordernum);
