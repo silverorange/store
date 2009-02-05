@@ -208,6 +208,7 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 		$product_indexer = new NateGoSearchIndexer('product', $this->db);
 		$product_indexer->setSpellChecker($spell_checker);
 		$product_indexer->addTerm(new NateGoSearchTerm('title', 5));
+		$product_indexer->addTerm(new NateGoSearchTerm('keywords', 3));
 		$product_indexer->addTerm(new NateGoSearchTerm('bodytext'));
 		$product_indexer->setMaximumWordLength(32);
 		$product_indexer->addUnindexedWords(
@@ -223,7 +224,7 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 
 		$type = NateGoSearch::getDocumentType($this->db, 'product');
 
-		$sql = sprintf('select Product.id, Product.title,
+		$sql = sprintf('select Product.id, Product.title, Product.keywords,
 				Product.bodytext, Item.sku, Item.description
 			from Item
 				right outer join Product on Item.product = Product.id

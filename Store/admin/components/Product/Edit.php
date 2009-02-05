@@ -220,7 +220,7 @@ class StoreProductEdit extends AdminDBEdit
 	protected function updateProduct()
 	{
 		$values = $this->ui->getValues(array('title', 'shortname', 'catalog',
-			'bodytext'));
+			'bodytext', 'keywords'));
 
 		if ($this->id === null) {
 			$now = new Date();
@@ -232,6 +232,7 @@ class StoreProductEdit extends AdminDBEdit
 		$this->product->shortname = $values['shortname'];
 		$this->product->catalog   = $values['catalog'];
 		$this->product->bodytext  = $values['bodytext'];
+		$this->product->keywords  = $values['keywords'];
 	}
 
 	// }}}
