@@ -256,6 +256,9 @@ class StoreAccount extends SiteAccount
 		$this->registerInternalProperty('default_shipping_address',
 			SwatDBClassMap::get('StoreAccountAddress'), false, false);
 
+		// TODO: drop this.
+		$this->registerDeprecatedProperty('default_payment_method');
+
 		$this->registerInternalProperty('default_payment_method',
 			SwatDBClassMap::get('StoreAccountPaymentMethod'), false, false);
 	}
