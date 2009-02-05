@@ -258,9 +258,6 @@ class StoreAccount extends SiteAccount
 
 		$this->registerInternalProperty('default_payment_method',
 			SwatDBClassMap::get('StoreAccountPaymentMethod'), false, false);
-
-		// TODO: get rid of this
-		$this->registerDeprecatedProperty('default_payment_method');
 	}
 
 	// }}}
