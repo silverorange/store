@@ -68,6 +68,13 @@ class StoreProduct extends SwatDBDataObject
 	public $title;
 
 	/**
+	 * Keywords used by the search indexer
+	 *
+	 * @var string
+	 */
+	public $keywords;
+
+	/**
 	 * User visible content
 	 *
 	 * @var string

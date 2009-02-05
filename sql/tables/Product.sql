@@ -5,6 +5,7 @@ create table Product (
 	bodytext text,
 	createdate timestamp,
 	shortname varchar(255),
+	keywords varchar(255),
 	primary key (id)
 );
 

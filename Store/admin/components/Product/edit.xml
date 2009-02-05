@@ -21,6 +21,12 @@
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Search Keywords</property>
+				<widget class="SwatEntry" id="keywords">
+					<property name="maxlength" type="integer">255</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Body Text</property>
 				<widget class="SwatTextarea" id="bodytext" />
 			</widget>

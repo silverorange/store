@@ -28,6 +28,12 @@
 				</object>
 			</object>
 			<object class="SwatDetailsViewField">
+				<property name="title" translatable="yes">Search Keywords</property>
+				<object class="SwatNullTextCellRenderer">
+					<property name="text" type="data">keywords</property>
+				</object>
+			</object>
+			<object class="SwatDetailsViewField">
 				<property name="title" translatable="yes">Belongs to Categories</property>
 				<object class="SwatNullTextCellRenderer">
 					<property name="text" type="data">categories</property>
