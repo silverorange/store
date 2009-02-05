@@ -445,7 +445,7 @@ class StoreOrder extends SwatDBDataObject
 	{
 		// TODO: remove this
 		// temp to migrate payment methods in sessions
-		if ($key === 'payment_method') {
+		if ($key === 'payment_method' && $this->payment_methods === null) {
 			$this->payment_methods = new StoreOrderPaymentMethodWrapper();
 			$this->payment_methods->add($value);
 		}
