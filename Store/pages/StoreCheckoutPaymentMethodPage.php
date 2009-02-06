@@ -352,7 +352,11 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 		$class_name = SwatDBClassMap::get('StoreOrderPaymentMethodWrapper');
 		$this->app->session->order->payment_methods = new $class_name();
-		$this->app->session->order->payment_methods->add($order_payment_method);
+
+		if ($order_payment_method !== null) {
+			$this->app->session->order->payment_methods->add(
+				$order_payment_method);
+		}
 
 		if ($this->app->session->checkout_with_account) {
 			$this->app->session->save_account_payment_method =
