@@ -378,7 +378,8 @@ class StoreProduct extends SwatDBDataObject
 				'items', 'item_groups', 'categories', 'attributes',
 				'featured_categories', 'related_products',
 				'related_articles', 'popular_products',
-				'images', 'product_reviews', 'catalog', 'path'));
+				'images', 'product_reviews', 'catalog', 'path',
+				'collection_products'));
 	}
 
 	// }}}
@@ -650,6 +651,34 @@ class StoreProduct extends SwatDBDataObject
 		$sql = sprintf($sql,
 			$this->db->quote($this->id, 'integer'));
 
+		return SwatDB::query($this->db, $sql,
+			SwatDBClassMap::get('StoreProductWrapper'));
+	}
+
+	// }}}
+	// {{{ protected function loadCollectionProducts()
+
+	/**
+	 * Loads the collections that this product belongs to
+	 *
+	 * Collections products are loaded with primary categories.
+	 * To load only available collection products, see {@link
+	 * StoreProduct::getVisibleCollectionProducts}.
+	 */
+	protected function loadCollectionProducts()
+	{
+		$sql = 'select Product.*,
+			ProductPrimaryCategoryView.primary_category,
+			getCategoryPath(ProductPrimaryCategoryView.primary_category) as path
+			from Product
+				inner join ProductCollectionBinding
+					on Product.id = ProductCollectionBinding.source_product
+						and ProductCollectionBinding.member_product = %s
+				left outer join ProductPrimaryCategoryView
+					on Product.id = ProductPrimaryCategoryView.product
+			order by Product.title asc';
+
+		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 		return SwatDB::query($this->db, $sql,
 			SwatDBClassMap::get('StoreProductWrapper'));
 	}

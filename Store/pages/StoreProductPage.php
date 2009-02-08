@@ -859,6 +859,9 @@ class StoreProductPage extends StorePage
 
 		$this->displayItems();
 
+		$this->displayProductCollections();
+		$this->displayCollectionProducts();
+
 		$this->displayRelatedProducts();
 
 		$this->displayPopularProducts();
@@ -1083,6 +1086,104 @@ class StoreProductPage extends StorePage
 
 		$ul_tag->close();
 		$div->close();
+	}
+
+	// }}}
+	// {{{ protected function displayProductCollections()
+
+	/**
+	 * Displays all collections this product belongs to.
+	 */
+	protected function displayProductCollections()
+	{
+		$engine = new StoreProductSearchEngine($this->app);
+		$engine->collection_member_product = $this->product;
+		$engine->addOrderByField('is_available desc');
+		$products = $engine->search();
+
+		if (count($products) == 0)
+			return;
+
+		$div_tag = new SwatHtmlTag('div');
+		$div_tag->id = 'collection_products';
+		$div_tag->open();
+
+		$p_tag = new SwatHtmlTag('p');
+		$p_tag->open();
+
+		echo SwatString::minimizeEntities(Store::ngettext(
+			'This item is also available in a collection: ',
+			'This item is also available in collections: ',
+			count($products)));
+
+		$p_tag->close();
+
+		$ul_tag = new SwatHtmlTag('ul');
+		$ul_tag->class = 'store-product-list clearfix';
+
+		$li_tag = new SwatHtmlTag('li');
+		$li_tag->class = 'store-product-icon';
+
+		foreach ($products as $product) {
+			$li_tag->open();
+			$path = 'store/'.$product->path;
+			$product->displayAsIcon($path, 'pinky');
+			$li_tag->close();
+			echo ' ';
+		}
+
+		$ul_tag->close();
+		$div_tag->close();
+	}
+
+	// }}}
+	// {{{ protected function displayCollectionProducts()
+
+	/**
+	 * Displays all member products of this collection.
+	 */
+	protected function displayCollectionProducts()
+	{
+		$engine = new StoreProductSearchEngine($this->app);
+		$engine->collection_source_product = $this->product;
+		$engine->addOrderByField('is_available desc');
+		$products = $engine->search();
+
+		if (count($products) == 0)
+			return;
+
+		$div_tag = new SwatHtmlTag('div');
+		$div_tag->id = 'collection_products';
+		$div_tag->open();
+
+		$p_tag = new SwatHtmlTag('p');
+		$p_tag->open();
+
+		echo SwatString::minimizeEntities(Store::ngettext(
+			'This collection contains the following item: ',
+			'This collection contains the following items: ',
+			count($products)));
+
+		$p_tag->close();
+
+		$ul_tag = new SwatHtmlTag('ul');
+		$ul_tag->class = 'store-product-list';
+
+		$li_tag = new SwatHtmlTag('li');
+		$li_tag->class = 'store-product-icon';
+
+		$ul_tag->open();
+
+		foreach ($products as $product) {
+			$li_tag->open();
+			$path = 'store/'.$product->path;
+			$product->displayAsIcon($path, 'pinky');
+			$li_tag->close();
+			echo ' ';
+		}
+
+		$ul_tag->close();
+		$div_tag->close();
 	}
 
 	// }}}

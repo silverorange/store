@@ -102,11 +102,18 @@ class StoreProductDetails extends AdminIndex
 	{
 		parent::processInternal();
 
+		// related products
 		$related_products_form = $this->ui->getWidget('related_products_form');
 		$related_products_view = $this->ui->getWidget('related_products_view');
 		if ($related_products_form->isProcessed() &&
 			count($related_products_view->getSelection()) != 0)
 			$this->processRelatedProducts($related_products_view);
+
+		// product collections
+		$form = $this->ui->getWidget('product_collection_form');
+		$view = $this->ui->getWidget('product_collection_view');
+		if ($form->isProcessed() && count($view->getSelection()) != 0)
+			$this->processProductCollections($view);
 
 		// add new items
 		if ($this->ui->getWidget('index_actions')->selected !== null &&
@@ -401,6 +408,17 @@ class StoreProductDetails extends AdminIndex
 	}
 
 	// }}}
+	// {{{ private function processProductCollections()
+
+	private function processProductCollections($view)
+	{
+		$this->app->replacePage('Product/ProductCollectionDelete');
+		$this->app->getPage()->setItems($view->getSelection());
+		$this->app->getPage()->setId($this->id);
+		$this->app->getPage()->setCategory($this->category_id);
+	}
+
+	// }}}
 	// {{{ private function processRelatedArticleActions()
 
 	private function processRelatedArticleActions($view, $actions)
@@ -515,6 +533,7 @@ class StoreProductDetails extends AdminIndex
 		$this->buildItems();
 		$this->buildProductImages();
 		$this->buildRelatedProducts();
+		$this->buildProductCollections();
 		$this->buildRelatedArticles();
 		$this->buildProductReviews();
 	}
@@ -546,6 +565,8 @@ class StoreProductDetails extends AdminIndex
 				return $this->getItemsTableModel($view);
 			case  'related_products_view':
 				return $this->getRelatedProductsTableModel($view);
+			case  'product_collection_view':
+				return $this->getProductCollectionsTableModel($view);
 			case  'related_articles_view':
 				return $this->getRelatedArticlesTableModel($view);
 			case  'product_reviews_view':
@@ -1210,6 +1231,43 @@ class StoreProductDetails extends AdminIndex
 		if (count($rs) == 0) {
 			$view->visible = false;
 			$this->ui->getWidget('related_products_footer')->visible = false;
+		}
+
+		return $rs;
+	}
+
+	// }}}
+
+	// build phase - product collections
+	// {{{ private function buildProductCollections()
+
+	private function buildProductCollections()
+	{
+		$toolbar = $this->ui->getWidget('product_collection_toolbar');
+		$view = $this->ui->getWidget('product_collection_view');
+		$this->buildCategoryToolBarLinks($toolbar);
+		$this->buildCategoryTableViewLinks($view);
+	}
+
+	// }}}
+	// {{{ private function getProductCollectionsTableModel()
+
+	private function getProductCollectionsTableModel(SwatTableView $view)
+	{
+		$sql = 'select id, title
+			from Product
+				inner join ProductCollectionBinding on id = member_product
+					and source_product = %s
+			order by title';
+
+		$sql = sprintf($sql,
+			$this->app->db->quote($this->id, 'integer'));
+
+		$rs = SwatDB::query($this->app->db, $sql);
+
+		if (count($rs) == 0) {
+			$view->visible = false;
+			$this->ui->getWidget('product_collection_footer')->visible = false;
 		}
 
 		return $rs;
