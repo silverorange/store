@@ -76,7 +76,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	 *
 	 * Search will find products in this collection product.
 	 *
-	 * @var VanBourgondienProduct
+	 * @var StoreProduct
 	 */
 	public $popular_source_product;
 
@@ -88,6 +88,24 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	 * @var integer
 	 */
 	public $popular_threshold;
+
+	/**
+	 * Optional member product for collections
+	 *
+	 * Search will find collections containing this member product.
+	 *
+	 * @var StoreProduct
+	 */
+	public $collection_member_product;
+
+	/**
+	 * Optional source product for collections
+	 *
+	 * Search will find products in this collection product.
+	 *
+	 * @var StoreProduct
+	 */
+	public $collection_source_product;
 
 	/**
 	 * Whether or not to supress duplicate products
@@ -395,6 +413,16 @@ class StoreProductSearchEngine extends SiteSearchEngine
 					where attribute = %s)',
 					$this->app->db->quote($attribute->id, 'integer'));
 		}
+
+		if ($this->collection_source_product instanceof StoreProduct)
+			$clause.= sprintf(' and Product.id in
+				(select member_product from ProductCollectionBinding where source_product = %s)',
+				$this->app->db->quote($this->collection_source_product->id, 'integer'));
+
+		if ($this->collection_member_product instanceof StoreProduct)
+			$clause.= sprintf(' and Product.id in
+				(select source_product from ProductCollectionBinding where member_product = %s)',
+				$this->app->db->quote($this->collection_member_product->id, 'integer'));
 
 		return $clause;
 	}

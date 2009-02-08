@@ -275,6 +275,44 @@
 			</widget>
 		</widget>
 		<!-- }}} -->
+		<!-- {{{ Product Collections -->
+		<widget class="SwatFrame">
+			<property name="title" translatable="yes">Product Collection</property>
+			<widget class="SwatToolBar" id="product_collection_toolbar">
+				<widget class="SwatToolLink">
+					<property name="title" translatable="yes">Add products to this collection</property>
+					<property name="stock_id">create</property>
+					<property name="link">Product/ProductCollection?product=%s</property>
+				</widget>
+			</widget>
+			<widget class="AdminNote">
+				<property name="content" translatable="yes">If this product is a collection of other products, the product page for this product will display the constituent products of the collection and each constituent products’ page will link back to the collection.</property>
+			</widget>
+			<widget class="SwatForm" id="product_collection_form">
+				<widget class="SwatTableView" id="product_collection_view">
+					<object class="SwatTableViewCheckboxColumn" id="checkbox">
+						<object class="SwatCheckboxCellRenderer" id="items">
+							<property name="value" type="data">id</property>
+						</object>
+					</object>
+					<object class="SwatTableViewColumn">
+						<property name="title" translatable="yes">Title</property>
+						<object class="AdminTitleLinkCellRenderer">
+							<property name="text" type="data">title</property>
+							<property name="link">Product/Details?id=%s</property>
+							<property name="link_value" type="data">id</property>
+							<property name="stock_id">product</property>
+						</object>
+					</object>
+				</widget>
+				<widget class="SwatFooterFormField" id="product_collection_footer">
+					<widget class="SwatButton">
+						<property name="title" translatable="yes">Remove Checked Products</property>
+					</widget>
+				</widget>
+			</widget>
+		</widget>
+		<!-- }}} -->
 		<!-- {{{ Related Articles -->
 		<widget class="SwatFrame" id="related_articles_frame">
 			<property name="title" translatable="yes">Related Articles</property>
