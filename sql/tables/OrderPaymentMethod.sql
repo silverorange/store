@@ -1,7 +1,7 @@
 create table OrderPaymentMethod (
 	id serial,
 
-	ordernum integer references Orders(id) not null,
+	ordernum integer not null references Orders(id) on delete cascade,
 
 	payment_type integer not null references PaymentType(id),
 	surcharge numeric(11, 2),

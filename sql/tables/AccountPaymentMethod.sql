@@ -15,6 +15,8 @@ create table AccountPaymentMethod (
 
 CREATE INDEX AccountPaymentMethod_account ON AccountPaymentMethod(account);
 
--- This column belongs on Account but can only be added after
--- AccountPaymentMethod exists
-ALTER TABLE Account ADD COLUMN default_payment_method int references AccountPaymentMethod(id);
+-- This table doesn't exist when Account is created, so add the contstraint now
+-- that AccountPaymentMethod exists.
+alter table account add constraint "account_default_payment_method_fkey"
+	FOREIGN KEY (default_payment_method)
+	REFERENCES accountpaymentmethod(id) on delete set null;
