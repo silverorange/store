@@ -19,7 +19,7 @@
 				<property name="classes[]">store-cart-entry-view</property>
 				<object class="StoreCartImageTableViewGroup" id="cart_image">
 					<property name="group_by">item.product.id</property>
-					<object class="SwatImageLinkCellRenderer">
+					<object class="SwatImageLinkCellRenderer" id="product_image">
 						<property name="image" type="data">image</property>
 						<property name="width" type="data">image_width</property>
 						<property name="height" type="data">image_height</property>
