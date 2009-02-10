@@ -81,6 +81,9 @@ class StoreProductImagePage extends StorePage
 
 	protected function buildNavBar()
 	{
+		if (!property_exists($this->layout, 'navbar'))
+			return;
+
 		$link = 'store';
 
 		foreach ($this->path as $path_entry) {
@@ -211,8 +214,16 @@ class StoreProductImagePage extends StorePage
 	protected function displayBackLink()
 	{
 		$this->back_link->title = Store::_('Back to Product Page');
-		$this->back_link->link =
-			$this->layout->navbar->getEntryByPosition(-1)->link;
+
+		if (property_exists($this->layout, 'navbar')) {
+			$this->back_link->link =
+				$this->layout->navbar->getEntryByPosition(-1)->link;
+		} else {
+			$uri = explode('/', $this->app->getUri());
+			array_pop($uri);
+			$uri = implode('/', $uri);
+			$this->back_link->link = $uri;
+		}
 
 		$this->back_link->display();
 	}
