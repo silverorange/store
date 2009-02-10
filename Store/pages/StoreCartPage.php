@@ -38,7 +38,7 @@ class StoreCartPage extends SiteArticlePage
 	protected $updated_entry_ids = array();
 
 	/**
-	 * An array of cart entry ids that were added (or moved) to a cart 
+	 * An array of cart entry ids that were added (or moved) to a cart
 	 *
 	 * @var array
 	 */
@@ -883,6 +883,7 @@ class StoreCartPage extends SiteArticlePage
 		} else {
 			$this->buildAvailableTableView();
 			$this->buildUnavailableTableView();
+			$this->buildMessages();
 		}
 
 		$this->buildSavedTableView();
@@ -1271,6 +1272,20 @@ class StoreCartPage extends SiteArticlePage
 	}
 
 	// }}}
+	// {{{ protected function buildMessages()
+
+	protected function buildMessages()
+	{
+		try {
+			$message_display = $this->ui->getWidget('message_display');
+			foreach ($this->app->messages->getAll() as $message)
+				$message_display->add($message);
+		} catch (SwatWidgetNotFoundException $e) {
+		}
+	}
+
+	// }}}
+
 
 	// finalize phase
 	// {{{ public function finalize()
