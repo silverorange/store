@@ -50,7 +50,7 @@ class StoreCategoryPage extends StorePage
 
 	protected function initInternal()
 	{
-		$category_id = $this->path->getLast()->id;
+		$category_id = $this->getSelectedCategoryId();
 		$this->category = $this->queryCategory($category_id);
 	}
 
