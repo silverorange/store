@@ -144,6 +144,7 @@ abstract class StoreNotVisiblePage extends StorePage
 
 		$a_tag->href = $this->app->getBaseHref(null, $locale->id).
 			$this->source;
+
 		$a_tag->setContent($locale->getTitle());
 		$a_tag->display();
 
