@@ -116,7 +116,8 @@ abstract class StoreNotVisiblePage extends StorePage
 				$li_tag->open();
 				echo $this->getLocaleLink($locale);
 				$li_tag->close();
-			} 
+			}
+
 			$ul_tag->close();
 
 			$secondary_content = ob_get_clean();
