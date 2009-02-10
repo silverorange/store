@@ -437,6 +437,9 @@ class StoreCategoryPage extends StorePage
 
 	protected function buildNavBar()
 	{
+		if (!property_exists($this->layout, 'navbar'))
+			return;
+
 		if ($this->path !== null) {
 			$link = 'store';
 			foreach ($this->path as $path_entry) {
