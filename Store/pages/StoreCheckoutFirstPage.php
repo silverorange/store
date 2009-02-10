@@ -73,8 +73,10 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 	{
 		parent::build();
 
-		$this->layout->data->title = Store::_('Checkout');
-		$this->layout->navbar->popEntry();
+		if (property_exists($this->layout, 'navbar')) {
+			$this->layout->data->title = Store::_('Checkout');
+			$this->layout->navbar->popEntry();
+		}
 
 		if ($this->app->session->checkout_with_account) {
 			$this->layout->startCapture('content');
