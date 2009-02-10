@@ -47,7 +47,7 @@ class StoreLocale extends SwatDBDataObject
 
 	// }}}
 	// {{{ public function getTitle()
-	
+
 	/**
 	 * Get a title that can be displayed for this locale
 	 *
