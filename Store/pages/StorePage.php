@@ -27,6 +27,15 @@ abstract class StorePage extends SitePathPage
 			$this->getSelectedSecondaryCategoryId();
 
 		$this->layout->selected_category_id = $this->getSelectedCategoryId();
+
+		$this->initInternal();
+	}
+
+	// }}}
+	// {{{ protected function initInternal()
+
+	protected function initInternal()
+	{
 	}
 
 	// }}}
