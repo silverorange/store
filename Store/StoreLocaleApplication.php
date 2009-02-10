@@ -38,19 +38,9 @@ abstract class StoreLocaleApplication extends StoreApplication
 	}
 
 	// }}}
-	// {{{ protected function loadPage()
+	// {{{ public function getBaseHrefRelativeUri()
 
-	protected function loadPage()
-	{
-		$this->parseLocale(self::initVar('locale'));
-
-		parent::loadPage();
-	}
-
-	// }}}
-	// {{{ protected function getBaseHrefRelativeUri()
-
-	protected function getBaseHrefRelativeUri($secure = null)
+	public function getBaseHrefRelativeUri($secure = null)
 	{
 		$uri = parent::getBaseHrefRelativeUri($secure);
 
@@ -58,6 +48,16 @@ abstract class StoreLocaleApplication extends StoreApplication
 		$uri = preg_replace('|^[a-z][a-z]/[a-z][a-z]/|', '', $uri);
 
 		return $uri;
+	}
+
+	// }}}
+	// {{{ protected function loadPage()
+
+	protected function loadPage()
+	{
+		$this->parseLocale(self::initVar('locale'));
+
+		parent::loadPage();
 	}
 
 	// }}}
