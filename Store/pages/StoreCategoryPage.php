@@ -46,6 +46,15 @@ class StoreCategoryPage extends StorePage
 	}
 
 	// }}}
+	// {{{ protected function initInternal()
+
+	protected function initInternal()
+	{
+		$category_id = $this->path->getLast()->id;
+		$this->category = $this->queryCategory($category_id);
+	}
+
+	// }}}
 	// {{{ protected function getSelectedCategoryId()
 
 	protected function getSelectedCategoryId()
@@ -70,9 +79,6 @@ class StoreCategoryPage extends StorePage
 	{
 		parent::build();
 
-		$category_id = $this->path->getLast()->id;
-		$this->category = $this->queryCategory($category_id);
-
 		$this->layout->data->title =
 			SwatString::minimizeEntities($this->category->title);
 
@@ -95,7 +101,11 @@ class StoreCategoryPage extends StorePage
 				SwatString::minimizeEntities($this->category->description);
 		}
 
-		$this->products = $this->getProducts();
+		// subclasses may have loaded products already at this point, so avoid
+		// querying all products again
+		if ($this->products === null)
+			$this->products = $this->getProducts();
+
 		$this->buildPage();
 	}
 
