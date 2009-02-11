@@ -42,8 +42,24 @@ class StoreProductRelatedProduct extends AdminSearch
 		$this->ui->loadFromXML($this->search_xml);
 		$this->ui->loadFromXML($this->ui_xml);
 
-		$catalog_selector = $this->ui->getWidget('catalog_selector');
-		$catalog_selector->db = $this->app->db;
+		$this->initCatalogSelector();
+	}
+
+	// }}}
+	// {{{ private function initCatalogSelector()
+
+	/**
+	 * Builds the catalog selector. Selector does not get shown unless there is
+	 * more than one catalog, as its not useful when there is only one.
+	 */
+	private function initCatalogSelector()
+	{
+		$this->ui->getWidget('catalog_selector')->db = $this->app->db;
+
+		$sql = 'select count(id) from Catalog';
+		$catalog_count = SwatDB::queryOne($this->app->db, $sql);
+		if ($catalog_count == 1)
+			$this->ui->getWidget('catalog_field')->visible = false;
 	}
 
 	// }}}
