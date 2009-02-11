@@ -48,10 +48,8 @@ class StoreProductIndex extends AdminSearch
 		$this->ui->loadFromXML($this->search_xml);
 		$this->ui->loadFromXML($this->index_xml);
 
+		$this->initCatalogSelector();
 		$this->initAttributeList();
-
-		$catalog_selector = $this->ui->getWidget('catalog_selector');
-		$catalog_selector->db = $this->app->db;
 
 		$products_frame = $this->ui->getWidget('results_frame');
 		$products_frame->addStyleSheet(
@@ -68,6 +66,23 @@ class StoreProductIndex extends AdminSearch
 		$sale_discount_flydown = $this->ui->getWidget('sale_discount_flydown');
 		$sale_discount_flydown->addOptionsByArray(SwatDB::getOptionArray(
 			$this->app->db, 'SaleDiscount', 'title', 'id', 'title'));
+	}
+
+	// }}}
+	// {{{ private function initCatalogSelector()
+
+	/**
+	 * Builds the catalog selector. Selector does not get shown unless there is
+	 * more than one catalog, as its not useful when there is only one.
+	 */
+	private function initCatalogSelector()
+	{
+		$this->ui->getWidget('catalog_selector')->db = $this->app->db;
+
+		$sql = 'select count(id) from Catalog';
+		$catalog_count = SwatDB::queryOne($this->app->db, $sql);
+		if ($catalog_count == 1)
+			$this->ui->getWidget('catalog_field')->visible = false;
 	}
 
 	// }}}
