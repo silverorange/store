@@ -37,7 +37,7 @@
 				<property name="title" translatable="yes">Category</property>
 				<widget class="SwatTreeFlydown" id="search_category" />
 			</widget>
-			<widget class="SwatFormField">
+			<widget class="SwatFormField" id="catalog_field">
 				<property name="title" translatable="yes">Catalog</property>
 				<widget class="StoreCatalogSelector" id="catalog_selector" />
 			</widget>
