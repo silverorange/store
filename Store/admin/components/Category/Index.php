@@ -57,11 +57,28 @@ class StoreCategoryIndex extends AdminIndex
 		$this->ui->getRoot()->addStyleSheet(
 			'packages/store/admin/styles/store-image-preview.css');
 
-		$this->ui->getWidget('catalog_switcher')->db = $this->app->db;
 		$this->id = SiteApplication::initVar('id', null,
 			SiteApplication::VAR_GET);
 
+		$this->initCatalogSwitcher();
 		$this->initAttributeList();
+	}
+
+	// }}}
+	// {{{ private function initCatalogSwitcher()
+
+	/**
+	 * Builds the catalog switcher. Switcher does not get shown unless there is
+	 * more than one catalog, as its not useful when there is only one.
+	 */
+	private function initCatalogSwitcher()
+	{
+		$this->ui->getWidget('catalog_switcher')->db = $this->app->db;
+
+		$sql = 'select count(id) from Catalog';
+		$catalog_count = SwatDB::queryOne($this->app->db, $sql);
+		if ($catalog_count == 1)
+			$this->ui->getWidget('catalog_switcher_form')->visible = false;
 	}
 
 	// }}}
