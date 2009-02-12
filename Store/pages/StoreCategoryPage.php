@@ -87,9 +87,10 @@ class StoreCategoryPage extends StorePage
 
 		$this->layout->startCapture('content');
 
-		if ($this->category->bodytext != '')
-			echo '<div class="store-category-bodytext">',
-				SwatString::toXHTML($this->category->bodytext),'</div>';
+		if ($this->category->bodytext != '') {
+			printf('<div class="store-category-bodytext">%s</div>',
+				SwatString::toXHTML($this->category->bodytext));
+		}
 
 		$this->layout->endCapture();
 
