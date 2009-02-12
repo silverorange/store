@@ -107,9 +107,12 @@ class StoreProductPage extends StorePage
 	protected function initItemsView()
 	{
 		$this->items_view = $this->getItemsView();
-		$this->items_view->setProduct($this->product);
-		$this->items_view->setSource($this->source);
-		$this->items_view->init();
+
+		if ($this->items_view instanceof StoreItemsView) {
+			$this->items_view->setProduct($this->product);
+			$this->items_view->setSource($this->source);
+			$this->items_view->init();
+		}
 	}
 
 	// }}}
@@ -174,18 +177,20 @@ class StoreProductPage extends StorePage
 
 	protected function initCart()
 	{
-		$this->cart_ui = new SwatUI();
-		$this->cart_ui->loadFromXML($this->cart_ui_xml);
-		$this->cart_ui->getRoot()->addStyleSheet(
-			'packages/store/styles/store-cart.css', Store::PACKAGE_ID);
+		if ($this->cart_ui instanceof SwatUI) {
+			$this->cart_ui = new SwatUI();
+			$this->cart_ui->loadFromXML($this->cart_ui_xml);
+			$this->cart_ui->getRoot()->addStyleSheet(
+				'packages/store/styles/store-cart.css', Store::PACKAGE_ID);
 
-		if ($this->cart_ui->hasWidget('cart_form')) {
-			$cart_form = $this->cart_ui->getWidget('cart_form');
-			$cart_form->action = $this->source;
+			if ($this->cart_ui->hasWidget('cart_form')) {
+				$cart_form = $this->cart_ui->getWidget('cart_form');
+				$cart_form->action = $this->source;
+			}
+
+			$this->initCartInternal();
+			$this->cart_ui->init();
 		}
-
-		$this->initCartInternal();
-		$this->cart_ui->init();
 	}
 
 	// }}}
@@ -253,33 +258,35 @@ class StoreProductPage extends StorePage
 
 	protected function processProduct()
 	{
-		$this->items_view->process();
+		if ($this->items_view instanceof StoreItemsView) {
+			$this->items_view->process();
 
-		if ($this->items_view->hasMessage()) {
-			$message = new SwatMessage(Store::_('There is a problem with '.
-				'one or more of the items you requested.'), 'error');
+			if ($this->items_view->hasMessage()) {
+				$message = new SwatMessage(Store::_('There is a problem with '.
+					'one or more of the items you requested.'), 'error');
 
-			$message->secondary_content = Store::_('Please address the '.
-				'fields highlighted below and re-submit the form.');
+				$message->secondary_content = Store::_('Please address the '.
+					'fields highlighted below and re-submit the form.');
 
-			$this->message_display->add($message);
-		} else {
-			$entries = $this->items_view->getCartEntries();
-
-			$this->addEntriesToCart($entries);
-
-			if (count($this->items_added) > 0) {
-				$this->cart_message = new SwatMessage(
-					Store::_('Your cart has been updated.'), 'cart');
-			}
-
-			// add cart messages
-			$messages = $this->app->cart->checkout->getMessages();
-			foreach ($messages as $message)
 				$this->message_display->add($message);
+			} else {
+				$entries = $this->items_view->getCartEntries();
 
-			if (count($this->items_saved) > 0)
-				$this->message_display->add($this->getSavedCartMessage());
+				$this->addEntriesToCart($entries);
+
+				if (count($this->items_added) > 0) {
+					$this->cart_message = new SwatMessage(
+						Store::_('Your cart has been updated.'), 'cart');
+				}
+
+				// add cart messages
+				$messages = $this->app->cart->checkout->getMessages();
+				foreach ($messages as $message)
+					$this->message_display->add($message);
+
+				if (count($this->items_saved) > 0)
+					$this->message_display->add($this->getSavedCartMessage());
+			}
 		}
 	}
 
@@ -332,25 +339,27 @@ class StoreProductPage extends StorePage
 
 	protected function processCart()
 	{
-		$this->cart_ui->process();
+		if ($this->cart_ui instanceof SwatUI) {
+			$this->cart_ui->process();
 
-		if (!$this->cart_ui->hasWidget('cart_view'))
-			return;
+			if (!$this->cart_ui->hasWidget('cart_view'))
+				return;
 
-		$view = $this->cart_ui->getWidget('cart_view');
+			$view = $this->cart_ui->getWidget('cart_view');
 
-		// check for removed items
-		$remove_column = $view->getColumn('remove_column');
-		$remove_renderer = $remove_column->getRendererByPosition();
-		foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
-			if ($widget->hasBeenClicked()) {
-				$this->item_removed = true;
-				$this->app->cart->checkout->removeEntryById($id);
-				$this->message_display->add(new SwatMessage(
-					Store::_('An item has been removed from your cart.'),
-						'cart'));
+			// check for removed items
+			$remove_column = $view->getColumn('remove_column');
+			$remove_renderer = $remove_column->getRendererByPosition();
+			foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
+				if ($widget->hasBeenClicked()) {
+					$this->item_removed = true;
+					$this->app->cart->checkout->removeEntryById($id);
+					$this->message_display->add(new SwatMessage(
+						Store::_('An item has been removed from your cart.'),
+							'cart'));
 
-				break;
+					break;
+				}
 			}
 		}
 	}
@@ -539,36 +548,38 @@ class StoreProductPage extends StorePage
 
 	protected function buildCart()
 	{
-		$cart_view = $this->cart_ui->getWidget('cart_view');
-		$cart_view->model = $this->getCartTableStore();
-		$count = count($cart_view->model);
+		if ($this->cart_ui instanceof CartUI) {
+			$cart_view = $this->cart_ui->getWidget('cart_view');
+			$cart_view->model = $this->getCartTableStore();
+			$count = count($cart_view->model);
 
-		if ($count > 0) {
-			if ($this->cart_message === null) {
-				$this->cart_message = new SwatMessage(null, 'cart');
-				$this->cart_message->primary_content = Store::ngettext(
-					'The following item on this page is in your cart:',
-					'The following items on this page are in your cart:',
-					$count);
+			if ($count > 0) {
+				if ($this->cart_message === null) {
+					$this->cart_message = new SwatMessage(null, 'cart');
+					$this->cart_message->primary_content = Store::ngettext(
+						'The following item on this page is in your cart:',
+						'The following items on this page are in your cart:',
+						$count);
 
-				$this->cart_message->secondary_content =
-					Store::_('You may continue shopping by following any of '.
-						'the links on this page.');
+					$this->cart_message->secondary_content =
+						Store::_('You may continue shopping by following any '.
+							'of the links on this page.');
+				}
+
+				ob_start();
+				$this->cart_ui->display();
+
+				echo '<div class="cart-message-links">';
+				$this->displayCartLinks();
+				echo '</div>';
+
+				$this->cart_message->secondary_content = ob_get_clean();
+				$this->cart_message->content_type = 'text/xml';
+				$this->message_display->add($this->cart_message);
+
+			} elseif ($this->cart_message !== null) {
+				$this->message_display->add($this->cart_message);
 			}
-
-			ob_start();
-			$this->cart_ui->display();
-
-			echo '<div class="cart-message-links">';
-			$this->displayCartLinks();
-			echo '</div>';
-
-			$this->cart_message->secondary_content = ob_get_clean();
-			$this->cart_message->content_type = 'text/xml';
-			$this->message_display->add($this->cart_message);
-
-		} elseif ($this->cart_message !== null) {
-			$this->message_display->add($this->cart_message);
 		}
 	}
 
@@ -1013,7 +1024,8 @@ class StoreProductPage extends StorePage
 
 	protected function displayItems()
 	{
-		$this->items_view->display();
+		if ($this->items_view instanceof StoreItemsView)
+			$this->items_view->display();
 	}
 
 	// }}}
@@ -1383,9 +1395,10 @@ class StoreProductPage extends StorePage
 			'packages/store/javascript/store-product-page.js',
 			Store::PACKAGE_ID));
 
-		if (isset($this->items_view))
+		if ($this->items_view instanceof StoreItemsView) {
 			$this->layout->addHtmlHeadEntrySet(
 				$this->items_view->getHtmlHeadEntrySet());
+		}
 
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
 			'packages/store/styles/store-product-page.css',
@@ -1398,8 +1411,10 @@ class StoreProductPage extends StorePage
 		$this->layout->addHtmlHeadEntrySet(
 			$this->message_display->getHtmlHeadEntrySet());
 
-		$this->layout->addHtmlHeadEntrySet(
-			$this->cart_ui->getRoot()->getHtmlHeadEntrySet());
+		if ($this->cart_ui instanceof SwatUI) {
+			$this->layout->addHtmlHeadEntrySet(
+				$this->cart_ui->getRoot()->getHtmlHeadEntrySet());
+		}
 
 		if ($this->reviews_ui instanceof SwatUI) {
 			require_once 'XML/RPCAjax.php';
