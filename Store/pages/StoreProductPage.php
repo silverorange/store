@@ -177,7 +177,7 @@ class StoreProductPage extends StorePage
 
 	protected function initCart()
 	{
-		if ($this->cart_ui instanceof SwatUI) {
+		if ($this->cart_ui_xml !== null) {
 			$this->cart_ui = new SwatUI();
 			$this->cart_ui->loadFromXML($this->cart_ui_xml);
 			$this->cart_ui->getRoot()->addStyleSheet(
