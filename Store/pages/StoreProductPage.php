@@ -1056,13 +1056,21 @@ class StoreProductPage extends StorePage
 
 		foreach ($related_products as $product) {
 			$li_tag->open();
-			$path = 'store/'.$product->path;
-			$product->displayAsIcon($path, 'pinky');
+			$this->displayRelatedProduct($product);
 			$li_tag->close();
 		}
 
 		$ul_tag->close();
 		$div->close();
+	}
+
+	// }}}
+	// {{{ protected function displayRelatedProduct()
+
+	protected function displayRelatedProduct(StoreProduct $product)
+	{
+		$path = 'store/'.$product->path;
+		$product->displayAsIcon($path, 'pinky');
 	}
 
 	// }}}
@@ -1094,13 +1102,21 @@ class StoreProductPage extends StorePage
 
 		foreach ($popular_products as $product) {
 			$li_tag->open();
-			$path = 'store/'.$product->path;
-			$product->displayAsIcon($path, 'pinky');
+			$this->displayPopularProduct($product);
 			$li_tag->close();
 		}
 
 		$ul_tag->close();
 		$div->close();
+	}
+
+	// }}}
+	// {{{ protected function displayPopularProduct()
+
+	protected function displayPopularProduct(StoreProduct $product)
+	{
+		$path = 'store/'.$product->path;
+		$product->displayAsIcon($path, 'pinky');
 	}
 
 	// }}}
@@ -1141,8 +1157,7 @@ class StoreProductPage extends StorePage
 
 		foreach ($products as $product) {
 			$li_tag->open();
-			$path = 'store/'.$product->path;
-			$product->displayAsIcon($path, 'pinky');
+			$this->displayCollectionProduct($product);
 			$li_tag->close();
 			echo ' ';
 		}
@@ -1191,14 +1206,22 @@ class StoreProductPage extends StorePage
 
 		foreach ($products as $product) {
 			$li_tag->open();
-			$path = 'store/'.$product->path;
-			$product->displayAsIcon($path, 'pinky');
+			$this->displayCollectionProduct($product);
 			$li_tag->close();
 			echo ' ';
 		}
 
 		$ul_tag->close();
 		$div_tag->close();
+	}
+
+	// }}}
+	// {{{ protected function displayCollectionProduct()
+
+	protected function displayCollectionProduct(StoreProduct $product)
+	{
+		$path = 'store/'.$product->path;
+		$product->displayAsIcon($path, 'pinky');
 	}
 
 	// }}}
