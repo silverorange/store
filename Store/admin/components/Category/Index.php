@@ -864,9 +864,9 @@ class StoreCategoryIndex extends AdminIndex
 	// }}}
 
 	// build phase - category details
-	// {{{ private function buildDetails()
+	// {{{ protected function buildDetails()
 
-	private function buildDetails()
+	protected function buildDetails()
 	{
 		$this->ui->getWidget('details_toolbar')->setToolLinkValues($this->id);
 
@@ -878,6 +878,30 @@ class StoreCategoryIndex extends AdminIndex
 		$details_frame = $this->ui->getWidget('details_frame');
 		$details_frame->title = Store::_('Category');
 		$details_frame->subtitle = $category->title;
+	}
+
+	// }}}
+	// {{{ protected function buildCategoryDetails()
+
+	protected function buildCategoryDetails($category)
+	{
+		$this->buildImageDetails($category);
+
+		$details_view = $this->ui->getWidget('details_view');
+		$details_view->data = $this->getCategoryDetailsStore($category);
+	}
+
+	// }}}
+	// {{{ protected function getCategoryDetailsStore()
+
+	protected function getCategoryDetailsStore(StoreCategory $category)
+	{
+		$ds = new SwatDetailsStore($category);
+
+		$ds->bodytext = SwatString::condense(SwatString::toXHTML(
+			$category->bodytext), 120);
+
+		return $ds;
 	}
 
 	// }}}
@@ -918,22 +942,6 @@ class StoreCategoryIndex extends AdminIndex
 
 		$this->navbar->addEntry(new SwatNavBarEntry($category->title));
 		$this->title = $category->title;
-	}
-
-	// }}}
-	// {{{ private function buildCategoryDetails()
-
-	private function buildCategoryDetails($category)
-	{
-		$this->buildImageDetails($category);
-
-		$ds = new SwatDetailsStore($category);
-
-		$ds->bodytext = SwatString::condense(SwatString::toXHTML(
-			$category->bodytext), 120);
-
-		$details_view = $this->ui->getWidget('details_view');
-		$details_view->data = $ds;
 	}
 
 	// }}}
