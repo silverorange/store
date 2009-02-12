@@ -44,6 +44,7 @@ class StoreProductDetails extends AdminIndex
 	protected $ui_xml = 'Store/admin/components/Product/details.xml';
 	protected $id;
 	protected $category_id;
+	protected $product;
 
 	// }}}
 	// {{{ private properties
@@ -73,6 +74,7 @@ class StoreProductDetails extends AdminIndex
 			'packages/store/admin/styles/store-image-preview.css');
 
 		$this->id = SiteApplication::initVar('id');
+		$this->product = $this->loadProduct();
 		$this->category_id = SiteApplication::initVar('category', null,
 			SiteApplication::VAR_GET);
 
@@ -91,6 +93,23 @@ class StoreProductDetails extends AdminIndex
 
 		if ($this->ui->hasWidget('review_pager'))
 			$this->ui->getWidget('review_pager')->page_size = 10;
+	}
+
+	// }}}
+	// {{{ private function loadProduct()
+
+	private function loadProduct()
+	{
+		$product_class = SwatDBClassMap::get('StoreProduct');
+		$product = new $product_class();
+		$product->setDatabase($this->app->db);
+
+		if (!$product->load($this->id))
+			throw new AdminNotFoundException(sprintf(
+				Store::_('A product with an id of ‘%d’ does not exist.'),
+				$this->id));
+
+		return $product;
 	}
 
 	// }}}
@@ -688,21 +707,19 @@ class StoreProductDetails extends AdminIndex
 
 	private function buildProduct()
 	{
-		$product = $this->loadProduct();
-
-		$ds = $this->getProductDetailsStore($product);
+		$ds = $this->getProductDetailsStore($this->product);
 		$details_view = $this->ui->getWidget('details_view');
 		$details_view->data = $ds;
 
 		$details_frame = $this->ui->getWidget('details_frame');
 		$details_frame->title = Store::_('Product');
-		$details_frame->subtitle = $product->title;
-		$this->title = $product->title;
+		$details_frame->subtitle = $this->product->title;
+		$this->title = $this->product->title;
 
 		$toolbar = $this->ui->getWidget('details_toolbar');
 		$this->buildCategoryToolBarLinks($toolbar);
-		$this->buildViewInStoreToolLinks($product);
-		$this->buildProductNavBar($product);
+		$this->buildViewInStoreToolLinks($this->product);
+		$this->buildProductNavBar($this->product);
 	}
 
 	// }}}
@@ -790,23 +807,6 @@ class StoreProductDetails extends AdminIndex
 		}
 
 		$this->navbar->addEntry(new SwatNavBarEntry($product->title));
-	}
-
-	// }}}
-	// {{{ private function loadProduct()
-
-	private function loadProduct()
-	{
-		$product_class = SwatDBClassMap::get('StoreProduct');
-		$product = new $product_class();
-		$product->setDatabase($this->app->db);
-
-		if (!$product->load($this->id))
-			throw new AdminNotFoundException(sprintf(
-				Store::_('A product with an id of ‘%d’ does not exist.'),
-				$this->id));
-
-		return $product;
 	}
 
 	// }}}
