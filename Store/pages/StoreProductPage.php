@@ -548,7 +548,7 @@ class StoreProductPage extends StorePage
 
 	protected function buildCart()
 	{
-		if ($this->cart_ui instanceof CartUI) {
+		if ($this->cart_ui instanceof SwatUI) {
 			$cart_view = $this->cart_ui->getWidget('cart_view');
 			$cart_view->model = $this->getCartTableStore();
 			$count = count($cart_view->model);
