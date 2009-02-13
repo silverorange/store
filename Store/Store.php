@@ -96,18 +96,6 @@ class Store
 			'froogle.username'      => null,
 			'froogle.password'      => null,
 
-			// smtp server name (ex: smtp.mail.silverorange.com)
-			'email.smtp_server'     => null,
-
-			// to address for contact-us emails
-			'email.contact_address' => null,
-
-			// from address for automated emails sent by orders or accounts
-			'email.service_address' => null,
-
-			// from address for contact-us emails (from "the website" to client)
-			'email.website_address' => null,
-
 			// Optional Wordpress API key for Akismet spam filtering.
 			'store.akismet_key'     => null,
 
