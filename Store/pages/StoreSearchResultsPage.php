@@ -64,7 +64,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 		if (substr($sku, 0, 1) === '#' && strlen($sku) > 1)
 			$sku = substr($sku, 1);
 
-		$sql = 'select Product.id, Product.shortname,
+		$base_sql = 'select Product.id, Product.shortname,
 				ProductPrimaryCategoryView.primary_category
 			from Product
 				inner join VisibleProductCache on
@@ -72,11 +72,31 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 				left outer join ProductPrimaryCategoryView
 					on ProductPrimaryCategoryView.product = Product.id
 			where VisibleProductCache.region = %1$s and
-				Product.id in
-				(select Item.product from Item where lower(Item.sku) like %2$s
+				Product.id in ';
+
+		// exact match
+		$sql = $base_sql. '(select Item.product from Item where sku = %2$s
 					or Item.id in (select ItemAlias.item from ItemAlias
-					where (lower(ItemAlias.sku) like %2$s))
-				)';
+					where ItemAlias.sku = %2$s))';
+
+		$sql = sprintf($sql,
+				$this->app->db->quote($this->app->getRegion()->id, 'integer'),
+				$this->app->db->quote($sku, 'text'));
+
+		$products = SwatDB::query($this->app->db, $sql,
+			SwatDBClassMap::get('StoreProductWrapper'));
+
+		if (count($products) == 1) {
+			$first_product = $products->getFirst();
+			$path = 'store/'.$first_product->path;
+			$this->app->relocate($path);
+		}
+
+		// starts-with match
+		$sql = $base_sql.'(select Item.product from Item
+				where lower(Item.sku) like %2$s
+					or Item.id in (select ItemAlias.item from ItemAlias
+					where (lower(ItemAlias.sku) like %2$s)))';
 
 		$sql = sprintf($sql,
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
