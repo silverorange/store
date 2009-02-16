@@ -346,9 +346,6 @@ class StoreOrder extends SwatDBDataObject
 		$this->registerInternalProperty('invoice',
 			SwatDBClassMap::get('StoreInvoice'));
 
-		$this->registerInternalProperty('previous_attempt',
-			SwatDBClassMap::get('StoreOrder'));
-
 		$this->registerDateProperty('createdate');
 
 		$this->table = 'Orders';
