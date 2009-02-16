@@ -19,9 +19,10 @@ require_once 'Crypt/GPG.php';
  * encryption.
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StorePaymentType
+ * @see       StoreCardType
  */
 abstract class StorePaymentMethod extends SwatDBDataObject
 {
@@ -115,6 +116,8 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	/**
 	 * The card verification value of this payment method
 	 *
+	 * Note: This should NEVER be saved. Not ever.
+	 *
 	 * @var string
 	 *
 	 * @see StorePaymentMethod::getCardVerificationValue()
@@ -123,6 +126,8 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 
 	/**
 	 * The unencrypted card number of this payment method
+	 *
+	 * Note: This should NEVER be saved. Not ever.
 	 *
 	 * @var string
 	 *
