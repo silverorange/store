@@ -21,6 +21,83 @@ require_once 'Payment/PayPal/SOAP.php';
  */
 class StorePayPalPaymentProvider extends StorePaymentProvider
 {
+	// {{{ private properties
+
+	/**
+	 * PayPal SOAP client
+	 *
+	 * @var Payment_PayPal_SOAP_Client
+	 * @see StoreProtxPaymentProvider::__construct()
+	 */
+	private $client;
+
+	/**
+	 * The currency to use for transactions
+	 *
+	 * @var string
+	 * @see StorePayPalPaymentProvider::__construct()
+	 */
+	private $currency;
+
+	// }}}
+	// {{{ public function __construct()
+
+	/**
+	 * Creates a new payment provider using the PayPal SOAP API
+	 *
+	 * Available parameters are:
+	 *
+	 * <kbd>mode</kbd>      - optional. Transaction mode to use. Muse be one of
+	 *                        either 'live' or 'sandbox'. If not specified,
+	 *                        'sandbox' is used.
+	 * <kbd>username</kbd>  - required. Username for PayPal authentication.
+	 * <kbd>password</kbd>  - required. Password for PayPal authentication.
+	 * <kbd>signature</kbd> - required. Signature used for signature-based
+	 *                        authentication.
+	 * <kbd>currency</kbd>  - required. The currency in which to perform
+	 *                        transactions.
+	 *
+	 * @throws StoreException if a required parameter is missing or if the
+	 *                        'mode' paramater is not valid.
+	 */
+	public function __construct(array $parameters = array())
+	{
+		$required_parameters = array(
+			'username',
+			'password',
+			'signature',
+			'currency',
+		);
+
+		foreach ($required_parameters as $parameter) {
+			if (!isset($parameters[$parameter])) {
+				throw new StoreException('"'.$parameter.'" is required in the '.
+					'PayPal payment provider parameters.');
+			}
+		}
+
+		$this->currency = $parameters['currency'];
+
+		$options = array(
+			'username'  => $parameters['username'],
+			'password'  => $parameters['password'],
+			'signature' => $parameters['signature'],
+		);
+
+		if (isset($parameters['mode'])) {
+			$valid_modes = array('live', 'sandbox');
+			if (!in_array($parameters['mode'], $valid_modes)) {
+				throw new StoreException('Mode "'.$mode.'" is not valid for '.
+					'the PayPal payment provider.');
+			}
+
+			$options['mode'] = $parameters['mode'];
+		}
+
+		$this->client = new Payment_PayPal_SOAP_Client($options);
+	}
+
+	// }}}
 	// {{{ public function pay()
 
 	/**
@@ -40,10 +117,10 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	public function pay(StoreOrder $order, $card_number,
 		$card_verification_value = null)
 	{
-		require_once 'Store/exceptions/StoreUnimplementedException.php';
-		throw new StoreUnimplementedException(sprintf(
-			'%s does not implement the %s() method.',
-			get_class($this), __FUNCTION__));
+		$request = $this->getDoDirectPaymentRequest($order, 'Sale',
+			$card_number, $card_verification_value);
+
+		Swat::printObject($request);
 	}
 
 	// }}}
@@ -72,19 +149,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	public function hold(StoreOrder $order, $card_number,
 		$card_verification_value = null)
 	{
-		$request = new StoreProtxPaymentRequest(
-			StorePaymentRequest::TYPE_HOLD, $this->mode);
-
-		$payment_fields = $this->getOrderPaymentFields($order);
-		$request->setFields($payment_fields);
-
-		$card_fields = $this->getCardFields($order, $card_number,
-			$card_verification_value);
-
-		$request->setFields($card_fields);
-
-		$response = $request->process();
-		$this->checkResponse($response);
+		$request = $this->getDoDirectPaymentRequest($order, 'Authorization',
+			$card_number, $card_verification_value);
 
 		$transaction = $this->getPaymentTransaction($response, $order->id,
 			StorePaymentRequest::TYPE_HOLD);
