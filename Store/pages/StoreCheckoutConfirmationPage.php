@@ -10,6 +10,7 @@ require_once 'Store/dataobjects/StoreCartEntry.php';
 require_once 'Store/exceptions/StorePaymentAddressException.php';
 require_once 'Store/exceptions/StorePaymentPostalCodeException.php';
 require_once 'Store/exceptions/StorePaymentCvvException.php';
+require_once 'Store/exceptions/StorePaymentTotalException.php';
 
 /**
  * Confirmation page of checkout
@@ -85,24 +86,14 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		if (!$saved)
 			return;
 
-		try {
-			$this->processPayment();
+		$order = $this->app->session->order;
+		$order->sendConfirmationEmail($this->app);
 
-			$order = $this->app->session->order;
-			$order->sendConfirmationEmail($this->app);
-			$this->removeCartEntries();
-			$this->cleanupSession();
-			$this->updateProgress();
-			$this->app->relocate('checkout/thankyou');
+		$this->removeCartEntries();
+		$this->cleanupSession();
+		$this->updateProgress();
 
-		} catch (StorePaymentException $e) {
-			$this->handlePaymentException($e);
-
-			// duplicate order
-			$new_order = $order->duplicate();
-			$new_order->previous_attempt = $order;
-			$this->app->session->order = $new_order;
-		}
+		$this->app->relocate('checkout/thankyou');
 	}
 
 	// }}}
@@ -125,79 +116,43 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	protected function save()
 	{
-		// If there is no transaction in progress, save the order
-		// otherwise it has already been saved.
-		if (!isset($this->app->session->transaction)) {
-			if ($this->app->session->checkout_with_account) {
-				$db_transaction = new SwatDBTransaction($this->app->db);
-				$duplicate_account = $this->app->session->account->duplicate();
-				try {
-					// Save account
-					$this->saveAccount();
-					$db_transaction->commit();
-				} catch (Exception $e) {
-					$db_transaction->rollback();
-					$this->app->session->account = $duplicate_account;
-
-					if (!($e instanceof SwatException))
-						$e = new SwatException($e);
-
-					$e->process();
-
-					$message = new SwatMessage(Store::_('A system error '.
-						'occured while processing your order'),
-						SwatMessage::SYSTEM_ERROR);
-
-					$message->content_type = 'text/xml';
-					$message->secondary_content = Store::_(
-						'Your account was not created, '.
-						'your order was <em>not</em> placed, and you have '.
-						'<em>not</em> been billed. The error has been logged '.
-						'and we will attempt to fix it as quickly as '.
-						'possible.');
-
-					$this->app->messages->add($message);
-					$this->ui->getWidget('message_display')->add($message);
-					return false;
-				}
-			}
-
+		if ($this->app->session->checkout_with_account) {
 			$db_transaction = new SwatDBTransaction($this->app->db);
-			$duplicate_order = $this->app->session->order->duplicate();
-
+			$duplicate_account = $this->app->session->account->duplicate();
 			try {
-				// Save order
-				if ($this->saveOrder() !== false) {
-					$db_transaction->commit();
-				} else {
-					$db_transaction->rollback();
-					$this->app->session->order = $duplicate_order;
-					return false;
-				}
+				$this->saveAccount();
+				$db_transaction->commit();
 			} catch (Exception $e) {
 				$db_transaction->rollback();
-				$this->app->session->order = $duplicate_order;
+				$this->app->session->account = $duplicate_account;
 
 				if (!($e instanceof SwatException))
 					$e = new SwatException($e);
 
 				$e->process();
 
-				$message = new SwatMessage(Store::_('A system error '.
-					'occured while processing your order'),
-					SwatMessage::SYSTEM_ERROR);
-
-				$message->content_type = 'text/xml';
-				$message->secondary_content = Store::_(
-					'Your account was created, but your order was '.
-					'<em>not</em> placed and you have '.
-					'<em>not</em> been billed. The error has been logged '.
-					'and we will attempt to fix it as quickly as '.
-					'possible.');
-
+				$message = $this->getErrorMessage('account-error');
 				$this->ui->getWidget('message_display')->add($message);
+
 				return false;
 			}
+		}
+
+		$db_transaction = new SwatDBTransaction($this->app->db);
+		$duplicate_order = $this->app->session->order->duplicate();
+
+		try {
+			$this->saveOrder();
+			$this->processPayment();
+			$db_transaction->commit();
+		} catch (Exception $e) {
+			$db_transaction->rollback();
+			$this->app->session->order = $duplicate_order;
+
+			$this->logException($e);
+			$this->handleException($e);
+
+			return false;
 		}
 
 		return true;
@@ -270,12 +225,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		if ($this->app->hasModule('SiteMultipleInstanceModule'))
 			$order->instance = $this->app->instance->getInstance();
-
-		// if there was a previous order attempt, mark it as failed
-		if ($order->previous_attempt !== null) {
-			$order->previous_attempt->failed_attempt = true;
-			$order->previous_attempt->save();
-		}
 
 		// attach order to account
 		if ($this->app->session->checkout_with_account)
@@ -366,60 +315,88 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	}
 
 	// }}}
-	// {{{ protected function handlePaymentException()
+	// {{{ protected function handleException()
 
 	/**
-	 * Handles exceptions produced by automatic card payment processing
+	 * Handles exceptions produced by order processing
+	 *
+	 * @param Exception $e
 	 *
 	 * @see StorePaymentProvider
 	 */
-	protected function handlePaymentException(StorePaymentException $e)
+	protected function handleException(Exception $e)
 	{
-		// log all payment exceptions
-		$e->process(false);
-
 		if ($e instanceof StorePaymentAddressException) {
 			$this->ui->getWidget('message_display')->add(
-				$this->getPaymentErrorMessage('address'));
+				$this->getErrorMessage('address'));
 		} elseif ($e instanceof StorePaymentPostalCodeException) {
 			$this->ui->getWidget('message_display')->add(
-				$this->getPaymentErrorMessage('postal-code'));
+				$this->getErrorMessage('postal-code'));
 		} elseif ($e instanceof StorePaymentCvvException) {
 			$this->ui->getWidget('message_display')->add(
-				$this->getPaymentErrorMessage('card-verification-value'));
+				$this->getErrorMessage('card-verification-value'));
 		} elseif ($e instanceof StorePaymentCardTypeException) {
 			$this->ui->getWidget('message_display')->add(
-				$this->getPaymentErrorMessage('card-type'));
+				$this->getErrorMessage('card-type'));
+		} elseif ($e instanceof StorePaymentTotalException) {
+			$this->ui->getWidget('message_display')->add(
+				$this->getErrorMessage('total'));
+		} elseif ($e instanceof StorePaymentException) {
+			$this->ui->getWidget('message_display')->add(
+				$this->getErrorMessage('payment-error'));
 		} else {
-			// relocate on fatal payment processing errors and give no
-			// opportunity to edit the order
-			if (isset($this->app->session->transaction))
-				unset($this->app->session->transaction);
-
-			$order = $this->app->session->order;
-			$order->sendPaymentFailedEmail($this->app);
-			$this->removeCartEntries();
-			$this->cleanupSession();
-			$this->updateProgress();
-			$this->app->relocate('checkout/paymentfailed');
+			$this->ui->getWidget('message_display')->add(
+				$this->getErrorMessage('order-error'));
 		}
 	}
 
 	// }}}
-	// {{{ protected function getPaymentErrorMessage()
+	// {{{ protected function logException()
 
 	/**
-	 * Gets the error message for a payment error
+	 * Logs exceptions produced by order processing
 	 *
-	 * @param string $message_id the id of the message to get. Message ids
-	 *                            defined in this class are: 'address',
-	 *                            'postal-code' and 'card-verification-value'.
-	 *
-	 * @return SwatMessage the payment error message corresponding to the
-	 *                      specified <i>$message_id</i> or null if no such
-	 *                      message exists.
+	 * @param Exception $e
 	 */
-	protected function getPaymentErrorMessage($message_id)
+	protected function logException(Exception $e)
+	{
+		if (!($e instanceof SwatException)) {
+			$e = new SwatException($e);
+		}
+
+		// by default, all exceptions are logged
+		$e->process(false);
+	}
+
+	// }}}
+	// {{{ protected function getErrorMessage()
+
+	/**
+	 * Gets the error message for an error
+	 *
+	 * Message ids defined in this class are:
+	 *
+	 * <kbd>address</kdb>                 - for address AVS mismatch errors.
+	 * <kbd>postal-code</kbd>             - for postal/zip code AVS mismatch
+	 *                                      errors.
+	 * <kbd>card-verification-value</kbd> - for CVS, CV2 mismatch errors.
+	 * <kbd>card-type</kbd>               - for invalid card types.
+	 * <kbd>total</kbd>                   - for invalid order totals.
+	 * <kbd>payment-error</kbd>           - for an unknown error processing
+	 *                                      payment for orders.
+	 * <kbd>order-error</kbd>             - for an unknown error saving orders.
+	 * <kbd>account-error</kbd>           - for an unknown error saving
+	 *                                      accounts.
+	 *
+	 * Subclasses may define additional error message ids.
+	 *
+	 * @param string $message_id the id of the message to get.
+	 *
+	 * @return SwatMessage the error message corresponding to the specified
+	 *                      <kbd>$message_id</kbd> or null if no such message
+	 *                      exists.
+	 */
+	protected function getErrorMessage($message_id)
 	{
 		$message = null;
 
@@ -427,7 +404,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		case 'address':
 			$message = new SwatMessage(
 				Store::_('There was a problem processing your payment.'),
-				SwatMessage::ERROR);
+				'error');
 
 			$message->content_type = 'text/xml';
 			$message->secondary_content =
@@ -449,7 +426,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		case 'postal-code':
 			$message = new SwatMessage(
 				Store::_('There was a problem processing your payment.'),
-				SwatMessage::ERROR);
+				'error');
 
 			$message->content_type = 'text/xml';
 			$message->secondary_content =
@@ -471,7 +448,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		case 'card-verification-value':
 			$message = new SwatMessage(
 				Store::_('There was a problem processing your payment.'),
-				SwatMessage::ERROR);
+				'error');
 
 			$message->content_type = 'text/xml';
 			$message->secondary_content =
@@ -493,7 +470,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		case 'card-type':
 			$message = new SwatMessage(
 				Store::_('There was a problem processing your payment.'),
-				SwatMessage::ERROR);
+				'error');
 
 			$message->content_type = 'text/xml';
 			$message->secondary_content =
@@ -510,6 +487,71 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 					'%scontact us%s. Your order details have been recorded.'),
 					'<a href="about/contact">', '</a>').
 				'</p>';
+
+			break;
+		case 'total':
+			$message = new SwatMessage(
+				Store::_('There was a problem processing your payment.'),
+				'error');
+
+			$message->content_type = 'text/xml';
+			$message->secondary_content =
+				'<p>'.sprintf(
+				Store::_('%sYour order total is too large to process.%s '.
+					'Your order has %snot%s been placed. Please remove some '.
+					'items from %syour cart%s or %scontact us%s to continue.'),
+					'<strong>', '</strong>', '<em>', '</em>',
+					'<a href="checkout/confirmation/cart">', '</a>',
+					'<a href="about/contact">', '</a>').
+				' '.Store::_('No funds have been removed from your card.').
+				'</p>';
+
+			break;
+		case 'payment-error':
+			$message = new SwatMessage(
+				Store::_('There was a problem processing your payment.'),
+				'error');
+
+			$message->content_type = 'text/xml';
+			$message->secondary_content =
+				sprintf(
+				Store::_('%sYour payment details are correct, but we were '.
+					'unable to process your payment.%s Your order has %snot%s '.
+					'been placed. Please %scontact us%s to complete your '.
+					'order.'),
+					'<strong>', '</strong>', '<em>', '</em>',
+					'<a href="about/contact">', '</a>').
+				' '.Store::_('No funds have been removed from your card.');
+
+			break;
+		case 'order-error':
+			$message = new SwatMessage(
+				Store::_('A system error occurred while processing your order'),
+				'system-error');
+
+			$message->content_type = 'text/xml';
+			$message->secondary_content = sprintf(
+				Store::_(
+					'Your account was created, but your order was %snot%s '.
+					'placed and you have %snot%s been billed. The error has '.
+					'been recorded and and we will attempt to fix it as '.
+					'quickly as possible.'),
+					'<em>', '</em>', '<em>', '</em>');
+
+			break;
+		case 'account-error':
+			$message = new SwatMessage(
+				Store::_('A system error occurred while processing your order'),
+				'system-error');
+
+			$message->content_type = 'text/xml';
+			$message->secondary_content = sprintf(
+				Store::_(
+					'Your account was not created, your order was %snot%s '.
+					'placed, and you have %snot%s been billed. The error has '.
+					'been recorded and we will attempt to fix it as quickly '.
+					'as possible.'),
+					'<em>', '</em>', '<em>', '</em>');
 
 			break;
 		}
