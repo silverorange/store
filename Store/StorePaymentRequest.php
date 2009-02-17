@@ -12,8 +12,12 @@ require_once 'Store/exceptions/StoreException.php';
  * 3. process the request to get a response object
  * 4. get protocol-specific fields from the response object
  *
+ * StorePaymentRequest is used internally in {@link StorePaymentProvider} to
+ * make API requests. This class is intended to be used to name-value-pair-
+ * style APIs.
+ *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StorePaymentRequest
