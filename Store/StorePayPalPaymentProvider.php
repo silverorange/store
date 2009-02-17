@@ -120,7 +120,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$request = $this->getDoDirectPaymentRequest($order, 'Sale',
 			$card_number, $card_verification_value);
 
-		Swat::printObject($request);
+		$details = $this->client->call('DoDirectPayment', $request);
+
 	}
 
 	// }}}
@@ -151,6 +152,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	{
 		$request = $this->getDoDirectPaymentRequest($order, 'Authorization',
 			$card_number, $card_verification_value);
+
+		$details = $this->client->call('DoDirectPayment', $request);
 
 		$transaction = $this->getPaymentTransaction($response, $order->id,
 			StorePaymentRequest::TYPE_HOLD);
@@ -327,7 +330,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			$details['Street2'] = $this->formatString($address->line2, 100);
 		}
 
-		$details['City'] = $this->formatString($address->city, 40);
+		$details['CityName'] = $this->formatString($address->city, 40);
 
 		if ($address->getInternalValue('provstate') !== null) {
 			$details['StateOrProvince'] = $address->provstate->abbreviation;
@@ -367,7 +370,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			$pos = $right_pos;
 		} elseif ($right_pos === false) {
 			$pos = $left_pos;
-		} elseif (($midpoint - $left_pos) <= ($right_post - $midpoint)) {
+		} elseif (($midpoint - $left_pos) <= ($right_pos - $midpoint)) {
 			$pos = $left_pos;
 		} else {
 			$pos = $right_pos;
