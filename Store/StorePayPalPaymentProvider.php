@@ -120,8 +120,17 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$request = $this->getDoDirectPaymentRequest($order, 'Sale',
 			$card_number, $card_verification_value);
 
-		$details = $this->client->call('DoDirectPayment', $request);
+		$response = $this->client->call('DoDirectPayment', $request);
 
+		$wrapper = SwatDBClassMap::get('StorePaymentMethodTransaction');
+		$transaction = new $wrapper();
+
+		$transaction->createdate = new SwatDate();
+		$transaction->createdate->toUTC();
+		$transaction->transaction_type = StorePaymentRequest::TYPE_PAY;
+		$transaction->transaction_id = $response->TransactionID;
+
+		return $transaction;
 	}
 
 	// }}}
@@ -153,10 +162,15 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$request = $this->getDoDirectPaymentRequest($order, 'Authorization',
 			$card_number, $card_verification_value);
 
-		$details = $this->client->call('DoDirectPayment', $request);
+		$response = $this->client->call('DoDirectPayment', $request);
 
-		$transaction = $this->getPaymentTransaction($response, $order->id,
-			StorePaymentRequest::TYPE_HOLD);
+		$wrapper = SwatDBClassMap::get('StorePaymentMethodTransaction');
+		$transaction = new $wrapper();
+
+		$transaction->createdate = new SwatDate();
+		$transaction->createdate->toUTC();
+		$transaction->transaction_type = StorePaymentRequest::TYPE_HOLD;
+		$transaction->transaction_id = $response->TransactionID;
 
 		return $transaction;
 	}
