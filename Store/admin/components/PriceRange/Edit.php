@@ -69,7 +69,7 @@ class StorePriceRangeEdit extends AdminDBEdit
 	{
 		$start_price = floor($this->ui->getWidget('start_price')->value);
 		$end_price = floor($this->ui->getWidget('end_price')->value);
-		if ($start_price > $end_price) {
+		if ($start_price > $end_price && $end_price > 0) {
 			$this->ui->getWidget('end_price')->addMessage(new SwatMessage(
 				Store::_('End Price must be greater than start price.'),
 					SwatMessage::ERROR));
@@ -83,6 +83,9 @@ class StorePriceRangeEdit extends AdminDBEdit
 	{
 		$this->updatePriceRange();
 		$this->price_range->save();
+
+		if (isset($this->app->memcache))
+			$this->app->memcache->flushNs('price_ranges');
 
 		$message = new SwatMessage(sprintf(Store::_('“%s” has been saved.'),
 			$this->price_range->getTitle()));
@@ -101,8 +104,12 @@ class StorePriceRangeEdit extends AdminDBEdit
 			'original_price'
 		));
 
-		$this->price_range->start_price    = floor($values['start_price']);
-		$this->price_range->end_price      = floor($values['end_price']);
+		$this->price_range->start_price = ($values['start_price'] === null) ?
+			null : floor($values['start_price']);
+
+		$this->price_range->end_price = ($values['end_price'] === null) ?
+			null : floor($values['end_price']);
+
 		$this->price_range->original_price = $values['original_price'];
 	}
 
