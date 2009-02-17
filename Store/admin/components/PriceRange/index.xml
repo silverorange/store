@@ -1,0 +1,56 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<widget class="SwatFrame" id="index_frame">
+		<property name="title" translatable="yes">Price Ranges</property>
+		<widget class="SwatToolbar" id="index_toolbar">
+			<widget class="SwatToolLink">
+				<property name="title" translatable="yes">Add a Price Range</property>
+				<property name="link">PriceRange/Edit</property>
+				<property name="stock_id">create</property>
+			</widget>
+		</widget>
+		<widget class="SwatForm" id="index_form">
+			<widget class="SwatTableView" id="index_view">
+				<object class="SwatTableViewCheckboxColumn" id="checkbox">
+					<object class="SwatCheckboxCellRenderer" id="items">
+						<property name="value" type="data">id</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="title" translatable="yes">Title</property>
+					<object class="AdminTitleLinkCellRenderer">
+						<property name="text" type="data">title</property>
+						<property name="link">PriceRange/Edit?id=%s</property>
+						<property name="link_value" type="data">id</property>
+						<property name="stock_id">edit</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="title" translatable="yes">Start Price</property>
+					<object class="SwatMoneyCellRenderer">
+						<property name="value" type="data">start_price</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="title" translatable="yes">End Price</property>
+					<object class="SwatMoneyCellRenderer">
+						<property name="value" type="data">end_price</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="title" translatable="yes">Match Original Price</property>
+					<object class="SwatBooleanCellRenderer">
+						<property name="value" type="data">original_price</property>
+					</object>
+				</object>
+			</widget>
+			<widget class="SwatActions" id="index_actions">
+				<widget class="SwatActionItem" id="delete">
+					<property name="title" translatable="yes">delete…</property>
+				</widget>
+			</widget>
+		</widget>
+	</widget>
+</swatml>

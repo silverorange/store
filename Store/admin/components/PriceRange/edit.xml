@@ -1,0 +1,25 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<widget class="SwatFrame" id="edit_frame">
+		<property name="title" translatable="yes">Price Range</property>
+		<widget class="SwatForm" id="edit_form">
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Start Price</property>
+				<widget class="SwatMoneyEntry" id="start_price" />
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">End Price</property>
+				<widget class="SwatMoneyEntry" id="end_price" />
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Match Original Price</property>
+				<widget class="SwatCheckbox" id="original_price" />
+			</widget>
+			<widget class="SwatFooterFormField">
+				<widget class="SwatButton" id="submit_button" />
+			</widget>
+		</widget>
+	</widget>
+</swatml>
