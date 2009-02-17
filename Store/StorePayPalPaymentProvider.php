@@ -108,11 +108,9 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 * @param string $card_verification_value optional. Card verification value
 	 *                                         used for fraud prevention.
 	 *
-	 * @return StorePaymentTransaction the transaction object for the payment.
-	 *                                  this object contains information such
-	 *                                  as the transaction identifier and
-	 *                                  Address Verification Service (AVS)
-	 *                                  results.
+	 * @return StorePaymentMethodTransaction the transaction object for the
+	 *                                        payment. This object contains the
+	 *                                        transaction date and identifier.
 	 */
 	public function pay(StoreOrder $order, $card_number,
 		$card_verification_value = null)
@@ -148,11 +146,9 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 *                                         code found on the front of amex
 	 *                                         cards.
 	 *
-	 * @return StorePaymentTransaction the transaction object for the payment.
-	 *                                  this object contains information such
-	 *                                  as the transaction identifier and
-	 *                                  Address Verification Service (AVS)
-	 *                                  results.
+	 * @return StorePaymentMethodTransaction the transaction object for the
+	 *                                        payment. This object contains the
+	 *                                        transaction date and identifier.
 	 *
 	 * @sensitive $card_number
 	 */
