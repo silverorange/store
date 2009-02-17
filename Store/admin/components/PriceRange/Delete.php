@@ -25,6 +25,9 @@ class StorePriceRangeDelete extends AdminDBDelete
 		$sql = sprintf($sql, $item_list);
 		$num = SwatDB::exec($this->app->db, $sql);
 
+		if (isset($this->app->memcache))
+			$this->app->memcache->flushNs('price_ranges');
+
 		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One price range has been deleted.',
 			'%d price ranges have been deleted.', $num),
