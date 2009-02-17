@@ -2,7 +2,7 @@
 
 require_once 'Store/StorePaymentProvider.php';
 require_once 'Swat/SwatNumber.php';
-require_once 'Payment/PayPal/SOAP.php';
+require_once 'Payment/PayPal/SOAP/Client.php';
 
 /**
  * Payment provider for PayPal payments
@@ -267,7 +267,9 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			$details['Number']   = $item->sku;
 		}
 
-		$details['Amount']   = $this->getCurrencyValue($item->price);
+		$details['Amount'] = $this->getCurrencyValue($item->price,
+			$this->currency);
+
 		$detauls['Quantity'] = $item->quantity;
 
 		return $details;
@@ -328,7 +330,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$details['City'] = $this->formatString($address->city, 40);
 
 		if ($address->getInternalValue('provstate') !== null) {
-			$details['StateOrProvince'] = $address->provstate->shortname;
+			$details['StateOrProvince'] = $address->provstate->abbreviation;
 		} else {
 			$details['StateOrProvince'] = $this->formatString(
 				$address->provstate_other, 40);
@@ -351,17 +353,33 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	{
 		$fullname = $payment_method->card_fullname;
 
+		$midpoint = intval(floor(strlen($fullname) / 2));
+
+		// get space closest to the middle of the string
+		$left_pos  = strrpos($fullname, ' ', -strlen($fullname) + $midpoint);
+		$right_pos = strpos($fullname, ' ', $midpoint);
+
+		if ($left_pos === false && $right_pos === false) {
+			// There is no first and last name division, just split string for
+			// PayPal's sake.
+			$pos = $midpoint;
+		} elseif ($left_pos === false) {
+			$pos = $right_pos;
+		} elseif ($right_pos === false) {
+			$pos = $left_pos;
+		} elseif (($midpoint - $left_pos) <= ($right_post - $midpoint)) {
+			$pos = $left_pos;
+		} else {
+			$pos = $right_pos;
+		}
+
 		// split name into first and last parts in roughly the middle
-		$fullname_exp = explode(' ', $fullname);
-		$midpoint     = floor(count($fullname_exp) / 2) + 1;
-		$first_name   = '';
-		$last_name    = '';
-		for ($i = 0 ; $i < count($fullname_exp); $i++) {
-			if ($i < $midpoint) {
-				$first_name.= $fullname_exp[$i];
-			} else {
-				$last_name.= $fullname_exp[$i];
-			}
+		if ($pos === false) {
+			$first_name = substr($fullname, 0, $midpoint);
+			$last_name  = substr($fullname, $midpoint);
+		} else {
+			$first_name = substr($fullname, 0, $pos);
+			$last_name  = substr($fullname, $pos + 1);
 		}
 
 		$details = array();
