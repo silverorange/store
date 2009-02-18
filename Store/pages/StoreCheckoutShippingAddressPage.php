@@ -340,27 +340,38 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 
 	protected function buildForm()
 	{
+		$provstate_where = sprintf('country in (
+					select country from RegionShippingCountryBinding
+					where region = %1$s)
+				and id in (
+					select provstate from RegionShippingProvStateBinding
+					where region = %1$s)',
+				$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+
 		$provstate_flydown = $this->ui->getWidget('shipping_address_provstate');
 		$provstate_flydown->addOptionsByArray(SwatDB::getOptionArray(
 			$this->app->db, 'ProvState', 'title', 'id', 'title',
-				sprintf('country in (select country from
-				RegionShippingCountryBinding where region = %s)',
-				$this->app->db->quote($this->app->getRegion()->id, 'integer'))));
+			$provstate_where));
 
-		$provstate_other = $this->ui->getWidget('shipping_address_provstate_other');
+		$provstate_other =
+			$this->ui->getWidget('shipping_address_provstate_other');
+
 		if ($provstate_other->visible) {
 			$provstate_flydown->addDivider();
 			$option = new SwatOption('other', 'Other…');
 			$provstate_flydown->addOption($option);
 		}
 
+		$country_where = sprintf('id in (
+				select country from RegionShippingCountryBinding
+				where region = %s)
+			and visible = %s',
+			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
+			$this->app->db->quote(true, 'boolean'));
+
 		$country_flydown = $this->ui->getWidget('shipping_address_country');
 		$country_flydown->addOptionsByArray(SwatDB::getOptionArray(
-			$this->app->db, 'Country', 'title', 'id', 'title',
-				sprintf('id in (select country from RegionShippingCountryBinding
-				where region = %s) and visible = %s',
-				$this->app->db->quote($this->app->getRegion()->id, 'integer'),
-				$this->app->db->quote(true, 'boolean'))));
+			$this->app->db, 'Country', 'title', 'id', 'title', $country_where));
 	}
 
 	// }}}
@@ -373,9 +384,15 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 		foreach ($this->app->getRegion()->shipping_countries as $country)
 			$shipping_country_ids[] = $country->id;
 
+		foreach ($this->app->getRegion()->shipping_provstates as $provstate)
+			$shipping_provstate_ids[] = $provstate->id;
+
+
 		foreach ($this->app->session->account->addresses as $address) {
 			if (in_array($address->getInternalValue('country'),
-				$shipping_country_ids)) {
+					$shipping_country_ids) &&
+				in_array($address->getInternalValue('provstate'),
+					$shipping_provstate_ids)) {
 
 				ob_start();
 				$address->displayCondensed();

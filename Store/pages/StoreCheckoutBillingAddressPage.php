@@ -334,13 +334,18 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 
 	protected function buildForm()
 	{
+		$provstate_where = sprintf('country in (
+					select country from RegionBillingCountryBinding
+					where region = %1$s)
+				and id in (
+					select provstate from RegionBillingProvStateBinding
+					where region = %1$s)',
+				$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+
 		$provstate_flydown = $this->ui->getWidget('billing_address_provstate');
 		$provstate_flydown->addOptionsByArray(SwatDB::getOptionArray(
 			$this->app->db, 'ProvState', 'title', 'id', 'title',
-			sprintf('country in (select country from
-				RegionBillingCountryBinding where region = %s)',
-				$this->app->db->quote($this->app->getRegion()->id,
-				'integer'))));
+			$provstate_where));
 
 		$provstate_other =
 			$this->ui->getWidget('billing_address_provstate_other');
@@ -351,14 +356,16 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 			$provstate_flydown->addOption($option);
 		}
 
+		$country_where = sprintf('id in (
+				select country from RegionBillingCountryBinding
+				where region = %s)
+			and visible = %s',
+			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
+			$this->app->db->quote(true, 'boolean'));
+
 		$country_flydown = $this->ui->getWidget('billing_address_country');
 		$country_flydown->addOptionsByArray(SwatDB::getOptionArray(
-			$this->app->db, 'Country', 'title', 'id', 'title',
-			sprintf('id in (select country from RegionBillingCountryBinding
-				where region = %s) and visible = %s',
-				$this->app->db->quote($this->app->getRegion()->id,
-				'integer'),
-				$this->app->db->quote(true, 'boolean'))));
+			$this->app->db, 'Country', 'title', 'id', 'title', $country_where));
 	}
 
 	// }}}
@@ -371,9 +378,14 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 		foreach ($this->app->getRegion()->billing_countries as $country)
 			$billing_country_ids[] = $country->id;
 
+		foreach ($this->app->getRegion()->billing_provstates as $provstate)
+			$billing_provstate_ids[] = $provstate->id;
+
 		foreach ($this->app->session->account->addresses as $address) {
 			if (in_array($address->getInternalValue('country'),
-				$billing_country_ids)) {
+					$billing_country_ids) &&
+				in_array($address->getInternalValue('provstate'),
+					$billing_provstate_ids)) {
 
 				ob_start();
 				$address->displayCondensed();
