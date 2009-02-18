@@ -99,6 +99,28 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	 */
 	public $card_issue_number;
 
+	/**
+	 * Identifier of the payer
+	 *
+	 * Used for online payment systems like PayPal and Bill Me Later where
+	 * card information is not transmitted between the merchant and the
+	 * payment provider.
+	 *
+	 * @var string
+	 */
+	public $payer_id;
+
+	/**
+	 * Email address of the payer
+	 *
+	 * Used for online payment systems like PayPal and Bill Me Later where
+	 * card information is not transmitted between the merchant and the
+	 * payment provider.
+	 *
+	 * @var string
+	 */
+	public $payer_email;
+
 	// }}}
 	// {{{ protected properties
 
@@ -286,71 +308,20 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		if ($this->payment_type->isCard()) {
 			$this->card_type->display();
 			$this->displayCard($passphrase);
-
-			if ($display_details)
+			if ($display_details) {
 				$this->displayCardDetails();
+			}
+		} elseif ($this->payment_type->isPayPal()) {
+			$this->payment_type->display();
+			$this->displayPayPal();
+			if ($display_details) {
+				$this->displayPayPalDetails();
+			}
 		} else {
 			$this->payment_type->display();
 		}
 
 		$span_tag->close();
-	}
-
-	// }}}
-	// {{{ protected function displayCard()
-
-	protected function displayCard($passphrase)
-	{
-		$span_tag = new SwatHtmlTag('span');
-		$display_card = false;
-
-		if ($this->payment_type->isCard() &&
-			$this->gpg_id !== null && $passphrase !== null) {
-			$display_card = true;
-			$card_number = $this->getCardNumber($passphrase);
-			$span_tag->setContent(StoreCardType::formatCardNumber(
-				$card_number));
-
-		} elseif ($this->payment_type->isCard() &&
-			$this->card_number_preview !== null) {
-			$display_card = true;
-			$span_tag->setContent(StoreCardType::formatCardNumber(
-				$this->card_number_preview,
-				$this->card_type->getMaskedFormat()));
-		}
-
-		if ($display_card) {
-			$span_tag->class = 'store-payment-method-card-number';
-			echo ': ';
-			$span_tag->display();
-		}
-	}
-
-	// }}}
-	// {{{ protected function displayCardDetails()
-
-	protected function displayCardDetails()
-	{
-		if ($this->card_expiry !== null || $this->card_fullname !== null) {
-			echo '<br />';
-
-			$span_tag = new SwatHtmlTag('span');
-			$span_tag->class = 'store-payment-method-info';
-			$span_tag->open();
-
-			if ($this->card_expiry !== null) {
-				echo 'Expiration Date: ',
-					$this->card_expiry->format(SwatDate::DF_CC_MY);
-
-				if ($this->card_fullname !== null)
-					echo ', ';
-			}
-
-			if ($this->card_fullname !== null)
-				echo SwatString::minimizeEntities($this->card_fullname);
-
-			$span_tag->close();
-		}
 	}
 
 	// }}}
@@ -371,30 +342,10 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	{
 		echo $this->payment_type->title;
 
-		if ($this->payment_type->isCard())
+		if ($this->payment_type->isCard()) {
 			$this->displayCardAsText($display_details, $line_break);
-	}
-
-	// }}}
-	// {{{ protected function displayCardAsText()
-
-	protected function displayCardAsText($display_details, $line_break)
-	{
-		if ($this->card_number_preview !== null) {
-			echo $line_break, StoreCardType::formatCardNumber(
-				$this->card_number_preview,
-				$this->card_type->getMaskedFormat());
-		}
-
-		if ($display_details) {
-			if ($this->card_expiry !== null) {
-				echo $line_break, 'Expiration Date: ',
-					$this->card_expiry->format(SwatDate::DF_CC_MY);
-			}
-
-			if ($this->card_fullname !== null) {
-				echo $line_break, $this->card_fullname;
-			}
+		} elseif ($this->payment_type->isPayPal()) {
+			$this->displayPayPalAsText($display_details, $line_break);
 		}
 	}
 
@@ -543,6 +494,130 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		}
 
 		return $this->gpg;
+	}
+
+	// }}}
+	// {{{ protected function displayCard()
+
+	protected function displayCard($passphrase)
+	{
+		$span_tag = new SwatHtmlTag('span');
+		$display_card = false;
+
+		if ($this->payment_type->isCard() &&
+			$this->gpg_id !== null && $passphrase !== null) {
+			$display_card = true;
+			$card_number = $this->getCardNumber($passphrase);
+			$span_tag->setContent(StoreCardType::formatCardNumber(
+				$card_number));
+
+		} elseif ($this->payment_type->isCard() &&
+			$this->card_number_preview !== null) {
+			$display_card = true;
+			$span_tag->setContent(StoreCardType::formatCardNumber(
+				$this->card_number_preview,
+				$this->card_type->getMaskedFormat()));
+		}
+
+		if ($display_card) {
+			$span_tag->class = 'store-payment-method-card-number';
+			echo ': ';
+			$span_tag->display();
+		}
+	}
+
+	// }}}
+	// {{{ protected function displayCardDetails()
+
+	protected function displayCardDetails()
+	{
+		if ($this->card_expiry !== null || $this->card_fullname !== null) {
+			echo '<br />';
+
+			$span_tag = new SwatHtmlTag('span');
+			$span_tag->class = 'store-payment-method-info';
+			$span_tag->open();
+
+			if ($this->card_expiry !== null) {
+				echo 'Expiration Date: ',
+					$this->card_expiry->format(SwatDate::DF_CC_MY);
+
+				if ($this->card_fullname !== null)
+					echo ', ';
+			}
+
+			if ($this->card_fullname !== null)
+				echo SwatString::minimizeEntities($this->card_fullname);
+
+			$span_tag->close();
+		}
+	}
+
+	// }}}
+	// {{{ protected function displayPayPal()
+
+	protected function displayPayPal()
+	{
+		echo ': ';
+
+		$span_tag = new SwatHtmlTag('span');
+		$span_tag->setContent($this->payer_email);
+		$span_tag->class = 'store-payment-method-paypal-email';
+		$span_tag->display();
+	}
+
+	// }}}
+	// {{{ protected function displayPayPalDetails()
+
+	protected function displayPayPalDetails()
+	{
+		if ($this->card_fullname !== null) {
+			echo '<br />';
+
+			$span_tag = new SwatHtmlTag('span');
+			$span_tag->setContent($this->card_fullname);
+			$span_tag->class = 'store-payment-method-info';
+			$span_tag->display();
+		}
+	}
+
+	// }}}
+	// {{{ protected function displayCardAsText()
+
+	protected function displayCardAsText($display_details, $line_break)
+	{
+		if ($this->card_number_preview !== null) {
+			echo $line_break, StoreCardType::formatCardNumber(
+				$this->card_number_preview,
+				$this->card_type->getMaskedFormat());
+		}
+
+		if ($display_details) {
+			if ($this->card_expiry !== null) {
+				echo $line_break, 'Expiration Date: ',
+					$this->card_expiry->format(SwatDate::DF_CC_MY);
+			}
+
+			if ($this->card_fullname !== null) {
+				echo $line_break, $this->card_fullname;
+			}
+		}
+	}
+
+	// }}}
+	// {{{ protected function displayPayPalAsText()
+
+	protected function displayPayPalAsText($display_details, $line_break)
+	{
+		if ($this->card_number_preview !== null) {
+			echo $line_break, $this->payer_email;
+		}
+
+		if ($display_details) {
+			if ($this->card_fullname !== null) {
+				echo $line_break, $this->card_fullname;
+			}
+		}
 	}
 
 	// }}}
