@@ -2,6 +2,7 @@
 
 require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Store/dataobjects/StoreCountryWrapper.php';
+require_once 'Store/dataobjects/StoreProvStateWrapper.php';
 require_once 'Store/dataobjects/StoreLocaleWrapper.php';
 
 /**
@@ -119,6 +120,54 @@ class StoreRegion extends SwatDBDataObject
 			$this->db->quote($this->id, 'integer'));
 
 		return SwatDB::query($this->db, $sql, 'StoreCountryWrapper');
+	}
+
+	// }}}
+	// {{{ protected function loadBillingProvStates()
+
+	/**
+	 * Gets provinces and states that orders may be billed to in this region
+	 *
+	 * @return StoreProvStateWrapper a recordset of StoreProvState objects that
+	 *                              orders may be billed to.
+	 */
+	protected function loadBillingProvStates()
+	{
+		$this->checkDB();
+
+		$sql = 'select id, title from ProvState
+			inner join RegionBillingProvStateBinding on
+				ProvState.id = RegionBillingProvStateBinding.provstate and
+					RegionBillingProvStateBinding.region = %s';
+
+		$sql = sprintf($sql,
+			$this->db->quote($this->id, 'integer'));
+
+		return SwatDB::query($this->db, $sql, 'StoreProvStateWrapper');
+	}
+
+	// }}}
+	// {{{ protected function loadShippingProvStates()
+
+	/**
+	 * Gets provinces and states that orders may be shipped to in this region
+	 *
+	 * @return StoreProvStateWrapper a recordset of StoreProvState objects that
+	 *                              orders may be shipped to.
+	 */
+	protected function loadShippingProvStates()
+	{
+		$this->checkDB();
+
+		$sql = 'select id, title from ProvState
+			inner join RegionShippingProvStateBinding on
+				ProvState.id = RegionShippingProvStateBinding.provstate and
+					RegionShippingProvStateBinding.region = %s';
+
+		$sql = sprintf($sql,
+			$this->db->quote($this->id, 'integer'));
+
+		return SwatDB::query($this->db, $sql, 'StoreProvStateWrapper');
 	}
 
 	// }}}
