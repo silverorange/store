@@ -98,6 +98,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
+
+	// direct payment methods
 	// {{{ public function pay()
 
 	/**
@@ -173,6 +175,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 	// }}}
 
+	// express checkout payment methods
 	public function setExpressCheckout(StoreOrder $order = null)
 	{
 	}
@@ -183,11 +186,31 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 	// {{{ public function doExpressCheckout()
 
+	/**
+	 * Completes an Express Checkout payment
+	 *
+	 * The <kbd>$action</kbd> must be the same value as the original request
+	 * that generated the <kbd>$token</kbd>.
+	 *
+	 * @param string $token the token of the active transaction.
+	 * @param string $action one of 'Sale' or 'Authorization' or 'Order'.
+	 * @param string $payer_id PayPal customer account identification number
+	 *                          as returned by the
+	 *                          <kbd>getExpressCheckout()</kbd> method.
+	 * @param StoreOrder $order the order to pay for.
+	 *
+	 * @return StorePaymentMethodTransaction the transaction object for the
+	 *                                        payment. This object contains the
+	 *                                        transaction date and identifier.
+	 *
+	 * @see StorePayPalPaymentProdiver::setExpressCheckout()
+	 * @see StorePayPalPaymentProdiver::getExpressCheckout()
+	 */
 	public function doExpressCheckout($token, $action,
 		$payer_id, StoreOrder $order)
 	{
 		$request = $this->getDoExpressCheckoutPaymentRequest($token,
-			$order, $action, $payer_id);
+			$action, $payer_id, $order);
 
 		$response = $this->client->call('DoExpressCheckoutPayment', $request);
 		$details  = $response->DoExpressCheckoutPaymentResponseDetails;
@@ -213,7 +236,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 				'Version' => '1.0',
 				'DoExpressCheckoutPaymentRequestDetails' =>
 					$this->getDoExpressCheckoutPaymentRequestDetails($token,
-						$order, $action, $payer_id),
+						$action, $payer_id, $order),
 			),
 		);
 	}
