@@ -158,6 +158,24 @@ class StorePaymentType extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function isPayPal()
+
+	/**
+	 * Gets whether or not this payment type is PayPal
+	 *
+	 * @return boolean true if this payment type is PayPal and false if this
+	 *                  payment type is not PayPal.
+	 */
+	public function isPayPal()
+	{
+		$types = array(
+			'paypal',
+		);
+
+		return (in_array($this->shortname, $types));
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()

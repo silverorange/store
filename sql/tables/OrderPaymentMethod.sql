@@ -14,6 +14,9 @@ create table OrderPaymentMethod (
 	card_inception date,
 	card_issue_number varchar(4),
 
+	payer_id varchar(255),
+	payer_email varchar(255),
+
 	primary key (id)
 );
 
