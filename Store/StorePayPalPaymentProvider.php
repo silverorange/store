@@ -2,6 +2,7 @@
 
 require_once 'Store/StorePaymentProvider.php';
 require_once 'Swat/SwatNumber.php';
+require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Payment/PayPal/SOAP/Client.php';
 
 /**
@@ -21,6 +22,15 @@ require_once 'Payment/PayPal/SOAP/Client.php';
  */
 class StorePayPalPaymentProvider extends StorePaymentProvider
 {
+	// {{{ class constants
+
+	const EXPRESS_CHECKOUT_URL_LIVE =
+		'https://www.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=';
+
+	const EXPRESS_CHECKOUT_URL_SANDBOX =
+		'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=';
+
+	// }}}
 	// {{{ private properties
 
 	/**
@@ -176,14 +186,91 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// }}}
 
 	// express checkout payment methods
+	// {{{ public function setExpressCheckout()
+
+	/**
+	 * @return string the token of the initiated transaction
+	 *
+	 * @see StorePayPalPaymentProdiver::getExpressCheckoutDetails()
+	 * @see StorePayPalPaymentProdiver::getExpressCheckoutUri()
+	 * @see StorePayPalPaymentProdiver::doExpressCheckout()
+	 */
 	public function setExpressCheckout(StoreOrder $order = null)
 	{
 	}
 
-	public function getExpressCheckout($token)
+	// }}}
+	// {{{ public function getExpressCheckoutUri()
+
+	/**
+	 * Gets the URI for PayPal's Express Checkout
+	 *
+	 * Site code should relocate to this URI.
+	 *
+	 * @param string $token the token of the current transaction.
+	 *
+	 * @return string the URI to which the browser should be relocated to
+	 *                 continue the Express Checkout transaction.
+	 *
+	 * @see StorePayPalPaymentProdiver::setExpressCheckout()
+	 * @see StorePayPalPaymentProdiver::getExpressCheckoutDetails()
+	 * @see StorePayPalPaymentProdiver::doExpressCheckout()
+	 */
+	public function getExpressCheckoutUri($token)
 	{
+		if ($this->mode === 'live') {
+			$uri = self::EXPRESS_CHECKOUT_URL_LIVE.urlencode($token);
+		} else {
+			$uri = self::EXPRESS_CHECKOUT_URL_SANDBOX.urlencode($token);
+		}
+		return $uri;
 	}
 
+	// }}}
+	// {{{ public function getExpressCheckoutDetails()
+
+	/**
+	 * Updates an order with payment details from an Express Checkout
+	 * transaction
+	 *
+	 * This sets the order payment method and order billing address.
+	 *
+	 * @param string $token the token of the Express Checkout transaction for
+	 *                       which to get the details.
+	 * @param StoreOrder $order the order object to update.
+	 * @param MDB2_Driver_Common $db the database. This is used for parsing
+	 *                                addresses and payment types.
+	 *
+	 * @see StorePayPalPaymentProdiver::setExpressCheckout()
+	 * @see StorePayPalPaymentProdiver::getExpressCheckoutUri()
+	 * @see StorePayPalPaymentProdiver::doExpressCheckout()
+	 */
+	public function getExpressCheckoutDetails($token, StoreOrder $order,
+		MDB2_Driver_Common $db)
+	{
+		$request  = $this->getGetExpressCheckoutDetailsRequest($token);
+		$response = $this->client->call('GetExpressCheckoutDetails', $request);
+
+		$payment_method = $this->getStoreOrderPaymentMethod(
+			$response->PayerInfo, $db);
+
+		// Note: When multiple payment methods are added, this code will
+		// need updating.
+		$class_name = SwatDBClassMap::get('StoreOrderPaymentMethodWrapper');
+		$order->payment_methods = new $class_name();
+		$order->payment_methods->add($payment_method);
+
+		$billing_address = $this->getStoreOrderAddress(
+			$response->PayerInfo->Address, $db);
+
+		$order->billing_address = $billing_address;
+
+		if ($response->ContactPhone != '') {
+			$order->phone = $response->ContactPhone;
+		}
+	}
+
+	// }}}
 	// {{{ public function doExpressCheckout()
 
 	/**
@@ -194,9 +281,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 *
 	 * @param string $token the token of the active transaction.
 	 * @param string $action one of 'Sale' or 'Authorization' or 'Order'.
-	 * @param string $payer_id PayPal customer account identification number
-	 *                          as returned by the
-	 *                          <kbd>getExpressCheckout()</kbd> method.
+	 * @param string $payer_id PayPal payer identification number as returned
+	 *                          by the <kbd>getExpressCheckout()</kbd> method.
 	 * @param StoreOrder $order the order to pay for.
 	 *
 	 * @return StorePaymentMethodTransaction the transaction object for the
@@ -204,7 +290,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 *                                        transaction date and identifier.
 	 *
 	 * @see StorePayPalPaymentProdiver::setExpressCheckout()
-	 * @see StorePayPalPaymentProdiver::getExpressCheckout()
+	 * @see StorePayPalPaymentProdiver::getExpressCheckoutDetails()
+	 * @see StorePayPalPaymentProdiver::getExpressCheckoutUri()
 	 */
 	public function doExpressCheckout($token, $action,
 		$payer_id, StoreOrder $order)
@@ -255,6 +342,117 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$details['PaymentDetails'] = $this->getPaymentDetails($order);
 
 		return $details;
+	}
+
+	// }}}
+	// {{{ private function getGetExpressCheckoutDetailsRequest()
+
+	private function getGetExpressCheckoutDetailsRequest($token)
+	{
+		return array(
+			'GetExpressCheckoutDetailsRequest' => array(
+				'Version' => '1.0',
+				'Token'   => $token,
+			),
+		);
+	}
+
+	// }}}
+	// {{{ private function getStoreOrderPaymentMethod()
+
+	private function getStoreOrderPaymentMethod($payer_info,
+		MDB2_Driver_Common $db)
+	{
+		$class_name = SwatDBClassMap::get('StoreOrderPaymentMethod');
+		$payment_method = new $class_name();
+
+		$fullname = $this->getStoreFullname($payer_info->PayerName);
+
+		$payment_method->card_fullname = $fullname;
+		$payment_method->payer_email   = $address->Payer;
+		$payment_method->payer_id      = $address->PayerEmail;
+
+		$class_name = SwatDBClassMap::get('StorePaymentType');
+		$payment_type = new $class_name();
+		$payment_type->setDatabase($db);
+
+		if ($payment_type->loadFromShortname('paypal')) {
+			$payment_method->payment_type = $payment_type;
+		}
+
+		return $payment_method;
+	}
+
+	// }}}
+	// {{{ private function getStoreOrderAddress()
+
+	private function getStoreOrderAddress($address, MDB2_Driver_Common $db)
+	{
+		$class_name = SwatDBClassMap::get('StoreOrderAddress');
+		$order_address = new $class_name();
+
+		$order_address->fullname    = $address->Name;
+		$order_address->line2       = $address->Street1;
+		$order_address->city        = $address->CityName;
+		$order_address->postal_code = $address->PostalCode;
+		$order_address->country     = $address->Country;
+
+		if ($address->Street2 != '') {
+			$order_address->line2 = $address->Street2;
+		}
+
+		// PayPal sometimes returns an abbreviation and sometimes returns the
+		// full title. Go figure.
+		if ($address->StateOrProvince != '') {
+			$class_name = SwatDBClassMap::get('StoreProvState');
+			$provstate  = new $class_name();
+			$provstate->setDatabase($db);
+			if (strlen($address->StateOrProvince) === 2) {
+				if ($provstate->loadFromAbbreviation($address->StateOrProvince,
+					$address->Country)) {
+					$order_address->provstate = $provstate;
+				} else {
+					$order_address->provstate_other = $address->StateOrProvince;
+				}
+			} else {
+				if ($provstate->loadFromTitle($address->StateOrProvince,
+					$address->Country)) {
+					$order_address->provstate = $provstate;
+				} else {
+					$order_address->provstate_other = $address->StateOrProvince;
+				}
+			}
+		}
+
+		return $order_address;
+	}
+
+	// }}}
+	// {{{ private function getStoreFullname()
+
+	private function getStoreFullname($person_name)
+	{
+		$name = array();
+
+		if ($person_name->Salutation != '') {
+			$name[] = $payer_info->PayerName->Salutation;
+		}
+		if ($person_name->FirstName != '') {
+			$name[] = $payer_info->PayerName->FirstName;
+		}
+		if ($person_name->MiddleName != '') {
+			$name[] = $payer_info->PayerName->MiddleName;
+		}
+		if ($person_name->LastName != '') {
+			$name[] = $payer_info->PayerName->LastName;
+		}
+		if ($person_name->Suffix != '') {
+			$name[] = $payer_info->PayerName->Suffix;
+		}
+
+		$name = implode(' ', $name);
+
+		return $name;
 	}
 
 	// }}}
