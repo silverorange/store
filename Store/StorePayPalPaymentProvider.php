@@ -502,12 +502,13 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	{
 		$details = array();
 
+		$name = $item->product_title;
 		$description = strip_tags($item->getDescription());
-		$description = $this->formatString($description, 127);
-
 		if ($description != '') {
-			$details['Name'] = $description;
+			$name.= ' - '.$description;
 		}
+
+		$details['Name'] = $this->formatString($name, 127);
 
 		if ($item->sku != '') {
 			$details['Number']   = $item->sku;
