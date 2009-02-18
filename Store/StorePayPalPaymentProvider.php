@@ -173,7 +173,70 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 	// }}}
 
-	// data-structure helper methods
+	public function setExpressCheckout(StoreOrder $order = null)
+	{
+	}
+
+	public function getExpressCheckout($token)
+	{
+	}
+
+	// {{{ public function doExpressCheckout()
+
+	public function doExpressCheckout($token, $action,
+		$payer_id, StoreOrder $order)
+	{
+		$request = $this->getDoExpressCheckoutPaymentRequest($token,
+			$order, $action, $payer_id);
+
+		$response = $this->client->call('DoExpressCheckoutPayment', $request);
+		$details  = $response->DoExpressCheckoutPaymentResponseDetails;
+
+		$transaction->createdate = new SwatDate();
+		$transaction->createdate->toUTC();
+		$transaction->transaction_type = StorePaymentRequest::TYPE_PAY; // TODO
+		$transaction->transaction_id = $details->TransactionID;
+
+		return $transaction;
+	}
+
+	// }}}
+
+	// data-structure helper methods (express checkout)
+	// {{{ private function getDoExpressCheckoutPaymentRequest()
+
+	private function getDoExpressCheckoutPaymentRequest($token,
+		$action, $payer_id, StoreOrder $order)
+	{
+		return array(
+			'DoExpressCheckoutPaymentRequest' => array(
+				'Version' => '1.0',
+				'DoExpressCheckoutPaymentRequestDetails' =>
+					$this->getDoExpressCheckoutPaymentRequestDetails($token,
+						$order, $action, $payer_id),
+			),
+		);
+	}
+
+	// }}}
+	// {{{ private function getDoExpressCheckoutPaymentRequestDetails()
+
+	private function getDoExpressCheckoutPaymentRequestDetails($token,
+		$action, $payer_id, StoreOrder $order)
+	{
+		$details = array();
+
+		$details['Token']          = $payer_id;
+		$details['PaymentAction']  = $action;
+		$details['PayerID']        = $payer_id;
+		$details['PaymentDetails'] = $this->getPaymentDetails($order);
+
+		return $details;
+	}
+
+	// }}}
+
+	// data-structure helper methods (direct)
 	// {{{ private function getDoDirectPaymentRequest()
 
 	private function getDoDirectPaymentRequest(StoreOrder $order, $action,
@@ -211,6 +274,153 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
+	// {{{ private function getCreditCardDetails()
+
+	private function getCreditCardDetails(StoreOrder $order,
+		StoreOrderPaymentMethod $payment_method, $card_number,
+			$card_verification_value)
+	{
+		$details = array();
+
+		$details['CardOwner'] = $this->getPayerInfo($order, $payment_method);
+
+		$details['CreditCardType'] = $this->getCreditCardType($payment_method);
+
+		$details['CreditCardNumber'] = $card_number;
+
+		$details['ExpMonth'] = $payment_method->card_expiry->format('%m');
+		$details['ExpYear']  = $payment_method->card_expiry->format('%Y');
+		$details['CVV2']     = $card_verification_value;
+
+		if ($payment_method->card_inception !== null) {
+			$details['StartMonth'] =
+				$payment_method->card_inception->format('%m');
+
+			$details['StartYear'] =
+				$payment_method->card_inception->format('%Y');
+		}
+
+		if ($payment_method->card_issue_number != '') {
+			$details['IssueNumber'] = $payment_method->card_issue_number;
+		}
+
+		return $details;
+	}
+
+	// }}}
+	// {{{ private function getCreditCardType()
+
+	private function getCreditCardType(StoreOrderPaymentMethod $payment_method)
+	{
+		switch ($payment_method->card_type->shortname) {
+		case 'amex':
+			$type = 'Amex';
+			break;
+
+		case 'discover':
+			$type = 'Discover';
+			break;
+
+		case 'mastercard':
+			$type = 'MasterCard';
+			break;
+
+		case 'visa':
+			$type = 'Visa';
+			break;
+
+		case 'switch':
+			$type = 'Switch';
+			break;
+
+		case 'solo':
+			$type = 'Solo';
+			break;
+
+		default:
+			throw new StorePaymentException('Unsupported card type in order.');
+		}
+
+		return $type;
+	}
+
+	// }}}
+	// {{{ private function getPayerInfo()
+
+	private function getPayerInfo(StoreOrder $order,
+		StorePaymentMethod $payment_method)
+	{
+		$details = array();
+
+		if ($order->email != '') {
+			$details['Payer'] = $order->email;
+		}
+
+		$details['PayerName'] = $this->getPersonName($payment_method);
+
+		$details['PayerCountry'] =
+			$order->billing_address->getInternalValue('country');
+
+		$details['Address'] = $this->getPayerInfoAddress($order);
+
+		return $details;
+	}
+
+	// }}}
+	// {{{ private function getPayerInfoAddress()
+
+	private function getPayerInfoAddress(StoreOrder $order)
+	{
+		return $this->getAddress($order->billing_address);
+	}
+
+	// }}}
+	// {{{ private function getPersonName()
+
+	private function getPersonName(StoreOrderPaymentMethod $payment_method)
+	{
+		$fullname = $payment_method->card_fullname;
+
+		$midpoint = intval(floor(strlen($fullname) / 2));
+
+		// get space closest to the middle of the string
+		$left_pos  = strrpos($fullname, ' ', -strlen($fullname) + $midpoint);
+		$right_pos = strpos($fullname, ' ', $midpoint);
+
+		if ($left_pos === false && $right_pos === false) {
+			// There is no first and last name division, just split string for
+			// PayPal's sake.
+			$pos = $midpoint;
+		} elseif ($left_pos === false) {
+			$pos = $right_pos;
+		} elseif ($right_pos === false) {
+			$pos = $left_pos;
+		} elseif (($midpoint - $left_pos) <= ($right_pos - $midpoint)) {
+			$pos = $left_pos;
+		} else {
+			$pos = $right_pos;
+		}
+
+		// split name into first and last parts in roughly the middle
+		if ($pos === false) {
+			$first_name = substr($fullname, 0, $midpoint);
+			$last_name  = substr($fullname, $midpoint);
+		} else {
+			$first_name = substr($fullname, 0, $pos);
+			$last_name  = substr($fullname, $pos + 1);
+		}
+
+		$details = array();
+
+		$details['FirstName'] = $this->formatString($first_name, 25);
+		$details['LastName'] = $this->formatString($last_name, 25);
+
+		return $details;
+	}
+
+	// }}}
+
+	// data-structure helper methods (shared)
 	// {{{ private function getPaymentDetails()
 
 	private function getPaymentDetails(StoreOrder $order)
@@ -297,36 +507,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
-	// {{{ private function getPayerInfo()
-
-	private function getPayerInfo(StoreOrder $order,
-		StorePaymentMethod $payment_method)
-	{
-		$details = array();
-
-		if ($order->email != '') {
-			$details['Payer'] = $order->email;
-		}
-
-		$details['PayerName'] = $this->getPersonName($payment_method);
-
-		$details['PayerCountry'] =
-			$order->billing_address->getInternalValue('country');
-
-		$details['Address'] = $this->getPayerInfoAddress($order);
-
-		return $details;
-	}
-
-	// }}}
-	// {{{ private function getPayerInfoAddress()
-
-	private function getPayerInfoAddress(StoreOrder $order)
-	{
-		return $this->getAddress($order->billing_address);
-	}
-
-	// }}}
 	// {{{ private function getAddress()
 
 	private function getAddress(StoreOrderAddress $address)
@@ -357,121 +537,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		}
 
 		return $details;
-	}
-
-	// }}}
-	// {{{ private function getPersonName()
-
-	private function getPersonName(StoreOrderPaymentMethod $payment_method)
-	{
-		$fullname = $payment_method->card_fullname;
-
-		$midpoint = intval(floor(strlen($fullname) / 2));
-
-		// get space closest to the middle of the string
-		$left_pos  = strrpos($fullname, ' ', -strlen($fullname) + $midpoint);
-		$right_pos = strpos($fullname, ' ', $midpoint);
-
-		if ($left_pos === false && $right_pos === false) {
-			// There is no first and last name division, just split string for
-			// PayPal's sake.
-			$pos = $midpoint;
-		} elseif ($left_pos === false) {
-			$pos = $right_pos;
-		} elseif ($right_pos === false) {
-			$pos = $left_pos;
-		} elseif (($midpoint - $left_pos) <= ($right_pos - $midpoint)) {
-			$pos = $left_pos;
-		} else {
-			$pos = $right_pos;
-		}
-
-		// split name into first and last parts in roughly the middle
-		if ($pos === false) {
-			$first_name = substr($fullname, 0, $midpoint);
-			$last_name  = substr($fullname, $midpoint);
-		} else {
-			$first_name = substr($fullname, 0, $pos);
-			$last_name  = substr($fullname, $pos + 1);
-		}
-
-		$details = array();
-
-		$details['FirstName'] = $this->formatString($first_name, 25);
-		$details['LastName'] = $this->formatString($last_name, 25);
-
-		return $details;
-	}
-
-	// }}}
-	// {{{ private function getCreditCardDetails()
-
-	private function getCreditCardDetails(StoreOrder $order,
-		StoreOrderPaymentMethod $payment_method, $card_number,
-			$card_verification_value)
-	{
-		$details = array();
-
-		$details['CardOwner'] = $this->getPayerInfo($order, $payment_method);
-
-		$details['CreditCardType'] = $this->getCreditCardType($payment_method);
-
-		$details['CreditCardNumber'] = $card_number;
-
-		$details['ExpMonth'] = $payment_method->card_expiry->format('%m');
-		$details['ExpYear']  = $payment_method->card_expiry->format('%Y');
-		$details['CVV2']     = $card_verification_value;
-
-		if ($payment_method->card_inception !== null) {
-			$details['StartMonth'] =
-				$payment_method->card_inception->format('%m');
-
-			$details['StartYear'] =
-				$payment_method->card_inception->format('%Y');
-		}
-
-		if ($payment_method->card_issue_number != '') {
-			$details['IssueNumber'] = $payment_method->card_issue_number;
-		}
-
-		return $details;
-	}
-
-	// }}}
-	// {{{ private function getCreditCardType()
-
-	private function getCreditCardType(StoreOrderPaymentMethod $payment_method)
-	{
-		switch ($payment_method->card_type->shortname) {
-		case 'amex':
-			$type = 'Amex';
-			break;
-
-		case 'discover':
-			$type = 'Discover';
-			break;
-
-		case 'mastercard':
-			$type = 'MasterCard';
-			break;
-
-		case 'visa':
-			$type = 'Visa';
-			break;
-
-		case 'switch':
-			$type = 'Switch';
-			break;
-
-		case 'solo':
-			$type = 'Solo';
-			break;
-
-		default:
-			throw new StorePaymentException('Unsupported card type in order.');
-		}
-
-		return $type;
 	}
 
 	// }}}
