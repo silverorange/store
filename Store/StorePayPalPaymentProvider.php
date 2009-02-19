@@ -302,7 +302,11 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			$order->shipping_address = $order->billing_address;
 		}
 
-		if (isset($details->ContactPhone)) {
+		if ($order->email === null) {
+			$order->email = $details->PayerInfo->Payer;
+		}
+
+		if (isset($details->ContactPhone) && $order->phone === null) {
 			$order->phone = $details->ContactPhone;
 		}
 	}
