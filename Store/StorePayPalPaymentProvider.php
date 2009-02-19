@@ -276,9 +276,10 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	{
 		$request  = $this->getGetExpressCheckoutDetailsRequest($token);
 		$response = $this->client->call('GetExpressCheckoutDetails', $request);
+		$details  = $response->GetExpressCheckoutDetailsResponseDetails;
 
 		$payment_method = $this->getStoreOrderPaymentMethod(
-			$response->PayerInfo, $db);
+			$details->PayerInfo, $db);
 
 		// Note: When multiple payment methods are added, this code will
 		// need updating.
@@ -287,7 +288,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$order->payment_methods->add($payment_method);
 
 		$billing_address = $this->getStoreOrderAddress(
-			$response->PayerInfo->Address, $db);
+			$details->PayerInfo->Address, $db);
 
 		// Only set address if it is not already set or if it is not the same
 		// as the existing billing address.
@@ -301,8 +302,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			$order->billing_address = $billing_address;
 		}
 
-		if ($response->ContactPhone != '') {
-			$order->phone = $response->ContactPhone;
+		if (isset($details->ContactPhone)) {
+			$order->phone = $details->ContactPhone;
 		}
 	}
 
@@ -429,8 +430,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$fullname = $this->getStoreFullname($payer_info->PayerName);
 
 		$payment_method->card_fullname = $fullname;
-		$payment_method->payer_email   = $address->Payer;
-		$payment_method->payer_id      = $address->PayerEmail;
+		$payment_method->payer_email   = $payer_info->Payer;
+		$payment_method->payer_id      = $payer_info->PayerID;
 
 		$class_name = SwatDBClassMap::get('StorePaymentType');
 		$payment_type = new $class_name();
@@ -495,19 +496,19 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$name = array();
 
 		if ($person_name->Salutation != '') {
-			$name[] = $payer_info->PayerName->Salutation;
+			$name[] = $person_name->Salutation;
 		}
 		if ($person_name->FirstName != '') {
-			$name[] = $payer_info->PayerName->FirstName;
+			$name[] = $person_name->FirstName;
 		}
 		if ($person_name->MiddleName != '') {
-			$name[] = $payer_info->PayerName->MiddleName;
+			$name[] = $person_name->MiddleName;
 		}
 		if ($person_name->LastName != '') {
-			$name[] = $payer_info->PayerName->LastName;
+			$name[] = $person_name->LastName;
 		}
 		if ($person_name->Suffix != '') {
-			$name[] = $payer_info->PayerName->Suffix;
+			$name[] = $person_name->Suffix;
 		}
 
 		$name = implode(' ', $name);
