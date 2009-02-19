@@ -299,7 +299,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 		// Only set shipping address if it is not already set.
 		if ($order->shipping_address === null) {
-			$order->shipping_address = $billing_address;
+			$order->shipping_address = $order->billing_address;
 		}
 
 		if (isset($details->ContactPhone)) {
