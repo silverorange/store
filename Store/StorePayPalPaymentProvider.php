@@ -289,7 +289,17 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$billing_address = $this->getStoreOrderAddress(
 			$response->PayerInfo->Address, $db);
 
-		$order->billing_address = $billing_address;
+		// Only set address if it is not already set or if it is not the same
+		// as the existing billing address.
+		if ($order->billing_address === null ||
+			$order->billing_address->compare($billing_address) !== 0) {
+			$order->billing_address = $billing_address;
+		}
+
+		// Only set shipping address if it is not already set.
+		if ($order->shipping_address === null) {
+			$order->billing_address = $billing_address;
+		}
 
 		if ($response->ContactPhone != '') {
 			$order->phone = $response->ContactPhone;
