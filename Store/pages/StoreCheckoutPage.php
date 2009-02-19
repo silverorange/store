@@ -105,15 +105,6 @@ abstract class StoreCheckoutPage extends SiteUiPage
 
 	protected function initDataObjects()
 	{
-		// Clear existing transaction from session unless it is a 3-D Secure
-		// transaction
-		if (isset($this->app->session->transaction) &&
-			$this->app->session->transaction->request_type !=
-			StorePaymentRequest::TYPE_3DS_AUTH) {
-
-			unset($this->app->session->transaction);
-		}
-
 		if (!isset($this->app->session->account)) {
 			unset($this->app->session->account);
 			$account_class = SwatDBClassMap::get('StoreAccount');
@@ -122,12 +113,7 @@ abstract class StoreCheckoutPage extends SiteUiPage
 			$this->resetProgress();
 		}
 
-		// Clear placed order from the session if there is no 3-D Secure
-		// transaction in progress.
-		if (!isset($this->app->session->order) ||
-			($this->app->session->order->id !== null &&
-			!isset($this->app->session->transaction))) {
-
+		if (!isset($this->app->session->order)) {
 			unset($this->app->session->order);
 			$order_class = SwatDBClassMap::get('StoreOrder');
 			$this->app->session->order = new $order_class();
