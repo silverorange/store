@@ -58,6 +58,9 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 		parent::initInternal();
 
 		foreach ($this->embedded_edit_pages as $page)
+			$page->source = $this->source;
+
+		foreach ($this->embedded_edit_pages as $page)
 			$page->setUI($this->ui);
 
 		foreach ($this->embedded_edit_pages as $page)
