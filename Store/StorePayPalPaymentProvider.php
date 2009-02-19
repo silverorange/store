@@ -293,7 +293,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		// Only set address if it is not already set or if it is not the same
 		// as the existing billing address.
 		if ($order->billing_address === null ||
-			$order->billing_address->compare($billing_address) !== 0) {
+			!$order->billing_address->compare($billing_address)) {
 			$order->billing_address = $billing_address;
 		}
 
