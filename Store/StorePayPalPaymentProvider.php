@@ -49,6 +49,12 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 */
 	private $currency;
 
+	/**
+	 * @var string
+	 * @see StorePayPalPaymentProvider::__construct()
+	 */
+	private $mode;
+
 	// }}}
 	// {{{ public function __construct()
 
@@ -94,15 +100,18 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			'signature' => $parameters['signature'],
 		);
 
-		if (isset($parameters['mode'])) {
-			$valid_modes = array('live', 'sandbox');
-			if (!in_array($parameters['mode'], $valid_modes)) {
-				throw new StoreException('Mode "'.$mode.'" is not valid for '.
-					'the PayPal payment provider.');
-			}
-
-			$options['mode'] = $parameters['mode'];
+		if (!isset($parameters['mode'])) {
+			$parameters['mode'] = 'sandbox';
 		}
+
+		$valid_modes = array('live', 'sandbox');
+		if (!in_array($parameters['mode'], $valid_modes)) {
+			throw new StoreException('Mode "'.$mode.'" is not valid for '.
+				'the PayPal payment provider.');
+		}
+
+		$options['mode'] = $parameters['mode'];
+		$this->mode      = $parameters['mode'];
 
 		$this->client = new Payment_PayPal_SOAP_Client($options);
 	}
