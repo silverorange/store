@@ -453,7 +453,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$order_address = new $class_name();
 
 		$order_address->fullname    = $address->Name;
-		$order_address->line2       = $address->Street1;
+		$order_address->line1       = $address->Street1;
 		$order_address->city        = $address->CityName;
 		$order_address->postal_code = $address->PostalCode;
 		$order_address->country     = $address->Country;
