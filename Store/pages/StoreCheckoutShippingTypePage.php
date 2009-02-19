@@ -156,9 +156,6 @@ class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
 	public function finalize()
 	{
 		parent::finalize();
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-checkout-shipping-type-page.css',
-			Store::PACKAGE_ID));
 
 		$this->layout->addHtmlHeadEntrySet(
 			$this->ui->getRoot()->getHtmlHeadEntrySet());
