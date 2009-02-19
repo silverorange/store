@@ -287,19 +287,21 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$order->payment_methods = new $class_name();
 		$order->payment_methods->add($payment_method);
 
-		$billing_address = $this->getStoreOrderAddress(
-			$details->PayerInfo->Address, $db);
+		if (isset($details->PayerInfo->Address->Country)) {
+			$shipping_address = $this->getStoreOrderAddress(
+				$details->PayerInfo->Address, $db);
 
-		// Only set address if it is not already set or if it is not the same
-		// as the existing billing address.
-		if ($order->billing_address === null ||
-			!$order->billing_address->compare($billing_address)) {
-			$order->billing_address = $billing_address;
-		}
+			// Only set address if it is not already set or if it is not the
+			// same as the existing billing address.
+			if ($order->shipping_address === null ||
+				!$order->shipping_address->compare($shipping_address)) {
+				$order->shipping_address = $shipping_address;
+			}
 
-		// Only set shipping address if it is not already set.
-		if ($order->shipping_address === null) {
-			$order->shipping_address = $order->billing_address;
+			// Only set billing address if it is not already set.
+			if ($order->billing_address === null) {
+				$order->billing_address = $order->shipping_address;
+			}
 		}
 
 		if ($order->email === null) {
