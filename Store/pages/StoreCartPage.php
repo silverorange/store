@@ -127,12 +127,21 @@ class StoreCartPage extends SiteArticlePage
 				$this->ui->getWidget('message_display')->add($message);
 			} else {
 				$this->updateCheckoutCart();
-				if (!$form->hasMessage() &&
-					$this->continueButtonHasBeenClicked()) {
-					$this->app->cart->save();
-					$this->app->relocate('checkout');
+				if (!$form->hasMessage() && $this->canCheckout()) {
+					$this->processCheckoutCartCheckoutButtons();
 				}
 			}
+		}
+	}
+
+	// }}}
+	// {{{ protected function processCheckoutCartCheckoutButtons()
+
+	protected function processCheckoutCartCheckoutButtons()
+	{
+		if ($this->continueButtonHasBeenClicked()) {
+			$this->app->cart->save();
+			$this->app->relocate('checkout');
 		}
 	}
 
@@ -241,6 +250,23 @@ class StoreCartPage extends SiteArticlePage
 				$buttons[]= $this->ui->getWidget($id);
 
 		return $buttons;
+	}
+
+	// }}}
+	// {{{ protected function canCheckout()
+
+	/**
+	 * Whether or not the current cart can proceed to the checkout
+	 *
+	 * Subclasses may add additional validation here. By default, all carts can
+	 * proceed to the checkout.
+	 *
+	 * @return boolean true if the checkout cart can proceed to the checkout
+	 *                 process. Otherwise false.
+	 */
+	protected function canCheckout()
+	{
+		return true;
 	}
 
 	// }}}
