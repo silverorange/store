@@ -337,7 +337,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		if (array_key_exists('OrderTotal', $parameters) &&
 			!is_array($parameters['OrderTotal'])) {
 			$parameters['OrderTotal'] = $this->getCurrencyValue(
-				$paramaters['OrderTotal'], $this->currency);
+				$parameters['OrderTotal'], $this->currency);
 		}
 
 		if (array_key_exists('Address', $parameters) &&
