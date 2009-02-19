@@ -189,14 +189,31 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// {{{ public function setExpressCheckout()
 
 	/**
-	 * @return string the token of the initiated transaction
+	 * Initiates or updates an express checkout transaction
 	 *
-	 * @see StorePayPalPaymentProdiver::getExpressCheckoutDetails()
-	 * @see StorePayPalPaymentProdiver::getExpressCheckoutUri()
-	 * @see StorePayPalPaymentProdiver::doExpressCheckout()
+	 * @param array $parameters array of name-value pairs. Required parameters
+	 *                           are 'OrderTotal', 'ReturnURL' and 'CancelURL'.
+	 *
+	 * @return string the token of the transaction.
+	 *
+	 * @see StorePayPalPaymentProvider::getExpressCheckoutDetails()
+	 * @see StorePayPalPaymentProvider::getExpressCheckoutUri()
+	 * @see StorePayPalPaymentProvider::doExpressCheckout()
 	 */
-	public function setExpressCheckout(StoreOrder $order = null)
+	public function setExpressCheckout(array $parameters)
 	{
+		$required_parameters = array('OrderTotal', 'ReturnURL', 'CancelURL');
+		foreach ($required_parameters as $name) {
+			if (!array_key_exists($name, $parameters)) {
+				throw new StoreException('Required setExpressCheckout() '.
+					'parameter "'.$name.'" is missing.');
+			}
+		}
+
+		$request  = $this->getSetExpressCheckoutRequest($parameters);
+		$response = $this->client->call('SetExpressCheckout', $request);
+
+		return $response->Token;
 	}
 
 	// }}}
@@ -212,9 +229,9 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 * @return string the URI to which the browser should be relocated to
 	 *                 continue the Express Checkout transaction.
 	 *
-	 * @see StorePayPalPaymentProdiver::setExpressCheckout()
-	 * @see StorePayPalPaymentProdiver::getExpressCheckoutDetails()
-	 * @see StorePayPalPaymentProdiver::doExpressCheckout()
+	 * @see StorePayPalPaymentProvider::setExpressCheckout()
+	 * @see StorePayPalPaymentProvider::getExpressCheckoutDetails()
+	 * @see StorePayPalPaymentProvider::doExpressCheckout()
 	 */
 	public function getExpressCheckoutUri($token)
 	{
@@ -241,9 +258,9 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 * @param MDB2_Driver_Common $db the database. This is used for parsing
 	 *                                addresses and payment types.
 	 *
-	 * @see StorePayPalPaymentProdiver::setExpressCheckout()
-	 * @see StorePayPalPaymentProdiver::getExpressCheckoutUri()
-	 * @see StorePayPalPaymentProdiver::doExpressCheckout()
+	 * @see StorePayPalPaymentProvider::setExpressCheckout()
+	 * @see StorePayPalPaymentProvider::getExpressCheckoutUri()
+	 * @see StorePayPalPaymentProvider::doExpressCheckout()
 	 */
 	public function getExpressCheckoutDetails($token, StoreOrder $order,
 		MDB2_Driver_Common $db)
@@ -289,9 +306,9 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 *                                        payment. This object contains the
 	 *                                        transaction date and identifier.
 	 *
-	 * @see StorePayPalPaymentProdiver::setExpressCheckout()
-	 * @see StorePayPalPaymentProdiver::getExpressCheckoutDetails()
-	 * @see StorePayPalPaymentProdiver::getExpressCheckoutUri()
+	 * @see StorePayPalPaymentProvider::setExpressCheckout()
+	 * @see StorePayPalPaymentProvider::getExpressCheckoutDetails()
+	 * @see StorePayPalPaymentProvider::getExpressCheckoutUri()
 	 */
 	public function doExpressCheckout($token, $action,
 		$payer_id, StoreOrder $order)
@@ -313,6 +330,43 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// }}}
 
 	// data-structure helper methods (express checkout)
+	// {{{ private function getSetExpressCheckoutRequest()
+
+	private function getSetExpressCheckoutRequest(array $parameters)
+	{
+		if (array_key_exists('OrderTotal', $parameters) &&
+			!is_array($parameters['OrderTotal'])) {
+			$parameters['OrderTotal'] = $this->getCurrencyValue(
+				$paramaters['OrderTotal'], $this->currency);
+		}
+
+		if (array_key_exists('Address', $parameters) &&
+			$parameters['Address'] instanceof StoreOrderAddress) {
+			$parameters['Address'] = $this->getAddress($parameters['Address']);
+		}
+
+		return array(
+			'SetExpressCheckoutRequest' => array(
+				'Version' => '1.0',
+				'SetExpressCheckoutRequestDetails' => $parameters,
+			),
+		);
+	}
+
+	// }}}
+	// {{{ private function getGetExpressCheckoutDetailsRequest()
+
+	private function getGetExpressCheckoutDetailsRequest($token)
+	{
+		return array(
+			'GetExpressCheckoutDetailsRequest' => array(
+				'Version' => '1.0',
+				'Token'   => $token,
+			),
+		);
+	}
+
+	// }}}
 	// {{{ private function getDoExpressCheckoutPaymentRequest()
 
 	private function getDoExpressCheckoutPaymentRequest($token,
@@ -342,19 +396,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$details['PaymentDetails'] = $this->getPaymentDetails($order);
 
 		return $details;
-	}
-
-	// }}}
-	// {{{ private function getGetExpressCheckoutDetailsRequest()
-
-	private function getGetExpressCheckoutDetailsRequest($token)
-	{
-		return array(
-			'GetExpressCheckoutDetailsRequest' => array(
-				'Version' => '1.0',
-				'Token'   => $token,
-			),
-		);
 	}
 
 	// }}}
