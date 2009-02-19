@@ -132,9 +132,21 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 		if (!in_array($address->getInternalValue('country'),
 			$shipping_country_ids)) {
 			$field = $this->ui->getWidget('shipping_address_list_field');
-			$field->addMessage(new SwatMessage('Orders can not be shipped to '.
-				'the country of the selected address. Select a different '.
-				'shipping address or enter a new shipping address.'));
+			$field->addMessage(new SwatMessage(Store::_('Orders can not be '.
+				'shipped to the country of the selected address. Select a '.
+				'different shipping address or enter a new shipping '.
+				'address.')));
+		}
+
+		$shipping_provstate_ids = array();
+		foreach ($this->app->getRegion()->shipping_provstates as $provstate)
+			$shipping_provstate_ids[] = $provstate->id;
+
+		if (!in_array($address->getInternalValue('provstate'),
+			$shipping_provstate_ids)) {
+			$field = $this->ui->getWidget('shipping_address_list_field');
+			$field->addMessage(new SwatMessage(
+				$this->getInvalidProvStateMessage()));
 		}
 	}
 
@@ -210,6 +222,16 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 		$this->address = $address;
 
 		return $this->address;
+	}
+
+	// }}}
+	// {{{ protected function getInvalidProvStateMessage()
+
+	protected function getInvalidProvStateMessage()
+	{
+		return Store::_('Orders can not be shipped to the province/state of '.
+			'the selected address. Select a different shipping address or '.
+			'enter a new shipping address.');
 	}
 
 	// }}}
@@ -311,8 +333,6 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 
 		$span = '<span class="add-new">%s</span>';
 
-		// TODO: it is possible to select a billing address that is not
-		// shippable and then select "ship to billing address".
 		if ($this->app->session->checkout_with_account) {
 			$address_list->addOption('new',
 				sprintf($span, Store::_('Add a New Address')), 'text/xml');
