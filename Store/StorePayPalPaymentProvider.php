@@ -333,6 +333,18 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	public function doExpressCheckout($token, $action,
 		$payer_id, StoreOrder $order)
 	{
+		switch ($action) {
+		case 'Authorizarion':
+			$transaction_type = StorePaymentRequest::TYPE_HOLD;
+			break;
+
+		case 'Sale':
+		case 'Order':
+		default:
+			$transaction_type = StorePaymentRequest::TYPE_PAY;
+			break;
+		}
+
 		$request = $this->getDoExpressCheckoutPaymentRequest($token,
 			$action, $payer_id, $order);
 
@@ -344,7 +356,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 		$transaction->createdate = new SwatDate();
 		$transaction->createdate->toUTC();
-		$transaction->transaction_type = StorePaymentRequest::TYPE_PAY; // TODO
+		$transaction->transaction_type = $transaction_type;
 		$transaction->transaction_id = $details->PaymentInfo->TransactionID;
 
 		return $transaction;
