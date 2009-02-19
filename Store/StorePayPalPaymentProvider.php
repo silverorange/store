@@ -141,8 +141,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 		$response = $this->client->call('DoDirectPayment', $request);
 
-		$wrapper = SwatDBClassMap::get('StorePaymentMethodTransaction');
-		$transaction = new $wrapper();
+		$class_name = SwatDBClassMap::get('StorePaymentMethodTransaction');
+		$transaction = new $class_name();
 
 		$transaction->createdate = new SwatDate();
 		$transaction->createdate->toUTC();
@@ -181,8 +181,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 		$response = $this->client->call('DoDirectPayment', $request);
 
-		$wrapper = SwatDBClassMap::get('StorePaymentMethodTransaction');
-		$transaction = new $wrapper();
+		$class_name = SwatDBClassMap::get('StorePaymentMethodTransaction');
+		$transaction = new $class_name();
 
 		$transaction->createdate = new SwatDate();
 		$transaction->createdate->toUTC();
@@ -339,10 +339,13 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$response = $this->client->call('DoExpressCheckoutPayment', $request);
 		$details  = $response->DoExpressCheckoutPaymentResponseDetails;
 
+		$class_name = SwatDBClassMap::get('StorePaymentMethodTransaction');
+		$transaction = new $class_name();
+
 		$transaction->createdate = new SwatDate();
 		$transaction->createdate->toUTC();
 		$transaction->transaction_type = StorePaymentRequest::TYPE_PAY; // TODO
-		$transaction->transaction_id = $details->TransactionID;
+		$transaction->transaction_id = $details->PaymentInfo->TransactionID;
 
 		return $transaction;
 	}
@@ -410,7 +413,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	{
 		$details = array();
 
-		$details['Token']          = $payer_id;
+		$details['Token']          = $token;
 		$details['PaymentAction']  = $action;
 		$details['PayerID']        = $payer_id;
 		$details['PaymentDetails'] = $this->getPaymentDetails($order);
