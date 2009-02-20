@@ -47,7 +47,13 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 
 	public function processCommon()
 	{
-		$this->saveDataToSession();
+		if (!$this->ui->getWidget('form')->hasMessage())
+			$this->validateAddress();
+
+		// only save address in session if above validation didn't cause other
+		// validation messages to be generated.
+		if (!$this->ui->getWidget('form')->hasMessage())
+			$this->saveDataToSession();
 	}
 
 	// }}}
