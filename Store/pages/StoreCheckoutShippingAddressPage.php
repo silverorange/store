@@ -105,6 +105,16 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 
 	protected function validateAddress()
 	{
+		$this->validateAddressCountry();
+		$this->validateAddressProvState();
+		parent::validateAddress();
+	}
+
+	// }}}
+	// {{{ protected function validateAddressCountry()
+
+	protected function validateAddressCountry()
+	{
 		$address = $this->getAddress();
 
 		$shipping_country_ids = array();
@@ -119,6 +129,14 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 				'different shipping address or enter a new shipping '.
 				'address.')));
 		}
+	}
+
+	// }}}
+	// {{{ protected function validateAddressProvState()
+
+	protected function validateAddressProvState()
+	{
+		$address = $this->getAddress();
 
 		$shipping_provstate_ids = array();
 		foreach ($this->app->getRegion()->shipping_provstates as $provstate)
@@ -130,8 +148,6 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 			$field->addMessage(new SwatMessage(
 				$this->getInvalidProvStateMessage()));
 		}
-
-		parent::validateAddress();
 	}
 
 	// }}}
