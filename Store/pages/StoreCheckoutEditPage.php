@@ -11,6 +11,11 @@ require_once 'Store/pages/StoreCheckoutPage.php';
  */
 abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 {
+	// {{{ protected properties
+
+	protected $is_embedded = true;
+
+	// }}}
 	// {{{ protected function getOptionalStringValue()
 
 	protected function getOptionalStringValue($id)
@@ -31,6 +36,7 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 
 	protected function initInternal()
 	{
+		$this->is_embedded = false;
 		parent::initInternal();
 		$this->initCommon();
 

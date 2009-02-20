@@ -43,6 +43,14 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 	// }}}
 
 	// process phase
+	// {{{ public function processCommon()
+
+	public function processCommon()
+	{
+		$this->saveDataToSession();
+	}
+
+	// }}}
 	// {{{ protected function processInternal()
 
 	protected function processInternal()
@@ -55,8 +63,17 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 
 		if ($this->button1->hasBeenClicked())
 			$this->verified_address = $form->getHiddenField('verified_address');
+	}
 
-		if ($form->isProcessed() &&
+	// }}}
+	// {{{ protected function validateAddress()
+
+	protected function validateAddress()
+	{
+		$form = $this->ui->getWidget('form');
+
+		if (!$this->is_embedded &&
+			$form->isProcessed() &&
 			!$this->button2->hasBeenClicked() &&
 			!$this->button1->hasBeenClicked() &&
 			!$form->hasMessage() &&
@@ -93,7 +110,9 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 			$message->primary_content = Store::_('Is this your address?');
 			$this->button1->title = Store::_('Yes, this is my address');
 			$this->button1->classes[] = 'address-verification-yes';
-			$this->button2->title = Store::_('No, use my address as entered below');
+			$this->button2->title =
+				Store::_('No, use my address as entered below');
+
 			$this->button2->classes[] = 'address-verification-no';
 
 			ob_start();
@@ -103,7 +122,9 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 			$message->secondary_content.= ob_get_clean();
 		} else {
 			$message->primary_content = Store::_('Address not found');
-			$this->button2->title = Store::_('Yes, use my address as entered below');
+			$this->button2->title =
+				Store::_('Yes, use my address as entered below');
+
 			$message->secondary_content.= Store::_(
 				'Please confirm the address below is correct.').
 				'<br />';
