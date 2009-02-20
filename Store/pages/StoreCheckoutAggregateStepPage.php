@@ -149,6 +149,7 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 	}
 
 	// }}}
+
 	// build phase
 	// {{{ public function build()
 
