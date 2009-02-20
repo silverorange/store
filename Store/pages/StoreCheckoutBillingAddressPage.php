@@ -55,17 +55,6 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 	}
 
 	// }}}
-	// {{{ public function processCommon()
-
-	public function processCommon()
-	{
-		$this->saveDataToSession();
-
-		if ($this->app->session->isLoggedIn())
-			$this->app->session->account->save();
-	}
-
-	// }}}
 	// {{{ protected function saveDataToSession()
 
 	protected function saveDataToSession()

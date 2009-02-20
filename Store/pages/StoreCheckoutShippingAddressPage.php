@@ -69,7 +69,7 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 		// only save address in session if above validation didn't cause other
 		// validation messages to be generated.
 		if (!$this->ui->getWidget('form')->hasMessage())
-			$this->saveDataToSession();
+			parent::processCommon();
 	}
 
 	// }}}
@@ -148,6 +148,8 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 			$field->addMessage(new SwatMessage(
 				$this->getInvalidProvStateMessage()));
 		}
+
+		parent::validateAddress();
 	}
 
 	// }}}
