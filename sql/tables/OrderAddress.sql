@@ -10,6 +10,7 @@ create table OrderAddress (
 	country char(2) not null references Country(id),
 	postal_code varchar(50) not null,
 	phone varchar(100),
+	po_box boolean not null default false,
 	primary key (id)
 );
 
