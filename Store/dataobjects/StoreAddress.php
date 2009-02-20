@@ -89,6 +89,13 @@ abstract class StoreAddress extends SwatDBDataObject
 	 */
 	public $phone;
 
+	/**
+	 * Whether this address is a PO box
+	 *
+	 * @var boolean
+	 */
+	public $po_box;
+
 	// }}}
 	// {{{ private properties
 
@@ -737,6 +744,7 @@ abstract class StoreAddress extends SwatDBDataObject
 		$this->phone           = $address->phone;
 		$this->provstate       = $address->getInternalValue('provstate');
 		$this->country         = $address->getInternalValue('country');
+		$this->po_box          = $address->po_box;
 	}
 
 	// }}}
@@ -1457,6 +1465,7 @@ abstract class StoreAddress extends SwatDBDataObject
 				$this->city = $result->VerifyAddressUSAResult->City;
 				$this->company = $result->VerifyAddressUSAResult->Firm;
 				$this->postal_code = $result->VerifyAddressUSAResult->ZipPlus4;
+				$this->po_box = ($result->VerifyAddressUSAResult->RecordType === 'P');
 
 				if ($this->provstate->abbreviation !== $result->VerifyAddressUSAResult->State) {
 					$class = SwatDBClassMap::get('StoreProvState');
