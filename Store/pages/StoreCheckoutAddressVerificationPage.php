@@ -75,11 +75,6 @@ abstract class StoreCheckoutAddressVerificationPage extends StoreCheckoutEditPag
 		} else {
 			$this->buildList();
 		}
-
-		/*
-		if (!$this->ui->getWidget('form')->isProcessed())
-			$this->loadDataFromSession();
-		*/
 	}
 
 	// }}}
