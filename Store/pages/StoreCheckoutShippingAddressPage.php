@@ -55,24 +55,6 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 	}
 
 	// }}}
-	// {{{ public function processCommon()
-
-	public function processCommon()
-	{
-		// if form validated, perform additional checks on generated address
-		// object. This is dependent on Billing Address already having been
-		// saved to the session, so we can't perform this check in
-		// validateCommon
-		if (!$this->ui->getWidget('form')->hasMessage())
-			$this->validateAddress();
-
-		// only save address in session if above validation didn't cause other
-		// validation messages to be generated.
-		if (!$this->ui->getWidget('form')->hasMessage())
-			parent::processCommon();
-	}
-
-	// }}}
 	// {{{ protected function setupPostalCode()
 
 	protected function setupPostalCode()
