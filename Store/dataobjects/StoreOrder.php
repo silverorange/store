@@ -324,6 +324,9 @@ class StoreOrder extends SwatDBDataObject
 
 	protected function init()
 	{
+		// TODO: remove this
+		$this->registerDepreciatedProperty('previous_attempt');
+
 		$this->registerInternalProperty('status');
 		$this->registerInternalProperty('account',
 			SwatDBClassMap::get('StoreAccount'));
