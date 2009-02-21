@@ -105,15 +105,17 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 		}
 
 		$message = new SwatMessage('', 'notification');
-		$message->secondary_content = '<p>'.Store::_(
-			'To ensure effective delivery, we have compared your address to '.
-			'our postal address database for formatting and style. Please '.
-			'review the recommendations below:').'</p>';
 
 		if ($valid) {
 			$form->addHiddenField('verified_address', $verified_address);
 
 			$message->primary_content = Store::_('Is this your address?');
+
+			$message->secondary_content = '<p>'.Store::_(
+				'To ensure effective delivery, we have compared your address '.
+				'to our postal address database for formatting and style. '.
+				'Please review the recommendations below:').'</p>';
+
 			$this->button1->title = Store::_('Yes, this is my address');
 			$this->button1->classes[] = 'address-verification-yes';
 			$this->button2->title =
@@ -130,6 +132,11 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 			$message->primary_content = Store::_('Address not found');
 			$this->button2->title =
 				Store::_('Yes, use my address as entered below');
+
+			$message->secondary_content = '<p>'.Store::_(
+				'To ensure effective delivery, we have compared your address '.
+				'to our postal address database for formatting and style. '.
+				'The address you entered was not found.').'</p>';
 
 			$message->secondary_content.= Store::_(
 				'Please confirm the address below is correct.').
