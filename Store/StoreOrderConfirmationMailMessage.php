@@ -153,11 +153,8 @@ abstract class StoreOrderConfirmationMailMessage
 		$ui->getRoot()->addStyleSheet('packages/store/styles/store-cart.css');
 		$order = $this->order;
 
-		$ds = new SwatDetailsStore($order);
-		$ds->payment_method = $order->payment_methods->getFirst();
-
 		$details_view =  $ui->getWidget('order_details');
-		$details_view->data = $ds;
+		$details_view->data = $this->getOrderDetailsStore($order);
 
 		$date_field = $details_view->getField('createdate');
 		$date_renderer = $date_field->getFirstRenderer();
@@ -183,6 +180,17 @@ abstract class StoreOrderConfirmationMailMessage
 
 		$this->buildOrderHeader($ui);
 		$this->buildOrderFooter($ui);
+	}
+
+	// }}}
+	// {{{ protected function getOrderDetailsStore()
+
+	protected function getOrderDetailsStore(StoreOrder $order)
+	{
+		$ds = new SwatDetailsStore($order);
+		$ds->payment_method = $order->payment_methods->getFirst();
+
+		return $ds;
 	}
 
 	// }}}
