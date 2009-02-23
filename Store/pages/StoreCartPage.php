@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Site/pages/SiteArticlePage.php';
+require_once 'Site/pages/SitePage.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Swat/SwatUI.php';
 
@@ -16,7 +16,7 @@ require_once 'Swat/SwatDetailsStore.php';
  * @copyright 2006-2008 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreCartPage extends SiteArticlePage
+class StoreCartPage extends SitePage
 {
 	// {{{ protected properties
 
