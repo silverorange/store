@@ -153,7 +153,7 @@ abstract class StoreOrderConfirmationMailMessage
 		$ui->getRoot()->addStyleSheet('packages/store/styles/store-cart.css');
 		$order = $this->order;
 
-		$details_view =  $ui->getWidget('order_details');
+		$details_view = $ui->getWidget('order_details');
 		$details_view->data = $this->getOrderDetailsStore($order);
 
 		$date_field = $details_view->getField('createdate');
