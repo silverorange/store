@@ -1151,6 +1151,7 @@ class StoreProductPage extends StorePage
 
 		$ul_tag = new SwatHtmlTag('ul');
 		$ul_tag->class = 'store-product-list clearfix';
+		$ul_tag->open();
 
 		$li_tag = new SwatHtmlTag('li');
 		$li_tag->class = 'store-product-icon';
