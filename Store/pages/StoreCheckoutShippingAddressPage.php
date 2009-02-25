@@ -137,20 +137,20 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 	protected function validateAddressProvState()
 	{
 		$address = $this->getAddress();
-		$provstate = $address->getInternalValue('provstate');
+		$shipping_provstate = $address->getInternalValue('provstate');
 
 		/* If provstate is null, it means it's either not required, or
 		 * provstate_other is set. In either case, we don't need to check
 		 * against valid provstates.
 		 */
-		if ($provstate === null)
+		if ($shipping_provstate === null)
 			return;
 
 		$shipping_provstate_ids = array();
 		foreach ($this->app->getRegion()->shipping_provstates as $provstate)
 			$shipping_provstate_ids[] = $provstate->id;
 
-		if (!in_array($provstate, $shipping_provstate_ids)) {
+		if (!in_array($shipping_provstate, $shipping_provstate_ids)) {
 			$field = $this->ui->getWidget('shipping_address_list_field');
 			$field->addMessage(new SwatMessage(
 				$this->getInvalidProvStateMessage()));
