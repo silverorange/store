@@ -1139,15 +1139,14 @@ class StoreProductPage extends StorePage
 		$div_tag->id = 'collection_products';
 		$div_tag->open();
 
-		$p_tag = new SwatHtmlTag('p');
-		$p_tag->open();
-
-		echo SwatString::minimizeEntities(Store::ngettext(
+		$title =  SwatString::minimizeEntities(Store::ngettext(
 			'This item is also available in a collection: ',
 			'This item is also available in collections: ',
 			count($products)));
 
-		$p_tag->close();
+		$header_tag = new SwatHtmlTag('h4');
+		$header_tag->setContent($title);
+		$header_tag->display();
 
 		$ul_tag = new SwatHtmlTag('ul');
 		$ul_tag->class = 'store-product-list clearfix';
