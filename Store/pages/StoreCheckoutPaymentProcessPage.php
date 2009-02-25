@@ -36,6 +36,7 @@ abstract class StoreCheckoutPaymentProcessPage extends StoreCheckoutPage
 	{
 		try {
 			$this->processPayment();
+			$this->updateProgress();
 		} catch (Exception $e) {
 			$this->logException($e);
 			$this->handleException($e);
