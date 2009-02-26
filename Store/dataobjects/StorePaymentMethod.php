@@ -312,11 +312,8 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 				$this->displayCardDetails();
 			}
 		} elseif ($this->payment_type->isPayPal()) {
-			$this->payment_type->display();
-			$this->displayPayPal();
-			if ($display_details) {
-				$this->displayPayPalDetails();
-			}
+			echo SwatString::minimizeEntities($this->payment_type->title);
+			$this->displayPayPal($display_details);
 		} else {
 			$this->payment_type->display();
 		}
@@ -556,29 +553,32 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	// }}}
 	// {{{ protected function displayPayPal()
 
-	protected function displayPayPal()
+	protected function displayPayPal($display_details = true)
 	{
 		echo ': ';
 
-		$span_tag = new SwatHtmlTag('span');
-		$span_tag->setContent($this->payer_email);
-		$span_tag->class = 'store-payment-method-paypal-email';
-		$span_tag->display();
-	}
-
-	// }}}
-	// {{{ protected function displayPayPalDetails()
-
-	protected function displayPayPalDetails()
-	{
-		if ($this->card_fullname !== null) {
-			echo '<br />';
-
+		if ($display_details && $this->card_fullname !== null) {
 			$span_tag = new SwatHtmlTag('span');
 			$span_tag->setContent($this->card_fullname);
 			$span_tag->class = 'store-payment-method-info';
 			$span_tag->display();
 		}
+
+		$span_tag = new SwatHtmlTag('span');
+		$span_tag->class = 'store-payment-method-paypal-email';
+		$span_tag->open();
+
+		if ($display_details) {
+			echo ' &lt;';
+		}
+
+		echo SwatString::minimizeEntities($this->payer_email);
+
+		if ($display_details) {
+			echo '&gt;';
+		}
+
+		$span_tag->close();
 	}
 
 	// }}}
