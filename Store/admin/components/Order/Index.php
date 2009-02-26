@@ -144,7 +144,7 @@ class StoreOrderIndex extends AdminSearch
 			$clause = new AdminSearchClause('date:createdate');
 			$clause->table = 'Orders';
 			$clause->value = $date_gt->getDate();
-			$clause->operator = AdminSearchClause::OP_GT;
+			$clause->operator = AdminSearchClause::OP_GTE;
 			$where.= $clause->getClause($this->app->db);
 		}
 
