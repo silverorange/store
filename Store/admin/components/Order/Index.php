@@ -89,7 +89,7 @@ class StoreOrderIndex extends AdminSearch
 
 	protected function getWhereClause()
 	{
-		$where = 'Orders.failed_attempt = false';
+		$where = '1 = 1';
 
 		// Order #
 		$clause = new AdminSearchClause('integer:id');
