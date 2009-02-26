@@ -295,6 +295,19 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	public function processCommon()
 	{
+		try {
+			$this->processCommonInternal();
+		} catch (Exception $e) {
+			$this->logException($e);
+			$this->handleException($e);
+		}
+	}
+
+	// }}}
+	// {{{ protected function processCommonInternal()
+
+	protected function processCommonInternal()
+	{
 		$this->saveDataToSession();
 	}
 
@@ -480,6 +493,25 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		}
 
 		return $type;
+	}
+
+	// }}}
+	// {{{ protected function logException()
+
+	protected function logException(Exception $e)
+	{
+		if (!($e instanceof SwatException)) {
+			$e = new SwatException($e);
+		}
+
+		$e->process(false);
+	}
+
+	// }}}
+	// {{{ protected funciton handleException()
+
+	protected function handleException(Exception $e)
+	{
 	}
 
 	// }}}
