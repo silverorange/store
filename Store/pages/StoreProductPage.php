@@ -1189,7 +1189,10 @@ class StoreProductPage extends StorePage
 		$p_tag = new SwatHtmlTag('p');
 		$p_tag->open();
 
-		echo SwatString::minimizeEntities($this->getCollectionProductsTitle());
+		echo SwatString::minimizeEntities(Store::ngettext(
+			'This collection contains the following item: ',
+			'This collection contains the following items: ',
+			count($products)));
 
 		$p_tag->close();
 
@@ -1210,17 +1213,6 @@ class StoreProductPage extends StorePage
 
 		$ul_tag->close();
 		$div_tag->close();
-	}
-
-	// }}}
-	// {{{ protected function getCollectionProductsTitle()
-
-	protected function getCollectionProductsTitle()
-	{
-		return Store::ngettext(
-			'This collection contains the following item: ',
-			'This collection contains the following items: ',
-			count($products));
 	}
 
 	// }}}
