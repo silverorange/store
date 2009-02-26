@@ -1127,7 +1127,7 @@ class StoreProductPage extends StorePage
 	 */
 	protected function displayProductCollections()
 	{
-		$engine = new StoreProductSearchEngine($this->app);
+		$engine = $this->getProductSearchEngine();
 		$engine->collection_member_product = $this->product;
 		$engine->addOrderByField('is_available desc');
 		$products = $engine->search();
@@ -1174,7 +1174,7 @@ class StoreProductPage extends StorePage
 	 */
 	protected function displayCollectionProducts()
 	{
-		$engine = new StoreProductSearchEngine($this->app);
+		$engine = $this->getProductSearchEngine();
 		$engine->collection_source_product = $this->product;
 		$engine->addOrderByField('is_available desc');
 		$products = $engine->search();
@@ -1189,10 +1189,7 @@ class StoreProductPage extends StorePage
 		$p_tag = new SwatHtmlTag('p');
 		$p_tag->open();
 
-		echo SwatString::minimizeEntities(Store::ngettext(
-			'This collection contains the following item: ',
-			'This collection contains the following items: ',
-			count($products)));
+		echo SwatString::minimizeEntities($this->getCollectionProductsTitle());
 
 		$p_tag->close();
 
@@ -1213,6 +1210,17 @@ class StoreProductPage extends StorePage
 
 		$ul_tag->close();
 		$div_tag->close();
+	}
+
+	// }}}
+	// {{{ protected function getCollectionProductsTitle()
+
+	protected function getCollectionProductsTitle()
+	{
+		return Store::ngettext(
+			'This collection contains the following item: ',
+			'This collection contains the following items: ',
+			count($products));
 	}
 
 	// }}}
@@ -1241,7 +1249,7 @@ class StoreProductPage extends StorePage
 
 	protected function getPopularProducts()
 	{
-		$engine = new StoreProductSearchEngine($this->app);
+		$engine = $this->getProductSearchEngine();
 		$engine->popular_only = true;
 		$engine->available_only = true;
 		$engine->popular_source_product = $this->product;
@@ -1402,6 +1410,14 @@ class StoreProductPage extends StorePage
 			$this->related_articles = $related_articles;
 		}
 		return $this->related_articles;
+	}
+
+	// }}}
+	// {{{ protected function getProductSearchEngine()
+
+	protected function getProductSearchEngine()
+	{
+		return new StoreProductSearchEngine($this->app);
 	}
 
 	// }}}
