@@ -797,7 +797,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$details['Amount'] = $this->getCurrencyValue($item->price,
 			$this->currency);
 
-		$detauls['Quantity'] = $item->quantity;
+		$details['Quantity'] = $item->quantity;
 
 		return $details;
 	}
