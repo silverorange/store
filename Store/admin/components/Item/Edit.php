@@ -162,7 +162,7 @@ class StoreItemEdit extends AdminDBEdit
 			'minimum_multiple',
 			));
 
-		$this->item->sku              = $values['sku'];
+		$this->item->sku              = trim($values['sku']);
 		$this->item->description      = $values['description'];
 		$this->item->part_unit        = $values['part_unit'];
 		$this->item->part_count       = $values['part_count'];
