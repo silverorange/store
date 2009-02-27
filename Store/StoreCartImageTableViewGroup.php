@@ -26,6 +26,7 @@ class StoreCartImageTableViewGroup extends SwatTableViewGroup
 		$tr_tag->open();
 
 		$td_tag = new SwatHtmlTag('td');
+		$td_tag->class = 'cart-image-renderer';
 		$td_tag->rowspan = $row->item_count + 1;
 
 		// add a rowspan for each error message row
