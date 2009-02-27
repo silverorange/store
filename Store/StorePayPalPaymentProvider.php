@@ -139,7 +139,14 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$request = $this->getDoDirectPaymentRequest($order, 'Sale',
 			$card_number, $card_verification_value);
 
-		$response = $this->client->call('DoDirectPayment', $request);
+		try {
+			$response = $this->client->call('DoDirectPayment', $request);
+		} catch (Payment_PayPal_SOAP_ErrorException $e) {
+			// ignore warnings
+			if ($e->getSeverity() !== Payment_PayPal_SOAP::ERROR_WARNING) {
+				throw $e;
+			}
+		}
 
 		$class_name = SwatDBClassMap::get('StorePaymentMethodTransaction');
 		$transaction = new $class_name();
@@ -179,7 +186,14 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$request = $this->getDoDirectPaymentRequest($order, 'Authorization',
 			$card_number, $card_verification_value);
 
-		$response = $this->client->call('DoDirectPayment', $request);
+		try {
+			$response = $this->client->call('DoDirectPayment', $request);
+		} catch (Payment_PayPal_SOAP_ErrorException $e) {
+			// ignore warnings
+			if ($e->getSeverity() !== Payment_PayPal_SOAP::ERROR_WARNING) {
+				throw $e;
+			}
+		}
 
 		$class_name = SwatDBClassMap::get('StorePaymentMethodTransaction');
 		$transaction = new $class_name();
@@ -220,7 +234,15 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		}
 
 		$request  = $this->getSetExpressCheckoutRequest($parameters);
-		$response = $this->client->call('SetExpressCheckout', $request);
+
+		try {
+			$response = $this->client->call('SetExpressCheckout', $request);
+		} catch (Payment_PayPal_SOAP_ErrorException $e) {
+			// ignore warnings
+			if ($e->getSeverity() !== Payment_PayPal_SOAP::ERROR_WARNING) {
+				throw $e;
+			}
+		}
 
 		return $response->Token;
 	}
@@ -274,9 +296,19 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	public function getExpressCheckoutDetails($token, StoreOrder $order,
 		MDB2_Driver_Common $db)
 	{
-		$request  = $this->getGetExpressCheckoutDetailsRequest($token);
-		$response = $this->client->call('GetExpressCheckoutDetails', $request);
-		$details  = $response->GetExpressCheckoutDetailsResponseDetails;
+		$request = $this->getGetExpressCheckoutDetailsRequest($token);
+
+		try {
+			$response = $this->client->call('GetExpressCheckoutDetails',
+				$request);
+		} catch (Payment_PayPal_SOAP_ErrorException $e) {
+			// ignore warnings
+			if ($e->getSeverity() !== Payment_PayPal_SOAP::ERROR_WARNING) {
+				throw $e;
+			}
+		}
+
+		$details = $response->GetExpressCheckoutDetailsResponseDetails;
 
 		$payment_method = $this->getStoreOrderPaymentMethod(
 			$details->PayerInfo, $db);
@@ -354,8 +386,17 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$request = $this->getDoExpressCheckoutPaymentRequest($token,
 			$action, $payer_id, $order);
 
-		$response = $this->client->call('DoExpressCheckoutPayment', $request);
-		$details  = $response->DoExpressCheckoutPaymentResponseDetails;
+		try {
+			$response = $this->client->call('DoExpressCheckoutPayment',
+				$request);
+		} catch (Payment_PayPal_SOAP_ErrorException $e) {
+			// ignore warnings
+			if ($e->getSeverity() !== Payment_PayPal_SOAP::ERROR_WARNING) {
+				throw $e;
+			}
+		}
+
+		$details = $response->DoExpressCheckoutPaymentResponseDetails;
 
 		$class_name = SwatDBClassMap::get('StorePaymentMethodTransaction');
 		$transaction = new $class_name();
