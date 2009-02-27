@@ -64,7 +64,7 @@ $package->addPackageDepWithChannel('required', 'Validate_Finance_CreditCard', 'p
 $package->addPackageDepWithChannel('required', 'Numbers_Words', 'pear.php.net', '0.15.0');
 $package->addPackageDepWithChannel('required', 'Date', 'pear.silverorange.com', '1.5.0so6');
 $package->addPackageDepWithChannel('optional', 'Services_StrikeIron', 'pear.silverorange.com', '0.1.0');
-$package->addPackageDepWithChannel('optional', 'Payment_PayPal_SOAP', 'pear.php.net', '0.2.0');
+$package->addPackageDepWithChannel('optional', 'Payment_PayPal_SOAP', 'pear.php.net', '0.2.1');
 $package->addExtensionDep('required', 'imagick', '2.0.0');
 $package->generateContents();
 
