@@ -327,27 +327,23 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	protected function handleException(Exception $e)
 	{
 		if ($e instanceof StorePaymentAddressException) {
-			$this->ui->getWidget('message_display')->add(
-				$this->getErrorMessage('address'));
+			$message = $this->getErrorMessage('address');
 		} elseif ($e instanceof StorePaymentPostalCodeException) {
-			$this->ui->getWidget('message_display')->add(
-				$this->getErrorMessage('postal-code'));
+			$message = $this->getErrorMessage('postal-code');
 		} elseif ($e instanceof StorePaymentCvvException) {
-			$this->ui->getWidget('message_display')->add(
-				$this->getErrorMessage('card-verification-value'));
+			$message = $this->getErrorMessage('card-verification-value');
 		} elseif ($e instanceof StorePaymentCardTypeException) {
-			$this->ui->getWidget('message_display')->add(
-				$this->getErrorMessage('card-type'));
+			$message = $this->getErrorMessage('card-type');
 		} elseif ($e instanceof StorePaymentTotalException) {
-			$this->ui->getWidget('message_display')->add(
-				$this->getErrorMessage('total'));
+			$message = $this->getErrorMessage('total');
 		} elseif ($e instanceof StorePaymentException) {
-			$this->ui->getWidget('message_display')->add(
-				$this->getErrorMessage('payment-error'));
+			$message = $this->getErrorMessage('payment-error');
 		} else {
-			$this->ui->getWidget('message_display')->add(
-				$this->getErrorMessage('order-error'));
+			$message = $this->getErrorMessage('order-error');
 		}
+
+		$message_display = $this->ui->getWidget('message_display');
+		$message_display->add($message);
 	}
 
 	// }}}
@@ -529,6 +525,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 				Store::_('A system error occurred while processing your order'),
 				'system-error');
 
+			// TODO: only display account stuff if account was created
 			$message->content_type = 'text/xml';
 			$message->secondary_content = sprintf(
 				Store::_(
