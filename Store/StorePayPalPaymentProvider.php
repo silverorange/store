@@ -3,7 +3,7 @@
 require_once 'Store/StorePaymentProvider.php';
 require_once 'Swat/SwatNumber.php';
 require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Payment/PayPal/SOAP/Client.php';
+require_once 'Payment/PayPal/SOAP.php';
 
 /**
  * Payment provider for PayPal payments
@@ -18,7 +18,7 @@ require_once 'Payment/PayPal/SOAP/Client.php';
  * @copyright 2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StorePaymentProvider::factory()
- * @see       StorePaymentTransaction
+ * @see       StorePaymentMethodTransaction
  */
 class StorePayPalPaymentProvider extends StorePaymentProvider
 {
@@ -36,7 +36,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	/**
 	 * PayPal SOAP client
 	 *
-	 * @var Payment_PayPal_SOAP_Client
+	 * @var Payment_PayPal_SOAP
 	 * @see StoreProtxPaymentProvider::__construct()
 	 */
 	private $client;
@@ -113,7 +113,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$options['mode'] = $parameters['mode'];
 		$this->mode      = $parameters['mode'];
 
-		$this->client = new Payment_PayPal_SOAP_Client($options);
+		$this->client = new Payment_PayPal_SOAP($options);
 	}
 
 	// }}}
