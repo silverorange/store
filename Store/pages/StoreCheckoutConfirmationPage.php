@@ -327,9 +327,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	protected function handleException(Exception $e)
 	{
 		if ($e instanceof StorePaymentAddressException) {
-			$message = $this->getErrorMessage('address');
+			$message = $this->getErrorMessage('address-mismatch');
 		} elseif ($e instanceof StorePaymentPostalCodeException) {
-			$message = $this->getErrorMessage('postal-code');
+			$message = $this->getErrorMessage('postal-code-mismatch');
 		} elseif ($e instanceof StorePaymentCvvException) {
 			$message = $this->getErrorMessage('card-verification-value');
 		} elseif ($e instanceof StorePaymentCardTypeException) {
@@ -397,7 +397,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$message = null;
 
 		switch ($message_id) {
-		case 'address':
+		case 'address-mismatch':
 			$message = new SwatMessage(
 				Store::_('There was a problem processing your payment.'),
 				'error');
@@ -414,12 +414,12 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 				'</p><p>'.sprintf(
 				Store::_('If you are still unable to complete your order '.
 					'after confirming your payment information, please '.
-					'%scontact us%s. Your order details have been recorded.'),
+					'%scontact us%s.'),
 					'<a href="about/contact">', '</a>').
 				'</p>';
 
 			break;
-		case 'postal-code':
+		case 'postal-code-mismatch':
 			$message = new SwatMessage(
 				Store::_('There was a problem processing your payment.'),
 				'error');
@@ -436,7 +436,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 				'</p><p>'.sprintf(
 				Store::_('If you are still unable to complete your order '.
 					'after confirming your payment information, please '.
-					'%scontact us%s. Your order details have been recorded.'),
+					'%scontact us%s.'),
 					'<a href="about/contact">', '</a>').
 				'</p>';
 
@@ -458,7 +458,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 				'</p><p>'.sprintf(
 				Store::_('If you are still unable to complete your order '.
 					'after confirming your payment information, please '.
-					'%scontact us%s. Your order details have been recorded.'),
+					'%scontact us%s.'),
 					'<a href="about/contact">', '</a>').
 				'</p>';
 
@@ -480,7 +480,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 				'</p><p>'.sprintf(
 				Store::_('If you are still unable to complete your order '.
 					'after confirming your payment information, please '.
-					'%scontact us%s. Your order details have been recorded.'),
+					'%scontact us%s.'),
 					'<a href="about/contact">', '</a>').
 				'</p>';
 
