@@ -143,7 +143,9 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			$response = $this->client->call('DoDirectPayment', $request);
 		} catch (Payment_PayPal_SOAP_ErrorException $e) {
 			// ignore warnings
-			if ($e->getSeverity() !== Payment_PayPal_SOAP::ERROR_WARNING) {
+			if ($e->getSeverity() === Payment_PayPal_SOAP::ERROR_WARNING) {
+				$response = $e->getResponse();
+			} else {
 				throw $e;
 			}
 		}
@@ -190,7 +192,9 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			$response = $this->client->call('DoDirectPayment', $request);
 		} catch (Payment_PayPal_SOAP_ErrorException $e) {
 			// ignore warnings
-			if ($e->getSeverity() !== Payment_PayPal_SOAP::ERROR_WARNING) {
+			if ($e->getSeverity() === Payment_PayPal_SOAP::ERROR_WARNING) {
+				$response = $e->getResponse();
+			} else {
 				throw $e;
 			}
 		}
@@ -239,7 +243,9 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			$response = $this->client->call('SetExpressCheckout', $request);
 		} catch (Payment_PayPal_SOAP_ErrorException $e) {
 			// ignore warnings
-			if ($e->getSeverity() !== Payment_PayPal_SOAP::ERROR_WARNING) {
+			if ($e->getSeverity() === Payment_PayPal_SOAP::ERROR_WARNING) {
+				$response = $e->getResponse();
+			} else {
 				throw $e;
 			}
 		}
@@ -303,7 +309,9 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 				$request);
 		} catch (Payment_PayPal_SOAP_ErrorException $e) {
 			// ignore warnings
-			if ($e->getSeverity() !== Payment_PayPal_SOAP::ERROR_WARNING) {
+			if ($e->getSeverity() === Payment_PayPal_SOAP::ERROR_WARNING) {
+				$response = $e->getResponse();
+			} else {
 				throw $e;
 			}
 		}
@@ -391,7 +399,9 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 				$request);
 		} catch (Payment_PayPal_SOAP_ErrorException $e) {
 			// ignore warnings
-			if ($e->getSeverity() !== Payment_PayPal_SOAP::ERROR_WARNING) {
+			if ($e->getSeverity() === Payment_PayPal_SOAP::ERROR_WARNING) {
+				$response = $e->getResponse();
+			} else {
 				throw $e;
 			}
 		}
