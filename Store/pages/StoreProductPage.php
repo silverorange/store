@@ -1153,7 +1153,7 @@ class StoreProductPage extends StorePage
 		$ul_tag->open();
 
 		$li_tag = new SwatHtmlTag('li');
-		$li_tag->class = 'store-product-icon';
+		$li_tag->class = 'store-product-icon clearfix';
 
 		foreach ($products as $product) {
 			$li_tag->open();
@@ -1197,10 +1197,10 @@ class StoreProductPage extends StorePage
 		$p_tag->close();
 
 		$ul_tag = new SwatHtmlTag('ul');
-		$ul_tag->class = 'store-product-list';
+		$ul_tag->class = 'store-product-list clearfix';
 
 		$li_tag = new SwatHtmlTag('li');
-		$li_tag->class = 'store-product-icon';
+		$li_tag->class = 'store-product-icon clearfix';
 
 		$ul_tag->open();
 
