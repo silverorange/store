@@ -198,13 +198,16 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	{
 		$this->card_number_preview = substr($number, -4);
 
-		if ($this->gpg_id !== null) {
-			$gpg = $this->getGPG();
-			$this->card_number = self::encryptCardNumber($gpg, $number,
-				$this->gpg_id);
-		} else {
+		// We throw an exception here to prevent silent failures when saving
+		// payment information. Sites that do not require GPG encryption should
+		// override this method and explicitly remove the GPG check.
+		if ($this->gpg_id === null) {
 			throw new StoreException('GPG ID is required.');
 		}
+
+		$gpg = $this->getGPG();
+		$this->card_number = self::encryptCardNumber($gpg, $number,
+			$this->gpg_id);
 
 		if ($store_unencrypted) {
 			$this->unencrypted_card_number = (string)$number;
