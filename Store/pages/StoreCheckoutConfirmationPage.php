@@ -372,8 +372,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	 *
 	 * Message ids defined in this class are:
 	 *
-	 * <kbd>address</kdb>                 - for address AVS mismatch errors.
-	 * <kbd>postal-code</kbd>             - for postal/zip code AVS mismatch
+	 * <kbd>address-mismatch</kdb>        - for address AVS mismatch errors.
+	 * <kbd>postal-code-mismatch</kbd>    - for postal/zip code AVS mismatch
 	 *                                      errors.
 	 * <kbd>card-verification-value</kbd> - for CVS, CV2 mismatch errors.
 	 * <kbd>card-type</kbd>               - for invalid card types.
