@@ -2,6 +2,7 @@
 
 require_once 'Store/StorePaymentProvider.php';
 require_once 'Swat/SwatNumber.php';
+require_once 'Swat/SwatMessage.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Payment/PayPal/SOAP.php';
 
@@ -417,6 +418,202 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$transaction->transaction_id = $details->PaymentInfo->TransactionID;
 
 		return $transaction;
+	}
+
+	// }}}
+
+	// convenience methods for handling errors
+	// {{{ public function getExceptionMessage()
+
+	/**
+	 * Get a formatted message from a Payment_PayPal_SOAP_ErrorException
+	 *
+	 * @param Payment_PayPal_SOAP_ErrorException $e The payment exception
+	 * @param string $token the token of the current transaction.
+	 *
+	 * @return SwatMessage A human-formatted message for the corresponding
+	 *                     exception.
+	 */
+	public function getExceptionMessage(
+		Payment_PayPal_SOAP_ErrorException $e, $token = null)
+	{
+		switch ($e->getCode()) {
+
+		/*
+		 * Invalid card number (4111 1111 1111 1111 for example)
+		 */
+		case 10759:
+			return $this->getErrorMessage('card-not-valid', $token);
+
+		/*
+		 * CVV2 error. May be one of:
+		 *
+		 *  - CVV2 does not match
+		 *  - CVV2 was not processed by PayPal
+		 *  - CVV2 was not provided by merchant (us)
+		 *  - CVV2 is not supported by card issuer
+		 *  - No response from card issuer
+		 */
+		case 10725:
+		case 15004:
+			$cvv2_code = $e->getResponse()->CVV2Code;
+			switch ($cvv2_code) {
+
+			// CVV2 does not match
+			case 'N':
+				return $this->getErrorMessage('card-verification-value',
+					$token);
+
+			// Everything else gets a generic error message.
+			case 'P':
+			case 'S':
+			case 'U':
+			case 'X':
+			default:
+				return $this->getErrorMessage('card-error', $token);
+			}
+
+			break;
+
+		/*
+		 * AVS error. There are a number of possible errors as documented
+		 * within.
+		 */
+		case 10505:
+		case 10555:
+		case 10752:
+			$avs_code = $e->getResponse()->AVSCode;
+			switch ($avs_code) {
+
+			// Postal code does not match.
+			case 'A':
+			case 'B':
+				return $this->getErrorMessage('postal-code-mismatch', $token);
+
+			// Either the whole address or the street address do not match.
+			case 'C':
+			case 'N':
+			case 'P':
+			case 'W':
+			case 'Z':
+				return $this->getErrorMessage('address-mismatch', $token);
+
+			// Service unavailable or other errors. Generic error message.
+			case 'E':
+			case 'G':
+			case 'I':
+			case 'R':
+			case 'S':
+			case 'U':
+			default:
+				return $this->getErrorMessage('card-error', $token);
+			}
+
+			break;
+
+		/**
+		 * Express checkout shipping address did not pass PalPal's
+		 * address verification check.
+		 *
+		 * PayPal checks the City/State/ZIP and fails if they don't match.
+		 */
+		case 10736:
+			return $this->getErrorMessage('paypal-address-error', $token);
+
+		/*
+		 * Some kind of generic AVS rate limiting error. Who knows what the
+		 * fuck this really means because it's not documented besides
+		 * "Gateway Error". It happens occasionally though.
+		 */
+		case 10564:
+			return $this->getErrorMessage('card-error', $token);
+		}
+
+		return null;
+	}
+
+	// }}}
+	// {{{ private function getErrorMessage()
+
+	private function getErrorMessage($message_id, $token = null)
+	{
+		$message = null;
+
+		switch ($message_id) {
+		case 'card-not-valid':
+			$message = new SwatMessage(
+				Store::_('There was a problem processing your payment.'),
+				'error');
+
+			$message->content_type = 'text/xml';
+			$message->secondary_content = sprintf(Store::_(
+				'%sCard number is not valid.%s Your order was %snot%s '.
+				'placed. Please %suse a different card or pay using '.
+				'PayPal%s to continue.'),
+				'<strong>', '</strong>',
+				'<em>', '</em>',
+				'<a href="checkout/confirmation/paymentmethod">', '</a>');
+
+			break;
+
+		case 'card-verification-value':
+			$message = new SwatMessage(
+				Store::_('There was a problem processing your payment.'),
+				'error');
+
+			$message->content_type = 'text/xml';
+			$message->secondary_content = sprintf(Store::_(
+				'%sCard verification value does not match card number.%s '.
+				'Your order was %snot%s placed. Please %scorrect your card '.
+				'verification value%s to continue.'),
+				'<strong>', '</strong>',
+				'<em>', '</em>',
+				'<a href="checkout/confirmation/paymentmethod">', '</a>');
+
+			break;
+
+		case 'card-error':
+			$message = new SwatMessage(
+				Store::_('There was a problem processing your payment.'),
+				'error');
+
+			$message->content_type = 'text/xml';
+			$message->secondary_content = sprintf(Store::_(
+				'%sCard was not accepted.%s Your order was %snot%s placed. '.
+				'Please %suse a different card or pay using PayPal%s to '.
+				'continue.'),
+				'<strong>', '</strong>',
+				'<em>', '</em>',
+				'<a href="checkout/confirmation/paymentmethod">', '</a>');
+
+			break;
+
+		case 'paypal-address-error':
+			$message = new SwatMessage(
+				Store::_('There was a problem processing your payment.'),
+				'error');
+
+			$message->content_type = 'text/xml';
+			$message->secondary_content = sprintf(Store::_(
+				'%sPalPal cannot accept your shipping address.%s Your '.
+				'order was %snot%s placed. Please %supdate your shipping '.
+				'address%s '),
+				'<strong>', '</strong>',
+				'<em>', '</em>',
+				'<a href="checkout/confirmation/shippingaddress">', '</a>');
+
+			if ($token !== null) {
+				$edit_uri = $this->getExpressCheckoutUri($token);
+				$message->secondary_content.= sprintf(Store::_(
+					'or %senter your shipping details through PayPal%s '),
+					'<a href="'.$edit_uri.'">', '</a>');
+			}
+
+			$message->secondary_content.= Store::_('to continue.');
+			break;
+		}
+
+		return $message;
 	}
 
 	// }}}
