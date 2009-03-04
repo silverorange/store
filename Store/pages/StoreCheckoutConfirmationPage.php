@@ -149,8 +149,16 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$db_transaction->rollback();
 			$this->app->session->order = $duplicate_order;
 
-			$this->logException($e);
-			$this->handleException($e);
+			if ($this->handleException($e)) {
+				// log the exception
+				if (!($e instanceof SwatException)) {
+					$e = new SwatException($e);
+				}
+				$e->process(false);
+			} else {
+				// exception was not handled, rethrow
+				throw $e;
+			}
 
 			return false;
 		}
@@ -322,6 +330,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	 *
 	 * @param Exception $e
 	 *
+	 * @return boolean true if the exception was handled and false if it was
+	 *                 not. Unhandled excepions are rethrown.
+	 *
 	 * @see StorePaymentProvider
 	 */
 	protected function handleException(Exception $e)
@@ -344,24 +355,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		$message_display = $this->ui->getWidget('message_display');
 		$message_display->add($message);
-	}
 
-	// }}}
-	// {{{ protected function logException()
-
-	/**
-	 * Logs exceptions produced by order processing
-	 *
-	 * @param Exception $e
-	 */
-	protected function logException(Exception $e)
-	{
-		if (!($e instanceof SwatException)) {
-			$e = new SwatException($e);
-		}
-
-		// by default, all exceptions are logged
-		$e->process(false);
+		// exceptions are always handled
+		return true;
 	}
 
 	// }}}
