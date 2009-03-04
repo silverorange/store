@@ -127,8 +127,14 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 				$page->validateCommon();
 
 			if (!$form->hasMessage()) {
-				foreach ($this->embedded_edit_pages as $page)
-					$page->processCommon();
+				foreach ($this->embedded_edit_pages as $page) {
+					try {
+						$page->processCommon();
+					} catch (Exception $e) {
+						$page->logExceptionCommon($e);
+						$page->handleExceptionCommon($e);
+					}
+				}
 			}
 		}
 

@@ -94,7 +94,14 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 			$this->validateCommon();
 
 			if (!$form->hasMessage()) {
-				$this->processCommon();
+
+				try {
+					$this->processCommon();
+				} catch (Exception $e) {
+					$this->logExceptionCommon($e);
+					$this->handleExceptionCommon($e);
+				}
+
 				// check again here in case processing the form revealed
 				// additional errors
 				if (!$form->hasMessage()) {
@@ -153,6 +160,31 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 	 */
 	public function processCommon()
 	{
+	}
+
+	// }}}
+	// {{{ public function logExceptionCommon()
+
+	public function logExceptionCommon(Exception $e)
+	{
+		if (!($e instanceof SwatException)) {
+			$e = new SwatException($e);
+		}
+
+		$e->process(false);
+	}
+
+	// }}}
+	// {{{ public function handleExceptionCommon()
+
+	/**
+	 * By default, exceptions are thrown in Store.
+	 *
+	 * @param Exception $e
+	 */
+	public function handleExceptionCommon(Exception $e)
+	{
+		throw $e;
 	}
 
 	// }}}
