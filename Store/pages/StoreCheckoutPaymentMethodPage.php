@@ -510,8 +510,14 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	// }}}
 	// {{{ protected funciton handleException()
 
+	/**
+	 * By default, exceptions are thrown in Store.
+	 *
+	 * @param Exception $e
+	 */
 	protected function handleException(Exception $e)
 	{
+		throw $e;
 	}
 
 	// }}}
