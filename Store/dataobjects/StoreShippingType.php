@@ -153,6 +153,28 @@ class StoreShippingType extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function hasFuelSurcharge()
+
+	/**
+	 * Whether this shipping type has a shipping rate with a fuel surcharge
+	 */
+	public function hasFuelSurcharge()
+	{
+		$surcharge = false;
+
+		foreach ($this->shipping_rates as $rate) {
+			if ($rate->fuel_surcharge_amount > 0 ||
+				$rate->fuel_surcharge_percentage > 0) {
+
+				$surcharge = true;
+				break;
+			}
+		}
+
+		return $surcharge;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
