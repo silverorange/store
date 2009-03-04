@@ -55,7 +55,15 @@ abstract class StoreCheckoutAddressVerificationPage extends StoreCheckoutEditPag
 
 		if ($list->value === 'verified') {
 			$verified_address = $form->getHiddenField('verified_address');
-			$this->address->copyFrom($verified_address);
+
+			if ($verifiyed_address === null) {
+				/* If verified address object is missing from POST data
+				 * then re-verify the address.
+				 */
+				$this->address->verify($this->app);
+			} else {
+				$this->address->copyFrom($verified_address);
+			}
 
 			if ($this->app->session->isLoggedIn())
 				$this->app->session->account->save();
