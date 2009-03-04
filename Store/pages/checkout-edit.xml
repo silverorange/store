@@ -4,7 +4,7 @@
 	<widget class="SwatFrame" id="frame">
 		<widget class="SwatContainer" id="container" />
 		<widget class="SwatFooterFormField" id="footer_field">
-			<widget class="SwatButton">
+			<widget class="SwatButton" id="update_button">
 				<property name="title" translatable="yes">Update</property>
 			</widget>
 		</widget>
