@@ -100,31 +100,6 @@ class StoreShippingType extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ public function loadShippingRates(StoreRegion $region)
-
-	public function loadShippingRates(StoreRegion $region = null)
-	{
-		if ($region === null)
-			$region = $this->region;
-
-		if ($region === null)
-			throw new StoreException(
-				'$region must be specified unless setRegion() is called '.
-				'beforehand.');
-
-		$sql = 'select * from ShippingRate
-			where shipping_type = %s and region = %s
-			order by threshold, id';
-
-		$sql = sprintf($sql,
-			$this->db->quote($this->id, 'integer'),
-			$this->db->quote($region->id, 'integer'));
-
-		return SwatDB::query($this->db, $sql,
-			SwatDBClassMap::get('StoreShippingRateWrapper'));
-	}
-
-	// }}}
 	// {{{ public function calculateShippingRate()
 
 	public function calculateShippingRate($item_total,
@@ -178,6 +153,44 @@ class StoreShippingType extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ protected function init()
+
+	protected function init()
+	{
+		$this->table = 'ShippingType';
+		$this->id_field = 'integer:id';
+	}
+
+	// }}}
+
+	// loader methods
+	// {{{ public function loadShippingRates(StoreRegion $region)
+
+	public function loadShippingRates(StoreRegion $region = null)
+	{
+		if ($region === null)
+			$region = $this->region;
+
+		if ($region === null)
+			throw new StoreException(
+				'$region must be specified unless setRegion() is called '.
+				'beforehand.');
+
+		$sql = 'select * from ShippingRate
+			where shipping_type = %s and region = %s
+			order by threshold, id';
+
+		$sql = sprintf($sql,
+			$this->db->quote($this->id, 'integer'),
+			$this->db->quote($region->id, 'integer'));
+
+		return SwatDB::query($this->db, $sql,
+			SwatDBClassMap::get('StoreShippingRateWrapper'));
+	}
+
+	// }}}
+
+	// display methods
 	// {{{ public function display()
 
 	/**
@@ -206,16 +219,6 @@ class StoreShippingType extends SwatDBDataObject
 		if (strlen($this->note) > 0) {
 			echo ' - '.$this->note;
 		}
-	}
-
-	// }}}
-
-	// {{{ protected function init()
-
-	protected function init()
-	{
-		$this->table = 'ShippingType';
-		$this->id_field = 'integer:id';
 	}
 
 	// }}}
