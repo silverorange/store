@@ -98,8 +98,16 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 				try {
 					$this->processCommon();
 				} catch (Exception $e) {
-					$this->logExceptionCommon($e);
-					$this->handleExceptionCommon($e);
+					if ($this->handleExceptionCommon($e)) {
+						// log the exception
+						if (!($e instanceof SwatException)) {
+							$e = new SwatException($e);
+						}
+						$e->process(false);
+					} else {
+						// exception was not handled, rethrow
+						throw $e;
+					}
 				}
 
 				// check again here in case processing the form revealed
@@ -163,28 +171,19 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 	}
 
 	// }}}
-	// {{{ public function logExceptionCommon()
-
-	public function logExceptionCommon(Exception $e)
-	{
-		if (!($e instanceof SwatException)) {
-			$e = new SwatException($e);
-		}
-
-		$e->process(false);
-	}
-
-	// }}}
 	// {{{ public function handleExceptionCommon()
 
 	/**
 	 * By default, exceptions are thrown in Store.
 	 *
 	 * @param Exception $e
+	 *
+	 * @return boolean true if the exception was handled and false if it was
+	 *                 not. Unhandled excepions are rethrown.
 	 */
 	public function handleExceptionCommon(Exception $e)
 	{
-		throw $e;
+		return false;
 	}
 
 	// }}}
