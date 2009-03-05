@@ -1157,13 +1157,22 @@ class StoreProductPage extends StorePage
 
 		foreach ($products as $product) {
 			$li_tag->open();
-			$this->displayCollectionProduct($product);
+			$this->displayProductCollection($product);
 			$li_tag->close();
 			echo ' ';
 		}
 
 		$ul_tag->close();
 		$div_tag->close();
+	}
+
+	// }}}
+	// {{{ protected function displayProductCollection()
+
+	protected function displayProductCollection(StoreProduct $product)
+	{
+		$path = 'store/'.$product->path;
+		$product->displayAsIcon($path, 'pinky');
 	}
 
 	// }}}
