@@ -21,6 +21,14 @@ class StoreAddressCellRenderer extends SwatCellRenderer
 	 */
 	public $address;
 
+	/**
+	 * Whether or not to display the address in condensed format or not. If
+	 * false, call the normal display.
+	 *
+	 * @var boolean
+	 */
+	public $condensed = true;
+
 	// }}}
 	// {{{ public function render()
 
@@ -32,8 +40,13 @@ class StoreAddressCellRenderer extends SwatCellRenderer
 		if (!$this->visible)
 			return;
 
-		if ($this->address instanceof StoreAddress)
-			$this->address->displayCondensed();
+		if ($this->address instanceof StoreAddress) {
+			if ($this->condensed) {
+				$this->address->displayCondensed();
+			} else {
+				$this->address->display();
+			}
+		}
 	}
 
 	// }}}
