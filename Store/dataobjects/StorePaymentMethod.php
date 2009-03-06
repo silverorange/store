@@ -190,24 +190,33 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	 *                                    {@link StorePaymentMethod::getUnencryptedCardNumber()}
 	 *                                    method.
 	 *
+	 * @param boolean $store_encrypted optional flag to store a GPG encrypted
+	 *                                  version of the card number in the
+	 *                                  public $card_number property.
+	 *
 	 * @todo make this smart based on card type.
 	 *
 	 * @sensitive $number
 	 */
-	public function setCardNumber($number, $store_unencrypted = false)
+	public function setCardNumber($number, $store_unencrypted = false,
+		$store_encrypted = true)
 	{
 		$this->card_number_preview = substr($number, -4);
 
-		// We throw an exception here to prevent silent failures when saving
-		// payment information. Sites that do not require GPG encryption should
-		// override this method and explicitly remove the GPG check.
-		if ($this->gpg_id === null) {
-			throw new StoreException('GPG ID is required.');
-		}
+		if ($store_encrypted) {
+			/* We throw an exception here to prevent silent failures when
+			 * saving payment information. Sites that do not require GPG
+			 * encryption should override this method and explicitly remove
+			 * the GPG check.
+			 */
+			if ($this->gpg_id === null) {
+				throw new StoreException('GPG ID is required.');
+			}
 
-		$gpg = $this->getGPG();
-		$this->card_number = self::encryptCardNumber($gpg, $number,
-			$this->gpg_id);
+			$gpg = $this->getGPG();
+			$this->card_number = self::encryptCardNumber($gpg, $number,
+				$this->gpg_id);
+		}
 
 		if ($store_unencrypted) {
 			$this->unencrypted_card_number = (string)$number;
@@ -236,6 +245,21 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		}
 
 		return $number;
+	}
+
+	// }}}
+	// {{{ public function hasCardNumber()
+
+	/**
+	 * @return boolean whether this objects contains a card number,
+	 *                  either encrypted or unencrypted.
+	 */
+	public function hasCardNumber()
+	{
+		$has_number = $this->card_number !== null ||
+			$this->unencrypted_card_number !== null;
+
+		return $has_number;
 	}
 
 	// }}}
