@@ -608,10 +608,10 @@ class StoreProductPage extends StorePage
 
 			if ($show_thank_you) {
 				$message = new SwatMessage(
-					Store::_('Your review has been submitted.'));
+					Store::_('Your comment has been submitted.'));
 
 				$message->secondary_content =
-					Store::_('Your review will be published after being '.
+					Store::_('Your comment will be published after being '.
 						'approved by the site moderator.');
 
 				$this->reviews_ui->getWidget('product_review_message_display')
@@ -634,15 +634,15 @@ class StoreProductPage extends StorePage
 			$button_tag = new SwatHtmlTag('input');
 			$button_tag->type = 'submit';
 			$button_tag->name = 'product_review_add';
-			$button_tag->value = Store::_('Post');
+			$button_tag->value = Store::_('Add Comment');
 
 			$message = new SwatMessage(
-				Store::_('Your review has not yet been published.'));
+				Store::_('Your comment has not yet been published.'));
 
 			$message->secondary_content = sprintf(Store::_(
-				'Review your review and press the <em>Post</em> button when '.
-				'it’s ready to publish. %s'),
-				$button_tag);
+				'Please review your comment and press the '.
+				'<em>Add Comment</em> button when it’s ready to '.
+				'publish. %s'), $button_tag);
 
 			$message->content_type = 'text/xml';
 
