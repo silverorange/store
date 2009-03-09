@@ -200,7 +200,7 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
 	protected function getForgotPasswordLink()
 	{
 		$email = $this->ui->getWidget('email_address');
-		$link = sprintf(Store::_('%sForgot your password?%s'),
+		$link = sprintf(Store::_(' %sForgot your password?%s'),
 			'<a href="account/forgotpassword%s">', '</a>');
 
 		if (!$email->hasMessage() && $email != null) {
