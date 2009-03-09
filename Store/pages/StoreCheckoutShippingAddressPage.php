@@ -152,8 +152,10 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 
 		if (!in_array($shipping_provstate, $shipping_provstate_ids)) {
 			$field = $this->ui->getWidget('shipping_address_list_field');
-			$field->addMessage(new SwatMessage(
-				$this->getInvalidProvStateMessage()));
+			$field->addMessage(new SwatMessage(sprintf(Store::_('Orders can '.
+				'not be shipped to %s. Please select a different shipping '.
+				'address or enter a new shipping address.'),
+				$address->provstate->title)));
 		}
 	}
 
@@ -229,16 +231,6 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 		$this->address = $address;
 
 		return $this->address;
-	}
-
-	// }}}
-	// {{{ protected function getInvalidProvStateMessage()
-
-	protected function getInvalidProvStateMessage()
-	{
-		return Store::_('Orders can not be shipped to the province/state of '.
-			'the selected address. Select a different shipping address or '.
-			'enter a new shipping address.');
 	}
 
 	// }}}
