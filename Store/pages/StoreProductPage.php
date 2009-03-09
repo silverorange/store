@@ -1048,7 +1048,7 @@ class StoreProductPage extends StorePage
 		$ul_tag->class = 'store-product-list clearfix';
 
 		$li_tag = new SwatHtmlTag('li');
-		$li_tag->class = 'store-product-icon clearfix';
+		$li_tag->class = 'store-product-icon';
 
 		$div->open();
 		$header_tag->display();
@@ -1136,7 +1136,7 @@ class StoreProductPage extends StorePage
 			return;
 
 		$div_tag = new SwatHtmlTag('div');
-		$div_tag->id = 'collection_products';
+		$div_tag->id = 'product_collection';
 		$div_tag->open();
 
 		$title =  SwatString::minimizeEntities(Store::ngettext(
@@ -1153,7 +1153,7 @@ class StoreProductPage extends StorePage
 		$ul_tag->open();
 
 		$li_tag = new SwatHtmlTag('li');
-		$li_tag->class = 'store-product-icon clearfix';
+		$li_tag->class = 'store-product-icon';
 
 		foreach ($products as $product) {
 			$li_tag->open();
@@ -1207,7 +1207,7 @@ class StoreProductPage extends StorePage
 		$ul_tag->class = 'store-product-list clearfix';
 
 		$li_tag = new SwatHtmlTag('li');
-		$li_tag->class = 'store-product-icon clearfix';
+		$li_tag->class = 'store-product-icon';
 
 		$ul_tag->open();
 
