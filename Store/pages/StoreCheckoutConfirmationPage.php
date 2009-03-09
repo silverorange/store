@@ -82,8 +82,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	protected function validate()
 	{
 		$valid = true;
-		$valid = $valid && $this->validateBillingAddress();
-		$valid = $valid && $this->validateShippingAddress();
+		$valid = $this->validateBillingAddress() && $valid;
+		$valid = $this->validateShippingAddress() && $valid;
 
 		return $valid;
 	}
@@ -96,8 +96,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$valid = true;
 
 		$address = $this->app->session->order->billing_address;
-		$valid = $valid && $this->validateBillingAddressCountry($address);
-		$valid = $valid && $this->validateBillingAddressProvState($address);
+		$valid = $this->validateBillingAddressCountry($address) && $valid;
+		$valid = $this->validateBillingAddressProvState($address) && $valid;
 
 		return $valid;
 	}
@@ -110,8 +110,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$valid = true;
 
 		$address = $this->app->session->order->shipping_address;
-		$valid = $valid && $this->validateShippingAddressCountry($address);
-		$valid = $valid && $this->validateShippingAddressProvState($address);
+		$valid = $this->validateShippingAddressCountry($address) && $valid;
+		$valid = $this->validateShippingAddressProvState($address) && $valid;
 
 		return $valid;
 	}
