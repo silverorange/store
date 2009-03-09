@@ -687,10 +687,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$message->content_type = 'text/xml';
 			$message->secondary_content = sprintf(
 				Store::_(
-					'Your account was created, but your order was %snot%s '.
-					'placed and you have %snot%s been billed. The error has '.
-					'been recorded and and we will attempt to fix it as '.
-					'quickly as possible.'),
+					'Your account has been created, but your order has '.
+					'%snot%s been placed and you have %snot%s been billed. '.
+					'The error has been recorded and and we will attempt '.
+					'to fix it as quickly as possible.'),
 					'<em>', '</em>', '<em>', '</em>');
 
 			break;
@@ -702,10 +702,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$message->content_type = 'text/xml';
 			$message->secondary_content = sprintf(
 				Store::_(
-					'Your account was not created, your order was %snot%s '.
-					'placed, and you have %snot%s been billed. The error has '.
-					'been recorded and we will attempt to fix it as quickly '.
-					'as possible.'),
+					'Your account has not created, your order has %snot%s '.
+					'been placed, and you have %snot%s been billed. '.
+					'The error has been recorded and we will attempt to '.
+					'fix it as quickly as possible.'),
 					'<em>', '</em>', '<em>', '</em>');
 
 			break;
