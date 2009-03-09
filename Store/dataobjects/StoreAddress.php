@@ -853,8 +853,9 @@ abstract class StoreAddress extends SwatDBDataObject
 			!self::differByStreetAbbreviationOnly($this->line1, $address->line1))
 				$equal = false;
 
-		if (strtoupper($this->line2) != strtoupper($address->line2))
-			$equal = false;
+		if (trim(strtoupper($this->line2)) !=
+			trim(strtoupper($address->line2)))
+				$equal = false;
 
 		if (strtoupper($this->city) != strtoupper($address->city))
 			$equal = false;
