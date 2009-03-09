@@ -76,23 +76,34 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 
 	protected function validateAddress()
 	{
+		if ($this->shouldVerifyAddress())
+			$this->verifyAddress();
+	}
+
+	// }}}
+	// {{{ protected function shouldVerifyAddress()
+
+	protected function shouldVerifyAddress()
+	{
 		$form = $this->ui->getWidget('form');
 
-		if (!$this->is_embedded &&
+		$verify =
+			!$this->is_embedded &&
 			$form->isProcessed() &&
 			!$this->button2->hasBeenClicked() &&
 			!$this->button1->hasBeenClicked() &&
 			!$form->hasMessage() &&
-			StoreAddress::isVerificationAvailable($this->app)) {
-				$this->verifyAddress($form);
-		}
+			StoreAddress::isVerificationAvailable($this->app);
+
+		return $verify;
 	}
 
 	// }}}
 	// {{{ protected function verifyAddress()
 
-	protected function verifyAddress(SwatForm $form)
+	protected function verifyAddress()
 	{
+		$form = $this->ui->getWidget('form');
 		$address = clone $this->getAddress();
 		$address->setDatabase($this->app->db);
 		$verified_address = clone $address;
