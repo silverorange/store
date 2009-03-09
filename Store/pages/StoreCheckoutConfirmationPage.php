@@ -72,8 +72,170 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		$form = $this->ui->getWidget('form');
 
-		if ($form->isProcessed() && !$form->hasMessage())
+		if ($this->validate() && $form->isProcessed() && !$form->hasMessage())
 			$this->processOrder();
+	}
+
+	// }}}
+	// {{{ protected function validate()
+
+	protected function validate()
+	{
+		$valid = true;
+		$valid = $valid && $this->validateBillingAddress();
+		$valid = $valid && $this->validateShippingAddress();
+
+		return $valid;
+	}
+
+	// }}}
+	// {{{ protected function validateBillingAddress()
+
+	protected function validateBillingAddress()
+	{
+		$valid = true;
+
+		$address = $this->app->session->order->billing_address;
+		$valid = $valid && $this->validateBillingAddressCountry($address);
+		$valid = $valid && $this->validateBillingAddressProvState($address);
+
+		return $valid;
+	}
+
+	// }}}
+	// {{{ protected function validateShippingAddress()
+
+	protected function validateShippingAddress()
+	{
+		$valid = true;
+
+		$address = $this->app->session->order->shipping_address;
+		$valid = $valid && $this->validateShippingAddressCountry($address);
+		$valid = $valid && $this->validateShippingAddressProvState($address);
+
+		return $valid;
+	}
+
+	// }}}
+	// {{{ protected function validateBillingAddressCountry()
+
+	protected function validateBillingAddressCountry(StoreOrderAddress $address)
+	{
+		$valid = true;
+		$country_ids = array();
+		foreach ($this->app->getRegion()->billing_countries as $country)
+			$country_ids[] = $country->id;
+
+		if (!in_array($address->getInternalValue('country'), $country_ids)) {
+			$valid = false;
+			$message = new SwatMessage('Billing Address', 'error');
+
+			$message->secondary_content = sprintf(
+				'Orders can not be billed to %s. Please select a different '.
+				'billing address or enter a new billing address.',
+				$address->country->title);
+
+			$this->ui->getWidget('message_display')->add($message,
+				SwatMessageDisplay::DISMISS_OFF);
+		}
+
+		return $valid;
+	}
+
+	// }}}
+	// {{{ protected function validateBillingAddressProvState()
+
+	protected function validateBillingAddressProvState(
+		StoreOrderAddress $address)
+	{
+		$valid = true;
+		$billing_provstate = $address->getInternalValue('provstate');
+
+		/* If provstate is null, it means it's either not required, or
+		 * provstate_other is set. In either case, we don't need to check
+		 * against valid provstates.
+		 */
+		if ($billing_provstate === null)
+			return;
+
+		$provstate_ids = array();
+		foreach ($this->app->getRegion()->billing_provstates as $provstate)
+			$provstate_ids[] = $provstate->id;
+
+		if (!in_array($billing_provstate, $provstate_ids)) {
+			$valid = false;
+			$message = new SwatMessage('Billing Address', 'error');
+			$message->secondary_content = sprintf(
+				'Orders can not be billed to %s. Please select a different '.
+				'billing address or enter a new billing address.',
+				$address->provstate->title);
+
+			$this->ui->getWidget('message_display')->add($message,
+				SwatMessageDisplay::DISMISS_OFF);
+		}
+
+		return $valid;
+	}
+
+	// }}}
+	// {{{ protected function validateShippingAddressCountry()
+
+	protected function validateShippingAddressCountry(
+		StoreOrderAddress $address)
+	{
+		$valid = true;
+		$country_ids = array();
+		foreach ($this->app->getRegion()->shipping_countries as $country)
+			$country_ids[] = $country->id;
+
+		if (!in_array($address->getInternalValue('country'), $country_ids)) {
+			$valid = false;
+			$message = new SwatMessage('Shipping Address', 'error');
+			$message->secondary_content = sprintf(
+				'Orders can not be shipped to %s. Please select a different '.
+				'shipping address or enter a new shipping address.',
+				$address->country->title);
+
+			$this->ui->getWidget('message_display')->add($message,
+				SwatMessageDisplay::DISMISS_OFF);
+		}
+
+		return $valid;
+	}
+
+	// }}}
+	// {{{ protected function validateShippingAddressProvState()
+
+	protected function validateShippingAddressProvState(
+		StoreOrderAddress $address)
+	{
+		$valid = true;
+		$shipping_provstate = $address->getInternalValue('provstate');
+
+		/* If provstate is null, it means it's either not required, or
+		 * provstate_other is set. In either case, we don't need to check
+		 * against valid provstates.
+		 */
+		if ($shipping_provstate === null)
+			return;
+
+		$provstate_ids = array();
+		foreach ($this->app->getRegion()->shipping_provstates as $provstate)
+			$provstate_ids[] = $provstate->id;
+
+		if (!in_array($shipping_provstate, $provstate_ids)) {
+			$valid = false;
+			$message = new SwatMessage('Shipping Address', 'error');
+			$message->secondary_content = sprintf(
+				'Orders can not be shipped to %s. Please select a different '.
+				'shipping address or enter a new shipping address.',
+				$address->provstate->title);
+
+			$this->ui->getWidget('message_display')->add($message,
+				SwatMessageDisplay::DISMISS_OFF);
+		}
+
+		return $valid;
 	}
 
 	// }}}
@@ -585,6 +747,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 			$this->ui->getWidget('message_display')->add($message,
 				SwatMessageDisplay::DISMISS_OFF);
+		} else {
+			// if there are messages, order cannot be placed
+			$this->ui->getWidget('submit')->sensitive = false;
 		}
 	}
 
