@@ -702,8 +702,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$message->content_type = 'text/xml';
 			$message->secondary_content = sprintf(
 				Store::_(
-					'Your account has not created, your order has %snot%s '.
-					'been placed, and you have %snot%s been billed. '.
+					'Your account has not been created, your order has '.
+					'%snot%s been placed, and you have %snot%s been billed. '.
 					'The error has been recorded and we will attempt to '.
 					'fix it as quickly as possible.'),
 					'<em>', '</em>', '<em>', '</em>');
