@@ -111,6 +111,20 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 	}
 
 	// }}}
+	// {{{ protected function shouldVerifyAddress()
+
+	protected function shouldVerifyAddress()
+	{
+		$verify = parent::shouldVerifyAddress();
+
+		$address = $this->getAddress();
+		if ($address === $this->app->session->order->billing_address)
+			$verify = false;
+
+		return $verify;
+	}
+
+	// }}}
 	// {{{ protected function validateAddressCountry()
 
 	protected function validateAddressCountry()
