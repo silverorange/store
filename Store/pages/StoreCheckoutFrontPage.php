@@ -181,6 +181,35 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
 		foreach ($this->app->messages->getAll() as $message) {
 			$this->ui->getWidget('message_display')->add($message);
 		}
+
+		$this->buildForgotPasswordLink();
+	}
+
+	// }}}
+	// {{{ protected function buildForgotPasswordLink()
+
+	protected function buildForgotPasswordLink()
+	{
+		$this->ui->getWidget('forgot_password')->content =
+			$this->getForgotPasswordLink();
+	}
+
+	// }}}
+	// {{{ protected function getForgotPasswordLink()
+
+	protected function getForgotPasswordLink()
+	{
+		$email = $this->ui->getWidget('email_address');
+		$link = sprintf(Store::_('%sForgot your password?%s'),
+			'<a href="account/forgotpassword%s">', '</a>');
+
+		if (!$email->hasMessage() && $email != null) {
+			$link_value = sprintf('?email=%s', urlencode($email->value));
+		} else {
+			$link_value = null;
+		}
+
+		return sprintf($link, $link_value);
 	}
 
 	// }}}
