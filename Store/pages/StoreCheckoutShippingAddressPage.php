@@ -138,10 +138,10 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 		if (!in_array($address->getInternalValue('country'),
 			$shipping_country_ids)) {
 			$field = $this->ui->getWidget('shipping_address_list_field');
-			$field->addMessage(new SwatMessage(Store::_('Orders can not be '.
-				'shipped to the country of the selected address. Select a '.
-				'different shipping address or enter a new shipping '.
-				'address.')));
+			$field->addMessage(new SwatMessage(sprintf(Store::_('Orders can '.
+				'not be shipped to %s. Please select a different shipping '.
+				'address or enter a new shipping address.'),
+				$address->country->title)));
 		}
 	}
 
