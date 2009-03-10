@@ -131,8 +131,16 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 					try {
 						$page->processCommon();
 					} catch (Exception $e) {
-						$page->logExceptionCommon($e);
-						$page->handleExceptionCommon($e);
+						if ($page->handleExceptionCommon($e)) {
+							// log the exception
+							if (!($e instanceof SwatException)) {
+								$e = new SwatException($e);
+							}
+							$e->process(false);
+						} else {
+							// exception was not handled, rethrow
+							throw $e;
+						}
 					}
 				}
 			}
