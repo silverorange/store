@@ -226,8 +226,10 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 			'country',
 		));
 
-		if ($this->address->provstate === 'other')
-			$this->address->provstate = null;
+		if ($address->provstate === 'other')
+			$address->provstate = null;
+
+		$address->po_box = $address->isPoBox();
 	}
 
 	// }}}
