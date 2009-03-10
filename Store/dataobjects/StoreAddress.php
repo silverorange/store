@@ -1470,10 +1470,12 @@ abstract class StoreAddress extends SwatDBDataObject
 
 				if ($this->provstate->abbreviation !== $result->VerifyAddressUSAResult->State) {
 					$class = SwatDBClassMap::get('StoreProvState');
-					$this->provstate = new $class;
-					$this->provstate->setDatabase($app->db);
-					$this->provstate->loadFromAbbreviation(
+					$provstate = new $class;
+					$provstate->setDatabase($app->db);
+					$provstate->loadFromAbbreviation(
 						$result->VerifyAddressUSAResult->State, 'US');
+
+					$this->provstate = $provstate;
 				}
 			}
 		} catch (SoapFault $e) {
