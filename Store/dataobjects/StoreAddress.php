@@ -649,8 +649,8 @@ abstract class StoreAddress extends SwatDBDataObject
 		$po_box_exp = '(p[.\s]*o[.\s]*|post\s+office\s+)box\s*[0-9]+';
 
 		// escape delimiters
-		$po_box_exp = str_replace('//', '////', $po_box_exp);
-		$po_box_exp = '/^\s*'.$po_box_exp.'.*$/ui';
+		$po_box_exp = str_replace('/', '\\/', $po_box_exp);
+		$po_box_exp = '/'.$po_box_exp.'/ui';
 		return (preg_match($po_box_exp, $string) == 1);
 	}
 
