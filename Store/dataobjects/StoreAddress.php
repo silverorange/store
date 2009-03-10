@@ -634,6 +634,44 @@ abstract class StoreAddress extends SwatDBDataObject
 	);
 
 	// }}}
+	// {{{ public static function isPoBoxLine()
+
+	/**
+	 * Checks whether or not an address string is a PO box
+	 *
+	 * @param string $string the string to check.
+	 *
+	 * @return boolean true if the specified string is a PO box and false if it
+	 *                  is not.
+	 */
+	public static function isPoBoxLine($string)
+	{
+		$po_box_exp = '(p[.\s]*o[.\s]*|post\s+office\s+)box\s*[0-9]+';
+
+		// escape delimiters
+		$po_box_exp = str_replace('//', '////', $po_box_exp);
+		$po_box_exp = '/^\s*'.$po_box_exp.'.*$/ui';
+		return (preg_match($po_box_exp, $string) == 1);
+	}
+
+	// }}}
+	// {{{ public function isPoBox()
+
+	/**
+	 * Gets whether or not this address is for a PO box
+	 *
+	 * @return boolean true if this address is for a PO box and false if it is
+	 *                  not.
+	 */
+	public function isPoBox()
+	{
+		$is_po = self::isPoBoxLine($this->line1) ||
+			self::isPoBoxLine($this->line2);
+
+		return $is_po;
+	}
+
+	// }}}
 	// {{{ public static function isVerificationAvailable()
 
 	/**
