@@ -4,7 +4,6 @@
 	<widget class="SwatContentBlock" id="shipping_verification_message" />
 	<widget class="SwatRadioList" id="shipping_verification_list">
 		<property name="classes[]">address-verification-list clearfix</property>
-		<property name="value">verified</property>
 	</widget>
 	<widget class="SwatContentBlock" id="shipping_verification_message_bottom" />
 </swatml>

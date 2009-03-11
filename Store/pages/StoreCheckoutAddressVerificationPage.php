@@ -118,6 +118,7 @@ abstract class StoreCheckoutAddressVerificationPage extends StoreCheckoutEditPag
 			echo '<span class="address-option">Yes, this is my address:</span>';
 			$verified_address->display();
 			$list->addOption('verified', ob_get_clean(), 'text/xml');
+			$list->value = 'verified';
 
 			ob_start();
 			echo '<span class="address-option">No, use the address I entered:</span>';
