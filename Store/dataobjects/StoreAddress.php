@@ -646,7 +646,7 @@ abstract class StoreAddress extends SwatDBDataObject
 	 */
 	public static function isPoBoxLine($string)
 	{
-		$po_box_exp = '(p[.\s]*o[.\s]*|post\s+office\s+)box\s*[0-9]+';
+		$po_box_exp = '(p[.\s]*o[.\s]*|post\s+office\s+)box\s*';
 
 		// escape delimiters
 		$po_box_exp = str_replace('/', '\\/', $po_box_exp);
@@ -665,10 +665,11 @@ abstract class StoreAddress extends SwatDBDataObject
 	 */
 	public function isPoBox()
 	{
-		$is_po = self::isPoBoxLine($this->line1) ||
+		$is_po_box = $this->po_box ||
+			self::isPoBoxLine($this->line1) ||
 			self::isPoBoxLine($this->line2);
 
-		return $is_po;
+		return $is_po_box;
 	}
 
 	// }}}

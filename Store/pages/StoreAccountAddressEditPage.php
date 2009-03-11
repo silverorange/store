@@ -228,8 +228,6 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 
 		if ($address->provstate === 'other')
 			$address->provstate = null;
-
-		$address->po_box = $address->isPoBox();
 	}
 
 	// }}}
