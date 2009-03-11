@@ -77,7 +77,6 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 	protected function validateAddress()
 	{
 		$address = $this->getAddress();
-		$address->po_box = $address->isPoBox();
 
 		if ($this->shouldVerifyAddress())
 			$this->verifyAddress();
