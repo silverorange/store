@@ -660,26 +660,6 @@ class StoreItem extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ protected function getSerializableSubDataObjects()
-
-	protected function getSerializableSubDataObjects()
-	{
-		return array_merge(parent::getSerializableSubDataObjects(),
-			array('item_alias', 'region_bindings', 'quantity_discounts',
-				'item_group', 'sale_discount'));
-	}
-
-	// }}}
-	// {{{ protected function getSerializablePrivateProperties()
-
-	protected function getSerializablePrivateProperties()
-	{
-		return array_merge(parent::getSerializablePrivateProperties(),
-			array('region', 'limit_by_region', 'is_available', 'is_enabled',
-				'price', 'status'));
-	}
-
-	// }}}
 
 	// loader methods
 	// {{{ protected function loadQuantityDiscounts()

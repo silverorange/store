@@ -84,24 +84,12 @@ class StoreProductPage extends StorePage
 
 	public function isVisibleInRegion(StoreRegion $region)
 	{
-		if (isset($this->app->memcache)) {
-			$key = 'StoreProductPage.isVisibleInRegion.'.$region->id;
-			$product = $this->app->memcache->getNs('product', $key);
-			if ($product !== false)
-				return ($product !== null);
-		}
-
 		$sql = sprintf('select product from VisibleProductCache
 			where product = %s and  region = %s',
 			$this->app->db->quote($this->product_id, 'integer'),
 			$this->app->db->quote($region->id, 'integer'));
 
 		$product = SwatDB::queryOne($this->app->db, $sql);
-
-		if (isset($this->app->memcache)) {
-			$this->app->memcache->setNs('product', $key, $product);
-		}
-
 		return ($product !== null);
 	}
 
@@ -1045,12 +1033,9 @@ class StoreProductPage extends StorePage
 
 	protected function displayRelatedProducts()
 	{
-		$engine = $this->getProductSearchEngine();
-		$engine->related_source_product = $this->product;
-		$engine->addOrderByField('is_available desc');
-		$products = $engine->search();
+		$related_products = $this->product->getVisibleRelatedProducts();
 
-		if (count($products) == 0)
+		if (count($related_products) == 0)
 			return;
 
 		$div = new SwatHtmlTag('div');
@@ -1069,7 +1054,7 @@ class StoreProductPage extends StorePage
 		$header_tag->display();
 		$ul_tag->open();
 
-		foreach ($products as $product) {
+		foreach ($related_products as $product) {
 			$li_tag->open();
 			$this->displayRelatedProduct($product);
 			$li_tag->close();
