@@ -74,7 +74,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	/**
 	 * Optional product
 	 *
-	 * Search will find products in this collection product.
+	 * Search will find popular products in this product.
 	 *
 	 * @var StoreProduct
 	 */
