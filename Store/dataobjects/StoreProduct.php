@@ -679,6 +679,7 @@ class StoreProduct extends SwatDBDataObject
 			order by Product.title asc';
 
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+
 		return SwatDB::query($this->db, $sql,
 			SwatDBClassMap::get('StoreProductWrapper'));
 	}
