@@ -101,6 +101,9 @@ class StoreProductProductCollection extends AdminSearch
 					SwatMessage::NOTIFICATION);
 
 				$this->app->messages->add($message);
+
+				if (isset($this->app->memcache))
+					$this->app->memcache->flushNs('product');
 			}
 
 			if ($this->category_id === null)

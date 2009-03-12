@@ -309,7 +309,7 @@ class StoreItemQuantityDiscount extends AdminIndex
 
 		foreach ($replicators as $replicator_id) {
 			if ($this->validateRow($input_row, $replicator_id)) {
-				$quantity = $input_row->getWidget('quantity', 
+				$quantity = $input_row->getWidget('quantity',
 					$replicator_id)->getState();
 
 				$values = array('item' => $this->id, 'quantity' => $quantity);
@@ -341,6 +341,9 @@ class StoreItemQuantityDiscount extends AdminIndex
 				$has_invalid_row = true;
 			}
 		}
+
+		if (isset($this->app->memcache))
+			$this->app->memcache->flushNs('product');
 
 		if (count($new_discounts) == 1) {
 			$message = new SwatMessage(sprintf(Store::_('“%s” has been added.'),

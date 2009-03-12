@@ -43,6 +43,9 @@ class StoreCategoryOrder extends AdminDBOrder
 		SwatDB::exec($this->app->db,
 			'alter table Category
 			enable trigger CategoryVisibleProductCountByRegionTrigger');
+
+		if (isset($this->app->memcache))
+			$this->app->memcache->flushNs('product');
 	}
 
 	// }}}

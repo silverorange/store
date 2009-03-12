@@ -56,16 +56,19 @@ class StoreCountryEdit extends AdminDBEdit
 		$values = $this->getUIValues();
 
 		if ($this->id === null)
-			SwatDB::insertRow($this->app->db, 'Country', $this->fields, 
+			SwatDB::insertRow($this->app->db, 'Country', $this->fields,
 				$values);
 		else
-			SwatDB::updateRow($this->app->db, 'Country', $this->fields, 
+			SwatDB::updateRow($this->app->db, 'Country', $this->fields,
 				$values, 'text:id', $this->id);
 
 		$message = new SwatMessage(
 			sprintf(Store::_('“%s” has been saved.'), $values['title']));
 
 		$this->app->messages->add($message);
+
+		if (isset($this->app->memcache))
+			$this->app->memcache->flushNs('product');
 	}
 
 	// }}}

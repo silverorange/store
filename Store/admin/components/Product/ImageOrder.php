@@ -71,6 +71,9 @@ class StoreProductImageOrder extends AdminDBOrder
 			$count++;
 			$this->saveIndex($id, $count);
 		}
+
+		if (isset($this->app->memcache))
+			$this->app->memcache->flushNs('product');
 	}
 
 	// }}}

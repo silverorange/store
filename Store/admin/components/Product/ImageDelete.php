@@ -114,6 +114,9 @@ class StoreProductImageDelete extends AdminDBDelete
 
 		$message = new SwatMessage($message_text, SwatMessage::NOTIFICATION);
 		$this->app->messages->add($message);
+
+		if (isset($this->app->memcache))
+			$this->app->memcache->flushNs('product');
 	}
 
 	// }}}

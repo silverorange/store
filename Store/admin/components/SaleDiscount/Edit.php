@@ -107,6 +107,9 @@ class StoreSaleDiscountEdit extends AdminDBEdit
 				$this->sale_discount->title));
 
 		$this->app->messages->add($message);
+
+		if (isset($this->app->memcache))
+			$this->app->memcache->flushNs('product');
 	}
 
 	// }}}

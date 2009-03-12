@@ -70,6 +70,9 @@ class StoreItemGroupEdit extends AdminDBEdit
 			$this->item_group->title));
 
 		$this->app->messages->add($message);
+
+		if (isset($this->app->memcache))
+			$this->app->memcache->flushNs('product');
 	}
 
 	// }}}

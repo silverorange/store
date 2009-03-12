@@ -35,7 +35,7 @@ class StoreItemQuantityDiscountDelete extends AdminDBDelete
 		parent::processDBData();
 
 		$item_list = $this->getItemList('integer');
-		
+
 		$sql = sprintf('delete from QuantityDiscount where id in (%s)',
 			$item_list);
 
@@ -47,6 +47,9 @@ class StoreItemQuantityDiscountDelete extends AdminDBDelete
 			SwatString::numberFormat($num)), SwatMessage::NOTIFICATION);
 
 		$this->app->messages->add($message);
+
+		if (isset($this->app->memcache))
+			$this->app->memcache->flushNs('product');
 	}
 
 	// }}}

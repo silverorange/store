@@ -96,6 +96,9 @@ class StoreRegionEdit extends AdminDBEdit
 			sprintf(Store::_('“%s” has been saved.'), $values['title']));
 
 		$this->app->messages->add($message);
+
+		if (isset($this->app->memcache))
+			$this->app->memcache->flushNs('product');
 	}
 
 	// }}}

@@ -72,6 +72,9 @@ class StoreCategoryFeaturedProducts extends AdminIndex
 					SwatMessage::NOTIFICATION);
 
 				$this->app->messages->add($message);
+
+				if (isset($this->app->memcache))
+					$this->app->memcache->flushNs('product');
 			}
 
 			$this->app->relocate('Category/Index?id='.$this->parent);

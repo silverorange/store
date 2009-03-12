@@ -133,6 +133,9 @@ class StoreCategoryIndex extends AdminIndex
 			$this->processRelatedArticles($view, $actions);
 			return;
 		}
+
+		if (isset($this->app->memcache))
+			$this->app->memcache->flushNs('product');
 	}
 
 	// }}}
