@@ -23,7 +23,7 @@
 			</widget>
 			<widget class="SwatFooterFormField">
 				<widget class="SwatButton" id="add_button">
-					<property name="title" translatable="yes">Add Product Collections</property>
+					<property name="title" translatable="yes">Add Product to Collection</property>
 				</widget>
 			</widget>
 		</widget>
