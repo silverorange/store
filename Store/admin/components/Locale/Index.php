@@ -27,7 +27,7 @@ class StoreLocaleIndex extends AdminIndex
 
 	// process phase
 	// {{{ protected function processActions()
-	
+
 	protected function processActions(SwatTableView $view, SwatActions $actions)
 	{
 		switch ($actions->selected->id) {
@@ -36,6 +36,9 @@ class StoreLocaleIndex extends AdminIndex
 			$this->app->getPage()->setItems($view->getSelection());
 			break;
 		}
+
+		if (isset($this->app->memcache))
+			$this->app->memcache->flushNs('product');
 	}
 
 	// }}}
@@ -58,6 +61,6 @@ class StoreLocaleIndex extends AdminIndex
 	}
 
 	// }}}
-}	
+}
 
 ?>

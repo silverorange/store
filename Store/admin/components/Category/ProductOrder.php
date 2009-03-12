@@ -43,6 +43,9 @@ class StoreCategoryProductOrder extends AdminDBOrder
 		SwatDB::exec($this->app->db,
 			'alter table CategoryProductBinding
 			enable trigger VisibleProductTrigger');
+
+		if (isset($this->app->memcache))
+			$this->app->memcache->flushNs('product');
 	}
 
 	// }}}

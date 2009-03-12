@@ -91,6 +91,9 @@ class StoreAttributeTypeEdit extends AdminDBEdit
 				$this->attribute_type->shortname));
 
 		$this->app->messages->add($message);
+
+		if (isset($this->app->memcache))
+			$this->app->memcache->flushNs('product');
 	}
 
 	// }}}

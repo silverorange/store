@@ -91,6 +91,9 @@ class StorePriceRangeEdit extends AdminDBEdit
 			$this->price_range->getTitle()));
 
 		$this->app->messages->add($message);
+
+		if (isset($this->app->memcache))
+			$this->app->memcache->flushNs('product');
 	}
 
 	// }}}

@@ -36,6 +36,9 @@ class StoreCountryIndex extends AdminIndex
 			$this->app->getPage()->setItems($view->getSelection());
 			break;
 		}
+
+		if (isset($this->app->memcache))
+			$this->app->memcache->flushNs('product');
 	}
 
 	// }}}

@@ -239,6 +239,9 @@ class StoreProductIndex extends AdminSearch
 
 			break;
 		}
+
+		if (isset($this->app->memcache))
+			$this->app->memcache->flushNs('product');
 	}
 
 	// }}}

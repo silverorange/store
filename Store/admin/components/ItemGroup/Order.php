@@ -42,6 +42,9 @@ class StoreItemGroupOrder extends AdminDBOrder
 	{
 		SwatDB::updateColumn($this->app->db, 'ItemGroup',
 			'integer:displayorder', $index, 'integer:id', array($id));
+
+		if (isset($this->app->memcache))
+			$this->app->memcache->flushNs('product');
 	}
 
 	// }}}
