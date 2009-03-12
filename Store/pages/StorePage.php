@@ -13,6 +13,12 @@ require_once 'Store/dataobjects/StoreCategoryImageWrapper.php';
  */
 abstract class StorePage extends SitePathPage
 {
+	// {{{ private properties
+
+	private $category;
+
+	// }}}
+
 	// init phase
 	// {{{ public function init()
 
@@ -96,6 +102,13 @@ abstract class StorePage extends SitePathPage
 
 	protected function queryCategory($category_id)
 	{
+		if (isset($this->app->memcache)) {
+			$key = 'StorePage.category.'.$category_id;
+			$this->category = $this->app->memcache->getNs('product', $key);
+			if ($this->category !== false)
+				return $this->category;
+		}
+
 		$sql = 'select * from Category where id = %s';
 
 		$sql = sprintf($sql,
@@ -104,7 +117,28 @@ abstract class StorePage extends SitePathPage
 		$categories = SwatDB::query($this->app->db, $sql,
 			'StoreCategoryWrapper');
 
-		return $categories->getFirst();
+		$this->category = $categories->getFirst();
+
+		return $this->category;
+	}
+
+	// }}}
+
+	// finalize phase
+	// {{{ public function finalize()
+
+	public function finalize()
+	{
+		parent::finalize();
+
+		if (isset($this->app->memcache) && $this->category !== null) {
+			$key = 'StorePage.category.'.$this->category->id;
+			$this->app->memcache->setNs('product', $key, $this->category);
+		}
+
+		$this->layout->startCapture('content');
+		$this->app->timer->display();
+		$this->layout->endCapture();
 	}
 
 	// }}}
