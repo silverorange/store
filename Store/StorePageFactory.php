@@ -161,6 +161,15 @@ class StorePageFactory extends SitePageFactory
 	 */
 	protected function getProductInfo($source)
 	{
+		if (isset($this->app->memcache)) {
+			$key = 'StorePageFactory.getProductInfo'.$source.'.'.
+				$this->app->getRegion()->id;
+
+			$data = $this->app->memcache->getNs('product', $key);
+			if ($data !== false)
+				return $data;
+		}
+
 		$source_exp  = explode('/', $source);
 		$db          = $this->app->db;
 		$region_id   = $this->app->getRegion()->id;
@@ -206,10 +215,16 @@ class StorePageFactory extends SitePageFactory
 			$product_id = SwatDB::queryOne($db, $sql);
 		}
 
-		return array(
+		$data = array(
 			'product_id'  => $product_id,
 			'category_id' => $category_id,
 		);
+
+		if (isset($this->app->memcache)) {
+			$this->app->memcache->setNs('product', $key, $data);
+		}
+
+		return $data;
 	}
 
 	// }}}

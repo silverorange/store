@@ -26,6 +26,13 @@ class StoreCategoryPage extends StorePage
 
 	public function isVisibleInRegion(StoreRegion $region)
 	{
+		if (isset($this->app->memcache)) {
+			$key = 'StoreCategoryPage.isVisibleInRegion.'.$region->id;
+			$category = $this->app->memcache->getNs('product', $key);
+			if ($category !== false)
+				return ($category !== null);
+		}
+
 		$category = null;
 
 		if ($this->path !== null) {
@@ -40,6 +47,10 @@ class StoreCategoryPage extends StorePage
 
 				$category = SwatDB::queryOne($this->app->db, $sql);
 			}
+		}
+
+		if (isset($this->app->memcache)) {
+			$this->app->memcache->setNs('product', $key, $category);
 		}
 
 		return ($category !== null);
@@ -151,6 +162,9 @@ class StoreCategoryPage extends StorePage
 
 	protected function querySubCategories(StoreCategory $category = null)
 	{
+		// note: sub-categories are hard to memcache properly because of
+		// the number of sub-dataobjects and the way they're loaded
+
 		$sql = 'select Category.id, Category.title, Category.shortname,
 				Category.description, Category.image,
 				a.product_count as available_product_count,
