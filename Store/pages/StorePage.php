@@ -135,10 +135,6 @@ abstract class StorePage extends SitePathPage
 			$key = 'StorePage.category.'.$this->category->id;
 			$this->app->memcache->setNs('product', $key, $this->category);
 		}
-
-		$this->layout->startCapture('content');
-		$this->app->timer->display();
-		$this->layout->endCapture();
 	}
 
 	// }}}
