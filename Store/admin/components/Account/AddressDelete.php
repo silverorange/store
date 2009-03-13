@@ -15,8 +15,8 @@ class StoreAccountAddressDelete extends AdminDBDelete
 {
 	// {{{ private properties
 
+	private $account;
 	private $account_id;
-	private $account_fullname;
 
 	// }}}
 
@@ -26,10 +26,10 @@ class StoreAccountAddressDelete extends AdminDBDelete
 	protected function processDBData()
 	{
 		parent::processDBData();
+		// we can't do this in init, as its a replace page
 		$this->buildAccount();
 
 		$item_list = $this->getItemList('integer');
-
 		$sql = sprintf('delete from AccountAddress where id in (%s)',
 			$item_list);
 
@@ -38,76 +38,66 @@ class StoreAccountAddressDelete extends AdminDBDelete
 		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One address for %s has been deleted.',
 			'%d addresses for %s have been deleted.', $num),
-			SwatString::numberFormat($num), $this->account_fullname),
+			SwatString::numberFormat($num), $this->account->getFullName()),
 			SwatMessage::NOTIFICATION);
 
 		$this->app->messages->add($message);
 	}
 
 	// }}}
+	// {{{ protected function relocate()
+
+	protected function relocate()
+	{
+		// we don't want the fancy relocate to index thats in AdminDBDelete.
+		AdminConfirmation::relocate();
+	}
+
+	// }}}
 
 	// build phase
-	// {{{ protected function buildInternal()
+	// {{{ public function build()
 
+	public function build()
+	{
+		// we can't do this in init, as its a replace page, and it has to happen
+		// before buildInternal due to the navbar
+		$this->buildAccount();
+		parent::build();
+	}
+
+	// }}}
+	// {{{ protected function buildInternal()
 	protected function buildInternal()
 	{
 		parent::buildInternal();
-
-		$this->buildAccount();
-
-		$form = $this->ui->getWidget('confirmation_form');
-		$form->addHiddenField('account', $this->account_id);
 
 		$item_list = $this->getItemList('integer');
 		$num = $this->getItemCount();
 
 		$dep = new AdminListDependency();
 
-		$fullname = $this->account_fullname;
+		$fullname = $this->account->getFullName();
 		$singular = sprintf(Store::_('address for %s'), $fullname);
 		$plural = sprintf(Store::_('addresses for %s'), $fullname);
 		$dep->setTitle($singular, $plural);
 
-		$rs = SwatDB::query($this->app->db,
-			'select AccountAddress.id, fullname, line1, line2, city,
-				ProvState.abbreviation as provstate, Country.title as country,
-				postal_code
-			from AccountAddress
-				left outer join ProvState
-					on ProvState.id = AccountAddress.provstate
-				inner join Country
-					on Country.id = AccountAddress.country
-			where AccountAddress.id in ('.$item_list.')
-			order by createdate desc');
+		$sql = 'select * from AccountAddress where id in (%s)
+			order by createdate desc';
+
+		$sql = sprintf($sql, $item_list);
+		$addresses = SwatDB::query($this->app->db, $sql,
+			SwatDBClassMap::get('StoreAccountAddressWrapper'));
 
 		$entries = array();
-		$title_one_line =
-			'<address>%s<br />%s<br />%s, %s<br/>%s<br />%s</address>';
-
-		$title_two_lines =
-			'<address>%s<br />%s<br />%s<br />%s, %s<br/>%s<br />%s</address>';
-
-		foreach ($rs as $row) {
+		foreach ($addresses as $address) {
 			$entry = new AdminDependencyEntry();
-			$entry->id = $row->id;
+			$entry->id = $address->id;
 			$entry->status_level = AdminDependency::DELETE;
 			$entry->content_type = 'text/xml';
-			$entry->title = ($row->line2 === null) ?
-				sprintf($title_one_line,
-					SwatString::minimizeEntities($row->fullname),
-					SwatString::minimizeEntities($row->line1),
-					SwatString::minimizeEntities($row->city),
-					SwatString::minimizeEntities($row->provstate),
-					SwatString::minimizeEntities($row->country),
-					SwatString::minimizeEntities($row->postal_code)) :
-				sprintf($title_two_lines,
-					SwatString::minimizeEntities($row->fullname),
-					SwatString::minimizeEntities($row->line1),
-					SwatString::minimizeEntities($row->line2),
-					SwatString::minimizeEntities($row->city),
-					SwatString::minimizeEntities($row->provstate),
-					SwatString::minimizeEntities($row->country),
-					SwatString::minimizeEntities($row->postal_code));
+			ob_start();
+			$address->display();
+			$entry->title = ob_get_clean();
 
 			$entries[] = $entry;
 		}
@@ -128,32 +118,36 @@ class StoreAccountAddressDelete extends AdminDBDelete
 	protected function buildNavBar()
 	{
 		parent::buildNavBar();
-
 		$this->navbar->popEntry();
-		$this->navbar->addEntry(new SwatNavBarEntry($this->account_fullname,
-			sprintf('Account/Details?id=%s', $this->account_id)));
+		$this->navbar->addEntry(new SwatNavBarEntry(
+			$this->account->getFullName(),
+			sprintf('Account/Details?id=%s', $this->account->id)));
 
 		$this->navbar->createEntry(Store::_('Address Delete'));
 
-		$this->title = $this->account_fullname;
+		$this->title = $this->account->getFullname();
 	}
 
 	// }}}
-	// {{{ private function buildAccount()
+	// {{{ protected function buildAccount()
 
-	private function buildAccount()
+	protected function buildAccount()
 	{
 		$item_list = $this->getItemList('integer');
-
-		$row = SwatDB::queryRow($this->app->db,
-			sprintf('select Account.id, Account.fullname from Account
-				inner join AccountAddress
-					on Account.id = AccountAddress.account
-				where AccountAddress.id in (%s)',
+		$this->account_id = SwatDB::queryOne($this->app->db,
+			sprintf('select account from AccountAddress where id in (%s)',
 				$item_list));
 
-		$this->account_id = $row->id;
-		$this->account_fullname = $row->fullname;
+		$class_name = SwatDBClassMap::get('StoreAccount');
+		$this->account = new $class_name();
+		$this->account->setDatabase($this->app->db);
+
+		if ($this->account_id !== null) {
+			if (!$this->account->load($this->account_id))
+				throw new AdminNotFoundException(
+					sprintf(Store::_('Account with id “%s” not found.'),
+						$this->account_id));
+		}
 	}
 
 	// }}}
