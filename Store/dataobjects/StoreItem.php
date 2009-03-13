@@ -666,7 +666,7 @@ class StoreItem extends SwatDBDataObject
 	{
 		return array_merge(parent::getSerializableSubDataObjects(),
 			array('item_alias', 'region_bindings', 'quantity_discounts',
-				'item_group', 'sale_discount'));
+				'item_group', 'sale_discount', 'status'));
 	}
 
 	// }}}
@@ -676,7 +676,7 @@ class StoreItem extends SwatDBDataObject
 	{
 		return array_merge(parent::getSerializablePrivateProperties(),
 			array('region', 'limit_by_region', 'is_available', 'is_enabled',
-				'price', 'status'));
+				'price'));
 	}
 
 	// }}}
