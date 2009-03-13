@@ -363,6 +363,10 @@ class StoreProductSearchEngine extends SiteSearchEngine
 				$this->app->db->quote(
 					$this->price_range->original_price, 'boolean'));
 
+		if ($this->related_source_product instanceof StoreProduct)
+			$clause.= ' inner join ProductRelatedProductBinding on
+					Product.id = ProductRelatedProductBinding.related_product';
+
 		return $clause;
 	}
 
@@ -424,8 +428,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 		}
 
 		if ($this->related_source_product instanceof StoreProduct)
-			$clause.= sprintf(' and Product.id in
-				(select related_product from ProductRelatedProductBinding where source_product = %s)',
+			$clause.= sprintf(' and ProductRelatedProductBinding.source_product = %s',
 				$this->app->db->quote($this->related_source_product->id, 'integer'));
 
 		if ($this->collection_source_product instanceof StoreProduct)
