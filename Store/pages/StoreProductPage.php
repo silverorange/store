@@ -1045,7 +1045,7 @@ class StoreProductPage extends StorePage
 
 	protected function displayRelatedProducts()
 	{
-		$engine = $this->getProductSearchEngine();
+		$engine = $this->getProductSearchEngine('related-products');
 		$engine->related_source_product = $this->product;
 		$engine->addOrderByField('is_available desc');
 		$products = $engine->search();
@@ -1142,7 +1142,7 @@ class StoreProductPage extends StorePage
 	 */
 	protected function displayProductCollections()
 	{
-		$engine = $this->getProductSearchEngine();
+		$engine = $this->getProductSearchEngine('product-collections');
 		$engine->collection_member_product = $this->product;
 		$engine->addOrderByField('is_available desc');
 		$products = $engine->search();
@@ -1198,7 +1198,7 @@ class StoreProductPage extends StorePage
 	 */
 	protected function displayCollectionProducts()
 	{
-		$engine = $this->getProductSearchEngine();
+		$engine = $this->getProductSearchEngine('collection-products');
 		$engine->collection_source_product = $this->product;
 		$engine->addOrderByField('is_available desc');
 		$products = $engine->search();
@@ -1263,7 +1263,7 @@ class StoreProductPage extends StorePage
 
 	protected function getPopularProducts()
 	{
-		$engine = $this->getProductSearchEngine();
+		$engine = $this->getProductSearchEngine('popular-products');
 		$engine->popular_only = true;
 		$engine->available_only = true;
 		$engine->popular_source_product = $this->product;
@@ -1429,7 +1429,7 @@ class StoreProductPage extends StorePage
 	// }}}
 	// {{{ protected function getProductSearchEngine()
 
-	protected function getProductSearchEngine()
+	protected function getProductSearchEngine($context = null)
 	{
 		return new StoreProductSearchEngine($this->app);
 	}
