@@ -72,6 +72,24 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	public $card_number;
 
 	/**
+	 * Card Verification Value (CVV)
+	 *
+	 * This value is encrypted using GPG encryption. The only way the number
+	 * may be retrieved is by using GPG decryption with the correct GPG private
+	 * key.
+	 *
+	 * NOTE: Visa forbids storing this code after authorization is obtained.
+	 * PCI compliance standards forbit storing this code altogether. This class
+	 * supports storing the CVV only for offline authorization. The code must
+	 * be deleted from the database upon authorization.
+	 *
+	 * @var string
+	 *
+	 * @see StorePaymentMethod::setCardVerificationValue()
+	 */
+	public $card_verification_value;
+
+	/**
 	 * The expiry date of the card
 	 *
 	 * @var Date
@@ -142,9 +160,9 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	 *
 	 * @var string
 	 *
-	 * @see StorePaymentMethod::getCardVerificationValue()
+	 * @see StorePaymentMethod::getUnencryptedCardVerificationValue()
 	 */
-	protected $card_verification_value = '';
+	protected $unencrypted_card_verification_value = '';
 
 	/**
 	 * The unencrypted card number of this payment method
@@ -189,7 +207,6 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	 *                                    this object using the
 	 *                                    {@link StorePaymentMethod::getUnencryptedCardNumber()}
 	 *                                    method.
-	 *
 	 * @param boolean $store_encrypted optional flag to store a GPG encrypted
 	 *                                  version of the card number in the
 	 *                                  public $card_number property.
@@ -204,22 +221,22 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		$this->card_number_preview = substr($number, -4);
 
 		if ($store_encrypted) {
-			/* We throw an exception here to prevent silent failures when
+			/*
+			 * We throw an exception here to prevent silent failures when
 			 * saving payment information. Sites that do not require GPG
-			 * encryption should override this method and explicitly remove
-			 * the GPG check.
+			 * encryption should use the third parameter of this method to
+			 * not store the encrypted value.
 			 */
 			if ($this->gpg_id === null) {
 				throw new StoreException('GPG ID is required.');
 			}
 
 			$gpg = $this->getGPG();
-			$this->card_number = self::encryptCardNumber($gpg, $number,
-				$this->gpg_id);
+			$this->card_number = self::encrypt($gpg, $number, $this->gpg_id);
 		}
 
 		if ($store_unencrypted) {
-			$this->unencrypted_card_number = (string)$number;
+			$this->unencrypted_card_number = strval($number);
 		}
 	}
 
@@ -280,38 +297,93 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function getUnencryptedCardVerificationValue()
+
+	/**
+	 * Gets the unencrypted card verification value (CVV) of this payment
+	 * method
+	 *
+	 * @return string the unencrypted card verification value of this payment
+	 *                method.
+	 *
+	 * @see StorePaymentMethod::setCardVerificationValue()
+	 */
+	public function getUnencryptedCardVerificationValue()
+	{
+		return $this->unencrypted_card_verification_value;
+	}
+
+	// }}}
+	// {{{ public function hasCardVerificationValue()
+
+	/**
+	 * @return boolean true if this payment method has a card verification
+	 *                 value and false if it does not. Either an encrypted or
+	 *                 unencrypted version of the value counts.
+	 */
+	public function hasCardVerificationValue()
+	{
+		return ($this->card_verification_value !== null ||
+			$this->unencrypted_card_verification_value !== null);
+	}
+
+	// }}}
 	// {{{ public function setCardVerificationValue()
 
 	/**
 	 * Sets the card verification value (CVV) of this payment method
 	 *
-	 * Due to VISA rules on how CVVs are processed, CVVs are never saved in
-	 * the database. This method sets an internal property that may be accessed
-	 * for the lifetime of this object using the
-	 * {@link StorePaymentMethod::getCardVerificationValue()} method.
+	 * When setting the CVV, use this method rather than modifying the public
+	 * {@link StorePaymentMethod::$card_verification_value} property.
+	 *
+	 * NOTE: Visa forbids storing this code after authorization is obtained.
+	 * PCI compliance standards forbit storing this code altogether. This class
+	 * supports storing the CVV only for offline authorization. The code must
+	 * be deleted from the database upon authorization.
 	 *
 	 * @param string $value the card verification value.
+	 * @param boolean $store_unencrypted optional flag to store an uncrypted
+	 *                                    version of the CVV as an internal
+	 *                                    property. This value is never saved
+	 *                                    in the database but can be retrieved
+	 *                                    for the lifetime of this object using
+	 *                                    the {@link StorePaymentMethod::getUnencryptedCardVerificationValue()}
+	 *                                    method. If not specified, the
+	 *                                    unencrypted version is set.
+	 * @param boolean $store_encrypted optional flag to store a GPG encrypted
+	 *                                  version of the CVV in the public
+	 *                                  {@link StorePaymentMethod::$card_verification_value}
+	 *                                  property. The encrypted value will be
+	 *                                  saved in the database when this object
+	 *                                  is saved. If not specified, the
+	 *                                  encrypted version is <em>not</em>
+	 *                                  stored.
 	 *
-	 * @see StorePaymentMethod::getCardVerificationValue()
+	 * @see StorePaymentMethod::getUnencryptedCardVerificationValue()
 	 */
-	public function setCardVerificationValue($value)
+	public function setCardVerificationValue($value, $store_unencrypted = true,
+		$store_encrypted = false)
 	{
-		$this->card_verification_value = (string)$value;
-	}
 
-	// }}}
-	// {{{ public function getCardVerificationValue()
+		if ($store_encrypted) {
+			/*
+			 * We throw an exception here to prevent silent failures when
+			 * saving payment information. Sites that do not require GPG
+			 * encryption should use the third parameter of this method to
+			 * not store the encrypted value.
+			 */
+			if ($this->gpg_id === null) {
+				throw new StoreException('GPG ID is required.');
+			}
 
-	/**
-	 * Gets the card verification value (CVV) of this payment method
-	 *
-	 * @return string the card verification value of this payment method.
-	 *
-	 * @see StorePaymentMethod::setCardVerificationValue()
-	 */
-	public function getCardVerificationValue()
-	{
-		return $this->card_verification_value;
+			$gpg = $this->getGPG();
+			$this->card_verification_value = self::encrypt($gpg, $value,
+				$this->gpg_id);
+		}
+
+		if ($store_unencrypted) {
+			$this->unencrypted_card_verification_value = strval($value);
+		}
 	}
 
 	// }}}
@@ -378,12 +450,20 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 
 	public function copyFrom(StorePaymentMethod $method)
 	{
-		$this->card_fullname        = $method->card_fullname;
-		$this->card_number_preview  = $method->card_number_preview;
-		$this->card_number          = $method->card_number;
-		$this->card_expiry          = $method->card_expiry;
-		$this->card_type            = $method->getInternalValue('card_type');
-		$this->payment_type         = $method->getInternalValue('payment_type');
+		$fields = array(
+			'card_fullname',
+			'card_number_preview',
+			'card_number',
+			'card_verification_value',
+			'card_expiry',
+		);
+
+		foreach ($fields as $field_name) {
+			$this->$field_name = $method->$field_name;
+		}
+
+		$this->card_type    = $method->getInternalValue('card_type');
+		$this->payment_type = $method->getInternalValue('payment_type');
 	}
 
 	// }}}
@@ -393,12 +473,16 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	{
 		$new_payment_method = parent::duplicate();
 
-		$new_payment_method->setCardVerificationValue(
-			$this->getCardVerificationValue());
+		$card_verification_value = $this->getUnencryptedCardVerificationValue();
+		if ($card_verification_value != '') {
+			$new_payment_method->setCardVerificationValue(
+				$card_verification_value, true, false);
+		}
 
 		$card_number = $this->getUnencryptedCardNumber();
-		if ($card_number != '')
+		if ($card_number != '') {
 			$new_payment_method->setCardNumber($card_number, true, false);
+		}
 
 		return $new_payment_method;
 	}
@@ -412,50 +496,50 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ public static function encryptCardNumber()
+	// {{{ public static function encrypt()
 
 	/**
-	 * Encrypts a card number using GPG encryption
+	 * Encrypts a piece of payment data using GPG encryption
 	 *
 	 * @param Crypt_GPG $gpg the GPG object with which to encrypt.
-	 * @param string $number the card number to encrypt.
+	 * @param string $data the payment data to encrypt.
 	 * @param string $key_id the key id to encrypt with.
 	 *
-	 * @return string the encrypted card number.
+	 * @return string the encrypted payment data.
 	 *
-	 * @sensitive $number
+	 * @sensitive $data
 	 */
-	public static function encryptCardNumber(Crypt_GPG $gpg, $number, $key_id)
+	public static function encrypt(Crypt_GPG $gpg, $data, $key_id)
 	{
 		$gpg->clearEncryptKeys();
 		$gpg->addEncryptKey($key_id);
-		$encrypted_card_number = $gpg->encrypt($number);
+		$encrypted_data = $gpg->encrypt($data);
 		$gpg->clearEncryptKeys();
 
-		return $encrypted_card_number;
+		return $encrypted_data;
 	}
 
 	// }}}
-	// {{{ public static function decryptCardNumber()
+	// {{{ public static function decrypt()
 
 	/**
-	 * Decrypts a card number using GPG decryption
+	 * Decrypts a piece of payment data using GPG decryption
 	 *
 	 * @param Crypt_GPG $gpg the GPG object with which to decrypt.
-	 * @param string $encrypted_number the card number to decrypt.
+	 * @param string $encrypted_data the data to decrypt.
 	 * @param string $key_id the key id to decrypt with.
 	 * @param string $passphrase the passphrase of the private key.
 	 *
-	 * @return string the decrypted card number.
+	 * @return string the decrypted data.
 	 *
 	 * @sensitive $passphrase
 	 */
-	public static function decryptCardNumber(Crypt_GPG $gpg, $encrypted_number,
-		$key_id, $passphrase)
+	public static function decrypt(Crypt_GPG $gpg, $encrypted_data, $key_id,
+		$passphrase)
 	{
 		$gpg->clearDecryptKeys();
 		$gpg->addDecryptKey($key_id, $passphrase);
-		$decrypted_data = $gpg->decrypt($encrypted_number);
+		$decrypted_data = $gpg->decrypt($encrypted_data);
 		$gpg->clearDecryptKeys();
 
 		return $decrypted_data;
