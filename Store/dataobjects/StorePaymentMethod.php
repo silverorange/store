@@ -257,7 +257,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 
 		if ($this->card_number !== null) {
 			$gpg = $this->getGPG();
-			$number = self::decryptCardNumber($gpg, $this->card_number,
+			$number = self::decrypt($gpg, $this->card_number,
 				$this->gpg_id, $passphrase);
 		}
 
