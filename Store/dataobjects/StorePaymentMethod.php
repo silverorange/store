@@ -247,7 +247,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	 * @param $passphrase the passphrase required for decrypting the card
 	 *                     number.
 	 *
-	 * @return string the unencrypted card number
+	 * @return string the unencrypted card number.
 	 *
 	 * @sensitive $passphrase
 	 */
@@ -257,8 +257,8 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 
 		if ($this->card_number !== null) {
 			$gpg = $this->getGPG();
-			$number = self::decrypt($gpg, $this->card_number,
-				$this->gpg_id, $passphrase);
+			$number = self::decrypt($gpg, $this->card_number, $this->gpg_id,
+				$passphrase);
 		}
 
 		return $number;
@@ -367,6 +367,30 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	{
 		return ($this->card_verification_value !== null ||
 			$this->unencrypted_card_verification_value !== null);
+	}
+
+	// }}}
+	// {{{ public function getCardVerificationValue()
+
+	/**
+	 * @param $passphrase the passphrase required for decrypting the card
+	 *                     verification value.
+	 *
+	 * @return string the unencrypted card verification value.
+	 *
+	 * @sensitive $passphrase
+	 */
+	public function getCardVerificationValue($passphrase)
+	{
+		$value = null;
+
+		if ($this->card_number !== null) {
+			$gpg = $this->getGPG();
+			$value = self::decrypt($gpg, $this->card_verification_value,
+				$this->gpg_id, $passphrase);
+		}
+
+		return $value;
 	}
 
 	// }}}
