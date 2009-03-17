@@ -297,37 +297,6 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ public function getUnencryptedCardVerificationValue()
-
-	/**
-	 * Gets the unencrypted card verification value (CVV) of this payment
-	 * method
-	 *
-	 * @return string the unencrypted card verification value of this payment
-	 *                method.
-	 *
-	 * @see StorePaymentMethod::setCardVerificationValue()
-	 */
-	public function getUnencryptedCardVerificationValue()
-	{
-		return $this->unencrypted_card_verification_value;
-	}
-
-	// }}}
-	// {{{ public function hasCardVerificationValue()
-
-	/**
-	 * @return boolean true if this payment method has a card verification
-	 *                 value and false if it does not. Either an encrypted or
-	 *                 unencrypted version of the value counts.
-	 */
-	public function hasCardVerificationValue()
-	{
-		return ($this->card_verification_value !== null ||
-			$this->unencrypted_card_verification_value !== null);
-	}
-
-	// }}}
 	// {{{ public function setCardVerificationValue()
 
 	/**
@@ -384,6 +353,37 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		if ($store_unencrypted) {
 			$this->unencrypted_card_verification_value = strval($value);
 		}
+	}
+
+	// }}}
+	// {{{ public function hasCardVerificationValue()
+
+	/**
+	 * @return boolean true if this payment method has a card verification
+	 *                 value and false if it does not. Either an encrypted or
+	 *                 unencrypted version of the value counts.
+	 */
+	public function hasCardVerificationValue()
+	{
+		return ($this->card_verification_value !== null ||
+			$this->unencrypted_card_verification_value !== null);
+	}
+
+	// }}}
+	// {{{ public function getUnencryptedCardVerificationValue()
+
+	/**
+	 * Gets the unencrypted card verification value (CVV) of this payment
+	 * method
+	 *
+	 * @return string the unencrypted card verification value of this payment
+	 *                method.
+	 *
+	 * @see StorePaymentMethod::setCardVerificationValue()
+	 */
+	public function getUnencryptedCardVerificationValue()
+	{
+		return $this->unencrypted_card_verification_value;
 	}
 
 	// }}}
