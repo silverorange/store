@@ -186,9 +186,11 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	{
 		parent::copyFrom($method);
 
-		$this->card_verification_value = $method->card_verification_value;
 		if ($method instanceof StoreAccountPaymentMethod)
 			$this->account_payment_method_id = $method->id;
+
+		if ($method instanceof StoreOrderPaymentMethod)
+			$this->card_verification_value = $method->card_verification_value;
 	}
 
 	// }}}
