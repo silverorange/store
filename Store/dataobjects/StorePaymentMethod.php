@@ -273,10 +273,8 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	 */
 	public function hasCardNumber()
 	{
-		$has_number = $this->card_number !== null ||
-			$this->unencrypted_card_number !== null;
-
-		return $has_number;
+		return ($this->card_number != '' ||
+			$this->unencrypted_card_number != '');
 	}
 
 	// }}}
@@ -365,8 +363,8 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	 */
 	public function hasCardVerificationValue()
 	{
-		return ($this->card_verification_value !== null ||
-			$this->unencrypted_card_verification_value !== null);
+		return ($this->card_verification_value != '' ||
+			$this->unencrypted_card_verification_value != '');
 	}
 
 	// }}}
