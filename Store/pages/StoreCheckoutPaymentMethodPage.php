@@ -372,8 +372,13 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				throw new StoreException('Account payment method not found. '.
 					"Method with id ‘{$method_id}’ not found.");
 
-			$old_card_verification_value =
-				$order_payment_method->card_verification_value;
+			// grab the card_verification_value from the old order payment
+			// method if its exists, before we recreate the dataobject
+			$old_card_verification_value = null;
+			if ($order_payment_method instanceof StoreOrderPaymentMethod) {
+				$old_card_verification_value =
+					$order_payment_method->card_verification_value;
+			}
 
 			$class_name = SwatDBClassMap::get('StoreOrderPaymentMethod');
 			$order_payment_method = new $class_name();
