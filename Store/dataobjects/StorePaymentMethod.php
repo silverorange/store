@@ -645,7 +645,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 				$card_number));
 
 			$card_verification_value =
-				$this->getCardVerifcationValue($passphrase);
+				$this->getCardVerificationValue($passphrase);
 
 			if ($card_verification_value !== null) {
 				$has_cvv = true;
