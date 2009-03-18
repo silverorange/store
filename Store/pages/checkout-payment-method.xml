@@ -5,6 +5,17 @@
 		<widget class="SwatRadioTable" id="payment_method_list">
 			<property name="value">new</property>
 		</widget>
+		<widget class="SwatDisplayableContainer" id="account_fields_container">
+			<widget class="SwatFormField" id="account_card_verification_value_field">
+				<property name="visible" type="boolean">false</property>
+				<property name="title" translatable="yes">Card Verification Value</property>
+				<widget class="StoreCardVerificationValueEntry" id="account_card_verification_value">
+					<property name="required" type="boolean">true</property>
+					<property name="maxlength" type="integer">4</property>
+					<property name="size" type="integer">4</property>
+				</widget>
+			</widget>
+		</widget>
 	</widget>
 	<widget class="SwatFieldset" id="payment_method_form">
 		<widget class="SwatFormField" id="payment_type_field">
@@ -30,10 +41,9 @@
 			</widget>
 			<widget class="SwatFormField" id="card_verification_value_field">
 				<property name="title" translatable="yes">Card Verification Value</property>
-				<widget class="SwatEntry" id="card_verification_value">
+				<widget class="StoreCardVerificationValueEntry" id="card_verification_value">
 					<property name="required" type="boolean">true</property>
 					<property name="maxlength" type="integer">4</property>
-					<property name="size" type="integer">4</property>
 				</widget>
 			</widget>
 			<widget class="SwatFormField" id="card_issue_number_field">

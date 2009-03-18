@@ -238,14 +238,23 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 		$method_list = $this->ui->getWidget('payment_method_list');
 		$method_list->process();
+		$method_id = $method_list->value;
 
-		if ($method_list->value === null || $method_list->value === 'new') {
+		if ($method_id === null || $method_id === 'new') {
+			// the account card verification value only needs to be required for
+			// saved cards
+			$this->ui->getWidget('account_card_verification_value')->required =
+				false;
+
 			$payment_type = $this->getPaymentType();
 
 			if ($payment_type !== null) {
 				if ($payment_type->isCard()) {
+					$widget = $this->ui->getWidget('card_verification_value');
+					$this->setupCardVerificationValue($widget);
 
-					// set debit card fields as required when a debit card is used
+					// set debit card fields as required when a debit card is
+					// used
 					$card_type = $this->getCardType();
 					if ($card_type !== null) {
 						$this->ui->getWidget('card_inception')->required =
@@ -258,10 +267,11 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 					$this->ui->getWidget('card_type')->required = false;
 					$this->ui->getWidget('card_number')->required = false;
 					$this->ui->getWidget('card_expiry')->required = false;
-					$this->ui->getWidget('card_verification_value')->required = false;
 					$this->ui->getWidget('card_fullname')->required = false;
 					$this->ui->getWidget('card_inception')->required = false;
 					$this->ui->getWidget('card_issue_number')->required = false;
+					$this->ui->getWidget('card_verification_value')->required =
+						false;
 				}
 			}
 		} else {
@@ -271,6 +281,23 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			$controls = $container->getDescendants('SwatInputControl');
 			foreach ($controls as $control)
 				$control->required = false;
+
+			$widget = $this->ui->getWidget('account_card_verification_value');
+			$this->setupCardVerificationValue($widget);
+		}
+	}
+
+	// }}}
+	// {{{ protected function setupCardVerificationValue()
+
+	protected function setupCardVerificationValue(
+		StoreCardVerificationValueEntry $card_verification_value_widget)
+	{
+		$card_type = $this->getCardType();
+
+		if ($card_type != null) {
+			$card_verification_value_widget->setCardType($card_type);
+			$card_verification_value_widget->process();
 		}
 	}
 
@@ -304,11 +331,10 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	protected function saveDataToSession()
 	{
 		$method_list = $this->ui->getWidget('payment_method_list');
+		$order_payment_method =
+			$this->app->session->order->payment_methods->getFirst();
 
 		if ($method_list->value === null || $method_list->value === 'new') {
-			$order_payment_method =
-				$this->app->session->order->payment_methods->getFirst();
-
 			if ($order_payment_method === null ||
 				$order_payment_method->getAccountPaymentMethodId() !== null) {
 
@@ -341,9 +367,17 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				throw new StoreException('Account payment method not found. '.
 					"Method with id ‘{$method_id}’ not found.");
 
+			$old_card_verification_value =
+				$order_payment_method->card_verification_value;
+
 			$class_name = SwatDBClassMap::get('StoreOrderPaymentMethod');
 			$order_payment_method = new $class_name();
 			$order_payment_method->copyFrom($account_payment_method);
+
+			$this->updatePaymentMethodCardVerificationValue(
+				'account_card_verification_value',
+				$order_payment_method,
+				$old_card_verification_value);
 
 			// if its a saved method, we want the confirmation page to use the
 			// save code-path so that default payment method gets set
@@ -383,8 +417,8 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		if ($payment_type->isCard()) {
 			$this->updatePaymentMethodCardNumber($payment_method);
 
-			$payment_method->setCardVerificationValue(
-				$this->ui->getWidget('card_verification_value')->value);
+			$this->updatePaymentMethodCardVerificationValue(
+				'card_verification_value', $payment_method);
 
 			$payment_method->card_issue_number =
 				$this->ui->getWidget('card_issue_number')->value;
@@ -431,6 +465,33 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
+	// {{{ protected function updatePaymentMethodCardVerificationValue()
+
+	/**
+	 * Updates session order payment method card verification value
+	 *
+	 * The card verification value is stored unencrypted in the payment method.
+	 * Subclasses can override this method to optionally store an encrypted
+	 * version of the card verification value.
+	 *
+	 * @param string $entry_widget_name
+	 * @param StoreOrderPaymentMethod $payment_method
+	 * @param string $old_payment_method
+	 */
+	protected function updatePaymentMethodCardVerificationValue(
+		$entry_widget_name, StoreOrderPaymentMethod $payment_method,
+		$old_card_verification_value = null)
+	{
+		$value = $this->ui->getWidget($entry_widget_name)->value;
+		if ($value !== null) {
+			$payment_method->setCardVerificationValue($value);
+		} elseif ($old_card_verification_value !== null) {
+			$payment_method->card_verification_value =
+				$old_card_verification_value;
+		}
+	}
+
+	// }}}
 	// {{{ protected function getPaymentType()
 
 	protected function getPaymentType()
@@ -459,27 +520,50 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	protected function getCardType()
 	{
-		static $type = null;
+		static $card_type = null;
 
-		if ($type === null) {
-			$type_list = $this->ui->getWidget('card_type');
+		if ($card_type === null) {
+			$method_list = $this->ui->getWidget('payment_method_list');
+			$method_list->process();
 
-			if (isset($_POST['card_type'])) {
-				$type_list->process();
-				$card_type_id = $type_list->value;
+			if ($method_list->value === null || $method_list->value === 'new') {
+				$order = $this->app->session->order;
+				$order_payment_method = $order->payment_methods->getFirst();
+				$type_list = $this->ui->getWidget('card_type');
+
+				if (isset($_POST['card_type'])) {
+					$type_list->process();
+					$card_type_id = $type_list->value;
+				} else {
+					$card_number = $this->ui->getWidget('card_number');
+					$card_number->process();
+
+					if ($card_number->value == null &&
+						$order_payment_method != null) {
+						$card_type_id =
+							$order_payment_method->getInternalValue('card_type');
+					} else {
+						$card_type_id = $card_number->getCardType();
+					}
+				}
+
+				$class_name = SwatDBClassMap::get('StoreCardType');
+				$type = new $class_name();
+				$type->setDatabase($this->app->db);
+				if ($type->load($card_type_id))
+					$card_type = $type;
 			} else {
-				$card_number = $this->ui->getWidget('card_number');
-				$card_number->process();
-				$card_type_id = $card_number->getCardType();
-			}
+				$method_id = intval($method_list->value);
 
-			$class_name = SwatDBClassMap::get('StoreCardType');
-			$type = new $class_name();
-			$type->setDatabase($this->app->db);
-			$type->load($card_type_id);
+				$account_payment_method =
+					$this->app->session->account->payment_methods->getByIndex(
+						$method_id);
+
+				$card_type = $account_payment_method->card_type;
+			}
 		}
 
-		return $type;
+		return $card_type;
 	}
 
 	// }}}
@@ -553,6 +637,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 			$parent->classes[] = 'store-payment-method-single';
 		}
+
 
 		if (!$this->ui->getWidget('form')->isProcessed())
 			$this->loadDataFromSession();
@@ -628,7 +713,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			}
 		} else {
 			if ($order_payment_method->getAccountPaymentMethodId() === null) {
-
 				$this->ui->getWidget('payment_type')->value =
 					$order_payment_method->getInternalValue('payment_type');
 
@@ -640,12 +724,18 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				 *        only store the encrypted number in the dataobject.
 				 */
 				if ($order_payment_method->hasCardNumber()) {
-					$card_number = $this->ui->getWidget('card_number');
-					$card_number->show_blank_value = true;
+					$this->ui->getWidget('card_number')->show_blank_value =
+						true;
 				}
 
-				$this->ui->getWidget('card_verification_value')->value =
-					$order_payment_method->getCardVerificationValue();
+				if ($order_payment_method->hasCardVerificationValue()) {
+					$cvv = $this->ui->getWidget('card_verification_value');
+					$card_type = $this->getCardType();
+					if ($card_type !== null) {
+						$cvv->setCardType($card_type);
+						$cvv->show_blank_value = true;
+					}
+				}
 
 				$this->ui->getWidget('card_issue_number')->value =
 					$order_payment_method->card_issue_number;
@@ -661,6 +751,17 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			} else {
 				$this->ui->getWidget('payment_method_list')->value =
 					$order_payment_method->getAccountPaymentMethodId();
+
+				if ($order_payment_method->hasCardVerificationValue()) {
+					$cvv =
+						$this->ui->getWidget('account_card_verification_value');
+
+					$card_type = $this->getCardType();
+					if ($card_type !== null) {
+						$cvv->setCardType($card_type);
+						$cvv->show_blank_value = true;
+					}
+				}
 			}
 		}
 
