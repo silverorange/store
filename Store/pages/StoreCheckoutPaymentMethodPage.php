@@ -639,8 +639,10 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				 *  Note: We can't repopulate the card number entry since we
 				 *        only store the encrypted number in the dataobject.
 				 */
-				if ($order_payment_method->hasCardNumber())
-					$this->ui->getWidget('card_number')->show_blank_value = true;
+				if ($order_payment_method->hasCardNumber()) {
+					$card_number = $this->ui->getWidget('card_number');
+					$card_number->show_blank_value = true;
+				}
 
 				$this->ui->getWidget('card_verification_value')->value =
 					$order_payment_method->getCardVerificationValue();
