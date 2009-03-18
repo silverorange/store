@@ -631,28 +631,49 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 
 	protected function displayCard($passphrase)
 	{
-		$span_tag = new SwatHtmlTag('span');
+		$number_span = new SwatHtmlTag('span');
+		$cvv_span = new SwatHtmlTag('span');
 		$display_card = false;
+		$has_cvv = false;
 
 		if ($this->payment_type->isCard() &&
 			$this->gpg_id !== null && $passphrase !== null) {
 			$display_card = true;
+
 			$card_number = $this->getCardNumber($passphrase);
-			$span_tag->setContent(StoreCardType::formatCardNumber(
+			$number_span->setContent(StoreCardType::formatCardNumber(
 				$card_number));
+
+			$card_verification_value =
+				$this->getCardVerifcationValue($passphrase);
+
+			if ($card_verification_value !== null) {
+				$has_cvv = true;
+				$cvv_span->setContent(sprintf('(CVV: %s)',
+					$card_verification_value));
+			}
 
 		} elseif ($this->payment_type->isCard() &&
 			$this->card_number_preview !== null) {
 			$display_card = true;
-			$span_tag->setContent(StoreCardType::formatCardNumber(
+
+			$number_span->setContent(StoreCardType::formatCardNumber(
 				$this->card_number_preview,
 				$this->card_type->getMaskedFormat()));
 		}
 
 		if ($display_card) {
-			$span_tag->class = 'store-payment-method-card-number';
+			$number_span->class = 'store-payment-method-card-number';
 			echo ': ';
-			$span_tag->display();
+			$number_span->display();
+
+			if ($has_cvv) {
+				$cvv_span->class =
+					'store-payment-method-card-verification-value';
+
+				echo ' ';
+				$cvv_span->display();
+			}
 		}
 	}
 

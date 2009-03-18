@@ -5,6 +5,9 @@ function StoreCheckoutPaymentMethodPage(id, inception_date_ids,
 	this.card_ids = card_ids;
 	this.container = document.getElementById('payment_method_form');
 	this.card_container = document.getElementById('card_container');
+	this.account_fields_container =
+		document.getElementById('account_fields_container');
+
 	this.list_new = document.getElementById('payment_method_list_new');
 	this.inception_date_types = [];
 	this.issue_number_types = [];
@@ -87,6 +90,10 @@ function StoreCheckoutPaymentMethodPage(id, inception_date_ids,
 		'card_issue_number'
 	];
 
+	this.account_fields = [
+		'account_card_verification_value'
+	];
+
 	var payment_type_options =
 		document.getElementsByName('payment_type');
 
@@ -110,10 +117,12 @@ StoreCheckoutPaymentMethodPage.prototype.updateFields = function()
 {
 	if (!this.isSensitive()) {
 		this.desensitize();
+		this.sensitizeAccountFields();
 		return;
 	}
 
 	this.sensitize();
+	this.desensitizeAccountFields();
 
 	if (!this.isCardSensitive()) {
 		this.desensitizeCard();
@@ -158,6 +167,26 @@ StoreCheckoutPaymentMethodPage.prototype.desensitize = function()
 		YAHOO.util.Dom.addClass(this.container, 'swat-insensitive');
 
 	StoreCheckoutPage_desensitizeFields(this.fields);
+}
+
+// account card verification number
+
+StoreCheckoutPaymentMethodPage.prototype.sensitizeAccountFields = function()
+{
+	if (this.account_fields_container)
+		YAHOO.util.Dom.removeClass(this.account_fields_container,
+			'swat-insensitive');
+
+	StoreCheckoutPage_sensitizeFields(this.account_fields);
+}
+
+StoreCheckoutPaymentMethodPage.prototype.desensitizeAccountFields = function()
+{
+	if (this.account_fields_container)
+		YAHOO.util.Dom.addClass(this.account_fields_container,
+			'swat-insensitive');
+
+	StoreCheckoutPage_desensitizeFields(this.account_fields);
 }
 
 // card fields

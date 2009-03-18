@@ -249,6 +249,42 @@ class StoreCardType extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function getCardVerificationValueLength()
+
+	/**
+	 * Gets the length of the card verification value for this card type
+	 *
+	 * @return integer the length of the card verification value for this
+	 *                  card type. If this card type is not a known debit
+	 *                  or credit card, the card verification value length is
+	 *                  returned as zero.
+	 */
+	public function getCardVerificationValueLength()
+	{
+		$length = null;
+
+		switch ($this->shortname) {
+		case 'visa':
+		case 'mastercard':
+		case 'discover':
+		case 'jcb':
+		case 'electron':
+		case 'unionpay':
+		case 'delta':
+		case 'switch':
+		case 'solo':
+		case 'dinersclub':
+			$length = 3;
+			break;
+		case 'amex':
+			$length = 4;
+			break;
+		}
+
+		return $length;
+	}
+
+	// }}}
 	// {{{ public function hasInceptionDate()
 
 	/**
