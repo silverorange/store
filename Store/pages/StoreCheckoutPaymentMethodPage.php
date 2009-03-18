@@ -241,10 +241,15 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$method_id = $method_list->value;
 
 		if ($method_id === null || $method_id === 'new') {
-			// the account card verification value only needs to be required for
-			// saved cards
-			$this->ui->getWidget('account_card_verification_value')->required =
-				false;
+
+			// the account card verification value only needs to be required
+			// for saved cards
+			if ($this->ui->hasWidget('account_card_verification_value')) {
+				$account_card_verification_value =
+					$this->ui->getWidget('account_card_verification_value');
+
+				$account_card_verification_value->required = false;
+			}
 
 			$payment_type = $this->getPaymentType();
 
