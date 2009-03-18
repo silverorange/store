@@ -266,7 +266,6 @@ class StoreCardType extends SwatDBDataObject
 		switch ($this->shortname) {
 		case 'visa':
 		case 'mastercard':
-		case 'discover':
 		case 'jcb':
 		case 'electron':
 		case 'unionpay':
@@ -276,6 +275,7 @@ class StoreCardType extends SwatDBDataObject
 		case 'dinersclub':
 			$length = 3;
 			break;
+		case 'discover':
 		case 'amex':
 			$length = 4;
 			break;
