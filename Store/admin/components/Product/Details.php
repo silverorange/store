@@ -727,6 +727,25 @@ class StoreProductDetails extends AdminIndex
 
 	private function buildViewInStoreToolLinks(StoreProduct $product)
 	{
+		if (count($this->queryRegions()) > 1) {
+			$this->buildPerRegionViewInStoreToolLinks($product);
+		} else {
+			$tool_link = $this->ui->getWidget('view_in_store');
+			$some_category = $product->categories->getFirst();
+			if ($some_category !== null) {
+				$path = $some_category->path;
+				$tool_link->value = 'store/'.$path.'/'.$product->shortname;
+			} else {
+				$tool_link->visible = false;
+			}
+		}
+	}
+
+	// }}}
+	// {{{ private function buildPerRegionViewInStoreToolLinks()
+
+	private function buildPerRegionViewInStoreToolLinks(StoreProduct $product)
+	{
 		$some_category = $product->categories->getFirst();
 		if ($some_category !== null) {
 			$prototype_tool_link = $this->ui->getWidget('view_in_store');
