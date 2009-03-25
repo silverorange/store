@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Store/dataobjects/StorePaymentTransaction.php';
+require_once 'Store/dataobjects/StorePaymentMethodTransaction.php';
 require_once 'Store/dataobjects/StoreOrder.php';
 
 /**
@@ -18,19 +18,15 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * $provider = StorePaymentProvider::factory('Protx', $paramaters);
  * $provider->setAvsMode();
  * $transaction = $provider->hold($order);
- * if ($transaction->address_status == StorePaymentTransaction::STATUS_FAILED) {
- *     echo 'Invalid billing address detected!';
- *     $provider->abort($transaction);
- * } else {
- *     $provider->release($transaction);
+ * $transaction = $provider->release($transaction);
  * }
  * </code>
  *
  * @package   Store
- * @copyright 2007 silverorange
+ * @copyright 2007-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StorePaymentProvider::factory()
- * @see       StorePaymentTransaction
+ * @see       StorePaymentMethodTransaction
  */
 abstract class StorePaymentProvider
 {
@@ -204,11 +200,9 @@ abstract class StorePaymentProvider
 	 * @param string $card_verification_value optional. Card verification value
 	 *                                         used for fraud prevention.
 	 *
-	 * @return StorePaymentTransaction the transaction object for the payment.
-	 *                                  this object contains information such
-	 *                                  as the transaction identifier and
-	 *                                  Address Verification Service (AVS)
-	 *                                  results.
+	 * @return StorePaymentMethodTransaction the transaction object for the
+	 *                                        payment. This object contains the
+	 *                                        transaction date and identifier.
 	 */
 	public function pay(StoreOrder $order, $card_number,
 		$card_verification_value = null)
@@ -230,11 +224,9 @@ abstract class StorePaymentProvider
 	 * @param string $card_verification_value optional. Card verification value
 	 *                                         used for fraud prevention.
 	 *
-	 * @return StorePaymentTransaction the transaction object for the payment.
-	 *                                  this object contains information such
-	 *                                  as the transaction identifier and
-	 *                                  Address Verification Service (AVS)
-	 *                                  results.
+	 * @return StorePaymentMethodTransaction the transaction object for the
+	 *                                        payment. This object contains the
+	 *                                        transaction date and identifier.
 	 *
 	 * @see StorePaymentProvider::release()
 	 */
@@ -253,18 +245,18 @@ abstract class StorePaymentProvider
 	/**
 	 * Release funds held for an order payment
 	 *
-	 * @param StorePaymentTransaction $transaction the tranaction used to place
-	 *                                              a hold on the funds. This
-	 *                                              should be a transaction
-	 *                                              returned by
-	 *                                              {@link StorePaymentProvider::hold()}.
+	 * @param StorePaymentMethodTransaction $transaction the tranaction used to
+	 *                                                    place a hold on funds.
+	 *                                                    This should be a
+	 *                                                    transaction returned
+	 *                                                    by {@link StorePaymentProvider::hold()}.
 	 *
-	 * @return StorePaymentTransaction a transaction object representing the
-	 *                                  released transaction.
+	 * @return StorePaymentMethodTransaction a transaction object representing
+	 *                                        the released transaction.
 	 *
 	 * @see StorePaymentProvider::hold()
 	 */
-	public function release(StorePaymentTransaction $transaction)
+	public function release(StorePaymentMethodTransaction $transaction)
 	{
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
@@ -283,18 +275,18 @@ abstract class StorePaymentProvider
 	 *
 	 * If this method does not throw an exception, the about was successful.
 	 *
-	 * @param StorePaymentTransaction $transaction the tranaction used to place
-	 *                                              a hold on the funds. This
-	 *                                              should be a transaction
-	 *                                              returned by
-	 *                                              {@link StorePaymentProvider::hold()}.
+	 * @param StorePaymentMethodTransaction $transaction the tranaction used to
+	 *                                                    place a hold on the
+	 *                                                    funds. This should be
+	 *                                                    a transaction returned
+	 *                                                    by {@link StorePaymentProvider::hold()}.
 	 *
-	 * @return StorePaymentTransaction a transaction object representing the
-	 *                                  aborted transaction.
+	 * @return StorePaymentMethodTransaction a transaction object representing
+	 *                                        the aborted transaction.
 	 *
 	 * @see StorePaymentProvider::hold()
 	 */
-	public function abort(StorePaymentTransaction $transaction)
+	public function abort(StorePaymentMethodTransaction $transaction)
 	{
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
@@ -317,10 +309,11 @@ abstract class StorePaymentProvider
 	 * @param string $card_verification_value optional. Card verification value
 	 *                                         used for fraud prevention.
 	 *
-	 * @return StorePaymentTransaction the transaction object containing the
-	 *                                  verification results. This transaction
-	 *                                  may optionally be used to pay for the
-	 *                                  order at a later date.
+	 * @return StorePaymentMethodTransaction the transaction object containing
+	 *                                        verification results. This
+	 *                                        transaction may optionally be
+	 *                                        used to pay for the order at a
+	 *                                        later date.
 	 *
 	 * @see StorePaymentProvider::verifiedPay()
 	 */
@@ -339,18 +332,19 @@ abstract class StorePaymentProvider
 	/**
 	 * Pays for an order using an already verified transaction
 	 *
-	 * @param StorePaymentTranaction $transaction the verified transaction to
-	 *                                             pay with. This should be a
-	 *                                             transaction returned from a
-	 *                                             {@link StorePaymentProvider::vefiry()}
-	 *                                             call.
+	 * @param StorePaymentMethodTransaction $transaction the verified
+	 *                                                    transaction to pay
+	 *                                                    with. This should be a
+	 *                                                    transaction returned
+	 *                                                    from a call to
+	 *                                                    {@link StorePaymentProvider::vefiry()}.
 	 *
-	 * @return StorePaymentTransaction a transaction object representing the
-	 *                                  verified payment transaction.
+	 * @return StorePaymentMethodTransaction a transaction object representing
+	 *                                        the verified payment transaction.
 	 *
 	 * @see StorePaymentProvider::verify()
 	 */
-	public function verifiedPay(StorePaymentTransaction $transaction)
+	public function verifiedPay(StorePaymentMethodTransaction $transaction)
 	{
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
@@ -369,7 +363,8 @@ abstract class StorePaymentProvider
 	 * perform call {@link StorePaymentProvider::void()} to cancel the
 	 * original transaction without incurring merchant fees.
 	 *
-	 * @param StorePaymentTransaction the original transaction to refund.
+	 * @param StorePaymentMethodTransaction $transaction the original
+	 *                                                    transaction to refund.
 	 * @param string $description optional. A description of why the refund is
 	 *                             being made. If not specified, a blank string
 	 *                             is used.
@@ -378,10 +373,11 @@ abstract class StorePaymentProvider
 	 *                        specified, the amount defaults to the total value
 	 *                        of the order for the original transaction.
 	 *
-	 * @return StorePaymentTransaction a new transaction object representing
-	 *                                  the refund transaction.
+	 * @return StorePaymentMethodTransaction a new transaction object
+	 *                                        representing the refund
+	 *                                        transaction.
 	 */
-	public function refund(StorePaymentTransaction $transaction,
+	public function refund(StorePaymentMethodTransaction $transaction,
 		$description = '', $amount = null)
 	{
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
@@ -397,7 +393,7 @@ abstract class StorePaymentProvider
 	 * Voids a transaction
 	 *
 	 * Voiding cancels a transaction and prevents both both merchant fees and
-	 * charging the customer. 
+	 * charging the customer.
 	 *
 	 * A void must be performed before the merchant bank settles outstanding
 	 * transactions. Once settled, a transaction cannot be voided.
@@ -407,12 +403,12 @@ abstract class StorePaymentProvider
 	 *
 	 * If this method does not throw an exception, the void was successful.
 	 *
-	 * @param StorePaymentTransaction $transaction the tranaction to void.
+	 * @param StorePaymentMethodTransaction $transaction the tranaction to void.
 	 *
-	 * @return StorePaymentTransaction a transaction object representing the
-	 *                                  voided transaction.
+	 * @return StorePaymentMethodTransaction a transaction object representing
+	 *                                        the voided transaction.
 	 */
-	public function void(StorePaymentTransaction $transaction)
+	public function void(StorePaymentMethodTransaction $transaction)
 	{
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
@@ -429,24 +425,27 @@ abstract class StorePaymentProvider
 	 * After successful completion of the 3-D Secure transaction, the
 	 * returned transaction object should be saved.
 	 *
-	 * @param StorePaymentTransaction $transaction the original transaction
-	 *                                              initiated by the 3-D Secure
-	 *                                              authentication process.
-	 *                                              This transaction must
-	 *                                              contain the order id and
-	 *                                              merchant data of the
-	 *                                              original transaction.
+	 * @param StorePaymentMethodTransaction $transaction the original
+	 *                                                    transaction initiated
+	 *                                                    by the 3-D Secure
+	 *                                                    authentication
+	 *                                                    process. This
+	 *                                                    transaction must
+	 *                                                    contain the order id
+	 *                                                    and merchant data of
+	 *                                                    the original
+	 *                                                    transaction.
 	 * @param string $pares payer authentication response. The base64 encoded,
 	 *                       encrypted message retrieved from the issuing bank
 	 *                       for the transaction.
 	 *
-	 * @return StorePaymentTransaction the authenticated transaction. The
-	 *                                  authenticated transaction can be
-	 *                                  released if the initial request was a
-	 *                                  hold request.
+	 * @return StorePaymentMethodTransaction the authenticated transaction. The
+	 *                                        authenticated transaction can be
+	 *                                        released if the initial request
+	 *                                        was a hold request.
 	 */
-	public function threeDomainSecureAuth(StorePaymentTransaction $transaction,
-		$pares)
+	public function threeDomainSecureAuth(
+		StorePaymentMethodTransaction $transaction, $pares)
 	{
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
