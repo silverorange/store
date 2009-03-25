@@ -156,7 +156,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		 * against valid provstates.
 		 */
 		if ($billing_provstate === null)
-			return;
+			return true;
 
 		$provstate_ids = array();
 		foreach ($this->app->getRegion()->billing_provstates as $provstate)
@@ -217,7 +217,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		 * against valid provstates.
 		 */
 		if ($shipping_provstate === null)
-			return;
+			return true;
 
 		$provstate_ids = array();
 		foreach ($this->app->getRegion()->shipping_provstates as $provstate)
