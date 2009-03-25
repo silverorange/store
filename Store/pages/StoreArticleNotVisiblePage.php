@@ -66,7 +66,9 @@ class StoreArticleNotVisiblePage extends StoreNotVisiblePage
 
 	protected function buildNavBar($link_prefix = '')
 	{
-		$this->layout->navbar->addEntries($this->article->getNavBarEntries());
+		if (isset($this->layout->navbar))
+			$this->layout->navbar->addEntries(
+				$this->article->getNavBarEntries());
 	}
 
 	// }}}
