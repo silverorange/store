@@ -105,8 +105,11 @@ abstract class StorePage extends SitePathPage
 		if (isset($this->app->memcache)) {
 			$key = 'StorePage.category.'.$category_id;
 			$this->category = $this->app->memcache->getNs('product', $key);
-			if ($this->category !== false)
+			if ($this->category !== false) {
+				$this->category->setDatabase($this->app->db);
+				$this->category->setRegion($this->app->getRegion());
 				return $this->category;
+			}
 		}
 
 		$sql = 'select * from Category where id = %s';
