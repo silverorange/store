@@ -85,7 +85,9 @@ class StoreProductPage extends StorePage
 	public function isVisibleInRegion(StoreRegion $region)
 	{
 		if (isset($this->app->memcache)) {
-			$key = 'StoreProductPage.isVisibleInRegion.'.$region->id;
+			$key = 'StoreProductPage.isVisibleInRegion.'.$region->id.
+				'.'.$this->product_id;
+
 			$product = $this->app->memcache->getNs('product', $key);
 			if ($product !== false)
 				return ($product !== null);
