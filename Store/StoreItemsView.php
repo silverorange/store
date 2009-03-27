@@ -199,11 +199,6 @@ class StoreItemsView extends SwatControl
 		$tab_index = 1;
 
 		foreach ($this->product->items as $item) {
-			// hack because the reverse reference from Item to Product can't
-			// be serialized because of an infinite loop, so this prevents
-			// each item from querying its product
-			$item->product = $this->product;
-
 			if ($item->isEnabled()) {
 				$ds = $this->getItemDetailsStore($item);
 				$ds->tab_index = $tab_index++;

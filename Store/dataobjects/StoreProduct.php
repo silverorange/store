@@ -948,6 +948,19 @@ class StoreProduct extends SwatDBDataObject
 	}
 
 	// }}}
+
+	// serialization
+	// {{{ public function unserialize()
+
+	public function unserialize($data)
+	{
+		parent::unserialize($data);
+
+		foreach ($this->items as $item)
+			$item->product = $this;
+	}
+
+	// }}}
 }
 
 ?>
