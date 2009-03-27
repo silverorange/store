@@ -185,6 +185,15 @@ class StoreQuantityDiscount extends SwatDBDataObject
 
 
 	// }}}
+	// {{{ protected function getSerializableSubDataObjects()
+
+	protected function getSerializableSubDataObjects()
+	{
+		return array_merge(parent::getSerializableSubDataObjects(),
+			array('region_bindings'));
+	}
+
+	// }}}
 
 	// loader methods
 	// {{{ protected function loadRegionBindings()

@@ -772,6 +772,19 @@ class StoreItem extends SwatDBDataObject
 	}
 
 	// }}}
+
+	// serialization
+	// {{{ public function unserialize()
+
+	public function unserialize($data)
+	{
+		parent::unserialize($data);
+
+		foreach ($this->quantity_discounts as $discount)
+			$discount->item = $this;
+	}
+
+	// }}}
 }
 
 ?>
