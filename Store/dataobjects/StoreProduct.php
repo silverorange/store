@@ -956,8 +956,9 @@ class StoreProduct extends SwatDBDataObject
 	{
 		parent::unserialize($data);
 
-		foreach ($this->items as $item)
-			$item->product = $this;
+		if ($this->hasSubDataObject('items'))
+			foreach ($this->items as $item)
+				$item->product = $this;
 	}
 
 	// }}}

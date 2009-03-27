@@ -780,8 +780,9 @@ class StoreItem extends SwatDBDataObject
 	{
 		parent::unserialize($data);
 
-		foreach ($this->quantity_discounts as $discount)
-			$discount->item = $this;
+		if ($this->hasSubDataObject('quantity_discounts'))
+			foreach ($this->quantity_discounts as $discount)
+				$discount->item = $this;
 	}
 
 	// }}}
