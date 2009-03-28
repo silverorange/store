@@ -72,7 +72,7 @@ class StoreAdReferrerAggregator extends SiteCommandLineApplication
 
 	protected function aggregate()
 	{
-		$this->debug(Store::_('Querying unaggregated referrers'));
+		$this->debug(Store::_('Querying unaggregated referrers'."\n"));
 
 		$sql = sprintf('select count(id) as num_referrers, ad,
 				max(id) as max_id
@@ -95,7 +95,7 @@ class StoreAdReferrerAggregator extends SiteCommandLineApplication
 			$max_id = max($max_id, $referrer->max_id);
 		}
 
-		$this->debug(Store::_('Setting referrers as aggregated'));
+		$this->debug(Store::_('Setting referrers as aggregated'."\n"));
 		$sql = sprintf('update AdReferrer set aggregated = %s
 			where aggregated = %s and id <= %s',
 			$this->db->quote(true, 'boolean'),
