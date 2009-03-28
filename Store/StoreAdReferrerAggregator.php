@@ -83,7 +83,7 @@ class StoreAdReferrerAggregator extends SiteCommandLineApplication
 		$referrers = SwatDB::query($this->db, $sql);
 		$max_id = 0;
 
-		$this->debug(Store::_('Updating ad counts'));
+		$this->debug(Store::_('Updating ad counts'."\n"));
 		foreach ($referrers as $referrer) {
 			$sql = sprintf('update Ad set
 				total_referrers = total_referrers + %s where id = %s',
