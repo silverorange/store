@@ -884,8 +884,9 @@ abstract class StoreAddress extends SwatDBDataObject
 		if ($this->fullname != $address->fullname)
 			$equal = false;
 
-		if ($this->company != $address->company)
-			$equal = false;
+		if (trim(strtoupper($this->company)) !=
+			trim(strtoupper($address->company)))
+				$equal = false;
 
 		if (strtoupper($this->line1) != strtoupper($address->line1) &&
 			!self::differByStreetSuffixOnly($this->line1, $address->line1) &&
