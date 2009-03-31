@@ -762,7 +762,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	protected function buildInternal()
 	{
-		$this->buildMessage();
 		$this->buildOrder();
 
 		$order = $this->app->session->order;
@@ -772,6 +771,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$this->buildShippingAddress($order);
 		$this->buildShippingType($order);
 		$this->buildPaymentMethod($order);
+
+		$this->buildMessage();
 	}
 
 	// }}}
