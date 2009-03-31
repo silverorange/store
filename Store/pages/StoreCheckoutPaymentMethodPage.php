@@ -51,7 +51,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$payment_methods = $this->app->session->order->payment_methods;
 		$order_payment_method = $this->getPaymentMethod($payment_methods);
 
-		if ($order_payment_method !== null) {
+		if ($this->app->config->store->multiple_payment_support &&
+			$order_payment_method !== null) {
+
 			$this->remove_button = new SwatButton('remove_payment_method');
 			$this->remove_button->title = Store::_('Remove');
 			$this->remove_button->confirmation_message = Store::_(
