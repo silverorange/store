@@ -864,6 +864,51 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	}
 
 	// }}}
+	// {{{ protected function buildShippingType()
+
+	protected function buildShippingType($order)
+	{
+		if (!$this->ui->hasWidget('shipping_type'))
+			return;
+
+		ob_start();
+
+		if ($order->shipping_type instanceof StoreShippingType) {
+			$order->shipping_type->display();
+		} else {
+			$span_tag = new SwatHtmlTag('span');
+			$span_tag->class = 'swat-none';
+			$span_tag->setContent(Store::_('<none>'));
+			$span_tag->display();
+		}
+
+		$this->ui->getWidget('shipping_type')->content = ob_get_clean();
+		$this->ui->getWidget('shipping_type')->content_type = 'text/xml';
+	}
+
+	// }}}
+	// {{{ protected function buildItems()
+
+	protected function buildItems($order)
+	{
+		$items_view = $this->ui->getWidget('items_view');
+		$items_view->model = $order->getOrderDetailsTableStore();
+
+		$items_view->getRow('subtotal')->value = $order->getSubtotal();
+		$items_view->getRow('shipping')->value = $order->shipping_total;
+		if ($order->surcharge_total > 0)
+			$items_view->getRow('surcharge')->value = $order->surcharge_total;
+
+		$items_view->getRow('total')->value = $order->total;
+
+		// invoice the items can not be edited
+		if ($this->app->session->order->isFromInvoice())
+			$this->ui->getWidget('item_link')->visible = false;
+	}
+
+	// }}}
+
+	// build phase - payment method
 	// {{{ protected function buildPaymentMethod()
 
 	protected function buildPaymentMethod($order)
@@ -888,6 +933,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$span_tag->display();
 			$this->displayNewPaymentLinks($order);
 		}
+
+		if ($this->app->config->store->multiple_payment_support)
+			$this->ui->getWidget('payment_method_edit')->visible = false;
 
 		$this->ui->getWidget('payment_method')->content = ob_get_clean();
 		$this->ui->getWidget('payment_method')->content_type = 'text/xml';
@@ -976,7 +1024,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	protected function displayMultiplePaymentMethods($order)
 	{
-		$this->ui->getWidget('payment_method_edit')->visible = false;
 		$payment_methods = array_reverse($order->payment_methods->getArray());
 
 		echo '<table><tbody>';
@@ -1091,49 +1138,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	}
 
 	// }}}
-	// {{{ protected function buildShippingType()
 
-	protected function buildShippingType($order)
-	{
-		if (!$this->ui->hasWidget('shipping_type'))
-			return;
-
-		ob_start();
-
-		if ($order->shipping_type instanceof StoreShippingType) {
-			$order->shipping_type->display();
-		} else {
-			$span_tag = new SwatHtmlTag('span');
-			$span_tag->class = 'swat-none';
-			$span_tag->setContent(Store::_('<none>'));
-			$span_tag->display();
-		}
-
-		$this->ui->getWidget('shipping_type')->content = ob_get_clean();
-		$this->ui->getWidget('shipping_type')->content_type = 'text/xml';
-	}
-
-	// }}}
-	// {{{ protected function buildItems()
-
-	protected function buildItems($order)
-	{
-		$items_view = $this->ui->getWidget('items_view');
-		$items_view->model = $order->getOrderDetailsTableStore();
-
-		$items_view->getRow('subtotal')->value = $order->getSubtotal();
-		$items_view->getRow('shipping')->value = $order->shipping_total;
-		if ($order->surcharge_total > 0)
-			$items_view->getRow('surcharge')->value = $order->surcharge_total;
-
-		$items_view->getRow('total')->value = $order->total;
-
-		// invoice the items can not be edited
-		if ($this->app->session->order->isFromInvoice())
-			$this->ui->getWidget('item_link')->visible = false;
-	}
-
-	// }}}
+	// build phase - order creation
 	// {{{ protected function createOrder()
 
 	protected function createOrder()
