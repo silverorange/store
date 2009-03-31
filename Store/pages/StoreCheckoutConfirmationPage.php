@@ -1034,7 +1034,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		if ($this->app->config->store->multiple_payment_support &&
 			($this->app->config->store->multiple_payment_ui ||
-			count($order->payment_methods) == 0)) {
+			$this->hasSimplePaymentMethod($order))) {
 
 			$links['payment_method'] = array(
 				'href' => 'checkout/confirmation/paymentmethod/new',
@@ -1044,6 +1044,25 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		}
 
 		return $links;
+	}
+
+	// }}}
+	// {{{ protected function hasSimplePaymentMethod()
+
+	protected function hasSimplePaymentMethod($order)
+	{
+		$found = false;
+		$region = $this->app->getRegion();
+
+		// find a payment method that is edited with CheckoutPaymentMethodPage
+		foreach ($order->payment_methods as $payment_method) {
+			if ($payment_method->payment_type->isAvailableInRegion($region)) {
+				$found = true;
+				break;
+			}
+		}
+
+		return $found;
 	}
 
 	// }}}
