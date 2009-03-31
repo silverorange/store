@@ -245,16 +245,19 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	protected function validatePaymentMethod($show_message = false)
 	{
 		$valid = true;
-		$payment_total = 0;
 		$order = $this->app->session->order;
 
 		if ($this->app->config->store->multiple_payment_support) {
+			$payment_total = 0;
 			foreach ($order->payment_methods as $payment_method)
 				$payment_total+= $payment_method->amount;
 
-			$valid = ($payment_total >= $order_total);
-		} elseif (count($order->payment_methods) == 0) {
-			$valid = false;
+			if ($order_total > $payment_total)
+				$valid = false;
+
+		} else {
+			if (count($order->payment_methods) == 0)
+				$valid = false;
 		}
 
 		if (!$valid && $show_message) {
