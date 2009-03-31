@@ -4,6 +4,7 @@ create table OrderPaymentMethod (
 	ordernum integer not null references Orders(id) on delete cascade,
 
 	payment_type integer not null references PaymentType(id),
+	amount numeric(11, 2),
 	surcharge numeric(11, 2),
 
 	card_type int null references CardType(id),

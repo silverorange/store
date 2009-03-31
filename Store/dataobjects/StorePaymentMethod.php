@@ -282,20 +282,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		$span_tag = new SwatHtmlTag('span');
 		$span_tag->class = 'store-payment-method';
 		$span_tag->open();
-
-		if ($this->payment_type->isCard()) {
-			$this->card_type->display();
-			$this->displayCard($passphrase);
-			if ($display_details) {
-				$this->displayCardDetails();
-			}
-		} elseif ($this->payment_type->isPayPal()) {
-			echo SwatString::minimizeEntities($this->payment_type->title);
-			$this->displayPayPal($display_details);
-		} else {
-			$this->payment_type->display();
-		}
-
+		$this->displayInternal($display_details, $passphrase);
 		$span_tag->close();
 	}
 
@@ -473,6 +460,26 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		}
 
 		return $this->gpg;
+	}
+
+	// }}}
+	// {{{ protected function displayInternal()
+
+	protected function displayInternal(
+		$display_details = true, $passphrase = null)
+	{
+		if ($this->payment_type->isCard()) {
+			$this->card_type->display();
+			$this->displayCard($passphrase);
+			if ($display_details) {
+				$this->displayCardDetails();
+			}
+		} elseif ($this->payment_type->isPayPal()) {
+			echo SwatString::minimizeEntities($this->payment_type->title);
+			$this->displayPayPal($display_details);
+		} else {
+			$this->payment_type->display();
+		}
 	}
 
 	// }}}

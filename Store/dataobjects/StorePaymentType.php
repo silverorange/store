@@ -75,6 +75,13 @@ class StorePaymentType extends SwatDBDataObject
 	 */
 	public $surcharge;
 
+	/**
+	 * Priority of payment for when multipe payments are made on one order
+	 *
+	 * @var integer
+	 */
+	public $priority;
+
 	// }}}
 	// {{{ public function loadFromShortname()
 

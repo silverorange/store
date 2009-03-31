@@ -84,6 +84,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$valid = true;
 		$valid = $this->validateBillingAddress() && $valid;
 		$valid = $this->validateShippingAddress() && $valid;
+		$valid = $this->validatePaymentMethod() && $valid;
 
 		return $valid;
 	}
@@ -236,6 +237,46 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		}
 
 		return $valid;
+	}
+
+	// }}}
+	// {{{ protected function validatePaymentMethod()
+
+	protected function validatePaymentMethod($show_message = false)
+	{
+		$valid = true;
+		$payment_total = 0;
+		$order = $this->app->session->order;
+
+		foreach ($order->payment_methods as $payment_method)
+			$payment_total+= $payment_method->amount;
+
+		if ($order->total > $payment_total) {
+			$valid = false;
+
+			if ($show_message) {
+				$message = $this->getPaymentMethodValidationMessage();
+
+				$this->ui->getWidget('message_display')->add($message,
+					SwatMessageDisplay::DISMISS_OFF);
+			}
+		}
+
+		return $valid;
+	}
+
+	// }}}
+	// {{{ protected function getPaymentMethodValidationMessage()
+
+	protected function getPaymentMethodValidationMessage()
+	{
+		$message = new SwatMessage('Payment', 'error');
+		$message->secondary_content =
+			'The payments on this order do not cover the order total. '.
+			'Please edit an existing payment or add another '.
+			'payment method.';
+
+		return $message;
 	}
 
 	// }}}
@@ -819,19 +860,208 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		ob_start();
 
-		$payment_method = $order->payment_methods->getFirst();
-
-		if ($payment_method instanceof StorePaymentMethod) {
-			$payment_method->display();
+		if (count($order->payment_methods) > 0) {
+			if ($this->app->config->store->multiple_payments) {
+				$this->calculateMultiplePaymentMethods($order);
+				$this->validatePaymentMethod(true);
+				$this->displayMultiplePaymentMethods($order);
+				$this->displayNewPaymentLinks($order);
+			} else {
+				$payment_method =  $order->payment_methods->getFirst();
+				$payment_method->display();
+				$this->displayNewPaymentLinks($order);
+			}
 		} else {
 			$span_tag = new SwatHtmlTag('span');
 			$span_tag->class = 'swat-none';
 			$span_tag->setContent(Store::_('<none>'));
 			$span_tag->display();
+			$this->displayNewPaymentLinks($order);
 		}
 
 		$this->ui->getWidget('payment_method')->content = ob_get_clean();
 		$this->ui->getWidget('payment_method')->content_type = 'text/xml';
+	}
+
+	// }}}
+	// {{{ protected function calculateMultiplePaymentMethods()
+
+	protected function calculateMultiplePaymentMethods($order)
+	{
+		$payment_total = 0;
+		$adjustable_payment_methods = array();
+
+		foreach ($order->payment_methods as $payment_method) {
+			if ($payment_method->amount === null) {
+				$payment_method->setAdjustable();
+			}
+
+			if ($payment_method->isAdjustable()) {
+				$payment_method->amount = 0;
+				$adjustable_payment_methods[] = $payment_method;
+			} else {
+				$payment_total+= $payment_method->amount;
+			}
+		}
+
+		if ($payment_total < $order->total) {
+			// need more payment
+			// add to adjustable payment, in order of payment priority
+			$adjustable_payment_methods_by_priority =
+				$this->sortPaymentMethodsByPriority($adjustable_payment_methods);
+
+			$adjustment = $order->total - $payment_total;
+			foreach ($adjustable_payment_methods_by_priority as $payment_method) {
+				$max = $payment_method->getMaxAmount();
+				if ($max === null || $adjustment <= $max) {
+					$payment_method->amount = $adjustment;
+					break;
+				} else {
+					$payment_method->amount = $max;
+					$adjustment-= $max;
+				}
+			}
+
+		} elseif ($payment_total > $order->total) {
+			// too much payment, reduce in order of payment type priority
+			$payment_methods_by_priority =
+				$this->sortPaymentMethodsByPriority($order->payment_methods);
+
+			$partial_payment_total = 0;
+			$done = false;
+			foreach ($payment_methods_by_priority as $payment_method) {
+				if ($done) {
+					$payment_method->amount = 0;
+				} elseif ($partial_payment_total + $payment_method->amount > $order->total) {
+					$payment_method->amount = $order->total - $partial_payment_total;
+					$done = true;
+				}
+
+				$partial_payment_total+= $payment_method->amount;
+			}
+		}
+	}
+
+	// }}}
+	// {{{ protected function sortPaymentMethodsByPriority()
+
+	protected function sortPaymentMethodsByPriority($payment_methods)
+	{
+		$payment_methods_by_priority = array();
+		$count = 0;
+
+		foreach ($payment_methods as $payment_method) {
+			$priority = $payment_method->payment_type->priority.'_'.$count;
+			$payment_methods_by_priority[$priority] =  $payment_method;
+			$count++;
+		}
+
+		krsort($payment_methods_by_priority);
+
+		return $payment_methods_by_priority;
+	}
+
+	// }}}
+	// {{{ protected function displayMultiplePaymentMethods()
+
+	protected function displayMultiplePaymentMethods($order)
+	{
+		$payment_methods = array_reverse($order->payment_methods->getArray());
+
+		echo '<table><tbody>';
+
+		$payment_total = 0;
+		foreach ($payment_methods as $payment_method) {
+			$payment_total+= $payment_method->amount;
+
+			echo '<tr><td>';
+			$payment_method->display();
+			echo '</td><td>';
+			$payment_method->displayAmount();
+			echo '</td><td>';
+			$this->displayPaymentMethodToolLink($payment_method);
+			echo '</td></tr>';
+		}
+
+		echo '</tbody><tfoot>';
+
+		$locale = SwatI18NLocale::get();
+
+		if (count($payment_methods) > 1) {
+			echo '<tr><td>Payment Total</td><td>';
+			echo $locale->formatCurrency($payment_total);
+			echo '</td></tr>';
+		}
+
+		$balance = $order->total - $payment_total;
+		if ($balance > 0) {
+			echo '<tr><td>Remaining Balance</td><td>';
+			echo $locale->formatCurrency($balance);
+			echo '</td></tr>';
+		}
+		echo '</tfoot></table>';
+	}
+
+	// }}}
+	// {{{ protected function displayNewPaymentLinks()
+
+	protected function displayNewPaymentLinks($order)
+	{
+		$links = $this->getNewPaymentLinks($order);
+
+		if (count($links) > 1 || count($order->payment_methods) > 1) {
+			$this->ui->getWidget('payment_method_edit')->visible = false;
+
+			foreach ($links as $link) {
+				$anchor = new SwatHtmlTag('a');
+				$anchor->href = $link['href'];
+				$anchor->setContent($link['title']);
+
+				echo '<p>';
+				$anchor->display();
+
+				if (strlen($link['note']) > 0)
+					echo '<br />', $link['note'];
+
+				echo '</p>';
+			}
+		}
+	}
+
+	// }}}
+	// {{{ protected function getNewPaymentLinks()
+
+	protected function getNewPaymentLinks($order)
+	{
+		$links = array();
+
+		if ($this->app->config->store->multiple_payments &&
+			($this->app->config->store->allow_adding_multiple_payments ||
+			count($order->payment_methods) == 0)) {
+
+			$links['payment_method'] = array(
+				'href' => 'checkout/confirmation/paymentmethod/new',
+				'title' => 'Add a New Payment',
+				'note' => '',
+			);
+		}
+
+		return $links;
+	}
+
+	// }}}
+	// {{{ protected function displayPaymentMethodToolLink()
+
+	protected function displayPaymentMethodToolLink($payment_method)
+	{
+		$tag = uniqid();
+		$payment_method->setTag($tag);
+		$tool = new SwatToolLink();
+		$tool->class = 'payment_method_edit';
+		$tool->title = 'Edit';
+		$tool->link = sprintf('checkout/confirmation/paymentmethod/%s', $tag);
+		$tool->stock_id = 'edit';
+		$tool->display();
 	}
 
 	// }}}

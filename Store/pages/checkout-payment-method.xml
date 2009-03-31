@@ -73,6 +73,11 @@
 					<property name="size" type="integer">35</property>
 				</widget>
 			</widget>
+			<widget class="SwatFormField" id="payment_amount_field">
+				<property name="title" translatable="yes">Amount to Pay</property>
+				<property name="note" translatable="yes">Amount to pay using this payment method when splitting the total across multiple payment methods. Leave this field empty to pay full balance using this payment method.</property>
+				<widget class="SwatMoneyEntry" id="payment_amount" />
+			</widget>
 			<widget class="SwatFormField" id="save_account_payment_method_field">
 				<property name="visible" type="boolean">false</property>
 				<property name="title" translatable="yes">Save my debit or credit card information with my account for future web orders</property>

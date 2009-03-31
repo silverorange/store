@@ -16,6 +16,11 @@ require_once 'Store/dataobjects/StoreCardTypeWrapper.php';
  */
 class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 {
+	// {{{ protected properties
+
+	protected $remove_button;
+
+	// }}}
 	// {{{ public function getUiXml()
 
 	public function getUiXml()
@@ -24,8 +29,39 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
+	// {{{ protected function getArgumentMap()
+
+	protected function getArgumentMap()
+	{
+		return array(
+			'tag' => array(0, null),
+		);
+	}
+
+	// }}}
 
 	// init phase
+	// {{{ public function init()
+
+	public function init()
+	{
+		parent::init();
+
+		$method_list = $this->ui->getWidget('payment_method_list');
+		$payment_methods = $this->app->session->order->payment_methods;
+		$order_payment_method = $this->getPaymentMethod($payment_methods);
+
+		if ($order_payment_method !== null) {
+			$this->remove_button = new SwatButton('remove_payment_method');
+			$this->remove_button->title = Store::_('Remove');
+			$this->remove_button->confirmation_message = Store::_(
+				'Are you sure you want to remove this payment method?');
+
+			$this->ui->getWidget('footer_field')->add($this->remove_button);
+		}
+	}
+
+	// }}}
 	// {{{ public function initCommon()
 
 	public function initCommon()
@@ -33,6 +69,10 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		parent::initCommon();
 		$types = $this->getPaymentTypes();
 		$this->initPaymentTypes($types);
+
+		if (!$this->app->config->store->allow_adding_multiple_payments &&
+			$this->ui->hasWidget('payment_amount_field'))
+				$this->ui->getWidget('payment_amount_field')->visible = false;
 	}
 
 	// }}}
@@ -234,6 +274,20 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	public function preProcessCommon()
 	{
+		if ($this->remove_button !== null) {
+			$this->remove_button->process();
+			if ($this->remove_button->hasBeenClicked()) {
+				$methods = $this->app->session->order->payment_methods;
+				$order_payment_method = $this->getPaymentMethod($methods);
+
+				// remove from session
+				if ($order_payment_method !== null)
+					$methods->remove($order_payment_method);
+
+				$this->app->relocate('checkout/confirmation');
+			}
+		}
+
 		$this->ui->getWidget('card_number')->setDatabase($this->app->db);
 
 		$method_list = $this->ui->getWidget('payment_method_list');
@@ -336,8 +390,12 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	protected function saveDataToSession()
 	{
 		$method_list = $this->ui->getWidget('payment_method_list');
-		$order_payment_method =
-			$this->app->session->order->payment_methods->getFirst();
+		$payment_methods = $this->app->session->order->payment_methods;
+		$order_payment_method = $this->getPaymentMethod($payment_methods);
+
+		// remove from session
+		if ($order_payment_method !== null)
+			$payment_methods->remove($order_payment_method);
 
 		if ($method_list->value === null || $method_list->value === 'new') {
 			if ($order_payment_method === null ||
@@ -395,17 +453,51 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		}
 
 		$class_name = SwatDBClassMap::get('StoreOrderPaymentMethodWrapper');
-		$this->app->session->order->payment_methods = new $class_name();
+		$new_payment_methods = new $class_name();
 
-		if ($order_payment_method !== null) {
-			$this->app->session->order->payment_methods->add(
-				$order_payment_method);
-		}
+		if ($order_payment_method !== null)
+			$new_payment_methods->add($order_payment_method);
+
+		foreach ($payment_methods as $payment_method)
+			$new_payment_methods->add($payment_method);
+
+		$this->app->session->order->payment_methods = $new_payment_methods;
 
 		if ($this->app->session->checkout_with_account) {
 			$this->app->session->save_account_payment_method =
 				$save_payment_method;
 		}
+	}
+
+	// }}}
+	// {{{ protected function getPaymentMethod()
+
+	protected function getPaymentMethod($payment_methods)
+	{
+		$payment_method = null;
+		$payment_methods = $this->getEditablePaymentMethods($payment_methods);
+
+		$tag = $this->getArgument('tag');
+		if ($tag === 'new')
+			return null;
+
+		if ($tag !== null)
+			foreach ($payment_methods as $payment_method)
+				if ($tag === $payment_method->getTag())
+					break;
+
+		if ($payment_method === null)
+			$payment_method = $payment_methods->getFirst();
+
+		return $payment_method;
+	}
+
+	// }}}
+	// {{{ protected function getEditablePaymentMethods()
+
+	protected function getEditablePaymentMethods($payment_methods)
+	{
+		return $payment_methods;
 	}
 
 	// }}}
@@ -423,6 +515,16 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 		$payment_method->payment_type = $payment_type;
 		$payment_method->surcharge = $payment_type->surcharge;
+
+		if ($this->ui->hasWidget('payment_amount')) {
+			$old_amount = $payment_method->amount;
+
+			$payment_method->amount =
+				$this->ui->getWidget('payment_amount')->value;
+
+			if ($old_amount != $payment_method->amount)
+				$payment_method->setAdjustable(false);
+		}
 
 		if ($payment_type->isCard()) {
 			$this->updatePaymentMethodCardNumber($payment_method);
@@ -710,7 +812,8 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	protected function loadDataFromSession()
 	{
 		$order = $this->app->session->order;
-		$order_payment_method = $order->payment_methods->getFirst();
+		$tag = $this->getArgument('tag');
+		$order_payment_method = $this->getPaymentMethod($order->payment_methods);
 
 		if ($order_payment_method === null) {
 			$this->ui->getWidget('card_fullname')->value =
@@ -725,6 +828,10 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			if ($order_payment_method->getAccountPaymentMethodId() === null) {
 				$this->ui->getWidget('payment_type')->value =
 					$order_payment_method->getInternalValue('payment_type');
+
+				if ($this->ui->hasWidget('payment_amount'))
+					$this->ui->getWidget('payment_amount')->value =
+						$order_payment_method->amount;
 
 				$this->ui->getWidget('card_type')->value =
 					$order_payment_method->getInternalValue('card_type');
