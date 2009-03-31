@@ -966,6 +966,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	protected function displayMultiplePaymentMethods($order)
 	{
+		$this->ui->getWidget('payment_method_edit')->visible = false;
 		$payment_methods = array_reverse($order->payment_methods->getArray());
 
 		echo '<table><tbody>';
@@ -1010,8 +1011,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$links = $this->getNewPaymentLinks($order);
 
 		if (count($links) > 1 || count($order->payment_methods) > 1) {
-			$this->ui->getWidget('payment_method_edit')->visible = false;
-
 			foreach ($links as $link) {
 				$anchor = new SwatHtmlTag('a');
 				$anchor->href = $link['href'];
