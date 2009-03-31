@@ -1010,20 +1010,18 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		$links = $this->getNewPaymentLinks($order);
 
-		if (count($links) > 1 || count($order->payment_methods) > 1) {
-			foreach ($links as $link) {
-				$anchor = new SwatHtmlTag('a');
-				$anchor->href = $link['href'];
-				$anchor->setContent($link['title']);
+		foreach ($links as $link) {
+			$anchor = new SwatHtmlTag('a');
+			$anchor->href = $link['href'];
+			$anchor->setContent($link['title']);
 
-				echo '<p>';
-				$anchor->display();
+			echo '<p>';
+			$anchor->display();
 
-				if (strlen($link['note']) > 0)
-					echo '<br />', $link['note'];
+			if (strlen($link['note']) > 0)
+				echo '<br />', $link['note'];
 
-				echo '</p>';
-			}
+			echo '</p>';
 		}
 	}
 
