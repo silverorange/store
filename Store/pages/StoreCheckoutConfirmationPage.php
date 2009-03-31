@@ -861,7 +861,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		ob_start();
 
 		if (count($order->payment_methods) > 0) {
-			if ($this->app->config->store->multiple_payments) {
+			if ($this->app->config->store->multiple_payments_support) {
 				$this->calculateMultiplePaymentMethods($order);
 				$this->validatePaymentMethod(true);
 				$this->displayMultiplePaymentMethods($order);
@@ -1035,8 +1035,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		$links = array();
 
-		if ($this->app->config->store->multiple_payments &&
-			($this->app->config->store->allow_adding_multiple_payments ||
+		if ($this->app->config->store->multiple_payments_support &&
+			($this->app->config->store->multiple_payments_ui ||
 			count($order->payment_methods) == 0)) {
 
 			$links['payment_method'] = array(

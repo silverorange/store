@@ -86,8 +86,8 @@ class Store
 	public static function getConfigDefinitions()
 	{
 		return array(
-			'store.multiple_payments' => false,
-			'store.allow_adding_multiple_payments' => false,
+			'store.multiple_payment_support' => false,
+			'store.multiple_payment_ui' => false,
 
 			// Expiry dates for the privateer data deleter
 			'expiry.accounts'       => '3 years',
