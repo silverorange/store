@@ -87,6 +87,7 @@ class Store
 	{
 		return array(
 			'store.multiple_payments' => false,
+			'store.allow_adding_multiple_payments' => false,
 
 			// Expiry dates for the privateer data deleter
 			'expiry.accounts'       => '3 years',

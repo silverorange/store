@@ -54,6 +54,9 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 		// passwords only required on checkout/first
 		$this->ui->getWidget('password')->required = true;
 		$this->ui->getWidget('confirm_password')->required = true;
+
+		if ($this->ui->hasWidget('payment_amount_field'))
+			$this->ui->getWidget('payment_amount_field')->visible = false;
 	}
 
 	// }}}

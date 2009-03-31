@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Store/dataobjects/StorePaymentMethod.php';
+require_once 'SwatI18N/SwatI18NLocale.php';
 
 /**
  * A payment method for an order for an e-commerce Web application
@@ -35,6 +36,13 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	 */
 	public $card_verification_value;
 
+	/**
+	 * Optional amount to charge to this payment method
+	 *
+	 * @var float
+	 */
+	public $amount;
+
 	// }}}
 	// {{{ protected properties
 
@@ -56,6 +64,30 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	 * @see StoreOrderPaymentMethod::getUnencryptedCardVerificationValue()
 	 */
 	protected $unencrypted_card_verification_value = '';
+
+	/**
+	 * Whether this payment method is adjustable when calculating multiple
+	 * payment amounts.
+	 *
+	 * @var boolean
+	 */
+	protected $adjustable = false;
+
+	/**
+	 * The max amount this payment method can be adjusted to if it is
+	 * adjustable.
+	 *
+	 * @var float
+	 */
+	protected $max_amount;
+
+	/**
+	 * Tag used to identify this payment method before it is saved and has a
+	 * database id.
+	 *
+	 * @var string
+	 */
+	protected $tag;
 
 	// }}}
 	// {{{ public function setCardVerificationValue()
@@ -180,6 +212,54 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	}
 
 	// }}}
+	// {{{ public function setAdjustable()
+
+	public function setAdjustable($value = true)
+	{
+		$this->adjustable = $value;
+	}
+
+	// }}}
+	// {{{ public function isAdjustable()
+
+	public function isAdjustable()
+	{
+		return $this->adjustable;
+	}
+
+	// }}}
+	// {{{ public function setMaxAmount()
+
+	public function setMaxAmount($amount)
+	{
+		$this->max_amount = $amount;
+	}
+
+	// }}}
+	// {{{ public function getMaxAmount()
+
+	public function getMaxAmount()
+	{
+		return $this->max_amount;
+	}
+
+	// }}}
+	// {{{ public function setTag()
+
+	public function setTag($tag)
+	{
+		$this->tag = $tag;
+	}
+
+	// }}}
+	// {{{ public function getTag()
+
+	public function getTag()
+	{
+		return $this->tag;
+	}
+
+	// }}}
 	// {{{ public function copyFrom()
 
 	public function copyFrom(StorePaymentMethod $method)
@@ -210,6 +290,17 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	}
 
 	// }}}
+	// {{{ public function displayAmount()
+
+	public function displayAmount()
+	{
+		if ($this->amount !== null) {
+			$locale = SwatI18NLocale::get();
+			echo $locale->formatCurrency($this->amount);
+		}
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
@@ -228,6 +319,9 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 		$properties = parent::getSerializablePrivateProperties();
 		$properties[] = 'card_verification_value';
 		$properties[] = 'account_payment_method_id';
+		$properties[] = 'adjustable';
+		$properties[] = 'max_amount';
+		$properties[] = 'tag';
 
 		return $properties;
 	}
