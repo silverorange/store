@@ -248,18 +248,20 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$payment_total = 0;
 		$order = $this->app->session->order;
 
-		foreach ($order->payment_methods as $payment_method)
-			$payment_total+= $payment_method->amount;
+		if ($this->app->config->store->multiple_payment_support) {
+			foreach ($order->payment_methods as $payment_method)
+				$payment_total+= $payment_method->amount;
 
-		if ($order->total > $payment_total) {
+			$valid = ($payment_total >= $order_total);
+		} elseif (count($order->payment_methods) == 0) {
 			$valid = false;
+		}
 
-			if ($show_message) {
-				$message = $this->getPaymentMethodValidationMessage();
+		if (!$valid && $show_message) {
+			$message = $this->getPaymentMethodValidationMessage();
 
-				$this->ui->getWidget('message_display')->add($message,
-					SwatMessageDisplay::DISMISS_OFF);
-			}
+			$this->ui->getWidget('message_display')->add($message,
+				SwatMessageDisplay::DISMISS_OFF);
 		}
 
 		return $valid;
