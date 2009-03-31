@@ -312,12 +312,14 @@ class StoreProductSearchEngine extends SiteSearchEngine
 			$clause.= ' '.
 				$this->fulltext_result->getJoinClause('Product.id', 'product');
 
-		if ($this->popular_only ||
-			$this->popular_source_product instanceof StoreProduct) {
+		if ($this->popular_source_product instanceof StoreProduct) {
 			$clause.= sprintf('
 				%s join ProductPopularProductBinding
 				on Product.id = ProductPopularProductBinding.related_product',
 				$this->popular_only ? 'inner' : 'left outer');
+		} elseif ($this->popular_only) {
+			$clause.= 'inner join ProductPopularity
+				on Product.id = ProductPopularity.product';
 		}
 
 		if ($this->category === null) {
