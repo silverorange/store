@@ -70,7 +70,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$types = $this->getPaymentTypes();
 		$this->initPaymentTypes($types);
 
-		if (!$this->app->config->store->multiple_payments_ui &&
+		if (!$this->app->config->store->multiple_payment_ui &&
 			$this->ui->hasWidget('payment_amount_field'))
 				$this->ui->getWidget('payment_amount_field')->visible = false;
 	}
