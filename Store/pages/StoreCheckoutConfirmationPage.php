@@ -1034,7 +1034,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		if ($this->app->config->store->multiple_payment_support &&
 			($this->app->config->store->multiple_payment_ui ||
-			$this->hasSimplePaymentMethod($order))) {
+			!$this->hasSimplePaymentMethod($order))) {
 
 			$links['payment_method'] = array(
 				'href' => 'checkout/confirmation/paymentmethod/new',
