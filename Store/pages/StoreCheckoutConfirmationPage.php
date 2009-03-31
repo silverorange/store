@@ -780,7 +780,17 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	protected function buildMessage()
 	{
-		if ($this->ui->getWidget('message_display')->getMessageCount() == 0) {
+		$count = 0;
+		$messages = $this->ui->getWidget('message_display')->getMessages();
+
+		foreach ($messages as $message)
+			if ($message->type !== SwatMessage::NOTIFICATION)
+				$count++;
+
+		if ($count > 0) {
+			// if there are non-notification messages, order cannot be placed
+			$this->ui->getWidget('submit')->sensitive = false;
+		} else {
 			$message = new SwatMessage(Store::_('Please Review Your Order'));
 			$message->content_type= 'text/xml';
 			$message->secondary_content = sprintf(Store::_('Press the '.
@@ -789,9 +799,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 			$this->ui->getWidget('message_display')->add($message,
 				SwatMessageDisplay::DISMISS_OFF);
-		} else {
-			// if there are messages, order cannot be placed
-			$this->ui->getWidget('submit')->sensitive = false;
 		}
 	}
 
