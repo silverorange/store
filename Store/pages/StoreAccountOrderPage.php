@@ -260,7 +260,6 @@ class StoreAccountOrderPage extends SiteUiPage
 	{
 		$details_view =  $this->ui->getWidget('order_details');
 		$ds = new SwatDetailsStore($this->order);
-		$ds->payment_method = $this->order->payment_methods->getFirst();
 		$details_view->data = $ds;
 
 		$createdate_column = $details_view->getField('createdate');

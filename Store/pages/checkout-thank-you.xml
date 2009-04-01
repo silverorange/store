@@ -37,8 +37,8 @@
 			</object>
 			<object class="SwatDetailsViewField" id="payment_method">
 				<property name="title" translatable="yes">Payment</property>
-				<object class="StorePaymentMethodCellRenderer">
-					<property name="payment_method" type="data">payment_method</property>
+				<object class="StoreOrderPaymentMethodsCellRenderer">
+					<property name="payment_methods" type="data">payment_methods</property>
 				</object>
 			</object>
 			<object class="SwatDetailsViewField" id="billing_address">
