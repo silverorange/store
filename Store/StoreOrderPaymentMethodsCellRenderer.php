@@ -13,6 +13,18 @@ require_once 'Store/dataobjects/StoreOrderPaymentMethodWrapper.php';
  */
 class StoreOrderPaymentMethodsCellRenderer extends SwatCellRenderer
 {
+	// {{{ public function __construct()
+
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->addStyleSheet(
+			'packages/store/styles/store-order-payment-methods-cell-renderer.css',
+			Store::PACKAGE_ID);
+	}
+
+	// }}}
 	// {{{ public properties
 
 	/**
@@ -67,17 +79,18 @@ class StoreOrderPaymentMethodsCellRenderer extends SwatCellRenderer
 					$this->passphrase);
 
 			} else {
-				echo '<table><tbody>';
+				echo '<table class="store-order-payment-methods-cell-renderer">';
+				echo '<tbody>';
 
 				foreach ($this->payment_methods as $payment_method) {
 					if ($this->gpg instanceof Crypt_GPG)
 						$payment_method->setGPG($this->gpg);
 
-					echo '<tr><td>';
+					echo '<tr><th class="payment">';
 					$payment_method->display($this->display_details,
 						$this->passphrase);
 
-					echo '</td><td>';
+					echo '</th><td class="payment-amount">';
 					$payment_method->displayAmount();
 					echo '</td></tr>';
 				}

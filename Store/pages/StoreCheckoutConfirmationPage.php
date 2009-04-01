@@ -1036,17 +1036,17 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		$payment_methods = array_reverse($order->payment_methods->getArray());
 
-		echo '<table><tbody>';
+		echo '<table class="multiple-payment-table"><tbody>';
 
 		$payment_total = 0;
 		foreach ($payment_methods as $payment_method) {
 			$payment_total+= $payment_method->amount;
 
-			echo '<tr><td>';
+			echo '<tr><th class="payment">';
 			$payment_method->display();
-			echo '</td><td>';
+			echo '</th><td class="payment-amount">';
 			$payment_method->displayAmount();
-			echo '</td><td>';
+			echo '</td><td class="payment-edit">';
 			$this->displayPaymentMethodToolLink($payment_method);
 			echo '</td></tr>';
 		}
@@ -1056,16 +1056,16 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$locale = SwatI18NLocale::get();
 
 		if (count($payment_methods) > 1) {
-			echo '<tr><td>Payment Total</td><td>';
+			echo '<tr><th>Payment Total:</th><td class="payment-amount">';
 			echo $locale->formatCurrency($payment_total);
-			echo '</td></tr>';
+			echo '</td><td></td></tr>';
 		}
 
 		$balance = $order->total - $payment_total;
 		if ($balance > 0) {
-			echo '<tr><td>Remaining Balance</td><td>';
+			echo '<tr class="payment-remaining swat-error"><th>Remaining Balance:</th><td class="payment-amount">';
 			echo $locale->formatCurrency($balance);
-			echo '</td></tr>';
+			echo '</td><td></td></tr>';
 		}
 		echo '</tfoot></table>';
 	}
@@ -1082,7 +1082,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$anchor->href = $link['href'];
 			$anchor->setContent($link['title']);
 
-			echo '<p>';
+			echo '<p class="new-payment-link">';
 			$anchor->display();
 
 			if (strlen($link['note']) > 0)
