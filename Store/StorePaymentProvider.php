@@ -77,6 +77,19 @@ abstract class StorePaymentProvider
 	 */
 	protected $three_domain_secure_mode = self::THREE_DOMAIN_SECURE_OFF;
 
+	/**
+	 * Packages that are searched for payment provider drivers in the factory
+	 * method
+	 *
+	 * Includes the 'Store' package by default.
+	 *
+	 * @var array
+	 *
+	 * @see StorePaymentProvider::addPackage()
+	 * @see StorePaymentProvider::removePackage()
+	 */
+	protected static $packages = array('Store');
+
 	// }}}
 	// {{{ public static function factory()
 
@@ -105,8 +118,22 @@ abstract class StorePaymentProvider
 			$class_name = $loaded_drivers[$driver];
 		} else {
 			$sanitized_driver = basename($driver);
-			include_once 'Store/Store'.$sanitized_driver.'PaymentProvider.php';
-			$class_name = 'Store'.$sanitized_driver.'PaymentProvider';
+
+			foreach (self::$packages as $package) {
+				$class_name = $package.$sanitized_driver.'PaymentProvider';
+
+				if (!class_exists($class_name) &&
+					self::driverFileExists($sanitized_driver, $package)) {
+					$filename = $package.'/'.
+						$package.$sanitized_driver.'PaymentProvider.php';
+
+					include_once $filename;
+				}
+
+				if (class_exists($class_name)) {
+					break;
+				}
+			}
 
 			if (!class_exists($class_name)) {
 				throw new Exception(sprintf('No payment provider available '.
@@ -118,6 +145,86 @@ abstract class StorePaymentProvider
 
 		$reflector = new ReflectionClass($class_name);
 		return $reflector->newInstance($parameters);
+	}
+
+	// }}}
+	// {{{ public static function addPackage()
+
+	/**
+	 * Adds package that is searched for payment provider drivers
+	 *
+	 * Packages that are added later are searched first. If the same driver
+	 * exists in multiple packages, the driver in the package added last is
+	 * used first.
+	 *
+	 * The 'Store' package is added by default and does not need to be re-added
+	 * unless you want to change the search order.
+	 *
+	 * @param string $package the package to search for payment provider
+	 *                         drivers.
+	 *
+	 * @see StorePaymentProvider::removePackage()
+	 * @see StorePaymentProvider::factory()
+	 */
+	public static function addPackage($package)
+	{
+		if (in_array($package, self::$packages, true)) {
+			// remove it from the array, it will be re-added with higher
+			// search priority
+			self::removePackage($package);
+		}
+
+		// add package to front of array so we search it first
+		array_unshift(self::$packages, $package);
+	}
+
+	// }}}
+	// {{{ public static function removePackage()
+
+	/**
+	 * Removes a package that is searched for payment provider drivers
+	 *
+	 * @param string $package the package to remove.
+	 *
+	 * @see StorePaymentProvider::addPackage()
+	 * @see StorePaymentProvider::factory()
+	 */
+	public static function removePackage($package)
+	{
+		if (in_array($package, self::$packages, true)) {
+			self::$packages = array_diff(self::$packages, array($package));
+		}
+	}
+
+	// }}}
+	// {{{ protected static function driverFileExists()
+
+	/**
+	 * Gets whether or not a payment provider driver exists for the given
+	 * package
+	 *
+	 * @param string $driver  the driver name.
+	 * @param string $package the package.
+	 *
+	 * @return boolean true if the file exists and false if it does not.
+	 */
+	public static function driverFileExists($driver, $package)
+	{
+		$file_exists = false;
+
+		$filename = $package.'/'.$package.$driver.'PaymentProvider.php';
+
+		$include_paths = explode(':', get_include_path());
+		foreach ($include_paths as $include_path) {
+			$package_filename = $include_path.'/'.$filename;
+
+			if (file_exists($package_filename)) {
+				$file_exists = true;
+				break;
+			}
+		}
+
+		return $file_exists;
 	}
 
 	// }}}
