@@ -252,7 +252,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			foreach ($order->payment_methods as $payment_method)
 				$payment_total+= $payment_method->amount;
 
-			if ($order_total > $payment_total)
+			if ($order->total > $payment_total)
 				$valid = false;
 
 		} else {
@@ -438,6 +438,13 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	protected function saveOrder()
 	{
 		$order = $this->app->session->order;
+
+		// remove unused payment methods when multiple payments are allowed
+		if ($this->app->config->store->multiple_payment_support) {
+			foreach ($order->payment_methods as $payment_method)
+				if ($payment_method->amount <= 0)
+					$order->payment_methods->remove($payment_method);
+		}
 
 		if ($this->app->hasModule('SiteMultipleInstanceModule'))
 			$order->instance = $this->app->instance->getInstance();
