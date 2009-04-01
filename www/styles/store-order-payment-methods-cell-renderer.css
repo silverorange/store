@@ -1,0 +1,23 @@
+.store-order-payment-methods-cell-renderer {
+	border-top: 1px solid #ddd;
+}
+
+.store-order-payment-methods-cell-renderer th,
+.store-order-payment-methods-cell-renderer td {
+	width: auto;
+	padding: 0.5em;
+}
+
+.store-order-payment-methods-cell-renderer .payment-amount {
+	text-align: right;
+}
+
+.store-order-payment-methods-cell-renderer tbody th {
+	font-weight: normal;
+	text-align: left;
+}
+
+.store-order-payment-methods-cell-renderer tbody th.payment,
+.store-order-payment-methods-cell-renderer tbody td.payment-amount {
+	border-bottom: 1px solid #ddd;
+}
