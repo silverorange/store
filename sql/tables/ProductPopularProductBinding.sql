@@ -6,3 +6,6 @@ create table ProductPopularProductBinding (
 	total_sales numeric(11, 2) not null default 0,
 	primary key(source_product, related_product)
 );
+
+CREATE INDEX ProductPopularProductBinding_source_product_index ON ProductPopularProductBinding(source_product);
+CREATE INDEX ProductPopularProductBinding_related_product_index ON ProductPopularProductBinding(related_product);

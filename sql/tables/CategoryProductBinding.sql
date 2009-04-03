@@ -5,3 +5,6 @@ create table CategoryProductBinding (
 	displayorder int not null default 0,
 	primary key (product, category)
 );
+
+CREATE INDEX CategoryProductBinding_category_index ON CategoryProductBinding(category);
+CREATE INDEX CategoryProductBinding_product_index ON CategoryProductBinding(product);

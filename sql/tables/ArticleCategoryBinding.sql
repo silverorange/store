@@ -4,3 +4,6 @@ create table ArticleCategoryBinding (
 	primary key (article, category)
 );
 
+CREATE INDEX ArticleCategoryBinding_article_index ON ArticleCategoryBinding(article);
+CREATE INDEX ArticleCategoryBinding_category_index ON ArticleCategoryBinding(category);
+

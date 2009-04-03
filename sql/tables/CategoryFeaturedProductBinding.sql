@@ -4,3 +4,6 @@ create table CategoryFeaturedProductBinding (
 	displayorder int not null default 0,
 	primary key (product, category)
 );
+
+CREATE INDEX CategoryFeaturedProductBinding_category_index ON CategoryFeaturedProductBinding(category);
+CREATE INDEX CategoryFeaturedProductBinding_product_index ON CategoryFeaturedProductBinding(product);
