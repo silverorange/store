@@ -38,8 +38,16 @@ abstract class StoreCheckoutPaymentProcessPage extends StoreCheckoutPage
 			$this->processPayment();
 			$this->updateProgress();
 		} catch (Exception $e) {
-			$this->logException($e);
-			$this->handleException($e);
+			if ($this->handleException($e)) {
+				// log the exception
+				if (!($e instanceof SwatException)) {
+					$e = new SwatException($e);
+				}
+				$e->process(false);
+			} else {
+				// exception was not handled, rethrow
+				throw $e;
+			}
 		}
 
 		$this->relocate();
@@ -56,22 +64,11 @@ abstract class StoreCheckoutPaymentProcessPage extends StoreCheckoutPage
 	abstract protected function relocate();
 
 	// }}}
-	// {{{ protected function logException()
-
-	protected function logException(Exception $e)
-	{
-		if (!($e instanceof SwatException)) {
-			$e = new SwatException($e);
-		}
-
-		$e->process(false);
-	}
-
-	// }}}
 	// {{{ protected funciton handleException()
 
 	protected function handleException(Exception $e)
 	{
+		return false;
 	}
 
 	// }}}
