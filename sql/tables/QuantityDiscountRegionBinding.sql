@@ -5,3 +5,5 @@ create table QuantityDiscountRegionBinding (
 	primary key (quantity_discount, region)
 );
 
+CREATE INDEX QuantityDiscountRegionBinding_quantity_discount_index ON QuantityDiscountRegionBinding(quantity_discount);
+

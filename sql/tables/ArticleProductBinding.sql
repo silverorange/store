@@ -4,3 +4,5 @@ create table ArticleProductBinding (
 	primary key (article, product)
 );
 
+CREATE INDEX ArticleProductBinding_article_index ON ArticleProductBinding(article);
+CREATE INDEX ArticleProductBinding_product_index ON ArticleProductBinding(product);

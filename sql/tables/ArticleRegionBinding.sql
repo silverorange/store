@@ -3,3 +3,5 @@ create table ArticleRegionBinding (
 	region int not null references Region(id) on delete cascade,
 	primary key (article, region)
 );
+
+CREATE INDEX ArticleRegionBinding_article_index ON ArticleRegionBinding(article);
