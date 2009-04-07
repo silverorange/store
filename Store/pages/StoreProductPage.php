@@ -84,14 +84,12 @@ class StoreProductPage extends StorePage
 
 	public function isVisibleInRegion(StoreRegion $region)
 	{
-		if (isset($this->app->memcache)) {
-			$key = 'StoreProductPage.isVisibleInRegion.'.$region->id.
-				'.'.$this->product_id;
+		$key = 'StoreProductPage.isVisibleInRegion.'.$region->id.
+			'.'.$this->product_id;
 
-			$product = $this->app->memcache->getNs('product', $key);
-			if ($product !== false)
-				return ($product !== null);
-		}
+		$product = $this->getCacheValue($key, 'product');
+		if ($product !== false)
+			return ($product !== null);
 
 		$sql = sprintf('select product from VisibleProductCache
 			where product = %s and  region = %s',
@@ -99,11 +97,7 @@ class StoreProductPage extends StorePage
 			$this->app->db->quote($region->id, 'integer'));
 
 		$product = SwatDB::queryOne($this->app->db, $sql);
-
-		if (isset($this->app->memcache)) {
-			$this->app->memcache->setNs('product', $key, $product);
-		}
-
+		$this->addCacheValue($product, $key, 'product');
 		return ($product !== null);
 	}
 
@@ -219,15 +213,13 @@ class StoreProductPage extends StorePage
 
 	protected function loadProduct($id)
 	{
-		if (isset($this->app->memcache)) {
-			$key = 'StoreProductPage.product.'.$id;
-			$product = $this->app->memcache->getNs('product', $key);
-			if ($product !== false) {
-				$this->product = $product;
-				$this->product->setDatabase($this->app->db);
-				$this->product->setRegion($this->app->getRegion());
-				return;
-			}
+		$key = 'StoreProductPage.product.'.$id;
+		$product = $this->getCacheValue($key, 'product');
+		if ($product !== false) {
+			$this->product = $product;
+			$this->product->setDatabase($this->app->db);
+			$this->product->setRegion($this->app->getRegion());
+			return;
 		}
 
 		$product_class = SwatDBClassMap::get('StoreProduct');
@@ -243,6 +235,8 @@ class StoreProductPage extends StorePage
 		$wrapper = SwatDBClassMap::get('StoreItemGroupWrapper');
 		$this->product->items->loadAllSubDataObjects('item_group',
 			$this->app->db, $sql, $wrapper);
+
+		$this->addCacheValue($this->product, $key, 'product');
 	}
 
 	// }}}
@@ -1479,11 +1473,6 @@ class StoreProductPage extends StorePage
 
 			$this->layout->addHtmlHeadEntrySet(
 				$this->reviews_ui->getRoot()->getHtmlHeadEntrySet());
-		}
-
-		if (isset($this->app->memcache)) {
-			$key = 'StoreProductPage.product.'.$this->product->id;
-			$this->app->memcache->setNs('product', $key, $this->product);
 		}
 	}
 
