@@ -175,11 +175,7 @@ class StorePaymentType extends SwatDBDataObject
 	 */
 	public function isPayPal()
 	{
-		$types = array(
-			'paypal',
-		);
-
-		return (in_array($this->shortname, $types));
+		return ($this->shortname === 'paypal');
 	}
 
 	// }}}
