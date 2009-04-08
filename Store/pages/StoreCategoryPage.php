@@ -410,7 +410,7 @@ class StoreCategoryPage extends StorePage
 
 	protected function getRelatedArticleTitle($article)
 	{
-		return $this->title;
+		return $article->title;
 	}
 
 	// }}}
