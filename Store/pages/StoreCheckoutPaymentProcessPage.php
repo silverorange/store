@@ -35,9 +35,15 @@ abstract class StoreCheckoutPaymentProcessPage extends StoreCheckoutPage
 	public function process()
 	{
 		try {
-			$this->processPayment();
-			$this->updateProgress();
+			if ($this->processPayment()) {
+				$this->updateProgress();
+			} else {
+				$this->cancelPayment();
+			}
 		} catch (Exception $e) {
+
+			$this->cancelPayment();
+
 			if ($this->handleException($e)) {
 				// log the exception
 				if (!($e instanceof SwatException)) {
@@ -76,10 +82,14 @@ abstract class StoreCheckoutPaymentProcessPage extends StoreCheckoutPage
 
 	protected function updateProgress()
 	{
-		if (!isset($this->app->session->checkout_progress))
-			$this->app->session->checkout_progress = new ArrayObject();
+		$this->app->checkout->addProgress('checkout/first');
+	}
 
-		$this->app->session->checkout_progress[] = 'checkout/first';
+	// }}}
+	// {{{ protected function cancelPayment()
+
+	protected function cancelPayment()
+	{
 	}
 
 	// }}}
