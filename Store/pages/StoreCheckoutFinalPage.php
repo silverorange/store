@@ -156,6 +156,9 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
 	{
 		$ds = new SwatDetailsStore($order);
 
+		if (!$this->app->config->store->multiple_payment_support)
+			$ds->payment_method = $order->payment_methods->getFirst();
+
 		return $ds;
 	}
 

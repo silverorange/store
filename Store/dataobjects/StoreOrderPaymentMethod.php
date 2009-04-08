@@ -256,6 +256,9 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 
 	public function getTag()
 	{
+		if ($this->tag === null)
+			$this->tag = uniqid();
+
 		return $this->tag;
 	}
 
@@ -318,6 +321,7 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	{
 		$properties = parent::getSerializablePrivateProperties();
 		$properties[] = 'card_verification_value';
+		$properties[] = 'unencrypted_card_verification_value';
 		$properties[] = 'account_payment_method_id';
 		$properties[] = 'adjustable';
 		$properties[] = 'max_amount';

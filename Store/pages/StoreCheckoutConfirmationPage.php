@@ -925,24 +925,23 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		ob_start();
 
-		//if ($this->app->config->store->multiple_payment_support)
-		if (count($order->payment_methods) > 0 || count($order->payment_methods) == 0) {
-			if ($this->app->config->store->multiple_payment_support) {
-				$this->calculateMultiplePaymentMethods($order);
-				$this->validatePaymentMethod(true);
-				$this->displayMultiplePaymentMethods($order);
-				$this->displayNewPaymentLinks($order);
-			} else {
+		if ($this->app->config->store->multiple_payment_support) {
+			$this->calculateMultiplePaymentMethods($order);
+			$this->validatePaymentMethod(true);
+			$this->displayMultiplePaymentMethods($order);
+			$this->displayNewPaymentLinks($order);
+		} else {
+			if (count($order->payment_methods) > 0) {
 				$payment_method =  $order->payment_methods->getFirst();
 				$payment_method->display();
 				$this->displayNewPaymentLinks($order);
+			} else {
+				$span_tag = new SwatHtmlTag('span');
+				$span_tag->class = 'swat-none';
+				$span_tag->setContent(Store::_('<none>'));
+				$span_tag->display();
+				$this->displayNewPaymentLinks($order);
 			}
-		} else {
-			$span_tag = new SwatHtmlTag('span');
-			$span_tag->class = 'swat-none';
-			$span_tag->setContent(Store::_('<none>'));
-			$span_tag->display();
-			$this->displayNewPaymentLinks($order);
 		}
 
 		if ($this->app->config->store->multiple_payment_support)
@@ -1017,12 +1016,11 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	protected function sortPaymentMethodsByPriority($payment_methods)
 	{
 		$payment_methods_by_priority = array();
-		$count = 0;
 
 		foreach ($payment_methods as $payment_method) {
-			$priority = $payment_method->payment_type->priority.'_'.$count;
+			$priority = $payment_method->payment_type->priority;
+			$priority.= '_'.$payment_method->getTag();
 			$payment_methods_by_priority[$priority] =  $payment_method;
-			$count++;
 		}
 
 		krsort($payment_methods_by_priority);
@@ -1137,8 +1135,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	protected function displayPaymentMethodToolLink($payment_method)
 	{
-		$tag = uniqid();
-		$payment_method->setTag($tag);
+		$tag = $payment_method->getTag();
+
 		$tool = new SwatToolLink();
 		$tool->class = 'payment_method_edit';
 		$tool->title = 'Edit';
