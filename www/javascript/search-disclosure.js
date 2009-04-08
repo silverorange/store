@@ -8,6 +8,8 @@ function StoreSearchDisclosure(id, open, entry, keywords_id, panel_height,
 	this.initial_open    = open;
 	this.title           = title;
 
+	this.custom_query_string = null;
+
 	if (panel_height) {
 		this.panel_height = panel_height;
 	} else {
@@ -254,6 +256,13 @@ StoreSearchDisclosure.prototype.loadSearchPanel = function()
 	var query = location.search;
 	if (query.length > 0)
 		query = query.substr(1);
+
+	if (this.custom_query_string) {
+		if (query.length)
+			query += '&';
+
+		query += this.custom_query_string;
+	}
 
 	var uri = location.href;
 

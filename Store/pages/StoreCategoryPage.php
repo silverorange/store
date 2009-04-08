@@ -387,7 +387,9 @@ class StoreCategoryPage extends StorePage
 					echo ', ';
 
 				$anchor_tag->href = $article->path;
-				$anchor_tag->setContent($article->title);
+				$anchor_tag->setContent(
+					$this->getRelatedArticleTitle($article));
+
 				$anchor_tag->display();
 			}
 
@@ -401,6 +403,14 @@ class StoreCategoryPage extends StorePage
 	protected function displayRelatedArticlesTitle()
 	{
 		echo Store::_('Related Articles: ');
+	}
+
+	// }}}
+	// {{{ protected function getRelatedArticleTitle()
+
+	protected function getRelatedArticleTitle($article)
+	{
+		return $this->title;
 	}
 
 	// }}}
