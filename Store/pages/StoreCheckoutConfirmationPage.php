@@ -925,7 +925,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		ob_start();
 
-		if (count($order->payment_methods) > 0) {
+		//if ($this->app->config->store->multiple_payment_support)
+		if (count($order->payment_methods) > 0 || count($order->payment_methods) == 0) {
 			if ($this->app->config->store->multiple_payment_support) {
 				$this->calculateMultiplePaymentMethods($order);
 				$this->validatePaymentMethod(true);
@@ -1054,19 +1055,18 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		echo '</tbody><tfoot>';
 
 		$locale = SwatI18NLocale::get();
-
-		if (count($payment_methods) > 1) {
-			echo '<tr><th>Payment Total:</th><td class="payment-amount">';
-			echo $locale->formatCurrency($payment_total);
-			echo '</td><td></td></tr>';
-		}
-
 		$balance = $order->total - $payment_total;
+
+		echo '<tr><th>Payment Total:</th><td class="payment-amount">';
+		echo $locale->formatCurrency($payment_total);
+		echo '</td><td></td></tr>';
+
 		if ($balance > 0) {
 			echo '<tr class="payment-remaining swat-error"><th>Remaining Balance:</th><td class="payment-amount">';
 			echo $locale->formatCurrency($balance);
 			echo '</td><td></td></tr>';
 		}
+
 		echo '</tfoot></table>';
 	}
 

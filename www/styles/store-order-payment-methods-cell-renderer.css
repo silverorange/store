@@ -21,3 +21,12 @@
 .store-order-payment-methods-cell-renderer tbody td.payment-amount {
 	border-bottom: 1px solid #ddd;
 }
+
+.store-order-payment-methods-cell-renderer tfoot th {
+	text-align: right;
+	font-weight: bold;
+}
+
+.store-order-payment-methods-cell-renderer tfoot td.payment-amount {
+	font-weight: bold;
+}

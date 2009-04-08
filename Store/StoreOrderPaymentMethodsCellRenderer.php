@@ -82,7 +82,10 @@ class StoreOrderPaymentMethodsCellRenderer extends SwatCellRenderer
 				echo '<table class="store-order-payment-methods-cell-renderer">';
 				echo '<tbody>';
 
+				$payment_total = 0;
 				foreach ($this->payment_methods as $payment_method) {
+					$payment_total+= $payment_method->amount;
+
 					if ($this->gpg instanceof Crypt_GPG)
 						$payment_method->setGPG($this->gpg);
 
@@ -95,7 +98,12 @@ class StoreOrderPaymentMethodsCellRenderer extends SwatCellRenderer
 					echo '</td></tr>';
 				}
 
-				echo '</tbody></table>';
+				echo '</tbody><tfoot>';
+				$locale = SwatI18NLocale::get();
+				echo '<tr><th>Payment Total:</th><td class="payment-amount">';
+				echo $locale->formatCurrency($payment_total);
+				echo '</td></tr>';
+				echo '</tfoot></table>';
 			}
 		} else {
 			$span_tag = new SwatHtmlTag('span');
