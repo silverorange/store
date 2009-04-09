@@ -443,18 +443,19 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 	protected function buildProducts($fulltext_result)
 	{
 		$pager = $this->ui->getWidget('product_pager');
+		$engine = $this->instantiateProductSearchEngine();
+		$engine->setFulltextResult($fulltext_result);
 
 		if ($pager->visible) {
-			$products = $this->getProducts($fulltext_result,
-				$pager->page_size, $pager->current_record);
-
+			$products = $engine->search($pager->page_size, $pager->current_record);
+			$pager->total_records = $engine->getResultCount();
 			$pager->link = $this->source;
 		} else {
 			$limit = $this->getProductLimit();
 			if ($limit === null)
-				$products = $this->getProducts($fulltext_result);
+				$products = $engine->search();
 			else
-				$products = $this->getProducts($fulltext_result, $limit);
+				$products = $engine->search($limit);
 		}
 
 		$this->result_count['product'] = count($products);
@@ -470,69 +471,6 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 			$this->displayProducts($products);
 			$results->content = ob_get_clean();
 		}
-	}
-
-	// }}}
-	// {{{ protected function getProducts()
-
-	protected function getProducts(
-		SiteNateGoFulltextSearchResult $result = null,
-		$page_size = null, $current_record = 0)
-	{
-		$pager = $this->ui->getWidget('product_pager');
-
-		// cached content
-		$set_key = sprintf('StoreSearchResultsPage.getProducts.%s.%s.%s',
-			$this->getQueryString(),
-			$page_size, $current_record);
-
-		$product_key = 'StoreSearchResultsPage.product';
-
-		$product_ids = $this->getCacheValue($set_key, 'product');
-		$total_records = $this->getCacheValue($set_key.'.total_records',
-			'product');
-
-		if ($product_ids !== false && $total_records !== false) {
-			$class_name = SwatDBClassMap::get('StoreProductWrapper');
-			$products = new $class_name();
-			foreach ($product_ids as $id) {
-				$product = $this->getCacheValue($product_key.'.'.$id,
-					'product');
-
-				if ($product !== false)
-					$products->add($product);
-			}
-
-			if (count($products) == count($product_ids)) {
-				$products->setDatabase($this->app->db);
-				$pager->total_records = $total_records;
-				return $products;
-			}
-		}
-
-		// get products
-		$engine = $this->instantiateProductSearchEngine();
-
-		if ($result !== null)
-			$engine->setFulltextResult($result);
-
-		$products = $engine->search($page_size, $current_record);
-		$pager->total_records = $engine->getResultCount();
-
-		// cache each product individually as the whole wrapper
-		// is too big to cache
-		$product_ids = array();
-		foreach ($products as $product) {
-			$product_ids[] = $product->id;
-			$this->addCacheValue($product, $product_key.'.'.$product->id,
-				'product');
-		}
-
-		$this->addCacheValue($product_ids, $set_key, 'product');
-		$this->addCacheValue($engine->getResultCount(),
-			$set_key.'.total_records', 'product');
-
-		return $products;
 	}
 
 	// }}}
