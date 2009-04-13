@@ -299,8 +299,10 @@ class StoreSearchPanel extends SwatObject
 		if ($this->memcache !== null) {
 			$key = 'StoreSearchPanel.getAttributes.'.$type;
 			$value = $this->memcache->get($key);
-			if ($value !== false)
+			if ($value !== false) {
+				$value->setDatabase($this->db);
 				return $value;
+			}
 		}
 
 		$sql = 'select id, shortname, title, attribute_type from Attribute';
@@ -316,13 +318,8 @@ class StoreSearchPanel extends SwatObject
 		$attributes = SwatDB::query($this->db, $sql,
 			SwatDBClassMap::get('StoreAttributeWrapper'));
 
-		if ($this->memcache !== null) {
-			// pre-load the attribute_type so it gets cached
-			foreach ($attributes as $attribute)
-				$attribute->attribute_type;
-
+		if ($this->memcache !== null)
 			$this->memcache->set($key, $attributes);
-		}
 
 		return $attributes;
 	}
