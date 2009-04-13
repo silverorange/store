@@ -957,6 +957,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	protected function calculateMultiplePaymentMethods($order)
 	{
 		$payment_total = 0;
+		$this->sortPaymentMethodsByPriority($order);
 		$adjustable_payment_methods = array();
 
 		foreach ($order->payment_methods as $payment_method) {
@@ -975,11 +976,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		if ($payment_total < $order->total) {
 			// need more payment
 			// add to adjustable payment, in order of payment priority
-			$adjustable_payment_methods_by_priority =
-				$this->sortPaymentMethodsByPriority($adjustable_payment_methods);
-
 			$adjustment = $order->total - $payment_total;
-			foreach ($adjustable_payment_methods_by_priority as $payment_method) {
+			foreach ($adjustable_payment_methods as $payment_method) {
 				$max = $payment_method->getMaxAmount();
 				if ($max === null || $adjustment <= $max) {
 					$payment_method->amount = $adjustment;
@@ -992,12 +990,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		} elseif ($payment_total > $order->total) {
 			// too much payment, reduce in order of payment type priority
-			$payment_methods_by_priority =
-				$this->sortPaymentMethodsByPriority($order->payment_methods);
-
 			$partial_payment_total = 0;
 			$done = false;
-			foreach ($payment_methods_by_priority as $payment_method) {
+			foreach ($order->payment_methods as $payment_method) {
 				if ($done) {
 					$payment_method->amount = 0;
 				} elseif ($partial_payment_total + $payment_method->amount > $order->total) {
@@ -1013,11 +1008,12 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	// }}}
 	// {{{ protected function sortPaymentMethodsByPriority()
 
-	protected function sortPaymentMethodsByPriority($payment_methods)
+	protected function sortPaymentMethodsByPriority($order)
 	{
 		$payment_methods_by_priority = array();
 
-		foreach ($payment_methods as $payment_method) {
+		foreach ($order->payment_methods as $payment_method) {
+			$order->payment_methods->remove($payment_method);
 			$priority = $payment_method->payment_type->priority;
 			$priority.= '_'.$payment_method->getTag();
 			$payment_methods_by_priority[$priority] =  $payment_method;
@@ -1025,7 +1021,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		krsort($payment_methods_by_priority);
 
-		return $payment_methods_by_priority;
+		foreach ($payment_methods_by_priority as $payment_method)
+			$order->payment_methods->add($payment_method);
 	}
 
 	// }}}
