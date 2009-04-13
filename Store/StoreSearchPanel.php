@@ -299,7 +299,7 @@ class StoreSearchPanel extends SwatObject
 		if ($this->memcache !== null) {
 			$key = 'StoreSearchPanel.getAttributes.'.$type;
 			$value = $this->memcache->get($key);
-			if (1== 2 && $value !== false)
+			if ($value !== false)
 				return $value;
 		}
 
