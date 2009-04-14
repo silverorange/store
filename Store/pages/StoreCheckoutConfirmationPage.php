@@ -960,7 +960,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		$this->sortPaymentMethodsByPriority($order);
 		$payment_total = 0;
-		$payment_methods = array_reverse($order->payment_methods->getArray());
+		$payment_methods = $order->payment_methods->getArray();
 		$adjustable_payment_methods = array();
 
 		foreach ($payment_methods as $payment_method) {
@@ -1030,14 +1030,16 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	protected function sortPaymentMethodsCallback($method1, $method2)
 	{
-		$result = $method2->payment_type->priority -
-			$method1->payment_type->priority;
+		$result = 0;
+
+		if ($method1->isAdjustable() && !$method2->isAdjustable())
+			$result = 1;
+		elseif ($method2->isAdjustable() && !$method1->isAdjustable())
+			$result = -1;
 
 		if ($result == 0) {
-			if ($method1->isAdjustable() && !$method2->isAdjustable())
-				$result = 1;
-			elseif ($method2->isAdjustable() && !$method1->isAdjustable())
-				$result = -1;
+			$result = $method2->payment_type->priority -
+				$method1->payment_type->priority;
 		}
 
 		if ($result == 0)
