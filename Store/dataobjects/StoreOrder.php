@@ -529,11 +529,13 @@ class StoreOrder extends SwatDBDataObject
 
 	protected function loadPaymentMethods()
 	{
-		$sql = sprintf('select * from OrderPaymentMethod
+		$sql = sprintf('select OrderPaymentMethod.*
+			from OrderPaymentMethod
 			inner join PaymentType on
 				OrderPaymentMethod.payment_type = PaymentType.id
 			where ordernum = %s
-			order by PaymentType.displayorder, PaymentType.title',
+			order by OrderPaymentMethod.displayorder,
+				PaymentType.displayorder, PaymentType.title',
 			$this->db->quote($this->id, 'integer'));
 
 		$payment_methods = SwatDB::query($this->db, $sql,
