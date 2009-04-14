@@ -43,6 +43,13 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	 */
 	public $amount;
 
+	/**
+	 * Order of display
+	 *
+	 * @var integer
+	 */
+	public $displayorder;
+
 	// }}}
 	// {{{ protected properties
 

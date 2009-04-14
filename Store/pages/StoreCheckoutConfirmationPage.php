@@ -444,6 +444,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			foreach ($order->payment_methods as $payment_method)
 				if ($payment_method->amount <= 0)
 					$order->payment_methods->remove($payment_method);
+
+			$this->sortPaymentMethodsByPriority($order);
 		}
 
 		if ($this->app->hasModule('SiteMultipleInstanceModule'))
@@ -956,11 +958,12 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	protected function calculateMultiplePaymentMethods($order)
 	{
-		$payment_total = 0;
 		$this->sortPaymentMethodsByPriority($order);
+		$payment_total = 0;
+		$payment_methods = array_reverse($order->payment_methods->getArray());
 		$adjustable_payment_methods = array();
 
-		foreach ($order->payment_methods as $payment_method) {
+		foreach ($payment_methods as $payment_method) {
 			if ($payment_method->amount === null) {
 				$payment_method->setAdjustable();
 			}
@@ -992,7 +995,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			// too much payment, reduce in order of payment type priority
 			$partial_payment_total = 0;
 			$done = false;
-			foreach ($order->payment_methods as $payment_method) {
+			foreach ($payment_methods as $payment_method) {
 				if ($done) {
 					$payment_method->amount = 0;
 				} elseif ($partial_payment_total + $payment_method->amount > $order->total) {
@@ -1010,19 +1013,37 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	protected function sortPaymentMethodsByPriority($order)
 	{
-		$payment_methods_by_priority = array();
+		$payment_methods = $order->payment_methods->getArray();
+		$order->payment_methods->removeAll();
 
-		foreach ($order->payment_methods as $payment_method) {
-			$order->payment_methods->remove($payment_method);
-			$priority = $payment_method->payment_type->priority;
-			$priority.= '_'.$payment_method->getTag();
-			$payment_methods_by_priority[$priority] =  $payment_method;
+		usort($payment_methods, array($this, 'sortPaymentMethodsCallback'));
+
+		$count = 1;
+		foreach ($payment_methods as $payment_method) {
+			$payment_method->displayorder = $count++;
+			$order->payment_methods->add($payment_method);
+		}
+	}
+
+	// }}}
+	// {{{ protected function sortPaymentMethodsCallback()
+
+	protected function sortPaymentMethodsCallback($method1, $method2)
+	{
+		$result = $method2->payment_type->priority -
+			$method1->payment_type->priority;
+
+		if ($result == 0) {
+			if ($method1->isAdjustable() && !$method2->isAdjustable())
+				$result = 1;
+			elseif ($method2->isAdjustable() && !$method1->isAdjustable())
+				$result = -1;
 		}
 
-		krsort($payment_methods_by_priority);
+		if ($result == 0)
+			$result = strcmp($method1->getTag(), $method2->getTag());
 
-		foreach ($payment_methods_by_priority as $payment_method)
-			$order->payment_methods->add($payment_method);
+		return $result;
 	}
 
 	// }}}
@@ -1030,12 +1051,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	protected function displayMultiplePaymentMethods($order)
 	{
-		$payment_methods = array_reverse($order->payment_methods->getArray());
-
 		echo '<table class="multiple-payment-table"><tbody>';
 
 		$payment_total = 0;
-		foreach ($payment_methods as $payment_method) {
+		foreach ($order->payment_methods as $payment_method) {
 			$payment_total+= $payment_method->amount;
 
 			echo '<tr><th class="payment">';
