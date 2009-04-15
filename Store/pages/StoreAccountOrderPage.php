@@ -275,6 +275,9 @@ class StoreAccountOrderPage extends SiteUiPage
 			$details_view->getField('billing_address')->visible = false;
 			$details_view->getField('shipping_address')->visible = false;
 		} else {
+			if (!$this->app->config->store->multiple_payment_support)
+				$ds->payment_method = $this->order->payment_methods->getFirst();
+
 			if ($this->order->comments === null)
 				$details_view->getField('comments')->visible = false;
 
@@ -289,8 +292,10 @@ class StoreAccountOrderPage extends SiteUiPage
 
 		$items_view->getRow('shipping')->value = $this->order->shipping_total;
 
-		if ($this->order->surcharge_total > 0)
-			$items_view->getRow('surcharge')->value = $this->order->surcharge_total;
+		if ($this->order->surcharge_total > 0) {
+			$items_view->getRow('surcharge')->value =
+				$this->order->surcharge_total;
+		}
 
 		if ($this->order->tax_total > 0)
 			$items_view->getRow('tax')->value = $this->order->tax_total;
@@ -352,11 +357,14 @@ class StoreAccountOrderPage extends SiteUiPage
 	private function setItemPaths($store)
 	{
 		$sql = sprintf('select OrderItem.id,
-				getCategoryPath(ProductPrimaryCategoryView.primary_category) as path,
+				getCategoryPath(ProductPrimaryCategoryView.primary_category)
+					as path,
 				Product.shortname
 			from OrderItem
-				left outer join Item as MatchItem on MatchItem.sku = OrderItem.sku
-				left outer join AvailableItemView on AvailableItemView.item = MatchItem.id
+				left outer join Item as MatchItem on
+					MatchItem.sku = OrderItem.sku
+				left outer join AvailableItemView on
+					AvailableItemView.item = MatchItem.id
 					and AvailableItemView.region = %s
 				left outer join Item on AvailableItemView.item = Item.id
 				left outer join Product on Item.product = Product.id
