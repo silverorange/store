@@ -99,8 +99,11 @@ abstract class StorePage extends SitePathPage
 		$key = 'StorePage.category.'.$category_id;
 		$category = $this->getCacheValue($key, 'product');
 		if ($category !== false) {
-			$category->setDatabase($this->app->db);
-			$category->setRegion($this->app->getRegion());
+			if ($category !== null) {
+				$category->setDatabase($this->app->db);
+				$category->setRegion($this->app->getRegion());
+			}
+
 			return $category;
 		}
 
