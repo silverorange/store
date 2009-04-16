@@ -141,6 +141,15 @@ class StoreAttribute extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ protected function getSerializableSubDataObjects()
+
+	protected function getSerializableSubDataObjects()
+	{
+		return array_merge(parent::getSerializableSubDataObjects(),
+			array('attribute_type'));
+	}
+
+	// }}}
 
 	// display methods
 	// {{{ public function display()

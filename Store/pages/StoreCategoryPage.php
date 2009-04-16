@@ -26,14 +26,12 @@ class StoreCategoryPage extends StorePage
 
 	public function isVisibleInRegion(StoreRegion $region)
 	{
-		if (isset($this->app->memcache)) {
-			$key = 'StoreCategoryPage.isVisibleInRegion.'.$region->id.
-				'.'.$this->path;
+		$key = 'StoreCategoryPage.isVisibleInRegion.'.$region->id.
+			'.'.$this->path;
 
-			$category = $this->app->memcache->getNs('product', $key);
-			if ($category !== false)
-				return ($category !== null);
-		}
+		$category = $this->getCacheValue($key, 'product');
+		if ($category !== false)
+			return ($category !== null);
 
 		$category = null;
 
@@ -51,9 +49,7 @@ class StoreCategoryPage extends StorePage
 			}
 		}
 
-		if (isset($this->app->memcache)) {
-			$this->app->memcache->setNs('product', $key, $category);
-		}
+		$this->addCacheValue($category, $key, 'product');
 
 		return ($category !== null);
 	}

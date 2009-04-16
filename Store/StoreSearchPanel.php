@@ -24,6 +24,11 @@ class StoreSearchPanel extends SwatObject
 	protected $db;
 
 	/**
+	 * @var SiteMemcacheModule
+	 */
+	protected $memcache;
+
+	/**
 	 * @var StoreRegion
 	 */
 	protected $region;
@@ -62,12 +67,12 @@ class StoreSearchPanel extends SwatObject
 	// {{{ public function __construct()
 
 	public function __construct(MDB2_Driver_Common $db, StoreRegion $region,
-		SwatContainer $root = null)
+		SwatContainer $root = null, SiteMemcacheModule $memcache = null)
 	{
 		$this->db = $db;
 		$this->region = $region;
+		$this->memcache = $memcache;
 		$this->ui = new SwatUI($root);
-
 		$this->ui->loadFromXML($this->ui_xml);
 	}
 
@@ -239,10 +244,20 @@ class StoreSearchPanel extends SwatObject
 
 	protected function getPriceRanges()
 	{
+		if ($this->memcache !== null) {
+			$key = 'StoreSearchPanel.getPriceRanges';
+			$value = $this->memcache->get($key);
+			if ($value !== false)
+				return $value;
+		}
+
 		$sql = 'select * from PriceRange order by coalesce(start_price, 0)';
 
 		$ranges = SwatDB::query($this->db, $sql,
 			SwatDBClassMap::get('StorePriceRangeWrapper'));
+
+		if ($this->memcache !== null)
+			$this->memcache->set($key, $ranges);
 
 		return $ranges;
 	}
@@ -252,6 +267,13 @@ class StoreSearchPanel extends SwatObject
 
 	protected function getCategories()
 	{
+		if ($this->memcache !== null) {
+			$key = 'StoreSearchPanel.getCategories';
+			$value = $this->memcache->get($key);
+			if ($value !== false)
+				return $value;
+		}
+
 		$sql = 'select id, title, shortname from Category
 			where parent is null
 			and id in
@@ -263,6 +285,9 @@ class StoreSearchPanel extends SwatObject
 		$categories = SwatDB::query($this->db, $sql,
 			SwatDBClassMap::get('StoreCategoryWrapper'));
 
+		if ($this->memcache !== null)
+			$this->memcache->set($key, $categories);
+
 		return $categories;
 	}
 
@@ -271,6 +296,15 @@ class StoreSearchPanel extends SwatObject
 
 	protected function getAttributes($type = null)
 	{
+		if ($this->memcache !== null) {
+			$key = 'StoreSearchPanel.getAttributes.'.$type;
+			$value = $this->memcache->get($key);
+			if ($value !== false) {
+				$value->setDatabase($this->db);
+				return $value;
+			}
+		}
+
 		$sql = 'select id, shortname, title, attribute_type from Attribute';
 
 		if ($type !== null)
@@ -283,6 +317,9 @@ class StoreSearchPanel extends SwatObject
 
 		$attributes = SwatDB::query($this->db, $sql,
 			SwatDBClassMap::get('StoreAttributeWrapper'));
+
+		if ($this->memcache !== null)
+			$this->memcache->set($key, $attributes);
 
 		return $attributes;
 	}
