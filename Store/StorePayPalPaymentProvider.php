@@ -2,7 +2,6 @@
 
 require_once 'Store/StorePaymentProvider.php';
 require_once 'Swat/SwatNumber.php';
-require_once 'Swat/SwatMessage.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Payment/PayPal/SOAP.php';
 
@@ -64,7 +63,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 *
 	 * Available parameters are:
 	 *
-	 * <kbd>mode</kbd>      - optional. Transaction mode to use. Muse be one of
+	 * <kbd>mode</kbd>      - optional. Transaction mode to use. Must be one of
 	 *                        either 'live' or 'sandbox'. If not specified,
 	 *                        'sandbox' is used.
 	 * <kbd>username</kbd>  - required. Username for PayPal authentication.
