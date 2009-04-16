@@ -208,7 +208,7 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 			$num_entries_updated += $result['num_entries_updated'];
 		}
 
-		$this->buildMessages($num_entries_moved, $num_entries_removed,
+		$this->buildCartMessages($num_entries_moved, $num_entries_removed,
 			$num_entries_updated);
 	}
 
@@ -292,9 +292,9 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 	}
 
 	// }}}
-	// {{{ protected function buildMessages()
+	// {{{ protected function buildCartMessages()
 
-	protected function buildMessages($num_entries_moved, $num_entries_removed,
+	protected function buildCartMessages($num_entries_moved, $num_entries_removed,
 		$num_entries_updated)
 	{
 		$message_display = $this->ui->getWidget('message_display');
