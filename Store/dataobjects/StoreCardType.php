@@ -273,9 +273,9 @@ class StoreCardType extends SwatDBDataObject
 		case 'switch':
 		case 'solo':
 		case 'dinersclub':
+		case 'discover':
 			$length = 3;
 			break;
-		case 'discover':
 		case 'amex':
 			$length = 4;
 			break;
