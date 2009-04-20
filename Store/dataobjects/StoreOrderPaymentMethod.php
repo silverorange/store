@@ -44,6 +44,14 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	public $amount;
 
 	/**
+	 * Whether this payment method is adjustable when calculating multiple
+	 * payment amounts.
+	 *
+	 * @var boolean
+	 */
+	public $adjustable = false;
+
+	/**
 	 * Order of display
 	 *
 	 * @var integer
@@ -71,14 +79,6 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	 * @see StoreOrderPaymentMethod::getUnencryptedCardVerificationValue()
 	 */
 	protected $unencrypted_card_verification_value = '';
-
-	/**
-	 * Whether this payment method is adjustable when calculating multiple
-	 * payment amounts.
-	 *
-	 * @var boolean
-	 */
-	protected $adjustable = false;
 
 	/**
 	 * The max amount this payment method can be adjusted to if it is
@@ -330,7 +330,6 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 		$properties[] = 'card_verification_value';
 		$properties[] = 'unencrypted_card_verification_value';
 		$properties[] = 'account_payment_method_id';
-		$properties[] = 'adjustable';
 		$properties[] = 'max_amount';
 		$properties[] = 'tag';
 
