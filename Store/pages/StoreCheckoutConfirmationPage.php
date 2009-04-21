@@ -61,6 +61,28 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			throw new StoreException('Missing shipping address.  '.
 				'StoreOrder::shipping_address must be a valid reference to a '.
 				'StoreOrderAddress object by this point.');
+
+		$this->checkAddress($this->app->session->order->billing_address);
+		$this->checkAddress($this->app->session->order->shipping_address);
+	}
+
+	// }}}
+
+	// {{{ protected function checkAddress()
+
+	protected function checkAddress(StoreOrderAddress $address)
+	{
+		$account = $this->app->session->account;
+
+		// Check to make sure the address hasn't been deleted from the account.
+		// If it has, remove the reference to the AccountAddress
+		if ($address->getAccountAddressId() !== null) {
+			$account_address = $account->addresses->getByIndex(
+				$address->getAccountAddressId());
+
+			if ($account_address === null)
+				$address->clearAccountAddress();
+		}
 	}
 
 	// }}}
