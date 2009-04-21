@@ -372,6 +372,51 @@ class StoreCartModule extends SiteApplicationModule
 	}
 
 	// }}}
+	// {{{ public function __get()
+
+	/**
+	 * Gets a cart from this cart module
+	 *
+	 * @param string $name the name of the cart to get. If no such cart exists
+	 *                      an exception is thrown.
+	 *
+	 * @throws StoreException
+	 */
+	public function __get($name)
+	{
+		if (isset($this->carts[$name]))
+			return $this->carts[$name];
+
+		throw new SiteException('Cart module does not have a property with '.
+			"the name '{$name}', and no cart with the identifier '{$name}' ".
+			'is loaded.');
+	}
+
+	// }}}
+	// {{{ public function __isset()
+
+	/**
+	 * Checks if a property of this cart module is set
+	 *
+	 * This magic method allows carts managed by this cart module to act as
+	 * read-only public properties of this module.
+	 *
+	 * @param string $name the name of the property to check for existance.
+	 *
+	 * @return boolean true if the property or cart exists in this object and
+	 *                  false if it does not.
+	 */
+	public function __isset($name)
+	{
+		$isset = isset($this->$name);
+
+		if (!$isset)
+			$isset = isset($this->carts[$name]);
+
+		return $isset;
+	}
+
+	// }}}
 	// {{{ protected function loadEntries()
 
 	/**
@@ -585,51 +630,6 @@ class StoreCartModule extends SiteApplicationModule
 		}
 
 		return $cart;
-	}
-
-	// }}}
-	// {{{ private function __get()
-
-	/**
-	 * Gets a cart from this cart module
-	 *
-	 * @param string $name the name of the cart to get. If no such cart exists
-	 *                      an exception is thrown.
-	 *
-	 * @throws StoreException
-	 */
-	private function __get($name)
-	{
-		if (isset($this->carts[$name]))
-			return $this->carts[$name];
-
-		throw new SiteException('Cart module does not have a property with '.
-			"the name '{$name}', and no cart with the identifier '{$name}' ".
-			'is loaded.');
-	}
-
-	// }}}
-	// {{{ private function __isset()
-
-	/**
-	 * Checks if a property of this cart module is set
-	 *
-	 * This magic method allows carts managed by this cart module to act as
-	 * read-only public properties of this module.
-	 *
-	 * @param string $name the name of the property to check for existance.
-	 *
-	 * @return boolean true if the property or cart exists in this object and
-	 *                  false if it does not.
-	 */
-	private function __isset($name)
-	{
-		$isset = isset($this->$name);
-
-		if (!$isset)
-			$isset = isset($this->carts[$name]);
-
-		return $isset;
 	}
 
 	// }}}
