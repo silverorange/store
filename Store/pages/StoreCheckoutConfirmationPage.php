@@ -417,7 +417,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$account->createdate->toUTC();
 
 			if ($this->app->hasModule('SiteMultipleInstanceModule'))
-				$account->instance = $this->app->instance->getInstance();
+				$account->instance = $this->app->getInstance();
 		}
 
 		// save account
@@ -449,7 +449,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		}
 
 		if ($this->app->hasModule('SiteMultipleInstanceModule'))
-			$order->instance = $this->app->instance->getInstance();
+			$order->instance = $this->app->getInstance();
 
 		// attach order to account
 		if ($this->app->session->checkout_with_account)
@@ -996,10 +996,15 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$partial_payment_total = 0;
 			$done = false;
 			foreach ($payment_methods as $payment_method) {
+				$payment_total =
+					$partial_payment_total + $payment_method->amount;
+
 				if ($done) {
 					$payment_method->amount = 0;
-				} elseif ($partial_payment_total + $payment_method->amount > $order->total) {
-					$payment_method->amount = $order->total - $partial_payment_total;
+				} elseif ($payment_total > $order->total) {
+					$payment_method->amount =
+						$order->total - $partial_payment_total;
+
 					$done = true;
 				}
 
@@ -1078,7 +1083,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		echo '</td><td></td></tr>';
 
 		if ($balance > 0) {
-			echo '<tr class="payment-remaining swat-error"><th>Remaining Balance:</th><td class="payment-amount">';
+			echo '<tr class="payment-remaining swat-error">'.
+				'<th>Remaining Balance:</th><td class="payment-amount">';
+
 			echo $locale->formatCurrency($balance);
 			echo '</td><td></td></tr>';
 		}
