@@ -32,6 +32,14 @@ class StoreOrderAddress extends StoreAddress
 	}
 
 	// }}}
+	// {{{ public function clearAccountAddress()
+
+	public function clearAccountAddress()
+	{
+		$this->account_address_id = null;
+	}
+
+	// }}}
 	// {{{ public function copyFrom()
 
 	public function copyFrom(StoreAddress $address)
