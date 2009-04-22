@@ -16,7 +16,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * Details page for Orders
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreOrderDetails extends AdminPage
@@ -72,6 +72,11 @@ abstract class StoreOrderDetails extends AdminPage
 				throw new AdminNotFoundException(sprintf(
 					Store::_('An order with an id of ‘%d’ does not exist.'),
 					$this->id));
+			}
+
+			if ($this->order->instance->id != $this->app->getInstanceId()) {
+				throw new AdminNotFoundException(sprintf(
+					Store::_('Incorrect instance for order ‘%d’.'), $this->id));
 			}
 		}
 

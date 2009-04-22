@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreAccountWrapper.php';
  * Removes personal data from inactive accounts
  *
  * @package   Store
- * @copyright 2007-2008 silverorange
+ * @copyright 2007-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountDeleter extends StorePrivateDataDeleter
@@ -162,26 +162,16 @@ class StoreAccountDeleter extends StorePrivateDataDeleter
 	protected function getWhereClause()
 	{
 		$expiry_date = $this->getExpiryDate();
+		$instance_id = $this->app->getInstanceId();
 
-		if ($this->app->hasModule('SiteInstanceModule')) {
-			$instance = $this->app->getModule('SiteInstanceModule');
-			$instance_id = $instance->getId();
+		$sql = 'where last_login < %s
+			and fullname is not null
+			and instance %s %s';
 
-			$sql = 'where last_login < %s
-				and fullname is not null
-				and instance %s %s';
-
-			$sql = sprintf($sql,
-				$this->app->db->quote($expiry_date->getDate(), 'date'),
-				SwatDB::equalityOperator($instance_id),
-				$this->app->db->quote($instance_id, 'integer'));
-		} else {
-			$sql = 'where last_login < %s
-				and fullname is not null';
-
-			$sql = sprintf($sql,
-				$this->app->db->quote($expiry_date->getDate(), 'date'));
-		}
+		$sql = sprintf($sql,
+			$this->app->db->quote($expiry_date->getDate(), 'date'),
+			SwatDB::equalityOperator($instance_id),
+			$this->app->db->quote($instance_id, 'integer'));
 
 		return $sql;
 	}

@@ -23,9 +23,10 @@ create table Orders (
 	surcharge_total numeric(11, 2) not null,
 	tax_total numeric(11, 2) not null,
 
-	ad integer null references Ad(id),
+	ad integer default null references Ad(id),
 	locale char(5) not null references Locale(id),
 	invoice integer null references Invoice(id),
+	instance integer default null references Instance(id),
 
 	-- whether this order has been processed by the cron job that inserts popular products
 	popular_products_processed boolean not null default false,
@@ -39,3 +40,4 @@ CREATE INDEX Orders_createdate_index ON Orders(createdate);
 CREATE INDEX Orders_billing_address_index ON Orders(billing_address);
 CREATE INDEX Orders_shipping_address_index ON Orders(shipping_address);
 CREATE INDEX Orders_popular_products_processed_index ON Orders(popular_products_processed);
+CREATE INDEX Orders_instance_index ON Orders(instance);

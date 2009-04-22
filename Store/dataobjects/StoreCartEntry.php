@@ -1,6 +1,7 @@
 <?php
 
 require_once 'SwatDB/SwatDBDataObject.php';
+require_once 'Site/dataobjects/SiteInstance.php';
 require_once 'Store/dataobjects/StoreItem.php';
 require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/dataobjects/StoreOrderItem.php';
@@ -23,7 +24,7 @@ require_once 'Store/dataobjects/StoreItemAlias.php';
  * subclassing this class to add these toString() methods.
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreCart
  */
@@ -387,6 +388,9 @@ class StoreCartEntry extends SwatDBDataObject
 	 */
 	protected function init()
 	{
+		$this->registerInternalProperty('instance',
+			SwatDBClassMap::get('SiteInstance'));
+
 		$this->registerInternalProperty('item',
 			SwatDBClassMap::get('StoreItem'));
 

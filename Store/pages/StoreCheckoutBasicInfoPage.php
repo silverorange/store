@@ -123,13 +123,10 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 			$email == $this->app->session->account->email)
 			return true;
 
-		$instance = ($this->app->hasModule('SiteMultipleInstanceModule')) ?
-			$this->app->instance->getInstance() : null;
-
-		$class_name = SwatDBClassMap::get('SiteAccount');
+		$class_name = SwatDBClassMap::get('StoreAccount');
 		$account = new $class_name();
 		$account->setDatabase($this->app->db);
-		$found = $account->loadWithEmail($email, $instance);
+		$found = $account->loadWithEmail($email, $this->app->getInstance());
 
 		$account_id = ($this->app->session->isLoggedIn()) ?
 			$this->app->session->account->id : null;

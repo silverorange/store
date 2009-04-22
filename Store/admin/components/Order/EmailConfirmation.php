@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * Page to resend the confirmation email for an order
  *
  * @package   Store
- * @copyright 2006-2008 silverorange
+ * @copyright 2006-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderEmailConfirmation extends AdminConfirmation
@@ -58,6 +58,11 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 				throw new AdminNotFoundException(sprintf(
 					Store::_('An order with an id of ‘%d’ does not exist.'),
 					$this->id));
+			}
+
+			if ($this->order->instance->id != $this->app->getInstanceId()) {
+				throw new AdminNotFoundException(sprintf(
+					Store::_('Incorrect instance for order ‘%d’.'), $this->id));
 			}
 		}
 		return $this->order;
