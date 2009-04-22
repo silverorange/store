@@ -435,11 +435,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		// if this is a new account, set createdate to now
 		if ($new_account) {
+			$account->instance   = $this->app->getInstance();
 			$account->createdate = new SwatDate();
 			$account->createdate->toUTC();
-
-			if ($this->app->hasModule('SiteMultipleInstanceModule'))
-				$account->instance = $this->app->getInstance();
 		}
 
 		// save account
@@ -470,8 +468,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$this->sortPaymentMethodsByPriority($order);
 		}
 
-		if ($this->app->hasModule('SiteMultipleInstanceModule'))
-			$order->instance = $this->app->getInstance();
+		$order->instance = $this->app->getInstance();
 
 		// attach order to account
 		if ($this->app->session->checkout_with_account)

@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreAccountPaymentMethodWrapper.php';
  * Removes expired payment methods
  *
  * @package   Store
- * @copyright 2006-2008 silverorange
+ * @copyright 2006-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountPaymentMethodDeleter extends StorePrivateDataDeleter
@@ -122,24 +122,15 @@ class StoreAccountPaymentMethodDeleter extends StorePrivateDataDeleter
 	protected function getWhereClause()
 	{
 		$expiry_date = $this->getExpiryDate();
+		$instance_id = $this->app->getInstanceId();
 
-		if ($this->app->hasModule('SiteInstanceModule')) {
-			$instance = $this->app->getModule('SiteInstanceModule');
-			$instance_id = $instance->getId();
+		$sql = 'where card_expiry < %s
+			and account in (select id from Account where instance %s %s)';
 
-			$sql = 'where card_expiry < %s
-				and account in (select id from Account where instance %s %s)';
-
-			$sql = sprintf($sql,
-				$this->app->db->quote($expiry_date->getDate(), 'date'),
-				SwatDB::equalityOperator($instance_id),
-				$this->app->db->quote($instance_id, 'integer'));
-		} else {
-			$sql = 'where card_expiry < %s';
-
-			$sql = sprintf($sql,
-				$this->app->db->quote($expiry_date->getDate(), 'date'));
-		}
+		$sql = sprintf($sql,
+			$this->app->db->quote($expiry_date->getDate(), 'date'),
+			SwatDB::equalityOperator($instance_id),
+			$this->app->db->quote($instance_id, 'integer'));
 
 		return $sql;
 	}

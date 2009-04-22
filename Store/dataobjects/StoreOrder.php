@@ -4,6 +4,7 @@ require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
 require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Site/dataobjects/SiteAd.php';
+require_once 'Site/dataobjects/SiteInstance.php';
 require_once 'Store/StoreOrderConfirmationMailMessage.php';
 require_once 'Store/StoreOrderStatus.php';
 require_once 'Store/StoreOrderStatusList.php';
@@ -21,7 +22,7 @@ require_once 'Store/dataobjects/StoreInvoice.php';
  *
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrder extends SwatDBDataObject
@@ -345,6 +346,9 @@ class StoreOrder extends SwatDBDataObject
 
 		$this->registerInternalProperty('ad',
 			SwatDBClassMap::get('SiteAd'), true);
+
+		$this->registerInternalProperty('instance',
+			SwatDBClassMap::get('SiteInstance'));
 
 		$this->registerInternalProperty('invoice',
 			SwatDBClassMap::get('StoreInvoice'));

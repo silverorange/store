@@ -12,7 +12,7 @@ require_once 'SwatDB/SwatDBClassMap.php';
  * Index page for Orders
  *
  * @package   Store
- * @copyright 2006-2008 silverorange
+ * @copyright 2006-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderIndex extends AdminSearch
@@ -89,7 +89,10 @@ class StoreOrderIndex extends AdminSearch
 
 	protected function getWhereClause()
 	{
-		$where = '1 = 1';
+		$instance_id = $this->app->getInstanceId();
+		$where.= sprintf('Orders.instance %s %s',
+			SwatDB::equityOperator($instance_id),
+			$this->app->db->quote($instance_id, 'integer'));
 
 		// Order #
 		$clause = new AdminSearchClause('integer:id');

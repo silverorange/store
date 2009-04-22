@@ -23,7 +23,7 @@ require_once 'Store/exceptions/StoreException.php';
  * ids which do not necessarily reference a unique cart entry.
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreCheckoutCart, StoreSavedCart
  */
@@ -575,8 +575,7 @@ abstract class StoreCart extends SwatObject
 	 */
 	protected function preSaveEntry(StoreCartEntry $entry)
 	{
-		if ($this->app->hasModule('SiteMultipleInstanceModule'))
-			$entry->instance = $this->app->instance->getInstance();
+		$entry->instance = $this->app->getInstance();
 	}
 
 	// }}}

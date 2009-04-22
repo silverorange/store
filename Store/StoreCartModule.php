@@ -26,7 +26,7 @@ require_once 'Store/dataobjects/StoreCategoryWrapper.php';
  * {@link SiteApplication::getDefaultModuleList()} method.
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreCart
  */
@@ -512,9 +512,7 @@ class StoreCartModule extends SiteApplicationModule
 					$this->app->session->getSessionId(), 'text'));
 		}
 
-		if ($this->app->hasModule('SiteMultipleInstanceModule') &&
-			($where_clause !== null)) {
-
+		if ($where_clause !== null) {
 			$instance_id = $this->app->getInstanceId();
 			$where_clause.= sprintf(' and instance %s %s',
 				SwatDB::equalityOperator($instance_id),

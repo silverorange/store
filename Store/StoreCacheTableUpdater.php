@@ -14,7 +14,7 @@ require_once 'Store/StoreCommandLineConfigModule.php';
  * for each entry found in the dirty cache table list.
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCacheTableUpdater extends SiteCommandLineApplication
@@ -159,7 +159,8 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
 
 	protected function flushMemcache()
 	{
-		$instances = SwatDB::queryColumn($this->db, 'Instance', 'text:shortname');
+		$instances = SwatDB::queryColumn($this->db, 'Instance',
+			'text:shortname');
 
 		if (count($instances) == 0) {
 			$this->memcache->flushNs('product');
