@@ -73,7 +73,7 @@
 			</object>
 		</widget>
 		<widget class="AdminNote">
-			<property name="content" translatable="yes">Only disabled catalogs or catalogs containing no products may be deleted.</property>
+			<property name="content" translatable="yes">Only catalogs containing no products, or catalogs disabled in all regions can be deleted.</property>
 		</widget>
 	</widget>
 </swatml>
