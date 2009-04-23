@@ -89,9 +89,10 @@ class StoreOrderIndex extends AdminSearch
 
 	protected function getWhereClause()
 	{
+		// filter on instance by default
 		$instance_id = $this->app->getInstanceId();
-		$where.= sprintf('Orders.instance %s %s',
-			SwatDB::equityOperator($instance_id),
+		$where = sprintf('Orders.instance %s %s',
+			SwatDB::equalityOperator($instance_id),
 			$this->app->db->quote($instance_id, 'integer'));
 
 		// Order #
@@ -217,9 +218,9 @@ class StoreOrderIndex extends AdminSearch
 	{
 		$sql = 'select count(Orders.id) from Orders
 					left outer join Account on Orders.account = Account.id
-					inner join OrderAddress as BillingAddress
+					left outer join OrderAddress as BillingAddress
 						on Orders.billing_address = BillingAddress.id
-					inner join OrderAddress as ShippingAddress
+					left outer join OrderAddress as ShippingAddress
 						on Orders.shipping_address = ShippingAddress.id
 					inner join Locale on Orders.locale = Locale.id
 					inner join Region on Locale.region = Region.id
@@ -240,7 +241,7 @@ class StoreOrderIndex extends AdminSearch
 		$store = new SwatTableStore();
 		foreach ($orders as $order) {
 			$ds = new SwatDetailsStore($order);
-			$ds->fullname = $order->billing_address->getFullname();
+			$ds->fullname = $this->getOrderFullname($order);
 			$ds->title = $this->getOrderTitle($order);
 			$ds->has_notes = ($order->notes != '');
 			$ds->has_comments = ($order->comments != '');
@@ -252,20 +253,38 @@ class StoreOrderIndex extends AdminSearch
 	}
 
 	// }}}
+	// {{{ protected function getOrderFullname()
+
+	protected function getOrderFullname(StoreOrder $order)
+	{
+		$fullname = null;
+
+		if ($order->billing_address !== null) {
+			$fullname = $order->billing_address->getFullname();
+		} elseif ($order->email !== null) {
+			$fullname = $order->email;
+		} elseif ($order->phone !== null) {
+			$fullname = $order->phone;
+		}
+
+		return $fullname;
+	}
+
+	// }}}
 	// {{{ protected function getOrders()
 
 	protected function getOrders($view, $limit, $offset)
 	{
 		$sql = 'select Orders.id, Orders.total, Orders.createdate,
 					Orders.locale, Orders.notes, Orders.comments,
-					Orders.billing_address,
+					Orders.billing_address, Orders.email, Orders.phone,
 					(Orders.comments is not null and Orders.comments != %s)
 						as has_comments
 				from Orders
 					left outer join Account on Orders.account = Account.id
-					inner join OrderAddress as BillingAddress
+					left outer join OrderAddress as BillingAddress
 						on Orders.billing_address = BillingAddress.id
-					inner join OrderAddress as ShippingAddress
+					left outer join OrderAddress as ShippingAddress
 						on Orders.shipping_address = ShippingAddress.id
 					inner join Locale on Orders.locale = Locale.id
 					inner join Region on Locale.region = Region.id
