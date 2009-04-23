@@ -156,8 +156,6 @@ class StoreCatalogClone extends AdminDBEdit
 
 	protected function buildNavBar()
 	{
-		parent::buildNavBar();
-
 		$link = sprintf('Catalog/Details?id=%s', $this->id);
 		$sql = sprintf('select title from Catalog where id = %s', $this->id);
 		$title = SwatDB::queryOne($this->app->db, $sql);
