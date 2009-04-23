@@ -103,8 +103,8 @@ class StoreCatalogDelete extends AdminDBDelete
 
 	protected function getNoteContent()
 	{
-		return sprintf(Store::_('A %s must have no products, or be '.
-			'disabled in all regions and have a clone in order to be deleted.'),
+		return sprintf(Store::_('A %s must contain no products, or be '.
+			'disabled in all regions in order to be deleted.'),
 			Store::_('catalog'));
 	}
 
