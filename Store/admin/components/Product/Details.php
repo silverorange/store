@@ -727,53 +727,54 @@ class StoreProductDetails extends AdminIndex
 
 	private function buildViewInStoreToolLinks(StoreProduct $product)
 	{
-		if (count($this->queryRegions()) > 1) {
-			$this->buildPerRegionViewInStoreToolLinks($product);
-		} else {
-			$tool_link = $this->ui->getWidget('view_in_store');
-			$some_category = $product->categories->getFirst();
-			if ($some_category !== null) {
-				$path = $some_category->path;
-				$tool_link->value = 'store/'.$path.'/'.$product->shortname;
-			} else {
-				$tool_link->visible = false;
-			}
-		}
-	}
+		$regions = $this->queryRegions();
+		$region_count = count($regions);
 
-	// }}}
-	// {{{ private function buildPerRegionViewInStoreToolLinks()
+		// do this before the category check, so that the prototype tool link
+		// gets removed no matter what.
+		$prototype_tool_link = $this->ui->getWidget('view_in_store');
+		$toolbar = $prototype_tool_link->parent;
+		$toolbar->remove($prototype_tool_link);
 
-	private function buildPerRegionViewInStoreToolLinks(StoreProduct $product)
-	{
-		$some_category = $product->categories->getFirst();
-		if ($some_category !== null) {
-			$prototype_tool_link = $this->ui->getWidget('view_in_store');
-			$toolbar = $prototype_tool_link->parent;
-			$toolbar->remove($prototype_tool_link);
-			$path = $some_category->path;
+		$category_path = null;
+		$first_category = $product->categories->getFirst();
+		if ($first_category !== null)
+			$category_path = $first_category->path.'/';
 
-			foreach ($this->queryRegions() as $region) {
-				$locale = $region->getFirstLocale();
-				if ($locale !== null) {
-					$sql = sprintf('select product from VisibleProductView
-						where region = %s and product = %s',
-						$this->app->db->quote($region->id, 'integer'),
-						$this->app->db->quote($product->id, 'integer'));
+		foreach ($this->regions as $region) {
+			$locale = $region->getFirstLocale();
+			if ($locale !== null) {
+				$sql = sprintf('select product from VisibleProductView
+					where region = %s and product = %s',
+					$this->app->db->quote($region->id, 'integer'),
+					$this->app->db->quote($product->id, 'integer'));
 
-					$visible_in_region =
-						(SwatDB::queryOne($this->app->db, $sql) !== null);
+				$visible_in_region =
+					(SwatDB::queryOne($this->app->db, $sql) !== null);
 
-					$tool_link = clone $prototype_tool_link;
-					$tool_link->id.= '_'.$region->id;
-					$tool_link->value = $locale->getURLLocale();
-					$tool_link->value.= 'store/'.$path.'/'.$product->shortname;
+				$tool_link = clone $prototype_tool_link;
+				$tool_link->id.= '_'.$region->id;
+
+				if ($region_count > 1) {
+					$tool_link->value = sprintf('%sstore/%s%s',
+						$locale->getURLLocale(),
+						$category_path,
+						$product->shortname);
+
 					$tool_link->title.= sprintf(' (%s)', $region->title);
-					if (!$visible_in_region)
-						$tool_link->sensitive = false;
-
-					$toolbar->packEnd($tool_link);
+				} else {
+					$tool_link->value = sprintf('store/%s%s',
+						$category_path,
+						$product->shortname);
 				}
+
+				// since we check the VisibleProductView for this, this will
+				// work on both sites that allow orphan products and those that
+				// don't
+				if (!$visible_in_region)
+					$tool_link->sensitive = false;
+
+				$toolbar->packEnd($tool_link);
 			}
 		}
 	}
