@@ -60,7 +60,10 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 					$this->id));
 			}
 
-			if ($this->order->instance->id != $this->app->getInstanceId()) {
+			$instance_id = ($this->order->instance === null) ?
+				null : $this->order->instance->id;
+
+			if ($instance_id != $this->app->getInstanceId()) {
 				throw new AdminNotFoundException(sprintf(
 					Store::_('Incorrect instance for order ‘%d’.'), $this->id));
 			}
