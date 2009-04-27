@@ -519,13 +519,16 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$payment_method->surcharge = $payment_type->surcharge;
 
 		if ($this->ui->hasWidget('payment_amount')) {
-			$old_amount = $payment_method->amount;
+			$amount = $this->ui->getWidget('payment_amount')->value;
 
-			$payment_method->amount =
-				$this->ui->getWidget('payment_amount')->value;
+			if ($amount == null) {
+				$payment_method->setAdjustable(true);
+			} else {
+				if ($amount != $payment_method->amount)
+					$payment_method->setAdjustable(false);
 
-			if ($old_amount != $payment_method->amount)
-				$payment_method->setAdjustable(false);
+				$payment_method->amount = $amount;
+			}
 		}
 
 		if ($payment_type->isCard()) {

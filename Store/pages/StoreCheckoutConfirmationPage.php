@@ -983,10 +983,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$adjustable_payment_methods = array();
 
 		foreach ($payment_methods as $payment_method) {
-			if ($payment_method->amount === null) {
-				$payment_method->setAdjustable();
-			}
-
 			if ($payment_method->isAdjustable()) {
 				$payment_method->amount = 0;
 				$adjustable_payment_methods[] = $payment_method;
