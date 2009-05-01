@@ -29,7 +29,7 @@ class StoreCategoryPage extends StorePage
 		$key = 'StoreCategoryPage.isVisibleInRegion.'.$region->id.
 			'.'.$this->path;
 
-		$category = $this->getCacheValue($key, 'product');
+		$category = $this->app->getCacheValue($key, 'product');
 		if ($category !== false)
 			return ($category !== null);
 
@@ -49,7 +49,7 @@ class StoreCategoryPage extends StorePage
 			}
 		}
 
-		$this->addCacheValue($category, $key, 'product');
+		$this->app->addCacheValue($category, $key, 'product');
 
 		return ($category !== null);
 	}
