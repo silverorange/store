@@ -97,7 +97,7 @@ abstract class StorePage extends SitePathPage
 	protected function queryCategory($category_id)
 	{
 		$key = 'StorePage.category.'.$category_id;
-		$category = $this->getCacheValue($key, 'product');
+		$category = $this->app->getCacheValue($key, 'product');
 		if ($category !== false) {
 			if ($category !== null) {
 				$category->setDatabase($this->app->db);
@@ -114,7 +114,7 @@ abstract class StorePage extends SitePathPage
 			'StoreCategoryWrapper');
 
 		$category = $categories->getFirst();
-		$this->addCacheValue($category, $key, 'product');
+		$this->app->addCacheValue($category, $key, 'product');
 		return $category;
 	}
 

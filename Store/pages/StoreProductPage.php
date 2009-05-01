@@ -87,7 +87,7 @@ class StoreProductPage extends StorePage
 		$key = 'StoreProductPage.isVisibleInRegion.'.$region->id.
 			'.'.$this->product_id;
 
-		$product = $this->getCacheValue($key, 'product');
+		$product = $this->app->getCacheValue($key, 'product');
 		if ($product !== false)
 			return ($product !== null);
 
@@ -97,7 +97,7 @@ class StoreProductPage extends StorePage
 			$this->app->db->quote($region->id, 'integer'));
 
 		$product = SwatDB::queryOne($this->app->db, $sql);
-		$this->addCacheValue($product, $key, 'product');
+		$this->app->addCacheValue($product, $key, 'product');
 		return ($product !== null);
 	}
 
@@ -214,7 +214,7 @@ class StoreProductPage extends StorePage
 	protected function loadProduct($id)
 	{
 		$key = 'StoreProductPage.product.'.$id;
-		$product = $this->getCacheValue($key, 'product');
+		$product = $this->app->getCacheValue($key, 'product');
 		if ($product !== false) {
 			$this->product = $product;
 			$this->product->setDatabase($this->app->db);
@@ -236,7 +236,7 @@ class StoreProductPage extends StorePage
 		$this->product->items->loadAllSubDataObjects('item_group',
 			$this->app->db, $sql, $wrapper);
 
-		$this->addCacheValue($this->product, $key, 'product');
+		$this->app->addCacheValue($this->product, $key, 'product');
 	}
 
 	// }}}
