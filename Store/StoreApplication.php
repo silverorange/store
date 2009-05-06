@@ -11,6 +11,7 @@ require_once 'Admin/Admin.php';
 require_once 'Store/Store.php';
 require_once 'Store/StoreMessage.php';
 require_once 'Store/StoreCartModule.php';
+require_once 'Store/StoreCheckoutModule.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/dataobjects/StoreRegion.php';
 
@@ -110,6 +111,7 @@ abstract class StoreApplication extends SiteWebApplication
 			'session'   => 'SiteAccountSessionModule',
 			'cookie'    => 'SiteCookieModule',
 			'cart'      => 'StoreCartModule',
+			'checkout'  => 'StoreCheckoutModule',
 			'messages'  => 'SiteMessagesModule',
 			'config'    => 'SiteConfigModule',
 			'analytics' => 'SiteAnalyticsModule',
