@@ -157,9 +157,8 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 			$pager = $this->ui->getWidget('article_pager');
 			$pager->display_parts = SwatPagination::NEXT | SwatPagination::PREV;
 		} else {
-			// set the article frame to use the whole width
-			$frame = $this->ui->getWidget('article_results_frame');
-			$frame->classes[] = 'store-article-results-full-width';
+			// set the right column to use the whole width
+			$this->ui->getWidget('right_column')->classes[] = 'full-width';
 		}
 
 		return true;

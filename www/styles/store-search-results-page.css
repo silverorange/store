@@ -65,9 +65,7 @@ ul.site-search-results li.store-category-tile a span.store-category-tile-title {
 	position: relative;
 }
 
-#article_results_frame.store-article-results-full-width,
-#post_results_frame.store-article-results-full-width {
-	background: none;
+#right_column.full-width {
 	border: none;
 	float: none;
 	width: auto;
