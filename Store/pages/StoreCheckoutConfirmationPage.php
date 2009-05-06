@@ -67,7 +67,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	}
 
 	// }}}
-
 	// {{{ protected function checkAddress()
 
 	protected function checkAddress(StoreOrderAddress $address)
