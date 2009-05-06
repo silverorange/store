@@ -214,6 +214,9 @@
 						<property name="title" translatable="yes">add sale discount…</property>
 						<widget class="SwatFlydown" id="sale_discount_flydown" />
 					</widget>
+					<widget class="SwatActionItem" id="remove_sale_discount">
+						<property name="title" translatable="yes">remove sale discount</property>
+					</widget>
 					<widget class="SwatActionItemDivider" />
 					<widget class="SwatActionItem" id="enable">
 						<property name="title" translatable="yes">enable…</property>
