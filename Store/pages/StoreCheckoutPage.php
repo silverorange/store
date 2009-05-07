@@ -143,7 +143,7 @@ abstract class StoreCheckoutPage extends SiteUiPage
 
 	protected function updateProgress()
 	{
-		$this->app->checkout->addProgress($this->getSource());
+		$this->app->checkout->setProgress($this->getSource());
 	}
 
 	// }}}
