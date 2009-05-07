@@ -80,14 +80,14 @@ class StoreCheckoutModule extends SiteApplicationModule
 	}
 
 	// }}}
-	// {{{ public function addProgress()
+	// {{{ public function setProgress()
 
 	/**
 	 * Sets a progress dependency as 'met'
 	 *
 	 * @param string $dependency the progress dependency that is now met.
 	 */
-	public function addProgress($dependency)
+	public function setProgress($dependency)
 	{
 		$session = $this->getSession();
 
