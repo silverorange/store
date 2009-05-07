@@ -532,6 +532,8 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		}
 
 		if ($payment_type->isCard()) {
+			$payment_method->setMaxAmount(null);
+
 			$this->updatePaymentMethodCardNumber($payment_method);
 
 			$this->updatePaymentMethodCardVerificationValue(
