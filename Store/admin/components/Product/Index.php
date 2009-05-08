@@ -49,6 +49,7 @@ class StoreProductIndex extends AdminSearch
 		$this->ui->loadFromXML($this->index_xml);
 
 		$this->initCatalogSelector();
+		$this->initSaleDiscountFlydown();
 		$this->initAttributeList();
 
 		$products_frame = $this->ui->getWidget('results_frame');
@@ -83,6 +84,16 @@ class StoreProductIndex extends AdminSearch
 		$catalog_count = SwatDB::queryOne($this->app->db, $sql);
 		if ($catalog_count == 1)
 			$this->ui->getWidget('catalog_field')->visible = false;
+	}
+
+	// }}}
+	// {{{ private function initSaleDiscountFlydown()
+
+	private function initSaleDiscountFlydown()
+	{
+		$flydown = $this->ui->getWidget('search_sale_discount');
+		$flydown->addOptionsByArray(SwatDB::getOptionArray(
+			$this->app->db, 'SaleDiscount', 'title', 'id', 'title'));
 	}
 
 	// }}}
