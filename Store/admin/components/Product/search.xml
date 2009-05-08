@@ -41,6 +41,10 @@
 				<property name="title" translatable="yes">Catalog</property>
 				<widget class="StoreCatalogSelector" id="catalog_selector" />
 			</widget>
+			<widget class="SwatFormField" id="sale_discount_field">
+				<property name="title" translatable="yes">Sale Discount</property>
+				<widget class="SwatFlydown" id="search_sale_discount" />
+			</widget>
 			<widget class="SwatFooterFormField">
 				<widget class="SwatButton" id="submit_button">
 					<property name="title" translatable="yes">Search</property>

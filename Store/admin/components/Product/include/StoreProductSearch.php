@@ -147,6 +147,7 @@ class StoreProductSearch
 		$where.= $this->buildSkuWhereClause();
 		$where.= $this->buildCategoryWhereClause();
 		$where.= $this->buildCatalogWhereClause();
+		$where.= $this->buildSaleDiscountWhereClause();
 
 		$this->where_clause = $where;
 	}
@@ -256,6 +257,22 @@ class StoreProductSearch
 
 		$where.= sprintf(' and Product.catalog in (%s)',
 			$catalog_selector->getSubQuery());
+
+		return $where;
+	}
+
+	// }}}
+	// {{{ protected function buildSaleDiscountWhereClause()
+
+	protected function buildSaleDiscountWhereClause()
+	{
+		$where = '';
+		$sale_discount = $this->ui->getWidget('search_sale_discount')->value;
+
+		if ($sale_discount !== null)
+			$where.= sprintf(' and Product.id in 
+				(select product from Item where sale_discount = %s)',
+				$this->db->quote($sale_discount));
 
 		return $where;
 	}
