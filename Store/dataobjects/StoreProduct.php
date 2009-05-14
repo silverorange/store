@@ -325,6 +325,7 @@ class StoreProduct extends SwatDBDataObject
 			SwatDBClassMap::get('StoreCategory'));
 
 		$this->registerInternalProperty('path');
+		$this->registerInternalProperty('cheapest_item');
 		$this->registerDateProperty('createdate');
 
 		$this->registerInternalProperty('catalog',
@@ -374,7 +375,7 @@ class StoreProduct extends SwatDBDataObject
 	protected function getSerializableSubDataObjects()
 	{
 		return array_merge(parent::getSerializableSubDataObjects(),
-			array('primary_category', 'primary_image',
+			array('primary_category', 'primary_image', 'cheapest_item',
 				'items', 'item_groups', 'categories', 'attributes',
 				'featured_categories', 'related_products',
 				'related_articles', 'popular_products',
@@ -682,6 +683,47 @@ class StoreProduct extends SwatDBDataObject
 
 		return SwatDB::query($this->db, $sql,
 			SwatDBClassMap::get('StoreProductWrapper'));
+	}
+
+	// }}}
+	// {{{ protected function loadCheapestItem()
+
+	/**
+	 * Loads the cheapest item of this product
+	 *
+	 * If the cheapest item was part of the initial query to load this product,
+	 * that value is returned. Otherwise, a separate query gets the cheapest
+	 * item of this product. If you are calling this method frequently during
+	 * a single request, it is more efficient to include the cheapest item in
+	 * the initial product query.
+	 */
+	protected function loadCheapestItem()
+	{
+		$cheapest_item = null;
+
+		if ($this->hasInternalValue('cheapest_item') &&
+			$this->getInternalValue('cheapest_item') !== null) {
+			$cheapest_item_id = $this->getInternalValue('cheapest_item');
+
+			$sql = 'select * from Item where id = %s';
+
+			$sql = sprintf($sql,
+				$this->db->quote($cheapest_item_id, 'integer'));
+		} else {
+			$sql = 'select * from Item where id in
+				(select getProductCheapestItem(%s, %s))';
+
+			$sql = sprintf($sql,
+				$this->db->quote($this->id, 'integer'),
+				$this->db->quote($this->region->id, 'integer'));
+		}
+
+		$wrapper = SwatDBClassMap::get('StoreItemWrapper');
+		$rs = SwatDB::query($this->db, $sql, $wrapper);
+		$cheapest_item = $rs->getFirst();
+		$cheapest_item->setRegion($this->region);
+
+		return $cheapest_item;
 	}
 
 	// }}}
