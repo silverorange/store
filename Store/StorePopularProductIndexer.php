@@ -241,7 +241,9 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 					OrderProductCrossListView.source_product
 				and ProductPopularProductBinding.related_product =
 					OrderProductCrossListView.related_product
-			where ordernum = %s';
+			where ordernum = %s
+				and OrderProductCrossListView.source_product in (select id from Product)
+				and OrderProductCrossListView.related_product in (select id from Product)';
 
 		$sql = sprintf($sql,
 			$this->db->quote($order_id, 'integer'));
@@ -259,7 +261,8 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 			from OrderProductPopularityView
 			left outer join ProductPopularity
 				on ProductPopularity.product = OrderProductPopularityView.product
-			where ordernum = %s';
+			where ordernum = %s
+				and OrderProductPopularityView.product in (select id from Product)';
 
 		$sql = sprintf($sql,
 			$this->db->quote($order_id, 'integer'));
