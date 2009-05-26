@@ -1,15 +1,21 @@
-#basic_info_container #basic_column_1 {
+#basic_column_1 {
 	float: left;
 	width: 60%;
+	padding-bottom: 1em;
 }
 
-#basic_info_container #basic_column_2 {
+#basic_column_2 {
 	float: left;
 	width: 38%;
 	margin-left: 2%;
 	display: block;
+	padding-bottom: 1em;
 }
 
-#basic_info_container #basic_column_2 #comments {
+#basic_column_2 #comments {
 	width: 98%;
+}
+
+#frame .swat-footer-form-field {
+	clear: left;
 }
