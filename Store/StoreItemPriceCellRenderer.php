@@ -169,6 +169,7 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 		$price = ob_get_clean();
 
 		$div = new SwatHtmlTag('div');
+		$div->class = 'store-quantity-discount';
 		$div->open();
 
 		if ($this->plural_unit === null)
