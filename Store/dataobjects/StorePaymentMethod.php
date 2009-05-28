@@ -456,10 +456,25 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	protected function getGPG()
 	{
 		if (!($this->gpg instanceof Crypt_GPG)) {
-			$this->gpg = new Crypt_GPG();
+			$this->gpg = new Crypt_GPG(
+				array(
+					'homedir' => $this->getKeyring(),
+				)
+			);
 		}
 
 		return $this->gpg;
+	}
+
+	// }}}
+	// {{{ protected function getKeyring()
+
+	protected function getKeyring()
+	{
+		$web_root = dirname($_SERVER['SCRIPT_FILENAME']);
+		$system   = dirname($web_root).'/system';
+		$keyrings = $system.'/keyrings';
+		return $keyrings.'/site';
 	}
 
 	// }}}
