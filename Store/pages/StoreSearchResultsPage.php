@@ -1,5 +1,6 @@
 <?php
 
+require_once 'Site/SiteViewFactory.php';
 require_once 'Site/pages/SiteSearchResultsPage.php';
 require_once 'Store/StoreArticleSearchEngine.php';
 require_once 'Store/StoreProductSearchEngine.php';
@@ -10,7 +11,6 @@ require_once 'Store/dataobjects/StoreCategoryImageWrapper.php';
 require_once 'Store/dataobjects/StoreProductImageWrapper.php';
 
 if (class_exists('Blorg')) {
-	require_once 'Blorg/BlorgViewFactory.php';
 	require_once 'Blorg/BlorgPostSearchEngine.php';
 	require_once 'Blorg/dataobjects/BlorgPostWrapper.php';
 }
@@ -19,7 +19,7 @@ if (class_exists('Blorg')) {
  * Page for displaying search results
  *
  * @package   Store
- * @copyright 2007 silverorange
+ * @copyright 2007-2009 silverorange
  */
 class StoreSearchResultsPage extends SiteSearchResultsPage
 {
@@ -296,13 +296,13 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 	 */
 	protected function displayPosts(BlorgPostWrapper $posts)
 	{
-		$view = BlorgViewFactory::get($this->app, 'post-search');
+		$view = SiteViewFactory::get($this->app, 'post-search');
 
-		$view->setPartMode('bodytext', BlorgView::MODE_SUMMARY);
-		$view->setPartMode('extended_bodytext', BlorgView::MODE_NONE);
-		$view->setPartMode('tags', BlorgView::MODE_NONE);
-		$view->setPartMode('author', BlorgView::MODE_NONE);
-		$view->setPartMode('comment_count', BlorgView::MODE_NONE);
+		$view->setPartMode('bodytext',          SiteView::MODE_SUMMARY);
+		$view->setPartMode('extended_bodytext', SiteView::MODE_NONE);
+		$view->setPartMode('tags',              SiteView::MODE_NONE);
+		$view->setPartMode('author',            SiteView::MODE_NONE);
+		$view->setPartMode('comment_count',     SiteView::MODE_NONE);
 
 		if (count($posts) > 0) {
 			echo '<ul class="site-search-results">';
