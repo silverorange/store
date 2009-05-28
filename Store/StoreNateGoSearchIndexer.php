@@ -431,7 +431,7 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 		$this->debug(Blorg::_('Indexing comments... ').'   ');
 
 		$comments = SwatDB::query($this->db, $sql,
-			SwatDBClassMap::get('BlorgCommentWrapper'));
+			SwatDBClassMap::get('SiteCommentWrapper'));
 
 		$total = count($comments);
 		$count = 0;
