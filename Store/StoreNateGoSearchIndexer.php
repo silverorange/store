@@ -7,7 +7,7 @@ require_once 'Store/pages/StoreSearchPage.php';
 
 if (class_exists('Blorg')) {
 	require_once 'Blorg/dataobjects/BlorgPostWrapper.php';
-	require_once 'Blorg/dataobjects/BlorgCommentWrapper.php';
+	require_once 'Site/dataobjects/SiteCommentWrapper.php';
 }
 
 /**
