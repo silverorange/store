@@ -53,7 +53,7 @@ $package->addReplacement('Store/Store.php', 'pear-config', '@DATA-DIR@', 'data_d
 $package->setPhpDep('5.1.5');
 $package->setPearinstallerDep('1.4.0');
 $package->addPackageDepWithChannel('required', 'Swat', 'pear.silverorange.com', '1.3.61');
-$package->addPackageDepWithChannel('required', 'Site', 'pear.silverorange.com', '1.4.11');
+$package->addPackageDepWithChannel('required', 'Site', 'pear.silverorange.com', '1.4.22');
 $package->addPackageDepWithChannel('required', 'Admin', 'pear.silverorange.com', '1.3.25');
 $package->addPackageDepWithChannel('required', 'XML_RPCAjax', 'pear.silverorange.com', '1.0.9');
 $package->addPackageDepWithChannel('required', 'Yui', 'pear.silverorange.com', '1.0.6');
@@ -62,6 +62,7 @@ $package->addPackageDepWithChannel('required', 'Text_Password', 'pear.php.net', 
 $package->addPackageDepWithChannel('required', 'Validate_Finance_CreditCard', 'pear.php.net', '0.5.2');
 $package->addPackageDepWithChannel('required', 'Numbers_Words', 'pear.php.net', '0.15.0');
 $package->addPackageDepWithChannel('required', 'Date', 'pear.silverorange.com', '1.5.0so6');
+$package->addPackageDepWithChannel('optional', 'Blorg', 'pear.silverorange.com', '0.1.34');
 $package->addPackageDepWithChannel('optional', 'Services_StrikeIron', 'pear.silverorange.com', '0.1.0');
 $package->addPackageDepWithChannel('optional', 'Payment_PayPal_SOAP', 'pear.php.net', '0.2.1');
 $package->addExtensionDep('required', 'imagick', '2.0.0');
