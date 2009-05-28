@@ -130,9 +130,9 @@ SwatDBClassMap::add('SiteArticle',        'StoreArticle');
 SwatDBClassMap::add('SiteArticleWrapper', 'StoreArticleWrapper');
 
 if (class_exists('Blorg')) {
-	require_once 'Blorg/BlorgViewFactory.php';
-	BlorgViewFactory::addPath('Store/views');
-	BlorgViewFactory::registerView('post-search', 'StoreBlorgPostSearchView');
+	require_once 'Site/SiteViewFactory.php';
+	SiteViewFactory::addPath('Store/views');
+	SiteViewFactory::registerView('post-search', 'StoreBlorgPostSearchView');
 }
 
 ?>
