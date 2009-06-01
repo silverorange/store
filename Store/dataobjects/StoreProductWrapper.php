@@ -28,40 +28,42 @@ class StoreProductWrapper extends SwatDBRecordsetWrapper
 
 			$product_ids = array();
 			foreach ($this->getArray() as $product) {
-				$product_ids[] = $this->db->quote($product->id, 'integer');
+				$product_ids[] = $product->id;
 				$product->attributes = new $wrapper_class();
 			}
+			$product_ids = $this->db->datatype->implodeArray($product_ids,
+				'integer');
 
 			$sql = sprintf('select ProductAttributeBinding.*
 				from ProductAttributeBinding
 				where ProductAttributeBinding.product in (%s)
 				order by product',
-				implode(',', $product_ids));
+				$product_ids);
 
 			$bindings = SwatDB::query($this->db, $sql);
 
-			if (count($bindings) == 0)
+			if (count($bindings) === 0)
 				return;
 
 			$attribute_ids = array();
-			foreach ($bindings as $binding)
-				$attribute_ids[] = $this->db->quote($binding->attribute, 'integer');
+			foreach ($bindings as $binding) {
+				$attribute_ids[] = $binding->attribute;
+			}
+			$attribute_ids = $this->db->datatype->implodeArray(
+				$attribute_ids, 'integer');
 
 			$sql = sprintf('select Attribute.*
 				from Attribute
 				where Attribute.id in (%s)
 				order by displayorder',
-				implode(',', $attribute_ids));
+				$attribute_ids);
 
 			$attributes = SwatDB::query($this->db, $sql, $wrapper_class);
 
-			foreach ($this as $product) {
-				foreach ($bindings as $binding) {
-					if ($binding->product === $product->id) {
-						$attribute = $attributes->getByIndex($binding->attribute);
-						$product->attributes->add($attribute);
-					}
-				}
+			foreach ($bindings as $binding) {
+				$product   = $this->getByIndex($binding->product);
+				$attribute = $attributes->getByIndex($binding->attribute);
+				$product->attributes->add($attribute);
 			}
 		}
 	}
