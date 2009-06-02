@@ -246,15 +246,14 @@ class StoreProductDetails extends AdminIndex
 			if ($sale_discount === null)
 				break;
 
-			SwatDB::updateColumn($this->app->db, 'Item',
+			$count = SwatDB::updateColumn($this->app->db, 'Item',
 				'integer:sale_discount', $sale_discount, 'id',
 					$view->getSelection());
 
-			$num = count($view->getSelection());
 			$message = new SwatMessage(sprintf(Store::ngettext(
 				'A sale discount has been applied to one item.',
-				'A sale discount has been applied to %s items.', $num),
-				SwatString::numberFormat($num)));
+				'A sale discount has been applied to %s items.', $count),
+				SwatString::numberFormat($count)));
 
 			$this->app->messages->add($message);
 
@@ -267,13 +266,13 @@ class StoreProductDetails extends AdminIndex
 					$view->getSelection())));
 
 			if ($num > 0) {
-				SwatDB::updateColumn($this->app->db, 'Item',
-					'integer:sale_discount', null, 'id', $item_list);
+				$count = SwatDB::updateColumn($this->app->db, 'Item',
+					'integer:sale_discount', null, 'id', $view->getSelection());
 
 				$message = new SwatMessage(sprintf(Store::ngettext(
 					'A sale discount has been removed from one item.',
-					'A sale discount has been removed from %s items.', $num),
-					SwatString::numberFormat($num)));
+					'A sale discount has been removed from %s items.', $count),
+					SwatString::numberFormat($count)));
 
 				$this->app->messages->add($message);
 			} else {
