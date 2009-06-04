@@ -16,7 +16,7 @@ require_once 'Store/dataobjects/StoreCategory.php';
 require_once 'Store/dataobjects/StoreItemGroupWrapper.php';
 require_once 'Store/dataobjects/StoreProductReview.php';
 require_once 'Store/StoreProductSearchEngine.php';
-@include_once 'Services/Akismet.php';
+@include_once 'Services/Akismet2.php';
 
 /**
  * A product page
@@ -493,19 +493,22 @@ class StoreProductPage extends StorePage
 		$is_spam = false;
 
 		if ($this->app->config->store->akismet_key !== null &&
-			class_exists('Services_Akismet')) {
+			class_exists('Services_Akismet2')) {
 			try {
-				$akismet = new Services_Akismet($this->app->getBaseHref(),
+				$akismet = new Services_Akismet2($this->app->getBaseHref(),
 					$this->app->config->store->akismet_key);
 
-				$akismet_review = new Services_Akismet_Comment();
-				$akismet_review->setAuthor($review->fullname);
-				$akismet_review->setAuthorEmail($review->email);
-				$akismet_review->setContent($review->bodytext);
-				$akismet_review->setPostPermalink(
-					$this->app->getBaseHref().$this->source);
+				$akismet_review = new Services_Akismet2_Comment(
+					array(
+						'comment_author'       => $review->fullname,
+						'comment_author_email' => $review->email,
+						'comment_content'      => $review->bodytext,
+						'permalink'            =>
+							$this->app->getBaseHref().$this->source,
+					)
+				);
 
-				$is_spam = $akismet->isSpam($akismet_review);
+				$is_spam = $akismet->isSpam($akismet_review, true);
 			} catch (Exception $e) {
 			}
 		}
