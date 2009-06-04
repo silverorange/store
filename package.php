@@ -65,6 +65,7 @@ $package->addPackageDepWithChannel('required', 'Date', 'pear.silverorange.com', 
 $package->addPackageDepWithChannel('optional', 'Blorg', 'pear.silverorange.com', '0.1.34');
 $package->addPackageDepWithChannel('optional', 'Services_StrikeIron', 'pear.silverorange.com', '0.1.0');
 $package->addPackageDepWithChannel('optional', 'Payment_PayPal_SOAP', 'pear.php.net', '0.2.1');
+$package->addPackageDepWithChannel('optional', 'Services_Akismet2', 'pear.php.net', '0.2.0');
 $package->addExtensionDep('required', 'imagick', '2.0.0');
 $package->generateContents();
 
