@@ -2,8 +2,10 @@
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
 	<widget class="SwatContainer" id="shipping_type_form">
-		<widget class="SwatRadioTable" id="shipping_type">
-			<property name="required" type="boolean">true</property>
+		<widget class="SwatFormField" id="shipping_type_field">
+			<widget class="SwatRadioTable" id="shipping_type">
+				<property name="required" type="boolean">true</property>
+			</widget>
 		</widget>
 	</widget>
 </swatml>
