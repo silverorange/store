@@ -686,6 +686,33 @@ class StoreProduct extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ protected function loadCollectionMemberProducts()
+
+	/**
+	 * Loads the member products of this collection product
+	 *
+	 * Member products are loaded with primary categories.
+	 */
+	protected function loadCollectionMemberProducts()
+	{
+		$sql = 'select Product.*,
+			ProductPrimaryCategoryView.primary_category,
+			getCategoryPath(ProductPrimaryCategoryView.primary_category) as path
+			from Product
+				inner join ProductCollectionBinding
+					on Product.id = ProductCollectionBinding.member_product
+						and ProductCollectionBinding.source_product = %s
+				left outer join ProductPrimaryCategoryView
+					on Product.id = ProductPrimaryCategoryView.product
+			order by Product.title asc';
+
+		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
+
+		return SwatDB::query($this->db, $sql,
+			SwatDBClassMap::get('StoreProductWrapper'));
+	}
+
+	// }}}
 	// {{{ protected function loadCheapestItem()
 
 	/**
