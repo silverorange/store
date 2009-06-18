@@ -318,14 +318,17 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 		$details = $response->GetExpressCheckoutDetailsResponseDetails;
 
-		$payment_method = $this->getStoreOrderPaymentMethod(
-			$details->PayerInfo, $db);
-
-		// Note: When multiple payment methods are added, this code will
-		// need updating.
-		$class_name = SwatDBClassMap::get('StoreOrderPaymentMethodWrapper');
-		$order->payment_methods = new $class_name();
-		$order->payment_methods->add($payment_method);
+		$payment_method = $order->payment_methods->getByPayPalToken($token);
+		if ($payment_method === null) {
+			$payment_method = $this->getStoreOrderPaymentMethod($db);
+			$order->payment_methods->add($payment_method);
+		}
+		$this->updateStoreOrderPaymentMethod(
+			$payment_method,
+			$token,
+			$details->PayerInfo,
+			$db
+		);
 
 		if (isset($details->PayerInfo->Address->Country)) {
 			$shipping_address = $this->getStoreOrderAddress(
@@ -603,17 +606,10 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// }}}
 	// {{{ private function getStoreOrderPaymentMethod()
 
-	private function getStoreOrderPaymentMethod($payer_info,
-		MDB2_Driver_Common $db)
+	private function getStoreOrderPaymentMethod(MDB2_Driver_Common $db)
 	{
 		$class_name = SwatDBClassMap::get('StoreOrderPaymentMethod');
 		$payment_method = new $class_name();
-
-		$fullname = $this->getStoreFullname($payer_info->PayerName);
-
-		$payment_method->card_fullname = $fullname;
-		$payment_method->payer_email   = $payer_info->Payer;
-		$payment_method->payer_id      = $payer_info->PayerID;
 
 		$class_name = SwatDBClassMap::get('StorePaymentType');
 		$payment_type = new $class_name();
@@ -696,6 +692,23 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$name = implode(' ', $name);
 
 		return $name;
+	}
+
+	// }}}
+	// {{{ private function updateStoreOrderPaymentMethod()
+
+	private function updateStoreOrderPaymentMethod(
+		StoreOrderPaymentMethod $payment_method, $token, $payer_info)
+	{
+		$payment_method->setPayPalToken($token);
+
+		$fullname = $this->getStoreFullname($payer_info->PayerName);
+
+		$payment_method->card_fullname = $fullname;
+		$payment_method->payer_email   = $payer_info->Payer;
+		$payment_method->payer_id      = $payer_info->PayerID;
+
+		return $payment_method;
 	}
 
 	// }}}
