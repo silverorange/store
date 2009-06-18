@@ -19,15 +19,11 @@
 			</widget>
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Amount</property>
-				<widget class="SwatMoneyEntry" id="amount">
-					<property name="required" type="boolean">true</property>
-				</widget>
+				<widget class="SwatMoneyEntry" id="amount" />
 			</widget>
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Percentage</property>
-				<widget class="SwatPercentageEntry" id="percentage">
-					<property name="required" type="boolean">true</property>
-				</widget>
+				<widget class="SwatPercentageEntry" id="percentage" />
 			</widget>
 			<widget class="SwatFooterFormField">
 				<widget class="SwatButton" id="submit_button" />

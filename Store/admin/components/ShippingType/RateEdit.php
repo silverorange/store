@@ -54,6 +54,7 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
 	private function initShippingRate()
 	{
 		$class_name = SwatDBClassMap::get('StoreShippingRate');
+
 		$this->shipping_rate = new $class_name();
 		$this->shipping_rate->setDatabase($this->app->db);
 
@@ -69,6 +70,41 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
 	// }}}
 
 	// process phase
+	// {{{ protected function validate()
+
+	protected function validate()
+	{
+		parent::validate();
+
+		if ($this->ui->getWidget('amount')->value == null &&
+			$this->ui->getWidget('percentage')->value == null) {
+			$message = new SwatMessage(sprintf(Store::_('Either an '.
+				'%3$%1$s%4$s or a %3$s%2$s%4$s is required.'),
+				$this->ui->getWidget('amount')->parent->title,
+				$this->ui->getWidget('percentage')->parent->title,
+				'<strong>', '</strong>'),
+				'error');
+
+			$message->content_type = 'text/xml';
+
+			$this->ui->getWidget('amount')->addMessage($message);
+			$this->ui->getWidget('percentage')->addMessage($message);
+		}
+	}
+
+	// }}}
+	// {{{ protected function saveDBData()
+
+	protected function saveDBData()
+	{
+		$this->updateShippingRate();
+		$this->shipping_rate->save();
+
+		$message = new SwatMessage(Store::_('Shipping Rate has been saved.'));
+		$this->app->messages->add($message);
+	}
+
+	// }}}
 	// {{{ protected function updateShippingRate()
 
 	protected function updateShippingRate()
@@ -87,18 +123,6 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
 
 		if ($this->parent !== null)
 			$this->shipping_rate->shipping_type = $this->parent;
-	}
-
-	// }}}
-	// {{{ protected function saveDBData()
-
-	protected function saveDBData()
-	{
-		$this->updateShippingRate();
-		$this->shipping_rate->save();
-
-		$message = new SwatMessage(Store::_('Shipping Rate has been saved.'));
-		$this->app->messages->add($message);
 	}
 
 	// }}}
