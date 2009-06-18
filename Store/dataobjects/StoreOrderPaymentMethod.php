@@ -335,7 +335,7 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	protected function getSerializablePrivateProperties()
 	{
 		return array_merge(
-			parent::getSerializablePrivateProperties().
+			parent::getSerializablePrivateProperties(),
 			array(
 				'card_verification_value',
 				'unencrypted_card_verification_value',
