@@ -96,6 +96,14 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	 */
 	protected $tag;
 
+	/**
+	 * @var string
+	 *
+	 * @see StoreOrderPaymentMethod::setPayPalToken()
+	 * @see StoreOrderPaymentMethod::getPayPalToken()
+	 */
+	protected $paypal_token;
+
 	// }}}
 	// {{{ public function setCardVerificationValue()
 
@@ -326,14 +334,17 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 
 	protected function getSerializablePrivateProperties()
 	{
-		$properties = parent::getSerializablePrivateProperties();
-		$properties[] = 'card_verification_value';
-		$properties[] = 'unencrypted_card_verification_value';
-		$properties[] = 'account_payment_method_id';
-		$properties[] = 'max_amount';
-		$properties[] = 'tag';
-
-		return $properties;
+		return array_merge(
+			parent::getSerializablePrivateProperties().
+			array(
+				'card_verification_value',
+				'unencrypted_card_verification_value',
+				'account_payment_method_id',
+				'max_amount',
+				'tag',
+				'paypal_token',
+			)
+		);
 	}
 
 	// }}}
@@ -365,6 +376,32 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 			echo ' ';
 			$cvv_span->display();
 		}
+	}
+
+	// }}}
+
+	// PayPal fields
+	// {{{ public function setPayPalToken()
+
+	public function setPayPalToken($token)
+	{
+		$this->paypal_token = strval($token);
+	}
+
+	// }}}
+	// {{{ public function getPayPalToken()
+
+	public function getPayPalToken()
+	{
+		return $this->paypal_token;
+	}
+
+	// }}}
+	// {{{ public function hasPayPalToken()
+
+	public function hasPayPalToken()
+	{
+		return ($this->paypal_token != '');
 	}
 
 	// }}}
