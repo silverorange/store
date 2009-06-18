@@ -167,6 +167,9 @@ class StoreProductImagePage extends StorePage
 			echo '</span> ';
 		}
 
+		if (!$selected)
+			$anchor->close();
+
 		$li_tag->close();
 	}
 
