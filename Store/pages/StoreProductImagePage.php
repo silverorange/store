@@ -108,10 +108,18 @@ class StoreProductImagePage extends StorePage
 		$this->displayImage();
 
 		if (count($this->product->images) > 1)
-			$this->displayThumbnails('pinky');
+			$this->displayThumbnails($this->getThumbnailSize());
 
 		$this->displayDescription();
 		echo '</div>';
+	}
+
+	// }}}
+	// {{{ protected function getThumbnailSize()
+
+	protected function getThumbnailSize()
+	{
+		return 'pinky';
 	}
 
 	// }}}
