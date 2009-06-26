@@ -191,7 +191,8 @@ class StoreAccountDetailsPage extends SiteUiPage
 		foreach ($this->app->messages->getAll() as $message)
 			$this->ui->getWidget('message_display')->add($message);
 
-		$this->ui->getWidget('account_form')->action = $this->source;
+		if ($this->ui->hasWidget('account_form'))
+			$this->ui->getWidget('account_form')->action = $this->source;
 	}
 
 	// }}}
