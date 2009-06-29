@@ -153,7 +153,7 @@ class StoreProductReviewDelete extends AdminDBDelete
 		}
 
 		$this->navbar->addEntry(new SwatNavBarEntry(Store::ngettext(
-			'Delete Product Review','Delete Product Reviews',
+			'Delete Product Review', 'Delete Product Reviews',
 			count($this->items))));
 	}
 
