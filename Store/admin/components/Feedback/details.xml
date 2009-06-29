@@ -12,15 +12,11 @@
 			</widget>
 		</widget>
 		<widget class="SwatDetailsView" id="details_view">
-			<object class="SwatDetailsViewField" id="fullname">
+			<object class="SwatDetailsViewField" id="customer">
 				<property name="title" translatable="yes">Customer</property>
-				<object class="SwatNullTextCellRenderer">
+				<object class="SwatTextCellRenderer">
 					<property name="text" type="data">fullname</property>
-					<property name="null_text">&lt;anonymous&gt;</property>
 				</object>
-			</object>
-			<object class="SwatDetailsViewField" id="email">
-				<property name="title" translatable="yes">Contact</property>
 				<object class="SwatLinkCellRenderer">
 					<property name="text" type="data">email</property>
 					<property name="link" type="data">email_link</property>
