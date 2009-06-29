@@ -28,6 +28,22 @@ class StoreFeedback extends SiteComment
 	public $http_referrer;
 
 	// }}}
+	// {{{ public function getTitle()
+
+	public function getTitle()
+	{
+		if ($this->fullname !== null) {
+			$title = $this->fullname;
+		} elseif ($this->email !== null) {
+			$title = $this->email;
+		} else {
+			$title = Store::_('anonymous');
+		}
+
+		return $title;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()

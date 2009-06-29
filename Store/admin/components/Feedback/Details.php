@@ -115,10 +115,11 @@ class StoreFeedbackDetails extends AdminPage
 		$date_renderer = $date_field->getRendererByPosition();
 		$date_renderer->display_time_zone = $this->app->default_time_zone;
 
-		// hide email field if there is no email address
-		$email_field = $details_view->getField('email');
-		if ($this->getFeedback()->email === null) {
-			$email_field->visible = false;
+		// hide customer field if there is no customer info
+		$customer_field = $details_view->getField('customer');
+		if ($this->getFeedback()->fullname === null &&
+			$this->getFeedback()->email === null) {
+			$customer_field->visible = false;
 		}
 
 		// hide referrer field if there is no referrer
@@ -136,7 +137,11 @@ class StoreFeedbackDetails extends AdminPage
 	protected function buildNavBar()
 	{
 		parent::buildNavBar();
-		$this->navbar->addEntry(new SwatNavBarEntry(Store::_('Details')));
+		$this->navbar->addEntry(
+			new SwatNavBarEntry(
+				$this->getFeedback()->getTitle()
+			)
+		);
 		$this->title = Store::_('Details');
 	}
 

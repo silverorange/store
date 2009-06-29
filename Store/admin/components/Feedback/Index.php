@@ -97,6 +97,7 @@ class StoreFeedbackIndex extends AdminSearch
 		$store = new SwatTableStore();
 		foreach ($feedback_messages as $feedback) {
 			$ds = new SwatDetailsStore($feedback);
+			$ds->title = $feedback->getTitle();
 			$store->add($ds);
 		}
 
@@ -121,26 +122,6 @@ class StoreFeedbackIndex extends AdminSearch
 			$clause = new AdminSearchClause('bodytext');
 			$clause->table = 'Feedback';
 			$clause->value = $keywords;
-			$clause->operator = AdminSearchClause::OP_CONTAINS;
-			$where.= $clause->getClause($this->app->db, 'and');
-		}
-
-		// author
-		$author = $this->ui->getWidget('search_author')->value;
-		if (trim($author) != '') {
-			$clause = new AdminSearchClause('fullname');
-			$clause->table = 'Feedback';
-			$clause->value = $author;
-			$clause->operator = AdminSearchClause::OP_CONTAINS;
-			$where.= $clause->getClause($this->app->db, 'and');
-		}
-
-		// email
-		$email = $this->ui->getWidget('search_email')->value;
-		if (trim($email) != '') {
-			$clause = new AdminSearchClause('email');
-			$clause->table = 'Feedback';
-			$clause->value = $email;
 			$clause->operator = AdminSearchClause::OP_CONTAINS;
 			$where.= $clause->getClause($this->app->db, 'and');
 		}
