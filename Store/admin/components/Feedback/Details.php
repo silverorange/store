@@ -121,6 +121,12 @@ class StoreFeedbackDetails extends AdminPage
 			$email_field->visible = false;
 		}
 
+		// hide referrer field if there is no referrer
+		$referrer_field = $details_view->getField('http_referrer');
+		if ($this->getFeedback()->http_referrer === null) {
+			$referrer_field->visible = false;
+		}
+
 		$details_view->data = $ds;
 	}
 

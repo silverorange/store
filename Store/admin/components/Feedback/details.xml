@@ -27,6 +27,13 @@
 					<property name="link" type="data">email_link</property>
 				</object>
 			</object>
+			<object class="SwatDetailsViewField" id="http_referrer">
+				<property name="title" translatable="yes">HTTP Referrer</property>
+				<object class="SwatLinkCellRenderer">
+					<property name="text" type="data">http_referrer</property>
+					<property name="link" type="data">http_referrer</property>
+				</object>
+			</object>
 			<object class="SwatDetailsViewField" id="createdate">
 				<property name="title" translatable="yes">Date</property>
 				<object class="SwatDateCellRenderer">
