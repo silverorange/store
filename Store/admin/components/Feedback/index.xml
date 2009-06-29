@@ -1,0 +1,75 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<widget class="SwatFrame" id="search_frame">
+		<property name="title" translatable="yes">Search Customer Feedback</property>
+		<widget class="SwatForm" id="search_form">
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Keywords</property>
+				<widget class="SwatEntry" id="search_keywords" />
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Customer</property>
+				<widget class="SwatEntry" id="search_author" />
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Email</property>
+				<widget class="SwatEntry" id="search_email" />
+			</widget>
+			<widget class="SwatFooterFormField">
+				<widget class="SwatButton" id="submit_button">
+					<property name="title" translatable="yes">Search</property>
+				</widget>
+			</widget>
+		</widget>
+	</widget>
+	<widget class="SwatFrame" id="results_frame">
+		<property name="visible" type="boolean">false</property>
+		<property name="title" translatable="yes">Customer Feedback</property>
+		<widget class="SwatContentBlock" id="results_message" />
+		<widget class="SwatForm" id="product_reviews_form">
+			<widget class="SwatTableView" id="feedback_view">
+				<object class="SwatTableViewCheckboxColumn" id="checkbox">
+					<object class="SwatCheckboxCellRenderer" id="items">
+						<property name="value" type="data">id</property>
+					</object>
+				</object>
+				<object class="AdminTableViewOrderableColumn" id="fullname">
+					<property name="title" translatable="yes">Posted By</property>
+					<object class="AdminTitleLinkCellRenderer">
+						<property name="text" type="data">fullname</property>
+						<property name="link">Feedback/Details?id=%s</property>
+						<property name="link_value" type="data">id</property>
+						<property name="stock_id">details</property>
+					</object>
+				</object>
+				<object class="AdminTableViewOrderableColumn" id="createdate">
+					<property name="title" translatable="yes">Date</property>
+					<object class="SwatDateCellRenderer">
+						<property name="date" type="data">createdate</property>
+						<property name="format" type="constant">SwatDate::DF_DATE_TIME</property>
+					</object>
+				</object>
+				<object class="SwatTableViewSpanningColumn" id="bodytext">
+					<property name="offset" type="integer">1</property>
+					<object class="SwatTextCellRenderer">
+						<property name="text" type="data">bodytext</property>
+					</object>
+				</object>
+			</widget>
+			<widget class="AdminPagination" id="pager">
+				<property name="link">Feedback</property>
+			</widget>
+			<widget class="SwatActions" id="actions">
+				<widget class="SwatActionItem" id="spam">
+					<property name="title" translatable="yes">mark as spam</property>
+				</widget>
+				<widget class="SwatActionItemDivider" />
+				<widget class="SwatActionItem" id="delete">
+					<property name="title" translatable="yes">delete…</property>
+				</widget>
+			</widget>
+		</widget>
+	</widget>
+</swatml>
