@@ -9,12 +9,11 @@
 				<property name="title" translatable="yes">Delete Feedback</property>
 				<property name="link">Feedback/Delete?id=%s</property>
 				<property name="stock_id">delete</property>
-				<property name="sensitive" type="boolean">false</property>
 			</widget>
 		</widget>
 		<widget class="SwatDetailsView" id="details_view">
 			<object class="SwatDetailsViewField" id="fullname">
-				<property name="title" translatable="yes">Posted By</property>
+				<property name="title" translatable="yes">Customer</property>
 				<object class="SwatNullTextCellRenderer">
 					<property name="text" type="data">fullname</property>
 					<property name="null_text">&lt;anonymous&gt;</property>
@@ -28,7 +27,7 @@
 				</object>
 			</object>
 			<object class="SwatDetailsViewField" id="http_referrer">
-				<property name="title" translatable="yes">HTTP Referrer</property>
+				<property name="title" translatable="yes">HTTP Referrer</property>
 				<object class="SwatLinkCellRenderer">
 					<property name="text" type="data">http_referrer</property>
 					<property name="link" type="data">http_referrer</property>
@@ -41,9 +40,11 @@
 					<property name="format" type="constant">SwatDate::DF_DATE_TIME</property>
 				</object>
 			</object>
-			<object class="SwatDetailsViewVerticalField" id="bodytext">
+			<object class="SwatDetailsViewField" id="bodytext">
+				<property name="title" translatable="yes">Feedback</property>
 				<object class="SwatTextCellRenderer">
 					<property name="text" type="data">bodytext</property>
+					<property name="content_type">text/xml</property>
 				</object>
 			</object>
 		</widget>

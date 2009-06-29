@@ -97,7 +97,7 @@ class StoreFeedbackDetails extends AdminPage
 
 		$this->buildFeedbackDetails();
 
-		$toolbar = $this->ui->getWidget('details_toolbar');
+		$toolbar = $this->ui->getWidget('toolbar');
 		$toolbar->setToolLinkValues($this->id);
 	}
 
