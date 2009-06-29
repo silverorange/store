@@ -1060,7 +1060,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	private function formatString($string, $max_length = 0)
 	{
 		// convert to iso-8859-1
-		$string = iconv('utf-8', 'iso-8859-1//TRANSLIT', $string);
+		$string = iconv('utf-8', 'ASCII//TRANSLIT', $string);
 
 		// truncate to max_length
 		if ($max_length > 0) {
