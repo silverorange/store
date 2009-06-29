@@ -56,23 +56,6 @@ class StoreFeedbackIndex extends AdminSearch
 			$this->app->replacePage('Feedback/Delete');
 			$this->app->getPage()->setItems($view->getSelection());
 			break;
-
-/*		case 'spam':
-			$sql = 'update ProductReview set spam = %s where id in (%s)';
-			SwatDB::exec($this->app->db, sprintf($sql,
-				$this->app->db->quote(true, 'boolean'),
-				SwatDB::implodeSelection($this->app->db,
-					$view->getSelection())));
-
-			$num = count($view->getSelection());
-
-			$message = new SwatMessage(sprintf(Store::ngettext(
-				'One product review has been marked as spam.',
-				'%d product reviews have been marked as spam.', $num),
-				SwatString::numberFormat($num)));
-
-			$this->app->messages->add($message);
-			break;*/
 		}
 	}
 
