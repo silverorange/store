@@ -1,0 +1,44 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<widget class="SwatFrame" id="frame">
+		<property name="title" translatable="yes">Customer Feedback</property>
+		<widget class="SwatToolbar" id="toolbar">
+			<widget class="SwatToolLink" id="delete_link">
+				<property name="title" translatable="yes">Delete Feedback</property>
+				<property name="link">Feedback/Delete?id=%s</property>
+				<property name="stock_id">delete</property>
+				<property name="sensitive" type="boolean">false</property>
+			</widget>
+		</widget>
+		<widget class="SwatDetailsView" id="details_view">
+			<object class="SwatDetailsViewField" id="fullname">
+				<property name="title" translatable="yes">Posted By</property>
+				<object class="SwatNullTextCellRenderer">
+					<property name="text" type="data">fullname</property>
+					<property name="null_text">&lt;anonymous&gt;</property>
+				</object>
+			</object>
+			<object class="SwatDetailsViewField" id="email">
+				<property name="title" translatable="yes">Contact</property>
+				<object class="SwatLinkCellRenderer">
+					<property name="text" type="data">email</property>
+					<property name="link" type="data">email_link</property>
+				</object>
+			</object>
+			<object class="SwatDetailsViewField" id="createdate">
+				<property name="title" translatable="yes">Date</property>
+				<object class="SwatDateCellRenderer">
+					<property name="date" type="data">createdate</property>
+					<property name="format" type="constant">SwatDate::DF_DATE_TIME</property>
+				</object>
+			</object>
+			<object class="SwatDetailsViewVerticalField" id="bodytext">
+				<object class="SwatTextCellRenderer">
+					<property name="text" type="data">bodytext</property>
+				</object>
+			</object>
+		</widget>
+	</widget>
+</swatml>
