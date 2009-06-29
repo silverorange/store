@@ -51,6 +51,8 @@ class StoreProductReviewIndex extends AdminSearch
 		$visibility->value = self::SHOW_UNAPPROVED;
 	}
 
+	// }}}
+
 	// process phase
 	// {{{ protected function processInternal()
 
