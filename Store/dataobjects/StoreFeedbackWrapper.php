@@ -8,6 +8,8 @@ require_once 'Store/dataobjects/StoreFeedback.php';
  *
  * @package   Store
  * @copyright 2009 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ * @see       StoreFeedback
  */
 class StoreFeedbackWrapper extends SwatDBRecordsetWrapper
 {
