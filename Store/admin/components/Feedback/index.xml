@@ -62,10 +62,6 @@
 				<property name="link">Feedback</property>
 			</widget>
 			<widget class="SwatActions" id="actions">
-				<widget class="SwatActionItem" id="spam">
-					<property name="title" translatable="yes">mark as spam</property>
-				</widget>
-				<widget class="SwatActionItemDivider" />
 				<widget class="SwatActionItem" id="delete">
 					<property name="title" translatable="yes">delete…</property>
 				</widget>
