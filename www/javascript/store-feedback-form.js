@@ -38,11 +38,11 @@ StoreFeedbackForm.prototype.handleSubmit = function(e)
 
 	this.showThrobber();
 
+	YAHOO.util.Connect.setForm(this.form_element);
 	var request = YAHOO.util.Connect.asyncRequest(
 		'POST',
 		this.getFormUri(),
-		callback,
-		this.getFormData()
+		callback
 	);
 
 	this.submitted = true;
@@ -61,7 +61,7 @@ StoreFeedbackForm.prototype.showThrobber = function()
 	this.throbber.style.fontSize = '200%';
 
 	var span = document.createElement('span');
-	span.style.padding = 
+//	span.style.padding = 
 
 	this.throbber.appendChild(document.createTextNode('sending'));
 
@@ -88,58 +88,4 @@ StoreFeedbackForm.prototype.showThrobber = function()
 StoreFeedbackForm.prototype.getFormUri = function()
 {
 	return this.form_element.action;
-}
-
-StoreFeedbackForm.prototype.getFormData = function()
-{
-	var data = '';
-
-	var inputNodes = this.form_element.getElementsByTagName('input');
-	for (var i = 0; i < inputNodes.length; i++) {
-		if (inputNodes[i].name) {
-			data += '&' + encodeURIComponent(inputNodes[i].name) + '=' +
-				encodeURIComponent(inputNodes[i].value);
-		}
-	}
-
-	var textareaNodes = this.form_element.getElementsByTagName('textarea');
-	for (var i = 0; i < textareaNodes.length; i++) {
-		if (textareaNodes[i].name) {
-			data += '&' + encodeURIComponent(textareaNodes[i].name) + '=' +
-				encodeURIComponent(textareaNodes[i].value);
-		}
-	}
-
-	var checkboxNodes = this.form_element.getElementsByTagName('checkbox');
-	for (var i = 0; i < checkboxNodes.length; i++) {
-		if (checkboxNodes[i].name) {
-			if (checkboxNodes[i].checked) {
-				data += '&' + encodeURIComponent(checkboxNodes[i].name) + '=' +
-					encodeURIComponent(checkboxNodes[i].value);
-			} else {
-				data += '&' + encodeURIComponent(checkboxNodes[i].name) + '=';
-			}
-		}
-	}
-
-	var radioNodes = this.form_element.getElementsByTagName('radio');
-	for (var i = 0; i < radioNodes.length; i++) {
-		if (radioNodes[i].checked && radioNodes[i].name) {
-			data += '&' + encodeURIComponent(radioNodes[i].name) + '=' +
-				encodeURIComponent(radioNodes[i].value);
-		}
-	}
-
-	var selectNodes = this.form_element.getElementsByTagName('select');
-	for (var i = 0; i < selectNodes.length; i++) {
-		var select = selectNodes[i];
-		if (select.name) {
-			data += '&' + encodeURIComponent(select.name) + '=' +
-				encodeURIComponent(select.options[select.selectedIndex].value);
-		}
-	}
-
-	data = data.substr(1);
-
-	return data;
 }
