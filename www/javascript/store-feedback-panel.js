@@ -217,7 +217,9 @@ StoreFeedbackPanel.prototype.hide = function()
 
 	var span = document.createElement('span');
 	span.className = 'store-feedback-panel-title';
-	span.appendChild(document.createTextNode(StoreFeedbackPage.thank_you_text));
+	span.appendChild(
+		document.createTextNode(StoreFeedbackPanel.thank_you_text)
+	);
 	this.link.parentNode.replaceChild(span, this.link);
 
 	animation.animate();
