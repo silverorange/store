@@ -8,6 +8,9 @@ function StoreFeedbackPanel(id)
 	YAHOO.util.Event.onDOMReady(this.init, this, true);
 }
 
+StoreFeedbackPanel.sending_text = 'sending…';
+StoreFeedbackPanel.loading_text = 'loading…';
+
 StoreFeedbackPanel.prototype.init = function()
 {
 	this.element = document.getElementById(this.id);
@@ -127,6 +130,11 @@ StoreFeedbackPanel.prototype.drawLoadingContainer = function()
 	var container_width  = container_region.right - container_region.left;
 	var panel_height     = panel_region.bottom    - panel_region.top;
 
+	var span = document.createElement('span');
+	span.className = 'store-feedback-panel-message';
+	span.appendChild(document.createTextNode(StoreFeedbackPanel.loading_text));
+	this.loading_container.appendChild(span);
+
 	var xy = [
 		panel_region.left + Math.round((panel_width - container_width) / 2),
 		panel_region.bottom - 5
@@ -244,11 +252,11 @@ StoreFeedbackPanel.prototype.handleFormSubmit = function(e)
 StoreFeedbackPanel.prototype.showThrobber = function()
 {
 	this.throbber = document.createElement('div');
-	this.throbber.className = 'store-feedback-overlay';
+	this.throbber.className = 'store-feedback-panel-overlay';
 
 	var span = document.createElement('span');
-
-	span.appendChild(document.createTextNode('sending…'));
+	span.className = 'store-feedback-panel-message';
+	span.appendChild(document.createTextNode(StoreFeedbackPanel.sending_text));
 	this.throbber.appendChild(span);
 
 	this.form.appendChild(this.throbber);
