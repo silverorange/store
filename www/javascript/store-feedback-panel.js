@@ -8,8 +8,9 @@ function StoreFeedbackPanel(id)
 	YAHOO.util.Event.onDOMReady(this.init, this, true);
 }
 
-StoreFeedbackPanel.sending_text = 'sending…';
-StoreFeedbackPanel.loading_text = 'loading…';
+StoreFeedbackPanel.sending_text   = 'sending…';
+StoreFeedbackPanel.loading_text   = 'loading…';
+StoreFeedbackPanel.thank_you_text = 'Thank you for your feedback!';
 
 StoreFeedbackPanel.prototype.init = function()
 {
@@ -43,8 +44,13 @@ StoreFeedbackPanel.prototype.open = function()
 
 	var height;
 	if (this.form_loaded) {
-//		var region = YAHOO.util.Dom.getRegion();
-		new_height = 264;
+		this.loading_container.style.visibility = 'hidden';
+		this.loading_container.style.height = 'auto';
+		var region = YAHOO.util.Dom.getRegion(this.loading_container);
+		// offset is for padding and border heights
+		new_height = region.bottom - region.top - 10;
+		this.loading_container.style.height = '0';
+		this.loading_container.style.visibility = 'visible';
 	} else {
 		new_height = 264;
 	}
@@ -208,7 +214,7 @@ StoreFeedbackPanel.prototype.hide = function()
 
 	var span = document.createElement('span');
 	span.className = 'store-feedback-panel-title';
-	span.appendChild(document.createTextNode('Thank you for your feedback!'));
+	span.appendChild(document.createTextNode(StoreFeedbackPage.thank_you_text));
 	this.link.parentNode.replaceChild(span, this.link);
 
 	animation.animate();
