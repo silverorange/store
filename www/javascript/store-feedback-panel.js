@@ -66,6 +66,9 @@ StoreFeedbackPanel.prototype.open = function()
 	);
 
 	animation.onComplete.subscribe(function() {
+		if (this.form_loaded) {
+			this.container.style.height = 'auto';
+		}
 		this.semaphore = false;
 	}, this, true);
 
