@@ -1,10 +1,13 @@
 function StoreFeedbackPanel(id)
 {
-	this.id = id;
-	this.form_loaded = false;
+	this.id             = id;
+	this.form_loaded    = false;
 	this.form_submitted = false;
-	this.opened = false;
-	this.semaphore = false;
+	this.opened         = false;
+	this.semaphore      = false;
+	this.container      = null;
+	this.form           = null;
+
 	YAHOO.util.Event.onDOMReady(this.init, this, true);
 }
 
@@ -37,26 +40,26 @@ StoreFeedbackPanel.prototype.open = function()
 		return;
 	}
 
-	this.drawLoadingContainer();
+	this.drawContainer();
 	this.loadFeedbackForm();
 
-	this.loading_container.style.display = 'block';
+	this.container.style.display = 'block';
 
 	var height;
 	if (this.form_loaded) {
-		this.loading_container.style.visibility = 'hidden';
-		this.loading_container.style.height = 'auto';
-		var region = YAHOO.util.Dom.getRegion(this.loading_container);
+		this.container.style.visibility = 'hidden';
+		this.container.style.height = 'auto';
+		var region = YAHOO.util.Dom.getRegion(this.container);
 		// offset is for padding and border heights
 		new_height = region.bottom - region.top - 10;
-		this.loading_container.style.height = '0';
-		this.loading_container.style.visibility = 'visible';
+		this.container.style.height = '0';
+		this.container.style.visibility = 'visible';
 	} else {
 		new_height = 264;
 	}
 
 	var animation = new YAHOO.util.Anim(
-		this.loading_container,
+		this.container,
 		{ height: { from: 0, to: new_height } },
 		0.25,
 		YAHOO.util.Easing.easeIn
@@ -68,9 +71,9 @@ StoreFeedbackPanel.prototype.open = function()
 
 	animation.animate();
 
-	if (this.loading_container.firstChild) {
+	if (this.container.firstChild) {
 		var animation = new YAHOO.util.Anim(
-			this.loading_container.firstChild,
+			this.container.firstChild,
 			{ opacity: { to: 1 } },
 			0.25,
 			YAHOO.util.Easing.easeIn
@@ -89,10 +92,10 @@ StoreFeedbackPanel.prototype.close = function()
 		return;
 	}
 
-	this.drawLoadingContainer();
+	this.drawContainer();
 
 	var animation = new YAHOO.util.Anim(
-		this.loading_container,
+		this.container,
 		{ height: { to: 0 } },
 		0.25,
 		YAHOO.util.Easing.easeOut
@@ -100,13 +103,13 @@ StoreFeedbackPanel.prototype.close = function()
 
 	animation.onComplete.subscribe(function() {
 		this.semaphore = false;
-		this.loading_container.style.display = 'none';
+		this.container.style.display = 'none';
 	}, this, true);
 
 	animation.animate();
 
 	var animation = new YAHOO.util.Anim(
-		this.loading_container.firstChild,
+		this.container.firstChild,
 		{ opacity: { to: 0 } },
 		0.25,
 		YAHOO.util.Easing.easeOut
@@ -118,19 +121,19 @@ StoreFeedbackPanel.prototype.close = function()
 	this.opened = false;
 }
 
-StoreFeedbackPanel.prototype.drawLoadingContainer = function()
+StoreFeedbackPanel.prototype.drawContainer = function()
 {
-	if (this.loading_container) {
+	if (this.container) {
 		return;
 	}
 
-	this.loading_container = document.createElement('div');
-	this.loading_container.className = 'store-feedback-panel-container';
+	this.container = document.createElement('div');
+	this.container.className = 'store-feedback-panel-container';
 
-	this.element.appendChild(this.loading_container);
+	this.element.appendChild(this.container);
 
-	var panel_region      = YAHOO.util.Dom.getRegion(this.element);
-	var container_region  = YAHOO.util.Dom.getRegion(this.loading_container);
+	var panel_region     = YAHOO.util.Dom.getRegion(this.element);
+	var container_region = YAHOO.util.Dom.getRegion(this.container);
 
 	var panel_width      = panel_region.right     - panel_region.left;
 	var container_width  = container_region.right - container_region.left;
@@ -139,19 +142,19 @@ StoreFeedbackPanel.prototype.drawLoadingContainer = function()
 	var span = document.createElement('span');
 	span.className = 'store-feedback-panel-message';
 	span.appendChild(document.createTextNode(StoreFeedbackPanel.loading_text));
-	this.loading_container.appendChild(span);
+	this.container.appendChild(span);
 
 	var xy = [
 		panel_region.left + Math.round((panel_width - container_width) / 2),
 		panel_region.bottom - 5
 	];
 
-	YAHOO.util.Dom.setXY(this.loading_container, xy);
+	YAHOO.util.Dom.setXY(this.container, xy);
 }
 
 StoreFeedbackPanel.prototype.loadFeedbackForm = function()
 {
-	if (this.form_loaded || !this.loading_container) {
+	if (this.form_loaded || !this.container) {
 		return;
 	}
 
@@ -160,7 +163,7 @@ StoreFeedbackPanel.prototype.loadFeedbackForm = function()
 
 	var callback = function(response)
 	{
-		that.loading_container.innerHTML = response.content;
+		that.container.innerHTML = response.content;
 		that.initForm();
 		that.form_loaded = true;
 	};
@@ -185,7 +188,7 @@ StoreFeedbackPanel.prototype.initForm = function()
 	);
 
 	animation.onComplete.subscribe(function() {
-		this.loading_container.style.height = 'auto';
+		this.container.style.height = 'auto';
 	}, this, true);
 
 	animation.animate();
@@ -202,14 +205,14 @@ StoreFeedbackPanel.prototype.initForm = function()
 StoreFeedbackPanel.prototype.hide = function()
 {
 	var animation = new YAHOO.util.Anim(
-		this.loading_container,
+		this.container,
 		{ opacity: { to: 0 } },
 		0.25,
 		YAHOO.util.Easing.easeOut
 	);
 
 	animation.onComplete.subscribe(function() {
-		this.loading_container.parentNode.removeChild(this.loading_container);
+		this.container.parentNode.removeChild(this.container);
 	});
 
 	var span = document.createElement('span');
@@ -239,9 +242,8 @@ StoreFeedbackPanel.prototype.handleFormSubmit = function(e)
 		if (response.success) {
 			that.hide();
 		} else {
-			that.loading_container.innerHTML = response.content;
+			that.container.innerHTML = response.content;
 			that.initForm();
-//		that.form_loaded = true;
 		}
 	};
 
