@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Site/pages/SiteXMLRPCServer.php';
+require_once 'Store/dataobjects/StoreFeedback.php';
 require_once 'Swat/SwatUI.php';
 
 /**
@@ -32,40 +33,8 @@ class StoreFeedbackPanelServer extends SiteXMLRPCServer
 	 */
 	public function getContent($method, $data, $uri)
 	{
-		if (strtolower($method) == 'post') {
-			$data_exp = explode('&', $data);
-			$args = array();
-			foreach ($data_exp as $parameter) {
-				if (strpos($parameter, '=')) {
-					list($key, $value) = explode('=', $parameter, 2);
-				} else {
-					$key   = $parameter;
-					$value = null;
-				}
-
-				$key   = urldecode($key);
-				$value = urldecode($value);
-
-				$regs = array();
-				if (preg_match('/^(.+)\[(.*)\]$/', $key, $regs)) {
-					$key = $regs[1];
-					$array_key = ($regs[2] == '') ? null : $regs[2];
-					if (!isset($args[$key]))
-						$args[$key] = array();
-
-					if ($array_key === null) {
-						$args[$key][] = $value;
-					} else {
-						$args[$key][$array_key] = $value;
-					}
-				} else {
-					$args[$key] = $value;
-				}
-			}
-
-			foreach ($args as $key => $value) {
-				$_POST[$key] = $value;
-			}
+		if (strtolower($method) === 'post') {
+			$this->initPostData($data);
 		}
 
 		$return = array();
@@ -77,6 +46,12 @@ class StoreFeedbackPanelServer extends SiteXMLRPCServer
 
 		$ui->init();
 		$ui->process();
+
+		if ($ui->getWidget('feedback_form')->isSubmitted() &&
+			!$ui->getRoot()->hasMessage()) {
+			$this->processFeedback($ui);
+		}
+
 		$ui->display();
 
 		$return['content'] = ob_get_clean();
@@ -84,6 +59,79 @@ class StoreFeedbackPanelServer extends SiteXMLRPCServer
 		$return['success'] = (!$ui->getRoot()->hasMessage());
 
 		return $return;
+	}
+
+	// }}}
+	// {{{ protected function initPostData()
+
+	protected function initPostData($data)
+	{
+		$data_exp = explode('&', $data);
+		$args = array();
+		foreach ($data_exp as $parameter) {
+			if (strpos($parameter, '=')) {
+				list($key, $value) = explode('=', $parameter, 2);
+			} else {
+				$key   = $parameter;
+				$value = null;
+			}
+
+			$key   = urldecode($key);
+			$value = urldecode($value);
+
+			$regs = array();
+			if (preg_match('/^(.+)\[(.*)\]$/', $key, $regs)) {
+				$key = $regs[1];
+				$array_key = ($regs[2] == '') ? null : $regs[2];
+				if (!isset($args[$key]))
+					$args[$key] = array();
+
+				if ($array_key === null) {
+					$args[$key][] = $value;
+				} else {
+					$args[$key][$array_key] = $value;
+				}
+			} else {
+				$args[$key] = $value;
+			}
+		}
+
+		foreach ($args as $key => $value) {
+			$_POST[$key] = $value;
+		}
+	}
+
+	// }}}
+	// {{{ protected function processFeedback()
+
+	protected function processFeedback(SwatUI $ui)
+	{
+		$feedback = $this->createFeedback();
+
+		$feedback->email    = $ui->getWidget('email')->value;
+		$feedback->bodytext = $ui->getWidget('bodytext')->value;
+
+		$feedback->createdate = new SwatDate();
+		$feedback->createdate->toUTC();
+
+		if ($this->app->hasModule('StoreFeedbackModule')) {
+			$module = $this->app->getModule('StoreFeedbackModule');
+			$feedback->http_referrer = $module->getSearchReferrer();
+			$module->clearSearchReferrer();
+		}
+
+		$feedback->save();
+	}
+
+	// }}}
+	// {{{ protected function createFeedback()
+
+	protected function createFeedback()
+	{
+		$class = SwatDBClassMap::get('StoreFeedback');
+		$feedback = new $class();
+		$feedback->setDatabase($this->app->db);
+		return $feedback;
 	}
 
 	// }}}
