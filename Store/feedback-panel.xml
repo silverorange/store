@@ -5,16 +5,21 @@
 		<property name="action">feedback</property>
 		<property name="classes[]">clearfix</property>
 		<widget class="SwatFrame" id="feedback_content">
+			<widget class="SwatContentBlock" id="feedback_description">
+				<property name="content_type">text/xml</property>
+				<property name="content"><![CDATA[<p>Can’t find what you’re looking for? Having trouble with the website? Please let us know so we can improve our website.</p>]]></property>
+			</widget>
 			<widget class="SwatFormField" id="bodytext_field">
-				<property name="title" translatable="yes">Feedback</property>
+				<property name="title">Feedback</property>
 				<widget class="SwatTextarea" id="bodytext">
 					<property name="required" type="boolean">true</property>
 					<property name="rows" type="integer">6</property>
-					<property name="cols" type="integer">60</property>
+					<property name="cols" type="integer">35</property>
 				</widget>
 			</widget>
 			<widget class="SwatFormField" id="email_field">
 				<property name="title" translatable="yes">Email</property>
+				<property name="note">Email is optional, but if you’d like a reponse, please do include it.</property>
 				<widget class="SwatEmailEntry" id="email">
 					<property name="maxlength" type="integer">255</property>
 				</widget>
