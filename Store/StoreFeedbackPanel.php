@@ -43,6 +43,11 @@ class StoreFeedbackPanel extends SwatControl
 		$ajax = new XML_RPCAjax();
 		$this->html_head_entry_set->addEntrySet($ajax->getHtmlHeadEntrySet());
 
+		$this->addStyleSheet(
+			'packages/store/styles/store-feedback-panel.css',
+			Store::PACKAGE_ID
+		);
+
 		$this->addJavaScript(
 			'packages/store/javascript/store-feedback-panel.js',
 			Store::PACKAGE_ID
