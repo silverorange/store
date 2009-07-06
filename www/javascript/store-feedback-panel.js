@@ -49,9 +49,9 @@ StoreFeedbackPanel.prototype.open = function()
 	if (this.form_loaded) {
 		this.container.style.visibility = 'hidden';
 		this.container.style.height = 'auto';
-		var region = YAHOO.util.Dom.getRegion(this.container);
-		// offset is for padding and border heights
-		new_height = region.bottom - region.top - 10;
+		// get interior dimensions to account for padding and border heights
+		var region = YAHOO.util.Dom.getRegion(this.container.firstChild);
+		new_height = region.bottom - region.top;
 		this.container.style.height = '0';
 		this.container.style.visibility = 'visible';
 	} else {
