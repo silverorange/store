@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
-	<widget class="StoreFeedbackForm" id="feedback_form">
+	<widget class="SwatForm" id="feedback_form">
 		<property name="action">feedback</property>
 		<property name="classes[]">clearfix</property>
 		<widget class="SwatFrame" id="feedback_content">
