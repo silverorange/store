@@ -48,6 +48,13 @@
 						<property name="text" type="data">bodytext</property>
 					</object>
 				</object>
+				<object class="SwatTableViewSpanningColumn" id="http_referrer">
+					<property name="offset" type="integer">1</property>
+					<object class="SwatLinkCellRenderer">
+						<property name="text" type="data">http_referrer</property>
+						<property name="link" type="data">http_referrer</property>
+					</object>
+				</object>
 			</widget>
 			<widget class="AdminPagination" id="pager">
 				<property name="link">Feedback</property>
