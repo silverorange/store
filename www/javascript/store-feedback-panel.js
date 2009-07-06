@@ -55,7 +55,7 @@ StoreFeedbackPanel.prototype.open = function()
 		this.container.style.height = '0';
 		this.container.style.visibility = 'visible';
 	} else {
-		new_height = 264;
+		new_height = 324;
 	}
 
 	var animation = new YAHOO.util.Anim(
