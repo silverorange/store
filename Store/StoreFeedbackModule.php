@@ -67,6 +67,7 @@ class StoreFeedbackModule extends SiteApplicationModule
 	{
 		if ($this->isSearchReferrer()) {
 			$session = $this->app->getModule('SiteSessionModule');
+			$session->activate();
 			$session->feedback_referrer = SiteApplication::initVar(
 				'HTTP_REFERER',
 				null,
