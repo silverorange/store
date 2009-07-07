@@ -70,3 +70,7 @@ a.store-feedback-panel-title:hover {
 #feedback .swat-frame {
 	border: 0;
 }
+
+#feedback .swat-footer-form-field a {
+	float: right;
+}
