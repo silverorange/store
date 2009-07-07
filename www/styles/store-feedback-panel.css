@@ -71,6 +71,12 @@ a.store-feedback-panel-title:hover {
 	border: 0;
 }
 
+#feedback .swat-footer-form-field .swat-form-field-contents {
+	position: relative;
+}
+
 #feedback .swat-footer-form-field a {
-	float: right;
+	position: absolute;
+	right: 0;
+	top: 0.2em;
 }
