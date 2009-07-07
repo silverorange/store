@@ -11,9 +11,9 @@ function StoreFeedbackPanel(id)
 	YAHOO.util.Event.onDOMReady(this.init, this, true);
 }
 
-StoreFeedbackPanel.sending_text   = 'sending…';
-StoreFeedbackPanel.loading_text   = 'loading…';
-StoreFeedbackPanel.cancel_text    = 'cancel';
+StoreFeedbackPanel.sending_text   = 'Sending…';
+StoreFeedbackPanel.loading_text   = 'Loading…';
+StoreFeedbackPanel.cancel_text    = 'Cancel';
 StoreFeedbackPanel.thank_you_text = 'Thank you for your feedback!';
 
 StoreFeedbackPanel.prototype.init = function()
