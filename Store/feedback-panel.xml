@@ -7,10 +7,9 @@
 		<widget class="SwatFrame" id="feedback_content">
 			<widget class="SwatContentBlock" id="feedback_description">
 				<property name="content_type">text/xml</property>
-				<property name="content"><![CDATA[<p>Can’t find what you’re looking for? Having trouble with the website? Please let us know so we can improve our website.</p>]]></property>
+				<property name="content"><![CDATA[<p>Can’t find what you’re looking for? Having trouble with the website? Please let us know so we can improve our website:</p>]]></property>
 			</widget>
 			<widget class="SwatFormField" id="bodytext_field">
-				<property name="title">Feedback</property>
 				<widget class="SwatTextarea" id="bodytext">
 					<property name="required" type="boolean">true</property>
 					<property name="rows" type="integer">6</property>
@@ -26,7 +25,7 @@
 			</widget>
 			<widget class="SwatFooterFormField" id="submit_button_field">
 				<widget class="SwatButton" id="submit">
-					<property name="title" translatable="yes">Send</property>
+					<property name="title" translatable="yes">Send Feedback</property>
 				</widget>
 			</widget>
 		</widget>
