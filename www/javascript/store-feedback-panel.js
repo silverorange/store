@@ -13,6 +13,7 @@ function StoreFeedbackPanel(id)
 
 StoreFeedbackPanel.sending_text   = 'sending…';
 StoreFeedbackPanel.loading_text   = 'loading…';
+StoreFeedbackPanel.cancel_text    = 'cancel';
 StoreFeedbackPanel.thank_you_text = 'Thank you for your feedback!';
 
 StoreFeedbackPanel.prototype.init = function()
@@ -155,6 +156,59 @@ StoreFeedbackPanel.prototype.drawContainer = function()
 	YAHOO.util.Dom.setXY(this.container, xy);
 }
 
+StoreFeedbackPanel.prototype.drawCancelLink = function()
+{
+	this.cancel_link = document.createElement('a');
+	this.cancel_link.href = '#';
+	this.cancel_link.appendChild(
+		document.createTextNode(StoreFeedbackPanel.cancel_text)
+	);
+
+	YAHOO.util.Event.on(this.cancel_link, 'click', function(e) {
+		YAHOO.util.Event.preventDefault(e);
+		this.close();
+	}, this, true);
+
+	function getLastDiv(node)
+	{
+		var last_div = null;
+		var child_node;
+
+		for (var i = 0; i < node.childNodes.length; i++) {
+			child_node = node.childNodes[i];
+			if (   child_node.nodeType == 1
+				&& child_node.nodeName == 'DIV'
+				&& child_node.className.indexOf('swat-input-hidden') == -1
+			) {
+				last_div = child_node;
+			}
+		}
+
+		if (last_div) {
+			last_div = getLastDiv(last_div);
+		} else {
+			last_div = node;
+		}
+
+		return last_div;
+	}
+
+	var parent_node = getLastDiv(this.form);
+
+	parent_node.appendChild(this.cancel_link);
+}
+
+StoreFeedbackPanel.prototype.removeCancelLink = function()
+{
+	if (!this.cancel_link) {
+		return;
+	}
+
+	YAHOO.util.Event.purgeElement(this.cancel_link, false, 'click');
+	this.cancel_link.parentNode.removeChild(this.cancel_link);
+	this.cancel_link = null;
+}
+
 StoreFeedbackPanel.prototype.loadFeedbackForm = function()
 {
 	if (this.form_loaded || !this.container) {
@@ -166,8 +220,10 @@ StoreFeedbackPanel.prototype.loadFeedbackForm = function()
 
 	var callback = function(response)
 	{
+		that.removeCancelLink();
 		that.container.innerHTML = response.content;
 		that.initForm();
+		that.drawCancelLink();
 		that.form_loaded = true;
 	};
 
@@ -247,8 +303,10 @@ StoreFeedbackPanel.prototype.handleFormSubmit = function(e)
 		if (response.success) {
 			that.hide();
 		} else {
+			that.removeCancelLink();
 			that.container.innerHTML = response.content;
 			that.initForm();
+			that.drawCancelLink();
 		}
 	};
 
