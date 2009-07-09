@@ -376,6 +376,31 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				'The card expiry date must be after the card inception date.'),
 				'error'));
 		}
+
+		// prevent the same credit card from being entered twice
+		$methods = $this->app->session->order->payment_methods;
+		if (count($methods)) {
+			$card_number = $this->ui->getWidget('card_number');
+			if (!$card_number->hasMessage()) {
+				$card_number_preview = substr($card_number->value, -4);
+				foreach ($methods as $method) {
+					if ($method->payment_type->isCard() &&
+						$method->card_number_preview == $card_number_preview) {
+						$message = new SwatMessage(Store::_(
+							sprintf('Another payment method is already using '.
+								'this card number. Please enter a different '.
+								'number or '.
+								'<a href="checkout/confirmation/paymentmethod/%s">'.
+								'edit the existing payment</a>.',
+								$method->getTag())),
+							'error');
+
+						$message->content_type = 'text/xml';
+						$card_number->addMessage($message);
+					}
+				}
+			}
+		}
 	}
 
 	// }}}
