@@ -60,6 +60,25 @@ class StorePageFactory extends SitePageFactory
 				$category_id, $product_id, $image_id);
 		}
 
+		// if path ends with 'landing', try to load product landing page
+		$regexp = '/\/landing?$/u';
+		if (preg_match($regexp, $source)) {
+
+			$source_exp = explode('/', $source);
+			array_pop($source_exp);
+			$source = implode('/', $source_exp);
+
+			$product_info = $this->getProductInfo($source);
+			$product_id   = $product_info['product_id'];
+			$category_id  = $product_info['category_id'];
+
+			if ($product_id === null)
+				throw new SiteNotFoundException();
+
+			return $this->resolveProductLandingPage($source, $layout,
+				$category_id, $product_id);
+		}
+
 		$category_id = $this->getCategoryId($source);
 
 		// if path is a valid category, load category page
@@ -113,6 +132,19 @@ class StorePageFactory extends SitePageFactory
 	}
 
 	// }}}
+	// {{{ protected function resolveProductLandingPage()
+
+	protected function resolveProductLandingPage($source, SiteLayout $layout,
+		$category_id, $product_id)
+	{
+		$page = $this->instantiatePage($this->default_page_class, $layout);
+		$page = $this->decorateProductLandingPage($page);
+		$page->setPath($this->getCategoryPath($category_id));
+		$page->product_id = $product_id;
+		return $page;
+	}
+
+	// }}}
 	// {{{ protected function resolveProductImagePage()
 
 	protected function resolveProductImagePage($source, SiteLayout $layout,
@@ -151,6 +183,14 @@ class StorePageFactory extends SitePageFactory
 	{
 		require_once 'Store/pages/StoreProductImagePage.php';
 		return $this->decorate($page, 'StoreProductImagePage');
+	}
+
+	// }}}
+	// {{{ protected function decorateProductLandingPage()
+
+	protected function decorateProductLandingPage(SiteAbstractPage $page)
+	{
+		return $page;
 	}
 
 	// }}}

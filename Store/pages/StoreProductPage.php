@@ -1460,8 +1460,9 @@ class StoreProductPage extends StorePage
 			'packages/store/javascript/store-background-image-animation.js',
 			Store::PACKAGE_ID));
 
-		$this->layout->addHtmlHeadEntrySet(
-			$this->message_display->getHtmlHeadEntrySet());
+		if ($this->message_display !== null)
+			$this->layout->addHtmlHeadEntrySet(
+				$this->message_display->getHtmlHeadEntrySet());
 
 		if ($this->cart_ui instanceof SwatUI) {
 			$this->layout->addHtmlHeadEntrySet(
