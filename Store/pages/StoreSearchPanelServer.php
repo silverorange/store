@@ -7,7 +7,7 @@ require_once 'Store/StoreSearchPanel.php';
 
 /**
  * @package   Store
- * @copyright 2007 silverorange
+ * @copyright 2007-2009 silverorange
  */
 class StoreSearchPanelServer extends SiteXMLRPCServer
 {
@@ -15,7 +15,7 @@ class StoreSearchPanelServer extends SiteXMLRPCServer
 
 	/**
 	 * Returns the XHTML required to display the search panel for the
-	 * Van Bourgondien advanced search
+	 * advanced search
 	 *
 	 * @param string $query_string the query string containg the state of the
 	 *                              search panel.
