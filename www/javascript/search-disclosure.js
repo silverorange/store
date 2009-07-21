@@ -1,20 +1,16 @@
-function StoreSearchDisclosure(id, open, entry, keywords_id, panel_height,
-	title)
+function StoreSearchDisclosure(id, open, entry, options)
 {
 	this.search_controls = document.getElementById(id + '_search_controls');
 	this.fade_animation  = null;
 	this.entry           = entry;
-	this.keywords_id     = keywords_id;
 	this.initial_open    = open;
-	this.title           = title;
+
+	this.title           = (options.title)        ? options.title        : '';
+	this.keywords_id     = (options.keywords_id)  ? options.keywords_id  : '';
+	this.panel_height    = (options.panel_height) ? options.panel_height : 13;
+	this.panel_units     = (options.panel_units)  ? options.panel_units  : 'em';
 
 	this.custom_query_string = null;
-
-	if (panel_height) {
-		this.panel_height = panel_height;
-	} else {
-		this.panel_height = 13; // default height in ems
-	}
 
 	StoreSearchDisclosure.superclass.constructor.call(this, id, open);
 	YAHOO.util.Dom.removeClass(this.div.firstChild, 'no-js');
@@ -142,12 +138,13 @@ openWithAnimation: function()
 	this.animate_div.style.position = 'relative';
 	this.animate_div.parentNode.style.overflow = 'visible';
 	this.animate_div.firstChild.style.position = 'relative';
-	this.animate_div.firstChild.style.height = this.panel_height + 'em';
+	this.animate_div.firstChild.style.height = this.panel_height +
+		this.panel_units;
 
 	var attributes = { height: {
 		to:   this.panel_height,
 		from: 0,
-		unit: 'em'
+		unit: this.panel_units
 	}};
 
 	var animation = new YAHOO.util.Anim(this.animate_div, attributes, time,
@@ -156,7 +153,7 @@ openWithAnimation: function()
 	var attributes = { top: {
 		to:   0,
 		from: -this.panel_height,
-		unit: 'em'
+		unit: this.panel_units
 	}};
 
 	var slide_animation = new YAHOO.util.Anim(this.animate_div.firstChild,
@@ -196,7 +193,7 @@ closeWithAnimation: function()
 	var attributes = { height: {
 		to:   0,
 		from: this.panel_height,
-		unit: 'em'
+		unit: this.panel_units
 	}};
 
 	var animation = new YAHOO.util.Anim(this.animate_div, attributes, time,
@@ -205,7 +202,7 @@ closeWithAnimation: function()
 	var attributes = { top: {
 		to:   -this.panel_height,
 		from: 0,
-		unit: 'em'
+		unit: this.panel_units
 	}};
 
 	var slide_animation = new YAHOO.util.Anim(this.animate_div.firstChild,
@@ -234,6 +231,14 @@ StoreSearchDisclosure.prototype.drawLoadingContainer = function()
 {
 	this.loading_container =
 		document.getElementById(this.id + '_loading_container');
+
+	if (this.panel_units == 'px') {
+		var top_padding = Math.round((this.panel_height - 16) / 2);
+		var height      = this.panel_height - top_padding;
+
+		this.loading_container.style.padding = top_padding + 'px 0 0 0';
+		this.loading_container.style.height  = height + 'px';
+	}
 
 	var image = document.createElement('img');
 	image.src = 'packages/swat/images/swat-button-throbber.gif';

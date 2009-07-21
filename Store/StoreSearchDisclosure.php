@@ -39,11 +39,20 @@ class StoreSearchDisclosure extends SwatDisclosure
 	public $input_text;
 
 	/**
-	 * Panel height in ems
+	 * Panel height in {@link StoreSearchDisclosure::$panel_unit} units
 	 *
 	 * @var float
 	 */
 	public $panel_height = 13;
+
+	/**
+	 * Panel height units
+	 *
+	 * Should be one of 'em', 'px', 'pt', '%', etc...
+	 *
+	 * @var string
+	 */
+	public $panel_units = 'em';
 
 	/**
 	 * Access key used by the entry control within this disclosure's header
@@ -183,18 +192,35 @@ class StoreSearchDisclosure extends SwatDisclosure
 	 */
 	protected function getInlineJavaScript()
 	{
-		$open = ($this->open) ? 'true' : 'false';
-		$title = SwatString::quoteJavaScriptString($this->title);
+		$open        = ($this->open) ? 'true' : 'false';
+		$title       = SwatString::quoteJavaScriptString($this->title);
+		$keywords_id = SwatString::quoteJavaScriptString($this->keywords_id);
+		$panel_units = SwatString::quoteJavaScriptString($this->panel_units);
+
+		$options = array(
+			'title'        => $title,
+			'panel_height' => $this->panel_height,
+			'panel_units'  => $panel_units,
+			'keywords_id'  => $keywords_id,
+		);
+
+		$options_string = "{\n";
+		foreach ($options as $name => $value) {
+			$options_string.= "\t".SwatString::quoteJavaScriptString($name).
+				': '.$value.",\n";
+		}
+		$options_string = substr($options_string, 0, -2);
+		$options_string.= "\n}";
+
 		return sprintf(
-			"var %s_obj = new %s('%s', %s, %s_entry_obj, '%s', %s, %s);",
+			"var %s_obj = new %s('%s', %s, %s_entry_obj, %s);",
 			$this->id,
 			$this->getJavaScriptClass(),
 			$this->id,
 			$open,
 			$this->id,
-			$this->keywords_id,
-			$this->panel_height,
-			$title);
+			$options_string
+		);
 	}
 
 	// }}}
