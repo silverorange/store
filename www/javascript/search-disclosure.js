@@ -10,6 +10,10 @@ function StoreSearchDisclosure(id, open, entry, options)
 	this.panel_height    = (options.panel_height) ? options.panel_height : 13;
 	this.panel_units     = (options.panel_units)  ? options.panel_units  : 'em';
 
+	this.loading_image   = (options.loading_image) ?
+		options.loading_image :
+		'packages/swat/images/swat-button-throbber.gif';
+
 	this.custom_query_string = null;
 
 	StoreSearchDisclosure.superclass.constructor.call(this, id, open);
@@ -241,7 +245,7 @@ StoreSearchDisclosure.prototype.drawLoadingContainer = function()
 	}
 
 	var image = document.createElement('img');
-	image.src = 'packages/swat/images/swat-button-throbber.gif';
+	image.src = this.loading_image;
 
 	this.loading_container.appendChild(image);
 }

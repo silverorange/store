@@ -61,6 +61,13 @@ class StoreSearchDisclosure extends SwatDisclosure
 	 */
 	public $access_key;
 
+	/**
+	 * Loading throbber image to use
+	 *
+	 * @var string
+	 */
+	public $loading_image = 'packages/swat/images/swat-button-throbber.gif';
+
 	// }}}
 	// {{{ public function __construct()
 
@@ -192,16 +199,18 @@ class StoreSearchDisclosure extends SwatDisclosure
 	 */
 	protected function getInlineJavaScript()
 	{
-		$open        = ($this->open) ? 'true' : 'false';
-		$title       = SwatString::quoteJavaScriptString($this->title);
-		$keywords_id = SwatString::quoteJavaScriptString($this->keywords_id);
-		$panel_units = SwatString::quoteJavaScriptString($this->panel_units);
+		$open          = ($this->open) ? 'true' : 'false';
+		$title         = SwatString::quoteJavaScriptString($this->title);
+		$keywords_id   = SwatString::quoteJavaScriptString($this->keywords_id);
+		$panel_units   = SwatString::quoteJavaScriptString($this->panel_units);
+		$loading_image = SwatString::quoteJavaScriptString($this->loading_image);
 
 		$options = array(
-			'title'        => $title,
-			'panel_height' => $this->panel_height,
-			'panel_units'  => $panel_units,
-			'keywords_id'  => $keywords_id,
+			'title'         => $title,
+			'panel_height'  => $this->panel_height,
+			'panel_units'   => $panel_units,
+			'keywords_id'   => $keywords_id,
+			'loading_image' => $loading_image,
 		);
 
 		$options_string = "{\n";
