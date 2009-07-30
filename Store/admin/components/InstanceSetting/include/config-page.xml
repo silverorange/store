@@ -1,0 +1,28 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatFormField">
+		<property name="title" translatable="yes">Froogle Filename</property>
+		<widget class="SwatEntry" id="froogle_filename" />
+	</widget>
+	<widget class="SwatFormField">
+		<property name="title" translatable="yes">Froogle Server</property>
+		<widget class="SwatEntry" id="froogle_server" />
+	</widget>
+	<widget class="SwatFormField">
+		<property name="title" translatable="yes">Froogle Username</property>
+		<widget class="SwatEntry" id="froogle_username" />
+	</widget>
+	<widget class="SwatFormField">
+		<property name="title" translatable="yes">Froogle Password</property>
+		<widget class="SwatEntry" id="froogle_password" />
+	</widget>
+	<widget class="SwatFormField">
+		<property name="title" translatable="yes">StrikeIron USA Key</property>
+		<widget class="SwatEntry" id="strikeiron_verify_address_usa_key" />
+	</widget>
+	<widget class="SwatFormField">
+		<property name="title" translatable="yes">StrikeIron Canada Key</property>
+		<widget class="SwatEntry" id="strikeiron_verify_address_canada_key" />
+	</widget>
+</swatml>
