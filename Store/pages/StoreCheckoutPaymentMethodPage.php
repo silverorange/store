@@ -379,7 +379,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 		// prevent the same credit card from being entered twice
 		$methods = $this->app->session->order->payment_methods;
-		if (count($methods)) {
+		if ($this->app->config->store->multiple_payment_support &&
+			count($methods) > 0) {
+
 			$card_number = $this->ui->getWidget('card_number');
 			if (!$card_number->hasMessage()) {
 				$card_number_preview = substr($card_number->value, -4);
