@@ -183,11 +183,13 @@ abstract class StoreCheckoutCart extends StoreCart
 			return;
 
 		try {
-			if (isset($this->app->cookie->cart_session)) {
+			$cookie_name = $this->getCartSessionCookieName();
+
+			if (isset($this->app->cookie->$cookie_name)) {
 				if (!$this->app->session->isActive())
 					$this->app->session->activate();
 
-				$previous_session = $this->app->cookie->cart_session;
+				$previous_session = $this->app->cookie->$cookie_name;
 				$current_session = $this->app->session->getSessionId();
 
 				if ($previous_session !== $current_session) {
@@ -206,8 +208,16 @@ abstract class StoreCheckoutCart extends StoreCart
 		}
 
 		if ($this->app->session->isActive())
-			$this->app->cookie->setCookie('cart_session',
+			$this->app->cookie->setCookie($cookie_name,
 				$this->app->session->getSessionId());
+	}
+
+	// }}}
+	// {{{ protected function getCartSessionCookieName()
+
+	protected function getCartSessionCookieName()
+	{
+		return 'cart_session';
 	}
 
 	// }}}
