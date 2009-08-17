@@ -88,6 +88,13 @@ class StoreProduct extends SwatDBDataObject
 	 */
 	public $createdate;
 
+	/**
+	 * Whether or not customers can review the product.
+	 *
+	 * @var boolean
+	 */
+	public $reviewable = true;
+
 	// }}}
 	// {{{ protected properties
 
