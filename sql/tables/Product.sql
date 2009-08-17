@@ -6,6 +6,7 @@ create table Product (
 	createdate timestamp,
 	shortname varchar(255),
 	keywords varchar(255),
+	reviewable boolean not null default true,
 	primary key (id)
 );
 

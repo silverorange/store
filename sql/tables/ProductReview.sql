@@ -22,3 +22,4 @@ create index ProductReview_parent_index on ProductReview(parent);
 create index ProductReview_author_review_index on ProductReview(author_review);
 create index ProductReview_spam_index on ProductReview(spam);
 create index ProductReview_status_index on ProductReview(status);
+create index ProductReview_author_index on ProductReview(author);
