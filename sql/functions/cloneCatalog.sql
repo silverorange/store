@@ -299,7 +299,7 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 					part_unit,
 					part_count,
 					singular_unit,
-					plural_unit
+					plural_unit,
 					minimum_quantity,
 					minimum_multiple
 				from Item
