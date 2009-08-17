@@ -128,40 +128,45 @@ class StoreProductPage extends StorePage
 
 	protected function initReviews()
 	{
-		$this->reviews_ui = new SwatUI();
-		$this->reviews_ui->loadFromXML($this->reviews_ui_xml);
+		if ($this->product->reviewable) {
+			$this->reviews_ui = new SwatUI();
+			$this->reviews_ui->loadFromXML($this->reviews_ui_xml);
 
-		$reviews = $this->product->getVisibleProductReviews(
-			$this->app->getInstance(),
-			$this->getMaxProductReviews());
+			$reviews = $this->product->getVisibleProductReviews(
+				$this->app->getInstance(),
+				$this->getMaxProductReviews());
 
-		$review_ids = array();
-		foreach ($reviews as $review) {
-			$review_ids[] = $review->id;
-		}
+			$review_ids = array();
+			foreach ($reviews as $review) {
+				$review_ids[] = $review->id;
+			}
 
-		// set view replicator ids
-		$this->reviews_ui->getWidget('reviews_replicator')
-			->replication_ids = $review_ids;
+			// set view replicator ids
+			$this->reviews_ui->getWidget('reviews_replicator')
+				->replication_ids = $review_ids;
 
-		$this->reviews_ui->getWidget('review')->app = $this->app;
+			$this->reviews_ui->getWidget('review')->app = $this->app;
 
-		$this->reviews_ui->init();
+			$this->reviews_ui->init();
 
-		$this->initReviewsInternal();
+			$this->initReviewsInternal();
 
-		// set reviews on replicated views
-		foreach ($reviews as $review) {
-			$view = $this->reviews_ui
-				->getWidget('reviews_replicator')
-				->getWidget('review', $review->id);
+			// set reviews on replicated views
+			foreach ($reviews as $review) {
+				$view = $this->reviews_ui
+					->getWidget('reviews_replicator')
+					->getWidget('review', $review->id);
 
-			$view->review = $review;
-		}
+				$view->review = $review;
+			}
 
-		if (count($reviews) == 0) {
-			$this->reviews_ui->getWidget('product_review_disclosure')->title =
-				Store::_('Be the first to review this product');
+			if (count($reviews) == 0) {
+				$disclosure =
+					$this->reviews_ui->getWidget('product_review_disclosure');
+
+				$disclosure->title =
+					Store::_('Be the first to review this product');
+			}
 		}
 	}
 
