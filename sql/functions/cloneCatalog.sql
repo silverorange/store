@@ -131,7 +131,9 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 				id,
 				title,
 				bodytext,
-				shortname
+				shortname,
+				keywords,
+				reviewable
 			from Product
 			where catalog = param_id
 		loop
@@ -142,13 +144,18 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 				title,
 				bodytext,
 				shortname,
-				createdate)
-			values (
+				keywords,
+				reviewable,
+				createdate
+			) values (
 				local_id,
 				record_product.title,
 				record_product.bodytext,
 				record_product.shortname,
-				LOCALTIMESTAMP);
+				record_product.keywords,
+				record_product.reviewable,
+				LOCALTIMESTAMP
+			);
 
 			local_new_product_id := currval('product_id_seq');
 
@@ -192,8 +199,7 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 				from ProductReview
 				where product = local_old_product_id
 			loop
-				insert into ProductReview
-				(
+				insert into ProductReview (
 					product,
 					parent,
 					instance,
@@ -256,18 +262,22 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 
 			-- clone item groups
 			for record_item_group in
-				select id, title, displayorder
+				select
+					id,
+					title,
+					displayorder
 				from ItemGroup
 				where product = local_old_product_id
 			loop
 				insert into ItemGroup (
 					product,
 					title,
-					displayorder)
-				values (
+					displayorder
+				) values (
 					local_new_product_id,
 					record_item_group.title,
-					record_item_group.displayorder);
+					record_item_group.displayorder
+				);
 
 				-- store cloned item-group in map
 				insert into ClonedItemGroupMap (new_id, old_id)
@@ -290,6 +300,8 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 					part_count,
 					singular_unit,
 					plural_unit
+					minimum_quantity,
+					minimum_multiple
 				from Item
 				where product = local_old_product_id
 			loop
@@ -306,8 +318,10 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 					part_unit,
 					part_count,
 					singular_unit,
-					plural_unit)
-				values (
+					plural_unit,
+					minimum_quantity,
+					minimum_multiple
+				) values (
 					record_item.sku,
 					local_new_product_id,
 					record_item.displayorder,
@@ -318,7 +332,10 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 					record_item.part_unit,
 					record_item.part_count,
 					record_item.singular_unit,
-					record_item.plural_unit);
+					record_item.plural_unit,
+					record_item.minimum_quantity,
+					record_item.minimum_multiple
+				);
 
 				local_new_item_id := currval('item_id_seq');
 
@@ -346,10 +363,11 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 
 					insert into QuantityDiscount (
 						item,
-						quantity)
-					values (
+						quantity
+					) values (
 						local_new_item_id,
-						record_quantity_discount.quantity);
+						record_quantity_discount.quantity
+					);
 
 					local_new_quantity_discount_id := currval('quantitydiscount_id_seq');
 
