@@ -2,6 +2,7 @@
 
 require_once 'Site/pages/SiteXMLRPCServer.php';
 require_once 'Store/dataobjects/StoreFeedback.php';
+require_once 'Store/dataobjects/StoreArticle.php';
 require_once 'Swat/SwatUI.php';
 
 /**
@@ -11,6 +12,11 @@ require_once 'Swat/SwatUI.php';
  */
 class StoreFeedbackPanelServer extends SiteXMLRPCServer
 {
+	// {{{ protected properties
+
+	protected $ui;
+
+	// }}}
 	// {{{ public function getContent()
 
 	/**
@@ -41,22 +47,19 @@ class StoreFeedbackPanelServer extends SiteXMLRPCServer
 
 		ob_start();
 
-		$ui = new SwatUI();
-		$ui->loadFromXml($this->getXmlUi());
+		$this->initUi();
+		$this->ui->process();
 
-		$ui->init();
-		$ui->process();
-
-		if ($ui->getWidget('feedback_form')->isSubmitted() &&
-			!$ui->getRoot()->hasMessage()) {
-			$this->processFeedback($ui);
+		if ($this->ui->getWidget('feedback_form')->isSubmitted() &&
+			!$this->ui->getRoot()->hasMessage()) {
+			$this->processFeedback();
 		}
 
-		$ui->display();
+		$this->ui->display();
 
 		$return['content'] = ob_get_clean();
 		$return['head_entries'] = '';
-		$return['success'] = (!$ui->getRoot()->hasMessage());
+		$return['success'] = (!$this->ui->getRoot()->hasMessage());
 
 		return $return;
 	}
@@ -104,12 +107,12 @@ class StoreFeedbackPanelServer extends SiteXMLRPCServer
 	// }}}
 	// {{{ protected function processFeedback()
 
-	protected function processFeedback(SwatUI $ui)
+	protected function processFeedback()
 	{
 		$feedback = $this->createFeedback();
 
-		$feedback->email    = $ui->getWidget('email')->value;
-		$feedback->bodytext = $ui->getWidget('bodytext')->value;
+		$feedback->email    = $this->ui->getWidget('email')->value;
+		$feedback->bodytext = $this->ui->getWidget('bodytext')->value;
 
 		$feedback->createdate = new SwatDate();
 		$feedback->createdate->toUTC();
@@ -132,6 +135,31 @@ class StoreFeedbackPanelServer extends SiteXMLRPCServer
 		$feedback = new $class();
 		$feedback->setDatabase($this->app->db);
 		return $feedback;
+	}
+
+	// }}}
+	// {{{ protected function initUi()
+
+	protected function initUi()
+	{
+		$this->ui = new SwatUI();
+		$this->ui->loadFromXml($this->getXmlUi());
+		$description = $this->ui->getwidget('feedback_description');
+
+		$class = SwatDBClassMap::get('StoreArticle');
+		$article = new $class();
+		$article->setDatabase($this->app->db);
+
+		if ($article->loadByShortname('feedback'))
+			$description->content = $article->bodytext;
+
+		if (strlen($description->content) == 0)
+			$description->content =
+				'<p>Can’t find what you’re looking for? Having trouble '.
+				'with the website? Please let us know so we can improve '.
+				'our website:</p>';
+
+		$this->ui->init();
 	}
 
 	// }}}
