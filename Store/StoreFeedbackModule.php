@@ -19,7 +19,9 @@ class StoreFeedbackModule extends SiteApplicationModule
 	{
 		$show = false;
 
-		if (in_array($this->app->getPage()->getSource(), $this->getSources())) {
+		if (isset($_GET['feedback'])) {
+			$show = true;
+		} elseif (in_array($this->app->getPage()->getSource(), $this->getSources())) {
 			$show = true;
 		} else {
 			$show = ($this->getSearchReferrer() !== null);
