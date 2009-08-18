@@ -91,8 +91,9 @@ class StoreProductDetails extends AdminIndex
 		$sale_discount_flydown->addOptionsByArray(SwatDB::getOptionArray(
 			$this->app->db, 'SaleDiscount', 'title', 'id', 'title'));
 
-		if ($this->ui->hasWidget('review_pager'))
+		if ($this->ui->hasWidget('review_pager')) {
 			$this->ui->getWidget('review_pager')->page_size = 10;
+		}
 	}
 
 	// }}}
@@ -141,8 +142,9 @@ class StoreProductDetails extends AdminIndex
 			$this->addNewItems();
 		}
 
-		if ($this->ui->hasWidget('review_pager'))
+		if ($this->ui->hasWidget('review_pager')) {
 			$this->ui->getWidget('review_pager')->process();
+		}
 	}
 
 	// }}}
@@ -1366,6 +1368,11 @@ class StoreProductDetails extends AdminIndex
 		$view = $this->ui->getWidget('product_reviews_view');
 		$this->buildCategoryToolBarLinks($toolbar);
 		$this->buildCategoryTableViewLinks($view);
+
+		if (!$this->product->reviewable) {
+			$toolbar->parent->sensitive = false;
+			$this->ui->getWidget('product_reviews_note')->visible = true;
+		}
 	}
 
 	// }}}

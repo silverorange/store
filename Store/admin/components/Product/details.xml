@@ -354,7 +354,7 @@
 		</widget>
 		<!-- }}} -->
 		<!-- {{{ Product Reviews -->
-		<widget class="SwatFrame">
+		<widget class="SwatFrame" id="product_reviews_frame">
 			<property name="title" translatable="yes">Product Reviews</property>
 			<widget class="SwatToolBar" id="product_reviews_toolbar">
 				<widget class="SwatToolLink">
@@ -362,6 +362,12 @@
 					<property name="stock_id">create</property>
 					<property name="link">ProductReview/Edit?product=%s</property>
 				</widget>
+			</widget>
+			<widget class="AdminNote" id="product_reviews_note">
+				<property name="visible" type="boolean">false</property>
+				<property name="content" translatable="yes">Product Reviews are
+					not allowed for this product. Any existing reviews for this
+					product will not be shown on the product’s page.</property>
 			</widget>
 			<widget class="SwatForm" id="product_reviews_form">
 				<widget class="SwatTableView" id="product_reviews_view">
