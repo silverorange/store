@@ -4,13 +4,10 @@ insert into AdminComponent (id, section, displayorder, shortname, title, descrip
 	values (402, 104, 30, 'Post', 'Blog Posts', null, true, true);
 
 insert into AdminComponent (id, section, displayorder, shortname, title, description, enabled, visible)
-	values (403, 104, 40, 'Comment', 'Manage Blog Comments', null, true, true);
+	values (403, 104, 50, 'Tag', 'Blog Tags', null, true, true);
 
 insert into AdminComponent (id, section, displayorder, shortname, title, description, enabled, visible)
-	values (404, 104, 50, 'Tag', 'Blog Tags', null, true, true);
-
-insert into AdminComponent (id, section, displayorder, shortname, title, description, enabled, visible)
-	values (405, 104, 60, 'Author', 'Blog Authors', null, true, true);
+	values (404, 104, 60, 'Author', 'Blog Authors', null, true, true);
 
 select setval('adminsection_id_seq', max(id)) from AdminSection;
 select setval('admincomponent_id_seq', max(id)) from AdminComponent;
