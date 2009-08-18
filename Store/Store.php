@@ -103,8 +103,11 @@ class Store
 			'store.akismet_key'     => null,
 
 			// Optional StrikeIron API keys for address verification.
-			'strikeiron.verify_address_usa_key' => null,
+			'strikeiron.verify_address_usa_key'    => null,
 			'strikeiron.verify_address_canada_key' => null,
+
+			// Optional Email address to send feedback too
+			'email.feedback_address' => null,
 		);
 	}
 

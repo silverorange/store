@@ -124,6 +124,9 @@ class StoreFeedbackPanelServer extends SiteXMLRPCServer
 		}
 
 		$feedback->save();
+
+		if ($this->app->config->email->feedback_address !== null)
+			$feedback->sendEmail($this->app);
 	}
 
 	// }}}
@@ -153,11 +156,12 @@ class StoreFeedbackPanelServer extends SiteXMLRPCServer
 		if ($article->loadByShortname('feedback'))
 			$description->content = $article->bodytext;
 
-		if (strlen($description->content) == 0)
+		if (strlen($description->content) == 0) {
 			$description->content =
 				'<p>Can’t find what you’re looking for? Having trouble '.
 				'with the website? Please let us know so we can improve '.
 				'our website:</p>';
+		}
 
 		$this->ui->init();
 	}

@@ -103,6 +103,9 @@ class StoreFeedbackEditPage extends SiteDBEditPage
 		$this->feedback->createdate->toUTC();
 
 		$this->feedback->save();
+
+		if ($this->app->config->email->feedback_address !== null)
+			$this->feedback->sendEmail($this->app);
 	}
 
 	// }}}
