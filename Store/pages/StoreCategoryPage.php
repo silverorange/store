@@ -1,4 +1,4 @@
-<?php
+i t<?php
 
 require_once 'Swat/SwatString.php';
 require_once 'Store/StoreProductSearchEngine.php';
@@ -105,8 +105,8 @@ class StoreCategoryPage extends StorePage
 
 		if ($this->category->description === null) {
 			$this->layout->data->meta_description =
-				SwatString::minimizeEntities(SwatString::condense(
-				SwatString::stripXHTMLTags($this->category->bodytext, 400)));
+				SwatString::minimizeEntities(SwatString::stripXHTMLTags(
+				SwatString::condense($this->category->bodytext, 400)));
 		} else {
 			$this->layout->data->meta_description =
 				SwatString::minimizeEntities($this->category->description);
