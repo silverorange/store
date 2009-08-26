@@ -555,8 +555,8 @@ class StoreProductPage extends StorePage
 			SwatString::minimizeEntities($this->product->title);
 
 		$this->layout->data->meta_description =
-			SwatString::minimizeEntities(SwatString::condense(
-			SwatString::stripXHTMLTags($this->product->bodytext, 400)));
+			SwatString::minimizeEntities(SwatString::stripXHTMLTags(
+			SwatString::condense($this->product->bodytext, 400)));
 
 		$image = $this->product->primary_image;
 		if ($image !== null) {
