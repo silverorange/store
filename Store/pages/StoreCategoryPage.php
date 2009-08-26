@@ -112,6 +112,13 @@ class StoreCategoryPage extends StorePage
 				SwatString::minimizeEntities($this->category->description);
 		}
 
+		$image = $this->category->image;
+		if ($image !== null) {
+			$this->layout->data->extra_headers.= sprintf(
+				'<link rel="image_src" href="%s" />',
+				$this->app->getBaseHref().$image->getUri('thumb'));
+		}
+
 		// subclasses may have loaded products already at this point, so avoid
 		// querying all products again
 		if ($this->products === null)
