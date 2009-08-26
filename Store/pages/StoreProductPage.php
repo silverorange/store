@@ -557,6 +557,13 @@ class StoreProductPage extends StorePage
 		$this->layout->data->meta_description =
 			SwatString::minimizeEntities(SwatString::condense(
 			SwatString::stripXHTMLTags($this->product->bodytext, 400)));
+
+		$image = $this->product->primary_image;
+		if ($image !== null) {
+			$this->layout->data->extra_headers.= sprintf(
+				'<link rel="image_src" href="%s" />',
+				$this->app->getBaseHref().$image->getUri('small'));
+		}
 	}
 
 	// }}}
