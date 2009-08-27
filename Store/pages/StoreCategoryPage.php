@@ -1,4 +1,4 @@
-i t<?php
+<?php
 
 require_once 'Swat/SwatString.php';
 require_once 'Store/StoreProductSearchEngine.php';
