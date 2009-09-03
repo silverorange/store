@@ -9,5 +9,6 @@ create or replace view AvailableItemView as
 			inner join Catalog on Product.catalog = Catalog.id
 			inner join CatalogRegionBinding on
 				Catalog.id = CatalogRegionBinding.catalog
+				and ItemRegionBinding.region = CatalogRegionBinding.region
 		where ItemRegionBinding.enabled = true
 			and (Item.status = 0);
