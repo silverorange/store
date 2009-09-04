@@ -90,6 +90,15 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	public $popular_threshold;
 
 	/**
+	 * Optional flag to search for collections only
+	 *
+	 * Search will find collection products only.
+	 *
+	 * @var boolean
+	 */
+	public $collection_products_only = false;
+
+	/**
 	 * Optional member product for collections
 	 *
 	 * Search will find collections containing this member product.
@@ -442,6 +451,10 @@ class StoreProductSearchEngine extends SiteSearchEngine
 			$clause.= sprintf(' and Product.id in
 				(select source_product from ProductCollectionBinding where member_product = %s)',
 				$this->app->db->quote($this->collection_member_product->id, 'integer'));
+
+		if ($this->collection_products_only)
+			$clause.= ' and Product.id in
+				(select source_product from ProductCollectionBinding)';
 
 		return $clause;
 	}
