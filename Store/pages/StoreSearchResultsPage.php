@@ -33,6 +33,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 		$this->addSearchDataField('category');
 		$this->addSearchDataField('attr', true);
 		$this->addSearchDataField('price');
+		$this->addSearchDataField('collection');
 
 		parent::init();
 
@@ -493,6 +494,9 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 		$engine->supress_duplicate_products = true;
 		$engine->price_range = $this->getPriceRange();
 		$engine->addOrderByField('is_available desc');
+
+		if ($this->hasSearchDataValue('collection'))
+			$engine->collection_products_only = true;
 
 		return $engine;
 	}
