@@ -171,8 +171,7 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
 
 	// }}}
 
-
-	/// build phase
+	// build phase
 	// {{{ protected function buildInternal()
 
 	protected function buildInternal()
