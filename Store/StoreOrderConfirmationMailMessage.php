@@ -81,7 +81,7 @@ abstract class StoreOrderConfirmationMailMessage
 
 	protected function getSubject()
 	{
-		return sprintf('Order Confirmation: Order %s',
+		return sprintf(Store::_('Order Confirmation: Order %s'),
 			$this->order->id);
 	}
 
