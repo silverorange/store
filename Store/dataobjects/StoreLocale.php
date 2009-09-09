@@ -32,7 +32,7 @@ class StoreLocale extends SwatDBDataObject
 
 	// }}}
 	// {{{ public function getURLLocale()
-	
+
 	/**
 	 * Get locale formatted for the URL
 	 *
