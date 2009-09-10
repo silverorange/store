@@ -484,7 +484,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		 */
 		case 10505:
 		case 10555:
-		case 10752:
 			$avs_code = $e->getResponse()->AVSCode;
 			switch ($avs_code) {
 
@@ -514,7 +513,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 			break;
 
-		/**
+		/*
 		 * Express checkout shipping address did not pass PalPal's
 		 * address verification check.
 		 *
@@ -522,6 +521,13 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		 */
 		case 10736:
 			return 'paypal-address-error';
+
+		/*
+		 * Gateway declined. This happens when the issuing bank declines the
+		 * transaction.
+		 */
+		case 10752:
+			return 'card-error';
 
 		/*
 		 * Some kind of generic AVS rate limiting error. Who knows what the
