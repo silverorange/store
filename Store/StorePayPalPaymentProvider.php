@@ -31,6 +31,17 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=';
 
 	// }}}
+	// {{{ protected properties
+
+	/**
+	 * The currency to use for transactions
+	 *
+	 * @var string
+	 * @see StorePayPalPaymentProvider::__construct()
+	 */
+	protected $currency;
+
+	// }}}
 	// {{{ private properties
 
 	/**
@@ -40,14 +51,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 * @see StoreProtxPaymentProvider::__construct()
 	 */
 	private $client;
-
-	/**
-	 * The currency to use for transactions
-	 *
-	 * @var string
-	 * @see StorePayPalPaymentProvider::__construct()
-	 */
-	private $currency;
 
 	/**
 	 * @var string
