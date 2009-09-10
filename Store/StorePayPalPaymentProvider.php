@@ -41,22 +41,19 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 */
 	protected $currency;
 
-	// }}}
-	// {{{ private properties
-
 	/**
 	 * PayPal SOAP client
 	 *
 	 * @var Payment_PayPal_SOAP
 	 * @see StoreProtxPaymentProvider::__construct()
 	 */
-	private $client;
+	protected $client;
 
 	/**
 	 * @var string
 	 * @see StorePayPalPaymentProvider::__construct()
 	 */
-	private $mode;
+	protected $mode;
 
 	// }}}
 	// {{{ public function __construct()
