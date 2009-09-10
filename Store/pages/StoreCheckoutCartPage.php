@@ -78,11 +78,14 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 			} else {
 				$this->processEntries();
 
-				if (!$form->hasMessage() &&
-					$this->continueButtonHasBeenClicked()) {
+				if (!$form->hasMessage())
 					$this->app->cart->save();
+
+				if (!$this->checkCart())
+					$this->app->relocate('cart');
+
+				if ($this->continueButtonHasBeenClicked())
 					$this->app->relocate('checkout/confirmation');
-				}
 			}
 		}
 	}
