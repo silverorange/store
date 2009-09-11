@@ -487,8 +487,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		if ($order_payment_method !== null)
 			$new_payment_methods->add($order_payment_method);
 
-		foreach ($payment_methods as $payment_method)
-			$new_payment_methods->add($payment_method);
+		if ($this->app->config->store->multiple_payment_support)
+			foreach ($payment_methods as $payment_method)
+				$new_payment_methods->add($payment_method);
 
 		$this->app->session->order->payment_methods = $new_payment_methods;
 

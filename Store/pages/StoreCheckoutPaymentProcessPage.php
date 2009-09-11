@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Store/pages/StoreCheckoutPage.php';
+require_once 'Store/dataobjects/StoreOrderPaymentMethodWrapper.php';
 
 /**
  * Processes the order payment response
@@ -35,6 +36,11 @@ abstract class StoreCheckoutPaymentProcessPage extends StoreCheckoutPage
 	public function process()
 	{
 		try {
+			if (!$this->app->config->store->multiple_payment_support) {
+				$class_name = SwatDBClassMap::get('StoreOrderPaymentMethodWrapper');
+				$this->app->session->order->payment_methods = new $class_name();
+			}
+
 			if ($this->processPayment()) {
 				$this->updateProgress();
 			} else {
