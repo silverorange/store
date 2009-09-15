@@ -68,6 +68,13 @@ class StoreSearchDisclosure extends SwatDisclosure
 	 */
 	public $loading_image = 'packages/swat/images/swat-button-throbber.gif';
 
+	/**
+	 * XML-RPC Server
+	 *
+	 * @var string
+	 */
+	public $xml_rpc_server = 'xml-rpc/search-panel';
+
 	// }}}
 	// {{{ public function __construct()
 
@@ -146,7 +153,7 @@ class StoreSearchDisclosure extends SwatDisclosure
 		$sub_container_div->id = $this->id.'_sub_container';
 		$sub_container_div->open();
 
-		if ($this->open)
+		if (count($this->getChildren()) > 0)
 			$this->displayChildren();
 		else
 			$this->displayLoadingContainer();
@@ -199,18 +206,21 @@ class StoreSearchDisclosure extends SwatDisclosure
 	 */
 	protected function getInlineJavaScript()
 	{
-		$open          = ($this->open) ? 'true' : 'false';
-		$title         = SwatString::quoteJavaScriptString($this->title);
-		$keywords_id   = SwatString::quoteJavaScriptString($this->keywords_id);
-		$panel_units   = SwatString::quoteJavaScriptString($this->panel_units);
-		$loading_image = SwatString::quoteJavaScriptString($this->loading_image);
+		$open           = ($this->open) ? 'true' : 'false';
+		$title          = SwatString::quoteJavaScriptString($this->title);
+		$keywords_id    = SwatString::quoteJavaScriptString($this->keywords_id);
+		$panel_units    = SwatString::quoteJavaScriptString($this->panel_units);
+		$loading_image  = SwatString::quoteJavaScriptString($this->loading_image);
+		$xml_rpc_server = (count($this->getChildren()) == 0) ?
+			SwatString::quoteJavaScriptString($this->xml_rpc_server) : 'null';
 
 		$options = array(
-			'title'         => $title,
-			'panel_height'  => $this->panel_height,
-			'panel_units'   => $panel_units,
-			'keywords_id'   => $keywords_id,
-			'loading_image' => $loading_image,
+			'title'          => $title,
+			'panel_height'   => $this->panel_height,
+			'panel_units'    => $panel_units,
+			'keywords_id'    => $keywords_id,
+			'loading_image'  => $loading_image,
+			'xml_rpc_server' => $xml_rpc_server,
 		);
 
 		$options_string = "{\n";
