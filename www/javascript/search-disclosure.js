@@ -9,6 +9,7 @@ function StoreSearchDisclosure(id, open, entry, options)
 	this.keywords_id     = (options.keywords_id)  ? options.keywords_id  : '';
 	this.panel_height    = (options.panel_height) ? options.panel_height : 13;
 	this.panel_units     = (options.panel_units)  ? options.panel_units  : 'em';
+	this.xml_rpc_server  = options.xml_rpc_server;
 
 	this.loading_image   = (options.loading_image) ?
 		options.loading_image :
@@ -35,7 +36,7 @@ YAHOO.lang.extend(StoreSearchDisclosure, SwatDisclosure, {
 
 init: function()
 {
-	if (this.initial_open) {
+	if (this.initial_open || this.xml_rpc_server === null) {
 		this.loading_container = null;
 	} else {
 		this.drawLoadingContainer();
@@ -252,31 +253,36 @@ StoreSearchDisclosure.prototype.drawLoadingContainer = function()
 
 StoreSearchDisclosure.prototype.loadSearchPanel = function()
 {
-	var client = new XML_RPC_Client('xml-rpc/search-panel');
-	var that = this;
+	var content = document.getElementById(this.id + '_content');
+	if (content) {
+		this.loading_container.parentNode.innerHTML = content.innerHTML;
+	} else {
+		var client = new XML_RPC_Client(this.xml_rpc_server);
+		var that = this;
 
-	var callback = function(response)
-	{
-		that.loading_container.parentNode.innerHTML = response;
-		that.loading_container = null;
-		that.pushDownKeywords();
-	};
+		var callback = function(response)
+		{
+			that.loading_container.parentNode.innerHTML = response;
+			that.loading_container = null;
+			that.pushDownKeywords();
+		};
 
-	var query = location.search;
-	if (query.length > 0)
-		query = query.substr(1);
+		var query = location.search;
+		if (query.length > 0)
+			query = query.substr(1);
 
-	if (this.custom_query_string) {
-		if (query.length)
-			query += '&';
+		if (this.custom_query_string) {
+			if (query.length)
+				query += '&';
 
-		query += this.custom_query_string;
+			query += this.custom_query_string;
+		}
+
+		var uri = location.href;
+
+		client.callProcedure('getContent', callback,
+			[query, uri], ['string', 'string']);
 	}
-
-	var uri = location.href;
-
-	client.callProcedure('getContent', callback,
-		[query, uri], ['string', 'string']);
 }
 
 /**
