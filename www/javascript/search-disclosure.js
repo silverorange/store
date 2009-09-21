@@ -291,8 +291,38 @@ StoreSearchDisclosure.prototype.loadSearchPanel = function()
 StoreSearchDisclosure.prototype.pushDownKeywords = function()
 {
 	var keywords = this.getKeywords();
-	if (keywords && !this.entry.isLabelTextShown()) {
-		keywords.value = this.entry.input.value;
+
+	// only push down keywords if a keyword entry exists in the main UI
+	if (keywords) {
+		if (this.entry.isLabelTextShown()) {
+
+			// push down empty state of search entry
+			if (keywords._search_entry) {
+				if (!keywords._search_entry.isLabelTextShown()) {
+					// push down keywords value to main UI, push saved value,
+					// not label
+					keywords.value = this.entry.input_value;
+
+					// push down label state
+					keywords._search_entry.showLabelText();
+				}
+			} else {
+				// push down keywords value to main UI, push saved value, not
+				// label
+				keywords.value = this.entry.input_value;
+			}
+
+		} else {
+
+			// if the main UI uses a search entry, hide its label text before
+			// pushing the keywords value down
+			if (keywords._search_entry) {
+				keywords._search_entry.hideLabelText();
+			}
+
+			// push down keywords value to main UI
+			keywords.value = this.entry.input.value;
+		}
 	}
 }
 
@@ -302,12 +332,28 @@ StoreSearchDisclosure.prototype.pushDownKeywords = function()
 StoreSearchDisclosure.prototype.pullUpKeywords = function()
 {
 	var keywords = this.getKeywords();
+
+	// only pull up keywords is a keyword entry exists in the main UI
 	if (keywords) {
-		if (keywords.value == '') {
-			this.entry.showLabelText();
+		if (keywords._search_entry &&
+			keywords._search_entry.isLabelTextShown()) {
+
+			if (!this.entry.isLabelTextShown()) {
+				// pull up saved value, not label value
+				this.entry.input.value = keywords._search_entry.input_value;
+
+				// pull up label state
+				this.entry.showLabelText();
+			}
+
 		} else {
+
+			// hide label before pulling up keywords value
 			this.entry.hideLabelText();
+
+			// pull up keywords value to search entry
 			this.entry.input.value = keywords.value;
+
 		}
 	}
 }
@@ -355,6 +401,8 @@ StoreSearchDisclosure.prototype.closeSearchControlsWithAnimation =
 
 	this.pushDownKeywords();
 
+	// opacities are not quite 1.0 because of a weird Firefox on OS X
+	// font-rendering issue.
 	if (this.fade_animation && this.fade_animation.isAnimated()) {
 		var from = this.fade_animation.getAttribute('opacity');
 		this.fade_animation.stop();
@@ -390,6 +438,8 @@ StoreSearchDisclosure.prototype.openSearchControlsWithAnimation =
 		var from = 0;
 	}
 
+	// opacities are not quite 1.0 because of a weird Firefox on OS X
+	// font-rendering issue.
 	this.fade_animation = new YAHOO.util.Anim(this.search_controls,
 		{ opacity: { from: from, to: 0.999999 } }, 0.5,
 		YAHOO.util.Easing.easeOut);
