@@ -39,6 +39,8 @@
 	min-height: 0;
 }
 
+* html .search-disclosure { height: 0; }
+
 .search-disclosure .swat-disclosure-container {
 	clear: both;
 }
