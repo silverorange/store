@@ -16,6 +16,13 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	// {{{ public properties
 
 	/**
+	 * Optional shortname to search with
+	 *
+	 * @var string
+	 */
+	public $shortname;
+
+	/**
 	 * An optional category to search within
 	 *
 	 * @var StoreCategory
@@ -387,6 +394,11 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	protected function getWhereClause()
 	{
 		$clause = parent::getWhereClause();
+
+		if ($this->shortname !== null) {
+			$clause.= sprintf(' and Product.shortname = %s',
+				$this->app->db->quote($this->shortname, 'text'));
+		}
 
 		if ($this->popular_source_product instanceof StoreProduct) {
 			$clause.= sprintf(' and ProductPopularProductBinding.source_product = %s',
