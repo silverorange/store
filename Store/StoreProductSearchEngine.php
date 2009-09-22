@@ -16,6 +16,13 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	// {{{ public properties
 
 	/**
+	 * An optional sku to limit search results with
+	 *
+	 * @var string
+	 */
+	public $sku;
+
+	/**
 	 * An optional category to search within
 	 *
 	 * @var StoreCategory
@@ -321,6 +328,10 @@ class StoreProductSearchEngine extends SiteSearchEngine
 			$clause.= ' '.
 				$this->fulltext_result->getJoinClause('Product.id', 'product');
 
+		if ($this->sku !== null) {
+			$clause.= 'inner join ItemView on Product.id = ItemView.product';
+		}
+
 		if ($this->popular_source_product instanceof StoreProduct) {
 			$clause.= sprintf('
 				%s join ProductPopularProductBinding
@@ -367,16 +378,18 @@ class StoreProductSearchEngine extends SiteSearchEngine
 				$this->app->db->quote($category_id, 'integer'));
 		}
 
-		if ($this->price_range instanceof StorePriceRange)
+		if ($this->price_range instanceof StorePriceRange) {
 			$clause.= sprintf(' inner join getProductPriceRange(%s, %s) on
 				getProductPriceRange.product = Product.id',
 				$this->app->db->quote($this->app->getRegion()->id, 'integer'),
 				$this->app->db->quote(
 					$this->price_range->original_price, 'boolean'));
+		}
 
-		if ($this->related_source_product instanceof StoreProduct)
+		if ($this->related_source_product instanceof StoreProduct) {
 			$clause.= ' inner join ProductRelatedProductBinding on
 					Product.id = ProductRelatedProductBinding.related_product';
+		}
 
 		return $clause;
 	}
@@ -387,6 +400,11 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	protected function getWhereClause()
 	{
 		$clause = parent::getWhereClause();
+
+		if ($this->sku !== null) {
+			$clause.= sprintf(' and ItemView.sku = %s',
+				$this->app->db->quote($this->sku, 'text'));
+		}
 
 		if ($this->popular_source_product instanceof StoreProduct) {
 			$clause.= sprintf(' and ProductPopularProductBinding.source_product = %s',
