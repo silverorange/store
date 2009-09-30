@@ -962,7 +962,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	protected function buildCurrentPaymentMethods()
 	{
-		if ($this->app->config->store->multiple_payment_ui) {
+		if ($this->app->config->store->multiple_payment_ui &&
+			$this->ui->hasWidget('current_payment_methods')) {
+
 			$methods = $this->app->session->order->payment_methods;
 
 			if (count($methods) > 0) {
