@@ -92,12 +92,12 @@
 			<property name="content" translatable="yes"><![CDATA[<p class="small-print">As you have opted to checkout as a guest, your debit or credit card information will <em>not</em> be saved for future visits to the website. See our <a href="about/website/privacy">privacy &amp; security policy</a> for more information about how your information will be used.</p>]]></property>
 			<property name="content_type">text/xml</property>
 		</widget>
-		<widget class="SwatFieldset">
-			<property name="title">Current Payments</property>
-			<property name="visible" type="boolean">false</property>
-			<widget class="SwatContentBlock" id="current_payment_methods">
-				<property name="content_type">text/xml</property>
-			</widget>
+	</widget>
+	<widget class="SwatFieldset" id="current_payments">
+		<property name="title">Current Payments</property>
+		<property name="visible" type="boolean">false</property>
+		<widget class="SwatContentBlock" id="current_payment_methods">
+			<property name="content_type">text/xml</property>
 		</widget>
 	</widget>
 </swatml>
