@@ -382,16 +382,20 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		if ($this->app->config->store->multiple_payment_support &&
 			count($methods) > 0) {
 
+			$current_payment_method = $this->getPaymentMethod($methods);
 			$card_number = $this->ui->getWidget('card_number');
 			if (!$card_number->hasMessage()) {
 				$card_number_preview = substr($card_number->value, -4);
 				foreach ($methods as $method) {
+					if ($method === $current_payment_method)
+						continue;
+
 					if ($method->payment_type->isCard() &&
 						$method->card_number_preview == $card_number_preview) {
 						$message = new SwatMessage(Store::_(
-							sprintf('Another payment method is already using '.
-								'this card number. Please enter a different '.
-								'number or '.
+							sprintf('This Card has already been applied to '.
+								'this order as payment. Please use another '.
+								'card or '.
 								'<a href="checkout/confirmation/paymentmethod/%s">'.
 								'edit the existing payment</a>.',
 								$method->getTag())),
@@ -741,6 +745,8 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	{
 		parent::buildInternal();
 
+		$this->buildCurrentPaymentMethods();
+
 		/*
 		 * Set page to two-column layout when page is stand-alone even when
 		 * there is no address list. The narrower layout of the form fields
@@ -949,6 +955,64 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		}
 
 		return $payment_method;
+	}
+
+	// }}}
+	// {{{ protected function buildCurrentPaymentMethods()
+
+	protected function buildCurrentPaymentMethods()
+	{
+		if ($this->app->config->store->multiple_payment_ui) {
+			$methods = $this->app->session->order->payment_methods;
+
+			if (count($methods) > 0) {
+				$block = $this->ui->getWidget('current_payment_methods');
+				$block->parent->visible = true;
+
+				ob_start();
+				$this->displayMultiplePaymentMethods($methods);
+				$block->content = ob_get_clean();
+			}
+		}
+	}
+
+	// }}}
+	// {{{ protected function displayMultiplePaymentMethods()
+
+	protected function displayMultiplePaymentMethods($methods)
+	{
+		echo '<table class="multiple-payment-table"><tbody>';
+
+		$payment_total = 0;
+		foreach ($methods as $method) {
+			$payment_total+= $method->amount;
+
+			echo '<tr><th class="payment">';
+			$method->display();
+			echo '</th><td class="payment-amount">';
+			$method->displayAmount();
+			echo '</td></tr>';
+		}
+
+		echo '</tbody><tfoot>';
+
+		$locale = SwatI18NLocale::get();
+		$total = $this->getCartTotal();
+		$balance = $total - $payment_total;
+
+		echo '<tr><th>Payment Total:</th><td class="payment-amount">';
+		echo $locale->formatCurrency($payment_total);
+		echo '</td></tr>';
+
+		if ($balance > 0) {
+			echo '<tr class="payment-remaining swat-error">'.
+				'<th>Remaining Balance:</th><td class="payment-amount">';
+
+			echo $locale->formatCurrency($balance);
+			echo '</td></tr>';
+		}
+
+		echo '</tfoot></table>';
 	}
 
 	// }}}
