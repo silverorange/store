@@ -3,7 +3,7 @@
 require_once 'Blorg/views/BlorgPostView.php';
 
 /**
- * @pacakge   Store
+ * @package   Store
  * @copyright 2008 silverorange
  */
 class StoreBlorgPostSearchView extends BlorgPostView

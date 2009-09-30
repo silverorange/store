@@ -5,6 +5,10 @@ require_once 'Swat/SwatDetailsStore.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Admin/pages/AdminIndex.php';
 
+/**
+ * @package   Store
+ * @copyright 2009 silverorange
+ */
 class StoreShippingTypeDetails extends AdminIndex
 {
 	// {{{ protected properties
