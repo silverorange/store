@@ -36,8 +36,10 @@ class StoreProductWrapper extends SwatDBRecordsetWrapper
 
 			$sql = sprintf('select ProductAttributeBinding.*
 				from ProductAttributeBinding
+				inner join Attribute
+					on ProductAttributeBinding.attribute = Attribute.id
 				where ProductAttributeBinding.product in (%s)
-				order by product',
+				order by ProductAttributeBinding.product, Attribute.displayorder',
 				$product_ids);
 
 			$bindings = SwatDB::query($this->db, $sql);
@@ -54,8 +56,7 @@ class StoreProductWrapper extends SwatDBRecordsetWrapper
 
 			$sql = sprintf('select Attribute.*
 				from Attribute
-				where Attribute.id in (%s)
-				order by displayorder',
+				where Attribute.id in (%s)',
 				$attribute_ids);
 
 			$attributes = SwatDB::query($this->db, $sql, $wrapper_class);
