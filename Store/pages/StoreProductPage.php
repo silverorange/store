@@ -583,10 +583,6 @@ class StoreProductPage extends StorePage
 						'The following item on this page is in your cart:',
 						'The following items on this page are in your cart:',
 						$count);
-
-					$this->cart_message->secondary_content =
-						Store::_('You may continue shopping by following any '.
-							'of the links on this page.');
 				}
 
 				ob_start();
