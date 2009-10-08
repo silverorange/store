@@ -108,6 +108,10 @@ class Store
 
 			// Optional Email address to send feedback too
 			'email.feedback_address' => null,
+
+			// mailchimp
+			// Optional Plugin ID for reporting sales for mailchimp stats
+			'mail_chimp.plugin_id'   => null,
 		);
 	}
 
