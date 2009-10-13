@@ -7,7 +7,7 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * typically visible in the frontend of a store. They often represent products
  * specific to an actual physical catalog.
  *
- * Every individual product belong to exactly one catalog.
+ * Every individual product belongs to exactly one catalog.
  *
  * A catalog is enabled in a region if it has a region binding in the
  * CatalogRegionBinding table for the region. Products in disabled
