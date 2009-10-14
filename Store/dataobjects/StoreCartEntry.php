@@ -35,11 +35,11 @@ class StoreCartEntry extends SwatDBDataObject
 	/**
 	 * Valid sources for where the cart entry was created.
 	 */
-	const SOURCE_QUICK_ORDER        = 1;
-	const SOURCE_PRODUCT_PAGE       = 2;
-	const SOURCE_INVOICE            = 3;
+	const SOURCE_PRODUCT_PAGE       = 1;
+	const SOURCE_QUICK_ORDER        = 2;
+	const SOURCE_CATEGORY_PAGE      = 3;
 	const SOURCE_ACCOUNT_ORDER_PAGE = 4;
-	const SOURCE_CATEGORY_PAGE      = 5;
+	const SOURCE_INVOICE            = 5;
 	const SOURCE_ARTICLE_PAGE       = 6;
 
 	// }}}
