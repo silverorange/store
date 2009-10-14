@@ -182,11 +182,11 @@ class StoreAccountOrderPage extends SiteUiPage
 	{
 		$cart_entry_class = SwatDBClassMap::get('StoreCartEntry');
 		$cart_entry = new $cart_entry_class();
-		$cart_entry->account = $this->app->session->getAccountId();
 
-		$cart_entry->item = $item;
-		$cart_entry->quantity = $order_item->quantity;
-		$cart_entry->quick_order = false;
+		$cart_entry->account = $this->app->session->getAccountId();
+		$cart_entry->item    = $item;
+		$cart_entry->source  = StoreCartEntry::SOURCE_ACCOUNT_ORDER_PAGE;
+		$cart_entry->setQuantity($order_item->quantity);
 
 		if ($order_item->custom_price)
 			$cart_entry->custom_price = $order_item->price;
@@ -378,9 +378,10 @@ class StoreAccountOrderPage extends SiteUiPage
 
 		$paths = array();
 
-		foreach ($item_paths as $row)
+		foreach ($item_paths as $row) {
 			if ($row->path !== null)
 				$paths[$row->id] = 'store/'.$row->path.'/'.$row->shortname;
+		}
 
 		foreach ($store as $row) {
 			if (isset($paths[$row->id])) {

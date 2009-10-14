@@ -1,6 +1,8 @@
 <?php
 
 require_once 'SwatDB/SwatDBDataObject.php';
+require_once 'Store/dataobjects/StoreOrderItem.php';
+require_once 'Store/dataobjects/StoreCartEntry.php';
 
 /**
  * An item in an invoice
@@ -81,7 +83,7 @@ class StoreInvoiceItem extends SwatDBDataObject
 			$description.= $this->description;
 
 		return $description;
-	} 
+	}
 
 	// }}}
 	// {{{ public function getExtension()
@@ -113,14 +115,14 @@ class StoreInvoiceItem extends SwatDBDataObject
 		$class = SwatDBClassMap::get('StoreOrderItem');
 		$order_item = new $class();
 
-		$order_item->sku = $this->sku;
-		$order_item->price = $this->price;
-		$order_item->quantity = $this->quantity;
-		$order_item->extension = $this->getExtension();
-		$order_item->description = $this->description;
-		$order_item->product = null;
+		$order_item->sku           = $this->sku;
+		$order_item->price         = $this->price;
+		$order_item->quantity      = $this->quantity;
+		$order_item->extension     = $this->getExtension();
+		$order_item->description   = $this->description;
+		$order_item->product       = null;
 		$order_item->product_title = null;
-		$order_item->quick_order = false;
+		$order_item->source        = StoreCartEntry::SOURCE_INVOICE;
 
 		// set database if it exists
 		if ($this->db !== null)

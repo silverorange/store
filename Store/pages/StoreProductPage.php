@@ -334,14 +334,13 @@ class StoreProductPage extends StorePage
 	{
 		$this->app->session->activate();
 
-		if ($this->app->session->isLoggedIn())
-			$cart_entry->account =
-				$this->app->session->getAccountId();
-		else
-			$cart_entry->sessionid =
-				$this->app->session->getSessionId();
+		if ($this->app->session->isLoggedIn()) {
+			$cart_entry->account = $this->app->session->getAccountId();
+		} else {
+			$cart_entry->sessionid = $this->app->session->getSessionId();
+		}
 
-		$cart_entry->quick_order = false;
+		$cart_entry->source = StoreCartEntry::SOURCE_PRODUCT_PAGE;
 		$cart_entry->item->setDatabase($this->app->db);
 		$cart_entry->item->setRegion($this->app->getRegion());
 		$cart_entry->item->load($cart_entry->item->id);
