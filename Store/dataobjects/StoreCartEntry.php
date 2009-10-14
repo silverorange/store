@@ -30,6 +30,18 @@ require_once 'Store/dataobjects/StoreItemAlias.php';
  */
 class StoreCartEntry extends SwatDBDataObject
 {
+	// {{{ class constants
+
+	/**
+	 * Valid sources for where the cart entry was created.
+	 */
+	const SOURCE_QUICK_ORDER        = 1;
+	const SOURCE_PRODUCT_PAGE       = 2;
+	const SOURCE_INVOICE            = 3;
+	const SOURCE_ACCOUNT_ORDER_PAGE = 4;
+	const SOURCE_CATEGORY_PAGE      = 5;
+
+	// }}}
 	// {{{ public properties
 
 	/**
@@ -76,6 +88,13 @@ class StoreCartEntry extends SwatDBDataObject
 	 * @var boolean
 	 */
 	public $quick_order;
+
+	/**
+	 * Where this cart entry was created.
+	 *
+	 * @var integer
+	 */
+	public $source;
 
 	/*
 	 * A custom override price for item's without a fixed price like gift
@@ -349,7 +368,7 @@ class StoreCartEntry extends SwatDBDataObject
 		$order_item->item               = $this->item->id;
 		$order_item->product            = $this->item->product->id;
 		$order_item->product_title      = $this->item->product->title;
-		$order_item->quick_order        = $this->quick_order;
+		$order_item->source             = $this->source;
 		$order_item->discount           = $this->getDiscount();
 		$order_item->discount_extension = $this->getDiscountExtension();
 
@@ -399,6 +418,8 @@ class StoreCartEntry extends SwatDBDataObject
 
 		$this->registerInternalProperty('alias',
 			SwatDBClassMap::get('StoreItemAlias'));
+
+		$this->registerDeprecatedProperty('quick_order');
 
 		$this->table = 'CartEntry';
 		$this->id_field = 'integer:id';

@@ -15,7 +15,7 @@ create table OrderItem (
 	discount numeric(11, 2) not null default 0,
 	discount_extension numeric(11, 2) not null default 0,
 	catalog int,
-	quick_order boolean not null default false,
+	source integer,
 	primary key (id)
 );
 

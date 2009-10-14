@@ -254,10 +254,11 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 
 		$this->app->session->activate();
 
-		if ($this->app->session->isLoggedIn())
+		if ($this->app->session->isLoggedIn()) {
 			$cart_entry->account = $this->app->session->getAccountId();
-		else
+		} else {
 			$cart_entry->sessionid = $this->app->session->getSessionId();
+		}
 
 		$item_class = SwatDBClassMap::get('StoreItem');
 		$item = new $item_class();
@@ -280,9 +281,9 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 		$product = $products->getFirst();
 		$item->product = $product;
 
-		$cart_entry->item = $item;
+		$cart_entry->item   = $item;
+		$cart_entry->source = StoreCartEntry::SOURCE_QUICK_ORDER;
 		$cart_entry->setQuantity($quantity);
-		$cart_entry->quick_order = true;
 
 		if ($sku != $cart_entry->item->sku) {
 			$sql = sprintf('select * from ItemAlias where sku = %s',

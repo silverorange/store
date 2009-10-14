@@ -6,7 +6,7 @@ create table CartEntry (
 	item integer not null references Item(id) on delete cascade,
 	alias integer references ItemAlias(id) on delete set null,
 	quantity integer default 0,
-	quick_order boolean not null default false,
+	source integer,
 	saved boolean not null default false,
 	custom_price numeric(11, 2), -- used by items like gift certificates to over-ride price
 	primary key(id)

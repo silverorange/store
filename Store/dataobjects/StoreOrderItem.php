@@ -3,6 +3,7 @@
 require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Store/dataobjects/StoreRegion.php';
 require_once 'Store/dataobjects/StoreItemWrapper.php';
+require_once 'Store/dataobjects/StoreCartEntry.php';
 
 /**
  * An item in an order
@@ -109,6 +110,16 @@ class StoreOrderItem extends SwatDBDataObject
 	public $catalog;
 
 	/**
+	 * Where this cart entry was created.
+	 *
+	 * Uses StoreCartEntry::SOURCE_* constants
+	 *
+	 * @var integer
+	 * @see StoreCartEntry
+	 */
+	public $source;
+
+	/**
 	 * Whether or not this item was ordered through the quick-order tool
 	 *
 	 * @var boolean
@@ -157,28 +168,6 @@ class StoreOrderItem extends SwatDBDataObject
 	public function getDescription()
 	{
 		return $this->description;
-	}
-
-	// }}}
-	// {{{ protected function init()
-
-	protected function init()
-	{
-		$this->registerInternalProperty('ordernum',
-			SwatDBClassMap::get('StoreOrder'));
-
-		$this->table = 'OrderItem';
-		$this->id_field = 'integer:id';
-	}
-
-	// }}}
-	// {{{ protected function getSerializablePrivateProperties()
-
-	protected function getSerializablePrivateProperties()
-	{
-		$properties = parent::getSerializablePrivateProperties();
-		$properties[] = 'cart_entry_id';
-		return $properties;
 	}
 
 	// }}}
@@ -291,6 +280,30 @@ class StoreOrderItem extends SwatDBDataObject
 		}
 
 		return $item;
+	}
+
+	// }}}
+	// {{{ protected function init()
+
+	protected function init()
+	{
+		$this->registerInternalProperty('ordernum',
+			SwatDBClassMap::get('StoreOrder'));
+
+		$this->registerDeprecatedProperty('quick_order');
+
+		$this->table = 'OrderItem';
+		$this->id_field = 'integer:id';
+	}
+
+	// }}}
+	// {{{ protected function getSerializablePrivateProperties()
+
+	protected function getSerializablePrivateProperties()
+	{
+		$properties = parent::getSerializablePrivateProperties();
+		$properties[] = 'cart_entry_id';
+		return $properties;
 	}
 
 	// }}}
