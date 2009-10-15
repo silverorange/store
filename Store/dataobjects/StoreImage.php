@@ -19,6 +19,13 @@ class StoreImage extends SiteImage
 	 */
 	public $border;
 
+	/**
+	 * For loading primary images which are 1-to-1 with products
+	 *
+	 * @var integer
+	 */
+	public $product;
+
 	// }}}
 	// {{{ public function hasOriginal()
 

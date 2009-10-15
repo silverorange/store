@@ -1111,8 +1111,10 @@ class StoreCartPage extends SitePage
 		$store = new SwatTableStore();
 
 		$entries = $this->app->cart->checkout->getAvailableEntries();
-		foreach ($entries as $entry)
+
+		foreach ($entries as $entry) {
 			$store->add($this->getAvailableRow($entry));
+		}
 
 		return $store;
 	}
@@ -1135,9 +1137,9 @@ class StoreCartPage extends SitePage
 		$ds->discount_extension = $entry->getDiscountExtension();
 		$ds->message            = null;
 		$ds->product_link       = 'store/'.$entry->item->product->path;
+		$ds->item_count         = $this->getAvailableProductItemCount($entry);
 
 		$image = $entry->item->product->primary_image;
-
 		if ($image === null) {
 			$ds->image        = null;
 			$ds->image_width  = null;
@@ -1148,13 +1150,12 @@ class StoreCartPage extends SitePage
 			$ds->image_height = $image->getHeight($this->getImageDimension());
 		}
 
-		$ds->item_count   = $this->getAvailableProductItemCount($entry);
-
-		if ($entry->alias === null)
+		if ($entry->alias === null) {
 			$ds->alias_sku = null;
-		else
+		} else {
 			$ds->alias_sku = sprintf('(%s)',
 				SwatString::minimizeEntities($entry->alias->sku));
+		}
 
 		return $ds;
 	}
