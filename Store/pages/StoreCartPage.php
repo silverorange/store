@@ -1148,8 +1148,7 @@ class StoreCartPage extends SitePage
 			$ds->image_height = $image->getHeight($this->getImageDimension());
 		}
 
-		$ds->item_count   = $this->getAvailableProductItemCount(
-			$entry->item->product);
+		$ds->item_count   = $this->getAvailableProductItemCount($entry);
 
 		if ($entry->alias === null)
 			$ds->alias_sku = null;
@@ -1297,9 +1296,9 @@ class StoreCartPage extends SitePage
 	}
 
 	// }}}
-	// {{{ private function getAvailableProductItemCount()
+	// {{{ protected function getAvailableProductItemCount()
 
-	private function getAvailableProductItemCount(StoreProduct $product)
+	protected function getAvailableProductItemCount(StoreCartEntry $entry)
 	{
 		static $item_counts;
 
@@ -1316,7 +1315,7 @@ class StoreCartPage extends SitePage
 			}
 		}
 
-		return $item_counts[$product->id];
+		return $item_counts[$entry->item->getInternalValue('product')];
 	}
 
 	// }}}
