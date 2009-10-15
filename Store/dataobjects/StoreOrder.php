@@ -378,15 +378,16 @@ class StoreOrder extends SwatDBDataObject
 	public function getOrderItemDetailsStore($order_item)
 	{
 		$ds = new SwatDetailsStore($order_item);
-		$ds->item = $order_item;
+		$ds->item        = $order_item;
 		$ds->description = $order_item->getDescription();
+		$ds->item_count  = $this->getProductItemCount($order_item);
 
 		if ($order_item->alias_sku !== null &&
-			$order_item->alias_sku != '')
+			$order_item->alias_sku != '') {
 			$ds->sku.= sprintf(' (%s)', $order_item->alias_sku);
+		}
 
 		$item = $order_item->getAvailableItem($this->locale->region);
-
 		if ($item !== null && $item->product->primary_image !== null) {
 			$image = $item->product->primary_image;
 			$ds->image = $image->getUri($this->getImageDimension());
@@ -397,8 +398,6 @@ class StoreOrder extends SwatDBDataObject
 			$ds->image_width = null;
 			$ds->image_height = null;
 		}
-
-		$ds->item_count = $this->getProductItemCount($order_item->product);
 
 		return $ds;
 	}
@@ -417,16 +416,25 @@ class StoreOrder extends SwatDBDataObject
 	// }}}
 	// {{{ private function getProductItemCount()
 
-	private function getProductItemCount($product_id)
+	private function getProductItemCount(StoreOrderItem $item)
 	{
-		$count = 0;
-		$items = clone $this->items;
+		static $item_counts;
 
-		foreach ($items as $item)
-			if ($product_id == $item->product)
-				$count++;
+		if ($item_counts === null) {
+			$item_counts = array();
 
-		return $count;
+			$items = clone $this->items;
+			foreach ($items as $item) {
+				$id = $item->product;
+				if (!isset($item_counts[$id])) {
+					$item_counts[$id] = 1;
+				} else {
+					$item_counts[$id]++;
+				}
+			}
+		}
+
+		return $item_counts[$item->product];
 	}
 
 	// }}}
