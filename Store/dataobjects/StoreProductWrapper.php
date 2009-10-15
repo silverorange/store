@@ -23,8 +23,7 @@ class StoreProductWrapper extends SwatDBRecordsetWrapper
 
 		// efficiently load all attributes at once
 		if ($this->getCount() > 0) {
-			$wrapper_class =
-				SwatDBClassMap::get('StoreAttributeWrapper');
+			$wrapper_class = SwatDBClassMap::get('StoreAttributeWrapper');
 
 			$product_ids = array();
 			foreach ($this->getArray() as $product) {
@@ -39,7 +38,8 @@ class StoreProductWrapper extends SwatDBRecordsetWrapper
 				inner join Attribute
 					on ProductAttributeBinding.attribute = Attribute.id
 				where ProductAttributeBinding.product in (%s)
-				order by ProductAttributeBinding.product, Attribute.displayorder',
+				order by ProductAttributeBinding.product,
+					Attribute.displayorder',
 				$product_ids);
 
 			$bindings = SwatDB::query($this->db, $sql);
