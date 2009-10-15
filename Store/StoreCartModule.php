@@ -465,12 +465,66 @@ class StoreCartModule extends SiteApplicationModule
 		$products = $items->loadAllSubDataObjects('product', $this->app->db,
 			$this->getProductSql(), SwatDBClassMap::get('StoreProductWrapper'));
 
+		// efficiently load quantity discounts.
+		$item_ids = array();
+		$product_ids = array();
+		foreach ($items as $item) {
+			$item_ids[] = $item->id;
+			$product_ids[] = $item->product->id;
+		}
+
+		$class = SwatDBClassMap::get('StoreQuantityDiscountWrapper');
+		$wrapper = new $class();
+		$quantity_discounts = $wrapper->loadSetFromDB($this->app->db,
+			$item_ids, $this->app->getRegion(), true);
+
+		foreach ($items as $item) {
+			$discounts = new $class();
+			foreach ($quantity_discounts as $discount) {
+				if ($discount->getInternalValue('item') == $item->id) {
+					$discount->item = $item;
+					$discounts->add($discount);
+				}
+			}
+
+			$item->quantity_discounts = $discounts;
+		}
+
+		// efficiently load primary images
+		$sql = 'select Image.*, product from Image
+			inner join ProductPrimaryImageView
+				on ProductPrimaryImageView.image = Image.id
+			where product in (%s)';
+
+		$sql = sprintf($sql,
+			$this->app->db->datatype->implodeArray($product_ids, 'integer'));
+
+		$primary_images = SwatDB::query($this->app->db, $sql,
+			SwatDBClassMap::get('StoreProductImageWrapper'));
+
+		foreach ($primary_images as $image) {
+			$product = $products->getByIndex(
+				$image->product);
+
+			if ($product !== null) {
+				$product->primary_image = $image;
+				$x = $product->primary_image;
+			}
+		}
+
 		$category_sql = 'select id, getCategoryPath(id) as path
 			from Category where id in (%s)';
 
 		$categories = $products->loadAllSubDataObjects('primary_category',
 			$this->app->db, $category_sql,
 			SwatDBClassMap::get('StoreCategoryWrapper'));
+
+		$catalog_sql = 'select * from Catalog
+			where id in (%s)';
+
+		$catalog = $products->loadAllSubDataObjects('catalog',
+			$this->app->db, $catalog_sql,
+			SwatDBClassMap::get('StoreCatalogWrapper'));
 
 		$this->entries->attachSubDataObjects('item', $items);
 	}
