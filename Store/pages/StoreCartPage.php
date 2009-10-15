@@ -13,7 +13,7 @@ require_once 'Swat/SwatDetailsStore.php';
  * Shopping cart display page
  *
  * @package   Store
- * @copyright 2006-2008 silverorange
+ * @copyright 2006-2009 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCartPage extends SitePage
