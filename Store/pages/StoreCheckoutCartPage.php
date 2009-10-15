@@ -393,9 +393,9 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 		$ds->discount           = $entry->getDiscount();
 		$ds->discount_extension = $entry->getDiscountExtension();
 		$ds->product_link       = 'store/'.$entry->item->product->path;
+		$ds->item_count         = $this->getAvailableProductItemCount($entry);
 
 		$image = $entry->item->product->primary_image;
-
 		if ($image === null) {
 			$ds->image        = null;
 			$ds->image_width  = null;
@@ -406,14 +406,12 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 			$ds->image_height = $image->getHeight($this->getImageDimension());
 		}
 
-		$ds->item_count   = $this->getProductItemCount($entry->item->product,
-			$this->app->cart->checkout->getAvailableEntries());
-
-		if ($entry->alias === null)
+		if ($entry->alias === null) {
 			$ds->alias_sku = null;
-		else
+		} else {
 			$ds->alias_sku = sprintf('(%s)',
 				SwatString::minimizeEntities($entry->alias->sku));
+		}
 
 		return $ds;
 	}
@@ -443,17 +441,26 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 	}
 
 	// }}}
-	// {{{ private function getProductItemCount()
+	// {{{ protected function getAvailableProductItemCount()
 
-	private function getProductItemCount(StoreProduct $product, $cart_entries)
+	protected function getAvailableProductItemCount(StoreCartEntry $entry)
 	{
-		$count = 0;
+		static $item_counts;
 
-		foreach ($cart_entries as $entry)
-			if ($entry->item->product->id == $product->id)
-				$count++;
+		if ($item_counts === null) {
+			$item_counts = array();
 
-		return $count;
+			$entries = $this->app->cart->checkout->getAvailableEntries();
+			foreach ($entries as $entry) {
+				$id = $entry->item->getInternalValue('product');
+				if (!isset($item_counts[$id]))
+					$item_counts[$id] = 1;
+				else
+					$item_counts[$id]++;
+			}
+		}
+
+		return $item_counts[$entry->item->getInternalValue('product')];
 	}
 
 	// }}}
