@@ -1148,8 +1148,8 @@ class StoreCartPage extends SitePage
 			$ds->image_height = $image->getHeight($this->getImageDimension());
 		}
 
-		$ds->item_count   = $this->getProductItemCount($entry->item->product,
-			$this->app->cart->checkout->getAvailableEntries());
+		$ds->item_count   = $this->getAvailableProductItemCount(
+			$entry->item->product);
 
 		if ($entry->alias === null)
 			$ds->alias_sku = null;
@@ -1284,20 +1284,6 @@ class StoreCartPage extends SitePage
 	}
 
 	// }}}
-	// {{{ private function getProductItemCount()
-
-	private function getProductItemCount(StoreProduct $product, $cart_entries)
-	{
-		$count = 0;
-
-		foreach ($cart_entries as $entry)
-			if ($entry->item->product->id == $product->id)
-				$count++;
-
-		return $count;
-	}
-
-	// }}}
 	// {{{ protected function buildMessages()
 
 	protected function buildMessages()
@@ -1308,6 +1294,29 @@ class StoreCartPage extends SitePage
 				$message_display->add($message);
 		} catch (SwatWidgetNotFoundException $e) {
 		}
+	}
+
+	// }}}
+	// {{{ private function getAvailableProductItemCount()
+
+	private function getAvailableProductItemCount(StoreProduct $product)
+	{
+		static $item_counts;
+
+		if ($item_counts === null) {
+			$item_counts = array();
+
+			$entries = $this->app->cart->checkout->getAvailableEntries();
+			foreach ($entries as $entry) {
+				$id = $entry->item->getInternalValue('product');
+				if (!isset($item_counts[$id]))
+					$item_counts[$id] = 1;
+				else
+					$item_counts[$id]++;
+			}
+		}
+
+		return $item_counts[$product->id];
 	}
 
 	// }}}
