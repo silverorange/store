@@ -1321,7 +1321,6 @@ class StoreCartPage extends SitePage
 
 	// }}}
 
-
 	// finalize phase
 	// {{{ public function finalize()
 
