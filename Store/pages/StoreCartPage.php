@@ -44,6 +44,13 @@ class StoreCartPage extends SitePage
 	 */
 	protected $added_entry_ids = array();
 
+	/**
+	 * An array of product counts by product_id.
+	 *
+	 * @var array
+	 */
+	protected $available_item_counts = array();
+
 	// }}}
 
 	// init phase
@@ -762,10 +769,11 @@ class StoreCartPage extends SitePage
 				Store::_('One item has been removed from your saved items.'),
 				'cart'));
 
-		if ($num_entries_moved > 0)
+		if ($num_entries_moved > 0) {
 			$message_display->add(new SwatMessage(
 				Store::_('One item has been moved to your cart.'),
 				'cart'));
+		}
 	}
 
 	// }}}
@@ -792,6 +800,9 @@ class StoreCartPage extends SitePage
 
 				$this->app->cart->saved->removeEntry($entry);
 				$this->app->cart->checkout->addEntry($entry);
+
+				// add the new entry to $this->available_item_counts;
+				$this->updateAvailableProductCount($entry);
 
 				break;
 			}
@@ -1301,22 +1312,28 @@ class StoreCartPage extends SitePage
 
 	protected function getAvailableProductItemCount(StoreCartEntry $entry)
 	{
-		static $item_counts;
-
-		if ($item_counts === null) {
-			$item_counts = array();
-
+		if (count($this->available_item_counts) === 0) {
 			$entries = $this->app->cart->checkout->getAvailableEntries();
 			foreach ($entries as $entry) {
-				$id = $entry->item->getInternalValue('product');
-				if (!isset($item_counts[$id]))
-					$item_counts[$id] = 1;
-				else
-					$item_counts[$id]++;
+				$this->updateAvailableProductCount($entry);
 			}
 		}
 
-		return $item_counts[$entry->item->getInternalValue('product')];
+		return $this->available_item_counts[
+			$entry->item->getInternalValue('product')];
+	}
+
+	// }}}
+	// {{{ protected function updateAvailableProductCount()
+
+	protected function updateAvailableProductCount(StoreCartEntry $entry)
+	{
+		$id = $entry->item->getInternalValue('product');
+		if (array_key_exists($id, $this->available_item_counts)) {
+			$this->available_item_counts[$id]++;
+		} else {
+			$this->available_item_counts[$id] = 1;
+		}
 	}
 
 	// }}}
