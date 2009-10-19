@@ -658,7 +658,7 @@ class StoreCartPage extends SitePage
 
 		foreach ($this->getUnavailableRemoveButtons() as $id => $button) {
 			if ($button->hasBeenClicked()) {
-				$entry = $this->app->cart->getEntryById($id);
+				$entry = $this->app->cart->checkout->getEntryById($id);
 				if ($this->app->cart->checkout->removeEntryById($id) !== null) {
 					$num_entries_removed++;
 					$this->removeFromUnvailableProductCount($entry);
@@ -843,9 +843,9 @@ class StoreCartPage extends SitePage
 
 				$this->removeFromSavedProductCount($entry);
 				if ($entry->isAvailable()) {
-					$this->updateAvailableProductCount($entry);
+					$this->addToAvailableProductCount($entry);
 				} else {
-					$this->updateUnavailableProductCount($entry);
+					$this->addToUnavailableProductCount($entry);
 				}
 
 				break;
