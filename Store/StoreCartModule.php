@@ -11,8 +11,10 @@ require_once 'Store/StoreSavedCart.php';
 require_once 'Store/StoreCheckoutCart.php';
 require_once 'Store/exceptions/StoreException.php';
 require_once 'Store/dataobjects/StoreCartEntryWrapper.php';
-require_once 'Store/dataobjects/StoreItemWrapper.php';
 require_once 'Store/dataobjects/StoreProductWrapper.php';
+require_once 'Store/dataobjects/StoreItemWrapper.php';
+require_once 'Store/dataobjects/StoreQuantityDiscountWrapper.php';
+require_once 'Store/dataobjects/StoreProductImageWrapper.php';
 require_once 'Store/dataobjects/StoreCategoryWrapper.php';
 require_once 'Store/dataobjects/StoreCatalogWrapper.php';
 
