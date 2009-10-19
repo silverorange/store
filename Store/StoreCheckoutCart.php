@@ -96,6 +96,13 @@ abstract class StoreCheckoutCart extends StoreCart
 	public function &getUnavailableEntries()
 	{
 		$entries = array();
+
+		foreach ($this->getEntries() as $entry) {
+			if ($entry->isAvailable() === false) {
+				$entries[] = $entry;
+			}
+		}
+
 		return $entries;
 	}
 

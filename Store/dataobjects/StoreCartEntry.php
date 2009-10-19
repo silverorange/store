@@ -346,6 +346,21 @@ class StoreCartEntry extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function isAvailable()
+
+	/**
+	 * Whether or not this entry is available for order
+	 *
+	 * @return boolean Whether or not this entry is available for order. Entries
+	 *                  are available by default. Subclasses can override this
+	 *                  method to provide additional availability filtering.
+	 */
+	public function isAvailable()
+	{
+		return true;
+	}
+
+	// }}}
 	// {{{ public function createOrderItem()
 
 	/**
