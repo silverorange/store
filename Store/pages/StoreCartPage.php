@@ -45,11 +45,25 @@ class StoreCartPage extends SitePage
 	protected $added_entry_ids = array();
 
 	/**
-	 * An array of product counts by product_id.
+	 * An array of product counts by product id for available items.
 	 *
 	 * @var array
 	 */
 	protected $available_item_counts = array();
+
+	/**
+	 * An array of product counts by product id for unavailable items.
+	 *
+	 * @var array
+	 */
+	protected $unavailable_item_counts = array();
+
+	/**
+	 * An array of product counts by product id for saved items.
+	 *
+	 * @var array
+	 */
+	protected $saved_item_counts = array();
 
 	// }}}
 
@@ -386,6 +400,9 @@ class StoreCartPage extends SitePage
 				$this->app->cart->checkout->removeEntry($entry);
 				$this->app->cart->saved->addEntry($entry);
 
+				$this->removeFromAvailableProductCount($entry);
+				$this->addToSavedProductCount($entry);
+
 				break;
 			}
 		}
@@ -405,8 +422,11 @@ class StoreCartPage extends SitePage
 
 		foreach ($this->getAvailableRemoveButtons() as $id => $button) {
 			if ($button->hasBeenClicked()) {
-				if ($this->app->cart->checkout->removeEntryById($id) !== null)
+				$entry = $this->app->cart->checkout->getEntryById($id);
+				if ($this->app->cart->checkout->removeEntryById($id) !== null) {
 					$num_entries_removed++;
+					$this->removeFromAvailableProductCount($entry);
+				}
 
 				break;
 			}
@@ -435,10 +455,12 @@ class StoreCartPage extends SitePage
 					$this->app->cart->checkout->setEntryQuantity($entry,
 						$widget->value);
 
-					if ($widget->value > 0)
+					if ($widget->value > 0) {
 						$num_entries_updated++;
-					else
+					} else {
 						$num_entries_removed++;
+						$this->removeFromAvailableProductCount($entry);
+					}
 
 					$widget->value = $entry->getQuantity();
 				}
@@ -482,6 +504,10 @@ class StoreCartPage extends SitePage
 		}
 
 		if ($num_entries_moved > 0) {
+			// since everything was moved, reset entire count.
+			$this->resetAvailableProductItemCount();
+			$this->resetSavedProductItemCount();
+
 			$moved_message = new SwatMessage(
 				sprintf(Store::ngettext(
 				'One item has been saved for later.',
@@ -525,7 +551,10 @@ class StoreCartPage extends SitePage
 			}
 		}
 
-		if ($num_removed_items > 0)
+		if ($num_removed_items > 0) {
+			// since everything was moved, reset entire count.
+			$this->resetAvailableProductItemCount();
+
 			$message_display->add(new SwatMessage(
 				sprintf(Store::ngettext(
 				'One item has been removed from your cart.',
@@ -533,6 +562,7 @@ class StoreCartPage extends SitePage
 				$num_removed_items),
 				SwatString::numberFormat($num_removed_items)),
 				'cart'));
+		}
 	}
 
 	// }}}
@@ -606,6 +636,9 @@ class StoreCartPage extends SitePage
 				$this->app->cart->checkout->removeEntry($entry);
 				$this->app->cart->saved->addEntry($entry);
 
+				$this->removeFromUnvailableProductCount($entry);
+				$this->addToSavedProductCount($entry);
+
 				break;
 			}
 		}
@@ -625,8 +658,11 @@ class StoreCartPage extends SitePage
 
 		foreach ($this->getUnavailableRemoveButtons() as $id => $button) {
 			if ($button->hasBeenClicked()) {
-				if ($this->app->cart->checkout->removeEntryById($id) !== null)
+				$entry = $this->app->cart->getEntryById($id);
+				if ($this->app->cart->checkout->removeEntryById($id) !== null) {
 					$num_entries_removed++;
+					$this->removeFromUnvailableProductCount($entry);
+				}
 
 				break;
 			}
@@ -659,7 +695,9 @@ class StoreCartPage extends SitePage
 			}
 		}
 
-		if ($num_removed_items > 0)
+		if ($num_removed_items > 0) {
+			$this->resetUnavailableProductItemCount();
+
 			$message_display->add(new SwatMessage(
 				sprintf(Store::ngettext(
 				'One item has been removed from your unavailable items.',
@@ -667,6 +705,7 @@ class StoreCartPage extends SitePage
 				$num_removed_items),
 				SwatString::numberFormat($num_removed_items)),
 				'cart'));
+		}
 	}
 
 	// }}}
@@ -693,12 +732,13 @@ class StoreCartPage extends SitePage
 
 				$this->ui->getWidget('message_display')->add($message);
 			} else {
-				if ($this->getSavedMoveAllButton()->hasBeenClicked())
+				if ($this->getSavedMoveAllButton()->hasBeenClicked()) {
 					$this->moveAllSavedCart();
-				elseif ($this->getSavedRemoveAllButton()->hasBeenClicked())
+				} elseif ($this->getSavedRemoveAllButton()->hasBeenClicked()) {
 					$this->removeAllSavedCart();
-				else
+				} else {
 					$this->updateSavedCart();
+				}
 			}
 		}
 	}
@@ -801,8 +841,12 @@ class StoreCartPage extends SitePage
 				$this->app->cart->saved->removeEntry($entry);
 				$this->app->cart->checkout->addEntry($entry);
 
-				// add the new entry to $this->available_item_counts;
-				$this->updateAvailableProductCount($entry);
+				$this->removeFromSavedProductCount($entry);
+				if ($entry->isAvailable()) {
+					$this->updateAvailableProductCount($entry);
+				} else {
+					$this->updateUnavailableProductCount($entry);
+				}
 
 				break;
 			}
@@ -823,8 +867,11 @@ class StoreCartPage extends SitePage
 
 		foreach ($this->getSavedRemoveButtons() as $id => $button) {
 			if ($button->hasBeenClicked()) {
-				if ($this->app->cart->saved->removeEntryById($id) !== null)
+				$entry = $this->app->cart->saved->getEntryById($id);
+				if ($this->app->cart->saved->removeEntryById($id) !== null) {
 					$num_entries_removed++;
+					$this->removeFromSavedProductCount($entry);
+				}
 
 				break;
 			}
@@ -859,13 +906,17 @@ class StoreCartPage extends SitePage
 			}
 		}
 
-		if ($num_moved_items > 0)
+		if ($num_moved_items > 0) {
+			$this->resetSavedProductItemCount();
+			$this->resetAvailableProductItemCount();
+
 			$message_display->add(new SwatMessage(
 				sprintf(Store::ngettext(
 				'One item has been moved to your cart.',
 				'%s items have been moved to your cart.', $num_moved_items),
 				SwatString::numberFormat($num_moved_items)),
 				'cart'));
+		}
 	}
 
 	// }}}
@@ -892,7 +943,9 @@ class StoreCartPage extends SitePage
 			}
 		}
 
-		if ($num_removed_items > 0)
+		if ($num_removed_items > 0) {
+			$this->resetSavedProductItemCount();
+
 			$message_display->add(new SwatMessage(
 				sprintf(Store::ngettext(
 				'One item has been removed from your saved items.',
@@ -900,6 +953,7 @@ class StoreCartPage extends SitePage
 				$num_removed_items),
 				SwatString::numberFormat($num_removed_items)),
 				'cart'));
+		}
 	}
 
 	// }}}
@@ -1308,6 +1362,8 @@ class StoreCartPage extends SitePage
 	}
 
 	// }}}
+
+	// available_item_counts methods
 	// {{{ protected function getAvailableProductItemCount()
 
 	protected function getAvailableProductItemCount(StoreCartEntry $entry)
@@ -1315,7 +1371,7 @@ class StoreCartPage extends SitePage
 		if (count($this->available_item_counts) === 0) {
 			$entries = $this->app->cart->checkout->getAvailableEntries();
 			foreach ($entries as $entry) {
-				$this->updateAvailableProductCount($entry);
+				$this->addToAvailableProductCount($entry);
 			}
 		}
 
@@ -1324,9 +1380,9 @@ class StoreCartPage extends SitePage
 	}
 
 	// }}}
-	// {{{ protected function updateAvailableProductCount()
+	// {{{ protected function addToAvailableProductCount()
 
-	protected function updateAvailableProductCount(StoreCartEntry $entry)
+	protected function addToAvailableProductCount(StoreCartEntry $entry)
 	{
 		$id = $entry->item->getInternalValue('product');
 		if (array_key_exists($id, $this->available_item_counts)) {
@@ -1334,6 +1390,131 @@ class StoreCartPage extends SitePage
 		} else {
 			$this->available_item_counts[$id] = 1;
 		}
+	}
+
+	// }}}
+	// {{{ protected function removeFromAvailableProductCount()
+
+	protected function removeFromAvailableProductCount(StoreCartEntry $entry)
+	{
+		$id = $entry->item->getInternalValue('product');
+		// only subtract from count if it exists and we're not already at 0.
+		if (array_key_exists($id, $this->available_item_counts) &&
+			$this->available_item_counts[$id] > 0) {
+			$this->available_item_counts[$id]--;
+		}
+	}
+
+	// }}}
+	// {{{ protected function resetAvailableProductItemCount()
+
+	protected function resetAvailableProductItemCount()
+	{
+		$this->available_item_counts = array();
+	}
+
+	// }}}
+
+	// unavailable_item_counts methods
+	// {{{ protected function getUnavailableProductItemCount()
+
+	protected function getUnavailableProductItemCount(StoreCartEntry $entry)
+	{
+		if (count($this->unavailable_item_counts) === 0) {
+			$entries = $this->app->cart->checkout->getUnavailableEntries();
+			foreach ($entries as $entry) {
+				$this->addToUnavailableProductCount($entry);
+			}
+		}
+
+		return $this->unavailable_item_counts[
+			$entry->item->getInternalValue('product')];
+	}
+
+	// }}}
+	// {{{ protected function addToUnvailableProductCount()
+
+	protected function addToUnvailableProductCount(StoreCartEntry $entry)
+	{
+		$id = $entry->item->getInternalValue('product');
+		if (array_key_exists($id, $this->unavailable_item_counts)) {
+			$this->unavailable_item_counts[$id]++;
+		} else {
+			$this->unavailable_item_counts[$id] = 1;
+		}
+	}
+
+	// }}}
+	// {{{ protected function removeFromUnvailableProductCount()
+
+	protected function removeFromUnvailableProductCount(StoreCartEntry $entry)
+	{
+		$id = $entry->item->getInternalValue('product');
+		// only subtract from count if it exists and we're not already at 0.
+		if (array_key_exists($id, $this->unavailable_item_counts) &&
+			$this->unavailable_item_counts[$id] > 0) {
+			$this->unavailable_item_counts[$id]--;
+		}
+	}
+
+	// }}}
+	// {{{ protected function resetUnavailableProductItemCount()
+
+	protected function resetUnavailableProductItemCount()
+	{
+		$this->unavailable_item_counts = array();
+	}
+
+	// }}}
+
+	// saved_item_counts methods
+	// {{{ protected function getSavedProductItemCount()
+
+	protected function getSavedProductItemCount(StoreCartEntry $entry)
+	{
+		if (count($this->saved_item_counts) === 0) {
+			$entries = $this->app->cart->saved->getAvailableEntries();
+			foreach ($entries as $entry) {
+				$this->addToSavedProductCount($entry);
+			}
+		}
+
+		return $this->saved_item_counts[
+			$entry->item->getInternalValue('product')];
+	}
+
+	// }}}
+	// {{{ protected function addToSavedProductCount()
+
+	protected function addToSavedProductCount(StoreCartEntry $entry)
+	{
+		$id = $entry->item->getInternalValue('product');
+		if (array_key_exists($id, $this->saved_item_counts)) {
+			$this->saved_item_counts[$id]++;
+		} else {
+			$this->saved_item_counts[$id] = 1;
+		}
+	}
+
+	// }}}
+	// {{{ protected function removeFromSavedProductCount()
+
+	protected function removeFromSavedProductCount(StoreCartEntry $entry)
+	{
+		$id = $entry->item->getInternalValue('product');
+		// only subtract from count if it exists and we're not already at 0.
+		if (array_key_exists($id, $this->saved_item_counts) &&
+			$this->saved_item_counts[$id] > 0) {
+			$this->saved_item_counts[$id]--;
+		}
+	}
+
+	// }}}
+	// {{{ protected function resetSavedProductItemCount()
+
+	protected function resetSavedProductItemCount()
+	{
+		$this->saved_item_counts = array();
 	}
 
 	// }}}
