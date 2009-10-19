@@ -352,12 +352,15 @@ class StoreCartEntry extends SwatDBDataObject
 	 * Whether or not this entry is available for order
 	 *
 	 * @return boolean Whether or not this entry is available for order. Entries
-	 *                  are available by default. Subclasses can override this
-	 *                  method to provide additional availability filtering.
+	 *                  are based on item isAvailableInRegion() by default.
+	 *                  Subclasses can override this method to provide
+	 *                  additional availability filtering.
+	 *
+	 * @see StoreItem::isAvailableInRegion()
 	 */
-	public function isAvailable()
+	public function isAvailable(StoreRegion $region = null)
 	{
-		return true;
+		return $this->item->isAvailableInRegion($region);
 	}
 
 	// }}}

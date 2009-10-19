@@ -65,19 +65,21 @@ abstract class StoreCheckoutCart extends StoreCart
 	 *
 	 * Only available entries are used for cart cost totalling methods.
 	 *
-	 * @return array the entries of this cart that are available for order.
-	 *                All entries are returned by default. Subclasses may
-	 *                override this method to provide additional availability
-	 *                filtering on entries.
+	 * @return array the entries of this cart that are not available for order.
+	 *                This availabiliy is determined by the isAvailable() method
+	 *                on each CartEntry. Subclasses may override this method to
+	 *                provide additional availability filtering on entries.
 	 *
-	 * @see StoreCartModule::getUnavailableEntries()
+	 * @see StoreCheckoutCart::getUnavailableEntries()
+	 * @see StoreCartEntry::isAvailable()
 	 */
 	public function &getAvailableEntries()
 	{
 		$entries = array();
+		$region  = $this->app->getRegion();
 
 		foreach ($this->getEntries() as $entry) {
-			if ($entry->isAvailable() === true) {
+			if ($entry->isAvailable($region) === true) {
 				$entries[] = $entry;
 			}
 		}
@@ -94,18 +96,20 @@ abstract class StoreCheckoutCart extends StoreCart
 	 * Only available entries are used for cart cost totalling methods.
 	 *
 	 * @return array the entries of this cart that are not available for order.
-	 *                No entries are returned by default. Subclasses may
-	 *                override this method to provide additional availability
-	 *                filtering on entries.
+	 *                This availabiliy is determined by the isAvailable() method
+	 *                on each CartEntry. Subclasses may override this method to
+	 *                provide additional availability filtering on entries.
 	 *
-	 * @see StoreCartModule::getAvailableEntries()
+	 * @see StoreCheckoutCart::getAvailableEntries()
+	 * @see StoreCartEntry::isAvailable()
 	 */
 	public function &getUnavailableEntries()
 	{
 		$entries = array();
+		$region  = $this->app->getRegion();
 
 		foreach ($this->getEntries() as $entry) {
-			if ($entry->isAvailable() === false) {
+			if ($entry->isAvailable($region) === false) {
 				$entries[] = $entry;
 			}
 		}
