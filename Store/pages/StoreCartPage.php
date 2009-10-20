@@ -1375,7 +1375,14 @@ class StoreCartPage extends SitePage
 			}
 		}
 
-		return $this->available_item_counts[$this->getEntryIndex($entry)];
+		$id = $this->getEntryIndex($entry);
+		if (array_key_exists($id, $this->available_item_counts)) {
+			$count = $this->available_item_counts[$id];
+		} else {
+			$count = 1;
+		}
+
+		return $count;
 	}
 
 	// }}}
@@ -1426,7 +1433,14 @@ class StoreCartPage extends SitePage
 			}
 		}
 
-		return $this->unavailable_item_counts[$this->getEntryIndex($entry)];
+		$id = $this->getEntryIndex($entry);
+		if (array_key_exists($id, $this->unavailable_item_counts)) {
+			$count = $this->unavailable_item_counts[$id];
+		} else {
+			$count = 1;
+		}
+
+		return $count;
 	}
 
 	// }}}
@@ -1471,13 +1485,20 @@ class StoreCartPage extends SitePage
 	protected function getSavedProductItemCount(StoreCartEntry $entry)
 	{
 		if (count($this->saved_item_counts) === 0) {
-			$entries = $this->app->cart->saved->getAvailableEntries();
+			$entries = $this->app->cart->saved->getEntries();
 			foreach ($entries as $entry) {
 				$this->addToSavedProductCount($entry);
 			}
 		}
 
-		return $this->saved_item_counts[$this->getEntryIndex($entry)];
+		$id = $this->getEntryIndex($entry);
+		if (array_key_exists($id, $this->saved_item_counts)) {
+			$count = $this->saved_item_counts[$id];
+		} else {
+			$count = 1;
+		}
+
+		return $count;
 	}
 
 	// }}}
