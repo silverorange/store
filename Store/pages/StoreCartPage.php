@@ -1432,9 +1432,9 @@ class StoreCartPage extends SitePage
 	}
 
 	// }}}
-	// {{{ protected function addToUnvailableProductCount()
+	// {{{ protected function addToUnavailableProductCount()
 
-	protected function addToUnvailableProductCount(StoreCartEntry $entry)
+	protected function addToUnavailableProductCount(StoreCartEntry $entry)
 	{
 		$id = $entry->item->getInternalValue('product');
 		if (array_key_exists($id, $this->unavailable_item_counts)) {
