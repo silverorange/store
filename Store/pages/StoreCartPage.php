@@ -401,7 +401,6 @@ class StoreCartPage extends SitePage
 				$this->app->cart->saved->addEntry($entry);
 
 				$this->removeFromAvailableProductCount($entry);
-				$this->addToSavedProductCount($entry);
 
 				break;
 			}
@@ -636,9 +635,6 @@ class StoreCartPage extends SitePage
 				$this->app->cart->checkout->removeEntry($entry);
 				$this->app->cart->saved->addEntry($entry);
 
-				$this->removeFromUnvailableProductCount($entry);
-				$this->addToSavedProductCount($entry);
-
 				break;
 			}
 		}
@@ -658,10 +654,8 @@ class StoreCartPage extends SitePage
 
 		foreach ($this->getUnavailableRemoveButtons() as $id => $button) {
 			if ($button->hasBeenClicked()) {
-				$entry = $this->app->cart->checkout->getEntryById($id);
 				if ($this->app->cart->checkout->removeEntryById($id) !== null) {
 					$num_entries_removed++;
-					$this->removeFromUnvailableProductCount($entry);
 				}
 
 				break;
@@ -841,11 +835,8 @@ class StoreCartPage extends SitePage
 				$this->app->cart->saved->removeEntry($entry);
 				$this->app->cart->checkout->addEntry($entry);
 
-				$this->removeFromSavedProductCount($entry);
 				if ($entry->isAvailable()) {
 					$this->addToAvailableProductCount($entry);
-				} else {
-					$this->addToUnavailableProductCount($entry);
 				}
 
 				break;
@@ -867,10 +858,8 @@ class StoreCartPage extends SitePage
 
 		foreach ($this->getSavedRemoveButtons() as $id => $button) {
 			if ($button->hasBeenClicked()) {
-				$entry = $this->app->cart->saved->getEntryById($id);
 				if ($this->app->cart->saved->removeEntryById($id) !== null) {
 					$num_entries_removed++;
-					$this->removeFromSavedProductCount($entry);
 				}
 
 				break;
