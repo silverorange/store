@@ -1375,8 +1375,7 @@ class StoreCartPage extends SitePage
 			}
 		}
 
-		return $this->available_item_counts[
-			$entry->item->getInternalValue('product')];
+		return $this->available_item_counts[$this->getEntryIndex($entry)];
 	}
 
 	// }}}
@@ -1384,7 +1383,7 @@ class StoreCartPage extends SitePage
 
 	protected function addToAvailableProductCount(StoreCartEntry $entry)
 	{
-		$id = $entry->item->getInternalValue('product');
+		$id = $this->getEntryIndex($entry);
 		if (array_key_exists($id, $this->available_item_counts)) {
 			$this->available_item_counts[$id]++;
 		} else {
@@ -1397,7 +1396,7 @@ class StoreCartPage extends SitePage
 
 	protected function removeFromAvailableProductCount(StoreCartEntry $entry)
 	{
-		$id = $entry->item->getInternalValue('product');
+		$id = $this->getEntryIndex($entry);
 		// only subtract from count if it exists and we're not already at 0.
 		if (array_key_exists($id, $this->available_item_counts) &&
 			$this->available_item_counts[$id] > 0) {
@@ -1427,8 +1426,7 @@ class StoreCartPage extends SitePage
 			}
 		}
 
-		return $this->unavailable_item_counts[
-			$entry->item->getInternalValue('product')];
+		return $this->unavailable_item_counts[$this->getEntryIndex($entry)];
 	}
 
 	// }}}
@@ -1436,7 +1434,7 @@ class StoreCartPage extends SitePage
 
 	protected function addToUnavailableProductCount(StoreCartEntry $entry)
 	{
-		$id = $entry->item->getInternalValue('product');
+		$id = $this->getEntryIndex($entry);
 		if (array_key_exists($id, $this->unavailable_item_counts)) {
 			$this->unavailable_item_counts[$id]++;
 		} else {
@@ -1449,7 +1447,7 @@ class StoreCartPage extends SitePage
 
 	protected function removeFromUnvailableProductCount(StoreCartEntry $entry)
 	{
-		$id = $entry->item->getInternalValue('product');
+		$id = $this->getEntryIndex($entry);
 		// only subtract from count if it exists and we're not already at 0.
 		if (array_key_exists($id, $this->unavailable_item_counts) &&
 			$this->unavailable_item_counts[$id] > 0) {
@@ -1479,8 +1477,7 @@ class StoreCartPage extends SitePage
 			}
 		}
 
-		return $this->saved_item_counts[
-			$entry->item->getInternalValue('product')];
+		return $this->saved_item_counts[$this->getEntryIndex($entry)];
 	}
 
 	// }}}
@@ -1488,7 +1485,7 @@ class StoreCartPage extends SitePage
 
 	protected function addToSavedProductCount(StoreCartEntry $entry)
 	{
-		$id = $entry->item->getInternalValue('product');
+		$id = $this->getEntryIndex($entry);
 		if (array_key_exists($id, $this->saved_item_counts)) {
 			$this->saved_item_counts[$id]++;
 		} else {
@@ -1501,7 +1498,7 @@ class StoreCartPage extends SitePage
 
 	protected function removeFromSavedProductCount(StoreCartEntry $entry)
 	{
-		$id = $entry->item->getInternalValue('product');
+		$id = $this->getEntryIndex($entry);
 		// only subtract from count if it exists and we're not already at 0.
 		if (array_key_exists($id, $this->saved_item_counts) &&
 			$this->saved_item_counts[$id] > 0) {
@@ -1515,6 +1512,14 @@ class StoreCartPage extends SitePage
 	protected function resetSavedProductItemCount()
 	{
 		$this->saved_item_counts = array();
+	}
+
+	// }}}
+	// {{{ protected function getEntryIndex()
+
+	protected function getEntryIndex(StoreCartEntry $entry)
+	{
+		return $entry->item->getInternalValue('product');
 	}
 
 	// }}}
