@@ -414,9 +414,9 @@ class StoreOrder extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ private function getProductItemCount()
+	// {{{ protected function getProductItemCount()
 
-	private function getProductItemCount(StoreOrderItem $item)
+	protected function getProductItemCount(StoreOrderItem $item)
 	{
 		static $item_counts;
 
@@ -424,17 +424,32 @@ class StoreOrder extends SwatDBDataObject
 			$item_counts = array();
 
 			$items = clone $this->items;
-			foreach ($items as $item) {
-				$id = $item->product;
-				if (!isset($item_counts[$id])) {
-					$item_counts[$id] = 1;
-				} else {
+			foreach ($items as $current_item) {
+				$id = $this->getItemIndex($current_item);
+				if (array_key_exists($id, $item_counts)) {
 					$item_counts[$id]++;
+				} else {
+					$item_counts[$id] = 1;
 				}
 			}
 		}
 
-		return $item_counts[$item->product];
+		$id = $this->getItemIndex($item);
+		if (array_key_exists($id, $item_counts)) {
+			$count = $item_counts[$id];
+		} else {
+			$count = 1;
+		}
+
+		return $count;
+	}
+
+	// }}}
+	// {{{ protected function getItemIndex()
+
+	protected function getItemIndex(StoreOrderItem $item)
+	{
+		return $item->product;
 	}
 
 	// }}}
