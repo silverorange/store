@@ -451,16 +451,32 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 			$item_counts = array();
 
 			$entries = $this->app->cart->checkout->getAvailableEntries();
-			foreach ($entries as $entry) {
-				$id = $entry->item->getInternalValue('product');
-				if (!isset($item_counts[$id]))
-					$item_counts[$id] = 1;
-				else
+			foreach ($entries as $current_entry) {
+				$id = $this->getEntryIndex($current_entry);
+				if (array_key_exists($id, $item_counts)) {
 					$item_counts[$id]++;
+				} else {
+					$item_counts[$id] = 1;
+				}
 			}
 		}
 
-		return $item_counts[$entry->item->getInternalValue('product')];
+		$id = $this->getItemIndex($entry);
+		if (array_key_exists($id, $item_counts)) {
+			$count = $item_counts[$id];
+		} else {
+			$count = 1;
+		}
+
+		return $count;
+	}
+
+	// }}}
+	// {{{ protected function getEntryIndex()
+
+	protected function getEntryIndex(StoreCartEntry $entry)
+	{
+		return $entry->item->getInternalValue('product');
 	}
 
 	// }}}
