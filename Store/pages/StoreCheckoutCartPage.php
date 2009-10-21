@@ -461,7 +461,7 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 			}
 		}
 
-		$id = $this->getItemIndex($entry);
+		$id = $this->getEntryIndex($entry);
 		if (array_key_exists($id, $item_counts)) {
 			$count = $item_counts[$id];
 		} else {
