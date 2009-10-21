@@ -1359,8 +1359,8 @@ class StoreCartPage extends SitePage
 	{
 		if (count($this->available_item_counts) === 0) {
 			$entries = $this->app->cart->checkout->getAvailableEntries();
-			foreach ($entries as $entry) {
-				$this->addToAvailableProductCount($entry);
+			foreach ($entries as $current_entry) {
+				$this->addToAvailableProductCount($current_entry);
 			}
 		}
 
@@ -1417,8 +1417,8 @@ class StoreCartPage extends SitePage
 	{
 		if (count($this->unavailable_item_counts) === 0) {
 			$entries = $this->app->cart->checkout->getUnavailableEntries();
-			foreach ($entries as $entry) {
-				$this->addToUnavailableProductCount($entry);
+			foreach ($entries as $current_entry) {
+				$this->addToUnavailableProductCount($current_entry);
 			}
 		}
 
@@ -1475,8 +1475,8 @@ class StoreCartPage extends SitePage
 	{
 		if (count($this->saved_item_counts) === 0) {
 			$entries = $this->app->cart->saved->getEntries();
-			foreach ($entries as $entry) {
-				$this->addToSavedProductCount($entry);
+			foreach ($entries as $current_entry) {
+				$this->addToSavedProductCount($current_entry);
 			}
 		}
 
