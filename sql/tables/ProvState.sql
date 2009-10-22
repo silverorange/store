@@ -7,3 +7,4 @@ create table ProvState (
 );
 
 CREATE INDEX ProvState_country_index ON ProvState(country);
+CREATE INDEX ProvState_abbreviation_index ON ProvState(abbreviation);
