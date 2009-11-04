@@ -16,17 +16,6 @@ require_once 'Store/StoreRecentStack.php';
  */
 class StoreRecentModule extends SiteApplicationModule
 {
-	// {{{ public function init()
-
-	public function init()
-	{
-		$this->app->session->activate();
-
-		if (!($this->app->session->recent instanceof ArrayObject))
-			$this->app->session->recent = new ArrayObject();
-	}
-
-	// }}}
 	// {{{ public function depends()
 
 	/**
@@ -51,10 +40,24 @@ class StoreRecentModule extends SiteApplicationModule
 	}
 
 	// }}}
+	// {{{ public function init()
+
+	public function init()
+	{
+		if ($this->app->session->isActive())
+			if (!isset($this->app->session->recent) ||
+				!($this->app->session->recent instanceof ArrayObject))
+					$this->app->session->recent = new ArrayObject();
+	}
+
+	// }}}
 	// {{{ public function add()
 
 	public function add($stack_name, $id)
 	{
+		$this->app->session->activate();
+		$this->init();
+
 		if (!$this->app->session->recent->offsetExists($stack_name))
 			$this->app->session->recent->offsetSet($stack_name, new StoreRecentStack());
 
@@ -67,6 +70,11 @@ class StoreRecentModule extends SiteApplicationModule
 
 	public function get($stack_name, $count = null)
 	{
+		if (!$this->app->session->isActive())
+			return null;
+
+		$this->init();
+
 		$exclude_id = null;
 
 		$page = $this->app->getPage();
