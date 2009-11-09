@@ -42,6 +42,19 @@ init: function()
 		this.drawLoadingContainer();
 	}
 
+	/*
+	 * Workaround for case when the disclosure is initialized open and the
+	 * form inside the disclosure is processed. In this case, the keywords
+	 * field could be populated with search data. We pull up the keywords from
+	 * the form. Later on during initialization, the keywords are pushed down.
+	 * Pulling them up here prevents losing the search keywords on the form.
+	 */
+	if (this.initial_open) {
+		this.pullUpKeywords();
+	} else if (this.xml_rpc_server === null) {
+		this.pushDownUpKeywords();
+	}
+
 	this.search_input_elements =
 		this.search_controls.getElementsByTagName('input');
 
