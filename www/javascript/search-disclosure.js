@@ -395,9 +395,7 @@ StoreSearchDisclosure.prototype.closeSearchControls = function()
 {
 	this.pushDownKeywords();
 	this.search_controls.style.display = 'none';
-	this.search_controls.style.opacity = '0';
-	this.search_controls.style.MozOpacity = '0';
-	this.search_controls.style.filter = 'alpha(opacity=0)';
+	YAHOO.util.Dom.setStyle(this.search_controls, 'opacity', 0);
 }
 
 StoreSearchDisclosure.prototype.openSearchControls = function()
