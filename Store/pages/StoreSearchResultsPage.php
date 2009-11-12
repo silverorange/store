@@ -154,15 +154,29 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 			$fulltext_result->saveHistory();
 		}
 
-		if (count($this->has_results) > 1) {
-			$pager = $this->ui->getWidget('article_pager');
-			$pager->display_parts = SwatPagination::NEXT | SwatPagination::PREV;
-		} else {
-			// set the right column to use the whole width
+		$pager = $this->ui->getWidget('article_pager');
+		$pager->display_parts = SwatPagination::NEXT | SwatPagination::PREV;
+
+		if (!$this->hasLeftColumnResults()) {
 			$this->ui->getWidget('right_column')->classes[] = 'full-width';
 		}
 
 		return true;
+	}
+
+	// }}}
+	// {{{ protected function hasLeftColumnResults()
+
+	protected function hasLeftColumnResults()
+	{
+		foreach (array('category', 'product') as $key) {
+			if (array_key_exists($key, $this->result_count) &&
+				$this->result_count[$key] > 0) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	// }}}
