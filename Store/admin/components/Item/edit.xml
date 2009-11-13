@@ -102,6 +102,10 @@
 					<property name="title">Sale Discount</property>
 					<widget class="SwatFlydown" id="sale_discount" />
 				</widget>
+				<widget class="SwatFormField" id="minimum_quantity_group_field">
+					<property name="title">Minimum Quantity Sale Group</property>
+					<widget class="SwatFlydown" id="minimum_quantity_group" />
+				</widget>
 			</widget>
 			<widget class="SwatFieldset">
 				<property name="title" translatable="yes">Status</property>

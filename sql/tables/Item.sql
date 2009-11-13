@@ -13,6 +13,7 @@ create table Item (
 	plural_unit varchar(100),
 	minimum_quantity int not null default 1,
 	minimum_multiple boolean not null default false,
+	minimum_quantity_group int references ItemMinimumQuantityGroup(id) on delete set null,
 	primary key (id)
 );
 

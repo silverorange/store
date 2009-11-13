@@ -91,6 +91,14 @@ class StoreProductDetails extends AdminIndex
 		$sale_discount_flydown->addOptionsByArray(SwatDB::getOptionArray(
 			$this->app->db, 'SaleDiscount', 'title', 'id', 'title'));
 
+		$flydown = $this->ui->getWidget('minimum_quantity_group_flydown');
+		$options = SwatDB::getOptionArray($this->app->db,
+			'ItemMinimumQuantityGroup', 'title', 'id', 'title');
+
+		$flydown->addOptionsByArray($options);
+		$this->ui->getWidget('minimum_quantity_group')->visible =
+			(count($options) > 0);
+
 		if ($this->ui->hasWidget('review_pager')) {
 			$this->ui->getWidget('review_pager')->page_size = 10;
 		}
@@ -280,6 +288,54 @@ class StoreProductDetails extends AdminIndex
 			} else {
 				$this->app->messages->add(new SwatMessage(Store::_(
 					'None of the items selected had a sale discount.')));
+			}
+
+			break;
+		case 'minimum_quantity_group' :
+			$minimum_quantity_group =
+				$this->ui->getWidget('minimum_quantity_group_flydown')->value;
+
+			if ($minimum_quantity_group === null)
+				break;
+
+			$count = SwatDB::updateColumn($this->app->db, 'Item',
+				'integer:minimum_quantity_group', $minimum_quantity_group, 'id',
+					$view->getSelection());
+
+			$message = new SwatMessage(sprintf(Store::ngettext(
+				'A minimum quantity sale group has been '.
+					'applied to one item.',
+				'A minimum quantity sale group has been '.
+					'applied to %s items.', $count),
+				SwatString::numberFormat($count)));
+
+			$this->app->messages->add($message);
+
+			break;
+		case 'remove_minimum_quantity_group' :
+			$num = SwatDB::queryOne($this->app->db, sprintf(
+				'select count(id) from Item where id in (%s)
+					and minimum_quantity_group is not null',
+				SwatDB::implodeSelection($this->app->db,
+					$view->getSelection())));
+
+			if ($num > 0) {
+				$count = SwatDB::updateColumn($this->app->db, 'Item',
+					'integer:minimum_quantity_group', null, 'id',
+					$view->getSelection());
+
+				$message = new SwatMessage(sprintf(Store::ngettext(
+					'A minimum quantity sale group has been '.
+						'removed from one item.',
+					'A minimum quantity sale group has been '.
+						'removed from %s items.', $count),
+					SwatString::numberFormat($count)));
+
+				$this->app->messages->add($message);
+			} else {
+				$this->app->messages->add(new SwatMessage(Store::_(
+					'None of the items selected had a minimum '.
+					'quantity sale group.')));
 			}
 
 			break;

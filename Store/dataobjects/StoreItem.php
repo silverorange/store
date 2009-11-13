@@ -8,6 +8,7 @@ require_once 'Store/dataobjects/StoreProduct.php';
 require_once 'Store/dataobjects/StoreRegion.php';
 require_once 'Store/dataobjects/StoreSaleDiscount.php';
 require_once 'Store/dataobjects/StoreItemAliasWrapper.php';
+require_once 'Store/dataobjects/StoreItemMinimumQuantityGroup.php';
 require_once 'Store/StoreItemStatus.php';
 require_once 'Store/StoreItemStatusList.php';
 
@@ -583,6 +584,9 @@ class StoreItem extends SwatDBDataObject
 
 		$this->registerInternalProperty('item_group',
 			SwatDBClassMap::get('StoreItemGroup'));
+
+		$this->registerInternalProperty('minimum_quantity_group',
+			SwatDBClassMap::get('StoreItemMinimumQuantityGroup'));
 
 		$this->registerInternalProperty('sale_discount',
 			SwatDBClassMap::get('StoreSaleDiscount'));

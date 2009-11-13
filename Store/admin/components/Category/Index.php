@@ -62,6 +62,14 @@ class StoreCategoryIndex extends AdminIndex
 
 		$this->initCatalogSwitcher();
 		$this->initAttributeList();
+
+		$flydown = $this->ui->getWidget('item_minimum_quantity_group_flydown');
+		$options = SwatDB::getOptionArray($this->app->db,
+			'ItemMinimumQuantityGroup', 'title', 'id', 'title');
+
+		$flydown->addOptionsByArray($options);
+		$this->ui->getWidget('item_minimum_quantity_group')->visible =
+			(count($options) > 0);
 	}
 
 	// }}}
@@ -439,6 +447,16 @@ class StoreCategoryIndex extends AdminIndex
 		case 'products_remove_sale_discount' :
 			$this->removeSaleDiscount($view->getSelection());
 			break;
+		case 'item_minimum_quantity_group' :
+			$group = $this->ui->getWidget(
+				'item_minimum_quantity_group_flydown')->value;
+
+			$this->addItemMinimumQuantityGroup($view->getSelection(), $group);
+
+			break;
+		case 'remove_item_minimum_quantity_group' :
+			$this->removeItemMinimumQuantityGroup($view->getSelection());
+			break;
 		}
 
 		if ($message !== null)
@@ -644,6 +662,75 @@ class StoreCategoryIndex extends AdminIndex
 		} else {
 			$this->app->messages->add(new SwatMessage(Store::_(
 				'None of the items selected had a sale discount.')));
+		}
+	}
+
+	// }}}
+	// {{{ private function addItemMinimumQuantityGroup()
+
+	private function addItemMinimumQuantityGroup($products, $group)
+	{
+		if (count($products) == 0 || $group === null)
+			return;
+
+		$product_array = array();
+
+		foreach ($products as $product)
+			$product_array[] = $this->app->db->quote($product, 'integer');
+
+		$num = SwatDB::queryOne($this->app->db, sprintf(
+			'select count(id) from Item where product in (%s)',
+			implode(', ', $product_array)));
+
+		SwatDB::updateColumn($this->app->db, 'Item',
+			'integer:minimum_quantity_group', $group, 'product',
+			$product_array);
+
+		$message = new SwatMessage(sprintf(Store::ngettext(
+			'An item miniumum quantity sale group has been applied '.
+				'to one item.',
+			'An item miniumum quantity sale group has been applied to '.
+				'%s items.', $num),
+			SwatString::numberFormat($num)));
+
+		$this->app->messages->add($message);
+	}
+
+	// }}}
+	// {{{ private function removeItemMinimumQuantityGroup()
+
+	private function removeItemMinimumQuantityGroup($products)
+	{
+		if (count($products) == 0)
+			return;
+
+		$product_array = array();
+
+		foreach ($products as $product)
+			$product_array[] = $this->app->db->quote($product, 'integer');
+
+		$num = SwatDB::queryOne($this->app->db, sprintf(
+			'select count(id) from Item where product in (%s)
+			and minimum_quantity_group is not null',
+			implode(', ', $product_array)));
+
+		if ($num > 0) {
+			SwatDB::updateColumn($this->app->db, 'Item',
+				'integer:minimum_quantity_group', null, 'product',
+				$product_array);
+
+			$message = new SwatMessage(sprintf(Store::ngettext(
+				'A item miniumum quantity sale group has been '.
+					'removed from one item.',
+				'A item miniumum quantity sale group has been '.
+					'removed from %s items.', $num),
+				SwatString::numberFormat($num)));
+
+			$this->app->messages->add($message);
+		} else {
+			$this->app->messages->add(new SwatMessage(Store::_(
+				'None of the items selected had a item miniumum '.
+				'quantity sale group.')));
 		}
 	}
 

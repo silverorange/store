@@ -217,6 +217,13 @@
 					<widget class="SwatActionItem" id="remove_sale_discount">
 						<property name="title" translatable="yes">remove sale discount</property>
 					</widget>
+					<widget class="SwatActionItem" id="minimum_quantity_group">
+						<property name="title" translatable="yes">add to minimum quantity sale group</property>
+						<widget class="SwatFlydown" id="minimum_quantity_group_flydown" />
+					</widget>
+					<widget class="SwatActionItem" id="remove_minimum_quantity_group">
+						<property name="title" translatable="yes">remove from minimum quantity sale group</property>
+					</widget>
 					<widget class="SwatActionItemDivider" />
 					<widget class="SwatActionItem" id="enable">
 						<property name="title" translatable="yes">enable…</property>
