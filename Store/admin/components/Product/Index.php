@@ -69,11 +69,20 @@ class StoreProductIndex extends AdminSearch
 			$this->app->db, 'SaleDiscount', 'title', 'id', 'title'));
 
 		$flydown = $this->ui->getWidget('item_minimum_quantity_group_flydown');
+		$search_flydown = $this->ui->getWidget(
+			'search_item_minimum_quantity_group');
+
 		$options = SwatDB::getOptionArray($this->app->db,
 			'ItemMinimumQuantityGroup', 'title', 'id', 'title');
 
 		$flydown->addOptionsByArray($options);
+		$search_flydown->addOptionsByArray($options);
+
 		$this->ui->getWidget('item_minimum_quantity_group')->visible =
+			(count($options) > 0);
+
+		$this->ui->getWidget(
+			'search_item_minimum_quantity_group_field')->visible =
 			(count($options) > 0);
 	}
 

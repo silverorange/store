@@ -45,6 +45,10 @@
 				<property name="title" translatable="yes">Sale Discount</property>
 				<widget class="SwatFlydown" id="search_sale_discount" />
 			</widget>
+			<widget class="SwatFormField" id="search_item_minimum_quantity_group_field">
+				<property name="title" translatable="yes">Minimum Quantity Sale Group</property>
+				<widget class="SwatFlydown" id="search_item_minimum_quantity_group" />
+			</widget>
 			<widget class="SwatFooterFormField">
 				<widget class="SwatButton" id="submit_button">
 					<property name="title" translatable="yes">Search</property>
