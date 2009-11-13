@@ -148,6 +148,7 @@ class StoreProductSearch
 		$where.= $this->buildCategoryWhereClause();
 		$where.= $this->buildCatalogWhereClause();
 		$where.= $this->buildSaleDiscountWhereClause();
+		$where.= $this->buildMinimumQuantityGroupWhereClause();
 
 		$this->where_clause = $where;
 	}
@@ -273,6 +274,23 @@ class StoreProductSearch
 			$where.= sprintf(' and Product.id in 
 				(select product from Item where sale_discount = %s)',
 				$this->db->quote($sale_discount));
+
+		return $where;
+	}
+
+	// }}}
+	// {{{ protected function buildMinimumQuantityGroupWhereClause()
+
+	protected function buildMinimumQuantityGroupWhereClause()
+	{
+		$where = '';
+		$item_minimum_quantity_group = $this->ui->getWidget(
+			'search_item_minimum_quantity_group')->value;
+
+		if ($item_minimum_quantity_group !== null)
+			$where.= sprintf(' and Product.id in (select product from Item '.
+				'where minimum_quantity_group = %s)',
+				$this->db->quote($item_minimum_quantity_group));
 
 		return $where;
 	}
