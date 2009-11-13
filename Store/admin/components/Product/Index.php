@@ -67,6 +67,14 @@ class StoreProductIndex extends AdminSearch
 		$sale_discount_flydown = $this->ui->getWidget('sale_discount_flydown');
 		$sale_discount_flydown->addOptionsByArray(SwatDB::getOptionArray(
 			$this->app->db, 'SaleDiscount', 'title', 'id', 'title'));
+
+		$flydown = $this->ui->getWidget('item_minimum_quantity_group_flydown');
+		$options = SwatDB::getOptionArray($this->app->db,
+			'ItemMinimumQuantityGroup', 'title', 'id', 'title');
+
+		$flydown->addOptionsByArray($options);
+		$this->ui->getWidget('item_minimum_quantity_group')->visible =
+			(count($options) > 0);
 	}
 
 	// }}}
@@ -247,6 +255,57 @@ class StoreProductIndex extends AdminSearch
 				$this->app->messages->add(new SwatMessage(Store::_(
 					'None of the items selected had a sale discount.')));
 			}
+
+			break;
+
+		case 'item_minimum_quantity_group' :
+			$value = $this->ui->getWidget(
+				'item_minimum_quantity_group_flydown')->value;
+
+			if ($value !== null) {
+				$num = SwatDB::queryOne($this->app->db, sprintf(
+					'select count(id) from Item where product in (%s)',
+					SwatDB::implodeSelection($this->app->db,
+						$view->getSelection())));
+
+				SwatDB::updateColumn($this->app->db, 'Item',
+					'integer:minimum_quantity_group', $value,
+					'product', $item_list);
+
+				$message = new SwatMessage(sprintf(Store::ngettext(
+					'One item has been added to a minimum quantity sale group.',
+					'%s items have been added to a minimum quantity sale group.',
+					$num),
+					SwatString::numberFormat($num)));
+
+				$this->app->messages->add($message);
+			}
+
+			break;
+		case 'remove_item_minimum_quantity_group' :
+			$num = SwatDB::queryOne($this->app->db, sprintf(
+				'select count(id) from Item where product in (%s)
+					and Item.minimum_quantity_group is not null',
+				SwatDB::implodeSelection($this->app->db,
+					$view->getSelection())));
+
+			if ($num > 0) {
+				SwatDB::updateColumn($this->app->db, 'Item',
+					'integer:minimum_quantity_group', null,
+					'product', $item_list);
+
+				$message = new SwatMessage(sprintf(Store::ngettext(
+					'One item has been removed from a %s.',
+					'%s items have been removed from a %s.',
+					$num),
+					SwatString::numberFormat($num),
+					Store::_('minimum quantity sale group')));
+			} else {
+				$message = new SwatMessage(Store::_('None of the items '.
+					'selected had a minimum quantity sale group.'));
+			}
+
+			$this->app->messages->add($message);
 
 			break;
 		}

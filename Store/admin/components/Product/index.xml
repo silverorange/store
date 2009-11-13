@@ -72,6 +72,19 @@
 						<property name="content" translatable="yes">This will remove any sale discounts for items belonging to the checked products.</property>
 					</widget>
 				</widget>
+				<widget class="SwatActionItem" id="item_minimum_quantity_group">
+					<property name="title" translatable="yes">add to minimum quantity sale group</property>
+					<widget class="SwatFormField">
+						<property name="note" translatable="yes">This will apply to all items belonging to the checked products. To apply to individual items, use the item editor.</property>
+						<widget class="SwatFlydown" id="item_minimum_quantity_group_flydown" />
+					</widget>
+				</widget>
+				<widget class="SwatActionItem" id="remove_item_minimum_quantity_group">
+					<property name="title" translatable="yes">remove from minimum quantity sale group</property>
+					<widget class="SwatContentBlock">
+						<property name="content" translatable="yes">This will remove any items belonging to the checked products from a minimum quantity sale group.</property>
+					</widget>
+				</widget>
 			</widget>
 		</widget>
 	</widget>
