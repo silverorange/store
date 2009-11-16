@@ -146,6 +146,13 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	 */
 	public $supress_duplicate_products = false;
 
+	/**
+	 * An optional array of product id to limit search results with
+	 *
+	 * @var array
+	 */
+	public $product_ids;
+
 	// }}}
 	// {{{ public function __construct()
 
@@ -473,6 +480,10 @@ class StoreProductSearchEngine extends SiteSearchEngine
 		if ($this->collection_products_only)
 			$clause.= ' and Product.id in
 				(select source_product from ProductCollectionBinding)';
+
+		if (is_array($this->product_ids))
+			$clause.= sprintf(' and Product.id in (%s)',
+				implode(',', $this->product_ids));
 
 		return $clause;
 	}
