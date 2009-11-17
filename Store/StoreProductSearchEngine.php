@@ -153,6 +153,13 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	 */
 	public $product_ids;
 
+	/**
+	 * Item minimum quantity group
+	 *
+	 * @var StoreItemMinimumQuantityGroup
+	 */
+	public $item_minimum_quantity_group;
+
 	// }}}
 	// {{{ public function __construct()
 
@@ -189,6 +196,11 @@ class StoreProductSearchEngine extends SiteSearchEngine
 		if ($this->price_range !== null)
 			$summary[] = sprintf(Store::_('Price: <b>%s</b>'),
 				SwatString::minimizeEntities($this->price_range->getTitle()));
+
+		if ($this->item_minimum_quantity_group !== null)
+			$summary[] = sprintf(Store::_('Group: <b>%s</b>'),
+				SwatString::minimizeEntities(
+					$this->item_minimum_quantity_group->title));
 
 		if ($this->attributes !== null) {
 			if (count($this->attributes)) {
@@ -484,6 +496,13 @@ class StoreProductSearchEngine extends SiteSearchEngine
 		if (is_array($this->product_ids))
 			$clause.= sprintf(' and Product.id in (%s)',
 				implode(',', $this->product_ids));
+
+		if ($this->item_minimum_quantity_group !== null) {
+			$clause.= sprintf(' and Product.id in (select Item.product
+				from Item where minimum_quantity_group = %s)',
+				$this->app->db->quote($this->item_minimum_quantity_group->id,
+					'integer'));
+		}
 
 		return $clause;
 	}
