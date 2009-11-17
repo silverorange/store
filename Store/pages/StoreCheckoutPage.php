@@ -106,16 +106,7 @@ abstract class StoreCheckoutPage extends SiteUiPage
 
 	protected function checkCart()
 	{
-		// cart doesn't matter if we have an invoice
-		if (isset($this->app->session->order) &&
-			$this->app->session->order->isFromInvoice())
-			return true;
-
-		// no cart, no checkout
-		if (count($this->app->cart->checkout->getAvailableEntries()) <= 0)
-			return false;
-
-		return true;
+		return $this->app->cart->checkout->checkoutEnabled();
 	}
 
 	// }}}

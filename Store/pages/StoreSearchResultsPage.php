@@ -34,6 +34,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 		$this->addSearchDataField('attr', true);
 		$this->addSearchDataField('price');
 		$this->addSearchDataField('collection');
+		$this->addSearchDataField('minimum_quantity_group');
 
 		parent::init();
 
@@ -512,6 +513,11 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 		if ($this->hasSearchDataValue('collection'))
 			$engine->collection_products_only = true;
 
+		if ($this->hasSearchDataValue('minimum_quantity_group')) {
+			$group = $this->getItemMinimumQuantityGroup();
+			$engine->item_minimum_quantity_group = $group;
+		}
+
 		return $engine;
 	}
 
@@ -563,6 +569,29 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 		}
 
 		return $range;
+	}
+
+	// }}}
+	// {{{ protected function getItemMinimumQuantityGroup()
+
+	protected function getItemMinimumQuantityGroup()
+	{
+		static $group = null;
+
+		if ($group === null &&
+			$this->hasSearchDataValue('minimum_quantity_group')) {
+
+			$class_name = SwatDBClassMap::get('StoreItemMinimumQuantityGroup');
+			$g = new $class_name();
+			$g->setDatabase($this->app->db);
+			if ($g->loadByShortname(
+				$this->getSearchDataValue('minimum_quantity_group'))) {
+
+				$group = $g;
+			}
+		}
+
+		return $group;
 	}
 
 	// }}}

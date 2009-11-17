@@ -58,6 +58,60 @@ abstract class StoreCheckoutCart extends StoreCart
 	}
 
 	// }}}
+	// {{{ public function checkoutEnabled()
+
+	/**
+	 * Whether or not the customer is allowed to check out
+	 *
+	 * This method can be useful for checking item purchasing rules (
+	 * such as a minimum purchase amount). If the check out is not enabled,
+	 * the buttons will be insensitive and the checkout inaccessible (
+	 * the customer will be relocated back to the cart where a message can
+	 * be displayed).
+	 *
+	 * @return boolean Whether or not the customer is allowed to check out
+	 */
+	public function checkoutEnabled()
+	{
+		// cart doesn't matter if we have an invoice
+		if (isset($this->app->session->order) &&
+			$this->app->session->order->isFromInvoice()) {
+			return true;
+		}
+
+		// no cart, no checkout
+		if (count($this->app->cart->checkout->getAvailableEntries()) <= 0) {
+			return false;
+		}
+
+		// check item minimum quantity group
+		$groups = array();
+
+		foreach ($this->getAvailableEntries() as $entry) {
+			$group = $entry->item->getInternalValue('minimum_quantity_group');
+
+			if ($group !== null) {
+				if (!isset($groups[$group])) {
+					$groups[$group] = new StdClass();
+					$groups[$group]->quantiy = 0;
+					$groups[$group]->group =
+						$entry->item->minimum_quantity_group;
+				}
+			}
+
+			$groups[$group]->quantity += $entry->quantity;
+		}
+
+		foreach ($groups as $g) {
+			if ($g->quantity < $g->group->minimum_quantity) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	// }}}
 	// {{{ public function getAvailableEntries()
 
 	/**

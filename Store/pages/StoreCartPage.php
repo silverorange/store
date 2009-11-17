@@ -964,6 +964,12 @@ class StoreCartPage extends SitePage
 			$this->buildAvailableTableView();
 			$this->buildUnavailableTableView();
 			$this->buildMessages();
+
+			if (!$this->app->cart->checkout->checkoutEnabled()) {
+				foreach ($this->getContinueButtons() as $button) {
+					$button->sensitive = false;
+				}
+			}
 		}
 
 		$this->buildSavedTableView();
@@ -1342,12 +1348,83 @@ class StoreCartPage extends SitePage
 
 	protected function buildMessages()
 	{
+		$this->buildItemMinimumQuantityGroupMessage();
+
 		try {
 			$message_display = $this->ui->getWidget('message_display');
 			foreach ($this->app->messages->getAll() as $message)
 				$message_display->add($message);
 		} catch (SwatWidgetNotFoundException $e) {
 		}
+	}
+
+	// }}}
+	// {{{ protected function buildItemMinimumQuantityGroupMessage()
+
+	protected function buildItemMinimumQuantityGroupMessage()
+	{
+		$groups = array();
+
+		foreach ($this->app->cart->checkout->getAvailableEntries() as $entry) {
+			$group = $entry->item->getInternalValue('minimum_quantity_group');
+
+			if ($group !== null) {
+				if (!isset($groups[$group])) {
+					$groups[$group] = new StdClass();
+					$groups[$group]->entries = array();
+					$groups[$group]->quantiy = 0;
+					$groups[$group]->group =
+						$entry->item->minimum_quantity_group;
+				}
+			}
+
+			$groups[$group]->entries[] = $entry;
+			$groups[$group]->quantity += $entry->quantity;
+		}
+
+		foreach ($groups as $g) {
+			if ($g->quantity < $g->group->minimum_quantity) {
+				$this->addItemMinimumQuantityGroupMessage($g->group,
+					$g->entries, $g->quantity);
+			}
+		}
+	}
+
+	// }}}
+	// {{{ protected function addItemMinimumQuantityGroupMessage()
+
+	protected function addItemMinimumQuantityGroupMessage(
+		StoreItemMinimumQuantityGroup $group, array $entries, $quantity)
+	{
+		$skus = array();
+
+		foreach ($entries as $entry) {
+			$skus[] = $entry->item->sku;
+		}
+
+		$locale = SwatI18NLocale::get();
+		$group_link = sprintf(
+			'<a href="search?minimum_quantity_group=%s">%s</a>',
+			SwatString::minimizeEntities($group->shortname),
+			SwatString::minimizeEntities($group->title));
+
+		$title = sprintf(Store::_('You must purchase at least %s items '.
+			'from %s in order to check out.'),
+			$locale->formatNumber($group->minimum_quantity),
+			$group_link);
+
+		$content = sprintf(Store::ngettext(
+			'You currently have one item from %2$s in your cart (%3$s).',
+			'You currently have %1$s items from %2$s in your cart (%3$s).',
+			$quantity),
+			$locale->formatNumber($quantity),
+			$group_link,
+			SwatString::toList($skus));
+
+		$m = new SwatMessage($title, 'warning');
+		$m->secondary_content = $content;
+		$m->content_type = 'text/xml';
+		$this->app->messages->add($m);
 	}
 
 	// }}}

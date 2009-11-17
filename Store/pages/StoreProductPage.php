@@ -890,6 +890,7 @@ class StoreProductPage extends StorePage
 		$this->displayRelatedArticleLinks();
 
 		$this->displayItems();
+		$this->displayItemMinimumQuantityGroupNotes();
 
 		$this->displayProductCollections();
 		$this->displayCollectionProducts();
@@ -1044,6 +1045,77 @@ class StoreProductPage extends StorePage
 	{
 		if ($this->items_view instanceof StoreItemsView)
 			$this->items_view->display();
+	}
+
+	// }}}
+	// {{{ protected function displayItemMinimumQuantityGroupNotes()
+
+	protected function displayItemMinimumQuantityGroupNotes()
+	{
+		// it's possible, but unlikely that a product can contain items
+		// from two different groups. This handles that case.
+
+		$count = 0;
+		$groups = array();
+
+		foreach ($this->product->items as $item) {
+			$group = $item->getInternalValue('minimum_quantity_group');
+
+			if ($item->isAvailableInRegion($this->app->getRegion())
+				&& $group !== null) {
+
+				$groups[$group][] = $item;
+			}
+		}
+
+		foreach ($groups as $items) {
+			$this->displayItemMinimumQuantityGroupNote($items);
+		}
+	}
+
+	// }}}
+	// {{{ protected function displayItemMinimumQuantityGroupNote()
+
+	protected function displayItemMinimumQuantityGroupNote($items)
+	{
+		$group = current($items)->minimum_quantity_group;
+		$count = 0;
+
+		$locale = SwatI18NLocale::get();
+		$group_link = sprintf(
+			'<a href="search?minimum_quantity_group=%s">%s</a>',
+			SwatString::minimizeEntities($group->shortname),
+			SwatString::minimizeEntities($group->title));
+
+		if (count($items) == $count) {
+			// all of the product's items belong to the group
+			$content = sprintf(Store::_(
+				'This product is part of %s. You must purchase at '.
+				'least %s items from the group in order to check '.
+				'out.'),
+				$group_link,
+				$locale->formatNumber($group->minimum_quantity));
+		} else {
+			$skus = array();
+			foreach ($items as $item) {
+				$skus[] = $item->sku;
+			}
+
+			$content = sprintf(Store::ngettext('%s is part of %s.',
+				'%s are part of %s.', count($items)),
+				SwatString::toList($skus),
+				$group_link);
+
+			$content.= sprintf(Store::_(' You must purchase at '.
+				'least %s items from the group in order to check '.
+				'out.'),
+				$locale->formatNumber($group->minimum_quantity));
+		}
+
+		$p_tag = new SwatHtmlTag('p');
+		$p_tag->class = 'store-item-minimum-quantity-group-note';
+		$p_tag->setContent($content, 'text/xml');
+		$p_tag->display();
 	}
 
 	// }}}
