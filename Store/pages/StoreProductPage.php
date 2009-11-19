@@ -1065,21 +1065,22 @@ class StoreProductPage extends StorePage
 				&& $group !== null) {
 
 				$groups[$group][] = $item;
+				$count++;
 			}
 		}
 
 		foreach ($groups as $items) {
-			$this->displayItemMinimumQuantityGroupNote($items);
+			$this->displayItemMinimumQuantityGroupNote($items, $count);
 		}
 	}
 
 	// }}}
 	// {{{ protected function displayItemMinimumQuantityGroupNote()
 
-	protected function displayItemMinimumQuantityGroupNote($items)
+	protected function displayItemMinimumQuantityGroupNote($items,
+		$total_item_count)
 	{
 		$group = current($items)->minimum_quantity_group;
-		$count = 0;
 
 		$locale = SwatI18NLocale::get();
 		$group_link = sprintf(
@@ -1087,7 +1088,7 @@ class StoreProductPage extends StorePage
 			SwatString::minimizeEntities($group->shortname),
 			SwatString::minimizeEntities($group->title));
 
-		if (count($items) == $count) {
+		if (count($items) == $total_item_count) {
 			// all of the product's items belong to the group
 			$content = sprintf(Store::_(
 				'This product is part of %s. You must purchase at '.
