@@ -1069,8 +1069,14 @@ class StoreProductPage extends StorePage
 			}
 		}
 
-		foreach ($groups as $items) {
-			$this->displayItemMinimumQuantityGroupNote($items, $count);
+		if (count($groups) > 0) {
+			echo '<div class="store-item-minimum-quantity-groups">';
+
+			foreach ($groups as $items) {
+				$this->displayItemMinimumQuantityGroupNote($items, $counti);
+			}
+
+			echo '</div>';
 		}
 	}
 
