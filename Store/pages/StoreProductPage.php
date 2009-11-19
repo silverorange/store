@@ -1073,7 +1073,7 @@ class StoreProductPage extends StorePage
 			echo '<div class="store-item-minimum-quantity-groups">';
 
 			foreach ($groups as $items) {
-				$this->displayItemMinimumQuantityGroupNote($items, $counti);
+				$this->displayItemMinimumQuantityGroupNote($items, $count);
 			}
 
 			echo '</div>';
