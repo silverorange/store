@@ -889,8 +889,8 @@ class StoreProductPage extends StorePage
 
 		$this->displayRelatedArticleLinks();
 
-		$this->displayItems();
 		$this->displayItemMinimumQuantityGroupNotes();
+		$this->displayItems();
 
 		$this->displayProductCollections();
 		$this->displayCollectionProducts();
@@ -1097,11 +1097,13 @@ class StoreProductPage extends StorePage
 		if (count($items) == $total_item_count) {
 			// all of the product's items belong to the group
 			$content = sprintf(Store::_(
-				'This product is part of %s. You must purchase at '.
-				'least %s items from the group in order to check '.
+				'This product is part of %s. You must purchase %sat '.
+				'least %s items%s from the group in order to check '.
 				'out.'),
 				$group_link,
-				$locale->formatNumber($group->minimum_quantity));
+				'<strong>',
+				$locale->formatNumber($group->minimum_quantity),
+				'</strong>');
 		} else {
 			$skus = array();
 			foreach ($items as $item) {
@@ -1113,10 +1115,12 @@ class StoreProductPage extends StorePage
 				SwatString::toList($skus),
 				$group_link);
 
-			$content.= sprintf(Store::_(' You must purchase at '.
-				'least %s items from the group in order to check '.
+			$content.= sprintf(Store::_(' You must purchase %sat '.
+				'least %s items%s from the group in order to check '.
 				'out.'),
-				$locale->formatNumber($group->minimum_quantity));
+				'<strong>',
+				$locale->formatNumber($group->minimum_quantity),
+				'</strong>');
 		}
 
 		$p_tag = new SwatHtmlTag('p');
