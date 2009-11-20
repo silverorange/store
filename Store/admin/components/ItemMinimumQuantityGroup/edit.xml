@@ -26,6 +26,10 @@
 					<property name="minimum_value" type="integer">2</property>
 				</widget>
 			</widget>
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Description</property>
+				<widget class="SwatXHTMLTextarea" id="description" />
+			</widget>
 			<widget class="SwatFooterFormField">
 				<widget class="SwatButton" id="submit_button" />
 			</widget>
