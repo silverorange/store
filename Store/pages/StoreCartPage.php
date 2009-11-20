@@ -65,6 +65,12 @@ class StoreCartPage extends SitePage
 	 */
 	protected $saved_item_counts = array();
 
+	/**
+	 * An array of ItemMinimumQuantityGroup.id for groups that haven't
+	 * reached the minimum quantity.
+	 */
+	protected $item_minimum_quantity_group_warnings = array();
+
 	// }}}
 
 	// init phase
@@ -993,6 +999,8 @@ class StoreCartPage extends SitePage
 		StoreItemMinimumQuantityGroup $group, array $entries, $quantity,
 		SwatForm $form)
 	{
+		$this->item_minimum_quantity_group_warnings[] = $group->id;
+
 		$skus = array();
 
 		foreach ($entries as $entry) {
@@ -1000,26 +1008,27 @@ class StoreCartPage extends SitePage
 		}
 
 		$locale = SwatI18NLocale::get();
-		$group_link = sprintf(
-			'<a href="search?minimum_quantity_group=%s">%s</a>',
-			SwatString::minimizeEntities($group->shortname),
-			SwatString::minimizeEntities($group->title));
 
 		$title = sprintf(Store::_('You must purchase at least %s items '.
 			'from %s in order to check out.'),
 			$locale->formatNumber($group->minimum_quantity),
-			$group_link);
+			$group->getSearchLink());
 
 		$content = sprintf(Store::ngettext(
 			'You currently have one item from %2$s in your cart (%3$s).',
 			'You currently have %1$s items from %2$s in your cart (%3$s).',
 			$quantity),
 			$locale->formatNumber($quantity),
-			$group_link,
+			$group->getSearchLink(),
 			SwatString::toList($skus));
 
 		ob_start();
+		$div_tag = new SwatHtmlTag('div');
+		$div_tag->class = 'store-item-minimum-quantity-remove';
+		$div_tag->open();
+		echo SwatString::minimizeEntities(Store::_('You can also:'));
 		$form->display();
+		$div_tag->close();
 		$content.= ob_get_clean();
 
 		$m = new SwatMessage($title, 'warning');
@@ -1314,6 +1323,11 @@ class StoreCartPage extends SitePage
 		$ds->message            = null;
 		$ds->product_link       = 'store/'.$entry->item->product->path;
 		$ds->item_count         = $this->getAvailableProductItemCount($entry);
+
+		$group = $entry->item->minimum_quantity_group;
+		$ds->minimum_quantity_group = $entry->item->minimum_quantity_group;
+		$ds->minimum_quantity_group_warning = ($group !== null &&
+			in_array($group->id, $this->item_minimum_quantity_group_warnings));
 
 		$image = $entry->item->product->primary_image;
 		if ($image === null) {
