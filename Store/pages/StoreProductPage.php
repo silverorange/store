@@ -1094,34 +1094,32 @@ class StoreProductPage extends StorePage
 			SwatString::minimizeEntities($group->shortname),
 			SwatString::minimizeEntities($group->title));
 
-		if (count($items) == $total_item_count) {
-			// all of the product's items belong to the group
-			$content = sprintf(Store::_(
-				'This product is part of %s. You must purchase %sat '.
-				'least %s items%s from the group in order to check '.
-				'out.'),
-				$group_link,
-				'<strong>',
-				$locale->formatNumber($group->minimum_quantity),
-				'</strong>');
-		} else {
+		$content = '';
+
+		if (count($items) < $total_item_count) {
 			$skus = array();
 			foreach ($items as $item) {
 				$skus[] = $item->sku;
 			}
 
-			$content = sprintf(Store::ngettext('%s is part of %s.',
-				'%s are part of %s.', count($items)),
+			$content.= sprintf(Store::ngettext('%s belongs to %s.',
+				'%s are %s.', count($items)),
 				SwatString::toList($skus),
 				$group_link);
 
-			$content.= sprintf(Store::_(' You must purchase %sat '.
-				'least %s items%s from the group in order to check '.
-				'out.'),
-				'<strong>',
-				$locale->formatNumber($group->minimum_quantity),
-				'</strong>');
+			$content.= ' ';
 		}
+
+		// all of the product's items belong to the group
+		if ($group->description != '')
+			$content.= $group->description.' ';
+
+		$content.= sprintf(Store::_(
+			'You must purchase %sat least %s %s%s in order to check out.'),
+			'<strong>',
+			$locale->formatNumber($group->minimum_quantity),
+			$group_link,
+			'</strong>');
 
 		$p_tag = new SwatHtmlTag('p');
 		$p_tag->class = 'store-item-minimum-quantity-group-note';
