@@ -50,6 +50,17 @@ class StoreItemMinimumQuantityGroup extends SwatDBDataObject
 	public $description;
 
 	// }}}
+	// {{{ public function getSearchLink()
+
+	public function getSearchLink()
+	{
+		return sprintf(
+			'<a href="search?minimum_quantity_group=%s">%s</a>',
+			SwatString::minimizeEntities($this->shortname),
+			SwatString::minimizeEntities($this->title));
+	}
+
+	// }}}
 	// {{{ public function loadByShortname()
 
 	/**

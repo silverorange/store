@@ -1087,13 +1087,7 @@ class StoreProductPage extends StorePage
 		$total_item_count)
 	{
 		$group = current($items)->minimum_quantity_group;
-
 		$locale = SwatI18NLocale::get();
-		$group_link = sprintf(
-			'<a href="search?minimum_quantity_group=%s">%s</a>',
-			SwatString::minimizeEntities($group->shortname),
-			SwatString::minimizeEntities($group->title));
-
 		$content = '';
 
 		if (count($items) < $total_item_count) {
@@ -1105,7 +1099,7 @@ class StoreProductPage extends StorePage
 			$content.= sprintf(Store::ngettext('%s belongs to %s.',
 				'%s are %s.', count($items)),
 				SwatString::toList($skus),
-				$group_link);
+				$group->getSearchLink());
 
 			$content.= ' ';
 		}
@@ -1118,7 +1112,7 @@ class StoreProductPage extends StorePage
 			'You must purchase %sat least %s %s%s in order to check out.'),
 			'<strong>',
 			$locale->formatNumber($group->minimum_quantity),
-			$group_link,
+			$group->getSearchLink(),
 			'</strong>');
 
 		$p_tag = new SwatHtmlTag('p');
