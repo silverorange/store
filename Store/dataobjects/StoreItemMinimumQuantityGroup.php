@@ -42,6 +42,13 @@ class StoreItemMinimumQuantityGroup extends SwatDBDataObject
 	 */
 	public $minimum_quantity;
 
+	/**
+	 * User visible xhtml description
+	 *
+	 * @var string
+	 */
+	public $description;
+
 	// }}}
 	// {{{ public function loadByShortname()
 
