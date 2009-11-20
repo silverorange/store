@@ -1014,7 +1014,12 @@ class StoreCartPage extends SitePage
 			$locale->formatNumber($group->minimum_quantity),
 			$group->getSearchLink());
 
-		$content = sprintf(Store::ngettext(
+		$content = '';
+
+		if ($group->description != '')
+			$content.= $group->description.' ';
+
+		$content.= sprintf(Store::ngettext(
 			'You currently have one item from %2$s in your cart (%3$s).',
 			'You currently have %1$s items from %2$s in your cart (%3$s).',
 			$quantity),
