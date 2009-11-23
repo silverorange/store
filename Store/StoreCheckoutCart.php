@@ -98,7 +98,8 @@ abstract class StoreCheckoutCart extends StoreCart
 						$entry->item->minimum_quantity_group;
 				}
 
-				$groups[$group]->quantity += $entry->quantity;
+				$groups[$group]->quantity +=
+					($entry->quantity * $entry->item->part_count);
 			}
 		}
 
