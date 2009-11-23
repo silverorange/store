@@ -27,6 +27,22 @@
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Part Unit</property>
+				<widget class="SwatEntry" id="part_unit">
+					<property name="required" type="boolean">true</property>
+					<property name="maxlength" type="integer">50</property>
+					<property name="value" translatable="yes">item</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Part Unit Plural</property>
+				<widget class="SwatEntry" id="part_unit_plural">
+					<property name="required" type="boolean">true</property>
+					<property name="maxlength" type="integer">50</property>
+					<property name="value" translatable="yes">items</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Description</property>
 				<widget class="SwatXHTMLTextarea" id="description" />
 			</widget>

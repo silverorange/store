@@ -4,5 +4,7 @@ create table ItemMinimumQuantityGroup (
 	title varchar(255),
 	minimum_quantity integer not null default 1,
 	description text,
+	part_unit varchar(50),
+	part_unit_plural varchar(50),
 	primary key (id)
 );
