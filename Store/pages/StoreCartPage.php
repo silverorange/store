@@ -1010,7 +1010,7 @@ class StoreCartPage extends SitePage
 
 		$locale = SwatI18NLocale::get();
 
-		$title = sprintf(Store::_('You must purchase at least %s %s '.
+		$title = sprintf(Store::_('You must purchase a minimum of %s %s '.
 			'from %s in order to check out.'),
 			$locale->formatNumber($group->minimum_quantity),
 			$group->part_unit_plural,
