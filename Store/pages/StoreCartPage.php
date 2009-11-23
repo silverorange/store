@@ -974,7 +974,8 @@ class StoreCartPage extends SitePage
 				}
 
 				$groups[$group]->entries[] = $entry;
-				$groups[$group]->quantity += $entry->quantity;
+				$groups[$group]->quantity +=
+					$entry->quantity * $entry->item->part_count;
 			}
 		}
 
@@ -1009,9 +1010,10 @@ class StoreCartPage extends SitePage
 
 		$locale = SwatI18NLocale::get();
 
-		$title = sprintf(Store::_('You must purchase at least %s items '.
+		$title = sprintf(Store::_('You must purchase at least %s %s '.
 			'from %s in order to check out.'),
 			$locale->formatNumber($group->minimum_quantity),
+			$group->part_unit_plural,
 			$group->getSearchLink());
 
 		$content = '';
@@ -1019,13 +1021,16 @@ class StoreCartPage extends SitePage
 		if ($group->description != '')
 			$content.= $group->description.' ';
 
+		$unit = ($quantity == 1) ? $group->part_unit : $group->part_unit_plural;
+
 		$content.= sprintf(Store::ngettext(
-			'You currently have one item from %2$s in your cart (%3$s).',
-			'You currently have %1$s items from %2$s in your cart (%3$s).',
+			'You currently have one %4$s from %2$s in your cart (%3$s).',
+			'You currently have %1$s %4$s from %2$s in your cart (%3$s).',
 			$quantity),
 			$locale->formatNumber($quantity),
 			$group->getSearchLink(),
-			SwatString::toList($skus));
+			SwatString::toList($skus),
+			$unit);
 
 		ob_start();
 		$div_tag = new SwatHtmlTag('div');

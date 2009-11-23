@@ -116,12 +116,15 @@ class StoreItemMinimumQuantityGroupEdit extends AdminDBEdit
 	protected function updateItemMinimumQuantityGroup()
 	{
 		$values = $this->ui->getValues(array(
-			'title', 'shortname', 'minimum_quantity', 'description'));
+			'title', 'shortname', 'minimum_quantity', 'description',
+			'part_unit', 'part_unit_plural'));
 
 		$this->item_group->title            = $values['title'];
 		$this->item_group->description      = $values['description'];
 		$this->item_group->shortname        = $values['shortname'];
 		$this->item_group->minimum_quantity = $values['minimum_quantity'];
+		$this->item_group->part_unit        = $values['part_unit'];
+		$this->item_group->part_unit_plural = $values['part_unit_plural'];
 	}
 
 	// }}}
