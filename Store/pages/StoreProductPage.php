@@ -1109,7 +1109,7 @@ class StoreProductPage extends StorePage
 			$content.= $group->description.' ';
 
 		$content.= sprintf(Store::_(
-			'You must purchase %sat least %s %s%s in order to check out.'),
+			'You must purchase %sa minimum of %s %s%s in order to check out.'),
 			'<strong>',
 			$locale->formatNumber($group->minimum_quantity),
 			$group->getSearchLink(),
