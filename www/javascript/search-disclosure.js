@@ -52,7 +52,7 @@ init: function()
 	if (this.initial_open) {
 		this.pullUpKeywords();
 	} else if (this.xml_rpc_server === null) {
-		this.pushDownUpKeywords();
+		this.pushDownKeywords();
 	}
 
 	this.search_input_elements =
