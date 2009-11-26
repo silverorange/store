@@ -984,7 +984,7 @@ class StoreCartPage extends SitePage
 				$form = $this->getItemMinimumQuantityGroupForm($g->group);
 
 				if ($form->isSubmitted()) {
-					$this->removeItemMinimumQuantityGroupEntries($g->group);
+					$this->removeItemMinimumQuantityGroupEntries($g);
 				} else {
 					$this->addItemMinimumQuantityGroupMessage($g->group,
 						$g->entries, $g->quantity, $form);
@@ -1043,20 +1043,22 @@ class StoreCartPage extends SitePage
 		$m = new SwatMessage($title, 'warning');
 		$m->secondary_content = $content;
 		$m->content_type = 'text/xml';
-		$this->app->messages->add($m);
+
+		$message_display = $this->ui->getWidget('message_display');
+		$message_display->add($m);
 	}
 
 	// }}}
 	// {{{ protected function removeItemMinimumQuantityGroupEntries()
 
-	protected function removeItemMinimumQuantityGroupEntries(
-		StoreItemMinimumQuantityGroup $group)
+	protected function removeItemMinimumQuantityGroupEntries(StdClass $g)
 	{
-		foreach ($group->entries as $entry) {
+		foreach ($g->entries as $entry) {
 			$this->app->cart->checkout->removeEntry($entry);
 		}
 
-		$this->app->messages->add(new SwatMessage(sprintf(
+		$message_display = $this->ui->getWidget('message_display');
+		$message_display->add(new SwatMessage(sprintf(
 			Store::_('All %s have been removed from your cart.'),
 			$g->group->title)));
 	}
