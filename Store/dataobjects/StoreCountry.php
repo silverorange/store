@@ -35,6 +35,28 @@ class StoreCountry extends SwatDBDataObject
 	public $visible;
 
 	// }}}
+	// {{{ public static function getTitleById()
+
+	/**
+	 * Get the title of the country from an id.
+	 *
+	 * @param MDB2_Driver_Common $db the database connection.
+	 * @param string $id the ISO-3166-1 alpha-2 code for the country of the
+	 *                    province/state to load.
+	 *
+	 * @return string the title of the country, or null if not found.
+	 */
+	public static function getTitleById(MDB2_Driver_Common $db, $id)
+	{
+		$sql = sprintf('select title from Country where id = %s',
+			$db->quote($id, 'text'));
+
+		$title = SwatDB::queryOne($db, $sql);
+
+		return $title;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()

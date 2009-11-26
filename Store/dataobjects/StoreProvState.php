@@ -37,6 +37,49 @@ class StoreProvState extends SwatDBDataObject
 	public $abbreviation;
 
 	// }}}
+	// {{{ public static function getAbbreviationById()
+
+	/**
+	 * Get the abbreviation of the provstate from an id.
+	 *
+	 * @param MDB2_Driver_Common $db the database connection.
+	 * @param integer $id the id of the province.
+	 *
+	 * @return string the abbreviation of the provstate, or null if not found.
+	 */
+	public static function getAbbreviationById(MDB2_Driver_Common $db, $id)
+	{
+		$sql = sprintf('select abbreviation from ProvState where id = %s',
+			$db->quote($id, 'integer'));
+
+		$abbreviation = SwatDB::queryOne($db, $sql);
+
+		return $abbreviation;
+	}
+
+	// }}}
+	// {{{ public static function getTitleById()
+
+	/**
+	 * Get the title of the provstate from an id.
+	 *
+	 * @param MDB2_Driver_Common $db the database connection.
+	 * @param integer $id the id of the province.
+	 *
+	 * @return string the title of the provstate, or null if not found.
+	 */
+	public static function getTitleById(MDB2_Driver_Common $db, $id)
+	{
+		$sql = sprintf('select title from ProvState where id = %s',
+			$db->quote($id, 'integer'));
+
+		$title = SwatDB::queryOne($db, $sql);
+
+		return $title;
+	}
+
+	// }}}
+
 	// {{{ public function loadFromAbbreviation()
 
 	/**
