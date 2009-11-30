@@ -70,6 +70,14 @@ class StoreCategoryIndex extends AdminIndex
 		$flydown->addOptionsByArray($options);
 		$this->ui->getWidget('item_minimum_quantity_group')->visible =
 			(count($options) > 0);
+
+		$flydown = $this->ui->getWidget(
+			'categories_item_minimum_quantity_group_flydown');
+
+		$flydown->addOptionsByArray($options);
+		$this->ui->getWidget(
+			'categories_item_minimum_quantity_group')->visible =
+				(count($options) > 0);
 	}
 
 	// }}}
@@ -243,6 +251,22 @@ class StoreCategoryIndex extends AdminIndex
 
 			$this->removeSaleDiscount($product_array);
 
+			break;
+		case 'categories_item_minimum_quantity_group' :
+			$group = $this->ui->getWidget(
+				'categories_item_minimum_quantity_group_flydown')->value;
+
+			$product_array = $this->getProductsByCategories(
+				$view->getSelection());
+
+			$this->addItemMinimumQuantityGroup($product_array, $group);
+
+			break;
+		case 'categories_remove_item_minimum_quantity_group' :
+			$product_array = $this->getProductsByCategories(
+				$view->getSelection());
+
+			$this->removeItemMinimumQuantityGroup($product_array);
 			break;
 		}
 	}
