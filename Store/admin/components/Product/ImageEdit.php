@@ -112,14 +112,22 @@ class StoreProductImageEdit extends AdminDBEdit
 		$manual_fieldset = $this->ui->getWidget('manual_fieldset');
 		$note = Store::_('Maximum Dimensions: %s px');
 		foreach ($this->dimensions as $dimension) {
-			$dimension_text = $dimension->max_width;
-			if ($dimension->max_height !== null)
-				$dimension_text = sprintf('%s x %s', $dimension->max_width,
-					$dimension->max_height);
-
 			$form_field = new SwatFormField();
 			$form_field->title = $dimension->title;
-			$form_field->note  = sprintf($note, $dimension_text);
+
+			$width = $dimension->max_width;
+			$height = $dimension->max_height;
+			if ($height !== null || $width !== null) {
+				if ($height !== null && $width !== null)
+					$dimension_text = sprintf('%s x %s', $width, $height);
+				elseif ($width === null)
+					$dimension_text = $height;
+				elseif ($height === null)
+					$dimension_text = $width;
+
+				$form_field->note  = sprintf($note, $dimension_text);
+			}
+
 			$file_widget = new SwatFileEntry($dimension->shortname);
 			$form_field->addChild($file_widget);
 			$manual_fieldset->addChild($form_field);
