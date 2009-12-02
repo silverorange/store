@@ -72,8 +72,12 @@ class StoreItemEdit extends AdminDBEdit
 			$this->app->db, 'SaleDiscount', 'title', 'id', 'title'));
 
 		$group_flydown = $this->ui->getWidget('minimum_quantity_group');
-		$group_flydown->addOptionsByArray(SwatDB::getOptionArray($this->app->db,
-			'ItemMinimumQuantityGroup', 'title', 'id', 'title'));
+		$options = SwatDB::getOptionArray($this->app->db,
+			'ItemMinimumQuantityGroup', 'title', 'id', 'title');
+
+		$group_flydown->addOptionsByArray($options);
+		$this->ui->getWidget('minimum_quantity_group_field')->visible =
+			(count($options) > 0);
 
 		$regions = SwatDB::getOptionArray($this->app->db, 'Region', 'title',
 			'id', 'title');
