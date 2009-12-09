@@ -7,8 +7,8 @@
 		<widget class="StoreCatalogSwitcher" id="catalog_switcher" />
 	</widget>
 
-	<!-- {{{ Category Details -->
 	<widget class="SwatFrame" id="details_frame">
+		<!-- {{{ Category Details -->
 		<property name="visible" type="boolean">false</property>
 
 		<widget class="SwatToolbar" id="details_toolbar">
@@ -73,125 +73,139 @@
 			</object>
 		</widget>
 		<!-- }}} -->
-	<!-- {{{ (Sub)Categories -->
+		<!-- {{{ (Sub)Categories -->
 
-	<widget class="SwatFrame" id="categories_frame">
-		<property name="title" translatable="yes">Sub-Categories</property>
-		<widget class="SwatToolbar" id="categories_toolbar">
-			<widget class="SwatToolLink" id="create_category">
-				<property name="title" translatable="yes">New Category</property>
-				<property name="link">Category/Edit%s</property>
-				<property name="stock_id">create</property>
+		<widget class="SwatFrame" id="categories_frame">
+			<property name="title" translatable="yes">Sub-Categories</property>
+			<widget class="SwatToolbar" id="categories_toolbar">
+				<widget class="SwatToolLink" id="create_category">
+					<property name="title" translatable="yes">New Category</property>
+					<property name="link">Category/Edit%s</property>
+					<property name="stock_id">create</property>
+				</widget>
+				<widget class="SwatToolLink" id="category_change_order">
+					<property name="title" translatable="yes">Change Category Order</property>
+					<property name="link">Category/Order%s</property>
+					<property name="stock_id">change-order</property>
+				</widget>
 			</widget>
-			<widget class="SwatToolLink" id="category_change_order">
-				<property name="title" translatable="yes">Change Category Order</property>
-				<property name="link">Category/Order%s</property>
-				<property name="stock_id">change-order</property>
+			<widget class="SwatForm" id="categories_index_form">
+				<widget class="StoreCategoryTableView" id="categories_index_view">
+					<object class="SwatTableViewCheckboxColumn" id="checkbox">
+						<object class="SwatCheckboxCellRenderer" id="items">
+							<property name="value" type="data">id</property>
+						</object>
+					</object>
+					<object class="AdminTableViewOrderableColumn" id="title">
+						<property name="title" translatable="yes">Title</property>
+						<object class="StoreCategoryTitleCellRenderer">
+							<property name="text" type="data">title</property>
+							<property name="link">Category/Index?id=%s</property>
+							<property name="link_value" type="data">id</property>
+							<property name="product_count" type="data">product_count</property>
+							<property name="child_count" type="data">child_count</property>
+							<property name="currently_visible" type="data">currently_visible</property>
+							<property name="always_visible" type="data">always_visible</property>
+						</object>
+					</object>
+					<object class="AdminTableViewOrderableColumn" id="shortname">
+						<property name="title" translatable="yes">Short Name</property>
+						<object class="SwatTextCellRenderer">
+							<property name="text" type="data">shortname</property>
+						</object>
+					</object>
+				</widget>
+				<widget class="SwatActions" id="categories_index_actions">
+					<widget class="SwatActionItem" id="categories_delete">
+						<property name="title" translatable="yes">delete…</property>
+					</widget>
+					<widget class="SwatActionItem" id="categories_remove_products">
+						<property name="title" translatable="yes">remove products…</property>
+					</widget>
+					<widget class="SwatActionItem" id="categories_change_status">
+						<property name="title" translatable="yes">change item status…</property>
+						<widget class="SwatFormField">
+							<property name="title" translatable="yes">Status</property>
+							<widget class="SwatFlydown" id="categories_status">
+								<property name="show_blank" type="boolean">false</property>
+							</widget>
+						</widget>
+					</widget>
+					<widget class="SwatActionItemDivider" />
+					<widget class="SwatActionItem" id="categories_enable_items">
+						<property name="title" translatable="yes">enable items…</property>
+						<widget class="SwatFormField">
+							<property name="title" translatable="yes">Region</property>
+							<widget class="SwatFlydown" id="categories_enable_region">
+								<property name="show_blank" type="boolean">false</property>
+							</widget>
+						</widget>
+					</widget>
+					<widget class="SwatActionItem" id="categories_disable_items">
+						<property name="title" translatable="yes">disable items…</property>
+						<widget class="SwatFormField">
+							<property name="title" translatable="yes">Region</property>
+							<widget class="SwatFlydown" id="categories_disable_region">
+								<property name="show_blank" type="boolean">false</property>
+							</widget>
+						</widget>
+					</widget>
+					<widget class="SwatActionItemDivider" />
+					<widget class="SwatActionItem" id="categories_add_attributes">
+						<property name="title" translatable="yes">add product attributes…</property>
+						<widget class="SwatReplicableFormField" id="category_attributes_form_field">
+							<widget class="SwatCheckboxList" id="category_attributes" />
+						</widget>
+					</widget>
+					<widget class="SwatActionItem" id="categories_remove_attributes">
+						<property name="title" translatable="yes">remove product attributes…</property>
+						<widget class="SwatReplicableFormField" id="category_remove_attributes_form_field">
+							<widget class="SwatCheckboxList" id="category_remove_attributes" />
+						</widget>
+					</widget>
+					<widget class="SwatActionItem" id="categories_add_sale_discount">
+						<property name="title" translatable="yes">add sale discount…</property>
+						<widget class="SwatFormField">
+							<property name="note" translatable="yes">The sale will apply to all items under the selected categories. To apply to individual items, use the item editor.</property>
+							<widget class="SwatFlydown" id="categories_sale_discount_flydown" />
+						</widget>
+					</widget>
+					<widget class="SwatActionItem" id="categories_remove_sale_discount">
+						<property name="title" translatable="yes">remove sale discount</property>
+						<widget class="SwatContentBlock">
+							<property name="content" translatable="yes">This will remove any sale discounts for items under the selected categories.</property>
+						</widget>
+					</widget>
+					<widget class="SwatActionItem" id="categories_item_minimum_quantity_group">
+						<property name="title" translatable="yes">add to minimum quantity sale group</property>
+						<widget class="SwatFormField">
+							<property name="note" translatable="yes">This will apply to all items belonging to the checked products. To apply to individual items, use the item editor.</property>
+							<widget class="SwatFlydown" id="categories_item_minimum_quantity_group_flydown" />
+						</widget>
+					</widget>
+					<widget class="SwatActionItem" id="categories_remove_item_minimum_quantity_group">
+						<property name="title" translatable="yes">remove from minimum quantity sale group</property>
+						<widget class="SwatContentBlock">
+							<property name="content" translatable="yes">This will remove any items belonging to the checked products from a minimum quantity sale group.</property>
+						</widget>
+					</widget>
+					<widget class="SwatActionItemDivider" />
+					<widget class="SwatActionItem" id="categories_set_reviewable">
+						<property name="title" translatable="yes">allow reviews</property>
+						<widget class="SwatContentBlock">
+							<property name="content" translatable="yes">Applies to all products under the selected categories. To apply to individual products, use the product editor.</property>
+						</widget>
+					</widget>
+					<widget class="SwatActionItem" id="categories_unset_reviewable">
+						<property name="title" translatable="yes">disallow reviews</property>
+						<widget class="SwatContentBlock">
+							<property name="content" translatable="yes">This will disallow reviews on all products under the selected categories.</property>
+						</widget>
+					</widget>
+				</widget>
 			</widget>
 		</widget>
-		<widget class="SwatForm" id="categories_index_form">
-			<widget class="StoreCategoryTableView" id="categories_index_view">
-				<object class="SwatTableViewCheckboxColumn" id="checkbox">
-					<object class="SwatCheckboxCellRenderer" id="items">
-						<property name="value" type="data">id</property>
-					</object>
-				</object>
-				<object class="AdminTableViewOrderableColumn" id="title">
-					<property name="title" translatable="yes">Title</property>
-					<object class="StoreCategoryTitleCellRenderer">
-						<property name="text" type="data">title</property>
-						<property name="link">Category/Index?id=%s</property>
-						<property name="link_value" type="data">id</property>
-						<property name="product_count" type="data">product_count</property>
-						<property name="child_count" type="data">child_count</property>
-						<property name="currently_visible" type="data">currently_visible</property>
-						<property name="always_visible" type="data">always_visible</property>
-					</object>
-				</object>
-				<object class="AdminTableViewOrderableColumn" id="shortname">
-					<property name="title" translatable="yes">Short Name</property>
-					<object class="SwatTextCellRenderer">
-						<property name="text" type="data">shortname</property>
-					</object>
-				</object>
-			</widget>
-			<widget class="SwatActions" id="categories_index_actions">
-				<widget class="SwatActionItem" id="categories_delete">
-					<property name="title" translatable="yes">delete…</property>
-				</widget>
-				<widget class="SwatActionItem" id="categories_remove_products">
-					<property name="title" translatable="yes">remove products…</property>
-				</widget>
-				<widget class="SwatActionItem" id="categories_change_status">
-					<property name="title" translatable="yes">change item status…</property>
-					<widget class="SwatFormField">
-						<property name="title" translatable="yes">Status</property>
-						<widget class="SwatFlydown" id="categories_status">
-							<property name="show_blank" type="boolean">false</property>
-						</widget>
-					</widget>
-				</widget>
-				<widget class="SwatActionItem" id="categories_enable_items">
-					<property name="title" translatable="yes">enable items…</property>
-					<widget class="SwatFormField">
-						<property name="title" translatable="yes">Region</property>
-						<widget class="SwatFlydown" id="categories_enable_region">
-							<property name="show_blank" type="boolean">false</property>
-						</widget>
-					</widget>
-				</widget>
-				<widget class="SwatActionItem" id="categories_disable_items">
-					<property name="title" translatable="yes">disable items…</property>
-					<widget class="SwatFormField">
-						<property name="title" translatable="yes">Region</property>
-						<widget class="SwatFlydown" id="categories_disable_region">
-							<property name="show_blank" type="boolean">false</property>
-						</widget>
-					</widget>
-				</widget>
-				<widget class="SwatActionItemDivider" />
-				<widget class="SwatActionItem" id="categories_add_attributes">
-					<property name="title" translatable="yes">add product attributes…</property>
-					<widget class="SwatReplicableFormField" id="category_attributes_form_field">
-						<widget class="SwatCheckboxList" id="category_attributes" />
-					</widget>
-				</widget>
-				<widget class="SwatActionItem" id="categories_remove_attributes">
-					<property name="title" translatable="yes">remove product attributes…</property>
-					<widget class="SwatReplicableFormField" id="category_remove_attributes_form_field">
-						<widget class="SwatCheckboxList" id="category_remove_attributes" />
-					</widget>
-				</widget>
-				<widget class="SwatActionItem" id="categories_add_sale_discount">
-					<property name="title" translatable="yes">add sale discount…</property>
-					<widget class="SwatFormField">
-						<property name="note" translatable="yes">The sale will apply to all items under the selected categories. To apply to individual items, use the item editor.</property>
-						<widget class="SwatFlydown" id="categories_sale_discount_flydown" />
-					</widget>
-				</widget>
-				<widget class="SwatActionItem" id="categories_remove_sale_discount">
-					<property name="title" translatable="yes">remove sale discount</property>
-					<widget class="SwatContentBlock">
-						<property name="content" translatable="yes">This will remove any sale discounts for items under the selected categories.</property>
-					</widget>
-				</widget>
-				<widget class="SwatActionItem" id="categories_item_minimum_quantity_group">
-					<property name="title" translatable="yes">add to minimum quantity sale group</property>
-					<widget class="SwatFormField">
-						<property name="note" translatable="yes">This will apply to all items belonging to the checked products. To apply to individual items, use the item editor.</property>
-						<widget class="SwatFlydown" id="categories_item_minimum_quantity_group_flydown" />
-					</widget>
-				</widget>
-				<widget class="SwatActionItem" id="categories_remove_item_minimum_quantity_group">
-					<property name="title" translatable="yes">remove from minimum quantity sale group</property>
-					<widget class="SwatContentBlock">
-						<property name="content" translatable="yes">This will remove any items belonging to the checked products from a minimum quantity sale group.</property>
-					</widget>
-				</widget>
-			</widget>
-		</widget>
-	</widget>
-	<!-- }}} -->
+		<!-- }}} -->
 		<!-- {{{ Products -->
 		<widget class="SwatFrame" id="products_frame">
 			<property name="visible" type="boolean">false</property>
@@ -329,6 +343,13 @@
 						<widget class="SwatContentBlock">
 							<property name="content" translatable="yes">This will remove any items belonging to the checked products from a minimum quantity sale group.</property>
 						</widget>
+					</widget>
+					<widget class="SwatActionItemDivider" />
+					<widget class="SwatActionItem" id="products_set_reviewable">
+						<property name="title" translatable="yes">allow reviews</property>
+					</widget>
+					<widget class="SwatActionItem" id="products_unset_reviewable">
+						<property name="title" translatable="yes">disallow reviews</property>
 					</widget>
 				</widget>
 			</widget>

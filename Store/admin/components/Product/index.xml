@@ -85,6 +85,13 @@
 						<property name="content" translatable="yes">This will remove any items belonging to the checked products from a minimum quantity sale group.</property>
 					</widget>
 				</widget>
+				<widget class="SwatActionItemDivider" />
+				<widget class="SwatActionItem" id="set_reviewable">
+					<property name="title" translatable="yes">allow reviews</property>
+				</widget>
+				<widget class="SwatActionItem" id="unset_reviewable">
+					<property name="title" translatable="yes">disallow reviews</property>
+				</widget>
 			</widget>
 		</widget>
 	</widget>
