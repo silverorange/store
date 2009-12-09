@@ -204,11 +204,11 @@ class StoreOrderItem extends SwatDBDataObject
 			inner join AvailableItemView
 				on AvailableItemView.item = Item.id
 				and AvailableItemView.region = %s
-			where Item.sku = %s';
+			where Item.id = %s';
 
 		$sql = sprintf($sql,
 			$this->db->quote($region->id, 'integer'),
-			$this->db->quote($this->sku, 'text'));
+			$this->db->quote($this->item, 'integer'));
 
 		$id = SwatDB::queryOne($this->db, $sql);
 
@@ -217,11 +217,11 @@ class StoreOrderItem extends SwatDBDataObject
 				inner join AvailableItemView
 					on AvailableItemView.item = Item.id
 					and AvailableItemView.region = %s
-				where Item.id = %s';
+				where Item.sku = %s';
 
 			$sql = sprintf($sql,
 				$this->db->quote($region->id, 'integer'),
-				$this->db->quote($this->item, 'integer'));
+				$this->db->quote($this->sku, 'text'));
 
 			$id = SwatDB::queryOne($this->db, $sql);
 		}
