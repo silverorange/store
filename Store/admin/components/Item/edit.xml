@@ -5,7 +5,7 @@
 	<widget class="SwatFrame" id="edit_frame">
 		<property name="title" translatable="yes">Item</property>
 		<widget class="SwatForm" id="edit_form">
-			<widget class="SwatFormField">
+			<widget class="SwatFormField" id="sku_field">
 				<property name="title" translatable="yes">SKU</property>
 				<widget class="SwatEntry" id="sku">
 					<property name="size" type="integer">15</property>
@@ -45,6 +45,8 @@
 				</widget>
 				<widget class="SwatFormField">
 					<property name="title" translatable="yes">Singular Unit</property>
+					<property name="note" translatable="yes"><![CDATA[Examples: <em>bag</em>, <em>package</em>]]></property>
+					<property name="note_content_type">text/xml</property>
 					<widget class="SwatEntry" id="singular_unit">
 						<property name="size" type="integer">20</property>
 						<property name="maxlength" type="integer">100</property>
@@ -52,6 +54,8 @@
 				</widget>
 				<widget class="SwatFormField">
 					<property name="title" translatable="yes">Plural Unit</property>
+					<property name="note" translatable="yes"><![CDATA[Examples: <em>bags</em>, <em>packages</em>]]></property>
+					<property name="note_content_type">text/xml</property>
 					<widget class="SwatEntry" id="plural_unit">
 						<property name="size" type="integer">20</property>
 						<property name="maxlength" type="integer">100</property>
@@ -99,11 +103,11 @@
 					</widget>
 				</widget>
 				<widget class="SwatFormField" id="sale_discount_field">
-					<property name="title">Sale Discount</property>
+					<property name="title" translatable="yes">Sale Discount</property>
 					<widget class="SwatFlydown" id="sale_discount" />
 				</widget>
 				<widget class="SwatFormField" id="minimum_quantity_group_field">
-					<property name="title">Minimum Quantity Sale Group</property>
+					<property name="title" translatable="yes">Minimum Quantity Sale Group</property>
 					<widget class="SwatFlydown" id="minimum_quantity_group" />
 				</widget>
 			</widget>
