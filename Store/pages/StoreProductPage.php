@@ -92,7 +92,7 @@ class StoreProductPage extends StorePage
 			return ($product !== null);
 
 		$sql = sprintf('select product from VisibleProductCache
-			where product = %s and  region = %s',
+			where product = %s and region = %s',
 			$this->app->db->quote($this->product_id, 'integer'),
 			$this->app->db->quote($region->id, 'integer'));
 
@@ -218,7 +218,7 @@ class StoreProductPage extends StorePage
 
 	protected function loadProduct($id)
 	{
-		$key = 'StoreProductPage.product.'.$id;
+		$key = 'StoreProductPage.product.'.$this->app->getRegion()->id.$id;
 		$product = $this->app->getCacheValue($key, 'product');
 		if ($product !== false) {
 			$this->product = $product;
