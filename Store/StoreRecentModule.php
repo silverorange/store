@@ -34,9 +34,15 @@ class StoreRecentModule extends SiteApplicationModule
 
 	public function init()
 	{
+		$new = false;
+
 		if (!isset($this->app->cookie->recent) ||
-			!($this->app->cookie->recent instanceof ArrayObject))
+			!($this->app->cookie->recent instanceof ArrayObject)) {
+				$new = true;
 				$this->app->cookie->setCookie('recent', new ArrayObject());
+		}
+
+		return $new;
 	}
 
 	// }}}
@@ -44,7 +50,8 @@ class StoreRecentModule extends SiteApplicationModule
 
 	public function add($stack_name, $id)
 	{
-		$this->init();
+		if ($this->init())
+			return;
 
 		$stacks = $this->app->cookie->recent;
 
@@ -62,7 +69,8 @@ class StoreRecentModule extends SiteApplicationModule
 
 	public function get($stack_name, $count = null)
 	{
-		$this->init();
+		if ($this->init())
+			return null;
 
 		$exclude_id = null;
 
