@@ -63,11 +63,20 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	/**
 	 * Whether or not to search for only available products
 	 *
-	 * Defaults to false and searchs all visible products.
+	 * Defaults to false and searchs all available products.
 	 *
 	 * @var boolean
 	 */
 	public $available_only = false;
+
+	/**
+	 * Whether or not to search for only visible products
+	 *
+	 * Defaults to false and searchs all visible products.
+	 *
+	 * @var boolean
+	 */
+	public $visible_only = false;
 
 	/**
 	 * Whether or not to search for only popular products
@@ -331,7 +340,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	{
 		$clause = sprintf('from Product
 			inner join Catalog on Product.catalog = Catalog.id
-			inner join VisibleProductCache on
+			%s join VisibleProductCache on
 				VisibleProductCache.product = Product.id and
 				VisibleProductCache.region = %s
 			left outer join ProductPrimaryImageView
@@ -339,6 +348,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 			%s join AvailableProductView on
 				AvailableProductView.product = Product.id and
 				AvailableProductView.region = %s',
+			$this->visible_only ? 'inner' : 'left outer',
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
 			$this->available_only ? 'inner' : 'left outer',
 			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
