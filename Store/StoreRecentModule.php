@@ -12,6 +12,11 @@ require_once 'Store/StoreRecentStack.php';
  */
 class StoreRecentModule extends SiteApplicationModule
 {
+	// {{{ private properties
+
+	private $stacks;
+
+	// }}}
 	// {{{ public function depends()
 
 	/**
@@ -34,15 +39,13 @@ class StoreRecentModule extends SiteApplicationModule
 
 	public function init()
 	{
-		$new = false;
-
-		if (!isset($this->app->cookie->recent) ||
-			!($this->app->cookie->recent instanceof ArrayObject)) {
-				$new = true;
-				$this->app->cookie->setCookie('recent', new ArrayObject());
+		if ($this->stacks === null) {
+			if (isset($this->app->cookie->recent) &&
+				($this->app->cookie->recent instanceof ArrayObject))
+					$this->stacks = $this->app->cookie->recent;
+			else
+					$this->stacks = new ArrayObject();
 		}
-
-		return $new;
 	}
 
 	// }}}
@@ -50,18 +53,13 @@ class StoreRecentModule extends SiteApplicationModule
 
 	public function add($stack_name, $id)
 	{
-		if ($this->init())
-			return;
+		$this->init();
 
-		$stacks = $this->app->cookie->recent;
+		if (!$this->stacks->offsetExists($stack_name))
+			$this->stacks->offsetSet($stack_name, new StoreRecentStack());
 
-		if (!$stacks->offsetExists($stack_name))
-			$stacks->offsetSet($stack_name, new StoreRecentStack());
-
-		$stack = $stacks->offsetGet($stack_name);
+		$stack = $this->stacks->offsetGet($stack_name);
 		$stack->add($id);
-
-		$this->app->cookie->setCookie('recent', $stacks);
 	}
 
 	// }}}
@@ -69,8 +67,7 @@ class StoreRecentModule extends SiteApplicationModule
 
 	public function get($stack_name, $count = null)
 	{
-		if ($this->init())
-			return null;
+		$this->init();
 
 		$exclude_id = null;
 
@@ -78,18 +75,23 @@ class StoreRecentModule extends SiteApplicationModule
 		if ($stack_name == 'products' && $page instanceof StoreProductPage)
 			$exclude_id = $page->product_id;
 
-		$stacks = $this->app->cookie->recent;
-
-		if ($stacks->offsetExists($stack_name)) {
-			$stack = $this->app->cookie->recent->offsetGet($stack_name);
+		if ($this->stacks->offsetExists($stack_name)) {
+			$stack = $this->stacks->offsetGet($stack_name);
 			$values =  $stack->get($count, $exclude_id);
 		} else {
-			$stacks->offsetSet($stack_name, new StoreRecentStack());
-			$this->app->cookie->setCookie('recent', $stacks);
+			$this->stacks->offsetSet($stack_name, new StoreRecentStack());
 			$values = null;
 		}
 
 		return $values;
+	}
+
+	// }}}
+	// {{{ public function save()
+
+	public function save()
+	{
+		$this->app->cookie->setCookie('recent', $this->stacks);
 	}
 
 	// }}}
