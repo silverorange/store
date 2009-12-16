@@ -966,7 +966,7 @@ class StoreCartPage extends SitePage
 
 			if ($group !== null) {
 				if (!isset($groups[$group])) {
-					$groups[$group] = new StdClass();
+					$groups[$group] = new stdClass();
 					$groups[$group]->entries = array();
 					$groups[$group]->quantiy = 0;
 					$groups[$group]->group =
@@ -1051,7 +1051,7 @@ class StoreCartPage extends SitePage
 	// }}}
 	// {{{ protected function removeItemMinimumQuantityGroupEntries()
 
-	protected function removeItemMinimumQuantityGroupEntries(StdClass $g)
+	protected function removeItemMinimumQuantityGroupEntries(stdClass $g)
 	{
 		foreach ($g->entries as $entry) {
 			$this->app->cart->checkout->removeEntry($entry);

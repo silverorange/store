@@ -92,7 +92,7 @@ abstract class StoreCheckoutCart extends StoreCart
 
 			if ($group !== null) {
 				if (!isset($groups[$group])) {
-					$groups[$group] = new StdClass();
+					$groups[$group] = new stdClass();
 					$groups[$group]->quantiy = 0;
 					$groups[$group]->group =
 						$entry->item->minimum_quantity_group;
