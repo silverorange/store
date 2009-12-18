@@ -17,7 +17,7 @@ class StoreMoneyCellRenderer extends SwatMoneyCellRenderer
 	{
 		parent::__construct();
 
-		$this->null_display_value = 'n/a';
+		$this->null_display_value = Store::_('n/a');
 
 		$this->addStyleSheet('packages/swat/styles/swat.css',
 			Swat::PACKAGE_ID);
