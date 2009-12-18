@@ -72,11 +72,11 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	/**
 	 * Whether or not to search for only visible products
 	 *
-	 * Defaults to false and searchs all visible products.
+	 * Defaults to true and searchs all visible products.
 	 *
 	 * @var boolean
 	 */
-	public $visible_only = false;
+	public $visible_only = true;
 
 	/**
 	 * Whether or not to search for only popular products
