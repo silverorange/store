@@ -23,6 +23,12 @@ if (class_exists('Blorg')) {
  */
 class StoreSearchResultsPage extends SiteSearchResultsPage
 {
+	// {{{ protected properties
+
+	protected $result_count = array();
+
+	// }}}
+
 	// init phase
 	// {{{ public function init()
 
@@ -171,8 +177,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 	protected function hasLeftColumnResults()
 	{
 		foreach (array('category', 'product') as $key) {
-			if ($this->result_count !== null &&
-				array_key_exists($key, $this->result_count) &&
+			if (array_key_exists($key, $this->result_count) &&
 				$this->result_count[$key] > 0) {
 				return true;
 			}
