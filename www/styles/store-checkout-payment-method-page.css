@@ -47,6 +47,7 @@
 #current_payments {
 	width: 48%;
 	float: left;
+	margin-right: 24px;
 }
 
 /* {{{ Multiple Payments Table */
