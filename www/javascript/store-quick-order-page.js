@@ -17,11 +17,13 @@ function StoreQuickOrder(id, item_selector_id, num_rows)
 {
 	this.id = id;
 	this.items = [];
+	this.item_ids = [];
 
 	var item;
 	for (var i = 0; i < num_rows; i++) {
 		item = new StoreQuickOrderItem(this, item_selector_id, i);
 		this.items.push(item);
+		this.item_ids.push(item_selector_id + '_' + i);
 	}
 }
 
@@ -38,6 +40,27 @@ StoreQuickOrder.timeout_delay = 250;
  * @var String
  */
 StoreQuickOrder.loading_text = 'loading …';
+
+/**
+ * Gets an item selector on the quick-order by the item selector's widget id
+ *
+ * @var String id
+ *
+ * @return StoreQuickOrderItem the item selector or null if it does not exist.
+ */
+StoreQuickOrder.prototype.getItemSelector = function(id)
+{
+	var selector = null;
+
+	for (var i = 0; i < this.item_ids.length; i++) {
+		if (this.item_ids[i] == id) {
+			selector = this.items[i];
+			break;
+		}
+	}
+
+	return selector;
+}
 
 /**
  * Creates a new item-row controller for the quick-order page
@@ -140,6 +163,21 @@ StoreQuickOrderItem.prototype.handleFadeOut = function(type, args)
 
 	this.new_description = null;
 	this.in_effect.animate();
+}
+
+/**
+ * Change the SKU to something else
+ *
+ * The item selector content is updated immediately after changing the SKU.
+ *
+ * @param value the new sku value.
+ */
+StoreQuickOrderItem.prototype.setSku = function(value)
+{
+	var value = value.replace(/^\s+|\s+$/g, ''); // trim whitespace
+	this.sku.value = value;
+	this.old_value = value;
+	StoreQuickOrder_staticTimeOut(this.quick_order, this.id);
 }
 
 /**
