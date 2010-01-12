@@ -146,6 +146,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			if ($e->getSeverity() === Payment_PayPal_SOAP::ERROR_WARNING) {
 				$response = $e->getResponse();
 			} else {
+				echo $e->getCode();
 				throw $e;
 			}
 		}
@@ -250,7 +251,24 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			}
 		}
 
-		return $response->Token;
+		// According to the PayPal WSDL and SOAP schemas, it should be
+		// impossible to get a response without a token, but due to incredible
+		// incompetance on PayPal's end, the token is not returned if the token
+		// is specified in the original array of parameters. In this case, just
+		// return the token as it was passed in, as the response value should
+		// be identical anyhow according to the documentation.
+		if (isset($response->Token)) {
+			$token = $response->Token;
+		} else {
+			if (isset($parameters['Token'])) {
+				$token = $parameters['Token'];
+			} else {
+				throw new StoreException('No token returned in '.
+					'SetExpressCheckout call.');
+			}
+		}
+
+		return $token;
 	}
 
 	// }}}
