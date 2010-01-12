@@ -146,7 +146,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			if ($e->getSeverity() === Payment_PayPal_SOAP::ERROR_WARNING) {
 				$response = $e->getResponse();
 			} else {
-				echo $e->getCode();
 				throw $e;
 			}
 		}
