@@ -61,6 +61,10 @@ class StoreCategoryPage extends StorePage
 	{
 		$category_id = $this->getSelectedCategoryId();
 		$this->category = $this->queryCategory($category_id);
+
+		if ($this->app->hasModule('StoreRecentModule'))
+			$this->app->getModule('StoreRecentModule')->setExclusionId(
+				'categories', $category_id);
 	}
 
 	// }}}

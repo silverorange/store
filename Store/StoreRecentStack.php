@@ -8,6 +8,11 @@
  */
 class StoreRecentStack
 {
+	// {{{ public properties
+
+	public $max_size = 10;
+
+	// }}}
 	// {{{ private properties
 
 	private $stack = array();
@@ -23,6 +28,9 @@ class StoreRecentStack
 			unset($this->stack[$key]);
 
 		array_unshift($this->stack, $id);
+
+		while (count($this->stack) > $this->max_size)
+			array_pop($this->stack);
 	}
 
 	// }}}
@@ -34,14 +42,18 @@ class StoreRecentStack
 			$out = $this->stack;
 		} else {
 			$out = array();
+			reset($this->stack);
 			for ($i = 0; $i < $count; $i++) {
-				if (isset($this->stack[$i]))
-					if ($this->stack[$i] !== $exclude_id)
-						$out[] = $this->stack[$i];
-					else
-						$count++;
-				else
+				$value = current($this->stack);
+
+				if ($value === $exclude_id)
+					$value = next($this->stack);
+
+				if ($value === false)
 					break;
+
+				$out[] = $value;
+				next($this->stack);
 			}
 		}
 

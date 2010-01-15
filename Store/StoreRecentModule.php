@@ -15,6 +15,7 @@ class StoreRecentModule extends SiteApplicationModule
 	// {{{ private properties
 
 	private $stacks;
+	private $exclusion_ids = array();
 
 	// }}}
 	// {{{ public function depends()
@@ -69,11 +70,10 @@ class StoreRecentModule extends SiteApplicationModule
 	{
 		$this->init();
 
-		$exclude_id = null;
-
-		$page = $this->app->getPage();
-		if ($stack_name == 'products' && $page instanceof StoreProductPage)
-			$exclude_id = $page->product_id;
+		if (isset($this->exclusion_ids[$stack_name]))
+			$exclude_id = $this->exclusion_ids[$stack_name];
+		else
+			$exclude_id = null;
 
 		if ($this->stacks->offsetExists($stack_name)) {
 			$stack = $this->stacks->offsetGet($stack_name);
@@ -92,6 +92,14 @@ class StoreRecentModule extends SiteApplicationModule
 	public function save()
 	{
 		$this->app->cookie->setCookie('recent', $this->stacks);
+	}
+
+	// }}}
+	// {{{ public function setExclusionId()
+
+	public function setExclusionId($stack_name, $id)
+	{
+		$this->exclusion_ids[$stack_name] = $id;
 	}
 
 	// }}}
