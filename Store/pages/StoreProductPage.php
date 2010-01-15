@@ -74,6 +74,10 @@ class StoreProductPage extends StorePage
 		$this->message_display->id = 'cart_message_display';
 		$this->message_display->init();
 
+		if ($this->app->hasModule('StoreRecentModule'))
+			$this->app->getModule('StoreRecentModule')->setExclusionId(
+				'products', $this->product_id);
+
 		$this->initProduct();
 		$this->initItemsView();
 		$this->initCart();
