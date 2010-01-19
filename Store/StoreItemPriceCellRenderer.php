@@ -7,7 +7,7 @@ require_once 'Store/StoreSavingsCellRenderer.php';
  * Renders item prices, including any quantity discounts
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2010 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemPriceCellRenderer extends StorePriceCellRenderer
@@ -51,6 +51,13 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 	 */
 	public $show_savings = true;
 
+	/**
+	 * Show lower limit
+	 *
+	 * @var boolean
+	 */
+	public $show_quantity_discount_lower_limit = false;
+
 	// }}}
 	// {{{ public function __construct()
 
@@ -88,17 +95,38 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 			$price = ob_get_clean();
 
 			if ($this->singular_unit === null)
-				if ($this->hasQuantityDiscounts())
+				if ($this->hasQuantityDiscounts()) {
+					if ($this->show_quantity_discount_lower_limit) {
+						$this->displayQuantityDiscountLowerLimit();
+					}
 					printf(Store::_('%s each'), $price);
+				}
 				else
 					echo $price;
 			else
 				printf(Store::_('%s per %s'), $price, $this->singular_unit);
 		}
 
-		if ($this->quantity_discounts !== null)
+		if ($this->hasQuantityDiscounts())
 			foreach ($this->quantity_discounts as $quantity_discount)
 				$this->renderDiscount($quantity_discount);
+	}
+
+	// }}}
+	// {{{ protected function displayQuantityDiscountLowerLimit()
+
+	protected function displayQuantityDiscountLowerLimit()
+	{
+		$first_discount = $this->quantity_discounts->getFirst();
+		if ($first_discount->item->minimum_quantity > 1) {
+			$lower_limit = sprintf(Store::_('%s or more: '),
+				$first_discount->item->minimum_quantity);
+		} else {
+			$lower_limit = sprintf(Store::_('%s or less: '),
+				($first_discount->quantity - 1));
+		}
+
+		echo $lower_limit;
 	}
 
 	// }}}
@@ -131,7 +159,6 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 	protected function renderOriginalValue()
 	{
 		ob_start();
-
 		$this->renderValue($this->value, $this->original_value);
 		$price = ob_get_clean();
 
