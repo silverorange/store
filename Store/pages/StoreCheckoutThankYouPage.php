@@ -6,7 +6,7 @@ require_once 'Store/pages/StoreCheckoutFinalPage.php';
  * Page displayed when an order is processed successfully on the checkout
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2010 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
@@ -50,6 +50,10 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
 		if ($this->ui->hasWidget('checkout_progress')) {
 			$checkout_progress = $this->ui->getWidget('checkout_progress');
 			$checkout_progress->current_step = 3;
+		}
+
+		if (property_exists($this->layout, 'analytics_tracked_order')) {
+			$this->layout->analytics_tracked_order = $this->getOrder();
 		}
 	}
 
