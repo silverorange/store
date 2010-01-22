@@ -149,6 +149,7 @@ class StoreProductSearch
 		$where.= $this->buildCatalogWhereClause();
 		$where.= $this->buildSaleDiscountWhereClause();
 		$where.= $this->buildMinimumQuantityGroupWhereClause();
+		$where.= $this->buildItemStatusWhereClause();
 
 		$this->where_clause = $where;
 	}
@@ -271,7 +272,7 @@ class StoreProductSearch
 		$sale_discount = $this->ui->getWidget('search_sale_discount')->value;
 
 		if ($sale_discount !== null)
-			$where.= sprintf(' and Product.id in 
+			$where.= sprintf(' and Product.id in
 				(select product from Item where sale_discount = %s)',
 				$this->db->quote($sale_discount));
 
@@ -291,6 +292,22 @@ class StoreProductSearch
 			$where.= sprintf(' and Product.id in (select product from Item '.
 				'where minimum_quantity_group = %s)',
 				$this->db->quote($item_minimum_quantity_group));
+
+		return $where;
+	}
+
+	// }}}
+	// {{{ protected function buildItemStatusWhereClause()
+
+	protected function buildItemStatusWhereClause()
+	{
+		$where = '';
+		$item_status = $this->ui->getWidget('search_item_status')->value;
+
+		if ($item_status !== null)
+			$where.= sprintf(' and Product.id in (select product from Item '.
+				'where status = %s)',
+				$this->db->quote($item_status));
 
 		return $where;
 	}

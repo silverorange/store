@@ -5,12 +5,11 @@ require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatTreeFlydownNode.php';
 require_once 'Swat/SwatFlydownDivider.php';
 require_once 'Store/StoreCatalogSelector.php';
+require_once 'Store/StoreItemStatusList.php';
 require_once 'Store/dataobjects/StoreAttributeTypeWrapper.php';
 require_once 'Store/dataobjects/StoreAttributeWrapper.php';
-
 require_once 'Store/admin/components/Product/include/StoreProductTableView.php';
 require_once 'Store/admin/components/Product/include/StoreProductSearch.php';
-
 require_once
 	'Store/admin/components/Product/include/StoreProductTitleCellRenderer.php';
 
@@ -21,7 +20,7 @@ require_once
  * Index page for Products
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2010 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductIndex extends AdminSearch
@@ -63,6 +62,13 @@ class StoreProductIndex extends AdminSearch
 			if ($quick_search_form->isProcessed())
 				$this->clearState();
 		}
+
+		$status_array = array();
+		foreach (StoreItemStatusList::statuses() as $status) {
+			$status_array[$status->id]= $status->title;
+		}
+		$status_flydown = $this->ui->getWidget('search_item_status');
+		$status_flydown->addOptionsByArray($status_array);
 
 		$sale_discount_flydown = $this->ui->getWidget('sale_discount_flydown');
 		$sale_discount_flydown->addOptionsByArray(SwatDB::getOptionArray(
