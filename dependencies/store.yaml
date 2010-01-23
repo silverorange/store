@@ -1,0 +1,100 @@
+##
+## Static Web-resource dependencies for the Store package
+##
+## Copyright (c) 2010 silverorange
+##
+## This library is free software; you can redistribute it and/or modify
+## it under the terms of the GNU Lesser General Public License as
+## published by the Free Software Foundation; either version 2.1 of the
+## License, or (at your option) any later version.
+##
+## This library is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+## Lesser General Public License for more details.
+##
+## You should have received a copy of the GNU Lesser General Public
+## License along with this library; if not, write to the Free Software
+## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+##
+Store:
+  Depends:
+    # Package Dependencies
+    - Swat
+    - Site
+
+  Provides:
+
+    # JavaScript resources
+    packages/store/javascript/search-disclosure.js:
+    packages/store/javascript/store-account-address-page.js:
+    packages/store/javascript/store-account-payment-method-page.js:
+    packages/store/javascript/store-background-image-animation.js:
+    packages/store/javascript/store-checkout-address-page.js:
+      Depends:
+        - packages/store/javascript/store-checkout-page.js
+    packages/store/javascript/store-checkout-billing-address-page.js:
+      Depends:
+        - packages/store/javascript/store-checkout-address-page.js
+    packages/store/javascript/store-checkout-first-page.js:
+    packages/store/javascript/store-checkout-page.js:
+    packages/store/javascript/store-checkout-payment-method-page.js:
+      Depends:
+        - packages/store/javascript/store-checkout-page.js
+    packages/store/javascript/store-checkout-shipping-address-page.js:
+      Depends:
+        - packages/store/javascript/store-checkout-address-page.js
+    packages/store/javascript/store-feedback-panel.js:
+    packages/store/javascript/store-gift-certificate-radio-list.js:
+    packages/store/javascript/store-opacity-animation.js:
+    packages/store/javascript/store-product-page.js:
+      OptionalDepends:
+        - packages/store/javascript/store-product-review-view.js
+    packages/store/javascript/store-product-review-view.js:
+    packages/store/javascript/store-quick-order-page.js:
+    packages/store/admin/javascript/store-account-address-edit-page.js:
+    packages/store/admin/javascript/store-item-edit-page.js:
+    packages/store/admin/javascript/store-item-group-action.js:
+
+    # Style-sheet resources
+    packages/store/styles/checkout-address-verification-page.css:
+    packages/store/styles/search-disclosure.css:
+    packages/store/styles/store-account-address-edit-page.css:
+    packages/store/styles/store-account-details-page.css:
+    packages/store/styles/store-account-invoice-page.css:
+    packages/store/styles/store-account-order-page.css:
+    packages/store/styles/store-cart.css:
+    packages/store/styles/store-cart-page.css:
+    packages/store/styles/store-checkout-address-page.css:
+    packages/store/styles/store-checkout-basic-info-page.css:
+    packages/store/styles/store-checkout-cart-page.css:
+    packages/store/styles/store-checkout-confirmation-page.css:
+    packages/store/styles/store-checkout-final-page.css:
+    packages/store/styles/store-checkout-first-page.css:
+    packages/store/styles/store-checkout-front-page.css:
+    packages/store/styles/store-checkout-payment-method-page.css:
+    packages/store/styles/store-checkout-progress.css:
+    packages/store/styles/store-feedback-panel.css:
+    packages/store/styles/store-item-price-cell-renderer.css:
+    packages/store/styles/store-message.css:
+    packages/store/styles/store-order-payment-methods-cell-renderer.css:
+    packages/store/styles/store-product-page.css:
+    packages/store/styles/store-quantity-entry.css:
+    packages/store/styles/store-quick-order-page.css:
+    packages/store/styles/store-search-results-page.css:
+    packages/store/styles/store-total-row.css:
+    packages/store/styles/store-transaction-status-cell-renderer.css:
+    packages/store/admin/styles/disabled-rows.css:
+    packages/store/admin/styles/store-admin-item-price-cell-renderer.css:
+    packages/store/admin/styles/store-catalog-switcher.css:
+    packages/store/admin/styles/store-category-index.css:
+    packages/store/admin/styles/store-image-preview.css:
+    packages/store/admin/styles/store-item-edit-page.css:
+    packages/store/admin/styles/store-order-details.css:
+    packages/store/admin/styles/store-order-index.css:
+    packages/store/admin/styles/store-product-details-page.css:
+    packages/store/admin/styles/store-product-edit-page.css:
+    packages/store/admin/styles/store-product-index.css:
+    packages/store/admin/styles/store-quick-search.css:
+
+# vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2:
