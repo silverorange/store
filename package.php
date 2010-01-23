@@ -24,8 +24,9 @@ $result = $package->setOptions(
 		'baseinstalldir'    => '/',
 		'packagedirectory'  => './',
 		'dir_roles'         => array(
-			'/' => 'data',
-			'Store' => 'php',
+			'Store'         => 'php',
+			'dependencies'  => 'data',
+			'/'             => 'data',
 		),
 	)
 );
