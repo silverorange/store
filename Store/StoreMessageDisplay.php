@@ -4,7 +4,7 @@ require_once 'Swat/SwatMessageDisplay.php';
 require_once 'Store/StoreMessage.php';
 
 /**
- * A control to display page status messages  
+ * A control to display page status messages
  *
  * @package   Store
  * @copyright 2006-2007 silverorange
@@ -13,7 +13,7 @@ require_once 'Store/StoreMessage.php';
 class StoreMessageDisplay extends SwatMessageDisplay
 {
 	// {{{ public function __construct()
- 
+
 	/**
 	 * Creates a new message display
 	 *
