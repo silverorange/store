@@ -216,9 +216,9 @@ class StoreNateGoSearchIndexer extends SiteNateGoSearchIndexer
 
 		// the item indexer appends, it gets called after the product indexer
 		$item_indexer = new NateGoSearchIndexer('product', $this->db, false, true);
-
 		$item_indexer->addTerm(new NateGoSearchTerm('sku', 3));
 		$item_indexer->addTerm(new NateGoSearchTerm('description'));
+		$item_indexer->setMaximumWordLength(32);
 		$item_indexer->addUnindexedWords(
 			NateGoSearchIndexer::getDefaultUnindexedWords());
 
