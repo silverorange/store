@@ -170,21 +170,6 @@ class StoreCartEntry extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ public function getQuantityDiscountedExtension()
-
-	/**
-	 * Gets the extension cost of this cart entry with only qunatity discounts.
-	 *
-	 * The cost is calculated with quantity discounts.
-	 *
-	 * @return double the extension cost of this cart entry.
-	 */
-	public function getQuantityDiscountedExtension()
-	{
-		return ($this->getQuantityDiscountedItemPrice() * $this->getQuantity());
-	}
-
-	// }}}
 	// {{{ public function getCalculatedItemPrice()
 
 	/**
@@ -194,16 +179,18 @@ class StoreCartEntry extends SwatDBDataObject
 	 *
 	 * @return double the unit cost of the StoreItem for this cart entry.
 	 */
-	public function getCalculatedItemPrice()
+	public function getCalculatedItemPrice($apply_sale_discounts = true)
 	{
 		if ($this->custom_price !== null) {
 			$price = $this->custom_price;
 		} else {
 			$price = $this->getQuantityDiscountedItemPrice();
 
-			$sale = $this->item->getActiveSaleDiscount();
-			if ($sale !== null)
-				$price = round($price * (1 - $sale->discount_percentage), 2);
+			if ($apply_sale_discounts) {
+				$sale = $this->item->getActiveSaleDiscount();
+				if ($sale !== null)
+					$price = round($price * (1 - $sale->discount_percentage), 2);
+			}
 		}
 
 		return $price;
@@ -254,9 +241,12 @@ class StoreCartEntry extends SwatDBDataObject
 	 *
 	 * @return double the extension cost of this cart entry.
 	 */
-	public function getExtension()
+	public function getExtension($apply_sale_discounts = true)
 	{
-		return ($this->getCalculatedItemPrice() * $this->getQuantity());
+		$price = $this->getCalculatedItemPrice($apply_sale_discounts);
+		$extension = $price * $this->getQuantity();
+
+		return $extension;
 	}
 
 	// }}}
