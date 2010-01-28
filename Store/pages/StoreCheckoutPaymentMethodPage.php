@@ -355,6 +355,10 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				if ($order_payment_method !== null)
 					$methods->remove($order_payment_method);
 
+				if (!$this->orderHasAdjustableMethod() && count($methods) > 0) {
+					$methods->getFirst()->setAdjustable(true);
+				}
+
 				$this->app->relocate('checkout/confirmation');
 			}
 		}
