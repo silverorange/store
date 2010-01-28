@@ -161,6 +161,33 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
+	// {{{ protected function getPaymentMethod()
+
+	protected function getPaymentMethod($payment_methods)
+	{
+		$payment_method = null;
+		$payment_methods = $this->getEditablePaymentMethods($payment_methods);
+
+		$tag = $this->getArgument('tag');
+
+		if ($tag === 'new' || count($payment_methods) == 0)
+			return null;
+
+		if ($tag !== null) {
+			foreach ($payment_methods as $payment_method_obj) {
+				if ($tag == $payment_method_obj->getTag()) {
+					$payment_method = $payment_method_obj;
+					break;
+				}
+			}
+		} else {
+			$patment_method = $payment_methods->getFirst();
+		}
+
+		return $payment_method;
+	}
+
+	// }}}
 	// {{{ protected function getPaymentMethods()
 
 	/**
@@ -267,6 +294,48 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		}
 
 		return $types;
+	}
+
+	// }}}
+	// {{{ protected function getOrderBalance()
+
+	protected function getOrderBalance($exclude_current_method = false)
+	{
+		$methods = $this->app->session->order->payment_methods;
+		$current_method = $this->getPaymentMethod($methods);
+
+		$payment_total = 0;
+		foreach ($methods as $method) {
+			if (!$exclude_current_method || $current_method === null ||
+				$method->getTag() != $current_method->getTag()) {
+
+				$payment_total+= $method->amount;
+			}
+		}
+
+		$total = $this->getCartTotal();
+		return $total - $payment_total;
+	}
+
+	// }}}
+	// {{{ protected function orderHasAdjustableMethod()
+
+	protected function orderHasAdjustableMethod($exclude_current_method = false)
+	{
+		$methods = $this->app->session->order->payment_methods;
+		$current_method = $this->getPaymentMethod($methods);
+
+		$has_adjustable_method = false;
+		foreach ($methods as $method) {
+			if ($method->isAdjustable() &&
+					(!$exclude_current_method || $current_method === null ||
+					$method->getTag() != $current_method->getTag())) {
+
+				$has_adjustable_method = true;
+			}
+		}
+
+		return $has_adjustable_method;
 	}
 
 	// }}}
@@ -504,29 +573,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
-	// {{{ protected function getPaymentMethod()
-
-	protected function getPaymentMethod($payment_methods)
-	{
-		$payment_method = null;
-		$payment_methods = $this->getEditablePaymentMethods($payment_methods);
-
-		$tag = $this->getArgument('tag');
-		if ($tag === 'new')
-			return null;
-
-		if ($tag !== null)
-			foreach ($payment_methods as $payment_method)
-				if ($tag === $payment_method->getTag())
-					break;
-
-		if ($payment_method === null)
-			$payment_method = $payment_methods->getFirst();
-
-		return $payment_method;
-	}
-
-	// }}}
 	// {{{ protected function getEditablePaymentMethods()
 
 	protected function getEditablePaymentMethods($payment_methods)
@@ -553,15 +599,18 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		if ($this->ui->hasWidget('payment_amount')) {
 			$amount = $this->ui->getWidget('payment_amount')->value;
 
-			if ($amount == null) {
+			if ($this->orderHasAdjustableMethod(true)) {
+				$payment_method->setAdjustable(false);
+			} elseif ($amount == null ||
+				$amount >= $this->getOrderBalance(true)) {
+
 				$payment_method->setAdjustable(true);
 			} else {
-				if ($amount != $payment_method->amount)
-					$payment_method->setAdjustable(false);
-
-				$payment_method->amount = $amount;
+				$payment_method->setAdjustable(false);
 			}
 		}
+
+		$payment_method->amount = $amount;
 
 		if ($payment_type->isCard()) {
 			$payment_method->setMaxAmount(null);
@@ -856,6 +905,13 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$tag = $this->getArgument('tag');
 		$order_payment_method = $this->getPaymentMethod($order->payment_methods);
 
+		if ($this->ui->hasWidget('payment_amount_field')) {
+			// only display the amount field if the order has
+			// an adjustable payment method.
+			$this->ui->getWidget('payment_amount_field')->visible =
+				$this->orderHasAdjustableMethod(true);
+		}
+
 		if ($order_payment_method === null) {
 			$this->ui->getWidget('card_fullname')->value =
 				$this->app->session->account->fullname;
@@ -870,9 +926,10 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				$this->ui->getWidget('payment_type')->value =
 					$order_payment_method->getInternalValue('payment_type');
 
-				if ($this->ui->hasWidget('payment_amount'))
+				if ($this->ui->hasWidget('payment_amount')) {
 					$this->ui->getWidget('payment_amount')->value =
 						$order_payment_method->amount;
+				}
 
 				$this->ui->getWidget('card_type')->value =
 					$order_payment_method->getInternalValue('card_type');
@@ -985,10 +1042,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	{
 		echo '<table class="multiple-payment-table"><tbody>';
 
-		$payment_total = 0;
 		foreach ($methods as $method) {
-			$payment_total+= $method->amount;
-
 			echo '<tr><th class="payment">';
 			$method->display();
 			echo '</th><td class="payment-amount">';
@@ -999,11 +1053,10 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		echo '</tbody><tfoot>';
 
 		$locale = SwatI18NLocale::get();
-		$total = $this->getCartTotal();
-		$balance = $total - $payment_total;
+		$balance = $this->getOrderBalance();
 
 		echo '<tr><th>Payment Total:</th><td class="payment-amount">';
-		echo $locale->formatCurrency($payment_total);
+		echo $locale->formatCurrency($this->getCartTotal() - $balance);
 		echo '</td></tr>';
 
 		if ($balance > 0) {
