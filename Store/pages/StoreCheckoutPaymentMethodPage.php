@@ -803,7 +803,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		/*
 		 * Set page to two-column layout when page is stand-alone even when
 		 * there is no address list. The narrower layout of the form fields
-		 * looks better even withour a select list on the left.
+		 * looks better even without a select list on the left.
 		 */
 		$this->ui->getWidget('form')->classes[] = 'checkout-no-column';
 	}
