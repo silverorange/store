@@ -82,7 +82,7 @@ drawDisclosureLink: function()
 		this.anchor.appendChild(document.createTextNode(this.title));
 	} else {
 		this.img = document.createElement('img');
-		this.img.src = StoreSearchDisclosure.down_image.src;
+		this.img.src = this.getClosedImageSrc();
 		this.anchor.appendChild(this.img);
 	}
 
@@ -107,7 +107,7 @@ open: function()
 		return;
 
 	if (this.img) {
-		this.img.src = StoreSearchDisclosure.up_image.src;
+		this.img.src = this.getOpenedImageSrc();
 	}
 
 	if (this.loading_container) {
@@ -121,7 +121,7 @@ open: function()
 close: function()
 {
 	if (this.img) {
-		this.img.src = StoreSearchDisclosure.down_image.src;
+		this.img.src = this.getClosedImageSrc();
 	}
 
 	StoreSearchDisclosure.superclass.close.call(this);
@@ -141,7 +141,7 @@ openWithAnimation: function()
 	var time = 0.5;
 
 	if (this.img) {
-		this.img.src = StoreSearchDisclosure.up_image.src;
+		this.img.src = this.getOpenedImageSrc();
 	}
 
 	YAHOO.util.Dom.removeClass(this.div, 'swat-disclosure-control-closed');
@@ -197,7 +197,7 @@ closeWithAnimation: function()
 	var time = 0.25
 
 	if (this.img) {
-		this.img.src = StoreSearchDisclosure.down_image.src;
+		this.img.src = this.getClosedImageSrc();
 	}
 
 	YAHOO.util.Dom.removeClass(this.anchor, 'swat-disclosure-anchor-opened');
@@ -456,4 +456,14 @@ StoreSearchDisclosure.prototype.openSearchControlsWithAnimation =
 		YAHOO.util.Easing.easeOut);
 
 	this.fade_animation.animate();
+};
+
+StoreSearchDisclosure.prototype.getOpenedImageSrc = function()
+{
+	return StoreSearchDisclosure.up_image.src;
+};
+
+StoreSearchDisclosure.prototype.getClosedImageSrc = function()
+{
+	return StoreSearchDisclosure.down_image.src;
 };
