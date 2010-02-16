@@ -95,7 +95,7 @@ StoreProductReviewPage.prototype.initReviews = function()
 		YAHOO.util.Event.preventDefault(e);
 		this.loadAllReviews();
 	}, this, true);
-}
+};
 
 StoreProductReviewPage.prototype.loadAllReviews = function()
 {
@@ -160,4 +160,4 @@ StoreProductReviewPage.prototype.loadAllReviews = function()
 	client.callProcedure('getReviews', callBack,
 		[this.product_id, 0, this.offset],
 		['int', 'int', 'int']);
-}
+};

@@ -296,7 +296,7 @@ StoreSearchDisclosure.prototype.loadSearchPanel = function()
 		client.callProcedure('getContent', callback,
 			[query, uri], ['string', 'string']);
 	}
-}
+};
 
 /**
  * Pushes search entry value down into keywords field
@@ -369,7 +369,7 @@ StoreSearchDisclosure.prototype.pullUpKeywords = function()
 
 		}
 	}
-}
+};
 
 StoreSearchDisclosure.prototype.getKeywords = function()
 {
@@ -389,20 +389,20 @@ StoreSearchDisclosure.prototype.getKeywords = function()
 	}
 
 	return keywords;
-}
+};
 
 StoreSearchDisclosure.prototype.closeSearchControls = function()
 {
 	this.pushDownKeywords();
 	this.search_controls.style.display = 'none';
 	YAHOO.util.Dom.setStyle(this.search_controls, 'opacity', 0);
-}
+};
 
 StoreSearchDisclosure.prototype.openSearchControls = function()
 {
 	this.pullUpKeywords();
 	this.search_controls.style.display = 'inline';
-}
+};
 
 StoreSearchDisclosure.prototype.closeSearchControlsWithAnimation =
 	function()
@@ -429,7 +429,7 @@ StoreSearchDisclosure.prototype.closeSearchControlsWithAnimation =
 		function() { that.search_controls.style.display = 'none'; });
 
 	this.fade_animation.animate();
-}
+};
 
 StoreSearchDisclosure.prototype.openSearchControlsWithAnimation =
 	function()
@@ -456,4 +456,4 @@ StoreSearchDisclosure.prototype.openSearchControlsWithAnimation =
 		YAHOO.util.Easing.easeOut);
 
 	this.fade_animation.animate();
-}
+};

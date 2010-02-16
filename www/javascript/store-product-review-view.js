@@ -89,7 +89,7 @@ StoreProductReviewView.prototype.openWithAnimation = function()
 	animation.animate();
 
 	this.opened = true;
-}
+};
 
 StoreProductReviewView.prototype.open = function()
 {
@@ -102,7 +102,7 @@ StoreProductReviewView.prototype.open = function()
 	}
 
 	this.opened = true;
-}
+};
 
 StoreProductReviewView.prototype.handleOpen = function()
 {
@@ -113,4 +113,4 @@ StoreProductReviewView.prototype.handleOpen = function()
 	this.description.style.overflow = 'visible';
 
 	this.semaphore = false;
-}
+};

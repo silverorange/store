@@ -43,10 +43,10 @@
 		// preload images
 		for (var i = 0; i <= images.length; i++) {
 			image = new Image();
-			image.src = images[i]; 
+			image.src = images[i];
 			StoreBackgroundImageAnim.frame_images.push(image);
 		}
-	}
+	};
 
 	/**
 	 * toString method
