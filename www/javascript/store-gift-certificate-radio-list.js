@@ -20,5 +20,4 @@ StoreGiftCertificateRadioList.prototype.handlePriceChange = function()
 		this.custom_item.checked = true;
 		this.old_custom_price_value = this.custom_price.value;
 	}
-}
-
+};
