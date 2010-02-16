@@ -181,7 +181,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				}
 			}
 		} else {
-			$payment_method = $payment_methods->getFirst();
+			$patment_method = $payment_methods->getFirst();
 		}
 
 		return $payment_method;
@@ -465,12 +465,17 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 					if ($method->payment_type->isCard() &&
 						$method->card_number_preview == $card_number_preview) {
+						$message = new SwatMessage(Store::_(
+							sprintf('This Card has already been applied to '.
+								'this order as payment. Please use another '.
+								'card or '.
+								'<a href="checkout/confirmation/paymentmethod/%s">'.
+								'edit the existing payment</a>.',
+								$method->getTag())),
+							'error');
 
-						if ($this->is_embedded) {
-							$methods->remove($method);
-						} else {
-							$this->addDuplicatePaymentMessage($card_number);
-						}
+						$message->content_type = 'text/xml';
+						$card_number->addMessage($message);
 					}
 				}
 			}
@@ -483,23 +488,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	public function processCommon()
 	{
 		$this->saveDataToSession();
-	}
-
-	// }}}
-	// {{{ protected function addDuplicatePaymentMessage()
-
-	protected function addDuplicatePaymentMessage(SwatWidget $widget)
-	{
-		$message = new SwatMessage(Store::_(
-			sprintf('This card has already been applied to this order as '.
-				'payment. Please use another card or '.
-				'<a href="checkout/confirmation/paymentmethod/%s">'.
-				'edit the existing payment</a>.',
-				$method->getTag())),
-			'error');
-
-		$message->content_type = 'text/xml';
-		$widget->addMessage($message);
 	}
 
 	// }}}
@@ -925,7 +913,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			// only display the amount field if the order has
 			// an adjustable payment method.
 			$this->ui->getWidget('payment_amount_field')->visible =
-				($this->orderHasAdjustableMethod(true) && !$this->is_embedded);
+				$this->orderHasAdjustableMethod(true);
 		}
 
 		if ($order_payment_method === null) {
