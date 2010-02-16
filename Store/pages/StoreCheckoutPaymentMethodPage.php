@@ -181,7 +181,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				}
 			}
 		} else {
-			$patment_method = $payment_methods->getFirst();
+			$payment_method = $payment_methods->getFirst();
 		}
 
 		return $payment_method;
