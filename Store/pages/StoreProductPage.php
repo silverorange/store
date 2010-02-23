@@ -22,7 +22,7 @@ require_once 'Store/StoreProductSearchEngine.php';
  * A product page
  *
  * @package   Store
- * @copyright 2005-2009 silverorange
+ * @copyright 2005-2010 silverorange
  */
 class StoreProductPage extends StorePage
 {
@@ -541,7 +541,6 @@ class StoreProductPage extends StorePage
 		$this->message_display->display();
 		$this->displayProduct();
 		Swat::displayInlineJavaScript($this->getProductInlineJavaScript());
-		Swat::displayInlineJavaScript($this->getCartInlineJavaScript());
 		if ($this->reviews_ui instanceof SwatUI) {
 			Swat::displayInlineJavaScript($this->getReviewsInlineJavaScript());
 		}
@@ -1422,53 +1421,6 @@ class StoreProductPage extends StorePage
 	}
 
 	// }}}
-	// {{{ protected function getCartInlineJavaScript()
-
-	/**
-	 * @see StoreProductPage::getCartAnimationFrames()
-	 */
-	protected function getCartInlineJavaScript()
-	{
-		$javascript = '';
-
-		$frames = $this->getCartAnimationFrames();
-
-		// only show animation if some animation frames are defined
-		if (count($frames) > 0) {
-			$frames_list = "['".implode("', '", $frames)."']";
-
-			foreach ($this->items_added as $item) {
-				$javascript.= sprintf(
-					"var animation_%1\$s = new StoreBackgroundImageAnim(".
-					"'entry_%1\$s', { frames: { from: 1, to: %2\$s } }, 2);\n".
-					"animation_%1\$s.addFrameImages(%3\$s);\n".
-					"animation_%1\$s.animate();\n",
-					$item->id, count($frames), $frames_list);
-			}
-		}
-
-		return $javascript;
-	}
-
-	// }}}
-	// {{{ protected function getCartAnimationFrames()
-
-	/**
-	 * Gets the animation frames to use for animating the background cells of
-	 * added cart entries on the product page cart display.
-	 *
-	 * By default, no animation frames are defined. Subclasses should define
-	 * a set of animation frames by extending this method if they want to use
-	 * the background image animation effect on added cart entries.
-	 *
-	 * @return array an array of image URL fragments for the animation frames.
-	 */
-	protected function getCartAnimationFrames()
-	{
-		return array();
-	}
-
-	// }}}
 	// {{{ protected function getRelatedArticles()
 
 	/**
@@ -1540,10 +1492,6 @@ class StoreProductPage extends StorePage
 
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
 			'packages/store/styles/store-product-page.css',
-			Store::PACKAGE_ID));
-
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/javascript/store-background-image-animation.js',
 			Store::PACKAGE_ID));
 
 		if ($this->message_display !== null)
