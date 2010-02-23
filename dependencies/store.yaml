@@ -29,7 +29,6 @@ Store:
     packages/store/javascript/search-disclosure.js:
     packages/store/javascript/store-account-address-page.js:
     packages/store/javascript/store-account-payment-method-page.js:
-    packages/store/javascript/store-background-image-animation.js:
     packages/store/javascript/store-checkout-address-page.js:
       Depends:
         - packages/store/javascript/store-checkout-page.js
@@ -46,7 +45,6 @@ Store:
         - packages/store/javascript/store-checkout-address-page.js
     packages/store/javascript/store-feedback-panel.js:
     packages/store/javascript/store-gift-certificate-radio-list.js:
-    packages/store/javascript/store-opacity-animation.js:
     packages/store/javascript/store-product-page.js:
       OptionalDepends:
         - packages/store/javascript/store-product-review-view.js
