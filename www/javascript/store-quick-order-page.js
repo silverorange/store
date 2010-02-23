@@ -80,22 +80,19 @@ function StoreQuickOrderItem(quick_order, item_selector_id, id)
 	this.sequence = 0;
 	this.displayed_sequence = 0;
 
-	this.out_effect = new StoreOpacityAnimation(this.div,
+	this.out_effect = new YAHOO.util.Anim(this.div,
 		{ opacity: { from: 1, to: 0 } }, 0.5);
 
 	this.out_effect.onComplete.subscribe(this.handleFadeOut, this, true);
 
-	this.in_effect = new StoreOpacityAnimation(this.div,
+	this.in_effect = new YAHOO.util.Anim(this.div,
 		{ opacity: { from: 0, to: 1 } }, 1);
 
 	this.sku = document.getElementById('sku_renderer_' + id);
 	this.old_value = this.sku.value;
 
-	YAHOO.util.Event.addListener(this.sku, 'keyup', this.handleSkuChange,
-		this, true);
-
-	YAHOO.util.Event.addListener(this.sku, 'blur', this.handleSkuChange,
-		this, true);
+	YAHOO.util.Event.on(this.sku, 'keyup', this.handleSkuChange, this, true);
+	YAHOO.util.Event.on(this.sku, 'blur',  this.handleSkuChange, this, true);
 
 	this.timer = null;
 	this.new_description = null;
@@ -162,7 +159,10 @@ StoreQuickOrderItem.prototype.handleFadeOut = function(type, args)
 		this.div.innerHTML = this.new_description;
 
 	this.new_description = null;
-	this.in_effect.animate();
+	if (!YAHOO.env.ua.ie || YAHOO.env.ua.ie > 8) {
+		// only animate if not IE < 9
+		this.in_effect.animate();
+	}
 }
 
 /**
@@ -203,9 +203,14 @@ function StoreQuickOrder_staticTimeOut(quick_order, replicator_id)
 	function callBack(response)
 	{
 		if (response.sequence > item.displayed_sequence) {
-			item.out_effect.animate();
 			item.new_description = response.description;
 			item.displayed_sequence = response.sequence;
+			if (!YAHOO.env.ua.ie || YAHOO.env.ua.ie > 8) {
+				// only animate if not IE < 9
+				item.out_effect.animate();
+			} else {
+				item.handleFadeOut();
+			}
 		}
 	}
 
