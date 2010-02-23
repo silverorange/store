@@ -39,6 +39,27 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
+	// {{{ protected function getCartTotal()
+
+	protected function getCartTotal()
+	{
+		$billing_address  = $this->app->session->order->billing_address;
+		$shipping_address = $this->app->session->order->shipping_address;
+		$shipping_type    = $this->app->session->order->shipping_type;
+
+		$class_name = SwatDBClassMap::get('StoreOrderAddress');
+
+		if ($billing_address === null)
+			$billing_address = new $class_name();
+
+		if ($shipping_address === null)
+			$shipping_address = new $class_name();
+
+		return ($this->app->cart->checkout->getTotal(
+			$billing_address, $shipping_address, $shipping_type));
+	}
+
+	// }}}
 
 	// init phase
 	// {{{ public function init()
@@ -315,27 +336,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 		$total = $this->getCartTotal();
 		return $total - $payment_total;
-	}
-
-	// }}}
-	// {{{ protected function getCartTotal()
-
-	protected function getCartTotal()
-	{
-		$billing_address  = $this->app->session->order->billing_address;
-		$shipping_address = $this->app->session->order->shipping_address;
-		$shipping_type    = $this->app->session->order->shipping_type;
-
-		$class_name = SwatDBClassMap::get('StoreOrderAddress');
-
-		if ($billing_address === null)
-			$billing_address = new $class_name();
-
-		if ($shipping_address === null)
-			$shipping_address = new $class_name();
-
-		return ($this->app->cart->checkout->getTotal(
-			$billing_address, $shipping_address, $shipping_type));
 	}
 
 	// }}}
