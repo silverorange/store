@@ -1,18 +1,21 @@
 <?php
 
+require_once 'Swat/SwatUI.php';
 require_once 'Swat/SwatDetailsStore.php';
 require_once 'Swat/SwatTableStore.php';
+require_once 'Swat/SwatHtmlHeadEntrySet.php';
+
+require_once 'Site/SiteMultipartMailMessage.php';
+require_once 'Site/SiteHtmlHeadEntrySetDisplayerFactory.php';
 
 require_once 'Store/exceptions/StoreException.php';
-require_once 'Swat/SwatUI.php';
 require_once 'Store/StoreShippingAddressCellRenderer.php';
-require_once 'Site/SiteMultipartMailMessage.php';
 
 /**
  * An email message for order confirmations
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2010 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreOrderConfirmationMailMessage
@@ -112,15 +115,24 @@ abstract class StoreOrderConfirmationMailMessage
 		$ui->display();
 		$ui_content = ob_get_clean();
 
-		$ui->getRoot()->getHtmlHeadEntrySet()->displayInline(
-			$this->getWebRoot(),
-			'SwatStyleSheetHtmlHeadEntry');
+		$this->displayHtmlHeadEntries(
+			$ui->getRoot()->getHtmlHeadEntrySet(), $this->getWebRoot());
 
 		echo '</head><body><div id="frame">';
 		echo $ui_content;
 		echo '</div></body></html>';
 
 		return ob_get_clean();
+	}
+
+	// }}}
+	// {{{ protected function displayHtmlHeadEntries()
+
+	protected function displayHtmlHeadEntries(SwatHtmlHeadEntrySet $set, $root)
+	{
+		$factory   = new SiteHtmlHeadEntrySetDisplayerFactory();
+		$displayer = $factory->build($this->app);
+		$displayer->displayInline($set, $root, 'SwatStyleSheetHtmlHeadEntry');
 	}
 
 	// }}}
