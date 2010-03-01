@@ -11,7 +11,7 @@ require_once 'Store/StoreCategoryPath.php';
  * Resolves pages below the 'store' tag in the URL.
  *
  * @package   Store
- * @copyright 2005-2008 silverorange
+ * @copyright 2005-2010 silverorange
  */
 class StorePageFactory extends SitePageFactory
 {
@@ -320,20 +320,23 @@ class StorePageFactory extends SitePageFactory
 	{
 		// don't try to resolve categories that are deeper than the max depth
 		if (substr_count($path, '/') >= StoreCategory::MAX_DEPTH) {
-			throw new SiteNotFoundException(
-				sprintf('Category not found for path ‘%s’', $path));
+			require_once('Site/exceptions/SitePathTooLongException.php');
+			throw new SitePathTooLongException(
+				sprintf('Category path is too long: ‘%s’', $path));
 		}
 
 		// don't try to find categories with invalid UTF-8 in the path
 		if (!SwatString::validateUtf8($path)) {
-			throw new SiteException(
+			require_once('Site/exceptions/SitePathInvalidUtf8Exception.php');
+			throw new SitePathInvalidUtf8Exception(
 				sprintf('Category path is not valid UTF-8: ‘%s’', $path));
 		}
 
 		// don't try to find catrgories with more than 254 characters in the
 		// path
 		if (strlen($path) > 254) {
-			throw new SiteException(
+			require_once('Site/exceptions/SitePathTooLongException.php');
+			throw new SitePathTooLongException(
 				sprintf('Category path is too long: ‘%s’', $path));
 		}
 
