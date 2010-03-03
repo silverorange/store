@@ -110,7 +110,7 @@ class StoreOrderItem extends SwatDBDataObject
 	public $catalog;
 
 	/**
-	 * Where this cart entry was created.
+	 * Where this order item was created.
 	 *
 	 * Uses StoreCartEntry::SOURCE_* constants
 	 *
@@ -118,6 +118,14 @@ class StoreOrderItem extends SwatDBDataObject
 	 * @see StoreCartEntry
 	 */
 	public $source;
+
+	/**
+	 * Category related to  the source of this order item.
+	 *
+	 * @var integer
+	 * @see StoreCartEntry
+	 */
+	public $source_category;
 
 	/**
 	 * Whether or not this item was ordered through the quick-order tool
