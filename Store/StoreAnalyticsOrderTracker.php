@@ -96,8 +96,7 @@ JAVASCRIPT;
 			str_replace('|', '_', $order->id),
 			str_replace('|', '_', $item->sku),
 			str_replace('|', '_', $item->product_title),
-			str_replace('|', '_',
-				SwatString::condense($item->getDescription())),
+			str_replace('|', '_', $item->getSourceCategoryTitle()),
 			str_replace('|', '_', $item->price),
 			str_replace('|', '_', $item->quantity));
 	}

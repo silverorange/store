@@ -291,6 +291,25 @@ class StoreOrderItem extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function getSourceCategoryTitle()
+
+	public function getSourceCategoryTitle()
+	{
+		$title = null;
+
+		if ($this->source_category !== null) {
+			$this->checkDB();
+
+			$sql = sprintf('select title from Category where id = %s',
+				$this->source_category);
+
+			$title = SwatDB::queryOne($this->db, $sql);
+		}
+
+		return $title;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
