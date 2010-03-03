@@ -97,6 +97,13 @@ class StoreCartEntry extends SwatDBDataObject
 	 */
 	public $source;
 
+	/**
+	 * Optional category id which was the source of this cart entry.
+	 *
+	 * @var integer
+	 */
+	public $source_category;
+
 	/*
 	 * A custom override price for item's without a fixed price like gift
 	 * certificates
@@ -378,6 +385,7 @@ class StoreCartEntry extends SwatDBDataObject
 		$order_item->product            = $this->item->product->id;
 		$order_item->product_title      = $this->item->product->title;
 		$order_item->source             = $this->source;
+		$order_item->source_category    = $this->source_category;
 		$order_item->discount           = $this->getDiscount();
 		$order_item->discount_extension = $this->getDiscountExtension();
 

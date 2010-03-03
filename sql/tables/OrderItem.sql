@@ -16,6 +16,7 @@ create table OrderItem (
 	discount_extension numeric(11, 2) not null default 0,
 	catalog int,
 	source integer,
+	source_category integer,
 	primary key (id)
 );
 

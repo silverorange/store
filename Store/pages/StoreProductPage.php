@@ -344,7 +344,9 @@ class StoreProductPage extends StorePage
 			$cart_entry->sessionid = $this->app->session->getSessionId();
 		}
 
+		$path_entry = $this->getPath()->getLast();
 		$cart_entry->source = StoreCartEntry::SOURCE_PRODUCT_PAGE;
+		$cart_entry->source_category = $path_entry->id;
 		$cart_entry->item->setDatabase($this->app->db);
 		$cart_entry->item->setRegion($this->app->getRegion());
 		$cart_entry->item->load($cart_entry->item->id);
