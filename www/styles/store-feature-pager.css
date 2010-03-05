@@ -1,0 +1,75 @@
+.pager {
+	position: relative;
+}
+
+
+/* Nav styles */
+
+.pager .pager-nav {
+	z-index: 15000;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+
+.pager .pager-nav .pager-prev,
+.pager .pager-nav .pager-prev-insensitive,
+.pager .pager-nav .pager-next,
+.pager .pager-nav .pager-next-insensitive {
+	width: 40px;
+	height: 30px;
+	text-indent: -20000em;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	outline: none;
+	background: #000 url(../images/store-feature-pager.png) 6px center no-repeat;
+
+	opacity: 0.8;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+	filter: alpha(opacity=80);
+
+	-moz-border-radius-topright: 2px;
+	-webkit-border-top-right-radius: 2px;
+}
+.pager .pager-nav .pager-next,
+.pager .pager-nav .pager-next-insensitive {
+	margin-left: 1px;
+	left: 40px;
+	background-position: -66px center;
+	-moz-border-radius-topright: 10px;
+	-webkit-border-top-right-radius: 10px;
+	-moz-border-radius-topleft: 2px;
+	-webkit-border-top-left-radius: 2px;
+}
+
+.pager .pager-nav .pager-prev-insensitive {
+	background-position: -142px center;
+}
+
+.pager .pager-nav .pager-next-insensitive {
+	background-position: -214px center;
+}
+
+
+/* Page styles */
+
+.pager .pager-page {
+	display: none;
+}
+
+.pager .pager-first {
+	/* Display first page by default */
+	display: block;
+}
+
+#feature_pages a {
+	background-position: right top;
+	background-repeat: no-repeat;
+	display: block;
+	height: 261px;
+	outline: none;
+	color: #fff;
+	text-decoration: none;
+	position: relative;
+}
