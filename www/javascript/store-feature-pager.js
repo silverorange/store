@@ -148,9 +148,8 @@ YAHOO.util.Event.onDOMReady(function ()
 	Store.widget.Pager.PAGE_DURATION = 0.25; // seconds
 	Store.widget.Pager.PAGE_INTERVAL = 15.0; // seconds
 
-	Store.widget.Pager.TEXT_PREV        = 'Previous';
-	Store.widget.Pager.TEXT_NEXT        = 'Next';
-	Store.widget.Pager.TEXT_PAGE_NUMBER = 'Page %s of %s';
+	Store.widget.Pager.TEXT_PREV = 'Previous';
+	Store.widget.Pager.TEXT_NEXT = 'Next';
 
 	var _interval = null;
 
@@ -228,6 +227,7 @@ YAHOO.util.Event.onDOMReady(function ()
 			function (e)
 			{
 				YAHOO.util.Event.preventDefault(e);
+				this.clearInterval();
 				this.prevPageWithAnimation();
 			},
 			this, true);
@@ -258,6 +258,7 @@ YAHOO.util.Event.onDOMReady(function ()
 			function (e)
 			{
 				YAHOO.util.Event.preventDefault(e);
+				this.clearInterval();
 				this.nextPageWithAnimation();
 			},
 			this, true);
@@ -270,13 +271,8 @@ YAHOO.util.Event.onDOMReady(function ()
 			this, true);
 
 		// create navigation element
-
-		this.pageNumber = document.createElement('span');
-		YAHOO.util.Dom.addClass(this.pageNumber, 'pager-nav-page-number');
-
 		this.nav = document.createElement('div');
 		YAHOO.util.Dom.addClass(this.nav, 'pager-nav');
-		this.nav.appendChild(this.pageNumber);
 		this.nav.appendChild(this.prevInsensitive);
 		this.nav.appendChild(this.prev);
 		this.nav.appendChild(this.next);
@@ -289,23 +285,6 @@ YAHOO.util.Event.onDOMReady(function ()
 	{
 		var pageNumber = this.currentPage.index + 1;
 		var pageCount  = this.pages.length;
-
-		var text = Store.widget.Pager.TEXT_PAGE_NUMBER.replace(
-			/%s/,
-			pageNumber
-		).replace(
-			/%s/,
-			pageCount
-		);
-
-		if (this.pageNumber.firstChild) {
-			this.pageNumber.replaceChild(
-				document.createTextNode(text),
-				this.pageNumber.firstChild
-			);
-		} else {
-			this.pageNumber.appendChild(document.createTextNode(text));
-		}
 
 		this.setPrevSensitivity(pageNumber != 1);
 		this.setNextSensitivity(pageNumber != pageCount);
