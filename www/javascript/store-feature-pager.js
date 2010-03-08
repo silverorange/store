@@ -277,7 +277,7 @@ YAHOO.util.Event.onDOMReady(function ()
 		this.nav.appendChild(this.next);
 		this.nav.appendChild(this.nextInsensitive);
 
-		this.container.insertBefore(this.nav, this.page_container);
+		this.container.insertBefore(this.nav, this.pageContainer);
 	};
 
 	proto.updateNav = function()
