@@ -34,7 +34,7 @@ YAHOO.util.Event.onDOMReady(function ()
 		this.container = container;
 
 		var region = Dom.getRegion(this.container);
-		var height = region.bottom - region.top - 1;
+		var height = region.bottom - region.top;
 
 		Dom.setStyle(this.container, 'position',  'relative');
 		Dom.setStyle(this.container, 'overflowY', 'hidden');
@@ -277,7 +277,7 @@ YAHOO.util.Event.onDOMReady(function ()
 		this.nav.appendChild(this.next);
 		this.nav.appendChild(this.nextInsensitive);
 
-		this.container.insertBefore(this.nav, this.pageContainer);
+		this.container.insertBefore(this.nav, this.container.firstChild);
 	};
 
 	proto.updateNav = function()
