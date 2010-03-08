@@ -68,7 +68,6 @@ YAHOO.util.Event.onDOMReady(function ()
 		}
 
 		if (Dom.hasClass(this.container, 'pager-with-nav')) {
-			console.log('f');
 			this.drawNav();
 		} else {
 			this.nav = null;
