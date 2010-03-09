@@ -9,6 +9,16 @@ require_once 'Site/pages/SiteExceptionPage.php';
 class StoreExceptionPage extends SiteExceptionPage
 {
 	// build phase
+	// {{{ public function build()
+
+	public function build()
+	{
+		parent::build();
+
+		$this->attemptRedirection();
+	}
+
+	// }}}
 	// {{{ protected function getSuggestions()
 
 	protected function getSuggestions()
@@ -30,6 +40,102 @@ class StoreExceptionPage extends SiteExceptionPage
 			'on the top right.');
 
 		return $suggestions;
+	}
+
+	// }}}
+	// {{{ protected function attemptRedirection()
+
+	protected function attemptRedirection()
+	{
+		$source = SiteApplication::initVar('source', SiteApplication::VAR_GET);
+		$source_exp = explode('/', $source);
+
+		if ($this->exception instanceof SiteNotFoundException &&
+			$source_exp[0] == 'store') {
+
+			array_shift($source_exp);
+			$path = $this->getNewStorePath($source_exp);
+
+			if ($path !== null) {
+				// permanent redirect to the new path
+				$this->app->relocate('store/'.$path, null, null, true);
+			}
+		}
+	}
+
+	// }}}
+	// {{{ protected function getNewStorePath()
+
+	protected function getNewStorePath(array $source_array)
+	{
+		$path = null;
+
+		// check if the last element in the path is a sku
+		if (count($source_array) > 1) {
+			$path = $this->getNewStoreProductPath($source_array);
+		}
+
+		if ($path === null) {
+			$path = $this->getNewStoreCategoryPath($source_array);
+		}
+
+		return $path;
+	}
+
+	// }}}
+	// {{{ protected function getNewStoreProductPath()
+
+	protected function getNewStoreProductPath(array $source_array)
+	{
+		$path = null;
+
+		$sql = sprintf('select Product.*
+			from Product
+			inner join VisibleProductView on
+				VisibleProductView.product = Product.id
+					and VisibleProductView.region = %s
+			where Product.shortname = %s',
+			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
+			$this->app->db->quote(
+				$source_array[count($source_array) - 1], 'text'));
+
+		$products = SwatDB::query($this->app->db, $sql,
+			SwatDBClassMap::get('StoreProductWrapper'));
+
+		if (count($products) > 0) {
+			$product = $products->getFirst();
+			$path = $product->path;
+		}
+
+		return $path;
+	}
+
+	// }}}
+	// {{{ protected function getNewStoreCategoryPath()
+
+	protected function getNewStoreCategoryPath(array $source_array)
+	{
+		$path = null;
+
+		while (count($source_array) > 0) {
+			$sql = sprintf('select Category.id from Category
+				inner join VisibleCategoryView on
+					VisibleCategoryView.category = Category.id
+				where Category.id = findCategory(%s)
+					and VisibleCategoryView.region = %s',
+				$this->app->db->quote(implode('/', $source_array), 'text'),
+				$this->app->db->quote(
+					$this->app->getRegion()->id, 'integer'));
+
+			$category = SwatDB::queryOne($this->app->db, $sql);
+			if ($category !== null) {
+				$path = implode('/', $source_array);
+			}
+
+			array_pop($source_array);
+		}
+
+		return $path;
 	}
 
 	// }}}
