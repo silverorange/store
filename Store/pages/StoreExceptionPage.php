@@ -118,21 +118,33 @@ class StoreExceptionPage extends SiteExceptionPage
 		$path = null;
 
 		while (count($source_array) > 0) {
-			$sql = sprintf('select Category.id from Category
+			$current_path = implode('/', $source_array);
+			$shortname = array_pop($source_array);
+
+			$sql = sprintf('select getCategoryPath(Category.id) as path
+				from Category
 				inner join VisibleCategoryView on
 					VisibleCategoryView.category = Category.id
-				where Category.id = findCategory(%s)
+				where Category.shortname = %s
 					and VisibleCategoryView.region = %s',
-				$this->app->db->quote(implode('/', $source_array), 'text'),
+				$this->app->db->quote($shortname, 'text'),
 				$this->app->db->quote(
 					$this->app->getRegion()->id, 'integer'));
 
-			$category = SwatDB::queryOne($this->app->db, $sql);
-			if ($category !== null) {
-				$path = implode('/', $source_array);
-			}
+			$paths = SwatDB::query($this->app->db, $sql);
+			if (count($paths) > 0) {
+				$path = $paths->getFirst()->path;
 
-			array_pop($source_array);
+				// if there's more than one path with the given shortname,
+				// try to match the one that has the same parent paths
+				// as the source.
+				foreach ($paths as $row) {
+					if ($current_path == $row->path) {
+						$path = $row->path;
+						break;
+					}
+				}
+			}
 		}
 
 		return $path;
