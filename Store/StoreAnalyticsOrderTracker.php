@@ -12,6 +12,8 @@ require_once 'Store/dataobjects/StoreOrder.php';
  */
 class StoreAnalyticsOrderTracker
 {
+	// {{{ protected properties
+
 	/**
 	 * @var StoreOrder
 	 */
@@ -19,11 +21,17 @@ class StoreAnalyticsOrderTracker
 
 	protected $affiliation;
 
+	// }}}
+	// {{{ public function __construct()
+
 	public function __construct(StoreOrder $order, $affiliation = null)
 	{
 		$this->order = $order;
 		$this->affiliation = $affiliation;
 	}
+
+	// }}}
+	// {{{ public function getInlineJavaScript()
 
 	public function getInlineJavaScript()
 	{
@@ -56,6 +64,7 @@ JAVASCRIPT;
 		// }}}
 	}
 
+	// }}}
 	// {{{ protected function getOrder()
 
 	protected function getOrder(StoreOrder $order)
