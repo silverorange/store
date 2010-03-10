@@ -9,6 +9,8 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * @package   Store
  * @copyright 2008 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ * @link      http://www.google.com/support/googleanalytics/bin/answer.py?answer=74984
+ * @link      http://www.google.com/support/googleanalytics/bin/answer.py?answer=55528
  */
 class StoreAnalyticsOrderTracker
 {
