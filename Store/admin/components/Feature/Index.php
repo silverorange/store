@@ -1,7 +1,10 @@
 <?php
 
 require_once 'SwatDB/SwatDB.php';
+require_once 'Swat/SwatTableStore.php';
+require_once 'Swat/SwatDetailsStore.php';
 require_once 'Admin/pages/AdminIndex.php';
+require_once 'Store/dataobjects/StoreFeatureWrapper.php';
 
 /**
  * Index page for Features
@@ -71,18 +74,24 @@ class StoreFeatureIndex extends AdminIndex
 	{
 		$sql = 'select * from Feature order by display_slot, priority, start_date';
 
-		$rows = SwatDB::query($this->app->db, $sql);
+		$wrapper = SwatDBClassMap::get('StoreFeatureWrapper');
+		$features = SwatDB::query($this->app->db, $sql, $wrapper);
 
 		$store = new SwatTableStore();
 		$counts = array();
 
-		foreach ($rows as $row) {
-			$ds = new SwatDetailsStore($row);
+		foreach ($features as $feature) {
+			$ds = new SwatDetailsStore($feature);
 
 			if (!isset($counts[$ds->display_slot]))
 				$counts[$ds->display_slot] = 0;
 
 			$counts[$ds->display_slot]++;
+
+			if ($feature->region === null)
+				$ds->region = 'All';
+			else
+				$ds->region = $feature->region->title;
 
 			$store->add($ds);
 		}

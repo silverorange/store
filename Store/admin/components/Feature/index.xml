@@ -66,6 +66,12 @@
 						<property name="format">%Y-%m-%d</property>
 					</object>
 				</object>
+				<object class="SwatTableViewOrderableColumn" id="region">
+					<property name="title" translatable="yes">Region</property>
+					<object class="SwatTextCellRenderer">
+						<property name="text" type="data">region</property>
+					</object>
+				</object>
 			</widget>
 			<widget class="SwatActions" id="index_actions">
 				<widget class="SwatActionItem" id="delete">
