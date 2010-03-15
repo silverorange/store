@@ -114,7 +114,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		}
 
 		// If no value was set, default to first payment type
-		if ($type_flydown->value === null) {
+		if ($type_flydown->value === null && $types->getFirst() !== null) {
 			$type_flydown->value = $types->getFirst()->id;
 		}
 	}
