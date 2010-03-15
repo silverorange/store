@@ -52,11 +52,17 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 		parent::initInternal();
 
 		// passwords only required on checkout/first
-		$this->ui->getWidget('password')->required = true;
-		$this->ui->getWidget('confirm_password')->required = true;
+		if ($this->ui->hasWidget('password')) {
+			$this->ui->getWidget('password')->required = true;
+		}
 
-		if ($this->ui->hasWidget('payment_amount_field'))
+		if ($this->ui->hasWidget('confirm_password')) {
+			$this->ui->getWidget('confirm_password')->required = true;
+		}
+
+		if ($this->ui->hasWidget('payment_amount_field')) {
 			$this->ui->getWidget('payment_amount_field')->visible = false;
+		}
 	}
 
 	// }}}
@@ -95,12 +101,33 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 	{
 		parent::buildInternal();
 
+		$this->buildBillingAndShippingAddressUi();
+		$this->buildShippingandPaymentUi();
+
+		// note in XML only applies when editing basic info off confirmation
+		$this->ui->getWidget('confirm_password_field')->note = null;
+	}
+
+	// }}}
+	// {{{ protected function buildBillingAndShippingAddressUi()
+
+	protected function buildBillingAndShippingAddressUi()
+	{
 		// if there are no saved addresses, add a side-by-side class to the
-		// frame, if there are saved addresses, add a stacked class to the frame
-		$address_list = $this->ui->getWidget('billing_address_list');
-		$billing_container = $this->ui->getWidget('billing_address_container');
-		$shipping_container =
-			$this->ui->getWidget('shipping_address_container');
+		// frame, if there are saved addresses, add a stacked class to the
+		// frame
+
+		$ui = $this->ui;
+
+		if (!$ui->hasWidget('billing_address_list') ||
+			!$ui->hasWidget('billing_address_container') ||
+			!$ui->hasWidget('shipping_address_container')) {
+			return;
+		}
+
+		$address_list       = $ui->getWidget('billing_address_list');
+		$billing_container  = $ui->getWidget('billing_address_container');
+		$shipping_container = $ui->getWidget('shipping_address_container');
 
 		if (!$address_list->visible) {
 			$billing_container->classes[]  = 'checkout-column-left';
@@ -109,7 +136,13 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 			$billing_container->classes[]  = 'checkout-no-column';
 			$shipping_container->classes[] = 'checkout-no-column';
 		}
+	}
 
+	// }}}
+	// {{{ protected function buildShippingAndPaymentUi()
+
+	protected function buildShippingAndPaymentUi()
+	{
 		/*
 		 * if there are no saved payment methods, add a side-by-side class
 		 * if there are saved payment methods, add a stacked class
@@ -118,25 +151,34 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 		 * container, don't put the shipping type in a right-column
 		 */
 
-		$payment_method_list = $this->ui->getWidget('payment_method_list');
-		$payment_method_container =
-			$this->ui->getWidget('payment_method_container');
+		$ui = $this->ui;
 
-		if ($this->ui->hasWidget('shipping_type_container')) {
+		if (!$ui->hasWidget('payment_method_list') ||
+			!$ui->hasWidget('payment_method_container')) {
+			return;
+		}
+		
+		$payment_method_list      = $ui->getWidget('payment_method_list');
+		$payment_method_container = $ui->getWidget('payment_method_container');
+
+		if ($ui->hasWidget('shipping_type_container')) {
 			$shipping_type_container =
-				$this->ui->getWidget('shipping_type_container');
+				$ui->getWidget('shipping_type_container');
+		} else {
+			$shipping_type_container = null;
 		}
 
 		if (!$payment_method_list->visible) {
 			$payment_method_container->classes[] = 'checkout-column-left';
-			$shipping_type_container->classes[]  = 'checkout-column-right';
+			if ($shipping_type_container instanceof SwatWidget) {
+				$shipping_type_container->classes[]  = 'checkout-column-right';
+			}
 		} else {
 			$payment_method_container->classes[] = 'checkout-no-column';
-			$shipping_type_container->classes[]  = 'checkout-no-column';
+			if ($shipping_type_container instanceof SwatWidget) {
+				$shipping_type_container->classes[]  = 'checkout-no-column';
+			}
 		}
-
-		// note in XML only applies when editing basic info off confirmation
-		$this->ui->getWidget('confirm_password_field')->note = null;
 	}
 
 	// }}}
