@@ -1,0 +1,69 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<widget class="SwatFrame" id="edit_frame">
+		<property name="title" translatable="yes">Feature</property>
+		<widget class="SwatForm" id="edit_form">
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Shortname</property>
+				<widget class="SwatEntry" id="shortname">
+					<property name="required" type="boolean">true</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Title</property>
+				<widget class="SwatEntry" id="title">
+					<property name="required" type="boolean">true</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Description</property>
+				<widget class="SwatTextarea" id="description">
+					<property name="required" type="boolean">true</property>
+					<property name="maxlength" type="integer">500</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Link</property>
+				<widget class="SwatEntry" id="link">
+					<property name="required" type="boolean">true</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Display Slot</property>
+				<property name="note" translatable="yes">The slot number this feature should appear in.</property>
+				<widget class="SwatIntegerEntry" id="display_slot">
+					<property name="required" type="boolean">true</property>
+					<property name="minimum_value" type="integer">1</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Enabled</property>
+				<widget class="SwatCheckbox" id="enabled">
+					<property name="value" type="boolean">true</property>
+				</widget>
+			</widget>
+			<widget class="SwatFieldset">
+				<property name="title">Active Period</property>
+				<widget class="SwatFormField" id="start_date_field">
+				<property name="title" type="string">Start Date</property>
+					<widget class="SwatDateEntry" id="start_date">
+						<property name="display_parts" type="constant">YEAR|MONTH|DAY|TIME|CALENDAR</property>
+						<property name="use_current_date" type="boolean">false</property>
+					</widget>
+				</widget>
+				<widget class="SwatFormField" id="end_date_field">
+					<property name="title" type="string">End Date</property>
+					<widget class="SwatDateEntry" id="end_date">
+						<property name="display_parts" type="constant">YEAR|MONTH|DAY|TIME|CALENDAR</property>
+						<property name="use_current_date" type="boolean">false</property>
+					</widget>
+				</widget>
+			</widget>
+			<widget class="SwatFooterFormField">
+				<widget class="SwatButton" id="submit_button" />
+			</widget>
+		</widget>
+	</widget>
+</swatml>
