@@ -1,0 +1,83 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<widget class="SwatFrame" id="index_frame">
+		<property name="title" translatable="yes">Features</property>
+		<widget class="SwatForm" id="index_form">
+			<widget class="SwatToolbar" id="search_toolbar">
+				<widget class="SwatToolLink">
+					<property name="title" translatable="yes">New Feature</property>
+					<property name="link">Feature/Edit</property>
+					<property name="stock_id">create</property>
+				</widget>
+			</widget>
+			<widget class="SwatTableView" id="index_view">
+				<object class="SwatTableViewGroup">
+					<property name="id">display_slot</property>
+					<property name="group_by">display_slot</property>
+					<object class="SwatTextCellRenderer">
+						<property name="text">Slot %s</property>
+						<property name="value" type="data">display_slot</property>
+					</object>
+					<object class="AdminGroupLinkCellRenderer">
+						<property name="text" translatable="yes">Change Priority</property>
+						<property name="link">Feature/Priority?slot=%s</property>
+						<property name="link_value" type="data">display_slot</property>
+						<property name="sensitive" type="data">priority_sensitive</property>
+					</object>
+				</object>
+				<object class="SwatTableViewCheckboxColumn" id="checkbox">
+					<object class="SwatCheckboxCellRenderer" id="items">
+						<property name="value" type="data">id</property>
+					</object>
+				</object>
+				<object class="AdminTableViewOrderableColumn" id="shortname">
+					<property name="title" translatable="yes">Name</property>
+					<object class="AdminTitleLinkCellRenderer">
+						<property name="text" type="data" translatable="yes">shortname</property>
+						<property name="link">Feature/Edit?id=%s</property>
+						<property name="link_value" type="data">id</property>
+					</object>
+				</object>
+				<object class="SwatTableViewOrderableColumn" id="title">
+					<property name="title" translatable="yes">Title</property>
+					<object class="SwatNullTextCellRenderer">
+						<property name="text" type="data">title</property>
+					</object>
+				</object>
+				<object class="SwatTableViewOrderableColumn" id="enabled">
+					<property name="title">Enabled</property>
+					<object class="SwatBooleanCellRenderer">
+						<property name="value" type="data">enabled</property>
+					</object>
+				</object>
+				<object class="SwatTableViewOrderableColumn" id="start_date">
+					<property name="title" translatable="yes">Start Date</property>
+					<object class="SwatDateCellRenderer">
+						<property name="date" type="data">start_date</property>
+						<property name="format">%Y-%m-%d</property>
+					</object>
+				</object>
+				<object class="SwatTableViewOrderableColumn" id="end_date">
+					<property name="title" translatable="yes">End Date</property>
+					<object class="SwatDateCellRenderer">
+						<property name="date" type="data">end_date</property>
+						<property name="format">%Y-%m-%d</property>
+					</object>
+				</object>
+			</widget>
+			<widget class="SwatActions" id="index_actions">
+				<widget class="SwatActionItem" id="delete">
+					<property name="title" translatable="yes">delete…</property>
+				</widget>
+				<widget class="SwatActionItem" id="enable">
+					<property name="title" translatable="yes">enable</property>
+				</widget>
+				<widget class="SwatActionItem" id="disable">
+					<property name="title" translatable="yes">disable</property>
+				</widget>
+			</widget>
+		</widget>
+	</widget>
+</swatml>
