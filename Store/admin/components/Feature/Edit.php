@@ -4,20 +4,21 @@ require_once 'Admin/AdminUI.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'SwatDB/SwatDB.php';
-require_once 'VanBourgondien/dataobjects/VanBourgondienFeature.php';
+require_once 'Store/dataobjects/StoreFeature.php';
 
 /**
  * Edit page for Features
  *
- * @package   VanBourgondien
+ * @package   Store
  * @copyright 2010 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class VanBourgondienFeatureEdit extends AdminDBEdit
+class StoreFeatureEdit extends AdminDBEdit
 {
 	// {{{ private properties
 
 	/**
-	 * @var VanBourgondienFeature
+	 * @var StoreFeature
 	 */
 	private $feature;
 
@@ -40,14 +41,14 @@ class VanBourgondienFeatureEdit extends AdminDBEdit
 
 	private function initFeature()
 	{
-		$class_name = SwatDBClassMap::get('VanBourgondienFeature');
+		$class_name = SwatDBClassMap::get('StoreFeature');
 		$this->feature = new $class_name();
 		$this->feature->setDatabase($this->app->db);
 
 		if ($this->id !== null) {
 			if (!$this->feature->load($this->id)) {
 				throw new AdminNotFoundException(
-					sprintf(VanBourgondien::_(
+					sprintf(Store::_(
 						'Feature with id ‘%s’ not found.'),
 						$this->id));
 			}
@@ -101,7 +102,7 @@ class VanBourgondienFeatureEdit extends AdminDBEdit
 		$this->feature->save();
 
 		$message = new SwatMessage(sprintf(
-			VanBourgondien::_('Feature “%s” has been saved.'),
+			Store::_('Feature “%s” has been saved.'),
 			$this->feature->title));
 
 		$this->app->messages->add($message);

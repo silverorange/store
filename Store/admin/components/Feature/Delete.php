@@ -8,10 +8,11 @@ require_once 'Admin/AdminSummaryDependency.php';
 /**
  * Delete confirmation page for Features
  *
- * @package   VanBourgondien
+ * @package   Store
  * @copyright 2010 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class VanBourgondienFeatureDelete extends AdminDBDelete
+class StoreFeatureDelete extends AdminDBDelete
 {
 	// process phase
 	// {{{ protected function processDBData()
@@ -44,8 +45,8 @@ class VanBourgondienFeatureDelete extends AdminDBDelete
 		$item_list = $this->getItemList('integer');
 
 		$dep = new AdminListDependency();
-		$dep->setTitle(VanBourgondien::_('feature'),
-			VanBourgondien::_('features'));
+		$dep->setTitle(Store::_('feature'),
+			Store::_('features'));
 
 		$dep->entries = AdminListDependency::queryEntries($this->app->db,
 			'Feature', 'integer:id', null, 'text:title',
