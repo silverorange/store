@@ -7,10 +7,11 @@ require_once 'SwatDB/SwatDB.php';
 /**
  * Priority page for Features
  *
- * @package   VanBourgondien
+ * @package   Store
  * @copyright 2010 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class VanBourgondienFeaturePriority extends AdminDBOrder
+class StoreFeaturePriority extends AdminDBOrder
 {
 	// {{{ private properties
 

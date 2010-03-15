@@ -6,10 +6,11 @@ require_once 'Admin/pages/AdminIndex.php';
 /**
  * Index page for Features
  *
- * @package   VanBourgondien
+ * @package   Store
  * @copyright 2010 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class VanBourgondienFeatureIndex extends AdminIndex
+class StoreFeatureIndex extends AdminIndex
 {
 	// init phase
 	// {{{ protected function initInternal()
