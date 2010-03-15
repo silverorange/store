@@ -34,6 +34,11 @@ class StoreFeatureEdit extends AdminDBEdit
 		$this->initFeature();
 
 		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
+
+		$region_flydown = $this->ui->getWidget('region');
+		$region_flydown->addOptionsByArray(SwatDB::getOptionArray(
+			$this->app->db, 'Region', 'title', 'id', 'title'));
+
 	}
 
 	// }}}
@@ -71,6 +76,7 @@ class StoreFeatureEdit extends AdminDBEdit
 			'start_date',
 			'end_date',
 			'display_slot',
+			'region',
 		));
 
 		if ($values['start_date'] !== null) {
@@ -91,6 +97,7 @@ class StoreFeatureEdit extends AdminDBEdit
 		$this->feature->start_date   = $values['start_date'];
 		$this->feature->end_date     = $values['end_date'];
 		$this->feature->display_slot = $values['display_slot'];
+		$this->feature->region       = $values['region'];
 	}
 
 	// }}}
@@ -133,7 +140,9 @@ class StoreFeatureEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$this->ui->setValues(get_object_vars($this->feature));
+		$values = get_object_vars($this->feature);
+		$values['region'] = $this->feature->getInternalValue('region');
+		$this->ui->setValues($values);
 
 		$start_date = $this->ui->getWidget('start_date');
 		$end_date = $this->ui->getWidget('end_date');

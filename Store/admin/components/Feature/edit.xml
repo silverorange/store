@@ -44,6 +44,13 @@
 					<property name="value" type="boolean">true</property>
 				</widget>
 			</widget>
+			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Region</property>
+				<widget class="SwatFlydown" id="region">
+					<property name="show_blank" type="boolean">true</property>
+					<property name="blank_title" translatable="yes">All</property>
+				</widget>
+			</widget>
 			<widget class="SwatFieldset">
 				<property name="title">Active Period</property>
 				<widget class="SwatFormField" id="start_date_field">
