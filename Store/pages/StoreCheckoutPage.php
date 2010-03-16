@@ -16,7 +16,6 @@ abstract class StoreCheckoutPage extends SiteUiPage
 {
 	// {{{ protected properties
 
-	protected $base_ui_xml = 'Store/pages/checkout.xml';
 
 	// }}}
 	// {{{ public function setUI()
@@ -24,6 +23,14 @@ abstract class StoreCheckoutPage extends SiteUiPage
 	public function setUI($ui = null)
 	{
 		$this->ui = $ui;
+	}
+
+	// }}}
+	// {{{ protected function getBaseUiXml()
+
+	protected function getBaseUiXml()
+	{
+		return 'Store/pages/checkout.xml';
 	}
 
 	// }}}
@@ -62,7 +69,7 @@ abstract class StoreCheckoutPage extends SiteUiPage
 	protected function loadUI()
 	{
 		$this->ui = new SwatUI();
-		$this->ui->loadFromXML($this->base_ui_xml);
+		$this->ui->loadFromXML($this->getBaseUiXml());
 
 		/**
 		 * only load the page's xml if it actually exists. This allows
