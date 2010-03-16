@@ -173,7 +173,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				new SwatOption($type->id, $title, 'text/xml'));
 		}
 
-		if ($type_flydown->value === null) {
+		if ($type_flydown->value === null && $types->getFirst() !== null) {
 			$type_flydown->value = $types->getFirst()->id;
 		}
 
@@ -870,15 +870,23 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			$this->loadDataFromSession();
 
 		if ($this->app->session->checkout_with_account) {
-			$this->ui->getWidget('save_account_payment_method_field')->visible =
-				true;
-
-			$this->ui->getWidget('payment_method_note')->content = sprintf(
-				Store::_('%sSee our %sprivacy &amp; security policy%s for '.
-				'more information about how your information will be used.%s'),
-				'<p class="small-print">', '<a href="about/website/privacy">',
-				'</a>', '</p>');
+			$this->buildAccountSpecificFields();
 		}
+	}
+
+	// }}}
+	// {{{ protected function buildAccountSpecificFields()
+
+	protected function buildAccountSpecificFields()
+	{
+		$this->ui->getWidget('save_account_payment_method_field')->visible =
+			true;
+
+		$this->ui->getWidget('payment_method_note')->content = sprintf(
+			Store::_('%sSee our %sprivacy &amp; security policy%s for '.
+			'more information about how your information will be used.%s'),
+			'<p class="small-print">', '<a href="about/website/privacy">',
+			'</a>', '</p>');
 	}
 
 	// }}}
