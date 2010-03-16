@@ -157,7 +157,7 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 			!$ui->hasWidget('payment_method_container')) {
 			return;
 		}
-		
+
 		$payment_method_list      = $ui->getWidget('payment_method_list');
 		$payment_method_container = $ui->getWidget('payment_method_container');
 
