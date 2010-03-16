@@ -52,7 +52,7 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 	protected function loadUI()
 	{
 		$this->ui = new SwatUI();
-		$this->ui->loadFromXML($this->base_ui_xml);
+		$this->ui->loadFromXML($this->getBaseUiXml());
 
 		$form = $this->ui->getWidget('form');
 		$this->ui->loadFromXML('Store/pages/checkout-edit.xml', $form);
