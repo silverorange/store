@@ -15,7 +15,7 @@ require_once 'Payment/PayPal/SOAP.php';
  * Additionally, methods to handle PayPal Express Checkout are provided.
  *
  * @package   Store
- * @copyright 2009 silverorange
+ * @copyright 2009-2010 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StorePaymentProvider::factory()
  * @see       StorePaymentMethodTransaction
@@ -218,8 +218,12 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	/**
 	 * Initiates or updates an express checkout transaction
 	 *
-	 * @param array $parameters array of name-value pairs. Required parameters
-	 *                           are 'OrderTotal', 'ReturnURL' and 'CancelURL'.
+	 * @param array $details array of name-value pairs. Required parameters
+	 *                        are 'ReturnURL' and 'CancelURL'. If no
+	 *                        <kbd>$payment_details</kbd> are specified, the
+	 *                        'PaymentDetails' parameter is required.
+	 * @param array $payment_details array of name-value pairs. Required
+	 *                                parameters are 'OrderTotal'.
 	 *
 	 * @return string the token of the transaction.
 	 *
@@ -227,17 +231,31 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 * @see StorePayPalPaymentProvider::getExpressCheckoutUri()
 	 * @see StorePayPalPaymentProvider::doExpressCheckout()
 	 */
-	public function setExpressCheckout(array $parameters)
+	public function setExpressCheckout(array $details,
+		array $payment_details = array())
 	{
-		$required_parameters = array('OrderTotal', 'ReturnURL', 'CancelURL');
+		$required_parameters = array('ReturnURL', 'CancelURL');
 		foreach ($required_parameters as $name) {
-			if (!array_key_exists($name, $parameters)) {
+			if (!array_key_exists($name, $details)) {
 				throw new StoreException('Required setExpressCheckout() '.
-					'parameter "'.$name.'" is missing.');
+					'$details parameter "'.$name.'" is missing.');
 			}
 		}
 
-		$request  = $this->getSetExpressCheckoutRequest($parameters);
+		if ($payment_details == array() && isset($details['PaymentDetails'])) {
+			$payment_details  = $details['PaymentDetails'];
+		}
+
+		$required_parameters = array('OrderTotal');
+		foreach ($required_parameters as $name) {
+			if (!array_key_exists($name, $payment_details)) {
+				throw new StoreException('Required setExpressCheckout() '.
+					'$payment_details parameter"'.$name.'" is missing.');
+			}
+		}
+
+		$details['PaymentDetails'] = $payment_details;
+		$request = $this->getSetExpressCheckoutRequest($details);
 
 		try {
 			$response = $this->client->call('SetExpressCheckout', $request);
@@ -347,12 +365,27 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			$db
 		);
 
+		// set billing address if it was returned
+		if (isset($details->BillingAddress) &&
+			isset($details->BillingAddress->Country)) {
+			$billing_address = $this->getStoreOrderAddress(
+				$details->BillingAddress, $db);
+
+			// Only set address if it is not already set or if it is not the
+			// same as the existing billing address.
+			if ($order->billing_address === null ||
+				!$order->billing_address->compare($billing_address)) {
+				$order->billing_address = $billing_address;
+			}
+		}
+
+		// set shipping address if it was returned
 		if (isset($details->PayerInfo->Address->Country)) {
 			$shipping_address = $this->getStoreOrderAddress(
 				$details->PayerInfo->Address, $db);
 
 			// Only set address if it is not already set or if it is not the
-			// same as the existing billing address.
+			// same as the existing shipping address.
 			if ($order->shipping_address === null ||
 				!$order->shipping_address->compare($shipping_address)) {
 				$order->shipping_address = $shipping_address;
@@ -442,7 +475,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// }}}
 
 	// convenience methods for handling errors
-	// {{{ public static function getExceptionMessage()
+	// {{{ public static function getExceptionMessageId()
 
 	/**
 	 * Get a formatted message from a Payment_PayPal_SOAP_ErrorException
@@ -550,6 +583,12 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		 */
 		case 10564:
 			return 'card-error';
+
+		/*
+		 * ExpressCheckout session has expired. Checkout needs to be restarted.
+		 */
+		case 10411:
+			return 'paypal-expired-token';
 		}
 
 		return null;
@@ -562,20 +601,24 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 	protected function getSetExpressCheckoutRequest(array $parameters)
 	{
-		if (array_key_exists('OrderTotal', $parameters) &&
-			!is_array($parameters['OrderTotal'])) {
-			$parameters['OrderTotal'] = $this->getCurrencyValue(
-				$parameters['OrderTotal'], $this->currency);
+		if (isset($parameters['PaymentDetails']['OrderTotal']) &&
+			!is_array($parameters['PaymentDetails']['OrderTotal'])) {
+			$parameters['PaymentDetails']['OrderTotal'] =
+				$this->getCurrencyValue(
+					$parameters['PaymentDetails']['OrderTotal'],
+					$this->currency);
 		}
 
-		if (array_key_exists('Address', $parameters) &&
-			$parameters['Address'] instanceof StoreOrderAddress) {
-			$parameters['Address'] = $this->getAddress($parameters['Address']);
+		if (isset($parameters['PaymentDetails']['ShipToAddress']) &&
+			$parameters['PaymentDetails']['ShipToAddress'] instanceof StoreOrderAddress) {
+			$parameters['PaymentDetails']['ShipToAddress'] =
+				$this->getAddress(
+					$parameters['PaymentDetails']['ShipToAddress']);
 		}
 
 		return array(
 			'SetExpressCheckoutRequest' => array(
-				'Version' => '1.0',
+				'Version' => '62.0',
 				'SetExpressCheckoutRequestDetails' => $parameters,
 			),
 		);
@@ -588,7 +631,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	{
 		return array(
 			'GetExpressCheckoutDetailsRequest' => array(
-				'Version' => '1.0',
+				'Version' => '62.0',
 				'Token'   => $token,
 			),
 		);
@@ -602,7 +645,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	{
 		return array(
 			'DoExpressCheckoutPaymentRequest' => array(
-				'Version' => '1.0',
+				'Version' => '62.0',
 				'DoExpressCheckoutPaymentRequestDetails' =>
 					$this->getDoExpressCheckoutPaymentRequestDetails($token,
 						$action, $payer_id, $order),
@@ -952,7 +995,10 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			$details['InvoiceID'] = $order->id;
 		}
 
-		$details['ShipToAddress']      = $this->getShipToAddress($order);
+		if ($order->shipping_address->getInternalValue('country') !== null) {
+			$details['ShipToAddress'] = $this->getShipToAddress($order);
+		}
+
 		$details['PaymentDetailsItem'] = $this->getPaymentDetailsItems($order);
 
 		return $details;
