@@ -77,7 +77,6 @@ class StoreTotalRow extends SwatTableViewRow
 
 		$th_tag->open();
 		$this->displayTitle();
-		$this->displayNote();
 		$th_tag->close();
 	}
 
@@ -95,20 +94,18 @@ class StoreTotalRow extends SwatTableViewRow
 			$anchor_tag->setContent($this->title);
 			$anchor_tag->display();
 		}
-		echo ':';
-	}
 
-	// }}}
-	// {{{ protected function displayNote()
-
-	protected function displayNote()
-	{
 		if ($this->note !== null) {
-			$div = new SwatHtmlTag('div');
-			$div->class = 'note';
-			$div->setContent($this->note, $this->note_content_type);
-			$div->display();
+			$span = new SwatHtmlTag('span');
+			$span->class = 'note';
+			$span->setContent(sprintf('(%s)', $this->note),
+				$this->note_content_type);
+
+			echo ' ';
+			$span->display();
 		}
+
+		echo ':';
 	}
 
 	// }}}
