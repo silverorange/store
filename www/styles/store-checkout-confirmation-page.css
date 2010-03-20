@@ -41,6 +41,11 @@
 	float: left;
 }
 
+#tax_message {
+	margin-top: 1em;
+	text-align: right;
+}
+
 /* {{{ Multiple Payments Table */
 
 .multiple-payment-table {
