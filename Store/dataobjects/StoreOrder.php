@@ -271,9 +271,20 @@ class StoreOrder extends SwatDBDataObject
 	 */
 	public function getReceiptFooter()
 	{
+		$footer = array();
+
+		if ($this->shipping_address !== null &&
+			$this->shipping_address->provstate !== null &&
+			$this->shipping_address->provstate->tax_message !== null) {
+
+			$footer[] = $this->shipping_address->provstate->tax_message;
+		}
+
 		$locale_id = $this->getInternalValue('locale');
-		return sprintf(Store::_('All prices are in %s.'),
+		$footer[] = sprintf(Store::_('All prices are in %s.'),
 			SwatString::getInternationalCurrencySymbol($locale_id));
+
+		return implode("\n\n", $footer);
 	}
 
 	// }}}

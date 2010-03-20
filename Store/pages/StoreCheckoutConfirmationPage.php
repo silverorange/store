@@ -803,6 +803,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$this->buildShippingAddress($order);
 		$this->buildShippingType($order);
 		$this->buildPaymentMethod($order);
+		$this->buildTaxMessage($order);
 
 		$this->buildMessage();
 	}
@@ -934,6 +935,23 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		// invoice the items can not be edited
 		if ($this->app->session->order->isFromInvoice())
 			$this->ui->getWidget('item_link')->visible = false;
+	}
+
+	// }}}
+	// {{{ protected function buildTaxMessage()
+
+	protected function buildTaxMessage($order)
+	{
+		if ($order->shipping_address !== null &&
+			$order->shipping_address->provstate !== null &&
+			$order->shipping_address->provstate->tax_message !== null) {
+
+			$container = new SwatDisplayableContainer('tax_message');
+			$text = new SwatContentBlock();
+			$text->content = $order->shipping_address->provstate->tax_message;
+			$container->addChild($text);
+			$this->ui->getWidget('item_container')->addChild($container);
+		}
 	}
 
 	// }}}

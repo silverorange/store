@@ -36,6 +36,16 @@ class StoreProvState extends SwatDBDataObject
 	 */
 	public $abbreviation;
 
+	/**
+	 * Tax message
+	 *
+	 * If this province or state requires special tax procedures, this note
+	 * will be displayed to customers shipping to it.
+	 *
+	 * @var string
+	 */
+	public $tax_message;
+
 	// }}}
 	// {{{ public static function getAbbreviationById()
 
