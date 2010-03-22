@@ -166,10 +166,11 @@ class StoreItemsView extends SwatControl
 	 */
 	public function getHtmlHeadEntrySet()
 	{
-		if ($this->isVisible())
-			$set = $this->ui->getRoot()->getHtmlHeadEntrySet();
-		else
-			$set = new SwatHtmlHeadEntrySet();
+		$set = parent::getHtmlHeadEntrySet();
+
+		if ($this->isVisible()) {
+			$set->addEntrySet($this->ui->getRoot()->getHtmlHeadEntrySet());
+		}
 
 		return $set;
 	}
