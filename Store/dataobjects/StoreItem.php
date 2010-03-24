@@ -142,13 +142,22 @@ class StoreItem extends SwatDBDataObject
 	protected $is_enabled = array();
 
 	/**
-	 * Cache of unit cost of this item indexed by region id
+	 * Cache of prices indexed by region id
 	 *
 	 * This is an array of floats.
 	 *
 	 * @var array
 	 */
 	protected $price = array();
+
+	/**
+	 * Cache of original prices indexed by region id
+	 *
+	 * This is an array of floats.
+	 *
+	 * @var array
+	 */
+	protected $original_price = array();
 
 	/**
 	 * Cache of availability of this item indexed by region id
@@ -319,38 +328,61 @@ class StoreItem extends SwatDBDataObject
 	 */
 	public function getPrice($region = null)
 	{
-		if ($region !== null && !($region instanceof StoreRegion))
-			throw new StoreException(
-				'$region must be an instance of StoreRegion.');
-
-		// If region is not specified but is set through setRegion() use
-		// that region instead.
-		if ($region === null && $this->region !== null)
-			$region = $this->region;
-
-		// A region is required.
-		if ($region === null)
-			throw new StoreException(
-				'$region must be specified unless setRegion() is called '.
-				'beforehand.');
-
 		$price = null;
+		$region = $this->checkRegion($region);
 
 		if ($this->region !== null && $this->region->id == $region->id &&
 			isset($this->price[$region->id])) {
 			$price = $this->price[$region->id];
 		} else {
-			// Price is not loaded, load from specified region through region
-			// bindings.
 			$region_bindings = $this->region_bindings;
 			foreach ($region_bindings as $binding) {
 				if ($binding->getInternalValue('region') == $region->id) {
 					$price = $binding->price;
-					$this->price[$region->id] = $price;
 					break;
 				}
 			}
 		}
+
+		$this->price[$region->id] = $price;
+
+		return $price;
+	}
+
+	// }}}
+	// {{{ public function getOriginalPrice()
+
+	/**
+	 * Gets the original price of this item in a region
+	 *
+	 * @param StoreRegion $region optional. Region for which to get price. If
+	 *                             no region is specified, the region set using
+	 *                             {@link StoreItem::setRegion()} is used.
+	 *
+	 * @return double the original price of this item in the given region
+	 */
+	public function getOriginalPrice($region = null)
+	{
+		$price = null;
+		$region = $this->checkRegion($region);
+
+		if ($this->region !== null && $this->region->id == $region->id &&
+			isset($this->original_price[$region->id])) {
+			$price = $this->original_price[$region->id];
+		} else {
+			$region_bindings = $this->region_bindings;
+			foreach ($region_bindings as $binding) {
+				if ($binding->getInternalValue('region') == $region->id) {
+					$price = $binding->original_price;
+					break;
+				}
+			}
+		}
+
+		if ($price === null)
+			$price = $this->getPrice($region);
+
+		$this->original_price[$region->id] = $price;
 
 		return $price;
 	}
@@ -681,6 +713,29 @@ class StoreItem extends SwatDBDataObject
 		return array_merge(parent::getSerializablePrivateProperties(),
 			array('region', 'limit_by_region', 'is_available', 'is_enabled',
 				'price'));
+	}
+
+	// }}}
+	// {{{ private function checkRegion()
+
+	private function checkRegion($region)
+	{
+		if ($region !== null && !($region instanceof StoreRegion))
+			throw new StoreException(
+				'$region must be an instance of StoreRegion.');
+
+		// If region is not specified but is set through setRegion() use
+		// that region instead.
+		if ($region === null && $this->region !== null)
+			$region = $this->region;
+
+		// A region is required.
+		if ($region === null)
+			throw new StoreException(
+				'$region must be specified unless setRegion() is called '.
+				'beforehand.');
+
+		return $region;
 	}
 
 	// }}}

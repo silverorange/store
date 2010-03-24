@@ -240,9 +240,8 @@ class StoreItemsView extends SwatControl
 				$item->getStatus()->title);
 
 		$ds->price = $item->getDisplayPrice();
-		$ds->original_price = $item->getPrice();
-		$ds->discount = ($item->getPrice() - $item->getDisplayPrice());
-
+		$ds->original_price = $item->getOriginalPrice();
+		$ds->discount = $ds->original_price - $ds->price;
 		$ds->is_on_sale = ($ds->original_price !== $ds->price);
 
 		$sale = $item->getActiveSaleDiscount();
