@@ -218,7 +218,7 @@ class StoreCartEntry extends SwatDBDataObject
 	 */
 	public function getDiscount()
 	{
-		return $this->item->getPrice() - $this->getCalculatedItemPrice();
+		return $this->item->getOriginalPrice() - $this->getCalculatedItemPrice();
 	}
 
 	// }}}

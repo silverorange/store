@@ -3,6 +3,7 @@ create table ItemRegionBinding (
 	region int not null references Region(id),
 	enabled boolean not null default true,
 	price numeric(11, 2),
+	original_price numeric(11, 2),
 	primary key (item, region)
 );
 

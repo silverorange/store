@@ -20,6 +20,13 @@ class StoreItemRegionBinding extends SwatDBDataObject
 	public $price;
 
 	/**
+	 * Optional original price of the item
+	 *
+	 * @var float
+	 */
+	public $original_price;
+
+	/**
 	 * If the item should be available
 	 *
 	 * @var boolean
