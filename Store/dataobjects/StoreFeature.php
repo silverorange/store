@@ -1,6 +1,7 @@
 <?php
 
 require_once 'SwatDB/SwatDBDataObject.php';
+require_once 'Store/dataobjects/StoreRegion.php';
 
 /**
  * @package   Store
@@ -114,7 +115,8 @@ class StoreFeature extends SwatDBDataObject
 
 		$this->registerDateProperty('start_date');
 		$this->registerDateProperty('end_date');
-		$this->registerInternalProperty('region', 'Region');
+		$this->registerInternalProperty('region',
+			SwatDBClassMap::get('StoreRegion'));
 	}
 	// }}}
 	// {{{ protected function getSerializableSubDataObjects()
