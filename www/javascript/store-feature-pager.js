@@ -67,12 +67,6 @@ YAHOO.util.Event.onDOMReady(function ()
 			this.tabs = null;
 		}
 
-		if (Dom.hasClass(this.container, 'pager-with-nav')) {
-			this.drawNav();
-		} else {
-			this.nav = null;
-		}
-
 		// add pages
 		var pageNodes = Dom.getChildrenBy(
 			this.pageContainer,
@@ -112,6 +106,14 @@ YAHOO.util.Event.onDOMReady(function ()
 			for (var i = 0; i < pageNodes.length; i++) {
 				this.addPage(new Store.widget.Page(pageNodes[i], i));
 			}
+		}
+
+		if (   this.pages.length > 1
+			&& Dom.hasClass(this.container, 'pager-with-nav')
+		) {
+			this.drawNav();
+		} else {
+			this.nav = null;
 		}
 
 		// initialize current page
