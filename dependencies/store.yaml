@@ -50,6 +50,7 @@ Store:
         - packages/store/javascript/store-product-review-view.js
     packages/store/javascript/store-product-review-view.js:
     packages/store/javascript/store-quick-order-page.js:
+    packages/store/javascript/store-feature-pager.js:
     packages/store/admin/javascript/store-account-address-edit-page.js:
     packages/store/admin/javascript/store-item-edit-page.js:
     packages/store/admin/javascript/store-item-group-action.js:
@@ -73,6 +74,7 @@ Store:
     packages/store/styles/store-checkout-payment-method-page.css:
     packages/store/styles/store-checkout-progress.css:
     packages/store/styles/store-feedback-panel.css:
+    packages/store/styles/store-feature-pager.css:
     packages/store/styles/store-item-price-cell-renderer.css:
     packages/store/styles/store-message.css:
     packages/store/styles/store-order-payment-methods-cell-renderer.css:
