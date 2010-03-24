@@ -26,7 +26,8 @@ class StoreFeatureWrapper extends SwatDBRecordsetWrapper
 			$date->setTZbyID($app->config->date->time_zone);
 		}
 
-		$key = 'StoreFeatureWrapper.getFeatures.'.$date;
+		$region = $app->getRegion();
+		$key = 'StoreFeatureWrapper.getFeatures.'.$date.'.'.$region->id;
 		$features = $app->getCacheValue($key, 'product');
 		if ($features !== false)
 			return $features;
@@ -38,7 +39,7 @@ class StoreFeatureWrapper extends SwatDBRecordsetWrapper
 			order by display_slot, start_date desc';
 
 		$sql = sprintf($sql,
-			$app->db->quote($app->getRegion()->id, 'integer'));
+			$app->db->quote($region->id, 'integer'));
 
 		$all_features = SwatDB::query($app->db, $sql,
 			'StoreFeatureWrapper');
