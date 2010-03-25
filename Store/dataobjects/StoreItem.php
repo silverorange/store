@@ -412,6 +412,53 @@ class StoreItem extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function isOnSale()
+
+	/**
+	 * Gets the displayable price of this item including any sale discounts
+	 *
+	 * @param StoreRegion $region optional. Region for which to get prices. If
+	 *                             no region is specified, the region set using
+	 *                             {@link StoreItem::setRegion()} is used.
+	 *
+	 * @return boolean true if the display price is different than the original
+	 *                  price, and false if it is the same.
+	 */
+	public function isOnSale($region = null)
+	{
+		$price = $this->getDisplayPrice($region);
+		$original_price = $this->getOriginalPrice($region);
+
+		return ($price !== $original_price);
+	}
+
+	// }}}
+	// {{{ public function getSavings()
+
+	/**
+	 * Gets the savings on the item, in a formatted percentage string.
+	 *
+	 * @param StoreRegion $region optional. Region for which to get prices. If
+	 *                             no region is specified, the region set using
+	 *                             {@link StoreItem::setRegion()} is used.
+	 *
+	 * @return string the percentage savings as string with the percentage mark.
+	 */
+	public function getSavings($region = null)
+	{
+		$savings = null;
+
+		if ($this->isOnSale($region)) {
+			$price = $this->getDisplayPrice($region);
+			$original_price = $this->getOriginalPrice($region);
+			$savings = round(1 - ($price / $original_price), 2);
+			$savings = sprintf('%s%%', $savings * 100);
+		}
+
+		return $savings;
+	}
+
+	// }}}
 	// {{{ public function hasAvailableStatus()
 
 	/**
