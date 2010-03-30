@@ -68,6 +68,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 *                        'sandbox' is used.
 	 * <kbd>username</kbd>  - required. Username for PayPal authentication.
 	 * <kbd>password</kbd>  - required. Password for PayPal authentication.
+	 * <kbd>subject</kbd>   - optional. Third-party on behalf of whom requests
+	 *                        should be made. Use for market-place type apps.
 	 * <kbd>signature</kbd> - required. Signature used for signature-based
 	 *                        authentication.
 	 * <kbd>currency</kbd>  - required. The currency in which to perform
@@ -102,6 +104,10 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 		if (!isset($parameters['mode'])) {
 			$parameters['mode'] = 'sandbox';
+		}
+
+		if (isset($parameters['subject'])) {
+			$options['subject'] = $parameters['subject'];
 		}
 
 		$valid_modes = array('live', 'sandbox');
