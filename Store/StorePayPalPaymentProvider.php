@@ -426,17 +426,27 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 * @param string $payer_id PayPal payer identification number as returned
 	 *                          by the <kbd>getExpressCheckout()</kbd> method.
 	 * @param StoreOrder $order the order to pay for.
+	 * @param string $notify_url optional. The URL where the Instant Payment
+	 *                            Notification (IPN) from PayPal should be
+	 *                            sent. If not specified, the IPN will be sent
+	 *                            to the URL set in your PayPal account.
+	 * @param string $custom optional. A custom value that is passed through
+	 *                        with your order. This value will be present in
+	 *                        the IPN if it is specified.
 	 *
-	 * @return StorePaymentMethodTransaction the transaction object for the
-	 *                                        payment. This object contains the
-	 *                                        transaction date and identifier.
+	 * @return array a two element array containing a
+	 *                {@link StorePaymentMethodTransaction} object representing
+	 *                the transaction as well as an object containing the
+	 *                detailed response from PayPal. The array keys are:
+	 *                <kbd>transaction</kbd> and <kbd>details</kbd>
+	 *                respectively.
 	 *
 	 * @see StorePayPalPaymentProvider::setExpressCheckout()
 	 * @see StorePayPalPaymentProvider::getExpressCheckoutDetails()
 	 * @see StorePayPalPaymentProvider::getExpressCheckoutUri()
 	 */
 	public function doExpressCheckout($token, $action,
-		$payer_id, StoreOrder $order)
+		$payer_id, StoreOrder $order, $notify_url = '', $custom = '')
 	{
 		switch ($action) {
 		case 'Authorizarion':
@@ -475,7 +485,10 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$transaction->transaction_type = $transaction_type;
 		$transaction->transaction_id = $details->PaymentInfo->TransactionID;
 
-		return $transaction;
+		return array(
+			'transaction' => $transaction,
+			'details'     => $details,
+		);
 	}
 
 	// }}}
@@ -647,14 +660,14 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// {{{ protected function getDoExpressCheckoutPaymentRequest()
 
 	protected function getDoExpressCheckoutPaymentRequest($token,
-		$action, $payer_id, StoreOrder $order)
+		$action, $payer_id, StoreOrder $order, $notify_url = '', $custom = '')
 	{
 		return array(
 			'DoExpressCheckoutPaymentRequest' => array(
 				'Version' => '62.0',
 				'DoExpressCheckoutPaymentRequestDetails' =>
 					$this->getDoExpressCheckoutPaymentRequestDetails($token,
-						$action, $payer_id, $order),
+						$action, $payer_id, $order, $notify_url, $custom),
 			),
 		);
 	}
@@ -663,14 +676,15 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// {{{ protected function getDoExpressCheckoutPaymentRequestDetails()
 
 	protected function getDoExpressCheckoutPaymentRequestDetails($token,
-		$action, $payer_id, StoreOrder $order)
+		$action, $payer_id, StoreOrder $order, $notify_url = '', $custom = '')
 	{
 		$details = array();
 
 		$details['Token']          = $token;
 		$details['PaymentAction']  = $action;
 		$details['PayerID']        = $payer_id;
-		$details['PaymentDetails'] = $this->getPaymentDetails($order);
+		$details['PaymentDetails'] = $this->getPaymentDetails($order,
+			$notify_url, $custom);
 
 		return $details;
 	}
@@ -972,7 +986,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// data-structure helper methods (shared)
 	// {{{ protected function getPaymentDetails()
 
-	protected function getPaymentDetails(StoreOrder $order)
+	protected function getPaymentDetails(StoreOrder $order,
+		$notify_url = '', $custom = '')
 	{
 		$details = array();
 
@@ -1003,6 +1018,14 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 		if ($order->shipping_address->getInternalValue('country') !== null) {
 			$details['ShipToAddress'] = $this->getShipToAddress($order);
+		}
+
+		if ($notify_url != '') {
+			$details['Notify_URL'] = $this->formatString($notify_url, 2048);
+		}
+
+		if ($custom != '') {
+			$details['Custom'] = $this->formatString($custom, 256);
 		}
 
 		$details['PaymentDetailsItem'] = $this->getPaymentDetailsItems($order);
