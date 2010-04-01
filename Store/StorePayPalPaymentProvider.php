@@ -25,10 +25,10 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// {{{ class constants
 
 	const EXPRESS_CHECKOUT_URL_LIVE =
-		'https://www.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=';
+		'https://www.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=%s&useraction=%s';
 
 	const EXPRESS_CHECKOUT_URL_SANDBOX =
-		'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=';
+		'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=%s&useraction=%s';
 
 	// }}}
 	// {{{ protected properties
@@ -303,6 +303,9 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 * Site code should relocate to this URI.
 	 *
 	 * @param string $token the token of the current transaction.
+	 * @param boolean $continue optional. Whether or not the customer should
+	 *                           will continue to a review page, or will commit
+	 *                           to payment without an additonal review step.
 	 *
 	 * @return string the URI to which the browser should be relocated to
 	 *                 continue the Express Checkout transaction.
@@ -311,13 +314,22 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 * @see StorePayPalPaymentProvider::getExpressCheckoutDetails()
 	 * @see StorePayPalPaymentProvider::doExpressCheckout()
 	 */
-	public function getExpressCheckoutUri($token)
+	public function getExpressCheckoutUri($token, $continue = true)
 	{
+		$useraction = ($continue) ? 'continue' : 'commit';
+
 		if ($this->mode === 'live') {
-			$uri = self::EXPRESS_CHECKOUT_URL_LIVE.urlencode($token);
+			$uri = sprintf(
+				self::EXPRESS_CHECKOUT_URL_LIVE,
+				urlencode($token),
+				$useraction);
 		} else {
-			$uri = self::EXPRESS_CHECKOUT_URL_SANDBOX.urlencode($token);
+			$uri = sprintf(
+				self::EXPRESS_CHECKOUT_URL_SANDBOX,
+				urlencode($token),
+				$useraction);
 		}
+
 		return $uri;
 	}
 
@@ -1063,7 +1075,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$details['Name'] = $this->formatString($name, 127);
 
 		if ($item->sku != '') {
-			$details['Number']   = $item->sku;
+			$details['Number'] = $item->sku;
 		}
 
 		$details['Amount'] = $this->getCurrencyValue($item->price,
