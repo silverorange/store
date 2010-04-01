@@ -505,7 +505,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 	// }}}
 
-	// convenience methods for handling errors
+	// convenience methods
 	// {{{ public static function getExceptionMessageId()
 
 	/**
@@ -623,6 +623,57 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		}
 
 		return null;
+	}
+
+	// }}}
+	// {{{ public function formatNumber()
+
+	/**
+	 * @param double $value
+	 *
+	 * @return string formatted order total.
+	 */
+	public function formatNumber($value)
+	{
+		$value = SwatNumber::roundToEven($value, 2);
+		return number_format($value, 2, '.', '');
+	}
+
+	// }}}
+	// {{{ public function formatString()
+
+	/**
+	 * @param string $string
+	 *
+	 * @return string
+	 */
+	public function formatString($string, $max_length = 0)
+	{
+		// convert to iso-8859-1
+		$string = iconv('utf-8', 'ASCII//TRANSLIT', $string);
+
+		// truncate to max_length
+		if ($max_length > 0) {
+			$string = mb_substr($string, 0, $max_length);
+		}
+
+		return $string;
+	}
+
+	// }}}
+	// {{{ public function getCurrencyValue()
+
+	/**
+	 * @param double $value
+	 *
+	 * @return string formatted order total.
+	 */
+	public function getCurrencyValue($value, $currency)
+	{
+		return array(
+			'_'          => $this->formatNumber($value),
+			'currencyID' => $currency,
+		);
 	}
 
 	// }}}
@@ -1128,59 +1179,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
-	// {{{ protected function getCurrencyValue()
-
-	/**
-	 * @param double $value
-	 *
-	 * @return string formatted order total.
-	 */
-	protected function getCurrencyValue($value, $currency)
-	{
-		return array(
-			'_'          => $this->formatNumber($value),
-			'currencyID' => $currency,
-		);
-	}
-
-	// }}}
 
 	// general helper methods
-	// {{{ protected function formatNumber()
-
-	/**
-	 * @param double $value
-	 *
-	 * @return string formatted order total.
-	 */
-	protected function formatNumber($value)
-	{
-		$value = SwatNumber::roundToEven($value, 2);
-		return number_format($value, 2, '.', '');
-	}
-
-	// }}}
-	// {{{ protected function formatString()
-
-	/**
-	 * @param string $string
-	 *
-	 * @return string
-	 */
-	protected function formatString($string, $max_length = 0)
-	{
-		// convert to iso-8859-1
-		$string = iconv('utf-8', 'ASCII//TRANSLIT', $string);
-
-		// truncate to max_length
-		if ($max_length > 0) {
-			$string = mb_substr($string, 0, $max_length);
-		}
-
-		return $string;
-	}
-
-	// }}}
 	// {{{ protected function getMerchantSessionId()
 
 	protected function getMerchantSessionId()
