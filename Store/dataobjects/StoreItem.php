@@ -436,13 +436,13 @@ class StoreItem extends SwatDBDataObject
 	// {{{ public function getSavings()
 
 	/**
-	 * Gets the savings on the item, in a formatted percentage string.
+	 * Gets the savings on the item
 	 *
 	 * @param StoreRegion $region optional. Region for which to get prices. If
 	 *                             no region is specified, the region set using
 	 *                             {@link StoreItem::setRegion()} is used.
 	 *
-	 * @return string the percentage savings as string with the percentage mark.
+	 * @return float the percentage savings
 	 */
 	public function getSavings($region = null)
 	{
@@ -452,7 +452,6 @@ class StoreItem extends SwatDBDataObject
 			$price = $this->getDisplayPrice($region);
 			$original_price = $this->getOriginalPrice($region);
 			$savings = round(1 - ($price / $original_price), 2);
-			$savings = sprintf('%s%%', $savings * 100);
 		}
 
 		return $savings;
