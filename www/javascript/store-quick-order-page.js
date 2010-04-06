@@ -19,12 +19,16 @@ function StoreQuickOrder(id, item_selector_id, num_rows)
 	this.items = [];
 	this.item_ids = [];
 
+	this.submitted = false;
+
 	var item;
 	for (var i = 0; i < num_rows; i++) {
 		item = new StoreQuickOrderItem(this, item_selector_id, i);
 		this.items.push(item);
 		this.item_ids.push(item_selector_id + '_' + i);
 	}
+
+	YAHOO.util.Event.onDOMReady(this.initSubmitButton, null, this);
 }
 
 /**
@@ -40,6 +44,32 @@ StoreQuickOrder.timeout_delay = 250;
  * @var String
  */
 StoreQuickOrder.loading_text = 'loading …';
+
+/**
+ * Sets an event handler on the submit button to prevent submitting the form
+ * twice.
+ */
+StoreQuickOrder.prototype.initSubmitButton = function()
+{
+	var form = document.getElementById('sku_renderer_0').form;
+	var buttons = YAHOO.util.Dom.getElementsByClassName(
+		'swat-button', 'input', form);
+
+	var that = this;
+
+	YAHOO.util.Event.on(form, 'submit', function (e) {
+		for (var i = 0; i < buttons.length; i++) {
+			YAHOO.util.Dom.addClass(buttons[i], 'swat-insensitive');
+			buttons[i].disabled = true;
+		}
+
+		if (that.submitted) {
+			YAHOO.util.Event.preventDefault(e);
+		}
+
+		that.submitted = true;
+	});
+}
 
 /**
  * Gets an item selector on the quick-order by the item selector's widget id
