@@ -33,6 +33,9 @@ class StoreFeatureDelete extends AdminDBDelete
 			SwatMessage::NOTIFICATION);
 
 		$this->app->messages->add($message);
+
+		if (isset($this->app->memcache))
+			$this->app->memcache->flushNs('product');
 	}
 
 	// }}}

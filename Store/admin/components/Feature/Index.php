@@ -42,6 +42,9 @@ class StoreFeatureIndex extends AdminIndex
 			SwatDB::updateColumn($this->app->db, 'Feature',
 				'boolean:enabled', true, 'id', $view->getSelection());
 
+			if (isset($this->app->memcache))
+				$this->app->memcache->flushNs('product');
+
 			$message = new SwatMessage(sprintf(ngettext(
 				'One feature has been enabled.',
 				'%d features have been enabled.', $num),
@@ -52,6 +55,9 @@ class StoreFeatureIndex extends AdminIndex
 		case 'disable':
 			SwatDB::updateColumn($this->app->db, 'Feature',
 				'boolean:enabled', false, 'id', $view->getSelection());
+
+			if (isset($this->app->memcache))
+				$this->app->memcache->flushNs('product');
 
 			$message = new SwatMessage(sprintf(ngettext(
 				'One feature has been disabled.',

@@ -40,6 +40,9 @@ class StoreFeaturePriority extends AdminDBOrder
 	{
 		SwatDB::updateColumn($this->app->db, 'Feature',
 			'integer:priority', $index, 'integer:id', array($id));
+
+		if (isset($this->app->memcache))
+			$this->app->memcache->flushNs('product');
 	}
 
 	// }}}
