@@ -126,13 +126,10 @@ class StorePaymentTypeEdit extends AdminDBEdit
 
 	protected function updatePaymentType()
 	{
-		$values = $this->ui->getValues(array('title', 'shortname', 'note',
-			'surcharge'));
+		$values = $this->ui->getValues(array('title', 'shortname'));
 
 		$this->payment_type->title     = $values['title'];
 		$this->payment_type->shortname = $values['shortname'];
-		$this->payment_type->surcharge = $values['surcharge'];
-		$this->payment_type->note      = $values['note'];
 	}
 
 	// }}}
