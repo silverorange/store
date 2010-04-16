@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StorePaymentType.php';
  * Edit page for payment types
  *
  * @package   Store
- * @copyright 2005-2008 silverorange
+ * @copyright 2005-2010 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StorePaymentTypeEdit extends AdminDBEdit
