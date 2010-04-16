@@ -93,7 +93,7 @@ class StorePaymentTypeEdit extends AdminDBEdit
 		$payment_type = new $class_name();
 		$payment_type->setDatabase($this->app->db);
 
-		if ($payment_type->loadByShortname($shortname)) {
+		if ($payment_type->loadFromShortname($shortname)) {
 			if ($payment_type->id !== $this->payment_type->id)
 				$valid = false;
 		}
@@ -115,7 +115,8 @@ class StorePaymentTypeEdit extends AdminDBEdit
 			'Region', 'id');
 
 		$message = new SwatMessage(
-			sprintf(Store::_('“%s” has been saved.'), $values['title']));
+			sprintf(Store::_('“%s” has been saved.'),
+				$this->payment_type->title));
 
 		$this->app->messages->add($message);
 	}
@@ -125,10 +126,13 @@ class StorePaymentTypeEdit extends AdminDBEdit
 
 	protected function updatePaymentType()
 	{
-		$values = $this->ui->getValues(array('title', 'shortname'));
+		$values = $this->ui->getValues(array('title', 'shortname', 'note',
+			'surcharge'));
 
 		$this->payment_type->title     = $values['title'];
 		$this->payment_type->shortname = $values['shortname'];
+		$this->payment_type->surcharge = $values['surcharge'];
+		$this->payment_type->note      = $values['note'];
 	}
 
 	// }}}

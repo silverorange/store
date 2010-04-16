@@ -19,6 +19,16 @@
 					<property name="maxlength" type="integer">100</property>
 				</widget>
 			</widget>
+			<widget class="SwatFormField" id="surcharge_field">
+				<property name="visible" type="boolean">false</property>
+				<property name="title" translatable="yes">Surcharge</property>
+				<widget class="SwatMoneyEntry" id="surcharge" />
+			</widget>
+			<widget class="SwatFormField" id="note_field">
+				<property name="visible" type="boolean">false</property>
+				<property name="title" translatable="yes">Note</property>
+				<widget class="SwatTextarea" id="note" />
+			</widget>
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Available to Customers in the following Regions</property>
 				<widget class="SwatCheckboxList" id="regions" />
