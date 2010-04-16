@@ -14,7 +14,7 @@ require_once 'Store/StoreCommandLineConfigModule.php';
  * for each entry found in the dirty cache table list.
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2010 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCacheTableUpdater extends SiteCommandLineApplication
@@ -26,6 +26,7 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
 		$this->initModules();
 		$this->parseCommandLineArguments();
 
+		$this->lock();
 		$this->debug(Store::_('Pass 1/2:')."\n\n", true);
 
 		$this->updateCacheTables();
@@ -34,6 +35,7 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
 		$this->debug("\n".Store::_('Pass 2/2:')."\n\n", true);
 
 		$this->updateCacheTables();
+		$this->unlock();
 	}
 
 	// }}}
@@ -57,7 +59,6 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
 
 				$sql = sprintf('select * from %s()', $update_function);
 				SwatDB::exec($this->db, $sql);
-
 				$this->debug(Store::_('done')."\n");
 			}
 
