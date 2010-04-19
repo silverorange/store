@@ -41,6 +41,8 @@ class StoreCartEntry extends SwatDBDataObject
 	const SOURCE_ACCOUNT_ORDER_PAGE = 4;
 	const SOURCE_INVOICE            = 5;
 	const SOURCE_ARTICLE_PAGE       = 6;
+	const SOURCE_SEARCH_PAGE        = 7;
+	const SOURCE_CART_PAGE          = 8;
 
 	// }}}
 	// {{{ public properties
