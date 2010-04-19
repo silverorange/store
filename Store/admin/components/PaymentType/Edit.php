@@ -93,7 +93,7 @@ class StorePaymentTypeEdit extends AdminDBEdit
 		$payment_type = new $class_name();
 		$payment_type->setDatabase($this->app->db);
 
-		if ($payment_type->loadFromShortname($shortname)) {
+		if ($payment_type->loadByShortname($shortname)) {
 			if ($payment_type->id !== $this->payment_type->id)
 				$valid = false;
 		}
