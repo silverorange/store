@@ -206,7 +206,7 @@ class StorePageFactory extends SitePageFactory
 				$this->app->getRegion()->id;
 
 			$data = $this->app->memcache->getNs('product', $key);
-			if ($data !== false)
+			if (is_array($data))
 				return $data;
 		}
 
