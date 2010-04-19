@@ -38,8 +38,9 @@ class StorePaymentTypeEdit extends AdminDBEdit
 
 		$region_list->addOptionsByArray($region_list_options);
 
-		if ($this->id === null)
+		if ($this->id === null) {
 			$this->ui->getWidget('shortname_field')->visible = false;
+		}
 	}
 
 	// }}}
