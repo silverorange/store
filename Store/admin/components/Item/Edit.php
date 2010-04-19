@@ -132,6 +132,11 @@ class StoreItemEdit extends AdminDBEdit
 			$price_widget = $replicator->getWidget('price', $region->id);
 			$price_widget->required = $enabled_widget->value;
 			$price_widget->locale = $region->getFirstLocale()->id;
+
+			$original_price_widget =
+				$replicator->getWidget('original_price', $region->id);
+
+			$original_price_widget->locale = $region->getFirstLocale()->id;
 		}
 
 		parent::process();
@@ -294,8 +299,10 @@ class StoreItemEdit extends AdminDBEdit
 		$class_name = SwatDBClassMap::get('StoreItemRegionBinding');
 
 		foreach ($price_replicator->replicators as $region => $title) {
-			$price_field   = $price_replicator->getWidget('price', $region);
+			$price_field = $price_replicator->getWidget('price', $region);
 			$enabled_field = $price_replicator->getWidget('enabled', $region);
+			$original_price_field =
+				$price_replicator->getWidget('original_price', $region);
 
 			// only create new binding if price exists, otherwise there is no
 			// use for the binding, and it can lead to bad data on the site
@@ -304,6 +311,7 @@ class StoreItemEdit extends AdminDBEdit
 				$region_binding->region  = $region;
 				$region_binding->enabled = $enabled_field->value;
 				$region_binding->price   = $price_field->value;
+				$region_binding->original_price = $original_price_field->value;
 
 				$this->item->region_bindings->add($region_binding);
 			}
@@ -437,6 +445,9 @@ class StoreItemEdit extends AdminDBEdit
 				$region_id = $binding->region->id;
 				$price_replicator->getWidget('price', $region_id)->value =
 					$binding->price;
+
+				$price_replicator->getWidget('original_price', $region_id)->value =
+					$binding->original_price;
 
 				$price_replicator->getWidget('enabled', $region_id)->value =
 					$binding->enabled;

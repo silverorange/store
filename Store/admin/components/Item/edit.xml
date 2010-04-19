@@ -96,9 +96,13 @@
 							<property name="title" translatable="yes">Price</property>
 							<widget class="SwatMoneyEntry" id="price" />
 						</widget>
+						<widget class="SwatFormField" id="original_price_field">
+							<property name="title" translatable="yes">Original Price</property>
+							<widget class="SwatMoneyEntry" id="original_price" />
+						</widget>
 					</widget>
 					<widget class="SwatContentBlock">
-						<property name="content" translatable="yes"><![CDATA[<div class="swat-note clearfix" id="pricing_note">The enabled checkbox must be set for the this item to appear on the site in that region. The enabled flag overrides all other item statuses. The price is required if the item is enabled in that region.</div>]]></property>
+						<property name="content" translatable="yes"><![CDATA[<div class="swat-note clearfix" id="pricing_note"><p>The enabled checkbox must be set for the this item to appear on the site in that region. The enabled flag overrides all other item statuses. The price is required if the item is enabled in that region.</p><p>The original price is optional and is only to indicate a sale.</p></div>]]></property>
 						<property name="content_type">text/xml</property>
 					</widget>
 				</widget>
