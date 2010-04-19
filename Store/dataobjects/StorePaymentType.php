@@ -89,8 +89,23 @@ class StorePaymentType extends SwatDBDataObject
 	 * Loads a payment type by its shortname
 	 *
 	 * @param string $shortname the shortname of the payment type to load.
+	 *
+	 * @deprecated Use {@link StorePaymentType::loadByShortname()} instead.
 	 */
 	public function loadFromShortname($shortname)
+	{
+		return $this->loadByShortname($shortname);
+	}
+
+	// }}}
+	// {{{ public function loadByShortname()
+
+	/**
+	 * Loads a payment type by its shortname
+	 *
+	 * @param string $shortname the shortname of the payment type to load.
+	 */
+	public function loadByShortname($shortname)
 	{
 		$this->checkDB();
 		$row = null;
