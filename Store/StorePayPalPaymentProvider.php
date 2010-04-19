@@ -764,7 +764,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$payment_type = new $class_name();
 		$payment_type->setDatabase($db);
 
-		if ($payment_type->loadFromShortname('paypal')) {
+		if ($payment_type->loadByShortname('paypal')) {
 			$payment_method->payment_type = $payment_type;
 		}
 
