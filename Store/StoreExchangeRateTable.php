@@ -57,9 +57,9 @@ class StoreExchangeRateTable
 	/**
 	 * Creates a new exchange rate table
 	 *
-	 * @param $from_currency Currency to convert from 
-	 * @param $to_currency Currency to convert to 
-	 * @param SwatDate $date The date of the cut-off 
+	 * @param $from_currency Currency to convert from
+	 * @param $to_currency Currency to convert to
+	 * @param SwatDate $date The date of the cut-off
 	 */
 	public function __construct($from_currency, $to_currency,
 		SwatDate $cut_off_date = null)
@@ -76,9 +76,9 @@ class StoreExchangeRateTable
 	 * Get an exchange rate
 	 *
 	 * Returns the exchange rate for a given day. If no date is set,
-	 * returns the most recent exchange rate. 
+	 * returns the most recent exchange rate.
 	 *
-	 * @param SwatDate $date Date to return the exchange rate for (optional) 
+	 * @param SwatDate $date Date to return the exchange rate for (optional)
 	 *
 	 * @return float The exchange rate for the given date.
 	 */
