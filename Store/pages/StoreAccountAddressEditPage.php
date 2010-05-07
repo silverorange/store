@@ -263,9 +263,9 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 	}
 
 	// }}}
-	// {{{ private function setupPostalCode()
+	// {{{ protected function setupPostalCode()
 
-	private function setupPostalCode()
+	protected function setupPostalCode()
 	{
 		// set provsate and country on postal code entry
 		$postal_code = $this->ui->getWidget('postal_code');
@@ -290,9 +290,9 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 	}
 
 	// }}}
-	// {{{ private function addMessage()
+	// {{{ protected function addMessage()
 
-	private function addMessage($text)
+	protected function addMessage($text)
 	{
 		ob_start();
 		$this->address->displayCondensed();
@@ -336,10 +336,6 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 		$country_flydown->addOptionsByArray(SwatDB::getOptionArray(
 			$this->app->db, 'Country', 'title', 'id', 'title',
 			sprintf('visible = %s', $this->app->db->quote(true, 'boolean'))));
-
-		$this->layout->startCapture('content');
-		Swat::displayInlineJavaScript($this->getInlineJavaScript());
-		$this->layout->endCapture();
 	}
 
 	// }}}
@@ -371,6 +367,18 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 		} else {
 			$this->layout->data->title = Store::_('Edit an Existing Address');
 		}
+	}
+
+	// }}}
+	// {{{ protected function buildContent()
+
+	protected function buildContent()
+	{
+		parent::buildContent();
+
+		$this->layout->startCapture('content');
+		Swat::displayInlineJavaScript($this->getInlineJavaScript());
+		$this->layout->endCapture();
 	}
 
 	// }}}
