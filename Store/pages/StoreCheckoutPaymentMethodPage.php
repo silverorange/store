@@ -841,6 +841,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 		foreach ($this->getPaymentMethods() as $method) {
 			ob_start();
+			$method->showCardExpiry(false);
 			$method->display();
 			$method_display = ob_get_clean();
 			$method_list->addOption($method->id, $method_display, 'text/xml');
@@ -1077,6 +1078,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 		foreach ($methods as $method) {
 			echo '<tr><th class="payment">';
+			$method->showCardExpiry(false);
 			$method->display();
 			echo '</th><td class="payment-amount">';
 			$method->displayAmount();
