@@ -156,6 +156,45 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	 */
 	protected $gpg = null;
 
+	/**
+	 * When displaying the payment method, defines which parts to show.
+	 *
+	 * @var array
+	 *
+	 * @see StorePaymentMethod::showCardNumber()
+	 * @see StorePaymentMethod::showCardFullname()
+	 * @see StorePaymentMethod::showCardExpiry()
+	 */
+	protected $display_details = array(
+		'card_number'   => true,
+		'card_fullname' => true,
+		'card_expiry'   => true,
+		);
+
+	// }}}
+	// {{{ public function showCardNumber()
+
+	public function showCardNumber($display = true)
+	{
+		$this->display_details['card_number'] = $display;
+	}
+
+	// }}}
+	// {{{ public function showCardFullname()
+
+	public function showCardFullname($display = true)
+	{
+		$this->display_details['card_fullname'] = $display;
+	}
+
+	// }}}
+	// {{{ public function showCardExpiry()
+
+	public function showCardExpiry($display = true)
+	{
+		$this->display_details['card_expiry'] = $display;
+	}
+
 	// }}}
 	// {{{ public function setCardNumber()
 
@@ -485,8 +524,14 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	{
 		if ($this->payment_type->isCard()) {
 			$this->card_type->display();
-			$this->displayCard($passphrase);
-			if ($display_details) {
+
+			if ($this->display_details['card_number'] === true) {
+				$this->displayCard($passphrase);
+			}
+
+			if (($this->display_details['card_expiry'] === true ||
+					$this->display_details['card_fullname'] === true) &&
+				$display_details) {
 				$this->displayCardDetails();
 			}
 		} elseif ($this->payment_type->isPayPal()) {
@@ -541,7 +586,8 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 			$span_tag->class = 'store-payment-method-info';
 			$span_tag->open();
 
-			if ($this->card_expiry !== null) {
+			if ($this->display_details['card_expiry'] === true &&
+				$this->card_expiry !== null) {
 				echo 'Expiration Date: ',
 					$this->card_expiry->format(SwatDate::DF_CC_MY);
 
@@ -549,8 +595,10 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 					echo ', ';
 			}
 
-			if ($this->card_fullname !== null)
+			if ($this->display_details['card_fullname'] === true &&
+				$this->card_fullname !== null) {
 				echo SwatString::minimizeEntities($this->card_fullname);
+			}
 
 			$span_tag->close();
 		}
@@ -592,19 +640,24 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 
 	protected function displayCardAsText($display_details, $line_break)
 	{
-		if ($this->card_number_preview !== null) {
+		if ($this->display_details['card_number'] === true &&
+			$this->card_number_preview !== null) {
 			echo $line_break, StoreCardType::formatCardNumber(
 				$this->card_number_preview,
 				$this->card_type->getMaskedFormat());
 		}
 
-		if ($display_details) {
-			if ($this->card_expiry !== null) {
+		if (($this->display_details['card_expiry'] === true ||
+				$this->display_details['card_fullname'] === true) &&
+			$display_details) {
+			if ($this->display_details['card_expiry'] === true &&
+				$this->card_expiry !== null) {
 				echo $line_break, 'Expiration Date: ',
 					$this->card_expiry->format(SwatDate::DF_CC_MY);
 			}
 
-			if ($this->card_fullname !== null) {
+			if ($this->display_details['card_fullname'] === true &&
+				$this->card_fullname !== null) {
 				echo $line_break, $this->card_fullname;
 			}
 		}
