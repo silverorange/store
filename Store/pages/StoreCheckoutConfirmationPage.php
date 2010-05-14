@@ -970,7 +970,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$this->displayNewPaymentLinks($order);
 		} else {
 			if (count($order->payment_methods) > 0) {
-				$payment_method =  $order->payment_methods->getFirst();
+				$payment_method = $order->payment_methods->getFirst();
+				$payment_method->showCardExpiry(false);
 				$payment_method->display();
 				$this->displayNewPaymentLinks($order);
 			} else {
@@ -1094,6 +1095,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		$payment_total = 0;
 		foreach ($order->payment_methods as $payment_method) {
+			$payment_method->showCardExpiry(false);
 			$payment_total+= $payment_method->amount;
 
 			echo '<tr><th class="payment">';

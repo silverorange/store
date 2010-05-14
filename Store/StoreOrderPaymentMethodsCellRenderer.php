@@ -42,6 +42,27 @@ class StoreOrderPaymentMethodsCellRenderer extends SwatCellRenderer
 	public $display_details = true;
 
 	/**
+	 * Whether or not to show card_number
+	 *
+	 * @var boolean
+	 */
+	public $show_card_number = true;
+
+	/**
+	 * Whether or not to show card_expiry
+	 *
+	 * @var boolean
+	 */
+	public $show_card_expiry = false;
+
+	/**
+	 * Whether or not to show card_fullname
+	 *
+	 * @var boolean
+	 */
+	public $show_card_fullname = true;
+
+	/**
 	 * The Crypt_GPG object to use for decryption
 	 *
 	 * @var Crypt_GPG
@@ -75,6 +96,9 @@ class StoreOrderPaymentMethodsCellRenderer extends SwatCellRenderer
 				if ($this->gpg instanceof Crypt_GPG)
 					$payment_method->setGPG($this->gpg);
 
+				$payment_method->showCardNumber($this->show_card_number);
+				$payment_method->showCardExpiry($this->show_card_expiry);
+				$payment_method->showCardFullname($this->show_card_fullname);
 				$payment_method->display($this->display_details,
 					$this->passphrase);
 
@@ -84,6 +108,11 @@ class StoreOrderPaymentMethodsCellRenderer extends SwatCellRenderer
 
 				$payment_total = 0;
 				foreach ($this->payment_methods as $payment_method) {
+					$payment_method->showCardNumber($this->show_card_number);
+					$payment_method->showCardExpiry($this->show_card_expiry);
+					$payment_method->showCardFullname(
+						$this->show_card_fullname);
+
 					$payment_total+= $payment_method->amount;
 
 					if ($this->gpg instanceof Crypt_GPG)
