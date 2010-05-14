@@ -214,6 +214,7 @@
 					</object>
 					<object class="SwatTableViewColumn" id="id">
 						<object class="StorePaymentMethodCellRenderer">
+							<property name="show_card_expiry" type="boolean">true</property>
 							<property name="payment_method" type="data">payment_method</property>
 						</object>
 					</object>
