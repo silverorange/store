@@ -28,7 +28,7 @@ require_once 'Store/dataobjects/StoreRegion.php';
  * multiple categories so categories do not represent a tree structure.
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2010 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCategory extends SwatDBDataObject
@@ -54,15 +54,6 @@ class StoreCategory extends SwatDBDataObject
 	 * @var integer
 	 */
 	public $id;
-
-	/**
-	 * Identifier of parent category
-	 *
-	 * If this category is a root category, this property is null.
-	 *
-	 * @var integer
-	 */
-	public $parent;
 
 	/**
 	 * Short, textual identifier of this category
@@ -496,6 +487,9 @@ class StoreCategory extends SwatDBDataObject
 		$this->registerInternalProperty('path');
 		$this->registerInternalProperty('image',
 			SwatDBClassMap::get('StoreCategoryImage'));
+
+		$this->registerInternalProperty('parent',
+			SwatDBClassMap::get('StoreCategory'));
 
 		$this->table = 'Category';
 		$this->id_field = 'integer:id';
