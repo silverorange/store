@@ -33,7 +33,7 @@ require_once 'Store/admin/components/Product/include/'.
  * Index page for Categories
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2010 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCategoryIndex extends AdminIndex
@@ -1045,9 +1045,10 @@ class StoreCategoryIndex extends AdminIndex
 		$this->navbar->addEntry(new SwatNavBarEntry(
 			Store::_('Product Categories'), 'Category'));
 
-		if ($category->parent !== null) {
+		if ($category->getInternalValue('parent') !== null) {
 			$navbar_rs = SwatDB::executeStoredProc($this->app->db,
-				'getCategoryNavbar', array($category->parent));
+				'getCategoryNavbar',
+					array($category->getInternalValue('parent')));
 
 			foreach ($navbar_rs as $row)
 				$this->navbar->addEntry(new SwatNavBarEntry($row->title,
