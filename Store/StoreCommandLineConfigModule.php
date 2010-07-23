@@ -13,7 +13,7 @@ require_once 'Site/SiteCommandLineConfigModule.php';
  * @copyright 2007-2010 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreCommandLineConfigModule extends SiteConfigModule
+class StoreCommandLineConfigModule extends SiteCommandLineConfigModule
 {
 }
 
