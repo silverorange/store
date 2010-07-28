@@ -7,7 +7,7 @@ require_once 'Swat/SwatYUI.php';
  * Billing address edit page of checkout
  *
  * @package   Store
- * @copyright 2005-2009 silverorange
+ * @copyright 2005-2010 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
@@ -176,6 +176,21 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 		$this->address = $address;
 
 		return $this->address;
+	}
+
+	// }}}
+	// {{{ protected function getRequiredAddressFields()
+
+	protected function getRequiredAddressFields()
+	{
+		return array(
+			'fullname'    => 'shipping_address_fullname',
+			'line1'       => 'shipping_address_line1',
+			'city'        => 'shipping_address_city',
+			'provstate'   => 'shipping_address_provstate',
+			'postal_code' => 'shipping_address_postalcode',
+			'phone'       => 'shipping_address_phone',
+		);
 	}
 
 	// }}}
