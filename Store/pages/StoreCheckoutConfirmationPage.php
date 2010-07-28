@@ -192,11 +192,11 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		if (!in_array($address->getInternalValue('country'), $country_ids)) {
 			$valid = false;
-			$message = new SwatMessage('Billing Address', 'error');
+			$message = new SwatMessage(Store::_('Billing Address'), 'error');
 
-			$message->secondary_content = sprintf(
+			$message->secondary_content = sprintf(Store::_(
 				'Orders can not be billed to %s. Please select a different '.
-				'billing address or enter a new billing address.',
+				'billing address or enter a new billing address.'),
 				$address->country->title);
 
 			$this->ui->getWidget('message_display')->add($message,
@@ -215,7 +215,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$valid = true;
 		$billing_provstate = $address->getInternalValue('provstate');
 
-		/* If provstate is null, it means it's either not required, or
+		/*
+		 * If provstate is null, it means it's either not required, or
 		 * provstate_other is set. In either case, we don't need to check
 		 * against valid provstates.
 		 */
@@ -228,10 +229,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		if (!in_array($billing_provstate, $provstate_ids)) {
 			$valid = false;
-			$message = new SwatMessage('Billing Address', 'error');
-			$message->secondary_content = sprintf(
+			$message = new SwatMessage(Store::_('Billing Address'), 'error');
+			$message->secondary_content = sprintf(Store::_(
 				'Orders can not be billed to %s. Please select a different '.
-				'billing address or enter a new billing address.',
+				'billing address or enter a new billing address.'),
 				$address->provstate->title);
 
 			$this->ui->getWidget('message_display')->add($message,
@@ -254,10 +255,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		if (!in_array($address->getInternalValue('country'), $country_ids)) {
 			$valid = false;
-			$message = new SwatMessage('Shipping Address', 'error');
-			$message->secondary_content = sprintf(
+			$message = new SwatMessage(Store::_('Shipping Address'), 'error');
+			$message->secondary_content = sprintf(Store::_(
 				'Orders can not be shipped to %s. Please select a different '.
-				'shipping address or enter a new shipping address.',
+				'shipping address or enter a new shipping address.'),
 				$address->country->title);
 
 			$this->ui->getWidget('message_display')->add($message,
@@ -276,7 +277,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$valid = true;
 		$shipping_provstate = $address->getInternalValue('provstate');
 
-		/* If provstate is null, it means it's either not required, or
+		/*
+		 * If provstate is null, it means it's either not required, or
 		 * provstate_other is set. In either case, we don't need to check
 		 * against valid provstates.
 		 */
@@ -289,10 +291,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		if (!in_array($shipping_provstate, $provstate_ids)) {
 			$valid = false;
-			$message = new SwatMessage('Shipping Address', 'error');
-			$message->secondary_content = sprintf(
+			$message = new SwatMessage(Store::_('Shipping Address'), 'error');
+			$message->secondary_content = sprintf(Store::_(
 				'Orders can not be shipped to %s. Please select a different '.
-				'shipping address or enter a new shipping address.',
+				'shipping address or enter a new shipping address.'),
 				$address->provstate->title);
 
 			$this->ui->getWidget('message_display')->add($message,
