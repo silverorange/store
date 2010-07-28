@@ -7,7 +7,7 @@ require_once 'Swat/SwatYUI.php';
  * Base address edit page of checkout
  *
  * @package   Store
- * @copyright 2009 silverorange
+ * @copyright 2009-2010 silverorange
  */
 abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 {
@@ -76,10 +76,34 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 
 	protected function validateAddress()
 	{
+		$this->validateAddressRequiredFields();
+
+		if ($this->shouldVerifyAddress()) {
+			$this->verifyAddress();
+		}
+	}
+
+	// }}}
+	// {{{ protected function validateAddressRequiredFields()
+
+	protected function validateAddressRequiredFields()
+	{
 		$address = $this->getAddress();
 
-		if ($this->shouldVerifyAddress())
-			$this->verifyAddress();
+		foreach ($this->getRequiredAddressFields() as $field => $widget_id) {
+			if ($address->$field === null) {
+				$this->ui->getWidget($widget_id)->addMessage(new SwatMessage(
+					Store::_('The %s field is required.'), 'error'));
+			}
+		}
+	}
+
+	// }}}
+	// {{{ protected function getRequiredAddressFields()
+
+	protected function getRequiredAddressFields()
+	{
+		return array();
 	}
 
 	// }}}
