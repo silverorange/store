@@ -16,7 +16,7 @@ require_once 'Store/exceptions/StorePaymentTotalException.php';
  * Confirmation page of checkout
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2010 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutConfirmationPage extends StoreCheckoutPage
