@@ -118,6 +118,27 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$valid = true;
 
 		$address = $this->app->session->order->billing_address;
+
+		if ($address->fullname === null ||
+			$address->line1 === null ||
+			$address->city === null) {
+
+			$message = new SwatMessage(Store::_('Billing Address'), 'error');
+
+			$message->secondary_content = sprintf(Store::_(
+				'Billing address is missing required fields. Please %sselect '.
+				'a different billing address or enter a new billing '.
+				'address%s.'),
+				'<a href="checkout/confirmation/billingaddress">', '</a>');
+
+			$message->content_type = 'text/xml';
+
+			$this->ui->getWidget('message_display')->add($message,
+				SwatMessageDisplay::DISMISS_OFF);
+
+			$valid = false;
+		}
+
 		$valid = $this->validateBillingAddressCountry($address) && $valid;
 		$valid = $this->validateBillingAddressProvState($address) && $valid;
 
@@ -132,6 +153,27 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$valid = true;
 
 		$address = $this->app->session->order->shipping_address;
+
+		if ($address->fullname === null ||
+			$address->line1 === null ||
+			$address->city === null) {
+
+			$message = new SwatMessage(Store::_('Shipping Address'), 'error');
+
+			$message->secondary_content = sprintf(Store::_(
+				'Shipping address is missing required fields. Please %sselect '.
+				'a different shipping address or enter a new shipping '.
+				'address%s.'),
+				'<a href="checkout/confirmation/shippingaddress">', '</a>');
+
+			$message->content_type = 'text/xml';
+
+			$this->ui->getWidget('message_display')->add($message,
+				SwatMessageDisplay::DISMISS_OFF);
+
+			$valid = false;
+		}
+
 		$valid = $this->validateShippingAddressCountry($address) && $valid;
 		$valid = $this->validateShippingAddressProvState($address) && $valid;
 
