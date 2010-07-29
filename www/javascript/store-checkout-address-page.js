@@ -24,10 +24,13 @@ function StoreCheckoutAddressPage(id, provstate_other_index)
 	}
 
 	// initialize state
-	if (!this.list_new || this.list_new.checked)
-		this.sensitize();
-	else
-		this.desensitize();
+	YAHOO.util.Event.onDOMReady(function() {
+		if (!this.list_new || this.list_new.checked) {
+			this.sensitize();
+		} else {
+			this.desensitize();
+		}
+	}, this, true);
 }
 
 StoreCheckoutAddressPage.prototype.sensitize = function()
