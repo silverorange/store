@@ -100,7 +100,9 @@ function StoreCheckoutPaymentMethodPage(id, inception_date_ids,
 	for (var i = 0; i < payment_type_options.length; i++)
 		this.fields.push(payment_type_options[i].id);
 
-	this.updateFields();
+	YAHOO.util.Event.onDOMReady(function() {
+		this.updateFields();
+	}, this, true);
 }
 
 StoreCheckoutPaymentMethodPage.prototype.handlePaymentMethodClick = function(e)
