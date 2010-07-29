@@ -91,7 +91,7 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 		$address = $this->getAddress();
 
 		foreach ($this->getRequiredAddressFields() as $field => $widget_id) {
-			if ($address->$field === null) {
+			if (!isset($address->$field)) {
 				$this->ui->getWidget($widget_id)->addMessage(new SwatMessage(
 					Store::_('The %s field is required.'), 'error'));
 			}
