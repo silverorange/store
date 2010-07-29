@@ -137,7 +137,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$valid = true;
 
 		foreach ($this->getRequiredBillingAddressFields() as $field) {
-			if ($address->$field === null) {
+			if (!isset($address->$field)) {
 
 				$message = new SwatMessage(
 					Store::_('Billing Address'), 'error');
@@ -225,9 +225,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	}
 
 	// }}}
-	// {{{ protected function getBillingAddressRequiredFields()
+	// {{{ protected function getRequiredBillingAddressFields()
 
-	protected function getBillingAddressRequiredFields()
+	protected function getRequiredBillingAddressFields()
 	{
 		return array(
 			'fullname',
@@ -266,7 +266,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$valid = true;
 
 		foreach ($this->getRequiredShippingAddressFields() as $field) {
-			if ($address->$field === null) {
+			if (!isset($address->$field)) {
 
 				$message = new SwatMessage(
 					Store::_('Shipping Address'), 'error');
@@ -354,9 +354,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	}
 
 	// }}}
-	// {{{ protected function getShippingAddressRequiredFields()
+	// {{{ protected function getRequiredShippingAddressFields()
 
-	protected function getShippingAddressRequiredFields()
+	protected function getRequiredShippingAddressFields()
 	{
 		return array(
 			'fullname',
