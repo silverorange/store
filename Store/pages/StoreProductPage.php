@@ -583,6 +583,8 @@ class StoreProductPage extends StorePage
 			$count = count($cart_view->model);
 
 			if ($count > 0) {
+				$this->checkCartDescription($cart_view);
+
 				if ($this->cart_message === null) {
 					$this->cart_message = new SwatMessage(null, 'cart');
 					$this->cart_message->primary_content = Store::ngettext(
@@ -605,6 +607,31 @@ class StoreProductPage extends StorePage
 			} elseif ($this->cart_message !== null) {
 				$this->message_display->add($this->cart_message);
 			}
+		}
+	}
+
+	// }}}
+	// {{{ protected function checkCartDescription()
+
+	protected function checkCartDescription($cart_view)
+	{
+		/* if the view has a description column, check all columns to make sure
+		 * they have a description. If none have a description, hide the column.
+		 * if some are empty, but others have description, use the product title
+		 * for the description instead of an empty column.
+		 */
+		if ($cart_view->hasColumn('description')) {
+			$description_column = $cart_view->getColumn('description');
+			$has_description = false;
+			foreach($cart_view->model as $ds) {
+				if ($ds->description == '') {
+					$ds->description = $ds->item->product->title;
+				} else {
+					$has_description = true;
+				}
+			}
+
+			$description_column->visible = $has_description;
 		}
 	}
 
