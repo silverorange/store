@@ -89,8 +89,9 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 	protected function validateAddressRequiredFields()
 	{
 		$address = $this->getAddress();
+		$required_fields = $this->getRequiredAddressFields($address);
 
-		foreach ($this->getRequiredAddressFields() as $field => $widget_id) {
+		foreach ($required_fields as $field => $widget_id) {
 			if (!isset($address->$field)) {
 				$this->ui->getWidget($widget_id)->addMessage(new SwatMessage(
 					Store::_('The %s field is required.'), 'error'));
@@ -101,7 +102,7 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 	// }}}
 	// {{{ protected function getRequiredAddressFields()
 
-	protected function getRequiredAddressFields()
+	protected function getRequiredAddressFields(StoreOrderAddress $address)
 	{
 		return array();
 	}
