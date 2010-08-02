@@ -135,8 +135,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		StoreOrderAddress $address)
 	{
 		$valid = true;
+		$required_fields = $this->getRequiredBillingAddressFields($address);
 
-		foreach ($this->getRequiredBillingAddressFields() as $field) {
+		foreach ($required_fields as $field) {
 			if (!isset($address->$field)) {
 
 				$message = new SwatMessage(
@@ -227,7 +228,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	// }}}
 	// {{{ protected function getRequiredBillingAddressFields()
 
-	protected function getRequiredBillingAddressFields()
+	protected function getRequiredBillingAddressFields(
+		StoreOrderAddress $address)
 	{
 		return array(
 			'fullname',
@@ -264,8 +266,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		StoreOrderAddress $address)
 	{
 		$valid = true;
+		$required_fields = $this->getRequiredShippingAddressFields($address);
 
-		foreach ($this->getRequiredShippingAddressFields() as $field) {
+		foreach ($required_fields as $field) {
 			if (!isset($address->$field)) {
 
 				$message = new SwatMessage(
@@ -356,7 +359,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	// }}}
 	// {{{ protected function getRequiredShippingAddressFields()
 
-	protected function getRequiredShippingAddressFields()
+	protected function getRequiredShippingAddressFields(
+		StoreOrderAddress $address)
 	{
 		return array(
 			'fullname',
