@@ -250,7 +250,7 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 	// }}}
 	// {{{ protected function getRequiredAddressFields()
 
-	protected function getRequiredAddressFields()
+	protected function getRequiredAddressFields(StoreOrderAddress $address)
 	{
 		return array(
 			'fullname'    => 'shipping_address_fullname',
