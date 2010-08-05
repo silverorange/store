@@ -951,8 +951,42 @@ class StoreProductPage extends StorePage
 				$this->displaySecondaryImages();
 
 			echo '</div>';
+
+			Swat::displayInlineJavaScript($this->getImageInlineJavaScript());
 		}
 
+	}
+
+	// }}}
+	// {{{ protected function getImageInlineJavaScript()
+
+	protected function getImageInlineJavaScript()
+	{
+		$data = array(
+			'product'   => array(
+				'id'    => $this->product->id,
+				'title' => $this->product->title,
+			),
+			'images'    => array(),
+		);
+
+		foreach ($this->product->images as $image) {
+			$data['images'][] = array(
+				'id'           => $image->id,
+				'title'        => $image->title,
+				'description'  => $image->description,
+				'large_width'  => $image->getWidth('large'),
+				'large_height' => $image->getHeight('large'),
+				'large_uri'    => $image->getUri('large'),
+				'pinky_width'  => $image->getWidth('pinky'),
+				'pinky_height' => $image->getHeight('pinky'),
+				'pinky_uri'    => $image->getUri('pinky'),
+			);
+		}
+
+		return sprintf(
+			'var StoreProductPageImages = %s;',
+			json_encode($data));
 	}
 
 	// }}}
@@ -982,6 +1016,7 @@ class StoreProductPage extends StorePage
 
 		if ($link_to_large) {
 			$anchor = new SwatHtmlTag('a');
+			$anchor->id = 'product_image_link';
 			$anchor->href = $this->source.'/image';
 			$anchor->class = 'large-image-wrapper';
 			$anchor->title = Store::_('View Larger Image');
@@ -1516,6 +1551,10 @@ class StoreProductPage extends StorePage
 			'packages/store/javascript/store-product-page.js',
 			Store::PACKAGE_ID));
 
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			'packages/store/javascript/store-product-page-images.js',
+			Store::PACKAGE_ID));
+
 		if ($this->items_view instanceof StoreItemsView) {
 			$this->layout->addHtmlHeadEntrySet(
 				$this->items_view->getHtmlHeadEntrySet());
@@ -1523,6 +1562,10 @@ class StoreProductPage extends StorePage
 
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
 			'packages/store/styles/store-product-page.css',
+			Store::PACKAGE_ID));
+
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/styles/store-product-page-images.css',
 			Store::PACKAGE_ID));
 
 		if ($this->message_display !== null)
