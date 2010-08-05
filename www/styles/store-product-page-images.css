@@ -1,0 +1,110 @@
+.store-product-image-overlay {
+	background: #fff;
+	opacity: 0.75;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+
+.store-product-image-container {
+	display: none;
+	overflow: hidden;
+	background: #aaa;
+	padding: 1px;
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	border-radius: 7px;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+
+	box-shadow: 0 2px 20px -2px rgba(0,0,0,0.25);
+	-webkit-box-shadow: 0 2px 20px -2px rgba(0,0,0,0.25);
+	-moz-box-shadow: 0 2px 20px -2px rgba(0,0,0,0.25);
+}
+
+.store-product-image-container .store-product-image-wrapper {
+	background: #fff;
+	padding: 6px;
+
+	border-radius: 6px;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+}
+.store-product-image-container .store-product-image-image-wrapper {
+	position: relative;
+}
+
+.store-product-image-with-pinkies .store-product-image-image-wrapper {
+	margin-left: 120px;
+}
+
+.store-product-image-container .store-product-image-header{
+	z-index: 2000;
+	background: rgba(0,0,0,0.5);
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	-moz-border-radius-topleft: 7px;
+	-moz-border-radius-topright: 7px;
+	-webkit-border-top-left-radius: 7px;
+	-moz-border-top-right-radius: 7px;
+}
+
+.store-product-image-container .store-product-image-title {
+	display: block;
+	font-weight: bold;
+	font-size: 120%;
+	height: 24px;
+	padding: 6px;
+	color: #fff;
+	text-align: left;
+}
+
+.store-product-image-container .store-product-image-close {
+	display: block;
+	float: right;
+	text-decoration: none;
+	color: #fff;
+	text-align: center;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 85%;
+	margin: 10px 0 0;
+	padding: 0 8px;
+}
+
+.store-product-image-container .store-product-image-close:hover {
+	text-decoration: underline;
+}
+
+.store-product-image-pinkies {
+	margin: 0;
+	float: left;
+	width: 98px;
+}
+
+.store-product-image-pinkies li {
+	background: url("../images/elements/product-frames.png") no-repeat scroll -120px 0 transparent;
+	display: block;
+	margin: 5px 0;
+	padding: 4px;
+}
+
+.store-product-image-pinkies li.store-product-image-pinky-selected {
+	background: #888;
+}
+
+.store-product-image-pinkies li a {
+	display: block;
+}
+.store-product-image-pinkies li a img {
+	display: block;
+}
+
+.store-product-image-container .store-product-image-image {
+	display: block;
+}
