@@ -72,8 +72,9 @@ abstract class StoreFroogleUploader extends SiteCommandLineApplication
 
 	public function run()
 	{
-		$this->initModules();
-		$this->parseCommandLineArguments();
+		parent::run();
+
+		$this->lock();
 
 		$filename = $this->config->froogle->filename;
 
@@ -85,6 +86,11 @@ abstract class StoreFroogleUploader extends SiteCommandLineApplication
 
  		$xml = $generator->generate();
 		$file = fopen($this->path.$filename, 'w');
+		if ($file === false) {
+			$this->terminate(sprintf(Store::_(
+				'Error writing file: %s', $this->path.$filename))."\n\n");
+		}
+
  		fwrite($file, $xml);
 		fclose($file);
 
@@ -131,6 +137,8 @@ abstract class StoreFroogleUploader extends SiteCommandLineApplication
 
 			ftp_close($ftp_connection);
 		}
+
+		$this->unlock();
 
 		$this->debug(Store::_('All done.')."\n");
 	}
