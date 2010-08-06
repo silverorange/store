@@ -228,7 +228,7 @@ YAHOO.util.Event.onDOMReady(function() {
 			return false;
 		}
 
-		var data = this.data[index];
+		var data = this.data.images[index];
 
 		var anim = new Anim(this.image, { opacity: { to: 0 } },
 			0.200, YAHOO.util.Easing.easeIn);
@@ -289,14 +289,14 @@ YAHOO.util.Event.onDOMReady(function() {
 		var image_id = hash.replace('image', '');
 
 		if (image_id) {
-			var index;
+			var index = null;
 			for (var i = 0; i < this.data.images.length; i++) {
 				if (this.data.images[i].id == image_id) {
 					index = i;
 					break;
 				}
 			}
-			if (index) {
+			if (index !== null) {
 				this.selectImage(index);
 				this.open();
 			}
@@ -319,15 +319,17 @@ YAHOO.util.Event.onDOMReady(function() {
 		hash = (hash.substring(0, 1) == '#') ? hash.substring(1) : hash;
 		var image_id = hash.replace('image', '');
 
-		if (image_id && image_id !== current_image_id) {
-			var index;
+		console.log(image_id, current_image_id);
+
+		if (image_id && image_id != current_image_id) {
+			var index = null;
 			for (var i = 0; i < this.data.images.length; i++) {
 				if (this.data.images[i].id == image_id) {
 					index = i;
 					break;
 				}
 			}
-			if (index) {
+			if (index !== null) {
 				this.selectImage(index);
 			}
 		}
