@@ -1,11 +1,14 @@
 .store-product-image-overlay {
 	background: #fff;
-	opacity: 0.75;
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	z-index: 500;
+
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+	filter: alpha(opacity=75);
+	opacity: 0.75;
 }
 
 .store-product-image-container {
@@ -40,7 +43,7 @@
 }
 
 .store-product-image-with-pinkies .store-product-image-image-wrapper {
-	margin-left: 120px;
+	margin-left: 98px;
 }
 
 .store-product-image-container .store-product-image-header{
@@ -63,8 +66,7 @@
 	display: block;
 	font-weight: bold;
 	font-size: 120%;
-	height: 24px;
-	padding: 6px;
+	padding: 6px 10px;
 	color: #fff;
 	text-align: left;
 }
@@ -78,8 +80,9 @@
 	text-transform: uppercase;
 	font-weight: bold;
 	font-size: 85%;
-	margin: 10px 0 0;
-	padding: 0 8px;
+	margin: 8px 0 0;
+	padding: 0 28px 0 12px;
+	background: url('../images/product-image-close.png') no-repeat right 1px;
 }
 
 .store-product-image-container .store-product-image-close:hover {
@@ -88,19 +91,23 @@
 
 .store-product-image-pinkies {
 	margin: 0;
+	padding: 0;
 	float: left;
 	width: 98px;
 }
 
 .store-product-image-pinkies li {
-	background: url("../images/elements/product-frames.png") no-repeat scroll -120px 0 transparent;
+	background: url("../../van-bourgondien/images/elements/product-frames.png") no-repeat scroll -120px 0 transparent;
 	display: block;
 	margin: 5px 0;
 	padding: 4px;
 }
+.store-product-image-pinkies li.store-product-image-pinky-first {
+	margin: 0 0 5px 0;
+}
 
 .store-product-image-pinkies li.store-product-image-pinky-selected {
-	background: #888;
+	background: url("../../van-bourgondien/images/elements/product-frames.png") no-repeat scroll -221px -189px transparent;
 }
 
 .store-product-image-pinkies li a {
@@ -108,6 +115,9 @@
 }
 .store-product-image-pinkies li a img {
 	display: block;
+}
+.store-product-image-pinkies li a:focus {
+	outline: none;
 }
 
 .store-product-image-container .store-product-image-image {
