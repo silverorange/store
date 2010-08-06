@@ -439,6 +439,9 @@ YAHOO.util.Event.onDOMReady(function() {
 
 	StoreProductPageImageController.prototype.showOverlay = function()
 	{
+		// init keypress handler for escape key to close
+		Event.on(document, 'keypress', this.handleKeypress, this, true);
+
 		if (StoreProductPageImageController.ie6) {
 			this.select_elements = document.getElementsByTagName('select');
 			for (var i = 0; i < this.select_elements.length; i++) {
@@ -465,6 +468,10 @@ YAHOO.util.Event.onDOMReady(function() {
 
 	StoreProductPageImageController.prototype.close = function()
 	{
+		if (this.semaphore) {
+			return;
+		}
+
 		this.hideOverlay();
 
 		this.container.style.display = 'none';
@@ -473,7 +480,20 @@ YAHOO.util.Event.onDOMReady(function() {
 		var baseLocation = location.href.split('#')[0];
 		location.href = baseLocation + '#';
 
+		// unset keypress handler
+		Event.removeListener(document, 'keypress', this.handleKeypress);
+
 		this.opened = false;
+	};
+
+	StoreProductPageImageController.prototype.handleKeypress = function(e)
+	{
+		YAHOO.util.Event.preventDefault(e);
+
+		// close preview on backspace or escape
+		if (e.keyCode == 8 || e.keyCode == 27) {
+			this.close();
+		}
 	};
 
 	StoreProductPageImageController.LOCATION_INTERVAL = 200; // in ms
