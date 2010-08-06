@@ -22,6 +22,14 @@ YAHOO.util.Event.onDOMReady(function() {
 
 		this.max_dimensions = this.getMaxDimensions();
 
+		// preload images
+		var images = [], image;
+		for (var i = 0; i < this.data.images.length; i++ ) {
+			image = new Image();
+			image.src = this.data.images[i].large_uri
+			images.push(image);
+		}
+
 		this.initLinks();
 		this.drawOverlay();
 		this.drawContainer();
@@ -163,6 +171,9 @@ YAHOO.util.Event.onDOMReady(function() {
 				}());
 
 				pinky = document.createElement('li');
+				if (i == 0) {
+					pinky.className = 'store-product-image-pinky-first';
+				}
 				pinky.appendChild(link);
 
 				this.pinkies.push(pinky);
@@ -286,7 +297,7 @@ YAHOO.util.Event.onDOMReady(function() {
 	{
 		var hash = location.hash;
 		hash = (hash.substring(0, 1) == '#') ? hash.substring(1) : hash;
-		var image_id = hash.replace('image', '');
+		var image_id = hash.replace(/[^0-9]/g, '');
 
 		if (image_id) {
 			var index = null;
@@ -317,7 +328,7 @@ YAHOO.util.Event.onDOMReady(function() {
 
 		var hash = location.hash;
 		hash = (hash.substring(0, 1) == '#') ? hash.substring(1) : hash;
-		var image_id = hash.replace('image', '');
+		var image_id = hash.replace(/[^0-9]/g, '');
 
 		if (image_id && image_id != current_image_id) {
 			var index = null;
@@ -331,45 +342,36 @@ YAHOO.util.Event.onDOMReady(function() {
 				this.selectImage(index);
 			}
 		}
+
+		if (image_id == '' && current_image_id && this.opened) {
+			this.close();
+		} else if (image_id && !this.opened) {
+			this.open();
+		}
 	};
 
 	StoreProductPageImageController.prototype.open = function()
 	{
+		this.selectImage(this.current_image);
+
 		this.showOverlay();
-		/*
 
-		// get approximate max height and width excluding close text
-		var padding = StoreProductPageImageController.padding;
-		var max_width = YAHOO.util.Dom.getViewportWidth() - (padding * 2);
-		var max_height = YAHOO.util.Dom.getViewportHeight() - (padding * 2);
-
-		this.scaleImage(max_width, max_height);
-
-		this.preview_container.style.visibility = 'hidden';
-		this.preview_container.style.display = 'block';
-
-		// now that is it displayed, adjust height for the close text
-		var region = YAHOO.util.Dom.getRegion(this.preview_close_text);
-		max_height -= (region.bottom - region.top);
-		this.scaleImage(max_width, max_height);
-
-		this.preview_container.style.visibility = 'visible';
-
-		// x is relative to center of page
 		var scroll_top = YAHOO.util.Dom.getDocumentScrollTop();
-		var x = -Math.round((this.preview_image.width  + padding) / 2);
-		var y = Math.round((max_height - this.preview_image.height + padding) / 2) +
-			scroll_top;
 
-		YAHOO.util.Dom.setY(this.preview_container, y);
+		if (this.pinkies.length) {
+			var w = this.max_dimensions[0] + 110;
+		} else {
+			var w = this.max_dimensions[0] + 12;
+		}
 
-		// set x
-		this.preview_container.style.left = '50%';
-		this.preview_container.style.marginLeft = x + 'px';
+		var h = this.max_dimensions[1] + 12;
+		var x = Math.floor((Dom.getViewportWidth() - w) / 2);
+		var y = Math.max(0, Math.floor((Dom.getViewportHeight() - h) / 2) + scroll_top);
 
-		// focus link to capture keyboard events
-		this.preview_link.focus();
-		*/
+		this.container.style.display = 'block';
+		this.container.style.width = w + 'px';
+		this.container.style.height = h + 'px';
+		Dom.setXY(this.container, [x, y]);
 
 		this.opened = true;
 	};
@@ -396,7 +398,7 @@ YAHOO.util.Event.onDOMReady(function() {
 		var scroll_top = YAHOO.util.Dom.getDocumentScrollTop();
 
 		if (this.pinkies.length) {
-			var w = this.max_dimensions[0] + 114;
+			var w = this.max_dimensions[0] + 110;
 		} else {
 			var w = this.max_dimensions[0] + 12;
 		}
@@ -478,7 +480,7 @@ YAHOO.util.Event.onDOMReady(function() {
 
 		// remove image from address bar
 		var baseLocation = location.href.split('#')[0];
-		location.href = baseLocation + '#';
+		location.href = baseLocation + '#closed';
 
 		// unset keypress handler
 		Event.removeListener(document, 'keypress', this.handleKeypress);
@@ -488,10 +490,9 @@ YAHOO.util.Event.onDOMReady(function() {
 
 	StoreProductPageImageController.prototype.handleKeypress = function(e)
 	{
-		YAHOO.util.Event.preventDefault(e);
-
 		// close preview on backspace or escape
 		if (e.keyCode == 8 || e.keyCode == 27) {
+			YAHOO.util.Event.preventDefault(e);
 			this.close();
 		}
 	};
