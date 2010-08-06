@@ -5,6 +5,7 @@
 	top: 0;
 	left: 0;
 	width: 100%;
+	z-index: 500;
 }
 
 .store-product-image-container {
@@ -15,6 +16,7 @@
 	position: absolute;
 	top: 0;
 	left: 0;
+	z-index: 1000;
 
 	border-radius: 7px;
 	-webkit-border-radius: 7px;
@@ -48,10 +50,13 @@
 	top: 0;
 	left: 0;
 	width: 100%;
-	-moz-border-radius-topleft: 7px;
-	-moz-border-radius-topright: 7px;
-	-webkit-border-top-left-radius: 7px;
-	-moz-border-top-right-radius: 7px;
+
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+	-webkit-border-top-left-radius: 6px;
+	-webkit-border-top-right-radius: 6px;
+	-moz-border-radius-topleft: 6px;
+	-moz-border-radius-topright: 6px;
 }
 
 .store-product-image-container .store-product-image-title {
