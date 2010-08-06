@@ -319,8 +319,6 @@ YAHOO.util.Event.onDOMReady(function() {
 		hash = (hash.substring(0, 1) == '#') ? hash.substring(1) : hash;
 		var image_id = hash.replace('image', '');
 
-		console.log(image_id, current_image_id);
-
 		if (image_id && image_id != current_image_id) {
 			var index = null;
 			for (var i = 0; i < this.data.images.length; i++) {
