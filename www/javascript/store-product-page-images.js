@@ -22,12 +22,17 @@ YAHOO.util.Event.onDOMReady(function() {
 
 		this.max_dimensions = this.getMaxDimensions();
 
-		// preload images
+		// preload images and create id-to-index lookup table
 		var images = [], image;
+		this.image_indexes_by_id = {};
 		for (var i = 0; i < this.data.images.length; i++ ) {
+			// preload images
 			image = new Image();
 			image.src = this.data.images[i].large_uri
 			images.push(image);
+
+			// build id-to-index table
+			this.image_indexes_by_id[this.data.images[i].id] = i;
 		}
 
 		this.initLinks();
@@ -57,8 +62,31 @@ YAHOO.util.Event.onDOMReady(function() {
 
 		Event.on(this.image_link, 'click', function(e) {
 			Event.preventDefault(e);
+			this.selectImage(0);
 			this.openWithAnimation();
 		}, this, true);
+
+		var pinky_list = document.getElementById('product_secondary_images');
+		if (pinky_list) {
+			var that = this;
+			var pinky_link;
+			var pinky_items = Dom.getChildren(pinky_list);
+			for (var i = 0; i < pinky_items.length; i++) {
+				pinky_link = Dom.getFirstChildBy(pinky_items[i],
+					function(n) { return (n.nodeName == 'A'); } );
+
+				if (pinky_link) {
+					(function() {
+						var index = i + 1;
+						Event.on(pinky_link, 'click', function(e) {
+							Event.preventDefault(e);
+							that.selectImage(index);
+							that.openWithAnimation();
+						}, that , true);
+					}());
+				}
+			}
+		}
 	};
 
 	StoreProductPageImageController.prototype.drawContainer = function()
@@ -300,15 +328,8 @@ YAHOO.util.Event.onDOMReady(function() {
 		var image_id = hash.replace(/[^0-9]/g, '');
 
 		if (image_id) {
-			var index = null;
-			for (var i = 0; i < this.data.images.length; i++) {
-				if (this.data.images[i].id == image_id) {
-					index = i;
-					break;
-				}
-			}
-			if (index !== null) {
-				this.selectImage(index);
+			if (typeof this.image_indexes_by_id[image_id] != 'undefined') {
+				this.selectImage(this.image_indexes_by_id[image_id]);
 				this.open();
 			}
 		}
@@ -331,14 +352,8 @@ YAHOO.util.Event.onDOMReady(function() {
 		var image_id = hash.replace(/[^0-9]/g, '');
 
 		if (image_id && image_id != current_image_id) {
-			var index = null;
-			for (var i = 0; i < this.data.images.length; i++) {
-				if (this.data.images[i].id == image_id) {
-					index = i;
-					break;
-				}
-			}
-			if (index !== null) {
+			if (typeof this.image_indexes_by_id[image_id] != 'undefined') {
+				this.selectImage(this.image_indexes_by_id[image_id]);
 				this.selectImage(index);
 			}
 		}
