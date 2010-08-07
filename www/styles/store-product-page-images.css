@@ -80,8 +80,7 @@
 	text-transform: uppercase;
 	font-weight: bold;
 	font-size: 85%;
-	margin: 8px 0 0;
-	padding: 0 28px 0 12px;
+	padding: 8px 28px 8px 12px;
 	background: url('../images/product-image-close.png') no-repeat right 1px;
 }
 
