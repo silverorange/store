@@ -1,17 +1,16 @@
-.store-product-image-overlay {
+.store-product-image-display-overlay {
 	background: #fff;
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
-	z-index: 500;
 
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
 	filter: alpha(opacity=75);
 	opacity: 0.75;
 }
 
-.store-product-image-container {
+.store-product-image-display-container {
 	display: none;
 	overflow: hidden;
 	background: #aaa;
@@ -19,7 +18,6 @@
 	position: absolute;
 	top: 0;
 	left: 0;
-	z-index: 1000;
 
 	border-radius: 7px;
 	-webkit-border-radius: 7px;
@@ -30,24 +28,28 @@
 	-moz-box-shadow: 0 2px 20px -2px rgba(0,0,0,0.25);
 }
 
-.store-product-image-container .store-product-image-wrapper {
+.store-product-image-display-wrapper {
 	background: #fff;
 	padding: 6px;
+	-overflow: hidden;
 
 	border-radius: 6px;
 	-webkit-border-radius: 6px;
 	-moz-border-radius: 6px;
 }
-.store-product-image-container .store-product-image-image-wrapper {
+
+.store-product-image-display-image-container {
+	overflow: hidden;
+	-float: left;
 	position: relative;
 }
 
-.store-product-image-with-pinkies .store-product-image-image-wrapper {
+.store-product-image-display-with-pinkies .store-product-image-display-image-container {
 	margin-left: 98px;
 }
 
-.store-product-image-container .store-product-image-header{
-	z-index: 2000;
+.store-product-image-display-header{
+	background: url('../images/store-product-image-display-header-bg.png');
 	background: rgba(0,0,0,0.5);
 	position: absolute;
 	top: 0;
@@ -62,7 +64,7 @@
 	-moz-border-radius-topright: 6px;
 }
 
-.store-product-image-container .store-product-image-title {
+.store-product-image-display-title {
 	display: block;
 	font-weight: bold;
 	font-size: 120%;
@@ -71,7 +73,7 @@
 	text-align: left;
 }
 
-.store-product-image-container .store-product-image-close {
+.store-product-image-display-close {
 	display: block;
 	float: right;
 	text-decoration: none;
@@ -81,44 +83,53 @@
 	font-weight: bold;
 	font-size: 85%;
 	padding: 8px 28px 8px 12px;
-	background: url('../images/product-image-close.png') no-repeat right 1px;
+	background: url('../images/store-product-image-display-close.png') no-repeat right 9px;
 }
 
-.store-product-image-container .store-product-image-close:hover {
+.store-product-image-display-close:link,
+.store-product-image-display-close:hover:link {
+	color: #fff;
+}
+
+.store-product-image-display-close:hover {
 	text-decoration: underline;
 }
 
-.store-product-image-pinkies {
+.store-product-image-display-pinkies {
 	margin: 0;
 	padding: 0;
 	float: left;
 	width: 98px;
 }
 
-.store-product-image-pinkies li {
+.store-product-image-display-pinkies li {
 	background: url("../../van-bourgondien/images/elements/product-frames.png") no-repeat scroll -120px 0 transparent;
 	display: block;
-	margin: 5px 0;
+	margin: 5px 0 0 0;
 	padding: 4px;
 }
-.store-product-image-pinkies li.store-product-image-pinky-first {
-	margin: 0 0 5px 0;
+.store-product-image-display-pinkies li.store-product-image-display-pinky-first {
+	margin: 0;
 }
 
-.store-product-image-pinkies li.store-product-image-pinky-selected {
+.store-product-image-display-pinkies li.store-product-image-display-pinky-selected {
 	background: url("../../van-bourgondien/images/elements/product-frames.png") no-repeat scroll -221px -189px transparent;
 }
 
-.store-product-image-pinkies li a {
+.store-product-image-display-pinkies li a {
 	display: block;
 }
-.store-product-image-pinkies li a img {
+.store-product-image-display-pinkies li a img {
 	display: block;
 }
-.store-product-image-pinkies li a:focus {
+.store-product-image-display-pinkies li a:focus {
 	outline: none;
 }
 
-.store-product-image-container .store-product-image-image {
+.store-product-image-display-image {
 	display: block;
+}
+
+.store-product-image-display-clear {
+	clear: both;
 }

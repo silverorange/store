@@ -962,6 +962,15 @@ class StoreProductPage extends StorePage
 
 	protected function getImageInlineJavaScript()
 	{
+		static $shown = false;
+
+		if (!$shown) {
+			$javascript = $this->getInlineJavaScriptTranslations();
+			$shown = true;
+		} else {
+			$javascript = '';
+		}
+
 		$data = array(
 			'product'   => array(
 				'id'    => $this->product->id,
@@ -984,9 +993,22 @@ class StoreProductPage extends StorePage
 			);
 		}
 
-		return sprintf(
-			'var StoreProductPageImages = %s;',
+		$javascript.= sprintf(
+			'new StoreProductImageDisplay(%s);',
 			json_encode($data));
+
+		return $javascript;
+	}
+
+	// }}}
+	// {{{ protected function getImageInlineJavaScriptTranslations()
+
+	protected function getInlineJavaScriptTranslations()
+	{
+		$close_text  = Store::_('Close');
+		return sprintf(
+			"StoreProductImageDisplay.close_text = %s;\n",
+			SwatString::quoteJavaScriptString($close_text));
 	}
 
 	// }}}
@@ -1547,6 +1569,11 @@ class StoreProductPage extends StorePage
 		parent::finalize();
 		$yui = new SwatYUI(array('event'));
 		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
+
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			'packages/swat/javascript/swat-z-index-manager.js',
+			Swat::PACKAGE_ID));
+
 		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
 			'packages/store/javascript/store-product-page.js',
 			Store::PACKAGE_ID));
