@@ -36,10 +36,12 @@
 	border-radius: 6px;
 	-webkit-border-radius: 6px;
 	-moz-border-radius: 6px;
+
+	zoom: 1;
 }
 
 .store-product-image-display-image-container {
-	overflow: hidden;
+	-overflow: hidden;
 	-float: left;
 	position: relative;
 }
@@ -107,6 +109,8 @@
 	display: block;
 	margin: 5px 0 0 0;
 	padding: 4px;
+	vertical-align: top; /* required for IE6/7 */
+	text-align: left; /* required for IE6/7 */
 }
 .store-product-image-display-pinkies li.store-product-image-display-pinky-first {
 	margin: 0;
@@ -120,8 +124,10 @@
 	display: block;
 }
 .store-product-image-display-pinkies li a img {
+	vertical-align: top; /* required for IE6/7 */
 	display: block;
 }
+
 .store-product-image-display-pinkies li a:focus {
 	outline: none;
 }
