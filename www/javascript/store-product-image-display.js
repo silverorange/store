@@ -107,8 +107,6 @@ StoreProductImageDisplay.close_text = 'Close';
 
 			this.max_dimensions[1] = Math.max(this.max_dimensions[1], height);
 		}
-
-		return max_dimensions;
 	};
 
 	StoreProductImageDisplay.prototype.initLinks = function()
