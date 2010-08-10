@@ -355,6 +355,28 @@ StoreProductImageDisplay.close_text = 'Close';
 
 	};
 
+	StoreProductImageDisplay.prototype.selectPrevious = function()
+	{
+		var index = this.current_image - 1;
+
+		if (index < 0) {
+			index = this.data.images.length - 1;
+		}
+
+		this.selectImage(index);
+	};
+
+	StoreProductImageDisplay.prototype.selectNext = function()
+	{
+		var index = this.current_image + 1;
+
+		if (index >= this.data.images.length) {
+			index = 0;
+		}
+
+		this.selectImage(index);
+	};
+
 	StoreProductImageDisplay.prototype.selectImageWithAnimation =
 		function(index)
 	{
@@ -563,8 +585,8 @@ StoreProductImageDisplay.close_text = 'Close';
 
 	StoreProductImageDisplay.prototype.showOverlay = function()
 	{
-		// init keyup handler for escape key to close
-		Event.on(document, 'keyup', this.handleKeyUp, this, true);
+		// init keydown handler for escape key to close
+		Event.on(document, 'keydown', this.handleKeyDown, this, true);
 
 		if (StoreProductImageDisplay.ie6) {
 			this.select_elements = document.getElementsByTagName('select');
@@ -604,18 +626,26 @@ StoreProductImageDisplay.close_text = 'Close';
 		var baseLocation = location.href.split('#')[0];
 		location.href = baseLocation + '#closed';
 
-		// unset keyup handler
-		Event.removeListener(document, 'keyup', this.handleKeyUp);
+		// unset keydown handler
+		Event.removeListener(document, 'keydown', this.handleKeyDown);
 
 		this.opened = false;
 	};
 
-	StoreProductImageDisplay.prototype.handleKeyUp = function(e)
+	StoreProductImageDisplay.prototype.handleKeyDown = function(e)
 	{
 		// close preview on backspace or escape
 		if (e.keyCode == 8 || e.keyCode == 27) {
 			Event.preventDefault(e);
 			this.close();
+		} else if (this.data.images.length > 1 && this.opened) {
+			if (e.keyCode == 37 || e.keyCode == 38) {
+				Event.preventDefault(e);
+				this.selectPrevious();
+			} else if (e.keyCode == 39 || e.keyCode == 40) {
+				Event.preventDefault(e);
+				this.selectNext();
+			}
 		}
 	};
 
