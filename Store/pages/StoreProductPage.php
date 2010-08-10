@@ -1579,7 +1579,7 @@ class StoreProductPage extends StorePage
 			Store::PACKAGE_ID));
 
 		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/javascript/store-product-page-images.js',
+			'packages/store/javascript/store-product-image-display.js',
 			Store::PACKAGE_ID));
 
 		if ($this->items_view instanceof StoreItemsView) {
@@ -1592,7 +1592,7 @@ class StoreProductPage extends StorePage
 			Store::PACKAGE_ID));
 
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-product-page-images.css',
+			'packages/store/styles/store-product-image-display.css',
 			Store::PACKAGE_ID));
 
 		if ($this->message_display !== null)
