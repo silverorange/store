@@ -109,14 +109,7 @@ class StoreItemsView extends SwatControl
 		$entries = array();
 
 		if ($form->isProcessed()) {
-			$view = $this->ui->getWidget('items_view');
-			if ($view->hasSpanningColumn('quantity_column'))
-				$column = $view->getSpanningColumn('quantity_column');
-			else
-				$column = $view->getColumn('quantity_column');
-
-			$renderer = $column->getRenderer('quantity_renderer');
-
+			$renderer = $this->getQuantityRenderer();
 			foreach ($renderer->getClonedWidgets() as $id => $widget) {
 				if (!$renderer->hasMessage($id) && $widget->value > 0) {
 					$cart_entry = $this->createCartEntry($id, $widget->value);
@@ -180,7 +173,6 @@ class StoreItemsView extends SwatControl
 
 	protected function createCartEntry($item_id, $quantity)
 	{
-
 		$cart_entry_class = SwatDBClassMap::get('StoreCartEntry');
 		$cart_entry = new $cart_entry_class();
 		$item = $this->product->items->getByIndex($item_id);
@@ -297,6 +289,20 @@ class StoreItemsView extends SwatControl
 		}
 
 		return $this->has_same_part_count;
+	}
+
+	// }}}
+	// {{{ protected function getQuantityRenderer()
+
+	protected function getQuantityRenderer()
+	{
+		$view = $this->ui->getWidget('items_view');
+		if ($view->hasSpanningColumn('quantity_column'))
+			$column = $view->getSpanningColumn('quantity_column');
+		else
+			$column = $view->getColumn('quantity_column');
+
+		return $column->getRenderer('quantity_renderer');
 	}
 
 	// }}}
