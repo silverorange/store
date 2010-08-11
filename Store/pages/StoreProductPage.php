@@ -1415,60 +1415,6 @@ class StoreProductPage extends StorePage
 	}
 
 	// }}}
-	// {{{ protected function getImageInlineJavaScript()
-
-	protected function getImageInlineJavaScript()
-	{
-		static $shown = false;
-
-		if (!$shown) {
-			$javascript = $this->getInlineJavaScriptTranslations();
-			$shown = true;
-		} else {
-			$javascript = '';
-		}
-
-		$data = array(
-			'product'   => array(
-				'id'    => $this->product->id,
-				'title' => $this->product->title,
-			),
-			'images'    => array(),
-		);
-
-		foreach ($this->product->images as $image) {
-			$data['images'][] = array(
-				'id'           => $image->id,
-				'title'        => $image->title,
-				'description'  => $image->description,
-				'large_width'  => $image->getWidth('large'),
-				'large_height' => $image->getHeight('large'),
-				'large_uri'    => $image->getUri('large'),
-				'pinky_width'  => $image->getWidth('pinky'),
-				'pinky_height' => $image->getHeight('pinky'),
-				'pinky_uri'    => $image->getUri('pinky'),
-			);
-		}
-
-		$javascript.= sprintf(
-			'new StoreProductImageDisplay(%s);',
-			json_encode($data));
-
-		return $javascript;
-	}
-
-	// }}}
-	// {{{ protected function getImageInlineJavaScriptTranslations()
-
-	protected function getInlineJavaScriptTranslations()
-	{
-		$close_text  = Store::_('Close');
-		return sprintf(
-			"StoreProductImageDisplay.close_text = %s;\n",
-			SwatString::quoteJavaScriptString($close_text));
-	}
-
-	// }}}
 	// {{{ protected function displayImage()
 
 	protected function displayImage()
@@ -1477,21 +1423,9 @@ class StoreProductPage extends StorePage
 		$div = new SwatHtmlTag('div');
 		$div->id = 'product_image';
 
-		$img_tag = $image->getImgTag('small');
+		$div->open();
 
-		if ($img_tag->alt == '')
-			$img_tag->alt = sprintf(Store::_('Image of %s'),
-				$this->product->title);
-
-		$link_to_large = true;
-		$small_width = $image->getWidth('small');
-		$large_width = $image->getWidth('large');
-		if ($small_width > 0) {
-			$percentage_larger = ($large_width / $small_width) - 1;
-			// large must be at least 20% larger
-			if ($percentage_larger < 0.20)
-				$link_to_large = false;
-		}
+		$link_to_large = $this->isImageLinked();
 
 		if ($link_to_large) {
 			$anchor = new SwatHtmlTag('a');
@@ -1499,14 +1433,18 @@ class StoreProductPage extends StorePage
 			$anchor->href = $this->source.'/image';
 			$anchor->class = 'large-image-wrapper';
 			$anchor->title = Store::_('View Larger Image');
+			$anchor->open();
+		} else {
+			echo '<span class="large-image-wrapper">';
 		}
 
-		$div->open();
+		$img_tag = $image->getImgTag('small');
 
-		if ($link_to_large)
-			$anchor->open();
-		else
-			echo '<span class="large-image-wrapper">';
+		if ($img_tag->alt == '') {
+			$img_tag->alt = sprintf(
+				Store::_('Image of %s'),
+				$this->product->title);
+		}
 
 		echo '<span class="large-image">';
 		$img_tag->display();
@@ -1571,6 +1509,100 @@ class StoreProductPage extends StorePage
 
 		$anchor->close();
 		$li_tag->close();
+	}
+
+	// }}}
+	// {{{ protected function isImageLinked()
+
+	protected function isImageLinked($large_ratio_limit = 20)
+	{
+		$is_linked = false;
+
+		if (count($this->product->images) > 1) {
+			$is_linked = true;
+		} else {
+			$small_width = $this->product->primary_image->getWidth('small');
+			$large_width = $this->product->primary_image->getWidth('large');
+
+			if ($small_width > 0) {
+				$percentage_larger = (($large_width / $small_width) - 1) * 100;
+			} else {
+				$percentage_larger = 100;
+			}
+
+			$is_linked = ($percentage_larger >= $large_ratio_limit);
+		}
+
+		return $is_linked;
+	}
+
+	// }}}
+	// {{{ protected function getImageInlineJavaScript()
+
+	protected function getImageInlineJavaScript()
+	{
+		static $shown = false;
+
+		if (!$shown) {
+			$javascript = $this->getInlineJavaScriptTranslations();
+			$shown = true;
+		} else {
+			$javascript = '';
+		}
+
+		$data = array(
+			'product'   => array(
+				'id'    => $this->product->id,
+				'title' => $this->product->title,
+			),
+			'images'    => array(),
+		);
+
+		$key = 0;
+		foreach ($this->product->images as $image) {
+			$datum = array(
+				'id'           => $image->id,
+				'title'        => $image->title,
+				'description'  => $image->description,
+				'large_width'  => $image->getWidth('large'),
+				'large_height' => $image->getHeight('large'),
+				'large_uri'    => $image->getUri('large'),
+				'pinky_width'  => $image->getWidth('pinky'),
+				'pinky_height' => $image->getHeight('pinky'),
+				'pinky_uri'    => $image->getUri('pinky'),
+			);
+
+			// put primary image first
+			if ($this->product->primary_image->id === $image->id) {
+				$data['images'][0] = $datum;
+			} else {
+				$data['images'][$key + 1] = $datum;
+			}
+
+			$key++;
+		}
+
+		// order and strip array keys from PHP so serialization to JSON
+		// results in a JSON array instead of a key-value hash.
+		ksort($data['images']);
+		$data['images'] = array_values($data['images']);
+
+		$javascript.= sprintf(
+			'new StoreProductImageDisplay(%s);',
+			json_encode($data));
+
+		return $javascript;
+	}
+
+	// }}}
+	// {{{ protected function getImageInlineJavaScriptTranslations()
+
+	protected function getInlineJavaScriptTranslations()
+	{
+		$close_text  = Store::_('Close');
+		return sprintf(
+			"StoreProductImageDisplay.close_text = %s;\n",
+			SwatString::quoteJavaScriptString($close_text));
 	}
 
 	// }}}
