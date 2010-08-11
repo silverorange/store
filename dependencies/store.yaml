@@ -48,6 +48,7 @@ Store:
     packages/store/javascript/store-product-page.js:
       OptionalDepends:
         - packages/store/javascript/store-product-review-view.js
+    packages/store/javascript/store-product-image-display.js:
     packages/store/javascript/store-product-review-view.js:
     packages/store/javascript/store-quick-order-page.js:
     packages/store/javascript/store-feature-pager.js:
@@ -79,6 +80,7 @@ Store:
     packages/store/styles/store-message.css:
     packages/store/styles/store-order-payment-methods-cell-renderer.css:
     packages/store/styles/store-product-page.css:
+    packages/store/styles/store-product-image-display.css:
     packages/store/styles/store-quantity-entry.css:
     packages/store/styles/store-quick-order-page.css:
     packages/store/styles/store-search-results-page.css:
