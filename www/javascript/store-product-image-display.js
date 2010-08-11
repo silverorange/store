@@ -1,3 +1,5 @@
+// {{{ StoreProductImageDisplay()
+
 var StoreProductImageDisplay = function(data, config)
 {
 	this.semaphore     = false;
@@ -42,6 +44,8 @@ var StoreProductImageDisplay = function(data, config)
 	}, this, true);
 };
 
+// }}}
+
 StoreProductImageDisplay.ie6 = false /*@cc_on || @_jscript_version < 5.7 @*/;
 
 StoreProductImageDisplay.close_text = 'Close';
@@ -53,6 +57,8 @@ StoreProductImageDisplay.close_text = 'Close';
 	var Anim   = YAHOO.util.Anim;
 	var Motion = YAHOO.util.Motion;
 	var Easing = YAHOO.util.Easing;
+
+	// {{{ configure()
 
 	StoreProductImageDisplay.prototype.configure = function(config)
 	{
@@ -85,137 +91,8 @@ StoreProductImageDisplay.close_text = 'Close';
 		override(this.config, config);
 	};
 
-	StoreProductImageDisplay.prototype.initDimensions = function()
-	{
-		this.initPinkyDimensions();
-		this.initContainerDimensions();
-		this.initMinDimensions();
-		this.initMaxDimensions();
-	};
-
-	StoreProductImageDisplay.prototype.initMaxDimensions = function()
-	{
-		this.dimensions.max = [0, 0];
-
-		for (var i = 0; i < this.data.images.length; i++) {
-			this.dimensions.max[0] = Math.max(
-				this.dimensions.max[0],
-				this.data.images[i].large_width);
-
-			this.dimensions.max[1] = Math.max(
-				this.dimensions.max[1],
-				this.data.images[i].large_height);
-		}
-
-		if (this.pinkies.length > 1) {
-			this.dimensions.max[1] = Math.max(
-				this.dimensions.max[1],
-				this.dimensions.pinky.totalHeight);
-		}
-	};
-
-	StoreProductImageDisplay.prototype.initMinDimensions = function()
-	{
-		for (var i = 0; i < this.data.images.length; i++) {
-			if (this.dimensions.min[0] == 0) {
-				this.dimensions.min[0] = this.data.images[i].large_width;
-			} else {
-				this.dimensions.min[0] = Math.min(
-					this.dimensions.min[0],
-					this.data.images[i].large_width);
-			}
-
-			if (this.dimensions.min[1] == 0) {
-				this.dimensions.min[1] = this.data.images[i].large_height;
-			} else {
-				this.dimensions.min[1] = Math.min(
-					this.dimensions.min[1],
-					this.data.images[i].large_height);
-			}
-		}
-
-		if (this.pinkies.length > 1) {
-			this.dimensions.min[1] = Math.max(
-				this.dimensions.min[1],
-				this.dimensions.pinky.totalHeight);
-		}
-	};
-
-	StoreProductImageDisplay.prototype.initPinkyDimensions = function()
-	{
-		if (this.pinkies.length == 1) {
-			this.dimensions.pinky = {
-				firstPaddingTop:    0,
-				firstPaddingBottom: 0,
-				firstMarginTop:     0,
-				firstMarginBottom:  0,
-				paddingTop:         0,
-				paddingBottom:      0,
-				marginTop:          0,
-				marginBottom:       0,
-				totalWidth:         0,
-				totalHeight:        0
-			};
-
-			return;
-		}
-
-		var first  = this.pinkies[0];
-		var second = this.pinkies[1];
-
-		this.dimensions.pinky = {
-			firstPaddingTop:    parseInt(Dom.getStyle(first,  'paddingTop')),
-			firstPaddingBottom: parseInt(Dom.getStyle(first,  'paddingBottom')),
-			firstMarginTop:     parseInt(Dom.getStyle(first,  'marginTop')),
-			firstMarginBottom:  parseInt(Dom.getStyle(first,  'marginBottom')),
-			paddingTop:         parseInt(Dom.getStyle(second, 'paddingTop')),
-			paddingBottom:      parseInt(Dom.getStyle(second, 'paddingBottom')),
-			marginTop:          parseInt(Dom.getStyle(second, 'marginTop')),
-			marginBottom:       parseInt(Dom.getStyle(second, 'marginBottom'))
-		};
-
-		var dimensions = this.dimensions.pinky;
-
-		// Calculates total height of pinkies based on collapsing margin CSS
-		// model with the first pinky possibly having different margin or
-		// padding.
-
-		var top_height = dimensions.firstMarginTop +
-			dimensions.firstPaddingTop;
-
-		var first_height = dimensions.firstPaddingBottom +
-			Math.max(dimensions.marginTop, dimensions.firstMarginBottom) +
-			dimensions.paddingTop;
-
-		var mid_height = dimensions.paddingBottom +
-			Math.max(dimensions.marginTop, dimensions.marginBottom) +
-			dimensions.paddingTop;
-
-		var bottom_height = dimensions.paddingBottom +
-			dimensions.marginBottom;
-
-		var pinky_height = this.data.images[0].pinky_height;
-
-		dimensions.totalHeight = top_height + first_height +
-			(this.pinkies.length - 2) * mid_height +
-			bottom_height +
-			this.pinkies.length * pinky_height;
-
-		dimensions.totalWidth = parseInt(
-			Dom.getStyle(first.parentNode, 'width'));
-	};
-
-	StoreProductImageDisplay.prototype.initContainerDimensions = function()
-	{
-		var el = this.container.firstChild;
-
-		this.dimensions.container = {
-			paddingTop:    parseInt(Dom.getStyle(el, 'paddingTop')),
-			paddingRight:  parseInt(Dom.getStyle(el, 'paddingRight')),
-			paddingBottom: parseInt(Dom.getStyle(el, 'paddingBottom')),
-			paddingLeft:   parseInt(Dom.getStyle(el, 'paddingLeft'))
-		};
-	};
+	// }}}
+	// {{{ initLinks()
 
 	StoreProductImageDisplay.prototype.initLinks = function()
 	{
@@ -250,6 +127,9 @@ StoreProductImageDisplay.close_text = 'Close';
 		}
 	};
 
+	// }}}
+
+	// draw
 	// {{{ drawContainer()
 
 	StoreProductImageDisplay.prototype.drawContainer = function()
@@ -424,6 +304,158 @@ StoreProductImageDisplay.close_text = 'Close';
 
 	// }}}
 
+	// dimensions
+	// {{{ initDimensions()
+
+	StoreProductImageDisplay.prototype.initDimensions = function()
+	{
+		this.initPinkyDimensions();
+		this.initContainerDimensions();
+		this.initMinDimensions();
+		this.initMaxDimensions();
+	};
+
+	// }}}
+	// {{{ initMaxDimensions()
+
+	StoreProductImageDisplay.prototype.initMaxDimensions = function()
+	{
+		this.dimensions.max = [0, 0];
+
+		for (var i = 0; i < this.data.images.length; i++) {
+			this.dimensions.max[0] = Math.max(
+				this.dimensions.max[0],
+				this.data.images[i].large_width);
+
+			this.dimensions.max[1] = Math.max(
+				this.dimensions.max[1],
+				this.data.images[i].large_height);
+		}
+
+		if (this.pinkies.length > 1) {
+			this.dimensions.max[1] = Math.max(
+				this.dimensions.max[1],
+				this.dimensions.pinky.totalHeight);
+		}
+	};
+
+	// }}}
+	// {{{ initMinDimensions()
+
+	StoreProductImageDisplay.prototype.initMinDimensions = function()
+	{
+		for (var i = 0; i < this.data.images.length; i++) {
+			if (this.dimensions.min[0] == 0) {
+				this.dimensions.min[0] = this.data.images[i].large_width;
+			} else {
+				this.dimensions.min[0] = Math.min(
+					this.dimensions.min[0],
+					this.data.images[i].large_width);
+			}
+
+			if (this.dimensions.min[1] == 0) {
+				this.dimensions.min[1] = this.data.images[i].large_height;
+			} else {
+				this.dimensions.min[1] = Math.min(
+					this.dimensions.min[1],
+					this.data.images[i].large_height);
+			}
+		}
+
+		if (this.pinkies.length > 1) {
+			this.dimensions.min[1] = Math.max(
+				this.dimensions.min[1],
+				this.dimensions.pinky.totalHeight);
+		}
+	};
+
+	// }}}
+	// {{{ initPinkyDimensions()
+
+	StoreProductImageDisplay.prototype.initPinkyDimensions = function()
+	{
+		if (this.pinkies.length == 1) {
+			this.dimensions.pinky = {
+				firstPaddingTop:    0,
+				firstPaddingBottom: 0,
+				firstMarginTop:     0,
+				firstMarginBottom:  0,
+				paddingTop:         0,
+				paddingBottom:      0,
+				marginTop:          0,
+				marginBottom:       0,
+				totalWidth:         0,
+				totalHeight:        0
+			};
+
+			return;
+		}
+
+		var first  = this.pinkies[0];
+		var second = this.pinkies[1];
+
+		this.dimensions.pinky = {
+			firstPaddingTop:    parseInt(Dom.getStyle(first,  'paddingTop')),
+			firstPaddingBottom: parseInt(Dom.getStyle(first,  'paddingBottom')),
+			firstMarginTop:     parseInt(Dom.getStyle(first,  'marginTop')),
+			firstMarginBottom:  parseInt(Dom.getStyle(first,  'marginBottom')),
+			paddingTop:         parseInt(Dom.getStyle(second, 'paddingTop')),
+			paddingBottom:      parseInt(Dom.getStyle(second, 'paddingBottom')),
+			marginTop:          parseInt(Dom.getStyle(second, 'marginTop')),
+			marginBottom:       parseInt(Dom.getStyle(second, 'marginBottom'))
+		};
+
+		var dimensions = this.dimensions.pinky;
+
+		// Calculates total height of pinkies based on collapsing margin CSS
+		// model with the first pinky possibly having different margin or
+		// padding.
+
+		var top_height = dimensions.firstMarginTop +
+			dimensions.firstPaddingTop;
+
+		var first_height = dimensions.firstPaddingBottom +
+			Math.max(dimensions.marginTop, dimensions.firstMarginBottom) +
+			dimensions.paddingTop;
+
+		var mid_height = dimensions.paddingBottom +
+			Math.max(dimensions.marginTop, dimensions.marginBottom) +
+			dimensions.paddingTop;
+
+		var bottom_height = dimensions.paddingBottom +
+			dimensions.marginBottom;
+
+		var pinky_height = this.data.images[0].pinky_height;
+
+		dimensions.totalHeight = top_height + first_height +
+			(this.pinkies.length - 2) * mid_height +
+			bottom_height +
+			this.pinkies.length * pinky_height;
+
+		dimensions.totalWidth = parseInt(
+			Dom.getStyle(first.parentNode, 'width'));
+	};
+
+	// }}}
+	// {{{ initContainerDimensions()
+
+	StoreProductImageDisplay.prototype.initContainerDimensions = function()
+	{
+		var el = this.container.firstChild;
+
+		this.dimensions.container = {
+			paddingTop:    parseInt(Dom.getStyle(el, 'paddingTop')),
+			paddingRight:  parseInt(Dom.getStyle(el, 'paddingRight')),
+			paddingBottom: parseInt(Dom.getStyle(el, 'paddingBottom')),
+			paddingLeft:   parseInt(Dom.getStyle(el, 'paddingLeft'))
+		};
+	};
+
+	// }}}
+
+	// image selection
+	// {{{ selectImage()
+
 	StoreProductImageDisplay.prototype.selectImage = function(index)
 	{
 		if (!this.data.images[index]) {
@@ -456,7 +488,10 @@ StoreProductImageDisplay.close_text = 'Close';
 
 	};
 
-	StoreProductImageDisplay.prototype.selectPrevious = function()
+	// }}}
+	// {{{ selectPreviousImage()
+
+	StoreProductImageDisplay.prototype.selectPreviousImage = function()
 	{
 		var index = this.current_image - 1;
 
@@ -467,7 +502,10 @@ StoreProductImageDisplay.close_text = 'Close';
 		this.selectImage(index);
 	};
 
-	StoreProductImageDisplay.prototype.selectNext = function()
+	// }}}
+	// {{{ selectNextImage()
+
+	StoreProductImageDisplay.prototype.selectNextImage = function()
 	{
 		var index = this.current_image + 1;
 
@@ -477,6 +515,9 @@ StoreProductImageDisplay.close_text = 'Close';
 
 		this.selectImage(index);
 	};
+
+	// }}}
+	// {{{ selectImageWithAnimation()
 
 	StoreProductImageDisplay.prototype.selectImageWithAnimation =
 		function(index)
@@ -539,6 +580,9 @@ StoreProductImageDisplay.close_text = 'Close';
 
 	};
 
+	// }}}
+	// {{{ setTitle()
+
 	StoreProductImageDisplay.prototype.setTitle = function(image, product)
 	{
 		if (image.title) {
@@ -548,6 +592,9 @@ StoreProductImageDisplay.close_text = 'Close';
 		}
 	};
 
+	// }}}
+
+	// location
 	// {{{ initLocation()
 
 	StoreProductImageDisplay.prototype.initLocation = function()
@@ -602,6 +649,9 @@ StoreProductImageDisplay.close_text = 'Close';
 
 	// }}}
 
+	// open/close
+	// {{{ open()
+
 	StoreProductImageDisplay.prototype.open = function()
 	{
 		this.selectImage(this.current_image);
@@ -631,6 +681,9 @@ StoreProductImageDisplay.close_text = 'Close';
 
 		this.opened = true;
 	};
+
+	// }}}
+	// {{{ openWithAnimation()
 
 	StoreProductImageDisplay.prototype.openWithAnimation = function()
 	{
@@ -706,52 +759,8 @@ StoreProductImageDisplay.close_text = 'Close';
 		anim.animate();
 	};
 
-	StoreProductImageDisplay.prototype.scaleImage = function(max_width, max_height)
-	{
-		// if preview image is larger than viewport width, scale down
-		if (this.preview_image.width > max_width) {
-			this.preview_image.width = max_width;
-			this.preview_image.height = (this.preview_image.height *
-				(max_width / this.preview_image.width));
-		}
-
-		// if preview image is larger than viewport height, scale down
-		if (this.preview_image.height > max_height) {
-			this.preview_image.width = (this.preview_image.width *
-				(max_height / this.preview_image.height));
-
-			this.preview_image.height = max_height;
-		}
-	};
-
-	StoreProductImageDisplay.prototype.showOverlay = function()
-	{
-		// init keydown handler for escape key to close
-		Event.on(document, 'keydown', this.handleKeyDown, this, true);
-
-		if (StoreProductImageDisplay.ie6) {
-			this.select_elements = document.getElementsByTagName('select');
-			for (var i = 0; i < this.select_elements.length; i++) {
-				this.select_elements[i].style._visibility =
-					this.select_elements[i].style.visibility;
-
-				this.select_elements[i].style.visibility = 'hidden';
-			}
-		}
-		this.overlay.style.height = Dom.getDocumentHeight() + 'px';
-		this.overlay.style.display = 'block';
-	}
-
-	StoreProductImageDisplay.prototype.hideOverlay = function()
-	{
-		this.overlay.style.display = 'none';
-		if (StoreProductImageDisplay.ie6) {
-			for (var i = 0; i < this.select_elements.length; i++) {
-				this.select_elements[i].style.visibility =
-					this.select_elements[i].style._visibility;
-			}
-		}
-	};
+	// }}}
+	// {{{ close()
 
 	StoreProductImageDisplay.prototype.close = function()
 	{
@@ -773,6 +782,46 @@ StoreProductImageDisplay.close_text = 'Close';
 		this.opened = false;
 	};
 
+	// }}}
+	// {{{ showOverlay()
+
+	StoreProductImageDisplay.prototype.showOverlay = function()
+	{
+		// init keydown handler for escape key to close
+		Event.on(document, 'keydown', this.handleKeyDown, this, true);
+
+		if (StoreProductImageDisplay.ie6) {
+			this.select_elements = document.getElementsByTagName('select');
+			for (var i = 0; i < this.select_elements.length; i++) {
+				this.select_elements[i].style._visibility =
+					this.select_elements[i].style.visibility;
+
+				this.select_elements[i].style.visibility = 'hidden';
+			}
+		}
+		this.overlay.style.height = Dom.getDocumentHeight() + 'px';
+		this.overlay.style.display = 'block';
+	}
+
+	// }}}
+	// {{{ hideOverlay()
+
+	StoreProductImageDisplay.prototype.hideOverlay = function()
+	{
+		this.overlay.style.display = 'none';
+		if (StoreProductImageDisplay.ie6) {
+			for (var i = 0; i < this.select_elements.length; i++) {
+				this.select_elements[i].style.visibility =
+					this.select_elements[i].style._visibility;
+			}
+		}
+	};
+
+	// }}}
+
+	// keyboard
+	// {{{ handleKeyDown()
+
 	StoreProductImageDisplay.prototype.handleKeyDown = function(e)
 	{
 		// close preview on backspace or escape
@@ -782,12 +831,14 @@ StoreProductImageDisplay.close_text = 'Close';
 		} else if (this.data.images.length > 1 && this.opened) {
 			if (e.keyCode == 37 || e.keyCode == 38) {
 				Event.preventDefault(e);
-				this.selectPrevious();
+				this.selectPreviousImage();
 			} else if (e.keyCode == 39 || e.keyCode == 40) {
 				Event.preventDefault(e);
-				this.selectNext();
+				this.selectNextImage();
 			}
 		}
 	};
+
+	// }}}
 
 }());
