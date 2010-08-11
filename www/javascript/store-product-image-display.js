@@ -374,7 +374,8 @@ StoreProductImageDisplay.close_text = 'Close';
 
 	StoreProductImageDisplay.prototype.initPinkyDimensions = function()
 	{
-		if (this.pinkies.length == 1) {
+		if (this.pinkies.length < 2) {
+
 			this.dimensions.pinky = {
 				firstPaddingTop:    0,
 				firstPaddingBottom: 0,
