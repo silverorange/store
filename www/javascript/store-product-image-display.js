@@ -5,27 +5,29 @@ var StoreProductImageDisplay = function(data, config)
 	this.opened        = false;
 	this.current_image = 0;
 
-	if (config) {
-		this.configure(config);
-	} else {
-		this.configure({});
-	}
+	this.configure(config);
 
 	this.dimensions = {
-		pinky: {}
+		pinky:     {},
+		container: {},
+		min:   [0, 0],
+		max:   [0, 0]
 	};
 
 	// list of select elements to hide for IE6
 	this.select_elements = [];
 
-	// preload images and create id-to-index lookup table
-	var images = [], image;
+	// preload images and create id-to-index lookup table, needs to be added
+	// to an instance variable so the images don't get garbage-collected by
+	// some browsers.
+	var image;
+	this.images = [];
 	this.image_indexes_by_id = {};
 	for (var i = 0; i < this.data.images.length; i++ ) {
 		// preload images
 		image = new Image();
 		image.src = this.data.images[i].large_uri
-		images.push(image);
+		this.images.push(image);
 
 		// build id-to-index table
 		this.image_indexes_by_id[this.data.images[i].id] = i;
@@ -35,7 +37,7 @@ var StoreProductImageDisplay = function(data, config)
 		this.initLinks();
 		this.drawOverlay();
 		this.drawContainer();
-		this.initMaxDimensions();
+		this.initDimensions();
 		this.initLocation();
 	}, this, true);
 };
@@ -54,59 +56,165 @@ StoreProductImageDisplay.close_text = 'Close';
 
 	StoreProductImageDisplay.prototype.configure = function(config)
 	{
+		if (!config) {
+			config = {};
+		}
+
 		this.config = {
 			period: {
 				open:          0.200, // in sec
-				fade:          0.050, // in sec
+				fadeOut:       0.250, // in sec
+				fadeIn:        0.100, // in sec
 				resize:        0.100, // in sec
 				locationCheck: 0.200  // in sec
 			}
 		};
+
+		var override = function(base_config, new_config) {
+			for (var key in base_config) {
+				if (typeof base_config[key] == 'Object' &&
+					typeof new_config[key] == 'Object') {
+					override(base_config[key], new_config[key]);
+				} else if (typeof config[key] != 'undefined' &&
+					typeof new_config[key] != 'Object') {
+					base_config[key] = new_config[key];
+				}
+			}
+		};
+
+		override(this.config, config);
+	};
+
+	StoreProductImageDisplay.prototype.initDimensions = function()
+	{
+		this.initPinkyDimensions();
+		this.initContainerDimensions();
+		this.initMinDimensions();
+		this.initMaxDimensions();
 	};
 
 	StoreProductImageDisplay.prototype.initMaxDimensions = function()
 	{
-		this.max_dimensions = [0, 0];
+		this.dimensions.max = [0, 0];
 
 		for (var i = 0; i < this.data.images.length; i++) {
-			this.max_dimensions[0] = Math.max(
-				this.max_dimensions[0],
+			this.dimensions.max[0] = Math.max(
+				this.dimensions.max[0],
 				this.data.images[i].large_width);
 
-			this.max_dimensions[1] = Math.max(
-				this.max_dimensions[1],
+			this.dimensions.max[1] = Math.max(
+				this.dimensions.max[1],
 				this.data.images[i].large_height);
 		}
 
-		// Check if pinkies are taller than the tallest large image. Calculates
-		// height based on collapsing margin CSS model with the first pinky
-		// possibly having different margin or padding.
 		if (this.pinkies.length > 1) {
-			var dimensions = this.dimensions.pinky;
-
-			var top_height = dimensions.firstMarginTop +
-				dimensions.firstPaddingTop;
-
-			var first_height = dimensions.firstPaddingBottom +
-				Math.max(dimensions.marginTop, dimensions.firstMarginBottom) +
-				dimensions.paddingTop;
-
-			var mid_height = dimensions.paddingBottom +
-				Math.max(dimensions.marginTop, dimensions.marginBottom) +
-				dimensions.paddingTop;
-
-			var bottom_height = dimensions.paddingBottom +
-				dimensions.marginBottom;
-
-			var pinky_height = this.data.images[0].pinky_height;
-
-			var height = top_height + first_height +
-				(this.pinkies.length - 2) * mid_height +
-				bottom_height +
-				this.pinkies.length * pinky_height;
-
-			this.max_dimensions[1] = Math.max(this.max_dimensions[1], height);
+			this.dimensions.max[1] = Math.max(
+				this.dimensions.max[1],
+				this.dimensions.pinky.totalHeight);
 		}
+	};
+
+	StoreProductImageDisplay.prototype.initMinDimensions = function()
+	{
+		for (var i = 0; i < this.data.images.length; i++) {
+			if (this.dimensions.min[0] == 0) {
+				this.dimensions.min[0] = this.data.images[i].large_width;
+			} else {
+				this.dimensions.min[0] = Math.min(
+					this.dimensions.min[0],
+					this.data.images[i].large_width);
+			}
+
+			if (this.dimensions.min[1] == 0) {
+				this.dimensions.min[1] = this.data.images[i].large_height;
+			} else {
+				this.dimensions.min[1] = Math.min(
+					this.dimensions.min[1],
+					this.data.images[i].large_height);
+			}
+		}
+
+		if (this.pinkies.length > 1) {
+			this.dimensions.min[1] = Math.max(
+				this.dimensions.min[1],
+				this.dimensions.pinky.totalHeight);
+		}
+	};
+
+	StoreProductImageDisplay.prototype.initPinkyDimensions = function()
+	{
+		if (this.pinkies.length == 1) {
+			this.dimensions.pinky = {
+				firstPaddingTop:    0,
+				firstPaddingBottom: 0,
+				firstMarginTop:     0,
+				firstMarginBottom:  0,
+				paddingTop:         0,
+				paddingBottom:      0,
+				marginTop:          0,
+				marginBottom:       0,
+				totalWidth:         0,
+				totalHeight:        0
+			};
+
+			return;
+		}
+
+		var first  = this.pinkies[0];
+		var second = this.pinkies[1];
+
+		this.dimensions.pinky = {
+			firstPaddingTop:    parseInt(Dom.getStyle(first,  'paddingTop')),
+			firstPaddingBottom: parseInt(Dom.getStyle(first,  'paddingBottom')),
+			firstMarginTop:     parseInt(Dom.getStyle(first,  'marginTop')),
+			firstMarginBottom:  parseInt(Dom.getStyle(first,  'marginBottom')),
+			paddingTop:         parseInt(Dom.getStyle(second, 'paddingTop')),
+			paddingBottom:      parseInt(Dom.getStyle(second, 'paddingBottom')),
+			marginTop:          parseInt(Dom.getStyle(second, 'marginTop')),
+			marginBottom:       parseInt(Dom.getStyle(second, 'marginBottom'))
+		};
+
+		var dimensions = this.dimensions.pinky;
+
+		// Calculates total height of pinkies based on collapsing margin CSS
+		// model with the first pinky possibly having different margin or
+		// padding.
+
+		var top_height = dimensions.firstMarginTop +
+			dimensions.firstPaddingTop;
+
+		var first_height = dimensions.firstPaddingBottom +
+			Math.max(dimensions.marginTop, dimensions.firstMarginBottom) +
+			dimensions.paddingTop;
+
+		var mid_height = dimensions.paddingBottom +
+			Math.max(dimensions.marginTop, dimensions.marginBottom) +
+			dimensions.paddingTop;
+
+		var bottom_height = dimensions.paddingBottom +
+			dimensions.marginBottom;
+
+		var pinky_height = this.data.images[0].pinky_height;
+
+		dimensions.totalHeight = top_height + first_height +
+			(this.pinkies.length - 2) * mid_height +
+			bottom_height +
+			this.pinkies.length * pinky_height;
+
+		dimensions.totalWidth = parseInt(
+			Dom.getStyle(first.parentNode, 'width'));
+	};
+
+	StoreProductImageDisplay.prototype.initContainerDimensions = function()
+	{
+		var el = this.container.firstChild;
+
+		this.dimensions.container = {
+			paddingTop:    parseInt(Dom.getStyle(el, 'paddingTop')),
+			paddingRight:  parseInt(Dom.getStyle(el, 'paddingRight')),
+			paddingBottom: parseInt(Dom.getStyle(el, 'paddingBottom')),
+			paddingLeft:   parseInt(Dom.getStyle(el, 'paddingLeft'))
+		};
 	};
 
 	StoreProductImageDisplay.prototype.initLinks = function()
@@ -142,6 +250,8 @@ StoreProductImageDisplay.close_text = 'Close';
 		}
 	};
 
+	// {{{ drawContainer()
+
 	StoreProductImageDisplay.prototype.drawContainer = function()
 	{
 		this.container = document.createElement('div');
@@ -174,21 +284,9 @@ StoreProductImageDisplay.close_text = 'Close';
 
 		var body = document.getElementsByTagName('body')[0];
 		body.appendChild(this.container);
-
-		if (this.pinkies.length > 1) {
-			this.dimensions.pinky = {
-				firstPaddingTop:    parseInt(Dom.getStyle(this.pinkies[0], 'paddingTop')),
-				firstPaddingBottom: parseInt(Dom.getStyle(this.pinkies[0], 'paddingBottom')),
-				firstMarginTop:     parseInt(Dom.getStyle(this.pinkies[0], 'marginTop')),
-				firstMarginBottom:  parseInt(Dom.getStyle(this.pinkies[0], 'marginBottom')),
-				paddingTop:         parseInt(Dom.getStyle(this.pinkies[1], 'paddingTop')),
-				paddingBottom:      parseInt(Dom.getStyle(this.pinkies[1], 'paddingBottom')),
-				marginTop:          parseInt(Dom.getStyle(this.pinkies[1], 'marginTop')),
-				marginBottom:       parseInt(Dom.getStyle(this.pinkies[1], 'marginBottom'))
-			};
-		}
 	};
 
+	// }}}
 	// {{{ drawClear()
 
 	StoreProductImageDisplay.prototype.drawClear = function()
@@ -255,6 +353,7 @@ StoreProductImageDisplay.close_text = 'Close';
 	};
 
 	// }}}
+	// {{{ drawPinkies()
 
 	StoreProductImageDisplay.prototype.drawPinkies = function()
 	{
@@ -276,6 +375,7 @@ StoreProductImageDisplay.close_text = 'Close';
 
 				link = document.createElement('a');
 				link.href = '#image' + this.data.images[i].id;
+				link.hideFocus = true; // for IE6/7
 				link.appendChild(image);
 
 				var that = this;
@@ -283,7 +383,7 @@ StoreProductImageDisplay.close_text = 'Close';
 					var index = i;
 					Event.on(link, 'click', function(e) {
 						Event.preventDefault(e);
-						that.selectImageWithAnimation(index);
+						that.selectImage(index);
 					}, that, true);
 				}());
 
@@ -304,6 +404,7 @@ StoreProductImageDisplay.close_text = 'Close';
 		return pinky_list;
 	};
 
+	// }}}
 	// {{{ drawOverlay()
 
 	StoreProductImageDisplay.prototype.drawOverlay = function()
@@ -331,9 +432,9 @@ StoreProductImageDisplay.close_text = 'Close';
 
 		var data = this.data.images[index];
 
+		this.image.src = data.large_uri;
 		this.image.style.width = data.large_width + 'px';
 		this.image.style.height = data.large_height + 'px';
-		this.image.src = data.large_uri;
 
 		this.setTitle(data, this.data.product);
 
@@ -390,7 +491,7 @@ StoreProductImageDisplay.close_text = 'Close';
 		var data = this.data.images[index];
 
 		var anim = new Anim(this.image_container, { opacity: { to: 0 } },
-			0.0500);
+			this.config.period.fadeOut);
 
 		anim.onComplete.subscribe(function() {
 
@@ -406,7 +507,7 @@ StoreProductImageDisplay.close_text = 'Close';
 			anim.onComplete.subscribe(function() {
 
 				var anim = new Anim(this.image_container,
-					{ opacity: { to: 1 } }, 0.0500);
+					{ opacity: { to: 1 } }, this.config.period.fadeIn);
 
 				anim.onComplete.subscribe(function() {
 					this.semaphore = false;
@@ -447,6 +548,8 @@ StoreProductImageDisplay.close_text = 'Close';
 		}
 	};
 
+	// {{{ initLocation()
+
 	StoreProductImageDisplay.prototype.initLocation = function()
 	{
 		var hash = location.hash;
@@ -468,6 +571,9 @@ StoreProductImageDisplay.close_text = 'Close';
 			that.checkLocation();
 		}, this.config.period.locationCheck * 1000);
 	};
+
+	// }}}
+	// {{{ checkLocation()
 
 	StoreProductImageDisplay.prototype.checkLocation = function()
 	{
@@ -494,6 +600,8 @@ StoreProductImageDisplay.close_text = 'Close';
 		}
 	};
 
+	// }}}
+
 	StoreProductImageDisplay.prototype.open = function()
 	{
 		this.selectImage(this.current_image);
@@ -502,19 +610,23 @@ StoreProductImageDisplay.close_text = 'Close';
 
 		var scroll_top = Dom.getDocumentScrollTop();
 
-		if (this.pinkies.length) {
-			var w = this.max_dimensions[0] + 110;
-		} else {
-			var w = this.max_dimensions[0] + 12;
-		}
+		var w, h, x, y;
 
-		var h = this.max_dimensions[1] + 12;
-		var x = Math.floor((Dom.getViewportWidth() - w) / 2);
-		var y = Math.max(0, Math.floor((Dom.getViewportHeight() - h) / 2) + scroll_top);
+		w = this.dimensions.max[0] +
+			this.dimensions.container.paddingLeft +
+			this.dimensions.container.paddingRight +
+			this.dimensions.pinky.totalWidth;
+
+		h = this.dimensions.max[1] +
+			this.dimensions.container.paddingTop +
+			this.dimensions.container.paddingBottom;
+
+		x = Math.floor((Dom.getViewportWidth() - w) / 2);
+		y = Math.max(
+			0,
+			Math.floor((Dom.getViewportHeight() - h) / 2) + scroll_top);
 
 		this.container.style.display = 'block';
-		this.container.style.width = w + 'px';
-		this.container.style.height = h + 'px';
 		Dom.setXY(this.container, [x, y]);
 
 		this.opened = true;
@@ -526,14 +638,19 @@ StoreProductImageDisplay.close_text = 'Close';
 			return;
 		}
 
-		this.selectImage(this.current_image);
-
 		this.semaphore = true;
 
+		this.selectImage(this.current_image);
+
+		// hold image container open while container resizes, prevents text
+		// from re-laying out during animation
+		this.image_container.style.width = this.dimensions.max[0] + 'px';
+
 		this.showOverlay();
-		this.container.style.display = 'block';
 
 		var region = Dom.getRegion(this.image_link);
+
+		this.container.style.display = 'block';
 
 		Dom.setXY(this.container, [region.left, region.top]);
 		this.container.style.width = region.width + 'px';
@@ -541,15 +658,37 @@ StoreProductImageDisplay.close_text = 'Close';
 
 		var scroll_top = Dom.getDocumentScrollTop();
 
-		if (this.pinkies.length) {
-			var w = this.max_dimensions[0] + 110;
-		} else {
-			var w = this.max_dimensions[0] + 12;
-		}
+		var w, h, x, y;
 
-		var h = this.max_dimensions[1] + 12;
-		var x = Math.floor((Dom.getViewportWidth() - w) / 2);
-		var y = Math.max(0, Math.floor((Dom.getViewportHeight() - h) / 2) + scroll_top);
+		// get position based on maximum size since position doesn't change
+		// when we select a different image
+		w = this.dimensions.max[0] +
+			this.dimensions.container.paddingLeft +
+			this.dimensions.container.paddingRight +
+			this.dimensions.pinky.totalWidth;
+
+		h = this.dimensions.max[1] +
+			this.dimensions.container.paddingTop +
+			this.dimensions.container.paddingBottom;
+
+		x = Math.floor((Dom.getViewportWidth() - w) / 2);
+		y = Math.max(
+			0,
+			Math.floor((Dom.getViewportHeight() - h) / 2) + scroll_top);
+
+		// resize to current image size, but always include room for pinkies
+		w = this.data.images[this.current_image].large_width +
+			this.dimensions.container.paddingLeft +
+			this.dimensions.container.paddingRight +
+			this.dimensions.pinky.totalWidth;
+
+		h = Math.max(
+			this.data.images[this.current_image].large_height +
+			this.dimensions.container.paddingTop +
+			this.dimensions.container.paddingBottom,
+			this.dimensions.min[1] +
+			this.dimensions.container.paddingTop +
+			this.dimensions.container.paddingBottom);
 
 		var anim = new Motion(this.container, {
 			'points': { to: [x, y] },
@@ -560,6 +699,8 @@ StoreProductImageDisplay.close_text = 'Close';
 		anim.onComplete.subscribe(function() {
 			this.opened = true;
 			this.semaphore = false;
+			this.container.style.width = 'auto';
+			this.container.style.height = 'auto';
 		}, this, true);
 
 		anim.animate();
