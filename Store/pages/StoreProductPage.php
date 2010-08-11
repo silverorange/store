@@ -573,6 +573,189 @@ class StoreProductPage extends StorePage
 	}
 
 	// }}}
+	// {{{ protected function buildNavBar()
+
+	protected function buildNavBar()
+	{
+		if (!property_exists($this->layout, 'navbar'))
+			return;
+
+		$link = 'store';
+
+		foreach ($this->path as $path_entry) {
+			$link .= '/'.$path_entry->shortname;
+			$this->layout->navbar->createEntry($path_entry->title, $link);
+		}
+
+		if ($this->product !== null)
+			$this->layout->navbar->createEntry($this->product->title);
+	}
+
+	// }}}
+	// {{{ protected function displayProduct()
+
+	protected function displayProduct()
+	{
+		$this->displayImages();
+
+		echo '<div id="product_contents">';
+
+		$this->displayBodyText();
+
+		$this->displayRelatedArticleLinks();
+
+		$this->displayItemMinimumQuantityGroupNotes();
+		$this->displayItems();
+
+		$this->displayProductCollections();
+		$this->displayCollectionProducts();
+
+		$this->displayRelatedProducts();
+
+		$this->displayPopularProducts();
+
+		$this->displayReviews();
+
+		echo '</div>';
+	}
+
+	// }}}
+	// {{{ protected function displayBodyText()
+
+	protected function displayBodyText()
+	{
+		$div = new SwatHtmlTag('div');
+		$div->id = 'product_bodytext';
+		$div->setContent(
+			SwatString::toXHTML($this->product->bodytext), 'text/xml');
+
+		$div->display();
+	}
+
+	// }}}
+	// {{{ protected function displayItems()
+
+	protected function displayItems()
+	{
+		if ($this->items_view instanceof StoreItemsView)
+			$this->items_view->display();
+	}
+
+	// }}}
+	// {{{ protected function displayItemMinimumQuantityGroupNotes()
+
+	protected function displayItemMinimumQuantityGroupNotes()
+	{
+		// it's possible, but unlikely that a product can contain items
+		// from two different groups. This handles that case.
+
+		$count = 0;
+		$groups = array();
+
+		foreach ($this->product->items as $item) {
+			$group = $item->getInternalValue('minimum_quantity_group');
+
+			if ($item->isAvailableInRegion($this->app->getRegion())
+				&& $group !== null) {
+
+				$groups[$group][] = $item;
+				$count++;
+			}
+		}
+
+		if (count($groups) > 0) {
+			echo '<div class="store-item-minimum-quantity-groups">';
+
+			foreach ($groups as $items) {
+				$this->displayItemMinimumQuantityGroupNote($items, $count);
+			}
+
+			echo '</div>';
+		}
+	}
+
+	// }}}
+	// {{{ protected function displayItemMinimumQuantityGroupNote()
+
+	protected function displayItemMinimumQuantityGroupNote($items,
+		$total_item_count)
+	{
+		$group = current($items)->minimum_quantity_group;
+		$locale = SwatI18NLocale::get();
+		$content = '';
+
+		if (count($items) < $total_item_count) {
+			$skus = array();
+			foreach ($items as $item) {
+				$skus[] = $item->sku;
+			}
+
+			$content.= sprintf(Store::ngettext('%s belongs to %s.',
+				'%s are %s.', count($items)),
+				SwatString::toList($skus),
+				$group->getSearchLink());
+
+			$content.= ' ';
+		}
+
+		// all of the product's items belong to the group
+		if ($group->description != '')
+			$content.= $group->description.' ';
+
+		$content.= sprintf(Store::_(
+			'You must purchase %sa minimum of %s %s%s in order to check out.'),
+			'<strong>',
+			$locale->formatNumber($group->minimum_quantity),
+			$group->getSearchLink(),
+			'</strong>');
+
+		$p_tag = new SwatHtmlTag('p');
+		$p_tag->class = 'store-item-minimum-quantity-group-note';
+		$p_tag->setContent($content, 'text/xml');
+		$p_tag->display();
+	}
+
+	// }}}
+	// {{{ protected function getProductInlineJavaScript()
+
+	protected function getProductInlineJavaScript()
+	{
+		static $translations_displayed = false;
+
+		$item_ids = array();
+		foreach ($this->product->items as $item)
+			if ($item->isEnabled())
+				$item_ids[] = $item->id;
+
+		$item_ids = "'".implode("', '", $item_ids)."'";
+
+		$javascript = '';
+		if (!$translations_displayed) {
+			$javascript.= sprintf(
+				"StoreProductPage.enter_quantity_message = '%s';\n",
+				Store::_('Please enter a quantity.'));
+
+			$translations_displayed = true;
+		}
+
+		$javascript.= sprintf(
+			"var product_page = new StoreProductPage([%s]);",
+			$item_ids);
+
+		return $javascript;
+	}
+
+	// }}}
+	// {{{ protected function getProductSearchEngine()
+
+	protected function getProductSearchEngine($context = null)
+	{
+		return new StoreProductSearchEngine($this->app);
+	}
+
+	// }}}
+
+	// build - mini cart
 	// {{{ protected function buildCart()
 
 	protected function buildCart()
@@ -647,94 +830,6 @@ class StoreProductPage extends StorePage
 	}
 
 	// }}}
-	// {{{ protected function buildReviewsUi()
-
-	protected function buildReviewsUi()
-	{
-		if ($this->reviews_ui instanceof SwatUI) {
-			$ui             = $this->reviews_ui;
-			$form           = $ui->getWidget('product_reviews_form');
-			$show_thank_you = array_key_exists(self::THANK_YOU_ID, $_GET);
-
-			$form->action = $this->source.'#submit_review';
-
-			if ($show_thank_you) {
-				$message = new SwatMessage(
-					Store::_('Your comment has been submitted.'));
-
-				$message->secondary_content =
-					Store::_('Your comment will be published after being '.
-						'approved by the site moderator.');
-
-				$this->reviews_ui->getWidget('product_review_message_display')
-					->add($message, SwatMessageDisplay::DISMISS_OFF);
-			}
-
-			$this->buildReviewPreview();
-		}
-	}
-
-	// }}}
-	// {{{ protected function buildReviewPreview()
-
-	protected function buildReviewPreview()
-	{
-		if ($this->review instanceof StoreProductReview &&
-			$this->reviews_ui->getWidget('product_review_preview')
-				->hasBeenClicked()) {
-
-			$button_tag = new SwatHtmlTag('input');
-			$button_tag->type = 'submit';
-			$button_tag->name = 'product_review_add';
-			$button_tag->value = Store::_('Add Comment');
-
-			$message = new SwatMessage(
-				Store::_('Your comment has not yet been published.'));
-
-			$message->secondary_content = sprintf(Store::_(
-				'Please review your comment and press the '.
-				'<em>Add Comment</em> button when it’s ready to '.
-				'publish. %s'), $button_tag);
-
-			$message->content_type = 'text/xml';
-
-			$message_display =
-				$this->reviews_ui->getWidget('product_review_message_display');
-
-			$message_display->add($message, SwatMessageDisplay::DISMISS_OFF);
-
-			$review_preview = $this->reviews_ui->getWidget('review_preview');
-			$review_preview->review = $this->review;
-			$review_preview->app    = $this->app;
-			$container = $this->reviews_ui->getWidget(
-				'product_review_preview_container');
-
-			$container->visible = true;
-			$this->reviews_ui->getWidget('product_review_disclosure')->open =
-				true;
-		}
-	}
-
-	// }}}
-	// {{{ protected function buildNavBar()
-
-	protected function buildNavBar()
-	{
-		if (!property_exists($this->layout, 'navbar'))
-			return;
-
-		$link = 'store';
-
-		foreach ($this->path as $path_entry) {
-			$link .= '/'.$path_entry->shortname;
-			$this->layout->navbar->createEntry($path_entry->title, $link);
-		}
-
-		if ($this->product !== null)
-			$this->layout->navbar->createEntry($this->product->title);
-	}
-
-	// }}}
 	// {{{ protected function getCartTableStore()
 
 	/**
@@ -794,6 +889,8 @@ class StoreProductPage extends StorePage
 	}
 
 	// }}}
+
+	// build - related articles
 	// {{{ protected function displayRelatedArticles()
 
 	/**
@@ -911,34 +1008,394 @@ class StoreProductPage extends StorePage
 	}
 
 	// }}}
-	// {{{ protected function displayProduct()
+	// {{{ protected function getRelatedArticles()
 
-	protected function displayProduct()
+	/**
+	 * Gets related articles from the product, and combines them with the
+	 * related articles from the direct parent category of the product
+	 * on this page, as well as any twigs.
+	 */
+	protected function getRelatedArticles()
 	{
-		$this->displayImages();
+		if ($this->related_articles === null) {
+			// product related articles
+			$related_articles = array();
+			foreach ($this->product->related_articles as $article)
+				$related_articles[$article->id] = $article;
 
-		echo '<div id="product_contents">';
+			// add category and twig related articles
+			$last_entry = $this->path->getLast();
+			$entries_to_relate = array();
+			foreach ($this->path as $entry) {
+				if ($entry->twig && $entry !== $last_entry)
+					$entries_to_relate[] = $entry;
+			}
 
-		$this->displayBodyText();
+			if ($last_entry !== null)
+				$entries_to_relate[] = $last_entry;
 
-		$this->displayRelatedArticleLinks();
+			foreach ($entries_to_relate as $entry) {
+				$category_class = SwatDBClassMap::get('StoreCategory');
+				$category = new $category_class();
+				$category->id = $entry->id;
+				$category->setDatabase($this->app->db);
+				$category->setRegion($this->app->getRegion());
 
-		$this->displayItemMinimumQuantityGroupNotes();
-		$this->displayItems();
+				foreach ($category->related_articles as $article)
+					$related_articles[$article->id] = $article;
+			}
 
-		$this->displayProductCollections();
-		$this->displayCollectionProducts();
-
-		$this->displayRelatedProducts();
-
-		$this->displayPopularProducts();
-
-		$this->displayReviews();
-
-		echo '</div>';
+			$this->related_articles = $related_articles;
+		}
+		return $this->related_articles;
 	}
 
 	// }}}
+
+	// build - popular products
+	// {{{ protected function displayPopularProducts()
+
+	protected function displayPopularProducts()
+	{
+		$popular_products = $this->getPopularProducts();
+		if (count($popular_products) == 0)
+			return;
+
+		$div = new SwatHtmlTag('div');
+		$div->id = 'popular_products';
+
+		$header_tag = new SwatHtmlTag('h4');
+		$header_tag->setContent(
+			sprintf(Store::_('Customers who bought %s also bought…'),
+				$this->product->title));
+
+		$ul_tag = new SwatHtmlTag('ul');
+		$ul_tag->class = 'store-product-list clearfix';
+
+		$li_tag = new SwatHtmlTag('li');
+		$li_tag->class = 'store-product-icon';
+
+		$div->open();
+		$header_tag->display();
+		$ul_tag->open();
+
+		foreach ($popular_products as $product) {
+			$li_tag->open();
+			$this->displayPopularProduct($product);
+			$li_tag->close();
+		}
+
+		$ul_tag->close();
+		$div->close();
+	}
+
+	// }}}
+	// {{{ protected function displayPopularProduct()
+
+	protected function displayPopularProduct(StoreProduct $product)
+	{
+		$path = 'store/'.$product->path.'?link=popular-product';
+		$product->displayAsIcon($path, 'pinky');
+	}
+
+	// }}}
+	// {{{ protected function getPopularProducts()
+
+	protected function getPopularProducts()
+	{
+		$engine = $this->getProductSearchEngine('popular-products');
+		$engine->popular_only = true;
+		$engine->available_only = true;
+		$engine->popular_source_product = $this->product;
+		$engine->popular_threshold = 2;
+		$engine->addOrderByField('ProductPopularProductBinding.order_count
+			desc');
+
+		$products = $engine->search(3);
+
+		return $products;
+	}
+
+	// }}}
+
+	// build - related products
+	// {{{ protected function displayRelatedProducts()
+
+	protected function displayRelatedProducts()
+	{
+		$engine = $this->getProductSearchEngine('related-products');
+		$engine->related_source_product = $this->product;
+		$engine->addOrderByField('is_available desc');
+		$products = $engine->search();
+
+		if (count($products) == 0)
+			return;
+
+		$div = new SwatHtmlTag('div');
+		$div->id = 'related_products';
+
+		$header_tag = new SwatHtmlTag('h4');
+		$header_tag->setContent(Store::_('You might also be interested in…'));
+
+		$ul_tag = new SwatHtmlTag('ul');
+		$ul_tag->class = 'store-product-list clearfix';
+
+		$li_tag = new SwatHtmlTag('li');
+		$li_tag->class = 'store-product-icon';
+
+		$div->open();
+		$header_tag->display();
+		$ul_tag->open();
+
+		foreach ($products as $product) {
+			$li_tag->open();
+			$this->displayRelatedProduct($product);
+			$li_tag->close();
+		}
+
+		$ul_tag->close();
+		$div->close();
+	}
+
+	// }}}
+	// {{{ protected function displayRelatedProduct()
+
+	protected function displayRelatedProduct(StoreProduct $product)
+	{
+		$path = 'store/'.$product->path.'?link=related-product';
+		$product->displayAsIcon($path, 'pinky');
+	}
+
+	// }}}
+
+	// build - collections
+	// {{{ protected function displayProductCollections()
+
+	/**
+	 * Displays all collections this product belongs to.
+	 */
+	protected function displayProductCollections()
+	{
+		$engine = $this->getProductSearchEngine('product-collections');
+		$engine->collection_member_product = $this->product;
+		$engine->addOrderByField('is_available desc');
+		$products = $engine->search();
+
+		if (count($products) == 0)
+			return;
+
+		$div_tag = new SwatHtmlTag('div');
+		$div_tag->id = 'product_collection';
+		$div_tag->open();
+
+		$title =  SwatString::minimizeEntities(Store::ngettext(
+			'This item is also available in a collection: ',
+			'This item is also available in collections: ',
+			count($products)));
+
+		$header_tag = new SwatHtmlTag('h4');
+		$header_tag->setContent($title);
+		$header_tag->display();
+
+		$ul_tag = new SwatHtmlTag('ul');
+		$ul_tag->class = 'store-product-list clearfix';
+		$ul_tag->open();
+
+		$li_tag = new SwatHtmlTag('li');
+		$li_tag->class = 'store-product-icon';
+
+		foreach ($products as $product) {
+			$li_tag->open();
+			$this->displayProductCollection($product);
+			$li_tag->close();
+			echo ' ';
+		}
+
+		$ul_tag->close();
+		$div_tag->close();
+	}
+
+	// }}}
+	// {{{ protected function displayProductCollection()
+
+	protected function displayProductCollection(StoreProduct $product)
+	{
+		$path = 'store/'.$product->path.'?link=product-collection';
+		$product->displayAsIcon($path, 'pinky');
+	}
+
+	// }}}
+	// {{{ protected function displayCollectionProducts()
+
+	/**
+	 * Displays all member products of this collection.
+	 */
+	protected function displayCollectionProducts()
+	{
+		$engine = $this->getProductSearchEngine('collection-products');
+		$engine->collection_source_product = $this->product;
+		$engine->addOrderByField('is_available desc');
+		$products = $engine->search();
+
+		if (count($products) == 0)
+			return;
+
+		$div_tag = new SwatHtmlTag('div');
+		$div_tag->id = 'collection_products';
+		$div_tag->open();
+
+		$h4_tag = new SwatHtmlTag('h4');
+		$h4_tag->setContent(Store::ngettext(
+			'This collection contains the following item: ',
+			'This collection contains the following items: ',
+			count($products)));
+
+		$h4_tag->display();
+
+		$ul_tag = new SwatHtmlTag('ul');
+		$ul_tag->class = 'store-product-list clearfix';
+
+		$li_tag = new SwatHtmlTag('li');
+		$li_tag->class = 'store-product-icon';
+
+		$ul_tag->open();
+
+		foreach ($products as $product) {
+			$li_tag->open();
+			$this->displayCollectionProduct($product);
+			$li_tag->close();
+			echo ' ';
+		}
+
+		$ul_tag->close();
+		$div_tag->close();
+	}
+
+	// }}}
+	// {{{ protected function displayCollectionProduct()
+
+	protected function displayCollectionProduct(StoreProduct $product)
+	{
+		$path = 'store/'.$product->path.'?link=collection-product';
+		$product->displayAsIcon($path, 'pinky');
+	}
+
+	// }}}
+
+	// build - reviews
+	// {{{ protected function buildReviewsUi()
+
+	protected function buildReviewsUi()
+	{
+		if ($this->reviews_ui instanceof SwatUI) {
+			$ui             = $this->reviews_ui;
+			$form           = $ui->getWidget('product_reviews_form');
+			$show_thank_you = array_key_exists(self::THANK_YOU_ID, $_GET);
+
+			$form->action = $this->source.'#submit_review';
+
+			if ($show_thank_you) {
+				$message = new SwatMessage(
+					Store::_('Your comment has been submitted.'));
+
+				$message->secondary_content =
+					Store::_('Your comment will be published after being '.
+						'approved by the site moderator.');
+
+				$this->reviews_ui->getWidget('product_review_message_display')
+					->add($message, SwatMessageDisplay::DISMISS_OFF);
+			}
+
+			$this->buildReviewPreview();
+		}
+	}
+
+	// }}}
+	// {{{ protected function buildReviewPreview()
+
+	protected function buildReviewPreview()
+	{
+		if ($this->review instanceof StoreProductReview &&
+			$this->reviews_ui->getWidget('product_review_preview')
+				->hasBeenClicked()) {
+
+			$button_tag = new SwatHtmlTag('input');
+			$button_tag->type = 'submit';
+			$button_tag->name = 'product_review_add';
+			$button_tag->value = Store::_('Add Comment');
+
+			$message = new SwatMessage(
+				Store::_('Your comment has not yet been published.'));
+
+			$message->secondary_content = sprintf(Store::_(
+				'Please review your comment and press the '.
+				'<em>Add Comment</em> button when it’s ready to '.
+				'publish. %s'), $button_tag);
+
+			$message->content_type = 'text/xml';
+
+			$message_display =
+				$this->reviews_ui->getWidget('product_review_message_display');
+
+			$message_display->add($message, SwatMessageDisplay::DISMISS_OFF);
+
+			$review_preview = $this->reviews_ui->getWidget('review_preview');
+			$review_preview->review = $this->review;
+			$review_preview->app    = $this->app;
+			$container = $this->reviews_ui->getWidget(
+				'product_review_preview_container');
+
+			$container->visible = true;
+			$this->reviews_ui->getWidget('product_review_disclosure')->open =
+				true;
+		}
+	}
+
+	// }}}
+	// {{{ protected function displayReviews()
+
+	protected function displayReviews()
+	{
+		if ($this->reviews_ui instanceof SwatUI) {
+			echo '<div id="submit_review"></div>';
+
+			$this->reviews_ui->display();
+		}
+	}
+
+	// }}}
+	// {{{ protected function getReviewsInlineJavaScript()
+
+	protected function getReviewsInlineJavaScript()
+	{
+		$locale = SwatI18NLocale::get();
+
+		$review_count = $this->product->getVisibleProductReviewCount(
+			$this->app->getInstance());
+
+		$message = sprintf(Store::_('Read All %s Comments'),
+			$locale->formatNumber($review_count));
+
+		$message       = SwatString::quoteJavaScriptString($message);
+		$replicator_id = "'reviews_replicator'";
+		$disclosure_id = "'product_review_disclosure'";
+
+		$show_more = ($review_count > $this->getMaxProductReviews()) ?
+			'true' : 'false';
+
+		return sprintf("var product_review_page = ".
+			"new StoreProductReviewPage(%s, %s, %s, %s, %s, %s);",
+			$this->product->id,
+			$this->getMaxProductReviews(),
+			$replicator_id,
+			$disclosure_id,
+			$message,
+			$show_more);
+	}
+
+	// }}}
+
+	// build - images
 	// {{{ protected function displayImages()
 
 	protected function displayImages()
@@ -1114,449 +1571,6 @@ class StoreProductPage extends StorePage
 
 		$anchor->close();
 		$li_tag->close();
-	}
-
-	// }}}
-	// {{{ protected function displayBodyText()
-
-	protected function displayBodyText()
-	{
-		$div = new SwatHtmlTag('div');
-		$div->id = 'product_bodytext';
-		$div->setContent(
-			SwatString::toXHTML($this->product->bodytext), 'text/xml');
-
-		$div->display();
-	}
-
-	// }}}
-	// {{{ protected function displayItems()
-
-	protected function displayItems()
-	{
-		if ($this->items_view instanceof StoreItemsView)
-			$this->items_view->display();
-	}
-
-	// }}}
-	// {{{ protected function displayItemMinimumQuantityGroupNotes()
-
-	protected function displayItemMinimumQuantityGroupNotes()
-	{
-		// it's possible, but unlikely that a product can contain items
-		// from two different groups. This handles that case.
-
-		$count = 0;
-		$groups = array();
-
-		foreach ($this->product->items as $item) {
-			$group = $item->getInternalValue('minimum_quantity_group');
-
-			if ($item->isAvailableInRegion($this->app->getRegion())
-				&& $group !== null) {
-
-				$groups[$group][] = $item;
-				$count++;
-			}
-		}
-
-		if (count($groups) > 0) {
-			echo '<div class="store-item-minimum-quantity-groups">';
-
-			foreach ($groups as $items) {
-				$this->displayItemMinimumQuantityGroupNote($items, $count);
-			}
-
-			echo '</div>';
-		}
-	}
-
-	// }}}
-	// {{{ protected function displayItemMinimumQuantityGroupNote()
-
-	protected function displayItemMinimumQuantityGroupNote($items,
-		$total_item_count)
-	{
-		$group = current($items)->minimum_quantity_group;
-		$locale = SwatI18NLocale::get();
-		$content = '';
-
-		if (count($items) < $total_item_count) {
-			$skus = array();
-			foreach ($items as $item) {
-				$skus[] = $item->sku;
-			}
-
-			$content.= sprintf(Store::ngettext('%s belongs to %s.',
-				'%s are %s.', count($items)),
-				SwatString::toList($skus),
-				$group->getSearchLink());
-
-			$content.= ' ';
-		}
-
-		// all of the product's items belong to the group
-		if ($group->description != '')
-			$content.= $group->description.' ';
-
-		$content.= sprintf(Store::_(
-			'You must purchase %sa minimum of %s %s%s in order to check out.'),
-			'<strong>',
-			$locale->formatNumber($group->minimum_quantity),
-			$group->getSearchLink(),
-			'</strong>');
-
-		$p_tag = new SwatHtmlTag('p');
-		$p_tag->class = 'store-item-minimum-quantity-group-note';
-		$p_tag->setContent($content, 'text/xml');
-		$p_tag->display();
-	}
-
-	// }}}
-	// {{{ protected function displayRelatedProducts()
-
-	protected function displayRelatedProducts()
-	{
-		$engine = $this->getProductSearchEngine('related-products');
-		$engine->related_source_product = $this->product;
-		$engine->addOrderByField('is_available desc');
-		$products = $engine->search();
-
-		if (count($products) == 0)
-			return;
-
-		$div = new SwatHtmlTag('div');
-		$div->id = 'related_products';
-
-		$header_tag = new SwatHtmlTag('h4');
-		$header_tag->setContent(Store::_('You might also be interested in…'));
-
-		$ul_tag = new SwatHtmlTag('ul');
-		$ul_tag->class = 'store-product-list clearfix';
-
-		$li_tag = new SwatHtmlTag('li');
-		$li_tag->class = 'store-product-icon';
-
-		$div->open();
-		$header_tag->display();
-		$ul_tag->open();
-
-		foreach ($products as $product) {
-			$li_tag->open();
-			$this->displayRelatedProduct($product);
-			$li_tag->close();
-		}
-
-		$ul_tag->close();
-		$div->close();
-	}
-
-	// }}}
-	// {{{ protected function displayRelatedProduct()
-
-	protected function displayRelatedProduct(StoreProduct $product)
-	{
-		$path = 'store/'.$product->path.'?link=related-product';
-		$product->displayAsIcon($path, 'pinky');
-	}
-
-	// }}}
-	// {{{ protected function displayPopularProducts()
-
-	protected function displayPopularProducts()
-	{
-		$popular_products = $this->getPopularProducts();
-		if (count($popular_products) == 0)
-			return;
-
-		$div = new SwatHtmlTag('div');
-		$div->id = 'popular_products';
-
-		$header_tag = new SwatHtmlTag('h4');
-		$header_tag->setContent(
-			sprintf(Store::_('Customers who bought %s also bought…'),
-				$this->product->title));
-
-		$ul_tag = new SwatHtmlTag('ul');
-		$ul_tag->class = 'store-product-list clearfix';
-
-		$li_tag = new SwatHtmlTag('li');
-		$li_tag->class = 'store-product-icon';
-
-		$div->open();
-		$header_tag->display();
-		$ul_tag->open();
-
-		foreach ($popular_products as $product) {
-			$li_tag->open();
-			$this->displayPopularProduct($product);
-			$li_tag->close();
-		}
-
-		$ul_tag->close();
-		$div->close();
-	}
-
-	// }}}
-	// {{{ protected function displayPopularProduct()
-
-	protected function displayPopularProduct(StoreProduct $product)
-	{
-		$path = 'store/'.$product->path.'?link=popular-product';
-		$product->displayAsIcon($path, 'pinky');
-	}
-
-	// }}}
-	// {{{ protected function displayProductCollections()
-
-	/**
-	 * Displays all collections this product belongs to.
-	 */
-	protected function displayProductCollections()
-	{
-		$engine = $this->getProductSearchEngine('product-collections');
-		$engine->collection_member_product = $this->product;
-		$engine->addOrderByField('is_available desc');
-		$products = $engine->search();
-
-		if (count($products) == 0)
-			return;
-
-		$div_tag = new SwatHtmlTag('div');
-		$div_tag->id = 'product_collection';
-		$div_tag->open();
-
-		$title =  SwatString::minimizeEntities(Store::ngettext(
-			'This item is also available in a collection: ',
-			'This item is also available in collections: ',
-			count($products)));
-
-		$header_tag = new SwatHtmlTag('h4');
-		$header_tag->setContent($title);
-		$header_tag->display();
-
-		$ul_tag = new SwatHtmlTag('ul');
-		$ul_tag->class = 'store-product-list clearfix';
-		$ul_tag->open();
-
-		$li_tag = new SwatHtmlTag('li');
-		$li_tag->class = 'store-product-icon';
-
-		foreach ($products as $product) {
-			$li_tag->open();
-			$this->displayProductCollection($product);
-			$li_tag->close();
-			echo ' ';
-		}
-
-		$ul_tag->close();
-		$div_tag->close();
-	}
-
-	// }}}
-	// {{{ protected function displayProductCollection()
-
-	protected function displayProductCollection(StoreProduct $product)
-	{
-		$path = 'store/'.$product->path.'?link=product-collection';
-		$product->displayAsIcon($path, 'pinky');
-	}
-
-	// }}}
-	// {{{ protected function displayCollectionProducts()
-
-	/**
-	 * Displays all member products of this collection.
-	 */
-	protected function displayCollectionProducts()
-	{
-		$engine = $this->getProductSearchEngine('collection-products');
-		$engine->collection_source_product = $this->product;
-		$engine->addOrderByField('is_available desc');
-		$products = $engine->search();
-
-		if (count($products) == 0)
-			return;
-
-		$div_tag = new SwatHtmlTag('div');
-		$div_tag->id = 'collection_products';
-		$div_tag->open();
-
-		$h4_tag = new SwatHtmlTag('h4');
-		$h4_tag->setContent(Store::ngettext(
-			'This collection contains the following item: ',
-			'This collection contains the following items: ',
-			count($products)));
-
-		$h4_tag->display();
-
-		$ul_tag = new SwatHtmlTag('ul');
-		$ul_tag->class = 'store-product-list clearfix';
-
-		$li_tag = new SwatHtmlTag('li');
-		$li_tag->class = 'store-product-icon';
-
-		$ul_tag->open();
-
-		foreach ($products as $product) {
-			$li_tag->open();
-			$this->displayCollectionProduct($product);
-			$li_tag->close();
-			echo ' ';
-		}
-
-		$ul_tag->close();
-		$div_tag->close();
-	}
-
-	// }}}
-	// {{{ protected function displayCollectionProduct()
-
-	protected function displayCollectionProduct(StoreProduct $product)
-	{
-		$path = 'store/'.$product->path.'?link=collection-product';
-		$product->displayAsIcon($path, 'pinky');
-	}
-
-	// }}}
-	// {{{ protected function displayReviews()
-
-	protected function displayReviews()
-	{
-		if ($this->reviews_ui instanceof SwatUI) {
-			echo '<div id="submit_review"></div>';
-
-			$this->reviews_ui->display();
-		}
-	}
-
-	// }}}
-	// {{{ protected function getPopularProducts()
-
-	protected function getPopularProducts()
-	{
-		$engine = $this->getProductSearchEngine('popular-products');
-		$engine->popular_only = true;
-		$engine->available_only = true;
-		$engine->popular_source_product = $this->product;
-		$engine->popular_threshold = 2;
-		$engine->addOrderByField('ProductPopularProductBinding.order_count
-			desc');
-
-		$products = $engine->search(3);
-
-		return $products;
-	}
-
-	// }}}
-	// {{{ protected function getProductInlineJavaScript()
-
-	protected function getProductInlineJavaScript()
-	{
-		static $translations_displayed = false;
-
-		$item_ids = array();
-		foreach ($this->product->items as $item)
-			if ($item->isEnabled())
-				$item_ids[] = $item->id;
-
-		$item_ids = "'".implode("', '", $item_ids)."'";
-
-		$javascript = '';
-		if (!$translations_displayed) {
-			$javascript.= sprintf(
-				"StoreProductPage.enter_quantity_message = '%s';\n",
-				Store::_('Please enter a quantity.'));
-
-			$translations_displayed = true;
-		}
-
-		$javascript.= sprintf(
-			"var product_page = new StoreProductPage([%s]);",
-			$item_ids);
-
-		return $javascript;
-	}
-
-	// }}}
-	// {{{ protected function getReviewsInlineJavaScript()
-
-	protected function getReviewsInlineJavaScript()
-	{
-		$locale = SwatI18NLocale::get();
-
-		$review_count = $this->product->getVisibleProductReviewCount(
-			$this->app->getInstance());
-
-		$message = sprintf(Store::_('Read All %s Comments'),
-			$locale->formatNumber($review_count));
-
-		$message       = SwatString::quoteJavaScriptString($message);
-		$replicator_id = "'reviews_replicator'";
-		$disclosure_id = "'product_review_disclosure'";
-
-		$show_more = ($review_count > $this->getMaxProductReviews()) ?
-			'true' : 'false';
-
-		return sprintf("var product_review_page = ".
-			"new StoreProductReviewPage(%s, %s, %s, %s, %s, %s);",
-			$this->product->id,
-			$this->getMaxProductReviews(),
-			$replicator_id,
-			$disclosure_id,
-			$message,
-			$show_more);
-	}
-
-	// }}}
-	// {{{ protected function getRelatedArticles()
-
-	/**
-	 * Gets related articles from the product, and combines them with the
-	 * related articles from the direct parent category of the product
-	 * on this page, as well as any twigs.
-	 */
-	protected function getRelatedArticles()
-	{
-		if ($this->related_articles === null) {
-			// product related articles
-			$related_articles = array();
-			foreach ($this->product->related_articles as $article)
-				$related_articles[$article->id] = $article;
-
-			// add category and twig related articles
-			$last_entry = $this->path->getLast();
-			$entries_to_relate = array();
-			foreach ($this->path as $entry) {
-				if ($entry->twig && $entry !== $last_entry)
-					$entries_to_relate[] = $entry;
-			}
-
-			if ($last_entry !== null)
-				$entries_to_relate[] = $last_entry;
-
-			foreach ($entries_to_relate as $entry) {
-				$category_class = SwatDBClassMap::get('StoreCategory');
-				$category = new $category_class();
-				$category->id = $entry->id;
-				$category->setDatabase($this->app->db);
-				$category->setRegion($this->app->getRegion());
-
-				foreach ($category->related_articles as $article)
-					$related_articles[$article->id] = $article;
-			}
-
-			$this->related_articles = $related_articles;
-		}
-		return $this->related_articles;
-	}
-
-	// }}}
-	// {{{ protected function getProductSearchEngine()
-
-	protected function getProductSearchEngine($context = null)
-	{
-		return new StoreProductSearchEngine($this->app);
 	}
 
 	// }}}
