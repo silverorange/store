@@ -147,10 +147,10 @@ class StoreAccountDeleter extends StorePrivateDataDeleter
 
 	protected function getExpiryDate()
 	{
-		$expiry_accounts = $this->app->config->expiry->accounts;
-		$expiry_date = new SwatDate(strtotime('-'.$expiry_accounts),
-			DATE_FORMAT_UNIXTIME);
+		$unix_time = strtotime('-'.$this->app->config->expiry->accounts);
 
+		$expiry_date = new SwatDate();
+		$expiry_date->setDate($unix_time, DATE_FORMAT_UNIXTIME);
 		$expiry_date->toUTC();
 
 		return $expiry_date;
