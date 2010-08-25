@@ -194,9 +194,9 @@ class StoreOrderDeleter extends StorePrivateDataDeleter
 	protected function getExpiryDate()
 	{
 		$expiry_orders = $this->app->config->expiry->orders;
-		$expiry_date = new SwatDate(strtotime('-'.$expiry_orders),
-			DATE_FORMAT_UNIXTIME);
-
+		$timestamp = strtotime('-'.$expiry_orders);
+		$expiry_date = new SwatDate();
+		$expiry_date->setDate($timestamp, DATE_FORMAT_UNIXTIME);
 		$expiry_date->toUTC();
 		return $expiry_date;
 	}
