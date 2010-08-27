@@ -340,6 +340,9 @@ class StoreProductDetails extends AdminIndex
 
 			break;
 		}
+
+		if (isset($this->app->memcache))
+			$this->app->memcache->flushNs('product');
 	}
 
 	// }}}
