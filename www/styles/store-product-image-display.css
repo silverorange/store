@@ -38,7 +38,7 @@
 	text-align: center;
 	width: 100%;
 	margin-left: -50%;
-	text-shadow: 0 1px 1px #fff, 0 -1px 1px #fff;
+	text-shadow: 0 1px #fff;
 	border-bottom: 1px solid #fff;
 	box-shadow: 0 2px 4px -1px rgba(0,0,0,0.80);
 	-webkit-box-shadow: 0 2px 4px -1px rgba(0,0,0,0.80);
