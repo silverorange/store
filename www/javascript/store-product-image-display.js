@@ -2,6 +2,7 @@
 
 var StoreProductImageDisplay = function(data, config)
 {
+
 	this.semaphore     = false;
 	this.data          = data;
 	this.opened        = false;
@@ -9,15 +10,7 @@ var StoreProductImageDisplay = function(data, config)
 
 	this.configure(config);
 
-	this.dimensions = {
-		pinky:     {},
-		container: {},
-		min:   [0, 0],
-		max:   [0, 0]
-	};
-
-	// list of select elements to hide for IE6
-	this.select_elements = [];
+	this.dimensions = { container: {} };
 
 	// preload images and create id-to-index lookup table, needs to be added
 	// to an instance variable so the images don't get garbage-collected by
@@ -35,13 +28,16 @@ var StoreProductImageDisplay = function(data, config)
 		this.image_indexes_by_id[this.data.images[i].id] = i;
 	}
 
-	YAHOO.util.Event.onDOMReady(function() {
-		this.initLinks();
-		this.drawOverlay();
-		this.drawContainer();
-		this.initDimensions();
-		this.initLocation();
-	}, this, true);
+	// custom events allow us to track effectivness of UI design in 3rd party
+	// analytics software.
+	this.onOpen        = new YAHOO.util.CustomEvent('open');
+	this.onClose       = new YAHOO.util.CustomEvent('close');
+	this.onSelectImage = new YAHOO.util.CustomEvent('selectImage');
+
+	// IE6 is not supported for this cool feature
+	if (!StoreProductImageDisplay.ie6) {
+		YAHOO.util.Event.onDOMReady(this.init, this, true);
+	}
 };
 
 // }}}
@@ -68,11 +64,14 @@ StoreProductImageDisplay.close_text = 'Close';
 
 		this.config = {
 			period: {
-				open:          0.200, // in sec
+				open:          0.500, // in sec
 				fadeOut:       0.250, // in sec
 				fadeIn:        0.100, // in sec
 				resize:        0.100, // in sec
 				locationCheck: 0.200  // in sec
+			},
+			geometry: {
+				top: 40               // in px
 			}
 		};
 
@@ -92,6 +91,23 @@ StoreProductImageDisplay.close_text = 'Close';
 	};
 
 	// }}}
+	// {{{ init()
+
+	StoreProductImageDisplay.prototype.init = function()
+	{
+		this.html = document.getElementsByTagName('html')[0];
+		this.html_overflow = Dom.getStyle(this.html, 'overflowY');
+
+		this.body = document.getElementsByTagName('body')[0];
+		this.body_overflow = Dom.getStyle(this.body, 'overflowY');
+
+		this.initLinks();
+		this.drawOverlay();
+		this.initContainerDimensions();
+		this.initLocation();
+	};
+
+	// }}}
 	// {{{ initLinks()
 
 	StoreProductImageDisplay.prototype.initLinks = function()
@@ -101,7 +117,11 @@ StoreProductImageDisplay.close_text = 'Close';
 		Event.on(this.image_link, 'click', function(e) {
 			Event.preventDefault(e);
 			this.selectImage(0);
+			this.onSelectImage.fire(this.data.images[0].id,
+				'mainProductImageLink');
+
 			this.openWithAnimation();
+			this.onOpen.fire(this.data.images[0].id, 'mainProductImageLink');
 		}, this, true);
 
 		var pinky_list = document.getElementById('product_secondary_images');
@@ -119,7 +139,15 @@ StoreProductImageDisplay.close_text = 'Close';
 						Event.on(pinky_link, 'click', function(e) {
 							Event.preventDefault(e);
 							that.selectImage(index);
+							that.onSelectImage.fire(
+								that.data.images[index].id,
+								'secondaryProductImageLink');
+
 							that.openWithAnimation();
+							that.onOpen.fire(
+								that.data.images[index].id,
+								'secondaryProductImageLink');
+
 						}, that , true);
 					}());
 				}
@@ -130,51 +158,56 @@ StoreProductImageDisplay.close_text = 'Close';
 	// }}}
 
 	// draw
-	// {{{ drawContainer()
+	// {{{ drawOverlay()
 
-	StoreProductImageDisplay.prototype.drawContainer = function()
+	StoreProductImageDisplay.prototype.drawOverlay = function()
 	{
-		this.container = document.createElement('div');
-		this.container.style.display = 'none';
-		this.container.className = 'store-product-image-display-container';
+		this.overlay = document.createElement('div');
+		this.overlay.className = 'store-product-image-display-overlay';
+		this.overlay.style.display = 'none';
 
-		SwatZIndexManager.raiseElement(this.container);
-
-		var wrapper = document.createElement('div');
-		wrapper.className = 'store-product-image-display-wrapper';
+		this.overlay.appendChild(this.drawOverlayMask());
+		this.overlay.appendChild(this.drawContainer());
+		this.overlay.appendChild(this.drawHeader());
+//		this.overlay.appendChild(this.drawCloseLink());
 
 		var pinkies = this.drawPinkies();
 		if (pinkies) {
-			wrapper.appendChild(pinkies);
-			Dom.addClass(this.container,
-				'store-product-image-display-with-pinkies');
+			this.overlay.appendChild(pinkies);
 		}
 
-		this.image_container = document.createElement('div');
-		this.image_container.className =
-			'store-product-image-display-image-container';
-
-		this.image_container.appendChild(this.drawHeader());
-		this.image_container.appendChild(this.drawImage());
-
-		wrapper.appendChild(this.image_container);
-		wrapper.appendChild(this.drawClear());
-
-		this.container.appendChild(wrapper);
-
-		var body = document.getElementsByTagName('body')[0];
-		body.appendChild(this.container);
+		this.body.appendChild(this.overlay);
 	};
 
 	// }}}
-	// {{{ drawClear()
+	// {{{ drawOverlayMask()
 
-	StoreProductImageDisplay.prototype.drawClear = function()
+	StoreProductImageDisplay.prototype.drawOverlayMask = function()
 	{
-		var clear = document.createElement('div');
-		clear.className = 'store-product-image-display-clear';
-		return clear;
-	};
+		var mask = document.createElement('a');
+		mask.href = '#close';
+		mask.className = 'store-product-image-display-overlay-mask';
+
+		Event.on(mask, 'click', function(e) {
+			Event.preventDefault(e);
+			this.close();
+			this.onClose.fire('overlayMask');
+		}, this, true);
+
+		Event.on(mask, 'mouseover', function(e) {
+			YAHOO.util.Dom.addClass(this.close_link,
+				'store-product-image-display-close-hover');
+		}, this, true);
+
+		Event.on(mask, 'mouseout', function(e) {
+			YAHOO.util.Dom.removeClass(this.close_link,
+				'store-product-image-display-close-hover');
+		}, this, true);
+
+		SwatZIndexManager.raiseElement(mask);
+
+		return mask;
+	}
 
 	// }}}
 	// {{{ drawHeader()
@@ -184,22 +217,23 @@ StoreProductImageDisplay.close_text = 'Close';
 		var header = document.createElement('div');
 		header.className = 'store-product-image-display-header';
 
-		SwatZIndexManager.raiseElement(header);
-
-		header.appendChild(this.drawCloseLink());
+		header.appendChild(this.drawLinks());
 		header.appendChild(this.drawTitle());
+
+		SwatZIndexManager.raiseElement(header);
 
 		return header;
 	};
 
 	// }}}
-	// {{{ drawTitle()
+	// {{{ drawLinks()
 
-	StoreProductImageDisplay.prototype.drawTitle= function()
+	StoreProductImageDisplay.prototype.drawLinks = function()
 	{
-		this.title = document.createElement('div');
-		this.title.className = 'store-product-image-display-title';
-		return this.title;
+		var links = document.createElement('div');
+		links.className = 'store-product-image-display-links';
+		links.appendChild(this.drawCloseLink());
+		return links;
 	};
 
 	// }}}
@@ -207,29 +241,36 @@ StoreProductImageDisplay.close_text = 'Close';
 
 	StoreProductImageDisplay.prototype.drawCloseLink = function()
 	{
-		var close_link = document.createElement('a');
-		close_link.className = 'store-product-image-display-close';
-		close_link.href = '#close';
+		this.close_link = document.createElement('a');
+		this.close_link.className = 'store-product-image-display-close';
+		this.close_link.href = '#close';
 
-		close_link.appendChild(document.createTextNode(
-			StoreProductImageDisplay.close_text));
+		// uses a unicode narrow space character
+		this.close_link.appendChild(document.createTextNode(
+			'× ' + StoreProductImageDisplay.close_text));
 
-		Event.on(close_link, 'click', function(e) {
+		Event.on(this.close_link, 'click', function(e) {
 			Event.preventDefault(e);
 			this.close();
+			this.onClose.fire('closeLink');
 		}, this, true);
 
-		return close_link;
+		SwatZIndexManager.raiseElement(this.close_link);
+
+		return this.close_link;
 	};
 
 	// }}}
-	// {{{ drawImage()
+	// {{{ drawTitle()
 
-	StoreProductImageDisplay.prototype.drawImage = function()
+	StoreProductImageDisplay.prototype.drawTitle = function()
 	{
-		this.image = document.createElement('img');
-		this.image.className = 'store-product-image-display-image';
-		return this.image;
+		this.title = document.createElement('div');
+		this.title.className = 'store-product-image-display-title';
+
+//		SwatZIndexManager.raiseElement(this.title);
+
+		return this.title;
 	};
 
 	// }}}
@@ -237,15 +278,15 @@ StoreProductImageDisplay.close_text = 'Close';
 
 	StoreProductImageDisplay.prototype.drawPinkies = function()
 	{
-		var pinky_list;
+		this.pinky_list = null;
 
 		this.pinkies = [];
 
 		if (this.data.images.length > 1) {
 
 			var pinky, image, link;
-			pinky_list = document.createElement('ul');
-			pinky_list.className = 'store-product-image-display-pinkies';
+			this.pinky_list = document.createElement('ul');
+			this.pinky_list.className = 'store-product-image-display-pinkies';
 			for (var i = 0; i < this.data.images.length; i++) {
 
 				image = document.createElement('img');
@@ -264,6 +305,8 @@ StoreProductImageDisplay.close_text = 'Close';
 					Event.on(link, 'click', function(e) {
 						Event.preventDefault(e);
 						that.selectImage(index);
+						that.onSelectImage.fire(that.data.images[index].id,
+							'pinkyImage');
 					}, that, true);
 				}());
 
@@ -276,168 +319,50 @@ StoreProductImageDisplay.close_text = 'Close';
 
 				this.pinkies.push(pinky);
 
-				pinky_list.appendChild(pinky);
+				this.pinky_list.appendChild(pinky);
 			}
+
+			SwatZIndexManager.raiseElement(this.pinky_list);
 
 		}
 
-		return pinky_list;
+		return this.pinky_list;
 	};
 
 	// }}}
-	// {{{ drawOverlay()
+	// {{{ drawContainer()
 
-	StoreProductImageDisplay.prototype.drawOverlay = function()
+	StoreProductImageDisplay.prototype.drawContainer = function()
 	{
-		this.overlay = document.createElement('div');
+		this.container = document.createElement('div');
+		this.container.style.display = 'none';
+		this.container.className = 'store-product-image-display-container';
 
-		this.overlay.className = 'store-product-image-display-overlay';
-		this.overlay.style.display = 'none';
+		var wrapper = document.createElement('div');
+		wrapper.className = 'store-product-image-display-wrapper';
 
-		SwatZIndexManager.raiseElement(this.overlay);
+		wrapper.appendChild(this.drawImage());
 
-		Event.on(this.overlay, 'click', this.close, this, true);
+		this.container.appendChild(wrapper);
 
-		var body = document.getElementsByTagName('body')[0];
-		body.appendChild(this.overlay);
+		SwatZIndexManager.raiseElement(this.container);
+
+		return this.container;
+	};
+
+	// }}}
+	// {{{ drawImage()
+
+	StoreProductImageDisplay.prototype.drawImage = function()
+	{
+		this.image = document.createElement('img');
+		this.image.className = 'store-product-image-display-image';
+		return this.image;
 	};
 
 	// }}}
 
 	// dimensions
-	// {{{ initDimensions()
-
-	StoreProductImageDisplay.prototype.initDimensions = function()
-	{
-		this.initPinkyDimensions();
-		this.initContainerDimensions();
-		this.initMinDimensions();
-		this.initMaxDimensions();
-	};
-
-	// }}}
-	// {{{ initMaxDimensions()
-
-	StoreProductImageDisplay.prototype.initMaxDimensions = function()
-	{
-		this.dimensions.max = [0, 0];
-
-		for (var i = 0; i < this.data.images.length; i++) {
-			this.dimensions.max[0] = Math.max(
-				this.dimensions.max[0],
-				this.data.images[i].large_width);
-
-			this.dimensions.max[1] = Math.max(
-				this.dimensions.max[1],
-				this.data.images[i].large_height);
-		}
-
-		if (this.pinkies.length > 1) {
-			this.dimensions.max[1] = Math.max(
-				this.dimensions.max[1],
-				this.dimensions.pinky.totalHeight);
-		}
-	};
-
-	// }}}
-	// {{{ initMinDimensions()
-
-	StoreProductImageDisplay.prototype.initMinDimensions = function()
-	{
-		for (var i = 0; i < this.data.images.length; i++) {
-			if (this.dimensions.min[0] == 0) {
-				this.dimensions.min[0] = this.data.images[i].large_width;
-			} else {
-				this.dimensions.min[0] = Math.min(
-					this.dimensions.min[0],
-					this.data.images[i].large_width);
-			}
-
-			if (this.dimensions.min[1] == 0) {
-				this.dimensions.min[1] = this.data.images[i].large_height;
-			} else {
-				this.dimensions.min[1] = Math.min(
-					this.dimensions.min[1],
-					this.data.images[i].large_height);
-			}
-		}
-
-		if (this.pinkies.length > 1) {
-			this.dimensions.min[1] = Math.max(
-				this.dimensions.min[1],
-				this.dimensions.pinky.totalHeight);
-		}
-	};
-
-	// }}}
-	// {{{ initPinkyDimensions()
-
-	StoreProductImageDisplay.prototype.initPinkyDimensions = function()
-	{
-		if (this.pinkies.length < 2) {
-
-			this.dimensions.pinky = {
-				firstPaddingTop:    0,
-				firstPaddingBottom: 0,
-				firstMarginTop:     0,
-				firstMarginBottom:  0,
-				paddingTop:         0,
-				paddingBottom:      0,
-				marginTop:          0,
-				marginBottom:       0,
-				totalWidth:         0,
-				totalHeight:        0
-			};
-
-			return;
-		}
-
-		var first  = this.pinkies[0];
-		var second = this.pinkies[1];
-
-		this.dimensions.pinky = {
-			firstPaddingTop:    parseInt(Dom.getStyle(first,  'paddingTop')),
-			firstPaddingBottom: parseInt(Dom.getStyle(first,  'paddingBottom')),
-			firstMarginTop:     parseInt(Dom.getStyle(first,  'marginTop')),
-			firstMarginBottom:  parseInt(Dom.getStyle(first,  'marginBottom')),
-			paddingTop:         parseInt(Dom.getStyle(second, 'paddingTop')),
-			paddingBottom:      parseInt(Dom.getStyle(second, 'paddingBottom')),
-			marginTop:          parseInt(Dom.getStyle(second, 'marginTop')),
-			marginBottom:       parseInt(Dom.getStyle(second, 'marginBottom'))
-		};
-
-		var dimensions = this.dimensions.pinky;
-
-		// Calculates total height of pinkies based on collapsing margin CSS
-		// model with the first pinky possibly having different margin or
-		// padding.
-
-		var top_height = dimensions.firstMarginTop +
-			dimensions.firstPaddingTop;
-
-		var first_height = dimensions.firstPaddingBottom +
-			Math.max(dimensions.marginTop, dimensions.firstMarginBottom) +
-			dimensions.paddingTop;
-
-		var mid_height = dimensions.paddingBottom +
-			Math.max(dimensions.marginTop, dimensions.marginBottom) +
-			dimensions.paddingTop;
-
-		var bottom_height = dimensions.paddingBottom +
-			dimensions.marginBottom;
-
-		var pinky_height = this.data.images[0].pinky_height;
-
-		dimensions.totalHeight = top_height + first_height +
-			(this.pinkies.length - 2) * mid_height +
-			bottom_height +
-			this.pinkies.length * pinky_height;
-
-		dimensions.totalWidth = parseInt(
-			Dom.getStyle(first.parentNode, 'width'));
-	};
-
-	// }}}
 	// {{{ initContainerDimensions()
 
 	StoreProductImageDisplay.prototype.initContainerDimensions = function()
@@ -459,15 +384,28 @@ StoreProductImageDisplay.close_text = 'Close';
 
 	StoreProductImageDisplay.prototype.selectImage = function(index)
 	{
-		if (!this.data.images[index]) {
+		if (!this.data.images[index] ||
+			(this.opened && this.current_image == index)) {
 			return false;
 		}
 
 		var data = this.data.images[index];
 
+		var w = data.large_width +
+			this.dimensions.container.paddingLeft +
+			this.dimensions.container.paddingRight;
+
+		this.container.style.display = 'block';
+		this.container.style.marginLeft = -Math.floor(w / 2) + 'px';
+		this.container.style.top = this.config.geometry.top + 'px';
+
 		this.image.src = data.large_uri;
-		this.image.style.width = data.large_width + 'px';
-		this.image.style.height = data.large_height + 'px';
+		this.image.width = data.large_width;
+		this.image.height = data.large_height;
+
+		// required for IE6
+		this.image.parentNode.style.width = data.large_width + 'px';
+		this.image.parentNode.style.height = data.large_height + 'px';
 
 		this.setTitle(data, this.data.product);
 
@@ -480,6 +418,25 @@ StoreProductImageDisplay.close_text = 'Close';
 			'store-product-image-display-pinky-selected');
 
 		this.current_image = index;
+
+		// Set page scroll height so we can't scroll the image out of view.
+		// This doesn't work correctly in IE6 and 7 or in
+		// Opera (Bug #CORE-22089); however it degrades nicely.
+		var window_height = Math.max(
+			// 10 extra px to  keep larger than viewport to keep scroll bars
+			Dom.getViewportHeight() + 10,
+			// 15 extra px to contain image paddings
+			data.large_height + this.config.geometry.top + 15);
+
+		this.html.style.overflowY = 'auto';
+		this.html.style.height    = window_height + 'px';
+		this.body.style.overflowY = 'hidden';
+		this.body.style.height    = window_height + 'px';
+		this.overlay.style.height = window_height + 'px';
+
+		// Set final overlay height to account for any margins and padding on
+		// the body or html elements.
+		this.overlay.style.height = Dom.getDocumentHeight() + 'px';
 
 		// set address bar to current image
 		var baseLocation = location.href.split('#')[0];
@@ -518,70 +475,6 @@ StoreProductImageDisplay.close_text = 'Close';
 	};
 
 	// }}}
-	// {{{ selectImageWithAnimation()
-
-	StoreProductImageDisplay.prototype.selectImageWithAnimation =
-		function(index)
-	{
-		if (this.semaphore || !this.data.images[index] ||
-			this.current_image == index) {
-			return false;
-		}
-
-		this.semaphore = true;
-
-		var data = this.data.images[index];
-
-		var anim = new Anim(this.image_container, { opacity: { to: 0 } },
-			this.config.period.fadeOut);
-
-		anim.onComplete.subscribe(function() {
-
-			this.setTitle(data, this.data.product);
-
-			this.image.src = data.large_uri;
-
-			var anim = new Anim(this.image, {
-					width:  { to: data.large_width  },
-					height: { to: data.large_height }
-				}, this.config.period.resize, Easing.easeIn);
-
-			anim.onComplete.subscribe(function() {
-
-				var anim = new Anim(this.image_container,
-					{ opacity: { to: 1 } }, this.config.period.fadeIn);
-
-				anim.onComplete.subscribe(function() {
-					this.semaphore = false;
-				}, this, true);
-
-				anim.animate();
-			}, this, true);
-
-			anim.animate();
-		}, this, true);
-
-		anim.animate();
-
-		Dom.removeClass(
-			this.pinkies[this.current_image],
-			'store-product-image-display-pinky-selected');
-
-		Dom.addClass(
-			this.pinkies[index],
-			'store-product-image-display-pinky-selected');
-
-		this.current_image = index;
-
-		// set address bar to current image
-		var baseLocation = location.href.split('#')[0];
-		location.href = baseLocation + '#image' + data.id;
-
-		return true;
-
-	};
-
-	// }}}
 	// {{{ setTitle()
 
 	StoreProductImageDisplay.prototype.setTitle = function(image, product)
@@ -605,9 +498,12 @@ StoreProductImageDisplay.close_text = 'Close';
 		var image_id = hash.replace(/[^0-9]/g, '');
 
 		if (image_id) {
+			image_id = parseInt(image_id);
 			if (typeof this.image_indexes_by_id[image_id] != 'undefined') {
 				this.selectImage(this.image_indexes_by_id[image_id]);
+				this.onSelectImage.fire(image_id, 'location');
 				this.open();
+				this.onOpen.fire(image_id, 'location');
 			}
 		}
 
@@ -635,16 +531,23 @@ StoreProductImageDisplay.close_text = 'Close';
 		hash = (hash.substring(0, 1) == '#') ? hash.substring(1) : hash;
 		var image_id = hash.replace(/[^0-9]/g, '');
 
+		if (image_id) {
+			image_id = parseInt(image_id);
+		}
+
 		if (image_id && image_id != current_image_id) {
 			if (typeof this.image_indexes_by_id[image_id] != 'undefined') {
 				this.selectImage(this.image_indexes_by_id[image_id]);
+				this.onSelectImage.fire(image_id, 'location');
 			}
 		}
 
 		if (image_id == '' && current_image_id && this.opened) {
 			this.close();
+			this.onClose.fire('location');
 		} else if (image_id && !this.opened) {
 			this.open();
+			this.onOpen.fire(current_image_id, 'location');
 		}
 	};
 
@@ -655,31 +558,12 @@ StoreProductImageDisplay.close_text = 'Close';
 
 	StoreProductImageDisplay.prototype.open = function()
 	{
-		this.selectImage(this.current_image);
+		if (this.opened) {
+			return;
+		}
 
 		this.showOverlay();
-
-		var scroll_top = Dom.getDocumentScrollTop();
-
-		var w, h, x, y;
-
-		w = this.dimensions.max[0] +
-			this.dimensions.container.paddingLeft +
-			this.dimensions.container.paddingRight +
-			this.dimensions.pinky.totalWidth;
-
-		h = this.dimensions.max[1] +
-			this.dimensions.container.paddingTop +
-			this.dimensions.container.paddingBottom;
-
-		x = Math.floor((Dom.getViewportWidth() - w) / 2);
-		y = Math.max(
-			0,
-			Math.floor((Dom.getViewportHeight() - h) / 2) + scroll_top);
-
 		this.container.style.display = 'block';
-		Dom.setXY(this.container, [x, y]);
-
 		this.opened = true;
 	};
 
@@ -688,76 +572,34 @@ StoreProductImageDisplay.close_text = 'Close';
 
 	StoreProductImageDisplay.prototype.openWithAnimation = function()
 	{
+		if (typeof this.container.style.filter === 'string') {
+			// YUI opacity animations overrite all CSS filters so just skip them
+			this.open();
+			return;
+		}
+
 		if (this.semaphore || this.opened) {
 			return;
 		}
 
 		this.semaphore = true;
 
-		this.selectImage(this.current_image);
-
-		// hold image container open while container resizes, prevents text
-		// from re-laying out during animation
-		this.image_container.style.width = this.dimensions.max[0] + 'px';
-
 		this.showOverlay();
 
-		var region = Dom.getRegion(this.image_link);
-
+		Dom.setStyle(this.container, 'opacity', '0');
 		this.container.style.display = 'block';
 
-		Dom.setXY(this.container, [region.left, region.top]);
-		this.container.style.width = region.width + 'px';
-		this.container.style.height = region.height + 'px';
-
-		var scroll_top = Dom.getDocumentScrollTop();
-
-		var w, h, x, y;
-
-		// get position based on maximum size since position doesn't change
-		// when we select a different image
-		w = this.dimensions.max[0] +
-			this.dimensions.container.paddingLeft +
-			this.dimensions.container.paddingRight +
-			this.dimensions.pinky.totalWidth;
-
-		h = this.dimensions.max[1] +
-			this.dimensions.container.paddingTop +
-			this.dimensions.container.paddingBottom;
-
-		x = Math.floor((Dom.getViewportWidth() - w) / 2);
-		y = Math.max(
-			0,
-			Math.floor((Dom.getViewportHeight() - h) / 2) + scroll_top);
-
-		// resize to current image size, but always include room for pinkies
-		w = this.data.images[this.current_image].large_width +
-			this.dimensions.container.paddingLeft +
-			this.dimensions.container.paddingRight +
-			this.dimensions.pinky.totalWidth;
-
-		h = Math.max(
-			this.data.images[this.current_image].large_height +
-			this.dimensions.container.paddingTop +
-			this.dimensions.container.paddingBottom,
-			this.dimensions.min[1] +
-			this.dimensions.container.paddingTop +
-			this.dimensions.container.paddingBottom);
-
-		var anim = new Motion(this.container, {
-			'points': { to: [x, y] },
-			'width':  { to: w },
-			'height': { to: h }
-		}, this.config.period.open, Easing.easeOutStrong);
+		var anim = new Anim(this.container, {
+			opacity: { from: 0, to: 1 }
+		}, this.config.period.open, Easing.easeOut);
 
 		anim.onComplete.subscribe(function() {
-			this.opened = true;
 			this.semaphore = false;
-			this.container.style.width = 'auto';
-			this.container.style.height = 'auto';
 		}, this, true);
 
 		anim.animate();
+
+		this.opened = true;
 	};
 
 	// }}}
@@ -780,6 +622,12 @@ StoreProductImageDisplay.close_text = 'Close';
 		// unset keydown handler
 		Event.removeListener(document, 'keydown', this.handleKeyDown);
 
+		// reset window scroll height
+		this.html.style.overflowY = this.html_overflow;
+		this.html.style.height    = 'auto';
+		this.body.style.overflowY = this.body_overflow;
+		this.body.style.height    = 'auto';
+
 		this.opened = false;
 	};
 
@@ -791,17 +639,17 @@ StoreProductImageDisplay.close_text = 'Close';
 		// init keydown handler for escape key to close
 		Event.on(document, 'keydown', this.handleKeyDown, this, true);
 
-		if (StoreProductImageDisplay.ie6) {
-			this.select_elements = document.getElementsByTagName('select');
-			for (var i = 0; i < this.select_elements.length; i++) {
-				this.select_elements[i].style._visibility =
-					this.select_elements[i].style.visibility;
-
-				this.select_elements[i].style.visibility = 'hidden';
-			}
-		}
 		this.overlay.style.height = Dom.getDocumentHeight() + 'px';
+		this.overlay.style.visible = 'hidden';
 		this.overlay.style.display = 'block';
+
+		if (this.pinky_list) {
+			this.pinky_list.style.top = this.config.geometry.top + 'px';
+		}
+
+		this.overlay.style.visible = 'visible';
+
+
 	}
 
 	// }}}
@@ -810,12 +658,6 @@ StoreProductImageDisplay.close_text = 'Close';
 	StoreProductImageDisplay.prototype.hideOverlay = function()
 	{
 		this.overlay.style.display = 'none';
-		if (StoreProductImageDisplay.ie6) {
-			for (var i = 0; i < this.select_elements.length; i++) {
-				this.select_elements[i].style.visibility =
-					this.select_elements[i].style._visibility;
-			}
-		}
 	};
 
 	// }}}
@@ -829,13 +671,20 @@ StoreProductImageDisplay.close_text = 'Close';
 		if (e.keyCode == 8 || e.keyCode == 27) {
 			Event.preventDefault(e);
 			this.close();
+			this.onClose.fire('keyboard');
 		} else if (this.data.images.length > 1 && this.opened) {
 			if (e.keyCode == 37 || e.keyCode == 38) {
 				Event.preventDefault(e);
 				this.selectPreviousImage();
+				this.onSelectImage.fire(
+					this.data.images[this.current_image].id,
+					'keyboard');
 			} else if (e.keyCode == 39 || e.keyCode == 40) {
 				Event.preventDefault(e);
 				this.selectNextImage();
+				this.onSelectImage.fire(
+					this.data.images[this.current_image].id,
+					'keyboard');
 			}
 		}
 	};
