@@ -449,7 +449,7 @@ StoreProductImageDisplay.close_text = 'Close';
 				this.dimensions.body.marginTop -
 				this.dimensions.body.marginBottom,
 			// 15 extra px to contain image paddings
-			data.large_height + this.config.geometry.top + 15);
+			data.large_height + this.config.geometry.top + 32);
 
 		// keep scroll bars on the page if they're already there.
 		var overflow;
