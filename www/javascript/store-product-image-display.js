@@ -10,7 +10,7 @@ var StoreProductImageDisplay = function(data, config)
 
 	this.configure(config);
 
-	this.dimensions = { container: {} };
+	this.dimensions = { container: {}, body: {} };
 
 	// preload images and create id-to-index lookup table, needs to be added
 	// to an instance variable so the images don't get garbage-collected by
@@ -100,6 +100,7 @@ StoreProductImageDisplay.close_text = 'Close';
 
 		this.initLinks();
 		this.drawOverlay();
+		this.initBodyDimensions();
 		this.initContainerDimensions();
 		this.initLocation();
 	};
@@ -372,6 +373,18 @@ StoreProductImageDisplay.close_text = 'Close';
 	};
 
 	// }}}
+	// {{{ initBodyDimensions()
+
+	StoreProductImageDisplay.prototype.initBodyDimensions = function()
+	{
+		var el = this.body;
+		this.dimensions.body = {
+			marginTop:     parseInt(Dom.getStyle(el, 'marginTop')),
+			marginBottom:  parseInt(Dom.getStyle(el, 'marginBottom'))
+		};
+	};
+
+	// }}}
 
 	// image selection
 	// {{{ selectImage()
@@ -417,12 +430,21 @@ StoreProductImageDisplay.close_text = 'Close';
 		// This doesn't work correctly in IE6 and 7 or in
 		// Opera (Bug #CORE-22089); however it degrades nicely.
 		var window_height = Math.max(
-			// 10 extra px to  keep larger than viewport to keep scroll bars
-			Dom.getViewportHeight() + 10,
+			Dom.getViewportHeight() -
+				this.dimensions.body.marginTop -
+				this.dimensions.body.marginBottom,
 			// 15 extra px to contain image paddings
 			data.large_height + this.config.geometry.top + 15);
 
-		this.html.style.overflowY = 'auto';
+		// keep scroll bars on the page if they're already there.
+		var overflow;
+		if (Dom.getViewportHeight() < Dom.getDocumentHeight()) {
+			overflow = 'scroll';
+		} else {
+			overflow = 'auto';
+		}
+
+		this.html.style.overflowY = overflow;
 		this.html.style.height    = window_height + 'px';
 		this.body.style.overflowY = 'hidden';
 		this.body.style.height    = window_height + 'px';
