@@ -96,10 +96,12 @@ StoreProductImageDisplay.close_text = 'Close';
 		this.html_overflow = Dom.getStyle(this.html, 'overflowY');
 
 		this.body = document.getElementsByTagName('body')[0];
-		this.body_overflow = Dom.getStyle(this.body, 'overflowY');
+		this.body_overflow_x = Dom.getStyle(this.body, 'overflowX');
+		this.body_overflow_y = Dom.getStyle(this.body, 'overflowY');
 
 		this.initLinks();
 		this.drawOverlay();
+		this.initDocumentDimensions();
 		this.initBodyDimensions();
 		this.initContainerDimensions();
 		this.initLocation();
@@ -385,6 +387,16 @@ StoreProductImageDisplay.close_text = 'Close';
 	};
 
 	// }}}
+	// {{{ initDocumentDimensions()
+
+	StoreProductImageDisplay.prototype.initDocumentDimensions = function()
+	{
+		this.dimensions.document = {
+			height: Dom.getDocumentHeight()
+		};
+	};
+
+	// }}}
 
 	// image selection
 	// {{{ selectImage()
@@ -426,9 +438,12 @@ StoreProductImageDisplay.close_text = 'Close';
 
 		this.current_image = index;
 
+
 		// Set page scroll height so we can't scroll the image out of view.
 		// This doesn't work correctly in IE6 and 7 or in
 		// Opera (Bug #CORE-22089); however it degrades nicely.
+		this.body.style.overflowX = 'hidden';
+
 		var window_height = Math.max(
 			Dom.getViewportHeight() -
 				this.dimensions.body.marginTop -
@@ -438,7 +453,7 @@ StoreProductImageDisplay.close_text = 'Close';
 
 		// keep scroll bars on the page if they're already there.
 		var overflow;
-		if (Dom.getViewportHeight() < Dom.getDocumentHeight()) {
+		if (Dom.getViewportHeight() < this.dimensions.document.height) {
 			overflow = 'scroll';
 		} else {
 			overflow = 'auto';
@@ -641,7 +656,8 @@ StoreProductImageDisplay.close_text = 'Close';
 		// reset window scroll height
 		this.html.style.overflowY = this.html_overflow;
 		this.html.style.height    = 'auto';
-		this.body.style.overflowY = this.body_overflow;
+		this.body.style.overflowX = this.body_overflow_x;
+		this.body.style.overflowY = this.body_overflow_y;
 		this.body.style.height    = 'auto';
 
 		this.opened = false;
