@@ -1583,12 +1583,12 @@ class StoreProductPage extends StorePage
 		}
 
 		// order and strip array keys from PHP so serialization to JSON
-		// results in a JSON array instead of a key-value hash.
+		// results is a JSON array instead of a key-value hash.
 		ksort($data['images']);
 		$data['images'] = array_values($data['images']);
 
 		$javascript.= sprintf(
-			'new StoreProductImageDisplay(%s);',
+			'var product_image_display = new StoreProductImageDisplay(%s);',
 			json_encode($data));
 
 		return $javascript;
