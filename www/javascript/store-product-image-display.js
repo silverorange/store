@@ -264,9 +264,6 @@ StoreProductImageDisplay.close_text = 'Close';
 	{
 		this.title = document.createElement('div');
 		this.title.className = 'store-product-image-display-title';
-
-//		SwatZIndexManager.raiseElement(this.title);
-
 		return this.title;
 	};
 
