@@ -65,9 +65,6 @@ StoreProductImageDisplay.close_text = 'Close';
 		this.config = {
 			period: {
 				open:          0.500, // in sec
-				fadeOut:       0.250, // in sec
-				fadeIn:        0.100, // in sec
-				resize:        0.100, // in sec
 				locationCheck: 0.200  // in sec
 			},
 			geometry: {
