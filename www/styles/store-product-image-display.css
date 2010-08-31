@@ -14,9 +14,9 @@
 	height: 100%;
 	display: block;
 	background: #000;
-	opacity: 0.80;
-	filter: alpha(opacity=80);
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+	opacity: 0.75;
+	filter: alpha(opacity=75);
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
 }
 
 .store-product-image-display-overlay-mask:active,
@@ -32,22 +32,19 @@
 	position: fixed;
 	top: 0;
 	left: 50%;
-	background: #f3eee6;
-	color: #5f5851;
+	border-bottom: 1px solid #333;
+	background: #000;
+	background: rgba(0,0,0,0.75);
+	-pie-background: rgba(0,0,0,0.75);
+	color: #fff;
+	text-shadow: 0 1px #000;
 	display: block;
 	text-align: center;
 	width: 100%;
 	margin-left: -50%;
-	text-shadow: 0 1px #fff;
-	border-bottom: 1px solid #fff;
-	box-shadow: 0 2px 4px -1px rgba(0,0,0,0.80);
-	-webkit-box-shadow: 0 2px 4px -1px rgba(0,0,0,0.80);
-	-moz-box-shadow: 0 2px 4px -1px rgba(0,0,0,0.80);
-}
-
-/* IE hack since shadows are not supported */
-.store-product-image-display-header {
-	border-bottom: 1px solid #5f5851\9
+	-moz-box-shadow: 0 2px 4px -1px rgba(0,0,0,0.80), inset 0 -5px 15px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 0 2px 4px -1px rgba(0,0,0,0.80), inset 0 -5px 15px rgba(0,0,0,0.5);
+	box-shadow: 0 2px 4px -1px rgba(0,0,0,0.80), inset 0 -5px 15px rgba(0,0,0,0.5);
 }
 
 .store-product-image-display-title {
@@ -75,7 +72,7 @@
 .store-product-image-display-links a,
 .store-product-image-display-links a:link,
 .store-product-image-display-links a:visited {
-	color: #5f5851;
+	color: #fff;
 }
 
 .store-product-image-display-close-hover,
