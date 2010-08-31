@@ -5,9 +5,9 @@
 		<widget class="SwatTableView" id="cart_view">
 			<property name="classes[]">store-cart-entry-view</property>
 			<object class="SwatTableViewGroup" id="status_group">
-				<property name="group_by" type="data">status_title</property>
-				<property name="visible" type="data">show_status_title</property>
+				<property name="group_by">status_title</property>
 				<object class="SwatTextCellRenderer">
+					<property name="visible" type="data">show_status_title</property>
 					<property name="text" type="data">status_title</property>
 				</object>
 			</object>
