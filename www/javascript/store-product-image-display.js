@@ -2,7 +2,6 @@
 
 var StoreProductImageDisplay = function(data, config)
 {
-
 	this.semaphore     = false;
 	this.data          = data;
 	this.opened        = false;
@@ -98,6 +97,8 @@ StoreProductImageDisplay.close_text = 'Close';
 		this.body = document.getElementsByTagName('body')[0];
 		this.body_overflow_x = Dom.getStyle(this.body, 'overflowX');
 		this.body_overflow_y = Dom.getStyle(this.body, 'overflowY');
+
+		this.current_viewport_height = Dom.getViewportHeight();
 
 		this.initLinks();
 		this.drawOverlay();
@@ -195,12 +196,12 @@ StoreProductImageDisplay.close_text = 'Close';
 		}, this, true);
 
 		Event.on(mask, 'mouseover', function(e) {
-			YAHOO.util.Dom.addClass(this.close_link,
+			Dom.addClass(this.close_link,
 				'store-product-image-display-close-hover');
 		}, this, true);
 
 		Event.on(mask, 'mouseout', function(e) {
-			YAHOO.util.Dom.removeClass(this.close_link,
+			Dom.removeClass(this.close_link,
 				'store-product-image-display-close-hover');
 		}, this, true);
 
@@ -440,34 +441,25 @@ StoreProductImageDisplay.close_text = 'Close';
 
 
 		// Set page scroll height so we can't scroll the image out of view.
-		// This doesn't work correctly in IE6 and 7 or in
-		// Opera (Bug #CORE-22089); however it degrades nicely.
+		// This doesn't work correctly in IE7 or in Opera (Bug #CORE-22089);
+		// however it degrades nicely.
 		this.body.style.overflowX = 'hidden';
 
-		var window_height = Math.max(
-			Dom.getViewportHeight() -
-				this.dimensions.body.marginTop -
-				this.dimensions.body.marginBottom,
-			// 15 extra px to contain image paddings
-			data.large_height + this.config.geometry.top + 32);
+		var viewport_height = Dom.getViewportHeight();
 
 		// keep scroll bars on the page if they're already there.
 		var overflow;
-		if (Dom.getViewportHeight() < this.dimensions.document.height) {
+		if (viewport_height < this.dimensions.document.height) {
 			overflow = 'scroll';
 		} else {
 			overflow = 'auto';
 		}
 
 		this.html.style.overflowY = overflow;
-		this.html.style.height    = window_height + 'px';
 		this.body.style.overflowY = 'hidden';
-		this.body.style.height    = window_height + 'px';
-		this.overlay.style.height = window_height + 'px';
 
-		// Set final overlay height to account for any margins and padding on
-		// the body or html elements.
-		this.overlay.style.height = Dom.getDocumentHeight() + 'px';
+		this.updateOverlayHeight(viewport_height);
+
 
 		// set address bar to current image
 		var baseLocation = location.href.split('#')[0];
@@ -650,8 +642,9 @@ StoreProductImageDisplay.close_text = 'Close';
 		var baseLocation = location.href.split('#')[0];
 		location.href = baseLocation + '#closed';
 
-		// unset keydown handler
+		// unset event handlers
 		Event.removeListener(document, 'keydown', this.handleKeyDown);
+		Event.removeListener(window, 'resize', this.handleResize);
 
 		// reset window scroll height
 		this.html.style.overflowY = this.html_overflow;
@@ -670,6 +663,8 @@ StoreProductImageDisplay.close_text = 'Close';
 	{
 		// init keydown handler for escape key to close
 		Event.on(document, 'keydown', this.handleKeyDown, this, true);
+
+		Event.on(window, 'resize', this.handleResize, this, true);
 
 		this.overlay.style.height = Dom.getDocumentHeight() + 'px';
 		this.overlay.style.visible = 'hidden';
@@ -693,6 +688,26 @@ StoreProductImageDisplay.close_text = 'Close';
 	};
 
 	// }}}
+
+	StoreProductImageDisplay.prototype.updateOverlayHeight = function(
+		viewport_height)
+	{
+		var data = this.data.images[this.current_image];
+
+		var window_height = Math.max(
+			viewport_height -
+				this.dimensions.body.marginTop -
+				this.dimensions.body.marginBottom,
+			// 32 extra px to contain image paddings and shadows
+			data.large_height + this.config.geometry.top + 32);
+
+		this.html.style.height = window_height + 'px';
+		this.body.style.height = window_height + 'px';
+
+		this.overlay.style.height = (window_height +
+			this.dimensions.body.marginTop +
+			this.dimensions.body.marginBottom) + 'px';
+	};
 
 	// keyboard
 	// {{{ handleKeyDown()
@@ -718,6 +733,20 @@ StoreProductImageDisplay.close_text = 'Close';
 					this.data.images[this.current_image].id,
 					'keyboard');
 			}
+		}
+	};
+
+	// }}}
+
+	// resize
+	// {{{ handleResize()
+
+	StoreProductImageDisplay.prototype.handleResize = function(e)
+	{
+		var new_height = Dom.getViewportHeight();
+		if (this.current_viewport_height != new_height) {
+			this.current_viewport_height = new_height;
+			this.updateOverlayHeight(this.current_viewport_height);
 		}
 	};
 
