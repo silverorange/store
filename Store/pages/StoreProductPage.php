@@ -16,6 +16,7 @@ require_once 'Store/dataobjects/StoreCategory.php';
 require_once 'Store/dataobjects/StoreItemGroupWrapper.php';
 require_once 'Store/dataobjects/StoreProductReview.php';
 require_once 'Store/StoreProductSearchEngine.php';
+require_once 'Store/pages/StoreCartServer.php';
 @include_once 'Services/Akismet2.php';
 
 /**
@@ -40,8 +41,6 @@ class StoreProductPage extends StorePage
 	// {{{ protected properties
 
 	protected $items_view;
-	protected $cart_ui;
-	protected $cart_ui_xml = 'Store/pages/product-cart.xml';
 	protected $reviews_ui;
 	protected $reviews_ui_xml = 'Store/pages/product-reviews.xml';
 	protected $message_display;
@@ -80,7 +79,6 @@ class StoreProductPage extends StorePage
 
 		$this->initProduct();
 		$this->initItemsView();
-		$this->initCart();
 	}
 
 	// }}}
@@ -190,34 +188,6 @@ class StoreProductPage extends StorePage
 	}
 
 	// }}}
-	// {{{ protected function initCart()
-
-	protected function initCart()
-	{
-		if ($this->cart_ui_xml !== null) {
-			$this->cart_ui = new SwatUI();
-			$this->cart_ui->loadFromXML($this->cart_ui_xml);
-			$this->cart_ui->getRoot()->addStyleSheet(
-				'packages/store/styles/store-cart.css', Store::PACKAGE_ID);
-
-			if ($this->cart_ui->hasWidget('cart_form')) {
-				$cart_form = $this->cart_ui->getWidget('cart_form');
-				$cart_form->action = $this->source;
-			}
-
-			$this->initCartInternal();
-			$this->cart_ui->init();
-		}
-	}
-
-	// }}}
-	// {{{ protected function initCartInternal()
-
-	protected function initCartInternal()
-	{
-	}
-
-	// }}}
 	// {{{ protected function loadProduct()
 
 	protected function loadProduct($id)
@@ -266,7 +236,6 @@ class StoreProductPage extends StorePage
 		parent::process();
 		$this->message_display->process();
 		$this->processProduct();
-		$this->processCart();
 		$this->processReviewUi();
 	}
 
@@ -288,9 +257,15 @@ class StoreProductPage extends StorePage
 				$this->message_display->add($message);
 			} else {
 				$entries = $this->items_view->getCartEntries();
-
-				$this->addEntriesToCart($entries);
-
+				foreach ($entries as $entry) {
+					$status = StoreCartServer::addEntry($this->app, $entry);
+					if ($status == StoreCartServer::ENTRY_ADDED) {
+						$this->items_added[] = $entry;
+					} elseif ($status == StoreCartServer::ENTRY_SAVED) {
+						$this->items_saved[] = $entry;
+					}
+				}
+				
 				if (count($this->items_added) > 0) {
 					$this->cart_message = new SwatMessage(
 						Store::_('Your cart has been updated.'), 'cart');
@@ -305,109 +280,6 @@ class StoreProductPage extends StorePage
 					$this->message_display->add($this->getSavedCartMessage());
 			}
 		}
-	}
-
-	// }}}
-	// {{{ protected function addEntriesToCart()
-
-	protected function addEntriesToCart($entries)
-	{
-		$cart = $this->app->cart;
-
-		foreach ($entries as $cart_entry) {
-			$this->setupCartEntry($cart_entry);
-
-			if ($cart_entry->item->hasAvailableStatus()) {
-				$added_entry = $cart->checkout->addEntry($cart_entry);
-
-				if ($added_entry !== null)
-					$this->items_added[] = $added_entry->item;
-			} else {
-				$added_entry = $cart->saved->addEntry($cart_entry);
-
-				if ($added_entry !== null)
-					$this->items_saved[] = $added_entry->item;
-			}
-		}
-	}
-
-	// }}}
-	// {{{ protected function setupCartEntry()
-
-	protected function setupCartEntry(StoreCartEntry $cart_entry)
-	{
-		$this->app->session->activate();
-
-		if ($this->app->session->isLoggedIn()) {
-			$cart_entry->account = $this->app->session->getAccountId();
-		} else {
-			$cart_entry->sessionid = $this->app->session->getSessionId();
-		}
-
-		$path_entry = $this->getPath()->getLast();
-		if ($path_entry instanceof SitePathEntry)
-			$cart_entry->source_category = $path_entry->id;
-
-		$cart_entry->source = StoreCartEntry::SOURCE_PRODUCT_PAGE;
-		$cart_entry->item->setDatabase($this->app->db);
-		$cart_entry->item->setRegion($this->app->getRegion());
-		$cart_entry->item->load($cart_entry->item->id);
-	}
-
-	// }}}
-	// {{{ protected function processCart()
-
-	protected function processCart()
-	{
-		if ($this->cart_ui instanceof SwatUI) {
-			$this->cart_ui->process();
-
-			if (!$this->cart_ui->hasWidget('cart_view'))
-				return;
-
-			$view = $this->cart_ui->getWidget('cart_view');
-
-			// check for removed items
-			$remove_column = $view->getColumn('remove_column');
-			$remove_renderer = $remove_column->getRendererByPosition();
-			foreach ($remove_renderer->getClonedWidgets() as $id => $widget) {
-				if ($widget->hasBeenClicked()) {
-					$this->item_removed = true;
-					$this->app->cart->checkout->removeEntryById($id);
-					$this->message_display->add(new SwatMessage(
-						Store::_('An item has been removed from your cart.'),
-							'cart'));
-
-					break;
-				}
-			}
-		}
-	}
-
-	// }}}
-	// {{{ protected function getSavedCartMessage()
-
-	protected function getSavedCartMessage()
-	{
-		$num_items_saved = count($this->items_saved);
-
-		if ($num_items_saved == 0)
-			return null;
-
-		$items = ngettext('item', 'items', $num_items_saved);
-		$number = SwatString::minimizeEntities(ucwords(
-			Numbers_Words::toWords($num_items_saved)));
-
-		$cart_message = new SwatMessage(
-			sprintf('%s %s has been saved for later.', $number, $items),
-			'cart');
-
-		$cart_message->content_type = 'text/xml';
-		$cart_message->secondary_content = sprintf('Saved '.
-			'items are displayed at the bottom of the %scart page%s.',
-			'<a href="cart">', '</a>');
-
-		return $cart_message;
 	}
 
 	// }}}
@@ -537,7 +409,6 @@ class StoreProductPage extends StorePage
 	{
 		parent::build();
 
-		$this->buildCart();
 		$this->buildProduct();
 		$this->buildReviewsUi();
 
@@ -604,6 +475,7 @@ class StoreProductPage extends StorePage
 
 		$this->displayRelatedArticleLinks();
 
+		$this->displayCartInfo();
 		$this->displayItemMinimumQuantityGroupNotes();
 		$this->displayItems();
 
@@ -630,6 +502,43 @@ class StoreProductPage extends StorePage
 			SwatString::toXHTML($this->product->bodytext), 'text/xml');
 
 		$div->display();
+	}
+
+	// }}}
+	// {{{ protected function displayCartInfo()
+
+	protected function displayCartInfo()
+	{
+		$entries = array();
+		foreach ($this->app->cart->checkout->getAvailableEntries() as $entry) {
+			if ($entry->item->product->id == $this->product->id) {
+				$entries[] = $entry;
+			}
+		}
+
+		if (count($entries) > 0) {
+			$locale = SwatI18NLocale::get($this->app->getLocale());
+
+			$div_tag = new SwatHtmlTag('div');
+			$div_tag->id = 'product_page_cart';
+			$div_tag->open();
+
+			echo SwatString::minimizeEntities(sprintf(Store::ngettext(
+				'You have one item from this page in your cart.',
+				'You have %s items from this page in your cart.',
+				count($entries)),
+				$locale->formatNumber(count($entries))));
+
+			echo ' ';
+
+			$a_tag = new SwatHtmlTag('a');
+			$a_tag->href = 'cart';
+			$a_tag->class = 'product-page-cart-link';
+			$a_tag->setContent(Store::_('View Details'));
+			$a_tag->display();
+
+			$div_tag->close();
+		}
 	}
 
 	// }}}
@@ -716,6 +625,14 @@ class StoreProductPage extends StorePage
 	}
 
 	// }}}
+	// {{{ protected function getProductSearchEngine()
+
+	protected function getProductSearchEngine($context = null)
+	{
+		return new StoreProductSearchEngine($this->app);
+	}
+
+	// }}}
 	// {{{ protected function getProductInlineJavaScript()
 
 	protected function getProductInlineJavaScript()
@@ -738,154 +655,26 @@ class StoreProductPage extends StorePage
 			$translations_displayed = true;
 		}
 
+		$path_entry = $this->getPath()->getLast();
+		$category_id = ($path_entry instanceof SitePathEntry) ?
+			$path_entry->id : 'null';
+
 		$javascript.= sprintf(
-			"var product_page = new StoreProductPage([%s]);",
-			$item_ids);
+			"var product_page = new %s(%d, [%s], %d);",
+			$this->getProductJavaScriptClass(),
+			$this->product->id,
+			$item_ids,
+			$category_id);
 
 		return $javascript;
 	}
 
 	// }}}
-	// {{{ protected function getProductSearchEngine()
+	// {{{ protected function getProductJavaScriptClass()
 
-	protected function getProductSearchEngine($context = null)
+	protected function getProductJavaScriptClass()
 	{
-		return new StoreProductSearchEngine($this->app);
-	}
-
-	// }}}
-
-	// build - mini cart
-	// {{{ protected function buildCart()
-
-	protected function buildCart()
-	{
-		if ($this->cart_ui instanceof SwatUI) {
-			$cart_view = $this->cart_ui->getWidget('cart_view');
-			$cart_view->model = $this->getCartTableStore();
-			$count = count($cart_view->model);
-
-			if ($count > 0) {
-				$this->checkCartDescription($cart_view);
-
-				if ($this->cart_message === null) {
-					$this->cart_message = new SwatMessage(null, 'cart');
-					$this->cart_message->primary_content = Store::ngettext(
-						'The following item on this page is in your cart:',
-						'The following items on this page are in your cart:',
-						$count);
-				}
-
-				ob_start();
-				$this->cart_ui->display();
-
-				echo '<div class="cart-message-links">';
-				$this->displayCartLinks();
-				echo '</div>';
-
-				$this->cart_message->secondary_content = ob_get_clean();
-				$this->cart_message->content_type = 'text/xml';
-				$this->message_display->add($this->cart_message);
-
-			} elseif ($this->cart_message !== null) {
-				$this->message_display->add($this->cart_message);
-			}
-		}
-	}
-
-	// }}}
-	// {{{ protected function checkCartDescription()
-
-	protected function checkCartDescription($cart_view)
-	{
-		/* if the view has a description column, check all columns to make sure
-		 * they have a description. If none have a description, hide the column.
-		 * if some are empty, but others have description, use the product title
-		 * for the description instead of an empty column.
-		 */
-		if ($cart_view->hasColumn('description')) {
-			$description_column = $cart_view->getColumn('description');
-			$has_description = false;
-			foreach($cart_view->model as $ds) {
-				if ($ds->description == '') {
-					$ds->description = $ds->item->product->title;
-				} else {
-					$has_description = true;
-				}
-			}
-
-			$description_column->visible = $has_description;
-		}
-	}
-
-	// }}}
-	// {{{ protected function displayCartLinks()
-
-	protected function displayCartLinks()
-	{
-		printf(Store::_(
-			'%sView your shopping cart%s or %sproceed to the checkout%s.'),
-			'<a href="cart">', '</a>',
-			'<a href="checkout">', '</a>');
-	}
-
-	// }}}
-	// {{{ protected function getCartTableStore()
-
-	/**
-	 * Gets the cart data-store for the product on this page
-	 */
-	protected function getCartTableStore()
-	{
-		$store = new SwatTableStore();
-
-		$entries = $this->app->cart->checkout->getEntries();
-		foreach ($entries as $entry) {
-			// filter entries by item
-			if ($this->isOnThisPage($entry->item)) {
-				$ds = $this->getCartDetailsStore($entry);
-				$store->add($ds);
-			}
-		}
-
-		return $store;
-	}
-
-	// }}}
-	// {{{ protected function getCartDetailsStore()
-
-	protected function getCartDetailsStore(StoreCartEntry $entry)
-	{
-		$ds = new SwatDetailsStore($entry);
-
-		$ds->quantity = $entry->getQuantity();
-		$ds->description = $this->getEntryDescription($entry);
-		$ds->price = $entry->getCalculatedItemPrice();
-		$ds->extension = $entry->getExtension();
-		$ds->discount = $entry->getDiscount();
-		$ds->discount_extension = $entry->getDiscountExtension();
-
-		return $ds;
-	}
-
-	// }}}
-	// {{{ protected function getEntryDescription()
-
-	protected function getEntryDescription(StoreCartEntry $entry)
-	{
-		$description = array();
-		foreach ($entry->item->getDescriptionArray() as $element)
-			$description[] = SwatString::minimizeEntities($element);
-
-		return implode(' - ', $description);
-	}
-
-	// }}}
-	// {{{ protected function isOnThisPage()
-
-	protected function isOnThisPage(StoreItem $item)
-	{
-		return ($item->product->id === $this->product_id);
+		return 'StoreProductPage';
 	}
 
 	// }}}
@@ -1641,14 +1430,13 @@ class StoreProductPage extends StorePage
 			'packages/store/styles/store-product-image-display.css',
 			Store::PACKAGE_ID));
 
+		// TODO: only include this if there are cart items on this page
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/store/styles/store-cart.css', Store::PACKAGE_ID));
+
 		if ($this->message_display !== null)
 			$this->layout->addHtmlHeadEntrySet(
 				$this->message_display->getHtmlHeadEntrySet());
-
-		if ($this->cart_ui instanceof SwatUI) {
-			$this->layout->addHtmlHeadEntrySet(
-				$this->cart_ui->getRoot()->getHtmlHeadEntrySet());
-		}
 
 		if ($this->reviews_ui instanceof SwatUI) {
 			require_once 'XML/RPCAjax.php';
