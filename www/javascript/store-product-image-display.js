@@ -63,7 +63,7 @@ StoreProductImageDisplay.close_text = 'Close';
 
 		this.config = {
 			period: {
-				open:          0.500, // in sec
+				open:          0.200, // in sec
 				locationCheck: 0.200  // in sec
 			},
 			geometry: {
@@ -121,7 +121,7 @@ StoreProductImageDisplay.close_text = 'Close';
 			this.onSelectImage.fire(this.data.images[0].id,
 				'mainProductImageLink');
 
-			this.openWithAnimation();
+			this.open();
 			this.onOpen.fire(this.data.images[0].id, 'mainProductImageLink');
 		}, this, true);
 
@@ -144,7 +144,7 @@ StoreProductImageDisplay.close_text = 'Close';
 								that.data.images[index].id,
 								'secondaryProductImageLink');
 
-							that.openWithAnimation();
+							that.open();
 							that.onOpen.fire(
 								that.data.images[index].id,
 								'secondaryProductImageLink');
@@ -167,10 +167,11 @@ StoreProductImageDisplay.close_text = 'Close';
 		this.overlay.className = 'store-product-image-display-overlay';
 		this.overlay.style.display = 'none';
 
+		SwatZIndexManager.raiseElement(this.overlay);
+
 		this.overlay.appendChild(this.drawOverlayMask());
 		this.overlay.appendChild(this.drawContainer());
 		this.overlay.appendChild(this.drawHeader());
-//		this.overlay.appendChild(this.drawCloseLink());
 
 		var pinkies = this.drawPinkies();
 		if (pinkies) {
@@ -520,7 +521,8 @@ StoreProductImageDisplay.close_text = 'Close';
 	StoreProductImageDisplay.prototype.setTitle = function(image, product)
 	{
 		if (image.title) {
-			this.title.innerHTML = product.title + ' - ' + image.title;
+			// dash is nbsp padded
+			this.title.innerHTML = product.title + '  -  ' + image.title;
 		} else {
 			this.title.innerHTML = product.title;
 		}
