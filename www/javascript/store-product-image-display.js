@@ -332,11 +332,28 @@ StoreProductImageDisplay.close_text = 'Close';
 
 	StoreProductImageDisplay.prototype.drawContainer = function()
 	{
-		this.container = document.createElement('div');
+		this.container = document.createElement('a');
+		this.container.href = '#close';
 		this.container.style.display = 'none';
 		this.container.className = 'store-product-image-display-container';
 
-		var wrapper = document.createElement('div');
+		Event.on(this.container, 'click', function(e) {
+			Event.preventDefault(e);
+			this.close();
+			this.onClose.fire('overlayMask');
+		}, this, true);
+
+		Event.on(this.container, 'mouseover', function(e) {
+			Dom.addClass(this.close_link,
+				'store-product-image-display-close-hover');
+		}, this, true);
+
+		Event.on(this.container, 'mouseout', function(e) {
+			Dom.removeClass(this.close_link,
+				'store-product-image-display-close-hover');
+		}, this, true);
+
+		var wrapper = document.createElement('span');
 		wrapper.className = 'store-product-image-display-wrapper';
 
 		wrapper.appendChild(this.drawImage());
@@ -688,6 +705,7 @@ StoreProductImageDisplay.close_text = 'Close';
 	};
 
 	// }}}
+	// {{{ updateOverlayHeight()
 
 	StoreProductImageDisplay.prototype.updateOverlayHeight = function(
 		viewport_height)
@@ -708,6 +726,8 @@ StoreProductImageDisplay.close_text = 'Close';
 			this.dimensions.body.marginTop +
 			this.dimensions.body.marginBottom) + 'px';
 	};
+
+	// }}}
 
 	// keyboard
 	// {{{ handleKeyDown()
