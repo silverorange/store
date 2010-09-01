@@ -14,6 +14,7 @@
 	height: 100%;
 	display: block;
 	background: #000;
+	cursor: default;
 	opacity: 0.75;
 	filter: alpha(opacity=75);
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
@@ -107,6 +108,11 @@
 	/* emulate drop shadow in IE */
 	filter: progid:DXImageTransform.Microsoft.shadow(Color=#111111, Direction=180) progid:DXImageTransform.Microsoft.glow(Color=#000000, Strength=2);
 	-ms-filter: progid:DXImageTransform.Microsoft.shadow(Color=#111111, Direction=180) progid:DXImageTransform.Microsoft.glow(Color=#000000, Strength=2);
+}
+
+.store-product-image-display-container:active,
+.store-product-image-display-container:focus {
+	outline: none;
 }
 
 .store-product-image-display-wrapper {
