@@ -110,6 +110,7 @@
 }
 
 .store-product-image-display-wrapper {
+	display: block;
 	background: #fff;
 	padding: 6px;
 }
