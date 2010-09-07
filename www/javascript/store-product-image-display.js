@@ -93,12 +93,14 @@ StoreProductImageDisplay.close_text = 'Close';
 	{
 		this.html = document.getElementsByTagName('html')[0];
 		this.html_overflow = Dom.getStyle(this.html, 'overflowY');
+		this.html_position = Dom.getStyle(this.html, 'position');
 
 		this.body = document.getElementsByTagName('body')[0];
 		this.body_overflow_x = Dom.getStyle(this.body, 'overflowX');
 		this.body_overflow_y = Dom.getStyle(this.body, 'overflowY');
 
 		this.current_viewport_height = Dom.getViewportHeight();
+		this.current_scroll_top      = 0;
 
 		this.initLinks();
 		this.drawOverlay();
@@ -427,6 +429,10 @@ StoreProductImageDisplay.close_text = 'Close';
 			return false;
 		}
 
+		if (!this.opened) {
+			this.current_scroll_top = Dom.getDocumentScrollTop();
+		}
+
 		var data = this.data.images[index];
 
 		var w = data.large_width +
@@ -435,7 +441,8 @@ StoreProductImageDisplay.close_text = 'Close';
 
 		this.container.style.display = 'block';
 		this.container.style.marginLeft = -Math.floor(w / 2) + 'px';
-		this.container.style.top = this.config.geometry.top + 'px';
+		this.container.style.top =
+			(this.current_scroll_top + this.config.geometry.top) + 'px';
 
 		this.image.src = data.large_uri;
 		this.image.width = data.large_width;
@@ -476,7 +483,13 @@ StoreProductImageDisplay.close_text = 'Close';
 		this.html.style.overflowY = overflow;
 		this.body.style.overflowY = 'hidden';
 
-		this.updateOverlayHeight(viewport_height);
+		this.updateOverlayHeight(viewport_height, this.current_scroll_top);
+
+		if (!this.opened) {
+			this.html.style.position = 'relative';
+			this.html.style.top = -this.current_scroll_top + 'px';
+			window.scroll(0, 0);
+		}
 
 
 		// set address bar to current image
@@ -606,6 +619,7 @@ StoreProductImageDisplay.close_text = 'Close';
 
 		this.showOverlay();
 		this.container.style.display = 'block';
+		this.close_link.focus();
 		this.opened = true;
 	};
 
@@ -630,6 +644,7 @@ StoreProductImageDisplay.close_text = 'Close';
 
 		Dom.setStyle(this.container, 'opacity', '0');
 		this.container.style.display = 'block';
+		this.close_link.focus();
 
 		var anim = new Anim(this.container, {
 			opacity: { from: 0, to: 1 }
@@ -666,11 +681,18 @@ StoreProductImageDisplay.close_text = 'Close';
 		Event.removeListener(window, 'resize', this.handleResize);
 
 		// reset window scroll height
+		var scroll_top = Dom.getDocumentScrollTop();
+
 		this.html.style.overflowY = this.html_overflow;
 		this.html.style.height    = 'auto';
+		this.html.style.position  = this.html_position;
+
 		this.body.style.overflowX = this.body_overflow_x;
 		this.body.style.overflowY = this.body_overflow_y;
 		this.body.style.height    = 'auto';
+
+		this.html.style.top = 0;
+		window.scroll(0, this.current_scroll_top + scroll_top);
 
 		this.opened = false;
 	};
@@ -685,7 +707,6 @@ StoreProductImageDisplay.close_text = 'Close';
 
 		Event.on(window, 'resize', this.handleResize, this, true);
 
-		this.overlay.style.height = Dom.getDocumentHeight() + 'px';
 		this.overlay.style.visible = 'hidden';
 		this.overlay.style.display = 'block';
 
@@ -694,8 +715,6 @@ StoreProductImageDisplay.close_text = 'Close';
 		}
 
 		this.overlay.style.visible = 'visible';
-
-
 	}
 
 	// }}}
@@ -710,7 +729,7 @@ StoreProductImageDisplay.close_text = 'Close';
 	// {{{ updateOverlayHeight()
 
 	StoreProductImageDisplay.prototype.updateOverlayHeight = function(
-		viewport_height)
+		viewport_height, scroll_top)
 	{
 		var data = this.data.images[this.current_image];
 
@@ -722,9 +741,10 @@ StoreProductImageDisplay.close_text = 'Close';
 			data.large_height + this.config.geometry.top + 32);
 
 		this.html.style.height = window_height + 'px';
-		this.body.style.height = window_height + 'px';
+		this.body.style.height = (window_height + scroll_top) + 'px';
 
 		this.overlay.style.height = (window_height +
+			scroll_top +
 			this.dimensions.body.marginTop +
 			this.dimensions.body.marginBottom) + 'px';
 	};
@@ -768,7 +788,8 @@ StoreProductImageDisplay.close_text = 'Close';
 		var new_height = Dom.getViewportHeight();
 		if (this.current_viewport_height != new_height) {
 			this.current_viewport_height = new_height;
-			this.updateOverlayHeight(this.current_viewport_height);
+			this.updateOverlayHeight(this.current_viewport_height,
+				this.current_scroll_top);
 		}
 	};
 

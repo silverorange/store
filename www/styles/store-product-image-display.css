@@ -36,7 +36,6 @@
 	border-bottom: 1px solid #333;
 	background: #000;
 	background: rgba(0,0,0,0.75);
-	-pie-background: rgba(0,0,0,0.75);
 	color: #fff;
 	text-shadow: 0 1px #000;
 	display: block;
@@ -74,6 +73,10 @@
 .store-product-image-display-links a:link,
 .store-product-image-display-links a:visited {
 	color: #fff;
+}
+
+.store-product-image-display-links a:focus {
+	outline: none;
 }
 
 .store-product-image-display-close-hover,
@@ -123,6 +126,7 @@
 
 .store-product-image-display-image {
 	display: block;
+	border: none;
 }
 
 
