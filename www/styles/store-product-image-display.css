@@ -92,6 +92,7 @@
 .store-product-image-display-container {
 	display: none;
 	overflow: hidden;
+	text-decoration: none;
 
 	/* Border color. Done as a background since both Gecko and Webkit have */
 	/* rendering bugs when using borders and rounded corners. */
