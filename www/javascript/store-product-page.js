@@ -327,7 +327,6 @@ StoreProductPage.prototype.setMiniCartContentWithAnimation = function(contents)
 StoreProductPage.prototype.getContentHeight = function(contents)
 {
 	var hidden_div = document.createElement('div');
-	hidden_div.style.overflow = 'none';
 	hidden_div.style.visiblility = 'hidden';
 	hidden_div.height = 0;
 
