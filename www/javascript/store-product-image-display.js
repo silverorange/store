@@ -107,6 +107,7 @@ StoreProductImageDisplay.close_text = 'Close';
 		this.initDocumentDimensions();
 		this.initBodyDimensions();
 		this.initContainerDimensions();
+		this.initContent();
 		this.initLocation();
 	};
 
@@ -156,6 +157,13 @@ StoreProductImageDisplay.close_text = 'Close';
 				}
 			}
 		}
+	};
+
+	// }}}
+	// {{{ initContent()
+
+	StoreProductImageDisplay.prototype.initContent = function()
+	{
 	};
 
 	// }}}
