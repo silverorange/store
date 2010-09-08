@@ -649,8 +649,21 @@ class StoreProductPage extends StorePage
 		$javascript = '';
 		if (!$translations_displayed) {
 			$javascript.= sprintf(
-				"StoreProductPage.enter_quantity_message = '%s';\n",
-				Store::_('Please enter a quantity.'));
+				"StoreProductPage.enter_quantity_message = %s;\n".
+				"StoreProductPage.submit_message= %s;\n".
+				"StoreProductPage.loading_message = %s;\n".
+				"StoreProductPage.close_text = %s;\n".
+				"StoreProductPage.empty_message = %s;\n",
+				SwatString::quoteJavascriptString(
+					Store::_('Please enter a quantity.')),
+				SwatString::quoteJavascriptString(Store::_('Updating Cart…')),
+				SwatString::quoteJavascriptString(Store::_('Loading…')),
+				SwatString::quoteJavascriptString(Store::_('Close')),
+				SwatString::quoteJavascriptString(sprintf('<h2>%s</h2>%s',
+					Store::_('All Items Removed'),
+					Store::_('You no longer have any items from this page '.
+						'in your cart.')))
+				);
 
 			$translations_displayed = true;
 		}
