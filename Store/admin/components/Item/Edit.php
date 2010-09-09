@@ -319,9 +319,9 @@ class StoreItemEdit extends AdminDBEdit
 	}
 
 	// }}}
-	// {{{ private function updateItemAliases()
+	// {{{ protected function updateItemAliases()
 
-	private function updateItemAliases()
+	protected function updateItemAliases()
 	{
 		$this->item->item_aliases->removeAll();
 
