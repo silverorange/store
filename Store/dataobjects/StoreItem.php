@@ -823,7 +823,8 @@ class StoreItem extends SwatDBDataObject
 	{
 		$sql = 'select * from ItemAlias where item = %s';
 		$sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
-		return SwatDB::query($this->db, $sql, 'StoreItemAliasWrapper');
+		return SwatDB::query($this->db, $sql,
+			SwatDBClassMap::get('StoreItemAliasWrapper'));
 	}
 
 	// }}}
