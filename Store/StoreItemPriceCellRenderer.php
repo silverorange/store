@@ -99,12 +99,14 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 					if ($this->show_quantity_discount_lower_limit) {
 						$this->displayQuantityDiscountLowerLimit();
 					}
-					printf(Store::_('%s each'), $price);
+					printf(Store::_('%s %seach%s'), $price,
+						'<span>', '</span>');
 				} else {
 					echo $price;
 				}
 			} else {
-				printf(Store::_('%s per %s'), $price, $this->singular_unit);
+				printf(Store::_('%1$s %3$sper %2$s%4$s'), $price,
+					$this->singular_unit, '<span>', '</span>');
 			}
 		}
 
