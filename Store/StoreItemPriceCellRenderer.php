@@ -100,13 +100,13 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 						$this->displayQuantityDiscountLowerLimit();
 					}
 					printf(Store::_('%s %seach%s'), $price,
-						'<span>', '</span>');
+						'<span class="unit">', '</span>');
 				} else {
 					echo $price;
 				}
 			} else {
 				printf(Store::_('%1$s %3$sper %2$s%4$s'), $price,
-					$this->singular_unit, '<span>', '</span>');
+					$this->singular_unit, '<span class="unit">', '</span>');
 			}
 		}
 
