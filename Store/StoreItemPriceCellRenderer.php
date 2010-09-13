@@ -94,17 +94,18 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 			parent::render();
 			$price = ob_get_clean();
 
-			if ($this->singular_unit === null)
+			if ($this->singular_unit === null) {
 				if ($this->hasQuantityDiscounts()) {
 					if ($this->show_quantity_discount_lower_limit) {
 						$this->displayQuantityDiscountLowerLimit();
 					}
 					printf(Store::_('%s each'), $price);
-				}
-				else
+				} else {
 					echo $price;
-			else
+				}
+			} else {
 				printf(Store::_('%s per %s'), $price, $this->singular_unit);
+			}
 		}
 
 		if ($this->hasQuantityDiscounts())
