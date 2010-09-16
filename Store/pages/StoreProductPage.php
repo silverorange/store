@@ -687,7 +687,7 @@ class StoreProductPage extends StorePage
 
 	protected function getProductJavaScriptClass()
 	{
-		return 'StoreProductPage';
+		return 'StoreProductPageLightBox';
 	}
 
 	// }}}
@@ -1424,6 +1424,14 @@ class StoreProductPage extends StorePage
 
 		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
 			'packages/store/javascript/store-product-page.js',
+			Store::PACKAGE_ID));
+
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			'packages/store/javascript/store-product-page-lightbox.js',
+			Store::PACKAGE_ID));
+
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			'packages/store/javascript/store-product-review-page.js',
 			Store::PACKAGE_ID));
 
 		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
