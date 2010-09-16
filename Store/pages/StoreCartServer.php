@@ -242,6 +242,10 @@ class StoreCartServer extends SiteXMLRPCServer
 
 		$entry->setQuantity($e['quantity']);
 
+		if (isset($e['custom_price'])) {
+			$entry->custom_price = (float) $e['custom_price'];
+		}
+
 		return $entry;
 	}
 
