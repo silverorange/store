@@ -62,6 +62,7 @@ handleFormSubmit: function(e)
 		}
 
 		this.addEntriesToCart(entries);
+		this.openMiniCart(StoreProductPageLightBox.loading_message);
 	}
 }
 
@@ -124,9 +125,8 @@ StoreProductPageLightBox.prototype.addEntriesToCart = function(entries)
 	{
 		// TODO
 		// update layout cart icon/info
-		//that.setMiniCartContentWithAnimation(response.mini_cart);
-
-		that.displayCartData(response);
+		that.setMiniCartContentWithAnimation(response.mini_cart);
+		//that.displayCartData(response);
 		that.resetForm();
 		that.mini_cart_entry_count = response.product_items;
 	}

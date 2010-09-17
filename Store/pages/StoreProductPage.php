@@ -16,7 +16,7 @@ require_once 'Store/dataobjects/StoreCategory.php';
 require_once 'Store/dataobjects/StoreItemGroupWrapper.php';
 require_once 'Store/dataobjects/StoreProductReview.php';
 require_once 'Store/StoreProductSearchEngine.php';
-require_once 'Store/pages/StoreCartServer.php';
+require_once 'Store/StoreCartProcessor.php';
 @include_once 'Services/Akismet2.php';
 
 /**
@@ -44,7 +44,6 @@ class StoreProductPage extends StorePage
 	protected $reviews_ui;
 	protected $reviews_ui_xml = 'Store/pages/product-reviews.xml';
 	protected $message_display;
-	protected $cart_message;
 	protected $item_removed = false;
 	protected $items_added = array();
 	protected $items_saved = array();
@@ -256,30 +255,57 @@ class StoreProductPage extends StorePage
 
 				$this->message_display->add($message);
 			} else {
+				$class_name = StoreCartProcessor::$class_name;
+				$processor = new $class_name($this->app);
 				$entries = $this->items_view->getCartEntries();
 				foreach ($entries as $entry) {
-					$status = StoreCartServer::addEntry($this->app, $entry);
-					if ($status == StoreCartServer::ENTRY_ADDED) {
+					$status = $processor->addEntryToCart($entry);
+					if ($status == StoreCartProcessor::ENTRY_ADDED) {
 						$this->items_added[] = $entry;
-					} elseif ($status == StoreCartServer::ENTRY_SAVED) {
+					} elseif ($status == StoreCartProcessor::ENTRY_SAVED) {
 						$this->items_saved[] = $entry;
 					}
 				}
-				
-				if (count($this->items_added) > 0) {
-					$this->cart_message = new SwatMessage(
-						Store::_('Your cart has been updated.'), 'cart');
+
+				if (count($this->items_added) > 0 ||
+					count($this->items_saved) > 0) {
+
+					$this->app->messages->add($this->getUpdatedCartMessage());
+					$this->app->relocate('cart');
 				}
 
 				// add cart messages
+				// TODO: what does this do anyway?
+				/*
 				$messages = $this->app->cart->checkout->getMessages();
 				foreach ($messages as $message)
 					$this->message_display->add($message);
-
-				if (count($this->items_saved) > 0)
-					$this->message_display->add($this->getSavedCartMessage());
+				*/
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function getUpdatedCartMessage()
+
+	protected function getUpdatedCartMessage()
+	{
+		$cart_message = new SwatMessage(
+			Store::_('Your cart has been updated.'), 'cart');
+
+		if (count($this->items_added) > 0) {
+			$cart_message->secondary_content = Store::ngettext(
+				'One item has been added to your cart.',
+				'%s items have been added to your cart.',
+				count($this->items_added));
+		} elseif (count($this->items_saved) > 0) {
+			$cart_message->secondary_content = Store::ngettext(
+				'One item has been saved to your cart.',
+				'%s items have been saved to your cart.',
+				count($this->items_added));
+		}
+
+		return $cart_message;
 	}
 
 	// }}}
