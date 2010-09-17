@@ -4,6 +4,7 @@ require_once 'Site/pages/SiteXMLRPCServer.php';
 require_once 'Site/exceptions/SiteNotFoundException.php';
 require_once 'Store/dataobjects/StoreCartEntry.php';
 require_once 'Store/dataobjects/StoreItem.php';
+require_once 'Store/StoreCartProcessor.php';
 
 /**
  * Handles XML-RPC requests to update the cart
@@ -13,12 +14,6 @@ require_once 'Store/dataobjects/StoreItem.php';
  */
 class StoreCartServer extends SiteXMLRPCServer
 {
-	// {{{ class constants
-
-	const ENTRY_ADDED = 1;
-	const ENTRY_SAVED = 2;
-
-	// }}}
 	// {{{ protected properties
 
 	protected $cart_ui;
@@ -64,18 +59,24 @@ class StoreCartServer extends SiteXMLRPCServer
 		$mini_cart = false)
 	{
 		$product_id = null;
+		$class_name = StoreCartProcessor::$class_name;
+		$processor = new $class_name($this->app);
 
 		foreach ($entries as $e) {
-			$entry = $this->createCartEntry($e);
-			$status = self::addEntry($this->app, $entry, $source_category);
+			$entry = $processor->createCartEntry($e['item_id'], $e['quantity']);
+			$entry->source_category = $source_category;
+			$entry->source = StoreCartEntry::SOURCE_PRODUCT_PAGE;
+			$this->setupCartEntry($entry, $e);
+
+			$status = $processor->addEntryToCart($entry);
 
 			if ($product_id === null) {
 				$product_id = $entry->item->product->id;
 			}
 
-			if ($status == self::ENTRY_ADDED)
+			if ($status == StoreCartProcessor::ENTRY_ADDED)
 				$this->entries_added[] = $entry;
-			elseif ($status == self::ENTRY_SAVED)
+			elseif ($status == StoreCartProcessor::ENTRY_SAVED)
 				$this->entries_saved[] = $entry;
 		}
 
@@ -170,83 +171,11 @@ class StoreCartServer extends SiteXMLRPCServer
 	}
 
 	// }}}
+	// {{{ protected function setupCartEntry()
 
-	// public static methods
-	// {{{ public static function addEntry()
-
-	/**
-	 * Add an entry to the cart
-	 */
-	public static function addEntry(SiteApplication $app, $entry,
-		$source_category = null)
+	protected function setupCartEntry(StoreCartEntry $entry, array $e)
 	{
-		$status = null;
-
-		self::setupCartEntry($app, $entry, $source_category);
-
-		if ($entry->item->hasAvailableStatus()) {
-			$added_entry = $app->cart->checkout->addEntry($entry);
-
-			if ($added_entry !== null)
-				$status = self::ENTRY_ADDED;
-		} else {
-			$added_entry = $app->cart->saved->addEntry($entry);
-
-			if ($added_entry !== null)
-				$status = self::ENTRY_SAVED;
-		}
-
-		return $status;
-	}
-
-	// }}}
-
-	// saving cart entries
-	// {{{ protected static function setupCartEntry()
-
-	protected static function setupCartEntry(SiteApplication $app,
-		StoreCartEntry $cart_entry, $source_category = null)
-	{
-		$app->session->activate();
-
-		if ($app->session->isLoggedIn()) {
-			$cart_entry->account = $app->session->getAccountId();
-		} else {
-			$cart_entry->sessionid = $app->session->getSessionId();
-		}
-
-		if ($source_category !== null)
-			$cart_entry->source_category = $source_category;
-
-		$cart_entry->source = StoreCartEntry::SOURCE_PRODUCT_PAGE;
-		$cart_entry->item->setDatabase($app->db);
-		$cart_entry->item->setRegion($app->getRegion());
-		$cart_entry->item->load($cart_entry->item->id);
-	}
-
-	// }}}
-	// {{{ protected function createCartEntry()
-
-	protected function createCartEntry($e)
-	{
-		$class_name = SwatDBClassMap::get('StoreCartEntry');
-		$entry = new $class_name();
-		$entry->setDatabase($this->app->db);
-
-		$class_name = SwatDBClassMap::get('StoreItem');;
-		$item = new $class_name();
-		$item->setDatabase($this->app->db);
-		$item->load($e['item_id']);
-		$item->setRegion($this->app->getRegion());
-		$entry->item = $item;
-
-		$entry->setQuantity($e['quantity']);
-
-		if (isset($e['custom_price'])) {
-			$entry->custom_price = (float) $e['custom_price'];
-		}
-
-		return $entry;
+		// Do custom entry manipulation here
 	}
 
 	// }}}
