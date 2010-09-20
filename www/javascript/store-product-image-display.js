@@ -437,7 +437,7 @@ StoreProductImageDisplay.close_text = 'Close';
 			return false;
 		}
 
-		if (!this.opened) {
+		if (!this.opened && (YAHOO.env.ua.ie < 7 || YAHOO.env.ua.ie >= 8)) {
 			this.current_scroll_top = Dom.getDocumentScrollTop();
 		}
 
@@ -456,7 +456,7 @@ StoreProductImageDisplay.close_text = 'Close';
 		this.image.width = data.large_width;
 		this.image.height = data.large_height;
 
-		// required for IE6
+		// required for IE
 		this.image.parentNode.style.width = data.large_width + 'px';
 		this.image.parentNode.style.height = data.large_height + 'px';
 
@@ -476,26 +476,32 @@ StoreProductImageDisplay.close_text = 'Close';
 		// Set page scroll height so we can't scroll the image out of view.
 		// This doesn't work correctly in IE7 or in Opera (Bug #CORE-22089);
 		// however it degrades nicely.
-		this.body.style.overflowX = 'hidden';
+		if (YAHOO.env.ua.ie < 7 || YAHOO.env.ua.ie >= 8) {
+			this.body.style.overflowX = 'hidden';
 
-		var viewport_height = Dom.getViewportHeight();
+			var viewport_height = Dom.getViewportHeight();
 
-		// keep scroll bars on the page if they're already there.
-		var overflow;
-		if (viewport_height < this.dimensions.document.height) {
-			overflow = 'scroll';
-		} else {
-			overflow = 'auto';
+			// keep scroll bars on the page if they're already there.
+			var overflow;
+			if (viewport_height < this.dimensions.document.height) {
+				overflow = 'scroll';
+			} else {
+				overflow = 'auto';
+			}
+
+			this.html.style.overflowY = overflow;
+			this.body.style.overflowY = 'hidden';
 		}
-
-		this.html.style.overflowY = overflow;
-		this.body.style.overflowY = 'hidden';
 
 		this.updateOverlayHeight(viewport_height, this.current_scroll_top);
 
 		if (!this.opened) {
-			this.html.style.position = 'relative';
-			this.html.style.marginTop = -this.current_scroll_top + 'px';
+			if (YAHOO.env.ua.ie < 7 || YAHOO.env.ua.ie >= 8) {
+				this.html.style.position = 'relative';
+				this.html.style.marginTop = -this.current_scroll_top + 'px';
+			}
+		}
+		if (!this.opened || (YAHOO.env.ua.ie >= 7 && YAHOO.env.ua.ie < 8)) {
 			window.scroll(0, 0);
 		}
 
@@ -681,8 +687,10 @@ StoreProductImageDisplay.close_text = 'Close';
 		this.container.style.display = 'none';
 
 		// remove image from address bar
-		var baseLocation = location.href.split('#')[0];
-		location.href = baseLocation + '#closed';
+		var locationParts = location.href.split('#');
+		if (locationParts[1]) {
+			location.href = locationParts[0] + '#closed';
+		}
 
 		// unset event handlers
 		Event.removeListener(document, 'keydown', this.handleKeyDown);
@@ -741,20 +749,24 @@ StoreProductImageDisplay.close_text = 'Close';
 	{
 		var data = this.data.images[this.current_image];
 
-		var window_height = Math.max(
-			viewport_height -
-				this.dimensions.body.marginTop -
-				this.dimensions.body.marginBottom,
-			// 32 extra px to contain image paddings and shadows
-			data.large_height + this.config.geometry.top + 32);
+		if (YAHOO.env.ua.ie < 7 || YAHOO.env.ua.ie >= 8) {
+			var window_height = Math.max(
+				viewport_height -
+					this.dimensions.body.marginTop -
+					this.dimensions.body.marginBottom,
+				// 32 extra px to contain image paddings and shadows
+				data.large_height + this.config.geometry.top + 32);
 
-		this.html.style.height = window_height + 'px';
-		this.body.style.height = (window_height + scroll_top) + 'px';
+			this.html.style.height = window_height + 'px';
+			this.body.style.height = (window_height + scroll_top) + 'px';
 
-		this.overlay.style.height = (window_height +
-			scroll_top +
-			this.dimensions.body.marginTop +
-			this.dimensions.body.marginBottom) + 'px';
+			this.overlay.style.height = (window_height +
+				scroll_top +
+				this.dimensions.body.marginTop +
+				this.dimensions.body.marginBottom) + 'px';
+		} else {
+			this.overlay.style.height = Dom.getDocumentHeight() + 'px';
+		}
 	};
 
 	// }}}
