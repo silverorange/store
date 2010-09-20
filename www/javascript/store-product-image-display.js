@@ -495,7 +495,7 @@ StoreProductImageDisplay.close_text = 'Close';
 
 		if (!this.opened) {
 			this.html.style.position = 'relative';
-			this.html.style.top = -this.current_scroll_top + 'px';
+			this.html.style.marginTop = -this.current_scroll_top + 'px';
 			window.scroll(0, 0);
 		}
 
@@ -699,7 +699,7 @@ StoreProductImageDisplay.close_text = 'Close';
 		this.body.style.overflowY = this.body_overflow_y;
 		this.body.style.height    = 'auto';
 
-		this.html.style.top = 0;
+		this.html.style.marginTop = 0;
 		window.scroll(0, this.current_scroll_top + scroll_top);
 
 		this.opened = false;
