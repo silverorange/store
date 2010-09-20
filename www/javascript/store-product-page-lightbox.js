@@ -34,7 +34,10 @@ init: function()
 	var cart_links = YAHOO.util.Dom.getElementsByClassName(
 		'product-page-cart-link');
 
-	YAHOO.util.Event.on(cart_links, 'click', this.loadMiniCart, this, true);
+	if (cart_links.length > 0) {
+		YAHOO.util.Event.on(cart_links, 'click', this.loadMiniCart, this, true);
+	}
+
 	this.initMiniCart();
 },
 
@@ -136,7 +139,7 @@ StoreProductPageLightBox.prototype.addEntriesToCart = function(entries)
 		[entries, this.source_category, true],
 		['array', 'int', 'boolean']);
 
-	//this.openMiniCart('<h3>' + StoreProductPageLightBox.submit_message + '</h3>');
+	this.openMiniCart('<h3>' + StoreProductPageLightBox.submit_message + '</h3>');
 }
 
 // }}}
