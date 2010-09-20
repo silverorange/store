@@ -6,20 +6,15 @@ require_once 'Store/dataobjects/StoreImage.php';
  * An image data object for categories
  *
  * @package Store
- * @copyright silverorange 2006-2008
+ * @copyright silverorange 2006-2010
  */
 class StoreCategoryImage extends StoreImage
 {
-	// {{{ public function getURI()
+	// {{{ public function getUri()
 
-	public function getURI($set = 'thumb', $prefix = null)
+	public function getUri($shortname = 'thumb', $prefix = null)
 	{
-		$uri = 'images/categories/'.$set.'/'.$this->id.'.jpg';
-
-		if ($prefix != null)
-			$uri = $prefix.$uri;
-
-		return $uri;
+		return parent::getUri($shortname, $prefix);
 	}
 
 	// }}}
