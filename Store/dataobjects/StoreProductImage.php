@@ -6,20 +6,15 @@ require_once 'Store/dataobjects/StoreImage.php';
  * An image data object for products
  *
  * @package Store
- * @copyright silverorange 2006-2008
+ * @copyright silverorange 2006-2010
  */
 class StoreProductImage extends StoreImage
 {
-	// {{{ public function getURI()
+	// {{{ public function getUri()
 
-    public function getURI($set = 'large', $prefix = null)
+    public function getUri($shortname = 'large', $prefix = null)
 	{
-		$uri = 'images/products/'.$set.'/'.$this->id.'.jpg';
-
-		if ($prefix != null)
-			$uri = $prefix.$uri;
-
-		return $uri;
+		return parent::getUri($shortname, $prefix);
 	}
 
 	// }}}
