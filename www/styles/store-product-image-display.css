@@ -48,6 +48,11 @@
 	box-shadow: 0 2px 4px -1px rgba(0,0,0,0.80), inset 0 -5px 15px rgba(0,0,0,0.5);
 }
 
+/* IE hack since shadows are not supported */
+.store-product-image-display-header {
+	border-bottom: 1px solid #555\9
+}
+
 .store-product-image-display-title {
 	font-weight: bold;
 	font-size: 120%;
