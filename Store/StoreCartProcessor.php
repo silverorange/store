@@ -34,6 +34,15 @@ class StoreCartProcessor extends SwatObject
 	public static $class_name = 'StoreCartProcessor';
 
 	// }}}
+	// {{{ public function get()
+
+	public static function get(SiteApplication $app)
+	{
+		$class_name = self::$class_name;
+		return new $class_name($app);
+	}
+
+	// }}}
 	// {{{ public function __construct()
 
 	public function __construct(SiteApplication $app)
@@ -52,11 +61,14 @@ class StoreCartProcessor extends SwatObject
 		$entry->setDatabase($this->app->db);
 
 		$class_name = SwatDBClassMap::get('StoreItem');
-		$entry->item = new $class_name();
-		$entry->item->setDatabase($this->app->db);
-		$entry->item->setRegion($this->app->getRegion());
-		$entry->item->load($item_id);
+		$item = new $class_name();
+		$item->setDatabase($this->app->db);
+		$item->setRegion($this->app->getRegion());
+		if ($item->load($item_id) === false) {
+			throw new StoreException('Item id "'.$item_id.'" not found.');
+		}
 
+		$entry->item = $item;
 		$entry->setQuantity($quantity);
 
 		return $entry;
@@ -73,14 +85,15 @@ class StoreCartProcessor extends SwatObject
 		$this->app->session->activate();
 
 		if ($this->app->session->isLoggedIn()) {
-			$cart_entry->account = $this->app->session->getAccountId();
+			$entry->account = $this->app->session->getAccountId();
 		} else {
-			$cart_entry->sessionid = $this->app->session->getSessionId();
+			$entry->sessionid = $this->app->session->getSessionId();
 		}
 
 		$status = null;
 
 		if ($entry->item->hasAvailableStatus()) {
+			$entry->item = $entry->item->id;
 			if ($this->app->cart->checkout->addEntry($entry) !== null)
 				$status = self::ENTRY_ADDED;
 		} else {
