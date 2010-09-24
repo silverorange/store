@@ -26,10 +26,13 @@ StoreProductPageLightBox.empty_message = '<h2>All Items Removed</h2>' +
 
 YAHOO.lang.extend(StoreProductPageLightBox, StoreProductPage, {
 // {{{ init: function()
-//
+
 init: function()
 {
 	StoreProductPageLightBox.superclass.init.call(this);
+
+	this.mini_cart_entry_count = 0;
+	this.mini_cart = document.getElementById('store_product_cart');
 
 	var cart_links = YAHOO.util.Dom.getElementsByClassName(
 		'product-page-cart-link');
@@ -38,7 +41,16 @@ init: function()
 		YAHOO.util.Event.on(cart_links, 'click', this.loadMiniCart, this, true);
 	}
 
-	this.initMiniCart();
+	YAHOO.util.Event.on(window, 'scroll', this.positionMiniCart, this, true);
+
+	// make any click on the body close the mini-cart, except for the
+	// mini-cart itself
+	YAHOO.util.Event.on(this.mini_cart, 'click',
+		function(e) {
+			YAHOO.util.Event.stopPropagation(e);
+	});
+
+	YAHOO.util.Event.on(document.body, 'click', this.bodyCloseMiniCart, this, true);
 },
 
 // }}}
@@ -128,7 +140,9 @@ StoreProductPageLightBox.prototype.addEntriesToCart = function(entries)
 	{
 		// TODO
 		// update layout cart icon/info
-		that.setMiniCartContentWithAnimation(response.mini_cart);
+		//that.setMiniCartContentWithAnimation(response.mini_cart);
+		that.setMiniCartContent(response.mini_cart);
+
 		//that.displayCartData(response);
 		that.resetForm();
 		that.mini_cart_entry_count = response.product_items;
@@ -147,34 +161,6 @@ StoreProductPageLightBox.prototype.addEntriesToCart = function(entries)
 
 StoreProductPageLightBox.prototype.initMiniCart = function()
 {
-	this.mini_cart_entry_count = 0;
-
-	this.mini_cart = document.createElement('div');
-	this.mini_cart.id = 'store_product_cart';
-	this.mini_cart.style.display = 'none';
-
-	var close_tag = document.createElement('a');
-	close_tag.id = 'store_product_cart_close';
-	close_tag.href = '#';
-	close_tag.appendChild(document.createTextNode(StoreProductPageLightBox.close_text));
-	YAHOO.util.Event.on(close_tag, 'click', this.closeMiniCart, this, true);
-	this.mini_cart.appendChild(close_tag);
-
-	this.mini_cart_contents = document.createElement('div');
-	this.mini_cart.appendChild(this.mini_cart_contents);
-
-	document.body.appendChild(this.mini_cart);
-
-	this.mini_cart_overlay = document.createElement('div');
-	this.mini_cart_overlay.id = 'store_product_cart_overlay';
-	this.mini_cart_overlay.style.display = 'none';
-
-	YAHOO.util.Event.on(this.mini_cart_overlay,
-		'click', this.closeMiniCart, this, true);
-
-	document.body.appendChild(this.mini_cart_overlay);
-
-	YAHOO.util.Event.on(window, 'resize', this.positionMiniCart, this, true);
 }
 
 // }}}
@@ -185,10 +171,7 @@ StoreProductPageLightBox.prototype.openMiniCart = function(contents)
 	this.setMiniCartContent(contents);
 
 	YAHOO.util.Dom.setStyle(this.mini_cart, 'opacity', 0);
-	YAHOO.util.Dom.setStyle(this.mini_cart_overlay, 'opacity', 0);
 	this.mini_cart.style.display = 'block';
-	this.mini_cart_overlay.style.display = 'block';
-
 	this.positionMiniCart();
 
 	var cart_animation = new YAHOO.util.Anim(
@@ -196,12 +179,6 @@ StoreProductPageLightBox.prototype.openMiniCart = function(contents)
 		{ opacity: { from: 0, to: 1 }},
 		0.3);
 
-	var overlay_animation = new YAHOO.util.Anim(
-		this.mini_cart_overlay,
-		{ opacity: { from: 0, to: 0.6 }},
-		0.3);
-
-	overlay_animation.animate();
 	cart_animation.animate();
 }
 
@@ -210,12 +187,14 @@ StoreProductPageLightBox.prototype.openMiniCart = function(contents)
 
 StoreProductPageLightBox.prototype.loadMiniCart = function(e)
 {
+	YAHOO.util.Event.stopPropagation(e);
 	YAHOO.util.Event.preventDefault(e);
 
 	var that = this;
 	function callBack(response)
 	{
-		that.setMiniCartContentWithAnimation(response);
+		//that.setMiniCartContentWithAnimation(response);
+		that.setMiniCartContent(response);
 	}
 
 	StoreProductPageLightBox.xml_rpc_client.callProcedure(
@@ -225,40 +204,18 @@ StoreProductPageLightBox.prototype.loadMiniCart = function(e)
 }
 
 // }}}
-// {{{ StoreProductPageLightBox.prototype.positionMiniCart
-
-StoreProductPageLightBox.prototype.positionMiniCart = function()
-{
-	var cart_width = this.mini_cart.offsetWidth;
-
-	this.mini_cart.style.left =
-		((YAHOO.util.Dom.getViewportWidth() - cart_width) / 2) + 'px';
-
-	this.mini_cart.style.top = this.getContainerTop(
-		this.mini_cart_contents.innerHTML) + 'px';
-
-	this.mini_cart_contents.style.height = this.getContentHeight(
-		this.mini_cart_contents.innerHTML) + 'px';
-
-	// if contents are taller than the window, switch to scrolling
-	if (this.mini_cart.offsetHeight >= YAHOO.util.Dom.getViewportHeight()) {
-		this.mini_cart_contents.style.overflow = 'scroll';
-	} else {
-		this.mini_cart_contents.style.overflow = 'visible';
-	}
-}
-
-// }}}
 // {{{ StoreProductPageLightBox.prototype.setMiniCartContent
 
 StoreProductPageLightBox.prototype.setMiniCartContent = function(contents)
 {
-	this.mini_cart_contents.innerHTML = contents;
 	this.positionMiniCart();
+
+	var content = document.getElementById('store_product_cart_content');
+	content.innerHTML = contents;
 
 	// activate any 'remove' buttons
 	var remove_buttons = YAHOO.util.Dom.getElementsByClassName(
-		'store-remove', 'input', this.mini_cart_contents);
+		'store-remove', 'input', content);
 
 	for (var i = 0; i < remove_buttons.length; i++) {
 		YAHOO.util.Event.on(remove_buttons[i], 'click',
@@ -267,7 +224,7 @@ StoreProductPageLightBox.prototype.setMiniCartContent = function(contents)
 
 	// activate any 'close' links
 	var close_buttons = YAHOO.util.Dom.getElementsByClassName(
-		'store-close-cart', 'a', this.mini_cart_contents);
+		'store-close-cart', 'a', this.mini_cart);
 
 	for (var i = 0; i < close_buttons.length; i++) {
 		YAHOO.util.Event.on(close_buttons[i], 'click',
@@ -390,7 +347,8 @@ StoreProductPageLightBox.prototype.removeEntry = function(e)
 	this.mini_cart_entry_count--;
 
 	if (this.mini_cart_entry_count <= 0) {
-		this.setMiniCartContentWithAnimation(StoreProductPageLightBox.empty_message);
+		//this.setMiniCartContentWithAnimation(StoreProductPageLightBox.empty_message);
+		this.setMiniCartContent(StoreProductPageLightBox.empty_message);
 	} else {
 		var tr = this.getParentNode(button, 'tr');
 		this.removeRow(tr, button);
@@ -448,21 +406,31 @@ StoreProductPageLightBox.prototype.resetForm = function()
 
 StoreProductPageLightBox.prototype.closeMiniCart = function(e)
 {
-	YAHOO.util.Event.preventDefault(e);
+	if (e) {
+		YAHOO.util.Event.preventDefault(e);
+	}
 
-	var animation = new YAHOO.util.Anim(
-		[this.mini_cart, this.mini_cart_overlay],
-		{ opacity: { to: 0 }},
-		0.3);
+	if (this.mini_cart.style.display != 'none') {
+		var animation = new YAHOO.util.Anim(
+			this.mini_cart,
+			{ opacity: { to: 0 }},
+			0.3);
 
-	var that = this;
-	animation.onComplete.subscribe(function() {
-		that.mini_cart.style.display = 'none';
-		that.mini_cart_overlay.style.display = 'none';
-	});
+		var that = this;
+		animation.onComplete.subscribe(function() {
+			that.mini_cart.style.display = 'none';
+		});
 
-	animation.animate();
+		animation.animate();
+	}
+}
 
+// }}}
+// {{{ StoreProductPageLightBox.prototype.bodyCloseMiniCart
+
+StoreProductPageLightBox.prototype.bodyCloseMiniCart = function(e)
+{
+	this.closeMiniCart();
 }
 
 // }}}
@@ -501,6 +469,16 @@ StoreProductPageLightBox.prototype.restoreButtonValue = function(button)
 			break;
 		}
 	}
+}
+
+// }}}
+// {{{ StoreProductPageLightBox.prototype.positionMiniCart
+
+StoreProductPageLightBox.prototype.positionMiniCart = function()
+{
+	// TODO maybe grab the -12 from the css and the 20 from the cart-div region
+	var scroll_top = Math.max(-1 * (YAHOO.util.Dom.getDocumentScrollTop() - 20), -12);
+	this.mini_cart.style.top = scroll_top + 'px';
 }
 
 // }}}

@@ -137,8 +137,6 @@ class StoreCartServer extends SiteXMLRPCServer
 			$h2_tag->setContent(Store::_('Your Cart is Empty'));
 			$h2_tag->display();
 		} else {
-			$this->checkCartDescription($cart_view);
-
 			if (count($this->entries_added) > 0) {
 				$locale = SwatI18NLocale::get($this->app->getLocale());
 
@@ -153,18 +151,14 @@ class StoreCartServer extends SiteXMLRPCServer
 				$h3_tag->display();
 			}
 
-			$h2_tag = new SwatHtmlTag('h2');
-			$h2_tag->setContent(Store::ngettext(
+			$h3_tag = new SwatHtmlTag('h3');
+			$h3_tag->setContent(Store::ngettext(
 				'The following item on this page is in your cart:',
 				'The following items on this page are in your cart:',
 				$count));
 
-			$h2_tag->display();
+			$h3_tag->display();
 			$this->cart_ui->display();
-
-			echo '<div class="cart-message-links">';
-			$this->displayCartLinks();
-			echo '</div>';
 		}
 
 		return ob_get_clean();
@@ -217,44 +211,6 @@ class StoreCartServer extends SiteXMLRPCServer
 	// }}}
 
 	// mini cart
-	// {{{ protected function checkCartDescription()
-
-	protected function checkCartDescription($cart_view)
-	{
-		/* if the view has a description column, check all columns to make sure
-		 * they have a description. If none have a description, hide the column.
-		 * if some are empty, but others have description, use the product title
-		 * for the description instead of an empty column.
-		 */
-		if ($cart_view->hasColumn('description')) {
-			$description_column = $cart_view->getColumn('description');
-			$has_description = false;
-			foreach($cart_view->model as $ds) {
-				if ($ds->description == '') {
-					$ds->description = $ds->item->product->title;
-				} else {
-					$has_description = true;
-				}
-			}
-
-			$description_column->visible = $has_description;
-		}
-	}
-
-	// }}}
-	// {{{ protected function displayCartLinks()
-
-	protected function displayCartLinks()
-	{
-		printf(Store::_(
-			'%sContinue shopping%s, %sview your shopping cart%s, '.
-				'or %sproceed to the checkout%s.'),
-			'<a class="store-close-cart" href="store">', '</a>',
-			'<a href="cart">', '</a>',
-			'<a href="checkout">', '</a>');
-	}
-
-	// }}}
 	// {{{ protected function getCartTableStore()
 
 	/**
@@ -310,11 +266,31 @@ class StoreCartServer extends SiteXMLRPCServer
 
 	protected function getEntryDescription(StoreCartEntry $entry)
 	{
+		$description = implode(', ', $this->getItemDescriptionArray($entry));
+
+		$locale = SwatI18NLocale::get($this->app->getLocale());
+
+		// TODO: discounts
+		$description.= '<div class="price-quantity">'.
+			sprintf('Quantity: %s, Price: %s',
+				$locale->formatNumber($entry->getQuantity()),
+				$locale->formatCurrency($entry->getCalculatedItemPrice())).
+			'</div>';
+
+		return $description;
+	}
+
+	// }}}
+	// {{{ protected function getItemDescriptionArray()
+
+	protected function getItemDescriptionArray(StoreCartEntry $entry)
+	{
 		$description = array();
+
 		foreach ($entry->item->getDescriptionArray() as $element)
 			$description[] = SwatString::minimizeEntities($element);
 
-		return implode(' - ', $description);
+		return $description;
 	}
 
 	// }}}
