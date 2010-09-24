@@ -19,6 +19,7 @@
 			<object class="SwatTableViewColumn" id="description">
 				<object class="SwatTextCellRenderer">
 					<property name="text" type="data">description</property>
+					<property name="content_type">text/xml</property>
 				</object>
 			</object>
 			<object class="SwatTableViewColumn" id="remove_column">
