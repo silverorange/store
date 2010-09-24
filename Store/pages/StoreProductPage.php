@@ -441,6 +441,9 @@ class StoreProductPage extends StorePage
 		$this->layout->startCapture('content');
 		$this->message_display->display();
 		$this->displayProduct();
+
+		$this->displayProductCart();
+
 		Swat::displayInlineJavaScript($this->getProductInlineJavaScript());
 		if ($this->reviews_ui instanceof SwatUI) {
 			Swat::displayInlineJavaScript($this->getReviewsInlineJavaScript());
@@ -515,6 +518,46 @@ class StoreProductPage extends StorePage
 		$this->displayReviews();
 
 		echo '</div>';
+	}
+
+	// }}}
+	// {{{ protected function displayProductCart()
+
+	protected function displayProductCart()
+	{
+		// the content for the cart is filled in via ajax
+		$div_lightbox = new SwatHtmlTag('div');
+		$div_lightbox->id = 'store_product_cart';
+		$div_lightbox->open();
+
+		$div_content = new SwatHtmlTag('div');
+		$div_content->id = 'store_product_cart_content';
+		$div_content->open();
+		$div_content->close();
+
+		$div_footer = new SwatHtmlTag('div');
+		$div_footer->id = 'store_product_cart_footer';
+		$div_footer->open();
+
+		$a_close = new SwatHtmlTag('a');
+		$a_close->class = 'store-close-cart';
+		$a_close->href = '#';
+		$a_close->setContent(Store::_('Continue Shopping'));
+		$a_close->display();
+
+		$a_cart = new SwatHtmlTag('a');
+		$a_cart->href = 'cart';
+		$a_cart->setContent(Store::_('View Cart'));
+		$a_cart->display();
+
+		$a_checkout = new SwatHtmlTag('a');
+		$a_checkout->href = 'checkout';
+		$a_checkout->setContent(Store::_('Checkout'));
+		$a_checkout->display();
+
+		$div_footer->close();
+
+		$div_lightbox->close();
 	}
 
 	// }}}
