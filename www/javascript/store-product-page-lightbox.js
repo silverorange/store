@@ -12,6 +12,7 @@ function StoreProductPageLightBox(product_id, item_ids, source_category)
 	this.product_id = product_id;
 	this.source_category = source_category;
 	this.button_values = [];
+	this.open = false;
 
 	StoreProductPageLightBox.superclass.constructor.call(this);
 }
@@ -107,6 +108,7 @@ StoreProductPageLightBox.prototype.hasQuantity = function()
 StoreProductPageLightBox.prototype.changeButtonText = function(e)
 {
 	var button = document.getElementById(StoreProductPageLightBox.add_button_id);
+	button.disabled = true;
 	this.saveButtonValue(button);
 	button.value = StoreProductPageLightBox.submit_message;
 }
@@ -146,6 +148,7 @@ StoreProductPageLightBox.prototype.addEntriesToCart = function(entries)
 		//that.displayCartData(response);
 		that.resetForm();
 		that.mini_cart_entry_count = response.product_items;
+		that.open = true;
 	}
 
 	StoreProductPageLightBox.xml_rpc_client.callProcedure(
@@ -195,6 +198,7 @@ StoreProductPageLightBox.prototype.loadMiniCart = function(e)
 	{
 		//that.setMiniCartContentWithAnimation(response);
 		that.setMiniCartContent(response);
+		that.open = true;
 	}
 
 	StoreProductPageLightBox.xml_rpc_client.callProcedure(
@@ -336,7 +340,7 @@ StoreProductPageLightBox.prototype.removeEntry = function(e)
 	var that = this;
 	function callBack(response)
 	{
-		// update layout cart icon/display
+		// TODO update layout cart icon/display
 	}
 
 	StoreProductPageLightBox.xml_rpc_client.callProcedure(
@@ -408,9 +412,10 @@ StoreProductPageLightBox.prototype.closeMiniCart = function(e)
 {
 	if (e) {
 		YAHOO.util.Event.preventDefault(e);
+
 	}
 
-	if (this.mini_cart.style.display != 'none') {
+	if (this.open) {
 		var animation = new YAHOO.util.Anim(
 			this.mini_cart,
 			{ opacity: { to: 0 }},
@@ -421,6 +426,7 @@ StoreProductPageLightBox.prototype.closeMiniCart = function(e)
 			that.mini_cart.style.display = 'none';
 		});
 
+		this.open = false;
 		animation.animate();
 	}
 }
@@ -466,6 +472,7 @@ StoreProductPageLightBox.prototype.restoreButtonValue = function(button)
 	for (var i = 0; i < this.button_values.length; i++) {
 		if (this.button_values[i].id == button.id) {
 			button.value = this.button_values[i].value;
+			button.disabled = false;
 			break;
 		}
 	}
