@@ -34,6 +34,8 @@ init: function()
 
 	this.mini_cart_entry_count = 0;
 	this.mini_cart = document.getElementById('store_product_cart');
+	this.mini_cart_content = document.getElementById(
+		'store_product_cart_content');
 
 	var cart_links = YAHOO.util.Dom.getElementsByClassName(
 		'product-page-cart-link');
@@ -142,8 +144,7 @@ StoreProductPageLightBox.prototype.addEntriesToCart = function(entries)
 	{
 		// TODO
 		// update layout cart icon/info
-		//that.setMiniCartContentWithAnimation(response.mini_cart);
-		that.setMiniCartContent(response.mini_cart);
+		that.setMiniCartContentWithAnimation(response.mini_cart);
 
 		//that.displayCartData(response);
 		that.resetForm();
@@ -196,8 +197,7 @@ StoreProductPageLightBox.prototype.loadMiniCart = function(e)
 	var that = this;
 	function callBack(response)
 	{
-		//that.setMiniCartContentWithAnimation(response);
-		that.setMiniCartContent(response);
+		that.setMiniCartContentWithAnimation(response);
 		that.open = true;
 	}
 
@@ -214,15 +214,14 @@ StoreProductPageLightBox.prototype.setMiniCartContent = function(contents)
 {
 	this.positionMiniCart();
 
-	var content = document.getElementById('store_product_cart_content');
-	content.innerHTML = contents;
+	this.mini_cart_content.innerHTML = contents;
 
 	// activate any 'remove' buttons
 	var remove_buttons = YAHOO.util.Dom.getElementsByClassName(
-		'store-remove', 'input', content);
+		'store-remove', 'input', this.mini_cart);
 
-	for (var i = 0; i < remove_buttons.length; i++) {
-		YAHOO.util.Event.on(remove_buttons[i], 'click',
+	if (remove_buttons.length != 0) {
+		YAHOO.util.Event.on(remove_buttons, 'click',
 			this.removeEntry, this, true);
 	}
 
@@ -230,8 +229,8 @@ StoreProductPageLightBox.prototype.setMiniCartContent = function(contents)
 	var close_buttons = YAHOO.util.Dom.getElementsByClassName(
 		'store-close-cart', 'a', this.mini_cart);
 
-	for (var i = 0; i < close_buttons.length; i++) {
-		YAHOO.util.Event.on(close_buttons[i], 'click',
+	if (close_buttons.length != 0) {
+		YAHOO.util.Event.on(close_buttons, 'click',
 			this.closeMiniCart, this, true);
 	}
 }
@@ -242,11 +241,13 @@ StoreProductPageLightBox.prototype.setMiniCartContent = function(contents)
 StoreProductPageLightBox.prototype.setMiniCartContentWithAnimation =
 	function(contents)
 {
-	var old_height = this.mini_cart_contents.offsetHeight;
+	var old_height = this.mini_cart_content.offsetHeight;
+	console.log('old height: ' + old_height);
 	var new_height = this.getContentHeight(contents);
+	console.log('new height: ' + new_height);
 
 	var content_animation = new YAHOO.util.Anim(
-		this.mini_cart_contents,
+		this.mini_cart_content,
 		{ height: { to: new_height }},
 		0.3);
 
@@ -262,19 +263,6 @@ StoreProductPageLightBox.prototype.setMiniCartContentWithAnimation =
 	});
 
 	content_animation.animate();
-
-	var container_height = (this.mini_cart.offsetHeight -
-		this.mini_cart_contents.offsetHeight + new_height)
-
-	var container_top = (YAHOO.util.Dom.getViewportHeight() -
-		container_height) / 2;
-
-	var container_animation = new YAHOO.util.Anim(
-		this.mini_cart,
-		{ top: { to: container_top }},
-		0.3);
-
-	container_animation.animate();
 
 	if (old_height >= new_height) {
 		this.setMiniCartContent(contents);
@@ -293,21 +281,10 @@ StoreProductPageLightBox.prototype.getContentHeight = function(contents)
 	var hidden_content_div = document.createElement('div');
 	hidden_content_div.innerHTML = contents;
 	hidden_div.appendChild(hidden_content_div);
-	this.mini_cart_contents.parentNode.appendChild(hidden_div);
+	this.mini_cart_content.appendChild(hidden_div);
 
 	var new_height = hidden_content_div.offsetHeight;
-	this.mini_cart_contents.parentNode.removeChild(hidden_div);
-
-	// if contents are taller than the window, restrict height to
-	// the available space
-	var new_container_height = (this.mini_cart.offsetHeight -
-		this.mini_cart_contents.offsetHeight + new_height);
-
-	if (new_container_height > YAHOO.util.Dom.getViewportHeight()) {
-		new_height = (YAHOO.util.Dom.getViewportHeight() -
-			(this.mini_cart.offsetHeight -
-			(this.mini_cart_contents.offsetHeight)));
-	}
+	this.mini_cart_content.removeChild(hidden_div);
 
 	return new_height;
 }
@@ -320,7 +297,7 @@ StoreProductPageLightBox.prototype.getContainerTop = function(contents)
 	var content_height = this.getContentHeight(contents);
 
 	var container_height = (this.mini_cart.offsetHeight -
-		this.mini_cart_contents.offsetHeight + content_height)
+		this.mini_cart_content.offsetHeight + content_height)
 
 	return Math.max(((YAHOO.util.Dom.getViewportHeight() -
 		container_height) / 2), 0);
@@ -351,8 +328,7 @@ StoreProductPageLightBox.prototype.removeEntry = function(e)
 	this.mini_cart_entry_count--;
 
 	if (this.mini_cart_entry_count <= 0) {
-		//this.setMiniCartContentWithAnimation(StoreProductPageLightBox.empty_message);
-		this.setMiniCartContent(StoreProductPageLightBox.empty_message);
+		this.setMiniCartContentWithAnimation(StoreProductPageLightBox.empty_message);
 	} else {
 		var tr = this.getParentNode(button, 'tr');
 		this.removeRow(tr, button);
@@ -383,8 +359,11 @@ StoreProductPageLightBox.prototype.removeRow = function(tr, button)
 			{ opacity: { to: 0 }},
 			0.3);
 
+		var that = this;
 		animation.onComplete.subscribe(function() {
 			tr.parentNode.deleteRow(index);
+			that.setMiniCartContentWithAnimation(
+				that.mini_cart_content.innerHTML);
 		});
 
 		animation.animate();
