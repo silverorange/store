@@ -351,7 +351,7 @@ StoreProductImageDisplay.close_text = 'Close';
 		Event.on(this.container, 'click', function(e) {
 			Event.preventDefault(e);
 			this.close();
-			this.onClose.fire('overlayMask');
+			this.onClose.fire('container');
 		}, this, true);
 
 		Event.on(this.container, 'mouseover', function(e) {
@@ -443,7 +443,7 @@ StoreProductImageDisplay.close_text = 'Close';
 
 		var data = this.data.images[index];
 
-		var w = data.large_width +
+		var w = this.getImageWidth(data) +
 			this.dimensions.container.paddingLeft +
 			this.dimensions.container.paddingRight;
 
@@ -457,8 +457,8 @@ StoreProductImageDisplay.close_text = 'Close';
 		this.image.height = data.large_height;
 
 		// required for IE
-		this.image.parentNode.style.width = data.large_width + 'px';
-		this.image.parentNode.style.height = data.large_height + 'px';
+		this.image.parentNode.style.width = this.getImageWidth(data) + 'px';
+		this.image.parentNode.style.height = this.getImageHeight(data) + 'px';
 
 		this.setTitle(data, this.data.product);
 
@@ -553,6 +553,22 @@ StoreProductImageDisplay.close_text = 'Close';
 		} else {
 			this.title.innerHTML = product.title;
 		}
+	};
+
+	// }}}
+	// {{{ getImageWidth()
+
+	StoreProductImageDisplay.prototype.getImageWidth = function(image_data)
+	{
+		return image_data.large_width;
+	};
+
+	// }}}
+	// {{{ getImageHeight()
+
+	StoreProductImageDisplay.prototype.getImageHeight = function(image_data)
+	{
+		return image_data.large_height;
 	};
 
 	// }}}
@@ -755,7 +771,7 @@ StoreProductImageDisplay.close_text = 'Close';
 					this.dimensions.body.marginTop -
 					this.dimensions.body.marginBottom,
 				// 32 extra px to contain image paddings and shadows
-				data.large_height + this.config.geometry.top + 32);
+				this.getImageHeight(data) + this.config.geometry.top + 32);
 
 			this.html.style.height = window_height + 'px';
 			this.body.style.height = (window_height + scroll_top) + 'px';
