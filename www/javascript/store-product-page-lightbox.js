@@ -210,11 +210,54 @@ StoreProductPageLightBox.prototype.loadMiniCart = function(e)
 
 StoreProductPageLightBox.prototype.displayResponse = function(response)
 {
-	this.setMiniCartContentWithAnimation(response.mini_cart);
+	if (response.mini_cart) {
+		this.setMiniCartContentWithAnimation(response.mini_cart);
+	}
 
-	// TODO update other parts of the page
+	this.updateCartMessage(response.cart_message);
+
+	// TODO update header shopping cart
+
 	this.resetForm();
 	this.mini_cart_entry_count = response.product_items;
+}
+
+// }}}
+// {{{ StoreProductPageLightBox.prototype.updateCartMessage
+
+StoreProductPageLightBox.prototype.updateCartMessage = function(cart_message)
+{
+	var div = document.getElementById('product_page_cart');
+
+	if (cart_message) {
+		if (div.innerHTML == '') {
+			alert('hello');
+			YAHOO.util.Dom.setStyle(div, 'opacity', 0);
+			div.innerHTML = cart_message;
+
+			var animation = new YAHOO.util.Anim(
+				div,
+				{ opacity: { to: 1 }},
+				0.3);
+
+			animation.animate();
+			
+		} else {
+			div.innerHTML = cart_message;
+		}
+	} else if (div.innerHTML != '') {
+		var animation = new YAHOO.util.Anim(
+			div,
+			{ opacity: { to: 0 }},
+			0.3);
+
+		animation.onComplete.subscribe(function() {
+			div.innerHTML = '';
+		});
+
+		animation.animate();
+
+	}
 }
 
 // }}}
@@ -326,6 +369,7 @@ StoreProductPageLightBox.prototype.removeEntry = function(e)
 	function callBack(response)
 	{
 		// TODO update layout cart icon/display
+		that.displayResponse(response);
 	}
 
 	StoreProductPageLightBox.xml_rpc_client.callProcedure(

@@ -155,53 +155,53 @@ class StoreCartProcessor extends SwatObject
 
 	public function getProductCartMessage(StoreProduct $product)
 	{
-		$cart_entries = array();
+		$cart_entries = 0;
 		foreach ($this->app->cart->checkout->getAvailableEntries() as $entry) {
 			if ($entry->item->product->id == $product->id) {
-				$cart_entries[] = $entry;
+				$cart_entries += $entry->getQuantity();
 			}
 		}
 
-		$saved_entries = array();
+		$saved_entries = 0;
 		foreach ($this->app->cart->saved->getEntries() as $entry) {
 			if ($entry->item->product->id == $product->id) {
-				$saved_entries[] = $entry;
+				$saved_entries += $entry->getQuantity();
 			}
 		}
 
-		if (count($cart_entries) == 0 && count($saved_entries) == 0) {
+		if ($cart_entries == 0 && $saved_entries == 0) {
 			$message = null;
 		} else {
 			ob_start();
 			$locale = SwatI18NLocale::get($this->app->getLocale());
 
 			$div_tag = new SwatHtmlTag('div');
-			$div_tag->id = 'product_page_cart';
+			$div_tag->class = 'product-page-cart-message';
 			$div_tag->open();
 
-			if (count($cart_entries) > 0 && count($saved_entries) > 0) {
+			if ($cart_entries > 0 && $saved_entries > 0) {
 				echo SwatString::minimizeEntities(sprintf(Store::_(
 					'You have %s from this page in your cart and '.
 					'%s saved for later.'),
 					sprintf(Store::ngettext('one item', '%s items',
-						count($cart_entries)),
-						$locale->formatNumber(count($cart_entries))),
+						$cart_entries),
+						$locale->formatNumber($cart_entries)),
 					sprintf(Store::ngettext('one item', '%s items',
-						count($saved_entries)),
-						$locale->formatNumber(count($saved_entries)))));
+						$saved_entries),
+						$locale->formatNumber($saved_entries))));
 
-			} elseif (count($saved_entries) > 0) {
+			} elseif ($saved_entries > 0) {
 				echo SwatString::minimizeEntities(sprintf(Store::ngettext(
 					'You have one item from this page saved for later.',
 					'You have %s items from this page saved for later.',
-					count($saved_entries)),
-					$locale->formatNumber(count($saved_entries))));
+					$saved_entries),
+					$locale->formatNumber($saved_entries)));
 			} else {
 				echo SwatString::minimizeEntities(sprintf(Store::ngettext(
 					'You have one item from this page in your cart.',
 					'You have %s items from this page in your cart.',
-					count($cart_entries)),
-					$locale->formatNumber(count($cart_entries))));
+					$cart_entries),
+					$locale->formatNumber($cart_entries)));
 			}
 
 			echo ' ';

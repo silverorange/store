@@ -1,6 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
+	<widget class="SwatMessageDisplay" id="cart_message_display" />
+	<widget class="SwatContentBlock" id="cart_title">
+		<property name="content_type">text/xml</property>
+	</widget>
 	<widget class="SwatForm" id="cart_form">
 		<widget class="SwatTableView" id="cart_view">
 			<property name="classes[]">store-cart-entry-view</property>

@@ -11,7 +11,7 @@ div.store-sale-discount {
 	color: #990000;
 }
 
-#product_page_cart {
+div.product-page-cart-message {
 	background: #FFFBC9 url(../../../packages/swat/images/swat-message-cart.png) no-repeat 0 0;
 	padding: 12px 12px 12px 48px;
 	border-radius: 8px;
@@ -20,7 +20,7 @@ div.store-sale-discount {
 	min-height: 18px;
 }
 
-* html #product_page_cart {
+* html div.product-page-cart-message {
 	height: 18px;
 }
 
