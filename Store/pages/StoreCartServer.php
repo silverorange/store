@@ -111,7 +111,59 @@ class StoreCartServer extends SiteXMLRPCServer
 	}
 
 	// }}}
-	// {{{ public function getMiniCart()
+	// {{{ public function getCartInfo()
+
+	/**
+	 * Get information about what's in the user's cart
+	 *
+	 * @param integer $product_id Optional product id to filter by 
+	 * @param boolean $mini_cart Whether or not to return the mini-cart 
+	 *
+	 * @return array
+	 */
+	public function getCartInfo($product_id = null, $mini_cart = false)
+	{
+		$product_items = 0;
+		$total_items = 0;
+		$total_products = 0;
+		$currrent_product = null;
+
+		foreach ($this->app->cart->checkout->getAvailableEntries() as $e) {
+			$total_items++;
+			if ($e->item->getInternalValue('product') !== $currrent_product) {
+				$currrent_product = $e->item->getInternalValue('product');
+				$total_products++;
+			}
+
+			if ($e->item->getInternalValue('product') === $product_id) {
+				$product_items++;
+			}
+		}
+
+		$return = array();
+		$return['product_items'] = $product_items;
+		$return['total_items'] = $total_items;
+		$return['total_products'] = $total_products;
+
+		if ($mini_cart) {
+			$return['mini_cart'] = $this->getMiniCart($product_id);
+		} else {
+			$return['mini_cart'] = '';
+		}
+
+		return $return;
+	}
+
+	// }}}
+	// {{{ protected function setupCartEntry()
+
+	protected function setupCartEntry(StoreCartEntry $entry, array $e)
+	{
+		// Do custom entry manipulation here
+	}
+
+	// }}}
+	// {{{ protected function getMiniCart()
 
 	/**
 	 * Get a mini cart for a specific product page
@@ -120,7 +172,7 @@ class StoreCartServer extends SiteXMLRPCServer
 	 *
 	 * @return string The mini cart.
 	 */
-	public function getMiniCart($product_id)
+	protected function getMiniCart($product_id)
 	{
 		$this->cart_ui = new SwatUI();
 		$this->cart_ui->loadFromXML($this->cart_ui_xml);
@@ -162,50 +214,6 @@ class StoreCartServer extends SiteXMLRPCServer
 		}
 
 		return ob_get_clean();
-	}
-
-	// }}}
-	// {{{ protected function setupCartEntry()
-
-	protected function setupCartEntry(StoreCartEntry $entry, array $e)
-	{
-		// Do custom entry manipulation here
-	}
-
-	// }}}
-	// {{{ protected function getCartInfo()
-
-	protected function getCartInfo($product_id = null, $mini_cart = false)
-	{
-		$product_items = 0;
-		$total_items = 0;
-		$total_products = 0;
-		$currrent_product = null;
-
-		foreach ($this->app->cart->checkout->getAvailableEntries() as $e) {
-			$total_items++;
-			if ($e->item->getInternalValue('product') !== $currrent_product) {
-				$currrent_product = $e->item->getInternalValue('product');
-				$total_products++;
-			}
-
-			if ($e->item->getInternalValue('product') === $product_id) {
-				$product_items++;
-			}
-		}
-
-		$return = array();
-		$return['product_items'] = $product_items;
-		$return['total_items'] = $total_items;
-		$return['total_products'] = $total_products;
-
-		if ($mini_cart) {
-			$return['mini_cart'] = $this->getMiniCart($product_id);
-		} else {
-			$return['mini_cart'] = '';
-		}
-
-		return $return;
 	}
 
 	// }}}
