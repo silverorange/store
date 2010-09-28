@@ -80,7 +80,8 @@ handleFormSubmit: function(e)
 		}
 
 		this.addEntriesToCart(entries);
-		this.openMiniCart(StoreProductPageLightBox.loading_message);
+		this.openMiniCart(
+			'<h3>' + StoreProductPageLightBox.loading_message + '</h3>');
 	}
 }
 
@@ -178,6 +179,9 @@ StoreProductPageLightBox.prototype.openMiniCart = function(contents)
 	this.mini_cart.style.display = 'block';
 	this.positionMiniCart();
 
+	YAHOO.util.Dom.setStyle(this.mini_cart_content, 'height',
+		this.getContentHeight(contents) + 'px');
+
 	var cart_animation = new YAHOO.util.Anim(
 		this.mini_cart,
 		{ opacity: { from: 0, to: 1 }},
@@ -242,9 +246,7 @@ StoreProductPageLightBox.prototype.setMiniCartContentWithAnimation =
 	function(contents)
 {
 	var old_height = this.mini_cart_content.offsetHeight;
-	console.log('old height: ' + old_height);
 	var new_height = this.getContentHeight(contents);
-	console.log('new height: ' + new_height);
 
 	var content_animation = new YAHOO.util.Anim(
 		this.mini_cart_content,
