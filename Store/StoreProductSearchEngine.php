@@ -9,7 +9,7 @@ require_once 'Store/dataobjects/StoreAttributeWrapper.php';
  * A product search engine
  *
  * @package   Store
- * @copyright 2007 silverorange
+ * @copyright 2007-2010 silverorange
  */
 class StoreProductSearchEngine extends SiteSearchEngine
 {
@@ -42,6 +42,15 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	 * @var StoreAttributeWrapper
 	 */
 	public $attributes;
+
+	/**
+	 * Optional region to search within.
+	 *
+	 * If region is not set, the engine uses the Application's region.
+	 *
+	 * @var StoreRegion
+	 */
+	public $region;
 
 	/**
 	 * Whether or not to search category descendants when a category
@@ -187,6 +196,33 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	}
 
 	// }}}
+	// {{{ public function setRegion()
+
+	public function setRegion(StoreRegion $region)
+	{
+		$this->region= $region;
+	}
+
+	// }}}
+	// {{{ public function getRegion()
+
+	/**
+	 * Creates a new product search engine
+	 *
+	 * Adds default order by fields.
+	 *
+	 * @param SiteApplication $app the application object.
+	 */
+	public function getRegion()
+	{
+		if ($this->region === null) {
+			$this->region = $this->app->getRegion();
+		}
+
+		return $this->region;
+	}
+
+	// }}}
 	// {{{ public function getSearchSummary()
 
 	/**
@@ -244,7 +280,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	public function search($limit = null, $offset = null)
 	{
 		$products = parent::search($limit, $offset);
-		$products->setRegion($this->app->getRegion());
+		$products->setRegion($this->getRegion());
 
 		return $products;
 	}
@@ -373,9 +409,9 @@ class StoreProductSearchEngine extends SiteSearchEngine
 				AvailableProductView.product = Product.id and
 				AvailableProductView.region = %s',
 			$this->visible_only ? 'inner' : 'left outer',
-			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
+			$this->app->db->quote($this->getRegion()->id, 'integer'),
 			$this->available_only ? 'inner' : 'left outer',
-			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+			$this->app->db->quote($this->getRegion()->id, 'integer'));
 
 		if ($this->fulltext_result !== null)
 			$clause.= ' '.
@@ -434,7 +470,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 		if ($this->price_range instanceof StorePriceRange) {
 			$clause.= sprintf(' inner join getProductPriceRange(%s, %s) on
 				getProductPriceRange.product = Product.id',
-				$this->app->db->quote($this->app->getRegion()->id, 'integer'),
+				$this->app->db->quote($this->getRegion()->id, 'integer'),
 				$this->app->db->quote(
 					$this->price_range->original_price, 'boolean'));
 		}
