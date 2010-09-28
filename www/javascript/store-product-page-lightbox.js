@@ -1,6 +1,5 @@
 /**
- * Displays an alert if there are no quantities entered on the items table
- * on a product page
+ * Extends the default product page to also do an xml-rpc driven mini cart
  *
  * @param integer the product id.
  * @param Array item_ids the array of item ids displayed on this product page.
@@ -231,7 +230,6 @@ StoreProductPageLightBox.prototype.updateCartMessage = function(cart_message)
 
 	if (cart_message) {
 		if (div.innerHTML == '') {
-			alert('hello');
 			YAHOO.util.Dom.setStyle(div, 'opacity', 0);
 			div.innerHTML = cart_message;
 
