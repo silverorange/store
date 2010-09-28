@@ -256,6 +256,13 @@ StoreProductPageLightBox.prototype.updateCartMessage = function(cart_message)
 		animation.animate();
 
 	}
+
+	var cart_links = YAHOO.util.Dom.getElementsByClassName(
+		'product-page-cart-link');
+
+	if (cart_links.length > 0) {
+		YAHOO.util.Event.on(cart_links, 'click', this.loadMiniCart, this, true);
+	}
 }
 
 // }}}
