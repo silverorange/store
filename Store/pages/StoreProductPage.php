@@ -550,10 +550,14 @@ class StoreProductPage extends StorePage
 
 	protected function displayCartMessage()
 	{
+		echo '<div id="product_page_cart">';
+
 		$message = $this->cart_processor->getProductCartMessage($this->product);
 		if ($message !== null) {
 			echo $message;
 		}
+
+		echo '</div>';
 	}
 
 	// }}}

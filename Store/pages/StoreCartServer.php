@@ -16,10 +16,9 @@ class StoreCartServer extends SiteXMLRPCServer
 {
 	// {{{ protected properties
 
+	protected $processor;
 	protected $cart_ui;
 	protected $cart_ui_xml = 'Store/pages/product-cart.xml';
-	protected $entries_added = array();
-	protected $entries_saved = array();
 
 	// }}}
 
@@ -33,7 +32,10 @@ class StoreCartServer extends SiteXMLRPCServer
 	 */
 	public function init()
 	{
+		$this->processor = StoreCartProcessor::get($this->app);
+
 		parent::init();
+
 		$this->app->cart->load();
 	}
 
@@ -59,25 +61,20 @@ class StoreCartServer extends SiteXMLRPCServer
 		$mini_cart = false)
 	{
 		$product_id = null;
-		$class_name = StoreCartProcessor::$class_name;
-		$processor = new $class_name($this->app);
 
 		foreach ($entries as $e) {
-			$entry = $processor->createCartEntry($e['item_id'], $e['quantity']);
+			$entry = $this->processor->createCartEntry(
+				$e['item_id'], $e['quantity']);
+
 			$entry->source_category = $source_category;
 			$entry->source = StoreCartEntry::SOURCE_PRODUCT_PAGE;
 			$this->setupCartEntry($entry, $e);
 
-			$status = $processor->addEntryToCart($entry);
+			$status = $this->processor->addEntryToCart($entry);
 
 			if ($product_id === null) {
 				$product_id = $entry->item->product->id;
 			}
-
-			if ($status == StoreCartProcessor::ENTRY_ADDED)
-				$this->entries_added[] = $entry;
-			elseif ($status == StoreCartProcessor::ENTRY_SAVED)
-				$this->entries_saved[] = $entry;
 		}
 
 		return $this->getCartInfo($product_id, $mini_cart);
@@ -145,6 +142,16 @@ class StoreCartServer extends SiteXMLRPCServer
 		$return['total_items'] = $total_items;
 		$return['total_products'] = $total_products;
 
+		if ($product_id !== null) {
+			$class_name =  SwatDBClassMap::get('StoreProduct');
+			$product = new $class_name();
+			$product->setDatabase($this->app->db);
+			$product->load($product_id);
+
+			$return['cart_message'] =
+				$this->processor->getProductCartMessage($product);
+		}
+
 		if ($mini_cart) {
 			$return['mini_cart'] = $this->getMiniCart($product_id);
 		} else {
@@ -182,25 +189,14 @@ class StoreCartServer extends SiteXMLRPCServer
 		$cart_view->model = $this->getCartTableStore($product_id);
 		$count = count($cart_view->model);
 
-		ob_start();
-
 		if ($count == 0) {
 			$h2_tag = new SwatHtmlTag('h2');
 			$h2_tag->setContent(Store::_('Your Cart is Empty'));
-			$h2_tag->display();
+			$mini_cart = $h2_tag->__toString();
 		} else {
-			if (count($this->entries_added) > 0) {
-				$locale = SwatI18NLocale::get($this->app->getLocale());
-
-				$h3_tag = new SwatHtmlTag('h3');
-				$h3_tag->class = 'cart-added';
-				$h3_tag->setContent(sprintf(Store::ngettext(
-					'One item has been added to your cart.',
-					'%s items have been added to your cart.',
-					count($this->entries_added)),
-					$locale->formatNumber(count($this->entries_added))));
-
-				$h3_tag->display();
+			$message = $this->processor->getUpdatedCartMessage();
+			if ($message !== null) {
+				$this->cart_ui->getWidget('cart_message_display')->add($message);
 			}
 
 			$h3_tag = new SwatHtmlTag('h3');
@@ -209,11 +205,14 @@ class StoreCartServer extends SiteXMLRPCServer
 				'The following items on this page are in your cart:',
 				$count));
 
-			$h3_tag->display();
+			$this->cart_ui->getWidget('cart_title')->content = $h3_tag->__toString();
+
+			ob_start();
 			$this->cart_ui->display();
+			$mini_cart = ob_get_clean();
 		}
 
-		return ob_get_clean();
+		return $mini_cart;
 	}
 
 	// }}}
