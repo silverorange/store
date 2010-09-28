@@ -143,13 +143,7 @@ StoreProductPageLightBox.prototype.addEntriesToCart = function(entries)
 	var that = this;
 	function callBack(response)
 	{
-		// TODO
-		// update layout cart icon/info
-		that.setMiniCartContentWithAnimation(response.mini_cart);
-
-		//that.displayCartData(response);
-		that.resetForm();
-		that.mini_cart_entry_count = response.product_items;
+		that.displayResponse(response);
 		that.open = true;
 	}
 
@@ -201,14 +195,26 @@ StoreProductPageLightBox.prototype.loadMiniCart = function(e)
 	var that = this;
 	function callBack(response)
 	{
-		that.setMiniCartContentWithAnimation(response);
+		that.displayResponse(response);
 		that.open = true;
 	}
 
 	StoreProductPageLightBox.xml_rpc_client.callProcedure(
-		'getMiniCart', callBack, [this.product_id], ['int']);
+		'getCartInfo', callBack, [this.product_id, true], ['int', 'boolean']);
 
 	this.openMiniCart('<h3>' + StoreProductPageLightBox.loading_message + '</h3>');
+}
+
+// }}}
+// {{{ StoreProductPageLightBox.prototype.displayResponse
+
+StoreProductPageLightBox.prototype.displayResponse = function(response)
+{
+	this.setMiniCartContentWithAnimation(response.mini_cart);
+
+	// TODO update other parts of the page
+	this.resetForm();
+	this.mini_cart_entry_count = response.product_items;
 }
 
 // }}}
