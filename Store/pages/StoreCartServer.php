@@ -149,7 +149,7 @@ class StoreCartServer extends SiteXMLRPCServer
 			$product->setDatabase($this->app->db);
 			$product->load($product_id);
 
-			$return['cart_message'] =
+			$return['cart_message'] = (string)
 				$this->processor->getProductCartMessage($product);
 		}
 
@@ -318,11 +318,18 @@ class StoreCartServer extends SiteXMLRPCServer
 	{
 		$locale = SwatI18NLocale::get($this->app->getLocale());
 
-		return sprintf('<span>%s</span> (%s)',
-			Store::_('Shopping Cart'),
-			sprintf(Store::ngettext('%s item', '%s items',
-				$cart_info['total_entries']),
-				$locale->formatNumber($cart_info['total_entries'])));
+		if ($cart_info['total_entries'] == 0) {
+			$link = sprintf('<span>%s</span>',
+				Store::_('Shopping Cart'));
+		} else {
+			$link = sprintf('<span>%s</span> (%s)',
+				Store::_('Shopping Cart'),
+				sprintf(Store::ngettext('%s item', '%s items',
+					$cart_info['total_entries']),
+					$locale->formatNumber($cart_info['total_entries'])));
+		}
+
+		return $link;
 	}
 
 	// }}}
