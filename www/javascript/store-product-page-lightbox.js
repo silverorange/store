@@ -16,11 +16,8 @@ function StoreProductPageLightBox(product_id, item_ids, source_category)
 	StoreProductPageLightBox.superclass.constructor.call(this);
 }
 
-StoreProductPageLightBox.xml_rpc_client = new XML_RPC_Client('xml-rpc/cart');
 StoreProductPageLightBox.submit_message = 'Updating Cart…';
-StoreProductPageLightBox.loading_message = 'Loading…';
-StoreProductPageLightBox.close_text = 'Close';
-StoreProductPageLightBox.add_button_id = 'add_button';
+StoreProductPageLightBox.loading_message = '<h2>Loading…</h2>';
 StoreProductPageLightBox.empty_message = '<h2>All Items Removed</h2>' +
 	'You no longer have any items from this page in your cart.';
 
@@ -29,6 +26,8 @@ YAHOO.lang.extend(StoreProductPageLightBox, StoreProductPage, {
 
 init: function()
 {
+	this.configure();
+
 	StoreProductPageLightBox.superclass.init.call(this);
 
 	this.mini_cart_entry_count = 0;
@@ -80,28 +79,21 @@ handleFormSubmit: function(e)
 
 		this.addEntriesToCart(entries);
 		this.openMiniCart(
-			'<h3>' + StoreProductPageLightBox.loading_message + '</h3>');
+			StoreProductPageLightBox.loading_message);
 	}
 }
 
 // }}}
 });
 
-// {{{ StoreProductPageLightBox.prototype.hasQuantity
+// {{{ StoreProductPageLightBox.prototype.configure
 
-StoreProductPageLightBox.prototype.hasQuantity = function()
+StoreProductPageLightBox.prototype.configure = function()
 {
-	var has_quantity = false;
-
-	// check if any quantity box has a value
-	for (var i = 0; i < this.quantity_boxes.length; i++) {
-		if (this.quantity_boxes[i].value != 0) {
-			has_quantity = true;
-			break;
-		}
-	}
-
-	return (this.quantity_boxes.length == 0 || has_quantity);
+	this.xml_rpc_client = new XML_RPC_Client('xml-rpc/cart');
+	this.add_button_id = 'add_button';
+	this.cart_message_id = 'product_page_cart';
+	this.cart_header_id = 'cart_link';
 }
 
 // }}}
@@ -109,7 +101,7 @@ StoreProductPageLightBox.prototype.hasQuantity = function()
 
 StoreProductPageLightBox.prototype.changeButtonText = function(e)
 {
-	var button = document.getElementById(StoreProductPageLightBox.add_button_id);
+	var button = document.getElementById(this.add_button_id);
 	button.disabled = true;
 	this.saveButtonValue(button);
 	button.value = StoreProductPageLightBox.submit_message;
@@ -146,12 +138,12 @@ StoreProductPageLightBox.prototype.addEntriesToCart = function(entries)
 		that.open = true;
 	}
 
-	StoreProductPageLightBox.xml_rpc_client.callProcedure(
+	this.xml_rpc_client.callProcedure(
 		'addEntries', callBack,
 		[entries, this.source_category, true],
 		['array', 'int', 'boolean']);
 
-	this.openMiniCart('<h3>' + StoreProductPageLightBox.submit_message + '</h3>');
+	this.openMiniCart('<h2>' + StoreProductPageLightBox.submit_message + '</h2>');
 }
 
 // }}}
@@ -198,10 +190,10 @@ StoreProductPageLightBox.prototype.loadMiniCart = function(e)
 		that.open = true;
 	}
 
-	StoreProductPageLightBox.xml_rpc_client.callProcedure(
+	this.xml_rpc_client.callProcedure(
 		'getCartInfo', callBack, [this.product_id, true], ['int', 'boolean']);
 
-	this.openMiniCart('<h3>' + StoreProductPageLightBox.loading_message + '</h3>');
+	this.openMiniCart(StoreProductPageLightBox.loading_message);
 }
 
 // }}}
@@ -215,10 +207,10 @@ StoreProductPageLightBox.prototype.displayResponse = function(response)
 
 	this.updateCartMessage(response.cart_message);
 
-	// TODO update header shopping cart
+	var cart_link = document.getElementById(this.cart_header_id);
+	cart_link.innerHTML = response.cart_link;
 
 	this.resetForm();
-	this.mini_cart_entry_count = response.product_items;
 }
 
 // }}}
@@ -226,7 +218,7 @@ StoreProductPageLightBox.prototype.displayResponse = function(response)
 
 StoreProductPageLightBox.prototype.updateCartMessage = function(cart_message)
 {
-	var div = document.getElementById('product_page_cart');
+	var div = document.getElementById(this.cart_message_id);
 
 	if (cart_message) {
 		if (div.innerHTML == '') {
@@ -254,7 +246,6 @@ StoreProductPageLightBox.prototype.updateCartMessage = function(cart_message)
 		});
 
 		animation.animate();
-
 	}
 
 	var cart_links = YAHOO.util.Dom.getElementsByClassName(
@@ -373,11 +364,11 @@ StoreProductPageLightBox.prototype.removeEntry = function(e)
 	var that = this;
 	function callBack(response)
 	{
-		// TODO update layout cart icon/display
+		that.mini_cart_entry_count = response.product_entries;
 		that.displayResponse(response);
 	}
 
-	StoreProductPageLightBox.xml_rpc_client.callProcedure(
+	this.xml_rpc_client.callProcedure(
 		'removeEntry', callBack,
 		[entry_id],
 		['int']);
@@ -386,6 +377,7 @@ StoreProductPageLightBox.prototype.removeEntry = function(e)
 
 	if (this.mini_cart_entry_count <= 0) {
 		this.setMiniCartContentWithAnimation(StoreProductPageLightBox.empty_message);
+		this.updateCartMessage('');
 	} else {
 		var tr = this.getParentNode(button, 'tr');
 		this.removeRow(tr, button);
@@ -433,7 +425,7 @@ StoreProductPageLightBox.prototype.removeRow = function(tr, button)
 StoreProductPageLightBox.prototype.resetForm = function()
 {
 	this.restoreButtonValue(
-		document.getElementById(StoreProductPageLightBox.add_button_id));
+		document.getElementById(this.add_button_id));
 
 	// reset quantites
 	for (var i = 0; i < this.quantity_boxes.length; i++) {
