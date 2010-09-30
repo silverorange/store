@@ -120,27 +120,28 @@ class StoreCartServer extends SiteXMLRPCServer
 	 */
 	public function getCartInfo($product_id = null, $mini_cart = false)
 	{
-		$product_items = 0;
-		$total_items = 0;
-		$total_products = 0;
+		$product_entries = 0;	// total number of cart-enties for the product
+		$product_quantity = 0;	// sum of all quantities for the product
+		$total_entries = 0;		// total number of cart-entries
+		$total_quantity = 0;	// sum of all cart-entry quantites
+
 		$currrent_product = null;
 
 		foreach ($this->app->cart->checkout->getAvailableEntries() as $e) {
-			$total_items++;
-			if ($e->item->getInternalValue('product') !== $currrent_product) {
-				$currrent_product = $e->item->getInternalValue('product');
-				$total_products++;
-			}
+			$total_entries++;
+			$total_quantity += $e->getQuantity();
 
 			if ($e->item->getInternalValue('product') === $product_id) {
-				$product_items++;
+				$product_entries++;
+				$product_quantity += $e->getQuantity();
 			}
 		}
 
 		$return = array();
-		$return['product_items'] = $product_items;
-		$return['total_items'] = $total_items;
-		$return['total_products'] = $total_products;
+		$return['product_entries']  = $product_entries;
+		$return['product_quantity'] = $product_quantity;
+		$return['total_entries']    = $total_entries;
+		$return['total_quantity']   = $total_quantity;
 
 		if ($product_id !== null) {
 			$class_name =  SwatDBClassMap::get('StoreProduct');
@@ -151,6 +152,8 @@ class StoreCartServer extends SiteXMLRPCServer
 			$return['cart_message'] =
 				$this->processor->getProductCartMessage($product);
 		}
+
+		$return['cart_link'] = $this->getCartLink($return);
 
 		if ($mini_cart) {
 			$return['mini_cart'] = $this->getMiniCart($product_id);
@@ -306,6 +309,20 @@ class StoreCartServer extends SiteXMLRPCServer
 	protected function isOnThisPage($product_id, StoreItem $item)
 	{
 		return ($product_id === $item->getInternalValue('product'));
+	}
+
+	// }}}
+	// {{{ protected function getCartLink()
+
+	protected function getCartLink(array $cart_info)
+	{
+		$locale = SwatI18NLocale::get($this->app->getLocale());
+
+		return sprintf('<span>%s</span> (%s)',
+			Store::_('Shopping Cart'),
+			sprintf(Store::ngettext('%s item', '%s items',
+				$cart_info['total_entries']),
+				$locale->formatNumber($cart_info['total_entries'])));
 	}
 
 	// }}}
