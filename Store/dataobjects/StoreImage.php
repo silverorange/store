@@ -6,7 +6,8 @@ require_once 'Site/dataobjects/SiteImage.php';
  * An image data object
  *
  * @package   Store
- * @copyright 2005-2009 silverorange
+ * @copyright 2005-2010 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreImage extends SiteImage
 {
