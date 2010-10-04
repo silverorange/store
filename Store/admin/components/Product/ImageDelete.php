@@ -17,7 +17,7 @@ require_once 'Store/dataobjects/StoreProductImage.php';
  * removed from the images table and the file is deleted.
  *
  * @package   Store
- * @copyright 2006-2008 silverorange
+ * @copyright 2006-2010 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductImageDelete extends AdminDBDelete
@@ -112,7 +112,7 @@ class StoreProductImageDelete extends AdminDBDelete
 			$message_text = Store::_('One product image has been removed.');
 		}
 
-		$message = new SwatMessage($message_text, SwatMessage::NOTIFICATION);
+		$message = new SwatMessage($message_text);
 		$this->app->messages->add($message);
 
 		if (isset($this->app->memcache))
@@ -132,7 +132,6 @@ class StoreProductImageDelete extends AdminDBDelete
 	}
 
 	// }}}
-
 
 	// build phase
 	// {{{ protected function buildInternal()
