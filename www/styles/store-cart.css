@@ -78,6 +78,10 @@
 	background: #fff;
 }
 
+#store_product_cart div.swat-table-view-column-renderer {
+	display: block;
+}
+
 #store_product_cart tbody td {
 	padding-top: 3px;
 	padding-bottom: 3px;
