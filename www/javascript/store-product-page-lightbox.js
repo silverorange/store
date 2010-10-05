@@ -35,6 +35,10 @@ init: function()
 	this.mini_cart_content = document.getElementById(
 		'store_product_cart_content');
 
+	// make the cart positioned visible, but off the page to preload images
+	this.mini_cart.style.right = '-1000px';
+	this.mini_cart.style.display = 'block';
+
 	var cart_links = YAHOO.util.Dom.getElementsByClassName(
 		'product-page-cart-link');
 
@@ -42,7 +46,7 @@ init: function()
 		YAHOO.util.Event.on(cart_links, 'click', this.loadMiniCart, this, true);
 	}
 
-	YAHOO.util.Event.on(window, 'scroll', this.positionMiniCart, this, true);
+	YAHOO.util.Event.on(window, 'scroll', this.handleWindowChange, this, true);
 
 	// make any click on the body close the mini-cart, except for the
 	// mini-cart itself
@@ -52,7 +56,7 @@ init: function()
 	});
 
 	YAHOO.util.Event.on(document.body, 'click', this.bodyCloseMiniCart, this, true);
-	YAHOO.util.Event.on(window, 'resize', this.positionMiniCart, this, true);
+	YAHOO.util.Event.on(window, 'resize', this.handleWindowChange, this, true);
 },
 
 // }}}
@@ -504,6 +508,16 @@ StoreProductPageLightBox.prototype.restoreButtonValue = function(button)
 			button.disabled = false;
 			break;
 		}
+	}
+}
+
+// }}}
+// {{{ StoreProductPageLightBox.prototype.handleWindowChange
+
+StoreProductPageLightBox.prototype.handleWindowChange = function(contents)
+{
+	if (this.open) {
+		this.positionMiniCart();
 	}
 }
 
