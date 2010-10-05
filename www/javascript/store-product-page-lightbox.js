@@ -52,6 +52,7 @@ init: function()
 	});
 
 	YAHOO.util.Event.on(document.body, 'click', this.bodyCloseMiniCart, this, true);
+	YAHOO.util.Event.on(window, 'resize', this.positionMiniCart, this, true);
 },
 
 // }}}
@@ -78,8 +79,6 @@ handleFormSubmit: function(e)
 		}
 
 		this.addEntriesToCart(entries);
-		this.openMiniCart(
-			StoreProductPageLightBox.loading_message);
 	}
 }
 
@@ -134,8 +133,10 @@ StoreProductPageLightBox.prototype.addEntriesToCart = function(entries)
 	var that = this;
 	function callBack(response)
 	{
+		that.mini_cart_entry_count = response.product_entries;
 		that.displayResponse(response);
 		that.open = true;
+		that.resetForm();
 	}
 
 	this.xml_rpc_client.callProcedure(
@@ -186,6 +187,7 @@ StoreProductPageLightBox.prototype.loadMiniCart = function(e)
 	var that = this;
 	function callBack(response)
 	{
+		that.mini_cart_entry_count = response.product_entries;
 		that.displayResponse(response);
 		that.open = true;
 	}
@@ -209,8 +211,6 @@ StoreProductPageLightBox.prototype.displayResponse = function(response)
 
 	var cart_link = document.getElementById(this.cart_header_id);
 	cart_link.innerHTML = response.cart_link;
-
-	this.resetForm();
 }
 
 // }}}
@@ -364,7 +364,6 @@ StoreProductPageLightBox.prototype.removeEntry = function(e)
 	var that = this;
 	function callBack(response)
 	{
-		that.mini_cart_entry_count = response.product_entries;
 		that.displayResponse(response);
 	}
 
@@ -376,7 +375,9 @@ StoreProductPageLightBox.prototype.removeEntry = function(e)
 	this.mini_cart_entry_count--;
 
 	if (this.mini_cart_entry_count <= 0) {
-		this.setMiniCartContentWithAnimation(StoreProductPageLightBox.empty_message);
+		this.setMiniCartContentWithAnimation('<div class="empty-message">' +
+			StoreProductPageLightBox.empty_message + '</div>');
+
 		this.updateCartMessage('');
 	} else {
 		var tr = this.getParentNode(button, 'tr');
@@ -511,9 +512,17 @@ StoreProductPageLightBox.prototype.restoreButtonValue = function(button)
 
 StoreProductPageLightBox.prototype.positionMiniCart = function()
 {
-	// TODO maybe grab the -12 from the css and the 20 from the cart-div region
-	var scroll_top = Math.max(-1 * (YAHOO.util.Dom.getDocumentScrollTop() - 20), -12);
-	this.mini_cart.style.top = scroll_top + 'px';
+	var region = YAHOO.util.Dom.getRegion(this.cart_header_id);
+	var offset = -5; // accounts for the whitespace where the shadow appears
+
+	var scroll_top = -1 * (YAHOO.util.Dom.getDocumentScrollTop() -
+		region.bottom - offset);
+
+	var pos = Math.max(scroll_top, offset);
+	this.mini_cart.style.top = pos + 'px';
+
+	this.mini_cart.style.right =
+		(YAHOO.util.Dom.getViewportWidth() - region.right) + 'px';
 }
 
 // }}}

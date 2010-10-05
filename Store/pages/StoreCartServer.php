@@ -96,12 +96,19 @@ class StoreCartServer extends SiteXMLRPCServer
 
 		$entry = $this->app->cart->checkout->removeEntryById($entry_id);
 
-		if ($entry !== null) {
+		if ($entry === null) {
+			$entry = $this->app->cart->saved->removeEntryById($entry_id);
+			if ($entry === null) {
+				$product_id = null;
+			} else {
+				$this->app->cart->saved->save();
+				$removed = true;
+				$product_id = $entry->item->product->id;
+			}
+		} else {
 			$this->app->cart->checkout->save();
 			$removed = true;
 			$product_id = $entry->item->product->id;
-		} else {
-			$product_id = null;
 		}
 
 		return $this->getCartInfo($product_id, false);
@@ -131,6 +138,14 @@ class StoreCartServer extends SiteXMLRPCServer
 			$total_entries++;
 			$total_quantity += $e->getQuantity();
 
+			if ($e->item->getInternalValue('product') === $product_id) {
+				$product_entries++;
+				$product_quantity += $e->getQuantity();
+			}
+		}
+
+		// only count saved entries for products - not for the main cart
+		foreach ($this->app->cart->saved->getEntries() as $e) {
 			if ($e->item->getInternalValue('product') === $product_id) {
 				$product_entries++;
 				$product_quantity += $e->getQuantity();
@@ -197,18 +212,14 @@ class StoreCartServer extends SiteXMLRPCServer
 			$h2_tag->setContent(Store::_('Your Cart is Empty'));
 			$mini_cart = $h2_tag->__toString();
 		} else {
-			$message = $this->processor->getUpdatedCartMessage();
-			if ($message !== null) {
-				$this->cart_ui->getWidget('cart_message_display')->add($message);
-			}
+			$this->cart_ui->getWidget('cart_title')->content =
+				$this->getCartTitle();
 
-			$h3_tag = new SwatHtmlTag('h3');
-			$h3_tag->setContent(Store::ngettext(
-				'The following item on this page is in your cart:',
-				'The following items on this page are in your cart:',
-				$count));
-
-			$this->cart_ui->getWidget('cart_title')->content = $h3_tag->__toString();
+			$cart_link = new SwatHtmlTag('a');
+			$cart_link->href = 'cart';
+			$cart_link->setContent(Store::_('View Cart'));
+			$this->cart_ui->getWidget('cart_link')->content =
+				$cart_link->__toString().' '.Store::_('or');
 
 			ob_start();
 			$this->cart_ui->display();
@@ -221,6 +232,31 @@ class StoreCartServer extends SiteXMLRPCServer
 	// }}}
 
 	// mini cart
+	// {{{ protected function getCartTitle()
+
+	protected function getCartTitle()
+	{
+		$locale = SwatI18NLocale::get($this->app->getLocale());
+
+		$title = '';
+		$added = count($this->processor->getEntriesAdded());
+		if ($added > 0) {
+			$div_tag = new SwatHtmlTag('div');
+			$div_tag->class = 'added-message';
+			$div_tag->setContent(sprintf(Store::ngettext(
+				'One item added', '%s items added', $added),
+				$locale->formatNumber($added)));
+
+			$title.= $div_tag->__toString();
+		}
+
+		$h3_tag = new SwatHtmlTag('h3');
+		$h3_tag->setContent(Store::_('Shopping Cart'));
+		$title.= $h3_tag->__toString();
+		return $title;
+	}
+
+	// }}}
 	// {{{ protected function getCartTableStore()
 
 	/**
@@ -231,25 +267,47 @@ class StoreCartServer extends SiteXMLRPCServer
 		$store = new SwatTableStore();
 		$show_group = false;
 
+		$saved_count = 0;
+		$entry_count = 0;
+
+		$status_title = Store::_('Saved For Later');
 		foreach ($this->app->cart->saved->getEntries() as $entry) {
 			if ($this->isOnThisPage($product_id, $entry->item)) {
 				$ds = $this->getCartDetailsStore($entry);
-				$ds->status_title = Store::_('Saved For Later');
+				$ds->status_title = $status_title;
 				$store->add($ds);
+				$saved_count++;
 			}
 		}
 
+		$count = (count($this->app->cart->saved->getEntries()) - $saved_count);
+		if ($saved_count > 0 && $count > 0) {
+			$ds = $this->getMoreRow($count);
+			$ds->status_title = $status_title;
+			$store->add($ds);
+		}
+
+		$status_title = Store::_('Available For Purchase');
 		foreach ($this->app->cart->checkout->getEntries() as $entry) {
 			if ($this->isOnThisPage($product_id, $entry->item)) {
 				$ds = $this->getCartDetailsStore($entry);
-				$ds->status_title = Store::_('Available For Purchase');
+				$ds->status_title = $status_title;
 				$store->add($ds);
-				$show_group = true;
+				$entry_count++;
 			}
 		}
 
+		$count = (count($this->app->cart->checkout->getEntries())
+			- $entry_count);
+
+		if ($entry_count > 0 && $count > 0) {
+			$ds = $this->getMoreRow($count);
+			$ds->status_title = $status_title;
+			$store->add($ds);
+		}
+
 		$this->cart_ui->getWidget('cart_view')->getGroup(
-			'status_group')->visible = false;
+			'status_group')->visible = ($saved_count > 0 && $entry_count > 0);
 
 		return $store;
 	}
@@ -267,8 +325,61 @@ class StoreCartServer extends SiteXMLRPCServer
 		$ds->extension = $entry->getExtension();
 		$ds->discount = $entry->getDiscount();
 		$ds->discount_extension = $entry->getDiscountExtension();
+		$ds->show_remove_button = true;
+
+		$image = $entry->item->product->primary_image;
+		if ($image === null) {
+			$ds->image        = null;
+			$ds->image_width  = null;
+			$ds->image_height = null;
+		} else {
+			$ds->image        = $image->getUri($this->getImageDimension());
+			$ds->image_width  = $image->getWidth($this->getImageDimension());
+			$ds->image_height = $image->getHeight($this->getImageDimension());
+		}
 
 		return $ds;
+	}
+
+	// }}}
+	// {{{ protected function getMoreRow()
+
+	/**
+	 * Gets the cart data-store for the product on this page
+	 */
+	protected function getMoreRow($num_items)
+	{
+		$locale = SwatI18NLocale::get($this->app->getLocale());
+
+		$ds = new SwatDetailsStore();
+		$ds->id = 0;
+		$ds->status_title = null;
+		$ds->quantity = null;
+		$ds->description = sprintf('<a class="more-link" href="cart">%s</a>',
+			sprintf(Store::ngettext('and one other item',
+					'and %s other items…', $num_items),
+				$locale->formatNumber($num_items)));
+
+		$ds->price = null;
+		$ds->extension = null;
+		$ds->discount = null;
+		$ds->discount_extension = null;
+		$ds->image        = null;
+		$ds->image_width  = null;
+		$ds->image_height = null;
+		$ds->show_remove_button = false;
+		return $ds;
+	}
+
+	// }}}
+	// {{{ protected function getImageDimension()
+
+	/**
+	 * @return string Image dimension shortname
+	 */
+	protected function getImageDimension()
+	{
+		return 'pinky';
 	}
 
 	// }}}
@@ -276,16 +387,10 @@ class StoreCartServer extends SiteXMLRPCServer
 
 	protected function getEntryDescription(StoreCartEntry $entry)
 	{
-		$description = implode(', ', $this->getItemDescriptionArray($entry));
-
-		$locale = SwatI18NLocale::get($this->app->getLocale());
-
-		// TODO: discounts
-		$description.= '<div class="price-quantity">'.
-			sprintf('Quantity: %s, Price: %s',
-				$locale->formatNumber($entry->getQuantity()),
-				$locale->formatCurrency($entry->getCalculatedItemPrice())).
-			'</div>';
+		$description = sprintf('<h4>%s - %s</h4>%s',
+			SwatString::minimizeEntities($entry->item->sku),
+			SwatString::minimizeEntities($entry->item->getDescription(false)),
+			implode(', ', $this->getItemDescriptionArray($entry)));
 
 		return $description;
 	}
@@ -297,8 +402,11 @@ class StoreCartServer extends SiteXMLRPCServer
 	{
 		$description = array();
 
-		foreach ($entry->item->getDescriptionArray() as $element)
-			$description[] = SwatString::minimizeEntities($element);
+		foreach ($entry->item->getDescriptionArray() as $key => $element) {
+			if ($key !== 'description') {
+				$description[] = SwatString::minimizeEntities($element);
+			}
+		}
 
 		return $description;
 	}

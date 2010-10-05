@@ -502,32 +502,26 @@ class StoreProductPage extends StorePage
 		$div_lightbox->id = 'store_product_cart';
 		$div_lightbox->open();
 
-		$div_content = new SwatHtmlTag('div');
-		$div_content->id = 'store_product_cart_content';
-		$div_content->open();
-		$div_content->close();
+		$div_top = new SwatHtmlTag('div');
+		$div_top->id = 'store_product_cart_top';
+		$div_top->open();
+		$div_top->close();
 
-		$div_footer = new SwatHtmlTag('div');
-		$div_footer->id = 'store_product_cart_footer';
-		$div_footer->open();
+		$div_body = new SwatHtmlTag('div');
+		$div_body->id = 'store_product_cart_body';
+		$div_body->open();
 
-		$a_close = new SwatHtmlTag('a');
-		$a_close->class = 'store-close-cart';
-		$a_close->href = '#';
-		$a_close->setContent(Store::_('Continue Shopping'));
-		$a_close->display();
+			$div_content = new SwatHtmlTag('div');
+			$div_content->id = 'store_product_cart_content';
+			$div_content->open();
+			$div_content->close();
 
-		$a_cart = new SwatHtmlTag('a');
-		$a_cart->href = 'cart';
-		$a_cart->setContent(Store::_('View Cart'));
-		$a_cart->display();
+		$div_body->close();
 
-		$a_checkout = new SwatHtmlTag('a');
-		$a_checkout->href = 'checkout';
-		$a_checkout->setContent(Store::_('Checkout'));
-		$a_checkout->display();
-
-		$div_footer->close();
+		$div_bottom = new SwatHtmlTag('div');
+		$div_bottom->id = 'store_product_cart_bottom';
+		$div_bottom->open();
+		$div_bottom->close();
 
 		$div_lightbox->close();
 	}
