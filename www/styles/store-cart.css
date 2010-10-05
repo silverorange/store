@@ -69,13 +69,17 @@
 	padding-top: 5px;
 }
 
+#store_product_cart .swat-table-view {
+	background: #f0e6d6;
+}
+
 #store_product_cart #cart_view.swat-table-view tr {
 	border-bottom: 1px solid #dfd5c3;
-	background: #f0e6d6;
 }
 
 #store_product_cart .swat-table-view .swat-table-view-group {
 	background: #fff;
+	padding-top: 10px;
 }
 
 #store_product_cart div.swat-table-view-column-renderer {
