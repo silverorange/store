@@ -166,13 +166,11 @@
 
 #store_product_cart #cart_link_container {
 	float: right;
-	height: 28px;
 	padding: 10px;
 }
 
 #store_product_cart #checkout_container {
 	float: right;
-	height: 28px;
 	padding: 10px;
 }
 
