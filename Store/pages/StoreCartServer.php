@@ -270,23 +270,6 @@ class StoreCartServer extends SiteXMLRPCServer
 		$saved_count = 0;
 		$entry_count = 0;
 
-		$status_title = Store::_('Saved For Later');
-		foreach ($this->app->cart->saved->getEntries() as $entry) {
-			if ($this->isOnThisPage($product_id, $entry->item)) {
-				$ds = $this->getCartDetailsStore($entry);
-				$ds->status_title = $status_title;
-				$store->add($ds);
-				$saved_count++;
-			}
-		}
-
-		$count = (count($this->app->cart->saved->getEntries()) - $saved_count);
-		if ($saved_count > 0 && $count > 0) {
-			$ds = $this->getMoreRow($count);
-			$ds->status_title = $status_title;
-			$store->add($ds);
-		}
-
 		$status_title = Store::_('Available For Purchase');
 		foreach ($this->app->cart->checkout->getEntries() as $entry) {
 			if ($this->isOnThisPage($product_id, $entry->item)) {
@@ -301,6 +284,23 @@ class StoreCartServer extends SiteXMLRPCServer
 			- $entry_count);
 
 		if ($entry_count > 0 && $count > 0) {
+			$ds = $this->getMoreRow($count);
+			$ds->status_title = $status_title;
+			$store->add($ds);
+		}
+
+		$status_title = Store::_('Saved For Later');
+		foreach ($this->app->cart->saved->getEntries() as $entry) {
+			if ($this->isOnThisPage($product_id, $entry->item)) {
+				$ds = $this->getCartDetailsStore($entry);
+				$ds->status_title = $status_title;
+				$store->add($ds);
+				$saved_count++;
+			}
+		}
+
+		$count = (count($this->app->cart->saved->getEntries()) - $saved_count);
+		if ($saved_count > 0 && $count > 0) {
 			$ds = $this->getMoreRow($count);
 			$ds->status_title = $status_title;
 			$store->add($ds);
