@@ -1,7 +1,6 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
-	<widget class="SwatMessageDisplay" id="cart_message_display" />
 	<widget class="SwatContentBlock" id="cart_title">
 		<property name="content_type">text/xml</property>
 	</widget>
@@ -11,31 +10,56 @@
 			<object class="SwatTableViewGroup" id="status_group">
 				<property name="group_by">status_title</property>
 				<object class="SwatTextCellRenderer">
-					<property name="visible" type="data">show_status_title</property>
 					<property name="text" type="data">status_title</property>
 				</object>
 			</object>
-			<object class="SwatTableViewColumn" id="sku">
-				<object class="SwatTextCellRenderer">
-					<property name="text" type="data">item.sku</property>
+			<object class="SwatTableViewColumn" id="cart_image">
+				<object class="SwatImageCellRenderer" id="product_image">
+					<property name="image" type="data">image</property>
+					<property name="width" type="data">image_width</property>
+					<property name="height" type="data">image_height</property>
 				</object>
 			</object>
-			<object class="SwatTableViewColumn" id="description">
+			<object class="SwatTableViewColumn">
 				<object class="SwatTextCellRenderer">
 					<property name="text" type="data">description</property>
 					<property name="content_type">text/xml</property>
+					<property name="classes[]">store-cart-description</property>
+				</object>
+			</object>
+			<object class="SwatTableViewColumn" id="quantity_column">
+				<object class="SwatNumericCellRenderer">
+					<property name="value" type="data">quantity</property>
 				</object>
 			</object>
 			<object class="SwatTableViewColumn" id="remove_column">
+				<object class="StorePriceCellRenderer">
+					<property name="value" type="data">extension</property>
+				</object>
 				<object class="SwatWidgetCellRenderer" id="remove_renderer">
 					<property name="replicator_id" type="data">id</property>
 					<widget class="SwatButton" id="remove_button">
 						<property name="title" translatable="yes">Remove</property>
 						<property name="classes[]">compact-button</property>
 						<property name="classes[]">store-remove</property>
+						<property name="visible" type="data">show_remove_button</property>
 					</widget>
 				</object>
 			</object>
+		</widget>
+	</widget>
+	<widget class="SwatForm" id="checkout_form">
+		<property name="action">checkout</property>
+		<property name="classes[]">clearfix</property>
+		<widget class="SwatDisplayableContainer" id="checkout_container">
+			<widget class="SwatButton" id="checkout_button">
+				<property name="title"  translatable="yes">Checkout</property>
+			</widget>
+		</widget>
+		<widget class="SwatDisplayableContainer" id="cart_link_container">
+			<widget class="SwatContentBlock" id="cart_link">
+				<property name="content_type">text/xml</property>
+			</widget>
 		</widget>
 	</widget>
 </swatml>

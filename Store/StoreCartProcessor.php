@@ -108,6 +108,14 @@ class StoreCartProcessor extends SwatObject
 	}
 
 	// }}}
+	// {{{ public function getEntriesAdded()
+
+	public function getEntriesAdded()
+	{
+		return $this->entries_added;
+	}
+
+	// }}}
 	// {{{ public function getUpdatedCartMessage()
 
 	public function getUpdatedCartMessage()
@@ -118,34 +126,11 @@ class StoreCartProcessor extends SwatObject
 		$cart_message = new SwatMessage(
 			Store::_('Your cart has been updated.'), 'cart');
 
-
-		$saved = 0;
-		$added = 0;
-
-		foreach ($this->entries_added as $e) {
-			if ($e['status'] == self::ENTRY_ADDED) {
-				$added++;
-			} elseif ($e['status'] == self::ENTRY_SAVED) {
-				$saved++;
-			}
-		}
-
-		$messages = array();
 		$locale = SwatI18NLocale::get($this->app->getLocale());
-
-		if ($added > 0) {
-			$messages[] = sprintf(Store::ngettext(
-				'One item has been added to your cart.',
-				'%s items have been added to your cart.',
-				$added), $locale->formatNumber($added));
-		} elseif ($saved > 0) {
-			$messages[] = sprintf(Store::ngettext(
-				'One item has been saved to your cart.',
-				'%s items have been saved to your cart.',
-				$saved), $locale->formatNumber($saved));
-		}
-
-		$cart_message->secondary_content = implode(' ', $messages);
+		$count = count($this->entries_added);
+		$cart_message->secondary_content = sprintf(Store::ngettext(
+			'One item added', '%s items added', $count),
+			$locale->formatNumber($count));
 
 		return $cart_message;
 	}
