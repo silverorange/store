@@ -135,6 +135,7 @@ class StoreCartServer extends SiteXMLRPCServer
 		$product_quantity = 0;	// sum of all quantities for the product
 		$total_entries = 0;		// total number of cart-entries
 		$total_quantity = 0;	// sum of all cart-entry quantites
+		$total_saved = 0;
 
 		$currrent_product = null;
 
@@ -154,6 +155,8 @@ class StoreCartServer extends SiteXMLRPCServer
 				$product_entries++;
 				$product_quantity += $e->getQuantity();
 			}
+
+			$total_saved++;
 		}
 
 		$return = array();
@@ -162,6 +165,7 @@ class StoreCartServer extends SiteXMLRPCServer
 		$return['product_quantity'] = $product_quantity;
 		$return['total_entries']    = $total_entries;
 		$return['total_quantity']   = $total_quantity;
+		$return['total_saved']      = $total_saved;
 
 		if ($product_id !== null) {
 			$class_name =  SwatDBClassMap::get('StoreProduct');
@@ -176,7 +180,7 @@ class StoreCartServer extends SiteXMLRPCServer
 		$return['cart_link'] = $this->getCartLink($return);
 
 		if ($mini_cart) {
-			$return['mini_cart'] = $this->getMiniCart($product_id);
+			$return['mini_cart'] = $this->getMiniCart();
 		} else {
 			$return['mini_cart'] = '';
 		}
@@ -200,18 +204,16 @@ class StoreCartServer extends SiteXMLRPCServer
 	/**
 	 * Get a mini cart for a specific product page
 	 *
-	 * @param integer $product_id Product id for the mini-cart entries.
-	 *
 	 * @return string The mini cart.
 	 */
-	protected function getMiniCart($product_id)
+	protected function getMiniCart()
 	{
 		$this->cart_ui = new SwatUI();
 		$this->cart_ui->loadFromXML($this->cart_ui_xml);
 		$this->cart_ui->init();
 
 		$cart_view = $this->cart_ui->getWidget('cart_view');
-		$cart_view->model = $this->getCartTableStore($product_id);
+		$cart_view->model = $this->getCartTableStore();
 		$count = count($cart_view->model);
 
 		if ($count == 0) {
@@ -265,9 +267,9 @@ class StoreCartServer extends SiteXMLRPCServer
 	// {{{ protected function getCartTableStore()
 
 	/**
-	 * Gets the cart data-store for the product on this page
+	 * Gets the cart data-store
 	 */
-	protected function getCartTableStore($product_id)
+	protected function getCartTableStore()
 	{
 		$store = new SwatTableStore();
 		$show_group = false;
@@ -277,12 +279,10 @@ class StoreCartServer extends SiteXMLRPCServer
 
 		$status_title = Store::_('Available For Purchase');
 		foreach ($this->app->cart->checkout->getEntries() as $entry) {
-			if ($this->isOnThisPage($product_id, $entry->item)) {
-				$ds = $this->getCartDetailsStore($entry);
-				$ds->status_title = $status_title;
-				$store->add($ds);
-				$entry_count++;
-			}
+			$ds = $this->getCartDetailsStore($entry);
+			$ds->status_title = $status_title;
+			$store->add($ds);
+			$entry_count++;
 		}
 
 		$count = (count($this->app->cart->checkout->getEntries())
@@ -296,12 +296,10 @@ class StoreCartServer extends SiteXMLRPCServer
 
 		$status_title = Store::_('Saved For Later');
 		foreach ($this->app->cart->saved->getEntries() as $entry) {
-			if ($this->isOnThisPage($product_id, $entry->item)) {
-				$ds = $this->getCartDetailsStore($entry);
-				$ds->status_title = $status_title;
-				$store->add($ds);
-				$saved_count++;
-			}
+			$ds = $this->getCartDetailsStore($entry);
+			$ds->status_title = $status_title;
+			$store->add($ds);
+			$saved_count++;
 		}
 
 		$count = (count($this->app->cart->saved->getEntries()) - $saved_count);
@@ -426,14 +424,6 @@ class StoreCartServer extends SiteXMLRPCServer
 		}
 
 		return $description;
-	}
-
-	// }}}
-	// {{{ protected function isOnThisPage()
-
-	protected function isOnThisPage($product_id, StoreItem $item)
-	{
-		return ($product_id === $item->getInternalValue('product'));
 	}
 
 	// }}}

@@ -19,8 +19,7 @@ function StoreProductPageLightBox(product_id, item_ids, source_category)
 
 StoreProductPageLightBox.submit_message = 'Updating Cart…';
 StoreProductPageLightBox.loading_message = '<h2>Loading…</h2>';
-StoreProductPageLightBox.empty_message = '<h2>All Items Removed</h2>' +
-	'You no longer have any items from this page in your cart.';
+StoreProductPageLightBox.empty_message = '<h2>Your Shopping Cart is Empty</h2>';
 
 YAHOO.lang.extend(StoreProductPageLightBox, StoreProductPage, {
 // {{{ init: function()
@@ -139,7 +138,9 @@ StoreProductPageLightBox.prototype.addEntriesToCart = function(entries)
 	function callBack(response)
 	{
 		if (response.request_id == that.current_request) {
-			that.mini_cart_entry_count = response.product_entries;
+			that.mini_cart_entry_count = response.total_entries +
+				response.total_saved;
+
 			that.displayResponse(response);
 			that.status = 'open';
 			that.resetForm();
@@ -198,7 +199,9 @@ StoreProductPageLightBox.prototype.loadMiniCart = function(e)
 	function callBack(response)
 	{
 		if (response.request_id == that.current_request) {
-			that.mini_cart_entry_count = response.product_entries;
+			that.mini_cart_entry_count = response.total_entries +
+				response.total_saved;
+
 			that.displayResponse(response);
 			that.status = 'open';
 		}
