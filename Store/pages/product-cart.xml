@@ -35,6 +35,7 @@
 			<object class="SwatTableViewColumn" id="remove_column">
 				<object class="StorePriceCellRenderer">
 					<property name="value" type="data">extension</property>
+					<property name="discount" type="data">discount</property>
 				</object>
 				<object class="SwatWidgetCellRenderer" id="remove_renderer">
 					<property name="replicator_id" type="data">id</property>
