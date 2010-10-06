@@ -115,12 +115,6 @@
 	color: #090;
 }
 
-#store_product_cart .finish {
-	background: #dfd5c3;
-	padding: 2px;
-	white-space: nowrap;
-}
-
 #store_product_cart tbody td.swat-image-cell-renderer {
 	padding-left: 10px;
 }
