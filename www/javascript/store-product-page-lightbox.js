@@ -400,6 +400,7 @@ StoreProductPageLightBox.prototype.removeEntry = function(e)
 	} else {
 		var tr = this.getParentNode(button, 'tr');
 		this.removeRow(tr, button);
+		this.hideAddedMessage();
 	}
 }
 
@@ -553,6 +554,29 @@ StoreProductPageLightBox.prototype.positionMiniCart = function()
 
 	this.mini_cart.style.right =
 		(YAHOO.util.Dom.getViewportWidth() - region.right) + 'px';
+}
+
+// }}}
+// {{{ StoreProductPageLightBox.prototype.hideAddedMessage
+
+StoreProductPageLightBox.prototype.hideAddedMessage = function()
+{
+	var messages = YAHOO.util.Dom.getElementsByClassName(
+		'added-message', 'div', this.mini_cart);
+
+	for (var i = 0; i < messages.length; i++) {
+		var animation = new YAHOO.util.Anim(
+			messages[i],
+			{ opacity: { to: 0 }},
+			0.3);
+
+		var that = this;
+		animation.onComplete.subscribe(function() {
+			messages[i].parentNode.removeChild(messages[i]);
+		});
+
+		animation.animate();
+	}
 }
 
 // }}}
