@@ -1,7 +1,7 @@
 create table PaymentMethodTransaction (
 	id serial,
 
-	payment_method integer not null references OrderPaymentMethod(id),
+	payment_method integer not null references OrderPaymentMethod(id) on delete cascade,
 
 	transaction_id varchar(255) not null,
 	transaction_type integer not null,

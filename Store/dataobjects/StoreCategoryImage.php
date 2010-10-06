@@ -5,8 +5,9 @@ require_once 'Store/dataobjects/StoreImage.php';
 /**
  * An image data object for categories
  *
- * @package Store
- * @copyright silverorange 2006-2010
+ * @package   Store
+ * @copyright 2006-2010 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCategoryImage extends StoreImage
 {
