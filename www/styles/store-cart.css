@@ -150,6 +150,15 @@
 	color: #6B685B
 }
 
+#store_product_cart input.store-remove {
+	background: #fff;
+	color: #900;
+}
+
+#store_product_cart input.store-remove:hover {
+	color: #b00;
+}
+
 #store_product_cart #cart_view.swat-table-view tbody td.remove-column .swat-money-cell-renderer {
 	font-size: 135%;
 	font-weight: bold;
@@ -177,8 +186,12 @@
 
 #store_product_cart .store-cart-description h4 {
 	color: #3f0e08;
-	font-size: 110%;
+	font-size: 13px;
 	margin-bottom: 3px;
+}
+
+#store_product_cart .store-cart-description {
+	font-size: 11px;
 }
 
 #store_product_cart .store-cart-description a.more-link {

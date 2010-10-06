@@ -409,8 +409,20 @@ class StoreCartServer extends SiteXMLRPCServer
 
 		foreach ($entry->item->getDescriptionArray() as $key => $element) {
 			if ($key !== 'description') {
-				$description[] = SwatString::minimizeEntities($element);
+				$description[$key] = SwatString::minimizeEntities($element);
 			}
+		}
+
+		$discount = $entry->getDiscountExtension();
+		if ($discount > 0) {
+			$locale = SwatI18NLocale::get($this->app->getLocale());
+
+			$span = new SwatHtmlTag('span');
+			$span->class = 'store-cart-discount';
+			$span->setContent(sprintf(Store::_('You save %s'),
+				$locale->formatCurrency($discount)));
+
+			$description['discount'] = $span->__toString();
 		}
 
 		return $description;
