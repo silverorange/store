@@ -11,7 +11,8 @@ function StoreProductPageLightBox(product_id, item_ids, source_category)
 	this.product_id = product_id;
 	this.source_category = source_category;
 	this.button_values = [];
-	this.open = false;
+	this.status = 'closed';
+	this.current_request = 0;
 
 	StoreProductPageLightBox.superclass.constructor.call(this);
 }
@@ -137,16 +138,21 @@ StoreProductPageLightBox.prototype.addEntriesToCart = function(entries)
 	var that = this;
 	function callBack(response)
 	{
-		that.mini_cart_entry_count = response.product_entries;
-		that.displayResponse(response);
-		that.open = true;
-		that.resetForm();
+		if (response.request_id == that.current_request) {
+			that.mini_cart_entry_count = response.product_entries;
+			that.displayResponse(response);
+			that.status = 'open';
+			that.resetForm();
+		}
 	}
+
+	this.status = 'opening';
+	this.current_request++;
 
 	this.xml_rpc_client.callProcedure(
 		'addEntries', callBack,
-		[entries, this.source_category, true],
-		['array', 'int', 'boolean']);
+		[this.current_request, entries, this.source_category, true],
+		['int', 'array', 'int', 'boolean']);
 
 	this.openMiniCart('<h2>' + StoreProductPageLightBox.submit_message + '</h2>');
 }
@@ -191,13 +197,18 @@ StoreProductPageLightBox.prototype.loadMiniCart = function(e)
 	var that = this;
 	function callBack(response)
 	{
-		that.mini_cart_entry_count = response.product_entries;
-		that.displayResponse(response);
-		that.open = true;
+		if (response.request_id == that.current_request) {
+			that.mini_cart_entry_count = response.product_entries;
+			that.displayResponse(response);
+			that.status = 'open';
+		}
 	}
 
+	this.current_request++;
 	this.xml_rpc_client.callProcedure(
-		'getCartInfo', callBack, [this.product_id, true], ['int', 'boolean']);
+		'getCartInfo', callBack,
+		[this.current_request, this.product_id, true],
+		['int', 'int', 'boolean']);
 
 	this.openMiniCart(StoreProductPageLightBox.loading_message);
 }
@@ -368,13 +379,16 @@ StoreProductPageLightBox.prototype.removeEntry = function(e)
 	var that = this;
 	function callBack(response)
 	{
-		that.displayResponse(response);
+		if (response.request_id == that.current_request) {
+			that.displayResponse(response);
+		}
 	}
 
+	this.current_request++;
 	this.xml_rpc_client.callProcedure(
 		'removeEntry', callBack,
-		[entry_id],
-		['int']);
+		[this.current_request, entry_id],
+		['int', 'int']);
 
 	this.mini_cart_entry_count--;
 
@@ -445,10 +459,9 @@ StoreProductPageLightBox.prototype.closeMiniCart = function(e)
 {
 	if (e) {
 		YAHOO.util.Event.preventDefault(e);
-
 	}
 
-	if (this.open) {
+	if (this.status == 'open') {
 		var animation = new YAHOO.util.Anim(
 			this.mini_cart,
 			{ opacity: { to: 0 }},
@@ -456,10 +469,13 @@ StoreProductPageLightBox.prototype.closeMiniCart = function(e)
 
 		var that = this;
 		animation.onComplete.subscribe(function() {
-			that.mini_cart.style.display = 'none';
+			if (that.status == 'closing') {
+				that.mini_cart.style.display = 'none';
+				that.status = 'closed';
+			}
 		});
 
-		this.open = false;
+		this.status = 'closing';
 		animation.animate();
 	}
 }
@@ -516,7 +532,7 @@ StoreProductPageLightBox.prototype.restoreButtonValue = function(button)
 
 StoreProductPageLightBox.prototype.handleWindowChange = function(contents)
 {
-	if (this.open) {
+	if (this.status == 'open') {
 		this.positionMiniCart();
 	}
 }

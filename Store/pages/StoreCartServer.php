@@ -47,6 +47,7 @@ class StoreCartServer extends SiteXMLRPCServer
 	/**
 	 * Adds entries to the cart
 	 *
+	 * @param integer $request_id A unique id for this request 
 	 * @param array $entries The cart entries to add to the cart. Entries are
 	 *                       objects with values for 'item_id' and 'quantity'.
 	 * @param integer $source_category The category id from which the product
@@ -57,7 +58,7 @@ class StoreCartServer extends SiteXMLRPCServer
 	 * @return array An array containing: 'mini_cart', 'product_items',
 	 *               'total_items', 'total_products'
 	 */
-	public function addEntries($entries, $source_category = null,
+	public function addEntries($request_id, $entries, $source_category = null,
 		$mini_cart = false)
 	{
 		$product_id = null;
@@ -77,7 +78,7 @@ class StoreCartServer extends SiteXMLRPCServer
 			}
 		}
 
-		return $this->getCartInfo($product_id, $mini_cart);
+		return $this->getCartInfo($request_id, $product_id, $mini_cart);
 	}
 
 	// }}}
@@ -86,11 +87,12 @@ class StoreCartServer extends SiteXMLRPCServer
 	/**
 	 * Remove an entry from the cart
 	 *
+	 * @param integer $request_id A unique id for this request 
 	 * @param integer $entry_id The id of the entry to be removed
 	 *
 	 * @return array
 	 */
-	public function removeEntry($entry_id)
+	public function removeEntry($request_id, $entry_id)
 	{
 		$removed = false;
 
@@ -111,7 +113,7 @@ class StoreCartServer extends SiteXMLRPCServer
 			$product_id = $entry->item->product->id;
 		}
 
-		return $this->getCartInfo($product_id, false);
+		return $this->getCartInfo($request_id, $product_id, false);
 	}
 
 	// }}}
@@ -120,12 +122,14 @@ class StoreCartServer extends SiteXMLRPCServer
 	/**
 	 * Get information about what's in the user's cart
 	 *
+	 * @param integer $request_id A unique id for this request 
 	 * @param integer $product_id Optional product id to filter by 
 	 * @param boolean $mini_cart Whether or not to return the mini-cart 
 	 *
 	 * @return array
 	 */
-	public function getCartInfo($product_id = null, $mini_cart = false)
+	public function getCartInfo($request_id, $product_id = null,
+		$mini_cart = false)
 	{
 		$product_entries = 0;	// total number of cart-enties for the product
 		$product_quantity = 0;	// sum of all quantities for the product
@@ -153,6 +157,7 @@ class StoreCartServer extends SiteXMLRPCServer
 		}
 
 		$return = array();
+		$return['request_id']       = $request_id;
 		$return['product_entries']  = $product_entries;
 		$return['product_quantity'] = $product_quantity;
 		$return['total_entries']    = $total_entries;
@@ -188,6 +193,8 @@ class StoreCartServer extends SiteXMLRPCServer
 	}
 
 	// }}}
+
+	// mini cart
 	// {{{ protected function getMiniCart()
 
 	/**
@@ -230,8 +237,6 @@ class StoreCartServer extends SiteXMLRPCServer
 	}
 
 	// }}}
-
-	// mini cart
 	// {{{ protected function getCartTitle()
 
 	protected function getCartTitle()
