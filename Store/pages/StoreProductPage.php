@@ -414,8 +414,6 @@ class StoreProductPage extends StorePage
 		$this->message_display->display();
 		$this->displayProduct();
 
-		$this->displayProductCart();
-
 		Swat::displayInlineJavaScript($this->getProductInlineJavaScript());
 		if ($this->reviews_ui instanceof SwatUI) {
 			Swat::displayInlineJavaScript($this->getReviewsInlineJavaScript());
@@ -490,40 +488,6 @@ class StoreProductPage extends StorePage
 		$this->displayReviews();
 
 		echo '</div>';
-	}
-
-	// }}}
-	// {{{ protected function displayProductCart()
-
-	protected function displayProductCart()
-	{
-		// the content for the cart is filled in via ajax
-		$div_lightbox = new SwatHtmlTag('div');
-		$div_lightbox->id = 'store_product_cart';
-		$div_lightbox->open();
-
-		$div_top = new SwatHtmlTag('div');
-		$div_top->id = 'store_product_cart_top';
-		$div_top->open();
-		$div_top->close();
-
-		$div_body = new SwatHtmlTag('div');
-		$div_body->id = 'store_product_cart_body';
-		$div_body->open();
-
-			$div_content = new SwatHtmlTag('div');
-			$div_content->id = 'store_product_cart_content';
-			$div_content->open();
-			$div_content->close();
-
-		$div_body->close();
-
-		$div_bottom = new SwatHtmlTag('div');
-		$div_bottom->id = 'store_product_cart_bottom';
-		$div_bottom->open();
-		$div_bottom->close();
-
-		$div_lightbox->close();
 	}
 
 	// }}}
