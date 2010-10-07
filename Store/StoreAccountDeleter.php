@@ -150,7 +150,7 @@ class StoreAccountDeleter extends StorePrivateDataDeleter
 		$unix_time = strtotime('-'.$this->app->config->expiry->accounts);
 
 		$expiry_date = new SwatDate();
-		$expiry_date->setDate($unix_time, DATE_FORMAT_UNIXTIME);
+		$expiry_date->setTimestamp($unix_time);
 		$expiry_date->toUTC();
 
 		return $expiry_date;

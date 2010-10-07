@@ -17,7 +17,7 @@ class StoreAccountAddress extends StoreAddress
 	/**
 	 * Creation date
 	 *
-	 * @var date
+	 * @var SwatDate
 	 */
 	public $createdate;
 

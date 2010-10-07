@@ -50,14 +50,14 @@ class StoreFeature extends SwatDBDataObject
 	/**
 	 *
 	 *
-	 * @var Date
+	 * @var SwatDate
 	 */
 	public $start_date;
 
 	/**
 	 *
 	 *
-	 * @var Date
+	 * @var SwatDate
 	 */
 	public $end_date;
 

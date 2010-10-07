@@ -45,14 +45,14 @@ class StoreSaleDiscount extends SwatDBDataObject
 	/**
 	 * Start data
 	 *
-	 * @var date
+	 * @var SwatDate
 	 */
 	public $start_date;
 
 	/**
 	 * End date
 	 *
-	 * @var date
+	 * @var SwatDate
 	 */
 	public $end_date;
 

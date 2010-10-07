@@ -74,7 +74,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	/**
 	 * The expiry date of the card
 	 *
-	 * @var Date
+	 * @var SwatDate
 	 */
 	public $card_expiry;
 
@@ -83,7 +83,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	 *
 	 * This is required for some debit cards.
 	 *
-	 * @var Date
+	 * @var SwatDate
 	 */
 	public $card_inception;
 
@@ -589,7 +589,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 			if ($this->display_details['card_expiry'] === true &&
 				$this->card_expiry !== null) {
 				echo 'Expiration Date: ',
-					$this->card_expiry->format(SwatDate::DF_CC_MY);
+					$this->card_expiry->formatLikeIntl(SwatDate::DF_CC_MY);
 
 				if ($this->card_fullname !== null)
 					echo ', ';
@@ -653,7 +653,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 			if ($this->display_details['card_expiry'] === true &&
 				$this->card_expiry !== null) {
 				echo $line_break, 'Expiration Date: ',
-					$this->card_expiry->format(SwatDate::DF_CC_MY);
+					$this->card_expiry->formatLikeIntl(SwatDate::DF_CC_MY);
 			}
 
 			if ($this->display_details['card_fullname'] === true &&

@@ -35,7 +35,7 @@ class StoreInvoice extends SwatDBDataObject
 	/**
 	 * Creation date
 	 *
-	 * @var date
+	 * @var SwatDate
 	 */
 	public $createdate;
 

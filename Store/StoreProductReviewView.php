@@ -166,13 +166,12 @@ class StoreProductReviewView extends SwatControl
 		// display machine-readable date in UTC
 		$abbr_tag = new SwatHtmlTag('abbr');
 		$abbr_tag->class = 'dtreviewed';
-		$abbr_tag->title =
-			$this->review->createdate->getDate(DATE_FORMAT_ISO_EXTENDED);
+		$abbr_tag->title = $this->review->createdate->getISO8601();
 
 		// display human-readable date in local time
 		$date = clone $this->review->createdate;
 		$date->convertTZ($this->app->default_time_zone);
-		$abbr_tag->setContent($date->format(SwatDate::DF_DATE));
+		$abbr_tag->setContent($date->formatLikeIntl(SwatDate::DF_DATE));
 		$abbr_tag->display();
 
 		$span_tag->close();

@@ -36,7 +36,7 @@ class StorePaymentMethodTransaction extends SwatDBDataObject
 	/**
 	 * The date this transaction was created on
 	 *
-	 * @var Date
+	 * @var SwatDate
 	 */
 	public $createdate;
 

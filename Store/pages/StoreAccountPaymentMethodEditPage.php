@@ -390,7 +390,7 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
 		if (!$expiry->isValid()) {
 			$content = sprintf(Store::_('The expiry date that was entered '.
 				'(%s) is in the past. Please enter an updated date.'),
-				$expiry->value->format(SwatDate::DF_CC_MY));
+				$expiry->value->formatLikeIntl(SwatDate::DF_CC_MY));
 
 			$message = new SwatMessage($content, SwatMessage::WARNING);
 			$expiry->addMessage($message);
