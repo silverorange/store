@@ -52,6 +52,14 @@ Store:
     packages/store/javascript/store-product-review-view.js:
     packages/store/javascript/store-quick-order-page.js:
     packages/store/javascript/store-feature-pager.js:
+    packages/store/javascript/store-cart-lightbox.js:
+    packages/store/javascript/store-simple-product-page.js:
+      Depends:
+        - packages/store/javascript/store-cart-lightbox.js
+    packages/store/javascript/store-product-page-lightbox.js:
+      Depends:
+        - packages/store/javascript/store-cart-lightbox.js
+        - packages/store/javascript/store-simple-product-page.js
     packages/store/admin/javascript/store-account-address-edit-page.js:
     packages/store/admin/javascript/store-item-edit-page.js:
     packages/store/admin/javascript/store-item-group-action.js:

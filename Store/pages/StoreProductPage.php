@@ -661,21 +661,18 @@ class StoreProductPage extends StorePage
 
 		$javascript = '';
 		if (!$translations_displayed) {
+			// TODO: some of these classes aren't correct
 			$javascript.= sprintf(
 				"StoreProductPage.enter_quantity_message = %s;\n".
 				"StoreProductPage.submit_message= %s;\n".
 				"StoreProductPage.loading_message = %s;\n".
-				"StoreProductPage.close_text = %s;\n".
 				"StoreProductPage.empty_message = %s;\n",
 				SwatString::quoteJavascriptString(
 					Store::_('Please enter a quantity.')),
 				SwatString::quoteJavascriptString(Store::_('Updating Cart…')),
 				SwatString::quoteJavascriptString(Store::_('Loading…')),
-				SwatString::quoteJavascriptString(Store::_('Close')),
-				SwatString::quoteJavascriptString(sprintf('<h2>%s</h2>%s',
-					Store::_('All Items Removed'),
-					Store::_('You no longer have any items from this page '.
-						'in your cart.')))
+				SwatString::quoteJavascriptString(sprintf('<h2>%s</h2>',
+					Store::_('Your Cart is Empty')))
 				);
 
 			$translations_displayed = true;
@@ -685,12 +682,17 @@ class StoreProductPage extends StorePage
 		$category_id = ($path_entry instanceof SitePathEntry) ?
 			$path_entry->id : 'null';
 
-		$javascript.= sprintf(
-			"var product_page = new %s(%d, [%s], %d);",
+		$javascript.= sprintf("var product_page = new %s(%d, [%s], %d);",
 			$this->getProductJavaScriptClass(),
 			$this->product->id,
 			$item_ids,
 			$category_id);
+
+		$lightbox = $this->getCartLightboxJavaScriptClass();
+		if ($lightbox !== null) {
+			$javascript.= sprintf('product_page.setCart(%s.getInstance());',
+				$lightbox);
+		}
 
 		return $javascript;
 	}
@@ -701,6 +703,14 @@ class StoreProductPage extends StorePage
 	protected function getProductJavaScriptClass()
 	{
 		return 'StoreProductPageLightBox';
+	}
+
+	// }}}
+	// {{{ protected function getCartLightboxJavaScriptClass()
+
+	protected function getCartLightboxJavaScriptClass()
+	{
+		return 'StoreCartLightBox';
 	}
 
 	// }}}
@@ -1437,10 +1447,6 @@ class StoreProductPage extends StorePage
 
 		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
 			'packages/store/javascript/store-product-page.js',
-			Store::PACKAGE_ID));
-
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/javascript/store-product-page-lightbox.js',
 			Store::PACKAGE_ID));
 
 		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
