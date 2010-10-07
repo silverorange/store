@@ -34,12 +34,10 @@ class StoreCardExpiryEntry extends SwatDateEntry
 		$this->setValidRange(0, 20);
 
 		// set start date fields to first day of the current month
-		$today = new Date();
+		$today = new SwatDate();
 		$this->valid_range_start->setMonth($today->getMonth());
 		$this->valid_range_start->setDay(1);
-		$this->valid_range_start->setHour(0);
-		$this->valid_range_start->setMinute(0);
-		$this->valid_range_start->setSecond(0);
+		$this->valid_range_start->setTime(0, 0, 0);
 	}
 
 	// }}}
