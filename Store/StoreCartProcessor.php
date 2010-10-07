@@ -193,7 +193,7 @@ class StoreCartProcessor extends SwatObject
 
 			$a_tag = new SwatHtmlTag('a');
 			$a_tag->href = 'cart';
-			$a_tag->class = 'product-page-cart-link';
+			$a_tag->class = 'store-open-cart-link';
 			$a_tag->setContent(Store::_('View Details'));
 			$a_tag->display();
 
