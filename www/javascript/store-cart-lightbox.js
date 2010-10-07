@@ -1,5 +1,7 @@
 /**
  * A lightbox that displays items in the user's cart 
+ *
+ * This should be instansiated using: StoreCartLightBox.getInstance();
  */
 function StoreCartLightBox()
 {
