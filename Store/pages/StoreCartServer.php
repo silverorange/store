@@ -310,7 +310,7 @@ class StoreCartServer extends SiteXMLRPCServer
 		}
 
 		$this->cart_ui->getWidget('cart_view')->getGroup(
-			'status_group')->visible = ($saved_count > 0 && $entry_count > 0);
+			'status_group')->visible = ($saved_count > 0);
 
 		return $store;
 	}
