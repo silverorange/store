@@ -14,7 +14,7 @@ class StoreShipmentMethod
 	/**
 	 * An approximation of how long it takes to ship items with this method.
 	 *
-	 * @return Date_Span the approximate time it will take to deliver a
+	 * @return HotDateInterval the approximate time it will take to deliver a
 	 *                    shipment using this method.
 	 */
 	public function getTimeToDeliver($address)

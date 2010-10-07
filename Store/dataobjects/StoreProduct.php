@@ -84,7 +84,7 @@ class StoreProduct extends SwatDBDataObject
 	/**
 	 * Create date
 	 *
-	 * @var Date
+	 * @var SwatDate
 	 */
 	public $createdate;
 

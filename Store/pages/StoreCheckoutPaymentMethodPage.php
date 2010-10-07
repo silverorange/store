@@ -465,7 +465,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$card_expiry = $this->ui->getWidget('card_expiry');
 		$card_inception = $this->ui->getWidget('card_inception');
 		if ($card_expiry->value !== null && $card_inception->value !== null &&
-			Date::compare($card_expiry->value, $card_inception->value) < 0) {
+			SwatDate::compare($card_expiry->value,
+				$card_inception->value) < 0) {
+
 			$card_expiry->addMessage(new SwatMessage(Store::_(
 				'The card expiry date must be after the card inception date.'),
 				'error'));

@@ -17,7 +17,7 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
 	public function init()
 	{
 		parent::init();
-		$this->resetProgress();
+//		$this->resetProgress();
 	}
 
 	// }}}
@@ -245,7 +245,7 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
 
 	protected function logoutSession()
 	{
-		$this->app->session->logout();
+//		$this->app->session->logout();
 	}
 
 	// }}}

@@ -94,7 +94,7 @@ class StoreExchangeRateTable
 			$day = clone $date;
 
 			for ($i = 0; $i < 7; $i++) {
-				$key = $day->format('%Y-%m-%d');
+				$key = $day->formatLikeIntl('yyyy-MM-dd');
 
 				if (array_key_exists($key, $this->exchange_rates))
 					return $this->exchange_rates[$key];
@@ -156,7 +156,7 @@ class StoreExchangeRateTable
 				$exchange_date = new SwatDate($regs[1]);
 				// rates are noon buying rates in New York City
 				$exchange_date->setHour(12);
-				$exchange_date->setTZbyID('America/New_York');
+				$exchange_date->setTZbYId('America/New_York');
 
 				if ($this->cut_off_date !== null &&
 					SwatDate::compare($exchange_date,

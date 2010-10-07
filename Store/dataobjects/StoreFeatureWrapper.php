@@ -23,7 +23,7 @@ class StoreFeatureWrapper extends SwatDBRecordsetWrapper
 		if (isset($_GET['warp'])) {
 			$date = trim($_GET['warp']);
 			$date = new SwatDate($date);
-			$date->setTZbyID($app->config->date->time_zone);
+			$date->setTZById($app->config->date->time_zone);
 		}
 
 		$region = $app->getRegion();

@@ -276,7 +276,8 @@ abstract class StoreOrderConfirmationMailMessage
 		$createdate = clone $this->order->createdate;
 		$createdate->convertTZ($this->app->default_time_zone);
 		printf('Order Placed: %s',
-			$createdate->format(SwatDate::DF_DATE_TIME,
+			$createdate->formatLikeIntl(
+				SwatDate::DF_DATE_TIME,
 				SwatDate::TZ_CURRENT_SHORT));
 
 		echo self::LINE_BREAK;

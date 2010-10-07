@@ -103,7 +103,7 @@ class StoreCategory extends SwatDBDataObject
 	/**
 	 * The date this category was created
 	 *
-	 * @var Date
+	 * @var SwatDate
 	 */
 	public $createdate;
 

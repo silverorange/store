@@ -299,7 +299,7 @@ class StoreAccountDetailsPage extends SiteUiPage
 		$a->display();
 
 		echo ' - ', SwatString::minimizeEntities(
-			$createdate->format(SwatDate::DF_DATE));
+			$createdate->formatLikeIntl(SwatDate::DF_DATE));
 	}
 
 	// }}}
