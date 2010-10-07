@@ -18,7 +18,7 @@ class StoreCartServer extends SiteXMLRPCServer
 
 	protected $processor;
 	protected $cart_ui;
-	protected $cart_ui_xml = 'Store/pages/product-cart.xml';
+	protected $cart_ui_xml = 'Store/pages/mini-cart.xml';
 
 	// }}}
 
