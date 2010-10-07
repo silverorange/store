@@ -14,10 +14,11 @@
 				</object>
 			</object>
 			<object class="SwatTableViewColumn" id="cart_image">
-				<object class="SwatImageCellRenderer" id="product_image">
+				<object class="SwatImageLinkCellRenderer" id="product_image">
 					<property name="image" type="data">image</property>
 					<property name="width" type="data">image_width</property>
 					<property name="height" type="data">image_height</property>
+					<property name="link" type="data">product_link</property>
 				</object>
 			</object>
 			<object class="SwatTableViewColumn">

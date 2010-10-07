@@ -329,6 +329,7 @@ class StoreCartServer extends SiteXMLRPCServer
 		$ds->discount = $entry->getDiscount();
 		$ds->discount_extension = $entry->getDiscountExtension();
 		$ds->show_remove_button = true;
+		$ds->product_link = 'store/'.$entry->item->product->path;
 
 		$image = $entry->item->product->primary_image;
 		if ($image === null) {
@@ -390,7 +391,8 @@ class StoreCartServer extends SiteXMLRPCServer
 
 	protected function getEntryDescription(StoreCartEntry $entry)
 	{
-		$description = sprintf('<h4>%s - %s</h4>%s',
+		$description = sprintf('<h4><a href="%s">%s - %s</a></h4>%s',
+			'store/'.$entry->item->product->path,
 			SwatString::minimizeEntities($entry->item->sku),
 			SwatString::minimizeEntities($entry->item->getDescription(false)),
 			implode(', ', $this->getItemDescriptionArray($entry)));
