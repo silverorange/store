@@ -633,18 +633,19 @@ class StoreItem extends SwatDBDataObject
 
 		$sale = $this->getActiveSaleDiscount();
 		if ($sale !== null && $sale->end_date !== null) {
-			$now = new SwatDate();
-			$span = new Date_Span();
-			$span->setFromDateDiff($now, $sale->end_date);
 
-			if ($span->toHours() < 2) {
-				if ($span->toHours() < 1)
-					$format = '%m minutes';
-				else
-					$format = '%h hours and %m minutes';
+			$now = new SwatDate();
+			$interval = $now->diff($sale->end_date, true);
+
+			if ($interval->hours < 2) {
+				if ($interval->hours < 1) {
+					$format = '%i minutes';
+				} else {
+					$format = '%h hours and %i minutes';
+				}
 
 				$note = sprintf('%s sale on this item ends in %s',
-					$sale->title, $span->format($format));
+					$sale->title, $interval->format($format));
 			}
 		}
 
