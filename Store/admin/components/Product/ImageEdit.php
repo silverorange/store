@@ -84,9 +84,7 @@ class StoreProductImageEdit extends AdminDBEdit
 
 	protected function initImage()
 	{
-		$class_name = SwatDBClassMap::get('StoreProductImage');
-		$this->image = new $class_name();
-		$this->image->setDatabase($this->app->db);
+		$this->image = $this->getNewImageInstance();
 
 		if ($this->id !== null && !$this->image->load($this->id)) {
 			throw new AdminNotFoundException(
@@ -134,6 +132,18 @@ class StoreProductImageEdit extends AdminDBEdit
 
 			$this->dimension_files[$dimension->shortname] = $file_widget;
 		}
+	}
+
+	// }}}
+	// {{{ protected function getNewImageInstance()
+
+	protected function getNewImageInstance()
+	{
+		$class_name = SwatDBClassMap::get('StoreProductImage');
+		$image = new $class_name();
+		$image->setDatabase($this->app->db);
+
+		return $image;
 	}
 
 	// }}}
@@ -188,7 +198,7 @@ class StoreProductImageEdit extends AdminDBEdit
 
 		$this->image->save();
 
-		if ($this->id == null) {
+		if ($this->id != $this->image->id) {
 			$sql = sprintf('insert into ProductImageBinding
 				(product, image) values (%s, %s)',
 				$this->app->db->quote($this->product->id, 'integer'),
@@ -212,8 +222,17 @@ class StoreProductImageEdit extends AdminDBEdit
 		$file = $this->ui->getWidget('original_image');
 
 		if ($file->isUploaded()) {
-			$this->image->setFileBase('../images');
-			$this->image->process($file->getTempFileName());
+			$image = $this->getNewImageInstance();
+			$image->setFileBase('../images');
+			$image->process($file->getTempFileName());
+
+			// Delete the old image. Prevents broswer/CDN caching.
+			if ($this->id !== null) {
+				$this->image->setFileBase('../images');
+				$this->image->delete();
+			}
+
+			$this->image = $image;
 		}
 
 		foreach ($this->dimensions as $dimension) {
