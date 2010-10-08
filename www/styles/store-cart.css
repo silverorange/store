@@ -44,33 +44,33 @@
 }
 
 #store_product_cart_body {
-	background: url(../images/product-cart-body.png) repeat-y;
+	background: url(../images/mini-cart-background.png) repeat-y -378px 0;
 	padding: 0 14px;
 }
 
 * html #store_product_cart_body,
 *+html #store_product_cart_body {
-	background: url(../images/product-cart-body-ie.png) repeat-y;
+	background: url(../images/mini-cart-background-ie.png) repeat-y -378px 0;
 }
 
 #store_product_cart_top {
-	background: url(../images/product-cart-top.png) no-repeat;
+	background: url(../images/mini-cart-background.png) no-repeat 0 100%;
 	height: 27px;
 }
 
 * html #store_product_cart_top,
 *+html #store_product_cart_top {
-	background: url(../images/product-cart-top-ie.png) no-repeat;
+	background: url(../images/mini-cart-background-ie.png) no-repeat 0 100%;
 }
 
 #store_product_cart_bottom {
-	background: url(../images/product-cart-bottom.png) 0 100% no-repeat;
+	background: url(../images/mini-cart-background.png) no-repeat -756px 100%;
 	height: 26px;
 }
 
 * html #store_product_cart_bottom,
 *+html #store_product_cart_bottom {
-	background: url(../images/product-cart-bottom-ie.png) 0 100% no-repeat;
+	background: url(../images/mini-cart-background-ie.png) no-repeat -756px 100%;
 }
 
 #store_product_cart_body #cart_form {
