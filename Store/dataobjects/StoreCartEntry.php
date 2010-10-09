@@ -115,6 +115,11 @@ class StoreCartEntry extends SwatDBDataObject
 	public $custom_price;
 
 	// }}}
+	// {{{ private properties
+
+	private $product_max_cart_entry_id;
+
+	// }}}
 	// {{{ public function getQuantity()
 
 	/**
@@ -292,23 +297,22 @@ class StoreCartEntry extends SwatDBDataObject
 	 */
 	public function compare(StoreCartEntry $entry)
 	{
-		// order by product-title, product-id, item-displayorder, item-id
+		// order by date of most recent items ordered (with product
+		// grouping preserved), item-displayorder, item-id
 
 		$item1 = $this->item;
 		$item2 = $entry->item;
 		$product1 = $this->item->product;
 		$product2 = $entry->item->product;
 
-		$title_cmp = strcmp($product1->title, $product2->title);
-
-		if ($title_cmp != 0)
-			return $title_cmp;
-		elseif ($product1->id != $product1->id)
-			return ($product1->id < $product2->id) ? -1 : 1;
-		elseif ($item1->displayorder != $item2->displayorder)
+		if ($product1->id != $product2->id) {
+			return ($this->getProductMaxCartEntryId() <
+				$entry->getProductMaxCartEntryId()) ? 1 : -1;
+		} elseif ($item1->displayorder != $item2->displayorder) {
 			return ($item1->displayorder < $item2->displayorder) ? -1 : 1;
-		elseif ($this->getItemId() != $entry->getItemId())
+		} elseif ($this->getItemId() != $entry->getItemId()) {
 			return ($this->getItemId() < $entry->getItemId()) ? -1 : 1;
+		}
 
 		return 0;
 	}
@@ -403,6 +407,39 @@ class StoreCartEntry extends SwatDBDataObject
 			$order_item->setDatabase($this->db);
 
 		return $order_item;
+	}
+
+	// }}}
+	// {{{ public function setProductMaxCartEntryId()
+
+	/**
+	 * Sets the maximum StoreCartEntry::$id for all cart entries in the same
+	 * product as this entry. 
+	 *
+	 * Used for ordering items in the cart by the most recently added items
+	 * first, while still grouping by product.
+	 *
+	 * @see StoreCart::sort()
+	 * @see StoreCartEntry::compare()
+	 */
+	public function setProductMaxCartEntryId($id)
+	{
+		$this->product_max_cart_entry_id = $id;
+	}
+
+	// }}}
+	// {{{ public function getProductMaxCartEntryId()
+
+	/**
+	 * Get the maximum StoreCartEntry::$id for all cart entries in the same
+	 * product as this entry. 
+	 *
+	 * @see StoreCart::sort()
+	 * @see StoreCartEntry::compare()
+	 */
+	public function getProductMaxCartEntryId()
+	{
+		return $this->product_max_cart_entry_id;
 	}
 
 	// }}}
