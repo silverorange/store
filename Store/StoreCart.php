@@ -612,6 +612,22 @@ abstract class StoreCart extends SwatObject
 	protected function sort()
 	{
 		if (!$this->sorted) {
+			$max_ids = array();
+			foreach ($this->entries as $entry) {
+				$key = $entry->item->product->id;
+
+				if (!isset($max_ids[$entry->item->product->id])) {
+					$max_ids[$key] = $entry->id;
+				} else {
+					$max_ids[$key] = max($entry->id, $max_ids[$key]);
+				}
+			}
+
+			foreach ($this->entries as $entry) {
+				$key = $entry->item->product->id;
+				$entry->setProductMaxCartEntryId($max_ids[$key]);
+			}
+
 			usort($this->entries, array('StoreCart', 'compare'));
 			$this->sorted = true;
 		}
