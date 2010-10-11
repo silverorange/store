@@ -628,15 +628,7 @@ class StoreProductPage extends StorePage
 			// TODO: some of these classes aren't correct
 			$javascript.= sprintf(
 				"StoreProductPage.enter_quantity_message = %s;\n".
-				"StoreProductPage.submit_message= %s;\n".
-				"StoreProductPage.loading_message = %s;\n".
-				"StoreProductPage.empty_message = %s;\n",
-				SwatString::quoteJavascriptString(
-					Store::_('Please enter a quantity.')),
-				SwatString::quoteJavascriptString(Store::_('Updating Cart…')),
-				SwatString::quoteJavascriptString(Store::_('Loading…')),
-				SwatString::quoteJavascriptString(sprintf('<h2>%s</h2>',
-					Store::_('Your Cart is Empty')))
+					Store::_('Please enter a quantity.')
 				);
 
 			$translations_displayed = true;
@@ -666,7 +658,7 @@ class StoreProductPage extends StorePage
 
 	protected function getProductJavaScriptClass()
 	{
-		return 'StoreProductPageLightBox';
+		return 'StoreProductPage';
 	}
 
 	// }}}
