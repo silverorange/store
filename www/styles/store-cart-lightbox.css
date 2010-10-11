@@ -145,6 +145,7 @@
 #store_product_cart h3 {
 	margin: 0 10px;
 	font-size: 130%;
+	text-align: left;
 }
 
 #store_product_cart .store-cart-description h4 {
