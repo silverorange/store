@@ -73,6 +73,7 @@ Store:
     packages/store/styles/store-account-order-page.css:
     packages/store/styles/store-cart.css:
     packages/store/styles/store-cart-page.css:
+    packages/store/styles/store-cart-lightbox.css:
     packages/store/styles/store-checkout-address-page.css:
     packages/store/styles/store-checkout-basic-info-page.css:
     packages/store/styles/store-checkout-cart-page.css:

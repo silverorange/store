@@ -21,8 +21,8 @@ function StoreCartLightBox()
 
 StoreCartLightBox.instance = null;
 StoreCartLightBox.submit_message = 'Updating Cart…';
-StoreCartLightBox.loading_message = '<h2>Loading…</h2>';
-StoreCartLightBox.empty_message = '<h2>Your Shopping Cart is Empty</h2>';
+StoreCartLightBox.loading_message = 'Loading…';
+StoreCartLightBox.empty_message = 'Your Shopping Cart is Empty';
 
 // static method to call an instance of StoreCartLightBox
 // {{{ StoreCartLightBox.getInstance
@@ -156,7 +156,7 @@ StoreCartLightBox.prototype.load = function(e)
 		[this.current_request, this.product_id, true],
 		['int', 'int', 'boolean']);
 
-	this.open(StoreCartLightBox.loading_message);
+	this.open('<h2>' + StoreCartLightBox.loading_message + '</h2>');
 }
 
 // }}}
@@ -164,6 +164,8 @@ StoreCartLightBox.prototype.load = function(e)
 
 StoreCartLightBox.prototype.open = function(contents)
 {
+	SwatZIndexManager.raiseElement(this.mini_cart);
+
 	this.setContent(contents);
 
 	YAHOO.util.Dom.setStyle(this.mini_cart, 'opacity', 0);
@@ -380,6 +382,7 @@ StoreCartLightBox.prototype.close = function(e)
 			if (that.status == 'closing') {
 				that.mini_cart.style.display = 'none';
 				that.status = 'closed';
+				SwatZIndexManager.raiseElement(that.mini_cart);
 			}
 		});
 
@@ -502,8 +505,8 @@ StoreCartLightBox.prototype.addEntriesCallback = function(response)
 
 StoreCartLightBox.prototype.displayEmptyCartMessage = function()
 {
-	this.setContentWithAnimation('<div class="empty-message">' +
-		StoreCartLightBox.empty_message + '</div>');
+	this.setContentWithAnimation('<div class="empty-message"><h2>' +
+		StoreCartLightBox.empty_message + '</h2></div>');
 }
 
 // }}}
