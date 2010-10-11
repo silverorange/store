@@ -627,7 +627,7 @@ class StoreProductPage extends StorePage
 		if (!$translations_displayed) {
 			// TODO: some of these classes aren't correct
 			$javascript.= sprintf(
-				"StoreProductPage.enter_quantity_message = %s;\n".
+				"StoreProductPage.enter_quantity_message = %s;\n",
 					Store::_('Please enter a quantity.')
 				);
 
