@@ -628,8 +628,8 @@ class StoreProductPage extends StorePage
 			// TODO: some of these classes aren't correct
 			$javascript.= sprintf(
 				"StoreProductPage.enter_quantity_message = %s;\n",
-					Store::_('Please enter a quantity.')
-				);
+					SwatString::quoteJavascriptString(
+						Store::_('Please enter a quantity.')));
 
 			$translations_displayed = true;
 		}
