@@ -28,6 +28,12 @@ class StoreCartLightbox extends SwatControl
 		$yui = new SwatYUI(array('dom', 'event'));
 		$this->html_head_entry_set->addEntrySet($yui->getHtmlHeadEntrySet());
 
+		$this->addJavaScript('packages/swat/javascript/swat-view.js',
+			Swat::PACKAGE_ID);
+
+		$this->addJavaScript('packages/swat/javascript/swat-table-view.js',
+			Swat::PACKAGE_ID);
+
 		$this->addJavaScript('packages/swat/javascript/swat-z-index-manager.js',
 			Swat::PACKAGE_ID);
 
