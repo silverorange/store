@@ -17,7 +17,7 @@ class StoreCartLightbox extends SwatControl
 	/*
 	 * @var string
 	 */
-	public $class_name = 'StoreCartLightbox';
+	public $class_name = 'StoreCartLightBox';
 
 	// }}}
 	// {{{ public function __construct()

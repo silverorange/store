@@ -39,6 +39,7 @@
 				</object>
 				<object class="SwatWidgetCellRenderer" id="remove_renderer">
 					<property name="replicator_id" type="data">id</property>
+					<property name="classes[]" type="data">status_class</property>
 					<widget class="SwatButton" id="remove_button">
 						<property name="title" translatable="yes">Remove</property>
 						<property name="classes[]">compact-button</property>
