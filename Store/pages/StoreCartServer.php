@@ -264,6 +264,17 @@ class StoreCartServer extends SiteXMLRPCServer
 	}
 
 	// }}}
+	// {{{ protected function getAvailableEntries()
+
+	/**
+	 * Gets the cart entries
+	 */
+	protected function getAvailableEntries()
+	{
+		return $this->app->cart->checkout->getEntries();
+	}
+
+	// }}}
 	// {{{ protected function getCartTableStore()
 
 	/**
@@ -278,15 +289,14 @@ class StoreCartServer extends SiteXMLRPCServer
 		$entry_count = 0;
 
 		$status_title = Store::_('Available For Purchase');
-		foreach ($this->app->cart->checkout->getEntries() as $entry) {
+		foreach ($this->getAvailableEntries() as $entry) {
 			$ds = $this->getCartDetailsStore($entry);
 			$ds->status_title = $status_title;
 			$store->add($ds);
 			$entry_count++;
 		}
 
-		$count = (count($this->app->cart->checkout->getEntries())
-			- $entry_count);
+		$count = (count($this->getAvailableEntries()) - $entry_count);
 
 		if ($entry_count > 0 && $count > 0) {
 			$ds = $this->getMoreRow($count);
@@ -391,11 +401,25 @@ class StoreCartServer extends SiteXMLRPCServer
 
 	protected function getEntryDescription(StoreCartEntry $entry)
 	{
-		$description = sprintf('<h4><a href="%s">%s - %s</a></h4>%s',
-			'store/'.$entry->item->product->path,
-			SwatString::minimizeEntities($entry->item->sku),
-			SwatString::minimizeEntities($entry->item->getDescription(false)),
-			implode(', ', $this->getItemDescriptionArray($entry)));
+		$description = '';
+		$title = array();
+
+		if ($entry->item->sku !== null) {
+			$title[] = $entry->item->sku;
+		}
+
+		if ($entry->item->product->title !== null) {
+			$title[] = $entry->item->product->title;
+		}
+
+		if (count($title) > 0) {
+			$a_tag = new SwatHtmlTag('a');
+			$a_tag->href = 'store/'.$entry->item->product->path;
+			$a_tag->setContent(implode(' - ', $title));
+			$description.= '<h4>'.$a_tag->__toString().'</h4>';
+		}
+
+		$description.= implode(', ', $this->getItemDescriptionArray($entry));
 
 		return $description;
 	}
@@ -408,9 +432,7 @@ class StoreCartServer extends SiteXMLRPCServer
 		$description = array();
 
 		foreach ($entry->item->getDescriptionArray() as $key => $element) {
-			if ($key !== 'description') {
-				$description[$key] = SwatString::minimizeEntities($element);
-			}
+			$description[$key] = SwatString::minimizeEntities($element);
 		}
 
 		$discount = $entry->getDiscountExtension();
