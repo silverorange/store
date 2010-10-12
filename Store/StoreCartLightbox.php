@@ -12,6 +12,14 @@ require_once 'Swat/SwatString.php';
  */
 class StoreCartLightbox extends SwatControl
 {
+	// {{{ public properties
+
+	/*
+	 * @var string
+	 */
+	public $class_name = 'StoreCartLightbox';
+
+	// }}}
 	// {{{ public function __construct()
 
 	/**
@@ -76,7 +84,9 @@ class StoreCartLightbox extends SwatControl
 			$translated = true;
 		}
 
-		$javascript.= 'var cart_lightbox = StoreCartLightBox.getInstance();';
+		$javascript.= 'var cart_lightbox = '.$this->class_name.
+			'.getInstance();';
+
 		return $javascript;
 	}
 
