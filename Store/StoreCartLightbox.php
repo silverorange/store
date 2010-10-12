@@ -81,6 +81,14 @@ class StoreCartLightbox extends SwatControl
 			$javascript.= sprintf("StoreCartLightBox.submit_message = %s;\n",
 				SwatString::quoteJavaScriptString(Store::_('Updating Cart…')));
 
+			$javascript.= sprintf(
+				"StoreCartLightBox.item_count_message_singular = %s;\n",
+				SwatString::quoteJavaScriptString(Store::_('(1 item)')));
+
+			$javascript.= sprintf(
+				"StoreCartLightBox.item_count_message_plural = %s;\n",
+				SwatString::quoteJavaScriptString(Store::_('(%s items)')));
+
 			$translated = true;
 		}
 
