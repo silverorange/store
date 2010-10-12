@@ -203,7 +203,8 @@ StoreProductPage.prototype.updateCartMessage = function(response)
 	}
 
 	var cart_links = YAHOO.util.Dom.getElementsByClassName(
-		'store-open-cart-link');
+		'store-open-cart-link', 'a',
+		document.getElementById(this.cart_message_id));
 
 	if (cart_links.length > 0) {
 		YAHOO.util.Event.on(cart_links, 'click',
