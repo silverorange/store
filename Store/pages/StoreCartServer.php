@@ -257,8 +257,16 @@ class StoreCartServer extends SiteXMLRPCServer
 			$title.= $div_tag->__toString();
 		}
 
+		$item_count = count($this->app->cart->checkout->getAvailableEntries());
+		$items = sprintf('<span class="item-count"> (%s)</span>',
+			sprintf(Store::ngettext('%s item', '%s items', $item_count),
+			$locale->formatNumber($item_count)));
+
 		$h3_tag = new SwatHtmlTag('h3');
-		$h3_tag->setContent(Store::_('Shopping Cart'));
+		$h3_tag->setContent(
+			SwatString::minimizeEntities(Store::_('Shopping Cart')).$items,
+			'text/xml');
+
 		$title.= $h3_tag->__toString();
 		return $title;
 	}
@@ -292,6 +300,7 @@ class StoreCartServer extends SiteXMLRPCServer
 		foreach ($this->getAvailableEntries() as $entry) {
 			$ds = $this->getCartDetailsStore($entry);
 			$ds->status_title = $status_title;
+			$ds->status_class = 'available';
 			$store->add($ds);
 			$entry_count++;
 		}
@@ -301,6 +310,7 @@ class StoreCartServer extends SiteXMLRPCServer
 		if ($entry_count > 0 && $count > 0) {
 			$ds = $this->getMoreRow($count);
 			$ds->status_title = $status_title;
+			$ds->status_class = 'available';
 			$store->add($ds);
 		}
 
@@ -308,6 +318,7 @@ class StoreCartServer extends SiteXMLRPCServer
 		foreach ($this->app->cart->saved->getEntries() as $entry) {
 			$ds = $this->getCartDetailsStore($entry);
 			$ds->status_title = $status_title;
+			$ds->status_class = 'saved';
 			$store->add($ds);
 			$saved_count++;
 		}
@@ -316,6 +327,7 @@ class StoreCartServer extends SiteXMLRPCServer
 		if ($saved_count > 0 && $count > 0) {
 			$ds = $this->getMoreRow($count);
 			$ds->status_title = $status_title;
+			$ds->status_class = 'saved';
 			$store->add($ds);
 		}
 
