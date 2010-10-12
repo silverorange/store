@@ -144,7 +144,7 @@ StoreProductPage.prototype.changeButtonText = function(e)
 	var button = document.getElementById(this.add_button_id);
 	button.disabled = true;
 	this.saveButtonValue(button);
-	button.value = StoreProductPage.submit_message;
+	button.value = StoreCartLightBox.submit_message;
 }
 
 // }}}
