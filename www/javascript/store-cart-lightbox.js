@@ -5,11 +5,11 @@
  */
 function StoreCartLightBox()
 {
-	this.status = 'closed';
-	this.product_id      = 0;
-	this.source_category = 0;
-	this.current_request = 0;
-	this.analytics       = null;
+	this.status           = 'closed';
+	this.product_id       = 0;
+	this.current_request  = 0;
+	this.analytics        = null;
+	this.override_message = null;
 
 	this.entries_added_event =
 		new YAHOO.util.CustomEvent('entries_added', this);
@@ -113,7 +113,7 @@ StoreCartLightBox.prototype.configure = function()
 // }}}
 // {{{ StoreCartLightBox.prototype.addEntries
 
-StoreCartLightBox.prototype.addEntries = function(entries)
+StoreCartLightBox.prototype.addEntries = function(entries, source_category)
 {
 	var that = this;
 	function callBack(response)
@@ -129,7 +129,7 @@ StoreCartLightBox.prototype.addEntries = function(entries)
 
 	this.xml_rpc_client.callProcedure(
 		'addEntries', callBack,
-		[this.current_request, entries, this.source_category, true],
+		[this.current_request, entries, source_category, true],
 		['int', 'array', 'int', 'boolean']);
 
 	this.open('<h2>' + StoreCartLightBox.submit_message + '</h2>');
@@ -158,13 +158,18 @@ StoreCartLightBox.prototype.load = function(e)
 		}
 	}
 
-	this.current_request++;
-	this.xml_rpc_client.callProcedure(
-		'getCartInfo', callBack,
-		[this.current_request, this.product_id, true],
-		['int', 'int', 'boolean']);
+	if (this.override_message === null) {
+		this.current_request++;
+		this.xml_rpc_client.callProcedure(
+			'getCartInfo', callBack,
+			[this.current_request, this.product_id, true],
+			['int', 'int', 'boolean']);
 
-	this.open('<h2>' + StoreCartLightBox.loading_message + '</h2>');
+		this.open('<h2>' + StoreCartLightBox.loading_message + '</h2>');
+	} else {
+		this.open(this.override_message);
+		this.status = 'open';
+	}
 }
 
 // }}}
