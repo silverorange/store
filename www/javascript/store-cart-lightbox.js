@@ -9,6 +9,7 @@ function StoreCartLightBox()
 	this.product_id      = 0;
 	this.source_category = 0;
 	this.current_request = 0;
+	this.analytics       = null;
 
 	this.entries_added_event =
 		new YAHOO.util.CustomEvent('entries_added', this);
@@ -118,7 +119,8 @@ StoreCartLightBox.prototype.addEntries = function(entries)
 	function callBack(response)
 	{
 		if (response.request_id == that.current_request) {
-			that.addEntriesCallback(response);;
+			that.addEntriesCallback(response);
+			that.recordAnalytics('xml-rpc/mini-cart/add-entries');
 		}
 	}
 
@@ -152,6 +154,7 @@ StoreCartLightBox.prototype.load = function(e)
 
 			that.displayResponse(response);
 			that.status = 'open';
+			that.recordAnalytics('xml-rpc/mini-cart/load');
 		}
 	}
 
@@ -539,6 +542,16 @@ StoreCartLightBox.prototype.updateItemCount = function(item_count)
 			item_counts[i].innerHTML = ' ' +
 				StoreCartLightBox.item_count_message_singular;
 		}
+	}
+}
+
+// }}}
+// {{{ StoreCartLightBox.prototype.recordAnalytics
+
+StoreCartLightBox.prototype.recordAnalytics = function(uri)
+{
+	if (this.analytics == 'google_analytics') {
+		urchinTracker(uri);
 	}
 }
 
