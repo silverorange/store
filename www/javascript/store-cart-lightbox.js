@@ -172,8 +172,6 @@ StoreCartLightBox.prototype.load = function(e)
 
 StoreCartLightBox.prototype.open = function(contents)
 {
-	SwatZIndexManager.raiseElement(this.mini_cart);
-
 	this.setContent(contents);
 
 	YAHOO.util.Dom.setStyle(this.mini_cart, 'opacity', 0);
@@ -398,7 +396,6 @@ StoreCartLightBox.prototype.close = function(e)
 			if (that.status == 'closing') {
 				that.mini_cart.style.display = 'none';
 				that.status = 'closed';
-				SwatZIndexManager.raiseElement(that.mini_cart);
 			}
 		});
 

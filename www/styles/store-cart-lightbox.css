@@ -5,6 +5,7 @@
 	right: 10px;
 	width: 378px;
 	text-align: left;
+	z-index: 1000;
 }
 
 #store_product_cart_body {
