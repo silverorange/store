@@ -67,7 +67,7 @@ StoreCartLightBox.prototype.init = function()
 			YAHOO.util.Event.stopPropagation(e);
 	});
 
-	YAHOO.util.Event.on(document.body, 'click', this.bodyClose, this, true);
+	YAHOO.util.Event.on(window, 'click', this.clickClose, this, true);
 	YAHOO.util.Event.on(window, 'resize', this.handleWindowChange, this, true);
 }
 
@@ -405,9 +405,9 @@ StoreCartLightBox.prototype.close = function(e)
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.bodyClose
+// {{{ StoreCartLightBox.prototype.clickClose
 
-StoreCartLightBox.prototype.bodyClose = function(e)
+StoreCartLightBox.prototype.clickClose = function(e)
 {
 	this.close();
 }
