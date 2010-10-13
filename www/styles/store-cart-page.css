@@ -42,7 +42,15 @@
 }
 
 .store-cart-entry-view .move-column .swat-button {
-	width: 8.5em;
+	/*
+	 * This is to provide column width consistency between saved and
+	 * checkout carts.
+	 */
+	width: 8.0em;
+}
+
+.store-cart-entry-view .remove-column .swat-button {
+	width: 5.5em;
 }
 
 #saved_cart_move_all_field {
