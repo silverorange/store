@@ -12,12 +12,22 @@ require_once 'Swat/SwatString.php';
  */
 class StoreCartLightbox extends SwatControl
 {
+	// {{{ constants
+
+	const GOOGLE_ANALYTICS = 1;
+
+	// }}}
 	// {{{ public properties
 
 	/*
 	 * @var string
 	 */
 	public $class_name = 'StoreCartLightBox';
+
+	/*
+	 * @var integer
+	 */
+	public $analytics;
 
 	// }}}
 	// {{{ public function __construct()
@@ -93,7 +103,11 @@ class StoreCartLightbox extends SwatControl
 		}
 
 		$javascript.= 'var cart_lightbox = '.$this->class_name.
-			'.getInstance();';
+			".getInstance();\n";
+
+		if ($this->analytics === self::GOOGLE_ANALYTICS) {
+			$javascript.= "cart_lightbox.analytics = 'google_analytics';\n";
+		}
 
 		return $javascript;
 	}
