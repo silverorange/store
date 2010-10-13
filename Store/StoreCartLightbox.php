@@ -25,6 +25,17 @@ class StoreCartLightbox extends SwatControl
 	public $class_name = 'StoreCartLightBox';
 
 	/*
+	 * Override Message
+	 *
+	 * Optional message to override content of the lightbox. Useful for pages
+	 * where you just want to display a message instead of displaying the cart
+	 * contents.
+	 *
+	 * @var string
+	 */
+	public $override_message = null;
+
+	/*
 	 * @var integer
 	 */
 	public $analytics;
@@ -104,6 +115,11 @@ class StoreCartLightbox extends SwatControl
 
 		if ($this->analytics === self::GOOGLE_ANALYTICS) {
 			$javascript.= "cart_lightbox.analytics = 'google_analytics';\n";
+		}
+
+		if ($this->override_message !== null) {
+			$javascript.= sprintf("cart_lightbox.override_message = %s;\n",
+				SwatString::quoteJavaScriptString($this->override_message));
 		}
 
 		return $javascript;

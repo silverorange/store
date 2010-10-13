@@ -44,6 +44,16 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 			$checkout_progress = $this->ui->getWidget('checkout_progress');
 			$checkout_progress->current_step = 2;
 		}
+
+		if (isset($this->layout->cart_lightbox)) {
+			$div_tag = new SwatHtmlTag('div');
+			$div_tag->class = 'empty-message';
+			$div_tag->setContent(Store::_('You can view and edit your '.
+				'shopping cart using the form below.'));
+
+			$this->layout->cart_lightbox->override_message =
+				$div_tag->__toString();
+		}
 	}
 
 	// }}}

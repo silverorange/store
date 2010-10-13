@@ -100,6 +100,16 @@ class StoreCartPage extends SitePage
 		$this->initInternal();
 
 		$this->ui->init();
+
+		if (isset($this->layout->cart_lightbox)) {
+			$div_tag = new SwatHtmlTag('div');
+			$div_tag->class = 'empty-message';
+			$div_tag->setContent(Store::_('You can view and edit your '.
+				'shopping cart using the form below.'));
+
+			$this->layout->cart_lightbox->override_message =
+				$div_tag->__toString();
+		}
 	}
 
 	// }}}

@@ -133,7 +133,7 @@ StoreProductPage.prototype.addEntriesToCart = function()
 		}
 	}
 
-	this.cart.addEntries(entries);
+	this.cart.addEntries(entries, this.source_category);
 }
 
 // }}}
