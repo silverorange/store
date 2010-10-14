@@ -177,12 +177,19 @@ StoreProductPage.prototype.updateCartMessage = function(response)
 	if (cart_message) {
 		if (div.innerHTML == '') {
 			YAHOO.util.Dom.setStyle(div, 'opacity', 0);
-			div.innerHTML = cart_message;
+			YAHOO.util.Dom.setStyle(div, 'height', 0);
 
 			var animation = new YAHOO.util.Anim(
 				div,
-				{ opacity: { to: 1 }},
+				{
+					opacity: { to: 1 },
+					height:  { to: 40 },
+				},
 				0.3);
+
+			animation.onComplete.subscribe(function() {
+				div.innerHTML = cart_message;
+			});
 
 			animation.animate();
 			
@@ -192,7 +199,10 @@ StoreProductPage.prototype.updateCartMessage = function(response)
 	} else if (div.innerHTML != '') {
 		var animation = new YAHOO.util.Anim(
 			div,
-			{ opacity: { to: 0 }},
+			{
+				opacity: { to: 0 },
+				height:  { to: 0 }
+			},
 			0.3);
 
 		animation.onComplete.subscribe(function() {
