@@ -538,12 +538,14 @@ StoreCartLightBox.prototype.updateItemCount = function(item_count)
 		'item-count', '', this.mini_cart);
 
 	for (var i = 0; i < item_counts.length; i++) {
-		if (item_count > 1) {
+		if (item_count == 1) {
+			item_counts[i].innerHTML = ' ' +
+				StoreCartLightBox.item_count_message_singular;
+		} else if (item_count > 1) {
 			var message = StoreCartLightBox.item_count_message_plural;
 			item_counts[i].innerHTML = ' ' + message.replace(/%s/, item_count);
 		} else {
-			item_counts[i].innerHTML = ' ' +
-				StoreCartLightBox.item_count_message_singular;
+			item_counts[i].innerHTML = '';
 		}
 	}
 }
