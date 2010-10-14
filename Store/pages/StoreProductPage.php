@@ -1419,6 +1419,14 @@ class StoreProductPage extends StorePage
 		}
 
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/swat/styles/swat-message.css',
+			Swat::PACKAGE_ID));
+
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+			'packages/swat/styles/swat-message-display.css',
+			Swat::PACKAGE_ID));
+
+		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
 			'packages/store/styles/store-product-page.css',
 			Store::PACKAGE_ID));
 
