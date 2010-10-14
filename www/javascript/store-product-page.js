@@ -183,7 +183,7 @@ StoreProductPage.prototype.updateCartMessage = function(response)
 				div,
 				{
 					opacity: { to: 1 },
-					height:  { to: 40 },
+					height:  { to: 60 },
 				},
 				0.3);
 
