@@ -217,9 +217,7 @@ class StoreCartServer extends SiteXMLRPCServer
 		$count = count($cart_view->model);
 
 		if ($count == 0) {
-			$h2_tag = new SwatHtmlTag('h2');
-			$h2_tag->setContent(Store::_('Your Cart is Empty'));
-			$mini_cart = $h2_tag->__toString();
+			return '';
 		} else {
 			$this->cart_ui->getWidget('cart_title')->content =
 				$this->getCartTitle();
