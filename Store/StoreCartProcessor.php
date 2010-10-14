@@ -1,6 +1,8 @@
 <?php
 
 require_once 'Swat/SwatObject.php';
+require_once 'Swat/SwatMessage.php';
+require_once 'Swat/SwatMessageDisplay.php';
 require_once 'Store/dataobjects/StoreCartEntry.php';
 require_once 'Store/dataobjects/StoreItem.php';
 
@@ -157,49 +159,47 @@ class StoreCartProcessor extends SwatObject
 		if ($added == 0 && $saved == 0) {
 			$message = null;
 		} else {
-			ob_start();
 			$locale = SwatI18NLocale::get($this->app->getLocale());
 
-			$div_tag = new SwatHtmlTag('div');
-			$div_tag->class = 'product-page-cart-message';
-			$div_tag->open();
-
-			if ($added > 0 && $saved > 0) {
-				echo SwatString::minimizeEntities(sprintf(Store::_(
-					'You have %s from this page in your cart and '.
-					'%s saved for later.'),
-					sprintf(Store::ngettext('one item', '%s items',
-						$added),
-						$locale->formatNumber($added)),
-					sprintf(Store::ngettext('one item', '%s items',
-						$saved),
-						$locale->formatNumber($saved))));
-
-			} elseif ($saved > 0) {
-				echo SwatString::minimizeEntities(sprintf(Store::ngettext(
+			if ($added > 0) {
+				$title = sprintf(Store::ngettext(
+					'You have one item from this page in your cart.',	
+					'You have %s items from this page in your cart.',
+					$added),
+					$locale->formatNumber($added));
+			} else {
+				$title = sprintf(Store::ngettext(
 					'You have one item from this page saved for later.',
 					'You have %s items from this page saved for later.',
 					$saved),
-					$locale->formatNumber($saved)));
-			} else {
-				echo SwatString::minimizeEntities(sprintf(Store::ngettext(
-					'You have one item from this page in your cart.',
-					'You have %s items from this page in your cart.',
-					$added),
-					$locale->formatNumber($added)));
+					$locale->formatNumber($saved));
 			}
-
-			echo ' ';
 
 			$a_tag = new SwatHtmlTag('a');
 			$a_tag->href = 'cart';
 			$a_tag->class = 'store-open-cart-link';
 			$a_tag->setContent(Store::_('View Details'));
-			$a_tag->display();
 
-			echo '.';
+			$seconday = '';
 
-			$div_tag->close();
+			if ($added > 0 && $saved > 0) {
+				$secondary = sprintf(Store::ngettext(
+					'You also have one item saved for later.',
+					'You also have %s items saved for later.',
+					$saved), $locale->formatNumber($saved)).
+					' '.$a_tag->__toString().'.';
+			} else {
+				$secondary = $a_tag->__toString().'.';
+			}
+
+			$cart_message = new SwatMessage($title, 'cart');
+			$cart_message->content_type = 'text/xml';
+			$cart_message->secondary_content = $secondary;
+
+			$message_display = new SwatMessageDisplay();
+			$message_display->add($cart_message);
+			ob_start();
+			$message_display->display();
 			$message = ob_get_clean();
 		}
 
