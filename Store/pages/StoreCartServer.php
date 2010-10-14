@@ -258,9 +258,13 @@ class StoreCartServer extends SiteXMLRPCServer
 		}
 
 		$item_count = count($this->app->cart->checkout->getAvailableEntries());
-		$items = sprintf('<span class="item-count"> (%s)</span>',
-			sprintf(Store::ngettext('%s item', '%s items', $item_count),
-			$locale->formatNumber($item_count)));
+		if ($item_count > 0) {
+			$items = sprintf('<span class="item-count"> (%s)</span>',
+				sprintf(Store::ngettext('%s item', '%s items', $item_count),
+				$locale->formatNumber($item_count)));
+		} else {
+			$items = '';
+		}
 
 		$h3_tag = new SwatHtmlTag('h3');
 		$h3_tag->setContent(
