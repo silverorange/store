@@ -25,6 +25,15 @@ class StoreCartLightbox extends SwatControl
 	public $class_name = 'StoreCartLightBox';
 
 	/*
+	 * Empty message
+	 *
+	 * Optional message to display when the cart is empty. 
+	 *
+	 * @var string
+	 */
+	public $empty_message = null;
+
+	/*
 	 * Override Message
 	 *
 	 * Optional message to override content of the lightbox. Useful for pages
@@ -89,9 +98,16 @@ class StoreCartLightbox extends SwatControl
 		$javascript = '';
 
 		if (!$translated) {
+			if ($this->empty_message === null) {
+				$h2_tag = new SwatHtmlTag('h2');
+				$h2_tag->setContent(Store::_('Your Shopping Cart is Empty'));
+				$empty_message = $h2_tag->__toString();
+			} else {
+				$empty_message = $this->empty_message;
+			}
+
 			$javascript.= sprintf("StoreCartLightBox.empty_message = %s;\n",
-				SwatString::quoteJavaScriptString(
-					Store::_('Your Shopping Cart is Empty')));
+				SwatString::quoteJavaScriptString($empty_message));
 
 			$javascript.= sprintf("StoreCartLightBox.loading_message = %s;\n",
 				SwatString::quoteJavaScriptString(Store::_('Loading…')));

@@ -64,6 +64,13 @@ StoreProductPage.prototype.init = function()
 
 		this.cart.entry_removed_event.subscribe(
 			entryRemovedCallback, this);
+
+		function cartEmptyCallback(type, args, that) {
+			that.updateCartMessage('');
+		}
+
+		this.cart.cart_empty_event.subscribe(
+			cartEmptyCallback, this);
 	}
 }
 
