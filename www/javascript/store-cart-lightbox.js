@@ -166,6 +166,7 @@ StoreCartLightBox.prototype.load = function(e)
 			['int', 'int', 'boolean']);
 
 		this.open('<h2>' + StoreCartLightBox.loading_message + '</h2>');
+		this.status = 'opening';
 	} else {
 		this.open(this.override_message);
 		this.status = 'open';
@@ -461,7 +462,7 @@ StoreCartLightBox.prototype.restoreButtonValue = function(button)
 
 StoreCartLightBox.prototype.handleWindowChange = function(contents)
 {
-	if (this.status == 'open') {
+	if (this.status != 'closed') {
 		this.position();
 	}
 }
