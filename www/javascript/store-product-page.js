@@ -158,7 +158,7 @@ StoreProductPage.prototype.getEntry = function(item_id)
 	if (parseInt(quantity) > 0) {
 		var entry = {};
 		entry.item_id = item_id;
-		entry.quantity = quantity;
+		entry.quantity = parseFloat(quantity);
 	} else {
 		var entry = null;
 	}
