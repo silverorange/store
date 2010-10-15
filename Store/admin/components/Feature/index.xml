@@ -56,14 +56,14 @@
 					<property name="title" translatable="yes">Start Date</property>
 					<object class="SwatDateCellRenderer">
 						<property name="date" type="data">start_date</property>
-						<property name="format">%Y-%m-%d</property>
+						<property name="format">yyyy-MM-dd</property>
 					</object>
 				</object>
 				<object class="SwatTableViewOrderableColumn" id="end_date">
 					<property name="title" translatable="yes">End Date</property>
 					<object class="SwatDateCellRenderer">
 						<property name="date" type="data">end_date</property>
-						<property name="format">%Y-%m-%d</property>
+						<property name="format">yyyy-MM-dd</property>
 					</object>
 				</object>
 				<object class="SwatTableViewOrderableColumn" id="region">

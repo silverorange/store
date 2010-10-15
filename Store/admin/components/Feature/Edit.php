@@ -130,9 +130,13 @@ class StoreFeatureEdit extends AdminDBEdit
 		$form = $this->ui->getWidget('edit_frame');
 		$form->subtitle = $this->feature->title;
 
-		$note = sprintf('%s/%s',
-			$this->app->default_time_zone->getShortName(),
-			$this->app->default_time_zone->getDSTShortName());
+		$abbreviations = SwatDate::getTimeZoneAbbreviation(
+			$this->app->default_time_zone);
+
+		$note = sprintf('%s%s',
+			$abbreviations['st'],
+			array_key_exists('dt', $abbreviations) ?
+				'/'.$abbreviations['dt'] : '');
 
 		$this->ui->getWidget('start_date_field')->note = $note;
 		$this->ui->getWidget('end_date_field')->note = $note;
