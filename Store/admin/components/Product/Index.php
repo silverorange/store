@@ -145,6 +145,13 @@ class StoreProductIndex extends AdminSearch
 			$this->ui->getWidget('remove_attributes_form_field');
 
 		$attributes_field->replicators = $replicators;
+
+		// don't allow queuing of attributes with dates in the past.
+		$now = new SwatDate();
+		$actions = $this->ui->getWidget('index_actions');
+		foreach ($actions->getDescendants('SwatDateEntry') as $entry) {
+			$entry->valid_range_start = $now;
+		};
 	}
 
 	// }}}
@@ -184,13 +191,37 @@ class StoreProductIndex extends AdminSearch
 	}
 
 	// }}}
+	// {{{ protected function quickSKUSearch()
+
+	protected function quickSKUSearch()
+	{
+		$search_item = $this->ui->getWidget('search_item');
+
+		$sql = sprintf('select id from Product
+			where id in (select product from Item where sku = %s)',
+			$this->app->db->quote($search_item->value, 'text'));
+
+		$products = SwatDB::query($this->app->db, $sql);
+
+		if (count($products) == 1) {
+			$product = $products->getFirst();
+			$this->app->relocate('Product/Details?id='.$product->id);
+		}
+	}
+
+	// }}}
 	// {{{ protected function processActions()
 
 	protected function processActions(SwatTableView $view, SwatActions $actions)
 	{
-		$item_list = array();
+		$flush_memcache = false;
+		$item_list      = array();
 		foreach ($view->getSelection() as $item)
 			$item_list[] = $this->app->db->quote($item, 'integer');
+
+		// if nothing is selected, we have no actions to process
+		if (count($item_list) == 0)
+			return;
 
 		switch ($actions->selected->id) {
 		case 'delete':
@@ -199,33 +230,13 @@ class StoreProductIndex extends AdminSearch
 			break;
 
 		case 'add_attributes' :
-			$attribute_array = array();
-			$attributes_field =
-				$this->ui->getWidget('attributes_form_field');
-
-			foreach ($attributes_field->replicators as $id => $title)
-				$attribute_array = array_merge($attribute_array,
-					$attributes_field->getWidget(
-						'attributes', $id)->values);
-
-			$this->addProductAttributes($view->getSelection(),
-				$attribute_array);
-
+			$flush_memcache = $this->processAddAttributes($view, $item_list);
 			break;
+
 		case 'remove_attributes_action' :
-			$attribute_array = array();
-			$attributes_field =
-				$this->ui->getWidget('remove_attributes_form_field');
-
-			foreach ($attributes_field->replicators as $id => $title)
-				$attribute_array = array_merge($attribute_array,
-					$attributes_field->getWidget(
-						'remove_attributes', $id)->values);
-
-			$this->removeProductAttributes($view->getSelection(),
-				$attribute_array);
-
+			$flush_memcache = $this->processRemoveAttributes($view, $item_list);
 			break;
+
 		case 'add_sale_discount' :
 			$sale_discount =
 				$this->ui->getWidget('sale_discount_flydown')->value;
@@ -248,6 +259,8 @@ class StoreProductIndex extends AdminSearch
 
 			$this->app->messages->add($message);
 
+			$flush_memcache = true;
+
 			break;
 		case 'remove_sale_discount' :
 			$num = SwatDB::queryOne($this->app->db, sprintf(
@@ -266,6 +279,8 @@ class StoreProductIndex extends AdminSearch
 					SwatString::numberFormat($num)));
 
 				$this->app->messages->add($message);
+
+				$flush_memcache = true;
 			} else {
 				$this->app->messages->add(new SwatMessage(Store::_(
 					'None of the items selected had a sale discount.')));
@@ -294,6 +309,8 @@ class StoreProductIndex extends AdminSearch
 					SwatString::numberFormat($num)));
 
 				$this->app->messages->add($message);
+
+				$flush_memcache = true;
 			}
 
 			break;
@@ -315,6 +332,8 @@ class StoreProductIndex extends AdminSearch
 					$num),
 					SwatString::numberFormat($num),
 					Store::_('minimum quantity sale group')));
+
+				$flush_memcache = true;
 			} else {
 				$message = new SwatMessage(Store::_('None of the items '.
 					'selected had a minimum quantity sale group.'));
@@ -325,106 +344,162 @@ class StoreProductIndex extends AdminSearch
 			break;
 		}
 
-		if (isset($this->app->memcache))
+		if ($flush_memcache === true && isset($this->app->memcache)) {
 			$this->app->memcache->flushNs('product');
+		}
 	}
 
 	// }}}
-	// {{{ protected function quickSKUSearch()
+	// {{{ protected function processAddAttributes()
 
-	protected function quickSKUSearch()
+	protected function processAddAttributes(SwatTableView $view,
+		array $products)
 	{
-		$search_item = $this->ui->getWidget('search_item');
+		$flush_memcache = false;
+		$attributes     = $this->getAttributeArray('attributes');
 
-		$sql = sprintf('select id from Product
-			where id in (select product from Item where sku = %s)',
-			$this->app->db->quote($search_item->value, 'text'));
+		if (count($attributes) == 0)
+			return $flush_memcache;
 
-		$products = SwatDB::query($this->app->db, $sql);
-
-		if (count($products) == 1) {
-			$product = $products->getFirst();
-			$this->app->relocate('Product/Details?id='.$product->id);
+		if ($this->ui->getWidget('attributes_start_date') instanceof SwatDate) {
+			$this->queueProductAttributes($products, $attributes, 'add');
+		} else {
+			$flush_memcache = $this->addProductAttributes($products,
+				$attributes);
 		}
+
+		return $flush_memcache;
+	}
+
+	// }}}
+	// {{{ protected function processRemoveAttributes()
+
+	protected function processRemoveAttributes(SwatTableView $view,
+		array $products)
+	{
+		$flush_memcache = false;
+		$attributes     = $this->getAttributeArray('remove_attributes');
+
+		if (count($attributes) == 0)
+			return $flush_memcache;
+
+		if ($this->ui->getWidget('remove_attributes_start_date')->value
+			instanceof SwatDate) {
+			$this->queueProductAttributes($products, $attributes, 'remove');
+		} else {
+			$flush_memcache = $this->removeProductAttributes($products,
+				$attributes);
+		}
+
+		return $flush_memcache;
+	}
+
+	// }}}
+	// {{{ protected function getAttributeArray()
+
+	protected function getAttributeArray($widget_title, $form_field_title = '')
+	{
+		$attribute_array = array();
+		if ($form_field_title == '')
+			$form_field_title = $widget_title.'_form_field';
+
+		$attributes_field = $this->ui->getWidget($form_field_title);
+
+		foreach ($attributes_field->replicators as $id => $title) {
+			foreach ($attributes_field->getWidget($widget_title, $id)->values as
+				$value) {
+				$attribute_array[] = $this->app->db->quote($value, 'integer');
+			}
+		}
+
+		return $attribute_array;
 	}
 
 	// }}}
 	// {{{ private function addProductAttributes()
 
-	private function addProductAttributes($products, $attributes)
+	private function addProductAttributes(array $products, array $attributes)
 	{
-		if (count($products) == 0 || count($attributes) == 0)
-			return;
-
-		$product_array = array();
-		$attribute_array = array();
-
-		foreach ($products as $product)
-			$product_array[] = $this->app->db->quote($product, 'integer');
-
-		foreach ($attributes as $attribute)
-			$attribute_array[] = $this->app->db->quote($attribute, 'integer');
+		$flush_memcache = false;
 
 		$sql = sprintf('delete from ProductAttributeBinding
 			where product in (%s) and attribute in (%s)',
-			implode(',', $product_array), implode(',', $attribute_array));
+			implode(',', $products), implode(',', $attributes));
 
-		SwatDB::exec($this->app->db, $sql);
+		$delete_count = SwatDB::exec($this->app->db, $sql);
 
 		$sql = sprintf('insert into ProductAttributeBinding
 			(product, attribute)
 			select Product.id, Attribute.id
 			from Product cross join Attribute
 			where Product.id in (%s) and Attribute.id in (%s)',
-			implode(',', $product_array), implode(',', $attribute_array));
+			implode(',', $products), implode(',', $attributes));
 
-		SwatDB::exec($this->app->db, $sql);
+		$add_count = SwatDB::exec($this->app->db, $sql);
 
-		$message = new SwatMessage(sprintf(
-			'%s %s been given %s %s.',
-			SwatString::numberFormat(count($product_array)),
-			Store::ngettext('product has', 'products have',
-				count($product_array)),
-			SwatString::numberFormat(count($attribute_array)),
-			Store::ngettext('atrribute', 'attributes',
-				count($attribute_array))));
+		if ($add_count != $delete_count) {
+			$flush_memcache = true;
+		}
+
+		// TODO: we could have better messages for this that gave accurate
+		// numbers of products updated, versus ones that already had said
+		// attributes.
+		$message = new SwatMessage(sprintf(Store::ngettext(
+			'One product has been given %2$s %3$s.',
+			'%1$s products have been given %2$s %3$s.', count($products)),
+			SwatString::numberFormat(count($products)),
+			SwatString::numberFormat(count($attributes)),
+			Store::ngettext('attribute', 'attributes',
+				count($attributes))));
 
 		$this->app->messages->add($message);
+
+		return $flush_memcache;
 	}
 
 	// }}}
 	// {{{ private function removeProductAttributes()
 
-	private function removeProductAttributes($products, $attributes)
+	private function removeProductAttributes(array $products, array $attributes)
 	{
-		if (count($products) == 0 || count($attributes) == 0)
-			return;
-
-		$product_array = array();
-		$attribute_array = array();
-
-		foreach ($products as $product)
-			$product_array[] = $this->app->db->quote($product, 'integer');
-
-		foreach ($attributes as $attribute)
-			$attribute_array[] = $this->app->db->quote($attribute, 'integer');
+		$flush_memcache = false;
 
 		$sql = sprintf('delete from ProductAttributeBinding
 			where product in (%s) and attribute in (%s)',
-			implode(',', $product_array), implode(',', $attribute_array));
+			implode(',', $products), implode(',', $attributes));
 
-		SwatDB::exec($this->app->db, $sql);
+		$count = SwatDB::exec($this->app->db, $sql);
 
-		$message = new SwatMessage(sprintf(
-			'%s %s had %s %s removed.',
-			SwatString::numberFormat(count($product_array)),
-			Store::ngettext('product has', 'products have',
-				count($product_array)),
-			SwatString::numberFormat(count($attribute_array)),
-			Store::ngettext('atrribute', 'attributes',
-				count($attribute_array))));
+		if ($count > 0) {
+			$flush_memcache = true;
+
+			// TODO: we could have better messages for this that gave accurate
+			// numbers of products updated, versus ones that already had said
+			// attributes.
+			$message = new SwatMessage(sprintf(Store::ngettext(
+				'One product has had %2$s %3$s removed.',
+				'%1$s products have had %2$s %3$s removed.', count($products)),
+				SwatString::numberFormat(count($products)),
+				SwatString::numberFormat(count($attributes)),
+				Store::ngettext('attribute', 'attributes',
+					count($attributes))));
+		} else {
+			$message = new SwatMessage(Store::_(
+				'None of the products selected had attributes to remove.'));
+		}
 
 		$this->app->messages->add($message);
+
+		return $flush_memcache;
+	}
+
+	// }}}
+	// {{{ private function queueProductAttributes()
+
+	private function queueProductAttributes(array $products, array $attributes,
+		$queue_action)
+	{
+		// TODO
 	}
 
 	// }}}
