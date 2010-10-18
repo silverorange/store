@@ -178,55 +178,80 @@ StoreProductPage.prototype.getEntry = function(item_id)
 
 StoreProductPage.prototype.updateCartMessage = function(response)
 {
-	var cart_message = response.cart_message;
 	var div = document.getElementById(this.cart_message_id);
 
-	if (cart_message) {
+	if (response.cart_message) {
 		if (div.innerHTML == '') {
-			YAHOO.util.Dom.setStyle(div, 'opacity', 0);
-			YAHOO.util.Dom.setStyle(div, 'height', 0);
-
-			var animation = new YAHOO.util.Anim(
-				div,
-				{
-					opacity: { to: 1 },
-					height:  { to: 60 },
-				},
-				0.3);
-
-			animation.onComplete.subscribe(function() {
-				div.innerHTML = cart_message;
-			});
-
-			animation.animate();
-			
+			this.openCartMessage(response.cart_message);
 		} else {
-			div.innerHTML = cart_message;
+			div.innerHTML = response.cart_message;
 		}
 	} else if (div.innerHTML != '') {
-		var animation = new YAHOO.util.Anim(
-			div,
-			{
-				opacity: { to: 0 },
-				height:  { to: 0 }
-			},
-			0.3);
-
-		animation.onComplete.subscribe(function() {
-			div.innerHTML = '';
-		});
-
-		animation.animate();
+		this.closeCartMessage();
 	}
+}
 
-	var cart_links = YAHOO.util.Dom.getElementsByClassName(
-		'store-open-cart-link', 'a',
-		document.getElementById(this.cart_message_id));
+// }}}
+// {{{ StoreProductPage.prototype.openCartMessage
 
-	if (cart_links.length > 0) {
-		YAHOO.util.Event.on(cart_links, 'click',
-			this.cart.load, this.cart, true);
-	}
+StoreProductPage.prototype.openCartMessage = function(cart_message)
+{
+	var div = document.getElementById(this.cart_message_id);
+
+	YAHOO.util.Dom.setStyle(div, 'opacity', 0);
+	YAHOO.util.Dom.setStyle(div, 'height', 0);
+
+	var hidden_div = document.createElement('div');
+	hidden_div.innerHTML = cart_message;
+	div.appendChild(hidden_div);
+	var new_height = hidden_div.offsetHeight;
+	div.removeChild(hidden_div);
+
+	var animation = new YAHOO.util.Anim(
+		div,
+		{
+			opacity: { to: 1 },
+			height:  { to: new_height },
+		},
+		0.3);
+
+	var that = this;
+
+	animation.onComplete.subscribe(function() {
+		div.innerHTML = cart_message;
+
+		var cart_links = YAHOO.util.Dom.getElementsByClassName(
+			'store-open-cart-link', 'a', div);
+
+		if (cart_links.length > 0) {
+			YAHOO.util.Event.on(cart_links, 'click',
+				that.cart.load, that.cart, true);
+		}
+	});
+
+	animation.animate();
+}
+
+// }}}
+// {{{ StoreProductPage.prototype.closeCartMessage
+
+StoreProductPage.prototype.closeCartMessage = function()
+{
+	var div = document.getElementById(this.cart_message_id);
+
+	var animation = new YAHOO.util.Anim(
+		div,
+		{
+			opacity: { to: 0 },
+			height:  { to: 0 }
+		},
+		0.3);
+
+	animation.onComplete.subscribe(function() {
+		div.innerHTML = '';
+	});
+
+	animation.animate();
 }
 
 // }}}
