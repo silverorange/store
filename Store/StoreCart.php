@@ -616,7 +616,7 @@ abstract class StoreCart extends SwatObject
 			foreach ($this->entries as $entry) {
 				$key = $entry->item->product->id;
 
-				if (!isset($max_ids[$entry->item->product->id])) {
+				if (!isset($max_ids[$key])) {
 					$max_ids[$key] = $entry->id;
 				} else {
 					$max_ids[$key] = max($entry->id, $max_ids[$key]);
