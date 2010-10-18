@@ -1,12 +1,13 @@
 #store_product_cart {
 	display: none;
-	position: fixed;
+	position: absolute;
 	top: -12px;
 	right: 10px;
 	width: 378px;
 	text-align: left;
 	z-index: 1000;
 }
+body > #store_product_cart { position: fixed; }
 
 #store_product_cart_body {
 	background: url(../images/mini-cart-background.png) repeat-y -378px 0;
