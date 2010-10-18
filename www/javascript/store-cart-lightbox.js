@@ -70,7 +70,7 @@ StoreCartLightBox.prototype.init = function()
 			YAHOO.util.Event.stopPropagation(e);
 	});
 
-	YAHOO.util.Event.on(window, 'click', this.clickClose, this, true);
+	YAHOO.util.Event.on(document, 'click', this.clickClose, this, true);
 	YAHOO.util.Event.on(window, 'resize', this.handleWindowChange, this, true);
 }
 
