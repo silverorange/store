@@ -561,7 +561,7 @@ StoreCartLightBox.prototype.updateItemCount = function(item_count)
 StoreCartLightBox.prototype.updateCartLink = function(link)
 {
 	var cart_link = document.getElementById(this.cart_header_id);
-	cart_link.innerHTML = response.cart_link;
+	cart_link.innerHTML = link;
 }
 
 // }}}
