@@ -49,14 +49,32 @@
 				</widget>
 				<widget class="SwatActionItem" id="add_attributes">
 					<property name="title" translatable="yes">add product attributes…</property>
-					<widget class="SwatReplicableFormField" id="attributes_form_field">
-						<widget class="SwatCheckboxList" id="attributes" />
+					<widget class="SwatContainer">
+						<widget class="SwatReplicableFormField" id="attributes_form_field">
+							<widget class="SwatCheckboxList" id="attributes" />
+						</widget>
+						<widget class="SwatFormField">
+							<property name="title" translatable="yes">add product attributes on</property>
+							<property name="note" translatable="yes">Leave blank to immediately add selected product attributes.</property>
+							<widget class="SwatDateEntry" id="attributes_action_date">
+								<property name="display_parts" type="constant">YEAR|MONTH|DAY|TIME|CALENDAR</property>
+							</widget>
+						</widget>
 					</widget>
 				</widget>
 				<widget class="SwatActionItem" id="remove_attributes_action">
 					<property name="title" translatable="yes">remove product attributes…</property>
-					<widget class="SwatReplicableFormField" id="remove_attributes_form_field">
-						<widget class="SwatCheckboxList" id="remove_attributes" />
+					<widget class="SwatContainer">
+						<widget class="SwatReplicableFormField" id="remove_attributes_form_field">
+							<widget class="SwatCheckboxList" id="remove_attributes" />
+						</widget>
+						<widget class="SwatFormField">
+						<property name="title" translatable="yes">remove product attributes on</property>
+							<property name="note" translatable="yes">Leave blank to immediately remove selected product attributes.</property>
+							<widget class="SwatDateEntry" id="remove_attributes_action_date">
+								<property name="display_parts" type="constant">YEAR|MONTH|DAY|TIME|CALENDAR</property>
+							</widget>
+						</widget>
 					</widget>
 				</widget>
 				<widget class="SwatActionItem" id="add_sale_discount">
