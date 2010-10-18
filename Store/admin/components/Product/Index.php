@@ -146,11 +146,13 @@ class StoreProductIndex extends AdminSearch
 
 		$attributes_field->replicators = $replicators;
 
-		// don't allow queuing of attributes with dates in the past.
-		$now = new SwatDate();
+		// TODO: if/when SwatActionItems can have better error handling on
+		// embedded widgets, make the queueing actions only work in the future.
+		// For now, make the valid date range sane, and if someone mistaken sets
+		// a date in the past, the system script will do it anyhow.
 		$actions = $this->ui->getWidget('index_actions');
 		foreach ($actions->getDescendants('SwatDateEntry') as $entry) {
-			$entry->valid_range_start = $now;
+			$entry->setValidRange(0, 1);
 		};
 	}
 
@@ -361,8 +363,10 @@ class StoreProductIndex extends AdminSearch
 		if (count($attributes) == 0)
 			return $flush_memcache;
 
-		if ($this->ui->getWidget('attributes_start_date') instanceof SwatDate) {
-			$this->queueProductAttributes($products, $attributes, 'add');
+		if ($this->ui->getWidget('attributes_action_date')->value
+			instanceof SwatDate) {
+			$this->queueProductAttributes($products, $attributes,
+				$this->ui->getWidget('attributes_action_date')->value, 'add');
 		} else {
 			$flush_memcache = $this->addProductAttributes($products,
 				$attributes);
@@ -383,9 +387,11 @@ class StoreProductIndex extends AdminSearch
 		if (count($attributes) == 0)
 			return $flush_memcache;
 
-		if ($this->ui->getWidget('remove_attributes_start_date')->value
+		if ($this->ui->getWidget('remove_attributes_action_date')->value
 			instanceof SwatDate) {
-			$this->queueProductAttributes($products, $attributes, 'remove');
+			$this->queueProductAttributes($products, $attributes,
+				$this->ui->getWidget('remove_attributes_action_date')->value,
+				'remove');
 		} else {
 			$flush_memcache = $this->removeProductAttributes($products,
 				$attributes);
@@ -445,8 +451,8 @@ class StoreProductIndex extends AdminSearch
 		// numbers of products updated, versus ones that already had said
 		// attributes.
 		$message = new SwatMessage(sprintf(Store::ngettext(
-			'One product has been given %2$s %3$s.',
-			'%1$s products have been given %2$s %3$s.', count($products)),
+			'One product has had %2$s %3$s added.',
+			'%1$s products has had %2$s %3$s added.', count($products)),
 			SwatString::numberFormat(count($products)),
 			SwatString::numberFormat(count($attributes)),
 			Store::ngettext('attribute', 'attributes',
@@ -497,9 +503,37 @@ class StoreProductIndex extends AdminSearch
 	// {{{ private function queueProductAttributes()
 
 	private function queueProductAttributes(array $products, array $attributes,
-		$queue_action)
+		SwatDate $action_date, $queue_action)
 	{
-		// TODO
+		// build message first to avoid converting the date to UTC and then back
+		$message = new SwatMessage(sprintf(Store::ngettext(
+			'One product will have %2$s %3$s %4$s on %5$s at %6$s.',
+			'%1$s products will have %2$s %3$s %4$s on %5$s at %6$s.',
+				count($products)),
+			SwatString::numberFormat(count($products)),
+			SwatString::numberFormat(count($attributes)),
+			Store::ngettext('attribute', 'attributes',
+				count($attributes)),
+			($queue_action == 'add') ? Store::_('added') : Store::_('removed'),
+			$action_date->formatLikeIntl(SwatDate::DF_DATE),
+			$action_date->formatLikeIntl(SwatDate::DF_TIME)));
+
+		$action_date->setTZ($this->app->default_time_zone);
+		$action_date->toUTC();
+
+		$sql = sprintf('insert into ProductAttributeBindingQueue
+			(product, attribute, queue_action, action_date)
+			select Product.id, Attribute.id, %s, %s
+			from Product cross join Attribute
+			where Product.id in (%s) and Attribute.id in (%s)',
+			$this->app->db->quote($queue_action, 'text'),
+			$this->app->db->quote($action_date, 'date'),
+			implode(',', $products),
+			implode(',', $attributes));
+
+		SwatDB::exec($this->app->db, $sql);
+
+		$this->app->messages->add($message);
 	}
 
 	// }}}
