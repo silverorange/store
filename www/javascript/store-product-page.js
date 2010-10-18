@@ -207,18 +207,17 @@ StoreProductPage.prototype.openCartMessage = function(cart_message)
 	var new_height = hidden_div.offsetHeight;
 	div.removeChild(hidden_div);
 
-	var animation = new YAHOO.util.Anim(
-		div,
-		{
-			opacity: { to: 1 },
-			height:  { to: new_height },
-		},
-		0.3);
+	var height_animation = new YAHOO.util.Anim(
+		div, { height: { to: new_height }}, 0.3);
+
+	var opacity_animation = new YAHOO.util.Anim(
+		div, { opacity: { to: 1 }}, 0.3);
 
 	var that = this;
 
-	animation.onComplete.subscribe(function() {
+	height_animation.onComplete.subscribe(function() {
 		div.innerHTML = cart_message;
+		opacity_animation.animate();
 
 		var cart_links = YAHOO.util.Dom.getElementsByClassName(
 			'store-open-cart-link', 'a', div);
@@ -229,7 +228,7 @@ StoreProductPage.prototype.openCartMessage = function(cart_message)
 		}
 	});
 
-	animation.animate();
+	height_animation.animate();
 }
 
 // }}}
@@ -239,19 +238,21 @@ StoreProductPage.prototype.closeCartMessage = function()
 {
 	var div = document.getElementById(this.cart_message_id);
 
-	var animation = new YAHOO.util.Anim(
-		div,
-		{
-			opacity: { to: 0 },
-			height:  { to: 0 }
-		},
-		0.3);
+	var fade_animation = new YAHOO.util.Anim(
+		div, { opacity: { to: 0 }}, 0.3);
 
-	animation.onComplete.subscribe(function() {
+	var height_animation = new YAHOO.util.Anim(
+		div, { height: { to: 0 }}, 0.3);
+
+	fade_animation.onComplete.subscribe(function() {
+		height_animation.animate();
+	});
+
+	height_animation.onComplete.subscribe(function() {
 		div.innerHTML = '';
 	});
 
-	animation.animate();
+	fade_animation.animate();
 }
 
 // }}}
