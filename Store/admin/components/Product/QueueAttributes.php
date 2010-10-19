@@ -192,12 +192,12 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 		ob_start();
 		printf('<h3>%s</h3>', $this->getTitle());
 
-		$message = sprintf('<p>%s</p>', ngettext(
-			ngettext(
+		$message = sprintf('<p>%s</p>', Store::ngettext(
+			Store::ngettext(
 				'The attribute <em>%s</em> will be %s the following product:',
 				'The attribute <em>%s</em> will be %s the following products:',
 				count($this->items)),
-			ngettext(
+			Store::ngettext(
 				'The attributes <em>%s</em> will be %s the following product:',
 				'The attributes <em>%s</em> will be %s the following products:',
 				count($this->items)),
@@ -205,7 +205,8 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 
 		printf($message,
 			implode(', ', $this->getAttributeTitles()),
-			($this->action == 'add') ? 'added to' : 'removed from');
+			($this->action == 'add') ? Store::_('added to') :
+				Store::_('removed from'));
 
 		echo '<ul>';
 		foreach ($this->getProductTitles() as $id => $title) {
@@ -221,9 +222,9 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 	protected function getTitle()
 	{
 		if ($this->action == 'add') {
-			$title = 'Queue Product Attribute Addition';
+			$title = Store::_('Queue Product Attribute Addition');
 		} else {
-			$title = 'Queue Product Attribute Removal';
+			$title = Store::_('Queue Product Attribute Removal');
 		}
 
 		return $title;
