@@ -263,6 +263,8 @@ class StoreProductPage extends StorePage
 					$status = $this->cart_processor->addEntryToCart($entry);
 				}
 
+				$this->app->cart->save();
+
 				$message = $this->cart_processor->getUpdatedCartMessage();
 				if ($message !== null) {
 					$this->app->messages->add($message);
