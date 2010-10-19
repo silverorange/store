@@ -192,17 +192,21 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 		ob_start();
 		printf('<h3>%s</h3>', $this->getTitle());
 
-		$message = sprintf('<p>%s</p>', Store::ngettext(
-			Store::ngettext(
+		// You unfortunately can't nest ngettext calls. Nor does there appear to
+		// be a better way to do a sentence with multiple plural options.
+		if (count($this->attributes) == 1) {
+			$message = Store::ngettext(
 				'The attribute <em>%s</em> will be %s the following product:',
 				'The attribute <em>%s</em> will be %s the following products:',
-				count($this->items)),
-			Store::ngettext(
+				count($this->items));
+		} else {
+			$message = Store::ngettext(
 				'The attributes <em>%s</em> will be %s the following product:',
 				'The attributes <em>%s</em> will be %s the following products:',
-				count($this->items)),
-			count($this->attributes)));
+				count($this->items));
+		}
 
+		$message = sprintf('<p>%s</p>', $message);
 		printf($message,
 			implode(', ', $this->getAttributeTitles()),
 			($this->action == 'add') ? Store::_('added to') :

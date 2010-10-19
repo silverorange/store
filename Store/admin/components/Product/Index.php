@@ -419,15 +419,26 @@ class StoreProductIndex extends AdminSearch
 		}
 
 		// TODO: we could have better messages for this that gave accurate
-		// numbers of products updated, versus ones that already had said
-		// attributes.
-		$message = new SwatMessage(sprintf(Store::ngettext(
-			'One product has had %2$s %3$s added.',
-			'%1$s products has had %2$s %3$s added.', count($products)),
+		// numbers of products and attributes updated, versus just the number of
+		// each passed in.
+
+		// You unfortunately can't nest ngettext calls. Nor does there appear to
+		// be a better way to do a sentence with multiple plural options.
+		if (count($attributes) == 1) {
+			$message_text = Store::ngettext(
+				'One product has had one product attribute added.',
+				'%1$s products have had one product attribute added.',
+				count($products));
+		} else {
+			$message_text = Store::ngettext(
+				'One product has had %2$s product attributes added.',
+				'%1$s products have had %2$s product attributes added.',
+				count($products));
+		}
+
+		$message = new SwatMessage(sprintf($message_text,
 			SwatString::numberFormat(count($products)),
-			SwatString::numberFormat(count($attributes)),
-			Store::ngettext('attribute', 'attributes',
-				count($attributes))));
+			SwatString::numberFormat(count($attributes))));
 
 		$this->app->messages->add($message);
 
@@ -451,15 +462,27 @@ class StoreProductIndex extends AdminSearch
 			$flush_memcache = true;
 
 			// TODO: we could have better messages for this that gave accurate
-			// numbers of products updated, versus ones that already had said
-			// attributes.
-			$message = new SwatMessage(sprintf(Store::ngettext(
-				'One product has had %2$s %3$s removed.',
-				'%1$s products have had %2$s %3$s removed.', count($products)),
+			// numbers of products attributes removed, versus just the number
+			// of each passed in.
+
+			// You unfortunately can't nest ngettext calls. Nor does there
+			// appear to be a better way to do a sentence with multiple plural
+			// options.
+			if (count($attributes) == 1) {
+				$message_text = Store::ngettext(
+					'One product has had one product attribute removed.',
+					'%1$s products have had one product attribute removed.',
+					count($products));
+			} else {
+				$message_text = Store::ngettext(
+					'One product has had %2$s product attributes removed.',
+					'%1$s products have had %2$s product attributes removed.',
+					count($products));
+			}
+
+			$message = new SwatMessage(sprintf($message_text,
 				SwatString::numberFormat(count($products)),
-				SwatString::numberFormat(count($attributes)),
-				Store::ngettext('attribute', 'attributes',
-					count($attributes))));
+				SwatString::numberFormat(count($attributes))));
 		} else {
 			$message = new SwatMessage(Store::_(
 				'None of the products selected had attributes to remove.'));
