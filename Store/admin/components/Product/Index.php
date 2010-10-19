@@ -232,11 +232,40 @@ class StoreProductIndex extends AdminSearch
 			break;
 
 		case 'add_attributes' :
-			$flush_memcache = $this->processAddAttributes($view, $item_list);
+			$attributes = $this->getAttributeArray('attributes');
+
+			if (count($attributes) == 0)
+				break;
+
+			if ($this->ui->getWidget('attributes_queue')->value === true) {
+				$this->app->replacePage('Product/QueueAttributes');
+				$this->app->getPage()->setItems($view->getSelection());
+				$this->app->getPage()->setAttributes($attributes);
+				$this->app->getPage()->setAction('add');
+				break;
+			} else {
+				$flush_memcache = $this->addProductAttributes($item_list,
+					$attributes);
+			}
 			break;
 
 		case 'remove_attributes_action' :
-			$flush_memcache = $this->processRemoveAttributes($view, $item_list);
+			$attributes = $this->getAttributeArray('remove_attributes');
+
+			if (count($attributes) == 0)
+				break;
+
+			if ($this->ui->getWidget('remove_attributes_queue')->value ===
+				true) {
+				$this->app->replacePage('Product/QueueAttributes');
+				$this->app->getPage()->setItems($view->getSelection());
+				$this->app->getPage()->setAttributes($attributes);
+				$this->app->getPage()->setAction('remove');
+				break;
+			} else {
+				$flush_memcache = $this->removeProductAttributes($item_list,
+					$attributes);
+			}
 			break;
 
 		case 'add_sale_discount' :
@@ -352,55 +381,6 @@ class StoreProductIndex extends AdminSearch
 	}
 
 	// }}}
-	// {{{ protected function processAddAttributes()
-
-	protected function processAddAttributes(SwatTableView $view,
-		array $products)
-	{
-		$flush_memcache = false;
-		$attributes     = $this->getAttributeArray('attributes');
-
-		if (count($attributes) == 0)
-			return $flush_memcache;
-
-		if ($this->ui->getWidget('attributes_action_date')->value
-			instanceof SwatDate) {
-			$this->queueProductAttributes($products, $attributes,
-				$this->ui->getWidget('attributes_action_date')->value, 'add');
-		} else {
-			$flush_memcache = $this->addProductAttributes($products,
-				$attributes);
-		}
-
-		return $flush_memcache;
-	}
-
-	// }}}
-	// {{{ protected function processRemoveAttributes()
-
-	protected function processRemoveAttributes(SwatTableView $view,
-		array $products)
-	{
-		$flush_memcache = false;
-		$attributes     = $this->getAttributeArray('remove_attributes');
-
-		if (count($attributes) == 0)
-			return $flush_memcache;
-
-		if ($this->ui->getWidget('remove_attributes_action_date')->value
-			instanceof SwatDate) {
-			$this->queueProductAttributes($products, $attributes,
-				$this->ui->getWidget('remove_attributes_action_date')->value,
-				'remove');
-		} else {
-			$flush_memcache = $this->removeProductAttributes($products,
-				$attributes);
-		}
-
-		return $flush_memcache;
-	}
-
-	// }}}
 	// {{{ protected function getAttributeArray()
 
 	protected function getAttributeArray($widget_title, $form_field_title = '')
@@ -497,43 +477,6 @@ class StoreProductIndex extends AdminSearch
 		$this->app->messages->add($message);
 
 		return $flush_memcache;
-	}
-
-	// }}}
-	// {{{ private function queueProductAttributes()
-
-	private function queueProductAttributes(array $products, array $attributes,
-		SwatDate $action_date, $queue_action)
-	{
-		// build message first to avoid converting the date to UTC and then back
-		$message = new SwatMessage(sprintf(Store::ngettext(
-			'One product will have %2$s %3$s %4$s on %5$s at %6$s.',
-			'%1$s products will have %2$s %3$s %4$s on %5$s at %6$s.',
-				count($products)),
-			SwatString::numberFormat(count($products)),
-			SwatString::numberFormat(count($attributes)),
-			Store::ngettext('attribute', 'attributes',
-				count($attributes)),
-			($queue_action == 'add') ? Store::_('added') : Store::_('removed'),
-			$action_date->formatLikeIntl(SwatDate::DF_DATE),
-			$action_date->formatLikeIntl(SwatDate::DF_TIME)));
-
-		$action_date->setTZ($this->app->default_time_zone);
-		$action_date->toUTC();
-
-		$sql = sprintf('insert into ProductAttributeBindingQueue
-			(product, attribute, queue_action, action_date)
-			select Product.id, Attribute.id, %s, %s
-			from Product cross join Attribute
-			where Product.id in (%s) and Attribute.id in (%s)',
-			$this->app->db->quote($queue_action, 'text'),
-			$this->app->db->quote($action_date, 'date'),
-			implode(',', $products),
-			implode(',', $attributes));
-
-		SwatDB::exec($this->app->db, $sql);
-
-		$this->app->messages->add($message);
 	}
 
 	// }}}
