@@ -145,15 +145,6 @@ class StoreProductIndex extends AdminSearch
 			$this->ui->getWidget('remove_attributes_form_field');
 
 		$attributes_field->replicators = $replicators;
-
-		// TODO: if/when SwatActionItems can have better error handling on
-		// embedded widgets, make the queueing actions only work in the future.
-		// For now, make the valid date range sane, and if someone mistaken sets
-		// a date in the past, the system script will do it anyhow.
-		$actions = $this->ui->getWidget('index_actions');
-		foreach ($actions->getDescendants('SwatDateEntry') as $entry) {
-			$entry->setValidRange(0, 1);
-		};
 	}
 
 	// }}}
