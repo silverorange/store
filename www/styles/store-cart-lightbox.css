@@ -53,6 +53,7 @@ body > #store_product_cart { position: fixed; }
 	max-height: 300px;
 	overflow: auto;
 	border-top: 1px solid #dfd5c3;
+	border-bottom: 1px solid #dfd5c3;
 	margin: 15px 0 10px 0;
 }
 
@@ -66,6 +67,10 @@ body > #store_product_cart { position: fixed; }
 
 #store_product_cart #cart_view.swat-table-view tr {
 	border-bottom: 1px solid #dfd5c3;
+}
+
+#store_product_cart #cart_view.swat-table-view tr:last-child {
+	border-bottom: 0;
 }
 
 #store_product_cart .swat-table-view .swat-table-view-group {
