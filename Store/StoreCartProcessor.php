@@ -97,11 +97,13 @@ class StoreCartProcessor extends SwatObject
 
 		if ($entry->item->hasAvailableStatus()) {
 			$entry->item = $entry->item->id;
-			if ($this->app->cart->checkout->addEntry($entry) !== null)
+			if ($this->app->cart->checkout->addEntry($entry) !== null) {
 				$status = self::ENTRY_ADDED;
+			}
 		} else {
-			if ($this->app->cart->saved->addEntry($entry) !== null)
+			if ($this->app->cart->saved->addEntry($entry) !== null) {
 				$status = self::ENTRY_SAVED;
+			}
 		}
 
 		$this->entries_added[] = array('entry' => $entry, 'status' => $status);
