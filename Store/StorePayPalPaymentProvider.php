@@ -914,16 +914,15 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 		$details['CreditCardNumber'] = $card_number;
 
-		$details['ExpMonth'] = $payment_method->card_expiry->format('%m');
-		$details['ExpYear']  = $payment_method->card_expiry->format('%Y');
+		$expiry = $payment_method->card_expiry;
+		$details['ExpMonth'] = $expiry->formatLikeIntl('MM');
+		$details['ExpYear']  = $expiry->formatLikeIntl('yyyy');
 		$details['CVV2']     = $card_verification_value;
 
 		if ($payment_method->card_inception !== null) {
-			$details['StartMonth'] =
-				$payment_method->card_inception->format('%m');
-
-			$details['StartYear'] =
-				$payment_method->card_inception->format('%Y');
+			$inception = $payment_method->card_inception;
+			$details['StartMonth'] = $inception->formatLikeIntl('MM');
+			$details['StartYear']  = $inception->formatLikeIntl('yyyy');
 		}
 
 		if ($payment_method->card_issue_number != '') {

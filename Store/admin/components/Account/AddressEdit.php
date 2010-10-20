@@ -161,7 +161,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 
 		if ($this->id === null) {
 			$this->fields[] = 'date:createdate';
-			$date = new Date();
+			$date = new SwatDate();
 			$date->toUTC();
 			$values['createdate'] = $date->getDate();
 

@@ -477,7 +477,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 
 		$card_holder = substr($payment_method->card_fullname, 0, 50);
 		$card_number = substr($card_number, 0, 20);
-		$expiry_date = $payment_method->card_expiry->format('%m%y');
+		$expiry_date = $payment_method->card_expiry->formatLikeIntl('MMyy');
 
 		$payment_type_map = $this->getPaymentTypeMap();
 		if (array_key_exists($payment_type->shortname, $payment_type_map))
@@ -494,7 +494,9 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 
 		// Start date is required for Solo, Switch and Amex
 		if (in_array($card_type, array('SWITCH', 'SOLO', 'AMEX'))) {
-			$start_date = $payment_method->card_inception->format('%m%y');
+			$start_date =
+				$payment_method->card_inception->formatLikeIntl('MMyy');
+
 			$fields['StartDate'] = $start_date;
 		}
 

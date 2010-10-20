@@ -4,8 +4,8 @@ require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'Store/dataobjects/StoreCategory.php';
 require_once 'NateGoSearch/NateGoSearch.php';
+require_once 'Swat/SwatDate.php';
 require_once 'SwatDB/SwatDB.php';
-require_once 'Date.php';
 
 /**
  * Edit page for Categories
@@ -19,6 +19,11 @@ class StoreCategoryEdit extends AdminDBEdit
 	// {{{ protected properties
 
 	protected $ui_xml = 'Store/admin/components/Category/edit.xml';
+
+	/**
+	 * @var StoreCategory
+	 */
+	protected $category;
 
 	// }}}
 	// {{{ private properties
@@ -107,7 +112,7 @@ class StoreCategoryEdit extends AdminDBEdit
 		$this->updateCategory();
 
 		if ($this->id === null) {
-			$date = new Date();
+			$date = new SwatDate();
 			$date->toUTC();
 			$this->category->createdate = $date->getDate();
 
