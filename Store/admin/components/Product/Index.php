@@ -401,7 +401,8 @@ class StoreProductIndex extends AdminSearch
 
 		$sql = sprintf('delete from ProductAttributeBinding
 			where product in (%s) and attribute in (%s)',
-			implode(',', $products), implode(',', $attributes));
+			implode(',', $products),
+			implode(',', $attributes));
 
 		$delete_count = SwatDB::exec($this->app->db, $sql);
 
@@ -410,7 +411,8 @@ class StoreProductIndex extends AdminSearch
 			select Product.id, Attribute.id
 			from Product cross join Attribute
 			where Product.id in (%s) and Attribute.id in (%s)',
-			implode(',', $products), implode(',', $attributes));
+			implode(',', $products),
+			implode(',', $attributes));
 
 		$add_count = SwatDB::exec($this->app->db, $sql);
 
@@ -454,7 +456,8 @@ class StoreProductIndex extends AdminSearch
 
 		$sql = sprintf('delete from ProductAttributeBinding
 			where product in (%s) and attribute in (%s)',
-			implode(',', $products), implode(',', $attributes));
+			implode(',', $products),
+			implode(',', $attributes));
 
 		$count = SwatDB::exec($this->app->db, $sql);
 
