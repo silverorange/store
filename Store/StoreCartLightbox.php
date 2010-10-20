@@ -72,6 +72,9 @@ class StoreCartLightbox extends SwatControl
 		$this->addJavaScript('packages/swat/javascript/swat-table-view.js',
 			Swat::PACKAGE_ID);
 
+		$this->addStyleSheet('packages/swat/styles/swat-table-view.css',
+			Swat::PACKAGE_ID);
+
 		$this->addJavascript('packages/store/javascript/store-cart-lightbox.js',
 			Store::PACKAGE_ID);
 
