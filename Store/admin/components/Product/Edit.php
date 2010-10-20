@@ -4,12 +4,12 @@ require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'Admin/exceptions/AdminNoAccessException.php';
 require_once 'NateGoSearch/NateGoSearch.php';
+require_once 'Swat/SwatDate.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Store/dataobjects/StoreProduct.php';
 require_once 'Store/dataobjects/StoreAttributeTypeWrapper.php';
 require_once 'Store/dataobjects/StoreAttributeWrapper.php';
 require_once 'Store/StoreCatalogSelector.php';
-require_once 'Date.php';
 
 /**
  * Edit page for Products
@@ -226,7 +226,7 @@ class StoreProductEdit extends AdminDBEdit
 			'bodytext', 'keywords'));
 
 		if ($this->id === null) {
-			$now = new Date();
+			$now = new SwatDate();
 			$now->toUTC();
 			$this->product->createdate = $now->getDate();
 		}
