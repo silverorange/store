@@ -185,6 +185,7 @@ StoreProductPage.prototype.updateCartMessage = function(response)
 			this.openCartMessage(response.cart_message);
 		} else {
 			div.innerHTML = response.cart_message;
+			this.addCartMessageEvents(div);
 		}
 	} else if (div.innerHTML != '') {
 		this.closeCartMessage();
@@ -218,14 +219,7 @@ StoreProductPage.prototype.openCartMessage = function(cart_message)
 	height_animation.onComplete.subscribe(function() {
 		div.innerHTML = cart_message;
 		opacity_animation.animate();
-
-		var cart_links = YAHOO.util.Dom.getElementsByClassName(
-			'store-open-cart-link', 'a', div);
-
-		if (cart_links.length > 0) {
-			YAHOO.util.Event.on(cart_links, 'click',
-				that.cart.load, that.cart, true);
-		}
+		that.addCartMessageEvents(div);
 	});
 
 	height_animation.animate();
@@ -253,6 +247,20 @@ StoreProductPage.prototype.closeCartMessage = function()
 	});
 
 	fade_animation.animate();
+}
+
+// }}}
+// {{{ StoreProductPage.prototype.addCartMessageEvents
+
+StoreProductPage.prototype.addCartMessageEvents = function(div)
+{
+	var cart_links = YAHOO.util.Dom.getElementsByClassName(
+		'store-open-cart-link', 'a', div);
+
+	if (cart_links.length > 0) {
+		YAHOO.util.Event.on(cart_links, 'click',
+			this.cart.load, this.cart, true);
+	}
 }
 
 // }}}
