@@ -7,7 +7,7 @@ require_once 'Store/StoreFroogleFeedEntry.php';
  * A class for constructing Froogle Atom feeds
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2010 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreFroogleFeed extends AtomFeed
@@ -42,22 +42,25 @@ class StoreFroogleFeed extends AtomFeed
 	/**
 	 * Get date node
 	 */
-	public static function getDateNode($document, $name, $date, $name_space = null)
+	public static function getDateNode($document, $name, HotDateTime $date,
+		$name_space = null)
 	{
 		if ($name == 'expiration_date') {
-			if ($name_space !== null)
+			if ($name_space !== null) {
 				$name = $name_space.':'.$name;
+			}
 
-			if ($date === null || !$date instanceof Date)
-				throw new PEAR_Exception(sprintf('%s is not a Date', $name));
+			if (!($date instanceof SwatDate)) {
+				$date = new SwatDate($date->format('c'));
+				$date->setTZ($date->getTimezone()->getName());
+			}
 
 			return self::getTextNode($document,
 				$name,
-				$date->format('%Y-%m-%d'));
-		} else {
-			return parent::getDateNode($document, $name, $date, $name_space);
+				$date->formatLikeIntl('yyyy-MM-dd'));
 		}
 
+		return parent::getDateNode($document, $name, $date, $name_space);
 	}
 
 	// }}}
