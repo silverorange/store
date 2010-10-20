@@ -8,6 +8,7 @@
 				<widget class="SwatContentBlock" id="confirmation_message" />
 				<widget class="SwatFormField">
 					<property name="title" translatable="yes">apply changes on</property>
+					<property name="note" translatable="yes">Please note that queued attribute updates are checked every 5 minutes.</property>
 					<widget class="SwatDateEntry" id="action_date">
 						<property name="display_parts" type="constant">YEAR|MONTH|DAY|TIME|CALENDAR</property>
 						<property name="required" type="boolean">true</property>
