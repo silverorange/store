@@ -112,6 +112,9 @@ class Store
 			// mailchimp
 			// Optional Plugin ID for reporting sales for mailchimp stats
 			'mail_chimp.plugin_id'   => null,
+
+			// AdWords conversion id
+			'adwords.conversion_id'  => null,
 		);
 	}
 

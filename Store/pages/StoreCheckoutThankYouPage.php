@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Store/pages/StoreCheckoutFinalPage.php';
+require_once 'Store/StoreAdWordsTracker.php';
 
 /**
  * Page displayed when an order is processed successfully on the checkout
@@ -36,6 +37,29 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
 		$header_tag->display();
 		$paragraph_tag->display();
 		echo "</div>";
+	}
+
+	// }}}
+	// {{{ protected function buildConversionTracking()
+
+	protected function buildConversionTracking(StoreOrder $order)
+	{
+		if ($this->app->config->adwords->conversion_id !== null) {
+			$footer = $this->ui->getWidget('footer');
+			if ($footer instanceof SwatContentBlock) {
+				$tracker = new StoreAdWordsTracker($order,
+					$this->app->config->adwords->conversion_id);
+
+				$footer->content.= $tracker->getInlineXHtml();
+			} else {
+				// log an exception (but don't exit), so that we know ad
+				// conversion tracking isn't working correctly.
+				$e = new SiteException('Ad conversion tracking not working '.
+					'as footer content block not found.');
+
+				$e->process(false);
+			}
+		}
 	}
 
 	// }}}
