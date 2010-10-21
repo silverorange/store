@@ -89,6 +89,7 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
 
 		$this->buildFinalNote($order);
 		$this->buildAccountNote($order);
+		$this->buildConversionTracking($order);
 	}
 
 	// }}}
@@ -227,6 +228,14 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
 
 		$header_tag->display();
 		$paragraph_tag->display();
+	}
+
+	// }}}
+	// {{{ protected function buildConversionTracking()
+
+	protected function buildConversionTracking(StoreOrder $order)
+	{
+		// by default do nothing.
 	}
 
 	// }}}
