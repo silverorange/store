@@ -637,8 +637,8 @@ class StoreItem extends SwatDBDataObject
 			$now = new SwatDate();
 			$interval = $now->diff($sale->end_date, true);
 
-			if ($interval->hours < 2) {
-				if ($interval->hours < 1) {
+			if ($interval->h < 2) {
+				if ($interval->h < 1) {
 					$format = '%i minutes';
 				} else {
 					$format = '%h hours and %i minutes';
