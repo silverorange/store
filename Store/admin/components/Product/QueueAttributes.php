@@ -131,7 +131,7 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 
 	protected function relocate()
 	{
-		if ($this->category_id === null) {
+		if ($this->category === null) {
 			$this->app->relocate('Product');
 		} else {
 			$this->app->relocate('Category/Index?id='.$this->category);
