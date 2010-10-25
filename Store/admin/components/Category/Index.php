@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 require_once 'Admin/pages/AdminIndex.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
@@ -132,26 +132,31 @@ class StoreCategoryIndex extends AdminIndex
 
 	protected function processActions(SwatTableView $view, SwatActions $actions)
 	{
+		$flush_memcache = false;
+
 		switch ($view->id) {
 		case 'categories_index_view':
-			$this->processCategoryActions($view, $actions);
-			return;
+			$flush_memcache = $this->processCategoryActions($view, $actions);
+			break;
 
 		case 'products_index_view':
-			$this->processProductActions($view, $actions);
-			return;
+			$flush_memcache = $this->processProductActions($view, $actions);
+			break;
 
 		case 'featured_products_index_view':
-			$this->processFeaturedProductActions($view, $actions);
-			return;
+			$flush_memcache = $this->processFeaturedProductActions($view,
+				$actions);
+
+			break;
 
 		case 'related_articles_index_view':
-			$this->processRelatedArticles($view, $actions);
-			return;
+			$flush_memcache = $this->processRelatedArticles($view, $actions);
+			break;
 		}
 
-		if (isset($this->app->memcache))
+		if ($flush_memcache === true && isset($this->app->memcache)) {
 			$this->app->memcache->flushNs('product');
+		}
 	}
 
 	// }}}
@@ -159,6 +164,8 @@ class StoreCategoryIndex extends AdminIndex
 
 	protected function processCategoryActions($view, $actions)
 	{
+		$flush_memcache = false;
+
 		switch ($actions->selected->id) {
 		case 'categories_delete':
 			$this->app->replacePage('Category/Delete');
@@ -213,7 +220,8 @@ class StoreCategoryIndex extends AdminIndex
 			$product_array = $this->getProductsByCategories(
 				$view->getSelection());
 
-			$this->addProductAttributes($product_array, $attribute_array);
+			$flush_memcache = $this->addProductAttributes($product_array,
+				$attribute_array);
 
 			break;
 
@@ -230,7 +238,8 @@ class StoreCategoryIndex extends AdminIndex
 			$product_array = $this->getProductsByCategories(
 				$view->getSelection());
 
-			$this->removeProductAttributes($product_array, $attribute_array);
+			$flush_memcache = $this->removeProductAttributes($product_array,
+				$attribute_array);
 
 			break;
 
@@ -241,7 +250,8 @@ class StoreCategoryIndex extends AdminIndex
 			$product_array = $this->getProductsByCategories(
 				$view->getSelection());
 
-			$this->addSaleDiscount($product_array, $sale_discount);
+			$flush_memcache = $this->addSaleDiscount($product_array,
+				$sale_discount);
 
 			break;
 
@@ -249,9 +259,9 @@ class StoreCategoryIndex extends AdminIndex
 			$product_array = $this->getProductsByCategories(
 				$view->getSelection());
 
-			$this->removeSaleDiscount($product_array);
-
+			$flush_memcache = $this->removeSaleDiscount($product_array);
 			break;
+
 		case 'categories_item_minimum_quantity_group' :
 			$group = $this->ui->getWidget(
 				'categories_item_minimum_quantity_group_flydown')->value;
@@ -259,16 +269,22 @@ class StoreCategoryIndex extends AdminIndex
 			$product_array = $this->getProductsByCategories(
 				$view->getSelection());
 
-			$this->addItemMinimumQuantityGroup($product_array, $group);
+			$flush_memcache = $this->addItemMinimumQuantityGroup($product_array,
+				$group);
 
 			break;
+
 		case 'categories_remove_item_minimum_quantity_group' :
 			$product_array = $this->getProductsByCategories(
 				$view->getSelection());
 
-			$this->removeItemMinimumQuantityGroup($product_array);
+			$flush_memcache = $$this->removeItemMinimumQuantityGroup(
+				$product_array);
+
 			break;
 		}
+
+		return $flush_memcache;
 	}
 
 	// }}}
@@ -302,6 +318,7 @@ class StoreCategoryIndex extends AdminIndex
 
 	protected function processProductActions($view, $actions)
 	{
+		$flush_memcache = false;
 		$num = count($view->getSelection());
 		$message = null;
 
@@ -328,6 +345,8 @@ class StoreCategoryIndex extends AdminIndex
 				'%s products have been removed from this category.', $num),
 				SwatString::numberFormat($num)));
 
+			$flush_memcache = true;
+
 			break;
 
 		case 'products_change_status' :
@@ -345,6 +364,8 @@ class StoreCategoryIndex extends AdminIndex
 				'The status of one item has been changed.',
 				'The status of %s items has been changed.', $num),
 				SwatString::numberFormat($num)));
+
+			$flush_memcache = true;
 
 			break;
 
@@ -369,6 +390,8 @@ class StoreCategoryIndex extends AdminIndex
 				'The minor member status of one product has been changed.',
 				'The minor member status of %s products has been changed.',
 				$num), SwatString::numberFormat($num)));
+
+			$flush_memcache = true;
 
 			break;
 
@@ -400,6 +423,8 @@ class StoreCategoryIndex extends AdminIndex
 				'%s items have been enabled.', $num),
 				SwatString::numberFormat($num)));
 
+			$flush_memcache = true;
+
 			break;
 
 		case 'products_disable_items':
@@ -429,6 +454,8 @@ class StoreCategoryIndex extends AdminIndex
 				'%s items have been disabled.', $num),
 				SwatString::numberFormat($num)));
 
+			$flush_memcache = true;
+
 			break;
 
 		case 'products_add_attributes' :
@@ -441,7 +468,7 @@ class StoreCategoryIndex extends AdminIndex
 					$attributes_field->getWidget(
 						'product_attributes', $id)->values);
 
-			$this->addProductAttributes($view->getSelection(),
+			$flush_memcache = $this->addProductAttributes($view->getSelection(),
 				$attribute_array);
 
 			break;
@@ -456,7 +483,8 @@ class StoreCategoryIndex extends AdminIndex
 					$attributes_field->getWidget(
 						'product_remove_attributes', $id)->values);
 
-			$this->removeProductAttributes($view->getSelection(),
+			$flush_memcache = $this->removeProductAttributes(
+				$view->getSelection(),
 				$attribute_array);
 
 			break;
@@ -465,26 +493,36 @@ class StoreCategoryIndex extends AdminIndex
 			$sale_discount = $this->ui->getWidget(
 				'products_sale_discount_flydown')->value;
 
-			$this->addSaleDiscount($view->getSelection(), $sale_discount);
+			$flush_memcache = $this->addSaleDiscount($view->getSelection(),
+				$sale_discount);
+
 			break;
 
 		case 'products_remove_sale_discount' :
-			$this->removeSaleDiscount($view->getSelection());
+			$flush_memcache = $this->removeSaleDiscount($view->getSelection());
+
 			break;
+
 		case 'item_minimum_quantity_group' :
 			$group = $this->ui->getWidget(
 				'item_minimum_quantity_group_flydown')->value;
 
-			$this->addItemMinimumQuantityGroup($view->getSelection(), $group);
+			$flush_memcache = $this->addItemMinimumQuantityGroup(
+				$view->getSelection(), $group);
 
 			break;
+
 		case 'remove_item_minimum_quantity_group' :
-			$this->removeItemMinimumQuantityGroup($view->getSelection());
+			$flush_memcache = $this->removeItemMinimumQuantityGroup(
+				$view->getSelection());
+
 			break;
 		}
 
 		if ($message !== null)
 			$this->app->messages->add($message);
+
+		return $flush_memcache;
 	}
 
 	// }}}
@@ -492,6 +530,7 @@ class StoreCategoryIndex extends AdminIndex
 
 	private function processFeaturedProductActions($view, $actions)
 	{
+		$flush_memcache = false;
 		$num = count($view->getSelection());
 		$message = null;
 
@@ -511,10 +550,14 @@ class StoreCategoryIndex extends AdminIndex
 				'One featured product has been removed from this category.',
 				'%s featured products have been removed from this category.',
 				$num), SwatString::numberFormat($num)));
+
+			$flush_memcache = true;
 		}
 
 		if ($message !== null)
 			$this->app->messages->add($message);
+
+		return $flush_memcache;
 	}
 
 	// }}}
@@ -522,6 +565,7 @@ class StoreCategoryIndex extends AdminIndex
 
 	private function processRelatedArticles($view, $actions)
 	{
+		$flush_memcache = false;
 		$num = count($view->getSelection());
 		$message = null;
 
@@ -541,10 +585,14 @@ class StoreCategoryIndex extends AdminIndex
 				'One related article has been removed from this category.',
 				'%s related articles have been removed from this category.',
 				$num), SwatString::numberFormat($num)));
+
+			$flush_memcache = true;
 		}
 
 		if ($message !== null)
 			$this->app->messages->add($message);
+
+		return $flush_memcache;
 	}
 
 	// }}}
@@ -552,8 +600,10 @@ class StoreCategoryIndex extends AdminIndex
 
 	private function addProductAttributes($products, $attributes)
 	{
+		$flush_memcache = false;
+
 		if (count($products) == 0 || count($attributes) == 0)
-			return;
+			return $flush_memcache;
 
 		$product_array = array();
 		$attribute_array = array();
@@ -589,6 +639,9 @@ class StoreCategoryIndex extends AdminIndex
 				count($attribute_array))));
 
 		$this->app->messages->add($message);
+		$flush_memcache = true;
+
+		return $flush_memcache;
 	}
 
 	// }}}
@@ -596,8 +649,10 @@ class StoreCategoryIndex extends AdminIndex
 
 	private function removeProductAttributes($products, $attributes)
 	{
+		$flush_memcache = false;
+
 		if (count($products) == 0 || count($attributes) == 0)
-			return;
+			return $flush_memcache;
 
 		$product_array = array();
 		$attribute_array = array();
@@ -624,6 +679,9 @@ class StoreCategoryIndex extends AdminIndex
 				count($attribute_array))));
 
 		$this->app->messages->add($message);
+		$flush_memcache = true;
+
+		return $flush_memcache;
 	}
 
 	// }}}
@@ -631,8 +689,9 @@ class StoreCategoryIndex extends AdminIndex
 
 	private function addSaleDiscount($products, $sale_discount)
 	{
+		$flush_memcache = false;
 		if (count($products) == 0 || $sale_discount === null)
-			return;
+			return $flush_memcache;
 
 		$product_array = array();
 
@@ -653,6 +712,9 @@ class StoreCategoryIndex extends AdminIndex
 			SwatString::numberFormat($num)));
 
 		$this->app->messages->add($message);
+		$flush_memcache = true;
+
+		return $flush_memcache;
 	}
 
 	// }}}
@@ -660,8 +722,9 @@ class StoreCategoryIndex extends AdminIndex
 
 	private function removeSaleDiscount($products)
 	{
+		$flush_memcache = false;
 		if (count($products) == 0)
-			return;
+			return $flush_memcache;
 
 		$product_array = array();
 
@@ -683,10 +746,13 @@ class StoreCategoryIndex extends AdminIndex
 				SwatString::numberFormat($num)));
 
 			$this->app->messages->add($message);
+			$flush_memcache = true;
 		} else {
 			$this->app->messages->add(new SwatMessage(Store::_(
 				'None of the items selected had a sale discount.')));
 		}
+
+		return $flush_memcache;
 	}
 
 	// }}}
@@ -694,8 +760,9 @@ class StoreCategoryIndex extends AdminIndex
 
 	private function addItemMinimumQuantityGroup($products, $group)
 	{
+		$flush_memcache = false;
 		if (count($products) == 0 || $group === null)
-			return;
+			return $flush_memcache;
 
 		$product_array = array();
 
@@ -718,6 +785,8 @@ class StoreCategoryIndex extends AdminIndex
 			SwatString::numberFormat($num)));
 
 		$this->app->messages->add($message);
+		$flush_memcache = true;
+		return $flush_memcache;
 	}
 
 	// }}}
@@ -725,8 +794,9 @@ class StoreCategoryIndex extends AdminIndex
 
 	private function removeItemMinimumQuantityGroup($products)
 	{
+		$flush_memcache = false;
 		if (count($products) == 0)
-			return;
+			return $flush_memcache;
 
 		$product_array = array();
 
@@ -751,11 +821,14 @@ class StoreCategoryIndex extends AdminIndex
 				SwatString::numberFormat($num)));
 
 			$this->app->messages->add($message);
+			$flush_memcache = true;
 		} else {
 			$this->app->messages->add(new SwatMessage(Store::_(
 				'None of the items selected had a item miniumum '.
 				'quantity sale group.')));
 		}
+
+		return $flush_memcache;
 	}
 
 	// }}}
