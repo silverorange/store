@@ -48,7 +48,8 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
 			$footer = $this->ui->getWidget('footer');
 			if ($footer instanceof SwatContentBlock) {
 				$tracker = new StoreAdWordsTracker($order,
-					$this->app->config->adwords->conversion_id);
+					$this->app->config->adwords->conversion_id,
+					$this->app->config->adwords->conversion_label);
 
 				$footer->content.= $tracker->getInlineXHtml();
 			} else {
