@@ -1,28 +1,26 @@
 <?php
 
-require_once 'Site/pages/SiteContactPage.php';
+require_once 'Site/dataobjects/SiteContactMessage.php';
 
 /**
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2010 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreContactPage extends SiteContactPage
+class StoreContactMessage extends SiteContactMessage
 {
-	// {{{ protected function getSubjects()
+	// {{{ public static function getSubjects()
 
-	protected function getSubjects()
+	public static function getSubjects()
 	{
-		$subjects = array(
+		return array(
 			'general'  => Store::_('General Question'),
 			'order'    => Store::_('My Order'),
 			'website'  => Store::_('Website'),
 			'products' => Store::_('Products'),
 			'privacy'  => Store::_('Privacy'),
 		);
-
-		return $subjects;
 	}
 
 	// }}}
