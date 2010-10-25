@@ -137,6 +137,7 @@ SwatUI::mapClassPrefixToPath('Store', 'Store');
 
 SwatDBClassMap::addPath('Store/dataobjects');
 SwatDBClassMap::add('SiteAccount',        'StoreAccount');
+SwatDBClassMap::add('SiteContactMessage', 'StoreContactMessage');
 SwatDBClassMap::add('SiteArticle',        'StoreArticle');
 SwatDBClassMap::add('SiteArticleWrapper', 'StoreArticleWrapper');
 
