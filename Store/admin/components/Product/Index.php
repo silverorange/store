@@ -222,7 +222,7 @@ class StoreProductIndex extends AdminSearch
 			$this->app->getPage()->setItems($view->getSelection());
 			break;
 
-		case 'add_attributes' :
+		case 'add_attributes':
 			$attributes = $this->getAttributeArray('attributes');
 
 			if (count($attributes) == 0)
@@ -240,7 +240,7 @@ class StoreProductIndex extends AdminSearch
 			}
 			break;
 
-		case 'remove_attributes_action' :
+		case 'remove_attributes_action':
 			$attributes = $this->getAttributeArray('remove_attributes');
 
 			if (count($attributes) == 0)
@@ -259,7 +259,7 @@ class StoreProductIndex extends AdminSearch
 			}
 			break;
 
-		case 'add_sale_discount' :
+		case 'add_sale_discount':
 			$sale_discount =
 				$this->ui->getWidget('sale_discount_flydown')->value;
 
@@ -284,7 +284,7 @@ class StoreProductIndex extends AdminSearch
 			$flush_memcache = true;
 
 			break;
-		case 'remove_sale_discount' :
+		case 'remove_sale_discount':
 			$num = SwatDB::queryOne($this->app->db, sprintf(
 				'select count(id) from Item where product in (%s)
 					and sale_discount is not null',
@@ -310,7 +310,7 @@ class StoreProductIndex extends AdminSearch
 
 			break;
 
-		case 'item_minimum_quantity_group' :
+		case 'item_minimum_quantity_group':
 			$value = $this->ui->getWidget(
 				'item_minimum_quantity_group_flydown')->value;
 
@@ -336,7 +336,7 @@ class StoreProductIndex extends AdminSearch
 			}
 
 			break;
-		case 'remove_item_minimum_quantity_group' :
+		case 'remove_item_minimum_quantity_group':
 			$num = SwatDB::queryOne($this->app->db, sprintf(
 				'select count(id) from Item where product in (%s)
 					and Item.minimum_quantity_group is not null',

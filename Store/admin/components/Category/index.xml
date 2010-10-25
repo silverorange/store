@@ -153,14 +153,38 @@
 					<widget class="SwatActionItemDivider" />
 					<widget class="SwatActionItem" id="categories_add_attributes">
 						<property name="title" translatable="yes">add product attributes…</property>
-						<widget class="SwatReplicableFormField" id="category_attributes_form_field">
-							<widget class="SwatCheckboxList" id="category_attributes" />
+						<widget class="SwatContainer">
+							<widget class="SwatFormField">
+								<property name="title" translatable="yes">Queue Product Attribute Addition…</property>
+								<property name="note" translatable="yes">Select to have product attributes applied on a future date.</property>
+								<widget class="SwatCheckbox" id="category_attributes_queue">
+									<property name="value" type="boolean">false</property>
+								</widget>
+							</widget>
+							<widget class="SwatGroupingFormField">
+								<property name="title">Attributes</property>
+								<widget class="SwatReplicableFormField" id="category_attributes_form_field">
+									<widget class="SwatCheckboxList" id="category_attributes" />
+								</widget>
+							</widget>
 						</widget>
 					</widget>
 					<widget class="SwatActionItem" id="categories_remove_attributes">
 						<property name="title" translatable="yes">remove product attributes…</property>
-						<widget class="SwatReplicableFormField" id="category_remove_attributes_form_field">
-							<widget class="SwatCheckboxList" id="category_remove_attributes" />
+						<widget class="SwatContainer">
+							<widget class="SwatFormField">
+								<property name="title" translatable="yes">Queue Product Attribute Removal…</property>
+								<property name="note" translatable="yes">Select to have product attributes removed on a future date.</property>
+								<widget class="SwatCheckbox" id="category_remove_attributes_queue">
+									<property name="value" type="boolean">false</property>
+								</widget>
+							</widget>
+							<widget class="SwatGroupingFormField">
+								<property name="title">Attributes</property>
+								<widget class="SwatReplicableFormField" id="category_remove_attributes_form_field">
+									<widget class="SwatCheckboxList" id="category_remove_attributes" />
+								</widget>
+							</widget>
 						</widget>
 					</widget>
 					<widget class="SwatActionItem" id="categories_add_sale_discount">
@@ -308,14 +332,38 @@
 					<widget class="SwatActionItemDivider" />
 					<widget class="SwatActionItem" id="products_add_attributes">
 						<property name="title" translatable="yes">add product attributes…</property>
-						<widget class="SwatReplicableFormField" id="product_attributes_form_field">
-							<widget class="SwatCheckboxList" id="product_attributes" />
+						<widget class="SwatContainer">
+							<widget class="SwatFormField">
+								<property name="title" translatable="yes">Queue Product Attribute Addition…</property>
+								<property name="note" translatable="yes">Select to have product attributes applied on a future date.</property>
+								<widget class="SwatCheckbox" id="product_attributes_queue">
+									<property name="value" type="boolean">false</property>
+								</widget>
+							</widget>
+							<widget class="SwatGroupingFormField">
+								<property name="title">Attributes</property>
+								<widget class="SwatReplicableFormField" id="product_attributes_form_field">
+									<widget class="SwatCheckboxList" id="product_attributes" />
+								</widget>
+							</widget>
 						</widget>
 					</widget>
 					<widget class="SwatActionItem" id="products_remove_attributes">
 						<property name="title" translatable="yes">remove product attributes…</property>
-						<widget class="SwatReplicableFormField" id="product_remove_attributes_form_field">
-							<widget class="SwatCheckboxList" id="product_remove_attributes" />
+						<widget class="SwatContainer">
+							<widget class="SwatFormField">
+								<property name="title" translatable="yes">Queue Product Attribute Removal…</property>
+								<property name="note" translatable="yes">Select to have product attributes removed on a future date.</property>
+								<widget class="SwatCheckbox" id="product_remove_attributes_queue">
+									<property name="value" type="boolean">false</property>
+								</widget>
+							</widget>
+							<widget class="SwatGroupingFormField">
+								<property name="title">Attributes</property>
+								<widget class="SwatReplicableFormField" id="product_remove_attributes_form_field">
+									<widget class="SwatCheckboxList" id="product_remove_attributes" />
+								</widget>
+							</widget>
 						</widget>
 					</widget>
 					<widget class="SwatActionItem" id="products_add_sale_discount">
