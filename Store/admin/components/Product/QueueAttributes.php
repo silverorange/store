@@ -29,11 +29,18 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 	protected $action;
 
 	/**
-	 * Optional id of the category page this was called from.
+	 * Whether or not we've come here from a category page
+	 *
+	 * @var boolean
+	 */
+	protected $category;
+
+	/**
+	 * Id of the category page this was called from.
 	 *
 	 * @var integer
 	 */
-	protected $category;
+	protected $category_id;
 
 	// }}}
 	// {{{ public function setAction()
@@ -54,9 +61,10 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 	// }}}
 	// {{{ public function setCategory()
 
-	public function setCategory($category)
+	public function setCategory($category_id)
 	{
-		$this->category = $category;
+		$this->category_id = $category_id;
+		$this->category    = true;
 	}
 
 	// }}}
@@ -73,7 +81,7 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 		$form = $this->ui->getWidget('confirmation_form');
 		$this->setAction($form->getHiddenField('action'));
 		$this->setAttributes($form->getHiddenField('attributes'));
-		$this->setCategory($form->getHiddenField('category'));
+		$this->setCategory($form->getHiddenField('category_id'));
 
 		// only allow dates in the future, and only a year out for sanity's sake
 		$action_date = $this->ui->getWidget('action_date');
@@ -131,11 +139,16 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 
 	protected function relocate()
 	{
-		if ($this->category === null) {
-			$this->app->relocate('Product');
+		if ($this->category === false) {
+			$uri = 'Product';
 		} else {
-			$this->app->relocate('Category/Index?id='.$this->category);
+			$uri = 'Category';
+			if ($this->category_id !== null) {
+				$uri.='/Index?id='.$this->category_id;
+			}
 		}
+
+		$this->app->relocate($uri);
 	}
 
 	// }}}
@@ -150,7 +163,7 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 		$form = $this->ui->getWidget('confirmation_form');
 		$form->addHiddenField('action', $this->action);
 		$form->addHiddenField('attributes', $this->attributes);
-		$form->addHiddenField('category', $this->category);
+		$form->addHiddenField('category_id', $this->category_id);
 
 		$message = $this->ui->getWidget('confirmation_message');
 		$message->content = $this->getConfirmationMessage();
@@ -166,18 +179,20 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 	{
 		$this->navbar->popEntry();
 
-		if ($this->category !== null) {
+		if ($this->category === true) {
 			$this->navbar->popEntry();
 			$this->navbar->addEntry(new SwatNavBarEntry(
 				Store::_('Product Categories'), 'Category'));
 
-			$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
-				'getCategoryNavbar', array($this->category));
+			if ($this->category_id !== null) {
+				$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
+					'getCategoryNavbar', array($this->category_id));
 
-			foreach ($cat_navbar_rs as $entry) {
-				$this->title = $entry->title;
-				$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
-					'Category/Index?id='.$entry->id));
+				foreach ($cat_navbar_rs as $entry) {
+					$this->title = $entry->title;
+					$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
+						'Category/Index?id='.$entry->id));
+				}
 			}
 		}
 
