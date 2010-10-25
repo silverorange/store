@@ -114,7 +114,8 @@ class Store
 			'mail_chimp.plugin_id'   => null,
 
 			// AdWords conversion id
-			'adwords.conversion_id'  => null,
+			'adwords.conversion_id'    => null,
+			'adwords.conversion_label' => null,
 		);
 	}
 
