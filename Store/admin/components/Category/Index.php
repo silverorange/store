@@ -134,6 +134,10 @@ class StoreCategoryIndex extends AdminIndex
 	{
 		$flush_memcache = false;
 
+		// if nothing is selected, we have no actions to process
+		if (count($view->getSelection()) == 0)
+			return;
+
 		switch ($view->id) {
 		case 'categories_index_view':
 			$flush_memcache = $this->processCategoryActions($view, $actions);
@@ -207,40 +211,57 @@ class StoreCategoryIndex extends AdminIndex
 
 			break;
 
-		case 'categories_add_attributes' :
-			$attribute_array = array();
-			$attributes_field =
-				$this->ui->getWidget('category_attributes_form_field');
+		case 'categories_add_attributes':
+			$attributes = $this->getAttributeArray('category_attributes');
 
-			foreach ($attributes_field->replicators as $id => $title)
-				$attribute_array = array_merge($attribute_array,
-					$attributes_field->getWidget(
-						'category_attributes', $id)->values);
+			if (count($attributes) == 0)
+				break;
 
 			$product_array = $this->getProductsByCategories(
 				$view->getSelection());
 
-			$flush_memcache = $this->addProductAttributes($product_array,
-				$attribute_array);
+			if (count($product_array) === 0)
+				break;
 
+			if ($this->ui->getWidget('category_attributes_queue')->value ===
+				true) {
+				$this->app->replacePage('Product/QueueAttributes');
+				$this->app->getPage()->setCategory($this->id);
+				$this->app->getPage()->setItems($product_array);
+				$this->app->getPage()->setAttributes($attributes);
+				$this->app->getPage()->setAction('add');
+				break;
+			} else {
+				$flush_memcache = $this->addProductAttributes($product_array,
+					$attributes);
+			}
 			break;
 
-		case 'categories_remove_attributes' :
-			$attribute_array = array();
-			$attributes_field =
-				$this->ui->getWidget('category_remove_attributes_form_field');
+		case 'categories_remove_attributes':
+			$attributes = $this->getAttributeArray(
+				'category_remove_attributes');
 
-			foreach ($attributes_field->replicators as $id => $title)
-				$attribute_array = array_merge($attribute_array,
-					$attributes_field->getWidget(
-						'category_remove_attributes', $id)->values);
+			if (count($attributes) == 0)
+				break;
 
 			$product_array = $this->getProductsByCategories(
 				$view->getSelection());
 
-			$flush_memcache = $this->removeProductAttributes($product_array,
-				$attribute_array);
+			if (count($product_array) === 0)
+				break;
 
+			if ($this->ui->getWidget(
+				'category_remove_attributes_queue')->value === true) {
+				$this->app->replacePage('Product/QueueAttributes');
+				$this->app->getPage()->setCategory($this->id);
+				$this->app->getPage()->setItems($product_array);
+				$this->app->getPage()->setAttributes($attributes);
+				$this->app->getPage()->setAction('remove');
+				break;
+			} else {
+				$flush_memcache = $this->removeProductAttributes($product_array,
+					$attributes);
+			}
 			break;
 
 		case 'categories_add_sale_discount' :
@@ -250,6 +271,9 @@ class StoreCategoryIndex extends AdminIndex
 			$product_array = $this->getProductsByCategories(
 				$view->getSelection());
 
+			if (count($product_array) === 0)
+				break;
+
 			$flush_memcache = $this->addSaleDiscount($product_array,
 				$sale_discount);
 
@@ -258,6 +282,9 @@ class StoreCategoryIndex extends AdminIndex
 		case 'categories_remove_sale_discount' :
 			$product_array = $this->getProductsByCategories(
 				$view->getSelection());
+
+			if (count($product_array) === 0)
+				break;
 
 			$flush_memcache = $this->removeSaleDiscount($product_array);
 			break;
@@ -269,6 +296,9 @@ class StoreCategoryIndex extends AdminIndex
 			$product_array = $this->getProductsByCategories(
 				$view->getSelection());
 
+			if (count($product_array) === 0)
+				break;
+
 			$flush_memcache = $this->addItemMinimumQuantityGroup($product_array,
 				$group);
 
@@ -277,6 +307,9 @@ class StoreCategoryIndex extends AdminIndex
 		case 'categories_remove_item_minimum_quantity_group' :
 			$product_array = $this->getProductsByCategories(
 				$view->getSelection());
+
+			if (count($product_array) === 0)
+				break;
 
 			$flush_memcache = $$this->removeItemMinimumQuantityGroup(
 				$product_array);
@@ -459,34 +492,43 @@ class StoreCategoryIndex extends AdminIndex
 			break;
 
 		case 'products_add_attributes' :
-			$attribute_array = array();
-			$attributes_field =
-				$this->ui->getWidget('product_attributes_form_field');
+			$attributes = $this->getAttributeArray('product_attributes');
 
-			foreach ($attributes_field->replicators as $id => $title)
-				$attribute_array = array_merge($attribute_array,
-					$attributes_field->getWidget(
-						'product_attributes', $id)->values);
+			if (count($attributes) == 0)
+				break;
 
-			$flush_memcache = $this->addProductAttributes($view->getSelection(),
-				$attribute_array);
-
+			if ($this->ui->getWidget('product_attributes_queue')->value ===
+				true) {
+				$this->app->replacePage('Product/QueueAttributes');
+				$this->app->getPage()->setCategory($this->id);
+				$this->app->getPage()->setItems($view->getSelection());
+				$this->app->getPage()->setAttributes($attributes);
+				$this->app->getPage()->setAction('add');
+				break;
+			} else {
+				$flush_memcache = $this->addProductAttributes(
+					$view->getSelection(), $attributes);
+			}
 			break;
 
 		case 'products_remove_attributes' :
-			$attribute_array = array();
-			$attributes_field =
-				$this->ui->getWidget('product_remove_attributes_form_field');
+			$attributes = $this->getAttributeArray('product_remove_attributes');
 
-			foreach ($attributes_field->replicators as $id => $title)
-				$attribute_array = array_merge($attribute_array,
-					$attributes_field->getWidget(
-						'product_remove_attributes', $id)->values);
+			if (count($attributes) == 0)
+				break;
 
-			$flush_memcache = $this->removeProductAttributes(
-				$view->getSelection(),
-				$attribute_array);
-
+			if ($this->ui->getWidget(
+				'product_remove_attributes_queue')->value === true) {
+				$this->app->replacePage('Product/QueueAttributes');
+				$this->app->getPage()->setCategory($this->id);
+				$this->app->getPage()->setItems($view->getSelection());
+				$this->app->getPage()->setAttributes($attributes);
+				$this->app->getPage()->setAction('remove');
+				break;
+			} else {
+				$flush_memcache = $this->addProductAttributes(
+					$view->getSelection(), $attributes);
+			}
 			break;
 
 		case 'products_add_sale_discount' :
@@ -596,6 +638,27 @@ class StoreCategoryIndex extends AdminIndex
 	}
 
 	// }}}
+	// {{{ protected function getAttributeArray()
+
+	protected function getAttributeArray($widget_title, $form_field_title = '')
+	{
+		$attribute_array = array();
+		if ($form_field_title == '')
+			$form_field_title = $widget_title.'_form_field';
+
+		$attributes_field = $this->ui->getWidget($form_field_title);
+
+		foreach ($attributes_field->replicators as $id => $title) {
+			foreach ($attributes_field->getWidget($widget_title, $id)->values as
+				$value) {
+				$attribute_array[] = $this->app->db->quote($value, 'integer');
+			}
+		}
+
+		return $attribute_array;
+	}
+
+	// }}}
 	// {{{ private function addProductAttributes()
 
 	private function addProductAttributes($products, $attributes)
@@ -606,40 +669,53 @@ class StoreCategoryIndex extends AdminIndex
 			return $flush_memcache;
 
 		$product_array = array();
-		$attribute_array = array();
-
 		foreach ($products as $product)
 			$product_array[] = $this->app->db->quote($product, 'integer');
 
-		foreach ($attributes as $attribute)
-			$attribute_array[] = $this->app->db->quote($attribute, 'integer');
-
 		$sql = sprintf('delete from ProductAttributeBinding
 			where product in (%s) and attribute in (%s)',
-			implode(',', $product_array), implode(',', $attribute_array));
+			implode(',', $product_array),
+			implode(',', $attributes));
 
-		SwatDB::exec($this->app->db, $sql);
+		$delete_count = SwatDB::exec($this->app->db, $sql);
 
 		$sql = sprintf('insert into ProductAttributeBinding
 			(product, attribute)
 			select Product.id, Attribute.id
 			from Product cross join Attribute
 			where Product.id in (%s) and Attribute.id in (%s)',
-			implode(',', $product_array), implode(',', $attribute_array));
+			implode(',', $product_array),
+			implode(',', $attributes));
 
-		SwatDB::exec($this->app->db, $sql);
+		$add_count = SwatDB::exec($this->app->db, $sql);
 
-		$message = new SwatMessage(sprintf(
-			'%s %s been given %s %s.',
-			SwatString::numberFormat(count($product_array)),
-			Store::ngettext('product has', 'products have',
-				count($product_array)),
-			SwatString::numberFormat(count($attribute_array)),
-			Store::ngettext('atrribute', 'attributes',
-				count($attribute_array))));
+		if ($add_count != $delete_count) {
+			$flush_memcache = true;
+		}
+
+		// TODO: we could have better messages for this that gave accurate
+		// numbers of products and attributes updated, versus just the number of
+		// each passed in.
+
+		// You unfortunately can't nest ngettext calls. Nor does there appear to
+		// be a better way to do a sentence with multiple plural options.
+		if (count($attributes) == 1) {
+			$message_text = Store::ngettext(
+				'One product has had one product attribute added.',
+				'%1$s products have had one product attribute added.',
+				count($products));
+		} else {
+			$message_text = Store::ngettext(
+				'One product has had %2$s product attributes added.',
+				'%1$s products have had %2$s product attributes added.',
+				count($products));
+		}
+
+		$message = new SwatMessage(sprintf($message_text,
+			SwatString::numberFormat(count($products)),
+			SwatString::numberFormat(count($attributes))));
 
 		$this->app->messages->add($message);
-		$flush_memcache = true;
 
 		return $flush_memcache;
 	}
@@ -655,31 +731,47 @@ class StoreCategoryIndex extends AdminIndex
 			return $flush_memcache;
 
 		$product_array = array();
-		$attribute_array = array();
-
 		foreach ($products as $product)
 			$product_array[] = $this->app->db->quote($product, 'integer');
 
-		foreach ($attributes as $attribute)
-			$attribute_array[] = $this->app->db->quote($attribute, 'integer');
-
 		$sql = sprintf('delete from ProductAttributeBinding
 			where product in (%s) and attribute in (%s)',
-			implode(',', $product_array), implode(',', $attribute_array));
+			implode(',', $product_array),
+			implode(',', $attributes));
 
-		SwatDB::exec($this->app->db, $sql);
+		$count = SwatDB::exec($this->app->db, $sql);
 
-		$message = new SwatMessage(sprintf(
-			'%s %s had %s %s removed.',
-			SwatString::numberFormat(count($product_array)),
-			Store::ngettext('product has', 'products have',
-				count($product_array)),
-			SwatString::numberFormat(count($attribute_array)),
-			Store::ngettext('atrribute', 'attributes',
-				count($attribute_array))));
+		if ($count > 0) {
+			$flush_memcache = true;
+
+			// TODO: we could have better messages for this that gave accurate
+			// numbers of products attributes removed, versus just the number
+			// of each passed in.
+
+			// You unfortunately can't nest ngettext calls. Nor does there
+			// appear to be a better way to do a sentence with multiple plural
+			// options.
+			if (count($attributes) == 1) {
+				$message_text = Store::ngettext(
+					'One product has had one product attribute removed.',
+					'%1$s products have had one product attribute removed.',
+					count($products));
+			} else {
+				$message_text = Store::ngettext(
+					'One product has had %2$s product attributes removed.',
+					'%1$s products have had %2$s product attributes removed.',
+					count($products));
+			}
+
+			$message = new SwatMessage(sprintf($message_text,
+				SwatString::numberFormat(count($products)),
+				SwatString::numberFormat(count($attributes))));
+		} else {
+			$message = new SwatMessage(Store::_(
+				'None of the products selected had attributes to remove.'));
+		}
 
 		$this->app->messages->add($message);
-		$flush_memcache = true;
 
 		return $flush_memcache;
 	}
