@@ -41,7 +41,7 @@ require_once 'Store/StoreItemStatusList.php';
  * This class contains mostly data.
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2010 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreItemWrapper
  */
@@ -397,14 +397,18 @@ class StoreItem extends SwatDBDataObject
 	 *                             no region is specified, the region set using
 	 *                             {@link StoreItem::setRegion()} is used.
 	 *
+	 * @param SwatDate $date optional. Date on which to get price. If no date is
+	 *                        specified, we get the current price. Otherwise we
+	 *                        get the price as it would be on that date.
+	 *
 	 * @return double the displayable price of this item in the given region or
 	 *                 null if this item has no price in the given region.
 	 */
-	public function getDisplayPrice($region = null)
+	public function getDisplayPrice($region = null, SwatDate $date = null)
 	{
 		$price = $this->getPrice($region);
 
-		$sale = $this->getActiveSaleDiscount();
+		$sale = $this->getActiveSaleDiscount($date);
 		if ($sale !== null)
 			$price -= ($price * $sale->discount_percentage);
 
@@ -421,12 +425,16 @@ class StoreItem extends SwatDBDataObject
 	 *                             no region is specified, the region set using
 	 *                             {@link StoreItem::setRegion()} is used.
 	 *
+	 * @param SwatDate $date optional. Date on which to get prices. If no date
+	 *                        is specified, we get the current prices. Otherwise
+	 *                        we get the prices as they would be on that date.
+	 *
 	 * @return boolean true if the display price is different than the original
 	 *                  price, and false if it is the same.
 	 */
-	public function isOnSale($region = null)
+	public function isOnSale($region = null, SwatDate $date = null)
 	{
-		$price = $this->getDisplayPrice($region);
+		$price = $this->getDisplayPrice($region, $date);
 		$original_price = $this->getOriginalPrice($region);
 
 		return ($price !== $original_price);
@@ -442,14 +450,18 @@ class StoreItem extends SwatDBDataObject
 	 *                             no region is specified, the region set using
 	 *                             {@link StoreItem::setRegion()} is used.
 	 *
+	 * @param SwatDate $date optional. Date on which to get prices. If no date
+	 *                        is specified, we get the current prices. Otherwise
+	 *                        we get the prices as they would be on that date.
+	 *
 	 * @return float the percentage savings
 	 */
-	public function getSavings($region = null)
+	public function getSavings($region = null, SwatDate $date = null)
 	{
 		$savings = null;
 
-		if ($this->isOnSale($region)) {
-			$price = $this->getDisplayPrice($region);
+		if ($this->isOnSale($region, $date)) {
+			$price = $this->getDisplayPrice($region, $date);
 			$original_price = $this->getOriginalPrice($region);
 			$savings = round(1 - ($price / $original_price), 2);
 		}
@@ -607,14 +619,28 @@ class StoreItem extends SwatDBDataObject
 	/**
 	 * Gets an active sale discount if one exists on this item
 	 *
+	 * @param SwatDate $date optional. Date on which to check for an active sale
+	 *                        discount. If no date is specified, we check with
+	 *                        the current date.
+	 *
 	 * @return SaleDiscount
 	 */
-	public function getActiveSaleDiscount()
+	public function getActiveSaleDiscount(SwatDate $date = null)
 	{
 		$sale_discount = null;
 
-		if ($this->sale_discount !== null && $this->sale_discount->isActive())
-			$sale_discount = $this->sale_discount;
+		if ($this->sale_discount !== null) {
+			// don't bother setting up the date if we don't have a sale discount
+			// to check
+			if ($date === null)
+				$date = new SwatDate();
+
+			$date->toUTC();
+
+			if ($this->sale_discount->isActive($date)) {
+				$sale_discount = $this->sale_discount;
+			}
+		}
 
 		return $sale_discount;
 	}
@@ -625,17 +651,24 @@ class StoreItem extends SwatDBDataObject
 	/**
 	 * Gets a note about the active sale discount if one exists
 	 *
+	 * @param SwatDate $date optional. Date on which to check for an active sale
+	 *                        discount. If no date is specified, we check with
+	 *                        the current date.
+	 *
 	 * @return string
 	 */
-	public function getSaleDiscountNote()
+	public function getSaleDiscountNote(SwatDate $date = null)
 	{
 		$note = null;
 
-		$sale = $this->getActiveSaleDiscount();
+		$sale = $this->getActiveSaleDiscount($date);
 		if ($sale !== null && $sale->end_date !== null) {
+			if ($date === null)
+				$date = new SwatDate();
 
-			$now = new SwatDate();
-			$interval = $now->diff($sale->end_date, true);
+			$date->toUTC();
+
+			$interval = $date->diff($sale->end_date, true);
 
 			if ($interval->h < 2) {
 				if ($interval->h < 1) {

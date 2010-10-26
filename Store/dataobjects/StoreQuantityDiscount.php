@@ -140,16 +140,20 @@ class StoreQuantityDiscount extends SwatDBDataObject
 	 *                             no region is specified, the region set using
 	 *                             {@link StoreItem::setRegion()} is used.
 	 *
+	 * @param SwatDate $date optional. Date on which to get price. If no date is
+	 *                        specified, we get the current price. Otherwise we
+	 *                        get the price as it would be on that date.
+	 *
 	 * @return double the displayable price of this quanitity discount in the
 	 *                given region or null if this quantity discount has no
 	 *                price in the given region.
 	 */
-	public function getDisplayPrice($region = null)
+	public function getDisplayPrice($region = null, SwatDate $date = null)
 	{
 		$price = $this->getPrice($region);
 
-		$sale = $this->item->getActiveSaleDiscount();
-		if ($sale !== null && $sale->isActive())
+		$sale = $this->item->getActiveSaleDiscount($date);
+		if ($sale !== null)
 			$price = round($price * (1 - $sale->discount_percentage), 2);
 
 		return $price;

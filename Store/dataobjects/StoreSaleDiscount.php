@@ -6,7 +6,7 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * A sale with a percentage discount
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2010 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreItem
  */
@@ -62,18 +62,24 @@ class StoreSaleDiscount extends SwatDBDataObject
 	/**
 	 * Checks if this sale is currently active
 	 *
+	 * @param SwatDate $date optional. Date on which to check if the discount is
+	 *                        active. If no date is specified, we check to see
+	 *                        if the discount is currently active.
+	 *
 	 * @return boolean true if this sale is active and false if it is not.
 	 */
-	public function isActive()
+	public function isActive(SwatDate $date = null)
 	{
-		$now = new SwatDate();
-		$now->toUTC();
+		if ($date === null)
+			$date = new SwatDate();
+
+		$date->toUTC();
 
 		return
 			(($this->start_date === null ||
-				SwatDate::compare($now, $this->start_date) >= 0) &&
+				SwatDate::compare($date, $this->start_date) >= 0) &&
 			($this->end_date === null ||
-				SwatDate::compare($now, $this->end_date) <= 0));
+				SwatDate::compare($date, $this->end_date) <= 0));
 	}
 
 	// }}}
