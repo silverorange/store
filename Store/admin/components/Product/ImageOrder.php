@@ -106,10 +106,18 @@ class StoreProductImageOrder extends AdminDBOrder
 		$frame = $this->ui->getWidget('order_frame');
 		$frame->title = Store::_('Order Product Images');
 
+		$dimension = $this->getImageDimension();
+
 		$this->ui->getWidget('options_field')->visible = false;
 		$this->ui->getWidget('order')->height = '350px';
-		// TODO: load this from the ImageDimension so it always fits
-		$this->ui->getWidget('order')->width = '105px';
+
+		// use ImageDimension so width of change-order always fits
+		if ($dimension !== null) {
+			$this->ui->getWidget('order')->width =
+				($dimension->max_width + 24).'px';
+		} else {
+			$this->ui->getWidget('order')->width = '105px';
+		}
 	}
 
 	// }}}
@@ -171,6 +179,21 @@ class StoreProductImageOrder extends AdminDBOrder
 			new SwatNavBarEntry(Store::_('Order Product Images')));
 
 		$this->title = $this->product->title;
+	}
+
+	// }}}
+	// {{{ protected function getImageDimension()
+
+	protected function getImageDimension()
+	{
+		$sql = 'select * from ImageDimension
+			inner join ImageSet on ImageDimension.image_set = ImageSet.id
+			where ImageSet.shortname = \'products\' and
+			ImageDimension.shortname = \'thumb\'';
+
+		return SwatDB::query($this->app->db, $sql,
+			SwatDBClassMap::get('SiteImageDimensionWrapper'))->getFirst();
+
 	}
 
 	// }}}
