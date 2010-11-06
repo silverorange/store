@@ -3,14 +3,16 @@
  *
  * @param integer the product id.
  * @param Array item_ids the array of item ids displayed on this product page.
+ * @param integer the StoreCartEntry::SOURCE_* source.
  * @param integer the category the product belongs to.
  */
-function StoreProductPage(product_id, item_ids, source_category)
+function StoreProductPage(product_id, item_ids, source, source_category)
 {
 	this.cart = null;
 
 	this.item_ids = item_ids;
 	this.product_id = product_id;
+	this.source = source;
 	this.source_category = source_category;
 	this.button_values = [];
 	this.current_request = 0;
@@ -140,7 +142,7 @@ StoreProductPage.prototype.addEntriesToCart = function()
 		}
 	}
 
-	this.cart.addEntries(entries, this.source_category);
+	this.cart.addEntries(entries, this.source, this.source_category);
 }
 
 // }}}

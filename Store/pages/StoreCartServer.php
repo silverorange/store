@@ -47,9 +47,11 @@ class StoreCartServer extends SiteXMLRPCServer
 	/**
 	 * Adds entries to the cart
 	 *
-	 * @param integer $request_id A unique id for this request 
+	 * @param integer $request_id A unique id for this request
 	 * @param array $entries The cart entries to add to the cart. Entries are
 	 *                       objects with values for 'item_id' and 'quantity'.
+	 * @param integer $source The source of the added product. See
+	 *                        StoreCartEntry::SOURCE_* constants.
 	 * @param integer $source_category The category id from which the product
 	 *                       came from.
 	 * @param boolean $mini_cart Whether or not to return the XHTML for
@@ -58,8 +60,8 @@ class StoreCartServer extends SiteXMLRPCServer
 	 * @return array An array containing: 'mini_cart', 'product_items',
 	 *               'total_items', 'total_products'
 	 */
-	public function addEntries($request_id, $entries, $source_category = null,
-		$mini_cart = false)
+	public function addEntries($request_id, $entries, $source = null,
+		$source_category = null, $mini_cart = false)
 	{
 		$product_id = null;
 
@@ -67,8 +69,14 @@ class StoreCartServer extends SiteXMLRPCServer
 			$entry = $this->processor->createCartEntry(
 				$e['item_id'], $e['quantity']);
 
-			$entry->source_category = $source_category;
-			$entry->source = StoreCartEntry::SOURCE_PRODUCT_PAGE;
+			if ($source != 0) {
+				$entry->source = $source;
+			}
+
+			if ($source_category != 0) {
+				$entry->source_category = $source_category;
+			}
+
 			$this->setupCartEntry($entry, $e);
 
 			$status = $this->processor->addEntryToCart($entry);

@@ -116,7 +116,7 @@ StoreCartLightBox.prototype.configure = function()
 // }}}
 // {{{ StoreCartLightBox.prototype.addEntries
 
-StoreCartLightBox.prototype.addEntries = function(entries, source_category)
+StoreCartLightBox.prototype.addEntries = function(entries, source, source_category)
 {
 	var that = this;
 	function callBack(response)
@@ -132,8 +132,8 @@ StoreCartLightBox.prototype.addEntries = function(entries, source_category)
 
 	this.xml_rpc_client.callProcedure(
 		'addEntries', callBack,
-		[this.current_request, entries, source_category, true],
-		['int', 'array', 'int', 'boolean']);
+		[this.current_request, entries, source, source_category, true],
+		['int', 'array', 'int', 'int', 'boolean']);
 
 	this.open('<h2>' + StoreCartLightBox.submit_message + '</h2>');
 }
