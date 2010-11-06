@@ -640,10 +640,11 @@ class StoreProductPage extends StorePage
 		$category_id = ($path_entry instanceof SitePathEntry) ?
 			$path_entry->id : 'null';
 
-		$javascript.= sprintf("var product_page = new %s(%d, [%s], %d);",
+		$javascript.= sprintf("var product_page = new %s(%d, [%s], %d, %d);",
 			$this->getProductJavaScriptClass(),
 			$this->product->id,
 			$item_ids,
+			StoreCartEntry::SOURCE_PRODUCT_PAGE,
 			$category_id);
 
 		$lightbox = $this->getCartLightboxJavaScriptClass();
