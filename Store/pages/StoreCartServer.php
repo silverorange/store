@@ -95,7 +95,7 @@ class StoreCartServer extends SiteXMLRPCServer
 	/**
 	 * Remove an entry from the cart
 	 *
-	 * @param integer $request_id A unique id for this request 
+	 * @param integer $request_id A unique id for this request
 	 * @param integer $entry_id The id of the entry to be removed
 	 *
 	 * @return array
@@ -130,9 +130,9 @@ class StoreCartServer extends SiteXMLRPCServer
 	/**
 	 * Get information about what's in the user's cart
 	 *
-	 * @param integer $request_id A unique id for this request 
-	 * @param integer $product_id Optional product id to filter by 
-	 * @param boolean $mini_cart Whether or not to return the mini-cart 
+	 * @param integer $request_id A unique id for this request
+	 * @param integer $product_id Optional product id to filter by
+	 * @param boolean $mini_cart Whether or not to return the mini-cart
 	 *
 	 * @return array
 	 */
