@@ -331,8 +331,9 @@ class StoreCartEntry extends SwatDBDataObject
 	 */
 	public function combine(StoreCartEntry $entry)
 	{
-		if ($this->hasSameItem($entry))
+		if ($this->hasSameItem($entry)) {
 			$this->quantity += $entry->getQuantity();
+		}	
 	}
 
 	// }}}
