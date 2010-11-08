@@ -108,7 +108,9 @@ StoreCartLightBox.prototype.addEntries = function(entries, source, source_catego
 		[this.current_request, entries, source, source_category, true],
 		['int', 'array', 'int', 'int', 'boolean']);
 
-	this.setContent('<h2>' + StoreCartLightBox.submit_message + '</h2>');
+	this.setContentWithAnimation(
+		'<h2>' + StoreCartLightBox.submit_message + '</h2>');
+
 	this.open();
 }
 
@@ -125,7 +127,6 @@ StoreCartLightBox.prototype.load = function(e)
 	}
 
 	this.open();
-	this.status = 'open';
 }
 
 // }}}
@@ -133,7 +134,7 @@ StoreCartLightBox.prototype.load = function(e)
 
 StoreCartLightBox.prototype.open = function()
 {
-	if (this.status != 'open' || this.status != 'opening') {
+	if (this.status != 'open' && this.status != 'opening') {
 		YAHOO.util.Dom.setStyle(this.mini_cart, 'opacity', 0);
 		this.mini_cart.style.display = 'block';
 		this.position();
