@@ -5,6 +5,7 @@ require_once 'Site/exceptions/SiteNotFoundException.php';
 require_once 'Store/dataobjects/StoreCartEntry.php';
 require_once 'Store/dataobjects/StoreItem.php';
 require_once 'Store/StoreCartProcessor.php';
+require_once 'Store/StoreCartLightbox.php';
 
 /**
  * Handles XML-RPC requests to update the cart
@@ -17,8 +18,6 @@ class StoreCartServer extends SiteXMLRPCServer
 	// {{{ protected properties
 
 	protected $processor;
-	protected $cart_ui;
-	protected $cart_ui_xml = 'Store/pages/mini-cart.xml';
 
 	// }}}
 
@@ -121,6 +120,10 @@ class StoreCartServer extends SiteXMLRPCServer
 			$product_id = $entry->item->product->id;
 		}
 
+		// clear memcache of mini-cart view
+		$this->app->deleteCacheValue('mini-cart',
+			$this->app->session->getSessionId());
+
 		return $this->getCartInfo($request_id, $product_id, false);
 	}
 
@@ -205,271 +208,19 @@ class StoreCartServer extends SiteXMLRPCServer
 	}
 
 	// }}}
-
-	// mini cart
 	// {{{ protected function getMiniCart()
 
 	/**
-	 * Get a mini cart for a specific product page
+	 * Get a mini cart to display
 	 *
 	 * @return string The mini cart.
 	 */
 	protected function getMiniCart()
 	{
-		$this->cart_ui = new SwatUI();
-		$this->cart_ui->loadFromXML($this->cart_ui_xml);
-		$this->cart_ui->init();
-
-		$cart_view = $this->cart_ui->getWidget('cart_view');
-		$cart_view->model = $this->getCartTableStore();
-		$count = count($cart_view->model);
-
-		if ($count == 0) {
-			return '';
-		} else {
-			$this->cart_ui->getWidget('cart_title')->content =
-				$this->getCartTitle();
-
-			$cart_link = new SwatHtmlTag('a');
-			$cart_link->href = 'cart';
-			$cart_link->setContent(Store::_('View Cart'));
-			$this->cart_ui->getWidget('cart_link')->content =
-				$cart_link->__toString().' '.Store::_('or');
-
-			ob_start();
-			$this->cart_ui->display();
-			$mini_cart = ob_get_clean();
-		}
-
-		return $mini_cart;
-	}
-
-	// }}}
-	// {{{ protected function getCartTitle()
-
-	protected function getCartTitle()
-	{
-		$locale = SwatI18NLocale::get($this->app->getLocale());
-
-		$title = '';
-		$added = count($this->processor->getEntriesAdded());
-		if ($added > 0) {
-			$div_tag = new SwatHtmlTag('div');
-			$div_tag->class = 'added-message';
-			$div_tag->setContent(sprintf(Store::ngettext(
-				'One item added', '%s items added', $added),
-				$locale->formatNumber($added)));
-
-			$title.= $div_tag->__toString();
-		}
-
-		$item_count = count($this->app->cart->checkout->getAvailableEntries());
-		if ($item_count > 0) {
-			$items = sprintf('<span class="item-count"> (%s)</span>',
-				sprintf(Store::ngettext('%s item', '%s items', $item_count),
-				$locale->formatNumber($item_count)));
-		} else {
-			$items = '';
-		}
-
-		$h3_tag = new SwatHtmlTag('h3');
-		$h3_tag->setContent(
-			SwatString::minimizeEntities(Store::_('Shopping Cart')).$items,
-			'text/xml');
-
-		$title.= $h3_tag->__toString();
-		return $title;
-	}
-
-	// }}}
-	// {{{ protected function getAvailableEntries()
-
-	/**
-	 * Gets the cart entries
-	 */
-	protected function getAvailableEntries()
-	{
-		return $this->app->cart->checkout->getEntries();
-	}
-
-	// }}}
-	// {{{ protected function getCartTableStore()
-
-	/**
-	 * Gets the cart data-store
-	 */
-	protected function getCartTableStore()
-	{
-		$store = new SwatTableStore();
-		$show_group = false;
-
-		$saved_count = 0;
-		$entry_count = 0;
-
-		$status_title = Store::_('Available For Purchase');
-		foreach ($this->getAvailableEntries() as $entry) {
-			$ds = $this->getCartDetailsStore($entry);
-			$ds->status_title = $status_title;
-			$ds->status_class = 'available';
-			$store->add($ds);
-			$entry_count++;
-		}
-
-		$count = (count($this->getAvailableEntries()) - $entry_count);
-
-		if ($entry_count > 0 && $count > 0) {
-			$ds = $this->getMoreRow($count);
-			$ds->status_title = $status_title;
-			$ds->status_class = 'available';
-			$store->add($ds);
-		}
-
-		$status_title = Store::_('Saved For Later');
-		foreach ($this->app->cart->saved->getEntries() as $entry) {
-			$ds = $this->getCartDetailsStore($entry);
-			$ds->status_title = $status_title;
-			$ds->status_class = 'saved';
-			$store->add($ds);
-			$saved_count++;
-		}
-
-		$count = (count($this->app->cart->saved->getEntries()) - $saved_count);
-		if ($saved_count > 0 && $count > 0) {
-			$ds = $this->getMoreRow($count);
-			$ds->status_title = $status_title;
-			$ds->status_class = 'saved';
-			$store->add($ds);
-		}
-
-		$this->cart_ui->getWidget('cart_view')->getGroup(
-			'status_group')->visible = ($saved_count > 0);
-
-		return $store;
-	}
-
-	// }}}
-	// {{{ protected function getCartDetailsStore()
-
-	protected function getCartDetailsStore(StoreCartEntry $entry)
-	{
-		$ds = new SwatDetailsStore($entry);
-
-		$ds->quantity = $entry->getQuantity();
-		$ds->description = $this->getEntryDescription($entry);
-		$ds->price = $entry->getCalculatedItemPrice();
-		$ds->extension = $entry->getExtension();
-		$ds->discount = $entry->getDiscount();
-		$ds->discount_extension = $entry->getDiscountExtension();
-		$ds->show_remove_button = true;
-		$ds->product_link = 'store/'.$entry->item->product->path;
-
-		$image = $entry->item->product->primary_image;
-		if ($image === null) {
-			$ds->image        = null;
-			$ds->image_width  = null;
-			$ds->image_height = null;
-		} else {
-			$ds->image        = $image->getUri($this->getImageDimension());
-			$ds->image_width  = $image->getWidth($this->getImageDimension());
-			$ds->image_height = $image->getHeight($this->getImageDimension());
-		}
-
-		return $ds;
-	}
-
-	// }}}
-	// {{{ protected function getMoreRow()
-
-	/**
-	 * Gets the cart data-store for the product on this page
-	 */
-	protected function getMoreRow($num_items)
-	{
-		$locale = SwatI18NLocale::get($this->app->getLocale());
-
-		$ds = new SwatDetailsStore();
-		$ds->id = 0;
-		$ds->status_title = null;
-		$ds->quantity = null;
-		$ds->description = sprintf('<a class="more-link" href="cart">%s</a>',
-			sprintf(Store::ngettext('and one other item',
-					'and %s other items…', $num_items),
-				$locale->formatNumber($num_items)));
-
-		$ds->price = null;
-		$ds->extension = null;
-		$ds->discount = null;
-		$ds->discount_extension = null;
-		$ds->image        = null;
-		$ds->image_width  = null;
-		$ds->image_height = null;
-		$ds->show_remove_button = false;
-		return $ds;
-	}
-
-	// }}}
-	// {{{ protected function getImageDimension()
-
-	/**
-	 * @return string Image dimension shortname
-	 */
-	protected function getImageDimension()
-	{
-		return 'pinky';
-	}
-
-	// }}}
-	// {{{ protected function getEntryDescription()
-
-	protected function getEntryDescription(StoreCartEntry $entry)
-	{
-		$description = '';
-		$title = array();
-
-		if ($entry->item->sku !== null) {
-			$title[] = $entry->item->sku;
-		}
-
-		if ($entry->item->product->title !== null) {
-			$title[] = $entry->item->product->title;
-		}
-
-		if (count($title) > 0) {
-			$a_tag = new SwatHtmlTag('a');
-			$a_tag->href = 'store/'.$entry->item->product->path;
-			$a_tag->setContent(implode(' - ', $title));
-			$description.= '<h4>'.$a_tag->__toString().'</h4>';
-		}
-
-		$description.= implode(', ', $this->getItemDescriptionArray($entry));
-
-		return $description;
-	}
-
-	// }}}
-	// {{{ protected function getItemDescriptionArray()
-
-	protected function getItemDescriptionArray(StoreCartEntry $entry)
-	{
-		$description = array();
-
-		foreach ($entry->item->getDescriptionArray() as $key => $element) {
-			$description[$key] = SwatString::minimizeEntities($element);
-		}
-
-		$discount = $entry->getDiscountExtension();
-		if ($discount > 0) {
-			$locale = SwatI18NLocale::get($this->app->getLocale());
-
-			$span = new SwatHtmlTag('span');
-			$span->class = 'store-cart-discount';
-			$span->setContent(sprintf(Store::_('You save %s'),
-				$locale->formatCurrency($discount)));
-
-			$description['discount'] = $span->__toString();
-		}
-
-		return $description;
+		$mini_cart = new StoreCartLightbox(null, $this->app, $this->processor);
+		ob_start();
+		$mini_cart->displayContent();
+		return ob_get_clean();
 	}
 
 	// }}}

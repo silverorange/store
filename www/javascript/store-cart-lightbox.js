@@ -1,15 +1,18 @@
 /**
- * A lightbox that displays items in the user's cart 
+ * A lightbox that displays items in the user's cart
  *
  * This should be instansiated using: StoreCartLightBox.getInstance();
  */
-function StoreCartLightBox()
+function StoreCartLightBox(available_entry_count, all_entry_count)
 {
 	this.status           = 'closed';
 	this.product_id       = 0;
 	this.current_request  = 0;
 	this.analytics        = null;
 	this.override_message = null;
+
+	this.all_entry_count = available_entry_count;
+	this.available_entry_count = all_entry_count;
 
 	this.entries_added_event =
 		new YAHOO.util.CustomEvent('entries_added', this);
@@ -49,10 +52,9 @@ StoreCartLightBox.getInstance = function()
 StoreCartLightBox.prototype.init = function()
 {
 	this.configure();
-	this.draw();
 
-	this.all_entry_count = 0;
-	this.available_entry_count = 0;
+	this.mini_cart = document.getElementById('store_product_cart');
+	this.content = document.getElementById('store_product_cart_content');
 
 	var cart_links = YAHOO.util.Dom.getElementsByClassName(
 		'store-open-cart-link');
@@ -72,36 +74,8 @@ StoreCartLightBox.prototype.init = function()
 
 	YAHOO.util.Event.on(document, 'click', this.clickClose, this, true);
 	YAHOO.util.Event.on(window, 'resize', this.handleWindowChange, this, true);
-}
 
-// }}}
-// {{{ StoreCartLightBox.prototype.draw
-
-StoreCartLightBox.prototype.draw = function()
-{
-	this.mini_cart = document.createElement('div');
-	this.mini_cart.id = 'store_product_cart';
-
-	// make the cart positioned visible, but off the page to preload image
-	this.mini_cart.style.right = '-1000px';
-	this.mini_cart.style.display = 'block';
-
-	var div_top = document.createElement('div');
-	div_top.id = 'store_product_cart_top';
-	this.mini_cart.appendChild(div_top);
-
-	var div_body = document.createElement('div'); 
-	div_body.id = 'store_product_cart_body';
-	this.content = document.createElement('div');
-	this.content.id = 'store_product_cart_content';
-	div_body.appendChild(this.content);
-	this.mini_cart.appendChild(div_body);
-
-	var div_bottom = document.createElement('div');
-	div_bottom.id = 'store_product_cart_bottom';
-	this.mini_cart.appendChild(div_bottom);
-
-	document.body.appendChild(this.mini_cart);
+	this.activateLinks();
 }
 
 // }}}
@@ -127,7 +101,6 @@ StoreCartLightBox.prototype.addEntries = function(entries, source, source_catego
 		}
 	}
 
-	this.status = 'opening';
 	this.current_request++;
 
 	this.xml_rpc_client.callProcedure(
@@ -135,7 +108,8 @@ StoreCartLightBox.prototype.addEntries = function(entries, source, source_catego
 		[this.current_request, entries, source, source_category, true],
 		['int', 'array', 'int', 'int', 'boolean']);
 
-	this.open('<h2>' + StoreCartLightBox.submit_message + '</h2>');
+	this.setContent('<h2>' + StoreCartLightBox.submit_message + '</h2>');
+	this.open();
 }
 
 // }}}
@@ -146,56 +120,40 @@ StoreCartLightBox.prototype.load = function(e)
 	YAHOO.util.Event.stopPropagation(e);
 	YAHOO.util.Event.preventDefault(e);
 
-	var that = this;
-	function callBack(response)
-	{
-		if (response.request_id == that.current_request) {
-			that.all_entry_count = response.total_entries +
-				response.total_saved;
-
-			that.available_entry_count = response.total_entries;
-
-			that.displayResponse(response);
-			that.status = 'open';
-			that.recordAnalytics('xml-rpc/mini-cart/load');
-		}
+	if (this.override_message !== null) {
+		this.setContent(this.override_message);
 	}
 
-	if (this.override_message === null) {
-		this.current_request++;
-		this.xml_rpc_client.callProcedure(
-			'getCartInfo', callBack,
-			[this.current_request, this.product_id, true],
-			['int', 'int', 'boolean']);
-
-		this.open('<h2>' + StoreCartLightBox.loading_message + '</h2>');
-		this.status = 'opening';
-	} else {
-		this.open(this.override_message);
-		this.status = 'open';
-	}
+	this.open();
+	this.status = 'open';
 }
 
 // }}}
 // {{{ StoreCartLightBox.prototype.open
 
-StoreCartLightBox.prototype.open = function(contents)
+StoreCartLightBox.prototype.open = function()
 {
-	this.setContent(contents);
+	if (this.status != 'open' || this.status != 'opening') {
+		YAHOO.util.Dom.setStyle(this.mini_cart, 'opacity', 0);
+		this.mini_cart.style.display = 'block';
+		this.position();
 
-	YAHOO.util.Dom.setStyle(this.mini_cart, 'opacity', 0);
-	this.mini_cart.style.display = 'block';
-	this.position();
+		YAHOO.util.Dom.setStyle(this.content, 'height',
+			this.getContentHeight(this.content.innerHTML));
 
-	YAHOO.util.Dom.setStyle(this.content, 'height',
-		this.getContentHeight(contents) + 'px');
+		var animation = new YAHOO.util.Anim(
+			this.mini_cart,
+			{ opacity: { from: 0, to: 1 }},
+			0.3);
 
-	var cart_animation = new YAHOO.util.Anim(
-		this.mini_cart,
-		{ opacity: { from: 0, to: 1 }},
-		0.3);
+		var that = this;
+		animation.onComplete.subscribe(function() {
+			that.status = 'open';
+		});
 
-	cart_animation.animate();
+		animation.animate();
+		this.status = 'opening';
+	}
 }
 
 // }}}
@@ -221,7 +179,14 @@ StoreCartLightBox.prototype.setContent = function(contents)
 	this.position();
 
 	this.content.innerHTML = contents;
+	this.activateLinks();
+}
 
+// }}}
+// {{{ StoreCartLightBox.prototype.activateLinks
+
+StoreCartLightBox.prototype.activateLinks = function()
+{
 	// activate any 'remove' buttons
 	var remove_buttons = YAHOO.util.Dom.getElementsByClassName(
 		'store-remove', 'input', this.mini_cart);
