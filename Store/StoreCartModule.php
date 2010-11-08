@@ -185,6 +185,11 @@ class StoreCartModule extends SiteApplicationModule
 		}
 
 		$transaction->commit();
+
+		// clear memcache of mini-cart data
+		if (isset($this->app->memcache)) {
+			$this->app->memcache->flushNs($this->app->session->getSessionId());
+		}
 	}
 
 	// }}}
