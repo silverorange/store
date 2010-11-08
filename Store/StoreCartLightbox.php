@@ -198,23 +198,7 @@ class StoreCartLightbox extends SwatControl
 				}
 			}
 
-			$this->cart_ui = new SwatUI();
-			$this->cart_ui->loadFromXML($this->cart_ui_xml);
-			$this->cart_ui->init();
-
-			$cart_view = $this->cart_ui->getWidget('cart_view');
-			$cart_view->model = $this->getCartTableStore();
-
-			$this->cart_ui->getWidget('cart_title')->content =
-				$this->getCartTitle();
-
-			$cart_link = new SwatHtmlTag('a');
-			$cart_link->href = 'cart';
-			$cart_link->setContent(Store::_('View Cart'));
-			$this->cart_ui->getWidget('cart_link')->content =
-				$cart_link->__toString().' '.Store::_('or');
-
-			$this->cart_ui->display();
+			$this->displayCartEntries();
 		}
 	}
 

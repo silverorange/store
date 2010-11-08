@@ -85,6 +85,7 @@ class StoreCartServer extends SiteXMLRPCServer
 			}
 		}
 
+		$this->app->cart->save();
 		return $this->getCartInfo($request_id, $product_id, $mini_cart);
 	}
 
@@ -110,20 +111,15 @@ class StoreCartServer extends SiteXMLRPCServer
 			if ($entry === null) {
 				$product_id = null;
 			} else {
-				$this->app->cart->saved->save();
 				$removed = true;
 				$product_id = $entry->item->product->id;
 			}
 		} else {
-			$this->app->cart->checkout->save();
 			$removed = true;
 			$product_id = $entry->item->product->id;
 		}
 
-		// clear memcache of mini-cart view
-		$this->app->deleteCacheValue('mini-cart',
-			$this->app->session->getSessionId());
-
+		$this->app->cart->save();
 		return $this->getCartInfo($request_id, $product_id, false);
 	}
 
@@ -142,6 +138,16 @@ class StoreCartServer extends SiteXMLRPCServer
 	public function getCartInfo($request_id, $product_id = null,
 		$mini_cart = false)
 	{
+		$key = 'cart-info.'.$product_id.'.'.$mini_cart;
+
+		$return = $this->app->getCacheValue($key,
+			$this->app->session->getSessionId());
+
+		if ($return !== false) {
+			$return['request_id'] = $request_id;
+			return $return;
+		}
+
 		$product_entries = 0;	// total number of cart-enties for the product
 		$product_quantity = 0;	// sum of all quantities for the product
 		$total_entries = 0;		// total number of cart-entries
@@ -196,6 +202,9 @@ class StoreCartServer extends SiteXMLRPCServer
 			$return['mini_cart'] = '';
 		}
 
+		$this->app->addCacheValue($return, $key,
+			$this->app->session->getSessionId());
+
 		return $return;
 	}
 
@@ -242,21 +251,6 @@ class StoreCartServer extends SiteXMLRPCServer
 		}
 
 		return $link;
-	}
-
-	// }}}
-
-	// finalize phase
-	// {{{ public function finalize()
-
-	/**
-	 * Save the cart
-	 *
-	 * @xmlrpc.hidden
-	 */
-	public function finalize()
-	{
-		$this->app->cart->save();
 	}
 
 	// }}}
