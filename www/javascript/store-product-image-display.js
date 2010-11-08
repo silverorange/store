@@ -101,6 +101,7 @@ StoreProductImageDisplay.close_text = 'Close';
 
 		this.current_viewport_height = Dom.getViewportHeight();
 		this.current_scroll_top      = 0;
+		this.description_height      = 0;
 
 		this.initLinks();
 		this.drawOverlay();
@@ -181,6 +182,7 @@ StoreProductImageDisplay.close_text = 'Close';
 
 		this.overlay.appendChild(this.drawOverlayMask());
 		this.overlay.appendChild(this.drawContainer());
+		this.overlay.appendChild(this.drawDescriptionContainer());
 		this.overlay.appendChild(this.drawHeader());
 
 		var pinkies = this.drawPinkies();
@@ -377,6 +379,40 @@ StoreProductImageDisplay.close_text = 'Close';
 	};
 
 	// }}}
+	// {{{ drawDescriptionContainer()
+
+	StoreProductImageDisplay.prototype.drawDescriptionContainer = function()
+	{
+		this.description_container = document.createElement('a');
+		this.description_container.href = '#close';
+		this.description_container.style.display = 'none';
+		this.description_container.className =
+			'store-product-image-display-description-container';
+
+		Event.on(this.description_container, 'click', function(e) {
+			Event.preventDefault(e);
+			this.close();
+			this.onClose.fire('description_container');
+		}, this, true);
+
+		Event.on(this.description_container, 'mouseover', function(e) {
+			Dom.addClass(this.close_link,
+				'store-product-image-display-close-hover');
+		}, this, true);
+
+		Event.on(this.description_container, 'mouseout', function(e) {
+			Dom.removeClass(this.close_link,
+				'store-product-image-display-close-hover');
+		}, this, true);
+
+		this.description_container.appendChild(this.drawDescription());
+
+		SwatZIndexManager.raiseElement(this.description_container);
+
+		return this.description_container;
+	};
+
+	// }}}
 	// {{{ drawImage()
 
 	StoreProductImageDisplay.prototype.drawImage = function()
@@ -384,6 +420,16 @@ StoreProductImageDisplay.close_text = 'Close';
 		this.image = document.createElement('img');
 		this.image.className = 'store-product-image-display-image';
 		return this.image;
+	};
+
+	// }}}
+	// {{{ drawDescription()
+
+	StoreProductImageDisplay.prototype.drawDescription = function()
+	{
+		this.description = document.createElement('span');
+		this.description.className = 'store-product-image-display-description';
+		return this.description;
 	};
 
 	// }}}
@@ -447,10 +493,11 @@ StoreProductImageDisplay.close_text = 'Close';
 			this.dimensions.container.paddingLeft +
 			this.dimensions.container.paddingRight;
 
+		var top = this.current_scroll_top + this.config.geometry.top;
+
 		this.container.style.display = 'block';
 		this.container.style.marginLeft = -Math.floor(w / 2) + 'px';
-		this.container.style.top =
-			(this.current_scroll_top + this.config.geometry.top) + 'px';
+		this.container.style.top = top + 'px';
 
 		this.image.src = data.large_uri;
 		this.image.width = data.large_width;
@@ -459,6 +506,42 @@ StoreProductImageDisplay.close_text = 'Close';
 		// required for IE
 		this.image.parentNode.style.width = this.getImageWidth(data) + 'px';
 		this.image.parentNode.style.height = this.getImageHeight(data) + 'px';
+
+		// set image description
+		if (data.description) {
+			this.description_container.style.marginLeft =
+				-Math.floor(w / 2) + 'px';
+
+			this.description_container.style.top = '0';
+			this.description_container.style.visibility = 'hidden';
+			this.description_container.style.display = 'block';
+			this.description.style.width = this.getImageWidth(data) + 'px';
+
+			this.setDescription(data, this.data.product);
+
+			// this doesn't properly work in IE7 but is not needed anyway since
+			// the window scroll height can't be set in IE7.
+			if (YAHOO.env.ua.ie < 7 || YAHOO.env.ua.ie >= 8) {
+				// pop it into the displayed dom while hidden to get dimensions
+				this.body.appendChild(this.description_container);
+				var description_region = Dom.getRegion(
+					this.description_container);
+
+				this.description_height = description_region.height;
+
+				// put back in place before setting visible
+				this.container.parentNode.insertBefore(
+					this.description_container, this.container.nextSibling);
+			}
+
+			this.description_container.style.top =
+				(top + this.getImageHeight(data) + 16) + 'px';
+
+			this.description_container.style.visibility = 'visible';
+		} else {
+			this.description_container.style.display = 'none';
+			this.description_height = 0;
+		}
 
 		this.setTitle(data, this.data.product);
 
@@ -504,7 +587,6 @@ StoreProductImageDisplay.close_text = 'Close';
 		if (!this.opened || (YAHOO.env.ua.ie >= 7 && YAHOO.env.ua.ie < 8)) {
 			window.scroll(0, 0);
 		}
-
 
 		// set address bar to current image
 		var baseLocation = location.href.split('#')[0];
@@ -552,6 +634,16 @@ StoreProductImageDisplay.close_text = 'Close';
 			this.title.innerHTML = product.title + '  -  ' + image.title;
 		} else {
 			this.title.innerHTML = product.title;
+		}
+	};
+
+	// }}}
+	// {{{ setDescription()
+
+	StoreProductImageDisplay.prototype.setDescription = function(image, product)
+	{
+		if (image.description) {
+			this.description.innerHTML = image.description;
 		}
 	};
 
@@ -771,7 +863,10 @@ StoreProductImageDisplay.close_text = 'Close';
 					this.dimensions.body.marginTop -
 					this.dimensions.body.marginBottom,
 				// 32 extra px to contain image paddings and shadows
-				this.getImageHeight(data) + this.config.geometry.top + 32);
+				this.getImageHeight(data) +
+					this.description_height +
+					this.config.geometry.top +
+					32);
 
 			this.html.style.height = window_height + 'px';
 			this.body.style.height = (window_height + scroll_top) + 'px';
