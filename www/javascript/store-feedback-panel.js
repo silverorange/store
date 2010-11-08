@@ -9,7 +9,7 @@ function StoreFeedbackPanel(id)
 	this.form           = null;
 
 	YAHOO.util.Event.onDOMReady(this.init, this, true);
-}
+};
 
 StoreFeedbackPanel.sending_text   = 'Sending…';
 StoreFeedbackPanel.loading_text   = 'Loading…';
@@ -24,7 +24,7 @@ StoreFeedbackPanel.prototype.init = function()
 		YAHOO.util.Event.preventDefault(e);
 		this.toggle();
 	}, this, true);
-}
+};
 
 StoreFeedbackPanel.prototype.toggle = function()
 {
@@ -33,7 +33,7 @@ StoreFeedbackPanel.prototype.toggle = function()
 	} else {
 		this.open();
 	}
-}
+};
 
 StoreFeedbackPanel.prototype.open = function()
 {
@@ -88,7 +88,7 @@ StoreFeedbackPanel.prototype.open = function()
 
 	this.semaphore = true;
 	this.opened = true;
-}
+};
 
 StoreFeedbackPanel.prototype.close = function()
 {
@@ -123,7 +123,7 @@ StoreFeedbackPanel.prototype.close = function()
 
 	this.semaphore = true;
 	this.opened = false;
-}
+};
 
 StoreFeedbackPanel.prototype.drawContainer = function()
 {
@@ -154,7 +154,7 @@ StoreFeedbackPanel.prototype.drawContainer = function()
 	];
 
 	YAHOO.util.Dom.setXY(this.container, xy);
-}
+};
 
 StoreFeedbackPanel.prototype.drawCancelLink = function()
 {
@@ -196,7 +196,7 @@ StoreFeedbackPanel.prototype.drawCancelLink = function()
 	var parent_node = getLastDiv(this.form);
 
 	parent_node.appendChild(this.cancel_link);
-}
+};
 
 StoreFeedbackPanel.prototype.removeCancelLink = function()
 {
@@ -207,7 +207,7 @@ StoreFeedbackPanel.prototype.removeCancelLink = function()
 	YAHOO.util.Event.purgeElement(this.cancel_link, false, 'click');
 	this.cancel_link.parentNode.removeChild(this.cancel_link);
 	this.cancel_link = null;
-}
+};
 
 StoreFeedbackPanel.prototype.loadFeedbackForm = function()
 {
@@ -233,7 +233,7 @@ StoreFeedbackPanel.prototype.loadFeedbackForm = function()
 		['GET',    '',        location.href],
 		['string', 'string', 'string']
 	);
-}
+};
 
 StoreFeedbackPanel.prototype.initForm = function()
 {
@@ -259,7 +259,7 @@ StoreFeedbackPanel.prototype.initForm = function()
 		this,
 		true
 	);
-}
+};
 
 StoreFeedbackPanel.prototype.hide = function()
 {
@@ -282,7 +282,7 @@ StoreFeedbackPanel.prototype.hide = function()
 	this.link.parentNode.replaceChild(span, this.link);
 
 	animation.animate();
-}
+};
 
 StoreFeedbackPanel.prototype.handleFormSubmit = function(e)
 {
@@ -318,7 +318,7 @@ StoreFeedbackPanel.prototype.handleFormSubmit = function(e)
 	);
 
 	this.submitted = true;
-}
+};
 
 StoreFeedbackPanel.prototype.showThrobber = function()
 {
@@ -355,7 +355,7 @@ StoreFeedbackPanel.prototype.showThrobber = function()
 	);
 
 	animation.animate();
-}
+};
 
 StoreFeedbackPanel.prototype.getFormData = function(form)
 {
@@ -409,4 +409,4 @@ StoreFeedbackPanel.prototype.getFormData = function(form)
 	data = data.substr(1);
 
 	return data;
-}
+};
