@@ -10,8 +10,8 @@ function StoreCartLightBox(available_entry_count, all_entry_count)
 	this.current_request  = 0;
 	this.analytics        = null;
 
-	this.all_entry_count = available_entry_count;
-	this.available_entry_count = all_entry_count;
+	this.all_entry_count = all_entry_count;
+	this.available_entry_count = available_entry_count;
 
 	this.entries_added_event =
 		new YAHOO.util.CustomEvent('entries_added', this);
