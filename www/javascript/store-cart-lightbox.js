@@ -53,8 +53,8 @@ StoreCartLightBox.prototype.init = function()
 {
 	this.configure();
 
-	this.mini_cart = document.getElementById('store_product_cart');
-	this.content = document.getElementById('store_product_cart_content');
+	this.mini_cart = document.getElementById('store_cart_lightbox');
+	this.content = document.getElementById('store_cart_lightbox_content');
 
 	var cart_links = YAHOO.util.Dom.getElementsByClassName(
 		'store-open-cart-link');

@@ -54,8 +54,8 @@ class StoreCartLightbox extends SwatControl
 	// {{{ protected properties
 
 	protected $app;
-	protected $cart_ui;
-	protected $cart_ui_xml = 'Store/pages/mini-cart.xml';
+	protected $ui;
+	protected $ui_xml = 'Store/cart-lightbox.xml';
 
 	// }}}
 	// {{{ public function __construct()
@@ -95,18 +95,18 @@ class StoreCartLightbox extends SwatControl
 	{
 		parent::display();
 
-		echo '<div id="store_product_cart" class="swat-hidden">';
-		echo '<div id="store_product_cart_top"></div>';
+		echo '<div id="store_cart_lightbox" class="swat-hidden">';
+		echo '<div id="store_cart_lightbox_top"></div>';
 
-		echo '<div id="store_product_cart_body">';
-		echo '<div id="store_product_cart_content">';
+		echo '<div id="store_cart_lightbox_body">';
+		echo '<div id="store_cart_lightbox_content">';
 
 		$this->displayContent();
 
 		echo '</div>';
 		echo '</div>';
 
-		echo '<div id="store_product_cart_bottom"></div>';
+		echo '<div id="store_cart_lightbox_bottom"></div>';
 		echo '</div>';
 
 		Swat::displayInlineJavaScript($this->getInlineJavaScript());
@@ -214,24 +214,24 @@ class StoreCartLightbox extends SwatControl
 			$this->app->session->getSessionId());
 
 		if ($cart === false) {
-			$this->cart_ui = new SwatUI();
-			$this->cart_ui->loadFromXML($this->cart_ui_xml);
-			$this->cart_ui->init();
+			$this->ui = new SwatUI();
+			$this->ui->loadFromXML($this->ui_xml);
+			$this->ui->init();
 
-			$cart_view = $this->cart_ui->getWidget('cart_view');
+			$cart_view = $this->ui->getWidget('lightbox_cart_view');
 			$cart_view->model = $this->getCartTableStore();
 
-			$this->cart_ui->getWidget('cart_title')->content =
+			$this->ui->getWidget('lightbox_cart_title')->content =
 				$this->getCartTitle();
 
 			$cart_link = new SwatHtmlTag('a');
 			$cart_link->href = 'cart';
 			$cart_link->setContent(Store::_('View Cart'));
-			$this->cart_ui->getWidget('cart_link')->content =
+			$this->ui->getWidget('lightbox_cart_link')->content =
 				$cart_link->__toString().' '.Store::_('or');
 
 			ob_start();
-			$this->cart_ui->display();
+			$this->ui->display();
 			$cart = ob_get_clean();
 			$this->app->addCacheValue($cart, 'mini-cart',
 				$this->app->session->getSessionId());
@@ -327,7 +327,7 @@ class StoreCartLightbox extends SwatControl
 			$store->add($ds);
 		}
 
-		$this->cart_ui->getWidget('cart_view')->getGroup(
+		$this->ui->getWidget('lightbox_cart_view')->getGroup(
 			'status_group')->visible = ($saved_count > 0);
 
 		return $store;

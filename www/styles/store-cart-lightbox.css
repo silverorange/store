@@ -1,4 +1,4 @@
-#store_product_cart {
+#store_cart_lightbox {
 	position: fixed;
 	top: -12px;
 	right: -1000px; /* position it off the page so that images pre-load */
@@ -7,48 +7,48 @@
 	z-index: 1000;
 }
 
-body > #store_product_cart { position: fixed; }
-
-#store_product_cart_body {
+#store_cart_lightbox_body {
 	background: url(../images/mini-cart-background.png) repeat-y -378px 0;
 	padding: 0 14px;
 }
 
-#store_product_cart_top {
+#store_cart_lightbox_top {
 	background: url(../images/mini-cart-background.png) no-repeat 0 100%;
 	height: 27px;
 }
 
-#store_product_cart_bottom {
+#store_cart_lightbox_bottom {
 	background: url(../images/mini-cart-background.png) no-repeat -756px 100%;
 	height: 26px;
 }
 
 /* {{{ IE hacks */
 
-* html #store_product_cart_top,
-* html #store_product_cart_body,
-* html #store_product_cart_bottom {
+/* IE doesn't play nice with 24bit png's whose style.opacity changes */
+
+* html #store_cart_lightbox_top,
+* html #store_cart_lightbox_body,
+* html #store_cart_lightbox_bottom {
 	background-image: url(../images/mini-cart-background-ie.png);
 }
 
 /* IE 7 */
-*+html #store_product_cart_top,
-*+html #store_product_cart_body,
-*+html #store_product_cart_bottom {
+*+html #store_cart_lightbox_top,
+*+html #store_cart_lightbox_body,
+*+html #store_cart_lightbox_bottom {
 	background-image: url(../images/mini-cart-background-ie.png);
 }
 
 /* IE 8 */
-#store_product_cart_top,
-#store_product_cart_body,
-#store_product_cart_bottom {
-	background-image: url(../images/mini-cart-background-ie.png)\9
+#store_cart_lightbox_top,
+#store_cart_lightbox_body,
+#store_cart_lightbox_bottom {
+	background-image: url(../images/mini-cart-background-ie.png);
 }
 
 /* }}} */
 
-#store_product_cart_body #cart_form {
+#store_cart_lightbox #cart_lightbox_cart_form {
 	max-height: 300px;
 	overflow: auto;
 	border-top: 1px solid #dfd5c3;
@@ -56,101 +56,97 @@ body > #store_product_cart { position: fixed; }
 	margin: 15px 0 10px 0;
 }
 
-#store_product_cart_content {
+#store_cart_lightbox_content {
 	padding-top: 5px;
 }
 
-#store_product_cart .swat-table-view tbody tr {
+#store_cart_lightbox .swat-table-view tbody tr {
 	background: #f0e6d6;
 }
 
-#store_product_cart #cart_view.swat-table-view tr {
+#store_cart_lightbox #cart_view.swat-table-view tr {
 	border-bottom: 1px solid #dfd5c3;
 }
 
-#store_product_cart #cart_view.swat-table-view tr:last-child {
+#store_cart_lightbox #cart_view.swat-table-view tr:last-child {
 	border-bottom: 0;
 }
 
-#store_product_cart .swat-table-view .swat-table-view-group {
+#store_cart_lightbox .swat-table-view .swat-table-view-group {
 	background: #fff;
 	padding-top: 10px;
 	padding-left: 10px;
 }
 
-#store_product_cart div.swat-table-view-column-renderer {
+#store_cart_lightbox div.swat-table-view-column-renderer {
 	display: block;
 }
 
-#store_product_cart tbody td {
+#store_cart_lightbox tbody td {
 	padding-top: 3px;
 	padding-bottom: 3px;
 }
 
-#store_product_cart .store-cart-discount {
-	font-size: 60%;
-}
-
-#store_product_cart .discount {
+#store_cart_lightbox .discount {
 	color: #090;
 }
 
-#store_product_cart tbody td.swat-image-cell-renderer {
+#store_cart_lightbox tbody td.swat-image-cell-renderer {
 	padding-left: 10px;
 }
 
-#store_product_cart tbody td.remove-column {
+#store_cart_lightbox tbody td.remove-column {
 	padding-right: 10px;
 }
 
-#store_product_cart tbody td.quantity-column {
+#store_cart_lightbox tbody td.quantity-column {
 	padding: 8px 6px 0 0;
 	font-weight: bold;
 }
 
-#store_product_cart #cart_view.swat-table-view .store-cart-description {
+#store_cart_lightbox #cart_view.swat-table-view .store-cart-description {
 	width: 100%;
 	padding: 0.4em;
 }
 
-#store_product_cart #cart_view.swat-table-view {
+#store_cart_lightbox #cart_view.swat-table-view {
 	margin: 0;
 	width: 100%;
 }
 
-#store_product_cart #cart_view.swat-table-view th {
+#store_cart_lightbox #cart_view.swat-table-view th {
 	font-weight: normal;
 }
 
-#store_product_cart #cart_view.swat-table-view tbody td {
+#store_cart_lightbox #cart_view.swat-table-view tbody td {
 	vertical-align: top;
 }
 
-#store_product_cart #cart_view.swat-table-view tbody td.description-column {
+#store_cart_lightbox #cart_view.swat-table-view tbody td.description-column {
 	color: #6B685B
 }
 
-#store_product_cart input.store-remove {
+#store_cart_lightbox input.store-remove {
 	background: #fff;
 	color: #900;
 }
 
-#store_product_cart input.store-remove:hover {
+#store_cart_lightbox input.store-remove:hover {
 	color: #b00;
 }
 
-#store_product_cart #cart_view.swat-table-view tbody td.remove-column .swat-money-cell-renderer {
+#store_cart_lightbox #cart_view.swat-table-view tbody td.remove-column .swat-money-cell-renderer {
 	font-size: 135%;
 	font-weight: bold;
 }
 
-#store_product_cart img.swat-image-cell-renderer {
+#store_cart_lightbox img.swat-image-cell-renderer {
 	border: 1px solid #8f8874;
 	background: #fff;
 	padding: 2px;
 }
 
-#store_product_cart .added-message {
+#store_cart_lightbox .added-message {
 	padding: 4px;
 	float: right;
 	background: #fffbc9;
@@ -158,44 +154,44 @@ body > #store_product_cart { position: fixed; }
 	text-align: center;
 }
 
-#store_product_cart h2,
-#store_product_cart h3 {
+#store_cart_lightbox h2,
+#store_cart_lightbox h3 {
 	margin: 0 10px;
 	font-size: 130%;
 }
 
-#store_product_cart .store-cart-description h4 {
+#store_cart_lightbox .store-cart-description h4 {
 	color: #3f0e08;
 	font-size: 13px;
 	margin-bottom: 3px;
 }
 
-#store_product_cart .store-cart-description {
+#store_cart_lightbox .store-cart-description {
 	font-size: 11px;
 }
 
-#store_product_cart .store-cart-description a.more-link {
+#store_cart_lightbox .store-cart-description a.more-link {
 	font-weight: bold;
 }
 
-#store_product_cart .empty-message {
+#store_cart_lightbox .empty-message {
 	padding: 0 10px;
 }
 
-#store_product_cart .empty-message h2 {
+#store_cart_lightbox .empty-message h2 {
 	margin: 0 0 10px 0;
 }
 
-#store_product_cart #cart_link_container {
+#store_cart_lightbox #lightbox_cart_link_container {
 	float: right;
 	padding: 10px;
 }
 
-#store_product_cart #checkout_container {
+#store_cart_lightbox #checkout_container {
 	float: right;
 	padding: 10px;
 }
 
-#store_product_cart #checkout_form {
+#store_cart_lightbox #checkout_form {
 	margin: 5px 10px 0 10px;
 }

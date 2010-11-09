@@ -1,11 +1,11 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
-	<widget class="SwatContentBlock" id="cart_title">
+	<widget class="SwatContentBlock" id="lightbox_cart_title">
 		<property name="content_type">text/xml</property>
 	</widget>
-	<widget class="SwatForm" id="cart_form">
-		<widget class="SwatTableView" id="cart_view">
+	<widget class="SwatForm" id="lightbox_cart_form">
+		<widget class="SwatTableView" id="lightbox_cart_view">
 			<property name="classes[]">store-cart-entry-view</property>
 			<object class="SwatTableViewGroup" id="status_group">
 				<property name="group_by">status_title</property>
@@ -13,7 +13,7 @@
 					<property name="text" type="data">status_title</property>
 				</object>
 			</object>
-			<object class="SwatTableViewColumn" id="cart_image">
+			<object class="SwatTableViewColumn" id="lightbox_cart_image">
 				<object class="SwatImageLinkCellRenderer" id="product_image">
 					<property name="image" type="data">image</property>
 					<property name="width" type="data">image_width</property>
@@ -58,8 +58,8 @@
 				<property name="title"  translatable="yes">Checkout</property>
 			</widget>
 		</widget>
-		<widget class="SwatDisplayableContainer" id="cart_link_container">
-			<widget class="SwatContentBlock" id="cart_link">
+		<widget class="SwatDisplayableContainer" id="lightbox_cart_link_container">
+			<widget class="SwatContentBlock" id="lightbox_cart_link">
 				<property name="content_type">text/xml</property>
 			</widget>
 		</widget>
