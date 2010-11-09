@@ -9,7 +9,6 @@ function StoreCartLightBox(available_entry_count, all_entry_count)
 	this.product_id       = 0;
 	this.current_request  = 0;
 	this.analytics        = null;
-	this.override_message = null;
 
 	this.all_entry_count = available_entry_count;
 	this.available_entry_count = all_entry_count;
@@ -124,10 +123,6 @@ StoreCartLightBox.prototype.load = function(e)
 {
 	YAHOO.util.Event.stopPropagation(e);
 	YAHOO.util.Event.preventDefault(e);
-
-	if (this.override_message !== null) {
-		this.setContent(this.override_message);
-	}
 
 	this.open();
 	this.status = 'open';

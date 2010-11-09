@@ -86,6 +86,10 @@ class StoreCartLightbox extends SwatControl
 
 		$this->addStyleSheet('packages/store/styles/store-cart-lightbox.css',
 			Store::PACKAGE_ID);
+
+		$h3_tag = new SwatHtmlTag('h3');
+		$h3_tag->setContent(Store::_('Your Shopping Cart is Empty'));
+		$this->empty_message = $h3_tag->__toString();
 	}
 
 	// }}}
@@ -160,11 +164,6 @@ class StoreCartLightbox extends SwatControl
 			$javascript.= "cart_lightbox.analytics = 'google_analytics';\n";
 		}
 
-		if ($this->override_message !== null) {
-			$javascript.= sprintf("cart_lightbox.override_message = %s;\n",
-				SwatString::quoteJavaScriptString($this->override_message));
-		}
-
 		return $javascript;
 	}
 
@@ -180,8 +179,9 @@ class StoreCartLightbox extends SwatControl
 	 */
 	public function displayContent()
 	{
-		if ($this->app->cart->checkout->isEmpty()) {
-			// TODO: also handle override messages like this
+		if ($this->override_message !== null) {
+			echo $this->override_message;
+		} elseif ($this->app->cart->checkout->isEmpty()) {
 			echo $this->empty_message;
 		} else {
 			if ($this->processor !== null) {
