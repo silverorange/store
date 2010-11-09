@@ -56,6 +56,9 @@ StoreCartLightBox.prototype.init = function()
 	this.mini_cart = document.getElementById('store_cart_lightbox');
 	this.content = document.getElementById('store_cart_lightbox_content');
 
+	this.mini_cart.parentNode.removeChild(this.mini_cart);
+	document.body.appendChild(this.mini_cart);
+
 	var cart_links = YAHOO.util.Dom.getElementsByClassName(
 		'store-open-cart-link');
 
