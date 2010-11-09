@@ -108,7 +108,7 @@ StoreCartLightBox.prototype.addEntries = function(entries, source, source_catego
 		[this.current_request, entries, source, source_category, true],
 		['int', 'array', 'int', 'int', 'boolean']);
 
-	this.setContentWithAnimation(
+	this.setContent(
 		'<h2>' + StoreCartLightBox.submit_message + '</h2>');
 
 	this.open();
@@ -127,6 +127,7 @@ StoreCartLightBox.prototype.load = function(e)
 	}
 
 	this.open();
+	this.status = 'open';
 }
 
 // }}}
@@ -139,18 +140,13 @@ StoreCartLightBox.prototype.open = function()
 		this.mini_cart.style.display = 'block';
 		this.position();
 
-		YAHOO.util.Dom.setStyle(this.content, 'height',
-			this.getContentHeight(this.content.innerHTML));
+		this.content.style.height =
+			this.getContentHeight(this.content.innerHTML) + 'px';
 
 		var animation = new YAHOO.util.Anim(
 			this.mini_cart,
 			{ opacity: { from: 0, to: 1 }},
 			0.3);
-
-		var that = this;
-		animation.onComplete.subscribe(function() {
-			that.status = 'open';
-		});
 
 		animation.animate();
 		this.status = 'opening';
@@ -170,17 +166,6 @@ StoreCartLightBox.prototype.displayResponse = function(response)
 
 	this.updateCartLink(response.cart_link);
 	this.updateItemCount(response['total_entries']);
-}
-
-// }}}
-// {{{ StoreCartLightBox.prototype.setContent
-
-StoreCartLightBox.prototype.setContent = function(contents)
-{
-	this.position();
-
-	this.content.innerHTML = contents;
-	this.activateLinks();
 }
 
 // }}}
@@ -205,6 +190,17 @@ StoreCartLightBox.prototype.activateLinks = function()
 		YAHOO.util.Event.on(close_buttons, 'click',
 			this.close, this, true);
 	}
+}
+
+// }}}
+// {{{ StoreCartLightBox.prototype.setContent
+
+StoreCartLightBox.prototype.setContent = function(contents)
+{
+	this.position();
+
+	this.content.innerHTML = contents;
+	this.activateLinks();
 }
 
 // }}}
@@ -246,7 +242,7 @@ StoreCartLightBox.prototype.getContentHeight = function(contents)
 {
 	var hidden_div = document.createElement('div');
 	hidden_div.style.visiblility = 'hidden';
-	hidden_div.height = 0;
+	hidden_div.style.height = '0px';
 
 	var hidden_content_div = document.createElement('div');
 	hidden_content_div.innerHTML = contents;
