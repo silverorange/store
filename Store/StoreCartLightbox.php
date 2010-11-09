@@ -87,9 +87,9 @@ class StoreCartLightbox extends SwatControl
 		$this->addStyleSheet('packages/store/styles/store-cart-lightbox.css',
 			Store::PACKAGE_ID);
 
-		$h3_tag = new SwatHtmlTag('h3');
-		$h3_tag->setContent(Store::_('Your Shopping Cart is Empty'));
-		$this->empty_message = $h3_tag->__toString();
+		$h2_tag = new SwatHtmlTag('h2');
+		$h2_tag->setContent(Store::_('Your Shopping Cart is Empty'));
+		$this->empty_message = $h2_tag->__toString();
 	}
 
 	// }}}
@@ -126,16 +126,8 @@ class StoreCartLightbox extends SwatControl
 		$javascript = '';
 
 		if (!$translated) {
-			if ($this->empty_message === null) {
-				$h2_tag = new SwatHtmlTag('h2');
-				$h2_tag->setContent(Store::_('Your Shopping Cart is Empty'));
-				$empty_message = $h2_tag->__toString();
-			} else {
-				$empty_message = $this->empty_message;
-			}
-
 			$javascript.= sprintf("StoreCartLightBox.empty_message = %s;\n",
-				SwatString::quoteJavaScriptString($empty_message));
+				SwatString::quoteJavaScriptString($this->empty_message));
 
 			$javascript.= sprintf("StoreCartLightBox.loading_message = %s;\n",
 				SwatString::quoteJavaScriptString(Store::_('Loading…')));
@@ -182,7 +174,8 @@ class StoreCartLightbox extends SwatControl
 		if ($this->override_message !== null) {
 			echo $this->override_message;
 		} elseif ($this->app->cart->checkout->isEmpty()) {
-			echo $this->empty_message;
+			echo '<div class="empty-message">'.
+				$this->empty_message.'</div>';
 		} else {
 			if ($this->processor !== null) {
 				$added = count($this->processor->getEntriesAdded());
