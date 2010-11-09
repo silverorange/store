@@ -48,7 +48,7 @@
 
 /* }}} */
 
-#store_cart_lightbox #cart_lightbox_cart_form {
+#store_cart_lightbox #lightbox_cart_form {
 	max-height: 300px;
 	overflow: auto;
 	border-top: 1px solid #dfd5c3;
