@@ -165,7 +165,7 @@ class StoreCartProcessor extends SwatObject
 
 			if ($added > 0) {
 				$title = sprintf(Store::ngettext(
-					'You have one item from this page in your cart.',	
+					'You have one item from this page in your cart.',
 					'You have %s items from this page in your cart.',
 					$added),
 					$locale->formatNumber($added));
