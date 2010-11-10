@@ -120,7 +120,7 @@ class StoreCategoryPage extends StorePage
 		if ($image !== null) {
 			$this->layout->data->extra_headers.= sprintf(
 				'<link rel="image_src" href="%s" />',
-				$this->app->getBaseHref().$image->getUri('thumb'));
+				$image->getUri('thumb', $this->app->getBaseHref(false)));
 		}
 
 		// subclasses may have loaded products already at this point, so avoid
