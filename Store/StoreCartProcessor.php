@@ -51,7 +51,6 @@ class StoreCartProcessor extends SwatObject
 	public function __construct(SiteApplication $app)
 	{
 		$this->app = $app;
-		//$this->app->cart->load();
 	}
 
 	// }}}
@@ -144,6 +143,8 @@ class StoreCartProcessor extends SwatObject
 
 	public function getProductCartMessage(StoreProduct $product)
 	{
+		$total_items = count($product->items);
+
 		$added = 0;
 		foreach ($this->app->cart->checkout->getAvailableEntries() as $entry) {
 			if ($entry->item->product->id == $product->id) {
@@ -164,17 +165,25 @@ class StoreCartProcessor extends SwatObject
 			$locale = SwatI18NLocale::get($this->app->getLocale());
 
 			if ($added > 0) {
-				$title = sprintf(Store::ngettext(
-					'You have one item from this page in your cart.',
-					'You have %s items from this page in your cart.',
-					$added),
-					$locale->formatNumber($added));
+				if ($added == 1 && $total_items == 1) {
+					$title = Store::_('You have this product in your cart.');
+				} else {
+					$title = sprintf(Store::ngettext(
+						'You have one item from this page in your cart.',
+						'You have %s items from this page in your cart.',
+						$added),
+						$locale->formatNumber($added));
+				}
 			} else {
-				$title = sprintf(Store::ngettext(
-					'You have one item from this page saved for later.',
-					'You have %s items from this page saved for later.',
-					$saved),
-					$locale->formatNumber($saved));
+				if ($saved == 1 && $total_items == 1) {
+					$title = Store::_('You have saved this product for later.');
+				} else {
+					$title = sprintf(Store::ngettext(
+						'You have one item from this page saved for later.',
+						'You have %s items from this page saved for later.',
+						$saved),
+						$locale->formatNumber($saved));
+				}
 			}
 
 			$a_tag = new SwatHtmlTag('a');
