@@ -437,8 +437,7 @@ class StoreProductPage extends StorePage
 			SwatString::condense($this->product->bodytext, 400)));
 
 		$image = $this->product->primary_image;
-		if ($image !== null && isset($this->app->config->facebook) &&
-			$this->app->config->facebook->app_id === null) {
+		if ($image !== null) {
 			$this->layout->data->extra_headers.= sprintf(
 				'<link rel="image_src" href="%s" />',
 				$image->getUri('small', $this->app->getBaseHref(false)));
