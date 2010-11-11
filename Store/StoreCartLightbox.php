@@ -342,15 +342,17 @@ class StoreCartLightbox extends SwatControl
 		$ds->show_remove_button = true;
 		$ds->product_link = 'store/'.$entry->item->product->path;
 
+		$dimension = $this->getImageDimension();
 		$image = $entry->item->product->primary_image;
-		if ($image === null) {
+
+		if ($image !== null && $image->hasDimension($dimension)) {
+			$ds->image        = $image->getUri($dimension);
+			$ds->image_width  = $image->getWidth($dimension);
+			$ds->image_height = $image->getHeight($dimension);
+		} else {
 			$ds->image        = null;
 			$ds->image_width  = null;
 			$ds->image_height = null;
-		} else {
-			$ds->image        = $image->getUri($this->getImageDimension());
-			$ds->image_width  = $image->getWidth($this->getImageDimension());
-			$ds->image_height = $image->getHeight($this->getImageDimension());
 		}
 
 		return $ds;
