@@ -42,6 +42,7 @@
 			</widget>
 			<widget class="AdminPagination" id="pager">
 				<property name="link">Product</property>
+				<property name="page_size" type="integer">50</property>
 			</widget>
 			<widget class="SwatActions" id="index_actions">
 				<widget class="SwatActionItem" id="delete">
