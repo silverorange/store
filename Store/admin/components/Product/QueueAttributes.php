@@ -33,7 +33,7 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 	 *
 	 * @var boolean
 	 */
-	protected $category;
+	protected $category = false;
 
 	/**
 	 * Id of the category page this was called from.
