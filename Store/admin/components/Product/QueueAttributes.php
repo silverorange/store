@@ -64,7 +64,9 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 	public function setCategory($category_id)
 	{
 		$this->category_id = $category_id;
-		$this->category    = true;
+		if ($category_id !== null) {
+			$this->category = true;
+		}
 	}
 
 	// }}}
