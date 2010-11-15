@@ -545,6 +545,18 @@ class StoreCategory extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ protected function deleteInternal()
+
+	protected function deleteInternal()
+	{
+		parent::deleteInternal();
+
+		if ($this->getInternalValue('image') !== null) {
+			$this->image->delete();
+		}
+	}
+
+	// }}}
 
 	// loader methods
 	// {{{ protected function loadPath()
