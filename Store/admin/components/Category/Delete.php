@@ -5,6 +5,7 @@ require_once 'Admin/AdminListDependency.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/dataobjects/StoreCategoryWrapper.php';
+require_once 'Store/dataobjects/StoreCategoryImageWrapper.php';
 
 require_once 'include/StoreCategoryProductDependency.php';
 
@@ -99,8 +100,17 @@ class StoreCategoryDelete extends AdminDBDelete
 		$sql = sprintf('select * from Category where id in (%s)',
 			$this->getItemList('integer'));
 
-		return SwatDB::query($this->app->db, $sql,
+		$categories = SwatDB::query($this->app->db, $sql,
 			SwatDBClassMap::get('StoreCategoryWrapper'));
+
+		$image_sql = 'select * from Image where id in (%s)';
+		$categories->loadAllSubDataObjects(
+			'image',
+			$this->app->db,
+			$image_sql,
+			SwatDBClassMap::get('StoreCategoryImageWrapper'));
+
+		return $categories;
 	}
 
 	// }}}
