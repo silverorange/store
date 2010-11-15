@@ -3,6 +3,8 @@
 require_once 'Admin/pages/AdminDBDelete.php';
 require_once 'Admin/AdminListDependency.php';
 require_once 'SwatDB/SwatDB.php';
+require_once 'SwatDB/SwatDBClassMap.php';
+require_once 'Store/dataobjects/StoreCategoryWrapper.php';
 
 require_once 'include/StoreCategoryProductDependency.php';
 
@@ -41,23 +43,28 @@ class StoreCategoryDelete extends AdminDBDelete
 	{
 		parent::processDBData();
 
-		if ($this->single_delete) {
-			$sql = sprintf('select parent from Category where id = %s',
-				$this->app->db->quote($this->getFirstItem(), 'integer'));
+		$categories = $this->getCategories();
 
-			$this->relocate_id = SwatDB::queryOne($this->app->db, $sql);
+		if ($this->single_delete) {
+			$this->relocate_id =
+				$categories->getFirst()->getInternalValue('parent');
 		}
 
-		$sql = 'delete from Category where id in (%s)';
-		$item_list = $this->getItemList('integer');
-		$sql = sprintf($sql, $item_list);
+		$num = 0;
+		foreach ($categories as $category) {
+			if ($category->getInternalValue('image') !== null) {
+				$category->image->setFileBase('../images');
+			}
 
-		$num = SwatDB::exec($this->app->db, $sql);
+			$category->delete();
+
+			$num++;
+		}
 
 		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One category has been deleted.',
 			'%d categories have been deleted.', $num),
-			SwatString::numberFormat($num)), SwatMessage::NOTIFICATION);
+			SwatString::numberFormat($num)));
 
 		$this->app->messages->add($message);
 
@@ -82,6 +89,18 @@ class StoreCategoryDelete extends AdminDBDelete
 		} else {
 			parent::relocate();
 		}
+	}
+
+	// }}}
+	// {{{ protected function getCategories()
+
+	protected function getCategories()
+	{
+		$sql = sprintf('select * from Category where id in (%s)',
+			$this->getItemList('integer'));
+
+		return SwatDB::query($this->app->db, $sql,
+			SwatDBClassMap::get('StoreCategoryWrapper'));
 	}
 
 	// }}}
