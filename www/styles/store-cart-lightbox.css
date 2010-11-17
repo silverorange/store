@@ -47,7 +47,7 @@
 #store_cart_lightbox_top,
 #store_cart_lightbox_body,
 #store_cart_lightbox_bottom {
-	background-image: url(../images/mini-cart-background-ie.png);
+	background-image: url(../images/mini-cart-background-ie.png)\0/;
 }
 
 /* }}} */
