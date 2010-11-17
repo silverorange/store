@@ -126,6 +126,13 @@ class StoreProduct extends SwatDBDataObject
 	 */
 	protected $is_available = array();
 
+	/**
+	 * Cache of item count
+	 *
+	 * @var integer
+	 */
+	protected $item_count;
+
 	// }}}
 	// {{{ public function setRegion()
 
@@ -263,6 +270,22 @@ class StoreProduct extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function getItemCount()
+
+	/**
+	 * Get the number of items that belong to this product
+	 *
+	 * @return integer
+	 */
+	public function getItemCount()
+	{
+		if ($this->item_count === null)
+			$this->item_count = count($this->items);
+
+		return $this->item_count;
+	}
+
+	// }}}
 	// {{{ public function getVisibleProductReviews()
 
 	/**
@@ -363,6 +386,9 @@ class StoreProduct extends SwatDBDataObject
 
 		if (is_object($row))
 			$row = get_object_vars($row);
+
+		if (isset($row['item_count']))
+			$this->item_count = $row['item_count'];
 
 		if (isset($row['region_id'])) {
 			if (isset($row['price']))

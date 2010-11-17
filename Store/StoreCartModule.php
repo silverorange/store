@@ -542,9 +542,14 @@ class StoreCartModule extends SiteApplicationModule
 
 	protected function getProductSql()
 	{
-		$product_sql = 'select id, shortname, title, primary_category, catalog
-			from Product left outer join ProductPrimaryCategoryView
-			on product = id where id in (%s)';
+		$product_sql = 'select id, shortname, title, catalog,
+			 primary_category, item_count
+			from Product
+			left outer join ProductItemCountView
+				on ProductItemCountView.product = id
+			left outer join ProductPrimaryCategoryView
+				on ProductPrimaryCategoryView.product = id
+			where id in (%s)';
 
 		return $product_sql;
 	}
