@@ -185,11 +185,6 @@ class StoreCartModule extends SiteApplicationModule
 		}
 
 		$transaction->commit();
-
-		// clear memcache of mini-cart data
-		if (isset($this->app->memcache)) {
-			$this->app->memcache->flushNs($this->app->session->getSessionId());
-		}
 	}
 
 	// }}}
@@ -469,6 +464,10 @@ class StoreCartModule extends SiteApplicationModule
 		$items = call_user_func(array($class, 'loadSetFromDBWithRegion'),
 			$this->app->db, $quoted_item_ids, $this->app->getRegion(),
 			false);
+
+		$items->loadAllSubDataObjects('item_group', $this->app->db,
+			'select * from ItemGroup where id in (%s)',
+			SwatDBClassMap::get('StoreItemGroupWrapper'));
 
 		$products = $items->loadAllSubDataObjects('product', $this->app->db,
 			$this->getProductSql(), SwatDBClassMap::get('StoreProductWrapper'));
