@@ -498,6 +498,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		try {
 			$this->saveOrder();
+			$this->queueMailChimpOrder();
 			$this->processPayment();
 			$db_transaction->commit();
 		} catch (Exception $e) {
@@ -911,6 +912,25 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		}
 
 		return $message;
+	}
+
+	// }}}
+	// {{{ protected function queueMailChimpOrder()
+
+	/**
+	 * Queues the order in MailChimpOrderQueue if MailChimp cookies exist
+	 */
+	protected function queueMailChimpOrder()
+	{
+
+		if ($this->app->hasModule('StoreMailChimpModule')) {
+			$order = $this->app->session->order;
+			$chimp = $this->app->getModule('StoreMailChimpModule');
+
+			// This will only queue the order if the correct MailChimp
+			// cookies exist otherwise nothing will happen.
+			$chimp->queueOrder($order);
+		}
 	}
 
 	// }}}
