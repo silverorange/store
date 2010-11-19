@@ -87,6 +87,7 @@ StoreCartLightBox.prototype.configure = function()
 {
 	this.xml_rpc_client = new XML_RPC_Client('xml-rpc/cart');
 	this.cart_header_id = 'cart_link';
+	this.cart_header_container_id = this.cart_header_id;
 }
 
 // }}}
@@ -435,7 +436,7 @@ StoreCartLightBox.prototype.handleWindowChange = function(contents)
 
 StoreCartLightBox.prototype.position = function()
 {
-	var region = YAHOO.util.Dom.getRegion(this.cart_header_id);
+	var region = YAHOO.util.Dom.getRegion(this.cart_header_container_id);
 	var offset = -5; // accounts for the whitespace where the shadow appears
 
 	var scroll_top = -1 * (YAHOO.util.Dom.getDocumentScrollTop() -
