@@ -145,21 +145,9 @@ abstract class StoreCart extends SwatObject
 	 */
 	public function save()
 	{
-		$modified = false;
-
 		foreach ($this->entries as $entry) {
 			$this->preSaveEntry($entry);
-
-			if ($entry->isModified()) {
-				$modified = true;
-			}
-
 			$entry->save();
-		}
-
-		// clear memcache of mini-cart data
-		if ($modified && isset($this->app->memcache)) {
-			$this->app->memcache->flushNs($this->app->session->getSessionId());
 		}
 	}
 
@@ -683,6 +671,11 @@ abstract class StoreCart extends SwatObject
 	{
 		$this->totals = array();
 		$this->sorted = false;
+
+		// clear memcache of mini-cart data
+		if (isset($this->app->memcache)) {
+			$this->app->memcache->flushNs($this->app->session->getSessionId());
+		}
 	}
 
 	// }}}
