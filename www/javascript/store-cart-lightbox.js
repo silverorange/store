@@ -114,7 +114,7 @@ StoreCartLightBox.prototype.addEntries = function(entries, source, source_catego
 	this.setContent(
 		'<h2>' + StoreCartLightBox.submit_message + '</h2>');
 
-	this.open();
+	this.open(true);
 }
 
 // }}}
@@ -126,13 +126,12 @@ StoreCartLightBox.prototype.load = function(e)
 	YAHOO.util.Event.preventDefault(e);
 
 	this.open();
-	this.status = 'open';
 }
 
 // }}}
 // {{{ StoreCartLightBox.prototype.open
 
-StoreCartLightBox.prototype.open = function()
+StoreCartLightBox.prototype.open = function(is_status_opening)
 {
 	if (this.status != 'open' && this.status != 'opening') {
 		YAHOO.util.Dom.setStyle(this.mini_cart, 'opacity', 0);
@@ -148,7 +147,12 @@ StoreCartLightBox.prototype.open = function()
 			0.3);
 
 		animation.animate();
-		this.status = 'opening';
+
+		if (is_status_opening) {
+			this.status = 'opening';
+		} else {
+			this.status = 'open';
+		}
 	}
 }
 

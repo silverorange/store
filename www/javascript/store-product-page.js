@@ -122,8 +122,10 @@ StoreProductPage.prototype.hasQuantity = function()
 
 StoreProductPage.prototype.openQuantityMessage = function()
 {
-	this.cart.open('<h3>' + StoreProductPage.enter_quantity_message +
+	this.cart.setContent('<h3>' + StoreProductPage.enter_quantity_message +
 		'</h3>');
+
+	this.cart.open();
 }
 
 // }}}
