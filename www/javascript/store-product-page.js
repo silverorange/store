@@ -163,15 +163,15 @@ StoreProductPage.prototype.changeButtonText = function(e)
 
 StoreProductPage.prototype.getEntry = function(item_id)
 {
-	var quantity = document.getElementById(
-		'quantity_quantity_renderer_' + item_id).value;
+	var renderer = document.getElementById(
+		'quantity_quantity_renderer_' + item_id);
 
-	if (parseInt(quantity) > 0) {
+	var entry = null;
+
+	if (renderer != null && parseFloat(renderer.value) > 0) {
 		var entry = {};
 		entry.item_id = item_id;
-		entry.quantity = parseFloat(quantity);
-	} else {
-		var entry = null;
+		entry.quantity = parseFloat(renderer.value);
 	}
 
 	return entry;
