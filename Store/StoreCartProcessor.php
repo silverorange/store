@@ -166,11 +166,12 @@ class StoreCartProcessor extends SwatObject
 
 			if ($added > 0) {
 				if ($added == 1 && $total_items == 1) {
-					$title = Store::_('You have this product in your cart.');
+					$title = Store::_(
+						'You have this product %%sin your%%s cart.');
 				} else {
 					$title = sprintf(Store::ngettext(
-						'You have one item from this page in your cart.',
-						'You have %s items from this page in your cart.',
+						'You have one item from this page %%sin your cart%%s.',
+						'You have %s items from this page %%sin your cart%%s.',
 						$added),
 						$locale->formatNumber($added));
 				}
@@ -179,8 +180,10 @@ class StoreCartProcessor extends SwatObject
 					$title = Store::_('You have saved this product for later.');
 				} else {
 					$title = sprintf(Store::ngettext(
-						'You have one item from this page saved for later.',
-						'You have %s items from this page saved for later.',
+						'You have one item from this page '.
+							'saved for later. %%sView cart%%s.',
+						'You have %s items from this page '.
+							'saved for later. %%sView cart%%s.',
 						$saved),
 						$locale->formatNumber($saved));
 				}
@@ -200,7 +203,10 @@ class StoreCartProcessor extends SwatObject
 					$saved), $locale->formatNumber($saved)).
 					' '.$a_tag->__toString().'.';
 			} else {
-				$secondary = $a_tag->__toString().'.';
+				$title = sprintf($title,
+					'<a href="cart" class="store-open-cart-link">', '</a>');
+
+				$secondary = null;
 			}
 
 			$cart_message = new SwatMessage($title, 'cart');
