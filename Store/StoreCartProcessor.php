@@ -167,7 +167,7 @@ class StoreCartProcessor extends SwatObject
 			if ($added > 0) {
 				if ($added == 1 && $total_items == 1) {
 					$title = Store::_(
-						'You have this product %%sin your%%s cart.');
+						'You have this product %sin your cart%s.');
 				} else {
 					$title = sprintf(Store::ngettext(
 						'You have one item from this page %%sin your cart%%s.',
@@ -177,7 +177,8 @@ class StoreCartProcessor extends SwatObject
 				}
 			} else {
 				if ($saved == 1 && $total_items == 1) {
-					$title = Store::_('You have saved this product for later.');
+					$title = Store::_('You have saved this product for later.'.
+						' %sView cart%s.');
 				} else {
 					$title = sprintf(Store::ngettext(
 						'You have one item from this page '.
