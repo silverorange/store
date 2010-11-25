@@ -2,10 +2,11 @@
 
 var StoreProductImageDisplay = function(data, config)
 {
-	this.semaphore     = false;
-	this.data          = data;
-	this.opened        = false;
-	this.current_image = 0;
+	this.semaphore      = false;
+	this.data           = data;
+	this.opened         = false;
+	this.current_image  = 0;
+	this.image_selected = false;
 
 	this.configure(config);
 
@@ -68,7 +69,8 @@ StoreProductImageDisplay.close_text = 'Close';
 			},
 			geometry: {
 				top: 40               // in px
-			}
+			},
+			location_prefix: 'image'
 		};
 
 		var override = function(base_config, new_config) {
@@ -590,7 +592,10 @@ StoreProductImageDisplay.close_text = 'Close';
 
 		// set address bar to current image
 		var baseLocation = location.href.split('#')[0];
-		location.href = baseLocation + '#image' + data.id;
+		location.href = baseLocation + '#' + this.config.location_prefix +
+			data.id;
+
+		this.image_selected = true;
 
 		return true;
 
@@ -672,10 +677,12 @@ StoreProductImageDisplay.close_text = 'Close';
 	{
 		var hash = location.hash;
 		hash = (hash.substring(0, 1) == '#') ? hash.substring(1) : hash;
-		var image_id = hash.replace(/[^0-9]/g, '');
+
+		var exp = new RegExp('^' + this.config.location_prefix + '([0-9]+)$');
+		var matches = hash.match(exp);
+		var image_id = (matches === null) ? null : parseInt(matches[1]);
 
 		if (image_id) {
-			image_id = parseInt(image_id);
 			if (typeof this.image_indexes_by_id[image_id] != 'undefined') {
 				this.selectImage(this.image_indexes_by_id[image_id]);
 				this.onSelectImage.fire(image_id, 'location');
@@ -706,25 +713,28 @@ StoreProductImageDisplay.close_text = 'Close';
 
 		var hash = location.hash;
 		hash = (hash.substring(0, 1) == '#') ? hash.substring(1) : hash;
-		var image_id = hash.replace(/[^0-9]/g, '');
 
-		if (image_id) {
-			image_id = parseInt(image_id);
-		}
+		var exp = new RegExp('^' + this.config.location_prefix + '([0-9]+)$');
+		var matches = hash.match(exp);
+		var image_id = (matches === null) ? null : parseInt(matches[1]);
 
-		if (image_id && image_id != current_image_id) {
+		if (image_id &&
+			(image_id != current_image_id || !this.image_selected)) {
 			if (typeof this.image_indexes_by_id[image_id] != 'undefined') {
 				this.selectImage(this.image_indexes_by_id[image_id]);
 				this.onSelectImage.fire(image_id, 'location');
+			console.log('selected' + image_id);
 			}
 		}
 
-		if (image_id == '' && current_image_id && this.opened) {
+		if (image_id === null && current_image_id && this.opened) {
 			this.close();
 			this.onClose.fire('location');
-		} else if (image_id && !this.opened) {
+		} else if (image_id && !this.opened &&
+			typeof this.image_indexes_by_id[image_id] != 'undefined') {
 			this.open();
 			this.onOpen.fire(current_image_id, 'location');
+			console.log('open');
 		}
 	};
 
