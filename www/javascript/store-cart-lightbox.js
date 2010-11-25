@@ -10,6 +10,9 @@ function StoreCartLightBox(available_entry_count, all_entry_count)
 	this.current_request  = 0;
 	this.analytics        = null;
 
+	// accounts for the whitespace where the shadow appears
+	this.cart_container_offset = -5;
+
 	this.all_entry_count = all_entry_count;
 	this.available_entry_count = available_entry_count;
 
@@ -34,10 +37,12 @@ StoreCartLightBox.item_count_message_plural   = ' (%s items)';
 
 // static method to call an instance of StoreCartLightBox
 // {{{ StoreCartLightBox.getInstance
-StoreCartLightBox.getInstance = function()
+StoreCartLightBox.getInstance = function(
+	available_entry_count, all_entry_count)
 {
 	if (StoreCartLightBox.instance === null) {
-		StoreCartLightBox.instance = new StoreCartLightBox();
+		StoreCartLightBox.instance = new StoreCartLightBox(
+			available_entry_count, all_entry_count);
 	}
 
 	return StoreCartLightBox.instance;
@@ -441,12 +446,11 @@ StoreCartLightBox.prototype.handleWindowChange = function(contents)
 StoreCartLightBox.prototype.position = function()
 {
 	var region = YAHOO.util.Dom.getRegion(this.cart_header_container_id);
-	var offset = -5; // accounts for the whitespace where the shadow appears
 
 	var scroll_top = -1 * (YAHOO.util.Dom.getDocumentScrollTop() -
-		region.bottom - offset);
+		region.bottom - this.cart_container_offset);
 
-	var pos = Math.max(scroll_top, offset);
+	var pos = Math.max(scroll_top, this.cart_container_offset);
 	this.mini_cart.style.top = pos + 'px';
 
 	this.mini_cart.style.right =
