@@ -18,16 +18,6 @@ require_once 'Store/dataobjects/StoreOrder.php';
  */
 class StoreMailChimpOrder extends SwatDBDataObject
 {
-	// {{{ constants
-
-	/**
-	 * The maximum number of attempts made to send an order to MailChimp
-	 *
-	 * @var integer
-	 */
-	const MAX_SEND_ATTEMPTS = 3;
-
-	// }}}
 	// {{{ public properties
 
 	/**
