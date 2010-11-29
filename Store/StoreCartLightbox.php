@@ -268,7 +268,7 @@ class StoreCartLightbox extends SwatControl
 	 */
 	protected function getAvailableEntries()
 	{
-		return $this->app->cart->checkout->getEntries();
+		return $this->app->cart->checkout->getAvailableEntries();
 	}
 
 	// }}}
