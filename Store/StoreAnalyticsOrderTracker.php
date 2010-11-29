@@ -7,10 +7,10 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * Generates Google Analytics order transaction tracking code for an order
  *
  * @package   Store
- * @copyright 2008 silverorange
+ * @copyright 2008-2010 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
- * @link      http://www.google.com/support/googleanalytics/bin/answer.py?answer=74984
  * @link      http://www.google.com/support/googleanalytics/bin/answer.py?answer=55528
+ * @link      http://code.google.com/apis/analytics/docs/gaJS/gaJSApiEcommerce.html
  */
 class StoreAnalyticsOrderTracker
 {
@@ -28,91 +28,109 @@ class StoreAnalyticsOrderTracker
 
 	public function __construct(StoreOrder $order, $affiliation = null)
 	{
-		$this->order = $order;
+		$this->order       = $order;
 		$this->affiliation = $affiliation;
 	}
 
 	// }}}
-	// {{{ public function getInlineJavaScript()
+	// {{{ public function getCommands()
 
-	public function getInlineJavaScript()
+	public function getCommands()
 	{
-		$utm_content = $this->getOrder($this->order);
+		$commands = array($this->getOrderCommand());
 		foreach ($this->order->items as $item) {
-			$utm_content.= "\n".$this->getOrderItem($this->order, $item);
+			$commands[] = $this->getOrderItemCommand($item);
 		}
-		$utm_content = SwatString::quoteJavaScriptString($utm_content);
 
-		// {{{ returned JavaScript
-		return <<<JAVASCRIPT
-	var transaction_text = document.createTextNode($utm_content);
+		$commands[] = '_trackTrans';
 
-	var utm_trans = document.createElement('textarea');
-	utm_trans.id = 'utmtrans';
-	utm_trans.appendChild(transaction_text);
-
-	var utm_form = document.createElement('form');
-	utm_form.id = 'utmform';
-	utm_form.name = 'utmform';
-	utm_form.style.display = 'none';
-	utm_form.appendChild(utm_trans);
-
-	var body = document.getElementsByTagName('body')[0];
-	body.appendChild(utm_form);
-
-	YAHOO.util.Event.onAvailable('utmform', __utmSetTrans);
-
-JAVASCRIPT;
-		// }}}
+		return $commands;
 	}
 
 	// }}}
-	// {{{ protected function getOrder()
+	// {{{ protected function getOrderCommand()
 
-	protected function getOrder(StoreOrder $order)
+	protected function getOrderCommand()
 	{
-		$billing_address = $order->billing_address;
-
-		$provstate_title = ($billing_address->provstate === null) ?
-			$billing_address->provstate_other :
-			$billing_address->provstate->title;
+		$address         = $this->getAddress();
+		$provstate_title = $this->getProvStateTitle($address);
+		$order_total     = $this->getOrderTotal();
 
 		/*
 		 * Shipping and tax fields cannot be 0 according to Google Analytics
 		 * support article:
 		 * http://www.google.com/support/analytics/bin/answer.py?answer=72291
-		 * This is a workaround.
+		 * These methods include a workaround.
 		 */
-		$tax_total = ($order->tax_total == 0) ? '' : $order->tax_total;
-		$shipping_total = ($order->shipping_total == 0) ?
-			'' : $order->shipping_total;
+		$tax_total       = $this->getTaxTotal();
+		$shipping_total  = $this->getShippingTotal();
 
-		return sprintf('UTM:T|%s|%s|%s|%s|%s|%s|%s|%s',
-			str_replace('|', '_', $order->id),
-			str_replace('|', '_', $this->affiliation),
-			str_replace('|', '_', $order->total),
-			str_replace('|', '_', $tax_total),
-			str_replace('|', '_', $shipping_total),
-			str_replace('|', '_', $billing_address->city),
-			str_replace('|', '_', $provstate_title),
-			str_replace('|', '_', $billing_address->country->title));
+		return array(
+			'_addTrans',
+			$this->order->id,
+			$this->affiliation,
+			$order_total,
+			$tax_total,
+			$shipping_total,
+			$address->city,
+			$provstate_title,
+			$address->country->title);
 	}
 
 	// }}}
-	// {{{ protected function getOrderItem()
+	// {{{ protected function getOrderItemCommand()
 
-	protected function getOrderItem(StoreOrder $order, StoreOrderItem $item)
+	protected function getOrderItemCommand(StoreOrderItem $item)
 	{
-		return sprintf('UTM:I|%s|%s|%s|%s|%s|%s',
-			str_replace('|', '_', $order->id),
-			str_replace('|', '_', $item->sku),
-			str_replace('|', '_', $item->product_title),
-			str_replace('|', '_', $item->getSourceCategoryTitle()),
-			str_replace('|', '_', $item->price),
-			str_replace('|', '_', $item->quantity));
+		return array(
+			'_addItem',
+			$this->order->id,
+			$item->sku,
+			$item->product_title,
+			$item->getSourceCategoryTitle(),
+			$item->price,
+			$item->quantity);
 	}
-
 	// }}}
+	// {{{ protected function getAddress()
+
+	protected function getAddress()
+	{
+		return $this->order->billing_address;
+	}
+	// }}}
+	// {{{ protected function getProvStateTitle()
+
+	protected function getProvStateTitle(StoreOrderAddress $address)
+	{
+		return ($address->provstate === null) ?
+			$address->provstate_other :
+			$address->provstate->title;
+	}
+	// }}}
+	// {{{ protected function getOrderTotal()
+
+	protected function getOrderTotal()
+	{
+		return $this->order->total;
+	}
+	// }}}
+	// {{{ protected function getTaxTotal()
+
+	protected function getTaxTotal()
+	{
+		return ($this->order->tax_total == 0) ? '' : $this->order->tax_total;
+	}
+	// }}}
+	// {{{ protected function getShippingTotal()
+
+	protected function getShippingTotal()
+	{
+		return ($this->order->shipping_total == 0) ?
+			'' : $this->order->shipping_total;
+	}
+	// }}}
+
 }
 
 ?>
