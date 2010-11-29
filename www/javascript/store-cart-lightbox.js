@@ -300,8 +300,8 @@ StoreCartLightBox.prototype.removeEntry = function(e)
 	this.current_request++;
 	this.xml_rpc_client.callProcedure(
 		'removeEntry', callBack,
-		[this.current_request, entry_id],
-		['int', 'int']);
+		[this.current_request, entry_id, this.product_id],
+		['int', 'int', 'int']);
 
 	this.all_entry_count--;
 

@@ -649,11 +649,14 @@ class StoreProductPage extends StorePage
 
 		$lightbox = $this->getCartLightboxJavaScriptClass();
 		if ($lightbox !== null) {
-			$javascript.= sprintf('product_page.setCart(%s.getInstance(%d, %d));',
+			$javascript.= sprintf("var cart = %s.getInstance(%d, %d)
+				cart.product_id = %d;
+				product_page.setCart(cart);",
 				$lightbox,
 				count($this->app->cart->checkout->getAvailableEntries()),
 				count($this->app->cart->checkout->getAvailableEntries() +
-					$this->app->cart->saved->getEntries()));
+					$this->app->cart->saved->getEntries()),
+				$this->product->id);
 		}
 
 		return $javascript;
