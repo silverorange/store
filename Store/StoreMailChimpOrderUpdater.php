@@ -158,27 +158,7 @@ class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
 
 	protected function sendOrder(StoreMailChimpOrder $order)
 	{
-		$order_date = clone $order->ordernum->createdate;
-
-		$store_id = parse_url($this->config->uri->absolute_base, PHP_URL_HOST);
-
-		$info = array(
-			'id'         => $order->ordernum->id,
-			'email_id'   => $order->email_id,
-			'total'      => $order->ordernum->total,
-			'tax'        => $order->ordernum->tax_total,
-			'shipping'   => $order->ordernum->shipping_total,
-			'store_id'   => $store_id,
-			'store_name' => $this->config->site->title,
-			'plugin_id'  => $this->config->mail_chimp->plugin_id,
-			'order_date' => $order_date->formatLikeStrftime('%Y-%m-%d %T'),
-		);
-
-		if ($order->campaign_id != '') {
-			$info['campaign_id'] = $order->campaign_id;
-		}
-
-		$info['items'] = $this->getItems($order->ordernum);
+		$info = $this->getOrderInfo($order);
 
 		$api_key = $this->config->mail_chimp->api_key;
 		if ($order->campaign_id != '') {
@@ -229,9 +209,39 @@ class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
 	}
 
 	// }}}
-	// {{{ protected function getItems()
+	// {{{ protected function getOrderInfo()
 
-	protected function getItems(StoreOrder $order)
+	protected function getOrderInfo(StoreMailChimpOrder $order)
+	{
+		$order_date = clone $order->ordernum->createdate;
+
+		$store_id = parse_url($this->config->uri->absolute_base, PHP_URL_HOST);
+
+		$info = array(
+			'id'         => $order->ordernum->id,
+			'email_id'   => $order->email_id,
+			'total'      => $order->ordernum->total,
+			'tax'        => $order->ordernum->tax_total,
+			'shipping'   => $order->ordernum->shipping_total,
+			'store_id'   => $store_id,
+			'store_name' => $this->config->site->title,
+			'plugin_id'  => $this->config->mail_chimp->plugin_id,
+			'order_date' => $order_date->formatLikeStrftime('%Y-%m-%d %T'),
+		);
+
+		if ($order->campaign_id != '') {
+			$info['campaign_id'] = $order->campaign_id;
+		}
+
+		$info['items'] = $this->getItemsInfo($order->ordernum);
+
+		return $info;
+	}
+
+	// }}}
+	// {{{ protected function getItemsInfo()
+
+	protected function getItemsInfo(StoreOrder $order)
 	{
 		$items = array();
 
