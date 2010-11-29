@@ -96,26 +96,19 @@ class StoreCartServer extends SiteXMLRPCServer
 	 *
 	 * @param integer $request_id A unique id for this request
 	 * @param integer $entry_id The id of the entry to be removed
+	 * @param integer $product_id The id of the product if on a
+	 *                            product page. Note that this product id is
+	 *                            not necesarily the same as the product for
+	 *                            the entry being removed
 	 *
 	 * @return array
 	 */
-	public function removeEntry($request_id, $entry_id)
+	public function removeEntry($request_id, $entry_id, $product_id = null)
 	{
-		$removed = false;
-
 		$entry = $this->app->cart->checkout->removeEntryById($entry_id);
 
 		if ($entry === null) {
 			$entry = $this->app->cart->saved->removeEntryById($entry_id);
-			if ($entry === null) {
-				$product_id = null;
-			} else {
-				$removed = true;
-				$product_id = $entry->item->product->id;
-			}
-		} else {
-			$removed = true;
-			$product_id = $entry->item->product->id;
 		}
 
 		$this->app->cart->save();
@@ -142,8 +135,6 @@ class StoreCartServer extends SiteXMLRPCServer
 		$total_entries = 0;		// total number of cart-entries
 		$total_quantity = 0;	// sum of all cart-entry quantites
 		$total_saved = 0;
-
-		$currrent_product = null;
 
 		foreach ($this->app->cart->checkout->getAvailableEntries() as $e) {
 			$total_entries++;
