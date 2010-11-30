@@ -59,7 +59,7 @@ class StoreFeedbackModule extends SiteApplicationModule
 	// {{{ public function init()
 
 	/**
-	 * Initializes this analytics module
+	 * Initializes this module
 	 *
 	 * Stores ad object in the session module and initializes ad database
 	 * reference.

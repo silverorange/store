@@ -680,7 +680,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	protected function cleanupSession()
 	{
 		// unset session variable flags
-		$this->app->analytics->clearAd();
+		$this->app->ads->clearAd();
 		unset($this->app->session->save_account_payment_method);
 	}
 
@@ -1381,7 +1381,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		// Reload ad from the database to esure it exists before trying to save
 		// the order. This prevents order failure when a deleted ad ends up in
 		// the session.
-		$session_ad = $this->app->analytics->getAd();
+		$session_ad = $this->app->ads->getAd();
 		if ($session_ad !== null) {
 			$ad_class = SwatDBClassMap::get('SiteAd');
 			$ad = new $ad_class();
@@ -1431,7 +1431,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$order->total = $invoice->getTotal($order->billing_address,
 			$order->shipping_address, $this->app->getRegion());
 
-		$order->ad = $this->app->app->analytics->getAd();
+		$order->ad = $this->app->app->ads->getAd();
 	}
 
 	// }}}
