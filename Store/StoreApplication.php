@@ -6,6 +6,7 @@ require_once 'Site/SiteCookieModule.php';
 require_once 'Site/SiteConfigModule.php';
 require_once 'Site/SiteMessagesModule.php';
 require_once 'Site/SiteAccountSessionModule.php';
+require_once 'Site/SiteAdModule.php';
 require_once 'Site/SiteAnalyticsModule.php';
 require_once 'Site/SiteTimerModule.php';
 require_once 'Admin/Admin.php';
@@ -20,7 +21,7 @@ require_once 'Store/dataobjects/StoreRegion.php';
  * Web application class for a store
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2010 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreApplication extends SiteWebApplication
@@ -115,6 +116,7 @@ abstract class StoreApplication extends SiteWebApplication
 			'checkout'  => 'StoreCheckoutModule',
 			'messages'  => 'SiteMessagesModule',
 			'config'    => 'SiteConfigModule',
+			'ads'       => 'SiteAdModule',
 			'analytics' => 'SiteAnalyticsModule',
 			'timer'     => 'SiteTimerModule',
 		);
