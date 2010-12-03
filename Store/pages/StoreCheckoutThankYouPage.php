@@ -80,6 +80,12 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
 		if (property_exists($this->layout, 'analytics_tracked_order')) {
 			$this->layout->analytics_tracked_order = $this->getOrder();
 		}
+
+		// This will only queue the order if the correct MailChimp cookies
+		// exist otherwise nothing will happen.
+		if ($this->app->config->mail_chimp->track_orders) {
+			$this->app->mailchimp->queueOrder($this->getOrder());
+		}
 	}
 
 	// }}}

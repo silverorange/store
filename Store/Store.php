@@ -8,7 +8,7 @@ require_once 'Site/Site.php';
  * Container for package wide static methods
  *
  * @package   Store
- * @copyright 2006-2008 silverorange
+ * @copyright 2006-2010 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class Store
@@ -111,7 +111,8 @@ class Store
 
 			// mailchimp
 			// Optional Plugin ID for reporting sales for mailchimp stats
-			'mail_chimp.plugin_id'   => null,
+			'mail_chimp.plugin_id'    => null,
+			'mail_chimp.track_orders' => false,
 
 			// AdWords conversion id
 			'adwords.conversion_id'    => null,
