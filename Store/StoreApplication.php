@@ -14,6 +14,7 @@ require_once 'Store/Store.php';
 require_once 'Store/StoreMessage.php';
 require_once 'Store/StoreCartModule.php';
 require_once 'Store/StoreCheckoutModule.php';
+require_once 'Store/StoreMailChimpModule.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/dataobjects/StoreRegion.php';
 
@@ -114,6 +115,7 @@ abstract class StoreApplication extends SiteWebApplication
 			'cookie'    => 'SiteCookieModule',
 			'cart'      => 'StoreCartModule',
 			'checkout'  => 'StoreCheckoutModule',
+			'mailchimp' => 'StoreMailChimpModule',
 			'messages'  => 'SiteMessagesModule',
 			'config'    => 'SiteConfigModule',
 			'ads'       => 'SiteAdModule',
