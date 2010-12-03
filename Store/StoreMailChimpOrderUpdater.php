@@ -100,8 +100,11 @@ class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
 			'connectionTimeout' => 1000,
 		);
 
-		$this->client = XML_RPC2_Client::create(
-			$this->config->mail_chimp->api_url, $client_options);
+		// TODO: Use the Deliverance config setting when it has been updated to 1.3
+		// $api_url = $this->config->mail_chimp->api_url;
+		$api_url = 'https://us1.api.mailchimp.com/1.3/';
+
+		$this->client = XML_RPC2_Client::create($api_url, $client_options);
 	}
 
 	// }}}
