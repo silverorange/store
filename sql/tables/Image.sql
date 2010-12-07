@@ -1,1 +1,1 @@
-alter table image add border boolean not null default false;
+alter table Image add border boolean not null default false;
