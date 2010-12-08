@@ -78,7 +78,7 @@ class StoreCartServer extends SiteXMLRPCServer
 
 			$this->setupCartEntry($entry, $e);
 
-			$status = $this->processor->addEntryToCart($entry);
+			$this->processor->addEntryToCart($entry);
 
 			if ($product_id === null) {
 				$product_id = $entry->item->product->id;
