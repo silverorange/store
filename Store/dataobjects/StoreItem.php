@@ -729,6 +729,9 @@ class StoreItem extends SwatDBDataObject
 			if (isset($row['price']))
 				$this->price[$row['region_id']] = $row['price'];
 
+			if (isset($row['original_price']))
+				$this->original_price[$row['region_id']] = $row['original_price'];
+
 			if (isset($row['enabled']))
 				$this->is_enabled[$row['region_id']] = $row['enabled'];
 
