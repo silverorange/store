@@ -10,6 +10,7 @@ require_once 'Store/dataobjects/StoreMailChimpOrder.php';
 require_once 'Store/dataobjects/StoreMailChimpOrderWrapper.php';
 require_once 'Store/dataobjects/StoreOrderWrapper.php';
 require_once 'Store/dataobjects/StoreOrderItemWrapper.php';
+require_once 'Deliverance/Deliverance.php';
 
 /**
  * Command line application used to send mailing list orders to MailChimp
@@ -322,6 +323,7 @@ class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
 		parent::addConfigDefinitions($config);
 
 		$config->addDefinitions(Store::getConfigDefinitions());
+		$config->addDefinitions(Deliverance::getConfigDefinitions());
 	}
 
 	// }}}
