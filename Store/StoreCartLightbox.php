@@ -211,6 +211,10 @@ class StoreCartLightbox extends SwatControl
 			$this->ui->loadFromXML($this->ui_xml);
 			$this->ui->init();
 
+			$message_display = $this->ui->getWidget('lightbox_message_display');
+			foreach ($this->getCartMessages() as $message)
+				$message_display->add($message, SwatMessageDisplay::DISMISS_OFF);
+
 			$cart_view = $this->ui->getWidget('lightbox_cart_view');
 			$cart_view->model = $this->getCartTableStore();
 
@@ -231,6 +235,14 @@ class StoreCartLightbox extends SwatControl
 		}
 
 		echo $cart;
+	}
+
+	// }}}
+	// {{{ protected function getCartMessages()
+
+	protected function getCartMessages()
+	{
+		return array();
 	}
 
 	// }}}

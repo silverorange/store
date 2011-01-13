@@ -4,6 +4,7 @@
 	<widget class="SwatContentBlock" id="lightbox_cart_title">
 		<property name="content_type">text/xml</property>
 	</widget>
+	<widget class="SwatMessageDisplay" id="lightbox_message_display" />
 	<widget class="SwatForm" id="lightbox_cart_form">
 		<widget class="SwatTableView" id="lightbox_cart_view">
 			<property name="classes[]">store-cart-entry-view</property>
