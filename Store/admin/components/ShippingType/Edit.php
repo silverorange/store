@@ -13,12 +13,14 @@ require_once 'Store/dataobjects/StoreShippingType.php';
  */
 class StoreShippingTypeEdit extends AdminDBEdit
 {
-	// {{{ private properties
+	// {{{ protected properties
+
+	protected $ui_xml = 'Store/admin/components/ShippingType/edit.xml';
 
 	/**
 	 * @var VanBourgondienShippingType
 	 */
-	private $shipping_type;
+	protected $shipping_type;
 
 	// }}}
 
@@ -31,7 +33,7 @@ class StoreShippingTypeEdit extends AdminDBEdit
 
 		$this->initShippingType();
 
-		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
+		$this->ui->loadFromXML($this->ui_xml);
 	}
 
 	// }}}
