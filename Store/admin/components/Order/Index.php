@@ -212,6 +212,23 @@ class StoreOrderIndex extends AdminSearch
 	}
 
 	// }}}
+	// {{{ protected function getSelectClause()
+
+	protected function getSelectClause()
+	{
+		$clause = 'Orders.id, Orders.total, Orders.createdate,
+					Orders.locale, Orders.notes, Orders.comments,
+					Orders.billing_address, Orders.email, Orders.phone,
+					(Orders.comments is not null and Orders.comments != %s)
+						as has_comments';
+
+		$clause = sprintf($clause,
+			$this->app->db->quote('', 'text'));
+
+		return $clause;
+	}
+
+	// }}}
 	// {{{ protected function getTableModel()
 
 	protected function getTableModel(SwatView $view)
@@ -275,11 +292,7 @@ class StoreOrderIndex extends AdminSearch
 
 	protected function getOrders($view, $limit, $offset)
 	{
-		$sql = 'select Orders.id, Orders.total, Orders.createdate,
-					Orders.locale, Orders.notes, Orders.comments,
-					Orders.billing_address, Orders.email, Orders.phone,
-					(Orders.comments is not null and Orders.comments != %s)
-						as has_comments
+		$sql = 'select %s
 				from Orders
 					left outer join Account on Orders.account = Account.id
 					left outer join OrderAddress as BillingAddress
@@ -292,7 +305,7 @@ class StoreOrderIndex extends AdminSearch
 				order by %s';
 
 		$sql = sprintf($sql,
-			$this->app->db->quote('', 'text'),
+			$this->getSelectClause(),
 			$this->getWhereClause(),
 			$this->getOrderByClause($view, 'Orders.id desc'));
 
