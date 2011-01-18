@@ -9,6 +9,7 @@ require_once 'Store/dataobjects/StoreProductImageWrapper.php';
 require_once 'Store/dataobjects/StoreRegion.php';
 require_once 'Store/dataobjects/StoreAttributeWrapper.php';
 require_once 'Store/dataobjects/StoreProductReviewWrapper.php';
+require_once 'Store/dataobjects/StoreCategory.php';
 
 /**
  * A product for an e-commerce web application
