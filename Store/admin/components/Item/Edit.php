@@ -137,6 +137,11 @@ class StoreItemEdit extends AdminDBEdit
 				$replicator->getWidget('original_price', $region->id);
 
 			$original_price_widget->locale = $region->getFirstLocale()->id;
+
+			$sale_discount_price_widget =
+				$replicator->getWidget('sale_discount_price', $region->id);
+
+			$sale_discount_price_widget->locale = $region->getFirstLocale()->id;
 		}
 
 		parent::process();
@@ -304,6 +309,9 @@ class StoreItemEdit extends AdminDBEdit
 			$original_price_field =
 				$price_replicator->getWidget('original_price', $region);
 
+			$sale_discount_price_field =
+				$price_replicator->getWidget('sale_discount_price', $region);
+
 			// only create new binding if price exists, otherwise there is no
 			// use for the binding, and it can lead to bad data on the site
 			if ($price_field->getState() !== null) {
@@ -312,6 +320,7 @@ class StoreItemEdit extends AdminDBEdit
 				$region_binding->enabled = $enabled_field->value;
 				$region_binding->price   = $price_field->value;
 				$region_binding->original_price = $original_price_field->value;
+				$region_binding->sale_discount_price = $sale_discount_price_field->value;
 
 				$this->item->region_bindings->add($region_binding);
 			}
@@ -448,6 +457,9 @@ class StoreItemEdit extends AdminDBEdit
 
 				$price_replicator->getWidget('original_price', $region_id)->value =
 					$binding->original_price;
+
+				$price_replicator->getWidget('sale_discount_price', $region_id)->value =
+					$binding->sale_discount_price;
 
 				$price_replicator->getWidget('enabled', $region_id)->value =
 					$binding->enabled;

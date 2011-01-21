@@ -160,6 +160,15 @@ class StoreItem extends SwatDBDataObject
 	protected $original_price = array();
 
 	/**
+	 * Cache of sale discount prices indexed by region id
+	 *
+	 * This is an array of floats.
+	 *
+	 * @var array
+	 */
+	protected $sale_discount_price = array();
+
+	/**
 	 * Cache of availability of this item indexed by region id
 	 *
 	 * This is an array of boolean values.
@@ -388,6 +397,41 @@ class StoreItem extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function getSaleDiscountPrice()
+
+	/**
+	 * Gets the sale discount price of this item in a region
+	 *
+	 * @param StoreRegion $region optional. Region for which to get price. If
+	 *                             no region is specified, the region set using
+	 *                             {@link StoreItem::setRegion()} is used.
+	 *
+	 * @return double the sale discount price of this item in the given region
+	 */
+	public function getSaleDiscountPrice($region = null)
+	{
+		$price = null;
+		$region = $this->checkRegion($region);
+
+		if ($this->region !== null && $this->region->id == $region->id &&
+			array_key_exists($region->id, $this->sale_discount_price)) {
+			$price = $this->sale_discount_price[$region->id];
+		} else {
+			$region_bindings = $this->region_bindings;
+			foreach ($region_bindings as $binding) {
+				if ($binding->getInternalValue('region') == $region->id) {
+					$price = $binding->sale_discount_price;
+					break;
+				}
+			}
+		}
+
+		$this->sale_discount_price[$region->id] = $price;
+
+		return $price;
+	}
+
+	// }}}
 	// {{{ public function getDisplayPrice()
 
 	/**
@@ -409,8 +453,14 @@ class StoreItem extends SwatDBDataObject
 		$price = $this->getPrice($region);
 
 		$sale = $this->getActiveSaleDiscount($date);
-		if ($sale !== null)
-			$price -= ($price * $sale->discount_percentage);
+		if ($sale !== null) {
+			$sale_discount_price = $this->getSaleDiscountPrice($region);
+
+			if ($sale_discount_price == null)
+				$price -= ($price * $sale->discount_percentage);
+			else
+				$price = $sale_discount_price;
+		}
 
 		return $price;
 	}
