@@ -23,6 +23,11 @@ class StoreSaleDiscountDelete extends AdminDBDelete
 
 		$item_list = $this->getItemList('text');
 
+		SwatDB::exec($this->app->db, sprintf(
+			'update ItemRegionBinding set sale_discount_price = null
+			where item in (select id from Item where sale_discount in (%s))',
+			$item_list));
+
 		$sql = sprintf('delete from SaleDiscount where id in (%s)',
 			$item_list);
 
