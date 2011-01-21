@@ -279,6 +279,9 @@ class StoreProductDetails extends AdminIndex
 				$count = SwatDB::updateColumn($this->app->db, 'Item',
 					'integer:sale_discount', null, 'id', $view->getSelection());
 
+				SwatDB::updateColumn($this->app->db, 'ItemRegionBinding',
+					'float:sale_discount_price', null, 'item', $view->getSelection());
+
 				$message = new SwatMessage(sprintf(Store::ngettext(
 					'A sale discount has been removed from one item.',
 					'A sale discount has been removed from %s items.', $count),

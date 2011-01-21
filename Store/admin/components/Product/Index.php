@@ -295,6 +295,11 @@ class StoreProductIndex extends AdminSearch
 				SwatDB::updateColumn($this->app->db, 'Item',
 					'integer:sale_discount', null, 'product', $item_list);
 
+				SwatDB::exec($this->app->db, sprintf(
+					'update ItemRegionBinding set sale_discount_price = null
+					where item in (%s)',
+					implode(', ', $item_list)));
+
 				$message = new SwatMessage(sprintf(Store::ngettext(
 					'A sale discount has been removed from one item.',
 					'A sale discount has been removed from %s items.', $num),
