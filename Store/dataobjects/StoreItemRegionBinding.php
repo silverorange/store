@@ -27,6 +27,15 @@ class StoreItemRegionBinding extends SwatDBDataObject
 	public $original_price;
 
 	/**
+	 * Optional sale discount price of the item
+	 *
+	 * Used when a sale discount is attached to the item.
+	 *
+	 * @var float
+	 */
+	public $sale_discount_price;
+
+	/**
 	 * If the item should be available
 	 *
 	 * @var boolean

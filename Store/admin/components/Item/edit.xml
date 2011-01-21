@@ -100,9 +100,13 @@
 							<property name="title" translatable="yes">Original Price</property>
 							<widget class="SwatMoneyEntry" id="original_price" />
 						</widget>
+						<widget class="SwatFormField" id="sale_discount_price_field">
+							<property name="title" translatable="yes">Sale Discount Price</property>
+							<widget class="SwatMoneyEntry" id="sale_discount_price" />
+						</widget>
 					</widget>
 					<widget class="SwatContentBlock">
-						<property name="content" translatable="yes"><![CDATA[<div class="swat-note clearfix" id="pricing_note"><p>The enabled checkbox must be set for the this item to appear on the site in that region. The enabled flag overrides all other item statuses. The price is required if the item is enabled in that region.</p><p>The original price is optional and is only to indicate a sale.</p></div>]]></property>
+						<property name="content" translatable="yes"><![CDATA[<div class="swat-note clearfix" id="pricing_note"><p>The enabled checkbox must be set for the this item to appear on the site in that region. The enabled flag overrides all other item statuses. The price is required if the item is enabled in that region.</p><p>The original price is optional and is only to indicate a marked down price.</p><p>The sale discount price is used if this item has an active sale discount. When a sale discount is active, this price will override the sale discount percentage mark down.</p></div>]]></property>
 						<property name="content_type">text/xml</property>
 					</widget>
 				</widget>

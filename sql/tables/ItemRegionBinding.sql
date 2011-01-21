@@ -4,6 +4,7 @@ create table ItemRegionBinding (
 	enabled boolean not null default true,
 	price numeric(11, 2),
 	original_price numeric(11, 2),
+	sale_discount_price numeric(11, 2),
 	primary key (item, region)
 );
 

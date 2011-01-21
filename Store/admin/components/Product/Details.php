@@ -991,8 +991,10 @@ class StoreProductDetails extends AdminIndex
 			foreach ($this->queryRegions() as $region) {
 				$price_field_name = sprintf('price_%s', $region->id);
 				$enabled_field_name = sprintf('enabled_%s', $region->id);
+				$savings_field_name = sprintf('savings_%s', $region->id);
 				$is_on_sale_field_name = sprintf('is_on_sale_%s',
 					$region->id);
+
 
 				$original_price_field_name = sprintf('original_price_%s',
 					$region->id);
@@ -1000,6 +1002,9 @@ class StoreProductDetails extends AdminIndex
 				$ds->$price_field_name = $item->getDisplayPrice($region);
 				$ds->$original_price_field_name = $item->getPrice($region);
 				$ds->$enabled_field_name = $item->isEnabled($region);
+				$ds->$savings_field_name =
+					1 - round($ds->$price_field_name / $ds->$original_price_field_name, 2);
+
 				$ds->$is_on_sale_field_name =
 					$ds->$price_field_name != $ds->$original_price_field_name;
 
@@ -1189,7 +1194,7 @@ class StoreProductDetails extends AdminIndex
 			$column->addrenderer($discount_renderer);
 
 			$column->addmappingtorenderer($discount_renderer,
-				'sale_discount.discount_percentage', 'value');
+				'savings_'.$region->id, 'value');
 
 			$column->addMappingToRenderer($discount_renderer,
 				'is_on_sale_'.$region->id, 'visible');
