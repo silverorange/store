@@ -21,7 +21,7 @@ class StoreAccountDetailsPage extends SiteUiPage
 
 	protected function getUiXml()
 	{
-		return 'Site/pages/account-details.xml';
+		return 'Store/pages/account-details.xml';
 	}
 
 	// }}}
