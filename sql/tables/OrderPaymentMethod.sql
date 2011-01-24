@@ -7,6 +7,7 @@ create table OrderPaymentMethod (
 	amount numeric(11, 2),
 	surcharge numeric(11, 2),
 	displayorder integer not null default 0,
+	adjustable boolean not null default false,
 
 	card_type int null references CardType(id),
 	card_fullname varchar(255),
