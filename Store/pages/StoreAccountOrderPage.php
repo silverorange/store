@@ -46,7 +46,7 @@ class StoreAccountOrderPage extends SiteUiPage
 
 	protected function getUiXml()
 	{
-		return 'Site/pages/account-order.xml';
+		return 'Store/pages/account-order.xml';
 	}
 
 	// }}}
