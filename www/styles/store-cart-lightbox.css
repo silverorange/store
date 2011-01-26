@@ -199,3 +199,18 @@
 #store_cart_lightbox #checkout_form {
 	margin: 5px 10px 0 10px;
 }
+
+/* {{{ SwatMessageDisplay embedded in Cart Lightbox */
+
+#store_cart_lightbox .swat-message {
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	border-width: 1px 0;
+}
+
+#store_cart_lightbox .swat-message .swat-message-container {
+	padding-top: 12px;
+}
+
+/* }}} */
