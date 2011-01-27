@@ -1005,8 +1005,10 @@ class StoreProductDetails extends AdminIndex
 				$ds->$price_field_name = $item->getDisplayPrice($region);
 				$ds->$original_price_field_name = $item->getPrice($region);
 				$ds->$enabled_field_name = $item->isEnabled($region);
-				$ds->$savings_field_name =
-					1 - round($ds->$price_field_name / $ds->$original_price_field_name, 2);
+
+				$ds->$savings_field_name = $ds->$original_price_field_name > 0 ?
+					1 - round($ds->$price_field_name / $ds->$original_price_field_name, 2) :
+					null;
 
 				$ds->$is_on_sale_field_name =
 					$ds->$price_field_name != $ds->$original_price_field_name;
