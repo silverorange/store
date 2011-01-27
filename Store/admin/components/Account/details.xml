@@ -166,19 +166,19 @@
 							<property name="stock_id">edit</property>
 						</object>
 					</object>
-					<object class="AdminTableViewOrderableColumn" id="id">
+					<object class="SwatTableViewColumn" id="id">
 						<property name="title" translatable="yes">Address</property>
 						<object class="StoreAddressCellRenderer">
 							<property name="address" type="data">address</property>
 						</object>
 					</object>
-					<object class="AdminTableViewOrderableColumn" id="default_billing_address">
+					<object class="SwatTableViewColumn" id="default_billing_address">
 						<property name="title" translatable="yes">Default Billing Address</property>
 						<object class="SwatBooleanCellRenderer">
 							<property name="value" type="data">default_billing_address</property>
 						</object>
 					</object>
-					<object class="AdminTableViewOrderableColumn" id="default_shipping_address">
+					<object class="SwatTableViewColumn" id="default_shipping_address">
 						<property name="title" translatable="yes">Default Shipping Address</property>
 						<object class="SwatBooleanCellRenderer">
 							<property name="value" type="data">default_shipping_address</property>

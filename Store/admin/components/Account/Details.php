@@ -24,6 +24,25 @@ class StoreAccountDetails extends SiteAccountDetails
 	protected $ui_xml = 'Store/admin/components/Account/details.xml';
 
 	// }}}
+	// {{{ protected function initInternal()
+	protected function initInternal()
+	{
+		parent::initInternal();
+
+		// set a default order on the login history table view
+		$view = $this->ui->getWidget('orders_view');
+		$view->setDefaultOrderbyColumn(
+			$view->getColumn('createdate'),
+			SwatTableViewOrderableColumn::ORDER_BY_DIR_DESCENDING);
+
+		// set a default order on the invoice table view
+		$view = $this->ui->getWidget('invoices_view');
+		$view->setDefaultOrderbyColumn(
+			$view->getColumn('createdate'),
+			SwatTableViewOrderableColumn::ORDER_BY_DIR_DESCENDING);
+	}
+
+	// }}}
 
 	// process phase
 	// {{{ protected function processActions()
@@ -221,7 +240,8 @@ class StoreAccountDetails extends SiteAccountDetails
 	{
 		$wrapper = SwatDBClassMap::get('StoreAccountPaymentMethodWrapper');
 
-		$sql = sprintf('select * from AccountPaymentMethod where account = %s',
+		$sql = sprintf('select * from AccountPaymentMethod
+			where account = %s',
 			$this->app->db->quote($this->id, 'integer'));
 
 		$payment_methods = SwatDB::query($this->app->db, $sql, $wrapper);
