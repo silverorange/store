@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreInvoiceWrapper.php';
  * Details page for accounts
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountDetails extends SiteAccountDetails
@@ -131,14 +131,14 @@ class StoreAccountDetails extends SiteAccountDetails
 	protected function getTableModel(SwatView $view)
 	{
 		switch ($view->id) {
-			case 'invoices_view':
-				return $this->getInvoicesTableModel($view);
-			case 'orders_view':
-				return $this->getOrdersTableModel($view);
-			case 'addresses_view':
-				return $this->getAddressesTableModel($view);
-			case 'payment_methods_view':
-				return $this->getPaymentMethodsTableModel($view);
+		case 'invoices_view':
+			return $this->getInvoicesTableModel($view);
+		case 'orders_view':
+			return $this->getOrdersTableModel($view);
+		case 'addresses_view':
+			return $this->getAddressesTableModel($view);
+		case 'payment_methods_view':
+			return $this->getPaymentMethodsTableModel($view);
 		}
 	}
 
