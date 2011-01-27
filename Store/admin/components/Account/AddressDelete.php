@@ -3,12 +3,13 @@
 require_once 'Admin/pages/AdminDBDelete.php';
 require_once 'Admin/AdminListDependency.php';
 require_once 'SwatDB/SwatDB.php';
+require_once 'SwatI18N/SwatI18NLocale.php';
 
 /**
  * Delete confirmation page for Account Addresses
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountAddressDelete extends AdminDBDelete
@@ -26,6 +27,7 @@ class StoreAccountAddressDelete extends AdminDBDelete
 	protected function processDBData()
 	{
 		parent::processDBData();
+
 		// we can't do this in init, as its a replace page
 		$this->buildAccount();
 
@@ -33,13 +35,21 @@ class StoreAccountAddressDelete extends AdminDBDelete
 		$sql = sprintf('delete from AccountAddress where id in (%s)',
 			$item_list);
 
+		$locale = SwatI18NLocale::get();
+
 		$num = SwatDB::exec($this->app->db, $sql);
 
-		$message = new SwatMessage(sprintf(Store::ngettext(
-			'One address for %s has been deleted.',
-			'%d addresses for %s have been deleted.', $num),
-			SwatString::numberFormat($num), $this->account->getFullName()),
-			SwatMessage::NOTIFICATION);
+		$message = new SwatMessage(
+			sprintf(
+				Store::ngettext(
+					'One address for %2$s has been deleted.',
+					'%1$s addresses for %2$s have been deleted.',
+					$num
+				),
+				SwatString::numberFormat($num),
+				$this->account->getFullName()
+			)
+		);
 
 		$this->app->messages->add($message);
 	}
