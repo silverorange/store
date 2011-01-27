@@ -46,7 +46,7 @@ class StoreAccountAddressDelete extends AdminDBDelete
 					'%1$s addresses for %2$s have been deleted.',
 					$num
 				),
-				SwatString::numberFormat($num),
+				$locale->formatNumber($num),
 				$this->account->getFullName()
 			)
 		);

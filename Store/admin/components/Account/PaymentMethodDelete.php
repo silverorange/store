@@ -1,14 +1,15 @@
 <?php
 
 require_once 'Admin/pages/AdminDBDelete.php';
-require_once 'SwatDB/SwatDB.php';
 require_once 'Store/dataobjects/StorePaymentMethod.php';
+require_once 'SwatDB/SwatDB.php';
+require_once 'SwatI18N/SwatI18NLocale.php';
 
 /**
  * Delete confirmation page for Account Payment Methods
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountPaymentMethodDelete extends AdminDBDelete
@@ -33,13 +34,21 @@ class StoreAccountPaymentMethodDelete extends AdminDBDelete
 		$sql = sprintf('delete from AccountPaymentMethod where id in (%s)',
 			$item_list);
 
+		$locale = SwatI18NLocale::get();
+
 		$num = SwatDB::exec($this->app->db, $sql);
 
-		$message = new SwatMessage(sprintf(Store::ngettext(
-			'One payment method for %s has been deleted.',
-			'%d payment methods for %s have been deleted.', $num),
-			SwatString::numberFormat($num), $this->account_fullname),
-			SwatMessage::NOTIFICATION);
+		$message = new SwatMessage(
+			sprintf(
+				Store::ngettext(
+					'One payment method for %2$s has been deleted.',
+					'%1$s payment method for %2$s have been deleted.',
+					$num
+				),
+				$locale->formatNumber($num),
+				$this->account_fullname
+			)
+		);
 
 		$this->app->messages->add($message);
 	}
