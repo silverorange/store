@@ -465,6 +465,9 @@ StoreCartLightBox.prototype.hideAddedMessage = function()
 	var messages = YAHOO.util.Dom.getElementsByClassName(
 		'added-message', 'div', this.mini_cart);
 
+	// Reset opacity of parent element. Works around IE 6 rendering bug.
+	this.mini_cart.style.filter = '';
+
 	for (var i = 0; i < messages.length; i++) {
 		var animation = new YAHOO.util.Anim(
 			messages[i],
