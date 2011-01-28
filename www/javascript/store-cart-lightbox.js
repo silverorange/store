@@ -32,8 +32,8 @@ StoreCartLightBox.instance = null;
 StoreCartLightBox.submit_message = 'Updating Cart…';
 StoreCartLightBox.loading_message = 'Loading…';
 StoreCartLightBox.empty_message = '<h2>Your Shopping Cart is Empty</h2>';
-StoreCartLightBox.item_count_message_singular = ' (1 item)';
-StoreCartLightBox.item_count_message_plural   = ' (%s items)';
+StoreCartLightBox.item_count_message_singular = '(1 item)';
+StoreCartLightBox.item_count_message_plural   = '(%s items)';
 
 // static method to call an instance of StoreCartLightBox
 // {{{ StoreCartLightBox.getInstance
@@ -511,16 +511,20 @@ StoreCartLightBox.prototype.updateItemCount = function(item_count)
 	var item_counts = YAHOO.util.Dom.getElementsByClassName(
 		'item-count', '', this.mini_cart);
 
+	var message = '';
+
+	if (item_count === 1) {
+		message = ' ' + StoreCartLightBox.item_count_message_singular;
+	} else if (item_count > 1) {
+		message = ' ' + StoreCartLightBox.item_count_message_plural.replace(
+			/%s/, item_count);
+	}
+
 	for (var i = 0; i < item_counts.length; i++) {
-		if (item_count == 1) {
-			item_counts[i].innerHTML = ' ' +
-				StoreCartLightBox.item_count_message_singular;
-		} else if (item_count > 1) {
-			var message = StoreCartLightBox.item_count_message_plural;
-			item_counts[i].innerHTML = ' ' + message.replace(/%s/, item_count);
-		} else {
-			item_counts[i].innerHTML = '';
+		while (item_counts[i].firstChild) {
+			item_counts[i].removeChild(item_counts[i].firstChild);
 		}
+		item_counts[i].appendChild(document.createTextNode(message));
 	}
 }
 
