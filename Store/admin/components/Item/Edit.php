@@ -16,7 +16,7 @@ require_once 'NateGoSearch/NateGoSearch.php';
  * Edit page for Items
  *
  * @package   Store
- * @copyright 2005-2009 silverorange
+ * @copyright 2005-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemEdit extends AdminDBEdit
@@ -320,7 +320,12 @@ class StoreItemEdit extends AdminDBEdit
 				$region_binding->enabled = $enabled_field->value;
 				$region_binding->price   = $price_field->value;
 				$region_binding->original_price = $original_price_field->value;
-				$region_binding->sale_discount_price = $sale_discount_price_field->value;
+
+				// sale discount price is optional and not used by some sites
+				if ($sale_discount_price_field !== null) {
+					$region_binding->sale_discount_price =
+						$sale_discount_price_field->value;
+				}
 
 				$this->item->region_bindings->add($region_binding);
 			}
