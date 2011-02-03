@@ -14,5 +14,6 @@
 create table VisibleProductCache (
 	product int not null references Product(id) on delete cascade,
 	region int not null references Region(id) on delete cascade,
+	instance int references Instance(id) on delete cascade,
 	primary key (product, region)
 );

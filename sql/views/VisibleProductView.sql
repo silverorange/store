@@ -7,12 +7,13 @@
  * catalogue availability (as determined by CatalogRegionBinding).
  */
 create or replace view VisibleProductView as
-	select Product.id as product, ItemRegionBinding.region
+	select Product.id as product, ItemRegionBinding.region, CatalogInstanceBinding.instance
 		from Product
 			inner join Item on Item.product = Product.id
 			inner join ItemRegionBinding on Item.id = ItemRegionBinding.item
 			inner join CategoryProductBinding on Product.id = CategoryProductBinding.product
 			inner join CatalogRegionBinding on Product.catalog = CatalogRegionBinding.catalog and
 				CatalogRegionBinding.region = ItemRegionBinding.region
+			left outer join CatalogInstanceBinding on Product.catalog = CatalogInstanceBinding.catalog
 		where ItemRegionBinding.enabled = true
-		group by Product.id, ItemRegionBinding.region;
+		group by Product.id, ItemRegionBinding.region, CatalogInstanceBinding.instance;
