@@ -129,7 +129,7 @@ class StoreProvState extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ public function loadFromAbbreviation()
+	// {{{ public function loadFromTitle()
 
 	/**
 	 * Loads this province/state from a title and country code
