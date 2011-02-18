@@ -202,13 +202,15 @@ class StoreItemsView extends SwatControl
 				$last_sku = $item->sku;
 				$store->add($ds);
 
-				if ($ds->is_available)
+				if ($ds->is_available && $view->hasRow('add_button'))
 					$view->getRow('add_button')->title =
 						Store::_('Add to Cart');
 			}
 		}
 
-		$view->getRow('add_button')->tab_index = $tab_index;
+		if ($view->hasRow('add_button'))
+			$view->getRow('add_button')->tab_index = $tab_index;
+
 		return $store;
 	}
 
