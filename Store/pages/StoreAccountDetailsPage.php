@@ -189,7 +189,9 @@ class StoreAccountDetailsPage extends SiteUiPage
 
 	protected function buildInternal()
 	{
-		$this->buildAccountDetails();
+		if ($this->ui->hasWidget('details_frame'))
+			$this->buildAccountDetails();
+
 		$this->buildSavedCartMessage();
 		$this->buildInvoices();
 
