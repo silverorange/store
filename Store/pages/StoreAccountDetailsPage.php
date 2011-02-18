@@ -45,8 +45,11 @@ class StoreAccountDetailsPage extends SiteUiPage
 	{
 		$account = $this->app->session->account;
 
-		$this->initPaymentMethodViews($account);
-		$this->initAddressViews($account);
+		if ($this->ui->hasWidget('account_payment_method_container'))
+			$this->initPaymentMethodViews($account);
+
+		if ($this->ui->hasWidget('account_address_container'))
+			$this->initAddressViews($account);
 	}
 
 	// }}}
@@ -113,8 +116,11 @@ class StoreAccountDetailsPage extends SiteUiPage
 
 		$account = $this->app->session->account;
 
-		$this->processAddressViews($account);
-		$this->processPaymentMethodViews($account);
+		if ($this->ui->hasWidget('account_address_container'))
+			$this->processAddressViews($account);
+
+		if ($this->ui->hasWidget('account_payment_method_container'))
+			$this->processPaymentMethodViews($account);
 
 		if ($account->isModified()) {
 			$account->save();
@@ -186,7 +192,9 @@ class StoreAccountDetailsPage extends SiteUiPage
 		$this->buildAccountDetails();
 		$this->buildSavedCartMessage();
 		$this->buildInvoices();
-		$this->buildOrders();
+
+		if ($this->ui->hasWidget('account_order_container'))
+			$this->buildOrders();
 
 		foreach ($this->app->messages->getAll() as $message)
 			$this->ui->getWidget('message_display')->add($message);
