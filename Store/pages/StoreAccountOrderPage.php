@@ -245,11 +245,6 @@ class StoreAccountOrderPage extends SiteUiPage
 		$this->ui->getWidget('form')->action = $this->source;
 
 		$this->buildCartMessages();
-
-		$title = $this->order->getTitle();
-		$this->layout->data->title = $title;
-		$this->layout->navbar->createEntry($title);
-
 		$this->buildOrderDetails();
 	}
 
@@ -341,6 +336,18 @@ class StoreAccountOrderPage extends SiteUiPage
 
 			$this->ui->getWidget('message_display')->add($message);
 		}
+	}
+
+	// }}}
+	// {{{ protected function buildNavBar()
+
+	protected function buildNavBar()
+	{
+		parent::buildNavBar();
+
+		$title = $this->order->getTitle();
+		$this->layout->data->title = $title;
+		$this->layout->navbar->createEntry($title);
 	}
 
 	// }}}
