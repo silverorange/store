@@ -115,7 +115,7 @@ class StoreItemsView extends SwatControl
 					$cart_entry = $this->createCartEntry($id, $widget->value);
 					$entries[] = $cart_entry;
 
-					// reset qauntity - not persistent
+					// reset quantity - not persistent
 					$widget->value = $this->default_quantity;
 				}
 			}
