@@ -3,6 +3,7 @@
 require_once 'Swat/SwatControl.php';
 require_once 'Swat/SwatString.php';
 require_once 'SwatI18N/SwatI18NLocale.php';
+require_once 'XML/RPCAjax.php';
 
 /**
  * Control to display a lightbox driven cart on the page
@@ -71,6 +72,8 @@ class StoreCartLightbox extends SwatControl
 
 		$yui = new SwatYUI(array('dom', 'event'));
 		$this->html_head_entry_set->addEntrySet($yui->getHtmlHeadEntrySet());
+		$this->html_head_entry_set->addEntrySet(
+			XML_RPCAjax::getHtmlHeadEntrySet());
 
 		$this->addJavaScript('packages/swat/javascript/swat-view.js',
 			Swat::PACKAGE_ID);
