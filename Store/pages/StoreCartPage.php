@@ -83,9 +83,6 @@ class StoreCartPage extends SitePage
 		if (!isset($this->app->cart->checkout))
 			throw new StoreException('Store has no checkout cart.');
 
-		if (!isset($this->app->cart->saved))
-			throw new StoreException('Store has no saved cart.');
-
 		$this->ui = new SwatUI();
 		$this->ui->loadFromXML($this->ui_xml);
 
@@ -726,7 +723,8 @@ class StoreCartPage extends SitePage
 
 	protected function processSavedCart()
 	{
-		if (!$this->ui->hasWidget('saved_cart_form'))
+		if (!isset($this->app->cart->saved) ||
+			!$this->ui->hasWidget('saved_cart_form'))
 			return;
 
 		$form = $this->ui->getWidget('saved_cart_form');
@@ -1158,6 +1156,15 @@ class StoreCartPage extends SitePage
 		$available_view = $this->ui->getWidget('available_cart_view');
 		$available_view->model = $this->getAvailableTableStore();
 
+		// no saved card, hide move buttons
+		if (!isset($this->app->cart->saved)) {
+			if ($available_view->hasColumn('move_column')) {
+				$available_view->getColumn('move_column')->visible = false;
+			}
+
+			$this->getAvailableMoveAllButton()->visible = false;
+		}
+
 		$available_view->getRow('subtotal')->value =
 			$this->app->cart->checkout->getSubtotal();
 
@@ -1240,8 +1247,10 @@ class StoreCartPage extends SitePage
 
 	protected function buildSavedTableView()
 	{
-		if (!$this->ui->hasWidget('saved_cart_view'))
+		if (!isset($this->app->cart->saved) ||
+			!$this->ui->hasWidget('saved_cart_view')) {
 			return;
+		}
 
 		$saved_view = $this->ui->getWidget('saved_cart_view');
 		$saved_view->model = $this->getSavedTableStore();

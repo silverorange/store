@@ -107,8 +107,7 @@ class StoreCartModule extends SiteApplicationModule
 		foreach ($this->carts as $cart)
 			$cart->init();
 
-		if ($this->getCheckoutCart() !== null &&
-			$this->getSavedCart() !== null) {
+		if ($this->getCheckoutCart() !== null) {
 			$this->app->session->registerLoginCallback(
 				array($this, 'handleLogin'));
 
@@ -269,16 +268,16 @@ class StoreCartModule extends SiteApplicationModule
 		$checkout_cart = $this->getCheckoutCart();
 		$saved_cart = $this->getSavedCart();
 
-		if ($checkout_cart !== null && $saved_cart !== null &&
-			$this->getEntryCount()) {
-
+		if ($checkout_cart !== null && $this->getEntryCount()) {
 			// reload to get account cart entries
 			$this->load();
 
 			// move account cart entries to saved cart
-			$entries = $checkout_cart->removeAllEntries();
-			foreach ($entries as $entry)
-				$saved_cart->addEntry($entry);
+			if ($saved_cart !== null) {
+				$entries = $checkout_cart->removeAllEntries();
+				foreach ($entries as $entry)
+					$saved_cart->addEntry($entry);
+			}
 
 			// move session cart entries to account cart
 			$account_id = $this->app->session->getAccountId();
@@ -432,8 +431,8 @@ class StoreCartModule extends SiteApplicationModule
 	 */
 	protected function loadEntries()
 	{
-		// make sure default carts exist
-		if ($this->getCheckoutCart() === null || $this->getSavedCart() === null)
+		// make sure default cart exists
+		if ($this->getCheckoutCart() === null)
 			return;
 
 		// make sure we're browsing a request with a region

@@ -109,7 +109,7 @@ class StoreCartServer extends SiteXMLRPCServer
 	{
 		$entry = $this->app->cart->checkout->removeEntryById($entry_id);
 
-		if ($entry === null) {
+		if ($entry === null && isset($this->app->cart->saved)) {
 			$entry = $this->app->cart->saved->removeEntryById($entry_id);
 		}
 
@@ -148,14 +148,16 @@ class StoreCartServer extends SiteXMLRPCServer
 			}
 		}
 
-		// only count saved entries for products - not for the main cart
-		foreach ($this->app->cart->saved->getEntries() as $e) {
-			if ($e->item->getInternalValue('product') === $product_id) {
-				$product_entries++;
-				$product_quantity += $e->getQuantity();
-			}
+		if (isset($this->app->cart->saved)) {
+			// only count saved entries for products - not for the main cart
+			foreach ($this->app->cart->saved->getEntries() as $e) {
+				if ($e->item->getInternalValue('product') === $product_id) {
+					$product_entries++;
+					$product_quantity += $e->getQuantity();
+				}
 
-			$total_saved++;
+				$total_saved++;
+			}
 		}
 
 		$return = array();

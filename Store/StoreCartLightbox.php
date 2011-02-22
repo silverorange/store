@@ -149,11 +149,15 @@ class StoreCartLightbox extends SwatControl
 			$translated = true;
 		}
 
+		$available_entries = count(
+			$this->app->cart->checkout->getAvailableEntries());
+
+		$saved_entries = (isset($this->app->cart->saved)) ?
+			count($this->app->cart->saved->getEntries()) : 0;
+
 		$javascript.= sprintf('var cart_lightbox = '.$this->class_name.
 			".getInstance(%d, %d);\n",
-			count($this->app->cart->checkout->getAvailableEntries()),
-			count($this->app->cart->checkout->getAvailableEntries()) +
-				count($this->app->cart->saved->getEntries()));
+			$available_entries, $available_entries + $saved_entries);
 
 		if ($this->analytics === self::GOOGLE_ANALYTICS) {
 			$javascript.= "cart_lightbox.analytics = 'google_analytics';\n";
@@ -318,16 +322,20 @@ class StoreCartLightbox extends SwatControl
 			$store->add($ds);
 		}
 
-		$status_title = Store::_('Saved For Later');
-		foreach ($this->app->cart->saved->getEntries() as $entry) {
-			$ds = $this->getCartDetailsStore($entry);
-			$ds->status_title = $status_title;
-			$ds->status_class = 'saved';
-			$store->add($ds);
-			$saved_count++;
+		if (isset($this->app->cart->saved)) {
+			$status_title = Store::_('Saved For Later');
+			foreach ($this->app->cart->saved->getEntries() as $entry) {
+				$ds = $this->getCartDetailsStore($entry);
+				$ds->status_title = $status_title;
+				$ds->status_class = 'saved';
+				$store->add($ds);
+				$saved_count++;
+			}
+
+			$count = (count($this->app->cart->saved->getEntries())
+				- $saved_count);
 		}
 
-		$count = (count($this->app->cart->saved->getEntries()) - $saved_count);
 		if ($saved_count > 0 && $count > 0) {
 			$ds = $this->getMoreRow($count);
 			$ds->status_title = $status_title;

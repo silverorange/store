@@ -229,6 +229,9 @@ class StoreAccountDetailsPage extends SiteUiPage
 
 	protected function buildSavedCartMessage()
 	{
+		if (!isset($this->app->cart->saved))
+			return;
+
 		$count = $this->app->cart->saved->getEntryCount();
 
 		if ($count > 0) {

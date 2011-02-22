@@ -234,7 +234,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 
 			if ($added_entry !== null)
 				$this->items_added[] = $added_entry->item;
-		} else {
+		} elseif (isset($cart->saved)) {
 			$added_entry = $cart->saved->addEntry($cart_entry);
 
 			if ($added_entry !== null)
