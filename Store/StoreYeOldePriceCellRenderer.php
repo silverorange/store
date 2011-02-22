@@ -40,16 +40,29 @@ class StoreYeOldePriceCellRenderer extends StoreItemPriceCellRenderer
 		if (!$this->visible)
 			return;
 
+		echo self::moneyFormat(
+			$this->value, $this->locale, $this->display_currency);
+	}
+
+	// }}}
+	// {{{ public static function moneyFormat()
+
+	/**
+	 * Renders the contents of this cell
+	 */
+	public static function moneyFormat($value, $locale = null,
+		$display_currency = false, $decimal_places = null)
+	{
 		$money = SwatString::minimizeEntities(
 			SwatString::moneyFormat(
-				$this->value, $this->locale, $this->display_currency));
+				$value, $locale, $display_currency, $decimal_places));
 
-		if ($this->locale !== null) {
+		if ($locale !== null) {
 			$old_locale = setlocale(LC_ALL, 0);
-			if (setlocale(LC_ALL, $this->locale) === false) {
+			if (setlocale(LC_ALL, $locale) === false) {
 				throw new SwatException(sprintf('Locale %s passed to the '.
 					'moneyFormat() method is not valid for this operating '.
-					'system.', $this->locale));
+					'system.', $locale));
 			}
 		}
 
@@ -65,7 +78,7 @@ class StoreYeOldePriceCellRenderer extends StoreItemPriceCellRenderer
 					'to UTF-8', $character_set));
 		}
 
-		if ($this->locale !== null)
+		if ($locale !== null)
 			setlocale(LC_ALL, $old_locale);
 
 		$search = sprintf('/%s([0-9][0-9])/u',
@@ -76,7 +89,7 @@ class StoreYeOldePriceCellRenderer extends StoreItemPriceCellRenderer
 
 		$money = preg_replace($search, $replace, $money);
 
-		echo $money;
+		return $money;
 	}
 
 	// }}}
