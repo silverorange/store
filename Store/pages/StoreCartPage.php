@@ -141,7 +141,8 @@ class StoreCartPage extends SitePage
 		$form->process();
 
 		if ($form->isProcessed()) {
-			if ($this->getAvailableMoveAllButton()->hasBeenClicked())
+			$button = $this->getAvailableMoveAllButton();
+			if ($button !== null && $button->hasBeenClicked())
 				$this->moveAllAvailableCheckoutCart();
 
 			if ($this->getAvailableRemoveAllButton()->hasBeenClicked())
@@ -354,7 +355,11 @@ class StoreCartPage extends SitePage
 
 	protected function getAvailableMoveAllButton()
 	{
-		$button = $this->ui->getWidget('available_move_all_button');
+		if ($this->ui->hasWidget('available_move_all_button')) {
+			$button = $this->ui->getWidget('available_move_all_button');
+		} else {
+			$button = null;
+		}
 
 		return $button;
 	}
@@ -1162,7 +1167,10 @@ class StoreCartPage extends SitePage
 				$available_view->getColumn('move_column')->visible = false;
 			}
 
-			$this->getAvailableMoveAllButton()->visible = false;
+			$button = $this->getAvailableMoveAllButton();
+			if ($button !== null) {
+				$button->visible = false;
+			}
 		}
 
 		$available_view->getRow('subtotal')->value =
@@ -1181,10 +1189,12 @@ class StoreCartPage extends SitePage
 				$remove_all_button->visible = false;
 
 			$move_all_button = $this->getAvailableMoveAllButton();
-			if ($move_all_button->parent instanceof SwatTableViewRow)
-				$move_all_button->parent->visible = false;
-			else
-				$move_all_button->visible = false;
+			if ($move_all_button !== null) {
+				if ($move_all_button->parent instanceof SwatTableViewRow)
+					$move_all_button->parent->visible = false;
+				else
+					$move_all_button->visible = false;
+			}
 		}
 
 		$available_view->visible = (count($available_view->model) > 0);
