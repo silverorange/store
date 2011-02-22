@@ -26,6 +26,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 	// {{{ protected properties
 
 	protected $result_count = array();
+	protected $store_path = 'store/';
 
 	// }}}
 
@@ -96,7 +97,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 
 		if (count($products) == 1) {
 			$first_product = $products->getFirst();
-			$path = 'store/'.$first_product->path;
+			$path = $this->store_path.$first_product->path;
 			$this->app->relocate($path);
 		}
 
@@ -115,7 +116,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 
 		if (count($products) == 1) {
 			$first_product = $products->getFirst();
-			$path = 'store/'.$first_product->path;
+			$path = $this->store_path.$first_product->path;
 			$this->app->relocate($path);
 		}
 	}
@@ -543,7 +544,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 
 		foreach ($products as $product) {
 			echo '<li class="store-product-tile">';
-			$link_href = 'store/'.$product->path;
+			$link_href = $this->store_path.$product->path;
 			$product->displayAsTile($link_href);
 			echo '</li>';
 		}
