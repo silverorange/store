@@ -152,8 +152,8 @@ class StoreCartLightbox extends SwatControl
 		$javascript.= sprintf('var cart_lightbox = '.$this->class_name.
 			".getInstance(%d, %d);\n",
 			count($this->app->cart->checkout->getAvailableEntries()),
-			count($this->app->cart->checkout->getAvailableEntries() +
-				$this->app->cart->saved->getEntries()));
+			count($this->app->cart->checkout->getAvailableEntries()) +
+				count($this->app->cart->saved->getEntries()));
 
 		if ($this->analytics === self::GOOGLE_ANALYTICS) {
 			$javascript.= "cart_lightbox.analytics = 'google_analytics';\n";
