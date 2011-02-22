@@ -99,7 +99,7 @@ class StoreCartProcessor extends SwatObject
 			if ($this->app->cart->checkout->addEntry($entry) !== null) {
 				$status = self::ENTRY_ADDED;
 			}
-		} else {
+		} elseif (isset($this->app->cart->saved)) {
 			if ($this->app->cart->saved->addEntry($entry) !== null) {
 				$status = self::ENTRY_SAVED;
 			}
@@ -153,9 +153,11 @@ class StoreCartProcessor extends SwatObject
 		}
 
 		$saved = 0;
-		foreach ($this->app->cart->saved->getEntries() as $entry) {
-			if ($entry->item->product->id == $product->id) {
-				$saved++;
+		if (isset($this->app->cart->saved)) {
+			foreach ($this->app->cart->saved->getEntries() as $entry) {
+				if ($entry->item->product->id == $product->id) {
+					$saved++;
+				}
 			}
 		}
 
