@@ -357,7 +357,7 @@ class StoreCategoryPage extends StorePage
 
 			foreach ($products as $product) {
 				$li_tag->open();
-				$path = 'store/'.$product->path;
+				$path = $this->app->config->store->path.$product->path;
 				$product->displayAsText($path);
 				$li_tag->close();
 				echo ' ';

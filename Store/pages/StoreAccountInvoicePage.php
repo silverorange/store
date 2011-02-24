@@ -213,7 +213,8 @@ class StoreAccountInvoicePage extends SitePage
 
 		foreach ($item_paths as $row)
 			if ($row->path !== null)
-				$paths[$row->id] = 'store/'.$row->path.'/'.$row->shortname;
+				$paths[$row->id] = $this->app->config->store->path.
+					$row->path.'/'.$row->shortname;
 
 		foreach ($store as $row)
 			$row->path = (isset($paths[$row->id])) ? $paths[$row->id] : null;

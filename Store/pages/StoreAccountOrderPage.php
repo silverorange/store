@@ -387,7 +387,8 @@ class StoreAccountOrderPage extends SiteUiPage
 
 		foreach ($item_paths as $row) {
 			if ($row->path !== null)
-				$paths[$row->id] = 'store/'.$row->path.'/'.$row->shortname;
+				$paths[$row->id] = $this->app->config->store->path.
+					$row->path.'/'.$row->shortname;
 		}
 
 		foreach ($store as $row) {

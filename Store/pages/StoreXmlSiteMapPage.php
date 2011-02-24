@@ -46,11 +46,13 @@ class StoreXmlSiteMapPage extends SiteXmlSiteMapPage
 			else
 				$category_path = $path.'/'.$category->shortname;
 
-			$this->displayPath('store/'.$category_path, null, 'weekly');
+			$this->displayPath($this->app->config->store->path.
+				$category_path, null, 'weekly');
 
 			$products = $category->getVisibleProducts();
 			foreach ($products as $product)
-				$this->displayPath('store/'.$product->path, null, 'weekly');
+				$this->displayPath($this->app->config->store->path.
+					$product->path, null, 'weekly');
 
 			$sub_categories = $category->getVisibleSubCategories();
 			if (count($sub_categories) > 0)

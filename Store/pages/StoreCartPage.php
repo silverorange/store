@@ -1361,7 +1361,7 @@ class StoreCartPage extends SitePage
 		$ds->discount           = $entry->getDiscount();
 		$ds->discount_extension = $entry->getDiscountExtension();
 		$ds->message            = null;
-		$ds->product_link       = 'store/'.$entry->item->product->path;
+		$ds->product_link       = $this->app->config->store->path.$entry->item->product->path;
 		$ds->item_count         = $this->getAvailableProductItemCount($entry);
 
 		$group = $entry->item->minimum_quantity_group;
@@ -1434,7 +1434,7 @@ class StoreCartPage extends SitePage
 		if ($entry->item->product->primary_category === null)
 			$ds->product_link = null;
 		else
-			$ds->product_link = 'store/'.$entry->item->product->path;
+			$ds->product_link = $this->app->config->store->path.$entry->item->product->path;
 
 		$status = $entry->item->getStatus();
 		$ds->status = sprintf('<span class="status-%s">%s</span>',
@@ -1485,7 +1485,7 @@ class StoreCartPage extends SitePage
 		if ($entry->item->product->primary_category === null)
 			$ds->product_link = null;
 		else
-			$ds->product_link = 'store/'.$entry->item->product->path;
+			$ds->product_link = $this->app->config->store->path.$entry->item->product->path;
 
 		if ($entry->alias === null)
 			$ds->alias_sku = null;
