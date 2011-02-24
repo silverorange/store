@@ -433,7 +433,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 		$ds->description  = $this->getEntryDescription($entry);
 		$ds->price        = $entry->getCalculatedItemPrice();
 		$ds->extension    = $entry->getExtension();
-		$ds->product_link = 'store/'.$entry->item->product->path;
+		$ds->product_link = $this->app->config->store->path.$entry->item->product->path;
 
 		if ($entry->alias !== null) {
 			$ds->item->sku = $entry->item->sku;

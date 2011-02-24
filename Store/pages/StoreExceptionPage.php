@@ -58,7 +58,8 @@ class StoreExceptionPage extends SiteExceptionPage
 
 			if ($path !== null) {
 				// permanent redirect to the new path
-				$this->app->relocate('store/'.$path, null, null, true);
+				$path = $this->app->config->store->path.$path;
+				$this->app->relocate($path, null, null, true);
 			}
 		}
 	}

@@ -402,7 +402,7 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 		$ds->extension          = $entry->getExtension();
 		$ds->discount           = $entry->getDiscount();
 		$ds->discount_extension = $entry->getDiscountExtension();
-		$ds->product_link       = 'store/'.$entry->item->product->path;
+		$ds->product_link       = $this->app->config->store->path.$entry->item->product->path;
 		$ds->item_count         = $this->getAvailableProductItemCount($entry);
 
 		$image = $entry->item->product->primary_image;

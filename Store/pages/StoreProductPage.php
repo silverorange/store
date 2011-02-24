@@ -887,7 +887,9 @@ class StoreProductPage extends StorePage
 
 	protected function displayPopularProduct(StoreProduct $product)
 	{
-		$path = 'store/'.$product->path.'?link=popular-product';
+		$path = $this->app->config->store->path.
+			$product->path.'?link=popular-product';
+
 		$product->displayAsIcon($path, 'pinky');
 	}
 
@@ -955,7 +957,9 @@ class StoreProductPage extends StorePage
 
 	protected function displayRelatedProduct(StoreProduct $product)
 	{
-		$path = 'store/'.$product->path.'?link=related-product';
+		$path = $this->app->config->store->path.
+			$product->path.'?link=related-product';
+
 		$product->displayAsIcon($path, 'pinky');
 	}
 
@@ -1013,7 +1017,9 @@ class StoreProductPage extends StorePage
 
 	protected function displayProductCollection(StoreProduct $product)
 	{
-		$path = 'store/'.$product->path.'?link=product-collection';
+		$path = $this->app->config->store->path.
+			$product->path.'?link=product-collection';
+
 		$product->displayAsIcon($path, 'pinky');
 	}
 
@@ -1069,7 +1075,7 @@ class StoreProductPage extends StorePage
 
 	protected function displayCollectionProduct(StoreProduct $product)
 	{
-		$path = 'store/'.$product->path.'?link=collection-product';
+		$path = $this->app->config->store->path.$product->path.'?link=collection-product';
 		$product->displayAsIcon($path, 'pinky');
 	}
 
