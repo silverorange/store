@@ -340,7 +340,7 @@ class StoreCartEntry extends SwatDBDataObject
 	{
 		if ($this->hasSameItem($entry)) {
 			$this->quantity += $entry->getQuantity();
-		}	
+		}
 	}
 
 	// }}}
