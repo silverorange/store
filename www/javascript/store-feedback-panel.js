@@ -191,7 +191,6 @@ StoreFeedbackPanel.prototype.drawCancelLink = function()
 		} else {
 			last_div = node;
 		}
-		console.log(last_div);
 
 		return last_div;
 	}
