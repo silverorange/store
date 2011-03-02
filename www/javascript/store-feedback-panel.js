@@ -159,7 +159,8 @@ StoreFeedbackPanel.prototype.drawContainer = function()
 StoreFeedbackPanel.prototype.drawCancelLink = function()
 {
 	this.cancel_link = document.createElement('a');
-	this.cancel_link.href = '#';
+	this.cancel_link.className = 'store-feedback-cancel';
+	this.cancel_link.href = '#cancel';
 	this.cancel_link.appendChild(
 		document.createTextNode(StoreFeedbackPanel.cancel_text)
 	);
@@ -179,6 +180,7 @@ StoreFeedbackPanel.prototype.drawCancelLink = function()
 			if (   child_node.nodeType == 1
 				&& child_node.nodeName == 'DIV'
 				&& child_node.className.indexOf('swat-input-hidden') == -1
+				&& child_node.className.indexOf('swat-hidden') == -1
 			) {
 				last_div = child_node;
 			}
@@ -189,6 +191,7 @@ StoreFeedbackPanel.prototype.drawCancelLink = function()
 		} else {
 			last_div = node;
 		}
+		console.log(last_div);
 
 		return last_div;
 	}
