@@ -75,8 +75,8 @@ a.store-feedback-panel-title:hover {
 	position: relative;
 }
 
-#feedback .swat-footer-form-field a {
-	position: absolute;
-	right: 0;
-	top: 0.2em;
+#feedback .store-feedback-cancel {
+	position: relative;
+	top: 1px;
+	margin-left: 3px;
 }
