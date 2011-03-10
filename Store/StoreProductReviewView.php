@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreProductReview.php';
  * Reviews are displayed using the hReview microformat.
  *
  * @package   Store
- * @copyright 2008 silverorange
+ * @copyright 2008-2011 silverorange
  */
 class StoreProductReviewView extends SwatControl
 {
@@ -228,7 +228,7 @@ class StoreProductReviewView extends SwatControl
 		if ($this->description === null &&
 			$this->review instanceof StoreProductReview) {
 			$this->description =
-				SiteCommentFilter::toXhtml($this->review->bodytext);
+				SiteCommentFilter::toXhtml($this->review->bodytext, true);
 		}
 
 		return $this->description;
@@ -247,7 +247,7 @@ class StoreProductReviewView extends SwatControl
 				$this->review->bodytext, 300, ' … ', $this->summarized);
 
 			if ($this->summarized) {
-				$this->summary = SiteCommentFilter::toXhtml($summary);
+				$this->summary = SiteCommentFilter::toXhtml($summary, true);
 			} else {
 				$this->summary = false;
 			}
