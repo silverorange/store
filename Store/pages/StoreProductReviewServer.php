@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreProductReviewWrapper.php';
  * Handles XML-RPC requests to view more product reviews
  *
  * @package   Store
- * @copyright 2008-2009 silverorange
+ * @copyright 2008-2011 silverorange
  */
 class StoreProductReviewServer extends SiteXMLRPCServer
 {
@@ -97,7 +97,7 @@ class StoreProductReviewServer extends SiteXMLRPCServer
 		$instance_id = $this->app->getInstanceId();
 		$sql = sprintf('select * from ProductReview
 			where product = %s and spam = %s and status = %s and instance %s %s
-			order by createdate, id',
+			order by createdate desc, id',
 			$this->app->db->quote($product_id, 'integer'),
 			$this->app->db->quote(false, 'boolean'),
 			$this->app->db->quote(SiteComment::STATUS_PUBLISHED, 'integer'),
