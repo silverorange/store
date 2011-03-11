@@ -7,7 +7,7 @@ require_once 'SwatDB/SwatDB.php';
  * Index page for SaleDiscounts
  *
  * @package   Store
- * @copyright 2005-2009 silverorange
+ * @copyright 2005-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreSaleDiscountIndex extends AdminIndex
@@ -82,7 +82,8 @@ class StoreSaleDiscountIndex extends AdminIndex
 				from SaleDiscount
 				order by %s';
 
-		$sql = sprintf($sql, $this->getOrderByClause($view, 'title'));
+		$sql = sprintf($sql,
+			$this->getOrderByClause($view, 'start_date, end_date, title'));
 
 		$rs = SwatDB::query($this->app->db, $sql);
 
