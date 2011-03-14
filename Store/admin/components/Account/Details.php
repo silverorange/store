@@ -35,11 +35,13 @@ class StoreAccountDetails extends SiteAccountDetails
 			$view->getColumn('createdate'),
 			SwatTableViewOrderableColumn::ORDER_BY_DIR_DESCENDING);
 
-		// set a default order on the invoice table view
-		$view = $this->ui->getWidget('invoices_view');
-		$view->setDefaultOrderbyColumn(
-			$view->getColumn('createdate'),
-			SwatTableViewOrderableColumn::ORDER_BY_DIR_DESCENDING);
+		if ($this->ui->hasWidget('invoices_view')) {
+			// set a default order on the invoice table view
+			$view = $this->ui->getWidget('invoices_view');
+			$view->setDefaultOrderbyColumn(
+				$view->getColumn('createdate'),
+				SwatTableViewOrderableColumn::ORDER_BY_DIR_DESCENDING);
+		}
 	}
 
 	// }}}
@@ -135,7 +137,7 @@ class StoreAccountDetails extends SiteAccountDetails
 		$date_renderer = $date_column->getRendererByPosition();
 		$date_renderer->display_time_zone = $this->app->default_time_zone;
 
-		if ($this->ui->hasWidget('invoice_toolbar')) {
+		if ($this->ui->hasWidget('invoices_view')) {
 			$date_column =
 				$this->ui->getWidget('invoices_view')->getColumn('createdate');
 
