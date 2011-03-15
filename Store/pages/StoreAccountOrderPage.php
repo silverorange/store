@@ -345,6 +345,9 @@ class StoreAccountOrderPage extends SiteUiPage
 	{
 		parent::buildNavBar();
 
+		if (!property_exists($this->layout, 'navbar'))
+			return;
+
 		$title = $this->order->getTitle();
 		$this->layout->data->title = $title;
 		$this->layout->navbar->createEntry($title);
