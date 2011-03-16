@@ -24,7 +24,7 @@ require_once 'Deliverance/Deliverance.php';
  * submission attempts are made.
  *
  * @package   Store
- * @copyright 2010 silverorange
+ * @copyright 2010-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
@@ -128,10 +128,22 @@ class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
 				$this->sendOrder($order);
 
 				$success = true;
+			} catch (XML_RPC2_FaultException $e) {
+				// 330 means order has already been submitted, we can safely
+				// throw these away
+				if ($e->getFaultCode() == '330') {
+					$success = true;
+				}
+
+				// continue to log the errors for now to see how frequent they
+				// are, and to make sure we're not throwing away ones we
+				// shouldn't
+				$e = new SiteException($e);
+				$e->processAndContinue();
 			} catch (XML_RPC2_Exception $e) {
 				// TODO: Some of these should be logged while others shouldn't
 				$e = new SiteException($e);
-				$e->process(true);
+				$e->processAndContinue();
 			}
 
 			if ($success === true) {
@@ -255,11 +267,15 @@ class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
 			$entry = array(
 				'product_id'    => $product->id,
 				'product_name'  => $product->title,
-				'category_id'   => $product->primary_category->id,
-				'category_name' => $product->primary_category->title,
 				'qty'           => $item->quantity,
 				'cost'          => $item->price,
 			);
+
+			// products with no category won't have a primary category.
+			if ($product->primary_category !== null) {
+				$entry['category_id']   = $product->primary_category->id;
+				$entry['category_name'] = $product->primary_category->title;
+			}
 
 			$items[] = $entry;
 		}
@@ -274,8 +290,8 @@ class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
 	{
 		$sql = 'select Product.*, ProductPrimaryCategoryView.primary_category
 			from Product
-				inner join ProductPrimaryCategoryView
-					on Product.id = ProductPrimaryCategoryView.product
+			left outer join ProductPrimaryCategoryView
+				on Product.id = ProductPrimaryCategoryView.product
 			where id = %s';
 
 		$sql = sprintf($sql, $this->db->quote($item->product, 'integer'));
