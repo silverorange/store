@@ -9,7 +9,7 @@ require_once 'Admin/AdminSummaryDependency.php';
  * Delete confirmation page for Features
  *
  * @package   Store
- * @copyright 2010 silverorange
+ * @copyright 2010-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreFeatureDelete extends AdminDBDelete
@@ -35,7 +35,7 @@ class StoreFeatureDelete extends AdminDBDelete
 		$this->app->messages->add($message);
 
 		if (isset($this->app->memcache))
-			$this->app->memcache->flushNs('product');
+			$this->app->memcache->flushNs('StoreFeature');
 	}
 
 	// }}}

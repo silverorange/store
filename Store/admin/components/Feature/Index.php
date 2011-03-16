@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreFeatureWrapper.php';
  * Index page for Features
  *
  * @package   Store
- * @copyright 2010 silverorange
+ * @copyright 2010-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreFeatureIndex extends AdminIndex
@@ -43,7 +43,7 @@ class StoreFeatureIndex extends AdminIndex
 				'boolean:enabled', true, 'id', $view->getSelection());
 
 			if (isset($this->app->memcache))
-				$this->app->memcache->flushNs('product');
+				$this->app->memcache->flushNs('StoreFeature');
 
 			$message = new SwatMessage(sprintf(ngettext(
 				'One feature has been enabled.',
@@ -57,7 +57,7 @@ class StoreFeatureIndex extends AdminIndex
 				'boolean:enabled', false, 'id', $view->getSelection());
 
 			if (isset($this->app->memcache))
-				$this->app->memcache->flushNs('product');
+				$this->app->memcache->flushNs('StoreFeature');
 
 			$message = new SwatMessage(sprintf(ngettext(
 				'One feature has been disabled.',
