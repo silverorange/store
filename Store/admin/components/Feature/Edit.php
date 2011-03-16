@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreFeature.php';
  * Edit page for Features
  *
  * @package   Store
- * @copyright 2010 silverorange
+ * @copyright 2010-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreFeatureEdit extends AdminDBEdit
@@ -115,7 +115,7 @@ class StoreFeatureEdit extends AdminDBEdit
 		$this->app->messages->add($message);
 
 		if (isset($this->app->memcache))
-			$this->app->memcache->flushNs('product');
+			$this->app->memcache->flushNs('StoreFeature');
 	}
 
 	// }}}
