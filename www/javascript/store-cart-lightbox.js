@@ -83,13 +83,7 @@ StoreCartLightBox.prototype.init = function()
 	YAHOO.util.Event.on(window, 'resize', this.handleWindowChange, this, true);
 
 	this.activateLinks();
-
-	// pre-load images
-	var preload = new Image();
-	preload.src = 'packages/store/images/mini-cart-background.png';
-
-	var preload_ie = new Image();
-	preload_ie.src = 'packages/store/images/mini-cart-background-ie.png';
+	this.preLoadImages();
 }
 
 // }}}
@@ -558,3 +552,16 @@ StoreCartLightBox.prototype.recordAnalytics = function(uri)
 }
 
 // }}}
+// {{{ StoreCartLightBox.prototype.preLoadImages
+
+StoreCartLightBox.prototype.preLoadImages = function()
+{
+	var preload = new Image();
+	preload.src = 'packages/store/images/mini-cart-background.png';
+
+	var preload_ie = new Image();
+	preload_ie.src = 'packages/store/images/mini-cart-background-ie.png';
+}
+
+// }}}
+
