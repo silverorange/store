@@ -36,7 +36,7 @@ require_once 'Store/dataobjects/StoreCategory.php';
  * load the objects.
  *
  * @package   Store
- * @copyright 2005-2009 silverorange
+ * @copyright 2005-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreProductWrapper
  */
@@ -307,7 +307,7 @@ class StoreProduct extends SwatDBDataObject
 
 		$sql = 'select * from ProductReview
 			where product = %s and spam = %s and status = %s %s
-			order by createdate, id';
+			order by createdate desc, id';
 
 		$sql = sprintf($sql,
 			$this->db->quote($this->id, 'integer'),
