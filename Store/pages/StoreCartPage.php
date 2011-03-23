@@ -145,7 +145,8 @@ class StoreCartPage extends SitePage
 			if ($button !== null && $button->hasBeenClicked())
 				$this->moveAllAvailableCheckoutCart();
 
-			if ($this->getAvailableRemoveAllButton()->hasBeenClicked())
+			$button = $this->getAvailableRemoveAllButton();
+			if ($button !== null && $button->hasBeenClicked())
 				$this->removeAllAvailableCheckoutCart();
 
 			if ($this->getUnavailableRemoveAllButton()->hasBeenClicked())
@@ -386,7 +387,10 @@ class StoreCartPage extends SitePage
 
 	protected function getAvailableRemoveAllButton()
 	{
-		$button = $this->ui->getWidget('available_remove_all_button');
+		$button = null;
+
+		if ($this->ui->hasWidget('available_remove_all_button'))
+			$button = $this->ui->getWidget('available_remove_all_button');
 
 		return $button;
 	}
@@ -1183,10 +1187,12 @@ class StoreCartPage extends SitePage
 
 		if (count($available_view->model) == 1) {
 			$remove_all_button = $this->getAvailableRemoveAllButton();
-			if ($remove_all_button->parent instanceof SwatTableViewRow)
-				$remove_all_button->parent->visible = false;
-			else
-				$remove_all_button->visible = false;
+			if ($remove_all_button !== null) {
+				if ($remove_all_button->parent instanceof SwatTableViewRow)
+					$remove_all_button->parent->visible = false;
+				else
+					$remove_all_button->visible = false;
+			}
 
 			$move_all_button = $this->getAvailableMoveAllButton();
 			if ($move_all_button !== null) {
