@@ -128,9 +128,7 @@ StoreCartLightBox.prototype.addEntries = function(entries, source, source_catego
 
 StoreCartLightBox.prototype.load = function(e)
 {
-	YAHOO.util.Event.stopPropagation(e);
 	YAHOO.util.Event.preventDefault(e);
-
 	this.open();
 }
 
@@ -139,6 +137,8 @@ StoreCartLightBox.prototype.load = function(e)
 
 StoreCartLightBox.prototype.open = function(is_status_opening)
 {
+	SwatZIndexManager.raiseElement(this.mini_cart);
+
 	if (this.status != 'open' && this.status != 'opening') {
 		YAHOO.util.Dom.setStyle(this.mini_cart, 'opacity', 0);
 		this.mini_cart.style.display = 'block';
@@ -389,6 +389,18 @@ StoreCartLightBox.prototype.close = function(e)
 
 StoreCartLightBox.prototype.clickClose = function(e)
 {
+	if (YAHOO.util.Dom.hasClass(
+		YAHOO.util.Event.getTarget(e), 'store-open-cart-link')) {
+		return;
+	}
+
+	var ancestor = YAHOO.util.Dom.getAncestorByTagName(
+		YAHOO.util.Event.getTarget(e), 'a');
+
+	if (ancestor && YAHOO.util.Dom.hasClass(ancestor, 'store-open-cart-link')) {
+		return;
+	}
+
 	this.close();
 }
 
