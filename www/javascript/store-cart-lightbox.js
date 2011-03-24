@@ -459,11 +459,16 @@ StoreCartLightBox.prototype.handleWindowChange = function(contents)
 StoreCartLightBox.prototype.position = function()
 {
 	var region = YAHOO.util.Dom.getRegion(this.cart_header_container_id);
+	var scroll_top;
 
-	var scroll_top = -1 * (YAHOO.util.Dom.getDocumentScrollTop() -
-		region.bottom - this.cart_container_offset);
+	if (YAHOO.util.Dom.getStyle(this.mini_cart, 'position') == 'fixed') {
+		scroll_top = YAHOO.util.Dom.getDocumentScrollTop();
+	} else {
+		scroll_top = 0;
+	}
 
-	var pos = Math.max(scroll_top, this.cart_container_offset);
+	var scroll_pos = region.bottom + this.cart_container_offset - scroll_top;
+	var pos = Math.max(scroll_pos, this.cart_container_offset);
 	this.mini_cart.style.top = pos + 'px';
 
 	this.mini_cart.style.right =
