@@ -177,11 +177,11 @@
 	font-weight: bold;
 }
 
-#store_cart_lightbox .empty-message {
+#store_cart_lightbox .empty-content {
 	padding: 0 10px;
 }
 
-#store_cart_lightbox .empty-message h3 {
+#store_cart_lightbox .empty-content h3 {
 	margin: 0 0 10px 0;
 }
 
