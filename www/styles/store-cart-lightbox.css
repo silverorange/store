@@ -158,7 +158,6 @@
 	text-align: center;
 }
 
-#store_cart_lightbox h2,
 #store_cart_lightbox h3 {
 	margin: 0 10px;
 	font-size: 130%;
@@ -182,7 +181,7 @@
 	padding: 0 10px;
 }
 
-#store_cart_lightbox .empty-message h2 {
+#store_cart_lightbox .empty-message h3 {
 	margin: 0 0 10px 0;
 }
 

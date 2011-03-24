@@ -31,7 +31,7 @@ function StoreCartLightBox(available_entry_count, all_entry_count)
 StoreCartLightBox.instance = null;
 StoreCartLightBox.submit_message = 'Updating Cart…';
 StoreCartLightBox.loading_message = 'Loading…';
-StoreCartLightBox.empty_message = '<h2>Your Shopping Cart is Empty</h2>';
+StoreCartLightBox.empty_message = 'Your Shopping Cart is Empty';
 StoreCartLightBox.item_count_message_singular = '(1 item)';
 StoreCartLightBox.item_count_message_plural   = '(%s items)';
 
@@ -118,7 +118,7 @@ StoreCartLightBox.prototype.addEntries = function(entries, source, source_catego
 		['int', 'array', 'int', 'int', 'boolean']);
 
 	this.setContent(
-		'<h2>' + StoreCartLightBox.submit_message + '</h2>');
+		'<h3>' + StoreCartLightBox.submit_message + '</h3>');
 
 	this.open(true);
 }
@@ -513,8 +513,8 @@ StoreCartLightBox.prototype.addEntriesCallback = function(response)
 
 StoreCartLightBox.prototype.displayEmptyCartMessage = function()
 {
-	this.setContentWithAnimation('<div class="empty-message">' +
-		StoreCartLightBox.empty_message + '</div>');
+	this.setContentWithAnimation('<div class="empty-message"><h3>' +
+		StoreCartLightBox.empty_message + '</h3></div>');
 
 	this.cart_empty_event.fire();
 }
