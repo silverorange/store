@@ -51,7 +51,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 				'shopping cart%2$s.'),
 				'<a href="checkout/confirmation/cart">', '</a>'), 'text/xml');
 
-			$this->layout->cart_lightbox->override_message =
+			$this->layout->cart_lightbox->override_content =
 				$div_tag->__toString();
 		}
 	}
