@@ -90,9 +90,7 @@ class StoreCartLightbox extends SwatControl
 		$this->addStyleSheet('packages/store/styles/store-cart-lightbox.css',
 			Store::PACKAGE_ID);
 
-		$h2_tag = new SwatHtmlTag('h2');
-		$h2_tag->setContent(Store::_('Your Shopping Cart is Empty'));
-		$this->empty_message = $h2_tag->__toString();
+		$this->empty_message = Store::_('Your Shopping Cart is Empty');
 	}
 
 	// }}}
@@ -181,8 +179,8 @@ class StoreCartLightbox extends SwatControl
 		if ($this->override_message !== null) {
 			echo $this->override_message;
 		} elseif ($this->app->cart->checkout->isEmpty()) {
-			echo '<div class="empty-message">'.
-				$this->empty_message.'</div>';
+			echo '<div class="empty-message"><h3>'.
+				$this->empty_message.'</h3></div>';
 		} else {
 			if ($this->processor !== null) {
 				$added = count($this->processor->getEntriesAdded());
