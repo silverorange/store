@@ -26,25 +26,29 @@ class StoreCartLightbox extends SwatControl
 	 */
 	public $class_name = 'StoreCartLightBox';
 
-	/*
-	 * Empty message
+	/**
+	 * Optional content to display when the cart is empty
 	 *
-	 * Optional message to display when the cart is empty.
+	 * This is a string of XHTML.
+	 *
+	 * If not specified, the default content of an &lt;h3&gt; element with
+	 * the text 'Your Shopping Cart is Empty' is used.
 	 *
 	 * @var string
 	 */
-	public $empty_message = null;
+	public $empty_content = null;
 
-	/*
-	 * Override Message
+	/**
+	 * Optional content that ovberrides the default content of this lightbox
 	 *
-	 * Optional message to override content of the lightbox. Useful for pages
-	 * where you just want to display a message instead of displaying the cart
-	 * contents.
+	 * This is a string of XHTML.
+	 *
+	 * This is useful for pages where you just want to display a message
+	 * instead of displaying the cart contents.
 	 *
 	 * @var string
 	 */
-	public $override_message = null;
+	public $override_content = null;
 
 	/*
 	 * @var integer
@@ -90,7 +94,9 @@ class StoreCartLightbox extends SwatControl
 		$this->addStyleSheet('packages/store/styles/store-cart-lightbox.css',
 			Store::PACKAGE_ID);
 
-		$this->empty_message = Store::_('Your Shopping Cart is Empty');
+		$h3 = new SwatHtmlTag('h3');
+		$h3->setContent(Store::_('Your Shopping Cart is Empty'));
+		$this->empty_content = strval($h3);
 	}
 
 	// }}}
@@ -127,8 +133,8 @@ class StoreCartLightbox extends SwatControl
 		$javascript = '';
 
 		if (!$translated) {
-			$javascript.= sprintf("StoreCartLightBox.empty_message = %s;\n",
-				SwatString::quoteJavaScriptString($this->empty_message));
+			$javascript.= sprintf("StoreCartLightBox.empty_content = %s;\n",
+				SwatString::quoteJavaScriptString($this->empty_content));
 
 			$javascript.= sprintf("StoreCartLightBox.loading_message = %s;\n",
 				SwatString::quoteJavaScriptString(Store::_('Loading…')));
@@ -176,11 +182,11 @@ class StoreCartLightbox extends SwatControl
 	 */
 	public function displayContent()
 	{
-		if ($this->override_message !== null) {
-			echo $this->override_message;
+		if ($this->override_content !== null) {
+			echo $this->override_content;
 		} elseif ($this->app->cart->checkout->isEmpty()) {
-			echo '<div class="empty-message"><h3>'.
-				$this->empty_message.'</h3></div>';
+			echo '<div class="empty-content">'.
+				$this->empty_content.'</div>';
 		} else {
 			if ($this->processor !== null) {
 				$added = count($this->processor->getEntriesAdded());

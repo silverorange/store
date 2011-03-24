@@ -31,9 +31,9 @@ function StoreCartLightBox(available_entry_count, all_entry_count)
 StoreCartLightBox.instance = null;
 StoreCartLightBox.submit_message = 'Updating Cart…';
 StoreCartLightBox.loading_message = 'Loading…';
-StoreCartLightBox.empty_message = 'Your Shopping Cart is Empty';
 StoreCartLightBox.item_count_message_singular = '(1 item)';
 StoreCartLightBox.item_count_message_plural   = '(%s items)';
+StoreCartLightBox.empty_content = '<h3>Your Shopping Cart is Empty</h3>';
 
 // static method to call an instance of StoreCartLightBox
 // {{{ StoreCartLightBox.getInstance
@@ -518,8 +518,8 @@ StoreCartLightBox.prototype.addEntriesCallback = function(response)
 
 StoreCartLightBox.prototype.displayEmptyCartMessage = function()
 {
-	this.setContentWithAnimation('<div class="empty-message"><h3>' +
-		StoreCartLightBox.empty_message + '</h3></div>');
+	this.setContentWithAnimation('<div class="empty-content">' +
+		StoreCartLightBox.empty_content + '</div>');
 
 	this.cart_empty_event.fire();
 }
