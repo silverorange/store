@@ -51,7 +51,7 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 			$div_tag->setContent(Store::_('You can view and edit your '.
 				'shopping cart using the form below.'));
 
-			$this->layout->cart_lightbox->override_message =
+			$this->layout->cart_lightbox->override_content =
 				$div_tag->__toString();
 		}
 	}
