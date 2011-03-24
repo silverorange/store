@@ -53,6 +53,13 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	public $region;
 
 	/**
+	 * Optional instance to search within.
+	 *
+	 * @var SiteInstance
+	 */
+	public $instance;
+
+	/**
 	 * Whether or not to search category descendants when a category
 	 * is selected
 	 *
@@ -573,6 +580,11 @@ class StoreProductSearchEngine extends SiteSearchEngine
 				$this->app->db->quote($this->item_minimum_quantity_group->id,
 					'integer'));
 		}
+
+		if ($this->instance instanceof SiteInstance)
+			$clause.= sprintf(' and Catalog.id in
+				(select catalog from CatalogInstanceBinding where instance = %s)',
+				$this->app->db->quote($this->instance->id, 'integer'));
 
 		return $clause;
 	}
