@@ -94,6 +94,9 @@ class StoreCartLightbox extends SwatControl
 		$this->addStyleSheet('packages/store/styles/store-cart-lightbox.css',
 			Store::PACKAGE_ID);
 
+		$this->addJavaScript('packages/swat/javascript/swat-z-index-manager.js',
+			Swat::PACKAGE_ID);
+
 		$h3 = new SwatHtmlTag('h3');
 		$h3->setContent(Store::_('Your Shopping Cart is Empty'));
 		$this->empty_content = strval($h3);
