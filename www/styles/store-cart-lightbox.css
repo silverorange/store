@@ -177,7 +177,8 @@
 	font-weight: bold;
 }
 
-#store_cart_lightbox .empty-content {
+#store_cart_lightbox .empty-content,
+#store_cart_lightbox .empty-message {
 	padding: 0 10px;
 }
 
