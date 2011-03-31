@@ -1,9 +1,9 @@
 /**
  * A lightbox that displays items in the user's cart
  *
- * This should be instansiated using: StoreCartLightBox.getInstance();
+ * This should be instansiated using: StoreCartLightbox.getInstance();
  */
-function StoreCartLightBox(available_entry_count, all_entry_count)
+function StoreCartLightbox(available_entry_count, all_entry_count)
 {
 	this.status           = 'closed';
 	this.product_id       = 0;
@@ -28,32 +28,32 @@ function StoreCartLightBox(available_entry_count, all_entry_count)
 	YAHOO.util.Event.onDOMReady(this.init, this, true);
 }
 
-StoreCartLightBox.instance = null;
-StoreCartLightBox.submit_message = 'Updating Cart…';
-StoreCartLightBox.loading_message = 'Loading…';
-StoreCartLightBox.item_count_message_singular = '(1 item)';
-StoreCartLightBox.item_count_message_plural   = '(%s items)';
-StoreCartLightBox.empty_content = '<h3>Your Shopping Cart is Empty</h3>';
+StoreCartLightbox.instance = null;
+StoreCartLightbox.submit_message = 'Updating Cart…';
+StoreCartLightbox.loading_message = 'Loading…';
+StoreCartLightbox.item_count_message_singular = '(1 item)';
+StoreCartLightbox.item_count_message_plural   = '(%s items)';
+StoreCartLightbox.empty_content = '<h3>Your Shopping Cart is Empty</h3>';
 
-// static method to call an instance of StoreCartLightBox
-// {{{ StoreCartLightBox.getInstance
-StoreCartLightBox.getInstance = function(
+// static method to call an instance of StoreCartLightbox
+// {{{ StoreCartLightbox.getInstance
+StoreCartLightbox.getInstance = function(
 	available_entry_count, all_entry_count)
 {
-	if (StoreCartLightBox.instance === null) {
-		StoreCartLightBox.instance = new StoreCartLightBox(
+	if (StoreCartLightbox.instance === null) {
+		StoreCartLightbox.instance = new StoreCartLightbox(
 			available_entry_count, all_entry_count);
 	}
 
-	return StoreCartLightBox.instance;
+	return StoreCartLightbox.instance;
 }
 
 // }}}
 
 // class methods
-// {{{ StoreCartLightBox.prototype.init
+// {{{ StoreCartLightbox.prototype.init
 
-StoreCartLightBox.prototype.init = function()
+StoreCartLightbox.prototype.init = function()
 {
 	this.configure();
 
@@ -87,9 +87,9 @@ StoreCartLightBox.prototype.init = function()
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.configure
+// {{{ StoreCartLightbox.prototype.configure
 
-StoreCartLightBox.prototype.configure = function()
+StoreCartLightbox.prototype.configure = function()
 {
 	this.xml_rpc_client = new XML_RPC_Client('xml-rpc/cart');
 	this.cart_header_id = 'cart_link';
@@ -97,9 +97,9 @@ StoreCartLightBox.prototype.configure = function()
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.addEntries
+// {{{ StoreCartLightbox.prototype.addEntries
 
-StoreCartLightBox.prototype.addEntries = function(entries, source, source_category)
+StoreCartLightbox.prototype.addEntries = function(entries, source, source_category)
 {
 	var that = this;
 	function callBack(response)
@@ -118,24 +118,24 @@ StoreCartLightBox.prototype.addEntries = function(entries, source, source_catego
 		['int', 'array', 'int', 'int', 'boolean']);
 
 	this.setContent(
-		'<h3>' + StoreCartLightBox.submit_message + '</h3>');
+		'<h3>' + StoreCartLightbox.submit_message + '</h3>');
 
 	this.open(true);
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.load
+// {{{ StoreCartLightbox.prototype.load
 
-StoreCartLightBox.prototype.load = function(e)
+StoreCartLightbox.prototype.load = function(e)
 {
 	YAHOO.util.Event.preventDefault(e);
 	this.open();
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.open
+// {{{ StoreCartLightbox.prototype.open
 
-StoreCartLightBox.prototype.open = function(is_status_opening)
+StoreCartLightbox.prototype.open = function(is_status_opening)
 {
 	SwatZIndexManager.raiseElement(this.mini_cart);
 
@@ -163,9 +163,9 @@ StoreCartLightBox.prototype.open = function(is_status_opening)
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.displayResponse
+// {{{ StoreCartLightbox.prototype.displayResponse
 
-StoreCartLightBox.prototype.displayResponse = function(response)
+StoreCartLightbox.prototype.displayResponse = function(response)
 {
 	if (this.all_entry_count == 0) {
 		this.displayEmptyCartMessage();
@@ -178,9 +178,9 @@ StoreCartLightBox.prototype.displayResponse = function(response)
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.activateLinks
+// {{{ StoreCartLightbox.prototype.activateLinks
 
-StoreCartLightBox.prototype.activateLinks = function()
+StoreCartLightbox.prototype.activateLinks = function()
 {
 	// activate any 'remove' buttons
 	var remove_buttons = YAHOO.util.Dom.getElementsByClassName(
@@ -202,9 +202,9 @@ StoreCartLightBox.prototype.activateLinks = function()
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.setContent
+// {{{ StoreCartLightbox.prototype.setContent
 
-StoreCartLightBox.prototype.setContent = function(contents)
+StoreCartLightbox.prototype.setContent = function(contents)
 {
 	this.position();
 
@@ -213,9 +213,9 @@ StoreCartLightBox.prototype.setContent = function(contents)
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.setContentWithAnimation
+// {{{ StoreCartLightbox.prototype.setContentWithAnimation
 
-StoreCartLightBox.prototype.setContentWithAnimation =
+StoreCartLightbox.prototype.setContentWithAnimation =
 	function(contents)
 {
 	var old_height = this.content.offsetHeight;
@@ -245,9 +245,9 @@ StoreCartLightBox.prototype.setContentWithAnimation =
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.getContentHeight
+// {{{ StoreCartLightbox.prototype.getContentHeight
 
-StoreCartLightBox.prototype.getContentHeight = function(contents)
+StoreCartLightbox.prototype.getContentHeight = function(contents)
 {
 	var hidden_div = document.createElement('div');
 	hidden_div.style.visiblility = 'hidden';
@@ -265,9 +265,9 @@ StoreCartLightBox.prototype.getContentHeight = function(contents)
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.getContainerTop
+// {{{ StoreCartLightbox.prototype.getContainerTop
 
-StoreCartLightBox.prototype.getContainerTop = function(contents)
+StoreCartLightbox.prototype.getContainerTop = function(contents)
 {
 	var content_height = this.getContentHeight(contents);
 
@@ -279,9 +279,9 @@ StoreCartLightBox.prototype.getContainerTop = function(contents)
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.removeEntry
+// {{{ StoreCartLightbox.prototype.removeEntry
 
-StoreCartLightBox.prototype.removeEntry = function(e)
+StoreCartLightbox.prototype.removeEntry = function(e)
 {
 	YAHOO.util.Event.preventDefault(e);
 
@@ -322,9 +322,9 @@ StoreCartLightBox.prototype.removeEntry = function(e)
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.removeRow
+// {{{ StoreCartLightbox.prototype.removeRow
 
-StoreCartLightBox.prototype.removeRow = function(tr, button)
+StoreCartLightbox.prototype.removeRow = function(tr, button)
 {
 	var rows = tr.parentNode.childNodes;
 	var index = null;
@@ -357,9 +357,9 @@ StoreCartLightBox.prototype.removeRow = function(tr, button)
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.close
+// {{{ StoreCartLightbox.prototype.close
 
-StoreCartLightBox.prototype.close = function(e)
+StoreCartLightbox.prototype.close = function(e)
 {
 	if (e) {
 		YAHOO.util.Event.preventDefault(e);
@@ -385,9 +385,9 @@ StoreCartLightBox.prototype.close = function(e)
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.clickClose
+// {{{ StoreCartLightbox.prototype.clickClose
 
-StoreCartLightBox.prototype.clickClose = function(e)
+StoreCartLightbox.prototype.clickClose = function(e)
 {
 	if (YAHOO.util.Dom.hasClass(
 		YAHOO.util.Event.getTarget(e), 'store-open-cart-link')) {
@@ -405,9 +405,9 @@ StoreCartLightBox.prototype.clickClose = function(e)
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.getParentNode
+// {{{ StoreCartLightbox.prototype.getParentNode
 
-StoreCartLightBox.prototype.getParentNode = function(node, tag)
+StoreCartLightbox.prototype.getParentNode = function(node, tag)
 {
 	if (node.tagName == tag.toUpperCase()) {
 		return node;
@@ -417,9 +417,9 @@ StoreCartLightBox.prototype.getParentNode = function(node, tag)
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.saveButtonValue
+// {{{ StoreCartLightbox.prototype.saveButtonValue
 
-StoreCartLightBox.prototype.saveButtonValue = function(button)
+StoreCartLightbox.prototype.saveButtonValue = function(button)
 {
 	var value = {
 		id: button.id,
@@ -430,9 +430,9 @@ StoreCartLightBox.prototype.saveButtonValue = function(button)
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.restoreButtonValue
+// {{{ StoreCartLightbox.prototype.restoreButtonValue
 
-StoreCartLightBox.prototype.restoreButtonValue = function(button)
+StoreCartLightbox.prototype.restoreButtonValue = function(button)
 {
 	for (var i = 0; i < this.button_values.length; i++) {
 		if (this.button_values[i].id == button.id) {
@@ -444,9 +444,9 @@ StoreCartLightBox.prototype.restoreButtonValue = function(button)
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.handleWindowChange
+// {{{ StoreCartLightbox.prototype.handleWindowChange
 
-StoreCartLightBox.prototype.handleWindowChange = function(contents)
+StoreCartLightbox.prototype.handleWindowChange = function(contents)
 {
 	if (this.status != 'closed') {
 		this.position();
@@ -454,9 +454,9 @@ StoreCartLightBox.prototype.handleWindowChange = function(contents)
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.position
+// {{{ StoreCartLightbox.prototype.position
 
-StoreCartLightBox.prototype.position = function()
+StoreCartLightbox.prototype.position = function()
 {
 	var region = YAHOO.util.Dom.getRegion(this.cart_header_container_id);
 	var scroll_top;
@@ -476,9 +476,9 @@ StoreCartLightBox.prototype.position = function()
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.hideAddedMessage
+// {{{ StoreCartLightbox.prototype.hideAddedMessage
 
-StoreCartLightBox.prototype.hideAddedMessage = function()
+StoreCartLightbox.prototype.hideAddedMessage = function()
 {
 	var messages = YAHOO.util.Dom.getElementsByClassName(
 		'added-message', 'div', this.mini_cart);
@@ -502,9 +502,9 @@ StoreCartLightBox.prototype.hideAddedMessage = function()
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.addEntriesCallback
+// {{{ StoreCartLightbox.prototype.addEntriesCallback
 
-StoreCartLightBox.prototype.addEntriesCallback = function(response)
+StoreCartLightbox.prototype.addEntriesCallback = function(response)
 {
 	this.all_entry_count = response.total_entries + response.total_saved;
 	this.available_entry_count = response.total_entries;
@@ -514,20 +514,20 @@ StoreCartLightBox.prototype.addEntriesCallback = function(response)
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.displayEmptyCartMessage
+// {{{ StoreCartLightbox.prototype.displayEmptyCartMessage
 
-StoreCartLightBox.prototype.displayEmptyCartMessage = function()
+StoreCartLightbox.prototype.displayEmptyCartMessage = function()
 {
 	this.setContentWithAnimation('<div class="empty-content">' +
-		StoreCartLightBox.empty_content + '</div>');
+		StoreCartLightbox.empty_content + '</div>');
 
 	this.cart_empty_event.fire();
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.updateItemCount
+// {{{ StoreCartLightbox.prototype.updateItemCount
 
-StoreCartLightBox.prototype.updateItemCount = function(item_count)
+StoreCartLightbox.prototype.updateItemCount = function(item_count)
 {
 	var item_counts = YAHOO.util.Dom.getElementsByClassName(
 		'item-count', '', this.mini_cart);
@@ -535,9 +535,9 @@ StoreCartLightBox.prototype.updateItemCount = function(item_count)
 	var message = '';
 
 	if (item_count === 1) {
-		message = ' ' + StoreCartLightBox.item_count_message_singular;
+		message = ' ' + StoreCartLightbox.item_count_message_singular;
 	} else if (item_count > 1) {
-		message = ' ' + StoreCartLightBox.item_count_message_plural.replace(
+		message = ' ' + StoreCartLightbox.item_count_message_plural.replace(
 			/%s/, item_count);
 	}
 
@@ -550,18 +550,18 @@ StoreCartLightBox.prototype.updateItemCount = function(item_count)
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.updateCartLink
+// {{{ StoreCartLightbox.prototype.updateCartLink
 
-StoreCartLightBox.prototype.updateCartLink = function(link)
+StoreCartLightbox.prototype.updateCartLink = function(link)
 {
 	var cart_link = document.getElementById(this.cart_header_id);
 	cart_link.innerHTML = link;
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.recordAnalytics
+// {{{ StoreCartLightbox.prototype.recordAnalytics
 
-StoreCartLightBox.prototype.recordAnalytics = function(uri)
+StoreCartLightbox.prototype.recordAnalytics = function(uri)
 {
 	if (this.analytics == 'google_analytics') {
 		_gaq.push(['_trackPageview'], uri);
@@ -569,9 +569,9 @@ StoreCartLightBox.prototype.recordAnalytics = function(uri)
 }
 
 // }}}
-// {{{ StoreCartLightBox.prototype.preLoadImages
+// {{{ StoreCartLightbox.prototype.preLoadImages
 
-StoreCartLightBox.prototype.preLoadImages = function()
+StoreCartLightbox.prototype.preLoadImages = function()
 {
 	var preload = new Image();
 	preload.src = 'packages/store/images/mini-cart-background.png';

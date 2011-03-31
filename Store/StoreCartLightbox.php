@@ -21,11 +21,6 @@ class StoreCartLightbox extends SwatControl
 	// }}}
 	// {{{ public properties
 
-	/*
-	 * @var string
-	 */
-	public $class_name = 'StoreCartLightBox';
-
 	/**
 	 * Optional content to display when the cart is empty
 	 *
@@ -50,7 +45,7 @@ class StoreCartLightbox extends SwatControl
 	 */
 	public $override_content = null;
 
-	/*
+	/**
 	 * @var integer
 	 */
 	public $analytics;
@@ -136,21 +131,21 @@ class StoreCartLightbox extends SwatControl
 		$javascript = '';
 
 		if (!$translated) {
-			$javascript.= sprintf("StoreCartLightBox.empty_content = %s;\n",
+			$javascript.= sprintf("StoreCartLightbox.empty_content = %s;\n",
 				SwatString::quoteJavaScriptString($this->empty_content));
 
-			$javascript.= sprintf("StoreCartLightBox.loading_message = %s;\n",
+			$javascript.= sprintf("StoreCartLightbox.loading_message = %s;\n",
 				SwatString::quoteJavaScriptString(Store::_('Loading…')));
 
-			$javascript.= sprintf("StoreCartLightBox.submit_message = %s;\n",
+			$javascript.= sprintf("StoreCartLightbox.submit_message = %s;\n",
 				SwatString::quoteJavaScriptString(Store::_('Updating Cart…')));
 
 			$javascript.= sprintf(
-				"StoreCartLightBox.item_count_message_singular = %s;\n",
+				"StoreCartLightbox.item_count_message_singular = %s;\n",
 				SwatString::quoteJavaScriptString(Store::_('(1 item)')));
 
 			$javascript.= sprintf(
-				"StoreCartLightBox.item_count_message_plural = %s;\n",
+				"StoreCartLightbox.item_count_message_plural = %s;\n",
 				SwatString::quoteJavaScriptString(Store::_('(%s items)')));
 
 			$translated = true;
@@ -162,9 +157,60 @@ class StoreCartLightbox extends SwatControl
 		$saved_entries = (isset($this->app->cart->saved)) ?
 			count($this->app->cart->saved->getEntries()) : 0;
 
-		$javascript.= sprintf('var cart_lightbox = '.$this->class_name.
-			".getInstance(%d, %d);\n",
-			$available_entries, $available_entries + $saved_entries);
+		$javascript.= sprintf(
+			"var cart_lightbox = %s.getInstance(%s, %s)\n",
+			$this->getJavaScriptClassName(),
+			intval($available_entries),
+			intval($available_entries + $saved_entries));
+
+		if ($this->analytics === self::GOOGLE_ANALYTICS) {
+			$javascript.= "cart_lightbox.analytics = 'google_analytics';\n";
+		}
+
+		return $javascript;
+	}
+
+	// }}}
+	// {{{ protected function getJavaScriptClassName()
+
+	protected function getJavaScriptClassName()
+	{
+		static $translated = false;
+
+		$javascript = '';
+
+		if (!$translated) {
+			$javascript.= sprintf("StoreCartLightbox.empty_content = %s;\n",
+				SwatString::quoteJavaScriptString($this->empty_content));
+
+			$javascript.= sprintf("StoreCartLightbox.loading_message = %s;\n",
+				SwatString::quoteJavaScriptString(Store::_('Loading…')));
+
+			$javascript.= sprintf("StoreCartLightbox.submit_message = %s;\n",
+				SwatString::quoteJavaScriptString(Store::_('Updating Cart…')));
+
+			$javascript.= sprintf(
+				"StoreCartLightbox.item_count_message_singular = %s;\n",
+				SwatString::quoteJavaScriptString(Store::_('(1 item)')));
+
+			$javascript.= sprintf(
+				"StoreCartLightbox.item_count_message_plural = %s;\n",
+				SwatString::quoteJavaScriptString(Store::_('(%s items)')));
+
+			$translated = true;
+		}
+
+		$available_entries = count(
+			$this->app->cart->checkout->getAvailableEntries());
+
+		$saved_entries = (isset($this->app->cart->saved)) ?
+			count($this->app->cart->saved->getEntries()) : 0;
+
+		$javascript.= sprintf(
+			"var cart_lightbox = %s.getInstance(%s, %s)\n",
+			$this->getJavaScriptClassName(),
+			intval($available_entries),
+			intval($available_entries + $saved_entries));
 
 		if ($this->analytics === self::GOOGLE_ANALYTICS) {
 			$javascript.= "cart_lightbox.analytics = 'google_analytics';\n";
