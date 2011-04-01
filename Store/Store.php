@@ -100,6 +100,12 @@ class Store
 			'froogle.username'      => null,
 			'froogle.password'      => null,
 
+			// Bing Shopping
+			'bing.filename' => 'bingshopping.txt',
+			'bing.server'   => null,
+			'bing.username' => null,
+			'bing.password' => null,
+
 			// Optional Wordpress API key for Akismet spam filtering.
 			'store.akismet_key'     => null,
 
