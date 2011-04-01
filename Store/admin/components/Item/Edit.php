@@ -67,9 +67,13 @@ class StoreItemEdit extends AdminDBEdit
 				new SwatOption($status->id, $status->title));
 		}
 
+		$sale_discounts = SwatDB::getOptionArray(
+			$this->app->db, 'SaleDiscount', 'title', 'id', 'title');
+
 		$sale_discount_flydown = $this->ui->getWidget('sale_discount');
-		$sale_discount_flydown->addOptionsByArray(SwatDB::getOptionArray(
-			$this->app->db, 'SaleDiscount', 'title', 'id', 'title'));
+		$sale_discount_flydown->addOptionsByArray($sale_discounts);
+		$this->ui->getWidget('sale_discount_field')->visible =
+			(count($sale_discounts) > 0);
 
 		$group_flydown = $this->ui->getWidget('minimum_quantity_group');
 		$options = SwatDB::getOptionArray($this->app->db,
