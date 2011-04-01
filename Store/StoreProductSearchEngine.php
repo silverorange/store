@@ -293,30 +293,6 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	}
 
 	// }}}
-	// {{{ protected function performResultsQuery()
-
-	/**
-	 * Performs a query for search results
-	 *
-	 * @param string $sql the SQL query.
-	 *
-	 * @return SwatDBRecordsetWrapper the results.
-	 */
-	protected function performResultsQuery($sql)
-	{
-		$dsn = MDB2::parseDSN($this->app->config->database->dsn);
-		if ($dsn['phptype'] == 'pgsql') {
-			// manually analyze the 'nategosearchresult' table. This can
-			// drastically improve the performance of the next query
-			SwatDB::exec($this->app->db, 'analyze nategosearchresult');
-		}
-
-		$results = parent::performResultsQuery($sql);
-
-		return $results;
-	}
-
-	// }}}
 	// {{{ protected function loadSubObjects()
 
 	/**
