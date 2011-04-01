@@ -19,7 +19,7 @@ require_once 'Swat/SwatUI.php';
  * Items in old orders can be added to the checkout card from this page.
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreAccount
  * @see       StoreOrder
@@ -348,9 +348,16 @@ class StoreAccountOrderPage extends SiteUiPage
 		if (!property_exists($this->layout, 'navbar'))
 			return;
 
-		$title = $this->order->getTitle();
-		$this->layout->data->title = $title;
-		$this->layout->navbar->createEntry($title);
+		$this->layout->navbar->createEntry($this->order->getTitle());
+	}
+
+	// }}}
+	// {{{ protected function buildTitle()
+
+	protected function buildTitle()
+	{
+		parent::buildTitle();
+		$this->layout->data->title = $this->order->getTitle();
 	}
 
 	// }}}
