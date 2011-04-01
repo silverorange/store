@@ -842,16 +842,16 @@ class StoreProductDetails extends AdminIndex
 				$tool_link->id.= '_'.$region->id;
 
 				if ($region_count > 1) {
-					$tool_link->value = sprintf('%sstore/%s%s',
-						$locale->getURLLocale(),
-						$category_path,
-						$product->shortname);
+					$tool_link->value = $locale->getURLLocale().
+						$this->app->config->store->path.
+						$category_path.
+						$product->shortname;
 
 					$tool_link->title.= sprintf(' (%s)', $region->title);
 				} else {
-					$tool_link->value = sprintf('store/%s%s',
-						$category_path,
-						$product->shortname);
+					$tool_link->value = $this->app->config->store->path.
+						$category_path.
+						$product->shortname;
 				}
 
 				// since we check the VisibleProductView for this, this will
