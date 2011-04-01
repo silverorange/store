@@ -423,14 +423,18 @@ class StoreProductEdit extends AdminDBEdit
 			SwatDBClassMap::get('StoreAttributeWrapper'));
 		$attributes_field = $this->ui->getWidget('attributes_form_field');
 
-		foreach ($attributes as $attribute) {
-			ob_start();
-			$this->displayAttribute($attribute);
-			$option = ob_get_clean();
+		if (count($attributes) > 0) {
+			foreach ($attributes as $attribute) {
+				ob_start();
+				$this->displayAttribute($attribute);
+				$option = ob_get_clean();
 
-			$attributes_field->getWidget('attributes',
-				$attribute->attribute_type->id)->addOption(
-					$attribute->id, $option, 'text/xml');
+				$attributes_field->getWidget('attributes',
+					$attribute->attribute_type->id)->addOption(
+						$attribute->id, $option, 'text/xml');
+			}
+		} else {
+			$this->ui->getWidget('attributes_grouping_field')->visible = false;
 		}
 	}
 

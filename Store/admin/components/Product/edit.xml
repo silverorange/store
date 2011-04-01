@@ -39,7 +39,7 @@
 					<property name="required" type="boolean">true</property>
 				</widget>
 			</widget>
-			<widget class="SwatGroupingFormField">
+			<widget class="SwatGroupingFormField" id="attributes_grouping_field">
 				<property name="title">Attributes</property>
 				<widget class="SwatReplicableFormField" id="attributes_form_field">
 					<widget class="SwatCheckboxList" id="attributes" />
