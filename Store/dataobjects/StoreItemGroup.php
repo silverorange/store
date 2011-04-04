@@ -82,6 +82,18 @@ class StoreItemGroup extends SwatDBDataObject
 	// }}}
 
 	// loader methods
+	// {{{ protected function loadItems()
+
+	protected function loadItems()
+	{
+		$sql = sprintf('select * from Item where item_group = %s',
+			$this->db->quote($this->id, 'integer'));
+
+		$wrapper = SwatDBClassMap::get('StoreItemWrapper');
+		return SwatDB::query($this->db, $sql, $wrapper);
+	}
+
+	// }}}
 	// {{{ protected function loadCheapestItem()
 
 	/**
