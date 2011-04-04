@@ -678,7 +678,7 @@ class StoreProductPage extends StorePage
 
 	protected function getCartLightboxJavaScriptClass()
 	{
-		return 'StoreCartLightBox';
+		return 'StoreCartLightbox';
 	}
 
 	// }}}
