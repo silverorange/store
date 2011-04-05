@@ -106,14 +106,16 @@ class StoreOrderIndex extends AdminSearch
 
 	protected function getWhereClause()
 	{
+		$where = '1=1';
+
 		// Instance
 		$instance_id = $this->app->getInstanceId();
-		if ($instance_id == null)
+		if ($instance_id === null)
 			$instance_id = $this->ui->getWidget('search_instance')->value;
 
-		$where = sprintf('Orders.instance %s %s',
-			SwatDB::equalityOperator($instance_id),
-			$this->app->db->quote($instance_id, 'integer'));
+		if ($instance_id !== null)
+			$where.= sprintf(' and Orders.instance = %s',
+				$this->app->db->quote($instance_id, 'integer'));
 
 		// Order #
 		$clause = new AdminSearchClause('integer:id');
