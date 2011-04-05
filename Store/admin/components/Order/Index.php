@@ -43,8 +43,25 @@ class StoreOrderIndex extends AdminSearch
 
 		$search_region = $this->ui->getWidget('search_region');
 		$search_region->show_blank = true;
-		$search_region->addOptionsByArray(SwatDB::getOptionArray($this->app->db,
-			'Region', 'title', 'id', 'title'));
+		$options = SwatDB::getOptionArray($this->app->db,
+				'Region', 'title', 'id', 'title');
+
+		if (count($options) > 1) {
+			$search_region->addOptionsByArray($options);
+			$search_region->parent->visible = true;
+		}
+
+		if ($this->app->getInstance() === null) {
+			$search_instance = $this->ui->getWidget('search_instance');
+			$search_instance->show_blank = true;
+			$options = SwatDB::getOptionArray($this->app->db,
+					'Instance', 'title', 'id', 'title');
+
+			if (count($options) > 1) {
+				$search_instance->addOptionsByArray($options);
+				$search_instance->parent->visible = true;
+			}
+		}
 
 		// Set a default order on the table view. Default to id and not
 		// createdate in case two createdates are the same.
@@ -89,8 +106,11 @@ class StoreOrderIndex extends AdminSearch
 
 	protected function getWhereClause()
 	{
-		// filter on instance by default
+		// Instance
 		$instance_id = $this->app->getInstanceId();
+		if ($instance_id == null)
+			$instance_id = $this->ui->getWidget('search_instance')->value;
+
 		$where = sprintf('Orders.instance %s %s',
 			SwatDB::equalityOperator($instance_id),
 			$this->app->db->quote($instance_id, 'integer'));
