@@ -92,13 +92,21 @@ class StoreOrderIndex extends AdminSearch
 	{
 		parent::buildInternal();
 
-		// set default time zone
-		$date_column =
-			$this->ui->getWidget('index_view')->getColumn('createdate');
+		$view = $this->ui->getWidget('index_view');
 
+		// set default time zone
+		$date_column = $view->getColumn('createdate');
 		$date_renderer = $date_column->getRendererByPosition();
 		$date_renderer->display_time_zone = $this->app->default_time_zone;
 		$date_renderer->time_zone_format = SwatDate::TZ_CURRENT_SHORT;
+
+		$view->getColumn('instance')->visible =
+			($this->ui->getWidget('search_instance')->value === null) &&
+			$this->ui->getWidget('search_instance')->parent->visible;
+
+		$view->getColumn('region')->visible =
+			($this->ui->getWidget('search_region')->value === null) &&
+			$this->ui->getWidget('search_region')->parent->visible;
 	}
 
 	// }}}
@@ -113,9 +121,12 @@ class StoreOrderIndex extends AdminSearch
 		if ($instance_id === null)
 			$instance_id = $this->ui->getWidget('search_instance')->value;
 
-		if ($instance_id !== null)
-			$where.= sprintf(' and Orders.instance = %s',
-				$this->app->db->quote($instance_id, 'integer'));
+		if ($instance_id !== null) {
+			$clause = new AdminSearchClause('integer:instance');
+			$clause->table = 'Orders';
+			$clause->value = $this->ui->getWidget('search_instance')->value;
+			$where.= $clause->getClause($this->app->db);
+		}
 
 		// Order #
 		$clause = new AdminSearchClause('integer:id');
@@ -239,7 +250,7 @@ class StoreOrderIndex extends AdminSearch
 	protected function getSelectClause()
 	{
 		$clause = 'Orders.id, Orders.total, Orders.createdate,
-					Orders.locale, Orders.notes, Orders.comments,
+					Orders.locale, Orders.instance, Orders.notes, Orders.comments,
 					Orders.billing_address, Orders.email, Orders.phone,
 					(Orders.comments is not null and Orders.comments != %s)
 						as has_comments';
