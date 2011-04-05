@@ -41,21 +41,25 @@ class StoreOrderIndex extends AdminSearch
 		$this->ui->loadFromXML($this->search_xml);
 		$this->ui->loadFromXML($this->ui_xml);
 
-		$search_region = $this->ui->getWidget('search_region');
-		$search_region->show_blank = true;
-		$options = SwatDB::getOptionArray($this->app->db,
+		if ($this->ui->hasWidget('search_region')) {
+			$search_region = $this->ui->getWidget('search_region');
+			$search_region->show_blank = true;
+			$options = SwatDB::getOptionArray($this->app->db,
 				'Region', 'title', 'id', 'title');
 
-		if (count($options) > 1) {
-			$search_region->addOptionsByArray($options);
-			$search_region->parent->visible = true;
+			if (count($options) > 1) {
+				$search_region->addOptionsByArray($options);
+				$search_region->parent->visible = true;
+			}
 		}
 
-		if ($this->app->getInstance() === null) {
+		if ($this->app->getInstance() === null &&
+			$this->ui->hasWidget('search_instance')) {
+
 			$search_instance = $this->ui->getWidget('search_instance');
 			$search_instance->show_blank = true;
 			$options = SwatDB::getOptionArray($this->app->db,
-					'Instance', 'title', 'id', 'title');
+				'Instance', 'title', 'id', 'title');
 
 			if (count($options) > 1) {
 				$search_instance->addOptionsByArray($options);
@@ -100,13 +104,21 @@ class StoreOrderIndex extends AdminSearch
 		$date_renderer->display_time_zone = $this->app->default_time_zone;
 		$date_renderer->time_zone_format = SwatDate::TZ_CURRENT_SHORT;
 
-		$view->getColumn('instance')->visible =
-			($this->ui->getWidget('search_instance')->value === null) &&
-			$this->ui->getWidget('search_instance')->parent->visible;
+		if ($view->hasColumn('instance') &&
+			$this->ui->hasWidget('search_instance')) {
 
-		$view->getColumn('region')->visible =
-			($this->ui->getWidget('search_region')->value === null) &&
-			$this->ui->getWidget('search_region')->parent->visible;
+			$view->getColumn('instance')->visible =
+				($this->ui->getWidget('search_instance')->value === null) &&
+				$this->ui->getWidget('search_instance')->parent->visible;
+		}
+
+		if ($view->hasColumn('region') &&
+			$this->ui->hasWidget('search_region')) {
+
+			$view->getColumn('region')->visible =
+				($this->ui->getWidget('search_region')->value === null) &&
+				$this->ui->getWidget('search_region')->parent->visible;
+		}
 	}
 
 	// }}}
@@ -118,13 +130,13 @@ class StoreOrderIndex extends AdminSearch
 
 		// Instance
 		$instance_id = $this->app->getInstanceId();
-		if ($instance_id === null)
+		if ($instance_id === null && $this->ui->hasWidget('search_instance'))
 			$instance_id = $this->ui->getWidget('search_instance')->value;
 
 		if ($instance_id !== null) {
 			$clause = new AdminSearchClause('integer:instance');
 			$clause->table = 'Orders';
-			$clause->value = $this->ui->getWidget('search_instance')->value;
+			$clause->value = $instance_id;
 			$where.= $clause->getClause($this->app->db);
 		}
 
