@@ -30,7 +30,8 @@ class StoreAccountIndex extends SiteAccountIndex
 
 	protected function getSQL()
 	{
-		return 'select Account.id, Account.fullname, Account.email,
+		return 'select Account.id, Account.fullname,
+				Account.email, Account.instance,
 				coalesce(AccountOrderCountView.order_count, 0) as order_count
 			from Account
 			left outer join AccountOrderCountView on
