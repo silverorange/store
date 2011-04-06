@@ -497,7 +497,7 @@ class StoreProductPage extends StorePage
 
 	protected function displayBodyText()
 	{
-		if ($this->product->bodytext == ''){
+		if ($this->product->bodytext !== ''){
 			$div = new SwatHtmlTag('div');
 			$div->id = 'product_bodytext';
 			$div->setContent(
