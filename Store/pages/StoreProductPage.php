@@ -497,12 +497,14 @@ class StoreProductPage extends StorePage
 
 	protected function displayBodyText()
 	{
-		$div = new SwatHtmlTag('div');
-		$div->id = 'product_bodytext';
-		$div->setContent(
-			SwatString::toXHTML($this->product->bodytext), 'text/xml');
+		if ($this->product->bodytext == ''){
+			$div = new SwatHtmlTag('div');
+			$div->id = 'product_bodytext';
+			$div->setContent(
+				SwatString::toXHTML($this->product->bodytext), 'text/xml');
 
-		$div->display();
+			$div->display();
+		}
 	}
 
 	// }}}
