@@ -74,12 +74,14 @@ abstract class StoreOrderDetails extends AdminPage
 					$this->id));
 			}
 
-			$instance_id = ($this->order->instance === null) ?
-				null : $this->order->instance->id;
+			$instance_id = $this->app->getInstanceId();
+			if ($instance_id !== null) {
+				$order_instance_id = ($this->order->instance === null) ?
+					null : $this->order->instance->id;
 
-			if ($instance_id != $this->app->getInstanceId()) {
-				throw new AdminNotFoundException(sprintf(
-					Store::_('Incorrect instance for order ‘%d’.'), $this->id));
+				if ($order_instance_id !== $instance_id)
+					throw new AdminNotFoundException(sprintf(Store::_(
+						'Incorrect instance for order ‘%d’.'), $this->id));
 			}
 		}
 
