@@ -158,9 +158,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 				if ($item_id === null && $normalized_sku !== null) {
 					$item_id = $this->getItemId($normalized_sku);
 					if ($item_id === null) {
-						$message = new SwatMessage(sprintf(Store::_(
-							'“%s” is not an available %%s.'), $sku), 'error');
-
+						$message = $this->getNotFoundErrorMessage($sku);
 						$sku_widget->addMessage($message);
 					}
 				}
@@ -186,6 +184,17 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 				$this->message_display->add($message);
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function getNotFoundErrorMessage()
+
+	protected function getNotFoundErrorMessage($sku)
+	{
+		$message = new SwatMessage(sprintf(Store::_(
+			'“%s” is not an available %%s.'), $sku), 'error');
+
+		return $message;
 	}
 
 	// }}}
