@@ -102,11 +102,13 @@ abstract class StoreOrderDetails extends AdminPage
 		$details_frame->subtitle = $this->getOrderTitle();
 
 		// set default time zone
-		$date_field =
-			$this->ui->getWidget('order_details')->getField('createdate');
+		if ($this->ui->getWidget('order_details')->hasField('createdate')) {
+			$date_field =
+				$this->ui->getWidget('order_details')->getField('createdate');
 
-		$date_renderer = $date_field->getRendererByPosition();
-		$date_renderer->display_time_zone = $this->app->default_time_zone;
+			$date_renderer = $date_field->getRendererByPosition();
+			$date_renderer->display_time_zone = $this->app->default_time_zone;
+		}
 
 		$this->buildOrderDetails();
 		$this->buildMessages();
