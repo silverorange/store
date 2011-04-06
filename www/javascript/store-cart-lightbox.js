@@ -120,6 +120,7 @@ StoreCartLightbox.prototype.addEntries = function(entries, source, source_catego
 	this.setContent(
 		'<h3>' + StoreCartLightbox.submit_message + '</h3>');
 
+	this.status = 'closed';
 	this.open(true);
 }
 
