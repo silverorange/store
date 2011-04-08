@@ -1249,6 +1249,7 @@ class StoreProductPage extends StorePage
 
 		echo '<span class="large-image">';
 		$img_tag->display();
+		$this->displayImageOverlays();
 		echo '</span>';
 
 		if ($image->title != '') {
@@ -1265,6 +1266,13 @@ class StoreProductPage extends StorePage
 		}
 
 		$div->close();
+	}
+
+	// }}}
+	// {{{ protected function displayImageOverlays()
+
+	protected function displayImageOverlays()
+	{
 	}
 
 	// }}}
