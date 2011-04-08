@@ -19,6 +19,7 @@ class StoreItemsView extends SwatControl
 {
 	// {{{ public properties
 
+
 	public $ui_xml = 'Store/items-view.xml';
 	public $ui;
 
@@ -28,7 +29,7 @@ class StoreItemsView extends SwatControl
 	/**
 	 * The product displayed by this items view
 	 *
-	 * @var StoreProductWrapper
+	 * @var StoreProduct
 	 */
 	protected $product;
 
