@@ -4,6 +4,7 @@ function StoreCheckoutAddressPage(id, provstate_other_index)
 	this.sensitive = null;
 	this.fields = this.getFieldNames();
 	this.provstate_other_index = provstate_other_index;
+	this.semaphore = false;
 
 	// set up event handlers
 	for (var i = 0; i < this.list.length; i++)
@@ -25,53 +26,121 @@ function StoreCheckoutAddressPage(id, provstate_other_index)
 
 	// initialize state
 	YAHOO.util.Event.onDOMReady(function() {
+		if (this.container) {
+			this.initContainer();
+		}
+
 		if (!this.list_new || this.list_new.checked) {
-			this.sensitize();
+			this.showAddressForm(false);
 		} else {
-			this.desensitize();
+			this.hideAddressForm(false);
 		}
 	}, this, true);
 }
 
-StoreCheckoutAddressPage.prototype.sensitize = function()
+StoreCheckoutAddressPage.prototype.initContainer = function()
 {
-	if (this.container)
-		YAHOO.util.Dom.removeClass(this.container, 'swat-insensitive');
+	var div = document.createElement('div');
+	div.style.overflow = 'hidden';
+	this.container.parentNode.replaceChild(div, this.container);
+	div.appendChild(this.container);
 
-	var fields = [];
-	for (var i = 0; i < this.fields.length; i++)
-		fields.push(this.fields[i]);
+	var duration = 0.4;
 
-	if (this.provstate_other_sensitive)
-		fields.push(this.provstate_other_id);
+	var that = this;
 
-	StoreCheckoutPage_sensitizeFields(fields);
+	this.show_animation = new YAHOO.util.Anim(
+		div, { height: { to: this.container.offsetHeight } }, duration,
+		YAHOO.util.Easing.easeOut);
 
-	this.sensitive = true;
+	this.show_animation.onComplete.subscribe(function() {
+		div.style.overflow = 'visible';
+
+		var fade_in = new YAHOO.util.Anim(
+			that.container, { opacity: { to: 1 } }, duration,
+			YAHOO.util.Easing.easeOut);
+
+		fade_in.animate();
+	});
+
+	this.hide_animation = new YAHOO.util.Anim(
+		this.container, { opacity: { to: 0 } }, duration,
+		YAHOO.util.Easing.easeOut);
+
+	this.hide_animation.onComplete.subscribe(function() {
+		div.style.overflow = 'hidden';
+
+		var collapse = new YAHOO.util.Anim(
+			div, { height: { to: 0 } }, duration,
+			YAHOO.util.Easing.easeOut);
+
+		collapse.animate();
+	});
 }
 
-StoreCheckoutAddressPage.prototype.desensitize = function()
+StoreCheckoutAddressPage.prototype.showAddressForm = function(animate)
 {
-	if (this.container)
-		YAHOO.util.Dom.addClass(this.container, 'swat-insensitive');
+	if (this.container) {
+		if (animate) {
+			if (this.semaphore) {
+				this.hide_animation.stop();
+			}
 
-	var fields = [];
-	for (var i = 0; i < this.fields.length; i++)
-		fields.push(this.fields[i]);
+			var div = this.container.parentNode;
+			div.style.height = '0';
+			this.container.style.display = 'block';
+			this.container.style.opacity = 0;
 
-	fields.push(this.provstate_other_id);
+			this.semaphore = true;
+			this.show_animation.animate();
+		} else {
+			this.container.style.display = 'block';
+		}
+	} else {
+		var fields = [];
+		for (var i = 0; i < this.fields.length; i++)
+			fields.push(this.fields[i]);
 
-	StoreCheckoutPage_desensitizeFields(fields);
+		if (this.provstate_other_sensitive)
+			fields.push(this.provstate_other_id);
 
-	this.sensitive = false;
+		StoreCheckoutPage_sensitizeFields(fields);
+
+		this.sensitive = true;
+	}
+}
+
+StoreCheckoutAddressPage.prototype.hideAddressForm = function(animate)
+{
+	if (this.container) {
+		if (animate) {
+			if (this.semaphore) {
+				this.show_animation.stop();
+			}
+
+			this.hide_animation.animate();
+		} else {
+			this.container.style.display = 'none';
+		}
+	} else {
+		var fields = [];
+		for (var i = 0; i < this.fields.length; i++)
+			fields.push(this.fields[i]);
+
+		fields.push(this.provstate_other_id);
+
+		StoreCheckoutPage_desensitizeFields(fields);
+
+		this.sensitive = false;
+	}
 }
 
 StoreCheckoutAddressPage.clickHandler = function(event, address)
 {
 	if (address.list_new.checked)
-		address.sensitize();
+		address.showAddressForm(true);
 	else if (address.sensitive || address.sensitive == null)
-		address.desensitize();
+		address.hideAddressForm(true);
 }
 
 StoreCheckoutAddressPage.prototype.provstateChangeHandler = function(event,
