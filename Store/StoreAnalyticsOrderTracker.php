@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * Generates Google Analytics order transaction tracking code for an order
  *
  * @package   Store
- * @copyright 2008-2010 silverorange
+ * @copyright 2008-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @link      http://www.google.com/support/googleanalytics/bin/answer.py?answer=55528
  * @link      http://code.google.com/apis/analytics/docs/gaJS/gaJSApiEcommerce.html
@@ -78,26 +78,13 @@ class StoreAnalyticsOrderTracker
 	}
 
 	// }}}
-	// {{{ protected function getOrderItemCommand()
-
-	protected function getOrderItemCommand(StoreOrderItem $item)
-	{
-		return array(
-			'_addItem',
-			$this->order->id,
-			$item->sku,
-			$item->product_title,
-			$item->getSourceCategoryTitle(),
-			$item->price,
-			$item->quantity);
-	}
-	// }}}
 	// {{{ protected function getAddress()
 
 	protected function getAddress()
 	{
 		return $this->order->billing_address;
 	}
+
 	// }}}
 	// {{{ protected function getProvStateTitle()
 
@@ -107,6 +94,7 @@ class StoreAnalyticsOrderTracker
 			$address->provstate_other :
 			$address->provstate->title;
 	}
+
 	// }}}
 	// {{{ protected function getOrderTotal()
 
@@ -114,6 +102,7 @@ class StoreAnalyticsOrderTracker
 	{
 		return $this->order->total;
 	}
+
 	// }}}
 	// {{{ protected function getTaxTotal()
 
@@ -121,6 +110,7 @@ class StoreAnalyticsOrderTracker
 	{
 		return ($this->order->tax_total == 0) ? '' : $this->order->tax_total;
 	}
+
 	// }}}
 	// {{{ protected function getShippingTotal()
 
@@ -129,8 +119,31 @@ class StoreAnalyticsOrderTracker
 		return ($this->order->shipping_total == 0) ?
 			'' : $this->order->shipping_total;
 	}
-	// }}}
 
+	// }}}
+	// {{{ protected function getOrderItemCommand()
+
+	protected function getOrderItemCommand(StoreOrderItem $item)
+	{
+		return array(
+			'_addItem',
+			$this->order->id,
+			$item->sku,
+			$this->getProductTitle($item),
+			$item->getSourceCategoryTitle(),
+			$item->price,
+			$item->quantity);
+	}
+
+	// }}}
+	// {{{ protected function getProductTitle()
+
+	protected function getProductTitle(StoreOrderItem $item)
+	{
+		return $item->product_title;
+	}
+
+	// }}}
 }
 
 ?>
