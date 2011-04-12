@@ -46,9 +46,19 @@ class StoreProductEdit extends AdminDBEdit
 		$this->initProduct();
 		$this->initAttributeList();
 
+		if ($this->app->getInstance() === null) {
+			$where = ' 1 = 1';
+		} else {
+			$where = sprintf('Catalog.id in (select catalog from
+				CatalogInstanceBinding where instance = %s)',
+				$this->app->db->quote($this->app->getInstance()->id,
+					'integer'));
+		}
+
 		$catalog_flydown = $this->ui->getWidget('catalog');
 		$catalog_flydown->addOptionsByArray(SwatDB::getOptionArray(
-			$this->app->db, 'Catalog', 'title', 'id', 'title'));
+			$this->app->db, 'Catalog', 'title', 'id', 'title',
+			$where));
 
 		// Only show blank option in catalogue flydown if there is more than
 		// one catalogue to choose from.
