@@ -17,6 +17,11 @@ require_once 'Store.php';
  */
 class StoreProvStateFlydown extends SwatFlydown
 {
+	// {{{ public properties
+
+	public $other_value = 'other';
+
+	// }}}
 	// {{{ public function process()
 
 	/**
@@ -29,7 +34,7 @@ class StoreProvStateFlydown extends SwatFlydown
 		parent::process();
 
 		if ($this->db !== null && $this->country !== null &&
-			$this->value !== null)
+			$this->value !== null && $this->value != $this->other_value)
 				$this->validate();
 	}
 

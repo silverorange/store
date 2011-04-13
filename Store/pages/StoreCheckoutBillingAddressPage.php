@@ -94,10 +94,9 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 				$this->ui->getWidget('billing_address_provstate_other');
 
 			$provstate_other->required = true;
-			$provstate->value = null;
 		}
 
-		if ($provstate->value !== null) {
+		if ($provstate->value !== null && $provstate->value != 'other') {
 			$sql = sprintf('select abbreviation from ProvState where id = %s',
 			$this->app->db->quote($provstate->value));
 
@@ -135,8 +134,10 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 			$address->city =
 				$this->ui->getWidget('billing_address_city')->value;
 
-			$address->provstate =
-				$this->ui->getWidget('billing_address_provstate')->value;
+			$provstate = $this->ui->getWidget(
+				'billing_address_provstate')->value;
+
+			$address->provstate = ($provstate == 'other') ? null : $provstate;
 
 			$address->provstate_other =
 				$this->ui->getWidget('billing_address_provstate_other')->value;
