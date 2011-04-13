@@ -1,5 +1,5 @@
 /**
- * Store Product Page 
+ * Store Product Page
  *
  * @param integer the product id.
  * @param Array item_ids the array of item ids displayed on this product page.
@@ -155,7 +155,7 @@ StoreProductPage.prototype.changeButtonText = function(e)
 	var button = document.getElementById(this.add_button_id);
 	button.disabled = true;
 	this.saveButtonValue(button);
-	button.value = StoreCartLightBox.submit_message;
+	button.value = StoreCartLightbox.submit_message;
 }
 
 // }}}
