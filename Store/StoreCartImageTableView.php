@@ -8,9 +8,9 @@ require_once 'Swat/SwatHtmlTag.php';
  * images.
  *
  * This class is meant to me used in conjunction with a {@see
- * SwatCartImageTableViewGroup}.
+ * StoreCartImageTableViewGroup}.
  *
- * @see SwatCartImageTableViewGroup
+ * @see StoreCartImageTableViewGroup
  *
  * @package   Store
  * @copyright 2004-2008 silverorange
