@@ -14,14 +14,6 @@ function StoreCheckoutAddressPage(id, provstate_other_index)
 	if (this.provstate) {
 		YAHOO.util.Event.addListener(this.provstate, 'change',
 			this.provstateChangeHandler, this, true);
-
-		this.provstate_other_sensitive =
-			(this.provstate.selectedIndex == this.provstate_other_index);
-
-		if (!this.provstate_other_sensitive)
-			StoreCheckoutPage_desensitizeFields([this.provstate_other_id]);
-	} else {
-		this.provstate_other_sensitive = true;
 	}
 
 	// initialize state
@@ -35,6 +27,8 @@ function StoreCheckoutAddressPage(id, provstate_other_index)
 		} else {
 			this.hideAddressForm(false);
 		}
+
+		this.provstateChangeHandler();
 	}, this, true);
 }
 
@@ -101,9 +95,6 @@ StoreCheckoutAddressPage.prototype.showAddressForm = function(animate)
 		for (var i = 0; i < this.fields.length; i++)
 			fields.push(this.fields[i]);
 
-		if (this.provstate_other_sensitive)
-			fields.push(this.provstate_other_id);
-
 		StoreCheckoutPage_sensitizeFields(fields);
 
 		this.sensitive = true;
@@ -146,13 +137,9 @@ StoreCheckoutAddressPage.clickHandler = function(event, address)
 StoreCheckoutAddressPage.prototype.provstateChangeHandler = function(event,
 	address)
 {
-	this.provstate_other_sensitive =
-		(this.provstate.selectedIndex == this.provstate_other_index);
-
-	if (this.provstate_other_sensitive)
-		StoreCheckoutPage_sensitizeFields([this.provstate_other_id]);
-	else
-		StoreCheckoutPage_desensitizeFields([this.provstate_other_id]);
+	document.getElementById(this.provstate_other_id).style.display =
+		(this.provstate.selectedIndex == this.provstate_other_index) ?
+		'block' : 'none';
 }
 
 StoreCheckoutAddressPage.prototype.getFieldNames = function()
