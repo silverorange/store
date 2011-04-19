@@ -49,7 +49,7 @@
 				</widget>
 			</widget>
 			<widget class="SwatFooterFormField">
-				<widget class="SwatButton">
+				<widget class="SwatButton" id="login_button">
 					<property name="title" translatable="yes">Login</property>
 				</widget>
 				<widget class="SwatContentBlock" id="forgot_password">
