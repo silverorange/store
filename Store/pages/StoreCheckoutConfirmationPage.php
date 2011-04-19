@@ -977,15 +977,26 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	protected function buildBasicInfo($order)
 	{
-		$ds = new SwatDetailsStore($order);
 		$view = $this->ui->getWidget('basic_info_details');
+		$ds = $this->getBasicInfoDetailsStore($order);
+
+		$view->data = $ds;
+
+		if (isset($ds->fullname) && $ds->fullname == '')
+			$view->getField('fullname_field')->visible = false;
+	}
+
+	// }}}
+	// {{{ protected function getBasicInfoDetailsStore()
+
+	protected function getBasicInfoDetailsStore($order)
+	{
+		$ds = new SwatDetailsStore($order);
 
 		if ($this->app->session->isLoggedIn())
 			$ds->fullname = $this->app->session->account->fullname;
-		else
-			$view->getField('fullname_field')->visible = false;
 
-		$view->data = $ds;
+		return $ds;
 	}
 
 	// }}}
