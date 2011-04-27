@@ -160,10 +160,7 @@ class StoreItemEdit extends AdminDBEdit
 		$this->item->save();
 		$this->addToSearchQueue();
 
-		$message = new SwatMessage(
-			sprintf(Store::_('“%s” has been saved.'), $this->item->sku));
-
-		$this->app->messages->add($message);
+		$this->app->messages->add($this->getUpdateMessage());
 
 		if (isset($this->app->memcache))
 			$this->app->memcache->flushNs('product');
@@ -353,6 +350,15 @@ class StoreItemEdit extends AdminDBEdit
 				$this->item->item_aliases->add($item_alias);
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function getUpdateMessage()
+
+	protected function getUpdateMessage()
+	{
+		return new SwatMessage(sprintf(Store::_('“%s” has been saved.'),
+			$this->item->sku));
 	}
 
 	// }}}
