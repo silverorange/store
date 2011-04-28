@@ -577,8 +577,10 @@ StoreCartLightbox.prototype.preLoadImages = function()
 	var preload = new Image();
 	preload.src = 'packages/store/images/mini-cart-background.png';
 
-	var preload_ie = new Image();
-	preload_ie.src = 'packages/store/images/mini-cart-background-ie.png';
+	if (YAHOO.ua.ie > 0 a&& YAHOO.ua.ie < 9) {
+		var preload_ie = new Image();
+		preload_ie.src = 'packages/store/images/mini-cart-background-ie.png';
+	}
 }
 
 // }}}
