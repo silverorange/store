@@ -47,7 +47,7 @@ class StoreProductEdit extends AdminDBEdit
 		$this->initAttributeList();
 
 		if ($this->app->getInstance() === null) {
-			$where = ' 1 = 1';
+			$where = null;
 		} else {
 			$where = sprintf('Catalog.id in (select catalog from
 				CatalogInstanceBinding where instance = %s)',
