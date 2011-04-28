@@ -577,7 +577,7 @@ StoreCartLightbox.prototype.preLoadImages = function()
 	var preload = new Image();
 	preload.src = 'packages/store/images/mini-cart-background.png';
 
-	if (YAHOO.env.ua.ie > 0 a&& YAHOO.env.ua.ie < 9) {
+	if (YAHOO.env.ua.ie > 0 && YAHOO.env.ua.ie < 9) {
 		var preload_ie = new Image();
 		preload_ie.src = 'packages/store/images/mini-cart-background-ie.png';
 	}
