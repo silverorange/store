@@ -982,7 +982,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		$view->data = $ds;
 
-		if (isset($ds->fullname) && $ds->fullname == '')
+		if (!isset($ds->fullname) || $ds->fullname != '')
 			$view->getField('fullname_field')->visible = false;
 	}
 
