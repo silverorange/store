@@ -36,7 +36,7 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
 
 		$header_tag->display();
 		$paragraph_tag->display();
-		echo "</div>";
+		echo '</div>';
 	}
 
 	// }}}
