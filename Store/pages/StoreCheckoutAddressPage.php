@@ -236,7 +236,7 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
-	// {{{ abstarct rotected function getInlineJavaScript()
+	// {{{ abstarct protected function getInlineJavaScript()
 
 	abstract protected function getInlineJavaScript();
 
