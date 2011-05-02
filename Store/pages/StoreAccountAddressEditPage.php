@@ -343,6 +343,9 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 
 	protected function buildNavBar()
 	{
+		if (!property_exists($this->layout, 'navbar'))
+			return;
+
 		parent::buildNavBar();
 
 		$form = $this->ui->getWidget('edit_form');
