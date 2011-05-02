@@ -70,9 +70,10 @@ class StoreOrderIndex extends AdminSearch
 		// Set a default order on the table view. Default to id and not
 		// createdate in case two createdates are the same.
 		$index_view = $this->ui->getWidget('index_view');
-		$index_view->setDefaultOrderbyColumn(
-			$index_view->getColumn('id'),
-			 SwatTableViewOrderableColumn::ORDER_BY_DIR_DESCENDING);
+		if ($index_view->hasColumn('id'))
+			$index_view->setDefaultOrderbyColumn(
+				$index_view->getColumn('id'),
+				 SwatTableViewOrderableColumn::ORDER_BY_DIR_DESCENDING);
 	}
 
 	// }}}
