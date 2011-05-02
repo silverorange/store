@@ -220,14 +220,13 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 			'line1',
 			'line2',
 			'city',
-			'provstate',
 			'provstate_other',
 			'postal_code',
 			'country',
 		));
 
-		if ($address->provstate === 'other')
-			$address->provstate = null;
+		$provstate = $this->ui->getWidget('provstate')->value;
+		$address->provstate = ($provstate == 'other') ? null : $provstate;
 	}
 
 	// }}}
