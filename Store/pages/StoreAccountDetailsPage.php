@@ -124,8 +124,16 @@ class StoreAccountDetailsPage extends SiteUiPage
 
 		if ($account->isModified()) {
 			$account->save();
-			$this->app->relocate('account');
+			$this->relocate();
 		}
+	}
+
+	// }}}
+	// {{{ protected function relocate()
+
+	protected function relocate()
+	{
+		$this->app->relocate('account');
 	}
 
 	// }}}
