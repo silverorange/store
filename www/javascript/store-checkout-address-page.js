@@ -115,10 +115,13 @@ StoreCheckoutAddressPage.prototype.hideAddressForm = function(animate)
 		}
 	} else {
 		var fields = [];
-		for (var i = 0; i < this.fields.length; i++)
+		for (var i = 0; i < this.fields.length; i++) {
 			fields.push(this.fields[i]);
+		}
 
-		fields.push(this.provstate_other_id);
+		if (this.provstate_other) {
+			fields.push(this.provstate_other_id);
+		}
 
 		StoreCheckoutPage_desensitizeFields(fields);
 
@@ -126,7 +129,7 @@ StoreCheckoutAddressPage.prototype.hideAddressForm = function(animate)
 	}
 }
 
-StoreCheckoutAddressPage.clickHandler = function(event, address)
+StoreCheckoutAddressPage.clickHandler = function(e, address)
 {
 	if (address.list_new.checked)
 		address.showAddressForm(true);
@@ -134,12 +137,14 @@ StoreCheckoutAddressPage.clickHandler = function(event, address)
 		address.hideAddressForm(true);
 }
 
-StoreCheckoutAddressPage.prototype.provstateChangeHandler = function(event,
-	address)
+StoreCheckoutAddressPage.prototype.provstateChangeHandler = function(
+	e, address)
 {
-	document.getElementById(this.provstate_other_id).style.display =
-		(this.provstate.selectedIndex == this.provstate_other_index) ?
-		'block' : 'none';
+	if (this.provstate_other) {
+		this.provstate_other.style.display =
+			(this.provstate.selectedIndex == this.provstate_other_index) ?
+			'block' : 'none';
+	}
 }
 
 StoreCheckoutAddressPage.prototype.getFieldNames = function()
