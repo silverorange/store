@@ -2,6 +2,7 @@ function StoreCheckoutAddressPage(id, provstate_other_index)
 {
 	this.id = id;
 	this.sensitive = null;
+	this.status = 'none';
 	this.fields = this.getFieldNames();
 	this.provstate_other_index = provstate_other_index;
 	this.semaphore = false;
@@ -76,7 +77,9 @@ StoreCheckoutAddressPage.prototype.showAddressForm = function(animate)
 {
 	if (this.container) {
 		if (animate) {
-			if (this.semaphore) {
+			if (this.status == 'open') {
+				return; // don't re-animate if already open
+			} else if (this.semaphore) {
 				this.hide_animation.stop();
 			}
 
@@ -90,6 +93,8 @@ StoreCheckoutAddressPage.prototype.showAddressForm = function(animate)
 		} else {
 			this.container.style.display = 'block';
 		}
+
+		this.status = 'open';
 	} else {
 		var fields = [];
 		for (var i = 0; i < this.fields.length; i++)
@@ -105,7 +110,9 @@ StoreCheckoutAddressPage.prototype.hideAddressForm = function(animate)
 {
 	if (this.container) {
 		if (animate) {
-			if (this.semaphore) {
+			if (this.status == 'closed') {
+				return; // don't re-animate if already closed
+			} else if (this.semaphore) {
 				this.show_animation.stop();
 			}
 
@@ -113,6 +120,8 @@ StoreCheckoutAddressPage.prototype.hideAddressForm = function(animate)
 		} else {
 			this.container.style.display = 'none';
 		}
+
+		this.status = 'closed';
 	} else {
 		var fields = [];
 		for (var i = 0; i < this.fields.length; i++) {
@@ -131,10 +140,11 @@ StoreCheckoutAddressPage.prototype.hideAddressForm = function(animate)
 
 StoreCheckoutAddressPage.clickHandler = function(e, address)
 {
-	if (address.list_new.checked)
+	if (address.list_new.checked) {
 		address.showAddressForm(true);
-	else if (address.sensitive || address.sensitive == null)
+	} else if (address.sensitive || address.sensitive == null) {
 		address.hideAddressForm(true);
+	}
 }
 
 StoreCheckoutAddressPage.prototype.provstateChangeHandler = function(
