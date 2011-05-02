@@ -10,26 +10,18 @@ function StoreAccountAddressPage(id, provstate_other_index)
 		YAHOO.util.Event.addListener(this.provstate, 'change',
 			this.provstateChangeHandler, this, true);
 
-		this.updateFields();
+		this.provstateChangeHandler();
 	}
 }
 
-StoreAccountAddressPage.prototype.updateFields = function()
+StoreAccountAddressPage.prototype.provstateChangeHandler = function(e)
 {
-	this.provstate_other_sensitive =
+	this.provstate_other_enabled =
 		(this.provstate.selectedIndex == this.provstate_other_index);
 
-	if (this.provstate_other_sensitive) {
-		this.provstate_other.disabled = false;
-		YAHOO.util.Dom.removeClass(this.provstate_other, 'swat-insensitive');
+	if (this.provstate_other_enabled) {
+		this.provstate_other.style.display = 'block';
 	} else {
-		this.provstate_other.disabled = true;
-		YAHOO.util.Dom.addClass(this.provstate_other, 'swat-insensitive');
+		this.provstate_other.style.display = 'none';
 	}
-}
-
-StoreAccountAddressPage.prototype.provstateChangeHandler = function(event,
-	address)
-{
-	this.updateFields();
 }
