@@ -146,8 +146,9 @@ YAHOO.util.Event.onDOMReady(function ()
 		this.setInterval();
 	};
 
-	Store.widget.Pager.PAGE_DURATION = 0.25; // seconds
-	Store.widget.Pager.PAGE_INTERVAL = 15.0; // seconds
+	Store.widget.Pager.PAGE_CLICK_DURATION = 0.25; // seconds
+	Store.widget.Pager.PAGE_AUTO_DURATION = 1.00; // seconds
+	Store.widget.Pager.PAGE_INTERVAL = 10.0; // seconds
 
 	Store.widget.Pager.TEXT_PREV = 'Previous';
 	Store.widget.Pager.TEXT_NEXT = 'Next';
@@ -162,7 +163,9 @@ YAHOO.util.Event.onDOMReady(function ()
 		_interval = setInterval(
 			function ()
 			{
-				that.nextPageWithAnimation();
+				that.nextPageWithAnimation(
+					Store.widget.Pager.PAGE_AUTO_DURATION
+				);
 			},
 			Store.widget.Pager.PAGE_INTERVAL * 1000
 		);
@@ -187,24 +190,24 @@ YAHOO.util.Event.onDOMReady(function ()
 		return page;
 	};
 
-	proto.prevPageWithAnimation = function()
+	proto.prevPageWithAnimation = function(speed)
 	{
 		var index = this.currentPage.index - 1;
 		if (index < 0) {
 			index = this.pages.length - 1;
 		}
 
-		this.setPageWithAnimation(this.pages[index]);
+		this.setPageWithAnimation(this.pages[index], speed);
 	};
 
-	proto.nextPageWithAnimation = function()
+	proto.nextPageWithAnimation = function(speed)
 	{
 		var index = this.currentPage.index + 1;
 		if (index >= this.pages.length) {
 			index = 0;
 		}
 
-		this.setPageWithAnimation(this.pages[index]);
+		this.setPageWithAnimation(this.pages[index], speed);
 	};
 
 	proto.drawNav = function()
@@ -229,7 +232,9 @@ YAHOO.util.Event.onDOMReady(function ()
 			{
 				YAHOO.util.Event.preventDefault(e);
 				this.clearInterval();
-				this.prevPageWithAnimation();
+				this.prevPageWithAnimation(
+					Store.widget.Pager.PAGE_CLICK_DURATION
+				);
 			},
 			this, true);
 
@@ -260,7 +265,9 @@ YAHOO.util.Event.onDOMReady(function ()
 			{
 				YAHOO.util.Event.preventDefault(e);
 				this.clearInterval();
-				this.nextPageWithAnimation();
+				this.nextPageWithAnimation(
+					Store.widget.Pager.PAGE_CLICK_DURATION
+				);
 			},
 			this, true);
 
@@ -327,7 +334,10 @@ YAHOO.util.Event.onDOMReady(function ()
 				{
 					Event.preventDefault(e);
 					this.clearInterval();
-					this.setPageWithAnimation(page);
+					this.setPageWithAnimation(
+						page,
+						Store.widget.Pager.PAGE_CLICK_DURATION
+					);
 				},
 				this, true);
 		}
@@ -367,7 +377,7 @@ YAHOO.util.Event.onDOMReady(function ()
 		}
 	};
 
-	proto.setPageWithAnimation = function(page)
+	proto.setPageWithAnimation = function(page, speed)
 	{
 		if (this.currentPage !== page) {
 
@@ -389,7 +399,7 @@ YAHOO.util.Event.onDOMReady(function ()
 			var anim = new Anim(
 				page.element,
 				{ opacity: { from: 0, to: 1 } },
-				Store.widget.Pager.PAGE_DURATION,
+				speed,
 				Easing.easeIn
 			);
 
