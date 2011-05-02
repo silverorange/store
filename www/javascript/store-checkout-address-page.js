@@ -40,9 +40,11 @@ StoreCheckoutAddressPage.prototype.initContainer = function()
 	this.container.parentNode.replaceChild(div, this.container);
 	div.appendChild(this.container);
 
-	var duration = 0.4;
+	var duration = 0.25;
 
 	var that = this;
+
+	window.alert(this.container.offsetHeight);
 
 	this.show_animation = new YAHOO.util.Anim(
 		div, { height: { to: this.container.offsetHeight } }, duration,
