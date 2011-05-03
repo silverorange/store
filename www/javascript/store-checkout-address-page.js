@@ -44,8 +44,6 @@ StoreCheckoutAddressPage.prototype.initContainer = function()
 
 	var that = this;
 
-	window.alert(this.container.offsetHeight);
-
 	this.show_animation = new YAHOO.util.Anim(
 		div, { height: { to: this.container.offsetHeight } }, duration,
 		YAHOO.util.Easing.easeOut);
