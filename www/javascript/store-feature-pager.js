@@ -370,8 +370,10 @@ YAHOO.util.Event.onDOMReady(function ()
 		if (this.currentPage !== page) {
 			if (this.currentPage) {
 				this.currentPage.deselectTab();
+				Dom.removeClass(this.currentPage.element, 'pager-current');
 			}
 
+			Dom.addClass(page.element, 'pager-current');
 			this.currentPage = page;
 			this.update();
 		}
@@ -380,6 +382,8 @@ YAHOO.util.Event.onDOMReady(function ()
 	proto.setPageWithAnimation = function(page, speed)
 	{
 		if (this.currentPage !== page) {
+
+			var oldPage = this.currentPage;
 
 			// deselect last selected page (not necessarily previous page)
 			if (this.currentPage) {
@@ -401,6 +405,22 @@ YAHOO.util.Event.onDOMReady(function ()
 				{ opacity: { from: 0, to: 1 } },
 				speed,
 				Easing.easeIn
+			);
+
+			var classSwitched = false;
+			anim.onTween.subscribe(
+				function()
+				{
+					if (   !classSwitched
+						&& anim.currentFrame / anim.totalFrames > 0.50
+					) {
+						classSwitched = true;
+						Dom.removeClass(oldPage.element, 'pager-current');
+						Dom.addClass(this.currentPage.element, 'pager-current');
+					}
+				},
+				this,
+				true
 			);
 
 			// when animation is complete, reduce all z-indexes by one to
