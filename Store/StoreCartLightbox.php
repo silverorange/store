@@ -192,8 +192,8 @@ class StoreCartLightbox extends SwatControl
 	{
 		if ($this->override_content !== null) {
 			echo $this->override_content;
-		} elseif ($this->app->cart->checkout->isEmpty() &&
-			(!isset($this->app->cart->saved) ||
+		} elseif (count($this->app->cart->checkout->getAvailableEntries() > 0)
+			&& (!isset($this->app->cart->saved) ||
 				$this->app->cart->saved->isEmpty())) {
 
 			echo '<div class="empty-content">'.
