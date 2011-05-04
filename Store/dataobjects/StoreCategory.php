@@ -114,6 +114,13 @@ class StoreCategory extends SwatDBDataObject
 	 */
 	public $displayorder;
 
+	/**
+	 * Content used for creating pay-per-click ads
+	 *
+	 * @var string
+	 */
+	public $ppc_ad_text;
+
 	// }}}
 	// {{{ protected properties
 
