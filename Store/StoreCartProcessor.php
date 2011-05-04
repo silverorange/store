@@ -192,19 +192,13 @@ class StoreCartProcessor extends SwatObject
 				}
 			}
 
-			$a_tag = new SwatHtmlTag('a');
-			$a_tag->href = 'cart';
-			$a_tag->class = 'store-open-cart-link';
-			$a_tag->setContent(Store::_('View Details'));
-
 			$seconday = '';
 
 			if ($added > 0 && $saved > 0) {
 				$secondary = sprintf(Store::ngettext(
 					'You also have one item saved for later.',
 					'You also have %s items saved for later.',
-					$saved), $locale->formatNumber($saved)).
-					' '.$a_tag->__toString().'.';
+					$saved), $locale->formatNumber($saved));
 			} else {
 				$secondary = null;
 			}
