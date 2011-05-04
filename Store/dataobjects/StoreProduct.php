@@ -96,6 +96,13 @@ class StoreProduct extends SwatDBDataObject
 	 */
 	public $reviewable = true;
 
+	/**
+	 * Content used for creating pay-per-click ads
+	 *
+	 * @var string
+	 */
+	public $ppc_ad_text;
+
 	// }}}
 	// {{{ protected properties
 

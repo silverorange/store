@@ -9,6 +9,7 @@ create table Category (
 	displayorder int not null default 0,
 	always_visible boolean not null default false,
 	image int references Image(id) on delete set null,
+	ppc_ad_text varchar(255),
 	primary key (id)
 );
 
