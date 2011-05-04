@@ -205,12 +205,12 @@ class StoreCartProcessor extends SwatObject
 					'You also have %s items saved for later.',
 					$saved), $locale->formatNumber($saved)).
 					' '.$a_tag->__toString().'.';
+			} else {
+				$secondary = null;
 			}
 
 			$title = sprintf($title,
 				'<a href="cart" class="store-open-cart-link">', '</a>');
-
-			$secondary = null;
 
 			$cart_message = new SwatMessage($title, 'cart');
 			$cart_message->content_type = 'text/xml';
