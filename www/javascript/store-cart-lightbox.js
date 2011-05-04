@@ -82,6 +82,12 @@ StoreCartLightbox.prototype.init = function()
 	YAHOO.util.Event.on(document, 'click', this.clickClose, this, true);
 	YAHOO.util.Event.on(window, 'resize', this.handleWindowChange, this, true);
 
+	var that = this;
+	var esc_close = new YAHOO.util.KeyListener(document, {keys:[27]},
+		function() { that.close(); });
+
+	esc_close.enable();
+
 	this.activateLinks();
 	this.preLoadImages();
 }
