@@ -67,7 +67,7 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
 	{
 		// redirect to login page if not logged in
 		if (!$this->app->session->isLoggedIn()) {
-			$uri = sprintf('account/login?relocate=%s',	$this->source);
+			$uri = sprintf('account/login?relocate=%s', $this->source);
 			$this->app->relocate($uri);
 		}
 
