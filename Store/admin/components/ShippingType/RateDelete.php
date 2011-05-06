@@ -47,8 +47,8 @@ class StoreShippingTypeRateDelete extends AdminDBDelete
 
 		$count = $this->getItemCount();
 
-		$content = sprintf(ngettext(
-			'Delete on shipping rate?',
+		$content = sprintf(Store::ngettext(
+			'Delete one shipping rate?',
 			'Delete %s shipping rates?', $count),
 			SwatString::numberFormat($count));
 
