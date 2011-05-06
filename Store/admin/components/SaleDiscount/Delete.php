@@ -35,7 +35,7 @@ class StoreSaleDiscountDelete extends AdminDBDelete
 
 		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One sale discount has been deleted.',
-			'%d sale discounts have been deleted.', $num),
+			'%s sale discounts have been deleted.', $num),
 			SwatString::numberFormat($num)),
 			'notice');
 

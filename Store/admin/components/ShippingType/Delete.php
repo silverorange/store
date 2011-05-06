@@ -30,7 +30,7 @@ class StoreShippingTypeDelete extends AdminDBDelete
 
 		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One shipping type has been deleted.',
-			'%d shipping types have been deleted.', $num),
+			'%s shipping types have been deleted.', $num),
 			SwatString::numberFormat($num)),
 			'notice');
 

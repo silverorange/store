@@ -78,7 +78,7 @@ class StoreCategoryRelatedArticles extends AdminSearch
 
 				$message = new SwatMessage(sprintf(Store::ngettext(
 					'One related article has been added to this category.',
-					'%d related articles have been added to this category.',
+					'%s related articles have been added to this category.',
 					$num), SwatString::numberFormat($num)),
 					'notice');
 

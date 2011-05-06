@@ -30,7 +30,7 @@ class StorePriceRangeDelete extends AdminDBDelete
 
 		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One price range has been deleted.',
-			'%d price ranges have been deleted.', $num),
+			'%s price ranges have been deleted.', $num),
 			SwatString::numberFormat($num)),
 			'notice');
 
@@ -63,7 +63,7 @@ class StorePriceRangeDelete extends AdminDBDelete
 
 		$content = sprintf(ngettext(
 			'Delete one price range?',
-			'Delete %d price ranges?', $count),
+			'Delete %s price ranges?', $count),
 			SwatString::numberFormat($count));
 
 		$message = $this->ui->getWidget('confirmation_message');

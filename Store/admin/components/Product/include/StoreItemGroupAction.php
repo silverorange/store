@@ -91,7 +91,7 @@ class StoreItemGroupAction extends SwatControl
 			$message = new SwatMessage(
 				sprintf(Store::ngettext(
 				'One item has been added to the new group “%2$s”.',
-				'%d items have been added to the new group “%s”.',
+				'%s items have been added to the new group “%s”.',
 				count($items)), SwatString::numberFormat(count($items)),
 				$new_title), 'notice');
 
@@ -101,7 +101,7 @@ class StoreItemGroupAction extends SwatControl
 			$message = new SwatMessage(
 				sprintf(Store::ngettext(
 				'One item has been removed from a group.',
-				'%d items have been removed from group(s).', count($items)),
+				'%s items have been removed from group(s).', count($items)),
 				SwatString::numberFormat(count($items))),
 				'notice');
 
@@ -112,7 +112,7 @@ class StoreItemGroupAction extends SwatControl
 			$message = new SwatMessage(
 				sprintf(Store::ngettext(
 				'One item has been added to the group “%2$s”.',
-				'%d items have been added to the group “%s”.',
+				'%s items have been added to the group “%s”.',
 				count($items)), SwatString::numberFormat(count($items)),
 				$old_title), 'notice');
 		}

@@ -50,7 +50,7 @@ class StoreItemGroupDelete extends AdminDBDelete
 
 		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One group has been deleted.',
-			'%d groups have been deleted.', $num),
+			'%s groups have been deleted.', $num),
 			SwatString::numberFormat($num)),
 			'notice');
 

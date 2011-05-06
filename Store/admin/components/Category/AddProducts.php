@@ -89,7 +89,7 @@ class StoreCategoryAddProducts extends AdminSearch
 
 				$message = new SwatMessage(sprintf(Store::ngettext(
 					'One product has been added to this category.',
-					'%d products have been added to this category.', $num),
+					'%s products have been added to this category.', $num),
 					SwatString::numberFormat($num)), 'notice');
 
 				$this->app->messages->add($message);

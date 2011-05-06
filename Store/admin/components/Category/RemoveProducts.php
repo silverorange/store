@@ -58,7 +58,7 @@ class StoreCategoryRemoveProducts extends AdminDBConfirmation
 
 		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One category has had its products removed.',
-			'%d categories have had their products removed.', $num),
+			'%s categories have had their products removed.', $num),
 			SwatString::numberFormat($num)), 'notice');
 
 		$this->app->messages->add($message);

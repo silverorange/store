@@ -26,7 +26,7 @@ class StoreLocaleDelete extends AdminDBDelete
 		$num = SwatDB::exec($this->app->db, sprintf($sql, $item_list));
 
 		$message = new SwatMessage(sprintf(Store::ngettext(
-			'One locale has been deleted.', '%d locales have been deleted.',
+			'One locale has been deleted.', '%s locales have been deleted.',
 			$num), SwatString::numberFormat($num)), 'notice');
 
 		$this->app->messages->add($message);

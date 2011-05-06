@@ -43,7 +43,7 @@ class StoreItemQuantityDiscountDelete extends AdminDBDelete
 
 		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One quantity discount has been deleted.',
-			'%d quantity discounts have been deleted.', $num),
+			'%s quantity discounts have been deleted.', $num),
 			SwatString::numberFormat($num)), 'notice');
 
 		$this->app->messages->add($message);

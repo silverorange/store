@@ -47,7 +47,7 @@ class StoreFeatureIndex extends AdminIndex
 
 			$message = new SwatMessage(sprintf(ngettext(
 				'One feature has been enabled.',
-				'%d features have been enabled.', $num),
+				'%s features have been enabled.', $num),
 				SwatString::numberFormat($num)));
 
 			break;
@@ -61,7 +61,7 @@ class StoreFeatureIndex extends AdminIndex
 
 			$message = new SwatMessage(sprintf(ngettext(
 				'One feature has been disabled.',
-				'%d features have been disabled.', $num),
+				'%s features have been disabled.', $num),
 				SwatString::numberFormat($num)));
 
 			break;

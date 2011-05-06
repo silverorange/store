@@ -31,7 +31,7 @@ class StoreRegionDelete extends AdminDBDelete
 		$num = SwatDB::exec($this->app->db, $sql);
 
 		$message = new SwatMessage(sprintf(Store::ngettext(
-			'One region has been deleted.', '%d regions have been deleted.',
+			'One region has been deleted.', '%s regions have been deleted.',
 			$num), SwatString::numberFormat($num)), 'notice');
 
 		$this->app->messages->add($message);
