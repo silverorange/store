@@ -30,7 +30,7 @@ class StoreFeatureDelete extends AdminDBDelete
 			'One feature has been deleted.',
 			'%d features have been deleted.', $num),
 			SwatString::numberFormat($num)),
-			SwatMessage::NOTIFICATION);
+			'notice');
 
 		$this->app->messages->add($message);
 

@@ -30,7 +30,7 @@ class StoreProvStateDelete extends AdminDBDelete
 			'One province or state has been deleted.',
 			'%d provinces and/or states have been deleted.', $num),
 			SwatString::numberFormat($num)),
-			SwatMessage::NOTIFICATION);
+			'notice');
 
 		$this->app->messages->add($message);
 	}

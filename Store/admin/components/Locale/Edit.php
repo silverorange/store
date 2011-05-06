@@ -59,7 +59,7 @@ class StoreLocaleEdit extends AdminDBEdit
 
 		if (!ereg('^[a-z][a-z]_[A-Z][A-Z]$', $localeid->value)) {
 			$localeid->addMessage(new SwatMessage(
-				Store::_('Invalid locale identifier.'), SwatMessage::ERROR));
+				Store::_('Invalid locale identifier.'), 'error'));
 		}
 	}
 
@@ -98,8 +98,7 @@ class StoreLocaleEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$message = new SwatMessage('Locales can not be edited.',
-			SwatMessage::WARNING);
+		$message = new SwatMessage('Locales can not be edited.', 'warning');
 
 		$this->app->messages->add($message);
 		$this->app->relocate('Locale');

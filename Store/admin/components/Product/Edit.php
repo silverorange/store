@@ -127,7 +127,7 @@ class StoreProductEdit extends AdminDBEdit
 		} elseif (!$this->validateShortname($shortname->value)) {
 			$message = new SwatMessage(
 				Store::_('Shortname already exists and must be unique.'),
-				SwatMessage::ERROR);
+				'error');
 
 			$this->ui->getWidget('shortname')->addMessage($message);
 		}
@@ -320,7 +320,7 @@ class StoreProductEdit extends AdminDBEdit
 		if ($this->id === null && $this->category_id === null) {
 			$message = new SwatMessage(Store::_(
 				'This product is not being created inside a category.'),
-				SwatMessage::WARNING);
+				'warning');
 
 			$message->secondary_content = Store::_(
 				'Though it may be possible to purchase from this product on '.

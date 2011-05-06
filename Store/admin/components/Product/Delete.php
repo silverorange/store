@@ -64,7 +64,7 @@ class StoreProductDelete extends AdminDBDelete
 			Store::ngettext('One product has been deleted.',
 			'%d products have been deleted.', $num),
 			SwatString::numberFormat($num)),
-			SwatMessage::NOTIFICATION);
+			'notice');
 
 		$this->app->messages->add($message);
 

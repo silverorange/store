@@ -90,8 +90,7 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 
 			$message = new SwatMessage(sprintf(
 				Store::_('A confirmation of %s has been emailed to %s%s.'),
-				$this->getOrderTitle(), $this->order->email, $cc),
-					SwatMessage::NOTIFICATION);
+				$this->getOrderTitle(), $this->order->email, $cc), 'notice');
 
 			$this->app->messages->add($message);
 		}

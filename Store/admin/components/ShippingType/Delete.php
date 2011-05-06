@@ -32,7 +32,7 @@ class StoreShippingTypeDelete extends AdminDBDelete
 			'One shipping type has been deleted.',
 			'%d shipping types have been deleted.', $num),
 			SwatString::numberFormat($num)),
-			SwatMessage::NOTIFICATION);
+			'notice');
 
 		$this->app->messages->add($message);
 	}

@@ -52,7 +52,7 @@ class StoreItemGroupDelete extends AdminDBDelete
 			'One group has been deleted.',
 			'%d groups have been deleted.', $num),
 			SwatString::numberFormat($num)),
-			SwatMessage::NOTIFICATION);
+			'notice');
 
 		$this->app->messages->add($message);
 

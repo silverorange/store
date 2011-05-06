@@ -254,7 +254,7 @@ class StoreItemEdit extends AdminDBEdit
 					'The following alias SKU already exists: %s',
 					'The following alias SKUs already exist: %s',
 					count($invalid_skus)), implode(', ', $invalid_skus)),
-					SwatMessage::ERROR);
+					'error');
 
 				$aliases->addMessage($message);
 			}

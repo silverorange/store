@@ -82,7 +82,7 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 		$count = count($rs);
 
 		$message = new SwatMessage($this->getEnabledText('message', $count),
-			SwatMessage::NOTIFICATION);
+			'notice');
 
 		$this->app->messages->add($message);
 

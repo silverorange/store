@@ -77,7 +77,7 @@ class StorePaymentTypeEdit extends AdminDBEdit
 		} elseif (!$this->validateShortname($shortname)) {
 			$message = new SwatMessage(Store::_(
 				'Shortname already exists and must be unique.'),
-				SwatMessage::ERROR);
+				'error');
 
 			$shortname->addMessage($message);
 		}

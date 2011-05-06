@@ -98,7 +98,7 @@ class StoreProductProductCollection extends AdminSearch
 					'One product has been added to this collection.',
 					'%s product have been added to this collection.', $num),
 					SwatString::numberFormat($num)),
-					SwatMessage::NOTIFICATION);
+					'notice');
 
 				$this->app->messages->add($message);
 

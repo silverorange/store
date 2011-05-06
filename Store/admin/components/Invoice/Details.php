@@ -186,7 +186,7 @@ class StoreInvoiceDetails extends AdminIndex
 		} else {
 			$message = new SwatMessage(Store::_('There was a problem adding '.
 				'the item(s). Please check the highlighted fields below.'),
-				SwatMessage::ERROR);
+				'error');
 
 			$this->app->messages->add($message);
 		}

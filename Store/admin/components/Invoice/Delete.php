@@ -51,7 +51,7 @@ class StoreInvoiceDelete extends AdminDBDelete
 			Store::ngettext('One invoice has been deleted.',
 			'%d invoices have been deleted.', $num),
 			SwatString::numberFormat($num)),
-			SwatMessage::NOTIFICATION);
+			'notice');
 
 		$this->app->messages->add($message);
 	}
