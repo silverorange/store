@@ -3,6 +3,7 @@
 require_once 'Site/SiteCommandLineApplication.php';
 require_once 'Site/SiteDatabaseModule.php';
 require_once 'Store/StoreCommandLineConfigModule.php';
+require_once 'Site/SiteMultipleInstanceModule.php';
 require_once 'Store/Store.php';
 require_once 'Store/StorePrivateDataDeleter.php';
 
@@ -10,7 +11,7 @@ require_once 'Store/StorePrivateDataDeleter.php';
  * Framework for a command line application to remove personal data.
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2011 silverorange
  */
 class StorePrivateDataDeleterApplication extends SiteCommandLineApplication
 {
@@ -53,6 +54,15 @@ class StorePrivateDataDeleterApplication extends SiteCommandLineApplication
 	{
 		parent::__construct($id, $config_filename, $title, $documentation);
 
+		$instance = new SiteCommandLineArgument(array('-i', '--instance'),
+			'setInstance', 'Required. Sets the site instance for which to '.
+			'run this application.');
+
+		$instance->addParameter('string',
+			'instance name must be specified.');
+
+		$this->addCommandLineArgument($instance);
+
 		$debug = new SiteCommandLineArgument(array('-D', '--debug'),
 			'setDebug', Store::_('Turns on debugging mode which causes '.
 			'output for each action to be sent to stdout.'));
@@ -66,39 +76,13 @@ class StorePrivateDataDeleterApplication extends SiteCommandLineApplication
 	}
 
 	// }}}
-	// {{{ public function initModules()
+	// {{{ public function setInstance()
 
-	/**
-	 * Initializes the modules of this application and sets up the database
-	 * convenience reference
-	 */
-	public function initModules()
+	public function setInstance($shortname)
 	{
-		parent::initModules();
-		$this->db->loadModule('Datatype', null, true);
-	}
-
-	// }}}
-	// {{{ public function run()
-
-	public function run()
-	{
-		$this->parseCommandLineArguments();
-		$this->initModules();
-
-		if ($this->dry_run) {
-			$this->debug(
-				Store::_("Dry Run. No data will actually be deleted.\n"));
-		}
-
-		foreach ($this->deleters as $deleter) {
-			$deleter->run();
-		}
-
-		if ($this->dry_run) {
-			$this->debug(
-				Store::_("\nDry Run. No data was actually deleted.\n\n"));
-		}
+		putenv(sprintf('instance=%s', $shortname));
+		$this->instance->init();
+		$this->config->init();
 	}
 
 	// }}}
@@ -127,6 +111,29 @@ class StorePrivateDataDeleterApplication extends SiteCommandLineApplication
 	public function isDryRun()
 	{
 		return $this->dry_run;
+	}
+
+	// }}}
+	// {{{ public function run()
+
+	public function run()
+	{
+		$this->initModules();
+		$this->parseCommandLineArguments();
+
+		if ($this->dry_run) {
+			$this->debug(
+				Store::_("Dry Run. No data will actually be deleted.\n"));
+		}
+
+		foreach ($this->deleters as $deleter) {
+			$deleter->run();
+		}
+
+		if ($this->dry_run) {
+			$this->debug(
+				Store::_("\nDry Run. No data was actually deleted.\n\n"));
+		}
 	}
 
 	// }}}
@@ -171,6 +178,7 @@ class StorePrivateDataDeleterApplication extends SiteCommandLineApplication
 		return array(
 			'config'   => 'StoreCommandLineConfigModule',
 			'database' => 'SiteDatabaseModule',
+			'instance' => 'SiteMultipleInstanceModule',
 		);
 	}
 
@@ -187,6 +195,34 @@ class StorePrivateDataDeleterApplication extends SiteCommandLineApplication
 	{
 		parent::addConfigDefinitions($config);
 		$config->addDefinitions(Store::getConfigDefinitions());
+	}
+
+	// }}}
+	// {{{ protected function configure()
+
+	/**
+	 * Configures modules of this application before they are initialized
+	 *
+	 * @param SiteConfigModule $config the config module of this application to
+	 *                                  use for configuration other modules.
+	 */
+	protected function configure(SiteConfigModule $config)
+	{
+		parent::configure($config);
+		$this->database->dsn = $config->database->dsn;
+	}
+
+	// }}}
+	// {{{ public function initModules()
+
+	/**
+	 * Initializes the modules of this application and sets up the database
+	 * convenience reference
+	 */
+	public function initModules()
+	{
+		parent::initModules();
+		$this->db->loadModule('Datatype', null, true);
 	}
 
 	// }}}
