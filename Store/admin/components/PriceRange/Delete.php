@@ -61,7 +61,7 @@ class StorePriceRangeDelete extends AdminDBDelete
 
 		$count = $this->getItemCount();
 
-		$content = sprintf(ngettext(
+		$content = sprintf(Store::ngettext(
 			'Delete one price range?',
 			'Delete %s price ranges?', $count),
 			SwatString::numberFormat($count));

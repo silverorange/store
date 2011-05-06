@@ -26,7 +26,7 @@ class StoreFeatureDelete extends AdminDBDelete
 		$sql = sprintf($sql, $item_list);
 		$num = SwatDB::exec($this->app->db, $sql);
 
-		$message = new SwatMessage(sprintf(ngettext(
+		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One feature has been deleted.',
 			'%s features have been deleted.', $num),
 			SwatString::numberFormat($num)),

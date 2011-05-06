@@ -45,7 +45,7 @@ class StoreFeatureIndex extends AdminIndex
 			if (isset($this->app->memcache))
 				$this->app->memcache->flushNs('StoreFeature');
 
-			$message = new SwatMessage(sprintf(ngettext(
+			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One feature has been enabled.',
 				'%s features have been enabled.', $num),
 				SwatString::numberFormat($num)));
@@ -59,7 +59,7 @@ class StoreFeatureIndex extends AdminIndex
 			if (isset($this->app->memcache))
 				$this->app->memcache->flushNs('StoreFeature');
 
-			$message = new SwatMessage(sprintf(ngettext(
+			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One feature has been disabled.',
 				'%s features have been disabled.', $num),
 				SwatString::numberFormat($num)));
