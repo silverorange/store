@@ -49,7 +49,7 @@ class StoreInvoiceEmailNotification extends AdminConfirmation
 			$message = new SwatMessage(sprintf(
 				Store::_('A notification of “%s” has been emailed to %s.'),
 				$this->getInvoiceTitle(), $this->invoice->account->email),
-					SwatMessage::NOTIFICATION);
+					'notice');
 
 			$this->app->messages->add($message);
 		}

@@ -72,7 +72,7 @@ class StorePriceRangeEdit extends AdminDBEdit
 		if ($start_price > $end_price && $end_price > 0) {
 			$this->ui->getWidget('end_price')->addMessage(new SwatMessage(
 				Store::_('End Price must be greater than start price.'),
-					SwatMessage::ERROR));
+					'error'));
 		}
 	}
 

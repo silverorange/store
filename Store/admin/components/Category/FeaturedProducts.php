@@ -69,7 +69,7 @@ class StoreCategoryFeaturedProducts extends AdminIndex
 					'One featured product has been updated.',
 					'%s featured products have been updated.', $num),
 					SwatString::numberFormat($num)),
-					SwatMessage::NOTIFICATION);
+					'notice');
 
 				$this->app->messages->add($message);
 

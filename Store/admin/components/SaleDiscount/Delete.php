@@ -37,7 +37,7 @@ class StoreSaleDiscountDelete extends AdminDBDelete
 			'One sale discount has been deleted.',
 			'%d sale discounts have been deleted.', $num),
 			SwatString::numberFormat($num)),
-			SwatMessage::NOTIFICATION);
+			'notice');
 
 		$this->app->messages->add($message);
 

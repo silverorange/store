@@ -124,7 +124,7 @@ class StoreCategoryImageEdit extends AdminDBEdit
 		if ($this->id === null && !$this->checkManualUploads()) {
 			$message = new SwatMessage(Store::_('You need to specify all '.
 				'image sizes when creating a new image or upload an image to '.
-				'be automatically resized.'), SwatMessage::ERROR);
+				'be automatically resized.'), 'error');
 
 			$this->ui->getWidget('message')->add($message);
 			return false;

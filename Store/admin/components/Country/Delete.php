@@ -33,7 +33,7 @@ class StoreCountryDelete extends AdminDBDelete
 
 		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One country has been deleted.', '%s countries have been deleted.',
-			$num), SwatString::numberFormat($num)), SwatMessage::NOTIFICATION);
+			$num), SwatString::numberFormat($num)), 'notice');
 
 		$this->app->messages->add($message);
 

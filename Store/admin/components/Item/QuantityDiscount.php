@@ -365,7 +365,7 @@ class StoreItemQuantityDiscount extends AdminIndex
 		if ($has_invalid_row) {
 			$message = new SwatMessage(Store::_('There was a problem adding '.
 				'the quantity discount(s). Please review the highlighted '.
-				'fields for errors and try again.'), SwatMessage::ERROR);
+				'fields for errors and try again.'), 'error');
 
 			$this->app->messages->add($message);
 		} else {

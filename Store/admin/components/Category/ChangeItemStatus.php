@@ -82,7 +82,7 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 			'One item has had its status set as “%s”.',
 			'%s items have had their status set as “%s”.', $num),
 			SwatString::numberFormat($num), $this->status->title),
-			SwatMessage::NOTIFICATION);
+			'notice');
 
 		$this->app->messages->add($message);
 

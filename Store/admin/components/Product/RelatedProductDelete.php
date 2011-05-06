@@ -76,7 +76,7 @@ class StoreProductRelatedProductDelete extends AdminDBDelete
 		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One related product has been removed.',
 			'%d related products have been removed.', $num),
-			SwatString::numberFormat($num)), SwatMessage::NOTIFICATION);
+			SwatString::numberFormat($num)), 'notice');
 
 		$this->app->messages->add($message);
 

@@ -32,7 +32,7 @@ class StoreItemMinimumQuantityGroupDelete extends AdminDBDelete
 			'One item minimum quantity sale group has been deleted.',
 			'%d item minimum quantity sale groups have been deleted.', $num),
 			SwatString::numberFormat($num)),
-			SwatMessage::NOTIFICATION);
+			'notice');
 
 		$this->app->messages->add($message);
 	}

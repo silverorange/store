@@ -88,7 +88,7 @@ class StoreCountryEdit extends AdminDBEdit
 				$message = new SwatMessage(
 					Store::_('<strong>Country Code</strong> already exists. '.
 					'Country code must be unique for each country.'),
-					SwatMessage::ERROR);
+					'error');
 
 				$message->content_type = 'text/xml';
 				$this->ui->getWidget('id_edit')->addMessage($message);

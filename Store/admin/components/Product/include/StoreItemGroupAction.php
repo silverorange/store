@@ -93,7 +93,7 @@ class StoreItemGroupAction extends SwatControl
 				'One item has been added to the new group “%2$s”.',
 				'%d items have been added to the new group “%s”.',
 				count($items)), SwatString::numberFormat(count($items)),
-				$new_title), SwatMessage::NOTIFICATION);
+				$new_title), 'notice');
 
 		} elseif (strcmp($group_id, 'no_group') == 0) {
 			$group_id = null;
@@ -103,7 +103,7 @@ class StoreItemGroupAction extends SwatControl
 				'One item has been removed from a group.',
 				'%d items have been removed from group(s).', count($items)),
 				SwatString::numberFormat(count($items))),
-				SwatMessage::NOTIFICATION);
+				'notice');
 
 		} else {
 			$sql = 'select title from ItemGroup where id = %s';
@@ -114,7 +114,7 @@ class StoreItemGroupAction extends SwatControl
 				'One item has been added to the group “%2$s”.',
 				'%d items have been added to the group “%s”.',
 				count($items)), SwatString::numberFormat(count($items)),
-				$old_title), SwatMessage::NOTIFICATION);
+				$old_title), 'notice');
 		}
 
 		SwatDB::updateColumn($this->db, 'Item', 'integer:item_group', $group_id,

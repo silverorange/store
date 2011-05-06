@@ -80,7 +80,7 @@ class StoreCategoryRelatedArticles extends AdminSearch
 					'One related article has been added to this category.',
 					'%d related articles have been added to this category.',
 					$num), SwatString::numberFormat($num)),
-					SwatMessage::NOTIFICATION);
+					'notice');
 
 				$this->app->messages->add($message);
 

@@ -58,7 +58,7 @@ class StoreProductReviewDelete extends AdminDBDelete
 			'One product review has been deleted.',
 			'%d product reviews have been deleted.', $num),
 			SwatString::numberFormat($num)),
-			SwatMessage::NOTIFICATION);
+			'notice');
 
 		$this->app->messages->add($message);
 	}

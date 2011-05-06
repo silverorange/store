@@ -53,7 +53,7 @@ class StoreCatalogClone extends AdminDBEdit
 		if ($clone_id == -1) {
 			$message = new SwatMessage(
 				sprintf(Store::_('The %s “%s” could not be cloned.'),
-				Store::_('catalog'), $title), SwatMessage::SYSTEM_ERROR);
+				Store::_('catalog'), $title), 'system-error');
 
 		} else {
 			// add all new products to search queue

@@ -31,7 +31,7 @@ class StoreShippingTypeRateDelete extends AdminDBDelete
 			'One shipping rate has been deleted.',
 			'%d shipping rates have been deleted.', $num),
 			SwatString::numberFormat($num)),
-			SwatMessage::NOTIFICATION);
+			'notice');
 
 		$this->app->messages->add($message);
 	}

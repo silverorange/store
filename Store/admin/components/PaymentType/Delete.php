@@ -34,7 +34,7 @@ class StorePaymentTypeDelete extends AdminDBDelete
 			'One payment method has been deleted.',
 			'%d payment methods have been deleted.', $num),
 			SwatString::numberFormat($num)),
-			SwatMessage::NOTIFICATION);
+			'notice');
 
 		$this->app->messages->add($message);
 	}

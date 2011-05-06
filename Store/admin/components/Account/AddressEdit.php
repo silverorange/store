@@ -263,9 +263,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 						'<strong>', $country_title, '</strong>');
 				}
 
-				$message = new SwatMessage($message_content,
-					SwatMessage::ERROR);
-
+				$message = new SwatMessage($message_content, 'error');
 				$message->content_type = 'text/xml';
 				$provstate->addMessage($message);
 			}

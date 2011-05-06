@@ -31,7 +31,7 @@ class StoreAttributeDelete extends AdminDBDelete
 		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One attribute has been deleted.',
 			'%s attributes have been deleted.',
-			$num), SwatString::numberFormat($num)), SwatMessage::NOTIFICATION);
+			$num), SwatString::numberFormat($num)), 'notice');
 
 		$this->app->messages->add($message);
 

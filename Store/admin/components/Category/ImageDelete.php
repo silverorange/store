@@ -58,7 +58,7 @@ class StoreCategoryImageDelete extends AdminDBDelete
 
 		$message = new SwatMessage(
 			Store::_('The category image has been deleted.'),
-			SwatMessage::NOTIFICATION);
+			'notice');
 
 		$this->app->messages->add($message);
 

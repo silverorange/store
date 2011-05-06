@@ -73,7 +73,7 @@ class StoreInvoiceItemDelete extends AdminDBDelete
 			'One invoice item has been deleted.',
 			'%s invoice items have been deleted.', $num),
 			SwatString::numberFormat($num)),
-			SwatMessage::NOTIFICATION);
+			'notice');
 
 		$this->app->messages->add($message);
 	}

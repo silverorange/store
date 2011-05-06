@@ -32,7 +32,7 @@ class StorePriceRangeDelete extends AdminDBDelete
 			'One price range has been deleted.',
 			'%d price ranges have been deleted.', $num),
 			SwatString::numberFormat($num)),
-			SwatMessage::NOTIFICATION);
+			'notice');
 
 		$this->app->messages->add($message);
 

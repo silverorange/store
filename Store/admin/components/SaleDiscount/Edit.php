@@ -70,7 +70,7 @@ class StoreSaleDiscountEdit extends AdminDBEdit
 		} elseif (!$this->validateShortname($shortname, $this->id)) {
 			$message = new SwatMessage(
 				Store::_('Shortname already exists and must be unique.'),
-				SwatMessage::ERROR);
+				'error');
 
 			$this->ui->getWidget('shortname')->addMessage($message);
 		}
