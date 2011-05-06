@@ -64,7 +64,7 @@ class StoreCategoryDelete extends AdminDBDelete
 
 		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One category has been deleted.',
-			'%d categories have been deleted.', $num),
+			'%s categories have been deleted.', $num),
 			SwatString::numberFormat($num)));
 
 		$this->app->messages->add($message);

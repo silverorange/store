@@ -75,7 +75,7 @@ class StoreProductProductCollectionDelete extends AdminDBDelete
 
 		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One product has been removed from the collection.',
-			'%d products have been removed from the collection.', $num),
+			'%s products have been removed from the collection.', $num),
 			SwatString::numberFormat($num)), 'notice');
 
 		$this->app->messages->add($message);

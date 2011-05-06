@@ -49,7 +49,7 @@ class StoreInvoiceDelete extends AdminDBDelete
 
 		$message = new SwatMessage(sprintf(
 			Store::ngettext('One invoice has been deleted.',
-			'%d invoices have been deleted.', $num),
+			'%s invoices have been deleted.', $num),
 			SwatString::numberFormat($num)),
 			'notice');
 

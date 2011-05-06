@@ -32,7 +32,7 @@ class StorePaymentTypeDelete extends AdminDBDelete
 
 		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One payment method has been deleted.',
-			'%d payment methods have been deleted.', $num),
+			'%s payment methods have been deleted.', $num),
 			SwatString::numberFormat($num)),
 			'notice');
 

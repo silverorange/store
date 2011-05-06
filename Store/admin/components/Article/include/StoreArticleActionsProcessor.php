@@ -39,7 +39,7 @@ class StoreArticleActionsProcessor extends SiteArticleActionsProcessor
 
 			$message = new SwatMessage(sprintf(Store::ngettext(
 				'Accessibility has been updated for one article.',
-				'Accessibility has been updated for %d articles.', $num),
+				'Accessibility has been updated for %s articles.', $num),
 				SwatString::numberFormat($num)));
 
 			break;

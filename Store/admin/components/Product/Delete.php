@@ -62,7 +62,7 @@ class StoreProductDelete extends AdminDBDelete
 
 		$message = new SwatMessage(sprintf(
 			Store::ngettext('One product has been deleted.',
-			'%d products have been deleted.', $num),
+			'%s products have been deleted.', $num),
 			SwatString::numberFormat($num)),
 			'notice');
 

@@ -28,7 +28,7 @@ class StoreFeatureDelete extends AdminDBDelete
 
 		$message = new SwatMessage(sprintf(ngettext(
 			'One feature has been deleted.',
-			'%d features have been deleted.', $num),
+			'%s features have been deleted.', $num),
 			SwatString::numberFormat($num)),
 			'notice');
 

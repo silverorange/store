@@ -30,7 +30,7 @@ class StoreItemMinimumQuantityGroupDelete extends AdminDBDelete
 
 		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One item minimum quantity sale group has been deleted.',
-			'%d item minimum quantity sale groups have been deleted.', $num),
+			'%s item minimum quantity sale groups have been deleted.', $num),
 			SwatString::numberFormat($num)),
 			'notice');
 

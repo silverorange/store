@@ -33,7 +33,7 @@ class StoreFeedbackDelete extends AdminDBDelete
 			sprintf(
 				Store::ngettext(
 					'One feedback message has been deleted.',
-					'%d feedback messages have been deleted.',
+					'%s feedback messages have been deleted.',
 					$num
 				),
 				SwatString::numberFormat($num)

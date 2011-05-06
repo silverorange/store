@@ -217,7 +217,7 @@ class StoreProductDetails extends AdminIndex
 
 			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One item has been enabled.',
-				'%d items have been enabled.', $num),
+				'%s items have been enabled.', $num),
 				SwatString::numberFormat($num)));
 
 			$this->app->messages->add($message);
@@ -243,7 +243,7 @@ class StoreProductDetails extends AdminIndex
 
 			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One item has been disabled.',
-				'%d items have been disabled.', $num),
+				'%s items have been disabled.', $num),
 				SwatString::numberFormat($num)));
 
 			$this->app->messages->add($message);
@@ -580,7 +580,7 @@ class StoreProductDetails extends AdminIndex
 
 			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One product review has been published.',
-				'%d product reviews have been published.', $num),
+				'%s product reviews have been published.', $num),
 				SwatString::numberFormat($num)));
 
 			$this->app->messages->add($message);
@@ -600,7 +600,7 @@ class StoreProductDetails extends AdminIndex
 
 			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One product review has been unpushlished.',
-				'%d product reviews have been unpushlished.', $num),
+				'%s product reviews have been unpushlished.', $num),
 				SwatString::numberFormat($num)));
 
 			$this->app->messages->add($message);
@@ -619,7 +619,7 @@ class StoreProductDetails extends AdminIndex
 
 			$message = new SwatMessage(sprintf(Store::ngettext(
 				'One product review has been marked as spam.',
-				'%d product reviews have been marked as spam.', $num),
+				'%s product reviews have been marked as spam.', $num),
 				SwatString::numberFormat($num)));
 
 			$this->app->messages->add($message);

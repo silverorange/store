@@ -28,7 +28,7 @@ class StoreProvStateDelete extends AdminDBDelete
 
 		$message = new SwatMessage(sprintf(Store::ngettext(
 			'One province or state has been deleted.',
-			'%d provinces and/or states have been deleted.', $num),
+			'%s provinces and/or states have been deleted.', $num),
 			SwatString::numberFormat($num)),
 			'notice');
 
