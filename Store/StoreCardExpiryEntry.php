@@ -41,6 +41,24 @@ class StoreCardExpiryEntry extends SwatDateEntry
 	}
 
 	// }}}
+	// {{{ public function init()
+
+	public function init()
+	{
+		if ($this->display_parts & self::YEAR) {
+			$this->getCompositeWidget('year_flydown')->blank_title =
+				Store::_('Year');
+		}
+
+		if ($this->display_parts & self::MONTH) {
+			$this->getCompositeWidget('month_flydown')->blank_title =
+				Store::_('Month');
+		}
+
+		parent::init();
+	}
+
+	// }}}
 }
 
 ?>
