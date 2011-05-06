@@ -19,8 +19,11 @@ CREATE OR REPLACE FUNCTION getProductCheapestItem(INTEGER, INTEGER) RETURNS INTE
 		FOR local_item_row IN SELECT
 			Item.id
 		FROM Item
+			INNER JOIN AvailableItemView ON AvailableItemView.item = Item.id
 			LEFT OUTER JOIN ItemRegionBinding ON ItemRegionBinding.item = Item.id
-		WHERE region = param_region_id AND product = param_product_id
+		WHERE ItemRegionBinding.region = param_region_id
+			AND AvailableItemView.region = param_region_id
+			AND Item.product = param_product_id
 		ORDER BY price, sale_discount ASC
 		LIMIT 1
 		LOOP
