@@ -121,9 +121,15 @@ class Store
 			'mail_chimp.plugin_id'    => null,
 			'mail_chimp.track_orders' => false,
 
-			// AdWords conversion id
+			// AdWords
 			'adwords.conversion_id'    => null,
 			'adwords.conversion_label' => null,
+			// client manager email address used for automating ad creation
+			'adwords.email'            => null,
+			// client ID used for automating ad creation
+			'adwords.client_id'        => null,
+			// developer token used for automating ad creation
+			'adwords.developer_token'  => null,
 		);
 	}
 
