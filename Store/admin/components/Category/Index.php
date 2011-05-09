@@ -33,7 +33,7 @@ require_once 'Store/admin/components/Product/include/'.
  * Index page for Categories
  *
  * @package   Store
- * @copyright 2005-2010 silverorange
+ * @copyright 2005-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCategoryIndex extends AdminIndex
@@ -526,7 +526,7 @@ class StoreCategoryIndex extends AdminIndex
 				$this->app->getPage()->setAction('remove');
 				break;
 			} else {
-				$flush_memcache = $this->addProductAttributes(
+				$flush_memcache = $this->removeProductAttributes(
 					$view->getSelection(), $attributes);
 			}
 			break;
