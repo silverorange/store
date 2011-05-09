@@ -660,14 +660,14 @@ abstract class StoreCart extends SwatObject
 	// }}}
 
 	// caching methods
-	// {{{ protected function setChanged()
+	// {{{ public function setChanged()
 
 	/**
 	 * Sets this cart as modified
 	 *
 	 * This clears the totals cache if it has entries.
 	 */
-	protected function setChanged()
+	public function setChanged()
 	{
 		$this->totals = array();
 		$this->sorted = false;
