@@ -790,9 +790,10 @@ class StoreProduct extends SwatDBDataObject
 		}
 
 		$wrapper = SwatDBClassMap::get('StoreItemWrapper');
-		$rs = SwatDB::query($this->db, $sql, $wrapper);
-		$cheapest_item = $rs->getFirst();
-		$cheapest_item->setRegion($this->region);
+		$cheapest_item = SwatDB::query($this->db, $sql, $wrapper)->getFirst();
+
+		if ($cheapest_item != null)
+			$cheapest_item->setRegion($this->region);
 
 		return $cheapest_item;
 	}
