@@ -13,7 +13,7 @@ require_once 'Store/dataobjects/StoreShippingType.php';
  * to all sites. It is intended to be extended on a per-site basis.
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreCartModule, StoreCart
  */
@@ -391,7 +391,8 @@ abstract class StoreCheckoutCart extends StoreCart
 		} else {
 			$total = 0;
 
-			if ($this->app->session->order !== null) {
+			if (isset($this->app->session->order) &&
+				$this->app->session->order !== null) {
 				$payment_method =
 					$this->app->session->order->payment_methods->getFirst();
 
