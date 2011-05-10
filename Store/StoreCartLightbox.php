@@ -9,7 +9,7 @@ require_once 'XML/RPCAjax.php';
  * Control to display a lightbox driven cart on the page
  *
  * @package   Store
- * @copyright 2010 silverorange
+ * @copyright 2010-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCartLightbox extends SwatControl
@@ -230,34 +230,48 @@ class StoreCartLightbox extends SwatControl
 			$this->app->session->getSessionId());
 
 		if ($cart === false) {
-			$this->ui = new SwatUI();
-			$this->ui->loadFromXML($this->ui_xml);
-			$this->ui->init();
-
-			$message_display = $this->ui->getWidget('lightbox_message_display');
-			foreach ($this->getCartMessages() as $message)
-				$message_display->add($message, SwatMessageDisplay::DISMISS_OFF);
-
-			$cart_view = $this->ui->getWidget('lightbox_cart_view');
-			$cart_view->model = $this->getCartTableStore();
-
-			$this->ui->getWidget('lightbox_cart_title')->content =
-				$this->getCartTitle();
-
-			$cart_link = new SwatHtmlTag('a');
-			$cart_link->href = 'cart';
-			$cart_link->setContent(Store::_('View Cart'));
-			$this->ui->getWidget('lightbox_cart_link')->content =
-				$cart_link->__toString().' '.Store::_('or');
+			$this->initCartUI();
+			$this->buildCartUI();
 
 			ob_start();
 			$this->ui->display();
 			$cart = ob_get_clean();
-			$this->app->addCacheValue($cart, 'mini-cart',
-				$this->app->session->getSessionId());
 		}
 
 		echo $cart;
+	}
+
+	// }}}
+	// {{{ protected function initCartUI()
+
+	protected function initCartUI()
+	{
+		$this->ui = new SwatUI();
+		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->init();
+	}
+
+	// }}}
+
+	// {{{ protected function buildCartUI()
+
+	protected function buildCartUI()
+	{
+		$message_display = $this->ui->getWidget('lightbox_message_display');
+		foreach ($this->getCartMessages() as $message)
+			$message_display->add($message, SwatMessageDisplay::DISMISS_OFF);
+
+		$cart_view = $this->ui->getWidget('lightbox_cart_view');
+		$cart_view->model = $this->getCartTableStore();
+
+		$this->ui->getWidget('lightbox_cart_title')->content =
+			$this->getCartTitle();
+
+		$cart_link = new SwatHtmlTag('a');
+		$cart_link->href = 'cart';
+		$cart_link->setContent(Store::_('View Cart'));
+		$this->ui->getWidget('lightbox_cart_link')->content =
+			$cart_link->__toString().' '.Store::_('or');
 	}
 
 	// }}}
