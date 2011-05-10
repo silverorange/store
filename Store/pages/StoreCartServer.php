@@ -11,7 +11,7 @@ require_once 'Store/StoreCartLightbox.php';
  * Handles XML-RPC requests to update the cart
  *
  * @package   Store
- * @copyright 2010 silverorange
+ * @copyright 2010-2011 silverorange
  */
 class StoreCartServer extends SiteXMLRPCServer
 {
@@ -132,11 +132,11 @@ class StoreCartServer extends SiteXMLRPCServer
 	public function getCartInfo($request_id, $product_id = null,
 		$mini_cart = false)
 	{
-		$product_entries = 0;	// total number of cart-enties for the product
-		$product_quantity = 0;	// sum of all quantities for the product
-		$total_entries = 0;		// total number of cart-entries
-		$total_quantity = 0;	// sum of all cart-entry quantites
-		$total_saved = 0;
+		$product_entries  = 0; // total number of cart-enties for the product
+		$product_quantity = 0; // sum of all quantities for the product
+		$total_entries    = 0; // total number of cart-entries
+		$total_quantity   = 0; // sum of all cart-entry quantites
+		$total_saved      = 0;
 
 		foreach ($this->app->cart->checkout->getAvailableEntries() as $e) {
 			$total_entries++;
