@@ -25,6 +25,8 @@ function StoreCartLightbox(available_entry_count, all_entry_count)
 	this.cart_empty_event =
 		new YAHOO.util.CustomEvent('cart_empty', this);
 
+	this.current_delete = 0;
+
 	YAHOO.util.Event.onDOMReady(this.init, this, true);
 }
 
@@ -323,7 +325,7 @@ StoreCartLightbox.prototype.removeEntry = function(e)
 			this.updateItemCount(this.available_entry_count);
 		}
 
-		this.removeRow(tr, button);
+		this.removeRow(tr);
 		this.hideAddedMessage();
 	}
 }
@@ -331,36 +333,35 @@ StoreCartLightbox.prototype.removeEntry = function(e)
 // }}}
 // {{{ StoreCartLightbox.prototype.removeRow
 
-StoreCartLightbox.prototype.removeRow = function(tr, button)
+StoreCartLightbox.prototype.removeRow = function(tr)
 {
-	var rows = tr.parentNode.childNodes;
-	var index = null;
+	var animation = new YAHOO.util.Anim(
+		tr,
+		{ opacity: { to: 0 }},
+		0.3);
 
-	for (var i = 0; i < rows.length; i++) {
-		var remove_buttons = YAHOO.util.Dom.getElementsByClassName(
-			'store-remove', 'input', rows[i]);
+	var that = this;
 
-		if (remove_buttons.length > 0 && remove_buttons[0].id == button.id) {
-			var index = i;
-			break;
+	var current_delete = this.current_delete + 1;
+	this.current_delete = current_delete;
+
+	animation.onComplete.subscribe(function() {
+		var rows = tr.parentNode.childNodes;
+
+		for (var i = 0; i < rows.length; i++) {
+			if (rows[i] == tr) {
+				tr.parentNode.deleteRow(i);
+				break;
+			}
 		}
-	}
 
-	if (index !== null) {
-		var animation = new YAHOO.util.Anim(
-			tr,
-			{ opacity: { to: 0 }},
-			0.3);
-
-		var that = this;
-		animation.onComplete.subscribe(function() {
-			tr.parentNode.deleteRow(index);
+		if (that.current_delete == current_delete) {
 			that.setContentWithAnimation(
 				that.content.innerHTML);
-		});
+		}
+	});
 
-		animation.animate();
-	}
+	animation.animate();
 }
 
 // }}}
