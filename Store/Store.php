@@ -124,8 +124,8 @@ class Store
 			// AdWords
 			'adwords.conversion_id'    => null,
 			'adwords.conversion_label' => null,
-			// client manager email address used for automating ad creation
-			'adwords.email'            => null,
+			// API server used for automating ad creation
+			'adwords.server'           => 'https://adwords-sandbox.google.com',
 			// client ID used for automating ad creation
 			'adwords.client_id'        => null,
 			// developer token used for automating ad creation
