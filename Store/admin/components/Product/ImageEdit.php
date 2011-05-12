@@ -163,7 +163,7 @@ class StoreProductImageEdit extends AdminDBEdit
 
 			$message = new SwatMessage(Store::_('You need to specify all '.
 				'image sizes when creating a new image or upload an image to '.
-				'be automatically resized.'), 'notice');
+				'be automatically resized.'), 'error');
 
 			$this->ui->getWidget('message')->add($message);
 			return false;
