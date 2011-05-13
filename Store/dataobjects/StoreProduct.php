@@ -97,11 +97,28 @@ class StoreProduct extends SwatDBDataObject
 	public $reviewable = true;
 
 	/**
+	 * Headline content used for creating pay-per-click ads
+	 *
+	 * This is usually the product title or a shortened version of the product
+	 * title.
+	 *
+	 * @var string
+	 */
+	public $ppc_ad_headline;
+
+	/**
 	 * Content used for creating pay-per-click ads
 	 *
 	 * @var string
 	 */
-	public $ppc_ad_text;
+	public $ppc_ad_description1;
+
+	/**
+	 * Content used for creating pay-per-click ads
+	 *
+	 * @var string
+	 */
+	public $ppc_ad_description2;
 
 	// }}}
 	// {{{ protected properties
