@@ -10,7 +10,7 @@ require_once 'Swat/SwatDetailsStore.php';
  * Cart edit page of checkout
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutCartPage extends StoreCheckoutPage
@@ -364,13 +364,13 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 			$order->billing_address, $order->shipping_address,
 			$order->shipping_type);
 
-		$surcharge_total = $cart->getSurchargeTotal();
+		$surcharge_total = $cart->getSurchargeTotal($order->payment_methods);
 		if ($surcharge_total > 0)
 			$view->getRow('surcharge')->value = $surcharge_total;
 
 		$view->getRow('total')->value = $cart->getTotal(
 			$order->billing_address, $order->shipping_address,
-			$order->shipping_type);
+			$order->shipping_type, $order->payment_methods);
 	}
 
 	// }}}

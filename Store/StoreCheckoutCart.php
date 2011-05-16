@@ -307,11 +307,14 @@ abstract class StoreCheckoutCart extends StoreCart
 	 * @param StoreAddress $billing_address the billing address of the order.
 	 * @param StoreAddress $shipping_address the shipping address of the order.
 	 * @param StoreShippingType $shipping_type the shipping type of the order.
+	 * @param StorePaymentMethodWrapper $payment_methods the payment methods of
+	 *                                                    the order.
 	 *
 	 * @return double the cost of this cart's contents.
 	 */
 	public function getTotal(StoreAddress $billing_address,
-		StoreAddress $shipping_address, StoreShippingType $shipping_type = null)
+		StoreAddress $shipping_address, StoreShippingType $shipping_type = null,
+		StorePaymentMethodWrapper $payment_methods = null)
 	{
 		if ($this->cachedValueExists('store-total')) {
 			$total = $this->getCachedValue('store-total');
@@ -319,13 +322,13 @@ abstract class StoreCheckoutCart extends StoreCart
 			$total = 0;
 			$total += $this->getItemTotal();
 
-			$total += $this->getSurchargeTotal();
+			$total += $this->getSurchargeTotal($payment_methods);
 
-			$total += $this->getTaxTotal(
-				$billing_address, $shipping_address, $shipping_type);
+			$total += $this->getTaxTotal($billing_address, $shipping_address,
+				$shipping_type, $payment_methods);
 
-			$total += $this->getShippingTotal(
-				$billing_address, $shipping_address, $shipping_type);
+			$total += $this->getShippingTotal($billing_address,
+				$shipping_address, $shipping_type);
 
 			$this->setCachedValue('store-total', $total);
 		}
@@ -382,23 +385,24 @@ abstract class StoreCheckoutCart extends StoreCart
 	/**
 	 * Gets the total of any surcharges.
 	 *
+	 * @param StorePaymentMethodWrapper $payment_methods the payment method of
+	 *                                                    the order.
+	 *
 	 * @return double the sum of all surcharges.
 	 */
-	public function getSurchargeTotal()
+	public function getSurchargeTotal(
+		StorePaymentMethodWrapper $payment_methods = null)
 	{
 		if ($this->cachedValueExists('store-surcharge-total')) {
 			$total = $this->getCachedValue('store-surcharge-total');
 		} else {
 			$total = 0;
 
-			if (isset($this->app->session->order) &&
-				$this->app->session->order !== null) {
-				$payment_method =
-					$this->app->session->order->payment_methods->getFirst();
-
-				if ($payment_method !== null) {
-					if ($payment_method->surcharge !== null)
+			if ($payment_methods !== null) {
+				foreach ($payment_methods as $payment_method) {
+					if ($payment_method->surcharge !== null) {
 						$total+= $payment_method->surcharge;
+					}
 				}
 			}
 
@@ -471,17 +475,20 @@ abstract class StoreCheckoutCart extends StoreCart
 	 *
 	 * Calculates applicable taxes based on the contents of this cart. Tax
 	 * Calculations need to know where purchase is made in order to correctly
-	 * apply tax.
+	 * apply tax. Payment method is passed in case related surcharges need to be
+	 * taxed.
 	 *
 	 * @param StoreAddress $billing_address the billing address of the order.
 	 * @param StoreAddress $shipping_address the shipping address of the order.
 	 * @param StoreShippingType $shipping_type the shipping type of the order.
+	 * @param StorePaymentMethodWrapper $payment_methods the payment method of
+	 *                                                    the order.
 	 *
 	 * @return double the tax charged for the contents of this cart.
 	 */
 	abstract public function getTaxTotal(StoreAddress $billing_address,
-		StoreAddress $shipping_address,
-		StoreShippingType $shipping_type = null);
+		StoreAddress $shipping_address, StoreShippingType $shipping_type = null,
+		StorePaymentMethodWrapper $payment_methods = null);
 
 	// }}}
 	// {{{ abstract public function getTaxProvState()

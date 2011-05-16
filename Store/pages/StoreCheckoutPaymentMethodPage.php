@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreCardTypeWrapper.php';
  * Payment method edit page of checkout
  *
  * @package   Store
- * @copyright 2005-2009 silverorange
+ * @copyright 2005-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
@@ -46,6 +46,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$billing_address  = $this->app->session->order->billing_address;
 		$shipping_address = $this->app->session->order->shipping_address;
 		$shipping_type    = $this->app->session->order->shipping_type;
+		$payment_methods  = $this->app->session->order->payment_methods;
 
 		$class_name = SwatDBClassMap::get('StoreOrderAddress');
 
@@ -55,8 +56,8 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		if ($shipping_address === null)
 			$shipping_address = new $class_name();
 
-		return ($this->app->cart->checkout->getTotal(
-			$billing_address, $shipping_address, $shipping_type));
+		return ($this->app->cart->checkout->getTotal($billing_address,
+			$shipping_address, $shipping_type, $payment_methods));
 	}
 
 	// }}}
