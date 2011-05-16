@@ -307,14 +307,15 @@ abstract class StoreCheckoutCart extends StoreCart
 	 * @param StoreAddress $billing_address the billing address of the order.
 	 * @param StoreAddress $shipping_address the shipping address of the order.
 	 * @param StoreShippingType $shipping_type the shipping type of the order.
-	 * @param StorePaymentMethodWrapper $payment_methods the payment methods of
-	 *                                                    the order.
+	 * @param StoreOrderPaymentMethodWrapper $payment_methods the payment
+	 *                                                         methods of the
+	 *                                                         order.
 	 *
 	 * @return double the cost of this cart's contents.
 	 */
 	public function getTotal(StoreAddress $billing_address,
 		StoreAddress $shipping_address, StoreShippingType $shipping_type = null,
-		StorePaymentMethodWrapper $payment_methods = null)
+		StoreOrderPaymentMethodWrapper $payment_methods = null)
 	{
 		if ($this->cachedValueExists('store-total')) {
 			$total = $this->getCachedValue('store-total');
@@ -385,13 +386,13 @@ abstract class StoreCheckoutCart extends StoreCart
 	/**
 	 * Gets the total of any surcharges.
 	 *
-	 * @param StorePaymentMethodWrapper $payment_methods the payment method of
-	 *                                                    the order.
+	 * @param StoreOrderPaymentMethodWrapper $payment_methods the payment method
+	 *                                                         of the order.
 	 *
 	 * @return double the sum of all surcharges.
 	 */
 	public function getSurchargeTotal(
-		StorePaymentMethodWrapper $payment_methods = null)
+		StoreOrderPaymentMethodWrapper $payment_methods = null)
 	{
 		if ($this->cachedValueExists('store-surcharge-total')) {
 			$total = $this->getCachedValue('store-surcharge-total');
@@ -481,14 +482,15 @@ abstract class StoreCheckoutCart extends StoreCart
 	 * @param StoreAddress $billing_address the billing address of the order.
 	 * @param StoreAddress $shipping_address the shipping address of the order.
 	 * @param StoreShippingType $shipping_type the shipping type of the order.
-	 * @param StorePaymentMethodWrapper $payment_methods the payment method of
-	 *                                                    the order.
+	 * @param StoreOrderPaymentMethodWrapper $payment_methods the payment
+	 *                                                         methods of the
+	 *                                                         order.
 	 *
 	 * @return double the tax charged for the contents of this cart.
 	 */
 	abstract public function getTaxTotal(StoreAddress $billing_address,
 		StoreAddress $shipping_address, StoreShippingType $shipping_type = null,
-		StorePaymentMethodWrapper $payment_methods = null);
+		StoreOrderPaymentMethodWrapper $payment_methods = null);
 
 	// }}}
 	// {{{ abstract public function getTaxProvState()
