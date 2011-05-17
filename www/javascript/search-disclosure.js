@@ -1,7 +1,5 @@
 function StoreSearchDisclosure(id, open, entry, options)
 {
-	this.preloadImages();
-
 	this.search_controls = document.getElementById(id + '_search_controls');
 	this.fade_animation  = null;
 	this.entry           = entry;
@@ -12,6 +10,10 @@ function StoreSearchDisclosure(id, open, entry, options)
 	this.panel_height    = (options.panel_height) ? options.panel_height : 13;
 	this.panel_units     = (options.panel_units)  ? options.panel_units  : 'em';
 	this.xml_rpc_server  = options.xml_rpc_server;
+
+	if (this.title.length == 0) {
+		this.preloadImages();
+	}
 
 	this.loading_image   = (options.loading_image) ?
 		options.loading_image :
