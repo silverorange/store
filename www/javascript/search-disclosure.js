@@ -1,5 +1,7 @@
 function StoreSearchDisclosure(id, open, entry, options)
 {
+	this.preloadImages();
+
 	this.search_controls = document.getElementById(id + '_search_controls');
 	this.fade_animation  = null;
 	this.entry           = entry;
@@ -21,16 +23,7 @@ function StoreSearchDisclosure(id, open, entry, options)
 	YAHOO.util.Dom.removeClass(this.div.firstChild, 'no-js');
 }
 
-/**
- * Preload images
- */
-StoreSearchDisclosure.down_image = new Image();
-StoreSearchDisclosure.down_image.src =
-	'packages/store/images/search-disclosure-arrow-down.png';
-
-StoreSearchDisclosure.up_image = new Image();
-StoreSearchDisclosure.up_image.src =
-	'packages/store/images/search-disclosure-arrow-up.png';
+StoreSearchDisclosure.preloaded = false;
 
 YAHOO.lang.extend(StoreSearchDisclosure, SwatDisclosure, {
 
@@ -466,4 +459,19 @@ StoreSearchDisclosure.prototype.getOpenedImageSrc = function()
 StoreSearchDisclosure.prototype.getClosedImageSrc = function()
 {
 	return StoreSearchDisclosure.down_image.src;
+};
+
+StoreSearchDisclosure.prototype.preloadImages = function()
+{
+	if (!StoreSearchDisclosure.preloaded) {
+		StoreSearchDisclosure.down_image = new Image();
+		StoreSearchDisclosure.down_image.src =
+			'packages/store/images/search-disclosure-arrow-down.png';
+
+		StoreSearchDisclosure.up_image = new Image();
+		StoreSearchDisclosure.up_image.src =
+			'packages/store/images/search-disclosure-arrow-up.png';
+
+		StoreSearchDisclosure.preloaded = true;
+	}
 };
