@@ -1357,7 +1357,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		$order->item_total = $cart->getItemTotal();
 
-		$order->surcharge_total = $cart->getSurchargeTotal();
+		$order->surcharge_total = $cart->getSurchargeTotal(
+			$order->payment_methods);
 
 		$order->shipping_total = $cart->getShippingTotal(
 			$order->billing_address, $order->shipping_address,
