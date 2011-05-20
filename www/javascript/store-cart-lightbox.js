@@ -138,7 +138,12 @@ StoreCartLightbox.prototype.addEntries = function(entries, source, source_catego
 StoreCartLightbox.prototype.load = function(e)
 {
 	YAHOO.util.Event.preventDefault(e);
-	this.open();
+
+	if (this.status == 'open') {
+		this.close();
+	} else {
+		this.open();
+	}
 }
 
 // }}}
