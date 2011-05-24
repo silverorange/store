@@ -93,7 +93,7 @@ class StoreAttributeEdit extends AdminDBEdit
 
 		$message = new SwatMessage(
 			sprintf(Store::_('Attribute “%s” has been saved.'),
-				$this->attribute_type->title));
+				$this->attribute->title));
 
 		$this->app->messages->add($message);
 
