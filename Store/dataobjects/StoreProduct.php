@@ -376,6 +376,7 @@ class StoreProduct extends SwatDBDataObject
 
 	protected function init()
 	{
+		$this->registerDeprecatedProperty('ppc_ad_text');
 		$this->registerInternalProperty('primary_category',
 			SwatDBClassMap::get('StoreCategory'));
 

@@ -506,6 +506,7 @@ class StoreCategory extends SwatDBDataObject
 
 	protected function init()
 	{
+		$this->registerDeprecatedProperty('ppc_ad_text');
 		$this->registerDateProperty('createdate');
 
 		$this->registerInternalProperty('path');
