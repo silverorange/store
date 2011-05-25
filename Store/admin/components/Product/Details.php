@@ -666,16 +666,16 @@ class StoreProductDetails extends AdminIndex
 	protected function getTableModel(SwatView $view)
 	{
 		switch ($view->id) {
-			case 'items_view':
-				return $this->getItemsTableModel($view);
-			case  'related_products_view':
-				return $this->getRelatedProductsTableModel($view);
-			case  'product_collection_view':
-				return $this->getProductCollectionsTableModel($view);
-			case  'related_articles_view':
-				return $this->getRelatedArticlesTableModel($view);
-			case  'product_reviews_view':
-				return $this->getProductReviewsTableModel($view);
+		case 'items_view':
+			return $this->getItemsTableModel($view);
+		case  'related_products_view':
+			return $this->getRelatedProductsTableModel($view);
+		case  'product_collection_view':
+			return $this->getProductCollectionsTableModel($view);
+		case  'related_articles_view':
+			return $this->getRelatedArticlesTableModel($view);
+		case  'product_reviews_view':
+			return $this->getProductReviewsTableModel($view);
 		}
 	}
 
@@ -927,16 +927,16 @@ class StoreProductDetails extends AdminIndex
 		$form = $this->ui->getWidget('items_form');
 		$view->addStyleSheet('packages/store/admin/styles/disabled-rows.css');
 		$form->action = $this->getRelativeURL();
-		//$this->ui->getWidget('index_actions')->setViewSelector($view);
 
 		$this->buildItemGroups();
 
-		// show default status for new items
-		$input_status =
-			$view->getColumn('status')->getInputCell()->getPrototypeWidget();
-
-		$input_status->content =
-			StoreItemStatusList::status('available')->title;
+		// show default status for new items if there is an input row
+		if ($view->getFirstRowByClass('SwatTableViewInputRow') !== null) {
+			$column = $view->getColumn('status');
+			$input_status = $column->getInputCell()->getPrototypeWidget();
+			$input_status->content =
+				StoreItemStatusList::status('available')->title;
+		}
 
 		$this->buildStatusList();
 
@@ -1245,15 +1245,18 @@ class StoreProductDetails extends AdminIndex
 			$money_entry->locale = $region->getFirstLocale()->id;
 			$money_entry->size = 4;
 
-			$cell = new SwatInputcell();
-			$cell->setWidget($money_entry);
+			// add input cells if view has an input row
+			if ($view->getFirstRowByClass('SwatTableViewInputRow') !== null) {
+				$cell = new SwatInputcell();
+				$cell->setWidget($money_entry);
 
-			$column->setInputCell($cell);
+				$column->setInputCell($cell);
 
-			$view->appendColumn($column);
+				$view->appendColumn($column);
 
-			// need to manually init here
-			$column->init();
+				// need to manually init here
+				$column->init();
+			}
 		}
 	}
 
