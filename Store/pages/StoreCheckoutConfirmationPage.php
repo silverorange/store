@@ -16,7 +16,7 @@ require_once 'Store/exceptions/StorePaymentTotalException.php';
  * Confirmation page of checkout
  *
  * @package   Store
- * @copyright 2006-2010 silverorange
+ * @copyright 2006-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutConfirmationPage extends StoreCheckoutPage
@@ -1357,17 +1357,20 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		$order->item_total = $cart->getItemTotal();
 
-		$order->surcharge_total = $cart->getSurchargeTotal();
+		$order->surcharge_total = $cart->getSurchargeTotal(
+			$order->payment_methods);
 
 		$order->shipping_total = $cart->getShippingTotal(
 			$order->billing_address, $order->shipping_address,
 			$order->shipping_type);
 
 		$order->tax_total = $cart->getTaxTotal($order->billing_address,
-			 $order->shipping_address, $order->shipping_type);
+			$order->shipping_address, $order->shipping_type,
+			$order->payment_methods);
 
 		$order->total = $cart->getTotal($order->billing_address,
-			$order->shipping_address, $order->shipping_type);
+			$order->shipping_address, $order->shipping_type,
+			$order->payment_methods);
 
 		// Reload ad from the database to esure it exists before trying to save
 		// the order. This prevents order failure when a deleted ad ends up in
@@ -1417,7 +1420,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$this->app->getRegion());
 
 		$order->tax_total = $invoice->getTaxTotal($order->billing_address,
-			 $order->shipping_address);
+			 $order->shipping_address, $order->payment_methods);
 
 		$order->total = $invoice->getTotal($order->billing_address,
 			$order->shipping_address, $this->app->getRegion());

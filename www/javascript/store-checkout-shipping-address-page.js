@@ -6,7 +6,6 @@ function StoreCheckoutShippingAddressPage(id, provstate_other_index)
 
 	this.provstate = document.getElementById('shipping_address_provstate');
 	this.provstate_other_id = 'shipping_address_provstate_other';
-	this.provstate_other = document.getElementById(this.provstate_other_id);
 
 	StoreCheckoutShippingAddressPage.superclass.constructor.call(this, id,
 		provstate_other_index);
@@ -25,8 +24,7 @@ getFieldNames: function()
 		'shipping_address_provstate',
 		'shipping_address_postalcode',
 		'shipping_address_phone',
-		'shipping_address_country'
-	];
+		'shipping_address_country'];
 }
 
 });

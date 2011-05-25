@@ -11,6 +11,10 @@ function StoreSearchDisclosure(id, open, entry, options)
 	this.panel_units     = (options.panel_units)  ? options.panel_units  : 'em';
 	this.xml_rpc_server  = options.xml_rpc_server;
 
+	if (this.title.length == 0) {
+		this.preloadImages();
+	}
+
 	this.loading_image   = (options.loading_image) ?
 		options.loading_image :
 		'packages/swat/images/swat-button-throbber.gif';
@@ -21,16 +25,7 @@ function StoreSearchDisclosure(id, open, entry, options)
 	YAHOO.util.Dom.removeClass(this.div.firstChild, 'no-js');
 }
 
-/**
- * Preload images
- */
-StoreSearchDisclosure.down_image = new Image();
-StoreSearchDisclosure.down_image.src =
-	'packages/store/images/search-disclosure-arrow-down.png';
-
-StoreSearchDisclosure.up_image = new Image();
-StoreSearchDisclosure.up_image.src =
-	'packages/store/images/search-disclosure-arrow-up.png';
+StoreSearchDisclosure.preloaded = false;
 
 YAHOO.lang.extend(StoreSearchDisclosure, SwatDisclosure, {
 
@@ -466,4 +461,19 @@ StoreSearchDisclosure.prototype.getOpenedImageSrc = function()
 StoreSearchDisclosure.prototype.getClosedImageSrc = function()
 {
 	return StoreSearchDisclosure.down_image.src;
+};
+
+StoreSearchDisclosure.prototype.preloadImages = function()
+{
+	if (!StoreSearchDisclosure.preloaded) {
+		StoreSearchDisclosure.down_image = new Image();
+		StoreSearchDisclosure.down_image.src =
+			'packages/store/images/search-disclosure-arrow-down.png';
+
+		StoreSearchDisclosure.up_image = new Image();
+		StoreSearchDisclosure.up_image.src =
+			'packages/store/images/search-disclosure-arrow-up.png';
+
+		StoreSearchDisclosure.preloaded = true;
+	}
 };

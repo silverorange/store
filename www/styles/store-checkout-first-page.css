@@ -20,8 +20,8 @@
 
 /* Stacked Addresses */
 
-#billing_address_container,
-#shipping_address_container,
+.checkout-no-column #billing_address_list_container,
+.checkout-no-column #shipping_address_list_container,
 .checkout-no-column #payment_method_list_container {
 	float: left;
 	width: 43%;

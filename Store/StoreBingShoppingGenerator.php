@@ -44,6 +44,10 @@ abstract class StoreBingShoppingGenerator extends SwatObject
 	{
 		$this->db     = $db;
 		$this->config = $config;
+
+		if ($this->config->uri->cdn_base != '') {
+			SiteImage::$cdn_base = $this->config->uri->cdn_base;
+		}
 	}
 
 	// }}}
@@ -253,8 +257,8 @@ abstract class StoreBingShoppingGenerator extends SwatObject
 		$image = null;
 
 		if ($item->product->primary_image !== null) {
-			$image = $this->getBaseHref().
-				$item->product->primary_image->getURI('small');
+			$image = $item->product->primary_image->getURI('small',
+				$this->getBaseHref());
 		}
 
 		return $image;

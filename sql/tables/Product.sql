@@ -7,7 +7,9 @@ create table Product (
 	shortname varchar(255),
 	keywords varchar(255),
 	reviewable boolean not null default true,
-	ppc_ad_text varchar(255),
+	ppc_ad_headline varchar(25),
+	ppc_ad_description1 varchar(35),
+	ppc_ad_description2 varchar(35),
 	primary key (id)
 );
 

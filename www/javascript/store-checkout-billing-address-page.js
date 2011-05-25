@@ -6,7 +6,6 @@ function StoreCheckoutBillingAddressPage(id, provstate_other_index)
 
 	this.provstate = document.getElementById('billing_address_provstate');
 	this.provstate_other_id = 'billing_address_provstate_other';
-	this.provstate_other = document.getElementById(this.provstate_other_id);
 
 	StoreCheckoutBillingAddressPage.superclass.constructor.call(this, id,
 		provstate_other_index);
@@ -25,8 +24,7 @@ getFieldNames: function()
 		'billing_address_city',
 		'billing_address_provstate',
 		'billing_address_postalcode',
-		'billing_address_country'
-	];
+		'billing_address_country'];
 }
 
 });

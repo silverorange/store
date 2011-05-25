@@ -363,6 +363,9 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 		$span = '<span class="add-new">%s</span>';
 
 		if ($this->app->session->checkout_with_account) {
+			$address_list->addOption('new',
+				sprintf($span, Store::_('Add a New Address')), 'text/xml');
+
 			$address_list->addOption('billing',
 				sprintf($span, Store::_('Ship to Billing Address')),
 				'text/xml');
@@ -377,15 +380,8 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 				'text/xml');
 		}
 
-		if ($this->app->session->isLoggedIn()) {
+		if ($this->app->session->isLoggedIn())
 			$this->buildAccountShippingAddresses($address_list);
-		}
-
-		if ($this->app->session->checkout_with_account) {
-			$address_list->addOption('new',
-				sprintf($span, Store::_('Add a New Address')), 'text/xml');
-		}
-
 	}
 
 	// }}}

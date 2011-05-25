@@ -115,11 +115,28 @@ class StoreCategory extends SwatDBDataObject
 	public $displayorder;
 
 	/**
+	 * Headline content used for creating pay-per-click ads
+	 *
+	 * This is usually the category title or a shortened version of the
+	 * category title.
+	 *
+	 * @var string
+	 */
+	public $ppc_ad_headline;
+
+	/**
 	 * Content used for creating pay-per-click ads
 	 *
 	 * @var string
 	 */
-	public $ppc_ad_text;
+	public $ppc_ad_description1;
+
+	/**
+	 * Content used for creating pay-per-click ads
+	 *
+	 * @var string
+	 */
+	public $ppc_ad_description2;
 
 	// }}}
 	// {{{ protected properties
