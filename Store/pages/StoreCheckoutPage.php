@@ -58,6 +58,13 @@ abstract class StoreCheckoutPage extends SiteUiPage
 		$this->initDataObjects();
 		$this->checkProgress();
 
+		// If the order has been saved then the checkout process is complete.
+		// If the user isn't on the thank you page then relocate there now.
+		if ($this->app->session->order->id !== null &&
+			$this->getSource() !== 'checkout/thankyou') {
+			$this->app->relocate('checkout/thankyou');
+		}
+
 		$this->loadUI();
 		$this->initInternal();
 		$this->ui->init();
