@@ -1,7 +1,7 @@
 /* Side-by-side billing/shipping addresses */
 
 .checkout-column-left {
-	margin-right: 4%;
+	margin-right: 3%;
 }
 
 .checkout-column-left,
@@ -14,7 +14,7 @@
 .checkout-column-left .swat-entry,
 .checkout-column-right .swat-entry,
 #card_fullname {
-	width: 98%;
+	width: 95%;
 }
 
 
@@ -22,10 +22,10 @@
 
 #billing_address_container,
 #shipping_address_container,
-.checkout-no-column #payment_method_list_container {
+.checkout-no-column #payment_method_list_container,
+.checkout-no-column #payment_method_form {
 	float: left;
-	width: 43%;
-	margin-right: 3%;
+	width: 42%;
 }
 
 #billing_address_form,
@@ -35,14 +35,6 @@
 	padding: 0;
 	margin: 0;
 }
-
-.checkout-no-column #billing_address_form,
-.checkout-no-column #shipping_address_form,
-.checkout-no-column #payment_method_form {
-	float: left;
-	width: 40%;
-}
-
 .swat-fieldset:after {
     content: ".";
     display: block;

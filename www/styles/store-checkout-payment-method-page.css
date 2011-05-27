@@ -12,13 +12,6 @@
 	font-weight: normal;
 }
 
-.checkout-no-column #payment_method_list_container,
-.checkout-no-column #payment_method_form {
-	float: left;
-	width: 45%;
-	display: inline;
-}
-
 .swat-footer-form-field { clear: both; }
 
 #card_verification_value_field .swat-entry,
@@ -41,13 +34,6 @@
 #card_verification_value_field .swat-note img,
 #account_card_verification_value_field .swat-note img {
 	vertical-align: middle;
-}
-
-#card_container,
-#current_payments {
-	width: 48%;
-	float: left;
-	margin-right: 24px;
 }
 
 /* {{{ Multiple Payments Table */
