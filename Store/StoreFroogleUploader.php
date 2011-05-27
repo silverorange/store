@@ -2,6 +2,7 @@
 
 require_once 'Site/SiteCommandLineApplication.php';
 require_once 'Site/SiteDatabaseModule.php';
+require_once 'Site/dataobjects/SiteImage.php';
 require_once 'Store/Store.php';
 require_once 'Store/StoreFroogleGenerator.php';
 require_once 'Store/StoreCommandLineConfigModule.php';
@@ -73,6 +74,10 @@ abstract class StoreFroogleUploader extends SiteCommandLineApplication
 	public function run()
 	{
 		parent::run();
+
+		if ($this->config->uri->cdn_base != '') {
+			SiteImage::$cdn_base = $this->config->uri->cdn_base;
+		}
 
 		$this->lock();
 
