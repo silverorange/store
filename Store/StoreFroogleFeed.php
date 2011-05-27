@@ -20,6 +20,7 @@ class StoreFroogleFeed extends AtomFeed
 	public function __construct()
 	{
 		$this->addNameSpace('g', 'http://base.google.com/ns/1.0');
+		$this->addNameSpace('c', 'http://base.google.com/cns/1.0');
 	}
 
 	// }}}
