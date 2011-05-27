@@ -35,7 +35,7 @@
 				</object>
 			</object>
 			<object class="SwatTableViewColumn" id="remove_column">
-				<object class="StorePriceCellRenderer">
+				<object class="StorePriceCellRenderer" id="price_renderer">
 					<property name="value" type="data">extension</property>
 				</object>
 				<object class="SwatWidgetCellRenderer" id="remove_renderer">
