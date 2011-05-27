@@ -105,7 +105,11 @@ class StoreCartProcessor extends SwatObject
 			}
 		}
 
-		$this->entries_added[] = array('entry' => $entry, 'status' => $status);
+		if ($status !== null) {
+			$this->entries_added[] = array(
+				'entry' => $entry,
+				'status' => $status);
+		}
 
 		return $status;
 	}
