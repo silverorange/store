@@ -48,6 +48,19 @@ abstract class StoreFroogleGenerator extends SwatObject
 
 	public function generate()
 	{
+		$feed = $this->getFeed();
+		$this->addEntries($feed);
+
+		ob_start();
+		$feed->display();
+		return ob_get_clean();
+	}
+
+	// }}}
+	// {{{ protected function getFeed()
+
+	protected function getFeed()
+	{
 		$feed = new StoreFroogleFeed();
 
 		$feed->title = sprintf(Store::_('%s Products'),
@@ -59,11 +72,7 @@ abstract class StoreFroogleGenerator extends SwatObject
 			substr($this->config->uri->absolute_base, 7), // get domain
 			$this->getSiteInceptionDate());
 
-		$this->addEntries($feed);
-
-		ob_start();
-		$feed->display();
-		return ob_get_clean();
+		return $feed;
 	}
 
 	// }}}

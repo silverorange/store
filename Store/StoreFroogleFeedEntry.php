@@ -14,6 +14,7 @@ class StoreFroogleFeedEntry extends AtomFeedEntry
 	// {{{ public properties
 
 	public $name_space = 'g';
+	public $custom_name_space = 'c';
 
 	public $expiration_date;
 	public $price;
@@ -183,6 +184,12 @@ class StoreFroogleFeedEntry extends AtomFeedEntry
 		if ($this->upc !== null)
 			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
 				'upc', $this->upc, $this->name_space));
+
+		if ($this->merchant_category !== null) {
+			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
+				'merchant_category', $this->merchant_category,
+				$this->custom_name_space));
+		}
 
 		return $entry;
 	}
