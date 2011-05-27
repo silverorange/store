@@ -7,9 +7,16 @@
 	margin: 1em;
 }
 
+.checkout-no-column .swat-entry,
+.checkout-column-left .swat-entry,
+.checkout-column-right .swat-entry {
+	width: 95%;
+}
+
 .checkout-no-column #billing_address_form,
 .checkout-no-column #shipping_address_form {
 	margin: 0;
+	width: 42%
 }
 
 .add-new {
@@ -24,6 +31,25 @@
 .swat-form #mailing_subscriber_field label {
 	font-weight: normal;
 }
+
+#billing_address_first_name_field.swat-form-field-with-messages,
+#billing_address_last_name_field.swat-form-field-with-messages,
+#shipping_address_first_name_field.swat-form-field-with-messages,
+#shipping_address_last_name_field.swat-form-field-with-messages,
+#billing_address_postalcode_field.swat-form-field-with-messages,
+#shipping_address_postalcode_field.swat-form-field-with-messages {
+	width: 42%;
+	padding-left: 2%;
+	padding-right: 2%;
+}
+
+#billing_address_first_name_field.swat-form-field-with-messages,
+#shipping_address_first_name_field.swat-form-field-with-messages,
+#billing_address_postalcode_field.swat-form-field-with-messages,
+#shipping_address_postalcode_field.swat-form-field-with-messages {
+	margin-right: 3%;
+}
+
 
 /* {{{ Address Verification */
 

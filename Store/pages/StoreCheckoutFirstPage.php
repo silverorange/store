@@ -129,13 +129,8 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 		$billing_container  = $ui->getWidget('billing_address_container');
 		$shipping_container = $ui->getWidget('shipping_address_container');
 
-		if (!$address_list->visible) {
-			$billing_container->classes[]  = 'checkout-column-left';
-			$shipping_container->classes[] = 'checkout-column-right';
-		} else {
-			$billing_container->classes[]  = 'checkout-no-column';
-			$shipping_container->classes[] = 'checkout-no-column';
-		}
+		$billing_container->classes[]  = 'checkout-column-left';
+		$shipping_container->classes[] = 'checkout-column-right';
 	}
 
 	// }}}
