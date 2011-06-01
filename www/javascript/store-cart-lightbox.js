@@ -592,7 +592,7 @@ StoreCartLightbox.prototype.updateCartLink = function(link)
 StoreCartLightbox.prototype.recordAnalytics = function(uri)
 {
 	if (this.analytics == 'google_analytics') {
-		_gaq.push(['_trackPageview'], uri);
+		_gaq.push(['_trackPageview', uri]);
 	}
 }
 
