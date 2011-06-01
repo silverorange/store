@@ -86,7 +86,10 @@ StoreCartLightbox.prototype.init = function()
 
 	var that = this;
 	var esc_close = new YAHOO.util.KeyListener(document, {keys:[27]},
-		function() { that.close(); });
+		function() {
+			that.close();
+			that.recordAnalytics('xml-rpc/mini-cart/close/esc');
+	});
 
 	esc_close.enable();
 
@@ -114,7 +117,7 @@ StoreCartLightbox.prototype.addEntries = function(entries, source, source_catego
 	{
 		if (response.request_id == that.current_request) {
 			that.addEntriesCallback(response);
-			that.recordAnalytics('xml-rpc/mini-cart/add-entries');
+			that.recordAnalytics('xml-rpc/mini-cart/open/add');
 		}
 	}
 
@@ -141,8 +144,18 @@ StoreCartLightbox.prototype.load = function(e)
 
 	if (this.status == 'open') {
 		this.close();
+
+		// track here instead of inside close() so that we only clicks on cart
+		// link a close. Closes caused by clicking outside the box are handled
+		// elsewhere
+		this.recordAnalytics('xml-rpc/mini-cart/close');
 	} else {
 		this.open();
+
+		// track here instead of inside open() so that we only clicks on cart
+		// link as opens. Opens caused by adding items to the cart are tracked
+		// elsewhere.
+		this.recordAnalytics('xml-rpc/mini-cart/open');
 	}
 }
 
@@ -309,6 +322,7 @@ StoreCartLightbox.prototype.removeEntry = function(e)
 		if (response.request_id == that.current_request) {
 			that.displayResponse(response);
 			that.entry_removed_event.fire(response);
+			that.recordAnalytics('xml-rpc/mini-cart/remove-entry');
 		}
 	}
 
@@ -415,6 +429,7 @@ StoreCartLightbox.prototype.clickClose = function(e)
 	}
 
 	this.close();
+	this.recordAnalytics('xml-rpc/mini-cart/close/click');
 }
 
 // }}}
