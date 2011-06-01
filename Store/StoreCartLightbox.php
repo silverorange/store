@@ -252,7 +252,6 @@ class StoreCartLightbox extends SwatControl
 	}
 
 	// }}}
-
 	// {{{ protected function buildCartUI()
 
 	protected function buildCartUI()
@@ -268,10 +267,13 @@ class StoreCartLightbox extends SwatControl
 			$this->getCartTitle();
 
 		$cart_link = new SwatHtmlTag('a');
-		$cart_link->href = 'cart';
+		$cart_link->href = 'cart?link=cart-lightbox';
 		$cart_link->setContent(Store::_('View Cart'));
 		$this->ui->getWidget('lightbox_cart_link')->content =
 			$cart_link->__toString().' '.Store::_('or');
+
+		// add link var for tracking.
+		$this->ui->getWidget('checkout_form')->action.= '?link=cart-lightbox';
 	}
 
 	// }}}
@@ -393,7 +395,7 @@ class StoreCartLightbox extends SwatControl
 		$ds->discount = $entry->getDiscount();
 		$ds->discount_extension = $entry->getDiscountExtension();
 		$ds->show_remove_button = true;
-		$ds->product_link = 'store/'.$entry->item->product->path;
+		$ds->product_link = $this->getProductLink($entry);
 
 		$dimension = $this->getImageDimension();
 		$image = $entry->item->product->primary_image;
@@ -425,7 +427,8 @@ class StoreCartLightbox extends SwatControl
 		$ds->id = 0;
 		$ds->status_title = null;
 		$ds->quantity = null;
-		$ds->description = sprintf('<a class="more-link" href="cart">%s</a>',
+		$ds->description = sprintf(
+			'<a class="more-link" href="cart?link=cart-lightbox-more">%s</a>',
 			sprintf(Store::ngettext('and one other item',
 					'and %s other items…', $num_items),
 				$locale->formatNumber($num_items)));
@@ -470,7 +473,7 @@ class StoreCartLightbox extends SwatControl
 
 		if (count($title) > 0) {
 			$a_tag = new SwatHtmlTag('a');
-			$a_tag->href = 'store/'.$entry->item->product->path;
+			$a_tag->href = $this->getProductLink($entry);
 			$a_tag->setContent(implode(' - ', $title));
 			$description.= '<h4>'.$a_tag->__toString().'</h4>';
 		}
@@ -504,6 +507,16 @@ class StoreCartLightbox extends SwatControl
 		}
 
 		return $description;
+	}
+
+	// }}}
+	// {{{ protected function getProductLink()
+
+	protected function getProductLink(StoreCartEntry $entry)
+	{
+		return sprintf('%s%s?link=cart-lightbox',
+			$this->app->config->store->path,
+			$entry->item->product->path);
 	}
 
 	// }}}
