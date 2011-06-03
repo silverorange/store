@@ -13,12 +13,11 @@ abstract class StoreLocaleApplication extends StoreApplication
 {
 	// {{{ public function getBaseHref()
 
-	public function getBaseHref($secure = null, $locale = null)
+	public function getBaseHref($secure = null)
 	{
-		if ($locale === null)
-			$locale = $this->locale;
+		$locale = $this->locale;
 
-		if ($locale === false || $locale === null)
+		if ($locale === null)
 			return parent::getBaseHref($secure);
 
 		$language = substr($locale, 0, 2);
@@ -48,6 +47,76 @@ abstract class StoreLocaleApplication extends StoreApplication
 		$uri = preg_replace('|^[a-z][a-z]/[a-z][a-z]/|', '', $uri);
 
 		return $uri;
+	}
+
+	// }}}
+	// {{{ public function getSwitchLocaleLink()
+
+	/**
+	 * Gets the link to switch locales
+	 *
+	 * @param string $locale The locale to link to. 
+	 *
+	 * @return string the link to switch locales on the site
+	 */
+	public function getSwitchLocaleLink($locale)
+	{
+		$link = $this->getRootBaseHref();
+
+		if (isset($this->mobile)) {
+			if ($this->mobile->isMobileUrl() &&
+				$this->mobile->getPrefix() !== null) {
+
+				$link.= $this->mobile->getPrefix().'/';
+			}
+		}
+
+		$language = substr($locale, 0, 2);
+		$country = strtolower(substr($locale, 3, 2));
+		$link.= $country.'/'.$language.'/';
+
+		return $link;
+	}
+
+	// }}}
+	// {{{ public function getSwitchMobileLink()
+
+	/**
+	 * Gets the link to switch to the mobile, or non-mobile url
+	 *
+	 * @param boolean $mobile If true, the link is for the mobile version
+	 *                        of the site, if false, for the non-mobile version.
+	 *
+	 * @return string the link to switch the mobile url of the site
+	 */
+	public function getSwitchMobileLink($mobile = true, $source = null)
+	{
+		$link = $this->getRootBaseHref();
+
+		if (!isset($this->mobile)) {
+			throw new SwatException(
+				'This site does not have a SiteMobileModule');
+		}
+
+		if ($mobile) {
+			$link.= $this->mobile->getPrefix().'/';
+		}
+
+		if ($this->locale instanceof ZsResearchLocale) {
+			$language  = substr($this->locale->id, 0, 2);
+			$country   = strtolower(substr($this->locale->id, 3, 2));
+			$link.= $language.'/'.$country.'/';
+		}
+
+		if ($source !== null) {
+			$link.= $source;
+		}
+
+		$link.= sprintf('?%s=%s',
+			$this->mobile->getSwitchGetVar(),
+			$mobile ? '1' : '0');
+
+		return $link;
 	}
 
 	// }}}
