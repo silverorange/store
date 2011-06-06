@@ -853,11 +853,15 @@ class StoreCartPage extends SitePage
 				if ($entry === null)
 					break;
 
+				$added_entry = $this->app->cart->checkout->addEntry($entry);
+				// make sure entry was added
+				if ($added_entry === null)
+					break;
+
 				$this->added_entry_ids[] = $id;
 				$num_entries_moved++;
 
 				$this->app->cart->saved->removeEntry($entry);
-				$this->app->cart->checkout->addEntry($entry);
 
 				if ($entry->isAvailable()) {
 					$this->addToAvailableProductCount($entry);
