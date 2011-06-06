@@ -43,6 +43,28 @@ class StoreProductProductCollection extends AdminSearch
 		$this->ui->loadFromXML($this->ui_xml);
 
 		$this->initCatalogSelector();
+
+		$status_array = array();
+		foreach (StoreItemStatusList::statuses() as $status) {
+			$status_array[$status->id]= $status->title;
+		}
+		$status_flydown = $this->ui->getWidget('search_item_status');
+		$status_flydown->addOptionsByArray($status_array);
+
+		$sale_discount_flydown = $this->ui->getWidget('search_sale_discount');
+		$sale_discount_flydown->addOptionsByArray(SwatDB::getOptionArray(
+			$this->app->db, 'SaleDiscount', 'title', 'id', 'title'));
+
+		$search_flydown = $this->ui->getWidget(
+			'search_item_minimum_quantity_group');
+
+		$options = SwatDB::getOptionArray($this->app->db,
+			'ItemMinimumQuantityGroup', 'title', 'id', 'title');
+
+		$search_flydown->addOptionsByArray($options);
+
+		$this->ui->getWidget('search_item_minimum_quantity_group_field'
+			)->visible = (count($options) > 0);
 	}
 
 	// }}}
