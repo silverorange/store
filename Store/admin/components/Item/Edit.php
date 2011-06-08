@@ -241,12 +241,13 @@ class StoreItemEdit extends AdminDBEdit
 				 * - alias is not the same as current item sku
 				 * - two of the same aliases are not entered at once
 				 */
-				if (!Item::validateSKU($this->app->db, $alias, $catalog,
+				if (!StoreItem::validateSKU($this->app->db, $alias, $catalog,
 					$this->product, $aliases->values) ||
-					$alias == $sku->value || in_array($alias, $valid_skus))
+					$alias == $sku->value || in_array($alias, $valid_skus)) {
 						$invalid_skus[] = $alias;
-				else
+				} else {
 					$valid_skus[] = $alias;
+				}
 			}
 
 			if (count($invalid_skus) > 0) {
