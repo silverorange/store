@@ -50,6 +50,8 @@ StoreCheckoutAddressPage.prototype.initContainer = function()
 
 	this.show_animation.onComplete.subscribe(function() {
 		div.style.overflow = 'visible';
+		div.style.height = 'auto';
+		YAHOO.util.Dom.addClass(div, 'store-checkout-address-open');
 
 		var fade_in = new YAHOO.util.Anim(
 			that.container, { opacity: { to: 1 } }, duration,
@@ -64,6 +66,7 @@ StoreCheckoutAddressPage.prototype.initContainer = function()
 
 	this.hide_animation.onComplete.subscribe(function() {
 		div.style.overflow = 'hidden';
+		YAHOO.util.Dom.addClass(div, 'store-checkout-address-closed');
 
 		var collapse = new YAHOO.util.Anim(
 			div, { height: { to: 0 } }, duration,
