@@ -45,6 +45,8 @@ class StoreFroogleFeedEntry extends AtomFeedEntry
 	public $tax_region = null;
 	public $upc = null;
 
+	public $merchant_category = null;
+
 	// }}}
 	// {{{ private properties
 
