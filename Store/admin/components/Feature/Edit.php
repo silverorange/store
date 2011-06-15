@@ -39,6 +39,17 @@ class StoreFeatureEdit extends AdminDBEdit
 		$region_flydown->addOptionsByArray(SwatDB::getOptionArray(
 			$this->app->db, 'Region', 'title', 'id', 'title'));
 
+		// only show instances if we're not on an instance, and at least
+		// one instance exists
+		$instance_id = $this->app->getInstanceId();
+		if ($instance_id === null) {
+			$instances = SwatDB::getOptionArray($this->app->db, 'Instance',
+				'title', 'id', 'title');
+
+			$this->ui->getWidget('instance')->addOptionsByArray($instances);
+			$this->ui->getWidget('instance_field')->visible =
+				(count($instances) != 0);
+		}
 	}
 
 	// }}}
@@ -98,6 +109,14 @@ class StoreFeatureEdit extends AdminDBEdit
 		$this->feature->end_date     = $values['end_date'];
 		$this->feature->display_slot = $values['display_slot'];
 		$this->feature->region       = $values['region'];
+
+		$instance_id = $this->app->getInstanceId();
+		$instance_widget = $this->ui->getWidget('instance');
+		if ($instance_id === null && $instance_widget->value !== null) {
+			$this->feature->instance = $instance_widget->value;
+		} else {
+			$this->feature->instance = $instance_id;
+		}
 	}
 
 	// }}}

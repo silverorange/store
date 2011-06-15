@@ -40,6 +40,13 @@
 						<property name="link_value" type="data">id</property>
 					</object>
 				</object>
+				<object class="SwatTableViewOrderableColumn" id="instance">
+					<property name="title" translatable="yes">Instance</property>
+					<property name="visible" type="boolean">false</property>
+					<object class="SwatTextCellRenderer">
+						<property name="text" type="data">instance_title</property>
+					</object>
+				</object>
 				<object class="SwatTableViewOrderableColumn" id="title">
 					<property name="title" translatable="yes">Title</property>
 					<object class="SwatNullTextCellRenderer">
