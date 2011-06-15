@@ -5,67 +5,46 @@
 	width: 378px;
 	text-align: left;
 	z-index: 1000;
+	padding-top: 10px;
 }
 
 * html #store_cart_lightbox {
 	position: absolute;
 }
 
-#store_cart_lightbox_body {
-	background: url(../images/mini-cart-background.png) repeat-y -378px 0;
-	padding: 0 14px;
+#store_cart_lightbox_content {
+	background: #fff;
+	border: 1px solid #ccc;
+	-webkit-box-shadow: 0 5px 30px #000;
+	-moz-box-shadow: 0 5px 30px #000;
+	box-shadow: 0 5px 30px #000;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
 }
 
 #store_cart_lightbox_top {
-	background: url(../images/mini-cart-background.png) no-repeat 0 100%;
-	height: 27px;
+	background: url(../images/store-cart-lightbox-arrow.png) no-repeat 50% 0;
+	height: 10px;
+	width: 19px;
+	position: absolute;
+	top: 1px;
+	right: 40px;
 }
-
-#store_cart_lightbox_bottom {
-	background: url(../images/mini-cart-background.png) no-repeat -756px 100%;
-	height: 26px;
-}
-
-/* {{{ IE hacks */
-
-/* IE doesn't play nice with 24bit png's whose style.opacity changes */
-
-* html #store_cart_lightbox_top,
-* html #store_cart_lightbox_body,
-* html #store_cart_lightbox_bottom {
-	background-image: url(../images/mini-cart-background-ie.png);
-}
-
-/* IE 7 */
-*+html #store_cart_lightbox_top,
-*+html #store_cart_lightbox_body,
-*+html #store_cart_lightbox_bottom {
-	background-image: url(../images/mini-cart-background-ie.png);
-}
-
-/* IE 8 */
-#store_cart_lightbox_top,
-#store_cart_lightbox_body,
-#store_cart_lightbox_bottom {
-	background-image: url(../images/mini-cart-background-ie.png)\0/;
-}
-
-/* }}} */
 
 #store_cart_lightbox #lightbox_cart_form {
 	max-height: 300px;
 	overflow: auto;
 	border-top: 1px solid #dfd5c3;
 	border-bottom: 1px solid #dfd5c3;
-	margin: 15px 0 10px 0;
-}
-
-#store_cart_lightbox_content {
-	padding-top: 5px;
+	margin: 0;
+	padding: 5px 0;
+	background: #f0e6d6;
+	clear: both;
 }
 
 #store_cart_lightbox .swat-table-view tbody tr {
-	background: #f0e6d6;
+	background: transparent;
 }
 
 #store_cart_lightbox #lightbox_cart_view.swat-table-view tr {
@@ -102,6 +81,7 @@
 #store_cart_lightbox tbody td.remove-column {
 	padding-right: 10px;
 }
+
 
 #store_cart_lightbox tbody td.quantity-column {
 	padding: 8px 6px 0 0;
@@ -151,6 +131,7 @@
 }
 
 #store_cart_lightbox .added-message {
+	margin-top: 7px;
 	padding: 4px;
 	float: right;
 	background: #fffbc9;
@@ -159,14 +140,15 @@
 }
 
 #store_cart_lightbox h3 {
-	margin: 0 10px;
+	margin: 0;
+	padding: 10px;
 	font-size: 130%;
 }
 
 #store_cart_lightbox .store-cart-description h4 {
 	color: #3f0e08;
 	font-size: 13px;
-	margin-bottom: 3px;
+	margin: 0 0 3px 0;
 }
 
 #store_cart_lightbox .store-cart-description {
@@ -179,7 +161,7 @@
 
 #store_cart_lightbox .empty-content,
 #store_cart_lightbox .empty-message {
-	padding: 0 10px;
+	padding: 10px;
 }
 
 #store_cart_lightbox .empty-content h3 {
@@ -187,17 +169,21 @@
 }
 
 #store_cart_lightbox #lightbox_cart_link_container {
-	float: right;
-	padding: 10px;
+	display: inline-block;
+	zoom: 1;
+	*display: inline;
+	vertical-align: middle;
+	padding-right: 0.5em;
 }
 
 #store_cart_lightbox #checkout_container {
-	float: right;
-	padding: 10px;
+	vertical-align: middle;
 }
 
 #store_cart_lightbox #checkout_form {
-	margin: 5px 10px 0 10px;
+	margin: 0;
+	padding: 15px 10px;
+	text-align: right;
 }
 
 /* {{{ SwatMessageDisplay embedded in Cart Lightbox */
