@@ -54,15 +54,13 @@
 	<widget class="SwatForm" id="checkout_form">
 		<property name="action">checkout</property>
 		<property name="classes[]">clearfix</property>
-		<widget class="SwatDisplayableContainer" id="checkout_container">
-			<widget class="SwatButton" id="checkout_button">
-				<property name="title"  translatable="yes">Checkout</property>
-			</widget>
-		</widget>
 		<widget class="SwatDisplayableContainer" id="lightbox_cart_link_container">
 			<widget class="SwatContentBlock" id="lightbox_cart_link">
 				<property name="content_type">text/xml</property>
 			</widget>
+		</widget>
+		<widget class="SwatButton" id="checkout_button">
+			<property name="title"  translatable="yes">Checkout</property>
 		</widget>
 	</widget>
 </swatml>
