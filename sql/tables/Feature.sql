@@ -10,5 +10,6 @@ create table Feature (
 	display_slot int not null,
 	priority int not null default 0,
 	description varchar(500),
+	instance integer references Instance(id),
 	primary key (id)
 );

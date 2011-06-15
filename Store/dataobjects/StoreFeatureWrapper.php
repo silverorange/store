@@ -19,7 +19,12 @@ class StoreFeatureWrapper extends SwatDBRecordsetWrapper
 	{
 		$features = false;
 		$region   = $app->getRegion();
+		$instance = $app->getInstanceId();
 		$key      = 'StoreFeatureWrapper.getFeatures.'.$region->id;
+
+		if ($instance !== null) {
+			$key.= '.'.$instance;
+		}
 
 		// easter egg for testing, if warp is set, don't bother checking
 		// memcache for features, and check each loaded
@@ -41,12 +46,15 @@ class StoreFeatureWrapper extends SwatDBRecordsetWrapper
 				where enabled = %s
 					and (region is null or region = %s)
 					and (start_date is null or start_date <= %s)
+					and %s
 				order by display_slot, start_date desc';
 
 			$sql = sprintf($sql,
 				$app->db->quote(true, 'boolean'),
 				$app->db->quote($region->id, 'integer'),
-				$app->db->quote($date, 'date'));
+				$app->db->quote($date, 'date'),
+				($instance === null) ? '1 = 1' : sprintf('instance = %s',
+					$app->db->quote($instance, 'integer')));
 
 			$all_features = SwatDB::query($app->db, $sql,
 				'StoreFeatureWrapper');

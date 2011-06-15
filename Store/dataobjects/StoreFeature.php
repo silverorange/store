@@ -117,6 +117,9 @@ class StoreFeature extends SwatDBDataObject
 		$this->registerDateProperty('end_date');
 		$this->registerInternalProperty('region',
 			SwatDBClassMap::get('StoreRegion'));
+
+		$this->registerInternalProperty('instance',
+			SwatDBClassMap::get('SiteInstance'));
 	}
 	// }}}
 	// {{{ protected function getSerializableSubDataObjects()
@@ -124,7 +127,7 @@ class StoreFeature extends SwatDBDataObject
 	protected function getSerializableSubDataObjects()
 	{
 		return array_merge(parent::getSerializableSubDataObjects(),
-			array('region'));
+			array('region', 'instance'));
 	}
 
 	// }}}
