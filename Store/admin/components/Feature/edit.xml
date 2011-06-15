@@ -5,6 +5,14 @@
 	<widget class="SwatFrame" id="edit_frame">
 		<property name="title" translatable="yes">Feature</property>
 		<widget class="SwatForm" id="edit_form">
+			<widget class="SwatFormField" id="instance_field">
+				<property name="title">Instance</property>
+				<property name="visible" type="boolean">false</property>
+				<widget class="SwatFlydown" id="instance">
+					<property name="show_blank" type="boolean">false</property>
+					<property name="required" type="boolean">true</property>
+				</widget>
+			</widget>
 			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Shortname</property>
 				<widget class="SwatEntry" id="shortname">

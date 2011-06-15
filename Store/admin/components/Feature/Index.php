@@ -78,13 +78,28 @@ class StoreFeatureIndex extends AdminIndex
 
 	protected function getTableModel(SwatView $view)
 	{
-		$sql = 'select * from Feature order by display_slot, priority, start_date';
+		$instance_where = ($this->app->getInstanceId() === null) ?
+			'1 = 1': sprintf('instance = %s',
+				$this->app->db->quote($this->app->getInstanceId(), 'integer'));
+
+		$sql = sprintf('select * from Feature
+			where %s
+			order by display_slot, priority, start_date',
+			$instance_where);
 
 		$wrapper = SwatDBClassMap::get('StoreFeatureWrapper');
 		$features = SwatDB::query($this->app->db, $sql, $wrapper);
 
 		$store = new SwatTableStore();
 		$counts = array();
+
+		$instance_count = SwatDB::queryOne($this->app->db,
+			'select count(id) from Instance');
+
+		if ($this->app->getInstanceId() === null && $instance_count > 0) {
+			$view = $this->ui->getWidget('index_view');
+			$view->getColumn('instance')->visible = true;
+		}
 
 		foreach ($features as $feature) {
 			$ds = new SwatDetailsStore($feature);
@@ -98,6 +113,10 @@ class StoreFeatureIndex extends AdminIndex
 				$ds->region = 'All';
 			else
 				$ds->region = $feature->region->title;
+
+			if ($feature->instance !== null) {
+				$ds->instance_title = $feature->instance->title;
+			}
 
 			$store->add($ds);
 		}
