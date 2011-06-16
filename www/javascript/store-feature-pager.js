@@ -57,6 +57,7 @@ YAHOO.util.Event.onDOMReady(function ()
 		this.currentPage   = null;
 
 		var randomStartPage = (Dom.hasClass(this.container, 'pager-random'));
+		this.wrap = (Dom.hasClass(this.container, 'pager-wrap'));
 
 		if (Dom.hasClass(this.container, 'pager-with-tabs')) {
 			var pagerTabNodes = Dom.getElementsByClassName(
@@ -294,8 +295,10 @@ YAHOO.util.Event.onDOMReady(function ()
 		var pageNumber = this.currentPage.index + 1;
 		var pageCount  = this.pages.length;
 
-		this.setPrevSensitivity(pageNumber != 1);
-		this.setNextSensitivity(pageNumber != pageCount);
+		if (!this.wrap) {
+			this.setPrevSensitivity(pageNumber != 1);
+			this.setNextSensitivity(pageNumber != pageCount);
+		}
 	};
 
 	proto.setPrevSensitivity = function(sensitive)
@@ -326,7 +329,7 @@ YAHOO.util.Event.onDOMReady(function ()
 
 	proto.addPage = function(page)
 	{
-		this.pagesById[page.id] = page;
+		this.pagesById[page.element.id] = page;
 		this.pages.push(page);
 		if (page.tab) {
 			Event.on(page.tab, 'click',
