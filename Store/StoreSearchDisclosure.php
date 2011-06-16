@@ -294,9 +294,9 @@ class StoreSearchDisclosure extends SwatDisclosure
 	}
 
 	// }}}
-	// {{{ private function displayLoadingContainer()
+	// {{{ protected function displayLoadingContainer()
 
-	private function displayLoadingContainer()
+	protected function displayLoadingContainer()
 	{
 		$loading_div_tag = new SwatHtmlTag('div');
 		$loading_div_tag->id = $this->id.'_loading_container';
