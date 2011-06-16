@@ -82,7 +82,7 @@ class StoreSearchPanel extends SwatObject
 	public function init()
 	{
 		$this->ui->init();
-		$form = $this->ui->getWidget('search_form');
+		$form = $this->getForm();
 		$this->init_search_state = $form->getDescendantStates();
 	}
 
@@ -94,7 +94,7 @@ class StoreSearchPanel extends SwatObject
 		if (!$this->ui->getRoot()->isProcessed())
 			$this->ui->process();
 
-		$form = $this->ui->getWidget('search_form');
+		$form = $this->getForm();
 		$this->process_search_state = $form->getDescendantStates();
 	}
 
@@ -335,6 +335,14 @@ class StoreSearchPanel extends SwatObject
 
 		return ($this->init_search_state[$name] ==
 				$this->process_search_state[$name]);
+	}
+
+	// }}}
+	// {{{ protected function getForm()
+
+	protected function getForm()
+	{
+		return $this->ui->getWidget('search_form');
 	}
 
 	// }}}
