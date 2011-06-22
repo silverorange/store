@@ -61,8 +61,9 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 	{
 		$address = $this->getAddress();
 
-		if ($this->verified_address !== null)
+		if ($this->verified_address !== null) {
 			$address->copyFrom($this->verified_address);
+		}
 
 		/* If we are currently shipping to the billing address,
 		 * change the shipping address too.
