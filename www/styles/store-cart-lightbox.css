@@ -1,11 +1,12 @@
 #store_cart_lightbox {
 	position: fixed;
-	top: -12px;
+	top: 0;
 	right: -1000px; /* position it off the page so that images pre-load */
-	width: 378px;
+	width: 350px;
 	text-align: left;
 	z-index: 1000;
-	padding-top: 10px;
+	padding-top: 20px;
+	padding-right: 20px;
 }
 
 * html #store_cart_lightbox {
@@ -15,17 +16,17 @@
 #store_cart_lightbox_content {
 	background: #fff;
 	border: 1px solid #ccc;
-	-webkit-box-shadow: 0 5px 30px #000;
-	-moz-box-shadow: 0 5px 30px #000;
-	box-shadow: 0 5px 30px #000;
+	-webkit-box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+	box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
 	-webkit-border-radius: 8px;
 	-moz-border-radius: 8px;
 	border-radius: 8px;
 }
 
 #store_cart_lightbox_top {
-	background: url(../images/store-cart-lightbox-arrow.png) no-repeat 50% 0;
-	height: 10px;
+	background: url(../images/store-cart-lightbox-arrow.png) no-repeat 50% 100%;
+	height: 20px;
 	width: 19px;
 	position: absolute;
 	top: 1px;
