@@ -86,7 +86,8 @@ class StoreItemGroup extends SwatDBDataObject
 
 	protected function loadItems()
 	{
-		$sql = sprintf('select * from Item where item_group = %s',
+		$sql = sprintf('select * from Item where item_group = %s
+				order by Item.displayorder, Item.sku',
 			$this->db->quote($this->id, 'integer'));
 
 		$wrapper = SwatDBClassMap::get('StoreItemWrapper');
