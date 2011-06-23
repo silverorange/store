@@ -96,7 +96,9 @@ class StoreAccountAddressEdit extends AdminDBEdit
 		// the checkbox
 		$account = $this->account;
 		$billing_id = $account->getInternalValue('default_billing_address');
-		if ($this->id === $billing_id) {
+		if ($billing_id !== null && $this->id !== null &&
+			$this->id === $billing_id) {
+
 			$billing_field =
 				$this->ui->getWidget('default_billing_address')->parent;
 
@@ -108,7 +110,8 @@ class StoreAccountAddressEdit extends AdminDBEdit
 		// if this address is already the default shipping address, desensitize
 		// the checkbox
 		$shipping_id = $account->getInternalValue('default_shipping_address');
-		if ($this->id === $shipping_id) {
+		if ($shipping_id !== null && $this->id !== null &&
+			$this->id === $shipping_id) {
 			$shipping_field =
 				$this->ui->getWidget('default_shipping_address')->parent;
 
@@ -169,7 +172,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 			$values['account'] = $this->account->id;
 
 			$this->id = SwatDB::insertRow($this->app->db, 'AccountAddress',
-				$this->fields, $values);
+				$this->fields, $values, 'integer:id');
 		} else {
 			SwatDB::updateRow($this->app->db, 'AccountAddress', $this->fields,
 				$values, 'id', $this->id);
