@@ -116,6 +116,8 @@ class StoreFeatureIndex extends AdminIndex
 
 			if ($feature->instance !== null) {
 				$ds->instance_title = $feature->instance->title;
+			} else {
+				$ds->instance_title = null;
 			}
 
 			$store->add($ds);
