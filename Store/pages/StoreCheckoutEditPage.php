@@ -47,6 +47,14 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 	}
 
 	// }}}
+	// {{{ protected function getEditUiXml()
+
+	protected function getEditUiXml()
+	{
+		return 'Store/pages/checkout-edit.xml';
+	}
+
+	// }}}
 	// {{{ protected function loadUI()
 
 	protected function loadUI()
@@ -55,7 +63,7 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 		$this->ui->loadFromXML($this->getBaseUiXml());
 
 		$form = $this->ui->getWidget('form');
-		$this->ui->loadFromXML('Store/pages/checkout-edit.xml', $form);
+		$this->ui->loadFromXML($this->getEditUiXml(), $form);
 
 		$container = $this->ui->getWidget('container');
 		$this->ui->loadFromXML($this->getUiXml(), $container);
