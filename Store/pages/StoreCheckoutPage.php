@@ -60,9 +60,10 @@ abstract class StoreCheckoutPage extends SiteUiPage
 
 		// If the order has been saved then the checkout process is complete.
 		// If the user isn't on the thank you page then relocate there now.
+		$thank_you_source = $this->getThankYouSource();
 		if ($this->app->session->order->id !== null &&
-			$this->getSource() !== 'checkout/thankyou') {
-			$this->app->relocate('checkout/thankyou');
+			$this->getSource() !== $thank_you_source) {
+			$this->app->relocate($thank_you_source);
 		}
 
 		$this->loadUI();
@@ -139,6 +140,14 @@ abstract class StoreCheckoutPage extends SiteUiPage
 				$this->app->relocate($dependency);
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function getThankYouSource()
+
+	protected function getThankYouSource()
+	{
+		return 'checkout/thankyou';
 	}
 
 	// }}}
