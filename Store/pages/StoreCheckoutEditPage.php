@@ -122,7 +122,7 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 				// additional errors
 				if (!$form->hasMessage()) {
 					$this->updateProgress();
-					$this->app->relocate('checkout/confirmation');
+					$this->relocate();
 				}
 			}
 		}
@@ -207,6 +207,14 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 	 */
 	protected function processInternal()
 	{
+	}
+
+	// }}}
+	// {{{ protected function relocate()
+
+	protected function relocate()
+	{
+		$this->app->relocate('checkout/confirmation');
 	}
 
 	// }}}
