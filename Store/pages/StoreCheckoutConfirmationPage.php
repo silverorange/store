@@ -448,7 +448,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$this->cleanupSession();
 		$this->updateProgress();
 
-		$this->app->relocate('checkout/thankyou');
+		$this->app->relocate($this->getThankYouPageSource());
 	}
 
 	// }}}
