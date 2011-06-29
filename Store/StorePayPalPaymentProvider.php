@@ -1090,7 +1090,10 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			$details['Custom'] = $this->formatString($custom, 256);
 		}
 
-		$details['PaymentDetailsItem'] = $this->getPaymentDetailsItems($order);
+		$items = $this->getPaymentDetailsItems($order);
+		if (count($items) > 0) {
+			$details['PaymentDetailsItem'] = $items;
+		}
 
 		return $details;
 	}
@@ -1151,7 +1154,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	{
 		$details = array();
 
-		$details['Name']    = $this->formatString($address->fullname, 32);
+		$details['Name']    = $this->formatString($address->getFullname(), 32);
 		$details['Street1'] = $this->formatString($address->line1, 100);
 
 		if ($address->line2 != '') {
