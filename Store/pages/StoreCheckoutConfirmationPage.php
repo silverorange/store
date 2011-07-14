@@ -531,16 +531,19 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$account = $this->app->session->account;
 		$order = $this->app->session->order;
 
-		$address = $this->addAddressToAccount($order->billing_address);
-		$account->setDefaultBillingAddress($address);
-
-		// shipping address is only added if it differs from billing address
-		if ($order->shipping_address !== $order->billing_address &&
-			$order->shipping_address->getAccountAddressId() === null) {
-			$address = $this->addAddressToAccount($order->shipping_address);
+		if ($order->billing_address instanceof StoreOrderAddress) {
+			$address = $this->addAddressToAccount($order->billing_address);
+			$account->setDefaultBillingAddress($address);
 		}
 
-		$account->setDefaultShippingAddress($address);
+		// shipping address is only added if it differs from billing address
+		if ($order->shipping_address instanceof StoreOrderAddress) {
+			if ($order->shipping_address !== $order->billing_address &&
+				$order->shipping_address->getAccountAddressId() === null) {
+				$address = $this->addAddressToAccount($order->shipping_address);
+			}
+			$account->setDefaultShippingAddress($address);
+		}
 
 		// new payment methods are only added if a session flag is set and true
 		if (isset($this->app->session->save_account_payment_method) &&
@@ -1004,11 +1007,12 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	protected function buildBillingAddress($order)
 	{
-		ob_start();
-		$order->billing_address->display();
-
-		$this->ui->getWidget('billing_address')->content = ob_get_clean();
-		$this->ui->getWidget('billing_address')->content_type = 'text/xml';
+		if ($order->billing_address instanceof StoreOrderAddress) {
+			ob_start();
+			$order->billing_address->display();
+			$this->ui->getWidget('billing_address')->content = ob_get_clean();
+			$this->ui->getWidget('billing_address')->content_type = 'text/xml';
+		}
 	}
 
 	// }}}
@@ -1016,19 +1020,22 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	protected function buildShippingAddress($order)
 	{
-		ob_start();
-		// compare references since these are not saved yet
-		if ($order->shipping_address === $order->billing_address) {
-			$span_tag = new SwatHtmlTag('span');
-			$span_tag->class = 'swat-none';
-			$span_tag->setContent(Store::_('<ship to billing address>'));
-			$span_tag->display();
-		} else {
-			$order->shipping_address->display();
-		}
+		if ($order->shipping_address instanceof StoreOrderAddress) {
+			ob_start();
 
-		$this->ui->getWidget('shipping_address')->content = ob_get_clean();
-		$this->ui->getWidget('shipping_address')->content_type = 'text/xml';
+			// compare references since these are not saved yet
+			if ($order->shipping_address === $order->billing_address) {
+				$span_tag = new SwatHtmlTag('span');
+				$span_tag->class = 'swat-none';
+				$span_tag->setContent(Store::_('<ship to billing address>'));
+				$span_tag->display();
+			} else {
+				$order->shipping_address->display();
+			}
+
+			$this->ui->getWidget('shipping_address')->content = ob_get_clean();
+			$this->ui->getWidget('shipping_address')->content_type = 'text/xml';
+		}
 	}
 
 	// }}}
