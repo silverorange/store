@@ -1078,7 +1078,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			$details['InvoiceID'] = $order->id;
 		}
 
-		if ($order->shipping_address->getInternalValue('country') !== null) {
+		if ($order->shipping_address instanceof StoreOrderAddress &&
+			$order->shipping_address->getInternalValue('country') !== null) {
 			$details['ShipToAddress'] = $this->getShipToAddress($order);
 		}
 
