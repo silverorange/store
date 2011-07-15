@@ -12,15 +12,6 @@ require_once 'Store/pages/StoreCheckoutPage.php';
 abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
 {
 	// init phase
-	// {{{ public function init()
-
-	public function init()
-	{
-		parent::init();
-		$this->resetProgress();
-	}
-
-	// }}}
 	// {{{ protected function initInternal()
 
 	// subclassed to avoid setting form that doesn't exist
@@ -71,6 +62,7 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
 	public function build()
 	{
 		parent::build();
+		$this->resetProgress();
 		$this->logoutSession();
 	}
 
