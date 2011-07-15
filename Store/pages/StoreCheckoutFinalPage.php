@@ -138,16 +138,20 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
 		if ($order->phone === null)
 			$details_view->getField('phone')->visible = false;
 
-		$items_view = $this->ui->getWidget('items_view');
-		$items_view->model = $order->getOrderDetailsTableStore();
+		if ($this->ui->hasWidget('items_view')) {
+			$items_view = $this->ui->getWidget('items_view');
+			$items_view->model = $order->getOrderDetailsTableStore();
 
-		$items_view->getRow('shipping')->value = $order->shipping_total;
-		$items_view->getRow('subtotal')->value = $order->getSubtotal();
+			$items_view->getRow('shipping')->value = $order->shipping_total;
+			$items_view->getRow('subtotal')->value = $order->getSubtotal();
 
-		if ($order->surcharge_total > 0)
-			$items_view->getRow('surcharge')->value = $order->surcharge_total;
+			if ($order->surcharge_total > 0) {
+				$items_view->getRow('surcharge')->value =
+					$order->surcharge_total;
+			}
 
-		$items_view->getRow('total')->value = $order->total;
+			$items_view->getRow('total')->value = $order->total;
+		}
 	}
 
 	// }}}
