@@ -41,10 +41,10 @@ abstract class StoreCheckoutPage extends SiteUiPage
 	public function init()
 	{
 		if (!$this->app->session->isActive())
-			$this->app->relocate('cart');
+			$this->app->relocate($this->getCartSource());
 
 		if (!$this->checkCart())
-			$this->app->relocate('cart');
+			$this->app->relocate($this->getCartSource());
 
 		$this->app->session->activate();
 
@@ -148,6 +148,14 @@ abstract class StoreCheckoutPage extends SiteUiPage
 	protected function getThankYouSource()
 	{
 		return 'checkout/thankyou';
+	}
+
+	// }}}
+	// {{{ protected function getCartSource()
+
+	protected function getCartSource()
+	{
+		return 'cart';
 	}
 
 	// }}}
