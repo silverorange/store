@@ -16,7 +16,29 @@ class StorePriceCellRenderer extends SwatMoneyCellRenderer
 {
 	// {{{ public properties
 
+	/**
+	 * @var string
+	 */
+	public $free_text;
+
+	/**
+	 * @var string
+	 */
+	public $free_text_content_type = 'text/plain';
+
+	/**
+	 * @var float
+	 */
 	public $discount = 0;
+
+	// }}}
+	// {{{ public function __construct()
+
+	public function __construct()
+	{
+		parent::__construct();
+		$this->free_text = Store::_('Free!');
+	}
 
 	// }}}
 	// {{{ public function render()
@@ -30,7 +52,11 @@ class StorePriceCellRenderer extends SwatMoneyCellRenderer
 			return;
 
 		if ($this->isFree()) {
-			echo Store::_('Free!');
+			if ($this->free_text_content_type == 'text/xml') {
+				echo $this->free_text;
+			} else {
+				echo SwatString::minimizeEntities($this->free_text);
+			}
 		} else {
 			parent::render();
 		}
