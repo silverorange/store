@@ -114,9 +114,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	protected function validate()
 	{
 		$valid = true;
+
+		$valid = $this->validatePaymentMethod() && $valid;
 		$valid = $this->validateBillingAddress() && $valid;
 		$valid = $this->validateShippingAddress() && $valid;
-		$valid = $this->validatePaymentMethod() && $valid;
 
 		return $valid;
 	}
