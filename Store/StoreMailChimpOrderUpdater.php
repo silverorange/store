@@ -119,27 +119,20 @@ class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
 		$orders = $this->getOrders();
 		$this->debug(sprintf("Found %s Orders:\n", count($orders)), true);
 
+		$success = false;
 		foreach ($orders as $order) {
 			try {
 				$this->debug('Sending order to MailChimp ... ');
-
-				$success = false;
-
 				$this->sendOrder($order);
-
 				$success = true;
+			} catch (XML_RPC2_CurlException $e) {
+				// ignore these, we'll just attempt a resend.
 			} catch (XML_RPC2_FaultException $e) {
 				// 330 means order has already been submitted, we can safely
 				// throw these away
 				if ($e->getFaultCode() == '330') {
 					$success = true;
 				}
-
-				// continue to log the errors for now to see how frequent they
-				// are, and to make sure we're not throwing away ones we
-				// shouldn't
-				$e = new SiteException($e);
-				$e->processAndContinue();
 			} catch (XML_RPC2_Exception $e) {
 				// TODO: Some of these should be logged while others shouldn't
 				$e = new SiteException($e);
@@ -154,6 +147,10 @@ class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
 				$order->send_attempts += 1;
 				if ($order->send_attempts >= self::MAX_SEND_ATTEMPTS) {
 					$this->debug("maximum send attepmts reached.\n");
+
+					// log for now so we know if it ever happens.
+					$e = new SiteException("maximum send attepmts reached.");
+					$e->processAndContinue();
 
 					$order->error_date = new SwatDate();
 					$order->error_date->toUTC();
