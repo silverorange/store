@@ -146,10 +146,10 @@ class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
 			} else {
 				$order->send_attempts += 1;
 				if ($order->send_attempts >= self::MAX_SEND_ATTEMPTS) {
-					$this->debug("maximum send attepmts reached.\n");
+					$this->debug("maximum send attempts reached.\n");
 
 					// log for now so we know if it ever happens.
-					$e = new SiteException("maximum send attepmts reached.");
+					$e = new SiteException("maximum send attempts reached.");
 					$e->processAndContinue();
 
 					$order->error_date = new SwatDate();
