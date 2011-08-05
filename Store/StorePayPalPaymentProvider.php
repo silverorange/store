@@ -63,17 +63,22 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 *
 	 * Available parameters are:
 	 *
-	 * <kbd>mode</kbd>      - optional. Transaction mode to use. Must be one of
-	 *                        either 'live' or 'sandbox'. If not specified,
-	 *                        'sandbox' is used.
-	 * <kbd>username</kbd>  - required. Username for PayPal authentication.
-	 * <kbd>password</kbd>  - required. Password for PayPal authentication.
-	 * <kbd>subject</kbd>   - optional. Third-party on behalf of whom requests
-	 *                        should be made. Use for market-place type apps.
-	 * <kbd>signature</kbd> - required. Signature used for signature-based
-	 *                        authentication.
-	 * <kbd>currency</kbd>  - required. The currency in which to perform
-	 *                        transactions.
+	 * <kbd>mode</kbd>            - optional. Transaction mode to use. Must be
+	 *                              one of either 'live' or 'sandbox'. If not
+	 *                              specified, 'sandbox' is used.
+	 * <kbd>username</kbd>        - required. Username for PayPal
+	 *                              authentication.
+	 * <kbd>password</kbd>        - required. Password for PayPal
+	 *                              authentication.
+	 * <kbd>subject</kbd>         - optional. Third-party on behalf of whom
+	 *                              requests should be made. Use for
+	 *                              market-place type apps.
+	 * <kbd>signature</kbd>       - required. Signature used for signature-based
+	 *                              authentication.
+	 * <kbd>currency</kbd>        - required. The currency in which to perform
+	 *                              transactions.
+	 * <kbd>use_local_wsdl</kbd>  - optional. Whether or not to use a local
+	 *                              copy of the PayPal WSDL.
 	 *
 	 * @throws StoreException if a required parameter is missing or if the
 	 *                        'mode' paramater is not valid.
@@ -108,6 +113,10 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 		if (isset($parameters['subject'])) {
 			$options['subject'] = $parameters['subject'];
+		}
+
+		if (isset($parameters['use_local_wsdl'])) {
+			$options['useLocalWsdl'] = $parameters['use_local_wsdl'];
 		}
 
 		$valid_modes = array('live', 'sandbox');
