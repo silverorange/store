@@ -15,10 +15,15 @@ require_once 'Swat/SwatActions.php';
  */
 class StoreItemQuantityDiscountActions extends SwatActions
 {
+	// {{{ public function getDoneButton()
+
 	public function getDoneButton()
 	{
 		return $this->getCompositeWidget('done_button');
 	}
+
+	// }}}
+	// {{{ protected function displayButton()
 
 	protected function displayButton()
 	{
@@ -32,6 +37,9 @@ class StoreItemQuantityDiscountActions extends SwatActions
 		$button->display();
 	}
 
+	// }}}
+	// {{{ protected function createCompositeWidgets()
+
 	protected function createCompositeWidgets()
 	{
 		parent::createCompositeWidgets();
@@ -39,6 +47,8 @@ class StoreItemQuantityDiscountActions extends SwatActions
 		$button = new SwatButton($this->id.'_done_button');
 		$this->addCompositeWidget($button, 'done_button');
 	}
+
+	// }}}
 }
 
 ?>
