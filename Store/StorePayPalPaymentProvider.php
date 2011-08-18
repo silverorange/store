@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Store/StorePaymentProvider.php';
+require_once 'Store/StorePaymentRequest.php';
 require_once 'Swat/SwatNumber.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Payment/PayPal/SOAP.php';
