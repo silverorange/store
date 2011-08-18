@@ -59,18 +59,21 @@
 			</widget>
 			<widget class="SwatFieldset">
 				<property name="title">Active Period</property>
-				<widget class="SwatFormField" id="start_date_field">
-				<property name="title" type="string">Start Date</property>
-					<widget class="SwatDateEntry" id="start_date">
-						<property name="display_parts" type="constant">YEAR|MONTH|DAY|TIME|CALENDAR</property>
-						<property name="use_current_date" type="boolean">false</property>
+				<widget class="SwatFormField" id="date_span_field">
+					<property name="display_messages" type="boolean">false</property>
+					<widget class="SwatFormField" id="start_date_field">
+					<property name="title" type="string">Start Date</property>
+						<widget class="SwatDateEntry" id="start_date">
+							<property name="display_parts" type="constant">YEAR|MONTH|DAY|TIME|CALENDAR</property>
+							<property name="use_current_date" type="boolean">false</property>
+						</widget>
 					</widget>
-				</widget>
-				<widget class="SwatFormField" id="end_date_field">
-					<property name="title" type="string">End Date</property>
-					<widget class="SwatDateEntry" id="end_date">
-						<property name="display_parts" type="constant">YEAR|MONTH|DAY|TIME|CALENDAR</property>
-						<property name="use_current_date" type="boolean">false</property>
+					<widget class="SwatFormField" id="end_date_field">
+						<property name="title" type="string">End Date</property>
+						<widget class="SwatDateEntry" id="end_date">
+							<property name="display_parts" type="constant">YEAR|MONTH|DAY|TIME|CALENDAR</property>
+							<property name="use_current_date" type="boolean">false</property>
+						</widget>
 					</widget>
 				</widget>
 			</widget>

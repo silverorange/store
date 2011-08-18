@@ -74,6 +74,39 @@ class StoreFeatureEdit extends AdminDBEdit
 	// }}}
 
 	// process phase
+	// {{{ protected function validate()
+
+	protected function validate()
+	{
+		$valid = parent::validate();
+
+		$start_date = $this->ui->getWidget('start_date')->value;
+		$end_date   = $this->ui->getWidget('end_date')->value;
+
+		if ($start_date !== null && $end_date !== null &&
+			SwatDate::compare($start_date, $end_date) > 0) {
+			$valid = false;
+			$message = new SwatMessage(
+				'The dates entered are not a valid set of dates. '.
+				'The date entered in the <strong>Start Date</strong> '.
+				'field must occur before the date entered in the '.
+				'<strong>End Date</strong> field.',
+				'error');
+
+			$message->content_type = 'text/xml';
+
+			$this->ui->getWidget('start_date')->addMessage($message);
+			// massage the SwatFormFields so that the message displays on both
+			// controls.
+			$this->ui->getWidget('date_span_field')->display_messages  = true;
+			$this->ui->getWidget('start_date_field')->display_messages = false;
+			$this->ui->getWidget('end_date_field')->display_messages   = false;
+		}
+
+		return $valid;
+	}
+
+	// }}}
 	// {{{ protected function updateFeature()
 
 	protected function updateFeature()
