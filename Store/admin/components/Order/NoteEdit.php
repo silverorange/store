@@ -8,7 +8,7 @@ require_once 'SwatDB/SwatDB.php';
  * Edit page for notes on orders
  *
  * @package   Store
- * @copyright 2007-2009 silverorange
+ * @copyright 2007-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderNoteEdit extends AdminDBEdit
@@ -20,6 +20,14 @@ class StoreOrderNoteEdit extends AdminDBEdit
 	 */
 	protected $order;
 
+	/**
+	 * If we came from an account page, this is the id of the account.
+	 * Otherwise it is null.
+	 *
+	 * @var integer
+	 */
+	protected $account;
+
 	// }}}
 
 	// init phase
@@ -28,6 +36,8 @@ class StoreOrderNoteEdit extends AdminDBEdit
 	protected function initInternal()
 	{
 		parent::initInternal();
+
+		$this->account = SiteApplication::initVar('account');
 
 		$this->ui->loadFromXML(dirname(__FILE__).'/note-edit.xml');
 
@@ -49,7 +59,7 @@ class StoreOrderNoteEdit extends AdminDBEdit
 
 			if (!$this->order->load($this->id)) {
 				throw new AdminNotFoundException(sprintf(
-					Store::_('An order with an id of ‘%d’ does not exist.'),
+					Store::_('An order with an id of “%s” does not exist.'),
 					$this->id));
 			}
 
@@ -60,7 +70,7 @@ class StoreOrderNoteEdit extends AdminDBEdit
 
                 if ($order_instance_id !== $instance_id)
                     throw new AdminNotFoundException(sprintf(Store::_(
-                        'Incorrect instance for order ‘%d’.'), $this->id));
+                        'Incorrect instance for order “%s”.'), $this->id));
             }
 		}
 
@@ -86,9 +96,7 @@ class StoreOrderNoteEdit extends AdminDBEdit
 
 	protected function getSaveMessage()
 	{
-		$message = new SwatMessage(Store::_('Note has been saved.'));
-
-		return $message;
+		return new SwatMessage(Store::_('Note has been saved.'));
 	}
 
 	// }}}
@@ -100,6 +108,40 @@ class StoreOrderNoteEdit extends AdminDBEdit
 	{
 		$notes = $this->ui->getWidget('notes');
 		$notes->value = $this->order->notes;
+	}
+
+	// }}}
+	// {{{ protected function buildNavBar()
+
+	protected function buildNavBar()
+	{
+		parent::buildNavBar();
+
+		if ($this->account !== null) {
+			// use account navbar
+			$this->navbar->popEntries(2);
+			$this->navbar->createEntry(
+				Store::_('Customer Accounts'), 'Account');
+
+			$this->navbar->createEntry(
+				$this->order->account->getFullname(),
+				'Account/Details?id='.$this->order->account->id);
+
+			$this->title = $this->order->account->getFullname();
+		}
+
+		$this->navbar->createEntry($this->getOrderTitle(),
+			'Order/Details?id='.$this->order->id);
+
+		$this->navbar->createEntry(Store::_('Edit Note'));
+	}
+
+	// }}}
+	// {{{ protected function getOrderTitle()
+
+	protected function getOrderTitle()
+	{
+		return sprintf(Store::_('Order %s'), $this->order->id);
 	}
 
 	// }}}
