@@ -128,6 +128,8 @@ class StoreOrderNoteEdit extends AdminDBEdit
 				'Account/Details?id='.$this->order->account->id);
 
 			$this->title = $this->order->account->getFullname();
+		} else {
+			$this->navbar->popEntry();
 		}
 
 		$this->navbar->createEntry($this->getOrderTitle(),
