@@ -53,7 +53,9 @@ class StoreAnalyticsOrderTracker
 	protected function getOrderCommand()
 	{
 		$address         = $this->getAddress();
+		$city            = $this->getCity($address);
 		$provstate_title = $this->getProvStateTitle($address);
+		$country_title   = $this->getCountryTitle($address);
 		$order_total     = $this->getOrderTotal();
 
 		/*
@@ -72,9 +74,9 @@ class StoreAnalyticsOrderTracker
 			$order_total,
 			$tax_total,
 			$shipping_total,
-			$address->city,
+			$city,
 			$provstate_title,
-			$address->country->title);
+			$country_title);
 	}
 
 	// }}}
@@ -86,13 +88,47 @@ class StoreAnalyticsOrderTracker
 	}
 
 	// }}}
+	// {{{ protected function getCity()
+
+	protected function getCity(StoreOrderAddress $address = null)
+	{
+		$city = '';
+
+		if ($address instanceof StoreOrderAddress) {
+			$city = $address->city;
+		}
+
+		return $city;
+	}
+
+	// }}}
 	// {{{ protected function getProvStateTitle()
 
-	protected function getProvStateTitle(StoreOrderAddress $address)
+	protected function getProvStateTitle(StoreOrderAddress $address = null)
 	{
-		return ($address->provstate === null) ?
-			$address->provstate_other :
-			$address->provstate->title;
+		$title = '';
+
+		if ($address instanceof StoreOrderAddress) {
+			$title = ($address->provstate === null) ?
+				$address->provstate_other :
+				$address->provstate->title;
+		}
+
+		return $title;
+	}
+
+	// }}}
+	// {{{ protected function getCountryTitle()
+
+	protected function getCountryTitle(StoreOrderAddress $address = null)
+	{
+		$title = '';
+
+		if ($address instanceof StoreOrderAddress) {
+			$title = $address->country->title;
+		}
+
+		return $title;
 	}
 
 	// }}}
