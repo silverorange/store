@@ -55,11 +55,13 @@ abstract class StoreLocaleApplication extends StoreApplication
 	/**
 	 * Gets the link to switch locales
 	 *
-	 * @param string $locale The locale to link to. 
+	 * @param string $locale the locale to link to.
+	 * @param string $source optional additional source path to append to the
+	 *                       base link.
 	 *
 	 * @return string the link to switch locales on the site
 	 */
-	public function getSwitchLocaleLink($locale)
+	public function getSwitchLocaleLink($locale, $source = null)
 	{
 		$link = $this->getRootBaseHref();
 
@@ -74,6 +76,10 @@ abstract class StoreLocaleApplication extends StoreApplication
 		$language = substr($locale, 0, 2);
 		$country = strtolower(substr($locale, 3, 2));
 		$link.= $country.'/'.$language.'/';
+
+		if ($source !== null) {
+			$link.= $source;
+		}
 
 		return $link;
 	}
@@ -102,7 +108,7 @@ abstract class StoreLocaleApplication extends StoreApplication
 			$link.= $this->mobile->getPrefix().'/';
 		}
 
-		if ($this->locale instanceof ZsResearchLocale) {
+		if ($this->locale instanceof StoreLocale) {
 			$language  = substr($this->locale->id, 0, 2);
 			$country   = strtolower(substr($this->locale->id, 3, 2));
 			$link.= $language.'/'.$country.'/';
