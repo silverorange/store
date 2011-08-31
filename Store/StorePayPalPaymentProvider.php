@@ -537,6 +537,31 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		case 10759:
 			return 'card-not-valid';
 
+		/**
+		 * Card rejected by PayPal
+		 */
+		case 15001:
+		case 15002:
+			return 'card-not-valid';
+
+		/**
+		 * Card declined by issuing bank
+		 */
+		case 15005:
+			return 'card-not-valid';
+
+		/**
+		 * Card type mismatch from issuing bank
+		 */
+		case 15006:
+			return 'card-type';
+
+		/**
+		 * Card expired from issuing bank
+		 */
+		case 15007:
+			return 'card-expired';
+
 		/*
 		 * CVV2 error. May be one of:
 		 *

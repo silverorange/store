@@ -738,6 +738,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	 *                                      errors.
 	 * <kbd>card-verification-value</kbd> - for CVS, CV2 mismatch errors.
 	 * <kbd>card-type</kbd>               - for invalid card types.
+	 * <kbd>card-expired</kbd>            - for expired cards.
 	 * <kbd>total</kbd>                   - for invalid order totals.
 	 * <kbd>payment-error</kbd>           - for an unknown error processing
 	 *                                      payment for orders.
@@ -835,6 +836,28 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 				Store::_('%sCard type does not correspond with card '.
 					'number.%s Your order has %snot%s been placed. '.
 					'Please edit your %spayment information%s and try again.'),
+					'<strong>', '</strong>', '<em>', '</em>',
+					'<a href="checkout/confirmation/paymentmethod">', '</a>').
+				' '.Store::_('No funds have been removed from your card.').
+				'</p><p>'.sprintf(
+				Store::_('If you are still unable to complete your order '.
+					'after confirming your payment information, please '.
+					'%scontact us%s.'),
+					'<a href="about/contact">', '</a>').
+				'</p>';
+
+			break;
+		case 'card-expired':
+			$message = new SwatMessage(
+				Store::_('There was a problem processing your payment.'),
+				'error');
+
+			$message->content_type = 'text/xml';
+			$message->secondary_content =
+				'<p>'.sprintf(
+				Store::_('%sCard is expired.%s Your order has %snot%s been '.
+					'placed. Please edit your %spayment information%s and '.
+					'try again.'),
 					'<strong>', '</strong>', '<em>', '</em>',
 					'<a href="checkout/confirmation/paymentmethod">', '</a>').
 				' '.Store::_('No funds have been removed from your card.').
