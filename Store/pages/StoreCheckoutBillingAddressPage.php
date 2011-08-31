@@ -384,14 +384,18 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 		foreach ($this->app->getRegion()->billing_countries as $country)
 			$billing_country_ids[] = $country->id;
 
+		$billing_provstate_ids = array();
 		foreach ($this->app->getRegion()->billing_provstates as $provstate)
 			$billing_provstate_ids[] = $provstate->id;
 
 		foreach ($this->app->session->account->addresses as $address) {
-			if (in_array($address->getInternalValue('country'),
-					$billing_country_ids) &&
-				in_array($address->getInternalValue('provstate'),
-					$billing_provstate_ids)) {
+
+			$country_id   = $address->getInternalValue('country');
+			$provstate_id = $address->getInternalValue('provstate');
+
+			if (in_array($country_id, $billing_country_ids) &&
+				($provsstate_id === null ||
+					in_array($provstate_id, $billing_provstate_ids))) {
 
 				ob_start();
 				$address->displayCondensed();

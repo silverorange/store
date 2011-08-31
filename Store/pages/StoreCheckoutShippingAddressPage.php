@@ -442,10 +442,13 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 
 
 		foreach ($this->app->session->account->addresses as $address) {
-			if (in_array($address->getInternalValue('country'),
-					$shipping_country_ids) &&
-				in_array($address->getInternalValue('provstate'),
-					$shipping_provstate_ids)) {
+
+			$country_id   = $address->getInternalValue('country');
+			$provstate_id = $address->getInternalValue('provstate');
+
+			if (in_array($country_id, $shipping_country_ids) &&
+				($provstate_id === null ||
+					in_array($provstate_id, $shipping_provstate_ids))) {
 
 				ob_start();
 				$address->displayCondensed();
