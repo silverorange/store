@@ -394,7 +394,7 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 			$provstate_id = $address->getInternalValue('provstate');
 
 			if (in_array($country_id, $billing_country_ids) &&
-				($provsstate_id === null ||
+				($provstate_id === null ||
 					in_array($provstate_id, $billing_provstate_ids))) {
 
 				ob_start();
