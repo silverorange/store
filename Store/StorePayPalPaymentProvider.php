@@ -148,6 +148,9 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 * @return StorePaymentMethodTransaction the transaction object for the
 	 *                                        payment. This object contains the
 	 *                                        transaction date and identifier.
+	 *
+	 * @sensitive $card_number
+	 * @sensitive $card_verification_value
 	 */
 	public function pay(StoreOrder $order, $card_number,
 		$card_verification_value = null)
@@ -197,6 +200,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 *                                        transaction date and identifier.
 	 *
 	 * @sensitive $card_number
+	 * @sensitive $card_verification_value
 	 */
 	public function hold(StoreOrder $order, $card_number,
 		$card_verification_value = null)
