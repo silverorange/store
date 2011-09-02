@@ -655,6 +655,13 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			return 'card-error';
 
 		/*
+		 * PayPal Express Checkout transaction can not complete. Instruct the
+		 * customer to use an alternative payment method.
+		 */
+		case 10417:
+			return 'payment-error';
+
+		/*
 		 * ExpressCheckout session has expired. Checkout needs to be restarted.
 		 */
 		case 10411:
