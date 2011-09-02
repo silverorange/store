@@ -17,23 +17,6 @@ require_once 'Store.php';
  */
 class StoreProvStateFlydown extends SwatFlydown
 {
-	// {{{ public function process()
-
-	/**
-	 * Processes this postal code entry widget
-	 *
-	 * The postal code is validated and formatted correctly.
-	 */
-	public function process()
-	{
-		parent::process();
-
-		if ($this->db !== null && $this->country !== null &&
-			$this->value !== null && $this->value != 'other')
-				$this->validate();
-	}
-
-	// }}}
 	// {{{ public properties
 
 	/**
@@ -52,6 +35,23 @@ class StoreProvStateFlydown extends SwatFlydown
 	 * @var MDB2_Driver_Common
 	 */
 	protected $db;
+
+	// }}}
+	// {{{ public function process()
+
+	/**
+	 * Processes this postal code entry widget
+	 *
+	 * The postal code is validated and formatted correctly.
+	 */
+	public function process()
+	{
+		parent::process();
+
+		if ($this->db !== null && $this->country !== null &&
+			$this->value !== null && $this->value != 'other')
+				$this->validate();
+	}
 
 	// }}}
 	// {{{ public function setDatabase()
