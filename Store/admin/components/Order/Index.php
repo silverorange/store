@@ -12,7 +12,7 @@ require_once 'SwatDB/SwatDBClassMap.php';
  * Index page for Orders
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderIndex extends AdminSearch
@@ -297,22 +297,38 @@ class StoreOrderIndex extends AdminSearch
 		$orders = $this->getOrders($view,
 			$pager->page_size, $pager->current_record);
 
-		if (count($orders) > 0)
+		if (count($orders) > 0) {
 			$this->ui->getWidget('results_message')->content =
 				$pager->getResultsMessage('result', 'results');
-
-		$store = new SwatTableStore();
-		foreach ($orders as $order) {
-			$ds = new SwatDetailsStore($order);
-			$ds->fullname = $this->getOrderFullname($order);
-			$ds->title = $this->getOrderTitle($order);
-			$ds->has_notes = ($order->notes != '');
-			$ds->has_comments = ($order->comments != '');
-
-			$store->add($ds);
 		}
 
+		$class_name = SwatDBClassMap::get('StoreOrder');
+		$store = new SwatTableStore();
+		foreach ($orders as $row) {
+			if ($row instanceof StoreOrder) {
+				$order = $row;
+			} else {
+				$order = new $class_name($row);
+				$order->setDatabase($this->app->db);
+			}
+			$store->add($this->getOrderDetailsStore($order, $row));
+		}
 		return $store;
+	}
+
+	// }}}
+	// {{{ protected function getOrderDetailsStore()
+
+	protected function getOrderDetailsStore(StoreOrder $order, $row)
+	{
+		$ds = new SwatDetailsStore($order);
+
+		$ds->fullname     = $this->getOrderFullname($order);
+		$ds->title        = $this->getOrderTitle($order);
+		$ds->has_notes    = ($order->notes != '');
+		$ds->has_comments = ($order->comments != '');
+
+		return $ds;
 	}
 
 	// }}}
@@ -357,10 +373,7 @@ class StoreOrderIndex extends AdminSearch
 
 		$this->app->db->setLimit($limit, $offset);
 
-		$orders = SwatDB::query($this->app->db, $sql,
-			SwatDBClassMap::get('StoreOrderWrapper'));
-
-		return $orders;
+		return SwatDB::query($this->app->db, $sql);
 	}
 
 	// }}}
