@@ -275,21 +275,29 @@ class StoreOrderIndex extends AdminSearch
 	}
 
 	// }}}
+	// {{{ protected function getJoinClauses()
+
+	protected function getJoinClauses()
+	{
+		return 'left outer join Account on Orders.account = Account.id
+			left outer join OrderAddress as BillingAddress
+				on Orders.billing_address = BillingAddress.id
+			left outer join OrderAddress as ShippingAddress
+				on Orders.shipping_address = ShippingAddress.id
+			inner join Locale on Orders.locale = Locale.id
+			inner join Region on Locale.region = Region.id';
+	}
+
+	// }}}
 	// {{{ protected function getTableModel()
 
 	protected function getTableModel(SwatView $view)
 	{
-		$sql = 'select count(Orders.id) from Orders
-					left outer join Account on Orders.account = Account.id
-					left outer join OrderAddress as BillingAddress
-						on Orders.billing_address = BillingAddress.id
-					left outer join OrderAddress as ShippingAddress
-						on Orders.shipping_address = ShippingAddress.id
-					inner join Locale on Orders.locale = Locale.id
-					inner join Region on Locale.region = Region.id
-				where %s';
+		$sql = 'select count(Orders.id) from Orders %s where %s';
 
-		$sql = sprintf($sql, $this->getWhereClause());
+		$sql = sprintf($sql,
+			$this->getJoinClauses(),
+			$this->getWhereClause());
 
 		$pager = $this->ui->getWidget('pager');
 		$pager->total_records = SwatDB::queryOne($this->app->db, $sql);
@@ -356,18 +364,13 @@ class StoreOrderIndex extends AdminSearch
 	{
 		$sql = 'select %s
 				from Orders
-					left outer join Account on Orders.account = Account.id
-					left outer join OrderAddress as BillingAddress
-						on Orders.billing_address = BillingAddress.id
-					left outer join OrderAddress as ShippingAddress
-						on Orders.shipping_address = ShippingAddress.id
-					inner join Locale on Orders.locale = Locale.id
-					inner join Region on Locale.region = Region.id
+				%s
 				where %s
 				order by %s';
 
 		$sql = sprintf($sql,
 			$this->getSelectClause(),
+			$this->getJoinClauses(),
 			$this->getWhereClause(),
 			$this->getOrderByClause($view, 'Orders.id desc'));
 
