@@ -60,6 +60,7 @@
 					<object class="SwatTextCellRenderer">
 						<property name="visible" type="data">has_notes</property>
 						<property name="text" type="data">notes</property>
+						<property name="content_type">text/xml</property>
 					</object>
 				</object>
 			</widget>

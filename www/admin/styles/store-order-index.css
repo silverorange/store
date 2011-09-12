@@ -17,3 +17,15 @@
 	float: left;
 	margin-right: 2em;
 }
+
+.swat-table-view td.has-notes {
+	padding: 1px 0 2px;
+}
+
+.has-notes .admin-notes {
+	display: block;
+	color: #947140;
+	background: #fffbc9;
+	padding: 2px 4px;
+	border: 1px solid #f0dca1;
+}
