@@ -164,11 +164,19 @@ class StoreAnalyticsOrderTracker
 		return array(
 			'_addItem',
 			$this->order->id,
-			$item->sku,
+			$this->getSku($item),
 			$this->getProductTitle($item),
-			$item->getSourceCategoryTitle(),
+			$this->getCategoryTitle($item),
 			$item->price,
 			$item->quantity);
+	}
+
+	// }}}
+	// {{{ protected function getSku()
+
+	protected function getSku(StoreOrderItem $item)
+	{
+		return $item->sku;
 	}
 
 	// }}}
@@ -177,6 +185,14 @@ class StoreAnalyticsOrderTracker
 	protected function getProductTitle(StoreOrderItem $item)
 	{
 		return $item->product_title;
+	}
+
+	// }}}
+	// {{{ protected function getCategoryTitle()
+
+	protected function getCategoryTitle(StoreOrderItem $item)
+	{
+		return $item->getSourceCategoryTitle();
 	}
 
 	// }}}
