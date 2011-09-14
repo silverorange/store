@@ -636,9 +636,10 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			} else {
 				$payment_method->setAdjustable(false);
 			}
+
+			$payment_method->amount = $amount;
 		}
 
-		$payment_method->amount = $amount;
 
 		if ($payment_type->isCard()) {
 			$payment_method->setMaxAmount(null);
