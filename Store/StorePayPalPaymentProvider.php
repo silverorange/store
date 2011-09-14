@@ -1130,7 +1130,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		}
 
 		if ($notify_url != '') {
-			$details['Notify_URL'] = $this->formatString($notify_url, 2048);
+			$details['NotifyURL'] = $this->formatString($notify_url, 2048);
 		}
 
 		if ($custom != '') {
