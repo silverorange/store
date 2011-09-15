@@ -7,7 +7,7 @@ require_once 'SwatI18N/SwatI18NLocale.php';
  * A payment method for an order for an e-commerce Web application
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StorePaymentMethod
  * @see       StorePaymentMethodTransaction
@@ -298,10 +298,16 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	{
 		$new_payment_method = parent::duplicate();
 
-		$card_verification_value = $this->getUnencryptedCardVerificationValue();
-		if ($card_verification_value != '') {
-			$new_payment_method->setCardVerificationValue(
-				$card_verification_value, true, false);
+		$fields = array(
+			'unencrypted_card_verification_value',
+			'account_payment_method_id',
+			'max_amount',
+			'tag',
+			'paypal_token',
+		);
+
+		foreach ($fields as $field) {
+			$new_payment_method->$field = $this->$field;
 		}
 
 		return $new_payment_method;
