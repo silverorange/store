@@ -19,7 +19,7 @@ require_once 'Crypt/GPG.php';
  * encryption.
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StorePaymentType
  * @see       StoreCardType
@@ -169,7 +169,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		'card_number'   => true,
 		'card_fullname' => true,
 		'card_expiry'   => true,
-		);
+	);
 
 	// }}}
 	// {{{ public function showCardNumber()
@@ -377,9 +377,12 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	{
 		$new_payment_method = parent::duplicate();
 
-		$card_number = $this->getUnencryptedCardNumber();
-		if ($card_number != '') {
-			$new_payment_method->setCardNumber($card_number, true, false);
+		$fields = array(
+			'unencrypted_card_number',
+		);
+
+		foreach ($fields as $field) {
+			$new_payment_method->$field = $this->$field;
 		}
 
 		return $new_payment_method;
