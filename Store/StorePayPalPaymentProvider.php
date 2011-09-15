@@ -518,6 +518,40 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
+	// {{{ public function createRecurringPaymentsProfile()
+
+	/**
+	 */
+	public function createRecurringPaymentsProfile(
+		StoreOrderPaymentMethod $payment_method, StoreOrder $order,
+		$profile_id, SwatDate $start_date, array $schedule_details,
+		$card_number = null, $card_verification_value = null)
+	{
+		$request = $this->getCreateRecurringPaymentsProfileRequest(
+			$payment_method, $order, $profile_id, $start_date,
+			$schedule_details);
+
+		try {
+			$response = $this->client->call('CreateRecurringPaymentsProfile',
+				$request);
+		} catch (Payment_PayPal_SOAP_ErrorException $e) {
+			// ignore warnings
+			if ($e->getSeverity() === Payment_PayPal_SOAP::ERROR_WARNING) {
+				$response = $e->getResponse();
+			} else {
+				throw $e;
+			}
+		}
+
+		$details = $response->CreateRecurringPaymentsProfileResponseDetails;
+
+		return array(
+			'profile_id' => $details->ProfileID,
+			'status'     => $details->ProfileStatus,
+		);
+	}
+
+	// }}}
 
 	// convenience methods
 	// {{{ public static function getExceptionMessageId()
@@ -704,6 +738,14 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		}
 
 		return $string;
+	}
+
+	// }}}
+	// {{{ public function formatCurrency()
+
+	public function formatCurrency($value)
+	{
+		return $this->getCurrencyValue($value, $this->currency);
 	}
 
 	// }}}
@@ -946,76 +988,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
-	// {{{ protected function getCreditCardDetails()
-
-	protected function getCreditCardDetails(StoreOrder $order,
-		StoreOrderPaymentMethod $payment_method, $card_number,
-			$card_verification_value)
-	{
-		$details = array();
-
-		$details['CardOwner'] = $this->getPayerInfo($order, $payment_method);
-
-		$details['CreditCardType'] = $this->getCreditCardType($payment_method);
-
-		$details['CreditCardNumber'] = $card_number;
-
-		$expiry = $payment_method->card_expiry;
-		$details['ExpMonth'] = $expiry->formatLikeIntl('MM');
-		$details['ExpYear']  = $expiry->formatLikeIntl('yyyy');
-		$details['CVV2']     = $card_verification_value;
-
-		if ($payment_method->card_inception !== null) {
-			$inception = $payment_method->card_inception;
-			$details['StartMonth'] = $inception->formatLikeIntl('MM');
-			$details['StartYear']  = $inception->formatLikeIntl('yyyy');
-		}
-
-		if ($payment_method->card_issue_number != '') {
-			$details['IssueNumber'] = $payment_method->card_issue_number;
-		}
-
-		return $details;
-	}
-
-	// }}}
-	// {{{ protected function getCreditCardType()
-
-	protected function getCreditCardType(StoreOrderPaymentMethod $payment_method)
-	{
-		switch ($payment_method->card_type->shortname) {
-		case 'amex':
-			$type = 'Amex';
-			break;
-
-		case 'discover':
-			$type = 'Discover';
-			break;
-
-		case 'mastercard':
-			$type = 'MasterCard';
-			break;
-
-		case 'visa':
-			$type = 'Visa';
-			break;
-
-		case 'switch':
-			$type = 'Switch';
-			break;
-
-		case 'solo':
-			$type = 'Solo';
-			break;
-
-		default:
-			throw new StorePaymentException('Unsupported card type in order.');
-		}
-
-		return $type;
-	}
-
-	// }}}
 	// {{{ protected function getPayerInfo()
 
 	protected function getPayerInfo(StoreOrder $order,
@@ -1091,7 +1063,175 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 	// }}}
 
+	// data-structure helper methods (recurring payments)
+	// {{{ protected function getCreateRecurringPaymentsProfileRequest()
+
+	protected function getCreateRecurringPaymentsProfileRequest(
+		StoreOrderPaymentMethod $payment_method, StoreOrder $order,
+		$profile_id, SwatDate $start_date, array $schedule_details,
+		$card_number = null, $card_verification_value = null)
+	{
+		return array(
+			'CreateRecurringPaymentsProfileRequest' => array(
+				'Version' => '60.0',
+				'CreateRecurringPaymentsProfileRequestDetails' =>
+					$this->getCreateRecurringPaymentsProfileRequestDetails(
+					$payment_method, $order, $profile_id, $start_date,
+					$schedule_details),
+			),
+		);
+	}
+
+	// }}}
+	// {{{ protected function getCreateRecurringPaymentsProfileRequestDetails()
+
+	protected function getCreateRecurringPaymentsProfileRequestDetails(
+		StoreOrderPaymentMethod $payment_method, StoreOrder $order,
+		$profile_id, SwatDate $start_date, array $schedule_details,
+		$card_number = null, $card_verification_value = null)
+	{
+		$details = array();
+
+		switch ($payment_method->payment_type->shortname) {
+		case 'paypal':
+			$details['Token'] = $this->formatString(
+				$payment_method->getPayPalToken(), 127);
+
+			break;
+
+		case 'card':
+		default:
+			$details['CreditCard'] = $this->getCreditCardDetails(
+				$order, $payment_method, $card_number,
+				$card_verification_value);
+
+			break;
+		}
+
+		$items = $this->getRecurringPaymentsPaymentDetailsItems($order);
+		if (count($items) > 0) {
+			$details['PaymentDetailsItem'] = $items;
+		}
+
+		$details['RecurringPaymentsProfileDetails'] =
+			$this->getRecurringPaymentsProfileDetails($order, $profile_id,
+				$start_date);
+
+		$details['ScheduleDetails'] = $schedule_details;
+
+		return $details;
+	}
+
+	// }}}
+	// {{{ protected function getRecurringPaymentsPaymentDetailsItems()
+
+	protected function getRecurringPaymentsPaymentDetailsItems(
+		StoreOrder $order)
+	{
+		$details = array();
+
+		foreach ($order->items as $item) {
+			$details[] = $this->getPaymentDetailsItem($item);
+		}
+
+		return $details;
+	}
+
+	// }}}
+	// {{{ protected function getRecurringPaymentsProfileDetails()
+
+	protected function getRecurringPaymentsProfileDetails(
+		StoreOrder $order, $profile_id, SwatDate $start_date)
+	{
+		$details = array();
+
+		$details['SubscriberName'] = $this->formatString(
+			$order->billing_address->getFullname(), 32);
+
+		if ($order->shipping_address instanceof StoreAddress) {
+			$details['SubscriberShippingAddress'] =
+				$this->getShipToAddress($order);
+		}
+
+		$details['BillingStartDate'] = $start_date->getISO8601();
+		$details['ProfileReference'] = $this->formatString($profile_id, 127);
+
+		return $details;
+	}
+
+	// }}}
+
 	// data-structure helper methods (shared)
+	// {{{ protected function getCreditCardDetails()
+
+	protected function getCreditCardDetails(StoreOrder $order,
+		StoreOrderPaymentMethod $payment_method, $card_number,
+			$card_verification_value)
+	{
+		$details = array();
+
+		$details['CardOwner'] = $this->getPayerInfo($order, $payment_method);
+
+		$details['CreditCardType'] = $this->getCreditCardType($payment_method);
+
+		$details['CreditCardNumber'] = $card_number;
+
+		$expiry = $payment_method->card_expiry;
+		$details['ExpMonth'] = $expiry->formatLikeIntl('MM');
+		$details['ExpYear']  = $expiry->formatLikeIntl('yyyy');
+		$details['CVV2']     = $card_verification_value;
+
+		if ($payment_method->card_inception !== null) {
+			$inception = $payment_method->card_inception;
+			$details['StartMonth'] = $inception->formatLikeIntl('MM');
+			$details['StartYear']  = $inception->formatLikeIntl('yyyy');
+		}
+
+		if ($payment_method->card_issue_number != '') {
+			$details['IssueNumber'] = $payment_method->card_issue_number;
+		}
+
+		return $details;
+	}
+
+	// }}}
+	// {{{ protected function getCreditCardType()
+
+	protected function getCreditCardType(StoreOrderPaymentMethod $payment_method)
+	{
+		switch ($payment_method->card_type->shortname) {
+		case 'amex':
+			$type = 'Amex';
+			break;
+
+		case 'discover':
+			$type = 'Discover';
+			break;
+
+		case 'mastercard':
+			$type = 'MasterCard';
+			break;
+
+		case 'visa':
+			$type = 'Visa';
+			break;
+
+		case 'switch':
+			$type = 'Switch';
+			break;
+
+		case 'solo':
+			$type = 'Solo';
+			break;
+
+		default:
+			throw new StorePaymentException('Unsupported card type in order.');
+		}
+
+		return $type;
+	}
+
+	// }}}
 	// {{{ protected function getPaymentDetails()
 
 	protected function getPaymentDetails(StoreOrder $order,
