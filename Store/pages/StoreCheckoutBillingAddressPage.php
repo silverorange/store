@@ -232,21 +232,26 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 		$order = $this->app->session->order;
 
 		if ($order->billing_address === null) {
-			$this->ui->getWidget('billing_address_fullname')->value =
-				$this->app->session->account->fullname;
+			
+			if ($this->app->session->checkout_with_account) {
+				$this->ui->getWidget('billing_address_fullname')->value =
+					$this->app->session->account->fullname;
 
-			$this->ui->getWidget('billing_address_phone')->value =
-				$this->app->session->account->phone;
+				$this->ui->getWidget('billing_address_phone')->value =
+					$this->app->session->account->phone;
 
-			$this->ui->getWidget('billing_address_company')->value =
-				$this->app->session->account->company;
+				$this->ui->getWidget('billing_address_company')->value =
+					$this->app->session->account->company;
 
-			$default_address = $this->getDefaultBillingAddress();
-			if ($default_address !== null) {
-				$this->ui->getWidget('billing_address_list')->value =
-					$default_address->id;
+				$default_address = $this->getDefaultBillingAddress();
+				if ($default_address !== null) {
+					$this->ui->getWidget('billing_address_list')->value =
+						$default_address->id;
+				}
 			}
+
 		} else {
+
 			if ($order->billing_address->getAccountAddressId() === null) {
 
 				$this->ui->getWidget('billing_address_fullname')->value =
