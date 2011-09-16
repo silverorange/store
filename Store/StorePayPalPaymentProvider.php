@@ -529,7 +529,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	{
 		$request = $this->getCreateRecurringPaymentsProfileRequest(
 			$payment_method, $order, $profile_id, $start_date,
-			$schedule_details);
+			$schedule_details, $card_number, $card_verification_value);
 
 		try {
 			$response = $this->client->call('CreateRecurringPaymentsProfile',
@@ -546,8 +546,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$details = $response->CreateRecurringPaymentsProfileResponseDetails;
 
 		return array(
-			'profile_id' => $details->ProfileID,
-			'status'     => $details->ProfileStatus,
+			'profile_id'     => $details->ProfileID,
+			'profile_status' => $details->ProfileStatus,
 		);
 	}
 
@@ -1077,7 +1077,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 				'CreateRecurringPaymentsProfileRequestDetails' =>
 					$this->getCreateRecurringPaymentsProfileRequestDetails(
 					$payment_method, $order, $profile_id, $start_date,
-					$schedule_details),
+					$schedule_details, $card_number, $card_verification_value),
 			),
 		);
 	}
