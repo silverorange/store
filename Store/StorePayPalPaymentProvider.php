@@ -1179,7 +1179,10 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$expiry = $payment_method->card_expiry;
 		$details['ExpMonth'] = $expiry->formatLikeIntl('MM');
 		$details['ExpYear']  = $expiry->formatLikeIntl('yyyy');
-		$details['CVV2']     = $card_verification_value;
+
+		if ($card_verification_value != '') {
+			$details['CVV2'] = $card_verification_value;
+		}
 
 		if ($payment_method->card_inception !== null) {
 			$inception = $payment_method->card_inception;

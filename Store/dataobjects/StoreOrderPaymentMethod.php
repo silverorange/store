@@ -67,7 +67,7 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	 *
 	 * @var integer
 	 */
-	protected $account_payment_method_id = null;
+	protected $account_payment_method_id;
 
 	/**
 	 * The card verification value of this payment method
@@ -78,7 +78,7 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	 *
 	 * @see StoreOrderPaymentMethod::getUnencryptedCardVerificationValue()
 	 */
-	protected $unencrypted_card_verification_value = '';
+	protected $unencrypted_card_verification_value;
 
 	/**
 	 * The max amount this payment method can be adjusted to if it is
