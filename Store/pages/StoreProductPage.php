@@ -23,7 +23,7 @@ require_once 'Store/StoreCartProcessor.php';
  * A product page
  *
  * @package   Store
- * @copyright 2005-2010 silverorange
+ * @copyright 2005-2011 silverorange
  */
 class StoreProductPage extends StorePage
 {
