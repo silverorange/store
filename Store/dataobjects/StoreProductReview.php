@@ -44,6 +44,25 @@ class StoreProductReview extends SiteComment
 	}
 
 	// }}}
+
+	// loader methods
+	// {{{ protected function loadReplies()
+
+	protected function loadReplies()
+	{
+		// include wrapper at call-time to prevent infinite include loop
+		require_once dirname(__FILE__).'/StoreProductReviewWrapper.php';
+
+		// order chronologically for sub-items
+		$sql = sprintf('select * from ProductReview where parent = %s
+			order by createdate asc',
+			$this->db->quote($this->id, 'integer'));
+
+		return SwatDB::query($this->db, $sql,
+			SwatDBClassMap::get('StoreProductReviewWrapper'));
+	}
+
+	// }}}
 }
 
 ?>

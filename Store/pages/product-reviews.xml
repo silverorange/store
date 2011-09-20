@@ -7,15 +7,13 @@
 			<property name="classes[]">store-product-reviews</property>
 
 			<!-- existing reviews -->
-			<widget class="SwatReplicableContainer" id="reviews_replicator">
-				<widget class="StoreProductReviewView" id="review" />
-			</widget>
+			<widget class="SwatContentBlock" id="reviews" />
 
 			<!-- new review controls -->
 			<widget class="SwatMessageDisplay" id="product_review_message_display" />
 			<widget class="SwatContainer" id="product_review_preview_container">
 				<property name="visible" type="boolean">false</property>
-				<widget class="StoreProductReviewView" id="review_preview" />
+				<widget class="SwatContentBlock" id="review_preview" />
 			</widget>
 
 			<widget class="SwatDisclosure" id="product_review_disclosure">

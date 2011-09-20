@@ -135,34 +135,28 @@ class StoreProductPage extends StorePage
 		if ($this->product->reviewable) {
 			$this->reviews_ui = new SwatUI();
 			$this->reviews_ui->loadFromXML($this->reviews_ui_xml);
+			$this->reviews_ui->init();
+			$this->initReviewsInternal();
+
+			// set up item view
+			$view = SiteViewFactory::get($this->app, 'product-review');
+			$view->setPartMode('replies', SiteView::MODE_ALL);
+
+			$replies_view = clone $view;
+			$replies_view->setPartMode('replies', SiteView::MODE_NONE);
+			$view->setReplyView($replies_view);
 
 			$reviews = $this->product->getVisibleProductReviews(
 				$this->app->getInstance(),
 				$this->getMaxProductReviews());
 
-			$review_ids = array();
+			ob_start();
 			foreach ($reviews as $review) {
-				$review_ids[] = $review->id;
+				$view->display($review);
 			}
 
-			// set view replicator ids
-			$this->reviews_ui->getWidget('reviews_replicator')
-				->replication_ids = $review_ids;
-
-			$this->reviews_ui->getWidget('review')->app = $this->app;
-
-			$this->reviews_ui->init();
-
-			$this->initReviewsInternal();
-
-			// set reviews on replicated views
-			foreach ($reviews as $review) {
-				$view = $this->reviews_ui
-					->getWidget('reviews_replicator')
-					->getWidget('review', $review->id);
-
-				$view->review = $review;
-			}
+			$this->reviews_ui->getWidget('reviews')->content = ob_get_clean();
+			$this->reviews_ui->getWidget('reviews')->content_type = 'text/xml';
 
 			if (count($reviews) == 0) {
 				$disclosure =
@@ -1112,7 +1106,7 @@ class StoreProductPage extends StorePage
 	}
 
 	// }}}
-	// {{{ protected function buildReviewPreview()
+	// {{{ protected function buildReviewbuildReviewPreview()
 
 	protected function buildReviewPreview()
 	{
@@ -1140,15 +1134,22 @@ class StoreProductPage extends StorePage
 
 			$message_display->add($message, SwatMessageDisplay::DISMISS_OFF);
 
-			$review_preview = $this->reviews_ui->getWidget('review_preview');
-			$review_preview->review = $this->review;
-			$review_preview->app    = $this->app;
+			$preview   = $this->reviews_ui->getWidget('review_preview');
 			$container = $this->reviews_ui->getWidget(
 				'product_review_preview_container');
 
 			$container->visible = true;
 			$this->reviews_ui->getWidget('product_review_disclosure')->open =
 				true;
+
+			// set up item view
+			$view = SiteViewFactory::get($this->app, 'product-review');
+			$view->setPartMode('replies', SiteView::MODE_NONE);
+
+			ob_start();
+			$view->display($this->review);
+			$preview->content_type = 'text/xml';
+			$preview->content = ob_get_clean();
 		}
 	}
 
@@ -1434,10 +1435,6 @@ class StoreProductPage extends StorePage
 			Store::PACKAGE_ID));
 
 		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/javascript/store-product-review-page.js',
-			Store::PACKAGE_ID));
-
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
 			'packages/store/javascript/store-product-image-display.js',
 			Store::PACKAGE_ID));
 
@@ -1476,8 +1473,19 @@ class StoreProductPage extends StorePage
 			$this->layout->addHtmlHeadEntrySet(
 				XML_RPCAjax::getHtmlHeadEntrySet());
 
+			$yui = new SwatYUI(array('dom', 'event', 'animation'));
+			$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
+
 			$this->layout->addHtmlHeadEntrySet(
 				$this->reviews_ui->getRoot()->getHtmlHeadEntrySet());
+
+			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+				'packages/store/javascript/store-product-review-page.js',
+				Store::PACKAGE_ID));
+
+			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+				'packages/store/javascript/store-product-review-view.js',
+				Store::PACKAGE_ID));
 		}
 	}
 

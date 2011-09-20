@@ -331,13 +331,16 @@ class StoreProduct extends SwatDBDataObject
 
 		$sql = 'select * from ProductReview
 			where product = %s and spam = %s and status = %s %s
+				and parent %s %s
 			order by createdate desc, id';
 
 		$sql = sprintf($sql,
 			$this->db->quote($this->id, 'integer'),
 			$this->db->quote(false, 'boolean'),
 			$this->db->quote(SiteComment::STATUS_PUBLISHED, 'integer'),
-			$instance_where);
+			$instance_where,
+			SwatDB::equalityOperator(null),
+			$this->db->quote(null));
 
 		if ($limit !== null)
 			$this->db->setLimit($limit, $offset);
@@ -360,13 +363,16 @@ class StoreProduct extends SwatDBDataObject
 		}
 
 		$sql = 'select count(1) from ProductReview
-			where product = %s and spam = %s and status = %s %s';
+			where product = %s and spam = %s and status = %s %s
+				and parent %s %s';
 
 		$sql = sprintf($sql,
 			$this->db->quote($this->id, 'integer'),
 			$this->db->quote(false, 'boolean'),
 			$this->db->quote(SiteComment::STATUS_PUBLISHED, 'integer'),
-			$instance_where);
+			$instance_where,
+			SwatDB::equalityOperator(null),
+			$this->db->quote(null));
 
 		return SwatDB::queryOne($this->db, $sql);
 	}
