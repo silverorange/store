@@ -179,7 +179,10 @@ class StoreProductReviewView extends SiteView
 	protected function displayAuthor(StoreProductReview $review)
 	{
 		$span_tag = new SwatHtmlTag('span');
-		$span_tag->class = 'product-review-author fn';
+		$span_tag->class = 'product-review-author';
+
+		$fn_span_tag = new SwatHtmlTag('span');
+		$fn_span_tag->class = 'fn';
 
 		if (class_exists('Blorg') && $review->author != null) {
 			$fullname = $review->author->name;
@@ -187,8 +190,15 @@ class StoreProductReviewView extends SiteView
 			$fullname = $review->fullname;
 		}
 
-		$span_tag->setContent($fullname);
-		$span_tag->display();
+
+		$span_tag->open();
+		$fn_span_tag->open();
+		echo $fullname;
+		$fn_span_tag->close();
+		if ($review->parent !== null) {
+			echo ' Reply';
+		}
+		$span_tag->close();
 	}
 
 	// }}}
