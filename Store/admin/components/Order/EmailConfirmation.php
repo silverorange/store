@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * Page to resend the confirmation email for an order
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderEmailConfirmation extends AdminConfirmation
@@ -60,16 +60,17 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 					$this->id));
 			}
 
-            $instance_id = $this->app->getInstanceId();
-            if ($instance_id !== null) {
-                $order_instance_id = ($this->order->instance === null) ?
-                    null : $this->order->instance->id;
+			$instance_id = $this->app->getInstanceId();
+			if ($instance_id !== null) {
+				$order_instance_id = ($this->order->instance === null) ?
+					null : $this->order->instance->id;
 
-                if ($order_instance_id !== $instance_id)
-                    throw new AdminNotFoundException(sprintf(Store::_(
-                        'Incorrect instance for order ‘%d’.'), $this->id));
-            }
+				if ($order_instance_id !== $instance_id)
+					throw new AdminNotFoundException(sprintf(Store::_(
+						'Incorrect instance for order ‘%d’.'), $this->id));
+			}
 		}
+
 		return $this->order;
 	}
 
@@ -83,7 +84,7 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 		$form = $this->ui->getWidget('confirmation_form');
 
 		if ($form->button->id == 'yes_button') {
-			$this->order->sendConfirmationEmail($this->app);
+			$this->sendOrderConfirmation();
 
 			$cc = ($this->order->cc_email !== null) ?
 				' and cc’d to '.$this->order->cc_email : '';
@@ -94,6 +95,14 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 
 			$this->app->messages->add($message);
 		}
+	}
+
+	// }}}
+	// {{{ protected function sendOrderConfirmation()
+
+	protected function sendOrderConfirmation()
+	{
+		$this->order->sendConfirmationEmail($this->app);
 	}
 
 	// }}}
