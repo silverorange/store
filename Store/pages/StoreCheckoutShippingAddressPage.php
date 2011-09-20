@@ -71,7 +71,7 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 
 		if ($provstate->value === 'other') {
 			$provstate_other =
-				$this->ui->getWidget('billing_address_provstate_other');
+				$this->ui->getWidget('shipping_address_provstate_other');
 
 			$provstate_other->required = true;
 		}
