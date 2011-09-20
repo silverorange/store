@@ -70,6 +70,10 @@ class StoreProductReviewView extends SiteView
 		$div_tag->id = $id;
 		$div_tag->class = 'product-review hreview';
 
+		if (count($review->replies) > 0) {
+			$div_tag->class.= ' product-review-has-replies';
+		}
+
 		if ($review->author_review) {
 			$div_tag->class.= ' system-product-review';
 		}
