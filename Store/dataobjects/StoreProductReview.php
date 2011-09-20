@@ -8,7 +8,7 @@ require_once 'Store/dataobjects/StoreProduct.php';
  * Product review for a product
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2011 silverorange
  */
 class StoreProductReview extends SiteComment
 {
