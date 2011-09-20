@@ -1179,7 +1179,7 @@ class StoreProductPage extends StorePage
 			$locale->formatNumber($review_count));
 
 		$message       = SwatString::quoteJavaScriptString($message);
-		$replicator_id = "'reviews_replicator'";
+		$container_id  = "'reviews_container'";
 		$disclosure_id = "'product_review_disclosure'";
 
 		$show_more = ($review_count > $this->getMaxProductReviews()) ?
@@ -1189,7 +1189,7 @@ class StoreProductPage extends StorePage
 			"new StoreProductReviewPage(%s, %s, %s, %s, %s, %s);",
 			$this->product->id,
 			$this->getMaxProductReviews(),
-			$replicator_id,
+			$container_id,
 			$disclosure_id,
 			$message,
 			$show_more);
