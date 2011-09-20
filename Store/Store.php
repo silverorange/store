@@ -3,6 +3,7 @@
 require_once 'Swat/Swat.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Site/Site.php';
+require_once 'Site/SiteViewFactory.php';
 
 /**
  * Container for package wide static methods
@@ -155,9 +156,9 @@ SwatDBClassMap::add('SiteContactMessage', 'StoreContactMessage');
 SwatDBClassMap::add('SiteArticle',        'StoreArticle');
 SwatDBClassMap::add('SiteArticleWrapper', 'StoreArticleWrapper');
 
+SiteViewFactory::addPath('Store/views');
+SiteViewFactory::registerView('product-review', 'StoreProductReviewView');
 if (class_exists('Blorg')) {
-	require_once 'Site/SiteViewFactory.php';
-	SiteViewFactory::addPath('Store/views');
 	SiteViewFactory::registerView('post-search', 'StoreBlorgPostSearchView');
 }
 

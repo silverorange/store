@@ -3,17 +3,28 @@
 require_once 'Admin/pages/AdminApproval.php';
 require_once 'Site/dataobjects/SiteComment.php';
 require_once 'Store/dataobjects/StoreProductReview.php';
+if (class_exists('Blorg')) {
+	require_once 'Blorg/dataobjects/BlorgAuthorWrapper.php';
+}
 
 /**
  * Approval page for Product reviews
  *
  * @package   Store
- * @copyright 2008-2009 silverorange
+ * @copyright 2008-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductReviewApproval extends AdminApproval
 {
 	// init phase
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return dirname(__FILE__).'/approval.xml';
+	}
+
+	// }}}
 	// {{{ protected function initInternal()
 
 	protected function initInternal()
@@ -23,6 +34,11 @@ class StoreProductReviewApproval extends AdminApproval
 		$title = Store::_('Product Review Approval');
 		$this->navbar->createEntry($title);
 		$this->ui->getWidget('frame')->title = $title;
+
+		if (class_exists('Blorg')) {
+			$this->ui->getWidget('author_field')->visible = true;
+			$this->initAuthors();
+		}
 	}
 
 	// }}}
@@ -63,12 +79,71 @@ class StoreProductReviewApproval extends AdminApproval
 	}
 
 	// }}}
+	// {{{ protected function initAuthors()
+
+	protected function initAuthors()
+	{
+		$instance_id = $this->app->getInstanceId();
+		$sql = sprintf('select BlorgAuthor.*,
+				AdminUserInstanceBinding.usernum
+			from BlorgAuthor
+			left outer join AdminUserInstanceBinding on
+				AdminUserInstanceBinding.default_author = BlorgAuthor.id
+			where BlorgAuthor.instance %s %s and BlorgAuthor.visible = %s
+			order by displayorder',
+			SwatDB::equalityOperator($instance_id),
+			$this->app->db->quote($instance_id, 'integer'),
+			$this->app->db->quote(true, 'boolean'));
+
+		$rs = SwatDB::query($this->app->db, $sql);
+
+		$authors = array();
+		foreach ($rs as $row) {
+			$authors[$row->id] = $row->name;
+
+			if ($row->usernum == $this->app->session->user->id) {
+				$this->ui->getWidget('author')->value = $row->id;
+			}
+		}
+
+		$this->ui->getWidget('author')->addOptionsByArray($authors);
+	}
+
+	// }}}
 
 	// process phase
+	// {{{ protected function save()
+
+	protected function save()
+	{
+		if ($this->ui->getWidget('approve_button')->hasBeenClicked() ||
+			$this->ui->getWidget('reply_button')->hasBeenClicked()) {
+			$this->approve();
+		} elseif ($this->ui->getWidget('delete_button')->hasBeenClicked()) {
+			$this->delete();
+		}
+	}
+
+	// }}}
 	// {{{ protected function approve()
 
 	protected function approve()
 	{
+		if (strlen($this->ui->getWidget('bodytext')->value)) {
+			$class_name = SwatDBClassMap::get('StoreProductReview');
+			$reply = new $class_name();
+			$reply->setDatabase($this->app->db);
+			$reply->author_review = true;
+			$reply->product       = $this->data_object->product;
+			$reply->parent        = $this->data_object;
+			$reply->author        = $this->ui->getWidget('author')->value;
+			$reply->bodytext      = $this->ui->getWidget('bodytext')->value;
+			$reply->status        = SiteComment::STATUS_PUBLISHED;
+			$reply->createdate    = new SwatDate();
+			$reply->createdate->toUTC();
+			$reply->save();
+		}
+
 		$this->data_object->status = SiteComment::STATUS_PUBLISHED;
 		$this->data_object->save();
 	}
@@ -83,7 +158,21 @@ class StoreProductReviewApproval extends AdminApproval
 		$review = $this->data_object;
 
 		$div_tag = new SwatHtmlTag('div');
-		$div_tag->setContent($this->data_object->product->title);
+
+		// link the product title if you have access to the component.
+		if ($this->app->session->user->hasAccessByShortname('Product')) {
+			$a_tag = new SwatHtmlTag('a');
+			$a_tag->href = sprintf('Product/Details?id=%s',
+				$this->data_object->product->id);
+			$a_tag->setContent($this->data_object->product->title);
+			ob_start();
+			$a_tag->display();
+			$content = ob_get_clean();
+		} else {
+			$content = $this->data_object->product->title;
+		}
+
+		$div_tag->setContent($content, 'text/xml');
 		$div_tag->display();
 
 		$h2_tag = new SwatHtmlTag('h2');

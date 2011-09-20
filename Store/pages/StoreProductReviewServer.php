@@ -2,7 +2,7 @@
 
 require_once 'Site/pages/SiteXMLRPCServer.php';
 require_once 'Site/exceptions/SiteNotFoundException.php';
-require_once 'Store/StoreProductReviewView.php';
+//require_once 'Store/StoreProductReviewView.php';
 require_once 'Store/dataobjects/StoreProductReview.php';
 require_once 'Store/dataobjects/StoreProductReviewWrapper.php';
 
@@ -42,6 +42,7 @@ class StoreProductReviewServer extends SiteXMLRPCServer
 
 		// get views
 		$reviews = $this->getProductReviews($product_id, $limit, $offset);
+
 		foreach ($reviews as $review) {
 			$view = $this->getProductReviewView($review);
 
@@ -76,6 +77,7 @@ class StoreProductReviewServer extends SiteXMLRPCServer
 	 */
 	protected function getProductReviewView(StoreProductReview $review)
 	{
+return null;
 		$view = new StoreProductReviewView('review_'.$review->id);
 
 		$view->app             = $this->app;
@@ -97,13 +99,16 @@ class StoreProductReviewServer extends SiteXMLRPCServer
 		$instance_id = $this->app->getInstanceId();
 		$sql = sprintf('select * from ProductReview
 			where product = %s and spam = %s and status = %s and instance %s %s
+				and parent %s %s
 			order by createdate desc, id',
 			$this->app->db->quote($product_id, 'integer'),
 			$this->app->db->quote(false, 'boolean'),
 			$this->app->db->quote(SiteComment::STATUS_PUBLISHED, 'integer'),
 			SwatDB::equalityOperator($instance_id),
-			$this->app->db->quote($instance_id, 'integer'));
-
+			$this->app->db->quote($instance_id, 'integer'),
+			SwatDB::equalityOperator(null),
+			$this->app->db->quote(null));
+echo $sql;
 		// Don't use db->setLimit here because it doesn't allow an offset
 		// with no limit.
 
@@ -117,8 +122,20 @@ class StoreProductReviewServer extends SiteXMLRPCServer
 				$this->app->db->quote($offset, 'integer'));
 		}
 
-		return SwatDB::query($this->app->db, $sql,
+		$reviews = SwatDB::query($this->app->db, $sql,
 			SwatDBClassMap::get('StoreProductReviewWrapper'));
+
+		// efficiently load replies
+		$replies = $reviews->loadAllSubRecordsets(
+			'replies',
+			SwatDBClassMap::get('StoreProductReviewWrapper'),
+			'ProductReview',
+			'parent',
+			'',
+			'createdate asc'
+			);
+
+		return $reviews;
 	}
 
 	// }}}
