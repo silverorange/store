@@ -3,16 +3,16 @@
  *
  * @param Number product_id
  * @param Number offset
- * @param String replicator_id
+ * @param String container_id
  *
- * @copyright 2008 silverorange
+ * @copyright 2008-2011 silverorange
  */
-function StoreProductReviewPage(product_id, offset, replicator_id,
+function StoreProductReviewPage(product_id, offset, container_id,
 	disclosure_id, message, show_all)
 {
 	this.product_id    = product_id;
 	this.offset        = offset;
-	this.replicator_id = replicator_id;
+	this.container_id  = container_id;
 	this.disclosure_id = disclosure_id;
 	this.message       = message;
 	this.show_all      = show_all;
@@ -67,9 +67,9 @@ StoreProductReviewPage.prototype.loadAllReviews = function()
 	var that = this;
 	function callBack(response)
 	{
-		var reviews_replicator = document.getElementById(that.replicator_id);
+		var reviews_container = document.getElementById(that.container_id);
 
-		if (!reviews_replicator)
+		if (!reviews_container)
 			return;
 
 		var counter = 0;
@@ -84,7 +84,7 @@ StoreProductReviewPage.prototype.loadAllReviews = function()
 			// elements.
 			var div = document.createElement('div');
 			div.innerHTML += response[counter].content;
-			reviews_replicator.appendChild(div);
+			reviews_container.appendChild(div);
 
 			// when the review is avaialable, run its JavaScript
 			YAHOO.util.Event.onAvailable(response[counter].id, function()

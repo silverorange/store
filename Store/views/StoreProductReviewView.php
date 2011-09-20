@@ -44,6 +44,14 @@ class StoreProductReviewView extends SiteView
 	}
 
 	// }}}
+	// {{{ public function getId()
+
+	public function getId(StoreProductReview $review)
+	{
+		return 'review'.$review->id;
+	}
+
+	// }}}
 	// {{{ public function display()
 
 	/**
@@ -61,8 +69,14 @@ class StoreProductReviewView extends SiteView
 		$div_tag = new SwatHtmlTag('div');
 		$div_tag->id = $id;
 		$div_tag->class = 'product-review hreview';
-		if ($review->author_review)
+
+		if ($review->author_review) {
 			$div_tag->class.= ' system-product-review';
+		}
+
+		if ($review->parent !== null) {
+			$div_tag->class.= ' product-review-reply';
+		}
 
 		$div_tag->open();
 
@@ -70,31 +84,20 @@ class StoreProductReviewView extends SiteView
 		$this->displayItem($review);
 		$this->displayDescription($review);
 		$this->displaySummary($review);
-		Swat::displayInlineJavaScript($this->getInlineJavaScript($id));
+
+		$mode = $this->getMode('javascript');
+		if ($mode > SiteView::MODE_NONE) {
+			Swat::displayInlineJavaScript($this->getInlineJavaScript($review));
+		}
+
 		$div_tag->close();
 		$this->displayReplies($review);
 	}
 
 	// }}}
-	// {{{ protected function define()
+	// {{{ public function getInlineJavaScript()
 
-	protected function define()
-	{
-		$this->definePart('replies');
-	}
-
-	// }}}
-	// {{{ protected function getId()
-
-	protected function getId(StoreProductReview $review)
-	{
-		return 'review'.$review->id;
-	}
-
-	// }}}
-	// {{{ protected function getInlineJavaScript()
-
-	protected function getInlineJavaScript($id)
+	public function getInlineJavaScript(StoreProductReview $review)
 	{
 		static $translations_displayed = false;
 
@@ -116,10 +119,34 @@ class StoreProductReviewView extends SiteView
 
 		$javascript.= sprintf(
 			"var %s_obj = new StoreProductReviewView(%s);",
-			$id,
-			SwatString::quoteJavaScriptString($id));
+			$this->getId($review),
+			SwatString::quoteJavaScriptString($this->getId($review)));
 
 		return $javascript;
+	}
+
+	// }}}
+	// {{{ public function getRepliesInlineJavaScript()
+
+	public function getRepliesInlineJavaScript(StoreProductReview $review)
+	{
+		$javascript = '';
+		$view = $this->getRepliesView();
+		foreach ($review->replies as $reply) {
+			$javascript.= $view->getInlineJavaScript($reply)."\n";
+		}
+
+		return $javascript;
+	}
+
+	// }}}
+
+	// {{{ protected function define()
+
+	protected function define()
+	{
+		$this->definePart('replies');
+		$this->definePart('javascript');
 	}
 
 	// }}}
@@ -234,12 +261,10 @@ class StoreProductReviewView extends SiteView
 		$mode = $this->getMode('replies');
 		if ($mode > SiteView::MODE_NONE) {
 			if (count($review->replies)) {
-				echo '<div class="product-review-replies">';
 				$view = $this->getRepliesView();
 				foreach ($review->replies as $reply) {
 					$view->display($reply);
 				}
-				echo '</div>';
 			}
 		}
 	}

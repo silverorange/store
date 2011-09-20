@@ -38,35 +38,47 @@ class StoreProductReviewServer extends SiteXMLRPCServer
 		$limit  = ($limit === 0) ? null : $limit;
 		$offset = intval($offset);
 
+		// get views
+		$reviews  = $this->getProductReviews($product_id, $limit, $offset);
+		$view     = $this->getProductReviewView();
 		$response = array();
 
-		// get views
-		$reviews = $this->getProductReviews($product_id, $limit, $offset);
-
 		foreach ($reviews as $review) {
-			$view = $this->getProductReviewView($review);
-
-			$response_review = array();
-
-			// display id
-			$response_review['id'] = $view->id;
-
-			// display content
-			ob_start();
-			$view->display();
-			$response_review['content'] = ob_get_clean();
-
-			// display javascript
-			ob_start();
-			echo $view->getInlineJavaScript();
-			echo "\n";
-			$response_review['javascript'] = ob_get_clean();
-
-			// add review
-			$response[] = $response_review;
+			$response[] = $this->getResponseReview($view, $review);
+			foreach ($review->replies as $reply) {
+				$response[] = $this->getResponseReview($view, $reply);
+			}
 		}
 
 		return $response;
+	}
+
+	// }}}
+	// {{{ protected function getResponseReview()
+
+	/**
+	 * @xmlrpc.hidden
+	 */
+	protected function getResponseReview(StoreProductReviewView $view,
+		StoreProductReview $review)
+	{
+		$response_review = array();
+
+		// display id
+		$response_review['id'] = $view->getId($review);
+
+		// display content
+		ob_start();
+		$view->display($review); //todo, don't display js inline
+		$response_review['content'] = ob_get_clean();
+
+		// display javascript
+		ob_start();
+		echo $view->getInlineJavaScript($review);
+		echo "\n";
+		$response_review['javascript'] = ob_get_clean();
+
+		return $response_review;
 	}
 
 	// }}}
@@ -75,14 +87,11 @@ class StoreProductReviewServer extends SiteXMLRPCServer
 	/**
 	 * @xmlrpc.hidden
 	 */
-	protected function getProductReviewView(StoreProductReview $review)
+	protected function getProductReviewView()
 	{
-return null;
-		$view = new StoreProductReviewView('review_'.$review->id);
-
-		$view->app             = $this->app;
-		$view->review          = $review;
-		$view->show_javascript = false;
+		$view = SiteViewFactory::get($this->app, 'product-review');
+		$view->setPartMode('replies',    SiteView::MODE_NONE);
+		$view->setPartMode('javascript', SiteView::MODE_NONE);
 
 		return $view;
 	}
@@ -108,7 +117,7 @@ return null;
 			$this->app->db->quote($instance_id, 'integer'),
 			SwatDB::equalityOperator(null),
 			$this->app->db->quote(null));
-echo $sql;
+
 		// Don't use db->setLimit here because it doesn't allow an offset
 		// with no limit.
 

@@ -7,7 +7,9 @@
 			<property name="classes[]">store-product-reviews</property>
 
 			<!-- existing reviews -->
-			<widget class="SwatContentBlock" id="reviews" />
+			<widget class="SwatDisplayableContainer" id="reviews_container">
+				<widget class="SwatContentBlock" id="reviews" />
+			</widget>
 
 			<!-- new review controls -->
 			<widget class="SwatMessageDisplay" id="product_review_message_display" />
