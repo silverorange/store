@@ -1,0 +1,50 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatFrame" id="frame">
+		<widget class="SwatForm" id="form">
+			<widget class="SwatToolbar" id="approval_toolbar">
+				<widget class="SwatButton" id="approve_button">
+					<property name="title" translatable="yes">Approve</property>
+				</widget>
+				<widget class="SwatConfirmationButton" id="delete_button">
+					<property name="title" translatable="yes">Delete</property>
+					<property name="confirmation_message" translatable="yes">Are you sure you want to delete?</property>
+				</widget>
+				<widget class="SwatButton" id="skip_button">
+					<property name="title" translatable="yes">Skip</property>
+				</widget>
+				<widget class="SwatContentBlock" id="status">
+					<property name="content_type">text/xml</property>
+				</widget>
+			</widget>
+			<widget class="SwatDisplayableContainer">
+				<widget class="SwatContentBlock" id="content">
+					<property name="content_type">text/xml</property>
+				</widget>
+			</widget>
+			<widget class="SwatGroupingFormField" id="reply_field">
+				<property name="title" translatable="yes">Reply</property>
+				<property name="note">Replies show below approved reviews.</property>
+				<widget class="SwatFormField" id="author_field">
+					<property name="title" translatable="yes">Author</property>
+					<property name="visible" type="boolean">false</property>
+					<widget class="SwatFlydown" id="author">
+						<property name="show_blank" type="boolean">false</property>
+					</widget>
+				</widget>
+				<widget class="SwatFormField" id="bodytext_field">
+					<property name="title">Comment</property>
+					<widget class="SwatTextarea" id="bodytext">
+						<property name="rows" type="integer">15</property>
+					</widget>
+				</widget>
+			</widget>
+			<widget class="SwatFooterFormField">
+				<widget class="SwatButton" id="reply_button">
+					<property name="title" translatable="yes">Approve and Post Reply</property>
+				</widget>
+			</widget>
+		</widget>
+	</widget>
+</swatml>
