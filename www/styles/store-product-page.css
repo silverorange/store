@@ -41,13 +41,16 @@ div.product-page-cart-message {
 	clear: left;
 }
 
+.product-review-has-replies {
+	border-bottom: 0;
+}
+
 .product-review .reviewer {
 	width: 145px;
 	float: left;
 }
 
 .product-review-animation {
-	overflow: hidden;
 	margin-left: 150px;
 }
 
@@ -72,6 +75,26 @@ div.product-page-cart-message {
 	padding: 0.5em 0; /* padding works, margins cause animation */
 	                  /* heights to be calculated incorrectly */
 	margin: 0;
+}
+
+#product_reviews_form .system-product-review {
+
+}
+
+.product-review-reply .reviewer {
+	float: none;
+	width: auto;
+	margin-left: 150px;
+}
+
+.product-review-reply .reviewer h4 {
+	margin: 0;
+	padding: 0;
+}
+
+.product-review-reply .reviewer h4 span.product-review-author,
+.product-review-reply .reviewer h4 span.product-review-date {
+	margin-right: 10px;
 }
 
 span.product-review-author {
