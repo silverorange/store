@@ -77,10 +77,6 @@ div.product-page-cart-message {
 	margin: 0;
 }
 
-#product_reviews_form .system-product-review {
-
-}
-
 .product-review-reply .reviewer {
 	float: none;
 	width: auto;
@@ -94,6 +90,7 @@ div.product-page-cart-message {
 
 .product-review-reply .reviewer h4 span.product-review-author,
 .product-review-reply .reviewer h4 span.product-review-date {
+	white-space: nowrap;
 	margin-right: 10px;
 }
 
