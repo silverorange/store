@@ -521,6 +521,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// {{{ public function createRecurringPaymentsProfile()
 
 	/**
+	 * @sensitive $card_number
+	 * @sensitive $card_verification_value
 	 */
 	public function createRecurringPaymentsProfile(
 		StoreOrderPaymentMethod $payment_method, StoreOrder $order,
@@ -1066,6 +1068,10 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// data-structure helper methods (recurring payments)
 	// {{{ protected function getCreateRecurringPaymentsProfileRequest()
 
+    /**
+	 * @sensitive $card_number
+	 * @sensitive $card_verification_value
+	 */
 	protected function getCreateRecurringPaymentsProfileRequest(
 		StoreOrderPaymentMethod $payment_method, StoreOrder $order,
 		$profile_id, SwatDate $start_date, array $schedule_details,
@@ -1085,6 +1091,10 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// }}}
 	// {{{ protected function getCreateRecurringPaymentsProfileRequestDetails()
 
+    /**
+	 * @sensitive $card_number
+	 * @sensitive $card_verification_value
+	 */
 	protected function getCreateRecurringPaymentsProfileRequestDetails(
 		StoreOrderPaymentMethod $payment_method, StoreOrder $order,
 		$profile_id, SwatDate $start_date, array $schedule_details,
