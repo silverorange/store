@@ -144,8 +144,7 @@ class StoreShippingType extends SwatDBDataObject
 			}
 
 			if ($percentage > 0) {
-				$total += SwatNumber::roundToEven(
-					$item_total * $percentage, 2);
+				$total += round($item_total * $percentage, 2);
 			}
 
 			if ($amount > 0) {
