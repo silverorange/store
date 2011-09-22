@@ -691,6 +691,13 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			return 'card-error';
 
 		/*
+		 * Transaction was declined by PayPal. Customer must contact PayPal
+		 * for moreinformation
+		 */
+		case 10544:
+			return 'card-error';
+
+		/*
 		 * PayPal Express Checkout transaction can not complete. Instruct the
 		 * customer to use an alternative payment method.
 		 */
