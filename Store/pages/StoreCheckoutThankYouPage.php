@@ -7,7 +7,7 @@ require_once 'Store/StoreAdWordsTracker.php';
  * Page displayed when an order is processed successfully on the checkout
  *
  * @package   Store
- * @copyright 2006-2010 silverorange
+ * @copyright 2006-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
@@ -20,6 +20,33 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
 	}
 
 	// }}}
+
+	// init phase
+	// {{{ protected function initInternal()
+
+	protected function initInternal()
+	{
+		parent::initInternal();
+
+		if ($this->ui->hasWidget('checkout_progress')) {
+			$checkout_progress = $this->ui->getWidget('checkout_progress');
+			$checkout_progress->current_step = 3;
+		}
+
+		if (property_exists($this->layout, 'analytics_tracked_order')) {
+			$this->layout->analytics_tracked_order = $this->getOrder();
+		}
+
+		// This will only queue the order if the correct MailChimp cookies
+		// exist otherwise nothing will happen.
+		if ($this->app->config->mail_chimp->track_orders) {
+			$this->app->mailchimp->queueOrder($this->getOrder());
+		}
+	}
+
+	// }}}
+
+	// build phase
 	// {{{ protected function displayFinalNote()
 
 	protected function displayFinalNote(StoreOrder $order)
@@ -60,31 +87,6 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
 
 				$e->process(false);
 			}
-		}
-	}
-
-	// }}}
-
-	// init phase
-	// {{{ protected function initInternal()
-
-	protected function initInternal()
-	{
-		parent::initInternal();
-
-		if ($this->ui->hasWidget('checkout_progress')) {
-			$checkout_progress = $this->ui->getWidget('checkout_progress');
-			$checkout_progress->current_step = 3;
-		}
-
-		if (property_exists($this->layout, 'analytics_tracked_order')) {
-			$this->layout->analytics_tracked_order = $this->getOrder();
-		}
-
-		// This will only queue the order if the correct MailChimp cookies
-		// exist otherwise nothing will happen.
-		if ($this->app->config->mail_chimp->track_orders) {
-			$this->app->mailchimp->queueOrder($this->getOrder());
 		}
 	}
 
