@@ -70,7 +70,10 @@ class StoreProductReviewView extends SiteView
 		$div_tag->id = $id;
 		$div_tag->class = 'product-review hreview';
 
-		if (count($review->replies) > 0) {
+		// Don't bother with the replies class if replies aren't shown.
+		$mode = $this->getMode('replies');
+		if ($mode > SiteView::MODE_NONE &&
+			count($review->replies) > 0) {
 			$div_tag->class.= ' product-review-has-replies';
 		}
 
