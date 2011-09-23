@@ -229,8 +229,10 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				$payment_type = $method->payment_type;
 				$card_type = $method->card_type;
 				if ($payment_type->isAvailableInRegion($region) &&
-					($card_type === null || $card_type->isAvailableInRegion($region)))
+					($card_type === null ||
+						$card_type->isAvailableInRegion($region))) {
 						$payment_methods->add($method);
+				}
 			}
 		}
 
