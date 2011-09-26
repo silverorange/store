@@ -772,13 +772,17 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 					'number.%s Your order has %snot%s been placed. '.
 					'Please edit your %sbilling address%s and try again.'),
 					'<strong>', '</strong>', '<em>', '</em>',
-					'<a href="checkout/confirmation/billingaddress">', '</a>').
+					'<a href="'.
+						$this->getEditLink('checkout/confirmation/billingaddress').
+						'">',
+					'</a>').
 				' '.Store::_('No funds have been removed from your card.').
 				'</p><p>'.sprintf(
 				Store::_('If you are still unable to complete your order '.
 					'after confirming your payment information, please '.
 					'%scontact us%s.'),
-					'<a href="about/contact">', '</a>').
+					'<a href="'.$this->getEditLink('about/contact').'">',
+					'</a>').
 				'</p>';
 
 			break;
@@ -794,13 +798,17 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 					'with card number.%s Your order has %snot%s been placed. '.
 					'Please edit your %sbilling address%s and try again.'),
 					'<strong>', '</strong>', '<em>', '</em>',
-					'<a href="checkout/confirmation/billingaddress">', '</a>').
+					'<a href="'.
+						$this->getEditLink('checkout/confirmation/billingaddress').
+						'">',
+					'</a>').
 				' '.Store::_('No funds have been removed from your card.').
 				'</p><p>'.sprintf(
 				Store::_('If you are still unable to complete your order '.
 					'after confirming your payment information, please '.
 					'%scontact us%s.'),
-					'<a href="about/contact">', '</a>').
+					'<a href="'.$this->getEditLink('about/contact').'">',
+					'</a>').
 				'</p>';
 
 			break;
@@ -816,13 +824,17 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 					'number.%s Your order has %snot%s been placed. '.
 					'Please edit your %spayment information%s and try again.'),
 					'<strong>', '</strong>', '<em>', '</em>',
-					'<a href="checkout/confirmation/paymentmethod">', '</a>').
+					'<a href="'.
+						$this->getEditLink('checkout/confirmation/paymentmethod').
+						'">',
+					'</a>').
 				' '.Store::_('No funds have been removed from your card.').
 				'</p><p>'.sprintf(
 				Store::_('If you are still unable to complete your order '.
 					'after confirming your payment information, please '.
 					'%scontact us%s.'),
-					'<a href="about/contact">', '</a>').
+					'<a href="'.$this->getEditLink('about/contact').'">',
+					'</a>').
 				'</p>';
 
 			break;
@@ -838,13 +850,17 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 					'number.%s Your order has %snot%s been placed. '.
 					'Please edit your %spayment information%s and try again.'),
 					'<strong>', '</strong>', '<em>', '</em>',
-					'<a href="checkout/confirmation/paymentmethod">', '</a>').
+					'<a href="'.
+						$this->getEditLink('checkout/confirmation/paymentmethod').
+						'">',
+					'</a>').
 				' '.Store::_('No funds have been removed from your card.').
 				'</p><p>'.sprintf(
 				Store::_('If you are still unable to complete your order '.
 					'after confirming your payment information, please '.
 					'%scontact us%s.'),
-					'<a href="about/contact">', '</a>').
+					'<a href="'.$this->getEditLink('about/contact').'">',
+					'</a>').
 				'</p>';
 
 			break;
@@ -860,13 +876,17 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 					'placed. Please edit your %spayment information%s and '.
 					'try again.'),
 					'<strong>', '</strong>', '<em>', '</em>',
-					'<a href="checkout/confirmation/paymentmethod">', '</a>').
+					'<a href="'.
+						$this->getEditLink('checkout/confirmation/paymentmethod').
+						'">',
+					'</a>').
 				' '.Store::_('No funds have been removed from your card.').
 				'</p><p>'.sprintf(
 				Store::_('If you are still unable to complete your order '.
 					'after confirming your payment information, please '.
 					'%scontact us%s.'),
-					'<a href="about/contact">', '</a>').
+					'<a href="'.$this->getEditLink('about/contact').'">',
+					'</a>').
 				'</p>';
 
 			break;
@@ -883,7 +903,11 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 					'items from %syour cart%s or %scontact us%s to continue.'),
 					'<strong>', '</strong>', '<em>', '</em>',
 					'<a href="checkout/confirmation/cart">', '</a>',
-					'<a href="about/contact">', '</a>').
+					'<a href="'.
+						$this->getEditLink('checkout/confirmation/cart').'">',
+					'</a>',
+					'<a href="'.$this->getEditLink('about/contact').'">',
+					'</a>').
 				' '.Store::_('No funds have been removed from your card.').
 				'</p>';
 
@@ -901,7 +925,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 					'been placed. Please %scontact us%s to complete your '.
 					'order.'),
 					'<strong>', '</strong>', '<em>', '</em>',
-					'<a href="about/contact">', '</a>').
+					'<a href="'.$this->getEditLink('about/contact').'">',
+					'</a>').
 				' '.Store::_('No funds have been removed from your card.');
 
 			break;
@@ -939,6 +964,14 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		}
 
 		return $message;
+	}
+
+	// }}}
+	// {{{ protected function getEditLink()
+
+	protected function getEditLink($link)
+	{
+		return $link;
 	}
 
 	// }}}
