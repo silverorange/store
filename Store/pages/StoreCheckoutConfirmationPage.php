@@ -160,7 +160,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 					'Billing address is missing required fields. Please '.
 					'%sselect a different billing address or enter a new '.
 					'billing address%s.'),
-					'<a href="checkout/confirmation/billingaddress">',
+					'<a href="'.
+						$this->getEditLink('checkout/confirmation/billingaddress').
+						'">',
 					'</a>');
 
 				$message->content_type = 'text/xml';
@@ -295,7 +297,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 					'Shipping address is missing required fields. Please '.
 					'%sselect a different shipping address or enter a new '.
 					'shipping address%s.'),
-					'<a href="checkout/confirmation/shippingaddress">',
+					'<a href="'.
+						$this->getEditLink('checkout/confirmation/shippingaddress').
+						'">',
 					'</a>');
 
 				$message->content_type = 'text/xml';
