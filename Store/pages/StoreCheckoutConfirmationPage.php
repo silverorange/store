@@ -182,11 +182,15 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	protected function validateBillingAddressCountry(StoreOrderAddress $address)
 	{
 		$valid = true;
-		$country_ids = array();
-		foreach ($this->app->getRegion()->billing_countries as $country)
-			$country_ids[] = $country->id;
 
-		if (!in_array($address->getInternalValue('country'), $country_ids)) {
+		$country_ids = array();
+		foreach ($this->app->getRegion()->billing_countries as $country) {
+			$country_ids[] = $country->id;
+		}
+
+		$country_id = $address->getInternalValue('country');
+
+		if ($country_id !== null && !in_array($country_id, $country_ids)) {
 			$valid = false;
 			$message = new SwatMessage(Store::_('Billing Address'), 'error');
 
@@ -315,10 +319,14 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		$valid = true;
 		$country_ids = array();
-		foreach ($this->app->getRegion()->shipping_countries as $country)
-			$country_ids[] = $country->id;
 
-		if (!in_array($address->getInternalValue('country'), $country_ids)) {
+		foreach ($this->app->getRegion()->shipping_countries as $country) {
+			$country_ids[] = $country->id;
+		}
+
+		$country_id = $address->getInternalValue('country');
+
+		if (!in_array($country_id, $country_ids)) {
 			$valid = false;
 			$message = new SwatMessage(Store::_('Shipping Address'), 'error');
 			$message->secondary_content = sprintf(Store::_(
