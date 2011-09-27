@@ -420,6 +420,9 @@ class StoreCartPage extends SitePage
 				$num_entries_moved++;
 
 				$entry->setQuantity($quantity);
+
+				// note: removing entry needs to happen before adding entry
+				// or else the moved entry will be deleted from the database
 				$this->app->cart->checkout->removeEntry($entry);
 				$this->app->cart->saved->addEntry($entry);
 
@@ -655,6 +658,8 @@ class StoreCartPage extends SitePage
 				$this->added_entry_ids[] = $id;
 				$num_entries_moved++;
 
+				// note: removing entry needs to happen before adding entry
+				// or else the moved entry will be deleted from the database
 				$this->app->cart->checkout->removeEntry($entry);
 				$this->app->cart->saved->addEntry($entry);
 
@@ -853,15 +858,21 @@ class StoreCartPage extends SitePage
 				if ($entry === null)
 					break;
 
+				// note: removing entry needs to happen before adding entry
+				// or else the moved entry will be deleted from the database
+				$this->app->cart->saved->removeEntry($entry);
 				$added_entry = $this->app->cart->checkout->addEntry($entry);
-				// make sure entry was added
-				if ($added_entry === null)
+
+				// make sure entry was added to checkout cart
+				if ($added_entry === null) {
+					// put it back in the saved cart if it was not added to
+					// checkout cart
+					$this->app->cart->saved->addEntry($entry);
 					break;
+				}
 
 				$this->added_entry_ids[] = $id;
 				$num_entries_moved++;
-
-				$this->app->cart->saved->removeEntry($entry);
 
 				if ($entry->isAvailable()) {
 					$this->addToAvailableProductCount($entry);
@@ -917,9 +928,18 @@ class StoreCartPage extends SitePage
 			// (i.e. a page resubmit)
 			if ($entry !== null) {
 				$this->added_entry_ids[] = $id;
+
 				$this->app->cart->saved->removeEntry($entry);
-				$this->app->cart->checkout->addEntry($entry);
-				$num_moved_items++;
+				$added_entry = $this->app->cart->checkout->addEntry($entry);
+
+				// make sure it was added to the checkout cart
+				if ($added_entry === null) {
+					// put it back in the saved cart if it was not added to
+					// checkout cart
+					$this->app->cart->saved->addEntry($entry);
+				} else {
+					$num_moved_items++;
+				}
 			}
 		}
 
