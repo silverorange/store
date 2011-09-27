@@ -110,7 +110,7 @@ class StoreAccountDetailsPage extends SiteUiPage
 	// }}}
 
 	// process phase
-	// {{{ public function processInternal()
+	// {{{ protected function processInternal()
 
 	protected function processInternal()
 	{
