@@ -3,5 +3,6 @@ create table Country (
 	id char(2),
 	title varchar(255),
 	visible boolean not null default true,
+	has_postal_code boolean not null default true,
 	primary key(id)
 );
