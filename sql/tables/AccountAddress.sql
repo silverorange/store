@@ -9,7 +9,7 @@ create table AccountAddress (
 	provstate int references ProvState(id),
 	provstate_other varchar(255),
 	country char(2) not null references Country(id),
-	postal_code varchar(50) not null,
+	postal_code varchar(50),
 	phone varchar(100),
 	po_box boolean not null default false,
 	createdate timestamp,

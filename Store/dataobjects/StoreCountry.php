@@ -34,6 +34,15 @@ class StoreCountry extends SwatDBDataObject
 	 */
 	public $visible;
 
+	/**
+	 * Whether or not this country has a postal code system
+	 *
+	 * Some countries, such as ithe Republic of Ireland do not.
+	 *
+	 * @var boolean
+	 */
+	public $has_postal_code;
+
 	// }}}
 	// {{{ public static function getTitleById()
 
