@@ -2,6 +2,7 @@
 
 require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
+require_once 'Store/dataobjects/StoreCountry.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'Swat/SwatMessage.php';
 require_once 'Swat/SwatYUI.php';
@@ -10,16 +11,27 @@ require_once 'Swat/SwatYUI.php';
  * Admin page for adding and editing addresses stored on accounts
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountAddressEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
+	/**
+	 * var string
+	 */
 	protected $ui_xml = 'Store/admin/components/Account/addressedit.xml';
 
+	/**
+	 * @var array
+	 */
 	protected $fields;
+
+	/**
+	 * @var StoreCountry
+	 */
+	protected $country;
 
 	// }}}
 	// {{{ private properties
@@ -130,11 +142,14 @@ class StoreAccountAddressEdit extends AdminDBEdit
 	{
 		if ($this->ui->getWidget('edit_form')->isSubmitted()) {
 			// set provsate and country on postal code entry
+			$country     = $this->getCountry();
 			$postal_code = $this->ui->getWidget('postal_code');
-			$country = $this->ui->getWidget('country');
-			$provstate = $this->ui->getWidget('provstate');
+			$provstate   = $this->ui->getWidget('provstate');
 
-			$country->process();
+			if ($country->id === null) {
+				return;
+			}
+
 			$provstate->process();
 
 			if ($provstate->value === 'other') {
@@ -147,12 +162,35 @@ class StoreAccountAddressEdit extends AdminDBEdit
 				$provstate_abbreviation =
 					SwatDB::queryOne($this->app->db, $sql);
 
-				$postal_code->country = $country->value;
+				$postal_code->country = $country->id;
 				$postal_code->provstate = $provstate_abbreviation;
+			}
+
+			if (!$country->has_postal_code) {
+				$postal_code->required = false;
 			}
 		}
 
 		parent::process();
+	}
+
+	// }}}
+	// {{{ protected function getCountry()
+
+	protected function getCountry()
+	{
+		if (!($this->country instanceof StoreCountry)) {
+			$country_widget = $this->ui->getWidget('country');
+			$country_widget->process();
+			$country_id = $country_widget->value;
+
+			$class_name = SwatDBClassMap::get('StoreCountry');
+			$this->country = new $class_name();
+			$this->country->setDatabase($this->app->db);
+			$this->country->load($country_id);
+		}
+
+		return $this->country;
 	}
 
 	// }}}
