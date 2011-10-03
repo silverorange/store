@@ -7,11 +7,19 @@ require_once 'Swat/SwatYUI.php';
  * Shipping address edit page of checkout
  *
  * @package   Store
- * @copyright 2005-2010 silverorange
+ * @copyright 2005-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 {
+	// {{{ protected properties
+
+	/**
+	 * @var StoreCountry
+	 */
+	protected $country;
+
+	// }}}
 	// {{{ public function getUiXml()
 
 	public function getUiXml()
@@ -55,17 +63,39 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 	}
 
 	// }}}
+	// {{{ protected function getCountry()
+
+	protected function getCountry()
+	{
+		if (!($this->country instanceof StoreCountry)) {
+			$country_widget = $this->ui->getWidget('billing_address_country');
+			$country_widget->process();
+			$country_id = $country_widget->value;
+
+			$class_name = SwatDBClassMap::get('StoreCountry');
+			$this->country = new $class_name();
+			$this->country->setDatabase($this->app->db);
+			$this->country->load($country_id);
+		}
+
+		return $this->country;
+	}
+
+	// }}}
 	// {{{ protected function setupPostalCode()
 
 	protected function setupPostalCode()
 	{
 		// set provsate and country on postal code entry
+		$country     = $this->getCountry();
 		$postal_code = $this->ui->getWidget('shipping_address_postalcode');
-		$country = $this->ui->getWidget('shipping_address_country');
-		$provstate = $this->ui->getWidget('shipping_address_provstate');
+		$provstate   = $this->ui->getWidget('shipping_address_provstate');
 
-		$country->process();
-		$provstate->country = $country->value;
+		if ($country->id === null) {
+			return;
+		}
+
+		$provstate->country = $country->id;
 		$provstate->setDatabase($this->app->db);
 		$provstate->process();
 
@@ -81,8 +111,12 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 			$this->app->db->quote($provstate->value));
 
 			$provstate_abbreviation = SwatDB::queryOne($this->app->db, $sql);
-			$postal_code->country = $country->value;
+			$postal_code->country = $country->id;
 			$postal_code->provstate = $provstate_abbreviation;
+		}
+
+		if (!$country->has_postal_code) {
+			$postal_code->required = false;
 		}
 	}
 
@@ -253,14 +287,19 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 
 	protected function getRequiredAddressFields(StoreOrderAddress $address)
 	{
-		return array(
+		$fields = array(
 			'fullname'    => 'shipping_address_fullname',
 			'line1'       => 'shipping_address_line1',
 			'city'        => 'shipping_address_city',
 			'provstate'   => 'shipping_address_provstate',
-			'postal_code' => 'shipping_address_postalcode',
 			'phone'       => 'shipping_address_phone',
 		);
+
+		if ($this->getCountry()->has_postal_code) {
+			$fields['postal_code'] = 'shipping_address_postalcode';
+		}
+
+		return $fields;
 	}
 
 	// }}}

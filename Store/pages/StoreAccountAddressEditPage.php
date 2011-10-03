@@ -269,12 +269,21 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 	protected function setupPostalCode()
 	{
 		// set provsate and country on postal code entry
+		$country_widget = $this->ui->getWidget('country');
 		$postal_code = $this->ui->getWidget('postal_code');
-		$country     = $this->ui->getWidget('country');
 		$provstate   = $this->ui->getWidget('provstate');
 
-		$country->process();
-		$provstate->country = $country->value;
+		$country_widget->process();
+		$country_id = $country_widget->value;
+
+		$class_name = SwatDBClassMap::get('StoreCountry');
+		$country = new $class_name();
+		$country->setDatabase($this->app->db);
+		if (!$country->load($country_id)) {
+			return;
+		}
+
+		$provstate->country = $country_id;
 		$provstate->setDatabase($this->app->db);
 		$provstate->process();
 
@@ -285,8 +294,12 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 				$this->app->db->quote($provstate->value, 'text'));
 
 			$provstate_abbreviation = SwatDB::queryOne($this->app->db, $sql);
-			$postal_code->country   = $country->value;
+			$postal_code->country   = $country_id;
 			$postal_code->provstate = $provstate_abbreviation;
+		}
+
+		if (!$country->has_postal_code) {
+			$postal_code->required = false;
 		}
 	}
 
