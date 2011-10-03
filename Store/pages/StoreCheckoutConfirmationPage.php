@@ -250,14 +250,20 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	protected function getRequiredBillingAddressFields(
 		StoreOrderAddress $address)
 	{
-		return array(
+		$fields = array(
 			'fullname',
 			'line1',
 			'city',
 			'provstate',
-			'postal_code',
 			'phone',
 		);
+
+		$country = $address->country;
+		if ($country->has_postal_code) {
+			$fields[] = 'postal_code';
+		}
+
+		return $fields;
 	}
 
 	// }}}
@@ -387,14 +393,20 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	protected function getRequiredShippingAddressFields(
 		StoreOrderAddress $address)
 	{
-		return array(
+		$fields = array(
 			'fullname',
 			'line1',
 			'city',
 			'provstate',
-			'postal_code',
 			'phone',
 		);
+
+		$country = $address->country;
+		if ($country->has_postal_code) {
+			$fields[] = 'postal_code';
+		}
+
+		return $fields;
 	}
 
 	// }}}

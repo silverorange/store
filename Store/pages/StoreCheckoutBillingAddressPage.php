@@ -7,11 +7,19 @@ require_once 'Swat/SwatYUI.php';
  * Billing address edit page of checkout
  *
  * @package   Store
- * @copyright 2005-2010 silverorange
+ * @copyright 2005-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 {
+	// {{{ protected properties
+
+	/**
+	 * @var StoreCountry
+	 */
+	protected $country;
+
+	// }}}
 	// {{{ public function getUiXml()
 
 	public function getUiXml()
@@ -55,6 +63,25 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 	}
 
 	// }}}
+	// {{{ protected function getCountry()
+
+	protected function getCountry()
+	{
+		if (!($this->country instanceof StoreCountry)) {
+			$country_widget = $this->ui->getWidget('billing_address_country');
+			$country_widget->process();
+			$country_id = $country_widget->value;
+
+			$class_name = SwatDBClassMap::get('StoreCountry');
+			$this->country = new $class_name();
+			$this->country->setDatabase($this->app->db);
+			$this->country->load($country_id);
+		}
+
+		return $this->country;
+	}
+
+	// }}}
 	// {{{ protected function saveDataToSession()
 
 	protected function saveDataToSession()
@@ -65,12 +92,12 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 			$address->copyFrom($this->verified_address);
 		}
 
-		/* If we are currently shipping to the billing address,
-		 * change the shipping address too.
-		 */
+		// If we are currently shipping to the billing address,
+		// change the shipping address too.
 		if ($this->app->session->order->shipping_address ===
-			$this->app->session->order->billing_address)
+			$this->app->session->order->billing_address) {
 				$this->app->session->order->shipping_address = $address;
+		}
 
 		$this->app->session->order->billing_address = $address;
 	}
@@ -81,12 +108,15 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 	protected function setupPostalCode()
 	{
 		// set provsate and country on postal code entry
+		$country     = $this->getCountry();
 		$postal_code = $this->ui->getWidget('billing_address_postalcode');
-		$country = $this->ui->getWidget('billing_address_country');
-		$provstate = $this->ui->getWidget('billing_address_provstate');
+		$provstate   = $this->ui->getWidget('billing_address_provstate');
 
-		$country->process();
-		$provstate->country = $country->value;
+		if ($country->id === null) {
+			return;
+		}
+
+		$provstate->country = $country->id;
 		$provstate->setDatabase($this->app->db);
 		$provstate->process();
 
@@ -102,8 +132,12 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 			$this->app->db->quote($provstate->value));
 
 			$provstate_abbreviation = SwatDB::queryOne($this->app->db, $sql);
-			$postal_code->country = $country->value;
+			$postal_code->country = $country->id;
 			$postal_code->provstate = $provstate_abbreviation;
+		}
+
+		if (!$country->has_postal_code) {
+			$postal_code->required = false;
 		}
 	}
 
@@ -185,14 +219,19 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 
 	protected function getRequiredAddressFields(StoreOrderAddress $address)
 	{
-		return array(
-			'fullname'    => 'shipping_address_fullname',
-			'line1'       => 'shipping_address_line1',
-			'city'        => 'shipping_address_city',
-			'provstate'   => 'shipping_address_provstate',
-			'postal_code' => 'shipping_address_postalcode',
-			'phone'       => 'shipping_address_phone',
+		$fields = array(
+			'fullname'  => 'billing_address_fullname',
+			'line1'     => 'billing_address_line1',
+			'city'      => 'billing_address_city',
+			'provstate' => 'billing_address_provstate',
+			'phone'     => 'billing_address_phone',
 		);
+
+		if ($this->getCountry()->has_postal_code) {
+			$fields['postal_code'] = 'billing_address_postalcode';
+		}
+
+		return $fields;
 	}
 
 	// }}}
@@ -232,7 +271,7 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 		$order = $this->app->session->order;
 
 		if ($order->billing_address === null) {
-			
+
 			if ($this->app->session->checkout_with_account) {
 				$this->ui->getWidget('billing_address_fullname')->value =
 					$this->app->session->account->fullname;
