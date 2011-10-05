@@ -1,12 +1,12 @@
 <?php
 
-require_once 'Site/pages/SiteExceptionPage.php';
+require_once 'Site/pages/SiteXhtmlExceptionPage.php';
 
 /**
  * @package   Store
  * @copyright 2006 silverorange
  */
-class StoreExceptionPage extends SiteExceptionPage
+class StoreExceptionPage extends SiteXhtmlExceptionPage
 {
 	// build phase
 	// {{{ public function build()
