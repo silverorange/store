@@ -127,8 +127,8 @@ abstract class StoreProductFileFtpUploader extends SiteCommandLineApplication
 			$username = $this->getFtpUsername();
 			$password = $this->getFtpPassword();
 
-			$this->debug(sprintf(Store::_('Logging into %s as %s ... ',
-				$server, $username)));
+			$this->debug(sprintf(Store::_('Logging into %s as %s ... '),
+				$server, $username));
 
 			$ftp_connection = ftp_connect($server);
 
