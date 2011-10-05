@@ -12,14 +12,16 @@ require_once 'Store/StoreCommandLineConfigModule.php';
  * @package   Store
  * @copyright 2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ * @todo      Figure out when setPath() is used, it may be a dead code path.
  */
 abstract class StoreProductFileFtpUploader extends SiteCommandLineApplication
 {
 	// {{{ private property
 
-	private $path    = '';
-	private $upload  = true;
-	private $display = false;
+	private $path      = '';
+	private $upload    = true;
+	private $display   = false;
+	private $keep_file = false;
 
 	// }}}
 	// {{{ public function __construct()
@@ -41,6 +43,13 @@ abstract class StoreProductFileFtpUploader extends SiteCommandLineApplication
 			Store::_('Do not upload the generated file to the ftp server.'));
 
 		$this->addCommandLineArgument($no_upload);
+
+		// add keep file argument
+		$keep_file = new SiteCommandLineArgument(
+			array('-f', '--keep-file'), 'setKeepFile',
+			Store::_('Keep the generated file after the script is done.'));
+
+		$this->addCommandLineArgument($keep_file);
 	}
 
 	// }}}
@@ -65,6 +74,14 @@ abstract class StoreProductFileFtpUploader extends SiteCommandLineApplication
 	public function setNoUpload()
 	{
 		$this->upload = false;
+	}
+
+	// }}}
+	// {{{ public function setKeepFile()
+
+	public function setKeepFile()
+	{
+		$this->keep_file = true;
 	}
 
 	// }}}
@@ -142,6 +159,10 @@ abstract class StoreProductFileFtpUploader extends SiteCommandLineApplication
 			}
 
 			ftp_close($ftp_connection);
+		}
+
+		if (!$this->keep_file) {
+			unlink($filename_with_path);
 		}
 
 		$this->unlock();
