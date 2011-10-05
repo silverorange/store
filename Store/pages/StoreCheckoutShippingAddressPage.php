@@ -68,7 +68,7 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 	protected function getCountry()
 	{
 		if (!($this->country instanceof StoreCountry)) {
-			$country_widget = $this->ui->getWidget('billing_address_country');
+			$country_widget = $this->ui->getWidget('shipping_address_country');
 			$country_widget->process();
 			$country_id = $country_widget->value;
 
