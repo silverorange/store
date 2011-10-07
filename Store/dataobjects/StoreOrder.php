@@ -22,7 +22,7 @@ require_once 'Store/dataobjects/StoreInvoice.php';
  *
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrder extends SwatDBDataObject
@@ -84,6 +84,13 @@ class StoreOrder extends SwatDBDataObject
 	 * @var SwatDate
 	 */
 	public $createdate;
+
+	/**
+	 * Cancellation date
+	 *
+	 * @var SwatDate
+	 */
+	public $cancel_date;
 
 	/**
 	 * Total amount
@@ -183,7 +190,7 @@ class StoreOrder extends SwatDBDataObject
 
 	public function getTitle()
 	{
-		return sprintf('Order %s', $this->id);
+		return sprintf(Store::_('Order %s'), $this->id);
 	}
 
 	// }}}
@@ -365,6 +372,7 @@ class StoreOrder extends SwatDBDataObject
 			SwatDBClassMap::get('StoreInvoice'));
 
 		$this->registerDateProperty('createdate');
+		$this->registerDateProperty('cancel_date');
 
 		$this->table = 'Orders';
 		$this->id_field = 'integer:id';
