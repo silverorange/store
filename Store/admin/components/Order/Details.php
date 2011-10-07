@@ -39,6 +39,13 @@ abstract class StoreOrderDetails extends AdminPage
 	 */
 	protected $ui_xml = 'Store/admin/components/Order/details.xml';
 
+	/**
+	 * Array of date field IDs
+	 * 
+	 * @var array
+	 */
+	protected $date_field_ids = array('createdate', 'cancel_date');
+
 	// }}}
 
 	// init phase
@@ -99,28 +106,23 @@ abstract class StoreOrderDetails extends AdminPage
 
 		$details_frame = $this->ui->getWidget('details_frame');
 		$details_frame->title = Store::_('Order');
-		$details_frame->subtitle = $this->getOrderTitle();
+		$details_frame->subtitle = $this->order->getTitle();
 
-		// set default time zone
-		if ($this->ui->getWidget('order_details')->hasField('createdate')) {
-			$date_field =
-				$this->ui->getWidget('order_details')->getField('createdate');
+		// set default time zone on each date field
+		foreach ($this->date_field_ids as $date_field_id) {
+			$view = $this->ui->getWidget('order_details');
 
-			$date_renderer = $date_field->getRendererByPosition();
-			$date_renderer->display_time_zone = $this->app->default_time_zone;
+			if ($view->hasField($date_field_id)) {
+				$date_field = $view->getField($date_field_id);
+
+				$date_renderer = $date_field->getRendererByPosition();
+				$date_renderer->display_time_zone = $this->app->default_time_zone;
+			}
 		}
 
 		$this->buildOrderDetails();
 		$this->buildMessages();
 		$this->buildToolBar();
-	}
-
-	// }}}
-	// {{{ protected function getOrderTitle()
-
-	protected function getOrderTitle()
-	{
-		return sprintf(Store::_('Order %s'), $this->order->id);
 	}
 
 	// }}}
@@ -143,7 +145,7 @@ abstract class StoreOrderDetails extends AdminPage
 			$this->title = $this->order->account->getFullname();
 		}
 
-		$this->navbar->addEntry(new SwatNavBarEntry($this->getOrderTitle()));
+		$this->navbar->addEntry(new SwatNavBarEntry($this->order->getTitle()));
 	}
 
 	// }}}
@@ -162,6 +164,11 @@ abstract class StoreOrderDetails extends AdminPage
 			}
 		}
 
+		if ($this->order->cancel_date instanceof SwatDate) {
+			if ($this->ui->hasWidget('cancel_order_link')) {
+				$this->ui->getWidget('cancel_order_link')->visible = false;
+			}
+		}
 	}
 
 	// }}}
