@@ -1,54 +1,19 @@
 <?php
 
-require_once 'Swat/SwatObject.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'Store/dataobjects/StoreProductWrapper.php';
+require_once 'Store/StoreProductFileGenerator.php';
 
 /**
  * @package   Store
  * @copyright 2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-abstract class StoreBingShoppingGenerator extends SwatObject
+abstract class StoreBingShoppingGenerator extends StoreProductFileGenerator
 {
 	// {{{ constants
 
 	const DELIMITER = "\t";
 
 	const EOL = "\r\n";
-
-	// }}}
-	// {{{ protected properties
-
-	/**
-	 * @var MDB2_Driver_Common
-	 */
-	protected $db;
-
-	/**
-	 * @var SiteConfigModule
-	 */
-	protected $config;
-
-	// }}}
-	// {{{ public function __construct()
-
-	/**
-	 * Creates a new froogle generator
-	 *
-	 * @param MDB2_Driver_Common $db
-	 * @param SiteConfigModule $config
-	 */
-	public function __construct(MDB2_Driver_Common $db,
-		SiteConfigModule $config)
-	{
-		$this->db     = $db;
-		$this->config = $config;
-
-		if ($this->config->uri->cdn_base != '') {
-			SiteImage::$cdn_base = $this->config->uri->cdn_base;
-		}
-	}
 
 	// }}}
 	// {{{ public function generate()
@@ -282,22 +247,6 @@ abstract class StoreBingShoppingGenerator extends SwatObject
 	// {{{ abstract protected function getBingCategory()
 
 	abstract protected function getBingCategory(StoreItem $item);
-
-	// }}}
-	// {{{ abstract protected function getItems()
-
-	/**
-	 * @return StoreItemWrapper
-	 */
-	abstract protected function getItems();
-
-	// }}}
-	// {{{ protected function getBaseHref()
-
-	protected function getBaseHref()
-	{
-		return $this->config->uri->absolute_base;
-	}
 
 	// }}}
 	// {{{ protected function printField()
