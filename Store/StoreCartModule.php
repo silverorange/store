@@ -258,26 +258,18 @@ class StoreCartModule extends SiteApplicationModule
 	/**
 	 * Manages moving around cart entries when a user logs into an account
 	 *
-	 * By default, if the user has cart entries before logging in, any entries
-	 * in the user's account cart are moved to the user's saved cart and
-	 * entries from the user's session cart are moved to the logged-in account
-	 * cart.
+	 * Loads the account's cart entries, handles them, and then moves the
+	 * session cart entries to the account cart.
 	 */
 	public function handleLogin()
 	{
 		$checkout_cart = $this->getCheckoutCart();
-		$saved_cart = $this->getSavedCart();
 
 		if ($checkout_cart !== null && $this->getEntryCount()) {
 			// reload to get account cart entries
 			$this->load();
 
-			// move account cart entries to saved cart
-			if ($saved_cart !== null) {
-				$entries = $checkout_cart->removeAllEntries();
-				foreach ($entries as $entry)
-					$saved_cart->addEntry($entry);
-			}
+			$this->handleAccountCartEntries();
 
 			// move session cart entries to account cart
 			$account_id = $this->app->session->getAccountId();
@@ -290,6 +282,35 @@ class StoreCartModule extends SiteApplicationModule
 			}
 		} else {
 			$this->load();
+		}
+	}
+
+	// }}}
+	// {{{ protected function handleAccountCartEntries()
+
+	/**
+	 * Manages account cart entries that exist when logging into an account.
+	 *
+	 * By default, if the user has cart entries before logging in, any entries
+	 * in the user's account cart are moved to the user's saved cart and
+	 * entries from the user's session cart are moved to the logged-in account
+	 * cart. If the saved cart doesn't exist, we throw away the account cart
+	 * entries.
+	 *
+	 * @todo Handle the case of no saved cart better. Perhaps show a message to
+	 *       the user and let the user choose what to do with the extra entries.
+	 */
+	protected function handleAccountCartEntries()
+	{
+		$saved_cart = $this->getSavedCart();
+
+		$entries = $checkout_cart->removeAllEntries();
+
+		// move account cart entries to saved cart
+		if ($saved_cart !== null) {
+			foreach ($entries as $entry) {
+				$saved_cart->addEntry($entry);
+			}
 		}
 	}
 
