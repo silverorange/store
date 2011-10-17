@@ -11,9 +11,11 @@
 			<widget class="SwatFieldset">
 				<property name="title" translatable="yes">Upload an Image to be Automatically Resized</property>
 				<widget class="SwatFormField">
-					<property name="title">Image</property>
+					<property name="title" translatable="yes">Image</property>
 					<widget class="SwatFileEntry" id="original_image">
 						<property name="accept_mime_types[]">image/jpeg</property>
+						<property name="accept_mime_types[]">image/png</property>
+						<property name="accept_mime_types[]">image/tiff</property>
 					</widget>
 				</widget>
 			</widget>
@@ -21,7 +23,7 @@
 				<property name="visible" type="boolean">true</property>
 			</widget>
 			<widget class="SwatFieldset" id="manual_fieldset">
-				<property name="title">or Upload Images that have been Manually Resized</property>
+				<property name="title" translatable="yes">or Upload Images that have been Manually Resized</property>
 			</widget>
 			<widget class="SwatFooterFormField">
 				<widget class="SwatButton" id="submit_button">

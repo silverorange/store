@@ -4,6 +4,7 @@ require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'SwatDB/SwatDBClassMap.php';
+require_once 'Site/dataobjects/SiteImageSet.php';
 require_once 'Store/dataobjects/StoreCategory.php';
 require_once 'Store/dataobjects/StoreCategoryImage.php';
 
@@ -23,21 +24,18 @@ class StoreCategoryImageEdit extends AdminDBEdit
 	 */
 	protected $ui_xml = 'Store/admin/components/Category/image-edit.xml';
 
-	// }}}
-	// {{{ private properties
+	/**
+	 * @var StoreCategoryImage
+	 */
+	protected $image;
 
 	/**
 	 * @var StoreCategory
 	 */
-	private $category;
+	protected $category;
 
-	/**
-	 * @var StoreCategoryImage
-	 */
-	private $image;
-
-	private $dimensions;
-	private $dimension_files;
+	protected $dimensions;
+	protected $dimension_files;
 
 	// }}}
 
@@ -51,6 +49,7 @@ class StoreCategoryImageEdit extends AdminDBEdit
 		$this->ui->loadFromXML($this->ui_xml);
 
 		$this->initCategory();
+		$this->initImage();
 		$this->initDimensions();
 	}
 
@@ -69,8 +68,22 @@ class StoreCategoryImageEdit extends AdminDBEdit
 				sprintf('Category with id ‘%s’ not found.', $category_id));
 		}
 
-		if ($this->category->image !== null)
+		if ($this->category->image !== null) {
 			$this->id = $this->category->image->id;
+		}
+	}
+
+	// }}}
+	// {{{ protected function initImage()
+
+	protected function initImage()
+	{
+		$this->image = $this->getNewImageInstance();
+
+		if ($this->id !== null && !$this->image->load($this->id)) {
+			throw new AdminNotFoundException(
+				sprintf('Product image with id ‘%s’ not found.', $this->id));
+		}
 	}
 
 	// }}}
@@ -78,8 +91,8 @@ class StoreCategoryImageEdit extends AdminDBEdit
 
 	protected function initDimensions()
 	{
-		if ($this->category->image !== null) {
-			$this->dimensions = $this->category->image->image_set->dimensions;
+		if ($this->id !== null) {
+			$this->dimensions = $this->image->image_set->dimensions;
 		} else {
 			$class_name = SwatDBClassMap::get('SiteImageSet');
 			$image_set = new $class_name();
@@ -91,14 +104,22 @@ class StoreCategoryImageEdit extends AdminDBEdit
 		$manual_fieldset = $this->ui->getWidget('manual_fieldset');
 		$note = Store::_('Maximum Dimensions: %s px');
 		foreach ($this->dimensions as $dimension) {
-			$dimension_text = $dimension->max_width;
-			if ($dimension->max_height !== null)
-				$dimension_text = sprintf('%s x %s', $dimension->max_width,
-					$dimension->max_height);
-
 			$form_field = new SwatFormField();
 			$form_field->title = $dimension->title;
-			$form_field->note  = sprintf($note, $dimension_text);
+
+			$width  = $dimension->max_width;
+			$height = $dimension->max_height;
+			if ($height !== null || $width !== null) {
+				if ($height !== null && $width !== null) {
+					$dimension_text = sprintf('%s x %s', $width, $height);
+				} elseif ($width === null) {
+					$dimension_text = $height;
+				} elseif ($height === null) {
+					$dimension_text = $width;
+				}
+				$form_field->note  = sprintf($note, $dimension_text);
+			}
+
 			$file_widget = new SwatFileEntry($dimension->shortname);
 			$form_field->addChild($file_widget);
 			$manual_fieldset->addChild($form_field);
@@ -108,27 +129,46 @@ class StoreCategoryImageEdit extends AdminDBEdit
 	}
 
 	// }}}
+	// {{{ protected function getNewImageInstance()
+
+	protected function getNewImageInstance()
+	{
+		$class_name = SwatDBClassMap::get('StoreCategoryImage');
+		$image = new $class_name();
+		$image->setDatabase($this->app->db);
+
+		return $image;
+	}
+
+	// }}}
 
 	// process phase
 	// {{{ protected function validate()
 
+	/**
+	 * Valid for new images when either the original image is uploaded, or if
+	 * all manual dimensions are uploaded. For edited images, always valid.
+	 *
+	 * @returns boolean
+	 */
 	protected function validate()
 	{
-		// if we're adding an image either the automatic image is uploaded, or
-		// all sizes of manual uploads
+		$valid = true;
 
 		$automatic = $this->ui->getWidget('original_image');
-		if ($automatic->isUploaded())
-			return true;
-
-		if ($this->id === null && !$this->checkManualUploads()) {
+		if ($automatic->isUploaded()) {
+			$valid = true;
+		} elseif ($this->id === null && !$this->checkManualUploads()) {
 			$message = new SwatMessage(Store::_('You need to specify all '.
 				'image sizes when creating a new image or upload an image to '.
-				'be automatically resized.'), 'error');
+				'be automatically resized.'),
+				'error');
 
 			$this->ui->getWidget('message')->add($message);
-			return false;
+			$valid = false;
 		}
+
+		return $valid;
 	}
 
 	// }}}
@@ -150,15 +190,16 @@ class StoreCategoryImageEdit extends AdminDBEdit
 
 	protected function saveDBData()
 	{
-		$new_image = $this->processImage();
-		$this->category->image = $new_image;
+		$this->processImage();
+		$this->category->image = $this->image;
 		$this->category->save();
 
 		$message = new SwatMessage(Store::_('Category Image has been saved.'));
 		$this->app->messages->add($message);
 
-		if (isset($this->app->memcache))
+		if (isset($this->app->memcache)) {
 			$this->app->memcache->flushNs('product');
+		}
 	}
 
 	// }}}
@@ -166,37 +207,29 @@ class StoreCategoryImageEdit extends AdminDBEdit
 
 	protected function processImage()
 	{
-		$automatic = $this->ui->getWidget('original_image');
-		if (!$automatic->isUploaded() && !$this->checkManualUploads()) {
-			$image = $this->category->image;
-		} else {
-			$class_name = SwatDBClassMap::get('StoreCategoryImage');
-			$image = new $class_name();
-			$image->setDatabase($this->app->db);
-			$file = $this->ui->getWidget('original_image');
+		$original = $this->ui->getWidget('original_image');
+		if ($original->isUploaded()) {
+			$image = $this->getNewImageInstance();
+			$image->setFileBase('../images');
+			$image->process($original->getTempFileName());
 
-			if ($file->isUploaded()) {
-				$image->setFileBase('../images');
-				$image->process($file->getTempFileName());
+			// Delete the old image. Prevents broswer/CDN caching.
+			if ($this->id !== null) {
+				$this->image->setFileBase('../images');
+				$this->image->delete();
 			}
 
-			foreach ($this->dimensions as $dimension) {
-				$file = $this->dimension_files[$dimension->shortname];
-				if ($file->isUploaded()) {
-					$image->setFileBase('../images');
-					$image->processManual($file->getTempFileName(),
-						$dimension->shortname);
-				}
-			}
-
-			// delete the old image
-			if ($this->category->image !== null) {
-				$this->category->image->setFileBase('../images');
-				$this->category->image->delete();
-			}
+			$this->image = $image;
 		}
 
-		return $image;
+		foreach ($this->dimensions as $dimension) {
+			$file = $this->dimension_files[$dimension->shortname];
+			if ($file->isUploaded()) {
+				$this->image->setFileBase('../images');
+				$this->image->processManual($file->getTempFileName(),
+					$dimension->shortname);
+			}
+		}
 	}
 
 	// }}}
@@ -211,10 +244,11 @@ class StoreCategoryImageEdit extends AdminDBEdit
 		$frame = $this->ui->getWidget('edit_frame');
 		$frame->subtitle = $this->category->title;
 
-		if ($this->category->image === null)
+		if ($this->category->image === null) {
 			$frame->title = Store::_('Add Category Image for');
-		else
+		} else {
 			$this->ui->getWidget('image')->visible = true;
+		}
 
 		$form = $this->ui->getWidget('edit_form');
 		$form->addHiddenField('category', $this->category->id);
@@ -245,15 +279,17 @@ class StoreCategoryImageEdit extends AdminDBEdit
 		$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
 			'getCategoryNavbar', array($this->category->id));
 
-		foreach ($cat_navbar_rs as $entry)
+		foreach ($cat_navbar_rs as $entry) {
 			$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
 				'Category/Index?id='.$entry->id));
+		}
 
-		if ($this->id === null)
+		if ($this->id === null) {
 			$last_entry = new SwatNavBarEntry(Store::_('Add Category Image'));
-		else
+		} else {
 			$last_entry = new SwatNavBarEntry(
 				Store::_('Change Category Image'));
+		}
 
 		$this->navbar->addEntry($last_entry);
 		$this->title = $this->category->title;
