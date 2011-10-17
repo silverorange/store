@@ -302,7 +302,8 @@ class StoreCartModule extends SiteApplicationModule
 	 */
 	protected function handleAccountCartEntries()
 	{
-		$saved_cart = $this->getSavedCart();
+		$checkout_cart = $this->getCheckoutCart();
+		$saved_cart    = $this->getSavedCart();
 
 		$entries = $checkout_cart->removeAllEntries();
 
