@@ -4,15 +4,16 @@ require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'SwatDB/SwatDBClassMap.php';
+require_once 'Site/dataobjects/SiteImageSet.php';
 require_once 'Store/dataobjects/StoreProduct.php';
 require_once 'Store/dataobjects/StoreProductImage.php';
-require_once 'Site/dataobjects/SiteImageSet.php';
+
 
 /**
  * Edit page for product images
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductImageEdit extends AdminDBEdit
@@ -20,6 +21,10 @@ class StoreProductImageEdit extends AdminDBEdit
 	// {{{ protected properties
 
 	protected $id;
+
+	/**
+	 * @var string
+	 */
 	protected $ui_xml = 'Store/admin/components/Product/image-edit.xml';
 
 	/**
@@ -113,16 +118,16 @@ class StoreProductImageEdit extends AdminDBEdit
 			$form_field = new SwatFormField();
 			$form_field->title = $dimension->title;
 
-			$width = $dimension->max_width;
+			$width  = $dimension->max_width;
 			$height = $dimension->max_height;
 			if ($height !== null || $width !== null) {
-				if ($height !== null && $width !== null)
+				if ($height !== null && $width !== null) {
 					$dimension_text = sprintf('%s x %s', $width, $height);
-				elseif ($width === null)
+				} elseif ($width === null) {
 					$dimension_text = $height;
-				elseif ($height === null)
+				} elseif ($height === null) {
 					$dimension_text = $width;
-
+				}
 				$form_field->note  = sprintf($note, $dimension_text);
 			}
 
@@ -151,27 +156,34 @@ class StoreProductImageEdit extends AdminDBEdit
 	// process phase
 	// {{{ protected function validate()
 
+	/**
+	 * Valid for new images when either the original image is uploaded, or if
+	 * all manual dimensions are uploaded. For edited images, always valid.
+	 *
+	 * @returns boolean
+	 */
 	protected function validate()
 	{
-		// if we're adding an image either the automatic image is uploaded, or
-		// all sizes of manual uploads
+		$valid = true;
 
 		$automatic = $this->ui->getWidget('original_image');
-		if ($automatic->isUploaded()) return true;
-
-		if ($this->id === null && !$this->checkManualUploads()) {
-
+		if ($automatic->isUploaded()) {
+			$valid = true;
+		} elseif ($this->id === null && !$this->checkManualUploads()) {
 			$message = new SwatMessage(Store::_('You need to specify all '.
 				'image sizes when creating a new image or upload an image to '.
-				'be automatically resized.'), 'error');
+				'be automatically resized.'),
+				'error');
 
 			$this->ui->getWidget('message')->add($message);
-			return false;
+			$valid = false;
 		}
+
+		return $valid;
 	}
 
 	// }}}
-	// {{{ private function checkManualUploads()
+	// {{{ protected function chackManualUploads()
 
 	protected function checkManualUploads()
 	{
@@ -210,8 +222,9 @@ class StoreProductImageEdit extends AdminDBEdit
 		$message = new SwatMessage(Store::_('Product Image has been saved.'));
 		$this->app->messages->add($message);
 
-		if (isset($this->app->memcache))
+		if (isset($this->app->memcache)) {
 			$this->app->memcache->flushNs('product');
+		}
 	}
 
 	// }}}
@@ -219,12 +232,11 @@ class StoreProductImageEdit extends AdminDBEdit
 
 	protected function processImage()
 	{
-		$file = $this->ui->getWidget('original_image');
-
-		if ($file->isUploaded()) {
+		$original = $this->ui->getWidget('original_image');
+		if ($original->isUploaded()) {
 			$image = $this->getNewImageInstance();
 			$image->setFileBase('../images');
-			$image->process($file->getTempFileName());
+			$image->process($original->getTempFileName());
 
 			// Delete the old image. Prevents broswer/CDN caching.
 			if ($this->id !== null) {
@@ -257,10 +269,11 @@ class StoreProductImageEdit extends AdminDBEdit
 		$frame = $this->ui->getWidget('edit_frame');
 		$frame->subtitle = $this->product->title;
 
-		if ($this->id === null)
+		if ($this->id === null) {
 			$frame->title = Store::_('Add Product Image for');
-		else
+		} else {
 			$this->ui->getWidget('image')->visible = true;
+		}
 
 		$form = $this->ui->getWidget('edit_form');
 		$form->addHiddenField('product', $this->product->id);
@@ -300,24 +313,27 @@ class StoreProductImageEdit extends AdminDBEdit
 			$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
 				'getCategoryNavbar', array($this->category_id));
 
-			foreach ($cat_navbar_rs as $entry)
+			foreach ($cat_navbar_rs as $entry) {
 				$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
 					'Category/Index?id='.$entry->id));
+			}
 		}
 
-		if ($this->category_id === null)
+		if ($this->category_id === null) {
 			$link = sprintf('Product/Details?id=%s', $this->product->id);
-		else
+		} else {
 			$link = sprintf('Product/Details?id=%s&category=%s',
 				$this->product->id, $this->category_id);
+		}
 
 		$this->navbar->addEntry(new SwatNavBarEntry($this->product->title,
 			$link));
 
-		if ($this->id === null)
+		if ($this->id === null) {
 			$last_entry = new SwatNavBarEntry(Store::_('Add Product Image'));
-		else
+		} else {
 			$last_entry = new SwatNavBarEntry(Store::_('Change Product Image'));
+		}
 
 		$this->navbar->addEntry($last_entry);
 		$this->title = $this->product->title;
