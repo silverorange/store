@@ -9,6 +9,7 @@ create table Orders (
 	comments text,
 	notes text,
 	createdate timestamp not null,
+	cancel_date timestamp,
 	status integer not null default 1,
 	cancelled boolean not null default false,
 	failed_attempt boolean not null default false,
