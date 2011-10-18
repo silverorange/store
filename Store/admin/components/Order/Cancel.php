@@ -83,7 +83,8 @@ class StoreOrderCancel extends AdminConfirmation
 			$this->order->save();
 
 			$this->app->messages->add(new SwatMessage(sprintf(
-				Store::_('%s has been canceled.'), $this->order->getTitle())));
+				Store::_('%s has been marked as canceled.'),
+				$this->order->getTitle())));
 		}
 	}
 
