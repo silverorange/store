@@ -66,6 +66,8 @@ abstract class StoreCheckoutPage extends SiteUiPage
 			$this->app->relocate($thank_you_source);
 		}
 
+		SitePageDecorator::init();
+
 		$this->loadUI();
 		$this->initInternal();
 		$this->ui->init();
