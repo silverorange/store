@@ -774,6 +774,101 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
+	// {{{ public function getPaymentDetails()
+
+	public function getPaymentDetails(StoreOrder $order,
+		$notify_url = '', $custom = '')
+	{
+		$details = array();
+
+		$details['OrderTotal'] =
+			$this->getCurrencyValue($order->total, $this->currency);
+
+		$description = $order->getDescription();
+		$description = $this->formatString($description, 127);
+		if ($description != '') {
+			$details['OrderDescription'] = $description;
+		}
+
+		$details['ItemTotal'] =
+			$this->getCurrencyValue($order->item_total, $this->currency);
+
+		$details['ShippingTotal'] =
+			$this->getCurrencyValue($order->shipping_total, $this->currency);
+
+		$details['HandlingTotal'] =
+			$this->getCurrencyValue($order->surcharge_total, $this->currency);
+
+		$details['TaxTotal'] =
+			$this->getCurrencyValue($order->tax_total, $this->currency);
+
+		if ($order->id !== null) {
+			$details['InvoiceID'] = $order->id;
+		}
+
+		if ($order->shipping_address instanceof StoreOrderAddress &&
+			$order->shipping_address->getInternalValue('country') !== null) {
+			$details['ShipToAddress'] = $this->getShipToAddress($order);
+		}
+
+		if ($notify_url != '') {
+			$details['NotifyURL'] = $this->formatString($notify_url, 2048);
+		}
+
+		if ($custom != '') {
+			$details['Custom'] = $this->formatString($custom, 256);
+		}
+
+		$items = $this->getPaymentDetailsItems($order);
+		if (count($items) > 0) {
+			$details['PaymentDetailsItem'] = $items;
+		}
+
+		return $details;
+	}
+
+	// }}}
+	// {{{ public function getPaymentDetailsItems()
+
+	public function getPaymentDetailsItems(StoreOrder $order)
+	{
+		$details = array();
+
+		foreach ($order->items as $item) {
+			$details[] = $this->getPaymentDetailsItem($item);
+		}
+
+		return $details;
+	}
+
+	// }}}
+	// {{{ public function getPaymentDetailsItem()
+
+	public function getPaymentDetailsItem(StoreOrderItem $item)
+	{
+		$details = array();
+
+		$name = $item->product_title;
+		$description = strip_tags($item->getDescription());
+		if ($description != '') {
+			$name.= ' - '.$description;
+		}
+
+		$details['Name'] = $this->formatString($name, 127);
+
+		if ($item->sku != '') {
+			$details['Number'] = $item->sku;
+		}
+
+		$details['Amount'] = $this->getCurrencyValue($item->price,
+			$this->currency);
+
+		$details['Quantity'] = $item->quantity;
+
+		return $details;
+	}
+
+	// }}}
 
 	// data-structure helper methods (express checkout)
 	// {{{ protected function getSetExpressCheckoutRequest()
@@ -1249,101 +1344,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		}
 
 		return $type;
-	}
-
-	// }}}
-	// {{{ protected function getPaymentDetails()
-
-	protected function getPaymentDetails(StoreOrder $order,
-		$notify_url = '', $custom = '')
-	{
-		$details = array();
-
-		$details['OrderTotal'] =
-			$this->getCurrencyValue($order->total, $this->currency);
-
-		$description = $order->getDescription();
-		$description = $this->formatString($description, 127);
-		if ($description != '') {
-			$details['OrderDescription'] = $description;
-		}
-
-		$details['ItemTotal'] =
-			$this->getCurrencyValue($order->item_total, $this->currency);
-
-		$details['ShippingTotal'] =
-			$this->getCurrencyValue($order->shipping_total, $this->currency);
-
-		$details['HandlingTotal'] =
-			$this->getCurrencyValue($order->surcharge_total, $this->currency);
-
-		$details['TaxTotal'] =
-			$this->getCurrencyValue($order->tax_total, $this->currency);
-
-		if ($order->id !== null) {
-			$details['InvoiceID'] = $order->id;
-		}
-
-		if ($order->shipping_address instanceof StoreOrderAddress &&
-			$order->shipping_address->getInternalValue('country') !== null) {
-			$details['ShipToAddress'] = $this->getShipToAddress($order);
-		}
-
-		if ($notify_url != '') {
-			$details['NotifyURL'] = $this->formatString($notify_url, 2048);
-		}
-
-		if ($custom != '') {
-			$details['Custom'] = $this->formatString($custom, 256);
-		}
-
-		$items = $this->getPaymentDetailsItems($order);
-		if (count($items) > 0) {
-			$details['PaymentDetailsItem'] = $items;
-		}
-
-		return $details;
-	}
-
-	// }}}
-	// {{{ protected function getPaymentDetailsItems()
-
-	protected function getPaymentDetailsItems(StoreOrder $order)
-	{
-		$details = array();
-
-		foreach ($order->items as $item) {
-			$details[] = $this->getPaymentDetailsItem($item);
-		}
-
-		return $details;
-	}
-
-	// }}}
-	// {{{ protected function getPaymentDetailsItem()
-
-	protected function getPaymentDetailsItem(StoreOrderItem $item)
-	{
-		$details = array();
-
-		$name = $item->product_title;
-		$description = strip_tags($item->getDescription());
-		if ($description != '') {
-			$name.= ' - '.$description;
-		}
-
-		$details['Name'] = $this->formatString($name, 127);
-
-		if ($item->sku != '') {
-			$details['Number'] = $item->sku;
-		}
-
-		$details['Amount'] = $this->getCurrencyValue($item->price,
-			$this->currency);
-
-		$details['Quantity'] = $item->quantity;
-
-		return $details;
 	}
 
 	// }}}
