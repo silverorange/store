@@ -39,13 +39,6 @@ abstract class StoreOrderDetails extends AdminPage
 	 */
 	protected $ui_xml = 'Store/admin/components/Order/details.xml';
 
-	/**
-	 * Array of date field IDs
-	 * 
-	 * @var array
-	 */
-	protected $date_field_ids = array('createdate', 'cancel_date');
-
 	// }}}
 
 	// init phase
@@ -109,15 +102,9 @@ abstract class StoreOrderDetails extends AdminPage
 		$details_frame->subtitle = $this->order->getTitle();
 
 		// set default time zone on each date field
-		foreach ($this->date_field_ids as $date_field_id) {
-			$view = $this->ui->getWidget('order_details');
-
-			if ($view->hasField($date_field_id)) {
-				$date_field = $view->getField($date_field_id);
-
-				$date_renderer = $date_field->getRendererByPosition();
-				$date_renderer->display_time_zone = $this->app->default_time_zone;
-			}
+		$view = $this->ui->getWidget('order_details');
+		foreach ($view->getDescendants('SwatDateCellRenderer') as $renderer) {
+			$renderer->display_time_zone = $this->app->default_time_zone;
 		}
 
 		$this->buildOrderDetails();
