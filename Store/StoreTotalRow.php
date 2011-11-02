@@ -203,7 +203,7 @@ class StoreTotalRow extends SwatTableViewRow
 		}
 
 		if ($this->show_colon) {
-			printf(Store::_('%s:', $title));
+			printf(Store::_('%s:'), $title);
 		} else {
 			echo $title;
 		}
