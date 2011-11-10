@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreItemWrapper.php';
  * Edit page for Item Groups
  *
  * @package   Store
- * @copyright 2005-2008 silverorange
+ * @copyright 2005-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemGroupEdit extends AdminDBEdit
@@ -19,7 +19,6 @@ class StoreItemGroupEdit extends AdminDBEdit
 	// {{{ protected properties
 
 	protected $item_group;
-	protected $ui_xml = 'Store/admin/components/ItemGroup/edit.xml';
 
 	// }}}
 	// {{{ private properties
@@ -34,7 +33,7 @@ class StoreItemGroupEdit extends AdminDBEdit
 	protected function initInternal()
 	{
 		parent::initInternal();
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 		$this->category_id = SiteApplication::initVar('category');
 		$this->initItemGroup();
 	}
@@ -54,6 +53,14 @@ class StoreItemGroupEdit extends AdminDBEdit
 					Store::_('An item group with id "%s" not found'),
 					$this->id));
 		}
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return 'Store/admin/components/ItemGroup/edit.xml';
 	}
 
 	// }}}
@@ -93,31 +100,6 @@ class StoreItemGroupEdit extends AdminDBEdit
 	protected function loadDBData()
 	{
 		$this->ui->setValues(get_object_vars($this->item_group));
-	}
-
-	// }}}
-	// {{{ protected function buildInternal()
-
-	protected function buildInternal()
-	{
-		parent::buildInternal();
-		$items_view = $this->ui->getWidget('items_view');
-		$items_view->model = $this->getItemsTableStore();
-	}
-
-	// }}}
-	// {{{ protected function getItemsTableStore()
-
-	protected function getItemsTableStore()
-	{
-		$sql = sprintf(
-			'select sku, description from Item where item_group = %s',
-			$this->app->db->quote($this->id, 'integer'));
-
-		$items = SwatDB::query($this->app->db, $sql,
-			SwatDBClassMap::get('StoreItemWrapper'));
-
-		return $items;
 	}
 
 	// }}}
