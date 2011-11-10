@@ -21,13 +21,6 @@ class StoreItemGroup extends SwatDBDataObject
 	public $id;
 
 	/**
-	 * Id of Product with ItemGroup belongs to
-	 *
-	 * @var integer
-	 */
-	public $product;
-
-	/**
 	 * User visible title
 	 *
 	 * @var string
@@ -77,6 +70,9 @@ class StoreItemGroup extends SwatDBDataObject
 	{
 		$this->table = 'ItemGroup';
 		$this->id_field = 'integer:id';
+
+		$this->registerInternalProperty('product',
+			SwatDBClassMap::get('StoreProduct'));
 	}
 
 	// }}}
