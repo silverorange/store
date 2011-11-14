@@ -1,6 +1,5 @@
 <?php
 
-require_once 'XML/RPC2/Client.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Site/SiteConfigModule.php';
@@ -11,6 +10,9 @@ require_once 'Store/dataobjects/StoreMailChimpOrderWrapper.php';
 require_once 'Store/dataobjects/StoreOrderWrapper.php';
 require_once 'Store/dataobjects/StoreOrderItemWrapper.php';
 require_once 'Deliverance/Deliverance.php';
+require_once 'Deliverance/DeliveranceMailChimpList.php';
+require_once 'Deliverance/exceptions/DeliveranceException.php';
+
 
 /**
  * Command line application used to send mailing list orders to MailChimp
@@ -52,11 +54,11 @@ class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
 	// {{{ protected properties
 
 	/**
-	 * The object used to make calls to the MailChimp API
+	 * The list to add the orders to.
 	 *
-	 * @var XML_RPC2_Client
+	 * @var DeliveranceMailChimpList
 	 */
-	protected $client;
+	protected $list;
 
 	// }}}
 	// {{{ public function run()
@@ -83,29 +85,20 @@ class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
 	{
 		$this->initModules();
 		$this->parseCommandLineArguments();
-		$this->initMailChimp();
+		$this->initList();
 	}
 
 	// }}}
-	// {{{ protected function initMailChimp()
+	// {{{ protected function initList()
 
 	/**
-	 * Initializes the MailChimp API
+	 * Initializes the list
 	 */
-	protected function initMailChimp()
+	protected function initList()
 	{
-		// If the connection takes longer than 1s timeout. This will prevent
-		// users from waiting too long when MailChimp is down - requests will
-		// just get queued. Without setting this, the timeout is ~90s.
-		$client_options = array(
-			'connectionTimeout' => 1000,
-		);
-
-		// TODO: Use the Deliverance config setting when it has been updated to 1.3
-		// $api_url = $this->config->mail_chimp->api_url;
-		$api_url = 'https://us1.api.mailchimp.com/1.3/';
-
-		$this->client = XML_RPC2_Client::create($api_url, $client_options);
+		$this->list = new DeliveranceMailChimpList($this);
+		$this->list->setTimeout(
+			$this->config->mail_chimp->script_connection_timeout);
 	}
 
 	// }}}
@@ -119,29 +112,36 @@ class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
 		$orders = $this->getOrders();
 		$this->debug(sprintf("Found %s Orders:\n", count($orders)), true);
 
-		$success = false;
+		$success   = false;
+		$not_found = false;
+
 		foreach ($orders as $order) {
 			try {
 				$this->debug('Sending order to MailChimp ... ');
-				$this->sendOrder($order);
-				$success = true;
-			} catch (XML_RPC2_CurlException $e) {
-				// ignore these, we'll just attempt a resend.
-			} catch (XML_RPC2_FaultException $e) {
-				// 330 means order has already been submitted, we can safely
-				// throw these away
-				if ($e->getFaultCode() == '330') {
-					$success = true;
+				$success = $this->sendOrder($order);
+			} catch (DeliveranceException $e) {
+				switch ($e->getCode()) {
+				case DeliveranceMailChimpList::NOT_FOUND_ERROR_CODE:
+					// if the email address isn't found, consider it a success.
+					$not_found = true;
+					$success   = true;
+					break;
+				default:
+					throw $e;
 				}
-			} catch (XML_RPC2_Exception $e) {
+			} catch (Exception $e) {
 				// TODO: Some of these should be logged while others shouldn't
-				$e = new SiteException($e);
+				$e = new DeliveranceException($e);
 				$e->processAndContinue();
 			}
 
 			if ($success === true) {
-				$this->debug("sent.\n");
+				$message = ($not_found === true) ?
+					sprintf('subscriber ‘%s’ not found.',
+						$order->email_id):
+					'sent';
 
+				$this->debug($message."\n");
 				$order->delete();
 			} else {
 				$order->send_attempts += 1;
@@ -168,13 +168,7 @@ class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
 	protected function sendOrder(StoreMailChimpOrder $order)
 	{
 		$info = $this->getOrderInfo($order);
-
-		$api_key = $this->config->mail_chimp->api_key;
-		if ($order->campaign_id != '') {
-			$reply = $this->client->campaignEcommOrderAdd($api_key, $info);
-		} else {
-			$reply = $this->client->ecommOrderAdd($api_key, $info);
-		}
+		return $this->list->addOrder($info);
 	}
 
 	// }}}
@@ -224,7 +218,9 @@ class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
 	{
 		$order_date = clone $order->ordernum->createdate;
 
-		$store_id = parse_url($this->config->uri->absolute_base, PHP_URL_HOST);
+		// store_id has a max length of 20 chars.
+		$store_id = substr(
+			parse_url($this->config->uri->absolute_base, PHP_URL_HOST), 0, 20);
 
 		$info = array(
 			'id'         => $order->ordernum->id,
