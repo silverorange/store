@@ -454,16 +454,19 @@ class StoreCartModule extends SiteApplicationModule
 	protected function loadEntries()
 	{
 		// make sure default cart exists
-		if ($this->getCheckoutCart() === null)
+		if ($this->getCheckoutCart() === null) {
 			return;
+		}
 
 		// make sure we're browsing a request with a region
-		if ($this->app->getRegion() === null)
+		if ($this->app->getRegion() === null) {
 			return;
+		}
 
 		// no active session, so no cart entries
-		if (!$this->app->session->isActive())
+		if (!$this->app->session->isActive()) {
 			return;
+		}
 
 		$entry_sql = $this->getEntrySql($this->getEntryWhereClause(),
 			$this->getEntryOrderByClause());
@@ -471,12 +474,31 @@ class StoreCartModule extends SiteApplicationModule
 		$this->entries = SwatDB::query($this->app->db, $entry_sql,
 			SwatDBClassMap::get('StoreCartEntryWrapper'));
 
-		if (count($this->entries) == 0)
+		if (count($this->entries) === 0) {
 			return;
+		}
 
 		// for implodeArray()
 		$this->app->db->loadModule('Datatype', null, true);
-		$item_ids = $this->entries->getInternalValues('item');
+
+		// efficiently load cart entry data structure
+		$items       = $this->loadEntryItems($this->entries);
+		$item_groups = $this->loadEntryItemGroups($items);
+		$discounts   = $this->loadEntryQuantityDiscounts($items);
+		$products    = $this->loadEntryProducts($items);
+		$images      = $this->loadEntryPrimaryImages($products);
+		$categories  = $this->loadEntryPrimaryCategories($products);
+		$catalogs    = $this->loadEntryCatalogs($products);
+
+		$this->entries->attachSubDataObjects('item', $items);
+	}
+
+	// }}}
+	// {{{ protected function loadEntryItems()
+
+	protected function loadEntryItems(StoreCartEntryWrapper $entries)
+	{
+		$item_ids = $entries->getInternalValues('item');
 		$class = SwatDBClassMap::get('StoreItemWrapper');
 
 		$quoted_item_ids =
@@ -486,21 +508,30 @@ class StoreCartModule extends SiteApplicationModule
 			$this->app->db, $quoted_item_ids, $this->app->getRegion(),
 			false);
 
-		$items->loadAllSubDataObjects('item_group', $this->app->db,
+		return $items;
+	}
+
+	// }}}
+	// {{{ protected function loadEntryItemGroups()
+
+	protected function loadEntryItemGroups(StoreItemWrapper $items)
+	{
+		$item_groups = $items->loadAllSubDataObjects(
+			'item_group', $this->app->db,
 			'select * from ItemGroup where id in (%s)',
 			SwatDBClassMap::get('StoreItemGroupWrapper'));
 
-		$products = $items->loadAllSubDataObjects('product', $this->app->db,
-			$this->getProductSql(), SwatDBClassMap::get('StoreProductWrapper'));
+		return $item_groups;
+	}
 
-		// efficiently load quantity discounts.
-		$item_ids = array();
-		$product_ids = array();
-		foreach ($items as $item) {
-			$item_ids[] = $item->id;
-			$product_ids[] = $item->product->id;
-		}
+	// }}}
+	// {{{ protected function loadEntryQuantityDiscounts()
 
+	protected function loadEntryQuantityDiscounts(StoreItemWrapper $items)
+	{
+		// TODO: can we use loadAllSubRecordsets() here?
+
+		$item_ids = $items->getIndexes();
 		$class = SwatDBClassMap::get('StoreQuantityDiscountWrapper');
 		$wrapper = new $class();
 		$quantity_discounts = $wrapper->loadSetFromDB($this->app->db,
@@ -518,28 +549,55 @@ class StoreCartModule extends SiteApplicationModule
 			$item->quantity_discounts = $discounts;
 		}
 
+		return $quantity_discounts;
+	}
+
+	// }}}
+	// {{{ protected function loadEntryProducts()
+
+	protected function loadEntryProducts(StoreItemWrapper $items)
+	{
+		$products = $items->loadAllSubDataObjects('product', $this->app->db,
+			$this->getProductSql(), SwatDBClassMap::get('StoreProductWrapper'));
+
+		return $products;
+	}
+
+	// }}}
+	// {{{ protected function loadEntryPrimaryImages()
+
+	protected function loadEntryPrimaryImages(StoreProductWrapper $products)
+	{
 		// efficiently load primary images
-		$sql = 'select Image.*, product from Image
+		$product_ids = $products->getIndexes();
+
+		$sql = sprintf(
+			'select Image.*, product from Image
 			inner join ProductPrimaryImageView
 				on ProductPrimaryImageView.image = Image.id
-			where product in (%s)';
-
-		$sql = sprintf($sql,
+			where product in (%s)',
 			$this->app->db->datatype->implodeArray($product_ids, 'integer'));
 
-		$primary_images = SwatDB::query($this->app->db, $sql,
+		$primary_images = SwatDB::query(
+			$this->app->db, $sql,
 			SwatDBClassMap::get('StoreProductImageWrapper'));
 
 		foreach ($primary_images as $image) {
-			$product = $products->getByIndex(
-				$image->product);
-
+			$product = $products->getByIndex($image->product);
 			if ($product !== null) {
 				$product->primary_image = $image;
-				$x = $product->primary_image;
+				$x = $product->primary_image; // WTF IS THIS SHIT
 			}
 		}
 
+		return $primary_images;
+	}
+
+	// }}}
+	// {{{ protected function loadEntryPrimaryCategories()
+
+	protected function loadEntryPrimaryCategories(StoreProductWrapper $products)
+	{
 		$category_sql = 'select id, getCategoryPath(id) as path
 			from Category where id in (%s)';
 
@@ -547,14 +605,21 @@ class StoreCartModule extends SiteApplicationModule
 			$this->app->db, $category_sql,
 			SwatDBClassMap::get('StoreCategoryWrapper'));
 
-		$catalog_sql = 'select * from Catalog
-			where id in (%s)';
+		return $categories;
+	}
 
-		$catalog = $products->loadAllSubDataObjects('catalog',
+	// }}}
+	// {{{ protected function loadEntryCatalogs()
+
+	protected function loadEntryCatalogs(StoreProductWrapper $products)
+	{
+		$catalog_sql = 'select * from Catalog where id in (%s)';
+
+		$catalogs = $products->loadAllSubDataObjects('catalog',
 			$this->app->db, $catalog_sql,
 			SwatDBClassMap::get('StoreCatalogWrapper'));
 
-		$this->entries->attachSubDataObjects('item', $items);
+		return $catalogs;
 	}
 
 	// }}}
