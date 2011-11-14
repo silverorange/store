@@ -586,7 +586,6 @@ class StoreCartModule extends SiteApplicationModule
 			$product = $products->getByIndex($image->product);
 			if ($product !== null) {
 				$product->primary_image = $image;
-				$x = $product->primary_image; // WTF IS THIS SHIT
 			}
 		}
 
