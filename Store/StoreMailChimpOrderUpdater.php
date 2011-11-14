@@ -251,13 +251,13 @@ class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
 		$items = array();
 
 		foreach($order->items as $item) {
-			$product  = $this->getProduct($item);
+			$product = $this->getProduct($item);
 
 			$entry = array(
-				'product_id'    => $product->id,
-				'product_name'  => $product->title,
-				'qty'           => $item->quantity,
-				'cost'          => $item->price,
+				'product_id'   => $product->id,
+				'product_name' => $product->title,
+				'qty'          => $item->quantity,
+				'cost'         => $item->price,
 			);
 
 			// products with no category won't have a primary category.
