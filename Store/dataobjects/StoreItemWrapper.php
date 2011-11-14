@@ -64,7 +64,7 @@ class StoreItemWrapper extends SwatDBRecordsetWrapper
 	public static function loadSetFromDBWithRegion($db, $id_set,
 		StoreRegion $region, $limiting = true)
 	{
-		$sql = 'select Item.*, ItemRegionBinding.price,
+		$sql = 'select Item.*, ItemRegionBinding.price, ItemRegionBinding.original_price,
 			ItemRegionBinding.enabled, ItemRegionBinding.region as region_id,
 			case when AvailableItemView.item is null then false
 				else true
@@ -89,8 +89,9 @@ class StoreItemWrapper extends SwatDBRecordsetWrapper
 		$items = SwatDB::query($db, $sql,
 			SwatDBClassMap::get('StoreItemWrapper'));
 
-		if ($items !== null)
+		if ($items !== null) {
 			$items->setRegion($region, $limiting);
+		}
 
 		return $items;
 	}

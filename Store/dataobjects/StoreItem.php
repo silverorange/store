@@ -286,22 +286,8 @@ class StoreItem extends SwatDBDataObject
 	 */
 	public function isEnabled(StoreRegion $region = null)
 	{
-		if ($region !== null && !($region instanceof StoreRegion))
-			throw new StoreException(
-				'$region must be an instance of StoreRegion.');
-
-		// If region is not specified but is set through setRegion() use
-		// that region instead.
-		if ($region === null && $this->region !== null)
-			$region = $this->region;
-
-		// A region is required.
-		if ($region === null)
-			throw new StoreException(
-				'$region must be specified unless setRegion() is called '.
-				'beforehand.');
-
 		$enabled = null;
+		$region = $this->checkRegion($region);
 
 		if ($this->region !== null && $this->region->id == $region->id &&
 			isset($this->is_enabled[$region->id])) {
@@ -341,8 +327,10 @@ class StoreItem extends SwatDBDataObject
 		$region = $this->checkRegion($region);
 
 		if ($this->region !== null && $this->region->id == $region->id &&
-			isset($this->price[$region->id])) {
+			array_key_exists($region->id, $this->price)) {
+
 			$price = $this->price[$region->id];
+
 		} else {
 			$region_bindings = $this->region_bindings;
 			foreach ($region_bindings as $binding) {
@@ -376,8 +364,10 @@ class StoreItem extends SwatDBDataObject
 		$region = $this->checkRegion($region);
 
 		if ($this->region !== null && $this->region->id == $region->id &&
-			isset($this->original_price[$region->id])) {
+			array_key_exists($region->id, $this->original_price)) {
+
 			$price = $this->original_price[$region->id];
+
 		} else {
 			$region_bindings = $this->region_bindings;
 			foreach ($region_bindings as $binding) {
@@ -388,8 +378,9 @@ class StoreItem extends SwatDBDataObject
 			}
 		}
 
-		if ($price === null)
+		if ($price === null) {
 			$price = $this->getPrice($region);
+		}
 
 		$this->original_price[$region->id] = $price;
 
@@ -772,21 +763,27 @@ class StoreItem extends SwatDBDataObject
 	{
 		parent::initFromRow($row);
 
-		if (is_object($row))
+		if (is_object($row)) {
 			$row = get_object_vars($row);
+		}
 
 		if (isset($row['region_id'])) {
-			if (isset($row['price']))
+			if (array_key_exists('price', $row)) {
 				$this->price[$row['region_id']] = $row['price'];
+			}
 
-			if (isset($row['original_price']))
-				$this->original_price[$row['region_id']] = $row['original_price'];
+			if (array_key_exists('original_price', $row)) {
+				$this->original_price[$row['region_id']] =
+					$row['original_price'];
+			}
 
-			if (isset($row['enabled']))
+			if (array_key_exists('enabled', $row)) {
 				$this->is_enabled[$row['region_id']] = $row['enabled'];
+			}
 
-			if (isset($row['is_available']))
+			if (array_key_exists('is_available', $row)) {
 				$this->is_available[$row['region_id']] = $row['is_available'];
+			}
 		}
 	}
 
