@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreMailChimpOrder.php';
  * Web application module for handling MailChimp order tracking.
  *
  * @package   Store
- * @copyright 2010 silverorange
+ * @copyright 2010-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreMailChimpOrder
  */
@@ -29,18 +29,19 @@ class StoreMailChimpModule extends SiteApplicationModule
 		$cookie = $this->app->cookie;
 		$expiry = strtotime('30 days');
 
-		$email_id    = SiteApplication::initVar('mc_eid', '');
-		$campaign_id = SiteApplication::initVar('mc_cid', '');
+		$email_id    = SiteApplication::initVar('mc_eid');
+		$campaign_id = SiteApplication::initVar('mc_cid');
 
-		// Save the campaign id and email id or just the email id
-		if ($email_id != '' && $campaign_id != '') {
-			$cookie->setCookie('mc_eid',    $email_id, $expiry);
-			$cookie->setCookie('mc_cid', $campaign_id, $expiry);
-		} else if ($email_id != '') {
+		// [UNIQID] is passed when coming from an archive page. Ignore these.
+		if ($email_id !== null && $email_id != '[UNIQID]') {
 			$cookie->setCookie('mc_eid', $email_id, $expiry);
 
-			// Make sure we don't falsely report a campaign
-			$cookie->removeCookie('mc_cid');
+			if ($campaign_id !== null) {
+				$cookie->setCookie('mc_cid', $campaign_id, $expiry);
+			} else {
+				// Make sure we don't falsely report a campaign
+				$cookie->removeCookie('mc_cid');
+			}
 		}
 	}
 
@@ -78,19 +79,16 @@ class StoreMailChimpModule extends SiteApplicationModule
 	{
 		$cookie = $this->app->cookie;
 
-		$class = SwatDBClassMap::get('StoreMailChimpOrder');
-		$chimp_order = new $class();
-		$chimp_order->setDatabase($this->app->db);
-
-		if (isset($cookie->mc_eid) && isset($cookie->mc_cid)) {
-			$chimp_order->email_id    = $cookie->mc_eid;
-			$chimp_order->campaign_id = $cookie->mc_cid;
-			$chimp_order->ordernum    = $order->id;
-
-			$chimp_order->save();
-		} else if (isset($cookie->mc_eid)) {
-			$chimp_order->email_id = $cookie->mc_eid;
+		if (isset($cookie->mc_eid)) {
+			$class = SwatDBClassMap::get('StoreMailChimpOrder');
+			$chimp_order = new $class();
+			$chimp_order->setDatabase($this->app->db);
 			$chimp_order->ordernum = $order->id;
+			$chimp_order->email_id = $cookie->mc_eid;
+
+			if (isset($cookie->mc_cid)) {
+				$chimp_order->campaign_id = $cookie->mc_cid;
+			}
 
 			$chimp_order->save();
 		}
