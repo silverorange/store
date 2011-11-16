@@ -117,7 +117,9 @@ class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
 
 		foreach ($orders as $order) {
 			try {
-				$this->debug('Sending order to MailChimp ... ');
+				$this->debug(sprintf('Sending order %s to MailChimp ... ',
+					$order->ordernum->id));
+
 				$success = $this->sendOrder($order);
 			} catch (DeliveranceException $e) {
 				switch ($e->getCode()) {
