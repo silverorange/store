@@ -101,6 +101,29 @@ class StoreCheckoutModule extends SiteApplicationModule
 	}
 
 	// }}}
+	// {{{ public function unsetProgress()
+
+	/**
+	 * Sets a progress dependency as 'unmet'
+	 *
+	 * @param string $dependency the progress dependency that is now unmet.
+	 */
+	public function unsetProgress($dependency)
+	{
+		$session = $this->getSession();
+
+		// if the progress session variable somehow got removed, recreate it
+		if (!isset($session->checkout_progress)) {
+			$session->checkout_progress = new ArrayObject();
+		}
+
+		// remove the met dependency
+		$progress_array = $session->checkout_progress->getArrayCopy();
+		$progress_array = array_diff($progress_array, array($dependency));
+		$session->checkout_progress = new ArrayObject($progress_array);
+	}
+
+	// }}}
 	// {{{ public function hasProgressDependency()
 
 	/**
