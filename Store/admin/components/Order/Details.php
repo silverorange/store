@@ -93,13 +93,13 @@ abstract class StoreOrderDetails extends AdminPage
 	// build phase
 	// {{{ protected function buildInternal()
 
-	public function buildInternal()
+	protected function buildInternal()
 	{
 		parent::buildInternal();
 
 		$details_frame = $this->ui->getWidget('details_frame');
 		$details_frame->title = Store::_('Order');
-		$details_frame->subtitle = $this->order->getTitle();
+		$details_frame->subtitle = $this->getOrderTitle();
 
 		// set default time zone on each date field
 		$view = $this->ui->getWidget('order_details');
@@ -132,7 +132,7 @@ abstract class StoreOrderDetails extends AdminPage
 			$this->title = $this->order->account->getFullname();
 		}
 
-		$this->navbar->addEntry(new SwatNavBarEntry($this->order->getTitle()));
+		$this->navbar->addEntry(new SwatNavBarEntry($this->getOrderTitle()));
 	}
 
 	// }}}
@@ -156,6 +156,14 @@ abstract class StoreOrderDetails extends AdminPage
 				$this->ui->getWidget('cancel_order_link')->visible = false;
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function getOrderTitle()
+
+	protected function getOrderTitle()
+	{
+		return $this->order->getTitle();
 	}
 
 	// }}}
