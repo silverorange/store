@@ -24,7 +24,7 @@ require_once 'Store/dataobjects/StoreItemAlias.php';
  * subclassing this class to add these toString() methods.
  *
  * @package   Store
- * @copyright 2005-2009 silverorange
+ * @copyright 2005-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreCart
  */
@@ -156,6 +156,19 @@ class StoreCartEntry extends SwatDBDataObject
 	public function getItemId()
 	{
 		return $this->item->id;
+	}
+
+	// }}}
+	// {{{ public function getItemSku()
+
+	/**
+	 * Gets the sku of the item in this cart entry
+	 *
+	 * @return string the SKU of the item of this cart entry.
+	 */
+	public function getItemSku()
+	{
+		return $this->item->sku;
 	}
 
 	// }}}
@@ -422,7 +435,7 @@ class StoreCartEntry extends SwatDBDataObject
 
 	/**
 	 * Sets the maximum StoreCartEntry::$id for all cart entries in the same
-	 * product as this entry. 
+	 * product as this entry.
 	 *
 	 * Used for ordering items in the cart by the most recently added items
 	 * first, while still grouping by product.
@@ -440,7 +453,7 @@ class StoreCartEntry extends SwatDBDataObject
 
 	/**
 	 * Get the maximum StoreCartEntry::$id for all cart entries in the same
-	 * product as this entry. 
+	 * product as this entry.
 	 *
 	 * @see StoreCart::sort()
 	 * @see StoreCartEntry::compare()
