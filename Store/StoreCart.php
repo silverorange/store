@@ -367,7 +367,7 @@ abstract class StoreCart extends SwatObject
 	}
 
 	// }}}
-	// {{{ public function getEntriesBySku()
+	// {{{ public function getEntriesByItemSku()
 
 	/**
 	 * Returns an array of entries in the cart based on the database item SKU
@@ -379,11 +379,11 @@ abstract class StoreCart extends SwatObject
 	 *
 	 * @return array an array of StoreCartEntry objects.
 	 */
-	public function &getEntriesBySku($sku)
+	public function &getEntriesByItemSku($sku)
 	{
 		$entries = array();
 		foreach ($this->entries as $entry) {
-			if ($entry->item->sku == $sku) {
+			if ($entry->getItemSku() == $sku) {
 				$entries[] = $entry;
 			}
 		}
