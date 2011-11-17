@@ -23,7 +23,7 @@ require_once 'Store/exceptions/StoreException.php';
  * ids which do not necessarily reference a unique cart entry.
  *
  * @package   Store
- * @copyright 2005-2009 silverorange
+ * @copyright 2005-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreCheckoutCart, StoreSavedCart
  */
@@ -359,8 +359,33 @@ abstract class StoreCart extends SwatObject
 	{
 		$entries = array();
 		foreach ($this->entries as $entry) {
-			if ($entry->getItemId() == $item_id)
+			if ($entry->getItemId() == $item_id) {
 				$entries[] = $entry;
+			}
+		}
+		return $entries;
+	}
+
+	// }}}
+	// {{{ public function getEntriesBySku()
+
+	/**
+	 * Returns an array of entries in the cart based on the database item SKU
+	 *
+	 * An array is returned because item SKUs are not required to be unique
+	 * across StoreCartItems in a single cart.
+	 *
+	 * @param string $sku the SKU of the StoreItem in the cart to be returned.
+	 *
+	 * @return array an array of StoreCartEntry objects.
+	 */
+	public function &getEntriesBySku($sku)
+	{
+		$entries = array();
+		foreach ($this->entries as $entry) {
+			if ($entry->item->sku == $sku) {
+				$entries[] = $entry;
+			}
 		}
 		return $entries;
 	}
