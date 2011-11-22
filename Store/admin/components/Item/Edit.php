@@ -27,9 +27,6 @@ class StoreItemEdit extends AdminDBEdit
 	protected $product;
 	protected $item;
 
-	// }}}
-	// {{{ private properties
-
 	/**
 	 * Used to build the navbar.
 	 *
@@ -39,7 +36,7 @@ class StoreItemEdit extends AdminDBEdit
 	 *
 	 * @var integer
 	 */
-	private $category_id;
+	protected $category_id;
 
 	// }}}
 
