@@ -119,7 +119,7 @@ class StoreItemGroupEdit extends AdminDBEdit
 	{
 		parent::buildNavBar();
 
-		$this->navbar->popEntry();
+		$this->navbar->popEntries(2);
 
 		if ($this->category_id === null) {
 			$this->navbar->addEntry(new SwatNavBarEntry(
@@ -137,21 +137,26 @@ class StoreItemGroupEdit extends AdminDBEdit
 					'Category/Index?id='.$entry->id));
 		}
 
-		$product_id = SwatDB::queryOneFromTable($this->app->db, 'ItemGroup',
-			'integer:product', 'id', $this->id);
+		$item_group = $this->item_group;
+		$product    = $item_group->product;
 
-		$product_title = SwatDB::queryOneFromTable($this->app->db, 'Product',
-			'text:title', 'id', $product_id);
+		if ($this->category_id === null) {
+			$this->navbar->createEntry($product->title,
+				sprintf('Product/Details?id=%s', $product->id));
 
-		if ($this->category_id === null)
-			$link = sprintf('Product/Details?id=%s', $product_id);
-		else
-			$link = sprintf('Product/Details?id=%s&category=%s', $product_id,
-				$this->category_id);
+			$this->navbar->createEntry($item_group->sku,
+				sprintf('ItemGroup/Details?id=%s', $item_group->id));
+		} else {
+			$this->navbar->createEntry($product->title,
+				sprintf('Product/Details?id=%s&category=%s',
+					$product->id, $this->category_id));
 
-		$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));
-		$this->navbar->addEntry(new SwatNavBarEntry(Store::_('Edit Group')));
-		$this->title = $product_title;
+			$this->navbar->createEntry($item_group->sku,
+				sprintf('ItemGroup/Details?id=%s&category=%s',
+					$item_group->id, $this->category_id));
+		}
+
+		$this->navbar->createEntry('Edit Item Group');
 	}
 
 	// }}}
