@@ -61,6 +61,12 @@ class StoreItemGroup extends SwatDBDataObject
 	public function setRegion(StoreRegion $region)
 	{
 		$this->region = $region;
+
+		if ($this->hasSubDataObject('items')) {
+			foreach ($this->items as $item) {
+				$item->setRegion($region);
+			}
+		}
 	}
 
 	// }}}
@@ -86,8 +92,15 @@ class StoreItemGroup extends SwatDBDataObject
 				order by Item.displayorder, Item.sku',
 			$this->db->quote($this->id, 'integer'));
 
-		$wrapper = SwatDBClassMap::get('StoreItemWrapper');
-		return SwatDB::query($this->db, $sql, $wrapper);
+
+		$items = SwatDB::query($this->db, $sql,
+			SwatDBClassMap::get('StoreItemWrapper'));
+
+		foreach ($items as $item) {
+			$item->setRegion($this->region);
+		}
+
+		return $items;
 	}
 
 	// }}}
