@@ -78,29 +78,39 @@ class StoreProductDetails extends AdminIndex
 		$this->category_id = SiteApplication::initVar('category', null,
 			SiteApplication::VAR_GET);
 
-		$this->ui->getWidget('item_group')->db = $this->app->db;
-		$this->ui->getWidget('item_group')->product_id = $this->id;
-
-		$regions = $this->queryRegions();
-		$view = $this->ui->getWidget('items_view');
-
-		// add dynamic columns to items view
-		$this->appendPriceColumns($view, $regions);
-
-		$sale_discount_flydown = $this->ui->getWidget('sale_discount_flydown');
-		$sale_discount_flydown->addOptionsByArray(SwatDB::getOptionArray(
-			$this->app->db, 'SaleDiscount', 'title', 'id', 'title'));
-
-		$flydown = $this->ui->getWidget('minimum_quantity_group_flydown');
-		$options = SwatDB::getOptionArray($this->app->db,
-			'ItemMinimumQuantityGroup', 'title', 'id', 'title');
-
-		$flydown->addOptionsByArray($options);
-		$this->ui->getWidget('minimum_quantity_group')->visible =
-			(count($options) > 0);
+		$this->initItems();
 
 		if ($this->ui->hasWidget('review_pager')) {
 			$this->ui->getWidget('review_pager')->page_size = 10;
+		}
+	}
+
+	// }}}
+	// {{{ protected function initItems()
+
+	protected function initItems()
+	{
+		if ($this->ui->hasWidget('items_frame')) {
+			$this->ui->getWidget('item_group')->db = $this->app->db;
+			$this->ui->getWidget('item_group')->product_id = $this->id;
+
+			$regions = $this->queryRegions();
+			$view = $this->ui->getWidget('items_view');
+
+			// add dynamic columns to items view
+			$this->appendPriceColumns($view, $regions);
+
+			$sale_discount_flydown = $this->ui->getWidget('sale_discount_flydown');
+			$sale_discount_flydown->addOptionsByArray(SwatDB::getOptionArray(
+				$this->app->db, 'SaleDiscount', 'title', 'id', 'title'));
+
+			$flydown = $this->ui->getWidget('minimum_quantity_group_flydown');
+			$options = SwatDB::getOptionArray($this->app->db,
+				'ItemMinimumQuantityGroup', 'title', 'id', 'title');
+
+			$flydown->addOptionsByArray($options);
+			$this->ui->getWidget('minimum_quantity_group')->visible =
+				(count($options) > 0);
 		}
 	}
 
@@ -144,7 +154,8 @@ class StoreProductDetails extends AdminIndex
 			$this->processProductCollections($view);
 
 		// add new items
-		if ($this->ui->getWidget('index_actions')->selected !== null &&
+		if ($this->ui->hasWidget('items_frame') &&
+			$this->ui->getWidget('index_actions')->selected !== null &&
 			$this->ui->getWidget('index_actions')->selected->id == 'add') {
 
 			$this->addNewItems();
@@ -652,7 +663,8 @@ class StoreProductDetails extends AdminIndex
 
 		// always show add new item action regardless of entries in item table
 		// but also keep all other actions hidden
-		if (count($this->ui->getWidget('items_view')->model) == 0) {
+		if ($this->ui->hasWidget('items_frame') &&
+			count($this->ui->getWidget('items_view')->model) == 0) {
 			$index_actions = $this->ui->getWidget('index_actions');
 			$index_actions->visible = true;
 			foreach ($index_actions->getActionItems() as $id => $widget)
@@ -922,38 +934,42 @@ class StoreProductDetails extends AdminIndex
 
 	protected function buildItems()
 	{
-		$view = $this->ui->getWidget('items_view');
-		$toolbar = $this->ui->getWidget('items_toolbar');
-		$form = $this->ui->getWidget('items_form');
-		$view->addStyleSheet('packages/store/admin/styles/disabled-rows.css');
-		$form->action = $this->getRelativeURL();
+		if ($this->ui->hasWidget('items_frame')) {
+			$view = $this->ui->getWidget('items_view');
+			$toolbar = $this->ui->getWidget('items_toolbar');
+			$form = $this->ui->getWidget('items_form');
+			$view->addStyleSheet(
+				'packages/store/admin/styles/disabled-rows.css');
 
-		$this->buildItemGroups();
+			$form->action = $this->getRelativeURL();
 
-		// show default status for new items if there is an input row
-		if ($view->getFirstRowByClass('SwatTableViewInputRow') !== null) {
-			$column = $view->getColumn('status');
-			$input_status = $column->getInputCell()->getPrototypeWidget();
-			$input_status->content =
-				StoreItemStatusList::status('available')->title;
+			$this->buildItemGroups();
+
+			// show default status for new items if there is an input row
+			if ($view->getFirstRowByClass('SwatTableViewInputRow') !== null) {
+				$column = $view->getColumn('status');
+				$input_status = $column->getInputCell()->getPrototypeWidget();
+				$input_status->content =
+					StoreItemStatusList::status('available')->title;
+			}
+
+			$this->buildStatusList();
+
+			// setup the flydowns for enabled/disabled actions
+			$regions = SwatDB::getOptionArray($this->app->db, 'Region', 'title',
+				'id');
+
+			$regions[0] = Store::_('All Regions');
+
+			$this->ui->getWidget('enable_region')->addOptionsByArray($regions);
+			$this->ui->getWidget('disable_region')->addOptionsByArray($regions);
+
+			$quantity_discounts = $view->getColumn('quantity_discounts');
+			$quantity_discounts->getRendererByPosition()->db = $this->app->db;
+
+			$this->buildCategoryToolBarLinks($toolbar);
+			$this->buildCategoryTableViewLinks($view);
 		}
-
-		$this->buildStatusList();
-
-		// setup the flydowns for enabled/disabled actions
-		$regions = SwatDB::getOptionArray($this->app->db, 'Region', 'title',
-			'id');
-
-		$regions[0] = Store::_('All Regions');
-
-		$this->ui->getWidget('enable_region')->addOptionsByArray($regions);
-		$this->ui->getWidget('disable_region')->addOptionsByArray($regions);
-
-		$view->getColumn('quantity_discounts')->getRendererByPosition()->db =
-			$this->app->db;
-
-		$this->buildCategoryToolBarLinks($toolbar);
-		$this->buildCategoryTableViewLinks($view);
 	}
 
 	// }}}
