@@ -262,14 +262,6 @@ class StoreCartLightbox extends SwatControl
 
 		$this->ui->getWidget('lightbox_cart_title')->content =
 			$this->getCartTitle();
-
-		if ($this->ui->hasWidget('lightbox_cart_link')) {
-			$cart_link = new SwatHtmlTag('a');
-			$cart_link->href = 'cart?link=cart-lightbox';
-			$cart_link->setContent(Store::_('View Cart'));
-			$this->ui->getWidget('lightbox_cart_link')->content =
-				$cart_link->__toString().' '.Store::_('or');
-		}
 	}
 
 	// }}}
