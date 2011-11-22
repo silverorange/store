@@ -564,8 +564,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		// shipping address is only added if it differs from billing address
 		if ($order->shipping_address instanceof StoreOrderAddress) {
-			if ($order->shipping_address !== $order->billing_address &&
-				$order->shipping_address->getAccountAddressId() === null) {
+			if ($order->shipping_address !== $order->billing_address) {
 				$address = $this->addAddressToAccount($order->shipping_address);
 			}
 			$account->setDefaultShippingAddress($address);
