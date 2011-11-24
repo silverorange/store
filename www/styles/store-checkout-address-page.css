@@ -53,7 +53,12 @@
 
 /* {{{ Address Verification */
 
-span.address {
+.checkout-address-verified {
+	margin: 0;
+	padding: 0;
+}
+
+.checkout-address-verified span.address {
 	display: block;
 	padding: 0 0 1em 1em;
 }

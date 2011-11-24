@@ -178,7 +178,9 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 			$this->button2->classes[] = 'address-verification-no';
 
 			ob_start();
+			echo '<p class="account-address-verified">';
 			$verified_address->display();
+			echo '</p>';
 			$this->button1->display();
 			$this->button2->display();
 			$message->secondary_content.= ob_get_clean();

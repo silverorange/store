@@ -1,6 +1,11 @@
 /* {{{ Address Verification */
 
-span.address {
+.account-address-verified {
+	margin: 0;
+	padding: 0;
+}
+
+.account-address-verified span.address {
 	display: block;
 	padding: 0 0.5em 1em 1em;
 }
