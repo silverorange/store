@@ -60,6 +60,8 @@ abstract class StoreCheckoutPage extends SiteUiPage
 
 		// If the order has been saved then the checkout process is complete.
 		// If the user isn't on the thank you page then relocate there now.
+		// This prevents duplicate orders when the confirmation page is
+		// submitted multiple times.
 		$thank_you_source = $this->getThankYouSource();
 		if ($this->app->session->order->id !== null &&
 			$this->getSource() !== $thank_you_source) {

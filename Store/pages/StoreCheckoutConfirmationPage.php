@@ -601,7 +601,14 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			// clear account from session so we appear to not be logged in now
 			// that the account is saved
 			$this->app->session->account = null;
-			$this->app->session->loginById($account->id);
+
+			// Login, but don't regenerate the session id. Regenerating the
+			// session id will cause problems when the same order is submitted
+			// multiple times by the customer.
+			$this->app->session->loginById(
+				$account->id,
+				SiteSessionModule::NO_REGENERATE_ID
+			);
 		}
 	}
 
