@@ -18,7 +18,7 @@
 			</widget>
 		</widget>
 		<widget class="SwatFooterFormField" id="button_container">
-			<widget class="SwatButton" id="submit">
+			<widget class="SwatButton" id="submit_button">
 				<property name="title">Add to Cart</property>
 			</widget>
 		</widget>
