@@ -22,7 +22,7 @@
 		purchasing.</p>
 		]]></property>
 		<property name="note_content_type">text/xml</property>
-		<widget class="SwatButton" id="submit">
+		<widget class="SwatButton" id="submit_button">
 			<property name="title">Next Step</property>
 		</widget>
 	</widget>

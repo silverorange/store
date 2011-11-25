@@ -1039,7 +1039,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		if ($this->ui->getWidget('message_display')->getMessageCount() > 0) {
 			// if there are messages, order cannot be placed
-			$this->ui->getWidget('submit')->sensitive = false;
+			$this->ui->getWidget('submit_button')->sensitive = false;
 		} else {
 			$message = new SwatMessage(Store::_('Please Review Your Order'));
 			$message->content_type= 'text/xml';

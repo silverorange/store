@@ -147,7 +147,7 @@
 	</widget>
 	<!-- }}} -->
 	<widget class="SwatFooterFormField" id="checkout_footer">
-		<widget class="SwatButton" id="submit">
+		<widget class="SwatButton" id="submit_button">
 			<property name="title" translatable="yes">Place Order</property>
 		</widget>
 	</widget>
