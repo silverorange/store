@@ -20,7 +20,12 @@ class StoreShippingAddressCellRenderer extends StoreAddressCellRenderer
 
 	public function render()
 	{
-		$same_address = ($this->billing_address !== null &&
+		if (!$this->visible) {
+			return;
+		}
+
+		$same_address = ($this->address instanceof StoreAddress &&
+			$this->billing_address instanceof StoreAddress &&
 			(($this->billing_address->id === null &&
 				$this->address->id === null &&
 				$this->address === $this->billing_address) ||
@@ -33,6 +38,7 @@ class StoreShippingAddressCellRenderer extends StoreAddressCellRenderer
 			$span_tag->class = 'swat-null-text-cell-renderer';
 			$span_tag->setContent(Store::_('<ship to billing address>'));
 			$span_tag->display();
+			SwatCellRenderer::render();
 		} else {
 			parent::render();
 		}
