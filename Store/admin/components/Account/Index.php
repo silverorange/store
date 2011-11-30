@@ -41,47 +41,13 @@ class StoreAccountIndex extends SiteAccountIndex
 	}
 
 	// }}}
-	// {{{ protected function getTableModel()
+	// {{{ protected function getDetailsStore()
 
-	protected function getTableModel(SwatView $view)
+	protected function getDetailsStore(SiteAccount $account, $row)
 	{
-		$accounts = parent::getTableModel($view);
-
-		$order_count = $this->getOrderCount($accounts);
-
-		$store = new SwatTableStore();
-		foreach ($accounts as $account) {
-			$ds = new SwatDetailsStore($account);
-			$ds->order_count = $order_count[$ds->id];
-			$store->add($ds);
-		}
-
-		return $store;
-	}
-
-	// }}}
-	// {{{ protected function getOrderCount()
-
-	private function getOrderCount(SwatTableStore $accounts)
-	{
-		$count_array = array();
-
-		if (count($accounts) > 0) {
-			// default to zero, some accounts aren't in AccountOrderCountView
-			foreach ($accounts as $account) {
-				$count_array[$account->id] = 0;
-			}
-
-			$account_ids = implode(', ', array_keys($count_array));
-			$sql = sprintf('select account, order_count from
-				AccountOrderCountView where account in (%s)', $account_ids);
-
-			$counts = SwatDB::query($this->app->db, $sql);
-			foreach ($counts as $count)
-				$count_array[$count->account] = $count->order_count;
-		}
-
-		return $count_array;
+		$ds = parent::getDetailsStore($account, $row);
+		$ds->order_count = $row->order_count;
+		return $ds;
 	}
 
 	// }}}
