@@ -36,13 +36,8 @@ class StoreOrderNoteEdit extends AdminDBEdit
 	protected function initInternal()
 	{
 		parent::initInternal();
-
 		$this->account = SiteApplication::initVar('account');
-
 		$this->ui->loadFromXML(dirname(__FILE__).'/note-edit.xml');
-
-		// initialize order object
-		$class_name = SwatDBClassMap::get('StoreOrder');
 		$this->order = $this->getOrder();
 	}
 
@@ -63,15 +58,16 @@ class StoreOrderNoteEdit extends AdminDBEdit
 					$this->id));
 			}
 
-            $instance_id = $this->app->getInstanceId();
-            if ($instance_id !== null) {
-                $order_instance_id = ($this->order->instance === null) ?
-                    null : $this->order->instance->id;
+			$instance_id = $this->app->getInstanceId();
+			if ($instance_id !== null) {
+				$order_instance_id = ($this->order->instance === null) ?
+					null : $this->order->instance->id;
 
-                if ($order_instance_id !== $instance_id)
-                    throw new AdminNotFoundException(sprintf(Store::_(
-                        'Incorrect instance for order “%s”.'), $this->id));
-            }
+				if ($order_instance_id !== $instance_id) {
+					throw new AdminNotFoundException(sprintf(Store::_(
+						'Incorrect instance for order “%s”.'), $this->id));
+				}
+			}
 		}
 
 		return $this->order;
