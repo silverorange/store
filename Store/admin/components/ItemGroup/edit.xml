@@ -12,23 +12,6 @@
 					<property name="maxlength" type="integer">255</property>
 				</widget>
 			</widget>
-			<widget class="SwatFrame">
-				<property name="title" translatable="yes">Items in this Group</property>
-				<widget class="SwatTableView" id="items_view">
-					<object class="SwatTableViewColumn">
-						<property name="title" translatable="yes">Item No.</property>
-						<object class="SwatTextCellRenderer">
-							<property name="text" type="data">sku</property>
-						</object>
-					</object>
-					<object class="SwatTableViewColumn">
-						<property name="title" translatable="yes">Description</property>
-						<object class="SwatTextCellRenderer">
-							<property name="text" type="data">description</property>
-						</object>
-					</object>
-				</widget>
-			</widget>
 			<widget class="SwatFooterFormField">
 				<widget class="SwatButton" id="submit_button" />
 			</widget>

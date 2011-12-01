@@ -143,17 +143,10 @@ class StoreItemGroupEdit extends AdminDBEdit
 		if ($this->category_id === null) {
 			$this->navbar->createEntry($product->title,
 				sprintf('Product/Details?id=%s', $product->id));
-
-			$this->navbar->createEntry($item_group->sku,
-				sprintf('ItemGroup/Details?id=%s', $item_group->id));
 		} else {
 			$this->navbar->createEntry($product->title,
 				sprintf('Product/Details?id=%s&category=%s',
 					$product->id, $this->category_id));
-
-			$this->navbar->createEntry($item_group->sku,
-				sprintf('ItemGroup/Details?id=%s&category=%s',
-					$item_group->id, $this->category_id));
 		}
 
 		$this->navbar->createEntry('Edit Item Group');
