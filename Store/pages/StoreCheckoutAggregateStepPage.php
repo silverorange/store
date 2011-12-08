@@ -6,7 +6,7 @@ require_once 'Store/pages/StoreCheckoutStepPage.php';
  * Base class for a step page of checkout that is composed of other pages.
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
@@ -22,23 +22,23 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 	{
 		parent::__construct($page);
 
-		foreach ($this->instantiateEmbeddedEditPages() as $page)
-			$this->registerEmbeddedEditPage($page);
-
+		foreach ($this->instantiateEmbeddedEditPages() as $key => $page) {
+			$this->registerEmbeddedEditPage($key, $page);
+		}
 	}
 
 	// }}}
-	// {{{ public function registerEmbeddedEditPage()
+	// {{{ protected function registerEmbeddedEditPage()
 
-	public function registerEmbeddedEditPage(SiteAbstractPage $page)
+	protected function registerEmbeddedEditPage($key, SiteAbstractPage $page)
 	{
-		$this->embedded_edit_pages[] = $page;
+		$this->embedded_edit_pages[$key] = $page;
 	}
 
 	// }}}
-	// {{{ public function getEmbeddedEditPages()
+	// {{{ protected function getEmbeddedEditPages()
 
-	public function getEmbeddedEditPages()
+	protected function getEmbeddedEditPages()
 	{
 		return $this->embedded_edit_pages;
 	}
@@ -57,14 +57,17 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 	{
 		parent::initInternal();
 
-		foreach ($this->embedded_edit_pages as $page)
+		foreach ($this->getEmbeddedEditPages() as $page) {
 			$page->source = $this->source;
+		}
 
-		foreach ($this->embedded_edit_pages as $page)
+		foreach ($this->getEmbeddedEditPages() as $page) {
 			$page->setUI($this->ui);
+		}
 
-		foreach ($this->embedded_edit_pages as $page)
+		foreach ($this->getEmbeddedEditPages() as $page) {
 			$page->initCommon();
+		}
 	}
 
 	// }}}
@@ -74,8 +77,7 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 	{
 		parent::loadUI();
 
-		$pages = $this->getEmbeddedEditPages();
-		foreach ($pages as $page) {
+		foreach ($this->getEmbeddedEditPages() as $page) {
 			$container = $this->getContainer($page);
 			$this->ui->loadFromXML($page->getUiXml(), $container);
 		}
@@ -113,8 +115,9 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 		$form = $this->ui->getWidget('form');
 
 		if ($form->isSubmitted()) {
-			foreach ($this->embedded_edit_pages as $page)
+			foreach ($this->getEmbeddedEditPages() as $page) {
 				$page->preProcessCommon();
+			}
 		}
 
 		// skip StoreCheckoutStepPage::process as we don't want to update
@@ -123,11 +126,12 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 		StoreCheckoutPage::process();
 
 		if ($form->isProcessed()) {
-			foreach ($this->embedded_edit_pages as $page)
+			foreach ($this->getEmbeddedEditPages() as $page) {
 				$page->validateCommon();
+			}
 
 			if (!$form->hasMessage()) {
-				foreach ($this->embedded_edit_pages as $page) {
+				foreach ($this->getEmbeddedEditPages() as $page) {
 					try {
 						$page->processCommon();
 					} catch (Exception $e) {
@@ -169,13 +173,15 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 
 	public function build()
 	{
-		foreach ($this->embedded_edit_pages as $page)
+		foreach ($this->getEmbeddedEditPages() as $page) {
 			$page->buildCommon();
+		}
 
 		parent::build();
 
-		foreach ($this->embedded_edit_pages as $page)
+		foreach ($this->getEmbeddedEditPages() as $page) {
 			$page->postBuildCommon();
+		}
 	}
 
 	// }}}
@@ -186,8 +192,10 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 	public function finalize()
 	{
 		parent::finalize();
-		foreach ($this->embedded_edit_pages as $page)
+
+		foreach ($this->getEmbeddedEditPages() as $page) {
 			$page->finalize();
+		}
 	}
 
 	// }}}
