@@ -9,15 +9,11 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * Base class for checkout pages
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreCheckoutPage extends SiteUiPage
 {
-	// {{{ protected properties
-
-
-	// }}}
 	// {{{ public function setUI()
 
 	public function setUI($ui = null)
