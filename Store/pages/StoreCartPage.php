@@ -13,17 +13,12 @@ require_once 'Swat/SwatDetailsStore.php';
  * Shopping cart display page
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCartPage extends SitePage
 {
 	// {{{ protected properties
-
-	/**
-	 * @var string
-	 */
-	protected $ui_xml = 'Store/pages/cart.xml';
 
 	/**
 	 * @var SwatUI
@@ -84,7 +79,7 @@ class StoreCartPage extends SitePage
 			throw new StoreException('Store has no checkout cart.');
 
 		$this->ui = new SwatUI();
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 
 		// set table store for widget validation
 		$available_view = $this->ui->getWidget('available_cart_view');
@@ -114,6 +109,14 @@ class StoreCartPage extends SitePage
 
 	protected function initInternal()
 	{
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return 'Store/pages/cart.xml';
 	}
 
 	// }}}
