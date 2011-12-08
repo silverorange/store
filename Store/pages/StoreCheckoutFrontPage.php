@@ -6,7 +6,7 @@ require_once 'Store/pages/StoreCheckoutPage.php';
  * Front page of checkout
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutFrontPage extends StoreCheckoutPage
@@ -37,6 +37,14 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
 	}
 
 	// }}}
+	// {{{ protected function getNextSource()
+
+	protected function getNextSource()
+	{
+		return 'checkout/first';
+	}
+
+	// }}}
 
 	// init phase
 	// {{{ public function init()
@@ -59,7 +67,7 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
 					$this->app->session->order->invoice = $invoice;
 			}
 
-			$this->app->relocate('checkout/first');
+			$this->relocate();
 		}
 
 		if (intval($this->getArgument('invoice_id')) != 0)
@@ -119,7 +127,7 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
 		$this->resetProgress();
 		$this->updateProgress();
 		$this->app->session->checkout_with_account = $checkout_with_account;
-		$this->app->relocate('checkout/first');
+		$this->relocate();
 	}
 
 	// }}}
@@ -151,7 +159,7 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
 				$this->processForm($login_form, true);
 			} else {
 				$message = new SwatMessage(Store::_('Login Incorrect'),
-					SwatMessage::WARNING);
+					'warning');
 
 				$tips = array(
 					Store::_('Please check the spelling on your email '.
@@ -167,6 +175,14 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
 				$this->ui->getWidget('message_display')->add($message);
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function relocate()
+
+	protected function relocate()
+	{
+		$this->app->relocate($this->getNextSource());
 	}
 
 	// }}}
@@ -202,7 +218,7 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
 		$link = sprintf(Store::_(' %sForgot your password?%s'),
 			'<a href="account/forgotpassword%s">', '</a>');
 
-		if (!$email->hasMessage() && $email != null) {
+		if ((!$email->hasMessage()) && ($email->value != '')) {
 			$link_value = sprintf('?email=%s', urlencode($email->value));
 		} else {
 			$link_value = null;
