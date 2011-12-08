@@ -12,7 +12,7 @@ require_once 'Store/pages/StoreCheckoutShippingTypePage.php';
  * First step of checkout
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2011 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
@@ -32,11 +32,11 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 		$page = new SitePage($this->app, $this->layout);
 
 		$pages = array(
-			new StoreCheckoutBasicInfoPage($page),
-			new StoreCheckoutBillingAddressPage($page),
-			new StoreCheckoutShippingAddressPage($page),
-			new StoreCheckoutPaymentMethodPage($page),
-			new StoreCheckoutShippingTypePage($page),
+			'basic-info'       => new StoreCheckoutBasicInfoPage($page),
+			'billing-address'  => new StoreCheckoutBillingAddressPage($page),
+			'shipping-address' => new StoreCheckoutShippingAddressPage($page),
+			'payment-type'     => new StoreCheckoutPaymentMethodPage($page),
+			'shipping-type'    => new StoreCheckoutShippingTypePage($page),
 		);
 
 		return $pages;
