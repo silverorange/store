@@ -106,6 +106,31 @@ abstract class StoreFroogleGenerator extends StoreProductFileGenerator
 	}
 
 	// }}}
+	// {{{ protected function getProductType()
+
+	protected function getProductType(StoreItem $item)
+	{
+		if ($item->product->primary_category === null) {
+			$product_type = $this->getGoolgeProductCategory($item);
+		} else {
+			$categories  = array();
+			$category_id = $item->product->getInternalValue('primary_category');
+
+			$cats = SwatDB::query($this->db,
+				sprintf('select * from getCategoryNavbar(%s)',
+				$this->db->quote($category_id)));
+
+			foreach ($cats as $cat) {
+				$categories[] = $cat->title;
+			}
+
+			$product_type = implode(' > ', $categories);
+		}
+
+		return $product_type;
+	}
+
+	// }}}
 }
 
 ?>
