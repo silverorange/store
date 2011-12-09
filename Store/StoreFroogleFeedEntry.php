@@ -47,7 +47,6 @@ class StoreFroogleFeedEntry extends AtomFeedEntry
 	public $tax_region = null;
 	public $upc = null;
 
-	public $merchant_category = null;
 	public $google_product_category = null;
 
 	// }}}
@@ -217,12 +216,6 @@ class StoreFroogleFeedEntry extends AtomFeedEntry
 		if ($this->upc !== null) {
 			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
 				'upc', $this->upc, $this->name_space));
-		}
-
-		if ($this->merchant_category !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'merchant_category', $this->merchant_category,
-				$this->custom_name_space));
 		}
 
 		if ($this->google_product_category !== null) {
