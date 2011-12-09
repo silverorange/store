@@ -19,6 +19,7 @@ class StoreFroogleFeedEntry extends AtomFeedEntry
 
 	public $expiration_date;
 	public $price;
+	public $availability;
 
 	public $actor = null;
 	public $apparel_type = null;
@@ -47,6 +48,7 @@ class StoreFroogleFeedEntry extends AtomFeedEntry
 	public $upc = null;
 
 	public $merchant_category = null;
+	public $google_product_category = null;
 
 	// }}}
 	// {{{ private properties
@@ -77,6 +79,9 @@ class StoreFroogleFeedEntry extends AtomFeedEntry
 
 		$entry->appendChild(StoreFroogleFeed::getTextNode($document,
 			'price', $this->price, $this->name_space));
+
+		$entry->appendChild(StoreFroogleFeed::getTextNode($document,
+			'availability', $this->availability, $this->name_space));
 
 		// optional fields (author is handled by StoreFroogleGenerator)
 		if ($this->actor !== null) {
@@ -217,6 +222,12 @@ class StoreFroogleFeedEntry extends AtomFeedEntry
 		if ($this->merchant_category !== null) {
 			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
 				'merchant_category', $this->merchant_category,
+				$this->custom_name_space));
+		}
+
+		if ($this->google_product_category !== null) {
+			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
+				'google_product_category', $this->google_product_category,
 				$this->custom_name_space));
 		}
 

@@ -74,6 +74,38 @@ abstract class StoreFroogleGenerator extends StoreProductFileGenerator
 	abstract protected function getSiteInceptionDate();
 
 	// }}}
+	// {{{ protected function getAvailability()
+
+	protected function getAvailability(StoreItem $item)
+	{
+		$status = $item->getStatus();
+
+		// normalize to Google Merchant Center Product Feed accepted values.
+		// http://support.google.com/merchants/bin/answer.py?hl=en&answer=188494#availability
+		// note that in stock should only be used when shipping takes place
+		// within 3 days. also available, but rarely used by any of our sites:
+		// 'available for order', 'preorder'
+		switch ($status->shortname) {
+		case 'available':
+			$availability = 'in stock';
+			break;
+
+		case 'outofstock':
+			$availability = 'out of stock';
+			break;
+
+		default:
+			throw new SiteException(sprintf(
+				'Froogle availability string missing for status ‘%s’',
+				$status->shortname));
+
+			break;
+		}
+
+		return $availability;
+	}
+
+	// }}}
 }
 
 ?>
