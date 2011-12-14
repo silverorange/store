@@ -313,8 +313,10 @@ abstract class StoreCheckoutCart extends StoreCart
 	 *
 	 * @return double the cost of this cart's contents.
 	 */
-	public function getTotal(StoreAddress $billing_address,
-		StoreAddress $shipping_address, StoreShippingType $shipping_type = null,
+	public function getTotal(
+		StoreAddress $billing_address = null,
+		StoreAddress $shipping_address = null,
+		StoreShippingType $shipping_type = null,
 		StoreOrderPaymentMethodWrapper $payment_methods = null)
 	{
 		if ($this->cachedValueExists('store-total')) {
@@ -464,8 +466,9 @@ abstract class StoreCheckoutCart extends StoreCart
 	 *
 	 * @return double the cost of shipping this order.
 	 */
-	abstract public function getShippingTotal(StoreAddress $billing_address,
-		StoreAddress $shipping_address,
+	abstract public function getShippingTotal(
+		StoreAddress $billing_address = null,
+		StoreAddress $shipping_address = null,
 		StoreShippingType $shipping_type = null);
 
 	// }}}
@@ -488,15 +491,18 @@ abstract class StoreCheckoutCart extends StoreCart
 	 *
 	 * @return double the tax charged for the contents of this cart.
 	 */
-	abstract public function getTaxTotal(StoreAddress $billing_address,
-		StoreAddress $shipping_address, StoreShippingType $shipping_type = null,
+	abstract public function getTaxTotal(
+		StoreAddress $billing_address = null,
+		StoreAddress $shipping_address = null,
+		StoreShippingType $shipping_type = null,
 		StoreOrderPaymentMethodWrapper $payment_methods = null);
 
 	// }}}
 	// {{{ abstract public function getTaxProvState()
 
 	abstract public function getTaxProvState(
-		StoreAddress $billing_address, StoreAddress $shipping_address);
+		StoreAddress $billing_address = null,
+		StoreAddress $shipping_address = null);
 
 	// }}}
 }
