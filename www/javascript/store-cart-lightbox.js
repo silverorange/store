@@ -26,6 +26,7 @@ function StoreCartLightbox(available_entry_count, all_entry_count)
 		new YAHOO.util.CustomEvent('cart_empty', this);
 
 	this.current_delete = 0;
+	this.main_animation = null;
 
 	YAHOO.util.Event.onDOMReady(this.init, this, true);
 }
@@ -167,19 +168,16 @@ StoreCartLightbox.prototype.open = function(is_status_opening)
 	SwatZIndexManager.raiseElement(this.mini_cart);
 
 	if (this.status != 'open' && this.status != 'opening') {
-		YAHOO.util.Dom.setStyle(this.mini_cart, 'opacity', 0);
+		if (this.main_animation) {
+			this.main_animation.stop(false);
+		}
+
+		YAHOO.util.Dom.setStyle(this.mini_cart, 'opacity', 1);
 		this.mini_cart.style.display = 'block';
 		this.position();
 
 		this.content.style.height =
 			this.getContentHeight(this.content.innerHTML) + 'px';
-
-		var animation = new YAHOO.util.Anim(
-			this.mini_cart,
-			{ opacity: { from: 0, to: 1 }},
-			0.3);
-
-		animation.animate();
 
 		if (is_status_opening) {
 			this.status = 'opening';
@@ -393,21 +391,24 @@ StoreCartLightbox.prototype.close = function(e)
 	}
 
 	if (this.status == 'open') {
-		var animation = new YAHOO.util.Anim(
+		if (this.main_animation) {
+			this.main_animation.stop(false);
+		}
+
+		this.main_animation = new YAHOO.util.Anim(
 			this.mini_cart,
-			{ opacity: { to: 0 }},
+			{ opacity: { to: 0 } },
 			0.3);
 
-		var that = this;
-		animation.onComplete.subscribe(function() {
-			if (that.status == 'closing') {
-				that.mini_cart.style.display = 'none';
-				that.status = 'closed';
+		this.main_animation.onComplete.subscribe(function() {
+			if (this.status == 'closing') {
+				this.mini_cart.style.display = 'none';
+				this.status = 'closed';
 			}
-		});
+		}, this, true);
 
 		this.status = 'closing';
-		animation.animate();
+		this.main_animation.animate();
 	}
 }
 
