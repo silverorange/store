@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreProductImageWrapper.php';
 
 /**
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2012 silverorange
  */
 class StoreCategoryPage extends StorePage
 {
@@ -18,6 +18,7 @@ class StoreCategoryPage extends StorePage
 
 	protected $category;
 	protected $products;
+	protected $out_of_stock_products;
 
 	// }}}
 
@@ -143,6 +144,7 @@ class StoreCategoryPage extends StorePage
 		if ($this->isTwigPage()) {
 			$this->displayFeaturedProducts($this->category);
 			$this->displayTwigPage();
+			$this->displayOutOfStockProductsAsTwig();
 		} else {
 			$this->displayRelatedContent($this->category);
 			$this->displayFeaturedProducts($this->category);
@@ -246,10 +248,14 @@ class StoreCategoryPage extends StorePage
 		echo '<ul class="store-product-list">';
 
 		foreach ($products as $product) {
-			echo '<li class="store-product-icon">';
-			$link = $path.'/'.$product->shortname;
-			$product->displayAsIcon($link);
-			echo '</li>';
+			if ($this->isTwigPage() && !$product->isAvailableInRegion()) {
+				$this->out_of_stock_products[] = $product;
+			} else {
+				echo '<li class="store-product-icon">';
+				$link = $path.'/'.$product->shortname;
+				$product->displayAsIcon($link);
+				echo '</li>';
+			}
 		}
 
 		echo '</ul>';
@@ -356,16 +362,55 @@ class StoreCategoryPage extends StorePage
 			$li_tag->class = 'store-product-text';
 
 			foreach ($products as $product) {
-				$li_tag->open();
-				$path = $this->app->config->store->path.$product->path;
-				$product->displayAsText($path);
-				$li_tag->close();
-				echo ' ';
+				if ($this->isTwigPage() && !$product->isAvailableInRegion()) {
+					$this->out_of_stock_products[] = $product;
+				} else {
+					$li_tag->open();
+					$path = $this->app->config->store->path.$product->path;
+					$product->displayAsText($path);
+					$li_tag->close();
+					echo ' ';
+				}
 			}
 
 			$ul_tag->close();
 			echo '<div class="clear"></div>';
 			$div->close();
+		}
+	}
+
+	// }}}
+	// {{{ protected function displayOutOfStockProductsAsTwig()
+
+	protected function displayOutOfStockProductsAsTwig()
+	{
+		if (count($this->out_of_stock_products) > 0) {
+			$twig_category_div = new SwatHtmlTag('div');
+			$twig_category_div->class = 'category-twig';
+			$twig_category_div->open();
+
+			$title_header = new SwatHtmlTag('h3');
+			$title_header->id = 'out-of-stock-twig';
+			$title_header->class = 'category-twig-subtitle';
+			$title_span   = new SwatHtmlTag('span');
+			$title_span->setContent(Store::_('Currently Out of Stock'));
+
+			$title_header->open();
+			$title_span->display();
+			$title_header->close();
+
+			echo '<ul class="store-product-list">';
+
+			foreach ($this->out_of_stock_products as $product) {
+				echo '<li class="store-product-icon">';
+				$path = $this->app->config->store->path.$product->path;
+				$product->displayAsIcon($path);
+				echo '</li>';
+			}
+
+			echo '</ul>';
+
+			$twig_category_div->close();
 		}
 	}
 
