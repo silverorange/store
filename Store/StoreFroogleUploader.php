@@ -24,7 +24,7 @@ abstract class StoreFroogleUploader extends StoreProductFileFtpUploader
 
 	protected function getFilename()
 	{
-		return $this->app->config->froogle->filename;
+		return $this->config->froogle->filename;
 	}
 
 	// }}}
@@ -32,7 +32,7 @@ abstract class StoreFroogleUploader extends StoreProductFileFtpUploader
 
 	protected function getFtpServer()
 	{
-		return $this->app->config->froogle->server;
+		return $this->config->froogle->server;
 	}
 
 	// }}}
@@ -40,7 +40,7 @@ abstract class StoreFroogleUploader extends StoreProductFileFtpUploader
 
 	protected function getFtpUsername()
 	{
-		return $this->app->config->froogle->username;
+		return $this->config->froogle->username;
 	}
 
 	// }}}
@@ -48,7 +48,7 @@ abstract class StoreFroogleUploader extends StoreProductFileFtpUploader
 
 	protected function getFtpPassword()
 	{
-		return $this->app->config->froogle->password;
+		return $this->config->froogle->password;
 	}
 
 	// }}}
