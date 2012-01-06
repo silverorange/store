@@ -8,7 +8,7 @@ require_once 'Store/StoreFroogleFeedEntry.php';
 
 /**
  * @package   Store
- * @copyright 2008-2011 silverorange
+ * @copyright 2008-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreFroogleGenerator extends StoreProductFileGenerator
@@ -33,12 +33,14 @@ abstract class StoreFroogleGenerator extends StoreProductFileGenerator
 		$feed = new StoreFroogleFeed();
 
 		$feed->title = sprintf(Store::_('%s Products'),
-			$this->config->site->title);
+			$this->app->config->site->title);
 
-		$feed->addAuthor(new AtomFeedAuthor($this->config->site->title));
+		// TODO: These appear to be depreciated. Sort it out. As well the sample
+		// has a updated date node here.
+		$feed->addAuthor(new AtomFeedAuthor($this->app->config->site->title));
 		$feed->link = new AtomFeedLink($this->getBaseHref(), 'self');
 		$feed->id = sprintf('tag:%s,%s:/products/',
-			substr($this->config->uri->absolute_base, 7), // get domain
+			substr($this->app->config->uri->absolute_base, 7), // get domain
 			$this->getSiteInceptionDate());
 
 		return $feed;
@@ -116,9 +118,9 @@ abstract class StoreFroogleGenerator extends StoreProductFileGenerator
 			$categories  = array();
 			$category_id = $item->product->getInternalValue('primary_category');
 
-			$cats = SwatDB::query($this->db,
+			$cats = SwatDB::query($this->app->db,
 				sprintf('select * from getCategoryNavbar(%s)',
-				$this->db->quote($category_id)));
+				$this->app->db->quote($category_id)));
 
 			foreach ($cats as $cat) {
 				$categories[] = $cat->title;
