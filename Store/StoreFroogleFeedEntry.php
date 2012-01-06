@@ -4,11 +4,12 @@ require_once 'AtomFeed/AtomFeedEntry.php';
 require_once 'Store/StoreFroogleFeed.php';
 
 /**
- * Froogle feed entry
+ * Google Merchant Center Product Feed Entry (formally known as Froogle)
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ * @link      http://support.google.com/merchants/bin/answer.py?hl=en&answer=188494#US
  */
 class StoreFroogleFeedEntry extends AtomFeedEntry
 {
@@ -17,42 +18,61 @@ class StoreFroogleFeedEntry extends AtomFeedEntry
 	public $name_space = 'g';
 	public $custom_name_space = 'c';
 
-	public $expiration_date;
-	public $price;
+	// {{{ required attributes
+
+	/* id, title and link are required and handled in the parent class.
+	 * image_link is also required and handled by
+	 * {@link StoreFroogleFeedEntry::addImageLink()}.
+	 * TODO: Tax and shipping are also required and require nested attributes.
+	 */
+	public $description;
+	public $google_product_category;
+	public $condition;
 	public $availability;
+	public $price;
 
-	public $actor = null;
-	public $apparel_type = null;
-	public $artist = null;
+	// two of three of these Unique Product Identifiers are required, if
+	// possible all 3 are recommended.
 	public $brand = null;
-	public $color = null;
-	public $condition = null;
-	public $delivery_notes = null;
-	public $delivery_radius = null;
-	public $format = null;
-	public $image_link = null;
-	public $isbn = null;
-	public $manufacturer = null;
-	public $manufacturer_id = null;
-	public $megapixels = null;
-	public $memory = null;
-	public $model_number = null;
-	public $payment_notes = null;
-	public $pickup = null;
-	public $price_type = null;
-	public $processor_speed = null;
-	public $product_type = null;
-	public $size = null;
-	public $tax_percent = null;
-	public $tax_region = null;
-	public $upc = null;
+	public $gtin = null;
+	public $mpn = null;
 
-	public $google_product_category = null;
+	// }}}
+	// {{{ strongly recommended attributes
+
+	public $product_type = null;
+
+	// }}}
+	// {{{ optional attributes
+
+	public $sale_price = null;
+	public $sale_price_effective_date = null;
+	public $color = null;
+	public $size = null;
+	public $shipping_weight = null;
+	public $online_only = null;
+	public $expiration_date = null;
+
+	// }}}
+	// {{{ category specific attributes
+
+	// apparel
+	// size and colour are required for apparel
+	public $gender = null;
+	public $age_group = null;
+
+	// variant fields
+	// size and color are also used as part of variants.
+	public $item_group_id = null;
+	public $material = null;
+	public $pattern = null;
 
 	// }}}
 	// {{{ private properties
 
 	private $image_links = array();
+
+	// TODO: these appear to be no longer used. Verify it.
 	private $payments_accepted = array();
 	private $shipping_types = array();
 
@@ -66,41 +86,73 @@ class StoreFroogleFeedEntry extends AtomFeedEntry
 	{
 		$entry = parent::getNode($document);
 
-		//required fields (id and title are handled in the parent class)
+		$entry->appendChild(StoreFroogleFeed::getCDATANode($document,
+			'description', $this->description, $this->name_space));
 
-		$entry->appendChild(StoreFroogleFeed::getDateNode($document,
-			'expiration_date', $this->expiration_date, $this->name_space));
-
+		// required fields (id, title, description and link are handled in the
+		// parent class)
+		$count = 0;
 		foreach ($this->image_links as $image_link) {
+			// only the first image should be passed as image_link.
+			if ($count == 0) {
+				$attribute_title = 'image_link';
+			} else {
+				$attribute_title = 'additional_image_link';
+			}
+
 			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'image_link', $image_link, $this->name_space));
+				$attribute_title, $image_link, $this->name_space));
+
+			$count++;
 		}
 
 		$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-			'price', $this->price, $this->name_space));
+			'google_product_category', $this->google_product_category,
+			$this->name_space));
+
+		$entry->appendChild(StoreFroogleFeed::getTextNode($document,
+			'condition', $this->condition, $this->name_space));
 
 		$entry->appendChild(StoreFroogleFeed::getTextNode($document,
 			'availability', $this->availability, $this->name_space));
 
-		// optional fields (author is handled by StoreFroogleGenerator)
-		if ($this->actor !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'actor', $this->actor, $this->name_space));
-		}
+		$entry->appendChild(StoreFroogleFeed::getTextNode($document,
+			'price', $this->price, $this->name_space));
 
-		if ($this->apparel_type !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'apparel_type', $this->apparel_type, $this->name_space));
-		}
-
-		if ($this->artist !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'artist', $this->artist, $this->name_space));
-		}
-
+		// Unique Product identifiers, two out of three required.
 		if ($this->brand !== null) {
 			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
 				'brand', $this->brand, $this->name_space));
+		}
+
+		if ($this->gtin !== null) {
+			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
+				'gtin', $this->gtin, $this->name_space));
+		}
+
+		if ($this->mpn !== null) {
+			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
+				'mpn', $this->mpn, $this->name_space));
+		}
+
+		// strongly recommended.
+		if ($this->product_type !== null) {
+			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
+				'product_type', $this->product_type, $this->name_space));
+		}
+
+		// optional fields
+		if ($this->sale_price !== null) {
+			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
+				'sale_price', $this->price, $this->name_space));
+		}
+
+		// TODO: this is really a two part date field, handle it in a more
+		// intelligent way. Also, how do we handle sales with an unknown end
+		// date?
+		if ($this->sale_price_effective_date !== null) {
+			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
+				'sale_price_effective_date', $this->price, $this->name_space));
 		}
 
 		if ($this->color !== null) {
@@ -108,120 +160,60 @@ class StoreFroogleFeedEntry extends AtomFeedEntry
 				'color', $this->color, $this->name_space));
 		}
 
-		if ($this->condition !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'condition', $this->condition, $this->name_space));
-		}
-
-		if ($this->delivery_notes !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'delivery_notes', $this->delivery_notes, $this->name_space));
-		}
-
-		if ($this->delivery_radius !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'delivery_radius', $this->delivery_radius, $this->name_space));
-		}
-
-		if ($this->format !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'format', $this->format, $this->name_space));
-		}
-
-		if ($this->isbn !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'isbn', $this->isbn, $this->name_space));
-		}
-
-		if ($this->image_link !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'image_link', $this->image_link, $this->name_space));
-		}
-
-		if ($this->manufacturer !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'manufacturer', $this->manufacturer, $this->name_space));
-		}
-
-		if ($this->manufacturer_id !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'manufacturer_id', $this->manufacturer_id, $this->name_space));
-		}
-
-		if ($this->megapixels !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'megapixels', $this->megapixels, $this->name_space));
-		}
-
-		if ($this->memory !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'memory', $this->memory, $this->name_space));
-		}
-
-		if ($this->model_number !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'model_number', $this->model_number, $this->name_space));
-		}
-
-		foreach ($this->payments_accepted as $payment_accepted) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'payment_accepted', $payment_accepted, $this->name_space));
-		}
-
-		if ($this->payment_notes !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'payment_notes', $this->payment_notes, $this->name_space));
-		}
-
-		if ($this->pickup !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'pickup', $this->pickup, $this->name_space));
-		}
-
-		if ($this->price_type !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'price_type', $this->price_type, $this->name_space));
-		}
-
-		if ($this->processor_speed !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'processor_speed', $this->processor_speed, $this->name_space));
-		}
-
-		if ($this->product_type !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'product_type', $this->product_type, $this->name_space));
-		}
-
-		foreach ($this->shipping_types as $shipping_type) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'shipping_type', $shipping_type, $this->name_space));
-		}
-
 		if ($this->size !== null) {
 			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
 				'size', $this->size, $this->name_space));
 		}
 
-		if ($this->tax_percent !== null) {
+		if ($this->shipping_weight !== null) {
 			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'tax_percent', $this->tax_percent, $this->name_space));
+				'shipping_weight', $this->shipping_weight, $this->name_space));
 		}
 
-		if ($this->tax_region !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'tax_region', $this->tax_region, $this->name_space));
+		if ($this->online_only !== null) {
+			$entry->appendChild(StoreFroogleFeed::getBooleanNode($document,
+				'online_only', $this->online_only, $this->name_space));
 		}
 
-		if ($this->upc !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'upc', $this->upc, $this->name_space));
+		if ($this->expiration_date !== null) {
+			$entry->appendChild(StoreFroogleFeed::getDateNode($document,
+				'expiration_date', $this->expiration_date, $this->name_space));
 		}
 
-		if ($this->google_product_category !== null) {
+		if ($this->gender !== null) {
 			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'google_product_category', $this->google_product_category,
-				$this->custom_name_space));
+				'gender', $this->gender, $this->name_space));
+		}
+
+		if ($this->age_group !== null) {
+			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
+				'age_group', $this->age_group, $this->name_space));
+		}
+
+		if ($this->item_group_id !== null) {
+			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
+				'item_group_id', $this->age_group, $this->name_space));
+		}
+
+		if ($this->material !== null) {
+			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
+				'material', $this->age_group, $this->name_space));
+		}
+
+		if ($this->pattern !== null) {
+			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
+				'pattern', $this->age_group, $this->name_space));
+		}
+
+		// deprecated, need to confirm.
+		foreach ($this->payments_accepted as $payment_accepted) {
+			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
+				'payment_accepted', $payment_accepted, $this->name_space));
+		}
+
+		foreach ($this->shipping_types as $shipping_type) {
+			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
+				'shipping_type', $shipping_type, $this->name_space));
 		}
 
 		return $entry;
