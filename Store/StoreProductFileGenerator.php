@@ -19,14 +19,9 @@ abstract class StoreProductFileGenerator extends SwatObject
 	// {{{ protected properties
 
 	/**
-	 * @var MDB2_Driver_Common
+	 * @var SiteApplication
 	 */
-	protected $db;
-
-	/**
-	 * @var SiteConfigModule
-	 */
-	protected $config;
+	protected $app;
 
 	/**
 	 * @var StoreRegion
@@ -42,14 +37,12 @@ abstract class StoreProductFileGenerator extends SwatObject
 	 * @param MDB2_Driver_Common $db
 	 * @param SiteConfigModule $config
 	 */
-	public function __construct(MDB2_Driver_Common $db,
-		SiteConfigModule $config)
+	public function __construct(SiteApplication $app)
 	{
-		$this->db     = $db;
-		$this->config = $config;
+		$this->app = $app;
 
-		if ($this->config->uri->cdn_base != '') {
-			SiteImage::$cdn_base = $this->config->uri->cdn_base;
+		if ($this->app->config->uri->cdn_base != '') {
+			SiteImage::$cdn_base = $this->app->config->uri->cdn_base;
 		}
 
 		$this->region = $this->loadRegion();
@@ -62,7 +55,7 @@ abstract class StoreProductFileGenerator extends SwatObject
 	{
 		$class_name = SwatDBClassMap::get('StoreRegion');
 		$region = new $class_name();
-		$region->setDatabase($this->db);
+		$region->setDatabase($this->app->db);
 
 		// Note: this depends on us naming our contants the same on all sites.
 		// if we ever don't, subclass this method. Also, we currently don't
@@ -85,7 +78,7 @@ abstract class StoreProductFileGenerator extends SwatObject
 
 	protected function getBaseHref()
 	{
-		return $this->config->uri->absolute_base;
+		return $this->app->config->uri->absolute_base;
 	}
 
 	// }}}
