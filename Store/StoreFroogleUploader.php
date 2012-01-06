@@ -16,7 +16,7 @@ abstract class StoreFroogleUploader extends StoreProductFileFtpUploader
 
 	protected function getGenerator()
 	{
-		return new StoreFroogleGenerator($this->db, $this->config);
+		return new StoreFroogleGenerator($this);
 	}
 
 	// }}}
