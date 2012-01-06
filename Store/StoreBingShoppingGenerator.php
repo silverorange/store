@@ -4,7 +4,7 @@ require_once 'Store/StoreProductFileGenerator.php';
 
 /**
  * @package   Store
- * @copyright 2011 silverorange
+ * @copyright 2011-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreBingShoppingGenerator extends StoreProductFileGenerator
@@ -140,8 +140,12 @@ abstract class StoreBingShoppingGenerator extends StoreProductFileGenerator
 		// ID needs to be distinct per row, so we can't use product.id, and
 		// item.id could change over time.
 		$id = $item->sku;
+
+		// this is unnecessary - double check.
+		/*
 		if ($item->part_count > 1)
 			$id.= '_part'.$item->part_count;
+		*/
 
 		return $id;
 	}
