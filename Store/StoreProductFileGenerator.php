@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreRegion.php';
 
 /**
  * @package   Store
- * @copyright 2011 silverorange
+ * @copyright 2011-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreProductFileGenerator extends SwatObject
@@ -34,8 +34,7 @@ abstract class StoreProductFileGenerator extends SwatObject
 	/**
 	 * Creates a new product file generator
 	 *
-	 * @param MDB2_Driver_Common $db
-	 * @param SiteConfigModule $config
+	 * @param SiteApplication $app
 	 */
 	public function __construct(SiteApplication $app)
 	{
