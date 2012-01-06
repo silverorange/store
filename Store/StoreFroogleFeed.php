@@ -7,7 +7,7 @@ require_once 'Store/StoreFroogleFeedEntry.php';
  * A class for constructing Froogle Atom feeds
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreFroogleFeed extends AtomFeed
@@ -34,6 +34,21 @@ class StoreFroogleFeed extends AtomFeed
 	{
 		// value must be text-only
 		$value = strip_tags($value);
+
+		return parent::getTextNode($document, $name, $value, $name_space);
+	}
+
+	// }}}
+	// {{{ public static function getBooleanNode()
+
+	/**
+	 * Get text node
+	 */
+	public static function getBooleanNode($document, $name, $value,
+		$name_space = null)
+	{
+		// set the value to the boolean values google expects.
+		$value = ($value === true) ? 'y' : 'n';
 
 		return parent::getTextNode($document, $name, $value, $name_space);
 	}
