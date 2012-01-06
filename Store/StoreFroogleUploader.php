@@ -7,7 +7,7 @@ require_once 'Store/StoreFroogleGenerator.php';
  * Application to upload Froogle files to Google
  *
  * @package   Store
- * @copyright 2008-2011 silverorange
+ * @copyright 2008-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreFroogleUploader extends StoreProductFileFtpUploader
@@ -24,7 +24,7 @@ abstract class StoreFroogleUploader extends StoreProductFileFtpUploader
 
 	protected function getFilename()
 	{
-		return $this->config->froogle->filename;
+		return $this->app->config->froogle->filename;
 	}
 
 	// }}}
@@ -32,7 +32,7 @@ abstract class StoreFroogleUploader extends StoreProductFileFtpUploader
 
 	protected function getFtpServer()
 	{
-		return $this->config->froogle->server;
+		return $this->app->config->froogle->server;
 	}
 
 	// }}}
@@ -40,7 +40,7 @@ abstract class StoreFroogleUploader extends StoreProductFileFtpUploader
 
 	protected function getFtpUsername()
 	{
-		return $this->config->froogle->username;
+		return $this->app->config->froogle->username;
 	}
 
 	// }}}
@@ -48,7 +48,7 @@ abstract class StoreFroogleUploader extends StoreProductFileFtpUploader
 
 	protected function getFtpPassword()
 	{
-		return $this->config->froogle->password;
+		return $this->app->config->froogle->password;
 	}
 
 	// }}}
