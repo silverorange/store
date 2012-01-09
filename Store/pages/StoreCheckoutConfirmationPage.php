@@ -31,7 +31,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	// }}}
 
 	// init phase
-	// {{{ protected function init()
+	// {{{ protected function initInternal()
 
 	protected function initInternal()
 	{
