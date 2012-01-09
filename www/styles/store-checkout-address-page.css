@@ -5,6 +5,10 @@
 	border: 0;
 	padding: 0;
 	margin: 1em;
+	/* Set a solid background color to make new address disclosure not */
+	/* have Cleartype issues in Windows XP. Background must be overridden */
+	/* On sites without a white background. */
+	background: #fff;
 }
 
 .checkout-no-column .swat-entry,
