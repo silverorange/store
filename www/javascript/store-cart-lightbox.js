@@ -86,7 +86,7 @@ StoreCartLightbox.prototype.init = function()
 	YAHOO.util.Event.on(window, 'resize', this.handleWindowChange, this, true);
 
 	var that = this;
-	var esc_close = new YAHOO.util.KeyListener(document, {keys:[27]},
+	var esc_close = new YAHOO.util.KeyListener(document, { keys: [27] },
 		function() {
 			that.close();
 			that.recordAnalytics('xml-rpc/mini-cart/close/esc');
@@ -171,6 +171,8 @@ StoreCartLightbox.prototype.open = function(is_status_opening)
 		if (this.main_animation) {
 			this.main_animation.stop(false);
 		}
+
+		this.swapOutVideos();
 
 		YAHOO.util.Dom.setStyle(this.mini_cart, 'opacity', 1);
 		this.mini_cart.style.display = 'block';
@@ -395,6 +397,8 @@ StoreCartLightbox.prototype.close = function(e)
 			this.main_animation.stop(false);
 		}
 
+		this.swapInVideos();
+
 		this.main_animation = new YAHOO.util.Anim(
 			this.mini_cart,
 			{ opacity: { to: 0 } },
@@ -607,4 +611,51 @@ StoreCartLightbox.prototype.preLoadImages = function()
 }
 
 // }}}
+// {{{ StoreCartLightbox.prototype.swapInVideos
 
+/**
+ * Mobile Safai z-index workaround
+ *
+ * Without this, elements with higher z-index are not clickable over HTML5
+ * videos.
+ */
+StoreCartLightbox.prototype.swapInVideos = function()
+{
+	if (!this.video_shims) {
+		return;
+	}
+
+	for (var i = 0; i < this.video_shims.length; i++) {
+		this.video_shims[i]._video.style.display = 'inline';
+		this.video_shims[i].parentNode.removeChild(this.video_shims[i]);
+	}
+
+	this.video_shims = null;
+}
+
+// }}}
+// {{{ StoreCartLightbox.prototype.swapOutVideos
+
+StoreCartLightbox.prototype.swapOutVideos = function()
+{
+	if (this.video_shims) {
+		this.swapInVideos();
+	}
+
+	this.video_shims = [];
+
+	var videos = document.getElementsByTagName('video');
+	var image;
+	for (var i = 0; i < videos.length; i++) {
+		image = document.createElement('img');
+		image.src = videos[i].poster;
+		image.width = videos[i].width;
+		image.height = videos[i].height;
+		image._video = videos[i];
+		videos[i].parentNode.insertBefore(image, videos[i]);
+		videos[i].style.display = 'none';
+		this.video_shims.push(image)
+	}
+}
+
+// }}}
