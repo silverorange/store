@@ -10,13 +10,12 @@ require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/StoreItemStatusList.php';
 require_once 'Store/dataobjects/StoreItem.php';
 require_once 'Store/dataobjects/StoreRegionWrapper.php';
-require_once 'NateGoSearch/NateGoSearch.php';
 
 /**
  * Edit page for Items
  *
  * @package   Store
- * @copyright 2005-2011 silverorange
+ * @copyright 2005-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemEdit extends AdminDBEdit
@@ -265,10 +264,17 @@ class StoreItemEdit extends AdminDBEdit
 
 	protected function addToSearchQueue()
 	{
+		$manager = $this->app->db->manager;
+		if (!in_array('nategosearchqueue', $manager->listTables())) {
+			return;
+		}
+
+		require_once 'NateGoSearch/NateGoSearch.php';
 		$type = NateGoSearch::getDocumentType($this->app->db, 'product');
 
-		if ($type === null)
+		if ($type === null) {
 			return;
+		}
 
 		$sql = sprintf('delete from NateGoSearchQueue
 			where document_id = %s and document_type = %s',

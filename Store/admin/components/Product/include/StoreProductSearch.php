@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Site/SiteNateGoFulltextSearchEngine.php';
-require_once 'NateGoSearch/NateGoSearch.php';
 require_once 'Swat/SwatUI.php';
 
 /**
@@ -56,17 +54,22 @@ class StoreProductSearch
 		$this->ui = $ui;
 		$this->db = $db;
 
-		$keywords = $ui->getWidget('search_keywords')->value;
-		$type = NateGoSearch::getDocumentType($this->db,
-			$this->getSearchType());
+		$manager = $this->app->db->manager;
+		if (in_array('nategosearchqueue', $manager->listTables())) {
+			require_once 'NateGoSearch/NateGoSearch.php';
+			require_once 'Site/SiteNateGoFulltextSearchEngine.php';
+			$type = NateGoSearch::getDocumentType($this->db,
+				$this->getSearchType());
 
-		if (trim($keywords) != '' && $type !== null) {
-			$fulltext_engine = new SiteNateGoFulltextSearchEngine($this->db);
-			$fulltext_engine->setTypes(array(
-				$this->getSearchType(),
-			));
+			$keywords = $ui->getWidget('search_keywords')->value;
+			if (trim($keywords) != '' && $type !== null) {
+				$fulltext_engine = new SiteNateGoFulltextSearchEngine($this->db);
+				$fulltext_engine->setTypes(array(
+					$this->getSearchType(),
+				));
 
-			$this->fulltext_result = $fulltext_engine->search($keywords);
+				$this->fulltext_result = $fulltext_engine->search($keywords);
+			}
 		}
 
 		$this->buildJoinClause();
