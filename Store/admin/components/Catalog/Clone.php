@@ -3,15 +3,13 @@
 require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'Admin/exceptions/AdminNoAccessException.php';
-require_once 'NateGoSearch/NateGoSearch.php';
-
 require_once 'include/StoreCatalogStatusCellRenderer.php';
 
 /**
  * Clone tool for catalogs
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCatalogClone extends AdminDBEdit
@@ -74,6 +72,12 @@ class StoreCatalogClone extends AdminDBEdit
 
 	protected function addToSearchQueue($catalog_id)
 	{
+		$manager = $this->app->db->manager;
+		if (!in_array('nategosearchqueue', $manager->listTables())) {
+			return;
+		}
+
+		require_once 'NateGoSearch/NateGoSearch.php';
 		$type = NateGoSearch::getDocumentType($this->app->db, 'product');
 
 		if ($type === null)

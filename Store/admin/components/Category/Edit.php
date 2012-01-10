@@ -3,7 +3,6 @@
 require_once 'Admin/pages/AdminDBEdit.php';
 require_once 'Admin/exceptions/AdminNotFoundException.php';
 require_once 'Store/dataobjects/StoreCategory.php';
-require_once 'NateGoSearch/NateGoSearch.php';
 require_once 'Swat/SwatDate.php';
 require_once 'SwatDB/SwatDB.php';
 
@@ -11,7 +10,7 @@ require_once 'SwatDB/SwatDB.php';
  * Edit page for Categories
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCategoryEdit extends AdminDBEdit
@@ -155,10 +154,17 @@ class StoreCategoryEdit extends AdminDBEdit
 
 	protected function addToSearchQueue()
 	{
+		$manager = $this->app->db->manager;
+		if (!in_array('nategosearchqueue', $manager->listTables())) {
+			return;
+		}
+
+		require_once 'NateGoSearch/NateGoSearch.php';
 		$type = NateGoSearch::getDocumentType($this->app->db, 'category');
 
-		if ($type === null)
+		if ($type === null) {
 			return;
+		}
 
 		$sql = sprintf('delete from NateGoSearchQueue
 			where document_id = %s and document_type = %s',
