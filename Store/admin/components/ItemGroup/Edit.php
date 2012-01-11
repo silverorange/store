@@ -20,10 +20,7 @@ class StoreItemGroupEdit extends AdminDBEdit
 
 	protected $item_group;
 
-	// }}}
-	// {{{ private properties
-
-	private $category_id;
+	protected $category_id;
 
 	// }}}
 
