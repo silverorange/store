@@ -96,6 +96,22 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 	// }}}
 
 	// process phase
+	// {{{ public function process()
+
+	public function process()
+	{
+		// if we've loaded this page by mistake, with either a reload or a
+		// direct link, then relocate back to our default location. This has to
+		// exist in after init() because it is used as a replacePage as the
+		// values don't exist until after the page is inited.
+		if ($this->attributes == null || $this->action == null) {
+			$this->relocate();
+		}
+
+		parent::process();
+	}
+
+	// }}}
 	// {{{ protected function processDBData()
 
 	protected function processDBData()
