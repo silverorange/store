@@ -9,7 +9,7 @@ require_once 'Swat/SwatUI.php';
  * class keeps the SQL where clause for the interface in the one place.
  *
  * @package   Store
- * @copyright 2006-2010 silverorange
+ * @copyright 2006-2012 silverorange
  * @see       Store/admin/components/Product/search.xml
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
@@ -54,7 +54,7 @@ class StoreProductSearch
 		$this->ui = $ui;
 		$this->db = $db;
 
-		$manager = $this->app->db->manager;
+		$manager = $db->manager;
 		if (in_array('nategosearchqueue', $manager->listTables())) {
 			require_once 'NateGoSearch/NateGoSearch.php';
 			require_once 'Site/SiteNateGoFulltextSearchEngine.php';
