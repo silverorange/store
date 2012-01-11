@@ -204,11 +204,9 @@ class StoreItemEdit extends AdminDBEdit
 
 	protected function validate()
 	{
-		$sql = sprintf('select catalog from Item
-				inner join Product on Item.product = Product.id
-				where Item.id %s %s',
-			SwatDB::equalityOperator($this->id),
-			$this->app->db->quote($this->id, 'integer'));
+		$sql = sprintf(
+			'select catalog from Product where id = %s',
+			$this->app->db->quote($this->product, 'integer'));
 
 		$catalog = SwatDB::queryOne($this->app->db, $sql);
 
@@ -414,7 +412,7 @@ class StoreItemEdit extends AdminDBEdit
 		$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));
 		$this->title = $product_title;
 
-		if ($this->id === null)
+		if ($this->item->id === null)
 			$this->navbar->addEntry(new SwatNavBarEntry(Store::_('New Item')));
 		else
 			$this->navbar->addEntry(new SwatNavBarEntry(Store::_('Edit Item')));
@@ -460,7 +458,7 @@ class StoreItemEdit extends AdminDBEdit
 
 	protected function loadRegionBindings()
 	{
-		if ($this->id !== null) {
+		if ($this->item->id !== null) {
 			$price_replicator = $this->ui->getWidget('price_replicator');
 
 			// set all enabled to false on edits, as each region will set its
