@@ -255,6 +255,25 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 	}
 
 	// }}}
+	// {{{ protected function searchFulltext()
+
+	protected function searchFulltext()
+	{
+		$fulltext_result = parent::searchFulltext();
+
+		if ($fulltext_result instanceof SiteNateGoFulltextSearchResult) {
+			$dsn = MDB2::parseDSN($this->app->config->database->dsn);
+			if ($dsn['phptype'] == 'pgsql') {
+				// manually analyze the 'nategosearchresult' table. This can
+				// drastically improve the performance of the next query
+				SwatDB::exec($this->app->db, 'analyze NateGoSearchResult');
+			}
+		}
+
+		return $fulltext_result;
+	}
+
+	// }}}
 
 	// build phase - articles
 	// {{{ protected function instantiateArticleSearchEngine()
