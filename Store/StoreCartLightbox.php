@@ -9,7 +9,7 @@ require_once 'XML/RPCAjax.php';
  * Control to display a lightbox driven cart on the page
  *
  * @package   Store
- * @copyright 2010-2011 silverorange
+ * @copyright 2010-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCartLightbox extends SwatControl
@@ -53,9 +53,20 @@ class StoreCartLightbox extends SwatControl
 	// }}}
 	// {{{ protected properties
 
+	/**
+	 * @var SiteApplication
+	 */
 	protected $app;
+
+	/**
+	 * @var SwatUI
+	 */
 	protected $ui;
-	protected $ui_xml = 'Store/cart-lightbox.xml';
+
+	/**
+	 * @var boolean
+	 */
+	protected $is_cached = null;
 
 	// }}}
 	// {{{ public function __construct()
@@ -74,15 +85,6 @@ class StoreCartLightbox extends SwatControl
 		$this->html_head_entry_set->addEntrySet(
 			XML_RPCAjax::getHtmlHeadEntrySet());
 
-		$this->addJavaScript('packages/swat/javascript/swat-view.js',
-			Swat::PACKAGE_ID);
-
-		$this->addJavaScript('packages/swat/javascript/swat-table-view.js',
-			Swat::PACKAGE_ID);
-
-		$this->addStyleSheet('packages/swat/styles/swat-table-view.css',
-			Swat::PACKAGE_ID);
-
 		$this->addJavascript('packages/store/javascript/store-cart-lightbox.js',
 			Store::PACKAGE_ID);
 
@@ -98,10 +100,24 @@ class StoreCartLightbox extends SwatControl
 	}
 
 	// }}}
+	// {{{ public function init()
+
+	public function init()
+	{
+		$this->confirmCompositeWidgets();
+		$this->initCartUI();
+		parent::init();
+	}
+
+	// }}}
 	// {{{ public function display()
 
 	public function display()
 	{
+		if (!$this->visible) {
+			return;
+		}
+
 		parent::display();
 
 		echo '<div id="store_cart_lightbox" class="swat-hidden">';
@@ -116,6 +132,19 @@ class StoreCartLightbox extends SwatControl
 		echo '</div>';
 
 		Swat::displayInlineJavaScript($this->getInlineJavaScript());
+	}
+
+	// }}}
+	// {{{ public function clearCache()
+
+	public function clearCache()
+	{
+		if (isset($this->app->memcache)) {
+			$this->app->memcache->flushNs($this->app->session->getSessionId());
+		}
+
+		$this->initialized = false;
+		$this->composite_widgets_created = false;
 	}
 
 	// }}}
@@ -176,6 +205,30 @@ class StoreCartLightbox extends SwatControl
 	}
 
 	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return 'Store/cart-lightbox.xml';
+	}
+
+	// }}}
+	// {{{ protected function createCompositeWidgets()
+
+	protected function createCompositeWidgets()
+	{
+		$cart = $this->app->getCacheValue('mini-cart',
+			$this->app->session->getSessionId());
+
+		// if not cached, load the UI XML
+		if ($cart === false) {
+			$this->ui = new SwatUI();
+			$this->ui->loadFromXml($this->getUiXml());
+			$this->addCompositeWidget($this->ui->getRoot(), 'ui');
+		}
+	}
+
+	// }}}
 
 	// cart content display methods
 	// {{{ public function displayContent()
@@ -187,6 +240,12 @@ class StoreCartLightbox extends SwatControl
 	 */
 	public function displayContent()
 	{
+		$this->confirmCompositeWidgets();
+
+		if ($this->isInitialized()) {
+			$this->init();
+		}
+
 		$cart = $this->app->cart;
 
 		if ($this->override_content !== null) {
@@ -223,19 +282,56 @@ class StoreCartLightbox extends SwatControl
 	 */
 	protected function displayCartEntries()
 	{
-		$cart = $this->app->getCacheValue('mini-cart',
-			$this->app->session->getSessionId());
+		$cart = $this->app->getCacheValue(
+			'mini-cart',
+			$this->app->session->getSessionId()
+		);
 
 		if ($cart === false) {
-			$this->initCartUI();
 			$this->buildCartUI();
 
 			ob_start();
 			$this->ui->display();
 			$cart = ob_get_clean();
+
+			$this->app->addCacheValue(
+				$cart,
+				'mini-cart',
+				$this->app->session->getSessionId()
+			);
 		}
 
 		echo $cart;
+	}
+
+	// }}}
+	// {{{ public function getAvailableHtmlHeadEntrySet()
+
+	public function getAvailableHtmlHeadEntrySet()
+	{
+		$set = $this->app->getCacheValue(
+			'mini-cart-resources',
+			$this->app->session->getSessionId()
+		);
+
+		if ($set !== false) {
+			$set = unserialize($set);
+		}
+
+		if ($set === false ) {
+			// get all available HTML head entries, not just the
+			// ones we need right now. We get all available because a new
+			// cart view can be loaded via AJAX that requires more resources
+			// than the initial view.
+			$set = parent::getAvailableHtmlHeadEntrySet();
+			$this->app->addCacheValue(
+				serialize($set),
+				'mini-cart-resources',
+				$this->app->session->getSessionId()
+			);
+		}
+
+		return $set;
 	}
 
 	// }}}
@@ -243,9 +339,6 @@ class StoreCartLightbox extends SwatControl
 
 	protected function initCartUI()
 	{
-		$this->ui = new SwatUI();
-		$this->ui->loadFromXML($this->ui_xml);
-		$this->ui->init();
 	}
 
 	// }}}
@@ -254,8 +347,10 @@ class StoreCartLightbox extends SwatControl
 	protected function buildCartUI()
 	{
 		$message_display = $this->ui->getWidget('lightbox_message_display');
-		foreach ($this->getCartMessages() as $message)
+		foreach ($this->getCartMessages() as $message) {
 			$message_display->add($message, SwatMessageDisplay::DISMISS_OFF);
+		}
+		$message_display->add(new SwatMessage('test'), SwatMessageDisplay::DISMISS_OFF);
 
 		$cart_view = $this->ui->getWidget('lightbox_cart_view');
 		$cart_view->model = $this->getCartTableStore();
