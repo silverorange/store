@@ -87,6 +87,10 @@ class StoreCartServer extends SiteXMLRPCServer
 
 		$this->app->cart->save();
 
+		if (isset($this->app->memcache)) {
+			$this->app->memcache->flushNs($this->app->session->getSessionId());
+		}
+
 		return $this->getCartInfo($request_id, $product_id, $mini_cart);
 	}
 
@@ -125,12 +129,12 @@ class StoreCartServer extends SiteXMLRPCServer
 	 *
 	 * @param integer $request_id A unique id for this request
 	 * @param integer $product_id Optional product id to filter by
-	 * @param boolean $mini_cart Whether or not to return the mini-cart
+	 * @param boolean $get_mini_cart Whether or not to return the mini-cart
 	 *
 	 * @return array
 	 */
 	public function getCartInfo($request_id, $product_id = null,
-		$mini_cart = false)
+		$get_mini_cart = false)
 	{
 		$product_entries  = 0; // total number of cart-enties for the product
 		$product_quantity = 0; // sum of all quantities for the product
@@ -167,6 +171,7 @@ class StoreCartServer extends SiteXMLRPCServer
 		$return['total_entries']    = $total_entries;
 		$return['total_quantity']   = $total_quantity;
 		$return['total_saved']      = $total_saved;
+		$return['head_entries']     = $total_saved;
 
 		if ($product_id !== null) {
 			$class_name =  SwatDBClassMap::get('StoreProduct');
@@ -180,8 +185,18 @@ class StoreCartServer extends SiteXMLRPCServer
 
 		$return['cart_link'] = $this->getCartLink($return);
 
-		if ($mini_cart) {
-			$return['mini_cart'] = $this->getMiniCart();
+		if ($get_mini_cart) {
+			$mini_cart = $this->getMiniCart();
+			ob_start();
+			$mini_cart->displayContent();
+
+			// Since the mini cart cache is rebuilt, the UI will not be re-
+			// loaded on the next page load. We need to cache the HTML head
+			// entries here because without the UI we will get an empty set.
+			// Just getting the set here should cause it to be cached properly.
+			$mini_cart->getAvailableHtmlHeadEntrySet();
+
+			$return['mini_cart'] = ob_get_clean();
 		} else {
 			$return['mini_cart'] = '';
 		}
@@ -203,14 +218,11 @@ class StoreCartServer extends SiteXMLRPCServer
 	/**
 	 * Get a mini cart to display
 	 *
-	 * @return string The mini cart.
+	 * @return StoreCartLightbox The mini cart.
 	 */
 	protected function getMiniCart()
 	{
-		$mini_cart = new StoreCartLightbox(null, $this->app, $this->processor);
-		ob_start();
-		$mini_cart->displayContent();
-		return ob_get_clean();
+		return new StoreCartLightbox(null, $this->app, $this->processor);
 	}
 
 	// }}}
