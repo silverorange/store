@@ -1106,7 +1106,7 @@ class StoreProductPage extends StorePage
 	}
 
 	// }}}
-	// {{{ protected function buildReviewbuildReviewPreview()
+	// {{{ protected function buildReviewPreview()
 
 	protected function buildReviewPreview()
 	{
