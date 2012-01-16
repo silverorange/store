@@ -350,7 +350,6 @@ class StoreCartLightbox extends SwatControl
 		foreach ($this->getCartMessages() as $message) {
 			$message_display->add($message, SwatMessageDisplay::DISMISS_OFF);
 		}
-		$message_display->add(new SwatMessage('test'), SwatMessageDisplay::DISMISS_OFF);
 
 		$cart_view = $this->ui->getWidget('lightbox_cart_view');
 		$cart_view->model = $this->getCartTableStore();
