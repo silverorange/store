@@ -141,13 +141,13 @@ class StoreCategoryPage extends StorePage
 
 		$this->layout->startCapture('content');
 
+		$this->displayRelatedContent($this->category);
+		$this->displayFeaturedProducts($this->category);
+
 		if ($this->isTwigPage()) {
-			$this->displayFeaturedProducts($this->category);
 			$this->displayTwigPage();
 			$this->displayOutOfStockProductsAsTwig();
 		} else {
-			$this->displayRelatedContent($this->category);
-			$this->displayFeaturedProducts($this->category);
 			$this->displayPage();
 		}
 
@@ -162,8 +162,9 @@ class StoreCategoryPage extends StorePage
 		$twig_page = false;
 
 		$last_entry = $this->path->getLast();
-		if ($last_entry->twig)
+		if ($last_entry->twig) {
 			$twig_page = true;
+		}
 
 		return $twig_page;
 	}
