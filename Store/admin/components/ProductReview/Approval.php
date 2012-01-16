@@ -2,6 +2,7 @@
 
 require_once 'Admin/pages/AdminApproval.php';
 require_once 'Site/dataobjects/SiteComment.php';
+require_once 'Site/SiteViewFactory.php';
 require_once 'Store/dataobjects/StoreProductReview.php';
 if (class_exists('Blorg')) {
 	require_once 'Blorg/dataobjects/BlorgAuthorWrapper.php';
@@ -11,7 +12,7 @@ if (class_exists('Blorg')) {
  * Approval page for Product reviews
  *
  * @package   Store
- * @copyright 2008-2011 silverorange
+ * @copyright 2008-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductReviewApproval extends AdminApproval
@@ -157,37 +158,33 @@ class StoreProductReviewApproval extends AdminApproval
 	{
 		$review = $this->data_object;
 
-		$div_tag = new SwatHtmlTag('div');
-
 		// link the product title if you have access to the component.
+		echo '<div class="product-title">';
 		if ($this->app->session->user->hasAccessByShortname('Product')) {
 			$a_tag = new SwatHtmlTag('a');
 			$a_tag->href = sprintf('Product/Details?id=%s',
 				$this->data_object->product->id);
+
 			$a_tag->setContent($this->data_object->product->title);
-			ob_start();
 			$a_tag->display();
-			$content = ob_get_clean();
 		} else {
-			$content = $this->data_object->product->title;
+			echo SwatString::minimizeEntities(
+				$this->data_object->product->title);
 		}
+		echo '</div>';
 
-		$div_tag->setContent($content, 'text/xml');
-		$div_tag->display();
+		$view = $this->getView();
+		$view->display($this->data_object);
+	}
 
-		$h2_tag = new SwatHtmlTag('h2');
-		$h2_tag->setContent($this->data_object->fullname);
-		$h2_tag->display();
+	// }}}
+	// {{{ protected function getView()
 
-		$abbr_tag = new SwatHtmlTag('abbr');
-		$date = clone $review->createdate;
-		$date->convertTZ($this->app->default_time_zone);
-		$abbr_tag->setContent(sprintf(Store::_('Posted: %s'),
-			$date->formatLikeIntl(SwatDate::DF_DATE)));
-
-		$abbr_tag->display();
-
-		echo SwatString::toXHTML($review->bodytext);
+	protected function getView()
+	{
+		$view = SiteViewFactory::get($this->app, 'product-review');
+		$view->setPartMode('replies', SiteView::MODE_NONE);
+		return $view;
 	}
 
 	// }}}
