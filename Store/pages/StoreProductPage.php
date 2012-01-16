@@ -41,9 +41,17 @@ class StoreProductPage extends StorePage
 	// {{{ protected properties
 
 	protected $cart_processor;
+
+	/**
+	 * @var StoreItemsView
+	 */
 	protected $items_view;
+
+	/**
+	 * @var SwatUI
+	 */
 	protected $reviews_ui;
-	protected $reviews_ui_xml = 'Store/pages/product-reviews.xml';
+
 	protected $message_display;
 	protected $item_removed = false;
 	protected $items_added = array();
@@ -134,7 +142,7 @@ class StoreProductPage extends StorePage
 	{
 		if ($this->product->reviewable) {
 			$this->reviews_ui = new SwatUI();
-			$this->reviews_ui->loadFromXML($this->reviews_ui_xml);
+			$this->reviews_ui->loadFromXML($this->getReviewsUiXml());
 			$this->reviews_ui->init();
 			$this->initReviewsInternal();
 
@@ -223,6 +231,14 @@ class StoreProductPage extends StorePage
 	}
 
 	// }}}
+	// {{{ protected function getReviewsUiXml()
+
+	protected function getReviewsUiXml()
+	{
+		return 'Store/pages/product-reviews.xml';
+	}
+
+	// }}}
 
 	// process phase
 	// {{{ public function process()
@@ -277,7 +293,7 @@ class StoreProductPage extends StorePage
 	}
 
 	// }}}
-	// {{{ protected function processReview()
+	// {{{ protected function processReviewUi()
 
 	protected function processReviewUi()
 	{
