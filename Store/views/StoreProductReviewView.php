@@ -90,10 +90,10 @@ class StoreProductReviewView extends SiteView
 		$this->displayHeader($review);
 		$this->displayItem($review);
 		$this->displayDescription($review);
-		$this->displaySummary($review);
 
 		$mode = $this->getMode('javascript');
 		if ($mode > SiteView::MODE_NONE) {
+			$this->displaySummary($review);
 			Swat::displayInlineJavaScript($this->getInlineJavaScript($review));
 		}
 
