@@ -2,18 +2,18 @@
 
 require_once 'SwatDB/SwatDB.php';
 require_once 'SwatDB/SwatDBClassMap.php';
+require_once 'Site/SitePrivateDataDeleter.php';
 require_once 'Store/Store.php';
-require_once 'Store/StorePrivateDataDeleter.php';
 require_once 'Store/dataobjects/StoreAccountPaymentMethodWrapper.php';
 
 /**
  * Removes expired payment methods
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreAccountPaymentMethodDeleter extends StorePrivateDataDeleter
+class StoreAccountPaymentMethodDeleter extends SitePrivateDataDeleter
 {
 	// {{{ class constants
 
