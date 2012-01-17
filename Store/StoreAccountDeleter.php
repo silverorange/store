@@ -2,8 +2,8 @@
 
 require_once 'SwatDB/SwatDB.php';
 require_once 'SwatDB/SwatDBClassMap.php';
+require_once 'Site/SitePrivateDataDeleter.php';
 require_once 'Store/Store.php';
-require_once 'Store/StorePrivateDataDeleter.php';
 require_once 'Store/dataobjects/StoreAccount.php';
 require_once 'Store/dataobjects/StoreAccountWrapper.php';
 
@@ -11,10 +11,10 @@ require_once 'Store/dataobjects/StoreAccountWrapper.php';
  * Removes personal data from inactive accounts
  *
  * @package   Store
- * @copyright 2007-2009 silverorange
+ * @copyright 2007-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreAccountDeleter extends StorePrivateDataDeleter
+class StoreAccountDeleter extends SitePrivateDataDeleter
 {
 	// {{{ class constants
 
