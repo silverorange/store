@@ -108,7 +108,7 @@
 
 #store_cart_lightbox #lightbox_cart_view.swat-table-view {
 	margin: 0;
-	width: 100%;
+	width: auto;
 }
 
 #store_cart_lightbox #lightbox_cart_view.swat-table-view th {
