@@ -53,6 +53,15 @@ class StoreFroogleFeedEntry extends AtomFeedEntry
 	public $shipping_weight = null;
 	public $online_only = null;
 	public $expiration_date = null;
+
+	/**
+	 * Product review average rating
+	 *
+	 * Note: This must be between 0 and 5. If product reviews have a different
+	 * range it must be scaled to between 0 and 5.
+	 *
+	 * @var float
+	 */
 	public $product_review_average = null;
 	public $product_review_count = null;
 
