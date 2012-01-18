@@ -48,6 +48,19 @@ abstract class StoreProductFileGenerator extends SwatObject
 	}
 
 	// }}}
+	// {{{ abstract public function generate()
+
+	abstract public function generate();
+
+	// }}}
+	// {{{ abstract protected function getItems()
+
+	/**
+	 * @return StoreItemWrapper
+	 */
+	abstract protected function getItems();
+
+	// }}}
 	// {{{ protected function loadRegion()
 
 	protected function loadRegion()
@@ -68,25 +81,12 @@ abstract class StoreProductFileGenerator extends SwatObject
 	}
 
 	// }}}
-	// {{{ abstract public function generate()
-
-	abstract public function generate();
-
-	// }}}
 	// {{{ protected function getBaseHref()
 
 	protected function getBaseHref()
 	{
 		return $this->app->config->uri->absolute_base;
 	}
-
-	// }}}
-	// {{{ abstract protected function getItems()
-
-	/**
-	 * @return StoreItemWrapper
-	 */
-	abstract protected function getItems();
 
 	// }}}
 }
