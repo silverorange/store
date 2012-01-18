@@ -118,7 +118,7 @@ class StoreCartServer extends SiteXMLRPCServer
 		}
 
 		$this->app->cart->save();
-		return $this->getCartInfo($request_id, $product_id, false);
+		return $this->getCartInfo($request_id, $product_id, true);
 	}
 
 	// }}}

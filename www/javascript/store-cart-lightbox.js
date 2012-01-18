@@ -34,6 +34,7 @@ function StoreCartLightbox(available_entry_count, all_entry_count)
 StoreCartLightbox.instance = null;
 StoreCartLightbox.submit_message = 'Updating Cart…';
 StoreCartLightbox.loading_message = 'Loading…';
+StoreCartLightbox.recalculating_message = 'Recalculating…';
 StoreCartLightbox.item_count_message_singular = '(1 item)';
 StoreCartLightbox.item_count_message_plural   = '(%s items)';
 StoreCartLightbox.empty_content = '<h3>Your Shopping Cart is Empty</h3>';
@@ -346,6 +347,7 @@ StoreCartLightbox.prototype.removeEntry = function(e)
 
 		this.removeRow(tr);
 		this.hideAddedMessage();
+		this.recalculateTotals();
 	}
 }
 
@@ -531,6 +533,33 @@ StoreCartLightbox.prototype.hideAddedMessage = function()
 		});
 
 		animation.animate();
+	}
+}
+
+// }}}
+// {{{ StoreCartLightbox.prototype.recalculateTotals
+
+StoreCartLightbox.prototype.recalculateTotals = function()
+{
+	var total_cells = YAHOO.util.Selector.query(
+		'tr.store-total-row td.swat-money-cell-renderer',
+		this.mini_cart);
+
+	for (var i = 0; i < total_cells.length; i++) {
+		var td = total_cells[i];
+
+		var th = td.parentNode.getElementsByTagName('th')[0];
+		var th_width = YAHOO.util.Dom.getStyle(th, 'width');
+		YAHOO.util.Dom.setStyle(th, 'width', th_width);
+
+		var td_width = YAHOO.util.Dom.getStyle(td, 'width');
+		YAHOO.util.Dom.setStyle(td, 'width', td_width);
+
+		td.innerHTML =
+			'<div class="recalculating" title="' +
+				StoreCartLightbox.recalculating_message +
+				'"><span>·</span><span>·</span><span>·</span><span>·</span>' +
+				'</div>';
 	}
 }
 
