@@ -113,7 +113,7 @@ abstract class StoreFroogleGenerator extends StoreProductFileGenerator
 	protected function getProductType(StoreItem $item)
 	{
 		if ($item->product->primary_category === null) {
-			$product_type = $this->getGoolgeProductCategory($item);
+			$product_type = $this->getGoogleProductCategory($item);
 		} else {
 			$categories  = array();
 			$category_id = $item->product->getInternalValue('primary_category');
@@ -130,6 +130,14 @@ abstract class StoreFroogleGenerator extends StoreProductFileGenerator
 		}
 
 		return $product_type;
+	}
+
+	// }}}
+	// {{{ protected function getGoogleProductCategory()
+
+	protected function getGoogleProductCategory(StoreItem $item)
+	{
+		// TODO: implement me
 	}
 
 	// }}}
