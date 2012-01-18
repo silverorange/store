@@ -605,7 +605,7 @@ class StoreItem extends SwatDBDataObject
 	public static function validateSku($db, $sku, $catalog_id, $product_id,
 		$valid_skus = array())
 	{
-		$sql = 'select count(ItemView.id) from itemView
+		$sql = 'select count(ItemView.id) from ItemView
 			inner join Product on ItemView.product = Product.id
 			inner join Catalog on Product.catalog = Catalog.id
 			where Catalog.id not in
