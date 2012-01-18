@@ -176,7 +176,6 @@ abstract class StoreApplication extends SiteWebApplication
 		$list = parent::getSecureSourceList();
 		$list[] = '^checkout.*';
 		$list[] = '^account.*';
-
 		return $list;
 	}
 
