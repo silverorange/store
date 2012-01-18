@@ -175,7 +175,8 @@ class StoreCategoryPage extends StorePage
 	protected function querySubCategories(StoreCategory $category = null)
 	{
 		// note: sub-categories are hard to memcache properly because of
-		// the number of sub-dataobjects and the way they're loaded
+		// the number of sub-dataobjects and the way they're loaded.
+		// It's also a pretty fast query despite looking complicated.
 
 		$sql = 'select Category.id, Category.title, Category.shortname,
 				Category.description, Category.image,
@@ -345,6 +346,11 @@ class StoreCategoryPage extends StorePage
 
 	protected function displayFeaturedProducts(StoreCategory $category)
 	{
+		// we only show featured products on pages with sub-categories
+		if (count($this->querySubCategories($this->category)) == 0) {
+			$this->app->timer->endCheckpoint('query');
+		}
+
 		$products = $this->getFeaturedProducts($category);
 		if (count($products) > 0) {
 			$div = new SwatHtmlTag('div');
