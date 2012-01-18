@@ -79,10 +79,22 @@
 	padding-left: 10px;
 }
 
-#store_cart_lightbox tbody td.remove-column {
+#store_cart_lightbox #lightbox_cart_totals_view {
+	padding-top: 5px;
+}
+
+#store_cart_lightbox tfoot th {
+	width: 100%;
+}
+
+#store_cart_lightbox tbody td.remove-column,
+#store_cart_lightbox tfoot .store-total-row .swat-money-cell-renderer {
 	padding-right: 10px;
 }
 
+#store_cart_lightbox tfoot .store-total-row .swat-money-cell-renderer {
+	font-weight: bold;
+}
 
 #store_cart_lightbox tbody td.quantity-column {
 	padding: 8px 6px 0 0;
@@ -199,5 +211,89 @@
 #store_cart_lightbox .swat-message .swat-message-container {
 	padding-top: 12px;
 }
+
+/* }}} */
+/* {{{ Animation for recalculating */
+
+@-moz-keyframes fade-recalculation {
+	0% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 0;
+	}
+}
+
+@-webkit-keyframes fade-recalculation {
+	0% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 0;
+	}
+}
+
+@-ms-keyframes fade-recalculation {
+	0% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 0;
+	}
+}
+
+#store_cart_lightbox .recalculating {
+	text-align: center;
+}
+
+#store_cart_lightbox .recalculating span {
+	-moz-animation-name: fade-recalculation;
+	-moz-animation-timing-function: ease-in-out;
+	-moz-animation-iteration-count: infinite;
+	-moz-animation-duration: 0.5s;
+	-moz-animation-direction: alternate;
+
+	-webkit-animation-name: fade-recalculation;
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-duration: 0.5s;
+	-webkit-animation-direction: alternate;
+
+	-ms-animation-name: fade-recalculation;
+	-ms-animation-timing-function: ease-in-out;
+	-ms-animation-iteration-count: infinite;
+	-ms-animation-duration: 0.5s;
+	-ms-animation-direction: alternate;
+
+	opacity: 1;
+}
+
+#store_cart_lightbox .recalculating span:nth-child(1) {
+	-moz-animation-delay: 0;
+    -webkit-animation-delay: 0;
+	-ms-animation-delay: 0;
+}
+
+#store_cart_lightbox .recalculating span:nth-child(2) {
+	-moz-animation-delay: 0.1s;
+    -webkit-animation-delay: 0.1s;
+	-ms-animation-delay: 0.1s;
+}
+
+#store_cart_lightbox .recalculating span:nth-child(3) {
+    -moz-animation-delay: 0.2s;
+    -webkit-animation-delay: 0.2s;
+    -ms-animation-delay: 0.2s;
+}
+
+#store_cart_lightbox .recalculating span:nth-child(4) {
+    -moz-animation-delay: 0.3s;
+    -webkit-animation-delay: 0.3s;
+    -ms-animation-delay: 0.3s;
+}
+
 
 /* }}} */

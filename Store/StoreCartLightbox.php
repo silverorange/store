@@ -80,7 +80,7 @@ class StoreCartLightbox extends SwatControl
 		$this->app = $app;
 		$this->processor = $processor;
 
-		$yui = new SwatYUI(array('dom', 'event'));
+		$yui = new SwatYUI(array('dom', 'event', 'animation', 'selector'));
 		$this->html_head_entry_set->addEntrySet($yui->getHtmlHeadEntrySet());
 		$this->html_head_entry_set->addEntrySet(
 			XML_RPCAjax::getHtmlHeadEntrySet());
@@ -353,6 +353,25 @@ class StoreCartLightbox extends SwatControl
 
 		$cart_view = $this->ui->getWidget('lightbox_cart_view');
 		$cart_view->model = $this->getCartTableStore();
+
+		if ($this->ui->hasWidget('lightbox_cart_totals_view')) {
+			$view = $this->ui->getWidget('lightbox_cart_totals_view');
+			// these two properties are needed to make the table view display
+			// without any real rows
+			$view->model = new SwatTableStore();
+			$view->no_records_message = null;
+			if ($view->hasRow('lightbox_subtotal')) {
+				$view->getRow('lightbox_subtotal')->value =
+					$this->app->cart->checkout->getSubtotal();
+			}
+
+			if ($view->hasRow('lightbox_shipping')) {
+				$class_name = SwatDBClassMap::get('StoreOrderAddress');
+				$view->getRow('lightbox_shipping')->value =
+					$this->app->cart->checkout->getShippingTotal(
+						new $class_name(), new $class_name);
+			}
+		}
 
 		$this->ui->getWidget('lightbox_cart_title')->content =
 			$this->getCartTitle();
