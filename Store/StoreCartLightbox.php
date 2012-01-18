@@ -104,9 +104,11 @@ class StoreCartLightbox extends SwatControl
 
 	public function init()
 	{
-		$this->confirmCompositeWidgets();
-		$this->initCartUI();
-		parent::init();
+		if (!$this->isInitialized()) {
+			$this->confirmCompositeWidgets();
+			$this->initCartUI();
+			parent::init();
+		}
 	}
 
 	// }}}
