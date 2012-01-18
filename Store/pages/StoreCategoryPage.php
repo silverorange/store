@@ -347,8 +347,8 @@ class StoreCategoryPage extends StorePage
 	protected function displayFeaturedProducts(StoreCategory $category)
 	{
 		// we only show featured products on pages with sub-categories
-		if (count($this->querySubCategories($this->category)) == 0) {
-			$this->app->timer->endCheckpoint('query');
+		if (count($this->querySubCategories($category)) == 0) {
+			return;
 		}
 
 		$products = $this->getFeaturedProducts($category);
