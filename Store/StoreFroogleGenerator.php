@@ -135,10 +135,17 @@ abstract class StoreFroogleGenerator extends StoreProductFileGenerator
 	// }}}
 	// {{{ protected function getGoogleProductCategory()
 
-	protected function getGoogleProductCategory(StoreItem $item)
-	{
-		// TODO: implement me
-	}
+	/**
+	 * Gets the default product taxonomy for products not in a category
+	 *
+	 * See {@link http://support.google.com/merchants/bin/answer.py?hl=en&answer=188494#US}.
+	 *
+	 * @param StoreItem $item the item for which to get the product taxonomy.
+	 *
+	 * @return string the default product taxonomy for products not in a
+	 *                category.
+	 */
+	abstract protected function getGoogleProductCategory(StoreItem $item);
 
 	// }}}
 }
