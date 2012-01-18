@@ -18,6 +18,7 @@ class StoreFroogleFeedEntry extends AtomFeedEntry
 	public $name_space = 'g';
 	public $custom_name_space = 'c';
 
+	// }}}
 	// {{{ required attributes
 
 	/* id, title and link are required and handled in the parent class.
@@ -52,6 +53,8 @@ class StoreFroogleFeedEntry extends AtomFeedEntry
 	public $shipping_weight = null;
 	public $online_only = null;
 	public $expiration_date = null;
+	public $product_review_average = null;
+	public $product_review_count = null;
 
 	// }}}
 	// {{{ category specific attributes
@@ -133,6 +136,18 @@ class StoreFroogleFeedEntry extends AtomFeedEntry
 		if ($this->mpn !== null) {
 			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
 				'mpn', $this->mpn, $this->name_space));
+		}
+
+		if ($this->product_review_average !== null) {
+			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
+				'product_review_average', (float)$this->product_review_average,
+				$this->name_space));
+		}
+
+		if ($this->product_review_count !== null) {
+			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
+				'product_review_count', (float)$this->product_review_count,
+				$this->name_space));
 		}
 
 		// strongly recommended.
