@@ -34,7 +34,7 @@ function StoreCartLightbox(available_entry_count, all_entry_count)
 StoreCartLightbox.instance = null;
 StoreCartLightbox.submit_message = 'Updating Cart…';
 StoreCartLightbox.loading_message = 'Loading…';
-StoreCartLightbox.recalculating_message = 'Recalculating…';
+StoreCartLightbox.recalculating_message = 'Updating…';
 StoreCartLightbox.item_count_message_singular = '(1 item)';
 StoreCartLightbox.item_count_message_plural   = '(%s items)';
 StoreCartLightbox.empty_content = '<h3>Your Shopping Cart is Empty</h3>';
