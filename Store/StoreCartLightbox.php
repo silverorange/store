@@ -248,7 +248,7 @@ class StoreCartLightbox extends SwatControl
 	{
 		$this->confirmCompositeWidgets();
 
-		if ($this->isInitialized()) {
+		if (!$this->isInitialized()) {
 			$this->init();
 		}
 
