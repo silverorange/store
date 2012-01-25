@@ -14,7 +14,7 @@ require_once 'Store/StoreCommandLineConfigModule.php';
  * date has passed. Deletes always run before additions.
  *
  * @package   Store
- * @copyright 2010 silverorange
+ * @copyright 2010-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductAttributeBindingQueueUpdater
@@ -35,16 +35,29 @@ class StoreProductAttributeBindingQueueUpdater
 
 		$this->debug(Store::_('Updating Product Attributes')."\n\n", true);
 
+		$distinct_attributes = $this->getDistinctAttributes($now);
+		$attributes_removed  = false;
+		$attributes_added    = false;
+
 		$this->debug(Store::_('Deleting:')."\n--------------------\n");
-		$attributes_removed = $this->removeAttributes($now);
+		foreach($distinct_attributes as $attribute) {
+			if ($this->removeAttributes($now, $attribute->attribute)) {
+				$attributes_removed = true;
+			}
+		}
 		$this->debug(Store::_('Done deleting attributes.')."\n\n");
 
 		$this->debug(Store::_('Adding:')."\n--------------------\n");
-		$attributes_added = $this->addAttributes($now);
+		foreach($distinct_attributes as $attribute) {
+			if ($this->addAttributes($now, $attribute->attribute)) {
+				$attributes_added = true;
+			}
+		}
+
 		$this->debug(Store::_('Done adding attributes.')."\n\n");
 
 		$this->debug(Store::_('Clearing Caches:')."\n--------------------\n");
-		$this->clearCacheTable($now);
+		$this->clearQueue($now);
 		if (($attributes_removed == true || $attributes_added == true) &&
 			isset($this->memcache)) {
 			$this->flushMemcache();
@@ -58,25 +71,28 @@ class StoreProductAttributeBindingQueueUpdater
 	// }}}
 	// {{{ protected function removeAttributes()
 
-	protected function removeAttributes(SwatDate $current_date)
+	protected function removeAttributes(SwatDate $current_date, $attribute)
 	{
 		$flush_memcache = false;
 		$sql = 'delete from ProductAttributeBinding
 			where product in (%s) and attribute in (%s)';
 
 		$sql = sprintf($sql,
-			$this->getInSql($current_date, 'product', 'remove'),
-			$this->getInSql($current_date, 'attribute', 'remove'));
+			$this->getInSql($current_date, 'product', 'remove', $attribute),
+			$this->getInSql($current_date, 'attribute', 'remove', $attribute));
 
 		$count = SwatDB::exec($this->db, $sql);
 
 		if ($count > 0) {
 			$flush_memcache = true;
 			$this->debug(sprintf(
-				Store::_('%s products had attributes removed.'),
-				$count)."\n");
+				Store::_('%s products had attribute %s removed.'),
+				$count,
+				$attribute)."\n");
 		} else {
-			$this->debug(Store::_('No product attributes to remove.')."\n");
+			$this->debug(sprintf(
+				Store::_('No products had attribute %s removed.'),
+				$attribute)."\n");
 		}
 
 		return $flush_memcache;
@@ -85,15 +101,15 @@ class StoreProductAttributeBindingQueueUpdater
 	// }}}
 	// {{{ protected function addAttributes()
 
-	protected function addAttributes(SwatDate $current_date)
+	protected function addAttributes(SwatDate $current_date, $attribute)
 	{
 		$flush_memcache = false;
 		$sql = 'delete from ProductAttributeBinding
 			where product in (%s) and attribute in (%s)';
 
 		$sql = sprintf($sql,
-			$this->getInSql($current_date, 'product', 'add'),
-			$this->getInSql($current_date, 'attribute', 'add'));
+			$this->getInSql($current_date, 'product', 'add', $attribute),
+			$this->getInSql($current_date, 'attribute', 'add', $attribute));
 
 		$delete_count = SwatDB::exec($this->db, $sql);
 
@@ -102,18 +118,21 @@ class StoreProductAttributeBindingQueueUpdater
 			select Product.id, Attribute.id
 			from Product cross join Attribute
 			where Product.id in (%s) and Attribute.id in (%s)',
-			$this->getInSql($current_date, 'product', 'add'),
-			$this->getInSql($current_date, 'attribute', 'add'));
+			$this->getInSql($current_date, 'product', 'add', $attribute),
+			$this->getInSql($current_date, 'attribute', 'add', $attribute));
 
 		$add_count = SwatDB::exec($this->db, $sql);
 
 		if ($add_count != $delete_count) {
 			$flush_memcache = true;
 			$this->debug(sprintf(
-				Store::_('%s products had attributes added.'),
-				$add_count)."\n");
+				Store::_('%s products had attribute %s added.'),
+				$add_count,
+				$attribute)."\n");
 		} else {
-			$this->debug(Store::_('No product attributes to add.')."\n");
+			$this->debug(sprintf(
+				Store::_('No products had attribute %s added.'),
+				$attribute)."\n");
 		}
 
 		return $flush_memcache;
@@ -122,17 +141,35 @@ class StoreProductAttributeBindingQueueUpdater
 	// }}}
 
 	// helper methods
-	// {{{ protected function getUpdates()
+	// {{{ protected function getDistinctAttributes()
 
-	protected function getInSql(SwatDate $current_date, $field_title, $action)
+	protected function getDistinctAttributes(SwatDate $current_date)
+	{
+		$sql = 'select distinct(attribute) from ProductAttributeBindingQueue
+			where action_date <= %s';
+
+		$sql = sprintf($sql,
+			$this->db->quote($current_date, 'date'));
+
+		$attributes = SwatDB::query($this->db, $sql);
+
+		return $attributes;
+	}
+
+	// }}}
+	// {{{ protected function getInSql()
+
+	protected function getInSql(SwatDate $current_date, $field_title, $action,
+		$attribute)
 	{
 		$sql = 'select %s from ProductAttributeBindingQueue
-			where action_date <= %s and queue_action = %s';
+			where action_date <= %s and queue_action = %s and attribute = %s';
 
 		return sprintf($sql,
 			$field_title,
 			$this->db->quote($current_date, 'date'),
-			$this->db->quote($action, 'text'));
+			$this->db->quote($action, 'text'),
+			$this->db->quote($attribute, 'integer'));
 	}
 
 	// }}}
@@ -156,9 +193,9 @@ class StoreProductAttributeBindingQueueUpdater
 	}
 
 	// }}}
-	// {{{ protected function clearCacheTable()
+	// {{{ protected function clearQueue()
 
-	protected function clearCacheTable(SwatDate $current_date)
+	protected function clearQueue(SwatDate $current_date)
 	{
 		$sql = 'delete from ProductAttributeBindingQueue
 			where action_date <= %s';
