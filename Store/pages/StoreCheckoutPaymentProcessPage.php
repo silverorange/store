@@ -36,10 +36,7 @@ abstract class StoreCheckoutPaymentProcessPage extends StoreCheckoutPage
 	public function process()
 	{
 		try {
-			if (!$this->app->config->store->multiple_payment_support) {
-				$class_name = SwatDBClassMap::get('StoreOrderPaymentMethodWrapper');
-				$this->app->session->order->payment_methods = new $class_name();
-			}
+			$this->clearPaymentMethods();
 
 			if ($this->processPayment()) {
 				$this->updateProgress();
@@ -74,6 +71,17 @@ abstract class StoreCheckoutPaymentProcessPage extends StoreCheckoutPage
 	// {{{ abstract protected function relocate()
 
 	abstract protected function relocate();
+
+	// }}}
+	// {{{ protected function clearPaymentMethods()
+
+	protected function clearPaymentMethods()
+	{
+		if (!$this->app->config->store->multiple_payment_support) {
+			$class_name = SwatDBClassMap::get('StoreOrderPaymentMethodWrapper');
+			$this->app->session->order->payment_methods = new $class_name();
+		}
+	}
 
 	// }}}
 	// {{{ protected funciton handleException()
