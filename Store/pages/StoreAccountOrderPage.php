@@ -248,6 +248,7 @@ class StoreAccountOrderPage extends SiteUiPage
 
 		$this->buildCartMessages();
 		$this->buildOrderDetails();
+		$this->buildOrderItemsView();
 	}
 
 	// }}}
@@ -281,7 +282,13 @@ class StoreAccountOrderPage extends SiteUiPage
 			if ($this->order->phone === null)
 				$details_view->getField('phone')->visible = false;
 		}
+	}
 
+	// }}}
+	// {{{ protected function buildOrderItemsView()
+
+	protected function buildOrderItemsView()
+	{
 		$items_view = $this->ui->getWidget('items_view');
 
 		$store = $this->getOrderDetailsTableStore();
