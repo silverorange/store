@@ -348,11 +348,11 @@ class StoreOrderIndex extends AdminSearch
 	{
 		$fullname = null;
 
-		if ($order->billing_address !== null) {
+		if ($order->billing_address instanceof StoreOrderAddress) {
 			$fullname = $order->billing_address->getFullname();
-		} elseif ($order->email !== null) {
+		} elseif ($order->email != '') {
 			$fullname = $order->email;
-		} elseif ($order->phone !== null) {
+		} elseif ($order->phone != '') {
 			$fullname = $order->phone;
 		}
 
