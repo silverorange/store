@@ -17,7 +17,7 @@ require_once 'Store/dataobjects/StoreCartEntry.php';
  * objects using the {@link StoreCartEntry::createOrderItem()} method.
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreCartEntry::createOrderItem()
  */
@@ -285,6 +285,33 @@ class StoreOrderItem extends SwatDBDataObject
 
 			if (count($items) > 0)
 				$item = $items->getFirst();
+		}
+
+		return $item;
+	}
+
+	// }}}
+	// {{{ public function getItem()
+
+	/**
+	 * Gets StoreItem belonging to this order item.
+	 *
+	 * @return StoreItem The item ordered or null it it no longer exists.
+	 */
+	public function getItem()
+	{
+		$item = null;
+
+		$sql = 'select Item.* from Item where Item.id = %s';
+
+		$sql = sprintf($sql,
+			$this->db->quote($this->item, 'integer'));
+
+		$items = SwatDB::query($this->db, $sql,
+			SwatDBClassMap::get('StoreItemWrapper'));
+
+		if (count($items) > 0) {
+			$item = $items->getFirst();
 		}
 
 		return $item;
