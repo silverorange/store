@@ -190,7 +190,7 @@ class StoreCartLightbox extends SwatControl
 			count($this->app->cart->saved->getEntries()) : 0;
 
 		$javascript.= sprintf(
-			"var cart_lightbox = %s.getInstance(%s, %s)\n",
+			"var cart_lightbox = %s.getInstance(%s, %s);\n",
 			$this->getJavaScriptClassName(),
 			intval($available_entries),
 			intval($available_entries + $saved_entries));
