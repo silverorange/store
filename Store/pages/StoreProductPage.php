@@ -667,7 +667,7 @@ class StoreProductPage extends StorePage
 			$available = count(
 				$this->app->cart->checkout->getAvailableEntries());
 
-			$javascript.= sprintf("var cart = %s.getInstance(%d, %d)
+			$javascript.= sprintf("var cart = %s.getInstance(%d, %d);
 				cart.product_id = %d;
 				product_page.setCart(cart);",
 				$lightbox, $available, ($available + $saved),
