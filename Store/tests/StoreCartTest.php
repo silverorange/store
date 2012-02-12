@@ -2,6 +2,13 @@
 
 require_once 'Turing/TuringSeleniumTest.php';
 
+/**
+ * Test manipulating the cart
+ *
+ * @package   Store
+ * @copyright 2012 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ */
 abstract class StoreCartTest extends TuringSeleniumTest
 {
 	// {{{ abstract protected function initCartEntries()
