@@ -6,7 +6,7 @@ require_once 'Site/admin/components/Account/Index.php';
  * Index page for Accounts
  *
  * @package   Store
- * @copyright 2006-2008 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountIndex extends SiteAccountIndex
@@ -36,6 +36,7 @@ class StoreAccountIndex extends SiteAccountIndex
 			from Account
 			left outer join AccountOrderCountView on
 				Account.id = AccountOrderCountView.account
+			%s
 			where %s
 			order by %s';
 	}
