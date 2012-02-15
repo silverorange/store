@@ -36,7 +36,7 @@ require_once 'Store/dataobjects/StoreAccountWrapper.php';
  * {@link StoreAccount::save()}.
  *
  * - Create a new StoreAccount object with a blank constructor. Call the
- *   {@link StoreAccount::load()} or {@link StoreAccount::loadWithCredentials}
+ *   {@link StoreAccount::load()} or {@link StoreAccount::loadWithEmail}
  *   method on the object instance. Modify some properties and call the save()
  *   method. The modified properties are updated in the database.
  *
@@ -48,9 +48,10 @@ require_once 'Store/dataobjects/StoreAccountWrapper.php';
  * $account->email = 'new_address@example.com';
  * $account->save();
  *
- * // using loadWithCredentials()
+ * // using loadWithEmail()
  * $account = new StoreAccount();
- * if ($account->loadWithCredentials('test@example.com', 'secretpassword')) {
+ * if ($account->loadWithEmail('test@example.com') &&
+ *     $account->isCorrectPassword('secretpassword')) {
  *     echo 'Hello ' . $account->fullname;
  *     $account->email = 'new_address@example.com';
  *     $account->save();
