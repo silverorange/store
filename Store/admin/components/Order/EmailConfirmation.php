@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * Page to resend the confirmation email for an order
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderEmailConfirmation extends AdminConfirmation
@@ -89,9 +89,16 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 			$cc = ($this->order->cc_email !== null) ?
 				' and cc’d to '.$this->order->cc_email : '';
 
-			$message = new SwatMessage(sprintf(
-				Store::_('A confirmation of %s has been emailed to %s%s.'),
-				$this->getOrderTitle(), $this->order->email, $cc), 'notice');
+			$message = new SwatMessage(
+				sprintf(
+					Store::_(
+						'A confirmation of %s has been emailed to %s%s.'
+					),
+					$this->getOrderTitle(),
+					$this->order->getConfirmationEmailAddress(),
+					$cc
+				)
+			);
 
 			$this->app->messages->add($message);
 		}
@@ -140,9 +147,11 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 
 		$confirmation_title->display();
 
+		$email_address = $this->order->getConfirmationEmailAddress();
+
 		$email_anchor = new SwatHtmlTag('a');
-		$email_anchor->href = sprintf('mailto:%s', $this->order->email);
-		$email_anchor->setContent($this->order->email);
+		$email_anchor->href = sprintf('mailto:%s', $email_address);
+		$email_anchor->setContent($email_address);
 
 		printf(Store::_('A confirmation of %s will be sent to '),
 			$this->getOrderTitle());
