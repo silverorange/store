@@ -19,10 +19,8 @@ require_once 'Store/dataobjects/StoreLocale.php';
 require_once 'Store/dataobjects/StoreInvoice.php';
 
 /**
- *
- *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrder extends SwatDBDataObject
@@ -201,8 +199,9 @@ class StoreOrder extends SwatDBDataObject
 		// This is demo code. StoreOrderConfirmationMailMessage is
 		// abstract and the site-specific version must be used.
 
-		if ($this->email === null)
+		if ($this->getConfirmationEmailAddress() === null) {
 			return;
+		}
 
 		try {
 			$email = new StoreOrderConfirmationMailMessage($app, $this);
@@ -336,6 +335,31 @@ class StoreOrder extends SwatDBDataObject
 	public function isFromInvoice()
 	{
 		return ($this->getInternalValue('invoice') !== null);
+	}
+
+	// }}}
+	// {{{ public function getConfirmationEmailAddress()
+
+	/**
+	 * Gets the address to which to send order confirmation messages
+	 *
+	 * If the order is placed on account, send to the account email address
+	 * by default. Orders placed on account do not have an email address
+	 * entered explicitly during the checkout.
+	 *
+	 * @return string the email address to which to send order confirmation
+	 *                messages.
+	 */
+	public function getConfirmationEmailAddress()
+	{
+		$address = $this->email;
+
+		if ($this->account instanceof SiteAccount &&
+			$this->account->email != '') {
+			$address = $this->account->email;
+		}
+
+		return $address;
 	}
 
 	// }}}

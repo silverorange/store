@@ -60,13 +60,16 @@ abstract class StoreOrderConfirmationMailMessage
 		$this->from_address = $this->app->config->email->service_address;
 		$this->from_name = $this->getFromName();
 
-		$this->to_address = $order->email;
 
-		if ($order->cc_email !== null)
-			$this->cc_list = array($order->cc_email);
+		$this->to_address = $order->getConfirmationEmailAddress();
 
-		if ($order->billing_address !== null)
+		if ($order->cc_email !== null) {
+			$this->cc_list[] = $order->cc_email;
+		}
+
+		if ($order->billing_address instanceof StoreOrderAddress) {
 			$this->to_name = $order->billing_address->fullname;
+		}
 
 		$this->subject = $this->getSubject();
 
@@ -201,7 +204,7 @@ abstract class StoreOrderConfirmationMailMessage
 	{
 		$ds = new SwatDetailsStore($order);
 		$ds->payment_method = $order->payment_methods->getFirst();
-
+		$ds->email = $order->getConfirmationEmailAddress();
 		return $ds;
 	}
 
@@ -281,7 +284,7 @@ abstract class StoreOrderConfirmationMailMessage
 				SwatDate::TZ_CURRENT_SHORT));
 
 		echo self::LINE_BREAK;
-		printf('Email: %s', $this->order->email);
+		printf('Email: %s', $this->order->getConfirmationEmailAddress());
 		echo self::LINE_BREAK;
 
 		if ($this->order->phone !== null) {
