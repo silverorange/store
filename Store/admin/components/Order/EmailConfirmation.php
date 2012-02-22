@@ -190,7 +190,7 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 				Store::_('Customer Accounts'), 'Account'));
 
 			$this->navbar->addEntry(new SwatNavBarEntry(
-				$this->order->account->fullname,
+				$this->order->account->getFullname(),
 				'Account/Details?id='.$this->order->account));
 
 			$this->title = $this->order->account->fullname;
