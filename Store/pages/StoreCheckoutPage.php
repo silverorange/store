@@ -61,6 +61,11 @@ abstract class StoreCheckoutPage extends SiteUiPage
 		$thank_you_source = $this->getThankYouSource();
 		if ($this->app->session->order->id !== null &&
 			$this->getSource() !== $thank_you_source) {
+			// The thank you page has checkout/confirmation as a progress
+			// dependency. As we have a completed order on the session, make
+			// sure the dependency is set before relocated there. Prevents a
+			// relocation loop.
+			$this->setProgress($this->getConfirmationSource());
 			$this->app->relocate($thank_you_source);
 		}
 
