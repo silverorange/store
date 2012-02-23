@@ -65,7 +65,7 @@ abstract class StoreCheckoutPage extends SiteUiPage
 			// dependency. As we have a completed order on the session, make
 			// sure the dependency is set before relocated there. Prevents a
 			// relocation loop.
-			$this->setProgress($this->getConfirmationSource());
+			$this->app->checkout->setProgress($this->getConfirmationSource());
 			$this->app->relocate($thank_you_source);
 		}
 
