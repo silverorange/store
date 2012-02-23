@@ -6,7 +6,7 @@ require_once 'Store/pages/StoreCheckoutPage.php';
  * Abstract base class for final page of the checkout
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
@@ -43,7 +43,7 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
 
 	protected function getProgressDependencies()
 	{
-		return array('checkout/confirmation');
+		return array($this->getConfirmationSource());
 	}
 
 	// }}}

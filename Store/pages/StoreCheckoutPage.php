@@ -9,7 +9,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * Base class for checkout pages
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreCheckoutPage extends SiteUiPage
@@ -140,6 +140,14 @@ abstract class StoreCheckoutPage extends SiteUiPage
 				$this->app->relocate($dependency);
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function getConfirmationSource()
+
+	protected function getConfirmationSource()
+	{
+		return 'checkout/confirmation';
 	}
 
 	// }}}

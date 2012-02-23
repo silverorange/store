@@ -6,7 +6,7 @@ require_once 'Store/pages/StoreCheckoutPage.php';
  * Base class for a step page of checkout
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreCheckoutStepPage extends StoreCheckoutPage
@@ -42,7 +42,7 @@ abstract class StoreCheckoutStepPage extends StoreCheckoutPage
 
 	protected function relocate()
 	{
-		$this->app->relocate('checkout/confirmation');
+		$this->app->relocate($this->getConfirmationSource());
 	}
 
 	// }}}

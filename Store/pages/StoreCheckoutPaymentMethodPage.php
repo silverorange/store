@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreCardTypeWrapper.php';
  * Payment method edit page of checkout
  *
  * @package   Store
- * @copyright 2005-2011 silverorange
+ * @copyright 2005-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
@@ -383,7 +383,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 					$methods->getFirst()->setAdjustable(true);
 				}
 
-				$this->app->relocate('checkout/confirmation');
+				$this->app->relocate($this->getConfirmationSource());
 			}
 		}
 

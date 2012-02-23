@@ -10,7 +10,7 @@ require_once 'Swat/SwatDetailsStore.php';
  * Cart edit page of checkout
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutCartPage extends StoreCheckoutPage
@@ -95,7 +95,7 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 					$this->app->relocate('cart');
 
 				if ($this->continueButtonHasBeenClicked())
-					$this->app->relocate('checkout/confirmation');
+					$this->app->relocate($this->getConfirmationSource());
 			}
 		}
 	}
