@@ -214,7 +214,7 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 
 	protected function relocate()
 	{
-		$this->app->relocate('checkout/confirmation');
+		$this->app->relocate($this->getConfirmationSource());
 	}
 
 	// }}}
