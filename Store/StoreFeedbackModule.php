@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreFeedback.php';
 
 /**
  * @package   Store
- * @copyright 2009 silverorange
+ * @copyright 2009-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreFeedbackModule extends SiteApplicationModule
@@ -20,7 +20,8 @@ class StoreFeedbackModule extends SiteApplicationModule
 
 		if (isset($_GET['feedback'])) {
 			$show = true;
-		} elseif (in_array($this->app->getPage()->getSource(), $this->getSources())) {
+		} elseif (in_array($this->app->getPage()->getSource(),
+			$this->getSources())) {
 			$show = true;
 		} else {
 			$show = ($this->getSearchReferrer() !== null);
@@ -61,19 +62,27 @@ class StoreFeedbackModule extends SiteApplicationModule
 	/**
 	 * Initializes this module
 	 *
-	 * Stores ad object in the session module and initializes ad database
-	 * reference.
+	 * If the http referrer is a search referrer, active the session and store
+	 * the referrer for future use.
 	 */
 	public function init()
 	{
 		if ($this->isSearchReferrer()) {
 			$session = $this->app->getModule('SiteSessionModule');
 			$session->activate();
-			$session->feedback_referrer = SiteApplication::initVar(
+
+			$referrer = SiteApplication::initVar(
 				'HTTP_REFERER',
 				null,
 				SiteApplication::VAR_SERVER
 			);
+
+			// trim long referrer's down to 255 chars to match the database.
+			if (strlen($referrer) > 255) {
+				$referrer = substr($referrer, 0, 255);
+			}
+
+			$session->feedback_referrer = $referrer;
 		}
 	}
 
