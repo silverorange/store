@@ -15,7 +15,7 @@ require_once 'Store/dataobjects/StoreRegionWrapper.php';
  * @copyright 2011-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class SalesReportDetails extends AdminIndex
+class StoreSalesReportDetails extends AdminIndex
 {
 	// {{{ protected properties
 
