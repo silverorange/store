@@ -1,0 +1,37 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<widget class="SwatFrame" id="index_frame">
+		<property name="title" translatable="yes">Sales Report</property>
+		<widget class="SwatForm" id="index_form">
+			<widget class="SwatTableView" id="index_view">
+				<object class="SwatTableViewColumn" id="date">
+					<property name="title" translatable="yes">Day</property>
+					<object class="SwatTextCellRenderer">
+						<property name="text" type="data">day</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="title" translatable="yes">Created Orders</property>
+					<object class="SwatNumericCellRenderer">
+						<property name="value" type="data">created</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="title" translatable="yes">Cancelled Orders</property>
+					<object class="SwatNumericCellRenderer">
+						<property name="value" type="data">cancelled</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn">
+					<property name="title" translatable="yes">Subtotal</property>
+					<object class="SwatMoneyCellRenderer">
+						<property name="value" type="data">subtotal</property>
+						<property name="locale" type="data">locale_id</property>
+					</object>
+				</object>
+			</widget>
+		</widget>
+	</widget>
+</swatml>
