@@ -2,7 +2,7 @@
 
 require_once 'PEAR/PackageFileManager2.php';
 
-$version = '1.22.46';
+$version = '1.22.47';
 $notes = <<<EOT
 see ChangeLog
 EOT;
