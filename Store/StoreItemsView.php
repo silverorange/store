@@ -48,7 +48,7 @@ class StoreItemsView extends SwatControl
 	/**
 	 * Sets the product of this view
 	 *
-	 * @param StoreProductWrapper $product the product of this items view.
+	 * @param StoreProduct $product the product of this items view.
 	 */
 	public function setProduct(StoreProduct $product)
 	{
