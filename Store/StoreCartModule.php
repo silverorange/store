@@ -29,7 +29,7 @@ require_once 'Store/dataobjects/StoreCatalogWrapper.php';
  * {@link SiteApplication::getDefaultModuleList()} method.
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreCart
  */
@@ -280,6 +280,11 @@ class StoreCartModule extends SiteApplicationModule
 					$checkout_cart->addEntry($entry);
 				}
 			}
+
+			// Save to ensure that the cart state is correct. If the login
+			// is followed by a redirect without a cart save, removed
+			// entries from from an Account cart stay in the cart.
+			$this->save();
 		} else {
 			$this->load();
 		}
