@@ -26,7 +26,7 @@ require_once 'Deliverance/exceptions/DeliveranceException.php';
  * submission attempts are made.
  *
  * @package   Store
- * @copyright 2010-2011 silverorange
+ * @copyright 2010-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
@@ -98,7 +98,7 @@ class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
 	{
 		$this->list = new DeliveranceMailChimpList($this);
 		$this->list->setTimeout(
-			$this->config->mail_chimp->script_connection_timeout);
+			$this->config->deliverance->list_script_connection_timeout);
 	}
 
 	// }}}
