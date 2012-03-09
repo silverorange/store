@@ -88,6 +88,7 @@ Store:
     packages/store/styles/store-item-price-cell-renderer.css:
     packages/store/styles/store-message.css:
     packages/store/styles/store-order-payment-methods-cell-renderer.css:
+    packages/store/styles/store-percentage-total-row.css:
     packages/store/styles/store-product-page.css:
     packages/store/styles/store-product-image-display.css:
     packages/store/styles/store-quantity-entry.css:
