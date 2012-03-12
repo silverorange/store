@@ -169,6 +169,14 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			}
 		}
 
+		if (!isset($response->TransactionID)) {
+			$exception = new StoreException(sprintf(
+				"The following PayPal response does not contain a ".
+				"TransactionID:\n%s", print_r($response, true)));
+
+			$exception->processAndContinue();
+		}
+
 		$class_name = SwatDBClassMap::get('StorePaymentMethodTransaction');
 		$transaction = new $class_name();
 
