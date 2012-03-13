@@ -42,3 +42,7 @@
 	width: 8.5em;
 }
 
+.store-cart-entry-view .warning {
+	color: #900;
+	font-weight: bold;
+}
