@@ -150,7 +150,7 @@ StoreProductPage.prototype.addEntriesToCart = function()
 // }}}
 // {{{ StoreProductPage.prototype.changeButtonText
 
-StoreProductPage.prototype.changeButtonText = function(e)
+StoreProductPage.prototype.changeButtonText = function()
 {
 	var button = document.getElementById(this.add_button_id);
 	button.disabled = true;
