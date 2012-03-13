@@ -436,11 +436,6 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 			$description[] = '<div>'.SwatString::minimizeEntities($element).
 				'</div>';
 
-		$exlusion_description = $this->getProvStateExclusionDescription($entry);
-		if ($exclusion_description !== null) {
-			$description[] = $exclusion_description;
-		}
-
 		return implode("\n", $description);
 	}
 
