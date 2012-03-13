@@ -397,6 +397,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	protected function validateShippingProvStateExclusion(
 		StoreOrderAddress $address)
 	{
+		if (!isset($this->app->cart->checkout)) {
+			return true;
+		}
+
 		$valid = true;
 		$shipping_provstate = $address->getInternalValue('provstate');
 
