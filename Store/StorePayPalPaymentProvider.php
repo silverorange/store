@@ -162,11 +162,12 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			$response = $this->client->call('DoDirectPayment', $request);
 		} catch (Payment_PayPal_SOAP_ErrorException $e) {
 			// ignore warnings
-			if ($e->getSeverity() === Payment_PayPal_SOAP::ERROR_WARNING) {
-				$response = $e->getResponse();
-			} else {
-				throw $e;
+			foreach ($e as $error) {
+				if ($e->getSeverity() !== Payment_PayPal_SOAP::ERROR_WARNING) {
+					throw $e;
+				}
 			}
+			$response = $e->getResponse();
 		}
 
 		if (!isset($response->TransactionID)) {
@@ -220,11 +221,12 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			$response = $this->client->call('DoDirectPayment', $request);
 		} catch (Payment_PayPal_SOAP_ErrorException $e) {
 			// ignore warnings
-			if ($e->getSeverity() === Payment_PayPal_SOAP::ERROR_WARNING) {
-				$response = $e->getResponse();
-			} else {
-				throw $e;
+			foreach ($e as $error) {
+				if ($e->getSeverity() !== Payment_PayPal_SOAP::ERROR_WARNING) {
+					throw $e;
+				}
 			}
+			$response = $e->getResponse();
 		}
 
 		$class_name = SwatDBClassMap::get('StorePaymentMethodTransaction');
@@ -289,11 +291,12 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			$response = $this->client->call('SetExpressCheckout', $request);
 		} catch (Payment_PayPal_SOAP_ErrorException $e) {
 			// ignore warnings
-			if ($e->getSeverity() === Payment_PayPal_SOAP::ERROR_WARNING) {
-				$response = $e->getResponse();
-			} else {
-				throw $e;
+			foreach ($e as $error) {
+				if ($e->getSeverity() !== Payment_PayPal_SOAP::ERROR_WARNING) {
+					throw $e;
+				}
 			}
+			$response = $e->getResponse();
 		}
 
 		// According to the PayPal WSDL and SOAP schemas, it should be
@@ -384,11 +387,12 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 				$request);
 		} catch (Payment_PayPal_SOAP_ErrorException $e) {
 			// ignore warnings
-			if ($e->getSeverity() === Payment_PayPal_SOAP::ERROR_WARNING) {
-				$response = $e->getResponse();
-			} else {
-				throw $e;
+			foreach ($e as $error) {
+				if ($e->getSeverity() !== Payment_PayPal_SOAP::ERROR_WARNING) {
+					throw $e;
+				}
 			}
+			$response = $e->getResponse();
 		}
 
 		$details = $response->GetExpressCheckoutDetailsResponseDetails;
@@ -502,11 +506,12 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 				$request);
 		} catch (Payment_PayPal_SOAP_ErrorException $e) {
 			// ignore warnings
-			if ($e->getSeverity() === Payment_PayPal_SOAP::ERROR_WARNING) {
-				$response = $e->getResponse();
-			} else {
-				throw $e;
+			foreach ($e as $error) {
+				if ($e->getSeverity() !== Payment_PayPal_SOAP::ERROR_WARNING) {
+					throw $e;
+				}
 			}
+			$response = $e->getResponse();
 		}
 
 		$details = $response->DoExpressCheckoutPaymentResponseDetails;
@@ -546,11 +551,12 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 				$request);
 		} catch (Payment_PayPal_SOAP_ErrorException $e) {
 			// ignore warnings
-			if ($e->getSeverity() === Payment_PayPal_SOAP::ERROR_WARNING) {
-				$response = $e->getResponse();
-			} else {
-				throw $e;
+			foreach ($e as $error) {
+				if ($e->getSeverity() !== Payment_PayPal_SOAP::ERROR_WARNING) {
+					throw $e;
+				}
 			}
+			$response = $e->getResponse();
 		}
 
 		$details = $response->CreateRecurringPaymentsProfileResponseDetails;
@@ -577,7 +583,21 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	public static function getExceptionMessageId(
 		Payment_PayPal_SOAP_ErrorException $e)
 	{
-		switch ($e->getCode()) {
+		$code = 0;
+
+		foreach ($e as $error) {
+			if ($error->getSeverity() === Payment_PayPal_SOAP::ERROR_ERROR) {
+				// get first error code
+				$code = $error->getCode();
+				break;
+			}
+			if ($code === 0) {
+				// otherwise get first non-error code
+				$code = $error->getCode();
+			}
+		}
+
+		switch ($code) {
 
 		/*
 		 * Invalid card number (4111 1111 1111 1111 for example)
@@ -585,26 +605,26 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		case 10759:
 			return 'card-not-valid';
 
-		/**
+		/*
 		 * Card rejected by PayPal
 		 */
 		case 15001:
 		case 15002:
 			return 'card-not-valid';
 
-		/**
+		/*
 		 * Card declined by issuing bank
 		 */
 		case 15005:
 			return 'card-not-valid';
 
-		/**
+		/*
 		 * Card type mismatch from issuing bank
 		 */
 		case 15006:
 			return 'card-type';
 
-		/**
+		/*
 		 * Card expired from issuing bank
 		 */
 		case 15007:
