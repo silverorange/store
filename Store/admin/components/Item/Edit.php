@@ -85,6 +85,12 @@ class StoreItemEdit extends AdminDBEdit
 		$price_replicator = $this->ui->getWidget('price_replicator');
 		$price_replicator->replicators = $regions;
 
+		if ($this->ui->hasWidget('provstate_exclusion')) {
+			$this->ui->getWidget('provstate_exclusion')->addOptionsByArray(
+				SwatDB::getOptionArray($this->app->db, 'ProvState',
+					'title', 'id', 'country, title'));
+		}
+
 		$form = $this->ui->getWidget('edit_form');
 		$form->addHiddenField('product', $this->product);
 	}
@@ -196,6 +202,7 @@ class StoreItemEdit extends AdminDBEdit
 			StoreItemStatusList::statuses()->getById($values['status']));
 
 		$this->updateRegionBindings();
+		$this->updateProvstateExclusionBindings();
 		$this->updateItemAliases();
 	}
 
@@ -336,6 +343,21 @@ class StoreItemEdit extends AdminDBEdit
 	}
 
 	// }}}
+	// {{{ protected function updateProvstateExclusionBindings()
+
+	protected function updateProvstateExclusionBindings()
+	{
+		if (!$this->ui->hasWidget('provstate_exclusion')) {
+			return;
+		}
+
+		SwatDB::updateBinding($this->app->db, 'ItemProvstateExclusionBinding',
+			'item', $this->item->id, 'provstate',
+			$this->ui->getWidget('provstate_exclusion')->values,
+			'ProvState', 'ProvState.id');
+	}
+
+	// }}}
 	// {{{ protected function updateItemAliases()
 
 	protected function updateItemAliases()
@@ -435,6 +457,7 @@ class StoreItemEdit extends AdminDBEdit
 				$this->item->minimum_quantity_group->id;
 
 		$this->loadRegionBindings();
+		$this->loadProvstateExclusionBindings();
 		$this->loadItemAliases();
 	}
 
@@ -481,6 +504,18 @@ class StoreItemEdit extends AdminDBEdit
 				$price_replicator->getWidget('enabled', $region_id)->value =
 					$binding->enabled;
 			}
+		}
+	}
+
+	// }}}
+	// {{{ protected function loadProvstateExclusionBindings()
+
+	protected function loadProvstateExclusionBindings()
+	{
+		if ($this->ui->hasWidget('provstate_exclusion')) {
+			$widget = $this->ui->getWidget('provstate_exclusion');
+			foreach ($this->item->provstate_exclusion_bindings as $binding)
+				$widget->values[] = $binding->getInternalValue('provstate');
 		}
 	}
 
