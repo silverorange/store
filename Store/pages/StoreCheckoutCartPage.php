@@ -440,6 +440,31 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 	}
 
 	// }}}
+	// {{{ protected function getProvStateExclusionDescription()
+
+	protected function getProvStateExclusionDescription(StoreCartEntry $entry)
+	{
+		$description = null;
+		$order = $this->app->session->order;
+
+		if ($order->shipping_address !== null) {
+			$provstate = $order->shipping_address->getInternalValue(
+				'provstate');
+
+			foreach ($entry->item->provstate_exclusion_bindings as $binding) {
+				if ($binding->getInternalValue('provstate') == $provstate) {
+					$description = sprintf('<div class="warning">%s</div>',
+						SwatString::minimizeEntities(sprintf(Store::_(
+							'Note: this item can not be shipped to %s'),
+							$order->shipping_address->provstate->title)));
+				}
+			}
+		}
+
+		return $description;
+	}
+
+	// }}}
 	// {{{ protected function getImageDimension()
 
 	/**

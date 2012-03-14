@@ -384,6 +384,50 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 				SwatMessageDisplay::DISMISS_OFF);
 		}
 
+		if ($valid) {
+			$valid = $this->validateShippingProvstateExclusion($address);
+		}
+
+		return $valid;
+	}
+
+	// }}}
+	// {{{ protected function validateShippingProvStateExclusion()
+
+	protected function validateShippingProvStateExclusion(
+		StoreOrderAddress $address)
+	{
+		if (!isset($this->app->cart->checkout)) {
+			return true;
+		}
+
+		$valid = true;
+		$shipping_provstate = $address->getInternalValue('provstate');
+
+		foreach ($this->app->cart->checkout->getAvailableEntries() as $entry) {
+			$bindings = $entry->item->prov_state_exclusion_bindings;
+			foreach ($bindings as $binding) {
+				$item_exclusion_provstate = $binding->getInternalValue('provstate');
+				if ($item_exclusion_provstate == $shipping_provstate) {
+					$valid = false;
+					$message = new SwatMessage(Store::_('Shipping Address'), 'error');
+					$message->content_type = 'text/xml';
+					$message->secondary_content = sprintf(Store::_(
+						'Item %s “%s” can not be shipped to %s. '.
+						'Please %sselect a different shipping address%s '.
+						'or %sremove this item%s from your order.'),
+						$binding->item->sku,
+						$binding->item->product->title,
+						$address->provstate->title,
+						'<a href="checkout/confirmation/shippingaddress">', '</a>',
+						'<a href="checkout/confirmation/cart">', '</a>');
+
+					$this->ui->getWidget('message_display')->add($message,
+						SwatMessageDisplay::DISMISS_OFF);
+				}
+			}
+		}
+
 		return $valid;
 	}
 
