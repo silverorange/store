@@ -16,7 +16,7 @@ require_once 'Payment/PayPal/SOAP.php';
  * Additionally, methods to handle PayPal Express Checkout are provided.
  *
  * @package   Store
- * @copyright 2009-2010 silverorange
+ * @copyright 2009-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StorePaymentProvider::factory()
  * @see       StorePaymentMethodTransaction
@@ -163,7 +163,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		} catch (Payment_PayPal_SOAP_ErrorException $e) {
 			// ignore warnings
 			foreach ($e as $error) {
-				if ($e->getSeverity() !== Payment_PayPal_SOAP::ERROR_WARNING) {
+				if ($error->getSeverity() !==
+					Payment_PayPal_SOAP::ERROR_WARNING) {
 					throw $e;
 				}
 			}
@@ -222,7 +223,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		} catch (Payment_PayPal_SOAP_ErrorException $e) {
 			// ignore warnings
 			foreach ($e as $error) {
-				if ($e->getSeverity() !== Payment_PayPal_SOAP::ERROR_WARNING) {
+				if ($error->getSeverity() !==
+					Payment_PayPal_SOAP::ERROR_WARNING) {
 					throw $e;
 				}
 			}
@@ -292,7 +294,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		} catch (Payment_PayPal_SOAP_ErrorException $e) {
 			// ignore warnings
 			foreach ($e as $error) {
-				if ($e->getSeverity() !== Payment_PayPal_SOAP::ERROR_WARNING) {
+				if ($error->getSeverity() !==
+					Payment_PayPal_SOAP::ERROR_WARNING) {
 					throw $e;
 				}
 			}
@@ -388,7 +391,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		} catch (Payment_PayPal_SOAP_ErrorException $e) {
 			// ignore warnings
 			foreach ($e as $error) {
-				if ($e->getSeverity() !== Payment_PayPal_SOAP::ERROR_WARNING) {
+				if ($error->getSeverity() !==
+					Payment_PayPal_SOAP::ERROR_WARNING) {
 					throw $e;
 				}
 			}
@@ -507,7 +511,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		} catch (Payment_PayPal_SOAP_ErrorException $e) {
 			// ignore warnings
 			foreach ($e as $error) {
-				if ($e->getSeverity() !== Payment_PayPal_SOAP::ERROR_WARNING) {
+				if ($error->getSeverity() !==
+					Payment_PayPal_SOAP::ERROR_WARNING) {
 					throw $e;
 				}
 			}
@@ -552,7 +557,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		} catch (Payment_PayPal_SOAP_ErrorException $e) {
 			// ignore warnings
 			foreach ($e as $error) {
-				if ($e->getSeverity() !== Payment_PayPal_SOAP::ERROR_WARNING) {
+				if ($error->getSeverity() !==
+					Payment_PayPal_SOAP::ERROR_WARNING) {
 					throw $e;
 				}
 			}
