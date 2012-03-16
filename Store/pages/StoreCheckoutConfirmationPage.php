@@ -1239,9 +1239,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		ob_start();
 
+		$this->validatePaymentMethod(true);
+
 		if ($this->app->config->store->multiple_payment_support) {
 			$this->calculateMultiplePaymentMethods($order);
-			$this->validatePaymentMethod(true);
 			$this->displayMultiplePaymentMethods($order);
 			$this->displayNewPaymentLinks($order);
 		} else {
