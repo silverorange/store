@@ -451,9 +451,26 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	protected function setupCardVerificationValue(
 		StoreCardVerificationValueEntry $card_verification_value_widget)
 	{
-		$card_type = $this->getCardType();
 
-		if ($card_type != null) {
+		$card_type = $this->getCardType();
+		if ($card_type == null) {
+			// Card number not valid, use card type from existing payment
+			// method.
+			$order = $this->app->session->order;
+			$order_payment_method = $order->payment_methods->getFirst();
+			if ($order_payment_method instanceof StoreOrderPaymentMethod &&
+				$order_payment_method->payment_type->isCard()) {
+				$card_verification_value_widget->setCardType(
+					$order_payment_method->card_type);
+
+				$card_verification_value_widget->process();
+			} else {
+				// Just set the CVV to null if there is no pre-existing order
+				// payment method.
+				$card_verification_value_widget->process();
+				$card_verification_value_widget->value = null;
+			}
+		} else {
 			$card_verification_value_widget->setCardType($card_type);
 			$card_verification_value_widget->process();
 		}
