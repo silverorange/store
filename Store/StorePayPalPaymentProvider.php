@@ -606,6 +606,13 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		switch ($code) {
 
 		/*
+		 * Generic error. This can mean anything from PayPal is broken to the
+		 * card number is not valid.
+		 */
+		case 10001:
+			return 'card-error';
+
+		/*
 		 * Invalid card number (4111 1111 1111 1111 for example)
 		 */
 		case 10759:
