@@ -226,7 +226,9 @@ class StoreAccountDetails extends SiteAccountDetails
 
 		foreach ($account->addresses as $address) {
 			$ds = new SwatDetailsStore($address);
-			$ds->address = $address;
+			ob_start();
+			$address->displayCondensed();
+			$ds->address = ob_get_clean();
 			$ds->default_billing_address = ($address->id == $billing_id);
 			$ds->default_shipping_address = ($address->id == $shipping_id);
 			$ts->add($ds);

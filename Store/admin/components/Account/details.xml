@@ -159,17 +159,14 @@
 							<property name="value" type="data">id</property>
 						</object>
 					</object>
-					<object class="SwatTableViewColumn" id="controls">
-						<object class="AdminControlCellRenderer">
+					<object class="SwatTableViewColumn" id="address">
+						<property name="title" translatable="yes">Address</property>
+						<object class="AdminTitleLinkCellRenderer">
 							<property name="link">Account/AddressEdit?id=%s</property>
 							<property name="link_value" type="data">id</property>
+							<property name="text" type="data">address</property>
+							<property name="content_type">text/xml</property>
 							<property name="stock_id">edit</property>
-						</object>
-					</object>
-					<object class="SwatTableViewColumn" id="id">
-						<property name="title" translatable="yes">Address</property>
-						<object class="StoreAddressCellRenderer">
-							<property name="address" type="data">address</property>
 						</object>
 					</object>
 					<object class="SwatTableViewColumn" id="default_billing_address">
