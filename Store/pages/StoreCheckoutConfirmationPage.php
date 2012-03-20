@@ -16,7 +16,7 @@ require_once 'Store/exceptions/StorePaymentTotalException.php';
  * Confirmation page of checkout
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutConfirmationPage extends StoreCheckoutPage
@@ -1239,10 +1239,13 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		ob_start();
 
+		if ($this->app->config->store->multiple_payment_support) {
+			$this->calculateMultiplePaymentMethods($order);
+		}
+
 		$this->validatePaymentMethod(true);
 
 		if ($this->app->config->store->multiple_payment_support) {
-			$this->calculateMultiplePaymentMethods($order);
 			$this->displayMultiplePaymentMethods($order);
 			$this->displayNewPaymentLinks($order);
 		} else {
