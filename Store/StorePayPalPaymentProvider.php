@@ -172,7 +172,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		}
 
 		if (!isset($response->TransactionID)) {
-			$exception = new StoreException(sprintf(
+			$exception = new StorePaymentException(sprintf(
 				"The following PayPal response does not contain a ".
 				"TransactionID:\n%s", print_r($response, true)));
 
