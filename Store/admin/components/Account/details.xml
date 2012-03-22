@@ -202,17 +202,13 @@
 							<property name="value" type="data">id</property>
 						</object>
 					</object>
-					<object class="SwatTableViewColumn" id="controls">
-						<object class="AdminControlCellRenderer">
+					<object class="SwatTableViewColumn" id="payment_method">
+						<object class="AdminTitleLinkCellRenderer">
 							<property name="link">Account/PaymentMethodEdit?id=%s</property>
 							<property name="link_value" type="data">id</property>
+							<property name="text" type="data">payment_method</property>
+							<property name="content_type">text/xml</property>
 							<property name="stock_id">edit</property>
-						</object>
-					</object>
-					<object class="SwatTableViewColumn" id="id">
-						<object class="StorePaymentMethodCellRenderer">
-							<property name="show_card_expiry" type="boolean">true</property>
-							<property name="payment_method" type="data">payment_method</property>
 						</object>
 					</object>
 				</widget>
