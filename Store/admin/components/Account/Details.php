@@ -254,6 +254,12 @@ class StoreAccountDetails extends SiteAccountDetails
 		foreach ($payment_methods as $method) {
 			$ds = new SwatDetailsStore($method);
 			$ds->payment_method = $method;
+			ob_start();
+			$method->showCardNumber(true);
+			$method->showCardExpiry(true);
+			$method->showCardFullname(true);
+			$method->display(true);
+			$ds->payment_method = ob_get_clean();
 			$store->add($ds);
 		}
 
