@@ -112,7 +112,8 @@ class StoreAdminMenuView extends AdminMenuView
 		parent::createCompositeWidgets();
 
 		$entry = new SwatEntry('quick_search_item');
-		$entry->size = 2;
+		$entry->placeholder = Store::_('Item #');
+		$entry->access_key = '4';
 		$this->item_entry = $entry;
 
 		$button = new SwatButton();
@@ -120,8 +121,6 @@ class StoreAdminMenuView extends AdminMenuView
 		$button->title = Store::_('Go');
 
 		$field = new SwatFormField('quick_search_item_field');
-		$field->title = Store::_('Item #');
-		$field->access_key = '4';
 		$field->add($entry);
 		$field->add($button);
 
