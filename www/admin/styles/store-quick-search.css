@@ -1,35 +1,26 @@
 #quick_search_form {
-	border: 1px solid #e7ddc8;
-	margin-bottom: 0.5em;
-	background: #fff;
+	padding: 0 8px 4px;
 }
 
 #quick_search_form div.swat-form-field {
-	padding: 0.5em;
-	margin: 1px;
-	background: #f8f6f0;
-}
-
-#quick_search_form label {
-	vertical-align: middle;
-	color: #837352;
-	font-size: 80%;
+	padding: 0;
+	margin: 0;
 }
 
 #quick_search_form .swat-form-field-contents {
 	display: inline;
 }
 
-
 #quick_search_form input.swat-entry {
 	vertical-align: middle;
-	width: 4em;
+	width: 70px;
+	margin: 0;
 }
 
 #quick_search_form input.swat-button {
-	font-size: 85%;
-	margin-left: 0.3em;
-	padding-left: 0.1em;
-	padding-right: 0.1em;
+	font-size: 11px;
+	margin: 0 0 0 4px;
 	vertical-align: middle;
+	text-transform: uppercase;
+	padding: 5px 8px;
 }
