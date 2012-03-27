@@ -12,25 +12,11 @@ require_once 'SwatDB/SwatDBClassMap.php';
  * Index page for Orders
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderIndex extends AdminSearch
 {
-	// {{{ protected properties
-
-	/**
-	 * @var string
-	 */
-	protected $ui_xml = 'Store/admin/components/Order/index.xml';
-
-	/**
-	 * @var string
-	 */
-	protected $search_xml = 'Store/admin/components/Order/search.xml';
-
-	// }}}
-
 	// init phase
 	// {{{ protected function initInternal()
 
@@ -38,8 +24,8 @@ class StoreOrderIndex extends AdminSearch
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML($this->search_xml);
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getSearchXml());
+		$this->ui->loadFromXML($this->getUiXml());
 
 		if ($this->ui->hasWidget('search_region')) {
 			$search_region = $this->ui->getWidget('search_region');
@@ -74,6 +60,22 @@ class StoreOrderIndex extends AdminSearch
 			$index_view->setDefaultOrderbyColumn(
 				$index_view->getColumn('id'),
 				 SwatTableViewOrderableColumn::ORDER_BY_DIR_DESCENDING);
+	}
+
+	// }}}
+	// {{{ protected function getSearchXml()
+
+	protected function getSearchXml()
+	{
+		return 'Store/admin/components/Order/search.xml';
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return 'Store/admin/components/Order/index.xml';
 	}
 
 	// }}}
