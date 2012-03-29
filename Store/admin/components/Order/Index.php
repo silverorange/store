@@ -336,8 +336,8 @@ class StoreOrderIndex extends AdminSearch
 		$ds->fullname     = $this->getOrderFullname($order);
 		$ds->title        = $this->getOrderTitle($order);
 		$ds->has_comments = ($order->comments != '');
-		$ds->has_notes    = ($order->notes != '');
-		$ds->notes        = SwatString::minimizeEntities($ds->notes);
+		$ds->has_notes    = ($order->private_notes != '');
+		$ds->notes        = SwatString::minimizeEntities($ds->private_notes);
 		$ds->notes        = '<span class="admin-notes">'.$ds->notes.'</span>';
 
 		return $ds;
