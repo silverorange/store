@@ -70,11 +70,18 @@ class StoreOrder extends SwatDBDataObject
 	public $comments;
 
 	/**
-	 * Admin Notes
+	 * Public Admin Notes
 	 *
 	 * @var string
 	 */
-	public $notes;
+	public $public_notes;
+
+	/**
+	 * Private Admin Notes
+	 *
+	 * @var string
+	 */
+	public $private_notes;
 
 	/**
 	 * Creation date
@@ -369,6 +376,7 @@ class StoreOrder extends SwatDBDataObject
 	{
 		// TODO: remove this
 		$this->registerDeprecatedProperty('previous_attempt');
+		$this->registerDeprecatedProperty('notes');
 
 		$this->registerInternalProperty('status');
 		$this->registerInternalProperty('account',
