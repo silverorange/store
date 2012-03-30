@@ -79,6 +79,8 @@ StoreCheckoutAddressPage.prototype.initContainer = function()
 StoreCheckoutAddressPage.prototype.showAddressForm = function(animate)
 {
 	if (this.container) {
+		var div = this.container.parentNode;
+
 		if (animate) {
 			if (this.status == 'open') {
 				return; // don't re-animate if already open
@@ -86,7 +88,6 @@ StoreCheckoutAddressPage.prototype.showAddressForm = function(animate)
 				this.hide_animation.stop();
 			}
 
-			var div = this.container.parentNode;
 			div.style.height = '0';
 			this.container.style.display = 'block';
 			this.container.style.opacity = 0;
@@ -95,6 +96,8 @@ StoreCheckoutAddressPage.prototype.showAddressForm = function(animate)
 			this.show_animation.animate();
 		} else {
 			this.container.style.display = 'block';
+			div.style.height = 'auto';
+			div.style.width = '100%';
 		}
 
 		this.status = 'open';
