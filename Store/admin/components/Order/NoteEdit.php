@@ -81,7 +81,7 @@ class StoreOrderNoteEdit extends AdminDBEdit
 	protected function saveDBData()
 	{
 		$notes = $this->ui->getWidget('notes');
-		$this->order->notes = $notes->value;
+		$this->order->private_notes = $notes->value;
 		$this->order->save();
 
 		$this->app->messages->add($this->getSaveMessage());
@@ -103,7 +103,7 @@ class StoreOrderNoteEdit extends AdminDBEdit
 	protected function loadDBData()
 	{
 		$notes = $this->ui->getWidget('notes');
-		$notes->value = $this->order->notes;
+		$notes->value = $this->order->private_notes;
 	}
 
 	// }}}
