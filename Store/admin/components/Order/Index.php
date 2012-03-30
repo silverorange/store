@@ -265,8 +265,9 @@ class StoreOrderIndex extends AdminSearch
 	protected function getSelectClause()
 	{
 		$clause = 'Orders.id, Orders.total, Orders.createdate,
-					Orders.locale, Orders.instance, Orders.notes, Orders.comments,
-					Orders.billing_address, Orders.email, Orders.phone,
+					Orders.locale, Orders.instance, Orders.private_notes,
+					Orders.comments, Orders.billing_address, Orders.email,
+					Orders.phone,
 					(Orders.comments is not null and Orders.comments != %s)
 						as has_comments';
 
