@@ -18,14 +18,24 @@
 	margin-right: 2em;
 }
 
-.swat-table-view td.has-notes {
+.swat-table-view td.order-notes-row {
 	padding: 1px 0 2px;
 }
 
-.has-notes .admin-notes {
+.order-public-notes,
+.order-private-notes {
 	display: block;
+	padding: 2px 4px;
+}
+
+.order-public-notes {
+	color: #438d04;
+	background: #d9e8cd;
+	border: 1px solid #8ebb68;
+}
+
+.order-private-notes {
 	color: #947140;
 	background: #fffbc9;
-	padding: 2px 4px;
 	border: 1px solid #f0dca1;
 }

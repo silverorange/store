@@ -55,7 +55,8 @@
 						<property name="value" type="data">has_comments</property>
 					</object>
 				</object>
-				<object class="SwatTableViewSpanningColumn" id="has_notes">
+				<object class="SwatTableViewSpanningColumn">
+					<property name="classes[]">order-notes-row</property>
 					<property name="offset" type="integer">1</property>
 					<object class="SwatTextCellRenderer">
 						<property name="visible" type="data">has_notes</property>
