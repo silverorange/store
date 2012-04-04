@@ -18,23 +18,24 @@
 	margin-right: 2em;
 }
 
+.swat-table-view td.order-comments-row,
 .swat-table-view td.order-notes-row {
 	padding: 1px 0 2px;
 }
 
-.order-public-notes,
-.order-private-notes {
+.order-comments,
+.order-notes {
 	display: block;
 	padding: 2px 4px;
 }
 
-.order-public-notes {
+.order-comments {
 	color: #438d04;
 	background: #d9e8cd;
 	border: 1px solid #8ebb68;
 }
 
-.order-private-notes {
+.order-notes {
 	color: #947140;
 	background: #fffbc9;
 	border: 1px solid #f0dca1;
