@@ -5,7 +5,7 @@
 	<widget class="SwatFrame" id="edit_frame">
 		<property name="title" translatable="yes">Note</property>
 		<widget class="AdminNote" id="admin_note">
-			<property name="content" translatable="yes">Note is for administrative purposes and will not be displayed to the customer.</property>
+			<property name="content" translatable="yes">This note is for administrative purposes and will not be displayed to the customer.</property>
 		</widget>
 		<widget class="SwatForm" id="edit_form">
 			<widget class="SwatTextarea" id="notes" />
