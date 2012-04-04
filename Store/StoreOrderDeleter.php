@@ -90,8 +90,8 @@ class StoreOrderDeleter extends SitePrivateDataDeleter
 		$order->email = null;
 		$order->phone = null;
 		$order->comments = null;
-		$order->public_notes = null;
-		$order->private_notes = null;
+		$order->admin_comments = null;
+		$order->notes = null;
 
 		if (count($order->payment_methods)) {
 			foreach ($order->payment_methods as $payment_method) {
