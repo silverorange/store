@@ -265,7 +265,7 @@ class StoreOrderIndex extends AdminSearch
 	protected function getSelectClause()
 	{
 		$clause = 'Orders.id, Orders.total, Orders.createdate,
-					Orders.locale, Orders.instance, Orders.private_notes,
+					Orders.locale, Orders.instance, Orders.notes,
 					Orders.comments, Orders.billing_address, Orders.email,
 					Orders.phone,
 					(Orders.comments is not null and Orders.comments != %s)
@@ -337,12 +337,10 @@ class StoreOrderIndex extends AdminSearch
 		$ds->fullname     = $this->getOrderFullname($order);
 		$ds->title        = $this->getOrderTitle($order);
 		$ds->has_comments = ($order->comments != '');
-		$ds->has_notes    = ($order->private_notes != '');
+		$ds->has_notes    = ($order->notes != '');
 
-		$pirvate_notes = SwatString::minimizeEntities($ds->private_notes);
-
-		$ds->notes = sprintf('<span class="order-public-notes">%s</span>',
-			$private_notes);
+		$ds->notes = sprintf('<span class="order-notes">%s</span>',
+			SwatString::minimizeEntities($ds->notes));
 
 		return $ds;
 	}
