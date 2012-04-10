@@ -250,14 +250,10 @@ class StoreCategoryPage extends StorePage
 		echo '<ul class="store-product-list">';
 
 		foreach ($products as $product) {
-			if ($this->isTwigPage() && !$product->isAvailableInRegion()) {
-				$this->out_of_stock_products[] = $product;
-			} else {
-				echo '<li class="store-product-icon">';
-				$link = $path.'/'.$product->shortname;
-				$product->displayAsIcon($link);
-				echo '</li>';
-			}
+			echo '<li class="store-product-icon">';
+			$link = $path.'/'.$product->shortname;
+			$product->displayAsIcon($link);
+			echo '</li>';
 		}
 
 		echo '</ul>';
@@ -508,11 +504,16 @@ class StoreCategoryPage extends StorePage
 		$products = array();
 
 		foreach ($this->products as $product) {
-			$category_id = $product->getInternalValue('primary_category');
-			if (!array_key_exists($category_id, $products))
-				$products[$category_id] = array();
+			if ($this->isTwigPage() && !$product->isAvailableInRegion()) {
+				$this->out_of_stock_products[] = $product;
+			} else {
+				$category_id = $product->getInternalValue('primary_category');
+				if (!array_key_exists($category_id, $products)) {
+					$products[$category_id] = array();
+				}
 
-			$products[$category_id][] = $product;
+				$products[$category_id][] = $product;
+			}
 		}
 
 		return $products;
