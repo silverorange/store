@@ -34,7 +34,7 @@ require_once
  * Details page for Products
  *
  * @package   Store
- * @copyright 2005-2009 silverorange
+ * @copyright 2005-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductDetails extends AdminIndex
@@ -1212,9 +1212,9 @@ class StoreProductDetails extends AdminIndex
 			// discount renderer (only displayed if sale-discount is set)
 			$discount_renderer = new SwatPercentageCellRenderer();
 			$discount_renderer->locale = $region->getFirstLocale()->id;
-			$column->addrenderer($discount_renderer);
+			$column->addRenderer($discount_renderer);
 
-			$column->addmappingtorenderer($discount_renderer,
+			$column->addMappingToRenderer($discount_renderer,
 				'savings_'.$region->id, 'value');
 
 			$column->addMappingToRenderer($discount_renderer,
@@ -1223,7 +1223,7 @@ class StoreProductDetails extends AdminIndex
 			// " Off" cell renderer (only displayed if sale-discount is set)
 			$off_renderer = new SwatTextCellRenderer();
 			$off_renderer->text = Store::_(' Off');
-			$column->addrenderer($off_renderer);
+			$column->addRenderer($off_renderer);
 			$column->addMappingToRenderer($off_renderer,
 				'is_on_sale_'.$region->id, 'visible');
 
@@ -1231,9 +1231,9 @@ class StoreProductDetails extends AdminIndex
 			$sale_renderer = new StorePriceCellRenderer();
 			$sale_renderer->locale = $region->getFirstLocale()->id;
 			$sale_renderer->classes[] = 'store-sale-discount-original-price';
-			$column->addrenderer($sale_renderer);
+			$column->addRenderer($sale_renderer);
 
-			$column->addmappingtorenderer($sale_renderer,
+			$column->addMappingToRenderer($sale_renderer,
 				'original_price_'.$region->id, 'value');
 
 			$column->addMappingToRenderer($sale_renderer,
@@ -1255,7 +1255,6 @@ class StoreProductDetails extends AdminIndex
 
 			$column->addMappingToRenderer($price_renderer,
 				'enabled_'.$region->id, 'enabled');
-
 
 			$money_entry = new SwatMoneyEntry('input_price_'.$region->id);
 			$money_entry->locale = $region->getFirstLocale()->id;
