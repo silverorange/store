@@ -253,38 +253,31 @@ class StoreOrderItem extends SwatDBDataObject
 	{
 		$item = null;
 
-		$sql = 'select Item.* from Item
+		$wrapper = SwatDBClassMap::get('StoreItemWrapper');
+
+		$sql = sprintf(
+			'select Item.* from Item
 			inner join AvailableItemView
 				on AvailableItemView.item = Item.id
 				and AvailableItemView.region = %s
-			where Item.id = %s';
-
-		$sql = sprintf($sql,
+			where Item.id = %s',
 			$this->db->quote($region->id, 'integer'),
 			$this->db->quote($this->item, 'integer'));
 
-		$items = SwatDB::query($this->db, $sql,
-			SwatDBClassMap::get('StoreItemWrapper'));
+		$item = SwatDB::query($this->db, $sql, $wrapper)->getFirst();
 
-		if (count($items) > 0)
-			$item = $items->getFirst();
-
-		if ($item === null) {
-			$sql = 'select Item.* from Item
+		// if lookup by id failed, try lookup by sku
+		if (!($item instanceof StoreItem)) {
+			$sql = sprintf(
+				'select Item.* from Item
 				inner join AvailableItemView
 					on AvailableItemView.item = Item.id
 					and AvailableItemView.region = %s
-				where Item.sku = %s';
-
-			$sql = sprintf($sql,
+				where Item.sku = %s',
 				$this->db->quote($region->id, 'integer'),
 				$this->db->quote($this->sku, 'text'));
 
-			$items = SwatDB::query($this->db, $sql,
-				SwatDBClassMap::get('StoreItemWrapper'));
-
-			if (count($items) > 0)
-				$item = $items->getFirst();
+			$item = SwatDB::query($this->db, $sql, $wrapper)->getFirst();
 		}
 
 		return $item;
@@ -294,24 +287,33 @@ class StoreOrderItem extends SwatDBDataObject
 	// {{{ public function getItem()
 
 	/**
-	 * Gets StoreItem belonging to this order item.
+	 * Gets the StoreItem belonging to this order item
 	 *
-	 * @return StoreItem The item ordered or null it it no longer exists.
+	 * The item is retrieved using the loose binding field OrderItem.item. If
+	 * that fails, the loose binding OrderItem.sku is attempted.
+	 *
+	 * @return StoreItem the StoreItem belonging to this order item, or null
+	 *                   if the item no longer exists.
 	 */
 	public function getItem()
 	{
 		$item = null;
 
-		$sql = 'select Item.* from Item where Item.id = %s';
+		$wrapper = SwatDBClassMap::get('StoreItemWrapper');
 
-		$sql = sprintf($sql,
+		$sql = sprintf(
+			'select * from Item where id = %s',
 			$this->db->quote($this->item, 'integer'));
 
-		$items = SwatDB::query($this->db, $sql,
-			SwatDBClassMap::get('StoreItemWrapper'));
+		$item = SwatDB::query($this->db, $sql, $wrapper)->getFirst();
 
-		if (count($items) > 0) {
-			$item = $items->getFirst();
+		// if lookup by id failed, try lookup by sku
+		if (!($item instanceof StoreItem)) {
+			$sql = sprintf(
+				'select * from Item where sku = %s',
+				$this->db->quote($this->sku, 'text'));
+
+			$item = SwatDB::query($this->db, $sql, $wrapper)->getFirst();
 		}
 
 		return $item;
