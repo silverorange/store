@@ -1205,9 +1205,18 @@ class StoreProductDetails extends AdminIndex
 
 	private function appendPriceColumns(SwatTableView $view, $regions)
 	{
+		$region_count = count($regions);
+
 		foreach ($regions as $region) {
 			$column = new SwatTableViewOrderableColumn('price_'.$region->id);
-			$column->title = sprintf(Store::_('%s Price'), $region->title);
+			$column->title = sprintf(
+				Store::ngettext(
+					'Price',
+					'%s Price',
+					$region_count
+				),
+				$region->title
+			);
 
 			// discount renderer (only displayed if sale-discount is set)
 			$discount_renderer = new SwatPercentageCellRenderer();
