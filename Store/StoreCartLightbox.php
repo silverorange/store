@@ -131,6 +131,7 @@ class StoreCartLightbox extends SwatControl
 
 		echo '</div>';
 
+		echo '<div id="store_cart_lightbox_bottom"></div>';
 		echo '</div>';
 
 		Swat::displayInlineJavaScript($this->getInlineJavaScript());
