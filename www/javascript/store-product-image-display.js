@@ -42,6 +42,7 @@ var StoreProductImageDisplay = function(data, config)
 
 // }}}
 
+/* note this JS test fails to detect ie6 TODO */
 StoreProductImageDisplay.ie6 = false /*@cc_on || @_jscript_version < 5.7 @*/;
 
 StoreProductImageDisplay.close_text = 'Close';
@@ -190,6 +191,7 @@ StoreProductImageDisplay.close_text = 'Close';
 		var pinkies = this.drawPinkies();
 		if (pinkies) {
 			this.overlay.appendChild(pinkies);
+			this.updatePinkiesHeight(this.current_viewport_height);
 		}
 
 		this.body.appendChild(this.overlay);
@@ -931,7 +933,20 @@ StoreProductImageDisplay.close_text = 'Close';
 			this.current_viewport_height = new_height;
 			this.updateOverlayHeight(this.current_viewport_height,
 				this.current_scroll_top);
+
+			this.updatePinkiesHeight(this.current_viewport_height);
 		}
+	};
+
+	// }}}
+	// {{{ updatePinkiesHeight()
+
+	StoreProductImageDisplay.prototype.updatePinkiesHeight = function(
+		viewport_height)
+	{
+		var pinky_width = this.data.images[0].pinky_width;
+		this.pinky_list.style.width = (pinky_width + 46) + 'px';
+		this.pinky_list.style.height = (viewport_height - 50) + 'px';
 	};
 
 	// }}}
