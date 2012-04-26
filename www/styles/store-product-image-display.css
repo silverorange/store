@@ -145,6 +145,8 @@
 	position: fixed;
 	left: 0;
 	top: 0;
+	overflow-y: auto;
+	overflow-x: visible;
 }
 
 .store-product-image-display-pinkies li {
