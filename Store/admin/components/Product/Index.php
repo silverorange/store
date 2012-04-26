@@ -117,6 +117,9 @@ class StoreProductIndex extends AdminSearch
 		$flydown = $this->ui->getWidget('search_sale_discount');
 		$flydown->addOptionsByArray(SwatDB::getOptionArray(
 			$this->app->db, 'SaleDiscount', 'title', 'id', 'title'));
+
+		$field = $this->ui->getWidget('sale_discount_field');
+		$field->visible = $this->app->hasComponent('SaleDiscount');
 	}
 
 	// }}}
