@@ -527,17 +527,22 @@ class StoreItemEdit extends AdminDBEdit
 			}
 
 			foreach ($this->item->region_bindings as $binding) {
-				$price_replicator->getWidget('price', $region_id)->value =
-					$binding->price;
+				$region_id = $binding->region->id;
+				$price = $price_replicator->getWidget('price', $region_id);
+				$price->value = $binding->price;
 
-				$price_replicator->getWidget('original_price', $region_id)->value =
-					$binding->original_price;
+				$original_price = $price_replicator->getWidget('original_price',
+					$region_id);
 
-				$price_replicator->getWidget('sale_discount_price', $region_id)->value =
-					$binding->sale_discount_price;
+				$original_price->value = $binding->original_price;
 
-				$price_replicator->getWidget('enabled', $region_id)->value =
-					$binding->enabled;
+				$sale_discount_price = $price_replicator->getWidget(
+					'sale_discount_price', $region_id);
+
+				$sale_discount_price->value = $binding->sale_discount_price;
+
+				$enabled = $price_replicator->getWidget('enabled', $region_id);
+				$enabled->value = $binding->enabled;
 			}
 		}
 	}
