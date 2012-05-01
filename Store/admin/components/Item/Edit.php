@@ -343,32 +343,25 @@ class StoreItemEdit extends AdminDBEdit
 				$region_binding->region  = $region;
 				$region_binding->price   = $price->value;
 
-				if ($enabled->visible &&
-					(isset($enabled->parent) &&
-					$enabled->parent->visible)) {
+				// enabled, original_price and sale_discount_price are all
+				// optional.
+				if ($this->replicatedWidgetVisible($enabled)) {
 					$region_binding->enabled = $enabled->value;
-				} elseif (isset($old_values[$region]['enabled'])) {
+				} elseif (isset($old_values[$region])) {
 					$region_binding->enabled = $old_values[$region]['enabled'];
 				}
 
-				if ($original_price->visible &&
-					(isset($original_price->parent) &&
-					$original_price->parent->visible)) {
-					$region_binding->original_price =
-						$original_price->value;
-				} elseif (isset($old_values[$region]['original_price'])) {
+				if ($this->replicatedWidgetVisible($original_price)) {
+					$region_binding->original_price = $original_price->value;
+				} elseif (isset($old_values[$region])) {
 					$region_binding->original_price =
 						$old_values[$region]['original_price'];
 				}
 
-				// sale discount price is optional and not used by some sites
-				if ($sale_discount_price !== null &&
-					$sale_discount_price->visible &&
-					(isset($sale_discount_price->parent) &&
-					$sale_discount_price->parent->visible)) {
+				if ($this->replicatedWidgetVisible($sale_discount_price)) {
 					$region_binding->sale_discount_price =
 						$sale_discount_price->value;
-				} elseif (isset($old_values[$region]['sale_discount_price'])) {
+				} elseif (isset($old_values[$region])) {
 					$region_binding->sale_discount_price =
 						$old_values[$region]['sale_discount_price'];
 				}
@@ -376,6 +369,20 @@ class StoreItemEdit extends AdminDBEdit
 				$this->item->region_bindings->add($region_binding);
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function replicatedWidgetVisible()
+
+	protected function replicatedWidgetVisible($widget)
+	{
+		$visible = ($widget !== null && $widget->visible);
+
+		if (isset($widget->parent)) {
+			$visible = $visible && $widget->parent->visible;
+		}
+
+		return $visible;
 	}
 
 	// }}}
