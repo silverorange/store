@@ -301,6 +301,20 @@ class StoreItemEdit extends AdminDBEdit
 
 	protected function updateRegionBindings()
 	{
+		// get old values. If the price_replicator doesn't include one of the
+		// old values, re-save its previous state instead of resetting it to the
+		// database default.
+		$old_values = array();
+		foreach ($this->item->region_bindings as $binding) {
+			$old_values[$binding->region->id]['enabled'] = $binding->enabled;
+			$old_values[$binding->region->id]['price']   = $binding->price;
+			$old_values[$binding->region->id]['original_price'] =
+				$binding->original_price;
+
+			$old_values[$binding->region->id]['sale_discount_price'] =
+				$binding->sale_discount_price;
+		}
+
 		// Due to SwatDBDataObject not being able to delete when there is no id
 		// like the binding table below, this has to use manual sql to do its
 		// delete, and can't use the nice removeAll() method.
@@ -327,14 +341,36 @@ class StoreItemEdit extends AdminDBEdit
 			if ($price_field->getState() !== null) {
 				$region_binding = new $class_name();
 				$region_binding->region  = $region;
-				$region_binding->enabled = $enabled_field->value;
 				$region_binding->price   = $price_field->value;
-				$region_binding->original_price = $original_price_field->value;
+
+				if ($enabled_field->visible &&
+					(isset($enabled_field->parent) &&
+					$enabled_field->parent->visible)) {
+					$region_binding->enabled = $enabled_field->value;
+				} elseif (isset($old_values[$region]['enabled'])) {
+					$region_binding->enabled = $old_values[$region]['enabled'];
+				}
+
+				if ($original_price_field->visible &&
+					(isset($original_price_field->parent) &&
+					$original_price_field->parent->visible)) {
+					$region_binding->original_price =
+						$original_price_field->value;
+				} elseif (isset($old_values[$region]['original_price'])) {
+					$region_binding->original_price =
+						$old_values[$region]['original_price'];
+				}
 
 				// sale discount price is optional and not used by some sites
-				if ($sale_discount_price_field !== null) {
+				if ($sale_discount_price_field !== null &&
+					$sale_discount_price_field->visible &&
+					(isset($sale_discount_price_field->parent) &&
+					$sale_discount_price_field->parent->visible)) {
 					$region_binding->sale_discount_price =
 						$sale_discount_price_field->value;
+				} elseif (isset($old_values[$region]['sale_discount_price'])) {
+					$region_binding->sale_discount_price =
+						$old_values[$region]['sale_discount_price'];
 				}
 
 				$this->item->region_bindings->add($region_binding);
@@ -491,7 +527,6 @@ class StoreItemEdit extends AdminDBEdit
 			}
 
 			foreach ($this->item->region_bindings as $binding) {
-				$region_id = $binding->region->id;
 				$price_replicator->getWidget('price', $region_id)->value =
 					$binding->price;
 
