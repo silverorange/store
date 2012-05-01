@@ -328,46 +328,46 @@ class StoreItemEdit extends AdminDBEdit
 		$class_name = SwatDBClassMap::get('StoreItemRegionBinding');
 
 		foreach ($price_replicator->replicators as $region => $title) {
-			$price_field = $price_replicator->getWidget('price', $region);
-			$enabled_field = $price_replicator->getWidget('enabled', $region);
-			$original_price_field =
+			$price          = $price_replicator->getWidget('price', $region);
+			$enabled        = $price_replicator->getWidget('enabled', $region);
+			$original_price =
 				$price_replicator->getWidget('original_price', $region);
 
-			$sale_discount_price_field =
+			$sale_discount_price =
 				$price_replicator->getWidget('sale_discount_price', $region);
 
 			// only create new binding if price exists, otherwise there is no
 			// use for the binding, and it can lead to bad data on the site
-			if ($price_field->getState() !== null) {
+			if ($price->getState() !== null) {
 				$region_binding = new $class_name();
 				$region_binding->region  = $region;
-				$region_binding->price   = $price_field->value;
+				$region_binding->price   = $price->value;
 
-				if ($enabled_field->visible &&
-					(isset($enabled_field->parent) &&
-					$enabled_field->parent->visible)) {
-					$region_binding->enabled = $enabled_field->value;
+				if ($enabled->visible &&
+					(isset($enabled->parent) &&
+					$enabled->parent->visible)) {
+					$region_binding->enabled = $enabled->value;
 				} elseif (isset($old_values[$region]['enabled'])) {
 					$region_binding->enabled = $old_values[$region]['enabled'];
 				}
 
-				if ($original_price_field->visible &&
-					(isset($original_price_field->parent) &&
-					$original_price_field->parent->visible)) {
+				if ($original_price->visible &&
+					(isset($original_price->parent) &&
+					$original_price->parent->visible)) {
 					$region_binding->original_price =
-						$original_price_field->value;
+						$original_price->value;
 				} elseif (isset($old_values[$region]['original_price'])) {
 					$region_binding->original_price =
 						$old_values[$region]['original_price'];
 				}
 
 				// sale discount price is optional and not used by some sites
-				if ($sale_discount_price_field !== null &&
-					$sale_discount_price_field->visible &&
-					(isset($sale_discount_price_field->parent) &&
-					$sale_discount_price_field->parent->visible)) {
+				if ($sale_discount_price !== null &&
+					$sale_discount_price->visible &&
+					(isset($sale_discount_price->parent) &&
+					$sale_discount_price->parent->visible)) {
 					$region_binding->sale_discount_price =
-						$sale_discount_price_field->value;
+						$sale_discount_price->value;
 				} elseif (isset($old_values[$region]['sale_discount_price'])) {
 					$region_binding->sale_discount_price =
 						$old_values[$region]['sale_discount_price'];
