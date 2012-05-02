@@ -345,20 +345,20 @@ class StoreItemEdit extends AdminDBEdit
 
 				// enabled, original_price and sale_discount_price are all
 				// optional.
-				if ($this->replicatedWidgetVisible($enabled)) {
+				if ($this->isWidgetVisible($enabled)) {
 					$region_binding->enabled = $enabled->value;
 				} elseif (isset($old_values[$region])) {
 					$region_binding->enabled = $old_values[$region]['enabled'];
 				}
 
-				if ($this->replicatedWidgetVisible($original_price)) {
+				if ($this->isWidgetVisible($original_price)) {
 					$region_binding->original_price = $original_price->value;
 				} elseif (isset($old_values[$region])) {
 					$region_binding->original_price =
 						$old_values[$region]['original_price'];
 				}
 
-				if ($this->replicatedWidgetVisible($sale_discount_price)) {
+				if ($this->isWidgetVisible($sale_discount_price)) {
 					$region_binding->sale_discount_price =
 						$sale_discount_price->value;
 				} elseif (isset($old_values[$region])) {
@@ -372,9 +372,9 @@ class StoreItemEdit extends AdminDBEdit
 	}
 
 	// }}}
-	// {{{ protected function replicatedWidgetVisible()
+	// {{{ protected function isWidgetVisible()
 
-	protected function replicatedWidgetVisible($widget)
+	protected function isWidgetVisible($widget)
 	{
 		$visible = ($widget !== null && $widget->visible);
 
