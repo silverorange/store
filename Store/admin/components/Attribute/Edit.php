@@ -8,20 +8,25 @@ require_once 'Swat/SwatMessage.php';
 require_once 'Store/dataobjects/StoreAttribute.php';
 
 /**
- * Edit page for Attribute Types
+ * Edit page for ttributes
  *
  * @package   Store
- * @copyright 2008 silverorange
+ * @copyright 2008-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAttributeEdit extends AdminDBEdit
 {
-	// {{{ private properties
+	// {{{ protected properties
 
 	/**
-	 * @var StoreAttributeType
+	 * @var string
 	 */
-	private $attribute;
+	protected $ui_xml = 'Store/admin/components/Attribute/edit.xml';
+
+	/**
+	 * @var StoreAttribute
+	 */
+	protected $attribute;
 
 	// }}}
 
@@ -34,11 +39,18 @@ class StoreAttributeEdit extends AdminDBEdit
 
 		$this->initAttribute();
 
-		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
+		$this->ui->loadFromXML($this->ui_xml);
 
 		$attribute_type_flydown = $this->ui->getWidget('attribute_type');
-		$attribute_type_flydown->addOptionsByArray(SwatDB::getOptionArray(
-			$this->app->db, 'AttributeType', 'shortname', 'id', 'shortname'));
+		$attribute_type_flydown->addOptionsByArray(
+			SwatDB::getOptionArray(
+				$this->app->db,
+				'AttributeType',
+				'shortname',
+				'id',
+				'shortname'
+			)
+		);
 	}
 
 	// }}}
@@ -53,8 +65,11 @@ class StoreAttributeEdit extends AdminDBEdit
 		if ($this->id != null) {
 			if (!$this->attribute->load($this->id)) {
 				throw new AdminNotFoundException(
-					sprintf(Store::_('Attribute with id ‘%s’ not found.'),
-						$this->id));
+					sprintf(
+						Store::_('Attribute with id ‘%s’ not found.'),
+						$this->id
+					)
+				);
 			}
 		}
 	}
@@ -75,8 +90,8 @@ class StoreAttributeEdit extends AdminDBEdit
 		if ($attribute->loadFromShortname($shortname->value)) {
 			if ($attribute->id !== $this->attribute->id) {
 				$message = new SwatMessage(
-					Admin::_('Shortname already exists and must be unique.'));
-
+					Store::_('Shortname already exists and must be unique.')
+				);
 				$shortname->addMessage($message);
 			}
 		}
@@ -92,13 +107,17 @@ class StoreAttributeEdit extends AdminDBEdit
 		$this->attribute->save();
 
 		$message = new SwatMessage(
-			sprintf(Store::_('Attribute “%s” has been saved.'),
-				$this->attribute->title));
+			sprintf(
+				Store::_('Attribute “%s” has been saved.'),
+				$this->attribute->title
+			)
+		);
 
 		$this->app->messages->add($message);
 
-		if (isset($this->app->memcache))
+		if (isset($this->app->memcache)) {
 			$this->app->memcache->flushNs('product');
+		}
 	}
 
 	// }}}
@@ -106,11 +125,13 @@ class StoreAttributeEdit extends AdminDBEdit
 
 	protected function updateAttribute()
 	{
-		$values = $this->ui->getValues(array(
-			'shortname',
-			'title',
-			'attribute_type',
-		));
+		$values = $this->ui->getValues(
+			array(
+				'shortname',
+				'title',
+				'attribute_type',
+			)
+		);
 
 		$this->attribute->shortname      = $values['shortname'];
 		$this->attribute->title          = $values['title'];
