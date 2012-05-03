@@ -12,7 +12,6 @@ require_once 'Store/dataobjects/StoreProductReview.php';
  * @package   Store
  * @copyright 2008-2011 silverorange
  */
-
 class StoreProductReviewView extends SiteView
 {
 	// {{{ protected properties
