@@ -8,7 +8,7 @@ require_once 'Swat/SwatMessage.php';
 require_once 'Store/dataobjects/StoreAttribute.php';
 
 /**
- * Edit page for ttributes
+ * Edit page for Attributes
  *
  * @package   Store
  * @copyright 2008-2012 silverorange
