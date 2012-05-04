@@ -56,7 +56,7 @@ class StoreAttributeIndex extends AdminIndex
 			inner join AttributeType on
 				Attribute.attribute_type = AttributeType.id
 			order by attribute_type, %s',
-			$this->getOrderByClause($view, 'displayorder'));
+			$this->getOrderByClause($view, 'displayorder, title'));
 
 		$attributes = SwatDB::query($this->app->db, $sql,
 			'StoreAttributeWrapper');
