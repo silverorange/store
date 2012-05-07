@@ -282,36 +282,6 @@ class StoreCartLightbox extends SwatControl
 	}
 
 	// }}}
-	// {{{ protected function displayCartEntries()
-
-	/**
-	 * @return string The mini cart entries.
-	 */
-	protected function displayCartEntries()
-	{
-		$cart = $this->app->getCacheValue(
-			'mini-cart',
-			$this->app->session->getSessionId()
-		);
-
-		if ($cart === false) {
-			$this->buildCartUI();
-
-			ob_start();
-			$this->ui->display();
-			$cart = ob_get_clean();
-
-			$this->app->addCacheValue(
-				$cart,
-				'mini-cart',
-				$this->app->session->getSessionId()
-			);
-		}
-
-		echo $cart;
-	}
-
-	// }}}
 	// {{{ public function getAvailableHtmlHeadEntrySet()
 
 	public function getAvailableHtmlHeadEntrySet()
@@ -339,6 +309,36 @@ class StoreCartLightbox extends SwatControl
 		}
 
 		return $set;
+	}
+
+	// }}}
+	// {{{ protected function displayCartEntries()
+
+	/**
+	 * @return string The mini cart entries.
+	 */
+	protected function displayCartEntries()
+	{
+		$cart = $this->app->getCacheValue(
+			'mini-cart',
+			$this->app->session->getSessionId()
+		);
+
+		if ($cart === false) {
+			$this->buildCartUI();
+
+			ob_start();
+			$this->ui->display();
+			$cart = ob_get_clean();
+
+			$this->app->addCacheValue(
+				$cart,
+				'mini-cart',
+				$this->app->session->getSessionId()
+			);
+		}
+
+		echo $cart;
 	}
 
 	// }}}
