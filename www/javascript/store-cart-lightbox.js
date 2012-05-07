@@ -5,10 +5,10 @@
  */
 function StoreCartLightbox(available_entry_count, all_entry_count)
 {
-	this.status           = 'closed';
-	this.product_id       = 0;
-	this.current_request  = 0;
-	this.analytics        = null;
+	this.status          = 'closed';
+	this.product_id      = 0;
+	this.current_request = 0;
+	this.esc_listener    = null;
 
 	// accounts for the whitespace where the shadow appears
 	this.cart_container_offset = -5;
@@ -24,6 +24,12 @@ function StoreCartLightbox(available_entry_count, all_entry_count)
 
 	this.cart_empty_event =
 		new YAHOO.util.CustomEvent('cart_empty', this);
+
+	this.open_event =
+		new YAHOO.util.CustomEvent('cart_open', this);
+
+	this.close_event =
+		new YAHOO.util.CustomEvent('cart_close', this);
 
 	this.current_delete = 0;
 	this.main_animation = null;
@@ -68,32 +74,52 @@ StoreCartLightbox.prototype.init = function()
 	document.body.appendChild(this.mini_cart);
 
 	var cart_links = YAHOO.util.Dom.getElementsByClassName(
-		'store-open-cart-link');
+		'store-open-cart-link'
+	);
 
 	if (cart_links.length > 0) {
-		YAHOO.util.Event.on(cart_links, 'click', this.load, this, true);
+		YAHOO.util.Event.on(
+			cart_links,
+			'click',
+			this.handleLinkClick,
+			this,
+			true
+		);
 	}
 
 	YAHOO.util.Event.on(window, 'scroll', this.handleWindowChange, this, true);
 
 	// make any click on the body close the mini-cart, except for the
 	// mini-cart itself
-	YAHOO.util.Event.on(this.mini_cart, 'click',
+	YAHOO.util.Event.on(
+		this.mini_cart,
+		'click',
 		function(e) {
 			YAHOO.util.Event.stopPropagation(e);
-	});
+		}
+	);
 
-	YAHOO.util.Event.on(document, 'click', this.clickClose, this, true);
+	YAHOO.util.Event.on(document, 'click', this.handleDocumentClick, this, true);
 	YAHOO.util.Event.on(window, 'resize', this.handleWindowChange, this, true);
 
-	var that = this;
-	var esc_close = new YAHOO.util.KeyListener(document, { keys: [27] },
-		function() {
-			that.close();
-			that.recordAnalytics('xml-rpc/mini-cart/close/esc');
-	});
+	this.esc_listener = new YAHOO.util.KeyListener(
+		document,
+		{ keys: [27] },
+		{
+			fn: function()
+			{
+				if (this.status == 'open') {
+					this.close_event.fire('esc');
+				}
 
-	esc_close.enable();
+				this.close();
+			},
+			scope: this,
+			correctScope: true
+		}
+	);
+
+	this.esc_listener.enable();
 
 	this.activateLinks();
 	this.preLoadImages();
@@ -112,14 +138,15 @@ StoreCartLightbox.prototype.configure = function()
 // }}}
 // {{{ StoreCartLightbox.prototype.addEntries
 
-StoreCartLightbox.prototype.addEntries = function(entries, source, source_category)
+StoreCartLightbox.prototype.addEntries = function(entries, source,
+	source_category)
 {
 	var that = this;
 	function callBack(response)
 	{
 		if (response.request_id == that.current_request) {
 			that.addEntriesCallback(response);
-			that.recordAnalytics('xml-rpc/mini-cart/open/add');
+			that.open_event.fire('add');
 		}
 	}
 
@@ -138,26 +165,26 @@ StoreCartLightbox.prototype.addEntries = function(entries, source, source_catego
 }
 
 // }}}
-// {{{ StoreCartLightbox.prototype.load
+// {{{ StoreCartLightbox.prototype.handleLinkClick
 
-StoreCartLightbox.prototype.load = function(e)
+StoreCartLightbox.prototype.handleLinkClick = function(e)
 {
 	YAHOO.util.Event.preventDefault(e);
 
 	if (this.status == 'open') {
 		this.close();
 
-		// track here instead of inside close() so that we only clicks on cart
-		// link a close. Closes caused by clicking outside the box are handled
-		// elsewhere
-		this.recordAnalytics('xml-rpc/mini-cart/close');
+		// track here instead of inside close() so we only track clicks on the
+		//cart link close. Closes caused by clicking outside the box are
+		// handled in handleDocumentClick().
+		this.close_event.fire('link');
 	} else {
 		this.open();
 
-		// track here instead of inside open() so that we only clicks on cart
-		// link as opens. Opens caused by adding items to the cart are tracked
-		// elsewhere.
-		this.recordAnalytics('xml-rpc/mini-cart/open');
+		// track here instead of inside open() so we only track clicks on the
+		// cart link opens. Opens caused by adding items to the cart are
+		// tracked in addEntries()/
+		this.open_event.fire('link');
 	}
 }
 
@@ -322,8 +349,7 @@ StoreCartLightbox.prototype.removeEntry = function(e)
 	{
 		if (response.request_id == that.current_request) {
 			that.displayResponse(response);
-			that.entry_removed_event.fire(response);
-			that.recordAnalytics('xml-rpc/mini-cart/remove-entry');
+			that.entry_removed_event.fire(response, entry_id);
 		}
 	}
 
@@ -419,9 +445,9 @@ StoreCartLightbox.prototype.close = function(e)
 }
 
 // }}}
-// {{{ StoreCartLightbox.prototype.clickClose
+// {{{ StoreCartLightbox.prototype.handleDocumentClick
 
-StoreCartLightbox.prototype.clickClose = function(e)
+StoreCartLightbox.prototype.handleDocumentClick = function(e)
 {
 	if (YAHOO.util.Dom.hasClass(
 		YAHOO.util.Event.getTarget(e), 'store-open-cart-link')) {
@@ -435,8 +461,11 @@ StoreCartLightbox.prototype.clickClose = function(e)
 		return;
 	}
 
+	if (this.status == 'open') {
+		this.close_event.fire('document-click');
+	}
+
 	this.close();
-	this.recordAnalytics('xml-rpc/mini-cart/close/click');
 }
 
 // }}}
@@ -618,16 +647,6 @@ StoreCartLightbox.prototype.updateCartLink = function(link)
 {
 	var cart_link = document.getElementById(this.cart_header_id);
 	cart_link.innerHTML = link;
-}
-
-// }}}
-// {{{ StoreCartLightbox.prototype.recordAnalytics
-
-StoreCartLightbox.prototype.recordAnalytics = function(uri)
-{
-	if (this.analytics == 'google_analytics') {
-		_gaq.push(['_trackPageview', uri]);
-	}
 }
 
 // }}}
