@@ -45,11 +45,6 @@ class StoreCartLightbox extends SwatControl
 	 */
 	public $override_content = null;
 
-	/**
-	 * @var integer
-	 */
-	public $analytics;
-
 	// }}}
 	// {{{ protected properties
 
@@ -195,10 +190,6 @@ class StoreCartLightbox extends SwatControl
 			$this->getJavaScriptClassName(),
 			intval($available_entries),
 			intval($available_entries + $saved_entries));
-
-		if ($this->analytics === self::GOOGLE_ANALYTICS) {
-			$javascript.= "cart_lightbox.analytics = 'google_analytics';\n";
-		}
 
 		return $javascript;
 	}

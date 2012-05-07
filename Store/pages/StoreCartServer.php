@@ -11,7 +11,7 @@ require_once 'Store/StoreCartLightbox.php';
  * Handles XML-RPC requests to update the cart
  *
  * @package   Store
- * @copyright 2010-2011 silverorange
+ * @copyright 2010-2012 silverorange
  */
 class StoreCartServer extends SiteXMLRPCServer
 {
@@ -64,6 +64,10 @@ class StoreCartServer extends SiteXMLRPCServer
 	{
 		$product_id = null;
 
+		$added_entries = array();
+		$saved_entries = array();
+		$other_entries = array();
+
 		foreach ($entries as $e) {
 			$entry = $this->processor->createCartEntry(
 				$e['item_id'], $e['quantity']);
@@ -80,6 +84,26 @@ class StoreCartServer extends SiteXMLRPCServer
 
 			$this->processor->addEntryToCart($entry);
 
+			$added = $this->processor->getEntriesAdded();
+			foreach ($added as $result) {
+				if ($result['status'] === StoreCartProcessor::ENTRY_ADDED) {
+					$added_entries[] = array(
+						'item_id' => $result['entry']->getItemId(),
+						'sku' => $result['entry']->getItemSku(),
+					);
+				} elseif ($result['status'] === StoreCartProcessor::ENTRY_SAVED) {
+					$saved_entries[] = array(
+						'item_id' => $result['entry']->getItemId(),
+						'sku' => $result['entry']->getItemSku(),
+					);
+				} else {
+					$other_entries[] = array(
+						'item_id' => $result['entry']->getItemId(),
+						'sku' => $result['entry']->getItemSku(),
+					);
+				}
+			}
+
 			if ($product_id === null) {
 				$product_id = $entry->item->product->id;
 			}
@@ -91,7 +115,13 @@ class StoreCartServer extends SiteXMLRPCServer
 			$this->app->memcache->flushNs($this->app->session->getSessionId());
 		}
 
-		return $this->getCartInfo($request_id, $product_id, $mini_cart);
+		$response = $this->getCartInfo($request_id, $product_id, $mini_cart);
+
+		$response['added_entries'] = $added_entries;
+		$response['saved_entries'] = $saved_entries;
+		$response['other_entries'] = $other_entries;
+
+		return $response;
 	}
 
 	// }}}
@@ -118,7 +148,12 @@ class StoreCartServer extends SiteXMLRPCServer
 		}
 
 		$this->app->cart->save();
-		return $this->getCartInfo($request_id, $product_id, true);
+		$response = $this->getCartInfo($request_id, $product_id, true);
+
+		$response['removed_sku'] = $entry->getItemSku();
+		$response['removed_item'] = $entry->getItemId();
+
+		return $response;
 	}
 
 	// }}}
