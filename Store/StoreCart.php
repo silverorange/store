@@ -664,7 +664,7 @@ abstract class StoreCart extends SwatObject
 	/**
 	 * Compares two entries in this cart
 	 *
-	 * This comparison method is used byt the StoreCart::sort() method.
+	 * This comparison method is used by the StoreCart::sort() method.
 	 *
 	 * @param StoreCartEntry $entry1 the cart entry on the left side of the
 	 *                                comparison.
