@@ -37,21 +37,23 @@ abstract class StoreCheckoutCart extends StoreCart
 	{
 		$this->entries = array();
 
-		if ($this->app->session->isLoggedIn()) {
-			$account_id = $this->app->session->getAccountId();
-			foreach ($this->module->getEntries() as $entry) {
-				if ($entry->getInternalValue('account') == $account_id &&
-					!$entry->saved) {
+		if ($this->module instanceof StoreCartModule) {
+			if ($this->app->session->isLoggedIn()) {
+				$account_id = $this->app->session->getAccountId();
+				foreach ($this->module->getEntries() as $entry) {
+					if ($entry->getInternalValue('account') == $account_id &&
+						!$entry->saved) {
 
-					$this->entries[] = $entry;
-					$this->entries_by_id[$entry->id] = $entry;
+						$this->entries[] = $entry;
+						$this->entries_by_id[$entry->id] = $entry;
+					}
 				}
-			}
-		} else {
-			foreach ($this->module->getEntries() as $entry) {
-				if (session_id() == $entry->sessionid && !$entry->saved) {
-					$this->entries[] = $entry;
-					$this->entries_by_id[$entry->id] = $entry;
+			} else {
+				foreach ($this->module->getEntries() as $entry) {
+					if (session_id() == $entry->sessionid && !$entry->saved) {
+						$this->entries[] = $entry;
+						$this->entries_by_id[$entry->id] = $entry;
+					}
 				}
 			}
 		}

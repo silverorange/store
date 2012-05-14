@@ -250,6 +250,7 @@ class StoreCartModule extends SiteApplicationModule
 				'property names of this cart module.');
 
 		$this->carts[$id] = $cart;
+		$this->carts[$id]->setCartModule($this);
 	}
 
 	// }}}

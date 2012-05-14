@@ -106,14 +106,10 @@ abstract class StoreCart extends SwatObject
 	/**
 	 * Creates a new cart
 	 *
-	 * @param StoreCartModule $module the cart module this cart belongs to.
 	 * @param SiteApplication $app the application this cart belongs to.
-	 *
-	 * @see StoreCartModule::__construct()
 	 */
-	public function __construct(StoreCartModule $module, SiteApplication $app)
+	public function __construct(SiteApplication $app)
 	{
-		$this->module = $module;
 		$this->app = $app;
 	}
 
@@ -272,7 +268,11 @@ abstract class StoreCart extends SwatObject
 					$old_entry = $this->entries[$key];
 					unset($this->entries[$key]);
 					unset($this->entries_by_id[$entry->id]);
-					$this->module->registerRemovedEntry($old_entry);
+
+					if ($this->module instanceof StoreCartModule) {
+						$this->module->registerRemovedEntry($old_entry);
+					}
+
 					$this->setChanged();
 					break;
 				}
@@ -297,8 +297,11 @@ abstract class StoreCart extends SwatObject
 		$this->entries = array();
 		$this->setChanged();
 
-		foreach ($entries as $entry)
-			$this->module->registerRemovedEntry($entry);
+		foreach ($entries as $entry) {
+			if ($this->module instanceof StoreCartModule) {
+				$this->module->registerRemovedEntry($entry);
+			}
+		}
 
 		return $entries;
 	}
@@ -519,6 +522,19 @@ abstract class StoreCart extends SwatObject
 	}
 
 	// }}}
+	// {{{ public function setCartModule()
+
+	/**
+	 * Sets the cart module this cart belongs to
+	 *
+	 * @param StoreCartModule $module the cart module this cart belongs to.
+	 */
+	public function setCartModule(StoreCartModule $module)
+	{
+		$this->module = $module;
+	}
+
+	// }}}
 	// {{{ protected function addMessage()
 
 	/**
@@ -622,7 +638,10 @@ abstract class StoreCart extends SwatObject
 		$this->entries[] = $entry;
 		$this->entries_by_id[$entry->id] = $entry;
 
-		$this->module->registerAddedEntry($entry);
+		if ($this->module instanceof StoreCartModule) {
+			$this->module->registerAddedEntry($entry);
+		}
+
 		$this->setChanged();
 	}
 
