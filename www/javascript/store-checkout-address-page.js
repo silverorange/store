@@ -23,9 +23,8 @@ function StoreCheckoutAddressPage(id, provstate_other_index)
 			this.initContainer();
 		}
 
-		if (!this.list_new || this.list_new.checked) {
-			this.showAddressForm(false);
-		} else {
+		// hide if the radio button state is set to hidden
+		if (this.list_new && !this.list_new.checked) {
 			this.hideAddressForm(false);
 		}
 
@@ -42,8 +41,6 @@ StoreCheckoutAddressPage.prototype.initContainer = function()
 
 	var duration = 0.25;
 
-	var that = this;
-
 	this.show_animation = new YAHOO.util.Anim(
 		div, { height: { to: this.container.offsetHeight } }, duration,
 		YAHOO.util.Easing.easeOut);
@@ -54,11 +51,11 @@ StoreCheckoutAddressPage.prototype.initContainer = function()
 		YAHOO.util.Dom.addClass(div, 'store-checkout-address-open');
 
 		var fade_in = new YAHOO.util.Anim(
-			that.container, { opacity: { to: 1 } }, duration,
+			this.container, { opacity: { to: 1 } }, duration,
 			YAHOO.util.Easing.easeOut);
 
 		fade_in.animate();
-	});
+	}, this, true);
 
 	this.hide_animation = new YAHOO.util.Anim(
 		this.container, { opacity: { to: 0 } }, duration,
@@ -72,8 +69,19 @@ StoreCheckoutAddressPage.prototype.initContainer = function()
 			div, { height: { to: 0 } }, duration,
 			YAHOO.util.Easing.easeOut);
 
+		collapse.onComplete.subscribe(function() {
+			var display = YAHOO.util.Dom.getStyle(this.container, 'display');
+
+			if (display != 'none') {
+				this.container._old_display = display;
+			}
+
+			this.container.style.display = 'none';
+		}, this, true);
+
 		collapse.animate();
-	});
+
+	}, this, true);
 }
 
 StoreCheckoutAddressPage.prototype.showAddressForm = function(animate)
@@ -89,13 +97,21 @@ StoreCheckoutAddressPage.prototype.showAddressForm = function(animate)
 			}
 
 			div.style.height = '0';
-			this.container.style.display = 'block';
+			if (this.container._old_display) {
+				this.container.style.display = this.container._old_display;
+			} else {
+				this.container.style.display = 'block';
+			}
 			this.container.style.opacity = 0;
 
 			this.semaphore = true;
 			this.show_animation.animate();
 		} else {
-			this.container.style.display = 'block';
+			if (this.container._old_display) {
+				this.container.style.display = this.container._old_display;
+			} else {
+				this.container.style.display = 'block';
+			}
 			div.style.height = 'auto';
 			div.style.width = '100%';
 		}
@@ -124,6 +140,12 @@ StoreCheckoutAddressPage.prototype.hideAddressForm = function(animate)
 
 			this.hide_animation.animate();
 		} else {
+			var display = YAHOO.util.Dom.getStyle(this.container, 'display');
+
+			if (display != 'none') {
+				this.container._old_display = display;
+			}
+
 			this.container.style.display = 'none';
 		}
 
