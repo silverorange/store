@@ -150,8 +150,10 @@ class StoreCartServer extends SiteXMLRPCServer
 		$this->app->cart->save();
 		$response = $this->getCartInfo($request_id, $product_id, true);
 
-		$response['removed_sku'] = $entry->getItemSku();
-		$response['removed_item'] = $entry->getItemId();
+		if ($entry instanceof StoreCartEntry) {
+			$response['removed_sku'] = $entry->getItemSku();
+			$response['removed_item'] = $entry->getItemId();
+		}
 
 		return $response;
 	}
