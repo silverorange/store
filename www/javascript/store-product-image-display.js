@@ -725,7 +725,6 @@ StoreProductImageDisplay.close_text = 'Close';
 			if (typeof this.image_indexes_by_id[image_id] != 'undefined') {
 				this.selectImage(this.image_indexes_by_id[image_id]);
 				this.onSelectImage.fire(image_id, 'location');
-			console.log('selected' + image_id);
 			}
 		}
 
@@ -736,7 +735,6 @@ StoreProductImageDisplay.close_text = 'Close';
 			typeof this.image_indexes_by_id[image_id] != 'undefined') {
 			this.open();
 			this.onOpen.fire(current_image_id, 'location');
-			console.log('open');
 		}
 	};
 
