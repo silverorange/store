@@ -183,7 +183,7 @@ StoreCartLightbox.prototype.handleLinkClick = function(e)
 
 		// track here instead of inside open() so we only track clicks on the
 		// cart link opens. Opens caused by adding items to the cart are
-		// tracked in addEntries()/
+		// tracked in addEntries().
 		this.open_event.fire('link');
 	}
 }
