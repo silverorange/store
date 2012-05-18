@@ -9,7 +9,7 @@
 	padding-right: 20px;
 }
 
-* html #store_cart_lightbox {
+.ie6 #store_cart_lightbox {
 	position: absolute;
 }
 
@@ -184,9 +184,13 @@
 #store_cart_lightbox #lightbox_cart_link_container {
 	display: inline-block;
 	zoom: 1;
-	*display: inline;
 	vertical-align: middle;
 	padding-right: 0.5em;
+}
+
+.ie6 #store_cart_lightbox #lightbox_cart_link_container,
+.ie7 #store_cart_lightbox #lightbox_cart_link_container {
+	display: inline;
 }
 
 #store_cart_lightbox #checkout_container {
@@ -199,8 +203,6 @@
 	text-align: right;
 }
 
-/* {{{ SwatMessageDisplay embedded in Cart Lightbox */
-
 #store_cart_lightbox .swat-message {
 	-webkit-border-radius: 0;
 	-moz-border-radius: 0;
@@ -211,9 +213,6 @@
 #store_cart_lightbox .swat-message .swat-message-container {
 	padding-top: 12px;
 }
-
-/* }}} */
-/* {{{ Animation for recalculating */
 
 @-moz-keyframes fade-recalculation {
 	0% {
@@ -294,5 +293,3 @@
 	-webkit-animation-delay: 0.3s;
 	-ms-animation-delay: 0.3s;
 }
-
-/* }}} */

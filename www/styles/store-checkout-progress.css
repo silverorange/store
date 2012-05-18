@@ -12,7 +12,10 @@
 	padding: 0;
 }
 
-.store-checkout-progress-clear { clear: both; line-height: 0; }
+.store-checkout-progress-clear {
+	clear: both;
+	line-height: 0;
+}
 
 .store-checkout-progress li {
 	list-style-type: none;

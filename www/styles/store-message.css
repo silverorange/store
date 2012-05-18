@@ -7,7 +7,9 @@
 	background-image: url(../images/cart-notification.png);
 }
 
-.store-message-cart-notification .swat-message-secondary-content { color: #947140; }
+.store-message-cart-notification .swat-message-secondary-content {
+	color: #947140;
+}
 
 #main-content .swat-message-display
 .swat-message-system-error
