@@ -1,6 +1,7 @@
 .category-not-visible td,
 .product-not-visible td, span.product-not-visible,
 .item-disabled td {
-	filter: alpha(opacity = 40);
-	opacity: 0.40;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+	filter: alpha(opacity=40);
+	opacity: 0.4;
 }
