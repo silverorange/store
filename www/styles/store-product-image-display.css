@@ -16,9 +16,9 @@
 	display: block;
 	background: #000;
 	cursor: default;
-	opacity: 0.75;
-	filter: alpha(opacity=75);
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+	filter: alpha(opacity=75);
+	opacity: 0.75;
 }
 
 .store-product-image-display-overlay-mask:active,
@@ -49,8 +49,10 @@
 }
 
 /* IE hack since shadows are not supported */
-.store-product-image-display-header {
-	border-bottom: 1px solid #555\9
+.ie6 .store-product-image-display-header,
+.ie7 .store-product-image-display-header,
+.ie8 .store-product-image-display-header {
+	border-bottom: 1px solid #555;
 }
 
 .store-product-image-display-title {

@@ -35,7 +35,8 @@
 	vertical-align: middle;
 }
 
-/* {{{ Multiple Payments Table */
+
+/* Multiple Payments Table */
 
 .multiple-payment-table {
 	margin: 0;
@@ -76,5 +77,3 @@
 .new-payment-link {
 	margin: 0.5em 0 0 0;
 }
-
-/* }}} */
