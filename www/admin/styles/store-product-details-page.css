@@ -36,7 +36,7 @@
 	display: block;
 }
 
-* html .store-product-images {
+.ie6 .store-product-images {
 	height: 1px;
 }
 
