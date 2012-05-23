@@ -73,35 +73,22 @@ class StoreAdminMenuView extends AdminMenuView
 	}
 
 	// }}}
-	// {{{ public function display()
+	// {{{ protected function displayMenuContent()
 
 	/**
-	 * Displays this admin menu
+	 * Displays this admin menu content
 	 *
 	 * The store admin menu displays an item search form on top of the menu.
 	 */
-	public function display()
+	protected function displayMenuContent()
 	{
-		if (!$this->visible) {
-			return;
-		}
-
-		SwatControl::display();
-
-		$menu_div = new SwatHtmlTag('div');
-		$menu_div->id = $this->id;
-		$menu_div->class = 'admin-menu';
-		$menu_div->open();
-
 		// only show if we have access to products
 		if ($this->store->getComponentByName('Product') !== null) {
 			$form = $this->getCompositeWidget('form');
 			$form->display();
 		}
 
-		$this->displayMenuContent();
-
-		$menu_div->close();
+		parent::displayMenuContent();
 	}
 
 	// }}}
