@@ -150,6 +150,8 @@ class StoreCartServer extends SiteXMLRPCServer
 		$this->app->cart->save();
 		$response = $this->getCartInfo($request_id, $product_id, true);
 
+		// a double-clicked button can fire a remove for an entry that doesn't
+		// exist
 		if ($entry instanceof StoreCartEntry) {
 			$response['removed_sku'] = $entry->getItemSku();
 			$response['removed_item'] = $entry->getItemId();
