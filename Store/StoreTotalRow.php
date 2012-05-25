@@ -8,7 +8,8 @@ require_once 'Swat/SwatMoneyCellRenderer.php';
  * Displays totals in a special row in a table view.
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2012 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreTotalRow extends SwatTableViewRow
 {
@@ -141,47 +142,49 @@ class StoreTotalRow extends SwatTableViewRow
 	// }}}
 	// {{{ public function display()
 
-	public function display()
+	public function display(SwatDisplayContext $context)
 	{
-		if ($this->value === null)
+		if ($this->value === null) {
 			$this->visible = false;
+		}
 
-		if (!$this->visible)
+		if (!$this->visible) {
 			return;
+		}
 
-		parent::display();
+		parent::display($context);
 
 		$tr_tag = new SwatHtmlTag('tr');
 		$tr_tag->class = 'store-total-row';
 		$tr_tag->id = $this->id;
 
-		$tr_tag->open();
+		$tr_tag->open($context);
 
-		$this->displayHeader();
-		$this->displayTotal();
-		$this->displayBlank();
+		$this->displayHeader($context);
+		$this->displayTotal($context);
+		$this->displayBlank($context);
 
-		$tr_tag->close();
+		$tr_tag->close($context);
 	}
 
 	// }}}
 	// {{{ protected function displayHeader()
 
-	protected function displayHeader()
+	protected function displayHeader(SwatDisplayContext $context)
 	{
 		$colspan = $this->view->getXhtmlColspan();
 		$th_tag = new SwatHtmlTag('th');
 		$th_tag->colspan = $colspan - 1 - $this->offset;
 
-		$th_tag->open();
-		$this->displayTitle();
-		$th_tag->close();
+		$th_tag->open($context);
+		$this->displayTitle($context);
+		$th_tag->close($context);
 	}
 
 	// }}}
 	// {{{ protected function displayTitle()
 
-	protected function displayTitle()
+	protected function displayTitle(SwatDisplayContext $context)
 	{
 		if ($this->link === null) {
 			$title = SwatString::minimizeEntities($this->title);
@@ -196,57 +199,63 @@ class StoreTotalRow extends SwatTableViewRow
 		if ($this->note !== null) {
 			$span = new SwatHtmlTag('span');
 			$span->class = 'note';
-			$span->setContent(sprintf('(%s)', $this->note),
-				$this->note_content_type);
+			$span->setContent(
+				sprintf(
+					'(%s)',
+					$this->note
+				),
+				$this->note_content_type
+			);
 
 			$title.= ' '.$span->__toString();
 		}
 
 		if ($this->show_colon) {
-			printf(Store::_('%s:'), $title);
+			$context->out(sprintf(Store::_('%s:'), $title));
 		} else {
-			echo $title;
+			$context->out($title);
 		}
 	}
 
 	// }}}
 	// {{{ protected function displayTotal()
 
-	protected function displayTotal()
+	protected function displayTotal(SwatDisplayContext $context)
 	{
 		$td_tag = new SwatHtmlTag('td');
 		$td_tag->class = $this->getCSSClassString();
-		$td_tag->open();
-		$this->displayValue();
-		$td_tag->close();
+		$td_tag->open($context);
+		$this->displayValue($context);
+		$td_tag->close($context);
 	}
 
 	// }}}
 	// {{{ protected function displayValue()
 
-	protected function displayValue()
+	protected function displayValue(SwatDisplayContext $context)
 	{
-		if ($this->locale !== null)
+		if ($this->locale !== null) {
 			$this->money_cell_renderer->locale = $this->locale;
+		}
 
 		if ($this->show_free && $this->value <= 0) {
-			echo SwatString::minimizeEntities($this->free_text);
+			$context->out(SwatString::minimizeEntities($this->free_text));
 		} else {
 			$this->money_cell_renderer->value = $this->value;
-			$this->money_cell_renderer->render();
+			$this->money_cell_renderer->render($context);
 		}
 	}
 
 	// }}}
 	// {{{ protected function displayBlank()
 
-	protected function displayBlank()
+	protected function displayBlank(SwatDisplayContext $context)
 	{
 		if ($this->offset > 0) {
 			$td_tag = new SwatHtmlTag('td');
 			$td_tag->colspan = $this->offset;
 			$td_tag->setContent('&nbsp;');
-			$td_tag->display();
+			$td_tag->display($context);
 		}
 	}
 

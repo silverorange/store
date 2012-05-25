@@ -6,9 +6,10 @@ require_once 'Store/StoreTotalRow.php';
 /**
  * A total row containing a confirmation button
  *
- * @package   Store
+ * @package    Store
+ * @copyright  2006-2012 silverorange
+ * @license    http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @deprecated {@link StoreTotalRow} and {@link SwatTableViewWidgetRow} should be used instead.
- * @copyright 2006 silverorange
  */
 class StoreTotalConfirmationButtonRow extends StoreTotalRow
 {
@@ -65,14 +66,14 @@ class StoreTotalConfirmationButtonRow extends StoreTotalRow
 		return $set;
 	}
 
-	protected function displayBlank()
+	protected function displayBlank(SwatDisplayContext $context)
 	{
 		if ($this->offset > 0) {
 			$this->createEmbeddedWidgets();
 			$td_tag = new SwatHtmlTag('td');
 			$td_tag->class = 'button-cell';
 			$td_tag->colspan = $this->offset;
-			$td_tag->open();
+			$td_tag->open($context);
 
 			$this->button->title = $this->button_title;
 			$this->button->classes[] = 'compact-button';
@@ -81,9 +82,9 @@ class StoreTotalConfirmationButtonRow extends StoreTotalRow
 			$this->button->confirmation_message =
 				$this->button_confirmation_message;
 
-			$this->button->display();
+			$this->button->display($context);
 
-			$td_tag->close();
+			$td_tag->close($context);
 		}
 	}
 

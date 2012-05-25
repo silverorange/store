@@ -12,7 +12,7 @@ require_once 'Store/dataobjects/StoreProduct.php';
  * Control to display and process items on a product page
  *
  * @package   Store
- * @copyright 2007 silverorange
+ * @copyright 2007-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemsView extends SwatControl
@@ -137,16 +137,17 @@ class StoreItemsView extends SwatControl
 	// }}}
 	// {{{ public function display()
 
-	public function display()
+	public function display(SwatDisplayContext $context)
 	{
-		parent::display();
+		parent::display($context);
 
 		$view = $this->ui->getWidget('items_view');
 
-		if (!$this->has_description)
+		if (!$this->has_description) {
 			$view->getColumn('description_column')->visible = false;
+		}
 
-		$this->ui->display();
+		$this->ui->display($context);
 	}
 
 	// }}}

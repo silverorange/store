@@ -11,7 +11,7 @@ require_once 'Swat/SwatInputControl.php';
  * Item selector that puts items into optgroups based on item groups
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
@@ -72,63 +72,67 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	// }}}
 	// {{{ public function display()
 
-	public function display()
+	public function display(SwatDisplayContext $context)
 	{
-		if (!$this->visible)
+		if (!$this->visible) {
 			return;
+		}
 
-		parent::display();
+		parent::display($context);
 
 		$div_tag = new SwatHtmlTag('div');
 		$div_tag->id = $this->id;
 		$div_tag->class = 'store-quick-order-description';
-		$div_tag->open();
-		$this->displayContent();
-		$div_tag->close();
+		$div_tag->open($context);
+		$this->displayContent($context);
+		$div_tag->close($context);
 	}
 
 	// }}}
 	// {{{ public function displayContent()
 
-	public function displayContent()
+	public function displayContent(SwatDisplayContext $context)
 	{
-		if (!$this->visible)
+		if (!$this->visible) {
 			return;
+		}
 
 		$items = $this->getItems();
 
 		$div_tag = new SwatHtmlTag('div');
 		$div_tag->id = $this->id.'_product';
 		$div_tag->class = 'store-quick-order-product';
-		$div_tag->open();
+		$div_tag->open($context);
 
 		if (count($items) > 0) {
 			$product = $items->getFirst()->product;
 
 			$image = $this->getImage($items);
-			if ($image !== null)
-				$this->displayImage($image, $product);
+			if ($image !== null) {
+				$this->displayImage($context, $image, $product);
+			}
 
 			$content_div_tag = new SwatHtmlTag('div');
 			$content_div_tag->class = 'store-quick-order-product-content';
-			$content_div_tag->open();
+			$content_div_tag->open($context);
 
-			$this->displayProduct($product);
+			$this->displayProduct($context, $product);
 
 			$item_div_tag = new SwatHtmlTag('div');
 			$item_div_tag->class = 'store-quick-order-item';
-			$item_div_tag->open();
+			$item_div_tag->open($context);
 
-			if (count($items) == 1)
-				$this->displayItem();
-			else
-				$this->displayItems();
+			if (count($items) == 1) {
+				$this->displayItem($context);
+			} else {
+				$this->displayItems($context);
+			}
 
-			$item_div_tag->close();
-			$content_div_tag->close();
+			$item_div_tag->close($context);
+			$content_div_tag->close($context);
 		}
 
-		$div_tag->close();
+		$div_tag->close($context);
 	}
 
 	// }}}
@@ -170,33 +174,35 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	// }}}
 	// {{{ protected function displayImage()
 
-	protected function displayImage(SiteImage $image, StoreProduct $product)
+	protected function displayImage(SwatDisplayContext $context,
+		SiteImage $image, StoreProduct $product)
 	{
 		$span_tag = new SwatHtmlTag('span');
-		$span_tag->open();
+		$span_tag->open($context);
 
 		$img_tag = $image->getImgTag('pinky');
-		$img_tag->display();
+		$img_tag->display($context);
 
 		if (!$product->isAvailableInRegion($this->region)) {
 			$span_tag = new SwatHtmlTag('span');
 			$span_tag->class = 'out-of-stock';
 			$span_tag->setContent('');
-			$span_tag->display();
+			$span_tag->display($context);
 		}
 
-		$span_tag->close();
+		$span_tag->close($context);
 	}
 
 	// }}}
 	// {{{ protected function displayProduct()
 
-	protected function displayProduct(StoreProduct $product)
+	protected function displayProduct(SwatDisplayContext $context,
+		StoreProduct $product)
 	{
 		$product_title_tag = new SwatHtmlTag('span');
 		$product_title_tag->class = 'store-quick-order-product-title';
 		$product_title_tag->setContent($product->title);
-		$product_title_tag->display();
+		$product_title_tag->display($context);
 	}
 
 	// }}}
@@ -206,9 +212,9 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	 * Displays this item selector when there are multiple items for the given
 	 * sku
 	 */
-	protected function displayItems()
+	protected function displayItems(SwatDisplayContext $context)
 	{
-		$this->getCompositeWidget('items_flydown')->display();
+		$this->getCompositeWidget('items_flydown')->display($context);
 	}
 
 	// }}}
@@ -218,10 +224,10 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	 * Displays this item selector when there is only one item for the given
 	 * sku
 	 */
-	protected function displayItem()
+	protected function displayItem(SwatDisplayContext $context)
 	{
 		$item = $this->getItems()->getFirst();
-		echo $this->getItemDescription($item);
+		$context->out($this->getItemDescription($item));
 	}
 
 	// }}}
@@ -424,9 +430,10 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 				SwatString::minimizeEntities($item->getStatus()->title));
 		}
 
+		$context = new SwatDisplayContext();
 		$renderer = $this->getItemPriceCellRenderer($item);
 		ob_start();
-		$renderer->render();
+		$renderer->render($context);
 		$description.= ' '.ob_get_clean();
 
 		return $description;

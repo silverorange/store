@@ -8,7 +8,7 @@ require_once 'Store/StorePaymentRequest.php';
  * Renders textual descriptions for payment request types
  *
  * @package   Store
- * @copyright 2007 silverorange
+ * @copyright 2007-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StorePaymentRequestTypeCellRenderer extends SwatCellRenderer
@@ -27,7 +27,7 @@ class StorePaymentRequestTypeCellRenderer extends SwatCellRenderer
 	// }}}
 	// {{{ public function render()
 
-	public function render()
+	public function render(SwatDisplayContext $context)
 	{
 		switch ($this->type) {
 		case StorePaymentRequest::TYPE_PAY:
@@ -62,7 +62,7 @@ class StorePaymentRequestTypeCellRenderer extends SwatCellRenderer
 			break;
 		}
 
-		echo SwatString::minimizeEntities($title);
+		$context->out(SwatString::minimizeEntities($title));
 	}
 
 	// }}}

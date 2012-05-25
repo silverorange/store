@@ -13,7 +13,8 @@ require_once 'Swat/SwatHtmlTag.php';
  * @see StoreCartImageTableViewGroup
  *
  * @package   Store
- * @copyright 2004-2008 silverorange
+ * @copyright 2004-2012 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCartImageTableView extends SwatTableView
 {
@@ -41,18 +42,19 @@ class StoreCartImageTableView extends SwatTableView
 	 * Each column is asked to display its own header.
 	 * Rows in the header are outputted inside a <thead> HTML tag.
 	 */
-	protected function displayHeader()
+	protected function displayHeader(SwatDisplayContext $context)
 	{
-		echo '<thead>';
-		echo '<tr>';
+		$context->out('<thead>');
+		$context->out('<tr>');
 
-		echo '<th>&nbsp;</th>';
+		$context->out('<th>&nbsp;</th>');
 
-		foreach ($this->columns as $column)
-			$column->displayHeaderCell();
+		foreach ($this->columns as $column) {
+			$column->displayHeaderCell($context);
+		}
 
-		echo '</tr>';
-		echo '</thead>';
+		$context->out('</tr>');
+		$context->out('</thead>');
 	}
 
 	// }}}

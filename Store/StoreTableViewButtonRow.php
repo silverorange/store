@@ -7,7 +7,7 @@ require_once 'Swat/SwatButton.php';
  * A table view row with an embedded button
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2012 silverorange
  */
 class StoreTableViewButtonRow extends SwatTableViewRow
 {
@@ -106,10 +106,13 @@ class StoreTableViewButtonRow extends SwatTableViewRow
 	// }}}
 	// {{{ public function display()
 
-	public function display()
+	public function display(SwatDisplayContext $context)
 	{
-		if (!$this->visible)
+		if (!$this->visible) {
 			return;
+		}
+
+		parent::display($context);
 
 		$this->createEmbeddedWidgets();
 
@@ -121,17 +124,17 @@ class StoreTableViewButtonRow extends SwatTableViewRow
 		$td_tag = new SwatHtmlTag('td');
 		$td_tag->colspan = $colspan - $this->offset;
 
-		$tr_tag->open();
+		$tr_tag->open($context);
 
 		if ($this->position === self::POSITION_LEFT || $this->offset == 0) {
 			$td_tag->class = 'button-cell';
-			$td_tag->open();
-			$this->displayButton();
-			$td_tag->close();
+			$td_tag->open($context);
+			$this->displayButton($context);
+			$td_tag->close($context);
 		} else {
-			$td_tag->open();
-			$this->displayEmptyCell();
-			$td_tag->close();
+			$td_tag->open($context);
+			$this->displayEmptyCell($context);
+			$td_tag->close($context);
 		}
 
 		if ($this->offset > 0) {
@@ -139,17 +142,17 @@ class StoreTableViewButtonRow extends SwatTableViewRow
 
 			if ($this->position === self::POSITION_RIGHT) {
 				$td_tag->class = 'button-cell';
-				$td_tag->open();
-				$this->displayButton();
-				$td_tag->close();
+				$td_tag->open($context);
+				$this->displayButton($context);
+				$td_tag->close($context);
 			} else {
-				$td_tag->open();
-				$this->displayEmptyCell();
-				$td_tag->close();
+				$td_tag->open($context);
+				$this->displayEmptyCell($context);
+				$td_tag->close($context);
 			}
 		}
 
-		$tr_tag->close();
+		$tr_tag->close($context);
 	}
 
 	// }}}
@@ -178,12 +181,12 @@ class StoreTableViewButtonRow extends SwatTableViewRow
 	/**
 	 * Displays the button contained by this row
 	 */
-	protected function displayButton()
+	protected function displayButton(SwatDisplayContext $context)
 	{
 		// properties may have been modified since the widgets were created
 		$this->button->title = $this->title;
 		$this->button->tab_index = $this->tab_index;
-		$this->button->display();
+		$this->button->display($context);
 	}
 
 	// }}}
@@ -192,9 +195,9 @@ class StoreTableViewButtonRow extends SwatTableViewRow
 	/**
 	 * Displays the empty cell in this row
 	 */
-	protected function displayEmptyCell()
+	protected function displayEmptyCell(SwatDisplayContext $context)
 	{
-		echo '&nbsp;';
+		$context->out('&nbsp;');
 	}
 
 	// }}}

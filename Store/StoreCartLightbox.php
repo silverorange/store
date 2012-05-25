@@ -75,20 +75,6 @@ class StoreCartLightbox extends SwatControl
 		$this->app = $app;
 		$this->processor = $processor;
 
-		$yui = new SwatYUI(array('dom', 'event', 'animation', 'selector'));
-		$this->html_head_entry_set->addEntrySet($yui->getHtmlHeadEntrySet());
-		$this->html_head_entry_set->addEntrySet(
-			XML_RPCAjax::getHtmlHeadEntrySet());
-
-		$this->addJavascript('packages/store/javascript/store-cart-lightbox.js',
-			Store::PACKAGE_ID);
-
-		$this->addStyleSheet('packages/store/styles/store-cart-lightbox.css',
-			Store::PACKAGE_ID);
-
-		$this->addJavaScript('packages/swat/javascript/swat-z-index-manager.js',
-			Swat::PACKAGE_ID);
-
 		$h3 = new SwatHtmlTag('h3');
 		$h3->setContent(Store::_('Your Shopping Cart is Empty'));
 		$this->empty_content = strval($h3);
@@ -109,27 +95,36 @@ class StoreCartLightbox extends SwatControl
 	// }}}
 	// {{{ public function display()
 
-	public function display()
+	public function display(SwatDisplayContext $context)
 	{
 		if (!$this->visible) {
 			return;
 		}
 
-		parent::display();
+		parent::display($context);
 
-		echo '<div id="store_cart_lightbox" class="swat-hidden">';
-		echo '<div id="store_cart_lightbox_top"></div>';
+		$context->out('<div id="store_cart_lightbox" class="swat-hidden">');
+		$context->out('<div id="store_cart_lightbox_top"></div>');
 
-		echo '<div id="store_cart_lightbox_content">';
+		$context->out('<div id="store_cart_lightbox_content">');
 
-		$this->displayContent();
+		$this->displayContent($context);
 
-		echo '</div>';
+		$context->out('</div>');
 
-		echo '<div id="store_cart_lightbox_bottom"></div>';
-		echo '</div>';
+		$context->out('<div id="store_cart_lightbox_bottom"></div>');
+		$context->out('</div>');
 
-		Swat::displayInlineJavaScript($this->getInlineJavaScript());
+		$ajax = new XML_RPCAjax();
+
+		$context->addYUI('dom', 'event', 'animation', 'selector');
+		$context->addStyleSheet(
+			'packages/store/styles/store-cart-lightbox.css'
+		);
+		$context->addScript($ajax->getHtmlHeadEntrySet());
+		$context->addScript('packages/store/javascript/store-cart-lightbox.js');
+		$context->addScript('packages/swat/javascript/swat-z-index-manager.js');
+		$context->addInlineScript($this->getInlineJavaScript());
 	}
 
 	// }}}
@@ -236,7 +231,7 @@ class StoreCartLightbox extends SwatControl
 	 *
 	 * @return string The mini cart.
 	 */
-	public function displayContent()
+	public function displayContent(SwatDisplayContext $context)
 	{
 		$this->confirmCompositeWidgets();
 
@@ -247,12 +242,16 @@ class StoreCartLightbox extends SwatControl
 		$cart = $this->app->cart;
 
 		if ($this->override_content !== null) {
-			echo $this->override_content;
+			$context->out($this->override_content);
 		} elseif (count($cart->checkout->getAvailableEntries()) === 0 &&
 			(!isset($cart->saved) || $cart->saved->isEmpty())) {
 
-			echo '<div class="empty-content">'.
-				$this->empty_content.'</div>';
+			$context->out(
+				'<div class="empty-content">'.
+				$this->empty_content.
+				'</div>'
+			);
+
 		} else {
 			if ($this->processor !== null) {
 				$added = count($this->processor->getEntriesAdded());
@@ -260,15 +259,21 @@ class StoreCartLightbox extends SwatControl
 					$locale = SwatI18NLocale::get($this->app->getLocale());
 					$div_tag = new SwatHtmlTag('div');
 					$div_tag->class = 'added-message';
-					$div_tag->setContent(sprintf(Store::ngettext(
-						'One item added', '%s items added', $added),
-						$locale->formatNumber($added)));
-
-					$div_tag->display();
+					$div_tag->setContent(
+						sprintf(
+							Store::ngettext(
+								'One item added',
+								'%s items added',
+								$added
+							),
+							$locale->formatNumber($added)
+						)
+					);
+					$div_tag->display($context);
 				}
 			}
 
-			$this->displayCartEntries();
+			$this->displayCartEntries($context);
 		}
 	}
 
@@ -308,7 +313,7 @@ class StoreCartLightbox extends SwatControl
 	/**
 	 * @return string The mini cart entries.
 	 */
-	protected function displayCartEntries()
+	protected function displayCartEntries(SwatDisplayContext $context)
 	{
 		$cart = $this->app->getCacheValue(
 			'mini-cart',
@@ -319,7 +324,7 @@ class StoreCartLightbox extends SwatControl
 			$this->buildCartUI();
 
 			ob_start();
-			$this->ui->display();
+			$this->ui->display($context);
 			$cart = ob_get_clean();
 
 			$this->app->addCacheValue(
@@ -329,7 +334,7 @@ class StoreCartLightbox extends SwatControl
 			);
 		}
 
-		echo $cart;
+		$context->out($cart);
 	}
 
 	// }}}

@@ -30,24 +30,26 @@ class StoreSavingsCellRenderer extends SwatPercentageCellRenderer
 	 *
 	 * @see SwatCellRenderer::render()
 	 */
-	public function render()
+	public function render(SwatDisplayContext $context)
 	{
-		if (!$this->visible)
+		if (!$this->visible) {
 			return;
+		}
 
-		if ($this->value <= 0)
+		if ($this->value <= 0) {
 			return;
+		}
 
 		$tag = new SwatHtmlTag('span');
 		$tag->class = $this->getCSSClassString();
 
 		ob_start();
-		parent::render();
+		parent::render($context);
 		$value = ob_get_clean();
 
-		$tag->open();
-		printf('Save %s', $value);
-		$tag->close();
+		$tag->open($context);
+		$context->out(sprintf('Save %s', $value));
+		$tag->close($context);
 	}
 
 	// }}}

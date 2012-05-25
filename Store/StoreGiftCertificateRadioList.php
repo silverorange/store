@@ -7,7 +7,7 @@ require_once 'Swat/SwatRadioList.php';
  * A custom radio list that has an embedded custom option
  *
  * @package   Store
- * @copyright 2007-2008 silverorange
+ * @copyright 2007-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreGiftCertificateRadioList extends SwatRadioList
@@ -15,24 +15,6 @@ class StoreGiftCertificateRadioList extends SwatRadioList
 	// {{{ public properties
 
 	public $custom_value = 'custom';
-
-	// }}}
-	// {{{ public function __construct()
-
-	/**
-	 * Creates a new radiolist
-	 *
-	 * @param string $id a non-visible unique id for this widget.
-	 *
-	 * @see SwatWidget::__construct()
-	 */
-	public function __construct($id = null)
-	{
-		parent::__construct($id);
-
-		$this->addJavaScript(
-			'packages/store/javascript/store-gift-certificate-radio-list.js');
-	}
 
 	// }}}
 	// {{{ public function process()
@@ -78,10 +60,18 @@ class StoreGiftCertificateRadioList extends SwatRadioList
 	/**
 	 * Displays this radio list
 	 */
-	public function display()
+	public function display(SwatDisplayContext $context)
 	{
-		parent::display();
-		Swat::displayInlineJavaScript($this->getInlineJavaScript());
+		if (!$this->visible) {
+			return;
+		}
+
+		parent::display($context);
+
+		$context->addScript(
+			'packages/store/javascript/store-gift-certificate-radio-list.js'
+		);
+		$context->addInlineScript($this->getInlineJavaScript());
 	}
 
 	// }}}
@@ -114,13 +104,14 @@ class StoreGiftCertificateRadioList extends SwatRadioList
 	 *
 	 * @param SwatOption $option
 	 */
-	protected function displayOptionLabel(SwatOption $option)
+	protected function displayOptionLabel(SwatDisplayContext $context,
+		SwatOption $option)
 	{
-		parent::displayOptionLabel($option);
+		parent::displayOptionLabel($context, $option);
 
-		if ($option->value == $this->custom_value)
-			$this->getCompositeWidget('custom_price')->display();
-
+		if ($option->value == $this->custom_value) {
+			$this->getCompositeWidget('custom_price')->display($context);
+		}
 	}
 
 	// }}}

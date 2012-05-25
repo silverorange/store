@@ -7,7 +7,7 @@ require_once 'Store/StoreTableViewButtonRow.php';
  * A table view row with an embedded confirmation button
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2012 silverorange
  */
 class StoreTableViewConfirmationButtonRow extends StoreTableViewButtonRow
 {
@@ -23,13 +23,13 @@ class StoreTableViewConfirmationButtonRow extends StoreTableViewButtonRow
 	// }}}
 	// {{{ protected function displayButton()
 
-	protected function displayButton()
+	protected function displayButton(SwatDisplayContext $context)
 	{
 		// properties may have been modified since the widgets were created
 		$this->button->title = $this->title;
 		$this->button->tab_index = $this->tab_index;
 		$this->button->confirmation_message = $this->confirmation_message;
-		$this->button->display();
+		$this->button->display($context);
 	}
 
 	// }}}

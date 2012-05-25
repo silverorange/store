@@ -8,14 +8,14 @@ require_once 'Store/StoreItemPriceCellRenderer.php';
  * A currency cell renderer
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreYeOldePriceCellRenderer extends StoreItemPriceCellRenderer
 {
 	// {{{ public function getBaseCSSClassNames()
 
-	/** 
+	/**
 	 * Gets the base CSS class names for this cell renderer
 	 *
 	 * @return array the array of base CSS class names for this cell renderer.
@@ -35,13 +35,21 @@ class StoreYeOldePriceCellRenderer extends StoreItemPriceCellRenderer
 	 *
 	 * @see SwatCellRenderer::render()
 	 */
-	public function render()
+	public function render(SwatDisplayContext $context)
 	{
-		if (!$this->visible)
+		if (!$this->visible) {
 			return;
+		}
 
-		echo self::moneyFormat(
-			$this->value, $this->locale, $this->display_currency);
+		SwatCellRenderer::render($context);
+
+		$context->out(
+			self::moneyFormat(
+				$this->value,
+				$this->locale,
+				$this->display_currency
+			)
+		);
 	}
 
 	// }}}

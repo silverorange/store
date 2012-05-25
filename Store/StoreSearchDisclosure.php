@@ -11,7 +11,7 @@ require_once 'XML/RPCAjax.php';
  * Special disclosure widget for displaying the search panel for
  *
  * @package   Store
- * @copyright 2007-2008 silverorange
+ * @copyright 2007-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreSearchDisclosure extends SwatDisclosure
@@ -76,22 +76,6 @@ class StoreSearchDisclosure extends SwatDisclosure
 	public $xml_rpc_server = 'xml-rpc/search-panel';
 
 	// }}}
-	// {{{ public function __construct()
-
-	public function __construct($id = null)
-	{
-		parent::__construct($id);
-
-		$ajax = new XML_RPCAjax();
-		$this->html_head_entry_set->addEntrySet($ajax->getHtmlHeadEntrySet());
-		$this->addJavaScript('packages/store/javascript/search-disclosure.js',
-			Store::PACKAGE_ID);
-
-		$this->addStyleSheet('packages/store/styles/search-disclosure.css',
-			Store::PACKAGE_ID);
-	}
-
-	// }}}
 	// {{{ public function init()
 
 	public function init()
@@ -108,12 +92,13 @@ class StoreSearchDisclosure extends SwatDisclosure
 	// }}}
 	// {{{ public function display()
 
-	public function display()
+	public function display(SwatDisplayContext $context)
 	{
-		if (!$this->visible)
+		if (!$this->visible) {
 			return;
+		}
 
-		SwatWidget::display();
+		SwatWidget::display($context);
 
 		$form = $this->getCompositeWidget('form');
 		$form->action = $this->form_action;
@@ -130,41 +115,47 @@ class StoreSearchDisclosure extends SwatDisclosure
 		$header_div = new SwatHtmlTag('div');
 		$header_div->class = 'search-disclosure-header no-js';
 
-		$control_div->open();
+		$control_div->open($context);
 
-		$header_div->open();
+		$header_div->open($context);
 
-		$search_controls_div->open();
-		$form->display();
-		$input->display();
-		$search_controls_div->close();
+		$search_controls_div->open($context);
+		$form->display($context);
+		$input->display($context);
+		$search_controls_div->close($context);
 
-		$span->display();
+		$span->display($context);
 
-		echo '<div style="clear:both;"></div>';
+		$context->out('<div style="clear:both;"></div>');
 
-		$header_div->close();
+		$header_div->close($context);
 
-		$container_div->open();
-		$animate_div->open();
+		$container_div->open($context);
+		$animate_div->open($context);
 
 		$sub_container_div = new SwatHtmlTag('div');
 		$sub_container_div->class = 'search-disclosure-sub-container';
 		$sub_container_div->id = $this->id.'_sub_container';
-		$sub_container_div->open();
+		$sub_container_div->open($context);
 
-		if (count($this->getChildren()) > 0)
-			$this->displayChildren();
-		else
-			$this->displayLoadingContainer();
+		if (count($this->getChildren()) > 0) {
+			$this->displayChildren($context);
+		} else {
+			$this->displayLoadingContainer($context);
+		}
 
-		$sub_container_div->close();
-		$animate_div->close();
-		$container_div->close();
+		$sub_container_div->close($context);
+		$animate_div->close($context);
+		$container_div->close($context);
 
-		Swat::displayInlineJavaScript($this->getInlineJavascript());
+		$control_div->close($context);
 
-		$control_div->close();
+		$ajax = new XML_RPCAjax();
+
+		$context->addScript($ajax->getHtmlHeadEntrySet());
+		$context->addScript('packages/store/javascript/search-disclosure.js');
+		$context->addStyleSheet('packages/store/styles/search-disclosure.css');
+		$context->addlineScript($this->getInlineJavascript());
 	}
 
 	// }}}
@@ -296,13 +287,13 @@ class StoreSearchDisclosure extends SwatDisclosure
 	// }}}
 	// {{{ protected function displayLoadingContainer()
 
-	protected function displayLoadingContainer()
+	protected function displayLoadingContainer(SwatDisplayContext $context)
 	{
 		$loading_div_tag = new SwatHtmlTag('div');
 		$loading_div_tag->id = $this->id.'_loading_container';
 		$loading_div_tag->class = 'search-disclosure-loading';
 		$loading_div_tag->setContent('');
-		$loading_div_tag->display();
+		$loading_div_tag->display($context);
 	}
 
 	// }}}

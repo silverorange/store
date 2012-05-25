@@ -7,7 +7,7 @@ require_once 'Store/Store.php';
 
 /**
  * @package   Store
- * @copyright 2009 silverorange
+ * @copyright 2009-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreFeedbackPanel extends SwatControl
@@ -36,56 +36,51 @@ class StoreFeedbackPanel extends SwatControl
 		);
 
 		$this->requires_id = true;
-
-		$yui = new SwatYUI(array('yahoo', 'dom', 'event'));
-		$this->html_head_entry_set->addEntrySet($yui->getHtmlHeadEntrySet());
-
-		$ajax = new XML_RPCAjax();
-		$this->html_head_entry_set->addEntrySet($ajax->getHtmlHeadEntrySet());
-
-		$this->addStyleSheet(
-			'packages/store/styles/store-feedback-panel.css',
-			Store::PACKAGE_ID
-		);
-
-		$this->addJavaScript(
-			'packages/store/javascript/store-feedback-panel.js',
-			Store::PACKAGE_ID
-		);
 	}
 
 	// }}}
 	// {{{ public function display()
 
-	public function display()
+	public function display(SwatDisplayContext $context)
 	{
-		if (!$this->visible)
+		if (!$this->visible) {
 			return;
+		}
 
-		SwatWidget::display();
+		SwatWidget::display($context);
 
 		$div = new SwatHtmlTag('div');
 		$div->id = $this->id;
 		$div->class = $this->getCSSClassString();
 
-		$div->open();
-		$this->displayContent();
-		$div->close();
+		$div->open($context);
+		$this->displayContent($context);
+		$div->close($context);
 
-		Swat::displayInlineJavaScript($this->getInlineJavaScript());
+		$ajax = new XML_RPCAjax();
+
+		$context->addYUI('yahoo', 'dom', 'event');
+		$context->addScript($ajax->getHtmlHeadEntrySet());
+		$context->addScript(
+			'packages/store/javascript/store-feedback-panel.js'
+		);
+		$context->addStyleSheet(
+			'packages/store/styles/store-feedback-panel.css'
+		);
+		$context->addInlineScript($this->getInlineJavaScript());
 	}
 
 	// }}}
 	// {{{ protected function displayContent()
 
-	protected function displayContent()
+	protected function displayContent(SwatDisplayContext $context)
 	{
 		$link = new SwatHtmlTag('a');
 		$link->id = $this->id.'_link';
 		$link->class = 'store-feedback-panel-title';
 		$link->href = $this->link;
 		$link->setContent($this->title);
-		echo $link;
+		$link->display($context);
 	}
 
 	// }}}

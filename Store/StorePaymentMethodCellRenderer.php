@@ -8,7 +8,7 @@ require_once 'Store/dataobjects/StorePaymentMethod.php';
  * Cell renderer for rendering a payment method
  *
  * @package   Store
- * @copyright 2006-2010 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StorePaymentMethodCellRenderer extends SwatCellRenderer
@@ -69,12 +69,13 @@ class StorePaymentMethodCellRenderer extends SwatCellRenderer
 	// }}}
 	// {{{ public function render()
 
-	public function render()
+	public function render(SwatDisplayContext $context)
 	{
-		if (!$this->visible)
+		if (!$this->visible) {
 			return;
+		}
 
-		parent::render();
+		parent::render($context);
 
 		if ($this->payment_method instanceof StorePaymentMethod) {
 			$this->payment_method->showCardNumber($this->show_card_number);
@@ -85,13 +86,17 @@ class StorePaymentMethodCellRenderer extends SwatCellRenderer
 				$this->payment_method->setGPG($this->gpg);
 			}
 
-			$this->payment_method->display($this->display_details,
-				$this->passphrase);
+			ob_start();
+			$this->payment_method->display(
+				$this->display_details,
+				$this->passphrase
+			);
+			$context->out(ob_get_clean());
 		} else {
 			$span_tag = new SwatHtmlTag('span');
 			$span_tag->class = 'swat-none';
 			$span_tag->setContent(Store::_('<none>'));
-			$span_tag->display();
+			$span_tag->display($context);
 		}
 	}
 

@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreCardType.php';
  * A widget for basic validation of a credit card verification value
  *
  * @package   Store
- * @copyright 2009 silverorange
+ * @copyright 2009-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCardVerificationValueEntry extends SwatEntry
@@ -105,17 +105,19 @@ class StoreCardVerificationValueEntry extends SwatEntry
 	// }}}
 	// {{{ public function display()
 
-	public function display()
+	public function display(SwatDisplayContext $context)
 	{
-		parent::display();
-
-		if (!$this->visible)
+		if (!$this->visible) {
 			return;
+		}
+
+		parent::display($context);
 
 		// add a hidden field to track how the widget was displayed
-		if ($this->show_blank_value)
+		if ($this->show_blank_value) {
 			$this->getForm()->addHiddenField(
 				$this->id.'_blank_value', $this->getBlankValue());
+		}
 	}
 
 	// }}}

@@ -7,7 +7,7 @@ require_once 'Swat/SwatCellRenderer.php';
  * A cell renderer for rendering address objects
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAddressCellRenderer extends SwatCellRenderer
@@ -35,19 +35,22 @@ class StoreAddressCellRenderer extends SwatCellRenderer
 	/**
 	 * Renders an address
 	 */
-	public function render()
+	public function render(SwatDisplayContext $context)
 	{
-		if (!$this->visible)
+		if (!$this->visible) {
 			return;
+		}
 
-		parent::render();
+		parent::render($context);
 
 		if ($this->address instanceof StoreAddress) {
+			ob_start();
 			if ($this->condensed) {
 				$this->address->displayCondensed();
 			} else {
 				$this->address->display();
 			}
+			$context->out(ob_get_clean());
 		}
 	}
 

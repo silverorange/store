@@ -9,7 +9,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * Cell renderer for order statuses
  *
  * @package   Store
- * @copyright 2007 silverorange
+ * @copyright 2007-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderStatusCellRenderer extends SwatCellRenderer
@@ -40,11 +40,19 @@ class StoreOrderStatusCellRenderer extends SwatCellRenderer
 	// }}}
 	// {{{ public function render()
 
-	public function render()
+	public function render(SwatDisplayContext $context)
 	{
+		if (!$this->visible) {
+			return;
+		}
+
+		parent::render($context);
+
 		$title = $this->status->title;
-		if ($this->cancelled)
+
+		if ($this->cancelled) {
 			$title.=' ('.Store::_('cancelled').')';
+		}
 
 		$image_path = 'packages/store/images/';
 
@@ -74,23 +82,31 @@ class StoreOrderStatusCellRenderer extends SwatCellRenderer
 				// ignore first status (initialized)
 				$first = false;
 			} else {
-				if ($completed)
-					$complete_img_tag->display();
-				else
-					$incomplete_img_tag->display();
+				if ($completed) {
+					$complete_img_tag->display($context);
+				} else {
+					$incomplete_img_tag->display($context);
+				}
 			}
 
 			// Order statuses are progressive. Once we reach the current
 			// status, subsequent statuses are incomplete.
-			if ($status === $this->status)
+			if ($status === $this->status) {
 				$completed = false;
+			}
 		}
 
 		if ($this->show_summary) {
-			echo '&nbsp;';
-			echo SwatString::minimizeEntities($this->status->title);
-			if ($this->cancelled)
-				printf('&nbsp;<strong>(%s)</strong>', Store::_('cancelled'));
+			$context->out('&nbsp;');
+			$context->out(SwatString::minimizeEntities($this->status->title));
+			if ($this->cancelled) {
+				$context->out(
+					sprintf(
+						'&nbsp;<strong>(%s)</strong>',
+						Store::_('cancelled')
+					)
+				);
+			}
 		}
 	}
 

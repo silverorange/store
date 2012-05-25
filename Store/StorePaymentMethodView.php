@@ -9,7 +9,7 @@ require_once 'Swat/SwatControl.php';
  * A viewer for an payment method object.
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StorePaymentMethodView extends SwatControl
@@ -73,10 +73,13 @@ class StorePaymentMethodView extends SwatControl
 	// }}}
 	// {{{ public function display()
 
-	public function display()
+	public function display(SwatDisplayContext $context)
 	{
-		if (!$this->visible)
+		if (!$this->visible) {
 			return;
+		}
+
+		parent::display($context);
 
 		ob_start();
 		$this->payment_method->displayAsText();
@@ -89,24 +92,29 @@ class StorePaymentMethodView extends SwatControl
 		$controls->class = 'store-payment-method-view-controls';
 
 		$edit_link = new SwatToolLink();
-		$edit_link->link = sprintf($this->edit_link,
-			$this->payment_method->id);
+		$edit_link->link = sprintf(
+			$this->edit_link,
+			$this->payment_method->id
+		);
 
 		$edit_link->title = Store::_('Edit Payment Method');
 		$edit_link->setFromStock('edit');
 
 		$this->remove_button->title = Store::_('Remove');
 		$this->remove_button->classes[] = 'store-remove';
-		$this->remove_button->confirmation_message = sprintf("%s\n\n%s",
-			$this->paymentMethodConfirmText, $payment_method_text);
+		$this->remove_button->confirmation_message = sprintf(
+			"%s\n\n%s",
+			$this->paymentMethodConfirmText,
+			$payment_method_text
+		);
 
-		$div->open();
-		$this->payment_method->display();
-		$controls->open();
-		$edit_link->display();
-		$this->remove_button->display();
-		$controls->close();
-		$div->close();
+		$div->open($context);
+		$this->payment_method->display($context);
+		$controls->open($context);
+		$edit_link->display($context);
+		$this->remove_button->display($context);
+		$controls->close($context);
+		$div->close($context);
 	}
 
 	// }}}

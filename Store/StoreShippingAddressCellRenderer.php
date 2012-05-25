@@ -7,7 +7,7 @@ require_once 'Store/StoreAddressCellRenderer.php';
  * the same as the shipping address
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2012 silverorange
  */
 class StoreShippingAddressCellRenderer extends StoreAddressCellRenderer
 {
@@ -18,7 +18,7 @@ class StoreShippingAddressCellRenderer extends StoreAddressCellRenderer
 	// }}}
 	// {{{ public function render()
 
-	public function render()
+	public function render(SwatDisplayContext $context)
 	{
 		if (!$this->visible) {
 			return;
@@ -37,10 +37,10 @@ class StoreShippingAddressCellRenderer extends StoreAddressCellRenderer
 			$span_tag = new SwatHtmlTag('span');
 			$span_tag->class = 'swat-null-text-cell-renderer';
 			$span_tag->setContent(Store::_('<ship to billing address>'));
-			$span_tag->display();
-			SwatCellRenderer::render();
+			$span_tag->display($context);
+			SwatCellRenderer::render($context);
 		} else {
-			parent::render();
+			parent::render($context);
 		}
 	}
 

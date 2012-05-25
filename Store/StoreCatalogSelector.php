@@ -7,7 +7,7 @@ require_once 'SwatDB/SwatDB.php';
  * A widget to allow selecting a catalog
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2012 silverorange
  */
 class StoreCatalogSelector extends SwatFlydown
 {
@@ -39,14 +39,44 @@ class StoreCatalogSelector extends SwatFlydown
 	// }}}
 	// {{{ public function display()
 
-	public function display()
+	public function display(SwatDisplayContext $context)
 	{
+		if (!$this->visible) {
+			return;
+		}
+
 		$this->show_blank = false;
 
-		$this->value = 
-			self::constructValue($this->scope, $this->catalog, $this->region);
+		$this->value = self::constructValue(
+			$this->scope,
+			$this->catalog,
+			$this->region
+		);
 
-		parent::display();
+		parent::display($context);
+	}
+
+	// }}}
+	// {{{ public function getSubQuery()
+
+	public function getSubQuery()
+	{
+		switch ($this->scope) {
+		case self::ALL_CATALOGS:
+			return 'select Catalog.id from Catalog';
+
+		case self::ONE_CATALOG:
+			return $this->db->quote($this->catalog, 'integer');
+
+		case self::ALL_ENABLED_CATALOGS:
+			return 'select CatalogRegionBinding.catalog from
+				CatalogRegionBinding';
+
+		case self::ALL_ENABLED_CATALOGS_IN_REGION:
+			return sprintf('select CatalogRegionBinding.catalog from
+				CatalogRegionBinding where region = %s',
+				$this->db->quote($this->region, 'integer'));
+		}
 	}
 
 	// }}}
@@ -56,6 +86,42 @@ class StoreCatalogSelector extends SwatFlydown
 	{
 		parent::setState($state);
 		$this->parseValue($this->value);
+	}
+
+	// }}}
+	// {{{ protected function &getOptions()
+
+	protected function &getOptions()
+	{
+		$options = array();
+		
+		$options[] = new SwatOption(
+			self::constructValue(self::ALL_CATALOGS), Store::_('All'));
+
+		$options[] = new SwatOption(
+			self::constructValue(self::ALL_ENABLED_CATALOGS),
+				Store::_('All Enabled'));
+
+		$regions = SwatDB::getOptionArray($this->db, 'Region', 'title', 'id',
+			'title');
+
+		foreach ($regions as $id => $title)
+			$options[] = new SwatOption(
+				self::constructValue(self::ALL_ENABLED_CATALOGS_IN_REGION, null,
+					$id),
+				sprintf(Store::_('All Enabled in %s'), $title));
+
+		$options[] = new SwatFlydownDivider('');
+
+		$catalogs = SwatDB::getOptionArray($this->db, 'Catalog', 'title', 'id',
+			'title');
+
+		foreach ($catalogs as $id => $title)
+			$options[] = new SwatOption(
+				self::constructValue(self::ONE_CATALOG, $id),
+				$title);
+
+		return $options;
 	}
 
 	// }}}
@@ -96,65 +162,6 @@ class StoreCatalogSelector extends SwatFlydown
 			break;
 		default:
 			$this->scope = self::ALL_CATALOGS;
-		}
-	}
-
-	// }}}
-	// {{{ protected function &getOptions()
-
-	protected function &getOptions()
-	{
-		$options = array();
-		
-		$options[] = new SwatOption(
-			self::constructValue(self::ALL_CATALOGS), Store::_('All'));
-
-		$options[] = new SwatOption(
-			self::constructValue(self::ALL_ENABLED_CATALOGS),
-				Store::_('All Enabled'));
-
-		$regions = SwatDB::getOptionArray($this->db, 'Region', 'title', 'id',
-			'title');
-
-		foreach ($regions as $id => $title)
-			$options[] = new SwatOption(
-				self::constructValue(self::ALL_ENABLED_CATALOGS_IN_REGION, null,
-					$id),
-				sprintf(Store::_('All Enabled in %s'), $title));
-
-		$options[] = new SwatFlydownDivider('');
-
-		$catalogs = SwatDB::getOptionArray($this->db, 'Catalog', 'title', 'id',
-			'title');
-
-		foreach ($catalogs as $id => $title)
-			$options[] = new SwatOption(
-				self::constructValue(self::ONE_CATALOG, $id),
-				$title);
-
-		return $options;
-	}
-
-	// }}}
-	// {{{ public function getSubQuery()
-
-	public function getSubQuery()
-	{
-		switch ($this->scope) {
-		case self::ALL_CATALOGS:
-			return 'select Catalog.id from Catalog';
-
-		case self::ONE_CATALOG:
-			return $this->db->quote($this->catalog, 'integer');
-
-		case self::ALL_ENABLED_CATALOGS:
-			return 'select CatalogRegionBinding.catalog from
-				CatalogRegionBinding';
-
-		case self::ALL_ENABLED_CATALOGS_IN_REGION:
-			return sprintf('select CatalogRegionBinding.catalog from
-				CatalogRegionBinding where region = %s',
-				$this->db->quote($this->region, 'integer'));
 		}
 	}
 

@@ -8,7 +8,7 @@ require_once 'Store/dataobjects/StoreCardType.php';
  * A widget for basic validation of a debit or credit card
  *
  * @package   Store
- * @copyright 2006-2008 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCardNumberEntry extends SwatEntry
@@ -90,6 +90,40 @@ class StoreCardNumberEntry extends SwatEntry
 	}
 
 	// }}}
+	// {{{ public function display()
+
+	public function display(SwatDisplayContext $context)
+	{
+		if (!$this->visible) {
+			return;
+		}
+
+		parent::display($context);
+
+		// add a hidden field to track how the widget was displayed
+		if ($this->show_blank_value) {
+			$this->getForm()->addHiddenField(
+				$this->id.'_blank_value', $this->blank_value);
+		}
+	}
+
+	// }}}
+	// {{{ public function setDatabase()
+
+	public function setDatabase(MDB2_Driver_Common $db)
+	{
+		$this->db = $db;
+	}
+
+	// }}}
+	// {{{ public function getCardType()
+
+	public function getCardType()
+	{
+		return $this->card_type;
+	}
+
+	// }}}
 	// {{{ protected function processCardType()
 
 	protected function processCardType()
@@ -119,38 +153,6 @@ class StoreCardNumberEntry extends SwatEntry
 
 			$this->addMessage($message);
 		}
-	}
-
-	// }}}
-	// {{{ public function display()
-
-	public function display()
-	{
-		parent::display();
-
-		if (!$this->visible)
-			return;
-
-		// add a hidden field to track how the widget was displayed
-		if ($this->show_blank_value)
-			$this->getForm()->addHiddenField(
-				$this->id.'_blank_value', $this->blank_value);
-	}
-
-	// }}}
-	// {{{ public function setDatabase()
-
-	public function setDatabase(MDB2_Driver_Common $db)
-	{
-		$this->db = $db;
-	}
-
-	// }}}
-	// {{{ public function getCardType()
-
-	public function getCardType()
-	{
-		return $this->card_type;
 	}
 
 	// }}}

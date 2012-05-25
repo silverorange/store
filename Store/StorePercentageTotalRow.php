@@ -104,48 +104,46 @@ class StorePercentageTotalRow extends SwatTableViewRow
 	{
 		parent::__construct();
 		$this->percentage_cell_renderer = new SwatPercentageCellRenderer();
-		$this->addStyleSheet('packages/store/styles/store-total-row.css',
-			 Store::PACKAGE_ID);
 	}
 
 	// }}}
 	// {{{ public function display()
 
-	public function display()
+	public function display(SwatDisplayContext $context)
 	{
-		if ($this->value === null)
-			$this->visible = false;
-
-		if (!$this->visible)
+		if (!$this->visible || $this->value === null) {
 			return;
+		}
 
-		parent::display();
+		parent::display($context);
 
 		$tr_tag = new SwatHtmlTag('tr');
 		$tr_tag->class = 'store-total-row';
 		$tr_tag->id = $this->id;
 
-		$tr_tag->open();
+		$tr_tag->open($context);
 
-		$this->displayHeader();
-		$this->displayTotal();
-		$this->displayBlank();
+		$this->displayHeader($context);
+		$this->displayTotal($context);
+		$this->displayBlank($context);
 
-		$tr_tag->close();
+		$tr_tag->close($context);
+
+		$context->addStyleSheet('packages/store/styles/store-total-row.css');
 	}
 
 	// }}}
 	// {{{ protected function displayHeader()
 
-	protected function displayHeader()
+	protected function displayHeader(SwatDisplayContext $context)
 	{
 		$colspan = $this->view->getXhtmlColspan();
 		$th_tag = new SwatHtmlTag('th');
 		$th_tag->colspan = $colspan - 1 - $this->offset;
 
-		$th_tag->open();
-		$this->displayTitle();
-		$th_tag->close();
+		$th_tag->open($context);
+		$this->displayTitle($context);
+		$th_tag->close($context);
 	}
 
 	// }}}
@@ -166,50 +164,55 @@ class StorePercentageTotalRow extends SwatTableViewRow
 		if ($this->note !== null) {
 			$span = new SwatHtmlTag('span');
 			$span->class = 'note';
-			$span->setContent(sprintf('(%s)', $this->note),
-				$this->note_content_type);
+			$span->setContent(
+				sprintf(
+					'(%s)',
+					$this->note
+				),
+				$this->note_content_type
+			);
 
 			$title.= ' '.$span->__toString();
 		}
 
 		if ($this->show_colon) {
-			printf(Store::_('%s:'), $title);
+			$context->out(sprintf(Store::_('%s:'), $title));
 		} else {
-			echo $title;
+			$context->out($title);
 		}
 	}
 
 	// }}}
 	// {{{ protected function displayTotal()
 
-	protected function displayTotal()
+	protected function displayTotal(SwatDisplayContext $context)
 	{
 		$td_tag = new SwatHtmlTag('td');
 		$td_tag->class = $this->getCSSClassString();
-		$td_tag->open();
-		$this->displayValue();
-		$td_tag->close();
+		$td_tag->open($context);
+		$this->displayValue($context);
+		$td_tag->close($context);
 	}
 
 	// }}}
 	// {{{ protected function displayValue()
 
-	protected function displayValue()
+	protected function displayValue(SwatDisplayContext $context)
 	{
 		$this->percentage_cell_renderer->value = $this->value;
-		$this->percentage_cell_renderer->render();
+		$this->percentage_cell_renderer->render($context);
 	}
 
 	// }}}
 	// {{{ protected function displayBlank()
 
-	protected function displayBlank()
+	protected function displayBlank(SwatDisplayContext $context)
 	{
 		if ($this->offset > 0) {
 			$td_tag = new SwatHtmlTag('td');
 			$td_tag->colspan = $this->offset;
 			$td_tag->setContent('&nbsp;');
-			$td_tag->display();
+			$td_tag->display($context);
 		}
 	}
 

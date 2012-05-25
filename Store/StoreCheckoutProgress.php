@@ -5,7 +5,7 @@ require_once 'Store/Store.php';
 
 /**
  * @package   Store
- * @copyright 2007 silverorange
+ * @copyright 2007-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutProgress extends SwatControl
@@ -18,50 +18,50 @@ class StoreCheckoutProgress extends SwatControl
 	public $current_step = 0;
 
 	// }}}
-	// {{{ public function __construct()
-
-	public function __construct($id = null)
-	{
-		parent::__construct($id);
-		$this->addStyleSheet(
-			'packages/store/styles/store-checkout-progress.css',
-			Store::PACKAGE_ID);
-	}
-
-	// }}}
 	// {{{ public function display()
 
-	public function display()
+	public function display(SwatDisplayContext $contex)
 	{
-		if (!$this->visible)
+		if (!$this->visible) {
 			return;
+		}
 
-		parent::display();
+		parent::display($context);
 
 		$ol_tag = new SwatHtmlTag('ol');
 		$ol_tag->id = $this->id;
-		if ($this->current_step > 0)
-			$ol_tag->class = ' store-checkout-progress-step'.$this->current_step;
+		if ($this->current_step > 0) {
+			$ol_tag->class =
+				' store-checkout-progress-step'.$this->current_step;
+		}
 
-
-		echo '<div class="store-checkout-progress">';
-		$ol_tag->open();
+		$context->out('<div class="store-checkout-progress">');
+		$ol_tag->open($context);
 
 		foreach ($this->getSteps() as $id => $step) {
 			$li_tag = new SwatHtmlTag('li');
 			$li_tag->class = 'store-checkout-progress-step'.$id;
-			$li_tag->open();
+			$li_tag->open($context);
 
-			printf('<span class="title"><span class="number">%s.</span> %s</span>',
-				$id, $step);
+			$context->out(
+				sprintf(
+					'<span class="title"><span class="number">'.
+					'%s.</span> %s</span>',
+					$id,
+					$step
+				)
+			);
 
-			$li_tag->close();
+			$li_tag->close($context);
 		}
 
-		$ol_tag->close();
-		echo '<div class="store-checkout-progress-clear"></div>';
-		echo '</div>';
+		$ol_tag->close($context);
+		$context->out('<div class="store-checkout-progress-clear"></div>');
+		$context->out('</div>');
 
+		$context->addStyleSheet(
+			'packages/store/styles/store-checkout-progress.css'
+		);
 	}
 
 	// }}}

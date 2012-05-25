@@ -7,26 +7,22 @@ require_once 'Store/StoreMessage.php';
  * A control to display page status messages
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreMessageDisplay extends SwatMessageDisplay
 {
-	// {{{ public function __construct()
+	// {{{ public function display()
 
-	/**
-	 * Creates a new message display
-	 *
-	 * @param string $id a non-visible unique id for this widget.
-	 *
-	 * @see SwatWidget::__construct()
-	 */
-	public function __construct($id = null)
+	public function display(SwatDisplayContext $context)
 	{
-		parent::__construct($id);
+		if (!$this->visible) {
+			return;
+		}
 
-		$this->addStyleSheet('packages/store/styles/store-message.css',
-			Store::PACKAGE_ID);
+		parent::display($context);
+
+		$context->addStyleSheet('packages/store/styles/store-message.css');
 	}
 
 	// }}}

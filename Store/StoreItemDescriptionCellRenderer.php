@@ -14,7 +14,7 @@ require_once 'Swat/SwatString.php';
  *    <span>SKU</span> - Desc
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2012 silverorange
  */
 class StoreItemDescriptionCellRenderer extends SwatCellRenderer
 {
@@ -28,26 +28,31 @@ class StoreItemDescriptionCellRenderer extends SwatCellRenderer
 	// }}}
 	// {{{ public function render()
 
-	public function render()
+	public function render(SwatDisplayContext $context)
 	{
-		if (!$this->visible)
+		if (!$this->visible) {
 			return;
+		}
 
-		parent::render();
+		parent::render($context);
 
 		if ($this->description == '') {
-			echo '<span class="item-sku">',
+			$context->out(
+				'<span class="item-sku">',
 				SwatString::minimizeEntities($this->sku),
-				'</span>';
+				'</span>'
+			);
 		} else {
-			echo '<span class="item-sku">',
+			$context->out(
+				'<span class="item-sku">',
 				SwatString::minimizeEntities($this->sku),
-				'</span> - ';
+				'</span> - '
+			);
 
 			if ($this->description_content_type == 'text/xml') {
-				echo $this->description;
+				$context->out($this->description);
 			} else {
-				echo SwatString::minimizeEntities($this->description);
+				$context->out(SwatString::minimizeEntities($this->description));
 			}
 		}
 	}

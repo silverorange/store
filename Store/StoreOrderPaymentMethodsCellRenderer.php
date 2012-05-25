@@ -8,23 +8,11 @@ require_once 'Store/dataobjects/StoreOrderPaymentMethodWrapper.php';
  * Cell renderer for rendering a payment method wrapper
  *
  * @package   Store
- * @copyright 2009 silverorange
+ * @copyright 2009-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderPaymentMethodsCellRenderer extends SwatCellRenderer
 {
-	// {{{ public function __construct()
-
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->addStyleSheet(
-			'packages/store/styles/store-order-payment-methods-cell-renderer.css',
-			Store::PACKAGE_ID);
-	}
-
-	// }}}
 	// {{{ public properties
 
 	/**
@@ -81,30 +69,39 @@ class StoreOrderPaymentMethodsCellRenderer extends SwatCellRenderer
 	// }}}
 	// {{{ public function render()
 
-	public function render()
+	public function render(SwatDisplayContext $context)
 	{
-		if (!$this->visible)
+		if (!$this->visible) {
 			return;
+		}
 
-		parent::render();
+		parent::render($context);
 
 		if ($this->payment_methods instanceof StoreOrderPaymentMethodWrapper &&
 			count($this->payment_methods) > 0) {
 
 			if (count($this->payment_methods) == 1) {
 				$payment_method = $this->payment_methods->getFirst();
-				if ($this->gpg instanceof Crypt_GPG)
+				if ($this->gpg instanceof Crypt_GPG) {
 					$payment_method->setGPG($this->gpg);
+				}
 
 				$payment_method->showCardNumber($this->show_card_number);
 				$payment_method->showCardExpiry($this->show_card_expiry);
 				$payment_method->showCardFullname($this->show_card_fullname);
-				$payment_method->display($this->display_details,
-					$this->passphrase);
+
+				ob_start();
+				$payment_method->display(
+					$this->display_details,
+					$this->passphrase
+				);
+				$context->out(ob_get_clean());
 
 			} else {
-				echo '<table class="store-order-payment-methods-cell-renderer">';
-				echo '<tbody>';
+				$context->out(
+					'<table class="store-order-payment-methods-cell-renderer">'
+				);
+				$context->out('<tbody>');
 
 				$payment_total = 0;
 				foreach ($this->payment_methods as $payment_method) {
@@ -113,33 +110,44 @@ class StoreOrderPaymentMethodsCellRenderer extends SwatCellRenderer
 					$payment_method->showCardFullname(
 						$this->show_card_fullname);
 
-					$payment_total+= $payment_method->amount;
+					$payment_total += $payment_method->amount;
 
-					if ($this->gpg instanceof Crypt_GPG)
+					if ($this->gpg instanceof Crypt_GPG) {
 						$payment_method->setGPG($this->gpg);
+					}
 
-					echo '<tr><th class="payment">';
-					$payment_method->display($this->display_details,
-						$this->passphrase);
+					$context->out('<tr><th class="payment">');
+					ob_start();
+					$payment_method->display(
+						$this->display_details,
+						$this->passphrase
+					);
+					$context->out(ob_get_clean());
 
-					echo '</th><td class="payment-amount">';
+					$context->out('</th><td class="payment-amount">');
+					ob_start();
 					$payment_method->displayAmount();
-					echo '</td></tr>';
+					$context->out(ob_get_clean());
+					$context->out('</td></tr>');
 				}
 
-				echo '</tbody><tfoot>';
+				$context->out('</tbody><tfoot>');
+				$context->out('<tr><th>Payment Total:</th><td class="payment-amount">');
 				$locale = SwatI18NLocale::get();
-				echo '<tr><th>Payment Total:</th><td class="payment-amount">';
-				echo $locale->formatCurrency($payment_total);
-				echo '</td></tr>';
-				echo '</tfoot></table>';
+				$context->out($locale->formatCurrency($payment_total));
+				$context->out('</td></tr>');
+				$context->out('</tfoot></table>');
 			}
 		} else {
 			$span_tag = new SwatHtmlTag('span');
 			$span_tag->class = 'swat-none';
 			$span_tag->setContent(Store::_('<none>'));
-			$span_tag->display();
+			$span_tag->display($context);
 		}
+
+		$context->addStyleSheet(
+			'packages/store/styles/store-order-payment-methods-cell-renderer.css'
+		);
 	}
 
 	// }}}

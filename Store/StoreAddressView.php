@@ -12,7 +12,7 @@ require_once 'Swat/SwatControl.php';
  * address. This view is a Swat widget and can exist in the Swat widget tree.
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAddressView extends SwatControl
@@ -47,10 +47,13 @@ class StoreAddressView extends SwatControl
 	// }}}
 	// {{{ public function display()
 
-	public function display()
+	public function display(SwatDisplayContext $context)
 	{
-		if (!$this->visible)
+		if (!$this->visible) {
 			return;
+		}
+
+		parent::display($context);
 
 		ob_start();
 		$this->address->displayCondensedAsText();
@@ -63,8 +66,10 @@ class StoreAddressView extends SwatControl
 		$controls->class = 'store-address-view-controls';
 
 		$edit_link = new SwatToolLink();
-		$edit_link->link = sprintf($this->edit_address_link,
-			$this->address->id);
+		$edit_link->link = sprintf(
+			$this->edit_address_link,
+			$this->address->id
+		);
 
 		$edit_link->title = Store::_('Edit Address');
 		$edit_link->setFromStock('edit');
@@ -72,17 +77,22 @@ class StoreAddressView extends SwatControl
 		$remove_button = $this->getCompositeWidget('remove_button');
 		$remove_button->title = Store::_('Remove');
 		$remove_button->classes[] = 'store-remove';
-		$remove_button->confirmation_message = sprintf(Store::_(
-			"Are you sure you want to remove the following address?\n\n%s"),
-			$address_text);
+		$remove_button->confirmation_message = sprintf(
+			Store::_(
+				"Are you sure you want to remove the following address?\n\n%s"
+			),
+			$address_text
+		);
 
-		$div->open();
+		$div->open($context);
+		ob_start();
 		$this->address->displayCondensed();
-		$controls->open();
-		$edit_link->display();
-		$remove_button->display();
-		$controls->close();
-		$div->close();
+		$context->out(ob_get_clean());
+		$controls->open($context);
+		$edit_link->display($context);
+		$remove_button->display($context);
+		$controls->close($context);
+		$div->close($context);
 	}
 
 	// }}}

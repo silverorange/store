@@ -7,7 +7,7 @@ require_once 'Swat/SwatIntegerEntry.php';
  * e-commerce web application
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreQuantityEntry extends SwatIntegerEntry
@@ -18,13 +18,26 @@ class StoreQuantityEntry extends SwatIntegerEntry
 	{
 		parent::__construct($id);
 
-		$this->addStyleSheet('packages/store/styles/store-quantity-entry.css',
-			 Store::PACKAGE_ID);
-
 		$this->minimum_value = 0;
 		$this->maxlength = 8;
 		$this->size = 3;
 		$this->show_thousands_separator = false;
+	}
+
+	// }}}
+	// {{{ public function display()
+
+	public function display(SwatDisplayContext $context)
+	{
+		if (!$this->visible) {
+			return;
+		}
+
+		parent::display($context);
+
+		$context->addStyleSheet(
+			'packages/store/styles/store-quantity-entry.css'
+		);
 	}
 
 	// }}}

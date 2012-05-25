@@ -11,7 +11,7 @@ require_once 'Store/StoreCatalogSelector.php';
  * The active catalog(s) is used for category pages.
  *
  * @package   Store
- * @copyright 2005-2008 silverorange
+ * @copyright 2005-2012 silverorange
  */
 class StoreCatalogSwitcher extends SwatControl
 {
@@ -21,24 +21,6 @@ class StoreCatalogSwitcher extends SwatControl
 	 * @var MDB2_Driver_Common
 	 */
 	public $db;
-
-	// }}}
-	// {{{ public function __construct()
-
-	/**
-	 * Creates a new catalog selector widget
-	 *
-	 * @param string $id a non-visible unique id for this widget.
-	 *
-	 * @see SwatWidget::__construct()
-	 */
-	public function __construct($id = null)
-	{
-		parent::__construct($id);
-		$this->addStyleSheet(
-			'packages/store/admin/styles/store-catalog-switcher.css',
-			Store::PACKAGE_ID);
-	}
 
 	// }}}
 	// {{{ public function init()
@@ -115,25 +97,33 @@ class StoreCatalogSwitcher extends SwatControl
 	// }}}
 	// {{{ public function display()
 
-	public function display()
+	public function display(SwatDisplayContext $context)
 	{
-		parent::display();
+		if (!$this->visible) {
+			return;
+		}
+
+		parent::display($context);
 
 		$div_tag = new SwatHtmlTag('div');
 		$div_tag->class = 'catalog-switcher';
-		$div_tag->open();
+		$div_tag->open($context);
 
 		$label_tag = new SwatHtmlTag('label');
 		$label_tag->for = $this->id.'_selector';
 		$label_tag->setContent(sprintf('%s:', Store::_('Catalog')));
-		$label_tag->display();
+		$label_tag->display($context);
 
-		echo '&nbsp;';
-		$this->getCompositeWidget('selector')->display();
-		echo '&nbsp;';
-		$this->getCompositeWidget('button')->display();
+		$context->out('&nbsp;');
+		$this->getCompositeWidget('selector')->display($context);
+		$context->out('&nbsp;');
+		$this->getCompositeWidget('button')->display($context);
 
-		$div_tag->close();
+		$div_tag->close($context);
+
+		$context->addStyleSheet(
+			'packages/store/admin/styles/store-catalog-switcher.css'
+		);
 	}
 
 	// }}}
