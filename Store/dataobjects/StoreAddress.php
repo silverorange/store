@@ -1528,11 +1528,11 @@ abstract class StoreAddress extends SwatDBDataObject
 			}
 		} catch (SoapFault $e) {
 			$e = new SwatException($e);
-			$e->process(false);
+			$e->processAndContinue();
 			$valid = true;
 		} catch (Services_StrikeIron_SoapException $e) {
 			$e = new SwatException($e);
-			$e->process(false);
+			$e->processAndContinue();
 			$valid = true;
 		}
 
