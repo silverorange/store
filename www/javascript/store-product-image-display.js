@@ -42,8 +42,7 @@ var StoreProductImageDisplay = function(data, config)
 
 // }}}
 
-/* note this JS test fails to detect ie6 TODO */
-StoreProductImageDisplay.ie6 = false /*@cc_on || @_jscript_version < 5.7 @*/;
+StoreProductImageDisplay.ie6 = (YAHOO.env.ua.ie > 0 && YAHOO.env.ua.ie <= 6);
 
 StoreProductImageDisplay.close_text = 'Close';
 
