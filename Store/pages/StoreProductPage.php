@@ -423,12 +423,16 @@ class StoreProductPage extends StorePage
 		$this->buildReviewsUi();
 
 		$this->layout->startCapture('content');
-		$this->message_display->display();
+		$this->message_display->display($this->layout->getDisplayContext());
 		$this->displayProduct();
 
-		Swat::displayInlineJavaScript($this->getProductInlineJavaScript());
+		$this->layout->getDisplayContext()->addInlineScript(
+			$this->getProductInlineJavaScript()
+		);
 		if ($this->reviews_ui instanceof SwatUI) {
-			Swat::displayInlineJavaScript($this->getReviewsInlineJavaScript());
+			$this->layout->getDisplayContext()->addInlineScript(
+				$this->getReviewsInlineJavaScript()
+			);
 		}
 
 		$this->layout->endCapture();
@@ -538,7 +542,7 @@ class StoreProductPage extends StorePage
 	protected function displayItems()
 	{
 		if ($this->items_view instanceof StoreItemsView)
-			$this->items_view->display();
+			$this->items_view->display($this->layout->getDisplayContext());
 	}
 
 	// }}}
@@ -1177,7 +1181,7 @@ class StoreProductPage extends StorePage
 		if ($this->reviews_ui instanceof SwatUI) {
 			echo '<div id="submit_review"></div>';
 
-			$this->reviews_ui->display();
+			$this->reviews_ui->display($this->layout->getDisplayContext());
 		}
 	}
 
@@ -1227,7 +1231,9 @@ class StoreProductPage extends StorePage
 
 			echo '</div>';
 
-			Swat::displayInlineJavaScript($this->getImageInlineJavaScript());
+			$this->layout->getDisplayContext()->addInlineScript(
+				$this->getImageInlineJavaScript()
+			);
 		}
 
 	}
@@ -1439,69 +1445,51 @@ class StoreProductPage extends StorePage
 	public function finalize()
 	{
 		parent::finalize();
-		$yui = new SwatYUI(array('event'));
-		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
 
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/swat/javascript/swat-z-index-manager.js',
-			Swat::PACKAGE_ID));
+		$context = $this->layout->getDisplayContext();
 
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/javascript/store-product-page.js',
-			Store::PACKAGE_ID));
+		$context->addYUI('event');
+		$context->addStyleSheet('packages/swat/styles/swat-message.css');
+		$context->addStyleSheet(
+			'packages/swat/styles/swat-message-display.css'
+		);
 
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/javascript/store-product-image-display.js',
-			Store::PACKAGE_ID));
+		$context->addStyleSheet(
+			'packages/store/styles/store-product-page.css'
+		);
 
-		if ($this->items_view instanceof StoreItemsView) {
-			$this->layout->addHtmlHeadEntrySet(
-				$this->items_view->getHtmlHeadEntrySet());
-		}
-
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/swat/styles/swat-message.css',
-			Swat::PACKAGE_ID));
-
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/swat/styles/swat-message-display.css',
-			Swat::PACKAGE_ID));
-
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-product-page.css',
-			Store::PACKAGE_ID));
-
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-product-image-display.css',
-			Store::PACKAGE_ID));
+		$context->addStyleSheet(
+			'packages/store/styles/store-product-image-display.css'
+		);
 
 		// TODO: only include this if there are cart items on this page
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-cart.css', Store::PACKAGE_ID));
+		$context->addStyleSheet('packages/store/styles/store-cart.css');
 
-		if ($this->message_display !== null)
-			$this->layout->addHtmlHeadEntrySet(
-				$this->message_display->getHtmlHeadEntrySet());
+		$context->addScript(
+			'packages/swat/javascript/swat-z-index-manager.js'
+		);
+
+		$context->addScript(
+			'packages/store/javascript/store-product-page.js'
+		);
+
+		$context->addScript(
+			'packages/store/javascript/store-product-image-display.js'
+		);
 
 		if ($this->reviews_ui instanceof SwatUI) {
 			require_once 'XML/RPCAjax.php';
 
-			$this->layout->addHtmlHeadEntrySet(
-				XML_RPCAjax::getHtmlHeadEntrySet());
+			$ajax = new XML_RPCAjax();
 
-			$yui = new SwatYUI(array('dom', 'event', 'animation'));
-			$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
-
-			$this->layout->addHtmlHeadEntrySet(
-				$this->reviews_ui->getRoot()->getHtmlHeadEntrySet());
-
-			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-				'packages/store/javascript/store-product-review-page.js',
-				Store::PACKAGE_ID));
-
-			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-				'packages/store/javascript/store-product-review-view.js',
-				Store::PACKAGE_ID));
+			$context->addScript($ajax->getHtmlHeadEntrySet());
+			$context->addYUI('dom', 'event', 'animation');
+			$context->addScript(
+				'packages/store/javascript/store-product-review-page.js'
+			);
+			$context->addScript(
+				'packages/store/javascript/store-product-review-view.js'
+			);
 		}
 	}
 

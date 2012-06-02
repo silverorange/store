@@ -155,7 +155,7 @@ class StoreSearchDisclosure extends SwatDisclosure
 		$context->addScript($ajax->getHtmlHeadEntrySet());
 		$context->addScript('packages/store/javascript/search-disclosure.js');
 		$context->addStyleSheet('packages/store/styles/search-disclosure.css');
-		$context->addlineScript($this->getInlineJavascript());
+		$context->addInlineScript($this->getInlineJavascript());
 	}
 
 	// }}}
