@@ -14,7 +14,7 @@ require_once 'Store/dataobjects/StoreAttributeWrapper.php';
  * @copyright 2007-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreSearchPanel extends SwatObject
+class StoreSearchPanel extends SwatUIObject
 {
 	// {{{ protected properties
 

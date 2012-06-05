@@ -7,7 +7,7 @@ require_once 'Store/StoreSearchPanel.php';
 
 /**
  * @package   Store
- * @copyright 2007-2009 silverorange
+ * @copyright 2007-2012 silverorange
  */
 class StoreSearchPanelServer extends SiteXMLRPCServer
 {
@@ -74,7 +74,7 @@ class StoreSearchPanelServer extends SiteXMLRPCServer
 		$panel->init();
 		$panel->process();
 		$this->setValues($panel);
-		$panel->display();
+		$panel->display($this->layout->getDisplayContext());
 
 		return ob_get_clean();
 	}
