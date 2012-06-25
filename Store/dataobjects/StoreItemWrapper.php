@@ -2,12 +2,13 @@
 
 require_once 'SwatDB/SwatDBRecordsetWrapper.php';
 require_once 'Store/dataobjects/StoreItem.php';
+require_once 'Store/dataobjects/StoreProductWrapper.php';
 
 /**
  * A recordset wrapper class for Item objects
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2012 silverorange
  */
 class StoreItemWrapper extends SwatDBRecordsetWrapper
 {
@@ -24,6 +25,16 @@ class StoreItemWrapper extends SwatDBRecordsetWrapper
 	{
 		foreach ($this as $item)
 			$item->setRegion($region, $limiting);
+	}
+
+	// }}}
+	// {{{ publc function loadProducts()
+
+	public function loadProducts()
+	{
+		return $this->loadAllSubDataObjects('product', $this->db,
+			'select * from Product where id in (%s)',
+			SwatDBClassMap::get('StoreProductWrapper'));
 	}
 
 	// }}}
