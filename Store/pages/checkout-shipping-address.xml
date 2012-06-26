@@ -10,7 +10,7 @@
 		</widget>
 		<widget class="SwatContentBlock" id="account_shipping_address_region_message" />
 	</widget>
-	<widget class="SwatFieldset" id="shipping_address_form">
+	<widget class="SwatDisplayableContainer" id="shipping_address_form">
 		<widget class="SwatFormField" id="shipping_address_fullname_field">
 			<property name="title" translatable="yes">First Name &amp; Last Name</property>
 			<widget class="SwatEntry" id="shipping_address_fullname">
