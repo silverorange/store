@@ -8,9 +8,9 @@
 		</widget>
 		<widget class="SwatContentBlock" id="account_billing_address_region_message" />
 	</widget>
-	<widget class="SwatDisplayableContainer" id="billing_address_formXXX">
+	<widget class="SwatDisplayableContainer" id="billing_address_form">
 		<widget class="SwatFormField" id="billing_address_fullname_field">
-			<property name="title" translatable="yes">xxxxFirst Name &amp; Last Name</property>
+			<property name="title" translatable="yes">First Name &amp; Last Name</property>
 			<widget class="SwatEntry" id="billing_address_fullname">
 				<property name="required" type="boolean">true</property>
 				<property name="maxlength" type="integer">255</property>
