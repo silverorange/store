@@ -86,20 +86,23 @@ class StoreCartServer extends SiteXMLRPCServer
 
 			$added = $this->processor->getEntriesAdded();
 			foreach ($added as $result) {
+				$entry = $result['entry'];
+				$sku = ($entry->getItemSku() === null) ? '' : $entry->getItemSku();
+
 				if ($result['status'] === StoreCartProcessor::ENTRY_ADDED) {
 					$added_entries[] = array(
-						'item_id' => $result['entry']->getItemId(),
-						'sku' => $result['entry']->getItemSku(),
+						'item_id' => $entry->getItemId(),
+						'sku' => $sku,
 					);
 				} elseif ($result['status'] === StoreCartProcessor::ENTRY_SAVED) {
 					$saved_entries[] = array(
-						'item_id' => $result['entry']->getItemId(),
-						'sku' => $result['entry']->getItemSku(),
+						'item_id' => $entry->getItemId(),
+						'sku' => $sku,
 					);
 				} else {
 					$other_entries[] = array(
-						'item_id' => $result['entry']->getItemId(),
-						'sku' => $result['entry']->getItemSku(),
+						'item_id' => $entry->getItemId(),
+						'sku' => $sku,
 					);
 				}
 			}
@@ -153,7 +156,8 @@ class StoreCartServer extends SiteXMLRPCServer
 		// a double-clicked button can fire a remove for an entry that doesn't
 		// exist
 		if ($entry instanceof StoreCartEntry) {
-			$response['removed_sku'] = $entry->getItemSku();
+			$sku = ($entry->getItemSku() === null) ? '' : $entry->getItemSku();
+			$response['removed_sku'] = $sku;
 			$response['removed_item'] = $entry->getItemId();
 		}
 
