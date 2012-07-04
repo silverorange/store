@@ -34,6 +34,14 @@ class StoreSalesReportDetails extends AdminIndex
 	protected $regions = null;
 
 	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return 'Store/admin/components/SalesReport/details.xml';
+	}
+
+	// }}}
 
 	// init phase
 	// {{{ protected function initInternal()
@@ -55,7 +63,7 @@ class StoreSalesReportDetails extends AdminIndex
 				'Unable to load commission report with id of “%s”', $id));
 		}
 
-		$this->ui->loadFromXML(dirname(__FILE__).'/details.xml');
+		$this->ui->loadFromXML($this->getUiXml());
 	}
 
 	// }}}
@@ -120,8 +128,8 @@ class StoreSalesReportDetails extends AdminIndex
 		foreach ($rs as $row) {
 			$key = $row->day;
 
-			$days[$key]->subtotal-= $row->subtotal;
-			$sum->subtotal-= $row->subtotal;
+			$days[$key]->subtotal -= $row->subtotal;
+			$sum->subtotal -= $row->subtotal;
 
 			$days[$key]->cancelled = $row->num_orders;
 			$sum->cancelled += $row->num_orders;
