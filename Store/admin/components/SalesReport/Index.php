@@ -132,6 +132,8 @@ class StoreSalesReportIndex extends AdminIndex
 
 	protected function queryOrderStats($date_field)
 	{
+		$instance_id = $this->app->getInstanceId();
+
 		$sql = 'select count(Orders.id) as num_orders, Locale.region,
 				(sum(item_total) + sum(surcharge_total)
 					- sum(promotion_total)) as subtotal,
@@ -141,12 +143,17 @@ class StoreSalesReportIndex extends AdminIndex
 				inner join Locale on Orders.locale = Locale.id
 			where
 				extract(year from convertTZ(%1$s, %2$s)) = %3$s
+				and Orders.instance %4$s %5$s
 			group by Locale.region, year, month';
 
-		$sql = sprintf($sql,
+		$sql = sprintf(
+			$sql,
 			$date_field,
 			$this->app->db->quote($this->app->config->date->time_zone, 'text'),
-			$this->app->db->quote($this->year, 'integer'));
+			$this->app->db->quote($this->year, 'integer'),
+			SwatDB::equalityOperator($instance_id),
+			$this->app->db->quote($instance_id, 'integer')
+		);
 
 		return SwatDB::query($this->app->db, $sql);
 	}
