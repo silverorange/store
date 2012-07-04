@@ -214,19 +214,19 @@ class StoreSalesReportIndex extends AdminIndex
 		$instance_id = $this->app->getInstanceId();
 
 		$sql = 'select count(Orders.id) as num_orders, Locale.region,
-				(sum(item_total) + sum(surcharge_total)
-					- sum(promotion_total)) as subtotal,
-				extract(month from convertTZ(%1$s, %2$s)) as month,
-				extract(year from convertTZ(%1$s, %2$s)) as year
+				%1$s as subtotal,
+				extract(month from convertTZ(%2$s, %3$s)) as month,
+				extract(year from convertTZ(%2$s, %3$s)) as year
 			from Orders
 				inner join Locale on Orders.locale = Locale.id
 			where
-				extract(year from convertTZ(%1$s, %2$s)) = %3$s
-				and Orders.instance %4$s %5$s
+				extract(year from convertTZ(%2$s, %3$s)) = %4$s
+				and Orders.instance %5$s %6$s
 			group by Locale.region, year, month';
 
 		$sql = sprintf(
 			$sql,
+			$this->getSubtotalSelectClause(),
 			$date_field,
 			$this->app->db->quote($this->app->config->date->time_zone, 'text'),
 			$this->app->db->quote($this->year, 'integer'),
@@ -235,6 +235,14 @@ class StoreSalesReportIndex extends AdminIndex
 		);
 
 		return SwatDB::query($this->app->db, $sql);
+	}
+
+	// }}}
+	// {{{ protected function getSubtotalSelectClause()
+
+	protected function getSubtotalSelectClause()
+	{
+		return '(sum(item_total) + sum(surcharge_total)';
 	}
 
 	// }}}
