@@ -52,6 +52,12 @@ class StoreSalesReportIndex extends AdminIndex
 
 		$this->ui->loadFromXML($this->getUiXml());
 
+		$regions = $this->getRegions();
+		$view = $this->ui->getWidget('index_view');
+
+		// add dynamic columns to items view
+		$this->appendRegionColumns($view, $regions);
+
 		$oldest_date_string = SwatDB::queryOne(
 			$this->app->db,
 			'select min(createdate) from Orders'
@@ -72,6 +78,74 @@ class StoreSalesReportIndex extends AdminIndex
 	}
 
 	// }}}
+	// {{{ protected function appendRegionColumns()
+
+	protected function appendRegionColumns(SwatTableView $view,
+		StoreRegionWrapper $regions)
+	{
+		foreach ($regions as $region) {
+			$created_column = new SwatTableViewColumn('created_'.$region->id);
+			$created_column->title = sprintf(
+				Store::_('%s Created Orders'),
+				$region->title
+			);
+
+			$created_renderer = new SwatNumericCellRenderer();
+
+			$created_column->addRenderer($created_renderer);
+			$created_column->addMappingToRenderer(
+				$created_renderer,
+				'created_'.$region->id,
+				'value'
+			);
+
+			$cancelled_column = new SwatTableViewColumn(
+				'cancelled_'.$region->id
+			);
+
+			$cancelled_column->title = sprintf(
+				Store::_('%s Cancelled Orders'),
+				$region->title
+			);
+
+			$cancelled_renderer = new SwatNumericCellRenderer();
+
+			$cancelled_column->addRenderer($cancelled_renderer);
+			$cancelled_column->addMappingToRenderer(
+				$cancelled_renderer,
+				'cancelled_'.$region->id,
+				'value'
+			);
+
+			$subtotal_column = new SwatTableViewColumn('subtotal_'.$region->id);
+			$subtotal_column->title = sprintf(
+				Store::_('%s Subtotal'),
+				$region->title
+			);
+
+			$subtotal_renderer = new SwatMoneyCellRenderer();
+			$subtotal_renderer->locale = $region->getFirstLocale()->id;
+
+			$subtotal_column->addRenderer($subtotal_renderer);
+			$subtotal_column->addMappingToRenderer(
+				$subtotal_renderer,
+				'subtotal_'.$region->id,
+				'value'
+			);
+
+			$subtotal_column->addMappingToRenderer(
+				$subtotal_renderer,
+				'locale_id',
+				'locale'
+			);
+
+			$view->appendColumn($created_column);
+			$view->appendColumn($cancelled_column);
+			$view->appendColumn($subtotal_column);
+		}
+	}
+
+	// }}}
 
 	// build phase
 	// {{{ protected function getTableModel()
@@ -81,7 +155,8 @@ class StoreSalesReportIndex extends AdminIndex
 		$start_date = new SwatDate();
 		$start_date->setDate($this->year, 1, 1);
 
-		$locale_id = $this->getRegions()->getFirst()->getFirstLocale()->id;
+		$regions = $this->getRegions();
+		$locale_id = $regions->getFirst()->getFirstLocale()->id;
 
 		// create an array of months with default values
 		$months = array();
@@ -89,11 +164,15 @@ class StoreSalesReportIndex extends AdminIndex
 			$key = $this->year.'-'.$i;
 
 			$month = new SwatDetailsStore();
+
+			foreach ($regions as $region) {
+				$month->{'created_'.$region->id}   = 0;
+				$month->{'cancelled_'.$region->id} = 0;
+				$month->{'subtotal_'.$region->id}  = 0;
+			}
+
 			$month->date        = clone $start_date;
 			$month->date_string = $key;
-			$month->created     = 0;
-			$month->cancelled   = 0;
-			$month->subtotal    = 0;
 			$month->locale_id   = $locale_id;
 
 			$months[$key] = $month;
@@ -106,16 +185,16 @@ class StoreSalesReportIndex extends AdminIndex
 		foreach ($rs as $row) {
 			$key = $row->year.'-'.$row->month;
 
-			$months[$key]->created  = $row->num_orders;
-			$months[$key]->subtotal = $row->subtotal;
+			$months[$key]->{'created_'.$row->region} = $row->num_orders;
+			$months[$key]->{'subtotal_'.$row->region} += $row->subtotal;
 		}
 
 		$rs = $this->queryOrderStats('cancel_date');
 		foreach ($rs as $row) {
 			$key = $row->year.'-'.$row->month;
 
-			$months[$key]->cancelled = $row->num_orders;
-			$months[$key]->subtotal -= $row->subtotal;
+			$months[$key]->{'cancelled_'.$row->region} = $row->num_orders;
+			$months[$key]->{'subtotal_'.$row->region} -= $row->subtotal;
 		}
 
 		// turn the array into a table model
