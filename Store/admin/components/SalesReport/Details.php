@@ -151,6 +151,9 @@ class StoreSalesReportDetails extends AdminIndex
 
 	protected function queryOrderStats($date_field)
 	{
+		$time_zone_name = $this->start_date->getTimezone()->getName();
+		$instance_id = $this->app->getInstanceId();
+
 		$sql = 'select count(Orders.id) as num_orders, Locale.region,
 				(sum(item_total) + sum(surcharge_total)
 					- sum(promotion_total)) as subtotal,
@@ -162,14 +165,18 @@ class StoreSalesReportDetails extends AdminIndex
 			where
 				extract(year from convertTZ(%1$s, %2$s)) = %3$s
 				and extract(month from convertTZ(%1$s, %2$s)) = %4$s
+				and Orders.instance %5$s %6$s
 			group by Locale.region, year, month, day';
 
-		$time_zone_name = $this->start_date->getTimezone()->getName();
-		$sql = sprintf($sql,
+		$sql = sprintf(
+			$sql,
 			$date_field,
 			$this->app->db->quote($time_zone_name, 'text'),
 			$this->app->db->quote($this->start_date->getYear(), 'integer'),
-			$this->app->db->quote($this->start_date->getMonth(), 'integer'));
+			$this->app->db->quote($this->start_date->getMonth(), 'integer'),
+			SwatDB::equalityOperator($instance_id),
+			$this->app->db->quote($instance_id, 'integer')
+		);
 
 		return SwatDB::query($this->app->db, $sql);
 	}
