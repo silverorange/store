@@ -64,6 +64,95 @@ class StoreSalesReportDetails extends AdminIndex
 		}
 
 		$this->ui->loadFromXML($this->getUiXml());
+
+		$regions = $this->getRegions();
+		$view = $this->ui->getWidget('index_view');
+
+		// add dynamic columns to items view
+		$this->appendRegionColumns($view, $regions);
+	}
+
+	// }}}
+	// {{{ protected function appendRegionColumns()
+
+	protected function appendRegionColumns(SwatTableView $view,
+		StoreRegionWrapper $regions)
+	{
+		foreach ($regions as $region) {
+			$view->appendColumn($this->getCreatedColumn($region));
+			$view->appendColumn($this->getCancelledColumn($region));
+			$view->appendColumn($this->getSubtotalColumn($region));
+		}
+	}
+
+	// }}}
+	// {{{ protected function getCreatedColumn()
+
+	protected function getCreatedColumn($region)
+	{
+		$column = new SwatTableViewColumn('created_'.$region->id);
+		$column->title = sprintf(Store::_('%s Created Orders'), $region->title);
+
+		$renderer = new SwatNumericCellRenderer();
+
+		$column->addRenderer($renderer);
+		$column->addMappingToRenderer(
+			$renderer,
+			'created_'.$region->id,
+			'value'
+		);
+
+		return $column;
+	}
+
+	// }}}
+	// {{{ protected function getCancelledColumn()
+
+	protected function getCancelledColumn($region)
+	{
+		$column = new SwatTableViewColumn('cancelled_'.$region->id);
+		$column->title = sprintf(
+			Store::_('%s Cancelled Orders'),
+			$region->title
+		);
+
+		$renderer = new SwatNumericCellRenderer();
+
+		$column->addRenderer($renderer);
+		$column->addMappingToRenderer(
+			$renderer,
+			'cancelled_'.$region->id,
+			'value'
+		);
+
+		return $column;
+	}
+
+	// }}}
+	// {{{ protected function getSubtotalColumn()
+
+	protected function getSubtotalColumn(StoreRegion $region)
+	{
+		$column = new SwatTableViewColumn('subtotal_'.$region->id);
+		$column->title = sprintf(Store::_('%s Subtotal'), $region->title);
+
+		$renderer = new SwatMoneyCellRenderer();
+		$renderer->locale = $region->getFirstLocale()->id;
+
+		$column->addRenderer($renderer);
+		$column->addMappingToRenderer(
+			$renderer,
+			'subtotal_'.$region->id,
+			'value'
+		);
+
+		$column->addMappingToRenderer(
+			$renderer,
+			'locale_id',
+			'locale'
+		);
+
+		return $column;
 	}
 
 	// }}}
@@ -90,26 +179,36 @@ class StoreSalesReportDetails extends AdminIndex
 
 	protected function getTableModel(SwatView $view)
 	{
-		$locale_id = $this->getRegions()->getFirst()->getFirstLocale()->id;
+		$regions   = $this->getRegions();
+		$locale_id = $regions->getFirst()->getFirstLocale()->id;
 
 		// create an array of days with default values
 		$days = array();
 		for ($i = 1; $i <= $this->start_date->getDaysInMonth(); $i++) {
 			$day = new SwatDetailsStore();
+
+			foreach ($regions as $region) {
+				$day->{'created_'.$region->id}   = 0;
+				$day->{'cancelled_'.$region->id} = 0;
+				$day->{'subtotal_'.$region->id}  = 0;
+			}
+
 			$day->day       = $i;
-			$day->created   = 0;
-			$day->cancelled = 0;
-			$day->subtotal  = 0;
 			$day->locale_id = $locale_id;
 
 			$days[$i] = $day;
 		}
 
+		// total row
 		$sum = new SwatDetailsStore();
-		$sum->day       = 'Total'; // TODO: should this be translated
-		$sum->created   = 0;
-		$sum->cancelled = 0;
-		$sum->subtotal  = 0;
+
+		foreach ($regions as $region) {
+			$sum->{'created_'.$region->id}   = 0;
+			$sum->{'cancelled_'.$region->id} = 0;
+			$sum->{'subtotal_'.$region->id}  = 0;
+		}
+
+		$sum->day       = Store::_('Total');
 		$sum->locale_id = $locale_id;
 
 		// fill our array with values from the database if the values exist
@@ -117,22 +216,22 @@ class StoreSalesReportDetails extends AdminIndex
 		foreach ($rs as $row) {
 			$key = $row->day;
 
-			$days[$key]->subtotal = $row->subtotal;
-			$sum->subtotal += $row->subtotal;
+			$days[$key]->{'subtotal_'.$row->region} += $row->subtotal;
+			$days[$key]->{'created_'.$row->region} = $row->num_orders;
 
-			$days[$key]->created = $row->num_orders;
-			$sum->created += $row->num_orders;
+			$sum->{'subtotal_'.$row->region} += $row->subtotal;
+			$sum->{'created_'.$row->region} += $row->num_orders;
 		}
 
 		$rs = $this->queryOrderStats('cancel_date');
 		foreach ($rs as $row) {
 			$key = $row->day;
 
-			$days[$key]->subtotal -= $row->subtotal;
-			$sum->subtotal -= $row->subtotal;
+			$days[$key]->{'subtotal_'.$row->region} -= $row->subtotal;
+			$days[$key]->{'cancelled_'.$row->region} = $row->num_orders;
 
-			$days[$key]->cancelled = $row->num_orders;
-			$sum->cancelled += $row->num_orders;
+			$sum->{'subtotal_'.$row->region} -= $row->subtotal;
+			$sum->{'cancelled_'.$row->region} += $row->num_orders;
 		}
 
 		// turn the array into a table model

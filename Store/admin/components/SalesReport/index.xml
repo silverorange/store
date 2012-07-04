@@ -16,25 +16,6 @@
 						<property name="format" type="constant">SwatDate::DF_MY</property>
 					</object>
 				</object>
-				<object class="SwatTableViewColumn">
-					<property name="title" translatable="yes">Created Orders</property>
-					<object class="SwatNumericCellRenderer">
-						<property name="value" type="data">created</property>
-					</object>
-				</object>
-				<object class="SwatTableViewColumn">
-					<property name="title" translatable="yes">Cancelled Orders</property>
-					<object class="SwatNumericCellRenderer">
-						<property name="value" type="data">cancelled</property>
-					</object>
-				</object>
-				<object class="SwatTableViewColumn">
-					<property name="title" translatable="yes">Subtotal</property>
-					<object class="SwatMoneyCellRenderer">
-						<property name="value" type="data">subtotal</property>
-						<property name="locale" type="data">locale_id</property>
-					</object>
-				</object>
 			</widget>
 		</widget>
 		<widget class="AdminPagination" id="pager">
