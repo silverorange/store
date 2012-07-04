@@ -27,6 +27,9 @@
 				<property name="sensitive" type="boolean">false</property>
 			</widget>
 		</widget>
+		<widget class="AdminNote">
+			<property name="content" translatable="yes">Only catalogs containing no products, or catalogs disabled in all regions can be deleted.</property>
+		</widget>
 		<widget class="SwatDetailsView" id="component_details">
 			<object class="SwatDetailsViewField" id="title">
 				<property name="title" translatable="yes">Title</property>
@@ -71,9 +74,6 @@
 					<property name="value" type="data">num_products</property>
 				</object>
 			</object>
-		</widget>
-		<widget class="AdminNote">
-			<property name="content" translatable="yes">Only catalogs containing no products, or catalogs disabled in all regions can be deleted.</property>
 		</widget>
 	</widget>
 </swatml>

@@ -11,6 +11,9 @@
 				<property name="stock_id">create</property>
 			</widget>
 		</widget>
+		<widget class="AdminNote">
+			<property name="content" translatable="yes">Catalogs may be deleted or may have their statuses changed from their catalog details pages.</property>
+		</widget>
 		<widget class="SwatForm" id="index_form">
 			<widget class="SwatTableView" id="index_view">
 				<object class="AdminTableViewOrderableColumn" id="title">
@@ -27,9 +30,6 @@
 						<property name="value" type="data">in_season</property>
 					</object>
 				</object>
-			</widget>
-			<widget class="AdminNote">
-				<property name="content" translatable="yes">Catalogs may be deleted or may have their statuses changed from their catalog details pages.</property>
 			</widget>
 		</widget>
 	</widget>
