@@ -13,6 +13,7 @@
 			<widget class="SwatToolLink">
 				<property name="title" translatable="yes">Change Order</property>
 				<property name="link">PaymentType/Order</property>
+				<property name="stock_id">change-order</property>
 			</widget>
 		</widget>
 		<widget class="SwatForm" id="index_form">
