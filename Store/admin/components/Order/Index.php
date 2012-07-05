@@ -167,8 +167,8 @@ class StoreOrderIndex extends AdminSearch
 		$where.= $this->getFullnameWhereClause();
 
 		// email, check accounts and order
-		$email = $this->ui->getWidget('search_email')->value;
-		if (trim($email) != '') {
+		$email = trim($this->ui->getWidget('search_email')->value);
+		if ($email != '') {
 			$where.= ' and (';
 			$clause = new AdminSearchClause('email');
 			$clause->table = 'Account';
@@ -181,6 +181,26 @@ class StoreOrderIndex extends AdminSearch
 			$clause->value = $email;
 			$clause->operator = AdminSearchClause::OP_CONTAINS;
 			$where.= $clause->getClause($this->app->db, 'or');
+			$where.= ')';
+		}
+
+		// postal code, check billing and shipping addresses
+		$postal_code = trim($this->ui->getWidget('search_postal_code')->value);
+		if ($postal_code != '') {
+			$where.= ' and (';
+
+			$clause = new AdminSearchClause('postal_code');
+			$clause->table = 'BillingAddress';
+			$clause->value = $postal_code;
+			$clause->operator = AdminSearchClause::OP_STARTS_WITH;
+			$where.= $clause->getClause($this->app->db, '');
+
+			$clause = new AdminSearchClause('postal_code');
+			$clause->table = 'ShippingAddress';
+			$clause->value = $postal_code;
+			$clause->operator = AdminSearchClause::OP_STARTS_WITH;
+			$where.= $clause->getClause($this->app->db, 'or');
+
 			$where.= ')';
 		}
 
@@ -233,8 +253,8 @@ class StoreOrderIndex extends AdminSearch
 		$where = '';
 
 		// fullname, check accounts, and both order addresses
-		$fullname = $this->ui->getWidget('search_fullname')->value;
-		if (trim($fullname) != '') {
+		$fullname = trim($this->ui->getWidget('search_fullname')->value);
+		if ($fullname != '') {
 			$where.= ' and (';
 			$clause = new AdminSearchClause('fullname');
 			$clause->table = 'Account';
