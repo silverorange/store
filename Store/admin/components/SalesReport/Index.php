@@ -242,7 +242,7 @@ class StoreSalesReportIndex extends AdminIndex
 
 	protected function getSubtotalSelectClause()
 	{
-		return '(sum(item_total) + sum(surcharge_total)';
+		return '(sum(item_total) + sum(surcharge_total))';
 	}
 
 	// }}}
