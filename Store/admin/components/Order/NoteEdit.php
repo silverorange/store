@@ -8,7 +8,7 @@ require_once 'SwatDB/SwatDB.php';
  * Edit page for notes on orders
  *
  * @package   Store
- * @copyright 2007-2011 silverorange
+ * @copyright 2007-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderNoteEdit extends AdminDBEdit
@@ -82,7 +82,7 @@ class StoreOrderNoteEdit extends AdminDBEdit
 	{
 		$values = $this->ui->getValues(array('notes'));
 
-		$this->order->admin_comments = $values['notes'];
+		$this->order->notes = $values['notes'];
 
 		$this->order->save();
 
@@ -132,7 +132,7 @@ class StoreOrderNoteEdit extends AdminDBEdit
 		$this->navbar->createEntry($this->getOrderTitle(),
 			'Order/Details?id='.$this->order->id);
 
-		$this->navbar->createEntry(Store::_('Edit Note'));
+		$this->navbar->createEntry(Store::_('Edit Administrative Note'));
 	}
 
 	// }}}

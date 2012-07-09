@@ -3,7 +3,7 @@
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="edit_frame">
-		<property name="title" translatable="yes">Note</property>
+		<property name="title" translatable="yes">Administrative Note</property>
 		<widget class="AdminNote" id="admin_note">
 			<property name="content" translatable="yes">This note is for administrative purposes and will not be displayed to the customer.</property>
 		</widget>
