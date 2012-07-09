@@ -34,11 +34,6 @@ abstract class StoreOrderDetails extends AdminPage
 	 */
 	protected $account;
 
-	/**
-	 * @var string
-	 */
-	protected $ui_xml = 'Store/admin/components/Order/details.xml';
-
 	// }}}
 
 	// init phase
@@ -49,12 +44,20 @@ abstract class StoreOrderDetails extends AdminPage
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 
 		$this->id = SiteApplication::initVar('id');
 		$this->account = SiteApplication::initVar('account');
 
 		$this->getOrder();
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return 'Store/admin/components/Order/details.xml';
 	}
 
 	// }}}
