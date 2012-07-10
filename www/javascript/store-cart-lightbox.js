@@ -200,6 +200,9 @@ StoreCartLightbox.prototype.open = function(is_status_opening)
 			this.main_animation.stop(false);
 		}
 
+		// used for media-query mobile styles
+		YAHOO.util.Dom.addClass(document.body, 'lightbox-open');
+
 		this.swapOutVideos();
 
 		YAHOO.util.Dom.setStyle(this.mini_cart, 'opacity', 1);
@@ -424,6 +427,9 @@ StoreCartLightbox.prototype.close = function(e)
 		if (this.main_animation) {
 			this.main_animation.stop(false);
 		}
+
+		// used for media-query mobile styles
+		YAHOO.util.Dom.removeClass(document.body, 'lightbox-open');
 
 		this.swapInVideos();
 
