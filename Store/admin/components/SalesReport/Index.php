@@ -3,6 +3,8 @@
 require_once 'Swat/SwatDate.php';
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
+require_once 'Swat/SwatNumericCellRenderer.php';
+require_once 'Swat/SwatMoneyCellRenderer.php';
 require_once 'SwatDB/SwatDB.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Admin/pages/AdminIndex.php';
