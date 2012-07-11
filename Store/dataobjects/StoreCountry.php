@@ -6,7 +6,7 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * A country data object
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCountry extends SwatDBDataObject
@@ -72,6 +72,22 @@ class StoreCountry extends SwatDBDataObject
 	{
 		$this->table = 'Country';
 		$this->id_field = 'text:id';
+	}
+
+	// }}}
+
+	// loader methods
+	// {{{ protected function loadProvStates()
+
+	protected function loadProvStates()
+	{
+		$sql = sprintf(
+			'select * from ProvState where country = %s',
+			$this->db->quote($this->id, 'text')
+		);
+
+		return SwatDB::query($this->db, $sql,
+			SwatDBClassMap::get('StoreProvStateWrapper'));
 	}
 
 	// }}}
