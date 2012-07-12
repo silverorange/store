@@ -226,7 +226,8 @@ class StoreProvStateEntry extends SwatInputControl
 		$flydown = $this->getCompositeWidget('flydown');
 		$provstate_id = $flydown->value;
 
-		if (isset($this->data[$country_id])) {
+		if (isset($this->data[$country_id]) &&
+			is_array($this->data[$country_id]['provstates'])) {
 			$found = false;
 			$provstates = $this->data[$country_id]['provstates'];
 			foreach ($provstates as $provstate) {
