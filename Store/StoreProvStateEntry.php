@@ -159,10 +159,13 @@ class StoreProvStateEntry extends SwatInputControl
 		$flydown->serialize_values = false;
 		$flydown->options = array();
 		$flydown->addOptionsByArray($provstates);
+		$flydown->value = $this->provstate_id;
 		$flydown->display();
 
 		// display provstate other entry
-		$this->getCompositeWidget('entry')->display();
+		$entry = $this->getCompositeWidget('entry');
+		$entry->value = $this->provstate_other;
+		$entry->display();
 
 		$div->close();
 
