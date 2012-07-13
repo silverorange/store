@@ -835,7 +835,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			// check if account payment method or new payment method was selected
 			if (strncmp('method_', $option->value, 7) === 0) {
 
-				$method_id = intval(substr($option->value, 5));
+				$method_id = intval(substr($option->value, 7));
 
 				$account_payment_method =
 					$this->app->session->account->payment_methods->getByIndex(
