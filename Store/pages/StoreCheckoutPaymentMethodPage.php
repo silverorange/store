@@ -69,7 +69,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	{
 		parent::init();
 
-		$method_list = $this->ui->getWidget('payment_method_list');
 		$payment_methods = $this->app->session->order->payment_methods;
 		$order_payment_method = $this->getPaymentMethod($payment_methods);
 
@@ -92,7 +91,8 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	{
 		parent::initCommon();
 		$types = $this->getPaymentTypes();
-		$this->initPaymentTypes($types);
+		$methods = $this->getPaymentMethods();
+		$this->initPaymentOptions($types, $methods);
 
 		if (!$this->app->config->store->multiple_payment_ui &&
 			$this->ui->hasWidget('payment_amount_field'))
@@ -100,40 +100,50 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
-	// {{{ protected function initPaymentTypes()
+	// {{{ protected function initPaymentOptions()
 
-	protected function initPaymentTypes(StorePaymentTypeWrapper $types)
+	protected function initPaymentOptions(StorePaymentTypeWrapper $types,
+		StorePaymentMethodWrapper $methods)
 	{
-		$type_flydown = $this->ui->getWidget('payment_type');
+		$flydown = $this->ui->getWidget('payment_option');
 
 		// payment types will determine whether or not the flydown is visible
-		$type_flydown->parent->visible = false;
+		$flydown->parent->visible = false;
+
+		// init payment methods
+		foreach ($methods as $method) {
+			$this->initPaymentOption($method, $flydown);
+		}
 
 		// init payment types
 		foreach ($types as $type) {
-			$this->initPaymentType($type, $type_flydown);
+			$this->initPaymentOption($type, $flydown);
 		}
 
 		// If no value was set, default to first payment type
-		if ($type_flydown->value === null && $types->getFirst() !== null) {
-			$type_flydown->value = $types->getFirst()->id;
+		if ($flydown->value === null && $types->getFirst() !== null) {
+			$flydown->value = $types->getFirst()->id;
 		}
 	}
 
 	// }}}
-	// {{{ protected function initPaymentType()
+	// {{{ protected function initPaymentOption()
 
-	protected function initPaymentType(StorePaymentType $type,
+	protected function initPaymentOption($option,
 		SwatFlydown $flydown)
 	{
-		switch ($type->shortname) {
-		case 'card':
-			$this->initPaymentTypeCard($type, $flydown);
-			break;
+		if ($option instanceof StorePaymentType) {
+			switch ($option->shortname) {
+			case 'card':
+				$this->initPaymentTypeCard($option, $flydown);
+				break;
 
-		default:
-			$this->initPaymentTypeDefault($type, $flydown);
-			break;
+			default:
+				$this->initPaymentTypeDefault($option, $flydown);
+				break;
+			}
+		} elseif ($option instanceof StorePaymentMethod) {
+			$this->initPaymentMethod($option, $flydown);
 		}
 	}
 
@@ -143,8 +153,14 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	protected function initPaymentTypeDefault(StorePaymentType $type,
 		SwatFlydown $flydown)
 	{
-		$title = $this->getPaymentTypeTitle($type);
-		$flydown->addOption(new SwatOption($type->id, $title, 'text/xml'));
+		$flydown->addOption(
+			new SwatOption(
+				'type_'.$type->id,
+				$this->getPaymentTypeTitle($type),
+				'text/xml'
+			)
+		);
+
 		$flydown->parent->visible = true;
 	}
 
@@ -154,32 +170,54 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	protected function initPaymentTypeCard(StorePaymentType $type,
 		SwatFlydown $flydown)
 	{
-		$title = $this->getPaymentTypeTitle($type);
-		$flydown->addOption(new SwatOption($type->id, $title, 'text/xml'));
+		$flydown->addOption(
+			new SwatOption(
+				'type_'.$type->id,
+				$this->getPaymentTypeTitle($type),
+				'text/xml'
+			)
+		);
 
 		// default to 'card' if it exists
 		if ($flydown->value === null) {
-			$flydown->value = $type->id;
+			$flydown->value = 'types_'.$type->id;
 		}
 
 		// set up card types flydown
-		$types = $this->getCardTypes();
+		$card_types = $this->getCardTypes();
 
 		$type_flydown = $this->ui->getWidget('card_type');
 
-		foreach ($types as $type) {
-			$title = $this->getCardTypeTitle($type);
-
+		foreach ($card_types as $card_type) {
 			$type_flydown->addOption(
-				new SwatOption($type->id, $title, 'text/xml'));
+				new SwatOption(
+					$card_type->id,
+					$this->getCardTypeTitle($card_type),
+					'text/xml'
+				)
+			);
 		}
 
-		if ($type_flydown->value === null && $types->getFirst() !== null) {
-			$type_flydown->value = $types->getFirst()->id;
+		if ($type_flydown->value === null && $card_types->getFirst() !== null) {
+			$type_flydown->value = $card_types->getFirst()->id;
 		}
 
 		// make card fields visible
 		$this->ui->getWidget('card_container')->visible = true;
+	}
+
+	// }}}
+	// {{{ protected function initPaymentMethod()
+
+	protected function initPaymentMethod(StorePaymentMethod $method,
+		SwatFlydown $flydown)
+	{
+		ob_start();
+		$method->showCardExpiry(false);
+		$method->display();
+		$method_display = ob_get_clean();
+		$flydown->addOption('method_'.$method->id, $method_display, 'text/xml');
+		$flydown->parent->visible = true;
 	}
 
 	// }}}
@@ -389,11 +427,28 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 		$this->ui->getWidget('card_number')->setDatabase($this->app->db);
 
-		$method_list = $this->ui->getWidget('payment_method_list');
-		$method_list->process();
-		$method_id = $method_list->value;
+		$option_list = $this->ui->getWidget('payment_option');
+		$option_list->process();
+		$option = $option_list->value;
 
-		if ($method_id === null || $method_id === 'new') {
+		// check if using an existing account payment method, or a new one
+		if (strncmp('method_', $option, 7) == 0) {
+
+			// set all fields as not required when an existing payment method
+			// is selected
+			$container = $this->ui->getWidget('payment_method_form');
+			$controls = $container->getDescendants('SwatInputControl');
+			foreach ($controls as $control) {
+				$control->required = false;
+			}
+
+			// make account CVV required for saved cards
+			if ($this->ui->hasWidget('account_card_verification_value')) {
+				$widget = $this->ui->getWidget('account_card_verification_value');
+				$this->setupCardVerificationValue($widget);
+			}
+
+		} else {
 
 			// the account card verification value only needs to be required
 			// for saved cards
@@ -432,16 +487,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 						false;
 				}
 			}
-		} else {
-			// set all fields as not required when an existing payment method
-			// is selected
-			$container = $this->ui->getWidget('payment_method_form');
-			$controls = $container->getDescendants('SwatInputControl');
-			foreach ($controls as $control)
-				$control->required = false;
 
-			$widget = $this->ui->getWidget('account_card_verification_value');
-			$this->setupCardVerificationValue($widget);
 		}
 	}
 
@@ -538,7 +584,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	protected function saveDataToSession()
 	{
-		$method_list = $this->ui->getWidget('payment_method_list');
+		$option_list = $this->ui->getWidget('payment_option');
 		$payment_methods = $this->app->session->order->payment_methods;
 		$order_payment_method = $this->getPaymentMethod($payment_methods);
 
@@ -546,7 +592,47 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		if ($order_payment_method !== null)
 			$payment_methods->remove($order_payment_method);
 
-		if ($method_list->value === null || $method_list->value === 'new') {
+		if (strncmp('method_', $option_list->value, 7) === 0) {
+
+			$method_id = intval(substr($option_list->value, 7));
+
+			$account_payment_method =
+				$this->app->session->account->payment_methods->getByIndex(
+					$method_id);
+
+			if (!($account_payment_method instanceof StoreAccountPaymentMethod)) {
+				throw new StoreException(
+					sprintf(
+						'Account payment method with id ‘%s’ not found.',
+						$method_id
+					)
+				);
+			}
+
+			// grab the card_verification_value from the old order payment
+			// method if its exists, before we recreate the dataobject
+			$old_card_verification_value = null;
+			if ($order_payment_method instanceof StoreOrderPaymentMethod) {
+				$old_card_verification_value =
+					$order_payment_method->card_verification_value;
+			}
+
+			$class_name = SwatDBClassMap::get('StoreOrderPaymentMethod');
+			$order_payment_method = new $class_name();
+			$order_payment_method->copyFrom($account_payment_method);
+
+			$this->updatePaymentMethodCardVerificationValue(
+				'account_card_verification_value',
+				$order_payment_method,
+				$old_card_verification_value
+			);
+
+			// if its a saved method, we want the confirmation page to use the
+			// save code-path so that default payment method gets set
+			$save_payment_method = true;
+
+		} else {
+
 			if ($order_payment_method === null ||
 				$order_payment_method->getAccountPaymentMethodId() !== null) {
 
@@ -568,37 +654,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 			$save_payment_method =
 				$this->ui->getWidget('save_account_payment_method')->value;
-		} else {
-			$method_id = intval($method_list->value);
 
-			$account_payment_method =
-				$this->app->session->account->payment_methods->getByIndex(
-					$method_id);
-
-			if (!($account_payment_method instanceof StoreAccountPaymentMethod))
-				throw new StoreException('Account payment method not found. '.
-					"Method with id ‘{$method_id}’ not found.");
-
-			// grab the card_verification_value from the old order payment
-			// method if its exists, before we recreate the dataobject
-			$old_card_verification_value = null;
-			if ($order_payment_method instanceof StoreOrderPaymentMethod) {
-				$old_card_verification_value =
-					$order_payment_method->card_verification_value;
-			}
-
-			$class_name = SwatDBClassMap::get('StoreOrderPaymentMethod');
-			$order_payment_method = new $class_name();
-			$order_payment_method->copyFrom($account_payment_method);
-
-			$this->updatePaymentMethodCardVerificationValue(
-				'account_card_verification_value',
-				$order_payment_method,
-				$old_card_verification_value);
-
-			// if its a saved method, we want the confirmation page to use the
-			// save code-path so that default payment method gets set
-			$save_payment_method = true;
 		}
 
 		$class_name = SwatDBClassMap::get('StoreOrderPaymentMethodWrapper');
@@ -748,15 +804,17 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		static $type = null;
 
 		if ($type === null) {
-			$type_list = $this->ui->getWidget('payment_type');
-			if (isset($_POST['payment_type'])) {
+			$type = $this->getPaymentTypes()->getFirst();
+
+			$type_list = $this->ui->getWidget('payment_option');
+			if (isset($_POST['payment_option'])) {
 				$type_list->process();
-				$class_name = SwatDBClassMap::get('StorePaymentType');
-				$type = new $class_name();
-				$type->setDatabase($this->app->db);
-				$type->load($type_list->value);
-			} else {
-				$type = $this->getPaymentTypes()->getFirst();
+				if (strncmp('type_', $type_list->value, 5) === 0) {
+					$class_name = SwatDBClassMap::get('StorePaymentType');
+					$type = new $class_name();
+					$type->setDatabase($this->app->db);
+					$type->load(substr($type_list->value, 5));
+				}
 			}
 		}
 
@@ -771,10 +829,22 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		static $card_type = null;
 
 		if ($card_type === null) {
-			$method_list = $this->ui->getWidget('payment_method_list');
-			$method_list->process();
+			$option = $this->ui->getWidget('payment_option');
+			$option->process();
 
-			if ($method_list->value === null || $method_list->value === 'new') {
+			// check if account payment method or new payment method was selected
+			if (strncmp('method_', $option->value, 7) === 0) {
+
+				$method_id = intval(substr($option->value, 5));
+
+				$account_payment_method =
+					$this->app->session->account->payment_methods->getByIndex(
+						$method_id);
+
+				$card_type = $account_payment_method->card_type;
+
+			} else {
+
 				$order = $this->app->session->order;
 				$order_payment_method = $order->payment_methods->getFirst();
 				$type_list = $this->ui->getWidget('card_type');
@@ -798,16 +868,10 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				$class_name = SwatDBClassMap::get('StoreCardType');
 				$type = new $class_name();
 				$type->setDatabase($this->app->db);
-				if ($type->load($card_type_id))
+				if ($type->load($card_type_id)) {
 					$card_type = $type;
-			} else {
-				$method_id = intval($method_list->value);
+				}
 
-				$account_payment_method =
-					$this->app->session->account->payment_methods->getByIndex(
-						$method_id);
-
-				$card_type = $account_payment_method->card_type;
 			}
 		}
 
@@ -821,7 +885,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	public function buildCommon()
 	{
-		$this->buildList();
 		$this->buildForm();
 	}
 
@@ -853,45 +916,25 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
-	// {{{ protected function buildList()
-
-	protected function buildList()
-	{
-		$method_list = $this->ui->getWidget('payment_method_list');
-		$method_list->addOption('new',
-			sprintf('<span class="add-new">%s</span>',
-			$this->getNewPaymentMethodText()), 'text/xml');
-
-		foreach ($this->getPaymentMethods() as $method) {
-			ob_start();
-			$method->showCardExpiry(false);
-			$method->display();
-			$method_display = ob_get_clean();
-			$method_list->addOption($method->id, $method_display, 'text/xml');
-		}
-
-		$method_list->visible = (count($method_list->options) > 1);
-	}
-
-	// }}}
 	// {{{ protected function buildForm()
 
 	protected function buildForm()
 	{
 		$types = $this->getPaymentTypes();
-//		$this->buildPaymentTypes($types);
+		$methods = $this->getPaymentMethods();
 
-		if (count($types) === 1) {
-			$types_flydown = $this->ui->getWidget('payment_type');
-			$parent = $types_flydown->parent->getFirstAncestor(
-				'SwatDisplayableContainer');
-
+		if ((count($types) + count($methods)) === 1) {
+			$option_flydown = $this->ui->getWidget('payment_option');
+			$parent = $option_flydown->parent->getFirstAncestor(
+				'SwatDisplayableContainer'
+			);
 			$parent->classes[] = 'store-payment-method-single';
 		}
 
 
-		if (!$this->ui->getWidget('form')->isProcessed())
+		if (!$this->ui->getWidget('form')->isProcessed()) {
 			$this->loadDataFromSession();
+		}
 
 		if ($this->app->session->checkout_with_account) {
 			$this->buildAccountSpecificFields();
@@ -975,13 +1018,13 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 			$default_payment_method = $this->getDefaultPaymentMethod();
 			if ($default_payment_method !== null) {
-				$this->ui->getWidget('payment_method_list')->value =
-					$default_payment_method->id;
+				$this->ui->getWidget('payment_option')->value =
+					'method_'.$default_payment_method->id;
 			}
 		} else {
 			if ($order_payment_method->getAccountPaymentMethodId() === null) {
-				$this->ui->getWidget('payment_type')->value =
-					$order_payment_method->getInternalValue('payment_type');
+				$this->ui->getWidget('payment_option')->value =
+					'type_'.$order_payment_method->getInternalValue('payment_type');
 
 				if ($this->ui->hasWidget('payment_amount')) {
 					$this->ui->getWidget('payment_amount')->value =
@@ -1021,8 +1064,8 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				$this->ui->getWidget('card_fullname')->value =
 					$order_payment_method->card_fullname;
 			} else {
-				$this->ui->getWidget('payment_method_list')->value =
-					$order_payment_method->getAccountPaymentMethodId();
+				$this->ui->getWidget('payment_option')->value =
+					'method_'.$order_payment_method->getAccountPaymentMethodId();
 
 				if ($order_payment_method->hasCardVerificationValue()) {
 					$cvv =
@@ -1057,14 +1100,15 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 			if ($default_payment_method !== null) {
 				// only default to a payment method that appears in the list
-				$payment_method_list =
-					$this->ui->getWidget('payment_method_list');
+				$payment_option = $this->ui->getWidget('payment_option');
 
-				$options = $payment_method_list->getOptionsByValue(
-					$default_payment_method->id);
+				$options = $payment_option->getOptionsByValue(
+					'method_'.$default_payment_method->id
+				);
 
-				if (count($options) > 0)
+				if (count($options) > 0) {
 					$payment_method = $default_payment_method;
+				}
 			}
 		}
 

@@ -8,28 +8,28 @@ function StoreCheckoutPaymentMethodPage(id, inception_date_ids,
 	this.account_fields_container =
 		document.getElementById('account_fields_container');
 
-	this.list_new = document.getElementById('payment_method_list_new');
 	this.inception_date_types = [];
 	this.issue_number_types = [];
 	this.card_types = [];
 
-	// set up event handlers for payment methods
-	var payment_methods = document.getElementsByName('payment_method_list');
-	for (var i = 0; i < payment_methods.length; i++) {
-		YAHOO.util.Event.on(payment_methods[i], 'click',
-			this.handlePaymentMethodClick, this, true);
-	}
-
-	// set up event handlers for payment types
-	var payment_types = document.getElementsByName('payment_type');
-	for (var i = 0; i < payment_types.length; i++) {
-		YAHOO.util.Event.on(payment_types[i], 'click',
-			this.handlePaymentTypeClick, this, true);
+	// set up event handlers for payment options
+	var payment_options = document.getElementsByName('payment_option');
+	for (var i = 0; i < payment_options.length; i++) {
+		// only consider input elements (IE fix)
+		if (payment_options[i].nodeName == 'INPUT') {
+			YAHOO.util.Event.on(
+				payment_options[i],
+				'click',
+				this.handlePaymentTypeClick,
+				this,
+				true
+			);
+		}
 	}
 
 	for (var i = 0; i < inception_date_ids.length; i++) {
 		var type = document.getElementById(
-			'payment_type_' + inception_date_ids[i]);
+			'payment_option_type_' + inception_date_ids[i]);
 
 		if (type) {
 			this.inception_date_types.push(type);
@@ -38,7 +38,7 @@ function StoreCheckoutPaymentMethodPage(id, inception_date_ids,
 
 	for (var i = 0; i < issue_number_ids.length; i++) {
 		var type = document.getElementById(
-			'payment_type_' + issue_number_ids[i]);
+			'payment_option_type_' + issue_number_ids[i]);
 
 		if (type) {
 			this.issue_number_types.push(type);
@@ -47,7 +47,7 @@ function StoreCheckoutPaymentMethodPage(id, inception_date_ids,
 
 	for (var i = 0; i < card_ids.length; i++) {
 		var type = document.getElementById(
-			'payment_type_' + card_ids[i]);
+			'payment_option_type_' + card_ids[i]);
 
 		if (type) {
 			this.card_types.push(type);
@@ -55,7 +55,7 @@ function StoreCheckoutPaymentMethodPage(id, inception_date_ids,
 	}
 
 	this.fields = [
-		'payment_type',
+		'payment_option',
 		'card_type',
 		'card_number',
 		'card_verification_value',
@@ -94,20 +94,15 @@ function StoreCheckoutPaymentMethodPage(id, inception_date_ids,
 		'account_card_verification_value'
 	];
 
-	var payment_type_options =
-		document.getElementsByName('payment_type');
-
-	for (var i = 0; i < payment_type_options.length; i++)
-		this.fields.push(payment_type_options[i].id);
+	for (var i = 0; i < payment_options.length; i++) {
+		if (payment_options[i].nodeName == 'INPUT') {
+			this.fields.push(payment_options[i].id);
+		}
+	}
 
 	YAHOO.util.Event.onDOMReady(function() {
 		this.updateFields();
 	}, this, true);
-}
-
-StoreCheckoutPaymentMethodPage.prototype.handlePaymentMethodClick = function(e)
-{
-	this.updateFields();
 }
 
 StoreCheckoutPaymentMethodPage.prototype.handlePaymentTypeClick = function(e)
@@ -133,26 +128,24 @@ StoreCheckoutPaymentMethodPage.prototype.updateFields = function()
 
 	this.sensitizeCard();
 
-	if (this.isInceptionDateSensitive())
+	if (this.isInceptionDateSensitive()) {
 		this.sensitizeInceptionDate();
-	else
+	} else {
 		this.desensitizeInceptionDate();
+	}
 
-	if (this.isIssueNumberSensitive())
+	if (this.isIssueNumberSensitive()) {
 		this.sensitizeIssueNumber();
-	else
+	} else {
 		this.desensitizeIssueNumber();
+	}
 }
 
 // payment method fields
 
 StoreCheckoutPaymentMethodPage.prototype.isSensitive = function()
 {
-	var sensitive = true;
-	if (this.list_new)
-		sensitive = this.list_new.checked;
-
-	return sensitive;
+	return true;
 }
 
 StoreCheckoutPaymentMethodPage.prototype.sensitize = function()
@@ -197,8 +190,8 @@ StoreCheckoutPaymentMethodPage.prototype.isCardSensitive = function()
 {
 	var sensitive = false;
 
-	if (document.getElementsByName('payment_type').length > 1) {
-		// radio list of payment types
+	if (document.getElementsByName('payment_option').length > 1) {
+		// radio list of payment options
 		for (var i = 0; i < this.card_types.length; i++) {
 			if (this.card_types[i].checked) {
 				sensitive = true;
