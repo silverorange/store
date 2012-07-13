@@ -2,9 +2,6 @@
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
 	<widget class="SwatDisplayableContainer" id="payment_method_list_container">
-		<widget class="SwatRadioTable" id="payment_method_list">
-			<property name="value">new</property>
-		</widget>
 		<widget class="SwatDisplayableContainer" id="account_fields_container">
 			<widget class="SwatFormField" id="account_card_verification_value_field">
 				<property name="visible" type="boolean">false</property>
@@ -18,9 +15,8 @@
 		</widget>
 	</widget>
 	<widget class="SwatDisplayableContainer" id="payment_method_form">
-		<widget class="SwatFormField" id="payment_type_field">
-			<property name="title" translatable="yes">Payment Type</property>
-			<widget class="SwatRadioTable" id="payment_type">
+		<widget class="SwatFormField" id="payment_option_field">
+			<widget class="SwatRadioTable" id="payment_option">
 				<property name="required" type="boolean">true</property>
 			</widget>
 		</widget>
