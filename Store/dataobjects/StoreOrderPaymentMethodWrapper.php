@@ -1,16 +1,16 @@
 <?php
 
-require_once 'SwatDB/SwatDBRecordsetWrapper.php';
+require_once 'Store/dataobjects/StorePaymentMethodWrapper.php';
 require_once 'Store/dataobjects/StoreOrderPaymentMethod.php';
 
 /**
  * A recordset wrapper class for StoreOrderPaymentMethod objects
  *
  * @package   Store
- * @copyright 2005-2009 silverorange
+ * @copyright 2005-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreOrderPaymentMethodWrapper extends SwatDBRecordsetWrapper
+class StoreOrderPaymentMethodWrapper extends StorePaymentMethodWrapper
 {
 	// {{{ public function getByPayPalToken()
 
