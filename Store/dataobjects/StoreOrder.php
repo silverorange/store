@@ -425,7 +425,7 @@ class StoreOrder extends SwatDBDataObject
 	// }}}
 	// {{{ protected function getOrderItemDetailsStore()
 
-	public function getOrderItemDetailsStore($order_item)
+	protected function getOrderItemDetailsStore($order_item)
 	{
 		$ds = new SwatDetailsStore($order_item);
 		$ds->item        = $order_item;
