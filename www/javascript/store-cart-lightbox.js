@@ -424,29 +424,34 @@ StoreCartLightbox.prototype.close = function(e)
 	}
 
 	if (this.status == 'open') {
-		if (this.main_animation) {
-			this.main_animation.stop(false);
-		}
-
 		// used for media-query mobile styles
 		YAHOO.util.Dom.removeClass(document.body, 'lightbox-open');
 
-		this.swapInVideos();
-
-		this.main_animation = new YAHOO.util.Anim(
-			this.mini_cart,
-			{ opacity: { to: 0 } },
-			0.3);
-
-		this.main_animation.onComplete.subscribe(function() {
-			if (this.status == 'closing') {
-				this.mini_cart.style.display = 'none';
-				this.status = 'closed';
+		if (YAHOO.env.ua.mobile) {
+			this.mini_cart.style.display = 'none';
+			this.status = 'closed';
+		} else {
+			if (this.main_animation) {
+				this.main_animation.stop(false);
 			}
-		}, this, true);
 
-		this.status = 'closing';
-		this.main_animation.animate();
+			this.swapInVideos();
+
+			this.main_animation = new YAHOO.util.Anim(
+				this.mini_cart,
+				{ opacity: { to: 0 } },
+				0.3);
+
+			this.main_animation.onComplete.subscribe(function() {
+				if (this.status == 'closing') {
+					this.mini_cart.style.display = 'none';
+					this.status = 'closed';
+				}
+			}, this, true);
+
+			this.status = 'closing';
+			this.main_animation.animate();
+		}
 	}
 }
 
