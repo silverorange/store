@@ -89,9 +89,20 @@ class StoreCartLightbox extends SwatControl
 		$this->addJavaScript('packages/swat/javascript/swat-z-index-manager.js',
 			Swat::PACKAGE_ID);
 
+		ob_start();
+
+		$mobile_close = new SwatHtmlTag('a');
+		$mobile_close->setContent(Store::_('Close'));
+		$mobile_close->classes = array('button',
+			'lightbox-close', 'mobile-only');
+
+		$mobile_close->display();
+
 		$h3 = new SwatHtmlTag('h3');
 		$h3->setContent(Store::_('Your Shopping Cart is Empty'));
-		$this->empty_content = strval($h3);
+		$h3->display();
+
+		$this->empty_content = ob_get_clean();
 	}
 
 	// }}}
