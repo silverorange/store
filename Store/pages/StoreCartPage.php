@@ -318,7 +318,7 @@ class StoreCartPage extends SitePage
 	{
 		$view = $this->ui->getWidget('available_cart_view');
 		$column = $view->getColumn('quantity_column');
-		$renderer = $column->getRendererByPosition();
+		$renderer = $column->getFirstDescendant('SwatWidgetCellRenderer');
 		$widgets = $renderer->getWidgets('quantity_entry');
 
 		return $widgets;
