@@ -9,7 +9,7 @@
 	padding-right: 20px;
 }
 
-#store_cart_lightbox_close_button.mobile-only {
+#store_cart_lightbox .close_button.mobile-only {
 	display: none;
 }
 
