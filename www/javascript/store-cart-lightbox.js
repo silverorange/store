@@ -102,10 +102,12 @@ StoreCartLightbox.prototype.init = function()
 	YAHOO.util.Event.on(document, 'click', this.handleDocumentClick, this, true);
 	YAHOO.util.Event.on(window, 'resize', this.handleWindowChange, this, true);
 
-	var close_links = Dom.getElementsByClassName('close-lightbox',
+	var close_links = YAHOO.util.Dom.getElementsByClassName('close-lightbox',
 		null, this.mini_cart);
 
-	Event.on(close_links, 'click', this.close, this, true);
+		console.log(close_links);
+
+	YAHOO.util.Event.on(close_links, 'click', this.close, this, true);
 
 	this.esc_listener = new YAHOO.util.KeyListener(
 		document,
