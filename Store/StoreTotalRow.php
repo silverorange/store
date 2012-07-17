@@ -43,6 +43,14 @@ class StoreTotalRow extends SwatTableViewRow
 	public $link_title = null;
 
 	/**
+	 * If set, value will be used as the anchor element's target attribute
+	 * value
+	 *
+	 * @var string
+	 */
+	public $link_target = null;
+
+	/**
 	 * Text to use when the total is zero
 	 *
 	 * Defaults to 'FREE'. Only displayed if {@link StoreTotalRow::$show_free}
@@ -189,6 +197,7 @@ class StoreTotalRow extends SwatTableViewRow
 			$anchor_tag = new SwatHtmlTag('a');
 			$anchor_tag->href = $this->link;
 			$anchor_tag->title = $this->link_title;
+			$anchor_tag->target = $this->link_target;
 			$anchor_tag->setContent($this->title);
 			$title = $anchor_tag->__toString();
 		}
