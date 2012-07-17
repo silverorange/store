@@ -1,6 +1,14 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
+	<widget class="SwatForm" id="close_store_cart_lightbox">
+		<widget class="SwatButton" id="store_cart_lightbox_close_button">
+			<property name="title">Close</property>
+			<property name="classes[]">button</property>
+			<property name="classes[]">close-lightbox</property>
+			<property name="classes[]">mobile-only</property>
+		</widget>
+	</widget>
 	<widget class="SwatContentBlock" id="lightbox_cart_title">
 		<property name="content_type">text/xml</property>
 	</widget>
