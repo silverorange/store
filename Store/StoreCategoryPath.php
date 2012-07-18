@@ -41,10 +41,11 @@ class StoreCategoryPath extends SitePath
 	 */
 	public function loadFromId(SiteWebApplication $app, $category_id)
 	{
-		foreach ($this->queryPath($app, $category_id) as $row)
+		foreach ($this->queryPath($app, $category_id) as $row) {
 			$this->addEntry(new StoreCategoryPathEntry(
 				$row->id, $row->parent, $row->shortname, $row->title,
 				$row->twig));
+		}
 	}
 
 	// }}}
