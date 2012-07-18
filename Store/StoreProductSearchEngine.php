@@ -9,7 +9,7 @@ require_once 'Store/dataobjects/StoreAttributeWrapper.php';
  * A product search engine
  *
  * @package   Store
- * @copyright 2007-2010 silverorange
+ * @copyright 2007-2012 silverorange
  */
 class StoreProductSearchEngine extends SiteSearchEngine
 {
@@ -177,6 +177,13 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	 * @var array
 	 */
 	public $product_ids;
+
+	/**
+	 * An optional array of product shortnames to limit search results with
+	 *
+	 * @var array
+	 */
+	public $product_shortnames;
 
 	/**
 	 * Item minimum quantity group
@@ -546,9 +553,26 @@ class StoreProductSearchEngine extends SiteSearchEngine
 			$clause.= ' and Product.id in
 				(select source_product from ProductCollectionBinding)';
 
-		if (is_array($this->product_ids))
-			$clause.= sprintf(' and Product.id in (%s)',
-				implode(',', $this->product_ids));
+		if (is_array($this->product_ids)) {
+			$clause.= sprintf(
+				' and Product.id in (%s)',
+				SwatDB::implodeAndQuoteArray(
+					$this->app->db,
+					$this->product_ids
+				)
+			);
+		}
+
+		if (is_array($this->product_shortnames)) {
+			$clause.= sprintf(
+				' and Product.shortname in (%s)',
+				SwatDB::implodeAndQuoteArray(
+					$this->app->db,
+					$this->product_shortnames,
+					'text'
+				)
+			);
+		}
 
 		if ($this->item_minimum_quantity_group !== null) {
 			$clause.= sprintf(' and Product.id in (select Item.product
