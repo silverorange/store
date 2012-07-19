@@ -456,6 +456,22 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	// }}}
 
 	// validate payment
+	// {{{ protected function validatePaymentMethodWithMessage()
+
+	protected function validatePaymentMethodWithMessage()
+	{
+		return $this->validatePaymentMethod(true);
+	}
+
+	// }}}
+	// {{{ protected function validatePaymentMethodWithNoMessage()
+
+	protected function validatePaymentMethodWithNoMessage()
+	{
+		return $this->validatePaymentMethod(false);
+	}
+
+	// }}}
 	// {{{ protected function validatePaymentMethod()
 
 	protected function validatePaymentMethod($show_message = false)
