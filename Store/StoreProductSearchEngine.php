@@ -556,9 +556,9 @@ class StoreProductSearchEngine extends SiteSearchEngine
 		if (is_array($this->product_ids)) {
 			$clause.= sprintf(
 				' and Product.id in (%s)',
-				SwatDB::implodeAndQuoteArray(
-					$this->app->db,
-					$this->product_ids
+				$this->app->db->datatype->implodeArray(
+					$this->product_ids,
+					'integer'
 				)
 			);
 		}
@@ -566,8 +566,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 		if (is_array($this->product_shortnames)) {
 			$clause.= sprintf(
 				' and Product.shortname in (%s)',
-				SwatDB::implodeAndQuoteArray(
-					$this->app->db,
+				$this->app->db->datatype->implodeArray(
 					$this->product_shortnames,
 					'text'
 				)
