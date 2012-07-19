@@ -465,15 +465,17 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		if ($this->app->config->store->multiple_payment_support) {
 			$payment_total = 0;
-			foreach ($order->payment_methods as $payment_method)
+			foreach ($order->payment_methods as $payment_method) {
 				$payment_total+= $payment_method->amount;
+			}
 
-			if ($order->total > $payment_total)
+			if ($order->total > $payment_total) {
 				$valid = false;
-
+			}
 		} else {
-			if (count($order->payment_methods) == 0)
+			if (count($order->payment_methods) == 0) {
 				$valid = false;
+			}
 		}
 
 		if (!$valid && $show_message) {
