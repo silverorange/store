@@ -128,9 +128,6 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 		$address_list       = $ui->getWidget('billing_address_list');
 		$billing_container  = $ui->getWidget('billing_address_container');
 		$shipping_container = $ui->getWidget('shipping_address_container');
-
-		$billing_container->classes[]  = 'checkout-column-left';
-		$shipping_container->classes[] = 'checkout-column-right';
 	}
 
 	// }}}
@@ -161,18 +158,6 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 				$ui->getWidget('shipping_type_container');
 		} else {
 			$shipping_type_container = null;
-		}
-
-		if (!$payment_method_list->visible) {
-			$payment_method_container->classes[] = 'checkout-column-left';
-			if ($shipping_type_container instanceof SwatWidget) {
-				$shipping_type_container->classes[]  = 'checkout-column-right';
-			}
-		} else {
-			$payment_method_container->classes[] = 'checkout-no-column';
-			if ($shipping_type_container instanceof SwatWidget) {
-				$shipping_type_container->classes[]  = 'checkout-no-column';
-			}
 		}
 	}
 
