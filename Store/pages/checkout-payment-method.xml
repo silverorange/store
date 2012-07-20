@@ -5,7 +5,7 @@
 		<widget class="SwatDisplayableContainer" id="account_fields_container">
 			<widget class="SwatFormField" id="account_card_verification_value_field">
 				<property name="visible" type="boolean">false</property>
-				<property name="title" translatable="yes">Card Verification Value</property>
+				<property name="title" translatable="yes">Card Security Code</property>
 				<widget class="StoreCardVerificationValueEntry" id="account_card_verification_value">
 					<property name="required" type="boolean">true</property>
 					<property name="maxlength" type="integer">4</property>
@@ -36,7 +36,7 @@
 				</widget>
 			</widget>
 			<widget class="SwatFormField" id="card_verification_value_field">
-				<property name="title" translatable="yes">Card Verification Value</property>
+				<property name="title" translatable="yes">Card Security Code</property>
 				<widget class="StoreCardVerificationValueEntry" id="card_verification_value">
 					<property name="required" type="boolean">true</property>
 					<property name="maxlength" type="integer">4</property>
