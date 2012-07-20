@@ -7,7 +7,7 @@ require_once 'Swat/SwatYUI.php';
  * Base address edit page of checkout
  *
  * @package   Store
- * @copyright 2009-2010 silverorange
+ * @copyright 2009-2012 silverorange
  */
 abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 {
@@ -235,6 +235,13 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 		 * looks better even withour a select list on the left.
 		 */
 		$this->ui->getWidget('form')->classes[] = 'checkout-no-column';
+	}
+
+	// }}}
+	// {{{ protected function buildForm()
+
+	protected function buildForm()
+	{
 	}
 
 	// }}}
