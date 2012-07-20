@@ -7,7 +7,7 @@ require_once 'Swat/SwatYUI.php';
  * Shipping address edit page of checkout
  *
  * @package   Store
- * @copyright 2005-2011 silverorange
+ * @copyright 2005-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
@@ -36,9 +36,79 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 	{
 		parent::initCommon();
 
+		$this->initForm();
+
 		// default country flydown to the country of the current locale
 		$country_flydown = $this->ui->getWidget('shipping_address_country');
 		$country_flydown->value = $this->app->getCountry();
+	}
+
+	// }}}
+	// {{{ protected function initForm()
+
+	protected function initForm()
+	{
+		$country_sql = sprintf(
+			'select id, title from Country
+			where id in (
+				select country from RegionShippingCountryBinding
+				where region = %s)
+			and visible = %s
+			order by title',
+			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
+			$this->app->db->quote(true, 'boolean')
+		);
+
+		$countries = SwatDB::query(
+			$this->app->db,
+			$country_sql,
+			SwatDBClassMap::get('StoreCountryWrapper')
+		);
+
+		$provstate_where_clause = sprintf(
+			'id in (
+				select provstate from RegionShippingProvStateBinding
+				where region = %s)',
+			$this->app->db->quote($this->app->getRegion()->id, 'integer')
+		);
+
+		$provstates = $countries->loadAllSubRecordsets(
+			'provstates',
+			SwatDBClassMap::get('StoreProvStateWrapper'),
+			'ProvState',
+			'text:country',
+			$provstate_where_clause,
+			'title'
+		);
+
+		$country_flydown = $this->ui->getWidget('shipping_address_country');
+		$country_flydown->serialize_values = false;
+		foreach ($countries as $country) {
+			$country_flydown->addOption($country->id, $country->title);
+		}
+
+		$data = array();
+		foreach ($countries as $country) {
+			$data[$country->id] = array(
+				'title' => $country->title
+			);
+
+			if (count($country->provstates) === 0) {
+				$data[$country->id]['provstates'] = null;
+			} else {
+				$data[$country->id]['provstates'] = array();
+				foreach ($country->provstates as $provstate) {
+					$data[$country->id]['provstates'][] = array(
+						'id'    => $provstate->id,
+						'title' => $provstate->title,
+					);
+				}
+			}
+		}
+
+		$provstate_flydown = $this->ui->getWidget('shipping_address_provstate');
+		$provstate_flydown->data = $data;
+		$provstate_flydown->setCountryFlydown($country_flydown);
 	}
 
 	// }}}
@@ -95,20 +165,11 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 			return;
 		}
 
-		$provstate->country = $country->id;
-		$provstate->setDatabase($this->app->db);
 		$provstate->process();
 
-		if ($provstate->value === 'other') {
-			$provstate_other =
-				$this->ui->getWidget('shipping_address_provstate_other');
-
-			$provstate_other->required = true;
-		}
-
-		if ($provstate->value !== null && $provstate->value != 'other') {
+		if ($provstate->provstate_id !== null) {
 			$sql = sprintf('select abbreviation from ProvState where id = %s',
-			$this->app->db->quote($provstate->value));
+			$this->app->db->quote($provstate->provstate_id));
 
 			$provstate_abbreviation = SwatDB::queryOne($this->app->db, $sql);
 			$postal_code->country = $country->id;
@@ -234,13 +295,9 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 			$address->city =
 				$this->ui->getWidget('shipping_address_city')->value;
 
-			$provstate = $this->ui->getWidget(
-				'shipping_address_provstate')->value;
-
-			$address->provstate = ($provstate == 'other') ? null : $provstate;
-
-			$address->provstate_other =
-				$this->ui->getWidget('shipping_address_provstate_other')->value;
+			$provstate = $this->ui->getWidget('shipping_address_provstate');
+			$address->provstate = $provstate->provstate_id;
+			$address->provstate_other = $provstate->provstate_other;
 
 			$address->postal_code =
 				$this->ui->getWidget('shipping_address_postalcode')->value;
@@ -336,10 +393,11 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 				$this->ui->getWidget('shipping_address_city')->value =
 					$order->shipping_address->city;
 
-				$this->ui->getWidget('shipping_address_provstate')->value =
+				$provstate = $this->ui->getWidget('shipping_address_provstate');
+				$provstate->provstate_id =
 					$order->shipping_address->getInternalValue('provstate');
 
-				$this->ui->getWidget('shipping_address_provstate_other')->value =
+				$provstate->provstate_other =
 					$order->shipping_address->provstate_other;
 
 				$this->ui->getWidget('shipping_address_postalcode')->value =
@@ -428,45 +486,6 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 	}
 
 	// }}}
-	// {{{ protected function buildForm()
-
-	protected function buildForm()
-	{
-		$provstate_where = sprintf('country in (
-					select country from RegionShippingCountryBinding
-					where region = %1$s)
-				and id in (
-					select provstate from RegionShippingProvStateBinding
-					where region = %1$s)',
-				$this->app->db->quote($this->app->getRegion()->id, 'integer'));
-
-		$provstate_flydown = $this->ui->getWidget('shipping_address_provstate');
-		$provstate_flydown->addOptionsByArray(SwatDB::getOptionArray(
-			$this->app->db, 'ProvState', 'title', 'id', 'title',
-			$provstate_where));
-
-		$provstate_other =
-			$this->ui->getWidget('shipping_address_provstate_other');
-
-		if ($provstate_other->visible) {
-			$provstate_flydown->addDivider();
-			$option = new SwatOption('other', 'Other…');
-			$provstate_flydown->addOption($option);
-		}
-
-		$country_where = sprintf('id in (
-				select country from RegionShippingCountryBinding
-				where region = %s)
-			and visible = %s',
-			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
-			$this->app->db->quote(true, 'boolean'));
-
-		$country_flydown = $this->ui->getWidget('shipping_address_country');
-		$country_flydown->addOptionsByArray(SwatDB::getOptionArray(
-			$this->app->db, 'Country', 'title', 'id', 'title', $country_where));
-	}
-
-	// }}}
 	// {{{ protected function buildAccountShippingAddresses()
 
 	protected function buildAccountShippingAddresses(
@@ -513,12 +532,12 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 
 	protected function getInlineJavaScript()
 	{
-		$provstate = $this->ui->getWidget('shipping_address_provstate');
-		$provstate_other_index = count($provstate->options);
 		$id = 'checkout_shipping_address';
 		return sprintf(
-			"var %s_obj = new StoreCheckoutShippingAddressPage('%s', %s);",
-			$id, $id, $provstate_other_index);
+			'var %s_obj = new StoreCheckoutShippingAddressPage(%s);',
+			$id,
+			SwatString::quoteJavaScriptString($id)
+		);
 	}
 
 	// }}}

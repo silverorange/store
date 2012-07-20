@@ -7,7 +7,7 @@ require_once 'Swat/SwatYUI.php';
  * Billing address edit page of checkout
  *
  * @package   Store
- * @copyright 2005-2011 silverorange
+ * @copyright 2005-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
@@ -36,9 +36,79 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 	{
 		parent::initCommon();
 
+		$this->initForm();
+
 		// default country flydown to the country of the current locale
 		$country_flydown = $this->ui->getWidget('billing_address_country');
 		$country_flydown->value = $this->app->getCountry();
+	}
+
+	// }}}
+	// {{{ protected function initForm()
+
+	protected function initForm()
+	{
+		$country_sql = sprintf(
+			'select id, title from Country
+			where id in (
+				select country from RegionBillingCountryBinding
+				where region = %s)
+			and visible = %s
+			order by title',
+			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
+			$this->app->db->quote(true, 'boolean')
+		);
+
+		$countries = SwatDB::query(
+			$this->app->db,
+			$country_sql,
+			SwatDBClassMap::get('StoreCountryWrapper')
+		);
+
+		$provstate_where_clause = sprintf(
+			'id in (
+				select provstate from RegionBillingProvStateBinding
+				where region = %s)',
+			$this->app->db->quote($this->app->getRegion()->id, 'integer')
+		);
+
+		$provstates = $countries->loadAllSubRecordsets(
+			'provstates',
+			SwatDBClassMap::get('StoreProvStateWrapper'),
+			'ProvState',
+			'text:country',
+			$provstate_where_clause,
+			'title'
+		);
+
+		$country_flydown = $this->ui->getWidget('billing_address_country');
+		$country_flydown->serialize_values = false;
+		foreach ($countries as $country) {
+			$country_flydown->addOption($country->id, $country->title);
+		}
+
+		$data = array();
+		foreach ($countries as $country) {
+			$data[$country->id] = array(
+				'title' => $country->title
+			);
+
+			if (count($country->provstates) === 0) {
+				$data[$country->id]['provstates'] = null;
+			} else {
+				$data[$country->id]['provstates'] = array();
+				foreach ($country->provstates as $provstate) {
+					$data[$country->id]['provstates'][] = array(
+						'id'    => $provstate->id,
+						'title' => $provstate->title,
+					);
+				}
+			}
+		}
+
+		$provstate_flydown = $this->ui->getWidget('billing_address_provstate');
+		$provstate_flydown->data = $data;
+		$provstate_flydown->setCountryFlydown($country_flydown);
 	}
 
 	// }}}
@@ -116,20 +186,11 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 			return;
 		}
 
-		$provstate->country = $country->id;
-		$provstate->setDatabase($this->app->db);
 		$provstate->process();
 
-		if ($provstate->value === 'other') {
-			$provstate_other =
-				$this->ui->getWidget('billing_address_provstate_other');
-
-			$provstate_other->required = true;
-		}
-
-		if ($provstate->value !== null && $provstate->value != 'other') {
+		if ($provstate->provstate_id !== null) {
 			$sql = sprintf('select abbreviation from ProvState where id = %s',
-			$this->app->db->quote($provstate->value));
+			$this->app->db->quote($provstate->provstate_id));
 
 			$provstate_abbreviation = SwatDB::queryOne($this->app->db, $sql);
 			$postal_code->country = $country->id;
@@ -169,13 +230,9 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 			$address->city =
 				$this->ui->getWidget('billing_address_city')->value;
 
-			$provstate = $this->ui->getWidget(
-				'billing_address_provstate')->value;
-
-			$address->provstate = ($provstate == 'other') ? null : $provstate;
-
-			$address->provstate_other =
-				$this->ui->getWidget('billing_address_provstate_other')->value;
+			$provstate = $this->ui->getWidget('billing_address_provstate');
+			$address->provstate = $provstate->provstate_id;
+			$address->provstate_other = $provstate->provstate_other;
 
 			$address->postal_code =
 				$this->ui->getWidget('billing_address_postalcode')->value;
@@ -237,33 +294,6 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 	// }}}
 
 	// build phase
-	// {{{ public function buildCommon()
-
-	public function buildCommon()
-	{
-		$this->buildList();
-		$this->buildForm();
-
-		if (!$this->ui->getWidget('form')->isProcessed())
-			$this->loadDataFromSession();
-	}
-
-	// }}}
-	// {{{ protected function buildInternal()
-
-	protected function buildInternal()
-	{
-		parent::buildInternal();
-
-		/*
-		 * Set page to two-column layout when page is stand-alone even when
-		 * there is no address list. The narrower layout of the form fields
-		 * looks better even withour a select list on the left.
-		 */
-		$this->ui->getWidget('form')->classes[] = 'checkout-no-column';
-	}
-
-	// }}}
 	// {{{ protected function loadDataFromSession()
 
 	protected function loadDataFromSession()
@@ -308,10 +338,11 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 				$this->ui->getWidget('billing_address_city')->value =
 					$order->billing_address->city;
 
-				$this->ui->getWidget('billing_address_provstate')->value =
+				$provstate = $this->ui->getWidget('billing_address_provstate');
+				$provstate->provstate_id =
 					$order->billing_address->getInternalValue('provstate');
 
-				$this->ui->getWidget('billing_address_provstate_other')->value =
+				$provstate->provstate_other =
 					$order->billing_address->provstate_other;
 
 				$this->ui->getWidget('billing_address_postalcode')->value =
@@ -371,51 +402,17 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 			$this->buildAccountBillingAddressRegionMessage($content_block);
 		}
 
-		$address_list->addOption('new', sprintf(
-			'<span class="add-new">%s</span>', Store::_('Add a New Address')),
-			'text/xml');
+		$address_list->addOption(
+			'new',
+			sprintf(
+				'<span class="add-new">%s</span>',
+				Store::_('Add a New Address')
+			),
+			'text/xml'
+		);
 
 		$address_list->visible           = (count($address_list->options) > 1);
 		$address_list_container->visible = (count($address_list->options) > 1);
-	}
-
-	// }}}
-	// {{{ protected function buildForm()
-
-	protected function buildForm()
-	{
-		$provstate_where = sprintf('country in (
-					select country from RegionBillingCountryBinding
-					where region = %1$s)
-				and id in (
-					select provstate from RegionBillingProvStateBinding
-					where region = %1$s)',
-				$this->app->db->quote($this->app->getRegion()->id, 'integer'));
-
-		$provstate_flydown = $this->ui->getWidget('billing_address_provstate');
-		$provstate_flydown->addOptionsByArray(SwatDB::getOptionArray(
-			$this->app->db, 'ProvState', 'title', 'id', 'title',
-			$provstate_where));
-
-		$provstate_other =
-			$this->ui->getWidget('billing_address_provstate_other');
-
-		if ($provstate_other->visible) {
-			$provstate_flydown->addDivider();
-			$option = new SwatOption('other', Store::_('Other…'));
-			$provstate_flydown->addOption($option);
-		}
-
-		$country_where = sprintf('id in (
-				select country from RegionBillingCountryBinding
-				where region = %s)
-			and visible = %s',
-			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
-			$this->app->db->quote(true, 'boolean'));
-
-		$country_flydown = $this->ui->getWidget('billing_address_country');
-		$country_flydown->addOptionsByArray(SwatDB::getOptionArray(
-			$this->app->db, 'Country', 'title', 'id', 'title', $country_where));
 	}
 
 	// }}}
@@ -465,12 +462,12 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 
 	protected function getInlineJavaScript()
 	{
-		$provstate = $this->ui->getWidget('billing_address_provstate');
-		$provstate_other_index = count($provstate->options);
 		$id = 'checkout_billing_address';
 		return sprintf(
-			"var %s_obj = new StoreCheckoutBillingAddressPage('%s', %s);",
-			$id, $id, $provstate_other_index);
+			'var %s_obj = new StoreCheckoutBillingAddressPage(%s);',
+			$id,
+			SwatString::quoteJavaScriptString($id)
+		);
 	}
 
 	// }}}
