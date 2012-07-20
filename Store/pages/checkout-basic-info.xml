@@ -12,7 +12,7 @@
 		</widget>
 		<widget class="SwatFormField" id="email_field">
 			<property name="title" translatable="yes">Email</property>
-			<property name="note" translatable="yes">Rest assured, we will not sell or share your email address.</property>
+			<property name="note" translatable="yes">We’ll email you a copy of your order receipt. We value your privacy—your email address will not be sold or shared.</property>
 			<widget class="SwatEmailEntry" id="email">
 				<property name="required" type="boolean">true</property>
 				<property name="maxlength" type="integer">255</property>
