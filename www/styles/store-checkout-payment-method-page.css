@@ -22,12 +22,10 @@
 #account_card_verification_value_field .swat-form-field-contents,
 #card_verification_value_field .swat-note,
 #account_card_verification_value_field .swat-note {
-	display: inline;
 }
 
 #card_verification_value_field label,
 #account_card_verification_value_field label {
-	display: block;
 }
 
 #card_verification_value_field .swat-note img,
