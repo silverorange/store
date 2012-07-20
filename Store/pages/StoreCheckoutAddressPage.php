@@ -223,21 +223,6 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
-	// {{{ protected function buildInternal()
-
-	protected function buildInternal()
-	{
-		parent::buildInternal();
-
-		/*
-		 * Set page to two-column layout when page is stand-alone even when
-		 * there is no address list. The narrower layout of the form fields
-		 * looks better even withour a select list on the left.
-		 */
-		$this->ui->getWidget('form')->classes[] = 'checkout-no-column';
-	}
-
-	// }}}
 	// {{{ protected function buildForm()
 
 	protected function buildForm()
