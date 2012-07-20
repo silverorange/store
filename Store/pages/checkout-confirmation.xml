@@ -2,7 +2,7 @@
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
 	<!-- {{{ basic info -->
-	<widget class="SwatFieldset" id="basic_info_container">
+	<widget class="SwatFrame" id="basic_info_container">
 		<property name="classes[]">checkout-no-column</property>
 		<property name="title" translatable="yes">Basic Information</property>
 		<widget class="SwatToolLink" id="basic_info_edit">
@@ -44,7 +44,7 @@
 	</widget>
 	<!-- }}} -->
 	<!-- {{{ billing address -->
-	<widget class="SwatFieldset" id="billing_address_container">
+	<widget class="SwatFrame" id="billing_address_container">
 		<property name="classes[]">checkout-column-left</property>
 		<property name="title" translatable="yes">Billing Address</property>
 		<widget class="SwatToolLink" id="billing_address_edit">
@@ -55,7 +55,7 @@
 	</widget>
 	<!-- }}} -->
 	<!-- {{{ shipping address -->
-	<widget class="SwatFieldset" id="shipping_address_container">
+	<widget class="SwatFrame" id="shipping_address_container">
 		<property name="classes[]">checkout-column-right</property>
 		<property name="title" translatable="yes">Shipping Address</property>
 		<widget class="SwatToolLink" id="shipping_address_edit">
@@ -66,7 +66,7 @@
 	</widget>
 	<!-- }}} -->
 	<!-- {{{ payment method -->
-	<widget class="SwatFieldset" id="payment_method_container">
+	<widget class="SwatFrame" id="payment_method_container">
 		<property name="classes[]">checkout-no-column</property>
 		<property name="title" translatable="yes">Payment Method</property>
 		<widget class="SwatToolLink" id="payment_method_edit">
@@ -77,7 +77,7 @@
 	</widget>
 	<!-- }}} -->
 	<!-- {{{ items -->
-	<widget class="SwatFieldset" id="item_container">
+	<widget class="SwatFrame" id="item_container">
 		<property name="classes[]">checkout-no-column</property>
 		<property name="title" translatable="yes">Items</property>
 		<widget class="SwatToolLink" id="item_link">
