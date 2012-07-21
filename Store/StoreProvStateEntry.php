@@ -118,8 +118,24 @@ class StoreProvStateEntry extends SwatInputControl
 		$this->provstate_id = $this->getCompositeWidget('flydown')->value;
 		$this->provstate_other = $this->getCompositeWidget('entry')->value;
 
+		// handle special mode flag set by JavaScript that says which type
+		// of input was used.
+		$raw_data = $this->getForm()->getFormData();
+		if (isset($raw_data[$this->id.'_mode'])) {
+			if ($raw_data[$this->id.'_mode'] == 'flydown') {
+				$this->provstate_other = null;
+			}
+			if ($raw_data[$this->id.'_mode'] == 'entry') {
+				$this->provstate_id = null;
+			}
+		}
+
+		// If JavaScript was not used, default to flydown unless the blank
+		// option was selected.
 		if ($this->provstate_id == '') {
 			$this->provstate_id = null;
+		} else {
+			$this->provstate_other = null;
 		}
 	}
 
