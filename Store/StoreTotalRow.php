@@ -124,6 +124,16 @@ class StoreTotalRow extends SwatTableViewRow
 	 */
 	public $locale = null;
 
+	/**
+	 * What to display when value is null.
+	 *
+	 * If set to null, the default behaviour is for the value to be passed to
+	 * formatCurrency(). If not null, display this in a span instead.
+	 *
+	 * @var string
+	 */
+	public $null_display_value = null;
+
 	// }}}
 	// {{{ protected properties
 
@@ -151,7 +161,7 @@ class StoreTotalRow extends SwatTableViewRow
 
 	public function display()
 	{
-		if ($this->value === null)
+		if ($this->value === null && $this->null_display_value === null)
 			$this->visible = false;
 
 		if (!$this->visible)
@@ -226,8 +236,23 @@ class StoreTotalRow extends SwatTableViewRow
 		$td_tag = new SwatHtmlTag('td');
 		$td_tag->class = $this->getCSSClassString();
 		$td_tag->open();
-		$this->displayValue();
+		if ($this->value === null && $this->null_display_value !== null) {
+			$this->displayNullValue();
+		} else {
+			$this->displayValue();
+		}
 		$td_tag->close();
+	}
+
+	// }}}
+	// {{{ protected function displayNullValue()
+
+	protected function displayNullValue()
+	{
+		$span_tag = new SwatHtmlTag('span');
+		$span_tag->class = 'swat-none';
+		$span_tag->setContent($this->null_display_value);
+		$span_tag->display();
 	}
 
 	// }}}
@@ -235,8 +260,9 @@ class StoreTotalRow extends SwatTableViewRow
 
 	protected function displayValue()
 	{
-		if ($this->locale !== null)
+		if ($this->locale !== null) {
 			$this->money_cell_renderer->locale = $this->locale;
+		}
 
 		if ($this->show_free && $this->value <= 0) {
 			echo SwatString::minimizeEntities($this->free_text);
