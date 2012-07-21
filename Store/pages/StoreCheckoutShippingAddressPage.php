@@ -247,23 +247,34 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 		$address = $this->getAddress();
 		$shipping_provstate = $address->getInternalValue('provstate');
 
-		/* If provstate is null, it means it's either not required, or
+		/*
+		 * If provstate is null, it means it's either not required, or
 		 * provstate_other is set. In either case, we don't need to check
 		 * against valid provstates.
 		 */
-		if ($shipping_provstate === null)
+		if ($shipping_provstate === null) {
 			return;
+		}
 
 		$shipping_provstate_ids = array();
-		foreach ($this->app->getRegion()->shipping_provstates as $provstate)
+		foreach ($this->app->getRegion()->shipping_provstates as $provstate) {
 			$shipping_provstate_ids[] = $provstate->id;
+		}
 
 		if (!in_array($shipping_provstate, $shipping_provstate_ids)) {
 			$field = $this->ui->getWidget('shipping_address_list_field');
-			$field->addMessage(new SwatMessage(sprintf(Store::_('Orders can '.
-				'not be shipped to %s. Please select a different shipping '.
-				'address or enter a new shipping address.'),
-				$address->provstate->title)));
+			$field->addMessage(
+				new SwatMessage(
+					sprintf(
+						Store::_(
+							'Orders can not be shipped to %s. Please select '.
+							'a different shipping address or enter a new '.
+							'shipping address.'
+						),
+						$address->provstate->title
+					)
+				)
+			);
 		}
 	}
 
