@@ -11,6 +11,13 @@ StoreProvStateEntry.prototype.init = function()
 	this.flydown = document.getElementById(this.id + '_flydown');
 	this.entry = document.getElementById(this.id + '_entry');
 
+	this.mode = document.createElement('input');
+	this.mode.setAttribute('type', 'hidden');
+	this.mode.setAttribute('name', this.id + '_mode');
+
+	var form = YAHOO.util.Dom.getAncestorByTagName(this.flydown, 'form');
+	form.appendChild(this.mode);
+
 
 	if (this.country_flydown_id) {
 		this.country = document.getElementById(this.country_flydown_id);
@@ -73,6 +80,7 @@ StoreProvStateEntry.prototype.updateProvState = function()
 		if (provstates === null) {
 			YAHOO.util.Dom.removeClass(this.entry, 'swat-hidden');
 			YAHOO.util.Dom.addClass(this.flydown, 'swat-hidden');
+			this.mode.value = 'entry';
 		} else {
 			YAHOO.util.Dom.addClass(this.entry, 'swat-hidden');
 			YAHOO.util.Dom.removeClass(this.flydown, 'swat-hidden');
@@ -92,6 +100,7 @@ StoreProvStateEntry.prototype.updateProvState = function()
 				option.appendChild(document.createTextNode(provstates[i].title));
 				this.flydown.appendChild(option);
 			}
+			this.mode.value = 'flydown';
 		}
 	}
 };
