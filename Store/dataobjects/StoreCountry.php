@@ -44,6 +44,32 @@ class StoreCountry extends SwatDBDataObject
 	public $has_postal_code;
 
 	// }}}
+	// {{{ public function getRegionSelectTitle()
+
+	public function getRegionSelectTitle()
+	{
+		switch ($this->id) {
+		case 'DE':
+			$select_title = Store::_('Select a Land …');
+			break;
+		case 'US':
+		case 'MX':
+			$select_title = Store::_('Select a State …');
+			break;
+		case 'CA':
+		case 'AU':
+			$select_title = Store::_('Select a Province …');
+			break;
+		case 'UK':
+		default:
+			$select_title = Store::_('Select a Region …');
+			break;
+		}
+
+		return $select_title;
+	}
+
+	// }}}
 	// {{{ public static function getTitleById()
 
 	/**

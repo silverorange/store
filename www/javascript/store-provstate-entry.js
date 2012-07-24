@@ -87,7 +87,21 @@ StoreProvStateEntry.prototype.updateProvState = function()
 			while (this.flydown.firstChild) {
 				this.flydown.removeChild(this.flydown.firstChild);
 			}
+
 			var option;
+
+			// add blank option
+			option = document.createElement('option');
+			option.value = '';
+			option.className = 'swat-blank-option';
+			option.appendChild(
+				document.createTextNode(
+					this.data[country_id].select_title
+				)
+			);
+			this.flydown.appendChild(option);
+
+			// add provstates
 			for (var i = 0; i < provstates.length; i++) {
 				option = document.createElement('option');
 				option.value = provstates[i].id;
