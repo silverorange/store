@@ -72,7 +72,7 @@
 		</widget>
 		<widget class="SwatFormField" id="billing_address_phone_field">
 			<property name="title" translatable="yes">Phone</property>
-			<property name="note" translatable="yes">Please include area code.</property>
+			<property name="note" translatable="yes">Your phone number is used to contact you if there is an issue with your order. Please include your area code.</property>
 			<widget class="SwatPhoneEntry" id="billing_address_phone">
 				<property name="maxlength" type="integer">100</property>
 				<property name="size" type="integer">35</property>
