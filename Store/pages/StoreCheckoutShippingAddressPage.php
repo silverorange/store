@@ -89,8 +89,10 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 
 		$data = array();
 		foreach ($countries as $country) {
+
 			$data[$country->id] = array(
-				'title' => $country->title
+				'title'        => $country->title,
+				'select_title' => $country->getRegionSelectTitle(),
 			);
 
 			if (count($country->provstates) === 0) {

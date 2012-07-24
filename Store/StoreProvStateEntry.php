@@ -40,8 +40,9 @@ class StoreProvStateEntry extends SwatInputControl
 	 * <?php
 	 * array(
 	 *     'country_id' => array(
-	 *         'title'      => 'Country Title',
-	 *         'provstates' => array(
+	 *         'title'        => 'Country Title',
+	 *         'select_title' => 'Select a State',
+	 *         'provstates'   => array(
 	 *             array(
 	 *                 'id'    => 'provstate_id',
 	 *                 'title' => 'Provstate Title',
@@ -54,8 +55,8 @@ class StoreProvStateEntry extends SwatInputControl
 	 *         ),
 	 *     ),
 	 *     'country_id' => array(
-	 *         'title'      => 'Country Title',
-	 *         'provstates' => null,
+	 *         'title'        => 'Country Title',
+	 *         'provstates'   => null,
 	 *     ),
 	 *     ...
 	 * );
@@ -228,6 +229,30 @@ class StoreProvStateEntry extends SwatInputControl
 
 	protected function validate()
 	{
+		$flydown = $this->getCompositeWidget('flydown');
+		$provstate_id = $flydown->value;
+
+		$entry = $this->getCompositeWidget('entry');
+
+		// validate required
+		$raw_data = $this->getForm()->getFormData();
+		if (isset($raw_data[$this->id.'_mode'])) {
+			$mode = $raw_data[$this->id.'_mode'];
+			if ($mode == 'flydown' && $provstate_id == '') {
+				$this->addMessage($this->getValidationMessage('required'));
+				return;
+			}
+			if ($mode == 'entry' && $entry->value == '') {
+				$this->addMessage($this->getValidationMessage('required'));
+				return;
+			}
+		} else {
+			if ($provstate_id == '' && $entry->value == '') {
+				$this->addMessage($this->getValidationMessage('required'));
+				return;
+			}
+		}
+
 		// only validate provstate if country flydown is set
 		if (!($this->country_flydown instanceof SwatFlydown)) {
 			return;
@@ -238,9 +263,6 @@ class StoreProvStateEntry extends SwatInputControl
 		if ($country_id === null) {
 			return;
 		}
-
-		$flydown = $this->getCompositeWidget('flydown');
-		$provstate_id = $flydown->value;
 
 		if (isset($this->data[$country_id]) &&
 			is_array($this->data[$country_id]['provstates'])) {
