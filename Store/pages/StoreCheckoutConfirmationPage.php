@@ -853,11 +853,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		switch ($message_id) {
 		case 'address-mismatch':
-			$message = new SwatMessage(
-				Store::_('There was a problem processing your payment.'),
-				'error');
-
-			$message->content_type = 'text/xml';
+			$message = $this->getPrototypeErrorMessage($message_id);
 			$message->secondary_content =
 				'<p>'.sprintf(
 				Store::_('%sBilling address does not correspond with card '.
@@ -868,22 +864,12 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 						$this->getEditLink('checkout/confirmation/billingaddress').
 						'">',
 					'</a>').
-				' '.Store::_('No funds have been removed from your card.').
-				'</p><p>'.sprintf(
-				Store::_('If you are still unable to complete your order '.
-					'after confirming your payment information, please '.
-					'%scontact us%s.'),
-					'<a href="'.$this->getEditLink('about/contact').'">',
-					'</a>').
-				'</p>';
+				' '.$this->getErrorMessageNoFunds().
+				'</p><p>'.$this->getErrorMessageContactUs().'</p>';
 
 			break;
 		case 'postal-code-mismatch':
-			$message = new SwatMessage(
-				Store::_('There was a problem processing your payment.'),
-				'error');
-
-			$message->content_type = 'text/xml';
+			$message = $this->getPrototypeErrorMessage($message_id);
 			$message->secondary_content =
 				'<p>'.sprintf(
 				Store::_('%sBilling postal code / ZIP code does not correspond '.
@@ -894,22 +880,12 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 						$this->getEditLink('checkout/confirmation/billingaddress').
 						'">',
 					'</a>').
-				' '.Store::_('No funds have been removed from your card.').
-				'</p><p>'.sprintf(
-				Store::_('If you are still unable to complete your order '.
-					'after confirming your payment information, please '.
-					'%scontact us%s.'),
-					'<a href="'.$this->getEditLink('about/contact').'">',
-					'</a>').
-				'</p>';
+				' '.$this->getErrorMessageNoFunds().
+				'</p><p>'.$this->getErrorMessageContactUs().'</p>';
 
 			break;
 		case 'card-verification-value':
-			$message = new SwatMessage(
-				Store::_('There was a problem processing your payment.'),
-				'error');
-
-			$message->content_type = 'text/xml';
+			$message = $this->getPrototypeErrorMessage($message_id);
 			$message->secondary_content =
 				'<p>'.sprintf(
 				Store::_('%sCard security code does not correspond with card '.
@@ -920,22 +896,12 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 						$this->getEditLink('checkout/confirmation/paymentmethod').
 						'">',
 					'</a>').
-				' '.Store::_('No funds have been removed from your card.').
-				'</p><p>'.sprintf(
-				Store::_('If you are still unable to complete your order '.
-					'after confirming your payment information, please '.
-					'%scontact us%s.'),
-					'<a href="'.$this->getEditLink('about/contact').'">',
-					'</a>').
-				'</p>';
+				' '.$this->getErrorMessageNoFunds().
+				'</p><p>'.$this->getErrorMessageContactUs().'</p>';
 
 			break;
 		case 'card-type':
-			$message = new SwatMessage(
-				Store::_('There was a problem processing your payment.'),
-				'error');
-
-			$message->content_type = 'text/xml';
+			$message = $this->getPrototypeErrorMessage($message_id);
 			$message->secondary_content =
 				'<p>'.sprintf(
 				Store::_('%sCard type does not correspond with card '.
@@ -946,22 +912,12 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 						$this->getEditLink('checkout/confirmation/paymentmethod').
 						'">',
 					'</a>').
-				' '.Store::_('No funds have been removed from your card.').
-				'</p><p>'.sprintf(
-				Store::_('If you are still unable to complete your order '.
-					'after confirming your payment information, please '.
-					'%scontact us%s.'),
-					'<a href="'.$this->getEditLink('about/contact').'">',
-					'</a>').
-				'</p>';
+				' '.$this->getErrorMessageNoFunds().
+				'</p><p>'.$this->getErrorMessageContactUs().'</p>';
 
 			break;
 		case 'card-expired':
-			$message = new SwatMessage(
-				Store::_('There was a problem processing your payment.'),
-				'error');
-
-			$message->content_type = 'text/xml';
+			$message = $this->getPrototypeErrorMessage($message_id);
 			$message->secondary_content =
 				'<p>'.sprintf(
 				Store::_('%sCard is expired.%s Your order has %snot%s been '.
@@ -972,22 +928,12 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 						$this->getEditLink('checkout/confirmation/paymentmethod').
 						'">',
 					'</a>').
-				' '.Store::_('No funds have been removed from your card.').
-				'</p><p>'.sprintf(
-				Store::_('If you are still unable to complete your order '.
-					'after confirming your payment information, please '.
-					'%scontact us%s.'),
-					'<a href="'.$this->getEditLink('about/contact').'">',
-					'</a>').
-				'</p>';
+				' '.$this->getErrorMessageNoFunds().
+				'</p><p>'.$this->getErrorMessageContactUs().'</p>';
 
 			break;
 		case 'total':
-			$message = new SwatMessage(
-				Store::_('There was a problem processing your payment.'),
-				'error');
-
-			$message->content_type = 'text/xml';
+			$message = $this->getPrototypeErrorMessage($message_id);
 			$message->secondary_content =
 				'<p>'.sprintf(
 				Store::_('%sYour order total is too large to process.%s '.
@@ -1000,16 +946,12 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 					'</a>',
 					'<a href="'.$this->getEditLink('about/contact').'">',
 					'</a>').
-				' '.Store::_('No funds have been removed from your card.').
+				' '.$this->getErrorMessageNoFunds().
 				'</p>';
 
 			break;
 		case 'payment-error':
-			$message = new SwatMessage(
-				Store::_('There was a problem processing your payment.'),
-				'error');
-
-			$message->content_type = 'text/xml';
+			$message = $this->getPrototypeErrorMessage($message_id);
 			$message->secondary_content =
 				sprintf(
 				Store::_('%sYour payment details are correct, but we were '.
@@ -1019,16 +961,12 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 					'<strong>', '</strong>', '<em>', '</em>',
 					'<a href="'.$this->getEditLink('about/contact').'">',
 					'</a>').
-				' '.Store::_('No funds have been removed from your card.');
+				' '.$this->getErrorMessageNoFunds();
 
 			break;
 		case 'order-error':
-			$message = new SwatMessage(
-				Store::_('A system error occurred while processing your order'),
-				'system-error');
-
 			// TODO: only display account stuff if account was created
-			$message->content_type = 'text/xml';
+			$message = $this->getPrototypeErrorMessage($message_id);
 			$message->secondary_content = sprintf(
 				Store::_(
 					'Your account has been created, but your order has '.
@@ -1039,11 +977,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 			break;
 		case 'account-error':
-			$message = new SwatMessage(
-				Store::_('A system error occurred while processing your order'),
-				'system-error');
-
-			$message->content_type = 'text/xml';
+			$message = $this->getPrototypeErrorMessage($message_id);
 			$message->secondary_content = sprintf(
 				Store::_(
 					'Your account has not been created, your order has '.
@@ -1056,6 +990,62 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		}
 
 		return $message;
+	}
+
+	// }}}
+	// {{{ protected function getPrototypeErrorMessage()
+
+	protected function getPrototypeErrorMessage($message_id)
+	{
+		switch ($message_id) {
+		case 'order-error':
+		case 'account-error':
+			$message = new SwatMessage(
+				Store::_(
+					'A system error occurred while processing your order'
+				),
+				'system-error'
+			);
+
+			break;
+
+		default:
+			$message = new SwatMessage(
+				Store::_(
+					'There was a problem processing your payment.'
+				),
+				'error'
+			);
+
+			break;
+		}
+
+		$message->content_type = 'text/xml';
+
+		return $message;
+	}
+
+	// }}}
+	// {{{ protected function getErrorMessageNoFunds()
+
+	protected function getErrorMessageNoFunds()
+	{
+		return Store::_('No funds have been removed from your card.');
+	}
+
+	// }}}
+	// {{{ protected function getErrorMessageContactUs()
+
+	protected function getErrorMessageContactUs()
+	{
+		return sprintf(
+			Store::_(
+				'If you are still unable to complete your order after '.
+				'confirming your payment information, please %scontact us%s.'
+			),
+			'<a href="'.$this->getEditLink('about/contact').'">',
+			'</a>'
+		);
 	}
 
 	// }}}
