@@ -235,21 +235,23 @@ class StoreProvStateEntry extends SwatInputControl
 		$entry = $this->getCompositeWidget('entry');
 
 		// validate required
-		$raw_data = $this->getForm()->getFormData();
-		if (isset($raw_data[$this->id.'_mode'])) {
-			$mode = $raw_data[$this->id.'_mode'];
-			if ($mode == 'flydown' && $provstate_id == '') {
-				$this->addMessage($this->getValidationMessage('required'));
-				return;
-			}
-			if ($mode == 'entry' && $entry->value == '') {
-				$this->addMessage($this->getValidationMessage('required'));
-				return;
-			}
-		} else {
-			if ($provstate_id == '' && $entry->value == '') {
-				$this->addMessage($this->getValidationMessage('required'));
-				return;
+		if ($this->required) {
+			$raw_data = $this->getForm()->getFormData();
+			if (isset($raw_data[$this->id.'_mode'])) {
+				$mode = $raw_data[$this->id.'_mode'];
+				if ($mode == 'flydown' && $provstate_id == '') {
+					$this->addMessage($this->getValidationMessage('required'));
+					return;
+				}
+				if ($mode == 'entry' && $entry->value == '') {
+					$this->addMessage($this->getValidationMessage('required'));
+					return;
+				}
+			} else {
+				if ($provstate_id == '' && $entry->value == '') {
+					$this->addMessage($this->getValidationMessage('required'));
+					return;
+				}
 			}
 		}
 
@@ -261,6 +263,11 @@ class StoreProvStateEntry extends SwatInputControl
 		// only validate provstate if country was selected
 		$country_id = $this->country_flydown->value;
 		if ($country_id === null) {
+			return;
+		}
+
+		// only validate provstate if provstate was selected
+		if ($provstate_id == '') {
 			return;
 		}
 
