@@ -68,7 +68,8 @@
 			</widget>
 		</widget>
 		<widget class="SwatFormField" id="phone_field">
-			<property name="title">Phone Number</property>
+			<property name="title" translatable="yes">Phone Number</property>
+			<property name="note" translatable="yes">Your phone number is used to contact you if there is an issue with your order. Please include your area code.</property>
 			<widget class="SwatEntry" id="phone">
 				<property name="required" type="boolean">true</property>
 				<property name="maxlength" type="integer">255</property>
