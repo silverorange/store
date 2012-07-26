@@ -1123,15 +1123,12 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			$default_payment_method =
 				$this->app->session->account->getDefaultPaymentMethod();
 
-			if ($default_payment_method !== null) {
+			if ($default_payment_method instanceof StorePaymentMethod) {
 				// only default to a payment method that appears in the list
 				$payment_option = $this->ui->getWidget('payment_option');
-
-				$options = $payment_option->getOptionsByValue(
-					'method_'.$default_payment_method->id
-				);
-
-				if (count($options) > 0) {
+				$page_id = 'method_'.$default_payment_method->id;
+				if ($payment_option->getPage($page_id)
+					instanceof SwatNoteBookPage) {
 					$payment_method = $default_payment_method;
 				}
 			}
