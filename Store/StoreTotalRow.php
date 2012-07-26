@@ -8,7 +8,8 @@ require_once 'Swat/SwatMoneyCellRenderer.php';
  * Displays totals in a special row in a table view.
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2012 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreTotalRow extends SwatTableViewRow
 {
@@ -189,7 +190,7 @@ class StoreTotalRow extends SwatTableViewRow
 	{
 		$colspan = $this->view->getXhtmlColspan();
 		$th_tag = new SwatHtmlTag('th');
-		$th_tag->colspan = $colspan - 1 - $this->offset;
+		$th_tag->colspan = max(1, $colspan - 1 - $this->offset);
 
 		$th_tag->open();
 		$this->displayTitle();
