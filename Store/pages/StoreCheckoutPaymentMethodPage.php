@@ -846,7 +846,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 					$class_name = SwatDBClassMap::get('StorePaymentType');
 					$type = new $class_name();
 					$type->setDatabase($this->app->db);
-					$type->load(substr($option_list->seleted_page, 5));
+					$type->load(substr($option_list->selected_page, 5));
 				}
 			}
 		}
@@ -862,13 +862,13 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		static $card_type = null;
 
 		if ($card_type === null) {
-			$option = $this->ui->getWidget('payment_option');
-			$option->process();
+			$option_list = $this->ui->getWidget('payment_option');
+			$option_list->process();
 
 			// check if account payment method or new payment method was selected
-			if (strncmp('method_', $option->value, 7) === 0) {
+			if (strncmp('method_', $option_list->selected_page, 7) === 0) {
 
-				$method_id = intval(substr($option->value, 7));
+				$method_id = intval(substr($option_list->selected_page, 7));
 
 				$account_payment_method =
 					$this->app->session->account->payment_methods->getByIndex(
@@ -949,8 +949,8 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$methods = $this->getPaymentMethods();
 
 		if ((count($types) + count($methods)) === 1) {
-			$option_flydown = $this->ui->getWidget('payment_option');
-			$parent = $option_flydown->parent->getFirstAncestor(
+			$option_list = $this->ui->getWidget('payment_option');
+			$parent = $option_list->parent->getFirstAncestor(
 				'SwatDisplayableContainer'
 			);
 			$parent->classes[] = 'store-payment-method-single';
