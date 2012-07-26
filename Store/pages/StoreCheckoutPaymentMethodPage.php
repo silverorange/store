@@ -90,13 +90,32 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	public function initCommon()
 	{
 		parent::initCommon();
+
+		// set up account payment method replicator
+		$methods = $this->getPaymentMethods();
+		$replication_ids = $methods->getIndexes();
+		$replicator = $this->ui->getWidget(
+			'account_payment_methods_replicator');
+
+		$replicator->replication_ids = $replication_ids;
+
+		// if multiple payments are enabled, make payment amount visible
+		if (!$this->app->config->store->multiple_payment_ui &&
+			$this->ui->hasWidget('payment_amount_field')) {
+				$this->ui->getWidget('payment_amount_field')->visible = false;
+		}
+	}
+
+	// }}}
+	// {{{ public function postInitCommon()
+
+	public function postInitCommon()
+	{
+		parent::postInitCommon();
+
 		$types = $this->getPaymentTypes();
 		$methods = $this->getPaymentMethods();
 		$this->initPaymentOptions($types, $methods);
-
-		if (!$this->app->config->store->multiple_payment_ui &&
-			$this->ui->hasWidget('payment_amount_field'))
-				$this->ui->getWidget('payment_amount_field')->visible = false;
 	}
 
 	// }}}
@@ -105,45 +124,45 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	protected function initPaymentOptions(StorePaymentTypeWrapper $types,
 		StorePaymentMethodWrapper $methods)
 	{
-		$flydown = $this->ui->getWidget('payment_option');
+		$list = $this->ui->getWidget('payment_option');
 
-		// payment types will determine whether or not the flydown is visible
-		$flydown->parent->visible = false;
+		// default visibility of list to false, payment options will determine
+		// whether or not the list is visible
+		$list->parent->visible = false;
 
 		// init payment methods
+		$replicator = $this->ui->getWidget(
+			'account_payment_methods_replicator');
+
 		foreach ($methods as $method) {
-			$this->initPaymentOption($method, $flydown);
+			$this->initPaymentMethod($method, $list, $replicator);
 		}
 
 		// init payment types
 		foreach ($types as $type) {
-			$this->initPaymentOption($type, $flydown);
+			$this->initPaymentType($type, $list);
 		}
 
 		// If no value was set, default to first payment type
-		if ($flydown->value === null && $types->getFirst() !== null) {
-			$flydown->value = $types->getFirst()->id;
+		if ($list->selected_page === null && $types->getFirst() !== null) {
+			$list->selected_page = 'type_'.$types->getFirst()->id;
 		}
 	}
 
 	// }}}
-	// {{{ protected function initPaymentOption()
+	// {{{ protected function initPaymentType()
 
-	protected function initPaymentOption($option,
-		SwatFlydown $flydown)
+	protected function initPaymentType(StorePaymentType $type,
+		SwatRadioNoteBook $list)
 	{
-		if ($option instanceof StorePaymentType) {
-			switch ($option->shortname) {
-			case 'card':
-				$this->initPaymentTypeCard($option, $flydown);
-				break;
+		switch ($type->shortname) {
+		case 'card':
+			$this->initPaymentTypeCard($type, $list);
+			break;
 
-			default:
-				$this->initPaymentTypeDefault($option, $flydown);
-				break;
-			}
-		} elseif ($option instanceof StorePaymentMethod) {
-			$this->initPaymentMethod($option, $flydown);
+		default:
+			$this->initPaymentTypeDefault($type, $list);
+			break;
 		}
 	}
 
@@ -151,36 +170,33 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	// {{{ protected function initPaymentTypeDefault()
 
 	protected function initPaymentTypeDefault(StorePaymentType $type,
-		SwatFlydown $flydown)
+		SwatRadioNoteBook $list)
 	{
-		$flydown->addOption(
-			new SwatOption(
-				'type_'.$type->id,
-				$this->getPaymentTypeTitle($type),
-				'text/xml'
-			)
-		);
+		$page = new SwatNoteBookPage();
+		$page->id = 'type_'.$type->id;
+		$page->title = $this->getPaymentTypeTitle($type);
+		$page->title_content_type = 'text/xml';
 
-		$flydown->parent->visible = true;
+		$list->addPage($page);
+		$list->parent->visible = true;
+
+		return $page;
 	}
 
 	// }}}
 	// {{{ protected function initPaymentTypeCard()
 
 	protected function initPaymentTypeCard(StorePaymentType $type,
-		SwatFlydown $flydown)
+		SwatRadioNoteBook $list)
 	{
-		$flydown->addOption(
-			new SwatOption(
-				'type_'.$type->id,
-				$this->getPaymentTypeTitle($type),
-				'text/xml'
-			)
-		);
+		$page = new SwatNoteBookPage();
+		$page->id = 'type_'.$type->id;
+		$page->title = $this->getPaymentTypeTitle($type);
+		$page->title_content_type = 'text/xml';
 
 		// default to 'card' if it exists
-		if ($flydown->value === null) {
-			$flydown->value = 'types_'.$type->id;
+		if ($list->selected_page === null) {
+			$list->selected_page = 'type_'.$type->id;
 		}
 
 		// set up card types flydown
@@ -198,32 +214,47 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			);
 		}
 
+		// default to first card type if no card type is set
 		if ($type_flydown->value === null && $card_types->getFirst() !== null) {
 			$type_flydown->value = $card_types->getFirst()->id;
 		}
 
-		// make card fields visible
-		$this->ui->getWidget('card_container')->visible = true;
+		// make card fields visible and add to page
+		$fields = $this->ui->getWidget('card_fields_container');
+		$fields->parent->remove($fields);
+		$fields->visible = true;
+		$page->add($fields);
+
+		$list->addPage($page);
+
+		return $page;
 	}
 
 	// }}}
 	// {{{ protected function initPaymentMethod()
 
 	protected function initPaymentMethod(StorePaymentMethod $method,
-		SwatFlydown $flydown)
+		SwatRadioNoteBook $list, SwatReplicableNoteBookChild $replicator)
 	{
+		$page = $replicator->getWidget('account_fields_container', $method->id);
+		$page->id = 'method_'.$method->id;
+
 		ob_start();
 		$method->showCardExpiry(false);
 		$method->display();
-		$method_display = ob_get_clean();
-		$flydown->addOption('method_'.$method->id, $method_display, 'text/xml');
-		$flydown->parent->visible = true;
+		$page->title = ob_get_clean();
+		$page->title_content_type = 'text/xml';
+
+		$list->parent->visible = true;
+
+		return $page;
 	}
 
 	// }}}
 	// {{{ protected function getPaymentMethod()
 
-	protected function getPaymentMethod($payment_methods)
+	protected function getPaymentMethod(
+		StorePaymentMethodWrapper $payment_methods)
 	{
 		$payment_method = null;
 		$payment_methods = $this->getEditablePaymentMethods($payment_methods);
@@ -282,11 +313,13 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	protected function getPaymentTypeTitle(StorePaymentType $type)
 	{
-		$title = $type->title;
+		$title = SwatString::minimizeEntities($type->title);
 
 		if (strlen($type->note) > 0) {
-			$title.= sprintf('<br /><span class="swat-note">%s</span>',
-				$type->note);
+			$title.= sprintf(
+				'<br /><span class="swat-note">%s</span>',
+				$type->note
+			);
 		}
 
 		return $title;
@@ -429,7 +462,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 		$option_list = $this->ui->getWidget('payment_option');
 		$option_list->process();
-		$option = $option_list->value;
+		$option = $option_list->selected_page;
 
 		// check if using an existing account payment method, or a new one
 		if (strncmp('method_', $option, 7) == 0) {
@@ -592,9 +625,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		if ($order_payment_method !== null)
 			$payment_methods->remove($order_payment_method);
 
-		if (strncmp('method_', $option_list->value, 7) === 0) {
+		if (strncmp('method_', $option_list->selected_page, 7) === 0) {
 
-			$method_id = intval(substr($option_list->value, 7));
+			$method_id = intval(substr($option_list->selected_page, 7));
 
 			$account_payment_method =
 				$this->app->session->account->payment_methods->getByIndex(
@@ -806,14 +839,14 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		if ($type === null) {
 			$type = $this->getPaymentTypes()->getFirst();
 
-			$type_list = $this->ui->getWidget('payment_option');
+			$option_list = $this->ui->getWidget('payment_option');
 			if (isset($_POST['payment_option'])) {
-				$type_list->process();
-				if (strncmp('type_', $type_list->value, 5) === 0) {
+				$option_list->process();
+				if (strncmp('type_', $option_list->selected_page, 5) === 0) {
 					$class_name = SwatDBClassMap::get('StorePaymentType');
 					$type = new $class_name();
 					$type->setDatabase($this->app->db);
-					$type->load(substr($type_list->value, 5));
+					$type->load(substr($option_list->seleted_page, 5));
 				}
 			}
 		}
