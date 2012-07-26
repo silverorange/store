@@ -1037,19 +1037,22 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				$this->orderHasAdjustableMethod(true);
 		}
 
+		$option_list = $this->ui->getWidget('payment_option');
+
 		if ($order_payment_method === null) {
 			$this->ui->getWidget('card_fullname')->value =
 				$this->app->session->account->fullname;
 
 			$default_payment_method = $this->getDefaultPaymentMethod();
 			if ($default_payment_method !== null) {
-				$this->ui->getWidget('payment_option')->value =
+				$option_list->selected_page =
 					'method_'.$default_payment_method->id;
 			}
 		} else {
 			if ($order_payment_method->getAccountPaymentMethodId() === null) {
-				$this->ui->getWidget('payment_option')->value =
-					'type_'.$order_payment_method->getInternalValue('payment_type');
+				$option_list->selected_page =
+					'type_'.$order_payment_method->getInternalValue(
+						'payment_type');
 
 				if ($this->ui->hasWidget('payment_amount')) {
 					$this->ui->getWidget('payment_amount')->value =
