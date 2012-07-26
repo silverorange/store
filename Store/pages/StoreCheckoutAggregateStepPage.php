@@ -163,10 +163,6 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 
 		if ($form->isProcessed()) {
 			if ($form->hasMessage()) {
-				echo 'test';
-				foreach ($form->getMessages() as $message) {
-					echo $message;
-				}
 				$message = new SwatMessage(Store::_('There is a problem with '.
 					'the information submitted.'), SwatMessage::ERROR);
 
