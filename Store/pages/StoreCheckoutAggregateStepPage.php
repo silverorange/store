@@ -6,7 +6,7 @@ require_once 'Store/pages/StoreCheckoutStepPage.php';
  * Base class for a step page of checkout that is composed of other pages.
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
@@ -51,6 +51,17 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 	// }}}
 
 	// init phase
+	// {{{ public function init()
+
+	public function init()
+	{
+		parent::init();
+		foreach ($this->getEmbeddedEditPages() as $page) {
+			$page->postInitCommon();
+		}
+	}
+
+	// }}}
 	// {{{ protected function initInternal()
 
 	protected function initInternal()
@@ -152,6 +163,10 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 
 		if ($form->isProcessed()) {
 			if ($form->hasMessage()) {
+				echo 'test';
+				foreach ($form->getMessages() as $message) {
+					echo $message;
+				}
 				$message = new SwatMessage(Store::_('There is a problem with '.
 					'the information submitted.'), SwatMessage::ERROR);
 

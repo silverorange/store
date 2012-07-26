@@ -6,7 +6,7 @@ require_once 'Store/pages/StoreCheckoutPage.php';
  * Base class for edit pages in the checkout
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreCheckoutEditPage extends StoreCheckoutPage
@@ -32,6 +32,29 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 	// }}}
 
 	// init phase
+	// {{{ public function init()
+
+	public function init()
+	{
+		parent::init();
+		$this->postInitCommon();
+	}
+
+	// }}}
+	// {{{ public function initCommon()
+
+	public function initCommon()
+	{
+	}
+
+	// }}}
+	// {{{ public function postInitCommon()
+
+	public function postInitCommon()
+	{
+	}
+
+	// }}}
 	// {{{ protected function initInternal()
 
 	protected function initInternal()
@@ -67,13 +90,6 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 
 		$container = $this->ui->getWidget('container');
 		$this->ui->loadFromXML($this->getUiXml(), $container);
-	}
-
-	// }}}
-	// {{{ public function initCommon()
-
-	public function initCommon()
-	{
 	}
 
 	// }}}
