@@ -3,6 +3,7 @@
 <swatml>
 	<widget class="SwatDisplayableContainer" id="payment_method_form">
 		<widget class="SwatFormField" id="payment_option_field">
+			<property name="display_messages" type="boolean">false</property>
 			<widget class="SwatRadioNoteBook" id="payment_option">
 				<property name="required" type="boolean">true</property>
 				<widget class="SwatReplicableNoteBookChild" id="account_payment_methods_replicator">
