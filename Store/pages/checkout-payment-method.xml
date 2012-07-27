@@ -11,6 +11,7 @@
 						<widget class="SwatFormField" id="account_card_verification_value_field">
 							<property name="visible" type="boolean">false</property>
 							<property name="title" translatable="yes">Card Security Code</property>
+							<property name="classes[]">card-verification-value-field</property>
 							<widget class="StoreCardVerificationValueEntry" id="account_card_verification_value">
 								<property name="required" type="boolean">true</property>
 								<property name="maxlength" type="integer">4</property>
