@@ -214,7 +214,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 
 	public function setRegion(StoreRegion $region)
 	{
-		$this->region= $region;
+		$this->region = $region;
 	}
 
 	// }}}
