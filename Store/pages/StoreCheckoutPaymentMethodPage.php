@@ -467,18 +467,27 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		// check if using an existing account payment method, or a new one
 		if (strncmp('method_', $option, 7) == 0) {
 
-			// set all fields as not required when an existing payment method
+			// set all card fields as not required when an existing payment method
 			// is selected
-			$container = $this->ui->getWidget('payment_method_form');
+			$container = $this->ui->getWidget('card_fields_container');
 			$controls = $container->getDescendants('SwatInputControl');
 			foreach ($controls as $control) {
 				$control->required = false;
 			}
 
-			// make account CVV required for saved cards
-			if ($this->ui->hasWidget('account_card_verification_value')) {
-				$widget = $this->ui->getWidget('account_card_verification_value');
-				$this->setupCardVerificationValue($widget);
+			// set up CVV for selected saved payment method
+			$replicator = $this->ui->getWidget(
+				'account_payment_methods_replicator'
+			);
+
+			$method_id = substr($option, 7);
+			$cvv = $replicator->getWidget(
+				'account_card_verification_value',
+				$method_id
+			);
+
+			if ($cvv instanceof StoreCardVerificationValueEntry) {
+				$this->setupCardVerificationValue($cvv);
 			}
 
 		} else {
@@ -654,11 +663,22 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			$order_payment_method = new $class_name();
 			$order_payment_method->copyFrom($account_payment_method);
 
-			$this->updatePaymentMethodCardVerificationValue(
-				'account_card_verification_value',
-				$order_payment_method,
-				$old_card_verification_value
+			$replicator = $this->ui->getWidget(
+				'account_payment_methods_replicator'
 			);
+
+			$cvv = $replicator->getWidget(
+				'account_card_verification_value',
+				$method_id
+			);
+
+			if ($cvv instanceof StoreCardverificationValueEntry) {
+				$this->updatePaymentMethodCardVerificationValue(
+					$cvv,
+					$order_payment_method,
+					$old_card_verification_value
+				);
+			}
 
 			// if its a saved method, we want the confirmation page to use the
 			// save code-path so that default payment method gets set
@@ -755,7 +775,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			$this->updatePaymentMethodCardNumber($payment_method);
 
 			$this->updatePaymentMethodCardVerificationValue(
-				'card_verification_value', $payment_method);
+				$this->ui->getWidget('card_verification_value'),
+				$payment_method
+			);
 
 			$payment_method->card_issue_number =
 				$this->ui->getWidget('card_issue_number')->value;
@@ -811,15 +833,17 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	 * Subclasses can override this method to optionally store an encrypted
 	 * version of the card verification value.
 	 *
-	 * @param string $entry_widget_name
+	 * @param StoreCardVerificationValueEntry $entry
 	 * @param StoreOrderPaymentMethod $payment_method
-	 * @param string $old_payment_method
+	 * @param string $old_card_verification_value
 	 */
 	protected function updatePaymentMethodCardVerificationValue(
-		$entry_widget_name, StoreOrderPaymentMethod $payment_method,
+		StoreCardVerificationValue $entry,
+		StoreOrderPaymentMethod $payment_method,
 		$old_card_verification_value = null)
 	{
-		$value = $this->ui->getWidget($entry_widget_name)->value;
+		$value = $entry->value;
+
 		if ($value !== null) {
 			$payment_method->setCardVerificationValue($value);
 		} elseif ($old_card_verification_value !== null) {
@@ -1092,17 +1116,27 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				$this->ui->getWidget('card_fullname')->value =
 					$order_payment_method->card_fullname;
 			} else {
-				$this->ui->getWidget('payment_option')->value =
-					'method_'.$order_payment_method->getAccountPaymentMethodId();
+				$method_id = $order_payment_method->getAccountPaymentMethodId();
+				$this->ui->getWidget('payment_option')->selected_page =
+					'method_'.$method_id;
 
 				if ($order_payment_method->hasCardVerificationValue()) {
-					$cvv =
-						$this->ui->getWidget('account_card_verification_value');
+					$replicator = $this->ui->getWidget(
+						'account_payment_methods_replicator'
+					);
 
-					$card_type = $this->getCardType();
-					if ($card_type !== null) {
-						$cvv->setCardType($card_type);
-						$cvv->show_blank_value = true;
+					$cvv = $replicator->getWidget(
+						'account_card_verification_value',
+						$method_id
+					);
+
+
+					if ($cvv instanceof StoreCardVerificationValueEntry) {
+						$card_type = $this->getCardType();
+						if ($card_type !== null) {
+							$cvv->setCardType($card_type);
+							$cvv->show_blank_value = true;
+						}
 					}
 				}
 			}
