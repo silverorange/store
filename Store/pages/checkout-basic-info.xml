@@ -12,7 +12,6 @@
 		</widget>
 		<widget class="SwatFormField" id="email_field">
 			<property name="title" translatable="yes">Email</property>
-			<property name="note" translatable="yes">We’ll email you a copy of your order receipt. We value your privacy—your email address will not be sold or shared.</property>
 			<widget class="SwatEmailEntry" id="email">
 				<property name="required" type="boolean">true</property>
 				<property name="maxlength" type="integer">255</property>
@@ -21,6 +20,7 @@
 		</widget>
 		<widget class="SwatFormField" id="confirm_email_field">
 			<property name="title" translatable="yes">Re-type Email</property>
+			<property name="note" translatable="yes">We’ll email you a copy of your order receipt. We value your privacy—your email address will not be sold or shared.</property>
 			<widget class="SwatConfirmEmailEntry" id="confirm_email">
 				<property name="required" type="boolean">true</property>
 				<property name="maxlength" type="integer">255</property>
@@ -31,14 +31,6 @@
 			<property name="title" translatable="yes">Password</property>
 			<property name="note" translatable="yes">Password is case-sensitive.</property>
 			<widget class="SwatPasswordEntry" id="password">
-				<property name="minlength" type="integer">4</property>
-				<property name="maxlength" type="integer">255</property>
-			</widget>
-		</widget>
-		<widget class="SwatFormField" id="confirm_password_field">
-			<property name="title" translatable="yes">Re-type Password</property>
-			<property name="note" translatable="yes">Leave Password fields blank for them to remain the same.</property>
-			<widget class="SwatConfirmPasswordEntry" id="confirm_password">
 				<property name="minlength" type="integer">4</property>
 				<property name="maxlength" type="integer">255</property>
 			</widget>

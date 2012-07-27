@@ -25,9 +25,6 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 
 	public function initCommon()
 	{
-		$confirm_password = $this->ui->getWidget('confirm_password');
-		$confirm_password->password_widget = $this->ui->getWidget('password');
-
 		$confirm_email = $this->ui->getWidget('confirm_email');
 		$confirm_email->email_widget = $this->ui->getWidget('email');
 	}
@@ -148,7 +145,6 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 			!$this->app->session->checkout_with_account) {
 
 			$this->ui->getWidget('password_field')->visible = false;
-			$this->ui->getWidget('confirm_password_field')->visible = false;
 		}
 
 		if (!$this->app->session->checkout_with_account)
