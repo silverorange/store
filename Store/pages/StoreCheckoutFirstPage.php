@@ -12,7 +12,7 @@ require_once 'Store/pages/StoreCheckoutShippingTypePage.php';
  * First step of checkout
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
@@ -103,9 +103,6 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 
 		$this->buildBillingAndShippingAddressUi();
 		$this->buildShippingandPaymentUi();
-
-		// note in XML only applies when editing basic info off confirmation
-		$this->ui->getWidget('confirm_password_field')->note = null;
 	}
 
 	// }}}
