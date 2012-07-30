@@ -112,22 +112,6 @@ StoreCheckoutPaymentMethodPage.prototype.handlePaymentTypeClick = function(e)
 
 StoreCheckoutPaymentMethodPage.prototype.updateFields = function()
 {
-	if (!this.isSensitive()) {
-		this.desensitize();
-		this.sensitizeAccountFields();
-		return;
-	}
-
-	this.sensitize();
-	this.desensitizeAccountFields();
-
-	if (!this.isCardSensitive()) {
-		this.desensitizeCard();
-		return;
-	}
-
-	this.sensitizeCard();
-
 	if (this.isInceptionDateSensitive()) {
 		this.sensitizeInceptionDate();
 	} else {
@@ -139,87 +123,6 @@ StoreCheckoutPaymentMethodPage.prototype.updateFields = function()
 	} else {
 		this.desensitizeIssueNumber();
 	}
-}
-
-// payment method fields
-
-StoreCheckoutPaymentMethodPage.prototype.isSensitive = function()
-{
-	return true;
-}
-
-StoreCheckoutPaymentMethodPage.prototype.sensitize = function()
-{
-	if (this.container)
-		YAHOO.util.Dom.removeClass(this.container, 'swat-insensitive');
-
-	StoreCheckoutPage_sensitizeFields(this.fields);
-}
-
-StoreCheckoutPaymentMethodPage.prototype.desensitize = function()
-{
-	if (this.container)
-		YAHOO.util.Dom.addClass(this.container, 'swat-insensitive');
-
-	StoreCheckoutPage_desensitizeFields(this.fields);
-}
-
-// account card verification number
-
-StoreCheckoutPaymentMethodPage.prototype.sensitizeAccountFields = function()
-{
-	if (this.account_fields_container)
-		YAHOO.util.Dom.removeClass(this.account_fields_container,
-			'swat-insensitive');
-
-	StoreCheckoutPage_sensitizeFields(this.account_fields);
-}
-
-StoreCheckoutPaymentMethodPage.prototype.desensitizeAccountFields = function()
-{
-	if (this.account_fields_container)
-		YAHOO.util.Dom.addClass(this.account_fields_container,
-			'swat-insensitive');
-
-	StoreCheckoutPage_desensitizeFields(this.account_fields);
-}
-
-// card fields
-
-StoreCheckoutPaymentMethodPage.prototype.isCardSensitive = function()
-{
-	var sensitive = false;
-
-	if (document.getElementsByName('payment_option').length > 1) {
-		// radio list of payment options
-		for (var i = 0; i < this.card_types.length; i++) {
-			if (this.card_types[i].checked) {
-				sensitive = true;
-				break;
-			}
-		}
-	} else if (this.card_ids.length == 1) {
-		// only one payment type and it's a card
-		sensitive = true;
-	}
-
-	return sensitive;
-}
-
-StoreCheckoutPaymentMethodPage.prototype.sensitizeCard = function()
-{
-	if (this.card_container)
-		YAHOO.util.Dom.removeClass(this.card_container, 'swat-insensitive');
-
-	StoreCheckoutPage_sensitizeFields(this.card_fields);
-}
-
-StoreCheckoutPaymentMethodPage.prototype.desensitizeCard = function()
-{
-	if (this.card_container)
-		YAHOO.util.Dom.addClass(this.card_container, 'swat-insensitive');
-
-	StoreCheckoutPage_desensitizeFields(this.card_fields);
 }
 
 // inception date fields
