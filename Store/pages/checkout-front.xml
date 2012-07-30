@@ -35,7 +35,7 @@
 					<property name="maxlength" type="integer">255</property>
 				</widget>
 			</widget>
-			<widget class="SwatFormField">
+			<widget class="SwatFormField" id="login_password_field">
 				<property name="title" translatable="yes">Password</property>
 				<widget class="SwatPasswordEntry" id="login_password">
 					<property name="maxlength" type="integer">255</property>
