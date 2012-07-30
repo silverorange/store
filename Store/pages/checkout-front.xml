@@ -3,49 +3,49 @@
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="new_frame">
-		<property name="title">New Customers &amp; Guests</property>
+		<property name="title" translatable="yes">New Customers &amp; Guests</property>
 		<widget class="SwatContentBlock" id="new_customer_info">
-			<property name="content"><![CDATA[You will have the option to create an account or checkout as a guest.]]></property>
+			<property name="content" translatable="yes"><![CDATA[<p>You will have the option to create an account or checkout as a guest.</p>]]></property>
 			<property name="content_type">text/xml</property>
 		</widget>
 		<widget class="SwatForm" id="new_form">
 			<widget class="SwatFormField" id="new_email_address_field">
-				<property name="title">Email</property>
+				<property name="title" translatable="yes">Email</property>
 				<widget class="SwatEmailEntry" id="new_email_address">
 					<property name="maxlength" type="integer">255</property>
 				</widget>
 			</widget>
 			<widget class="SwatFooterFormField">
 				<widget class="SwatButton" id="new_button">
-					<property name="title">Checkout</property>
+					<property name="title" translatable="yes">Checkout</property>
 				</widget>
 			</widget>
 		</widget>
 	</widget>
 	<widget class="SwatFrame" id="login_frame">
-		<property name="title">Returning Customers</property>
+		<property name="title" translatable="yes">Returning Customers</property>
 		<widget class="SwatContentBlock" id="login_customer_info">
-			<property name="content"><![CDATA[If you have previously created an account with a password on our website, login here to checkout.]]></property>
+			<property name="content" translatable="yes"><![CDATA[<p>If you have previously created an account with a password on our website, login here to checkout.</p>]]></property>
 			<property name="content_type">text/xml</property>
 		</widget>
 		<widget class="SwatForm" id="login_form">
 			<widget class="SwatFormField" id="login_email_address_field">
-				<property name="title">Email</property>
+				<property name="title" translatable="yes">Email</property>
 				<widget class="SwatEmailEntry" id="login_email_address">
 					<property name="maxlength" type="integer">255</property>
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
-				<property name="title">Password</property>
+				<property name="title" translatable="yes">Password</property>
 				<widget class="SwatPasswordEntry" id="login_password">
 					<property name="maxlength" type="integer">255</property>
 				</widget>
+				<widget class="SwatContentBlock" id="forgot_password" />
 			</widget>
 			<widget class="SwatFooterFormField" id="login_footer">
 				<widget class="SwatButton" id="login_button">
-					<property name="title">Login &amp; Checkout</property>
+					<property name="title" translatable="yes">Login &amp; Checkout</property>
 				</widget>
-				<widget class="SwatContentBlock" id="forgot_password" />
 			</widget>
 		</widget>
 	</widget>
