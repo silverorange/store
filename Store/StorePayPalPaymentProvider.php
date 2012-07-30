@@ -735,6 +735,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		 * Transaction was declined by PayPal. Customer must contact PayPal
 		 * for moreinformation
 		 */
+		case 10754:
 		case 10544:
 			return 'card-error';
 
