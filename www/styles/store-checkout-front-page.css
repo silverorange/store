@@ -1,45 +1,22 @@
 /* Checkout Front */
 
-#new_customers_frame,
+#new_frame,
 #login_frame {
 	float: left;
 	width: 47%;
 }
 
-#new_customers_frame {
+#new_frame {
 	margin-right: 3%;
 }
 
-#just_place_form {
-	padding: 0 16px;
-}
-
-#new_customers_frame .compact-button {
-	margin: 0;
-}
-
-#login_frame input#email_address {
+#new_frame input#new_email_address,
+#login_frame input#login_email_address {
 	width: 98%;
 }
 
-#login_form .swat-footer-form-field .swat-button {
-	vertical-align: middle;
-}
-
-#new_customers_frame p,
+#new_frame p,
 #login_frame p {
 	margin: 0 0 0.5em 0;
 	line-height: 1.2;
-}
-
-#new_customers_frame h4 {
-	margin: 0;
-}
-
-#create_account_form {
-	margin-bottom: 1em;
-}
-
-#new_customers_frame .swat-button {
-	font-weight: bold;
 }
