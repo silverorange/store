@@ -36,8 +36,9 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 
 	public function validateCommon()
 	{
-		if ($this->app->session->checkout_with_account)
+		if ($this->ui->getWidget('password')->value != '') {
 			$this->validateAccount();
+		}
 	}
 
 	// }}}
@@ -47,9 +48,9 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 	{
 		$this->saveDataToSession();
 
-		if ($this->app->session->checkout_with_account)
-			if ($this->app->session->isLoggedIn())
-				$this->app->session->account->save();
+		if ($this->app->session->isLoggedIn()) {
+			$this->app->session->account->save();
+		}
 	}
 
 	// }}}
@@ -64,20 +65,19 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 		$order->phone = $this->getOptionalStringValue('phone');
 		$order->comments = $this->getOptionalStringValue('comments');
 
-		if ($this->app->session->checkout_with_account) {
-			$account = $this->app->session->account;
-			$account->fullname = $this->getOptionalStringValue('fullname');
-			$account->email = $order->email;
-			$account->phone = $order->phone;
-			$account->company = $order->company;
+		$account = $this->app->session->account;
+		$account->fullname = $this->getOptionalStringValue('fullname');
+		$account->email = $order->email;
+		$account->phone = $order->phone;
+		$account->company = $order->company;
 
-			// only set password on new accounts
-			if (!$this->app->session->isLoggedIn()) {
-				$new_password = $this->ui->getWidget('password')->value;
+		// only set password on new accounts
+		if (!$this->app->session->isLoggedIn()) {
+			$new_password = $this->ui->getWidget('password')->value;
 
-				// don't change pass if it was left blank
-				if ($new_password !== null)
-					$account->setPassword($new_password);
+			// don't change pass if it was left blank
+			if ($new_password != '') {
+				$account->setPassword($new_password);
 			}
 		}
 	}
@@ -141,14 +141,13 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 
 	public function buildCommon()
 	{
-		if ($this->app->session->isLoggedIn() ||
-			!$this->app->session->checkout_with_account) {
-
+		if ($this->app->session->isLoggedIn()) {
 			$this->ui->getWidget('password_field')->visible = false;
 		}
 
-		if (!$this->app->session->checkout_with_account)
+		if ($this->app->session->account->password == '') {
 			$this->ui->getWidget('fullname_field')->visible = false;
+		}
 
 		if (!$this->ui->getWidget('form')->isProcessed())
 			$this->loadDataFromSession();
@@ -159,31 +158,29 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 
 	protected function loadDataFromSession()
 	{
-		if ($this->app->session->checkout_with_account) {
-			$account = $this->app->session->account;
+		$account = $this->app->session->account;
 
-			$this->ui->getWidget('fullname')->value = $account->fullname;
-			$this->ui->getWidget('email')->value = $account->email;
-			$this->ui->getWidget('confirm_email')->value = $account->email;
-			$this->ui->getWidget('phone')->value = $account->phone;
-			$this->ui->getWidget('company')->value = $account->company;
-		}
+		$this->ui->getWidget('fullname')->value = $account->fullname;
+		$this->ui->getWidget('email')->value = $account->email;
+		$this->ui->getWidget('phone')->value = $account->phone;
+		$this->ui->getWidget('company')->value = $account->company;
 
 		$order = $this->app->session->order;
 
 		if ($order->email !== null) {
 			$this->ui->getWidget('email')->value = $order->email;
-			$this->ui->getWidget('confirm_email')->value = $order->email;
 		} elseif ($this->app->session->checkout_email !== null) {
 			$this->ui->getWidget('email')->value =
 				$this->app->session->checkout_email;
 		}
 
-		if ($order->company !== null)
+		if ($order->company !== null) {
 			$this->ui->getWidget('company')->value = $order->company;
+		}
 
-		if ($order->phone !== null)
+		if ($order->phone !== null) {
 			$this->ui->getWidget('phone')->value = $order->phone;
+		}
 
 		$this->ui->getWidget('comments')->value = $order->comments;
 	}
