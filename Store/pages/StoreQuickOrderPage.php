@@ -84,7 +84,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 		$store = new SwatTableStore();
 
 		for ($i = 0; $i < $this->num_rows; $i++) {
-			$row = null;
+			$row = new stdClass();
 			$row->id = $i;
 			$store->add($row);
 		}
