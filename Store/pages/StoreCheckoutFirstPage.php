@@ -51,15 +51,6 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 	{
 		parent::initInternal();
 
-		// passwords only required on checkout/first
-		if ($this->ui->hasWidget('password')) {
-			$this->ui->getWidget('password')->required = true;
-		}
-
-		if ($this->ui->hasWidget('confirm_password')) {
-			$this->ui->getWidget('confirm_password')->required = true;
-		}
-
 		if ($this->ui->hasWidget('payment_amount_field')) {
 			$this->ui->getWidget('payment_amount_field')->visible = false;
 		}
@@ -87,11 +78,9 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 			$this->layout->navbar->popEntry();
 		}
 
-		if ($this->app->session->checkout_with_account) {
-			$this->layout->startCapture('content');
-			Swat::displayInlineJavaScript($this->getInlineJavaScript());
-			$this->layout->endCapture();
-		}
+		$this->layout->startCapture('content');
+		Swat::displayInlineJavaScript($this->getInlineJavaScript());
+		$this->layout->endCapture();
 	}
 
 	// }}}
@@ -180,14 +169,12 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 			'packages/store/styles/store-checkout-first-page.css',
 			Store::PACKAGE_ID));
 
-		if ($this->app->session->checkout_with_account) {
-			$yui = new SwatYUI(array('event'));
-			$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
+		$yui = new SwatYUI(array('event'));
+		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
 
-			$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-				'packages/store/javascript/store-checkout-first-page.js',
-				Store::PACKAGE_ID));
-		}
+		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
+			'packages/store/javascript/store-checkout-first-page.js',
+			Store::PACKAGE_ID));
 	}
 
 	// }}}

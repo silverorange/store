@@ -559,7 +559,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	protected function save()
 	{
-		if ($this->app->session->checkout_with_account) {
+		// Save the account if a password has been set.
+		if ($this->app->session->account->password != '') {
 			$db_transaction = new SwatDBTransaction($this->app->db);
 			$duplicate_account = $this->app->session->account->duplicate();
 			try {
@@ -693,8 +694,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$order->instance = $this->app->getInstance();
 
 		// attach order to account
-		if ($this->app->session->checkout_with_account)
+		if ($this->app->session->account->id != '') {
 			$order->account = $this->app->session->account;
+		}
 
 		// set createdate to now
 		$order->createdate = new SwatDate();

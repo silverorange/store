@@ -304,7 +304,7 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 
 		if ($order->billing_address === null) {
 
-			if ($this->app->session->checkout_with_account) {
+			if ($this->app->session->isLoggedIn()) {
 				$this->ui->getWidget('billing_address_fullname')->value =
 					$this->app->session->account->fullname;
 

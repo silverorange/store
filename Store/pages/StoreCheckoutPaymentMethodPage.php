@@ -722,7 +722,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 		$this->app->session->order->payment_methods = $new_payment_methods;
 
-		if ($this->app->session->checkout_with_account) {
+		if ($this->app->session->account->password != '') {
 			$this->app->session->save_account_payment_method =
 				$save_payment_method;
 		}
@@ -980,14 +980,11 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			$parent->classes[] = 'store-payment-method-single';
 		}
 
-
 		if (!$this->ui->getWidget('form')->isProcessed()) {
 			$this->loadDataFromSession();
 		}
 
-		if ($this->app->session->checkout_with_account) {
-			$this->buildAccountSpecificFields();
-		}
+		$this->buildAccountSpecificFields();
 	}
 
 	// }}}
@@ -1142,8 +1139,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			}
 		}
 
-		if ($this->app->session->checkout_with_account &&
-			isset($this->app->session->save_account_payment_method)) {
+		if (isset($this->app->session->save_account_payment_method)) {
 			$this->ui->getWidget('save_account_payment_method')->value =
 				$this->app->session->save_account_payment_method;
 		}

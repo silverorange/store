@@ -48,9 +48,6 @@ abstract class StoreCheckoutPage extends SiteUiPage
 		if (!isset($this->app->session->checkout_progress))
 			$this->resetProgress();
 
-		if ($this->app->session->isLoggedIn())
-			$this->app->session->checkout_with_account = true;
-
 		$this->initDataObjects();
 		$this->checkProgress();
 

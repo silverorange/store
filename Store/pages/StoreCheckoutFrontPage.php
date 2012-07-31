@@ -125,19 +125,12 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
 	protected function processNewForm($form)
 	{
 		$this->initDataObjects();
-
-		$order   = $this->app->session->order;
-		$account = $this->app->session->account;
-
-		$email = $this->ui->getWidget('new_email_address');
-
-		if ($email->value != '') {
-			$order->email = $email->value;
-			$account->email = $email->value;
-		}
-
 		$this->resetProgress();
 		$this->updateProgress();
+
+		$email = $this->ui->getWidget('new_email_address');
+		$this->app->session->checkout_email = $email->value;
+
 		$this->relocate();
 	}
 
