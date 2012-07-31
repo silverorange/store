@@ -172,6 +172,24 @@ class StoreOrderItem extends SwatDBDataObject
 	 */
 	protected $cart_entry_id = null;
 
+	/**
+	 * Cache of region-available StoreItem for this order item
+	 *
+	 * Array keys are region ids. Array values are {@link StoreItem} items
+	 * or null if no items are available.
+	 *
+	 * @var array
+	 * @see StoreOrderItem::getAvailableItem()
+	 */
+	protected $available_items_cache = array();
+
+	/**
+	 * Cache of StoreItem for this order item
+	 *
+	 * @var StoreItem
+	 */
+	protected $item_cache = false;
+
 	// }}}
 	// {{{ public function getDescription()
 
@@ -258,36 +276,51 @@ class StoreOrderItem extends SwatDBDataObject
 	 */
 	public function getAvailableItem(StoreRegion $region)
 	{
-		$item = null;
+		if (isset($this->available_items_cache[$region->id])) {
+			$item = $this->available_items_cache[$region->id];
+		} else {
+			$item = null;
 
-		$wrapper = SwatDBClassMap::get('StoreItemWrapper');
+			$wrapper = SwatDBClassMap::get('StoreItemWrapper');
 
-		$sql = sprintf(
-			'select Item.* from Item
-			inner join AvailableItemView
-				on AvailableItemView.item = Item.id
-				and AvailableItemView.region = %s
-			where Item.id = %s',
-			$this->db->quote($region->id, 'integer'),
-			$this->db->quote($this->item, 'integer'));
-
-		$item = SwatDB::query($this->db, $sql, $wrapper)->getFirst();
-
-		// if lookup by id failed, try lookup by sku
-		if (!($item instanceof StoreItem)) {
 			$sql = sprintf(
 				'select Item.* from Item
 				inner join AvailableItemView
 					on AvailableItemView.item = Item.id
 					and AvailableItemView.region = %s
-				where Item.sku = %s',
+				where Item.id = %s',
 				$this->db->quote($region->id, 'integer'),
-				$this->db->quote($this->sku, 'text'));
+				$this->db->quote($this->item, 'integer'));
 
 			$item = SwatDB::query($this->db, $sql, $wrapper)->getFirst();
+
+			// if lookup by id failed, try lookup by sku
+			if (!($item instanceof StoreItem)) {
+				$sql = sprintf(
+					'select Item.* from Item
+					inner join AvailableItemView
+						on AvailableItemView.item = Item.id
+						and AvailableItemView.region = %s
+					where Item.sku = %s',
+					$this->db->quote($region->id, 'integer'),
+					$this->db->quote($this->sku, 'text'));
+
+				$item = SwatDB::query($this->db, $sql, $wrapper)->getFirst();
+			}
+
+			$this->setAvailableItemCache($region, $item);
 		}
 
 		return $item;
+	}
+
+	// }}}
+	// {{{ public function setAvailableItemCache()
+
+	public function setAvailableItemCache(StoreRegion $region,
+		StoreItem $item = null)
+	{
+		$this->available_items_cache[$region->id] = $item;
 	}
 
 	// }}}
@@ -304,26 +337,41 @@ class StoreOrderItem extends SwatDBDataObject
 	 */
 	public function getItem()
 	{
-		$item = null;
+		if ($this->item_cache !== false) {
+			$item = $this->item_cache;
+		} else {
+			
+			$item = null;
 
-		$wrapper = SwatDBClassMap::get('StoreItemWrapper');
+			$wrapper = SwatDBClassMap::get('StoreItemWrapper');
 
-		$sql = sprintf(
-			'select * from Item where id = %s',
-			$this->db->quote($this->item, 'integer'));
-
-		$item = SwatDB::query($this->db, $sql, $wrapper)->getFirst();
-
-		// if lookup by id failed, try lookup by sku
-		if (!($item instanceof StoreItem)) {
 			$sql = sprintf(
-				'select * from Item where sku = %s',
-				$this->db->quote($this->sku, 'text'));
+				'select * from Item where id = %s',
+				$this->db->quote($this->item, 'integer'));
 
 			$item = SwatDB::query($this->db, $sql, $wrapper)->getFirst();
+
+			// if lookup by id failed, try lookup by sku
+			if (!($item instanceof StoreItem)) {
+				$sql = sprintf(
+					'select * from Item where sku = %s',
+					$this->db->quote($this->sku, 'text'));
+
+				$item = SwatDB::query($this->db, $sql, $wrapper)->getFirst();
+			}
+
+			$this->setItemCache($item);
 		}
 
 		return $item;
+	}
+
+	// }}}
+	// {{{ public function setItemCache()
+
+	public function setItemCache(StoreItem $item = null)
+	{
+		$this->item_cache = $item;
 	}
 
 	// }}}
