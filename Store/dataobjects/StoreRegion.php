@@ -17,7 +17,7 @@ require_once 'Store/dataobjects/StoreLocaleWrapper.php';
  * - Europe
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreRegion extends SwatDBDataObject
@@ -72,6 +72,64 @@ class StoreRegion extends SwatDBDataObject
 			$this->db->quote($this->id, 'integer'));
 
 		return SwatDB::query($this->db, $sql, 'StoreLocaleWrapper');
+	}
+
+	// }}}
+	// {{{ protected function loadPaymentTypes()
+
+	/**
+	 * Gets payment types that orders may use in this region
+	 *
+	 * @return StorePaymentTypeWrapper a recordset of StorePaymentType objects
+	 *                                  that orders may use in this region.
+	 */
+	protected function loadPaymentTypes()
+	{
+		require_once 'Store/dataobjects/StorePaymentTypeWrapper.php';
+
+		$sql = sprintf(
+			'select PaymentType.* from PaymentType
+				inner join PaymentTypeRegionBinding on
+					PaymentType.id = PaymentTypeRegionBinding.payment_type and
+					PaymentTypeRegionBinding.region = %s
+			order by displayorder, title',
+			$this->db->quote($this->id, 'integer')
+		);
+
+		return SwatDB::query(
+			$this->db,
+			$sql,
+			SwatDBClassMap::get('StorePaymentTypeWrapper')
+		);
+	}
+
+	// }}}
+	// {{{ protected function loadCardTypes()
+
+	/**
+	 * Gets payment card types that orders may use in this region
+	 *
+	 * @return StoreCardTypeWrapper a recordset of StoreCardType objects
+	 *                               that orders may use in this region.
+	 */
+	protected function loadCardTypes()
+	{
+		require_once 'Store/dataobjects/StoreCardTypeWrapper.php';
+
+		$sql = sprintf(
+			'select CardType.* from CardType
+				inner join CardTypeRegionBinding on
+					CardType.id = CardTypeRegionBinding.card_type and
+					CardTypeRegionBinding.region = %s
+			order by displayorder, title',
+			$this->db->quote($this->id, 'integer')
+		);
+
+		return SwatDB::query(
+			$this->db,
+			$sql,
+			SwatDBClassMap::get('StoreCardTypeWrapper')
+		);
 	}
 
 	// }}}
