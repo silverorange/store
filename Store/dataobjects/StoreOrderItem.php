@@ -103,6 +103,13 @@ class StoreOrderItem extends SwatDBDataObject
 	public $product_title;
 
 	/**
+	 * Title of item group if this item belonged to an item group
+	 *
+	 * @var string
+	 */
+	public $item_group_title;
+
+	/**
 	 * Catalog id
 	 *
 	 * @var integer

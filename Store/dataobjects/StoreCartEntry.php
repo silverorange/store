@@ -416,16 +416,24 @@ class StoreCartEntry extends SwatDBDataObject
 		$order_item->discount           = $this->getDiscount();
 		$order_item->discount_extension = $this->getDiscountExtension();
 
-		if ($this->alias !== null)
+		if ($this->alias !== null) {
 			$order_item->alias_sku = $this->alias->sku;
+		}
 
 		$sale = $this->item->getActiveSaleDiscount();
-		if ($sale !== null)
+		if ($sale !== null) {
 			$order_item->sale_discount = $sale->id;
+		}
+
+		if ($this->item->hasInternalValue('item_group')) {
+			$group = $this->item->item_group;
+			$order_item->item_group_title = $group->title;
+		}
 
 		// set database if it exists
-		if ($this->db !== null)
+		if ($this->db instanceof MDB2_Driver_Common) {
 			$order_item->setDatabase($this->db);
+		}
 
 		return $order_item;
 	}
