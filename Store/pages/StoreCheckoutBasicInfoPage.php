@@ -31,12 +31,6 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 		if ($this->app->session->isLoggedIn()) {
 			$password_field = $this->ui->getWidget('password_field');
 			$password_field->visible = false;
-
-			$confirm_email_field = $this->ui->getWidget('confirm_email_field');
-			$confirm_email_field->visible = false;
-
-			$email_field = $this->ui->getWidget('email_field');
-			$email_field->note = $confirm_email_field->note;
 		} else {
 			$fullname_field = $this->ui->getWidget('fullname_field');
 			$fullname_field->visible = false;
