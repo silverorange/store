@@ -9,6 +9,7 @@ create table OrderItem (
 	description varchar(255),
 	extension numeric(11, 2) not null,
 	item int null,
+	item_group_title varchar(255),
 	product int null,
 	product_title varchar(255) null,
 	sale_discount int null,
