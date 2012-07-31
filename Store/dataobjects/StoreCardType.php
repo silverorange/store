@@ -565,21 +565,16 @@ class StoreCardType extends SwatDBDataObject
 	// }}}
 	// {{{ public static function getAcceptedCardTypesMessage()
 
-	public static function getAcceptedCardTypesMessage($db)
+	public static function getAcceptedCardTypesMessage(
+		StoreCardTypeWrapper $types)
 	{
-		$types = SwatDB::getOptionArray($db,
-			'CardType', 'title', 'shortname', 'title');
+		$type_list = array();
 
-		if (count($types) > 2) {
-			array_push($types, sprintf('and %s',
-				array_pop($types)));
-
-			$type_list = implode(', ', $types);
-		} else {
-			$type_list = implode(' and ', $types);
+		foreach ($types as $type) {
+			$type_list[] = $type->title;
 		}
 
-		return sprintf('We accept %s.', $type_list);
+		return sprintf('We accept %s.', SwatString::toList($type_list));
 	}
 
 	// }}}
