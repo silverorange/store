@@ -5,4 +5,4 @@ create table RegionShippingCountryBinding (
 );
 
 create index RegionShippingCountryBinding_region on
-	ShippingCountryBinding(region);
+	RegionShippingCountryBinding(region);
