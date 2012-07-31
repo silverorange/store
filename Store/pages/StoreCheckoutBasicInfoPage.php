@@ -6,7 +6,7 @@ require_once 'Store/pages/StoreCheckoutEditPage.php';
  * Basic information edit page of checkout
  *
  * @package   Store
- * @copyright 2005-2009 silverorange
+ * @copyright 2005-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
@@ -27,6 +27,20 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 	{
 		$confirm_email = $this->ui->getWidget('confirm_email');
 		$confirm_email->email_widget = $this->ui->getWidget('email');
+
+		if ($this->app->session->isLoggedIn()) {
+			$password_field = $this->ui->getWidget('password_field');
+			$password_field->visible = false;
+
+			$confirm_email_field = $this->ui->getWidget('confirm_email_field');
+			$confirm_email_field->visible = false;
+
+			$email_field = $this->ui->getWidget('email_field');
+			$email_field->note = $confirm_email_field->note;
+		} else {
+			$fullname_field = $this->ui->getWidget('fullname_field');
+			$fullname_field->visible = false;
+		}
 	}
 
 	// }}}
@@ -36,7 +50,9 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 
 	public function validateCommon()
 	{
-		if ($this->ui->getWidget('password')->value != '') {
+		if (($this->app->session->account->password != '') ||
+			($this->ui->getWidget('password')->value != '')) {
+
 			$this->validateAccount();
 		}
 	}
@@ -73,11 +89,11 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 
 		// only set password on new accounts
 		if (!$this->app->session->isLoggedIn()) {
-			$new_password = $this->ui->getWidget('password')->value;
+			$password = $this->ui->getWidget('password')->value;
 
 			// don't change pass if it was left blank
-			if ($new_password != '') {
-				$account->setPassword($new_password);
+			if ($password != '') {
+				$account->setPassword($password);
 			}
 		}
 	}
@@ -141,16 +157,9 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 
 	public function buildCommon()
 	{
-		if ($this->app->session->isLoggedIn()) {
-			$this->ui->getWidget('password_field')->visible = false;
-		}
-
-		if ($this->app->session->account->password == '') {
-			$this->ui->getWidget('fullname_field')->visible = false;
-		}
-
-		if (!$this->ui->getWidget('form')->isProcessed())
+		if (!$this->ui->getWidget('form')->isProcessed()) {
 			$this->loadDataFromSession();
+		}
 	}
 
 	// }}}
@@ -158,27 +167,29 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 
 	protected function loadDataFromSession()
 	{
+		$order = $this->app->session->order;
 		$account = $this->app->session->account;
+		$email = $this->app->session->checkout_email;
 
 		$this->ui->getWidget('fullname')->value = $account->fullname;
-		$this->ui->getWidget('email')->value = $account->email;
 		$this->ui->getWidget('phone')->value = $account->phone;
 		$this->ui->getWidget('company')->value = $account->company;
 
-		$order = $this->app->session->order;
-
-		if ($order->email !== null) {
+		if ($account->email != '') {
+			$this->ui->getWidget('email')->value = $account->email;
+			$this->ui->getWidget('confirm_email')->value = $account->email;
+		} else if ($order->email != '') {
 			$this->ui->getWidget('email')->value = $order->email;
-		} elseif ($this->app->session->checkout_email !== null) {
-			$this->ui->getWidget('email')->value =
-				$this->app->session->checkout_email;
+			$this->ui->getWidget('confirm_email')->value = $order->email;
+		} else if ($email != '') {
+			$this->ui->getWidget('email')->value = $email;
 		}
 
-		if ($order->company !== null) {
+		if ($order->company != '') {
 			$this->ui->getWidget('company')->value = $order->company;
 		}
 
-		if ($order->phone !== null) {
+		if ($order->phone != '') {
 			$this->ui->getWidget('phone')->value = $order->phone;
 		}
 
