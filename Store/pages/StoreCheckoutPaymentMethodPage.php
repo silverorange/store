@@ -20,6 +20,30 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	protected $remove_button;
 
+	/**
+	 * Cache of valid account payment methods
+	 *
+	 * @var StoreAccountPaymentMethodWrapper
+	 * @see StoreCheckoutPaymentMethodPage::getPaymentMethods()
+	 */
+	protected $payment_methods = null;
+
+	/**
+	 * Cache of valid payment types for the current app region
+	 *
+	 * @var StorePaymentTypeWrapper
+	 * @see StoreCheckoutPaymentMethodPage::getPaymentTypes()
+	 */
+	protected $payment_types = null;
+
+	/**
+	 * Cache of valid card types for the current app region
+	 *
+	 * @var StoreCardTypeWrapper
+	 * @see StoreCheckoutPaymentMethodPage::getCardTypes()
+	 */
+	protected $card_types = null;
+
 	// }}}
 	// {{{ public function getUiXml()
 
@@ -288,24 +312,70 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	 */
 	protected function getPaymentMethods()
 	{
-		$wrapper = SwatDBClassMap::get('StoreAccountPaymentMethodWrapper');
-		$payment_methods = new $wrapper();
+		if ($this->payment_methods === null) {
+			$wrapper = SwatDBClassMap::get('StoreAccountPaymentMethodWrapper');
+			$this->payment_methods = new $wrapper();
 
-		if ($this->app->session->isLoggedIn()) {
-			$region = $this->app->getRegion();
-			$account = $this->app->session->account;
-			foreach ($account->payment_methods as $method) {
-				$payment_type = $method->payment_type;
-				$card_type = $method->card_type;
-				if ($payment_type->isAvailableInRegion($region) &&
-					($card_type === null ||
-						$card_type->isAvailableInRegion($region))) {
-						$payment_methods->add($method);
+			if ($this->app->session->isLoggedIn()) {
+
+				$payment_type_ids = $this->getPaymentTypes()->getIndexes();
+				$card_type_ids    = $this->getCardTypes()->getIndexes();
+
+				$account = $this->app->session->account;
+				$payment_methods = $account->payment_methods;
+
+				// efficiently load payment types on account payment methods
+				$payment_type_sql = sprintf(
+					'select * from PaymentType
+					where id in (%%s) and id in (%s)',
+					$this->app->db->datatype->implodeArray(
+						$payment_type_ids,
+						'integer'
+					)
+				);
+
+				$payment_types = $payment_methods->loadAllSubDataObjects(
+					'payment_type',
+					$this->app->db,
+					$payment_type_sql,
+					SwatDBClassMap::get('StorePaymentTypeWrapper')
+				);
+
+				// efficiently load card types on account payment methods
+				$card_type_sql = sprintf(
+					'select * from CardType where id in (%%s) and id in (%s)',
+					$this->app->db->datatype->implodeArray(
+						$card_type_ids,
+						'integer'
+					)
+				);
+
+				$card_types = $payment_methods->loadAllSubDataObjects(
+					'card_type',
+					$this->app->db,
+					$card_type_sql,
+					SwatDBClassMap::get('StoreCardTypeWrapper')
+				);
+
+				// filter account payment methods by card type and payment type
+				// region binding
+				foreach ($account->payment_methods as $method) {
+
+					// still using internal values here because types not in
+					// the region binding have not been efficiently loaded
+					$payment_type = $method->getInternalValue('payment_type');
+					$card_type    = $method->getInternalValue('card_type');
+
+					if (in_array($payment_type_id, $payment_type_ids) &&
+						($card_type_id === null ||
+							in_array($card_type, $card_type_ids))) {
+							$this->payment_methods->add($method);
+					}
 				}
 			}
 		}
 
-		return $payment_methods;
+		return $this->payment_methods;
 	}
 
 	// }}}
@@ -335,22 +405,12 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	 */
 	protected function getPaymentTypes()
 	{
-		static $types = null;
-
-		if ($types === null) {
-			$sql = 'select PaymentType.* from PaymentType
-				inner join PaymentTypeRegionBinding on
-					payment_type = id and region = %s
-				order by displayorder, title';
-
-			$sql = sprintf($sql,
-				$this->app->db->quote($this->app->getRegion()->id, 'integer'));
-
-			$wrapper = SwatDBClassMap::get('StorePaymentTypeWrapper');
-			$types = SwatDB::query($this->app->db, $sql, $wrapper);
+		if ($this->payment_types === null) {
+			$region = $this->app->getRegion();
+			$this->payment_types = $region->payment_types;
 		}
 
-		return $types;
+		return $this->payment_types;
 	}
 
 	// }}}
@@ -373,22 +433,12 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	 */
 	protected function getCardTypes()
 	{
-		static $types = null;
-
-		if ($types === null) {
-			$sql = 'select CardType.* from CardType
-				inner join CardTypeRegionBinding on
-					card_type = id and region = %s
-				order by displayorder, title';
-
-			$sql = sprintf($sql,
-				$this->app->db->quote($this->app->getRegion()->id, 'integer'));
-
-			$wrapper = SwatDBClassMap::get('StoreCardTypeWrapper');
-			$types = SwatDB::query($this->app->db, $sql, $wrapper);
+		if ($this->card_types === null) {
+			$region = $this->app->getRegion();
+			$this->card_types = $region->card_types;
 		}
 
-		return $types;
+		return $this->card_types;
 	}
 
 	// }}}
