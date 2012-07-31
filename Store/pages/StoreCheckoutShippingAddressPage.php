@@ -501,30 +501,16 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 	protected function buildAccountShippingAddresses(
 		SwatOptionControl $address_list)
 	{
-		$shipping_country_ids = array();
-		foreach ($this->app->getRegion()->shipping_countries as $country)
-			$shipping_country_ids[] = $country->id;
+		foreach ($this->getAccountAddresses() as $address) {
+			ob_start();
+			$address->displayCondensed();
+			$condensed_address = ob_get_clean();
 
-		foreach ($this->app->getRegion()->shipping_provstates as $provstate)
-			$shipping_provstate_ids[] = $provstate->id;
-
-
-		foreach ($this->app->session->account->addresses as $address) {
-
-			$country_id   = $address->getInternalValue('country');
-			$provstate_id = $address->getInternalValue('provstate');
-
-			if (in_array($country_id, $shipping_country_ids) &&
-				($provstate_id === null ||
-					in_array($provstate_id, $shipping_provstate_ids))) {
-
-				ob_start();
-				$address->displayCondensed();
-				$condensed_address = ob_get_clean();
-
-				$address_list->addOption($address->id, $condensed_address,
-					'text/xml');
-			}
+			$address_list->addOption(
+				$address->id,
+				$condensed_address,
+				'text/xml'
+			);
 		}
 	}
 
@@ -535,6 +521,77 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 		SwatContentBlock $content_block)
 	{
 		// TODO: pull parts of this up from Veseys
+	}
+
+	// }}}
+	// {{{ protected function getAccountAddresses()
+
+	protected function getAccountAddresses()
+	{
+		$shipping_country_ids = array();
+			$this->app->getRegion()->shipping_countries->getIndexes();
+
+		$shipping_provstate_ids =
+			$this->app->getRegion()->shipping_provstates->getIndexes();
+
+		// efficiently load country and provstate on account addresses
+		$addresses = $this->app->session->account->addresses;
+
+		$country_sql = sprintf(
+			'select * from Country where id in (%%s) and id in (%s)',
+			$this->app->db->datatype->implodeArray(
+				$shipping_country_ids,
+				'text'
+			)
+		);
+
+		$addresses->loadAllSubDataObjects(
+			'country',
+			$this->app->db,
+			$country_sql,
+			SwatDBClassMap::get('StoreCountryWrapper'),
+			'text'
+		);
+
+		$provstate_sql = sprintf(
+			'select * from ProvState where id in (%%s) and id in (%s)',
+			$this->app->db->datatype->implodeArray(
+				$shipping_provstate_ids,
+				'integer'
+			)
+		);
+
+		$addresses->loadAllSubDataObjects(
+			'provstate',
+			$this->app->db,
+			$provstate_sql,
+			SwatDBClassMap::get('StoreProvStateWrapper')
+		);
+
+		$wrapper = SwatDBClassMap::get('StoreAccountAddressWrapper');
+		$out_addresses = new $wrapper();
+
+		// filter account addresses by country and provstate region binding
+		foreach ($addresses as $address) {
+
+			// still using internal values here because countries and provstates
+			// provstate not in the region binding have not been efficiently
+			// loaded
+			$country_id   = $address->getInternalValue('country');
+			$provstate_id = $address->getInternalValue('provstate');
+
+			if (in_array($country_id, $shipping_country_ids) &&
+				($provstate_id === null ||
+					in_array($provstate_id, $shipping_provstate_ids))) {
+
+				$out_addresses->add($address);
+			}
+
+		}
+
+		$out_addresses->setDatabase($this->app->db);
+
+		return $out_addresses;
 	}
 
 	// }}}
