@@ -4,3 +4,5 @@ create table RegionShippingCountryBinding (
 	primary key (region, country)
 );
 
+create index RegionShippingCountryBinding_region on
+	ShippingCountryBinding(region);

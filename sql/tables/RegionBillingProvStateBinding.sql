@@ -4,3 +4,5 @@ create table RegionBillingProvStateBinding (
 	primary key (region, provstate)
 );
 
+create index RegionBillingProvStateBinding_region on
+	RegionBillingProvStateBinding(region);

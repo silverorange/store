@@ -4,3 +4,5 @@ create table RegionShippingProvStateBinding (
 	primary key (region, provstate)
 );
 
+create index RegionShippingProvStateBinding_region on
+	ShippingProvStateBinding(region);
