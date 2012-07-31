@@ -162,9 +162,8 @@ class StoreCheckoutModule extends SiteApplicationModule
 		// ArrayObject is used because magic get method can not return by
 		// reference since PHP 5.2 and we want the array to be returned by
 		// reference from the session.
-		$session->checkout_progress     = new ArrayObject();
-		$session->checkout_with_account = false;
-		$session->checkout_email        = null;
+		$session->checkout_progress = new ArrayObject();
+		$session->checkout_email    = null;
 	}
 
 	// }}}
