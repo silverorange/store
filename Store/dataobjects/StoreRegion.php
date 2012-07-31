@@ -143,8 +143,6 @@ class StoreRegion extends SwatDBDataObject
 	 */
 	protected function loadBillingCountries()
 	{
-		$this->checkDB();
-
 		$sql = 'select id, title from Country
 			inner join RegionBillingCountryBinding on
 				Country.id = RegionBillingCountryBinding.country and
@@ -167,8 +165,6 @@ class StoreRegion extends SwatDBDataObject
 	 */
 	protected function loadShippingCountries()
 	{
-		$this->checkDB();
-
 		$sql = 'select id, title from Country
 			inner join RegionShippingCountryBinding on
 				Country.id = RegionShippingCountryBinding.country and
@@ -191,8 +187,6 @@ class StoreRegion extends SwatDBDataObject
 	 */
 	protected function loadBillingProvStates()
 	{
-		$this->checkDB();
-
 		$sql = 'select id, title from ProvState
 			inner join RegionBillingProvStateBinding on
 				ProvState.id = RegionBillingProvStateBinding.provstate and
@@ -215,8 +209,6 @@ class StoreRegion extends SwatDBDataObject
 	 */
 	protected function loadShippingProvStates()
 	{
-		$this->checkDB();
-
 		$sql = 'select id, title from ProvState
 			inner join RegionShippingProvStateBinding on
 				ProvState.id = RegionShippingProvStateBinding.provstate and
