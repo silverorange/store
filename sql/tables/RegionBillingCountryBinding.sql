@@ -4,3 +4,5 @@ create table RegionBillingCountryBinding (
 	primary key (region, country)
 );
 
+create index RegionBillingCountryBinding_region on
+	RegionBillingCountryBinding(region);
