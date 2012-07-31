@@ -5,4 +5,4 @@ create table RegionShippingProvStateBinding (
 );
 
 create index RegionShippingProvStateBinding_region on
-	ShippingProvStateBinding(region);
+	RegionShippingProvStateBinding(region);
