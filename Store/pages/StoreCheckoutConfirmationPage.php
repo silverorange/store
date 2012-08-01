@@ -1544,12 +1544,16 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	protected function createOrderItems($order)
 	{
+		$region = $this->app->getRegion();
+
 		$wrapper = SwatDBClassMap::get('StoreOrderItemWrapper');
 		$order->items = new $wrapper();
 
 		foreach ($this->app->cart->checkout->getAvailableEntries() as $entry) {
 			$order_item = $entry->createOrderItem();
 			$order_item->setDatabase($this->app->db);
+			$order_item->setAvailableItemCache($region, $entry->item);
+			$order_item->setItemCache($entry->item);
 			$order->items->add($order_item);
 		}
 	}
