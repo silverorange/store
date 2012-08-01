@@ -366,8 +366,8 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 					$payment_type = $method->getInternalValue('payment_type');
 					$card_type    = $method->getInternalValue('card_type');
 
-					if (in_array($payment_type_id, $payment_type_ids) &&
-						($card_type_id === null ||
+					if (in_array($payment_type, $payment_type_ids) &&
+						($card_type === null ||
 							in_array($card_type, $card_type_ids))) {
 							$this->payment_methods->add($method);
 					}
