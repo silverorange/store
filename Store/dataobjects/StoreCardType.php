@@ -574,7 +574,8 @@ class StoreCardType extends SwatDBDataObject
 			$type_list[] = $type->title;
 		}
 
-		return sprintf('We accept %s.', SwatString::toList($type_list));
+		return sprintf(Store::_('We accept %s.'),
+			SwatString::toList($type_list));
 	}
 
 	// }}}
