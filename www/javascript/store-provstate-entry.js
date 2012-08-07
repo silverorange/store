@@ -18,7 +18,6 @@ StoreProvStateEntry.prototype.init = function()
 	var form = YAHOO.util.Dom.getAncestorByTagName(this.flydown, 'form');
 	form.appendChild(this.mode);
 
-
 	if (this.country_flydown_id) {
 		this.country = document.getElementById(this.country_flydown_id);
 
