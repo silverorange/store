@@ -29,7 +29,7 @@
 		</widget>
 		<widget class="SwatFormField" id="password_field">
 			<property name="title" translatable="yes">Password</property>
-			<property name="note" translatable="yes">Password is case-sensitive.</property>
+			<property name="note" translatable="yes">Please provide a password (case-sensitive) if you would like to make an account. Creating an account makes it easier to checkout in the future.</property>
 			<widget class="SwatPasswordEntry" id="password">
 				<property name="minlength" type="integer">4</property>
 				<property name="maxlength" type="integer">255</property>
