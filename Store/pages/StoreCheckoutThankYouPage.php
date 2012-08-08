@@ -52,17 +52,32 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
 	protected function displayFinalNote(StoreOrder $order)
 	{
 		echo '<div id="checkout_thank_you">';
+
 		$header_tag = new SwatHtmlTag('h3');
 		$header_tag->setContent(Store::_('Your order has been placed.'));
-		$paragraph_tag = new SwatHtmlTag('p');
-		$paragraph_tag->setContent(Store::_(
-			'Thank you for your order. You will receive an email '.
-			'confirmation which will include the following detailed '.
-			'order receipt for your records. If you wish, you can print '.
-			'a copy of this page for reference.'));
-
 		$header_tag->display();
+
+		ob_start();
+
+		echo Store::_('Thank you for your order.');
+		echo ' ';
+		
+		if ($order->email != '') {
+			echo Store::_(
+				'You will receive an email confirmation including the '.
+				'following detailed order receipt for your records.'
+			);
+			echo ' ';
+		}
+		
+		echo Store::_(
+			'If you wish, you can print a copy of this page for reference.'
+		);
+
+		$paragraph_tag = new SwatHtmlTag('p');
+		$paragraph_tag->setContent(ob_get_clean());
 		$paragraph_tag->display();
+
 		echo '</div>';
 	}
 
