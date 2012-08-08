@@ -96,7 +96,6 @@ abstract class StoreProductImageDisplayTest extends TuringSeleniumTest
 
 	public function testNavigateUsingKeyboard()
 	{
-		echo "\nstart : ".date('h:i:s')."\n";
 		$this->open($this->getPageUri());
 
 		$this->assertNoErrors();
