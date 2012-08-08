@@ -212,18 +212,27 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
 
 	protected function displayAccountNote()
 	{
+		echo '<div id="checkout_thank_you_account">';
+
 		$header_tag = new SwatHtmlTag('h3');
 		$header_tag->setContent(Store::_('Your Account'));
 		$paragraph_tag = new SwatHtmlTag('p');
-		$paragraph_tag->setContent(Store::_('By logging into your account '.
-			'the next time you visit our website, you can edit your addresses '.
-			'and payment methods, view previously placed orders, re-order '.
-			'items from your previous orders, and checkout without '.
-			'having to re-enter all of your address and payment '.
-			'information.'));
-
+		$paragraph_tag->setContent(
+			sprintf(
+				Store::_(
+					'By logging in with your account (%s) the next time you '.
+					'visit, you can edit your information, view previously '.
+					'placed orders, re-order items from your previous '.
+					'orders, and checkout faster without having to re-enter '.
+					'all of your information.'
+				),
+				$this->app->session->account->email
+			)
+		);
 		$header_tag->display();
 		$paragraph_tag->display();
+
+		echo '</div>';
 	}
 
 	// }}}

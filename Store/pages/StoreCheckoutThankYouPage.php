@@ -59,13 +59,13 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
 
 		ob_start();
 
-		echo Store::_('Thank you for your order.');
-		echo ' ';
-
 		if ($order->email != '') {
-			echo Store::_(
-				'You will receive an email confirmation including the '.
-				'following detailed order receipt for your records.'
+			printf(
+				Store::_(
+					'An email has been sent to %s containing '.
+					'the following detailed order receipt.'
+				),
+				SwatString::minimizeEntities($order->email)
 			);
 			echo ' ';
 		}
