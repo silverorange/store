@@ -68,9 +68,9 @@ class StorePayflowProPaymentRequest extends StorePaymentRequest
 	}
 
 	// }}}
-	// {{{ protected function __toString()
+	// {{{ public function __toString()
 
-	protected function __toString()
+	public function __toString()
 	{
 		$string = sprintf("Request Server: %s\n\n", $this->server);
 		foreach ($this->data as $name => $value)

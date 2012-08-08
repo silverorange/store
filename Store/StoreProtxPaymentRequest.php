@@ -274,7 +274,7 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	}
 
 	// }}}
-	// {{{ protected function __toString()
+	// {{{ public function __toString()
 
 	/**
 	 * Gets a string representation of this payment request
@@ -283,7 +283,7 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	 *
 	 * @return string a string representation of this payment request.
 	 */
-	protected function __toString()
+	public function __toString()
 	{
 		$string = sprintf("Request URL: %s\n\n", $this->url);
 		foreach ($this->data as $name => $value)

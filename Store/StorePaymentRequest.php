@@ -383,7 +383,7 @@ abstract class StorePaymentRequest
 	}
 
 	// }}}
-	// {{{ abstract protected function __toString()
+	// {{{ abstract public function __toString()
 
 	/**
 	 * Gets a string representation of this payment request
@@ -392,7 +392,7 @@ abstract class StorePaymentRequest
 	 *
 	 * @return string a string representation of this payment request.
 	 */
-	abstract protected function __toString();
+	abstract public function __toString();
 
 	// }}}
 	// {{{ abstract protected function getTypeMap()
