@@ -971,19 +971,7 @@ abstract class StoreAddress extends SwatDBDataObject
 		$address_span_tag->class = 'adr';
 		$address_span_tag->open();
 
-		if ($this->line1 != '') {
-			$span_tag->class = 'street-address';
-			$span_tag->setContent($this->line1);
-			$span_tag->display();
-			echo '<br />';
-
-			if ($this->line2 != '') {
-				$span_tag->class = 'extended-address';
-				$span_tag->setContent($this->line2);
-				$span_tag->display();
-				echo '<br />';
-			}
-		}
+		$this->displayLines();
 
 		if ($this->city != '') {
 			$span_tag->class = 'locality';
@@ -1091,19 +1079,7 @@ abstract class StoreAddress extends SwatDBDataObject
 		$address_span_tag->class = 'adr';
 		$address_span_tag->open();
 
-		if ($this->line1 != '') {
-			$span_tag->class = 'street-address';
-			$span_tag->setContent($this->line1);
-			$span_tag->display();
-			echo '<br />';
-
-			if ($this->line2 != '') {
-				$span_tag->class = 'extended-address';
-				$span_tag->setContent($this->line2);
-				$span_tag->display();
-				echo '<br />';
-			}
-		}
+		$this->displayLines();
 
 		if ($this->city != '') {
 			$span_tag->class = 'locality';
@@ -1470,6 +1446,36 @@ abstract class StoreAddress extends SwatDBDataObject
 			echo "\n";
 			printf(Store::_('Phone: %s'),
 				SwatString::minimizeEntities($this->phone));
+		}
+	}
+
+	// }}}
+	// {{{ protected function displayLines()
+
+	protected function displayLines()
+	{
+		if ($this->line1 != '') {
+			echo '<span class="street-address">';
+
+			$line1 = SwatString::minimizeEntities($this->line1);
+			$line1 = preg_replace('/\s*\n\s*/', "\n", $line1);
+			$line1 = nl2br(trim($line1));
+			echo $line1;
+
+			echo '</span>';
+			echo '<br />';
+
+			if ($this->line2 != '') {
+				echo '<span class="extended-address">';
+
+				$line2 = SwatString::minimizeEntities($this->line2);
+				$line2 = preg_replace('/\s*\n\s*/', "\n", $line2);
+				$line2 = nl2br(trim($line2));
+				echo $line2;
+
+				echo '</span>';
+				echo '<br />';
+			}
 		}
 	}
 
