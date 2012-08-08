@@ -51,7 +51,7 @@ abstract class StoreProductImageDisplayTest extends TuringSeleniumTest
 	// }}}
 	// {{{ testOpenUsingSecondaryImage()
 
-	public function AtestOpenUsingSecondaryImage()
+	public function testOpenUsingSecondaryImage()
 	{
 		$this->open($this->getPageUri());
 
@@ -111,11 +111,9 @@ abstract class StoreProductImageDisplayTest extends TuringSeleniumTest
 				"xpath=//div[@class='store-product-image-display-overlay' ".
 				"and contains(@style, 'display: block;')]"
 			),
-			'Clicking secondary product image did not open product image '.
+			'Clicking primary product image did not open product image '.
 			'display.'
 		);
-
-		$this->setSpeed(2500);
 
 		$this->assertEquals(
 			1,
@@ -129,7 +127,7 @@ abstract class StoreProductImageDisplayTest extends TuringSeleniumTest
 		$primary_location = $this->getLocation();
 
 		$keycodes = array(
-			'up'    => 48,
+			'up'    => 38,
 			'down'  => 40,
 			'left'  => 37,
 			'right' => 39,
@@ -139,6 +137,8 @@ abstract class StoreProductImageDisplayTest extends TuringSeleniumTest
 			$current_location = $this->getLocation();
 			do {
 				$this->keyPressNative($keycode);
+
+				usleep(100000);
 
 				$this->assertNotEquals(
 					$current_location,
@@ -172,7 +172,7 @@ abstract class StoreProductImageDisplayTest extends TuringSeleniumTest
 	// }}}
 // {{{ testCloseUsingLink()
 
-	public function AtestCloseUsingLink()
+	public function testCloseUsingLink()
 	{
 		$this->open($this->getPageUri());
 
@@ -211,7 +211,7 @@ abstract class StoreProductImageDisplayTest extends TuringSeleniumTest
 	// }}}
 	// {{{ testCloseUsingOverlay()
 
-	public function AtestCloseUsingOverlay()
+	public function testCloseUsingOverlay()
 	{
 		$this->open($this->getPageUri());
 
@@ -250,7 +250,7 @@ abstract class StoreProductImageDisplayTest extends TuringSeleniumTest
 	// }}}
 	// {{{ testCloseUsingImageContainer()
 
-	public function AtestCloseUsingImageContainer()
+	public function testCloseUsingImageContainer()
 	{
 		$this->open($this->getPageUri());
 
@@ -289,7 +289,7 @@ abstract class StoreProductImageDisplayTest extends TuringSeleniumTest
 	// }}}
 	// {{{ testCloseUsingKeyboardEscape()
 
-	public function AtestCloseUsingKeyboardEscape()
+	public function testCloseUsingKeyboardEscape()
 	{
 		$this->open($this->getPageUri());
 
@@ -326,7 +326,7 @@ abstract class StoreProductImageDisplayTest extends TuringSeleniumTest
 	// }}}
 	// {{{ testCloseUsingKeyboardBackspace()
 
-	public function AtestCloseUsingKeyboardBackspace()
+	public function testCloseUsingKeyboardBackspace()
 	{
 		$this->open($this->getPageUri());
 
