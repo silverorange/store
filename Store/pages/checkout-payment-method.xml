@@ -80,8 +80,7 @@
 				</widget>
 			</widget>
 			<widget class="SwatFormField" id="save_account_payment_method_field">
-				<property name="visible" type="boolean">false</property>
-				<property name="title" translatable="yes">Save my debit or credit card information with my account for future web orders</property>
+				<property name="title" translatable="yes">If creating an account than save my credit card information with my account for future web orders.</property>
 				<widget class="SwatCheckbox" id="save_account_payment_method">
 					<property name="value" type="boolean">true</property>
 				</widget>

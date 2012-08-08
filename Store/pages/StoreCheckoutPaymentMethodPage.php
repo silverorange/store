@@ -1042,8 +1042,11 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	protected function buildAccountSpecificFields()
 	{
-		$this->ui->getWidget('save_account_payment_method_field')->visible =
-			true;
+		if ($this->app->session->account->id != '') {
+			$this->ui->getWidget('save_account_payment_method_field')->title =
+				'Save my debit or credit card information with my account for '.
+				'future web orders';
+		}
 
 		$this->ui->getWidget('payment_method_note')->content = sprintf(
 			Store::_('%sSee our %sprivacy &amp; security policy%s for '.
