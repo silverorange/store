@@ -18,7 +18,7 @@ abstract class StoreProductImageDisplayTest extends TuringSeleniumTest
 	// }}}
 	// {{{ testOpenUsingPrimaryImage()
 
-	public function AtestOpenUsingPrimaryImage()
+	public function testOpenUsingPrimaryImage()
 	{
 		$this->open($this->getPageUri());
 
@@ -46,29 +46,6 @@ abstract class StoreProductImageDisplayTest extends TuringSeleniumTest
 			),
 			'Product image display overlay is missing or not visible.'
 		);
-
-		/* HORTON ONLY
-		$this->assertTrue(
-			$this->isElementPresent(
-				"xpath=//span[contains(@class, 'image-annotation')]"
-			),
-			'Product image annotations are missing.'
-		);
-
-		$this->assertTrue(
-			$this->isElementPresent(
-				"xpath=//img[@class='product-image-display-ruler']"
-			),
-			'Product image ruler is missing.'
-		);
-
-		$this->assertTrue(
-			$this->isElementPresent(
-				"xpath=//a[text()='Download High Resolution Image']"
-			),
-			'High resolution download link is missing.'
-		);
-		*/
 	}
 
 	// }}}
