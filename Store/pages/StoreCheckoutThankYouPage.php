@@ -61,7 +61,7 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
 
 		echo Store::_('Thank you for your order.');
 		echo ' ';
-		
+
 		if ($order->email != '') {
 			echo Store::_(
 				'You will receive an email confirmation including the '.
@@ -69,7 +69,7 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
 			);
 			echo ' ';
 		}
-		
+
 		echo Store::_(
 			'If you wish, you can print a copy of this page for reference.'
 		);
