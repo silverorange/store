@@ -508,7 +508,8 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			}
 		}
 
-		$this->ui->getWidget('card_number')->setDatabase($this->app->db);
+		$this->ui->getWidget('card_number')->setCardTypes(
+			$this->getCardTypes());
 
 		$option_list = $this->ui->getWidget('payment_option');
 		$option_list->process();
@@ -939,7 +940,8 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			$option_list = $this->ui->getWidget('payment_option');
 			$option_list->process();
 
-			// check if account payment method or new payment method was selected
+			// check if account payment method or new payment method
+			// was selected
 			if (strncmp('method_', $option_list->selected_page, 7) === 0) {
 
 				$method_id = intval(substr($option_list->selected_page, 7));
@@ -952,31 +954,47 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 			} else {
 
-				$order = $this->app->session->order;
-				$order_payment_method = $order->payment_methods->getFirst();
-				$type_list = $this->ui->getWidget('card_type');
-
 				if (isset($_POST['card_type'])) {
+
+					// card type manually specified, look it up in the
+					// card type list
+					$type_list = $this->ui->getWidget('card_type');
 					$type_list->process();
 					$card_type_id = $type_list->value;
+					foreach ($this->getCardTypes() as $type) {
+						if ($type->id == $card_type_id) {
+							$card_type = $type;
+							break;
+						}
+					}
+
 				} else {
+
 					$card_number = $this->ui->getWidget('card_number');
 					$card_number->process();
 
-					if ($card_number->value == null &&
-						$order_payment_method != null) {
-						$card_type_id =
-							$order_payment_method->getInternalValue('card_type');
-					} else {
-						$card_type_id = $card_number->getCardType();
-					}
-				}
+					if ($card_number->value == '') {
 
-				$class_name = SwatDBClassMap::get('StoreCardType');
-				$type = new $class_name();
-				$type->setDatabase($this->app->db);
-				if ($type->load($card_type_id)) {
-					$card_type = $type;
+						// card type not specified and card number not
+						// specified, try to get card type from session order
+						// payment method
+						$order = $this->app->session->order;
+						$order_payment_method =
+							$order->payment_methods->getFirst();
+
+						if ($order_payment_method instanceof
+							StoreOrderPaymentMethod) {
+							$card_type = $order_payment_method->card_type;
+						}
+
+					} else {
+
+						// card type not specified and card number entered, get
+						// card type from the card number
+						$card_type = $card_number->getCardType();
+
+					}
+
 				}
 
 			}
