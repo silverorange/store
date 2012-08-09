@@ -3,12 +3,13 @@
 require_once 'Swat/SwatEntry.php';
 require_once 'Validate/Finance/CreditCard.php';
 require_once 'Store/dataobjects/StoreCardType.php';
+require_once 'Store/dataobjects/StoreCardTypeWrapper.php';
 
 /**
  * A widget for basic validation of a debit or credit card
  *
  * @package   Store
- * @copyright 2006-2008 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCardNumberEntry extends SwatEntry
@@ -22,22 +23,27 @@ class StoreCardNumberEntry extends SwatEntry
 	 */
 	public $show_blank_value = false;
 
-	/**
-	 * The value to display as place holder for the card number
-	 *
-	 * @var string
-	 */
-	public $blank_value = '****************';
-
 	// }}}
 	// {{{ protected properties
 
 	/**
-	 * @var MDB2_Driver_Common
+	 * Selected card type as determined during the process step
+	 *
+	 * @var StoreCardType
+	 *
+	 * @see StoreCardNumberEntry::getCardType()
+	 * @see StoreCardNumberEntry::processCardType()
 	 */
-	protected $db;
-
 	protected $card_type;
+
+	/**
+	 * Valid card types for this entry
+	 *
+	 * @var StoreCardTypeWrapper
+	 *
+	 * @see StoreCardNumberEntry::setCardTypes()
+	 */
+	protected $card_types;
 
 	// }}}
 	// {{{ public function __construct()
@@ -60,8 +66,9 @@ class StoreCardNumberEntry extends SwatEntry
 
 	public function process()
 	{
-		if ($this->isProcessed())
+		if ($this->isProcessed()) {
 			return;
+		}
 
 		parent::process();
 
@@ -73,20 +80,65 @@ class StoreCardNumberEntry extends SwatEntry
 				$this->show_blank_value = true;
 		}
 
-		if ($this->value === null)
+		if ($this->value === null) {
 			return;
+		}
 
+		// remove spaces and dashes from value
 		$this->value = str_replace(array('-', ' '), '', $this->value);
 
 		if (!Validate_Finance_CreditCard::number($this->value)) {
-			$message = Store::_('The %s field is not a valid card number. '.
-				'Please ensure it is entered correctly.');
+			$message = Store::_(
+				'The %s field is not a valid card number. Please ensure '.
+				'it is entered correctly.'
+			);
 
-			$this->addMessage(new SwatMessage($message, SwatMessage::ERROR));
+			$this->addMessage(new SwatMessage($message, 'error'));
 		}
 
-		if (!$this->hasMessage() && $this->db !== null)
+		if (!$this->hasMessage() &&
+			$this->card_types instanceof StoreCardTypeWrapper) {
 			$this->processCardType();
+		}
+	}
+
+	// }}}
+	// {{{ public function display()
+
+	public function display()
+	{
+		if (!$this->visible) {
+			return;
+		}
+
+		parent::display();
+
+		// add a hidden field to track how the widget was displayed
+		if ($this->show_blank_value) {
+			$this->getForm()->addHiddenField(
+				$this->id.'_blank_value',
+				$this->getBlankValue()
+			);
+		}
+	}
+
+	// }}}
+	// {{{ public function setCardTypes()
+
+	public function setCardTypes(StoreCardTypeWrapper $card_types)
+	{
+		$this->card_types = $card_types;
+	}
+
+	// }}}
+	// {{{ public function getCardType()
+
+	/**
+	 * @return StoreCardType
+	 */
+	public function getCardType()
+	{
+		return $this->card_type;
 	}
 
 	// }}}
@@ -98,59 +150,50 @@ class StoreCardNumberEntry extends SwatEntry
 		$message = null;
 
 		if ($info !== null) {
-			$class_name = SwatDBClassMap::get('StoreCardType');
-			$type = new $class_name();
-			$type->setDatabase($this->db);
-			$found = $type->loadFromShortname($info->shortname);
+			$found = false;
 
-			if ($found)
-				$this->card_type = $type->id;
-			else
-				$message = sprintf('Sorry, we don’t accept %s payments.',
-					SwatString::minimizeEntities($info->description));
+			foreach ($this->card_types as $card_type) {
+				if ($card_type->shortname == $info->shortname) {
+					$found = true;
+					$this->card_type = $card_type;
+					break;
+				}
+			}
+
+			if (!$found) {
+				$message = sprintf(
+					'Sorry, we don’t accept %s payments.',
+					SwatString::minimizeEntities($info->description)
+				);
+			}
 		} else {
 			$message = 'Sorry, we don’t accept your card type.';
 		}
 
 		if ($message !== null) {
-			$message = new SwatMessage(sprintf('%s %s', $message,
-				StoreCardType::getAcceptedCardTypesMessage($this->db)),
-				SwatMessage::ERROR);
+			$message = new SwatMessage(
+				sprintf(
+					'%s %s',
+					$message,
+					StoreCardType::getAcceptedCardTypesMessage(
+						$this->card_types
+					)
+				),
+				'error'
+			);
 
 			$this->addMessage($message);
 		}
 	}
 
 	// }}}
-	// {{{ public function display()
+	// {{{ protected function getBlankValue()
 
-	public function display()
+	protected function getBlankValue()
 	{
-		parent::display();
-
-		if (!$this->visible)
-			return;
-
-		// add a hidden field to track how the widget was displayed
-		if ($this->show_blank_value)
-			$this->getForm()->addHiddenField(
-				$this->id.'_blank_value', $this->blank_value);
-	}
-
-	// }}}
-	// {{{ public function setDatabase()
-
-	public function setDatabase(MDB2_Driver_Common $db)
-	{
-		$this->db = $db;
-	}
-
-	// }}}
-	// {{{ public function getCardType()
-
-	public function getCardType()
-	{
-		return $this->card_type;
+		$length = 16;
+		$blank_value = str_repeat('*', $length);
+		return $blank_value;
 	}
 
 	// }}}
@@ -160,7 +203,6 @@ class StoreCardNumberEntry extends SwatEntry
 	{
 		$tag = parent::getInputTag();
 		$tag->autocomplete = 'off';
-
 		return $tag;
 	}
 
@@ -169,10 +211,13 @@ class StoreCardNumberEntry extends SwatEntry
 
 	protected function getDisplayValue()
 	{
-		if ($this->show_blank_value && $this->value === null)
-			return $this->blank_value;
-		else
-			return $this->value;
+		$value = $this->value;
+
+		if ($this->show_blank_value && $this->value === null) {
+			$value = $this->getBlankValue();
+		}
+
+		return $value;
 	}
 
 	// }}}
