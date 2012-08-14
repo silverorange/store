@@ -717,6 +717,12 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			return 'paypal-address-error';
 
 		/*
+		 * PayPal shipping country must be the same as billing country.
+		 */
+		case 10474:
+			return 'paypal-shipping-country-error';
+
+		/*
 		 * Gateway declined. This happens when the issuing bank declines the
 		 * transaction.
 		 */
