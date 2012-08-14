@@ -753,9 +753,11 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			return 'payment-error';
 
 		/*
-		 * ExpressCheckout session has expired. Checkout needs to be restarted.
+		 * ExpressCheckout session has expiredr token is invalid. Checkout
+		 * needs to be restarted.
 		 */
 		case 10411:
+		case 11502:
 			return 'paypal-expired-token';
 		}
 
