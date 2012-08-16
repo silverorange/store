@@ -190,6 +190,34 @@ class StoreCountry extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function getRegionSelectTitle()
+
+	public function getRegionSelectTitle()
+	{
+		switch ($this->id) {
+		case 'AU':
+		case 'MY':
+			$title = Store::_('Select a State/Territory …');
+			break;
+		case 'IT':
+			$title = Store::_('Select a Province …');
+			break;
+		case 'BR':
+		case 'US':
+			$title = Store::_('Select a State …');
+			break;
+		case 'CA':
+			$title = Store::_('Select a Province/Territory …');
+			break;
+		default:
+			$title = Store::_('Select a Region …');
+			break;
+		}
+
+		return $title;
+	}
+
+	// }}}
 	// {{{ public function getPostalCodeTitle()
 
 	public function getPostalCodeTitle()
