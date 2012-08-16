@@ -36,7 +36,7 @@ require_once 'Store/dataobjects/StoreCategory.php';
  * load the objects.
  *
  * @package   Store
- * @copyright 2005-2011 silverorange
+ * @copyright 2005-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreProductWrapper
  */
@@ -81,6 +81,18 @@ class StoreProduct extends SwatDBDataObject
 	 * @var string
 	 */
 	public $bodytext;
+
+	/**
+	 * Optional content displayed in the meta description tag for this
+	 * product's product page
+	 *
+	 * If not set, a shortened version of the product bodytext is used.
+	 *
+	 * @var string
+	 *
+	 * @see StoreProductPage
+	 */
+	public $meta_description;
 
 	/**
 	 * Create date

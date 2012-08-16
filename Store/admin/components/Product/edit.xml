@@ -34,6 +34,13 @@
 				</widget>
 			</widget>
 			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Meta-Description</property>
+				<property name="note" translatable="yes">Optional content displayed in the meta-description for this product’s product page. If not set, a condensed version of the body text is used.</property>
+				<widget class="SwatTextarea" id="meta_description">
+					<property name="rows" type="integer">5</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Catalog</property>
 				<widget class="SwatFlydown" id="catalog">
 					<property name="required" type="boolean">true</property>
