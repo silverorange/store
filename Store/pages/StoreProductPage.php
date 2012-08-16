@@ -23,7 +23,7 @@ require_once 'Store/StoreCartProcessor.php';
  * A product page
  *
  * @package   Store
- * @copyright 2005-2011 silverorange
+ * @copyright 2005-2012 silverorange
  */
 class StoreProductPage extends StorePage
 {
@@ -442,9 +442,7 @@ class StoreProductPage extends StorePage
 		$this->layout->data->title =
 			SwatString::minimizeEntities($this->product->title);
 
-		$this->layout->data->meta_description =
-			SwatString::minimizeEntities(SwatString::stripXHTMLTags(
-			SwatString::condense($this->product->bodytext, 400)));
+		$this->buildMetaDescription();
 
 		$image = $this->product->primary_image;
 		if ($image !== null) {
@@ -452,6 +450,27 @@ class StoreProductPage extends StorePage
 				'<link rel="image_src" href="%s" />',
 				$image->getUri('small', $this->app->getBaseHref(false)));
 		}
+	}
+
+	// }}}
+	// {{{ protected function buildMetaDescription()
+
+	protected function buildMetaDescription()
+	{
+		if ($this->product->meta_description != '') {
+			$meta_description = $this->product->meta_description;
+		} else {
+			$meta_description = SwatString::minimizeEntities(
+				SwatString::stripXHTMLTags(
+					SwatString::condense(
+						$this->product->bodytext,
+						400
+					)
+				)
+			);
+		}
+
+		$this->layout->data->meta_description = $meta_description;
 	}
 
 	// }}}

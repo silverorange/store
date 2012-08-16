@@ -231,8 +231,16 @@ class StoreProductEdit extends AdminDBEdit
 
 	protected function updateProduct()
 	{
-		$values = $this->ui->getValues(array('title', 'shortname', 'catalog',
-			'bodytext', 'keywords'));
+		$values = $this->ui->getValues(
+			array(
+				'title',
+				'shortname',
+				'catalog',
+				'bodytext',
+				'keywords',
+				'meta_description',
+			)
+		);
 
 		if ($this->id === null) {
 			$now = new SwatDate();
@@ -240,11 +248,12 @@ class StoreProductEdit extends AdminDBEdit
 			$this->product->createdate = $now->getDate();
 		}
 
-		$this->product->title     = $values['title'];
-		$this->product->shortname = $values['shortname'];
-		$this->product->catalog   = $values['catalog'];
-		$this->product->bodytext  = $values['bodytext'];
-		$this->product->keywords  = $values['keywords'];
+		$this->product->title            = $values['title'];
+		$this->product->shortname        = $values['shortname'];
+		$this->product->catalog          = $values['catalog'];
+		$this->product->bodytext         = $values['bodytext'];
+		$this->product->keywords         = $values['keywords'];
+		$this->product->meta_description = $values['meta_description'];
 	}
 
 	// }}}
