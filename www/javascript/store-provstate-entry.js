@@ -10,6 +10,22 @@ StoreProvStateEntry.prototype.init = function()
 {
 	this.flydown = document.getElementById(this.id + '_flydown');
 	this.entry = document.getElementById(this.id + '_entry');
+	this.field = YAHOO.util.Dom.getAncestorByClassName(
+		this.flydown,
+		'swat-form-field'
+	);
+	if (this.field) {
+		var that = this;
+		this.label = YAHOO.util.Dom.getElementBy(
+			function (n) {
+				return (n.getAttribute('for') == that.id + '_flydown');
+			},
+			'label',
+			this.field
+		);
+	} else {
+		this.label = null;
+	}
 
 	this.mode = document.createElement('input');
 	this.mode.setAttribute('type', 'hidden');
@@ -79,6 +95,9 @@ StoreProvStateEntry.prototype.updateProvState = function()
 		if (provstates === null) {
 			YAHOO.util.Dom.removeClass(this.entry, 'swat-hidden');
 			YAHOO.util.Dom.addClass(this.flydown, 'swat-hidden');
+			if (this.label) {
+				this.label.setAttribute('for', this.entry.id);
+			}
 			this.mode.value = 'entry';
 		} else {
 			YAHOO.util.Dom.addClass(this.entry, 'swat-hidden');
@@ -112,6 +131,9 @@ StoreProvStateEntry.prototype.updateProvState = function()
 
 				option.appendChild(document.createTextNode(provstates[i].title));
 				this.flydown.appendChild(option);
+			}
+			if (this.label) {
+				this.label.setAttribute('for', this.flydown.id);
 			}
 			this.mode.value = 'flydown';
 		}

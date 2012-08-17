@@ -190,6 +190,15 @@ class StoreProvStateEntry extends SwatInputControl
 	}
 
 	// }}}
+	// {{{ public function getFocusableHtmlId()
+
+	public function getFocusableHtmlId()
+	{
+		$this->confirmCompositeWidgets();
+		return $this->getCompositeWidget('flydown')->id;
+	}
+
+	// }}}
 	// {{{ protected function getInlineJavaScript()
 
 	protected function getInlineJavaScript()
