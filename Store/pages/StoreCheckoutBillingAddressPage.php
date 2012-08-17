@@ -93,6 +93,12 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 			$data[$country->id] = array(
 				'title'        => $country->title,
 				'select_title' => $country->getRegionSelectTitle(),
+				'field_title'  => sprintf(
+					Store::_('%s:'),
+					$country->getRegionTitle()
+				),
+				'required'     => $country->getRegionRequired(),
+				'visible'      => $country->getRegionVisible(),
 			);
 
 			if (count($country->provstates) === 0) {
