@@ -94,16 +94,32 @@ StoreProvStateEntry.prototype.updateProvState = function()
 
 	if (this.data[country_id]) {
 		var provstates = this.data[country_id].provstates;
-		if (provstates === null) {
+		if (this.data[country_id].visible === false) {
+			YAHOO.util.Dom.addClass(this.field, 'swat-hidden');
+			this.entry.tabIndex = -1; // for IE
+			this.entry.tabindex = -1;
+			this.flydown.tabIndex = -1; // for IE
+			this.flydown.tabindex = -1;
+		} else if (provstates === null) {
+			YAHOO.util.Dom.removeClass(this.field, 'swat-hidden');
 			YAHOO.util.Dom.removeClass(this.entry, 'swat-hidden');
+			this.entry.tabIndex = 0; // for IE
+			this.entry.tabindex = 0;
 			YAHOO.util.Dom.addClass(this.flydown, 'swat-hidden');
+			this.flydown.tabIndex = -1; // for IE
+			this.flydown.tabindex = -1;
 			if (this.label) {
 				this.updateProvStateLabel(this.data[country_id], this.entry.id);
 			}
 			this.mode.value = 'entry';
 		} else {
+			YAHOO.util.Dom.removeClass(this.field, 'swat-hidden');
 			YAHOO.util.Dom.addClass(this.entry, 'swat-hidden');
+			this.entry.tabIndex = -1; // for IE
+			this.entry.tabindex = -1;
 			YAHOO.util.Dom.removeClass(this.flydown, 'swat-hidden');
+			this.flydown.tabIndex = 0; // for IE
+			this.flydown.tabindex = 0;
 			while (this.flydown.firstChild) {
 				this.flydown.removeChild(this.flydown.firstChild);
 			}
