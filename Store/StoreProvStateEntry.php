@@ -203,7 +203,16 @@ class StoreProvStateEntry extends SwatInputControl
 
 	protected function getInlineJavaScript()
 	{
-		$javascript = sprintf(
+		static $shown = false;
+
+		if (!$shown) {
+			$javascript = $this->getInlineJavaScriptTranslations();
+			$shown = true;
+		} else {
+			$javascript = '';
+		}
+
+		$javascript.= sprintf(
 			'var %s_obj = new StoreProvStateEntry(%s, %s);',
 			$this->id,
 			SwatString::quoteJavaScriptString($this->id),
@@ -219,6 +228,25 @@ class StoreProvStateEntry extends SwatInputControl
 		}
 
 		return $javascript;
+	}
+
+	// }}}
+	// {{{ protected function getInlineJavaScriptTranslations()
+
+	/**
+	 * Gets translatable string resources for the JavaScript object for
+	 * this widget
+	 *
+	 * @return string translatable JavaScript string resources for this widget.
+	 */
+	protected function getInlineJavaScriptTranslations()
+	{
+		$required_text = Store::_('(required)');
+
+		return sprintf(
+			"StoreProvStateEntry.required_text = %s;\n",
+			SwatString::quoteJavaScriptString($required_text)
+		);
 	}
 
 	// }}}
@@ -243,8 +271,20 @@ class StoreProvStateEntry extends SwatInputControl
 
 		$entry = $this->getCompositeWidget('entry');
 
+		// if country flydown is set and country is selected, required depends
+		// on provstate data
+		if ($this->country_flydown instanceof SwatFlydown &&
+			$this->country_flydown->value !== null &&
+			isset($this->data[$this->country_flydown->value]) &&
+			isset($this->data[$this->country_flydown->value]['required'])) {
+			$required = ($this->required &&
+				$this->data[$this->country_flydown->value]['required']);
+		} else {
+			$required = $this->required;
+		}
+
 		// validate required
-		if ($this->required) {
+		if ($required) {
 			$raw_data = $this->getForm()->getFormData();
 			if (isset($raw_data[$this->id.'_mode'])) {
 				$mode = $raw_data[$this->id.'_mode'];
