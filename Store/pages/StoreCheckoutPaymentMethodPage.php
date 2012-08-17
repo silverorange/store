@@ -250,6 +250,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$page->add($fields);
 
 		$list->addPage($page);
+		$list->parent->visible = true;
 
 		return $page;
 	}
