@@ -6,6 +6,8 @@ function StoreProvStateEntry(id, data)
 	YAHOO.util.Event.onDOMReady(this.init, this, true);
 };
 
+StoreProvStateEntry.required_text = '(required)';
+
 StoreProvStateEntry.prototype.init = function()
 {
 	this.flydown = document.getElementById(this.id + '_flydown');
@@ -96,7 +98,7 @@ StoreProvStateEntry.prototype.updateProvState = function()
 			YAHOO.util.Dom.removeClass(this.entry, 'swat-hidden');
 			YAHOO.util.Dom.addClass(this.flydown, 'swat-hidden');
 			if (this.label) {
-				this.label.setAttribute('for', this.entry.id);
+				this.updateProvStateLabel(this.data[country_id], this.entry.id);
 			}
 			this.mode.value = 'entry';
 		} else {
@@ -133,9 +135,41 @@ StoreProvStateEntry.prototype.updateProvState = function()
 				this.flydown.appendChild(option);
 			}
 			if (this.label) {
-				this.label.setAttribute('for', this.flydown.id);
+				this.updateProvStateLabel(this.data[country_id], this.flydown.id);
 			}
 			this.mode.value = 'flydown';
 		}
 	}
 };
+
+StoreProvStateEntry.prototype.updateProvStateLabel = function(data, for_value)
+{
+	this.label.setAttribute('for', for_value);
+
+	if (!data.field_title) {
+		return;
+	}
+
+	while (this.label.firstChild) {
+		this.label.removeChild(this.label.firstChild);
+	}
+
+	this.label.appendChild(
+		document.createTextNode(
+			data.field_title
+		)
+	);
+
+	if (data.required) {
+		var required = document.createElement('span');
+		required.className = 'swat-required';
+		required.appendChild(
+			document.createTextNode(
+				StoreProvStateEntry.required_text
+			)
+		);
+
+		this.label.appendChild(document.createTextNode(' '));
+		this.label.appendChild(required);
+	}
+}
