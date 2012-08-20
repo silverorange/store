@@ -586,37 +586,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
-	// {{{ protected function setupCardVerificationValue()
-
-	protected function setupCardVerificationValue(
-		StoreCardVerificationValueEntry $card_verification_value_widget)
-	{
-
-		$card_type = $this->getCardType();
-		if ($card_type == null) {
-			// Card number not valid, use card type from existing payment
-			// method.
-			$order = $this->app->session->order;
-			$order_payment_method = $order->payment_methods->getFirst();
-			if ($order_payment_method instanceof StoreOrderPaymentMethod &&
-				$order_payment_method->payment_type->isCard()) {
-				$card_verification_value_widget->setCardType(
-					$order_payment_method->card_type);
-
-				$card_verification_value_widget->process();
-			} else {
-				// Just set the CVV to null if there is no pre-existing order
-				// payment method.
-				$card_verification_value_widget->process();
-				$card_verification_value_widget->value = null;
-			}
-		} else {
-			$card_verification_value_widget->setCardType($card_type);
-			$card_verification_value_widget->process();
-		}
-	}
-
-	// }}}
 	// {{{ public function validateCommon()
 
 	public function validateCommon()
@@ -671,6 +640,37 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	public function processCommon()
 	{
 		$this->saveDataToSession();
+	}
+
+	// }}}
+	// {{{ protected function setupCardVerificationValue()
+
+	protected function setupCardVerificationValue(
+		StoreCardVerificationValueEntry $card_verification_value_widget)
+	{
+
+		$card_type = $this->getCardType();
+		if ($card_type == null) {
+			// Card number not valid, use card type from existing payment
+			// method.
+			$order = $this->app->session->order;
+			$order_payment_method = $order->payment_methods->getFirst();
+			if ($order_payment_method instanceof StoreOrderPaymentMethod &&
+				$order_payment_method->payment_type->isCard()) {
+				$card_verification_value_widget->setCardType(
+					$order_payment_method->card_type);
+
+				$card_verification_value_widget->process();
+			} else {
+				// Just set the CVV to null if there is no pre-existing order
+				// payment method.
+				$card_verification_value_widget->process();
+				$card_verification_value_widget->value = null;
+			}
+		} else {
+			$card_verification_value_widget->setCardType($card_type);
+			$card_verification_value_widget->process();
+		}
 	}
 
 	// }}}
@@ -961,13 +961,8 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 					// card type list
 					$type_list = $this->ui->getWidget('card_type');
 					$type_list->process();
-					$card_type_id = $type_list->value;
-					foreach ($this->getCardTypes() as $type) {
-						if ($type->id == $card_type_id) {
-							$card_type = $type;
-							break;
-						}
-					}
+					$card_type = $this->getCardTypes()->getByIndex(
+						$card_type_id);
 
 				} else {
 
