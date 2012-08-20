@@ -890,7 +890,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	 * @param string $old_card_verification_value
 	 */
 	protected function updatePaymentMethodCardVerificationValue(
-		StoreCardVerificationValue $entry,
+		StoreCardVerificationValueEntry $entry,
 		StoreOrderPaymentMethod $payment_method,
 		$old_card_verification_value = null)
 	{
