@@ -12,7 +12,7 @@ require_once 'Store/dataobjects/StoreCardTypeWrapper.php';
  * Page to allow customers to add or edit payment methods on their account
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
@@ -20,17 +20,22 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
 	// {{{ protected properties
 
 	/**
+	 * @var integer
+	 */
+	protected $id;
+
+	/**
 	 * @var StoreAccountPaymentMethod
 	 */
 	protected $payment_method;
 
-	// }}}
-	// {{{ private properties
-
 	/**
-	 * @var integer
+	 * Cache of valid card types for the current app region
+	 *
+	 * @var StoreCardTypeWrapper
+	 * @see StoreAccountPaymentMethodEditPage::getCardTypes()
 	 */
-	private $id;
+	protected $card_types;
 
 	// }}}
 	// {{{ protected function getUiXml()
@@ -56,6 +61,24 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
 		return array(
 			'id' => array(0, 0),
 		);
+	}
+
+	// }}}
+	// {{{ protected function getCardTypes()
+
+	/**
+	 * Gets available card types for new payment methods
+	 *
+	 * @return StoreCardTypeWrapper
+	 */
+	protected function getCardTypes()
+	{
+		if ($this->card_types === null) {
+			$region = $this->app->getRegion();
+			$this->card_types = $region->card_types;
+		}
+
+		return $this->card_types;
 	}
 
 	// }}}
@@ -143,7 +166,9 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
 
 	public function process()
 	{
-		$this->ui->getWidget('card_number')->setDatabase($this->app->db);
+		$this->ui->getWidget('card_number')->setCardTypes(
+			$this->getCardTypes());
+
 		parent::process();
 
 		$type = $this->getCardType();
@@ -188,21 +213,26 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
 		static $type = null;
 
 		if ($type === null) {
-			$type_list = $this->ui->getWidget('card_type');
 
 			if (isset($_POST['card_type'])) {
+
+				// card type manually specified, look it up in the card
+				// type list
+				$type_list = $this->ui->getWidget('card_type');
 				$type_list->process();
 				$card_type_id = $type_list->value;
+				$type = $this->getCardTypes()->getByIndex($card_type_id);
+
 			} else {
+
+				// card type not specified and card number entered, get
+				// card type from the card number
 				$card_number = $this->ui->getWidget('card_number');
 				$card_number->process();
-				$card_type_id = $card_number->getCardType();
+				$type = $card_number->getCardType();
+
 			}
 
-			$class_name = SwatDBClassMap::get('StoreCardType');
-			$type = new $class_name();
-			$type->setDatabase($this->app->db);
-			$type->load($card_type_id);
 		}
 
 		return $type;
@@ -339,30 +369,6 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
 		$this->layout->startCapture('content');
 		Swat::displayInlineJavaScript($this->getInlineJavaScript($types));
 		$this->layout->endCapture();
-	}
-
-	// }}}
-	// {{{ protected function getCardTypes()
-
-	/**
-	 * Gets available payment types for new payment methods
-	 *
-	 * @return StorePaymentTypeWrapper
-	 */
-	protected function getCardTypes()
-	{
-		$sql = 'select CardType.* from CardType
-			inner join CardTypeRegionBinding on
-				card_type = id and region = %s
-			order by displayorder, title';
-
-		$sql = sprintf($sql,
-			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
-
-		$types = SwatDB::query($this->app->db, $sql,
-			SwatDBClassMap::get('StoreCardTypeWrapper'));
-
-		return $types;
 	}
 
 	// }}}
