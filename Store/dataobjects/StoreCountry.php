@@ -257,7 +257,7 @@ class StoreCountry extends SwatDBDataObject
 	{
 		switch ($this->id) {
 		case 'GB':
-			$title = Store::_('Post Town');
+			$title = Store::_('City / Post Town');
 			break;
 		default:
 			$title = Store::_('City');
