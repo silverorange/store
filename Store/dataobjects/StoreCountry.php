@@ -90,15 +90,13 @@ class StoreCountry extends SwatDBDataObject
 			$title = Store::_('Postal District');
 			break;
 		case 'ES':
+		case 'GB':
 		case 'IE':
 			$title = Store::_('County');
 			break;
 		case 'FR':
 		case 'ZA':
 			$title = Store::_('Locality');
-			break;
-		case 'GB':
-			$title = Store::_('Post Town');
 			break;
 		case 'IL':
 		case 'PK':
@@ -135,7 +133,6 @@ class StoreCountry extends SwatDBDataObject
 		case 'CA':
 		case 'CN':
 		case 'CR':
-		case 'GB':
 		case 'IT':
 		case 'JP':
 		case 'KP':
@@ -260,7 +257,7 @@ class StoreCountry extends SwatDBDataObject
 	{
 		switch ($this->id) {
 		case 'GB':
-			$title = Store::_('Locality');
+			$title = Store::_('Post Town');
 			break;
 		default:
 			$title = Store::_('City');
@@ -276,9 +273,6 @@ class StoreCountry extends SwatDBDataObject
 	public function getCityRequired()
 	{
 		switch ($this->id) {
-		case 'GB':
-			$required = false;
-			break;
 		default:
 			$required = true;
 			break;
