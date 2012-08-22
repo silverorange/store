@@ -72,6 +72,17 @@ class StoreCategory extends SwatDBDataObject
 	public $title;
 
 	/**
+	 * Optional HTML title
+	 *
+	 * If set, the category page HTML title uses this value. Otherwise, the
+	 * category page uses the category title from
+	 * {@link StoreCategory::$title}.
+	 *
+	 * @var string
+	 */
+	public $html_title;
+
+	/**
 	 * Description of this category
 	 *
 	 * This text is intended to be displayed on the parent page of this
