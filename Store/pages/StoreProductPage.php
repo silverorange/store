@@ -458,7 +458,9 @@ class StoreProductPage extends StorePage
 	protected function buildMetaDescription()
 	{
 		if ($this->product->meta_description != '') {
-			$meta_description = $this->product->meta_description;
+			$meta_description = SwatString::minimizeEntities(
+				$this->product->meta_description
+			);
 		} else {
 			$meta_description = SwatString::minimizeEntities(
 				SwatString::stripXHTMLTags(
