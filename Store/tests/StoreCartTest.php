@@ -78,6 +78,8 @@ abstract class StoreCartTest extends TuringSeleniumTest
 		$this->initCartEntries();
 
 		$this->open($this->getPageUri());
+		$this->assertNoErrors();
+
 		$this->type($this->findQuantityEntry(1), '4');
 		$this->click('header_update_button');
 		$this->waitForPageToLoad('30000');
@@ -95,6 +97,28 @@ abstract class StoreCartTest extends TuringSeleniumTest
 			$this->getValue($this->findQuantityEntry(2)),
 			'Value of second quantity entry was updated when it was '.
 			'not supposed to be.'
+		);
+	}
+
+	// }}}
+	// {{{ public function testNegativeUpdate()
+
+	public function testNegativeUpdate()
+	{
+		$this->initCartEntries();
+
+		$this->open($this->getPageUri());
+		$this->assertNoErrors();
+
+		$this->type($this->findQuantityEntry(1), '-10');
+		$this->click('header_update_button');
+		$this->waitForPageToLoad('30000');
+
+		$this->assertNoErrors();
+
+		$this->assertTrue(
+			$this->isTextPresent('field must not be less than 0'),
+			'Error text is not present when entering negative quantity.'
 		);
 	}
 
