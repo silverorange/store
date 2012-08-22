@@ -717,6 +717,12 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			return 'paypal-address-error';
 
 		/*
+		 * PayPal shipping country must be the same as billing country.
+		 */
+		case 10474:
+			return 'paypal-shipping-country-error';
+
+		/*
 		 * Gateway declined. This happens when the issuing bank declines the
 		 * transaction.
 		 */
@@ -747,9 +753,11 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			return 'payment-error';
 
 		/*
-		 * ExpressCheckout session has expired. Checkout needs to be restarted.
+		 * ExpressCheckout session has expiredr token is invalid. Checkout
+		 * needs to be restarted.
 		 */
 		case 10411:
+		case 11502:
 			return 'paypal-expired-token';
 		}
 
