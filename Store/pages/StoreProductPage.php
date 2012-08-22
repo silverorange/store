@@ -442,6 +442,11 @@ class StoreProductPage extends StorePage
 		$this->layout->data->title =
 			SwatString::minimizeEntities($this->product->title);
 
+		if ($this->product->html_title != '') {
+			$this->layout->data->html_title =
+				SwatString::minimizeEntities($this->product->html_title);
+		}
+
 		$this->buildMetaDescription();
 
 		$image = $this->product->primary_image;

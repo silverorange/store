@@ -69,6 +69,16 @@ class StoreProduct extends SwatDBDataObject
 	public $title;
 
 	/**
+	 * Optional HTML title
+	 *
+	 * If set, the product page HTML title uses this value. Otherwise, the
+	 * product page uses the product title from {@link StoreProduct::$title}.
+	 *
+	 * @var string
+	 */
+	public $html_title;
+
+	/**
 	 * Keywords used by the search indexer
 	 *
 	 * @var string
