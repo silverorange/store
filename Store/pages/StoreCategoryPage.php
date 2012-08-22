@@ -93,8 +93,7 @@ class StoreCategoryPage extends StorePage
 	{
 		parent::build();
 
-		$this->layout->data->title =
-			SwatString::minimizeEntities($this->category->title);
+		$this->buildTitle();
 
 		$this->layout->data->description =
 			SwatString::minimizeEntities($this->category->description);
@@ -130,6 +129,20 @@ class StoreCategoryPage extends StorePage
 			$this->products = $this->getProducts();
 
 		$this->buildPage();
+	}
+
+	// }}}
+	// {{{ protected function buildTitle()
+
+	protected function buildTitle()
+	{
+		$this->layout->data->title =
+			SwatString::minimizeEntities($this->category->title);
+
+		if ($this->category->html_title != '') {
+			$this->layout->data->html_title =
+				SwatString::minimizeEntities($this->category->html_title);
+		}
 	}
 
 	// }}}

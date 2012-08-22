@@ -139,12 +139,16 @@ class StoreCategoryEdit extends AdminDBEdit
 	{
 		$this->category->title =
 			$this->ui->getWidget('title')->value;
+
 		$this->category->shortname =
 			$this->ui->getWidget('shortname')->value;
+
 		$this->category->description =
 			$this->ui->getWidget('description')->value;
+
 		$this->category->bodytext =
 			$this->ui->getWidget('bodytext')->value;
+
 		$this->category->always_visible =
 			$this->ui->getWidget('always_visible')->value;
 	}
