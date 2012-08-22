@@ -2,6 +2,7 @@ create table Product (
 	id serial,
 	catalog int not null references Catalog(id) on delete cascade,
 	title varchar(255) not null,
+	html_title varchar(255),
 	bodytext text,
 	meta_description text,
 	createdate timestamp,

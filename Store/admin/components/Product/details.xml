@@ -22,6 +22,12 @@
 		</widget>
 		<widget class="SwatDetailsView" id="details_view">
 			<object class="SwatDetailsViewField">
+				<property name="title" translatable="yes">HTML Title</property>
+				<object class="SwatNullTextCellRenderer">
+					<property name="text" type="data">html_title</property>
+				</object>
+			</object>
+			<object class="SwatDetailsViewField">
 				<property name="title" translatable="yes">Short Name</property>
 				<object class="SwatTextCellRenderer">
 					<property name="text" type="data">shortname</property>
