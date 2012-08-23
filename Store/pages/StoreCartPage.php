@@ -1,19 +1,18 @@
 <?php
 
-require_once 'Site/pages/SitePage.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Swat/SwatUI.php';
-
 require_once 'Swat/SwatMessage.php';
 require_once 'Swat/SwatString.php';
 require_once 'Swat/SwatTableStore.php';
 require_once 'Swat/SwatDetailsStore.php';
+require_once 'Site/pages/SitePage.php';
 
 /**
  * Shopping cart display page
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCartPage extends SitePage
@@ -1165,6 +1164,7 @@ class StoreCartPage extends SitePage
 
 	protected function buildInternal()
 	{
+		$this->buildPaymentNote();
 	}
 
 	// }}}
@@ -1557,6 +1557,81 @@ class StoreCartPage extends SitePage
 				$message_display->add($message);
 		} catch (SwatWidgetNotFoundException $e) {
 		}
+	}
+
+	// }}}
+	// {{{ protected function buildPaymentNote()
+
+	protected function buildPaymentNote()
+	{
+		try {
+			$payment_cart_note = $this->ui->getWidget('payment_cart_note');
+			$payment_cart_note->content_type = 'text/xml';
+			ob_start();
+			$this->displayPaymentNote();
+			$payment_cart_note->content = ob_get_clean();
+		} catch (SwatWidgetNotFoundException $e) {
+		}
+	}
+
+	// }}}
+	// {{{ protected function displayPaymentNote()
+
+	protected function displayPaymentNote()
+	{
+		$payment_types = $this->app->getRegion()->payment_types;
+
+		$header = new SwatHtmlTag('h4');
+		$header->setContent(Store::_('Accepted Payment Types'));
+		$header->display();
+
+		echo '<ul class="payment-types clearfix">';
+
+		foreach ($payment_types as $type) {
+			$li_tag = new SwatHtmlTag('li');
+			$li_tag->class = 'payment-type payment-type-'.$type->shortname;
+			$li_tag->open();
+
+			if ($type->shortname == 'card') {
+				$this->displayAcceptedCardTypes($type);
+			} else {
+				echo SwatString::minimizeEntities($type->title);
+			}
+
+			$li_tag->close();
+		}
+
+		echo '</ul>';
+	}
+
+	// }}}
+	// {{{ protected function displayAcceptedCardTypes()
+
+	protected function displayAcceptedCardTypes(StorePaymentType $type)
+	{
+		$span = new SwatHtmlTag('span');
+		$span->setContent(
+			sprintf(
+				Store::_('%s:'),
+				$type->title
+			)
+		);
+		$span->display();
+
+		$card_types = $this->app->getRegion()->card_types;
+		$card_names = array();
+		foreach ($card_types as $card_type) {
+			$card_names[] = $card_type->title;
+		}
+
+		$card_names = SwatString::toList($card_names);
+
+		echo ' ';
+
+		$span = new SwatHtmlTag('span');
+		$span->class = 'card-types';
+		$span->setContent($card_names);
+		$span->display();
 	}
 
 	// }}}
