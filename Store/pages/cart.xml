@@ -209,6 +209,9 @@
 					<property name="visible" type="boolean">false</property>
 				</widget>
 			</widget>
+			<widget class="SwatDisplayableContainer" id="payment_container">
+				<widget class="SwatContentBlock" id="payment_cart_note" />
+			</widget>
 		</widget>
 	</widget>
 	<widget class="SwatForm" id="saved_cart_form">
