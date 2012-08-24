@@ -75,7 +75,7 @@ class StoreProvStateEntry extends SwatInputControl
 	 *
 	 * @var SwatFlydown
 	 */
-	protected $country = null;
+	protected $country_flydown = null;
 
 	// }}}
 	// {{{ public function __construct()
