@@ -219,9 +219,16 @@ class StoreProvStateEntry extends SwatInputControl
 			json_encode($this->data)
 		);
 
-		if ($this->country_flydown instanceof SwatFlydown) {
+		if (count($this->data) === 1) {
+			reset($this->data);
 			$javascript.= sprintf(
-				'%s_obj.setCountryFlydown(%s);',
+				"\n%s_obj.setCountryId(%s);",
+				$this->id,
+				SwatString::quoteJavaScriptString(key($this->data))
+			);
+		} elseif ($this->country_flydown instanceof SwatFlydown) {
+			$javascript.= sprintf(
+				"\n%s_obj.setCountryFlydown(%s);",
 				$this->id,
 				SwatString::quoteJavaScriptString($this->country_flydown->id)
 			);

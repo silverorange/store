@@ -47,9 +47,13 @@ StoreProvStateEntry.prototype.init = function()
 			true
 		);
 
-		var country_id =
-			this.country.options[this.country.selectedIndex].value;
+		var country_id = this.getCountryId();
+		this.provstate_id[country_id] =
+			this.flydown.options[this.flydown.selectedIndex].value;
 
+		this.updateProvState();
+	} else if (this.country_id) {
+		var country_id = this.getCountryId();
 		this.provstate_id[country_id] =
 			this.flydown.options[this.flydown.selectedIndex].value;
 
@@ -68,6 +72,11 @@ StoreProvStateEntry.prototype.init = function()
 StoreProvStateEntry.prototype.setCountryFlydown = function(country_flydown_id)
 {
 	this.country_flydown_id = country_flydown_id;
+};
+
+StoreProvStateEntry.prototype.setCountryId = function(country_id)
+{
+	this.country_id = country_id;
 };
 
 StoreProvStateEntry.prototype.handleCountryChange = function(e)
@@ -89,8 +98,7 @@ StoreProvStateEntry.prototype.handleProvStateChange = function(e)
 
 StoreProvStateEntry.prototype.updateProvState = function()
 {
-	var country_id =
-		this.country.options[this.country.selectedIndex].value;
+	var country_id = this.getCountryId();
 
 	if (this.data[country_id]) {
 		var provstates = this.data[country_id].provstates;
@@ -156,6 +164,19 @@ StoreProvStateEntry.prototype.updateProvState = function()
 			this.mode.value = 'flydown';
 		}
 	}
+};
+
+StoreProvStateEntry.prototype.getCountryId = function()
+{
+	var country_id;
+
+	if (this.country) {
+		country_id = this.country.options[this.country.selectedIndex].value;
+	} else if (this.country_id) {
+		country_id = this.country_id;
+	}
+
+	return country_id;
 };
 
 StoreProvStateEntry.prototype.updateProvStateLabel = function(data, for_value)
