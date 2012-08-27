@@ -425,7 +425,7 @@ class StoreCartEntry extends SwatDBDataObject
 			$order_item->sale_discount = $sale->id;
 		}
 
-		if ($this->item->hasInternalValue('item_group')) {
+		if ($this->item->getInternalValue('item_group') !== null) {
 			$group = $this->item->item_group;
 			$order_item->item_group_title = $group->title;
 		}
