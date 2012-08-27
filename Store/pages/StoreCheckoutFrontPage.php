@@ -226,19 +226,6 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
 	}
 
 	// }}}
-
-	// finalize phase
-	// {{{ public function finalize()
-
-	public function finalize()
-	{
-		parent::finalize();
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-checkout-front-page.css',
-			Store::PACKAGE_ID));
-	}
-
-	// }}}
 }
 
 ?>
