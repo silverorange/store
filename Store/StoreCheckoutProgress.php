@@ -77,9 +77,9 @@ class StoreCheckoutProgress extends SwatControl
 
 			if (isset($step['link']) && $step['link'] != '') {
 				printf(
-					'<a class="title" href="%s">'.
-					'<span class="number">%s</span> '.
-					'<span class="content">%s</span>'.
+					'<a class="store-checkout-progress-title" href="%s">'.
+					'<span class="store-checkout-progress-number">%s</span> '.
+					'<span class="store-checkout-progress-content">%s</span>'.
 					'</a>',
 					SwatString::minimizeEntities($step['link']),
 					SwatString::minimizeEntities($id),
@@ -87,9 +87,9 @@ class StoreCheckoutProgress extends SwatControl
 				);
 			} else {
 				printf(
-					'<span class="title">'.
-					'<span class="number">%s</span> '.
-					'<span class="content">%s</span>'.
+					'<span class="store-checkout-progress-title">'.
+					'<span class="store-checkout-progress-number">%s</span> '.
+					'<span class="store-checkout-progress-content">%s</span>'.
 					'</span>',
 					SwatString::minimizeEntities($id),
 					SwatString::minimizeEntities($step['title'])
