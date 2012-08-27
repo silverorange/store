@@ -28,7 +28,7 @@
 	color: #afa499;
 }
 
-.store-checkout-progress li .title {
+.store-checkout-progress li .store-checkout-progress-title {
 	border-radius: 4px;
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
@@ -38,17 +38,17 @@
 	display: block;
 }
 
-.store-checkout-progress-step1 li.store-checkout-progress-step1 .title {
+.store-checkout-progress-step1 li.store-checkout-progress-step1 .store-checkout-progress-title {
 	background-color: #e1dacf;
 	color: #5f5851;
 }
 
-.store-checkout-progress-step2 li.store-checkout-progress-step2 .title {
+.store-checkout-progress-step2 li.store-checkout-progress-step2 .store-checkout-progress-title {
 	background-color: #e1dacf;
 	color: #5f5851;
 }
 
-.store-checkout-progress-step3 li.store-checkout-progress-step3 .title {
+.store-checkout-progress-step3 li.store-checkout-progress-step3 .store-checkout-progress-title {
 	background-color: #e1dacf;
 	color: #5f5851;
 }
