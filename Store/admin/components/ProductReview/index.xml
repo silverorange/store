@@ -24,6 +24,10 @@
 				<widget class="SwatEntry" id="search_email" />
 			</widget>
 			<widget class="SwatFormField">
+				<property name="title" translatable="yes">Rating</property>
+				<widget class="SwatRating" id="search_rating" />
+			</widget>
+			<widget class="SwatFormField">
 				<property name="title" translatable="yes">Show</property>
 				<widget class="SwatRadioList" id="search_visibility" />
 			</widget>
@@ -67,6 +71,12 @@
 					<object class="SwatDateCellRenderer">
 						<property name="date" type="data">createdate</property>
 						<property name="format" type="constant">SwatDate::DF_DATE_TIME</property>
+					</object>
+				</object>
+				<object class="AdminTableViewOrderableColumn" id="rating">
+					<property name="title" translatable="yes">Rating</property>
+					<object class="SwatRatingCellRenderer">
+						<property name="value" type="data">rating</property>
 					</object>
 				</object>
 				<object class="SwatTableViewColumn" id="visibility">

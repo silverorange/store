@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreProductReviewWrapper.php';
  * Index page for Products Reviews
  *
  * @package   Store
- * @copyright 2009 silverorange
+ * @copyright 2009-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductReviewIndex extends AdminSearch
@@ -24,11 +24,6 @@ class StoreProductReviewIndex extends AdminSearch
 	const SHOW_SPAM       = 4;
 
 	// }}}
-	// {{{ protected properties
-
-	protected $ui_xml = 'Store/admin/components/ProductReview/index.xml';
-
-	// }}}
 
 	// init phase
 	// {{{ protected function initInternal()
@@ -37,7 +32,7 @@ class StoreProductReviewIndex extends AdminSearch
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 
 		$visibility_options = array(
 			self::SHOW_UNAPPROVED => Store::_('Pending Reviews'),
@@ -49,6 +44,14 @@ class StoreProductReviewIndex extends AdminSearch
 		$visibility = $this->ui->getWidget('search_visibility');
 		$visibility->addOptionsByArray($visibility_options);
 		$visibility->value = self::SHOW_UNAPPROVED;
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return 'Store/admin/components/ProductReview/index.xml';
 	}
 
 	// }}}
@@ -144,7 +147,15 @@ class StoreProductReviewIndex extends AdminSearch
 	protected function buildInternal()
 	{
 		$this->buildPendingProductReviews();
+
 		parent::buildInternal();
+
+		$this->ui->getWidget('search_rating')->maximum_value =
+			StoreProductReview::MAX_RATING;
+
+		$view = $this->ui->getWidget('product_reviews_view');
+		$view->getColumn('rating')->getFirstRenderer()->maximum_value =
+			StoreProductReview::MAX_RATING;
 	}
 
 	// }}}
@@ -219,6 +230,15 @@ class StoreProductReviewIndex extends AdminSearch
 			$clause->table = 'ProductReview';
 			$clause->value = $email;
 			$clause->operator = AdminSearchClause::OP_CONTAINS;
+			$where.= $clause->getClause($this->app->db, 'and');
+		}
+
+		$rating = $this->ui->getWidget('search_rating')->value;
+		if ($rating !== null) {
+			$clause = new AdminSearchClause('integer:rating');
+			$clause->table = 'ProductReview';
+			$clause->value = $rating;
+			$clause->operator = AdminSearchClause::OP_EQUALS;
 			$where.= $clause->getClause($this->app->db, 'and');
 		}
 
