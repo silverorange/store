@@ -137,11 +137,15 @@ class StoreProductReviewApproval extends AdminApproval
 			$reply->author_review = true;
 			$reply->product       = $this->data_object->product;
 			$reply->parent        = $this->data_object;
-			$reply->author        = $this->ui->getWidget('author')->value;
 			$reply->bodytext      = $this->ui->getWidget('bodytext')->value;
 			$reply->status        = SiteComment::STATUS_PUBLISHED;
 			$reply->createdate    = new SwatDate();
 			$reply->createdate->toUTC();
+
+			if (class_exists('Blorg')) {
+				$reply->author = $this->ui->getWidget('author')->value;
+			}
+
 			$reply->save();
 		}
 
