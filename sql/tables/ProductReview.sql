@@ -14,6 +14,7 @@ create table ProductReview (
 	ip_address varchar(15),
 	user_agent varchar(255),
 	createdate timestamp not null,
+	rating integer,
 	primary key (id)
 );
 

@@ -44,6 +44,12 @@
 						<property name="rows" type="integer">5</property>
 					</widget>
 				</widget>
+				<widget class="SwatFormField" id="review_rating_field">
+					<property name="title" translatable="yes">Rating</property>
+					<widget class="SwatRating" id="product_review_rating">
+						<property name="required" type="boolean">false</property>
+					</widget>
+				</widget>
 				<widget class="SwatFooterFormField">
 					<widget class="SwatButton" id="product_review_preview">
 						<property name="title" translatable="yes">Preview Comment</property>

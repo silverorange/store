@@ -342,6 +342,7 @@ class StoreProductPage extends StorePage
 		$fullname   = $this->reviews_ui->getWidget('product_review_fullname');
 		$email      = $this->reviews_ui->getWidget('product_review_email');
 		$bodytext   = $this->reviews_ui->getWidget('product_review_bodytext');
+		$rating     = $this->reviews_ui->getWidget('product_review_rating');
 
 		if (isset($_SERVER['REMOTE_ADDR'])) {
 			$ip_address = substr($_SERVER['REMOTE_ADDR'], 0, 15);
@@ -362,6 +363,7 @@ class StoreProductPage extends StorePage
 		$this->review->fullname   = $fullname->value;
 		$this->review->email      = $email->value;
 		$this->review->bodytext   = $bodytext->value;
+		$this->review->rating     = $rating->value;
 		$this->review->createdate = $now;
 		$this->review->ip_address = $ip_address;
 		$this->review->user_agent = $user_agent;
@@ -1142,6 +1144,9 @@ class StoreProductPage extends StorePage
 				$this->reviews_ui->getWidget('product_review_message_display')
 					->add($message, SwatMessageDisplay::DISMISS_OFF);
 			}
+	
+			$ui->getWidget('product_review_rating')->maximum_value =
+				StoreProductReview::MAX_RATING;
 
 			$this->buildReviewPreview();
 		}

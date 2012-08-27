@@ -8,10 +8,15 @@ require_once 'Store/dataobjects/StoreProduct.php';
  * Product review for a product
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2012 silverorange
  */
 class StoreProductReview extends SiteComment
 {
+	// {{{ class constants
+
+	const MAX_RATING = 5;
+
+	// }}}
 	// {{{ public properties
 
 	/**
@@ -20,6 +25,13 @@ class StoreProductReview extends SiteComment
 	 * @var boolean
 	 */
 	public $author_review = false;
+
+	/**
+	 * Star rating out of {@link StoreProductReview::MAX_RATING} stars
+	 *
+	 * @var integer
+	 */
+	public $rating;
 
 	// }}}
 	// {{{ protected function init()
