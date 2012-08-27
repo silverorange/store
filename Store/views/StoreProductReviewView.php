@@ -170,6 +170,7 @@ class StoreProductReviewView extends SiteView
 		$heading_tag->open();
 		$this->displayAuthor($review);
 		$this->displayDate($review);
+		$this->displayRating($review);
 		$heading_tag->close();
 
 		$div_tag->close();
@@ -224,6 +225,49 @@ class StoreProductReviewView extends SiteView
 		$abbr_tag->display();
 
 		$span_tag->close();
+	}
+
+	// }}}
+	// {{{ protected function displayRating()
+
+	protected function displayRating(StoreProductReview $review)
+	{
+		if ($review->rating !== null) {
+			$rating_class = floor(10 * min(
+				$review->rating, StoreProductReview::MAX_RATING));
+
+			$rating_class = 'rating-'.$rating_class;
+
+			$div_tag = new SwatHtmlTag('div');
+			$div_tag->class = 'rating '.$rating_class;
+			$div_tag->open();
+
+			$locale = SwatI18NLocale::get();
+			$difference = StoreProductReview::MAX_RATING - $review->rating;
+
+			$content = str_repeat('★', $review->rating);
+			if ($difference > 0) {
+				$content.= str_repeat('☆', $difference);
+			}
+
+			$value_tag = new SwatHtmlTag('span');
+			$value_tag->setContent($content);
+			$value_tag->class = 'value';
+			$value_tag->title = $locale->formatNumber($review->rating, 1);
+			$value_tag->display();
+
+			$best_tag = new SwatHtmlTag('span');
+			$best_tag->class = 'best';
+			$best_tag->title = $locale->formatNumber(
+				StoreProductReview::MAX_RATING, 1);
+
+			$best_tag->setContent('');
+			$best_tag->display();
+
+			echo '</span>';
+
+			$div_tag->close();
+		}
 	}
 
 	// }}}
