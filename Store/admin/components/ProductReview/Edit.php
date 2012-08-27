@@ -39,7 +39,7 @@ class StoreProductReviewEdit extends AdminDBEdit
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 
 		$this->category_id = SiteApplication::initVar('category');
 		$this->product_id  = SiteApplication::initVar('product');
@@ -89,6 +89,14 @@ class StoreProductReviewEdit extends AdminDBEdit
 	}
 
 	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return 'Store/admin/components/ProductReview/edit.xml';
+	}
+
+	// }}}
 
 	// process phase
 	// {{{ protected function saveDBData()
@@ -119,6 +127,7 @@ class StoreProductReviewEdit extends AdminDBEdit
 			'bodytext',
 			'status',
 			'author',
+			'rating',
 		));
 
 		if ($this->review->id === null) {
@@ -134,7 +143,11 @@ class StoreProductReviewEdit extends AdminDBEdit
 		$this->review->email    = $values['email'];
 		$this->review->bodytext = $values['bodytext'];
 		$this->review->status   = $values['status'];
-		$this->review->author   = $values['author'];
+		$this->review->rating   = $values['rating'];
+
+		if (class_exists('Blorg')) {
+			$this->review->author = $values['author'];
+		}
 	}
 
 	// }}}
@@ -184,6 +197,9 @@ class StoreProductReviewEdit extends AdminDBEdit
 
 		$this->ui->getWidget('edit_frame')->subtitle =
 			$this->review->product->title;
+
+		$this->ui->getWidget('rating')->maximum_value =
+			StoreProductReview::MAX_RATING;
 	}
 
 	// }}}
