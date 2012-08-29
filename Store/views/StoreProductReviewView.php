@@ -184,20 +184,18 @@ class StoreProductReviewView extends SiteView
 		$span_tag = new SwatHtmlTag('span');
 		$span_tag->class = 'product-review-author';
 
-		$fn_span_tag = new SwatHtmlTag('span');
-		$fn_span_tag->class = 'fn';
-
 		if (class_exists('Blorg') && $review->author != null) {
 			$fullname = $review->author->name;
 		} else {
 			$fullname = $review->fullname;
 		}
 
+		$fn_span_tag = new SwatHtmlTag('span');
+		$fn_span_tag->class = 'fn';
+		$fn_span_tag->setContent($fullname);
 
 		$span_tag->open();
-		$fn_span_tag->open();
-		echo $fullname;
-		$fn_span_tag->close();
+		$fn_span_tag->display();
 		if ($review->parent !== null) {
 			echo ' Reply';
 		}
