@@ -403,10 +403,11 @@ abstract class StoreCheckoutCart extends StoreCart
 		} else {
 			$total = 0;
 
-			if ($payment_methods !== null) {
+
+			if ($payment_methods instanceof StoreOrderPaymentMethodWrapper) {
 				foreach ($payment_methods as $payment_method) {
 					if ($payment_method->surcharge !== null) {
-						$total+= $payment_method->surcharge;
+						$total += $payment_method->surcharge;
 					}
 				}
 			}
