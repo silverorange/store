@@ -801,6 +801,28 @@ class StoreProductDetails extends AdminIndex
 	}
 
 	// }}}
+	// {{{ protected function buildProductNavBar()
+
+	protected function buildProductNavBar($product)
+	{
+		if ($this->category_id !== null) {
+			// use category navbar
+			$this->navbar->popEntry();
+			$this->navbar->addEntry(new SwatNavBarEntry(
+				Store::_('Product Categories'), 'Category'));
+
+			$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
+				'getCategoryNavbar', array($this->category_id));
+
+			foreach ($cat_navbar_rs as $entry)
+				$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
+					'Category/Index?id='.$entry->id));
+		}
+
+		$this->navbar->addEntry(new SwatNavBarEntry($product->title));
+	}
+
+	// }}}
 	// {{{ private function buildProduct()
 
 	private function buildProduct()
@@ -903,28 +925,6 @@ class StoreProductDetails extends AdminIndex
 
 			echo '</ul>';
 		}
-	}
-
-	// }}}
-	// {{{ protected function buildProductNavBar()
-
-	protected function buildProductNavBar($product)
-	{
-		if ($this->category_id !== null) {
-			// use category navbar
-			$this->navbar->popEntry();
-			$this->navbar->addEntry(new SwatNavBarEntry(
-				Store::_('Product Categories'), 'Category'));
-
-			$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
-				'getCategoryNavbar', array($this->category_id));
-
-			foreach ($cat_navbar_rs as $entry)
-				$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
-					'Category/Index?id='.$entry->id));
-		}
-
-		$this->navbar->addEntry(new SwatNavBarEntry($product->title));
 	}
 
 	// }}}
