@@ -915,11 +915,6 @@ class StoreProductDetails extends AdminIndex
 		$toolbar = $prototype_tool_link->parent;
 		$toolbar->remove($prototype_tool_link);
 
-//		$category_path = null;
-//		$first_category = $product->categories->getFirst();
-//		if ($first_category !== null)
-//			$category_path = $first_category->path.'/';
-
 		foreach ($this->regions as $region) {
 			$locale = $region->getFirstLocale();
 			if ($locale !== null) {
