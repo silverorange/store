@@ -49,3 +49,24 @@ div.store-sale-discount-original-price {
 	color: #999;
 	text-decoration: line-through;
 }
+
+.product-categories li {
+	margin-bottom: 6px;
+}
+
+.product-categories li .swat-nav-bar {
+	display: inline;
+}
+
+.product-categories .canonical-category {
+	margin-left: 6px;
+	display: inline-block;
+	background: #4e9a06;
+	color: #fff;
+	padding: 2px 4px;
+	font-size: 11px;
+	text-transform: uppercase;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}

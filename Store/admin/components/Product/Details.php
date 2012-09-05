@@ -119,14 +119,31 @@ class StoreProductDetails extends AdminIndex
 
 	private function loadProduct()
 	{
-		$product_class = SwatDBClassMap::get('StoreProduct');
-		$product = new $product_class();
-		$product->setDatabase($this->app->db);
+		$sql = sprintf(
+			'select Product.*, ProductPrimaryCategoryView.primary_category,
+				getCategoryPath(ProductPrimaryCategoryView.primary_category)
+					as path
+			from Product
+				left outer join ProductPrimaryCategoryView
+					on Product.id = ProductPrimaryCategoryView.product
+			where id = %s',
+			$this->app->db->quote($this->id, 'integer')
+		);
 
-		if (!$product->load($this->id))
-			throw new AdminNotFoundException(sprintf(
-				Store::_('A product with an id of ‘%d’ does not exist.'),
-				$this->id));
+		$row = SwatDB::queryRow($this->app->db, $sql);
+
+		if ($row === null) {
+			throw new AdminNotFoundException(
+				sprintf(
+					Store::_('A product with an id of ‘%s’ does not exist.'),
+					$this->id
+				)
+			);
+		}
+
+		$product_class = SwatDBClassMap::get('StoreProduct');
+		$product = new $product_class($row);
+		$product->setDatabase($this->app->db);
 
 		return $product;
 	}
@@ -736,13 +753,21 @@ class StoreProductDetails extends AdminIndex
 	{
 		$ds = new SwatDetailsStore($product);
 
-		ob_start();
-		$this->displayCategories($product->categories);
-		$ds->categories = ob_get_clean();
+		if (count($product->categories) === 0) {
+			$ds->categories = null;
+		} else {
+			ob_start();
+			$this->displayCategories($product->categories, true);
+			$ds->categories = ob_get_clean();
+		}
 
-		ob_start();
-		$this->displayCategories($product->featured_categories);
-		$ds->featured_categories = ob_get_clean();
+		if (count($product->featured_categories) === 0) {
+			$ds->featured_categories = null;
+		} else {
+			ob_start();
+			$this->displayCategories($product->featured_categories);
+			$ds->featured_categories = ob_get_clean();
+		}
 
 		// format the bodytext
 		$ds->bodytext = SwatString::condense(SwatString::toXHTML(
@@ -801,6 +826,62 @@ class StoreProductDetails extends AdminIndex
 	}
 
 	// }}}
+	// {{{ protected function buildProductNavBar()
+
+	protected function buildProductNavBar($product)
+	{
+		if ($this->category_id !== null) {
+			// use category navbar
+			$this->navbar->popEntry();
+			$this->navbar->addEntry(new SwatNavBarEntry(
+				Store::_('Product Categories'), 'Category'));
+
+			$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
+				'getCategoryNavbar', array($this->category_id));
+
+			foreach ($cat_navbar_rs as $entry)
+				$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
+					'Category/Index?id='.$entry->id));
+		}
+
+		$this->navbar->addEntry(new SwatNavBarEntry($product->title));
+	}
+
+	// }}}
+	// {{{ protected function displayCategories()
+
+	protected function displayCategories(StoreCategoryWrapper $categories,
+		$display_canonical = false)
+	{
+		$primary_category = $this->product->primary_category;
+		$multiple_categories = (count($categories) > 1);
+
+		echo '<ul class="product-categories">';
+
+		foreach ($categories as $category) {
+			$navbar = new SwatNavBar();
+			$navbar->separator = ' › ';
+			$navbar->addEntries($category->getAdminNavBarEntries());
+
+			echo '<li>';
+			$navbar->display();
+
+			if ($display_canonical &&
+				$multiple_categories &&
+				$category->id === $primary_category->id) {
+				$span_tag = new SwatHtmlTag('span');
+				$span_tag->class = 'canonical-category';
+				$span_tag->setContent(Store::_('Canonical Path'));
+				$span_tag->display();
+			}
+
+			echo '</li>';
+		}
+
+		echo '</ul>';
+	}
+
+	// }}}
 	// {{{ private function buildProduct()
 
 	private function buildProduct()
@@ -834,11 +915,6 @@ class StoreProductDetails extends AdminIndex
 		$toolbar = $prototype_tool_link->parent;
 		$toolbar->remove($prototype_tool_link);
 
-		$category_path = null;
-		$first_category = $product->categories->getFirst();
-		if ($first_category !== null)
-			$category_path = $first_category->path.'/';
-
 		foreach ($this->regions as $region) {
 			$locale = $region->getFirstLocale();
 			if ($locale !== null) {
@@ -856,14 +932,12 @@ class StoreProductDetails extends AdminIndex
 				if ($region_count > 1) {
 					$tool_link->value = $locale->getURLLocale().
 						$this->app->config->store->path.
-						$category_path.
-						$product->shortname;
+						$product->path;
 
 					$tool_link->title.= sprintf(' (%s)', $region->title);
 				} else {
 					$tool_link->value = $this->app->config->store->path.
-						$category_path.
-						$product->shortname;
+						$product->path;
 				}
 
 				// since we check the VisibleProductView for this, this will
@@ -875,56 +949,6 @@ class StoreProductDetails extends AdminIndex
 				$toolbar->packEnd($tool_link);
 			}
 		}
-	}
-
-	// }}}
-	// {{{ private function displayCategories()
-
-	private function displayCategories($categories)
-	{
-		if (count($categories) == 1) {
-			$category = $categories->getFirst();
-			$navbar = new SwatNavBar();
-			$navbar->addEntries($category->getAdminNavBarEntries());
-			$navbar->display();
-
-		// multiple categories, show in list
-		} elseif (count($categories) > 1) {
-			echo '<ul>';
-
-			foreach ($categories as $category) {
-				$navbar = new SwatNavBar();
-				$navbar->addEntries($category->getAdminNavBarEntries());
-
-				echo '<li>';
-				$navbar->display();
-				echo '</li>';
-			}
-
-			echo '</ul>';
-		}
-	}
-
-	// }}}
-	// {{{ protected function buildProductNavBar()
-
-	protected function buildProductNavBar($product)
-	{
-		if ($this->category_id !== null) {
-			// use category navbar
-			$this->navbar->popEntry();
-			$this->navbar->addEntry(new SwatNavBarEntry(
-				Store::_('Product Categories'), 'Category'));
-
-			$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
-				'getCategoryNavbar', array($this->category_id));
-
-			foreach ($cat_navbar_rs as $entry)
-				$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
-					'Category/Index?id='.$entry->id));
-		}
-
-		$this->navbar->addEntry(new SwatNavBarEntry($product->title));
 	}
 
 	// }}}

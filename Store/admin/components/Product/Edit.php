@@ -74,16 +74,37 @@ class StoreProductEdit extends AdminDBEdit
 
 	protected function initProduct()
 	{
-		$class_name = SwatDBClassMap::get('StoreProduct');
-		$this->product = new $class_name();
-		$this->product->setDatabase($this->app->db);
-
-		if ($this->id !== null) {
-			if (!$this->product->load($this->id))
-				throw new AdminNotFoundException(sprintf(
-					Store::_('A product with an id of ‘%d’ does not exist.'),
-					$this->id));
+		if ($this->id === null) {
+			throw new AdminNotFoundException(
+				Store::_('No product id specified.')
+			);
 		}
+
+		$sql = sprintf(
+			'select Product.*, ProductPrimaryCategoryView.primary_category,
+				getCategoryPath(ProductPrimaryCategoryView.primary_category)
+					as path
+			from Product
+				left outer join ProductPrimaryCategoryView
+					on Product.id = ProductPrimaryCategoryView.product
+			where id = %s',
+			$this->app->db->quote($this->id, 'integer')
+		);
+
+		$row = SwatDB::queryRow($this->app->db, $sql);
+
+		if ($row === null) {
+			throw new AdminNotFoundException(
+				sprintf(
+					Store::_('A product with an id of ‘%s’ does not exist.'),
+					$this->id
+				)
+			);
+		}
+
+		$product_class = SwatDBClassMap::get('StoreProduct');
+		$this->product = new $product_class($row);
+		$this->product->setDatabase($this->app->db);
 	}
 
 	// }}}
@@ -324,19 +345,54 @@ class StoreProductEdit extends AdminDBEdit
 
 		// orphan product warning
 		if ($this->id === null && $this->category_id === null) {
-			$message = new SwatMessage(Store::_(
-				'This product is not being created inside a category.'),
-				'warning');
+			$message = new SwatMessage(
+				Store::_(
+					'This product is not being created inside a category.'
+				),
+				'warning'
+			);
 
 			$message->secondary_content = Store::_(
-				'Though it may be possible to purchase from this product on '.
-				'the front-end, it will not be possible to browse to this '.
-				'product on the front-end.');
+				'It may be possible to purchase this product on the front-'.
+				'end (e.g. through the quick-order), but browsing to this '.
+				'product will not be possible.'
+			);
 
-			$this->ui->getWidget('orphan_note')->add($message,
-				SwatMessageDisplay::DISMISS_OFF);
+			$this->ui->getWidget('edit_warnings')->add(
+				$message,
+				SwatMessageDisplay::DISMISS_OFF
+			);
 		}
 
+		// multiple category warning
+		if (count($this->product->categories) > 1) {
+			$message = new SwatMessage(
+				SwatString::minimizeEntities(
+					Store::_(
+						'This product belongs to multiple categories.'
+					)
+				),
+				'warning'
+			);
+
+			ob_start();
+			echo '<p>';
+			echo SwatString::minimizeEntities(
+				Store::_('Changes to product content will appear in:')
+			);
+			echo '</p>';
+
+			$this->displayCategories($this->product->categories, true);
+			$message->secondary_content = ob_get_clean();
+
+			$message->content_type = 'text/xml';
+
+			$this->ui->getWidget('edit_warnings')->add(
+				$message,
+				SwatMessageDisplay::DISMISS_OFF
+			);
+		}
+		
 		$form = $this->ui->getWidget('edit_form');
 		if ($this->id === null && !$form->isProcessed())
 			$this->smartDefaultCatalog();
@@ -490,6 +546,40 @@ class StoreProductEdit extends AdminDBEdit
 		foreach ($attributes_field->replicators as $id => $title)
 			$attributes_field->getWidget('attributes', $id)->values =
 				$attribute_values;
+	}
+
+	// }}}
+	// {{{ protected function displayCategories()
+
+	protected function displayCategories(StoreCategoryWrapper $categories,
+		$display_canonical = false)
+	{
+		$primary_category = $this->product->primary_category;
+		$multiple_categories = (count($categories) > 1);
+
+		echo '<ul class="product-categories">';
+
+		foreach ($categories as $category) {
+			$navbar = new SwatNavBar();
+			$navbar->separator = ' › ';
+			$navbar->addEntries($category->getAdminNavBarEntries());
+
+			echo '<li>';
+			$navbar->display();
+
+			if ($display_canonical &&
+				$multiple_categories &&
+				$category->id === $primary_category->id) {
+				$span_tag = new SwatHtmlTag('span');
+				$span_tag->class = 'canonical-category';
+				$span_tag->setContent(Store::_('Canonical Path'));
+				$span_tag->display();
+			}
+
+			echo '</li>';
+		}
+
+		echo '</ul>';
 	}
 
 	// }}}
