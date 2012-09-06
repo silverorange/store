@@ -94,7 +94,7 @@ class StoreCartLightbox extends SwatControl
 		$mobile_close = new SwatHtmlTag('a');
 		$mobile_close->setContent(Store::_('Close'));
 		$mobile_close->classes = array('button',
-			'lightbox-close', 'mobile-only');
+			'store-close-cart', 'mobile-only');
 
 		$mobile_close->display();
 
