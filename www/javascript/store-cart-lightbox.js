@@ -262,6 +262,11 @@ StoreCartLightbox.prototype.activateLinks = function()
 		YAHOO.util.Event.on(close_buttons, 'click',
 			this.close, this, true);
 	}
+
+	if (document.getElementById('store_cart_lightbox_close_button')) {
+		YAHOO.util.Event.on('store_cart_lightbox_close_button', 'click',
+			this.close, this, true);
+	}
 }
 
 // }}}
