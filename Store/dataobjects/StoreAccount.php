@@ -96,6 +96,11 @@ class StoreAccount extends SiteAccount
 	 */
 	public $phone;
 
+	/**
+	 * @var float
+	 */
+	public $available_credit;
+
 	// }}}
 	// {{{ public function setDefaultBillingAddress()
 
@@ -215,6 +220,14 @@ class StoreAccount extends SiteAccount
 		}
 
 		return $payment_method;
+	}
+
+	// }}}
+	// {{{ public function canPayOnAccount()
+
+	public function canPayOnAccount()
+	{
+		return ($this->available_credit > 0);
 	}
 
 	// }}}

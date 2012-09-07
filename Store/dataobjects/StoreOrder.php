@@ -132,9 +132,18 @@ class StoreOrder extends SwatDBDataObject
 	public $tax_total;
 
 	/**
+	 * Gift certificate, merchandise credit or coupon total
+	 *
+	 * @var float
+	 */
+	public $voucher_total;
+
+	/**
 	 * Whether or not this order is cancelled
 	 *
 	 * @var boolean
+	 *
+	 * @deprecated Use {@link StoreOrder::$cancel_date} instead.
 	 */
 	public $cancelled = false;
 

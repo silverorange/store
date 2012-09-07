@@ -22,7 +22,7 @@ require_once 'Store/dataobjects/StoreRegion.php';
  * Web application class for a store
  *
  * @package   Store
- * @copyright 2005-2010 silverorange
+ * @copyright 2005-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreApplication extends SiteWebApplication
@@ -129,11 +129,20 @@ abstract class StoreApplication extends SiteWebApplication
 
 	protected function initModules()
 	{
-		$this->session->registerDataObject('account',
-			SwatDBClassMap::get('StoreAccount'));
+		$this->session->registerDataObject(
+			'account',
+			SwatDBClassMap::get('StoreAccount')
+		);
 
-		$this->session->registerDataObject('order',
-			SwatDBClassMap::get('StoreOrder'));
+		$this->session->registerDataObject(
+			'order',
+			SwatDBClassMap::get('StoreOrder')
+		);
+
+		$this->session->registerDataObject(
+			'vouchers',
+			SwatDBClassMap::get('StoreVoucherWrapper')
+		);
 
 		parent::initModules();
 

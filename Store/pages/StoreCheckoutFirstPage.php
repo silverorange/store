@@ -34,12 +34,25 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 		$pages = array(
 			'basic-info'       => new StoreCheckoutBasicInfoPage($page),
 			'billing-address'  => new StoreCheckoutBillingAddressPage($page),
-			'shipping-address' => new StoreCheckoutShippingAddressPage($page),
 			'payment-type'     => new StoreCheckoutPaymentMethodPage($page),
+			'shipping-address' => new StoreCheckoutShippingAddressPage($page),
 			'shipping-type'    => new StoreCheckoutShippingTypePage($page),
 		);
 
+		if ($this->isPayOnAccountEnabled()) {
+			$pages['pay-on-account'] = new StoreCheckoutPayOnAccountPage($page);
+		}
+
 		return $pages;
+	}
+
+	// }}}
+	// {{{ protected function isPayOnAccountEnabled()
+
+	protected function isPayOnAccountEnabled()
+	{
+		return ($this->app->session->isLoggedIn() &&
+			$this->app->session->account->canPayOnAccount());
 	}
 
 	// }}}

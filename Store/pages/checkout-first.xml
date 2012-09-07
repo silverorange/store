@@ -13,6 +13,12 @@
 	<widget class="SwatFieldset" id="payment_method_container">
 		<property name="title" translatable="yes">Payment Method</property>
 	</widget>
+	<widget class="SwatFieldset" id="pay_on_account_container">
+		<property name="title" translatable="yes">Approved Credit</property>
+	</widget>
+	<widget class="SwatFieldset" id="voucher_container">
+		<property name="title" translatable="yes">Gift Certificate, Merchandise Credit or Coupon</property>
+	</widget>
 	<widget class="SwatFieldset" id="shipping_type_container">
 		<property name="title" translatable="yes">Shipping</property>
 	</widget>
