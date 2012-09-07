@@ -8,19 +8,18 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * Payment type shortnames are by convention:
  *
  * <pre>
- * Shortname    | Description         | Type              | Region
- * -------------+---------------------+-------------------+--------
- * card         | credit or debit card| see CardType      |
- * paypal       | PayPal              | online payment    |
- * cheque       | cheque              | cheque            |
- * invoice      | invoice             | printed invoice   |
- * cod          | cash on delivery    | cash on delivery  |
- * gift         | gift certificate    | gift certificate  |
- * credit       | merchandise credit  | merchandise credit|
+ * Shortname    | Description
+ * -------------+------------------------------------------------------------
+ * card         | credit or debit card, more specific types in StoreCardType
+ * paypal       | PayPal express checkout
+ * check        | mailed cheque
+ * cod          | cash on delivery
+ * account      | pay on account balance (managed or unmanaged)
+ * voucher      | code based gift certificate, merchandise credit or coupon
  * </pre>
  *
  * @package   Store
- * @copyright 2006-2008 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StorePaymentType extends SwatDBDataObject
