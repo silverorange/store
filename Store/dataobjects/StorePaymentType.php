@@ -193,6 +193,22 @@ class StorePaymentType extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function isVoucher()
+
+	public function isVoucher()
+	{
+		return ($this->shortname === 'voucher');
+	}
+
+	// }}}
+	// {{{ public function isAccount()
+
+	public function isAccount()
+	{
+		return ($this->shortname === 'account');
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()

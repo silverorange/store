@@ -431,6 +431,49 @@ abstract class StoreCheckoutCart extends StoreCart
 	}
 
 	// }}}
+	// {{{ public function getVoucherTotal()
+
+	public function getVoucherTotal(
+		StoreAddress $billing_address = null,
+		StoreAddress $shipping_address = null)
+	{
+		$cache_key = 'compost-voucher-total';
+
+		if ($this->cachedValueExists($cache_key)) {
+			$total = $this->getCachedValue($cache_key);
+		} else {
+			$total = 0;
+
+			if (isset($this->app->session->vouchers) &&
+				count($this->app->session->vouchers) > 0) {
+
+				foreach ($this->app->session->vouchers as $voucher) {
+					$total += $voucher->amount;
+				}
+
+				$cart_total = 0;
+				$cart_total += $this->getItemTotal();
+
+				$cart_total += $this->getTaxTotal(
+					$billing_address,
+					$shipping_address
+				);
+
+				$cart_total += $this->getShippingTotal(
+					$billing_address,
+					$shipping_address
+				);
+
+				$total = min($total, $cart_total);
+			}
+
+			$this->setCachedValue($cache_key, $total);
+		}
+
+		return $total;
+	}
+
+	// }}}
 	// {{{ protected function calculateShippingRate()
 
 	protected function calculateShippingRate($item_total,

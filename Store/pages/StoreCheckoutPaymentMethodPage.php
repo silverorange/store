@@ -785,7 +785,19 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	protected function getEditablePaymentMethods($payment_methods)
 	{
-		return $payment_methods;
+		$wrapper = SwatDBClassMap::get('StoreOrderPaymentMethodWrapper');
+
+		$editable_methods = new $wrapper();
+		$editable_methods->setDatabase($this->ap->db);
+
+		foreach ($payment_methods as $payment_method) {
+			if (!$payment_method->payment_type->isAccount() &&
+				!$payment_method->payment_type->isVoucher()) {
+				$editable_methods->add($payment_method);
+			}
+		}
+
+		return $editable_methods;
 	}
 
 	// }}}
