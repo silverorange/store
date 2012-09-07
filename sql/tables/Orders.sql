@@ -24,6 +24,7 @@ create table Orders (
 	shipping_total numeric(11, 2) null, -- null when shipping was not calculated
 	surcharge_total numeric(11, 2) not null,
 	tax_total numeric(11, 2) not null,
+	voucher_total numeric(11,2) not null,
 
 	ad integer default null references Ad(id),
 	locale char(5) not null references Locale(id),
