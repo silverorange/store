@@ -6,7 +6,6 @@ require_once 'Site/dataobjects/SiteAccount.php';
 require_once 'SwatDB/SwatDBDataObject.php';
 require_once 'Store/dataobjects/StoreAccountAddressWrapper.php';
 require_once 'Store/dataobjects/StoreAccountPaymentMethodWrapper.php';
-require_once 'Store/dataobjects/StoreInvoiceWrapper.php';
 require_once 'Store/dataobjects/StoreOrderWrapper.php';
 require_once 'Store/dataobjects/StoreAccountWrapper.php';
 
@@ -75,7 +74,7 @@ require_once 'Store/dataobjects/StoreAccountWrapper.php';
  * </code>
  *
  * @package   Store
- * @copyright 2005-2009 silverorange
+ * @copyright 2005-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreAccountWrapper
  */
@@ -96,32 +95,6 @@ class StoreAccount extends SiteAccount
 	 * @var string
 	 */
 	public $phone;
-
-	// }}}
-	// {{{ public function getPendingInvoices()
-
-	/**
-	 * Gets order invoices for this account that have not yet been filled
-	 *
-	 * @return StoreInvoiceWrapper invoices for this account that have not
-	 *                              yet been filled.
-	 */
-	public function getPendingInvoices()
-	{
-		$this->checkDB();
-
-		$sql = sprintf('select Invoice.* from Invoice
-			inner join InvoiceItemCountView on
-				InvoiceItemCountView.invoice = Invoice.id and
-				Invoice.account = %s
-			where Invoice.id not in
-				(select invoice from Orders where invoice is not null)
-			order by id asc',
-			$this->db->quote($this->id, 'integer'));
-
-		return SwatDB::query($this->db, $sql,
-			SwatDBClassMap::get('StoreInvoiceWrapper'));
-	}
 
 	// }}}
 	// {{{ public function setDefaultBillingAddress()
@@ -314,25 +287,6 @@ class StoreAccount extends SiteAccount
 
 		return SwatDB::query($this->db, $sql,
 			SwatDBClassMap::get('StoreOrderWrapper'));
-	}
-
-	// }}}
-	// {{{ protected function loadInvoices()
-
-	/**
-	 * Loads StoreInvoice sub-data-objects for this StoreAccount
-	 *
-	 * This represents a set of invoices associated with this account.
-	 */
-	protected function loadInvoices()
-	{
-		$sql = sprintf('select * from Invoice
-			where account = %s
-			order by id asc',
-			$this->db->quote($this->id, 'integer'));
-
-		return SwatDB::query($this->db, $sql,
-			SwatDBClassMap::get('StoreInvoiceWrapper'));
 	}
 
 	// }}}

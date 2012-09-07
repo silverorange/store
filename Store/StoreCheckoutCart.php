@@ -13,7 +13,7 @@ require_once 'Store/dataobjects/StoreShippingType.php';
  * to all sites. It is intended to be extended on a per-site basis.
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreCartModule, StoreCart
  */
@@ -75,12 +75,6 @@ abstract class StoreCheckoutCart extends StoreCart
 	 */
 	public function checkoutEnabled()
 	{
-		// cart doesn't matter if we have an invoice
-		if (isset($this->app->session->order) &&
-			$this->app->session->order->isFromInvoice()) {
-			return true;
-		}
-
 		// no cart, no checkout
 		if (count($this->app->cart->checkout->getAvailableEntries()) <= 0) {
 			return false;

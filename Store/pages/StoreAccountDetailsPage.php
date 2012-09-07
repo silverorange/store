@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreAccount.php';
  * Page for viewing account details
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreAccount
  */
@@ -203,7 +203,6 @@ class StoreAccountDetailsPage extends SiteUiPage
 			$this->buildAccountDetails();
 
 		$this->buildSavedCartMessage();
-		$this->buildInvoices();
 
 		if ($this->ui->hasWidget('account_order_container'))
 			$this->buildOrders();
@@ -262,67 +261,6 @@ class StoreAccountDetailsPage extends SiteUiPage
 			$message_display = $this->ui->getWidget('message_display');
 			$message_display->add($message, SwatMessageDisplay::DISMISS_OFF);
 		}
-	}
-
-	// }}}
-	// {{{ protected function buildInvoices()
-
-	protected function buildInvoices()
-	{
-		$invoices = $this->app->session->account->getPendingInvoices();
-		$count = count($invoices);
-
-		if ($count > 0) {
-			$message = new SwatMessage(sprintf(Store::ngettext(
-				'Your account has a pending invoice:',
-				'Your account has %s pending invoices:',
-				$count), $count));
-
-			$message->content_type = 'text/xml';
-
-			ob_start();
-			$this->displayInvoices($invoices);
-			$message->secondary_content.= ob_get_clean();
-
-			$message_display = $this->ui->getWidget('message_display');
-			$message_display->add($message, SwatMessageDisplay::DISMISS_OFF);
-		}
-	}
-
-	// }}}
-	// {{{ protected function displayInvoices()
-
-	protected function displayInvoices($invoices)
-	{
-		$ul = new SwatHtmlTag('ul');
-		$li = new SwatHtmlTag('li');
-
-		$ul->open();
-
-		foreach ($invoices as $invoice) {
-			$li->open();
-			$this->displayInvoice($invoice);
-			$li->close();
-		}
-
-		$ul->close();
-	}
-
-	// }}}
-	// {{{ protected function displayInvoice()
-
-	protected function displayInvoice($invoice)
-	{
-		$createdate = clone $invoice->createdate;
-		$createdate->convertTZ($this->app->default_time_zone);
-
-		$a = new SwatHtmlTag('a');
-		$a->href = sprintf('account/invoice%s', $invoice->id);
-		$a->setContent($invoice->getTitle());
-		$a->display();
-
-		echo ' - ', SwatString::minimizeEntities(
-			$createdate->formatLikeIntl(SwatDate::DF_DATE));
 	}
 
 	// }}}

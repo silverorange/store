@@ -52,62 +52,6 @@
 		</widget>
 
 		<!-- }}} -->
-		<!-- {{{ Invoices -->
-
-		<widget class="SwatFrame" id="invoices_frame">
-			<property name="title" translatable="yes">Invoices</property>
-			<widget class="SwatForm" id="invoice_form">
-				<widget class="SwatToolbar" id="invoice_toolbar">
-					<widget class="SwatToolLink">
-						<property name="title" translatable="yes">Add an Invoice</property>
-						<property name="link">Invoice/Edit?account=%s</property>
-						<property name="stock_id">add</property>
-					</widget>
-				</widget>
-				<widget class="SwatTableView" id="invoices_view">
-					<object class="SwatTableViewCheckboxColumn" id="checkbox">
-						<object class="SwatCheckboxCellRenderer" id="items">
-							<property name="value" type="data">id</property>
-						</object>
-					</object>
-					<object class="AdminTableViewOrderableColumn" id="id">
-						<property name="title" translatable="yes">Invoice #</property>
-						<object class="AdminTitleLinkCellRenderer">
-							<property name="text">%s</property>
-							<property name="value" type="data">id</property>
-							<property name="link">Invoice/Details?id=%s</property>
-							<property name="link_value[]" type="data">id</property>
-						</object>
-					</object>
-					<object class="AdminTableViewOrderableColumn" id="createdate">
-						<property name="title" translatable="yes">Created</property>
-						<object class="SwatDateCellRenderer">
-							<property name="date" type="data">createdate</property>
-						</object>
-					</object>
-					<object class="AdminTableViewOrderableColumn" id="subtotal">
-						<property name="title" translatable="yes">Subtotal</property>
-						<object class="SwatMoneyCellRenderer">
-							<property name="value" type="data">subtotal</property>
-							<property name="locale" type="data">locale.id</property>
-						</object>
-					</object>
-					<object class="SwatTableViewColumn" id="pending">
-						<property name="title" translatable="yes">Pending</property>
-						<object class="SwatBooleanCellRenderer">
-							<property name="value" type="data">is_pending</property>
-						</object>
-					</object>
-				</widget>
-				<widget class="SwatActions" id="invoice_actions">
-					<widget class="SwatActionItem" id="invoice_delete">
-						<property name="title" translatable="yes">delete…</property>
-					</widget>
-				</widget>
-			</widget>
-		</widget>
-
-		<!-- }}} -->
 		<!-- {{{ Orders -->
 
 		<widget class="SwatFrame" id="orders_frame">

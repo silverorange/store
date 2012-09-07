@@ -1111,10 +1111,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	protected function buildOrder()
 	{
-		if ($this->app->session->order->isFromInvoice())
-			$this->createOrderFromInvoice();
-		else
-			$this->createOrder();
+		$this->createOrder();
 	}
 
 	// }}}
@@ -1217,10 +1214,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$items_view->getRow('surcharge')->value = $order->surcharge_total;
 
 		$items_view->getRow('total')->value = $order->total;
-
-		// invoice the items can not be edited
-		if ($this->app->session->order->isFromInvoice())
-			$this->ui->getWidget('item_link')->visible = false;
 	}
 
 	// }}}
@@ -1554,48 +1547,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$order_item->setDatabase($this->app->db);
 			$order_item->setAvailableItemCache($region, $entry->item);
 			$order_item->setItemCache($entry->item);
-			$order->items->add($order_item);
-		}
-	}
-
-	// }}}
-	// {{{ protected function createOrderFromInvoice()
-
-	protected function createOrderFromInvoice()
-	{
-		$order = $this->app->session->order;
-		$invoice = $order->invoice;
-
-		$this->createOrderItemsFromInvoice($order);
-
-		$order->locale = $this->app->getLocale();
-
-		$order->item_total = $invoice->getItemTotal();
-
-		$order->shipping_total = $invoice->getShippingTotal(
-			$order->billing_address, $order->shipping_address,
-			$this->app->getRegion());
-
-		$order->tax_total = $invoice->getTaxTotal($order->billing_address,
-			 $order->shipping_address, $order->payment_methods);
-
-		$order->total = $invoice->getTotal($order->billing_address,
-			$order->shipping_address, $this->app->getRegion());
-
-		$order->ad = $this->app->app->ads->getAd();
-	}
-
-	// }}}
-	// {{{ protected function createOrderItemsFromInvoice()
-
-	protected function createOrderItemsFromInvoice($order)
-	{
-		$wrapper = SwatDBClassMap::get('StoreOrderItemWrapper');
-		$order->items = new $wrapper();
-
-		foreach ($order->invoice->items as $invoice_item) {
-			$order_item = $invoice_item->createOrderItem();
-			$order_item->setDatabase($this->app->db);
 			$order->items->add($order_item);
 		}
 	}
