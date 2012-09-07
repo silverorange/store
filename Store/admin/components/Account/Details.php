@@ -5,13 +5,12 @@ require_once 'Store/StoreAddressCellRenderer.php';
 require_once 'Store/StorePaymentMethodCellRenderer.php';
 require_once 'Store/dataobjects/StoreAccountPaymentMethodWrapper.php';
 require_once 'Store/dataobjects/StoreAccount.php';
-require_once 'Store/dataobjects/StoreInvoiceWrapper.php';
 
 /**
  * Details page for accounts
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountDetails extends SiteAccountDetails
@@ -34,14 +33,6 @@ class StoreAccountDetails extends SiteAccountDetails
 		$view->setDefaultOrderbyColumn(
 			$view->getColumn('createdate'),
 			SwatTableViewOrderableColumn::ORDER_BY_DIR_DESCENDING);
-
-		if ($this->ui->hasWidget('invoices_view')) {
-			// set a default order on the invoice table view
-			$view = $this->ui->getWidget('invoices_view');
-			$view->setDefaultOrderbyColumn(
-				$view->getColumn('createdate'),
-				SwatTableViewOrderableColumn::ORDER_BY_DIR_DESCENDING);
-		}
 	}
 
 	// }}}
@@ -52,10 +43,6 @@ class StoreAccountDetails extends SiteAccountDetails
 	protected function processActions(SwatTableView $view, SwatActions $actions)
 	{
 		switch ($view->id) {
-		case 'invoices_view':
-			$this->processInvoiceActions($view, $actions);
-			return;
-
 		case 'addresses_view':
 			$this->processAddressActions($view, $actions);
 			return;
@@ -63,19 +50,6 @@ class StoreAccountDetails extends SiteAccountDetails
 		case 'payment_methods_view':
 			$this->processPaymentMethodActions($view, $actions);
 			return;
-		}
-	}
-
-	// }}}
-	// {{{ private function processInvoiceActions()
-
-	private function processInvoiceActions($view, $actions)
-	{
-		switch ($actions->selected->id) {
-		case 'invoice_delete':
-			$this->app->replacePage('Invoice/Delete');
-			$this->app->getPage()->setItems($view->getSelection());
-			break;
 		}
 	}
 
@@ -114,15 +88,10 @@ class StoreAccountDetails extends SiteAccountDetails
 	{
 		parent::buildInternal();
 
-		if ($this->ui->hasWidget('invoice_toolbar')) {
-			$toolbar = $this->ui->getWidget('invoice_toolbar');
-			$toolbar->setToolLinkValues($this->id);
-		}
-
 		$toolbar = $this->ui->getWidget('address_details_toolbar');
 		$toolbar->setToolLinkValues($this->id);
 
-		// set default time zone for orders & invoices
+		// set default time zone for orders
 		$this->setTimeZone();
 	}
 
@@ -136,14 +105,6 @@ class StoreAccountDetails extends SiteAccountDetails
 
 		$date_renderer = $date_column->getRendererByPosition();
 		$date_renderer->display_time_zone = $this->app->default_time_zone;
-
-		if ($this->ui->hasWidget('invoices_view')) {
-			$date_column =
-				$this->ui->getWidget('invoices_view')->getColumn('createdate');
-
-			$date_renderer = $date_column->getRendererByPosition();
-			$date_renderer->display_time_zone = $this->app->default_time_zone;
-		}
 	}
 
 	// }}}
@@ -152,8 +113,6 @@ class StoreAccountDetails extends SiteAccountDetails
 	protected function getTableModel(SwatView $view)
 	{
 		switch ($view->id) {
-		case 'invoices_view':
-			return $this->getInvoicesTableModel($view);
 		case 'orders_view':
 			return $this->getOrdersTableModel($view);
 		case 'addresses_view':
@@ -161,33 +120,6 @@ class StoreAccountDetails extends SiteAccountDetails
 		case 'payment_methods_view':
 			return $this->getPaymentMethodsTableModel($view);
 		}
-	}
-
-	// }}}
-	// {{{ protected function getInvoicesTableModel()
-
-	protected function getInvoicesTableModel(SwatTableView $view)
-	{
-		$sql = 'select * from Invoice where account = %s order by %s';
-
-		$sql = sprintf($sql,
-			$this->app->db->quote($this->id, 'integer'),
-			$this->getOrderByClause($view,
-				'Invoice.createdate desc, Invoice.id'));
-
-		$invoices =  SwatDB::query($this->app->db, $sql,
-			SwatDBClassMap::get('StoreInvoiceWrapper'));
-
-		$store = new SwatTableStore();
-
-		foreach ($invoices as $invoice) {
-			$ds = new SwatDetailsStore($invoice);
-			$ds->subtotal = $invoice->getSubtotal();
-			$ds->is_pending = $invoice->isPending();
-			$store->add($ds);
-		}
-
-		return $store;
 	}
 
 	// }}}

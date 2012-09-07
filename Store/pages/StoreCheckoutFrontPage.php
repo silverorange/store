@@ -11,29 +11,11 @@ require_once 'Store/pages/StoreCheckoutPage.php';
  */
 class StoreCheckoutFrontPage extends StoreCheckoutPage
 {
-	// {{{ protected properties
-
-	/**
-	 * @var integer
-	 */
-	protected $invoice_id = null;
-
-	// }}}
 	// {{{ public function getUiXml()
 
 	public function getUiXml()
 	{
 		return 'Store/pages/checkout-front.xml';
-	}
-
-	// }}}
-	// {{{ protected function getArgumentMap()
-
-	protected function getArgumentMap()
-	{
-		return array(
-			'invoice_id' => array(0, 0),
-		);
 	}
 
 	// }}}
@@ -56,23 +38,7 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
 			$this->initDataObjects();
 			$this->resetProgress();
 			$this->updateProgress();
-
-			// find the invoice if we have an invoice id
-			$this->app->session->order->invoice = null;
-			if ($this->invoice_id !== null) {
-				$account = $this->app->session->account;
-				$invoice = $account->invoices->getByIndex($this->invoice_id);
-
-				if ($invoice != null) {
-					$this->app->session->order->invoice = $invoice;
-				}
-			}
-
 			$this->relocate();
-		}
-
-		if (intval($this->getArgument('invoice_id')) != 0) {
-			$this->invoice_id = $invoice_id;
 		}
 
 		parent::init();

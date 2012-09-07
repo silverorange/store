@@ -16,7 +16,6 @@ require_once 'Store/dataobjects/StorePaymentMethodTransactionWrapper.php';
 require_once 'Store/dataobjects/StoreShippingType.php';
 require_once 'Store/dataobjects/StoreOrderItemWrapper.php';
 require_once 'Store/dataobjects/StoreLocale.php';
-require_once 'Store/dataobjects/StoreInvoice.php';
 
 /**
  * @package   Store
@@ -332,19 +331,6 @@ class StoreOrder extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ public function isFromInvoice()
-
-	/**
-	 * Whether this order is generated from an invoice
-	 *
-	 * @return boolean true if this order is from an invoice.
-	 */
-	public function isFromInvoice()
-	{
-		return ($this->getInternalValue('invoice') !== null);
-	}
-
-	// }}}
 	// {{{ public function getConfirmationEmailAddress()
 
 	/**
@@ -376,6 +362,7 @@ class StoreOrder extends SwatDBDataObject
 	{
 		// TODO: remove this
 		$this->registerDeprecatedProperty('previous_attempt');
+		$this->registerDeprecatedProperty('invoice');
 
 		$this->registerInternalProperty('status');
 		$this->registerInternalProperty('account',
@@ -398,9 +385,6 @@ class StoreOrder extends SwatDBDataObject
 
 		$this->registerInternalProperty('instance',
 			SwatDBClassMap::get('SiteInstance'));
-
-		$this->registerInternalProperty('invoice',
-			SwatDBClassMap::get('StoreInvoice'));
 
 		$this->registerDateProperty('createdate');
 		$this->registerDateProperty('cancel_date');

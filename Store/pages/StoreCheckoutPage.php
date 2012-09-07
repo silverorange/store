@@ -187,22 +187,6 @@ abstract class StoreCheckoutPage extends SiteUiPage
 	}
 
 	// }}}
-
-	// build phase
-	// {{{ protected function buildInternal()
-
-	protected function buildInternal()
-	{
-		parent::buildInternal();
-
-		if ($this->app->session->order->isFromInvoice()) {
-			$entry = $this->layout->navbar->getEntryByPosition(1);
-			$entry->link = sprintf('checkout/invoice%s',
-				$this->app->session->order->invoice->id);
-		}
-	}
-
-	// }}}
 }
 
 ?>

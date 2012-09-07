@@ -27,7 +27,6 @@ create table Orders (
 
 	ad integer default null references Ad(id),
 	locale char(5) not null references Locale(id),
-	invoice integer null references Invoice(id),
 	instance integer default null references Instance(id),
 
 	-- whether this order has been processed by the cron job that inserts popular products
