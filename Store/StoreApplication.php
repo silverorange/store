@@ -17,6 +17,7 @@ require_once 'Store/StoreCheckoutModule.php';
 require_once 'Store/StoreMailChimpModule.php';
 require_once 'SwatDB/SwatDBClassMap.php';
 require_once 'Store/dataobjects/StoreRegion.php';
+require_once 'Store/dataobjects/StoreVoucherWrapper.php';
 
 /**
  * Web application class for a store
