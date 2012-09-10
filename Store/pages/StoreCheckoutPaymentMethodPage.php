@@ -788,7 +788,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$wrapper = SwatDBClassMap::get('StoreOrderPaymentMethodWrapper');
 
 		$editable_methods = new $wrapper();
-		$editable_methods->setDatabase($this->ap->db);
+		$editable_methods->setDatabase($this->app->db);
 
 		foreach ($payment_methods as $payment_method) {
 			if (!$payment_method->payment_type->isAccount() &&
