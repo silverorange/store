@@ -9,7 +9,7 @@ require_once 'Store/StoreTotalRow.php';
  * @package   Store
  * @copyright 2006-2012 silverorange
  */
-class CompostCreditRow extends StoreTotalRow
+class StoreVoucherRow extends StoreTotalRow
 {
 	// {{{ public function __construct()
 
@@ -21,7 +21,7 @@ class CompostCreditRow extends StoreTotalRow
 
 		$this->remove_button = new SwatButton();
 		$this->remove_button->parent = $this;
-		$this->remove_button->title = 'Remove';
+		$this->remove_button->title = Store::_('Remove');
 		$this->remove_button->classes[] = 'compact-button';
 		$this->remove_button->classes[] = 'store-remove';
 	}
