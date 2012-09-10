@@ -83,9 +83,10 @@ class StoreVoucher extends SwatDBDataObject
 			$sql = sprintf(
 				'select * from Voucher
 				where lower(Voucher.code) = lower(%s)
-					and used = %s and instance = %s',
+					and used_date %s %s and instance = %s',
 				$this->db->quote($code, 'text'),
-				$this->db->quote(false, 'boolean'),
+				SwatDB::equalityOperator(null),
+				$this->db->quote(null, 'date'),
 				$this->db->quote($instance->id, 'integer')
 			);
 
