@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatFormField" id="pay_on_account_field">
+		<property name="show_colon" type="boolean">false</property>
+		<widget class="SwatRadioTable" id="pay_on_account_list">
+			<property name="value">all</property>
+		</widget>
+	</widget>
+	<widget class="SwatContentBlock" id="pay_on_account_note">
+		<property name="content_type">text/xml</property>
+		<property name="content" translatable="yes"><![CDATA[<strong class="small-print">When paying with approved credit, additional payment details are not required below.</strong>]]></property>
+	</widget>
+</swatml>
