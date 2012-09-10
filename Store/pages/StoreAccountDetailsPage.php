@@ -313,12 +313,20 @@ class StoreAccountDetailsPage extends SiteUiPage
 		$createdate->convertTZ($this->app->default_time_zone);
 
 		$a = new SwatHtmlTag('a');
-		$a->href = sprintf('account/order%s', $order->id);
+		$a->href = $this->getOrderDetailsURI($order);
 		$a->setContent($order->getTitle());
 		$a->display();
 
-		echo ' - ', SwatString::minimizeEntities(
+		echo ' - '.SwatString::minimizeEntities(
 			$createdate->format(SwatDate::DF_DATE));
+	}
+
+	// }}}
+	// {{{ protected function getOrderDetailsURI()
+
+	protected function getOrderDetailsURI(StoreOrder $order)
+	{
+		return sprintf('account/order%s', $order->id);
 	}
 
 	// }}}
