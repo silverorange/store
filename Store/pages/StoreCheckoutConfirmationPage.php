@@ -1413,7 +1413,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	// }}}
 	// {{{ protected function displayNewPaymentLinks()
 
-	protected function displayNewPaymentLinks($order)
+	protected function displayNewPaymentLinks(StoreOrder $order)
 	{
 		$links = $this->getNewPaymentLinks($order);
 
