@@ -18,6 +18,9 @@ create table OrderPaymentMethod (
 	card_inception date,
 	card_issue_number varchar(4),
 
+	voucher_code varchar(100),
+	voucher_type varchar(50),
+
 	payer_id varchar(255),
 	payer_email varchar(255),
 

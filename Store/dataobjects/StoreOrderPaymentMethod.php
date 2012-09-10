@@ -7,12 +7,13 @@ require_once 'SwatI18N/SwatI18NLocale.php';
  * A payment method for an order for an e-commerce Web application
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StorePaymentMethod
  * @see       StorePaymentMethodTransaction
  * @see       StorePaymentType
  * @see       StoreCardType
+ * @see       StoreVoucher
  */
 class StoreOrderPaymentMethod extends StorePaymentMethod
 {
@@ -57,6 +58,24 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	 * @var integer
 	 */
 	public $displayorder;
+
+	/**
+	 * Additional field for voucher code
+	 *
+	 * Used for gift certificatess, merchandise credits and coupons.
+	 *
+	 * @var string
+	 */
+	public $voucher_code;
+
+	/**
+	 * Additional field for voucher type
+	 *
+	 * Used for gift certificatess, merchandise credits and coupons.
+	 *
+	 * @var integer
+	 */
+	public $voucher_type;
 
 	// }}}
 	// {{{ protected properties
@@ -314,17 +333,6 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	}
 
 	// }}}
-	// {{{ public function displayAmount()
-
-	public function displayAmount()
-	{
-		if ($this->amount !== null) {
-			$locale = SwatI18NLocale::get();
-			echo $locale->formatCurrency($this->amount);
-		}
-	}
-
-	// }}}
 	// {{{ protected function init()
 
 	protected function init()
@@ -354,6 +362,19 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	}
 
 	// }}}
+
+	// display methods
+	// {{{ public function displayAmount()
+
+	public function displayAmount()
+	{
+		if ($this->amount !== null) {
+			$locale = SwatI18NLocale::get();
+			echo $locale->formatCurrency($this->amount);
+		}
+	}
+
+	// }}}
 	// {{{ protected function displayCard()
 
 	protected function displayCard($passphrase)
@@ -372,8 +393,12 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 
 			if ($card_verification_value !== null) {
 				$has_cvv = true;
-				$cvv_span->setContent(sprintf('(CVV: %s)',
-					$card_verification_value));
+				$cvv_span->setContent(
+					sprintf(
+						Store::_('(CVV: %s)'),
+						$card_verification_value
+					)
+				);
 			}
 		}
 
@@ -382,6 +407,49 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 			echo ' ';
 			$cvv_span->display();
 		}
+	}
+
+	// }}}
+	// {{{ protected function displayInternal()
+
+	protected function displayInternal(
+		$display_details = true, $passphrase = null)
+	{
+		if ($this->payment_type->isVoucher()) {
+			$this->displayVoucher();
+		} else {
+			parent::displayInternal($display_details, $passphrase);
+		}
+	}
+
+	// }}}
+	// {{{ protected function displayVoucher()
+
+	protected function displayVoucher()
+	{
+		switch ($this->voucher_type) {
+		case 'gift-certificate':
+			$type = 'Gift Certificate';
+			break;
+
+		case 'merchandise-credit':
+			$type =  'Merchandise Voucher';
+			break;
+
+		case 'coupon':
+			$type =  'Coupon';
+			break;
+
+		default :
+			$type = 'Voucher';
+			break;
+		}
+
+		printf(
+			Store::_('%s #%s'),
+			$type,
+			$this->voucher_code
+		);
 	}
 
 	// }}}
