@@ -67,6 +67,11 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 		if ($this->ui->hasWidget('payment_amount_field')) {
 			$this->ui->getWidget('payment_amount_field')->visible = false;
 		}
+
+		if (!$this->isPayOnAccountEnabled() &&
+			$this->ui->hasWidget('pay_on_account_container')) {
+			$this->ui->getWidget('pay_on_account_container')->visible = false;
+		}
 	}
 
 	// }}}
