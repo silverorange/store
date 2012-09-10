@@ -1475,7 +1475,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	// }}}
 	// {{{ protected function displayPaymentMethodToolLink()
 
-	protected function displayPaymentMethodToolLink($payment_method)
+	protected function displayPaymentMethodToolLink(
+		StorePaymentMethod $payment_method)
 	{
 		$tag = $payment_method->getTag();
 
