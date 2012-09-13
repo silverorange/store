@@ -558,6 +558,7 @@ class StoreCategory extends SwatDBDataObject
 		$row = SwatDB::queryRow($this->db, $sql);
 		if ($row !== null) {
 			$this->initFromRow($row);
+			$this->setRegion($region);
 			$this->setInternalValue('path', $path);
 			$this->generatePropertyHashes();
 			$found = true;
