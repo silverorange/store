@@ -513,6 +513,42 @@ class StoreCategory extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function loadByShortname()
+
+	/**
+	 * Loads a category from its shortname
+	 *
+	 * @param string $shortname the shortname of the category to load.
+	 *
+	 * @return boolean true if the loading of this category was successful and
+	 *                  false if the category with the given shortname doesn't
+	 *                  exist.
+	 */
+	public function loadByShortname($shortname)
+	{
+		$this->checkDB();
+
+		$row = null;
+
+		if ($this->table !== null) {
+			$sql = sprintf('select * from %s where shortname = %s',
+				$this->table,
+				$this->db->quote($shortname));
+
+			$rs = SwatDB::query($this->db, $sql, null);
+			$row = $rs->fetchRow(MDB2_FETCHMODE_ASSOC);
+		}
+
+		if ($row === null)
+			return false;
+
+		$this->initFromRow($row);
+		$this->generatePropertyHashes();
+
+		return true;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
@@ -659,6 +695,42 @@ class StoreCategory extends SwatDBDataObject
 
 		return SwatDB::query($this->db, $sql,
 			SwatDBClassMap::get('SiteArticleWrapper'));
+	}
+
+	// }}}
+	// {{{ protected function loadSubCategories()
+
+	/**
+	 * Loads the sub-categories of this category
+	 *
+	 * @return StoreCategoryWrapper a recordset of sub-categories of the
+	 *                              specified category.
+	 */
+	protected function loadSubCategories()
+	{
+		$sql = 'select id, shortname, title
+			from Category
+			where parent = %s and id in (
+				select id from VisibleCategoryView
+				where region = %s or region is null
+			) order by displayorder, title';
+
+		if ($this->region === null)
+			throw new StoreException('Region not set on the category '.
+				'dataobject; call the setRegion() method.');
+
+		$sql = sprintf($sql,
+			$this->db->quote($this->id, 'integer'),
+			$this->db->quote($this->region->id, 'integer'));
+
+		$wrapper = SwatDBClassMap::get('StoreCategoryWrapper');
+		$categories = SwatDB::query($this->db, $sql, $wrapper);
+
+		foreach ($categories as $category) {
+			$category->setRegion($this->region);
+		}
+
+		return $categories;
 	}
 
 	// }}}
