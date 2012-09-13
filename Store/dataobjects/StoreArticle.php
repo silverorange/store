@@ -126,6 +126,7 @@ class StoreArticle extends SiteArticle
 		$row = SwatDB::queryRow($this->db, $sql);
 		if ($row !== null) {
 			$this->initFromRow($row);
+			$this->setRegion($region);
 			$this->setInternalValue('path', $path);
 			$this->generatePropertyHashes();
 			$found = true;
