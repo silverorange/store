@@ -513,39 +513,57 @@ class StoreCategory extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ public function loadByShortname()
+	// {{{ public function loadByPath()
 
 	/**
-	 * Loads a category from its shortname
+	 * Loads a category from the database with a path
 	 *
-	 * @param string $shortname the shortname of the category to load.
+	 * @param string $path the path of the article in the category graph.
+	 *                      Category nodes are separated by a '/' character.
+	 * @param array $fields the category fields to load from the database. By
+	 *                       default, only the id and title are loaded. The
+	 *                       path pseudo-field is always populated from the
+	 *                       <code>$path</code> parameter.
 	 *
-	 * @return boolean true if the loading of this category was successful and
-	 *                  false if the category with the given shortname doesn't
-	 *                  exist.
+	 * @return boolean true if a category was successfully loaded and false if
+	 *                  no category was found at the specified path.
 	 */
-	public function loadByShortname($shortname)
+	public function loadByPath($path, StoreRegion $region,
+		$fields = array('id', 'title'))
 	{
 		$this->checkDB();
 
-		$row = null;
+		$found = false;
 
-		if ($this->table !== null) {
-			$sql = sprintf('select * from %s where shortname = %s',
-				$this->table,
-				$this->db->quote($shortname));
-
-			$rs = SwatDB::query($this->db, $sql, null);
-			$row = $rs->fetchRow(MDB2_FETCHMODE_ASSOC);
+		$id_field = new SwatDBField($this->id_field, 'integer');
+		foreach ($fields as &$field) {
+			$field = $this->table.'.'.$field;
 		}
 
-		if ($row === null)
-			return false;
+		$sql = 'select %1$s from
+				findCategory(%2$s)
+			inner join %3$s on findCategory = %3$s.%4$s
+			inner join VisibleCategoryView on
+				findCategory = VisibleCategoryView.category and
+				(VisibleCategoryView.region = %5$s or
+					VisibleCategoryView.region is null)';
 
-		$this->initFromRow($row);
-		$this->generatePropertyHashes();
+		$sql = sprintf($sql,
+			implode(', ', $fields),
+			$this->db->quote($path, 'text'),
+			$this->table,
+			$id_field->name,
+			$this->db->quote($region->id, 'integer'));
 
-		return true;
+		$row = SwatDB::queryRow($this->db, $sql);
+		if ($row !== null) {
+			$this->initFromRow($row);
+			$this->setInternalValue('path', $path);
+			$this->generatePropertyHashes();
+			$found = true;
+		}
+
+		return $found;
 	}
 
 	// }}}
