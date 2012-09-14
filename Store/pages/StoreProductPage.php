@@ -167,10 +167,10 @@ class StoreProductPage extends StorePage
 			$this->reviews_ui->getWidget('reviews')->content_type = 'text/xml';
 
 			if (count($reviews) == 0) {
-				$disclosure =
-					$this->reviews_ui->getWidget('product_review_disclosure');
-
-				$disclosure->title =
+				$container = $this->reviews_ui->getWidget(
+					'product_review_container'
+				);
+				$container->title =
 					Store::_('Be the first to review this product');
 			}
 		}
@@ -322,11 +322,11 @@ class StoreProductPage extends StorePage
 				}
 			}
 
-			if ($form->hasMessage()) {
-				$disclosure =
-					$this->reviews_ui->getWidget('product_review_disclosure');
-
-				$disclosure->open = true;
+			$container = $this->reviews_ui->getWidget(
+				'product_review_container'
+			);
+			if ($form->hasMessage() && $container instanceof SwatDisclosure) {
+				$container->open = true;
 			}
 		}
 	}
@@ -1190,25 +1190,34 @@ class StoreProductPage extends StorePage
 			$message = new SwatMessage(
 				Store::_('Your comment has not yet been published.'));
 
-			$message->secondary_content = sprintf(Store::_(
-				'Please review your comment and press the '.
-				'<em>Add Comment</em> button when it’s ready to '.
-				'publish. %s'), $button_tag);
+			$message->secondary_content = sprintf(
+				Store::_(
+					'Please review your comment and press the '.
+					'<em>Add Comment</em> button when it’s ready to '.
+					'publish. %s'
+				),
+				$button_tag
+			);
 
 			$message->content_type = 'text/xml';
 
-			$message_display =
-				$this->reviews_ui->getWidget('product_review_message_display');
-
+			$message_display = $this->reviews_ui->getWidget(
+				'product_review_message_display'
+			);
 			$message_display->add($message, SwatMessageDisplay::DISMISS_OFF);
 
-			$preview   = $this->reviews_ui->getWidget('review_preview');
-			$container = $this->reviews_ui->getWidget(
-				'product_review_preview_container');
+			$preview = $this->reviews_ui->getWidget('review_preview');
+			$preview_container = $this->reviews_ui->getWidget(
+				'product_review_preview_container'
+			);
+			$preview_container->visible = true;
 
-			$container->visible = true;
-			$this->reviews_ui->getWidget('product_review_disclosure')->open =
-				true;
+			$container = $this->reviews_ui->getWidget(
+				'product_review_container'
+			);
+			if ($container instanceof SwatDisclosure) {
+				$container->open = true;
+			}
 
 			// set up item view
 			$view = SiteViewFactory::get($this->app, 'product-review');
@@ -1248,7 +1257,7 @@ class StoreProductPage extends StorePage
 
 		$message       = SwatString::quoteJavaScriptString($message);
 		$container_id  = "'reviews_container'";
-		$disclosure_id = "'product_review_disclosure'";
+		$form_container_id = "'product_review_container'";
 
 		$show_more = ($review_count > $this->getMaxProductReviews()) ?
 			'true' : 'false';
@@ -1258,7 +1267,7 @@ class StoreProductPage extends StorePage
 			$this->product->id,
 			$this->getMaxProductReviews(),
 			$container_id,
-			$disclosure_id,
+			$form_container_id,
 			$message,
 			$show_more);
 	}

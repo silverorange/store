@@ -18,7 +18,7 @@
 				<widget class="SwatContentBlock" id="review_preview" />
 			</widget>
 
-			<widget class="SwatDisclosure" id="product_review_disclosure">
+			<widget class="SwatDisclosure" id="product_review_container">
 				<property name="title" translatable="yes">Add New Comment</property>
 				<property name="open" type="boolean">false</property>
 				<widget class="SwatDisplayableContainer" id="review_edit_details">
