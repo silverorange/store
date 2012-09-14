@@ -186,12 +186,12 @@ class StoreArticle extends SiteArticle
 		$sql = 'select Product.*
 			from Product
 				inner join ArticleProductBinding
-					on Category.id = ArticleProductBinding.product
+					on Product.id = ArticleProductBinding.product
 						and ArticleProductBinding.article = %s
 			where Product.id in
 				(select Product from VisibleProductView
 				where region = %s or region is null)
-			order by Product.displayorder asc';
+			order by Product.title';
 
 		if ($this->region === null)
 			throw new StoreException('Region not set on article dataobject; '.
