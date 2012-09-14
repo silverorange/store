@@ -727,7 +727,7 @@ class StoreCategory extends SwatDBDataObject
 	 */
 	protected function loadSubCategories()
 	{
-		$sql = 'select id, shortname, title
+		$sql = 'select id, shortname, title, getCategoryPath(id) as path
 			from Category
 			where parent = %s and id in (
 				select id from VisibleCategoryView
