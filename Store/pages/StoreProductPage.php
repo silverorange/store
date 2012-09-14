@@ -1127,6 +1127,7 @@ class StoreProductPage extends StorePage
 	protected function buildReviewsUi()
 	{
 		if ($this->reviews_ui instanceof SwatUI) {
+			$locale         = SwatI18NLocale::get();
 			$ui             = $this->reviews_ui;
 			$form           = $ui->getWidget('product_reviews_form');
 			$show_thank_you = array_key_exists(self::THANK_YOU_ID, $_GET);
@@ -1135,16 +1136,36 @@ class StoreProductPage extends StorePage
 
 			if ($show_thank_you) {
 				$message = new SwatMessage(
-					Store::_('Your comment has been submitted.'));
+					Store::_('Your comment has been submitted.')
+				);
 
-				$message->secondary_content =
-					Store::_('Your comment will be published after being '.
-						'approved by the site moderator.');
+				$message->secondary_content = Store::_(
+					'Your comment will be published after being approved '.
+					'by the site moderator.'
+				);
 
-				$this->reviews_ui->getWidget('product_review_message_display')
-					->add($message, SwatMessageDisplay::DISMISS_OFF);
+				$ui->getWidget('product_review_message_display')->add(
+					$message,
+					SwatMessageDisplay::DISMISS_OFF
+				);
 			}
-	
+
+			$ui->getWidget('review_bodytext_field')->title = sprintf(
+				Store::_('What did you think of %s?'),
+				$this->product->title
+			);
+
+			$ui->getWidget('review_rating_field')->title = sprintf(
+				Store::ngettext(
+					'Rate %s between %s and %s star',
+					'Rate %s between %s and %s stars',
+					StoreProductReview::MAX_RATING
+				),
+				$this->product->title,
+				$locale->formatNumber(1),
+				$locale->formatNumber(StoreProductReview::MAX_RATING)
+			);
+
 			$ui->getWidget('product_review_rating')->maximum_value =
 				StoreProductReview::MAX_RATING;
 
