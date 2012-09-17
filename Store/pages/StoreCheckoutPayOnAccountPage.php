@@ -26,7 +26,7 @@ class StoreCheckoutPayOnAccountPage extends StoreCheckoutEditPage
 		$payment_method = null;
 
 		foreach ($this->app->session->order->payment_methods as $method) {
-			if ($method->payment_type->isPayOnAccount()) {
+			if ($method->payment_type->isAccount()) {
 				$payment_method = $method;
 				break;
 			}
@@ -82,7 +82,7 @@ class StoreCheckoutPayOnAccountPage extends StoreCheckoutEditPage
 		$payment_methods = $this->app->session->order->payment_methods;
 
 		foreach ($payment_methods->getArray() as $payment_method) {
-			if ($payment_method->payment_type->isPayOnAccount()) {
+			if ($payment_method->payment_type->isAccount()) {
 				$payment_methods->remove($payment_method);
 			}
 		}
