@@ -316,6 +316,8 @@ class StoreCategoryPage extends StorePage
 			$this->app->relocate($link);
 		}
 
+		echo '<div class="category-twigs-wrapper">';	
+
 		foreach ($sub_categories as $sub_category) {
 			if (array_key_exists($sub_category->id, $products) == true) {
 				$twig_category_div = new SwatHtmlTag('div');
@@ -348,6 +350,8 @@ class StoreCategoryPage extends StorePage
 				$twig_category_div->close();
 			}
 		}
+
+		echo '</div>';
 	}
 
 	// }}}
