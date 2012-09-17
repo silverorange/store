@@ -7,15 +7,23 @@ require_once 'Store/StoreRecentStack.php';
  * Tracks recently viewed things in a web-store application
  *
  * @package   Store
- * @copyright 2009 silverorange
+ * @copyright 2009-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ * @see       StoreRecentStack
  */
 class StoreRecentModule extends SiteApplicationModule
 {
-	// {{{ private properties
+	// {{{ protected properties
 
-	private $stacks;
-	private $exclusion_ids = array();
+	/**
+	 * @var ArrayObject
+	 */
+	protected $stacks;
+
+	/**
+	 * @var array
+	 */
+	protected $exclusion_ids = array();
 
 	// }}}
 	// {{{ public function depends()
@@ -30,8 +38,11 @@ class StoreRecentModule extends SiteApplicationModule
 	{
 		$depends = parent::depends();
 		$depends[] = new SiteApplicationModuleDependency(
-			'SiteCookieModule');
-
+			'SiteCookieModule'
+		);
+		$depends[] = new SiteApplicationModuleDependency(
+			'SiteSessionModule'
+		);
 		return $depends;
 	}
 
@@ -42,10 +53,11 @@ class StoreRecentModule extends SiteApplicationModule
 	{
 		if ($this->stacks === null) {
 			if (isset($this->app->cookie->recent) &&
-				($this->app->cookie->recent instanceof ArrayObject))
-					$this->stacks = $this->app->cookie->recent;
-			else
-					$this->stacks = new ArrayObject();
+				($this->app->cookie->recent instanceof ArrayObject)) {
+				$this->stacks = $this->app->cookie->recent;
+			} else {
+				$this->stacks = new ArrayObject();
+			}
 		}
 	}
 
@@ -56,10 +68,11 @@ class StoreRecentModule extends SiteApplicationModule
 	{
 		$this->init();
 
-		if (!$this->stacks->offsetExists($stack_name))
-			$this->stacks->offsetSet($stack_name, new StoreRecentStack());
+		if (!isset($this->stacks[$stack_name])) {
+			$this->stacks[$stack_name] = new StoreRecentStack();
+		}
 
-		$stack = $this->stacks->offsetGet($stack_name);
+		$stack = $this->stacks[$stack_name];
 		$stack->add($id);
 	}
 
@@ -70,16 +83,17 @@ class StoreRecentModule extends SiteApplicationModule
 	{
 		$this->init();
 
-		if (isset($this->exclusion_ids[$stack_name]))
+		if (isset($this->exclusion_ids[$stack_name])) {
 			$exclude_id = $this->exclusion_ids[$stack_name];
-		else
+		} else {
 			$exclude_id = null;
+		}
 
-		if ($this->stacks->offsetExists($stack_name)) {
-			$stack = $this->stacks->offsetGet($stack_name);
+		if (isset($this->stacks[$stack_name])) {
+			$stack = $this->stacks[$stack_name];
 			$values =  $stack->get($count, $exclude_id);
 		} else {
-			$this->stacks->offsetSet($stack_name, new StoreRecentStack());
+			$this->stacks[$stack_name] = new StoreRecentStack();
 			$values = null;
 		}
 
@@ -91,7 +105,12 @@ class StoreRecentModule extends SiteApplicationModule
 
 	public function save()
 	{
-		$this->app->cookie->setCookie('recent', $this->stacks);
+		// Only save recently viewed item when session is active. This
+		// is intended to assist full page caching. If we save recent items
+		// before the session is started, we can never cache pages effectively.
+		if ($this->app->session->isActive()) {
+			$this->app->cookie->setCookie('recent', $this->stacks);
+		}
 	}
 
 	// }}}
