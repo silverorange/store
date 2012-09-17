@@ -1463,7 +1463,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		// find a payment method that is edited with CheckoutPaymentMethodPage
 		foreach ($order->payment_methods as $payment_method) {
-			if ($payment_method->payment_type->isAvailableInRegion($region)) {
+			if (!$payment_method->payment_type->isAccount() &&
+				!$payment_method->payment_type->isVoucher()) {
 				$found = true;
 				break;
 			}
