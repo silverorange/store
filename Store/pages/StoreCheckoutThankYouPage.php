@@ -7,7 +7,7 @@ require_once 'Store/StoreAdWordsTracker.php';
  * Page displayed when an order is processed successfully on the checkout
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
@@ -59,6 +59,21 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
 
 		ob_start();
 
+		$this->displayEmailNote($order);
+		$this->displayPrintNote($order);
+
+		$paragraph_tag = new SwatHtmlTag('p');
+		$paragraph_tag->setContent(ob_get_clean());
+		$paragraph_tag->display();
+
+		echo '</div>';
+	}
+
+	// }}}
+	// {{{ protected function displayEmailNote()
+
+	protected function displayEmailNote(StoreOrder $order)
+	{
 		if ($order->email != '') {
 			printf(
 				Store::_(
@@ -69,16 +84,16 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
 			);
 			echo ' ';
 		}
+	}
 
+	// }}}
+	// {{{ protected function displayPrintNote()
+
+	protected function displayPrintNote(StoreOrder $order)
+	{
 		echo Store::_(
 			'If you wish, you can print a copy of this page for reference.'
 		);
-
-		$paragraph_tag = new SwatHtmlTag('p');
-		$paragraph_tag->setContent(ob_get_clean());
-		$paragraph_tag->display();
-
-		echo '</div>';
 	}
 
 	// }}}
