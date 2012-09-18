@@ -1136,11 +1136,11 @@ class StoreProductPage extends StorePage
 
 			if ($show_thank_you) {
 				$message = new SwatMessage(
-					Store::_('Your comment has been submitted.')
+					Store::_('Your review has been submitted.')
 				);
 
 				$message->secondary_content = Store::_(
-					'Your comment will be published after being approved '.
+					'Your review will be published after being approved '.
 					'by the site moderator.'
 				);
 
@@ -1188,13 +1188,13 @@ class StoreProductPage extends StorePage
 			$button_tag->value = Store::_('Add Comment');
 
 			$message = new SwatMessage(
-				Store::_('Your comment has not yet been published.'));
+				Store::_('Your review has not yet been submitted.'));
 
 			$message->secondary_content = sprintf(
 				Store::_(
-					'Please review your comment and press the '.
-					'<em>Add Comment</em> button when it’s ready to '.
-					'publish. %s'
+					'Please look over your review and press the '.
+					'<em>Add</em> button when it’s ready to '.
+					'submit. %s'
 				),
 				$button_tag
 			);
