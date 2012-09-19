@@ -1156,14 +1156,8 @@ class StoreProductPage extends StorePage
 			);
 
 			$ui->getWidget('review_rating_field')->title = sprintf(
-				Store::ngettext(
-					'Rate %s between %s and %s star',
-					'Rate %s between %s and %s stars',
-					StoreProductReview::MAX_RATING
-				),
-				$this->product->title,
-				$locale->formatNumber(1),
-				$locale->formatNumber(StoreProductReview::MAX_RATING)
+				Store::_('Rate %s'),
+				$this->product->title
 			);
 
 			$ui->getWidget('product_review_rating')->maximum_value =
