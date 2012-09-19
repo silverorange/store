@@ -19,7 +19,7 @@ require_once 'Crypt/GPG.php';
  * encryption.
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StorePaymentType
  * @see       StoreCardType
@@ -261,7 +261,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	 *
 	 * @sensitive $passphrase
 	 */
-	public function getCardNumber($passphrase)
+	public function getCardNumber($passphrase = null)
 	{
 		$number = null;
 
@@ -436,7 +436,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	 * @sensitive $passphrase
 	 */
 	public static function decrypt(Crypt_GPG $gpg, $encrypted_data, $key_id,
-		$passphrase)
+		$passphrase = null)
 	{
 		$gpg->clearDecryptKeys();
 		$gpg->addDecryptKey($key_id, $passphrase);
