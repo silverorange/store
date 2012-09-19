@@ -429,19 +429,19 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	{
 		switch ($this->voucher_type) {
 		case 'gift-certificate':
-			$type = 'Gift Certificate';
+			$type = Store::_('Gift Certificate');
 			break;
 
 		case 'merchandise-credit':
-			$type =  'Merchandise Voucher';
+			$type =  Store::_('Merchandise Voucher');
 			break;
 
 		case 'coupon':
-			$type =  'Coupon';
+			$type =  Store::_('Coupon');
 			break;
 
 		default :
-			$type = 'Voucher';
+			$type = Store::_('Voucher');
 			break;
 		}
 
