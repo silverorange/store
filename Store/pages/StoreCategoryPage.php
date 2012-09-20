@@ -159,7 +159,6 @@ class StoreCategoryPage extends StorePage
 
 		if ($this->isTwigPage()) {
 			$this->displayTwigPage();
-			$this->displayOutOfStockProductsAsTwig();
 		} else {
 			$this->displayPage();
 		}
@@ -351,6 +350,7 @@ class StoreCategoryPage extends StorePage
 			}
 		}
 
+		$this->displayOutOfStockProductsAsTwig();
 		echo '</div>';
 	}
 
