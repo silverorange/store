@@ -140,8 +140,17 @@ class StoreCheckoutModule extends SiteApplicationModule
 	 */
 	public function hasProgressDependency($dependency)
 	{
-		$progress = $this->getSession()->checkout_progress;
-		return (in_array($dependency, $progress->getArrayCopy()));
+		$has_dependency = false;
+		$session = $this->getSession();
+		
+		if (isset($session->checkout_progress)) {
+			$has_dependency = in_array(
+				$dependency,
+				$session->checkout_progress->getArrayCopy()
+			);
+		}
+
+		return $has_dependency;
 	}
 
 	// }}}
