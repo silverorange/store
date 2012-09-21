@@ -48,7 +48,7 @@ ul.site-search-results li.store-category-tile a span.store-category-tile-title {
 	margin-left: 20px;
 	position: relative;
 	width: 220px;
-	z-index: 99;
+	z-index: 1;
 }
 
 #right_column .swat-frame {
