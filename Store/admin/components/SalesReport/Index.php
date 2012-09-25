@@ -213,8 +213,6 @@ class StoreSalesReportIndex extends AdminIndex
 
 	protected function queryOrderStats($date_field)
 	{
-		$instance_id = $this->app->getInstanceId();
-
 		$sql = 'select count(Orders.id) as num_orders, Locale.region,
 				%1$s as subtotal,
 				extract(month from convertTZ(%2$s, %3$s)) as month,
@@ -223,7 +221,7 @@ class StoreSalesReportIndex extends AdminIndex
 				inner join Locale on Orders.locale = Locale.id
 			where
 				extract(year from convertTZ(%2$s, %3$s)) = %4$s
-				and Orders.instance %5$s %6$s
+				%5$s
 			group by Locale.region, year, month';
 
 		$sql = sprintf(
@@ -232,8 +230,7 @@ class StoreSalesReportIndex extends AdminIndex
 			$date_field,
 			$this->app->db->quote($this->app->config->date->time_zone, 'text'),
 			$this->app->db->quote($this->year, 'integer'),
-			SwatDB::equalityOperator($instance_id),
-			$this->app->db->quote($instance_id, 'integer')
+			$this->getInstanceWhereClause()
 		);
 
 		return SwatDB::query($this->app->db, $sql);
@@ -245,6 +242,20 @@ class StoreSalesReportIndex extends AdminIndex
 	protected function getSubtotalSelectClause()
 	{
 		return '(sum(item_total) + sum(surcharge_total))';
+	}
+
+	// }}}
+	// {{{ protected function getInstanceWhereClause()
+
+	protected function getInstanceWhereClause()
+	{
+		$instance_id = $this->app->getInstanceId();
+
+		return sprintf(
+			'and Orders.instance %s %s',
+			SwatDB::equalityOperator($instance_id),
+			$this->app->db->quote($instance_id, 'integer')
+		);
 	}
 
 	// }}}
