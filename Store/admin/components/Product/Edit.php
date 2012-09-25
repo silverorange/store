@@ -74,37 +74,38 @@ class StoreProductEdit extends AdminDBEdit
 
 	protected function initProduct()
 	{
-		if ($this->id === null) {
-			throw new AdminNotFoundException(
-				Store::_('No product id specified.')
-			);
-		}
-
-		$sql = sprintf(
-			'select Product.*, ProductPrimaryCategoryView.primary_category,
-				getCategoryPath(ProductPrimaryCategoryView.primary_category)
-					as path
-			from Product
-				left outer join ProductPrimaryCategoryView
-					on Product.id = ProductPrimaryCategoryView.product
-			where id = %s',
-			$this->app->db->quote($this->id, 'integer')
-		);
-
-		$row = SwatDB::queryRow($this->app->db, $sql);
-
-		if ($row === null) {
-			throw new AdminNotFoundException(
-				sprintf(
-					Store::_('A product with an id of ‘%s’ does not exist.'),
-					$this->id
-				)
-			);
-		}
-
 		$product_class = SwatDBClassMap::get('StoreProduct');
-		$this->product = new $product_class($row);
-		$this->product->setDatabase($this->app->db);
+
+		if ($this->id === null) {
+			$this->product = new $product_class();
+			$this->product->setDatabase($this->app->db);
+		} else {
+			$sql = sprintf(
+				'select Product.*, ProductPrimaryCategoryView.primary_category,
+					getCategoryPath(ProductPrimaryCategoryView.primary_category)
+						as path
+				from Product
+					left outer join ProductPrimaryCategoryView
+						on Product.id = ProductPrimaryCategoryView.product
+				where id = %s',
+				$this->app->db->quote($this->id, 'integer')
+			);
+
+			$row = SwatDB::queryRow($this->app->db, $sql);
+
+			if ($row === null) {
+				throw new AdminNotFoundException(
+					sprintf(
+						Store::_(
+							'A product with an id of ‘%s’ does not exist.'),
+						$this->id
+					)
+				);
+			}
+
+			$this->product = new $product_class($row);
+			$this->product->setDatabase($this->app->db);
+		}
 	}
 
 	// }}}
