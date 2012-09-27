@@ -49,7 +49,7 @@ StoreQuickOrder.loading_text = 'loading …';
  * Creates a new quick-order item for use in the quick-order form.
  */
 StoreQuickOrder.prototype.createNewQuickOrderItem = function(item_selector_id,
-	index);
+	index)
 {
 	return new StoreQuickOrderItem(this, item_selector_id, index);
 };
