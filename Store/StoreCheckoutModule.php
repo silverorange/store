@@ -40,6 +40,9 @@ class StoreCheckoutModule extends SiteApplicationModule
 		$depends[] = new SiteApplicationModuleDependency(
 			'SiteAccountSessionModule');
 
+		$depends[] = new SiteApplicationModuleDependency(
+			'StoreCartModule');
+
 		$depends[] = new SiteApplicationModuleDependency('SiteDatabaseModule');
 
 		return $depends;
@@ -173,6 +176,82 @@ class StoreCheckoutModule extends SiteApplicationModule
 		// reference from the session.
 		$session->checkout_progress = new ArrayObject();
 		$session->checkout_email    = null;
+	}
+
+	// }}}
+	// {{{ public function buildOrder()
+
+	public function buildOrder(StoreOrder $order)
+	{
+		$cart = $this->app->getModule('StoreCartModule');
+		$cart = $cart->checkout;
+
+		$this->createOrderItems($order);
+
+		$order->locale = $this->app->getLocale();
+
+		$order->item_total = $cart->getItemTotal();
+
+		$order->surcharge_total = $cart->getSurchargeTotal(
+			$order->payment_methods
+		);
+
+		$order->shipping_total = $cart->getShippingTotal(
+			$order->billing_address,
+			$order->shipping_address,
+			$order->shipping_type
+		);
+
+		$order->tax_total = $cart->getTaxTotal(
+			$order->billing_address,
+			$order->shipping_address,
+			$order->shipping_type,
+			$order->payment_methods
+		);
+
+		$order->total = $cart->getTotal(
+			$order->billing_address,
+			$order->shipping_address,
+			$order->shipping_type,
+			$order->payment_methods
+		);
+
+		// Reload ad from the database to esure it exists before trying to
+		// build the order. This prevents order failure when a deleted or
+		// disabled ad ends up in the session.
+		if ($this->app->hasModule('SiteAdModule')) {
+			$ad_module = $this->app->getModule('SiteAdModule');
+			$session_ad = $ad_module->getAd();
+			if ($session_ad !== null) {
+				$ad_class = SwatDBClassMap::get('SiteAd');
+				$ad = new $ad_class();
+				$ad->setDatabase($this->app->db);
+				if ($ad->load($session_ad->id)) {
+					$order->ad = $ad;
+				}
+			}
+		}
+
+		return $order;
+	}
+
+	// }}}
+	// {{{ protected function createOrderItems()
+
+	protected function createOrderItems($order)
+	{
+		$region = $this->app->getRegion();
+
+		$wrapper = SwatDBClassMap::get('StoreOrderItemWrapper');
+		$order->items = new $wrapper();
+
+		foreach ($this->app->cart->checkout->getAvailableEntries() as $entry) {
+			$order_item = $entry->createOrderItem();
+			$order_item->setDatabase($this->app->db);
+			$order_item->setAvailableItemCache($region, $entry->item);
+			$order_item->setItemCache($entry->item);
+			$order->items->add($order_item);
+		}
 	}
 
 	// }}}
