@@ -905,7 +905,15 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$details = array();
 
 		$name = $item->product_title;
-		$description = strip_tags($item->getDescription());
+		$description = $item->getDescription();
+
+		// strip HTML formatting
+		$description = preg_replace('/<.*?\>/', ' ', $description);
+
+		// collapse whitespace
+		$description = preg_replace('/\s+/', ' ', $description);
+
+		// add to item name
 		if ($description != '') {
 			$name.= ' - '.$description;
 		}
