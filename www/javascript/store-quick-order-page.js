@@ -23,7 +23,7 @@ function StoreQuickOrder(id, item_selector_id, num_rows)
 
 	var item;
 	for (var i = 0; i < num_rows; i++) {
-		item = new StoreQuickOrderItem(this, item_selector_id, i);
+		item = this.createNewQuickOrderItem(item_selector_id, i);
 		this.items.push(item);
 		this.item_ids.push(item_selector_id + '_' + i);
 	}
@@ -44,6 +44,15 @@ StoreQuickOrder.timeout_delay = 250;
  * @var String
  */
 StoreQuickOrder.loading_text = 'loading …';
+
+/**
+ * Creates a new quick-order item for use in the quick-order form.
+ */
+StoreQuickOrder.prototype.createNewQuickOrderItem(item_selector_id, index);
+{
+	var item = new StoreQuickOrderItem(this, item_selector_id, index);
+	return item;
+};
 
 /**
  * Sets an event handler on the submit button to prevent submitting the form
