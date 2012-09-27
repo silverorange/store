@@ -3,7 +3,7 @@
  * catalog quick-order page
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2012 silverorange
  */
 
 /**
@@ -50,8 +50,7 @@ StoreQuickOrder.loading_text = 'loading …';
  */
 StoreQuickOrder.prototype.createNewQuickOrderItem(item_selector_id, index);
 {
-	var item = new StoreQuickOrderItem(this, item_selector_id, index);
-	return item;
+	return new StoreQuickOrderItem(this, item_selector_id, index);
 };
 
 /**
@@ -168,17 +167,70 @@ StoreQuickOrderItem.prototype.handleSkuChange = function(e)
 	if (value != this.old_value) {
 		var sku = value;
 
-		if (!this.quantity.value && sku.length > 0)
+		if (!this.quantity.value && sku.length > 0) {
 			this.quantity.value = '1';
+		}
 
-		if (this.timer != null)
-			clearTimeout(this.timer);
-
-		this.timer = setTimeout(
-			'StoreQuickOrder_staticTimeOut(' + this.quick_order.id + '_obj, ' +
-				this.id + ');', StoreQuickOrder.timeout_delay);
+		this.timer = this.setTimeout();
 
 		this.old_value = value;
+	}
+}
+
+StoreQuickOrderItem.prototype.setTimeout = function()
+{
+	this.clearTimeout();
+
+	var that = this;
+
+	return setTimeout(
+		function() { that.handleTimeout(); },
+		StoreQuickOrder.timeout_delay
+	);
+}
+
+StoreQuickOrderItem.prototype.handleTimeout = function()
+{
+	var client = new XML_RPC_Client('xml-rpc/quickorder');
+	var sku = this.sku.value;
+
+	this.sequence++;
+
+	this.div.firstChild.innerHTML =
+		'<span class="store-quick-order-item-loading">' +
+		StoreQuickOrder.loading_text + '</span>';
+
+	var that = this;
+
+	function callBack(response)
+	{
+		if (response.sequence > that.displayed_sequence) {
+			that.new_description = response.description;
+			that.displayed_sequence = response.sequence;
+			if (!YAHOO.env.ua.ie || YAHOO.env.ua.ie > 8) {
+				// only animate if not IE < 9
+				that.out_effect.animate();
+			} else {
+				that.handleFadeOut();
+			}
+		}
+	}
+
+	client.callProcedure(
+		'getItemDescription',
+		callBack,
+		[sku, this.id, this.sequence],
+		['string', 'string', 'int']
+	);
+
+	this.clearTimeout();
+}
+
+StoreQuickOrderItem.prototype.clearTimeout = function()
+{
+	if (this.timer) {
+		clearTimeout(this.timer);
+		this.timer = null;
 	}
 }
 
