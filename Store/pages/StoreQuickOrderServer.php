@@ -8,7 +8,7 @@ require_once 'Store/StoreQuickOrderItemSelector.php';
  * Handles XML-RPC requests from the quick order page
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2012 silverorange
  */
 class StoreQuickOrderServer extends SiteXMLRPCServer
 {
@@ -18,7 +18,7 @@ class StoreQuickOrderServer extends SiteXMLRPCServer
 	 * Returns the XHTML required to display a textual description of the item
 	 *
 	 * @param string $sku the item number of the item descriptions to get.
-	 *                     In Veseys, multiple items may have the same item
+	 *                     In some stores, multiple items may have the same item
 	 *                     number.
 	 * @param string $replicator_id the id to be appended to the widget id
 	 *                                   returned by this procedure.
