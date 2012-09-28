@@ -18,7 +18,7 @@ require_once 'Numbers/Words.php';
  *
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2012 silverorange
  */
 abstract class StoreQuickOrderPage extends SiteArticlePage
 {
@@ -52,14 +52,11 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 
 		$view = $this->form_ui->getWidget('quick_order_view');
 		$view->model = $this->getQuickOrderTableStore();
-
 		$column = $view->getColumn('item_selector_column');
 		$item_selector =
 			$column->getRendererByPosition()->getPrototypeWidget();
 
-		$item_selector->db = $this->app->db;
-		$item_selector->region = $this->app->getRegion();
-		$item_selector->sku = null;
+		$this->initItemSelector($item_selector);
 
 		$this->form_ui->init();
 
@@ -70,6 +67,16 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 		$this->message_display = new SwatMessageDisplay();
 		$this->message_display->id = 'cart_message_display';
 		$this->message_display->init();
+	}
+
+	// }}}
+	// {{{ protected function initItemSelector()
+
+	protected function initItemSelector(StoreQuickOrderItemSelector $selector)
+	{
+		$selector->db = $this->app->db;
+		$selector->region = $this->app->getRegion();
+		$selector->sku = null;
 	}
 
 	// }}}
