@@ -151,11 +151,18 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
 	{
 		parent::buildInternal();
 
+		$this->buildMessages();
+		$this->buildForgotPasswordLink();
+	}
+
+	// }}}
+	// {{{ protected function buildMessages()
+
+	protected function buildMessages()
+	{
 		foreach ($this->app->messages->getAll() as $message) {
 			$this->ui->getWidget('message_display')->add($message);
 		}
-
-		$this->buildForgotPasswordLink();
 	}
 
 	// }}}
