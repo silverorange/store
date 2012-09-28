@@ -160,8 +160,9 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
 
 	protected function buildMessages()
 	{
+		$message_display = $this->ui->getWidget('message_display');
 		foreach ($this->app->messages->getAll() as $message) {
-			$this->ui->getWidget('message_display')->add($message);
+			$message_display->add($message);
 		}
 	}
 
