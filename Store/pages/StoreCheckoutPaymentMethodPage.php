@@ -648,7 +648,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	protected function setupCardVerificationValue(
 		StoreCardVerificationValueEntry $card_verification_value_widget)
 	{
-
 		$card_type = $this->getCardType();
 		if ($card_type == null) {
 			// Card number not valid, use card type from existing payment
