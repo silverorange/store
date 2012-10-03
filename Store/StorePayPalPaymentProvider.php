@@ -717,7 +717,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			return 'paypal-address-error';
 
 		/*
-		 * ExPayPal does not allow purchases from some countries
+		 * PayPal does not allow purchases from some countries
 		 */
 		case 15011:
 			return 'paypal-country-error';
