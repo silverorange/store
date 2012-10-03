@@ -269,46 +269,5 @@ StoreQuickOrderItem.prototype.setSku = function(value)
 	var value = value.replace(/^\s+|\s+$/g, ''); // trim whitespace
 	this.sku.value = value;
 	this.old_value = value;
-	StoreQuickOrder_staticTimeOut(this.quick_order, this.id);
-}
-
-/**
- * Handles a timeout on the sku field timer
- *
- * When a timeout occurs, a RPC call is made to get the item(s) matching the
- * entered sku.
- *
- * @param StoreQuickOrder quick_order
- * @param String replicator_id
- */
-function StoreQuickOrder_staticTimeOut(quick_order, replicator_id)
-{
-	var client = new XML_RPC_Client('xml-rpc/quickorder');
-	var item = quick_order.items[replicator_id];
-	var sku = item.sku.value;
-	item.sequence++;
-
-	item.div.firstChild.innerHTML =
-		'<span class="store-quick-order-item-loading">' +
-		StoreQuickOrder.loading_text + '</span>';
-
-	function callBack(response)
-	{
-		if (response.sequence > item.displayed_sequence) {
-			item.new_description = response.description;
-			item.displayed_sequence = response.sequence;
-			if (!YAHOO.env.ua.ie || YAHOO.env.ua.ie > 8) {
-				// only animate if not IE < 9
-				item.out_effect.animate();
-			} else {
-				item.handleFadeOut();
-			}
-		}
-	}
-
-	client.callProcedure('getItemDescription', callBack,
-		[sku, replicator_id, item.sequence],
-		['string', 'string', 'int']);
-
-	clearTimeout(item.timer);
+	this.handleTimeout();
 }
