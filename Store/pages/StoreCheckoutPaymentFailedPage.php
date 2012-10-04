@@ -6,14 +6,14 @@ require_once 'Store/pages/StoreCheckoutFinalPage.php';
  * Page displayed when automatic payment on the checkout fails
  *
  * @package   Store
- * @copyright 2007-2009 silverorange
+ * @copyright 2007-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutPaymentFailedPage extends StoreCheckoutFinalPage
 {
-	// {{{ public function getUiXml()
+	// {{{ protected function getUiXml()
 
-	public function getUiXml()
+	protected function getUiXml()
 	{
 		return 'Store/pages/checkout-payment-failed.xml';
 	}

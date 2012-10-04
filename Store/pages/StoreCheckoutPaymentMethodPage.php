@@ -45,9 +45,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	protected $card_types = null;
 
 	// }}}
-	// {{{ public function getUiXml()
+	// {{{ protected function getUiXml()
 
-	public function getUiXml()
+	protected function getUiXml()
 	{
 		return 'Store/pages/checkout-payment-method.xml';
 	}

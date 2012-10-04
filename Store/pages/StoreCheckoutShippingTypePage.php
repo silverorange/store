@@ -13,9 +13,9 @@ require_once 'Store/dataobjects/StoreShippingTypeWrapper.php';
  */
 class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
 {
-	// {{{ public function getUiXml()
+	// {{{ protected function getUiXml()
 
-	public function getUiXml()
+	protected function getUiXml()
 	{
 		return 'Store/pages/checkout-shipping-type.xml';
 	}

@@ -17,9 +17,9 @@ require_once 'Store/pages/StoreCheckoutShippingTypePage.php';
  */
 class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 {
-	// {{{ public function getUiXml()
+	// {{{ protected function getUiXml()
 
-	public function getUiXml()
+	protected function getUiXml()
 	{
 		return 'Store/pages/checkout-first.xml';
 	}

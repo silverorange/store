@@ -11,9 +11,9 @@ require_once 'Store/pages/StoreCheckoutPage.php';
  */
 class StoreCheckoutFrontPage extends StoreCheckoutPage
 {
-	// {{{ public function getUiXml()
+	// {{{ protected function getUiXml()
 
-	public function getUiXml()
+	protected function getUiXml()
 	{
 		return 'Store/pages/checkout-front.xml';
 	}
