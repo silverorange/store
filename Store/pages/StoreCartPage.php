@@ -1592,16 +1592,24 @@ class StoreCartPage extends SitePage
 			$li_tag->class = 'payment-type payment-type-'.$type->shortname;
 			$li_tag->open();
 
-			if ($type->shortname == 'card') {
-				$this->displayAcceptedCardTypes($type);
-			} else {
-				echo SwatString::minimizeEntities($type->title);
-			}
+			$this->displayPaymentType($type);
 
 			$li_tag->close();
 		}
 
 		echo '</ul>';
+	}
+
+	// }}}
+	// {{{ protected function displayPaymentType()
+
+	protected function displayPaymentType(StorePaymentType $type)
+	{
+		if ($type->shortname == 'card') {
+			$this->displayAcceptedCardTypes($type);
+		} else {
+			echo SwatString::minimizeEntities($type->title);
+		}
 	}
 
 	// }}}
