@@ -20,9 +20,9 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 	protected $updated_entry_ids = array();
 
 	// }}}
-	// {{{ public function getUiXml()
+	// {{{ protected function getUiXml()
 
-	public function getUiXml()
+	protected function getUiXml()
 	{
 		return 'Store/pages/checkout-cart.xml';
 	}

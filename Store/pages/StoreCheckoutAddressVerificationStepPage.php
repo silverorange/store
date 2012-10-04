@@ -8,13 +8,13 @@ require_once 'Store/pages/StoreCheckoutShippingAddressVerificationPage.php';
  * Second step of checkout
  *
  * @package   Store
- * @copyright 2009 silverorange
+ * @copyright 2009-2012 silverorange
  */
 class StoreCheckoutAddressVerificationStepPage extends StoreCheckoutAggregateStepPage
 {
-	// {{{ public function getUiXml()
+	// {{{ protected function getUiXml()
 
-	public function getUiXml()
+	protected function getUiXml()
 	{
 		return 'Store/pages/checkout-address-verification-step.xml';
 	}
