@@ -35,6 +35,9 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 			$fullname_field = $this->ui->getWidget('fullname_field');
 			$fullname_field->visible = false;
 		}
+
+		$this->ui->getWidget('confirm_password')->password_widget =
+			$this->ui->getWidget('password');
 	}
 
 	// }}}
