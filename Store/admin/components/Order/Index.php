@@ -287,7 +287,7 @@ class StoreOrderIndex extends AdminSearch
 		$clause = 'Orders.id, Orders.total, Orders.createdate,
 					Orders.locale, Orders.instance, Orders.notes,
 					Orders.comments, Orders.billing_address, Orders.email,
-					Orders.phone,
+					Orders.phone, Orders.account,
 					(Orders.comments is not null and Orders.comments != %s)
 						as has_comments';
 
@@ -372,7 +372,9 @@ class StoreOrderIndex extends AdminSearch
 	{
 		$fullname = null;
 
-		if ($order->billing_address instanceof StoreOrderAddress) {
+		if ($order->account instanceof SiteAccount) {
+			$fullname = $order->account->getFullname();
+		} elseif ($order->billing_address instanceof StoreOrderAddress) {
 			$fullname = $order->billing_address->getFullname();
 		} elseif ($order->email != '') {
 			$fullname = $order->email;
