@@ -719,6 +719,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		/*
 		 * PayPal does not allow purchases from some countries
 		 */
+		case 10745:
 		case 15011:
 			return 'paypal-country-error';
 
@@ -734,6 +735,13 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		 */
 		case 10752:
 			return 'card-error';
+
+		/**
+		 * Invalid funding source selected in express checkout. Customer must
+		 * return to PayPal and select another funding source.
+		 */
+		case 10422:
+			return 'paypal-payment-error';
 
 		/*
 		 * Some kind of generic AVS rate limiting error. Who knows what the
