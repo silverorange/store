@@ -37,6 +37,17 @@
 					<property name="maxlength" type="integer">50</property>
 				</widget>
 			</widget>
+			<widget class="SwatFormField" id="card_expiry_field">
+				<property name="title" translatable="yes">Expiration Date</property>
+				<widget class="StoreCardExpiryEntry" id="card_expiry">
+					<property name="required" type="boolean">true</property>
+				</widget>
+			</widget>
+			<widget class="SwatFormField" id="card_inception_field">
+				<property name="title" translatable="yes">Inception Date</property>
+				<property name="note" translatable="yes">Required for debit cards.</property>
+				<widget class="StoreCardInceptionEntry" id="card_inception" />
+			</widget>
 			<widget class="SwatFormField" id="card_verification_value_field">
 				<property name="title" translatable="yes">Card Security Code</property>
 				<widget class="StoreCardVerificationValueEntry" id="card_verification_value">
@@ -51,17 +62,6 @@
 					<property name="maxlength" type="integer">2</property>
 					<property name="size" type="integer">4</property>
 				</widget>
-			</widget>
-			<widget class="SwatFormField" id="card_expiry_field">
-				<property name="title" translatable="yes">Expiration Date</property>
-				<widget class="StoreCardExpiryEntry" id="card_expiry">
-					<property name="required" type="boolean">true</property>
-				</widget>
-			</widget>
-			<widget class="SwatFormField" id="card_inception_field">
-				<property name="title" translatable="yes">Inception Date</property>
-				<property name="note" translatable="yes">Required for debit cards.</property>
-				<widget class="StoreCardInceptionEntry" id="card_inception" />
 			</widget>
 			<widget class="SwatFormField" id="card_fullname_field">
 				<property name="title" translatable="yes">Name on Card</property>
