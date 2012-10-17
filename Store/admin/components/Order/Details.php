@@ -16,7 +16,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * Details page for Orders
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreOrderDetails extends AdminPage
@@ -100,6 +100,8 @@ abstract class StoreOrderDetails extends AdminPage
 	{
 		parent::buildInternal();
 
+		$this->buildCancelledMessage();
+
 		$details_frame = $this->ui->getWidget('details_frame');
 		$details_frame->title = Store::_('Order');
 		$details_frame->subtitle = $this->getOrderTitle();
@@ -158,6 +160,29 @@ abstract class StoreOrderDetails extends AdminPage
 			if ($this->ui->hasWidget('cancel_order_link')) {
 				$this->ui->getWidget('cancel_order_link')->visible = false;
 			}
+		}
+	}
+
+	// }}}
+	// {{{ protected function buildCancelledMessage()
+
+	protected function buildCancelledMessage()
+	{
+		if ($this->order->cancel_date instanceof SwatDate) {
+			$cancel_date = clone $this->order->cancel_date;
+			$cancel_date->convertTZ($this->app->default_time_zone);
+			$message = new SwatMessage(
+				sprintf(
+					Store::_('This order was cancelled on %s.'),
+					$cancel_date->formatLikeIntl(Store::_('d MMMM, yyyy'))
+				),
+				'warning'
+			);
+
+			$this->ui->getWidget('message_display')->add(
+				$message,
+				SwatMessageDisplay::DISMISS_OFF
+			);
 		}
 	}
 
