@@ -12,9 +12,9 @@ require_once 'Store/StoreAdWordsTracker.php';
  */
 class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
 {
-	// {{{ public function getUiXml()
+	// {{{ protected function getUiXml()
 
-	public function getUiXml()
+	protected function getUiXml()
 	{
 		return 'Store/pages/checkout-thank-you.xml';
 	}

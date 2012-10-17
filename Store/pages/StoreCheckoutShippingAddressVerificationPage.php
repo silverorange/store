@@ -13,9 +13,9 @@ require_once 'Swat/SwatYUI.php';
 class StoreCheckoutShippingAddressVerificationPage extends
 	StoreCheckoutAddressVerificationPage
 {
-	// {{{ public function getUiXml()
+	// {{{ protected function getUiXml()
 
-	public function getUiXml()
+	protected function getUiXml()
 	{
 		return 'Store/pages/checkout-shipping-address-verification.xml';
 	}

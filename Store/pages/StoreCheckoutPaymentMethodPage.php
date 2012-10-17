@@ -21,9 +21,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	protected $remove_button;
 
 	// }}}
-	// {{{ public function getUiXml()
+	// {{{ protected function getUiXml()
 
-	public function getUiXml()
+	protected function getUiXml()
 	{
 		return 'Store/pages/checkout-payment-method.xml';
 	}

@@ -21,9 +21,9 @@ require_once 'Store/exceptions/StorePaymentTotalException.php';
  */
 class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 {
-	// {{{ public function getUiXml()
+	// {{{ protected function getUiXml()
 
-	public function getUiXml()
+	protected function getUiXml()
 	{
 		return 'Store/pages/checkout-confirmation.xml';
 	}

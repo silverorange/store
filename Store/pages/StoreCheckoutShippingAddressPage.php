@@ -20,9 +20,9 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 	protected $country;
 
 	// }}}
-	// {{{ public function getUiXml()
+	// {{{ protected function getUiXml()
 
-	public function getUiXml()
+	protected function getUiXml()
 	{
 		return 'Store/pages/checkout-shipping-address.xml';
 	}

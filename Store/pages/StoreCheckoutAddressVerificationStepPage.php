@@ -12,9 +12,9 @@ require_once 'Store/pages/StoreCheckoutShippingAddressVerificationPage.php';
  */
 class StoreCheckoutAddressVerificationStepPage extends StoreCheckoutAggregateStepPage
 {
-	// {{{ public function getUiXml()
+	// {{{ protected function getUiXml()
 
-	public function getUiXml()
+	protected function getUiXml()
 	{
 		return 'Store/pages/checkout-address-verification-step.xml';
 	}

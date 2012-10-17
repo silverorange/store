@@ -19,9 +19,9 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
 	protected $invoice_id = null;
 
 	// }}}
-	// {{{ public function getUiXml()
+	// {{{ protected function getUiXml()
 
-	public function getUiXml()
+	protected function getUiXml()
 	{
 		return 'Store/pages/checkout-front.xml';
 	}

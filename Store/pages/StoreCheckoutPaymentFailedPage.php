@@ -11,9 +11,9 @@ require_once 'Store/pages/StoreCheckoutFinalPage.php';
  */
 class StoreCheckoutPaymentFailedPage extends StoreCheckoutFinalPage
 {
-	// {{{ public function getUiXml()
+	// {{{ protected function getUiXml()
 
-	public function getUiXml()
+	protected function getUiXml()
 	{
 		return 'Store/pages/checkout-payment-failed.xml';
 	}

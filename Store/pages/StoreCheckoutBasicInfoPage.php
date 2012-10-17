@@ -11,9 +11,9 @@ require_once 'Store/pages/StoreCheckoutEditPage.php';
  */
 class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 {
-	// {{{ public function getUiXml()
+	// {{{ protected function getUiXml()
 
-	public function getUiXml()
+	protected function getUiXml()
 	{
 		return 'Store/pages/checkout-basic-info.xml';
 	}
