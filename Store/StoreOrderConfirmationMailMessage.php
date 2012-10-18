@@ -15,7 +15,7 @@ require_once 'Store/StoreShippingAddressCellRenderer.php';
  * An email message for order confirmations
  *
  * @package   Store
- * @copyright 2006-2010 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreOrderConfirmationMailMessage
@@ -175,23 +175,29 @@ abstract class StoreOrderConfirmationMailMessage
 		$date_renderer = $date_field->getFirstRenderer();
 		$date_renderer->display_time_zone = $this->app->default_time_zone;
 
-		if ($order->comments === null)
+		if ($order->comments === null && $details_view->hasField('comments')) {
 			$details_view->getField('comments')->visible = false;
+		}
 
-		if ($order->phone === null)
+		if ($order->phone === null && $details_view->hasField('phone')) {
 			$details_view->getField('phone')->visible = false;
+		}
 
-		if ($order->company === null && $details_view->hasField('company'))
+		if ($order->company === null && $details_view->hasField('company')) {
 			$details_view->getField('company')->visible = false;
+		}
 
-		if (count($order->payment_methods) == 0)
+		if (count($order->payment_methods) == 0  &&
+			$details_view->hasField('payment_method')) {
 			$details_view->getField('payment_method')->visible = false;
+		}
 
 		$items_view = $ui->getWidget('items_view');
 		$items_view->model = $order->getOrderDetailsTableStore();
 
-		if ($items_view instanceof SwatTableView)
+		if ($items_view instanceof SwatTableView) {
 			$this->setupTableData($items_view, $this->order);
+		}
 
 		$this->buildOrderHeader($ui);
 		$this->buildOrderFooter($ui);
