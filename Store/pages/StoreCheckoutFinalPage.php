@@ -121,14 +121,17 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
 		$createdate_renderer = $createdate_column->getFirstRenderer();
 		$createdate_renderer->display_time_zone = $this->app->default_time_zone;
 
-		if ($order->email === null)
+		if ($order->email === null && $details_view->hasField('email')) {
 			$details_view->getField('email')->visible = false;
+		}
 
-		if ($order->comments === null)
+		if ($order->comments === null && $details_view->hasField('comments')) {
 			$details_view->getField('comments')->visible = false;
+		}
 
-		if ($order->phone === null)
+		if ($order->phone === null && $details_view->hasField('phone')) {
 			$details_view->getField('phone')->visible = false;
+		}
 
 		if ($this->ui->hasWidget('items_view')) {
 			$items_view = $this->ui->getWidget('items_view');
