@@ -63,7 +63,7 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
 		$this->displayPrintNote($order);
 
 		$paragraph_tag = new SwatHtmlTag('p');
-		$paragraph_tag->setContent(ob_get_clean());
+		$paragraph_tag->setContent(ob_get_clean(), 'text/xml');
 		$paragraph_tag->display();
 
 		echo '</div>';
