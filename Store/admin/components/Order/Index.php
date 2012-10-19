@@ -367,6 +367,11 @@ class StoreOrderIndex extends AdminSearch
 			SwatString::minimizeEntities($order->notes)
 		);
 
+		$ds->comments = sprintf(
+			'<span class="order-comments">%s</span>',
+			SwatString::minimizeEntities($order->comments)
+		);
+
 		return $ds;
 	}
 
