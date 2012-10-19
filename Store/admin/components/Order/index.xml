@@ -55,6 +55,14 @@
 						<property name="value" type="data">has_comments</property>
 					</object>
 				</object>
+				<object class="AdminTableViewOrderableColumn" id="is_cancelled">
+					<property name="title" translatable="yes">Cancelled?</property>
+					<object class="SwatBooleanCellRenderer">
+						<property name="value" type="data">is_cancelled</property>
+						<property name="content_type">text/xml</property>
+						<property name="true_content"><![CDATA[<span class="cancelled">cancelled</span>]]></property>
+					</object>
+				</object>
 				<object class="SwatTableViewSpanningColumn">
 					<property name="classes[]">order-notes-row</property>
 					<property name="offset" type="integer">1</property>
