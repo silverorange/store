@@ -4,7 +4,7 @@
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="details_frame">
 		<widget class="SwatToolbar" id="details_toolbar">
-			<widget class="SwatToolLink">
+			<widget class="SwatToolLink" id="resend_confirmation_link">
 				<property name="title" translatable="yes">Resend Email Confirmation</property>
 				<property name="link">Order/EmailConfirmation?id=%s</property>
 				<property name="stock_id">email</property>
