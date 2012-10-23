@@ -73,7 +73,10 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 		$order->email = $this->getOptionalStringValue('email');
 		$order->company = $this->getOptionalStringValue('company');
 		$order->phone = $this->getOptionalStringValue('phone');
-		$order->comments = $this->getOptionalStringValue('comments');
+
+		if ($this->ui->hasWidget('comments')) {
+			$order->comments = $this->getOptionalStringValue('comments');
+		}
 
 		$account = $this->app->session->account;
 		$account->fullname = $this->getOptionalStringValue('fullname');
@@ -187,7 +190,9 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 			$this->ui->getWidget('phone')->value = $order->phone;
 		}
 
-		$this->ui->getWidget('comments')->value = $order->comments;
+		if ($this->ui->hasWidget('comments')) {
+			$this->ui->getWidget('comments')->value = $order->comments;
+		}
 	}
 
 	// }}}
