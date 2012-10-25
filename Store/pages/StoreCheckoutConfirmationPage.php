@@ -529,9 +529,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		if (!$saved)
 			return;
 
-		$order = $this->app->session->order;
-		$order->sendConfirmationEmail($this->app);
-
+		$this->sendConfirmationEmail();
 		$this->removeCartEntries();
 		$this->cleanupSession();
 		$this->updateProgress();
@@ -754,6 +752,15 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		}
 
 		return $account_payment_method;
+	}
+
+	// }}}
+	// {{{ protected function sendConfirmationEmail()
+
+	protected function sendConfirmationEmail()
+	{
+		$order = $this->app->session->order;
+		$order->sendConfirmationEmail($this->app);
 	}
 
 	// }}}
