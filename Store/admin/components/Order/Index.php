@@ -167,22 +167,7 @@ class StoreOrderIndex extends AdminSearch
 		$where.= $this->getFullnameWhereClause();
 
 		// email, check accounts and order
-		$email = trim($this->ui->getWidget('search_email')->value);
-		if ($email != '') {
-			$where.= ' and (';
-			$clause = new AdminSearchClause('email');
-			$clause->table = 'Account';
-			$clause->value = $email;
-			$clause->operator = AdminSearchClause::OP_CONTAINS;
-			$where.= $clause->getClause($this->app->db, '');
-
-			$clause = new AdminSearchClause('email');
-			$clause->table = 'Orders';
-			$clause->value = $email;
-			$clause->operator = AdminSearchClause::OP_CONTAINS;
-			$where.= $clause->getClause($this->app->db, 'or');
-			$where.= ')';
-		}
+		$where.= $this->getEmailWhereClause();
 
 		// postal code, check billing and shipping addresses
 		$postal_code = trim($this->ui->getWidget('search_postal_code')->value);
@@ -241,6 +226,34 @@ class StoreOrderIndex extends AdminSearch
 		$clause->table = 'Region';
 		$clause->value = $this->ui->getWidget('search_region')->value;
 		$where.= $clause->getClause($this->app->db);
+
+		return $where;
+	}
+
+	// }}}
+	// {{{ protected function getEmailWhereClause()
+
+	protected function getEmailWhereClause()
+	{
+		$where = '';
+
+		// email, check accounts and order
+		$email = trim($this->ui->getWidget('search_email')->value);
+		if ($email != '') {
+			$where.= ' and (';
+			$clause = new AdminSearchClause('email');
+			$clause->table = 'Account';
+			$clause->value = $email;
+			$clause->operator = AdminSearchClause::OP_CONTAINS;
+			$where.= $clause->getClause($this->app->db, '');
+
+			$clause = new AdminSearchClause('email');
+			$clause->table = 'Orders';
+			$clause->value = $email;
+			$clause->operator = AdminSearchClause::OP_CONTAINS;
+			$where.= $clause->getClause($this->app->db, 'or');
+			$where.= ')';
+		}
 
 		return $where;
 	}
