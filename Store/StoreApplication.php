@@ -9,6 +9,7 @@ require_once 'Site/SiteAccountSessionModule.php';
 require_once 'Site/SiteAdModule.php';
 require_once 'Site/SiteAnalyticsModule.php';
 require_once 'Site/SiteTimerModule.php';
+require_once 'Site/SiteNotifierModule.php';
 require_once 'Admin/Admin.php';
 require_once 'Store/Store.php';
 require_once 'Store/StoreMessage.php';
@@ -122,6 +123,7 @@ abstract class StoreApplication extends SiteWebApplication
 			'ads'       => 'SiteAdModule',
 			'analytics' => 'SiteAnalyticsModule',
 			'timer'     => 'SiteTimerModule',
+			'notifier'  => 'SiteNotifierModule',
 		);
 	}
 
