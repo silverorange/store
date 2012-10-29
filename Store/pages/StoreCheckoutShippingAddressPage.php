@@ -135,8 +135,9 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 		} else {
 			$container = $this->ui->getWidget('shipping_address_form');
 			$controls = $container->getDescendants('SwatInputControl');
-			foreach ($controls as $control)
+			foreach ($controls as $control) {
 				$control->required = false;
+			}
 		}
 	}
 
