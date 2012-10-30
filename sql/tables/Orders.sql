@@ -33,6 +33,8 @@ create table Orders (
 	-- whether this order has been processed by the cron job that inserts popular products
 	popular_products_processed boolean not null default false,
 
+	comments_sent boolean not null default false,
+
 	primary key (id)
 );
 
