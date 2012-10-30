@@ -155,6 +155,14 @@ class StoreOrder extends SwatDBDataObject
 	 */
 	public $failed_attempt = false;
 
+	/**
+	 * Whether or not the comments on this order have been sent to any
+	 * notification system in place.
+	 *
+	 * @var boolean
+	 */
+	public $comments_sent = false;
+
 	// }}}
 	// {{{ protected properties
 
