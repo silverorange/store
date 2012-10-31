@@ -40,3 +40,12 @@
 	background: #fffbc9;
 	border: 1px solid #f0dca1;
 }
+
+.is-cancelled .cancelled {
+	background: #a40000;
+	color: #fff;
+	padding: 2px 4px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}

@@ -285,16 +285,18 @@ class StoreOrderIndex extends AdminSearch
 	protected function getSelectClause()
 	{
 		$clause = 'Orders.id, Orders.total, Orders.createdate,
-					Orders.locale, Orders.instance, Orders.notes,
-					Orders.comments, Orders.billing_address, Orders.email,
-					Orders.phone,
-					(Orders.comments is not null and Orders.comments != %s)
-						as has_comments';
+			Orders.locale, Orders.instance, Orders.notes,
+			Orders.comments, Orders.billing_address, Orders.email,
+			Orders.phone, Orders.account,
+			(Orders.comments is not null and Orders.comments != %1$s)
+				as has_comments,
+			(Orders.notes is not null and Orders.notes != %1$s) as has_notes,
+			Orders.cancel_date is not null as is_cancelled';
 
-		$clause = sprintf($clause,
-			$this->app->db->quote('', 'text'));
-
-		return $clause;
+		return sprintf(
+			$clause,
+			$this->app->db->quote('', 'text')
+		);
 	}
 
 	// }}}
@@ -356,11 +358,19 @@ class StoreOrderIndex extends AdminSearch
 
 		$ds->fullname     = $this->getOrderFullname($order);
 		$ds->title        = $this->getOrderTitle($order);
-		$ds->has_comments = ($order->comments != '');
-		$ds->has_notes    = ($order->notes != '');
+		$ds->has_comments = $row->has_comments;
+		$ds->has_notes    = $row->has_notes;
+		$ds->is_cancelled = $row->is_cancelled;
 
-		$ds->notes = sprintf('<span class="order-notes">%s</span>',
-			SwatString::minimizeEntities($ds->notes));
+		$ds->notes = sprintf(
+			'<span class="order-notes">%s</span>',
+			SwatString::minimizeEntities($order->notes)
+		);
+
+		$ds->comments = sprintf(
+			'<span class="order-comments">%s</span>',
+			SwatString::minimizeEntities($order->comments)
+		);
 
 		return $ds;
 	}

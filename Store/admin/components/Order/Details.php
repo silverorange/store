@@ -158,6 +158,14 @@ abstract class StoreOrderDetails extends AdminPage
 			if ($this->ui->hasWidget('cancel_order_link')) {
 				$this->ui->getWidget('cancel_order_link')->visible = false;
 			}
+
+			if ($this->ui->hasWidget('resend_confirmation_link')) {
+				$link = $this->ui->getWidget('resend_confirmation_link');
+				$link->sensitive = false;
+				$link->tooltip = Store::_(
+					'Can not resend email confirmation for cancelled orders.'
+				);
+			}
 		}
 	}
 
