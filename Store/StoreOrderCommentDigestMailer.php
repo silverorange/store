@@ -142,36 +142,100 @@ class StoreOrderCommentDigestMailer extends SiteCommandLineApplication
 	{
 		ob_start();
 
+		$locale = SwatI18NLocale::get();
+
+		$order_count = count($orders);
+
+		$p_tag = new SwatHtmlTag('p');
+		$b_tag = new SwatHtmlTag('b');
+		$b_tag->setContent(
+			sprintf(
+				Store::ngettext(
+					'%s new order since last order comments digest email.',
+					'%s new orders since last order comments digest email.',
+					$order_count
+				),
+				$locale->formatNumber($order_count)
+			)
+		);
+		$p_tag->setContent(
+			$b_tag,
+			'text/xml'
+		);
+
+		$p_tag->display();
+
+		$comment_count = 0;
 		foreach ($orders as $order) {
 			if ($order->comments !== null) {
-				$date = clone $order->createdate;
-				$date->convertTZ($this->default_time_zone);
+				$comment_count++;
+			}
+		}
 
-				$p_tag = new SwatHtmlTag('p');
+		if ($comment_count == 0 && $order_count > 0) {
+			$p_tag->setContent(Store::_('No order comments.'));
+			$p_tag->display();
+		} else {
+			$no_comment_count = $order_count - $comment_count;
+			if ($no_comment_count > 0) {
 				$p_tag->setContent(
 					sprintf(
-						'<p><a href="%1$sadmin/Order/Details?id=%2$s">'.
-						'Order %2$s</a><br />%3$s (%4$s)<br />%5$s</p>',
-						$this->config->uri->absolute_base,
-						$order->id,
-						SwatString::minimizeEntities(
-							$order->account->getFullname()
+						Store::ngettext(
+							'%s order without comments.',
+							'%s orders without comments.',
+							$no_comment_count
 						),
-						SwatString::minimizeEntities(
-							$order->account->email
-						),
-						$date->format(
-							SwatDate::DF_DATE_TIME
-						)
-					),
-					'text/xml'
+						$locale->formatNumber($no_comment_count)
+					)
 				);
 
 				$p_tag->display();
 
-				$p_tag->style = 'padding-bottom: 10px;';
-				$p_tag->setContent($order->comments);
+				$p_tag->setContent(
+					sprintf(
+						Store::ngettext(
+							'%s new order with comments.',
+							'%s new orders with comments.',
+							$comment_count
+						),
+						$locale->formatNumber($comment_count)
+					)
+				);
 				$p_tag->display();
+			}
+
+			foreach ($orders as $order) {
+				if ($order->comments !== null) {
+					$date = clone $order->createdate;
+					$date->convertTZ($this->default_time_zone);
+
+					$p_tag->setContent(
+						sprintf(
+							Store::_(
+								'<a href="%1$sadmin/Order/Details?id=%2$s">'.
+								'Order %2$s</a><br />%3$s (%4$s)<br />%5$s'
+							),
+							$this->config->uri->absolute_base,
+							$order->id,
+							SwatString::minimizeEntities(
+								$order->account->getFullname()
+							),
+							SwatString::minimizeEntities(
+								$order->account->email
+							),
+							$date->format(
+								SwatDate::DF_DATE_TIME
+							)
+						),
+						'text/xml'
+					);
+
+					$p_tag->display();
+
+					$p_tag->style = 'padding-bottom: 10px;';
+					$p_tag->setContent($order->comments);
+					$p_tag->display();
+				}
 			}
 		}
 
