@@ -119,6 +119,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$valid = $this->validatePaymentMethod() && $valid;
 		$valid = $this->validateBillingAddress() && $valid;
 		$valid = $this->validateShippingAddress() && $valid;
+		$valid = $this->validateShippingType() && $valid;
 
 		return $valid;
 	}
@@ -451,6 +452,16 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		}
 
 		return $fields;
+	}
+
+	// }}}
+
+	// validate shipping type
+	// {{{ protected function validateShippingType()
+
+	protected function validateShippingType()
+	{
+		return true;
 	}
 
 	// }}}
