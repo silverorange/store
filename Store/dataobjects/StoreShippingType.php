@@ -189,7 +189,7 @@ class StoreShippingType extends SwatDBDataObject
 	// }}}
 
 	// loader methods
-	// {{{ public function loadShippingRates(StoreRegion $region)
+	// {{{ public function loadShippingRates()
 
 	public function loadShippingRates(StoreRegion $region = null)
 	{
