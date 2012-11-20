@@ -1114,13 +1114,18 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$this->ui->getWidget('submit_button')->sensitive = false;
 		} else {
 			$message = new SwatMessage(Store::_('Please Review Your Order'));
-			$message->content_type= 'text/xml';
-			$message->secondary_content = sprintf(Store::_('Press the '.
-				'%sPlace Order%s button to complete your order.'),
-				'<em>', '</em>');
-
-			$this->ui->getWidget('message_display')->add($message,
-				SwatMessageDisplay::DISMISS_OFF);
+			$message->content_type = 'text/xml';
+			$message->secondary_content = sprintf(
+				Store::_(
+					'Press the %sPlace Order%s button to complete your order.'
+				),
+				'<em>',
+				'</em>'
+			);
+			$this->ui->getWidget('message_display')->add(
+				$message,
+				SwatMessageDisplay::DISMISS_OFF
+			);
 		}
 	}
 
