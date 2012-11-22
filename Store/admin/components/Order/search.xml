@@ -51,8 +51,8 @@
 					<widget class="SwatFlydown" id="search_instance" />
 				</widget>
 			</widget>
-			<widget class="SwatFieldset" id="date_range">
-				<property name="title" translatable="yes">Order Date Range</property>
+			<widget class="SwatFieldset" id="order_options">
+				<property name="title" translatable="yes">Order Options</property>
 				<widget class="SwatFormField" id="date_after">
 					<property name="title" translatable="yes">Ordered On or After</property>
 					<widget class="SwatDateEntry" id="search_createdate_gt">
@@ -64,6 +64,10 @@
 					<widget class="SwatDateEntry" id="search_createdate_lt">
 						<property name="valid_range_start" type="date">2000-01-01</property>
 					</widget>
+				</widget>
+				<widget class="SwatFormField">
+					<property name="title" translatable="yes">Has Comments</property>
+					<widget class="SwatYesNoFlydown" id="search_comments" />
 				</widget>
 			</widget>
 			<widget class="SwatFooterFormField">
