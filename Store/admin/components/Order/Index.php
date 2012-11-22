@@ -221,6 +221,15 @@ class StoreOrderIndex extends AdminSearch
 			$where.= $clause->getClause($this->app->db);
 		}
 
+		if ($this->ui->getWidget('search_comments')->value !== null) {
+			if ($this->ui->getWidget('search_comments')->value ==
+				SwatYesNoFlydown::YES) {
+				$where.= ' and orders.comments is not null';
+			} else {
+				$where.= ' and orders.comments is null';
+			}
+		}
+
 		// Region
 		$clause = new AdminSearchClause('integer:id');
 		$clause->table = 'Region';
