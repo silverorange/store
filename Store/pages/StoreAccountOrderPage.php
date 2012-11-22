@@ -19,7 +19,7 @@ require_once 'Swat/SwatUI.php';
  * Items in old orders can be added to the checkout card from this page.
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreAccount
  * @see       StoreOrder
@@ -66,9 +66,16 @@ class StoreAccountOrderPage extends SiteUiPage
 
 	public function init()
 	{
-		// redirect to login page if not logged in
+		// Redirect to orders page if not logged in. Note: We do not redirect
+		// directly to this order to prevent the case where you log out of
+		// one account from an order page and then try to log in using a
+		// different account.
 		if (!$this->app->session->isLoggedIn()) {
-			$uri = sprintf('account/login?relocate=%s', $this->source);
+			$uri = sprintf(
+				'account/login?relocate=%s',
+				$this->getOrdersPageUri()
+			);
+
 			$this->app->relocate($uri);
 		}
 
@@ -122,6 +129,14 @@ class StoreAccountOrderPage extends SiteUiPage
 		if ($this->order === null)
 			throw new SiteNotFoundException(
 				sprintf('An order with an id of ‘%d’ does not exist.', $id));
+	}
+
+	// }}}
+	// {{{ protected function getOrdersPageUri()
+
+	protected function getOrdersPageUri()
+	{
+		return 'account/orders';
 	}
 
 	// }}}
