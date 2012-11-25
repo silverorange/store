@@ -1,0 +1,65 @@
+#order_stats {
+	width: 100%;
+	height: 250px;
+}
+
+#new_content_frame .swat-footer-form-field form {
+	display: inline;
+}
+
+#new_content_frame .admin-note {
+	background-image: none;
+	padding-left: 6px;
+	min-height: auto;
+}
+
+#new_content_view span.person,
+#new_content_view span.folder-with-contents,
+#new_content_view span.edit,
+#new_content_view span.product,
+#new_content_view span.file-save-as,
+#new_content_view span.download,
+#new_content_view span.document {
+	float: left;
+	width: 22px;
+	height: 22px;
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	background-image: url(../../../../packages/admin/images/admin-title-link-cell-renderer-icons.png);
+}
+
+#new_content_view span.edit {
+	background-position: 0 -22px;
+}
+
+#new_content_view span.document-with-contents {
+	background-position: 0 -44px;
+}
+
+#new_content_view span.folder {
+	background-position: 0 -66px;
+}
+
+#new_content_view span.folder-with-contents {
+	background-position: 0 -88px;
+}
+
+#new_content_view span.person {
+	background-position: 0 -110px;
+}
+
+#new_content_view span.product {
+	background-position: 0 -132px;
+}
+
+#new_content_view span.file-save-as {
+	background-position: 0 -154px;
+}
+
+#new_content_view span.download {
+	background-position: 0 -176px;
+}
+
+#new_content_view td.content div {
+	margin-left: 28px;
+}

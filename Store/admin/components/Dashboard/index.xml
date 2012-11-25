@@ -1,0 +1,60 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<!-- {{{ Order Stats  -->
+
+	<widget class="SwatFrame" id="order_stats_frame">
+		<property name="title" translatable="yes">Order Statistics</property>
+		<widget class="SwatToolbar">
+			<widget class="SwatToolLink">
+				<property name="title">View All Orders</property>
+				<property name="link">Orders</property>
+			</widget>
+		</widget>
+		<widget class="SwatDisplayableContainer" id="order_stats" />
+	</widget>
+
+	<!-- }}} -->
+	<!-- {{{ New Content  -->
+
+	<widget class="SwatFrame" id="new_content_frame">
+		<property name="title" translatable="yes">Recent Customer Feedback</property>
+		<widget class="SwatToolbar">
+			<widget class="SwatToolLink" id="view_all_orders">
+				<property name="title" translatable="yes">View All Orders With Comments</property>
+				<property name="link">Orders?has_comments=true</property>
+			</widget>
+			<widget class="SwatToolLink" id="view_all_product_reviews">
+				<property name="title" translatable="yes">View All Product Reviews</property>
+				<property name="link">ProductReview</property>
+			</widget>
+		</widget>
+		<widget class="AdminNote" id="new_content_note">
+			<property name="content">Showing orders with comments and product reviews with ★★★ or less</property>
+		</widget>
+		<widget class="SwatTableView" id="new_content_view">
+			<object class="SwatTableViewGroup">
+				<property name="group_by">date_formatted</property>
+				<object class="SwatTextCellRenderer">
+					<property name="text" type="data">date_formatted</property>
+				</object>
+			</object>
+			<object class="SwatTableViewColumn" id="content">
+				<object class="SwatTextCellRenderer">
+					<property name="text" type="data">content</property>
+					<property name="content_type">text/xml</property>
+				</object>
+			</object>
+			<object class="SwatTableViewColumn" id="rating">
+				<object class="SwatRatingCellRenderer">
+					<property name="value" type="data">rating</property>
+					<property name="round_mode" type="constant">ROUND_HALF</property>
+					<property name="classes[]">academy-rating</property>
+				</object>
+			</object>
+		</widget>
+	</widget>
+
+	<!-- }}} -->
+</swatml>
