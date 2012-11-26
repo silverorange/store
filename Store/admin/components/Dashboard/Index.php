@@ -64,6 +64,10 @@ class StoreDashboardIndex extends AdminIndex
 		$view_all_orders->link = 'Order?has_comments=yes';
 
 		$this->ui->getWidget('order_chart')->setApplication($this->app);
+		if ($this->app->getInstance() !== null) {
+			$this->ui->getWidget('order_chart')->setInstance(
+				$this->app->getInstance());
+		}
 	}
 
 	// }}}
