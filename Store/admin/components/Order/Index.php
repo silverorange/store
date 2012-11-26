@@ -87,7 +87,35 @@ class StoreOrderIndex extends AdminSearch
 	{
 		parent::processInternal();
 
+		if ($this->hasGetState()) {
+			$this->loadGetState();
+			$frame = $this->ui->getWidget('results_frame');
+			$frame->visible = true;
+		}
+
 		$this->ui->getWidget('pager')->process();
+	}
+
+	// }}}
+	// {{{ protected function hasGetState()
+
+	protected function hasGetState()
+	{
+		return isset($_GET['has_comments']);
+	}
+
+	// }}}
+	// {{{ protected function loadGetState()
+
+	protected function loadGetState()
+	{
+		// make it possible to link to page with only orders having comments
+		if (isset($_GET['has_comments'])) {
+			$this->ui->getWidget('search_comments')->value =
+				(strtolower($_GET['has_comments']) == 'yes')
+					? true
+					: false;
+		}
 	}
 
 	// }}}
@@ -221,13 +249,8 @@ class StoreOrderIndex extends AdminSearch
 			$where.= $clause->getClause($this->app->db);
 		}
 
-		if ($this->ui->getWidget('search_comments')->value !== null) {
-			if ($this->ui->getWidget('search_comments')->value ==
-				SwatYesNoFlydown::YES) {
-				$where.= ' and orders.comments is not null';
-			} else {
-				$where.= ' and orders.comments is null';
-			}
+		if ($this->ui->getWidget('search_comments')->value) {
+			$where.= ' and orders.comments is not null';
 		}
 
 		// Region

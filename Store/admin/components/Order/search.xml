@@ -67,7 +67,7 @@
 				</widget>
 				<widget class="SwatFormField">
 					<property name="title" translatable="yes">Has Comments</property>
-					<widget class="SwatYesNoFlydown" id="search_comments" />
+					<widget class="SwatCheckbox" id="search_comments" />
 				</widget>
 			</widget>
 			<widget class="SwatFooterFormField">
