@@ -6,6 +6,7 @@ require_once 'Site/dataobjects/SiteAccountWrapper.php';
 require_once 'Store/dataobjects/StoreOrderWrapper.php';
 require_once 'Store/dataobjects/StoreProductReviewWrapper.php';
 require_once 'Store/dataobjects/StoreProductWrapper.php';
+require_once 'Store/admin/StoreOrderChart.php';
 
 /**
  * Front-page dashboard
@@ -62,9 +63,7 @@ class StoreDashboardIndex extends AdminIndex
 		$view_all_orders = $this->ui->getWidget('view_all_orders');
 		$view_all_orders->link = 'Order?has_comments=yes';
 
-		$this->layout->startCapture('content');
-		Swat::displayInlineJavaScript($this->getOrdersChart());
-		$this->layout->endCapture();
+		$this->ui->getWidget('order_chart')->setApplication($this->app);
 	}
 
 	// }}}
@@ -362,18 +361,6 @@ class StoreDashboardIndex extends AdminIndex
 
 		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
 			'packages/store/admin/styles/store-dashboard.css'),
-			Store::PACKAGE_ID);
-
-		$this->layout->addHtmlHeadEntry(new SwatJavascriptHtmlHeadEntry(
-			'packages/store/admin/javascript/jquery-1.8.3.min.js'),
-			Store::PACKAGE_ID);
-
-		$this->layout->addHtmlHeadEntry(new SwatJavascriptHtmlHeadEntry(
-			'packages/store/admin/javascript/jquery.flot.js'),
-			Store::PACKAGE_ID);
-
-		$this->layout->addHtmlHeadEntry(new SwatJavascriptHtmlHeadEntry(
-			'packages/store/admin/javascript/store-dashboard-orders.js'),
 			Store::PACKAGE_ID);
 	}
 
