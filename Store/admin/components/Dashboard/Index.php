@@ -26,6 +26,7 @@ class StoreDashboardIndex extends AdminIndex
 	protected function initInternal()
 	{
 		$this->ui->loadFromXML($this->getUiXml());
+		$this->navbar->popEntry();
 
 		parent::initInternal();
 	}
