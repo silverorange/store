@@ -6,8 +6,8 @@
 
 	<widget class="SwatFrame" id="order_stats_frame">
 		<property name="title" translatable="yes">Order Statistics</property>
-		<widget class="SwatToolbar">
-			<widget class="SwatToolLink">
+		<widget class="SwatToolbar" id="orders_toolbar">
+			<widget class="SwatToolLink" id="order_link">
 				<property name="title">View All Orders</property>
 				<property name="link">Orders</property>
 			</widget>
