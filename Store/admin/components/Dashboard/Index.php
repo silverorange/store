@@ -59,8 +59,8 @@ class StoreDashboardIndex extends AdminIndex
 
 	protected function buildOrders()
 	{
-		$toolbar = $this->ui->getWidget('view_all_orders');
-		$toolbar->link = 'Order?has_comments=yes';
+		$view_all_orders = $this->ui->getWidget('view_all_orders');
+		$view_all_orders->link = 'Order?has_comments=yes';
 
 		$this->layout->startCapture('content');
 		Swat::displayInlineJavaScript($this->getOrdersChart());
