@@ -29,6 +29,8 @@ class StoreOrderChart extends SwatControl
 	 */
 	private $app;
 
+	private $instance = null;
+
 	// }}}
 	// {{{ public function __construct()
 
@@ -64,6 +66,14 @@ class StoreOrderChart extends SwatControl
 	public function setApplication(SiteApplication $app)
 	{
 		$this->app = $app;
+	}
+
+	// }}}
+	// {{{ public function setInstance()
+
+	public function setInstance(SiteInstance $instance)
+	{
+		$this->instance = $instance;
 	}
 
 	// }}}
@@ -103,9 +113,9 @@ class StoreOrderChart extends SwatControl
 	{
 		$where_clause = '1 = 1';
 
-		if ($this->app->getInstanceId() !== null) {
-			$where_clause = sprintf(' and Orders.instance = %s',
-				$this->app->db->quote($this->app->getInstanceId(), 'integer'));
+		if ($this->instance !== null) {
+			$where_clause.= sprintf(' and Orders.instance = %s',
+				$this->app->db->quote($this->instance->id, 'integer'));
 		}
 
 		$sql = sprintf('select sum(item_total) as total,
