@@ -1,7 +1,7 @@
 /*
 Written in JQuery because the flot charts are built on JQuery
 */
-function StoreDashboardOrders(id, data) {
+function StoreOrderChart(id, data) {
 	$(document).ready(function() {
 		function toDigits(num) {
 			return num.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");

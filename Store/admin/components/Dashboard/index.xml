@@ -12,7 +12,7 @@
 				<property name="link">Orders</property>
 			</widget>
 		</widget>
-		<widget class="SwatDisplayableContainer" id="order_stats" />
+		<widget class="StoreOrderChart" id="order_chart" />
 	</widget>
 
 	<!-- }}} -->
