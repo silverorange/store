@@ -247,7 +247,7 @@ class StoreDashboardIndex extends AdminIndex
 		$reviews = $this->getProductReviews();
 
 		foreach ($reviews as $review) {
-			$date = new SwatDate($order->createdate);
+			$date = new SwatDate($review->createdate);
 
 			if ($review->status == StoreProductReview::STATUS_PENDING) {
 				$link = 'ProductReview/Approval?id='.$review->id;
@@ -277,7 +277,7 @@ class StoreDashboardIndex extends AdminIndex
 			'date'    => $date,
 			'content' => $content,
 			'rating'  => $rating,
-			'icon'   => $icon,
+			'icon'    => $icon,
 		);
 	}
 
