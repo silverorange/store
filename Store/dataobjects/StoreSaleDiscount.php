@@ -57,6 +57,36 @@ class StoreSaleDiscount extends SwatDBDataObject
 	public $end_date;
 
 	// }}}
+	// {{{ public function loadFromShortname()
+
+	/**
+	 * Loads a sale discount by its shortname
+	 *
+	 * @param string $shortname the shortname of the sale discount to load.
+	 */
+	public function loadFromShortname($shortname)
+	{
+		$this->checkDB();
+		$row = null;
+
+		if ($this->table !== null) {
+			$sql = sprintf('select * from %s where shortname = %s',
+				$this->table,
+				$this->db->quote($shortname, 'text'));
+
+			$rs = SwatDB::query($this->db, $sql, null);
+			$row = $rs->fetchRow(MDB2_FETCHMODE_ASSOC);
+		}
+
+		if ($row === null)
+			return false;
+
+		$this->initFromRow($row);
+		$this->generatePropertyHashes();
+		return true;
+	}
+
+	// }}}
 	// {{{ public function isActive()
 
 	/**
