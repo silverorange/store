@@ -5,7 +5,7 @@
 	<!-- {{{ Order Stats  -->
 
 	<widget class="SwatFrame" id="order_stats_frame">
-		<property name="title" translatable="yes">Order Statistics</property>
+		<property name="title" translatable="yes">Sales History</property>
 		<widget class="SwatToolbar" id="orders_toolbar">
 			<widget class="SwatToolLink" id="order_link">
 				<property name="title">View All Orders</property>
