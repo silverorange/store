@@ -9,7 +9,7 @@
 		<widget class="SwatToolbar" id="orders_toolbar">
 			<widget class="SwatToolLink" id="order_link">
 				<property name="title">View All Orders</property>
-				<property name="link">Orders</property>
+				<property name="link">Order</property>
 			</widget>
 		</widget>
 		<widget class="StoreOrderChart" id="order_chart" />
