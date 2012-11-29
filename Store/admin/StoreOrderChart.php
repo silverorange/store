@@ -47,6 +47,10 @@ class StoreOrderChart extends SwatControl
 
 		$this->requires_id = true;
 
+		$this->addStyleSheet(
+			'packages/store/admin/styles/store-order-chart.css',
+			Store::PACKAGE_ID);
+
 		$this->addJavaScript(
 			'packages/store/admin/javascript/jquery-1.8.3.min.js',
 			Store::PACKAGE_ID);
@@ -104,6 +108,20 @@ class StoreOrderChart extends SwatControl
 		Swat::displayInlineJavaScript($this->getInlineJavaScript());
 
 		$container_div_tag->close();
+
+		$this->displayLegend();
+	}
+
+	// }}}
+	// {{{ protected function displayLegend()
+
+	protected function displayLegend()
+	{
+		$div_tag = new SwatHtmlTag('div');
+		$div_tag->id = $this->id.'_legend';
+		$div_tag->class = 'order-legend clearfix';
+		$div_tag->open();
+		$div_tag->close();
 	}
 
 	// }}}
@@ -178,12 +196,14 @@ class StoreOrderChart extends SwatControl
 		$now = new SwatDate();
 		$now->convertTZ($this->app->default_time_zone);
 
-		$orders_this_year = $this->getOrdersByDay($now->getYear());
+		$this_year = $now->getYear();
+		$orders_this_year = $this->getOrdersByDay($this_year);
 		$data_this_year = implode(', ',
 			$this->getChartData($orders_this_year, true));
 
 		$now->addYears(-1);
-		$orders_last_year = $this->getOrdersByDay($now->getYear());
+		$last_year = $now->getYear();
+		$orders_last_year = $this->getOrdersByDay($last_year);
 		$data_last_year = implode(', ',
 			$this->getChartData($orders_last_year));
 
@@ -194,14 +214,16 @@ class StoreOrderChart extends SwatControl
 		chart_data.push({
 			data: [<?= $data_this_year ?>],
 			lines: { lineWidth: 2 },
-			color: 'rgb(52, 101, 164)'
+			color: 'rgb(52, 101, 164)',
+			label: '<?=$this_year?>'
 		});
 
 		chart_data.push({
 			data: [<?= $data_last_year ?>],
 			lines: { lineWidth: 1 },
 			color: 'rgb(152, 201, 255)',
-			shadowSize: 0
+			shadowSize: 0,
+			label: '<?=$last_year?>'
 		});
 
 		var chart = new StoreOrderChart('<?=$this->id?>', chart_data);

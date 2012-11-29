@@ -1,0 +1,11 @@
+.order-legend {
+	padding-top: 20px;
+}
+
+.order-legend table {
+	float: right;
+}
+
+.order-legend table td:nth-child(2) {
+	padding-right: 10px;
+}
