@@ -50,6 +50,10 @@ function StoreOrderChart(id, data) {
 			series: {
 				points: { show: true },
 				lines: { show: true }
+			},
+			legend: {
+				container: '#' + id + '_legend',
+				noColumns: 2
 			}
 			});
 
