@@ -22,12 +22,16 @@ class StoreDashboardIndex extends AdminIndex
 	protected $new_content = array();
 
 	// }}}
+
+	// init phase
 	// {{{ protected function initInternal()
 
 	protected function initInternal()
 	{
 		$this->ui->loadFromXML($this->getUiXml());
 		$this->navbar->popEntry();
+
+		$this->initSuspiciousAccounts();
 
 		parent::initInternal();
 	}
@@ -41,7 +45,56 @@ class StoreDashboardIndex extends AdminIndex
 	}
 
 	// }}}
+	// {{{ protected function initSuspiciousAccounts()
 
+	protected function initSuspiciousAccounts()
+	{
+		$account_count = $this->getSuspiciousAccountCount();
+		if ($account_count > 0) {
+			$locale = SwatI18NLocale::get();
+			$message = new SwatMessage(sprintf(
+				Store::ngettext(
+					'One Suspicious Account This Week',
+					'%s Suspicious Accounts This Week',
+					$account_count
+				),
+				$locale->formatNumber($account_count)
+			), SwatMessage::WARNING);
+
+			$message->content_type = 'text/xml';
+			$message->secondary_content =
+				$this->getSuspiciousAccountForm($account_count);
+
+			$this->ui->getWidget('message_display')->add($message,
+				SwatMessageDisplay::DISMISS_OFF);
+		}
+	}
+
+	// }}}
+	// {{{ protected function getSuspiciousAccountCount()
+
+	protected function getSuspiciousAccountCount()
+	{
+		$sql = 'select count(Account.id) from Account
+				inner join SuspiciousAccountView on
+					SuspiciousAccountView.account = Account.id';
+
+		return SwatDB::queryOne($this->app->db, $sql);
+	}
+
+	// }}}
+	// {{{ protected function getSuspiciousAccountForm()
+
+	protected function getSuspiciousAccountForm($count)
+	{
+		return sprintf('<form method="get" action="Account/Suspicious">'.
+			'<input type="submit" value="%s" /></form>',
+			SwatString::minimizeEntities(Store::_('See Details')));
+	}
+
+	// }}}
+
+	// build phase
 	// {{{ protected function buildInternal()
 
 	protected function buildInternal()
