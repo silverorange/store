@@ -58,3 +58,13 @@
 #new_content_view td.content div {
 	margin-left: 28px;
 }
+
+#message_display .swat-message-with-secondary h3,
+#message_display .swat-message-with-secondary .swat-message-secondary-content,
+#message_display .swat-message-with-secondary form {
+	display: inline;
+}
+
+#message_display .swat-message-with-secondary form {
+	padding-left: 10px;
+}
