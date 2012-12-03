@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Site/SiteAccountLoginPage.php';
+require_once 'Site/pages/SiteAccountLoginPage.php';
 
 /**
  * @package   Store
