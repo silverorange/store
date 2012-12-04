@@ -13,6 +13,23 @@ require_once 'Store/dataobjects/StoreVoucher.php';
  */
 class StoreVoucherWrapper extends SwatDBRecordsetWrapper
 {
+	// {{{ public function getByCode()
+
+	public function getByCode($code)
+	{
+		$voucher = null;
+
+		foreach ($this as $v) {
+			if ($v->code == $code) {
+				$voucher = $v;
+				break;
+			}
+		}
+
+		return $voucher;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
