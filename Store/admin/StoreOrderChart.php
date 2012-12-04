@@ -212,18 +212,18 @@ class StoreOrderChart extends SwatControl
 		var chart_data = [];
 
 		chart_data.push({
-			data: [<?= $data_this_year ?>],
-			lines: { lineWidth: 2 },
-			color: 'rgb(52, 101, 164)',
-			label: '<?=$this_year?>'
-		});
-
-		chart_data.push({
 			data: [<?= $data_last_year ?>],
 			lines: { lineWidth: 1 },
 			color: 'rgb(152, 201, 255)',
 			shadowSize: 0,
 			label: '<?=$last_year?>'
+		});
+
+		chart_data.push({
+			data: [<?= $data_this_year ?>],
+			lines: { lineWidth: 2 },
+			color: 'rgb(52, 101, 164)',
+			label: '<?=$this_year?>'
 		});
 
 		var chart = new StoreOrderChart('<?=$this->id?>', chart_data);
