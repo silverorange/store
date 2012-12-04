@@ -187,6 +187,17 @@ class StoreVoucher extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ public function copyFrom()
+
+	public function copyFrom(StoreVoucher $voucher)
+	{
+		$this->code         = $voucher->code;
+		$this->voucher_type = $voucher->voucher_type;
+		$this->used_date    = $voucher->used_date;
+		$this->instance     = $voucher->instance;
+	}
+
+	// }}}
 	// {{{ protected function init()
 
 	protected function init()
