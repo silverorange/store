@@ -19,6 +19,11 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 	// {{{ protected properties
 
 	/**
+	 * @var integer
+	 */
+	protected $id;
+
+	/**
 	 * @var StoreAccountAddress
 	 */
 	protected $address;
@@ -33,16 +38,19 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 	 */
 	protected $verified_address;
 
-	protected $button1;
-	protected $button2;
-
-	// }}}
-	// {{{ protected properties
+	/**
+	 * Button for address verification
+	 *
+	 * @var SwatButton
+	 */
+	protected $confirm_yes_button;
 
 	/**
-	 * @var integer
+	 * Button for address verification
+	 *
+	 * @var SwatButton
 	 */
-	protected $id;
+	protected $confirm_no_button;
 
 	// }}}
 	// {{{ protected function getUiXml()
@@ -91,11 +99,11 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 
 		$form = $this->ui->getWidget('edit_form');
 
-		$this->button1 = new SwatButton('button1');
-		$this->button1->parent = $form;
+		$this->confirm_yes_button = new SwatButton('confirm_yes_button');
+		$this->confirm_yes_button->parent = $form;
 
-		$this->button2 = new SwatButton('button2');
-		$this->button2->parent = $form;
+		$this->confirm_no_button = new SwatButton('confirm_no_button');
+		$this->confirm_no_button->parent = $form;
 	}
 
 	// }}}
@@ -201,10 +209,10 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 		if ($form->isSubmitted())
 			$this->setupPostalCode();
 
-		$this->button1->process();
-		$this->button2->process();
+		$this->confirm_yes_button->process();
+		$this->confirm_no_button->process();
 
-		if ($this->button1->hasBeenClicked())
+		if ($this->confirm_yes_button->hasBeenClicked())
 			$this->verified_address = $form->getHiddenField('verified_address');
 
 		parent::process();
@@ -215,8 +223,8 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 
 	protected function validate(SwatForm $form)
 	{
-		if (!$this->button2->hasBeenClicked() &&
-			!$this->button1->hasBeenClicked() &&
+		if (!$this->confirm_no_button->hasBeenClicked() &&
+			!$this->confirm_yes_button->hasBeenClicked() &&
 			$this->isValid($form) &&
 			StoreAddress::isVerificationAvailable($this->app)) {
 				$this->verifyAddress($form);
@@ -250,24 +258,30 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 			$form->addHiddenField('verified_address', $verified_address);
 
 			$message->primary_content = Store::_('Is this your address?');
-			$this->button1->title = Store::_('Yes, this is my address');
-			$this->button1->classes[] = 'address-verification-yes';
-			$this->button2->title = Store::_('No, use my address as entered below');
-			$this->button2->classes[] = 'address-verification-no';
+			$this->confirm_yes_button->title = Store::_(
+				'Yes, this is my address'
+			);
+			$this->confirm_yes_button->classes[] = 'address-verification-yes';
+			$this->confirm_no_button->title = Store::_(
+				'No, use my address as entered below'
+			);
+			$this->confirm_no_button->classes[] = 'address-verification-no';
 
 			ob_start();
 			echo '<p class="account-address-verified">';
 			$verified_address->display();
 			echo '</p>';
-			$this->button1->display();
-			$this->button2->display();
+			$this->confirm_yes_button->display();
+			$this->confirm_no_button->display();
 			$message->secondary_content.= ob_get_clean();
 		} else {
 			$message->primary_content = Store::_('Address not found');
-			$this->button2->title = Store::_('Yes, use my address as entered below');
+			$this->confirm_no_button->title = Store::_(
+				'Yes, use my address as entered below'
+			);
 
 			ob_start();
-			$this->button2->display();
+			$this->confirm_no_button->display();
 			$message->secondary_content.= ob_get_clean();
 		}
 
