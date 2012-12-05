@@ -251,7 +251,7 @@ class StorePostalCodeEntry extends SwatEntry
 		case 'NT': // Northwest Territories
 			$districts = array('X');
 			break;
-		case 'NL': // Newfoundland nad Labrador
+		case 'NL': // Newfoundland and Labrador
 			$districts = array('A');
 			break;
 		case 'NB': // New Brunswick
