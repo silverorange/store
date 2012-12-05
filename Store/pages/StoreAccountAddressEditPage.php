@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreAccountAddress.php';
  * Page for adding and editing addresses stored on accounts
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2012 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreAccount
  */
@@ -23,18 +23,26 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 	 */
 	protected $address;
 
+	/**
+	 * @var boolean
+	 */
 	protected $show_invalid_message = true;
+
+	/**
+	 * @var boolean
+	 */
 	protected $verified_address;
+
 	protected $button1;
 	protected $button2;
 
 	// }}}
-	// {{{ private properties
+	// {{{ protected properties
 
 	/**
 	 * @var integer
 	 */
-	private $id;
+	protected $id;
 
 	// }}}
 	// {{{ protected function getUiXml()
@@ -79,12 +87,80 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 
 		$this->id = intval($this->getArgument('id'));
 		$this->initAddress();
+		$this->initCountryAndProvstate();
 
 		$form = $this->ui->getWidget('edit_form');
+
 		$this->button1 = new SwatButton('button1');
 		$this->button1->parent = $form;
+
 		$this->button2 = new SwatButton('button2');
 		$this->button2->parent = $form;
+	}
+
+	// }}}
+	// {{{ protected function initCountryAndProvstate()
+
+	protected function initCountryAndProvstate()
+	{
+		$country_sql = sprintf(
+			'select id, title from Country
+			where visible = %s
+			order by title',
+			$this->app->db->quote(true, 'boolean')
+		);
+
+		$countries = SwatDB::query(
+			$this->app->db,
+			$country_sql,
+			SwatDBClassMap::get('StoreCountryWrapper')
+		);
+
+		$provstates = $countries->loadAllSubRecordsets(
+			'provstates',
+			SwatDBClassMap::get('StoreProvStateWrapper'),
+			'ProvState',
+			'text:country',
+			null,
+			'title'
+		);
+
+		$country_flydown = $this->ui->getWidget('country');
+		$country_flydown->serialize_values = false;
+		foreach ($countries as $country) {
+			$country_flydown->addOption($country->id, $country->title);
+		}
+
+		$data = array();
+		foreach ($countries as $country) {
+
+			$data[$country->id] = array(
+				'title'        => $country->title,
+				'select_title' => $country->getRegionSelectTitle(),
+				'field_title'  => sprintf(
+					Store::_('%s:'),
+					$country->getRegionTitle()
+				),
+				'required'     => $country->getRegionRequired(),
+				'visible'      => $country->getRegionVisible(),
+			);
+
+			if (count($country->provstates) === 0) {
+				$data[$country->id]['provstates'] = null;
+			} else {
+				$data[$country->id]['provstates'] = array();
+				foreach ($country->provstates as $provstate) {
+					$data[$country->id]['provstates'][] = array(
+						'id'    => $provstate->id,
+						'title' => $provstate->title,
+					);
+				}
+			}
+		}
+
+		$provstate_flydown = $this->ui->getWidget('provstate');
+		$provstate_flydown->data = $data;
+		$provstate_flydown->setCountryFlydown($country_flydown);
 	}
 
 	// }}}
@@ -93,13 +169,15 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 	protected function initAddress()
 	{
 		$form = $this->ui->getWidget('edit_form');
+
 		if ($this->isNew($form)) {
 			$class   = SwatDBClassMap::get('StoreAccountAddress');
 			$address = new $class();
 			$address->setDatabase($this->app->db);
 		} else {
 			$address = $this->app->session->account->addresses->getByIndex(
-				$this->id);
+				$this->id
+			);
 
 			if ($address === null) {
 				throw new SiteNotFoundException(
@@ -217,20 +295,23 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 
 	protected function updateAddress(SwatForm $form, StoreAddress $address)
 	{
-		$this->assignUiValuesToObject($address, array(
-			'fullname',
-			'company',
-			'phone',
-			'line1',
-			'line2',
-			'city',
-			'provstate_other',
-			'postal_code',
-			'country',
-		));
+		$this->assignUiValuesToObject(
+			$address,
+			array(
+				'fullname',
+				'company',
+				'country',
+				'line1',
+				'line2',
+				'city',
+				'postal_code',
+				'phone',
+			)
+		);
 
-		$provstate = $this->ui->getWidget('provstate')->value;
-		$address->provstate = ($provstate == 'other') ? null : $provstate;
+		$provstate = $this->ui->getWidget('provstate');
+		$address->provstate = $provstate->provstate_id;
+		$address->provstate_other = $provstate->provstate_other;
 	}
 
 	// }}}
@@ -285,18 +366,16 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 			return;
 		}
 
-		$provstate->country = $country_id;
-		$provstate->setDatabase($this->app->db);
 		$provstate->process();
 
-		if ($provstate->value === 'other') {
-			$this->ui->getWidget('provstate_other')->required = true;
-		} elseif ($provstate->value !== null) {
-			$sql = sprintf('select abbreviation from ProvState where id = %s',
-				$this->app->db->quote($provstate->value, 'text'));
+		if ($provstate->provstate_id !== null) {
+			$sql = sprintf(
+				'select abbreviation from ProvState where id = %s',
+				$this->app->db->quote($provstate->provstate_id)
+			);
 
 			$provstate_abbreviation = SwatDB::queryOne($this->app->db, $sql);
-			$postal_code->country   = $country_id;
+			$postal_code->country = $country_id;
 			$postal_code->provstate = $provstate_abbreviation;
 		}
 
@@ -336,22 +415,6 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 		} elseif (!$form->isProcessed()) {
 			$this->setDefaultValues($this->app->session->account);
 		}
-
-		$provstate_flydown = $this->ui->getWidget('provstate');
-		$provstate_flydown->addOptionsByArray(SwatDB::getOptionArray(
-			$this->app->db, 'ProvState', 'title', 'id', 'title'));
-
-		$provstate_other = $this->ui->getWidget('provstate_other');
-		if ($provstate_other->visible) {
-			$provstate_flydown->addDivider();
-			$option = new SwatOption('other', 'Other…');
-			$provstate_flydown->addOption($option);
-		}
-
-		$country_flydown = $this->ui->getWidget('country');
-		$country_flydown->addOptionsByArray(SwatDB::getOptionArray(
-			$this->app->db, 'Country', 'title', 'id', 'title',
-			sprintf('visible = %s', $this->app->db->quote(true, 'boolean'))));
 	}
 
 	// }}}
@@ -389,51 +452,29 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 	}
 
 	// }}}
-	// {{{ protected function buildContent()
-
-	protected function buildContent()
-	{
-		parent::buildContent();
-
-		$this->layout->startCapture('content');
-		Swat::displayInlineJavaScript($this->getInlineJavaScript());
-		$this->layout->endCapture();
-	}
-
-	// }}}
 	// {{{ protected function load()
 
 	protected function load(SwatForm $form)
 	{
-		$this->assignObjectValuesToUi($this->address, array(
-			'fullname',
-			'company',
-			'phone',
-			'line1',
-			'line2',
-			'city',
-			'provstate',
-			'provstate_other',
-			'postal_code',
-			'country',
-		));
+		$this->assignObjectValuesToUi(
+			$this->address,
+			array(
+				'fullname',
+				'company',
+				'country',
+				'line1',
+				'line2',
+				'city',
+				'postal_code',
+				'phone',
+			)
+		);
 
-		if ($this->ui->getWidget('provstate_other')->visible &&
-			$this->address->provstate === null) {
-			$this->ui->getWidget('provstate')->value = 'other';
-		}
-	}
-
-	// }}}
-	// {{{ protected function getInlineJavaScript()
-
-	protected function getInlineJavaScript()
-	{
 		$provstate = $this->ui->getWidget('provstate');
-		$provstate_other_index = count($provstate->options);
-		$id = 'account_address';
-		return sprintf("var %s_obj = new StoreAccountAddressPage('%s', %s);",
-			$id, $id, $provstate_other_index);
+		$provstate->provstate_id =
+			$this->address->getInternalValue('provstate');
+
+		$provstate->provstate_other = $this->address->provstate_other;
 	}
 
 	// }}}
@@ -459,18 +500,25 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 	public function finalize()
 	{
 		parent::finalize();
+
+		$this->layout->addBodyClass('account-address-edit');
+
 		$yui = new SwatYUI(array('dom', 'event'));
 		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/javascript/store-account-address-page.js',
-			Store::PACKAGE_ID));
 
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/javascript/store-account-address-page.js',
+			Store::PACKAGE_ID
+		);
+
+		$this->layout->addHtmlHeadEntry(
 			'packages/store/styles/store-account-address-edit-page.css',
-			Store::PACKAGE_ID));
+			Store::PACKAGE_ID
+		);
 
 		$this->layout->addHtmlHeadEntrySet(
-			$this->ui->getRoot()->getHtmlHeadEntrySet());
+			$this->ui->getRoot()->getHtmlHeadEntrySet()
+		);
 	}
 
 	// }}}
