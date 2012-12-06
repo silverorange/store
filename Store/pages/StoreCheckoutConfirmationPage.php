@@ -629,17 +629,22 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$account = $this->app->session->account;
 		$order = $this->app->session->order;
 
-		if ($order->billing_address instanceof StoreOrderAddress) {
-			$address = $this->addAddressToAccount($order->billing_address);
-			$account->setDefaultBillingAddress($address);
-		}
-
-		// shipping address is only added if it differs from billing address
-		if ($order->shipping_address instanceof StoreOrderAddress) {
-			if ($order->shipping_address !== $order->billing_address) {
-				$address = $this->addAddressToAccount($order->shipping_address);
+		// new addresses are only saved to accounts if the ini setting is true.
+		if ($this->app->config->store->save_account_address) {
+			if ($order->billing_address instanceof StoreOrderAddress) {
+				$address = $this->addAddressToAccount($order->billing_address);
+				$account->setDefaultBillingAddress($address);
 			}
-			$account->setDefaultShippingAddress($address);
+
+			// shipping address is only added if it differs from billing address
+			if ($order->shipping_address instanceof StoreOrderAddress) {
+				if ($order->shipping_address !== $order->billing_address) {
+					$address = $this->addAddressToAccount(
+						$order->shipping_address
+					);
+				}
+				$account->setDefaultShippingAddress($address);
+			}
 		}
 
 		// new payment methods are only added if a session flag is set and true

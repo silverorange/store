@@ -89,6 +89,7 @@ class Store
 		return array(
 			'store.multiple_payment_support' => false,
 			'store.multiple_payment_ui' => false,
+			'store.save_account_address' => true,
 			'store.path' => 'store/',
 
 			// Expiry dates for the privateer data deleter
