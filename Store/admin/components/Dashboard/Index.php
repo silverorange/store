@@ -63,7 +63,7 @@ class StoreDashboardIndex extends AdminIndex
 
 			$message->content_type = 'text/xml';
 			$message->secondary_content =
-				$this->getSuspiciousAccountForm($account_count);
+				$this->getSuspiciousAccountLink($account_count);
 
 			$this->ui->getWidget('message_display')->add($message,
 				SwatMessageDisplay::DISMISS_OFF);
@@ -83,13 +83,14 @@ class StoreDashboardIndex extends AdminIndex
 	}
 
 	// }}}
-	// {{{ protected function getSuspiciousAccountForm()
+	// {{{ protected function getSuspiciousAccountLink()
 
-	protected function getSuspiciousAccountForm($count)
+	protected function getSuspiciousAccountLink($count)
 	{
-		return sprintf('<form method="get" action="Account/Suspicious">'.
-			'<input type="submit" value="%s" /></form>',
-			SwatString::minimizeEntities(Store::_('See Details')));
+		$a_tag = new SwatHtmlTag('a');
+		$a_tag->href = 'Account/Suspicious';
+		$a_tag->setContent(Store::_('See Details').' ›');
+		return $a_tag;
 	}
 
 	// }}}
