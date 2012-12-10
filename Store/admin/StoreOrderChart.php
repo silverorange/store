@@ -204,30 +204,40 @@ class StoreOrderChart extends SwatControl
 		$now->addYears(-1);
 		$last_year = $now->getYear();
 		$orders_last_year = $this->getOrdersByDay($last_year);
-		$data_last_year = implode(', ',
-			$this->getChartData($orders_last_year));
 
 		ob_start();
-		?>
-		var chart_data = [];
+		echo 'var chart_data = [];';
 
-		chart_data.push({
-			data: [<?= $data_last_year ?>],
-			lines: { lineWidth: 1 },
-			color: 'rgb(152, 201, 255)',
-			shadowSize: 0,
-			label: '<?=$last_year?>'
-		});
+		if (count($orders_last_year)) {
+			$data_last_year = implode(', ',
+				$this->getChartData($orders_last_year));
 
-		chart_data.push({
-			data: [<?= $data_this_year ?>],
-			lines: { lineWidth: 2 },
-			color: 'rgb(52, 101, 164)',
-			label: '<?=$this_year?>'
-		});
+			printf(
+				"chart_data.push({
+					data: [%s],
+					lines: { lineWidth: 1 },
+					color: 'rgb(152, 201, 255)',
+					shadowSize: 0,
+					label: '%s'
+				});",
+				$data_last_year,
+				$last_year
+			);
+		}
 
-		var chart = new StoreOrderChart('<?=$this->id?>', chart_data);
-		<?
+		printf(
+			"chart_data.push({
+				data: [%s],
+				lines: { lineWidth: 2 },
+				color: 'rgb(52, 101, 164)',
+				label: '%s'
+			});
+
+			var chart = new StoreOrderChart('%s', chart_data);",
+			$data_this_year,
+			$this_year,
+			$this->id
+		);
 
 		return ob_get_clean();
 	}
