@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreRegionWrapper.php';
  *
  *
  * @package   Store
- * @copyright 2004-2007 silverorange
+ * @copyright 2004-2012 silverorange
  */
 abstract class StoreLocaleApplication extends StoreApplication
 {
@@ -136,9 +136,9 @@ abstract class StoreLocaleApplication extends StoreApplication
 	}
 
 	// }}}
-	// {{{ private function parseLocale()
+	// {{{ protected function parseLocale()
 
-	private function parseLocale($locale)
+	protected function parseLocale($locale)
 	{
 		$this->locale = null;
 		$this->region = null;
