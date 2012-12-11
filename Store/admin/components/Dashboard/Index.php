@@ -276,7 +276,7 @@ class StoreDashboardIndex extends AdminIndex
 
 	protected function buildOrdersNewContentData()
 	{
-		$orders = $this->getOrdersWithComments();
+		$orders = $this->getOrders();
 
 		foreach ($orders as $order) {
 			$date = new SwatDate($order->createdate);
@@ -354,21 +354,20 @@ class StoreDashboardIndex extends AdminIndex
 	}
 
 	// }}}
-	// {{{ protected function getOrdersWithComments()
+	// {{{ protected function getOrders()
 
-	protected function getOrdersWithComments()
+	protected function getOrders()
 	{
 		$date = $this->getNewContentCutoffDate();
 		$date->toUTC();
 
-		$sql = sprintf('select Orders.id,
-				Orders.createdate, Orders.comments,
-				Orders.email
+		$sql = sprintf('select Orders.*
 			from Orders
 			where Orders.createdate >= %s
-				and Orders.comments is not null
+				and %s 
 			order by Orders.createdate desc',
-			$this->app->db->quote($date->getDate(), 'date'));
+			$this->app->db->quote($date->getDate(), 'date'),
+			$this->getOrdersWhereClause());
 
 		$orders = SwatDB::query($this->app->db, $sql,
 			SwatDBClassMap::get('StoreOrderWrapper'));
@@ -379,6 +378,14 @@ class StoreDashboardIndex extends AdminIndex
 			SwatDBClassMap::get('SiteAccountWrapper'), 'integer');
 
 		return $orders;
+	}
+
+	// }}}
+	// {{{ protected function getOrdersWhereClause()
+
+	protected function getOrdersWhereClause()
+	{
+		return 'Orders.comments is not null';
 	}
 
 	// }}}
