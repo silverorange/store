@@ -205,41 +205,71 @@ class StoreOrderCommentDigestMailer extends SiteCommandLineApplication
 			}
 
 			foreach ($orders as $order) {
-				if ($order->comments !== null) {
-					$date = clone $order->createdate;
-					$date->convertTZ($this->default_time_zone);
-
-					$p_tag->setContent(
-						sprintf(
-							Store::_(
-								'<a href="%1$sadmin/Order/Details?id=%2$s">'.
-								'Order %2$s</a><br />%3$s (%4$s)<br />%5$s'
-							),
-							$this->config->uri->absolute_base,
-							$order->id,
-							SwatString::minimizeEntities(
-								$order->account->getFullname()
-							),
-							SwatString::minimizeEntities(
-								$order->account->email
-							),
-							$date->format(
-								SwatDate::DF_DATE_TIME
-							)
-						),
-						'text/xml'
-					);
-
-					$p_tag->display();
-
-					$p_tag->style = 'padding-bottom: 10px;';
-					$p_tag->setContent($order->comments);
-					$p_tag->display();
+				if ($this->canDisplayOrder($order)) {
+					$this->displayOrder($order);
 				}
 			}
 		}
 
 		return ob_get_clean();
+	}
+
+	// }}}
+	// {{{ protected function canDisplayOrder()
+
+	protected function canDisplayOrder(StoreOrder $order)
+	{
+		return ($order->comments !== null);
+	}
+
+	// }}}
+	// {{{ protected function displayOrder()
+
+	protected function displayOrder(StoreOrder $order)
+	{
+		$p_tag = new SwatHtmlTag('p');
+
+		$date = clone $order->createdate;
+		$date->convertTZ($this->default_time_zone);
+
+		$p_tag->setContent(
+			sprintf(
+				Store::_(
+					'<a href="%1$sadmin/Order/Details?id=%2$s">'.
+					'Order %2$s</a><br />%3$s (%4$s)<br />%5$s'
+				),
+				$this->config->uri->absolute_base,
+				$order->id,
+				SwatString::minimizeEntities(
+					$order->account->getFullname()
+				),
+				SwatString::minimizeEntities(
+					$order->account->email
+				),
+				$date->format(
+					SwatDate::DF_DATE_TIME
+				)
+			),
+			'text/xml'
+		);
+
+		$p_tag->style = 'padding-top: 10px;';
+		$p_tag->display();
+
+		if ($order->comments !== null) {
+			$p_tag->style = null;
+			$p_tag->setContent(
+				sprintf(
+					'Comments:<br /><em>%s</em>',
+					SwatString::minimizeEntities(
+						$order->comments
+					)
+				),
+				'text/xml'
+			);
+
+			$p_tag->display();
+		}
 	}
 
 	// }}}
