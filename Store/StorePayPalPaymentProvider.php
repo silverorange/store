@@ -767,7 +767,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			return 'payment-error';
 
 		/*
-		 * ExpressCheckout session has expiredr token is invalid. Checkout
+		 * ExpressCheckout session has expired token is invalid. Checkout
 		 * needs to be restarted.
 		 */
 		case 10411:
