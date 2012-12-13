@@ -708,7 +708,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$order->instance = $this->app->getInstance();
 
 		// attach order to account
-		if ($this->app->session->account !== null &&
+		if (isset($this->app->session->account) &&
+			$this->app->session->account instanceof SiteAccount &&
 			$this->app->session->account->id != '') {
 			$order->account = $this->app->session->account;
 		}
