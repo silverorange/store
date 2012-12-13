@@ -709,7 +709,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		// attach order to account
 		if (isset($this->app->session->account) &&
-			$this->app->session->account instanceof SiteAccount &&
+			$this->app->session->account instanceof StoreAccount &&
 			$this->app->session->account->id != '') {
 			$order->account = $this->app->session->account;
 		}
