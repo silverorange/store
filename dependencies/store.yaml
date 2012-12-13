@@ -27,7 +27,6 @@ Store:
 
     # JavaScript resources
     packages/store/javascript/search-disclosure.js:
-    packages/store/javascript/store-account-address-page.js:
     packages/store/javascript/store-account-payment-method-page.js:
     packages/store/javascript/store-checkout-address-page.js:
       Depends:
