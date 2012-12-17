@@ -521,11 +521,6 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
 
 		$this->layout->addHtmlHeadEntry(
-			'packages/store/javascript/store-account-address-page.js',
-			Store::PACKAGE_ID
-		);
-
-		$this->layout->addHtmlHeadEntry(
 			'packages/store/styles/store-account-address-edit-page.css',
 			Store::PACKAGE_ID
 		);
