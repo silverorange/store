@@ -510,10 +510,15 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		}
 
 		$this->ui->getWidget('card_number')->setCardTypes(
-			$this->getCardTypes());
+			$this->getCardTypes()
+		);
 
 		$option_list = $this->ui->getWidget('payment_option');
-		$option_list->process();
+
+		// using processValue here so we don't process the widget sub-tree
+		// before card type is set for validation
+		$option_list->processValue();
+
 		$option = $option_list->selected_page;
 
 		// check if using an existing account payment method, or a new one
@@ -928,7 +933,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 			$option_list = $this->ui->getWidget('payment_option');
 			if (isset($_POST['payment_option'])) {
-				$option_list->process();
+				// using processValue here so we don't process the widget
+				// sub-tree before card type is set for validation
+				$option_list->processValue();
 				if (strncmp('type_', $option_list->selected_page, 5) === 0) {
 					$class_name = SwatDBClassMap::get('StorePaymentType');
 					$type = new $class_name();
@@ -950,7 +957,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 		if ($card_type === null) {
 			$option_list = $this->ui->getWidget('payment_option');
-			$option_list->process();
+			// using processValue here so we don't process the widget
+			// sub-tree before card type is set for validation
+			$option_list->processValue();
 
 			// check if account payment method or new payment method
 			// was selected
