@@ -25,7 +25,6 @@
 		</widget>
 		<widget class="SwatFormField" id="billing_address_country_field">
 			<property name="title" translatable="yes">Location</property>
-			<property name="note_content_type">text/xml</property>
 			<widget class="SwatFlydown" id="billing_address_country">
 				<property name="required" type="boolean">true</property>
 				<property name="show_blank" type="boolean">false</property>
