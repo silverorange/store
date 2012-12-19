@@ -197,8 +197,10 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 		$provstate->process();
 
 		if ($provstate->provstate_id !== null) {
-			$sql = sprintf('select abbreviation from ProvState where id = %s',
-			$this->app->db->quote($provstate->provstate_id));
+			$sql = sprintf(
+				'select abbreviation from ProvState where id = %s',
+				$this->app->db->quote($provstate->provstate_id)
+			);
 
 			$provstate_abbreviation = SwatDB::queryOne($this->app->db, $sql);
 			$postal_code->country = $country->id;
