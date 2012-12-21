@@ -35,6 +35,8 @@ class StoreSalesReportDetails extends AdminIndex
 	 */
 	protected $regions = null;
 
+	protected $display_shipping = false;
+
 	// }}}
 	// {{{ protected function getUiXml()
 
@@ -80,20 +82,33 @@ class StoreSalesReportDetails extends AdminIndex
 	protected function appendRegionColumns(SwatTableView $view,
 		StoreRegionWrapper $regions)
 	{
+		$show_region = count($regions) > 1;
+
 		foreach ($regions as $region) {
-			$view->appendColumn($this->getCreatedColumn($region));
-			$view->appendColumn($this->getCancelledColumn($region));
-			$view->appendColumn($this->getSubtotalColumn($region));
+			$view->appendColumn(
+				$this->getCreatedColumn($region, $show_region));
+
+			$view->appendColumn(
+				$this->getCancelledColumn($region, $show_region));
+
+			$view->appendColumn(
+				$this->getSubtotalColumn($region, $show_region));
+
+			if ($this->display_shipping) {
+				$view->appendColumn(
+					$this->getShippingColumn($region, $show_region));
+			}
 		}
 	}
 
 	// }}}
 	// {{{ protected function getCreatedColumn()
 
-	protected function getCreatedColumn($region)
+	protected function getCreatedColumn($region, $show_title = true)
 	{
 		$column = new SwatTableViewColumn('created_'.$region->id);
-		$column->title = sprintf(Store::_('%s Created Orders'), $region->title);
+		$column->title = sprintf(Store::_('%sCreated Orders'),
+			($show_title) ? $region->title.' ' : '');
 
 		$renderer = new SwatNumericCellRenderer();
 
@@ -110,13 +125,12 @@ class StoreSalesReportDetails extends AdminIndex
 	// }}}
 	// {{{ protected function getCancelledColumn()
 
-	protected function getCancelledColumn($region)
+	protected function getCancelledColumn($region, $show_title = true)
 	{
 		$column = new SwatTableViewColumn('cancelled_'.$region->id);
 		$column->title = sprintf(
-			Store::_('%s Cancelled Orders'),
-			$region->title
-		);
+			Store::_('%sCancelled Orders'),
+			($show_title) ? $region->title.' ' : '');
 
 		$renderer = new SwatNumericCellRenderer();
 
@@ -133,10 +147,12 @@ class StoreSalesReportDetails extends AdminIndex
 	// }}}
 	// {{{ protected function getSubtotalColumn()
 
-	protected function getSubtotalColumn(StoreRegion $region)
+	protected function getSubtotalColumn(StoreRegion $region,
+		$show_title = true)
 	{
 		$column = new SwatTableViewColumn('subtotal_'.$region->id);
-		$column->title = sprintf(Store::_('%s Subtotal'), $region->title);
+		$column->title = sprintf(Store::_('%sSubtotal'),
+			($show_title) ? $region->title.' ' : '');
 
 		$renderer = new SwatMoneyCellRenderer();
 		$renderer->locale = $region->getFirstLocale()->id;
@@ -145,6 +161,35 @@ class StoreSalesReportDetails extends AdminIndex
 		$column->addMappingToRenderer(
 			$renderer,
 			'subtotal_'.$region->id,
+			'value'
+		);
+
+		$column->addMappingToRenderer(
+			$renderer,
+			'locale_id',
+			'locale'
+		);
+
+		return $column;
+	}
+
+	// }}}
+	// {{{ protected function getShippingColumn()
+
+	protected function getShippingColumn(StoreRegion $region,
+		$show_title = true)
+	{
+		$column = new SwatTableViewColumn('shipping_'.$region->id);
+		$column->title = sprintf(Store::_('%sShipping'),
+			($show_title) ? $region->title.' ' : '');
+
+		$renderer = new SwatMoneyCellRenderer();
+		$renderer->locale = $region->getFirstLocale()->id;
+
+		$column->addRenderer($renderer);
+		$column->addMappingToRenderer(
+			$renderer,
+			'shipping_'.$region->id,
 			'value'
 		);
 
@@ -193,6 +238,7 @@ class StoreSalesReportDetails extends AdminIndex
 				$day->{'created_'.$region->id}   = 0;
 				$day->{'cancelled_'.$region->id} = 0;
 				$day->{'subtotal_'.$region->id}  = 0;
+				$day->{'shipping_'.$region->id}  = 0;
 			}
 
 			$day->day       = $i;
@@ -208,6 +254,7 @@ class StoreSalesReportDetails extends AdminIndex
 			$sum->{'created_'.$region->id}   = 0;
 			$sum->{'cancelled_'.$region->id} = 0;
 			$sum->{'subtotal_'.$region->id}  = 0;
+			$sum->{'shipping_'.$region->id}  = 0;
 		}
 
 		$sum->day       = Store::_('Total');
@@ -219,9 +266,11 @@ class StoreSalesReportDetails extends AdminIndex
 			$key = $row->day;
 
 			$days[$key]->{'subtotal_'.$row->region} += $row->subtotal;
+			$days[$key]->{'shipping_'.$row->region} += $row->shipping;
 			$days[$key]->{'created_'.$row->region} = $row->num_orders;
 
 			$sum->{'subtotal_'.$row->region} += $row->subtotal;
+			$sum->{'shipping_'.$row->region} += $row->shipping;
 			$sum->{'created_'.$row->region} += $row->num_orders;
 		}
 
@@ -230,10 +279,14 @@ class StoreSalesReportDetails extends AdminIndex
 			$key = $row->day;
 
 			$days[$key]->{'subtotal_'.$row->region} -= $row->subtotal;
+			$days[$key]->{'shipping_'.$row->region} -= $row->shipping;
 			$days[$key]->{'cancelled_'.$row->region} = $row->num_orders;
 
 			$sum->{'subtotal_'.$row->region} -= $row->subtotal;
 			$sum->{'cancelled_'.$row->region} += $row->num_orders;
+
+			// don't subtract shipping as it's usually not refunded
+			//$sum->{'shipping_'.$row->region} -= $row->shipping;
 		}
 
 		// turn the array into a table model
@@ -256,20 +309,22 @@ class StoreSalesReportDetails extends AdminIndex
 
 		$sql = 'select count(Orders.id) as num_orders, Locale.region,
 				%1$s as subtotal,
-				extract(day from convertTZ(%2$s, %3$s)) as day,
-				extract(month from convertTZ(%2$s, %3$s)) as month,
-				extract(year from convertTZ(%2$s, %3$s)) as year
+				%2$s as shipping,
+				extract(day from convertTZ(%3$s, %4$s)) as day,
+				extract(month from convertTZ(%3$s, %4$s)) as month,
+				extract(year from convertTZ(%3$s, %4$s)) as year
 			from Orders
 				inner join Locale on Orders.locale = Locale.id
 			where
-				extract(year from convertTZ(%2$s, %3$s)) = %4$s
-				and extract(month from convertTZ(%2$s, %3$s)) = %5$s
-				%6$s
+				extract(year from convertTZ(%3$s, %4$s)) = %5$s
+				and extract(month from convertTZ(%3$s, %4$s)) = %6$s
+				%7$s
 			group by Locale.region, year, month, day';
 
 		$sql = sprintf(
 			$sql,
 			$this->getSubtotalSelectClause(),
+			$this->getShippingSelectClause(),
 			$date_field,
 			$this->app->db->quote($time_zone_name, 'text'),
 			$this->app->db->quote($this->start_date->getYear(), 'integer'),
@@ -286,6 +341,14 @@ class StoreSalesReportDetails extends AdminIndex
 	protected function getSubtotalSelectClause()
 	{
 		return '(sum(item_total) + sum(surcharge_total))';
+	}
+
+	// }}}
+	// {{{ protected function getShippingSelectClause()
+
+	protected function getShippingSelectClause()
+	{
+		return 'sum(shipping_total)';
 	}
 
 	// }}}
