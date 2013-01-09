@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreAccount.php';
  * Details page for accounts
  *
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2013 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountDetails extends SiteAccountDetails
@@ -24,6 +24,7 @@ class StoreAccountDetails extends SiteAccountDetails
 
 	// }}}
 	// {{{ protected function initInternal()
+
 	protected function initInternal()
 	{
 		parent::initInternal();
