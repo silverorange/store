@@ -29,6 +29,7 @@ class StoreFeatureIndex extends AdminIndex
 
 	protected function processActions(SwatTableView $view, SwatActions $actions)
 	{
+		$locale = SwatI18NLocale::get();
 		$num = count($view->checked_items);
 		$message = null;
 
@@ -40,35 +41,52 @@ class StoreFeatureIndex extends AdminIndex
 
 		case 'enable':
 			SwatDB::updateColumn($this->app->db, 'Feature',
-				'boolean:enabled', true, 'id', $view->getSelection());
+				'boolean:enabled', true, 'id', $view->getSelection()
+			);
 
-			if (isset($this->app->memcache))
+			if (isset($this->app->memcache)) {
 				$this->app->memcache->flushNs('StoreFeature');
+			}
 
-			$message = new SwatMessage(sprintf(Store::ngettext(
-				'One feature has been enabled.',
-				'%s features have been enabled.', $num),
-				SwatString::numberFormat($num)));
+			$message = new SwatMessage(
+				sprintf(
+					Store::ngettext(
+						'One feature has been enabled.',
+						'%s features have been enabled.',
+						$num
+					),
+					$locale->formatNumber($num)
+				)
+			);
 
 			break;
 
 		case 'disable':
 			SwatDB::updateColumn($this->app->db, 'Feature',
-				'boolean:enabled', false, 'id', $view->getSelection());
+				'boolean:enabled', false, 'id', $view->getSelection()
+			);
 
-			if (isset($this->app->memcache))
+			if (isset($this->app->memcache)) {
 				$this->app->memcache->flushNs('StoreFeature');
+			}
 
-			$message = new SwatMessage(sprintf(Store::ngettext(
-				'One feature has been disabled.',
-				'%s features have been disabled.', $num),
-				SwatString::numberFormat($num)));
+			$message = new SwatMessage(
+				sprintf(
+					Store::ngettext(
+						'One feature has been disabled.',
+						'%s features have been disabled.',
+						$num
+					),
+					$locale->formatNumber($num)
+				)
+			);
 
 			break;
 		}
 
-		if ($message !== null)
+		if ($message !== null) {
 			$this->app->messages->add($message);
+		}
 	}
 
 	// }}}
