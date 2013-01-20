@@ -13,6 +13,12 @@
 				</widget>
 			</widget>
 			<widget class="SwatTableView" id="index_view">
+				<object class="SwatTableViewGroup" id="instance_group">
+					<property name="group_by">instance.id</property>
+					<object class="SwatTextCellRenderer" id="instance_renderer">
+						<property name="text" type="data">instance.title</property>
+					</object>
+				</object>
 				<object class="SwatTableViewGroup">
 					<property name="id">display_slot</property>
 					<property name="group_by">display_slot</property>
@@ -38,13 +44,6 @@
 						<property name="text" type="data" translatable="yes">shortname</property>
 						<property name="link">Feature/Edit?id=%s</property>
 						<property name="link_value" type="data">id</property>
-					</object>
-				</object>
-				<object class="SwatTableViewOrderableColumn" id="instance">
-					<property name="title" translatable="yes">Instance</property>
-					<property name="visible" type="boolean">false</property>
-					<object class="SwatTextCellRenderer">
-						<property name="text" type="data">instance_title</property>
 					</object>
 				</object>
 				<object class="SwatTableViewOrderableColumn" id="title">
