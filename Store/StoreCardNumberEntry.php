@@ -192,7 +192,7 @@ class StoreCardNumberEntry extends SwatEntry
 	protected function getBlankValue()
 	{
 		$length = 16;
-		$blank_value = str_repeat('*', $length);
+		$blank_value = str_repeat('●', $length);
 		return $blank_value;
 	}
 
