@@ -102,8 +102,7 @@ class StoreFeatureIndex extends AdminIndex
 
 		if ($view->hasGroup('instance')) {
 			$view->getGroup('instance')->visible =
-				($this->app->getInstance() === null &&
-					$this->app->hasModule('SiteMultipleInstanceModule'));
+				$this->app->isMultipleInstanceAdmin();
 		}
 
 		if ($view->hasColumn('region')) {
