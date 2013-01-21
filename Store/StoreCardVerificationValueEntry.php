@@ -64,7 +64,7 @@ class StoreCardVerificationValueEntry extends SwatEntry
 			$length = $this->card_type->getCardVerificationValueLength();
 		}
 
-		return str_repeat('•', $length);
+		return str_repeat('●', $length);
 	}
 
 	// }}}
