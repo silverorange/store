@@ -97,6 +97,14 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	}
 
 	// }}}
+	// {{{ protected function getProgressDependencies()
+
+	protected function getProgressDependencies()
+	{
+		return array('checkout/first');
+	}
+
+	// }}}
 
 	// process phase
 	// {{{ protected function processInternal()
