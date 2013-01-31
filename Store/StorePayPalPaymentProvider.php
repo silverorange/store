@@ -744,6 +744,14 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			return 'paypal-payment-error';
 
 		/*
+		 * Transaction cannot be processed at this time. Happens when Visa
+		 * or MasterCard servers go down.
+		 */
+		case 10445:
+		case 10764:
+			return 'card-error';
+
+		/*
 		 * Some kind of generic AVS rate limiting error. Who knows what the
 		 * fuck this really means because it's not documented besides
 		 * "Gateway Error". It happens occasionally though.
