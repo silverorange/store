@@ -143,12 +143,18 @@ class StoreFeatureIndex extends AdminIndex
 
 		foreach ($features as $feature) {
 			$ds = new SwatDetailsStore($feature);
-
-			if (!isset($counts[$ds->instance->id][$ds->display_slot])) {
-				$counts[$ds->instance->id][$ds->display_slot] = 0;
+			$instance_id = $feature->getInternalValue('instance');
+			if ($instance_id === null) {
+				$instance_id = 0;
 			}
 
-			$counts[$ds->instance->id][$ds->display_slot]++;
+			$ds->instance_id = $instance_id;
+
+			if (!isset($counts[$instance_id][$ds->display_slot])) {
+				$counts[$instance_id][$ds->display_slot] = 0;
+			}
+
+			$counts[$instance_id][$ds->display_slot]++;
 
 			if ($feature->region === null) {
 				$ds->region = 'All';
@@ -161,7 +167,7 @@ class StoreFeatureIndex extends AdminIndex
 
 		foreach ($store as $ds) {
 			$ds->priority_sensitive =
-				($counts[$ds->instance->id][$ds->display_slot] > 1);
+				($counts[$ds->instance_id][$ds->display_slot] > 1);
 		}
 
 		return $store;
