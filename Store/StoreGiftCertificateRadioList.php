@@ -7,7 +7,7 @@ require_once 'Swat/SwatRadioList.php';
  * A custom radio list that has an embedded custom option
  *
  * @package   Store
- * @copyright 2007-2008 silverorange
+ * @copyright 2007-2013 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreGiftCertificateRadioList extends SwatRadioList
@@ -113,14 +113,15 @@ class StoreGiftCertificateRadioList extends SwatRadioList
 	 * Displays an option in the radio list
 	 *
 	 * @param SwatOption $option
+	 * @param integer $index
 	 */
-	protected function displayOptionLabel(SwatOption $option)
+	protected function displayOptionLabel(SwatOption $option, $index)
 	{
-		parent::displayOptionLabel($option);
+		parent::displayOptionLabel($option, $index);
 
-		if ($option->value == $this->custom_value)
+		if ($option->value == $this->custom_value) {
 			$this->getCompositeWidget('custom_price')->display();
-
+		}
 	}
 
 	// }}}
