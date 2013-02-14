@@ -1185,10 +1185,12 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 		$details['PayerName'] = $this->getPersonName($payment_method);
 
-		$details['PayerCountry'] =
-			$order->billing_address->getInternalValue('country');
+		if ($order->billing_address instanceof StoreAddress) {
+			$details['PayerCountry'] =
+				$order->billing_address->getInternalValue('country');
 
-		$details['Address'] = $this->getPayerInfoAddress($order);
+			$details['Address'] = $this->getPayerInfoAddress($order);
+		}
 
 		return $details;
 	}
