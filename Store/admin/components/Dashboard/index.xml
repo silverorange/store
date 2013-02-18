@@ -20,12 +20,14 @@
 
 	<widget class="SwatFrame" id="new_content_frame">
 		<property name="title" translatable="yes">Recent Customer Feedback</property>
-		<widget class="SwatToolbar">
+		<widget class="SwatToolbar" id="new_content_toolbar">
 			<widget class="SwatToolLink" id="view_all_orders">
+				<property name="visible" type="boolean">false</property>
 				<property name="title" translatable="yes">View All Orders With Comments</property>
 				<property name="link">Orders?has_comments=true</property>
 			</widget>
 			<widget class="SwatToolLink" id="view_all_product_reviews">
+				<property name="visible" type="boolean">false</property>
 				<property name="title" translatable="yes">View All Product Reviews</property>
 				<property name="link">ProductReview</property>
 			</widget>

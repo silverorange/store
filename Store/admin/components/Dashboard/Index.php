@@ -12,7 +12,7 @@ require_once 'Store/admin/StoreOrderChart.php';
  * Front-page dashboard
  *
  * @package   Store
- * @copyright 2012 silverorange
+ * @copyright 2012-2013 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreDashboardIndex extends AdminIndex
@@ -31,7 +31,9 @@ class StoreDashboardIndex extends AdminIndex
 		$this->ui->loadFromXML($this->getUiXml());
 		$this->navbar->popEntry();
 
-		$this->initSuspiciousAccounts();
+		if ($this->app->session->user->hasAccessByShortname('Account')) {
+			$this->initSuspiciousAccounts();
+		}
 
 		parent::initInternal();
 	}
@@ -107,6 +109,18 @@ class StoreDashboardIndex extends AdminIndex
 		} else {
 			$this->ui->getWidget('order_stats_frame')->visible = false;
 		}
+
+		$this->ui->getWidget('new_content_frame')->visible =
+			$this->isNewContentFrameVisible();
+	}
+
+	// }}}
+	// {{{ protected function isNewContentFrameVisible()
+
+	protected function isNewContentFrameVisible()
+	{
+		return ($this->app->session->user->hasAccessByShortname('Order') ||
+			$this->app->session->user->hasAccessByShortname('ProductReview'));
 	}
 
 	// }}}
@@ -264,10 +278,12 @@ class StoreDashboardIndex extends AdminIndex
 	{
 		if ($this->app->session->user->hasAccessByShortname('Order')) {
 			$this->buildOrdersNewContentData();
+			$this->ui->getWidget('view_all_orders')->visible = true;
 		}
 
 		if ($this->app->session->user->hasAccessByShortname('ProductReview')) {
 			$this->buildProductReviewsNewContentData();
+			$this->ui->getWidget('view_all_product_reviews')->visible = true;
 		}
 	}
 
@@ -364,7 +380,7 @@ class StoreDashboardIndex extends AdminIndex
 		$sql = sprintf('select Orders.*
 			from Orders
 			where Orders.createdate >= %s
-				and %s 
+				and %s
 			order by Orders.createdate desc',
 			$this->app->db->quote($date->getDate(), 'date'),
 			$this->getOrdersWhereClause());
