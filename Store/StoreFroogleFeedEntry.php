@@ -7,7 +7,7 @@ require_once 'Store/StoreFroogleFeed.php';
  * Google Merchant Center Product Feed Entry (formally known as Froogle)
  *
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2013 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @link      http://support.google.com/merchants/bin/answer.py?hl=en&answer=188494#US
  */
@@ -167,16 +167,28 @@ class StoreFroogleFeedEntry extends AtomFeedEntry
 
 		// optional fields
 		if ($this->sale_price !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'sale_price', $this->price, $this->name_space));
+			$entry->appendChild(
+				StoreFroogleFeed::getTextNode(
+					$document,
+					'sale_price',
+					$this->sale_price,
+					$this->name_space
+				)
+			);
 		}
 
 		// TODO: this is really a two part date field, handle it in a more
 		// intelligent way. Also, how do we handle sales with an unknown end
 		// date?
 		if ($this->sale_price_effective_date !== null) {
-			$entry->appendChild(StoreFroogleFeed::getTextNode($document,
-				'sale_price_effective_date', $this->price, $this->name_space));
+			$entry->appendChild(
+				StoreFroogleFeed::getTextNode(
+					$document,
+					'sale_price_effective_date',
+					$this->sale_price_effective_date,
+					$this->name_space
+				)
+			);
 		}
 
 		if ($this->color !== null) {
