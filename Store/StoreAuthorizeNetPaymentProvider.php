@@ -3,7 +3,7 @@
 require_once 'Swat/SwatString.php';
 require_once 'Store/StorePaymentProvider.php';
 require_once 'AuthorizeNet.php';
-require_once 'Store/exceptions/StoreAuthorizeNetPaymentException.php';
+require_once 'Store/exceptions/StorePaymentAuthorizeNetException.php';
 
 /**
  * @package   Store
@@ -175,7 +175,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 				$response->response_reason_code,
 				$response->response_reason_text);
 
-			throw new StoreAuthorizeNetPaymentException(
+			throw new StorePaymentAuthorizeNetException(
 				$text,
 				$response->response_code,
 				$response->response_reason_code,
@@ -197,16 +197,16 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	// {{{ public static function getExceptionMessageId()
 
 	/**
-	 * Get a message id from a StoreAuthorizeNetPaymentException
+	 * Get a message id from a StorePaymentAuthorizeNetException
 	 *
-	 * @param StoreAuthorizeNetPaymentException $e the payment exception
+	 * @param StorePaymentAuthorizeNetException $e the payment exception
 	 *
 	 * @return string the error message id.
 	 *
 	 * @see StoreCheckoutConfirmationPage::getErrorMessage()
 	 */
 	public static function getExceptionMessageId(
-		StoreAuthorizeNetPaymentException $e)
+		StorePaymentAuthorizeNetException $e)
 	{
 		// declined responses
 		if ($e->getCode() === AuthorizeNetResponse::DECLINED) {
