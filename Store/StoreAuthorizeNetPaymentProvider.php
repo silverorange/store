@@ -104,91 +104,38 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	public function pay(StoreOrder $order, $card_number,
 		$card_verification_value = null)
 	{
-		$payment_method  = $order->payment_methods->getFirst();
-		$billing_address = $order->billing_address;
-
-		$request = new AuthorizeNetAIM(
-			$this->login_id,
-			$this->transaction_key);
-
-		$request->setSandbox(($this->mode !== 'live'));
-
-		// Transaction fields
-		$request->amount = $order->total;
-		$request->card_num =
-			$payment_method->getUnencryptedCardNumber();
-
-		$request->card_code =
-			$payment_method->getUnencryptedCardVerificationValue();
-
-		$request->exp_date =
-			$payment_method->card_expiry->formatLikeIntl('MM/yy');
-
-		// Order fields
-		$request->invoice_num = $order->id;
-		$request->description = 'Order '.$order->id;
-
-		// Customer fields
-		$request->first_name = $billing_address->first_name;
-		$request->last_name  = $billing_address->last_name;
-
-		if ($billing_address->company !== null) {
-			$request->company = $billing_address->company;
-		}
-
-		$request->address = $billing_address->line1;
-		$request->city = $billing_address->city;
-		if ($billing_address->provstate_other !== null) {
-			$request->state = $billing_address->provstate_other;
-		} else {
-			$request->state = $billing_address->provstate->abbreviation;
-		}
-		$request->zip = $billing_address->postal_code;
-		$request->country = $billing_address->country->title;
-
-		if ($billing_address->phone !== null) {
-			$request->phone = $billing_address->phone;
-		}
-		$request->email = $order->email;
-		if ($order->account !== null && $order->account->id !== null) {
-			$request->cust_id = $order->account->id;
-		}
-		$request->customer_ip = $this->getIpAddress();
-
-		// Line items
-		foreach ($order->items as $item) {
-			$request->addLineItem(
-				$item->id,
-				$this->truncateField($item->product_title, 31),
-				$this->truncateField($item->description, 255),
-				$item->quantity,
-				$item->price,
-				false);
-		}
+		$request = $this->getAIMPaymentRequest(
+			$order,
+			$card_number,
+			$card_verification_value
+		);
 
 		// do transaction
 		$response = $request->authorizeAndCapture();
 
 		if ($response->declined || $response->error) {
-			$text = sprintf('Code: %s, Reason Code: %s, Message: %s',
+			$text = sprintf(
+				'Code: %s, Reason Code: %s, Message: %s',
 				$response->response_code,
 				$response->response_reason_code,
-				$response->response_reason_text);
+				$response->response_reason_text
+			);
 
 			throw new StorePaymentAuthorizeNetException(
 				$text,
 				$response->response_code,
 				$response->response_reason_code,
-				$response);
+				$response
+			);
 		}
 
 		$class_name = SwatDBClassMap::get('StorePaymentMethodTransaction');
 		$transaction = new $class_name();
 
-		$transaction->createdate = new SwatDate();
-		$transaction->createdate->toUTC();
 		$transaction->transaction_type = StorePaymentRequest::TYPE_PAY;
 		$transaction->transaction_id = $response->transaction_id;
+		$transaction->createdate = new SwatDate();
+		$transaction->createdate->toUTC();
 
 		return $transaction;
 	}
@@ -250,6 +197,96 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 				return 'card-error';
 			}
 		}
+	}
+
+	// }}}
+	// {{{ public function getAIMPaymentRequest()
+
+	/**
+	 * Builds an AuthorizeNetAIM request for a payment.
+	 *
+	 * @param StoreOrder $order the order to pay for.
+	 * @param string $card_number the card number to use for payment.
+	 * @param string $card_verification_value optional. Card verification value
+	 *                                         used for fraud prevention.
+	 *
+	 * @return AuthorizeNetAIM the payment request object.
+	 *
+	 * @sensitive $card_number
+	 * @sensitive $card_verification_value
+	 */
+
+	protected function getAIMPaymentRequest(StoreOrder $order, $card_number,
+		$card_verification_value = null)
+	{
+		$payment_method  = $order->payment_methods->getFirst();
+		$billing_address = $order->billing_address;
+
+		$request = new AuthorizeNetAIM(
+			$this->login_id,
+			$this->transaction_key
+		);
+
+		$request->setSandbox(($this->mode !== 'live'));
+
+		// Transaction fields
+		$request->amount = $order->total;
+		$request->card_num =
+			$payment_method->getUnencryptedCardNumber();
+
+		$request->card_code =
+			$payment_method->getUnencryptedCardVerificationValue();
+
+		$request->exp_date =
+			$payment_method->card_expiry->formatLikeIntl('MM/yy');
+
+		// Order fields
+		$request->invoice_num = $order->id;
+		$request->description = 'Order '.$order->id;
+
+		// Customer fields
+		$request->first_name = $billing_address->first_name;
+		$request->last_name  = $billing_address->last_name;
+
+		if ($billing_address->company !== null) {
+			$request->company = $billing_address->company;
+		}
+
+		$request->address = $billing_address->line1;
+		$request->city = $billing_address->city;
+		if ($billing_address->provstate_other !== null) {
+			$request->state = $billing_address->provstate_other;
+		} else {
+			$request->state = $billing_address->provstate->abbreviation;
+		}
+
+		$request->zip = $billing_address->postal_code;
+		$request->country = $billing_address->country->title;
+
+		if ($billing_address->phone !== null) {
+			$request->phone = $billing_address->phone;
+		}
+
+		$request->email = $order->email;
+		if ($order->account !== null && $order->account->id !== null) {
+			$request->cust_id = $order->account->id;
+		}
+
+		$request->customer_ip = $this->getIpAddress();
+
+		// Line items
+		foreach ($order->items as $item) {
+			$request->addLineItem(
+				$item->id,
+				$this->truncateField($item->product_title, 31),
+				$this->truncateField($item->description, 255),
+				$item->quantity,
+				$item->price,
+				false
+			);
+		}
+
+		return $request;
 	}
 
 	// }}}
