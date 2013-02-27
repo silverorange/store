@@ -23,7 +23,7 @@ require_once 'Store/StoreCartProcessor.php';
  * A product page
  *
  * @package   Store
- * @copyright 2005-2012 silverorange
+ * @copyright 2005-2013 silverorange
  */
 class StoreProductPage extends StorePage
 {
@@ -343,12 +343,7 @@ class StoreProductPage extends StorePage
 		$email      = $this->reviews_ui->getWidget('product_review_email');
 		$bodytext   = $this->reviews_ui->getWidget('product_review_bodytext');
 		$rating     = $this->reviews_ui->getWidget('product_review_rating');
-
-		if (isset($_SERVER['REMOTE_ADDR'])) {
-			$ip_address = substr($_SERVER['REMOTE_ADDR'], 0, 15);
-		} else {
-			$ip_address = null;
-		}
+		$ip_address = $this->app->getRemoteIP(15);
 
 		if (isset($_SERVER['HTTP_USER_AGENT'])) {
 			$user_agent = substr($_SERVER['HTTP_USER_AGENT'], 0, 255);
