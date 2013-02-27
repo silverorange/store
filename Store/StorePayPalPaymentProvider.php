@@ -16,7 +16,7 @@ require_once 'Payment/PayPal/SOAP.php';
  * Additionally, methods to handle PayPal Express Checkout are provided.
  *
  * @package   Store
- * @copyright 2009-2012 silverorange
+ * @copyright 2009-2013 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StorePaymentProvider::factory()
  * @see       StorePaymentMethodTransaction
@@ -1488,7 +1488,15 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 	protected function getIpAddress()
 	{
-		return $_SERVER['REMOTE_ADDR'];
+		$remote_ip = null;
+
+		if (isset($_SERVER['HTTP_X_FORWARDED_IP'])) {
+			$remote_ip = $_SERVER['HTTP_X_FORWARDED_IP'];
+		} elseif (isset($_SERVER['REMOTE_ADDR'])) {
+			$remote_ip = $_SERVER['REMOTE_ADDR'];
+		}
+
+		return $remote_ip;
 	}
 
 	// }}}
