@@ -230,10 +230,11 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 		$request->setSandbox(($this->mode !== 'live'));
 
 		// Transaction fields
-		$request->amount = $order->total;
-		$request->card_num =
-			$payment_method->getUnencryptedCardNumber();
+		$request->tax     = $this->formatNumber($order->tax_total);
+		$request->freight = $this->formatNumber($order->shipping_total);
+		$request->amount  = $this->formatNumber($order->total);
 
+		$request->card_num = $payment_method->getUnencryptedCardNumber();
 		$request->card_code =
 			$payment_method->getUnencryptedCardVerificationValue();
 
@@ -242,7 +243,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 
 		// Order fields
 		$request->invoice_num = $order->id;
-		$request->description = 'Order '.$order->id;
+		$request->description = $this->getOrderDescription($order);
 
 		// Customer fields
 		$request->first_name = $billing_address->first_name;
@@ -281,12 +282,23 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 				$this->truncateField($item->product_title, 31),
 				$this->truncateField($item->description, 255),
 				$item->quantity,
-				$item->price,
+				$this->formatNumber($item->price),
 				false
 			);
 		}
 
 		return $request;
+	}
+
+	// }}}
+	// {{{ protected function getIpAddress()
+
+	protected function getOrderDescription(StoreOrder $order)
+	{
+		return sprintf(
+			'Order %s',
+			$order->id
+		);
 	}
 
 	// }}}
@@ -317,6 +329,19 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
+	// {{{ protected function formatNumber()
+
+	/**
+	 * @param float $value
+	 *
+	 * @return string formatted .
+	 */
+	protected function formatNumber($value)
+	{
+		$value = round($value, 2);
+
+		return number_format($value, 2, '.', '');
+	}
 }
 
 ?>
