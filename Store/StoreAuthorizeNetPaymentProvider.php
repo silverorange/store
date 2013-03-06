@@ -291,7 +291,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
-	// {{{ protected function getIpAddress()
+	// {{{ protected function getOrderDescription()
 
 	protected function getOrderDescription(StoreOrder $order)
 	{
