@@ -329,7 +329,13 @@ class StorePageFactory extends SitePageFactory
 		if (!SwatString::validateUtf8($path)) {
 			require_once('Site/exceptions/SitePathInvalidUtf8Exception.php');
 			throw new SitePathInvalidUtf8Exception(
-				sprintf('Category path is not valid UTF-8: ‘%s’', $path));
+				sprintf(
+					'Category path is not valid UTF-8: "%s"',
+					SwatString::escapeBinary($path)
+				),
+				0,
+				$path
+			);
 		}
 
 		// don't try to find catrgories with more than 254 characters in the
