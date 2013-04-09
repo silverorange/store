@@ -35,6 +35,12 @@ require_once 'Store/dataobjects/StoreCatalogWrapper.php';
  */
 class StoreCartModule extends SiteApplicationModule
 {
+	// {{{ class constants
+
+	const ENTRY_ADDED = 1;
+	const ENTRY_SAVED = 2;
+
+	// }}}
 	// {{{ protected properties
 
 	/**
@@ -70,6 +76,14 @@ class StoreCartModule extends SiteApplicationModule
 	 * @see StoreCartModule::registerRemovedEntry()
 	 */
 	protected $removed_entries = array();
+
+	/**
+	 * An array of cart entries that were added to the carts managed by
+	 * this module
+	 *
+	 * @var array
+	 */
+	protected $entries_added = array();
 
 	// }}}
 	// {{{ public function __construct()
@@ -361,6 +375,19 @@ class StoreCartModule extends SiteApplicationModule
 	}
 
 	// }}}
+	// {{{ public function getEntriesAdded()
+
+	/**
+	 * Gets all cart entries that have been added using the cart module
+	 *
+	 * @return array the cart entries added using this cart module.
+	 */
+	public function getEntriesAdded()
+	{
+		return $this->entries_added;
+	}
+
+	// }}}
 	// {{{ public function getEntryCount()
 
 	/**
@@ -399,6 +426,193 @@ class StoreCartModule extends SiteApplicationModule
 				$carts[$name] = $cart;
 
 		return $carts;
+	}
+
+	// }}}
+	// {{{ public function createCartEntry()
+
+	public function createCartEntry($id, $quantity = 1)
+	{
+		$class_name = SwatDBClassMap::get('StoreItem');
+		$item = new $class_name();
+		$item->setDatabase($this->app->db);
+		$item->setRegion($this->app->getRegion());
+
+		if (!$item->load($id)) {
+			throw new StoreException(
+				sprintf('Item id “%s” not found.', $id)
+			);
+		}
+
+		$class_name = SwatDBClassMap::get('StoreCartEntry');
+		$entry = new $class_name();
+		$entry->setDatabase($this->app->db);
+		$entry->item = $item;
+		$entry->setQuantity($quantity);
+
+		return $entry;
+	}
+
+	// }}}
+	// {{{ public function addEntryToCart()
+
+	/**
+	 * Add an entry to the cart
+	 */
+	public function addEntryToCart(StoreCartEntry $entry)
+	{
+		$session = $this->app->getModule('SiteSessionModule');
+		$session->activate();
+
+		if ($session->isLoggedIn()) {
+			$entry->account = $session->getAccountId();
+		} else {
+			$entry->sessionid = $session->getSessionId();
+		}
+
+		$status = null;
+
+		if ($entry->item->hasAvailableStatus()) {
+			$entry->item = $entry->item->id;
+			$cart = $this->getCheckoutCart();
+			if ($cart instanceof StoreCart) { 
+				if ($cart->addEntry($entry) !== null) {
+					$status = self::ENTRY_ADDED;
+				}
+			}
+		} else {
+			$cart = $this->getSavedCart();
+			if ($cart instanceof StoreCart) { 
+				if ($cart->addEntry($entry) !== null) {
+					$status = self::ENTRY_SAVED;
+				}
+			}
+		}
+
+		if ($status !== null) {
+			$this->entries_added[] = array(
+				'entry' => $entry,
+				'status' => $status
+			);
+		}
+
+		return $status;
+	}
+
+	// }}}
+	// {{{ public function getUpdatedCartMessage()
+
+	public function getUpdatedCartMessage()
+	{
+		$count = count($this->getEntriesAdded());
+
+		if ($count === 0) {
+			return null;
+		}
+
+		$locale = SwatI18NLocale::get($this->app->getLocale());
+
+		$message = new SwatMessage(
+			Store::_('Your cart has been updated.'),
+			'cart'
+		);
+
+		$message->secondary_content = sprintf(
+			Store::ngettext('One item added', '%s items added', $count),
+			$locale->formatNumber($count)
+		);
+
+		return $message;
+	}
+
+	// }}}
+	// {{{ public function getProductCartMessage()
+
+	public function getProductCartMessage(StoreProduct $product)
+	{
+		$total_items = count($product->items);
+
+		$added = 0;
+		$cart = $this->getCheckoutCart();
+		if ($cart instanceof StoreCart) { 
+			foreach ($cart->getAvailableEntries() as $entry) {
+				$product_id = $entry->item->getInternalValue('product');
+				if ($product_id == $product->id) {
+					$added++;
+				}
+			}
+		}
+
+		$saved = 0;
+		$cart = $this->getSavedCart();
+		if ($cart instanceof StoreCart) { 
+			foreach ($cart->getEntries() as $entry) {
+				$product_id = $entry->item->getInternalValue('product');
+				if ($product_id == $product->id) {
+					$saved++;
+				}
+			}
+		}
+
+		if ($added == 0 && $saved == 0) {
+			$message = null;
+		} else {
+			$locale = SwatI18NLocale::get($this->app->getLocale());
+
+			if ($added > 0) {
+				if ($added == 1 && $total_items == 1) {
+					$title = Store::_(
+						'You have this product %sin your cart%s.'
+					);
+				} else {
+					$title = sprintf(Store::ngettext(
+						'You have one item from this page %%sin your cart%%s.',
+						'You have %s items from this page %%sin your cart%%s.',
+						$added),
+						$locale->formatNumber($added));
+				}
+			} else {
+				if ($saved == 1 && $total_items == 1) {
+					$title = Store::_(
+						'You have saved this product for later. %sView cart%s.'
+					);
+				} else {
+					$title = sprintf(Store::ngettext(
+						'You have one item from this page '.
+							'saved for later. %%sView cart%%s.',
+						'You have %s items from this page '.
+							'saved for later. %%sView cart%%s.',
+						$saved),
+						$locale->formatNumber($saved));
+				}
+			}
+
+			$seconday = '';
+
+			if ($added > 0 && $saved > 0) {
+				$secondary = sprintf(Store::ngettext(
+					'You also have one item saved for later.',
+					'You also have %s items saved for later.',
+					$saved), $locale->formatNumber($saved));
+			} else {
+				$secondary = null;
+			}
+
+			$title = sprintf($title,
+				'<a href="cart" class="store-open-cart-link">', '</a>');
+
+			$cart_message = new SwatMessage($title, 'cart');
+			$cart_message->content_type = 'text/xml';
+			$cart_message->secondary_content = $secondary;
+
+			$message_display = new SwatMessageDisplay();
+			$message_display->add($cart_message);
+			ob_start();
+			$message_display->display();
+			$message = ob_get_clean();
+		}
+
+		return $message;
 	}
 
 	// }}}
