@@ -35,6 +35,16 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 			$fullname_field = $this->ui->getWidget('fullname_field');
 			$fullname_field->visible = false;
 		}
+
+		$account = $this->app->session->account;
+		if ($account !== null && $account->password !== null)  {
+			$this->ui->getWidget('password')->required = false;
+
+			$this->ui->getWidget('password_field')->note =
+				Store::_('Leave the password field blank to leave the '.
+					'password unchanged. ').
+				$this->ui->getWidget('password_field')->note;
+		}
 	}
 
 	// }}}
