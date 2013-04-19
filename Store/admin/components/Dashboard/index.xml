@@ -32,9 +32,7 @@
 				<property name="link">ProductReview</property>
 			</widget>
 		</widget>
-		<widget class="AdminNote" id="new_content_note">
-			<property name="content">Showing orders with comments and product reviews with ★★★ or less</property>
-		</widget>
+		<widget class="AdminNote" id="new_content_note" />
 		<widget class="SwatTableView" id="new_content_view">
 			<object class="SwatTableViewGroup">
 				<property name="group_by">date_formatted</property>

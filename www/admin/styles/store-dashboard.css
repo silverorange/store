@@ -8,6 +8,10 @@
 	min-height: auto;
 }
 
+#new_content_note ul {
+	margin: 0;
+}
+
 #new_content_view span.person,
 #new_content_view span.folder-with-contents,
 #new_content_view span.edit,
