@@ -342,6 +342,8 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 
 		return number_format($value, 2, '.', '');
 	}
+
+	// }}}
 }
 
 ?>
