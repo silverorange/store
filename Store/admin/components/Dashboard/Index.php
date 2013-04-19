@@ -439,10 +439,10 @@ class StoreDashboardIndex extends AdminIndex
 	public function finalize()
 	{
 		parent::finalize();
-
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/admin/styles/store-dashboard.css'),
-			Store::PACKAGE_ID);
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/admin/styles/store-dashboard.css',
+			Store::PACKAGE_ID
+		);
 	}
 
 	// }}}
