@@ -19,7 +19,15 @@ class StoreDashboardIndex extends AdminIndex
 {
 	// {{{ protected properties
 
+	/**
+	 * @var array
+	 */
 	protected $new_content = array();
+
+	/**
+	 * @var array
+	 */
+	protected $new_content_notes = array();
 
 	// }}}
 
@@ -247,6 +255,7 @@ class StoreDashboardIndex extends AdminIndex
 	protected function getNewContentTableModel(SwatView $view)
 	{
 		$this->buildNewContentData();
+		$this->buildNewContentNote();
 		uasort($this->new_content, array($this, 'sortNewContent'));
 
 		$store = new SwatTableStore();
@@ -279,11 +288,51 @@ class StoreDashboardIndex extends AdminIndex
 		if ($this->app->session->user->hasAccessByShortname('Order')) {
 			$this->buildOrdersNewContentData();
 			$this->ui->getWidget('view_all_orders')->visible = true;
+			$this->new_content_notes[] = Store::_('orders with comments');
 		}
 
 		if ($this->app->session->user->hasAccessByShortname('ProductReview')) {
-			$this->buildProductReviewsNewContentData();
-			$this->ui->getWidget('view_all_product_reviews')->visible = true;
+			$sql = 'select count(1) from
+				(select 1 from ProductReview limit 1) as t';
+
+			$has_product_reviews = (SwatDB::queryOne($this->app->db, $sql) > 0);
+			if ($has_product_reviews) {
+				$this->buildProductReviewsNewContentData();
+				$this->ui->getWidget('view_all_product_reviews')->visible =
+					true;
+
+				$this->new_content_notes[] =
+					Store::_('product reviews with less than ★★★★');
+			}
+		}
+	}
+
+	// }}}
+	// {{{ protected function buildNewContentNote()
+
+	protected function buildNewContentNote()
+	{
+		$note = $this->ui->getWidget('new_content_note');
+		$count = count($this->new_content_notes);
+		if ($count === 0) {
+			$note->visible = false;
+		} elseif ($count < 4) {
+			$note->content = sprintf(
+				Store::_('Showing %s.'),
+				SwatString::toList($this->new_content_notes)
+			);
+		} else {
+			ob_start();
+			echo SwatString::minimizeEntities(Store::_('Showing:'));
+			echo '<ul>';
+			foreach ($this->new_content_notes as $note_part) {
+				$li_tag = new SwatHtmlTag('li');
+				$li_tag->setContent($note_part);
+				$li_tag->display();
+			}
+			echo '</ul>';
+			$note->content = ob_get_clean();
+			$note->content_type = 'text/xml';
 		}
 	}
 
