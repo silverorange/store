@@ -37,13 +37,13 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 		}
 
 		$account = $this->app->session->account;
-		if ($account !== null && $account->password !== null)  {
+		if ($account instanceof SiteAccount && $account->password !== null)  {
 			$this->ui->getWidget('password')->required = false;
 
-			$this->ui->getWidget('password_field')->note =
-				Store::_('Leave the password field blank to leave the '.
-					'password unchanged. ').
-				$this->ui->getWidget('password_field')->note;
+			$this->ui->getWidget('password_field')->note = Store::_(
+				'Leave the password field blank to leave the password '.
+				'unchanged. '
+				).$this->ui->getWidget('password_field')->note;
 		}
 	}
 
