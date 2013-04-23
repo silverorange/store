@@ -356,6 +356,10 @@ class StoreSalesReportDetails extends AdminIndex
 
 	protected function getInstanceWhereClause()
 	{
+		if ($this->app->isMultipleInstanceAdmin()) {
+			return '';
+		}
+
 		$instance_id = $this->app->getInstanceId();
 
 		return sprintf(
