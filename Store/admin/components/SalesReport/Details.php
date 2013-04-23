@@ -308,22 +308,23 @@ class StoreSalesReportDetails extends AdminIndex
 		$time_zone_name = $this->start_date->getTimezone()->getName();
 
 		$sql = 'select count(Orders.id) as num_orders, Locale.region,
-				%1$s as subtotal,
-				%2$s as shipping,
-				extract(day from convertTZ(%3$s, %4$s)) as day,
-				extract(month from convertTZ(%3$s, %4$s)) as month,
-				extract(year from convertTZ(%3$s, %4$s)) as year
+				sum(OrderCommissionTotalView.commission_total) as subtotal,
+				%1$s as shipping,
+				extract(day from convertTZ(%2$s, %3$s)) as day,
+				extract(month from convertTZ(%2$s, %3$s)) as month,
+				extract(year from convertTZ(%2$s, %3$s)) as year
 			from Orders
 				inner join Locale on Orders.locale = Locale.id
+				inner join OrderCommissionTotalView on
+					OrderCommissionTotalView.ordernum = Orders.id
 			where
-				extract(year from convertTZ(%3$s, %4$s)) = %5$s
-				and extract(month from convertTZ(%3$s, %4$s)) = %6$s
-				%7$s
+				extract(year from convertTZ(%2$s, %3$s)) = %4$s
+				and extract(month from convertTZ(%2$s, %3$s)) = %5$s
+				%6$s
 			group by Locale.region, year, month, day';
 
 		$sql = sprintf(
 			$sql,
-			$this->getSubtotalSelectClause(),
 			$this->getShippingSelectClause(),
 			$date_field,
 			$this->app->db->quote($time_zone_name, 'text'),
@@ -333,14 +334,6 @@ class StoreSalesReportDetails extends AdminIndex
 		);
 
 		return SwatDB::query($this->app->db, $sql);
-	}
-
-	// }}}
-	// {{{ protected function getSubtotalSelectClause()
-
-	protected function getSubtotalSelectClause()
-	{
-		return '(sum(item_total) + sum(surcharge_total))';
 	}
 
 	// }}}

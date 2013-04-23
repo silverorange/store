@@ -136,9 +136,12 @@ class StoreOrderChart extends SwatControl
 				$this->app->db->quote($this->instance->id, 'integer'));
 		}
 
-		$sql = sprintf('select sum(item_total) as total,
-			date_part(\'doy\', convertTZ(createdate, %1$s)) as doy
+		$sql = sprintf('select sum(OrderCommissionTotalView.commission_total)
+				as total,
+				date_part(\'doy\', convertTZ(createdate, %1$s)) as doy
 			from Orders
+			inner join OrderCommissionTotalView on
+				OrderCommissionTotalView.ordernum = Orders.id
 			where date_part(\'year\', convertTZ(createdate, %1$s)) = %2$s
 				and cancel_date is null
 				and %3$s
