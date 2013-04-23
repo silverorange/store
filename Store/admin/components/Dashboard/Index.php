@@ -194,6 +194,7 @@ class StoreDashboardIndex extends AdminIndex
 			date_part(\'doy\', convertTZ(createdate, %1$s)) as doy
 			from orders
 			where date_part(\'year\', convertTZ(createdate, %1$s)) = %2$s
+				and cancel_date is null
 				and %3$s
 			group by date_part(\'doy\', convertTZ(createdate, %1$s))',
 			$this->app->db->quote($this->app->config->date->time_zone, 'text'),
