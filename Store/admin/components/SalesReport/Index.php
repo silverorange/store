@@ -214,19 +214,20 @@ class StoreSalesReportIndex extends AdminIndex
 	protected function queryOrderStats($date_field)
 	{
 		$sql = 'select count(Orders.id) as num_orders, Locale.region,
-				%1$s as subtotal,
-				extract(month from convertTZ(%2$s, %3$s)) as month,
-				extract(year from convertTZ(%2$s, %3$s)) as year
+				sum(OrderCommissionTotalView.commission_total) as subtotal,
+				extract(month from convertTZ(%1$s, %2$s)) as month,
+				extract(year from convertTZ(%1$s, %2$s)) as year
 			from Orders
 				inner join Locale on Orders.locale = Locale.id
+				inner join OrderCommissionTotalView on
+					OrderCommissionTotalView.ordernum = Orders.id
 			where
-				extract(year from convertTZ(%2$s, %3$s)) = %4$s
-				%5$s
+				extract(year from convertTZ(%1$s, %2$s)) = %3$s
+				%4$s
 			group by Locale.region, year, month';
 
 		$sql = sprintf(
 			$sql,
-			$this->getSubtotalSelectClause(),
 			$date_field,
 			$this->app->db->quote($this->app->config->date->time_zone, 'text'),
 			$this->app->db->quote($this->year, 'integer'),
@@ -234,14 +235,6 @@ class StoreSalesReportIndex extends AdminIndex
 		);
 
 		return SwatDB::query($this->app->db, $sql);
-	}
-
-	// }}}
-	// {{{ protected function getSubtotalSelectClause()
-
-	protected function getSubtotalSelectClause()
-	{
-		return '(sum(item_total) + sum(surcharge_total))';
 	}
 
 	// }}}
