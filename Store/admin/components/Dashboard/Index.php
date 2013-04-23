@@ -377,7 +377,7 @@ class StoreDashboardIndex extends AdminIndex
 		$instance_id = $this->app->getInstanceId();
 
 		return sprintf(
-			'and Orders.instance %s %s',
+			'Orders.instance %s %s',
 			SwatDB::equalityOperator($instance_id),
 			$this->app->db->quote($instance_id, 'integer')
 		);
