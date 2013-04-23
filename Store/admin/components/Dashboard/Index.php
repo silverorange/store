@@ -194,9 +194,11 @@ class StoreDashboardIndex extends AdminIndex
 			date_part(\'doy\', convertTZ(createdate, %1$s)) as doy
 			from orders
 			where date_part(\'year\', convertTZ(createdate, %1$s)) = %2$s
+				and %3$s
 			group by date_part(\'doy\', convertTZ(createdate, %1$s))',
 			$this->app->db->quote($this->app->config->date->time_zone, 'text'),
-			$this->app->db->quote($year, 'integer'));
+			$this->app->db->quote($year, 'integer'),
+			$this->getInstanceWhereClause());
 
 		$orders = SwatDB::query($this->app->db, $sql);
 		$return = array();
@@ -430,9 +432,11 @@ class StoreDashboardIndex extends AdminIndex
 			from Orders
 			where Orders.createdate >= %s
 				and %s
+				and %s
 			order by Orders.createdate desc',
 			$this->app->db->quote($date->getDate(), 'date'),
-			$this->getOrdersWhereClause());
+			$this->getOrdersWhereClause(),
+			$this->getInstanceWhereClause());
 
 		$orders = SwatDB::query($this->app->db, $sql,
 			SwatDBClassMap::get('StoreOrderWrapper'));
@@ -451,6 +455,24 @@ class StoreDashboardIndex extends AdminIndex
 	protected function getOrdersWhereClause()
 	{
 		return 'Orders.comments is not null';
+	}
+
+	// }}}
+	// {{{ protected function getInstanceWhereClause()
+
+	protected function getInstanceWhereClause()
+	{
+		if ($this->app->isMultipleInstanceAdmin()) {
+			return '1 = 1';
+		}
+
+		$instance_id = $this->app->getInstanceId();
+
+		return sprintf(
+			'and Orders.instance %s %s',
+			SwatDB::equalityOperator($instance_id),
+			$this->app->db->quote($instance_id, 'integer')
+		);
 	}
 
 	// }}}
