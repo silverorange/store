@@ -18,7 +18,9 @@
 .pager .pager-nav .pager-next-insensitive {
 	width: 40px;
 	height: 30px;
-	text-indent: -20000em;
+	text-indent: 100%;
+	overflow: hidden;
+	white-space: nowrap;
 	position: absolute;
 	bottom: 0;
 	left: 0;
