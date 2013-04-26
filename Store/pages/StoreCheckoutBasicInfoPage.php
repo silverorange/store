@@ -6,7 +6,7 @@ require_once 'Store/pages/StoreCheckoutEditPage.php';
  * Basic information edit page of checkout
  *
  * @package   Store
- * @copyright 2005-2012 silverorange
+ * @copyright 2005-2013 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
