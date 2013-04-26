@@ -92,7 +92,7 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 					$this->app->cart->save();
 
 				if (!$this->checkCart())
-					$this->app->relocate('cart');
+					$this->app->relocate($this->getCartSource());
 
 				if ($this->continueButtonHasBeenClicked())
 					$this->app->relocate($this->getConfirmationSource());
