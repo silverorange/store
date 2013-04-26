@@ -47,9 +47,18 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		if (isset($this->layout->cart_lightbox)) {
 			$div_tag = new SwatHtmlTag('div');
 			$div_tag->class = 'empty-message';
-			$div_tag->setContent(sprintf(Store::_('%1$sView and edit your '.
-				'shopping cart%2$s.'),
-				'<a href="checkout/confirmation/cart">', '</a>'), 'text/xml');
+			$div_tag->setContent(
+				sprintf(
+					Store::_(
+						'%sView and edit your shopping cart%s.'
+					),
+					'<a href="'.$this->getCheckoutEditLink(
+						'confirmation/cart'
+					).'">',
+					'</a>'
+				),
+				'text/xml'
+			);
 
 			$this->layout->cart_lightbox->override_content =
 				$div_tag->__toString();
@@ -95,7 +104,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	protected function getProgressDependencies()
 	{
-		return array('checkout/first');
+		return array($this->getCheckoutBase().'/first');
 	}
 
 	// }}}
@@ -193,19 +202,24 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 				$message = new SwatMessage(
 					Store::_('Billing Address'), 'error');
 
-				$message->secondary_content = sprintf(Store::_(
-					'Billing address is missing required fields. Please '.
-					'%sselect a different billing address or enter a new '.
-					'billing address%s.'),
-					'<a href="'.
-						$this->getEditLink('checkout/confirmation/billingaddress').
-						'">',
-					'</a>');
+				$message->secondary_content = sprintf(
+					Store::_(
+						'Billing address is missing required fields. Please '.
+						'%sselect a different billing address or enter a new '.
+						'billing address%s.'
+					),
+					'<a href="'.$this->getCheckoutEditLink(
+						'confirmation/billingaddress'
+					).'">',
+					'</a>'
+				);
 
 				$message->content_type = 'text/xml';
 
-				$this->ui->getWidget('message_display')->add($message,
-					SwatMessageDisplay::DISMISS_OFF);
+				$this->ui->getWidget('message_display')->add(
+					$message,
+					SwatMessageDisplay::DISMISS_OFF
+				);
 
 				$valid = false;
 				break;
@@ -309,8 +323,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	protected function getBillingAddressRequiredMessage()
 	{
 		$a_tag = new SwatHtmlTag('a');
-		$a_tag->href = $this->getEditLink(
-			'checkout/confirmation/billingaddress'
+		$a_tag->href = $this->getCheckoutEditLink(
+			'confirmation/billingaddress'
 		);
 		$a_tag->setContent(Store::_('add a billing address'));
 
@@ -371,21 +385,26 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			if (!isset($address->$field)) {
 
 				$message = new SwatMessage(
-					Store::_('Shipping Address'), 'error');
+					Store::_('Shipping Address'),
+					'error'
+				);
 
 				$message->secondary_content = sprintf(Store::_(
 					'Shipping address is missing required fields. Please '.
 					'%sselect a different shipping address or enter a new '.
 					'shipping address%s.'),
-					'<a href="'.
-						$this->getEditLink('checkout/confirmation/shippingaddress').
-						'">',
-					'</a>');
+					'<a href="'.$this->getCheckoutEditLink(
+						'confirmation/shippingaddress'
+					).'">',
+					'</a>'
+				);
 
 				$message->content_type = 'text/xml';
 
-				$this->ui->getWidget('message_display')->add($message,
-					SwatMessageDisplay::DISMISS_OFF);
+				$this->ui->getWidget('message_display')->add(
+					$message,
+					SwatMessageDisplay::DISMISS_OFF
+				);
 
 				$valid = false;
 				break;
@@ -481,23 +500,45 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		foreach ($this->app->cart->checkout->getAvailableEntries() as $entry) {
 			$bindings = $entry->item->prov_state_exclusion_bindings;
 			foreach ($bindings as $binding) {
-				$item_exclusion_provstate = $binding->getInternalValue('provstate');
+				$item_exclusion_provstate = $binding->getInternalValue(
+					'provstate'
+				);
+
 				if ($item_exclusion_provstate == $shipping_provstate) {
 					$valid = false;
-					$message = new SwatMessage(Store::_('Shipping Address'), 'error');
-					$message->content_type = 'text/xml';
-					$message->secondary_content = sprintf(Store::_(
-						'Item %s “%s” can not be shipped to %s. '.
-						'Please %sselect a different shipping address%s '.
-						'or %sremove this item%s from your order.'),
-						$binding->item->sku,
-						$binding->item->product->title,
-						$address->provstate->title,
-						'<a href="checkout/confirmation/shippingaddress">', '</a>',
-						'<a href="checkout/confirmation/cart">', '</a>');
+					$message = new SwatMessage(
+						Store::_('Shipping Address'),
+						'error'
+					);
 
-					$this->ui->getWidget('message_display')->add($message,
-						SwatMessageDisplay::DISMISS_OFF);
+					$message->content_type = 'text/xml';
+					$message->secondary_content = sprintf(
+						Store::_(
+							'Item %s “%s” can not be shipped to %s. '.
+							'Please %sselect a different shipping address%s '.
+							'or %sremove this item%s from your order.'
+						),
+						SwatString::minimizeEntities($binding->item->sku),
+						SwatString::minimizeEntities(
+							$binding->item->product->title
+						),
+						SwatString::minimizeEntities(
+							$address->provstate->title
+						),
+						'<a href="'.$this->getCheckoutEditLink(
+							'confirmation/shippingaddress'
+						).'">',
+						'</a>',
+						'<a href="'.$this->getCheckoutEditLink(
+							'confirmation/cart'
+						).'">',
+						'</a>'
+					);
+
+					$this->ui->getWidget('message_display')->add(
+						$message,
+						SwatMessageDisplay::DISMISS_OFF
+					);
 				}
 			}
 		}
@@ -533,8 +574,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	protected function getShippingAddressRequiredMessage()
 	{
 		$a_tag = new SwatHtmlTag('a');
-		$a_tag->href = $this->getEditLink(
-			'checkout/confirmation/shippingaddress'
+		$a_tag->href = $this->getCheckoutEditLink(
+			'confirmation/shippingaddress'
 		);
 		$a_tag->setContent(Store::_('add a shipping address'));
 
@@ -981,14 +1022,20 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$message = $this->getPrototypeErrorMessage($message_id);
 			$message->secondary_content =
 				'<p>'.sprintf(
-				Store::_('%sBilling address does not correspond with card '.
-					'number.%s Your order has %snot%s been placed. '.
-					'Please edit your %sbilling address%s and try again.'),
-					'<strong>', '</strong>', '<em>', '</em>',
-					'<a href="'.
-						$this->getEditLink('checkout/confirmation/billingaddress').
-						'">',
-					'</a>').
+					Store::_(
+						'%sBilling address does not correspond with card '.
+						'number.%s Your order has %snot%s been placed. '.
+						'Please edit your %sbilling address%s and try again.'
+					),
+					'<strong>',
+					'</strong>',
+					'<em>',
+					'</em>',
+					'<a href="'.$this->getCheckoutEditLink(
+						'confirmation/billingaddress'
+					).'">',
+					'</a>'
+				).
 				' '.$this->getErrorMessageNoFunds().
 				'</p><p>'.$this->getErrorMessageContactUs().'</p>';
 
@@ -997,14 +1044,21 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$message = $this->getPrototypeErrorMessage($message_id);
 			$message->secondary_content =
 				'<p>'.sprintf(
-				Store::_('%sBilling postal code / ZIP code does not correspond '.
-					'with card number.%s Your order has %snot%s been placed. '.
-					'Please edit your %sbilling address%s and try again.'),
-					'<strong>', '</strong>', '<em>', '</em>',
-					'<a href="'.
-						$this->getEditLink('checkout/confirmation/billingaddress').
-						'">',
-					'</a>').
+					Store::_(
+						'%sBilling postal code / ZIP code does not correspond '.
+						'with card number.%s Your order has %snot%s been '.
+						'placed. Please edit your %sbilling address%s and try '.
+						'again.'
+					),
+					'<strong>',
+					'</strong>',
+					'<em>',
+					'</em>',
+					'<a href="'.$this->getCheckoutEditLink(
+						'confirmation/billingaddress'
+					).'">',
+					'</a>'
+				).
 				' '.$this->getErrorMessageNoFunds().
 				'</p><p>'.$this->getErrorMessageContactUs().'</p>';
 
@@ -1013,14 +1067,21 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$message = $this->getPrototypeErrorMessage($message_id);
 			$message->secondary_content =
 				'<p>'.sprintf(
-				Store::_('%sCard security code does not correspond with card '.
-					'number.%s Your order has %snot%s been placed. '.
-					'Please edit your %spayment information%s and try again.'),
-					'<strong>', '</strong>', '<em>', '</em>',
-					'<a href="'.
-						$this->getEditLink('checkout/confirmation/paymentmethod').
-						'">',
-					'</a>').
+					Store::_(
+						'%sCard security code does not correspond with card '.
+						'number.%s Your order has %snot%s been placed. '.
+						'Please edit your %spayment information%s and try '.
+						'again.'
+					),
+					'<strong>',
+					'</strong>',
+					'<em>',
+					'</em>',
+					'<a href="'.$this->getCheckoutEditLink(
+						'confirmation/paymentmethod'
+					).'">',
+					'</a>'
+				).
 				' '.$this->getErrorMessageNoFunds().
 				'</p><p>'.$this->getErrorMessageContactUs().'</p>';
 
@@ -1029,14 +1090,21 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$message = $this->getPrototypeErrorMessage($message_id);
 			$message->secondary_content =
 				'<p>'.sprintf(
-				Store::_('%sCard type does not correspond with card '.
-					'number.%s Your order has %snot%s been placed. '.
-					'Please edit your %spayment information%s and try again.'),
-					'<strong>', '</strong>', '<em>', '</em>',
-					'<a href="'.
-						$this->getEditLink('checkout/confirmation/paymentmethod').
-						'">',
-					'</a>').
+					Store::_(
+						'%sCard type does not correspond with card '.
+						'number.%s Your order has %snot%s been placed. '.
+						'Please edit your %spayment information%s and try '.
+						'again.'
+					),
+					'<strong>',
+					'</strong>',
+					'<em>',
+					'</em>',
+					'<a href="'.$this->getCheckoutEditLink(
+						'confirmation/paymentmethod'
+					).'">',
+					'</a>'
+				).
 				' '.$this->getErrorMessageNoFunds().
 				'</p><p>'.$this->getErrorMessageContactUs().'</p>';
 
@@ -1045,14 +1113,20 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$message = $this->getPrototypeErrorMessage($message_id);
 			$message->secondary_content =
 				'<p>'.sprintf(
-				Store::_('%sCard is expired.%s Your order has %snot%s been '.
-					'placed. Please edit your %spayment information%s and '.
-					'try again.'),
-					'<strong>', '</strong>', '<em>', '</em>',
-					'<a href="'.
-						$this->getEditLink('checkout/confirmation/paymentmethod').
-						'">',
-					'</a>').
+					Store::_(
+						'%sCard is expired.%s Your order has %snot%s been '.
+						'placed. Please edit your %spayment information%s and '.
+						'try again.'
+					),
+					'<strong>',
+					'</strong>',
+					'<em>',
+					'</em>',
+					'<a href="'.$this->getCheckoutEditLink(
+						'confirmation/paymentmethod'
+					).'">',
+					'</a>'
+				).
 				' '.$this->getErrorMessageNoFunds().
 				'</p><p>'.$this->getErrorMessageContactUs().'</p>';
 
@@ -1061,13 +1135,19 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$message = $this->getPrototypeErrorMessage($message_id);
 			$message->secondary_content =
 				'<p>'.sprintf(
-				Store::_('%sYour order total is too large to process.%s '.
-					'Your order has %snot%s been placed. Please remove some '.
-					'items from %syour cart%s or %scontact us%s to continue.'),
-					'<strong>', '</strong>', '<em>', '</em>',
-					'<a href="checkout/confirmation/cart">', '</a>',
-					'<a href="'.
-						$this->getEditLink('checkout/confirmation/cart').'">',
+					Store::_(
+						'%sYour order total is too large to process.%s '.
+						'Your order has %snot%s been placed. Please remove '.
+						'some items from %syour cart%s or %scontact us%s to '.
+						'continue.'
+					),
+					'<strong>',
+					'</strong>',
+					'<em>',
+					'</em>',
+					'<a href="'.$this->getCheckoutEditLink(
+						'confirmation/cart'
+					).'">',
 					'</a>',
 					'<a href="'.$this->getEditLink('about/contact').'">',
 					'</a>').
@@ -1179,6 +1259,14 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	protected function getEditLink($link)
 	{
 		return $link;
+	}
+
+	// }}}
+	// {{{ protected function getCheckoutEditLink()
+
+	protected function getCheckoutEditLink($link)
+	{
+		return $this->getEditLink($this->getCheckoutBase().'/'.$link);
 	}
 
 	// }}}
@@ -1572,7 +1660,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			!$this->hasSimplePaymentMethod($order))) {
 
 			$links['payment_method'] = array(
-				'href' => 'checkout/confirmation/paymentmethod/new',
+				'href' => $this->getCheckoutEditLink(
+					'confirmation/paymentmethod/new'
+				),
 				'title' => 'Add a New Payment',
 				'note' => '',
 			);
@@ -1612,7 +1702,12 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$tool = new SwatToolLink();
 		$tool->class = 'payment_method_edit';
 		$tool->title = 'Edit';
-		$tool->link = sprintf('checkout/confirmation/paymentmethod/%s', $tag);
+		$tool->link = $this->getCheckoutEditLink(
+			sprintf(
+				'confirmation/paymentmethod/%s',
+				$tag
+			)
+		);
 		$tool->stock_id = 'edit';
 		$tool->display();
 	}
