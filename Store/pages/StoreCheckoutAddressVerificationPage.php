@@ -58,9 +58,8 @@ abstract class StoreCheckoutAddressVerificationPage extends
 			$verified_address = $form->getHiddenField('verified_address');
 
 			if ($verified_address === null) {
-				/* If verified address object is missing from POST data
-				 * then re-verify the address.
-				 */
+				// If verified address object is missing from POST data
+				// then re-verify the address.
 				$this->address->verify($this->app);
 			} else {
 				$this->address->copyFrom($verified_address);
