@@ -7,9 +7,10 @@ require_once 'Swat/SwatYUI.php';
  * Base address verification page of checkout
  *
  * @package   Store
- * @copyright 2009 silverorange
+ * @copyright 2009-2013 silverorange
  */
-abstract class StoreCheckoutAddressVerificationPage extends StoreCheckoutEditPage
+abstract class StoreCheckoutAddressVerificationPage extends
+	StoreCheckoutEditPage
 {
 	// {{{ protected properties
 
@@ -111,22 +112,47 @@ abstract class StoreCheckoutAddressVerificationPage extends StoreCheckoutEditPag
 
 		} elseif ($valid) {
 			ob_start();
-			echo '<p>Is this your address?</p>';
+			echo '<p>';
+			echo SwatString::minimizeEntities(
+				Store::_('Is this your address?')
+			);
+			echo '</p>';
 			$block->content = ob_get_clean();
 
 			ob_start();
-			echo '<span class="address-option">Yes, this is my address:</span>';
+			echo '<span class="address-option">';
+			echo SwatString::minimizeEntities(
+				Store::_('Yes, this is my address:')
+			);
+			echo '</span>';
 			$verified_address->display();
 			$list->addOption('verified', ob_get_clean(), 'text/xml');
 			$list->value = 'verified';
 
 			ob_start();
-			echo '<span class="address-option">No, use the address I entered:</span>';
+			echo '<span class="address-option">';
+			echo SwatString::minimizeEntities(
+				Store::_('No, use the address I entered:')
+			);
+			echo '</span>';
 			$this->address->display();
 			$list->addOption('entered', ob_get_clean(), 'text/xml');
 
 			ob_start();
-			echo '<div>Or, <a href="checkout/first">return to the previous step</a> to change your address.</div>';
+			echo '<div>';
+			printf(
+				SwatString::minimizeEntities(
+					Store::_(
+						'Or, %sreturn to the previous step%s to '.
+						'change your address.'
+					)
+				),
+				sprintf(
+					'<a href="%s">',
+					$this->getCheckoutSource().'/first'
+				),
+				'</a>'
+			);
 			$block_bottom->content = ob_get_clean();
 
 			$form = $this->ui->getWidget('form');
@@ -135,7 +161,26 @@ abstract class StoreCheckoutAddressVerificationPage extends StoreCheckoutEditPag
 			$this->getWidget('verification_list')->visible = false;
 
 			ob_start();
-			echo '<p><strong>This address was not found.</strong><br />If there is a mistake, <a href="checkout/first">please return to the previous step</a> to change the address, otherwise continue to the next step.</p>';
+			echo '<p><strong>';
+			echo SwatString::minimizeEntities(
+				Store::_('This address was not found.')
+			);
+			echo '</strong><br />';
+			printf(
+				SwatString::minizeEntities(
+					Store::_(
+						'If there is a mistake, %splease return to the '.
+						'previous step%s to change the address, otherwise '.
+						'continue to the next step.'
+					)
+				),
+				sprintf(
+					'<a href="%s">',
+					$this->getCheckoutSource().'/first'
+				),
+				'</a>'
+			);
+			echo '</p>';
 			$this->address->display();
 			$block_bottom->content = ob_get_clean();
 		}
