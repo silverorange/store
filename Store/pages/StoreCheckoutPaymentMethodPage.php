@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreCardTypeWrapper.php';
  * Payment method edit page of checkout
  *
  * @package   Store
- * @copyright 2005-2012 silverorange
+ * @copyright 2005-2013 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
@@ -419,9 +419,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	protected function getCardTypeTitle(StoreCardType $type)
 	{
-		$title = $type->title;
-
-		return $title;
+		return $type->title;
 	}
 
 	// }}}
@@ -455,7 +453,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			if (!$exclude_current_method || $current_method === null ||
 				$method->getTag() != $current_method->getTag()) {
 
-				$payment_total+= $method->amount;
+				$payment_total += $method->amount;
 			}
 		}
 
@@ -622,14 +620,23 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 					if ($method->payment_type->isCard() &&
 						$method->card_number_preview == $card_number_preview) {
-						$message = new SwatMessage(Store::_(
-							sprintf('This Card has already been applied to '.
-								'this order as payment. Please use another '.
-								'card or '.
-								'<a href="checkout/confirmation/paymentmethod/%s">'.
-								'edit the existing payment</a>.',
-								$method->getTag())),
-							'error');
+						$message = new SwatMessage(
+							sprintf(
+								Store::_(
+									'This Card has already been applied to '.
+									'this order as payment. Please use another '.
+									'another card or %sedit the existing '.
+									'payment method%s.'
+								),
+								sprintf(
+									'<a href="%s/confirmation/paymentmethod/%s">',
+									$this->getCheckoutBase(),
+									$method->getTag()
+								),
+								'</a>'
+							),
+							'error'
+						);
 
 						$message->content_type = 'text/xml';
 						$card_number->addMessage($message);
