@@ -43,7 +43,7 @@ class StoreCheckoutAddressVerificationStepPage extends
 
 	protected function getProgressDependencies()
 	{
-		return array('checkout/first');
+		return array($this->getCheckoutSource().'/first');
 	}
 
 	// }}}
