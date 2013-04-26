@@ -23,7 +23,7 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
 
 	protected function getNextSource()
 	{
-		return $this->getCheckoutBase().'/first';
+		return $this->getCheckoutSource().'/first';
 	}
 
 	// }}}
