@@ -8,7 +8,7 @@ require_once 'Store/pages/StoreCheckoutShippingAddressVerificationPage.php';
  * Second step of checkout
  *
  * @package   Store
- * @copyright 2009-2012 silverorange
+ * @copyright 2009-2013 silverorange
  */
 class StoreCheckoutAddressVerificationStepPage extends StoreCheckoutAggregateStepPage
 {
@@ -61,22 +61,6 @@ class StoreCheckoutAddressVerificationStepPage extends StoreCheckoutAggregateSte
 
 		if (!$billing_container->visible && !$shipping_container->visible)
 			$this->relocate();
-	}
-
-	// }}}
-
-	// finalize phase
-	// {{{ public function finalize()
-
-	public function finalize()
-	{
-		parent::finalize();
-
-		/*
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/checkout-address-verification-step-page.css',
-			Store::PACKAGE_ID));
-		*/
 	}
 
 	// }}}
