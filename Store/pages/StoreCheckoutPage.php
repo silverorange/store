@@ -145,11 +145,19 @@ abstract class StoreCheckoutPage extends SiteUiPage
 	}
 
 	// }}}
+	// {{{ protected function getCheckoutSource()
+
+	protected function getCheckoutSource()
+	{
+		return 'checkout';
+	}
+
+	// }}}
 	// {{{ protected function getConfirmationSource()
 
 	protected function getConfirmationSource()
 	{
-		return 'checkout/confirmation';
+		return $this->getCheckoutSource().'/confirmation';
 	}
 
 	// }}}
@@ -157,7 +165,7 @@ abstract class StoreCheckoutPage extends SiteUiPage
 
 	protected function getThankYouSource()
 	{
-		return 'checkout/thankyou';
+		return $this->getCheckoutSource().'/thankyou';
 	}
 
 	// }}}
