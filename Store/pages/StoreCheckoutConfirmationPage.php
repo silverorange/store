@@ -16,7 +16,7 @@ require_once 'Store/exceptions/StorePaymentTotalException.php';
  * Confirmation page of checkout
  *
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2013 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutConfirmationPage extends StoreCheckoutPage
@@ -63,19 +63,13 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		$order = $this->app->session->order;
 
-		if (!($order->billing_address instanceof StoreOrderAddress)) {
-			throw new StoreException('Missing billing address.  '.
-				'StoreOrder::billing_address must be a valid reference to a '.
-				'StoreOrderAddress object by this point.');
+		if ($order->billing_address instanceof StoreAddress) {
+			$this->checkAddress($order->billing_address);
 		}
 
-		if (!($order->shipping_address instanceof StoreOrderAddress))
-			throw new StoreException('Missing shipping address.  '.
-				'StoreOrder::shipping_address must be a valid reference to a '.
-				'StoreOrderAddress object by this point.');
-
-		$this->checkAddress($this->app->session->order->billing_address);
-		$this->checkAddress($this->app->session->order->shipping_address);
+		if ($order->shipping_address instanceof StoreAddress) {
+			$this->checkAddress($order->shipping_address);
+		}
 	}
 
 	// }}}
@@ -141,11 +135,24 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		$valid = true;
 
-		$address = $this->app->session->order->billing_address;
+		$order = $this->app->session->order;
+		if ($order->billing_address instanceof StoreOrderAddress) {
+			$address = $order->billing_address;
+			$valid = ($this->validateBillingAddressRequiredFields($address) &&
+				$valid);
 
-		$valid = $this->validateBillingAddressRequiredFields($address) && $valid;
-		$valid = $this->validateBillingAddressCountry($address) && $valid;
-		$valid = $this->validateBillingAddressProvState($address) && $valid;
+			$valid = ($this->validateBillingAddressCountry($address) &&
+				$valid);
+
+			$valid = ($this->validateBillingAddressProvState($address) &&
+				$valid);
+		} else {
+			$this->ui->getWidget('message_display')->add(
+				$this->getBillingAddressRequiredMessage(),
+				SwatMessageDisplay::DISMISS_OFF
+			);
+			$valid = false;
+		}
 
 		return $valid;
 	}
@@ -276,6 +283,30 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	}
 
 	// }}}
+	// {{{ protected function getBillingAddressRequiredMessage()
+
+	protected function getBillingAddressRequiredMessage()
+	{
+		$a_tag = new SwatHtmlTag('a');
+		$a_tag->href = $this->getEditLink(
+			'checkout/confirmation/billingaddress'
+		);
+		$a_tag->setContent(Store::_('add a billing address'));
+
+		$message = new SwatMessage(Store::_('Billing Address'), 'error');
+		$message->secondary_content = sprintf(
+			Store::_(
+				'A billing address is required. Please %s before '.
+				'you place your order.'
+			),
+			$a_tag
+		);
+		$message->content_type = 'text/xml';
+
+		return $message;
+	}
+
+	// }}}
 
 	// validate shipping
 	// {{{ protected function validateShippingAddress()
@@ -284,11 +315,24 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		$valid = true;
 
-		$address = $this->app->session->order->shipping_address;
+		$order = $this->app->session->order;
+		if ($order->shipping_address instanceof StoreOrderAddress) {
+			$address = $order->shipping_address;
+			$valid = ($this->validateShippingAddressRequiredFields($address) &&
+				$valid);
 
-		$valid = $this->validateShippingAddressRequiredFields($address) && $valid;
-		$valid = $this->validateShippingAddressCountry($address) && $valid;
-		$valid = $this->validateShippingAddressProvState($address) && $valid;
+			$valid = ($this->validateShippingAddressCountry($address) &&
+				$valid);
+
+			$valid = ($this->validateShippingAddressProvState($address) &&
+				$valid);
+		} else {
+			$this->ui->getWidget('message_display')->add(
+				$this->getShippingAddressRequiredMessage(),
+				SwatMessageDisplay::DISMISS_OFF
+			);
+			$valid = false;
+		}
 
 		return $valid;
 	}
@@ -460,6 +504,30 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		}
 
 		return $fields;
+	}
+
+	// }}}
+	// {{{ protected function getShippingAddressRequiredMessage()
+
+	protected function getShippingAddressRequiredMessage()
+	{
+		$a_tag = new SwatHtmlTag('a');
+		$a_tag->href = $this->getEditLink(
+			'checkout/confirmation/shippingaddress'
+		);
+		$a_tag->setContent(Store::_('add a shipping address'));
+
+		$message = new SwatMessage(Store::_('Shipping Address'), 'error');
+		$message->secondary_content = sprintf(
+			Store::_(
+				'A shipping address is required. Please %s before '.
+				'you place your order.'
+			),
+			$a_tag
+		);
+		$message->content_type = 'text/xml';
+
+		return $message;
 	}
 
 	// }}}
