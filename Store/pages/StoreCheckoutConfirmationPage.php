@@ -1068,10 +1068,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$message->secondary_content =
 				'<p>'.sprintf(
 					Store::_(
-						'%sCard security code does not correspond with card '.
+						'%sCard security code does not match card '.
 						'number.%s Your order has %snot%s been placed. '.
-						'Please edit your %spayment information%s and try '.
-						'again.'
+						'Please %scorrect your card security code%s to '.
+						'continue.'
 					),
 					'<strong>',
 					'</strong>',
@@ -1115,8 +1115,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 				'<p>'.sprintf(
 					Store::_(
 						'%sCard is expired.%s Your order has %snot%s been '.
-						'placed. Please edit your %spayment information%s and '.
-						'try again.'
+						'placed. Please %suse a different card%s to continue.'
 					),
 					'<strong>',
 					'</strong>',
