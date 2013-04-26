@@ -119,12 +119,17 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 		if (!$this->validEmailAddress($email_address)) {
 			$message = new SwatMessage(
 				Store::_('An account already exists with this email address.'),
-				SwatMessage::ERROR);
+				'error'
+			);
 
-			$message->secondary_content = sprintf(Store::_('Please %slog in '.
-				'to your account%s.'),
-				sprintf('<a href="checkout">',
-				$email_address), '</a>');
+			$message->secondary_content = sprintf(
+				Store::_('Please %slog in to your account%s.'),
+				sprintf(
+					'<a href="%s">',
+					$this->getCheckoutBase()
+				),
+				'</a>'
+			);
 
 			$message->content_type = 'text/xml';
 			$email_entry->addMessage($message);
