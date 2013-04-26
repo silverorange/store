@@ -23,7 +23,7 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
 
 	protected function getNextSource()
 	{
-		return 'checkout/first';
+		return $this->getCheckoutBase().'/first';
 	}
 
 	// }}}
@@ -47,7 +47,9 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
 	// }}}
 	// {{{ protected function loadUI()
 
-	// subclassed to avoid loading xml from a form that doesn't exist
+	/**
+	 * Subclassed to avoid loading xml from a form that doesn't exist
+	 */
 	protected function loadUI()
 	{
 		$this->ui = new SwatUI();
