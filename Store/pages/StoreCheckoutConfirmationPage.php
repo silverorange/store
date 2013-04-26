@@ -628,6 +628,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	// }}}
 
+	// order processing and saving
 	// {{{ protected function processOrder()
 
 	protected function processOrder()
