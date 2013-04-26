@@ -6,7 +6,7 @@ require_once 'Store/pages/StoreCheckoutPage.php';
  * Abstract base class for final page of the checkout
  *
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2013 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
@@ -181,10 +181,10 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
 
 	protected function buildAccountNote(StoreOrder $order)
 	{
-		/* TODO: Possilble refactor this. Veseys displays an account note
-		 *       but does not use this mechanism to do it.  It is displayed
-		 *       in a SwatMessageDisplay instead.
-		 */
+		// TODO: Possibly refactor this. Some sites display an account note
+		//       but do not use this mechanism to do it, using a
+		//       SwatMessageDisplay instead.
+		//
 		if (!$this->ui->hasWidget('account_note'))
 			return;
 
