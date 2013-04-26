@@ -79,7 +79,7 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 
 	protected function getProgressDependencies()
 	{
-		return array('checkout');
+		return array($this->getCheckoutBase());
 	}
 
 	// }}}
