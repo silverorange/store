@@ -99,6 +99,27 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	}
 
 	// }}}
+	// {{{ protected function getOrderTotal()
+
+	protected function getOrderTotal()
+	{
+		return $this->app->cart->checkout->getTotal(
+			$this->app->session->order->billing_address,
+			$this->app->session->order->shipping_address,
+			$this->app->session->order->shipping_type,
+			$this->app->session->order->payment_methods
+		);
+	}
+
+	// }}}
+	// {{{ protected function isOrderFree()
+
+	protected function isOrderFree()
+	{
+		return ($this->getOrderTotal() <= 0);
+	}
+
+	// }}}
 
 	// process phase
 	// {{{ protected function processInternal()
@@ -1622,9 +1643,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$order->shipping_address, $order->shipping_type,
 			$order->payment_methods);
 
-		$order->total = $cart->getTotal($order->billing_address,
-			$order->shipping_address, $order->shipping_type,
-			$order->payment_methods);
+		$order->total = $this->getOrderTotal();
 
 		// Reload ad from the database to esure it exists before trying to save
 		// the order. This prevents order failure when a deleted ad ends up in
