@@ -8,6 +8,7 @@ require_once 'Swat/SwatYUI.php';
  *
  * @package   Store
  * @copyright 2009-2013 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreCheckoutAddressVerificationPage extends
 	StoreCheckoutEditPage

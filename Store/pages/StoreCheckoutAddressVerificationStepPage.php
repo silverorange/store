@@ -9,8 +9,10 @@ require_once 'Store/pages/StoreCheckoutShippingAddressVerificationPage.php';
  *
  * @package   Store
  * @copyright 2009-2013 silverorange
+ * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreCheckoutAddressVerificationStepPage extends StoreCheckoutAggregateStepPage
+class StoreCheckoutAddressVerificationStepPage extends
+	StoreCheckoutAggregateStepPage
 {
 	// {{{ protected function getUiXml()
 
