@@ -96,7 +96,7 @@ abstract class StoreCheckoutPaymentProcessPage extends StoreCheckoutPage
 
 	protected function updateProgress()
 	{
-		$this->app->checkout->setProgress($this->getCheckoutBase().'/first');
+		$this->app->checkout->setProgress($this->getCheckoutSource().'/first');
 	}
 
 	// }}}

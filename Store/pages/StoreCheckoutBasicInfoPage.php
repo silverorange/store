@@ -126,7 +126,7 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 				Store::_('Please %slog in to your account%s.'),
 				sprintf(
 					'<a href="%s">',
-					$this->getCheckoutBase()
+					$this->getCheckoutSource()
 				),
 				'</a>'
 			);

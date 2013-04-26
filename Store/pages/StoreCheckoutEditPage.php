@@ -97,7 +97,7 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 
 	protected function getProgressDependencies()
 	{
-		return array($this->getCheckoutBase().'/first');
+		return array($this->getCheckoutSource().'/first');
 	}
 
 	// }}}

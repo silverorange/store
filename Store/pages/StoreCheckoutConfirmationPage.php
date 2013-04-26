@@ -104,7 +104,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	protected function getProgressDependencies()
 	{
-		return array($this->getCheckoutBase().'/first');
+		return array($this->getCheckoutSource().'/first');
 	}
 
 	// }}}
@@ -1265,7 +1265,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	protected function getCheckoutEditLink($link)
 	{
-		return $this->getEditLink($this->getCheckoutBase().'/'.$link);
+		return $this->getEditLink($this->getCheckoutSource().'/'.$link);
 	}
 
 	// }}}

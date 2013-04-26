@@ -630,7 +630,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 								),
 								sprintf(
 									'<a href="%s/confirmation/paymentmethod/%s">',
-									$this->getCheckoutBase(),
+									$this->getCheckoutSource(),
 									$method->getTag()
 								),
 								'</a>'
