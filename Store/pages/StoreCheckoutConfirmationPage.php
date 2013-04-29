@@ -644,26 +644,27 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		}
 
 		if (!$valid && $show_message) {
-			$message = $this->getPaymentMethodValidationMessage();
-
-			$this->ui->getWidget('message_display')->add($message,
-				SwatMessageDisplay::DISMISS_OFF);
+			$message = $this->getPaymentMethodRequiredMessage();
+			$this->ui->getWidget('message_display')->add(
+				$message,
+				SwatMessageDisplay::DISMISS_OFF
+			);
 		}
 
 		return $valid;
 	}
 
 	// }}}
-	// {{{ protected function getPaymentMethodValidationMessage()
+	// {{{ protected function getPaymentMethodRequiredMessage()
 
-	protected function getPaymentMethodValidationMessage()
+	protected function getPaymentMethodRequiredMessage()
 	{
 		$message = new SwatMessage(Store::_('Payment'), 'error');
 		$message->secondary_content = Store::_(
 			'The payments on this order do not cover the order total. '.
 			'Please edit an existing payment or add another '.
-			'payment method.');
-
+			'payment method.'
+		);
 		return $message;
 	}
 
