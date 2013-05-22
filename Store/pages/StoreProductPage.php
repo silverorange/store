@@ -1363,7 +1363,7 @@ class StoreProductPage extends StorePage
 	{
 		$li_tag = new SwatHtmlTag('li');
 		$img_tag = new SwatHtmlTag('img');
-		$img_tag = $image->getImgTag('pinky');
+		$img_tag = $this->getSecondaryImgTag($image);
 
 		if ($img_tag->alt == '')
 			$img_tag->alt = sprintf(Store::_('Additional Image of %s'),
@@ -1385,6 +1385,14 @@ class StoreProductPage extends StorePage
 
 		$anchor->close();
 		$li_tag->close();
+	}
+
+	// }}}
+	// {{{ protected function getSecondaryImgTag()
+
+	protected function getSecondaryImgTag($image)
+	{
+		return $image->getImgTag('pinky');
 	}
 
 	// }}}
