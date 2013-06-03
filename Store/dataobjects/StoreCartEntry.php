@@ -478,8 +478,10 @@ class StoreCartEntry extends SwatDBDataObject
 	{
 		$description = array();
 
-		foreach ($this->item->getDescriptionArray() as $element)
-			$description[] = '<div>'.$element.'</div>';
+		foreach ($this->item->getDescriptionArray() as $element) {
+			$description[] = '<div>'.SwatString::minimizeEntities($element).
+				'</div>';
+		}
 
 		return implode("\n", $description);
 	}
