@@ -91,14 +91,25 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	 * Pay for an order immediately
 	 *
 	 * @param StoreOrder $order the order to pay for.
+	 * @param string $card_number the card number to use for payment.
+	 * @param string $card_verification_value optional. Card verification value
+	 *                                         used for fraud prevention.
 	 *
 	 * @return StorePaymentMethodTransaction the transaction object for the
 	 *                                        payment. This object contains the
 	 *                                        transaction date and identifier.
+	 *
+	 * @sensitive $card_number
+	 * @sensitive $card_verification_value
 	 */
-	public function pay(StoreOrder $order)
+	public function pay(StoreOrder $order, $card_number,
+		$card_verification_value = null)
 	{
-		$request = $this->getAIMPaymentRequest($order);
+		$request = $this->getAIMPaymentRequest(
+			$order,
+			$card_number,
+			$card_verification_value
+		);
 
 		// do transaction
 		$response = $request->authorizeAndCapture();
@@ -196,10 +207,17 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	 * Builds an AuthorizeNetAIM request for a payment.
 	 *
 	 * @param StoreOrder $order the order to pay for.
+	 * @param string $card_number the card number to use for payment.
+	 * @param string $card_verification_value optional. Card verification value
+	 *                                         used for fraud prevention.
 	 *
 	 * @return AuthorizeNetAIM the payment request object.
+	 *
+	 * @sensitive $card_number
+	 * @sensitive $card_verification_value
 	 */
-	protected function getAIMPaymentRequest(StoreOrder $order)
+	protected function getAIMPaymentRequest(StoreOrder $order, $card_number,
+		$card_verification_value = null)
 	{
 		$request = new AuthorizeNetAIM(
 			$this->login_id,
@@ -215,7 +233,9 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 
 		$this->setRequestCardFields(
 			$request,
-			$order->payment_methods->getFirst()
+			$order,
+			$card_number,
+			$card_verification_value
 		);
 
 		// Order fields
@@ -250,15 +270,27 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	// }}}
 	// {{{ protected function setRequestCardFields()
 
+	/**
+	 * @sensitive $card_number
+	 * @sensitive $card_verification_value
+	 * @sensitive $payment_method
+	 */
 	protected function setRequestCardFields(AuthorizeNetAIM $request,
-		StorePaymentMethod $patment_method)
+		StoreOrder $order, $card_number, $card_verification_value = null)
 	{
-		$request->card_num = $payment_method->getUnencryptedCardNumber();
-		$request->card_code =
-			$payment_method->getUnencryptedCardVerificationValue();
+		$request->card_num = $card_number;
+		$request->card_code = $card_verification_value;
 
-		$request->exp_date =
-			$payment_method->card_expiry->formatLikeIntl('MM/yy');
+		$date = new SwatDate('-1 month');
+
+		foreach ($order->payment_methods as $payment_method) {
+			if ($payment_method->getUnencryptedCardNumber() == $card_number) {
+				$date = clone $payment_method->card_expiry;
+				break;
+			}
+		}
+
+		$request->exp_date = $date->formatLikeIntl('MM/yy');
 	}
 
 	// }}}
