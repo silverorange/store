@@ -91,25 +91,14 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	 * Pay for an order immediately
 	 *
 	 * @param StoreOrder $order the order to pay for.
-	 * @param string $card_number the card number to use for payment.
-	 * @param string $card_verification_value optional. Card verification value
-	 *                                         used for fraud prevention.
 	 *
 	 * @return StorePaymentMethodTransaction the transaction object for the
 	 *                                        payment. This object contains the
 	 *                                        transaction date and identifier.
-	 *
-	 * @sensitive $card_number
-	 * @sensitive $card_verification_value
 	 */
-	public function pay(StoreOrder $order, $card_number,
-		$card_verification_value = null)
+	public function pay(StoreOrder $order)
 	{
-		$request = $this->getAIMPaymentRequest(
-			$order,
-			$card_number,
-			$card_verification_value
-		);
+		$request = $this->getAIMPaymentRequest($order);
 
 		// do transaction
 		$response = $request->authorizeAndCapture();
@@ -207,22 +196,11 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	 * Builds an AuthorizeNetAIM request for a payment.
 	 *
 	 * @param StoreOrder $order the order to pay for.
-	 * @param string $card_number the card number to use for payment.
-	 * @param string $card_verification_value optional. Card verification value
-	 *                                         used for fraud prevention.
 	 *
 	 * @return AuthorizeNetAIM the payment request object.
-	 *
-	 * @sensitive $card_number
-	 * @sensitive $card_verification_value
 	 */
-
-	protected function getAIMPaymentRequest(StoreOrder $order, $card_number,
-		$card_verification_value = null)
+	protected function getAIMPaymentRequest(StoreOrder $order)
 	{
-		$payment_method  = $order->payment_methods->getFirst();
-		$billing_address = $order->billing_address;
-
 		$request = new AuthorizeNetAIM(
 			$this->login_id,
 			$this->transaction_key
@@ -235,58 +213,25 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 		$request->freight = $this->formatNumber($order->shipping_total);
 		$request->amount  = $this->formatNumber($order->total);
 
-		$request->card_num = $payment_method->getUnencryptedCardNumber();
-		$request->card_code =
-			$payment_method->getUnencryptedCardVerificationValue();
-
-		$request->exp_date =
-			$payment_method->card_expiry->formatLikeIntl('MM/yy');
+		$this->setRequestCardFields(
+			$request,
+			$order->payment_methods->getFirst()
+		);
 
 		// Order fields
 		$request->invoice_num = $order->id;
 		$request->description = $this->getOrderDescription($order);
 
-		// Customer fields
-		$request->first_name = $billing_address->first_name;
-		$request->last_name  = $billing_address->last_name;
-
-		if ($billing_address->company !== null) {
-			$request->company = $billing_address->company;
-		}
-
-		$request->address = $billing_address->line1;
-		$request->city = $billing_address->city;
-		if ($billing_address->provstate_other !== null) {
-			$request->state = $billing_address->provstate_other;
-		} else {
-			$request->state = $billing_address->provstate->abbreviation;
-		}
-
-		$request->zip = $billing_address->postal_code;
-		$request->country = $billing_address->country->title;
-
-		if ($billing_address->phone !== null) {
-			$request->phone = $billing_address->phone;
-		}
+		$this->setRequestAddressFields($request, $order->billing_address);
 
 		$request->email = $order->email;
 		if ($order->account !== null && $order->account->id !== null) {
 			$request->cust_id = $order->account->id;
 		}
 
-		$request->customer_ip = $this->getIpAddress();
+		$request->customer_ip = $this->getIPAddress();
 
-		// Line items
-		foreach ($order->items as $item) {
-			$request->addLineItem(
-				$item->id,
-				$this->truncateField($item->product_title, 31),
-				$this->truncateField($item->description, 255),
-				$item->quantity,
-				$this->formatNumber($item->price),
-				false
-			);
-		}
+		$this->addRequestLineItems($request, $order);
 
 		return $request;
 	}
@@ -303,9 +248,79 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
-	// {{{ protected function getIpAddress()
+	// {{{ protected function setRequestCardFields()
 
-	protected function getIpAddress()
+	protected function setRequestCardFields(AuthorizeNetAIM $request,
+		StorePaymentMethod $patment_method)
+	{
+		$request->card_num = $payment_method->getUnencryptedCardNumber();
+		$request->card_code =
+			$payment_method->getUnencryptedCardVerificationValue();
+
+		$request->exp_date =
+			$payment_method->card_expiry->formatLikeIntl('MM/yy');
+	}
+
+	// }}}
+	// {{{ protected function setRequestAddressFields()
+
+	protected function setRequestAddressFields(AuthorizeNetAIM $request,
+		StoreOrderAddress $address)
+	{
+		$request->first_name = $address->first_name;
+		$request->last_name  = $address->last_name;
+
+		if ($address->company != '') {
+			$request->company = $address->company;
+		}
+
+		$request->address = $address->line1;
+		$request->city = $address->city;
+		if ($address->provstate_other != null) {
+			$request->state = $address->provstate_other;
+		} else {
+			$request->state = $address->provstate->abbreviation;
+		}
+
+		$request->zip = $address->postal_code;
+		$request->country = $address->country->title;
+
+		if ($address->phone != '') {
+			$request->phone = $address->phone;
+		}
+	}
+
+	// }}}
+	// {{{ protected function addRequestLineItems()
+
+	protected function addRequestLineItems(AuthorizeNetAIM $request,
+		StoreOrder $order)
+	{
+		foreach ($order->items as $item) {
+			$this->addRequestLineItem($request, $item);
+		}
+	}
+
+	// }}}
+	// {{{ protected function addRequestLineItem()
+
+	protected function addRequestLineItem(AuthorizeNetAIM $request,
+		StoreOrderItem $item)
+	{
+		$request->addLineItem(
+			$item->id,
+			$this->truncateField($item->product_title, 31),
+			$this->truncateField($item->description, 255),
+			$item->quantity,
+			$this->formatNumber($item->price),
+			false
+		);
+	}
+
+	// }}}
+	// {{{ protected function getIPAddress()
+
+	protected function getIPAddress()
 	{
 		$remote_ip = null;
 
