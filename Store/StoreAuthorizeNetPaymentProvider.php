@@ -240,9 +240,14 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 
 		// Order fields
 		$request->invoice_num = $order->id;
-		$request->description = $this->getOrderDescription($order);
+		$request->description = $this->truncateField(
+			$this->getOrderDescription($order),
+			255
+		);
 
-		$this->setRequestAddressFields($request, $order->billing_address);
+		if ($order->billing_address instanceof StoreOrderAddress) {
+			$this->setRequestAddressFields($request, $order->billing_address);
+		}
 
 		$request->email = $order->email;
 		if ($order->account !== null && $order->account->id !== null) {
