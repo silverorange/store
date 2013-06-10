@@ -402,7 +402,7 @@ class StoreProductEdit extends AdminDBEdit
 				SwatMessageDisplay::DISMISS_OFF
 			);
 		}
-		
+
 		$form = $this->ui->getWidget('edit_form');
 		if ($this->id === null && !$form->isProcessed())
 			$this->smartDefaultCatalog();
