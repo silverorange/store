@@ -9,7 +9,7 @@ require_once 'Store/dataobjects/StoreAttributeWrapper.php';
  * A product search engine
  *
  * @package   Store
- * @copyright 2007-2012 silverorange
+ * @copyright 2007-2013 silverorange
  */
 class StoreProductSearchEngine extends SiteSearchEngine
 {
@@ -204,7 +204,6 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	 */
 	public function __construct(SiteApplication $app)
 	{
-
 		parent::__construct($app);
 		$this->addOrderByField('Product.title');
 	}
