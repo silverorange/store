@@ -315,7 +315,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 		$request->city = $address->city;
 		if ($address->provstate_other != null) {
 			$request->state = $address->provstate_other;
-		} else {
+		} else if ($address->provstate instanceof StoreProvState) {
 			$request->state = $address->provstate->abbreviation;
 		}
 
