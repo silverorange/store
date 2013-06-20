@@ -59,7 +59,7 @@ class StoreFroogleFeed extends AtomFeed
 	/**
 	 * Get date node
 	 */
-	public static function getDateNode($document, $name, HotDateTime $date,
+	public static function getDateNode($document, $name, DateTime $date,
 		$name_space = null)
 	{
 		if ($name == 'expiration_date') {
