@@ -14,7 +14,7 @@ require_once 'Store/StoreCatalogSelector.php';
  * Edit page for Products
  *
  * @package   Store
- * @copyright 2005-2012 silverorange
+ * @copyright 2005-2013 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductEdit extends AdminDBEdit
@@ -44,24 +44,7 @@ class StoreProductEdit extends AdminDBEdit
 
 		$this->initProduct();
 		$this->initAttributeList();
-
-		if ($this->app->getInstance() === null) {
-			$where = null;
-		} else {
-			$where = sprintf('Catalog.id in (select catalog from
-				CatalogInstanceBinding where instance = %s)',
-				$this->app->db->quote($this->app->getInstance()->id,
-					'integer'));
-		}
-
-		$catalog_flydown = $this->ui->getWidget('catalog');
-		$catalog_flydown->addOptionsByArray(SwatDB::getOptionArray(
-			$this->app->db, 'Catalog', 'title', 'id', 'title',
-			$where));
-
-		// Only show blank option in catalogue flydown if there is more than
-		// one catalogue to choose from.
-		$catalog_flydown->show_blank = (count($catalog_flydown->options) > 1);
+		$this->initCatalogFlydown();
 
 		if ($this->id === null) {
 			$this->ui->getWidget('shortname_field')->visible = false;
@@ -127,6 +110,30 @@ class StoreProductEdit extends AdminDBEdit
 
 		$attributes_field = $this->ui->getWidget('attributes_form_field');
 		$attributes_field->replicators = $replicators;
+	}
+
+	// }}}
+	// {{{ protected function initCatalogFlydown()
+
+	protected function initCatalogFlydown()
+	{
+		if ($this->app->getInstance() === null) {
+			$where = null;
+		} else {
+			$where = sprintf('Catalog.id in (select catalog from
+				CatalogInstanceBinding where instance = %s)',
+				$this->app->db->quote($this->app->getInstance()->id,
+					'integer'));
+		}
+
+		$catalog_flydown = $this->ui->getWidget('catalog');
+		$catalog_flydown->addOptionsByArray(SwatDB::getOptionArray(
+			$this->app->db, 'Catalog', 'title', 'id', 'title',
+			$where));
+
+		// Only show blank option in catalogue flydown if there is more than
+		// one catalogue to choose from.
+		$catalog_flydown->show_blank = (count($catalog_flydown->options) > 1);
 	}
 
 	// }}}
