@@ -4,24 +4,32 @@ require_once 'SwatDB/SwatDBRecordsetWrapper.php';
 require_once 'Store/dataobjects/StoreProduct.php';
 
 /**
+ * Note: This recordset automatically loads attributes for products when
+ *       constructed from a database result. If this behaviour is undesirable,
+ *       set the lazy_load option to true.
  *
  * @package   Store
- * @copyright 2006-2009 silverorange
+ * @copyright 2006-2013 silverorange
  */
 class StoreProductWrapper extends SwatDBRecordsetWrapper
 {
-	// {{{ public function __construct()
+	// {{{ public function initializeFromResultSet()
 
-	/**
-	 * Creates a new recordset wrapper
-	 *
-	 * @param MDB2_Result $recordset optional. The MDB2 recordset to wrap.
-	 */
-	public function __construct($recordset = null)
+	public function initializeFromResultSet(MDB2_Result_Common $rs)
 	{
-		parent::__construct($recordset);
+		parent::initializeFromResultSet($rs);
 
-		// efficiently load all attributes at once
+		// efficiently load all product attributes at once
+		if (!$this->getOption('lazy_load')) {
+			$this->loadAttributes();
+		}
+	}
+
+	// }}}
+	// {{{ public function loadAttributes()
+
+	public function loadAttributes()
+	{
 		if ($this->getCount() > 0) {
 			$wrapper_class = SwatDBClassMap::get('StoreAttributeWrapper');
 
