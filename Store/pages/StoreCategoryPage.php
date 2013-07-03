@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreProductImageWrapper.php';
 
 /**
  * @package   Store
- * @copyright 2005-2012 silverorange
+ * @copyright 2005-2013 silverorange
  */
 class StoreCategoryPage extends StorePage
 {
@@ -99,12 +99,7 @@ class StoreCategoryPage extends StorePage
 			SwatString::minimizeEntities($this->category->description);
 
 		$this->layout->startCapture('content');
-
-		if ($this->category->bodytext != '') {
-			printf('<div class="store-category-bodytext">%s</div>',
-				SwatString::toXHTML($this->category->bodytext));
-		}
-
+		$this->buildBodytext();
 		$this->layout->endCapture();
 
 		if ($this->category->description === null) {
@@ -142,6 +137,17 @@ class StoreCategoryPage extends StorePage
 		if ($this->category->html_title != '') {
 			$this->layout->data->html_title =
 				SwatString::minimizeEntities($this->category->html_title);
+		}
+	}
+
+	// }}}
+	// {{{ protected function buildBodytext()
+
+	protected function buildBodytext()
+	{
+		if ($this->category->bodytext != '') {
+			printf('<div class="store-category-bodytext">%s</div>',
+				SwatString::toXHTML($this->category->bodytext));
 		}
 	}
 
@@ -315,7 +321,7 @@ class StoreCategoryPage extends StorePage
 			$this->app->relocate($link);
 		}
 
-		echo '<div class="category-twigs-wrapper">';	
+		echo '<div class="category-twigs-wrapper">';
 
 		foreach ($sub_categories as $sub_category) {
 			if (array_key_exists($sub_category->id, $products) == true) {
