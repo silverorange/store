@@ -1310,10 +1310,12 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$message->content_type = 'text/xml';
 			$message->secondary_content = sprintf(
 				Store::_(
-					'Press the %sPlace Order%s button to complete your order.'
+					'Press the %s button to complete your order.'
 				),
-				'<em>',
-				'</em>'
+				sprintf(
+					'<em>%s</em>',
+					$this->ui->getWidget('submit_button')->title
+				)
 			);
 			$this->ui->getWidget('message_display')->add(
 				$message,
