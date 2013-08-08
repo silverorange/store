@@ -1,4 +1,4 @@
-store
+Store
 =====
 
 An e-commerce framework built on [Swat](https://github.com/silverorange/swat/),
