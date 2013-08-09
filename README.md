@@ -7,4 +7,5 @@ An e-commerce framework built on [Swat](https://github.com/silverorange/swat/),
 
 Documentation
 -------------
+ * [API Documentation](http://docs.silverorange.com/store/package-summary.html)
  * [Design Proposal for AJAX shopping cart](https://github.com/silverorange/store/wiki/Ajax-Cart-Proposal)
