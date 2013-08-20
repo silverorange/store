@@ -57,7 +57,7 @@ abstract class StorePaymentResponse
 	 *
 	 * @return string a string representation of this payment response.
 	 */
-	abstract protected function __toString();
+	abstract public function __toString();
 
 	// }}}
 }

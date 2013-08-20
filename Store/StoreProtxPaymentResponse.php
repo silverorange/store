@@ -92,7 +92,7 @@ class StoreProtxPaymentResponse extends StorePaymentResponse
 	 *
 	 * @return string a string representation of this payment response.
 	 */
-	protected function __toString()
+	public function __toString()
 	{
 		return $this->response_text;
 	}
