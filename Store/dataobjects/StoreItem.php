@@ -862,9 +862,9 @@ class StoreItem extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ private function checkRegion()
+	// {{{ protected function checkRegion()
 
-	private function checkRegion($region)
+	protected function checkRegion($region)
 	{
 		if ($region !== null && !($region instanceof StoreRegion))
 			throw new StoreException(
