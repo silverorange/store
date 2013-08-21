@@ -15,7 +15,7 @@ require_once 'Store/dataobjects/StoreRegionWrapper.php';
  * Edit page for Items
  *
  * @package   Store
- * @copyright 2005-2012 silverorange
+ * @copyright 2005-2013 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemEdit extends AdminDBEdit
@@ -121,36 +121,57 @@ class StoreItemEdit extends AdminDBEdit
 
 	public function process()
 	{
+		$this->processPriceReplicators();
+		parent::process();
+	}
+
+	// }}}
+	// {{{ protected function processPriceReplicators()
+
+	protected function processPriceReplicators()
+	{
 		/*
 		 * Pre-process "enabled" checkboxes to set required flag on price
 		 * entries.  Also set correct locale on the Price Entry.
 		 */
 		$sql = 'select id, title from Region order by Region.id';
-		$regions = SwatDB::query($this->app->db, $sql,
-			SwatDBClassMap::get('StoreRegionWrapper'));
+		$regions = SwatDB::query(
+			$this->app->db,
+			$sql,
+			SwatDBClassMap::get('StoreRegionWrapper')
+		);
 
 		$replicator = $this->ui->getWidget('price_replicator');
 
 		foreach ($regions as $region) {
-			$enabled_widget = $replicator->getWidget('enabled', $region->id);
-			$enabled_widget->process();
-
-			$price_widget = $replicator->getWidget('price', $region->id);
-			$price_widget->required = $enabled_widget->value;
-			$price_widget->locale = $region->getFirstLocale()->id;
-
-			$original_price_widget =
-				$replicator->getWidget('original_price', $region->id);
-
-			$original_price_widget->locale = $region->getFirstLocale()->id;
-
-			$sale_discount_price_widget =
-				$replicator->getWidget('sale_discount_price', $region->id);
-
-			$sale_discount_price_widget->locale = $region->getFirstLocale()->id;
+			$this->processPriceReplicatorByRegion($replicator, $region);
 		}
+	}
 
-		parent::process();
+	// }}}
+	// {{{ protected function processPriceReplicatorByRegion()
+
+	protected function processPriceReplicatorByRegion(
+		SwatReplicableContainer $replicator, StoreRegion $region)
+	{
+		$locale = $region->getFirstLocale()->id;
+
+		$enabled = $replicator->getWidget('enabled', $region->id);
+		$enabled->process();
+
+		$price = $replicator->getWidget('price', $region->id);
+		$price->required = $enabled->value;
+		$price->locale = $locale;
+
+		$original_price = $replicator->getWidget('original_price', $region->id);
+		$original_price->locale = $locale;
+
+		$sale_discount_price = $replicator->getWidget(
+			'sale_discount_price',
+			$region->id
+		);
+
+		$sale_discount_price->locale = $locale;
 	}
 
 	// }}}
@@ -301,10 +322,34 @@ class StoreItemEdit extends AdminDBEdit
 
 	protected function updateRegionBindings()
 	{
-		// get old values. If the price_replicator doesn't include one of the
-		// old values, re-save its previous state instead of resetting it to the
-		// database default.
+		// get old values before deleting the old bindings. If the
+		// price_replicator doesn't include one of the old values, re-save
+		// its previous state instead of resetting it to the database default.
+		$old_values = $this->getRegionBindingsOldValues();
+
+		$this->deleteRegionBindings();
+
+		$price_replicator = $this->ui->getWidget('price_replicator');
+		foreach ($price_replicator->replicators as $region_id => $title) {
+			$region_binding = $this->getItemRegionBinding(
+				$price_replicator,
+				$region_id,
+				$old_values
+			);
+
+			if ($region_binding instanceof StoreItemRegionBinding) {
+				$this->item->region_bindings->add($region_binding);
+			}
+		}
+	}
+
+	// }}}
+	// {{{ protected function getRegionBindingsOldValues()
+
+	protected function getRegionBindingsOldValues()
+	{
 		$old_values = array();
+
 		foreach ($this->item->region_bindings as $binding) {
 			$old_values[$binding->region->id]['enabled'] = $binding->enabled;
 			$old_values[$binding->region->id]['price']   = $binding->price;
@@ -315,6 +360,14 @@ class StoreItemEdit extends AdminDBEdit
 				$binding->sale_discount_price;
 		}
 
+		return $old_values;
+	}
+
+	// }}}
+	// {{{ protected function deleteRegionBindings()
+
+	protected function deleteRegionBindings()
+	{
 		// Due to SwatDBDataObject not being able to delete when there is no id
 		// like the binding table below, this has to use manual sql to do its
 		// delete, and can't use the nice removeAll() method.
@@ -323,52 +376,60 @@ class StoreItemEdit extends AdminDBEdit
 			$this->app->db->quote($this->item->id, 'integer'));
 
 		SwatDB::exec($this->app->db, $delete_sql);
+	}
 
-		$price_replicator = $this->ui->getWidget('price_replicator');
-		$class_name = SwatDBClassMap::get('StoreItemRegionBinding');
+	// }}}
+	// {{{ protected function getItemRegionBinding()
 
-		foreach ($price_replicator->replicators as $region => $title) {
-			$price          = $price_replicator->getWidget('price', $region);
-			$enabled        = $price_replicator->getWidget('enabled', $region);
-			$original_price =
-				$price_replicator->getWidget('original_price', $region);
+	protected function getItemRegionBinding(
+		SwatReplicableContainer $replicator,
+		$region_id,
+		array $old_values)
+	{
+		$region_binding = null;
 
-			$sale_discount_price =
-				$price_replicator->getWidget('sale_discount_price', $region);
+		$price          = $replicator->getWidget('price', $region_id);
+		$enabled        = $replicator->getWidget('enabled', $region_id);
+		$original_price = $replicator->getWidget('original_price', $region_id);
+		$sale_discount_price = $replicator->getWidget(
+			'sale_discount_price',
+			$region_id
+		);
 
-			// only create new binding if price exists, otherwise there is no
-			// use for the binding, and it can lead to bad data on the site
-			if ($price->getState() !== null) {
-				$region_binding = new $class_name();
-				$region_binding->region  = $region;
-				$region_binding->price   = $price->value;
+		// only create new binding if price exists, otherwise there is no
+		// use for the binding, and it can lead to bad data on the site
+		if ($price->getState() !== null) {
+			$class_name = SwatDBClassMap::get('StoreItemRegionBinding');
 
-				// enabled, original_price and sale_discount_price are all
-				// optional.
-				if ($this->isWidgetVisible($enabled)) {
-					$region_binding->enabled = $enabled->value;
-				} elseif (isset($old_values[$region])) {
-					$region_binding->enabled = $old_values[$region]['enabled'];
-				}
+			$region_binding = new $class_name();
+			$region_binding->region = $region_id;
+			$region_binding->price  = $price->value;
 
-				if ($this->isWidgetVisible($original_price)) {
-					$region_binding->original_price = $original_price->value;
-				} elseif (isset($old_values[$region])) {
-					$region_binding->original_price =
-						$old_values[$region]['original_price'];
-				}
+			// Check visiblity of the widgets as enabled, original_price and
+			// sale_discount_price are all optional.
+			if ($this->isWidgetVisible($enabled)) {
+				$region_binding->enabled = $enabled->value;
+			} elseif (isset($old_values[$region_id])) {
+				$region_binding->enabled = $old_values[$region_id]['enabled'];
+			}
 
-				if ($this->isWidgetVisible($sale_discount_price)) {
-					$region_binding->sale_discount_price =
-						$sale_discount_price->value;
-				} elseif (isset($old_values[$region])) {
-					$region_binding->sale_discount_price =
-						$old_values[$region]['sale_discount_price'];
-				}
+			if ($this->isWidgetVisible($original_price)) {
+				$region_binding->original_price = $original_price->value;
+			} elseif (isset($old_values[$region_id])) {
+				$region_binding->original_price =
+					$old_values[$region_id]['original_price'];
+			}
 
-				$this->item->region_bindings->add($region_binding);
+			if ($this->isWidgetVisible($sale_discount_price)) {
+				$region_binding->sale_discount_price =
+					$sale_discount_price->value;
+			} elseif (isset($old_values[$region_id])) {
+				$region_binding->sale_discount_price =
+					$old_values[$region_id]['sale_discount_price'];
 			}
 		}
+
+		return $region_binding;
 	}
 
 	// }}}
@@ -529,29 +590,45 @@ class StoreItemEdit extends AdminDBEdit
 
 			// set all enabled to false on edits, as each region will set its
 			// own enabled state in the next foreach loop.
-			foreach ($price_replicator->replicators as $region => $title) {
-				$price_replicator->getWidget('enabled', $region)->value = false;
+			foreach ($price_replicator->replicators as $region_id => $title) {
+				$enabled = $price_replicator->getWidget('enabled', $region_id);
+				$enabled->value = false;
 			}
 
 			foreach ($this->item->region_bindings as $binding) {
-				$region_id = $binding->region->id;
-				$price = $price_replicator->getWidget('price', $region_id);
-				$price->value = $binding->price;
-
-				$original_price = $price_replicator->getWidget('original_price',
-					$region_id);
-
-				$original_price->value = $binding->original_price;
-
-				$sale_discount_price = $price_replicator->getWidget(
-					'sale_discount_price', $region_id);
-
-				$sale_discount_price->value = $binding->sale_discount_price;
-
-				$enabled = $price_replicator->getWidget('enabled', $region_id);
-				$enabled->value = $binding->enabled;
+				$this->loadPriceReplicatorByBinding(
+					$price_replicator,
+					$binding
+				);
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function loadPriceReplicatorByBinding()
+
+	protected function loadPriceReplicatorByBinding(
+		SwatReplicableContainer $replicator, StoreItemRegionBinding $binding)
+	{
+		$enabled = $replicator->getWidget('enabled', $binding->region->id);
+		$enabled->value = $binding->enabled;
+
+		$price = $replicator->getWidget('price', $binding->region->id);
+		$price->value = $binding->price;
+
+		$original_price = $replicator->getWidget(
+			'original_price',
+			$binding->region->id
+		);
+
+		$original_price->value = $binding->original_price;
+
+		$sale_discount_price = $replicator->getWidget(
+			'sale_discount_price',
+			$binding->region->id
+		);
+
+		$sale_discount_price->value = $binding->sale_discount_price;
 	}
 
 	// }}}
