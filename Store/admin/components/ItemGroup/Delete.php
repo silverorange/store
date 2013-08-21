@@ -8,7 +8,7 @@ require_once 'Admin/AdminListDependency.php';
  * Delete confirmation page for ItemGroups
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2013 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemGroupDelete extends AdminDBDelete
@@ -72,13 +72,13 @@ class StoreItemGroupDelete extends AdminDBDelete
 		$form = $this->ui->getWidget('confirmation_form');
 		$form->addHiddenField('category', $this->category_id);
 
-		$item_list = $this->getItemList('integer');
-
 		$dep = new AdminListDependency();
-		$dep->setTitle(Store::_('group'), Store::_('groups'));
-		$dep->entries = AdminListDependency::queryEntries($this->app->db,
-			'ItemGroup', 'integer:id', null, 'text:title', 'id',
-			'id in ('.$item_list.')', AdminDependency::DELETE);
+		$dep->setTitle(
+			Store::_('group'),
+			Store::_('groups')
+		);
+
+		$dep->entries = $this->getDependencyEntries();
 
 		$message_content = '<p>'.Store::_('Items in removed groups will '.
 			'%snot%s be deleted. Items in removed groups will still be '.
@@ -87,12 +87,36 @@ class StoreItemGroupDelete extends AdminDBDelete
 
 		$message = $this->ui->getWidget('confirmation_message');
 		$message->content = $dep->getMessage().
-			sprintf($message_content, '<em>', '</em>');
+			sprintf(
+				$message_content,
+				'<em>',
+				'</em>'
+			);
 
 		$message->content_type = 'text/xml';
 
-		if ($dep->getStatusLevelCount(AdminDependency::DELETE) == 0)
+		if ($dep->getStatusLevelCount(AdminDependency::DELETE) == 0) {
 			$this->switchToCancelButton();
+		}
+	}
+
+	// }}}
+	// {{{ protected function getDependencyEntries()
+
+	protected function getDependencyEntries()
+	{
+		$item_list = $this->getItemList('integer');
+
+		return AdminListDependency::queryEntries(
+			$this->app->db,
+			'ItemGroup',
+			'integer:id',
+			null,
+			'text:title',
+			'displayorder, title, id',
+			'id in ('.$item_list.')',
+			AdminDependency::DELETE
+		);
 	}
 
 	// }}}
