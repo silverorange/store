@@ -10,12 +10,17 @@ function StoreItemEditPage(form_id, price_replicators)
 	this.price_replicators = [];
 	for (var i = 0; i < price_replicators.length; i++) {
 		this.price_replicators[i] =
-			new StoreItemRegionReplicator(price_replicators[i]);
+			this.getItemRegionReplicator(price_replicators[i]);
 	}
 
 	var form = document.getElementById(form_id);
 	YAHOO.util.Event.addListener(form, 'submit', StoreItemEditPage.handleSubmit,
 		this);
+}
+
+StoreItemEditPage.prototype.getItemRegionReplicator = function(id)
+{
+	return new StoreItemRegionReplicator(id);
 }
 
 StoreItemEditPage.handleSubmit = function(event, page)
