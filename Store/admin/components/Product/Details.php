@@ -34,7 +34,7 @@ require_once
  * Details page for Products
  *
  * @package   Store
- * @copyright 2005-2012 silverorange
+ * @copyright 2005-2013 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductDetails extends AdminIndex
@@ -882,9 +882,9 @@ class StoreProductDetails extends AdminIndex
 	}
 
 	// }}}
-	// {{{ private function buildProduct()
+	// {{{ protected function buildProduct()
 
-	private function buildProduct()
+	protected function buildProduct()
 	{
 		$ds = $this->getProductDetailsStore($this->product);
 		$details_view = $this->ui->getWidget('details_view');
@@ -902,9 +902,9 @@ class StoreProductDetails extends AdminIndex
 	}
 
 	// }}}
-	// {{{ private function buildViewInStoreToolLinks()
+	// {{{ protected function buildViewInStoreToolLinks()
 
-	private function buildViewInStoreToolLinks(StoreProduct $product)
+	protected function buildViewInStoreToolLinks(StoreProduct $product)
 	{
 		$regions = $this->queryRegions();
 		$region_count = count($regions);
