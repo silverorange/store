@@ -26,6 +26,7 @@
 						<property name="title" translatable="yes">Name</property>
 						<widget class="SwatEntry" id="product_review_fullname">
 							<property name="required" type="boolean">true</property>
+							<property name="maxlength" type="integer">50</property>
 						</widget>
 					</widget>
 					<widget class="SwatFormField">
@@ -33,6 +34,7 @@
 						<property name="note">Email addresses are not displayed with your comment and will not be shared.</property>
 						<widget class="SwatEmailEntry" id="product_review_email">
 							<property name="required" type="boolean">true</property>
+							<property name="maxlength" type="integer">50</property>
 						</widget>
 					</widget>
 				</widget>
