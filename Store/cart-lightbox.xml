@@ -60,7 +60,7 @@
 		</widget>
 	</widget>
 	<widget class="SwatForm" id="checkout_form">
-		<property name="action">cart?link=cart-lightbox</property>
+		<property name="action">cart</property>
 		<property name="classes[]">clearfix</property>
 		<widget class="SwatButton" id="checkout_button">
 			<property name="title" translatable="yes">View Cart &amp; Checkout</property>
