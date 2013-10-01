@@ -6,38 +6,12 @@ require_once 'Swat/SwatNavBar.php';
  * Visible navigation tool (breadcrumb trail)
  *
  * @package   Store
- * @copyright 2010 silverorange
+ * @copyright 2010-2013 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       SwatNavBar
  */
 class StoreNavBar extends SwatNavBar
 {
-	// {{{ public properties
-
-	/**
-	 * Whether or not to add a url parameter for analytics tracking.
-	 *
-	 * If set to true, all links have an added parameter of link=navbar.
-	 * Defaults to false.
-	 *
-	 * @var boolean
-	 */
-	public $add_analytics_url_parameter = false;
-
-	// {{{ protected function displayEntry()
-
-	protected function getLink(SwatNavBarEntry $entry)
-	{
-		$link = parent::getLink($entry);
-		if ($this->add_analytics_url_parameter) {
-			$concatenater = (strpos($link, '?')) ? '&' : '?';
-			$link.= $concatenater.'link=navbar';
-		}
-
-		return $link;
-	}
-
-	// }}}
 	// {{{ protected function getCSSClassNames()
 
 	/**

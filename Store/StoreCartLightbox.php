@@ -9,7 +9,7 @@ require_once 'XML/RPCAjax.php';
  * Control to display a lightbox driven cart on the page
  *
  * @package   Store
- * @copyright 2010-2012 silverorange
+ * @copyright 2010-2013 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCartLightbox extends SwatControl
@@ -538,10 +538,16 @@ class StoreCartLightbox extends SwatControl
 		$ds->status_title = null;
 		$ds->quantity = null;
 		$ds->description = sprintf(
-			'<a class="more-link" href="cart?link=cart-lightbox-more">%s</a>',
-			sprintf(Store::ngettext('and one other item',
-					'and %s other items…', $num_items),
-				$locale->formatNumber($num_items)));
+			'<a class="more-link" href="cart">%s</a>',
+			sprintf(
+				Store::ngettext(
+					'and one other item',
+					'and %s other items…',
+					$num_items
+				),
+				$locale->formatNumber($num_items)
+			)
+		);
 
 		$ds->price = null;
 		$ds->extension = null;
@@ -624,9 +630,7 @@ class StoreCartLightbox extends SwatControl
 
 	protected function getProductLink(StoreCartEntry $entry)
 	{
-		return sprintf('%s%s?link=cart-lightbox',
-			$this->app->config->store->path,
-			$entry->item->product->path);
+		return $this->app->config->store->path.$entry->item->product->path;
 	}
 
 	// }}}

@@ -488,8 +488,6 @@ YAHOO.util.Event.onDOMReady(function ()
 
 		if (tabElement) {
 			this.tab = tabElement;
-			// generate href to use for Google analytics virtual page view
-			this.tab.href = '?link=' + this.element.id;
 		} else {
 			this.tab = null;
 		}
