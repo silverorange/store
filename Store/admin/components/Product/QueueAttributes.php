@@ -76,7 +76,7 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 
 	protected function initInternal()
 	{
-		$this->ui_xml = dirname(__FILE__).'/queue-attributes.xml';
+		$this->ui_xml = __DIR__.'/queue-attributes.xml';
 
 		parent::initInternal();
 

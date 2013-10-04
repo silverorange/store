@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Site/admin/components/InstanceSetting/Index.php';
-require_once dirname(__FILE__).'/include/StoreConfigPage.php';
+require_once __DIR__.'/include/StoreConfigPage.php';
 
 /**
  * @package   Store

@@ -33,7 +33,7 @@ class StoreFeatureEdit extends AdminDBEdit
 
 		$this->initFeature();
 
-		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
+		$this->ui->loadFromXML(__DIR__.'/edit.xml');
 
 		$region_flydown = $this->ui->getWidget('region');
 		$region_flydown->addOptionsByArray(SwatDB::getOptionArray(

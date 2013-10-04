@@ -22,7 +22,7 @@ class StoreProductReviewApproval extends AdminApproval
 
 	protected function getUiXml()
 	{
-		return dirname(__FILE__).'/approval.xml';
+		return __DIR__.'/approval.xml';
 	}
 
 	// }}}
