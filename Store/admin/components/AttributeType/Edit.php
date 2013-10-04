@@ -34,7 +34,7 @@ class StoreAttributeTypeEdit extends AdminDBEdit
 
 		$this->initAttributeType();
 
-		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
+		$this->ui->loadFromXML(__DIR__.'/edit.xml');
 	}
 
 	// }}}

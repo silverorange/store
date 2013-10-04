@@ -31,7 +31,7 @@ class StoreRegionEdit extends AdminDBEdit
 		$this->initRegion();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
+		$this->ui->loadFromXML(__DIR__.'/edit.xml');
 
 		$countries = SwatDB::getOptionArray($this->app->db, 'Country', 'title',
 			'text:id', 'title');

@@ -63,7 +63,7 @@ class StoreProductReview extends SiteComment
 	protected function loadReplies()
 	{
 		// include wrapper at call-time to prevent infinite include loop
-		require_once dirname(__FILE__).'/StoreProductReviewWrapper.php';
+		require_once __DIR__.'/StoreProductReviewWrapper.php';
 
 		// order chronologically for sub-items
 		$sql = sprintf('select * from ProductReview where parent = %s

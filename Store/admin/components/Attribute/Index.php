@@ -23,7 +23,7 @@ class StoreAttributeIndex extends AdminIndex
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML(dirname(__FILE__).'/index.xml');
+		$this->ui->loadFromXML(__DIR__.'/index.xml');
 	}
 
 	// }}}

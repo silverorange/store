@@ -34,7 +34,7 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML(dirname(__FILE__).'/payment-method-edit.xml');
+		$this->ui->loadFromXML(__DIR__.'/payment-method-edit.xml');
 	}
 
 	// }}}

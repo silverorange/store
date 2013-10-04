@@ -20,7 +20,7 @@ class StoreAdIndex extends SiteAdIndex
 	public function __construct(SiteApplication $app, SiteLayout $layout = null)
 	{
 		parent::__construct($app, $layout);
-		$this->ui_xml = dirname(__FILE__).'/index.xml';
+		$this->ui_xml = __DIR__.'/index.xml';
 	}
 
 	// }}}
