@@ -29,7 +29,7 @@ class StorePaymentTypeEdit extends AdminDBEdit
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML(dirname(__FILE__).'/edit.xml');
+		$this->ui->loadFromXML(__DIR__.'/edit.xml');
 		$this->initPaymentType();
 
 		$region_list = $this->ui->getWidget('regions');

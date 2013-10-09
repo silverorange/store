@@ -43,7 +43,7 @@ class StoreConfigPage extends SiteAbstractConfigPage
 
 	protected function getUiXml()
 	{
-		return dirname(__FILE__).'/config-page.xml';
+		return __DIR__.'/config-page.xml';
 	}
 
 	// }}}

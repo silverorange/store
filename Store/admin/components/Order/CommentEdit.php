@@ -37,7 +37,7 @@ class StoreOrderCommentEdit extends AdminDBEdit
 	{
 		parent::initInternal();
 		$this->account = SiteApplication::initVar('account');
-		$this->ui->loadFromXML(dirname(__FILE__).'/comment-edit.xml');
+		$this->ui->loadFromXML(__DIR__.'/comment-edit.xml');
 		$this->order = $this->getOrder();
 	}
 

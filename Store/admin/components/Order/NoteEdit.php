@@ -37,7 +37,7 @@ class StoreOrderNoteEdit extends AdminDBEdit
 	{
 		parent::initInternal();
 		$this->account = SiteApplication::initVar('account');
-		$this->ui->loadFromXML(dirname(__FILE__).'/note-edit.xml');
+		$this->ui->loadFromXML(__DIR__.'/note-edit.xml');
 		$this->order = $this->getOrder();
 	}
 
