@@ -107,6 +107,11 @@ StoreCartLightbox.prototype.init = function()
 
 	YAHOO.util.Event.on(close_links, 'click', this.close, this, true);
 
+	var mobile_close_links = Dom.getElementsByClassName('mobile-close-lightbox',
+		null, this.mini_cart);
+
+	Event.on(mobile_close_links, 'click', this.close, this, true);
+
 	this.esc_listener = new YAHOO.util.KeyListener(
 		document,
 		{ keys: [27] },
