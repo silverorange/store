@@ -49,11 +49,18 @@ require_once 'Store/dataobjects/StoreAccountWrapper.php';
  *
  * // using loadWithEmail()
  * $account = new StoreAccount();
- * if ($account->loadWithEmail('test@example.com') &&
- *     $account->isCorrectPassword('secretpassword')) {
- *     echo 'Hello ' . $account->fullname;
- *     $account->email = 'new_address@example.com';
- *     $account->save();
+ * if ($account->loadWithEmail('test@example.com')) {
+ *     $password = 'secretpassword';
+ *     $password_hash = $account->password;
+ *     $password_salt = $account->password_salt;
+ *
+ *     $crypt = $this->app->getModule('SiteCryptModule');
+ *
+ *     if ($crypt->verifyHash($password, $password_hash, $password_salt)) {
+ *         echo 'Hello ' . $account->fullname;
+ *         $account->email = 'new_address@example.com';
+ *         $account->save();
+ *     }
  * }
  * </code>
  *
