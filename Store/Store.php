@@ -9,7 +9,7 @@ require_once 'Site/SiteViewFactory.php';
  * Container for package wide static methods
  *
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class Store
@@ -56,19 +56,6 @@ class Store
 	{
 		bindtextdomain(Store::GETTEXT_DOMAIN, '@DATA-DIR@/Store/locale');
 		bind_textdomain_codeset(Store::GETTEXT_DOMAIN, 'UTF-8');
-	}
-
-	// }}}
-	// {{{ public static function getDependencies()
-
-	/**
-	 * Gets the packages this package depends on
-	 *
-	 * @return array an array of package IDs that this package depends on.
-	 */
-	public static function getDependencies()
-	{
-		return array(Swat::PACKAGE_ID, Site::PACKAGE_ID);
 	}
 
 	// }}}
