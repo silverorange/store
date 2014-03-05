@@ -6,20 +6,11 @@ require_once 'Site/admin/components/Account/Edit.php';
  * Edit page for Accounts
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountEdit extends SiteAccountEdit
 {
-	// {{{ protected properties
-
-	/**
-	 * @var string
-	 */
-	protected $ui_xml = 'Store/admin/components/Account/edit.xml';
-
-	// }}}
-
 	// init phase
 	// {{{ protected function initInternal()
 
@@ -28,6 +19,14 @@ class StoreAccountEdit extends SiteAccountEdit
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
 
 		parent::initInternal();
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return 'Store/admin/components/Account/edit.xml';
 	}
 
 	// }}}
