@@ -6,22 +6,26 @@ require_once 'Site/admin/components/Account/Index.php';
  * Index page for Accounts
  *
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountIndex extends SiteAccountIndex
 {
-	// {{{ protected properties
+	// init phase
+	// {{{ protected function getSearchXml()
 
-	/**
-	 * @var string
-	 */
-	protected $ui_xml = 'Store/admin/components/Account/index.xml';
+	protected function getSearchXml()
+	{
+		return 'Store/admin/components/Account/search.xml';
+	}
 
-	/**
-	 * @var string
-	 */
-	protected $search_xml = 'Store/admin/components/Account/search.xml';
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return 'Store/admin/components/Account/index.xml';
+	}
 
 	// }}}
 
