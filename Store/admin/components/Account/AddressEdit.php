@@ -19,11 +19,6 @@ class StoreAccountAddressEdit extends AdminDBEdit
 	// {{{ protected properties
 
 	/**
-	 * var string
-	 */
-	protected $ui_xml = 'Store/admin/components/Account/addressedit.xml';
-
-	/**
 	 * @var array
 	 */
 	protected $fields;
@@ -51,7 +46,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 
 		$this->initAccount();
 		$this->initDefaultAddressFields();
@@ -131,6 +126,14 @@ class StoreAccountAddressEdit extends AdminDBEdit
 			$shipping_field->note = Store::_(
 				'This address is already the default shipping address.');
 		}
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return 'Store/admin/components/Account/addressedit.xml';
 	}
 
 	// }}}
