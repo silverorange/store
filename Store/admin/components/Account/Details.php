@@ -10,19 +10,11 @@ require_once 'Store/dataobjects/StoreAccount.php';
  * Details page for accounts
  *
  * @package   Store
- * @copyright 2006-2013 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountDetails extends SiteAccountDetails
 {
-	// {{{ protected properties
-
-	/**
-	 * @var string
-	 */
-	protected $ui_xml = 'Store/admin/components/Account/details.xml';
-
-	// }}}
 	// {{{ protected function initInternal()
 
 	protected function initInternal()
@@ -34,6 +26,14 @@ class StoreAccountDetails extends SiteAccountDetails
 		$view->setDefaultOrderbyColumn(
 			$view->getColumn('createdate'),
 			SwatTableViewOrderableColumn::ORDER_BY_DIR_DESCENDING);
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return 'Store/admin/components/Account/details.xml';
 	}
 
 	// }}}
