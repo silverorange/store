@@ -90,8 +90,7 @@ class StoreProvStateEntry extends SwatInputControl
 		$this->html_head_entry_set->addEntrySet($yui->getHtmlHeadEntrySet());
 
 		$this->addJavaScript(
-			'packages/store/javascript/store-provstate-entry.js',
-			Store::PACKAGE_ID
+			'packages/store/javascript/store-provstate-entry.js'
 		);
 	}
 

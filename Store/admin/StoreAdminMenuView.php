@@ -12,7 +12,7 @@ require_once 'Admin/AdminMenuView.php';
  * An admin menu view that has an item search box at the top
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAdminMenuView extends AdminMenuView
@@ -40,9 +40,9 @@ class StoreAdminMenuView extends AdminMenuView
 	public function __construct($id = null)
 	{
 		parent::__construct($id);
-		$this->html_head_entry_set->addEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/admin/styles/store-quick-search.css',
-			Store::PACKAGE_ID));
+		$this->html_head_entry_set->addEntry(
+			'packages/store/admin/styles/store-quick-search.css'
+		);
 	}
 
 	// }}}

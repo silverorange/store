@@ -19,7 +19,7 @@ if (class_exists('Blorg')) {
  * Page for displaying search results
  *
  * @package   Store
- * @copyright 2007-2009 silverorange
+ * @copyright 2007-2014 silverorange
  */
 class StoreSearchResultsPage extends SiteSearchResultsPage
 {
@@ -628,10 +628,12 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 	{
 		parent::finalize();
 		$this->layout->addHtmlHeadEntrySet(
-			$this->ui->getRoot()->getHtmlHeadEntrySet());
+			$this->ui->getRoot()->getHtmlHeadEntrySet()
+		);
 
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-search-results-page.css', Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/styles/store-search-results-page.css'
+		);
 	}
 
 	// }}}

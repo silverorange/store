@@ -7,7 +7,7 @@ require_once 'Swat/SwatIntegerEntry.php';
  * e-commerce web application
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreQuantityEntry extends SwatIntegerEntry
@@ -18,8 +18,7 @@ class StoreQuantityEntry extends SwatIntegerEntry
 	{
 		parent::__construct($id);
 
-		$this->addStyleSheet('packages/store/styles/store-quantity-entry.css',
-			 Store::PACKAGE_ID);
+		$this->addStyleSheet('packages/store/styles/store-quantity-entry.css');
 
 		$this->minimum_value = 0;
 		$this->maxlength = 8;

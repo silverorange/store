@@ -11,7 +11,7 @@ require_once 'XML/RPCAjax.php';
  * Special disclosure widget for displaying the search panel for
  *
  * @package   Store
- * @copyright 2007-2008 silverorange
+ * @copyright 2007-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreSearchDisclosure extends SwatDisclosure
@@ -84,11 +84,8 @@ class StoreSearchDisclosure extends SwatDisclosure
 
 		$ajax = new XML_RPCAjax();
 		$this->html_head_entry_set->addEntrySet($ajax->getHtmlHeadEntrySet());
-		$this->addJavaScript('packages/store/javascript/search-disclosure.js',
-			Store::PACKAGE_ID);
-
-		$this->addStyleSheet('packages/store/styles/search-disclosure.css',
-			Store::PACKAGE_ID);
+		$this->addJavaScript('packages/store/javascript/search-disclosure.js');
+		$this->addStyleSheet('packages/store/styles/search-disclosure.css');
 	}
 
 	// }}}

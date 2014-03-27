@@ -18,7 +18,7 @@ require_once 'Numbers/Words.php';
  *
  *
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2014 silverorange
  */
 abstract class StoreQuickOrderPage extends SiteArticlePage
 {
@@ -520,26 +520,29 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 		$yui = new SwatYUI(array('event', 'animation'));
 		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
 
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/javascript/store-quick-order-page.js',
-			Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/javascript/store-quick-order-page.js'
+		);
 
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-quick-order-page.css',
-			Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/styles/store-quick-order-page.css'
+		);
 
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-item-price-cell-renderer.css',
-			Store::PACKAGE_ID));
-
-		$this->layout->addHtmlHeadEntrySet(
-			$this->message_display->getHtmlHeadEntrySet());
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/styles/store-item-price-cell-renderer.css'
+		);
 
 		$this->layout->addHtmlHeadEntrySet(
-			$this->cart_ui->getRoot()->getHtmlHeadEntrySet());
+			$this->message_display->getHtmlHeadEntrySet()
+		);
 
 		$this->layout->addHtmlHeadEntrySet(
-			$this->form_ui->getRoot()->getHtmlHeadEntrySet());
+			$this->cart_ui->getRoot()->getHtmlHeadEntrySet()
+		);
+
+		$this->layout->addHtmlHeadEntrySet(
+			$this->form_ui->getRoot()->getHtmlHeadEntrySet()
+		);
 	}
 
 	// }}}

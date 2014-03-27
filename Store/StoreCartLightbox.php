@@ -9,7 +9,7 @@ require_once 'XML/RPCAjax.php';
  * Control to display a lightbox driven cart on the page
  *
  * @package   Store
- * @copyright 2010-2013 silverorange
+ * @copyright 2010-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCartLightbox extends SwatControl
@@ -80,14 +80,14 @@ class StoreCartLightbox extends SwatControl
 		$this->html_head_entry_set->addEntrySet(
 			XML_RPCAjax::getHtmlHeadEntrySet());
 
-		$this->addJavascript('packages/store/javascript/store-cart-lightbox.js',
-			Store::PACKAGE_ID);
+		$this->addJavascript(
+			'packages/store/javascript/store-cart-lightbox.js'
+		);
 
-		$this->addStyleSheet('packages/store/styles/store-cart-lightbox.css',
-			Store::PACKAGE_ID);
-
-		$this->addJavaScript('packages/swat/javascript/swat-z-index-manager.js',
-			Swat::PACKAGE_ID);
+		$this->addStyleSheet('packages/store/styles/store-cart-lightbox.css');
+		$this->addJavaScript(
+			'packages/swat/javascript/swat-z-index-manager.js'
+		);
 
 		ob_start();
 

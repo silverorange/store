@@ -16,11 +16,6 @@ class Store
 {
 	// {{{ constants
 
-	/**
-	 * The package identifier
-	 */
-	const PACKAGE_ID = 'Store';
-
 	const GETTEXT_DOMAIN = 'store';
 
 	// }}}

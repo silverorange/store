@@ -33,7 +33,7 @@ require_once 'Store/admin/components/Product/include/'.
  * Index page for Categories
  *
  * @package   Store
- * @copyright 2005-2011 silverorange
+ * @copyright 2005-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCategoryIndex extends AdminIndex
@@ -1480,9 +1480,9 @@ class StoreCategoryIndex extends AdminIndex
 	public function finalize()
 	{
 		parent::finalize();
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/admin/styles/store-category-index.css',
-			Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/admin/styles/store-category-index.css'
+		);
 	}
 
 	// }}}

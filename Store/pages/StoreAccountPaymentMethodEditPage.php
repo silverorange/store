@@ -12,7 +12,7 @@ require_once 'Store/dataobjects/StoreCardTypeWrapper.php';
  * Page to allow customers to add or edit payment methods on their account
  *
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
@@ -456,12 +456,13 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
 		parent::finalize();
 		$yui = new SwatYUI(array('dom', 'event'));
 		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/javascript/store-account-payment-method-page.js',
-			Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/javascript/store-account-payment-method-page.js'
+		);
 
 		$this->layout->addHtmlHeadEntrySet(
-			$this->ui->getRoot()->getHtmlHeadEntrySet());
+			$this->ui->getRoot()->getHtmlHeadEntrySet()
+		);
 	}
 
 	// }}}

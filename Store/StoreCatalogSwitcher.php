@@ -36,8 +36,8 @@ class StoreCatalogSwitcher extends SwatControl
 	{
 		parent::__construct($id);
 		$this->addStyleSheet(
-			'packages/store/admin/styles/store-catalog-switcher.css',
-			Store::PACKAGE_ID);
+			'packages/store/admin/styles/store-catalog-switcher.css'
+		);
 	}
 
 	// }}}
