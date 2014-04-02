@@ -12,7 +12,7 @@ require_once 'SwatDB/SwatDBClassMap.php';
  * Index page for Orders
  *
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderIndex extends AdminSearch
@@ -25,6 +25,10 @@ class StoreOrderIndex extends AdminSearch
 		parent::initInternal();
 
 		$this->ui->loadFromXML($this->getSearchXml());
+		$this->addAdditionalSearchFields(
+			$this->getAdditionalSearchFieldsUiXmlFiles()
+		);
+
 		$this->ui->loadFromXML($this->getUiXml());
 
 		if ($this->ui->hasWidget('search_region')) {
@@ -76,6 +80,29 @@ class StoreOrderIndex extends AdminSearch
 	protected function getUiXml()
 	{
 		return 'Store/admin/components/Order/index.xml';
+	}
+
+	// }}}
+	// {{{ protected function addAdditionalSearchFields()
+
+	protected function addAdditionalSearchFields(array $ui_xml_files)
+	{
+		if ($this->ui->hasWidget('additional_search_fields')) {
+			foreach ($ui_xml_files as $ui_xml) {
+				$this->ui->loadFromXML(
+					$ui_xml,
+					$this->ui->getWidget('additional_search_fields')
+				);
+			}
+		}
+	}
+
+	// }}}
+	// {{{ protected function getAdditionalSearchFieldsUiXmlFiles()
+
+	protected function getAdditionalSearchFieldsUiXmlFiles()
+	{
+		return array();
 	}
 
 	// }}}

@@ -70,6 +70,7 @@
 					<widget class="SwatCheckbox" id="search_comments" />
 				</widget>
 			</widget>
+			<widget class="SwatContainer" id="additional_search_fields" />
 			<widget class="SwatFooterFormField">
 				<widget class="SwatButton" id="submit_button">
 					<property name="title" translatable="yes">Search</property>
