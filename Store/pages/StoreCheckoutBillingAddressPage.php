@@ -7,7 +7,7 @@ require_once 'Swat/SwatYUI.php';
  * Billing address edit page of checkout
  *
  * @package   Store
- * @copyright 2005-2012 silverorange
+ * @copyright 2005-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
@@ -545,9 +545,9 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 	{
 		parent::finalize();
 
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/javascript/store-checkout-billing-address-page.js',
-			Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/javascript/store-checkout-billing-address-page.js'
+		);
 	}
 
 	// }}}

@@ -10,7 +10,7 @@ require_once 'Store/Store.php';
  * A custom action for grouping items inside products
  *
  * @package   Store
- * @copyright 2005-2007 silverorange
+ * @copyright 2005-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemGroupAction extends SwatControl
@@ -30,8 +30,8 @@ class StoreItemGroupAction extends SwatControl
 		$this->html_head_entry_set->addEntrySet($yui->getHtmlHeadEntrySet());
 
 		$this->addJavaScript(
-			'packages/store/admin/javascript/store-item-group-action.js',
-			Store::PACKAGE_ID);
+			'packages/store/admin/javascript/store-item-group-action.js'
+		);
 	}
 
 	public function init()

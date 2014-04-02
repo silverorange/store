@@ -11,7 +11,7 @@ require_once 'Swat/SwatYUI.php';
  * Admin page for adding and editing addresses stored on accounts
  *
  * @package   Store
- * @copyright 2006-2011 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountAddressEdit extends AdminDBEdit
@@ -416,15 +416,15 @@ class StoreAccountAddressEdit extends AdminDBEdit
 		parent::finalize();
 		$yui = new SwatYUI(array('dom', 'event'));
 		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/admin/javascript/store-account-address-edit-page.js',
-			Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/admin/javascript/store-account-address-edit-page.js'
+		);
 
 		$yui = new SwatYUI(array('dom', 'event'));
 		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/admin/javascript/store-account-address-edit-page.js',
-			Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/admin/javascript/store-account-address-edit-page.js'
+		);
 	}
 
 	// }}}

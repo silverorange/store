@@ -5,7 +5,7 @@ require_once 'Store/Store.php';
 
 /**
  * @package   Store
- * @copyright 2007-2012 silverorange
+ * @copyright 2007-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutProgress extends SwatControl
@@ -45,8 +45,8 @@ class StoreCheckoutProgress extends SwatControl
 		);
 
 		$this->addStyleSheet(
-			'packages/store/styles/store-checkout-progress.css',
-			Store::PACKAGE_ID);
+			'packages/store/styles/store-checkout-progress.css'
+		);
 	}
 
 	// }}}

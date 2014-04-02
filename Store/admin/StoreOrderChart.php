@@ -9,7 +9,7 @@ require_once 'Swat/SwatDate.php';
  * Order chart
  *
  * @package   Store
- * @copyright 2012 silverorange
+ * @copyright 2012-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderChart extends SwatControl
@@ -48,20 +48,20 @@ class StoreOrderChart extends SwatControl
 		$this->requires_id = true;
 
 		$this->addStyleSheet(
-			'packages/store/admin/styles/store-order-chart.css',
-			Store::PACKAGE_ID);
+			'packages/store/admin/styles/store-order-chart.css'
+		);
 
 		$this->addJavaScript(
-			'packages/store/admin/javascript/jquery-1.8.3.min.js',
-			Store::PACKAGE_ID);
+			'packages/store/admin/javascript/jquery-1.8.3.min.js'
+		);
 
 		$this->addJavaScript(
-			'packages/store/admin/javascript/jquery.flot.js',
-			Store::PACKAGE_ID);
+			'packages/store/admin/javascript/jquery.flot.js'
+		);
 
 		$this->addJavaScript(
-			'packages/store/admin/javascript/store-order-chart.js',
-			Store::PACKAGE_ID);
+			'packages/store/admin/javascript/store-order-chart.js'
+		);
 	}
 
 	// }}}

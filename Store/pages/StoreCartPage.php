@@ -12,7 +12,7 @@ require_once 'Site/pages/SitePage.php';
  * Shopping cart display page
  *
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCartPage extends SitePage
@@ -1832,12 +1832,13 @@ class StoreCartPage extends SitePage
 	public function finalize()
 	{
 		parent::finalize();
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-cart-page.css',
-			Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/styles/store-cart-page.css'
+		);
 
 		$this->layout->addHtmlHeadEntrySet(
-			$this->ui->getRoot()->getHtmlHeadEntrySet());
+			$this->ui->getRoot()->getHtmlHeadEntrySet()
+		);
 	}
 
 	// }}}

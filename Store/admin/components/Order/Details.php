@@ -16,7 +16,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * Details page for Orders
  *
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreOrderDetails extends AdminPage
@@ -215,9 +215,9 @@ abstract class StoreOrderDetails extends AdminPage
 	public function finalize()
 	{
 		parent::finalize();
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/admin/styles/store-order-details.css',
-			Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/admin/styles/store-order-details.css'
+		);
 	}
 
 	// }}}

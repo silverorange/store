@@ -7,7 +7,7 @@ require_once 'Swat/SwatYUI.php';
  * Base address verification page of checkout
  *
  * @package   Store
- * @copyright 2009-2013 silverorange
+ * @copyright 2009-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreCheckoutAddressVerificationPage extends
@@ -195,9 +195,9 @@ abstract class StoreCheckoutAddressVerificationPage extends
 	{
 		parent::finalize();
 
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/checkout-address-verification-page.css',
-			Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/styles/checkout-address-verification-page.css'
+		);
 
 		$yui = new SwatYUI(array('dom', 'event'));
 		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());

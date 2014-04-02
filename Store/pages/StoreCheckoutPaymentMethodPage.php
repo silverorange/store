@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreCardTypeWrapper.php';
  * Payment method edit page of checkout
  *
  * @package   Store
- * @copyright 2005-2013 silverorange
+ * @copyright 2005-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
@@ -1329,23 +1329,23 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	public function finalize()
 	{
 		parent::finalize();
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-checkout-payment-method-page.css',
-			Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/styles/store-checkout-payment-method-page.css'
+		);
 
 		$this->layout->addHtmlHeadEntrySet(
-			$this->ui->getRoot()->getHtmlHeadEntrySet());
+			$this->ui->getRoot()->getHtmlHeadEntrySet()
+		);
 
 		$yui = new SwatYUI(array('dom', 'event'));
 		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/javascript/store-checkout-page.js'
+		);
 
-		$path = 'packages/store/javascript/';
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			$path.'store-checkout-page.js', Store::PACKAGE_ID));
-
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			$path.'store-checkout-payment-method-page.js',
-			Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/javascript/store-checkout-payment-method-page.js'
+		);
 	}
 
 	// }}}

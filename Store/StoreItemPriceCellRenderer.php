@@ -7,7 +7,7 @@ require_once 'Store/StoreSavingsCellRenderer.php';
  * Renders item prices, including any quantity discounts
  *
  * @package   Store
- * @copyright 2006-2010 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemPriceCellRenderer extends StorePriceCellRenderer
@@ -66,8 +66,8 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 		parent::__construct();
 
 		$this->addStyleSheet(
-			'packages/store/styles/store-item-price-cell-renderer.css',
-			Store::PACKAGE_ID);
+			'packages/store/styles/store-item-price-cell-renderer.css'
+		);
 	}
 
 	// }}}

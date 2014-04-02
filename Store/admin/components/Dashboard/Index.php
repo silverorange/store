@@ -12,7 +12,7 @@ require_once 'Store/admin/StoreOrderChart.php';
  * Front-page dashboard
  *
  * @package   Store
- * @copyright 2012-2013 silverorange
+ * @copyright 2012-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreDashboardIndex extends AdminIndex
@@ -419,8 +419,7 @@ class StoreDashboardIndex extends AdminIndex
 	{
 		parent::finalize();
 		$this->layout->addHtmlHeadEntry(
-			'packages/store/admin/styles/store-dashboard.css',
-			Store::PACKAGE_ID
+			'packages/store/admin/styles/store-dashboard.css'
 		);
 	}
 

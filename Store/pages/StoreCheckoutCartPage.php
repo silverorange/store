@@ -10,7 +10,7 @@ require_once 'Swat/SwatDetailsStore.php';
  * Cart edit page of checkout
  *
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutCartPage extends StoreCheckoutPage
@@ -522,9 +522,9 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 	public function finalize()
 	{
 		parent::finalize();
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-checkout-cart-page.css',
-			Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/styles/store-checkout-cart-page.css'
+		);
 	}
 
 	// }}}

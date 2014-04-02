@@ -7,7 +7,7 @@ require_once 'Store/Store.php';
 
 /**
  * @package   Store
- * @copyright 2009 silverorange
+ * @copyright 2009-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreFeedbackPanel extends SwatControl
@@ -44,13 +44,11 @@ class StoreFeedbackPanel extends SwatControl
 		$this->html_head_entry_set->addEntrySet($ajax->getHtmlHeadEntrySet());
 
 		$this->addStyleSheet(
-			'packages/store/styles/store-feedback-panel.css',
-			Store::PACKAGE_ID
+			'packages/store/styles/store-feedback-panel.css'
 		);
 
 		$this->addJavaScript(
-			'packages/store/javascript/store-feedback-panel.js',
-			Store::PACKAGE_ID
+			'packages/store/javascript/store-feedback-panel.js'
 		);
 	}
 

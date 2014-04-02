@@ -291,7 +291,7 @@ class StorePostalCodeEntry extends SwatEntry
 	 */
 	public function validateByState($code, $state)
 	{
-		/* 
+		/*
 		 * Start and end ZIP codes by state taken from Wikipedia:
 		 * http://en.wikipedia.org/wiki/Image:ZIP_code_zones.png
 		 *  and

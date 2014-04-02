@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreAccount.php';
  * Page for viewing account details
  *
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreAccount
  */
@@ -367,9 +367,9 @@ class StoreAccountDetailsPage extends SiteUiPage
 	{
 		parent::finalize();
 
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-account-details-page.css',
-			Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/styles/store-account-details-page.css'
+		);
 	}
 
 	// }}}

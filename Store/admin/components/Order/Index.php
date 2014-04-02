@@ -12,7 +12,7 @@ require_once 'SwatDB/SwatDBClassMap.php';
  * Index page for Orders
  *
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderIndex extends AdminSearch
@@ -479,9 +479,9 @@ class StoreOrderIndex extends AdminSearch
 	{
 		parent::finalize();
 
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/admin/styles/store-order-index.css',
-			Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/admin/styles/store-order-index.css'
+		);
 	}
 
 	// }}}

@@ -1784,9 +1784,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	public function finalize()
 	{
 		parent::finalize();
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-checkout-confirmation-page.css',
-			Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/styles/store-checkout-confirmation-page.css'
+		);
 	}
 
 	// }}}

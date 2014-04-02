@@ -9,7 +9,7 @@ require_once 'Store/dataobjects/StoreFeedback.php';
  * Page to allow submitting customer feedback
  *
  * @package   Store
- * @copyright 2009 silverorange
+ * @copyright 2009-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreFeedback
  */
@@ -133,9 +133,9 @@ class StoreFeedbackEditPage extends SiteDBEditPage
 	public function finalize()
 	{
 		parent::finalize();
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/javascript/store-account-payment-method-page.js',
-			Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/javascript/store-account-payment-method-page.js'
+		);
 	}
 
 	// }}}

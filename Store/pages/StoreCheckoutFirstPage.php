@@ -183,16 +183,16 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 	public function finalize()
 	{
 		parent::finalize();
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-checkout-first-page.css',
-			Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/styles/store-checkout-first-page.css'
+		);
 
 		$yui = new SwatYUI(array('event'));
 		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
 
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			'packages/store/javascript/store-checkout-first-page.js',
-			Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/javascript/store-checkout-first-page.js'
+		);
 	}
 
 	// }}}

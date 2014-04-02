@@ -8,7 +8,7 @@ require_once 'Swat/SwatMoneyCellRenderer.php';
  * Displays totals in a special row in a table view.
  *
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreTotalRow extends SwatTableViewRow
@@ -153,8 +153,7 @@ class StoreTotalRow extends SwatTableViewRow
 		parent::__construct();
 		$this->free_text = Store::_('FREE');
 		$this->money_cell_renderer = new SwatMoneyCellRenderer();
-		$this->addStyleSheet('packages/store/styles/store-total-row.css',
-			 Store::PACKAGE_ID);
+		$this->addStyleSheet('packages/store/styles/store-total-row.css');
 	}
 
 	// }}}

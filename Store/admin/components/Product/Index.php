@@ -20,7 +20,7 @@ require_once
  * Index page for Products
  *
  * @package   Store
- * @copyright 2005-2010 silverorange
+ * @copyright 2005-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductIndex extends AdminSearch
@@ -660,9 +660,9 @@ class StoreProductIndex extends AdminSearch
 	public function finalize()
 	{
 		parent::finalize();
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/admin/styles/store-product-index.css',
-			Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/admin/styles/store-product-index.css'
+		);
 	}
 
 	// }}}

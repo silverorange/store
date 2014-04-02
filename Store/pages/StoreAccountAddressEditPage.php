@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreAccountAddress.php';
  * Page for adding and editing addresses stored on accounts
  *
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreAccount
  */
@@ -521,8 +521,7 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
 
 		$this->layout->addHtmlHeadEntry(
-			'packages/store/styles/store-account-address-edit-page.css',
-			Store::PACKAGE_ID
+			'packages/store/styles/store-account-address-edit-page.css'
 		);
 
 		$this->layout->addHtmlHeadEntrySet(

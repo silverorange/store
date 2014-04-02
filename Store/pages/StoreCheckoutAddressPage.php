@@ -7,7 +7,7 @@ require_once 'Swat/SwatYUI.php';
  * Base address edit page of checkout
  *
  * @package   Store
- * @copyright 2009-2012 silverorange
+ * @copyright 2009-2014 silverorange
  */
 abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 {
@@ -242,21 +242,19 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 	public function finalize()
 	{
 		parent::finalize();
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/styles/store-checkout-address-page.css',
-			Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/styles/store-checkout-address-page.css'
+		);
 
 		$yui = new SwatYUI(array('dom', 'event'));
 		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/javascript/store-checkout-page.js'
+		);
 
-		$path = 'packages/store/javascript/';
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			$path.'store-checkout-page.js',
-			Store::PACKAGE_ID));
-
-		$this->layout->addHtmlHeadEntry(new SwatJavaScriptHtmlHeadEntry(
-			$path.'store-checkout-address-page.js',
-			Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/javascript/store-checkout-address-page.js'
+		);
 	}
 
 	// }}}

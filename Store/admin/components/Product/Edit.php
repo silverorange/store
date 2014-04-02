@@ -14,7 +14,7 @@ require_once 'Store/StoreCatalogSelector.php';
  * Edit page for Products
  *
  * @package   Store
- * @copyright 2005-2013 silverorange
+ * @copyright 2005-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductEdit extends AdminDBEdit
@@ -608,9 +608,9 @@ class StoreProductEdit extends AdminDBEdit
 	{
 		parent::finalize();
 
-		$this->layout->addHtmlHeadEntry(new SwatStyleSheetHtmlHeadEntry(
-			'packages/store/admin/styles/store-product-edit-page.css',
-			Store::PACKAGE_ID));
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/admin/styles/store-product-edit-page.css'
+		);
 	}
 
 	// }}}
