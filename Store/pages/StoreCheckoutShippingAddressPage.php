@@ -535,7 +535,7 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 
 	protected function getAccountAddresses()
 	{
-		$shipping_country_ids = array();
+		$shipping_country_ids =
 			$this->app->getRegion()->shipping_countries->getIndexes();
 
 		$shipping_provstate_ids =
