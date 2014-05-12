@@ -13,7 +13,7 @@ require_once 'Store/dataobjects/StoreShippingType.php';
  * to all sites. It is intended to be extended on a per-site basis.
  *
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreCartModule, StoreCart
  */
@@ -437,7 +437,7 @@ abstract class StoreCheckoutCart extends StoreCart
 		StoreAddress $billing_address = null,
 		StoreAddress $shipping_address = null)
 	{
-		$cache_key = 'compost-voucher-total';
+		$cache_key = 'store-voucher-total';
 
 		if ($this->cachedValueExists($cache_key)) {
 			$total = $this->getCachedValue($cache_key);
