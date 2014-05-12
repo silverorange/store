@@ -1729,7 +1729,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$order->locale = $this->app->getLocale();
 
 		$order->item_total = $cart->getItemTotal();
-
+		$order->voucher_total = $cart->getVoucherTotal();
 		$order->surcharge_total = $cart->getSurchargeTotal(
 			$order->payment_methods);
 
