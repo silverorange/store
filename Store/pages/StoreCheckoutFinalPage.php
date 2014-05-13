@@ -6,7 +6,7 @@ require_once 'Store/pages/StoreCheckoutPage.php';
  * Abstract base class for final page of the checkout
  *
  * @package   Store
- * @copyright 2006-2013 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
@@ -167,12 +167,14 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
 
 	protected function buildFinalNote(StoreOrder $order)
 	{
-		$note = $this->ui->getWidget('final_note');
-		if ($note instanceof SwatContentBlock) {
-			$note->content_type = 'text/xml';
-			ob_start();
-			$this->displayFinalNote($order);
-			$note->content = ob_get_clean();
+		if ($this->ui->hasWidget('final_note')) {
+			$note = $this->ui->getWidget('final_note');
+			if ($note instanceof SwatContentBlock) {
+				$note->content_type = 'text/xml';
+				ob_start();
+				$this->displayFinalNote($order);
+				$note->content = ob_get_clean();
+			}
 		}
 	}
 
