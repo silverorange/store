@@ -174,9 +174,9 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 		// change the shipping address too.
 		$billing_address = $this->app->session->order->billing_address;
 		$shipping_address = $this->app->session->order->shipping_address;
-		if (($billing_address instanceof StoreOrderAddress) &&
-			($shipping_address instanceof StoreOrderAddress) &&
-			($shipping_address === $billing_address)) {
+		if ($billing_address instanceof StoreOrderAddress &&
+			$shipping_address instanceof StoreOrderAddress &&
+			$shipping_address === $billing_address) {
 				$this->app->session->order->shipping_address = $address;
 		}
 
@@ -262,7 +262,7 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 			// If we are already using the selected address for shipping, then
 			// use the existing OrderAddress. Otherwise copy into the new one.
 			$other_address = $this->app->session->order->shipping_address;
-			if ($other_address !== null &&
+			if ($other_address instanceof StoreOrderAddress &&
 				$other_address->getAccountAddressId() == $address_id) {
 					$address = $other_address;
 			} else {
