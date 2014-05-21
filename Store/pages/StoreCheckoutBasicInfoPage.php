@@ -119,7 +119,7 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 		$email_address = $email_entry->value;
 
 		if (!$this->validEmailAddress($email_address)) {
-			$message = $this->getDuplicateEmailMessage();
+			$message = $this->getInvalidEmailAddressMessage();
 			$email_entry->addMessage($message);
 		}
 	}
@@ -151,14 +151,14 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
-	// {{{ protected function getDuplicateEmailMessage()
+	// {{{ protected function getInvalidEmailAddressMessage()
 
 	/**
 	 * An error message for a duplicate email address 
 	 *
 	 * @return SwatMessage
 	 */
-	protected function getDuplicateEmailMessage()
+	protected function getInvalidEmailAddressMessage()
 	{
 		$message = new SwatMessage(
 			Store::_('An account already exists with this email address.'),
