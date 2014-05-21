@@ -119,21 +119,7 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 		$email_address = $email_entry->value;
 
 		if (!$this->validEmailAddress($email_address)) {
-			$message = new SwatMessage(
-				Store::_('An account already exists with this email address.'),
-				'error'
-			);
-
-			$message->secondary_content = sprintf(
-				Store::_('Please %slog in to your account%s.'),
-				sprintf(
-					'<a href="%s">',
-					$this->getCheckoutSource()
-				),
-				'</a>'
-			);
-
-			$message->content_type = 'text/xml';
+			$message = $this->getDuplicateEmailMessage();
 			$email_entry->addMessage($message);
 		}
 	}
@@ -162,6 +148,34 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 			return false;
 		else
 			return true;
+	}
+
+	// }}}
+	// {{{ protected function getDuplicateEmailMessage()
+
+	/**
+	 * An error message for a duplicate email address 
+	 *
+	 * @return SwatMessage
+	 */
+	protected function getDuplicateEmailMessage()
+	{
+		$message = new SwatMessage(
+			Store::_('An account already exists with this email address.'),
+			'error'
+		);
+
+		$message->secondary_content = sprintf(
+			Store::_('Please %slog in to your account%s.'),
+			sprintf(
+				'<a href="%s">',
+				$this->getCheckoutSource()
+			),
+			'</a>'
+		);
+
+		$message->content_type = 'text/xml';
+		return $message;
 	}
 
 	// }}}
