@@ -139,6 +139,9 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 			$country_flydown->addOption($country->id, $country->title);
 		}
 
+		// default country flydown to the country of the current locale
+		$country_flydown->value = $this->app->getCountry();
+
 		$data = array();
 		foreach ($countries as $country) {
 
