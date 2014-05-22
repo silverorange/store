@@ -26,7 +26,7 @@
 			</widget>
 		</widget>
 		<widget class="SwatFormField" id="address_line1_field">
-			<property name="title" translatable="yes">Address</property>
+			<property name="title" translatable="yes">Street Address</property>
 			<widget class="SwatTextarea" id="line1">
 				<property name="required" type="boolean">true</property>
 				<property name="resizeable" type="boolean">false</property>
