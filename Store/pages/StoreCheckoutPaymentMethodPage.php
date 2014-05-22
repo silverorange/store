@@ -67,21 +67,12 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	protected function getCartTotal()
 	{
-		$billing_address  = $this->app->session->order->billing_address;
-		$shipping_address = $this->app->session->order->shipping_address;
-		$shipping_type    = $this->app->session->order->shipping_type;
-		$payment_methods  = $this->app->session->order->payment_methods;
-
-		$class_name = SwatDBClassMap::get('StoreOrderAddress');
-
-		if ($billing_address === null)
-			$billing_address = new $class_name();
-
-		if ($shipping_address === null)
-			$shipping_address = new $class_name();
-
-		return ($this->app->cart->checkout->getTotal($billing_address,
-			$shipping_address, $shipping_type, $payment_methods));
+		return $this->app->cart->checkout->getTotal(
+			$this->app->session->order->billing_address,
+			$this->app->session->order->shipping_address,
+			$this->app->session->order->shipping_type,
+			$this->app->session->order->payment_methods
+		);
 	}
 
 	// }}}

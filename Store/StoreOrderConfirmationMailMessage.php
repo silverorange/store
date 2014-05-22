@@ -15,7 +15,7 @@ require_once 'Store/StoreShippingAddressCellRenderer.php';
  * An email message for order confirmations
  *
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreOrderConfirmationMailMessage
@@ -187,6 +187,11 @@ abstract class StoreOrderConfirmationMailMessage
 			$details_view->getField('company')->visible = false;
 		}
 
+		if (!$order->shipping_address instanceof StoreOrderAddress &&
+			$details_view->hasField('shipping_address')) {
+			$details_view->getField('shipping_address')->visible = false;
+		}
+
 		if (count($order->payment_methods) == 0  &&
 			$details_view->hasField('payment_method')) {
 			$details_view->getField('payment_method')->visible = false;
@@ -320,12 +325,14 @@ abstract class StoreOrderConfirmationMailMessage
 		$this->order->billing_address->displayCondensedAsText();
 		echo self::LINE_BREAK, self::LINE_BREAK;
 
-		echo 'Shipping Address:', self::LINE_BREAK;
-		if ($this->order->billing_address->id ==
-			$this->order->shipping_address->id) {
-			echo '<ship to billing address>';
-		} else {
-			$this->order->shipping_address->displayCondensedAsText();
+		if ($this->order->shipping_address instanceof StoreOrderAddress) {
+			echo 'Shipping Address:', self::LINE_BREAK;
+			if ($this->order->billing_address->id ==
+				$this->order->shipping_address->id) {
+				echo '<ship to billing address>';
+			} else {
+				$this->order->shipping_address->displayCondensedAsText();
+			}
 		}
 
 		echo self::LINE_BREAK, self::LINE_BREAK;

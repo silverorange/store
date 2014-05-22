@@ -16,7 +16,7 @@ create table Orders (
 	failed_attempt boolean not null default false,
 
 	billing_address integer not null references OrderAddress(id),
-	shipping_address integer not null references OrderAddress(id),
+	shipping_address integer references OrderAddress(id),
 	shipping_type integer null references ShippingType(id),
 
 	total numeric(11, 2) not null,

@@ -111,14 +111,17 @@ class StoreOrderDeleter extends SitePrivateDataDeleter
 		$order->billing_address->postal_code =
 			$this->cleanPostalCode($order->billing_address);
 
-		$order->shipping_address->fullname = '';
-		$order->shipping_address->company = '';
-		$order->shipping_address->phone = '';
-		$order->shipping_address->line1 = '';
-		$order->shipping_address->line2 = null;
-		$order->shipping_address->city = '';
-		$order->shipping_address->postal_code =
-			$this->cleanPostalCode($order->shipping_address);
+		if ($order->shipping_address instanceof StoreOrderAddress) {
+			$order->shipping_address->fullname = '';
+			$order->shipping_address->company = '';
+			$order->shipping_address->phone = '';
+			$order->shipping_address->line1 = '';
+			$order->shipping_address->line2 = null;
+			$order->shipping_address->city = '';
+			$order->shipping_address->postal_code = $this->cleanPostalCode(
+				$order->shipping_address
+			);
+		}
 	}
 
 	// }}}

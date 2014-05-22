@@ -16,7 +16,7 @@ require_once 'Store/exceptions/StorePaymentTotalException.php';
  * Confirmation page of checkout
  *
  * @package   Store
- * @copyright 2006-2013 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutConfirmationPage extends StoreCheckoutPage
@@ -72,11 +72,11 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		$order = $this->app->session->order;
 
-		if ($order->billing_address instanceof StoreAddress) {
+		if ($order->billing_address instanceof StoreOrderAddress) {
 			$this->checkAddress($order->billing_address);
 		}
 
-		if ($order->shipping_address instanceof StoreAddress) {
+		if ($order->shipping_address instanceof StoreOrderAddress) {
 			$this->checkAddress($order->shipping_address);
 		}
 	}
@@ -353,20 +353,12 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$order = $this->app->session->order;
 		if ($order->shipping_address instanceof StoreOrderAddress) {
 			$address = $order->shipping_address;
-			$valid = ($this->validateShippingAddressRequiredFields($address) &&
-				$valid);
 
-			$valid = ($this->validateShippingAddressCountry($address) &&
-				$valid);
-
-			$valid = ($this->validateShippingAddressProvState($address) &&
-				$valid);
-		} else {
-			$this->ui->getWidget('message_display')->add(
-				$this->getShippingAddressRequiredMessage(),
-				SwatMessageDisplay::DISMISS_OFF
+			$valid = (
+				$this->validateShippingAddressRequiredFields($address) &&
+				$this->validateShippingAddressCountry($address) &&
+				$this->validateShippingAddressProvState($address)
 			);
-			$valid = false;
 		}
 
 		return $valid;
@@ -1439,8 +1431,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	protected function buildTaxMessage($order)
 	{
-		if ($order->shipping_address !== null &&
-			$order->shipping_address->provstate !== null &&
+		if ($order->shipping_address instanceof StoreOrderAddress &&
+			$order->shipping_address->provstate instanceof StoreProvState &&
 			$order->shipping_address->provstate->tax_message !== null) {
 
 			$container = new SwatDisplayableContainer('tax_message');
@@ -1734,12 +1726,17 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$order->payment_methods);
 
 		$order->shipping_total = $cart->getShippingTotal(
-			$order->billing_address, $order->shipping_address,
-			$order->shipping_type);
+			$order->billing_address,
+			$order->shipping_address,
+			$order->shipping_type
+		);
 
-		$order->tax_total = $cart->getTaxTotal($order->billing_address,
-			$order->shipping_address, $order->shipping_type,
-			$order->payment_methods);
+		$order->tax_total = $cart->getTaxTotal(
+			$order->billing_address,
+			$order->shipping_address,
+			$order->shipping_type,
+			$order->payment_methods
+		);
 
 		$order->total = $this->getOrderTotal();
 

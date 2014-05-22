@@ -361,16 +361,21 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 		$view->getRow('subtotal')->value = $cart->getSubtotal();
 
 		$view->getRow('shipping')->value = $cart->getShippingTotal(
-			$order->billing_address, $order->shipping_address,
-			$order->shipping_type);
+			$order->billing_address,
+			$order->shipping_address,
+			$order->shipping_type
+		);
 
 		$surcharge_total = $cart->getSurchargeTotal($order->payment_methods);
 		if ($surcharge_total > 0)
 			$view->getRow('surcharge')->value = $surcharge_total;
 
 		$view->getRow('total')->value = $cart->getTotal(
-			$order->billing_address, $order->shipping_address,
-			$order->shipping_type, $order->payment_methods);
+			$order->billing_address,
+			$order->shipping_address,
+			$order->shipping_type,
+			$order->payment_methods
+		);
 	}
 
 	// }}}
@@ -447,16 +452,24 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 		$description = null;
 		$order = $this->app->session->order;
 
-		if ($order->shipping_address !== null) {
+		if ($order->shipping_address instanceof StoreOrderAddress) {
 			$provstate = $order->shipping_address->getInternalValue(
-				'provstate');
+				'provstate'
+			);
 
 			foreach ($entry->item->provstate_exclusion_bindings as $binding) {
 				if ($binding->getInternalValue('provstate') == $provstate) {
-					$description = sprintf('<div class="warning">%s</div>',
-						SwatString::minimizeEntities(sprintf(Store::_(
-							'Note: this item can not be shipped to %s'),
-							$order->shipping_address->provstate->title)));
+					$description = sprintf(
+						'<div class="warning">%s</div>',
+						SwatString::minimizeEntities(
+							sprintf(
+								Store::_(
+									'Note: this item can not be shipped to %s'
+								),
+								$order->shipping_address->provstate->title
+							)
+						)
+					);
 				}
 			}
 		}

@@ -19,7 +19,7 @@ require_once 'Store/dataobjects/StoreLocale.php';
 
 /**
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrder extends SwatDBDataObject
@@ -302,16 +302,19 @@ class StoreOrder extends SwatDBDataObject
 	{
 		$footer = array();
 
-		if ($this->shipping_address !== null &&
-			$this->shipping_address->provstate !== null &&
+		if ($this->shipping_address instanceof StoreOrderAddress &&
+			$this->shipping_address->provstate instanceof StoreProvState &&
 			$this->shipping_address->provstate->tax_message !== null) {
 
 			$footer[] = $this->shipping_address->provstate->tax_message;
 		}
 
-		$locale_id = $this->getInternalValue('locale');
-		$footer[] = sprintf(Store::_('All prices are in %s.'),
-			SwatString::getInternationalCurrencySymbol($locale_id));
+		$footer[] = sprintf(
+			Store::_('All prices are in %s.'),
+			SwatString::getInternationalCurrencySymbol(
+				$this->getInternalValue('locale')
+			)
+		);
 
 		return implode("\n\n", $footer);
 	}

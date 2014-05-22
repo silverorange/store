@@ -388,9 +388,9 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 	{
 		$order = $this->app->session->order;
 
-		if ($order->shipping_address === null) {
+		if (!$order->shipping_address instanceof StoreOrderAddress) {
 			$default_address = $this->getDefaultShippingAddress();
-			if ($default_address !== null) {
+			if ($default_address instanceof StoreAddress) {
 				$this->ui->getWidget('shipping_address_list')->value =
 					$default_address->id;
 			}
