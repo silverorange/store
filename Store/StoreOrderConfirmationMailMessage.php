@@ -187,6 +187,11 @@ abstract class StoreOrderConfirmationMailMessage
 			$details_view->getField('company')->visible = false;
 		}
 
+		if (!$order->shipping_address instanceof StoreOrderAddress &&
+			$details_view->hasField('shipping_address')) {
+			$details_view->getField('shipping_address')->visible = false;
+		}
+
 		if (count($order->payment_methods) == 0  &&
 			$details_view->hasField('payment_method')) {
 			$details_view->getField('payment_method')->visible = false;
