@@ -561,6 +561,30 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	}
 
 	// }}}
+	// {{{ protected function getShippingAddressRequiredMessage()
+
+	protected function getShippingAddressRequiredMessage()
+	{
+		$a_tag = new SwatHtmlTag('a');
+		$a_tag->href = $this->getCheckoutEditLink(
+			'confirmation/shippingaddress'
+		);
+		$a_tag->setContent(Store::_('add a shipping address'));
+
+		$message = new SwatMessage(Store::_('Shipping Address'), 'error');
+		$message->secondary_content = sprintf(
+			Store::_(
+				'A shipping address is required. Please %s before '.
+				'you place your order.'
+			),
+			$a_tag
+		);
+		$message->content_type = 'text/xml';
+
+		return $message;
+	}
+
+	// }}}
 
 	// validate shipping type
 	// {{{ protected function validateShippingType()
