@@ -74,11 +74,9 @@ Store:
     packages/store/styles/store-cart-page.css:
     packages/store/styles/store-cart-lightbox.css:
     packages/store/styles/store-checkout-address-page.css:
-    packages/store/styles/store-checkout-basic-info-page.css:
     packages/store/styles/store-checkout-cart-page.css:
     packages/store/styles/store-checkout-confirmation-page.css:
     packages/store/styles/store-checkout-final-page.css:
-    packages/store/styles/store-checkout-first-page.css:
     packages/store/styles/store-checkout-front-page.css:
     packages/store/styles/store-checkout-payment-method-page.css:
     packages/store/styles/store-checkout-progress.css:

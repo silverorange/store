@@ -12,7 +12,7 @@ require_once 'Store/pages/StoreCheckoutShippingTypePage.php';
  * First step of checkout
  *
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
@@ -183,9 +183,6 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 	public function finalize()
 	{
 		parent::finalize();
-		$this->layout->addHtmlHeadEntry(
-			'packages/store/styles/store-checkout-first-page.css'
-		);
 
 		$yui = new SwatYUI(array('event'));
 		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());

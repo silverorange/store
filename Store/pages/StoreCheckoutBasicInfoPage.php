@@ -6,7 +6,7 @@ require_once 'Store/pages/StoreCheckoutEditPage.php';
  * Basic information edit page of checkout
  *
  * @package   Store
- * @copyright 2005-2013 silverorange
+ * @copyright 2005-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
@@ -210,19 +210,6 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 		if ($this->ui->hasWidget('comments')) {
 			$this->ui->getWidget('comments')->value = $order->comments;
 		}
-	}
-
-	// }}}
-
-	// finalize phase
-	// {{{ public function finalize()
-
-	public function finalize()
-	{
-		parent::finalize();
-		$this->layout->addHtmlHeadEntry(
-			'packages/store/styles/store-checkout-basic-info-page.css'
-		);
 	}
 
 	// }}}
