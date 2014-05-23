@@ -524,6 +524,7 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 			'packages/store/javascript/store-quick-order-page.js'
 		);
 
+		$this->layout->addHtmlHeadEntry('packages/store/styles/store-cart.css');
 		$this->layout->addHtmlHeadEntry(
 			'packages/store/styles/store-quick-order-page.css'
 		);

@@ -1832,6 +1832,8 @@ class StoreCartPage extends SitePage
 	public function finalize()
 	{
 		parent::finalize();
+
+		$this->layout->addHtmlHeadEntry('packages/store/styles/store-cart.css');
 		$this->layout->addHtmlHeadEntry(
 			'packages/store/styles/store-cart-page.css'
 		);

@@ -68,15 +68,12 @@ Store:
     packages/store/styles/search-disclosure.css:
     packages/store/styles/store-account-address-edit-page.css:
     packages/store/styles/store-account-details-page.css:
-    packages/store/styles/store-account-invoice-page.css:
-    packages/store/styles/store-account-order-page.css:
     packages/store/styles/store-cart.css:
     packages/store/styles/store-cart-page.css:
     packages/store/styles/store-cart-lightbox.css:
     packages/store/styles/store-checkout-address-page.css:
     packages/store/styles/store-checkout-cart-page.css:
     packages/store/styles/store-checkout-confirmation-page.css:
-    packages/store/styles/store-checkout-final-page.css:
     packages/store/styles/store-checkout-front-page.css:
     packages/store/styles/store-checkout-payment-method-page.css:
     packages/store/styles/store-checkout-progress.css:

@@ -535,6 +535,8 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 	public function finalize()
 	{
 		parent::finalize();
+
+		$this->layout->addHtmlHeadEntry('packages/store/styles/store-cart.css');
 		$this->layout->addHtmlHeadEntry(
 			'packages/store/styles/store-checkout-cart-page.css'
 		);
