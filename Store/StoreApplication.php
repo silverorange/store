@@ -13,7 +13,6 @@ require_once 'Site/SiteNotifierModule.php';
 require_once 'Site/SiteCryptModule.php';
 require_once 'Admin/Admin.php';
 require_once 'Store/Store.php';
-require_once 'Store/StoreMessage.php';
 require_once 'Store/StoreCartModule.php';
 require_once 'Store/StoreCheckoutModule.php';
 require_once 'Store/StoreMailChimpModule.php';
@@ -25,7 +24,7 @@ require_once 'Store/dataobjects/StoreVoucherWrapper.php';
  * Web application class for a store
  *
  * @package   Store
- * @copyright 2005-2012 silverorange
+ * @copyright 2005-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreApplication extends SiteWebApplication
