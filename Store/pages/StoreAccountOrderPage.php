@@ -445,9 +445,7 @@ class StoreAccountOrderPage extends SiteUiPage
 	{
 		parent::finalize();
 
-		$this->layout->addHtmlHeadEntry(
-			'packages/store/styles/store-account-order-page.css'
-		);
+		$this->layout->addHtmlHeadEntry('packages/store/styles/store-cart.css');
 	}
 
 	// }}}

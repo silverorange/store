@@ -275,9 +275,8 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
 	public function finalize()
 	{
 		parent::finalize();
-		$this->layout->addHtmlHeadEntry(
-			'packages/store/styles/store-checkout-final-page.css'
-		);
+
+		$this->layout->addHtmlHeadEntry('packages/store/styles/store-cart.css');
 	}
 
 	// }}}
