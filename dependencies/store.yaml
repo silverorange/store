@@ -70,10 +70,16 @@ Store:
     packages/store/styles/store-account-details-page.css:
     packages/store/styles/store-cart.css:
     packages/store/styles/store-cart-page.css:
+      Depends:
+        - packages/store/styles/store-cart.css
     packages/store/styles/store-cart-lightbox.css:
     packages/store/styles/store-checkout-address-page.css:
     packages/store/styles/store-checkout-cart-page.css:
+      Depends:
+        - packages/store/styles/store-cart.css
     packages/store/styles/store-checkout-confirmation-page.css:
+      Depends:
+        - packages/store/styles/store-cart.css
     packages/store/styles/store-checkout-front-page.css:
     packages/store/styles/store-checkout-payment-method-page.css:
     packages/store/styles/store-checkout-progress.css:
@@ -87,6 +93,8 @@ Store:
     packages/store/styles/store-product-image-display.css:
     packages/store/styles/store-quantity-entry.css:
     packages/store/styles/store-quick-order-page.css:
+      Depends:
+        - packages/store/styles/store-cart.css
     packages/store/styles/store-search-results-page.css:
     packages/store/styles/store-total-row.css:
     packages/store/styles/store-transaction-status-cell-renderer.css:
