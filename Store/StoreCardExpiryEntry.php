@@ -6,7 +6,7 @@ require_once 'Swat/SwatDateEntry.php';
  * A widget for entry of payment card expiry dates
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCardExpiryEntry extends SwatDateEntry
@@ -38,24 +38,6 @@ class StoreCardExpiryEntry extends SwatDateEntry
 		$this->valid_range_start->setMonth($today->getMonth());
 		$this->valid_range_start->setDay(1);
 		$this->valid_range_start->setTime(0, 0, 0);
-	}
-
-	// }}}
-	// {{{ public function init()
-
-	public function init()
-	{
-		if ($this->display_parts & self::YEAR) {
-			$this->getCompositeWidget('year_flydown')->blank_title =
-				Store::_('Year');
-		}
-
-		if ($this->display_parts & self::MONTH) {
-			$this->getCompositeWidget('month_flydown')->blank_title =
-				Store::_('Month');
-		}
-
-		parent::init();
 	}
 
 	// }}}
