@@ -22,10 +22,10 @@
   <email>mike@silverorange.com</email>
   <active>yes</active>
  </lead>
- <date>2014-05-22</date>
- <time>13:50:40</time>
+ <date>2014-06-01</date>
+ <time>04:16:53</time>
  <version>
-  <release>2.0.16</release>
+  <release>2.1.0</release>
   <api>0.0.1</api>
  </version>
  <stability>
@@ -767,8 +767,6 @@ see ChangeLog
     <file name="StoreLocaleApplication.php" role="php" />
     <file name="StoreMailChimpModule.php" role="php" />
     <file name="StoreMailChimpOrderUpdater.php" role="php" />
-    <file name="StoreMessage.php" role="php" />
-    <file name="StoreMessageDisplay.php" role="php" />
     <file name="StoreMoneyCellRenderer.php" role="php" />
     <file name="StoreNateGoSearchIndexer.php" role="php" />
     <file name="StoreOrderCommentDigestMailer.php" role="php" />
@@ -856,7 +854,6 @@ see ChangeLog
      </dir> <!-- /www/admin/styles -->
     </dir> <!-- /www/admin -->
     <dir name="images">
-     <file name="cart-notification.png" role="data" />
      <file name="category-placeholder.png" role="data" />
      <file name="product-placeholder.png" role="data" />
      <file name="search-disclosure-arrow-down.png" role="data" />
@@ -894,23 +891,17 @@ see ChangeLog
      <file name="search-disclosure.css" role="data" />
      <file name="store-account-address-edit-page.css" role="data" />
      <file name="store-account-details-page.css" role="data" />
-     <file name="store-account-invoice-page.css" role="data" />
-     <file name="store-account-order-page.css" role="data" />
      <file name="store-cart-lightbox.css" role="data" />
      <file name="store-cart-page.css" role="data" />
      <file name="store-cart.css" role="data" />
      <file name="store-checkout-address-page.css" role="data" />
-     <file name="store-checkout-basic-info-page.css" role="data" />
      <file name="store-checkout-cart-page.css" role="data" />
      <file name="store-checkout-confirmation-page.css" role="data" />
-     <file name="store-checkout-final-page.css" role="data" />
-     <file name="store-checkout-first-page.css" role="data" />
      <file name="store-checkout-payment-method-page.css" role="data" />
      <file name="store-checkout-progress.css" role="data" />
      <file name="store-feature-pager.css" role="data" />
      <file name="store-feedback-panel.css" role="data" />
      <file name="store-item-price-cell-renderer.css" role="data" />
-     <file name="store-message.css" role="data" />
      <file name="store-order-payment-methods-cell-renderer.css" role="data" />
      <file name="store-percentage-total-row.css" role="data" />
      <file name="store-product-image-display.css" role="data" />
@@ -936,7 +927,7 @@ see ChangeLog
    <package>
     <name>Swat</name>
     <channel>pear.silverorange.com</channel>
-    <min>1.4.131</min>
+    <min>2.1.5</min>
    </package>
    <package>
     <name>Site</name>
@@ -1030,14 +1021,14 @@ see ChangeLog
  <changelog>
   <release>
    <version>
-    <release>2.0.16</release>
+    <release>2.1.0</release>
     <api>0.0.1</api>
    </version>
    <stability>
     <release>stable</release>
     <api>stable</api>
    </stability>
-   <date>2014-05-22</date>
+   <date>2014-06-01</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
    <notes>
 see ChangeLog
