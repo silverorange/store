@@ -19,7 +19,7 @@ require_once 'Crypt/GPG.php';
  * encryption.
  *
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2014 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StorePaymentType
  * @see       StoreCardType
@@ -582,24 +582,32 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 
 	protected function displayCardDetails()
 	{
-		if ($this->card_expiry !== null || $this->card_fullname !== null) {
+		if ((
+				$this->card_expiry != '' &&
+				$this->display_details['card_expiry'] === true
+			) || (
+				$this->card_fullname != '' &&
+				$this->display_details['card_fullname'] === true
+			)) {
 			echo '<br />';
-
 			$span_tag = new SwatHtmlTag('span');
 			$span_tag->class = 'store-payment-method-info';
 			$span_tag->open();
 
 			if ($this->display_details['card_expiry'] === true &&
-				$this->card_expiry !== null) {
-				echo 'Expiration Date: ',
-					$this->card_expiry->formatLikeIntl(SwatDate::DF_CC_MY);
+				$this->card_expiry != '') {
+				printf(
+					Store::_('Expiration Date: %s'),
+					$this->card_expiry->formatLikeIntl(SwatDate::DF_CC_MY)
+				);
 
-				if ($this->card_fullname !== null)
+				if ($this->card_fullname != '') {
 					echo ', ';
+				}
 			}
 
 			if ($this->display_details['card_fullname'] === true &&
-				$this->card_fullname !== null) {
+				$this->card_fullname != '') {
 				echo SwatString::minimizeEntities($this->card_fullname);
 			}
 
@@ -644,7 +652,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	protected function displayCardAsText($display_details, $line_break)
 	{
 		if ($this->display_details['card_number'] === true &&
-			$this->card_number_preview !== null) {
+			$this->card_number_preview != '') {
 			echo $line_break, StoreCardType::formatCardNumber(
 				$this->card_number_preview,
 				$this->card_type->getMaskedFormat());
@@ -654,13 +662,13 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 				$this->display_details['card_fullname'] === true) &&
 			$display_details) {
 			if ($this->display_details['card_expiry'] === true &&
-				$this->card_expiry !== null) {
-				echo $line_break, 'Expiration Date: ',
+				$this->card_expiry != '') {
+				echo $line_break, Store::_('Expiration Date: '),
 					$this->card_expiry->formatLikeIntl(SwatDate::DF_CC_MY);
 			}
 
 			if ($this->display_details['card_fullname'] === true &&
-				$this->card_fullname !== null) {
+				$this->card_fullname != '') {
 				echo $line_break, $this->card_fullname;
 			}
 		}
