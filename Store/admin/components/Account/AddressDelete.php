@@ -14,10 +14,10 @@ require_once 'SwatI18N/SwatI18NLocale.php';
  */
 class StoreAccountAddressDelete extends AdminDBDelete
 {
-	// {{{ private properties
+	// {{{ protected properties
 
-	private $account;
-	private $account_id;
+	protected $account;
+	protected $account_id;
 
 	// }}}
 

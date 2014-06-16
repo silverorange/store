@@ -28,13 +28,10 @@ class StoreAccountAddressEdit extends AdminDBEdit
 	 */
 	protected $country;
 
-	// }}}
-	// {{{ private properties
-
 	/**
 	 * @var StoreAccount
 	 */
-	private $account;
+	protected $account;
 
 	// }}}
 
