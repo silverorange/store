@@ -586,7 +586,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	protected function displayCardDetails()
 	{
 		if ((
-				$this->card_expiry != '' &&
+				$this->card_expiry instanceof SwatDate &&
 				$this->display_details['card_expiry']
 			) || (
 				$this->card_fullname != '' &&
@@ -598,7 +598,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 			$span_tag->open();
 
 			if ($this->display_details['card_expiry'] &&
-				$this->card_expiry != '') {
+				$this->card_expiry instanceof SwatDate) {
 				printf(
 					Store::_('Expiration Date: %s'),
 					$this->card_expiry->formatLikeIntl(SwatDate::DF_CC_MY)
@@ -668,7 +668,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 			)
 		) {
 			if ($this->display_details['card_expiry'] &&
-				$this->card_expiry != '') {
+				$this->card_expiry instanceof SwatDate) {
 				echo $line_break, Store::_('Expiration Date: '),
 					$this->card_expiry->formatLikeIntl(SwatDate::DF_CC_MY);
 			}
