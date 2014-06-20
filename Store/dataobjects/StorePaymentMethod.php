@@ -344,7 +344,9 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		echo $this->payment_type->title;
 
 		if ($this->payment_type->isCard()) {
-			$this->displayCardAsText($display_details, $line_break);
+			if ($display_details) {
+				$this->displayCardAsText($display_details, $line_break);
+			}
 		} elseif ($this->payment_type->isPayPal()) {
 			$this->displayPayPalAsText($display_details, $line_break);
 		}
@@ -659,20 +661,18 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 				$this->card_type->getMaskedFormat());
 		}
 
-		if ($display_details) {
-			if ($this->display_parts['card_expiry'] &&
-				$this->card_expiry instanceof SwatDate) {
-				echo $line_break;
-				printf(
-					Store::_('Expiration Date: %s'),
-					$this->card_expiry->formatLikeIntl(SwatDate::DF_CC_MY)
-				);
-			}
+		if ($this->display_parts['card_expiry'] &&
+			$this->card_expiry instanceof SwatDate) {
+			echo $line_break;
+			printf(
+				Store::_('Expiration Date: %s'),
+				$this->card_expiry->formatLikeIntl(SwatDate::DF_CC_MY)
+			);
+		}
 
-			if ($this->display_parts['card_fullname'] &&
-				$this->card_fullname != '') {
-				echo $line_break, $this->card_fullname;
-			}
+		if ($this->display_parts['card_fullname'] &&
+			$this->card_fullname != '') {
+			echo $line_break, $this->card_fullname;
 		}
 	}
 
