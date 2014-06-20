@@ -532,18 +532,16 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 				$this->displayCard($passphrase);
 			}
 
-			if ($display_details) {
-				if (
-					(
-						$this->card_expiry instanceof SwatDate &&
-						$this->display_parts['card_expiry']
-					) || (
-						$this->card_fullname != '' &&
-						$this->display_parts['card_fullname']
-					)
-				) {
-					$this->displayCardDetails();
-				}
+			if ($display_details &&
+				(
+					$this->card_expiry instanceof SwatDate &&
+					$this->display_parts['card_expiry']
+				) || (
+					$this->card_fullname != '' &&
+					$this->display_parts['card_fullname']
+				)
+			) {
+				$this->displayCardDetails();
 			}
 		} elseif ($this->payment_type->isPayPal()) {
 			echo SwatString::minimizeEntities($this->payment_type->title);
