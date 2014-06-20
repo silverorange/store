@@ -528,17 +528,22 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		if ($this->payment_type->isCard()) {
 			$this->card_type->display();
 
-			if ($this->display_details['card_number']) {
-				$this->displayCard($passphrase);
-			}
+			if ($display_details) {
+				if ($this->display_details['card_number']) {
+					$this->displayCard($passphrase);
+				}
 
-			if ($display_details &&
-				(
-				$this->display_details['card_expiry'] ||
-				$this->display_details['card_fullname']
-				)
-			) {
-				$this->displayCardDetails();
+				if (
+					(
+						$this->card_expiry instanceof SwatDate &&
+						$this->display_details['card_expiry']
+					) || (
+						$this->card_fullname != '' &&
+						$this->display_details['card_fullname']
+					)
+				) {
+					$this->displayCardDetails();
+				}
 			}
 		} elseif ($this->payment_type->isPayPal()) {
 			echo SwatString::minimizeEntities($this->payment_type->title);
@@ -585,37 +590,30 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 
 	protected function displayCardDetails()
 	{
-		if ((
-				$this->card_expiry instanceof SwatDate &&
-				$this->display_details['card_expiry']
-			) || (
-				$this->card_fullname != '' &&
-				$this->display_details['card_fullname']
-		)) {
-			echo '<br />';
-			$span_tag = new SwatHtmlTag('span');
-			$span_tag->class = 'store-payment-method-info';
-			$span_tag->open();
+		echo '<br />';
+		$span_tag = new SwatHtmlTag('span');
+		$span_tag->class = 'store-payment-method-info';
+		$span_tag->open();
 
-			if ($this->display_details['card_expiry'] &&
-				$this->card_expiry instanceof SwatDate) {
-				printf(
-					Store::_('Expiration Date: %s'),
-					$this->card_expiry->formatLikeIntl(SwatDate::DF_CC_MY)
-				);
-
-				if ($this->card_fullname != '') {
-					echo ', ';
-				}
-			}
+		if ($this->display_details['card_expiry'] &&
+			$this->card_expiry instanceof SwatDate) {
+			printf(
+				Store::_('Expiration Date: %s'),
+				$this->card_expiry->formatLikeIntl(SwatDate::DF_CC_MY)
+			);
 
 			if ($this->display_details['card_fullname'] &&
 				$this->card_fullname != '') {
-				echo SwatString::minimizeEntities($this->card_fullname);
+				echo ', ';
 			}
-
-			$span_tag->close();
 		}
+
+		if ($this->display_details['card_fullname'] &&
+			$this->card_fullname != '') {
+			echo SwatString::minimizeEntities($this->card_fullname);
+		}
+
+		$span_tag->close();
 	}
 
 	// }}}
