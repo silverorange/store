@@ -669,8 +669,11 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		) {
 			if ($this->display_details['card_expiry'] &&
 				$this->card_expiry instanceof SwatDate) {
-				echo $line_break, Store::_('Expiration Date: '),
-					$this->card_expiry->formatLikeIntl(SwatDate::DF_CC_MY);
+				echo $line_break;
+				printf(
+					Store::_('Expiration Date: %s'),
+					$this->card_expiry->formatLikeIntl(SwatDate::DF_CC_MY)
+				);
 			}
 
 			if ($this->display_details['card_fullname'] &&
