@@ -661,12 +661,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 				$this->card_type->getMaskedFormat());
 		}
 
-		if ($display_details &&
-			(
-				$this->display_details['card_expiry'] ||
-				$this->display_details['card_fullname']
-			)
-		) {
+		if ($display_details) {
 			if ($this->display_details['card_expiry'] &&
 				$this->card_expiry instanceof SwatDate) {
 				echo $line_break;
