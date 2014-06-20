@@ -165,7 +165,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	 * @see StorePaymentMethod::showCardFullname()
 	 * @see StorePaymentMethod::showCardExpiry()
 	 */
-	protected $display_details = array(
+	protected $display_parts = array(
 		'card_number'   => true,
 		'card_fullname' => true,
 		'card_expiry'   => true,
@@ -176,7 +176,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 
 	public function showCardNumber($display = true)
 	{
-		$this->display_details['card_number'] = $display;
+		$this->display_parts['card_number'] = $display;
 	}
 
 	// }}}
@@ -184,7 +184,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 
 	public function showCardFullname($display = true)
 	{
-		$this->display_details['card_fullname'] = $display;
+		$this->display_parts['card_fullname'] = $display;
 	}
 
 	// }}}
@@ -192,7 +192,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 
 	public function showCardExpiry($display = true)
 	{
-		$this->display_details['card_expiry'] = $display;
+		$this->display_parts['card_expiry'] = $display;
 	}
 
 	// }}}
@@ -529,17 +529,17 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 			$this->card_type->display();
 
 			if ($display_details) {
-				if ($this->display_details['card_number']) {
+				if ($this->display_parts['card_number']) {
 					$this->displayCard($passphrase);
 				}
 
 				if (
 					(
 						$this->card_expiry instanceof SwatDate &&
-						$this->display_details['card_expiry']
+						$this->display_parts['card_expiry']
 					) || (
 						$this->card_fullname != '' &&
-						$this->display_details['card_fullname']
+						$this->display_parts['card_fullname']
 					)
 				) {
 					$this->displayCardDetails();
@@ -595,20 +595,20 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		$span_tag->class = 'store-payment-method-info';
 		$span_tag->open();
 
-		if ($this->display_details['card_expiry'] &&
+		if ($this->display_parts['card_expiry'] &&
 			$this->card_expiry instanceof SwatDate) {
 			printf(
 				Store::_('Expiration Date: %s'),
 				$this->card_expiry->formatLikeIntl(SwatDate::DF_CC_MY)
 			);
 
-			if ($this->display_details['card_fullname'] &&
+			if ($this->display_parts['card_fullname'] &&
 				$this->card_fullname != '') {
 				echo ', ';
 			}
 		}
 
-		if ($this->display_details['card_fullname'] &&
+		if ($this->display_parts['card_fullname'] &&
 			$this->card_fullname != '') {
 			echo SwatString::minimizeEntities($this->card_fullname);
 		}
@@ -652,7 +652,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 
 	protected function displayCardAsText($display_details, $line_break)
 	{
-		if ($this->display_details['card_number'] &&
+		if ($this->display_parts['card_number'] &&
 			$this->card_number_preview != '') {
 			echo $line_break, StoreCardType::formatCardNumber(
 				$this->card_number_preview,
@@ -660,7 +660,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		}
 
 		if ($display_details) {
-			if ($this->display_details['card_expiry'] &&
+			if ($this->display_parts['card_expiry'] &&
 				$this->card_expiry instanceof SwatDate) {
 				echo $line_break;
 				printf(
@@ -669,7 +669,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 				);
 			}
 
-			if ($this->display_details['card_fullname'] &&
+			if ($this->display_parts['card_fullname'] &&
 				$this->card_fullname != '') {
 				echo $line_break, $this->card_fullname;
 			}
