@@ -528,13 +528,16 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 		if ($this->payment_type->isCard()) {
 			$this->card_type->display();
 
-			if ($this->display_details['card_number'] === true) {
+			if ($this->display_details['card_number']) {
 				$this->displayCard($passphrase);
 			}
 
-			if (($this->display_details['card_expiry'] === true ||
-					$this->display_details['card_fullname'] === true) &&
-				$display_details) {
+			if ($display_details &&
+				(
+				$this->display_details['card_expiry'] ||
+				$this->display_details['card_fullname']
+				)
+			) {
 				$this->displayCardDetails();
 			}
 		} elseif ($this->payment_type->isPayPal()) {
@@ -584,17 +587,17 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	{
 		if ((
 				$this->card_expiry != '' &&
-				$this->display_details['card_expiry'] === true
+				$this->display_details['card_expiry']
 			) || (
 				$this->card_fullname != '' &&
-				$this->display_details['card_fullname'] === true
-			)) {
+				$this->display_details['card_fullname']
+		)) {
 			echo '<br />';
 			$span_tag = new SwatHtmlTag('span');
 			$span_tag->class = 'store-payment-method-info';
 			$span_tag->open();
 
-			if ($this->display_details['card_expiry'] === true &&
+			if ($this->display_details['card_expiry'] &&
 				$this->card_expiry != '') {
 				printf(
 					Store::_('Expiration Date: %s'),
@@ -606,7 +609,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 				}
 			}
 
-			if ($this->display_details['card_fullname'] === true &&
+			if ($this->display_details['card_fullname'] &&
 				$this->card_fullname != '') {
 				echo SwatString::minimizeEntities($this->card_fullname);
 			}
@@ -651,23 +654,26 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 
 	protected function displayCardAsText($display_details, $line_break)
 	{
-		if ($this->display_details['card_number'] === true &&
+		if ($this->display_details['card_number'] &&
 			$this->card_number_preview != '') {
 			echo $line_break, StoreCardType::formatCardNumber(
 				$this->card_number_preview,
 				$this->card_type->getMaskedFormat());
 		}
 
-		if (($this->display_details['card_expiry'] === true ||
-				$this->display_details['card_fullname'] === true) &&
-			$display_details) {
-			if ($this->display_details['card_expiry'] === true &&
+		if ($display_details &&
+			(
+				$this->display_details['card_expiry'] ||
+				$this->display_details['card_fullname']
+			)
+		) {
+			if ($this->display_details['card_expiry'] &&
 				$this->card_expiry != '') {
 				echo $line_break, Store::_('Expiration Date: '),
 					$this->card_expiry->formatLikeIntl(SwatDate::DF_CC_MY);
 			}
 
-			if ($this->display_details['card_fullname'] === true &&
+			if ($this->display_details['card_fullname'] &&
 				$this->card_fullname != '') {
 				echo $line_break, $this->card_fullname;
 			}
