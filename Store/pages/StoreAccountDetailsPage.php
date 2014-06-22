@@ -33,7 +33,12 @@ class StoreAccountDetailsPage extends SiteUiPage
 	{
 		// redirect to login page if not logged in
 		if (!$this->app->session->isLoggedIn()) {
-			$uri = sprintf('account/login?relocate=%s', $this->source);
+			$uri = sprintf(
+				'%s?relocate=%s',
+				$this->app->config->uri->account_login,
+				$this->source
+			);
+
 			$this->app->relocate($uri);
 		}
 

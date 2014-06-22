@@ -72,7 +72,8 @@ class StoreAccountOrderPage extends SiteUiPage
 		// different account.
 		if (!$this->app->session->isLoggedIn()) {
 			$uri = sprintf(
-				'account/login?relocate=%s',
+				'%s?relocate=%s',
+				$this->app->config->uri->account_login,
 				$this->getOrdersPageUri()
 			);
 
