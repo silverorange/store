@@ -816,7 +816,10 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		$payment_type = $this->getPaymentType();
 
 		$payment_method->payment_type = $payment_type;
-		$payment_method->surcharge = $payment_type->surcharge;
+
+		if ($payment_type instanceof StorePaymentType) {
+			$payment_method->surcharge = $payment_type->surcharge;
+		}
 
 		if ($this->ui->hasWidget('payment_amount')) {
 			$amount = $this->ui->getWidget('payment_amount')->value;
@@ -835,7 +838,9 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 		}
 
 
-		if ($payment_type->isCard()) {
+		if ($payment_type instanceof StorePaymentType &&
+			$payment_type->isCard()) {
+
 			$payment_method->setMaxAmount(null);
 
 			$this->updatePaymentMethodCardNumber($payment_method);
