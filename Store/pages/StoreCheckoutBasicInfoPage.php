@@ -154,7 +154,7 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 	// {{{ protected function getInvalidEmailAddressMessage()
 
 	/**
-	 * An error message for a duplicate email address 
+	 * An error message for a duplicate email address
 	 *
 	 * @return SwatMessage
 	 */
@@ -169,13 +169,21 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 			Store::_('Please %slog in to your account%s.'),
 			sprintf(
 				'<a href="%s">',
-				$this->getCheckoutSource()
+				$this->getAccountLoginSource()
 			),
 			'</a>'
 		);
 
 		$message->content_type = 'text/xml';
 		return $message;
+	}
+
+	// }}}
+	// {{{ protected function getAccountLoginSource()
+
+	protected function getAccountLoginSource()
+	{
+		return $this->getCheckoutSource();
 	}
 
 	// }}}
