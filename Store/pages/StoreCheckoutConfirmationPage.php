@@ -157,6 +157,21 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	}
 
 	// }}}
+	// {{{ protected function getCurrentTime()
+
+	protected function getCurrentTime()
+	{
+		static $current_time;
+
+		if (!$current_time instanceof SwatDate) {
+			$current_time = new SwatDate();
+			$current_time->toUTC();
+		}
+
+		return $current_time;
+	}
+
+	// }}}
 
 	// validate billing
 	// {{{ protected function validateBillingAddress()
@@ -798,8 +813,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		// if this is a new account, set createdate to now
 		if ($new_account) {
 			$account->instance   = $this->app->getInstance();
-			$account->createdate = new SwatDate();
-			$account->createdate->toUTC();
+			$account->createdate = $this->getCurrentTime();
 		}
 
 		// save account
@@ -847,8 +861,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		}
 
 		// set createdate to now
-		$order->createdate = new SwatDate();
-		$order->createdate->toUTC();
+		$order->createdate = $this->getCurrentTime();
 
 		// save order
 		$order->save();
@@ -871,8 +884,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$class_name = SwatDBClassMap::get('StoreAccountAddress');
 			$account_address = new $class_name();
 			$account_address->copyFrom($order_address);
-			$account_address->createdate = new SwatDate();
-			$account_address->createdate->toUTC();
+			$account_address->createdate = $this->getCurrentTime();
 			$account->addresses->add($account_address);
 		} else {
 			$account_address = $account->addresses->getByIndex(
