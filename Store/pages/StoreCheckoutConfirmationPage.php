@@ -780,7 +780,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		if ($this->app->config->store->save_account_address) {
 			if ($order->billing_address instanceof StoreOrderAddress) {
 				$address = $this->addAddressToAccount($order->billing_address);
-				$account->setDefaultBillingAddress($address);
+				if ($address instanceof StoreAccountAddress) {
+					$account->setDefaultBillingAddress($address);
+				}
 			}
 
 			// shipping address is only added if it differs from billing address
@@ -790,7 +792,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 						$order->shipping_address
 					);
 				}
-				$account->setDefaultShippingAddress($address);
+				if ($address instanceof StoreAccountAddress) {
+					$account->setDefaultShippingAddress($address);
+				}
 			}
 		}
 
