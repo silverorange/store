@@ -89,7 +89,7 @@ class StorePopularProductIndexer extends SiteCommandLineApplication
 	 * Adds configuration definitions to the config module of this application
 	 *
 	 * @param SiteConfigModule $config the config module of this application to
-	 *                                  witch to add the config definitions.
+	 *                                  which to add the config definitions.
 	 */
 	protected function addConfigDefinitions(SiteConfigModule $config)
 	{
