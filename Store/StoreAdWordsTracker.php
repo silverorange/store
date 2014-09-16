@@ -6,7 +6,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * Generates Google AdWords purchase conversion tracking code for an order
  *
  * @package   Store
- * @copyright 2008-2010 silverorange
+ * @copyright 2008-2014 silverorange
  */
 class StoreAdWordsTracker
 {
@@ -46,28 +46,61 @@ class StoreAdWordsTracker
 		$total            = $this->order->total;
 		$conversion_id    = $this->conversion_id;
 		$conversion_label = $this->conversion_label;
+		$currency         = 'USD';
+
+		$js_conversion_id = (int)$conversion_id;
+		$js_conversion_label = SwatString::quoteJavaScriptString(
+			$conversion_label
+		);
+		$js_value = (float)$total;
+		$js_currency = SwatString::quoteJavaScriptString($currency);
+
+		$xml_conversion_id = SwatString::minimizeEntities($conversion_id);
+		$xml_conversion_label = SwatString::minimizeEntities(
+			$conversion_label
+		);
+		$xml_value = SwatString::minimizeEntities($total);
+		$xml_currency = SwatString::minimizeEntities($currency);
 
 		// {{{ returned HTML
 
 		// Note: Format 3 is hiding the Google Site Stats box
-		return <<<HTML
+		$html = <<<HTML
 <div class="google-adwords-tracking">
-<script type="text/javascript">// <![CDATA[
-var google_conversion_id       = {$conversion_id};
-var google_conversion_language = 'en_US';
-var google_conversion_format   = '3';
-var google_conversion_color    = 'FFFFFF';
-var google_conversion_value    = {$total};
-var google_conversion_label    = '{$conversion_label}';
-// ]]></script>
-<script type="text/javascript" src="https://www.googleadservices.com/pagead/conversion.js"></script>
-<noscript>
-<img width="1" height="1" alt="" src="https://www.googleadservices.com/pagead/conversion/{$conversion_id}/imp.gif?value={$total}&amp;label={$conversion_label}&amp;script=0" />
-</noscript>
+  <script>
+    /* <![CDATA[ */
+    var google_conversion_id = %s;
+    var google_conversion_language = "en";
+    var google_conversion_format = "3";
+    var google_conversion_color = "ffffff";
+    var google_conversion_label = %s;
+    var google_conversion_value = %s;
+    var google_conversion_currency = %s;
+    var google_remarketing_only = false;
+    /* ]]> */
+  </script>
+  <script src="//www.googleadservices.com/pagead/conversion.js"></script>
+  <noscript>
+    <div style="display:inline;">
+      <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/%s/?value=%s&amp;currency_code=%s&amp;label=%s&amp;guid=ON&amp;script=0" />
+    </div>
+  </noscript>
 </div>
 HTML;
 
 		// }}}
+
+		return sprintf(
+			$html,
+			$js_conversion_id,
+			$js_conversion_label,
+			$js_value,
+			$js_currency,
+			$xml_conversion_id,
+			$xml_value,
+			$xml_currency,
+			$xml_conversion_label
+		);
 	}
 
 	// }}}
