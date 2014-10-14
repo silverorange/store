@@ -106,13 +106,13 @@ StoreProductPage.prototype.hasQuantity = function()
 
 	// check if any quantity box has a value
 	for (var i = 0; i < this.quantity_boxes.length; i++) {
-		if (this.quantity_boxes[i].value != 0) {
+		if (this.quantity_boxes[i].value !== 0) {
 			has_quantity = true;
 			break;
 		}
 	}
 
-	return (this.quantity_boxes.length == 0 || has_quantity);
+	return (this.quantity_boxes.length === 0 || has_quantity);
 };
 
 // }}}
@@ -168,7 +168,7 @@ StoreProductPage.prototype.getEntry = function(item_id)
 
 	var entry = null;
 
-	if (renderer != null && parseFloat(renderer.value) > 0) {
+	if (renderer !== null && parseFloat(renderer.value) > 0) {
 		var entry = {};
 		entry.item_id = item_id;
 		entry.quantity = parseFloat(renderer.value);
@@ -185,13 +185,13 @@ StoreProductPage.prototype.updateCartMessage = function(response)
 	var div = document.getElementById(this.cart_message_id);
 
 	if (response.cart_message) {
-		if (div.innerHTML == '') {
+		if (div.innerHTML === '') {
 			this.openCartMessage(response.cart_message);
 		} else {
 			div.innerHTML = response.cart_message;
 			this.addCartMessageEvents(div);
 		}
-	} else if (div.innerHTML != '') {
+	} else if (div.innerHTML !== '') {
 		this.closeCartMessage();
 	}
 };

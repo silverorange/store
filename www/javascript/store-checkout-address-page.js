@@ -157,7 +157,7 @@ StoreCheckoutAddressPage.clickHandler = function(e, address)
 {
 	if (address.list_new.checked) {
 		address.showAddressForm(true);
-	} else if (address.sensitive || address.sensitive == null) {
+	} else if (address.sensitive || address.sensitive === null) {
 		address.hideAddressForm(true);
 	}
 };

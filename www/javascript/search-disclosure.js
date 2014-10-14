@@ -11,7 +11,7 @@ function StoreSearchDisclosure(id, open, entry, options)
 	this.panel_units     = (options.panel_units)  ? options.panel_units  : 'em';
 	this.xml_rpc_server  = options.xml_rpc_server;
 
-	if (this.title.length == 0) {
+	if (this.title.length === 0) {
 		this.preloadImages();
 	}
 

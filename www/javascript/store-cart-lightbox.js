@@ -223,14 +223,14 @@ StoreCartLightbox.prototype.open = function(is_status_opening)
 			this.status = 'open';
 		}
 	}
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.displayResponse
 
 StoreCartLightbox.prototype.displayResponse = function(response)
 {
-	if (this.all_entry_count == 0) {
+	if (this.all_entry_count === 0) {
 		this.displayEmptyCartMessage();
 	} else if (response.mini_cart) {
 		this.setContentWithAnimation(response.mini_cart);
@@ -249,7 +249,7 @@ StoreCartLightbox.prototype.activateLinks = function()
 	var remove_buttons = YAHOO.util.Dom.getElementsByClassName(
 		'store-remove', 'input', this.mini_cart);
 
-	if (remove_buttons.length != 0) {
+	if (remove_buttons.length !== 0) {
 		YAHOO.util.Event.on(remove_buttons, 'click',
 			this.removeEntry, this, true);
 	}
@@ -258,7 +258,7 @@ StoreCartLightbox.prototype.activateLinks = function()
 	var close_buttons = YAHOO.util.Dom.getElementsByClassName(
 		'store-close-cart', 'a', this.mini_cart);
 
-	if (close_buttons.length != 0) {
+	if (close_buttons.length !== 0) {
 		YAHOO.util.Event.on(close_buttons, 'click',
 			this.close, this, true);
 	}

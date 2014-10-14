@@ -325,7 +325,7 @@ StoreProductImageDisplay.close_text = 'Close';
 				}());
 
 				pinky = document.createElement('li');
-				if (i == 0) {
+				if (i === 0) {
 					pinky.className = 'store-product-image-display-pinky-first';
 				} else {
 				}

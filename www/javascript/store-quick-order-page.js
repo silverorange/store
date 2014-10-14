@@ -247,7 +247,7 @@ StoreQuickOrderItem.prototype.clearTimeout = function()
  */
 StoreQuickOrderItem.prototype.handleFadeOut = function(type, args)
 {
-	if (this.new_description != null)
+	if (this.new_description !== null)
 		this.div.innerHTML = this.new_description;
 
 	this.new_description = null;
