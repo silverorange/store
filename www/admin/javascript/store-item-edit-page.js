@@ -21,14 +21,14 @@ function StoreItemEditPage(form_id, price_replicators)
 StoreItemEditPage.prototype.getItemRegionReplicator = function(id)
 {
 	return new StoreItemRegionReplicator(id);
-}
+};
 
 StoreItemEditPage.handleSubmit = function(event, page)
 {
 	// sensitize prices so they send data even if they are desensitized
 	for (var i = 0; i < page.price_replicators.length; i++)
 		page.price_replicators[i].sensitize(false);
-}
+};
 
 /**
  * A single price replicator on the item edit page
@@ -58,7 +58,7 @@ StoreItemRegionReplicator.handleClick = function(event, replicator)
 		replicator.sensitize(true);
 	else
 		replicator.desensitize();
-}
+};
 
 StoreItemRegionReplicator.prototype.sensitize = function(focus)
 {
@@ -69,11 +69,11 @@ StoreItemRegionReplicator.prototype.sensitize = function(focus)
 		YAHOO.util.Dom.removeClass(this.price, 'swat-insensitive');
 		this.price.focus();
 	}
-}
+};
 
 StoreItemRegionReplicator.prototype.desensitize = function()
 {
 	this.price.disabled = true;
 	YAHOO.util.Dom.addClass(this.price_field, 'swat-insensitive');
 	YAHOO.util.Dom.addClass(this.price, 'swat-insensitive');
-}
+};

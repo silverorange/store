@@ -9,7 +9,7 @@ function StoreFeedbackPanel(id)
 	this.form           = null;
 
 	YAHOO.util.Event.onDOMReady(this.init, this, true);
-};
+}
 
 StoreFeedbackPanel.sending_text   = 'Sending…';
 StoreFeedbackPanel.loading_text   = 'Loading…';

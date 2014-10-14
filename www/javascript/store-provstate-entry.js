@@ -4,7 +4,7 @@ function StoreProvStateEntry(id, data)
 	this.data = data;
 	this.provstate_id = {};
 	YAHOO.util.Event.onDOMReady(this.init, this, true);
-};
+}
 
 StoreProvStateEntry.required_text = '(required)';
 
@@ -209,4 +209,4 @@ StoreProvStateEntry.prototype.updateProvStateLabel = function(data, for_value)
 		this.label.appendChild(document.createTextNode(' '));
 		this.label.appendChild(required);
 	}
-}
+};

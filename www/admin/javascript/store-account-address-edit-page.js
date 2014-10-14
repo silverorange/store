@@ -26,10 +26,10 @@ StoreAccountAddressEditPage.prototype.updateFields = function()
 		this.provstate_other.disabled = true;
 		YAHOO.util.Dom.addClass(this.provstate_other, 'swat-insensitive');
 	}
-}
+};
 
 StoreAccountAddressEditPage.prototype.provstateChangeHandler = function(event,
 	address)
 {
 	this.updateFields();
-}
+};

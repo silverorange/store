@@ -18,7 +18,7 @@ function StoreCheckoutFirstPage()
 StoreCheckoutFirstPage.handleFullnameBlur = function(event, page)
 {
 	page.updateFields();
-}
+};
 
 StoreCheckoutFirstPage.prototype.updateFields = function()
 {
@@ -33,4 +33,4 @@ StoreCheckoutFirstPage.prototype.updateFields = function()
 			this.card_fullname.value = this.fullname.value;
 		}
 	}
-}
+};

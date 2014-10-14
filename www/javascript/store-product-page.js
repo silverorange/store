@@ -33,7 +33,7 @@ StoreProductPage.prototype.setCart = function(cart)
 {
 	this.cart = cart;
 	this.cart.product_id = this.product_id;
-}
+};
 
 // }}}
 // {{{ StoreProductPage.prototype.init
@@ -74,7 +74,7 @@ StoreProductPage.prototype.init = function()
 		this.cart.cart_empty_event.subscribe(
 			cartEmptyCallback, this);
 	}
-}
+};
 
 // }}}
 // {{{ StoreProductPage.prototype.handleFormSubmit
@@ -95,7 +95,7 @@ StoreProductPage.prototype.handleFormSubmit = function(e)
 			this.addEntriesToCart();
 		}
 	}
-}
+};
 
 // }}}
 // {{{ StoreProductPage.prototype.hasQuantity
@@ -113,7 +113,7 @@ StoreProductPage.prototype.hasQuantity = function()
 	}
 
 	return (this.quantity_boxes.length == 0 || has_quantity);
-}
+};
 
 // }}}
 
@@ -126,7 +126,7 @@ StoreProductPage.prototype.openQuantityMessage = function()
 		'</h3>');
 
 	this.cart.open();
-}
+};
 
 // }}}
 // {{{ StoreProductPage.prototype.addEntriesToCart
@@ -145,7 +145,7 @@ StoreProductPage.prototype.addEntriesToCart = function()
 	}
 
 	this.cart.addEntries(entries, this.source, this.source_category);
-}
+};
 
 // }}}
 // {{{ StoreProductPage.prototype.changeButtonText
@@ -156,7 +156,7 @@ StoreProductPage.prototype.changeButtonText = function()
 	button.disabled = true;
 	this.saveButtonValue(button);
 	button.value = StoreCartLightbox.submit_message;
-}
+};
 
 // }}}
 // {{{ StoreProductPage.prototype.getEntry
@@ -175,7 +175,7 @@ StoreProductPage.prototype.getEntry = function(item_id)
 	}
 
 	return entry;
-}
+};
 
 // }}}
 // {{{ StoreProductPage.prototype.updateCartMessage
@@ -194,7 +194,7 @@ StoreProductPage.prototype.updateCartMessage = function(response)
 	} else if (div.innerHTML != '') {
 		this.closeCartMessage();
 	}
-}
+};
 
 // }}}
 // {{{ StoreProductPage.prototype.openCartMessage
@@ -227,7 +227,7 @@ StoreProductPage.prototype.openCartMessage = function(cart_message)
 	});
 
 	height_animation.animate();
-}
+};
 
 // }}}
 // {{{ StoreProductPage.prototype.closeCartMessage
@@ -251,7 +251,7 @@ StoreProductPage.prototype.closeCartMessage = function()
 	});
 
 	fade_animation.animate();
-}
+};
 
 // }}}
 // {{{ StoreProductPage.prototype.addCartMessageEvents
@@ -265,7 +265,7 @@ StoreProductPage.prototype.addCartMessageEvents = function(div)
 		YAHOO.util.Event.on(cart_links, 'click',
 			this.cart.load, this.cart, true);
 	}
-}
+};
 
 // }}}
 // {{{ StoreProductPage.prototype.resetForm
@@ -279,7 +279,7 @@ StoreProductPage.prototype.resetForm = function()
 	for (var i = 0; i < this.quantity_boxes.length; i++) {
 		this.quantity_boxes[i].value = 0;
 	}
-}
+};
 
 // }}}
 // {{{ StoreProductPage.prototype.saveButtonValue
@@ -289,10 +289,10 @@ StoreProductPage.prototype.saveButtonValue = function(button)
 	var value = {
 		id: button.id,
 		value: button.value
-	}
+	};
 
 	this.button_values.push(value);
-}
+};
 
 // }}}
 // {{{ StoreProductPage.prototype.restoreButtonValue
@@ -306,6 +306,6 @@ StoreProductPage.prototype.restoreButtonValue = function(button)
 			break;
 		}
 	}
-}
+};
 
 // }}}

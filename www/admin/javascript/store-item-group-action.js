@@ -15,7 +15,7 @@ function ItemGroupAction(id, values)
 ItemGroupAction.handleGroupChange = function(event, item_group_action)
 {
 	item_group_action.init();
-}
+};
 
 ItemGroupAction.prototype.init = function()
 {
@@ -26,4 +26,4 @@ ItemGroupAction.prototype.init = function()
 	} else {
 		this.title.style.display = 'none';
 	}
-}
+};

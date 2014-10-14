@@ -189,7 +189,7 @@ closeWithAnimation: function()
 	if (this.semaphore)
 		return;
 
-	var time = 0.25
+	var time = 0.25;
 
 	if (this.img) {
 		this.img.src = this.getClosedImageSrc();
@@ -257,7 +257,7 @@ StoreSearchDisclosure.prototype.drawLoadingContainer = function()
 	image.src = this.loading_image;
 
 	this.loading_container.appendChild(image);
-}
+};
 
 StoreSearchDisclosure.prototype.loadSearchPanel = function()
 {
@@ -332,7 +332,7 @@ StoreSearchDisclosure.prototype.pushDownKeywords = function()
 			keywords.value = this.entry.input.value;
 		}
 	}
-}
+};
 
 /**
  * Pulls keywords field value up into search entry value

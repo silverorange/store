@@ -21,7 +21,7 @@ var StoreProductImageDisplay = function(data, config)
 	for (var i = 0; i < this.data.images.length; i++ ) {
 		// preload images
 		image = new Image();
-		image.src = this.data.images[i].large_uri
+		image.src = this.data.images[i].large_uri;
 		this.images.push(image);
 
 		// build id-to-index table
@@ -224,7 +224,7 @@ StoreProductImageDisplay.close_text = 'Close';
 		SwatZIndexManager.raiseElement(mask);
 
 		return mask;
-	}
+	};
 
 	// }}}
 	// {{{ drawHeader()
@@ -848,7 +848,7 @@ StoreProductImageDisplay.close_text = 'Close';
 		}
 
 		this.overlay.style.visible = 'visible';
-	}
+	};
 
 	// }}}
 	// {{{ hideOverlay()
