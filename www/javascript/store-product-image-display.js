@@ -75,11 +75,11 @@ StoreProductImageDisplay.close_text = 'Close';
 
 		var override = function(base_config, new_config) {
 			for (var key in base_config) {
-				if (typeof base_config[key] == 'Object' &&
-					typeof new_config[key] == 'Object') {
+				if (typeof base_config[key] == 'object' &&
+					typeof new_config[key] == 'object') {
 					override(base_config[key], new_config[key]);
 				} else if (typeof config[key] != 'undefined' &&
-					typeof new_config[key] != 'Object') {
+					typeof new_config[key] != 'object') {
 					base_config[key] = new_config[key];
 				}
 			}
