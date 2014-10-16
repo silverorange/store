@@ -1268,9 +1268,15 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	// }}}
 	// {{{ protected function getCheckoutEditLink()
 
-	protected function getCheckoutEditLink($link)
+	protected function getCheckoutEditLink($link = '')
 	{
-		return $this->getEditLink($this->getCheckoutSource().'/'.$link);
+		if ($link == '') {
+			$link = $this->getCheckoutSource();
+		} else {
+			$link = $this->getCheckoutSource().'/'.$link;
+		}
+
+		return $this->getEditLink($link);
 	}
 
 	// }}}
