@@ -78,7 +78,7 @@ StoreQuickOrder.prototype.initSubmitButton = function()
 
 		that.submitted = true;
 	});
-}
+};
 
 /**
  * Gets an item selector on the quick-order by the item selector's widget id
@@ -99,7 +99,7 @@ StoreQuickOrder.prototype.getItemSelector = function(id)
 	}
 
 	return selector;
-}
+};
 
 /**
  * Creates a new item-row controller for the quick-order page
@@ -176,7 +176,7 @@ StoreQuickOrderItem.prototype.handleSkuChange = function(e)
 
 		this.old_value = value;
 	}
-}
+};
 
 StoreQuickOrderItem.prototype.setTimeout = function()
 {
@@ -188,7 +188,7 @@ StoreQuickOrderItem.prototype.setTimeout = function()
 		function() { that.handleTimeout(); },
 		StoreQuickOrder.timeout_delay
 	);
-}
+};
 
 StoreQuickOrderItem.prototype.handleTimeout = function()
 {
@@ -225,7 +225,7 @@ StoreQuickOrderItem.prototype.handleTimeout = function()
 	);
 
 	this.clearTimeout();
-}
+};
 
 StoreQuickOrderItem.prototype.clearTimeout = function()
 {
@@ -233,7 +233,7 @@ StoreQuickOrderItem.prototype.clearTimeout = function()
 		clearTimeout(this.timer);
 		this.timer = null;
 	}
-}
+};
 
 /**
  * Handles the completing of fadeout animations on the item-selector field
@@ -247,7 +247,7 @@ StoreQuickOrderItem.prototype.clearTimeout = function()
  */
 StoreQuickOrderItem.prototype.handleFadeOut = function(type, args)
 {
-	if (this.new_description != null)
+	if (this.new_description !== null)
 		this.div.innerHTML = this.new_description;
 
 	this.new_description = null;
@@ -255,7 +255,7 @@ StoreQuickOrderItem.prototype.handleFadeOut = function(type, args)
 		// only animate if not IE < 9
 		this.in_effect.animate();
 	}
-}
+};
 
 /**
  * Change the SKU to something else
@@ -270,4 +270,4 @@ StoreQuickOrderItem.prototype.setSku = function(value)
 	this.sku.value = value;
 	this.old_value = value;
 	this.handleTimeout();
-}
+};

@@ -72,7 +72,7 @@ StoreCheckoutAddressPage.prototype.initContainer = function()
 		collapse.animate();
 
 	}, this, true);
-}
+};
 
 StoreCheckoutAddressPage.prototype.showAddressForm = function(animate)
 {
@@ -116,7 +116,7 @@ StoreCheckoutAddressPage.prototype.showAddressForm = function(animate)
 
 		this.sensitive = true;
 	}
-}
+};
 
 StoreCheckoutAddressPage.prototype.hideAddressForm = function(animate)
 {
@@ -151,18 +151,18 @@ StoreCheckoutAddressPage.prototype.hideAddressForm = function(animate)
 
 		this.sensitive = false;
 	}
-}
+};
 
 StoreCheckoutAddressPage.clickHandler = function(e, address)
 {
 	if (address.list_new.checked) {
 		address.showAddressForm(true);
-	} else if (address.sensitive || address.sensitive == null) {
+	} else if (address.sensitive || address.sensitive === null) {
 		address.hideAddressForm(true);
 	}
-}
+};
 
 StoreCheckoutAddressPage.prototype.getFieldNames = function()
 {
 	return [];
-}
+};

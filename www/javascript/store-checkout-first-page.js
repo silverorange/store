@@ -18,19 +18,19 @@ function StoreCheckoutFirstPage()
 StoreCheckoutFirstPage.handleFullnameBlur = function(event, page)
 {
 	page.updateFields();
-}
+};
 
 StoreCheckoutFirstPage.prototype.updateFields = function()
 {
 	if (this.fullname) {
 		if (this.billing_address_fullname &&
-			this.billing_address_fullname.value == '') {
+			this.billing_address_fullname.value === '') {
 			this.billing_address_fullname.value = this.fullname.value;
 		}
 
 		if (this.card_fullname &&
-			this.card_fullname.value == '') {
+			this.card_fullname.value === '') {
 			this.card_fullname.value = this.fullname.value;
 		}
 	}
-}
+};

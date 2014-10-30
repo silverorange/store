@@ -33,7 +33,7 @@ StoreGiftCertificateRadioList.prototype.updateOption = function()
 {
 	this.custom_item.checked = true;
 	this.handlePriceChange();
-}
+};
 
 StoreGiftCertificateRadioList.prototype.handlePriceChange = function()
 {

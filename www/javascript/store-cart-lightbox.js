@@ -56,7 +56,7 @@ StoreCartLightbox.getInstance = function(
 	}
 
 	return StoreCartLightbox.instance;
-}
+};
 
 // }}}
 
@@ -128,7 +128,7 @@ StoreCartLightbox.prototype.init = function()
 
 	this.activateLinks();
 	this.preLoadImages();
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.configure
@@ -138,7 +138,7 @@ StoreCartLightbox.prototype.configure = function()
 	this.xml_rpc_client = new XML_RPC_Client('xml-rpc/cart');
 	this.cart_header_id = 'cart_link';
 	this.cart_header_container_id = this.cart_header_id;
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.addEntries
@@ -167,7 +167,7 @@ StoreCartLightbox.prototype.addEntries = function(entries, source,
 
 	this.status = 'closed';
 	this.open(true);
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.handleLinkClick
@@ -191,7 +191,7 @@ StoreCartLightbox.prototype.handleLinkClick = function(e)
 		// tracked in addEntries().
 		this.open_event.fire('link');
 	}
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.open
@@ -223,14 +223,14 @@ StoreCartLightbox.prototype.open = function(is_status_opening)
 			this.status = 'open';
 		}
 	}
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.displayResponse
 
 StoreCartLightbox.prototype.displayResponse = function(response)
 {
-	if (this.all_entry_count == 0) {
+	if (this.all_entry_count === 0) {
 		this.displayEmptyCartMessage();
 	} else if (response.mini_cart) {
 		this.setContentWithAnimation(response.mini_cart);
@@ -238,7 +238,7 @@ StoreCartLightbox.prototype.displayResponse = function(response)
 
 	this.updateCartLink(response.cart_link);
 	this.updateItemCount(response['total_entries']);
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.activateLinks
@@ -249,7 +249,7 @@ StoreCartLightbox.prototype.activateLinks = function()
 	var remove_buttons = YAHOO.util.Dom.getElementsByClassName(
 		'store-remove', 'input', this.mini_cart);
 
-	if (remove_buttons.length != 0) {
+	if (remove_buttons.length !== 0) {
 		YAHOO.util.Event.on(remove_buttons, 'click',
 			this.removeEntry, this, true);
 	}
@@ -258,7 +258,7 @@ StoreCartLightbox.prototype.activateLinks = function()
 	var close_buttons = YAHOO.util.Dom.getElementsByClassName(
 		'store-close-cart', 'a', this.mini_cart);
 
-	if (close_buttons.length != 0) {
+	if (close_buttons.length !== 0) {
 		YAHOO.util.Event.on(close_buttons, 'click',
 			this.close, this, true);
 	}
@@ -267,7 +267,7 @@ StoreCartLightbox.prototype.activateLinks = function()
 		YAHOO.util.Event.on('store_cart_lightbox_close_button', 'click',
 			this.close, this, true);
 	}
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.setContent
@@ -278,7 +278,7 @@ StoreCartLightbox.prototype.setContent = function(contents)
 
 	this.content.innerHTML = contents;
 	this.activateLinks();
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.setContentWithAnimation
@@ -310,7 +310,7 @@ StoreCartLightbox.prototype.setContentWithAnimation =
 	if (old_height >= new_height) {
 		this.setContent(contents);
 	}
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.getContentHeight
@@ -330,7 +330,7 @@ StoreCartLightbox.prototype.getContentHeight = function(contents)
 	this.content.removeChild(hidden_div);
 
 	return new_height;
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.getContainerTop
@@ -340,11 +340,11 @@ StoreCartLightbox.prototype.getContainerTop = function(contents)
 	var content_height = this.getContentHeight(contents);
 
 	var container_height = (this.mini_cart.offsetHeight -
-		this.content.offsetHeight + content_height)
+		this.content.offsetHeight + content_height);
 
 	return Math.max(((YAHOO.util.Dom.getViewportHeight() -
 		container_height) / 2), 0);
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.removeEntry
@@ -388,7 +388,7 @@ StoreCartLightbox.prototype.removeEntry = function(e)
 		this.hideAddedMessage();
 		this.recalculateTotals();
 	}
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.removeRow
@@ -422,7 +422,7 @@ StoreCartLightbox.prototype.removeRow = function(tr)
 	});
 
 	animation.animate();
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.close
@@ -463,7 +463,7 @@ StoreCartLightbox.prototype.close = function(e)
 			this.main_animation.animate();
 		}
 	}
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.handleDocumentClick
@@ -487,7 +487,7 @@ StoreCartLightbox.prototype.handleDocumentClick = function(e)
 	}
 
 	this.close();
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.getParentNode
@@ -499,7 +499,7 @@ StoreCartLightbox.prototype.getParentNode = function(node, tag)
 	} else {
 		return this.getParentNode(node.parentNode, tag);
 	}
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.saveButtonValue
@@ -509,10 +509,10 @@ StoreCartLightbox.prototype.saveButtonValue = function(button)
 	var value = {
 		id: button.id,
 		value: button.value
-	}
+	};
 
 	this.button_values.push(value);
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.restoreButtonValue
@@ -526,7 +526,7 @@ StoreCartLightbox.prototype.restoreButtonValue = function(button)
 			break;
 		}
 	}
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.handleWindowChange
@@ -536,7 +536,7 @@ StoreCartLightbox.prototype.handleWindowChange = function(contents)
 	if (this.status != 'closed') {
 		this.position();
 	}
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.position
@@ -558,7 +558,7 @@ StoreCartLightbox.prototype.position = function()
 
 	this.mini_cart.style.right =
 		(YAHOO.util.Dom.getViewportWidth() - region.right) + 'px';
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.hideAddedMessage
@@ -584,7 +584,7 @@ StoreCartLightbox.prototype.hideAddedMessage = function()
 
 		animation.animate();
 	}
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.recalculateTotals
@@ -611,7 +611,7 @@ StoreCartLightbox.prototype.recalculateTotals = function()
 				'"><span>·</span><span>·</span><span>·</span><span>·</span>' +
 				'</div>';
 	}
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.addEntriesCallback
@@ -623,7 +623,7 @@ StoreCartLightbox.prototype.addEntriesCallback = function(response)
 	this.displayResponse(response);
 	this.status = 'open';
 	this.entries_added_event.fire(response);
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.displayEmptyCartMessage
@@ -634,7 +634,7 @@ StoreCartLightbox.prototype.displayEmptyCartMessage = function()
 		StoreCartLightbox.empty_content + '</div>');
 
 	this.cart_empty_event.fire();
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.updateItemCount
@@ -659,7 +659,7 @@ StoreCartLightbox.prototype.updateItemCount = function(item_count)
 		}
 		item_counts[i].appendChild(document.createTextNode(message));
 	}
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.updateCartLink
@@ -668,7 +668,7 @@ StoreCartLightbox.prototype.updateCartLink = function(link)
 {
 	var cart_link = document.getElementById(this.cart_header_id);
 	cart_link.innerHTML = link;
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.preLoadImages
@@ -677,7 +677,7 @@ StoreCartLightbox.prototype.preLoadImages = function()
 {
 	var preload = new Image();
 	preload.src = 'packages/store/images/store-cart-lightbox-arrow.png';
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.swapInVideos
@@ -700,7 +700,7 @@ StoreCartLightbox.prototype.swapInVideos = function()
 	}
 
 	this.video_shims = null;
-}
+};
 
 // }}}
 // {{{ StoreCartLightbox.prototype.swapOutVideos
@@ -723,8 +723,8 @@ StoreCartLightbox.prototype.swapOutVideos = function()
 		image._video = videos[i];
 		videos[i].parentNode.insertBefore(image, videos[i]);
 		videos[i].style.display = 'none';
-		this.video_shims.push(image)
+		this.video_shims.push(image);
 	}
-}
+};
 
 // }}}

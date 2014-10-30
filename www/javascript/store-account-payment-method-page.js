@@ -47,7 +47,7 @@ StoreAccountPaymentMethodPage.prototype.handlePaymentTypeClick = function(
 	event, page)
 {
 	this.updateFields();
-}
+};
 
 StoreAccountPaymentMethodPage.prototype.updateFields = function()
 {
@@ -60,7 +60,7 @@ StoreAccountPaymentMethodPage.prototype.updateFields = function()
 		this.sensitizeIssueNumber();
 	else
 		this.desensitizeIssueNumber();
-}
+};
 
 // inception date fields
 
@@ -76,7 +76,7 @@ StoreAccountPaymentMethodPage.prototype.isInceptionDateSensitive = function()
 	}
 
 	return sensitive;
-}
+};
 
 StoreAccountPaymentMethodPage.prototype.sensitizeInceptionDate = function()
 {
@@ -90,7 +90,7 @@ StoreAccountPaymentMethodPage.prototype.sensitizeInceptionDate = function()
 			YAHOO.util.Dom.removeClass(element, 'swat-insensitive');
 		}
 	}
-}
+};
 
 StoreAccountPaymentMethodPage.prototype.desensitizeInceptionDate = function()
 {
@@ -104,7 +104,7 @@ StoreAccountPaymentMethodPage.prototype.desensitizeInceptionDate = function()
 			YAHOO.util.Dom.addClass(element, 'swat-insensitive');
 		}
 	}
-}
+};
 
 // issue number fields
 
@@ -120,7 +120,7 @@ StoreAccountPaymentMethodPage.prototype.isIssueNumberSensitive = function()
 	}
 
 	return sensitive;
-}
+};
 
 StoreAccountPaymentMethodPage.prototype.sensitizeIssueNumber = function()
 {
@@ -134,7 +134,7 @@ StoreAccountPaymentMethodPage.prototype.sensitizeIssueNumber = function()
 			YAHOO.util.Dom.removeClass(element, 'swat-insensitive');
 		}
 	}
-}
+};
 
 StoreAccountPaymentMethodPage.prototype.desensitizeIssueNumber = function()
 {
@@ -148,4 +148,4 @@ StoreAccountPaymentMethodPage.prototype.desensitizeIssueNumber = function()
 			YAHOO.util.Dom.addClass(element, 'swat-insensitive');
 		}
 	}
-}
+};

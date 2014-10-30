@@ -79,4 +79,4 @@ function StoreOrderChart(id, data) {
 			}
 		});
 	});
-};
+}

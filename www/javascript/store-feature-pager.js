@@ -38,7 +38,7 @@ YAHOO.util.Event.onDOMReady(function ()
 
 		Dom.setStyle(this.container, 'position',  'relative');
 		Dom.setStyle(this.container, 'overflowY', 'hidden');
-		Dom.setStyle(this.container, 'height',    height + 'px')
+		Dom.setStyle(this.container, 'height',    height + 'px');
 
 		if (!this.container.id) {
 			Dom.generateId(this.container, 'pager_');
@@ -126,7 +126,7 @@ YAHOO.util.Event.onDOMReady(function ()
 			} else {
 				var defaultPage = Dom.getFirstChildBy(
 					this.pageContainer,
-					function (n) { return Dom.hasClass(n, 'default-page') }
+					function (n) { return Dom.hasClass(n, 'default-page'); }
 				);
 				if (defaultPage) {
 					var defaultId;
@@ -177,7 +177,7 @@ YAHOO.util.Event.onDOMReady(function ()
 		if (_interval) {
 			clearInterval(_interval);
 		}
-	}
+	};
 
 	proto.getPseudoRandomPage = function()
 	{

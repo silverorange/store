@@ -21,7 +21,7 @@ var StoreProductImageDisplay = function(data, config)
 	for (var i = 0; i < this.data.images.length; i++ ) {
 		// preload images
 		image = new Image();
-		image.src = this.data.images[i].large_uri
+		image.src = this.data.images[i].large_uri;
 		this.images.push(image);
 
 		// build id-to-index table
@@ -75,11 +75,11 @@ StoreProductImageDisplay.close_text = 'Close';
 
 		var override = function(base_config, new_config) {
 			for (var key in base_config) {
-				if (typeof base_config[key] == 'Object' &&
-					typeof new_config[key] == 'Object') {
+				if (typeof base_config[key] == 'object' &&
+					typeof new_config[key] == 'object') {
 					override(base_config[key], new_config[key]);
 				} else if (typeof config[key] != 'undefined' &&
-					typeof new_config[key] != 'Object') {
+					typeof new_config[key] != 'object') {
 					base_config[key] = new_config[key];
 				}
 			}
@@ -224,7 +224,7 @@ StoreProductImageDisplay.close_text = 'Close';
 		SwatZIndexManager.raiseElement(mask);
 
 		return mask;
-	}
+	};
 
 	// }}}
 	// {{{ drawHeader()
@@ -325,9 +325,8 @@ StoreProductImageDisplay.close_text = 'Close';
 				}());
 
 				pinky = document.createElement('li');
-				if (i == 0) {
+				if (i === 0) {
 					pinky.className = 'store-product-image-display-pinky-first';
-				} else {
 				}
 				pinky.appendChild(link);
 
@@ -848,7 +847,7 @@ StoreProductImageDisplay.close_text = 'Close';
 		}
 
 		this.overlay.style.visible = 'visible';
-	}
+	};
 
 	// }}}
 	// {{{ hideOverlay()
