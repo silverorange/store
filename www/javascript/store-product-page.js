@@ -106,7 +106,7 @@ StoreProductPage.prototype.hasQuantity = function()
 
 	// check if any quantity box has a value
 	for (var i = 0; i < this.quantity_boxes.length; i++) {
-		if (this.quantity_boxes[i].value !== 0) {
+		if (parseFloat(this.quantity_boxes[i].value) !== 0) {
 			has_quantity = true;
 			break;
 		}
