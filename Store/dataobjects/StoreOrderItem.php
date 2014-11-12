@@ -295,7 +295,7 @@ class StoreOrderItem extends SwatDBDataObject
 			$item = SwatDB::query($this->db, $sql, $wrapper)->getFirst();
 
 			// if lookup by id failed, try lookup by sku
-			if (!($item instanceof StoreItem)) {
+			if (!$item instanceof StoreItem && $this->sku != '') {
 				$sql = sprintf(
 					'select Item.* from Item
 					inner join AvailableItemView
