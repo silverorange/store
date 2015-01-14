@@ -6,7 +6,7 @@ require_once 'Store/pages/StoreCheckoutPage.php';
  * Front page of checkout
  *
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutFrontPage extends StoreCheckoutPage

@@ -7,7 +7,7 @@ require_once 'Store/StoreSearchPanel.php';
 
 /**
  * @package   Store
- * @copyright 2007-2009 silverorange
+ * @copyright 2007-2015 silverorange
  */
 class StoreSearchPanelServer extends SiteXMLRPCServer
 {

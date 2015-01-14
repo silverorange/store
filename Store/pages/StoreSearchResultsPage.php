@@ -19,7 +19,7 @@ if (class_exists('Blorg')) {
  * Page for displaying search results
  *
  * @package   Store
- * @copyright 2007-2014 silverorange
+ * @copyright 2007-2015 silverorange
  */
 class StoreSearchResultsPage extends SiteSearchResultsPage
 {

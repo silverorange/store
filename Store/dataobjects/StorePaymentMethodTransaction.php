@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreOrderPaymentMethod.php';
  * StorePaymentMethodTransaction objects for most transaction methods.
  *
  * @package   Store
- * @copyright 2009 silverorange
+ * @copyright 2009-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StorePaymentProvider
  * @see       StoreOrderPaymentMethod

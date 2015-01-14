@@ -12,7 +12,7 @@ require_once 'Store/dataobjects/StoreOrderWrapper.php';
  * Removes personal data from expired orders
  *
  * @package   Store
- * @copyright 2007-2012 silverorange
+ * @copyright 2007-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderDeleter extends SitePrivateDataDeleter

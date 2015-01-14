@@ -13,7 +13,7 @@ require_once 'Store.php';
  * and call {@link StoreProvStateFlydown::setDatabase()}.
  *
  * @package   Store
- * @copyright 2008 silverorange
+ * @copyright 2008-2015 silverorange
  */
 class StoreProvStateFlydown extends SwatFlydown
 {

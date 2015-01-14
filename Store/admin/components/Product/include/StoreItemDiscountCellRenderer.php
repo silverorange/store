@@ -6,7 +6,7 @@ require_once 'Swat/SwatLinkCellRenderer.php';
  * A cell renderer that displays a link to add or edit quantity discounts
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemDiscountCellRenderer extends SwatLinkCellRenderer

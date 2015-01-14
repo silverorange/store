@@ -7,7 +7,7 @@ require_once 'Store/StoreFroogleGenerator.php';
  * Application to upload Froogle files to Google
  *
  * @package   Store
- * @copyright 2008-2012 silverorange
+ * @copyright 2008-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreFroogleUploader extends StoreProductFileFtpUploader

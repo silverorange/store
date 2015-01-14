@@ -7,7 +7,7 @@ require_once 'Site/admin/components/InstanceSetting/include/SiteAbstractConfigPa
  * package.
  *
  * @package   Store
- * @copyright 2009-2010 silverorange
+ * @copyright 2009-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreConfigPage extends SiteAbstractConfigPage

@@ -7,7 +7,7 @@ require_once 'Swat/SwatRadioList.php';
  * A custom radio list that has an embedded custom option
  *
  * @package   Store
- * @copyright 2007-2013 silverorange
+ * @copyright 2007-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreGiftCertificateRadioList extends SwatRadioList

@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StorePriceRange.php';
  * A recordset wrapper class for StorePriceRange objects
  *
  * @package   Store
- * @copyright 2007 silverorange
+ * @copyright 2007-2015 silverorange
  * @see       StorePriceRange
  */
 class StorePriceRangeWrapper extends SwatDBRecordsetWrapper

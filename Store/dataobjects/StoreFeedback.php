@@ -12,7 +12,7 @@ require_once 'Site/SiteMultipartMailMessage.php';
  * - link
  *
  * @package   Store
- * @copyright 2009 silverorange
+ * @copyright 2009-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreFeedback extends SiteComment

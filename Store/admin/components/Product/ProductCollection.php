@@ -11,7 +11,7 @@ require_once 'Store/admin/components/Product/include/StoreProductSearch.php';
  * Search page for Product Collections
  *
  * @package   Store
- * @copyright 2005-2009 silverorange
+ * @copyright 2005-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductProductCollection extends AdminSearch

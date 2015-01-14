@@ -6,7 +6,7 @@ require_once 'Store/dataobjects/StoreImage.php';
  * An image data object for products
  *
  * @package   Store
- * @copyright 2006-2010 silverorange
+ * @copyright 2006-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductImage extends StoreImage

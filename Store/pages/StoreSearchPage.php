@@ -6,7 +6,7 @@ require_once 'Store/pages/StoreSearchResultsPage.php';
  * Page for displaying a search form above search results.
  *
  * @package   Store
- * @copyright 2007 silverorange
+ * @copyright 2007-2015 silverorange
  */
 class StoreSearchPage extends StoreSearchResultsPage
 {

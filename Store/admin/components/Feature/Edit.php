@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreFeature.php';
  * Edit page for Features
  *
  * @package   Store
- * @copyright 2010-2011 silverorange
+ * @copyright 2010-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreFeatureEdit extends AdminDBEdit

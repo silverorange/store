@@ -9,7 +9,7 @@ require_once 'XML/RPCAjax.php';
  * Control to display a lightbox driven cart on the page
  *
  * @package   Store
- * @copyright 2010-2014 silverorange
+ * @copyright 2010-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCartLightbox extends SwatControl

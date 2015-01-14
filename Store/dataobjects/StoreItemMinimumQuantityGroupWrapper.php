@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreItemMinimumQuantityGroup.php';
  * A recordset wrapper class for StoreItemMinimumQuantityGroup objects
  *
  * @package   Store
- * @copyright 2009 silverorange
+ * @copyright 2009-2015 silverorange
  * @see       StoreItemMinimumQuantityGroup
  */
 class StoreItemMinimumQuantityGroupWrapper extends SwatDBRecordsetWrapper

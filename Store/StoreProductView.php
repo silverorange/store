@@ -8,7 +8,7 @@ require_once 'Store/dataobjects/StoreProductWrapper.php';
  * Control to display a recordset of products
  *
  * @package   Store
- * @copyright 2007 silverorange
+ * @copyright 2007-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreProductView extends SwatControl

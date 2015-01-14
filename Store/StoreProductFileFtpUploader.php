@@ -10,7 +10,7 @@ require_once 'Store/StoreCommandLineConfigModule.php';
  * Abstract application to upload product listing files to a ftp server
  *
  * @package   Store
- * @copyright 2011 silverorange
+ * @copyright 2011-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @todo      Figure out when setPath() is used, it may be a dead code path.
  */

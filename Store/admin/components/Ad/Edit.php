@@ -9,7 +9,7 @@ require_once 'SwatDB/SwatDB.php';
  * Store also saves the ad locale-bindings.
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAdEdit extends SiteAdEdit

@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * Generates Google Analytics order transaction tracking code for an order
  *
  * @package   Store
- * @copyright 2008-2011 silverorange
+ * @copyright 2008-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @link      http://www.google.com/support/googleanalytics/bin/answer.py?answer=55528
  * @link      http://code.google.com/apis/analytics/docs/gaJS/gaJSApiEcommerce.html

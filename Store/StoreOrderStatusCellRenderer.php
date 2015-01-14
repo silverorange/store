@@ -9,7 +9,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * Cell renderer for order statuses
  *
  * @package   Store
- * @copyright 2007 silverorange
+ * @copyright 2007-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderStatusCellRenderer extends SwatCellRenderer

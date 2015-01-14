@@ -8,7 +8,7 @@ require_once 'Swat/SwatString.php';
  * way
  *
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductTitleCellRenderer extends AdminTitleLinkCellRenderer

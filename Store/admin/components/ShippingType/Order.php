@@ -7,7 +7,7 @@ require_once 'SwatDB/SwatDB.php';
  * Order page for Shipping Types
  *
  * @package   Store
- * @copyright 2008 silverorange
+ * @copyright 2008-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreShippingTypeOrder extends AdminDBOrder

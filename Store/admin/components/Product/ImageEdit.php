@@ -13,7 +13,7 @@ require_once 'Store/dataobjects/StoreProductImage.php';
  * Edit page for product images
  *
  * @package   Store
- * @copyright 2005-2011 silverorange
+ * @copyright 2005-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductImageEdit extends AdminDBEdit

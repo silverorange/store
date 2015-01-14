@@ -8,7 +8,7 @@ require_once 'Swat/SwatPercentageCellRenderer.php';
  * Displays totals in a special row in a table view.
  *
  * @package   Store
- * @copyright 2006-2014 silverorange
+ * @copyright 2006-2015 silverorange
  */
 class StorePercentageTotalRow extends SwatTableViewRow
 {

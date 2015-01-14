@@ -8,7 +8,7 @@ require_once 'Store/StoreCommandLineConfigModule.php';
  * Framework for a command line application to remove personal data.
  *
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StorePrivateDataDeleterApplication extends

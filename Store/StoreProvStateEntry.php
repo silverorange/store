@@ -12,7 +12,7 @@ require_once 'Swat/SwatEntry.php';
  * displayed.
  *
  * @package   Store
- * @copyright 2012 silverorange
+ * @copyright 2012-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProvStateEntry extends SwatInputControl

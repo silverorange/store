@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreCardType.php';
  * A widget for basic validation of a credit card verification value
  *
  * @package   Store
- * @copyright 2009-2012 silverorange
+ * @copyright 2009-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCardVerificationValueEntry extends SwatEntry

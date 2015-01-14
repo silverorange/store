@@ -20,7 +20,7 @@ require_once
  * Index page for Products
  *
  * @package   Store
- * @copyright 2005-2014 silverorange
+ * @copyright 2005-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductIndex extends AdminSearch

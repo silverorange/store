@@ -5,7 +5,7 @@ require_once __DIR__.'/include/StoreConfigPage.php';
 
 /**
  * @package   Store
- * @copyright 2009 silverorange
+ * @copyright 2009-2015 silverorange
  */
 class StoreInstanceSettingIndex extends SiteInstanceSettingIndex
 {

@@ -7,7 +7,7 @@ require_once 'Swat/SwatYUI.php';
  * Shipping address verification page of checkout
  *
  * @package   Store
- * @copyright 2009 silverorange
+ * @copyright 2009-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutShippingAddressVerificationPage extends

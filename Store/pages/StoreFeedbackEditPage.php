@@ -9,7 +9,7 @@ require_once 'Store/dataobjects/StoreFeedback.php';
  * Page to allow submitting customer feedback
  *
  * @package   Store
- * @copyright 2009-2014 silverorange
+ * @copyright 2009-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreFeedback
  */

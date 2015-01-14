@@ -8,7 +8,7 @@ require_once 'SwatDB/SwatDB.php';
  * Edit page for notes on orders
  *
  * @package   Store
- * @copyright 2007-2012 silverorange
+ * @copyright 2007-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderNoteEdit extends AdminDBEdit

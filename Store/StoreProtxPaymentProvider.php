@@ -22,7 +22,7 @@ require_once 'Store/exceptions/StorePaymentCvvException.php';
  * Payment provider driver for Protx VSP Direct payments
  *
  * @package   Store
- * @copyright 2007 silverorange
+ * @copyright 2007-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StorePaymentProvider
  */

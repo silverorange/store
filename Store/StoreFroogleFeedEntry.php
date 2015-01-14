@@ -7,7 +7,7 @@ require_once 'Store/StoreFroogleFeed.php';
  * Google Merchant Center Product Feed Entry (formally known as Froogle)
  *
  * @package   Store
- * @copyright 2006-2013 silverorange
+ * @copyright 2006-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @link      http://support.google.com/merchants/bin/answer.py?hl=en&answer=188494#US
  */

@@ -4,7 +4,7 @@ require_once 'Site/pages/SiteSiteMapPage.php';
 
 /**
  * @package   Store
- * @copyright 2007 silverorange
+ * @copyright 2007-2015 silverorange
  */
 class StoreSiteMapPage extends SiteSiteMapPage
 {
