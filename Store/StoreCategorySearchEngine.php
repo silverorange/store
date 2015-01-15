@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreCategoryWrapper.php';
  * A category search engine
  *
  * @package   Store
- * @copyright 2007 silverorange
+ * @copyright 2007-2015 silverorange
  */
 class StoreCategorySearchEngine extends SiteSearchEngine
 {

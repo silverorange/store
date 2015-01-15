@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreFeedback.php';
  * A recordset wrapper class for StoreFeedback objects
  *
  * @package   Store
- * @copyright 2009 silverorange
+ * @copyright 2009-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreFeedback
  */

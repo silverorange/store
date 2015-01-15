@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreRegionWrapper.php';
  * A page for displaying a message if a article is not visible
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreArticleNotVisiblePage extends StoreNotVisiblePage

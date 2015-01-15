@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreCategory.php';
  * Delete confirmation page for category images
  *
  * @package   Store
- * @copyright 2006-2008 silverorange
+ * @copyright 2006-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCategoryImageDelete extends AdminDBDelete

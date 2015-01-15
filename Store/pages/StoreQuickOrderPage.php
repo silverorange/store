@@ -18,7 +18,7 @@ require_once 'Numbers/Words.php';
  *
  *
  * @package   Store
- * @copyright 2006-2014 silverorange
+ * @copyright 2006-2015 silverorange
  */
 abstract class StoreQuickOrderPage extends SiteArticlePage
 {

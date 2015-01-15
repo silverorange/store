@@ -6,7 +6,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * Generates Google AdWords purchase conversion tracking code for an order
  *
  * @package   Store
- * @copyright 2008-2014 silverorange
+ * @copyright 2008-2015 silverorange
  */
 class StoreAdWordsTracker
 {

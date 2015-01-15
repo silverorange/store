@@ -7,7 +7,7 @@ require_once 'SwatDB/SwatDB.php';
  * A widget to allow selecting a catalog
  *
  * @package   Store
- * @copyright 2005-2006 silverorange
+ * @copyright 2005-2015 silverorange
  */
 class StoreCatalogSelector extends SwatFlydown
 {

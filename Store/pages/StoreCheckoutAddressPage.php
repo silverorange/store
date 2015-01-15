@@ -7,7 +7,7 @@ require_once 'Swat/SwatYUI.php';
  * Base address edit page of checkout
  *
  * @package   Store
- * @copyright 2009-2014 silverorange
+ * @copyright 2009-2015 silverorange
  */
 abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 {

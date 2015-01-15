@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreAccountWrapper.php';
  * Removes personal data from inactive accounts
  *
  * @package   Store
- * @copyright 2007-2012 silverorange
+ * @copyright 2007-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountDeleter extends SitePrivateDataDeleter

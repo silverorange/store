@@ -42,7 +42,7 @@ require_once 'Store/StoreItemStatusList.php';
  * This class contains mostly data.
  *
  * @package   Store
- * @copyright 2005-2010 silverorange
+ * @copyright 2005-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreItemWrapper
  */

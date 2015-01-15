@@ -7,7 +7,7 @@ require_once 'Site/dataobjects/SiteArticleWrapper.php';
  * An article search engine that is region aware
  *
  * @package   Store
- * @copyright 2007 silverorange
+ * @copyright 2007-2015 silverorange
  */
 class StoreArticleSearchEngine extends SiteArticleSearchEngine
 {

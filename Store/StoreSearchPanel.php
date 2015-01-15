@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreAttributeWrapper.php';
  * Advanced search controls panel for Store
  *
  * @package   Store
- * @copyright 2007-2008 silverorange
+ * @copyright 2007-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreSearchPanel extends SwatObject

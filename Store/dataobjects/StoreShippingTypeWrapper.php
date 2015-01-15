@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreShippingType.php';
  * A recordset wrapper class for StoreShippingType objects
  *
  * @package   Store
- * @copyright 2008 silverorange
+ * @copyright 2008-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreShippingTypeWrapper extends SwatDBRecordsetWrapper

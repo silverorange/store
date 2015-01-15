@@ -21,7 +21,7 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * changes are ready to go live.
  *
  * @package   Store
- * @copyright 2005-2008 silverorange
+ * @copyright 2005-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCatalog extends SwatDBDataObject

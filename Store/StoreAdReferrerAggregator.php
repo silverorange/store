@@ -10,7 +10,7 @@ require_once 'SwatDB/SwatDB.php';
  * Class for aggregating the total number of referrers per ad.
  *
  * @package   Store
- * @copyright 2009 silverorange
+ * @copyright 2009-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAdReferrerAggregator extends SiteCommandLineApplication

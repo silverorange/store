@@ -8,7 +8,7 @@ require_once 'AuthorizeNet.php';
 
 /**
  * @package   Store
- * @copyright 2011-2013 silverorange
+ * @copyright 2011-2015 silverorange
  * @see       StorePaymentProvider::factory()
  * @see       StorePaymentMethodTransaction
  */

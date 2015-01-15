@@ -14,7 +14,7 @@ require_once 'Store/StoreCommandLineConfigModule.php';
  * for each entry found in the dirty cache table list.
  *
  * @package   Store
- * @copyright 2006-2010 silverorange
+ * @copyright 2006-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCacheTableUpdater extends SiteCommandLineApplication

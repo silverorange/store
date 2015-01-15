@@ -4,7 +4,7 @@ require_once 'Site/pages/SiteXhtmlExceptionPage.php';
 
 /**
  * @package   Store
- * @copyright 2006 silverorange
+ * @copyright 2006-2015 silverorange
  */
 class StoreExceptionPage extends SiteXhtmlExceptionPage
 {

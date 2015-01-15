@@ -7,7 +7,7 @@ require_once 'Admin/AdminListDependency.php';
  * Confirmation page for queuing future product attribute changes.
  *
  * @package   Store
- * @copyright 2010 silverorange
+ * @copyright 2010-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductQueueAttributes extends AdminDBConfirmation

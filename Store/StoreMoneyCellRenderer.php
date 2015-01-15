@@ -6,7 +6,7 @@ require_once 'Swat/SwatMoneyCellRenderer.php';
  * Money cell renderer that displays n/a when no value is available
  *
  * @package   Store
- * @copyright 2006-2014 silverorange
+ * @copyright 2006-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreMoneyCellRenderer extends SwatMoneyCellRenderer

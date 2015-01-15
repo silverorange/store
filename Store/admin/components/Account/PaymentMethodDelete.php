@@ -9,7 +9,7 @@ require_once 'SwatI18N/SwatI18NLocale.php';
  * Delete confirmation page for Account Payment Methods
  *
  * @package   Store
- * @copyright 2006-2013 silverorange
+ * @copyright 2006-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountPaymentMethodDelete extends AdminDBDelete

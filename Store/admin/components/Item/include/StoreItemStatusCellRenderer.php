@@ -9,7 +9,7 @@ require_once 'Store/StoreItemStatusList.php';
  * Cell renderer that displays a summary of the status of an item
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemStatusCellRenderer extends SwatCellRenderer

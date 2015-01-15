@@ -8,7 +8,7 @@ require_once 'SwatDB/SwatDB.php';
  * Search page for add related articles to product tool
  *
  * @package   Store
- * @copyright 2007-2008 silverorange
+ * @copyright 2007-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductRelatedArticles extends AdminSearch

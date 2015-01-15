@@ -12,7 +12,7 @@ require_once 'Store/dataobjects/StoreCardTypeWrapper.php';
  * Page to allow customers to add or edit payment methods on their account
  *
  * @package   Store
- * @copyright 2006-2014 silverorange
+ * @copyright 2006-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountPaymentMethodEditPage extends SiteDBEditPage

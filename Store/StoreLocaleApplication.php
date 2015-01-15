@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreRegionWrapper.php';
  *
  *
  * @package   Store
- * @copyright 2004-2012 silverorange
+ * @copyright 2004-2015 silverorange
  */
 abstract class StoreLocaleApplication extends StoreApplication
 {

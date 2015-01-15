@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreMailChimpOrder.php';
  * A recordset wrapper class for StoreMailChimpOrder objects
  *
  * @package   Store
- * @copyright 2010 silverorange
+ * @copyright 2010-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreMailChimpOrderWrapper extends SwatDBRecordsetWrapper

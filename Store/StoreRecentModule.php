@@ -7,7 +7,7 @@ require_once 'Store/StoreRecentStack.php';
  * Tracks recently viewed things in a web-store application
  *
  * @package   Store
- * @copyright 2009-2012 silverorange
+ * @copyright 2009-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreRecentStack
  */

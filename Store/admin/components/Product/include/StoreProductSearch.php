@@ -9,7 +9,7 @@ require_once 'Swat/SwatUI.php';
  * class keeps the SQL where clause for the interface in the one place.
  *
  * @package   Store
- * @copyright 2006-2012 silverorange
+ * @copyright 2006-2015 silverorange
  * @see       Store/admin/components/Product/search.xml
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */

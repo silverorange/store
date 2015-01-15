@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreCardType.php';
  * A recordset wrapper class for StoreCardType objects
  *
  * @package   Store
- * @copyright 2007 silverorange
+ * @copyright 2007-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCardTypeWrapper extends SwatDBRecordsetWrapper

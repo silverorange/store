@@ -13,7 +13,7 @@ require_once 'Swat/SwatUI.php';
  * package.
  *
  * @package   Store
- * @copyright 2006-2007 silverorange
+ * @copyright 2006-2015 silverorange
  * @deprecated The parent of this class, {@link SwatUI}, can now be used directly.
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */

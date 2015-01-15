@@ -10,7 +10,7 @@ require_once 'Store/StoreStatus.php';
  * StoreItemStatusList.
  *
  * @package   Store
- * @copyright 2007 silverorange
+ * @copyright 2007-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreItem::getStatus()
  * @see       StoreItem::setStatus()

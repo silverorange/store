@@ -8,7 +8,7 @@ require_once 'Store/dataobjects/StoreProvState.php';
  * Dataobject for item provstate exclusion bindings
  *
  * @package   Store
- * @copyright 2012 silverorange
+ * @copyright 2012-2015 silverorange
  */
 class StoreItemProvStateExclusionBinding extends SwatDBDataObject
 {

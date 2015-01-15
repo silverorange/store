@@ -8,7 +8,7 @@ require_once 'Store/dataobjects/StoreCategoryWrapper.php';
  * A generated XML Site Map for stores
  *
  * @package   Store
- * @copyright 2007 silverorange
+ * @copyright 2007-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       http://www.sitemaps.org/
  */

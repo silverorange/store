@@ -9,7 +9,7 @@ require_once 'Store/dataobjects/StoreProduct.php';
  *       set the lazy_load option to true.
  *
  * @package   Store
- * @copyright 2006-2013 silverorange
+ * @copyright 2006-2015 silverorange
  */
 class StoreProductWrapper extends SwatDBRecordsetWrapper
 {

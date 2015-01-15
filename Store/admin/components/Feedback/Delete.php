@@ -9,7 +9,7 @@ require_once 'Store/dataobjects/StoreFeedbackWrapper.php';
  * Delete confirmation page for feedback
  *
  * @package   Store
- * @copyright 2009 silverorange
+ * @copyright 2009-2015 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreFeedbackDelete extends AdminDBDelete

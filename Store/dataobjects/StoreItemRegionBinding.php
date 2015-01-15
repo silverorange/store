@@ -6,7 +6,7 @@ require_once 'SwatDB/SwatDBDataObject.php';
  * Dataobject for item region bindings
  *
  * @package   Store
- * @copyright silverorange 2006
+ * @copyright 2006-2015 silverorange
  */
 class StoreItemRegionBinding extends SwatDBDataObject
 {
