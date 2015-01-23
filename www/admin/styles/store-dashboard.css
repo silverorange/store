@@ -1,11 +1,9 @@
-#new_content_frame .swat-footer-form-field form {
-	display: inline;
+#order_stats_frame .swat-frame-contents {
+	padding-bottom: 8px;
 }
 
-#new_content_frame .admin-note {
-	background-image: none;
-	padding-left: 6px;
-	min-height: auto;
+#new_content_frame .swat-footer-form-field form {
+	display: inline;
 }
 
 #new_content_note ul {
