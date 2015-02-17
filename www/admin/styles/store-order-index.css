@@ -26,11 +26,11 @@
 }
 
 .order-comments {
-	background: #DCEDC8;
+	background: #dcedc8;
 }
 
 .order-notes {
-	background: #FFF9C4;
+	background: #fff9c4;
 }
 
 .swat-table-view .swat-table-view-spanning-column td {
@@ -39,7 +39,7 @@
 }
 
 .is-cancelled .cancelled {
-	background: #F44336;
+	background: #f44336;
 	color: rgba(255,255,255,0.54);
 	padding: 2px 6px;
 	border-radius: 2px;

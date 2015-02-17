@@ -53,7 +53,7 @@ function StoreOrderChart(id, data) {
 				container: '#' + id + '_legend',
 				noColumns: 2
 			},
-			colors: [ '#AED581', '#689F38' ]
+			colors: [ '#aed581', '#689f38' ]
 		});
 
 		$('#' + id + '_legend .legendColorBox > div').css({
