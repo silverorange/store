@@ -219,7 +219,6 @@ class StoreOrderChart extends SwatControl
 				"chart_data.push({
 					data: [%s],
 					lines: { lineWidth: 1 },
-					color: 'rgb(152, 201, 255)',
 					shadowSize: 0,
 					label: '%s'
 				});",
@@ -232,7 +231,6 @@ class StoreOrderChart extends SwatControl
 			"chart_data.push({
 				data: [%s],
 				lines: { lineWidth: 2 },
-				color: 'rgb(52, 101, 164)',
 				label: '%s'
 			});
 

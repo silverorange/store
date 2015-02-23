@@ -18,34 +18,29 @@
 	margin-right: 2em;
 }
 
-.swat-table-view td.order-comments-row,
-.swat-table-view td.order-notes-row {
-	padding: 1px 0 2px;
-}
-
 .order-comments,
 .order-notes {
 	display: block;
-	padding: 2px 4px;
+	padding: 4px 6px;
+	color: rgba(0,0,0,0.54);
 }
 
 .order-comments {
-	color: #438d04;
-	background: #d9e8cd;
-	border: 1px solid #8ebb68;
+	background: #dcedc8;
 }
 
 .order-notes {
-	color: #947140;
-	background: #fffbc9;
-	border: 1px solid #f0dca1;
+	background: #fff9c4;
+}
+
+.swat-table-view .swat-table-view-spanning-column td {
+	padding: 0 0 4px;
+	border-top: 0;
 }
 
 .is-cancelled .cancelled {
-	background: #a40000;
-	color: #fff;
-	padding: 2px 4px;
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
+	background: #f44336;
+	color: rgba(255,255,255,0.54);
+	padding: 2px 6px;
 	border-radius: 2px;
 }

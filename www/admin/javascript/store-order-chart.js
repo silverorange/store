@@ -12,16 +12,14 @@ function StoreOrderChart(id, data) {
 		}
 
 		function showTooltip(x, y, contents) {
-			$('<div id="tooltip">' + contents + '</div>').css({
-				position: 'absolute',
-				display: 'none',
-				top: y - 25,
-				left: x + 5,
-				border: '1px solid #f0dca1',
-				padding: '2px',
-				'background-color': '#fffbc9',
-				color: '#947140',
-			}).appendTo("body").fadeIn(200);
+			$('<div id="tooltip">' + contents + '</div>')
+				.addClass('store-order-chart-tooltip')
+				.css({
+					top: y - 25,
+					left: x + 5,
+				})
+				.appendTo("body")
+				.fadeIn(200);
 		}
 
 		var chart = $.plot($("#" + id), data, {
@@ -54,8 +52,19 @@ function StoreOrderChart(id, data) {
 			legend: {
 				container: '#' + id + '_legend',
 				noColumns: 2
-			}
-			});
+			},
+			colors: [ '#aed581', '#689f38' ]
+		});
+
+		$('#' + id + '_legend .legendColorBox > div').css({
+			padding: '0',
+			border: '0',
+			borderRadius: '2px',
+			overflow: 'hidden'
+		});
+		$('#' + id + '_legend .legendColorBox > div > div').css({
+			borderWidth: '8px'
+		});
 
 		$(window).resize(function() {
 			chart.resize();
