@@ -80,8 +80,6 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 		}
 
 		$this->ui->loadFromXML($this->getUiXml());
-
-		$view = $this->ui->getWidget('index_view');
 	}
 
 	// }}}
@@ -160,7 +158,6 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 					$ds->country_gross_total = $row->gross_total;
 					$ds->country_shipping_total = $row->shipping_total;
 					$ds->region_title = $provstate_row->provstate_title;
-					$ds->locale_id = 'en_US';
 
 					$store->add($ds);
 				}
@@ -184,7 +181,6 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 				$ds->country_gross_total = $other_gross_total;
 				$ds->country_shipping_total = $other_shipping_total;
 				$ds->region_title = $row->country_title;
-				$ds->locale_id = 'en_US';
 
 				$store->add($ds);
 			}
