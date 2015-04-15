@@ -209,12 +209,12 @@ class StoreSalesByRegionReportIndex extends AdminIndex
 	{
 		$sql = 'select count(Orders.id) as num_orders, Locale.region,
 				sum(OrderCommissionTotalView.commission_total) as subtotal,
-				extract(year from convertTZ(%s, %s)) as year
+				extract(year from convertTZ(%1$s, %2$s)) as year
 			from Orders
 				inner join Locale on Orders.locale = Locale.id
 				inner join OrderCommissionTotalView on
 					OrderCommissionTotalView.ordernum = Orders.id
-			where 1=1 %s
+			where %1$s is not null %3$s
 			group by Locale.region, year';
 
 		$sql = sprintf(
