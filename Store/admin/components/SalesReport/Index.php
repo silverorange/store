@@ -85,10 +85,14 @@ class StoreSalesReportIndex extends AdminIndex
 	protected function appendRegionColumns(SwatTableView $view,
 		StoreRegionWrapper $regions)
 	{
+		$include_region_in_title = (count($regions) > 1);
+
 		foreach ($regions as $region) {
 			$created_column = new SwatTableViewColumn('created_'.$region->id);
 			$created_column->title = sprintf(
-				Store::_('%s Created Orders'),
+				($include_region_in_title)
+					? Store::_('%s Created Orders')
+					: Store::_('Created Orders'),
 				$region->title
 			);
 
@@ -106,7 +110,9 @@ class StoreSalesReportIndex extends AdminIndex
 			);
 
 			$cancelled_column->title = sprintf(
-				Store::_('%s Cancelled Orders'),
+				($include_region_in_title)
+					? Store::_('%s Cancelled Orders')
+					: Store::_('Cancelled Orders'),
 				$region->title
 			);
 
@@ -121,7 +127,9 @@ class StoreSalesReportIndex extends AdminIndex
 
 			$subtotal_column = new SwatTableViewColumn('subtotal_'.$region->id);
 			$subtotal_column->title = sprintf(
-				Store::_('%s Subtotal'),
+				($include_region_in_title)
+					? Store::_('%s Subtotal')
+					: Store::_('Subtotal'),
 				$region->title
 			);
 
