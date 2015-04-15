@@ -40,6 +40,10 @@ class StoreSalesByRegionGroup extends SwatTableViewGroup
 		$tr_tag->class = 'swat-table-view-group';
 		$tr_tag->open();
 
+		// First renderer in this group is displayes in the header. All other
+		// renderers are displayed in table cells in the footer. The first
+		// cell in the footer (second renderer) has a colspan so the columns
+		// of the footer equal the columns of the table-view.
 		$first = true;
 		$second = true;
 		foreach ($this->renderers as $renderer) {
