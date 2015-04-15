@@ -52,6 +52,10 @@ class StoreSalesByRegionGroup extends SwatTableViewGroup
 				continue;
 			}
 
+			if (!$renderer->isVisible()) {
+				continue;
+			}
+
 			$td_tag = new SwatHtmlTag('td', $this->getTdAttributes());
 			$td_tag->class = implode(
 				' ',
