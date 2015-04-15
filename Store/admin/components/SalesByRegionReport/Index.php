@@ -58,6 +58,7 @@ class StoreSalesByRegionReportIndex extends AdminIndex
 		$view->getColumn('shipping')->visible = $this->show_shipping;
 	}
 
+	// }}}
 	// {{{ protected function getTableModel()
 
 	protected function getTableModel(SwatView $view)
