@@ -15,16 +15,16 @@
 						<property name="stock_id">document</property>
 					</object>
 				</object>
-				<object class="SwatTableViewColumn" id="gross">
-					<property name="title" translatable="yes">Gross Sales</property>
-					<object class="SwatMoneyCellRenderer">
-						<property name="value" type="data">gross_total</property>
-					</object>
-				</object>
 				<object class="SwatTableViewColumn" id="shipping">
 					<property name="title" translatable="yes">Shipping</property>
 					<object class="SwatMoneyCellRenderer">
 						<property name="value" type="data">shipping_total</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn" id="gross">
+					<property name="title" translatable="yes">Gross Sales</property>
+					<object class="SwatMoneyCellRenderer">
+						<property name="value" type="data">gross_total</property>
 					</object>
 				</object>
 			</widget>
