@@ -130,7 +130,8 @@ class StoreSalesByRegionReportIndex extends AdminIndex
 				extract(year from convertTZ(Orders.createdate, %1$s))
 					as year
 			from Orders
-			where Orders.createdate is not null %2$s
+			where Orders.createdate is not null
+				and Orders.cancel_date is null %2$s
 			group by year',
 			$this->app->db->quote(
 				$this->app->default_time_zone->getName(),
