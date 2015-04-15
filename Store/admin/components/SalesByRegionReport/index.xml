@@ -3,7 +3,7 @@
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
 	<widget class="SwatFrame" id="index_frame">
-		<property name="title" translatable="yes">Yearly Sales Reports By Region</property>
+		<property name="title" translatable="yes">Yearly Sales By Region</property>
 		<widget class="SwatForm" id="index_form">
 			<widget class="SwatTableView" id="index_view">
 				<object class="SwatTableViewColumn" id="date">
