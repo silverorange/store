@@ -69,6 +69,7 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 		}
 
 		$this->start_date = new SwatDate('now', $this->app->default_time_zone);
+		$this->start_date->setTime(0, 0, 0);
 		$this->start_date->toUTC();
 		if ($this->start_date->setDate($id, 1, 1) === false) {
 			throw new AdminNotFoundException(
