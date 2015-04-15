@@ -113,7 +113,11 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 	protected function getTableModel(SwatView $view)
 	{
 		$end_date = clone $this->start_date;
-		$end_date->addYears(1);
+		$end_date->setDate(
+			$this->start_date->getYear() + 1,
+			$this->start_date->getMonth(),
+			$this->start_date->getDay()
+		);
 		$end_date->toUTC();
 
 		$sql = sprintf(
@@ -197,7 +201,11 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 	protected function getProvStateModel($country_id)
 	{
 		$end_date = clone $this->start_date;
-		$end_date->addYears(1);
+		$end_date->setDate(
+			$this->start_date->getYear() + 1,
+			$this->start_date->getMonth(),
+			$this->start_date->getDay()
+		);
 		$end_date->toUTC();
 
 		$sql = sprintf(
