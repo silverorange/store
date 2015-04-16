@@ -1,0 +1,42 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
+<swatml>
+	<widget class="SwatMessageDisplay" id="message_display" />
+	<widget class="SwatFrame" id="index_frame">
+		<property name="title" translatable="yes">Yearly Sales By Region</property>
+		<widget class="SwatForm" id="index_form">
+			<widget class="SwatTableView" id="index_view">
+				<object class="StoreSalesByRegionGroup" id="country">
+					<property name="group_by">country_group</property>
+					<object class="SwatTextCellRenderer">
+						<property name="text" type="data">country_group</property>
+					</object>
+					<object class="SwatMoneyCellRenderer" id="shipping_total">
+						<property name="value" type="data">country_shipping_total</property>
+					</object>
+					<object class="SwatMoneyCellRenderer" id="gross_total">
+						<property name="value" type="data">country_gross_total</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn" id="region">
+					<property name="title" translatable="yes">Region</property>
+					<object class="SwatTextCellRenderer">
+						<property name="text" type="data">region_title</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn" id="shipping">
+					<property name="title" translatable="yes">Shipping</property>
+					<object class="SwatMoneyCellRenderer">
+						<property name="value" type="data">shipping_total</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn" id="gross">
+					<property name="title" translatable="yes">Gross Sales</property>
+					<object class="SwatMoneyCellRenderer">
+						<property name="value" type="data">gross_total</property>
+					</object>
+				</object>
+			</widget>
+		</widget>
+	</widget>
+</swatml>
