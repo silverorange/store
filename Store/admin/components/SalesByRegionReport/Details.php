@@ -129,16 +129,13 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 				inner join OrderAddress
 					on Orders.billing_address = OrderAddress.id
 				inner join Country on OrderAddress.Country = Country.id
-			where convertTZ(Orders.createdate, %1$s) >= %2$s
-				and convertTZ(Orders.createdate, %1$s) < %3$s
+			where Orders.createdate >= %1$s
+				and Orders.createdate < %2$s
 				and Orders.cancel_date is null
-				%4$s
+				and Orders.total > 0
+				%3$s
 			group by Country.id, Country.title
 			order by Country.title',
-			$this->app->db->quote(
-				$this->app->default_time_zone->getName(),
-				'text'
-			),
 			$this->app->db->quote($this->start_date->getDate(), 'date'),
 			$this->app->db->quote($end_date->getDate(), 'date'),
 			$this->getInstanceWhereClause()
@@ -214,23 +211,20 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 				Country.title as country_title,
 				Country.id as country_id,
 				ProvState.title as provstate_title
-			from Orders
-				inner join OrderAddress
+			from ProvState
+				left outer join OrderAddress
+					on OrderAddress.provstate = ProvState.id
+				left outer join Orders
 					on Orders.billing_address = OrderAddress.id
-				inner join Country on OrderAddress.Country = Country.id
-				left outer join ProvState
-					on OrderAddress.ProvState = ProvState.id
-			where Country.id = %5$s
-				and convertTZ(Orders.createdate, %1$s) >= %2$s
-				and convertTZ(Orders.createdate, %1$s) < %3$s
-				and Orders.cancel_date is null
-				%4$s
+						and Orders.createdate >= %1$s
+						and Orders.createdate < %2$s
+						and Orders.cancel_date is null
+						and Orders.total > 0
+						%3$s
+				inner join Country on ProvState.Country = Country.id
+			where Country.id = %4$s
 			group by Country.id, Country.title, ProvState.title
 			order by Country.title, ProvState.title',
-			$this->app->db->quote(
-				$this->app->default_time_zone->getName(),
-				'text'
-			),
 			$this->app->db->quote($this->start_date->getDate(), 'date'),
 			$this->app->db->quote($end_date->getDate(), 'date'),
 			$this->getInstanceWhereClause(),
