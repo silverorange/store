@@ -6,13 +6,22 @@
 		<property name="title" translatable="yes">Yearly Sales By Region</property>
 		<widget class="SwatForm" id="index_form">
 			<widget class="SwatTableView" id="index_view">
-				<object class="SwatTableViewColumn" id="date">
-					<property name="title" translatable="yes">Year</property>
-					<object class="AdminTitleLinkCellRenderer">
-						<property name="text" type="data">title</property>
-						<property name="link">SalesByRegionReport/Details?id=%s</property>
-						<property name="link_value" type="data">id</property>
-						<property name="stock_id">document</property>
+				<object class="StoreSalesByRegionGroup" id="country">
+					<property name="group_by">country_group</property>
+					<object class="SwatTextCellRenderer">
+						<property name="text" type="data">country_group</property>
+					</object>
+					<object class="SwatMoneyCellRenderer" id="shipping_total">
+						<property name="value" type="data">country_shipping_total</property>
+					</object>
+					<object class="SwatMoneyCellRenderer" id="gross_total">
+						<property name="value" type="data">country_gross_total</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn" id="region">
+					<property name="title" translatable="yes">Region</property>
+					<object class="SwatTextCellRenderer">
+						<property name="text" type="data">region_title</property>
 					</object>
 				</object>
 				<object class="SwatTableViewColumn" id="shipping">
