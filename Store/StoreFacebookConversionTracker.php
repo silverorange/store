@@ -63,7 +63,7 @@ class StoreFacebookConversionTracker
 
 	public function showTrackingPixel($show_tracking_pixel)
 	{
-		$this->show_tracking_pixel = show_tracking_pixel;
+		$this->show_tracking_pixel = (boolean)$show_tracking_pixel;
 	}
 
 	// }}}
