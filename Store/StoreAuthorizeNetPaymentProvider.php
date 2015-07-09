@@ -37,7 +37,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	protected $mode;
 
 	protected $invoice_number_prefix;
-	protected $order_description_prefix = Store::_('Order ');
+	protected $order_description_prefix = Store::_('Order');
 
 	// }}}
 	// {{{ public function __construct()
@@ -290,13 +290,16 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 
 	protected function getInvoiceNumber(StoreOrder $order)
 	{
-		// Authorize.net only allows 20 chars for invoice number.
+		// Authorize.net only allows 20 chars for invoice number. Get max length
+		// from 19 to account for the space added.
 		$invoice_number_prefix = $this->truncateField(
 			$this->invoice_number_prefix,
-			20-strlen($order->id)
+			19-strlen($order->id)
 		);
 
-		return $invoice_number_prefix.$order->id;
+		return ($invoice_number_prefix = '')
+			? $order->id
+			: $invoice_number_prefix.' '.$order->id;
 	}
 
 	// }}}
@@ -304,7 +307,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 
 	protected function getOrderDescription(StoreOrder $order)
 	{
-		return $this->order_description_prefix.$order->id;
+		return $this->order_description_prefix.' '.$order->id;
 	}
 
 	// }}}
