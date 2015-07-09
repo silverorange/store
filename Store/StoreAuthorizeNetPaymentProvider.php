@@ -37,7 +37,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	protected $mode;
 
 	protected $invoice_number_prefix;
-	protected $order_description_prefix = Store::_('Order');
+	protected $order_description_prefix;
 
 	// }}}
 	// {{{ public function __construct()
@@ -102,10 +102,10 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 			$this->invoice_number_prefix = $parameters['invoice_number_prefix'];
 		}
 
-		if (isset($parameters['order_description_prefix'])) {
-			$this->order_description_prefix =
-				$parameters['order_description_prefix'];
-		}
+		$this->order_description_prefix =
+			(isset($parameters['order_description_prefix']))
+			? $parameters['order_description_prefix']
+			: Store::_('Order');
 	}
 
 	// }}}
