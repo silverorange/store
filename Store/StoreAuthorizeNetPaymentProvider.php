@@ -49,7 +49,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	 *
 	 * <kbd>mode</kbd>                     - optional. Transaction mode to use.
 	 *                                       Must be one of either 'live' or
-     *                                       'sandbox'. If not specified,
+	 *                                       'sandbox'. If not specified,
 	 *                                       'sandbox' is used.
 	 * <kbd>login_id</kbd>                 - required. Login identifier for
 	 *                                       Authorize.net authentication.
@@ -294,7 +294,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 		// from 19 to account for the space added.
 		$invoice_number_prefix = $this->truncateField(
 			$this->invoice_number_prefix,
-			19-strlen($order->id)
+			19 - strlen($order->id)
 		);
 
 		return ($invoice_number_prefix = '')
