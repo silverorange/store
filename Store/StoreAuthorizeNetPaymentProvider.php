@@ -36,7 +36,16 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	 */
 	protected $mode;
 
+	/**
+	 * @var string
+	 * @see AuthorizeNetPaymentProvider::__construct()
+	 */
 	protected $invoice_number_prefix;
+
+	/**
+	 * @var string
+	 * @see AuthorizeNetPaymentProvider::__construct()
+	 */
 	protected $order_description_prefix;
 
 	// }}}
