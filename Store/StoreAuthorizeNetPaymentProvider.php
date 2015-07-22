@@ -36,6 +36,18 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	 */
 	protected $mode;
 
+	/**
+	 * @var string
+	 * @see AuthorizeNetPaymentProvider::__construct()
+	 */
+	protected $invoice_number_prefix;
+
+	/**
+	 * @var string
+	 * @see AuthorizeNetPaymentProvider::__construct()
+	 */
+	protected $order_description_prefix;
+
 	// }}}
 	// {{{ public function __construct()
 
@@ -44,13 +56,25 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	 *
 	 * Available parameters are:
 	 *
-	 * <kbd>mode</kbd>            - optional. Transaction mode to use. Must be
-	 *                              one of either 'live' or 'sandbox'. If not
-	 *                              specified, 'sandbox' is used.
-	 * <kbd>login_id</kbd>        - required. Login identifier for
-	 *                              Authorize.net authentication.
-	 * <kbd>transaction_key</kbd> - required. Transaction key for
-	 *                              Authorize.net authentication.
+	 * <kbd>mode</kbd>                     - optional. Transaction mode to use.
+	 *                                       Must be one of either 'live' or
+	 *                                       'sandbox'. If not specified,
+	 *                                       'sandbox' is used.
+	 * <kbd>login_id</kbd>                 - required. Login identifier for
+	 *                                       Authorize.net authentication.
+	 * <kbd>transaction_key</kbd>          - required. Transaction key for
+	 *                                       Authorize.net authentication.
+	 * <kbd>invoice_number_prefix</kbd>    - optional. Prefix for the invoice
+	 *                                       number sent to Authorize.net. Will
+	 *                                       be trimmed to 20 charecters minus
+	 *                                       the length of the order id to fix
+	 *                                       Authorize.net field length
+	 *                                       requirements.
+	 * <kbd>order_description_prefix</kbd> - optional. Prefix for the order id
+	 *                                       used for the description sent to
+	 *                                       Authorize.net. If not set, the
+	 *                                       order id will be prefixed with
+	 *                                       "Order".
 	 *
 	 * @throws StoreException if a required parameter is missing or if the
 	 *                        'mode' paramater is not valid.
@@ -82,6 +106,15 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 		$this->login_id        = $parameters['login_id'];
 		$this->transaction_key = $parameters['transaction_key'];
 		$this->mode            = $parameters['mode'];
+
+		if (isset($parameters['invoice_number_prefix'])) {
+			$this->invoice_number_prefix = $parameters['invoice_number_prefix'];
+		}
+
+		$this->order_description_prefix =
+			(isset($parameters['order_description_prefix']))
+			? $parameters['order_description_prefix']
+			: Store::_('Order');
 	}
 
 	// }}}
@@ -239,7 +272,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 		);
 
 		// Order fields
-		$request->invoice_num = $order->id;
+		$request->invoice_num = $this->getInvoiceNumber($order);
 		$request->description = $this->truncateField(
 			$this->getOrderDescription($order),
 			255
@@ -262,14 +295,28 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
+	// {{{ protected function getInvoiceNumber()
+
+	protected function getInvoiceNumber(StoreOrder $order)
+	{
+		// Authorize.net only allows 20 chars for invoice number. Get max length
+		// from 19 to account for the space added.
+		$invoice_number_prefix = $this->truncateField(
+			$this->invoice_number_prefix,
+			19 - strlen($order->id)
+		);
+
+		return ($invoice_number_prefix == '')
+			? $order->id
+			: $invoice_number_prefix.' '.$order->id;
+	}
+
+	// }}}
 	// {{{ protected function getOrderDescription()
 
 	protected function getOrderDescription(StoreOrder $order)
 	{
-		return sprintf(
-			'Order %s',
-			$order->id
-		);
+		return $this->order_description_prefix.' '.$order->id;
 	}
 
 	// }}}
