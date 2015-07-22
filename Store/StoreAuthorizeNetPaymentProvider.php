@@ -306,7 +306,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 			19 - strlen($order->id)
 		);
 
-		return ($invoice_number_prefix = '')
+		return ($invoice_number_prefix == '')
 			? $order->id
 			: $invoice_number_prefix.' '.$order->id;
 	}
