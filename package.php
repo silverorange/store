@@ -70,6 +70,7 @@ $package->addPackageDepWithChannel('optional', 'Services_StrikeIron', 'pear.silv
 $package->addPackageDepWithChannel('optional', 'Payment_PayPal_SOAP', 'pear.php.net', '0.2.1');
 $package->addPackageDepWithChannel('optional', 'Services_Akismet2', 'pear.php.net', '0.2.0');
 $package->addPackageDepWithChannel('optional', 'AuthorizeNet', 'pear.silverorange.com', '1.1.1so2');
+$package->addPackageDepWithChannel('optional', 'Braintree', 'pear.silverorange.com', '3.5.0');
 $package->addExtensionDep('required', 'imagick', '2.0.0');
 $package->generateContents();
 
