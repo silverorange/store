@@ -759,7 +759,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 			if ($this->handleException($e)) {
 				// log the exception
-				if (!($e instanceof SwatException)) {
+				if (!$e instanceof SwatException) {
 					$e = new SwatException($e);
 				}
 				$e->processAndContinue();
