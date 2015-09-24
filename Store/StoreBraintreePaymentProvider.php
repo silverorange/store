@@ -155,9 +155,10 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 		try {
 			$this->setConfig();
 			$response = Braintree_Transaction::sale($request);
-
-			if (count($response->errors) > 0) {
-				foreach ($response->errors as $error) {
+			if (!$response->success) {
+				if (count($response->errors) > 0) {
+					foreach ($response->errors as $error) {
+					}
 				}
 			}
 		} catch (Braintree_Exception $e) {
@@ -185,7 +186,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 		$transaction = new $class_name();
 
 		$transaction->transaction_type = StorePaymentRequest::TYPE_PAY;
-		$transaction->transaction_id = $response->transaction_id;
+		$transaction->transaction_id = $response->transaction->id;
 		$transaction->createdate = new SwatDate();
 		$transaction->createdate->toUTC();
 
