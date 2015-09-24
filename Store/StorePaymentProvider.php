@@ -565,7 +565,7 @@ abstract class StorePaymentProvider
 
 	public function getExceptionMessageId(Exception $e)
 	{
-		return null
+		return null;
 	}
 
 	// }}}
