@@ -159,8 +159,8 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 		// check for errors and throw exception
 		if (!$response->success) {
 			throw new StorePaymentBraintreeException(
-				0,
 				'Error processing Braintree payment.',
+				0,
 				$response
 			);
 		}
