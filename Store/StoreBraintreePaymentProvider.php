@@ -3,7 +3,6 @@
 require_once 'Swat/SwatString.php';
 require_once 'Store/StorePaymentProvider.php';
 require_once 'Store/StorePaymentRequest.php';
-require_once 'Store/exceptions/StorePaymentBraintreeException.php';
 require_once 'Braintree.php';
 
 /**
@@ -154,8 +153,17 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 		}
 
 		// do transaction
-		$this->setConfig();
-		$response = Braintree_Transaction::sale($request);
+		try {
+			$this->setConfig();
+			$response = Braintree_Transaction::sale($request);
+
+			if (count($response->errors) > 0) {
+				foreach ($response->errors as $error) {
+				}
+			}
+		} catch (Braintree_Exception $e) {
+			throw $e;
+		}
 
 /*
 		if ($response->declined || $response->error) {
@@ -245,15 +253,23 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 			$line2 = $lines[1];
 		}
 
+		$names = $this->getAddressNames($address);
+
 		$request = array(
 			'countryCodeAlpha2' => $address->country->id,
-			'firstName' => $this->truncateField($address->first_name, 255),
-			'lastName' => $this->truncateField($address->last_name, 255),
+			'firstName' => $this->truncateField($names['first'], 255),
 			'locality' => $this->truncateField($address->city, 255),
 			'postalCode' => $address->postal_code,
 			'region' => $this->truncateField($region, 255),
 			'streetAddress' => $this->truncateField($line1, 255),
 		);
+
+		if ($names['last'] != '') {
+			$request['lastName'] = $this->truncateField(
+				$address->last_name,
+				255
+			);
+		}
 
 		if ($line2 != '') {
 			$request['extendedAddress'] = $this->truncateField($line2, 255);
@@ -271,12 +287,15 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 
 	protected function getCustomer(StoreAccount $account)
 	{
-		$name = explode(' ', $account->fullname, 2);
+		$names = $this->getAccountNames($account);
 
 		$request = array(
-			'firstName' => $this->truncateField($name[0], 255),
-			'lastName' => $this->truncateField($name[1], 255),
+			'firstName' => $this->truncateField($names['first'], 255),
 		);
+
+		if ($names['last'] != '') {
+			$request['lastName'] = $this->truncateField($names['last'], 255);
+		}
 
 		if ($account->company != '') {
 			$request['company'] = $this->truncateField($account->company, 255);
@@ -302,6 +321,22 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
+	// {{{ protected function getAddressNames()
+
+	protected function getAddressNames(StoreOrderAddress $address)
+	{
+		return $this->splitFullName($address->fullname);
+	}
+
+	// }}}
+	// {{{ protected function getAccountNames()
+
+	protected function getAccountNames(StoreAccount $account)
+	{
+		return $this->splitFullName($account->fullname);
+	}
+
+	// }}}
 	// {{{ protected function formatCurrency()
 
 	/**
@@ -312,7 +347,6 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 	protected function formatCurrency($value)
 	{
 		$value = round($value, 2);
-
 		return number_format($value, 2, '.', '');
 	}
 
@@ -325,6 +359,27 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 		$content = str_replace('  •  ', ' - ', $content);
 		$content = html_entity_decode($content, ENT_QUOTES, 'ISO-8859-1');
 		return $content;
+	}
+
+	// }}}
+	// {{{ private function splitFullname()
+
+	private function splitFullname($full_name)
+	{
+		$parts = explode(' ', $full_name, 2);
+
+		if (count($parts) === 2) {
+			$first = trim($parts[0]);
+			$last = trim($parts[1]);
+		} else {
+			$first = trim($parts[0]);
+			$last = '';
+		}
+
+		return array(
+			'first' => $first,
+			'last'  => $last,
+		);
 	}
 
 	// }}}
