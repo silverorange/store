@@ -3,6 +3,7 @@
 require_once 'Swat/SwatString.php';
 require_once 'Store/StorePaymentProvider.php';
 require_once 'Store/StorePaymentRequest.php';
+require_once 'Store/exceptions/StorePaymentBraintreeException.php';
 require_once 'Braintree.php';
 
 /**
@@ -152,36 +153,18 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 		}
 
 		// do transaction
-		try {
-			$this->setConfig();
-			$response = Braintree_Transaction::sale($request);
-			if (!$response->success) {
-				if (count($response->errors) > 0) {
-					foreach ($response->errors as $error) {
-					}
-				}
-			}
-		} catch (Braintree_Exception $e) {
-			throw $e;
-		}
+		$this->setConfig();
+		$response = Braintree_Transaction::sale($request);
 
-/*
-		if ($response->declined || $response->error) {
-			$text = sprintf(
-				'Code: %s, Reason Code: %s, Message: %s',
-				$response->response_code,
-				$response->response_reason_code,
-				$response->response_reason_text
-			);
-
-			throw new StorePaymentAuthorizeNetException(
-				$text,
-				$response->response_code,
-				$response->response_reason_code,
+		// check for errors and throw exception
+		if (!$response->success) {
+			throw new StorePaymentBraintreeException(
+				0,
+				'Error processing Braintree payment.',
 				$response
 			);
 		}
-*/
+
 		$class_name = SwatDBClassMap::get('StorePaymentMethodTransaction');
 		$transaction = new $class_name();
 
@@ -191,6 +174,63 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 		$transaction->createdate->toUTC();
 
 		return $transaction;
+	}
+
+	// }}}
+	// {{{ public function getExceptionMessageId()
+
+	public function getExceptionMessageId(Exception $e)
+	{
+		if ($e instanceof Braintree_Exception_Authentication ||
+			$e instanceof Braintree_Exception_Authorization ||
+			$e instanceof Braintree_Exception_Configuration ||
+			$e instanceof Braintree_Exception_ServerError ||
+			$e instanceof Braintree_Exception_UpgradeRequired) {
+			return 'payment-error';
+		}
+
+		if ($e instanceof StorePaymentBraintreeException) {
+			$response = $e->getResponse();
+
+			// data validation error(s)
+			if ($response->errors->deepSize() > 0) {
+				return 'payment-error';
+			}
+
+			$transaction = $response->transaction;
+
+			// transaction error
+			if ($transaction->status === 'processor_declined') {
+				switch ($transaction->processorResponseCode) {
+				case 2004: // expired card
+					return 'card-expired';
+				case 2010: // issuer declined CVV
+					return 'card-verification-value';
+				case 2060: // address verification failed
+					return 'address-mismatch';
+				default:
+					return 'payment-error';
+				}
+			}
+
+			if ($transaction->status === 'settlement_declined') {
+				return 'payment-error';
+			}
+
+			if ($transaction->status === 'gateway_rejected') {
+				switch ($transaction->gatewayRejectionReason) {
+				case 'avs':
+					return 'address-mismatch';
+				case 'avs_and_cvv':
+				case 'cvv':
+					return 'card-verification-value';
+				default:
+					return 'payment-error';
+				}
+			}
+		}
+
+		return null;
 	}
 
 	// }}}
