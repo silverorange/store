@@ -711,6 +711,14 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	}
 
 	// }}}
+	// {{{ protected function getPaymentProvider()
+
+	protected function getPaymentProvider()
+	{
+		return null;
+	}
+
+	// }}}
 	// {{{ protected function save()
 
 	protected function save()
@@ -966,20 +974,34 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	 */
 	protected function handleException(Exception $e)
 	{
-		if ($e instanceof StorePaymentAddressException) {
-			$message = $this->getErrorMessage('address-mismatch');
-		} elseif ($e instanceof StorePaymentPostalCodeException) {
-			$message = $this->getErrorMessage('postal-code-mismatch');
-		} elseif ($e instanceof StorePaymentCvvException) {
-			$message = $this->getErrorMessage('card-verification-value');
-		} elseif ($e instanceof StorePaymentCardTypeException) {
-			$message = $this->getErrorMessage('card-type');
-		} elseif ($e instanceof StorePaymentTotalException) {
-			$message = $this->getErrorMessage('total');
-		} elseif ($e instanceof StorePaymentException) {
-			$message = $this->getErrorMessage('payment-error');
-		} else {
-			$message = $this->getErrorMessage('order-error');
+		$message = null;
+
+		// try to handle exception using payment provider
+		$provider = $this->getPaymentProvider();
+		if ($provider instanceof StorePaymentProvider) {
+			$message_id = $provider->getExceptionMessageId($e);
+			if ($message_id !== null) {
+				$message = $this->getErrorMessage($error_message);
+			}
+		}
+
+		// exception was not handled by payment provider
+		if (!$message instanceof SwatMessage) {
+			if ($e instanceof StorePaymentAddressException) {
+				$message = $this->getErrorMessage('address-mismatch');
+			} elseif ($e instanceof StorePaymentPostalCodeException) {
+				$message = $this->getErrorMessage('postal-code-mismatch');
+			} elseif ($e instanceof StorePaymentCvvException) {
+				$message = $this->getErrorMessage('card-verification-value');
+			} elseif ($e instanceof StorePaymentCardTypeException) {
+				$message = $this->getErrorMessage('card-type');
+			} elseif ($e instanceof StorePaymentTotalException) {
+				$message = $this->getErrorMessage('total');
+			} elseif ($e instanceof StorePaymentException) {
+				$message = $this->getErrorMessage('payment-error');
+			} else {
+				$message = $this->getErrorMessage('order-error');
+			}
 		}
 
 		$message_display = $this->ui->getWidget('message_display');

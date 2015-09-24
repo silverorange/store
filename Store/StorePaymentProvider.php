@@ -561,6 +561,14 @@ abstract class StorePaymentProvider
 	}
 
 	// }}}
+	// {{{ public function getExceptionMessageId()
+
+	public function getExceptionMessageId(Exception $e)
+	{
+		return null
+	}
+
+	// }}}
 }
 
 ?>
