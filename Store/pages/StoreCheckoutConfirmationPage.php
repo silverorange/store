@@ -981,7 +981,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		if ($provider instanceof StorePaymentProvider) {
 			$message_id = $provider->getExceptionMessageId($e);
 			if ($message_id !== null) {
-				$message = $this->getErrorMessage($error_message);
+				$message = $this->getErrorMessage($message_id);
 			}
 		}
 
