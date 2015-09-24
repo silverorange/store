@@ -136,7 +136,6 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 				$card_number,
 				$card_verification_value
 			),
-			'merchantAccountId' => $this->merchant_id,
 			'options' => array(
 				'submitForSettlement' => true,
 			),
