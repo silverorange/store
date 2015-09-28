@@ -357,18 +357,18 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 	protected function getCustomFields(StoreOrder $order) {
 	{
 		return array(
-			'site_title'    => $this->truncateField($this->site_title, 255)
-			'product_title' => $this->truncateField(
-				$this->getProductTitle($order),
+			'site_title' => $this->truncateField($this->site_title, 255)
+			'order_description' => $this->truncateField(
+				$this->getOrderDescription($order),
 				255
 			),
 		);
 	}
 
 	// }}}
-	// {{{ protected function getProductTitle()
+	// {{{ protected function getOrderDescription()
 
-	protected function getProductTitle(StoreOrder $order)
+	protected function getOrderDescription(StoreOrder $order)
 	{
 		return Store::_('Online Order');
 	}
