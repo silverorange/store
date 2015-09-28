@@ -354,7 +354,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 	// }}}
 	// {{{ protected function getCustomFields()
 
-	protected function getCustomFields(StoreOrder $order) {
+	protected function getCustomFields(StoreOrder $order)
 	{
 		return array(
 			'site_title' => $this->truncateField($this->site_title, 255),
