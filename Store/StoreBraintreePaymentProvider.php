@@ -357,7 +357,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 	protected function getCustomFields(StoreOrder $order) {
 	{
 		return array(
-			'site_title' => $this->truncateField($this->site_title, 255)
+			'site_title' => $this->truncateField($this->site_title, 255),
 			'order_description' => $this->truncateField(
 				$this->getOrderDescription($order),
 				255
