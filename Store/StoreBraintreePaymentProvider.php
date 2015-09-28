@@ -39,7 +39,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 	/**
 	 * @var string
 	 */
-	protected $order_id_prefix;
+	protected $site_title = '';
 
 	// }}}
 	// {{{ public function __construct()
@@ -49,21 +49,16 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 	 *
 	 * Available parameters are:
 	 *
-	 * <kbd>environment</kbd>     - optional. Transaction mode to use.
-	 *                              Must be one of either 'production'
-	 *                              or 'sandbox'. If not specified,
-	 *                              'sandbox' is used.
-	 * <kbd>merchant_id</kbd>     - required. Login identifier for
-	 *                              authentication.
-	 * <kbd>public_key</kbd>      - required. Transaction key for
-	 *                              authentication.
-	 * <kbd>private_key</kbd>     - required. Transaction key for
-	 *                              authentication.
-	 * <kbd>order_id_prefix</kbd> - optional. Prefix for the order id
-	 *                              used for the description sent to
-	 *                              Authorize.net. If not set, the
-	 *                              order id will be prefixed with
-	 *                              "Order".
+	 * <kbd>environment</kbd> - optional. Transaction mode to use. Must be one
+	 *                          of either 'production' or 'sandbox'. If not
+	 *                          specified, 'sandbox' is used.
+	 * <kbd>merchant_id</kbd> - required. Login identifier for authentication.
+	 * <kbd>public_key</kbd>  - required. Transaction key for authentication.
+	 * <kbd>private_key</kbd> - required. Transaction key for authentication.
+	 * <kbd>site_title</kbd>  - optional. The title of the site which is
+	 *                          placing the order. If specified, the order id
+	 *                          will be prefixed with the title. If not
+	 *                          specified, order ids will not be prefixed.
 	 *
 	 * @throws StoreException if a required parameter is missing or if the
 	 *                        'environment' paramater is not valid.
@@ -102,10 +97,9 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 		$this->private_key = $parameters['private_key'];
 		$this->environment = $parameters['environment'];
 
-		$this->order_id_prefix =
-			(isset($parameters['order_id_prefix']))
-			? $parameters['order_id_prefix']
-			: Store::_('Order');
+		if (isset($parameters['site_title'])) {
+			$this->site_title = $parameters['site_title'];
+		}
 	}
 
 	// }}}
@@ -150,6 +144,11 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 
 		if ($order->account instanceof StoreAccount) {
 			$request['customer'] = $this->getCustomer($order->account);
+		}
+
+		$custom_fields = $this->getCustomFields($order);
+		if (count($custom_fields) > 0) {
+			$request['customFields'] = $custom_fields;
 		}
 
 		// do transaction
@@ -353,11 +352,39 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
+	// {{{ protected function getCustomFields()
+
+	protected function getCustomFields(StoreOrder $order) {
+	{
+		return array(
+			'site_title'    => $this->truncateField($this->site_title, 255)
+			'product_title' => $this->truncateField(
+				$this->getProductTitle($order),
+				255
+			),
+		);
+	}
+
+	// }}}
+	// {{{ protected function getProductTitle()
+
+	protected function getProductTitle(StoreOrder $order)
+	{
+		return Store::_('Online Order');
+	}
+
+	// }}}
 	// {{{ protected function getOrderId()
 
 	protected function getOrderId(StoreOrder $order)
 	{
-		return $this->order_id_prefix.' '.$order->id;
+		$order_id = (string)$order->id;
+
+		if ($this->site_title != '') {
+			$order_id = $this->site_title.' '.$order_id;
+		}
+
+		return $order_id;
 	}
 
 	// }}}
