@@ -123,6 +123,12 @@ class Store
 			'authorizenet.login_id'              => null,
 			'authorizenet.transaction_key'       => null,
 			'authorizenet.invoice_number_prefix' => null,
+
+			// Braintree Payments
+			'braintree.environment' => 'sandbox',
+			'braintree.merchant_id' => null,
+			'braintree.public_key'  => null,
+			'braintree.private_key' => null,
 		);
 	}
 
