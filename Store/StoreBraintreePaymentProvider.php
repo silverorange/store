@@ -207,8 +207,25 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 					return 'card-verification-value';
 				case 2060: // address verification failed
 					return 'address-mismatch';
+				case 2005: // invalid number
+				case 2008: // account length error
+				case 2007: // no account
+				case 2009: // invalid issuer
+				case 2051: // card number does not match payment type
+					return 'card-not-valid';
+				case 2014: // card type not enabled
+					return 'card-type';
+				case 2000: // do not honor
+				case 2001: // insufficient funds
+				case 2002: // limit exceeded
+				case 2003: // activity limit exceeded
+				case 2015: // not allowed (reason unknown)
+				case 2041: // declined (call for approval)
+				case 2044: // declined (call issuer)
+				case 2046: // declined (customer needs to call bank)
+				case 2057: // issuer or cardholder restricted
 				default:
-					return 'payment-error';
+					return 'card-error';
 				}
 			}
 
