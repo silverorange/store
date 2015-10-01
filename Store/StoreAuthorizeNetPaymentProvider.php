@@ -327,6 +327,8 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 		$request->card_num = $card_number;
 		$request->card_code = $card_verification_value;
 
+		// Default expiry date to use if no date is found in a payment method
+		// is 1 month ago (expired).
 		$date = new SwatDate('-1 month');
 
 		foreach ($order->payment_methods as $payment_method) {

@@ -253,9 +253,12 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 	protected function getCreditCard(
 		StoreOrder $order, $card_number, $card_verification_value = null)
 	{
-		// get expiration date and cardholder from payment method
+		// Default expiry date to use if no date is found in a payment method
+		// is 1 month ago (expired).
 		$date = new SwatDate('-1 month');
 		$name = '';
+
+		// Get expiration date and cardholder from payment method.
 		foreach ($order->payment_methods as $payment_method) {
 			if ($payment_method->getUnencryptedCardNumber() == $card_number) {
 				$date = clone $payment_method->card_expiry;
