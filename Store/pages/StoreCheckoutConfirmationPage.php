@@ -1019,18 +1019,21 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	 *
 	 * Message ids defined in this class are:
 	 *
-	 * <kbd>address-mismatch</kdb>        - for address AVS mismatch errors.
-	 * <kbd>postal-code-mismatch</kbd>    - for postal/zip code AVS mismatch
-	 *                                      errors.
-	 * <kbd>card-verification-value</kbd> - for CVS, CV2 mismatch errors.
-	 * <kbd>card-type</kbd>               - for invalid card types.
-	 * <kbd>card-expired</kbd>            - for expired cards.
-	 * <kbd>total</kbd>                   - for invalid order totals.
-	 * <kbd>payment-error</kbd>           - for an unknown error processing
-	 *                                      payment for orders.
-	 * <kbd>order-error</kbd>             - for an unknown error saving orders.
 	 * <kbd>account-error</kbd>           - for an unknown error saving
 	 *                                      accounts.
+	 * <kbd>address-mismatch</kdb>        - for address AVS mismatch errors.
+	 * <kbd>card-not-valid</kbd>          - for declined cards or invalid card
+	 *                                      numbers.
+	 * <kbd>card-error</kbd>              - for unknown issue with card payment.
+	 * <kbd>card-expired</kbd>            - for expired cards.
+	 * <kbd>card-type</kbd>               - for invalid card types.
+	 * <kbd>card-verification-value</kbd> - for CVS, CV2 mismatch errors.
+	 * <kbd>order-error</kbd>             - for an unknown error saving orders.
+	 * <kbd>payment-error</kbd>           - for an unknown error processing
+	 *                                      payment for orders.
+	 * <kbd>postal-code-mismatch</kbd>    - for postal/zip code AVS mismatch
+	 *                                      errors.
+	 * <kbd>total</kbd>                   - for invalid order totals.
 	 *
 	 * Subclasses may define additional error message ids.
 	 *
@@ -1087,6 +1090,49 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 					'</a>'
 				).
 				' '.$this->getErrorMessageNoFunds().
+				'</p><p>'.$this->getErrorMessageContactUs().'</p>';
+
+			break;
+		case 'card-error':
+			$message = $this->getPrototypeErrorMessage($message_id);
+			$message->secondary_content =
+				'<p>'.sprintf(
+					Store::_(
+						'%sCard was not accepted.%s Your order has %snot%s '.
+						'been placed. Please %suse a different card%s to '.
+						'continue.'
+					),
+					'<strong>',
+					'</strong>',
+					'<em>',
+					'</em>',
+					'<a href="'.$this->getCheckoutEditLink(
+						'confirmation/paymentmethod'
+					).'">',
+					'</a>'
+				).
+				' '.$this->getErrorMessageNoFunds().
+				'</p><p>'.$this->getErrorMessageContactUs().'</p>';
+
+			break;
+		case 'card-not-valid':
+			$message = $this->getPrototypeErrorMessage($message_id);
+			$message->secondary_content =
+				'<p>'.sprintf(
+					Store::_(
+						'%sCard number is not valid.%s Your order has '.
+						'%snot%s been placed. Please %suse a different card%s '.
+						'to continue.'
+					),
+					'<strong>',
+					'</strong>',
+					'<em>',
+					'</em>',
+					'<a href="'.$this->getCheckoutEditLink(
+						'confirmation/paymentmethod'
+					).'">',
+					'</a>'
+				).
 				'</p><p>'.$this->getErrorMessageContactUs().'</p>';
 
 			break;
