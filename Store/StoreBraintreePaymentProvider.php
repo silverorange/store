@@ -197,9 +197,10 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 			}
 
 			$transaction = $response->transaction;
+			$status = $transaction->status;
 
 			// transaction error
-			if ($transaction->status === 'processor_declined') {
+			if ($status === Braintree_Transaction::PROCESSOR_DECLINED) {
 				switch ($transaction->processorResponseCode) {
 				case 2004: // expired card
 					return 'card-expired';
@@ -229,16 +230,16 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 				}
 			}
 
-			if ($transaction->status === 'settlement_declined') {
+			if ($status === Braintree_Transaction::SETTLEMENT_DECLINED) {
 				return 'payment-error';
 			}
 
-			if ($transaction->status === 'gateway_rejected') {
+			if ($status === Braintree_Transaction::GATEWAY_REJECTED) {
 				switch ($transaction->gatewayRejectionReason) {
-				case 'avs':
+				case Braintree_Transaction::AVS:
 					return 'address-mismatch';
-				case 'avs_and_cvv':
-				case 'cvv':
+				case Braintree_Transaction::AVS_AND_CVV:
+				case Braintree_Transaction::CVV:
 					return 'card-verification-value';
 				default:
 					return 'payment-error';
