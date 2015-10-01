@@ -1048,6 +1048,17 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$message = null;
 
 		switch ($message_id) {
+		case 'account-error':
+			$message = $this->getPrototypeErrorMessage($message_id);
+			$message->secondary_content = sprintf(
+				Store::_(
+					'Your account has not been created, your order has '.
+					'%snot%s been placed, and you have %snot%s been billed. '.
+					'The error has been recorded and we will attempt to '.
+					'fix it as quickly as possible.'),
+					'<em>', '</em>', '<em>', '</em>');
+
+			break;
 		case 'address-mismatch':
 			$message = $this->getPrototypeErrorMessage($message_id);
 			$message->secondary_content =
@@ -1063,51 +1074,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 					'</em>',
 					'<a href="'.$this->getCheckoutEditLink(
 						'confirmation/billingaddress'
-					).'">',
-					'</a>'
-				).
-				' '.$this->getErrorMessageNoFunds().
-				'</p><p>'.$this->getErrorMessageContactUs().'</p>';
-
-			break;
-		case 'postal-code-mismatch':
-			$message = $this->getPrototypeErrorMessage($message_id);
-			$message->secondary_content =
-				'<p>'.sprintf(
-					Store::_(
-						'%sBilling postal code / ZIP code does not correspond '.
-						'with card number.%s Your order has %snot%s been '.
-						'placed. Please edit your %sbilling address%s and try '.
-						'again.'
-					),
-					'<strong>',
-					'</strong>',
-					'<em>',
-					'</em>',
-					'<a href="'.$this->getCheckoutEditLink(
-						'confirmation/billingaddress'
-					).'">',
-					'</a>'
-				).
-				' '.$this->getErrorMessageNoFunds().
-				'</p><p>'.$this->getErrorMessageContactUs().'</p>';
-
-			break;
-		case 'card-error':
-			$message = $this->getPrototypeErrorMessage($message_id);
-			$message->secondary_content =
-				'<p>'.sprintf(
-					Store::_(
-						'%sCard was not accepted.%s Your order has %snot%s '.
-						'been placed. Please %suse a different card%s to '.
-						'continue.'
-					),
-					'<strong>',
-					'</strong>',
-					'<em>',
-					'</em>',
-					'<a href="'.$this->getCheckoutEditLink(
-						'confirmation/paymentmethod'
 					).'">',
 					'</a>'
 				).
@@ -1136,15 +1102,35 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 				'</p><p>'.$this->getErrorMessageContactUs().'</p>';
 
 			break;
-		case 'card-verification-value':
+		case 'card-error':
 			$message = $this->getPrototypeErrorMessage($message_id);
 			$message->secondary_content =
 				'<p>'.sprintf(
 					Store::_(
-						'%sCard security code does not match card '.
-						'number.%s Your order has %snot%s been placed. '.
-						'Please %scorrect your card security code%s to '.
+						'%sCard was not accepted.%s Your order has %snot%s '.
+						'been placed. Please %suse a different card%s to '.
 						'continue.'
+					),
+					'<strong>',
+					'</strong>',
+					'<em>',
+					'</em>',
+					'<a href="'.$this->getCheckoutEditLink(
+						'confirmation/paymentmethod'
+					).'">',
+					'</a>'
+				).
+				' '.$this->getErrorMessageNoFunds().
+				'</p><p>'.$this->getErrorMessageContactUs().'</p>';
+
+			break;
+		case 'card-expired':
+			$message = $this->getPrototypeErrorMessage($message_id);
+			$message->secondary_content =
+				'<p>'.sprintf(
+					Store::_(
+						'%sCard is expired.%s Your order has %snot%s been '.
+						'placed. Please %suse a different card%s to continue.'
 					),
 					'<strong>',
 					'</strong>',
@@ -1182,13 +1168,15 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 				'</p><p>'.$this->getErrorMessageContactUs().'</p>';
 
 			break;
-		case 'card-expired':
+		case 'card-verification-value':
 			$message = $this->getPrototypeErrorMessage($message_id);
 			$message->secondary_content =
 				'<p>'.sprintf(
 					Store::_(
-						'%sCard is expired.%s Your order has %snot%s been '.
-						'placed. Please %suse a different card%s to continue.'
+						'%sCard security code does not match card '.
+						'number.%s Your order has %snot%s been placed. '.
+						'Please %scorrect your card security code%s to '.
+						'continue.'
 					),
 					'<strong>',
 					'</strong>',
@@ -1196,6 +1184,55 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 					'</em>',
 					'<a href="'.$this->getCheckoutEditLink(
 						'confirmation/paymentmethod'
+					).'">',
+					'</a>'
+				).
+				' '.$this->getErrorMessageNoFunds().
+				'</p><p>'.$this->getErrorMessageContactUs().'</p>';
+
+			break;
+		case 'order-error':
+			// TODO: only display account stuff if account was created
+			$message = $this->getPrototypeErrorMessage($message_id);
+			$message->secondary_content = sprintf(
+				Store::_(
+					'Your account has been created, but your order has '.
+					'%snot%s been placed and you have %snot%s been billed. '.
+					'The error has been recorded and and we will attempt '.
+					'to fix it as quickly as possible.'),
+					'<em>', '</em>', '<em>', '</em>');
+
+			break;
+		case 'payment-error':
+			$message = $this->getPrototypeErrorMessage($message_id);
+			$message->secondary_content =
+				sprintf(
+				Store::_('%sYour payment details are correct, but we were '.
+					'unable to process your payment.%s Your order has %snot%s '.
+					'been placed. Please %scontact us%s to complete your '.
+					'order.'),
+					'<strong>', '</strong>', '<em>', '</em>',
+					'<a href="'.$this->getEditLink('about/contact').'">',
+					'</a>').
+				' '.$this->getErrorMessageNoFunds();
+
+			break;
+		case 'postal-code-mismatch':
+			$message = $this->getPrototypeErrorMessage($message_id);
+			$message->secondary_content =
+				'<p>'.sprintf(
+					Store::_(
+						'%sBilling postal code / ZIP code does not correspond '.
+						'with card number.%s Your order has %snot%s been '.
+						'placed. Please edit your %sbilling address%s and try '.
+						'again.'
+					),
+					'<strong>',
+					'</strong>',
+					'<em>',
+					'</em>',
+					'<a href="'.$this->getCheckoutEditLink(
+						'confirmation/billingaddress'
 					).'">',
 					'</a>'
 				).
@@ -1225,43 +1262,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 					'</a>').
 				' '.$this->getErrorMessageNoFunds().
 				'</p>';
-
-			break;
-		case 'payment-error':
-			$message = $this->getPrototypeErrorMessage($message_id);
-			$message->secondary_content =
-				sprintf(
-				Store::_('%sYour payment details are correct, but we were '.
-					'unable to process your payment.%s Your order has %snot%s '.
-					'been placed. Please %scontact us%s to complete your '.
-					'order.'),
-					'<strong>', '</strong>', '<em>', '</em>',
-					'<a href="'.$this->getEditLink('about/contact').'">',
-					'</a>').
-				' '.$this->getErrorMessageNoFunds();
-
-			break;
-		case 'order-error':
-			// TODO: only display account stuff if account was created
-			$message = $this->getPrototypeErrorMessage($message_id);
-			$message->secondary_content = sprintf(
-				Store::_(
-					'Your account has been created, but your order has '.
-					'%snot%s been placed and you have %snot%s been billed. '.
-					'The error has been recorded and and we will attempt '.
-					'to fix it as quickly as possible.'),
-					'<em>', '</em>', '<em>', '</em>');
-
-			break;
-		case 'account-error':
-			$message = $this->getPrototypeErrorMessage($message_id);
-			$message->secondary_content = sprintf(
-				Store::_(
-					'Your account has not been created, your order has '.
-					'%snot%s been placed, and you have %snot%s been billed. '.
-					'The error has been recorded and we will attempt to '.
-					'fix it as quickly as possible.'),
-					'<em>', '</em>', '<em>', '</em>');
 
 			break;
 		}
