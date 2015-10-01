@@ -117,6 +117,12 @@ class Store
 			'adwords.client_id'        => null,
 			// developer token used for automating ad creation
 			'adwords.developer_token'  => null,
+
+			// Authorize.net
+			'authorizenet.mode'                  => 'sandbox',
+			'authorizenet.login_id'              => null,
+			'authorizenet.transaction_key'       => null,
+			'authorizenet.invoice_number_prefix' => null,
 		);
 	}
 
