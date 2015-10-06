@@ -175,65 +175,6 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
-	// {{{ public static function getExceptionMessageId()
-
-	/**
-	 * Get a message id from a StorePaymentAuthorizeNetException
-	 *
-	 * @param StorePaymentAuthorizeNetException $e the payment exception
-	 *
-	 * @return string the error message id.
-	 *
-	 * @see StoreCheckoutConfirmationPage::getErrorMessage()
-	 */
-	public static function getExceptionMessageId(
-		StorePaymentAuthorizeNetException $e)
-	{
-		// declined responses
-		if ($e->getCode() === AuthorizeNetResponse::DECLINED) {
-			switch ($e->getReasonCode()) {
-			case 2:
-			case 3:
-			case 4:
-			case 28:  // card type not accepted
-			case 37:  // card number invalid
-			case 45:  // blacklisted cvv or address data
-			case 200: // FDC Omaha
-			case 315:
-			case 316:
-			case 317:
-				return 'card-not-valid';
-
-			// AVS address mismatch
-			case 27:
-			case 127: // for 'void' action
-				return 'address-mismatch';
-
-			// CVV2 mismatch
-			case 44:
-				return 'card-verification-value';
-
-			// Everything else gets a generic error.
-			default:
-				return 'card-error';
-			}
-
-		// error responses
-		} else {
-			switch ($e->getReasonCode()) {
-			case 6:
-			case 17:  // card type not accepted
-			case 128: // blocked by issuing bank
-				return 'card-not-valid';
-
-			// Everything else gets a generic error.
-			default:
-				return 'card-error';
-			}
-		}
-	}
-
-	// }}}
 	// {{{ public function getAIMPaymentRequest()
 
 	/**
@@ -295,6 +236,59 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
+	// {{{ public function getExceptionMessageId()
+
+	public function getExceptionMessageId(Exception $e)
+	{
+		if ($e instanceof StorePaymentAuthorizeNetException) {
+			// declined responses
+			if ($e->getCode() === AuthorizeNetResponse::DECLINED) {
+				switch ($e->getReasonCode()) {
+				case 2:
+				case 3:
+				case 4:
+				case 28:  // card type not accepted
+				case 37:  // card number invalid
+				case 45:  // blacklisted cvv or address data
+				case 200: // FDC Omaha
+				case 315:
+				case 316:
+				case 317:
+					return 'card-not-valid';
+
+				// AVS address mismatch
+				case 27:
+				case 127: // for 'void' action
+					return 'address-mismatch';
+
+				// CVV2 mismatch
+				case 44:
+					return 'card-verification-value';
+
+				// Everything else gets a generic error.
+				default:
+					return 'card-error';
+				}
+
+			// error responses
+			} else {
+				switch ($e->getReasonCode()) {
+				case 6:
+				case 17:  // card type not accepted
+				case 128: // blocked by issuing bank
+					return 'card-not-valid';
+
+				// Everything else gets a generic error.
+				default:
+					return 'card-error';
+				}
+			}
+		}
+
+		return null;
+	}
+
+	// }}}
 	// {{{ protected function getInvoiceNumber()
 
 	protected function getInvoiceNumber(StoreOrder $order)
@@ -333,6 +327,8 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 		$request->card_num = $card_number;
 		$request->card_code = $card_verification_value;
 
+		// Default expiry date to use if no date is found in a payment method
+		// is 1 month ago (expired).
 		$date = new SwatDate('-1 month');
 
 		foreach ($order->payment_methods as $payment_method) {
