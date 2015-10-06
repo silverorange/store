@@ -22,10 +22,10 @@
   <email>mike@silverorange.com</email>
   <active>yes</active>
  </lead>
- <date>2015-07-23</date>
- <time>15:06:43</time>
+ <date>2015-10-06</date>
+ <time>09:19:37</time>
  <version>
-  <release>2.1.12</release>
+  <release>2.1.13</release>
   <api>0.0.1</api>
  </version>
  <stability>
@@ -613,6 +613,7 @@ see ChangeLog
      <file name="StorePayment3DSecureUnsupportedException.php" role="php" />
      <file name="StorePaymentAddressException.php" role="php" />
      <file name="StorePaymentAuthorizeNetException.php" role="php" />
+     <file name="StorePaymentBraintreeException.php" role="php" />
      <file name="StorePaymentCardTypeException.php" role="php" />
      <file name="StorePaymentCvvException.php" role="php" />
      <file name="StorePaymentErrorException.php" role="php" />
@@ -737,6 +738,7 @@ see ChangeLog
     <file name="StoreAuthorizeNetPaymentProvider.php" role="php" />
     <file name="StoreBingShoppingGenerator.php" role="php" />
     <file name="StoreBingShoppingUploader.php" role="php" />
+    <file name="StoreBraintreePaymentProvider.php" role="php" />
     <file name="StoreCacheTableUpdater.php" role="php" />
     <file name="StoreCardExpiryEntry.php" role="php" />
     <file name="StoreCardInceptionEntry.php" role="php" />
@@ -1025,20 +1027,25 @@ see ChangeLog
     <channel>pear.silverorange.com</channel>
     <min>1.1.1so2</min>
    </package>
+   <package>
+    <name>Braintree</name>
+    <channel>pear.silverorange.com</channel>
+    <min>3.5.0</min>
+   </package>
   </optional>
  </dependencies>
  <phprelease />
  <changelog>
   <release>
    <version>
-    <release>2.1.12</release>
+    <release>2.1.13</release>
     <api>0.0.1</api>
    </version>
    <stability>
     <release>stable</release>
     <api>stable</api>
    </stability>
-   <date>2015-07-23</date>
+   <date>2015-10-06</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
    <notes>
 see ChangeLog
