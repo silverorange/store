@@ -285,6 +285,12 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 			}
 		}
 
+		// No name on payment method, try to get name from billing address
+		if ($name == '' &&
+			$order->billing_address instanceof StoreOrderAddress) {
+			$name = $order->billing_address->getFullname();
+		}
+
 		return array(
 			'cardholderName' => $this->truncateField($name, 175),
 			'cvv'            => $card_verification_value,
