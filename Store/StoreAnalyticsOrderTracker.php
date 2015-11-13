@@ -76,7 +76,8 @@ class StoreAnalyticsOrderTracker
 			$shipping_total,
 			$city,
 			$provstate_title,
-			$country_title);
+			$country_title
+		);
 	}
 
 	// }}}
@@ -109,9 +110,9 @@ class StoreAnalyticsOrderTracker
 		$title = '';
 
 		if ($address instanceof StoreOrderAddress) {
-			$title = ($address->provstate === null) ?
-				$address->provstate_other :
-				$address->provstate->title;
+			$title = ($address->provstate === null)
+				? $address->provstate_other :
+				: $address->provstate->title;
 		}
 
 		return $title;
@@ -152,8 +153,9 @@ class StoreAnalyticsOrderTracker
 
 	protected function getShippingTotal()
 	{
-		return ($this->order->shipping_total == 0) ?
-			'' : $this->order->shipping_total;
+		return ($this->order->shipping_total == 0)
+			? ''
+			: $this->order->shipping_total;
 	}
 
 	// }}}
@@ -168,7 +170,8 @@ class StoreAnalyticsOrderTracker
 			$this->getProductTitle($item),
 			$this->getCategoryTitle($item),
 			$item->price,
-			$item->quantity);
+			$item->quantity
+		);
 	}
 
 	// }}}
