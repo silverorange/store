@@ -54,7 +54,7 @@ $package->addReplacement('Store/Store.php', 'pear-config', '@DATA-DIR@', 'data_d
 $package->setPhpDep('5.3.0');
 $package->setPearinstallerDep('1.4.0');
 $package->addPackageDepWithChannel('required', 'Swat', 'pear.silverorange.com', '2.1.6');
-$package->addPackageDepWithChannel('required', 'Site', 'pear.silverorange.com', '2.1.14');
+$package->addPackageDepWithChannel('required', 'Site', 'pear.silverorange.com', '2.1.43');
 $package->addPackageDepWithChannel('required', 'Admin', 'pear.silverorange.com', '1.3.70');
 $package->addPackageDepWithChannel('required', 'XML_RPCAjax', 'pear.silverorange.com', '1.0.9');
 $package->addPackageDepWithChannel('required', 'Yui', 'pear.silverorange.com', '1.0.6');
