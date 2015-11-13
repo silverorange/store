@@ -11,6 +11,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @link      http://www.google.com/support/googleanalytics/bin/answer.py?answer=55528
  * @link      http://code.google.com/apis/analytics/docs/gaJS/gaJSApiEcommerce.html
+ * @link      https://developers.facebook.com/docs/facebook-pixel
  */
 class StoreAnalyticsOrderTracker
 {
@@ -43,6 +44,28 @@ class StoreAnalyticsOrderTracker
 		}
 
 		$commands[] = '_trackTrans';
+
+		return $commands;
+	}
+
+	// }}}
+	// {{{ public function getFacebookPixelCommands()
+
+	public function getFacebookPixelCommands()
+	{
+		$commands = array($this->getGoogleAnalyticsOrderCommand());
+		foreach ($this->order->items as $item) {
+			$commands[] = $this->getGoogleAnalyticsOrderItemCommand($item);
+		}
+
+		$commands[] = array(
+			'track',
+			'Purchase',
+			sprintf(
+				"{value: '%s', currency: 'USD'}",
+				$this->getOrderTotal()
+			)
+		);
 
 		return $commands;
 	}
