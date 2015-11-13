@@ -37,9 +37,9 @@ class StoreAnalyticsOrderTracker
 
 	public function getGoogleAnalyticsCommands()
 	{
-		$commands = array($this->getOrderCommand());
+		$commands = array($this->getGoogleAnalyticsOrderCommand());
 		foreach ($this->order->items as $item) {
-			$commands[] = $this->getOrderItemCommand($item);
+			$commands[] = $this->getGoogleAnalyticsOrderItemCommand($item);
 		}
 
 		$commands[] = '_trackTrans';
@@ -48,9 +48,9 @@ class StoreAnalyticsOrderTracker
 	}
 
 	// }}}
-	// {{{ protected function getOrderCommand()
+	// {{{ protected function getGoogleAnalyticsOrderCommand()
 
-	protected function getOrderCommand()
+	protected function getGoogleAnalyticsOrderCommand()
 	{
 		$address         = $this->getAddress();
 		$city            = $this->getCity($address);
@@ -157,9 +157,9 @@ class StoreAnalyticsOrderTracker
 	}
 
 	// }}}
-	// {{{ protected function getOrderItemCommand()
+	// {{{ protected function getGoogleAnalyticsOrderItemCommand()
 
-	protected function getOrderItemCommand(StoreOrderItem $item)
+	protected function getGoogleAnalyticsOrderItemCommand(StoreOrderItem $item)
 	{
 		return array(
 			'_addItem',
