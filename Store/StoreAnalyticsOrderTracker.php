@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @link      http://www.google.com/support/googleanalytics/bin/answer.py?answer=55528
  * @link      http://code.google.com/apis/analytics/docs/gaJS/gaJSApiEcommerce.html
- * @link      https://developers.facebook.com/docs/facebook-pixel
+ * @link      https://developers.facebook.com/docs/facebook-pixel/api-reference
  */
 class StoreAnalyticsOrderTracker
 {
