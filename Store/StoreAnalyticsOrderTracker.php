@@ -33,9 +33,9 @@ class StoreAnalyticsOrderTracker
 	}
 
 	// }}}
-	// {{{ public function getCommands()
+	// {{{ public function getGoogleAnalyticsCommands()
 
-	public function getCommands()
+	public function getGoogleAnalyticsCommands()
 	{
 		$commands = array($this->getOrderCommand());
 		foreach ($this->order->items as $item) {
