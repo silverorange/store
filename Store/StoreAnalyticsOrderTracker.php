@@ -59,7 +59,6 @@ class StoreAnalyticsOrderTracker
 		}
 
 		$commands[] = array(
-			'track',
 			'Purchase',
 			sprintf(
 				"{value: '%s', currency: 'USD'}",
