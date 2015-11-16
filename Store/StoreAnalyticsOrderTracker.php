@@ -53,11 +53,6 @@ class StoreAnalyticsOrderTracker
 
 	public function getFacebookPixelCommands()
 	{
-		$commands = array($this->getGoogleAnalyticsOrderCommand());
-		foreach ($this->order->items as $item) {
-			$commands[] = $this->getGoogleAnalyticsOrderItemCommand($item);
-		}
-
 		$commands[] = array(
 			'Purchase',
 			sprintf(
