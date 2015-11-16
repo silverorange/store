@@ -134,7 +134,7 @@ class StoreAnalyticsOrderTracker
 
 		if ($address instanceof StoreOrderAddress) {
 			$title = ($address->provstate === null)
-				? $address->provstate_other :
+				? $address->provstate_other
 				: $address->provstate->title;
 		}
 
