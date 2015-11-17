@@ -55,9 +55,9 @@ class StoreAnalyticsOrderTracker
 	{
 		$commands[] = array(
 			'Purchase',
-			sprintf(
-				"{value: %s, currency: 'USD'}",
-				$this->getOrderTotal()
+			array(
+				'value'    => $this->getOrderTotal(),
+				'currency' => 'USD',
 			)
 		);
 
