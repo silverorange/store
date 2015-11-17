@@ -5,10 +5,14 @@ require_once 'Swat/SwatString.php';
 /**
  * Generates Facebook conversion tracking code.
  *
- * @package   Store
- * @copyright 2015 silverorange
- * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
- * @link      https://developers.facebook.com/docs/ads-for-websites/drive-conversions
+ * @package    Store
+ * @copyright  2015 silverorange
+ * @license    http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ * @link       https://developers.facebook.com/docs/ads-for-websites/drive-conversions
+ * @deprecated Use SiteAnalyticsModule's Facebook Pixel support alongside
+ *             StoreAnalyticsOrderTracker for better analytics. This style
+ *             conversion tracking will be discontinued by Facebook before the
+ *             end of 2016.
  */
 class StoreFacebookConversionTracker
 {

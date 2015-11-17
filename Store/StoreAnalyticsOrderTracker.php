@@ -11,6 +11,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @link      http://www.google.com/support/googleanalytics/bin/answer.py?answer=55528
  * @link      http://code.google.com/apis/analytics/docs/gaJS/gaJSApiEcommerce.html
+ * @link      https://developers.facebook.com/docs/facebook-pixel/api-reference
  */
 class StoreAnalyticsOrderTracker
 {
@@ -33,13 +34,13 @@ class StoreAnalyticsOrderTracker
 	}
 
 	// }}}
-	// {{{ public function getCommands()
+	// {{{ public function getGoogleAnalyticsCommands()
 
-	public function getCommands()
+	public function getGoogleAnalyticsCommands()
 	{
-		$commands = array($this->getOrderCommand());
+		$commands = array($this->getGoogleAnalyticsOrderCommand());
 		foreach ($this->order->items as $item) {
-			$commands[] = $this->getOrderItemCommand($item);
+			$commands[] = $this->getGoogleAnalyticsOrderItemCommand($item);
 		}
 
 		$commands[] = '_trackTrans';
@@ -48,9 +49,26 @@ class StoreAnalyticsOrderTracker
 	}
 
 	// }}}
-	// {{{ protected function getOrderCommand()
+	// {{{ public function getFacebookPixelCommands()
 
-	protected function getOrderCommand()
+	public function getFacebookPixelCommands()
+	{
+		$commands[] = array(
+			'track',
+			'Purchase',
+			array(
+				'value'    => $this->getOrderTotal(),
+				'currency' => 'USD',
+			)
+		);
+
+		return $commands;
+	}
+
+	// }}}
+	// {{{ protected function getGoogleAnalyticsOrderCommand()
+
+	protected function getGoogleAnalyticsOrderCommand()
 	{
 		$address         = $this->getAddress();
 		$city            = $this->getCity($address);
@@ -76,7 +94,8 @@ class StoreAnalyticsOrderTracker
 			$shipping_total,
 			$city,
 			$provstate_title,
-			$country_title);
+			$country_title
+		);
 	}
 
 	// }}}
@@ -109,9 +128,9 @@ class StoreAnalyticsOrderTracker
 		$title = '';
 
 		if ($address instanceof StoreOrderAddress) {
-			$title = ($address->provstate === null) ?
-				$address->provstate_other :
-				$address->provstate->title;
+			$title = ($address->provstate === null)
+				? $address->provstate_other
+				: $address->provstate->title;
 		}
 
 		return $title;
@@ -152,14 +171,15 @@ class StoreAnalyticsOrderTracker
 
 	protected function getShippingTotal()
 	{
-		return ($this->order->shipping_total == 0) ?
-			'' : $this->order->shipping_total;
+		return ($this->order->shipping_total == 0)
+			? ''
+			: $this->order->shipping_total;
 	}
 
 	// }}}
-	// {{{ protected function getOrderItemCommand()
+	// {{{ protected function getGoogleAnalyticsOrderItemCommand()
 
-	protected function getOrderItemCommand(StoreOrderItem $item)
+	protected function getGoogleAnalyticsOrderItemCommand(StoreOrderItem $item)
 	{
 		return array(
 			'_addItem',
@@ -168,7 +188,8 @@ class StoreAnalyticsOrderTracker
 			$this->getProductTitle($item),
 			$this->getCategoryTitle($item),
 			$item->price,
-			$item->quantity);
+			$item->quantity
+		);
 	}
 
 	// }}}
