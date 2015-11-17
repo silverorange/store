@@ -54,6 +54,7 @@ class StoreAnalyticsOrderTracker
 	public function getFacebookPixelCommands()
 	{
 		$commands[] = array(
+			'track',
 			'Purchase',
 			array(
 				'value'    => $this->getOrderTotal(),
