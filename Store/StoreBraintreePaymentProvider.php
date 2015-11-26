@@ -164,15 +164,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 			);
 		}
 
-		$class_name = SwatDBClassMap::get('StorePaymentMethodTransaction');
-		$transaction = new $class_name();
-
-		$transaction->transaction_type = StorePaymentRequest::TYPE_PAY;
-		$transaction->transaction_id = $response->transaction->id;
-		$transaction->createdate = new SwatDate();
-		$transaction->createdate->toUTC();
-
-		return $transaction;
+		return $this->createPaymentMethodTransaction($response->transaction);
 	}
 
 	// }}}
@@ -248,6 +240,24 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 		}
 
 		return null;
+	}
+
+	// }}}
+	// {{{ protected function createPaymentMethodTransaction()
+
+	protected function createPaymentMethodTransaction(
+		Braintree_Transaction $external_transaction,
+		$type = StorePaymentRequest::TYPE_PAY)
+	{
+		$class_name = SwatDBClassMap::get('StorePaymentMethodTransaction');
+		$transaction = new $class_name();
+
+		$transaction->transaction_type = $type;
+		$transaction->transaction_id = $external_transaction->id;
+		$transaction->createdate = new SwatDate();
+		$transaction->createdate->toUTC();
+
+		return $transaction;
 	}
 
 	// }}}
