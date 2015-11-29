@@ -189,6 +189,11 @@ abstract class StoreApplication extends SiteWebApplication
 		$list = parent::getSecureSourceList();
 		$list[] = '^checkout.*';
 		$list[] = '^account.*';
+		$list[] = sprintf(
+			'^%s.*',
+			SwatString::minimizeEntities($this->config->uri->account_login)
+		);
+
 		return $list;
 	}
 
