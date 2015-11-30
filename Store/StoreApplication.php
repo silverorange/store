@@ -191,7 +191,7 @@ abstract class StoreApplication extends SiteWebApplication
 		$list[] = '^account.*';
 		$list[] = sprintf(
 			'^%s.*',
-			preg_quote($this->config->uri->account_login)
+			$this->config->uri->account_login
 		);
 
 		return $list;
