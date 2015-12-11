@@ -11,6 +11,7 @@ require_once 'Admin/pages/AdminIndex.php';
 require_once 'Store/dataobjects/StoreCountryWrapper.php';
 require_once 'Store/dataobjects/StoreRegionWrapper.php';
 require_once 'Store/admin/components/SalesByRegionReport/include/StoreSalesByRegionGroup.php';
+require_once 'Store/admin/components/SalesByRegionReport/include/StoreSalesByRegionTaxationStartDate.php';
 
 /**
  * Displays sales split by region for a year
@@ -40,28 +41,17 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 	 */
 	protected $detail_countries = null;
 
+	/**
+	 * @var StoreSalesByRegionTaxationStartDate
+	 */
+	protected $taxation_start_date;
+
 	// }}}
 	// {{{ protected function getUiXml()
 
 	protected function getUiXml()
 	{
 		return 'Store/admin/components/SalesByRegionReport/details.xml';
-	}
-
-	// }}}
-	// {{{ protected function getTaxStartDate()
-
-	protected function getTaxStartDate()
-	{
-		// These reports are for US tax savings on intenrational sales. This
-		// law didn't start applying to the following date.
-		$taxation_start_date = new SwatDate();
-		$taxation_start_date->setTimezone($this->app->default_time_zone);
-		$taxation_start_date->setDate(2015, 4, 14);
-		$taxation_start_date->setTime(0, 0, 0);
-		$taxation_start_date->toUTC();
-
-		return $taxation_start_date;
 	}
 
 	// }}}
@@ -96,8 +86,9 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 			);
 		}
 
-		$tax_start_date = $this->getTaxStartDate();
-		if ($this->start_date->getYear() < $tax_start_date->getYear()) {
+		$this->initTaxationStartDate();
+		if ($this->start_date->getYear() <
+			$this->taxation_start_date->getDate()->getYear()) {
 			throw new AdminNotFoundException(
 				sprintf(
 					'Unable to load report for a year prior to “%s”',
@@ -108,25 +99,20 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 
 		$this->ui->loadFromXML($this->getUiXml());
 
-		if ($this->start_date->getYear() === $tax_start_date->getYear()) {
-			$message = new SwatMessage(
-				Store::_('This report is for US taxation purposes only.')
-			);
+		$this->ui->getWidget('tax_note_message_display')->add(
+			$this->taxation_start_date->getWarningmessage(),
+			SwatMessageDisplay::DISMISS_OFF
+		);
+	}
 
-			$message->secondary_content = sprintf(
-				Store::_(
-					'It includes all sales from %s onwards. Any sales prior '.
-					'to the date fall outside the tax laws this report is '.
-					'used for and are explicitly excluded.'
-				),
-				$tax_start_date->formatLikeIntl(SwatDate::DF_DATE)
-			);
+	// }}}
+	// {{{ protected function initTaxationStartDate()
 
-			$this->ui->getWidget('tax_note_message_display')->add(
-				$message,
-				SwatMessageDisplay::DISMISS_OFF
-			);
-		}
+	protected function initTaxationStartDate()
+	{
+		$this->taxation_start_date = new StoreSalesByRegionTaxationStartDate(
+			$this->app
+		);
 	}
 
 	// }}}
@@ -138,19 +124,9 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 	{
 		parent::buildInternal();
 
-		$title_pattern = '%s';
-		$tax_start_date = $this->getTaxStartDate();
-		if ($this->start_date->getYear() === $tax_start_date->getYear()) {
-			$title_pattern.= sprintf(
-				' from %s',
-				$tax_start_date->formatLikeIntl('MMM d')
-			);
-		}
-
-		$now = new SwatDate();
-		if ($this->start_date->getYear() === $now->getYear()) {
-			$title_pattern.= ' (YTD)';
-		}
+		$title_pattern = $this->taxation_start_date->getTitlePatternFromDate(
+			$this->start_date
+		);
 
 		$report_title = sprintf(
 			$title_pattern,
@@ -202,7 +178,10 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 			order by Country.title',
 			$this->app->db->quote($this->start_date->getDate(), 'date'),
 			$this->app->db->quote($end_date->getDate(), 'date'),
-			$this->app->db->quote($this->getTaxStartDate(), 'date'),
+			$this->app->db->quote(
+				$this->taxation_start_date->getDate(),
+				'date'
+			),
 			$this->getInstanceWhereClause()
 		);
 
