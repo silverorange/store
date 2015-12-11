@@ -35,6 +35,22 @@ class StoreSalesByRegionReportIndex extends AdminIndex
 	}
 
 	// }}}
+	// {{{ protected function getTaxStartDate()
+
+	protected function getTaxStartDate()
+	{
+		// These reports are for US tax savings on intenrational sales. This
+		// law didn't start applying to the following date.
+		$taxation_start_date = new SwatDate();
+		$taxation_start_date->setTimezone($this->app->default_time_zone);
+		$taxation_start_date->setDate(2015, 4, 14);
+		$taxation_start_date->setTime(0, 0, 0);
+		$taxation_start_date->toUTC();
+
+		return $taxation_start_date;
+	}
+
+	// }}}
 
 	// init phase
 	// {{{ protected function initInternal()
@@ -43,6 +59,25 @@ class StoreSalesByRegionReportIndex extends AdminIndex
 	{
 		parent::initInternal();
 		$this->ui->loadFromXML($this->getUiXml());
+
+		$tax_start_date = $this->getTaxStartDate();
+		$message = new SwatMessage(
+			Store::_('This report is for US taxation purposes only.')
+		);
+
+		$message->secondary_content = sprintf(
+			Store::_(
+				'It includes all sales from %s onwards. Any sales prior to '.
+				'the date fall outside the tax laws this report is used for '.
+				'and are explicitly excluded.'
+			),
+			$tax_start_date->formatLikeIntl(SwatDate::DF_DATE)
+		);
+
+		$this->ui->getWidget('tax_note_message_display')->add(
+			$message,
+			SwatMessageDisplay::DISMISS_OFF
+		);
 	}
 
 	// }}}
@@ -68,7 +103,10 @@ class StoreSalesByRegionReportIndex extends AdminIndex
 
 		$first_order_date_string = SwatDB::queryOne(
 			$this->app->db,
-			'select min(createdate) from Orders'
+			sprintf(
+				'select min(createdate) from Orders where createdate >= %s',
+				$this->app->db->quote($this->getTaxStartDate(), 'date')
+			)
 		);
 
 		$first_order_date = new SwatDate($first_order_date_string);
@@ -90,10 +128,23 @@ class StoreSalesByRegionReportIndex extends AdminIndex
 			$ds->gross_total    = 0;
 			$ds->shipping_total = 0;
 
-			$ds->title          = sprintf(
-				($start_date->getYear() === $now->getYear())
-					? '%s (YTD)'
-					: '%s',
+			$taxation_start_date = $this->getTaxStartDate();
+			$taxation_start_date->setTimezone($this->app->default_time_zone);
+
+			$title_pattern = '%s';
+			if ($start_date->getYear() === $taxation_start_date->getYear()) {
+				$title_pattern.= sprintf(
+					' from %s',
+					$taxation_start_date->formatLikeIntl('MMM d')
+				);
+			}
+
+			if ($start_date->getYear() === $now->getYear()) {
+				$title_pattern.= ' (YTD)';
+			}
+
+			$ds->title = sprintf(
+				$title_pattern,
 				$start_date->formatLikeIntl(Store::_('YYYY'))
 			);
 
@@ -127,16 +178,19 @@ class StoreSalesByRegionReportIndex extends AdminIndex
 		$sql = sprintf(
 			'select sum(Orders.total) gross_total,
 				sum(Orders.shipping_total) as shipping_total,
-				extract(year from convertTZ(Orders.createdate, %1$s))
+				extract(year from convertTZ(Orders.createdate, %s))
 					as year
 			from Orders
 			where Orders.createdate is not null
-				and Orders.cancel_date is null %2$s
+				and Orders.createdate >= %s
+				and Orders.cancel_date is null
+				%s
 			group by year',
 			$this->app->db->quote(
 				$this->app->default_time_zone->getName(),
 				'text'
 			),
+			$this->app->db->quote($this->getTaxStartDate(), 'date'),
 			$this->getInstanceWhereClause()
 		);
 
