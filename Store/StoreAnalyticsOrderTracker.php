@@ -73,11 +73,18 @@ class StoreAnalyticsOrderTracker
 
 	public function getBingUETCommands()
 	{
-		$commands[] = array(
+		$command = array(
 			'ec' => 'conversion',
 			'ea' => 'purchase',
 			'gv' => $this->getOrderTotal(),
 		);
+
+		$event_label = $this->getBingUETEventLabel();
+		if ($event_label != '') {
+			$command['el'] = $event_label;
+		}
+
+		$commands[] = $command;
 
 		return $commands;
 	}
@@ -113,6 +120,14 @@ class StoreAnalyticsOrderTracker
 			$provstate_title,
 			$country_title
 		);
+	}
+
+	// }}}
+	// {{{ protected function getBingUETEventLabel()
+
+	protected function getBingUETEventLabel()
+	{
+		return '';
 	}
 
 	// }}}
