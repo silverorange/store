@@ -4,7 +4,8 @@ require_once 'Swat/SwatString.php';
 require_once 'Store/dataobjects/StoreOrder.php';
 
 /**
- * Generates Google Analytics order transaction tracking code for an order
+ * Generates order transaction tracking code for an order for Google Analytics,
+ * Facebook pixels, and the Bing Universal Event Tracker.
  *
  * @package   Store
  * @copyright 2008-2015 silverorange
@@ -12,6 +13,8 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * @link      http://www.google.com/support/googleanalytics/bin/answer.py?answer=55528
  * @link      http://code.google.com/apis/analytics/docs/gaJS/gaJSApiEcommerce.html
  * @link      https://developers.facebook.com/docs/facebook-pixel/api-reference
+ * @link      http://help.bingads.microsoft.com/#apex/3/en/56684/2
+
  */
 class StoreAnalyticsOrderTracker
 {
@@ -60,6 +63,20 @@ class StoreAnalyticsOrderTracker
 				'value'    => $this->getOrderTotal(),
 				'currency' => 'USD',
 			)
+		);
+
+		return $commands;
+	}
+
+	// }}}
+	// {{{ public function getBingUETCommands()
+
+	public function getBingUETCommands()
+	{
+		$commands[] = array(
+			'ec' => 'conversion',
+			'ea' => 'purchase',
+			'gv' => $this->getOrderTotal(),
 		);
 
 		return $commands;
