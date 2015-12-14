@@ -11,6 +11,7 @@ require_once 'Admin/pages/AdminIndex.php';
 require_once 'Store/dataobjects/StoreCountryWrapper.php';
 require_once 'Store/dataobjects/StoreRegionWrapper.php';
 require_once 'Store/admin/components/SalesByRegionReport/include/StoreSalesByRegionGroup.php';
+require_once 'Store/admin/components/SalesByRegionReport/include/StoreSalesByRegionTaxationStartDate.php';
 
 /**
  * Displays sales split by region for a year
@@ -39,6 +40,11 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 	 * @var StoreCountryWrapper
 	 */
 	protected $detail_countries = null;
+
+	/**
+	 * @var StoreSalesByRegionTaxationStartDate
+	 */
+	protected $taxation_start_date;
 
 	// }}}
 	// {{{ protected function getUiXml()
@@ -80,7 +86,33 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 			);
 		}
 
+		$this->initTaxationStartDate();
+		if ($this->start_date->getYear() <
+			$this->taxation_start_date->getDate()->getYear()) {
+			throw new AdminNotFoundException(
+				sprintf(
+					'Unable to load report for a year prior to “%s”',
+					$tax_start_date->getYear()
+				)
+			);
+		}
+
 		$this->ui->loadFromXML($this->getUiXml());
+
+		$this->ui->getWidget('tax_note_message_display')->add(
+			$this->taxation_start_date->getWarningMessage(),
+			SwatMessageDisplay::DISMISS_OFF
+		);
+	}
+
+	// }}}
+	// {{{ protected function initTaxationStartDate()
+
+	protected function initTaxationStartDate()
+	{
+		$this->taxation_start_date = new StoreSalesByRegionTaxationStartDate(
+			$this->app
+		);
 	}
 
 	// }}}
@@ -92,7 +124,14 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 	{
 		parent::buildInternal();
 
-		$report_title = $this->start_date->formatLikeIntl(Store::_('YYYY'));
+		$title_pattern = $this->taxation_start_date->getTitlePatternFromDate(
+			$this->start_date
+		);
+
+		$report_title = sprintf(
+			$title_pattern,
+			$this->start_date->formatLikeIntl(Store::_('YYYY'))
+		);
 
 		// set frame title
 		$index_frame = $this->ui->getWidget('index_frame');
@@ -131,13 +170,18 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 				inner join Country on OrderAddress.Country = Country.id
 			where Orders.createdate >= %1$s
 				and Orders.createdate < %2$s
+				and Orders.createdate >= %3$s
 				and Orders.cancel_date is null
 				and Orders.total > 0
-				%3$s
+				%4$s
 			group by Country.id, Country.title
 			order by Country.title',
 			$this->app->db->quote($this->start_date->getDate(), 'date'),
 			$this->app->db->quote($end_date->getDate(), 'date'),
+			$this->app->db->quote(
+				$this->taxation_start_date->getDate(),
+				'date'
+			),
 			$this->getInstanceWhereClause()
 		);
 

@@ -5,6 +5,7 @@
 	<widget class="SwatFrame" id="index_frame">
 		<property name="title" translatable="yes">Yearly Sales By Region</property>
 		<widget class="SwatForm" id="index_form">
+		<widget class="SwatMessageDisplay" id="tax_note_message_display" />
 			<widget class="SwatTableView" id="index_view">
 				<object class="StoreSalesByRegionGroup" id="country">
 					<property name="group_by">country_group</property>

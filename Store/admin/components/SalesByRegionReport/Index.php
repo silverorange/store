@@ -2,6 +2,7 @@
 
 require_once 'Admin/pages/AdminIndex.php';
 require_once 'Store/dataobjects/StoreRegionWrapper.php';
+require_once 'Store/admin/components/SalesByRegionReport/include/StoreSalesByRegionTaxationStartDate.php';
 
 /**
  * Displays sales summaries by year and country/provstate.
@@ -26,6 +27,11 @@ class StoreSalesByRegionReportIndex extends AdminIndex
 	 */
 	protected $show_shipping = false;
 
+	/**
+	 * @var StoreSalesByRegionTaxationStartDate
+	 */
+	protected $taxation_start_date;
+
 	// }}}
 	// {{{ protected function getUiXml()
 
@@ -43,6 +49,22 @@ class StoreSalesByRegionReportIndex extends AdminIndex
 	{
 		parent::initInternal();
 		$this->ui->loadFromXML($this->getUiXml());
+
+		$this->initTaxationStartDate();
+		$this->ui->getWidget('tax_note_message_display')->add(
+			$this->taxation_start_date->getWarningMessage(),
+			SwatMessageDisplay::DISMISS_OFF
+		);
+	}
+
+	// }}}
+	// {{{ protected function initTaxationStartDate()
+
+	protected function initTaxationStartDate()
+	{
+		$this->taxation_start_date = new StoreSalesByRegionTaxationStartDate(
+			$this->app
+		);
 	}
 
 	// }}}
@@ -68,7 +90,10 @@ class StoreSalesByRegionReportIndex extends AdminIndex
 
 		$first_order_date_string = SwatDB::queryOne(
 			$this->app->db,
-			'select min(createdate) from Orders'
+			sprintf(
+				'select min(createdate) from Orders where createdate >= %s',
+				$this->app->db->quote($this->taxation_start_date->getDate(), 'date')
+			)
 		);
 
 		$first_order_date = new SwatDate($first_order_date_string);
@@ -90,10 +115,11 @@ class StoreSalesByRegionReportIndex extends AdminIndex
 			$ds->gross_total    = 0;
 			$ds->shipping_total = 0;
 
-			$ds->title          = sprintf(
-				($start_date->getYear() === $now->getYear())
-					? '%s (YTD)'
-					: '%s',
+			$title_pattern = $this->taxation_start_date->
+				getTitlePatternFromDate($start_date);
+
+			$ds->title = sprintf(
+				$title_pattern,
 				$start_date->formatLikeIntl(Store::_('YYYY'))
 			);
 
@@ -127,15 +153,21 @@ class StoreSalesByRegionReportIndex extends AdminIndex
 		$sql = sprintf(
 			'select sum(Orders.total) gross_total,
 				sum(Orders.shipping_total) as shipping_total,
-				extract(year from convertTZ(Orders.createdate, %1$s))
+				extract(year from convertTZ(Orders.createdate, %s))
 					as year
 			from Orders
 			where Orders.createdate is not null
-				and Orders.cancel_date is null %2$s
+				and Orders.createdate >= %s
+				and Orders.cancel_date is null
+				%s
 			group by year',
 			$this->app->db->quote(
 				$this->app->default_time_zone->getName(),
 				'text'
+			),
+			$this->app->db->quote(
+				$this->taxation_start_date->getDate(),
+				'date'
 			),
 			$this->getInstanceWhereClause()
 		);
