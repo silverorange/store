@@ -318,6 +318,9 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 			$region = $address->provstate_other;
 		} elseif ($address->provstate instanceof StoreProvState) {
 			$region = $address->provstate->abbreviation;
+		} else {
+			// Some international addresses do not need a region.
+			$region = null;
 		}
 
 		$lines = explode("\n", $address->line1);
@@ -336,9 +339,12 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 			'firstName' => $this->truncateField($names['first'], 255),
 			'locality' => $this->truncateField($address->city, 255),
 			'postalCode' => $address->postal_code,
-			'region' => $this->truncateField($region, 255),
 			'streetAddress' => $this->truncateField($line1, 255),
 		);
+
+		if ($region !== null) {
+			$request['region'] = $this->truncateField($region, 255);
+		}
 
 		if ($names['last'] != '') {
 			$request['lastName'] = $this->truncateField(
