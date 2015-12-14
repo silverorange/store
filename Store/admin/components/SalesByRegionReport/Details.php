@@ -100,7 +100,7 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 		$this->ui->loadFromXML($this->getUiXml());
 
 		$this->ui->getWidget('tax_note_message_display')->add(
-			$this->taxation_start_date->getWarningmessage(),
+			$this->taxation_start_date->getWarningMessage(),
 			SwatMessageDisplay::DISMISS_OFF
 		);
 	}
