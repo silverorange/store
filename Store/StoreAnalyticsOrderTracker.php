@@ -56,7 +56,7 @@ class StoreAnalyticsOrderTracker
 
 	public function getFacebookPixelCommands()
 	{
-		$commands[] = array(
+		$command = array(
 			'track',
 			'Purchase',
 			array(
@@ -65,7 +65,7 @@ class StoreAnalyticsOrderTracker
 			)
 		);
 
-		return $commands;
+		return array($command);
 	}
 
 	// }}}
@@ -84,9 +84,7 @@ class StoreAnalyticsOrderTracker
 			$command['el'] = $event_label;
 		}
 
-		$commands[] = $command;
-
-		return $commands;
+		return array($command);
 	}
 
 	// }}}
