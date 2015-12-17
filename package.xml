@@ -22,10 +22,10 @@
   <email>mike@silverorange.com</email>
   <active>yes</active>
  </lead>
- <date>2015-12-01</date>
- <time>15:46:38</time>
+ <date>2015-12-17</date>
+ <time>11:16:27</time>
  <version>
-  <release>2.1.15</release>
+  <release>2.1.16</release>
   <api>0.0.1</api>
  </version>
  <stability>
@@ -487,6 +487,7 @@ see ChangeLog
       <dir name="SalesByRegionReport">
        <dir name="include">
         <file name="StoreSalesByRegionGroup.php" role="php" />
+        <file name="StoreSalesByRegionTaxationStartDate.php" role="php" />
        </dir> <!-- /Store/admin/components/SalesByRegionReport/include -->
        <file name="Details.php" role="php" />
        <file name="details.xml" role="php" />
@@ -944,7 +945,7 @@ see ChangeLog
    <package>
     <name>Site</name>
     <channel>pear.silverorange.com</channel>
-    <min>2.1.43</min>
+    <min>2.1.44</min>
    </package>
    <package>
     <name>Admin</name>
@@ -1038,14 +1039,14 @@ see ChangeLog
  <changelog>
   <release>
    <version>
-    <release>2.1.15</release>
+    <release>2.1.16</release>
     <api>0.0.1</api>
    </version>
    <stability>
     <release>stable</release>
     <api>stable</api>
    </stability>
-   <date>2015-12-01</date>
+   <date>2015-12-17</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
    <notes>
 see ChangeLog
