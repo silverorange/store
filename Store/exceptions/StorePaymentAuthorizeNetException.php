@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Store/exceptions/StorePaymentException.php';
-require_once 'AuthorizeNet.php';
 
 /**
  * @package   Store
