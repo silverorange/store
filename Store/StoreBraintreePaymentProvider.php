@@ -4,7 +4,6 @@ require_once 'Swat/SwatString.php';
 require_once 'Store/StorePaymentProvider.php';
 require_once 'Store/StorePaymentRequest.php';
 require_once 'Store/exceptions/StorePaymentBraintreeException.php';
-require_once 'Braintree.php';
 
 /**
  * @package   Store
