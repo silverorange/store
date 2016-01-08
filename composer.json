@@ -1,0 +1,72 @@
+{
+	"name": "silverorange/store",
+	"description": "Framework for e-commerce sites.",
+	"type": "library",
+	"keywords": [ "e-commerce", "product", "catalog" ],
+	"homepage": "https://github.com/silverorange/store",
+	"license": "LGPL-2.1",
+	"authors": [
+		{
+			"name": "Charles Waddell",
+			"email": "charles@silverorange.com"
+		},
+		{
+			"name": "Isaac Grant",
+			"email": "isaac@silverorange.com"
+		},
+		{
+			"name": "Michael Gauthier",
+			"email": "mike@silverorange.com"
+		},
+		{
+			"name": "Nathan Frederikson",
+			"email": "nathan@silverorange.com"
+		},
+		{
+			"name": "Nick Burka",
+			"email": "nick@silverorange.com"
+		},
+		{
+			"name": "Stephen DesRoches",
+			"email": "desroches@silverorange.com"
+		},
+		{
+			"name": "Steven Garrity",
+			"email": "steven@silverorange.com"
+		}
+	],
+	"require": {
+		"php": ">=5.5.0",
+		"ext-imagick": "*",
+		"pear/crypt_gpg": "^1.4.0",
+		"pear/text_password": "^1.1.1",
+		"pear/validate_finance_creditcard": ">=0.5.2",
+		"pear/numbers_words": ">=0.18.0",
+		"silverorange/admin": "^2.0.23",
+		"silverorange/net_notifier": "^0.4.1",
+		"silverorange/silverorange_autoloader": "*",
+		"silverorange/site": "^2.1.45",
+		"silverorange/swat": "^2.2.10",
+		"silverorange/xml_rpc_ajax": "^1.0.12",
+		"silverorange/yui": "^1.0.11"
+	},
+	"require-dev": {
+		"silverorange/turing": ">=0.1.1"
+	},
+	"suggest": {
+		"authorizenet/authorizenet": "Payments with Authorize.net.",
+		"braintree/braintree_php": "Payments with Braintree",
+		"pear/payment_paypal_soap": "Payments with PayPal.",
+		"pear/services_akismet2": "Filter spam from product reviews.",
+		"silverorange/atom_feed": "Froogle product feeds for Google.",
+		"silverorange/blorg": "Product reviews.",
+		"silverorange/deliverance": "Email mailing list support.",
+		"silverorange/nate_go_search": "Product search indexing."
+	},
+	"autoload": {
+		"file": [ "autoload.php" ]
+	},
+	"include-path": [
+		"./"
+	]
+}
