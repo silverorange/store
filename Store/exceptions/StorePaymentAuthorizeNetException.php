@@ -2,6 +2,14 @@
 
 require_once 'Store/exceptions/StorePaymentException.php';
 
+// Support loading Authorize.net through an autoloader via composer or through
+// the PEAR include path. When PEAR support is dropped, this code can be
+// dropped.
+$file = stream_resolve_include_path('AuthorizeNet.php');
+if ($file !== false) {
+	require_once $file;
+}
+
 /**
  * @package   Store
  * @copyright 2011-2015 silverorange

@@ -5,6 +5,13 @@ require_once 'Store/StorePaymentProvider.php';
 require_once 'Store/StorePaymentRequest.php';
 require_once 'Store/exceptions/StorePaymentBraintreeException.php';
 
+// Support loading Braintree through an autoloader via composer or through the
+// PEAR include path. When PEAR support is dropped, this code can be dropped.
+$file = stream_resolve_include_path('Braintree.php');
+if ($file !== false) {
+	require_once $file;
+}
+
 /**
  * @package   Store
  * @copyright 2011-2015 silverorange
