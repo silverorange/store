@@ -9,7 +9,7 @@ require_once 'Swat/SwatMoneyCellRenderer.php';
  * store-free is appended to the list of TD classes.
  *
  * @package   Store
- * @copyright 2006-2015 silverorange
+ * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StorePriceCellRenderer extends SwatMoneyCellRenderer

@@ -13,7 +13,7 @@ require_once 'include/StoreCategoryProductDependency.php';
  * Delete confirmation page for Categories
  *
  * @package   Store
- * @copyright 2005-2015 silverorange
+ * @copyright 2005-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCategoryDelete extends AdminDBDelete

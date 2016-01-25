@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreProductReview.php';
  * A recordset wrapper class for ProductReview objects
  *
  * @package   Store
- * @copyright 2006-2015 silverorange
+ * @copyright 2006-2016 silverorange
  */
 class StoreProductReviewWrapper extends SwatDBRecordsetWrapper
 {

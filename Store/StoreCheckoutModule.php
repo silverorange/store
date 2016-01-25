@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * Depends on the SiteAccountSessionModule and SiteDatabaseModule modules.
  *
  * @package   Store
- * @copyright 2009-2015 silverorange
+ * @copyright 2009-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutModule extends SiteApplicationModule

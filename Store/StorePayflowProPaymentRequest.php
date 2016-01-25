@@ -13,7 +13,7 @@ require_once 'Store/StorePaymentRequest.php';
  * WARNING
  *
  * @package   Store
- * @copyright 2006-2015 silverorange
+ * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StorePayflowProPaymentRequest extends StorePaymentRequest

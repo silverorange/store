@@ -7,7 +7,7 @@ require_once 'Swat/SwatString.php';
  * Cell renderer that displays a summary of statuses of items in a product
  *
  * @package   Store
- * @copyright 2006-2015 silverorange
+ * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductStatusCellRenderer extends SwatNullTextCellRenderer

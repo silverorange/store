@@ -5,7 +5,7 @@
  * @param Number offset
  * @param String container_id
  *
- * @copyright 2008-2015 silverorange
+ * @copyright 2008-2016 silverorange
  */
 function StoreProductReviewPage(product_id, offset, container_id,
 	disclosure_id, message, show_all)

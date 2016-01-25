@@ -8,7 +8,7 @@ require_once 'Store/dataobjects/StoreShippingType.php';
  * A shiping rate data object
  *
  * @package   Store
- * @copyright 2008-2015 silverorange
+ * @copyright 2008-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreShippingRate extends SwatDBDataObject

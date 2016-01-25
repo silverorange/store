@@ -14,7 +14,7 @@ require_once 'Store/dataobjects/StoreCategoryWrapper.php';
  * the {@link StoreArticle::$parent} property.
  *
  * @package   Store
- * @copyright 2006-2015 silverorange
+ * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreArticle extends SiteArticle

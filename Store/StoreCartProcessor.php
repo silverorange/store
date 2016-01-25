@@ -16,7 +16,7 @@ require_once 'Store/dataobjects/StoreItem.php';
  * $processor->addToCart($entry);
  *
  * @package   Store
- * @copyright 2010-2015 silverorange
+ * @copyright 2010-2016 silverorange
  */
 class StoreCartProcessor extends SwatObject
 {

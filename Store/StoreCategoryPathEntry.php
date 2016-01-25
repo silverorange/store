@@ -4,7 +4,7 @@ require_once 'Site/SitePathEntry.php';
 
 /**
  * @package Store
- * @copyright 2008-2015 silverorange
+ * @copyright 2008-2016 silverorange
  */
 class StoreCategoryPathEntry extends SitePathEntry
 {

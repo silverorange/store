@@ -12,7 +12,7 @@ require_once 'Store/dataobjects/StoreAccount.php';
  * Edit page for Account Payment Methods
  *
  * @package   Store
- * @copyright 2006-2015 silverorange
+ * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @todo      Make this tool have the ability to enter new card numbers.
  * @todo      Add card_inception and card_issue_number fields to this tool.

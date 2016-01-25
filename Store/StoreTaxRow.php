@@ -6,7 +6,7 @@ require_once 'Store/StoreTotalRow.php';
  * Displays taxes in a special row at the bottom of a table view.
  *
  * @package   Store
- * @copyright 2006-2015 silverorange
+ * @copyright 2006-2016 silverorange
  */
 class StoreTaxRow extends StoreTotalRow
 {

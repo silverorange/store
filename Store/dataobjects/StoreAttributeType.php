@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreAttributeWrapper.php';
  * An attribute type data object
  *
  * @package   Store
- * @copyright 2008-2015 silverorange
+ * @copyright 2008-2016 silverorange
  */
 class StoreAttributeType extends SwatDBDataObject
 {

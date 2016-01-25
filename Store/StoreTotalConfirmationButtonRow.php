@@ -8,7 +8,7 @@ require_once 'Store/StoreTotalRow.php';
  *
  * @package   Store
  * @deprecated {@link StoreTotalRow} and {@link SwatTableViewWidgetRow} should be used instead.
- * @copyright 2006-2015 silverorange
+ * @copyright 2006-2016 silverorange
  */
 class StoreTotalConfirmationButtonRow extends StoreTotalRow
 {

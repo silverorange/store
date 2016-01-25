@@ -13,7 +13,7 @@ require_once 'Swat/SwatHtmlTag.php';
  * @see StoreCartImageTableViewGroup
  *
  * @package   Store
- * @copyright 2004-2015 silverorange
+ * @copyright 2004-2016 silverorange
  */
 class StoreCartImageTableView extends SwatTableView
 {

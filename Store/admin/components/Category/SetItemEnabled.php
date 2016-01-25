@@ -9,7 +9,7 @@ require_once 'Store/StoreCatalogSwitcher.php';
  * Enable items confirmation page for Categories
  *
  * @package   Store
- * @copyright 2006-2015 silverorange
+ * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCategorySetItemEnabled extends AdminDBConfirmation

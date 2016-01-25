@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreFeature.php';
  * A recordset wrapper class for StoreFeature objects
  *
  * @package   Store
- * @copyright 2010-2015 silverorange
+ * @copyright 2010-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreFeature
  */

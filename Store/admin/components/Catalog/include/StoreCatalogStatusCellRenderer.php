@@ -8,7 +8,7 @@ require_once 'Swat/SwatCellRenderer.php';
  * Cell renderer that displays regions for which a catalog is enabled
  *
  * @package   Store
- * @copyright 2005-2015 silverorange
+ * @copyright 2005-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCatalogStatusCellRenderer extends SwatCellRenderer

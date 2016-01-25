@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreFeedbackWrapper.php';
  * Index page for customer feedback
  *
  * @package   Store
- * @copyright 2009-2015 silverorange
+ * @copyright 2009-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreFeedbackIndex extends AdminSearch

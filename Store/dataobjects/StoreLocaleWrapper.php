@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreLocale.php';
  * A recordset wrapper class for StoreLocale objects
  *
  * @package   Store
- * @copyright 2006-2015 silverorange
+ * @copyright 2006-2016 silverorange
  * @see       StoreLocale
  */
 class StoreLocaleWrapper extends SwatDBRecordsetWrapper

@@ -7,7 +7,7 @@ require_once 'Admin/pages/AdminIndex.php';
 
 /**
  * @package   Store
- * @copyright 2009-2015 silverorange
+ * @copyright 2009-2016 silverorange
  */
 class StoreShippingTypeDetails extends AdminIndex
 {

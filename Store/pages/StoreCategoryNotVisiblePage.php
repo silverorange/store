@@ -8,7 +8,7 @@ require_once 'Store/dataobjects/StoreRegionWrapper.php';
  * A page for displaying a message if a category is not visible
  *
  * @package   Store
- * @copyright 2006-2015 silverorange
+ * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCategoryNotVisiblePage extends StoreNotVisiblePage

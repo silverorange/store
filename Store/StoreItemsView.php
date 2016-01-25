@@ -12,7 +12,7 @@ require_once 'Store/dataobjects/StoreProduct.php';
  * Control to display and process items on a product page
  *
  * @package   Store
- * @copyright 2007-2015 silverorange
+ * @copyright 2007-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemsView extends SwatControl

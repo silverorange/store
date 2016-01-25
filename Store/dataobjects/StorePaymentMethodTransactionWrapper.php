@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StorePaymentMethodTransaction.php';
  * A recordset wrapper class for StorePaymentMethodTransaction objects
  *
  * @package   Store
- * @copyright 2009-2015 silverorange
+ * @copyright 2009-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StorePaymentMethodTransaction
  */

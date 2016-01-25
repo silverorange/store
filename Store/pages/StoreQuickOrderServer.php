@@ -8,7 +8,7 @@ require_once 'Store/StoreQuickOrderItemSelector.php';
  * Handles XML-RPC requests from the quick order page
  *
  * @package   Store
- * @copyright 2006-2015 silverorange
+ * @copyright 2006-2016 silverorange
  */
 class StoreQuickOrderServer extends SiteXMLRPCServer
 {

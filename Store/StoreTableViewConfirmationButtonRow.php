@@ -7,7 +7,7 @@ require_once 'Store/StoreTableViewButtonRow.php';
  * A table view row with an embedded confirmation button
  *
  * @package   Store
- * @copyright 2006-2015 silverorange
+ * @copyright 2006-2016 silverorange
  */
 class StoreTableViewConfirmationButtonRow extends StoreTableViewButtonRow
 {

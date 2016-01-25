@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreAttribute.php';
  * A recordset wrapper class for StoreAttribute objects
  *
  * @package   Store
- * @copyright 2008-2015 silverorange
+ * @copyright 2008-2016 silverorange
  * @see       StoreAttribute
  */
 class StoreAttributeWrapper extends SwatDBRecordsetWrapper

@@ -6,7 +6,7 @@ require_once 'Swat/SwatLinkCellRenderer.php';
 
 /**
  * @package   Store
- * @copyright 2004-2015 silverorange
+ * @copyright 2004-2016 silverorange
  */
 class StoreCartImageTableViewGroup extends SwatTableViewGroup
 {
