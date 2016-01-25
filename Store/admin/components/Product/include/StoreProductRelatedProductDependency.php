@@ -6,7 +6,7 @@ require_once 'Admin/AdminListDependency.php';
  * A dependency for deleting related products
  *
  * @package   Store
- * @copyright 2006-2015 silverorange
+ * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductRelatedProductDependency extends AdminListDependency

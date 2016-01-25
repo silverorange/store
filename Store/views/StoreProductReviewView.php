@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreProductReview.php';
  * Reviews are displayed using the hReview microformat.
  *
  * @package   Store
- * @copyright 2008-2015 silverorange
+ * @copyright 2008-2016 silverorange
  */
 class StoreProductReviewView extends SiteView
 {

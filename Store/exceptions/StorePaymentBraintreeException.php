@@ -11,7 +11,7 @@ if ($file !== false) {
 
 /**
  * @package   Store
- * @copyright 2015 silverorange
+ * @copyright 2015-2016 silverorange
  */
 class StorePaymentBraintreeException extends StorePaymentException
 {

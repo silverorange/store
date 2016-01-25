@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreSaleDiscount.php';
  * Edit page for SaleDiscount
  *
  * @package   Store
- * @copyright 2005-2015 silverorange
+ * @copyright 2005-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreSaleDiscountEdit extends AdminDBEdit

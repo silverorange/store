@@ -14,7 +14,7 @@ require_once 'Store/dataobjects/StoreRegionWrapper.php';
  * Store also reports order conversion rates.
  *
  * @package   Store
- * @copyright 2006-2015 silverorange
+ * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAdDetails extends SiteAdDetails

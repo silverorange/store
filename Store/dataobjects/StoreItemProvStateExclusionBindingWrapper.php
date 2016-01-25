@@ -7,7 +7,7 @@ require_once 'Store/dataobjects/StoreItemProvStateExclusionBinding.php';
  * A recordset wrapper class for StoreItemProvStateExclusionBinding objects
  *
  * @package   Store
- * @copyright 2012-2015 silverorange
+ * @copyright 2012-2016 silverorange
  */
 class StoreItemProvStateExclusionBindingWrapper extends SwatDBRecordsetWrapper
 {

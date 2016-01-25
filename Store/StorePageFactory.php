@@ -11,7 +11,7 @@ require_once 'Store/StoreCategoryPath.php';
  * Resolves pages below the 'store' tag in the URL.
  *
  * @package   Store
- * @copyright 2005-2015 silverorange
+ * @copyright 2005-2016 silverorange
  */
 class StorePageFactory extends SitePageFactory
 {

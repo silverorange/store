@@ -7,7 +7,7 @@ require_once 'Swat/SwatButton.php';
  * A table view row with an embedded button
  *
  * @package   Store
- * @copyright 2006-2015 silverorange
+ * @copyright 2006-2016 silverorange
  */
 class StoreTableViewButtonRow extends SwatTableViewRow
 {

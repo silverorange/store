@@ -8,7 +8,7 @@ require_once 'Store/admin/components/SalesByRegionReport/include/StoreSalesByReg
  * Displays sales summaries by year and country/provstate.
  *
  * @package   Store
- * @copyright 2015 silverorange
+ * @copyright 2015-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreSalesByRegionReportIndex extends AdminIndex

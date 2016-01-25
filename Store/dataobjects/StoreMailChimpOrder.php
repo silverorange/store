@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * {@link StoreMailChimpOrderUpdater} command line application.
  *
  * @package   Store
- * @copyright 2010-2015 silverorange
+ * @copyright 2010-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @see       StoreMailChimpModule
  * @see       StoreMailChimpOrderUpdater

@@ -14,7 +14,7 @@ require_once 'Store/StoreCommandLineConfigModule.php';
  * date has passed. Deletes always run before additions.
  *
  * @package   Store
- * @copyright 2010-2015 silverorange
+ * @copyright 2010-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductAttributeBindingQueueUpdater

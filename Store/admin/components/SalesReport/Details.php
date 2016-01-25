@@ -14,7 +14,7 @@ require_once 'Store/dataobjects/StoreRegionWrapper.php';
  * Displays sales for a single month
  *
  * @package   Store
- * @copyright 2011-2015 silverorange
+ * @copyright 2011-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreSalesReportDetails extends AdminIndex

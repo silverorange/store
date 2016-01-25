@@ -8,7 +8,7 @@ require_once 'Store/dataobjects/StoreCategoryImageWrapper.php';
 
 /**
  * @package   Store
- * @copyright 2005-2015 silverorange
+ * @copyright 2005-2016 silverorange
  * @see       StorePageFactory
  */
 abstract class StorePage extends SitePathPage

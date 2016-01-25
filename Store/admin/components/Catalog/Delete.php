@@ -11,7 +11,7 @@ require_once 'Admin/AdminSummaryDependency.php';
  * Only single deletes are supported. Deletes only happen from the details page
  *
  * @package   Store
- * @copyright 2005-2015 silverorange
+ * @copyright 2005-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCatalogDelete extends AdminDBDelete

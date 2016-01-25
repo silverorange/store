@@ -8,7 +8,7 @@ require_once 'Swat/SwatPercentageCellRenderer.php';
  * A percentage cell renderer for savings
  *
  * @package   Store
- * @copyright 2007-2015 silverorange
+ * @copyright 2007-2016 silverorange
  */
 class StoreSavingsCellRenderer extends SwatPercentageCellRenderer
 {

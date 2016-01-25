@@ -8,7 +8,7 @@ require_once 'SwatDB/SwatDB.php';
  * Delete confirmation page for shipping rates
  *
  * @package   Store
- * @copyright 2008-2015 silverorange
+ * @copyright 2008-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreShippingTypeRateDelete extends AdminDBDelete

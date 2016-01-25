@@ -3,7 +3,7 @@
  * catalog quick-order page
  *
  * @package   Store
- * @copyright 2006-2015 silverorange
+ * @copyright 2006-2016 silverorange
  */
 
 /**

@@ -11,7 +11,7 @@ require_once 'Store/dataobjects/StoreOrderWrapper.php';
  * Sends out a digest email of new order comments
  *
  * @package   Store
- * @copyright 2012-2015 silverorange
+ * @copyright 2012-2016 silverorange
  */
 class StoreOrderCommentDigestMailer extends SiteCommandLineApplication
 {

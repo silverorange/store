@@ -8,7 +8,7 @@ require_once 'Store/StoreItemPriceCellRenderer.php';
  * A currency cell renderer
  *
  * @package   Store
- * @copyright 2006-2015 silverorange
+ * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreYeOldePriceCellRenderer extends StoreItemPriceCellRenderer

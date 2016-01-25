@@ -7,7 +7,7 @@ require_once 'Store/StoreTotalRow.php';
  * Displays voucher totals and remove buttons
  *
  * @package   Store
- * @copyright 2006-2015 silverorange
+ * @copyright 2006-2016 silverorange
  */
 class StoreVoucherRow extends StoreTotalRow
 {

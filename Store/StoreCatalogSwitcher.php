@@ -11,7 +11,7 @@ require_once 'Store/StoreCatalogSelector.php';
  * The active catalog(s) is used for category pages.
  *
  * @package   Store
- * @copyright 2005-2015 silverorange
+ * @copyright 2005-2016 silverorange
  */
 class StoreCatalogSwitcher extends SwatControl
 {

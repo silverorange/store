@@ -7,7 +7,7 @@ require_once 'Swat/SwatHtmlTag.php';
  * A an extra row for displaying textual content
  *
  * @package   Store
- * @copyright 2005-2015 silverorange
+ * @copyright 2005-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreTextRow extends SwatTableViewRow

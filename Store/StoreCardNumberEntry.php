@@ -9,7 +9,7 @@ require_once 'Store/dataobjects/StoreCardTypeWrapper.php';
  * A widget for basic validation of a debit or credit card
  *
  * @package   Store
- * @copyright 2006-2015 silverorange
+ * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCardNumberEntry extends SwatEntry

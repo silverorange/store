@@ -7,7 +7,7 @@ require_once 'SwatDB/SwatDB.php';
  * Index page for item minimum quantity groups
  *
  * @package   Store
- * @copyright 2009-2015 silverorange
+ * @copyright 2009-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemMinimumQuantityGroupIndex extends AdminIndex

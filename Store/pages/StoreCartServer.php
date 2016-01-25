@@ -11,7 +11,7 @@ require_once 'Store/StoreCartLightbox.php';
  * Handles XML-RPC requests to update the cart
  *
  * @package   Store
- * @copyright 2010-2015 silverorange
+ * @copyright 2010-2016 silverorange
  */
 class StoreCartServer extends SiteXMLRPCServer
 {

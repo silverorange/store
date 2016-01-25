@@ -9,7 +9,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * Page to mark an order as cancelled
  *
  * @package   Store
- * @copyright 2011-2015 silverorange
+ * @copyright 2011-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderCancel extends AdminConfirmation

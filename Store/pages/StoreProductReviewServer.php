@@ -10,7 +10,7 @@ require_once 'Store/dataobjects/StoreProductReviewWrapper.php';
  * Handles XML-RPC requests to view more product reviews
  *
  * @package   Store
- * @copyright 2008-2015 silverorange
+ * @copyright 2008-2016 silverorange
  */
 class StoreProductReviewServer extends SiteXMLRPCServer
 {

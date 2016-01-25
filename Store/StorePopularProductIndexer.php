@@ -12,7 +12,7 @@ require_once 'SwatDB/SwatDB.php';
  * values used to display "Customers who bought this also bought X" data.
  *
  * @package   Store
- * @copyright 2007-2015 silverorange
+ * @copyright 2007-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StorePopularProductIndexer extends SiteCommandLineApplication

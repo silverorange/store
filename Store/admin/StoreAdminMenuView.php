@@ -12,7 +12,7 @@ require_once 'Admin/AdminMenuView.php';
  * An admin menu view that has an item search box at the top
  *
  * @package   Store
- * @copyright 2006-2015 silverorange
+ * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAdminMenuView extends AdminMenuView
