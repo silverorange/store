@@ -5,7 +5,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
 
 /**
  * Generates order transaction tracking code for an order for Google Analytics,
- * Facebook pixels, and the Bing Universal Event Tracker.
+ * Facebook pixels, Twitter pixels, and the Bing Universal Event Tracker.
  *
  * @package   Store
  * @copyright 2008-2016 silverorange
@@ -14,6 +14,7 @@ require_once 'Store/dataobjects/StoreOrder.php';
  * @link      http://code.google.com/apis/analytics/docs/gaJS/gaJSApiEcommerce.html
  * @link      https://developers.facebook.com/docs/facebook-pixel/api-reference
  * @link      http://help.bingads.microsoft.com/#apex/3/en/56684/2
+ * @link      https://business.twitter.com/solutions/how-to-set-up-online-conversion-tracking
 
  */
 class StoreAnalyticsOrderTracker
@@ -85,6 +86,17 @@ class StoreAnalyticsOrderTracker
 		}
 
 		return array($command);
+	}
+
+	// }}}
+	// {{{ public function getTwitterPixelCommands()
+
+	public function getTwitterPixelCommands()
+	{
+		return array(
+			'tw_sale_amount' => $this->getOrderTotal(),
+			'tw_order_quantity' => $this->getOrderQuantity(),
+		);
 	}
 
 	// }}}
@@ -186,6 +198,19 @@ class StoreAnalyticsOrderTracker
 	protected function getOrderTotal()
 	{
 		return $this->order->total;
+	}
+
+	// }}}
+	// {{{ protected function getOrderQuantity()
+
+	protected function getOrderQuantity()
+	{
+		$quantity = 0;
+		foreach ($this->order->items as $item) {
+			$quantity += $item->quantity;
+		}
+
+		return $quantity;
 	}
 
 	// }}}
