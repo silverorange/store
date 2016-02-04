@@ -166,7 +166,7 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 		);
 
 		$message->secondary_content = sprintf(
-			Store::_('Please %slog in to your account%s.'),
+			Store::_('Please %ssign in to your account%s.'),
 			sprintf(
 				'<a href="%s">',
 				$this->getAccountLoginSource()

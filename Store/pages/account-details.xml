@@ -13,7 +13,7 @@
 					<property name="stock_id">edit</property>
 				</widget>
 				<widget class="SwatToolLink">
-					<property name="title" translatable="yes">Change Login Password</property>
+					<property name="title" translatable="yes">Change Password</property>
 					<property name="link">account/changepassword</property>
 					<property name="stock_id">edit</property>
 				</widget>

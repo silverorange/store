@@ -44,7 +44,7 @@
 			</widget>
 			<widget class="SwatFooterFormField" id="login_footer">
 				<widget class="SwatButton" id="login_button">
-					<property name="title" translatable="yes">Login &amp; Checkout</property>
+					<property name="title" translatable="yes">Sign In &amp; Checkout</property>
 				</widget>
 			</widget>
 		</widget>

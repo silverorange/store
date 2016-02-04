@@ -117,8 +117,12 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
 				$this->updateProgress();
 				$this->relocate();
 			} else {
-				$message = new SwatMessage(Store::_('Login Incorrect'),
-					'warning');
+				$message = new SwatMessage(
+					Store::_(
+						'The email or password you entered is not correct'
+					),
+					'warning'
+				);
 
 				$tips = array(
 					Store::_('Please check the spelling on your email '.
