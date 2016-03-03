@@ -36,6 +36,10 @@
 	display: block;
 }
 
+.ie6 .store-product-images {
+	height: 1px;
+}
+
 span.item-disabled {
 	color: #999;
 	text-decoration: line-through;
@@ -62,5 +66,7 @@ div.store-sale-discount-original-price {
 	padding: 2px 4px;
 	font-size: 11px;
 	text-transform: uppercase;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
 	border-radius: 2px;
 }

@@ -40,6 +40,10 @@
 	min-height: 0;
 }
 
+.ie6 .search-disclosure {
+	height: 0;
+}
+
 .search-disclosure .swat-disclosure-container {
 	clear: both;
 }
@@ -55,6 +59,8 @@
 	margin: 0;
 }
 
+.ie6 .search-disclosure .search-disclosure-header .swat-disclosure-anchor-closed,
+.ie6 .search-disclosure .search-disclosure-header .swat-disclosure-anchor-opened,
 .ie7 .search-disclosure .search-disclosure-header .swat-disclosure-anchor-closed,
 .ie7 .search-disclosure .search-disclosure-header .swat-disclosure-anchor-opened {
 	top: 1px;

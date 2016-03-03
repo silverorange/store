@@ -43,10 +43,13 @@
 	text-align: center;
 	width: 100%;
 	margin-left: -50%;
+	-moz-box-shadow: 0 2px 4px -1px rgba(0,0,0,0.80), inset 0 -5px 15px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 0 2px 4px -1px rgba(0,0,0,0.80), inset 0 -5px 15px rgba(0,0,0,0.5);
 	box-shadow: 0 2px 4px -1px rgba(0,0,0,0.80), inset 0 -5px 15px rgba(0,0,0,0.5);
 }
 
 /* IE hack since shadows are not supported */
+.ie6 .store-product-image-display-header,
 .ie7 .store-product-image-display-header,
 .ie8 .store-product-image-display-header {
 	border-bottom: 1px solid #555;
@@ -109,6 +112,8 @@
 	left: 50%;
 
 	box-shadow: 0 1px 16px #000;
+	-webkit-box-shadow: 0 1px 16px #000;
+	-moz-box-shadow: 0 1px 16px #000;
 
 	zoom: 1; /* IE hack */
 
@@ -174,6 +179,8 @@
 	border: 1px solid #aaa;
 
 	box-shadow: 1px 1px 3px #000;
+	-webkit-box-shadow: 1px 1px 3px #000;
+	-moz-box-shadow: 1px 1px 3px #000;
 
 	/* emulate drop shadow in IE */
 	filter: progid:DXImageTransform.Microsoft.glow(Color=#000000, Strength=2);

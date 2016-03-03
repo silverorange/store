@@ -3,6 +3,8 @@
 	background: #f5ede5;
 	border: 1px solid #d2c7ba;
 	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
 }
 
 .store-checkout-progress ol {
@@ -28,6 +30,8 @@
 
 .store-checkout-progress li .store-checkout-progress-title {
 	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
 	background-color: #f9f5f1;
 	padding: 5px 8px;
 	margin: 0 3px;
