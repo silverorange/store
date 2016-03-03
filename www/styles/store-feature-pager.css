@@ -31,8 +31,6 @@
 	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
 	filter: alpha(opacity=80);
 
-	-moz-border-radius-topright: 2px;
-	-webkit-border-top-right-radius: 2px;
 	border-top-right-radius: 2px;
 }
 .pager .pager-nav .pager-next,
@@ -40,11 +38,7 @@
 	margin-left: 1px;
 	left: 40px;
 	background-position: -66px center;
-	-moz-border-radius-topright: 10px;
-	-webkit-border-top-right-radius: 10px;
 	border-top-right-radius: 10px;
-	-moz-border-radius-topleft: 2px;
-	-webkit-border-top-left-radius: 2px;
 	border-top-left-radius: 2px;
 }
 
