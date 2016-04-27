@@ -64,7 +64,7 @@
 		"silverorange/nate_go_search": "Product search indexing."
 	},
 	"autoload": {
-		"file": [ "autoload.php" ]
+		"files": [ "autoload.php" ]
 	},
 	"include-path": [
 		"./"
