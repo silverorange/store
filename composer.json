@@ -44,7 +44,6 @@
 		"pear/numbers_words": ">=0.18.0",
 		"silverorange/admin": "^2.0.23",
 		"silverorange/net_notifier": "^0.4.1",
-		"silverorange/silverorange_autoloader": "*",
 		"silverorange/site": "^2.1.45",
 		"silverorange/swat": "^2.2.10",
 		"silverorange/xml_rpc_ajax": "^1.0.12",
@@ -64,7 +63,7 @@
 		"silverorange/nate_go_search": "Product search indexing."
 	},
 	"autoload": {
-		"files": [ "autoload.php" ]
+		"classmap": [ "Store/" ]
 	},
 	"include-path": [
 		"./"
