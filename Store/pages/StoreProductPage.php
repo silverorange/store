@@ -268,12 +268,7 @@ class StoreProductPage extends StorePage
 
 				$this->message_display->add($message);
 			} else {
-				$entries = $this->items_view->getCartEntries();
-				foreach ($entries as $entry) {
-					$status = $this->cart_processor->addEntryToCart($entry);
-				}
-
-				$this->app->cart->save();
+				$this->addEntriesToCart();
 
 				$message = $this->cart_processor->getUpdatedCartMessage();
 				if ($message !== null) {
@@ -405,6 +400,18 @@ class StoreProductPage extends StorePage
 		}
 
 		return $is_spam;
+	}
+
+	// }}}
+	// {{{ protected function addEntriesToCart()
+
+	protected function addEntriesToCart()
+	{
+		$entries = $this->items_view->getCartEntries();
+		foreach ($entries as $entry) {
+			$this->cart_processor->addEntryToCart($entry);
+		}
+		$this->app->cart->save();
 	}
 
 	// }}}
