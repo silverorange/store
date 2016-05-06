@@ -409,7 +409,7 @@ class StoreProductPage extends StorePage
 	{
 		$entries = $this->items_view->getCartEntries();
 		foreach ($entries as $entry) {
-			$status = $this->cart_processor->addEntryToCart($entry);
+			$this->cart_processor->addEntryToCart($entry);
 		}
 		$this->app->cart->save();
 	}
