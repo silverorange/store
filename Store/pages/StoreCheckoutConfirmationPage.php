@@ -1728,7 +1728,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			echo '<p class="new-payment-link">';
 			$anchor->display();
 
-			if (strlen($link['note']) > 0)
+			if (mb_strlen($link['note']) > 0)
 				echo '<br />', $link['note'];
 
 			echo '</p>';

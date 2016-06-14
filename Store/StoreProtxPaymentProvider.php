@@ -313,7 +313,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 				'values of 100,000 or less.');
 		}
 		$amount = SwatString::numberFormat($amount, 2, null, false);
-		$description = substr($description, 0, 100);
+		$description = mb_substr($description, 0, 100);
 
 		$fields = array(
 			'Vendor'              => $this->vendor,
@@ -475,8 +475,8 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		$payment_method = $order->payment_method;
 		$payment_type = $payment_method->payment_type;
 
-		$card_holder = substr($payment_method->card_fullname, 0, 50);
-		$card_number = substr($card_number, 0, 20);
+		$card_holder = mb_substr($payment_method->card_fullname, 0, 50);
+		$card_number = mb_substr($card_number, 0, 20);
 		$expiry_date = $payment_method->card_expiry->formatLikeIntl('MMyy');
 
 		$payment_type_map = $this->getPaymentTypeMap();
@@ -502,7 +502,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 
 		// Issue number is required for Solo and Switch
 		if (in_array($card_type, array('SWITCH', 'SOLO'))) {
-			$issue_number = substr($payment_method->card_issue_number, 0, 2);
+			$issue_number = mb_substr($payment_method->card_issue_number, 0, 2);
 			$fields['IssueNumber'] = $issue_number;
 		}
 
@@ -510,7 +510,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 			$this->avs_mode == StorePaymentProvider::AVS_ON) {
 			// CV2 is 4 chars for amex and 3 chars for everything else
 			$length = ($card_type == 'AMEX') ? 4 : 3;
-			$cv2 = substr($card_verification_value, 0, $length);
+			$cv2 = mb_substr($card_verification_value, 0, $length);
 			$fields['CV2'] = $cv2;
 		}
 
@@ -549,7 +549,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 				'making payment.');
 		}
 
-		if (strlen($order->id) > 40) {
+		if (mb_strlen($order->id) > 40) {
 			throw new StoreException('Order id is too high to make Protx '.
 				'payment.');
 		}
@@ -585,17 +585,17 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		}
 
 		$amount = SwatString::numberFormat($order->total, 2, null, false);
-		$description = substr($order->getDescription(), 0, 100);
+		$description = mb_substr($order->getDescription(), 0, 100);
 
 		$billing_address = $this->getAddressString($order->billing_address);
 		$billing_post_code =
-			substr($order->billing_address->postal_code, 0, 10);
+			mb_substr($order->billing_address->postal_code, 0, 10);
 
 		$delivery_address = $this->getAddressString($order->shipping_address);
 		$delivery_post_code =
-			substr($order->shipping_address->postal_code, 0, 10);
+			mb_substr($order->shipping_address->postal_code, 0, 10);
 
-		$customer_name = substr($order->billing_address->fullname, 0, 100);
+		$customer_name = mb_substr($order->billing_address->fullname, 0, 100);
 
 		$payment_fields = array(
 			'Amount'           => $amount,
@@ -609,12 +609,12 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 		);
 
 		if ($order->phone !== null) {
-			$contact_number = substr($order->phone, 0, 20);
+			$contact_number = mb_substr($order->phone, 0, 20);
 			$payment_fields['ContactNumber'] = $contact_number;
 		}
 
 		if ($order->email !== null) {
-			$customer_email = substr($order->email, 0, 255);
+			$customer_email = mb_substr($order->email, 0, 255);
 			$payment_fields['CustomerEMail'] = $customer_email;
 		}
 
@@ -749,7 +749,7 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 			$address->provstate->abbreviation.', ';
 
 		$address_string.= $address->country->title;
-		$address_string = substr($address_string, 0, 200);
+		$address_string = mb_substr($address_string, 0, 200);
 
 		return $address_string;
 	}

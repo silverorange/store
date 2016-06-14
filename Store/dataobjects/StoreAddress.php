@@ -884,26 +884,26 @@ abstract class StoreAddress extends SwatDBDataObject
 		if ($this->fullname != $address->fullname)
 			$equal = false;
 
-		if (trim(strtoupper($this->company)) !=
-			trim(strtoupper($address->company)))
+		if (trim(mb_strtoupper($this->company)) !=
+			trim(mb_strtoupper($address->company)))
 				$equal = false;
 
-		if (strtoupper($this->line1) != strtoupper($address->line1) &&
+		if (mb_strtoupper($this->line1) != mb_strtoupper($address->line1) &&
 			!self::differByStreetSuffixOnly($this->line1, $address->line1) &&
 			!self::differByStreetAbbreviationOnly(
 				$this->line1, $address->line1)) {
 			$equal = false;
 		}
 
-		if (trim(strtoupper($this->line2)) !=
-			trim(strtoupper($address->line2)))
+		if (trim(mb_strtoupper($this->line2)) !=
+			trim(mb_strtoupper($address->line2)))
 				$equal = false;
 
-		if (strtoupper($this->city) != strtoupper($address->city))
+		if (mb_strtoupper($this->city) != mb_strtoupper($address->city))
 			$equal = false;
 
-		if (strtoupper($this->provstate_other) !=
-			strtoupper($address->provstate_other)) {
+		if (mb_strtoupper($this->provstate_other) !=
+			mb_strtoupper($address->provstate_other)) {
 			$equal = false;
 		}
 
@@ -911,8 +911,8 @@ abstract class StoreAddress extends SwatDBDataObject
 			$equal = false;
 
 		if ($this->country->id === 'US') {
-			if (substr($this->postal_code, 0, 5) !=
-				substr($address->postal_code, 0, 5)) {
+			if (mb_substr($this->postal_code, 0, 5) !=
+				mb_substr($address->postal_code, 0, 5)) {
 				$equal = false;
 			}
 		} else {
@@ -1561,10 +1561,10 @@ abstract class StoreAddress extends SwatDBDataObject
 	{
 		$result = false;
 
-		if (strlen($a) === strlen($b))
+		if (mb_strlen($a) === mb_strlen($b))
 			return $result;
 
-		if (strlen($a) > strlen($b)) {
+		if (mb_strlen($a) > mb_strlen($b)) {
 			$long = $a;
 			$short = $b;
 		} else {
@@ -1572,8 +1572,8 @@ abstract class StoreAddress extends SwatDBDataObject
 			$short = $a;
 		}
 
-		$suffix = substr($long, strlen($short));
-		$suffix = strtoupper(trim($suffix));
+		$suffix = mb_substr($long, mb_strlen($short));
+		$suffix = mb_strtoupper(trim($suffix));
 
 		$result = in_array($suffix, self::$street_suffixes);
 
@@ -1587,11 +1587,11 @@ abstract class StoreAddress extends SwatDBDataObject
 	{
 		$result = false;
 
-		if (strlen($a) === strlen($b))
+		if (mb_strlen($a) === mb_strlen($b))
 			return $result;
 
-		$a = explode(' ', trim(strtoupper($a)));
-		$b = explode(' ', trim(strtoupper($b)));
+		$a = explode(' ', trim(mb_strtoupper($a)));
+		$b = explode(' ', trim(mb_strtoupper($b)));
 
 		$suffix1 = implode(' ', array_diff_assoc($a, $b));
 		$suffix2 = implode(' ', array_diff_assoc($b, $a));

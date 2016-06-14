@@ -28,7 +28,7 @@ class StoreSearchPanelServer extends SiteXMLRPCServer
 		$query_string_exp = explode('&', $query_string);
 		$args = array();
 		foreach ($query_string_exp as $parameter) {
-			if (strpos($parameter, '=')) {
+			if (mb_strpos($parameter, '=')) {
 				list($key, $value) = explode('=', $parameter, 2);
 			} else {
 				$key = $parameter;
@@ -60,7 +60,7 @@ class StoreSearchPanelServer extends SiteXMLRPCServer
 		}
 
 		// parse uri components from special seach pages into GET vars
-		$uri = substr($uri, strlen($this->app->getBaseHref()));
+		$uri = mb_substr($uri, mb_strlen($this->app->getBaseHref()));
 		$uri_exp = explode('/', $uri);
 		if (count($uri_exp) == 3) {
 			$key = $uri_exp[1];

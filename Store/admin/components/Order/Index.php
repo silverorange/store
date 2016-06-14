@@ -139,7 +139,7 @@ class StoreOrderIndex extends AdminSearch
 		// make it possible to link to page with only orders having comments
 		if (isset($_GET['has_comments'])) {
 			$this->ui->getWidget('search_comments')->value =
-				(strtolower($_GET['has_comments']) == 'yes')
+				(mb_strtolower($_GET['has_comments']) == 'yes')
 					? true
 					: false;
 		}

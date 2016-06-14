@@ -39,7 +39,7 @@ class StoreFeedbackPanelServer extends SiteXMLRPCServer
 	 */
 	public function getContent($method, $data, $uri)
 	{
-		if (strtolower($method) === 'post') {
+		if (mb_strtolower($method) === 'post') {
 			$this->initPostData($data);
 		}
 
@@ -72,7 +72,7 @@ class StoreFeedbackPanelServer extends SiteXMLRPCServer
 		$data_exp = explode('&', $data);
 		$args = array();
 		foreach ($data_exp as $parameter) {
-			if (strpos($parameter, '=')) {
+			if (mb_strpos($parameter, '=')) {
 				list($key, $value) = explode('=', $parameter, 2);
 			} else {
 				$key   = $parameter;
@@ -156,7 +156,7 @@ class StoreFeedbackPanelServer extends SiteXMLRPCServer
 		if ($article->loadByShortname('feedback'))
 			$description->content = $article->bodytext;
 
-		if (strlen($description->content) == 0) {
+		if (mb_strlen($description->content) == 0) {
 			$description->content =
 				'<p>Can’t find what you’re looking for? Having trouble '.
 				'with the website? Please let us know so we can improve '.

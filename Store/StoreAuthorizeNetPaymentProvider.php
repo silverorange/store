@@ -304,7 +304,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 		// from 19 to account for the space added.
 		$invoice_number_prefix = $this->truncateField(
 			$this->invoice_number_prefix,
-			19 - strlen($order->id)
+			19 - mb_strlen($order->id)
 		);
 
 		return ($invoice_number_prefix == '')

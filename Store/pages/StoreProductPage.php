@@ -341,7 +341,7 @@ class StoreProductPage extends StorePage
 		$ip_address = $this->app->getRemoteIP(15);
 
 		if (isset($_SERVER['HTTP_USER_AGENT'])) {
-			$user_agent = substr($_SERVER['HTTP_USER_AGENT'], 0, 255);
+			$user_agent = mb_substr($_SERVER['HTTP_USER_AGENT'], 0, 255);
 		} else {
 			$user_agent = null;
 		}

@@ -228,7 +228,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	public function setCardNumber($number, $store_unencrypted = false,
 		$store_encrypted = true)
 	{
-		$this->card_number_preview = substr($number, -4);
+		$this->card_number_preview = mb_substr($number, -4);
 
 		if ($store_encrypted) {
 			/*

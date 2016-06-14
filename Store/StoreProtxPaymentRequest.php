@@ -570,7 +570,7 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 				$type_map = $this->getTypeMap();
 				$tx_type = $type_map[$type];
 				$url = sprintf(self::URL_SIMULATOR,
-					ucfirst(strtolower($tx_type)));
+					ucfirst(mb_strtolower($tx_type)));
 
 				break;
 			}
@@ -594,7 +594,7 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 			default:
 				$type_map = $this->getTypeMap();
 				$tx_type = $type_map[$type];
-				$url = sprintf(self::URL_TEST, strtolower($tx_type));
+				$url = sprintf(self::URL_TEST, mb_strtolower($tx_type));
 
 				break;
 			}
@@ -619,7 +619,7 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 			default:
 				$type_map = $this->getTypeMap();
 				$tx_type = $type_map[$type];
-				$url = sprintf(self::URL_LIVE, strtolower($tx_type));
+				$url = sprintf(self::URL_LIVE, mb_strtolower($tx_type));
 
 				break;
 			}
@@ -648,7 +648,7 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 		}
 
 		// remove leading ampersand
-		$post_data = substr($post_data, 1);
+		$post_data = mb_substr($post_data, 1);
 
 		return $post_data;
 	}

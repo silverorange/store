@@ -79,7 +79,7 @@ abstract class StoreApplication extends SiteWebApplication
 		if ($locale === null)
 			$locale = $this->locale;
 
-		$country = substr($locale, 3, 2);
+		$country = mb_substr($locale, 3, 2);
 
 		return $country;
 	}

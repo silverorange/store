@@ -20,8 +20,8 @@ abstract class StoreLocaleApplication extends StoreApplication
 		if ($locale === null)
 			return parent::getBaseHref($secure);
 
-		$language = substr($locale, 0, 2);
-		$country = strtolower(substr($locale, 3, 2));
+		$language = mb_substr($locale, 0, 2);
+		$country = mb_strtolower(mb_substr($locale, 3, 2));
 		return parent::getBaseHref($secure).$country.'/'.$language.'/';
 	}
 
@@ -73,8 +73,8 @@ abstract class StoreLocaleApplication extends StoreApplication
 			}
 		}
 
-		$language = substr($locale, 0, 2);
-		$country = strtolower(substr($locale, 3, 2));
+		$language = mb_substr($locale, 0, 2);
+		$country = mb_strtolower(mb_substr($locale, 3, 2));
 		$link.= $country.'/'.$language.'/';
 
 		if ($source !== null) {
@@ -109,8 +109,8 @@ abstract class StoreLocaleApplication extends StoreApplication
 		}
 
 		if ($this->locale instanceof StoreLocale) {
-			$language  = substr($this->locale->id, 0, 2);
-			$country   = strtolower(substr($this->locale->id, 3, 2));
+			$language  = mb_substr($this->locale->id, 0, 2);
+			$country   = mb_strtolower(mb_substr($this->locale->id, 3, 2));
 			$link.= $language.'/'.$country.'/';
 		}
 
@@ -147,7 +147,7 @@ abstract class StoreLocaleApplication extends StoreApplication
 		if (preg_match('|([a-z][a-z])/([a-z][a-z])|', $locale, $matches) != 1)
 			return;
 
-		$this->locale = $matches[2].'_'.strtoupper($matches[1]);
+		$this->locale = $matches[2].'_'.mb_strtoupper($matches[1]);
 
 		$sql = 'select id, title from Region where id in
 			(select region from Locale where id = %s)';

@@ -29,7 +29,7 @@ abstract class StoreCartTest extends TuringSeleniumTest
 		$count = 0;
 
 		foreach ($fields as $field) {
-			if (substr($field, 0, 15) === 'quantity_entry_') {
+			if (mb_substr($field, 0, 15) === 'quantity_entry_') {
 				$count++;
 				if ($count === $index) {
 					return $field;

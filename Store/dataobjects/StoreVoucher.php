@@ -75,9 +75,9 @@ class StoreVoucher extends SwatDBDataObject
 		if ($this->table !== null) {
 
 			// strip prefix if there is one
-			$prefix = strtolower($this->getCouponPrefix($instance));
-			if (strtolower(substr($code, 0, strlen($prefix))) == $prefix) {
-				$code = substr($code, strlen($prefix));
+			$prefix = mb_strtolower($this->getCouponPrefix($instance));
+			if (mb_strtolower(mb_substr($code, 0, mb_strlen($prefix))) == $prefix) {
+				$code = mb_substr($code, mb_strlen($prefix));
 			}
 
 			$sql = sprintf(

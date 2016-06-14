@@ -103,10 +103,10 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 
 		$matches = array();
 		if (preg_match('/Checkout(.*)Page$/', $class, $matches) === 1) {
-			$container_id = strtolower(
+			$container_id = mb_strtolower(
 				preg_replace('/([A-Z])/u', '_\\1', $matches[1])).'_container';
 
-			$container_id = substr($container_id, 1);
+			$container_id = mb_substr($container_id, 1);
 		} else {
 			throw new StoreException(
 				"Unable to guess container for page {$class}");

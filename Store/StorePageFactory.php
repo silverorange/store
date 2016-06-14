@@ -319,7 +319,7 @@ class StorePageFactory extends SitePageFactory
 	protected function getCategoryId($path)
 	{
 		// don't try to resolve categories that are deeper than the max depth
-		if (substr_count($path, '/') >= StoreCategory::MAX_DEPTH) {
+		if (mb_substr_count($path, '/') >= StoreCategory::MAX_DEPTH) {
 			require_once('Site/exceptions/SitePathTooLongException.php');
 			throw new SitePathTooLongException(
 				sprintf('Category path is too long: ‘%s’', $path));
@@ -340,7 +340,7 @@ class StorePageFactory extends SitePageFactory
 
 		// don't try to find catrgories with more than 254 characters in the
 		// path
-		if (strlen($path) > 254) {
+		if (mb_strlen($path) > 254) {
 			require_once('Site/exceptions/SitePathTooLongException.php');
 			throw new SitePathTooLongException(
 				sprintf('Category path is too long: ‘%s’', $path));
