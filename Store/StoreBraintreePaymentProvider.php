@@ -5,13 +5,6 @@ require_once 'Store/StorePaymentProvider.php';
 require_once 'Store/StorePaymentRequest.php';
 require_once 'Store/exceptions/StorePaymentBraintreeException.php';
 
-// Support loading Braintree through an autoloader via composer or through the
-// PEAR include path. When PEAR support is dropped, this code can be dropped.
-$file = stream_resolve_include_path('Braintree.php');
-if ($file !== false) {
-	require_once $file;
-}
-
 /**
  * @package   Store
  * @copyright 2011-2016 silverorange
@@ -159,7 +152,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 
 		// do transaction
 		$this->setConfig();
-		$response = Braintree_Transaction::sale($request);
+		$response = Braintree\Transaction::sale($request);
 
 		// check for errors and throw exception
 		if (!$response->success) {
@@ -178,11 +171,11 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 
 	public function getExceptionMessageId(Exception $e)
 	{
-		if ($e instanceof Braintree_Exception_Authentication ||
-			$e instanceof Braintree_Exception_Authorization ||
-			$e instanceof Braintree_Exception_Configuration ||
-			$e instanceof Braintree_Exception_ServerError ||
-			$e instanceof Braintree_Exception_UpgradeRequired) {
+		if ($e instanceof Braintree\Exception\Authentication ||
+			$e instanceof Braintree\Exception\Authorization ||
+			$e instanceof Braintree\Exception\Configuration ||
+			$e instanceof Braintree\Exception\ServerError ||
+			$e instanceof Braintree\Exception\UpgradeRequired) {
 			return 'payment-error';
 		}
 
@@ -198,7 +191,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 			$status = $transaction->status;
 
 			// transaction error
-			if ($status === Braintree_Transaction::PROCESSOR_DECLINED) {
+			if ($status === Braintree\Transaction::PROCESSOR_DECLINED) {
 				switch ($transaction->processorResponseCode) {
 				case 2004: // expired card
 					return 'card-expired';
@@ -228,16 +221,16 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 				}
 			}
 
-			if ($status === Braintree_Transaction::SETTLEMENT_DECLINED) {
+			if ($status === Braintree\Transaction::SETTLEMENT_DECLINED) {
 				return 'payment-error';
 			}
 
-			if ($status === Braintree_Transaction::GATEWAY_REJECTED) {
+			if ($status === Braintree\Transaction::GATEWAY_REJECTED) {
 				switch ($transaction->gatewayRejectionReason) {
-				case Braintree_Transaction::AVS:
+				case Braintree\Transaction::AVS:
 					return 'address-mismatch';
-				case Braintree_Transaction::AVS_AND_CVV:
-				case Braintree_Transaction::CVV:
+				case Braintree\Transaction::AVS_AND_CVV:
+				case Braintree\Transaction::CVV:
 					return 'card-verification-value';
 				default:
 					return 'payment-error';
@@ -252,7 +245,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 	// {{{ protected function createPaymentMethodTransaction()
 
 	protected function createPaymentMethodTransaction(
-		Braintree_Transaction $external_transaction,
+		Braintree\Transaction $external_transaction,
 		$type = StorePaymentRequest::TYPE_PAY)
 	{
 		$class_name = SwatDBClassMap::get('StorePaymentMethodTransaction');
@@ -271,10 +264,10 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 
 	protected function setConfig()
 	{
-		Braintree_Configuration::environment($this->environment);
-		Braintree_Configuration::merchantId($this->merchant_id);
-		Braintree_Configuration::publicKey($this->public_key);
-		Braintree_Configuration::privateKey($this->private_key);
+		Braintree\Configuration::environment($this->environment);
+		Braintree\Configuration::merchantId($this->merchant_id);
+		Braintree\Configuration::publicKey($this->public_key);
+		Braintree\Configuration::privateKey($this->private_key);
 	}
 
 	// }}}
