@@ -207,7 +207,7 @@ class StoreProductSearch
 		$value = $this->ui->getWidget('search_items')->value;
 		$items = array();
 		if ($value != '') {
-			$items = preg_mb_split('/[ ,\s]/u', $value, -1, PREG_SPLIT_NO_EMPTY);
+			$items = preg_split('/[ ,\s]/u', $value, -1, PREG_SPLIT_NO_EMPTY);
 			if (count($items) > 0) {
 				$where.= sprintf(' and Product.id in (
 					select ItemView.product from ItemView

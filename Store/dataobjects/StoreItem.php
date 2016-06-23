@@ -577,8 +577,9 @@ class StoreItem extends SwatDBDataObject
 				Store::_('%s %s per %s'),
 				$this->part_count, $this->part_unit, $this->singular_unit);
 
-		if ($this->item_group !== null && mb_strlen($this->item_group->title) > 0)
+		if ($this->item_group !== null && $this->item_group->title != '') {
 			$description['group'] = $this->item_group->title;
+		}
 
 		return $description;
 	}

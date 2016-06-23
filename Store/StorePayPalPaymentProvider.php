@@ -1217,7 +1217,12 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 		$midpoint = intval(floor(mb_strlen($fullname) / 2));
 
 		// get space closest to the middle of the string
-		$left_pos  = mb_strrpos($fullname, ' ', -mb_strlen($fullname) + $midpoint);
+		$left_pos  = mb_strrpos(
+			$fullname,
+			' ',
+			-mb_strlen($fullname) + $midpoint
+		);
+
 		$right_pos = mb_strpos($fullname, ' ', $midpoint);
 
 		if ($left_pos === false && $right_pos === false) {
