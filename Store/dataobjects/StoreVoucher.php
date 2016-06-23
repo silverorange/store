@@ -76,7 +76,8 @@ class StoreVoucher extends SwatDBDataObject
 
 			// strip prefix if there is one
 			$prefix = mb_strtolower($this->getCouponPrefix($instance));
-			if (mb_strtolower(mb_substr($code, 0, mb_strlen($prefix))) == $prefix) {
+			$prefix_length = mb_strlen($prefix);
+			if (mb_strtolower(mb_substr($code, 0, $prefix_length)) == $prefix) {
 				$code = mb_substr($code, mb_strlen($prefix));
 			}
 
