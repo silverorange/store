@@ -57,9 +57,13 @@ class StoreLocaleEdit extends AdminDBEdit
 	{
 		$localeid = $this->ui->getWidget('id');
 
-		if (!mb_ereg('^[a-z][a-z]_[A-Z][A-Z]$', $localeid->value)) {
-			$localeid->addMessage(new SwatMessage(
-				Store::_('Invalid locale identifier.'), 'error'));
+		if (preg_match('/^[a-z][a-z]_[A-Z][A-Z]$/', $localeid->value) !== 1) {
+			$localeid->addMessage(
+				new SwatMessage(
+					Store::_('Invalid locale identifier.'),
+					'error'
+				)
+			);
 		}
 	}
 
