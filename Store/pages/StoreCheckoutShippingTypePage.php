@@ -87,7 +87,7 @@ class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
 	{
 		$title = $type->title;
 
-		if (strlen($type->note) > 0) {
+		if (mb_strlen($type->note) > 0) {
 			$title.= sprintf('<br /><span class="swat-note">%s</span>',
 				$type->note);
 		}

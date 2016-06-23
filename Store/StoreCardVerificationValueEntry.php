@@ -136,7 +136,7 @@ class StoreCardVerificationValueEntry extends SwatEntry
 
 		if ($this->card_type instanceof StoreCardType) {
 			$length = $this->card_type->getCardVerificationValueLength();
-			if (strlen($this->value) != $length) {
+			if (mb_strlen($this->value) != $length) {
 				$message_content = sprintf(
 					Store::_(
 						'The %%s for %s%s%s must be a %s digit number.'

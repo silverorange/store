@@ -67,10 +67,10 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 		if (count(explode(' ', $keywords)) > 1)
 			return;
 
-		$sku = trim(strtolower($keywords));
+		$sku = trim(mb_strtolower($keywords));
 
-		if (substr($sku, 0, 1) === '#' && strlen($sku) > 1)
-			$sku = substr($sku, 1);
+		if (mb_substr($sku, 0, 1) === '#' && mb_strlen($sku) > 1)
+			$sku = mb_substr($sku, 1);
 
 		$base_sql = 'select Product.id, Product.shortname,
 				ProductPrimaryCategoryView.primary_category

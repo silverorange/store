@@ -227,7 +227,7 @@ class StorePaymentType extends SwatDBDataObject
 	{
 		echo SwatString::minimizeEntities($this->title);
 
-		if (strlen($this->note) > 0) {
+		if (mb_strlen($this->note) > 0) {
 			printf('<br /><span class="swat-note">%s</span>',
 				$this->note);
 		}

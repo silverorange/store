@@ -221,8 +221,14 @@ class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
 		$order_date = clone $order->ordernum->createdate;
 
 		// store_id has a max length of 20 chars.
-		$store_id = substr(
-			parse_url($this->config->uri->absolute_base, PHP_URL_HOST), 0, 20);
+		$store_id = mb_substr(
+			parse_url(
+				$this->config->uri->absolute_base,
+				PHP_URL_HOST
+			),
+			0,
+			20
+		);
 
 		$info = array(
 			'id'         => $order->ordernum->id,

@@ -364,22 +364,22 @@ class StoreCardType extends SwatDBDataObject
 	{
 		$number = trim((string)$number);
 		$output = '';
-		$format_len = strlen(str_replace(' ', '', $format));
+		$format_len = mb_strlen(str_replace(' ', '', $format));
 
 		// trim the number if it is too big
-		if (strlen($number) > $format_len)
-			$number = substr($number, 0, $format_len);
+		if (mb_strlen($number) > $format_len)
+			$number = mb_substr($number, 0, $format_len);
 
 		// expand the number if it is too small
-		if (strlen($number) < $format_len) {
+		if (mb_strlen($number) < $format_len) {
 			$number = ($zero_fill) ?
 				str_pad($number, $format_len, '0', STR_PAD_LEFT) :
 				str_pad($number, $format_len, '*', STR_PAD_LEFT);
 		}
 
 		// format number (from right to left)
-		$numberpos = strlen($number) - 1;
-		for ($i = strlen($format) - 1; $i >= 0; $i--) {
+		$numberpos = mb_strlen($number) - 1;
+		for ($i = mb_strlen($format) - 1; $i >= 0; $i--) {
 			$char = $format[$i];
 			switch ($char) {
 			case '#':
@@ -545,14 +545,14 @@ class StoreCardType extends SwatDBDataObject
 
 		$info = null;
 		$number = str_replace(' ', '', $number);
-		$number_length = strlen($number);
+		$number_length = mb_strlen($number);
 
 		foreach ($types as $type) {
 			if (!in_array($number_length, $type->length))
 				continue;
 
 			foreach ($type->prefixes as $prefix) {
-				if (strncmp($number, $prefix, strlen($prefix)) == 0) {
+				if (strncmp($number, $prefix, mb_strlen($prefix)) == 0) {
 					$info = clone $type;
 					break 2;
 				}
@@ -597,7 +597,7 @@ class StoreCardType extends SwatDBDataObject
 	{
 		echo SwatString::minimizeEntities($this->title);
 
-		if (strlen($this->note) > 0) {
+		if (mb_strlen($this->note) > 0) {
 			printf('<br /><span class="swat-note">%s</span>',
 				$this->note);
 		}

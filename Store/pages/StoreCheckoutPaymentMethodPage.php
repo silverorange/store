@@ -377,7 +377,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	{
 		$title = SwatString::minimizeEntities($type->title);
 
-		if (strlen($type->note) > 0) {
+		if (mb_strlen($type->note) > 0) {
 			$title.= sprintf(
 				'<br /><span class="swat-note">%s</span>',
 				$type->note
@@ -526,7 +526,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				'account_payment_methods_replicator'
 			);
 
-			$method_id = substr($option, 7);
+			$method_id = mb_substr($option, 7);
 			$cvv = $replicator->getWidget(
 				'account_card_verification_value',
 				$method_id
@@ -604,7 +604,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			$current_payment_method = $this->getPaymentMethod($methods);
 			$card_number = $this->ui->getWidget('card_number');
 			if (!$card_number->hasMessage()) {
-				$card_number_preview = substr($card_number->value, -4);
+				$card_number_preview = mb_substr($card_number->value, -4);
 				foreach ($methods as $method) {
 					if ($method === $current_payment_method)
 						continue;
@@ -690,7 +690,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 		if (strncmp('method_', $option_list->selected_page, 7) === 0) {
 
-			$method_id = intval(substr($option_list->selected_page, 7));
+			$method_id = intval(mb_substr($option_list->selected_page, 7));
 
 			$account_payment_method =
 				$this->app->session->account->payment_methods->getByIndex(
@@ -943,7 +943,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 					$class_name = SwatDBClassMap::get('StorePaymentType');
 					$type = new $class_name();
 					$type->setDatabase($this->app->db);
-					$type->load(substr($option_list->selected_page, 5));
+					$type->load(mb_substr($option_list->selected_page, 5));
 				}
 			}
 		}
@@ -968,7 +968,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			// was selected
 			if (strncmp('method_', $option_list->selected_page, 7) === 0) {
 
-				$method_id = intval(substr($option_list->selected_page, 7));
+				$method_id = intval(mb_substr($option_list->selected_page, 7));
 
 				$account_payment_method =
 					$this->app->session->account->payment_methods->getByIndex(

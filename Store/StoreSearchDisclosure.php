@@ -225,7 +225,7 @@ class StoreSearchDisclosure extends SwatDisclosure
 			$options_string.= "\t".SwatString::quoteJavaScriptString($name).
 				': '.$value.",\n";
 		}
-		$options_string = substr($options_string, 0, -2);
+		$options_string = mb_substr($options_string, 0, -2);
 		$options_string.= "\n}";
 
 		return sprintf(

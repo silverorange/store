@@ -40,7 +40,7 @@ abstract class StoreFroogleGenerator extends StoreProductFileGenerator
 		$feed->addAuthor(new AtomFeedAuthor($this->app->config->site->title));
 		$feed->link = new AtomFeedLink($this->getBaseHref(), 'self');
 		$feed->id = sprintf('tag:%s,%s:/products/',
-			substr($this->app->config->uri->absolute_base, 7), // get domain
+			mb_substr($this->app->config->uri->absolute_base, 7), // get domain
 			$this->getSiteInceptionDate());
 
 		return $feed;

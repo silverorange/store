@@ -143,11 +143,11 @@ class StoreOrderDeleter extends SitePrivateDataDeleter
 		switch ($address->getInternalValue('country')) {
 		case 'CA':
 			// leave off local delivery unit from postal code
-			$postal_code = substr($address->postal_code, 0, 3);
+			$postal_code = mb_substr($address->postal_code, 0, 3);
 			break;
 		case 'US':
 			// leave off +4 from Zip Code
-			$postal_code = substr($address->postal_code, 0, 5);
+			$postal_code = mb_substr($address->postal_code, 0, 5);
 			break;
 		}
 

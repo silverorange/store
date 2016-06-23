@@ -124,7 +124,7 @@ class StorePostalCodeEntry extends SwatEntry
 		$value = str_replace('-', '', $value);
 		$value = str_replace(' ', '', $value);
 
-		$value = strtoupper($value);
+		$value = mb_strtoupper($value);
 		$value = strtr($value, $trans);
 
 		if (preg_match('/^[ABCEGHJ-NPRSTVXY]\d[A-Z]\d[A-Z]\d$/u', $value) == 0) {
@@ -140,8 +140,8 @@ class StorePostalCodeEntry extends SwatEntry
 
 			$message->content_type = 'text/xml';
 			$this->addMessage($message);
-		} elseif (strlen($value) > 3)
-			$value = substr($value, 0, 3).' '.substr($value, 3, 3);
+		} elseif (mb_strlen($value) > 3)
+			$value = mb_substr($value, 0, 3).' '.mb_substr($value, 3, 3);
 
 		$this->value = $value;
 	}
@@ -492,17 +492,17 @@ class StorePostalCodeEntry extends SwatEntry
 		}
 
 		// truncate code if longer than 5 characters
-		if (strlen($code) > 5)
-			$code = substr($code, 0 , 5);
+		if (mb_strlen($code) > 5)
+			$code = mb_substr($code, 0 , 5);
 
 		// prepend code with zeros if shorter than 5 characters
-		if (strlen($code) < 5)
-			$code = str_repeat('0', 5 - strlen($code)).$code;
+		if (mb_strlen($code) < 5)
+			$code = str_repeat('0', 5 - mb_strlen($code)).$code;
 
 		// is code between some start and end range?
 		$valid = false;
 		foreach ($ranges as $start => $end) {
-			$zip_start = substr($code, 0, strlen($start));
+			$zip_start = mb_substr($code, 0, mb_strlen($start));
 			if ((integer)$zip_start >= (integer)$start &&
 				(integer)$zip_start <= (integer)$end) {
 				$valid = true;

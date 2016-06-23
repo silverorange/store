@@ -453,10 +453,10 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 
 	protected function normalizeSku($sku)
 	{
-		$sku = trim(strtolower($sku));
+		$sku = trim(mb_strtolower($sku));
 
-		if (strlen($sku) > 1 && $sku[0] === '#')
-			$sku = substr($sku, 1);
+		if (mb_strlen($sku) > 1 && $sku[0] === '#')
+			$sku = mb_substr($sku, 1);
 
 		return $sku;
 	}

@@ -717,8 +717,8 @@ class StoreProductDetails extends AdminIndex
 			$toolbar->setToolLinkValues($this->id);
 		} else {
 			foreach ($toolbar->getToolLinks() as $tool_link)
-				if (substr($tool_link->link, -5) === 'id=%s' ||
-					substr($tool_link->link, -10) === 'product=%s')
+				if (mb_substr($tool_link->link, -5) === 'id=%s' ||
+					mb_substr($tool_link->link, -10) === 'product=%s')
 					$tool_link->link.= '&category=%s';
 
 			$toolbar->setToolLinkValues(array($this->id, $this->category_id));

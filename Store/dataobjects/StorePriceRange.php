@@ -120,8 +120,8 @@ class StorePriceRange extends SwatDBDataObject
 	protected function initFromRow($value)
 	{
 		if (is_string($value)) {
-			if (substr($value, 0, 4) == 'orig') {
-				$price = substr($value, 4);
+			if (mb_substr($value, 0, 4) == 'orig') {
+				$price = mb_substr($value, 4);
 				$original_price = true;
 			} else {
 				$price = $value;

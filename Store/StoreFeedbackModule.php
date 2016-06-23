@@ -78,8 +78,8 @@ class StoreFeedbackModule extends SiteApplicationModule
 			);
 
 			// trim long referrer's down to 255 chars to match the database.
-			if (strlen($referrer) > 255) {
-				$referrer = substr($referrer, 0, 255);
+			if (mb_strlen($referrer) > 255) {
+				$referrer = mb_substr($referrer, 0, 255);
 			}
 
 			$session->feedback_referrer = $referrer;

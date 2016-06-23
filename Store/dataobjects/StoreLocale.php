@@ -40,8 +40,8 @@ class StoreLocale extends SwatDBDataObject
 	 */
 	public function getURLLocale()
 	{
-		$language = substr($this->id, 0, 2);
-		$country = strtolower(substr($this->id, 3, 2));
+		$language = mb_substr($this->id, 0, 2);
+		$country = mb_strtolower(mb_substr($this->id, 3, 2));
 		return $country.'/'.$language.'/';
 	}
 

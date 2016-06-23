@@ -130,7 +130,7 @@ class StoreProductReviewApproval extends AdminApproval
 
 	protected function approve()
 	{
-		if (strlen($this->ui->getWidget('bodytext')->value)) {
+		if (mb_strlen($this->ui->getWidget('bodytext')->value)) {
 			$class_name = SwatDBClassMap::get('StoreProductReview');
 			$reply = new $class_name();
 			$reply->setDatabase($this->app->db);

@@ -819,7 +819,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 		// truncate to max_length
 		if ($max_length > 0) {
-			$string = mb_substr($string, 0, $max_length);
+			$string = mb_mb_substr($string, 0, $max_length);
 		}
 
 		return $string;
@@ -1071,7 +1071,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			$class_name = SwatDBClassMap::get('StoreProvState');
 			$provstate  = new $class_name();
 			$provstate->setDatabase($db);
-			if (strlen($address->StateOrProvince) === 2) {
+			if (mb_strlen($address->StateOrProvince) === 2) {
 				if ($provstate->loadFromAbbreviation($address->StateOrProvince,
 					$address->Country)) {
 					$order_address->provstate = $provstate;
@@ -1214,11 +1214,16 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	{
 		$fullname = $payment_method->card_fullname;
 
-		$midpoint = intval(floor(strlen($fullname) / 2));
+		$midpoint = intval(floor(mb_strlen($fullname) / 2));
 
 		// get space closest to the middle of the string
-		$left_pos  = strrpos($fullname, ' ', -strlen($fullname) + $midpoint);
-		$right_pos = strpos($fullname, ' ', $midpoint);
+		$left_pos  = mb_strrpos(
+			$fullname,
+			' ',
+			-mb_strlen($fullname) + $midpoint
+		);
+
+		$right_pos = mb_strpos($fullname, ' ', $midpoint);
 
 		if ($left_pos === false && $right_pos === false) {
 			// There is no first and last name division, just split string for
@@ -1236,11 +1241,11 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 		// split name into first and last parts in roughly the middle
 		if ($pos === false) {
-			$first_name = substr($fullname, 0, $midpoint);
-			$last_name  = substr($fullname, $midpoint);
+			$first_name = mb_substr($fullname, 0, $midpoint);
+			$last_name  = mb_substr($fullname, $midpoint);
 		} else {
-			$first_name = substr($fullname, 0, $pos);
-			$last_name  = substr($fullname, $pos + 1);
+			$first_name = mb_substr($fullname, 0, $pos);
+			$last_name  = mb_substr($fullname, $pos + 1);
 		}
 
 		$details = array();

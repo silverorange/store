@@ -217,9 +217,9 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 	 */
 	protected function getItemId($sku)
 	{
-		$sku = strtolower($sku);
-		if (substr($sku, 0, 1) === '#' && strlen($sku) > 1)
-			$sku = substr($sku, 1);
+		$sku = mb_strtolower($sku);
+		if (mb_substr($sku, 0, 1) === '#' && mb_strlen($sku) > 1)
+			$sku = mb_substr($sku, 1);
 
 		$sql = sprintf('select Item.id from Item
 			inner join VisibleProductCache on
@@ -320,8 +320,8 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 
 	protected function normalizeSku($sku)
 	{
-		if (substr($sku, 0, 1) === '#' && strlen($sku) > 1)
-			$sku = substr($sku, 1);
+		if (mb_substr($sku, 0, 1) === '#' && mb_strlen($sku) > 1)
+			$sku = mb_substr($sku, 1);
 
 		return $sku;
 	}
