@@ -104,8 +104,9 @@ class StoreFeedbackEditPage extends SiteDBEditPage
 
 		$this->feedback->save();
 
-		if ($this->app->config->email->feedback_address !== null)
-			$this->feedback->sendEmb_send_mail($this->app);
+		if ($this->app->config->email->feedback_address !== null) {
+			$this->feedback->sendEmail($this->app);
+		}
 	}
 
 	// }}}
