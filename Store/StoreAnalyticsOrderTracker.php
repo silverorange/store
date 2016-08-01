@@ -22,6 +22,11 @@ class StoreAnalyticsOrderTracker
 	// {{{ protected properties
 
 	/**
+	 * @var SiteApplication
+	 */
+	protected $app;
+
+	/**
 	 * @var StoreOrder
 	 */
 	protected $order;
@@ -31,8 +36,9 @@ class StoreAnalyticsOrderTracker
 	// }}}
 	// {{{ public function __construct()
 
-	public function __construct(StoreOrder $order, $affiliation = null)
+	public function __construct(SiteApplication $app, StoreOrder $order, $affiliation = null)
 	{
+		$this->app         = $app;
 		$this->order       = $order;
 		$this->affiliation = $affiliation;
 	}
