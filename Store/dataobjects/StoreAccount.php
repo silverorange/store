@@ -264,7 +264,7 @@ class StoreAccount extends SiteAccount
 	{
 		$properties = parent::getProtectedPropertyList();
 
-		$properties['phone'] = array(
+		$properties['company'] = array(
 			'get' => 'getCompany',
 			'set' => 'setCompany'
 		);
