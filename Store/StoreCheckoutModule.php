@@ -67,17 +67,13 @@ class StoreCheckoutModule extends SiteApplicationModule
 
 		if (!isset($session->account)) {
 			unset($session->account);
-			$account_class = SwatDBClassMap::get('StoreAccount');
-			$session->account = new $account_class();
-			$session->account->setDatabase($this->getDB());
+			$session->account = $this->createAccount();
 			$this->resetProgress();
 		}
 
 		if (!isset($session->order)) {
 			unset($session->order);
-			$order_class = SwatDBClassMap::get('StoreOrder');
-			$session->order = new $order_class();
-			$session->order->setDatabase($this->getDB());
+			$session->order = $this->createOrder();
 			$this->resetProgress();
 		}
 	}
@@ -281,6 +277,30 @@ class StoreCheckoutModule extends SiteApplicationModule
 	{
 		$module = $this->app->getModule('SiteDatabaseModule');
 		return $module->getConnection();
+	}
+
+	// }}}
+	// {{{ protected function createAccount()
+
+	protected function createAccount()
+	{
+		$account_class = SwatDBClassMap::get('StoreAccount');
+		$account = new $account_class();
+		$account->setDatabase($this->getDB());
+
+		return $account;
+	}
+
+	// }}}
+	// {{{ protected function createOrder()
+
+	protected function createOrder()
+	{
+		$order_class = SwatDBClassMap::get('StoreOrder');
+		$order = new $order_class();
+		$order->setDatabase($this->getDB());
+
+		return $order;
 	}
 
 	// }}}
