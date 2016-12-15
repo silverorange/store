@@ -25,8 +25,8 @@ require_once 'Store/dataobjects/StoreAccountWrapper.php';
  *
  * <code>
  * $new_account = new StoreAccount();
- * $new_account->email = 'account@example.com';
- * $new_account->fullname = 'Example Customer';
+ * $new_account->setEmail('account@example.com');
+ * $new_account->setFullname('Example Customer');
  * $new_account->save();
  * </code>
  *
@@ -43,8 +43,8 @@ require_once 'Store/dataobjects/StoreAccountWrapper.php';
  * // using regular data-object load() method
  * $account = new StoreAccount();
  * $account->load(123);
- * echo 'Hello ' . $account->fullname;
- * $account->email = 'new_address@example.com';
+ * echo 'Hello ' . $account->getFullName();
+ * $account->setEmail('new_address@example.com');
  * $account->save();
  *
  * // using loadWithEmail()
@@ -57,8 +57,8 @@ require_once 'Store/dataobjects/StoreAccountWrapper.php';
  *     $crypt = $this->app->getModule('SiteCryptModule');
  *
  *     if ($crypt->verifyHash($password, $password_hash, $password_salt)) {
- *         echo 'Hello ' . $account->fullname;
- *         $account->email = 'new_address@example.com';
+ *         echo 'Hello ' . $account->getFullName();
+ *         $account->setEmail('new_address@example.com');
  *         $account->save();
  *     }
  * }
@@ -75,8 +75,8 @@ require_once 'Store/dataobjects/StoreAccountWrapper.php';
  * <code>
  * $sql = '-- select a account here';
  * $account = $db->query($sql, null, true, 'Account');
- * echo 'Hello ' . $account->fullname;
- * $account->email = 'new_address@example.com';
+ * echo 'Hello ' . $account->getFullName();
+ * $account->setEmail('new_address@example.com');
  * $account->save();
  * </code>
  *
@@ -90,23 +90,26 @@ class StoreAccount extends SiteAccount
 	// {{{ public properties
 
 	/**
+	 * @var float
+	 */
+	public $available_credit;
+
+	// }}}
+	// {{{ protected properties
+
+	/**
 	 * Optional company name for this account
 	 *
 	 * @var string
 	 */
-	public $company;
+	protected $company;
 
 	/**
 	 * Phone number of this account
 	 *
 	 * @var string
 	 */
-	public $phone;
-
-	/**
-	 * @var float
-	 */
-	public $available_credit;
+	protected $phone;
 
 	// }}}
 	// {{{ public function setDefaultBillingAddress()
@@ -252,6 +255,62 @@ class StoreAccount extends SiteAccount
 
 		$this->registerInternalProperty('default_payment_method',
 			SwatDBClassMap::get('StoreAccountPaymentMethod'), false, false);
+	}
+
+	// }}}
+	// {{{ protected function getProtectedPropertyList()
+
+	protected function getProtectedPropertyList()
+	{
+		$properties = parent::getProtectedPropertyList();
+
+		$properties['company'] = array(
+			'get' => 'getCompany',
+			'set' => 'setCompany'
+		);
+
+		$properties['phone'] = array(
+			'get' => 'getPhone',
+			'set' => 'setPhone'
+		);
+
+		return $properties;
+	}
+
+	// }}}
+
+	// getters
+	// {{{ public function getCompany()
+
+	public function getCompany()
+	{
+		return $this->company;
+	}
+
+	// }}}
+	// {{{ public function getPhone()
+
+	public function getPhone()
+	{
+		return $this->phone;
+	}
+
+	// }}}
+
+	// setters
+	// {{{ public function setCompany()
+
+	public function setCompany($company)
+	{
+		$this->company = $company;
+	}
+
+	// }}}
+	// {{{ public function setPhone()
+
+	public function setPhone($phone)
+	{
+		$this->phone = $phone;
 	}
 
 	// }}}
