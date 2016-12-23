@@ -10,6 +10,7 @@
 				<object class="SwatTableViewCheckboxColumn" id="checkbox">
 					<object class="SwatCheckboxCellRenderer" id="items">
 						<property name="value" type="data">id</property>
+						<property name="visible" type="data">is_editable</property>
 					</object>
 				</object>
 				<object class="AdminTableViewOrderableColumn" id="fullname">
@@ -19,6 +20,7 @@
 						<property name="link">Account/Details?id=%s</property>
 						<property name="link_value" type="data">id</property>
 						<property name="stock_id">person</property>
+						<property name="sensitive" type="data">is_editable</property>
 					</object>
 				</object>
 				<object class="AdminTableViewOrderableColumn" id="email">
