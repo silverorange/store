@@ -259,7 +259,7 @@ class StoreCategoryImageEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$this->ui->setValues(get_object_vars($this->category->image));
+		$this->ui->setValues($this->category->image->getAttributes());
 
 		$image = $this->ui->getWidget('image');
 		$image->image  = $this->category->image->getUri('thumb', '../');

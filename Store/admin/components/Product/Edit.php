@@ -540,7 +540,7 @@ class StoreProductEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$this->ui->setValues(get_object_vars($this->product));
+		$this->ui->setValues($this->product->getAttributes());
 
 		// make sure that the catalog defaults correctly
 		$this->ui->getWidget('catalog')->value =

@@ -160,7 +160,7 @@ class StoreSaleDiscountEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$this->ui->setValues(get_object_vars($this->sale_discount));
+		$this->ui->setValues($this->sale_discount->getAttributes());
 
 		$start_date = $this->ui->getWidget('start_date');
 		$end_date = $this->ui->getWidget('end_date');

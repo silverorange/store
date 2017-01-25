@@ -156,7 +156,7 @@ class StoreAttributeEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$this->ui->setValues(get_object_vars($this->attribute));
+		$this->ui->setValues($this->attribute->getAttributes());
 		$this->ui->getWidget('attribute_type')->value =
 			$this->attribute->getInternalValue('attribute_type');
 	}

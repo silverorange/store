@@ -549,7 +549,7 @@ class StoreItemEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$this->ui->setValues(get_object_vars($this->item));
+		$this->ui->setValues($this->item->getAttributes());
 		$this->ui->getWidget('status')->value = $this->item->getStatus()->id;
 
 		if ($this->item->sale_discount !== null)

@@ -161,7 +161,7 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$this->ui->setValues(get_object_vars($this->shipping_rate));
+		$this->ui->setValues($this->shipping_rate->getAttributes());
 		$this->ui->getWidget('region')->value =
 			$this->shipping_rate->getInternalValue('region');
 

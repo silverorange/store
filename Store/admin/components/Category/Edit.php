@@ -213,7 +213,7 @@ class StoreCategoryEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$this->ui->setValues(get_object_vars($this->category));
+		$this->ui->setValues($this->category->getAttributes());
 	}
 
 	// }}}

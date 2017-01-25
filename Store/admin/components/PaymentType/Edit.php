@@ -140,7 +140,7 @@ class StorePaymentTypeEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$this->ui->setValues(get_object_vars($this->payment_type));
+		$this->ui->setValues($this->payment_type->getAttributes());
 
 		$region_list = $this->ui->getWidget('regions');
 		$region_list->values = SwatDB::queryColumn($this->app->db,

@@ -108,7 +108,7 @@ class StoreRegionEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$this->ui->setValues(get_object_vars($this->region));
+		$this->ui->setValues($this->region->getAttributes());
 
 		$region_billing_country_list =
 			$this->ui->getWidget('region_billing_country');

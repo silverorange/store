@@ -111,7 +111,7 @@ class StoreShippingTypeEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$this->ui->setValues(get_object_vars($this->shipping_type));
+		$this->ui->setValues($this->shipping_type->getAttributes());
 	}
 
 	// }}}
