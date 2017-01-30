@@ -101,7 +101,7 @@ class StoreProvStateEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$this->ui->setValues(get_object_vars($this->prov_state));
+		$this->ui->setValues($this->prov_state->getAttributes());
 		$this->ui->getWidget('country')->value = $this->prov_state->country->id;
 	}
 

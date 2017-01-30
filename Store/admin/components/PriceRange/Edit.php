@@ -123,7 +123,7 @@ class StorePriceRangeEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$this->ui->setValues(get_object_vars($this->price_range));
+		$this->ui->setValues($this->price_range->getAttributes());
 	}
 
 	// }}}

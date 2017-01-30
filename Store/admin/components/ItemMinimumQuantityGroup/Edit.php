@@ -134,7 +134,7 @@ class StoreItemMinimumQuantityGroupEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$this->ui->setValues(get_object_vars($this->item_group));
+		$this->ui->setValues($this->item_group->getAttributes());
 	}
 
 	// }}}

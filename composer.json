@@ -45,7 +45,7 @@
 		"silverorange/admin": "^2.1.5",
 		"silverorange/net_notifier": "^0.4.1",
 		"silverorange/site": "^4.0.0",
-		"silverorange/swat": "^2.4.0",
+		"silverorange/swat": "^2.5.0",
 		"silverorange/xml_rpc_ajax": "^1.0.12",
 		"silverorange/yui": "^1.0.11"
 	},

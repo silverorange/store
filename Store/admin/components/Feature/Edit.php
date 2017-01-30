@@ -199,7 +199,7 @@ class StoreFeatureEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$values = get_object_vars($this->feature);
+		$values = $this->feature->getAttributes();
 		$values['region'] = $this->feature->getInternalValue('region');
 		$this->ui->setValues($values);
 

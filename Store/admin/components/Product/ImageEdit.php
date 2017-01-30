@@ -286,7 +286,7 @@ class StoreProductImageEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$this->ui->setValues(get_object_vars($this->image));
+		$this->ui->setValues($this->image->getAttributes());
 
 		$image = $this->ui->getWidget('image');
 		$image->image          = $this->image->getUri('thumb', '../');

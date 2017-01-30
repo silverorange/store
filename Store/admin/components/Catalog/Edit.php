@@ -94,7 +94,7 @@ class StoreCatalogEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$this->ui->setValues(get_object_vars($this->catalog));
+		$this->ui->setValues($this->catalog->getAttributes());
 	}
 
 	// }}}
