@@ -100,11 +100,18 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 
 			// don't change pass if it was left blank
 			if ($password != '') {
-				$crypt = $this->app->getModule('SiteCryptModule');
-
-				$account->setPasswordHash($crypt->generateHash($password));
+				$this->setAccountPassword($account, $password);
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function setAccountPassword()
+
+	protected function setAccountPassword($account, $password)
+	{
+		$crypt = $this->app->getModule('SiteCryptModule');
+		$account->setPasswordHash($crypt->generateHash($password));
 	}
 
 	// }}}
