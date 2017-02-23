@@ -116,7 +116,7 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 	// }}}
 	// {{{ protected function savePasswordToSession()
 
-	protected function savePasswordToSession($account, $password)
+	protected function savePasswordToSession()
 	{
 		// only set password on new accounts
 		if (!$this->app->session->isLoggedIn()) {
