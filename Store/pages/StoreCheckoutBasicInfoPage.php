@@ -78,6 +78,16 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 
 	protected function saveDataToSession()
 	{
+		$this->saveOrderToSession();
+		$this->saveAccountToSession();
+		$this->savePasswordToSession();
+	}
+
+	// }}}
+	// {{{ protected function saveOrderToSession()
+
+	protected function saveOrderToSession()
+	{
 		$order = $this->app->session->order;
 
 		$order->email = $this->getOptionalStringValue('email');
@@ -87,27 +97,42 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 		if ($this->ui->hasWidget('comments')) {
 			$order->comments = $this->getOptionalStringValue('comments');
 		}
+	}
 
+	// }}}
+	// {{{ protected function saveAccountToSession()
+
+	protected function saveAccountToSession()
+	{
+		$order = $this->app->session->order;
 		$account = $this->app->session->account;
+
 		$account->fullname = $this->getOptionalStringValue('fullname');
 		$account->email = $order->email;
 		$account->phone = $order->phone;
 		$account->company = $order->company;
+	}
 
+	// }}}
+	// {{{ protected function savePasswordToSession()
+
+	protected function savePasswordToSession()
+	{
 		// only set password on new accounts
 		if (!$this->app->session->isLoggedIn()) {
 			$password = $this->ui->getWidget('password')->value;
 
 			// don't change pass if it was left blank
 			if ($password != '') {
+				$account = $this->app->session->account;
 				$crypt = $this->app->getModule('SiteCryptModule');
-
 				$account->setPasswordHash($crypt->generateHash($password));
 			}
 		}
 	}
 
 	// }}}
+
 	// {{{ protected function validateAccount()
 
 	/**
