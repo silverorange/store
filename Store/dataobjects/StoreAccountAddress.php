@@ -12,14 +12,14 @@ require_once 'Store/dataobjects/StoreAddress.php';
  */
 class StoreAccountAddress extends StoreAddress
 {
-	// {{{ public properties
+	// {{{ protected properties
 
 	/**
 	 * Creation date
 	 *
 	 * @var SwatDate
 	 */
-	public $createdate;
+	protected $createdate;
 
 	// }}}
 	// {{{ protected function init()
@@ -37,6 +37,41 @@ class StoreAccountAddress extends StoreAddress
 	}
 
 	// }}}
+	// {{{ protected function getProtectedPropertyList()
+
+	protected function getProtectedPropertyList()
+	{
+		$properties = parent::getProtectedPropertyList();
+
+		$properties['createdate'] = array(
+			'get' => 'getCreateDate',
+			'set' => 'setCreateDate',
+		);
+
+		return $properties;
+	}
+
+	// }}}
+
+	// getters
+    // {{{ public function getCreateDate()
+
+    public function getCreateDate()
+    {
+		return $this->createdate;
+    }
+
+    // }}}
+
+	// setters
+    // {{{ public function setCreateDate()
+
+    public function setCreateDate(\SwatDate $createdate)
+    {
+		$this->createdate = $createdate;
+    }
+
+    // }}}
 }
 
 ?>
