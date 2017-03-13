@@ -669,8 +669,8 @@ abstract class StoreAddress extends SwatDBDataObject
 	public function isPoBox()
 	{
 		$is_po_box = $this->po_box ||
-			self::isPoBoxLine($this->line1) ||
-			self::isPoBoxLine($this->line2);
+			self::isPoBoxLine($this->getLine1()) ||
+			self::isPoBoxLine($this->getLine2());
 
 		return $is_po_box;
 	}
@@ -776,17 +776,18 @@ abstract class StoreAddress extends SwatDBDataObject
 
 	public function copyFrom(StoreAddress $address)
 	{
-		$this->fullname        = $address->fullname;
-		$this->company         = $address->company;
-		$this->line1           = $address->line1;
-		$this->line2           = $address->line2;
-		$this->city            = $address->city;
-		$this->postal_code     = $address->postal_code;
-		$this->provstate_other = $address->provstate_other;
-		$this->phone           = $address->phone;
-		$this->provstate       = $address->getInternalValue('provstate');
-		$this->country         = $address->getInternalValue('country');
-		$this->po_box          = $address->po_box;
+		$this->setFullName($address->getFullName());
+		$this->setCompany($address->getCompany());
+		$this->setLine1($address->getLine1());
+		$this->setLine2($address->getLine2());
+		$this->setCity($address->getCity());
+		$this->setPostalCode($address->getPostalCode());
+		$this->setProvStateOther($address->getProvstateOther());
+		$this->setPhone($address->getPhone());
+
+		$this->provstate = $address->getInternalValue('provstate');
+		$this->country   = $address->getInternalValue('country');
+		$this->po_box    = $address->po_box;
 	}
 
 	// }}}
@@ -804,28 +805,28 @@ abstract class StoreAddress extends SwatDBDataObject
 	{
 		$equal = true;
 
-		if ($this->fullname !== $address->fullname)
+		if ($this->getFullName() !== $address->getFullName())
 			$equal = false;
 
-		if ($this->company !== $address->company)
+		if ($this->getCompany() !== $address->getCompany())
 			$equal = false;
 
-		if ($this->line1 !== $address->line1)
+		if ($this->getLine1() !== $address->getLine1())
 			$equal = false;
 
-		if ($this->line2 !== $address->line2)
+		if ($this->getLine2() !== $address->getLine2())
 			$equal = false;
 
-		if ($this->city !== $address->city)
+		if ($this->getCity() !== $address->getCity())
 			$equal = false;
 
-		if ($this->provstate_other !== $address->provstate_other)
+		if ($this->getProvStateOther() !== $address->getProvStateOther())
 			$equal = false;
 
-		if ($this->postal_code !== $address->postal_code)
+		if ($this->getPostalCode() !== $address->getPostalCode())
 			$equal = false;
 
-		if ($this->phone !== $address->phone)
+		if ($this->getPhone() !== $address->getPhone())
 			$equal = false;
 
 		return $equal;
@@ -868,29 +869,29 @@ abstract class StoreAddress extends SwatDBDataObject
 	{
 		$equal = true;
 
-		if ($this->fullname != $address->fullname)
+		if ($this->getFullName() != $address->getFullName())
 			$equal = false;
 
-		if (trim(mb_strtoupper($this->company)) !=
-			trim(mb_strtoupper($address->company)))
+		if (trim(mb_strtoupper($this->getCompany())) !=
+			trim(mb_strtoupper($address->getCompany())))
 				$equal = false;
 
-		if (mb_strtoupper($this->line1) != mb_strtoupper($address->line1) &&
-			!self::differByStreetSuffixOnly($this->line1, $address->line1) &&
+		if (mb_strtoupper($this->getLine1()) != mb_strtoupper($address->getLine1()) &&
+			!self::differByStreetSuffixOnly($this->getLine1(), $address->getLine1()) &&
 			!self::differByStreetAbbreviationOnly(
-				$this->line1, $address->line1)) {
+				$this->getLine1(), $address->getLine1())) {
 			$equal = false;
 		}
 
-		if (trim(mb_strtoupper($this->line2)) !=
-			trim(mb_strtoupper($address->line2)))
+		if (trim(mb_strtoupper($this->getLine2())) !=
+			trim(mb_strtoupper($address->getLine2())))
 				$equal = false;
 
-		if (mb_strtoupper($this->city) != mb_strtoupper($address->city))
+		if (mb_strtoupper($this->getCity()) != mb_strtoupper($address->getCity()))
 			$equal = false;
 
-		if (mb_strtoupper($this->provstate_other) !=
-			mb_strtoupper($address->provstate_other)) {
+		if (mb_strtoupper($this->getProvStateOther()) !=
+			mb_strtoupper($address->getProvStateOther())) {
 			$equal = false;
 		}
 
@@ -898,16 +899,16 @@ abstract class StoreAddress extends SwatDBDataObject
 			$equal = false;
 
 		if ($this->country->id === 'US') {
-			if (mb_substr($this->postal_code, 0, 5) !=
-				mb_substr($address->postal_code, 0, 5)) {
+			if (mb_substr($this->getPostalCode(), 0, 5) !=
+				mb_substr($address->getPostalCode(), 0, 5)) {
 				$equal = false;
 			}
 		} else {
-			if ($this->postal_code != $address->postal_code)
+			if ($this->getPostalCode() != $address->getPostalCode())
 				$equal = false;
 		}
 
-		if ($this->phone != $address->phone)
+		if ($this->getPhone() != $address->getPhone())
 			$equal = false;
 
 		return $equal;
@@ -947,9 +948,9 @@ abstract class StoreAddress extends SwatDBDataObject
 			echo '<br />';
 		}
 
-		if ($this->company != '') {
+		if ($this->getCompany() != '') {
 			$span_tag->class = 'fn org';
-			$span_tag->setContent($this->company);
+			$span_tag->setContent($this->getCompany());
 			$span_tag->display();
 			echo '<br />';
 		}
@@ -960,9 +961,9 @@ abstract class StoreAddress extends SwatDBDataObject
 
 		$this->displayLines();
 
-		if ($this->city != '') {
+		if ($this->getCity() != '') {
 			$span_tag->class = 'locality';
-			$span_tag->setContent($this->city);
+			$span_tag->setContent($this->getCity());
 			$span_tag->display();
 			echo ' ';
 		}
@@ -973,16 +974,16 @@ abstract class StoreAddress extends SwatDBDataObject
 			$abbr_tag->title = $this->provstate->title;
 			$abbr_tag->setContent($this->provstate->abbreviation);
 			$abbr_tag->display();
-		} elseif ($this->provstate_other != '') {
+		} elseif ($this->getProvStateOther() != '') {
 			$span_tag->class = 'region';
-			$span_tag->setContent($this->provstate_other);
+			$span_tag->setContent($this->getProvStateOther());
 			$span_tag->display();
 		}
 
 		echo '&nbsp;&nbsp;';
 
 		$span_tag->class = 'postal-code';
-		$span_tag->setContent($this->postal_code);
+		$span_tag->setContent($this->getPostalCode());
 		$span_tag->display();
 		echo '<br />';
 
@@ -992,10 +993,10 @@ abstract class StoreAddress extends SwatDBDataObject
 
 		$address_span_tag->close();
 
-		if ($this->phone != '') {
+		if ($this->getPhone() != '') {
 			echo '<br />', Store::_('Phone: ');
 			$span_tag->class = 'tel';
-			$span_tag->setContent($this->phone);
+			$span_tag->setContent($this->getPhone());
 			$span_tag->display();
 		}
 	}
@@ -1013,26 +1014,26 @@ abstract class StoreAddress extends SwatDBDataObject
 	{
 		echo SwatString::minimizeEntities($this->getFullName()), '<br />';
 
-		if ($this->company != '')
-			echo SwatString::minimizeEntities($this->company), '<br />';
+		if ($this->getCompany() != '')
+			echo SwatString::minimizeEntities($this->getCompany()), '<br />';
 
-		echo SwatString::minimizeEntities($this->line1), '<br />';
+		echo SwatString::minimizeEntities($this->getLine1()), '<br />';
 
-		if ($this->line2 != '')
-			echo SwatString::minimizeEntities($this->line2), '<br />';
+		if ($this->getLine2() != '')
+			echo SwatString::minimizeEntities($this->getLine2()), '<br />';
 
-		echo SwatString::minimizeEntities($this->city), '<br />';
+		echo SwatString::minimizeEntities($this->getCity()), '<br />';
 
-		if ($this->provstate_other != '')
-			echo SwatString::minimizeEntities($this->provstate_other), '<br />';
+		if ($this->getProvStateOther() != '')
+			echo SwatString::minimizeEntities($this->getProvStateOther()), '<br />';
 
-		echo SwatString::minimizeEntities($this->postal_code), '<br />';
+		echo SwatString::minimizeEntities($this->getPostalCode()), '<br />';
 
 		echo SwatString::minimizeEntities($this->country->title), '<br />';
 
-		if ($this->phone != '')
+		if ($this->getPhone() != '')
 			printf('Phone: %s',
-				SwatString::minimizeEntities($this->phone));
+				SwatString::minimizeEntities($this->getPhone()));
 	}
 
 	// }}}
@@ -1055,9 +1056,9 @@ abstract class StoreAddress extends SwatDBDataObject
 			echo '<br />';
 		}
 
-		if ($this->company != '') {
+		if ($this->getCompany() != '') {
 			$span_tag->class = 'fn org';
-			$span_tag->setContent($this->company);
+			$span_tag->setContent($this->getCompany());
 			$span_tag->display();
 			echo '<br />';
 		}
@@ -1068,9 +1069,9 @@ abstract class StoreAddress extends SwatDBDataObject
 
 		$this->displayLines();
 
-		if ($this->city != '') {
+		if ($this->getCity() != '') {
 			$span_tag->class = 'locality';
-			$span_tag->setContent($this->city);
+			$span_tag->setContent($this->getCity());
 			$span_tag->display();
 			echo ' ';
 		}
@@ -1081,16 +1082,16 @@ abstract class StoreAddress extends SwatDBDataObject
 			$abbr_tag->title = $this->provstate->title;
 			$abbr_tag->setContent($this->provstate->abbreviation);
 			$abbr_tag->display();
-		} elseif ($this->provstate_other != '') {
+		} elseif ($this->getProvStateOther() != '') {
 			$span_tag->class = 'region';
-			$span_tag->setContent($this->provstate_other);
+			$span_tag->setContent($this->getProvStateOther());
 			$span_tag->display();
 		}
 
 		echo '&nbsp;&nbsp;';
 
 		$span_tag->class = 'postal-code';
-		$span_tag->setContent($this->postal_code);
+		$span_tag->setContent($this->getPostalCode());
 		$span_tag->display();
 		echo '<br />';
 
@@ -1100,10 +1101,10 @@ abstract class StoreAddress extends SwatDBDataObject
 
 		$address_span_tag->close();
 
-		if ($this->phone != '') {
+		if ($this->getPhone() != '') {
 			echo '<br />', Store::_('Phone: ');
 			$span_tag->class = 'tel';
-			$span_tag->setContent($this->phone);
+			$span_tag->setContent($this->getPhone());
 			$span_tag->display();
 		}
 	}
@@ -1125,9 +1126,9 @@ abstract class StoreAddress extends SwatDBDataObject
 			echo ', ';
 		}
 
-		if ($this->company != '') {
+		if ($this->getCompany() != '') {
 			$span_tag->class = 'fn org';
-			$span_tag->setContent($this->company);
+			$span_tag->setContent($this->getCompany());
 			$span_tag->display();
 			echo ', ';
 		}
@@ -1136,27 +1137,27 @@ abstract class StoreAddress extends SwatDBDataObject
 		$address_span_tag->class = 'adr';
 		$address_span_tag->open();
 
-		if ($this->line1 != '') {
+		if ($this->getLine1() != '') {
 			$span_tag->class = 'street-address';
-			$span_tag->setContent($this->line1);
+			$span_tag->setContent($this->getLine1());
 			$span_tag->display();
 
-			if ($this->line2 != '') {
+			if ($this->getLine2() != '') {
 				echo ', ';
 				$span_tag->class = 'extended-address';
-				$span_tag->setContent($this->line2);
+				$span_tag->setContent($this->getLine2());
 				$span_tag->display();
 			}
 		}
 
-		if ($this->getFullName() != '' || $this->company != '' ||
-			$this->line1 != '') {
+		if ($this->getFullName() != '' || $this->getCompany() != '' ||
+			$this->getLine1() != '') {
 			echo '<br />';
 		}
 
-		if ($this->city != '') {
+		if ($this->getCity() != '') {
 			$span_tag->class = 'locality';
-			$span_tag->setContent($this->city);
+			$span_tag->setContent($this->getCity());
 			$span_tag->display();
 			echo ' ';
 		}
@@ -1167,16 +1168,16 @@ abstract class StoreAddress extends SwatDBDataObject
 			$abbr_tag->title = $this->provstate->title;
 			$abbr_tag->setContent($this->provstate->abbreviation);
 			$abbr_tag->display();
-		} elseif ($this->provstate_other != '') {
+		} elseif ($this->getProvStateOther() != '') {
 			$span_tag->class = 'region';
-			$span_tag->setContent($this->provstate_other);
+			$span_tag->setContent($this->getProvStateOther());
 			$span_tag->display();
 		}
 
-		if ($this->postal_code !== null) {
+		if ($this->getPostalCode() !== null) {
 			echo '&nbsp;&nbsp;';
 			$span_tag->class = 'postal-code';
-			$span_tag->setContent($this->postal_code);
+			$span_tag->setContent($this->getPostalCode());
 			$span_tag->display();
 		}
 
@@ -1188,10 +1189,10 @@ abstract class StoreAddress extends SwatDBDataObject
 
 		$address_span_tag->close();
 
-		if ($this->phone != '') {
+		if ($this->getPhone() != '') {
 			echo '<br />', Store::_('Phone: ');
 			$span_tag->class = 'tel';
-			$span_tag->setContent($this->phone);
+			$span_tag->setContent($this->getPhone());
 			$span_tag->display();
 		}
 	}
@@ -1206,28 +1207,28 @@ abstract class StoreAddress extends SwatDBDataObject
 	{
 		echo SwatString::minimizeEntities($this->getFullName()), ', ';
 
-		if ($this->company != '')
-			echo SwatString::minimizeEntities($this->company), ', ';
+		if ($this->getCompany() != '')
+			echo SwatString::minimizeEntities($this->getCompany()), ', ';
 
-		echo SwatString::minimizeEntities($this->line1);
-		if ($this->line2 != '')
-			echo ', ', SwatString::minimizeEntities($this->line2);
+		echo SwatString::minimizeEntities($this->getLine1());
+		if ($this->getLine2() != '')
+			echo ', ', SwatString::minimizeEntities($this->getLine2());
 
 		echo '<br />';
-		echo SwatString::minimizeEntities($this->city);
+		echo SwatString::minimizeEntities($this->getCity());
 
-		if ($this->provstate_other != '')
-			echo ', ', SwatString::minimizeEntities($this->provstate_other);
+		if ($this->getProvStateOther() != '')
+			echo ', ', SwatString::minimizeEntities($this->getProvStateOther());
 
-		if ($this->postal_code !== null)
-			echo ', ', SwatString::minimizeEntities($this->postal_code);
+		if ($this->getPostalCode() !== null)
+			echo ', ', SwatString::minimizeEntities($this->getPostalCode());
 
 		echo ', ', SwatString::minimizeEntities($this->country->title);
 
-		if ($this->phone != '') {
+		if ($this->getPhone() != '') {
 			echo '<br />';
 			printf(Store::_('Phone: %s'),
-				SwatString::minimizeEntities($this->phone));
+				SwatString::minimizeEntities($this->getPhone()));
 		}
 	}
 
@@ -1248,9 +1249,9 @@ abstract class StoreAddress extends SwatDBDataObject
 			echo ', ';
 		}
 
-		if ($this->company != '') {
+		if ($this->getCompany() != '') {
 			$span_tag->class = 'fn org';
-			$span_tag->setContent($this->company);
+			$span_tag->setContent($this->getCompany());
 			$span_tag->display();
 			echo ', ';
 		}
@@ -1259,27 +1260,27 @@ abstract class StoreAddress extends SwatDBDataObject
 		$address_span_tag->class = 'adr';
 		$address_span_tag->open();
 
-		if ($this->line1 != '') {
+		if ($this->getLine1() != '') {
 			$span_tag->class = 'street-address';
-			$span_tag->setContent($this->line1);
+			$span_tag->setContent($this->getLine1());
 			$span_tag->display();
 
-			if ($this->line2 != '') {
+			if ($this->getLine2() != '') {
 				echo ', ';
 				$span_tag->class = 'extended-address';
-				$span_tag->setContent($this->line2);
+				$span_tag->setContent($this->getLine2());
 				$span_tag->display();
 			}
 		}
 
-		if ($this->getFullName() != '' || $this->company != '' ||
-			$this->line1 != '') {
+		if ($this->getFullName() != '' || $this->getCompany() != '' ||
+			$this->getLine1() != '') {
 			echo '<br />';
 		}
 
-		if ($this->city != '') {
+		if ($this->getCity() != '') {
 			$span_tag->class = 'locality';
-			$span_tag->setContent($this->city);
+			$span_tag->setContent($this->getCity());
 			$span_tag->display();
 			echo ' ';
 		}
@@ -1290,16 +1291,16 @@ abstract class StoreAddress extends SwatDBDataObject
 			$abbr_tag->title = $this->provstate->title;
 			$abbr_tag->setContent($this->provstate->abbreviation);
 			$abbr_tag->display();
-		} elseif ($this->provstate_other != '') {
+		} elseif ($this->getProvStateOther() != '') {
 			$span_tag->class = 'region';
-			$span_tag->setContent($this->provstate_other);
+			$span_tag->setContent($this->getProvStateOther());
 			$span_tag->display();
 		}
 
-		if ($this->postal_code !== null) {
+		if ($this->getPostalCode() !== null) {
 			echo '&nbsp;&nbsp;';
 			$span_tag->class = 'postal-code';
-			$span_tag->setContent($this->postal_code);
+			$span_tag->setContent($this->getPostalCode());
 			$span_tag->display();
 		}
 
@@ -1311,10 +1312,10 @@ abstract class StoreAddress extends SwatDBDataObject
 
 		$address_span_tag->close();
 
-		if ($this->phone != '') {
+		if ($this->getPhone() != '') {
 			echo '<br />', Store::_('Phone: ');
 			$span_tag->class = 'tel';
-			$span_tag->setContent($this->phone);
+			$span_tag->setContent($this->getPhone());
 			$span_tag->display();
 		}
 	}
@@ -1329,34 +1330,34 @@ abstract class StoreAddress extends SwatDBDataObject
 	{
 		echo $this->getFullName(), ', ';
 
-		if ($this->company != '')
-			echo $this->company, ', ';
+		if ($this->getCompany() != '')
+			echo $this->getCompany(), ', ';
 
-		echo $this->line1;
-		if ($this->line2 != '')
-			echo ', ', $this->line2;
+		echo $this->getLine1();
+		if ($this->getLine2() != '')
+			echo ', ', $this->getLine2();
 
 		echo "\n";
 
-		echo $this->city, ' ';
+		echo $this->getCity(), ' ';
 
 		if ($this->provstate !== null)
 			echo $this->provstate->abbreviation;
-		elseif ($this->provstate_other != '')
-			echo $this->provstate_other;
+		elseif ($this->getProvStateOther() != '')
+			echo $this->getProvStateOther();
 
-		if ($this->postal_code !== null) {
+		if ($this->getPostalCode() !== null) {
 			echo '  ';
-			echo $this->postal_code;
+			echo $this->getPostalCode();
 		}
 		echo ', ';
 
 		echo $this->country->title;
 
-		if ($this->phone != '') {
+		if ($this->getPhone() != '') {
 			echo "\n";
 			printf(Store::_('Phone: %s'),
-				SwatString::minimizeEntities($this->phone));
+				SwatString::minimizeEntities($this->getPhone()));
 		}
 	}
 
@@ -1370,28 +1371,28 @@ abstract class StoreAddress extends SwatDBDataObject
 	{
 		echo $this->getFullName(), ', ';
 
-		if ($this->company != '')
-			echo $this->company, ', ';
+		if ($this->getCompany() != '')
+			echo $this->getCompany(), ', ';
 
-		echo $this->line1;
-		if ($this->line2 != '')
-			echo ', ', $this->line2;
+		echo $this->getLine1();
+		if ($this->getLine2() != '')
+			echo ', ', $this->getLine2();
 
 		echo "\n";
 
-		echo $this->city;
-		if ($this->provstate_other != '')
-			echo ', ', $this->provstate_other;
+		echo $this->getCity();
+		if ($this->getProvStateOther() != '')
+			echo ', ', $this->getProvStateOther();
 
-		if ($this->postal_code !== null)
-			echo ', ', $this->postal_code;
+		if ($this->getPostalCode() !== null)
+			echo ', ', $this->getPostalCode();
 
 		echo ', ', $this->country->title;
 
-		if ($this->phone != '') {
+		if ($this->getPhone() != '') {
 			echo "\n";
 			printf(Store::_('Phone: %s'),
-				SwatString::minimizeEntities($this->phone));
+				SwatString::minimizeEntities($this->getPhone()));
 		}
 	}
 
@@ -1405,34 +1406,34 @@ abstract class StoreAddress extends SwatDBDataObject
 	{
 		echo $this->getFullName(), ', ';
 
-		if ($this->company != '')
-			echo $this->company, ', ';
+		if ($this->getCompany() != '')
+			echo $this->getCompany(), ', ';
 
-		echo $this->line1;
-		if ($this->line2 != '')
-			echo ', ', $this->line2;
+		echo $this->getLine1();
+		if ($this->getLine2() != '')
+			echo ', ', $this->getLine2();
 
 		echo "\n";
 
-		echo $this->city, ' ';
+		echo $this->getCity(), ' ';
 
 		if ($this->provstate !== null)
 			echo $this->provstate->abbreviation;
-		elseif ($this->provstate_other != '')
-			echo $this->provstate_other;
+		elseif ($this->getProvStateOther() != '')
+			echo $this->getProvStateOther();
 
-		if ($this->postal_code !== null) {
+		if ($this->getPostalCode() !== null) {
 			echo '  ';
-			echo $this->postal_code;
+			echo $this->getPostalCode();
 		}
 		echo ', ';
 
 		echo $this->country->title;
 
-		if ($this->phone != '') {
+		if ($this->getPhone() != '') {
 			echo "\n";
 			printf(Store::_('Phone: %s'),
-				SwatString::minimizeEntities($this->phone));
+				SwatString::minimizeEntities($this->getPhone()));
 		}
 	}
 
@@ -1441,10 +1442,10 @@ abstract class StoreAddress extends SwatDBDataObject
 
 	protected function displayLines()
 	{
-		if ($this->line1 != '') {
+		if ($this->getLine1() != '') {
 			echo '<span class="street-address">';
 
-			$line1 = SwatString::minimizeEntities($this->line1);
+			$line1 = SwatString::minimizeEntities($this->getLine1());
 			$line1 = preg_replace('/\s*\n\s*/', "\n", $line1);
 			$line1 = nl2br(trim($line1));
 			echo $line1;
@@ -1452,10 +1453,10 @@ abstract class StoreAddress extends SwatDBDataObject
 			echo '</span>';
 			echo '<br />';
 
-			if ($this->line2 != '') {
+			if ($this->getLine2() != '') {
 				echo '<span class="extended-address">';
 
-				$line2 = SwatString::minimizeEntities($this->line2);
+				$line2 = SwatString::minimizeEntities($this->getLine2());
 				$line2 = preg_replace('/\s*\n\s*/', "\n", $line2);
 				$line2 = nl2br(trim($line2));
 				echo $line2;
@@ -1484,12 +1485,12 @@ abstract class StoreAddress extends SwatDBDataObject
 			$key, '', $options);
 
 		$address = array(
-			'addressLine1'   => $this->line1,
-			'addressLine2'   => $this->line2,
+			'addressLine1'   => $this->getLine1(),
+			'addressLine2'   => $this->getLine2(),
 			'city_state_zip' => sprintf('%s %s %s',
-				$this->city,
+				$this->getCity(),
 				$this->provstate->abbreviation,
-				$this->postal_code),
+				$this->getPostalCode()),
 			'firm'           => $this->company,
 			'urbanization'   => '',
 			'casing'         => 'Proper'
@@ -1500,11 +1501,11 @@ abstract class StoreAddress extends SwatDBDataObject
 			$valid = $result->VerifyAddressUSAResult->AddressStatus === 'Valid';
 
 			if ($modify) {
-				$this->line1 = $result->VerifyAddressUSAResult->AddressLine1;
-				$this->line2 = $result->VerifyAddressUSAResult->AddressLine2;
-				$this->city = $result->VerifyAddressUSAResult->City;
-				$this->company = $result->VerifyAddressUSAResult->Firm;
-				$this->postal_code = $result->VerifyAddressUSAResult->ZipPlus4;
+				$this->setLine1($result->VerifyAddressUSAResult->AddressLine1);
+				$this->setLine2($result->VerifyAddressUSAResult->AddressLine2);
+				$this->setCity($result->VerifyAddressUSAResult->City);
+				$this->setCompany($result->VerifyAddressUSAResult->Firm);
+				$this->setPostalCode($result->VerifyAddressUSAResult->ZipPlus4);
 				$this->po_box =
 					($result->VerifyAddressUSAResult->RecordType === 'P');
 
