@@ -11,37 +11,37 @@ require_once 'SwatDB/SwatDBDataObject.php';
  */
 class StoreCountry extends SwatDBDataObject
 {
-	// {{{ public properties
+	// {{{ protected properties
 
 	/**
 	 * Unique identifier of this country
 	 *
 	 * @var string
 	 */
-	public $id;
+	protected $id;
 
 	/**
 	 * User visible title of this country
 	 *
 	 * @var string
 	 */
-	public $title;
+	protected $title;
 
 	/**
 	 * Whether or not to show this country on the front-end
 	 *
 	 * @var boolean
 	 */
-	public $visible;
+	protected $visible;
 
 	/**
 	 * Whether or not this country has a postal code system
 	 *
-	 * Some countries, such as the Republic of Ireland do not.
+	 * Some countries, such as the Reprotected of Ireland do not.
 	 *
 	 * @var boolean
 	 */
-	public $has_postal_code;
+	protected $has_postal_code;
 
 	// }}}
 	// {{{ public function getRegionTitle()
@@ -310,6 +310,102 @@ class StoreCountry extends SwatDBDataObject
 	{
 		$this->table = 'Country';
 		$this->id_field = 'text:id';
+	}
+
+	// }}}
+	// {{{ protected function getProtectedProperties()
+
+	protected function getProtectedProperties()
+	{
+		return array_merge(
+			parent::getProtectedPropertyList(),
+			array(
+				'id' => array(
+					'get' => 'getId',
+					'set' => 'setId',
+				),
+				'title' => array(
+					'get' => 'getTitle',
+					'set' => 'setTitle',
+				),
+				'visible' => array(
+					'get' => 'getVisible',
+					'set' => 'setVisible',
+				),
+				'has_postal_code' => array(
+					'get' => 'getHasPostalCode',
+					'set' => 'setHasPostalCode',
+				)
+			)
+		);
+	}
+
+	// }}}
+
+	// getters
+	// {{{public function getId()
+
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	// }}}
+	// {{{public function getTitle()
+
+	public function getTitle()
+	{
+		return $this->title;
+	}
+
+	// }}}
+	// {{{public function getVisible()
+
+	public function getVisible()
+	{
+		return $this->visible;
+	}
+
+	// }}}
+	// {{{public function getHasPostalCode()
+
+	public function getHasPostalCode()
+	{
+		return $this->has_postal_code;
+	}
+
+	// }}}
+
+	// setters
+	// {{{public function setId()
+
+	public function setId($id)
+	{
+		$this->id = $id;
+	}
+
+	// }}}
+	// {{{public function setTitle()
+
+	public function setTitle($title)
+	{
+		$this->title = $title;
+	}
+
+	// }}}
+	// {{{public function setVisible()
+
+	public function setVisible($visible)
+	{
+		$this->visible = $visible;
+	}
+
+	// }}}
+	// {{{public function setHasPostalCode()
+
+	public function setHasPostalCode($has_postal_code)
+	{
+		$this->has_postal_code = $has_postal_code;
 	}
 
 	// }}}

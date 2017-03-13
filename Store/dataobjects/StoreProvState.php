@@ -14,29 +14,6 @@ class StoreProvState extends SwatDBDataObject
 	// {{{ public properties
 
 	/**
-	 * Unique identifier of this province or state
-	 *
-	 * @var integer
-	 */
-	public $id;
-
-	/**
-	 * User visible title of this province or state
-	 *
-	 * @var string
-	 */
-	public $title;
-
-	/**
-	 * A two letter abbreviation used to identify this province of state
-	 *
-	 * This is also used for displaying addresses.
-	 *
-	 * @var string
-	 */
-	public $abbreviation;
-
-	/**
 	 * Tax message
 	 *
 	 * If this province or state requires special tax procedures, this note
@@ -45,6 +22,32 @@ class StoreProvState extends SwatDBDataObject
 	 * @var string
 	 */
 	public $tax_message;
+
+	// }}}
+	// {{{ protected properties
+
+	/**
+	 * Unique identifier of this province or state
+	 *
+	 * @var integer
+	 */
+	protected $id;
+
+	/**
+	 * User visible title of this province or state
+	 *
+	 * @var string
+	 */
+	protected $title;
+
+	/**
+	 * A two letter abbreviation used to identify this province of state
+	 *
+	 * This is also used for displaying addresses.
+	 *
+	 * @var string
+	 */
+	protected $abbreviation;
 
 	// }}}
 	// {{{ public static function getAbbreviationById()
@@ -89,7 +92,6 @@ class StoreProvState extends SwatDBDataObject
 	}
 
 	// }}}
-
 	// {{{ public function loadFromAbbreviation()
 
 	/**
@@ -177,6 +179,82 @@ class StoreProvState extends SwatDBDataObject
 
 		$this->registerInternalProperty('country',
 			SwatDBClassMap::get('StoreCountry'));
+	}
+
+	// }}}
+	// {{{ protected function getProtectedProperties()
+
+	protected function getProtectedProperties()
+	{
+		return array_merge(
+			parent::getProtectedPropertyList(),
+			array(
+				'id' => array(
+					'get' => 'getId',
+					'set' => 'setId',
+				),
+				'title' => array(
+					'get' => 'getTitle',
+					'set' => 'setTitle',
+				),
+				'abbreviation' => array(
+					'get' => 'getAbbreviation',
+					'set' => 'setAbbreviation',
+				),
+			)
+		);
+	}
+
+	// }}}
+
+	// getters
+	// {{{public function getId()
+
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	// }}}
+	// {{{public function getTitle()
+
+	public function getTitle()
+	{
+		return $this->title;
+	}
+
+	// }}}
+	// {{{public function getAbbreviation()
+
+	public function getAbbreviation()
+	{
+		return $this->abbreviation;
+	}
+
+	// }}}
+
+	// setters
+	// {{{public function setId()
+
+	public function setId($id)
+	{
+		$this->id = $id;
+	}
+
+	// }}}
+	// {{{public function setTitle()
+
+	public function setTitle($title)
+	{
+		$this->title = $title;
+	}
+
+	// }}}
+	// {{{public function setAbbreviation()
+
+	public function setAbbreviation($abbreviation)
+	{
+		$this->abbreviation = $abbreviation;
 	}
 
 	// }}}
