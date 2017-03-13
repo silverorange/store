@@ -67,7 +67,7 @@ class StoreAccountAddress extends StoreAddress
 	// setters
 	// {{{ public function setCreateDate()
 
-	public function setCreateDate(\SwatDate $createdate)
+	public function setCreateDate(SwatDate $createdate)
 	{
 		$this->createdate = $createdate;
 	}
