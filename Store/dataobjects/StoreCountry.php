@@ -37,7 +37,7 @@ class StoreCountry extends SwatDBDataObject
 	/**
 	 * Whether or not this country has a postal code system
 	 *
-	 * Some countries, such as the Reprotected of Ireland do not.
+	 * Some countries, such as the Republic of Ireland do not.
 	 *
 	 * @var boolean
 	 */
