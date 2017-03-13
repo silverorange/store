@@ -30,18 +30,28 @@ abstract class StoreAddress extends SwatDBDataObject
 	public $id;
 
 	/**
+	 * Whether this address is a PO box
+	 *
+	 * @var boolean
+	 */
+	public $po_box;
+
+	// }}}
+	// {{{ protected properties
+
+	/**
 	 * The full name of the address holder
 	 *
 	 * @var string
 	 */
-	public $fullname;
+	protected $fullname;
 
 	/**
 	 * The company of the address
 	 *
 	 * @var text
 	 */
-	public $company;
+	protected $company;
 
 	/**
 	 * Line 1 of the address
@@ -50,7 +60,7 @@ abstract class StoreAddress extends SwatDBDataObject
 	 *
 	 * @var string
 	 */
-	public $line1;
+	protected $line1;
 
 	/**
 	 * Optional line 2 of the address
@@ -59,42 +69,35 @@ abstract class StoreAddress extends SwatDBDataObject
 	 *
 	 * @var string
 	 */
-	public $line2;
+	protected $line2;
 
 	/**
 	 * The city of this address
 	 *
 	 * @var string
 	 */
-	public $city;
+	protected $city;
 
 	/**
 	 * Alternative free-form field for provstate of this address
 	 *
 	 * @var string
 	 */
-	public $provstate_other;
+	protected $provstate_other;
 
 	/**
 	 * The ZIP Code or postal code of this address
 	 *
 	 * @var string
 	 */
-	public $postal_code;
+	protected $postal_code;
 
 	/**
 	 * Phone number for this address
 	 *
 	 * @var text
 	 */
-	public $phone;
-
-	/**
-	 * Whether this address is a PO box
-	 *
-	 * @var boolean
-	 */
-	public $po_box;
+	protected $phone;
 
 	// }}}
 	// {{{ private properties
@@ -784,22 +787,6 @@ abstract class StoreAddress extends SwatDBDataObject
 		$this->provstate       = $address->getInternalValue('provstate');
 		$this->country         = $address->getInternalValue('country');
 		$this->po_box          = $address->po_box;
-	}
-
-	// }}}
-	// {{{ public function getFullName()
-
-	/**
-	 * Gets the full name of the person at this address
-	 *
-	 * Having this method allows subclasses to split the full name into an
-	 * arbitrary number of fields. For example, first name and last name.
-	 *
-	 * @return string the full name of the person at this address.
-	 */
-	public function getFullName()
-	{
-		return $this->fullname;
 	}
 
 	// }}}
@@ -1555,6 +1542,50 @@ abstract class StoreAddress extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ protected function getProtectedPropertyList()
+
+	protected function getProtectedPropertyList()
+	{
+		return array_merge(
+			parent::getProtectedPropertyList(),
+			array(
+				'fullname' => array(
+					'get' => 'getFullName',
+					'set' => 'setFullName',
+				),
+				'company' => array(
+					'get' => 'getCompany',
+					'set' => 'setCompany',
+				),
+				'line1' => array(
+					'get' => 'getLine1',
+					'set' => 'setLine1',
+				),
+				'line2' => array(
+					'get' => 'getLine2',
+					'set' => 'setLine2',
+				),
+				'city' => array(
+					'get' => 'getCity',
+					'set' => 'setCity',
+				),
+				'provstate_other' => array(
+					'get' => 'getProvStateOther',
+					'set' => 'setProvStateOther',
+				),
+				'postal_code' => array(
+					'get' => 'getPostalCode',
+					'set' => 'setPostalCode',
+				),
+				'phone' => array(
+					'get' => 'getPhone',
+					'set' => 'setPhone',
+				),
+			)
+		);
+	}
+
+	// }}}
 	// {{{ private static function differByStreetSuffixOnly()
 
 	private static function differByStreetSuffixOnly($a, $b)
@@ -1605,6 +1636,146 @@ abstract class StoreAddress extends SwatDBDataObject
 				$result = true;
 
 		return $result;
+	}
+
+	// }}}
+
+	// getters
+	// {{{ public function getFullName()
+
+	/**
+	 * Gets the full name of the person at this address
+	 *
+	 * Having this method allows subclasses to split the full name into an
+	 * arbitrary number of fields. For example, first name and last name.
+	 *
+	 * @return string the full name of the person at this address.
+	 */
+	public function getFullName()
+	{
+		return $this->fullname;
+	}
+
+	// }}}
+	// {{{ public function getCompany()
+
+	public function getCompany()
+	{
+		return $this->company;
+	}
+
+	// }}}
+	// {{{ public function getLine1()
+
+	public function getLine1()
+	{
+		return $this->line1;
+	}
+
+	// }}}
+	// {{{ public function getLine2()
+
+	public function getLine2()
+	{
+		return $this->line2;
+	}
+
+	// }}}
+	// {{{ public function getCity()
+
+	public function getCity()
+	{
+		return $this->city;
+	}
+
+	// }}}
+	// {{{ public function getProvStateOther()
+
+	public function getProvStateOther()
+	{
+		return $this->provstate_other;
+	}
+
+	// }}}
+	// {{{ public function getPostalCode()
+
+	public function getPostalCode()
+	{
+		return $this->postal_code;
+	}
+
+	// }}}
+	// {{{ public function getPhone()
+
+	public function getPhone()
+	{
+		return $this->phone;
+	}
+
+	// }}}
+
+	// setters
+	// {{{ public function setFullName()
+
+	public function setFullName($fullname)
+	{
+		$this->fullname = $fullname;
+	}
+
+	// }}}
+	// {{{ public function setCompany()
+
+	public function setCompany($company)
+	{
+		$this->company = $company;
+	}
+
+	// }}}
+	// {{{ public function setLine1()
+
+	public function setLine1($line1)
+	{
+		$this->line1 = $line1;
+	}
+
+	// }}}
+	// {{{ public function setLine2()
+
+	public function setLine2($line2)
+	{
+		$this->line2 = $line2;
+	}
+
+	// }}}
+	// {{{ public function setCity()
+
+	public function setCity($city)
+	{
+		$this->city = $city;
+	}
+
+	// }}}
+	// {{{ public function setProvStateOther()
+
+	public function setProvStateOther($provstate_other)
+	{
+		$this->provstate_other = $provstate_other;
+	}
+
+	// }}}
+	// {{{ public function setPostalCode()
+
+	public function setPostalCode($postal_code)
+	{
+		$this->postal_code = $postal_code;
+	}
+
+	// }}}
+	// {{{ public function setPhone()
+
+	public function setPhone($phone)
+	{
+		$this->phone = $phone;
 	}
 
 	// }}}
