@@ -41,14 +41,15 @@ class StoreAccountAddress extends StoreAddress
 
 	protected function getProtectedPropertyList()
 	{
-		$properties = parent::getProtectedPropertyList();
-
-		$properties['createdate'] = array(
-			'get' => 'getCreateDate',
-			'set' => 'setCreateDate',
+		return array_merge(
+			parent::getProtectedPropertyList(),
+			array(
+				'createdate' => array(
+					'get' => 'getCreateDate',
+					'set' => 'setCreateDate',
+				)
+			)
 		);
-
-		return $properties;
 	}
 
 	// }}}
