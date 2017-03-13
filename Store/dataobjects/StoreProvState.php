@@ -182,9 +182,9 @@ class StoreProvState extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ protected function getProtectedProperties()
+	// {{{ protected function getProtectedPropertyList()
 
-	protected function getProtectedProperties()
+	protected function getProtectedPropertyList()
 	{
 		return array_merge(
 			parent::getProtectedPropertyList(),
