@@ -1546,49 +1546,43 @@ abstract class StoreAddress extends SwatDBDataObject
 
 	protected function getProtectedPropertyList()
 	{
-		$properties = parent::getProtectedPropertyList();
-
-		$properties['fullname'] = array(
-			'get' => 'getFullName',
-			'set' => 'setFullName',
+		return array_merge(
+			parent::getProtectedPropertyList(),
+			array(
+				'fullname' => array(
+					'get' => 'getFullName',
+					'set' => 'setFullName',
+				),
+				'company' => array(
+					'get' => 'getCompany',
+					'set' => 'setCompany',
+				),
+				'line1' => array(
+					'get' => 'getLine1',
+					'set' => 'setLine1',
+				),
+				'line2' => array(
+					'get' => 'getLine2',
+					'set' => 'setLine2',
+				),
+				'city' => array(
+					'get' => 'getCity',
+					'set' => 'setCity',
+				),
+				'provstate_other' => array(
+					'get' => 'getProvStateOther',
+					'set' => 'setProvStateOther',
+				),
+				'postal_code' => array(
+					'get' => 'getPostalCode',
+					'set' => 'setPostalCode',
+				),
+				'phone' => array(
+					'get' => 'getPhone',
+					'set' => 'setPhone',
+				),
+			)
 		);
-
-		$properties['company'] = array(
-			'get' => 'getCompany',
-			'set' => 'setCompany',
-		);
-
-		$properties['line1'] = array(
-			'get' => 'getLine1',
-			'set' => 'setLine1',
-		);
-
-		$properties['line2'] = array(
-			'get' => 'getLine2',
-			'set' => 'setLine2',
-		);
-
-		$properties['city'] = array(
-			'get' => 'getCity',
-			'set' => 'setCity',
-		);
-
-		$properties['provstate_other'] = array(
-			'get' => 'getProvStateOther',
-			'set' => 'setProvStateOther',
-		);
-
-		$properties['postal_code'] = array(
-			'get' => 'getPostalCode',
-			'set' => 'setPostalCode',
-		);
-
-		$properties['phone'] = array(
-			'get' => 'getPhone',
-			'set' => 'setPhone',
-		);
-
-		return $properties;
 	}
 
 	// }}}
