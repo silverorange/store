@@ -208,7 +208,7 @@ class StoreProvState extends SwatDBDataObject
 	// }}}
 
 	// getters
-	// {{{public function getId()
+	// {{{ public function getId()
 
 	public function getId()
 	{
@@ -216,7 +216,7 @@ class StoreProvState extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{public function getTitle()
+	// {{{ public function getTitle()
 
 	public function getTitle()
 	{
@@ -224,7 +224,7 @@ class StoreProvState extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{public function getAbbreviation()
+	// {{{ public function getAbbreviation()
 
 	public function getAbbreviation()
 	{
@@ -234,7 +234,7 @@ class StoreProvState extends SwatDBDataObject
 	// }}}
 
 	// setters
-	// {{{public function setId()
+	// {{{ public function setId()
 
 	public function setId($id)
 	{
@@ -242,7 +242,7 @@ class StoreProvState extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{public function setTitle()
+	// {{{ public function setTitle()
 
 	public function setTitle($title)
 	{
@@ -250,7 +250,7 @@ class StoreProvState extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{public function setAbbreviation()
+	// {{{ public function setAbbreviation()
 
 	public function setAbbreviation($abbreviation)
 	{

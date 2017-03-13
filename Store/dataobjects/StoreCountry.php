@@ -343,7 +343,7 @@ class StoreCountry extends SwatDBDataObject
 	// }}}
 
 	// getters
-	// {{{public function getId()
+	// {{{ public function getId()
 
 	public function getId()
 	{
@@ -351,7 +351,7 @@ class StoreCountry extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{public function getTitle()
+	// {{{ public function getTitle()
 
 	public function getTitle()
 	{
@@ -359,7 +359,7 @@ class StoreCountry extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{public function getVisible()
+	// {{{ public function getVisible()
 
 	public function getVisible()
 	{
@@ -367,7 +367,7 @@ class StoreCountry extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{public function getHasPostalCode()
+	// {{{ public function getHasPostalCode()
 
 	public function getHasPostalCode()
 	{
@@ -377,7 +377,7 @@ class StoreCountry extends SwatDBDataObject
 	// }}}
 
 	// setters
-	// {{{public function setId()
+	// {{{ public function setId()
 
 	public function setId($id)
 	{
@@ -385,7 +385,7 @@ class StoreCountry extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{public function setTitle()
+	// {{{ public function setTitle()
 
 	public function setTitle($title)
 	{
@@ -393,7 +393,7 @@ class StoreCountry extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{public function setVisible()
+	// {{{ public function setVisible()
 
 	public function setVisible($visible)
 	{
@@ -401,7 +401,7 @@ class StoreCountry extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{public function setHasPostalCode()
+	// {{{ public function setHasPostalCode()
 
 	public function setHasPostalCode($has_postal_code)
 	{
