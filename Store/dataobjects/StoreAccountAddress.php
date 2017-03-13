@@ -54,24 +54,24 @@ class StoreAccountAddress extends StoreAddress
 	// }}}
 
 	// getters
-    // {{{ public function getCreateDate()
+	// {{{ public function getCreateDate()
 
-    public function getCreateDate()
-    {
+	public function getCreateDate()
+	{
 		return $this->createdate;
-    }
+	}
 
-    // }}}
+	// }}}
 
 	// setters
-    // {{{ public function setCreateDate()
+	// {{{ public function setCreateDate()
 
-    public function setCreateDate(\SwatDate $createdate)
-    {
+	public function setCreateDate(\SwatDate $createdate)
+	{
 		$this->createdate = $createdate;
-    }
+	}
 
-    // }}}
+	// }}}
 }
 
 ?>
