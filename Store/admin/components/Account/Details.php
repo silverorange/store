@@ -90,7 +90,7 @@ class StoreAccountDetails extends SiteAccountDetails
 		parent::buildInternal();
 
 		$toolbar = $this->ui->getWidget('address_details_toolbar');
-		$toolbar->setToolLinkValues($this->id);
+		$toolbar->setToolLinkValues($this->account->id);
 
 		// set default time zone for orders
 		$this->setTimeZone();
@@ -137,7 +137,7 @@ class StoreAccountDetails extends SiteAccountDetails
 				order by %s';
 
 		$sql = sprintf($sql,
-			$this->app->db->quote($this->id, 'integer'),
+			$this->app->db->quote($this->account->id, 'integer'),
 			$this->getOrderByClause($view,
 				'Orders.createdate desc, Orders.id'));
 
@@ -179,7 +179,7 @@ class StoreAccountDetails extends SiteAccountDetails
 
 		$sql = sprintf('select * from AccountPaymentMethod
 			where account = %s',
-			$this->app->db->quote($this->id, 'integer'));
+			$this->app->db->quote($this->account->id, 'integer'));
 
 		$payment_methods = SwatDB::query($this->app->db, $sql, $wrapper);
 
