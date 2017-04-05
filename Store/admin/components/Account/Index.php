@@ -52,7 +52,6 @@ class StoreAccountIndex extends SiteAccountIndex
 	{
 		$ds = parent::getDetailsStore($account, $row);
 		$ds->order_count = $row->order_count;
-		$ds->is_editable = true;
 		return $ds;
 	}
 
