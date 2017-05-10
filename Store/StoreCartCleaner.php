@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Command-line application to clear abandoned carts from the database
  *

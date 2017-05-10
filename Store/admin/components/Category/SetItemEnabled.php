@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Enable items confirmation page for Categories
  *

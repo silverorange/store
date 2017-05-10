@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Quantity discount object
  *
@@ -190,7 +189,6 @@ class StoreQuantityDiscount extends SwatDBDataObject
 				$this->price[$row['region_id']] = $row['price'];
 		}
 	}
-
 
 	// }}}
 	// {{{ protected function getSerializableSubDataObjects()

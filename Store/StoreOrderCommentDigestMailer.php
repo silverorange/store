@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Sends out a digest email of new order comments
  *
@@ -44,7 +43,6 @@ class StoreOrderCommentDigestMailer extends SiteCommandLineApplication
 				count($orders)
 			)
 		);
-
 
 		if (count($orders) > 0) {
 			$message = $this->getMailMessage();

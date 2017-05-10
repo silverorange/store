@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Front page of checkout
  *

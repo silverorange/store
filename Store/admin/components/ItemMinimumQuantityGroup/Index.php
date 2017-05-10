@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Index page for item minimum quantity groups
  *

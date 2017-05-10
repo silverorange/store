@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Displays totals in a special row in a table view.
  *

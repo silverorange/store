@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * Report page for Ads
  *
@@ -101,7 +99,6 @@ class StoreAdDetails extends SiteAdDetails
 			$subtotal_column->addRenderer($subtotal_renderer);
 			$subtotal_column->addMappingToRenderer($subtotal_renderer,
 				'subtotal_'.$region->id, 'value');
-
 
 			$orders_column = new SwatTableViewColumn('orders_'.$region->id);
 			$orders_column->title = sprintf(Store::_('%s Orders'),

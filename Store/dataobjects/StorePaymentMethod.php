@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A payment method for an ecommerce web application
  *

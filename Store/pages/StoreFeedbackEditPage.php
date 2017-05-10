@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Page to allow submitting customer feedback
  *

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Search page for Related Products
  *

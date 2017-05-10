@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Special disclosure widget for displaying the search panel for
  *

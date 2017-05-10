@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Exception that is thrown when an invalid payment request is processed
  *

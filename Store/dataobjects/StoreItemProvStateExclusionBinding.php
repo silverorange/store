@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Dataobject for item provstate exclusion bindings
  *

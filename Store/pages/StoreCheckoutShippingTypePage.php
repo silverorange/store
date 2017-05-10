@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Shipping type edit page of checkout
  *

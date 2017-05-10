@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Page displayed when an order is processed successfully on the checkout
  *

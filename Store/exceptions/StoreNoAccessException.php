@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Thrown when access to a page is not allowed
  *

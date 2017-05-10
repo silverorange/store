@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A widget to switch the active catalog(s) in the admin
  *

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Base address verification page of checkout
  *

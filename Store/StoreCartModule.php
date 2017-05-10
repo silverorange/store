@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 /**
  * Manages the carts used by a web-store application
  *

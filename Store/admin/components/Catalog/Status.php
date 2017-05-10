@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Change status page for catalogs
  *

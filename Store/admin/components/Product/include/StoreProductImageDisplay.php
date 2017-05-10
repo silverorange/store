@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A special image display with tools for product images
  *

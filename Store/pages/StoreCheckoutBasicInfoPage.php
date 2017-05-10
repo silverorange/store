@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Basic information edit page of checkout
  *

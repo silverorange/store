@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Edit page for Category images
  *

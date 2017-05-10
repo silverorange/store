@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Configuration module for Store command-line applications
  *

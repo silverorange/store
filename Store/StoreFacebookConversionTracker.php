@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Generates Facebook conversion tracking code.
  *

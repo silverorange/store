@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 /**
  * A cart object
  *

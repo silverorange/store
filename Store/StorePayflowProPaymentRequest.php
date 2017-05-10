@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Payment request for Verisign Payflow Pro payments
  *

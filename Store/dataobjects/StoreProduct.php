@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A product for an e-commerce web application
  *

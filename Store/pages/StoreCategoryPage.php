@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package   Store
  * @copyright 2005-2016 silverorange

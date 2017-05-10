@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Cell renderer that displays regions for which a catalog is enabled
  *

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Cell renderer for rendering a payment method wrapper
  *

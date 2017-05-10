@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Advanced search controls panel for Store
  *

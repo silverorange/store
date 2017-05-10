@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 /**
  * An email message for order confirmations
  *
@@ -51,7 +48,6 @@ abstract class StoreOrderConfirmationMailMessage
 
 		$this->from_address = $this->app->config->email->service_address;
 		$this->from_name = $this->getFromName();
-
 
 		$this->to_address = $order->getConfirmationEmailAddress();
 

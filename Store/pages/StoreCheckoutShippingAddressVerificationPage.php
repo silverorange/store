@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Shipping address verification page of checkout
  *

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Priority page for Features
  *

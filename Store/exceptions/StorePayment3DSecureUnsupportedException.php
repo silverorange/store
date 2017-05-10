@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Exception that is thrown when 3-D Secure is not supported for a payment
  *

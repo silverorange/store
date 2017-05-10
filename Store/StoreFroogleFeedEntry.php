@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Google Merchant Center Product Feed Entry (formally known as Froogle)
  *

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Handles XML-RPC requests to update the cart
  *

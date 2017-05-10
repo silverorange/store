@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Search report index page
  *

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A possible item status
  *

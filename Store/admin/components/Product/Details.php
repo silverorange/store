@@ -1015,7 +1015,6 @@ class StoreProductDetails extends AdminIndex
 				$is_on_sale_field_name = sprintf('is_on_sale_%s',
 					$region->id);
 
-
 				$original_price_field_name = sprintf('original_price_%s',
 					$region->id);
 

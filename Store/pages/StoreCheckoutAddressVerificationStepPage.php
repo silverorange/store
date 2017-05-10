@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Second step of checkout
  *

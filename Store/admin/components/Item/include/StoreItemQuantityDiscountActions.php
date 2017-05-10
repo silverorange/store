@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Index actions for the quantity discounts page
  *

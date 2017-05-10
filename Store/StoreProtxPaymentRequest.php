@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Payment request class for making payments with Protx VSP Direct
  *

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A table view that displays products with no items in a special way
  *

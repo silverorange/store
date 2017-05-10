@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Test manipulating the cart
  *

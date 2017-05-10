@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Confirmation page of checkout
  *

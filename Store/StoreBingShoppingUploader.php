@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Application to upload Catalog Data files to Bing Shopping.
  *

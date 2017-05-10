@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Regions are areas in which products may be sold. Each region may have
  * region-specific pricing and shipping rules. Sometimes regionscorrespond

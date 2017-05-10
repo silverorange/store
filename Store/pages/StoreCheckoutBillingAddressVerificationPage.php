@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Billing address verification page of checkout
  *

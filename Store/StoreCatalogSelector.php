@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A widget to allow selecting a catalog
  *

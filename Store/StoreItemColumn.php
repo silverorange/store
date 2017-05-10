@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A table-view column that displays item ids in the tr tag
  *

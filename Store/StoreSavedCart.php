@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A saved-cart object
  *

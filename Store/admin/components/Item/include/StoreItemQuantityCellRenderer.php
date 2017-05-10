@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Cell renderer for quantity discount quantities
  *

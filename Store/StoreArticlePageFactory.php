@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Resolves and creates article pages in a store web application
  *

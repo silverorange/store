@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * Order page for product images
  *

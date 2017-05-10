@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Test the product image display overlay
  *

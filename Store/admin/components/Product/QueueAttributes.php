@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Confirmation page for queuing future product attribute changes.
  *

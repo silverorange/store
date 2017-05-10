@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A category for an e-commerce web application
  *

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A account for an e-commerce web application
  *

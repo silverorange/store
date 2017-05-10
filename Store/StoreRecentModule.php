@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Tracks recently viewed things in a web-store application
  *

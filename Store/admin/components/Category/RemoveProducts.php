@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Remove products confirmation page for Categories
  *

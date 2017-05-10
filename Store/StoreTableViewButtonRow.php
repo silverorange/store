@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A table view row with an embedded button
  *

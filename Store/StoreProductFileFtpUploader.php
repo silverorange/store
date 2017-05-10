@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Abstract application to upload product listing files to a ftp server
  *

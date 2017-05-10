@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * An item in an order
  *

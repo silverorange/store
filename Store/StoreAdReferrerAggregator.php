@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Class for aggregating the total number of referrers per ad.
  *

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * An address for an e-commerce web application
  *

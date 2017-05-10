@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Money cell renderer that displays n/a when no value is available
  *

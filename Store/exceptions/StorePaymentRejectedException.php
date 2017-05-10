@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Thrown when a payment request is rejected based on merchant configured rules
  *

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Displays sales summaries for a year by month
  *

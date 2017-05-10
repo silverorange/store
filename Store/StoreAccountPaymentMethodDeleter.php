@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Removes expired payment methods
  *

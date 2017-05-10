@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Order page for Items component
  *
@@ -109,7 +108,6 @@ class StoreItemOrder extends AdminDBOrder
 		else
 			$where_clause = sprintf('Item.item_group = %s',
 				$this->app->db->quote($this->item_group_id, 'integer'));
-
 
 		$order_widget = $this->ui->getWidget('order');
 

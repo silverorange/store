@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A custom table view for the cart which allows for a column for product
  * images.

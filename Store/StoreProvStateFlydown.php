@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A widget for selecting a provstate
  *

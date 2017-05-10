@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Cart edit page of checkout
  *

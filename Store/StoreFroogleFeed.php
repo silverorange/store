@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A class for constructing Froogle Atom feeds
  *

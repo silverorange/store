@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Performs a search on products
  *

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Control to display a lightbox driven cart on the page
  *

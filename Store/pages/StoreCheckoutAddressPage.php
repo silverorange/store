@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Base address edit page of checkout
  *

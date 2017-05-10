@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A page for displaying a message if a product is not visible
  *

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Displays voucher totals and remove buttons
  *

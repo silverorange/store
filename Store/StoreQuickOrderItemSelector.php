@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Item selector that puts items into optgroups based on item groups
  *

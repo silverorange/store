@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A viewer for an payment method object.
  *

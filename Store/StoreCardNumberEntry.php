@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A widget for basic validation of a debit or credit card
  *

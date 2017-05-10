@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Renders item prices, including any quantity discounts
  *

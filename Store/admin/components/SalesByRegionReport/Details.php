@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Displays sales split by region for a year
  *
@@ -219,7 +218,6 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 				$store->add($ds);
 			}
 		}
-
 
 		return $store;
 	}

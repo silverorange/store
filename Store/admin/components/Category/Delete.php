@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * Delete confirmation page for Categories
  *

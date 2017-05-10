@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Displays sales for a single month
  *

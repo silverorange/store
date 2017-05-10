@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Index page for Attribute Types
  *

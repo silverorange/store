@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * Command line application used to send mailing list orders to MailChimp
  *
@@ -147,7 +145,6 @@ class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
 				$order->save();
 			}
 		}
-
 
 		$this->debug("All Done.\n", true);
 	}

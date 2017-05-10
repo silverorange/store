@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Cell renderer that displays product titles with no items in a special
  * way

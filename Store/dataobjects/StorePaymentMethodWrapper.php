@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Abstract warpper for payment method objects
  *

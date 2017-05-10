@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Abstract base class for a list of {@link StoreStatus} objects
  *

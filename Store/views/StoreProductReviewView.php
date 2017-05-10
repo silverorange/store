@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Reviews are displayed using the hReview microformat.
  *

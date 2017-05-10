@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A sale with a percentage discount
  *

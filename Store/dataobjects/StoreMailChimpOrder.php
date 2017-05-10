@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A dataobject used to store MailChimp order information
  *

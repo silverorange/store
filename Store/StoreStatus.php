@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Abstract base class for an object status
  *

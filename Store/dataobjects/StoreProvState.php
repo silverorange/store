@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A province/state data object
  *

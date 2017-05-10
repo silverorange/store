@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A recordset wrapper fot StoreCategory objects
  *

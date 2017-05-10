@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A shiping rate data object
  *

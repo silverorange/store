@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Exception that is thrown when an order total is too high for processing
  *

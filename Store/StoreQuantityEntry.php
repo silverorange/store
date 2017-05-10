@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * An integer entry widget especially taillored to quantity entry for an
  * e-commerce web application

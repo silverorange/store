@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Billing address edit page of checkout
  *

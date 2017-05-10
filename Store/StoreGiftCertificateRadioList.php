@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A custom radio list that has an embedded custom option
  *

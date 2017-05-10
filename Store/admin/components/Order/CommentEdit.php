@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Edit page for notes on orders
  *

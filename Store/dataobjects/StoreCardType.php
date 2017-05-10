@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A card type data object
  *

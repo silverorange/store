@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Base class for online financial transaction requests
  *

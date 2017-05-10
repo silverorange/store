@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Dataobject for quantity-discount region bindings
  *

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Generates order transaction tracking code for an order for Google Analytics,
  * Facebook pixels, Twitter pixels, and the Bing Universal Event Tracker.

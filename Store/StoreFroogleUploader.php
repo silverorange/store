@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Application to upload Froogle files to Google
  *

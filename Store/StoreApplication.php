@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Web application class for a store
  *

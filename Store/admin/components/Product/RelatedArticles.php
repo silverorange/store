@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Search page for add related articles to product tool
  *

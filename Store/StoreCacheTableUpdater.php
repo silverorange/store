@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Cache table updater application
  *

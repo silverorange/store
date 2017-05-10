@@ -1,6 +1,5 @@
 <?php
 
-
 // Support loading Authorize.net through an autoloader via composer or through
 // the PEAR include path. When PEAR support is dropped, this code can be
 // dropped.

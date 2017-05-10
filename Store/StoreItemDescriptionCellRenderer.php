@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Combines item SKU and description into one cell renderer
  *

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Dataobject to group {@link StoreItem} objects within a {@link StoreProduct}
  *
@@ -90,7 +89,6 @@ class StoreItemGroup extends SwatDBDataObject
 		$sql = sprintf('select * from Item where item_group = %s
 				order by Item.displayorder, Item.sku',
 			$this->db->quote($this->id, 'integer'));
-
 
 		$items = SwatDB::query($this->db, $sql,
 			SwatDBClassMap::get('StoreItemWrapper'));

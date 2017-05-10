@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Exception that is thrown when there is an server error processing a payment
  * request

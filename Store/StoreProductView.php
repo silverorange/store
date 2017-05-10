@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Control to display a recordset of products
  *

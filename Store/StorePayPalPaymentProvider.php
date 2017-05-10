@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Payment provider for PayPal payments
  *

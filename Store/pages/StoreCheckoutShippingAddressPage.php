@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Shipping address edit page of checkout
  *

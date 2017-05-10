@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A widget for entry of payment card expiry dates
  *

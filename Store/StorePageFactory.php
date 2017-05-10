@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Resolves pages below the 'store' tag in the URL.
  *

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Manages the checkout session and progress for a web-store application
  *

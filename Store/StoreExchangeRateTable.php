@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Exchange rate table lookup class
  *

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Delete confirmation page for Account Payment Methods
  *

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Control to display and process items on a product page
  *
@@ -11,7 +10,6 @@
 class StoreItemsView extends SwatControl
 {
 	// {{{ public properties
-
 
 	public $ui_xml = 'Store/items-view.xml';
 	public $ui;

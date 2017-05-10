@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Admin page for adding and editing addresses stored on accounts
  *

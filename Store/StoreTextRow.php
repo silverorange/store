@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A an extra row for displaying textual content
  *

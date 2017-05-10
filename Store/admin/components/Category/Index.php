@@ -1,6 +1,5 @@
  <?php
 
-
 //TODO - move some of these into better locations
 	'StoreCategoryTableView.php';
 

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Renders item prices and can optionally strike-through the price if it's not
  * available in the current region.

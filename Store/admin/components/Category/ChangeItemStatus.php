@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Item status change confirmation page for changing item status within the
  * category component

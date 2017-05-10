@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Search page for add products to category tool
  *

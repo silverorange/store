@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Page to mark an order as cancelled
  *

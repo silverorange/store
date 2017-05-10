@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Freeform feedback about the website
  *

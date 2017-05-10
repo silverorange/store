@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Class to manage automated card transactions for e-commerce stores
  *

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Response object returned by {@link StoreProtxPaymentRequest::process()}
  *

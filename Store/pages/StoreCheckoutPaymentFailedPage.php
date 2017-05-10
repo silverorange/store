@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Page displayed when automatic payment on the checkout fails
  *

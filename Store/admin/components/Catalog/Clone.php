@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Clone tool for catalogs
  *

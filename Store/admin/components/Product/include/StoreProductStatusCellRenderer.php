@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Cell renderer that displays a summary of statuses of items in a product
  *

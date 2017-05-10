@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A transaction for particular payment on an e-commerce Web application
  *

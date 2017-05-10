@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Payment method edit page of checkout
  *
@@ -831,7 +830,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			$payment_method->amount = $amount;
 		}
 
-
 		if ($payment_type instanceof StorePaymentType &&
 			$payment_type->isCard()) {
 
@@ -1210,7 +1208,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 						'account_card_verification_value',
 						$method_id
 					);
-
 
 					if ($cvv instanceof StoreCardVerificationValueEntry) {
 						$card_type = $this->getCardType();

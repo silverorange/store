@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Cell renderer that displays category titles with no products in a special
  * way

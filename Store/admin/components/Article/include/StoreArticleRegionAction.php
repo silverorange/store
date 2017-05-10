@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Actions flydown to control the accessibility of articles by region
  *

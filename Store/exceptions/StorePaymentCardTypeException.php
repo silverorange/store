@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Exception that is thrown for card type/number mismatches
  *

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Dataobject for item region bindings
  *
@@ -40,7 +39,6 @@ class StoreItemRegionBinding extends SwatDBDataObject
 	 * @var boolean
 	 */
 	public $enabled;
-
 
 	// }}}
 	// {{{ protected function init()

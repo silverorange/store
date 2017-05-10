@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * An entry in a shopping cart for an e-commerce web application
  *

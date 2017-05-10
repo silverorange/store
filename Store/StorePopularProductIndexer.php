@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Class for populating the ProductPopularProductBinding table which caches
  * values used to display "Customers who bought this also bought X" data.

@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 /**
  * Details page for Orders
  *

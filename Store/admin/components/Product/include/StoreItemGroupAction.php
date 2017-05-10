@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A custom action for grouping items inside products
  *

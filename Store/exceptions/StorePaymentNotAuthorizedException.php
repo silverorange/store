@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Thrown when a payment request is not authorized by the issuing bank
  *

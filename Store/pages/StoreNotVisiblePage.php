@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A page for displaying a message if the given page is not visible in the
  * current region.

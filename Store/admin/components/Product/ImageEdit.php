@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * Edit page for product images
  *

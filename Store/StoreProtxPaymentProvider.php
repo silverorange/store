@@ -1,9 +1,5 @@
 <?php
 
-
-
-
-
 /**
  * Payment provider driver for Protx VSP Direct payments
  *

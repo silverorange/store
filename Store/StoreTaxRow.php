@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Displays taxes in a special row at the bottom of a table view.
  *

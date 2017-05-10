@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Exception that is thrown for address AVS checks
  *

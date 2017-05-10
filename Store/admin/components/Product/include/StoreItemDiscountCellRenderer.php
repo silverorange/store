@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A cell renderer that displays a link to add or edit quantity discounts
  *

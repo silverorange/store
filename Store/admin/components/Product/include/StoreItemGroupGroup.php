@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A special table-view group for displaying item-groups
  *

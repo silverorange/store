@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * This is a deprecated equivalent of {@link SwatDBClassMap}.
  *

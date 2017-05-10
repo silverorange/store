@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Cell renderer for order statuses
  *

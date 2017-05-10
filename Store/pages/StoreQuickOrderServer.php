@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Handles XML-RPC requests from the quick order page
  *

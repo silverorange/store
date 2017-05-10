@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Processes the order payment response
  *

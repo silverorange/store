@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Composite widget that handles provstate entry and cascades from a country
  * flydown

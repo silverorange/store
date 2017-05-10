@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A dependency for deleting member products of a collection
  *

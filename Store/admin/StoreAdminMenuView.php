@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * An admin menu view that has an item search box at the top
  *

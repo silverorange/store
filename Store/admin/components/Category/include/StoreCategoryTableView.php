@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A table view that displays categories with no products in a special way
  *

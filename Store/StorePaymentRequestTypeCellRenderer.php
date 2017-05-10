@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Renders textual descriptions for payment request types
  *

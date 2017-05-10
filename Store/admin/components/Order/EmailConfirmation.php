@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Page to resend the confirmation email for an order
  *
@@ -150,7 +149,6 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 
 		printf(Store::_('A confirmation of %s will be sent to '),
 			$this->getOrderTitle());
-
 
 		$email_anchor->display();
 

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Edit page for item minimum quantity groups
  *

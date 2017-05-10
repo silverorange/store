@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Edit page for Account Payment Methods
  *

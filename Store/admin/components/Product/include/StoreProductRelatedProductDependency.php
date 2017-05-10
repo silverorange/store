@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A dependency for deleting related products
  *

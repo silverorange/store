@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Exception that is thrown for CVV (Card Verification Value) checks
  *

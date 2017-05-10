@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Page to allow customers to add or edit payment methods on their account
  *

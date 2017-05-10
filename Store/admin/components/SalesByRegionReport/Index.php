@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Displays sales summaries by year and country/provstate.
  *

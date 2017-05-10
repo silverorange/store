@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 /**
  * Page to display old orders placed using an account
  *

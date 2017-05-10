@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Index page for Products Reviews
  *
@@ -68,7 +67,6 @@ class StoreProductReviewIndex extends AdminSearch
 		$item_list = array();
 		foreach ($view->getSelection() as $item)
 			$item_list[] = $this->app->db->quote($item, 'integer');
-
 
 		switch ($actions->selected->id) {
 		case 'delete':
@@ -265,7 +263,6 @@ class StoreProductReviewIndex extends AdminSearch
 
 			break;
 		}
-
 
 		return $where;
 	}

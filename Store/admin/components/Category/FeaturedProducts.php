@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Search page for Featured Products
  *

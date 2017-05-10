@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Product Attribute Queue Updater
  *

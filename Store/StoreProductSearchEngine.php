@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A product search engine
  *

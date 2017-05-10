@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Edit page for Regions
  *

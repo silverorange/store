@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A total row containing a confirmation button
  *

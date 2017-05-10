@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * General processor class for adding items to the cart.
  *

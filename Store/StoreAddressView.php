@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A viewer for an address object
  *

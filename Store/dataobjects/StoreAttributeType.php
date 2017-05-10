@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * An attribute type data object
  *

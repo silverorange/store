@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Shopping cart display page
  *

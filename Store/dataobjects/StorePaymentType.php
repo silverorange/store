@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A payment type data object
  *

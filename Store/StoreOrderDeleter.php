@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Removes personal data from expired orders
  *

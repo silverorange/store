@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A shiping type data object
  *

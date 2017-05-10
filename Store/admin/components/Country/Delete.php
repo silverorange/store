@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Delete confirmation page for Countries
  *
