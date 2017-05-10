@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Swat/SwatObject.php';
-require_once 'Store/StoreStatus.php';
-require_once 'Store/exceptions/StoreException.php';
 
 /**
  * Abstract base class for a list of {@link StoreStatus} objects

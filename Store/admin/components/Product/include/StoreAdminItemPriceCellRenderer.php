@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Store/StoreItemPriceCellRenderer.php';
 
 /**
  * Renders item prices and can optionally strike-through the price if it's not

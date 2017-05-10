@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Swat/SwatTableView.php';
 
 /**
  * Custom table-view for quantity discounts that shows a "base" row at the top

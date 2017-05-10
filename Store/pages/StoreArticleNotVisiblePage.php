@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Store/pages/StoreNotVisiblePage.php';
-require_once 'Store/dataobjects/StoreRegionWrapper.php';
 
 /**
  * A page for displaying a message if a article is not visible

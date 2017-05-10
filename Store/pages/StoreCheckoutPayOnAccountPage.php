@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Store/pages/StoreCheckoutEditPage.php';
 
 /**
  * @package   Store

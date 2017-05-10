@@ -1,12 +1,5 @@
 <?php
 
-require_once 'Swat/SwatNavBarEntry.php';
-require_once 'SwatDB/SwatDBDataObject.php';
-require_once 'Store/dataobjects/StoreCategoryImage.php';
-require_once 'Site/dataobjects/SiteArticleWrapper.php';
-require_once 'Store/dataobjects/StoreCategoryWrapper.php';
-require_once 'Store/dataobjects/StoreProductWrapper.php';
-require_once 'Store/dataobjects/StoreRegion.php';
 
 /**
  * A category for an e-commerce web application

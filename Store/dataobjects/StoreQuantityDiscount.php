@@ -1,8 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBDataObject.php';
-require_once 'Store/dataobjects/StoreQuantityDiscountRegionBindingWrapper.php';
-require_once 'Store/dataobjects/StoreRegion.php';
 
 /**
  * Quantity discount object

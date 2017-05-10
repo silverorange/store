@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Store/pages/StoreCheckoutFinalPage.php';
 
 /**
  * Page displayed when automatic payment on the checkout fails

@@ -1,9 +1,5 @@
 <?php
 
-require_once 'Swat/SwatControl.php';
-require_once 'Swat/SwatString.php';
-require_once 'SwatI18N/SwatI18NLocale.php';
-require_once 'XML/RPCAjax.php';
 
 /**
  * Control to display a lightbox driven cart on the page

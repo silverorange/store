@@ -1,9 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminDBEdit.php';
-require_once 'Admin/exceptions/AdminNotFoundException.php';
-require_once 'Admin/exceptions/AdminNoAccessException.php';
-require_once 'include/StoreCatalogStatusCellRenderer.php';
 
 /**
  * Clone tool for catalogs

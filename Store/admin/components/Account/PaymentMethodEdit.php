@@ -1,12 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminDBEdit.php';
-require_once 'Admin/exceptions/AdminNotFoundException.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'Swat/SwatMessage.php';
-require_once 'Swat/SwatDate.php';
-require_once 'Store/dataobjects/StoreAccountPaymentMethod.php';
-require_once 'Store/dataobjects/StoreAccount.php';
 
 /**
  * Edit page for Account Payment Methods

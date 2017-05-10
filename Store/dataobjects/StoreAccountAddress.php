@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Store/dataobjects/StoreAddress.php';
 
 /**
  * An address belonging to an account for an e-commerce web application

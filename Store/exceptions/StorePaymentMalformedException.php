@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Store/exceptions/StorePaymentException.php';
 
 /**
  * Exception that is thrown when a malformed payment request is processed

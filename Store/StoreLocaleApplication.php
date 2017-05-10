@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Store/StoreApplication.php';
-require_once 'Store/dataobjects/StoreRegionWrapper.php';
 
 /**
  *

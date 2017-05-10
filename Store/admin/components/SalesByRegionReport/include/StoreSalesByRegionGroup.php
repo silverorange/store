@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Swat/SwatTableViewGroup.php';
 
 /**
  * @package   Store

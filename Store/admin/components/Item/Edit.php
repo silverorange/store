@@ -1,15 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminDBEdit.php';
-require_once 'Admin/exceptions/AdminNotFoundException.php';
-require_once 'Admin/exceptions/AdminNoAccessException.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'Swat/SwatMessage.php';
-require_once 'Swat/SwatYUI.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Store/StoreItemStatusList.php';
-require_once 'Store/dataobjects/StoreItem.php';
-require_once 'Store/dataobjects/StoreRegionWrapper.php';
 
 /**
  * Edit page for Items

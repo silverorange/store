@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Site/pages/SiteXhtmlExceptionPage.php';
 
 /**
  * @package   Store

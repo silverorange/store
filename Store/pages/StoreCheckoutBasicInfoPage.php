@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Store/pages/StoreCheckoutEditPage.php';
 
 /**
  * Basic information edit page of checkout

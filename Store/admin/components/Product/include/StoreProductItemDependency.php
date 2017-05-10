@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Swat/SwatString.php';
-require_once 'Admin/AdminSummaryDependency.php';
 
 /**
  * A dependency for items

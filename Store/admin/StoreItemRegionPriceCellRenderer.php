@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Swat/SwatMoneyCellRenderer.php';
 
 /**
  * A cell renderer that displays the price for an item in a region

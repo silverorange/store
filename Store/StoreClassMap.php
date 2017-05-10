@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Swat/SwatObject.php';
-require_once 'SwatDB/SwatDBClassMap.php';
 
 /**
  * This is a deprecated equivalent of {@link SwatDBClassMap}.

@@ -1,9 +1,5 @@
 <?php
 
-require_once 'Swat/SwatHtmlTag.php';
-require_once 'Swat/SwatToolLink.php';
-require_once 'Store/pages/StorePage.php';
-require_once 'Store/dataobjects/StoreProduct.php';
 
 /**
  * @package   Store

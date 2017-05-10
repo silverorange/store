@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Site/dataobjects/SiteImageWrapper.php';
-require_once 'Store/dataobjects/StoreCategoryImage.php';
 
 /**
  * A recordset wrapper class for StoreCategoryImage objects

@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Store/StorePriceCellRenderer.php';
-require_once 'Store/StoreSavingsCellRenderer.php';
 
 /**
  * Renders item prices, including any quantity discounts

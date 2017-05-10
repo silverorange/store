@@ -1,33 +1,10 @@
 <?php
 
-require_once 'SwatDB/SwatDB.php';
-require_once 'Swat/SwatHtmlTag.php';
-require_once 'Swat/SwatTableStore.php';
-require_once 'Swat/SwatDetailsStore.php';
-require_once 'Swat/SwatMoneyEntry.php';
-require_once 'Swat/SwatNavBar.php';
-require_once 'Admin/pages/AdminIndex.php';
-require_once 'Admin/exceptions/AdminNotFoundException.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Site/admin/SiteCommentVisibilityCellRenderer.php';
-require_once 'Store/StoreItemStatusList.php';
-require_once 'Store/dataobjects/StoreProduct.php';
-require_once 'Store/dataobjects/StoreRegionWrapper.php';
-require_once 'Store/dataobjects/StoreItemWrapper.php';
-require_once 'Store/dataobjects/StoreProductImageWrapper.php';
-require_once 'Store/dataobjects/StoreAttributeTypeWrapper.php';
-require_once 'Store/admin/components/Product/include/StoreItemTableView.php';
-require_once 'Store/admin/components/Product/include/StoreItemGroupGroup.php';
-require_once 'Store/admin/components/Product/include/StoreItemGroupAction.php';
-require_once
 	'Store/admin/components/Product/include/StoreProductImageDisplay.php';
-require_once
 	'Store/admin/components/Item/include/StoreItemStatusCellRenderer.php';
 
-require_once
 	'Store/admin/components/Product/include/StoreItemDiscountCellRenderer.php';
 
-require_once
 	'Store/admin/components/Product/include/StoreAdminItemPriceCellRenderer.php';
 
 /**

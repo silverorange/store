@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Site/pages/SiteXmlSiteMapPage.php';
-require_once 'Store/dataobjects/StoreArticleWrapper.php';
-require_once 'Store/dataobjects/StoreCategoryWrapper.php';
 
 /**
  * A generated XML Site Map for stores

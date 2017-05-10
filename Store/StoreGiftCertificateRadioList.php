@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Swat/SwatMoneyEntry.php';
-require_once 'Swat/SwatRadioList.php';
 
 /**
  * A custom radio list that has an embedded custom option

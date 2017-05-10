@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Store/pages/StoreNotVisiblePage.php';
-require_once 'Store/dataobjects/StoreCategoryWrapper.php';
-require_once 'Store/dataobjects/StoreRegionWrapper.php';
 
 /**
  * A page for displaying a message if a category is not visible

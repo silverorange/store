@@ -1,11 +1,5 @@
 <?php
 
-require_once 'Site/pages/SiteXMLRPCServer.php';
-require_once 'Site/exceptions/SiteNotFoundException.php';
-require_once 'Store/dataobjects/StoreCartEntry.php';
-require_once 'Store/dataobjects/StoreItem.php';
-require_once 'Store/StoreCartProcessor.php';
-require_once 'Store/StoreCartLightbox.php';
 
 /**
  * Handles XML-RPC requests to update the cart

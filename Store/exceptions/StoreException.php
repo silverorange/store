@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Site/exceptions/SiteException.php';
 
 /**
  * An exception in the Store package

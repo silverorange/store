@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Swat/SwatHtmlTag.php';
-require_once 'Swat/SwatCellRenderer.php';
-require_once 'Store/dataobjects/StoreOrderPaymentMethodWrapper.php';
 
 /**
  * Cell renderer for rendering a payment method wrapper

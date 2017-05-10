@@ -1,11 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDB.php';
-require_once 'Store/Store.php';
-require_once 'Site/SiteCommandLineApplication.php';
-require_once 'Site/SiteDatabaseModule.php';
-require_once 'Site/SiteMemcacheModule.php';
-require_once 'Store/StoreCommandLineConfigModule.php';
 
 /**
  * Cache table updater application

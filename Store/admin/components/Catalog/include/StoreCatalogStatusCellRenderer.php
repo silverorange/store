@@ -1,8 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDB.php';
-require_once 'Swat/SwatString.php';
-require_once 'Swat/SwatCellRenderer.php';
 
 /**
  * Cell renderer that displays regions for which a catalog is enabled

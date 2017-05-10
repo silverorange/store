@@ -1,11 +1,5 @@
 <?php
 
-require_once 'Site/SiteCommandLineApplication.php';
-require_once 'Site/SiteDatabaseModule.php';
-require_once 'Site/SiteSessionModule.php';
-require_once 'Store/Store.php';
-require_once 'Store/StoreCommandLineConfigModule.php';
-require_once 'SwatDB/SwatDB.php';
 
 /**
  * Command-line application to clear abandoned carts from the database

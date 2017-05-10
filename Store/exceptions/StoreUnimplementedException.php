@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Store/exceptions/StoreException.php';
 
 /**
  * Exception that is thrown when an unimplemented method is called

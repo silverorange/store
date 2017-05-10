@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Store/exceptions/StoreException.php';
 
 /**
  * Base class for payment exceptions

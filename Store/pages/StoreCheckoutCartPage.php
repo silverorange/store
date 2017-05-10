@@ -1,10 +1,5 @@
 <?php
 
-require_once 'Store/pages/StoreCheckoutPage.php';
-require_once 'Swat/SwatMessage.php';
-require_once 'Swat/SwatString.php';
-require_once 'Swat/SwatTableStore.php';
-require_once 'Swat/SwatDetailsStore.php';
 
 /**
  * Cart edit page of checkout

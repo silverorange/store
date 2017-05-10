@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Store/StoreProductFileGenerator.php';
 
 /**
  * @package   Store

@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Site/pages/SiteXMLRPCServer.php';
-require_once 'Site/exceptions/SiteNotFoundException.php';
-require_once 'Store/StoreQuickOrderItemSelector.php';
 
 /**
  * Handles XML-RPC requests from the quick order page

@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Store/pages/StoreCheckoutAggregateStepPage.php';
-require_once 'Store/pages/StoreCheckoutBillingAddressVerificationPage.php';
-require_once 'Store/pages/StoreCheckoutShippingAddressVerificationPage.php';
 
 /**
  * Second step of checkout

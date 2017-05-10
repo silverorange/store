@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Store/StoreProductFileFtpUploader.php';
-require_once 'Store/StoreFroogleGenerator.php';
 
 /**
  * Application to upload Froogle files to Google

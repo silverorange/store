@@ -1,9 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Store/dataobjects/StoreItemWrapper.php';
-require_once 'Admin/pages/AdminDBOrder.php';
-require_once 'SwatDB/SwatDB.php';
 
 /**
  * Order page for Items component

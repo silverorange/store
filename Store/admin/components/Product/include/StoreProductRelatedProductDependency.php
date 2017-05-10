@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Admin/AdminListDependency.php';
 
 /**
  * A dependency for deleting related products

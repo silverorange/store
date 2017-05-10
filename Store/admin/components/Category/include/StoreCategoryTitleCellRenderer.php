@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Admin/AdminTreeTitleLinkCellRenderer.php';
-require_once 'Swat/SwatString.php';
 
 /**
  * Cell renderer that displays category titles with no products in a special

@@ -1,10 +1,5 @@
 <?php
 
-require_once 'Swat/SwatFlydown.php';
-require_once 'Swat/SwatEntry.php';
-require_once 'Swat/SwatControl.php';
-require_once 'Swat/SwatYUI.php';
-require_once 'Store/Store.php';
 
 /**
  * A custom action for grouping items inside products

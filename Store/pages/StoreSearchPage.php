@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Store/pages/StoreSearchResultsPage.php';
 
 /**
  * Page for displaying a search form above search results.

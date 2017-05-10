@@ -1,7 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBRecordsetWrapper.php';
-require_once 'Store/dataobjects/StoreCategory.php';
 
 /**
  * A recordset wrapper fot StoreCategory objects

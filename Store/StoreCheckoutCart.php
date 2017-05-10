@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Store/StoreCart.php';
-require_once 'Store/dataobjects/StoreAddress.php';
-require_once 'Store/dataobjects/StoreShippingType.php';
 
 /**
  * A checkout cart object

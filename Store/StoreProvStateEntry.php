@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Swat/SwatInputControl.php';
-require_once 'Swat/SwatFlydown.php';
-require_once 'Swat/SwatEntry.php';
 
 /**
  * Composite widget that handles provstate entry and cascades from a country

@@ -1,21 +1,5 @@
 <?php
 
-require_once 'Swat/SwatTableStore.php';
-require_once 'Swat/SwatDetailsStore.php';
-require_once 'SwatDB/SwatDBDataObject.php';
-require_once 'Site/dataobjects/SiteAd.php';
-require_once 'Site/dataobjects/SiteInstance.php';
-require_once 'Store/StoreOrderConfirmationMailMessage.php';
-require_once 'Store/StoreOrderStatus.php';
-require_once 'Store/StoreOrderStatusList.php';
-require_once 'Store/dataobjects/StoreAccount.php';
-require_once 'Store/dataobjects/StoreOrderAddress.php';
-require_once 'Store/dataobjects/StoreOrderPaymentMethod.php';
-require_once 'Store/dataobjects/StoreOrderPaymentMethodWrapper.php';
-require_once 'Store/dataobjects/StorePaymentMethodTransactionWrapper.php';
-require_once 'Store/dataobjects/StoreShippingType.php';
-require_once 'Store/dataobjects/StoreOrderItemWrapper.php';
-require_once 'Store/dataobjects/StoreLocale.php';
 
 /**
  * @package   Store

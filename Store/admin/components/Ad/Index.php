@@ -1,8 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDB.php';
-require_once 'Site/admin/components/Ad/Index.php';
-require_once 'Store/admin/components/Ad/include/StoreConversionRateCellRenderer.php';
 
 /**
  * Report page for Ad

@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Site/SiteArticlePageFactory.php';
 
 /**
  * Resolves and creates article pages in a store web application

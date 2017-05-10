@@ -1,11 +1,5 @@
 <?php
 
-require_once 'Swat/SwatUI.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Store/dataobjects/StorePriceRangeWrapper.php';
-require_once 'Store/dataobjects/StoreCategoryWrapper.php';
-require_once 'Store/dataobjects/StoreAttributeWrapper.php';
 
 /**
  * Advanced search controls panel for Store

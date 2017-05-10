@@ -1,8 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'SwatDB/SwatDBDataObject.php';
-require_once 'Store/dataobjects/StoreOrder.php';
 
 /**
  * A dataobject used to store MailChimp order information

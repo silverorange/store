@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Store/dataobjects/StorePaymentMethodTransaction.php';
-require_once 'Store/dataobjects/StoreOrder.php';
 
 /**
  * Class to manage automated card transactions for e-commerce stores

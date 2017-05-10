@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Swat/SwatFlydown.php';
-require_once 'SwatDB/SwatDB.php';
 
 /**
  * A widget to allow selecting a catalog

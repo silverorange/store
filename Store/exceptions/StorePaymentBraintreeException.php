@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Store/exceptions/StorePaymentException.php';
 
 /**
  * @package   Store

@@ -1,10 +1,5 @@
 <?php
 
-require_once 'Swat/SwatYUI.php';
-require_once 'Swat/SwatUI.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Site/pages/SiteDBEditPage.php';
-require_once 'Store/dataobjects/StoreAccountAddress.php';
 
 /**
  * Page for adding and editing addresses stored on accounts

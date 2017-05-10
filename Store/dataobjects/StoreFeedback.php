@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Site/dataobjects/SiteComment.php';
-require_once 'Site/SiteMultipartMailMessage.php';
 
 /**
  * Freeform feedback about the website

@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Swat/SwatIntegerEntry.php';
 
 /**
  * An integer entry widget especially taillored to quantity entry for an

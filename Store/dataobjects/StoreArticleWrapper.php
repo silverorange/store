@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Site/dataobjects/SiteArticleWrapper.php';
-require_once 'Store/dataobjects/StoreArticle.php';
 
 /**
  *

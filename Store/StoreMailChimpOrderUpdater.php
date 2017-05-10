@@ -1,17 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDB.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Site/SiteConfigModule.php';
-require_once 'Site/SiteDatabaseModule.php';
-require_once 'Site/SiteCommandLineApplication.php';
-require_once 'Store/dataobjects/StoreMailChimpOrder.php';
-require_once 'Store/dataobjects/StoreMailChimpOrderWrapper.php';
-require_once 'Store/dataobjects/StoreOrderWrapper.php';
-require_once 'Store/dataobjects/StoreOrderItemWrapper.php';
-require_once 'Deliverance/Deliverance.php';
-require_once 'Deliverance/DeliveranceMailChimpList.php';
-require_once 'Deliverance/exceptions/DeliveranceException.php';
 
 
 /**

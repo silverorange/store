@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Store/StoreCart.php';
 
 /**
  * A saved-cart object

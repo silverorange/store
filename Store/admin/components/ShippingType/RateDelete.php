@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Swat/SwatString.php';
-require_once 'Admin/pages/AdminDBDelete.php';
-require_once 'SwatDB/SwatDB.php';
 
 /**
  * Delete confirmation page for shipping rates

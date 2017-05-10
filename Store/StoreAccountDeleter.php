@@ -1,11 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDB.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Site/SitePrivateDataDeleter.php';
-require_once 'Store/Store.php';
-require_once 'Store/dataobjects/StoreAccount.php';
-require_once 'Store/dataobjects/StoreAccountWrapper.php';
 
 /**
  * Removes personal data from inactive accounts

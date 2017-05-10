@@ -1,11 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Store/pages/StoreCheckoutEditPage.php';
-require_once 'Store/dataobjects/StoreAccountPaymentMethodWrapper.php';
-require_once 'Store/dataobjects/StoreOrderPaymentMethod.php';
-require_once 'Store/dataobjects/StorePaymentTypeWrapper.php';
-require_once 'Store/dataobjects/StoreCardTypeWrapper.php';
 
 /**
  * Payment method edit page of checkout

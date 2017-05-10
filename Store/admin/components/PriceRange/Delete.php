@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminDBDelete.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'Store/Store.php';
 
 /**
  * Delete confirmation page for PriceRanges

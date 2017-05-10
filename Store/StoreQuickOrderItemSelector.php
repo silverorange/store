@@ -1,11 +1,5 @@
 <?php
 
-require_once 'Store/dataobjects/StoreItemWrapper.php';
-require_once 'Store/StoreItemPriceCellRenderer.php';
-require_once 'Swat/SwatGroupedFlydown.php';
-require_once 'Swat/SwatString.php';
-require_once 'Swat/SwatState.php';
-require_once 'Swat/SwatInputControl.php';
 
 /**
  * Item selector that puts items into optgroups based on item groups

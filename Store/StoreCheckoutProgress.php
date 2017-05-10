@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Swat/SwatControl.php';
-require_once 'Store/Store.php';
 
 /**
  * @package   Store

@@ -1,32 +1,15 @@
  <?php
 
-require_once 'Admin/pages/AdminIndex.php';
-require_once 'Admin/exceptions/AdminNotFoundException.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'Swat/SwatString.php';
-require_once 'Swat/SwatDetailsStore.php';
-require_once 'Store/StoreCatalogSwitcher.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Store/StoreItemStatusList.php';
-require_once 'Store/dataobjects/StoreCategory.php';
-require_once 'Store/dataobjects/StoreItem.php';
-require_once 'Store/dataobjects/StoreAttributeTypeWrapper.php';
-require_once 'Store/dataobjects/StoreAttributeWrapper.php';
 
 //TODO - move some of these into better locations
-require_once 'Store/admin/components/Category/include/'.
 	'StoreCategoryTableView.php';
 
-require_once 'Store/admin/components/Category/include/'.
 	'StoreCategoryTitleCellRenderer.php';
 
-require_once 'Store/admin/components/Product/include/'.
 	'StoreProductStatusCellRenderer.php';
 
-require_once 'Store/admin/components/Product/include/'.
 	'StoreProductTableView.php';
 
-require_once 'Store/admin/components/Product/include/'.
 	'StoreProductTitleCellRenderer.php';
 
 /**

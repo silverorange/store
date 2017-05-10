@@ -1,9 +1,5 @@
 <?php
 
-require_once 'Store/dataobjects/StoreVoucher.php';
-require_once 'Swat/SwatConfirmationButton.php';
-require_once 'Swat/SwatHtmlTag.php';
-require_once 'Swat/SwatControl.php';
 
 /**
  * A viewer for an voucher object

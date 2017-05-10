@@ -1,7 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBRecordsetWrapper.php';
-require_once 'Store/dataobjects/StoreMailChimpOrder.php';
 
 /**
  * A recordset wrapper class for StoreMailChimpOrder objects

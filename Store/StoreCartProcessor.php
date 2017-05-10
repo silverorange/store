@@ -1,10 +1,5 @@
 <?php
 
-require_once 'Swat/SwatObject.php';
-require_once 'Swat/SwatMessage.php';
-require_once 'Swat/SwatMessageDisplay.php';
-require_once 'Store/dataobjects/StoreCartEntry.php';
-require_once 'Store/dataobjects/StoreItem.php';
 
 /**
  * General processor class for adding items to the cart.

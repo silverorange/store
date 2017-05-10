@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Store/dataobjects/StorePaymentMethodWrapper.php';
-require_once 'Store/dataobjects/StoreOrderPaymentMethod.php';
 
 /**
  * A recordset wrapper class for StoreOrderPaymentMethod objects

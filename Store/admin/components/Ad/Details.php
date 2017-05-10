@@ -1,11 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDB.php';
-require_once 'Swat/SwatTableStore.php';
-require_once 'Swat/SwatMoneyCellRenderer.php';
-require_once 'Swat/SwatNumericCellRenderer.php';
-require_once 'Site/admin/components/Ad/Details.php';
-require_once 'Store/dataobjects/StoreRegionWrapper.php';
 
 
 /**

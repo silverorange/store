@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Site/SiteXMLRPCServerFactory.php';
 
 /**
  * @package   Store

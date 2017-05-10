@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Site/pages/SiteSiteMapPage.php';
 
 /**
  * @package   Store

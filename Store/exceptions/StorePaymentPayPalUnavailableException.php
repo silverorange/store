@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Store/exceptions/StorePaymentException.php';
 
 /**
  * Exception that is thrown when PayPal is requested but is not available

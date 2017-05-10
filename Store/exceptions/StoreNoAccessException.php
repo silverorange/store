@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Store/exceptions/StoreException.php';
 
 /**
  * Thrown when access to a page is not allowed

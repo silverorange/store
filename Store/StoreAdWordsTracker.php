@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Store/dataobjects/StoreOrder.php';
 
 /**
  * Generates Google AdWords purchase conversion tracking code for an order

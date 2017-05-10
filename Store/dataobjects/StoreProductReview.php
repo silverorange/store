@@ -1,8 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBDataObject.php';
-require_once 'Site/dataobjects/SiteComment.php';
-require_once 'Store/dataobjects/StoreProduct.php';
 
 /**
  * Product review for a product

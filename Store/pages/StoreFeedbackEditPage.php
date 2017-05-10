@@ -1,9 +1,5 @@
 <?php
 
-require_once 'Swat/SwatDate.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Site/pages/SiteDBEditPage.php';
-require_once 'Store/dataobjects/StoreFeedback.php';
 
 /**
  * Page to allow submitting customer feedback

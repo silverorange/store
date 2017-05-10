@@ -1,9 +1,5 @@
 <?php
 
-require_once 'Site/SiteApplicationModule.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Store/dataobjects/StoreFeedback.php';
 
 /**
  * @package   Store

@@ -1,9 +1,5 @@
 <?php
 
-require_once 'Swat/SwatDetailsStore.php';
-require_once 'Site/SiteNateGoSearchIndexer.php';
-require_once 'Store/Store.php';
-require_once 'Store/pages/StoreSearchPage.php';
 
 if (class_exists('Blorg')) {
 	require_once 'Blorg/dataobjects/BlorgPostWrapper.php';

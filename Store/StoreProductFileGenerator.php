@@ -1,13 +1,5 @@
 <?php
 
-require_once 'Swat/SwatDate.php';
-require_once 'Swat/SwatObject.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Site/dataobjects/SiteImage.php';
-require_once 'Store/dataobjects/StoreProductWrapper.php';
-require_once 'Store/dataobjects/StoreItemWrapper.php';
-require_once 'Store/dataobjects/StoreRegion.php';
 
 /**
  * @package   Store

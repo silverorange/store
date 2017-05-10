@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Swat/SwatDate.php';
-require_once 'Store/exceptions/StoreException.php';
 
 /**
  * Exchange rate table lookup class

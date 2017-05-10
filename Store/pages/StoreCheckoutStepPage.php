@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Store/pages/StoreCheckoutPage.php';
 
 /**
  * Base class for a step page of checkout

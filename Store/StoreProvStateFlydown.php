@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Swat/SwatFlydown.php';
-require_once 'Store.php';
 
 /**
  * A widget for selecting a provstate

@@ -1,10 +1,6 @@
 <?php
 
-require_once 'Site/pages/SiteXMLRPCServer.php';
-require_once 'Site/exceptions/SiteNotFoundException.php';
 //require_once 'Store/StoreProductReviewView.php';
-require_once 'Store/dataobjects/StoreProductReview.php';
-require_once 'Store/dataobjects/StoreProductReviewWrapper.php';
 
 /**
  * Handles XML-RPC requests to view more product reviews

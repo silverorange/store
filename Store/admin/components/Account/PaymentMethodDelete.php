@@ -1,9 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminDBDelete.php';
-require_once 'Store/dataobjects/StorePaymentMethod.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'SwatI18N/SwatI18NLocale.php';
 
 /**
  * Delete confirmation page for Account Payment Methods

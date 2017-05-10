@@ -1,10 +1,5 @@
 <?php
 
-require_once 'AtomFeed/AtomFeedAuthor.php';
-require_once 'AtomFeed/AtomFeedLink.php';
-require_once 'Store/StoreProductFileGenerator.php';
-require_once 'Store/StoreFroogleFeed.php';
-require_once 'Store/StoreFroogleFeedEntry.php';
 
 /**
  * @package   Store

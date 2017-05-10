@@ -1,12 +1,6 @@
 <?php
 
-require_once 'Site/admin/components/Article/Index.php';
-require_once 'Store/dataobjects/StoreArticle.php';
-require_once 'Store/dataobjects/StoreRegionWrapper.php';
 
-require_once 'include/StoreArticleActionsProcessor.php';
-require_once 'include/StoreArticleRegionAction.php';
-require_once 'include/StoreArticleVisibilityCellRenderer.php';
 
 /**
  * Index page for Articles

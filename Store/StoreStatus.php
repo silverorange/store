@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Swat/SwatObject.php';
 
 /**
  * Abstract base class for an object status

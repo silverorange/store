@@ -1,12 +1,5 @@
 <?php
 
-require_once 'Swat/SwatForm.php';
-require_once 'Swat/SwatFrame.php';
-require_once 'Swat/SwatFormField.php';
-require_once 'Swat/SwatEntry.php';
-require_once 'Swat/SwatButton.php';
-require_once 'Swat/SwatHtmlTag.php';
-require_once 'Admin/AdminMenuView.php';
 
 /**
  * An admin menu view that has an item search box at the top

@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminIndex.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'Store/dataobjects/StoreAttributeTypeWrapper.php';
 
 /**
  * Index page for Attribute Types

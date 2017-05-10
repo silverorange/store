@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Swat/SwatTableView.php';
-require_once 'Swat/SwatHtmlTag.php';
 
 /**
  * A custom table view for the cart which allows for a column for product

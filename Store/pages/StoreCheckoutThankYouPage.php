@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Store/pages/StoreCheckoutFinalPage.php';
-require_once 'Store/StoreAdWordsTracker.php';
 
 /**
  * Page displayed when an order is processed successfully on the checkout

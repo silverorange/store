@@ -1,13 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDB.php';
-require_once 'Swat/SwatString.php';
-require_once 'Site/dataobjects/SiteAccount.php';
-require_once 'SwatDB/SwatDBDataObject.php';
-require_once 'Store/dataobjects/StoreAccountAddressWrapper.php';
-require_once 'Store/dataobjects/StoreAccountPaymentMethodWrapper.php';
-require_once 'Store/dataobjects/StoreOrderWrapper.php';
-require_once 'Store/dataobjects/StoreAccountWrapper.php';
 
 /**
  * A account for an e-commerce web application

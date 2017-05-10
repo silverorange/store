@@ -1,11 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminDBEdit.php';
-require_once 'Admin/exceptions/AdminNotFoundException.php';
-require_once 'Store/dataobjects/StoreCountry.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'Swat/SwatMessage.php';
-require_once 'Swat/SwatYUI.php';
 
 /**
  * Admin page for adding and editing addresses stored on accounts

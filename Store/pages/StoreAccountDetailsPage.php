@@ -1,11 +1,5 @@
 <?php
 
-require_once 'Swat/SwatDetailsStore.php';
-require_once 'Swat/SwatUI.php';
-require_once 'Site/pages/SiteUiPage.php';
-require_once 'Store/StoreAddressView.php';
-require_once 'Store/StorePaymentMethodView.php';
-require_once 'Store/dataobjects/StoreAccount.php';
 
 /**
  * Page for viewing account details

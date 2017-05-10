@@ -1,9 +1,6 @@
 <?php
 
-require_once 'Site/admin/components/Article/Search.php';
 
-require_once 'include/StoreArticleActionsProcessor.php';
-require_once 'include/StoreArticleRegionAction.php';
 
 /**
  * Search page for Articles

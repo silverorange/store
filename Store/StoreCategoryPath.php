@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Site/SitePath.php';
-require_once 'Store/StoreCategoryPathEntry.php';
 
 /**
  * @package   Store

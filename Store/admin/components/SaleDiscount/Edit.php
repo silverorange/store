@@ -1,10 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminDBEdit.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Swat/SwatMessage.php';
-require_once 'Store/dataobjects/StoreSaleDiscount.php';
 
 /**
  * Edit page for SaleDiscount

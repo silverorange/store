@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Swat/SwatRadioList.php';
-require_once 'Swat/SwatControl.php';
 
 /**
  * Actions flydown to control the accessibility of articles by region

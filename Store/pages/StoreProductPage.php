@@ -1,22 +1,5 @@
 <?php
 
-require_once 'Numbers/Words.php';
-require_once 'Swat/SwatString.php';
-require_once 'Swat/SwatTableStore.php';
-require_once 'Swat/SwatDetailsStore.php';
-require_once 'Swat/SwatMessage.php';
-require_once 'Swat/SwatMessageDisplay.php';
-require_once 'Swat/SwatYUI.php';
-require_once 'Swat/SwatUI.php';
-require_once 'Store/StoreItemsView.php';
-require_once 'Store/pages/StorePage.php';
-require_once 'Store/dataobjects/StoreCartEntry.php';
-require_once 'Store/dataobjects/StoreProduct.php';
-require_once 'Store/dataobjects/StoreCategory.php';
-require_once 'Store/dataobjects/StoreItemGroupWrapper.php';
-require_once 'Store/dataobjects/StoreProductReview.php';
-require_once 'Store/StoreProductSearchEngine.php';
-require_once 'Store/StoreCartProcessor.php';
 @include_once 'Services/Akismet2.php';
 
 /**

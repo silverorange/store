@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Swat/SwatUI.php';
 
 /**
  * Performs a search on products

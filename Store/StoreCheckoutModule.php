@@ -1,9 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Site/SiteApplicationModule.php';
-require_once 'Store/dataobjects/StoreAccount.php';
-require_once 'Store/dataobjects/StoreOrder.php';
 
 /**
  * Manages the checkout session and progress for a web-store application

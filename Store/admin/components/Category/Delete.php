@@ -1,13 +1,6 @@
 <?php
 
-require_once 'Admin/pages/AdminDBDelete.php';
-require_once 'Admin/AdminListDependency.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Store/dataobjects/StoreCategoryWrapper.php';
-require_once 'Store/dataobjects/StoreCategoryImageWrapper.php';
 
-require_once 'include/StoreCategoryProductDependency.php';
 
 /**
  * Delete confirmation page for Categories

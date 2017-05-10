@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Store/StorePaymentRequest.php';
 
 /**
  * Payment request for Verisign Payflow Pro payments

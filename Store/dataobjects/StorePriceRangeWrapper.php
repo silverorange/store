@@ -1,7 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBRecordsetWrapper.php';
-require_once 'Store/dataobjects/StorePriceRange.php';
 
 /**
  * A recordset wrapper class for StorePriceRange objects

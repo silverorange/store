@@ -1,6 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBDataObject.php';
 
 /**
  * Dataobject to group {@link StoreItem} objects within a {@link StoreProduct}

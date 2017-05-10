@@ -1,12 +1,5 @@
 <?php
 
-require_once 'Swat/SwatString.php';
-require_once 'Store/StoreProductSearchEngine.php';
-require_once 'Store/pages/StorePage.php';
-require_once 'Store/dataobjects/StoreLocaleWrapper.php';
-require_once 'Store/dataobjects/StoreCategoryWrapper.php';
-require_once 'Store/dataobjects/StoreProductWrapper.php';
-require_once 'Store/dataobjects/StoreProductImageWrapper.php';
 
 /**
  * @package   Store

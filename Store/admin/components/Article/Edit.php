@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Site/admin/components/Article/Edit.php';
 
 /**
  * Edit page for Articles

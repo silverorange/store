@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminIndex.php';
-require_once 'Store/dataobjects/StoreRegionWrapper.php';
-require_once 'Store/admin/components/SalesByRegionReport/include/StoreSalesByRegionTaxationStartDate.php';
 
 /**
  * Displays sales summaries by year and country/provstate.

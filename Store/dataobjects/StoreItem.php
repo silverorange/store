@@ -1,17 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBDataObject.php';
-require_once 'Store/dataobjects/StoreQuantityDiscountWrapper.php';
-require_once 'Store/dataobjects/StoreItemRegionBindingWrapper.php';
-require_once 'Store/dataobjects/StoreItemGroup.php';
-require_once 'Store/dataobjects/StoreProduct.php';
-require_once 'Store/dataobjects/StoreRegion.php';
-require_once 'Store/dataobjects/StoreSaleDiscount.php';
-require_once 'Store/dataobjects/StoreItemAliasWrapper.php';
-require_once 'Store/dataobjects/StoreItemMinimumQuantityGroup.php';
-require_once 'Store/dataobjects/StoreItemProvStateExclusionBindingWrapper.php';
-require_once 'Store/StoreItemStatus.php';
-require_once 'Store/StoreItemStatusList.php';
 
 /**
  * An item for an e-commerce web application

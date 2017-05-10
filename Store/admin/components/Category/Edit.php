@@ -1,10 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminDBEdit.php';
-require_once 'Admin/exceptions/AdminNotFoundException.php';
-require_once 'Store/dataobjects/StoreCategory.php';
-require_once 'Swat/SwatDate.php';
-require_once 'SwatDB/SwatDB.php';
 
 /**
  * Edit page for Categories

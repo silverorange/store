@@ -1,17 +1,5 @@
 <?php
 
-require_once 'Swat/SwatDate.php';
-require_once 'Swat/SwatTableStore.php';
-require_once 'Swat/SwatDetailsStore.php';
-require_once 'Swat/SwatNumericCellRenderer.php';
-require_once 'Swat/SwatMoneyCellRenderer.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Admin/pages/AdminIndex.php';
-require_once 'Store/dataobjects/StoreCountryWrapper.php';
-require_once 'Store/dataobjects/StoreRegionWrapper.php';
-require_once 'Store/admin/components/SalesByRegionReport/include/StoreSalesByRegionGroup.php';
-require_once 'Store/admin/components/SalesByRegionReport/include/StoreSalesByRegionTaxationStartDate.php';
 
 /**
  * Displays sales split by region for a year

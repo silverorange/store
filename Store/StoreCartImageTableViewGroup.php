@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Swat/SwatTableViewGroup.php';
-require_once 'Swat/SwatImageCellRenderer.php';
-require_once 'Swat/SwatLinkCellRenderer.php';
 
 /**
  * @package   Store

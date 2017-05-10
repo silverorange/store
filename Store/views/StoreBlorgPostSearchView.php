@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Blorg/views/BlorgPostView.php';
 
 /**
  * @package   Store

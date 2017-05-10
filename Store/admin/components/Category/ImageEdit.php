@@ -1,12 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminDBEdit.php';
-require_once 'Admin/exceptions/AdminNotFoundException.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Site/dataobjects/SiteImageSet.php';
-require_once 'Store/dataobjects/StoreCategory.php';
-require_once 'Store/dataobjects/StoreCategoryImage.php';
 
 /**
  * Edit page for Category images

@@ -1,11 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminSearch.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'Swat/SwatTreeFlydownNode.php';
-require_once 'Swat/SwatFlydownDivider.php';
-require_once 'Store/StoreCatalogSelector.php';
-require_once 'Store/admin/components/Product/include/StoreProductSearch.php';
 
 /**
  * Search page for add products to category tool

@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Site/admin/components/Account/Index.php';
 
 /**
  * Index page for Accounts
