@@ -1,25 +1,5 @@
 <?php
 
-require_once 'Site/SiteWebApplication.php';
-require_once 'Site/SiteDatabaseModule.php';
-require_once 'Site/SiteCookieModule.php';
-require_once 'Site/SiteConfigModule.php';
-require_once 'Site/SiteMessagesModule.php';
-require_once 'Site/SiteAccountSessionModule.php';
-require_once 'Site/SiteAdModule.php';
-require_once 'Site/SiteAnalyticsModule.php';
-require_once 'Site/SiteTimerModule.php';
-require_once 'Site/SiteNotifierModule.php';
-require_once 'Site/SiteCryptModule.php';
-require_once 'Admin/Admin.php';
-require_once 'Store/Store.php';
-require_once 'Store/StoreCartModule.php';
-require_once 'Store/StoreCheckoutModule.php';
-require_once 'Store/StoreMailChimpModule.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Store/dataobjects/StoreRegion.php';
-require_once 'Store/dataobjects/StoreVoucherWrapper.php';
-
 /**
  * Web application class for a store
  *

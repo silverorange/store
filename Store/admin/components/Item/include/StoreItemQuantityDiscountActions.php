@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Swat/SwatActions.php';
-
 /**
  * Index actions for the quantity discounts page
  *

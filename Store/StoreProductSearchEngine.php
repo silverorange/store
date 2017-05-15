@@ -1,10 +1,5 @@
 <?php
 
-require_once 'Site/SiteSearchEngine.php';
-require_once 'Store/dataobjects/StoreProductWrapper.php';
-require_once 'Store/dataobjects/StorePriceRangeWrapper.php';
-require_once 'Store/dataobjects/StoreAttributeWrapper.php';
-
 /**
  * A product search engine
  *

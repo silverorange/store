@@ -1,12 +1,5 @@
 <?php
 
-require_once 'Admin/exceptions/AdminNotFoundException.php';
-require_once 'Admin/pages/AdminPage.php';
-require_once 'Swat/SwatDetailsStore.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Site/SiteCommentFilter.php';
-require_once 'Store/dataobjects/StoreFeedback.php';
-
 /**
  * Details page for customer feedback
  *

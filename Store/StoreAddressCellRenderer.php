@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Store/dataobjects/StoreAddress.php';
-require_once 'Swat/SwatCellRenderer.php';
-
 /**
  * A cell renderer for rendering address objects
  *

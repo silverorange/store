@@ -1,10 +1,5 @@
 <?php
 
-require_once 'Site/pages/SiteXMLRPCServer.php';
-require_once 'Store/dataobjects/StoreCategoryWrapper.php';
-require_once 'Store/dataobjects/StorePriceRange.php';
-require_once 'Store/StoreSearchPanel.php';
-
 /**
  * @package   Store
  * @copyright 2007-2016 silverorange

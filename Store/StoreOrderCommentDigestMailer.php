@@ -1,12 +1,5 @@
 <?php
 
-require_once 'Site/SiteCommandLineApplication.php';
-require_once 'Site/SiteCommandLineArgument.php';
-require_once 'Site/SiteConfigModule.php';
-require_once 'Site/SiteDatabaseModule.php';
-require_once 'Store/Store.php';
-require_once 'Store/dataobjects/StoreOrderWrapper.php';
-
 /**
  * Sends out a digest email of new order comments
  *
@@ -50,7 +43,6 @@ class StoreOrderCommentDigestMailer extends SiteCommandLineApplication
 				count($orders)
 			)
 		);
-
 
 		if (count($orders) > 0) {
 			$message = $this->getMailMessage();

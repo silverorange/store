@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Site/pages/SiteAccountLoginPage.php';
-
 /**
  * @package   Store
  * @copyright 2012-2016 silverorange

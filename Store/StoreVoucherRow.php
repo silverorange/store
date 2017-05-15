@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Swat/SwatButton.php';
-require_once 'Store/StoreTotalRow.php';
-
 /**
  * Displays voucher totals and remove buttons
  *

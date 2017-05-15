@@ -1,10 +1,5 @@
 <?php
 
-require_once 'Swat/Swat.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Site/Site.php';
-require_once 'Site/SiteViewFactory.php';
-
 /**
  * Container for package wide static methods
  *

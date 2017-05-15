@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Blorg/views/BlorgPostView.php';
-
 /**
  * @package   Store
  * @copyright 2008-2016 silverorange

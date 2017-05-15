@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Site/SiteSearchEngine.php';
-require_once 'Store/dataobjects/StoreCategoryWrapper.php';
-
 /**
  * A category search engine
  *

@@ -1,12 +1,5 @@
 <?php
 
-require_once 'Swat/SwatMessage.php';
-require_once 'Swat/SwatHtmlTag.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'Swat/SwatUI.php';
-require_once 'Store/pages/StorePage.php';
-require_once 'Site/exceptions/SiteNotFoundException.php';
-
 /**
  * A page for displaying a message if the given page is not visible in the
  * current region.

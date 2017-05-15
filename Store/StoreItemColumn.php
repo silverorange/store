@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Swat/SwatTableViewColumn.php';
-
 /**
  * A table-view column that displays item ids in the tr tag
  *

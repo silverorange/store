@@ -1,8 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBDataObject.php';
-require_once 'Store/dataobjects/StoreOrderPaymentMethod.php';
-
 /**
  * A transaction for particular payment on an e-commerce Web application
  *

@@ -1,8 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBRecordsetWrapper.php';
-require_once 'Store/dataobjects/StoreQuantityDiscount.php';
-
 /**
  * A recordset wrapper class for StoreQuantityDiscount objects
  *

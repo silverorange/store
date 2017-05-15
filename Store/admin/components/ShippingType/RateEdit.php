@@ -1,9 +1,5 @@
 <?php
 
-require_once 'Admin/exceptions/AdminNotFoundException.php';
-require_once 'Admin/pages/AdminDBEdit.php';
-require_once 'Store/dataobjects/StoreShippingType.php';
-
 /**
  * Edit page for Shipping Rates
  *

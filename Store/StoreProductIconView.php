@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Store/StoreProductView.php';
-
 /**
  * Product view that displays a recordset of products as icons
  *

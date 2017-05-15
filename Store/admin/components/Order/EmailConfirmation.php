@@ -1,11 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminConfirmation.php';
-require_once 'Admin/exceptions/AdminNoAccessException.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Store/dataobjects/StoreOrder.php';
-
 /**
  * Page to resend the confirmation email for an order
  *
@@ -155,7 +149,6 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 
 		printf(Store::_('A confirmation of %s will be sent to '),
 			$this->getOrderTitle());
-
 
 		$email_anchor->display();
 

@@ -1,11 +1,5 @@
 <?php
 
-require_once 'Swat/Swat.php';
-require_once 'Swat/SwatString.php';
-require_once 'Site/views/SiteView.php';
-require_once 'Site/SiteCommentFilter.php';
-require_once 'Store/dataobjects/StoreProductReview.php';
-
 /**
  * Reviews are displayed using the hReview microformat.
  *

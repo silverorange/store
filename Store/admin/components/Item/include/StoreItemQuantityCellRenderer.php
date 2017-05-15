@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Swat/SwatTextCellRenderer.php';
-
 /**
  * Cell renderer for quantity discount quantities
  *

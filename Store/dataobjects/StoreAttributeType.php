@@ -1,8 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBDataObject.php';
-require_once 'Store/dataobjects/StoreAttributeWrapper.php';
-
 /**
  * An attribute type data object
  *

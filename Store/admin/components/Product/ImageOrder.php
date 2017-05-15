@@ -1,11 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminDBOrder.php';
-require_once 'Swat/SwatImageDisplay.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'Store/dataobjects/StoreProduct.php';
-
-
 /**
  * Order page for product images
  *

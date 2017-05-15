@@ -1,12 +1,5 @@
 <?php
 
-require_once 'Site/SiteCommandLineApplication.php';
-require_once 'Site/SiteDatabaseModule.php';
-require_once 'Site/SiteConfigModule.php';
-require_once 'Store/Store.php';
-require_once 'Admin/Admin.php';
-require_once 'SwatDB/SwatDB.php';
-
 /**
  * Class for populating the ProductPopularProductBinding table which caches
  * values used to display "Customers who bought this also bought X" data.

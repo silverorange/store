@@ -2,8 +2,6 @@
 
 /* vim: set noexpandtab tabstop=4 shiftwidth=4 foldmethod=marker: */
 
-require_once 'Store/StoreItemPriceCellRenderer.php';
-
 /**
  * A currency cell renderer
  *

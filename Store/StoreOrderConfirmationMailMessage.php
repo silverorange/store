@@ -1,16 +1,5 @@
 <?php
 
-require_once 'Swat/SwatUI.php';
-require_once 'Swat/SwatDetailsStore.php';
-require_once 'Swat/SwatTableStore.php';
-require_once 'Swat/SwatHtmlHeadEntrySet.php';
-
-require_once 'Site/SiteMultipartMailMessage.php';
-require_once 'Site/SiteHtmlHeadEntrySetDisplayerFactory.php';
-
-require_once 'Store/exceptions/StoreException.php';
-require_once 'Store/StoreShippingAddressCellRenderer.php';
-
 /**
  * An email message for order confirmations
  *
@@ -59,7 +48,6 @@ abstract class StoreOrderConfirmationMailMessage
 
 		$this->from_address = $this->app->config->email->service_address;
 		$this->from_name = $this->getFromName();
-
 
 		$this->to_address = $order->getConfirmationEmailAddress();
 

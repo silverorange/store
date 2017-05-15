@@ -1,13 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminDBDelete.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Swat/SwatTableStore.php';
-require_once 'Swat/SwatDetailsStore.php';
-require_once 'Store/dataobjects/StoreProduct.php';
-require_once 'Store/dataobjects/StoreProductImage.php';
-
 /**
  * Delete confirmation page for product images
  *

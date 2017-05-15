@@ -1,13 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Swat/SwatUI.php';
-require_once 'Swat/SwatMessage.php';
-require_once 'Swat/SwatString.php';
-require_once 'Swat/SwatTableStore.php';
-require_once 'Swat/SwatDetailsStore.php';
-require_once 'Site/pages/SitePage.php';
-
 /**
  * Shopping cart display page
  *

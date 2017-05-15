@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Store/StoreProductFileFtpUploader.php';
-require_once 'Store/StoreBingShoppingGenerator.php';
-
 /**
  * Application to upload Catalog Data files to Bing Shopping.
  *

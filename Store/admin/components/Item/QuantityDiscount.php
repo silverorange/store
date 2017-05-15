@@ -1,22 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminIndex.php';
-require_once 'Admin/exceptions/AdminNoAccessException.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'Swat/SwatMoneyEntry.php';
-require_once 'Swat/SwatBooleanCellRenderer.php';
-require_once 'Swat/SwatCheckbox.php';
-require_once 'Store/dataobjects/StoreRegionWrapper.php';
-require_once 'Store/admin/StoreItemRegionPriceCellRenderer.php';
-require_once 
-	'Store/admin/components/Item/include/StoreItemQuantityDiscountActions.php';
-
-require_once 
-	'Store/admin/components/Item/include/StoreItemQuantityCellRenderer.php';
-
-require_once 'Store/admin/components/Item/include/'.
-	'StoreItemQuantityDiscountTableView.php';
-
 /**
  * Quantity discounts tool
  *

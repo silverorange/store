@@ -1,9 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminDBEdit.php';
-require_once 'Store/dataobjects/StoreOrder.php';
-require_once 'SwatDB/SwatDB.php';
-
 /**
  * Edit page for notes on orders
  *

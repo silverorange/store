@@ -1,11 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDB.php';
-require_once 'Site/pages/SitePathPage.php';
-require_once 'Store/StoreCategoryPath.php';
-require_once 'Store/dataobjects/StoreCategoryWrapper.php';
-require_once 'Store/dataobjects/StoreCategoryImageWrapper.php';
-
 /**
  * @package   Store
  * @copyright 2005-2016 silverorange

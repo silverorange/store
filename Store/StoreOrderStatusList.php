@@ -1,10 +1,5 @@
 <?php
 
-require_once 'Store/Store.php';
-require_once 'Store/StoreStatusList.php';
-require_once 'Store/StoreOrderStatus.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-
 /**
  * A list of {@link StoreOrderStatus} objects
  *

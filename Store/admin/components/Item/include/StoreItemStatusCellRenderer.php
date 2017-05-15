@@ -1,10 +1,5 @@
 <?php
 
-require_once 'Swat/SwatCellRenderer.php';
-require_once 'Swat/SwatString.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Store/StoreItemStatusList.php';
-
 /**
  * Cell renderer that displays a summary of the status of an item
  *

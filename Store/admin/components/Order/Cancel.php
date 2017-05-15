@@ -1,10 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Admin/pages/AdminConfirmation.php';
-require_once 'Admin/exceptions/AdminNotFoundException.php';
-require_once 'Store/dataobjects/StoreOrder.php';
-
 /**
  * Page to mark an order as cancelled
  *

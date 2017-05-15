@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Turing/TuringSeleniumTest.php';
-
 /**
  * Test the product image display overlay
  *

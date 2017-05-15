@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Swat/SwatConfirmationButton.php';
-require_once 'Store/StoreTotalRow.php';
-
 /**
  * A total row containing a confirmation button
  *

@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Site/dataobjects/SiteArticle.php';
-require_once 'Store/dataobjects/StoreCategoryWrapper.php';
-
 /**
  * An article in an e-commerce web application
  *

@@ -1,9 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBDataObject.php';
-require_once 'Store/dataobjects/StoreItem.php';
-require_once 'Store/dataobjects/StoreProvState.php';
-
 /**
  * Dataobject for item provstate exclusion bindings
  *

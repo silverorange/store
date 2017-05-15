@@ -1,9 +1,5 @@
 <?php
 
-require_once 'Store/StoreCart.php';
-require_once 'Store/dataobjects/StoreAddress.php';
-require_once 'Store/dataobjects/StoreShippingType.php';
-
 /**
  * A checkout cart object
  *
@@ -396,7 +392,6 @@ abstract class StoreCheckoutCart extends StoreCart
 			$total = $this->getCachedValue('store-surcharge-total');
 		} else {
 			$total = 0;
-
 
 			if ($payment_methods instanceof StoreOrderPaymentMethodWrapper) {
 				foreach ($payment_methods as $payment_method) {

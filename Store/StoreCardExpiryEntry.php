@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Swat/SwatDateEntry.php';
-
 /**
  * A widget for entry of payment card expiry dates
  *

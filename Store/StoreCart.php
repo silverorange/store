@@ -1,13 +1,5 @@
 <?php
 
-require_once 'Swat/SwatMessage.php';
-require_once 'Swat/SwatObject.php';
-
-require_once 'Site/SiteApplication.php';
-
-require_once 'Store/StoreCartModule.php';
-require_once 'Store/exceptions/StoreException.php';
-
 /**
  * A cart object
  *

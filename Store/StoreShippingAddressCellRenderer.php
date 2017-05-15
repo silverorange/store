@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Store/StoreAddressCellRenderer.php';
-
 /**
  * An billing address cell renderer that displays a message if the address is
  * the same as the shipping address

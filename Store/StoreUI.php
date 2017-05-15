@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Swat/SwatUI.php';
-
 /**
  * This is a deprecated equivalent of {@link SwatUI}.
  *

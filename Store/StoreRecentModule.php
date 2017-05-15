@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Site/SiteApplicationModule.php';
-require_once 'Store/StoreRecentStack.php';
-
 /**
  * Tracks recently viewed things in a web-store application
  *

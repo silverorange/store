@@ -1,10 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBDataObject.php';
-require_once 'Store/dataobjects/StoreCountryWrapper.php';
-require_once 'Store/dataobjects/StoreProvStateWrapper.php';
-require_once 'Store/dataobjects/StoreLocaleWrapper.php';
-
 /**
  * Regions are areas in which products may be sold. Each region may have
  * region-specific pricing and shipping rules. Sometimes regionscorrespond

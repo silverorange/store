@@ -1,12 +1,5 @@
 <?php
 
-require_once 'Swat/exceptions/SwatException.php';
-require_once 'Swat/SwatDisclosure.php';
-require_once 'Swat/SwatSearchEntry.php';
-require_once 'Site/SiteUnnamedButton.php';
-require_once 'Site/SiteSearchForm.php';
-require_once 'XML/RPCAjax.php';
-
 /**
  * Special disclosure widget for displaying the search panel for
  *

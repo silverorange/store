@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Swat/SwatNullTextCellRenderer.php';
-require_once 'Swat/SwatString.php';
-
 /**
  * Cell renderer that displays a summary of statuses of items in a product
  *

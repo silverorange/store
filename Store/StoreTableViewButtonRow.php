@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Swat/SwatTableViewRow.php';
-require_once 'Swat/SwatButton.php';
-
 /**
  * A table view row with an embedded button
  *

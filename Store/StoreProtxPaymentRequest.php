@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Store/StorePaymentRequest.php';
-require_once 'Store/StoreProtxPaymentResponse.php';
-
 /**
  * Payment request class for making payments with Protx VSP Direct
  *

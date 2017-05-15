@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Store/pages/StoreCheckoutEditPage.php';
-
 /**
  * @package   Store
  * @copyright 2006-2016 silverorange

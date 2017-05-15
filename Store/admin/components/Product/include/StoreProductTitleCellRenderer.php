@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Admin/AdminTitleLinkCellRenderer.php';
-require_once 'Swat/SwatString.php';
-
 /**
  * Cell renderer that displays product titles with no items in a special
  * way

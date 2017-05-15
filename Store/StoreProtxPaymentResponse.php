@@ -1,7 +1,5 @@
 <?php
 
-require_once 'StorePaymentResponse.php';
-
 /**
  * Response object returned by {@link StoreProtxPaymentRequest::process()}
  *

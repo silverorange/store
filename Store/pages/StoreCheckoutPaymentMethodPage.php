@@ -1,12 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Store/pages/StoreCheckoutEditPage.php';
-require_once 'Store/dataobjects/StoreAccountPaymentMethodWrapper.php';
-require_once 'Store/dataobjects/StoreOrderPaymentMethod.php';
-require_once 'Store/dataobjects/StorePaymentTypeWrapper.php';
-require_once 'Store/dataobjects/StoreCardTypeWrapper.php';
-
 /**
  * Payment method edit page of checkout
  *
@@ -837,7 +830,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			$payment_method->amount = $amount;
 		}
 
-
 		if ($payment_type instanceof StorePaymentType &&
 			$payment_type->isCard()) {
 
@@ -1216,7 +1208,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 						'account_card_verification_value',
 						$method_id
 					);
-
 
 					if ($cvv instanceof StoreCardVerificationValueEntry) {
 						$card_type = $this->getCardType();

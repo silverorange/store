@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Site/SitePath.php';
-require_once 'Store/StoreCategoryPathEntry.php';
-
 /**
  * @package   Store
  * @copyright 2005-2016 silverorange

@@ -1,9 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Store/pages/StoreCheckoutEditPage.php';
-require_once 'Store/dataobjects/StoreShippingTypeWrapper.php';
-
 /**
  * Shipping type edit page of checkout
  *

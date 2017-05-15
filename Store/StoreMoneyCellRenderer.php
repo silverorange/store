@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Swat/SwatMoneyCellRenderer.php';
-
 /**
  * Money cell renderer that displays n/a when no value is available
  *

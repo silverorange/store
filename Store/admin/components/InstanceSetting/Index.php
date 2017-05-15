@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Site/admin/components/InstanceSetting/Index.php';
-require_once __DIR__.'/include/StoreConfigPage.php';
-
 /**
  * @package   Store
  * @copyright 2009-2016 silverorange

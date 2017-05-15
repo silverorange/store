@@ -1,10 +1,5 @@
 <?php
 
-require_once 'Swat/SwatHtmlTag.php';
-require_once 'Swat/SwatButton.php';
-require_once 'Swat/SwatControl.php';
-require_once 'Store/StoreCatalogSelector.php';
-
 /**
  * A widget to switch the active catalog(s) in the admin
  *

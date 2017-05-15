@@ -1,8 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBRecordsetWrapper.php';
-require_once 'Store/dataobjects/StorePaymentMethodTransaction.php';
-
 /**
  * A recordset wrapper class for StorePaymentMethodTransaction objects
  *

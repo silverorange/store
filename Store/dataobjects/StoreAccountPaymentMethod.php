@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Store/dataobjects/StorePaymentMethod.php';
-
 /**
  * A payment method for an account for an e-commerce web application
  *

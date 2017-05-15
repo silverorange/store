@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Site/admin/components/Ad/Edit.php';
-require_once 'SwatDB/SwatDB.php';
-
 /**
  * Edit page for Ads
  *

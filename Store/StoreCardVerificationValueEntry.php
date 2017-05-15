@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Swat/SwatEntry.php';
-require_once 'Store/dataobjects/StoreCardType.php';
-
 /**
  * A widget for basic validation of a credit card verification value
  *

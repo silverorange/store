@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Store/pages/StoreCheckoutEditPage.php';
-require_once 'Swat/SwatYUI.php';
-
 /**
  * Base address verification page of checkout
  *

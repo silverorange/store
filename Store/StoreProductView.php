@@ -1,9 +1,5 @@
 <?php
 
-require_once 'Swat/SwatControl.php';
-require_once 'Swat/SwatHtmlTag.php';
-require_once 'Store/dataobjects/StoreProductWrapper.php';
-
 /**
  * Control to display a recordset of products
  *

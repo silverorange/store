@@ -1,10 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBDataObject.php';
-require_once 'Store/dataobjects/StorePaymentType.php';
-require_once 'Store/dataobjects/StoreCardType.php';
-require_once 'Crypt/GPG.php';
-
 /**
  * A payment method for an ecommerce web application
  *

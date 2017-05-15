@@ -1,11 +1,5 @@
 <?php
 
-require_once 'Swat/SwatHtmlTag.php';
-require_once 'Swat/SwatString.php';
-require_once 'SwatDB/SwatDBDataObject.php';
-require_once 'Store/dataobjects/StoreCountry.php';
-require_once 'Store/dataobjects/StoreProvState.php';
-
 /**
  * An address for an e-commerce web application
  *

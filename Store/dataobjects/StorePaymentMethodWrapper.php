@@ -1,7 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBRecordsetWrapper.php';
-
 /**
  * Abstract warpper for payment method objects
  *

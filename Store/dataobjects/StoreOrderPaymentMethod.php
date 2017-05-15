@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Store/dataobjects/StorePaymentMethod.php';
-require_once 'SwatI18N/SwatI18NLocale.php';
-
 /**
  * A payment method for an order for an e-commerce Web application
  *

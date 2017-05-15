@@ -1,20 +1,5 @@
 <?php
 
-require_once 'Site/SiteViewFactory.php';
-require_once 'Site/pages/SiteSearchResultsPage.php';
-require_once 'Store/StoreArticleSearchEngine.php';
-require_once 'Store/StoreProductSearchEngine.php';
-require_once 'Store/StoreCategorySearchEngine.php';
-require_once 'Store/dataobjects/StoreProductWrapper.php';
-require_once 'Store/dataobjects/StoreAttributeWrapper.php';
-require_once 'Store/dataobjects/StoreCategoryImageWrapper.php';
-require_once 'Store/dataobjects/StoreProductImageWrapper.php';
-
-if (class_exists('Blorg')) {
-	require_once 'Blorg/BlorgPostSearchEngine.php';
-	require_once 'Blorg/dataobjects/BlorgPostWrapper.php';
-}
-
 /**
  * Page for displaying search results
  *

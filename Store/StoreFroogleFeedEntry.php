@@ -1,8 +1,5 @@
 <?php
 
-require_once 'AtomFeed/AtomFeedEntry.php';
-require_once 'Store/StoreFroogleFeed.php';
-
 /**
  * Google Merchant Center Product Feed Entry (formally known as Froogle)
  *

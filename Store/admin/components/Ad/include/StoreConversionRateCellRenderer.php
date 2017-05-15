@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Swat/SwatPercentageCellRenderer.php';
-
 /**
  * Displays conversion rates that are NaN as a none-styled dash
  *

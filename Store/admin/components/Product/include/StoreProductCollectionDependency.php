@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Admin/AdminListDependency.php';
-
 /**
  * A dependency for deleting member products of a collection
  *

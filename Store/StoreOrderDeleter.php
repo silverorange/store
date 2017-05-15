@@ -1,13 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDB.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Site/SitePrivateDataDeleter.php';
-require_once 'Store/Store.php';
-require_once 'Store/dataobjects/StoreAddress.php';
-require_once 'Store/dataobjects/StoreOrder.php';
-require_once 'Store/dataobjects/StoreOrderWrapper.php';
-
 /**
  * Removes personal data from expired orders
  *

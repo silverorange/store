@@ -1,8 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBRecordsetWrapper.php';
-require_once 'Store/dataobjects/StoreProduct.php';
-
 /**
  * Note: This recordset automatically loads attributes for products when
  *       constructed from a database result. If this behaviour is undesirable,

@@ -1,9 +1,5 @@
 <?php
 
-require_once 'SwatI18N/SwatI18NLocale.php';
-require_once 'SwatDB/SwatDBDataObject.php';
-require_once 'Store/Store.php';
-
 /**
  *
  *

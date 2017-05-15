@@ -1,13 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminDBDelete.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'Admin/AdminDependency.php';
-require_once 'Store/StoreCatalogSwitcher.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Store/StoreItemStatusList.php';
-require_once 'Store/dataobjects/StoreItem.php';
-
 /**
  * Item status change confirmation page for changing item status within the
  * category component

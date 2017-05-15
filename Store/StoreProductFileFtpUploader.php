@@ -1,11 +1,5 @@
 <?php
 
-require_once 'Site/SiteCommandLineApplication.php';
-require_once 'Site/SiteDatabaseModule.php';
-require_once 'Site/dataobjects/SiteImage.php';
-require_once 'Store/Store.php';
-require_once 'Store/StoreCommandLineConfigModule.php';
-
 /**
  * Abstract application to upload product listing files to a ftp server
  *

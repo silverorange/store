@@ -1,11 +1,5 @@
 <?php
 
-require_once 'Site/SiteApplication.php';
-require_once 'Site/SiteApplicationModule.php';
-require_once 'Site/SiteApplicationModuleDependency.php';
-require_once 'Store/dataobjects/StoreOrder.php';
-require_once 'Store/dataobjects/StoreMailChimpOrder.php';
-
 /**
  * Web application module for handling MailChimp order tracking.
  *

@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Swat/SwatCellRenderer.php';
-require_once 'Swat/SwatString.php';
-
 /**
  * Combines item SKU and description into one cell renderer
  *

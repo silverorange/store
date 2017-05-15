@@ -1,13 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminApproval.php';
-require_once 'Site/dataobjects/SiteComment.php';
-require_once 'Site/SiteViewFactory.php';
-require_once 'Store/dataobjects/StoreProductReview.php';
-if (class_exists('Blorg')) {
-	require_once 'Blorg/dataobjects/BlorgAuthorWrapper.php';
-}
-
 /**
  * Approval page for Product reviews
  *

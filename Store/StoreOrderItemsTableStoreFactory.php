@@ -1,9 +1,5 @@
 <?php
 
-require_once 'Store/dataobjects/StoreItem.php';
-require_once 'Store/dataobjects/StoreOrder.php';
-require_once 'Store/dataobjects/StoreOrderItem.php';
-
 /**
  * @package   Store
  * @copyright 2012-2016 silverorange

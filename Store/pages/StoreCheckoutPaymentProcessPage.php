@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Store/pages/StoreCheckoutPage.php';
-require_once 'Store/dataobjects/StoreOrderPaymentMethodWrapper.php';
-
 /**
  * Processes the order payment response
  *

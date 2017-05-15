@@ -1,8 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBRecordsetWrapper.php';
-require_once 'Store/dataobjects/StoreCardType.php';
-
 /**
  * A recordset wrapper class for StoreCardType objects
  *

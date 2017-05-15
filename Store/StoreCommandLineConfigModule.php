@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Site/SiteCommandLineConfigModule.php';
-
 /**
  * Configuration module for Store command-line applications
  *

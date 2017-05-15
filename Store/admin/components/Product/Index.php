@@ -1,21 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminSearch.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'Swat/SwatTreeFlydownNode.php';
-require_once 'Swat/SwatFlydownDivider.php';
-require_once 'Store/StoreCatalogSelector.php';
-require_once 'Store/StoreItemStatusList.php';
-require_once 'Store/dataobjects/StoreAttributeTypeWrapper.php';
-require_once 'Store/dataobjects/StoreAttributeWrapper.php';
-require_once 'Store/admin/components/Product/include/StoreProductTableView.php';
-require_once 'Store/admin/components/Product/include/StoreProductSearch.php';
-require_once
-	'Store/admin/components/Product/include/StoreProductTitleCellRenderer.php';
-
-require_once
-	'Store/admin/components/Product/include/StoreProductStatusCellRenderer.php';
-
 /**
  * Index page for Products
  *

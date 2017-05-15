@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Store/pages/StoreCheckoutPage.php';
-
 /**
  * Abstract base class for final page of the checkout
  *

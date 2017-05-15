@@ -1,11 +1,5 @@
 <?php
 
-require_once 'Site/admin/components/Account/Details.php';
-require_once 'Store/StoreAddressCellRenderer.php';
-require_once 'Store/StorePaymentMethodCellRenderer.php';
-require_once 'Store/dataobjects/StoreAccountPaymentMethodWrapper.php';
-require_once 'Store/dataobjects/StoreAccount.php';
-
 /**
  * Details page for accounts
  *

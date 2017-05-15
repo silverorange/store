@@ -1,9 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminIndex.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'Store/dataobjects/StoreRegionWrapper.php';
-
 /**
  * Index page for Regions
  *

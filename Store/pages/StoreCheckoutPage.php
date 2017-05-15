@@ -1,10 +1,5 @@
 <?php
 
-require_once 'Site/pages/SiteUiPage.php';
-require_once 'Store/StorePaymentRequest.php';
-require_once 'Store/dataobjects/StoreAccount.php';
-require_once 'Store/dataobjects/StoreOrder.php';
-
 /**
  * Base class for checkout pages
  *

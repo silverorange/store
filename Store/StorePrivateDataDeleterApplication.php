@@ -1,9 +1,5 @@
 <?php
 
-require_once 'Site/SitePrivateDataDeleterApplication.php';
-require_once 'Store/Store.php';
-require_once 'Store/StoreCommandLineConfigModule.php';
-
 /**
  * Framework for a command line application to remove personal data.
  *

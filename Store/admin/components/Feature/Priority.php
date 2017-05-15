@@ -1,9 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminDBOrder.php';
-require_once 'Admin/AdminUI.php';
-require_once 'SwatDB/SwatDB.php';
-
 /**
  * Priority page for Features
  *

@@ -1,8 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBRecordsetWrapper.php';
-require_once 'Store/dataobjects/StoreLocale.php';
-
 /**
  * A recordset wrapper class for StoreLocale objects
  *

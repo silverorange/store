@@ -1,9 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBDataObject.php';
-require_once 'Store/dataobjects/StoreQuantityDiscountRegionBindingWrapper.php';
-require_once 'Store/dataobjects/StoreRegion.php';
-
 /**
  * Quantity discount object
  *
@@ -193,7 +189,6 @@ class StoreQuantityDiscount extends SwatDBDataObject
 				$this->price[$row['region_id']] = $row['price'];
 		}
 	}
-
 
 	// }}}
 	// {{{ protected function getSerializableSubDataObjects()

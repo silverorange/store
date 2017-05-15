@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Site/SiteArticleSearchEngine.php';
-require_once 'Site/dataobjects/SiteArticleWrapper.php';
-
 /**
  * An article search engine that is region aware
  *

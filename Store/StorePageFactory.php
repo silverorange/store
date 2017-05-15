@@ -1,12 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDB.php';
-require_once 'Swat/SwatString.php';
-require_once 'Site/exceptions/SiteNotFoundException.php';
-require_once 'Site/SitePageFactory.php';
-require_once 'Store/dataobjects/StoreCategory.php';
-require_once 'Store/StoreCategoryPath.php';
-
 /**
  * Resolves pages below the 'store' tag in the URL.
  *

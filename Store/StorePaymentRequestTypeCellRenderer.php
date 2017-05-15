@@ -1,9 +1,5 @@
 <?php
 
-require_once 'Swat/SwatCellRenderer.php';
-require_once 'Store/Store.php';
-require_once 'Store/StorePaymentRequest.php';
-
 /**
  * Renders textual descriptions for payment request types
  *

@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Store/StoreStatus.php';
-
 /**
  * A possible order status
  *

@@ -1,7 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBDataObject.php';
-
 /**
  * Catalogs group products together into management units. Catalogs are not
  * typically visible in the frontend of a store. They often represent products

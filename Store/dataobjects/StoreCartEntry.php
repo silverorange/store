@@ -1,12 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBDataObject.php';
-require_once 'Site/dataobjects/SiteInstance.php';
-require_once 'Store/dataobjects/StoreItem.php';
-require_once 'Store/dataobjects/StoreAccount.php';
-require_once 'Store/dataobjects/StoreOrderItem.php';
-require_once 'Store/dataobjects/StoreItemAlias.php';
-
 /**
  * An entry in a shopping cart for an e-commerce web application
  *

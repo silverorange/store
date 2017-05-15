@@ -1,23 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBTransaction.php';
-
-require_once 'Site/SiteApplicationModule.php';
-
-require_once 'Site/SiteAccountSessionModule.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Store/StoreCart.php';
-require_once 'Store/StoreSavedCart.php';
-require_once 'Store/StoreCheckoutCart.php';
-require_once 'Store/exceptions/StoreException.php';
-require_once 'Store/dataobjects/StoreCartEntryWrapper.php';
-require_once 'Store/dataobjects/StoreProductWrapper.php';
-require_once 'Store/dataobjects/StoreItemWrapper.php';
-require_once 'Store/dataobjects/StoreQuantityDiscountWrapper.php';
-require_once 'Store/dataobjects/StoreProductImageWrapper.php';
-require_once 'Store/dataobjects/StoreCategoryWrapper.php';
-require_once 'Store/dataobjects/StoreCatalogWrapper.php';
-
 /**
  * Manages the carts used by a web-store application
  *

@@ -1,12 +1,5 @@
 <?php
 
-require_once 'Admin/AdminUI.php';
-require_once 'Admin/exceptions/AdminNotFoundException.php';
-require_once 'Admin/pages/AdminDBEdit.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'Swat/SwatMessage.php';
-require_once 'Store/dataobjects/StoreAttribute.php';
-
 /**
  * Edit page for Attributes
  *

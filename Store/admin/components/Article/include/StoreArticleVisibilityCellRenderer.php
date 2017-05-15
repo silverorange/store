@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Site/admin/components/Article/include/SiteArticleVisibilityCellRenderer.php';
-
 /**
  * Cell renderer that displays a summary of the visibility of an article
  *

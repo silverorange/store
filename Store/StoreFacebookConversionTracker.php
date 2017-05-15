@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Swat/SwatString.php';
-
 /**
  * Generates Facebook conversion tracking code.
  *

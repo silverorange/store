@@ -1,13 +1,5 @@
 <?php
 
-require_once 'Swat/SwatControl.php';
-require_once 'Swat/SwatString.php';
-require_once 'Swat/SwatTableStore.php';
-require_once 'Swat/SwatDetailsStore.php';
-require_once 'Swat/SwatUI.php';
-require_once 'Swat/SwatHtmlHeadEntrySet.php';
-require_once 'Store/dataobjects/StoreProduct.php';
-
 /**
  * Control to display and process items on a product page
  *
@@ -18,7 +10,6 @@ require_once 'Store/dataobjects/StoreProduct.php';
 class StoreItemsView extends SwatControl
 {
 	// {{{ public properties
-
 
 	public $ui_xml = 'Store/items-view.xml';
 	public $ui;

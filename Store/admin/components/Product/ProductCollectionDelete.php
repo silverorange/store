@@ -1,10 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminDBDelete.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'Store/admin/components/Product/'.
-	'include/StoreProductCollectionDependency.php';
-
 /**
  * Delete confirmation page for Product Collections
  *

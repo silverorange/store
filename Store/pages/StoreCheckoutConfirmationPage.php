@@ -1,17 +1,5 @@
 <?php
 
-require_once 'Swat/SwatDate.php';
-require_once 'Swat/SwatDetailsStore.php';
-require_once 'SwatDB/SwatDBTransaction.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Store/pages/StoreCheckoutPage.php';
-require_once 'Store/dataobjects/StoreOrderItemWrapper.php';
-require_once 'Store/dataobjects/StoreCartEntry.php';
-require_once 'Store/exceptions/StorePaymentAddressException.php';
-require_once 'Store/exceptions/StorePaymentPostalCodeException.php';
-require_once 'Store/exceptions/StorePaymentCvvException.php';
-require_once 'Store/exceptions/StorePaymentTotalException.php';
-
 /**
  * Confirmation page of checkout
  *

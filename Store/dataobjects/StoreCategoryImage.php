@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Store/dataobjects/StoreImage.php';
-
 /**
  * An image data object for categories
  *

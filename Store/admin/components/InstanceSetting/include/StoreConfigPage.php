@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Site/admin/components/InstanceSetting/include/SiteAbstractConfigPage.php';
-
 /**
  * Config page used for displaying and saving config settings for the Store
  * package.

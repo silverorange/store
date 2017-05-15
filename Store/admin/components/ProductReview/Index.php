@@ -1,12 +1,5 @@
 <?php
 
-require_once 'Swat/SwatDetailsStore.php';
-require_once 'Admin/pages/AdminSearch.php';
-require_once 'Admin/AdminSearchClause.php';
-require_once 'Site/dataobjects/SiteComment.php';
-require_once 'Site/admin/SiteCommentVisibilityCellRenderer.php';
-require_once 'Store/dataobjects/StoreProductReviewWrapper.php';
-
 /**
  * Index page for Products Reviews
  *
@@ -74,7 +67,6 @@ class StoreProductReviewIndex extends AdminSearch
 		$item_list = array();
 		foreach ($view->getSelection() as $item)
 			$item_list[] = $this->app->db->quote($item, 'integer');
-
 
 		switch ($actions->selected->id) {
 		case 'delete':
@@ -271,7 +263,6 @@ class StoreProductReviewIndex extends AdminSearch
 
 			break;
 		}
-
 
 		return $where;
 	}

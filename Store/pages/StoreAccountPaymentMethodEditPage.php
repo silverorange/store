@@ -1,13 +1,5 @@
 <?php
 
-require_once 'Swat/SwatUI.php';
-require_once 'Swat/SwatDate.php';
-require_once 'Swat/SwatYUI.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Site/pages/SiteDBEditPage.php';
-require_once 'Store/dataobjects/StoreAccountPaymentMethod.php';
-require_once 'Store/dataobjects/StoreCardTypeWrapper.php';
-
 /**
  * Page to allow customers to add or edit payment methods on their account
  *

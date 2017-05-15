@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminDBConfirmation.php';
-require_once 'Admin/AdminListDependency.php';
-
 /**
  * Confirmation page for queuing future product attribute changes.
  *

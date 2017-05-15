@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Store/exceptions/StorePaymentException.php';
-
 /**
  * Thrown when a payment request is not authorized by the issuing bank
  *

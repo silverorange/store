@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Swat/SwatCellRenderer.php';
-require_once 'Store/dataobjects/StorePaymentMethod.php';
-
 /**
  * Cell renderer that displays a summary of the status of a PaymentType
  *

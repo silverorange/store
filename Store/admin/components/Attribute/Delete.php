@@ -1,11 +1,5 @@
 <?php
 
-require_once 'Admin/pages/AdminDBDelete.php';
-require_once 'Admin/AdminListDependency.php';
-require_once 'Admin/AdminSummaryDependency.php';
-require_once 'SwatDB/SwatDB.php';
-require_once 'Swat/SwatString.php';
-
 /**
  * Delete confirmation page for Attributes
  *

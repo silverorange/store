@@ -1,9 +1,5 @@
 <?php
 
-require_once 'Swat/SwatTableViewRow.php';
-require_once 'Swat/SwatHtmlTag.php';
-require_once 'Swat/SwatMoneyCellRenderer.php';
-
 /**
  * Displays totals in a special row in a table view.
  *

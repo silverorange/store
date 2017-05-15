@@ -1,8 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBDataObject.php';
-require_once 'Store/dataobjects/StoreRegion.php';
-
 /**
  * @package   Store
  * @copyright 2010-2016 silverorange

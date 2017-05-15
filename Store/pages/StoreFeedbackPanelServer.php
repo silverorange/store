@@ -1,10 +1,5 @@
 <?php
 
-require_once 'Site/pages/SiteXMLRPCServer.php';
-require_once 'Store/dataobjects/StoreFeedback.php';
-require_once 'Store/dataobjects/StoreArticle.php';
-require_once 'Swat/SwatUI.php';
-
 /**
  * @package   Store
  * @copyright 2009-2016 silverorange

@@ -1,10 +1,5 @@
 <?php
 
-require_once 'Swat/SwatTableStore.php';
-require_once 'Swat/SwatDetailsStore.php';
-require_once 'SwatDB/SwatDBClassMap.php';
-require_once 'Admin/pages/AdminIndex.php';
-
 /**
  * @package   Store
  * @copyright 2009-2016 silverorange

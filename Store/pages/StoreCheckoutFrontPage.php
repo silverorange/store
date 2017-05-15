@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Store/pages/StoreCheckoutPage.php';
-
 /**
  * Front page of checkout
  *

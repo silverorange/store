@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Swat/SwatTableViewRow.php';
-require_once 'Swat/SwatHtmlTag.php';
-
 /**
  * A an extra row for displaying textual content
  *

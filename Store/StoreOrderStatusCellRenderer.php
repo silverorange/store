@@ -1,10 +1,5 @@
 <?php
 
-require_once 'Swat/SwatCellRenderer.php';
-require_once 'Store/StoreOrderStatus.php';
-require_once 'Store/StoreOrderStatusList.php';
-require_once 'Store/dataobjects/StoreOrder.php';
-
 /**
  * Cell renderer for order statuses
  *

@@ -1,8 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBDataObject.php';
-require_once 'Store/dataobjects/StoreShippingRateWrapper.php';
-
 /**
  * A shiping type data object
  *

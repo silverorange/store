@@ -1,7 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBDataObject.php';
-
 /**
  * Dataobject to group {@link StoreItem} objects within a group, of which a
  * minimum quantity of items must be purchased.

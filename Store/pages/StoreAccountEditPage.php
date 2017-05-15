@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Site/pages/SiteAccountEditPage.php';
-
 /**
  * @package   Store
  * @copyright 2006-2016 silverorange

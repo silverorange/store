@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Swat/SwatString.php';
-require_once 'Store/dataobjects/StoreOrder.php';
-
 /**
  * Generates order transaction tracking code for an order for Google Analytics,
  * Facebook pixels, Twitter pixels, and the Bing Universal Event Tracker.

@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Store/pages/StoreCheckoutAddressPage.php';
-require_once 'Swat/SwatYUI.php';
-
 /**
  * Shipping address edit page of checkout
  *

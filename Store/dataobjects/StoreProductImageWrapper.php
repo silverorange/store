@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Site/dataobjects/SiteImageWrapper.php';
-require_once 'Store/dataobjects/StoreProductImage.php';
-
 /**
  * A recordset wrapper class for StoreProductImage objects
  *

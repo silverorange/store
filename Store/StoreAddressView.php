@@ -1,10 +1,5 @@
 <?php
 
-require_once 'Store/dataobjects/StoreAddress.php';
-require_once 'Swat/SwatConfirmationButton.php';
-require_once 'Swat/SwatHtmlTag.php';
-require_once 'Swat/SwatControl.php';
-
 /**
  * A viewer for an address object
  *

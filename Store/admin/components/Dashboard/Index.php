@@ -1,13 +1,5 @@
 <?php
 
-require_once 'Swat/SwatYesNoFlydown.php';
-require_once 'Admin/pages/AdminIndex.php';
-require_once 'Site/dataobjects/SiteAccountWrapper.php';
-require_once 'Store/dataobjects/StoreOrderWrapper.php';
-require_once 'Store/dataobjects/StoreProductReviewWrapper.php';
-require_once 'Store/dataobjects/StoreProductWrapper.php';
-require_once 'Store/admin/StoreOrderChart.php';
-
 /**
  * Front-page dashboard
  *

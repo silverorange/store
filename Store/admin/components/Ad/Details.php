@@ -1,13 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDB.php';
-require_once 'Swat/SwatTableStore.php';
-require_once 'Swat/SwatMoneyCellRenderer.php';
-require_once 'Swat/SwatNumericCellRenderer.php';
-require_once 'Site/admin/components/Ad/Details.php';
-require_once 'Store/dataobjects/StoreRegionWrapper.php';
-
-
 /**
  * Report page for Ads
  *
@@ -107,7 +99,6 @@ class StoreAdDetails extends SiteAdDetails
 			$subtotal_column->addRenderer($subtotal_renderer);
 			$subtotal_column->addMappingToRenderer($subtotal_renderer,
 				'subtotal_'.$region->id, 'value');
-
 
 			$orders_column = new SwatTableViewColumn('orders_'.$region->id);
 			$orders_column->title = sprintf(Store::_('%s Orders'),

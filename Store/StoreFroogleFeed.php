@@ -1,8 +1,5 @@
 <?php
 
-require_once 'AtomFeed/AtomFeed.php';
-require_once 'Store/StoreFroogleFeedEntry.php';
-
 /**
  * A class for constructing Froogle Atom feeds
  *

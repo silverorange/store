@@ -1,7 +1,5 @@
 <?php
 
-require_once 'SwatDB/SwatDBDataObject.php';
-
 /**
  * Dataobject for quantity-discount region bindings
  *

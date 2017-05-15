@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Swat/SwatMoneyCellRenderer.php';
-
 /**
  * Renders item prices
  *

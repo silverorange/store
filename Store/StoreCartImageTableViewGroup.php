@@ -1,9 +1,5 @@
 <?php
 
-require_once 'Swat/SwatTableViewGroup.php';
-require_once 'Swat/SwatImageCellRenderer.php';
-require_once 'Swat/SwatLinkCellRenderer.php';
-
 /**
  * @package   Store
  * @copyright 2004-2016 silverorange

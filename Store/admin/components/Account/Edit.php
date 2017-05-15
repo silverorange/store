@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Site/admin/components/Account/Edit.php';
-
 /**
  * Edit page for Accounts
  *

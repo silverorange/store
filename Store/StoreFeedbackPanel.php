@@ -1,10 +1,5 @@
 <?php
 
-require_once 'Swat/SwatControl.php';
-require_once 'Swat/SwatString.php';
-require_once 'XML/RPCAjax.php';
-require_once 'Store/Store.php';
-
 /**
  * @package   Store
  * @copyright 2009-2016 silverorange
