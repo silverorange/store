@@ -1,10 +1,5 @@
 <?php
 
-if (class_exists('Blorg')) {
-	require_once 'Blorg/dataobjects/BlorgPostWrapper.php';
-	require_once 'Site/dataobjects/SiteCommentWrapper.php';
-}
-
 /**
  * Store search indexer application for NateGoSearch
  *

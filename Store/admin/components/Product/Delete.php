@@ -1,7 +1,5 @@
 <?php
 
-	'StoreProductItemDependency.php';
-
 /**
  * Delete confirmation page for products
  *

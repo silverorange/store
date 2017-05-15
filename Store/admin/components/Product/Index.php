@@ -1,9 +1,5 @@
 <?php
 
-	'Store/admin/components/Product/include/StoreProductTitleCellRenderer.php';
-
-	'Store/admin/components/Product/include/StoreProductStatusCellRenderer.php';
-
 /**
  * Index page for Products
  *

@@ -1,10 +1,5 @@
 <?php
 
-if (class_exists('Blorg')) {
-	require_once 'Blorg/BlorgPostSearchEngine.php';
-	require_once 'Blorg/dataobjects/BlorgPostWrapper.php';
-}
-
 /**
  * Page for displaying search results
  *

@@ -1,7 +1,5 @@
 <?php
 
-@include_once 'Services/Akismet2.php';
-
 /**
  * A product page
  *

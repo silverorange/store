@@ -1,7 +1,5 @@
 <?php
 
-	'include/StoreProductRelatedProductDependency.php';
-
 /**
  * Delete confirmation page for Related Products
  *

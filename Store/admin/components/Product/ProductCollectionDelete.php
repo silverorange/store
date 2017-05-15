@@ -1,7 +1,5 @@
 <?php
 
-	'include/StoreProductCollectionDependency.php';
-
 /**
  * Delete confirmation page for Product Collections
  *
