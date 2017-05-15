@@ -1,7 +1,5 @@
 <?php
 
-//require_once 'Store/StoreProductReviewView.php';
-
 /**
  * Handles XML-RPC requests to view more product reviews
  *

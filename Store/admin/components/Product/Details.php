@@ -1,12 +1,5 @@
 <?php
 
-	'Store/admin/components/Product/include/StoreProductImageDisplay.php';
-	'Store/admin/components/Item/include/StoreItemStatusCellRenderer.php';
-
-	'Store/admin/components/Product/include/StoreItemDiscountCellRenderer.php';
-
-	'Store/admin/components/Product/include/StoreAdminItemPriceCellRenderer.php';
-
 /**
  * Details page for Products
  *

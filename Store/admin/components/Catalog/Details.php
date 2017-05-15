@@ -1,7 +1,5 @@
 <?php
 
-	'StoreCatalogStatusCellRenderer.php';
-
 /**
  * Details page for Catalogs
  *

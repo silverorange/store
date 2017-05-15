@@ -1,11 +1,5 @@
 <?php
 
-	'Store/admin/components/Item/include/StoreItemQuantityDiscountActions.php';
-
-	'Store/admin/components/Item/include/StoreItemQuantityCellRenderer.php';
-
-	'StoreItemQuantityDiscountTableView.php';
-
 /**
  * Quantity discounts tool
  *

@@ -1,15 +1,4 @@
- <?php
-
-//TODO - move some of these into better locations
-	'StoreCategoryTableView.php';
-
-	'StoreCategoryTitleCellRenderer.php';
-
-	'StoreProductStatusCellRenderer.php';
-
-	'StoreProductTableView.php';
-
-	'StoreProductTitleCellRenderer.php';
+<?php
 
 /**
  * Index page for Categories

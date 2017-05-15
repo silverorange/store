@@ -1,7 +1,5 @@
 <?php
 
-	'StorePaymentTypeStatusCellRenderer.php';
-
 /**
  * Index page for payment types
  *

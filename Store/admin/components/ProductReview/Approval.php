@@ -1,9 +1,5 @@
 <?php
 
-if (class_exists('Blorg')) {
-	require_once 'Blorg/dataobjects/BlorgAuthorWrapper.php';
-}
-
 /**
  * Approval page for Product reviews
  *
