@@ -4,7 +4,7 @@
  * Container for package wide static methods
  *
  * @package   Store
- * @copyright 2006-2016 silverorange
+ * @copyright 2006-2017 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class Store
@@ -14,11 +14,21 @@ class Store
 	const GETTEXT_DOMAIN = 'store';
 
 	// }}}
+	// {{{ private properties
+
+	/**
+	 * Whether or not this package is initialized
+	 *
+	 * @var boolean
+	 */
+	private static $is_initialized = false;
+
+	// }}}
 	// {{{ public static function _()
 
 	public static function _($message)
 	{
-		return Store::gettext($message);
+		return self::gettext($message);
 	}
 
 	// }}}
@@ -26,7 +36,7 @@ class Store
 
 	public static function gettext($message)
 	{
-		return dgettext(Store::GETTEXT_DOMAIN, $message);
+		return dgettext(self::GETTEXT_DOMAIN, $message);
 	}
 
 	// }}}
@@ -35,7 +45,7 @@ class Store
 	public static function ngettext($singular_message,
 		$plural_message, $number)
 	{
-		return dngettext(Store::GETTEXT_DOMAIN,
+		return dngettext(self::GETTEXT_DOMAIN,
 			$singular_message, $plural_message, $number);
 	}
 
@@ -44,8 +54,8 @@ class Store
 
 	public static function setupGettext()
 	{
-		bindtextdomain(Store::GETTEXT_DOMAIN, '@DATA-DIR@/Store/locale');
-		bind_textdomain_codeset(Store::GETTEXT_DOMAIN, 'UTF-8');
+		bindtextdomain(self::GETTEXT_DOMAIN, '@DATA-DIR@/Store/locale');
+		bind_textdomain_codeset(self::GETTEXT_DOMAIN, 'UTF-8');
 	}
 
 	// }}}
@@ -128,6 +138,45 @@ class Store
 	}
 
 	// }}}
+	// {{{ public static function init()
+
+	public static function init()
+	{
+		if (self::$is_initialized) {
+			return;
+		}
+
+		Swat::init();
+		Site::init();
+		Admin::init();
+
+		self::setupGettext();
+
+		SwatUI::mapClassPrefixToPath('Store', 'Store');
+
+		SwatDBClassMap::addPath('Store/dataobjects');
+		SwatDBClassMap::add('SiteAccount',        'StoreAccount');
+		SwatDBClassMap::add('SiteContactMessage', 'StoreContactMessage');
+		SwatDBClassMap::add('SiteArticle',        'StoreArticle');
+		SwatDBClassMap::add('SiteArticleWrapper', 'StoreArticleWrapper');
+
+		SiteViewFactory::addPath('Store/views');
+		SiteViewFactory::registerView(
+			'product-review',
+			'StoreProductReviewView'
+		);
+
+		if (class_exists('Blorg')) {
+			SiteViewFactory::registerView(
+				'post-search',
+				'StoreBlorgPostSearchView'
+			);
+		}
+
+		self::$is_initialized = true;
+	}
+
+	// }}}
 	// {{{ private function __construct()
 
 	/**
@@ -138,21 +187,6 @@ class Store
 	}
 
 	// }}}
-}
-
-Store::setupGettext();
-SwatUI::mapClassPrefixToPath('Store', 'Store');
-
-SwatDBClassMap::addPath('Store/dataobjects');
-SwatDBClassMap::add('SiteAccount',        'StoreAccount');
-SwatDBClassMap::add('SiteContactMessage', 'StoreContactMessage');
-SwatDBClassMap::add('SiteArticle',        'StoreArticle');
-SwatDBClassMap::add('SiteArticleWrapper', 'StoreArticleWrapper');
-
-SiteViewFactory::addPath('Store/views');
-SiteViewFactory::registerView('product-review', 'StoreProductReviewView');
-if (class_exists('Blorg')) {
-	SiteViewFactory::registerView('post-search', 'StoreBlorgPostSearchView');
 }
 
 ?>
