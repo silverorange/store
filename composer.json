@@ -84,8 +84,5 @@
 	},
 	"autoload": {
 		"classmap": [ "Store/" ]
-	},
-	"include-path": [
-		"./"
-	]
+	}
 }
