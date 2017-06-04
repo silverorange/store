@@ -1,7 +1,5 @@
 <?php
 
-/* vim: set noexpandtab tabstop=4 shiftwidth=4 foldmethod=marker: */
-
 /**
  * A currency cell renderer
  *
@@ -13,7 +11,7 @@ class StoreYeOldePriceCellRenderer extends StoreItemPriceCellRenderer
 {
 	// {{{ public function getBaseCSSClassNames()
 
-	/** 
+	/**
 	 * Gets the base CSS class names for this cell renderer
 	 *
 	 * @return array the array of base CSS class names for this cell renderer.
