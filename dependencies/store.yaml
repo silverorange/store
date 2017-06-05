@@ -109,5 +109,3 @@ Store:
     packages/store/admin/styles/store-product-edit-page.css:
     packages/store/admin/styles/store-product-index.css:
     packages/store/admin/styles/store-quick-search.css:
-
-# vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2:
