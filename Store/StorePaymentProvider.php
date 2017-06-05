@@ -313,7 +313,6 @@ abstract class StorePaymentProvider
 		$card_number,
 		$card_verification_value = null
 	) {
-		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',
 			get_class($this), __FUNCTION__));
@@ -336,12 +335,18 @@ abstract class StorePaymentProvider
 	 *
 	 * @see StorePaymentProvider::release()
 	 */
+<<<<<<< HEAD
 	public function hold(
 		StoreOrder $order,
 		$card_number,
 		$card_verification_value = null
 	) {
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
+=======
+	public function hold(StoreOrder $order, $card_number,
+		$card_verification_value = null)
+	{
+>>>>>>> Remove more require_once calls
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',
 			get_class($this), __FUNCTION__));
@@ -366,7 +371,6 @@ abstract class StorePaymentProvider
 	 */
 	public function release(StorePaymentMethodTransaction $transaction)
 	{
-		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',
 			get_class($this), __FUNCTION__));
@@ -396,7 +400,6 @@ abstract class StorePaymentProvider
 	 */
 	public function abort(StorePaymentMethodTransaction $transaction)
 	{
-		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',
 			get_class($this), __FUNCTION__));
@@ -425,12 +428,18 @@ abstract class StorePaymentProvider
 	 *
 	 * @see StorePaymentProvider::verifiedPay()
 	 */
+<<<<<<< HEAD
 	public function verify(
 		StoreOrder $order,
 		$card_number,
 		$card_verification_value = null
 	) {
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
+=======
+	public function verify(StoreOrder $order, $card_number,
+		$card_verification_value = null)
+	{
+>>>>>>> Remove more require_once calls
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',
 			get_class($this), __FUNCTION__));
@@ -456,7 +465,6 @@ abstract class StorePaymentProvider
 	 */
 	public function verifiedPay(StorePaymentMethodTransaction $transaction)
 	{
-		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',
 			get_class($this), __FUNCTION__));
@@ -487,12 +495,18 @@ abstract class StorePaymentProvider
 	 *                                        representing the refund
 	 *                                        transaction.
 	 */
+<<<<<<< HEAD
 	public function refund(
 		StorePaymentMethodTransaction $transaction,
 		$description = '',
 		$amount = null
 	) {
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
+=======
+	public function refund(StorePaymentMethodTransaction $transaction,
+		$description = '', $amount = null)
+	{
+>>>>>>> Remove more require_once calls
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',
 			get_class($this), __FUNCTION__));
@@ -522,7 +536,6 @@ abstract class StorePaymentProvider
 	 */
 	public function void(StorePaymentMethodTransaction $transaction)
 	{
-		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',
 			get_class($this), __FUNCTION__));
@@ -557,10 +570,15 @@ abstract class StorePaymentProvider
 	 *                                        was a hold request.
 	 */
 	public function threeDomainSecureAuth(
+<<<<<<< HEAD
 		StorePaymentMethodTransaction $transaction,
 		$pares
 	) {
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
+=======
+		StorePaymentMethodTransaction $transaction, $pares)
+	{
+>>>>>>> Remove more require_once calls
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',
 			get_class($this), __FUNCTION__));

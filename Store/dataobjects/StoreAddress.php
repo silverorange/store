@@ -1472,7 +1472,6 @@ abstract class StoreAddress extends SwatDBDataObject
 		if ($key === null)
 			return $valid;
 
-		require_once 'Services/StrikeIron/VerifyAddressUsa.php';
 		$options = array('timeout' => 1);
 
 		$strikeiron = new Services_StrikeIron_VerifyAddressUsa(

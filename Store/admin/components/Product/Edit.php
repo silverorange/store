@@ -285,7 +285,6 @@ class StoreProductEdit extends AdminDBEdit
 			return;
 		}
 
-		require_once 'NateGoSearch/NateGoSearch.php';
 		$type = NateGoSearch::getDocumentType($this->app->db, 'product');
 
 		if ($type === null) {

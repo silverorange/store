@@ -166,7 +166,6 @@ class StorePageFactory extends SitePageFactory
 
 	protected function decorateProductPage(SiteAbstractPage $page)
 	{
-		require_once 'Store/pages/StoreProductPage.php';
 		return $this->decorate($page, 'StoreProductPage');
 	}
 
@@ -175,7 +174,6 @@ class StorePageFactory extends SitePageFactory
 
 	protected function decorateProductNotVisiblePage(SiteAbstractPage $page)
 	{
-		require_once 'Store/pages/StoreProductNotVisiblePage.php';
 		return $this->decorate($page, 'StoreProductNotVisiblePage');
 	}
 
@@ -184,7 +182,6 @@ class StorePageFactory extends SitePageFactory
 
 	protected function decorateProductImagePage(SiteAbstractPage $page)
 	{
-		require_once 'Store/pages/StoreProductImagePage.php';
 		return $this->decorate($page, 'StoreProductImagePage');
 	}
 
@@ -302,7 +299,6 @@ class StorePageFactory extends SitePageFactory
 
 	protected function decorateCategoryPage(SiteAbstractPage $page)
 	{
-		require_once 'Store/pages/StoreCategoryPage.php';
 		return $this->decorate($page, 'StoreCategoryPage');
 	}
 
@@ -311,7 +307,6 @@ class StorePageFactory extends SitePageFactory
 
 	protected function decorateCategoryNotVisiblePage(SiteAbstractPage $page)
 	{
-		require_once 'Store/pages/StoreCategoryNotVisiblePage.php';
 		return $this->decorate($page, 'StoreCategoryNotVisiblePage');
 	}
 
@@ -325,14 +320,12 @@ class StorePageFactory extends SitePageFactory
 	{
 		// don't try to resolve categories that are deeper than the max depth
 		if (mb_substr_count($path, '/') >= StoreCategory::MAX_DEPTH) {
-			require_once('Site/exceptions/SitePathTooLongException.php');
 			throw new SitePathTooLongException(
 				sprintf('Category path is too long: ‘%s’', $path));
 		}
 
 		// don't try to find categories with invalid UTF-8 in the path
 		if (!SwatString::validateUtf8($path)) {
-			require_once('Site/exceptions/SitePathInvalidUtf8Exception.php');
 			throw new SitePathInvalidUtf8Exception(
 				sprintf(
 					'Category path is not valid UTF-8: "%s"',
@@ -346,7 +339,6 @@ class StorePageFactory extends SitePageFactory
 		// don't try to find catrgories with more than 254 characters in the
 		// path
 		if (mb_strlen($path) > 254) {
-			require_once('Site/exceptions/SitePathTooLongException.php');
 			throw new SitePathTooLongException(
 				sprintf('Category path is too long: ‘%s’', $path));
 		}

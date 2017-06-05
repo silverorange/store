@@ -157,7 +157,6 @@ class StoreCategoryEdit extends AdminDBEdit
 			return;
 		}
 
-		require_once 'NateGoSearch/NateGoSearch.php';
 		$type = NateGoSearch::getDocumentType($this->app->db, 'category');
 
 		if ($type === null) {

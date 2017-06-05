@@ -43,7 +43,6 @@ class StoreProductReview extends SiteComment
 			SwatDBClassMap::get('StoreProductReview'));
 
 		if (class_exists('Blorg')) {
-			require_once 'Blorg/dataobjects/BlorgAuthor.php';
 			$this->registerInternalProperty('author',
 				SwatDBClassMap::get('BlorgAuthor'));
 		}
@@ -58,9 +57,6 @@ class StoreProductReview extends SiteComment
 
 	protected function loadReplies()
 	{
-		// include wrapper at call-time to prevent infinite include loop
-		require_once __DIR__.'/StoreProductReviewWrapper.php';
-
 		// order chronologically for sub-items
 		$sql = sprintf('select * from ProductReview where parent = %s
 			order by createdate asc',

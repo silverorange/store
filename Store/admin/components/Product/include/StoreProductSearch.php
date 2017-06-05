@@ -54,8 +54,6 @@ class StoreProductSearch
 
 		$manager = $db->manager;
 		if (in_array('nategosearchqueue', $manager->listTables())) {
-			require_once 'NateGoSearch/NateGoSearch.php';
-			require_once 'Site/SiteNateGoFulltextSearchEngine.php';
 			$type = NateGoSearch::getDocumentType($this->db,
 				$this->getSearchType());
 
