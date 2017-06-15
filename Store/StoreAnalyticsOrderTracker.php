@@ -269,6 +269,22 @@ class StoreAnalyticsOrderTracker
 	}
 
 	// }}}
+	// {{{ protected function getFriendbuyPixelOrderItemCommand()
+
+	protected function getFriendbuyPixelOrderItemCommand()
+	{
+		return array(
+			'track',
+			'order',
+			array(
+				'id'     => $this->order->id,
+				'amount' => $this->order->total,
+				'email'  => $this->order->email,
+			)
+		);
+	}
+
+	// }}}
 }
 
 ?>
