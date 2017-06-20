@@ -101,7 +101,8 @@ class StoreAnalyticsOrderTracker
 
 	public function getFriendbuyPixelCommands()
 	{
-		$commands = array(
+		$commands = array();
+		$commands[] = array(
 			'track',
 			'order',
 			array(
@@ -112,8 +113,8 @@ class StoreAnalyticsOrderTracker
 		);
 
 		$commands[] = array(
-			'widget' =>
-				$this->app->config->analytics->friendbuy_overlay_widget_id,
+			'widget',
+			$this->app->config->analytics->friendbuy_overlay_widget_id,
 		);
 
 		return $commands;
