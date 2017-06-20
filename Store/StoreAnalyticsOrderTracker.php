@@ -5,7 +5,7 @@
  * Facebook pixels, Twitter pixels, and the Bing Universal Event Tracker.
  *
  * @package   Store
- * @copyright 2008-2016 silverorange
+ * @copyright 2008-2017 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @link      http://www.google.com/support/googleanalytics/bin/answer.py?answer=55528
  * @link      http://code.google.com/apis/analytics/docs/gaJS/gaJSApiEcommerce.html
@@ -94,6 +94,29 @@ class StoreAnalyticsOrderTracker
 			'tw_sale_amount' => $this->getOrderTotal(),
 			'tw_order_quantity' => $this->getOrderQuantity(),
 		);
+	}
+
+	// }}}
+	// {{{ public function getFriendbuyPixelOrderItemCommand()
+
+	public function getFriendbuyPixelCommands()
+	{
+		$commands = array(
+			'track',
+			'order',
+			array(
+				'id'     => $this->order->id,
+				'amount' => $this->order->total,
+				'email'  => $this->order->email,
+			)
+		);
+
+		$commands[] = array(
+			'widget' =>
+				$this->app->config->analytics->friendbuy_overlay_widget_id,
+		);
+
+		return $commands;
 	}
 
 	// }}}
@@ -266,22 +289,6 @@ class StoreAnalyticsOrderTracker
 	protected function getCategoryTitle(StoreOrderItem $item)
 	{
 		return $item->getSourceCategoryTitle();
-	}
-
-	// }}}
-	// {{{ protected function getFriendbuyPixelOrderItemCommand()
-
-	protected function getFriendbuyPixelOrderItemCommand()
-	{
-		return array(
-			'track',
-			'order',
-			array(
-				'id'     => $this->order->id,
-				'amount' => $this->order->total,
-				'email'  => $this->order->email,
-			)
-		);
 	}
 
 	// }}}
