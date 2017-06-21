@@ -134,6 +134,9 @@ class Store
 			'braintree.merchant_id' => null,
 			'braintree.public_key'  => null,
 			'braintree.private_key' => null,
+
+			// Analytics
+			'analytics.friendbuy_overlay_widget_id' => null,
 		);
 	}
 
