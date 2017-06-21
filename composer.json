@@ -44,7 +44,7 @@
 		"pear/numbers_words": ">=0.18.0",
 		"silverorange/admin": "^2.5.0",
 		"silverorange/net_notifier": "^0.4.1",
-		"silverorange/site": "^4.11.0",
+		"silverorange/site": "^4.12.0",
 		"silverorange/swat": "^2.7.0",
 		"silverorange/xml_rpc_ajax": "^1.0.12",
 		"silverorange/yui": "^1.0.11"
