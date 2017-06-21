@@ -101,23 +101,21 @@ class StoreAnalyticsOrderTracker
 
 	public function getFriendbuyPixelCommands()
 	{
-		$commands = array();
-		$commands[] = array(
-			'track',
-			'order',
+		return array(
 			array(
-				'id'     => $this->order->id,
-				'amount' => $this->order->total,
-				'email'  => $this->order->email,
+				'track',
+				'order',
+				array(
+					'id'     => $this->order->id,
+					'amount' => $this->order->total,
+					'email'  => $this->order->email,
+				)
+			),
+			array(
+				'widget',
+				$this->app->config->analytics->friendbuy_overlay_widget_id,
 			)
 		);
-
-		$commands[] = array(
-			'widget',
-			$this->app->config->analytics->friendbuy_overlay_widget_id,
-		);
-
-		return $commands;
 	}
 
 	// }}}
