@@ -35,6 +35,20 @@
 			"email": "steven@silverorange.com"
 		}
 	],
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "https://composer",
+			"options": {
+				"ssl": {
+					"cafile": "/etc/nginx/tls.crt/composer.crt"
+				}
+			}
+		},
+		{
+			"packagist": false
+		}
+	],
 	"require": {
 		"php": ">=5.5.0",
 		"ext-imagick": "*",
