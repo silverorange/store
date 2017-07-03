@@ -21,7 +21,7 @@ class StoreFeatureIndex extends AdminIndex
 	// process phase
 	// {{{ protected function processActions()
 
-	protected function processActions(SwatTableView $view, SwatActions $actions)
+	protected function processActions(SwatView $view, SwatActions $actions)
 	{
 		$locale = SwatI18NLocale::get();
 		$num = count($view->checked_items);
