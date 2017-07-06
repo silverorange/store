@@ -10,8 +10,8 @@ abstract class StoreQuickOrderPage extends SiteArticlePage
 {
 	// {{{ protected properties
 
-	protected $form_xml = 'Store/pages/quick-order.xml';
-	protected $cart_xml = 'Store/pages/quick-order-cart.xml';
+	protected $form_xml = __DIR__.'/quick-order.xml';
+	protected $cart_xml = __DIR__.'/quick-order-cart.xml';
 	protected $message_display;
 
 	protected $form_ui;

@@ -14,7 +14,7 @@ class StoreCheckoutBillingAddressVerificationPage extends
 
 	public function getUiXml()
 	{
-		return 'Store/pages/checkout-billing-address-verification.xml';
+		return __DIR__.'/checkout-billing-address-verification.xml';
 	}
 
 	// }}}

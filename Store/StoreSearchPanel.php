@@ -39,7 +39,7 @@ class StoreSearchPanel extends SwatObject
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/search-panel.xml';
+	protected $ui_xml = __DIR__.'/search-panel.xml';
 
 	/**
 	 * @var SwatUI

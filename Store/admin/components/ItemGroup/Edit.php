@@ -50,7 +50,7 @@ class StoreItemGroupEdit extends AdminDBEdit
 
 	protected function getUiXml()
 	{
-		return 'Store/admin/components/ItemGroup/edit.xml';
+		return __DIR__.'/edit.xml';
 	}
 
 	// }}}

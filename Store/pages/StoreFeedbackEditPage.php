@@ -22,7 +22,7 @@ class StoreFeedbackEditPage extends SiteDBEditPage
 
 	protected function getUiXml()
 	{
-		return 'Store/feedback-panel.xml';
+		return __DIR__.'/feedback-panel.xml';
 	}
 
 	// }}}

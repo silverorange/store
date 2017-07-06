@@ -14,7 +14,7 @@ class StoreAccountIndex extends SiteAccountIndex
 
 	protected function getSearchXml()
 	{
-		return 'Store/admin/components/Account/search.xml';
+		return __DIR__.'/search.xml';
 	}
 
 	// }}}
@@ -22,7 +22,7 @@ class StoreAccountIndex extends SiteAccountIndex
 
 	protected function getUiXml()
 	{
-		return 'Store/admin/components/Account/index.xml';
+		return __DIR__.'/index.xml';
 	}
 
 	// }}}

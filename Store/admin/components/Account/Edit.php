@@ -24,7 +24,7 @@ class StoreAccountEdit extends SiteAccountEdit
 
 	protected function getUiXml()
 	{
-		return 'Store/admin/components/Account/edit.xml';
+		return __DIR__.'/edit.xml';
 	}
 
 	// }}}

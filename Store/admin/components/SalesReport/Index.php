@@ -30,7 +30,7 @@ class StoreSalesReportIndex extends AdminIndex
 
 	protected function getUiXml()
 	{
-		return 'Store/admin/components/SalesReport/index.xml';
+		return __DIR__.'/index.xml';
 	}
 
 	// }}}

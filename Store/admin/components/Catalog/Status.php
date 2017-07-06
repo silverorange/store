@@ -14,7 +14,7 @@ class StoreCatalogStatus extends AdminDBEdit
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/Catalog/status.xml';
+	protected $ui_xml = __DIR__.'/status.xml';
 
 	// }}}
 	// {{{ private properties

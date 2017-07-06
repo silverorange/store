@@ -11,7 +11,7 @@ class StoreCheckoutPayOnAccountPage extends StoreCheckoutEditPage
 
 	public function getUiXml()
 	{
-		return 'Store/pages/checkout-pay-on-account.xml';
+		return __DIR__.'/checkout-pay-on-account.xml';
 	}
 
 	// }}}

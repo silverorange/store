@@ -14,7 +14,7 @@ class StoreCheckoutAddressVerificationStepPage extends
 
 	protected function getUiXml()
 	{
-		return 'Store/pages/checkout-address-verification-step.xml';
+		return __DIR__.'/checkout-address-verification-step.xml';
 	}
 
 	// }}}

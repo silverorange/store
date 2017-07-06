@@ -13,7 +13,7 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 
 	protected function getUiXml()
 	{
-		return 'Store/pages/checkout-first.xml';
+		return __DIR__.'/checkout-first.xml';
 	}
 
 	// }}}

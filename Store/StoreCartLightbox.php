@@ -212,7 +212,7 @@ class StoreCartLightbox extends SwatControl
 
 	protected function getUiXml()
 	{
-		return 'Store/cart-lightbox.xml';
+		return __DIR__.'/cart-lightbox.xml';
 	}
 
 	// }}}

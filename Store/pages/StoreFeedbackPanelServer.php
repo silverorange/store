@@ -166,7 +166,7 @@ class StoreFeedbackPanelServer extends SiteXMLRPCServer
 
 	protected function getXmlUi()
 	{
-		return 'Store/feedback-panel.xml';
+		return __DIR__.'/../feedback-panel.xml';
 	}
 
 	// }}}

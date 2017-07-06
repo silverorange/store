@@ -11,7 +11,7 @@ class StoreCategoryIndex extends AdminIndex
 {
 	// {{{ protected properties
 
-	protected $ui_xml = 'Store/admin/components/Category/index.xml';
+	protected $ui_xml = __DIR__.'/index.xml';
 	protected $id = null;
 
 	// }}}

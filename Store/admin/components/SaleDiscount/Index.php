@@ -14,7 +14,7 @@ class StoreSaleDiscountIndex extends AdminIndex
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/SaleDiscount/index.xml';
+	protected $ui_xml = __DIR__.'/index.xml';
 
 	// }}}
 

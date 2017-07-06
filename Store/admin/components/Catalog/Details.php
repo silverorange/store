@@ -14,7 +14,7 @@ class StoreCatalogDetails extends AdminPage
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/Catalog/details.xml';
+	protected $ui_xml = __DIR__.'/details.xml';
 
 	protected $id;
 

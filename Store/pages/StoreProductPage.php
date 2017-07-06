@@ -216,7 +216,7 @@ class StoreProductPage extends StorePage
 
 	protected function getReviewsUiXml()
 	{
-		return 'Store/pages/product-reviews.xml';
+		return __DIR__.'/product-reviews.xml';
 	}
 
 	// }}}

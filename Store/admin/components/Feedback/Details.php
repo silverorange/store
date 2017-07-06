@@ -14,7 +14,7 @@ class StoreFeedbackDetails extends AdminPage
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/Feedback/details.xml';
+	protected $ui_xml = __DIR__.'/details.xml';
 
 	/**
 	 * @var integer

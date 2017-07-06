@@ -63,7 +63,7 @@ class StoreOrderIndex extends AdminSearch
 
 	protected function getSearchXml()
 	{
-		return 'Store/admin/components/Order/search.xml';
+		return __DIR__.'/search.xml';
 	}
 
 	// }}}
@@ -71,7 +71,7 @@ class StoreOrderIndex extends AdminSearch
 
 	protected function getUiXml()
 	{
-		return 'Store/admin/components/Order/index.xml';
+		return __DIR__.'/index.xml';
 	}
 
 	// }}}

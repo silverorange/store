@@ -13,7 +13,7 @@ class StoreShippingTypeDetails extends AdminIndex
 	 */
 	protected $shipping_type;
 
-	protected $ui_xml = 'Store/admin/components/ShippingType/details.xml';
+	protected $ui_xml = __DIR__.'/details.xml';
 
 	// }}}
 

@@ -11,7 +11,7 @@ class StoreItemEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
-	protected $ui_xml = 'Store/admin/components/Item/edit.xml';
+	protected $ui_xml = __DIR__.'/edit.xml';
 	protected $product;
 	protected $item;
 

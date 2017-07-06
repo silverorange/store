@@ -21,7 +21,7 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 
 	protected function getUiXml()
 	{
-		return 'Store/pages/checkout-billing-address.xml';
+		return __DIR__.'/checkout-billing-address.xml';
 	}
 
 	// }}}

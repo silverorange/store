@@ -11,7 +11,7 @@ class StoreCategoryRelatedArticles extends AdminSearch
 {
 	// {{{ private properties
 
-	protected $ui_xml = 'Store/admin/components/Category/relatedarticles.xml';
+	protected $ui_xml = __DIR__.'/relatedarticles.xml';
 
 	// }}}
 	// {{{ private properties

@@ -18,7 +18,7 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 
 	protected function getUiXml()
 	{
-		return 'Store/pages/checkout-cart.xml';
+		return __DIR__.'/checkout-cart.xml';
 	}
 
 	// }}}

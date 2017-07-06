@@ -44,7 +44,7 @@ class StoreProductReviewIndex extends AdminSearch
 
 	protected function getUiXml()
 	{
-		return 'Store/admin/components/ProductReview/index.xml';
+		return __DIR__.'/index.xml';
 	}
 
 	// }}}
