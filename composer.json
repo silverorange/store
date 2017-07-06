@@ -61,7 +61,7 @@
 		"silverorange/site": "^5.0.0",
 		"silverorange/swat": "^3.0.0",
 		"silverorange/xml_rpc_ajax": "^2.0.0",
-		"silverorange/yui": "^2.0.0"
+		"silverorange/yui": "^1.0.11"
 	},
 	"require-dev": {
 		"silverorange/turing": "^1.0.0",
