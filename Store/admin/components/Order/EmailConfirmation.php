@@ -29,7 +29,7 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 
 	protected function initInternal()
 	{
-		$this->ui->loadFromXML('Admin/pages/confirmation.xml');
+		$this->ui->loadFromXML($this->ui_xml);
 
 		$this->id = SiteApplication::initVar('id');
 		$this->account = SiteApplication::initVar('account');

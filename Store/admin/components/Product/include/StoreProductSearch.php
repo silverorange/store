@@ -8,7 +8,7 @@
  *
  * @package   Store
  * @copyright 2006-2016 silverorange
- * @see       Store/admin/components/Product/search.xml
+ * @see       search.xml
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductSearch
