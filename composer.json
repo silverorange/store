@@ -36,16 +36,16 @@
 		}
 	],
 	"require": {
-		"php": ">=7.0.0",
+		"php": ">=5.5.0",
 		"ext-imagick": "*",
 		"pear/crypt_gpg": "^1.4.0",
 		"pear/text_password": "^1.1.1",
 		"pear/validate_finance_creditcard": ">=0.5.2",
 		"pear/numbers_words": ">=0.18.0",
-		"silverorange/admin": "^3.0.0",
+		"silverorange/admin": "^2.5.0",
 		"silverorange/net_notifier": "^0.4.1",
-		"silverorange/site": "^5.0.0",
-		"silverorange/swat": "^3.0.0",
+		"silverorange/site": "^4.12.0",
+		"silverorange/swat": "^2.7.0",
 		"silverorange/xml_rpc_ajax": "^1.0.12",
 		"silverorange/yui": "^1.0.11"
 	},
