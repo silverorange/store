@@ -77,14 +77,14 @@
 		"silverorange/deliverance": "Email mailing list support.",
 		"silverorange/nate_go_search": "Product search indexing."
 	},
+	"scripts": {
+		"post-install-cmd": "./vendor/bin/phpcs --config-set installed_paths vendor/silverorange/coding-standard/src",
+		"post-update-cmd": "./vendor/bin/phpcs --config-set installed_paths vendor/silverorange/coding-standard/src"
+	},
 	"autoload": {
 		"classmap": [ "Store/" ]
 	},
 	"include-path": [
 		"./"
-	],
-	"scripts": {
-		"post-install-cmd": "./vendor/bin/phpcs --config-set installed_paths vendor/silverorange/coding-standard/src",
-		"post-update-cmd": "./vendor/bin/phpcs --config-set installed_paths vendor/silverorange/coding-standard/src"
-	 }
+	]
 }
