@@ -78,7 +78,7 @@ class StoreArticle extends SiteArticle
 	}
 
 	// }}}
-	// {{{ public function loadWithPath()
+	// {{{ public function loadWithPathAndRegion()
 
 	/**
 	 * Loads an article from the database with a path in a region
