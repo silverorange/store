@@ -169,7 +169,7 @@ class StoreCardVerificationValueEntry extends SwatEntry
 	// }}}
 	// {{{ protected function getDisplayValue()
 
-	protected function getDisplayValue()
+	protected function getDisplayValue($value)
 	{
 		$value = $this->value;
 

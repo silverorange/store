@@ -192,7 +192,7 @@ class StoreProductIndex extends AdminSearch
 	// }}}
 	// {{{ protected function processActions()
 
-	protected function processActions(SwatTableView $view, SwatActions $actions)
+	protected function processActions(SwatView $view, SwatActions $actions)
 	{
 		$flush_memcache = false;
 		$item_list      = array();

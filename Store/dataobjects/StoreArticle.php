@@ -78,7 +78,7 @@ class StoreArticle extends SiteArticle
 	}
 
 	// }}}
-	// {{{ public function loadWithPath()
+	// {{{ public function loadWithPathAndRegion()
 
 	/**
 	 * Loads an article from the database with a path in a region
@@ -95,7 +95,7 @@ class StoreArticle extends SiteArticle
 	 *                  no article was found in the given region at the
 	 *                  specified path.
 	 */
-	public function loadWithPath($path, StoreRegion $region,
+	public function loadWithPathAndRegion($path, StoreRegion $region,
 		$fields = array('id', 'title'))
 	{
 		$this->checkDB();

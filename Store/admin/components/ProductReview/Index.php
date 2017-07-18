@@ -62,7 +62,7 @@ class StoreProductReviewIndex extends AdminSearch
 	// }}}
 	// {{{ protected function processActions()
 
-	protected function processActions(SwatTableView $view, SwatActions $actions)
+	protected function processActions(SwatView $view, SwatActions $actions)
 	{
 		$item_list = array();
 		foreach ($view->getSelection() as $item)
