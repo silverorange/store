@@ -518,11 +518,17 @@ class StoreProductSearchEngine extends SiteSearchEngine
 				$clause.= sprintf(' and (getProductPriceRange.max_price <= %1$s)',
 					$this->app->db->quote($this->price_range->end_price, 'integer'));
 			} else {
-				$clause.= sprintf(' and (
-					(getProductPriceRange.min_price >= %1$s and getProductPriceRange.min_price <= %2$s) or
-					(getProductPriceRange.max_price >= %1$s and getProductPriceRange.max_price <= %2$s))',
+				$clause.= sprintf(
+					' and ((
+						getProductPriceRange.min_price >= %1$s
+						and getProductPriceRange.min_price <= %2$s
+					) or (
+						getProductPriceRange.max_price >= %1$s
+						and getProductPriceRange.max_price <= %2$s
+					))',
 					$this->app->db->quote($this->price_range->start_price, 'integer'),
-					$this->app->db->quote($this->price_range->end_price, 'integer'));
+					$this->app->db->quote($this->price_range->end_price, 'integer')
+				);
 			}
 		}
 
