@@ -306,7 +306,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	{
 		parent::loadSubObjects($products);
 
-		if ($products instanceof StoreProductWRapper) {
+		if ($products instanceof StoreProductWrapper) {
 			$sql = 'select * from Image where id in (%s)';
 			$wrapper_class = SwatDBClassMap::get('StoreProductImageWrapper');
 			$products->loadAllSubDataObjects(
