@@ -302,14 +302,20 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	 * @param StoreProductWrapper $products a recordset of StoreProduct
 	 *                                       dataobjects.
 	 */
-	protected function loadSubObjects(StoreProductWrapper $products)
+	protected function loadSubObjects(SwatDBRecordsetWrapper $products)
 	{
 		parent::loadSubObjects($products);
 
-		$sql = 'select * from Image where id in (%s)';
-		$wrapper_class = SwatDBClassMap::get('StoreProductImageWrapper');
-		$products->loadAllSubDataObjects(
-			'primary_image', $this->app->db, $sql, $wrapper_class);
+		if ($products instanceof StoreProductWrapper) {
+			$sql = 'select * from Image where id in (%s)';
+			$wrapper_class = SwatDBClassMap::get('StoreProductImageWrapper');
+			$products->loadAllSubDataObjects(
+				'primary_image',
+				$this->app->db,
+				$sql,
+				$wrapper_class
+			);
+		}
 	}
 
 	// }}}
@@ -512,11 +518,17 @@ class StoreProductSearchEngine extends SiteSearchEngine
 				$clause.= sprintf(' and (getProductPriceRange.max_price <= %1$s)',
 					$this->app->db->quote($this->price_range->end_price, 'integer'));
 			} else {
-				$clause.= sprintf(' and (
-					(getProductPriceRange.min_price >= %1$s and getProductPriceRange.min_price <= %2$s) or
-					(getProductPriceRange.max_price >= %1$s and getProductPriceRange.max_price <= %2$s))',
+				$clause.= sprintf(
+					' and ((
+						getProductPriceRange.min_price >= %1$s
+						and getProductPriceRange.min_price <= %2$s
+					) or (
+						getProductPriceRange.max_price >= %1$s
+						and getProductPriceRange.max_price <= %2$s
+					))',
 					$this->app->db->quote($this->price_range->start_price, 'integer'),
-					$this->app->db->quote($this->price_range->end_price, 'integer'));
+					$this->app->db->quote($this->price_range->end_price, 'integer')
+				);
 			}
 		}
 
