@@ -15,7 +15,7 @@ class StoreAttributeWrapper extends SwatDBRecordsetWrapper
 	{
 		parent::init();
 		$this->row_wrapper_class = SwatDBClassMap::get('StoreAttribute');
-		 $this->index_field = 'id';
+		$this->index_field = 'id';
 	}
 
 	// }}}

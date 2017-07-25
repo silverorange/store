@@ -155,7 +155,7 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 			$type_map = $this->getTypeMap();
 			$tx_type = $type_map[$type];
 
-			 // For Protx VSP Direct, the protocol version is defaulted to
+			// For Protx VSP Direct, the protocol version is defaulted to
 			// '2.22'.
 			$this->setField('VPSProtocol', '2.22');
 			$this->setField('TxType', $tx_type);

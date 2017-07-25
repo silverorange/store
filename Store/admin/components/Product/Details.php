@@ -1134,7 +1134,7 @@ class StoreProductDetails extends AdminIndex
 		// if there is one row and the groupnum is 0 then there are no
 		// item_groups with items in them for this product
 
-		// if $groups is 0, there are no items
+		// if $groups has 0 elements, there are no items
 		if (count($groups) == 1 && $groups->getFirst()->item_group == 0) {
 			$num_groups = 0;
 		} elseif ($groups->getFirst()->item_group == 0) {

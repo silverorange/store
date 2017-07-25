@@ -157,7 +157,6 @@ class StoreOrderItemsTableStoreFactory
 		}
 
 		$description.= '<div>'.implode(', ', $parts).'</div>';
-		;
 
 		return $description;
 	}
