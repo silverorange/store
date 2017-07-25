@@ -588,8 +588,10 @@ class StoreProductPage extends StorePage
 	// }}}
 	// {{{ protected function displayItemMinimumQuantityGroupNote()
 
-	protected function displayItemMinimumQuantityGroupNote($items,
-		$total_item_count) {
+	protected function displayItemMinimumQuantityGroupNote(
+		$items,
+		$total_item_count
+	) {
 		$group = current($items)->minimum_quantity_group;
 		$locale = SwatI18NLocale::get();
 		$content = '';

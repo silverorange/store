@@ -104,8 +104,12 @@ class StorePageFactory extends SitePageFactory
 	// products
 	// {{{ protected function resolveProductPage()
 
-	protected function resolveProductPage($source, SiteLayout $layout,
-		$category_id, $product_id) {
+	protected function resolveProductPage(
+		$source,
+		SiteLayout $layout,
+		$category_id,
+		$product_id
+	) {
 		$path = $this->getCategoryPath($category_id);
 
 		$base_page = $this->instantiatePage($this->default_page_class, $layout);
@@ -126,8 +130,12 @@ class StorePageFactory extends SitePageFactory
 	// }}}
 	// {{{ protected function resolveProductLandingPage()
 
-	protected function resolveProductLandingPage($source, SiteLayout $layout,
-		$category_id, $product_id) {
+	protected function resolveProductLandingPage(
+		$source,
+		SiteLayout $layout,
+		$category_id,
+		$product_id
+	) {
 		$page = $this->instantiatePage($this->default_page_class, $layout);
 		$page = $this->decorateProductLandingPage($page);
 		$page->setPath($this->getCategoryPath($category_id));
@@ -138,8 +146,13 @@ class StorePageFactory extends SitePageFactory
 	// }}}
 	// {{{ protected function resolveProductImagePage()
 
-	protected function resolveProductImagePage($source, SiteLayout $layout,
-		$category_id, $product_id, $image_id = null) {
+	protected function resolveProductImagePage(
+		$source,
+		SiteLayout $layout,
+		$category_id,
+		$product_id,
+		$image_id = null
+	) {
 		$page = $this->instantiatePage($this->default_page_class, $layout);
 		$page = $this->decorateProductImagePage($page);
 		$page->setPath($this->getCategoryPath($category_id));
@@ -262,8 +275,11 @@ class StorePageFactory extends SitePageFactory
 	// categories
 	// {{{ protected function resolveCategoryPage()
 
-	protected function resolveCategoryPage($source, SiteLayout $layout,
-		$category_id) {
+	protected function resolveCategoryPage(
+		$source,
+		SiteLayout $layout,
+		$category_id
+	) {
 		$path = $this->getCategoryPath($category_id);
 
 		$base_page = $this->instantiatePage($this->default_page_class, $layout);

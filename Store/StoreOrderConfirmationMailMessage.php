@@ -455,7 +455,8 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
 	// {{{ protected function displayPaymentMethodText()
 
 	protected function displayPaymentMethodText(
-		StoreOrderPaymentMethod $payment_method) {
+		StoreOrderPaymentMethod $payment_method
+	) {
 		$payment_method->displayAsText(true, self::LINE_BREAK);
 	}
 

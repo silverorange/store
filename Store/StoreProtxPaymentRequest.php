@@ -136,8 +136,10 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	 *
 	 * @throws StoreException if the type or the mode is invalid.
 	 */
-	public function __construct($type = StorePaymentRequest::TYPE_PAY,
-		$mode = null) {
+	public function __construct(
+		$type = StorePaymentRequest::TYPE_PAY,
+		$mode = null
+	) {
 		if ($mode === null)
 			$mode = self::$default_mode;
 

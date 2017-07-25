@@ -520,8 +520,11 @@ class StoreCategory extends SwatDBDataObject
 	 * @return boolean true if a category was successfully loaded and false if
 	 *                  no category was found at the specified path.
 	 */
-	public function loadByPath($path, StoreRegion $region,
-		$fields = array('id', 'title')) {
+	public function loadByPath(
+		$path,
+		StoreRegion $region,
+		$fields = array('id', 'title')
+	) {
 		$this->checkDB();
 
 		$found = false;

@@ -61,9 +61,11 @@ class StoreCartLightbox extends SwatControl
 	// }}}
 	// {{{ public function __construct()
 
-	public function __construct($id = null,
+	public function __construct(
+		$id = null,
 		SiteApplication $app,
-		StoreCartProcessor $processor = null) {
+		StoreCartProcessor $processor = null
+	) {
 		parent::__construct($id);
 
 		$this->app = $app;

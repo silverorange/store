@@ -428,7 +428,8 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 	// {{{ protected function buildAccountBillingAddresses()
 
 	protected function buildAccountBillingAddresses(
-		SwatOptionControl $address_list) {
+		SwatOptionControl $address_list
+	) {
 		foreach ($this->getAccountAddresses() as $address) {
 			ob_start();
 			$address->displayCondensed();
@@ -446,7 +447,8 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 	// {{{ protected function buildAccountBillingAddressRegionMessage()
 
 	protected function buildAccountBillingAddressRegionMessage(
-		SwatContentBlock $content_block) {
+		SwatContentBlock $content_block
+	) {
 		// TODO: pull parts of this up from Veseys
 	}
 

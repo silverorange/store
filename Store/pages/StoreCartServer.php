@@ -52,8 +52,13 @@ class StoreCartServer extends SiteXMLRPCServer
 	 * @return array An array containing: 'mini_cart', 'product_items',
 	 *               'total_items', 'total_products'
 	 */
-	public function addEntries($request_id, $entries, $source = null,
-		$source_category = null, $mini_cart = false) {
+	public function addEntries(
+		$request_id,
+		$entries,
+		$source = null,
+		$source_category = null,
+		$mini_cart = false
+	) {
 		$product_id = null;
 
 		$added_entries = array();
@@ -168,8 +173,11 @@ class StoreCartServer extends SiteXMLRPCServer
 	 *
 	 * @return array
 	 */
-	public function getCartInfo($request_id, $product_id = null,
-		$get_mini_cart = false) {
+	public function getCartInfo(
+		$request_id,
+		$product_id = null,
+		$get_mini_cart = false
+	) {
 		$product_entries  = 0; // total number of cart-enties for the product
 		$product_quantity = 0; // sum of all quantities for the product
 		$total_entries    = 0; // total number of cart-entries

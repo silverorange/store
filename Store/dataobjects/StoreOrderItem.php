@@ -312,8 +312,10 @@ class StoreOrderItem extends SwatDBDataObject
 	// }}}
 	// {{{ public function setAvailableItemCache()
 
-	public function setAvailableItemCache(StoreRegion $region,
-		StoreItem $item = null) {
+	public function setAvailableItemCache(
+		StoreRegion $region,
+		StoreItem $item = null
+	) {
 		$this->available_items_cache[$region->id] = $item;
 	}
 

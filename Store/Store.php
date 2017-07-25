@@ -42,8 +42,11 @@ class Store
 	// }}}
 	// {{{ public static function ngettext()
 
-	public static function ngettext($singular_message,
-		$plural_message, $number) {
+	public static function ngettext(
+		$singular_message,
+		$plural_message,
+		$number
+	) {
 		return dngettext(self::GETTEXT_DOMAIN,
 			$singular_message, $plural_message, $number);
 	}

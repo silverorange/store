@@ -301,8 +301,11 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 	// }}}
 	// {{{ protected function buildCartMessages()
 
-	protected function buildCartMessages($num_entries_moved, $num_entries_removed,
-		$num_entries_updated) {
+	protected function buildCartMessages(
+		$num_entries_moved,
+		$num_entries_removed,
+		$num_entries_updated
+	) {
 		$message_display = $this->ui->getWidget('message_display');
 
 		if ($num_entries_removed > 0) {

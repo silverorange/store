@@ -141,8 +141,11 @@ class StoreProductImagePage extends StorePage
 	// }}}
 	// {{{ protected function displayThumbnail()
 
-	protected function displayThumbnail(StoreImage $image, $size,
-		$selected = false) {
+	protected function displayThumbnail(
+		StoreImage $image,
+		$size,
+		$selected = false
+	) {
 		$li_tag = new SwatHtmlTag('li');
 		$li_tag->open();
 

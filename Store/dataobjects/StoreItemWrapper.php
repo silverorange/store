@@ -68,8 +68,12 @@ class StoreItemWrapper extends SwatDBRecordsetWrapper
 	 *                           loaded. If false, the items are loaded without
 	 *                           region specific fields.
 	 */
-	public static function loadSetFromDBWithRegion($db, $id_set,
-		StoreRegion $region, $limiting = true) {
+	public static function loadSetFromDBWithRegion(
+		$db,
+		$id_set,
+		StoreRegion $region,
+		$limiting = true
+	) {
 		$sql = 'select Item.*, ItemRegionBinding.price, ItemRegionBinding.original_price,
 			ItemRegionBinding.enabled, ItemRegionBinding.region as region_id,
 			case when AvailableItemView.item is null then false

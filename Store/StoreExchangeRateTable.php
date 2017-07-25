@@ -58,8 +58,11 @@ class StoreExchangeRateTable
 	 * @param $to_currency Currency to convert to
 	 * @param SwatDate $date The date of the cut-off
 	 */
-	public function __construct($from_currency, $to_currency,
-		SwatDate $cut_off_date = null) {
+	public function __construct(
+		$from_currency,
+		$to_currency,
+		SwatDate $cut_off_date = null
+	) {
 		$this->from_currency = $from_currency;
 		$this->to_currency = $to_currency;
 		$this->cut_off_date = $cut_off_date;

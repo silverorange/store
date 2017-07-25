@@ -325,8 +325,10 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	 *
 	 * @return SwatTreeFlydownNode a tree flydown node for the specified item.
 	 */
-	protected function getItemTreeNode(StoreItem $item,
-		$show_item_group = false) {
+	protected function getItemTreeNode(
+		StoreItem $item,
+		$show_item_group = false
+	) {
 		return new SwatTreeFlydownNode($item->id,
 			$this->getItemTreeNodeDescription($item, $show_item_group));
 	}
@@ -345,8 +347,10 @@ class StoreQuickOrderItemSelector extends SwatInputControl implements SwatState
 	 *
 	 * @return string a string containing the description of the item.
 	 */
-	protected function getItemTreeNodeDescription(StoreItem $item,
-		$show_item_group = false) {
+	protected function getItemTreeNodeDescription(
+		StoreItem $item,
+		$show_item_group = false
+	) {
 		/*
 		 * Note: Entities don't need to be escaped here because the resulting
 		 * string is used in a tree flydown and the tree flydown automatically

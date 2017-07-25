@@ -182,8 +182,10 @@ class StoreAccountOrderPage extends SiteUiPage
 	/**
 	 * @return StoreCartEntry the entry that was created.
 	 */
-	protected function createCartEntry(StoreItem $item,
-			StoreOrderItem $order_item) {
+	protected function createCartEntry(
+		StoreItem $item,
+		StoreOrderItem $order_item
+	) {
 		$cart_entry_class = SwatDBClassMap::get('StoreCartEntry');
 		$cart_entry = new $cart_entry_class();
 

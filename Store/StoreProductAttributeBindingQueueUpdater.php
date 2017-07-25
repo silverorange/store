@@ -151,8 +151,12 @@ class StoreProductAttributeBindingQueueUpdater extends SiteCommandLineApplicatio
 	// }}}
 	// {{{ protected function getInSql()
 
-	protected function getInSql(SwatDate $current_date, $field_title, $action,
-		$attribute) {
+	protected function getInSql(
+		SwatDate $current_date,
+		$field_title,
+		$action,
+		$attribute
+	) {
 		$sql = 'select %s from ProductAttributeBindingQueue
 			where action_date <= %s and queue_action = %s and attribute = %s';
 

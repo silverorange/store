@@ -558,8 +558,10 @@ class StoreProductEdit extends AdminDBEdit
 	// }}}
 	// {{{ protected function displayCategories()
 
-	protected function displayCategories(StoreCategoryWrapper $categories,
-		$display_canonical = false) {
+	protected function displayCategories(
+		StoreCategoryWrapper $categories,
+		$display_canonical = false
+	) {
 		$primary_category = $this->product->primary_category;
 		$multiple_categories = (count($categories) > 1);
 

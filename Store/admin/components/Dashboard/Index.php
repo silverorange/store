@@ -291,8 +291,12 @@ class StoreDashboardIndex extends AdminIndex
 	// }}}
 	// {{{ protected function addNewContent()
 
-	protected function addNewContent(SwatDate $date, $content, $rating = null,
-		$icon = null) {
+	protected function addNewContent(
+		SwatDate $date,
+		$content,
+		$rating = null,
+		$icon = null
+	) {
 		$this->new_content[] = array(
 			'date'    => $date,
 			'content' => $content,

@@ -11,8 +11,12 @@ class StoreQuantityDiscountWrapper extends SwatDBRecordsetWrapper
 {
 	// {{{ public function loadSetFromDB()
 
-	public function loadSetFromDB(MDB2_Driver_Common $db,
-		array $id_set, StoreRegion $region = null, $limiting = true) {
+	public function loadSetFromDB(
+		MDB2_Driver_Common $db,
+		array $id_set,
+		StoreRegion $region = null,
+		$limiting = true
+	) {
 		$quantity_discounts = null;
 		$wrapper = SwatDBClassMap::get('StoreQuantityDiscountWrapper');
 

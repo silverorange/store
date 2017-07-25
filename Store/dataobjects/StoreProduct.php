@@ -329,8 +329,11 @@ class StoreProduct extends SwatDBDataObject
 	 *
 	 * @return StoreProductReviewWrapper
 	 */
-	public function getVisibleProductReviews(SiteInstance $instance = null,
-		$limit = null, $offset = 0) {
+	public function getVisibleProductReviews(
+		SiteInstance $instance = null,
+		$limit = null,
+		$offset = 0
+	) {
 		$instance_where = '';
 		$instance_id = ($instance === null) ? null : $instance->id;
 		if ($instance_id !== null) {
