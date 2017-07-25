@@ -521,8 +521,7 @@ class StoreCategory extends SwatDBDataObject
 	 *                  no category was found at the specified path.
 	 */
 	public function loadByPath($path, StoreRegion $region,
-		$fields = array('id', 'title'))
-	{
+		$fields = array('id', 'title')) {
 		$this->checkDB();
 
 		$found = false;

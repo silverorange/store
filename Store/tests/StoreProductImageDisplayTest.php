@@ -168,7 +168,7 @@ abstract class StoreProductImageDisplayTest extends TuringSeleniumTest
 	}
 
 	// }}}
-// {{{ testCloseUsingLink()
+	// {{{ testCloseUsingLink()
 
 	public function testCloseUsingLink()
 	{

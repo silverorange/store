@@ -527,8 +527,7 @@ class StoreItem extends SwatDBDataObject
 	 * @return string a description for this item.
 	 */
 	public function getDescription(
-		$check_if_description_matches_title = true)
-	{
+		$check_if_description_matches_title = true) {
 		return ($check_if_description_matches_title &&
 			$this->description == $this->product->title) ?
 				null : $this->description;
@@ -549,8 +548,7 @@ class StoreItem extends SwatDBDataObject
 	 * @return array descriptive elements for this item.
 	 */
 	public function getDescriptionArray(
-		$check_if_description_matches_title = true)
-	{
+		$check_if_description_matches_title = true) {
 		$description = array();
 
 		$item_description =
@@ -592,8 +590,7 @@ class StoreItem extends SwatDBDataObject
 	 *          if it is not.
 	 */
 	public static function validateSku($db, $sku, $catalog_id, $product_id,
-		$valid_skus = array())
-	{
+		$valid_skus = array()) {
 		$sql = 'select count(ItemView.id) from ItemView
 			inner join Product on ItemView.product = Product.id
 			inner join Catalog on Product.catalog = Catalog.id

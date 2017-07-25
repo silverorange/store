@@ -97,7 +97,7 @@ class StoreItemOrder extends AdminDBOrder
 	// {{{ protected function loadData()
 
 	protected function loadData()
-	{ 
+	{
 		if ($this->item_group_id === null)
 			$where_clause = sprintf('Item.product = %s',
 				$this->app->db->quote($this->product_id, 'integer'));

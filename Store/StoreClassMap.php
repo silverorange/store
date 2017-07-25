@@ -14,10 +14,12 @@
  */
 class StoreClassMap extends SwatObject
 {
+
 	public static function instance()
 	{
 		return SwatDBClassMap::instance();
 	}
+
 }
 
 ?>

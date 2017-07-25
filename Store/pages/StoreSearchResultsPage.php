@@ -68,7 +68,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 				Product.id in ';
 
 		// exact match
-		$sql = $base_sql. '(select Item.product from Item where sku = %2$s
+		$sql = $base_sql.'(select Item.product from Item where sku = %2$s
 					or Item.id in (select ItemAlias.item from ItemAlias
 					where ItemAlias.sku = %2$s))';
 
@@ -324,11 +324,11 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 	{
 		$view = SiteViewFactory::get($this->app, 'post-search');
 
-		$view->setPartMode('bodytext',          SiteView::MODE_SUMMARY);
+		$view->setPartMode('bodytext', SiteView::MODE_SUMMARY);
 		$view->setPartMode('extended_bodytext', SiteView::MODE_NONE);
-		$view->setPartMode('tags',              SiteView::MODE_NONE);
-		$view->setPartMode('author',            SiteView::MODE_NONE);
-		$view->setPartMode('comment_count',     SiteView::MODE_NONE);
+		$view->setPartMode('tags', SiteView::MODE_NONE);
+		$view->setPartMode('author', SiteView::MODE_NONE);
+		$view->setPartMode('comment_count', SiteView::MODE_NONE);
 
 		if (count($posts) > 0) {
 			echo '<ul class="site-search-results">';
@@ -572,7 +572,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 
 				$query_string = $this->getQueryString('price');
 				if ($query_string != '')
-					$uri.='&'.$query_string;
+					$uri.= '&'.$query_string;
 
 				$this->app->relocate($uri);
 			}

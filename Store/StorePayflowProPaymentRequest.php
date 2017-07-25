@@ -30,8 +30,7 @@ class StorePayflowProPaymentRequest extends StorePaymentRequest
 	// {{{ public function __construct()
 
 	public function __construct($type = StorePaymentRequest::TYPE_PAY,
-		$mode = null)
-	{
+		$mode = null) {
 		if ($mode === null)
 			$mode = self::$default_mode;
 

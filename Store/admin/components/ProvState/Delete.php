@@ -85,6 +85,7 @@ class StoreProvStateDelete extends AdminDBDelete
 
 		$dep->addDependency($dep_orders);
 	}
+
 	// }}}
 }
 

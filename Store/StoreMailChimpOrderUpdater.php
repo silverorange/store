@@ -1,5 +1,7 @@
 <?php
 
+//Ignore coding standards because links exceed max length
+// @codingStandardsIgnoreStart
 /**
  * Command line application used to send mailing list orders to MailChimp
  *
@@ -15,6 +17,7 @@
  * @copyright 2010-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
+// @codingStandardsIgnoreEnd
 class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
 {
 	// {{{ constants
@@ -126,7 +129,7 @@ class StoreMailChimpOrderUpdater extends SiteCommandLineApplication
 			if ($success === true) {
 				$message = ($not_found === true) ?
 					sprintf('subscriber ‘%s’ not found.',
-						$order->email_id):
+						$order->email_id) :
 					'sent';
 
 				$this->debug($message."\n");

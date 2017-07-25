@@ -65,11 +65,11 @@ class StoreAdDetails extends SiteAdDetails
 
 				$col1 = 'subtotal_'.$row->region;
 				$col2 = $key.'_sales';
-				$periods[$key]->$col1 = $row->$col2;
+				$periods[$key]->{$col1} = $row->$col2;
 
 				$col1 = 'orders_'.$row->region;
 				$col2 = $key.'_orders';
-				$periods[$key]->$col1 = $row->$col2;
+				$periods[$key]->{$col1} = $row->$col2;
 
 				$periods[$key]->total_orders += $row->$col2;
 			}
@@ -126,6 +126,7 @@ class StoreAdDetails extends SiteAdDetails
 		$view->appendColumn($orders_column);
 
 	}
+
 	// }}}
 	// {{{ private function queryRegions()
 

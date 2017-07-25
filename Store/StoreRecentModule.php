@@ -88,7 +88,7 @@ class StoreRecentModule extends SiteApplicationModule
 
 		if (isset($this->stacks[$stack_name])) {
 			$stack = $this->stacks[$stack_name];
-			$values =  $stack->get($count, $exclude_id);
+			$values = $stack->get($count, $exclude_id);
 		} else {
 			$this->stacks[$stack_name] = new StoreRecentStack();
 			$values = null;

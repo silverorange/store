@@ -31,4 +31,5 @@ class StoreCategoryPathEntry extends SitePathEntry
 
 	// }}}
 }
+
 ?>

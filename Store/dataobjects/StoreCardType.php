@@ -358,8 +358,7 @@ class StoreCardType extends SwatDBDataObject
 	 * @return string the formatted card number.
 	 */
 	public static function formatCardNumber($number,
-		$format = '#### #### #### ####', $zero_fill = true)
-	{
+		$format = '#### #### #### ####', $zero_fill = true) {
 		$number = trim((string)$number);
 		$output = '';
 		$format_len = mb_strlen(str_replace(' ', '', $format));
@@ -564,8 +563,7 @@ class StoreCardType extends SwatDBDataObject
 	// {{{ public static function getAcceptedCardTypesMessage()
 
 	public static function getAcceptedCardTypesMessage(
-		StoreCardTypeWrapper $types)
-	{
+		StoreCardTypeWrapper $types) {
 		$type_list = array();
 
 		foreach ($types as $type) {

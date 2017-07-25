@@ -25,6 +25,7 @@ class StoreItemQuantityCellRenderer extends SwatTextCellRenderer
 		$span_tag->setContent($this->secondary_text);
 		$span_tag->display();
 	}
+
 }
 
 ?>

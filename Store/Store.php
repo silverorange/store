@@ -43,8 +43,7 @@ class Store
 	// {{{ public static function ngettext()
 
 	public static function ngettext($singular_message,
-		$plural_message, $number)
-	{
+		$plural_message, $number) {
 		return dngettext(self::GETTEXT_DOMAIN,
 			$singular_message, $plural_message, $number);
 	}
@@ -158,9 +157,9 @@ class Store
 		SwatUI::mapClassPrefixToPath('Store', 'Store');
 
 		SwatDBClassMap::addPath('Store/dataobjects');
-		SwatDBClassMap::add('SiteAccount',        'StoreAccount');
+		SwatDBClassMap::add('SiteAccount', 'StoreAccount');
 		SwatDBClassMap::add('SiteContactMessage', 'StoreContactMessage');
-		SwatDBClassMap::add('SiteArticle',        'StoreArticle');
+		SwatDBClassMap::add('SiteArticle', 'StoreArticle');
 		SwatDBClassMap::add('SiteArticleWrapper', 'StoreArticleWrapper');
 
 		SiteViewFactory::addPath('Store/views');

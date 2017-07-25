@@ -75,6 +75,7 @@ class StorePostalCodeEntry extends SwatEntry
 
 	// }}}
 	// {{{ protected function getCSSClassNames()
+
 	/**
 	 * Gets the array of CSS classes that are applied to this entry widget
 	 *
@@ -490,7 +491,7 @@ class StorePostalCodeEntry extends SwatEntry
 
 		// truncate code if longer than 5 characters
 		if (mb_strlen($code) > 5)
-			$code = mb_substr($code, 0 , 5);
+			$code = mb_substr($code, 0, 5);
 
 		// prepend code with zeros if shorter than 5 characters
 		if (mb_strlen($code) < 5)

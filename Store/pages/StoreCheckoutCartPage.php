@@ -130,7 +130,7 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 
 		foreach ($continue_button_ids as $id)
 			if ($this->ui->hasWidget($id))
-				$buttons[]= $this->ui->getWidget($id);
+				$buttons[] = $this->ui->getWidget($id);
 
 		return $buttons;
 	}
@@ -302,8 +302,7 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 	// {{{ protected function buildCartMessages()
 
 	protected function buildCartMessages($num_entries_moved, $num_entries_removed,
-		$num_entries_updated)
-	{
+		$num_entries_updated) {
 		$message_display = $this->ui->getWidget('message_display');
 
 		if ($num_entries_removed > 0) {

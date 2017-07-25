@@ -23,7 +23,7 @@ abstract class StorePaymentRequest
 	// {{{ class constants
 
 	/**
-	 * A normal payment request 
+	 * A normal payment request
 	 *
 	 * Funds are requested immediately and collected during the next bank
 	 * processing period or sooner if the payment provider supports it.
@@ -239,31 +239,31 @@ abstract class StorePaymentRequest
 		$string = 'unknown payment type';
 
 		switch ($type) {
-		case StorePaymentRequest::TYPE_PAY:
+		case self::TYPE_PAY:
 			$string = 'payment';
 			break;
-		case StorePaymentRequest::TYPE_VERIFY:
+		case self::TYPE_VERIFY:
 			$string = 'authorization';
 			break;
-		case StorePaymentRequest::TYPE_REFUND:
+		case self::TYPE_REFUND:
 			$string = 'refund';
 			break;
-		case StorePaymentRequest::TYPE_VERIFIEDPAY:
+		case self::TYPE_VERIFIEDPAY:
 			$string = 'post-authorization payment';
 			break;
-		case StorePaymentRequest::TYPE_VOID:
+		case self::TYPE_VOID:
 			$string = 'void (cancel)';
 			break;
-		case StorePaymentRequest::TYPE_HOLD:
+		case self::TYPE_HOLD:
 			$string = 'hold';
 			break;
-		case StorePaymentRequest::TYPE_RELEASE:
+		case self::TYPE_RELEASE:
 			$string = 'release';
 			break;
-		case StorePaymentRequest::TYPE_ABORT:
+		case self::TYPE_ABORT:
 			$string = 'abort';
 			break;
-		case StorePaymentRequest::TYPE_STATUS:
+		case self::TYPE_STATUS:
 			$string = 'status';
 			break;
 		}
@@ -313,7 +313,7 @@ abstract class StorePaymentRequest
 			$this->makeFieldRequired($field_name);
 	}
 
-	// }}} 
+	// }}}
 	// {{{ protected function checkRequiredFields()
 
 	/**
@@ -332,7 +332,7 @@ abstract class StorePaymentRequest
 		}
 	}
 
-	// }}} 
+	// }}}
 	// {{{ protected function getAvailableModes()
 
 	/**

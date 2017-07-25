@@ -3,7 +3,7 @@
 /**
  * A recordset wrapper class for StoreQuantityDiscount objects
  *
- * @package   Store 
+ * @package   Store
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
@@ -12,8 +12,7 @@ class StoreQuantityDiscountWrapper extends SwatDBRecordsetWrapper
 	// {{{ public function loadSetFromDB()
 
 	public function loadSetFromDB(MDB2_Driver_Common $db,
-		array $id_set, StoreRegion $region = null, $limiting = true)
-	{
+		array $id_set, StoreRegion $region = null, $limiting = true) {
 		$quantity_discounts = null;
 		$wrapper = SwatDBClassMap::get('StoreQuantityDiscountWrapper');
 

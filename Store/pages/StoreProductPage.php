@@ -476,7 +476,7 @@ class StoreProductPage extends StorePage
 		$link = 'store';
 
 		foreach ($this->path as $path_entry) {
-			$link .= '/'.$path_entry->shortname;
+			$link.= '/'.$path_entry->shortname;
 			$this->layout->navbar->createEntry($path_entry->title, $link);
 		}
 
@@ -589,8 +589,7 @@ class StoreProductPage extends StorePage
 	// {{{ protected function displayItemMinimumQuantityGroupNote()
 
 	protected function displayItemMinimumQuantityGroupNote($items,
-		$total_item_count)
-	{
+		$total_item_count) {
 		$group = current($items)->minimum_quantity_group;
 		$locale = SwatI18NLocale::get();
 		$content = '';
@@ -1006,7 +1005,7 @@ class StoreProductPage extends StorePage
 		$div_tag->id = 'product_collection';
 		$div_tag->open();
 
-		$title =  SwatString::minimizeEntities(Store::ngettext(
+		$title = SwatString::minimizeEntities(Store::ngettext(
 			'This item is also available in a collection: ',
 			'This item is also available in collections: ',
 			count($products)));

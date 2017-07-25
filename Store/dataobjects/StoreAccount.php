@@ -184,8 +184,7 @@ class StoreAccount extends SiteAccount
 	// {{{ public function setDefaultPaymentMethod()
 
 	public function setDefaultPaymentMethod(
-		StoreAccountPaymentMethod $payment_method)
-	{
+		StoreAccountPaymentMethod $payment_method) {
 		if ($payment_method->getId() === null) {
 			$this->payment_methods->add($payment_method);
 		} else {

@@ -29,8 +29,7 @@ class StoreAdWordsTracker
 	// {{{ public function __construct()
 
 	public function __construct(StoreOrder $order, $conversion_id,
-		$conversion_label)
-	{
+		$conversion_label) {
 		$this->order            = $order;
 		$this->conversion_id    = $conversion_id;
 		$this->conversion_label = $conversion_label;
@@ -63,6 +62,7 @@ class StoreAdWordsTracker
 		// {{{ returned HTML
 
 		// Note: Format 3 is hiding the Google Site Stats box
+		// @codingStandardsIgnoreStart
 		$html = <<<HTML
 <div class="google-adwords-tracking">
   <script>
@@ -85,7 +85,7 @@ class StoreAdWordsTracker
   </noscript>
 </div>
 HTML;
-
+		// @codingStandardsIgnoreEnd
 		// }}}
 
 		return sprintf(

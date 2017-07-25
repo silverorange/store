@@ -70,8 +70,7 @@ class StoreSalesReportDetails extends AdminIndex
 	// {{{ protected function appendRegionColumns()
 
 	protected function appendRegionColumns(SwatTableView $view,
-		StoreRegionWrapper $regions)
-	{
+		StoreRegionWrapper $regions) {
 		$show_region = count($regions) > 1;
 
 		foreach ($regions as $region) {
@@ -138,8 +137,7 @@ class StoreSalesReportDetails extends AdminIndex
 	// {{{ protected function getSubtotalColumn()
 
 	protected function getSubtotalColumn(StoreRegion $region,
-		$show_title = true)
-	{
+		$show_title = true) {
 		$column = new SwatTableViewColumn('subtotal_'.$region->id);
 		$column->title = sprintf(Store::_('%sSubtotal'),
 			($show_title) ? $region->title.' ' : '');
@@ -167,8 +165,7 @@ class StoreSalesReportDetails extends AdminIndex
 	// {{{ protected function getShippingColumn()
 
 	protected function getShippingColumn(StoreRegion $region,
-		$show_title = true)
-	{
+		$show_title = true) {
 		$column = new SwatTableViewColumn('shipping_'.$region->id);
 		$column->title = sprintf(Store::_('%sShipping'),
 			($show_title) ? $region->title.' ' : '');

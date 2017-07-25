@@ -54,8 +54,7 @@ class StoreProductReviewServer extends SiteXMLRPCServer
 	 * @xmlrpc.hidden
 	 */
 	protected function getResponseReview(StoreProductReviewView $view,
-		StoreProductReview $review)
-	{
+		StoreProductReview $review) {
 		$response_review = array();
 
 		// display id
@@ -84,7 +83,7 @@ class StoreProductReviewServer extends SiteXMLRPCServer
 	protected function getProductReviewView()
 	{
 		$view = SiteViewFactory::get($this->app, 'product-review');
-		$view->setPartMode('replies',    SiteView::MODE_NONE);
+		$view->setPartMode('replies', SiteView::MODE_NONE);
 		$view->setPartMode('javascript', SiteView::MODE_NONE);
 
 		return $view;
@@ -97,8 +96,7 @@ class StoreProductReviewServer extends SiteXMLRPCServer
 	 * @xmlrpc.hidden
 	 */
 	protected function getProductReviews($product_id, $limit = null,
-		$offset = 0)
-	{
+		$offset = 0) {
 		$instance_id = $this->app->getInstanceId();
 		$sql = sprintf('select * from ProductReview
 			where product = %s and spam = %s and status = %s and instance %s %s

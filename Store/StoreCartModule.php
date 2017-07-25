@@ -457,14 +457,14 @@ class StoreCartModule extends SiteApplicationModule
 		if ($entry->item->hasAvailableStatus()) {
 			$entry->item = $entry->item->id;
 			$cart = $this->getCheckoutCart();
-			if ($cart instanceof StoreCart) { 
+			if ($cart instanceof StoreCart) {
 				if ($cart->addEntry($entry) !== null) {
 					$status = self::ENTRY_ADDED;
 				}
 			}
 		} else {
 			$cart = $this->getSavedCart();
-			if ($cart instanceof StoreCart) { 
+			if ($cart instanceof StoreCart) {
 				if ($cart->addEntry($entry) !== null) {
 					$status = self::ENTRY_SAVED;
 				}
@@ -516,7 +516,7 @@ class StoreCartModule extends SiteApplicationModule
 
 		$added = 0;
 		$cart = $this->getCheckoutCart();
-		if ($cart instanceof StoreCart) { 
+		if ($cart instanceof StoreCart) {
 			foreach ($cart->getAvailableEntries() as $entry) {
 				$product_id = $entry->item->getInternalValue('product');
 				if ($product_id == $product->id) {
@@ -527,7 +527,7 @@ class StoreCartModule extends SiteApplicationModule
 
 		$saved = 0;
 		$cart = $this->getSavedCart();
-		if ($cart instanceof StoreCart) { 
+		if ($cart instanceof StoreCart) {
 			foreach ($cart->getEntries() as $entry) {
 				$product_id = $entry->item->getInternalValue('product');
 				if ($product_id == $product->id) {
@@ -892,8 +892,7 @@ class StoreCartModule extends SiteApplicationModule
 	// {{{ protected function getEntrySql()
 
 	protected function getEntrySql($where_clause,
-		$order_by_clause = 'Item.product, Item.displayorder')
-	{
+		$order_by_clause = 'Item.product, Item.displayorder') {
 		$entry_sql = 'select CartEntry.*, Item.sku
 			from CartEntry
 				inner join Item on CartEntry.item = Item.id

@@ -26,6 +26,7 @@ class StoreProductTitleCellRenderer extends AdminTitleLinkCellRenderer
 
 		parent::render();
 	}
+
 }
 
 ?>

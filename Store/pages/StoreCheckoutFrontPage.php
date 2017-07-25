@@ -126,7 +126,7 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
 					Store::_('Please check the spelling on your email '.
 						'address or password'),
 					sprintf(Store::_('Password is case-sensitive. Make sure '.
-                        'your %sCaps Lock%s key is off'), '<kbd>', '</kbd>'),
+						'your %sCaps Lock%s key is off'), '<kbd>', '</kbd>'),
 				);
 				$message->secondary_content =
 					vsprintf('<ul><li>%s</li><li>%s</li></ul>', $tips);

@@ -36,8 +36,7 @@ class StorePaymentAuthorizeNetException extends StorePaymentException
 	 * @param AuthorizeNetAIM_Response $response
 	 */
 	public function __construct($message, $code, $reason_code,
-		AuthorizeNetAIM_Response $response)
-	{
+		AuthorizeNetAIM_Response $response) {
 		parent::__construct($message, $code);
 		$this->reason_code = $reason_code;
 		$this->response    = $response;

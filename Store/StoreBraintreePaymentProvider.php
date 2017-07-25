@@ -115,8 +115,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 	 * @sensitive $card_verification_value
 	 */
 	public function pay(StoreOrder $order, $card_number,
-		$card_verification_value = null)
-	{
+		$card_verification_value = null) {
 		$request = array(
 			'amount' => $this->formatCurrency($order->total),
 			'orderId' => $this->getOrderId($order),
@@ -241,8 +240,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 
 	protected function createPaymentMethodTransaction(
 		Braintree\Transaction $external_transaction,
-		$type = StorePaymentRequest::TYPE_PAY)
-	{
+		$type = StorePaymentRequest::TYPE_PAY) {
 		$class_name = SwatDBClassMap::get('StorePaymentMethodTransaction');
 		$transaction = new $class_name();
 
@@ -273,8 +271,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 	 * @sensitive $card_verification_value
 	 */
 	protected function getCreditCard(
-		StoreOrder $order, $card_number, $card_verification_value = null)
-	{
+		StoreOrder $order, $card_number, $card_verification_value = null) {
 		// Default expiry date to use if no date is found in a payment method
 		// is 1 month ago (expired).
 		$date = new SwatDate('-1 month');

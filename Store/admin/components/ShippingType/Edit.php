@@ -45,7 +45,7 @@ class StoreShippingTypeEdit extends AdminDBEdit
 			if (!$this->shipping_type->load($this->id)) {
 				throw new AdminNotFoundException(
 					sprintf(Store::_(
-						'Shipping Type with id ‘%s’ not found.'),$this->id));
+						'Shipping Type with id ‘%s’ not found.'), $this->id));
 			}
 		}
 	}

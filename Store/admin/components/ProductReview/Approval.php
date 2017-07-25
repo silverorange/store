@@ -180,7 +180,7 @@ class StoreProductReviewApproval extends AdminApproval
 	{
 		$view = SiteViewFactory::get($this->app, 'product-review');
 
-		$view->setPartMode('replies',    SiteView::MODE_NONE);
+		$view->setPartMode('replies', SiteView::MODE_NONE);
 		$view->setPartMode('javascript', SiteView::MODE_NONE);
 
 		return $view;

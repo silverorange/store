@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Order page for payment types 
+ * Order page for payment types
  *
  * @package   Store
  * @copyright 2007-2016 silverorange
@@ -35,9 +35,9 @@ class StorePaymentTypeOrder extends AdminDBOrder
 	// {{{ protected function loadData()
 
 	protected function loadData()
-	{ 
+	{
 		$order_widget = $this->ui->getWidget('order');
-		$order_widget->addOptionsByArray(SwatDB::getOptionArray($this->app->db, 
+		$order_widget->addOptionsByArray(SwatDB::getOptionArray($this->app->db,
 			'PaymentType', 'title', 'id', 'displayorder, title'));
 
 		$sql = 'select sum(displayorder) from PaymentType';

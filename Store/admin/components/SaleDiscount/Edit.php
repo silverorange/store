@@ -168,4 +168,5 @@ class StoreSaleDiscountEdit extends AdminDBEdit
 
 	// }}}
 }
+
 ?>

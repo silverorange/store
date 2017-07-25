@@ -15,10 +15,10 @@ class StoreCategoryTableView extends SwatTableView
 	{
 		$classes = parent::getRowClasses($row, $count);
 
- 		if ($row->product_count == 0)
+		 if ($row->product_count == 0)
 			$classes[] = 'category-no-products';
 
- 		if (!$row->currently_visible && !$row->always_visible)
+		 if (!$row->currently_visible && !$row->always_visible)
 			$classes[] = 'category-not-visible';
 
 		return $classes;

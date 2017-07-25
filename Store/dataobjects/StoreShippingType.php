@@ -100,8 +100,7 @@ class StoreShippingType extends SwatDBDataObject
 	// {{{ public function calculateShippingRate()
 
 	public function calculateShippingRate($item_total,
-		StoreRegion $region = null)
-	{
+		StoreRegion $region = null) {
 		if ($region === null)
 			$region = $this->region;
 

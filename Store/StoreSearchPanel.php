@@ -60,8 +60,7 @@ class StoreSearchPanel extends SwatObject
 	// {{{ public function __construct()
 
 	public function __construct(MDB2_Driver_Common $db, StoreRegion $region,
-		SwatContainer $root = null, SiteMemcacheModule $memcache = null)
-	{
+		SwatContainer $root = null, SiteMemcacheModule $memcache = null) {
 		$this->db = $db;
 		$this->region = $region;
 		$this->memcache = $memcache;

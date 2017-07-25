@@ -59,7 +59,7 @@ class StoreCountryDelete extends AdminDBDelete
 
 		$orders_billing_dependency->summaries =
 			AdminSummaryDependency::querySummaries(
-			$this->app->db, 'OrderAddress', 'integer:id', 'text:country', 
+			$this->app->db, 'OrderAddress', 'integer:id', 'text:country',
 			'country in ('.$item_list.')', AdminDependency::NODELETE);
 
 		$dep->addDependency($orders_billing_dependency);

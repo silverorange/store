@@ -27,8 +27,7 @@ class StoreFroogleFeed extends AtomFeed
 	 * Get text node
 	 */
 	public static function getTextNode($document, $name, $value,
-		$name_space = null)
-	{
+		$name_space = null) {
 		// value must be text-only
 		$value = strip_tags($value);
 
@@ -42,8 +41,7 @@ class StoreFroogleFeed extends AtomFeed
 	 * Get text node
 	 */
 	public static function getBooleanNode($document, $name, $value,
-		$name_space = null)
-	{
+		$name_space = null) {
 		// set the value to the boolean values google expects.
 		$value = ($value === true) ? 'y' : 'n';
 
@@ -57,8 +55,7 @@ class StoreFroogleFeed extends AtomFeed
 	 * Get date node
 	 */
 	public static function getDateNode($document, $name, DateTime $date,
-		$name_space = null)
-	{
+		$name_space = null) {
 		if ($name == 'expiration_date') {
 			if ($name_space !== null) {
 				$name = $name_space.':'.$name;

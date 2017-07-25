@@ -73,8 +73,7 @@ class StoreSalesReportIndex extends AdminIndex
 	// {{{ protected function appendRegionColumns()
 
 	protected function appendRegionColumns(SwatTableView $view,
-		StoreRegionWrapper $regions)
-	{
+		StoreRegionWrapper $regions) {
 		$include_region_in_title = (count($regions) > 1);
 
 		foreach ($regions as $region) {

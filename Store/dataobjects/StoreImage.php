@@ -31,7 +31,7 @@ class StoreImage extends SiteImage
 	/**
 	 * Whether dimension exists for this image
 	 *
- 	 * @deprecated Use {@link SiteImage::hasDimension()} instead.
+	  * @deprecated Use {@link SiteImage::hasDimension()} instead.
 	 */
 	public function hasOriginal()
 	{

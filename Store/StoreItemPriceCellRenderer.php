@@ -165,7 +165,7 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 		if ($this->singular_unit === null)
 			if ($this->hasQuantityDiscounts())
 				printf(Store::_('%s each'), $price);
-			else
+		else
 				echo $price;
 		else
 			printf(Store::_('%s per %s'), $price, $this->singular_unit);

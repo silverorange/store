@@ -37,6 +37,7 @@ class StoreItemStatusCellRenderer extends SwatCellRenderer
 	{
 		echo SwatString::minimizeEntities($this->status->title);
 	}
+
 }
 
 ?>

@@ -86,11 +86,11 @@ class StoreProductImagePage extends StorePage
 		$link = 'store';
 
 		foreach ($this->path as $path_entry) {
-			$link .= '/'.$path_entry->shortname;
+			$link.= '/'.$path_entry->shortname;
 			$this->layout->navbar->createEntry($path_entry->title, $link);
 		}
 
-		$link .= '/'.$this->product->shortname;
+		$link.= '/'.$this->product->shortname;
 		$this->layout->navbar->createEntry($this->product->title, $link);
 		$this->layout->navbar->createEntry(Store::_('Image'));
 	}
@@ -142,8 +142,7 @@ class StoreProductImagePage extends StorePage
 	// {{{ protected function displayThumbnail()
 
 	protected function displayThumbnail(StoreImage $image, $size,
-		$selected = false)
-	{
+		$selected = false) {
 		$li_tag = new SwatHtmlTag('li');
 		$li_tag->open();
 

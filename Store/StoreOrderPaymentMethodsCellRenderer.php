@@ -110,7 +110,7 @@ class StoreOrderPaymentMethodsCellRenderer extends SwatCellRenderer
 					$payment_method->showCardFullname(
 						$this->show_card_fullname);
 
-					$payment_total+= $payment_method->amount;
+					$payment_total += $payment_method->amount;
 
 					if ($this->gpg instanceof Crypt_GPG)
 						$payment_method->setGPG($this->gpg);

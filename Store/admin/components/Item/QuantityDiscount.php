@@ -383,24 +383,24 @@ class StoreItemQuantityDiscount extends AdminIndex
 				$this->app->db->quote($this->id),
 				SwatDB::equalityOperator($quantity->getState()),
 				$this->app->db->quote($quantity->getState()));
-			
+
 			$unique = (SwatDB::queryOne($this->app->db, $sql) == 0);
 			if (!$unique) {
 				$quantity->addMessage(new SwatMessage(Store::_('%s must be '.
 					'unique for each item. If you want to update the prices '.
 					'for a quantity discount, first delete the old quantity '.
 					'discount.')));
-	
+
 				$valid = false;
 			}
-	
+
 			// validate prices (must enter at least one)
 			$regions = $this->queryRegions();
 			$has_price = false;
 			foreach ($regions as $region) {
 				$price = $input_row->getWidget('price_'.$region->id,
 					$replicator_id);
-	
+
 				if ($price->getState() !== null) {
 					$has_price = true;
 					break;
@@ -409,7 +409,7 @@ class StoreItemQuantityDiscount extends AdminIndex
 			if (!$has_price) {
 				$price->addMessage(new SwatMessage(
 					Store::_('At least one price is required')));
-	
+
 				$valid = false;
 			}
 		}

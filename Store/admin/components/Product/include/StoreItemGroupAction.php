@@ -74,7 +74,7 @@ class StoreItemGroupAction extends SwatControl
 		$group_id = $this->groups->value;
 
 		// create a new item group
-		if (strcmp($group_id, 'new_group') == 0) {
+		if ($group_id === 'new_group') {
 			$new_title = $this->group_title->value;
 
 			$group_id = SwatDB::insertRow($this->db, 'ItemGroup',
@@ -89,7 +89,7 @@ class StoreItemGroupAction extends SwatControl
 				count($items)), SwatString::numberFormat(count($items)),
 				$new_title), 'notice');
 
-		} elseif (strcmp($group_id, 'no_group') == 0) {
+		} elseif ($group_id === 'no_group') {
 			$group_id = null;
 
 			$message = new SwatMessage(
@@ -134,6 +134,7 @@ class StoreItemGroupAction extends SwatControl
 		return sprintf("var %s = new ItemGroupAction('%s', [%s]);\n",
 			$this->id, $this->id, implode(', ', $values));
 	}
+
 }
 
 ?>

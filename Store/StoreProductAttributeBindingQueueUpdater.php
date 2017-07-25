@@ -10,8 +10,7 @@
  * @copyright 2010-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreProductAttributeBindingQueueUpdater
-	extends SiteCommandLineApplication
+class StoreProductAttributeBindingQueueUpdater extends SiteCommandLineApplication
 {
 	// {{{ public function run()
 
@@ -153,8 +152,7 @@ class StoreProductAttributeBindingQueueUpdater
 	// {{{ protected function getInSql()
 
 	protected function getInSql(SwatDate $current_date, $field_title, $action,
-		$attribute)
-	{
+		$attribute) {
 		$sql = 'select %s from ProductAttributeBindingQueue
 			where action_date <= %s and queue_action = %s and attribute = %s';
 

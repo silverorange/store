@@ -92,6 +92,7 @@ class StoreTotalConfirmationButtonRow extends StoreTotalRow
 			$this->widgets_created = true;
 		}
 	}
+
 }
 
 ?>

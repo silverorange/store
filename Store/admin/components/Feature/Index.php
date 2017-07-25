@@ -113,7 +113,7 @@ class StoreFeatureIndex extends AdminIndex
 	protected function getTableModel(SwatView $view)
 	{
 		$instance_where = ($this->app->getInstanceId() === null) ?
-			'1 = 1':
+			'1 = 1' :
 			sprintf(
 				'instance = %s',
 				$this->app->db->quote($this->app->getInstanceId(), 'integer')

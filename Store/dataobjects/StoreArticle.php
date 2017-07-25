@@ -96,8 +96,7 @@ class StoreArticle extends SiteArticle
 	 *                  specified path.
 	 */
 	public function loadWithPathAndRegion($path, StoreRegion $region,
-		$fields = array('id', 'title'))
-	{
+		$fields = array('id', 'title')) {
 		$this->checkDB();
 
 		$found = false;

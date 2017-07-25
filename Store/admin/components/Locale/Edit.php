@@ -105,4 +105,5 @@ class StoreLocaleEdit extends AdminDBEdit
 
 	// }}}
 }
+
 ?>

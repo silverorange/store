@@ -118,10 +118,11 @@ JS;
 
 	protected function displayTrackingPixel()
 	{
+		// @codingStandardsIgnoreStart
 		$tracking_pixel = <<<'XHTML'
 <noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?ev=%s&amp;cd[value]=%s&amp;cd[currency]=%s&amp;noscript=1" /></noscript>
 XHTML;
-
+		// @codingStandardsIgnoreEnd
 		printf(
 			$tracking_pixel,
 			SwatString::minimizeEntities($this->tracking_id),

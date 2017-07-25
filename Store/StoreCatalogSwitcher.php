@@ -63,7 +63,7 @@ class StoreCatalogSwitcher extends SwatControl
 					$valid_state = false;
 
 					$selector->region = null;
-					$selector->catalog= null;
+					$selector->catalog = null;
 					$selector->scope =
 						StoreCatalogSelector::ALL_ENABLED_CATALOGS;
 
@@ -80,7 +80,7 @@ class StoreCatalogSwitcher extends SwatControl
 					$valid_state = false;
 
 					$selector->region = null;
-					$selector->catalog= null;
+					$selector->catalog = null;
 					$selector->scope =
 						StoreCatalogSelector::ALL_ENABLED_CATALOGS;
 

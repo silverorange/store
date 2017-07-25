@@ -44,3 +44,5 @@ class StoreTableViewConfirmationButtonRow extends StoreTableViewButtonRow
 
 	// }}}
 }
+
+?>

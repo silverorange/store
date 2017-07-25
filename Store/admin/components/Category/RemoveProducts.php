@@ -119,7 +119,7 @@ class StoreCategoryRemoveProducts extends AdminDBConfirmation
 			foreach ($invalid_rows as $row)
 				$message_text.= '<li>'.$row->title.'</li>';
 
-			$message_text .= '</ul>';
+			$message_text.= '</ul>';
 		}
 
 		$message = $this->ui->getWidget('confirmation_message');

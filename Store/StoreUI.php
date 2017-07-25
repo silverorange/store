@@ -6,7 +6,7 @@
  * UI manager for the store package
  *
  * Subclass of {@link SwatUI} for use with the Store package.  This can be used
- * as a central place to add {@link SwatUI::$class_map class maps} and 
+ * as a central place to add {@link SwatUI::$class_map class maps} and
  * {@link SwatUI::registerHandler() UI handlers} that are specific to the Store
  * package.
  *

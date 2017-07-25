@@ -14,13 +14,13 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	 * @var string
 	 * @see AuthorizeNetPaymentProvider::__construct()
 	 */
-	 protected $transaction_key;
+	protected $transaction_key;
 
 	/**
 	 * @var string
 	 * @see AuthorizeNetPaymentProvider::__construct()
 	 */
-	 protected $login_id;
+	protected $login_id;
 
 	/**
 	 * 'live' or 'sandbox'
@@ -130,8 +130,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	 * @sensitive $card_verification_value
 	 */
 	public function pay(StoreOrder $order, $card_number,
-		$card_verification_value = null)
-	{
+		$card_verification_value = null) {
 		$request = $this->getAIMPaymentRequest(
 			$order,
 			$card_number,
@@ -185,8 +184,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	 * @sensitive $card_verification_value
 	 */
 	protected function getAIMPaymentRequest(StoreOrder $order, $card_number,
-		$card_verification_value = null)
-	{
+		$card_verification_value = null) {
 		$request = new AuthorizeNetAIM(
 			$this->login_id,
 			$this->transaction_key
@@ -264,7 +262,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 					return 'card-error';
 				}
 
-			// error responses
+				// error responses
 			} else {
 				switch ($e->getReasonCode()) {
 				case 6:
@@ -316,8 +314,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	 * @sensitive $payment_method
 	 */
 	protected function setRequestCardFields(AuthorizeNetAIM $request,
-		StoreOrder $order, $card_number, $card_verification_value = null)
-	{
+		StoreOrder $order, $card_number, $card_verification_value = null) {
 		$request->card_num = $card_number;
 		$request->card_code = $card_verification_value;
 
@@ -339,8 +336,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	// {{{ protected function setRequestAddressFields()
 
 	protected function setRequestAddressFields(AuthorizeNetAIM $request,
-		StoreOrderAddress $address)
-	{
+		StoreOrderAddress $address) {
 		$request->first_name = $address->first_name;
 		$request->last_name  = $address->last_name;
 
@@ -368,8 +364,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	// {{{ protected function addRequestLineItems()
 
 	protected function addRequestLineItems(AuthorizeNetAIM $request,
-		StoreOrder $order)
-	{
+		StoreOrder $order) {
 		foreach ($order->items as $item) {
 			$this->addRequestLineItem($request, $item);
 		}
@@ -379,8 +374,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	// {{{ protected function addRequestLineItem()
 
 	protected function addRequestLineItem(AuthorizeNetAIM $request,
-		StoreOrderItem $item)
-	{
+		StoreOrderItem $item) {
 		$request->addLineItem(
 			$item->id,
 			$this->truncateField($item->product_title, 31),

@@ -309,8 +309,7 @@ abstract class StoreCheckoutCart extends StoreCart
 		StoreAddress $billing_address = null,
 		StoreAddress $shipping_address = null,
 		StoreShippingType $shipping_type = null,
-		StoreOrderPaymentMethodWrapper $payment_methods = null)
-	{
+		StoreOrderPaymentMethodWrapper $payment_methods = null) {
 		if ($this->cachedValueExists('store-total')) {
 			$total = $this->getCachedValue('store-total');
 		} else {
@@ -386,8 +385,7 @@ abstract class StoreCheckoutCart extends StoreCart
 	 * @return double the sum of all surcharges.
 	 */
 	public function getSurchargeTotal(
-		StoreOrderPaymentMethodWrapper $payment_methods = null)
-	{
+		StoreOrderPaymentMethodWrapper $payment_methods = null) {
 		if ($this->cachedValueExists('store-surcharge-total')) {
 			$total = $this->getCachedValue('store-surcharge-total');
 		} else {
@@ -430,8 +428,7 @@ abstract class StoreCheckoutCart extends StoreCart
 
 	public function getVoucherTotal(
 		StoreAddress $billing_address = null,
-		StoreAddress $shipping_address = null)
-	{
+		StoreAddress $shipping_address = null) {
 		$cache_key = 'store-voucher-total';
 
 		if ($this->cachedValueExists($cache_key)) {
@@ -472,8 +469,7 @@ abstract class StoreCheckoutCart extends StoreCart
 	// {{{ protected function calculateShippingRate()
 
 	protected function calculateShippingRate($item_total,
-		StoreShippingType $shipping_type = null)
-	{
+		StoreShippingType $shipping_type = null) {
 		if ($shipping_type === null)
 			$shipping_type = $this->getShippingType();
 
