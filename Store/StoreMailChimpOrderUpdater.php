@@ -1,6 +1,6 @@
 <?php
 
-//Ignore coding standards because links exceed max length
+// Ignore coding standards because links exceed max length
 // @codingStandardsIgnoreStart
 /**
  * Command line application used to send mailing list orders to MailChimp

@@ -268,8 +268,8 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 					return 'card-error';
 				}
 
-				// error responses
 			} else {
+				// error responses
 				switch ($e->getReasonCode()) {
 				case 6:
 				case 17:  // card type not accepted

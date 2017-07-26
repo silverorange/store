@@ -336,7 +336,6 @@ class StoreOrderItem extends SwatDBDataObject
 		if ($this->item_cache !== false) {
 			$item = $this->item_cache;
 		} else {
-
 			$item = null;
 
 			$wrapper = SwatDBClassMap::get('StoreItemWrapper');

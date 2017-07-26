@@ -180,7 +180,7 @@ abstract class StoreOrderConfirmationMailMessage extends
 			$details_view->getField('shipping_address')->visible = false;
 		}
 
-		if (count($order->payment_methods) == 0 &&
+		if (count($order->payment_methods) === 0 &&
 			$details_view->hasField('payment_method')) {
 			$details_view->getField('payment_method')->visible = false;
 		}
