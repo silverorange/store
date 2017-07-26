@@ -77,6 +77,7 @@ class StoreCategoryFeaturedProducts extends AdminIndex
 			$this->app->relocate('Category/Index?id='.$this->parent);
 		}
 	}
+
 	// }}}
 
 	// build phase

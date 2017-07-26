@@ -141,8 +141,9 @@ class StoreItemEdit extends AdminDBEdit
 	// {{{ protected function processPriceReplicatorByRegion()
 
 	protected function processPriceReplicatorByRegion(
-		SwatReplicableContainer $replicator, StoreRegion $region)
-	{
+		SwatReplicableContainer $replicator,
+		StoreRegion $region
+	) {
 		$locale = $region->getFirstLocale()->id;
 
 		$enabled = $replicator->getWidget('enabled', $region->id);
@@ -373,8 +374,8 @@ class StoreItemEdit extends AdminDBEdit
 	protected function getItemRegionBinding(
 		SwatReplicableContainer $replicator,
 		$region_id,
-		array $old_values)
-	{
+		array $old_values
+	) {
 		$region_binding = null;
 
 		$price          = $replicator->getWidget('price', $region_id);
@@ -597,8 +598,9 @@ class StoreItemEdit extends AdminDBEdit
 	// {{{ protected function loadPriceReplicatorByBinding()
 
 	protected function loadPriceReplicatorByBinding(
-		SwatReplicableContainer $replicator, StoreItemRegionBinding $binding)
-	{
+		SwatReplicableContainer $replicator,
+		StoreItemRegionBinding $binding
+	) {
 		$enabled = $replicator->getWidget('enabled', $binding->region->id);
 		$enabled->value = $binding->enabled;
 

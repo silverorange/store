@@ -84,7 +84,7 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 
 		// only allow dates in the future, and only a year out for sanity's sake
 		$action_date = $this->ui->getWidget('action_date');
-		$action_date->setValidRange(0,1);
+		$action_date->setValidRange(0, 1);
 		$action_date->valid_range_start = new SwatDate();
 		$action_date->valid_range_start->convertTZ(
 			$this->app->default_time_zone);
@@ -159,7 +159,7 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 		} else {
 			$uri = 'Category';
 			if ($this->category_id !== null) {
-				$uri.='/Index?id='.$this->category_id;
+				$uri.= '/Index?id='.$this->category_id;
 			}
 		}
 

@@ -129,9 +129,10 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	// }}}
 	// {{{ protected function initPaymentOptions()
 
-	protected function initPaymentOptions(StorePaymentTypeWrapper $types,
-		StorePaymentMethodWrapper $methods)
-	{
+	protected function initPaymentOptions(
+		StorePaymentTypeWrapper $types,
+		StorePaymentMethodWrapper $methods
+	) {
 		$list = $this->ui->getWidget('payment_option');
 
 		// default visibility of list to false, payment options will determine
@@ -160,9 +161,10 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	// }}}
 	// {{{ protected function initPaymentType()
 
-	protected function initPaymentType(StorePaymentType $type,
-		SwatRadioNoteBook $list)
-	{
+	protected function initPaymentType(
+		StorePaymentType $type,
+		SwatRadioNoteBook $list
+	) {
 		switch ($type->shortname) {
 		case 'card':
 			$this->initPaymentTypeCard($type, $list);
@@ -177,9 +179,10 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	// }}}
 	// {{{ protected function initPaymentTypeDefault()
 
-	protected function initPaymentTypeDefault(StorePaymentType $type,
-		SwatRadioNoteBook $list)
-	{
+	protected function initPaymentTypeDefault(
+		StorePaymentType $type,
+		SwatRadioNoteBook $list
+	) {
 		$page = new SwatNoteBookPage();
 		$page->id = 'type_'.$type->id;
 		$page->title = $this->getPaymentTypeTitle($type);
@@ -194,9 +197,10 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	// }}}
 	// {{{ protected function initPaymentTypeCard()
 
-	protected function initPaymentTypeCard(StorePaymentType $type,
-		SwatRadioNoteBook $list)
-	{
+	protected function initPaymentTypeCard(
+		StorePaymentType $type,
+		SwatRadioNoteBook $list
+	) {
 		$page = new SwatNoteBookPage();
 		$page->id = 'type_'.$type->id;
 		$page->title = $this->getPaymentTypeTitle($type);
@@ -242,9 +246,11 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	// }}}
 	// {{{ protected function initPaymentMethod()
 
-	protected function initPaymentMethod(StorePaymentMethod $method,
-		SwatRadioNoteBook $list, SwatReplicableNoteBookChild $replicator)
-	{
+	protected function initPaymentMethod(
+		StorePaymentMethod $method,
+		SwatRadioNoteBook $list,
+		SwatReplicableNoteBookChild $replicator
+	) {
 		$page = $replicator->getWidget('account_fields_container', $method->id);
 		$page->id = 'method_'.$method->id;
 
@@ -263,8 +269,8 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	// {{{ protected function getPaymentMethod()
 
 	protected function getPaymentMethod(
-		StorePaymentMethodWrapper $payment_methods)
-	{
+		StorePaymentMethodWrapper $payment_methods
+	) {
 		$payment_method = null;
 		$payment_methods = $this->getEditablePaymentMethods($payment_methods);
 
@@ -642,8 +648,8 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	// {{{ protected function setupCardVerificationValue()
 
 	protected function setupCardVerificationValue(
-		StoreCardVerificationValueEntry $card_verification_value_widget)
-	{
+		StoreCardVerificationValueEntry $card_verification_value_widget
+	) {
 		$card_type = $this->getCardType();
 		if ($card_type == null) {
 			// Card number not valid, use card type from existing payment
@@ -804,8 +810,8 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	 * @param StoreOrderPaymentMethod $payment_method
 	 */
 	protected function updatePaymentMethod(
-		StoreOrderPaymentMethod $payment_method)
-	{
+		StoreOrderPaymentMethod $payment_method
+	) {
 		$payment_type = $this->getPaymentType();
 
 		$payment_method->payment_type = $payment_type;
@@ -877,8 +883,8 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	 * @param StoreOrderPaymentMethod $payment_method
 	 */
 	protected function updatePaymentMethodCardNumber(
-		StoreOrderPaymentMethod $payment_method)
-	{
+		StoreOrderPaymentMethod $payment_method
+	) {
 		$card_number = $this->ui->getWidget('card_number')->value;
 		if ($card_number !== null) {
 			$payment_method->setCardNumber($card_number);
@@ -903,8 +909,8 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	protected function updatePaymentMethodCardVerificationValue(
 		StoreCardVerificationValueEntry $entry,
 		StoreOrderPaymentMethod $payment_method,
-		$old_card_verification_value = null)
-	{
+		$old_card_verification_value = null
+	) {
 		$value = $entry->value;
 
 		if ($value !== null) {

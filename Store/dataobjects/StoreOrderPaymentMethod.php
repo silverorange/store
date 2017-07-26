@@ -154,10 +154,11 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	 *
 	 * @see StoreOrderPaymentMethod::getUnencryptedCardVerificationValue()
 	 */
-	public function setCardVerificationValue($value, $store_unencrypted = true,
-		$store_encrypted = false)
-	{
-
+	public function setCardVerificationValue(
+		$value,
+		$store_unencrypted = true,
+		$store_encrypted = false
+	) {
 		if ($store_encrypted) {
 			/*
 			 * We throw an exception here to prevent silent failures when
@@ -410,8 +411,9 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	// {{{ protected function displayInternal()
 
 	protected function displayInternal(
-		$display_details = true, $passphrase = null)
-	{
+		$display_details = true,
+		$passphrase = null
+	) {
 		if ($this->payment_type->isVoucher()) {
 			$this->displayVoucher();
 		} else {
@@ -430,11 +432,11 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 			break;
 
 		case 'merchandise-credit':
-			$type =  Store::_('Merchandise Voucher');
+			$type = Store::_('Merchandise Voucher');
 			break;
 
 		case 'coupon':
-			$type =  Store::_('Coupon');
+			$type = Store::_('Coupon');
 			break;
 
 		default :

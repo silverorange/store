@@ -140,7 +140,7 @@ class StoreCheckoutModule extends SiteApplicationModule
 	{
 		$has_dependency = false;
 		$session = $this->getSession();
-		
+
 		if (isset($session->checkout_progress)) {
 			$has_dependency = in_array(
 				$dependency,

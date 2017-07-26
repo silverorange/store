@@ -156,7 +156,7 @@ class StoreOrderItemsTableStoreFactory
 			$parts[] = strip_tags($item->description);
 		}
 
-		$description.= '<div>'.implode(', ', $parts).'</div>';;
+		$description.= '<div>'.implode(', ', $parts).'</div>';
 
 		return $description;
 	}

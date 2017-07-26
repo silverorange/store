@@ -288,8 +288,8 @@ abstract class StorePaymentProvider
 	 *                       THREE_DOMAIN_SECURE_ON.
 	 */
 	public function setThreeDomainSecureMode(
-		$mode = self::THREE_DOMAIN_SECURE_ON)
-	{
+		$mode = self::THREE_DOMAIN_SECURE_ON
+	) {
 		$this->three_domain_secure_mode = (boolean)$mode;
 	}
 
@@ -308,9 +308,11 @@ abstract class StorePaymentProvider
 	 *                                        payment. This object contains the
 	 *                                        transaction date and identifier.
 	 */
-	public function pay(StoreOrder $order, $card_number,
-		$card_verification_value = null)
-	{
+	public function pay(
+		StoreOrder $order,
+		$card_number,
+		$card_verification_value = null
+	) {
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',
@@ -334,9 +336,11 @@ abstract class StorePaymentProvider
 	 *
 	 * @see StorePaymentProvider::release()
 	 */
-	public function hold(StoreOrder $order, $card_number,
-		$card_verification_value = null)
-	{
+	public function hold(
+		StoreOrder $order,
+		$card_number,
+		$card_verification_value = null
+	) {
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',
@@ -421,9 +425,11 @@ abstract class StorePaymentProvider
 	 *
 	 * @see StorePaymentProvider::verifiedPay()
 	 */
-	public function verify(StoreOrder $order, $card_number,
-		$card_verification_value = null)
-	{
+	public function verify(
+		StoreOrder $order,
+		$card_number,
+		$card_verification_value = null
+	) {
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',
@@ -481,9 +487,11 @@ abstract class StorePaymentProvider
 	 *                                        representing the refund
 	 *                                        transaction.
 	 */
-	public function refund(StorePaymentMethodTransaction $transaction,
-		$description = '', $amount = null)
-	{
+	public function refund(
+		StorePaymentMethodTransaction $transaction,
+		$description = '',
+		$amount = null
+	) {
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',
@@ -549,8 +557,9 @@ abstract class StorePaymentProvider
 	 *                                        was a hold request.
 	 */
 	public function threeDomainSecureAuth(
-		StorePaymentMethodTransaction $transaction, $pares)
-	{
+		StorePaymentMethodTransaction $transaction,
+		$pares
+	) {
 		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',

@@ -687,9 +687,10 @@ abstract class StoreCart extends SwatObject
 	 *                  the right side and 0 means the left side and right
 	 *                  side are equivalent.
 	 */
-	protected static function compare(StoreCartEntry $entry1,
-		StoreCartEntry $entry2)
-	{
+	protected static function compare(
+		StoreCartEntry $entry1,
+		StoreCartEntry $entry2
+	) {
 		return $entry1->compare($entry2);
 	}
 

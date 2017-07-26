@@ -32,5 +32,7 @@ class StorePaymentTypeStatusCellRenderer extends SwatCellRenderer
 			echo sprintf('&lt;%s&gt;', Store::_('disabled in all regions'));
 		}
 	}
+
 }
+
 ?>

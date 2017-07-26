@@ -46,9 +46,12 @@ class StoreYeOldePriceCellRenderer extends StoreItemPriceCellRenderer
 	/**
 	 * Renders the contents of this cell
 	 */
-	public static function moneyFormat($value, $locale = null,
-		$display_currency = false, $decimal_places = null)
-	{
+	public static function moneyFormat(
+		$value,
+		$locale = null,
+		$display_currency = false,
+		$decimal_places = null
+	) {
 		$money = SwatString::minimizeEntities(
 			SwatString::moneyFormat(
 				$value, $locale, $display_currency, $decimal_places));

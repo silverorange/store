@@ -33,14 +33,14 @@ class StoreCartCleaner extends SiteCommandLineApplication
 		$this->parseCommandLineArguments();
 
 		if (mb_strpos($this->session->getSavePath(), ';') !== false) {
-			$this->terminate(Store::_("Cannot automatically clean cart " .
-				"entries when using multiple levels of session files. See " .
+			$this->terminate(Store::_("Cannot automatically clean cart ".
+				"entries when using multiple levels of session files. See ".
 				"session.save_path documentation.\n"));
 		}
 
 		if (ini_get('session.save_handler') !== 'files') {
-			$this->terminate(Store::_("Cannot automatically clean cart " .
-				"entries when not using the files session backend. See " .
+			$this->terminate(Store::_("Cannot automatically clean cart ".
+				"entries when not using the files session backend. See ".
 				"session.save_handler documentation.\n"));
 		}
 

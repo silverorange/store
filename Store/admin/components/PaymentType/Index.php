@@ -98,7 +98,7 @@ class StorePaymentTypeIndex extends AdminIndex
 
 			break;
 		}
-		
+
 		if ($message !== null)
 			$this->app->messages->add($message);
 	}

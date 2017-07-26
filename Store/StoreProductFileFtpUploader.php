@@ -99,7 +99,7 @@ abstract class StoreProductFileFtpUploader extends SiteCommandLineApplication
 			Store::_('Generating Product file for %s ... '),
 			$this->config->site->title));
 
- 		$contents = $generator->generate();
+		$contents = $generator->generate();
 		if (file_put_contents($filename_with_path, $contents, LOCK_EX) ===
 			false) {
 			$this->terminate(sprintf(Store::_(

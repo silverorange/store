@@ -26,6 +26,7 @@ class StoreQuantityEntry extends SwatIntegerEntry
 
 	// }}}
 	// {{{ protected function getCSSClassNames()
+
 	/**
 	 * Gets the array of CSS classes that are applied to this entry widget
 	 *

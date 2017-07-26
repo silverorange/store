@@ -112,7 +112,7 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
 
 	protected function buildOrderDetails(StoreOrder $order)
 	{
-		$details_view =  $this->ui->getWidget('order_details');
+		$details_view = $this->ui->getWidget('order_details');
 		$details_view->data = $this->getOrderDetailsStore($order);
 
 		$createdate_column = $details_view->getField('createdate');

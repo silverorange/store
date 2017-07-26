@@ -55,6 +55,7 @@ class StoreItemQuantityDiscountTableView extends SwatTableView
 	{
 		$this->item_row = $item_row;
 	}
+
 }
 
 ?>

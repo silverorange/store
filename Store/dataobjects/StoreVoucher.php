@@ -134,11 +134,11 @@ class StoreVoucher extends SwatDBDataObject
 			break;
 
 		case 'merchandise-credit':
-			$type =  Store::_('Merchandise Credit');
+			$type = Store::_('Merchandise Credit');
 			break;
 
 		case 'coupon':
-			$type =  Store::_('Coupon');
+			$type = Store::_('Coupon');
 			break;
 
 		default :

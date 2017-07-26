@@ -14,7 +14,7 @@ class StoreArticleWrapper extends SiteArticleWrapper
 	 *
 	 * @var StoreRegion
 	 * @see StoreProduct::setRegion()
-	 */ 
+	 */
 	protected $region = null;
 
 	// }}}

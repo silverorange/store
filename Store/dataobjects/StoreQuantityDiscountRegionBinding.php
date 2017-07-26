@@ -12,7 +12,7 @@ class StoreQuantityDiscountRegionBinding extends SwatDBDataObject
 	// {{{ public properties
 
 	/**
-	 * Price of the quantity discount 
+	 * Price of the quantity discount
 	 *
 	 * @var float
 	 */

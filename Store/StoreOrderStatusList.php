@@ -37,7 +37,7 @@ class StoreOrderStatusList extends StoreStatusList
 	// {{{ private properties
 
 	/**
-	 * Static collection of available statuses for this class of status list 
+	 * Static collection of available statuses for this class of status list
 	 *
 	 * @var array
 	 */

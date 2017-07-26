@@ -162,13 +162,15 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 		$this->renderValue($this->value, $this->original_value);
 		$price = ob_get_clean();
 
-		if ($this->singular_unit === null)
-			if ($this->hasQuantityDiscounts())
+		if ($this->singular_unit === null) {
+			if ($this->hasQuantityDiscounts()) {
 				printf(Store::_('%s each'), $price);
-			else
+			} else {
 				echo $price;
-		else
+			}
+		} else {
 			printf(Store::_('%s per %s'), $price, $this->singular_unit);
+		}
 
 		if ($this->value > 0 && $this->show_savings) {
 			$savings_renderer = new StoreSavingsCellRenderer();

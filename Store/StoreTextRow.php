@@ -12,7 +12,7 @@ class StoreTextRow extends SwatTableViewRow
 	// {{{ public properties
 
 	/**
-	 * Text to display 
+	 * Text to display
 	 *
 	 * @var string
 	 */

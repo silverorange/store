@@ -11,7 +11,7 @@ class StoreProductImage extends StoreImage
 {
 	// {{{ public function getUri()
 
-    public function getUri($shortname = 'large', $prefix = null)
+	public function getUri($shortname = 'large', $prefix = null)
 	{
 		return parent::getUri($shortname, $prefix);
 	}

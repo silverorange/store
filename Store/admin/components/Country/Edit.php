@@ -112,12 +112,12 @@ class StoreCountryEdit extends AdminDBEdit
 
 	protected function loadDBData()
 	{
-		$row = SwatDB::queryRowFromTable($this->app->db, 'Country', 
+		$row = SwatDB::queryRowFromTable($this->app->db, 'Country',
 			$this->fields, 'text:id', $this->id);
 
 		if ($row === null)
 			throw new AdminNotFoundException(
-				sprintf(Store::_('Country with id ‘%s’ not found.'), 
+				sprintf(Store::_('Country with id ‘%s’ not found.'),
 					$this->id));
 
 		$this->ui->setValues(get_object_vars($row));
@@ -125,4 +125,5 @@ class StoreCountryEdit extends AdminDBEdit
 
 	// }}}
 }
+
 ?>

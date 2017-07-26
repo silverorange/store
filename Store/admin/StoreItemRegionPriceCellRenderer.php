@@ -43,6 +43,7 @@ class StoreItemRegionPriceCellRenderer extends SwatMoneyCellRenderer
 		if (!$this->enabled)
 			$span->close();
 	}
+
 }
 
 ?>

@@ -194,8 +194,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	// {{{ protected function validateBillingAddressRequiredFields()
 
 	protected function validateBillingAddressRequiredFields(
-		StoreOrderAddress $address)
-	{
+		StoreOrderAddress $address
+	) {
 		$valid = true;
 		$required_fields = $this->getRequiredBillingAddressFields($address);
 
@@ -266,8 +266,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	// {{{ protected function validateBillingAddressProvState()
 
 	protected function validateBillingAddressProvState(
-		StoreOrderAddress $address)
-	{
+		StoreOrderAddress $address
+	) {
 		$valid = true;
 		$billing_provstate = $address->getInternalValue('provstate');
 
@@ -302,8 +302,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	// {{{ protected function getRequiredBillingAddressFields()
 
 	protected function getRequiredBillingAddressFields(
-		StoreOrderAddress $address)
-	{
+		StoreOrderAddress $address
+	) {
 		$fields = array(
 			'fullname',
 			'line1',
@@ -371,8 +371,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	// {{{ protected function validateShippingAddressRequiredFields()
 
 	protected function validateShippingAddressRequiredFields(
-		StoreOrderAddress $address)
-	{
+		StoreOrderAddress $address
+	) {
 		$valid = true;
 		$required_fields = $this->getRequiredShippingAddressFields($address);
 
@@ -413,8 +413,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	// {{{ protected function validateShippingAddressCountry()
 
 	protected function validateShippingAddressCountry(
-		StoreOrderAddress $address)
-	{
+		StoreOrderAddress $address
+	) {
 		$valid = true;
 		$country_ids = array();
 
@@ -443,8 +443,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	// {{{ protected function validateShippingAddressProvState()
 
 	protected function validateShippingAddressProvState(
-		StoreOrderAddress $address)
-	{
+		StoreOrderAddress $address
+	) {
 		$valid = true;
 		$shipping_provstate = $address->getInternalValue('provstate');
 
@@ -483,8 +483,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	// {{{ protected function validateShippingProvStateExclusion()
 
 	protected function validateShippingProvStateExclusion(
-		StoreOrderAddress $address)
-	{
+		StoreOrderAddress $address
+	) {
 		if (!isset($this->app->cart->checkout)) {
 			return true;
 		}
@@ -545,8 +545,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	// {{{ protected function getRequiredShippingAddressFields()
 
 	protected function getRequiredShippingAddressFields(
-		StoreOrderAddress $address)
-	{
+		StoreOrderAddress $address
+	) {
 		$fields = array(
 			'fullname',
 			'line1',
@@ -894,8 +894,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	// {{{ protected function addPaymentMethodToAccount()
 
 	protected function addPaymentMethodToAccount(
-		StoreOrderPaymentMethod $order_payment_method)
-	{
+		StoreOrderPaymentMethod $order_payment_method
+	) {
 		$account = $this->app->session->account;
 
 		// check that payment method is not already in account
@@ -1579,7 +1579,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 				$payment_method->amount = 0;
 				$adjustable_payment_methods[] = $payment_method;
 			} else {
-				$payment_total+= $payment_method->amount;
+				$payment_total += $payment_method->amount;
 			}
 		}
 
@@ -1594,7 +1594,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 					break;
 				} else {
 					$payment_method->amount = $max;
-					$adjustment-= $max;
+					$adjustment -= $max;
 				}
 			}
 
@@ -1615,7 +1615,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 					$done = true;
 				}
 
-				$partial_payment_total+= $payment_method->amount;
+				$partial_payment_total += $payment_method->amount;
 			}
 		}
 	}
@@ -1654,9 +1654,11 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 				$method1->payment_type->priority;
 		}
 
-		if ($result == 0)
-			$result = strcmp($method1->getTag(), $method2->getTag());
-
+		if ($result == 0) {
+			if ($method1->getTag() !== $method2->getTag()) {
+				$result = ($method1->getTag() > $method2->getTag()) ? 1 : -1;
+			}
+		}
 		return $result;
 	}
 
@@ -1670,7 +1672,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$payment_total = 0;
 		foreach ($order->payment_methods as $payment_method) {
 			$payment_method->showCardExpiry(false);
-			$payment_total+= $payment_method->amount;
+			$payment_total += $payment_method->amount;
 
 			echo '<tr><th class="payment">';
 			$payment_method->display();
@@ -1770,8 +1772,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	// {{{ protected function displayPaymentMethodToolLink()
 
 	protected function displayPaymentMethodToolLink(
-		StorePaymentMethod $payment_method)
-	{
+		StorePaymentMethod $payment_method
+	) {
 		$tag = $payment_method->getTag();
 
 		$tool = new SwatToolLink();

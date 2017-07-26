@@ -52,9 +52,13 @@ class StoreCartServer extends SiteXMLRPCServer
 	 * @return array An array containing: 'mini_cart', 'product_items',
 	 *               'total_items', 'total_products'
 	 */
-	public function addEntries($request_id, $entries, $source = null,
-		$source_category = null, $mini_cart = false)
-	{
+	public function addEntries(
+		$request_id,
+		$entries,
+		$source = null,
+		$source_category = null,
+		$mini_cart = false
+	) {
 		$product_id = null;
 
 		$added_entries = array();
@@ -169,9 +173,11 @@ class StoreCartServer extends SiteXMLRPCServer
 	 *
 	 * @return array
 	 */
-	public function getCartInfo($request_id, $product_id = null,
-		$get_mini_cart = false)
-	{
+	public function getCartInfo(
+		$request_id,
+		$product_id = null,
+		$get_mini_cart = false
+	) {
 		$product_entries  = 0; // total number of cart-enties for the product
 		$product_quantity = 0; // sum of all quantities for the product
 		$total_entries    = 0; // total number of cart-entries
@@ -210,13 +216,12 @@ class StoreCartServer extends SiteXMLRPCServer
 		$return['head_entries']     = $total_saved;
 
 		if ($product_id !== null) {
-			$class_name =  SwatDBClassMap::get('StoreProduct');
+			$class_name = SwatDBClassMap::get('StoreProduct');
 			$product = new $class_name();
 			$product->setDatabase($this->app->db);
 			$product->load($product_id);
 
-			$return['cart_message'] = (string)
-				$this->processor->getProductCartMessage($product);
+			$return['cart_message'] = (string)$this->processor->getProductCartMessage($product);
 		}
 
 		$return['cart_link'] = $this->getCartLink($return);

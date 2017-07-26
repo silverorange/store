@@ -624,6 +624,7 @@ class StoreProductDetails extends AdminIndex
 			break;
 		}
 	}
+
 	// }}}
 
 	// build phase
@@ -654,8 +655,11 @@ class StoreProductDetails extends AdminIndex
 			count($this->ui->getWidget('items_view')->model) == 0) {
 			$index_actions = $this->ui->getWidget('index_actions');
 			$index_actions->visible = true;
-			foreach ($index_actions->getActionItems() as $id => $widget)
-				if ($widget->id !== 'add') $widget->visible = false;
+			foreach ($index_actions->getActionItems() as $id => $widget) {
+				if ($widget->id !== 'add') {
+					$widget->visible = false;
+				}
+			}
 		}
 	}
 
@@ -820,9 +824,10 @@ class StoreProductDetails extends AdminIndex
 	// }}}
 	// {{{ protected function displayCategories()
 
-	protected function displayCategories(StoreCategoryWrapper $categories,
-		$display_canonical = false)
-	{
+	protected function displayCategories(
+		StoreCategoryWrapper $categories,
+		$display_canonical = false
+	) {
 		$primary_category = $this->product->primary_category;
 		$multiple_categories = (count($categories) > 1);
 
@@ -1127,10 +1132,10 @@ class StoreProductDetails extends AdminIndex
 		$has_items = (count($groups) > 0);
 
 		// if there is one row and the groupnum is 0 then there are no
-		// item_groups with items in them for this product
-		if (count($groups) == 0) {
-			// there are no items
-		} elseif (count($groups) == 1 && $groups->getFirst()->item_group == 0) {
+		// item_groups with items in them for this product. If $groups has 0
+		// elements, there are no items
+
+		if (count($groups) == 1 && $groups->getFirst()->item_group == 0) {
 			$num_groups = 0;
 		} elseif ($groups->getFirst()->item_group == 0) {
 			$num_groups = count($groups) - 1;

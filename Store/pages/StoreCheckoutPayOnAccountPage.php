@@ -85,7 +85,7 @@ class StoreCheckoutPayOnAccountPage extends StoreCheckoutEditPage
 			}
 		}
 
-		if ($list->value ===  'all' || $list->value ===  'custom') {
+		if ($list->value === 'all' || $list->value === 'custom') {
 			$account = $this->app->session->account;
 
 			$class_name = SwatDBClassMap::get('StorePaymentType');

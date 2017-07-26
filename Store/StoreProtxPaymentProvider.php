@@ -94,9 +94,11 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	 *
 	 * @sensitive $card_number
 	 */
-	public function pay(StoreOrder $order, $card_number,
-		$card_verification_value = null)
-	{
+	public function pay(
+		StoreOrder $order,
+		$card_number,
+		$card_verification_value = null
+	) {
 		$request = new StoreProtxPaymentRequest(
 			StorePaymentRequest::TYPE_PAY, $this->mode);
 
@@ -140,9 +142,11 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	 *
 	 * @sensitive $card_number
 	 */
-	public function hold(StoreOrder $order, $card_number,
-		$card_verification_value = null)
-	{
+	public function hold(
+		StoreOrder $order,
+		$card_number,
+		$card_verification_value = null
+	) {
 		$request = new StoreProtxPaymentRequest(
 			StorePaymentRequest::TYPE_HOLD, $this->mode);
 
@@ -281,15 +285,17 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	 * @return StorePaymentTransaction a new transaction object representing
 	 *                                  the refund transaction.
 	 */
-	public function refund(StorePaymentTransaction $transaction,
-		$description = '', $amount = null)
-	{
+	public function refund(
+		StorePaymentTransaction $transaction,
+		$description = '',
+		$amount = null
+	) {
 		$request = new StoreProtxPaymentRequest(
 			StorePaymentRequest::TYPE_REFUND, $this->mode);
 
 		// compose refund transaction id from order and original transaction
 		$transaction_id = $transaction->order->id.'-'.$transaction->id;
-		$amount = ($amount === null) ? $order->total : $amount; 
+		$amount = ($amount === null) ? $order->total : $amount;
 		if ($amount > 100000) {
 			throw new StoreException('Protx refunds can only be made for '.
 				'values of 100,000 or less.');
@@ -404,9 +410,10 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	 *                                  released if the initial request was a
 	 *                                  hold request.
 	 */
-	public function threeDomainSecureAuth(StorePaymentTransaction $transaction,
-		$pares)
-	{
+	public function threeDomainSecureAuth(
+		StorePaymentTransaction $transaction,
+		$pares
+	) {
 		$request = new StoreProtxPaymentRequest(
 			StorePaymentRequest::TYPE_3DS_AUTH, $this->mode);
 
@@ -451,9 +458,11 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	 *
 	 * @sensitive $card_number
 	 */
-	private function getCardFields(StoreOrder $order, $card_number,
-		$card_verification_value = null)
-	{
+	private function getCardFields(
+		StoreOrder $order,
+		$card_number,
+		$card_verification_value = null
+	) {
 		$payment_method = $order->payment_method;
 		$payment_type = $payment_method->payment_type;
 
@@ -756,9 +765,11 @@ class StoreProtxPaymentProvider extends StorePaymentProvider
 	 *
 	 * @return StorePaymentTransaction the payment transaction object.
 	 */
-	private function getPaymentTransaction(StoreProtxPaymentResponse $response,
-		$order_id, $request_type)
-	{
+	private function getPaymentTransaction(
+		StoreProtxPaymentResponse $response,
+		$order_id,
+		$request_type
+	) {
 		$transaction = new StorePaymentTransaction();
 		$transaction->createdate = new SwatDate();
 		$transaction->createdate->toUTC();

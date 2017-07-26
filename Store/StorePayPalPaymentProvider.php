@@ -22,9 +22,10 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	const EXPRESS_CHECKOUT_URL_LIVE =
 		'https://www.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=%s&useraction=%s';
 
+	// @codingStandardsIgnoreStart
 	const EXPRESS_CHECKOUT_URL_SANDBOX =
 		'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=%s&useraction=%s';
-
+	// @codingStandardsIgnoreEnd
 	// }}}
 	// {{{ protected properties
 
@@ -146,9 +147,11 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 * @sensitive $card_number
 	 * @sensitive $card_verification_value
 	 */
-	public function pay(StoreOrder $order, $card_number,
-		$card_verification_value = null)
-	{
+	public function pay(
+		StoreOrder $order,
+		$card_number,
+		$card_verification_value = null
+	) {
 		$request = $this->getDoDirectPaymentRequest($order, 'Sale',
 			$card_number, $card_verification_value);
 
@@ -206,9 +209,11 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 * @sensitive $card_number
 	 * @sensitive $card_verification_value
 	 */
-	public function hold(StoreOrder $order, $card_number,
-		$card_verification_value = null)
-	{
+	public function hold(
+		StoreOrder $order,
+		$card_number,
+		$card_verification_value = null
+	) {
 		$request = $this->getDoDirectPaymentRequest($order, 'Authorization',
 			$card_number, $card_verification_value);
 
@@ -257,9 +262,10 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 * @see StorePayPalPaymentProvider::getExpressCheckoutUri()
 	 * @see StorePayPalPaymentProvider::doExpressCheckout()
 	 */
-	public function setExpressCheckout(array $details,
-		array $payment_details = array())
-	{
+	public function setExpressCheckout(
+		array $details,
+		array $payment_details = array()
+	) {
 		$required_parameters = array('ReturnURL', 'CancelURL');
 		foreach ($required_parameters as $name) {
 			if (!array_key_exists($name, $details)) {
@@ -374,9 +380,11 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 * @see StorePayPalPaymentProvider::getExpressCheckoutUri()
 	 * @see StorePayPalPaymentProvider::doExpressCheckout()
 	 */
-	public function getExpressCheckoutDetails($token, StoreOrder $order,
-		MDB2_Driver_Common $db)
-	{
+	public function getExpressCheckoutDetails(
+		$token,
+		StoreOrder $order,
+		MDB2_Driver_Common $db
+	) {
 		$request = $this->getGetExpressCheckoutDetailsRequest($token);
 
 		try {
@@ -481,9 +489,14 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 * @see StorePayPalPaymentProvider::getExpressCheckoutDetails()
 	 * @see StorePayPalPaymentProvider::getExpressCheckoutUri()
 	 */
-	public function doExpressCheckout($token, $action,
-		$payer_id, StoreOrder $order, $notify_url = '', $custom = '')
-	{
+	public function doExpressCheckout(
+		$token,
+		$action,
+		$payer_id,
+		StoreOrder $order,
+		$notify_url = '',
+		$custom = ''
+	) {
 		switch ($action) {
 		case 'Authorizarion':
 			$transaction_type = StorePaymentRequest::TYPE_HOLD;
@@ -537,10 +550,14 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 * @sensitive $card_verification_value
 	 */
 	public function createRecurringPaymentsProfile(
-		StoreOrderPaymentMethod $payment_method, StoreOrder $order,
-		$profile_id, SwatDate $start_date, array $schedule_details,
-		$card_number = null, $card_verification_value = null)
-	{
+		StoreOrderPaymentMethod $payment_method,
+		StoreOrder $order,
+		$profile_id,
+		SwatDate $start_date,
+		array $schedule_details,
+		$card_number = null,
+		$card_verification_value = null
+	) {
 		$request = $this->getCreateRecurringPaymentsProfileRequest(
 			$payment_method, $order, $profile_id, $start_date,
 			$schedule_details, $card_number, $card_verification_value);
@@ -846,9 +863,11 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// }}}
 	// {{{ public function getPaymentDetails()
 
-	public function getPaymentDetails(StoreOrder $order,
-		$notify_url = '', $custom = '')
-	{
+	public function getPaymentDetails(
+		StoreOrder $order,
+		$notify_url = '',
+		$custom = ''
+	) {
 		$details = array();
 
 		$details['OrderTotal'] =
@@ -992,9 +1011,14 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// }}}
 	// {{{ protected function getDoExpressCheckoutPaymentRequest()
 
-	protected function getDoExpressCheckoutPaymentRequest($token,
-		$action, $payer_id, StoreOrder $order, $notify_url = '', $custom = '')
-	{
+	protected function getDoExpressCheckoutPaymentRequest(
+		$token,
+		$action,
+		$payer_id,
+		StoreOrder $order,
+		$notify_url = '',
+		$custom = ''
+	) {
 		return array(
 			'DoExpressCheckoutPaymentRequest' => array(
 				'Version' => '62.0',
@@ -1008,9 +1032,14 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// }}}
 	// {{{ protected function getDoExpressCheckoutPaymentRequestDetails()
 
-	protected function getDoExpressCheckoutPaymentRequestDetails($token,
-		$action, $payer_id, StoreOrder $order, $notify_url = '', $custom = '')
-	{
+	protected function getDoExpressCheckoutPaymentRequestDetails(
+		$token,
+		$action,
+		$payer_id,
+		StoreOrder $order,
+		$notify_url = '',
+		$custom = ''
+	) {
 		$details = array();
 
 		$details['Token']          = $token;
@@ -1117,8 +1146,10 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// {{{ protected function updateStoreOrderPaymentMethod()
 
 	protected function updateStoreOrderPaymentMethod(
-		StoreOrderPaymentMethod $payment_method, $token, $payer_info)
-	{
+		StoreOrderPaymentMethod $payment_method,
+		$token,
+		$payer_info
+	) {
 		$payment_method->setPayPalToken($token);
 
 		$fullname = $this->getStoreFullname($payer_info->PayerName);
@@ -1135,9 +1166,12 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// data-structure helper methods (direct)
 	// {{{ protected function getDoDirectPaymentRequest()
 
-	protected function getDoDirectPaymentRequest(StoreOrder $order, $action,
-		$card_number, $card_verification_value)
-	{
+	protected function getDoDirectPaymentRequest(
+		StoreOrder $order,
+		$action,
+		$card_number,
+		$card_verification_value
+	) {
 		return array(
 			'DoDirectPaymentRequest' => array(
 				'Version' => '1.0',
@@ -1151,9 +1185,12 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// }}}
 	// {{{ protected function getDoDirectPaymentRequestDetails()
 
-	protected function getDoDirectPaymentRequestDetails(StoreOrder $order,
-		$action, $card_number, $card_verification_value)
-	{
+	protected function getDoDirectPaymentRequestDetails(
+		StoreOrder $order,
+		$action,
+		$card_number,
+		$card_verification_value
+	) {
 		$payment_method = $order->payment_methods->getFirst();
 
 		$details = array();
@@ -1172,9 +1209,10 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// }}}
 	// {{{ protected function getPayerInfo()
 
-	protected function getPayerInfo(StoreOrder $order,
-		StorePaymentMethod $payment_method)
-	{
+	protected function getPayerInfo(
+		StoreOrder $order,
+		StorePaymentMethod $payment_method
+	) {
 		$details = array();
 
 		if ($order->email != '') {
@@ -1255,15 +1293,19 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// data-structure helper methods (recurring payments)
 	// {{{ protected function getCreateRecurringPaymentsProfileRequest()
 
-    /**
+	/**
 	 * @sensitive $card_number
 	 * @sensitive $card_verification_value
 	 */
 	protected function getCreateRecurringPaymentsProfileRequest(
-		StoreOrderPaymentMethod $payment_method, StoreOrder $order,
-		$profile_id, SwatDate $start_date, array $schedule_details,
-		$card_number = null, $card_verification_value = null)
-	{
+		StoreOrderPaymentMethod $payment_method,
+		StoreOrder $order,
+		$profile_id,
+		SwatDate $start_date,
+		array $schedule_details,
+		$card_number = null,
+		$card_verification_value = null
+	) {
 		return array(
 			'CreateRecurringPaymentsProfileRequest' => array(
 				'Version' => '60.0',
@@ -1278,15 +1320,19 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// }}}
 	// {{{ protected function getCreateRecurringPaymentsProfileRequestDetails()
 
-    /**
+	/**
 	 * @sensitive $card_number
 	 * @sensitive $card_verification_value
 	 */
 	protected function getCreateRecurringPaymentsProfileRequestDetails(
-		StoreOrderPaymentMethod $payment_method, StoreOrder $order,
-		$profile_id, SwatDate $start_date, array $schedule_details,
-		$card_number = null, $card_verification_value = null)
-	{
+		StoreOrderPaymentMethod $payment_method,
+		StoreOrder $order,
+		$profile_id,
+		SwatDate $start_date,
+		array $schedule_details,
+		$card_number = null,
+		$card_verification_value = null
+	) {
 		$details = array();
 
 		switch ($payment_method->payment_type->shortname) {
@@ -1323,8 +1369,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// {{{ protected function getRecurringPaymentsPaymentDetailsItems()
 
 	protected function getRecurringPaymentsPaymentDetailsItems(
-		StoreOrder $order)
-	{
+		StoreOrder $order
+	) {
 		$details = array();
 
 		foreach ($order->items as $item) {
@@ -1338,8 +1384,10 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// {{{ protected function getRecurringPaymentsProfileDetails()
 
 	protected function getRecurringPaymentsProfileDetails(
-		StoreOrder $order, $profile_id, SwatDate $start_date)
-	{
+		StoreOrder $order,
+		$profile_id,
+		SwatDate $start_date
+	) {
 		$details = array();
 
 		$details['SubscriberName'] = $this->formatString(
@@ -1361,10 +1409,12 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	// data-structure helper methods (shared)
 	// {{{ protected function getCreditCardDetails()
 
-	protected function getCreditCardDetails(StoreOrder $order,
-		StoreOrderPaymentMethod $payment_method, $card_number,
-			$card_verification_value)
-	{
+	protected function getCreditCardDetails(
+		StoreOrder $order,
+		StoreOrderPaymentMethod $payment_method,
+		$card_number,
+		$card_verification_value
+	) {
 		$details = array();
 
 		$details['CardOwner'] = $this->getPayerInfo($order, $payment_method);
@@ -1504,3 +1554,5 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 	// }}}
 }
+
+?>

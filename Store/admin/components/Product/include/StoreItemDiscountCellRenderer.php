@@ -12,7 +12,7 @@ class StoreItemDiscountCellRenderer extends SwatLinkCellRenderer
 	public $edit_text = 'edit';
 	public $id;
 	public $db;
-	
+
 	public function render()
 	{
 		$sql = 'select count(QuantityDiscount.id)
@@ -38,6 +38,7 @@ class StoreItemDiscountCellRenderer extends SwatLinkCellRenderer
 			printf(Store::_(' (%s)'), SwatString::numberFormat($num));
 		}
 	}
+
 }
 
 ?>

@@ -9,6 +9,7 @@
  */
 class StoreCategoryProductDependency extends AdminSummaryDependency
 {
+
 	protected function getDependencyText($count)
 	{
 		$message = Store::ngettext('contains %s product',
@@ -18,6 +19,7 @@ class StoreCategoryProductDependency extends AdminSummaryDependency
 
 		return $message;
 	}
+
 }
 
 ?>

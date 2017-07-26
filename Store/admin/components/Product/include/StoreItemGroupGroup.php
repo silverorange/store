@@ -15,7 +15,7 @@ class StoreItemGroupGroup extends SwatTableViewGroup
 	 * @var array
 	 */
 	public $group_info;
-	
+
 	protected function displayRenderersInternal($row)
 	{
 		// the empty groupnum is set to zero in the sql select statement.
@@ -35,6 +35,7 @@ class StoreItemGroupGroup extends SwatTableViewGroup
 			}
 		}
 	}
+
 }
 
 ?>

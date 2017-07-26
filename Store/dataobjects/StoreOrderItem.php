@@ -312,9 +312,10 @@ class StoreOrderItem extends SwatDBDataObject
 	// }}}
 	// {{{ public function setAvailableItemCache()
 
-	public function setAvailableItemCache(StoreRegion $region,
-		StoreItem $item = null)
-	{
+	public function setAvailableItemCache(
+		StoreRegion $region,
+		StoreItem $item = null
+	) {
 		$this->available_items_cache[$region->id] = $item;
 	}
 
@@ -335,7 +336,6 @@ class StoreOrderItem extends SwatDBDataObject
 		if ($this->item_cache !== false) {
 			$item = $this->item_cache;
 		} else {
-			
 			$item = null;
 
 			$wrapper = SwatDBClassMap::get('StoreItemWrapper');

@@ -119,4 +119,5 @@ class StoreArticleEdit extends SiteArticleEdit
 
 	// }}}
 }
+
 ?>

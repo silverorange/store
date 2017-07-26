@@ -278,7 +278,7 @@ class StoreCartPage extends SitePage
 
 		foreach ($continue_button_ids as $id)
 			if ($this->ui->hasWidget($id))
-				$buttons[]= $this->ui->getWidget($id);
+				$buttons[] = $this->ui->getWidget($id);
 
 		return $buttons;
 	}
@@ -1032,9 +1032,11 @@ class StoreCartPage extends SitePage
 	// {{{ protected function addItemMinimumQuantityGroupMessage()
 
 	protected function addItemMinimumQuantityGroupMessage(
-		StoreItemMinimumQuantityGroup $group, array $entries, $quantity,
-		SwatForm $form)
-	{
+		StoreItemMinimumQuantityGroup $group,
+		array $entries,
+		$quantity,
+		SwatForm $form
+	) {
 		$this->item_minimum_quantity_group_warnings[] = $group->id;
 
 		$skus = array();
@@ -1102,8 +1104,8 @@ class StoreCartPage extends SitePage
 	// {{{ protected function getItemMinimumQuantityGroupForm()
 
 	protected function getItemMinimumQuantityGroupForm(
-		StoreItemMinimumQuantityGroup $group)
-	{
+		StoreItemMinimumQuantityGroup $group
+	) {
 		$form = new SwatForm('item_minimum_quantity_group_'.$group->shortname);
 		$form->action = $this->source;
 

@@ -29,6 +29,7 @@ class StoreProductCollectionDependency extends AdminListDependency
 
 		return $message;
 	}
+
 }
 
 ?>

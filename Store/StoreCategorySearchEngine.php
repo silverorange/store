@@ -53,7 +53,7 @@ class StoreCategorySearchEngine extends SiteSearchEngine
 		if ($this->fulltext_result === null)
 			$clause = sprintf('order by Category.title');
 		else
-			$clause = 
+			$clause =
 				$this->fulltext_result->getOrderByClause('Category.title');
 
 		return $clause;

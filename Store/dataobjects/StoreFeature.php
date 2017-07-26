@@ -118,6 +118,7 @@ class StoreFeature extends SwatDBDataObject
 		$this->registerInternalProperty('instance',
 			SwatDBClassMap::get('SiteInstance'));
 	}
+
 	// }}}
 	// {{{ protected function getSerializableSubDataObjects()
 

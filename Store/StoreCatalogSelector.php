@@ -40,7 +40,7 @@ class StoreCatalogSelector extends SwatFlydown
 	{
 		$this->show_blank = false;
 
-		$this->value = 
+		$this->value =
 			self::constructValue($this->scope, $this->catalog, $this->region);
 
 		parent::display();
@@ -58,9 +58,11 @@ class StoreCatalogSelector extends SwatFlydown
 	// }}}
 	// {{{ private static function constructValue()
 
-	private static function constructValue($scope, $catalog = null,
-		$region = null)
-	{
+	private static function constructValue(
+		$scope,
+		$catalog = null,
+		$region = null
+	) {
 		switch ($scope) {
 		case self::ONE_CATALOG:
 			return sprintf('%s_%s', $scope, $catalog);
@@ -102,7 +104,7 @@ class StoreCatalogSelector extends SwatFlydown
 	protected function &getOptions()
 	{
 		$options = array();
-		
+
 		$options[] = new SwatOption(
 			self::constructValue(self::ALL_CATALOGS), Store::_('All'));
 

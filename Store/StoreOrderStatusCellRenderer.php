@@ -39,7 +39,7 @@ class StoreOrderStatusCellRenderer extends SwatCellRenderer
 	{
 		$title = $this->status->title;
 		if ($this->cancelled)
-			$title.=' ('.Store::_('cancelled').')';
+			$title.= ' ('.Store::_('cancelled').')';
 
 		$image_path = 'packages/store/images/';
 

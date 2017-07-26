@@ -39,7 +39,7 @@ class StoreProductProductCollection extends AdminSearch
 
 		$status_array = array();
 		foreach (StoreItemStatusList::statuses() as $status) {
-			$status_array[$status->id]= $status->title;
+			$status_array[$status->id] = $status->title;
 		}
 		$status_flydown = $this->ui->getWidget('search_item_status');
 		$status_flydown->addOptionsByArray($status_array);

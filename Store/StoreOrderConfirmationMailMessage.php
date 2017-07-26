@@ -7,8 +7,8 @@
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-abstract class StoreOrderConfirmationMailMessage
-	extends SiteMultipartMailMessage
+abstract class StoreOrderConfirmationMailMessage extends
+	SiteMultipartMailMessage
 {
 	// {{{ protected properties
 
@@ -180,7 +180,7 @@ abstract class StoreOrderConfirmationMailMessage
 			$details_view->getField('shipping_address')->visible = false;
 		}
 
-		if (count($order->payment_methods) == 0  &&
+		if (count($order->payment_methods) === 0 &&
 			$details_view->hasField('payment_method')) {
 			$details_view->getField('payment_method')->visible = false;
 		}
@@ -456,8 +456,8 @@ abstract class StoreOrderConfirmationMailMessage
 	// {{{ protected function displayPaymentMethodText()
 
 	protected function displayPaymentMethodText(
-		StoreOrderPaymentMethod $payment_method)
-	{
+		StoreOrderPaymentMethod $payment_method
+	) {
 		$payment_method->displayAsText(true, self::LINE_BREAK);
 	}
 

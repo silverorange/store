@@ -220,9 +220,11 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	 *
 	 * @sensitive $number
 	 */
-	public function setCardNumber($number, $store_unencrypted = false,
-		$store_encrypted = true)
-	{
+	public function setCardNumber(
+		$number,
+		$store_unencrypted = false,
+		$store_encrypted = true
+	) {
 		$this->card_number_preview = mb_substr($number, -4);
 
 		if ($store_encrypted) {
@@ -430,9 +432,12 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	 *
 	 * @sensitive $passphrase
 	 */
-	public static function decrypt(Crypt_GPG $gpg, $encrypted_data, $key_id,
-		$passphrase = null)
-	{
+	public static function decrypt(
+		Crypt_GPG $gpg,
+		$encrypted_data,
+		$key_id,
+		$passphrase = null
+	) {
 		$gpg->clearDecryptKeys();
 		$gpg->addDecryptKey($key_id, $passphrase);
 		$decrypted_data = $gpg->decrypt($encrypted_data);
@@ -518,8 +523,9 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	// {{{ protected function displayInternal()
 
 	protected function displayInternal(
-		$display_details = true, $passphrase = null)
-	{
+		$display_details = true,
+		$passphrase = null
+	) {
 		if ($this->payment_type->isCard()) {
 			$this->card_type->display();
 
