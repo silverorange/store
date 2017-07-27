@@ -14,7 +14,7 @@ class StoreCatalogEdit extends AdminDBEdit
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/Catalog/edit.xml';
+	protected $ui_xml = __DIR__.'/edit.xml';
 
 	// }}}
 

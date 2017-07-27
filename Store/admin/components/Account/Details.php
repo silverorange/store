@@ -27,7 +27,7 @@ class StoreAccountDetails extends SiteAccountDetails
 
 	protected function getUiXml()
 	{
-		return 'Store/admin/components/Account/details.xml';
+		return __DIR__.'/details.xml';
 	}
 
 	// }}}

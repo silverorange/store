@@ -11,7 +11,7 @@ class StoreAccountEditPage extends SiteAccountEditPage
 
 	protected function getUiXml()
 	{
-		return 'Store/pages/account-edit.xml';
+		return __DIR__.'/account-edit.xml';
 	}
 
 	// }}}

@@ -45,7 +45,7 @@ abstract class StoreOrderDetails extends AdminPage
 
 	protected function getUiXml()
 	{
-		return 'Store/admin/components/Order/details.xml';
+		return __DIR__.'/details.xml';
 	}
 
 	// }}}

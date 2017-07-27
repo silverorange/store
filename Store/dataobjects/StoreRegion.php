@@ -80,8 +80,6 @@ class StoreRegion extends SwatDBDataObject
 	 */
 	protected function loadPaymentTypes()
 	{
-		require_once 'Store/dataobjects/StorePaymentTypeWrapper.php';
-
 		$sql = sprintf(
 			'select PaymentType.* from PaymentType
 				inner join PaymentTypeRegionBinding on
@@ -109,8 +107,6 @@ class StoreRegion extends SwatDBDataObject
 	 */
 	protected function loadCardTypes()
 	{
-		require_once 'Store/dataobjects/StoreCardTypeWrapper.php';
-
 		$sql = sprintf(
 			'select CardType.* from CardType
 				inner join CardTypeRegionBinding on

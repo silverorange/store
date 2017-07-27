@@ -594,8 +594,6 @@ class StoreProduct extends SwatDBDataObject
 
 	protected function loadCategories()
 	{
-		require_once 'Store/dataobjects/StoreCategoryWrapper.php';
-
 		$sql = 'select id, title, shortname, parent
 			from Category where id in
 				(select category from CategoryProductBinding
@@ -991,8 +989,6 @@ class StoreProduct extends SwatDBDataObject
 	 */
 	public function displayAsTile($link, $image_size = 'thumb')
 	{
-		require_once 'Swat/SwatString.php';
-
 		$anchor_tag = new SwatHtmlTag('a');
 		$anchor_tag->href = $link;
 		$anchor_tag->setContent('more&nbsp;»');

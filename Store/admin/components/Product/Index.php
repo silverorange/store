@@ -11,8 +11,8 @@ class StoreProductIndex extends AdminSearch
 {
 	// {{{ protected properties
 
-	protected $index_xml = 'Store/admin/components/Product/index.xml';
-	protected $search_xml = 'Store/admin/components/Product/search.xml';
+	protected $index_xml = __DIR__.'/index.xml';
+	protected $search_xml = __DIR__.'/search.xml';
 
 	// }}}
 	// {{{ private properties

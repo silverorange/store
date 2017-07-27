@@ -13,7 +13,7 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 
 	protected function getUiXml()
 	{
-		return 'Store/pages/checkout-basic-info.xml';
+		return __DIR__.'/checkout-basic-info.xml';
 	}
 
 	// }}}

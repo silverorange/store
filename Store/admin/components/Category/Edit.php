@@ -11,7 +11,7 @@ class StoreCategoryEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
-	protected $ui_xml = 'Store/admin/components/Category/edit.xml';
+	protected $ui_xml = __DIR__.'/edit.xml';
 
 	/**
 	 * @var StoreCategory
@@ -157,7 +157,6 @@ class StoreCategoryEdit extends AdminDBEdit
 			return;
 		}
 
-		require_once 'NateGoSearch/NateGoSearch.php';
 		$type = NateGoSearch::getDocumentType($this->app->db, 'category');
 
 		if ($type === null) {

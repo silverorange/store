@@ -13,7 +13,7 @@ class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
 
 	protected function getUiXml()
 	{
-		return 'Store/pages/checkout-shipping-type.xml';
+		return __DIR__.'/checkout-shipping-type.xml';
 	}
 
 	// }}}

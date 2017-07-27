@@ -107,7 +107,7 @@ class StoreCartPage extends SitePage
 
 	protected function getUiXml()
 	{
-		return 'Store/pages/cart.xml';
+		return __DIR__.'/cart.xml';
 	}
 
 	// }}}

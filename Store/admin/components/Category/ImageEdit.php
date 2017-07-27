@@ -14,7 +14,7 @@ class StoreCategoryImageEdit extends AdminDBEdit
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/Category/image-edit.xml';
+	protected $ui_xml = __DIR__.'/image-edit.xml';
 
 	/**
 	 * @var StoreCategoryImage

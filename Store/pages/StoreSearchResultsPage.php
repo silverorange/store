@@ -19,7 +19,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 
 	public function init()
 	{
-		$this->ui_xml = 'Store/pages/search-results.xml';
+		$this->ui_xml = __DIR__.'/search-results.xml';
 		$this->addSearchDataField('type');
 		$this->addSearchDataField('category');
 		$this->addSearchDataField('attr', true);

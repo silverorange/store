@@ -34,7 +34,7 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
 
 	protected function getUiXml()
 	{
-		return 'Store/pages/account-payment-method-edit.xml';
+		return __DIR__.'/account-payment-method-edit.xml';
 	}
 
 	// }}}

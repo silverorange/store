@@ -118,23 +118,18 @@ abstract class StorePaymentProvider
 
 			foreach (self::$packages as $package) {
 				$class_name = $package.$sanitized_driver.'PaymentProvider';
-
-				if (!class_exists($class_name) &&
-					self::driverFileExists($sanitized_driver, $package)) {
-					$filename = $package.'/'.
-						$package.$sanitized_driver.'PaymentProvider.php';
-
-					include_once $filename;
-				}
-
 				if (class_exists($class_name)) {
 					break;
 				}
 			}
 
 			if (!class_exists($class_name)) {
-				throw new Exception(sprintf('No payment provider available '.
-					'for driver %s', $driver));
+				throw new Exception(
+					sprintf(
+						'No payment provider available for driver %s',
+						$driver
+					)
+				);
 			}
 
 			$loaded_drivers[$sanitized_driver] = $class_name;
@@ -191,37 +186,6 @@ abstract class StorePaymentProvider
 		if (in_array($package, self::$packages, true)) {
 			self::$packages = array_diff(self::$packages, array($package));
 		}
-	}
-
-	// }}}
-	// {{{ protected static function driverFileExists()
-
-	/**
-	 * Gets whether or not a payment provider driver exists for the given
-	 * package
-	 *
-	 * @param string $driver  the driver name.
-	 * @param string $package the package.
-	 *
-	 * @return boolean true if the file exists and false if it does not.
-	 */
-	public static function driverFileExists($driver, $package)
-	{
-		$file_exists = false;
-
-		$filename = $package.'/'.$package.$driver.'PaymentProvider.php';
-
-		$include_paths = explode(':', get_include_path());
-		foreach ($include_paths as $include_path) {
-			$package_filename = $include_path.'/'.$filename;
-
-			if (file_exists($package_filename)) {
-				$file_exists = true;
-				break;
-			}
-		}
-
-		return $file_exists;
 	}
 
 	// }}}
@@ -313,7 +277,6 @@ abstract class StorePaymentProvider
 		$card_number,
 		$card_verification_value = null
 	) {
-		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',
 			get_class($this), __FUNCTION__));
@@ -341,7 +304,6 @@ abstract class StorePaymentProvider
 		$card_number,
 		$card_verification_value = null
 	) {
-		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',
 			get_class($this), __FUNCTION__));
@@ -366,7 +328,6 @@ abstract class StorePaymentProvider
 	 */
 	public function release(StorePaymentMethodTransaction $transaction)
 	{
-		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',
 			get_class($this), __FUNCTION__));
@@ -396,7 +357,6 @@ abstract class StorePaymentProvider
 	 */
 	public function abort(StorePaymentMethodTransaction $transaction)
 	{
-		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',
 			get_class($this), __FUNCTION__));
@@ -430,7 +390,6 @@ abstract class StorePaymentProvider
 		$card_number,
 		$card_verification_value = null
 	) {
-		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',
 			get_class($this), __FUNCTION__));
@@ -456,7 +415,6 @@ abstract class StorePaymentProvider
 	 */
 	public function verifiedPay(StorePaymentMethodTransaction $transaction)
 	{
-		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',
 			get_class($this), __FUNCTION__));
@@ -492,7 +450,6 @@ abstract class StorePaymentProvider
 		$description = '',
 		$amount = null
 	) {
-		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',
 			get_class($this), __FUNCTION__));
@@ -522,7 +479,6 @@ abstract class StorePaymentProvider
 	 */
 	public function void(StorePaymentMethodTransaction $transaction)
 	{
-		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',
 			get_class($this), __FUNCTION__));
@@ -560,7 +516,6 @@ abstract class StorePaymentProvider
 		StorePaymentMethodTransaction $transaction,
 		$pares
 	) {
-		require_once 'Store/exceptions/StoreUnimplementedException.php';
 		throw new StoreUnimplementedException(sprintf(
 			'%s does not implement the %s() method.',
 			get_class($this), __FUNCTION__));

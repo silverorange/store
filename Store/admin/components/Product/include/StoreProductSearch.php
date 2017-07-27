@@ -8,7 +8,7 @@
  *
  * @package   Store
  * @copyright 2006-2016 silverorange
- * @see       Store/admin/components/Product/search.xml
+ * @see       search.xml
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductSearch
@@ -54,8 +54,6 @@ class StoreProductSearch
 
 		$manager = $db->manager;
 		if (in_array('nategosearchqueue', $manager->listTables())) {
-			require_once 'NateGoSearch/NateGoSearch.php';
-			require_once 'Site/SiteNateGoFulltextSearchEngine.php';
 			$type = NateGoSearch::getDocumentType($this->db,
 				$this->getSearchType());
 

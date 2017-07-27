@@ -14,7 +14,7 @@ class StoreCatalogClone extends AdminDBEdit
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/Catalog/clone.xml';
+	protected $ui_xml = __DIR__.'/clone.xml';
 
 	// }}}
 
@@ -72,7 +72,6 @@ class StoreCatalogClone extends AdminDBEdit
 			return;
 		}
 
-		require_once 'NateGoSearch/NateGoSearch.php';
 		$type = NateGoSearch::getDocumentType($this->app->db, 'product');
 
 		if ($type === null)

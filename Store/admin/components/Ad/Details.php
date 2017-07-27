@@ -26,7 +26,7 @@ class StoreAdDetails extends SiteAdDetails
 	public function __construct(SiteApplication $app, SiteLayout $layout = null)
 	{
 		parent::__construct($app, $layout);
-		$this->ui_xml = 'Store/admin/components/Ad/details.xml';
+		$this->ui_xml = __DIR__.'/details.xml';
 	}
 
 	// }}}

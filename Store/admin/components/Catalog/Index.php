@@ -14,7 +14,7 @@ class StoreCatalogIndex extends AdminIndex
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/Catalog/index.xml';
+	protected $ui_xml = __DIR__.'/index.xml';
 
 	// }}}
 	// {{{ private properties

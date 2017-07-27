@@ -14,7 +14,7 @@ class StoreProvStateIndex extends AdminIndex
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/ProvState/index.xml';
+	protected $ui_xml = __DIR__.'/index.xml';
 
 	// }}}
 

@@ -42,7 +42,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
 	protected function getUiXml()
 	{
-		return 'Store/pages/checkout-payment-method.xml';
+		return __DIR__.'/checkout-payment-method.xml';
 	}
 
 	// }}}

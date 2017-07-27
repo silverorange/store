@@ -22,7 +22,7 @@ class StoreSearchPage extends StoreSearchResultsPage
 	 *
 	 * @var string
 	 */
-	protected $form_ui_xml = 'Store/pages/search-form.xml';
+	protected $form_ui_xml = __DIR__.'/search-form.xml';
 
 	// }}}
 

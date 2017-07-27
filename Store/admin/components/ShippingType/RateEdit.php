@@ -25,7 +25,7 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
 	 */
 	protected $shipping_rate;
 
-	protected $ui_xml = 'Store/admin/components/ShippingType/rate-edit.xml';
+	protected $ui_xml = __DIR__.'/rate-edit.xml';
 
 	// }}}
 

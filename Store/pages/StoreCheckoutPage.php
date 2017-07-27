@@ -21,7 +21,7 @@ abstract class StoreCheckoutPage extends SiteUiPage
 
 	protected function getBaseUiXml()
 	{
-		return 'Store/pages/checkout.xml';
+		return __DIR__.'/checkout.xml';
 	}
 
 	// }}}

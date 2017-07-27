@@ -123,7 +123,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 
 	protected function getUiXml()
 	{
-		return 'Store/admin/components/Account/addressedit.xml';
+		return __DIR__.'/addressedit.xml';
 	}
 
 	// }}}

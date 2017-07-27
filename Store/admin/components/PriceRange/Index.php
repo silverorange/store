@@ -14,7 +14,7 @@ class StorePriceRangeIndex extends AdminIndex
 	/**
 	 * @var string
 	 */
-	protected $ui_xml = 'Store/admin/components/PriceRange/index.xml';
+	protected $ui_xml = __DIR__.'/index.xml';
 
 	// }}}
 

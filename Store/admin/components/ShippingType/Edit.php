@@ -11,7 +11,7 @@ class StoreShippingTypeEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
-	protected $ui_xml = 'Store/admin/components/ShippingType/edit.xml';
+	protected $ui_xml = __DIR__.'/edit.xml';
 
 	/**
 	 * @var VanBourgondienShippingType

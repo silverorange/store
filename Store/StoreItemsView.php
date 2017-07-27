@@ -11,7 +11,7 @@ class StoreItemsView extends SwatControl
 {
 	// {{{ public properties
 
-	public $ui_xml = 'Store/items-view.xml';
+	public $ui_xml = __DIR__.'/items-view.xml';
 	public $ui;
 
 	// }}}

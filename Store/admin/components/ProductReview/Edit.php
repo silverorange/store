@@ -11,7 +11,7 @@ class StoreProductReviewEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
-	protected $ui_xml = 'Store/admin/components/ProductReview/edit.xml';
+	protected $ui_xml = __DIR__.'/edit.xml';
 
 	/**
 	 * @var StoreProductReview
@@ -84,7 +84,7 @@ class StoreProductReviewEdit extends AdminDBEdit
 
 	protected function getUiXml()
 	{
-		return 'Store/admin/components/ProductReview/edit.xml';
+		return __DIR__.'/edit.xml';
 	}
 
 	// }}}

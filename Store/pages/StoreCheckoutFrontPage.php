@@ -13,7 +13,7 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
 
 	protected function getUiXml()
 	{
-		return 'Store/pages/checkout-front.xml';
+		return __DIR__.'/checkout-front.xml';
 	}
 
 	// }}}

@@ -13,7 +13,7 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
 
 	protected function getUiXml()
 	{
-		return 'Store/pages/checkout-thank-you.xml';
+		return __DIR__.'/checkout-thank-you.xml';
 	}
 
 	// }}}

@@ -23,7 +23,7 @@ class StoreCategoryImageDelete extends AdminDBDelete
 
 	protected function initInternal()
 	{
-		$this->ui_xml = 'Store/admin/components/Product/image-delete.xml';
+		$this->ui_xml = __DIR__.'/../Product/image-delete.xml';
 		parent::initInternal();
 
 		$id = SiteApplication::initVar('id');

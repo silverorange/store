@@ -21,7 +21,7 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 
 	protected function getUiXml()
 	{
-		return 'Store/pages/checkout-shipping-address.xml';
+		return __DIR__.'/checkout-shipping-address.xml';
 	}
 
 	// }}}

@@ -51,7 +51,7 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 
 	protected function getUiXml()
 	{
-		return 'Store/pages/account-address-edit.xml';
+		return __DIR__.'/account-address-edit.xml';
 	}
 
 	// }}}

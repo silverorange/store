@@ -76,8 +76,6 @@ class StoreCatalog extends SwatDBDataObject
 	 */
 	protected function loadClone()
 	{
-		require_once 'Store/dataobjects/StoreCatalogWrapper.php';
-
 		$sql = sprintf('select * from Catalog where id =
 			(select clone from CatalogCloneView where catalog = %s)',
 			$this->db->quote($this->id, 'integer'));

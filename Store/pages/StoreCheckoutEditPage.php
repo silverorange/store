@@ -72,7 +72,7 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 
 	protected function getEditUiXml()
 	{
-		return 'Store/pages/checkout-edit.xml';
+		return __DIR__.'/checkout-edit.xml';
 	}
 
 	// }}}

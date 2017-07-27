@@ -43,7 +43,7 @@ class StoreDashboardIndex extends AdminIndex
 
 	protected function getUiXml()
 	{
-		return 'Store/admin/components/Dashboard/index.xml';
+		return __DIR__.'/index.xml';
 	}
 
 	// }}}

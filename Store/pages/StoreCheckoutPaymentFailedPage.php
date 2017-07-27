@@ -13,7 +13,7 @@ class StoreCheckoutPaymentFailedPage extends StoreCheckoutFinalPage
 
 	protected function getUiXml()
 	{
-		return 'Store/pages/checkout-payment-failed.xml';
+		return __DIR__.'/checkout-payment-failed.xml';
 	}
 
 	// }}}

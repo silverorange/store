@@ -25,7 +25,7 @@ abstract class StoreNotVisiblePage extends StorePage
 		parent::init();
 
 		$this->ui = new SwatUI();
-		$this->ui->loadFromXML('Store/pages/not-visible-page.xml');
+		$this->ui->loadFromXML(__DIR__.'/not-visible-page.xml');
 	}
 
 	// }}}

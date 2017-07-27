@@ -11,7 +11,7 @@ class StoreProductEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
-	protected $ui_xml = 'Store/admin/components/Product/edit.xml';
+	protected $ui_xml = __DIR__.'/edit.xml';
 	protected $product;
 
 	// }}}
@@ -285,7 +285,6 @@ class StoreProductEdit extends AdminDBEdit
 			return;
 		}
 
-		require_once 'NateGoSearch/NateGoSearch.php';
 		$type = NateGoSearch::getDocumentType($this->app->db, 'product');
 
 		if ($type === null) {

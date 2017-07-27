@@ -16,7 +16,7 @@ class StoreProductImageDelete extends AdminDBDelete
 {
 	// {{{ private properties
 
-	protected $ui_xml = 'Store/admin/components/Product/image-delete.xml';
+	protected $ui_xml = __DIR__.'/image-delete.xml';
 
 	// }}}
 	// {{{ private properties

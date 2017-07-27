@@ -38,7 +38,7 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 
 	protected function getUiXml()
 	{
-		return 'Store/admin/components/SalesByRegionReport/details.xml';
+		return __DIR__.'/details.xml';
 	}
 
 	// }}}

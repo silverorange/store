@@ -11,7 +11,7 @@ class StoreSaleDiscountEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
-	protected $ui_xml = 'Store/admin/components/SaleDiscount/edit.xml';
+	protected $ui_xml = __DIR__.'/edit.xml';
 	protected $sale_discount;
 
 	// }}}
