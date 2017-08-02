@@ -1244,46 +1244,15 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 	protected function getPersonName(StoreOrderPaymentMethod $payment_method)
 	{
-		$fullname = $payment_method->card_fullname;
-
-		$midpoint = intval(floor(mb_strlen($fullname) / 2));
-
-		// get space closest to the middle of the string
-		$left_pos  = mb_strrpos(
-			$fullname,
-			' ',
-			-mb_strlen($fullname) + $midpoint
+		$parts = SiteFullnameParser::parse(
+			$payment_method->card_fullname,
+			SiteFullnameParser::ALWAYS_BOTH
 		);
-
-		$right_pos = mb_strpos($fullname, ' ', $midpoint);
-
-		if ($left_pos === false && $right_pos === false) {
-			// There is no first and last name division, just split string for
-			// PayPal's sake.
-			$pos = $midpoint;
-		} elseif ($left_pos === false) {
-			$pos = $right_pos;
-		} elseif ($right_pos === false) {
-			$pos = $left_pos;
-		} elseif (($midpoint - $left_pos) <= ($right_pos - $midpoint)) {
-			$pos = $left_pos;
-		} else {
-			$pos = $right_pos;
-		}
-
-		// split name into first and last parts in roughly the middle
-		if ($pos === false) {
-			$first_name = mb_substr($fullname, 0, $midpoint);
-			$last_name  = mb_substr($fullname, $midpoint);
-		} else {
-			$first_name = mb_substr($fullname, 0, $pos);
-			$last_name  = mb_substr($fullname, $pos + 1);
-		}
 
 		$details = array();
 
-		$details['FirstName'] = $this->formatString($first_name, 25);
-		$details['LastName'] = $this->formatString($last_name, 25);
+		$details['FirstName'] = $this->formatString($parts['first'], 25);
+		$details['LastName'] = $this->formatString($parts['last'], 25);
 
 		return $details;
 	}
