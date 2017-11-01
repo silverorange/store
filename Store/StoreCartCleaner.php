@@ -112,10 +112,13 @@ class StoreCartCleaner extends SiteCommandLineApplication
 
 	protected function getDefaultModuleList()
 	{
-		return array(
-			'config'   => 'StoreCommandLineConfigModule',
-			'database' => 'SiteDatabaseModule',
-			'session'  => 'SiteSessionModule',
+		return array_merge(
+			parent::getDefaultModuleList(),
+			[
+				'config' => StoreCommandLineConfigModule::class,
+				'database' => SiteDatabaseModule::class,
+				'session' => SiteSessionModule::class,
+			]
 		);
 	}
 

@@ -313,9 +313,12 @@ class StoreOrderCommentDigestMailer extends SiteCommandLineApplication
 	 */
 	protected function getDefaultModuleList()
 	{
-		return array(
-			'config'   => 'SiteConfigModule',
-			'database' => 'SiteDatabaseModule',
+		return array_merge(
+			parent::getDefaultModuleList(),
+			[
+				'config' => StoreCommandLineConfigModule::class,
+				'database' => SiteDatabaseModule::class,
+			]
 		);
 	}
 
