@@ -91,20 +91,23 @@ abstract class StoreApplication extends SiteWebApplication
 
 	protected function getDefaultModuleList()
 	{
-		return array(
-			'database'  => 'SiteDatabaseModule',
-			'session'   => 'SiteAccountSessionModule',
-			'cookie'    => 'SiteCookieModule',
-			'cart'      => 'StoreCartModule',
-			'checkout'  => 'StoreCheckoutModule',
-			'mailchimp' => 'StoreMailChimpModule',
-			'messages'  => 'SiteMessagesModule',
-			'config'    => 'SiteConfigModule',
-			'ads'       => 'SiteAdModule',
-			'analytics' => 'SiteAnalyticsModule',
-			'timer'     => 'SiteTimerModule',
-			'notifier'  => 'SiteNotifierModule',
-			'crypt'     => 'SiteCryptModule',
+		return array_merge(
+			parent::getDefaultModuleList(),
+			[
+				'database' => SiteDatabaseModule::class,
+				'session' => SiteAccountSessionModule::class,
+				'cookie' => SiteCookieModule::class,
+				'cart' => StoreCartModule::class,
+				'checkout' => StoreCheckoutModule::class,
+				'mailchimp' => StoreMailChimpModule::class,
+				'messages' => SiteMessagesModule::class,
+				'config' => SiteConfigModule::class,
+				'ads' => SiteAdModule::class,
+				'analytics' => SiteAnalyticsModule::class,
+				'timer' => SiteTimerModule::class,
+				'notifier' => SiteNotifierModule::class,
+				'crypt' => SiteCryptModule::class,
+			]
 		);
 	}
 

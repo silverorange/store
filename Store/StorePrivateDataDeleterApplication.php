@@ -21,10 +21,12 @@ class StorePrivateDataDeleterApplication extends
 	 */
 	protected function getDefaultModuleList()
 	{
-		$modules = parent::getDefaultModuleList();
-		$modules['config'] = 'StoreCommandLineConfigModule';
-
-		return $modules;
+		return array_merge(
+			parent::getDefaultModuleList(),
+			[
+				'config' => StoreCommandLineConfigModule::class,
+			]
+		);
 	}
 
 	// }}}

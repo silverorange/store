@@ -40,9 +40,12 @@ class StoreAdReferrerAggregator extends SiteCommandLineApplication
 	 */
 	protected function getDefaultModuleList()
 	{
-		return array(
-			'config'   => 'StoreCommandLineConfigModule',
-			'database' => 'SiteDatabaseModule',
+		return array_merge(
+			parent::getDefaultModuleList(),
+			[
+				'config' => StoreCommandLineConfigModule::class,
+				'database' => SiteDatabaseModule::class,
+			]
 		);
 	}
 
