@@ -15,16 +15,16 @@ class StoreOrderChart extends SwatControl
 	public $height = '250px';
 
 	// }}}
-	// {{{ private properties
+	// {{{ protected properties
 
 	/**
 	 * SiteApplication
 	 *
 	 * @var SiteApplication
 	 */
-	private $app;
+	protected $app;
 
-	private $instance = null;
+	protected $instance = null;
 
 	// }}}
 	// {{{ public function __construct()
