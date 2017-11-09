@@ -1,7 +1,9 @@
 /*
 Written in JQuery because the flot charts are built on JQuery
 */
-function StoreOrderChart(id, data) {
+function StoreOrderChart(id, data, options) {
+	var options = options || {};
+	var showY = typeof options.showY === 'boolean' ? options.showY : true;
 	$(document).ready(function() {
 		function toDigits(num) {
 			return num.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
@@ -24,6 +26,7 @@ function StoreOrderChart(id, data) {
 
 		var chart = $.plot($("#" + id), data, {
 			yaxes: [{
+				show: showY,
 				alignTicksWithAxis: 1,
 				position: 'left',
 				tickFormatter: dollarFormat,
@@ -72,20 +75,22 @@ function StoreOrderChart(id, data) {
 			chart.draw();
 		});
 
-		var current_point = null;
-		$("#" + id).bind("plothover", function (event, pos, item) {
-			if (item) {
-				if (current_point === null || (current_point[0] != item.datapoint[0]
-					&& current_point[1] != item.datapoint[1])) {
+		if (showY) {
+			var current_point = null
+			$("#" + id).bind("plothover", function (event, pos, item) {
+				if (item) {
+					if (current_point === null || (current_point[0] != item.datapoint[0]
+						&& current_point[1] != item.datapoint[1])) {
 
+						$("#tooltip").remove();
+						showTooltip(item.pageX, item.pageY,	'$' + toDigits(item.datapoint[1].toFixed()));
+						current_point = item.datapoint;
+					}
+				} else {
+					current_point = null;
 					$("#tooltip").remove();
-					showTooltip(item.pageX, item.pageY,	'$' + toDigits(item.datapoint[1].toFixed()));
-					current_point = item.datapoint;
 				}
-			} else {
-				current_point = null;
-				$("#tooltip").remove();
-			}
-		});
+			});
+		}
 	});
 }
