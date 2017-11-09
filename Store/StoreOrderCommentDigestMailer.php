@@ -100,14 +100,10 @@ class StoreOrderCommentDigestMailer extends SiteCommandLineApplication
 	protected function getToAddress()
 	{
 		// always return the first address in the list as the to address
-		$to_address = array_shift(
-			explode(
-				';',
-				$this->config->email->order_comments_digest_list
-			)
-		);
-
-		return $to_address;
+		return explode(
+			';',
+			$this->config->email->order_comments_digest_list
+		)[0];
 	}
 
 	// }}}
