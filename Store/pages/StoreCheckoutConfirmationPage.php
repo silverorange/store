@@ -1455,10 +1455,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 			// compare references since these are not saved yet
 			if ($order->shipping_address === $order->billing_address) {
-				$span_tag = new SwatHtmlTag('span');
-				$span_tag->class = 'swat-none';
-				$span_tag->setContent(Store::_('<ship to billing address>'));
-				$span_tag->display();
+				$this->displayNoneTag('same-address');
 			} else {
 				$order->shipping_address->display();
 			}
@@ -1481,10 +1478,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		if ($order->shipping_type instanceof StoreShippingType) {
 			$order->shipping_type->display();
 		} else {
-			$span_tag = new SwatHtmlTag('span');
-			$span_tag->class = 'swat-none';
-			$span_tag->setContent(Store::_('<none>'));
-			$span_tag->display();
+			$this->displayNoneTag('shipping-type');
 		}
 
 		$this->ui->getWidget('shipping_type')->content = ob_get_clean();
@@ -1549,10 +1543,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 				$payment_method->display();
 				$this->displayNewPaymentLinks($order);
 			} else {
-				$span_tag = new SwatHtmlTag('span');
-				$span_tag->class = 'swat-none';
-				$span_tag->setContent(Store::_('<none>'));
-				$span_tag->display();
+				$this->displayNoneTag('payment-method');
 				$this->displayNewPaymentLinks($order);
 			}
 		}
@@ -1787,6 +1778,34 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		);
 		$tool->stock_id = 'edit';
 		$tool->display();
+	}
+
+	// }}}
+	// {{{ protected function displayNoneTag()
+
+	protected function displayNoneTag($type)
+	{
+		$span_tag = new SwatHtmlTag('span');
+		$span_tag->class = 'swat-none';
+		$span_tag->setContent($this->getNoneText($type));
+		$span_tag->display();
+	}
+
+	// }}}
+	// {{{ protected function getNoneText()
+
+	protected function getNoneText($type)
+	{
+		switch ($type) {
+		case 'same-address':
+			$text = Store::_('<ship to billing address>');
+			break;
+		default:
+			$text = Store::_('<none>');
+			break;
+		}
+
+		return $text;
 	}
 
 	// }}}
