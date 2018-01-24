@@ -13,8 +13,6 @@ class StoreShippingTypeDetails extends AdminIndex
 	 */
 	protected $shipping_type;
 
-	protected $ui_xml = __DIR__.'/details.xml';
-
 	// }}}
 
 	// init phase
@@ -24,7 +22,7 @@ class StoreShippingTypeDetails extends AdminIndex
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 		$this->initShippingType();
 	}
 
@@ -43,6 +41,14 @@ class StoreShippingTypeDetails extends AdminIndex
 				sprintf(Store::_('Shipping Type with id ‘%s’ not found.'),
 					$id));
 		}
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/details.xml';
 	}
 
 	// }}}

@@ -16,11 +16,6 @@ class StoreProductImageDelete extends AdminDBDelete
 {
 	// {{{ private properties
 
-	protected $ui_xml = __DIR__.'/image-delete.xml';
-
-	// }}}
-	// {{{ private properties
-
 	/**
 	 * @var StoreProduct
 	 */
@@ -49,8 +44,6 @@ class StoreProductImageDelete extends AdminDBDelete
 	{
 		parent::initInternal();
 
-		$this->ui_xml = $this->ui_xml;
-
 		$this->category_id = SiteApplication::initVar('category');
 
 		$product_id = SiteApplication::initVar('product');
@@ -70,6 +63,14 @@ class StoreProductImageDelete extends AdminDBDelete
 		if (!$this->image->load($image_id))
 			throw new AdminNotFoundException(
 				sprintf('Product mage with id ‘%s’ not found.', $image_id));
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/image-delete.xml';
 	}
 
 	// }}}

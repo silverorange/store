@@ -13,11 +13,6 @@ class StoreProvStateEdit extends AdminDBEdit
 
 	protected $prov_state;
 
-	/**
-	 * @var string
-	 */
-	protected $ui_xml = __DIR__.'/edit.xml';
-
 	// }}}
 
 	// init phase
@@ -29,7 +24,7 @@ class StoreProvStateEdit extends AdminDBEdit
 		$this->initProvState();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 
 		$country_flydown = $this->ui->getWidget('country');
 		$country_flydown->show_blank = false;
@@ -53,6 +48,14 @@ class StoreProvStateEdit extends AdminDBEdit
 						' not found'), $this->id));
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/edit.xml';
 	}
 
 	// }}}

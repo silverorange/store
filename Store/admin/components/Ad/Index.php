@@ -11,12 +11,12 @@
  */
 class StoreAdIndex extends SiteAdIndex
 {
-	// {{{ public function __construct()
+	// init phase
+	// {{{ protected function getUiXml()
 
-	public function __construct(SiteApplication $app, SiteLayout $layout = null)
+	protected function getUiXml()
 	{
-		parent::__construct($app, $layout);
-		$this->ui_xml = __DIR__.'/index.xml';
+		return __DIR__.'/index.xml';
 	}
 
 	// }}}

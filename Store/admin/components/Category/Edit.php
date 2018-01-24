@@ -11,8 +11,6 @@ class StoreCategoryEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
-	protected $ui_xml = __DIR__.'/edit.xml';
-
 	/**
 	 * @var StoreCategory
 	 */
@@ -32,7 +30,7 @@ class StoreCategoryEdit extends AdminDBEdit
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 		$this->parent = SiteApplication::initVar('parent');
 		$this->initCategory();
 	}
@@ -52,6 +50,14 @@ class StoreCategoryEdit extends AdminDBEdit
 					sprintf(Store::_('Category with id “%s” not found.'),
 						$this->id));
 		}
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/edit.xml';
 	}
 
 	// }}}

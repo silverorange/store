@@ -11,11 +11,6 @@ class StoreProductRelatedArticles extends AdminSearch
 {
 	// {{{ private properties
 
-	protected $ui_xml = __DIR__.'/relatedarticles.xml';
-
-	// }}}
-	// {{{ private properties
-
 	private $product_id;
 	private $category_id;
 
@@ -28,7 +23,7 @@ class StoreProductRelatedArticles extends AdminSearch
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 		$this->product_id = SiteApplication::initVar('product');
 		$this->category_id = SiteApplication::initVar('category');
 
@@ -54,6 +49,14 @@ class StoreProductRelatedArticles extends AdminSearch
 		}
 
 		return $link;
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/relatedarticles.xml';
 	}
 
 	// }}}

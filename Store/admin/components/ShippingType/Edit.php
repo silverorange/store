@@ -11,8 +11,6 @@ class StoreShippingTypeEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
-	protected $ui_xml = __DIR__.'/edit.xml';
-
 	/**
 	 * @var VanBourgondienShippingType
 	 */
@@ -29,7 +27,7 @@ class StoreShippingTypeEdit extends AdminDBEdit
 
 		$this->initShippingType();
 
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 	}
 
 	// }}}
@@ -48,6 +46,14 @@ class StoreShippingTypeEdit extends AdminDBEdit
 						'Shipping Type with id ‘%s’ not found.'), $this->id));
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/edit.xml';
 	}
 
 	// }}}

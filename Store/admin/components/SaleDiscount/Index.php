@@ -9,15 +9,6 @@
  */
 class StoreSaleDiscountIndex extends AdminIndex
 {
-	// {{{ protected properties
-
-	/**
-	 * @var string
-	 */
-	protected $ui_xml = __DIR__.'/index.xml';
-
-	// }}}
-
 	// init phase
 	// {{{ protected function initInternal()
 
@@ -26,7 +17,15 @@ class StoreSaleDiscountIndex extends AdminIndex
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/index.xml';
 	}
 
 	// }}}

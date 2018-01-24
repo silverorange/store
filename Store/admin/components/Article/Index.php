@@ -9,14 +9,6 @@
  */
 class StoreArticleIndex extends SiteArticleIndex
 {
-	// {{{ protected properties
-
-	/**
-	 * @var string
-	 */
-	protected $ui_xml = __DIR__.'/index.xml';
-
-	// }}}
 	// {{{ private properties
 
 	/**
@@ -39,6 +31,14 @@ class StoreArticleIndex extends SiteArticleIndex
 
 		$view = $this->ui->getWidget('index_view');
 		$this->ui->getWidget('article_region_action')->db = $this->app->db;
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/index.xml';
 	}
 
 	// }}}

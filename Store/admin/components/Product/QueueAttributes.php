@@ -73,8 +73,6 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 
 	protected function initInternal()
 	{
-		$this->ui_xml = __DIR__.'/queue-attributes.xml';
-
 		parent::initInternal();
 
 		$form = $this->ui->getWidget('confirmation_form');
@@ -88,6 +86,14 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 		$action_date->valid_range_start = new SwatDate();
 		$action_date->valid_range_start->convertTZ(
 			$this->app->default_time_zone);
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/queue-attributes.xml';
 	}
 
 	// }}}

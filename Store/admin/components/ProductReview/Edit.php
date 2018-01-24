@@ -11,8 +11,6 @@ class StoreProductReviewEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
-	protected $ui_xml = __DIR__.'/edit.xml';
-
 	/**
 	 * @var StoreProductReview
 	 */

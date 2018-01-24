@@ -13,11 +13,6 @@ class StoreCountryEdit extends AdminDBEdit
 
 	protected $fields;
 
-	/**
-	 * @var string
-	 */
-	protected $ui_xml = __DIR__.'/edit.xml';
-
 	// }}}
 
 	// init phase
@@ -28,7 +23,7 @@ class StoreCountryEdit extends AdminDBEdit
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 
 		if ($this->id === null) {
 			$this->fields = array('title', 'id', 'boolean:visible');
@@ -39,6 +34,14 @@ class StoreCountryEdit extends AdminDBEdit
 			$this->ui->getWidget('id_non_edit')->visible = true;
 			$this->ui->getWidget('id_non_edit')->content = $this->id;
 		}
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/edit.xml';
 	}
 
 	// }}}

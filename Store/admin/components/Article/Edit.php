@@ -9,15 +9,6 @@
  */
 class StoreArticleEdit extends SiteArticleEdit
 {
-	// {{{ protected properties
-
-	/**
-	 * @var string
-	 */
-	protected $ui_xml = __DIR__.'/edit.xml';
-
-	// }}}
-
 	// init phase
 	// {{{ protected function initInternal()
 
@@ -26,6 +17,14 @@ class StoreArticleEdit extends SiteArticleEdit
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/edit.xml';
 	}
 
 	// }}}

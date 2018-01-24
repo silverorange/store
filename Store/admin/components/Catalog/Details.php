@@ -11,11 +11,6 @@ class StoreCatalogDetails extends AdminPage
 {
 	// {{{ protected properties
 
-	/**
-	 * @var string
-	 */
-	protected $ui_xml = __DIR__.'/details.xml';
-
 	protected $id;
 
 	// }}}
@@ -28,8 +23,16 @@ class StoreCatalogDetails extends AdminPage
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 		$this->id = SiteApplication::initVar('id');
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/details.xml';
 	}
 
 	// }}}

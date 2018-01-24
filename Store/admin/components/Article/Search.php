@@ -9,15 +9,6 @@
  */
 class StoreArticleSearch extends SiteArticleSearch
 {
-	// {{{ protected properties
-
-	/**
-	 * @var string
-	 */
-	protected $ui_xml = __DIR__.'/search.xml';
-
-	// }}}
-
 	// init phase
 	// {{{ protected function initInternal()
 
@@ -36,6 +27,14 @@ class StoreArticleSearch extends SiteArticleSearch
 		}
 
 		$this->ui->getWidget('article_region_action')->db = $this->app->db;
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/search.xml';
 	}
 
 	// }}}
