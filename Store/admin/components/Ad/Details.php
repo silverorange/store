@@ -21,12 +21,13 @@ class StoreAdDetails extends SiteAdDetails
 	private $regions = null;
 
 	// }}}
-	// {{{ public function __construct()
 
-	public function __construct(SiteApplication $app, SiteLayout $layout = null)
+	// init phase
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
 	{
-		parent::__construct($app, $layout);
-		$this->ui_xml = __DIR__.'/details.xml';
+		return __DIR__.'/details.xml';
 	}
 
 	// }}}

@@ -9,14 +9,6 @@
  */
 class StoreCatalogStatus extends AdminDBEdit
 {
-	// {{{ protected properties
-
-	/**
-	 * @var string
-	 */
-	protected $ui_xml = __DIR__.'/status.xml';
-
-	// }}}
 	// {{{ private properties
 
 	/**
@@ -33,7 +25,7 @@ class StoreCatalogStatus extends AdminDBEdit
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 		$this->initCatalog();
 
 		$region_list = $this->ui->getWidget('regions');
@@ -62,6 +54,14 @@ class StoreCatalogStatus extends AdminDBEdit
 				sprintf(Store::_('Catalog with an id "%s" not found'),
 					$this->id));
 		}
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/status.xml';
 	}
 
 	// }}}

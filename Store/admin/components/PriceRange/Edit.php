@@ -16,11 +16,6 @@ class StorePriceRangeEdit extends AdminDBEdit
 	 */
 	protected $price_range;
 
-	/**
-	 * @var string
-	 */
-	protected $ui_xml = __DIR__.'/edit.xml';
-
 	// }}}
 
 	// init phase
@@ -32,7 +27,7 @@ class StorePriceRangeEdit extends AdminDBEdit
 		$this->initPriceRange();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 	}
 
 	// }}}
@@ -51,6 +46,14 @@ class StorePriceRangeEdit extends AdminDBEdit
 						' not found'), $this->id));
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/edit.xml';
 	}
 
 	// }}}

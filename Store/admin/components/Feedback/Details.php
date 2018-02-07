@@ -12,11 +12,6 @@ class StoreFeedbackDetails extends AdminPage
 	// {{{ protected properties
 
 	/**
-	 * @var string
-	 */
-	protected $ui_xml = __DIR__.'/details.xml';
-
-	/**
 	 * @var integer
 	 */
 	protected $id;
@@ -36,7 +31,7 @@ class StoreFeedbackDetails extends AdminPage
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 
 		$this->id = SiteApplication::initVar('id');
 	}
@@ -77,6 +72,14 @@ class StoreFeedbackDetails extends AdminPage
 		}
 
 		return $this->feedback;
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/details.xml';
 	}
 
 	// }}}

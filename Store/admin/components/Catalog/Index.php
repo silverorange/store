@@ -9,14 +9,6 @@
  */
 class StoreCatalogIndex extends AdminIndex
 {
-	// {{{ protected properties
-
-	/**
-	 * @var string
-	 */
-	protected $ui_xml = __DIR__.'/index.xml';
-
-	// }}}
 	// {{{ private properties
 
 	/**
@@ -36,7 +28,7 @@ class StoreCatalogIndex extends AdminIndex
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 
 		// set a default order on the table view
 		$index_view = $this->ui->getWidget('index_view');
@@ -57,6 +49,14 @@ class StoreCatalogIndex extends AdminIndex
 
 			$index_view->appendColumn($column);
 		}
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/index.xml';
 	}
 
 	// }}}

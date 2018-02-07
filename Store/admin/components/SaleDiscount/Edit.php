@@ -11,7 +11,6 @@ class StoreSaleDiscountEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
-	protected $ui_xml = __DIR__.'/edit.xml';
 	protected $sale_discount;
 
 	// }}}
@@ -24,7 +23,7 @@ class StoreSaleDiscountEdit extends AdminDBEdit
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 
 		$this->initSaleDiscount();
 	}
@@ -44,6 +43,14 @@ class StoreSaleDiscountEdit extends AdminDBEdit
 					sprintf(Store::_('Sale discount with id “%s” not found.'),
 						$this->id));
 		}
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/edit.xml';
 	}
 
 	// }}}

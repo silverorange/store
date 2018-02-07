@@ -11,7 +11,6 @@ class StoreItemEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
-	protected $ui_xml = __DIR__.'/edit.xml';
 	protected $product;
 	protected $item;
 
@@ -35,7 +34,7 @@ class StoreItemEdit extends AdminDBEdit
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 
 		$this->product     = SiteApplication::initVar('product');
 		$this->category_id = SiteApplication::initVar('category');
@@ -101,6 +100,14 @@ class StoreItemEdit extends AdminDBEdit
 			else
 				$this->product = $this->item->getInternalValue('product');
 		}
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/edit.xml';
 	}
 
 	// }}}

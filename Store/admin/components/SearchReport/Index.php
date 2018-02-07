@@ -13,11 +13,6 @@ class StoreSearchReportIndex extends AdminIndex
 	const MAX_RESULTS = 50;
 
 	// }}}
-	// {{{ protected properties
-
-	protected $ui_xml = __DIR__.'/index.xml';
-
-	// }}}
 
 	// init phase
 	// {{{ protected function initInternal()
@@ -26,7 +21,7 @@ class StoreSearchReportIndex extends AdminIndex
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 
 		$date = SwatDB::queryOne($this->app->db,
 				"select min(creation_date) from NateGoSearchHistory");
@@ -50,6 +45,14 @@ class StoreSearchReportIndex extends AdminIndex
 		$renderer = $view->getColumn('keywords')->getFirstRenderer();
 		$renderer->link = sprintf('%ssearch?keywords=%%s',
 			str_replace('%', '%%', $this->app->getFrontendBaseHref()));
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/index.xml';
 	}
 
 	// }}}

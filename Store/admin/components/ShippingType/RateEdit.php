@@ -25,8 +25,6 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
 	 */
 	protected $shipping_rate;
 
-	protected $ui_xml = __DIR__.'/rate-edit.xml';
-
 	// }}}
 
 	// init phase
@@ -37,7 +35,7 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
 		parent::initInternal();
 
 		$this->initShippingRate();
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 		$this->parent = SiteApplication::initVar('parent');
 
 		$this->ui->getWidget('region')->addOptionsByArray(
@@ -61,6 +59,14 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
 						$this->id));
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/rate-edit.xml';
 	}
 
 	// }}}

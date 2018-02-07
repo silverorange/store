@@ -12,11 +12,6 @@ class StoreCategoryImageEdit extends AdminDBEdit
 	// {{{ protected properties
 
 	/**
-	 * @var string
-	 */
-	protected $ui_xml = __DIR__.'/image-edit.xml';
-
-	/**
 	 * @var StoreCategoryImage
 	 */
 	protected $image;
@@ -38,7 +33,7 @@ class StoreCategoryImageEdit extends AdminDBEdit
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 
 		$this->initCategory();
 		$this->initImage();
@@ -130,6 +125,14 @@ class StoreCategoryImageEdit extends AdminDBEdit
 		$image->setDatabase($this->app->db);
 
 		return $image;
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/image-edit.xml';
 	}
 
 	// }}}

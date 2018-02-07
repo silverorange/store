@@ -9,15 +9,6 @@
  */
 class StoreCatalogEdit extends AdminDBEdit
 {
-	// {{{ protected properties
-
-	/**
-	 * @var string
-	 */
-	protected $ui_xml = __DIR__.'/edit.xml';
-
-	// }}}
-
 	// init phase
 	// {{{ protected function initInternal()
 
@@ -26,7 +17,7 @@ class StoreCatalogEdit extends AdminDBEdit
 		parent::initInternal();
 
 		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 
 		$this->initCatalog();
 	}
@@ -46,6 +37,14 @@ class StoreCatalogEdit extends AdminDBEdit
 					sprintf(Store::_('Catalog with id “%s” not found.'),
 						$this->id));
 		}
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/edit.xml';
 	}
 
 	// }}}

@@ -9,11 +9,6 @@
  */
 class StoreCategoryFeaturedProducts extends AdminIndex
 {
-	// {{{ protected properties
-
-	protected $ui_xml = __DIR__.'/featured-products.xml';
-
-	// }}}
 	// {{{ private properties
 
 	private $parent;
@@ -26,8 +21,16 @@ class StoreCategoryFeaturedProducts extends AdminIndex
 	protected function initInternal()
 	{
 		parent::initInternal();
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 		$this->parent = SiteApplication::initVar('parent');
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/featured-products.xml';
 	}
 
 	// }}}

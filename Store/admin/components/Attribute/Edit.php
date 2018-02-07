@@ -12,11 +12,6 @@ class StoreAttributeEdit extends AdminDBEdit
 	// {{{ protected properties
 
 	/**
-	 * @var string
-	 */
-	protected $ui_xml = __DIR__.'/edit.xml';
-
-	/**
 	 * @var StoreAttribute
 	 */
 	protected $attribute;
@@ -32,7 +27,7 @@ class StoreAttributeEdit extends AdminDBEdit
 
 		$this->initAttribute();
 
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 
 		$attribute_type_flydown = $this->ui->getWidget('attribute_type');
 		$attribute_type_flydown->addOptionsByArray(
@@ -65,6 +60,14 @@ class StoreAttributeEdit extends AdminDBEdit
 				);
 			}
 		}
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/edit.xml';
 	}
 
 	// }}}

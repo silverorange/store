@@ -11,11 +11,6 @@ class StoreCategoryRelatedArticles extends AdminSearch
 {
 	// {{{ private properties
 
-	protected $ui_xml = __DIR__.'/relatedarticles.xml';
-
-	// }}}
-	// {{{ private properties
-
 	private $category_id;
 
 	// }}}
@@ -27,7 +22,7 @@ class StoreCategoryRelatedArticles extends AdminSearch
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 		$this->category_id = SiteApplication::initVar('category');
 
 		$regions_sql = 'select id, title from Region';
@@ -37,6 +32,14 @@ class StoreCategoryRelatedArticles extends AdminSearch
 			$search_regions->addOption($region->id, $region->title);
 			$search_regions->values[] = $region->id;
 		}
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/relatedarticles.xml';
 	}
 
 	// }}}

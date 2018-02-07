@@ -14,11 +14,6 @@ class StoreProductImageEdit extends AdminDBEdit
 	protected $id;
 
 	/**
-	 * @var string
-	 */
-	protected $ui_xml = __DIR__.'/image-edit.xml';
-
-	/**
 	 * @var StoreProductImage
 	 */
 	protected $image;
@@ -49,7 +44,7 @@ class StoreProductImageEdit extends AdminDBEdit
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 
 		$this->id = $this->app->initVar('id');
 		$this->category_id = SiteApplication::initVar('category');
@@ -140,6 +135,14 @@ class StoreProductImageEdit extends AdminDBEdit
 		$image->setDatabase($this->app->db);
 
 		return $image;
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/image-edit.xml';
 	}
 
 	// }}}

@@ -23,7 +23,6 @@ class StoreCategoryImageDelete extends AdminDBDelete
 
 	protected function initInternal()
 	{
-		$this->ui_xml = __DIR__.'/../Product/image-delete.xml';
 		parent::initInternal();
 
 		$id = SiteApplication::initVar('id');
@@ -35,6 +34,14 @@ class StoreCategoryImageDelete extends AdminDBDelete
 		if (!$this->category->load($id))
 			throw new AdminNotFoundException(
 				sprintf('Category with id ‘%s’ not found.', $id));
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/../Product/image-delete.xml';
 	}
 
 	// }}}

@@ -11,7 +11,6 @@ class StoreProductEdit extends AdminDBEdit
 {
 	// {{{ protected properties
 
-	protected $ui_xml = __DIR__.'/edit.xml';
 	protected $product;
 
 	// }}}
@@ -28,7 +27,7 @@ class StoreProductEdit extends AdminDBEdit
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 
 		$this->category_id = SiteApplication::initVar('category');
 
@@ -124,6 +123,14 @@ class StoreProductEdit extends AdminDBEdit
 		// Only show blank option in catalogue flydown if there is more than
 		// one catalogue to choose from.
 		$catalog_flydown->show_blank = (count($catalog_flydown->options) > 1);
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/edit.xml';
 	}
 
 	// }}}

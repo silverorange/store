@@ -9,12 +9,6 @@
  */
 class StoreProductProductCollection extends AdminSearch
 {
-	// {{{ protected properties
-
-	protected $ui_xml = __DIR__.'/product-collection.xml';
-	protected $search_xml = __DIR__.'/search.xml';
-
-	// }}}
 	// {{{ private properties
 
 	private $category_id;
@@ -32,8 +26,8 @@ class StoreProductProductCollection extends AdminSearch
 		$this->product_id = SiteApplication::initVar('product');
 		$this->category_id = SiteApplication::initVar('category');
 
-		$this->ui->loadFromXML($this->search_xml);
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getSearchXml());
+		$this->ui->loadFromXML($this->getUiXml());
 
 		$this->initCatalogSelector();
 
@@ -75,6 +69,22 @@ class StoreProductProductCollection extends AdminSearch
 		$catalog_count = SwatDB::queryOne($this->app->db, $sql);
 		if ($catalog_count == 1)
 			$this->ui->getWidget('catalog_field')->visible = false;
+	}
+
+	// }}}
+	// {{{ protected function getSearchXml()
+
+	protected function getSearchXml()
+	{
+		return __DIR__.'/search.xml';
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/product-collection.xml';
 	}
 
 	// }}}

@@ -11,7 +11,6 @@ class StoreCategoryIndex extends AdminIndex
 {
 	// {{{ protected properties
 
-	protected $ui_xml = __DIR__.'/index.xml';
 	protected $id = null;
 
 	// }}}
@@ -23,7 +22,7 @@ class StoreCategoryIndex extends AdminIndex
 	{
 		parent::initInternal();
 
-		$this->ui->loadFromXML($this->ui_xml);
+		$this->ui->loadFromXML($this->getUiXml());
 
 		$this->ui->getRoot()->addStyleSheet(
 			'packages/store/admin/styles/store-image-preview.css');
@@ -49,6 +48,14 @@ class StoreCategoryIndex extends AdminIndex
 		$this->ui->getWidget(
 			'categories_item_minimum_quantity_group')->visible =
 				(count($options) > 0);
+	}
+
+	// }}}
+	// {{{ protected function getUiXml()
+
+	protected function getUiXml()
+	{
+		return __DIR__.'/index.xml';
 	}
 
 	// }}}
