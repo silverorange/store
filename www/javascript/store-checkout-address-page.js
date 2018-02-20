@@ -17,6 +17,9 @@ function StoreCheckoutAddressPage(id)
 			this.initContainer();
 		}
 
+		this.initAutoComplete('billing_');
+		this.initAutoComplete('shipping_');
+
 		// hide if the radio button state is set to hidden
 		if (this.list_new && !this.list_new.checked) {
 			this.hideAddressForm(false);
@@ -73,6 +76,90 @@ StoreCheckoutAddressPage.prototype.initContainer = function()
 
 	}, this, true);
 };
+
+StoreCheckoutAddressPage.prototype.initAutoComplete = function(prefix)
+{
+	// Auto-complete only works with input tags, not textarea
+	var input = document.getElementById(prefix + 'address_line1');
+	if (input && input.tagName !== 'INPUT') {
+		return;
+	}
+
+	var autocomplete = new google.maps.places.Autocomplete(input);
+
+	// prevent "enter" from submitting form
+	google.maps.event.addDomListener(input, 'keydown', function(event) {
+		if (event.keyCode === 13) {
+			event.preventDefault();
+		}
+	});
+
+	function setValue(name, value) {
+		document.getElementById(prefix + name).value = value;
+	}
+
+	function fillInAddress() {
+		var place = autocomplete.getPlace();
+		var components = place.address_components;
+		var parts = {};
+		for (var i = 0; i < place.address_components.length; i++) {
+			var addressType = place.address_components[i].types[0];
+			parts[addressType] = place.address_components[i].short_name;i
+		}
+
+		console.log(place);
+		console.log(parts);
+
+		if (parts.street_number && parts.route) {
+			setValue('address_line1', parts.street_number + ' ' + parts.route);
+		} else if (parts.route) {
+			setValue('address_line1', parts.route);
+		}
+
+		if (parts.locality) {
+			setValue('address_city', parts.locality);
+		}
+
+		if (parts.postal_code) {
+			setValue('address_postalcode', parts.postal_code);
+		}
+
+		if (parts.country) {
+			var select = document.getElementById(prefix + 'address_country');
+			for (var i = 0; i < select.options.length; i++) {
+				if (select[i].value == parts.country) {
+					select.selectedIndex = i;
+					select.dispatchEvent(new Event('change'));
+					break;
+				}
+			}
+		}
+
+		var code = parts.administrative_area_level_1;
+		if (parts.country && code) {
+			var id = false;
+			var ids = StoreCheckoutAddressPage.prov_state_ids;
+			for (var i = 0; i < ids.length; i++) {
+				if (ids[i].country == parts.country && ids[i].code == code) {
+					id = ids[i].id;
+				}
+			}
+
+			var select = document.getElementById(
+				prefix + 'address_provstate_flydown'
+			);
+
+			for (var i = 0; i < select.options.length; i++) {
+				if (select[i].value == id) {
+					select.selectedIndex = i;
+					break;
+				}
+			}
+		}
+	}
+
+	autocomplete.addListener('place_changed', fillInAddress);
+}
 
 StoreCheckoutAddressPage.prototype.showAddressForm = function(animate)
 {

@@ -21,6 +21,8 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 	protected $button1;
 	protected $button2;
 
+	protected static $run_once = true;
+
 	// }}}
 
 	// init phase
@@ -214,6 +216,13 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 
 	public function postBuildCommon()
 	{
+		if (self::$run_once) {
+			$this->layout->startCapture('content');
+			Swat::displayInlineJavaScript($this->getProvStateJavaScript());
+			$this->layout->endCapture();
+			self::$run_once = false;
+		}
+
 		$this->layout->startCapture('content');
 		Swat::displayInlineJavaScript($this->getInlineJavaScript());
 		$this->layout->endCapture();
@@ -230,6 +239,40 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 	// {{{ abstarct protected function getInlineJavaScript()
 
 	abstract protected function getInlineJavaScript();
+
+	// }}}
+	// {{{ protected function getProvStateJavaScript()
+
+	protected function getProvStateJavaScript()
+	{
+		$where_clause = sprintf(
+			'id in (
+				select provstate from RegionBillingProvStateBinding
+				where region = %s)',
+			$this->app->db->quote($this->app->getRegion()->id, 'integer')
+		);
+
+		$sql = sprintf(
+			'select id, country, abbreviation from ProvState where %s',
+			$where_clause
+		);
+
+		$provstates = SwatDB::query($this->app->db, $sql);
+
+		$values = [];
+		foreach ($provstates as $provstate) {
+			$values[] = [
+				'id' => $provstate->id,
+				'country' => $provstate->country,
+				'code' => $provstate->abbreviation,
+			];
+		}
+
+		return sprintf(
+			'StoreCheckoutAddressPage.prov_state_ids = %s;',
+			json_encode($values)
+		);
+	}
 
 	// }}}
 
@@ -252,6 +295,24 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 		$this->layout->addHtmlHeadEntry(
 			'packages/store/javascript/store-checkout-address-page.js'
 		);
+
+		// TODO: figure out why this is being run twice
+		$address_config = $this->app->config->google_address_autocomplete;
+		static $run_once = true;
+		if ($address_config->enabled && $address_config->api_key != '' && $run_once) {
+			$run_once = false;
+			$this->layout->startCapture('extra_headers');
+			$script = new SwatHtmlTag('script');
+			$script->type = 'text/javascript';
+			$script->src =  sprintf(
+				'https://maps.googleapis.com/maps/api/js?key=%s&libraries=places',
+				urlencode($address_config->api_key)
+			);
+
+			$script->open();
+			$script->close();
+			$this->layout->endCapture();
+		}
 	}
 
 	// }}}

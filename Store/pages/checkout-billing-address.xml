@@ -32,12 +32,9 @@
 		</widget>
 		<widget class="SwatFormField" id="billing_address_line1_field">
 			<property name="title" translatable="yes">Street Address</property>
-			<widget class="SwatTextarea" id="billing_address_line1">
+			<widget class="SwatEntry" id="billing_address_line1">
 				<property name="required" type="boolean">true</property>
-				<property name="resizeable" type="boolean">false</property>
 				<property name="maxlength" type="integer">255</property>
-				<property name="rows" type="integer">2</property>
-				<property name="cols" type="integer">35</property>
 			</widget>
 		</widget>
 		<widget class="SwatFormField" id="billing_address_line2_field">
