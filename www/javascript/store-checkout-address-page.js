@@ -101,23 +101,36 @@ StoreCheckoutAddressPage.prototype.initAutoComplete = function(prefix)
 	function fillInAddress() {
 		var place = autocomplete.getPlace();
 		var components = place.address_components;
+		if (!components || components.length === 0) {
+			return;
+		}
+
 		var parts = {};
 		for (var i = 0; i < place.address_components.length; i++) {
 			var addressType = place.address_components[i].types[0];
 			parts[addressType] = place.address_components[i].short_name;i
 		}
 
-		console.log(place);
-		console.log(parts);
+		var line1 = '';
+		if (parts.route) {
+			line1 = (parts.street_number)
+				? parts.street_number + ' ' + parts.route
+				: parts.route;
+		}
 
-		if (parts.street_number && parts.route) {
-			setValue('address_line1', parts.street_number + ' ' + parts.route);
-		} else if (parts.route) {
-			setValue('address_line1', parts.route);
+		if (line1) {
+			setValue('address_line1', line1);
+		}
+
+		if (place.name && place.name != line1) {
+			setValue('address_line2', place.name);
 		}
 
 		if (parts.locality) {
 			setValue('address_city', parts.locality);
+		} else if (parts.sublocality_level_1) {
+			// Brooklyn, NYC doesn't use parts.locality
+			setValue('address_city', parts.sublocality_level_1);
 		}
 
 		if (parts.postal_code) {
