@@ -124,6 +124,8 @@ StoreCheckoutAddressPage.prototype.initAutoComplete = function(prefix)
 
 		if (place.name && place.name != line1) {
 			setValue('address_line2', place.name);
+		} else {
+			setValue('address_line2', '');
 		}
 
 		if (parts.locality) {
@@ -131,10 +133,14 @@ StoreCheckoutAddressPage.prototype.initAutoComplete = function(prefix)
 		} else if (parts.sublocality_level_1) {
 			// Brooklyn, NYC doesn't use parts.locality
 			setValue('address_city', parts.sublocality_level_1);
+		} else {
+			setValue('address_city', '');
 		}
 
 		if (parts.postal_code) {
 			setValue('address_postalcode', parts.postal_code);
+		} else {
+			setValue('address_postalcode', '');
 		}
 
 		if (parts.country) {
