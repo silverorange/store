@@ -21,11 +21,22 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 	protected $button1;
 	protected $button2;
 
-	protected static $run_once = true;
+	protected $auto_complete;
 
 	// }}}
 
 	// init phase
+	// {{{ public function initCommon()
+
+	public function initCommon()
+	{
+		parent::initCommon();
+
+		$this->auto_complete = new StoreGoogleAddressAutoComplete();
+		$this->auto_complete->setApplication($this->app);
+	}
+
+	// }}}
 	// {{{ protected function initInternal()
 
 	protected function initInternal()
@@ -207,8 +218,9 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 		$this->buildList();
 		$this->buildForm();
 
-		if (!$this->ui->getWidget('form')->isProcessed())
+		if (!$this->ui->getWidget('form')->isProcessed()) {
 			$this->loadDataFromSession();
+		}
 	}
 
 	// }}}
@@ -216,14 +228,8 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 
 	public function postBuildCommon()
 	{
-		if (self::$run_once) {
-			$this->layout->startCapture('content');
-			Swat::displayInlineJavaScript($this->getProvStateJavaScript());
-			$this->layout->endCapture();
-			self::$run_once = false;
-		}
-
 		$this->layout->startCapture('content');
+		$this->auto_complete->display();
 		Swat::displayInlineJavaScript($this->getInlineJavaScript());
 		$this->layout->endCapture();
 	}
@@ -296,23 +302,9 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 			'packages/store/javascript/store-checkout-address-page.js'
 		);
 
-		// TODO: figure out why this is being run twice
-		$address_config = $this->app->config->google_address_autocomplete;
-		static $run_once = true;
-		if ($address_config->enabled && $address_config->api_key != '' && $run_once) {
-			$run_once = false;
-			$this->layout->startCapture('extra_headers');
-			$script = new SwatHtmlTag('script');
-			$script->type = 'text/javascript';
-			$script->src =  sprintf(
-				'https://maps.googleapis.com/maps/api/js?key=%s&libraries=places',
-				urlencode($address_config->api_key)
-			);
-
-			$script->open();
-			$script->close();
-			$this->layout->endCapture();
-		}
+		$this->layout->addHtmlHeadEntrySet(
+			$this->auto_complete->getHtmlHeadEntrySet()
+		);
 	}
 
 	// }}}

@@ -17,9 +17,6 @@ function StoreCheckoutAddressPage(id)
 			this.initContainer();
 		}
 
-		this.initAutoComplete('billing_');
-		this.initAutoComplete('shipping_');
-
 		// hide if the radio button state is set to hidden
 		if (this.list_new && !this.list_new.checked) {
 			this.hideAddressForm(false);

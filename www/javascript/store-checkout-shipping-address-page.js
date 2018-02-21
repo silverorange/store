@@ -4,6 +4,10 @@ function StoreCheckoutShippingAddressPage(id)
 	this.list = document.getElementsByName('shipping_address_list');
 	this.list_new = document.getElementById('shipping_address_list_new');
 
+	YAHOO.util.Event.onDOMReady(function() {
+		new StoreGoogleAddressAutoComplete('shipping');
+	});
+
 	StoreCheckoutShippingAddressPage.superclass.constructor.call(this, id);
 }
 

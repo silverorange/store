@@ -4,6 +4,10 @@ function StoreCheckoutBillingAddressPage(id)
 	this.list = document.getElementsByName('billing_address_list');
 	this.list_new = document.getElementById('billing_address_list_new');
 
+	YAHOO.util.Event.onDOMReady(function() {
+		new StoreGoogleAddressAutoComplete('billing');
+	});
+
 	StoreCheckoutBillingAddressPage.superclass.constructor.call(this, id);
 }
 
