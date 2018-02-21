@@ -59,7 +59,6 @@ function StoreGoogleAddressAutoComplete(prefix)
 		var parts_long = {};
 		for (var i = 0; i < place.address_components.length; i++) {
 			var addressType = place.address_components[i].types[0];
-			console.log(place.address_components[i]);
 			parts[addressType] = place.address_components[i].short_name;
 			parts_long[addressType] = place.address_components[i].long_name;
 		}
