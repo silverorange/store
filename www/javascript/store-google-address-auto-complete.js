@@ -90,7 +90,7 @@ function StoreGoogleAddressAutoComplete(prefix)
 		if (parts.country) {
 			var select = document.getElementById(prefix + 'address_country');
 			for (var i = 0; i < select.options.length; i++) {
-				if (select[i].value == parts.country) {
+				if (select[i].value === parts.country) {
 					select.selectedIndex = i;
 					select.dispatchEvent(new Event('change'));
 					break;
@@ -103,7 +103,7 @@ function StoreGoogleAddressAutoComplete(prefix)
 			var id = false;
 			var ids = StoreGoogleAddressAutoComplete.prov_states;
 			for (var i = 0; i < ids.length; i++) {
-				if (ids[i].country == parts.country && ids[i].code == code) {
+				if (ids[i].country === parts.country && ids[i].code == code) {
 					id = ids[i].id;
 				}
 			}
