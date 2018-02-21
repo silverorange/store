@@ -63,6 +63,8 @@ function StoreGoogleAddressAutoComplete(prefix)
 			parts_long[addressType] = place.address_components[i].long_name;
 		}
 
+		console.log(parts);
+
 		var line1 = '';
 		if (parts.route) {
 			line1 = (parts.street_number)
@@ -81,6 +83,8 @@ function StoreGoogleAddressAutoComplete(prefix)
 
 		if (parts_long.locality) {
 			setValue('address_city', parts_long.locality);
+		} else if (parts.postal_town) {
+			setValue('address_city', parts_long.postal_town);
 		} else if (parts_long.sublocality_level_1) {
 			// Brooklyn, NYC doesn't use parts.locality
 			setValue('address_city', parts_long.sublocality_level_1);
@@ -116,7 +120,8 @@ function StoreGoogleAddressAutoComplete(prefix)
 				}
 			}
 
-			if (id === false) {
+			// Great Britian returns "England" for administrative_area_level_1
+			if (id === false && parts.country !== 'GB') {
 				setValue(
 					'address_provstate_entry',
 					parts_long.administrative_area_level_1
