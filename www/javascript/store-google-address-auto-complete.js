@@ -23,6 +23,10 @@ function StoreGoogleAddressAutoComplete(prefix)
 		document.getElementById(prefix + name).value = value;
 	}
 
+	// Only return an establishment like "Googleplex" if the address
+	// isn't just a normal address. Auto-complete returns place.name
+	// for all addresses, but it's only useful for POI and
+	// establishments (aka businesses).
 	function getEstablishment(place) {
 		var establishment = '';
 
