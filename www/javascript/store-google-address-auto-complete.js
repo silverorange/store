@@ -92,6 +92,8 @@ function StoreGoogleAddressAutoComplete(prefix)
 			for (var i = 0; i < select.options.length; i++) {
 				if (select[i].value === parts.country) {
 					select.selectedIndex = i;
+
+					// fire event to make the cascade select change
 					select.dispatchEvent(new Event('change'));
 					break;
 				}
