@@ -47,7 +47,7 @@ class StoreGoogleAddressAutoComplete extends SwatControl
 
 		self::$run_once = false;
 
-		$address_config = $this->app->config->google_address_autocomplete;
+		$address_config = $this->app->config->google_address_auto_complete;
 		if ($address_config->enabled && $address_config->api_key != '') {
 			$script = new SwatHtmlTag('script');
 			$script->type = 'text/javascript';
