@@ -51,10 +51,6 @@ function StoreGoogleAddressAutoComplete(prefix)
 			parts[addressType] = place.address_components[i].short_name;
 		}
 
-		// TODO: remove
-		console.log(place);
-		console.log(parts);
-
 		var line1 = '';
 		if (parts.route) {
 			line1 = (parts.street_number)
