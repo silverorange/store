@@ -79,14 +79,14 @@ function StoreGoogleAddressAutoComplete(prefix)
 			setValue('address_line2', establishment);
 		}
 
-		if (parts.locality) {
-			setValue('address_city', parts.locality);
-		} else if (parts.sublocality_level_1) {
+		if (parts_long.locality) {
+			setValue('address_city', parts_long.locality);
+		} else if (parts_long.sublocality_level_1) {
 			// Brooklyn, NYC doesn't use parts.locality
-			setValue('address_city', parts.sublocality_level_1);
-		} else if (parts.administrative_area_level_1) {
+			setValue('address_city', parts_long.sublocality_level_1);
+		} else if (parts_long.administrative_area_level_1) {
 			// Istanbul uses administrative_area_level_1 as city
-			setValue('address_city', parts.administrative_area_level_1);
+			setValue('address_city', parts_long.administrative_area_level_1);
 		}
 
 		if (parts.postal_code) {
