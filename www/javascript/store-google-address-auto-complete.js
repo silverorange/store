@@ -49,10 +49,19 @@ function StoreGoogleAddressAutoComplete(prefix)
 			return;
 		}
 
+		// reset address parts
+		setValue('address_line2', '');
+		setValue('address_provstate_entry', '');
+		setValue('address_city', '');
+		setValue('address_postalcode', '');
+
 		var parts = {};
+		var parts_long = {};
 		for (var i = 0; i < place.address_components.length; i++) {
 			var addressType = place.address_components[i].types[0];
+			console.log(place.address_components[i]);
 			parts[addressType] = place.address_components[i].short_name;
+			parts_long[addressType] = place.address_components[i].long_name;
 		}
 
 		var line1 = '';
@@ -62,15 +71,13 @@ function StoreGoogleAddressAutoComplete(prefix)
 				: parts.route;
 		}
 
-		if (line1) {
+		if (line1 != '') {
 			setValue('address_line1', line1);
 		}
 
 		var establishment = getEstablishment(place);
 		if (establishment) {
 			setValue('address_line2', establishment);
-		} else {
-			setValue('address_line2', '');
 		}
 
 		if (parts.locality) {
@@ -79,16 +86,12 @@ function StoreGoogleAddressAutoComplete(prefix)
 			// Brooklyn, NYC doesn't use parts.locality
 			setValue('address_city', parts.sublocality_level_1);
 		} else if (parts.administrative_area_level_1) {
-			// Istanbul uses administrative_area_level_1
+			// Istanbul uses administrative_area_level_1 as city
 			setValue('address_city', parts.administrative_area_level_1);
-		} else {
-			setValue('address_city', '');
 		}
 
 		if (parts.postal_code) {
 			setValue('address_postalcode', parts.postal_code);
-		} else {
-			setValue('address_postalcode', '');
 		}
 
 		if (parts.country) {
@@ -114,14 +117,21 @@ function StoreGoogleAddressAutoComplete(prefix)
 				}
 			}
 
-			var select = document.getElementById(
-				prefix + 'address_provstate_flydown'
-			);
+			if (id === false) {
+				setValue(
+					'address_provstate_entry',
+					parts_long.administrative_area_level_1
+				);
+			} else {
+				var select = document.getElementById(
+					prefix + 'address_provstate_flydown'
+				);
 
-			for (var i = 0; i < select.options.length; i++) {
-				if (select[i].value == id) {
-					select.selectedIndex = i;
-					break;
+				for (var i = 0; i < select.options.length; i++) {
+					if (select[i].value == id) {
+						select.selectedIndex = i;
+						break;
+					}
 				}
 			}
 		}
