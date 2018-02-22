@@ -28,14 +28,13 @@ function StoreGoogleAddressAutoComplete(prefix)
 	function getEstablishment(place) {
 		var establishment = '';
 
-		for (var i = 0; i < place.types.length; i++) {
+		place.types.forEach(function(type) {
 			if (place.name &&
-				place.types[i] === 'establishment' ||
-				place.types[i] === 'point_of_interest') {
+				type === 'establishment' ||
+				type === 'point_of_interest') {
 				establishment = place.name;
-				break;
 			}
-		}
+		});
 
 		return establishment;
 	}
@@ -55,11 +54,11 @@ function StoreGoogleAddressAutoComplete(prefix)
 
 		var parts = {};
 		var parts_long = {};
-		for (var i = 0; i < place.address_components.length; i++) {
-			var addressType = place.address_components[i].types[0];
-			parts[addressType] = place.address_components[i].short_name;
-			parts_long[addressType] = place.address_components[i].long_name;
-		}
+		place.address_components.forEach(function(component) {
+			var addressType = component.types[0];
+			parts[addressType] = component.short_name;
+			parts_long[addressType] = component.long_name;
+		});
 
 		var line1 = '';
 		if (parts.route) {
@@ -109,12 +108,13 @@ function StoreGoogleAddressAutoComplete(prefix)
 		var code = parts.administrative_area_level_1;
 		if (parts.country && code) {
 			var id = false;
-			var ids = StoreGoogleAddressAutoComplete.prov_states;
-			for (var i = 0; i < ids.length; i++) {
-				if (ids[i].country === parts.country && ids[i].code == code) {
-					id = ids[i].id;
+			var prov_stats = StoreGoogleAddressAutoComplete.prov_states;
+			prov_stats.forEach(function(prov_state) {
+				if (prov_state.country === parts.country &&
+					prov_state.code == code) {
+					id = prov_state.id;
 				}
-			}
+			});
 
 			// Great Britian returns "England" for administrative_area_level_1
 			if (id === false && parts.country !== 'GB') {
