@@ -63,8 +63,6 @@ function StoreGoogleAddressAutoComplete(prefix)
 			parts_long[addressType] = place.address_components[i].long_name;
 		}
 
-		console.log(parts);
-
 		var line1 = '';
 		if (parts.route) {
 			line1 = (parts.street_number)
