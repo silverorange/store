@@ -27,14 +27,6 @@ class StoreGoogleAddressAutoComplete extends SwatControl
 	}
 
 	// }}}
-	// {{{ public function __construct()
-
-	public function __construct($id = null)
-	{
-		parent::__construct($id);
-	}
-
-	// }}}
 	// {{{ public function display()
 
 	public function display()
