@@ -1,8 +1,6 @@
 function StoreGoogleAddressAutoComplete(prefix)
 {
-	if (prefix) {
-		prefix += '_';
-	}
+	prefix += (prefix) ? '_' : '';
 
 	// Auto-complete only works with input tags, not textarea
 	var input = document.getElementById(prefix + 'address_line1');
