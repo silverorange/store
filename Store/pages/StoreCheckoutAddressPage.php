@@ -247,40 +247,6 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 	abstract protected function getInlineJavaScript();
 
 	// }}}
-	// {{{ protected function getProvStateJavaScript()
-
-	protected function getProvStateJavaScript()
-	{
-		$where_clause = sprintf(
-			'id in (
-				select provstate from RegionBillingProvStateBinding
-				where region = %s)',
-			$this->app->db->quote($this->app->getRegion()->id, 'integer')
-		);
-
-		$sql = sprintf(
-			'select id, country, abbreviation from ProvState where %s',
-			$where_clause
-		);
-
-		$provstates = SwatDB::query($this->app->db, $sql);
-
-		$values = [];
-		foreach ($provstates as $provstate) {
-			$values[] = [
-				'id' => $provstate->id,
-				'country' => $provstate->country,
-				'code' => $provstate->abbreviation,
-			];
-		}
-
-		return sprintf(
-			'StoreCheckoutAddressPage.prov_state_ids = %s;',
-			json_encode($values)
-		);
-	}
-
-	// }}}
 
 	// finalize phase
 	// {{{ public function finalize()
