@@ -13,7 +13,7 @@ function StoreCheckoutShippingAddressPage(id)
 				city: 'shipping_address_city',
 				postal_code: 'shipping_address_postalcode',
 				provstate_entry:
-					'shipping_address_address_provstate_entry',
+					'shipping_address_provstate_entry',
 				country: 'shipping_address_country',
 				provstate: 'shipping_address_provstate_flydown',
 			}

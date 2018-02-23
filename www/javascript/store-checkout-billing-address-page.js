@@ -13,7 +13,7 @@ function StoreCheckoutBillingAddressPage(id)
 				city: 'billing_address_city',
 				postal_code: 'billing_address_postalcode',
 				provstate_entry:
-					'billing_address_address_provstate_entry',
+					'billing_address_provstate_entry',
 				country: 'billing_address_country',
 				provstate: 'billing_address_provstate_flydown',
 			}
