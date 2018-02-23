@@ -2,7 +2,7 @@ function StoreGoogleAddressAutoComplete(input_id, fields)
 {
 	// Auto-complete only works with input tags, not textarea
 	var input = document.getElementById(input_id);
-	if (input && input.tagName !== 'INPUT') {
+	if (!input || input.tagName !== 'INPUT') {
 		return;
 	}
 
