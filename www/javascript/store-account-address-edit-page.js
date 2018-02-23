@@ -1,6 +1,6 @@
 YAHOO.util.Event.onDOMReady(function() {
 	new StoreGoogleAddressAutoComplete(
-		'address_line1',
+		'line1',
 		{
 			line1: 'line1',
 			line2: 'line2',
