@@ -1,9 +1,7 @@
-function StoreGoogleAddressAutoComplete(prefix)
+function StoreGoogleAddressAutoComplete(input_id, fields)
 {
-	prefix += (prefix) ? '_' : '';
-
 	// Auto-complete only works with input tags, not textarea
-	var input = document.getElementById(prefix + 'address_line1');
+	var input = document.getElementById(input_id);
 	if (input && input.tagName !== 'INPUT') {
 		return;
 	}
@@ -18,7 +16,9 @@ function StoreGoogleAddressAutoComplete(prefix)
 	});
 
 	function setValue(name, value) {
-		document.getElementById(prefix + name).value = value;
+		if (document.getElementById(fields[name])) {
+			document.getElementById(fields[name]).value = value;
+		}
 	}
 
 	// Only return an establishment like "Googleplex" if the address
@@ -47,10 +47,10 @@ function StoreGoogleAddressAutoComplete(prefix)
 		}
 
 		// reset address parts
-		setValue('address_line2', '');
-		setValue('address_provstate_entry', '');
-		setValue('address_city', '');
-		setValue('address_postalcode', '');
+		setValue('line2', '');
+		setValue('provstate_entry', '');
+		setValue('city', '');
+		setValue('postal_code', '');
 
 		var parts = {};
 		var parts_long = {};
@@ -68,32 +68,33 @@ function StoreGoogleAddressAutoComplete(prefix)
 		}
 
 		if (line1 != '') {
-			setValue('address_line1', line1);
+			setValue('line1', line1);
 		}
 
 		var establishment = getEstablishment(place);
 		if (establishment) {
-			setValue('address_line2', establishment);
+			setValue('line2', establishment);
 		}
 
 		if (parts_long.locality) {
-			setValue('address_city', parts_long.locality);
+			setValue('city', parts_long.locality);
 		} else if (parts.postal_town) {
-			setValue('address_city', parts_long.postal_town);
+			setValue('city', parts_long.postal_town);
 		} else if (parts_long.sublocality_level_1) {
 			// Brooklyn, NYC doesn't use parts.locality
-			setValue('address_city', parts_long.sublocality_level_1);
+			setValue('city', parts_long.sublocality_level_1);
 		} else if (parts_long.administrative_area_level_1) {
 			// Istanbul uses administrative_area_level_1 as city
-			setValue('address_city', parts_long.administrative_area_level_1);
+			setValue('city', parts_long.administrative_area_level_1);
 		}
 
 		if (parts.postal_code) {
-			setValue('address_postalcode', parts.postal_code);
+			setValue('postal_code', parts.postal_code);
 		}
 
 		if (parts.country) {
-			var select = document.getElementById(prefix + 'address_country');
+			var select = document.getElementById(fields.country);
+
 			for (var i = 0; i < select.options.length; i++) {
 				if (select[i].value === parts.country) {
 					select.selectedIndex = i;
@@ -119,14 +120,11 @@ function StoreGoogleAddressAutoComplete(prefix)
 			// Great Britian returns "England" for administrative_area_level_1
 			if (id === false && parts.country !== 'GB') {
 				setValue(
-					'address_provstate_entry',
+					'provstate_entry',
 					parts_long.administrative_area_level_1
 				);
 			} else {
-				var select = document.getElementById(
-					prefix + 'address_provstate_flydown'
-				);
-
+				var select = document.getElementById(fields.provstate);
 				for (var i = 0; i < select.options.length; i++) {
 					if (select[i].value == id) {
 						select.selectedIndex = i;
