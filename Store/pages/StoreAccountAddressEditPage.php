@@ -46,6 +46,11 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 	 */
 	protected $confirm_no_button;
 
+	/*
+	 * @var StoreGoogleAddressAutoComplete
+	 */
+	protected $auto_complete;
+
 	// }}}
 	// {{{ protected function getUiXml()
 
@@ -103,6 +108,9 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 
 		$this->confirm_no_button = new SwatButton('confirm_no_button');
 		$this->confirm_no_button->parent = $form;
+
+		$this->auto_complete = new StoreGoogleAddressAutoComplete();
+		$this->auto_complete->setApplication($this->app);
 	}
 
 	// }}}
@@ -431,6 +439,10 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 		} elseif (!$form->isProcessed()) {
 			$this->setDefaultValues($this->app->session->account);
 		}
+
+		$this->layout->startCapture('content');
+		$this->auto_complete->display();
+		$this->layout->endCapture();
 	}
 
 	// }}}
@@ -528,6 +540,14 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 
 		$this->layout->addHtmlHeadEntrySet(
 			$this->ui->getRoot()->getHtmlHeadEntrySet()
+		);
+
+		$this->layout->addHtmlHeadEntrySet(
+			$this->auto_complete->getHtmlHeadEntrySet()
+		);
+
+		$this->layout->addHtmlHeadEntry(
+			'packages/store/javascript/store-account-address-edit-page.js'
 		);
 	}
 

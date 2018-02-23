@@ -21,6 +21,9 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 	protected $button1;
 	protected $button2;
 
+	/*
+	 * @var StoreGoogleAddressAutoComplete
+	 */
 	protected $auto_complete;
 
 	// }}}
