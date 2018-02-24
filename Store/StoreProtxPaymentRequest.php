@@ -666,8 +666,7 @@ class StoreProtxPaymentRequest extends StorePaymentRequest
 	 */
 	private function getFakeStatusResponseText()
 	{
-		return
-			"Status=OK\r\n".
+		return "Status=OK\r\n".
 			"StatusDetail=Fake status response for testing.\r\n".
 			"TransactionType=DEFERRED\r\n".
 			"Released=NO\r\n".
