@@ -65,6 +65,8 @@ function StoreGoogleAddressAutoComplete(input_id, fields)
 			line1 = (parts.street_number)
 				? parts.street_number + ' ' + parts.route
 				: parts.route;
+		} else if (parts.premise) {
+			line1 = parts.premise;
 		}
 
 		if (line1 != '') {
