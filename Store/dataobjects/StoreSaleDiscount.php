@@ -98,16 +98,18 @@ class StoreSaleDiscount extends SwatDBDataObject
 	 */
 	public function isActive(SwatDate $date = null)
 	{
-		if ($date === null)
+		if ($date === null) {
 			$date = new SwatDate();
+		}
 
 		$date->toUTC();
 
-		return
-			(($this->start_date === null ||
+		return (
+			($this->start_date === null ||
 				SwatDate::compare($date, $this->start_date) >= 0) &&
 			($this->end_date === null ||
-				SwatDate::compare($date, $this->end_date) <= 0));
+				SwatDate::compare($date, $this->end_date) <= 0)
+		);
 	}
 
 	// }}}

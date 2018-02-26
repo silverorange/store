@@ -94,12 +94,13 @@ class StoreFeature extends SwatDBDataObject
 
 		$date->toUTC();
 
-		return
-			($this->enabled) &&
-			(($this->start_date === null ||
+		return (
+			$this->enabled &&
+			($this->start_date === null ||
 				SwatDate::compare($date, $this->start_date) >= 0) &&
 			($this->end_date === null ||
-				SwatDate::compare($date, $this->end_date) <= 0));
+				SwatDate::compare($date, $this->end_date) <= 0)
+		);
 	}
 
 	// }}}

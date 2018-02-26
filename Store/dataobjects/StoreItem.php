@@ -511,8 +511,9 @@ class StoreItem extends SwatDBDataObject
 	 */
 	public function hasAvailableStatus()
 	{
-		return
-			($this->getStatus() === StoreItemStatusList::status('available'));
+		return (
+			$this->getStatus() === StoreItemStatusList::status('available')
+		);
 	}
 
 	// }}}
