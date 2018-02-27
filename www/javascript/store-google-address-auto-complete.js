@@ -102,7 +102,10 @@ function StoreGoogleAddressAutoComplete(input_id, fields)
 					select.selectedIndex = i;
 
 					// fire event to make the cascade select change
-					select.dispatchEvent(new Event('change'));
+					// note: IE 11 still doesn't support new Event()
+					var change_event = document.createEvent("Event");
+					change_event.initEvent('change', false, true);
+					select.dispatchEvent(change_event);
 					break;
 				}
 			}
