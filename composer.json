@@ -60,7 +60,7 @@
 	},
 	"require-dev": {
 		"silverorange/turing": "^1.0.0",
-		"silverorange/coding-standard": "^0.6.0"
+		"silverorange/coding-standard": "^1.0.0"
 	},
 	"suggest": {
 		"authorizenet/authorizenet": "Payments with Authorize.net.",
