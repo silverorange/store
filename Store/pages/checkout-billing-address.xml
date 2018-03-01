@@ -23,26 +23,17 @@
 				<property name="maxlength" type="integer">255</property>
 			</widget>
 		</widget>
-		<widget class="SwatFormField" id="billing_address_country_field">
-			<property name="title" translatable="yes">Location</property>
-			<widget class="SwatFlydown" id="billing_address_country">
-				<property name="required" type="boolean">true</property>
-				<property name="show_blank" type="boolean">false</property>
-			</widget>
-		</widget>
 		<widget class="SwatFormField" id="billing_address_line1_field">
 			<property name="title" translatable="yes">Street Address</property>
-			<widget class="SwatTextarea" id="billing_address_line1">
+			<widget class="SwatEntry" id="billing_address_line1">
 				<property name="required" type="boolean">true</property>
-				<property name="resizeable" type="boolean">false</property>
 				<property name="maxlength" type="integer">255</property>
-				<property name="rows" type="integer">2</property>
-				<property name="cols" type="integer">35</property>
 			</widget>
 		</widget>
 		<widget class="SwatFormField" id="billing_address_line2_field">
-			<property name="title" translatable="yes">Address Line 2</property>
-			<property name="visible" type="boolean">false</property>
+			<property name="title" translatable="yes">Company, Suite, Apartment, etc.</property>
+			<property name="required_status_display" type="constant">SHOW_OPTIONAL</property>
+			<property name="show_colon" type="boolean">false</property>
 			<widget class="SwatEntry" id="billing_address_line2">
 				<property name="maxlength" type="integer">255</property>
 				<property name="size" type="integer">35</property>
@@ -54,6 +45,13 @@
 				<property name="required" type="boolean">true</property>
 				<property name="maxlength" type="integer">255</property>
 				<property name="size" type="integer">35</property>
+			</widget>
+		</widget>
+		<widget class="SwatFormField" id="billing_address_country_field">
+			<property name="title" translatable="yes">Country</property>
+			<widget class="SwatFlydown" id="billing_address_country">
+				<property name="required" type="boolean">true</property>
+				<property name="show_blank" type="boolean">false</property>
 			</widget>
 		</widget>
 		<widget class="SwatFormField" id="billing_address_provstate_field">

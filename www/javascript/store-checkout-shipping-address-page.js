@@ -4,6 +4,22 @@ function StoreCheckoutShippingAddressPage(id)
 	this.list = document.getElementsByName('shipping_address_list');
 	this.list_new = document.getElementById('shipping_address_list_new');
 
+	YAHOO.util.Event.onDOMReady(function() {
+		new StoreGoogleAddressAutoComplete(
+			'shipping_address_line1',
+			{
+				line1: 'shipping_address_line1',
+				line2: 'shipping_address_line2',
+				city: 'shipping_address_city',
+				postal_code: 'shipping_address_postalcode',
+				provstate_entry:
+					'shipping_address_provstate_entry',
+				country: 'shipping_address_country',
+				provstate: 'shipping_address_provstate_flydown',
+			}
+		);
+	});
+
 	StoreCheckoutShippingAddressPage.superclass.constructor.call(this, id);
 }
 

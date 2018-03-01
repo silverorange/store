@@ -21,9 +21,25 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 	protected $button1;
 	protected $button2;
 
+	/*
+	 * @var StoreGoogleAddressAutoComplete
+	 */
+	protected $auto_complete;
+
 	// }}}
 
 	// init phase
+	// {{{ public function initCommon()
+
+	public function initCommon()
+	{
+		parent::initCommon();
+
+		$this->auto_complete = new StoreGoogleAddressAutoComplete();
+		$this->auto_complete->setApplication($this->app);
+	}
+
+	// }}}
 	// {{{ protected function initInternal()
 
 	protected function initInternal()
@@ -205,8 +221,9 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 		$this->buildList();
 		$this->buildForm();
 
-		if (!$this->ui->getWidget('form')->isProcessed())
+		if (!$this->ui->getWidget('form')->isProcessed()) {
 			$this->loadDataFromSession();
+		}
 	}
 
 	// }}}
@@ -215,6 +232,7 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 	public function postBuildCommon()
 	{
 		$this->layout->startCapture('content');
+		$this->auto_complete->display();
 		Swat::displayInlineJavaScript($this->getInlineJavaScript());
 		$this->layout->endCapture();
 	}
@@ -251,6 +269,10 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 
 		$this->layout->addHtmlHeadEntry(
 			'packages/store/javascript/store-checkout-address-page.js'
+		);
+
+		$this->layout->addHtmlHeadEntrySet(
+			$this->auto_complete->getHtmlHeadEntrySet()
 		);
 	}
 

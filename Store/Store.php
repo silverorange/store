@@ -139,6 +139,10 @@ class Store
 
 			// Analytics
 			'analytics.friendbuy_overlay_widget_id' => null,
+
+			// Google Address Autocomplete
+			'google_address_auto_complete.enabled' => false,
+			'google_address_auto_complete.api_key' => null,
 		);
 	}
 
