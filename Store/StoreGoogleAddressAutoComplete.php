@@ -43,7 +43,7 @@ class StoreGoogleAddressAutoComplete extends SwatControl
 		if ($address_config->enabled && $address_config->api_key != '') {
 			$script = new SwatHtmlTag('script');
 			$script->type = 'text/javascript';
-			$script->src =  sprintf(
+			$script->src = sprintf(
 				'https://maps.googleapis.com/maps/api/js'.
 				'?key=%s&libraries=places',
 				urlencode($address_config->api_key)
