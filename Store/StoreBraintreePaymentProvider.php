@@ -389,21 +389,31 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 			$request['email'] = $this->truncateField($account->email, 255);
 		}
 
+		$custom_fields = $this->getCustomFields();
+		if (count($custom_fields) > 0) {
+			$request['customFields'] = $custom_fields;
+		}
+
 		return $request;
 	}
 
 	// }}}
 	// {{{ protected function getCustomFields()
 
-	protected function getCustomFields(StoreOrder $order)
+	protected function getCustomFields(StoreOrder $order = null)
 	{
-		return array(
-			'site_title' => $this->truncateField($this->site_title, 255),
-			'order_description' => $this->truncateField(
+		$fields = [
+			'site_title' => $this->truncateField($this->site_title, 255)
+		];
+
+		if ($order instanceof StoreOrder) {
+			$fields['order_description'] = $this->truncateField(
 				$this->getOrderDescription($order),
 				255
-			),
-		);
+			);
+		}
+
+		return $fields;
 	}
 
 	// }}}
