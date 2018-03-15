@@ -389,11 +389,6 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 			$request['email'] = $this->truncateField($account->email, 255);
 		}
 
-		$custom_fields = $this->getCustomFields();
-		if (count($custom_fields) > 0) {
-			$request['customFields'] = $custom_fields;
-		}
-
 		return $request;
 	}
 
