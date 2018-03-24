@@ -367,8 +367,7 @@ class StoreProductEdit extends AdminDBEdit
 
 			$message->secondary_content = Store::_(
 				'It may be possible to purchase this product on the front-'.
-				'end (e.g. through the quick-order), but browsing to this '.
-				'product will not be possible.'
+				'end, but browsing to this product will not be possible.'
 			);
 
 			$this->ui->getWidget('edit_warnings')->add(

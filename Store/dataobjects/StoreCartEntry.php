@@ -29,7 +29,6 @@ class StoreCartEntry extends SwatDBDataObject
 	 * Valid sources for where the cart entry was created.
 	 */
 	const SOURCE_PRODUCT_PAGE       = 1;
-	const SOURCE_QUICK_ORDER        = 2;
 	const SOURCE_CATEGORY_PAGE      = 3;
 	const SOURCE_ACCOUNT_ORDER_PAGE = 4;
 	const SOURCE_INVOICE            = 5;
@@ -77,13 +76,6 @@ class StoreCartEntry extends SwatDBDataObject
 	 * @var boolean
 	 */
 	public $saved;
-
-	/**
-	 * Whether or not this cart entry was created on the quick order page
-	 *
-	 * @var boolean
-	 */
-	public $quick_order;
 
 	/**
 	 * Where this cart entry was created.
@@ -498,8 +490,6 @@ class StoreCartEntry extends SwatDBDataObject
 
 		$this->registerInternalProperty('alias',
 			SwatDBClassMap::get('StoreItemAlias'));
-
-		$this->registerDeprecatedProperty('quick_order');
 
 		$this->table = 'CartEntry';
 		$this->id_field = 'integer:id';
