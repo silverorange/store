@@ -41,7 +41,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	 * PayPal SOAP client
 	 *
 	 * @var Payment_PayPal_SOAP
-	 * @see StoreProtxPaymentProvider::__construct()
+	 * @see StorePayPalPaymentProvider::__construct()
 	 */
 	protected $client;
 
