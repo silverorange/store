@@ -25,7 +25,6 @@ class StoreXMLRPCServerFactory extends SiteXMLRPCServerFactory
 			'quickorder'      => 'StoreQuickOrderServer',
 			'product-reviews' => 'StoreProductReviewServer',
 			'search-panel'    => 'StoreSearchPanelServer',
-			'feedback-panel'  => 'StoreFeedbackPanelServer',
 			'cart'            => 'StoreCartServer',
 		);
 	}
