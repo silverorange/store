@@ -26,11 +26,6 @@
 				<property name="title" translatable="yes">View All Orders With Comments</property>
 				<property name="link">Orders?has_comments=true</property>
 			</widget>
-			<widget class="SwatToolLink" id="view_all_product_reviews">
-				<property name="visible" type="boolean">false</property>
-				<property name="title" translatable="yes">View All Product Reviews</property>
-				<property name="link">ProductReview</property>
-			</widget>
 		</widget>
 		<widget class="AdminNote" id="new_content_note" />
 		<widget class="SwatTableView" id="new_content_view">

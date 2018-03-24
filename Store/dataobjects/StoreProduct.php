@@ -101,13 +101,6 @@ class StoreProduct extends SwatDBDataObject
 	public $createdate;
 
 	/**
-	 * Whether or not customers can review the product.
-	 *
-	 * @var boolean
-	 */
-	public $reviewable = true;
-
-	/**
 	 * Headline content used for creating pay-per-click ads
 	 *
 	 * This is usually the product title or a shortened version of the product
@@ -322,75 +315,6 @@ class StoreProduct extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ public function getVisibleProductReviews()
-
-	/**
-	 * Gets product reviews that are visible
-	 *
-	 * @return StoreProductReviewWrapper
-	 */
-	public function getVisibleProductReviews(
-		SiteInstance $instance = null,
-		$limit = null,
-		$offset = 0
-	) {
-		$instance_where = '';
-		$instance_id = ($instance === null) ? null : $instance->id;
-		if ($instance_id !== null) {
-			$instance_where = sprintf(' and instance %s %s',
-				SwatDB::equalityOperator($instance_id),
-				$this->db->quote($instance_id, 'integer'));
-		}
-
-		$sql = 'select * from ProductReview
-			where product = %s and spam = %s and status = %s %s
-				and parent %s %s
-			order by createdate desc, id';
-
-		$sql = sprintf($sql,
-			$this->db->quote($this->id, 'integer'),
-			$this->db->quote(false, 'boolean'),
-			$this->db->quote(SiteComment::STATUS_PUBLISHED, 'integer'),
-			$instance_where,
-			SwatDB::equalityOperator(null),
-			$this->db->quote(null));
-
-		if ($limit !== null)
-			$this->db->setLimit($limit, $offset);
-
-		return SwatDB::query($this->db, $sql,
-			SwatDBClassMap::get('StoreProductReviewWrapper'));
-	}
-
-	// }}}
-	// {{{ public function getVisibleProductReviewCount()
-
-	public function getVisibleProductReviewCount(SiteInstance $instance = null)
-	{
-		$instance_where = '';
-		$instance_id = ($instance === null) ? null : $instance->id;
-		if ($instance_id !== null) {
-			$instance_where = sprintf(' and instance %s %s',
-				SwatDB::equalityOperator($instance_id),
-				$this->db->quote($instance_id, 'integer'));
-		}
-
-		$sql = 'select count(1) from ProductReview
-			where product = %s and spam = %s and status = %s %s
-				and parent %s %s';
-
-		$sql = sprintf($sql,
-			$this->db->quote($this->id, 'integer'),
-			$this->db->quote(false, 'boolean'),
-			$this->db->quote(SiteComment::STATUS_PUBLISHED, 'integer'),
-			$instance_where,
-			SwatDB::equalityOperator(null),
-			$this->db->quote(null));
-
-		return SwatDB::queryOne($this->db, $sql);
-	}
-
-	// }}}
 	// {{{ protected function init()
 
 	protected function init()
@@ -452,13 +376,16 @@ class StoreProduct extends SwatDBDataObject
 
 	protected function getSerializableSubDataObjects()
 	{
-		return array_merge(parent::getSerializableSubDataObjects(),
-			array('primary_category', 'primary_image', 'cheapest_item',
+		return array_merge(
+			parent::getSerializableSubDataObjects(),
+			array(
+				'primary_category', 'primary_image', 'cheapest_item',
 				'items', 'item_groups', 'categories', 'attributes',
 				'featured_categories', 'related_products',
-				'related_articles',
-				'images', 'product_reviews', 'catalog', 'path',
-				'collection_products'));
+				'related_articles', 'images', 'catalog', 'path',
+				'collection_products'
+			)
+		);
 	}
 
 	// }}}
@@ -864,24 +791,6 @@ class StoreProduct extends SwatDBDataObject
 	}
 
 	// }}}
-	// {{{ protected function loadProductReviews()
-
-	/**
-	 * Loads product reviews
-	 *
-	 * @return StoreProductReviewWrapper
-	 */
-	protected function loadProductReviews()
-	{
-		$sql = 'select * from ProductReview where product = %s';
-		$sql = sprintf($sql,
-			$this->db->quote($this->id, 'integer'));
-
-		return SwatDB::query($this->db, $sql,
-			SwatDBClassMap::get('StoreProductReviewWrapper'));
-	}
-
-	// }}}
 
 	// saver methods
 	// {{{ protected function saveItems()
@@ -897,22 +806,6 @@ class StoreProduct extends SwatDBDataObject
 
 		$this->items->setDatabase($this->db);
 		$this->items->save();
-	}
-
-	// }}}
-	// {{{ protected function saveProductReviews()
-
-	/**
-	 * Automatically saves StoreProductReview sub-data-objects when this
-	 * StoreProduct object is saved
-	 */
-	protected function saveProductReviews()
-	{
-		foreach ($this->product_reviews as $review)
-			$review->product = $this;
-
-		$this->product_reviews->setDatabase($this->db);
-		$this->product_reviews->save();
 	}
 
 	// }}}

@@ -48,10 +48,6 @@ class StoreProductDetails extends AdminIndex
 			SiteApplication::VAR_GET);
 
 		$this->initItems();
-
-		if ($this->ui->hasWidget('review_pager')) {
-			$this->ui->getWidget('review_pager')->page_size = 10;
-		}
 	}
 
 	// }}}
@@ -154,10 +150,6 @@ class StoreProductDetails extends AdminIndex
 
 			$this->addNewItems();
 		}
-
-		if ($this->ui->hasWidget('review_pager')) {
-			$this->ui->getWidget('review_pager')->process();
-		}
 	}
 
 	// }}}
@@ -172,10 +164,6 @@ class StoreProductDetails extends AdminIndex
 
 		case 'related_articles_view':
 			$this->processRelatedArticleActions($view, $actions);
-			break;
-
-		case 'product_reviews_view':
-			$this->processProductReviewActions($view, $actions);
 			break;
 		}
 	}
@@ -559,80 +547,6 @@ class StoreProductDetails extends AdminIndex
 	}
 
 	// }}}
-	// {{{ private function processProductReviewActions()
-
-	private function processProductReviewActions($view, $actions)
-	{
-		switch ($actions->selected->id) {
-		case 'product_review_delete':
-			$this->app->replacePage('ProductReview/Delete');
-			$this->app->getPage()->setItems($view->getSelection());
-			$this->app->getPage()->setProduct($this->id);
-			$this->app->getPage()->setCategory($this->category_id);
-			break;
-
-		case 'product_review_approve':
-			$sql = 'update ProductReview set status = %s, spam = %s
-				where id in (%s)';
-
-			SwatDB::exec($this->app->db, sprintf($sql,
-				$this->app->db->quote(SiteComment::STATUS_PUBLISHED, 'integer'),
-				$this->app->db->quote(false, 'boolean'),
-				SwatDB::implodeSelection($this->app->db,
-					$view->getSelection())));
-
-			$num = count($view->getSelection());
-
-			$message = new SwatMessage(sprintf(Store::ngettext(
-				'One product review has been published.',
-				'%s product reviews have been published.', $num),
-				SwatString::numberFormat($num)));
-
-			$this->app->messages->add($message);
-			break;
-
-		case 'product_review_deny':
-			$sql = 'update ProductReview set status = %s
-				where id in (%s)';
-
-			SwatDB::exec($this->app->db, sprintf($sql,
-				$this->app->db->quote(SiteComment::STATUS_UNPUBLISHED,
-					'integer'),
-				SwatDB::implodeSelection($this->app->db,
-					$view->getSelection())));
-
-			$num = count($view->getSelection());
-
-			$message = new SwatMessage(sprintf(Store::ngettext(
-				'One product review has been unpushlished.',
-				'%s product reviews have been unpushlished.', $num),
-				SwatString::numberFormat($num)));
-
-			$this->app->messages->add($message);
-			break;
-
-		case 'product_review_spam':
-			$sql = 'update ProductReview set spam = %s
-				where id in (%s)';
-
-			SwatDB::exec($this->app->db, sprintf($sql,
-				$this->app->db->quote(true, 'boolean'),
-				SwatDB::implodeSelection($this->app->db,
-					$view->getSelection())));
-
-			$num = count($view->getSelection());
-
-			$message = new SwatMessage(sprintf(Store::ngettext(
-				'One product review has been marked as spam.',
-				'%s product reviews have been marked as spam.', $num),
-				SwatString::numberFormat($num)));
-
-			$this->app->messages->add($message);
-			break;
-		}
-	}
-
-	// }}}
 
 	// build phase
 	// {{{ protected function buildInternal()
@@ -646,7 +560,6 @@ class StoreProductDetails extends AdminIndex
 		$this->buildRelatedProducts();
 		$this->buildProductCollections();
 		$this->buildRelatedArticles();
-		$this->buildProductReviews();
 	}
 
 	// }}}
@@ -684,8 +597,6 @@ class StoreProductDetails extends AdminIndex
 			return $this->getProductCollectionsTableModel($view);
 		case  'related_articles_view':
 			return $this->getRelatedArticlesTableModel($view);
-		case  'product_reviews_view':
-			return $this->getProductReviewsTableModel($view);
 		}
 	}
 
@@ -1456,71 +1367,6 @@ class StoreProductDetails extends AdminIndex
 		}
 
 		return $rs;
-	}
-
-	// }}}
-
-	// build phase - product reviews
-	// {{{ private function buildProductReviews()
-
-	private function buildProductReviews()
-	{
-		$toolbar = $this->ui->getWidget('product_reviews_toolbar');
-		$view = $this->ui->getWidget('product_reviews_view');
-		$this->buildCategoryToolBarLinks($toolbar);
-		$this->buildCategoryTableViewLinks($view);
-
-		if (!$this->product->reviewable) {
-			$toolbar->parent->sensitive = false;
-			$this->ui->getWidget('product_reviews_note')->visible = true;
-		}
-	}
-
-	// }}}
-	// {{{ private function getProductReviewsTableModel()
-
-	private function getProductReviewsTableModel($view)
-	{
-		$instance_id = $this->app->getInstanceId();
-
-		$sql = sprintf('select count(id) from ProductReview
-			where product = %s and spam = %s and instance %s %s',
-			$this->app->db->quote($this->id, 'integer'),
-			$this->app->db->quote(false, 'boolean'),
-			SwatDB::equalityOperator($instance_id),
-			$this->app->db->quote($instance_id, 'integer'));
-
-		$pager = $this->ui->getWidget('review_pager');
-		$pager->total_records = SwatDB::queryOne($this->app->db, $sql);
-
-		$sql = 'select * from ProductReview
-			where product = %s and spam = %s and instance %s %s
-			order by %s';
-
-		$sql = sprintf($sql,
-			$this->app->db->quote($this->id, 'integer'),
-			$this->app->db->quote(false, 'boolean'),
-			SwatDB::equalityOperator($instance_id),
-			$this->app->db->quote($instance_id, 'integer'),
-			$this->getOrderByClause($view, 'createdate'));
-
-		$this->app->db->setLimit($pager->page_size, $pager->current_record);
-		$reviews = SwatDB::query($this->app->db, $sql,
-			SwatDBClassMap::get('StoreProductReviewWrapper'));
-
-		$store = new SwatTableStore();
-		foreach ($reviews as $review) {
-			$ds = new SwatDetailsStore($review);
-			if (class_exists('Blorg') && $review->author !== null)
-				$ds->fullname = $review->author->name;
-
-			$ds->bodytext = SwatString::condense(
-				SwatString::ellipsizeRight($review->bodytext, 500));
-
-			$store->add($ds);
-		}
-
-		return $store;
 	}
 
 	// }}}
