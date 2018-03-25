@@ -17,24 +17,6 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	// {{{ public properties
 
 	/**
-	 * Card Verification Value (CVV)
-	 *
-	 * This value is encrypted using GPG encryption. The only way the number
-	 * may be retrieved is by using GPG decryption with the correct GPG private
-	 * key.
-	 *
-	 * NOTE: Visa forbids storing this code after authorization is obtained.
-	 * PCI compliance standards forbit storing this code altogether. This class
-	 * supports storing the CVV only for offline authorization. The code must
-	 * be deleted from the database upon authorization.
-	 *
-	 * @var string
-	 *
-	 * @see StoreOrderPaymentMethod::setCardVerificationValue()
-	 */
-	public $card_verification_value;
-
-	/**
 	 * Optional amount to charge to this payment method
 	 *
 	 * @var float
@@ -143,38 +125,11 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	 *                                    the {@link StoreOrderPaymentMethod::getUnencryptedCardVerificationValue()}
 	 *                                    method. If not specified, the
 	 *                                    unencrypted version is set.
-	 * @param boolean $store_encrypted optional flag to store a GPG encrypted
-	 *                                  version of the CVV in the public
-	 *                                  {@link StoreOrderPaymentMethod::$card_verification_value}
-	 *                                  property. The encrypted value will be
-	 *                                  saved in the database when this object
-	 *                                  is saved. If not specified, the
-	 *                                  encrypted version is <em>not</em>
-	 *                                  stored.
 	 *
 	 * @see StoreOrderPaymentMethod::getUnencryptedCardVerificationValue()
 	 */
-	public function setCardVerificationValue(
-		$value,
-		$store_unencrypted = true,
-		$store_encrypted = false
-	) {
-		if ($store_encrypted) {
-			/*
-			 * We throw an exception here to prevent silent failures when
-			 * saving payment information. Sites that do not require GPG
-			 * encryption should use the third parameter of this method to
-			 * not store the encrypted value.
-			 */
-			if ($this->gpg_id === null) {
-				throw new StoreException('GPG ID is required.');
-			}
-
-			$gpg = $this->getGPG();
-			$this->card_verification_value = self::encrypt($gpg, $value,
-				$this->gpg_id);
-		}
-
+	public function setCardVerificationValue($value, $store_unencrypted = true)
+	{
 		if ($store_unencrypted) {
 			$this->unencrypted_card_verification_value = strval($value);
 		}
@@ -192,30 +147,6 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	{
 		return ($this->card_verification_value != '' ||
 			$this->unencrypted_card_verification_value != '');
-	}
-
-	// }}}
-	// {{{ public function getCardVerificationValue()
-
-	/**
-	 * @param $passphrase the passphrase required for decrypting the card
-	 *                     verification value.
-	 *
-	 * @return string the unencrypted card verification value.
-	 *
-	 * @sensitive $passphrase
-	 */
-	public function getCardVerificationValue($passphrase)
-	{
-		$value = null;
-
-		if ($this->card_verification_value !== null) {
-			$gpg = $this->getGPG();
-			$value = self::decrypt($gpg, $this->card_verification_value,
-				$this->gpg_id, $passphrase);
-		}
-
-		return $value;
 	}
 
 	// }}}
@@ -373,51 +304,14 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	}
 
 	// }}}
-	// {{{ protected function displayCard()
-
-	protected function displayCard($passphrase)
-	{
-		parent::displayCard($passphrase);
-
-		$cvv_span = new SwatHtmlTag('span');
-		$has_cvv = false;
-
-		if ($this->payment_type->isCard() &&
-			$this->gpg_id !== null && $passphrase !== null) {
-			$display_card = true;
-
-			$card_verification_value =
-				$this->getCardVerificationValue($passphrase);
-
-			if ($card_verification_value !== null) {
-				$has_cvv = true;
-				$cvv_span->setContent(
-					sprintf(
-						Store::_('(CVV: %s)'),
-						$card_verification_value
-					)
-				);
-			}
-		}
-
-		if ($has_cvv) {
-			$cvv_span->class = 'store-payment-method-card-verification-value';
-			echo ' ';
-			$cvv_span->display();
-		}
-	}
-
-	// }}}
 	// {{{ protected function displayInternal()
 
-	protected function displayInternal(
-		$display_details = true,
-		$passphrase = null
-	) {
+	protected function displayInternal($display_details = true)
+	{
 		if ($this->payment_type->isVoucher()) {
 			$this->displayVoucher();
 		} else {
-			parent::displayInternal($display_details, $passphrase);
+			parent::displayInternal($display_details);
 		}
 	}
 
