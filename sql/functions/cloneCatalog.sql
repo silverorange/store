@@ -21,10 +21,6 @@
  *    |
  *    +- ProductRelatedProductBinding [3]
  *    |
- *    +- ProductPopularProductBinding [3] [4]
- *    |
- *    +- ProductPopularity [4]
- *    |
  *    +- ProductReview
  *    |
  *    +- Item
@@ -96,13 +92,6 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 		-- cloned catalogs are disabled by default
 		--insert into CatalogRegionBinding (region, catalog)
 		--select region, local_id from CatalogRegionBinding where catalog = param_id;
-
-		-- map of old and new products so we can clone ProductRelatedProductBinding and ProductPopularProductBinding
-		create temporary table ClonedProductMap (
-			old_id integer,
-			new_id integer,
-			primary key (old_id, new_id)
-		);
 
 		-- list of cloned items with item groups so we can update item_group relation on Item
 		create temporary table ClonedItem (
