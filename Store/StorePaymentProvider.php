@@ -12,7 +12,7 @@
  *     'Mode'   => 'test',
  *     'Vendor' => 'my-vendor-id',
  * );
- * $provider = StorePaymentProvider::factory('Protx', $paramaters);
+ * $provider = StorePaymentProvider::factory('PayPal', $paramaters);
  * $provider->setAvsMode();
  * $transaction = $provider->hold($order);
  * $transaction = $provider->release($transaction);
