@@ -7,3 +7,5 @@
 class StorePaymentBraintreeValidationException extends StorePaymentException
 {
 }
+
+?>

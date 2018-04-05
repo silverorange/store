@@ -28,3 +28,5 @@ class StorePaymentBraintreeGatewayException extends StorePaymentException
 
 	// }}}
 }
+
+?>
