@@ -2,7 +2,7 @@
 
 /**
  * @package   Store
- * @copyright 2011-2016 silverorange
+ * @copyright 2011-2018 silverorange
  * @see       StorePaymentProvider::factory()
  * @see       StorePaymentMethodTransaction
  */
@@ -153,11 +153,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 
 		// check for errors and throw exception
 		if (!$response->success) {
-			throw new StorePaymentBraintreeException(
-				'Error processing Braintree payment: ' . $response->message,
-				0,
-				$response
-			);
+			throw $this->generateExceptionFromResponse($response);
 		}
 
 		return $this->createPaymentMethodTransaction($response->transaction);
@@ -172,66 +168,52 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 			$e instanceof Braintree\Exception\Authorization ||
 			$e instanceof Braintree\Exception\Configuration ||
 			$e instanceof Braintree\Exception\ServerError ||
-			$e instanceof Braintree\Exception\UpgradeRequired) {
+			$e instanceof Braintree\Exception\UpgradeRequired ||
+			$e instanceof StorePaymentBraintreeGatewayException ||
+			$e instanceof StorePaymentBraintreeSettlementException) {
 			return 'payment-error';
 		}
 
-		if ($e instanceof StorePaymentBraintreeException) {
-			$response = $e->getResponse();
+		// transaction error
+		if ($e instanceof StorePaymentBraintreeProcessorException) {
+			switch ($e->getCode()) {
+			case 2004: // expired card
+				return 'card-expired';
+			case 2010: // issuer declined CVV
+				return 'card-verification-value';
+			case 2060: // address verification failed
+				return 'address-mismatch';
+			case 2005: // invalid number
+			case 2008: // account length error
+			case 2007: // no account
+			case 2009: // invalid issuer
+			case 2051: // card number does not match payment type
+				return 'card-not-valid';
+			case 2014: // card type not enabled
+				return 'card-type';
+			case 2000: // do not honor
+			case 2001: // insufficient funds
+			case 2002: // limit exceeded
+			case 2003: // activity limit exceeded
+			case 2015: // not allowed (reason unknown)
+			case 2041: // declined (call for approval)
+			case 2044: // declined (call issuer)
+			case 2046: // declined (customer needs to call bank)
+			case 2057: // issuer or cardholder restricted
+			default:
+				return 'card-error';
+			}
+		}
 
-			// data validation error(s)
-			if ($response->errors->deepSize() > 0) {
+		if ($e instanceof StorePaymentBraintreeGatewayException) {
+			switch ($e->getCode()) {
+			case Braintree\Transaction::AVS:
+				return 'address-mismatch';
+			case Braintree\Transaction::AVS_AND_CVV:
+			case Braintree\Transaction::CVV:
+				return 'card-verification-value';
+			default:
 				return 'payment-error';
-			}
-
-			$transaction = $response->transaction;
-			$status = $transaction->status;
-
-			// transaction error
-			if ($status === Braintree\Transaction::PROCESSOR_DECLINED) {
-				switch ($transaction->processorResponseCode) {
-				case 2004: // expired card
-					return 'card-expired';
-				case 2010: // issuer declined CVV
-					return 'card-verification-value';
-				case 2060: // address verification failed
-					return 'address-mismatch';
-				case 2005: // invalid number
-				case 2008: // account length error
-				case 2007: // no account
-				case 2009: // invalid issuer
-				case 2051: // card number does not match payment type
-					return 'card-not-valid';
-				case 2014: // card type not enabled
-					return 'card-type';
-				case 2000: // do not honor
-				case 2001: // insufficient funds
-				case 2002: // limit exceeded
-				case 2003: // activity limit exceeded
-				case 2015: // not allowed (reason unknown)
-				case 2041: // declined (call for approval)
-				case 2044: // declined (call issuer)
-				case 2046: // declined (customer needs to call bank)
-				case 2057: // issuer or cardholder restricted
-				default:
-					return 'card-error';
-				}
-			}
-
-			if ($status === Braintree\Transaction::SETTLEMENT_DECLINED) {
-				return 'payment-error';
-			}
-
-			if ($status === Braintree\Transaction::GATEWAY_REJECTED) {
-				switch ($transaction->gatewayRejectionReason) {
-				case Braintree\Transaction::AVS:
-					return 'address-mismatch';
-				case Braintree\Transaction::AVS_AND_CVV:
-				case Braintree\Transaction::CVV:
-					return 'card-verification-value';
-				default:
-					return 'payment-error';
-				}
 			}
 		}
 
@@ -467,6 +449,44 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 		$content = str_replace('  •  ', ' - ', $content);
 		$content = html_entity_decode($content, ENT_QUOTES, 'ISO-8859-1');
 		return $content;
+	}
+
+	// }}}
+	// {{{ protected function generateExceptionFromResponse()
+
+	protected function generateExceptionFromResponse(Braintree\Base $response)
+	{
+		// data validation error(s)
+		if ($response->errors->deepSize() > 0) {
+			return new StorePaymentBraintreeValidationException(
+				$response->message
+			);
+		}
+
+		$status = $transaction->status;
+
+		// transaction error
+		if ($status === Braintree\Transaction::PROCESSOR_DECLINED) {
+			return new StorePaymentBraintreeProcessorException(
+				$response->message,
+				$response->transaction->processorResponseCode
+			);
+		}
+
+		if ($status === Braintree\Transaction::SETTLEMENT_DECLINED) {
+			return new StorePaymentBraintreeSettlementException(
+				$response->message
+			);
+		}
+
+		if ($status === Braintree\Transaction::GATEWAY_REJECTED) {
+			return new StorePaymentBraintreeGatewayException(
+				$response->message,
+				$response->transaction->gatewayRejectionReason
+			);
+		}
+
+		return new StorePaymentBraintreeException($response->message);
 	}
 
 	// }}}
