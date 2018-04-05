@@ -169,7 +169,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 			$e instanceof Braintree\Exception\Configuration ||
 			$e instanceof Braintree\Exception\ServerError ||
 			$e instanceof Braintree\Exception\UpgradeRequired ||
-			$e instanceof StorePaymentBraintreeGatewayException ||
+			$e instanceof StorePaymentBraintreeValidationException ||
 			$e instanceof StorePaymentBraintreeSettlementException) {
 			return 'payment-error';
 		}
@@ -206,7 +206,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 		}
 
 		if ($e instanceof StorePaymentBraintreeGatewayException) {
-			switch ($e->getCode()) {
+			switch ($e->getReason()) {
 			case Braintree\Transaction::AVS:
 				return 'address-mismatch';
 			case Braintree\Transaction::AVS_AND_CVV:
@@ -463,7 +463,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 			);
 		}
 
-		$status = $transaction->status;
+		$status = $response->transaction->status;
 
 		// transaction error
 		if ($status === Braintree\Transaction::PROCESSOR_DECLINED) {
@@ -480,10 +480,9 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 		}
 
 		if ($status === Braintree\Transaction::GATEWAY_REJECTED) {
-			return new StorePaymentBraintreeGatewayException(
-				$response->message,
-				$response->transaction->gatewayRejectionReason
-			);
+			$e = new StorePaymentBraintreeGatewayException($response->message);
+			$e->setReason($response->transaction->gatewayRejectionReason);
+			return $e;
 		}
 
 		return new StorePaymentBraintreeException($response->message);
