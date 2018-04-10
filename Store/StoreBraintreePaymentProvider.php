@@ -485,7 +485,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 			return $e;
 		}
 
-		return new StorePaymentBraintreeException($response->message);
+		return new StorePaymentBraintreeException(print_r($response, true));
 	}
 
 	// }}}
