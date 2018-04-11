@@ -4,7 +4,7 @@
  * @package   Store
  * @copyright 2018 silverorange
  */
-class StorePaymentBraintreeSettlementException extends StorePaymentException
+class StorePaymentBraintreeSettlementException extends StorePaymentBraintreeException
 {
 }
 
