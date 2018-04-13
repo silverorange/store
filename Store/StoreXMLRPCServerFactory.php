@@ -24,7 +24,6 @@ class StoreXMLRPCServerFactory extends SiteXMLRPCServerFactory
 		return array(
 			'product-reviews' => 'StoreProductReviewServer',
 			'search-panel'    => 'StoreSearchPanelServer',
-			'feedback-panel'  => 'StoreFeedbackPanelServer',
 			'cart'            => 'StoreCartServer',
 		);
 	}

@@ -104,9 +104,6 @@ class Store
 			'strikeiron.verify_address_usa_key'    => null,
 			'strikeiron.verify_address_canada_key' => null,
 
-			// Optional Email address to send feedback to
-			'email.feedback_address' => null,
-
 			// Optional list of email addresses to send order comments to
 			'email.order_comments_digest_list' => null,
 
