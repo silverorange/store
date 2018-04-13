@@ -130,13 +130,6 @@ class StoreOrderItem extends SwatDBDataObject
 	public $source_category;
 
 	/**
-	 * Whether or not this item was ordered through the quick-order tool
-	 *
-	 * @var boolean
-	 */
-	public $quick_order;
-
-	/**
 	 * Sale discount identifier
 	 *
 	 * @var integer
@@ -395,8 +388,6 @@ class StoreOrderItem extends SwatDBDataObject
 	{
 		$this->registerInternalProperty('ordernum',
 			SwatDBClassMap::get('StoreOrder'));
-
-		$this->registerDeprecatedProperty('quick_order');
 
 		$this->table = 'OrderItem';
 		$this->id_field = 'integer:id';
