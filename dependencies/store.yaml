@@ -26,7 +26,6 @@ Store:
   Provides:
 
     # JavaScript resources
-    packages/store/javascript/search-disclosure.js:
     packages/store/javascript/store-account-payment-method-page.js:
     packages/store/javascript/store-checkout-address-page.js:
       Depends:
@@ -63,7 +62,6 @@ Store:
 
     # Style-sheet resources
     packages/store/styles/checkout-address-verification-page.css:
-    packages/store/styles/search-disclosure.css:
     packages/store/styles/store-account-address-edit-page.css:
     packages/store/styles/store-account-details-page.css:
     packages/store/styles/store-cart.css:
