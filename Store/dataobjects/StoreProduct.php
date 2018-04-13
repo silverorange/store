@@ -456,7 +456,7 @@ class StoreProduct extends SwatDBDataObject
 			array('primary_category', 'primary_image', 'cheapest_item',
 				'items', 'item_groups', 'categories', 'attributes',
 				'featured_categories', 'related_products',
-				'related_articles', 'popular_products',
+				'related_articles',
 				'images', 'product_reviews', 'catalog', 'path',
 				'collection_products'));
 	}
@@ -702,37 +702,6 @@ class StoreProduct extends SwatDBDataObject
 
 		return SwatDB::query($this->db, $sql,
 			SwatDBClassMap::get('SiteArticleWrapper'));
-	}
-
-	// }}}
-	// {{{ protected function loadPopularProducts()
-
-	/**
-	 * Loads popular products
-	 *
-	 * Popular products are loaded with primary categories and ordered by
-	 * their popularity.
-	 *
-	 * For a region-aware way to load popular products, see {@link
-	 * StoreProduct::getPopularProducts()}
-	 */
-	protected function loadPopularProducts()
-	{
-		$sql = 'select Product.*, ProductPrimaryCategoryView.primary_category,
-			getCategoryPath(ProductPrimaryCategoryView.primary_category) as path
-			from Product
-				inner join ProductPopularProductBinding
-					on Product.id = ProductPopularProductBinding.related_product
-						and ProductPopularProductBinding.source_product = %s
-				left outer join ProductPrimaryCategoryView
-					on Product.id = ProductPrimaryCategoryView.product
-			order by ProductPopularProductBinding.order_count desc';
-
-		$sql = sprintf($sql,
-			$this->db->quote($this->id, 'integer'));
-
-		return SwatDB::query($this->db, $sql,
-			SwatDBClassMap::get('StoreProductWrapper'));
 	}
 
 	// }}}

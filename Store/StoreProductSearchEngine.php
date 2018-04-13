@@ -90,33 +90,6 @@ class StoreProductSearchEngine extends SiteSearchEngine
 	public $visible_only = true;
 
 	/**
-	 * Whether or not to search for only popular products
-	 *
-	 * Defaults to false and searchs all products.
-	 *
-	 * @var boolean
-	 */
-	public $popular_only = false;
-
-	/**
-	 * Optional product
-	 *
-	 * Search will find popular products in this product.
-	 *
-	 * @var StoreProduct
-	 */
-	public $popular_source_product;
-
-	/**
-	 * Optional popularity threshold
-	 *
-	 * Search will find products that have been ordered more than this amount
-	 *
-	 * @var integer
-	 */
-	public $popular_threshold;
-
-	/**
 	 * Optional flag to search for collections only
 	 *
 	 * Search will find collection products only.
@@ -411,16 +384,6 @@ class StoreProductSearchEngine extends SiteSearchEngine
 			$clause.= 'inner join ItemView on Product.id = ItemView.product';
 		}
 
-		if ($this->popular_source_product instanceof StoreProduct) {
-			$clause.= sprintf('
-				%s join ProductPopularProductBinding
-				on Product.id = ProductPopularProductBinding.related_product',
-				$this->popular_only ? 'inner' : 'left outer');
-		} elseif ($this->popular_only) {
-			$clause.= 'inner join ProductPopularity
-				on Product.id = ProductPopularity.product';
-		}
-
 		if ($this->category === null) {
 			$clause.= ' left outer join ProductPrimaryCategoryView
 				on ProductPrimaryCategoryView.product = Product.id';
@@ -483,16 +446,6 @@ class StoreProductSearchEngine extends SiteSearchEngine
 		if ($this->sku !== null) {
 			$clause.= sprintf(' and ItemView.sku = %s',
 				$this->app->db->quote($this->sku, 'text'));
-		}
-
-		if ($this->popular_source_product instanceof StoreProduct) {
-			$clause.= sprintf(' and ProductPopularProductBinding.source_product = %s',
-				$this->app->db->quote($this->popular_source_product->id, 'integer'));
-		}
-
-		if ($this->popular_threshold !== null) {
-			$clause.= sprintf(' and ProductPopularProductBinding.order_count > %s',
-				$this->app->db->quote($this->popular_threshold, 'integer'));
 		}
 
 		if ($this->category !== null) {

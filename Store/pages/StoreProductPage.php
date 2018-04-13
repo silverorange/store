@@ -506,8 +506,6 @@ class StoreProductPage extends StorePage
 
 		$this->displayRelatedProducts();
 
-		$this->displayPopularProducts();
-
 		$this->displayReviews();
 
 		echo '</div>';
@@ -865,73 +863,6 @@ class StoreProductPage extends StorePage
 			$this->related_articles = $related_articles;
 		}
 		return $this->related_articles;
-	}
-
-	// }}}
-
-	// build - popular products
-	// {{{ protected function displayPopularProducts()
-
-	protected function displayPopularProducts()
-	{
-		$popular_products = $this->getPopularProducts();
-		if (count($popular_products) == 0)
-			return;
-
-		$div = new SwatHtmlTag('div');
-		$div->id = 'popular_products';
-
-		$header_tag = new SwatHtmlTag('h4');
-		$header_tag->setContent(
-			sprintf(Store::_('Customers who bought %s also bought…'),
-				$this->product->title));
-
-		$ul_tag = new SwatHtmlTag('ul');
-		$ul_tag->class = 'store-product-list clearfix';
-
-		$li_tag = new SwatHtmlTag('li');
-		$li_tag->class = 'store-product-icon';
-
-		$div->open();
-		$header_tag->display();
-		$ul_tag->open();
-
-		foreach ($popular_products as $product) {
-			$li_tag->open();
-			$this->displayPopularProduct($product);
-			$li_tag->close();
-		}
-
-		$ul_tag->close();
-		$div->close();
-	}
-
-	// }}}
-	// {{{ protected function displayPopularProduct()
-
-	protected function displayPopularProduct(StoreProduct $product)
-	{
-		$path = $this->app->config->store->path.$product->path;
-
-		$product->displayAsIcon($path, 'pinky');
-	}
-
-	// }}}
-	// {{{ protected function getPopularProducts()
-
-	protected function getPopularProducts()
-	{
-		$engine = $this->getProductSearchEngine('popular-products');
-		$engine->popular_only = true;
-		$engine->available_only = true;
-		$engine->popular_source_product = $this->product;
-		$engine->popular_threshold = 2;
-		$engine->addOrderByField('ProductPopularProductBinding.order_count
-			desc');
-
-		$products = $engine->search(3);
-
-		return $products;
 	}
 
 	// }}}
