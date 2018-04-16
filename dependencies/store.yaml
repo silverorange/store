@@ -43,10 +43,7 @@ Store:
         - packages/store/javascript/store-checkout-address-page.js
     packages/store/javascript/store-gift-certificate-radio-list.js:
     packages/store/javascript/store-product-page.js:
-      OptionalDepends:
-        - packages/store/javascript/store-product-review-view.js
     packages/store/javascript/store-product-image-display.js:
-    packages/store/javascript/store-product-review-view.js:
     packages/store/javascript/store-feature-pager.js:
     packages/store/javascript/store-cart-lightbox.js:
     packages/store/javascript/store-simple-product-page.js:
@@ -93,7 +90,6 @@ Store:
     packages/store/admin/styles/store-admin-item-price-cell-renderer.css:
     packages/store/admin/styles/store-catalog-switcher.css:
     packages/store/admin/styles/store-category-index.css:
-    packages/store/admin/styles/store-image-preview.css:
     packages/store/admin/styles/store-item-edit-page.css:
     packages/store/admin/styles/store-order-details.css:
     packages/store/admin/styles/store-order-index.css:

@@ -119,8 +119,7 @@ class StoreDashboardIndex extends AdminIndex
 
 	protected function isNewContentFrameVisible()
 	{
-		return ($this->app->session->user->hasAccessByShortname('Order') ||
-			$this->app->session->user->hasAccessByShortname('ProductReview'));
+		return ($this->app->session->user->hasAccessByShortname('Order'));
 	}
 
 	// }}}
@@ -192,21 +191,6 @@ class StoreDashboardIndex extends AdminIndex
 			$this->ui->getWidget('view_all_orders')->visible = true;
 			$this->new_content_notes[] = Store::_('orders with comments');
 		}
-
-		if ($this->app->session->user->hasAccessByShortname('ProductReview')) {
-			$sql = 'select count(1) from
-				(select 1 from ProductReview limit 1) as t';
-
-			$has_product_reviews = (SwatDB::queryOne($this->app->db, $sql) > 0);
-			if ($has_product_reviews) {
-				$this->buildProductReviewsNewContentData();
-				$this->ui->getWidget('view_all_product_reviews')->visible =
-					true;
-
-				$this->new_content_notes[] =
-					Store::_('product reviews with less than ★★★★');
-			}
-		}
 	}
 
 	// }}}
@@ -257,34 +241,6 @@ class StoreDashboardIndex extends AdminIndex
 			SwatString::minimizeEntities($order->comments));
 
 			$this->addNewContent($date, $content, null, 'product');
-		}
-	}
-
-	// }}}
-	// {{{ protected function buildProductReviewsNewContentData()
-
-	protected function buildProductReviewsNewContentData()
-	{
-		$reviews = $this->getProductReviews();
-
-		foreach ($reviews as $review) {
-			$date = new SwatDate($review->createdate);
-
-			if ($review->status == StoreProductReview::STATUS_PENDING) {
-				$link = 'ProductReview/Approval?id='.$review->id;
-			} else {
-				$link = 'ProductReview/Edit?id='.$review->id;
-			}
-
-			$content = sprintf('<div><a href="%s">Product review by %s</a>
-				 of <a href="Product/Details?id=%s">%s</a><p>%s</p></div>',
-				$link,
-				SwatString::minimizeEntities($review->fullname),
-				$review->product->id,
-				SwatString::minimizeEntities($review->product->title),
-				SwatString::minimizeEntities($review->bodytext));
-
-			$this->addNewContent($date, $content, $review->rating, 'edit');
 		}
 	}
 
@@ -376,33 +332,6 @@ class StoreDashboardIndex extends AdminIndex
 			SwatDB::equalityOperator($instance_id),
 			$this->app->db->quote($instance_id, 'integer')
 		);
-	}
-
-	// }}}
-	// {{{ protected function getProductReviews()
-
-	protected function getProductReviews()
-	{
-		$date = $this->getNewContentCutoffDate();
-		$date->toUTC();
-
-		$sql = sprintf('select ProductReview.*
-			from ProductReview
-			where ProductReview.createdate >= %s
-				and ProductReview.author_review = %s
-			order by ProductReview.createdate desc',
-			$this->app->db->quote($date->getDate(), 'date'),
-			$this->app->db->quote(false, 'boolean'));
-
-		$reviews = SwatDB::query($this->app->db, $sql,
-			SwatDBClassMap::get('StoreProductReviewWrapper'));
-
-		$product_sql = 'select * from Product where id in (%s)';
-		$reviews->loadAllSubDataObjects('product',
-			$this->app->db, $product_sql,
-			SwatDBClassMap::get('StoreProductWrapper'), 'integer');
-
-		return $reviews;
 	}
 
 	// }}}

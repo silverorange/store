@@ -21,8 +21,6 @@
  *    |
  *    +- ProductRelatedProductBinding [3]
  *    |
- *    +- ProductReview
- *    |
  *    +- Item
  *       |
  *       +- ItemRegionBinding
@@ -67,8 +65,6 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 		record_cloned_item record;
 		record_quantity_discount record;
 		record_product_related_product record;
-		record_product_review record;
-		record_cloned_product_review record;
 	BEGIN
 		-- disable cache table triggers
 		alter table CategoryProductBinding disable trigger VisibleProductTrigger;
@@ -107,13 +103,6 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 			primary key (old_id, new_id)
 		);
 
-		-- map of old and new product reviews so we can update the parent relation on ProductReview
-		create temporary table ClonedProductReviewMap (
-			old_id integer,
-			new_id integer,
-			primary key (old_id, new_id)
-		);
-
 		-- clone products
 		for record_product in
 			select
@@ -121,8 +110,7 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 				title,
 				bodytext,
 				shortname,
-				keywords,
-				reviewable
+				keywords
 			from Product
 			where catalog = param_id
 		loop
@@ -134,7 +122,6 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 				bodytext,
 				shortname,
 				keywords,
-				reviewable,
 				createdate
 			) values (
 				local_id,
@@ -142,7 +129,6 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 				record_product.bodytext,
 				record_product.shortname,
 				record_product.keywords,
-				record_product.reviewable,
 				LOCALTIMESTAMP
 			);
 
@@ -167,87 +153,6 @@ CREATE OR REPLACE FUNCTION cloneCatalog (INTEGER, VARCHAR(255)) RETURNS INTEGER 
 			-- clone featured in category binding
 			insert into CategoryFeaturedProductBinding (category, product, displayorder)
 			select category, local_new_product_id, displayorder from CategoryFeaturedProductBinding where product = local_old_product_id;
-
-			-- clone product reviews
-			for record_product_review in
-				select
-					id,
-					parent,
-					instance,
-					author,
-					author_review,
-					fullname,
-					link,
-					email,
-					bodytext,
-					status,
-					spam,
-					ip_address,
-					user_agent,
-					createdate
-				from ProductReview
-				where product = local_old_product_id
-			loop
-				insert into ProductReview (
-					product,
-					parent,
-					instance,
-					author,
-					author_review,
-					fullname,
-					link,
-					email,
-					bodytext,
-					status,
-					spam,
-					ip_address,
-					user_agent,
-					createdate
-				) values (
-					local_new_product_id,
-					record_product_review.parent,
-					record_product_review.instance,
-					record_product_review.author,
-					record_product_review.author_review,
-					record_product_review.fullname,
-					record_product_review.link,
-					record_product_review.email,
-					record_product_review.bodytext,
-					record_product_review.status,
-					record_product_review.spam,
-					record_product_review.ip_address,
-					record_product_review.user_agent,
-					record_product_review.createdate
-				);
-
-				-- store cloned product-review in map
-				insert into ClonedProductReviewMap (new_id, old_id)
-				values (currval('productreview_id_seq'),
-					record_product_review.id);
-			end loop;
-			-- end clone product reviews
-
-			-- update product review parent relations
-			-- note: This doesn't handle the case when:
-			--  product1 is cloned
-			--  product1.review1 is cloned
-			--  product2 is not cloned (different catalog)
-			--  product2.review2.parent = product1.review1
-			-- Fortunately, this should never happen.
-			for record_cloned_product_review in
-				select
-					id,
-					parent
-				from ProductReview
-					inner join ClonedProductReviewMap on
-						ProductReview.parent = ClonedProductReviewMap.old_id
-				where id in (select new_id from ClonedProductReviewMap)
-			loop
-				update ProductReview set
-					parent = record_cloned_product_review.new_id
-				where id = record_cloned_product_review.id;
-			end loop;
-			-- end update product review parent relations
 
 			-- clone item groups
 			for record_item_group in

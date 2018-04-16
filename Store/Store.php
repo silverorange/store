@@ -167,10 +167,6 @@ class Store
 		SwatDBClassMap::add('SiteArticleWrapper', 'StoreArticleWrapper');
 
 		SiteViewFactory::addPath('Store/views');
-		SiteViewFactory::registerView(
-			'product-review',
-			'StoreProductReviewView'
-		);
 
 		if (class_exists('Blorg')) {
 			SiteViewFactory::registerView(
