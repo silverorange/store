@@ -108,9 +108,6 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	/**
 	 * Sets the card verification value (CVV) of this payment method
 	 *
-	 * When setting the CVV, use this method rather than modifying the public
-	 * {@link StorePaymentMethod::$card_verification_value} property.
-	 *
 	 * NOTE: Visa forbids storing this code after authorization is obtained.
 	 * PCI compliance standards forbit storing this code altogether. This class
 	 * supports storing the CVV only for offline authorization. The code must
@@ -145,8 +142,7 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 	 */
 	public function hasCardVerificationValue()
 	{
-		return ($this->card_verification_value != '' ||
-			$this->unencrypted_card_verification_value != '');
+		return ($this->unencrypted_card_verification_value != '');
 	}
 
 	// }}}
@@ -234,9 +230,6 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 
 		if ($method instanceof StoreAccountPaymentMethod)
 			$this->account_payment_method_id = $method->id;
-
-		if ($method instanceof StoreOrderPaymentMethod)
-			$this->card_verification_value = $method->card_verification_value;
 	}
 
 	// }}}
@@ -280,7 +273,6 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
 		return array_merge(
 			parent::getSerializablePrivateProperties(),
 			array(
-				'card_verification_value',
 				'unencrypted_card_verification_value',
 				'account_payment_method_id',
 				'max_amount',
