@@ -59,22 +59,6 @@ class StoreOrderPaymentMethodsCellRenderer extends SwatCellRenderer
 	 */
 	public $show_card_fullname = true;
 
-	/**
-	 * The Crypt_GPG object to use for decryption
-	 *
-	 * @var Crypt_GPG
-	 */
-	public $gpg;
-
-	/**
-	 * The passphrase to decrypt with
-	 *
-	 * @var string
-	 *
-	 * @sensitive
-	 */
-	public $passphrase;
-
 	// }}}
 	// {{{ public function render()
 
@@ -90,15 +74,10 @@ class StoreOrderPaymentMethodsCellRenderer extends SwatCellRenderer
 
 			if (count($this->payment_methods) == 1) {
 				$payment_method = $this->payment_methods->getFirst();
-				if ($this->gpg instanceof Crypt_GPG)
-					$payment_method->setGPG($this->gpg);
-
 				$payment_method->showCardNumber($this->show_card_number);
 				$payment_method->showCardExpiry($this->show_card_expiry);
 				$payment_method->showCardFullname($this->show_card_fullname);
-				$payment_method->display($this->display_details,
-					$this->passphrase);
-
+				$payment_method->display($this->display_details);
 			} else {
 				echo '<table class="store-order-payment-methods-cell-renderer">';
 				echo '<tbody>';
@@ -112,13 +91,8 @@ class StoreOrderPaymentMethodsCellRenderer extends SwatCellRenderer
 
 					$payment_total += $payment_method->amount;
 
-					if ($this->gpg instanceof Crypt_GPG)
-						$payment_method->setGPG($this->gpg);
-
 					echo '<tr><th class="payment">';
-					$payment_method->display($this->display_details,
-						$this->passphrase);
-
+					$payment_method->display($this->display_details);
 					echo '</th><td class="payment-amount">';
 					$payment_method->displayAmount();
 					echo '</td></tr>';

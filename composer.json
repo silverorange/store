@@ -47,7 +47,6 @@
 	"require": {
 		"php": ">=5.5.0",
 		"ext-imagick": "*",
-		"pear/crypt_gpg": "^1.4.0",
 		"pear/text_password": "^1.1.1",
 		"pear/validate_finance_creditcard": ">=0.5.2",
 		"pear/numbers_words": ">=0.18.0",

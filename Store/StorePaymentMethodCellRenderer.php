@@ -46,22 +46,6 @@ class StorePaymentMethodCellRenderer extends SwatCellRenderer
 	 */
 	public $show_card_fullname = true;
 
-	/**
-	 * The Crypt_GPG object to use for decryption
-	 *
-	 * @var Crypt_GPG
-	 */
-	public $gpg;
-
-	/**
-	 * The passphrase to decrypt with
-	 *
-	 * @var string
-	 *
-	 * @sensitive
-	 */
-	public $passphrase;
-
 	// }}}
 	// {{{ public function render()
 
@@ -76,13 +60,7 @@ class StorePaymentMethodCellRenderer extends SwatCellRenderer
 			$this->payment_method->showCardNumber($this->show_card_number);
 			$this->payment_method->showCardExpiry($this->show_card_expiry);
 			$this->payment_method->showCardFullname($this->show_card_fullname);
-
-			if ($this->gpg instanceof Crypt_GPG) {
-				$this->payment_method->setGPG($this->gpg);
-			}
-
-			$this->payment_method->display($this->display_details,
-				$this->passphrase);
+			$this->payment_method->display($this->display_details);
 		} else {
 			$span_tag = new SwatHtmlTag('span');
 			$span_tag->class = 'swat-none';
