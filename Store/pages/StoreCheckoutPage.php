@@ -51,7 +51,8 @@ abstract class StoreCheckoutPage extends SiteUiPage
 		// This prevents duplicate orders when the confirmation page is
 		// submitted multiple times.
 		$thank_you_source = $this->getThankYouSource();
-		if ($this->app->session->order->id !== null &&
+		if (isset($this->app->session->order) &&
+			$this->app->session->order->id !== null &&
 			$this->getSource() !== $thank_you_source) {
 			// The thank you page has checkout/confirmation as a progress
 			// dependency. As we have a completed order on the session, make
