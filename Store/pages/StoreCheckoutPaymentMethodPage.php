@@ -704,14 +704,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 				);
 			}
 
-			// grab the card_verification_value from the old order payment
-			// method if its exists, before we recreate the dataobject
-			$old_card_verification_value = null;
-			if ($order_payment_method instanceof StoreOrderPaymentMethod) {
-				$old_card_verification_value =
-					$order_payment_method->card_verification_value;
-			}
-
 			$class_name = SwatDBClassMap::get('StoreOrderPaymentMethod');
 			$order_payment_method = new $class_name();
 			$order_payment_method->copyFrom($account_payment_method);
@@ -728,8 +720,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 			if ($cvv instanceof StoreCardverificationValueEntry) {
 				$this->updatePaymentMethodCardVerificationValue(
 					$cvv,
-					$order_payment_method,
-					$old_card_verification_value
+					$order_payment_method
 				);
 			}
 
@@ -908,16 +899,12 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 	 */
 	protected function updatePaymentMethodCardVerificationValue(
 		StoreCardVerificationValueEntry $entry,
-		StoreOrderPaymentMethod $payment_method,
-		$old_card_verification_value = null
+		StoreOrderPaymentMethod $payment_method
 	) {
 		$value = $entry->value;
 
 		if ($value !== null) {
 			$payment_method->setCardVerificationValue($value);
-		} elseif ($old_card_verification_value !== null) {
-			$payment_method->card_verification_value =
-				$old_card_verification_value;
 		}
 	}
 
