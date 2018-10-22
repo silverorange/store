@@ -61,10 +61,11 @@ class StoreGiftCertificateRadioList extends SwatRadioList
 
 	public function getPrice()
 	{
-		if ($this->value == $this->custom_value)
+		if ($this->value == $this->custom_value) {
 			$price = $this->getCompositeWidget('custom_price')->value;
-		else
+		} else {
 			$price = abs($this->value);
+		}
 
 		return $price;
 	}

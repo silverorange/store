@@ -20,13 +20,14 @@ class StoreCatalogDelete extends AdminDBDelete
 
 		$id = $this->getFirstItem();
 
-		if ($this->catalogIsEnabled())
+		if ($this->catalogIsEnabled()) {
 			$sql = sprintf('delete from Catalog where id = %s
 				and id not in (select Catalog from Product)',
 				$this->app->db->quote($id, 'integer'));
-		else
+		} else {
 			$sql = sprintf('delete from Catalog where id = %s',
 				$this->app->db->quote($id, 'integer'));
+		}
 
 		$num = SwatDB::exec($this->app->db, $sql);
 
@@ -35,8 +36,9 @@ class StoreCatalogDelete extends AdminDBDelete
 
 		$this->app->messages->add($message);
 
-		if (isset($this->app->memcache))
+		if (isset($this->app->memcache)) {
 			$this->app->memcache->flushNs('product');
+		}
 	}
 
 	// }}}
@@ -81,10 +83,11 @@ class StoreCatalogDelete extends AdminDBDelete
 		$dep_products = new AdminSummaryDependency();
 		$dep_products->setTitle(Store::_('product'), Store::_('products'));
 
-		if ($this->catalogIsEnabled())
+		if ($this->catalogIsEnabled()) {
 			$default_status_level = AdminDependency::NODELETE;
-		else
+		} else {
 			$default_status_level = AdminDependency::DELETE;
+		}
 
 		$dep_products->summaries = AdminSummaryDependency::querySummaries(
 			$this->app->db, 'Product', 'integer:id', 'integer:catalog',

@@ -93,12 +93,13 @@ class StoreItemEdit extends AdminDBEdit
 		$this->item->setDatabase($this->app->db);
 
 		if ($this->id !== null) {
-			if (!$this->item->load($this->id))
+			if (!$this->item->load($this->id)) {
 				throw new AdminNotFoundException(
 					sprintf(Store::_('Item with id "%s" not found.'),
 						$this->id));
-			else
+			} else {
 				$this->product = $this->item->getInternalValue('product');
+			}
 		}
 	}
 
@@ -517,27 +518,30 @@ class StoreItemEdit extends AdminDBEdit
 			$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
 				'getCategoryNavbar', array($this->category_id));
 
-			foreach ($cat_navbar_rs as $entry)
+			foreach ($cat_navbar_rs as $entry) {
 				$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
 					'Category/Index?id='.$entry->id));
+			}
 		}
 
 		$product_title = SwatDB::queryOneFromTable($this->app->db, 'Product',
 			'text:title', 'id', $this->product);
 
-		if ($this->category_id === null)
+		if ($this->category_id === null) {
 			$link = sprintf('Product/Details?id=%s', $this->product);
-		else
+		} else {
 			$link = sprintf('Product/Details?id=%s&category=%s',
 				$this->product, $this->category_id);
+		}
 
 		$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));
 		$this->title = $product_title;
 
-		if ($this->item->id === null)
+		if ($this->item->id === null) {
 			$this->navbar->addEntry(new SwatNavBarEntry(Store::_('New Item')));
-		else
+		} else {
 			$this->navbar->addEntry(new SwatNavBarEntry(Store::_('Edit Item')));
+		}
 	}
 
 	// }}}

@@ -60,12 +60,13 @@ class StoreQuantityEntry extends SwatIntegerEntry
 
 			break;
 		case 'below-minimum':
-			if ($this->minimum_value === 0)
+			if ($this->minimum_value === 0) {
 				$message->primary_content =
 					Store::_('The %%s field must be at least 1.');
-			else
+			} else {
 				$message->primary_content =
 					Store::_('The %%s field must be at least %s.');
+			}
 
 			break;
 		}

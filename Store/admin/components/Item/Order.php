@@ -37,13 +37,13 @@ class StoreItemOrder extends AdminDBOrder
 	protected function saveDBData()
 	{
 		SwatDB::exec($this->app->db,
-			'alter table Item 
+			'alter table Item
 			disable trigger VisibleProductTrigger');
 
 		$this->saveIndexes();
 
 		SwatDB::exec($this->app->db,
-			'alter table Item 
+			'alter table Item
 			enable trigger VisibleProductTrigger');
 
 		if (isset($this->app->memcache))
@@ -98,16 +98,17 @@ class StoreItemOrder extends AdminDBOrder
 
 	protected function loadData()
 	{
-		if ($this->item_group_id === null)
+		if ($this->item_group_id === null) {
 			$where_clause = sprintf('Item.product = %s',
 				$this->app->db->quote($this->product_id, 'integer'));
-		elseif ($this->item_group_id == 0)
+		} elseif ($this->item_group_id == 0) {
 			$where_clause = sprintf(
 				'Item.item_group is null and Item.product = %s',
 				$this->app->db->quote($this->product_id, 'integer'));
-		else
+		} else {
 			$where_clause = sprintf('Item.item_group = %s',
 				$this->app->db->quote($this->item_group_id, 'integer'));
+		}
 
 		$order_widget = $this->ui->getWidget('order');
 
@@ -149,25 +150,28 @@ class StoreItemOrder extends AdminDBOrder
 			$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
 				'getCategoryNavbar', array($this->category_id));
 
-			foreach ($cat_navbar_rs as $entry)
+			foreach ($cat_navbar_rs as $entry) {
 				$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
 					'Category/Index?id='.$entry->id));
+			}
 		}
 
-		if ($this->product_id === null)
+		if ($this->product_id === null) {
 			$product_id = SwatDB::queryOneFromTable($this->app->db, 'ItemGroup',
 				'integer:product', 'id', $this->item_group_id);
-		else
+		} else {
 			$product_id = $this->product_id;
+		}
 
 		$product_title = SwatDB::queryOneFromTable($this->app->db, 'Product',
 			'text:title', 'id', $product_id);
 
-		if ($this->category_id === null)
+		if ($this->category_id === null) {
 			$link = sprintf('Product/Details?id=%s', $product_id);
-		else
+		} else {
 			$link = sprintf('Product/Details?id=%s&category=%s', $product_id,
 				$this->category_id);
+		}
 
 		$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));
 		$this->navbar->addEntry($last_entry);

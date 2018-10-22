@@ -146,11 +146,12 @@ class StoreProductDelete extends AdminDBDelete
 			$product_title = SwatDB::queryOneFromTable($this->app->db,
 				'Product', 'text:title', 'id', $id);
 
-			if ($this->category_id === null)
+			if ($this->category_id === null) {
 				$link = sprintf('Product/Details?id=%s', $id);
-			else
+			} else {
 				$link = sprintf('Product/Details?id=%s&category=%s', $id,
 					$this->category_id);
+			}
 
 			$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));
 			$this->title = $product_title;

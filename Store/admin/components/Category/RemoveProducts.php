@@ -90,10 +90,11 @@ class StoreCategoryRemoveProducts extends AdminDBConfirmation
 		$invalid_rows = array();
 
 		foreach ($rs as $row) {
-			if ($row->num_products == 0)
+			if ($row->num_products == 0) {
 				$invalid_rows[] = $row;
-			else
+			} else {
 				$valid_rows[] = $row;
+			}
 		}
 
 		$message_text = '';
@@ -101,9 +102,10 @@ class StoreCategoryRemoveProducts extends AdminDBConfirmation
 			$message_text.= sprintf('<h3>%s</h3><ul>',
 				Store::_('Remove all products from the following categories?'));
 
-			foreach ($valid_rows as $row)
+			foreach ($valid_rows as $row) {
 				$message_text.= sprintf(Store::_('<li>%s - %s product(s)</li>'),
 					$row->title, $row->num_products);
+			}
 
 			$message_text.= '</ul>';
 			$this->ui->getWidget('yes_button')->title = Store::_('Remove');
@@ -116,8 +118,9 @@ class StoreCategoryRemoveProducts extends AdminDBConfirmation
 				Store::_('There are no products attached to the following '.
 				'categories:'));
 
-			foreach ($invalid_rows as $row)
+			foreach ($invalid_rows as $row) {
 				$message_text.= '<li>'.$row->title.'</li>';
+			}
 
 			$message_text.= '</ul>';
 		}

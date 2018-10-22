@@ -305,10 +305,11 @@ class StoreAccountOrderPage extends SiteUiPage
 				$this->order->surcharge_total;
 		}
 
-		if ($this->order->tax_total > 0)
+		if ($this->order->tax_total > 0) {
 			$items_view->getRow('tax')->value = $this->order->tax_total;
-		else
+		} else {
 			$items_view->getRow('tax')->visible = false;
+		}
 
 		$items_view->getRow('subtotal')->value = $this->order->getSubtotal();
 		$items_view->getRow('total')->value = $this->order->total;

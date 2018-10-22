@@ -84,10 +84,11 @@ class StoreItemQuantityDiscountDelete extends AdminDBDelete
 		$form->action = $this->source;
 
 		if ($form->getHiddenField(self::RELOCATE_URL_FIELD) === null) {
-			if ($this->relocate_url === null)
+			if ($this->relocate_url === null) {
 				$url = $this->getRefererURL();
-			else
+			} else {
 				$url = $this->relocate_url;
+			}
 
 			$form->addHiddenField(self::RELOCATE_URL_FIELD, $url);
 		}

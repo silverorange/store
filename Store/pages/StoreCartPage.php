@@ -1209,25 +1209,28 @@ class StoreCartPage extends SitePage
 		if (count($available_view->model) == 1) {
 			$remove_all_button = $this->getAvailableRemoveAllButton();
 			if ($remove_all_button !== null) {
-				if ($remove_all_button->parent instanceof SwatTableViewRow)
+				if ($remove_all_button->parent instanceof SwatTableViewRow) {
 					$remove_all_button->parent->visible = false;
-				else
+				} else {
 					$remove_all_button->visible = false;
+				}
 			}
 
 			$move_all_button = $this->getAvailableMoveAllButton();
 			if ($move_all_button !== null) {
-				if ($move_all_button->parent instanceof SwatTableViewRow)
+				if ($move_all_button->parent instanceof SwatTableViewRow) {
 					$move_all_button->parent->visible = false;
-				else
+				} else {
 					$move_all_button->visible = false;
+				}
 			}
 		}
 
 		$available_view->visible = (count($available_view->model) > 0);
 
-		foreach ($this->getContinueButtons() as $button)
+		foreach ($this->getContinueButtons() as $button) {
 			$button->visible = $available_view->visible;
+		}
 	}
 
 	// }}}
@@ -1269,12 +1272,13 @@ class StoreCartPage extends SitePage
 
 			$message->content = ob_get_clean();
 
-			if ($count == 1) {
+			if ($count === 1) {
 				$remove_all_button = $this->getUnavailableRemoveAllButton();
-				if ($remove_all_button->parent instanceof SwatTableViewRow)
+				if ($remove_all_button->parent instanceof SwatTableViewRow) {
 					$remove_all_button->parent->visible = false;
-				else
+				} else {
 					$remove_all_button->visible = false;
+				}
 			}
 		}
 	}
@@ -1339,18 +1343,20 @@ class StoreCartPage extends SitePage
 
 			$message->content = ob_get_clean();
 
-			if ($count == 1) {
+			if ($count === 1) {
 				$remove_all_button = $this->getSavedRemoveAllButton();
-				if ($remove_all_button->parent instanceof SwatTableViewRow)
+				if ($remove_all_button->parent instanceof SwatTableViewRow) {
 					$remove_all_button->parent->visible = false;
-				else
+				} else {
 					$remove_all_button->visible = false;
+				}
 
 				$move_all_button = $this->getSavedMoveAllButton();
-				if ($move_all_button->parent instanceof SwatTableViewRow)
+				if ($move_all_button->parent instanceof SwatTableViewRow) {
 					$move_all_button->parent->visible = false;
-				else
+				} else {
 					$move_all_button->visible = false;
+				}
 			}
 		}
 	}
@@ -1458,20 +1464,23 @@ class StoreCartPage extends SitePage
 		$ds->extension   = $entry->getExtension();
 		$ds->message     = null;
 
-		if ($entry->item->product->primary_category === null)
+		if ($entry->item->product->primary_category === null) {
 			$ds->product_link = null;
-		else
-			$ds->product_link = $this->app->config->store->path.$entry->item->product->path;
+		} else {
+			$ds->product_link = $this->app->config->store->path.
+				$entry->item->product->path;
+		}
 
 		$status = $entry->item->getStatus();
 		$ds->status = sprintf('<span class="status-%s">%s</span>',
 			$status->shortname, SwatString::minimizeEntities($status->title));
 
-		if ($entry->alias === null)
+		if ($entry->alias === null) {
 			$ds->alias_sku = null;
-		else
+		} else {
 			$ds->alias_sku = sprintf('(%s)',
 				SwatString::minimizeEntities($entry->alias->sku));
+		}
 
 		return $ds;
 	}
@@ -1509,16 +1518,19 @@ class StoreCartPage extends SitePage
 		$ds->status      = sprintf('<span class="status-%s">%s</span>',
 			$status->shortname, SwatString::minimizeEntities($status->title));
 
-		if ($entry->item->product->primary_category === null)
+		if ($entry->item->product->primary_category === null) {
 			$ds->product_link = null;
-		else
-			$ds->product_link = $this->app->config->store->path.$entry->item->product->path;
+		} else {
+			$ds->product_link = $this->app->config->store->path.
+				$entry->item->product->path;
+		}
 
-		if ($entry->alias === null)
+		if ($entry->alias === null) {
 			$ds->alias_sku = null;
-		else
+		} else {
 			$ds->alias_sku = sprintf('(%s)',
 				SwatString::minimizeEntities($entry->alias->sku));
+		}
 
 		return $ds;
 	}

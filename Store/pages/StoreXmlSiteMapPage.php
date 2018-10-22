@@ -37,22 +37,25 @@ class StoreXmlSiteMapPage extends SiteXmlSiteMapPage
 	protected function displayCategories($categories, $path = null)
 	{
 		foreach ($categories as $category) {
-			if ($path === null)
+			if ($path === null) {
 				$category_path = $category->shortname;
-			else
+			} else {
 				$category_path = $path.'/'.$category->shortname;
+			}
 
 			$this->displayPath($this->app->config->store->path.
 				$category_path, null, 'weekly');
 
 			$products = $category->getVisibleProducts();
-			foreach ($products as $product)
+			foreach ($products as $product) {
 				$this->displayPath($this->app->config->store->path.
 					$product->path, null, 'weekly');
+			}
 
 			$sub_categories = $category->getVisibleSubCategories();
-			if (count($sub_categories) > 0)
+			if (count($sub_categories) > 0) {
 				$this->displayCategories($sub_categories, $category_path);
+			}
 		}
 	}
 

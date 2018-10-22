@@ -334,8 +334,9 @@ class StoreCategoryIndex extends AdminIndex
 		$message = null;
 
 		$item_list = array();
-		foreach ($view->getSelection() as $item)
+		foreach ($view->getSelection() as $item) {
 			$item_list[] = $this->app->db->quote($item, 'integer');
+		}
 
 		switch ($actions->selected->id) {
 		case 'products_delete':
@@ -385,10 +386,11 @@ class StoreCategoryIndex extends AdminIndex
 			$sql = 'update CategoryProductBinding set minor = %s
 				where product in (%s) and category = %s';
 
-			if ($actions->selected->id === 'products_set_minor')
+			if ($actions->selected->id === 'products_set_minor') {
 				$minor = true;
-			else
+			} else {
 				$minor = false;
+			}
 
 			$sql = sprintf($sql,
 				$this->app->db->quote($minor, 'boolean'),
@@ -472,8 +474,9 @@ class StoreCategoryIndex extends AdminIndex
 		case 'products_add_attributes' :
 			$attributes = $this->getAttributeArray('product_attributes');
 
-			if (count($attributes) == 0)
+			if (count($attributes) === 0) {
 				break;
+			}
 
 			if ($this->ui->getWidget('product_attributes_queue')->value ===
 				true) {
@@ -492,8 +495,9 @@ class StoreCategoryIndex extends AdminIndex
 		case 'products_remove_attributes' :
 			$attributes = $this->getAttributeArray('product_remove_attributes');
 
-			if (count($attributes) == 0)
+			if (count($attributes) === 0) {
 				break;
+			}
 
 			if ($this->ui->getWidget(
 				'product_remove_attributes_queue')->value === true) {
@@ -539,8 +543,9 @@ class StoreCategoryIndex extends AdminIndex
 			break;
 		}
 
-		if ($message !== null)
+		if ($message !== null) {
 			$this->app->messages->add($message);
+		}
 
 		return $flush_memcache;
 	}
