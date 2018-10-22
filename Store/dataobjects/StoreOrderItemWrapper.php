@@ -23,20 +23,18 @@ class StoreOrderItemWrapper extends SwatDBRecordsetWrapper
 		$item_ids = array_unique(
 			array_filter(
 				$item_ids,
-				create_function(
-					'$value',
-					'return $value !== null;'
-				)
+				function ($value) {
+					return $value !== null;
+				}
 			)
 		);
 
 		$item_skus = array_unique(
 			array_filter(
 				$item_skus,
-				create_function(
-					'$value',
-					'return $value !== null;'
-				)
+				function ($value) {
+					return $value !== null;
+				}
 			)
 		);
 
