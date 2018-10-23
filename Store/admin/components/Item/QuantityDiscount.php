@@ -261,11 +261,12 @@ class StoreItemQuantityDiscount extends AdminIndex
 	private function getProductDetailsUrl()
 	{
 		$item_row = $this->getItemRow();
-		if ($this->category_id === null)
+		if ($this->category_id === null) {
 			$url = 'Product/Details?id='.$item_row->product;
-		else
+		} else {
 			$url = 'Product/Details?id='.$item_row->product.'&category='.
 				$this->category_id;
+		}
 
 		return $url;
 	}
@@ -428,14 +429,14 @@ class StoreItemQuantityDiscount extends AdminIndex
 		$item_row = $this->getItemRow();
 		$this->ui->getWidget('index_view')->setItemRow($item_row);
 
-		if ($item_row->description === null)
+		if ($item_row->description === null) {
 			$this->ui->getWidget('index_frame')->subtitle = sprintf(
 				Store::_('for SKU %s'), $item_row->sku);
-
-		else
+		} else {
 			$this->ui->getWidget('index_frame')->subtitle = sprintf(
 				Store::_('for %s (%s)'), $item_row->description,
 				$item_row->sku);
+		}
 	}
 
 	// }}}
@@ -510,19 +511,21 @@ class StoreItemQuantityDiscount extends AdminIndex
 			$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
 				'getCategoryNavbar', array($this->category_id));
 
-			foreach ($cat_navbar_rs as $entry)
+			foreach ($cat_navbar_rs as $entry) {
 				$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
 					'Category/Index?id='.$entry->id));
+			}
 		}
 
 		$product_title = SwatDB::queryOneFromTable($this->app->db, 'Product',
 			'text:title', 'id', $item_row->product);
 
-		if ($this->category_id === null)
+		if ($this->category_id === null) {
 			$link = sprintf('Product/Details?id=%s', $item_row->product);
-		else
+		} else {
 			$link = sprintf('Product/Details?id=%s&category=%s',
 				$item_row->product, $this->category_id);
+		}
 
 		$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));
 		$this->title = $product_title;

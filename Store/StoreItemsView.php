@@ -291,10 +291,11 @@ class StoreItemsView extends SwatControl
 	protected function getQuantityRenderer()
 	{
 		$view = $this->ui->getWidget('items_view');
-		if ($view->hasSpanningColumn('quantity_column'))
+		if ($view->hasSpanningColumn('quantity_column')) {
 			$column = $view->getSpanningColumn('quantity_column');
-		else
+		} else {
 			$column = $view->getColumn('quantity_column');
+		}
 
 		return $column->getRenderer('quantity_renderer');
 	}

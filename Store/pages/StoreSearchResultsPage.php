@@ -477,10 +477,11 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 			$pager->link = $this->source;
 		} else {
 			$limit = $this->getProductLimit();
-			if ($limit === null)
+			if ($limit === null) {
 				$products = $engine->search();
-			else
+			} else {
 				$products = $engine->search($limit);
+			}
 		}
 
 		$this->result_count['product'] = count($products);

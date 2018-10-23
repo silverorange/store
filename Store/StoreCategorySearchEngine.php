@@ -50,11 +50,12 @@ class StoreCategorySearchEngine extends SiteSearchEngine
 
 	protected function getOrderByClause()
 	{
-		if ($this->fulltext_result === null)
+		if ($this->fulltext_result === null) {
 			$clause = sprintf('order by Category.title');
-		else
+		} else {
 			$clause =
 				$this->fulltext_result->getOrderByClause('Category.title');
+		}
 
 		return $clause;
 	}

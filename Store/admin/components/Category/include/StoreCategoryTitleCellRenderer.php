@@ -48,21 +48,23 @@ class StoreCategoryTitleCellRenderer extends AdminTreeTitleLinkCellRenderer
 	{
 		$out = array();
 
-		if (intval($this->child_count) == 0)
+		if (intval($this->child_count) === 0) {
 			$out[] = Store::_('no sub-categories');
-		else
+		} else {
 			$out[] = sprintf(Store::ngettext('One sub-category',
 				'%s sub-categories', $this->child_count),
 				SwatString::numberFormat($this->child_count));
+		}
 
-		if (intval($this->product_count) == 0)
+		if (intval($this->product_count) === 0) {
 			$out[] = Store::_('no products in the selected catalog(s)');
-		else
+		} else {
 			$out[] = sprintf(Store::ngettext(
 				'one product in the selected catalog(s)',
 				'%s products in the selected catalog(s)',
 				$this->product_count),
 				SwatString::numberFormat($this->product_count));
+		}
 
 		return implode(', ', $out);
 	}

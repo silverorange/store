@@ -179,11 +179,12 @@ class StoreProductImageDelete extends AdminDBDelete
 		}
 
 		if ($this->single_delete) {
-			if ($this->category_id === null)
+			if ($this->category_id === null) {
 				$link = sprintf('Product/Details?id=%s', $this->product->id);
-			else
+			} else {
 				$link = sprintf('Product/Details?id=%s&category=%s',
 					$this->product->id, $this->category_id);
+			}
 
 			$this->navbar->addEntry(new SwatNavBarEntry($this->product->title,
 				$link));

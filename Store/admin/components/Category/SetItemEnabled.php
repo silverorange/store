@@ -189,12 +189,13 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 
 	private function getRegionTitle()
 	{
-		if ($this->region > 0)
+		if ($this->region > 0) {
 			$region_title = SwatDB::queryOne($this->app->db,
 				sprintf('select title from Region where id = %s',
 					$this->region));
-		else
+		} else {
 			$region_title = Store::_('All Regions');
+		}
 
 		return $region_title;
 	}

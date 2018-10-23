@@ -155,16 +155,18 @@ class StoreProductImageOrder extends AdminDBOrder
 			$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
 				'getCategoryNavbar', array($this->category_id));
 
-			foreach ($cat_navbar_rs as $entry)
+			foreach ($cat_navbar_rs as $entry) {
 				$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
 					'Category/Index?id='.$entry->id));
+			}
 		}
 
-		if ($this->category_id === null)
+		if ($this->category_id === null) {
 			$link = sprintf('Product/Details?id=%s', $this->product->id);
-		else
+		} else {
 			$link = sprintf('Product/Details?id=%s&category=%s',
 				$this->product->id, $this->category_id);
+		}
 
 		$this->navbar->addEntry(
 			new SwatNavBarEntry($this->product->title, $link));

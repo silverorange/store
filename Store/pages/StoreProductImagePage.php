@@ -51,20 +51,23 @@ class StoreProductImagePage extends StorePage
 	{
 		parent::build();
 
-		if ($this->image_id === null)
+		if ($this->image_id === null) {
 			$this->image = $this->product->primary_image;
-		else
+		} else {
 			$this->image = $this->product->images->getByIndex($this->image_id);
+		}
 
-		if ($this->image === null)
+		if ($this->image === null) {
 			throw new SiteNotFoundException();
+		}
 
-		if ($this->image->title != '')
+		if ($this->image->title != '') {
 			$this->layout->data->title = sprintf(Store::_('%s: %s'),
 				$this->product->title, $this->image->title);
-		else
+		} else {
 			$this->layout->data->title = sprintf(Store::_('%s: Image'),
 				$this->product->title);
+		}
 
 		$this->layout->data->extra_headers.= sprintf(
 			'<link rel="image_src" href="%s" />',

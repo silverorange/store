@@ -376,9 +376,10 @@ class StoreProductSearchEngine extends SiteSearchEngine
 			$this->available_only ? 'inner' : 'left outer',
 			$this->app->db->quote($this->getRegion()->id, 'integer'));
 
-		if ($this->fulltext_result !== null)
+		if ($this->fulltext_result !== null) {
 			$clause.= ' '.
 				$this->fulltext_result->getJoinClause('Product.id', 'product');
+		}
 
 		if ($this->sku !== null) {
 			$clause.= 'inner join ItemView on Product.id = ItemView.product';
@@ -388,7 +389,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 			$clause.= ' left outer join ProductPrimaryCategoryView
 				on ProductPrimaryCategoryView.product = Product.id';
 		} else {
-			if ($this->supress_duplicate_products)
+			if ($this->supress_duplicate_products) {
 				$clause.= sprintf('
 					inner join CategoryProductBinding
 						on CategoryProductBinding.product = Product.id
@@ -398,7 +399,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 						CategoryProductBinding.category =
 							ProductPrimaryCategoryView.primary_category',
 					$this->app->db->quote($this->category->id, 'integer'));
-			else
+			} else {
 				$clause.= '
 					inner join CategoryProductBinding
 						on CategoryProductBinding.product = Product.id
@@ -406,13 +407,15 @@ class StoreProductSearchEngine extends SiteSearchEngine
 						on ProductPrimaryCategoryView.product = Product.id and
 							CategoryProductBinding.category =
 								ProductPrimaryCategoryView.primary_category';
+			}
 		}
 
 		if ($this->featured_category !== null) {
-			if ($this->featured_category instanceof StoreCategory)
+			if ($this->featured_category instanceof StoreCategory) {
 				$category_id = $this->featured_category->id;
-			else
+			} else {
 				$category_id = intval($this->featured_category);
+			}
 
 			$clause.= sprintf(' inner join CategoryFeaturedProductBinding on
 				CategoryFeaturedProductBinding.product = Product.id and
@@ -449,18 +452,20 @@ class StoreProductSearchEngine extends SiteSearchEngine
 		}
 
 		if ($this->category !== null) {
-			if ($this->category instanceof StoreCategory)
+			if ($this->category instanceof StoreCategory) {
 				$category_id = $this->category->id;
-			else
+			} else {
 				$category_id = intval($this->category);
+			}
 
-			if ($this->include_category_descendants)
+			if ($this->include_category_descendants) {
 				$clause.= sprintf(' and CategoryProductBinding.category in (
 					select descendant from getCategoryDescendants(%s))',
 					$this->app->db->quote($category_id, 'integer'));
-			else
+			} else {
 				$clause.= sprintf(' and CategoryProductBinding.category = %s',
 					$this->app->db->quote($category_id, 'integer'));
+			}
 		}
 
 		if ($this->price_range instanceof StorePriceRange) {
@@ -487,30 +492,52 @@ class StoreProductSearchEngine extends SiteSearchEngine
 
 		if ($this->attributes instanceof StoreAttributeWrapper) {
 			$attribute_ids = array();
-			foreach ($this->attributes as $attribute)
+			foreach ($this->attributes as $attribute) {
 				$clause.= sprintf(' and Product.id in (
 					select product from ProductAttributeBinding
 					where attribute = %s)',
 					$this->app->db->quote($attribute->id, 'integer'));
+			}
 		}
 
-		if ($this->related_source_product instanceof StoreProduct)
-			$clause.= sprintf(' and ProductRelatedProductBinding.source_product = %s',
-				$this->app->db->quote($this->related_source_product->id, 'integer'));
+		if ($this->related_source_product instanceof StoreProduct) {
+			$clause.= sprintf(
+				' and ProductRelatedProductBinding.source_product = %s',
+				$this->app->db->quote(
+					$this->related_source_product->id,
+					'integer'
+				)
+			);
+		}
 
-		if ($this->collection_source_product instanceof StoreProduct)
-			$clause.= sprintf(' and Product.id in
-				(select member_product from ProductCollectionBinding where source_product = %s)',
-				$this->app->db->quote($this->collection_source_product->id, 'integer'));
+		if ($this->collection_source_product instanceof StoreProduct) {
+			$clause.= sprintf(
+				' and Product.id in
+				(select member_product from ProductCollectionBinding
+				where source_product = %s)',
+				$this->app->db->quote(
+					$this->collection_source_product->id,
+					'integer'
+				)
+			);
+		}
 
-		if ($this->collection_member_product instanceof StoreProduct)
-			$clause.= sprintf(' and Product.id in
-				(select source_product from ProductCollectionBinding where member_product = %s)',
-				$this->app->db->quote($this->collection_member_product->id, 'integer'));
+		if ($this->collection_member_product instanceof StoreProduct) {
+			$clause.= sprintf(
+				' and Product.id in
+				(select source_product from ProductCollectionBinding
+				where member_product = %s)',
+				$this->app->db->quote(
+					$this->collection_member_product->id,
+					'integer'
+				)
+			);
+		}
 
-		if ($this->collection_products_only)
+		if ($this->collection_products_only) {
 			$clause.= ' and Product.id in
 				(select source_product from ProductCollectionBinding)';
+		}
 
 		if (is_array($this->product_ids)) {
 			$clause.= sprintf(
@@ -539,10 +566,11 @@ class StoreProductSearchEngine extends SiteSearchEngine
 					'integer'));
 		}
 
-		if ($this->instance instanceof SiteInstance)
+		if ($this->instance instanceof SiteInstance) {
 			$clause.= sprintf(' and Catalog.id in
 				(select catalog from CatalogInstanceBinding where instance = %s)',
 				$this->app->db->quote($this->instance->id, 'integer'));
+		}
 
 		return $clause;
 	}

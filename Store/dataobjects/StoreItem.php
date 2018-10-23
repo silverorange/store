@@ -435,10 +435,11 @@ class StoreItem extends SwatDBDataObject
 		if ($sale !== null) {
 			$sale_discount_price = $this->getSaleDiscountPrice($region);
 
-			if ($sale_discount_price == null)
+			if ($sale_discount_price == null) {
 				$price -= ($price * $sale->discount_percentage);
-			else
+			} else {
 				$price = $sale_discount_price;
+			}
 		}
 
 		return $price;

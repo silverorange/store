@@ -469,9 +469,10 @@ class StoreProductEdit extends AdminDBEdit
 			$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
 				'getCategoryNavbar', array($this->category_id));
 
-			foreach ($cat_navbar_rs as $entry)
+			foreach ($cat_navbar_rs as $entry) {
 				$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
 					'Category/Index?id='.$entry->id));
+			}
 		}
 
 		if ($this->id === null) {
@@ -483,11 +484,12 @@ class StoreProductEdit extends AdminDBEdit
 			$product_title = SwatDB::queryOneFromTable($this->app->db,
 				'Product', 'text:title', 'id', $this->id);
 
-			if ($this->category_id === null)
+			if ($this->category_id === null) {
 				$link = sprintf('Product/Details?id=%s', $this->id);
-			else
+			} else {
 				$link = sprintf('Product/Details?id=%s&category=%s', $this->id,
 					$this->category_id);
+			}
 
 			$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));
 			$this->navbar->addEntry(new SwatNavBarEntry(Store::_('Edit')));

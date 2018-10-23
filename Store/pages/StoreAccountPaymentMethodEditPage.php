@@ -352,12 +352,13 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
 		$type_list = $this->ui->getWidget('card_type');
 
 		foreach ($types as $type) {
-			if (mb_strlen($type->note) > 0)
+			if (mb_strlen($type->note) > 0) {
 				$title = sprintf('%s<br /><span class="swat-note">%s</span>',
 					$type->title,
 					$type->note);
-			else
+			} else {
 				$title = $type->title;
+			}
 
 			$type_list->addOption(
 				new SwatOption($type->id, $title, 'text/xml'));

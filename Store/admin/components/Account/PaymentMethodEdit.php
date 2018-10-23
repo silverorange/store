@@ -35,12 +35,13 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 	protected function getAccount()
 	{
 		if ($this->account === null) {
-			if ($this->id === null)
+			if ($this->id === null) {
 				$account_id = $this->app->initVar('account');
-			else
+			} else {
 				$account_id = SwatDB::queryOne($this->app->db, sprintf(
 					'select account from AccountPaymentMethod where id = %s',
 					$this->app->db->quote($this->id, 'integer')));
+			}
 
 			$class_name = SwatDBClassMap::get('StoreAccount');
 			$this->account = new $class_name();

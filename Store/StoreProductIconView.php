@@ -44,10 +44,11 @@ class StoreProductIconView extends StoreProductView
 	 */
 	protected function displayProduct(StoreProduct $product)
 	{
-		if ($this->path === null)
+		if ($this->path === null) {
 			$link = 'store/'.$product->path;
-		else
+		} else {
 			$link = $this->path.'/'.$product->shortname;
+		}
 
 		$product->displayAsIcon($link);
 	}

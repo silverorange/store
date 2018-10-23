@@ -44,16 +44,18 @@ class StorePriceRange extends SwatDBDataObject
 
 	public function getShortname()
 	{
-		if ($this->start_price === null)
+		if ($this->start_price === null) {
 			$shortname = sprintf('0-%s', $this->end_price);
-		elseif ($this->end_price === null)
+		} elseif ($this->end_price === null) {
 			$shortname = (string)$this->start_price;
-		else
+		} else {
 			$shortname = sprintf('%s-%s',
 				$this->start_price, $this->end_price);
+		}
 
-		if ($this->original_price)
+		if ($this->original_price) {
 			$shortname = 'orig'.$shortname;
+		}
 
 		return $shortname;
 	}
@@ -65,19 +67,20 @@ class StorePriceRange extends SwatDBDataObject
 	{
 		$locale = SwatI18NLocale::get();
 
-		if ($this->start_price === null || $this->start_price == 0)
+		if ($this->start_price === null || $this->start_price == 0) {
 			$title = sprintf(Store::_('%s or less'),
 				$locale->formatCurrency($this->end_price));
-		elseif ($this->end_price === null)
+		} elseif ($this->end_price === null) {
 			$title = sprintf(Store::_('%s+'),
 				$locale->formatCurrency($this->start_price));
-		elseif ($this->start_price == $this->end_price)
+		} elseif ($this->start_price == $this->end_price) {
 			$title = sprintf(Store::_('%s'),
 				$locale->formatCurrency($this->start_price));
-		else
+		} else {
 			$title = sprintf(Store::_('%s - %s'),
 				$locale->formatCurrency($this->start_price),
 				$locale->formatCurrency($this->end_price));
+		}
 
 		return $title;
 	}

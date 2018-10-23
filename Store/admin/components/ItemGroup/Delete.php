@@ -147,11 +147,12 @@ class StoreItemGroupDelete extends AdminDBDelete
 		$product_title = SwatDB::queryOneFromTable($this->app->db, 'Product',
 			'text:title', 'id', $product_id);
 
-		if ($this->category_id === null)
+		if ($this->category_id === null) {
 			$link = sprintf('Product/Details?id=%s', $product_id);
-		else
+		} else {
 			$link = sprintf('Product/Details?id=%s&category=%s', $product_id,
 				$this->category_id);
+		}
 
 		$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));
 		$this->navbar->addEntry(new SwatNavBarEntry(Store::_('Delete Group')));
