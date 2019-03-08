@@ -221,7 +221,8 @@ class StoreSalesReportIndex extends AdminIndex
 				inner join OrderCommissionTotalView on
 					OrderCommissionTotalView.ordernum = Orders.id
 			where
-				extract(year from convertTZ(%1$s, %2$s)) = %3$s
+				Orders.duplicate != true
+				and extract(year from convertTZ(%1$s, %2$s)) = %3$s
 				%4$s
 			group by Locale.region, year, month';
 
