@@ -10,16 +10,16 @@ abstract class StoreLocaleApplication extends StoreApplication
 {
 	// {{{ public function getBaseHref()
 
-	public function getBaseHref($secure = null)
+	public function getBaseHref()
 	{
 		$locale = $this->locale;
 
 		if ($locale === null)
-			return parent::getBaseHref($secure);
+			return parent::getBaseHref();
 
 		$language = mb_substr($locale, 0, 2);
 		$country = mb_strtolower(mb_substr($locale, 3, 2));
-		return parent::getBaseHref($secure).$country.'/'.$language.'/';
+		return parent::getBaseHref().$country.'/'.$language.'/';
 	}
 
 	// }}}
@@ -36,9 +36,9 @@ abstract class StoreLocaleApplication extends StoreApplication
 	// }}}
 	// {{{ public function getBaseHrefRelativeUri()
 
-	public function getBaseHrefRelativeUri($secure = null)
+	public function getBaseHrefRelativeUri()
 	{
-		$uri = parent::getBaseHrefRelativeUri($secure);
+		$uri = parent::getBaseHrefRelativeUri();
 
 		// trim locale from beginning of relative uri
 		$uri = preg_replace('|^[a-z][a-z]/[a-z][a-z]/|', '', $uri);
