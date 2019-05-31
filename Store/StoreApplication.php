@@ -154,33 +154,6 @@ abstract class StoreApplication extends SiteWebApplication
 	}
 
 	// }}}
-	// {{{ protected function getSecureSourceList()
-
-	/**
-	 * Gets an array of pages sources that are secure
-	 *
-	 * For store web applications, this list containes all checkout and account
-	 * pages by default.
-	 *
-	 * @return array an array or regular expressions using PREG syntax that
-	 *                match source strings that are secure.
-	 *
-	 * @see SiteApplication::getSecureSourceList()
-	 */
-	protected function getSecureSourceList()
-	{
-		$list = parent::getSecureSourceList();
-		$list[] = '^checkout.*';
-		$list[] = '^account.*';
-		$list[] = sprintf(
-			'^%s.*',
-			$this->config->uri->account_login
-		);
-
-		return $list;
-	}
-
-	// }}}
 	// {{{ protected function loadPage()
 
 	protected function loadPage()
