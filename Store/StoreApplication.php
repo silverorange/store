@@ -99,7 +99,6 @@ abstract class StoreApplication extends SiteWebApplication
 				'cookie' => SiteCookieModule::class,
 				'cart' => StoreCartModule::class,
 				'checkout' => StoreCheckoutModule::class,
-				'mailchimp' => StoreMailChimpModule::class,
 				'messages' => SiteMessagesModule::class,
 				'config' => SiteConfigModule::class,
 				'ads' => SiteAdModule::class,
