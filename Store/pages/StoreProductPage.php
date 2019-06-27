@@ -244,7 +244,7 @@ class StoreProductPage extends StorePage
 		if ($image !== null) {
 			$this->layout->data->extra_headers.= sprintf(
 				'<link rel="image_src" href="%s" />',
-				$image->getUri('small', $this->app->getBaseHref(false)));
+				$image->getUri('small', $this->app->getBaseHref()));
 		}
 	}
 
