@@ -261,7 +261,7 @@ class StoreAnalyticsOrderTracker
 			$this->getSku($item),
 			$this->getProductTitle($item),
 			$this->getCategoryTitle($item),
-			$item->price,
+			$item->getFinalPrice(),
 			$item->quantity
 		);
 	}

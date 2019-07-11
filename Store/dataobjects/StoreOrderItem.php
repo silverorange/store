@@ -404,6 +404,17 @@ class StoreOrderItem extends SwatDBDataObject
 	}
 
 	// }}}
+	// {{{ protected function getFinalPrice()
+
+	public function getFinalPrice()
+	{
+		$promotion_discount =
+			$this->promotion_discount ? $this->promotion_discount : 0.00;
+
+		return $this->price - $promotion_discount;
+	}
+
+	// }}}
 }
 
 ?>
