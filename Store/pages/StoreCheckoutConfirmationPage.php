@@ -711,19 +711,20 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 	protected function save()
 	{
+		$db_transaction = new SwatDBTransaction($this->app->db);
+
 		// Save the account if a password has been set.
 		if ($this->app->session->account->password != '') {
-			$db_transaction = new SwatDBTransaction($this->app->db);
 			$duplicate_account = $this->app->session->account->duplicate();
 			try {
 				$this->saveAccount();
-				$db_transaction->commit();
 			} catch (Exception $e) {
 				$db_transaction->rollback();
 				$this->app->session->account = $duplicate_account;
 
-				if (!($e instanceof SwatException))
+				if (!$e instanceof SwatException) {
 					$e = new SwatException($e);
+				}
 
 				$e->process();
 
@@ -734,13 +735,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			}
 		}
 
-		$db_transaction = new SwatDBTransaction($this->app->db);
 		$duplicate_order = $this->app->session->order->duplicate();
-
 		try {
 			$this->saveOrder();
 			$this->processPayment();
-			$db_transaction->commit();
 		} catch (Exception $e) {
 			$db_transaction->rollback();
 			$this->app->session->order = $duplicate_order;
@@ -758,6 +756,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 			return false;
 		}
+
+		$db_transaction->commit();
 
 		return true;
 	}
@@ -1180,14 +1180,12 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 			break;
 		case 'order-error':
-			// TODO: only display account stuff if account was created
 			$message = $this->getPrototypeErrorMessage($message_id);
 			$message->secondary_content = sprintf(
 				Store::_(
-					'Your account has been created, but your order has '.
-					'%snot%s been placed and you have %snot%s been billed. '.
-					'The error has been recorded and and we will attempt '.
-					'to fix it as quickly as possible.'),
+					'Your order has %snot%s been placed and you have %snot%s '.
+					'been billed. The error has been recorded and and we will '.
+					'attempt to fix it as quickly as possible.'),
 					'<em>', '</em>', '<em>', '</em>');
 
 			break;
