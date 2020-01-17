@@ -450,13 +450,21 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 
 	protected function hasError($response)
 	{
-		$has_error = true;
-
 		if ($response instanceof AnetAPI\AnetApiResponseType) {
-			$has_error = $response->getMessages()->getResultCode() != "Ok";
+			if ($response->getMessages()->getResultCode() != "Ok") {
+				return true;
+			}
+
+			$tresponse = $response->getTransactionResponse();
+			if ($tresponse instanceof AnetAPI\TransactionResponseType) {
+				$errors = $tresponse->getErrors();
+				if (is_array($errors) && count($errors) > 0) {
+					return true;
+				}
+			}
 		}
 
-		return $has_error;
+		return false;
 	}
 
 	// }}}
