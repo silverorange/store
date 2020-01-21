@@ -5,7 +5,7 @@ use net\authorize\api\controller as AnetController;
 
 /**
  * @package   Store
- * @copyright 2011-2019 silverorange
+ * @copyright 2011-2020 silverorange
  * @see       StorePaymentProvider::factory()
  * @see       StorePaymentMethodTransaction
  */
@@ -15,13 +15,13 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 
 	/**
 	 * @var string
-	 * @see AuthorizeNetPaymentProvider::__construct()
+	 * @see StoreAuthorizeNetPaymentProvider::__construct()
 	 */
 	protected $transaction_key;
 
 	/**
 	 * @var string
-	 * @see AuthorizeNetPaymentProvider::__construct()
+	 * @see StoreAuthorizeNetPaymentProvider::__construct()
 	 */
 	protected $login_id;
 
@@ -29,19 +29,19 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	 * 'live' or 'sandbox'
 	 *
 	 * @var string
-	 * @see AuthorizeNetPaymentProvider::__construct()
+	 * @see StoreAuthorizeNetPaymentProvider::__construct()
 	 */
 	protected $mode;
 
 	/**
 	 * @var string
-	 * @see AuthorizeNetPaymentProvider::__construct()
+	 * @see StoreAuthorizeNetPaymentProvider::__construct()
 	 */
 	protected $invoice_number_prefix;
 
 	/**
 	 * @var string
-	 * @see AuthorizeNetPaymentProvider::__construct()
+	 * @see StoreAuthorizeNetPaymentProvider::__construct()
 	 */
 	protected $order_description_prefix;
 
@@ -216,7 +216,8 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	 * @param string $card_verification_value optional. Card verification value
 	 *                                         used for fraud prevention.
 	 *
-	 * @return net\authorize\api\controller\CreateTransactionController the transaction controller
+	 * @return net\authorize\api\controller\CreateTransactionController the transaction
+	 *         controller.
 	 *
 	 * @sensitive $card_number
 	 * @sensitive $card_verification_value
@@ -226,30 +227,32 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 		$card_number,
 		$card_verification_value = null
 	) {
-		$requestType = new AnetAPI\TransactionRequestType();
-		$requestType->setTransactionType('authCaptureTransaction');
-		$requestType->setAmount($order->total);
-		$requestType->setTax($this->getTax($order));
-		$requestType->setShipping($this->getShipping($order));
-		$requestType->setOrder($this->getOrder($order));
-		$requestType->setPayment(
+		$request_type = new AnetAPI\TransactionRequestType();
+
+		$request_type->setTransactionType('authCaptureTransaction');
+		$request_type->setAmount($order->total);
+		$request_type->setTax($this->getTax($order));
+		$request_type->setShipping($this->getShipping($order));
+		$request_type->setOrder($this->getOrder($order));
+		$request_type->setPayment(
 			$this->getPayment($order, $card_number, $card_verification_value)
 		);
 
 		foreach ($order->items as $item) {
-			$requestType->addToLineItems($this->getLineItem($item));
+			$request_type->addToLineItems($this->getLineItem($item));
 		}
 
 		if ($order->billing_address instanceof StoreOrderAddress) {
-			$requestType->setBillTo($this->getBillTo($order->billing_address));
+			$request_type->setBillTo($this->getBillTo($order->billing_address));
 		}
 
-		$requestType->setCustomer($this->getCustomer($order));
-		$requestType->setCustomerIP($this->getIPAddress());
+		$request_type->setCustomer($this->getCustomer($order));
+		$request_type->setCustomerIP($this->getIPAddress());
 
 		$request = new AnetAPI\CreateTransactionRequest();
+
 		$request->setMerchantAuthentication($this->getMerchantAuthentication());
-		$request->setTransactionRequest($requestType);
+		$request->setTransactionRequest($request_type);
 
 		return new AnetController\CreateTransactionController($request);
 	}
@@ -259,8 +262,8 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 
 	protected function getInvoiceNumber(StoreOrder $order)
 	{
-		// Authorize.net only allows 20 chars for invoice number. Get max length
-		// from 19 to account for the space added.
+		// Authorize.net only allows 20 chars for invoice number. Get max
+		// length from 19 to account for the space added.
 		$invoice_number_prefix = $this->truncateField(
 			$this->invoice_number_prefix,
 			19 - mb_strlen($order->id)
@@ -292,9 +295,10 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 		$card_number,
 		$card_verification_value = null
 	) {
-		$creditCard = new AnetAPI\CreditCardType();
-		$creditCard->setCardNumber($card_number);
-		$creditCard->setCardCode($card_verification_value);
+		$credit_card = new AnetAPI\CreditCardType();
+
+		$credit_card->setCardNumber($card_number);
+		$credit_card->setCardCode($card_verification_value);
 
 		// Default expiry date to use if no date is found in a payment method
 		// is 1 month ago (expired).
@@ -307,11 +311,10 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 			}
 		}
 
-		$creditCard->setExpirationDate($date->formatLikeIntl('y-MM'));
+		$credit_card->setExpirationDate($date->formatLikeIntl('y-MM'));
 
 		$payment = new AnetAPI\PaymentType();
-		$payment->setCreditCard($creditCard);
-
+		$payment->setCreditCard($credit_card);
 		return $payment;
 	}
 
@@ -320,31 +323,32 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 
 	protected function getBillTo(StoreOrderAddress $address)
 	{
-		$addr = new AnetAPI\CustomerAddressType();
-		$addr->setFirstName($address->first_name);
-		$addr->setLastName($address->last_name);
+		$anet_address = new AnetAPI\CustomerAddressType();
+
+		$anet_address->setFirstName($address->first_name);
+		$anet_address->setLastName($address->last_name);
 
 		if ($address->company != '') {
-			$addr->setCompany($address->company);
+			$anet_address->setCompany($address->company);
 		}
 
-		$addr->setAddress($address->line1);
-		$addr->setCity($address->city);
+		$anet_address->setAddress($address->line1);
+		$anet_address->setCity($address->city);
 
 		if ($address->provstate_other != null) {
-			$addr->setState($address->provstate_other);
+			$anet_address->setState($address->provstate_other);
 		} elseif ($address->provstate instanceof StoreProvState) {
-			$addr->setState($address->provstate->abbreviation);
+			$anet_address->setState($address->provstate->abbreviation);
 		}
 
-		$addr->setZip($address->postal_code);
-		$addr->setCountry($address->country->title);
+		$anet_address->setZip($address->postal_code);
+		$anet_address->setCountry($address->country->title);
 
 		if ($address->phone != '') {
-			$addr->setPhoneNumber($address->phone);
+			$anet_address->setPhoneNumber($address->phone);
 		}
 
-		return $addr;
+		return $anet_address;
 	}
 
 	// }}}
@@ -352,16 +356,17 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 
 	protected function getOrder(StoreOrder $order)
 	{
-		$ord = new AnetAPI\OrderType();
-		$ord->setInvoiceNumber($this->getInvoiceNumber($order));
-		$ord->setDescription(
+		$anet_order = new AnetAPI\OrderType();
+
+		$anet_order->setInvoiceNumber($this->getInvoiceNumber($order));
+		$anet_order->setDescription(
 			$this->truncateField(
 				$this->getOrderDescription($order),
 				255
 			)
 		);
 
-		return $ord;
+		return $anet_order;
 	}
 
 	// }}}
@@ -370,9 +375,12 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	protected function getCustomer(StoreOrder $order)
 	{
 		$customer = new AnetAPI\CustomerDataType();
+
 		$customer->setEmail($order->email);
 
-		if ($order->account !== null && $order->account->id !== null) {
+		if ($order->account instanceof SiteAccount &&
+			$order->account->id !== null
+		) {
 			$customer->setId($order->account->id);
 		}
 
@@ -385,9 +393,12 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	protected function getLineItem(StoreOrderItem $item)
 	{
 		$line_item = new AnetAPI\LineItemType();
+
 		$line_item->setItemId($item->id);
 		$line_item->setName($this->truncateField($item->product_title, 31));
-		$line_item->setDescription($this->truncateField($item->description, 255));
+		$line_item->setDescription(
+			$this->truncateField($item->description, 255)
+		);
 		$line_item->setQuantity($item->quantity);
 		$line_item->setUnitPrice($item->price);
 		$line_item->setTaxable(false);
@@ -418,7 +429,6 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	{
 		$amount = new AnetAPI\ExtendedAmountType();
 		$amount->setAmount($order->tax_total);
-
 		return $amount;
 	}
 
@@ -429,7 +439,6 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	{
 		$amount = new AnetAPI\ExtendedAmountType();
 		$amount->setAmount($order->shipping_total);
-
 		return $amount;
 	}
 
@@ -439,6 +448,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	protected function getMerchantAuthentication()
 	{
 		$auth = new AnetAPI\MerchantAuthenticationType();
+
 		$auth->setName($this->login_id);
 		$auth->setTransactionKey($this->transaction_key);
 
@@ -451,7 +461,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	protected function hasError($response)
 	{
 		if ($response instanceof AnetAPI\AnetApiResponseType) {
-			if ($response->getMessages()->getResultCode() != "Ok") {
+			if ($response->getMessages()->getResultCode() !== 'Ok') {
 				return true;
 			}
 
@@ -485,7 +495,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 
 					$code = $error->getErrorCode();
 					$text = $error->getErrorText();
-				} else if (is_array($messages) && count($messages) > 0){
+				} elseif (is_array($messages) && count($messages) > 0){
 					$message = $messages[0];
 
 					$text = sprintf(
@@ -494,7 +504,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 						$message->getText()
 					);
 				}
-			} else if (is_array($messages) && count($messages) > 0){
+			} elseif (is_array($messages) && count($messages) > 0){
 				$message = $messages[0];
 
 				$text = sprintf(
