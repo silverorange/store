@@ -1,8 +1,11 @@
 <?php
 
+use net\authorize\api\contract\v1 as AnetAPI;
+use net\authorize\api\controller as AnetController;
+
 /**
  * @package   Store
- * @copyright 2011-2016 silverorange
+ * @copyright 2011-2020 silverorange
  * @see       StorePaymentProvider::factory()
  * @see       StorePaymentMethodTransaction
  */
@@ -12,13 +15,13 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 
 	/**
 	 * @var string
-	 * @see AuthorizeNetPaymentProvider::__construct()
+	 * @see StoreAuthorizeNetPaymentProvider::__construct()
 	 */
 	protected $transaction_key;
 
 	/**
 	 * @var string
-	 * @see AuthorizeNetPaymentProvider::__construct()
+	 * @see StoreAuthorizeNetPaymentProvider::__construct()
 	 */
 	protected $login_id;
 
@@ -26,19 +29,19 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	 * 'live' or 'sandbox'
 	 *
 	 * @var string
-	 * @see AuthorizeNetPaymentProvider::__construct()
+	 * @see StoreAuthorizeNetPaymentProvider::__construct()
 	 */
 	protected $mode;
 
 	/**
 	 * @var string
-	 * @see AuthorizeNetPaymentProvider::__construct()
+	 * @see StoreAuthorizeNetPaymentProvider::__construct()
 	 */
 	protected $invoice_number_prefix;
 
 	/**
 	 * @var string
-	 * @see AuthorizeNetPaymentProvider::__construct()
+	 * @see StoreAuthorizeNetPaymentProvider::__construct()
 	 */
 	protected $order_description_prefix;
 
@@ -134,103 +137,32 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 		$card_number,
 		$card_verification_value = null
 	) {
-		$request = $this->getAIMPaymentRequest(
+		$controller = $this->getTransactionController(
 			$order,
 			$card_number,
 			$card_verification_value
 		);
 
-		// do transaction
-		$response = $request->authorizeAndCapture();
+		$response = $controller->executeWithApiResponse(
+			$this->mode === 'live'
+				? \net\authorize\api\constants\ANetEnvironment::PRODUCTION
+				: \net\authorize\api\constants\ANetEnvironment::SANDBOX
+		);
 
-		if ($response->declined || $response->error) {
-			$text = sprintf(
-				'Code: %s, Reason Code: %s, Message: %s',
-				$response->response_code,
-				$response->response_reason_code,
-				$response->response_reason_text
-			);
-
-			throw new StorePaymentAuthorizeNetException(
-				$text,
-				$response->response_code,
-				$response->response_reason_code,
-				$response
-			);
+		if ($this->hasError($response)) {
+			throw $this->getException($response);
 		}
 
 		$class_name = SwatDBClassMap::get('StorePaymentMethodTransaction');
 		$transaction = new $class_name();
 
 		$transaction->transaction_type = StorePaymentRequest::TYPE_PAY;
-		$transaction->transaction_id = $response->transaction_id;
 		$transaction->createdate = new SwatDate();
 		$transaction->createdate->toUTC();
+		$transaction->transaction_id =
+			$response->getTransactionResponse()->getTransId();
 
 		return $transaction;
-	}
-
-	// }}}
-	// {{{ public function getAIMPaymentRequest()
-
-	/**
-	 * Builds an AuthorizeNetAIM request for a payment.
-	 *
-	 * @param StoreOrder $order the order to pay for.
-	 * @param string $card_number the card number to use for payment.
-	 * @param string $card_verification_value optional. Card verification value
-	 *                                         used for fraud prevention.
-	 *
-	 * @return AuthorizeNetAIM the payment request object.
-	 *
-	 * @sensitive $card_number
-	 * @sensitive $card_verification_value
-	 */
-	protected function getAIMPaymentRequest(
-		StoreOrder $order,
-		$card_number,
-		$card_verification_value = null
-	) {
-		$request = new AuthorizeNetAIM(
-			$this->login_id,
-			$this->transaction_key
-		);
-
-		$request->setSandbox(($this->mode !== 'live'));
-
-		// Transaction fields
-		$request->tax     = $this->formatNumber($order->tax_total);
-		$request->freight = $this->formatNumber($order->shipping_total);
-		$request->amount  = $this->formatNumber($order->total);
-
-		$this->setRequestCardFields(
-			$request,
-			$order,
-			$card_number,
-			$card_verification_value
-		);
-
-		// Order fields
-		$request->invoice_num = $this->getInvoiceNumber($order);
-		$request->description = $this->truncateField(
-			$this->getOrderDescription($order),
-			255
-		);
-
-		if ($order->billing_address instanceof StoreOrderAddress) {
-			$this->setRequestAddressFields($request, $order->billing_address);
-		}
-
-		$request->email = $order->email;
-		if ($order->account !== null && $order->account->id !== null) {
-			$request->cust_id = $order->account->id;
-		}
-
-		$request->customer_ip = $this->getIPAddress();
-
-		$this->addRequestLineItems($request, $order);
-
-		return $request;
 	}
 
 	// }}}
@@ -239,47 +171,34 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	public function getExceptionMessageId(Exception $e)
 	{
 		if ($e instanceof StorePaymentAuthorizeNetException) {
-			// declined responses
-			if ($e->getCode() === AuthorizeNetResponse::DECLINED) {
-				switch ($e->getReasonCode()) {
-				case 2:
-				case 3:
-				case 4:
-				case 28:  // card type not accepted
-				case 37:  // card number invalid
-				case 45:  // blacklisted cvv or address data
-				case 200: // FDC Omaha
-				case 315:
-				case 316:
-				case 317:
-					return 'card-not-valid';
+			switch ($e->getCode()) {
+			case 2:
+			case 3:
+			case 4:
+			case 6:
+			case 17:  // card type not accepted
+			case 28:  // card type not accepted
+			case 37:  // card number invalid
+			case 45:  // blacklisted cvv or address data
+			case 128: // blocked by issuing bank
+			case 200: // FDC Omaha
+			case 315:
+			case 316:
+			case 317:
+				return 'card-not-valid';
 
-				// AVS address mismatch
-				case 27:
-				case 127: // for 'void' action
-					return 'address-mismatch';
+			// AVS address mismatch
+			case 27:
+			case 127: // for 'void' action
+				return 'address-mismatch';
 
-				// CVV2 mismatch
-				case 44:
-					return 'card-verification-value';
+			// CVV2 mismatch
+			case 44:
+				return 'card-verification-value';
 
-				// Everything else gets a generic error.
-				default:
-					return 'card-error';
-				}
-
-			} else {
-				// error responses
-				switch ($e->getReasonCode()) {
-				case 6:
-				case 17:  // card type not accepted
-				case 128: // blocked by issuing bank
-					return 'card-not-valid';
-
-				// Everything else gets a generic error.
-				default:
-					return 'card-error';
-				}
+			// Everything else gets a generic error.
+			default:
+				return 'card-error';
 			}
 		}
 
@@ -287,12 +206,64 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
+	// {{{ protected function getTransactionController()
+
+	/**
+	 * Builds a transaction controller for a payment.
+	 *
+	 * @param StoreOrder $order the order to pay for.
+	 * @param string $card_number the card number to use for payment.
+	 * @param string $card_verification_value optional. Card verification value
+	 *                                         used for fraud prevention.
+	 *
+	 * @return net\authorize\api\controller\CreateTransactionController the transaction
+	 *         controller.
+	 *
+	 * @sensitive $card_number
+	 * @sensitive $card_verification_value
+	 */
+	protected function getTransactionController(
+		StoreOrder $order,
+		$card_number,
+		$card_verification_value = null
+	) {
+		$request_type = new AnetAPI\TransactionRequestType();
+
+		$request_type->setTransactionType('authCaptureTransaction');
+		$request_type->setAmount($order->total);
+		$request_type->setTax($this->getTax($order));
+		$request_type->setShipping($this->getShipping($order));
+		$request_type->setOrder($this->getOrder($order));
+		$request_type->setPayment(
+			$this->getPayment($order, $card_number, $card_verification_value)
+		);
+
+		foreach ($order->items as $item) {
+			$request_type->addToLineItems($this->getLineItem($item));
+		}
+
+		if ($order->billing_address instanceof StoreOrderAddress) {
+			$request_type->setBillTo($this->getBillTo($order->billing_address));
+		}
+
+		$request_type->setCustomer($this->getCustomer($order));
+		$request_type->setCustomerIP($this->getIPAddress());
+
+		$request = new AnetAPI\CreateTransactionRequest();
+
+		$request->setMerchantAuthentication($this->getMerchantAuthentication());
+		$request->setTransactionRequest($request_type);
+
+		return new AnetController\CreateTransactionController($request);
+	}
+
+	// }}}
 	// {{{ protected function getInvoiceNumber()
 
 	protected function getInvoiceNumber(StoreOrder $order)
 	{
-		// Authorize.net only allows 20 chars for invoice number. Get max length
-		// from 19 to account for the space added.
+		// Authorize.net only allows 20 chars for invoice number. Get max
+		// length from 19 to account for the space added.
 		$invoice_number_prefix = $this->truncateField(
 			$this->invoice_number_prefix,
 			19 - mb_strlen($order->id)
@@ -312,21 +283,22 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
-	// {{{ protected function setRequestCardFields()
+	// {{{ protected function getPayment()
 
 	/**
 	 * @sensitive $card_number
 	 * @sensitive $card_verification_value
 	 * @sensitive $payment_method
 	 */
-	protected function setRequestCardFields(
-		AuthorizeNetAIM $request,
+	protected function getPayment(
 		StoreOrder $order,
 		$card_number,
 		$card_verification_value = null
 	) {
-		$request->card_num = $card_number;
-		$request->card_code = $card_verification_value;
+		$credit_card = new AnetAPI\CreditCardType();
+
+		$credit_card->setCardNumber($card_number);
+		$credit_card->setCardCode($card_verification_value);
 
 		// Default expiry date to use if no date is found in a payment method
 		// is 1 month ago (expired).
@@ -339,66 +311,99 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 			}
 		}
 
-		$request->exp_date = $date->formatLikeIntl('MM/yy');
+		$credit_card->setExpirationDate($date->formatLikeIntl('y-MM'));
+
+		$payment = new AnetAPI\PaymentType();
+		$payment->setCreditCard($credit_card);
+		return $payment;
 	}
 
 	// }}}
-	// {{{ protected function setRequestAddressFields()
+	// {{{ protected function getBillTo()
 
-	protected function setRequestAddressFields(
-		AuthorizeNetAIM $request,
-		StoreOrderAddress $address
-	) {
-		$request->first_name = $address->first_name;
-		$request->last_name  = $address->last_name;
+	protected function getBillTo(StoreOrderAddress $address)
+	{
+		$anet_address = new AnetAPI\CustomerAddressType();
+
+		$anet_address->setFirstName($address->first_name);
+		$anet_address->setLastName($address->last_name);
 
 		if ($address->company != '') {
-			$request->company = $address->company;
+			$anet_address->setCompany($address->company);
 		}
 
-		$request->address = $address->line1;
-		$request->city = $address->city;
+		$anet_address->setAddress($address->line1);
+		$anet_address->setCity($address->city);
+
 		if ($address->provstate_other != null) {
-			$request->state = $address->provstate_other;
+			$anet_address->setState($address->provstate_other);
 		} elseif ($address->provstate instanceof StoreProvState) {
-			$request->state = $address->provstate->abbreviation;
+			$anet_address->setState($address->provstate->abbreviation);
 		}
 
-		$request->zip = $address->postal_code;
-		$request->country = $address->country->title;
+		$anet_address->setZip($address->postal_code);
+		$anet_address->setCountry($address->country->title);
 
 		if ($address->phone != '') {
-			$request->phone = $address->phone;
+			$anet_address->setPhoneNumber($address->phone);
 		}
+
+		return $anet_address;
 	}
 
 	// }}}
-	// {{{ protected function addRequestLineItems()
+	// {{{ protected function getOrder()
 
-	protected function addRequestLineItems(
-		AuthorizeNetAIM $request,
-		StoreOrder $order
-	) {
-		foreach ($order->items as $item) {
-			$this->addRequestLineItem($request, $item);
-		}
-	}
+	protected function getOrder(StoreOrder $order)
+	{
+		$anet_order = new AnetAPI\OrderType();
 
-	// }}}
-	// {{{ protected function addRequestLineItem()
-
-	protected function addRequestLineItem(
-		AuthorizeNetAIM $request,
-		StoreOrderItem $item
-	) {
-		$request->addLineItem(
-			$item->id,
-			$this->truncateField($item->product_title, 31),
-			$this->truncateField($item->description, 255),
-			$item->quantity,
-			$this->formatNumber($item->price),
-			false
+		$anet_order->setInvoiceNumber($this->getInvoiceNumber($order));
+		$anet_order->setDescription(
+			$this->truncateField(
+				$this->getOrderDescription($order),
+				255
+			)
 		);
+
+		return $anet_order;
+	}
+
+	// }}}
+	// {{{ protected function getCustomer()
+
+	protected function getCustomer(StoreOrder $order)
+	{
+		$customer = new AnetAPI\CustomerDataType();
+
+		$customer->setEmail($order->email);
+
+		if ($order->account instanceof SiteAccount &&
+			$order->account->id !== null
+		) {
+			$customer->setId($order->account->id);
+		}
+
+		return $customer;
+	}
+
+	// }}}
+	// {{{ protected function getLineItem()
+
+	protected function getLineItem(StoreOrderItem $item)
+	{
+		$line_item = new AnetAPI\LineItemType();
+
+		$line_item->setItemId($item->id);
+		$line_item->setName($this->truncateField($item->product_title, 31));
+		$line_item->setDescription(
+			$this->truncateField($item->description, 255)
+		);
+		$line_item->setQuantity($item->quantity);
+		$line_item->setUnitPrice($item->price);
+		$line_item->setTaxable(false);
+
+		return $line_item;
 	}
 
 	// }}}
@@ -418,6 +423,102 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
+	// {{{ protected function getTax()
+
+	protected function getTax(StoreOrder $order)
+	{
+		$amount = new AnetAPI\ExtendedAmountType();
+		$amount->setAmount($order->tax_total);
+		return $amount;
+	}
+
+	// }}}
+	// {{{ protected function getShipping()
+
+	protected function getShipping(StoreOrder $order)
+	{
+		$amount = new AnetAPI\ExtendedAmountType();
+		$amount->setAmount($order->shipping_total);
+		return $amount;
+	}
+
+	// }}}
+	// {{{ protected function getMerchantAuthentication()
+
+	protected function getMerchantAuthentication()
+	{
+		$auth = new AnetAPI\MerchantAuthenticationType();
+
+		$auth->setName($this->login_id);
+		$auth->setTransactionKey($this->transaction_key);
+
+		return $auth;
+	}
+
+	// }}}
+	// {{{ protected function hasError()
+
+	protected function hasError($response)
+	{
+		if ($response instanceof AnetAPI\AnetApiResponseType) {
+			if ($response->getMessages()->getResultCode() !== 'Ok') {
+				return true;
+			}
+
+			$tresponse = $response->getTransactionResponse();
+			if ($tresponse instanceof AnetAPI\TransactionResponseType) {
+				$errors = $tresponse->getErrors();
+				if (is_array($errors) && count($errors) > 0) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	// }}}
+	// {{{ protected function getException()
+
+	protected function getException($response)
+	{
+		$code = 0;
+		$text = 'Unknown Error';
+
+		if ($response instanceof AnetAPI\AnetApiResponseType) {
+			$messages = $response->getMessages()->getMessage();
+			$tresponse = $response->getTransactionResponse();
+			if ($tresponse instanceof AnetAPI\TransactionResponseType) {
+				$errors = $tresponse->getErrors();
+				if (is_array($errors) && count($errors) > 0) {
+					$error = $errors[0];
+
+					$code = $error->getErrorCode();
+					$text = $error->getErrorText();
+				} elseif (is_array($messages) && count($messages) > 0){
+					$message = $messages[0];
+
+					$text = sprintf(
+						'%s: %s',
+						$message->getCode(),
+						$message->getText()
+					);
+				}
+			} elseif (is_array($messages) && count($messages) > 0){
+				$message = $messages[0];
+
+				$text = sprintf(
+					'%s: %s',
+					$message->getCode(),
+					$message->getText()
+				);
+			}
+		}
+
+		return new StorePaymentAuthorizeNetException($text, $code);
+	}
+
+	// }}}
 	// {{{ protected function truncateField()
 
 	protected function truncateField($content, $maxlength)
@@ -426,21 +527,6 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 		$content = str_replace('  •  ', ' - ', $content);
 		$content = html_entity_decode($content, ENT_QUOTES, 'ISO-8859-1');
 		return $content;
-	}
-
-	// }}}
-	// {{{ protected function formatNumber()
-
-	/**
-	 * @param float $value
-	 *
-	 * @return string formatted .
-	 */
-	protected function formatNumber($value)
-	{
-		$value = round($value, 2);
-
-		return number_format($value, 2, '.', '');
 	}
 
 	// }}}
