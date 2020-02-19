@@ -536,7 +536,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	{
 		// We can get into trouble using floats. Using solution outlined here:
 		// https://github.com/AuthorizeNet/sdk-php/issues/366
-		return number_format($total, 2, '.', '') . "";
+		return number_format($total, 2, '.', '').'';
 	}
 
 	// }}}
