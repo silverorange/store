@@ -230,7 +230,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 		$request_type = new AnetAPI\TransactionRequestType();
 
 		$request_type->setTransactionType('authCaptureTransaction');
-		$request_type->setAmount($order->total);
+		$request_type->setAmount($this->getSafeTotal($order->total));
 		$request_type->setTax($this->getTax($order));
 		$request_type->setShipping($this->getShipping($order));
 		$request_type->setOrder($this->getOrder($order));
@@ -428,7 +428,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	protected function getTax(StoreOrder $order)
 	{
 		$amount = new AnetAPI\ExtendedAmountType();
-		$amount->setAmount($order->tax_total);
+		$amount->setAmount($this->getSafeTotal($order->tax_total));
 		return $amount;
 	}
 
@@ -438,7 +438,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	protected function getShipping(StoreOrder $order)
 	{
 		$amount = new AnetAPI\ExtendedAmountType();
-		$amount->setAmount($order->shipping_total);
+		$amount->setAmount($this->getSafeTotal($order->shipping_total));
 		return $amount;
 	}
 
@@ -527,6 +527,16 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 		$content = str_replace('  •  ', ' - ', $content);
 		$content = html_entity_decode($content, ENT_QUOTES, 'ISO-8859-1');
 		return $content;
+	}
+
+	// }}}
+	// {{{ protected function getSafeTotal()
+
+	protected function getSafeTotal($total)
+	{
+		// We can get into trouble using floats. Using solution outlined here:
+		// https://github.com/AuthorizeNet/sdk-php/issues/366
+		return number_format($total, 2, '.', '').'';
 	}
 
 	// }}}
