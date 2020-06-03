@@ -713,8 +713,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		$db_transaction = new SwatDBTransaction($this->app->db);
 
-		// Save the account if a password has been set.
-		if ($this->app->session->account->password != '') {
+		if ($this->shouldSaveAccount()) {
 			$duplicate_account = $this->app->session->account->duplicate();
 			try {
 				$this->saveAccount();
@@ -1331,6 +1330,15 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		}
 
 		return $this->getEditLink($link);
+	}
+
+	// }}}
+	// {{{ protected function shouldSaveAccount()
+
+	protected function shouldSaveAccount()
+	{
+		// Save the account if a password has been set.
+		return $this->app->session->account->password != '';
 	}
 
 	// }}}
