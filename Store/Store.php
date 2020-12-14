@@ -4,7 +4,7 @@
  * Container for package wide static methods
  *
  * @package   Store
- * @copyright 2006-2017 silverorange
+ * @copyright 2006-2020 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class Store
@@ -133,9 +133,6 @@ class Store
 			'braintree.merchant_id' => null,
 			'braintree.public_key'  => null,
 			'braintree.private_key' => null,
-
-			// Analytics
-			'analytics.friendbuy_overlay_widget_id' => null,
 
 			// Google Address Autocomplete
 			'google_address_auto_complete.enabled' => false,
