@@ -715,6 +715,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
 		if ($this->shouldSaveAccount()) {
 			$duplicate_account = $this->app->session->account->duplicate();
+		}
+
+		if ($this->shouldSaveAccount()) {
 			try {
 				$this->saveAccount();
 			} catch (Exception $e) {
@@ -740,6 +743,11 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$this->processPayment();
 		} catch (Exception $e) {
 			$db_transaction->rollback();
+
+			if ($this->shouldSaveAccount()) {
+				$this->app->session->account = $duplicate_account;
+			}
+
 			$this->app->session->order = $duplicate_order;
 
 			if ($this->handleException($e)) {
