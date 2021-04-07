@@ -156,7 +156,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 			throw $this->generateExceptionFromResponse($response);
 		}
 
-		throw new StorePaymentBraintreeValidationException('Nick test');
+		throw new StorePaymentBraintreeProcessorException('Nick test', 2010);
 
 		return $this->createPaymentMethodTransaction($response->transaction);
 	}
