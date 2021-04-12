@@ -713,16 +713,19 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	{
 		$db_transaction = new SwatDBTransaction($this->app->db);
 
-		if ($this->shouldSaveAccount()) {
-			$duplicate_account = $this->app->session->account->duplicate();
-		}
+		$duplicate_account = ($this->shouldSaveAccount())
+			? $this->app->session->account->duplicate()
+			: null;
 
 		if ($this->shouldSaveAccount()) {
 			try {
 				$this->saveAccount();
 			} catch (Exception $e) {
 				$db_transaction->rollback();
-				$this->app->session->account = $duplicate_account;
+
+				if ($duplicate_account instanceof SiteAccount) {
+					$this->app->session->account = $duplicate_account;
+				}
 
 				if (!$e instanceof SwatException) {
 					$e = new SwatException($e);
@@ -744,7 +747,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		} catch (Exception $e) {
 			$db_transaction->rollback();
 
-			if ($this->shouldSaveAccount()) {
+			if ($duplicate_account instanceof SiteAccount) {
 				$this->app->session->account = $duplicate_account;
 			}
 
