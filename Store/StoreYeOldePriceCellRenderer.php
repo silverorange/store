@@ -55,7 +55,9 @@ class StoreYeOldePriceCellRenderer extends StoreItemPriceCellRenderer
 		$formatter = SwatI18NLocale::get($locale);
 
 		$money = SwatString::minimizeEntities(
-			$formatter->formatCurrency($value, $display_currency, array('fractional_digits' => $decimal_places))
+			$formatter->formatCurrency(
+				$value, $display_currency, array('fractional_digits' => $decimal_places)
+			)
 		);
 
 		if ($locale !== null) {
