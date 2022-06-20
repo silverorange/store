@@ -378,9 +378,11 @@ abstract class StoreOrderConfirmationMailMessage extends
 	{
 		$locale = $this->order->locale->id;
 
+		$formatter = SwatI18NLocale::get($locale);
+
 		printf('   Price: %s, Total: %s',
-			SwatString::moneyFormat($item->price, $locale),
-			SwatString::moneyFormat($item->extension, $locale));
+			$formatter->formatCurrency($item->price),
+			$formatter->formatCurrency($item->extension));
 	}
 
 	// }}}
@@ -391,9 +393,11 @@ abstract class StoreOrderConfirmationMailMessage extends
 		$order = $this->order;
 		$locale = $this->order->locale->id;
 
+		$formatter = SwatI18NLocale::get($locale);
+
 		$subtotal = $order->getSubtotal();
 		printf(Store::_('Subtotal: %s'),
-			SwatString::moneyFormat($subtotal, $locale));
+			$formatter->formatCurrency($subtotal));
 
 		echo self::LINE_BREAK;
 
@@ -402,28 +406,28 @@ abstract class StoreOrderConfirmationMailMessage extends
 				self::LINE_BREAK;
 		} else {
 			printf(Store::_('Shipping: %s'),
-				SwatString::moneyFormat($order->shipping_total, $locale));
+				$formatter->formatCurrency($order->shipping_total));
 
 			echo self::LINE_BREAK;
 		}
 
 		if ($order->surcharge_total > 0) {
 			printf(Store::_('Surcharge: %s'),
-				SwatString::moneyFormat($order->surcharge_total, $locale));
+				$formatter->formatCurrency($order->surcharge_total));
 
 			echo self::LINE_BREAK;
 		}
 
 		if ($order->tax_total > 0) {
 			printf(Store::_('Tax: %s'),
-				SwatString::moneyFormat($order->tax_total, $locale));
+				$formatter->formatCurrency($order->tax_total));
 
 			echo self::LINE_BREAK;
 		}
 
 		echo self::LINE_BREAK;
 		printf(Store::_('Total: %s'),
-			SwatString::moneyFormat($order->total, $locale));
+			$formatter->formatCurrency($order->total));
 	}
 
 	// }}}

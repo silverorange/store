@@ -52,9 +52,11 @@ class StoreYeOldePriceCellRenderer extends StoreItemPriceCellRenderer
 		$display_currency = false,
 		$decimal_places = null
 	) {
-		$money = SwatString::minimizeEntities(
-			SwatString::moneyFormat(
-				$value, $locale, $display_currency, $decimal_places));
+		$formatter = SwatI18NLocale::get($locale);
+
+		$money = $formatter->formatCurrency(
+			$value, false, array('fractional_digits' => $decimal_places)
+		);
 
 		if ($locale !== null) {
 			$old_locale = setlocale(LC_ALL, 0);
@@ -67,6 +69,10 @@ class StoreYeOldePriceCellRenderer extends StoreItemPriceCellRenderer
 
 		$lc = localeconv();
 		$decimal_point = $lc['mon_decimal_point'];
+
+		if ($display_currency) {
+			$money.= ' '.$lc['int_curr_symbol'];
+		}
 
 		// convert decimal character to UTF-8
 		$character_set = nl_langinfo(CODESET);
