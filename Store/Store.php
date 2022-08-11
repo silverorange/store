@@ -97,9 +97,6 @@ class Store
 			'bing.username' => null,
 			'bing.password' => null,
 
-			// Optional Wordpress API key for Akismet spam filtering.
-			'store.akismet_key'     => null,
-
 			// Optional StrikeIron API keys for address verification.
 			'strikeiron.verify_address_usa_key'    => null,
 			'strikeiron.verify_address_canada_key' => null,
