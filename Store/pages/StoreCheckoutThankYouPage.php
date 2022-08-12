@@ -44,31 +44,6 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
 	// }}}
 
 	// build phase
-	// {{{ protected function buildInternal()
-
-	protected function buildInternal()
-	{
-		parent::buildInternal();
-		$this->sendNotification();
-	}
-
-	// }}}
-	// {{{ protected function sendNotification()
-
-	protected function sendNotification()
-	{
-		if (isset($this->app->notifier)) {
-			$this->app->notifier->send(
-				'order',
-				array(
-					'site'  => $this->app->config->notifier->site,
-					'value' => $this->getOrder()->total
-				)
-			);
-		}
-	}
-
-	// }}}
 	// {{{ protected function displayFinalNote()
 
 	protected function displayFinalNote(StoreOrder $order)
