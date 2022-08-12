@@ -49,7 +49,7 @@
 		"pear/validate_finance_creditcard": ">=0.5.2",
 		"silverorange/admin": "^5.4.0",
 		"silverorange/net_notifier": "^1.0.0",
-		"silverorange/site": "^10.1.0 || ^11.0.0",
+		"silverorange/site": "^10.1.0 || ^11.0.0 || ^12.0.0",
 		"silverorange/swat": "^5.0.0 || ^6.0.0",
 		"silverorange/xml_rpc_ajax": "^3.1.0",
 		"silverorange/yui": "^1.0.11"
@@ -61,7 +61,6 @@
 		"authorizenet/authorizenet": "Payments with Authorize.net.",
 		"braintree/braintree_php": "Payments with Braintree",
 		"pear/payment_paypal_soap": "Payments with PayPal.",
-		"pear/services_akismet2": "Filter spam from product reviews.",
 		"silverorange/atom_feed": "Froogle product feeds for Google.",
 		"silverorange/blorg": "Product reviews.",
 		"silverorange/deliverance": "Email mailing list support.",
