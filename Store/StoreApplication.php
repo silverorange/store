@@ -104,7 +104,6 @@ abstract class StoreApplication extends SiteWebApplication
 				'ads' => SiteAdModule::class,
 				'analytics' => SiteAnalyticsModule::class,
 				'timer' => SiteTimerModule::class,
-				'notifier' => SiteNotifierModule::class,
 				'crypt' => SiteCryptModule::class,
 			]
 		);
