@@ -225,21 +225,6 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 	}
 
 	// }}}
-	// {{{ protected function getFulltextTypes()
-
-	protected function getFulltextTypes()
-	{
-		$types = parent::getFulltextTypes();
-		$types[] = 'product';
-		$types[] = 'category';
-
-		if (class_exists('Blorg'))
-			$types[] = 'post';
-
-		return $types;
-	}
-
-	// }}}
 
 	// build phase - articles
 	// {{{ protected function instantiateArticleSearchEngine()
