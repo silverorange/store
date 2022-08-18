@@ -120,7 +120,6 @@ class StoreCategoryEdit extends AdminDBEdit
 		}
 
 		$this->category->save();
-		$this->addToSearchQueue();
 
 		$message = new SwatMessage(sprintf(
 			Store::_('“%s” has been saved.'),
@@ -151,37 +150,6 @@ class StoreCategoryEdit extends AdminDBEdit
 
 		$this->category->always_visible =
 			$this->ui->getWidget('always_visible')->value;
-	}
-
-	// }}}
-	// {{{ protected function addToSearchQueue()
-
-	protected function addToSearchQueue()
-	{
-		$manager = $this->app->db->manager;
-		if (!in_array('nategosearchqueue', $manager->listTables())) {
-			return;
-		}
-
-		$type = NateGoSearch::getDocumentType($this->app->db, 'category');
-
-		if ($type === null) {
-			return;
-		}
-
-		$sql = sprintf('delete from NateGoSearchQueue
-			where document_id = %s and document_type = %s',
-			$this->app->db->quote($this->id, 'integer'),
-			$this->app->db->quote($type, 'integer'));
-
-		SwatDB::exec($this->app->db, $sql);
-
-		$sql = sprintf('insert into NateGoSearchQueue
-			(document_id, document_type) values (%s, %s)',
-			$this->app->db->quote($this->id, 'integer'),
-			$this->app->db->quote($type, 'integer'));
-
-		SwatDB::exec($this->app->db, $sql);
 	}
 
 	// }}}

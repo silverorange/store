@@ -49,7 +49,6 @@ class StoreCatalogClone extends AdminDBEdit
 
 		} else {
 			// add all new products to search queue
-			$this->addToSearchQueue($clone_id);
 			$message = new SwatMessage(
 				sprintf(Store::_('The %s “%s” has been cloned.'),
 				Store::_('catalog'), $title));
@@ -59,30 +58,6 @@ class StoreCatalogClone extends AdminDBEdit
 
 		if (isset($this->app->memcache))
 			$this->app->memcache->flushNs('product');
-	}
-
-	// }}}
-	// {{{ protected function addToSearchQueue()
-
-	protected function addToSearchQueue($catalog_id)
-	{
-		$manager = $this->app->db->manager;
-		if (!in_array('nategosearchqueue', $manager->listTables())) {
-			return;
-		}
-
-		$type = NateGoSearch::getDocumentType($this->app->db, 'product');
-
-		if ($type === null)
-			return;
-
-		$sql = sprintf('insert into NateGoSearchQueue
-			(document_id, document_type) select id, %s from Product
-			where catalog = %s',
-			$this->app->db->quote($type, 'integer'),
-			$this->app->db->quote($catalog_id, 'integer'));
-
-		SwatDB::exec($this->app->db, $sql);
 	}
 
 	// }}}

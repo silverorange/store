@@ -25,11 +25,6 @@ class StoreProductSearch
 	 */
 	protected $ui;
 
-	/**
-	 * @var SiteNateGoFulltextSearchResult
-	 */
-	protected $fulltext_result;
-
 	protected $order_by_clause;
 	protected $join_clause;
 	protected $where_clause;
@@ -51,22 +46,6 @@ class StoreProductSearch
 	{
 		$this->ui = $ui;
 		$this->db = $db;
-
-		$manager = $db->manager;
-		if (in_array('nategosearchqueue', $manager->listTables())) {
-			$type = NateGoSearch::getDocumentType($this->db,
-				$this->getSearchType());
-
-			$keywords = $ui->getWidget('search_keywords')->value;
-			if (trim($keywords) != '' && $type !== null) {
-				$fulltext_engine = new SiteNateGoFulltextSearchEngine($this->db);
-				$fulltext_engine->setTypes(array(
-					$this->getSearchType(),
-				));
-
-				$this->fulltext_result = $fulltext_engine->search($keywords);
-			}
-		}
 
 		$this->buildJoinClause();
 		$this->buildWhereClause();
@@ -122,12 +101,7 @@ class StoreProductSearch
 	 */
 	protected function buildJoinClause()
 	{
-		if ($this->fulltext_result === null) {
-			$this->join_clause = '';
-		} else {
-			$this->join_clause = $this->fulltext_result->getJoinClause(
-				'Product.id', $this->getSearchType());
-		}
+		$this->join_clause = '';
 	}
 
 	// }}}
@@ -162,7 +136,7 @@ class StoreProductSearch
 		// keywords are included in the where clause if fulltext searching is
 		// turned off
 		$keywords = $this->ui->getWidget('search_keywords')->value;
-		if ($this->fulltext_result === null && trim($keywords) != '') {
+		if (trim($keywords) != '') {
 			$where.= ' and (';
 
 			$clause = new AdminSearchClause('title');
@@ -321,13 +295,7 @@ class StoreProductSearch
 	 */
 	protected function buildOrderByClause()
 	{
-		if ($this->fulltext_result === null) {
-			$this->order_by_clause = 'Product.title, Product.id';
-		} else {
-			$this->order_by_clause = str_replace('order by ', '',
-				$this->fulltext_result->getOrderByClause(
-					'Product.title, Product.id'));
-		}
+		$this->order_by_clause = 'Product.title, Product.id';
 	}
 
 	// }}}

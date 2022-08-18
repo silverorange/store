@@ -241,7 +241,6 @@ class StoreProductEdit extends AdminDBEdit
 		}
 
 		$this->saveAttributes();
-		$this->addToSearchQueue();
 
 		$message = new SwatMessage(sprintf(Store::_('“%s” has been saved.'),
 			$this->product->title));
@@ -280,37 +279,6 @@ class StoreProductEdit extends AdminDBEdit
 		$this->product->bodytext         = $values['bodytext'];
 		$this->product->keywords         = $values['keywords'];
 		$this->product->meta_description = $values['meta_description'];
-	}
-
-	// }}}
-	// {{{ protected function addToSearchQueue()
-
-	protected function addToSearchQueue()
-	{
-		$manager = $this->app->db->manager;
-		if (!in_array('nategosearchqueue', $manager->listTables())) {
-			return;
-		}
-
-		$type = NateGoSearch::getDocumentType($this->app->db, 'product');
-
-		if ($type === null) {
-			return;
-		}
-
-		$sql = sprintf('delete from NateGoSearchQueue
-			where document_id = %s and document_type = %s',
-			$this->app->db->quote($this->product->id, 'integer'),
-			$this->app->db->quote($type, 'integer'));
-
-		SwatDB::exec($this->app->db, $sql);
-
-		$sql = sprintf('insert into NateGoSearchQueue
-			(document_id, document_type) values (%s, %s)',
-			$this->app->db->quote($this->product->id, 'integer'),
-			$this->app->db->quote($type, 'integer'));
-
-		SwatDB::exec($this->app->db, $sql);
 	}
 
 	// }}}

@@ -592,11 +592,6 @@ msgstr ""
 msgid "Try using less specific keywords"
 msgstr ""
 
-#: ../Store/pages/StoreNateGoSearchPage.php.gettext:200
-#, php-format
-msgid "Did you mean “%s”?"
-msgstr ""
-
 #: ../Store/pages/StoreCategoryNotVisiblePage.php.gettext:38
 #, php-format
 msgid ""
@@ -2292,39 +2287,6 @@ msgstr ""
 msgid ""
 "No private data is actually deleted. Use with --debug to see what data will "
 "be deleted."
-msgstr ""
-
-#: ../Store/StoreNateGoSearchIndexer.php.gettext:89
-msgid "Repopulating article search queue ... "
-msgstr ""
-
-#: ../Store/StoreNateGoSearchIndexer.php.gettext:108
-#: ../Store/StoreNateGoSearchIndexer.php.gettext:138
-#: ../Store/StoreNateGoSearchIndexer.php.gettext:168
-#: ../Store/StoreNateGoSearchIndexer.php.gettext:221
-#: ../Store/StoreNateGoSearchIndexer.php.gettext:284
-#: ../Store/StoreNateGoSearchIndexer.php.gettext:363
-msgid "done"
-msgstr ""
-
-#: ../Store/StoreNateGoSearchIndexer.php.gettext:119
-msgid "Repopulating product search queue ... "
-msgstr ""
-
-#: ../Store/StoreNateGoSearchIndexer.php.gettext:149
-msgid "Repopulating category search queue ... "
-msgstr ""
-
-#: ../Store/StoreNateGoSearchIndexer.php.gettext:200
-msgid "Indexing articles ... "
-msgstr ""
-
-#: ../Store/StoreNateGoSearchIndexer.php.gettext:263
-msgid "Indexing categories ... "
-msgstr ""
-
-#: ../Store/StoreNateGoSearchIndexer.php.gettext:333
-msgid "Indexing products ... "
 msgstr ""
 
 #: ../Store/StoreCatalogSwitcher.php.gettext:98
