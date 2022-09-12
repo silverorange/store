@@ -4,10 +4,10 @@
  * Displays sales summaries for a year by month
  *
  * @package   Store
- * @copyright 2011-2016 silverorange
+ * @copyright 2011-2022 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreSalesReportIndex extends AdminIndex
+class StoreSalesReportIndex extends AdminSearch
 {
 	// {{{ protected properties
 

@@ -2,7 +2,7 @@
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
 	<widget class="SwatMessageDisplay" id="message_display" />
-	<widget class="SwatFrame" id="index_frame">
+	<widget class="SwatFrame" id="results_frame">
 		<property name="title" translatable="yes">Sales Reports</property>
 		<widget class="SwatForm" id="index_form">
 			<widget class="SwatTableView" id="index_view">

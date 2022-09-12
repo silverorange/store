@@ -44,18 +44,7 @@ class StoreSalesReportDetails extends AdminIndex
 	{
 		parent::initInternal();
 
-		$id = SiteApplication::initVar('id');
-		$parts = explode('-', $id);
-		if (count($parts) != 2) {
-			throw new AdminNotFoundException(sprintf(
-				'Unable to load commission report with id of “%s”', $id));
-		}
-
-		$this->start_date = new SwatDate('now', $this->app->default_time_zone);
-		if ($this->start_date->setDate($parts[0], $parts[1], 1) === false) {
-			throw new AdminNotFoundException(sprintf(
-				'Unable to load commission report with id of “%s”', $id));
-		}
+		$this->initReportValues();
 
 		$this->ui->loadFromXML($this->getUiXml());
 
@@ -64,6 +53,33 @@ class StoreSalesReportDetails extends AdminIndex
 
 		// add dynamic columns to items view
 		$this->appendRegionColumns($view, $regions);
+	}
+
+	// }}}
+	// {{{ protected function initReportValues()
+
+	protected function initReportValues()
+	{
+		$id = SiteApplication::initVar('id');
+		$parts = explode('-', $id);
+		if (count($parts) != 2) {
+			throw new AdminNotFoundException(sprintf(
+				'Unable to load commission report with id of “%s”', $id));
+		}
+
+		$this->initStartDate($parts[0], $parts[1]);
+	}
+
+	// }}}
+	// {{{ protected function initStartDate()
+
+	protected function initStartDate($year, $month)
+	{
+		$this->start_date = new SwatDate('now', $this->app->default_time_zone);
+		if ($this->start_date->setDate($year, $month, 1) === false) {
+			throw new AdminNotFoundException(sprintf(
+				'Unable to load commission report with id of “%s”', $id));
+		}
 	}
 
 	// }}}
@@ -204,7 +220,7 @@ class StoreSalesReportDetails extends AdminIndex
 	{
 		parent::buildInternal();
 
-		$report_title = $this->start_date->formatLikeIntl(SwatDate::DF_MY);
+		$report_title = $this->getReportTitle();
 
 		// set frame title
 		$index_frame = $this->ui->getWidget('index_frame');
@@ -367,6 +383,14 @@ class StoreSalesReportDetails extends AdminIndex
 		}
 
 		return $this->regions;
+	}
+
+	// }}}
+	// {{{ protected function getReportTitle()
+
+	protected function getReportTitle()
+	{
+		return $this->start_date->formatLikeIntl(SwatDate::DF_MY);
 	}
 
 	// }}}
