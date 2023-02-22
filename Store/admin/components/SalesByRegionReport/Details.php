@@ -152,9 +152,9 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 				Country.title as country_title,
 				Country.id as country_id
 			from Orders
-				inner join OrderAddress
+				left outer join OrderAddress
 					on Orders.billing_address = OrderAddress.id
-				inner join Country on OrderAddress.Country = Country.id
+				left outer join Country on OrderAddress.Country = Country.id
 			where Orders.createdate >= %1$s
 				and Orders.createdate < %2$s
 				and Orders.createdate >= %3$s
@@ -162,7 +162,7 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 				and Orders.total > 0
 				%4$s
 			group by Country.id, Country.title
-			order by Country.title',
+			order by Country.title nulls first',
 			$this->app->db->quote($this->start_date->getDate(), 'date'),
 			$this->app->db->quote($end_date->getDate(), 'date'),
 			$this->app->db->quote(
@@ -186,11 +186,15 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 				$provstate_model = $this->getProvStateModel($row->country_id);
 				foreach ($provstate_model as $provstate_row) {
 					$ds = new SwatDetailsStore($provstate_row);
-
-					$ds->country_group = $row->country_title;
 					$ds->country_gross_total = $row->gross_total;
 					$ds->country_shipping_total = $row->shipping_total;
-					$ds->region_title = $provstate_row->provstate_title;
+					$ds->country_group = $row->country_title;
+
+					if ($provstate_row->provstate_title === null) {
+						$ds->region_title = Store::_('Unknown');
+					} else {
+						$ds->region_title = $provstate_row->provstate_title;
+					}
 
 					$store->add($ds);
 				}
@@ -213,7 +217,12 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 				$ds->country_group = Store::_('Other');
 				$ds->country_gross_total = $other_gross_total;
 				$ds->country_shipping_total = $other_shipping_total;
-				$ds->region_title = $row->country_title;
+
+				if ($row->country_title === null) {
+					$ds->region_title = Store::_('Unknown');
+				} else {
+					$ds->region_title = $row->country_title;
+				}
 
 				$store->add($ds);
 			}
@@ -241,20 +250,20 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 				Country.title as country_title,
 				Country.id as country_id,
 				ProvState.title as provstate_title
-			from ProvState
-				left outer join OrderAddress
-					on OrderAddress.provstate = ProvState.id
-				left outer join Orders
-					on Orders.billing_address = OrderAddress.id
-						and Orders.createdate >= %1$s
-						and Orders.createdate < %2$s
-						and Orders.cancel_date is null
-						and Orders.total > 0
-						%3$s
-				inner join Country on ProvState.Country = Country.id
+			from Orders
+			inner join OrderAddress
+				on Orders.billing_address = OrderAddress.id
+			inner join Country on OrderAddress.country = Country.id
+			left outer join ProvState
+				on OrderAddress.provstate = ProvState.id
 			where Country.id = %4$s
+				and Orders.createdate >= %1$s
+				and Orders.createdate < %2$s
+				and Orders.cancel_date is null
+				and Orders.total > 0
+				%3$s
 			group by Country.id, Country.title, ProvState.title
-			order by Country.title, ProvState.title',
+			order by Country.title, ProvState.title nulls first',
 			$this->app->db->quote($this->start_date->getDate(), 'date'),
 			$this->app->db->quote($end_date->getDate(), 'date'),
 			$this->getInstanceWhereClause(),
