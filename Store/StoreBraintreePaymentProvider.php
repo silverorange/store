@@ -122,6 +122,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 		$request = array(
 			'amount' => $this->formatCurrency($order->total),
 			'orderId' => $this->getOrderId($order),
+			'deviceData' => $order->braintree_device_data,
 			'creditCard' => $this->getCreditCard(
 				$order,
 				$card_number,
