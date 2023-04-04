@@ -35,6 +35,11 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 	 */
 	protected $site_title = '';
 
+	/**
+	 * @var string
+	 */
+	protected $device_data = null;
+
 	// }}}
 	// {{{ public function __construct()
 
@@ -122,7 +127,6 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 		$request = array(
 			'amount' => $this->formatCurrency($order->total),
 			'orderId' => $this->getOrderId($order),
-			'deviceData' => $order->braintree_device_data,
 			'creditCard' => $this->getCreditCard(
 				$order,
 				$card_number,
@@ -146,6 +150,10 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 		$custom_fields = $this->getCustomFields($order);
 		if (count($custom_fields) > 0) {
 			$request['customFields'] = $custom_fields;
+		}
+
+		if ($this->device_data !== null) {
+			$request['deviceData'] = $this->device_data;
 		}
 
 		// do transaction
@@ -219,6 +227,14 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 		}
 
 		return null;
+	}
+
+	// }}}
+	// {{{ public function setDeviceData()
+
+	public function setDeviceData($device_data)
+	{
+		$this->device_data = $device_data;
 	}
 
 	// }}}
