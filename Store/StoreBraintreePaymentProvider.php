@@ -35,6 +35,11 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 	 */
 	protected $site_title = '';
 
+	/**
+	 * @var string
+	 */
+	protected $device_data;
+
 	// }}}
 	// {{{ public function __construct()
 
@@ -147,6 +152,10 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 			$request['customFields'] = $custom_fields;
 		}
 
+		if ($this->device_data !== null) {
+			$request['deviceData'] = $this->device_data;
+		}
+
 		// do transaction
 		$this->setConfig();
 		$response = Braintree\Transaction::sale($request);
@@ -218,6 +227,14 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 		}
 
 		return null;
+	}
+
+	// }}}
+	// {{{ public function setDeviceData()
+
+	public function setDeviceData($device_data)
+	{
+		$this->device_data = $device_data;
 	}
 
 	// }}}
