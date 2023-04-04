@@ -38,7 +38,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 	/**
 	 * @var string
 	 */
-	protected $device_data = null;
+	protected $device_data;
 
 	// }}}
 	// {{{ public function __construct()
