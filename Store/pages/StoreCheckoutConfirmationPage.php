@@ -4,7 +4,7 @@
  * Confirmation page of checkout
  *
  * @package   Store
- * @copyright 2006-2016 silverorange
+ * @copyright 2006-2023 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutConfirmationPage extends StoreCheckoutPage
@@ -716,6 +716,12 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		$duplicate_account = ($this->shouldSaveAccount())
 			? $this->app->session->account->duplicate()
 			: null;
+
+		// Prevent signing out account if there is an error saving the
+		// account or the order.
+		if ($duplicate_account instanceof SiteAccount) {
+			$duplicate_account->id = $this->app->session->account->id;
+		}
 
 		if ($this->shouldSaveAccount()) {
 			try {
