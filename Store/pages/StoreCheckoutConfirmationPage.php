@@ -1554,7 +1554,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 			$this->calculateMultiplePaymentMethods($order);
 		}
 
-		$this->validatePaymentMethod(true);
+		$this->validatePaymentMethodWithMessage();
 
 		if ($this->app->config->store->multiple_payment_support) {
 			$this->displayMultiplePaymentMethods($order);
