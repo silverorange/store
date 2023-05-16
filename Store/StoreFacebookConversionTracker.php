@@ -87,28 +87,31 @@ class StoreFacebookConversionTracker
 
 	protected function displayJavascriptTracker()
 	{
-		$javascript = <<<'JS'
-(function() {
-	var _fbq = window._fbq || (window._fbq = []);
-	if (!_fbq.loaded) {
-		var fbds = document.createElement('script');
-		fbds.async = true;
-		fbds.src = '//connect.facebook.net/en_US/fbds.js';
-		var s = document.getElementsByTagName('script')[0];
-		s.parentNode.insertBefore(fbds, s);
-		_fbq.loaded = true;
-	}
-})();
-window._fbq = window._fbq || [];
-window._fbq.push(['track', %s, {'value':%s,'currency':%s}]);
-JS;
+		$javascript = <<< 'JS'
+		<!-- Meta Pixel Code -->
+		<script>
+		!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+		n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+		n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+		t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+		document,'script','https://connect.facebook.net/en_US/fbevents.js');
+		// Insert Your Meta Pixel ID below.
+		_fbq.push(['track', %s, { 'value': %s, 'currency': %s }]);
+		</script>
+		<!-- Insert Your Meta Pixel ID below. -->
+		<noscript><img height="1" width="1" style="display:none"
+		src="https://www.facebook.com/tr?id=%s&amp;ev=PageView&amp;noscript=1"
+		/></noscript>
+		<!-- End Meta Pixel Code -->
+		JS;
 
 		Swat::displayInlineJavaScript(
 			sprintf(
 				$javascript,
 				SwatString::quoteJavaScriptString($this->tracking_id),
 				SwatString::quoteJavaScriptString($this->tracked_value),
-				SwatString::quoteJavaScriptString($this->tracked_value_currency)
+				SwatString::quoteJavaScriptString($this->tracked_value_currency),
+				SwatString::minimizeEntities($this->tracking_id)
 			)
 		);
 	}
@@ -119,17 +122,17 @@ JS;
 	protected function displayTrackingPixel()
 	{
 		// @codingStandardsIgnoreStart
-		$tracking_pixel = <<<'XHTML'
-<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?ev=%s&amp;cd[value]=%s&amp;cd[currency]=%s&amp;noscript=1" /></noscript>
-XHTML;
+		$tracking_pixel = <<<'HTML'
+		<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?ev=%s&amp;cd[value]=%s&amp;cd[currency]=%s"/>
+		HTML;
 		// @codingStandardsIgnoreEnd
+
 		printf(
 			$tracking_pixel,
 			SwatString::minimizeEntities($this->tracking_id),
 			SwatString::minimizeEntities($this->tracked_value),
 			SwatString::minimizeEntities($this->tracked_value_currency)
 		);
-
 	}
 
 	// }}}
