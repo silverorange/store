@@ -50,6 +50,16 @@ class StoreAnalyticsOrderTracker
 	}
 
 	// }}}
+	// {{{ public function getGoogleAnalytics4Commands()
+	public function getGoogleAnalytics4Commands()
+	{
+		return [
+			$this->getGoogleAnalytics4PurchaseCommand(),
+			$this->getGoogleAnalytics4ShippingCommand()
+		];
+	}
+
+	// }}}
 	// {{{ public function getFacebookPixelCommands()
 
 	public function getFacebookPixelCommands()
@@ -127,6 +137,77 @@ class StoreAnalyticsOrderTracker
 			$provstate_title,
 			$country_title
 		);
+	}
+
+	// }}}
+	// {{{ protected function getGoogleAnalytics4ItemsCommand()
+
+	protected function getGoogleAnalytics4ItemsParameter()
+	{
+		$item_elements = [];
+		foreach($this->order->items as $item){
+			$item_elements[] = sprintf(
+				<<<'JAVASCRIPT_OBJECT_LITERAL'
+				{
+					item_id: %s,
+					item_name: %s,
+					item_category: %s,
+					affiliation: %s,
+					price: %s
+				}
+				JAVASCRIPT_OBJECT_LITERAL
+				,
+				SwatString::quoteJavaScriptString($this->getSku($item)),
+				SwatString::quoteJavaScriptString($this->getProductTitle($item)),
+				SwatString::quoteJavaScriptString($this->getCategoryTitle($item)),
+				SwatString::quoteJavaScriptString($this->affiliation),
+				$item->price
+			);
+		}
+		return '[ '.implode(', ', $item_elements).' ]';
+	}
+
+	// }}}
+	// {{{ protected function getGoogleAnalytics4ShippingCommand()
+
+	protected function getGoogleAnalytics4ShippingCommand()
+	{
+		return [
+			'event' => 'add_shipping_info',
+			'parameters_javascript' => sprintf(
+				<<<'JAVASCRIPT_OBJECT_LITERAL'
+				{
+					currency: 'USD',
+					value: %s
+				}
+				JAVASCRIPT_OBJECT_LITERAL
+				,
+				$this->getShippingTotal()
+			)
+		];
+	}
+
+	// }}}
+	// {{{ protected function getGoogleAnalytics4PurchaseCommand()
+
+	protected function getGoogleAnalytics4PurchaseCommand()
+	{
+		return [
+			'event' => 'purchase',
+			'parameters_javascript' => sprintf(
+				<<<'JAVASCRIPT_OBJECT_LITERAL'
+				{
+					transaction_id: %s,
+					order_total: %s,
+					items: %s
+				}
+				JAVASCRIPT_OBJECT_LITERAL
+				,
+				SwatString::quoteJavaScriptString(strval($this->order->id)),
+				$this->getOrderTotal(),
+				$this->getGoogleAnalytics4ItemsParameter()
+			)
+		];
 	}
 
 	// }}}
