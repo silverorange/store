@@ -51,7 +51,8 @@ class StoreAnalyticsOrderTracker
 
 	// }}}
 	// {{{ public function getGoogleAnalytics4Commands()
-	public function getGoogleAnalytics4Commands()
+
+	public function getGoogleAnalytics4Commands() : array
 	{
 		return [
 			$this->getGoogleAnalytics4PurchaseCommand(),
@@ -140,49 +141,34 @@ class StoreAnalyticsOrderTracker
 	}
 
 	// }}}
-	// {{{ protected function getGoogleAnalytics4ItemsCommand()
+	// {{{ protected function getGoogleAnalytics4ItemsParameter()
 
-	protected function getGoogleAnalytics4ItemsParameter()
+	protected function getGoogleAnalytics4ItemsParameter() : array
 	{
-		$item_elements = [];
+		$items = [];
 		foreach($this->order->items as $item){
-			$item_elements[] = sprintf(
-				<<<'JAVASCRIPT_OBJECT_LITERAL'
-				{
-					item_id: %s,
-					item_name: %s,
-					item_category: %s,
-					affiliation: %s,
-					price: %s
-				}
-				JAVASCRIPT_OBJECT_LITERAL
-				,
-				SwatString::quoteJavaScriptString($this->getSku($item)),
-				SwatString::quoteJavaScriptString($this->getProductTitle($item)),
-				SwatString::quoteJavaScriptString($this->getCategoryTitle($item)),
-				SwatString::quoteJavaScriptString($this->affiliation),
-				$item->price
-			);
+			$items[] = [
+				'item_id' => $this->getSku($item),
+				'item_name' => $this->getProductTitle($item),
+				'item_category' => $this->getCategoryTitle($item),
+				'affiliation' => $this->affiliation,
+				'price' => $item->price
+			];
 		}
-		return '[ '.implode(', ', $item_elements).' ]';
+		return $items;
 	}
 
 	// }}}
 	// {{{ protected function getGoogleAnalytics4ShippingCommand()
 
-	protected function getGoogleAnalytics4ShippingCommand()
+	protected function getGoogleAnalytics4ShippingCommand() : array
 	{
 		return [
 			'event' => 'add_shipping_info',
-			'parameters_javascript' => sprintf(
-				<<<'JAVASCRIPT_OBJECT_LITERAL'
-				{
-					currency: 'USD',
-					value: %s
-				}
-				JAVASCRIPT_OBJECT_LITERAL
-				,
-				$this->getShippingTotal()
+			'parameters_javascript' => json_encode([
+				'currency' => 'USD',
+				'value' => $this->getShippingTotal()
+				]
 			)
 		];
 	}
@@ -190,22 +176,15 @@ class StoreAnalyticsOrderTracker
 	// }}}
 	// {{{ protected function getGoogleAnalytics4PurchaseCommand()
 
-	protected function getGoogleAnalytics4PurchaseCommand()
+	protected function getGoogleAnalytics4PurchaseCommand() : array
 	{
 		return [
 			'event' => 'purchase',
-			'parameters_javascript' => sprintf(
-				<<<'JAVASCRIPT_OBJECT_LITERAL'
-				{
-					transaction_id: %s,
-					order_total: %s,
-					items: %s
-				}
-				JAVASCRIPT_OBJECT_LITERAL
-				,
-				SwatString::quoteJavaScriptString(strval($this->order->id)),
-				$this->getOrderTotal(),
-				$this->getGoogleAnalytics4ItemsParameter()
+			'parameters_javascript' => json_encode([
+				'transaction_id' => strval($this->order->id),
+				'order_total' => $this->getOrderTotal(),
+				'items' => $this->getGoogleAnalytics4ItemsParameter()
+				]
 			)
 		];
 	}
