@@ -5,7 +5,7 @@
  * Facebook pixels, Twitter pixels, and the Bing Universal Event Tracker.
  *
  * @package   Store
- * @copyright 2008-2020 silverorange
+ * @copyright 2008-2023 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @link      http://www.google.com/support/googleanalytics/bin/answer.py?answer=55528
  * @link      http://code.google.com/apis/analytics/docs/gaJS/gaJSApiEcommerce.html
@@ -52,7 +52,7 @@ class StoreAnalyticsOrderTracker
 	// }}}
 	// {{{ public function getGoogleAnalytics4Commands()
 
-	public function getGoogleAnalytics4Commands() : array
+	public function getGoogleAnalytics4Commands(): array
 	{
 		return [
 			$this->getGoogleAnalytics4PurchaseCommand(),
@@ -143,7 +143,7 @@ class StoreAnalyticsOrderTracker
 	// }}}
 	// {{{ protected function getGoogleAnalytics4ItemsParameter()
 
-	protected function getGoogleAnalytics4ItemsParameter() : array
+	protected function getGoogleAnalytics4ItemsParameter(): array
 	{
 		$items = [];
 		foreach($this->order->items as $item){
@@ -152,7 +152,7 @@ class StoreAnalyticsOrderTracker
 				'item_name' => $this->getProductTitle($item),
 				'item_category' => $this->getCategoryTitle($item),
 				'affiliation' => $this->affiliation,
-				'price' => $item->price
+				'price' => $item->price,
 			];
 		}
 		return $items;
@@ -161,7 +161,7 @@ class StoreAnalyticsOrderTracker
 	// }}}
 	// {{{ protected function getGoogleAnalytics4ShippingCommand()
 
-	protected function getGoogleAnalytics4ShippingCommand() : array
+	protected function getGoogleAnalytics4ShippingCommand(): array
 	{
 		return [
 			'event' => 'add_shipping_info',
@@ -176,7 +176,7 @@ class StoreAnalyticsOrderTracker
 	// }}}
 	// {{{ protected function getGoogleAnalytics4PurchaseCommand()
 
-	protected function getGoogleAnalytics4PurchaseCommand() : array
+	protected function getGoogleAnalytics4PurchaseCommand(): array
 	{
 		return [
 			'event' => 'purchase',
