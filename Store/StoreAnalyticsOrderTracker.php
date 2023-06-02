@@ -5,7 +5,7 @@
  * Facebook pixels, Twitter pixels, and the Bing Universal Event Tracker.
  *
  * @package   Store
- * @copyright 2008-2020 silverorange
+ * @copyright 2008-2023 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @link      http://www.google.com/support/googleanalytics/bin/answer.py?answer=55528
  * @link      http://code.google.com/apis/analytics/docs/gaJS/gaJSApiEcommerce.html
@@ -47,6 +47,17 @@ class StoreAnalyticsOrderTracker
 		$commands[] = '_trackTrans';
 
 		return $commands;
+	}
+
+	// }}}
+	// {{{ public function getGoogleAnalytics4Commands()
+
+	public function getGoogleAnalytics4Commands(): array
+	{
+		return [
+			$this->getGoogleAnalytics4PurchaseCommand(),
+			$this->getGoogleAnalytics4ShippingCommand()
+		];
 	}
 
 	// }}}
@@ -127,6 +138,53 @@ class StoreAnalyticsOrderTracker
 			$provstate_title,
 			$country_title
 		);
+	}
+
+	// }}}
+	// {{{ protected function getGoogleAnalytics4ItemsParameter()
+
+	protected function getGoogleAnalytics4ItemsParameter(): array
+	{
+		$items = [];
+		foreach($this->order->items as $item){
+			$items[] = [
+				'item_id' => $this->getSku($item),
+				'item_name' => $this->getProductTitle($item),
+				'item_category' => $this->getCategoryTitle($item),
+				'affiliation' => $this->affiliation,
+				'price' => $item->price,
+			];
+		}
+		return $items;
+	}
+
+	// }}}
+	// {{{ protected function getGoogleAnalytics4ShippingCommand()
+
+	protected function getGoogleAnalytics4ShippingCommand(): array
+	{
+		return [
+			'event' => 'add_shipping_info',
+			'event_params' => [
+				'currency' => 'USD',
+				'value'    => $this->getShippingTotal(),
+			],
+		];
+	}
+
+	// }}}
+	// {{{ protected function getGoogleAnalytics4PurchaseCommand()
+
+	protected function getGoogleAnalytics4PurchaseCommand(): array
+	{
+		return [
+			'event'        => 'purchase',
+			'event_params' => [
+				'transaction_id' => strval($this->order->id),
+				'order_total'    => $this->getOrderTotal(),
+				'items'          => $this->getGoogleAnalytics4ItemsParameter(),
+			]
+		];
 	}
 
 	// }}}
