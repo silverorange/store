@@ -165,11 +165,10 @@ class StoreAnalyticsOrderTracker
 	{
 		return [
 			'event' => 'add_shipping_info',
-			'parameters_javascript' => json_encode([
+			'event_params' => [
 				'currency' => 'USD',
-				'value' => $this->getShippingTotal()
-				]
-			)
+				'value'    => $this->getShippingTotal(),
+			],
 		];
 	}
 
@@ -179,13 +178,12 @@ class StoreAnalyticsOrderTracker
 	protected function getGoogleAnalytics4PurchaseCommand(): array
 	{
 		return [
-			'event' => 'purchase',
-			'parameters_javascript' => json_encode([
+			'event'        => 'purchase',
+			'event_params' => [
 				'transaction_id' => strval($this->order->id),
-				'order_total' => $this->getOrderTotal(),
-				'items' => $this->getGoogleAnalytics4ItemsParameter()
-				]
-			)
+				'order_total'    => $this->getOrderTotal(),
+				'items'          => $this->getGoogleAnalytics4ItemsParameter(),
+			]
 		];
 	}
 
