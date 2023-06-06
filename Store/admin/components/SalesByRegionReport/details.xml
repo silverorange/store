@@ -15,6 +15,9 @@
 					<object class="SwatMoneyCellRenderer" id="shipping_total">
 						<property name="value" type="data">country_shipping_total</property>
 					</object>
+					<object class="SwatMoneyCellRenderer" id="tax_total">
+						<property name="value" type="data">country_tax_total</property>
+					</object>
 					<object class="SwatMoneyCellRenderer" id="gross_total">
 						<property name="value" type="data">country_gross_total</property>
 					</object>
@@ -29,6 +32,12 @@
 					<property name="title" translatable="yes">Shipping</property>
 					<object class="SwatMoneyCellRenderer">
 						<property name="value" type="data">shipping_total</property>
+					</object>
+				</object>
+				<object class="SwatTableViewColumn" id="tax">
+					<property name="title" translatable="yes">Sales Tax</property>
+					<object class="SwatMoneyCellRenderer">
+						<property name="value" type="data">tax_total</property>
 					</object>
 				</object>
 				<object class="SwatTableViewColumn" id="gross">

@@ -22,6 +22,12 @@
 						<property name="value" type="data">shipping_total</property>
 					</object>
 				</object>
+				<object class="SwatTableViewColumn" id="tax">
+					<property name="title" translatable="yes">Sales Tax</property>
+					<object class="SwatMoneyCellRenderer">
+						<property name="value" type="data">tax_total</property>
+					</object>
+				</object>
 				<object class="SwatTableViewColumn" id="gross">
 					<property name="title" translatable="yes">Gross Sales</property>
 					<object class="SwatMoneyCellRenderer">

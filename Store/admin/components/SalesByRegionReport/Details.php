@@ -4,7 +4,7 @@
  * Displays sales split by region for a year
  *
  * @package   Store
- * @copyright 2015-2016 silverorange
+ * @copyright 2015-2023 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreSalesByRegionReportDetails extends AdminIndex
@@ -22,6 +22,11 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 	 * @var boolean
 	 */
 	protected $show_shipping = false;
+
+	/**
+	 * @var boolean
+	 */
+	protected $show_tax = false;
 
 	/**
 	 * @var StoreCountryWrapper
@@ -129,7 +134,12 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 
 		$view = $this->ui->getWidget('index_view');
 		$view->getColumn('shipping')->visible = $this->show_shipping;
+		$view->getColumn('tax')->visible = $this->show_tax;
+
 		$view->getGroup('country')->getRenderer('shipping_total')->visible =
+			$this->show_shipping;
+
+		$view->getGroup('country')->getRenderer('tax_total')->visible =
 			$this->show_shipping;
 	}
 
@@ -149,6 +159,7 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 		$sql = sprintf(
 			'select sum(Orders.total) as gross_total,
 				sum(Orders.shipping_total) as shipping_total,
+				sum(Orders.tax_total) as tax_total,
 				Country.title as country_title,
 				Country.id as country_id
 			from Orders
@@ -188,6 +199,7 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 					$ds = new SwatDetailsStore($provstate_row);
 					$ds->country_gross_total = $row->gross_total;
 					$ds->country_shipping_total = $row->shipping_total;
+					$ds->country_tax_total = $row->tax_total;
 					$ds->country_group = $row->country_title;
 
 					if ($provstate_row->provstate_title === null) {
@@ -203,10 +215,12 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 
 		$other_gross_total = 0;
 		$other_shipping_total = 0;
+		$other_tax_total = 0;
 		foreach ($rs as $row) {
 			if (!isset($detail_countries[$row->country_id])) {
 				$other_gross_total += $row->gross_total;
 				$other_shipping_total += $row->shipping_total;
+				$other_tax_total += $row->tax_total;
 			}
 		}
 
@@ -217,6 +231,7 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 				$ds->country_group = Store::_('Other');
 				$ds->country_gross_total = $other_gross_total;
 				$ds->country_shipping_total = $other_shipping_total;
+				$ds->country_tax_total = $other_tax_total;
 
 				if ($row->country_title === null) {
 					$ds->region_title = Store::_('Unknown');
@@ -247,6 +262,7 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 		$sql = sprintf(
 			'select sum(Orders.total) as gross_total,
 				sum(Orders.shipping_total) as shipping_total,
+				sum(Orders.tax_total) as tax_total,
 				Country.title as country_title,
 				Country.id as country_id,
 				ProvState.title as provstate_title
