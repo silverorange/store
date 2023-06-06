@@ -4,7 +4,7 @@
  * Displays sales summaries by year and country/provstate.
  *
  * @package   Store
- * @copyright 2015-2016 silverorange
+ * @copyright 2015-2023 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreSalesByRegionReportIndex extends AdminIndex
@@ -22,6 +22,11 @@ class StoreSalesByRegionReportIndex extends AdminIndex
 	 * @var boolean
 	 */
 	protected $show_shipping = false;
+
+	/**
+	 * @var boolean
+	 */
+	protected $show_tax = false;
 
 	/**
 	 * @var StoreSalesByRegionTaxationStartDate
@@ -74,6 +79,7 @@ class StoreSalesByRegionReportIndex extends AdminIndex
 
 		$view = $this->ui->getWidget('index_view');
 		$view->getColumn('shipping')->visible = $this->show_shipping;
+		$view->getColumn('tax')->visible = $this->show_tax;
 	}
 
 	// }}}
@@ -110,6 +116,7 @@ class StoreSalesByRegionReportIndex extends AdminIndex
 			$ds->id             = $key;
 			$ds->gross_total    = 0;
 			$ds->shipping_total = 0;
+			$ds->tax_total      = 0;
 
 			$title_pattern = $this->taxation_start_date->
 				getTitlePatternFromDate($start_date);
@@ -130,6 +137,7 @@ class StoreSalesByRegionReportIndex extends AdminIndex
 
 			$years[$key]->gross_total    = $row->gross_total;
 			$years[$key]->shipping_total = $row->shipping_total;
+			$years[$key]->tax_total      = $row->tax_total;
 		}
 
 		// turn the array into a table model
@@ -149,6 +157,7 @@ class StoreSalesByRegionReportIndex extends AdminIndex
 		$sql = sprintf(
 			'select sum(Orders.total) gross_total,
 				sum(Orders.shipping_total) as shipping_total,
+				sum(Orders.tax_total) as tax_total,
 				extract(year from convertTZ(Orders.createdate, %s))
 					as year
 			from Orders
