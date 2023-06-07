@@ -181,7 +181,7 @@ class StoreAnalyticsOrderTracker
 			'event'        => 'purchase',
 			'event_params' => [
 				'transaction_id' => strval($this->order->id),
-				'order_total'    => $this->getOrderTotal(),
+				'value'          => $this->getOrderTotal(),
 				'currency'       => 'USD',
 				'items'          => $this->getGoogleAnalytics4ItemsParameter(),
 			]
