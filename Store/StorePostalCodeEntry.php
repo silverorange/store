@@ -276,7 +276,12 @@ class StorePostalCodeEntry extends SwatEntry
 			array_filter(
 				$districts,
 				function ($district) use ($code) {
-					return strncmp($district, $code, strlen($district)) === 0;
+					return strncmp(
+						$district,
+						$code,
+						// strncmp does binary comparison
+						mb_strlen($district, '8bit')
+					) === 0;
 				}
 			)
 		) > 0;
