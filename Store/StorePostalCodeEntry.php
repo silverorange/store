@@ -226,50 +226,65 @@ class StorePostalCodeEntry extends SwatEntry
 	{
 		switch ($province) {
 		case 'NU': // Nunavut
-			$districts = array('X');
+			$districts = ['X'];
 			break;
 		case 'YT': // Yukon Territory
-			$districts = array('Y');
+			$districts = ['Y'];
 			break;
 		case 'SK': // Saskatchewan
-			$districts = array('S');
+			$districts = ['S'];
 			break;
 		case 'QC': // Quebec
-			$districts = array('G', 'H', 'J');
+			$districts = ['G', 'H', 'J'];
 			break;
 		case 'PE': // Prince Edward Island
-			$districts = array('C');
+			$districts = ['C'];
 			break;
 		case 'ON': // Ontario
-			$districts = array('M', 'K', 'N', 'L', 'P');
+			$districts = ['M', 'K', 'N', 'L', 'P'];
 			break;
 		case 'NS': // Nova Scotia
-			$districts = array('B');
+			$districts = ['B'];
 			break;
 		case 'NT': // Northwest Territories
-			$districts = array('X');
+			$districts = ['X0', 'X1'];
+			break;
+		case 'NU': // Nunavut
+			$districts = ['X0A', 'X0B', 'X0C'];
 			break;
 		case 'NL': // Newfoundland and Labrador
-			$districts = array('A');
+			$districts = ['A'];
 			break;
 		case 'NB': // New Brunswick
-			$districts = array('E');
+			$districts = ['E'];
 			break;
 		case 'MB': // Manatoba
-			$districts = array('R');
+			$districts = ['R'];
 			break;
 		case 'AB': // Alberta
-			$districts = array('T');
+			$districts = ['T'];
 			break;
 		case 'BC': // British Columbia
-			$districts = array('V');
+			$districts = ['V'];
 			break;
 		default: // Not Found
-			$districts = array();
+			$districts = [];
 			break;
 		}
 
-		return in_array($code[0], $districts);
+		return count(
+			array_filter(
+				$districts,
+				function ($district) use ($code) {
+					return strncmp(
+						$district,
+						$code,
+						// strncmp does binary comparison
+						mb_strlen($district, '8bit')
+					) === 0;
+				}
+			)
+		) > 0;
 	}
 
 	// }}}
