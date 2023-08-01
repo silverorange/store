@@ -40,7 +40,7 @@ abstract class StoreCheckoutPaymentProcessPage extends StoreCheckoutPage
 			} else {
 				$this->cancelPayment();
 			}
-		} catch (Exception $e) {
+		} catch (Throwable $e) {
 
 			$this->cancelPayment();
 
@@ -83,7 +83,7 @@ abstract class StoreCheckoutPaymentProcessPage extends StoreCheckoutPage
 	// }}}
 	// {{{ protected funciton handleException()
 
-	protected function handleException(Exception $e)
+	protected function handleException(Throwable $e)
 	{
 		return false;
 	}
