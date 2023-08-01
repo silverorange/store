@@ -143,7 +143,7 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 				foreach ($this->getEmbeddedEditPages() as $page) {
 					try {
 						$page->processCommon();
-					} catch (Exception $e) {
+					} catch (Throwable $e) {
 						if ($page->handleExceptionCommon($e)) {
 							// log the exception
 							if (!($e instanceof SwatException)) {

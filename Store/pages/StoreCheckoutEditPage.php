@@ -119,7 +119,7 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 
 				try {
 					$this->processCommon();
-				} catch (Exception $e) {
+				} catch (Throwable $e) {
 					if ($this->handleExceptionCommon($e)) {
 						// log the exception
 						if (!($e instanceof SwatException)) {
@@ -198,12 +198,12 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 	/**
 	 * By default, exceptions are thrown in Store.
 	 *
-	 * @param Exception $e
+	 * @param Throwable $e
 	 *
 	 * @return boolean true if the exception was handled and false if it was
 	 *                 not. Unhandled excepions are rethrown.
 	 */
-	public function handleExceptionCommon(Exception $e)
+	public function handleExceptionCommon(Throwable $e)
 	{
 		return false;
 	}

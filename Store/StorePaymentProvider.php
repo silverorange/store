@@ -524,7 +524,7 @@ abstract class StorePaymentProvider
 	// }}}
 	// {{{ public function getExceptionMessageId()
 
-	public function getExceptionMessageId(Exception $e)
+	public function getExceptionMessageId(Throwable $e)
 	{
 		return null;
 	}

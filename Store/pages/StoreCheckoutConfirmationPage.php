@@ -726,7 +726,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		if ($this->shouldSaveAccount()) {
 			try {
 				$this->saveAccount();
-			} catch (Exception $e) {
+			} catch (Throwable $e) {
 				$db_transaction->rollback();
 
 				if ($duplicate_account instanceof SiteAccount) {
@@ -750,7 +750,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 		try {
 			$this->saveOrder();
 			$this->processPayment();
-		} catch (Exception $e) {
+		} catch (Throwable $e) {
 			$db_transaction->rollback();
 
 			if ($duplicate_account instanceof SiteAccount) {
@@ -969,14 +969,14 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 	/**
 	 * Handles exceptions produced by order processing
 	 *
-	 * @param Exception $e
+	 * @param Throwable $e
 	 *
 	 * @return boolean true if the exception was handled and false if it was
 	 *                 not. Unhandled excepions are rethrown.
 	 *
 	 * @see StorePaymentProvider
 	 */
-	protected function handleException(Exception $e)
+	protected function handleException(Throwable $e)
 	{
 		$message = null;
 

@@ -174,7 +174,7 @@ class StoreCartModule extends SiteApplicationModule
 				$cart->save();
 
 			$this->deleteRemovedEntries();
-		} catch (Exception $e) {
+		} catch (Throwable $e) {
 			$transaction->rollback();
 			throw $e;
 		}

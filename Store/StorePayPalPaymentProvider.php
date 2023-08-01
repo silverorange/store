@@ -592,13 +592,13 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 	/**
 	 * Gets an error message id from a Payment_PayPal_SOAP_ErrorException
 	 *
-	 * @param Exception $e the exception.
+	 * @param Throwable $e the exception.
 	 *
 	 * @return string the error message id.
 	 *
 	 * @see StoreCheckoutConfirmationPage::getErrorMessage()
 	 */
-	public function getExceptionMessageId(Exception $e)
+	public function getExceptionMessageId(Throwable $e)
 	{
 		if (!$e instanceof Payment_PayPal_SOAP_ErrorException) {
 			return null;

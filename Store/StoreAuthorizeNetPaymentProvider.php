@@ -168,7 +168,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 	// }}}
 	// {{{ public function getExceptionMessageId()
 
-	public function getExceptionMessageId(Exception $e)
+	public function getExceptionMessageId(Throwable $e)
 	{
 		if ($e instanceof StorePaymentAuthorizeNetException) {
 			switch ($e->getCode()) {

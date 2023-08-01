@@ -171,7 +171,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 	// }}}
 	// {{{ public function getExceptionMessageId()
 
-	public function getExceptionMessageId(Exception $e)
+	public function getExceptionMessageId(Throwable $e)
 	{
 		if ($e instanceof Braintree\Exception\Authentication ||
 			$e instanceof Braintree\Exception\Authorization ||
