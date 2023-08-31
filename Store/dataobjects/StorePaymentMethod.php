@@ -247,11 +247,10 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	 */
 	public function displayAsText($display_details = true, $line_break = "\n")
 	{
-		echo $this->payment_type->title;
-
 		if ($this->payment_type->isCard()) {
 			$this->displayCardAsText($display_details, $line_break);
 		} elseif ($this->payment_type->isPayPal()) {
+			echo $this->payment_type->title;
 			$this->displayPayPalAsText($display_details, $line_break);
 		}
 	}
@@ -474,7 +473,8 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	{
 		if ($this->display_parts['card_number'] &&
 			$this->card_number_preview != '') {
-			echo $line_break, StoreCardType::formatCardNumber(
+			$this->card_type->display();
+			echo ': ', StoreCardType::formatCardNumber(
 				$this->card_number_preview,
 				$this->card_type->getMaskedFormat());
 		}
