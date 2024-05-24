@@ -44,7 +44,10 @@ abstract class StoreOrderConfirmationMailMessage extends
 
 		$this->order = $order;
 
-		$this->smtp_server = $this->app->config->email->smtp_server;
+		$this->smtp_server   = $this->app->config->email->smtp_server;
+		$this->smtp_port     = $this->app->config->email->smtp_port;
+		$this->smtp_username = $this->app->config->email->smtp_username;
+		$this->smtp_password = $this->app->config->email->smtp_password;
 
 		$this->from_address = $this->app->config->email->service_address;
 		$this->from_name = $this->getFromName();
