@@ -172,6 +172,11 @@ abstract class StoreCheckoutPage extends SiteUiPage
 		return 'cart';
 	}
 
+	protected function getContactSource() :string
+	{
+		return 'about/contact';
+	}
+
 	// }}}
 
 	// process phase

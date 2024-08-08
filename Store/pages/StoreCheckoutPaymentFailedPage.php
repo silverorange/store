@@ -39,7 +39,7 @@ class StoreCheckoutPaymentFailedPage extends StoreCheckoutFinalPage
 			'process your payment. No funds were removed from your card. '.
 			'%sContact us%s to complete your order. %sYour order reference '.
 			'number is %s%s.'),
-			'<a href="about/contact">', '</a>',
+			'<a href="'.$this->getContactSource().'">', '</a>',
 			'<strong>', $order->id, '</strong>'),
 			'text/xml');
 
