@@ -1214,7 +1214,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 					'been placed. Please %scontact us%s to complete your '.
 					'order.'),
 					'<strong>', '</strong>', '<em>', '</em>',
-					'<a href="'.$this->getEditLink('about/contact').'">',
+					'<a href="'.$this->getContactSource().'">',
 					'</a>').
 				' '.$this->getErrorMessageNoFunds();
 
@@ -1260,7 +1260,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 						'confirmation/cart'
 					).'">',
 					'</a>',
-					'<a href="'.$this->getEditLink('about/contact').'">',
+					'<a href="'.$this->getContactSource().'">',
 					'</a>').
 				' '.$this->getErrorMessageNoFunds().
 				'</p>';
@@ -1322,7 +1322,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 				'If you are still unable to complete your order after '.
 				'confirming your payment information, please %scontact us%s.'
 			),
-			'<a href="'.$this->getEditLink('about/contact').'">',
+			'<a href="'.$this->getContactSource().'">',
 			'</a>'
 		);
 	}
