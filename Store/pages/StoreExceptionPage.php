@@ -23,11 +23,10 @@ class StoreExceptionPage extends SiteXhtmlExceptionPage
 	{
 		$suggestions = array();
 
-		$suggestions['contact'] = sprintf(Store::_(
+		$suggestions['contact'] = Store::_(
 			'If you followed a link from our site or elsewhere, please '.
-			'%scontact us%s and let us know where you came from so we can do '.
-			'our best to fix it.'),
-			'<a href="about/contact">', '</a>');
+			'contact us and let us know where you came from so we can do '.
+			'our best to fix it.');
 
 		$suggestions['typo'] = Store::_(
 			'If you typed in the address, please double check the spelling.');
