@@ -72,5 +72,11 @@
 	},
 	"autoload": {
 		"classmap": [ "Store/" ]
+	},
+	"config": {
+		"sort-packages": true,
+		"allow-plugins": {
+			"php-http/discovery": true
+		}
 	}
 }
