@@ -24,7 +24,7 @@ class StorePageFactory extends SitePageFactory
 	// }}}
 	// {{{ public function resolvePage()
 
-	public function resolvePage($source, SiteLayout $layout = null)
+	public function resolvePage(string $source, ?SiteLayout $layout = null): SiteAbstractPage
 	{
 		$layout = ($layout === null) ? $this->resolveLayout($source) : $layout;
 
