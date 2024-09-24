@@ -961,7 +961,7 @@ class StoreProduct extends SwatDBDataObject
 	// serialization
 	// {{{ public function unserialize()
 
-	public function unserialize($data)
+	public function unserialize(string $data): void
 	{
 		parent::unserialize($data);
 
