@@ -49,7 +49,7 @@
 		"pear/validate_finance_creditcard": ">=0.5.2",
 		"silverorange/admin": "^6.2.0",
 		"silverorange/site": "^14.5.0",
-		"silverorange/swat": "^7.1.0",
+		"silverorange/swat": "^7.3.0",
 		"silverorange/xml_rpc_ajax": "^3.1.0",
 		"silverorange/yui": "^1.0.11"
 	},
