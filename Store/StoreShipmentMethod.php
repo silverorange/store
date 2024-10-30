@@ -14,11 +14,12 @@ class StoreShipmentMethod
 	/**
 	 * An approximation of how long it takes to ship items with this method.
 	 *
-	 * @return DateInterval the approximate time it will take to deliver a
-	 *                      shipment using this method.
+	 * @return ?DateInterval the approximate time it will take to deliver a
+	 *                       shipment using this method, or null.
 	 */
-	public function getTimeToDeliver($address)
+	public function getTimeToDeliver($address): ?DateInterval
 	{
+		return null;
 	}
 
 	// }}}

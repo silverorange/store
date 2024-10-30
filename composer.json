@@ -37,23 +37,45 @@
 	],
 	"repositories": [
 		{
+			"type": "path",
+			"url": "../site",
+			"only": ["silverorange/site"],
+			"options": {
+				"versions": {
+					"silverorange/site": "15.1.0"
+				}
+			}
+		},
+		{
+			"type": "path",
+			"url": "../admin",
+			"only": ["silverorange/admin"],
+			"options": {
+				"versions": {
+					"silverorange/admin": "7.0.0"
+				}
+			}
+		},
+
+		{
 			"type": "composer",
 			"url": "https://composer.silverorange.com",
 			"only": ["silverorange/*"]
 		}
 	],
 	"require": {
-		"php": ">=8.1.0",
+		"php": ">=8.2",
 		"ext-imagick": "*",
 		"pear/text_password": "^1.1.1",
 		"pear/validate_finance_creditcard": ">=0.5.2",
-		"silverorange/admin": "^6.2.0",
-		"silverorange/site": "^14.5.0",
+		"silverorange/admin": "^6.2.0 || ^7.0.0",
+		"silverorange/site": "^14.5.0 || ^15.0.0",
 		"silverorange/swat": "^7.3.0",
 		"silverorange/xml_rpc_ajax": "^3.1.0",
 		"silverorange/yui": "^1.0.11"
 	},
 	"require-dev": {
+		"phpstan/phpstan": "^1.12",
 		"silverorange/coding-standard": "^1.0.0"
 	},
 	"suggest": {
@@ -61,12 +83,12 @@
 		"braintree/braintree_php": "Payments with Braintree",
 		"pear/payment_paypal_soap": "Payments with PayPal.",
 		"silverorange/atom_feed": "Froogle product feeds for Google.",
-		"silverorange/blorg": "Product reviews.",
 		"silverorange/deliverance": "Email mailing list support.",
 		"silverorange/nate_go_search": "Product search indexing."
 	},
 	"scripts": {
 		"lint": "./vendor/bin/phpcs",
+		"phpstan": "./vendor/bin/phpstan analyze",
 		"post-install-cmd": "./vendor/bin/phpcs --config-set installed_paths vendor/silverorange/coding-standard/src",
 		"post-update-cmd": "./vendor/bin/phpcs --config-set installed_paths vendor/silverorange/coding-standard/src"
 	},

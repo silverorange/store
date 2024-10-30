@@ -189,7 +189,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 	// }}}
 	// {{{ protected function saveDBData()
 
-	protected function saveDBData()
+	protected function saveDBData(): void
 	{
 		$values = $this->getUIValues();
 
@@ -263,7 +263,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
 	// }}}
 	// {{{ protected function validate()
 
-	protected function validate()
+	protected function validate(): void
 	{
 		$provstate = $this->ui->getWidget('provstate');
 		$country = $this->ui->getWidget('country');

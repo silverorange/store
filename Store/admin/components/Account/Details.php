@@ -105,7 +105,7 @@ class StoreAccountDetails extends SiteAccountDetails
 	// }}}
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view)
+	protected function getTableModel(SwatView $view): ?SwatTableModel
 	{
 		switch ($view->id) {
 		case 'orders_view':
@@ -115,12 +115,13 @@ class StoreAccountDetails extends SiteAccountDetails
 		case 'payment_methods_view':
 			return $this->getPaymentMethodsTableModel($view);
 		}
+		return null;
 	}
 
 	// }}}
 	// {{{ protected function getOrdersTableModel()
 
-	protected function getOrdersTableModel(SwatTableView $view)
+	protected function getOrdersTableModel(SwatTableView $view): SwatDBDefaultRecordsetWrapper
 	{
 		$sql = 'select Orders.id,
 					Orders.account as account_id,
@@ -143,7 +144,7 @@ class StoreAccountDetails extends SiteAccountDetails
 	// }}}
 	// {{{ protected function getAddressesTableModel()
 
-	protected function getAddressesTableModel(SwatTableView $view)
+	protected function getAddressesTableModel(SwatTableView $view): SwatTableStore
 	{
 		$account = $this->getAccount();
 		$billing_id = $account->getInternalValue('default_billing_address');
@@ -167,7 +168,7 @@ class StoreAccountDetails extends SiteAccountDetails
 	// }}}
 	// {{{ protected function getPaymentMethodsTableModel()
 
-	protected function getPaymentMethodsTableModel(SwatTableView $view)
+	protected function getPaymentMethodsTableModel(SwatTableView $view): SwatTableStore
 	{
 		$wrapper = SwatDBClassMap::get('StoreAccountPaymentMethodWrapper');
 

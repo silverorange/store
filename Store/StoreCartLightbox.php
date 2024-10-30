@@ -48,6 +48,8 @@ class StoreCartLightbox extends SwatControl
 	 */
 	protected $app;
 
+	private ?StoreCartProcessor $processor = null;
+
 	/**
 	 * @var SwatUI
 	 */

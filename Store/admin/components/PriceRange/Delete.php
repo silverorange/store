@@ -12,7 +12,7 @@ class StorePriceRangeDelete extends AdminDBDelete
 	// process phase
 	// {{{ protected funtion processDBData()
 
-	protected function processDBData()
+	protected function processDBData(): void
 	{
 		parent::processDBData();
 

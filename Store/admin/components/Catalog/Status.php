@@ -69,7 +69,7 @@ class StoreCatalogStatus extends AdminDBEdit
 	// process phase
 	// {{{ protected function saveDBData()
 
-	protected function saveDBData()
+	protected function saveDBData(): void
 	{
 		$region_list = $this->ui->getWidget('regions');
 		SwatDB::updateBinding($this->app->db, 'CatalogRegionBinding',

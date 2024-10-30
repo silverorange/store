@@ -28,6 +28,8 @@ class StoreItemsView extends SwatControl
 
 	protected $has_description = false;
 
+	protected string $source;
+
 	/**
 	 * @var boolean
 	 */

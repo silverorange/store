@@ -117,7 +117,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 		$valid_modes = array('live', 'sandbox');
 		if (!in_array($parameters['mode'], $valid_modes)) {
-			throw new StoreException('Mode "'.$mode.'" is not valid for '.
+			throw new StoreException('Mode "'.$parameters['mode'].'" is not valid for '.
 				'the PayPal payment provider.');
 		}
 
@@ -830,7 +830,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
 		// truncate to max_length
 		if ($max_length > 0) {
-			$string = mb_mb_substr($string, 0, $max_length);
+			$string = mb_substr($string, 0, $max_length);
 		}
 
 		return $string;
@@ -1475,7 +1475,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 			break;
 
 		default:
-			throw new StorePaymentException('Unsupported card type in order.');
+			throw new StorePaymentCardTypeException('Unsupported card type in order.');
 		}
 
 		return $type;

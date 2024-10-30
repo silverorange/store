@@ -61,7 +61,7 @@ class StorePriceRangeEdit extends AdminDBEdit
 	// process phase
 	// {{{ protected function validate()
 
-	protected function validate()
+	protected function validate(): void
 	{
 		$start_price = floor($this->ui->getWidget('start_price')->value);
 		$end_price = floor($this->ui->getWidget('end_price')->value);
@@ -75,7 +75,7 @@ class StorePriceRangeEdit extends AdminDBEdit
 	// }}}
 	// {{{ protected function saveDBData()
 
-	protected function saveDBData()
+	protected function saveDBData(): void
 	{
 		$this->updatePriceRange();
 		$this->price_range->save();

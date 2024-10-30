@@ -85,7 +85,7 @@ class StoreSalesByRegionReportIndex extends AdminIndex
 	// }}}
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view)
+	protected function getTableModel(SwatView $view): ?SwatTableModel
 	{
 		$now = new SwatDate();
 		$now->setTimezone($this->app->default_time_zone);

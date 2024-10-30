@@ -35,7 +35,7 @@ class StoreAdDetails extends SiteAdDetails
 	// build phase
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view)
+	protected function getTableModel(SwatView $view): ?SwatTableModel
 	{
 		switch ($view->id) {
 		case 'orders_view':
@@ -48,7 +48,7 @@ class StoreAdDetails extends SiteAdDetails
 	// }}}
 	// {{{ protected function getOrdersTableModel()
 
-	protected function getOrdersTableModel()
+	protected function getOrdersTableModel(): SwatTableStore
 	{
 		$regions = $this->queryRegions();
 		$this->appendRegionColumns($regions);

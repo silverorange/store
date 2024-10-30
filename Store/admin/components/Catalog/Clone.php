@@ -33,7 +33,7 @@ class StoreCatalogClone extends AdminDBEdit
 	// process phase
 	// {{{ protected function saveDBData()
 
-	protected function saveDBData()
+	protected function saveDBData(): void
 	{
 		$title = $this->ui->getWidget('title')->value;
 

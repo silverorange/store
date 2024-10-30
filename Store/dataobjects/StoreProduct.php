@@ -876,7 +876,7 @@ class StoreProduct extends SwatDBDataObject
 
 		$anchor_tag->close();
 
-		$paragraph_tag = new SwatHtmltag('p');
+		$paragraph_tag = new SwatHtmlTag('p');
 		$summary = SwatString::condense($this->bodytext, 200);
 		$paragraph_tag->setContent($summary);
 		$paragraph_tag->open();

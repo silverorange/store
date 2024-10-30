@@ -197,7 +197,7 @@ abstract class StoreAddress extends SwatDBDataObject
 		'CRT' => 'CT',
 		'CT' => 'CT',
 		'COURTS' => 'CTS',
-		'CT' => 'CTS',
+		'CTS' => 'CTS',
 		'COVE' => 'CV',
 		'CV' => 'CV',
 		'COVES' => 'CVS',

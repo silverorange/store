@@ -36,7 +36,7 @@ class StoreShippingTypeIndex extends AdminIndex
 	// build phase
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view)
+	protected function getTableModel(SwatView $view): ?SwatTableModel
 	{
 		$sql = 'select * from ShippingType order by displayorder';
 

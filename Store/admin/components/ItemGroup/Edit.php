@@ -58,7 +58,7 @@ class StoreItemGroupEdit extends AdminDBEdit
 	// process phase
 	// {{{ protected function saveDBData()
 
-	protected function saveDBData()
+	protected function saveDBData(): void
 	{
 		$this->updateItemGroup();
 		$this->item_group->save();

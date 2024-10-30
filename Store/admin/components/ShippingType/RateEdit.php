@@ -74,7 +74,7 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
 	// process phase
 	// {{{ protected function validate()
 
-	protected function validate()
+	protected function validate(): void
 	{
 		parent::validate();
 
@@ -97,7 +97,7 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
 	// }}}
 	// {{{ protected function saveDBData()
 
-	protected function saveDBData()
+	protected function saveDBData(): void
 	{
 		$this->updateShippingRate();
 		$this->shipping_rate->save();

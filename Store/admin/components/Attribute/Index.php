@@ -43,7 +43,7 @@ class StoreAttributeIndex extends AdminIndex
 	// build phase
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view)
+	protected function getTableModel(SwatView $view): SwatTableStore
 	{
 		$sql = sprintf('select Attribute.*
 			from Attribute

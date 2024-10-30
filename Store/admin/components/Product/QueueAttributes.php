@@ -117,7 +117,7 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 	// }}}
 	// {{{ protected function processDBData()
 
-	protected function processDBData()
+	protected function processDBData(): void
 	{
 		parent::processDBData();
 

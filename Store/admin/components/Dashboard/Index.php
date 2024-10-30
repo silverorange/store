@@ -140,12 +140,13 @@ class StoreDashboardIndex extends AdminIndex
 	// }}}
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view)
+	protected function getTableModel(SwatView $view): ?SwatTableStore
 	{
 		switch ($view->id) {
 		case 'new_content_view':
 			return $this->getNewContentTableModel($view);
 		}
+		return null;
 	}
 
 	// }}}
@@ -153,7 +154,7 @@ class StoreDashboardIndex extends AdminIndex
 	// new content table
 	// {{{ protected function getNewContentTableModel()
 
-	protected function getNewContentTableModel(SwatView $view)
+	protected function getNewContentTableModel(SwatView $view): SwatTableStore
 	{
 		$this->buildNewContentData();
 		$this->buildNewContentNote();

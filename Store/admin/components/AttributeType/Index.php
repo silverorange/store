@@ -43,11 +43,11 @@ class StoreAttributeTypeIndex extends AdminIndex
 	// build phase
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view)
+	protected function getTableModel(SwatView $view): StoreAttributeTypeWrapper
 	{
 		$sql = 'select * from AttributeType order by shortname';
 
-		$rs = SwatDB::query($this->app->db, $sql, 'StoreAttributeTypeWrapper');
+		$rs = SwatDB::query($this->app->db, $sql, StoreAttributeTypeWrapper::class);
 
 		return $rs;
 	}

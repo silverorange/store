@@ -162,13 +162,6 @@ class Store
 
 		SiteViewFactory::addPath('Store/views');
 
-		if (class_exists('Blorg')) {
-			SiteViewFactory::registerView(
-				'post-search',
-				'StoreBlorgPostSearchView'
-			);
-		}
-
 		self::$is_initialized = true;
 	}
 

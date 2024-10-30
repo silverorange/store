@@ -9,6 +9,8 @@
  */
 class StoreCatalogEdit extends AdminDBEdit
 {
+	protected StoreCatalog $catalog;
+
 	// init phase
 	// {{{ protected function initInternal()
 
@@ -27,7 +29,7 @@ class StoreCatalogEdit extends AdminDBEdit
 
 	protected function initCatalog()
 	{
-		$class_name = SwatDBClassMap::get('StoreCatalog');
+		$class_name = SwatDBClassMap::get(StoreCatalog::class);
 		$this->catalog = new $class_name();
 		$this->catalog->setDatabase($this->app->db);
 
@@ -52,7 +54,7 @@ class StoreCatalogEdit extends AdminDBEdit
 	// process phase
 	// {{{ protected function saveDBData()
 
-	protected function saveDBData()
+	protected function saveDBData(): void
 	{
 		$this->updateCatalog();
 		$this->catalog->save();

@@ -17,10 +17,8 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
 
 	/**
 	 * Index value used to implement the iterator interface for this list
-	 *
-	 * @var integer
 	 */
-	private $current_index = 0;
+	private int $current_index = 0;
 
 	// }}}
 	// {{{ protected properties
@@ -97,7 +95,7 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
 	 *
 	 * @return mixed the current status.
 	 */
-	public function current()
+	public function current(): mixed
 	{
 		return $this->statuses[$this->current_index];
 	}
@@ -108,9 +106,9 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
 	/**
 	 * Returns the key of the current status
 	 *
-	 * @return integer the key of the current status
+	 * @return int the key of the current status
 	 */
-	public function key()
+	public function key(): int
 	{
 		return $this->current_index;
 	}
@@ -121,7 +119,7 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
 	/**
 	 * Moves forward to the next status
 	 */
-	public function next()
+	public function next(): void
 	{
 		$this->current_index++;
 	}
@@ -143,7 +141,7 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
 	/**
 	 * Rewinds this iterator to the first status
 	 */
-	public function rewind()
+	public function rewind(): void
 	{
 		$this->current_index = 0;
 	}
@@ -154,10 +152,10 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
 	/**
 	 * Checks is there is a current status after calls to rewind() and next()
 	 *
-	 * @return boolean true if there is a current status and false if there
-	 *                  is not.
+	 * @return bool true if there is a current status and false if there
+	 *              is not.
 	 */
-	public function valid()
+	public function valid(): bool
 	{
 		return isset($this->statuses[$this->current_index]);
 	}
@@ -170,9 +168,9 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
 	 *
 	 * This satisfies the Countable interface.
 	 *
-	 * @return integer the number of statuses in this list.
+	 * @return int the number of statuses in this list.
 	 */
-	public function count()
+	public function count(): int
 	{
 		return count($this->statuses);
 	}

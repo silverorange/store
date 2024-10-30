@@ -25,7 +25,7 @@ abstract class StoreArticlePageFactory extends SiteArticlePageFactory
 	// }}}
 	// {{{ protected function isVisible()
 
-	protected function isVisible(SiteArticle $article, $source)
+	protected function isVisible(SiteArticle $article, $source): bool
 	{
 		$region = $this->app->getRegion();
 		$sql = sprintf('select count(id) from EnabledArticleView
@@ -51,7 +51,8 @@ abstract class StoreArticlePageFactory extends SiteArticlePageFactory
 	protected function getNotVisiblePage(
 		SiteArticle $article,
 		SiteLayout $layout
-	) {
+	): SitePage
+	{
 		$page = new SitePage($this->app, $layout);
 		$page = $this->decorate($page, 'StoreArticleNotVisiblePage');
 		$page->setArticle($article);
@@ -69,7 +70,7 @@ abstract class StoreArticlePageFactory extends SiteArticlePageFactory
 	 * @return SiteArticle the specified article or null if no such article
 	 *                       exists.
 	 */
-	protected function getArticle($path)
+	protected function getArticle($path): SiteArticle
 	{
 		$article = parent::getArticle($path);
 		$article->setRegion($this->app->getRegion());

@@ -49,7 +49,7 @@ class StoreCountryEdit extends AdminDBEdit
 	// process phase
 	// {{{ protected function saveDBData()
 
-	protected function saveDBData()
+	protected function saveDBData(): void
 	{
 		$values = $this->getUIValues();
 
@@ -72,7 +72,7 @@ class StoreCountryEdit extends AdminDBEdit
 	// }}}
 	// {{{ protected function validate()
 
-	protected function validate()
+	protected function validate(): void
 	{
 		// validate country id
 		if ($this->id === null) {

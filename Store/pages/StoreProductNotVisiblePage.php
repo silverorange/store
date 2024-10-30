@@ -60,7 +60,7 @@ class StoreProductNotVisiblePage extends StoreNotVisiblePage
 	// }}}
 	// {{{ protected function buildNavBar()
 
-	protected function buildNavBar()
+	protected function buildNavBar($link_prefix = '')
 	{
 		if (!isset($this->layout->navbar))
 			return;

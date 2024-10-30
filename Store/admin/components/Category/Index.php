@@ -1044,7 +1044,7 @@ class StoreCategoryIndex extends AdminIndex
 	// }}}
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view)
+	protected function getTableModel(SwatView $view): ?SwatDBDefaultRecordsetWrapper
 	{
 		switch ($view->id) {
 		case 'categories_index_view':
@@ -1056,6 +1056,7 @@ class StoreCategoryIndex extends AdminIndex
 		case 'related_articles_index_view':
 			return $this->getRelatedArticleTableModel($view);
 		}
+		return null;
 	}
 
 	// }}}
@@ -1217,7 +1218,7 @@ class StoreCategoryIndex extends AdminIndex
 	// build phase - table views
 	// {{{ protected function getCategoryTableModel()
 
-	protected function getCategoryTableModel(SwatTableView $view)
+	protected function getCategoryTableModel(SwatTableView $view): SwatDBDefaultRecordsetWrapper
 	{
 		$sql = 'select Category.id,
 					Category.title,
@@ -1255,7 +1256,7 @@ class StoreCategoryIndex extends AdminIndex
 	// }}}
 	// {{{ protected function getProductTableModel()
 
-	protected function getProductTableModel(SwatTableView $view)
+	protected function getProductTableModel(SwatTableView $view): SwatDBDefaultRecordsetWrapper
 	{
 		$sql = 'select Product.id,
 					Product.title,
@@ -1381,7 +1382,7 @@ class StoreCategoryIndex extends AdminIndex
 	// }}}
 	// {{{ private function getFeaturedProductTableModel()
 
-	private function getFeaturedProductTableModel(SwatTableView $view)
+	private function getFeaturedProductTableModel(SwatTableView $view): SwatDBDefaultRecordsetWrapper
 	{
 		$sql = 'select Product.id,
 					Product.title,
@@ -1411,7 +1412,7 @@ class StoreCategoryIndex extends AdminIndex
 	// }}}
 	// {{{ private function getRelatedArticleTableModel()
 
-	private function getRelatedArticleTableModel(SwatTableView $view)
+	private function getRelatedArticleTableModel(SwatTableView $view): SwatDBDefaultRecordsetWrapper
 	{
 		$sql = 'select Article.id,
 					Article.title

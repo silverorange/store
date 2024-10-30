@@ -51,7 +51,7 @@ class StorePriceRangeIndex extends AdminIndex
 	// build phase
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view)
+	protected function getTableModel(SwatView $view): SwatTableStore
 	{
 		$sql = 'select * from PriceRange order by %s';
 

@@ -72,7 +72,7 @@ class StoreSaleDiscountIndex extends AdminIndex
 	// }}}
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view)
+	protected function getTableModel(SwatView $view): ?SwatTableModel
 	{
 		$sql = 'select SaleDiscount.*
 				from SaleDiscount

@@ -81,7 +81,7 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 	// process phase
 	// {{{ protected function saveDBData()
 
-	protected function saveDBData()
+	protected function saveDBData(): void
 	{
 		$payment_method = $this->getPaymentMethod();
 		$payment_method->payment_type =

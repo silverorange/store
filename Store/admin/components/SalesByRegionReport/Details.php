@@ -84,7 +84,7 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 			throw new AdminNotFoundException(
 				sprintf(
 					'Unable to load report for a year prior to “%s”',
-					$tax_start_date->getYear()
+					$this->taxation_start_date->getDate()->getYear()
 				)
 			);
 		}
@@ -146,7 +146,7 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 	// }}}
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view)
+	protected function getTableModel(SwatView $view): SwatTableStore
 	{
 		$end_date = clone $this->start_date;
 		$end_date->setDate(

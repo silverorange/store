@@ -72,8 +72,6 @@ class StoreXmlSiteMapPage extends SiteXmlSiteMapPage
 				and id in (select category from VisibleCategoryView)
 			order by displayorder, title';
 
-		$sql = sprintf($sql, $this->app->db->quote(true, 'boolean'));
-
 		$categories = SwatDB::query($this->app->db, $sql, $wrapper);
 		$categories->setRegion($this->app->getRegion());
 

@@ -14,6 +14,7 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 	private $category_id;
 	private $enabled;
 	private $region = null;
+	private StoreCatalogSwitcher $catalog_switcher;
 
 	// }}}
 	// {{{ public function setCategory()
@@ -61,7 +62,7 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 	// process phase
 	// {{{ protected function processDBData()
 
-	protected function processDBData()
+	protected function processDBData(): void
 	{
 		parent::processDBData();
 
