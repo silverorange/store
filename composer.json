@@ -37,27 +37,6 @@
 	],
 	"repositories": [
 		{
-			"type": "path",
-			"url": "../site",
-			"only": ["silverorange/site"],
-			"options": {
-				"versions": {
-					"silverorange/site": "15.1.0"
-				}
-			}
-		},
-		{
-			"type": "path",
-			"url": "../admin",
-			"only": ["silverorange/admin"],
-			"options": {
-				"versions": {
-					"silverorange/admin": "7.0.0"
-				}
-			}
-		},
-
-		{
 			"type": "composer",
 			"url": "https://composer.silverorange.com",
 			"only": ["silverorange/*"]
