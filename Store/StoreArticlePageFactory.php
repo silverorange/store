@@ -25,7 +25,7 @@ abstract class StoreArticlePageFactory extends SiteArticlePageFactory
 	// }}}
 	// {{{ protected function isVisible()
 
-	protected function isVisible(SiteArticle $article, $source): bool
+	protected function isVisible(SiteArticle $article, string $source): bool
 	{
 		$region = $this->app->getRegion();
 		$sql = sprintf('select count(id) from EnabledArticleView
