@@ -51,8 +51,7 @@ abstract class StoreArticlePageFactory extends SiteArticlePageFactory
 	protected function getNotVisiblePage(
 		SiteArticle $article,
 		SiteLayout $layout
-	): SitePage
-	{
+	): SitePage {
 		$page = new SitePage($this->app, $layout);
 		$page = $this->decorate($page, 'StoreArticleNotVisiblePage');
 		$page->setArticle($article);

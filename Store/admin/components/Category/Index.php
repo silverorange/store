@@ -1382,8 +1382,9 @@ class StoreCategoryIndex extends AdminIndex
 	// }}}
 	// {{{ private function getFeaturedProductTableModel()
 
-	private function getFeaturedProductTableModel(SwatTableView $view): SwatDBDefaultRecordsetWrapper
-	{
+	private function getFeaturedProductTableModel(
+		SwatTableView $view
+	): SwatDBDefaultRecordsetWrapper {
 		$sql = 'select Product.id,
 					Product.title,
 					Product.shortname

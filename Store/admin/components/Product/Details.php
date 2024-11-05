@@ -1272,8 +1272,9 @@ class StoreProductDetails extends AdminIndex
 	// }}}
 	// {{{ private function getRelatedProductsTableModel()
 
-	private function getRelatedProductsTableModel(SwatTableView $view): SwatDBDefaultRecordsetWrapper
-	{
+	private function getRelatedProductsTableModel(
+		SwatTableView $view
+	): SwatDBDefaultRecordsetWrapper {
 		$sql = 'select id, title
 			from Product
 				inner join ProductRelatedProductBinding on id = related_product
@@ -1309,8 +1310,9 @@ class StoreProductDetails extends AdminIndex
 	// }}}
 	// {{{ private function getProductCollectionsTableModel()
 
-	private function getProductCollectionsTableModel(SwatTableView $view): SwatDBDefaultRecordsetWrapper
-	{
+	private function getProductCollectionsTableModel(
+		SwatTableView $view
+	): SwatDBDefaultRecordsetWrapper {
 		$sql = 'select id, title
 			from Product
 				inner join ProductCollectionBinding on id = member_product
@@ -1346,8 +1348,9 @@ class StoreProductDetails extends AdminIndex
 	// }}}
 	// {{{ private function getRelatedArticlesTableModel()
 
-	private function getRelatedArticlesTableModel(SwatTableView $view): SwatDBDefaultRecordsetWrapper
-	{
+	private function getRelatedArticlesTableModel(
+		SwatTableView $view
+	): SwatDBDefaultRecordsetWrapper {
 		$sql = 'select Article.id,
 					Article.title
 				from Article
