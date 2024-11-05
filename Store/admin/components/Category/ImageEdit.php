@@ -146,24 +146,20 @@ class StoreCategoryImageEdit extends AdminDBEdit
 	 *
 	 * @returns boolean
 	 */
-	protected function validate()
+	protected function validate(): void
 	{
-		$valid = true;
-
 		$automatic = $this->ui->getWidget('original_image');
 		if ($automatic->isUploaded()) {
-			$valid = true;
-		} elseif ($this->id === null && !$this->checkManualUploads()) {
+			return;
+		}
+		if ($this->id === null && !$this->checkManualUploads()) {
 			$message = new SwatMessage(Store::_('You need to specify all '.
 				'image sizes when creating a new image or upload an image to '.
 				'be automatically resized.'),
 				'error');
 
 			$this->ui->getWidget('message')->add($message);
-			$valid = false;
 		}
-
-		return $valid;
 	}
 
 	// }}}
@@ -183,7 +179,7 @@ class StoreCategoryImageEdit extends AdminDBEdit
 	// }}}
 	// {{{ protected function saveDBData()
 
-	protected function saveDBData()
+	protected function saveDBData(): void
 	{
 		$this->processImage();
 		$this->category->image = $this->image;

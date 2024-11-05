@@ -64,7 +64,7 @@ class StoreCatalogIndex extends AdminIndex
 	// build phase
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view)
+	protected function getTableModel(SwatView $view): SwatDBDefaultRecordsetWrapper
 	{
 		/*
 		 * This dynamic SQL is needed to make the table orderable by the

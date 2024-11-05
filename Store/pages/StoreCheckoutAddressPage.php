@@ -26,6 +26,8 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 	 */
 	protected $auto_complete;
 
+	protected bool $show_invalid_message = true;
+
 	// }}}
 
 	// init phase
@@ -245,12 +247,30 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
-	// {{{ abstarct protected function getInlineJavaScript()
+	// {{{ protected function buildList()
+
+	protected function buildList()
+	{
+	}
+
+	// }}}
+	// {{{ protected function loadDataFromSession()
+
+	protected function loadDataFromSession()
+	{
+	}
+
+	// }}}
+	// {{{ abstract protected function getInlineJavaScript()
 
 	abstract protected function getInlineJavaScript();
 
 	// }}}
+	// {{{ protected function saveDataToSession()
 
+	abstract protected function saveDataToSession();
+
+	// }}}
 	// finalize phase
 	// {{{ public function finalize()
 
@@ -277,6 +297,7 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 	}
 
 	// }}}
+
 }
 
 ?>

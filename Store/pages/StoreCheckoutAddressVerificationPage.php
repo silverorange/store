@@ -164,7 +164,7 @@ abstract class StoreCheckoutAddressVerificationPage extends
 			);
 			echo '</strong><br />';
 			printf(
-				SwatString::minizeEntities(
+				SwatString::minimizeEntities(
 					Store::_(
 						'If there is a mistake, %splease return to the '.
 						'previous step%s to change the address, otherwise '.

@@ -61,7 +61,7 @@ class StoreCategoryNotVisiblePage extends StoreNotVisiblePage
 	// }}}
 	// {{{ protected function buildNavBar()
 
-	protected function buildNavBar()
+	protected function buildNavBar($link_prefix = '')
 	{
 		if (isset($this->layout->navbar))
 			$this->layout->navbar->createEntry('Store', 'store');

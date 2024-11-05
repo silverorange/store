@@ -60,7 +60,7 @@ class StoreCatalogStatusCellRenderer extends SwatCellRenderer
 
 			echo SwatString::toList($region_titles);
 		} else {
-			$span_tag = new SwatHtmLTag('span');
+			$span_tag = new SwatHtmlTag('span');
 			$span_tag->class = 'swat-null-text-cell-renderer';
 			$span_tag->setContent(sprintf('<%s>', Store::_('no regions')));
 			$span_tag->display();

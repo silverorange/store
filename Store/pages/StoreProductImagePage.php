@@ -10,6 +10,7 @@ class StoreProductImagePage extends StorePage
 
 	public $product_id;
 	public $image_id;
+	public SwatToolLink $back_link;
 
 	// }}}
 	// {{{ protected properties

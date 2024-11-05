@@ -29,7 +29,7 @@ class StoreItemGroupDelete extends AdminDBDelete
 	// process phase
 	// {{{ protected function processDBData()
 
-	protected function processDBData()
+	protected function processDBData(): void
 	{
 		parent::processDBData();
 

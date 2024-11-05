@@ -26,7 +26,7 @@ class StoreItemQuantityDiscountDelete extends AdminDBDelete
 	// process phaes
 	// {{{ protected function processDBData()
 
-	protected function processDBData()
+	protected function processDBData(): void
 	{
 		parent::processDBData();
 

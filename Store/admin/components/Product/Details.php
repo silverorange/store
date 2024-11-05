@@ -586,7 +586,7 @@ class StoreProductDetails extends AdminIndex
 	// }}}
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view)
+	protected function getTableModel(SwatView $view): ?SwatTableModel
 	{
 		switch ($view->id) {
 		case 'items_view':
@@ -598,6 +598,7 @@ class StoreProductDetails extends AdminIndex
 		case  'related_articles_view':
 			return $this->getRelatedArticlesTableModel($view);
 		}
+		return null;
 	}
 
 	// }}}
@@ -902,7 +903,7 @@ class StoreProductDetails extends AdminIndex
 	// }}}
 	// {{{ protected function getItemsTableModel()
 
-	protected function getItemsTableModel(SwatTableView $view)
+	protected function getItemsTableModel(SwatTableView $view): SwatTableStore
 	{
 		$sql = $this->getItemsSql($view);
 		$items = SwatDB::query($this->app->db, $sql,
@@ -1187,7 +1188,7 @@ class StoreProductDetails extends AdminIndex
 
 			// add input cells if view has an input row
 			if ($view->getFirstRowByClass('SwatTableViewInputRow') !== null) {
-				$cell = new SwatInputcell();
+				$cell = new SwatInputCell();
 				$cell->setWidget($money_entry);
 
 				$column->setInputCell($cell);
@@ -1271,8 +1272,9 @@ class StoreProductDetails extends AdminIndex
 	// }}}
 	// {{{ private function getRelatedProductsTableModel()
 
-	private function getRelatedProductsTableModel(SwatTableView $view)
-	{
+	private function getRelatedProductsTableModel(
+		SwatTableView $view
+	): SwatDBDefaultRecordsetWrapper {
 		$sql = 'select id, title
 			from Product
 				inner join ProductRelatedProductBinding on id = related_product
@@ -1308,8 +1310,9 @@ class StoreProductDetails extends AdminIndex
 	// }}}
 	// {{{ private function getProductCollectionsTableModel()
 
-	private function getProductCollectionsTableModel(SwatTableView $view)
-	{
+	private function getProductCollectionsTableModel(
+		SwatTableView $view
+	): SwatDBDefaultRecordsetWrapper {
 		$sql = 'select id, title
 			from Product
 				inner join ProductCollectionBinding on id = member_product
@@ -1345,8 +1348,9 @@ class StoreProductDetails extends AdminIndex
 	// }}}
 	// {{{ private function getRelatedArticlesTableModel()
 
-	private function getRelatedArticlesTableModel(SwatTableView $view)
-	{
+	private function getRelatedArticlesTableModel(
+		SwatTableView $view
+	): SwatDBDefaultRecordsetWrapper {
 		$sql = 'select Article.id,
 					Article.title
 				from Article

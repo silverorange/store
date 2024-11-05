@@ -59,7 +59,7 @@ class StorePaymentTypeEdit extends AdminDBEdit
 	// process phase
 	// {{{ protected function validate()
 
-	protected function validate()
+	protected function validate(): void
 	{
 		$shortname = $this->ui->getWidget('shortname');
 		$title = $this->ui->getWidget('title');
@@ -98,7 +98,7 @@ class StorePaymentTypeEdit extends AdminDBEdit
 	// }}}
 	// {{{ protected function saveDBData()
 
-	protected function saveDBData()
+	protected function saveDBData(): void
 	{
 		$this->updatePaymentType();
 		$this->payment_type->save();

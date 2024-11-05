@@ -69,7 +69,7 @@ class StoreOrderCancel extends AdminConfirmation
 	// process phase
 	// {{{ protected function processResponse()
 
-	protected function processResponse()
+	protected function processResponse(): void
 	{
 		$form = $this->ui->getWidget('confirmation_form');
 

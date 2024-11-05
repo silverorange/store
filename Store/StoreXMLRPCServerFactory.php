@@ -19,7 +19,7 @@ class StoreXMLRPCServerFactory extends SiteXMLRPCServerFactory
 	// }}}
 	// {{{ protected function getPageMap()
 
-	protected function getPageMap()
+	protected function getPageMap(): array
 	{
 		return array(
 			'search-panel' => 'StoreSearchPanelServer',

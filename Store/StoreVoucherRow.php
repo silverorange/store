@@ -10,6 +10,8 @@ class StoreVoucherRow extends StoreTotalRow
 {
 	// {{{ public function __construct()
 
+	protected SwatButton $remove_button;
+
 	public function __construct()
 	{
 		parent::__construct();

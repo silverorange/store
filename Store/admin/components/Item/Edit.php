@@ -175,7 +175,7 @@ class StoreItemEdit extends AdminDBEdit
 	// }}}
 	// {{{ protected function saveDBData()
 
-	protected function saveDBData()
+	protected function saveDBData(): void
 	{
 		$this->updateItem();
 		$this->item->save();
@@ -227,7 +227,7 @@ class StoreItemEdit extends AdminDBEdit
 	// }}}
 	// {{{ protected function validate()
 
-	protected function validate()
+	protected function validate(): void
 	{
 		$sql = sprintf(
 			'select catalog from Product where id = %s',

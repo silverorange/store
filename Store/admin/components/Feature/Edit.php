@@ -70,16 +70,18 @@ class StoreFeatureEdit extends AdminDBEdit
 	// process phase
 	// {{{ protected function validate()
 
-	protected function validate()
+	protected function validate(): void
 	{
-		$valid = parent::validate();
+		parent::validate();
 
 		$start_date = $this->ui->getWidget('start_date')->value;
 		$end_date   = $this->ui->getWidget('end_date')->value;
 
-		if ($start_date !== null && $end_date !== null &&
-			SwatDate::compare($start_date, $end_date) > 0) {
-			$valid = false;
+		if (
+			$start_date !== null
+			&& $end_date !== null
+			&& SwatDate::compare($start_date, $end_date) > 0
+		) {
 			$message = new SwatMessage(
 				'The dates entered are not a valid set of dates. '.
 				'The date entered in the <strong>Start Date</strong> '.
@@ -96,8 +98,6 @@ class StoreFeatureEdit extends AdminDBEdit
 			$this->ui->getWidget('start_date_field')->display_messages = false;
 			$this->ui->getWidget('end_date_field')->display_messages   = false;
 		}
-
-		return $valid;
 	}
 
 	// }}}
@@ -149,7 +149,7 @@ class StoreFeatureEdit extends AdminDBEdit
 	// }}}
 	// {{{ protected function saveDBData()
 
-	protected function saveDBData()
+	protected function saveDBData(): void
 	{
 		$this->updateFeature();
 		$this->feature->save();

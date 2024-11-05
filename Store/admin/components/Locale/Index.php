@@ -43,7 +43,7 @@ class StoreLocaleIndex extends AdminIndex
 	// build phase
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view)
+	protected function getTableModel(SwatView $view): SwatDBDefaultRecordsetWrapper
 	{
 		$sql = 'select Locale.id, Region.title as region_title
 				from Locale

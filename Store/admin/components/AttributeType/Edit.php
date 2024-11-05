@@ -53,7 +53,7 @@ class StoreAttributeTypeEdit extends AdminDBEdit
 	// process phase
 	// {{{ protected function validate()
 
-	protected function validate()
+	protected function validate(): void
 	{
 		$shortname = $this->ui->getWidget('shortname');
 
@@ -74,7 +74,7 @@ class StoreAttributeTypeEdit extends AdminDBEdit
 	// }}}
 	// {{{ protected function saveDBData()
 
-	protected function saveDBData()
+	protected function saveDBData(): void
 	{
 		$this->updateAttributeType();
 		$this->attribute_type->save();

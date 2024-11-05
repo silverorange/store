@@ -45,7 +45,7 @@ class StoreItemMinimumQuantityGroupIndex extends AdminIndex
 	// build phase
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view)
+	protected function getTableModel(SwatView $view): SwatDBDefaultRecordsetWrapper
 	{
 		$sql = sprintf('select id, title, shortname
 				from ItemMinimumQuantityGroup order by %s',

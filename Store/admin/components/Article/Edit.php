@@ -32,7 +32,7 @@ class StoreArticleEdit extends SiteArticleEdit
 	// process phase
 	// {{{ protected function saveDBData()
 
-	protected function saveDBData()
+	protected function saveDBData(): void
 	{
 		parent::saveDBData();
 

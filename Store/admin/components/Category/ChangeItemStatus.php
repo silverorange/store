@@ -18,6 +18,7 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 	 * @var StoreItemStatus
 	 */
 	private $status;
+	private StoreCatalogSwitcher $catalog_switcher;
 
 	// }}}
 	// {{{ public function setCategory()
@@ -56,7 +57,7 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 	// process phase
 	// {{{ protected function processDBData()
 
-	protected function processDBData()
+	protected function processDBData(): void
 	{
 		parent::processDBData();
 
@@ -152,7 +153,7 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 		$sql = 'select distinct Item.id
 				from Item
 					inner join Product on Product.id = Item.product
-					inner join CategoryProductBinding on 
+					inner join CategoryProductBinding on
 						CategoryProductBinding.product = Product.id
 					inner join getCategoryDescendants(null) as
 						category_descendants on

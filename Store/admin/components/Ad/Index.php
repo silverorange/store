@@ -24,7 +24,7 @@ class StoreAdIndex extends SiteAdIndex
 	// build phase
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view)
+	protected function getTableModel(SwatView $view): SwatDBDefaultRecordsetWrapper
 	{
 		$sql = sprintf('select Ad.*,
 				coalesce(OrderCountByAdView.order_count, 0) as order_count,

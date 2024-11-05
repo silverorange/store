@@ -258,6 +258,7 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 	}
 
 	// }}}
+
 }
 
 ?>

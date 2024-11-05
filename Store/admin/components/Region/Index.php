@@ -43,12 +43,12 @@ class StoreRegionIndex extends AdminIndex
 	// build phase
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view)
+	protected function getTableModel(SwatView $view): StoreRegionWrapper
 	{
 		$sql = sprintf('select id, title from Region order by %s',
 			$this->getOrderByClause($view, 'title'));
 
-		$regions = SwatDB::query($this->app->db, $sql, 'StoreRegionWrapper');
+		$regions = SwatDB::query($this->app->db, $sql, StoreRegionWrapper::class);
 
 		return $regions;
 	}

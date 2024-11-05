@@ -78,7 +78,9 @@ class StoreSalesReportDetails extends AdminIndex
 		$this->start_date = new SwatDate('now', $this->app->default_time_zone);
 		if ($this->start_date->setDate($year, $month, 1) === false) {
 			throw new AdminNotFoundException(sprintf(
-				'Unable to load commission report with id of “%s”', $id));
+				'Unable to load commission report with year of “%s” and month of “%s”',
+				$year, $month
+			));
 		}
 	}
 
@@ -233,7 +235,7 @@ class StoreSalesReportDetails extends AdminIndex
 	// }}}
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view)
+	protected function getTableModel(SwatView $view): SwatTableStore
 	{
 		$regions   = $this->getRegions();
 		$locale_id = $regions->getFirst()->getFirstLocale()->id;

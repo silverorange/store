@@ -74,7 +74,7 @@ class StoreOrderCommentEdit extends AdminDBEdit
 	// process phase
 	// {{{ protected function saveDBData()
 
-	protected function saveDBData()
+	protected function saveDBData(): void
 	{
 		$values = $this->ui->getValues(array('admin_comments'));
 

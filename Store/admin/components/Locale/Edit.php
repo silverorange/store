@@ -48,7 +48,7 @@ class StoreLocaleEdit extends AdminDBEdit
 	// process phase
 	// {{{ protected function validate()
 
-	protected function validate()
+	protected function validate(): void
 	{
 		$localeid = $this->ui->getWidget('id');
 
@@ -65,7 +65,7 @@ class StoreLocaleEdit extends AdminDBEdit
 	// }}}
 	// {{{ protected function saveDBData()
 
-	protected function saveDBData()
+	protected function saveDBData(): void
 	{
 		$this->updateLocale();
 		$this->locale->save();
