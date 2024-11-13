@@ -141,7 +141,7 @@ class StoreProductRelatedArticles extends AdminSearch
 	// }}}
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view): SwatDBDefaultRecordsetWrapper
+	protected function getTableModel(SwatView $view): ?SwatTableModel
 	{
 		$sql = sprintf('select count(id) from Article where %s',
 			$this->getWhereClause());

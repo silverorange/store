@@ -110,7 +110,7 @@ class StoreFeatureIndex extends AdminIndex
 	// }}}
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view): SwatTableStore
+	protected function getTableModel(SwatView $view): ?SwatTableModel
 	{
 		$instance_where = ($this->app->getInstanceId() === null) ?
 			'1 = 1' :

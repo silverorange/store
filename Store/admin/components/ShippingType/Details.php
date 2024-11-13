@@ -97,7 +97,7 @@ class StoreShippingTypeDetails extends AdminIndex
 	// }}}
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view): SwatTableStore
+	protected function getTableModel(SwatView $view): ?SwatTableModel
 	{
 		$sql = sprintf('select * from ShippingRate where shipping_type = %s
 			order by region, threshold',

@@ -235,7 +235,7 @@ class StoreSalesReportDetails extends AdminIndex
 	// }}}
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view): SwatTableStore
+	protected function getTableModel(SwatView $view): ?SwatTableModel
 	{
 		$regions   = $this->getRegions();
 		$locale_id = $regions->getFirst()->getFirstLocale()->id;

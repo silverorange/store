@@ -48,7 +48,7 @@ class StoreProvStateIndex extends AdminIndex
 	// build phase
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view): SwatDBDefaultRecordsetWrapper
+	protected function getTableModel(SwatView $view): ?SwatTableModel
 	{
 		$sql = 'select ProvState.id, ProvState.title,
 					Country.title as country_title, ProvState.abbreviation

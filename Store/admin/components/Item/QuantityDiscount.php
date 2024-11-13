@@ -442,7 +442,7 @@ class StoreItemQuantityDiscount extends AdminIndex
 	// }}}
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view): SwatDBDefaultRecordsetWrapper
+	protected function getTableModel(SwatView $view): ?SwatTableModel
 	{
 		$regions = $this->queryRegions();
 

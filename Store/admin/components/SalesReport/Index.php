@@ -151,7 +151,7 @@ class StoreSalesReportIndex extends AdminSearch
 	// build phase
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view): SwatTableStore
+	protected function getTableModel(SwatView $view): ?SwatTableModel
 	{
 		$start_date = new SwatDate();
 		$start_date->setDate($this->year, 1, 1);

@@ -380,7 +380,7 @@ class StoreOrderIndex extends AdminSearch
 	// }}}
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view): SwatTableStore
+	protected function getTableModel(SwatView $view): ?SwatTableModel
 	{
 		$sql = 'select count(Orders.id) from Orders %s where %s';
 
