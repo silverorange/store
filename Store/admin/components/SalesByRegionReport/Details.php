@@ -146,7 +146,7 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 	// }}}
 	// {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view): SwatTableStore
+	protected function getTableModel(SwatView $view): ?SwatTableModel
 	{
 		$end_date = clone $this->start_date;
 		$end_date->setDate(
