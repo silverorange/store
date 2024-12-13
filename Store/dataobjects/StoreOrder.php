@@ -323,7 +323,7 @@ class StoreOrder extends SwatDBDataObject
 	// }}}
 	// {{{ public function duplicate()
 
-	public function duplicate()
+	public function duplicate(): static
 	{
 		$new_order = parent::duplicate();
 
