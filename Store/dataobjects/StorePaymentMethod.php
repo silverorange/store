@@ -277,7 +277,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 	// }}}
 	// {{{ public function duplicate()
 
-	public function duplicate()
+	public function duplicate(): static
 	{
 		$new_payment_method = parent::duplicate();
 

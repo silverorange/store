@@ -51,7 +51,7 @@ class StoreOrderAddress extends StoreAddress
 	// }}}
 	// {{{ public function duplicate()
 
-	public function duplicate()
+	public function duplicate(): static
 	{
 		$new_address = parent::duplicate();
 
