@@ -40,6 +40,11 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 	 */
 	protected $device_data;
 
+	/**
+	 * @var boolean
+	 */
+	protected $origin_admin = false;
+
 	// }}}
 	// {{{ public function __construct()
 
@@ -238,6 +243,14 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 	}
 
 	// }}}
+	// {{{ public function setOriginAdmin()
+
+	public function setOriginAdmin($origin_admin)
+	{
+		$this->origin_admin = $origin_admin;
+	}
+
+	// }}}
 	// {{{ protected function createPaymentMethodTransaction()
 
 	protected function createPaymentMethodTransaction(
@@ -396,13 +409,19 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 
 	protected function getCustomFields(StoreOrder $order)
 	{
-		return array(
+		$fields = array(
 			'site_title' => $this->truncateField($this->site_title, 255),
 			'order_description' => $this->truncateField(
 				$this->getOrderDescription($order),
 				255
-			),
+			)
 		);
+
+		if ($this->origin_admin) {
+			$fields['origin_admin'] = 1;
+		}
+
+		return $fields;
 	}
 
 	// }}}
