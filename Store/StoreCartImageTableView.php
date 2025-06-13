@@ -9,50 +9,48 @@
  *
  * @see StoreCartImageTableViewGroup
  *
- * @package   Store
  * @copyright 2004-2016 silverorange
  */
 class StoreCartImageTableView extends SwatTableView
 {
-	// {{{ public function getVisibleColumnCount()
+    // {{{ public function getVisibleColumnCount()
 
-	public function getVisibleColumnCount()
-	{
-		return parent::getVisibleColumnCount() + 1;
-	}
+    public function getVisibleColumnCount()
+    {
+        return parent::getVisibleColumnCount() + 1;
+    }
 
-	// }}}
-	// {{{ public function getXhtmlColspan()
+    // }}}
+    // {{{ public function getXhtmlColspan()
 
-	public function getXhtmlColspan()
-	{
-		return parent::getXhtmlColspan() + 1;
-	}
+    public function getXhtmlColspan()
+    {
+        return parent::getXhtmlColspan() + 1;
+    }
 
-	// }}}
-	// {{{ protected function displayHeader()
+    // }}}
+    // {{{ protected function displayHeader()
 
-	/**
-	 * Displays the column headers for this table-view
-	 *
-	 * Each column is asked to display its own header.
-	 * Rows in the header are outputted inside a <thead> HTML tag.
-	 */
-	protected function displayHeader()
-	{
-		echo '<thead>';
-		echo '<tr>';
+    /**
+     * Displays the column headers for this table-view.
+     *
+     * Each column is asked to display its own header.
+     * Rows in the header are outputted inside a <thead> HTML tag.
+     */
+    protected function displayHeader()
+    {
+        echo '<thead>';
+        echo '<tr>';
 
-		echo '<th>&nbsp;</th>';
+        echo '<th>&nbsp;</th>';
 
-		foreach ($this->columns as $column)
-			$column->displayHeaderCell();
+        foreach ($this->columns as $column) {
+            $column->displayHeaderCell();
+        }
 
-		echo '</tr>';
-		echo '</thead>';
-	}
+        echo '</tr>';
+        echo '</thead>';
+    }
 
-	// }}}
+    // }}}
 }
-
-?>

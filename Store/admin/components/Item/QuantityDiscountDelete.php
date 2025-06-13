@@ -1,100 +1,114 @@
 <?php
 
 /**
- * Delete confirmation page for Quantity Discounts
+ * Delete confirmation page for Quantity Discounts.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemQuantityDiscountDelete extends AdminDBDelete
 {
-	// {{{ private properties
+    // {{{ private properties
 
-	private $relocate_url;
+    private $relocate_url;
 
-	// }}}
-	// {{{ public function setRelocateURL()
+    // }}}
+    // {{{ public function setRelocateURL()
 
-	public function setRelocateURL($url)
-	{
-		$this->relocate_url = $url;
-	}
+    public function setRelocateURL($url)
+    {
+        $this->relocate_url = $url;
+    }
 
-	// }}}
+    // }}}
 
-	// process phaes
-	// {{{ protected function processDBData()
+    // process phaes
+    // {{{ protected function processDBData()
 
-	protected function processDBData(): void
-	{
-		parent::processDBData();
+    protected function processDBData(): void
+    {
+        parent::processDBData();
 
-		$item_list = $this->getItemList('integer');
+        $item_list = $this->getItemList('integer');
 
-		$sql = sprintf('delete from QuantityDiscount where id in (%s)',
-			$item_list);
+        $sql = sprintf(
+            'delete from QuantityDiscount where id in (%s)',
+            $item_list
+        );
 
-		$num = SwatDB::exec($this->app->db, $sql);
+        $num = SwatDB::exec($this->app->db, $sql);
 
-		$message = new SwatMessage(sprintf(Store::ngettext(
-			'One quantity discount has been deleted.',
-			'%s quantity discounts have been deleted.', $num),
-			SwatString::numberFormat($num)), 'notice');
+        $message = new SwatMessage(sprintf(
+            Store::ngettext(
+                'One quantity discount has been deleted.',
+                '%s quantity discounts have been deleted.',
+                $num
+            ),
+            SwatString::numberFormat($num)
+        ), 'notice');
 
-		$this->app->messages->add($message);
+        $this->app->messages->add($message);
 
-		if (isset($this->app->memcache))
-			$this->app->memcache->flushNs('product');
-	}
+        if (isset($this->app->memcache)) {
+            $this->app->memcache->flushNs('product');
+        }
+    }
 
-	// }}}
+    // }}}
 
-	// build phase
-	// {{{ protected function buildInternal()
+    // build phase
+    // {{{ protected function buildInternal()
 
-	protected function buildInternal()
-	{
-		parent::buildInternal();
+    protected function buildInternal()
+    {
+        parent::buildInternal();
 
-		$item_list = $this->getItemList('integer');
+        $item_list = $this->getItemList('integer');
 
-		$dep = new AdminListDependency();
-		$dep->setTitle(
-			Store::_('quantity discount'), Store::_('quantity discounts'));
+        $dep = new AdminListDependency();
+        $dep->setTitle(
+            Store::_('quantity discount'),
+            Store::_('quantity discounts')
+        );
 
-		$dep->entries = AdminListDependency::queryEntries($this->app->db,
-			'QuantityDiscount', 'integer:id', null, 'integer:quantity', 'id',
-			'id in ('.$item_list.')', AdminDependency::DELETE);
+        $dep->entries = AdminListDependency::queryEntries(
+            $this->app->db,
+            'QuantityDiscount',
+            'integer:id',
+            null,
+            'integer:quantity',
+            'id',
+            'id in (' . $item_list . ')',
+            AdminDependency::DELETE
+        );
 
-		$message = $this->ui->getWidget('confirmation_message');
-		$message->content = $dep->getMessage();
-		$message->content_type = 'text/xml';
+        $message = $this->ui->getWidget('confirmation_message');
+        $message->content = $dep->getMessage();
+        $message->content_type = 'text/xml';
 
-		if ($dep->getStatusLevelCount(AdminDependency::DELETE) == 0)
-			$this->switchToCancelButton();
-	}
+        if ($dep->getStatusLevelCount(AdminDependency::DELETE) == 0) {
+            $this->switchToCancelButton();
+        }
+    }
 
-	// }}}
-	// {{{ protected function buildForm()
+    // }}}
+    // {{{ protected function buildForm()
 
-	protected function buildForm()
-	{
-		$form = $this->ui->getWidget('confirmation_form');
-		$form->action = $this->source;
+    protected function buildForm()
+    {
+        $form = $this->ui->getWidget('confirmation_form');
+        $form->action = $this->source;
 
-		if ($form->getHiddenField(self::RELOCATE_URL_FIELD) === null) {
-			if ($this->relocate_url === null) {
-				$url = $this->getRefererURL();
-			} else {
-				$url = $this->relocate_url;
-			}
+        if ($form->getHiddenField(self::RELOCATE_URL_FIELD) === null) {
+            if ($this->relocate_url === null) {
+                $url = $this->getRefererURL();
+            } else {
+                $url = $this->relocate_url;
+            }
 
-			$form->addHiddenField(self::RELOCATE_URL_FIELD, $url);
-		}
-	}
+            $form->addHiddenField(self::RELOCATE_URL_FIELD, $url);
+        }
+    }
 
-	// }}}
+    // }}}
 }
-
-?>

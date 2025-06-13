@@ -2,79 +2,79 @@
 
 /**
  * An integer entry widget especially taillored to quantity entry for an
- * e-commerce web application
+ * e-commerce web application.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreQuantityEntry extends SwatIntegerEntry
 {
-	// {{{ public function __construct()
+    // {{{ public function __construct()
 
-	public function __construct($id = null)
-	{
-		parent::__construct($id);
+    public function __construct($id = null)
+    {
+        parent::__construct($id);
 
-		$this->addStyleSheet('packages/store/styles/store-quantity-entry.css');
+        $this->addStyleSheet('packages/store/styles/store-quantity-entry.css');
 
-		$this->minimum_value = 0;
-		$this->maxlength = 8;
-		$this->size = 3;
-		$this->show_thousands_separator = false;
-	}
+        $this->minimum_value = 0;
+        $this->maxlength = 8;
+        $this->size = 3;
+        $this->show_thousands_separator = false;
+    }
 
-	// }}}
-	// {{{ protected function getCSSClassNames()
+    // }}}
+    // {{{ protected function getCSSClassNames()
 
-	/**
-	 * Gets the array of CSS classes that are applied to this entry widget
-	 *
-	 * @return array the array of CSS classes that are applied to this entry
-	 *                widget.
-	 */
-	protected function getCSSClassNames()
-	{
-		$classes = parent::getCSSClassNames();
-		$classes[] = 'store-quantity-entry';
-		$classes = array_merge($classes, $this->classes);
-		return $classes;
-	}
+    /**
+     * Gets the array of CSS classes that are applied to this entry widget.
+     *
+     * @return array the array of CSS classes that are applied to this entry
+     *               widget
+     */
+    protected function getCSSClassNames()
+    {
+        $classes = parent::getCSSClassNames();
+        $classes[] = 'store-quantity-entry';
 
-	// }}}
-	// {{{ protected function getValidationMessage()
+        return array_merge($classes, $this->classes);
+    }
 
-	/**
-	 * Get validation message
-	 *
-	 * @see SwatEntry::getValidationMessage()
-	 */
-	protected function getValidationMessage($id)
-	{
-		$message = parent::getValidationMessage($id);
+    // }}}
+    // {{{ protected function getValidationMessage()
 
-		switch ($id) {
-		case 'integer':
-			$message->primary_content =
-				Store::_('The %s field must be a whole number.');
+    /**
+     * Get validation message.
+     *
+     * @see SwatEntry::getValidationMessage()
+     *
+     * @param mixed $id
+     */
+    protected function getValidationMessage($id)
+    {
+        $message = parent::getValidationMessage($id);
 
-			break;
-		case 'below-minimum':
-			if ($this->minimum_value === 0) {
-				$message->primary_content =
-					Store::_('The %%s field must be at least 1.');
-			} else {
-				$message->primary_content =
-					Store::_('The %%s field must be at least %s.');
-			}
+        switch ($id) {
+            case 'integer':
+                $message->primary_content =
+                    Store::_('The %s field must be a whole number.');
 
-			break;
-		}
+                break;
 
-		return $message;
-	}
+            case 'below-minimum':
+                if ($this->minimum_value === 0) {
+                    $message->primary_content =
+                        Store::_('The %%s field must be at least 1.');
+                } else {
+                    $message->primary_content =
+                        Store::_('The %%s field must be at least %s.');
+                }
 
-	// }}}
+                break;
+        }
+
+        return $message;
+    }
+
+    // }}}
 }
-
-?>

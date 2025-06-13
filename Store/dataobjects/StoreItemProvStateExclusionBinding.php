@@ -1,27 +1,28 @@
 <?php
 
 /**
- * Dataobject for item provstate exclusion bindings
+ * Dataobject for item provstate exclusion bindings.
  *
- * @package   Store
  * @copyright 2012-2016 silverorange
  */
 class StoreItemProvStateExclusionBinding extends SwatDBDataObject
 {
-	// {{{ protected function init()
+    // {{{ protected function init()
 
-	protected function init()
-	{
-		$this->registerInternalProperty('provstate',
-			SwatDBClassMap::get('StoreProvState'));
+    protected function init()
+    {
+        $this->registerInternalProperty(
+            'provstate',
+            SwatDBClassMap::get('StoreProvState')
+        );
 
-		$this->registerInternalProperty('item',
-			SwatDBClassMap::get('StoreItem'));
+        $this->registerInternalProperty(
+            'item',
+            SwatDBClassMap::get('StoreItem')
+        );
 
-		$this->table = 'ItemProvStateExclusionBinding';
-	}
+        $this->table = 'ItemProvStateExclusionBinding';
+    }
 
-	// }}}
+    // }}}
 }
-
-?>

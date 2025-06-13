@@ -1,129 +1,134 @@
 <?php
 
 /**
- * Details page for accounts
+ * Details page for accounts.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountDetails extends SiteAccountDetails
 {
-	// {{{ protected function initInternal()
+    // {{{ protected function initInternal()
 
-	protected function initInternal()
-	{
-		parent::initInternal();
+    protected function initInternal()
+    {
+        parent::initInternal();
 
-		// set a default order on the login history table view
-		$view = $this->ui->getWidget('orders_view');
-		$view->setDefaultOrderbyColumn(
-			$view->getColumn('createdate'),
-			SwatTableViewOrderableColumn::ORDER_BY_DIR_DESCENDING);
-	}
+        // set a default order on the login history table view
+        $view = $this->ui->getWidget('orders_view');
+        $view->setDefaultOrderbyColumn(
+            $view->getColumn('createdate'),
+            SwatTableViewOrderableColumn::ORDER_BY_DIR_DESCENDING
+        );
+    }
 
-	// }}}
-	// {{{ protected function getUiXml()
+    // }}}
+    // {{{ protected function getUiXml()
 
-	protected function getUiXml()
-	{
-		return __DIR__.'/details.xml';
-	}
+    protected function getUiXml()
+    {
+        return __DIR__ . '/details.xml';
+    }
 
-	// }}}
+    // }}}
 
-	// process phase
-	// {{{ protected function processActions()
+    // process phase
+    // {{{ protected function processActions()
 
-	protected function processActions(SwatView $view, SwatActions $actions)
-	{
-		switch ($view->id) {
-		case 'addresses_view':
-			$this->processAddressActions($view, $actions);
-			return;
+    protected function processActions(SwatView $view, SwatActions $actions)
+    {
+        switch ($view->id) {
+            case 'addresses_view':
+                $this->processAddressActions($view, $actions);
 
-		case 'payment_methods_view':
-			$this->processPaymentMethodActions($view, $actions);
-			return;
-		}
-	}
+                return;
 
-	// }}}
-	// {{{ private function processAddressActions()
+            case 'payment_methods_view':
+                $this->processPaymentMethodActions($view, $actions);
 
-	private function processAddressActions($view, $actions)
-	{
-		switch ($actions->selected->id) {
-		case 'address_delete':
-			$this->app->replacePage('Account/AddressDelete');
-			$this->app->getPage()->setItems($view->getSelection());
-			break;
-		}
-	}
+                return;
+        }
+    }
 
-	// }}}
-	// {{{ private function processPaymentMethodActions()
+    // }}}
+    // {{{ private function processAddressActions()
 
-	private function processPaymentMethodActions($view, $actions)
-	{
-		switch ($actions->selected->id) {
-		case 'payment_method_delete':
-			$this->app->replacePage('Account/PaymentMethodDelete');
-			$this->app->getPage()->setItems($view->getSelection());
-			break;
-		}
-	}
+    private function processAddressActions($view, $actions)
+    {
+        switch ($actions->selected->id) {
+            case 'address_delete':
+                $this->app->replacePage('Account/AddressDelete');
+                $this->app->getPage()->setItems($view->getSelection());
+                break;
+        }
+    }
 
-	// }}}
+    // }}}
+    // {{{ private function processPaymentMethodActions()
 
-	// build phase
-	// {{{ protected function buildInternal()
+    private function processPaymentMethodActions($view, $actions)
+    {
+        switch ($actions->selected->id) {
+            case 'payment_method_delete':
+                $this->app->replacePage('Account/PaymentMethodDelete');
+                $this->app->getPage()->setItems($view->getSelection());
+                break;
+        }
+    }
 
-	protected function buildInternal()
-	{
-		parent::buildInternal();
+    // }}}
 
-		$toolbar = $this->ui->getWidget('address_details_toolbar');
-		$toolbar->setToolLinkValues($this->account->id);
+    // build phase
+    // {{{ protected function buildInternal()
 
-		// set default time zone for orders
-		$this->setTimeZone();
-	}
+    protected function buildInternal()
+    {
+        parent::buildInternal();
 
-	// }}}
-	// {{{ protected function setTimeZone()
+        $toolbar = $this->ui->getWidget('address_details_toolbar');
+        $toolbar->setToolLinkValues($this->account->id);
 
-	protected function setTimeZone()
-	{
-		$date_column =
-			$this->ui->getWidget('orders_view')->getColumn('createdate');
+        // set default time zone for orders
+        $this->setTimeZone();
+    }
 
-		$date_renderer = $date_column->getRendererByPosition();
-		$date_renderer->display_time_zone = $this->app->default_time_zone;
-	}
+    // }}}
+    // {{{ protected function setTimeZone()
 
-	// }}}
-	// {{{ protected function getTableModel()
+    protected function setTimeZone()
+    {
+        $date_column =
+            $this->ui->getWidget('orders_view')->getColumn('createdate');
 
-	protected function getTableModel(SwatView $view): ?SwatTableModel
-	{
-		switch ($view->id) {
-		case 'orders_view':
-			return $this->getOrdersTableModel($view);
-		case 'addresses_view':
-			return $this->getAddressesTableModel($view);
-		case 'payment_methods_view':
-			return $this->getPaymentMethodsTableModel($view);
-		}
-		return null;
-	}
+        $date_renderer = $date_column->getRendererByPosition();
+        $date_renderer->display_time_zone = $this->app->default_time_zone;
+    }
 
-	// }}}
-	// {{{ protected function getOrdersTableModel()
+    // }}}
+    // {{{ protected function getTableModel()
 
-	protected function getOrdersTableModel(SwatTableView $view): SwatDBDefaultRecordsetWrapper
-	{
-		$sql = 'select Orders.id,
+    protected function getTableModel(SwatView $view): ?SwatTableModel
+    {
+        switch ($view->id) {
+            case 'orders_view':
+                return $this->getOrdersTableModel($view);
+
+            case 'addresses_view':
+                return $this->getAddressesTableModel($view);
+
+            case 'payment_methods_view':
+                return $this->getPaymentMethodsTableModel($view);
+        }
+
+        return null;
+    }
+
+    // }}}
+    // {{{ protected function getOrdersTableModel()
+
+    protected function getOrdersTableModel(SwatTableView $view): SwatDBDefaultRecordsetWrapper
+    {
+        $sql = 'select Orders.id,
 					Orders.account as account_id,
 					Orders.total,
 					Orders.createdate
@@ -131,70 +136,72 @@ class StoreAccountDetails extends SiteAccountDetails
 				where Orders.account = %s
 				order by %s';
 
-		$sql = sprintf($sql,
-			$this->app->db->quote($this->account->id, 'integer'),
-			$this->getOrderByClause($view,
-				'Orders.createdate desc, Orders.id'));
+        $sql = sprintf(
+            $sql,
+            $this->app->db->quote($this->account->id, 'integer'),
+            $this->getOrderByClause(
+                $view,
+                'Orders.createdate desc, Orders.id'
+            )
+        );
 
-		$store = SwatDB::query($this->app->db, $sql);
+        return SwatDB::query($this->app->db, $sql);
+    }
 
-		return $store;
-	}
+    // }}}
+    // {{{ protected function getAddressesTableModel()
 
-	// }}}
-	// {{{ protected function getAddressesTableModel()
+    protected function getAddressesTableModel(SwatTableView $view): SwatTableStore
+    {
+        $account = $this->getAccount();
+        $billing_id = $account->getInternalValue('default_billing_address');
+        $shipping_id = $account->getInternalValue('default_shipping_address');
 
-	protected function getAddressesTableModel(SwatTableView $view): SwatTableStore
-	{
-		$account = $this->getAccount();
-		$billing_id = $account->getInternalValue('default_billing_address');
-		$shipping_id = $account->getInternalValue('default_shipping_address');
+        $ts = new SwatTableStore();
 
-		$ts = new SwatTableStore();
+        foreach ($account->addresses as $address) {
+            $ds = new SwatDetailsStore($address);
+            ob_start();
+            $address->displayCondensed();
+            $ds->address = ob_get_clean();
+            $ds->default_billing_address = ($address->id == $billing_id);
+            $ds->default_shipping_address = ($address->id == $shipping_id);
+            $ts->add($ds);
+        }
 
-		foreach ($account->addresses as $address) {
-			$ds = new SwatDetailsStore($address);
-			ob_start();
-			$address->displayCondensed();
-			$ds->address = ob_get_clean();
-			$ds->default_billing_address = ($address->id == $billing_id);
-			$ds->default_shipping_address = ($address->id == $shipping_id);
-			$ts->add($ds);
-		}
+        return $ts;
+    }
 
-		return $ts;
-	}
+    // }}}
+    // {{{ protected function getPaymentMethodsTableModel()
 
-	// }}}
-	// {{{ protected function getPaymentMethodsTableModel()
+    protected function getPaymentMethodsTableModel(SwatTableView $view): SwatTableStore
+    {
+        $wrapper = SwatDBClassMap::get('StoreAccountPaymentMethodWrapper');
 
-	protected function getPaymentMethodsTableModel(SwatTableView $view): SwatTableStore
-	{
-		$wrapper = SwatDBClassMap::get('StoreAccountPaymentMethodWrapper');
-
-		$sql = sprintf('select * from AccountPaymentMethod
+        $sql = sprintf(
+            'select * from AccountPaymentMethod
 			where account = %s',
-			$this->app->db->quote($this->account->id, 'integer'));
+            $this->app->db->quote($this->account->id, 'integer')
+        );
 
-		$payment_methods = SwatDB::query($this->app->db, $sql, $wrapper);
+        $payment_methods = SwatDB::query($this->app->db, $sql, $wrapper);
 
-		$store = new SwatTableStore();
-		foreach ($payment_methods as $method) {
-			$ds = new SwatDetailsStore($method);
-			$ds->payment_method = $method;
-			ob_start();
-			$method->showCardNumber(true);
-			$method->showCardExpiry(true);
-			$method->showCardFullname(true);
-			$method->display(true);
-			$ds->payment_method = ob_get_clean();
-			$store->add($ds);
-		}
+        $store = new SwatTableStore();
+        foreach ($payment_methods as $method) {
+            $ds = new SwatDetailsStore($method);
+            $ds->payment_method = $method;
+            ob_start();
+            $method->showCardNumber(true);
+            $method->showCardExpiry(true);
+            $method->showCardFullname(true);
+            $method->display(true);
+            $ds->payment_method = ob_get_clean();
+            $store->add($ds);
+        }
 
-		return $store;
-	}
+        return $store;
+    }
 
-	// }}}
+    // }}}
 }
-
-?>

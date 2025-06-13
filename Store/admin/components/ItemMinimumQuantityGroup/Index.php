@@ -1,60 +1,60 @@
 <?php
 
 /**
- * Index page for item minimum quantity groups
+ * Index page for item minimum quantity groups.
  *
- * @package   Store
  * @copyright 2009-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemMinimumQuantityGroupIndex extends AdminIndex
 {
-	// init phase
-	// {{{ protected function initInternal()
+    // init phase
+    // {{{ protected function initInternal()
 
-	protected function initInternal()
-	{
-		parent::initInternal();
+    protected function initInternal()
+    {
+        parent::initInternal();
 
-		$this->ui->loadFromXML(__DIR__.'/index.xml');
-	}
+        $this->ui->loadFromXML(__DIR__ . '/index.xml');
+    }
 
-	// }}}
+    // }}}
 
-	// process phase
-	// {{{ protected function processActions()
+    // process phase
+    // {{{ protected function processActions()
 
-	protected function processActions(SwatView $view, SwatActions $actions)
-	{
-		$num = count($view->getSelection());
-		$message = null;
+    protected function processActions(SwatView $view, SwatActions $actions)
+    {
+        $num = count($view->getSelection());
+        $message = null;
 
-		switch ($actions->selected->id) {
-		case 'delete':
-			$this->app->replacePage('ItemMinimumQuantityGroup/Delete');
-			$this->app->getPage()->setItems($view->getSelection());
-			break;
-		}
+        switch ($actions->selected->id) {
+            case 'delete':
+                $this->app->replacePage('ItemMinimumQuantityGroup/Delete');
+                $this->app->getPage()->setItems($view->getSelection());
+                break;
+        }
 
-		if ($message !== null)
-			$this->app->messages->add($message);
-	}
+        if ($message !== null) {
+            $this->app->messages->add($message);
+        }
+    }
 
-	// }}}
+    // }}}
 
-	// build phase
-	// {{{ protected function getTableModel()
+    // build phase
+    // {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view): ?SwatTableModel
-	{
-		$sql = sprintf('select id, title, shortname
+    protected function getTableModel(SwatView $view): ?SwatTableModel
+    {
+        $sql = sprintf(
+            'select id, title, shortname
 				from ItemMinimumQuantityGroup order by %s',
-			$this->getOrderByClause($view, 'title'));
+            $this->getOrderByClause($view, 'title')
+        );
 
-		return SwatDB::query($this->app->db, $sql);
-	}
+        return SwatDB::query($this->app->db, $sql);
+    }
 
-	// }}}
+    // }}}
 }
-
-?>

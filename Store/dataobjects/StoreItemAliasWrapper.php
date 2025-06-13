@@ -1,26 +1,24 @@
 <?php
 
 /**
- * A recordset wrapper class for ItemAlias objects
+ * A recordset wrapper class for ItemAlias objects.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
  * @see       StoreItemAlias
  */
 class StoreItemAliasWrapper extends SwatDBRecordsetWrapper
 {
-	// {{{ protected function init()
+    // {{{ protected function init()
 
-	protected function init()
-	{
-		parent::init();
-		$this->row_wrapper_class = SwatDBClassMap::get('StoreItemAlias');
+    protected function init()
+    {
+        parent::init();
+        $this->row_wrapper_class = SwatDBClassMap::get('StoreItemAlias');
 
-		$this->index_field = 'id';
-	}
+        $this->index_field = 'id';
+    }
 
-	// }}}
+    // }}}
 }
-
-?>

@@ -1,173 +1,184 @@
 <?php
 
 /**
- * Edit page for Account Payment Methods
+ * Edit page for Account Payment Methods.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
  * @todo      Make this tool have the ability to enter new card numbers.
  * @todo      Add card_inception and card_issue_number fields to this tool.
  */
 class StoreAccountPaymentMethodEdit extends AdminDBEdit
 {
-	// {{{ private properties
+    // {{{ private properties
 
-	private $payment_method;
-	private $account;
+    private $payment_method;
+    private $account;
 
-	// }}}
+    // }}}
 
-	// init phase
-	// {{{ protected function initInternal()
+    // init phase
+    // {{{ protected function initInternal()
 
-	protected function initInternal()
-	{
-		parent::initInternal();
+    protected function initInternal()
+    {
+        parent::initInternal();
 
-		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML(__DIR__.'/payment-method-edit.xml');
-	}
+        $this->ui->mapClassPrefixToPath('Store', 'Store');
+        $this->ui->loadFromXML(__DIR__ . '/payment-method-edit.xml');
+    }
 
-	// }}}
-	// {{{ protected function getAccount()
+    // }}}
+    // {{{ protected function getAccount()
 
-	protected function getAccount()
-	{
-		if ($this->account === null) {
-			if ($this->id === null) {
-				$account_id = $this->app->initVar('account');
-			} else {
-				$account_id = SwatDB::queryOne($this->app->db, sprintf(
-					'select account from AccountPaymentMethod where id = %s',
-					$this->app->db->quote($this->id, 'integer')));
-			}
+    protected function getAccount()
+    {
+        if ($this->account === null) {
+            if ($this->id === null) {
+                $account_id = $this->app->initVar('account');
+            } else {
+                $account_id = SwatDB::queryOne($this->app->db, sprintf(
+                    'select account from AccountPaymentMethod where id = %s',
+                    $this->app->db->quote($this->id, 'integer')
+                ));
+            }
 
-			$class_name = SwatDBClassMap::get('StoreAccount');
-			$this->account = new $class_name();
-			$this->account->setDatabase($this->app->db);
-			$this->account->load($account_id);
-		}
+            $class_name = SwatDBClassMap::get('StoreAccount');
+            $this->account = new $class_name();
+            $this->account->setDatabase($this->app->db);
+            $this->account->load($account_id);
+        }
 
-		return $this->account;
-	}
+        return $this->account;
+    }
 
-	// }}}
-	// {{{ protected function getPaymentMethod()
+    // }}}
+    // {{{ protected function getPaymentMethod()
 
-	protected function getPaymentMethod()
-	{
-		if ($this->payment_method === null) {
-			$class_name = SwatDBClassMap::get('StoreAccountPaymentMethod');
-			$this->payment_method = new $class_name();
-			$this->payment_method->setDatabase($this->app->db);
+    protected function getPaymentMethod()
+    {
+        if ($this->payment_method === null) {
+            $class_name = SwatDBClassMap::get('StoreAccountPaymentMethod');
+            $this->payment_method = new $class_name();
+            $this->payment_method->setDatabase($this->app->db);
 
-			if ($this->id === null) {
-				$this->payment_method->account = $this->getAccount();
-			} else {
-				if (!$this->payment_method->load($this->id)) {
-					throw new AdminNotFoundException(sprintf(Store::_(
-						'Account payment method with id ‘%s’ not found.'),
-						$this->id));
-				}
-			}
-		}
+            if ($this->id === null) {
+                $this->payment_method->account = $this->getAccount();
+            } else {
+                if (!$this->payment_method->load($this->id)) {
+                    throw new AdminNotFoundException(sprintf(
+                        Store::_(
+                            'Account payment method with id ‘%s’ not found.'
+                        ),
+                        $this->id
+                    ));
+                }
+            }
+        }
 
-		return $this->payment_method;
-	}
+        return $this->payment_method;
+    }
 
-	// }}}
+    // }}}
 
-	// process phase
-	// {{{ protected function saveDBData()
+    // process phase
+    // {{{ protected function saveDBData()
 
-	protected function saveDBData(): void
-	{
-		$payment_method = $this->getPaymentMethod();
-		$payment_method->payment_type =
-			$this->ui->getWidget('payment_type')->value;
+    protected function saveDBData(): void
+    {
+        $payment_method = $this->getPaymentMethod();
+        $payment_method->payment_type =
+            $this->ui->getWidget('payment_type')->value;
 
-		$payment_method->card_fullname =
-			$this->ui->getWidget('card_fullname')->value;
+        $payment_method->card_fullname =
+            $this->ui->getWidget('card_fullname')->value;
 
-		$payment_method->card_expiry =
-			$this->ui->getWidget('card_expiry')->value;
+        $payment_method->card_expiry =
+            $this->ui->getWidget('card_expiry')->value;
 
-		$payment_method->save();
+        $payment_method->save();
 
-		$message = new SwatMessage(sprintf(
-			Store::_('Payment method for “%s” has been saved.'),
-			$this->getAccount()->fullname));
+        $message = new SwatMessage(sprintf(
+            Store::_('Payment method for “%s” has been saved.'),
+            $this->getAccount()->fullname
+        ));
 
-		$this->app->messages->add($message);
-	}
+        $this->app->messages->add($message);
+    }
 
-	// }}}
+    // }}}
 
-	// build phase
-	// {{{ protected buildInternal()
+    // build phase
+    // {{{ protected buildInternal()
 
-	protected function buildInternal()
-	{
-		parent::buildInternal();
+    protected function buildInternal()
+    {
+        parent::buildInternal();
 
-		$frame = $this->ui->getWidget('edit_frame');
-		$frame->subtitle = $this->getAccount()->fullname;
+        $frame = $this->ui->getWidget('edit_frame');
+        $frame->subtitle = $this->getAccount()->fullname;
 
-		$payment_type_flydown = $this->ui->getWidget('payment_type');
-		$payment_type_flydown->show_blank = true;
-		$payment_type_flydown->addOptionsByArray(SwatDB::getOptionArray(
-			$this->app->db, 'PaymentType', 'title', 'id',
-			'displayorder, title'));
+        $payment_type_flydown = $this->ui->getWidget('payment_type');
+        $payment_type_flydown->show_blank = true;
+        $payment_type_flydown->addOptionsByArray(SwatDB::getOptionArray(
+            $this->app->db,
+            'PaymentType',
+            'title',
+            'id',
+            'displayorder, title'
+        ));
 
-		$form = $this->ui->getWidget('edit_form');
-		$form->addHiddenField('account', $this->getAccount()->id);
-	}
+        $form = $this->ui->getWidget('edit_form');
+        $form->addHiddenField('account', $this->getAccount()->id);
+    }
 
-	// }}}
-	// {{{ protected buildNavBar()
+    // }}}
+    // {{{ protected buildNavBar()
 
-	protected function buildNavBar()
-	{
-		parent::buildNavBar();
-		$last_entry = $this->navbar->popEntry();
-		$last_entry->title = sprintf(Store::_('%s Payment Method'),
-			$last_entry->title);
+    protected function buildNavBar()
+    {
+        parent::buildNavBar();
+        $last_entry = $this->navbar->popEntry();
+        $last_entry->title = sprintf(
+            Store::_('%s Payment Method'),
+            $last_entry->title
+        );
 
-		$this->navbar->addEntry(new SwatNavBarEntry(
-			$this->getAccount()->fullname,
-			sprintf('Account/Details?id=%s', $this->getAccount()->id)));
+        $this->navbar->addEntry(new SwatNavBarEntry(
+            $this->getAccount()->fullname,
+            sprintf('Account/Details?id=%s', $this->getAccount()->id)
+        ));
 
-		$this->navbar->addEntry($last_entry);
+        $this->navbar->addEntry($last_entry);
 
-		$this->title = $this->getAccount()->fullname;
-	}
+        $this->title = $this->getAccount()->fullname;
+    }
 
-	// }}}
-	// {{{ protected function loadDBData()
+    // }}}
+    // {{{ protected function loadDBData()
 
-	protected function loadDBData()
-	{
-		$payment_method = $this->getPaymentMethod();
+    protected function loadDBData()
+    {
+        $payment_method = $this->getPaymentMethod();
 
-		$this->ui->getWidget('payment_type')->value =
-			$payment_method->payment_type->id;
+        $this->ui->getWidget('payment_type')->value =
+            $payment_method->payment_type->id;
 
-		if ($payment_method->payment_type->isCard()) {
-			$card_number_preview = $this->ui->getWidget('card_number_preview');
-			$card_number_preview->content = StoreCardType::formatCardNumber(
-				$payment_method->card_number_preview,
-				$payment_method->card_type->getMaskedFormat());
+        if ($payment_method->payment_type->isCard()) {
+            $card_number_preview = $this->ui->getWidget('card_number_preview');
+            $card_number_preview->content = StoreCardType::formatCardNumber(
+                $payment_method->card_number_preview,
+                $payment_method->card_type->getMaskedFormat()
+            );
 
-			$this->ui->getWidget('card_fullname')->value =
-				$payment_method->card_fullname;
+            $this->ui->getWidget('card_fullname')->value =
+                $payment_method->card_fullname;
 
-			$this->ui->getWidget('card_expiry')->value =
-				$payment_method->card_expiry;
-		}
-	}
+            $this->ui->getWidget('card_expiry')->value =
+                $payment_method->card_expiry;
+        }
+    }
 
-	// }}}
+    // }}}
 }
-
-?>

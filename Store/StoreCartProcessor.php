@@ -9,216 +9,233 @@
  * $entry->custom_price = 123.45; // and any other custom entry modifications
  * $processor->addToCart($entry);
  *
- * @package   Store
  * @copyright 2010-2016 silverorange
  */
 class StoreCartProcessor extends SwatObject
 {
-	// {{{ class constants
+    // {{{ class constants
 
-	const ENTRY_ADDED = 1;
-	const ENTRY_SAVED = 2;
+    public const ENTRY_ADDED = 1;
+    public const ENTRY_SAVED = 2;
 
-	// }}}
-	// {{{ protected properties
+    // }}}
+    // {{{ protected properties
 
-	protected $app;
-	protected $entries_added = array();
+    protected $app;
+    protected $entries_added = [];
 
-	// }}}
-	// {{{ public static properties
+    // }}}
+    // {{{ public static properties
 
-	public static $class_name = 'StoreCartProcessor';
+    public static $class_name = 'StoreCartProcessor';
 
-	// }}}
-	// {{{ public static function get()
+    // }}}
+    // {{{ public static function get()
 
-	public static function get(SiteApplication $app)
-	{
-		$class_name = self::$class_name;
-		return new $class_name($app);
-	}
+    public static function get(SiteApplication $app)
+    {
+        $class_name = self::$class_name;
 
-	// }}}
-	// {{{ public function __construct()
+        return new $class_name($app);
+    }
 
-	public function __construct(SiteApplication $app)
-	{
-		$this->app = $app;
-	}
+    // }}}
+    // {{{ public function __construct()
 
-	// }}}
-	// {{{ public function createCartEntry()
+    public function __construct(SiteApplication $app)
+    {
+        $this->app = $app;
+    }
 
-	public function createCartEntry($item_id, $quantity = 1)
-	{
-		$class_name = SwatDBClassMap::get('StoreCartEntry');
-		$entry = new $class_name();
-		$entry->setDatabase($this->app->db);
+    // }}}
+    // {{{ public function createCartEntry()
 
-		$class_name = SwatDBClassMap::get('StoreItem');
-		$item = new $class_name();
-		$item->setDatabase($this->app->db);
-		$item->setRegion($this->app->getRegion());
-		if ($item->load($item_id) === false) {
-			throw new StoreException('Item id "'.$item_id.'" not found.');
-		}
+    public function createCartEntry($item_id, $quantity = 1)
+    {
+        $class_name = SwatDBClassMap::get('StoreCartEntry');
+        $entry = new $class_name();
+        $entry->setDatabase($this->app->db);
 
-		$entry->item = $item;
-		$entry->setQuantity($quantity);
+        $class_name = SwatDBClassMap::get('StoreItem');
+        $item = new $class_name();
+        $item->setDatabase($this->app->db);
+        $item->setRegion($this->app->getRegion());
+        if ($item->load($item_id) === false) {
+            throw new StoreException('Item id "' . $item_id . '" not found.');
+        }
 
-		return $entry;
-	}
+        $entry->item = $item;
+        $entry->setQuantity($quantity);
 
-	// }}}
-	// {{{ public function addEntryToCart()
+        return $entry;
+    }
 
-	/**
-	 * Add an entry to the cart
-	 */
-	public function addEntryToCart(StoreCartEntry $entry)
-	{
-		$this->app->session->activate();
+    // }}}
+    // {{{ public function addEntryToCart()
 
-		if ($this->app->session->isLoggedIn()) {
-			$entry->account = $this->app->session->getAccountId();
-		} else {
-			$entry->sessionid = $this->app->session->getSessionId();
-		}
+    /**
+     * Add an entry to the cart.
+     */
+    public function addEntryToCart(StoreCartEntry $entry)
+    {
+        $this->app->session->activate();
 
-		$status = null;
+        if ($this->app->session->isLoggedIn()) {
+            $entry->account = $this->app->session->getAccountId();
+        } else {
+            $entry->sessionid = $this->app->session->getSessionId();
+        }
 
-		if ($entry->item->hasAvailableStatus()) {
-			$entry->item = $entry->item->id;
-			if ($this->app->cart->checkout->addEntry($entry) !== null) {
-				$status = self::ENTRY_ADDED;
-			}
-		} elseif (isset($this->app->cart->saved)) {
-			if ($this->app->cart->saved->addEntry($entry) !== null) {
-				$status = self::ENTRY_SAVED;
-			}
-		}
+        $status = null;
 
-		if ($status !== null) {
-			$this->entries_added[] = array(
-				'entry' => $entry,
-				'status' => $status);
-		}
+        if ($entry->item->hasAvailableStatus()) {
+            $entry->item = $entry->item->id;
+            if ($this->app->cart->checkout->addEntry($entry) !== null) {
+                $status = self::ENTRY_ADDED;
+            }
+        } elseif (isset($this->app->cart->saved)) {
+            if ($this->app->cart->saved->addEntry($entry) !== null) {
+                $status = self::ENTRY_SAVED;
+            }
+        }
 
-		return $status;
-	}
+        if ($status !== null) {
+            $this->entries_added[] = [
+                'entry'  => $entry,
+                'status' => $status];
+        }
 
-	// }}}
-	// {{{ public function getEntriesAdded()
+        return $status;
+    }
 
-	public function getEntriesAdded()
-	{
-		return $this->entries_added;
-	}
+    // }}}
+    // {{{ public function getEntriesAdded()
 
-	// }}}
-	// {{{ public function getUpdatedCartMessage()
+    public function getEntriesAdded()
+    {
+        return $this->entries_added;
+    }
 
-	public function getUpdatedCartMessage()
-	{
-		if (count($this->entries_added) == 0)
-			return null;
+    // }}}
+    // {{{ public function getUpdatedCartMessage()
 
-		$cart_message = new SwatMessage(
-			Store::_('Your cart has been updated.'), 'cart');
+    public function getUpdatedCartMessage()
+    {
+        if (count($this->entries_added) == 0) {
+            return null;
+        }
 
-		$locale = SwatI18NLocale::get($this->app->getLocale());
-		$count = count($this->entries_added);
-		$cart_message->secondary_content = sprintf(Store::ngettext(
-			'One item added', '%s items added', $count),
-			$locale->formatNumber($count));
+        $cart_message = new SwatMessage(
+            Store::_('Your cart has been updated.'),
+            'cart'
+        );
 
-		return $cart_message;
-	}
+        $locale = SwatI18NLocale::get($this->app->getLocale());
+        $count = count($this->entries_added);
+        $cart_message->secondary_content = sprintf(
+            Store::ngettext(
+                'One item added',
+                '%s items added',
+                $count
+            ),
+            $locale->formatNumber($count)
+        );
 
-	// }}}
-	// {{{ public function getProductCartMessage()
+        return $cart_message;
+    }
 
-	public function getProductCartMessage(StoreProduct $product)
-	{
-		$total_items = count($product->items);
+    // }}}
+    // {{{ public function getProductCartMessage()
 
-		$added = 0;
-		foreach ($this->app->cart->checkout->getAvailableEntries() as $entry) {
-			if ($entry->item->product->id == $product->id) {
-				$added++;
-			}
-		}
+    public function getProductCartMessage(StoreProduct $product)
+    {
+        $total_items = count($product->items);
 
-		$saved = 0;
-		if (isset($this->app->cart->saved)) {
-			foreach ($this->app->cart->saved->getEntries() as $entry) {
-				if ($entry->item->product->id == $product->id) {
-					$saved++;
-				}
-			}
-		}
+        $added = 0;
+        foreach ($this->app->cart->checkout->getAvailableEntries() as $entry) {
+            if ($entry->item->product->id == $product->id) {
+                $added++;
+            }
+        }
 
-		if ($added == 0 && $saved == 0) {
-			$message = null;
-		} else {
-			$locale = SwatI18NLocale::get($this->app->getLocale());
+        $saved = 0;
+        if (isset($this->app->cart->saved)) {
+            foreach ($this->app->cart->saved->getEntries() as $entry) {
+                if ($entry->item->product->id == $product->id) {
+                    $saved++;
+                }
+            }
+        }
 
-			if ($added > 0) {
-				if ($added == 1 && $total_items == 1) {
-					$title = Store::_(
-						'You have this product %sin your cart%s.');
-				} else {
-					$title = sprintf(Store::ngettext(
-						'You have one item from this page %%sin your cart%%s.',
-						'You have %s items from this page %%sin your cart%%s.',
-						$added),
-						$locale->formatNumber($added));
-				}
-			} else {
-				if ($saved == 1 && $total_items == 1) {
-					$title = Store::_('You have saved this product for later.'.
-						' %sView cart%s.');
-				} else {
-					$title = sprintf(Store::ngettext(
-						'You have one item from this page '.
-							'saved for later. %%sView cart%%s.',
-						'You have %s items from this page '.
-							'saved for later. %%sView cart%%s.',
-						$saved),
-						$locale->formatNumber($saved));
-				}
-			}
+        if ($added == 0 && $saved == 0) {
+            $message = null;
+        } else {
+            $locale = SwatI18NLocale::get($this->app->getLocale());
 
-			$seconday = '';
+            if ($added > 0) {
+                if ($added == 1 && $total_items == 1) {
+                    $title = Store::_(
+                        'You have this product %sin your cart%s.'
+                    );
+                } else {
+                    $title = sprintf(
+                        Store::ngettext(
+                            'You have one item from this page %%sin your cart%%s.',
+                            'You have %s items from this page %%sin your cart%%s.',
+                            $added
+                        ),
+                        $locale->formatNumber($added)
+                    );
+                }
+            } else {
+                if ($saved == 1 && $total_items == 1) {
+                    $title = Store::_('You have saved this product for later.' .
+                        ' %sView cart%s.');
+                } else {
+                    $title = sprintf(
+                        Store::ngettext(
+                            'You have one item from this page ' .
+                                'saved for later. %%sView cart%%s.',
+                            'You have %s items from this page ' .
+                                'saved for later. %%sView cart%%s.',
+                            $saved
+                        ),
+                        $locale->formatNumber($saved)
+                    );
+                }
+            }
 
-			if ($added > 0 && $saved > 0) {
-				$secondary = sprintf(Store::ngettext(
-					'You also have one item saved for later.',
-					'You also have %s items saved for later.',
-					$saved), $locale->formatNumber($saved));
-			} else {
-				$secondary = null;
-			}
+            $seconday = '';
 
-			$title = sprintf($title,
-				'<a href="cart" class="store-open-cart-link">', '</a>');
+            if ($added > 0 && $saved > 0) {
+                $secondary = sprintf(Store::ngettext(
+                    'You also have one item saved for later.',
+                    'You also have %s items saved for later.',
+                    $saved
+                ), $locale->formatNumber($saved));
+            } else {
+                $secondary = null;
+            }
 
-			$cart_message = new SwatMessage($title, 'cart');
-			$cart_message->content_type = 'text/xml';
-			$cart_message->secondary_content = $secondary;
+            $title = sprintf(
+                $title,
+                '<a href="cart" class="store-open-cart-link">',
+                '</a>'
+            );
 
-			$message_display = new SwatMessageDisplay();
-			$message_display->add($cart_message);
-			ob_start();
-			$message_display->display();
-			$message = ob_get_clean();
-		}
+            $cart_message = new SwatMessage($title, 'cart');
+            $cart_message->content_type = 'text/xml';
+            $cart_message->secondary_content = $secondary;
 
-		return $message;
-	}
+            $message_display = new SwatMessageDisplay();
+            $message_display->add($cart_message);
+            ob_start();
+            $message_display->display();
+            $message = ob_get_clean();
+        }
 
-	// }}}
+        return $message;
+    }
+
+    // }}}
 }
-
-?>

@@ -1,135 +1,136 @@
 <?php
 
 /**
- * Removes expired payment methods
+ * Removes expired payment methods.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountPaymentMethodDeleter extends SitePrivateDataDeleter
 {
-	// {{{ class constants
+    // {{{ class constants
 
-	/**
-	 * How many records to process in a single iteration
-	 *
-	 * @var integer
-	 */
-	const DATA_BATCH_SIZE = 100;
+    /**
+     * How many records to process in a single iteration.
+     *
+     * @var int
+     */
+    public const DATA_BATCH_SIZE = 100;
 
-	// }}}
-	// {{{ public function run()
+    // }}}
+    // {{{ public function run()
 
-	public function run()
-	{
-		$this->app->debug(sprintf("\n%s\n-------------------\n",
-			Store::_('Credit Card Numbers')));
+    public function run()
+    {
+        $this->app->debug(sprintf(
+            "\n%s\n-------------------\n",
+            Store::_('Credit Card Numbers')
+        ));
 
-		$total = $this->getTotal();
-		if ($total == 0) {
-			$this->app->debug(Store::_('No expired credit cards found. '.
-				'No private data removed.')."\n");
-		} else {
-			$this->app->debug(sprintf(
-				Store::_('Found %s expired credit cards for deletion:')."\n\n",
-				$total));
+        $total = $this->getTotal();
+        if ($total == 0) {
+            $this->app->debug(Store::_('No expired credit cards found. ' .
+                'No private data removed.') . "\n");
+        } else {
+            $this->app->debug(sprintf(
+                Store::_('Found %s expired credit cards for deletion:') . "\n\n",
+                $total
+            ));
 
-			if (!$this->app->isDryRun()) {
+            if (!$this->app->isDryRun()) {
+                /*
+                 * Transactions are not used because dataobject saving already
+                 * uses transactions.
+                 */
 
-				/*
-				 * Transactions are not used because dataobject saving already
-				 * uses transactions.
-				 */
+                $payment_methods = $this->getPaymentMethods();
+                $count = count($payment_methods);
+                while ($count > 0) {
+                    foreach ($payment_methods as $payment_method) {
+                        $this->app->debug(
+                            sprintf(
+                                '=> %s #%s ...',
+                                Store::_('cleaning payment method'),
+                                $payment_method->id
+                            )
+                        );
 
-				$payment_methods = $this->getPaymentMethods();
-				$count = count($payment_methods);
-				while ($count > 0) {
-					foreach ($payment_methods as $payment_method) {
-						$this->app->debug(
-							sprintf('=> %s #%s ...',
-								Store::_('cleaning payment method'),
-								$payment_method->id));
+                        $payment_method->delete();
+                        $this->app->debug(Store::_('done') . "\n");
+                    }
 
-						$payment_method->delete();
-						$this->app->debug(Store::_('done')."\n");
-					}
+                    // get next batch of accounts
+                    $payment_methods = $this->getPaymentMethods();
+                    $count = count($payment_methods);
+                }
+            } else {
+                $this->app->debug('=> ' .
+                    Store::_('not deleting because dry-run is on') . "\n");
+            }
 
-					// get next batch of accounts
-					$payment_methods = $this->getPaymentMethods();
-					$count = count($payment_methods);
-				}
+            $this->app->debug("\n" .
+                Store::_('Finished deleting expired credit cards.') . "\n");
+        }
+    }
 
-			} else {
-				$this->app->debug('=> '.
-					Store::_('not deleting because dry-run is on')."\n");
-			}
+    // }}}
+    // {{{ protected function getPaymentMethods()
 
-			$this->app->debug("\n".
-				Store::_('Finished deleting expired credit cards.')."\n");
-		}
-	}
+    protected function getPaymentMethods()
+    {
+        $sql = sprintf(
+            'select * from AccountPaymentMethod %s',
+            $this->getWhereClause()
+        );
 
-	// }}}
-	// {{{ protected function getPaymentMethods()
+        $this->app->db->setLimit(self::DATA_BATCH_SIZE);
 
-	protected function getPaymentMethods()
-	{
-		$sql = sprintf('select * from AccountPaymentMethod %s',
-			$this->getWhereClause());
+        $wrapper_class =
+            SwatDBClassMap::get('StoreAccountPaymentMethodWrapper');
 
-		$this->app->db->setLimit(self::DATA_BATCH_SIZE);
+        return SwatDB::query($this->app->db, $sql, $wrapper_class);
+    }
 
-		$wrapper_class =
-			SwatDBClassMap::get('StoreAccountPaymentMethodWrapper');
+    // }}}
+    // {{{ protected function getTotal()
 
-		$payment_methods = SwatDB::query($this->app->db, $sql, $wrapper_class);
+    protected function getTotal()
+    {
+        $sql = sprintf(
+            'select count(id) from AccountPaymentMethod %s',
+            $this->getWhereClause()
+        );
 
-		return $payment_methods;
-	}
+        return SwatDB::queryOne($this->app->db, $sql);
+    }
 
-	// }}}
-	// {{{ protected function getTotal()
+    // }}}
+    // {{{ protected function getExpiryDate()
 
-	protected function getTotal()
-	{
-		$sql = sprintf('select count(id) from AccountPaymentMethod %s',
-			$this->getWhereClause());
+    protected function getExpiryDate()
+    {
+        // credit cards expire now
+        return new SwatDate();
+    }
 
-		$total = SwatDB::queryOne($this->app->db, $sql);
+    // }}}
+    // {{{ protected function getWhereClause()
 
-		return $total;
-	}
+    protected function getWhereClause()
+    {
+        $expiry_date = $this->getExpiryDate();
+        $instance_id = $this->app->getInstanceId();
 
-	// }}}
-	// {{{ protected function getExpiryDate()
-
-	protected function getExpiryDate()
-	{
-		// credit cards expire now
-		return new SwatDate();
-	}
-
-	// }}}
-	// {{{ protected function getWhereClause()
-
-	protected function getWhereClause()
-	{
-		$expiry_date = $this->getExpiryDate();
-		$instance_id = $this->app->getInstanceId();
-
-		$sql = 'where card_expiry < %s
+        $sql = 'where card_expiry < %s
 			and account in (select id from Account where instance %s %s)';
 
-		$sql = sprintf($sql,
-			$this->app->db->quote($expiry_date->getDate(), 'date'),
-			SwatDB::equalityOperator($instance_id),
-			$this->app->db->quote($instance_id, 'integer'));
+        return sprintf(
+            $sql,
+            $this->app->db->quote($expiry_date->getDate(), 'date'),
+            SwatDB::equalityOperator($instance_id),
+            $this->app->db->quote($instance_id, 'integer')
+        );
+    }
 
-		return $sql;
-	}
-
-	// }}}
+    // }}}
 }
-
-?>

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * A list of {@link StoreOrderStatus} objects
+ * A list of {@link StoreOrderStatus} objects.
  *
  * Order statuses are progressive. That means if the id of one status is
  * greater than another, the lesser status is included in the greated status.
@@ -27,131 +27,130 @@
  * class and override the {@link StoreOrderStatusList::getDefinedStatuses()}
  * method.
  *
- * @package   Store
  * @copyright 2007-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
  * @see       StoreOrderStatus
  */
 class StoreOrderStatusList extends StoreStatusList
 {
-	// {{{ private properties
+    // {{{ private properties
 
-	/**
-	 * Static collection of available statuses for this class of status list
-	 *
-	 * @var array
-	 */
-	private static $defined_statuses;
+    /**
+     * Static collection of available statuses for this class of status list.
+     *
+     * @var array
+     */
+    private static $defined_statuses;
 
-	/**
-	 * The order status list instance used for the singleton pattern
-	 *
-	 * @var StoreOrderStatusList
-	 *
-	 * @see StoreOrderStatusList::statuses()
-	 */
-	private static $instance;
+    /**
+     * The order status list instance used for the singleton pattern.
+     *
+     * @var StoreOrderStatusList
+     *
+     * @see StoreOrderStatusList::statuses()
+     */
+    private static $instance;
 
-	// }}}
-	// {{{ public static function status()
+    // }}}
+    // {{{ public static function status()
 
-	/**
-	 * Convenience function to get a status by shortname without having to
-	 * create a list instance
-	 *
-	 * Example usage:
-	 *
-	 * <code>
-	 * $order->status = StoreOrderStatusList::status('complete');
-	 * </code>
-	 *
-	 * @param string $status_shortname the shortname of the status to retrieve.
-	 *
-	 * @return StoreOrderStatus the order status corresponding to the shortname
-	 *                          or null if no such status exists.
-	 */
-	public static function status($status_shortname)
-	{
-		return self::statuses()->getByShortname($status_shortname);
-	}
+    /**
+     * Convenience function to get a status by shortname without having to
+     * create a list instance.
+     *
+     * Example usage:
+     *
+     * <code>
+     * $order->status = StoreOrderStatusList::status('complete');
+     * </code>
+     *
+     * @param string $status_shortname the shortname of the status to retrieve
+     *
+     * @return StoreOrderStatus the order status corresponding to the shortname
+     *                          or null if no such status exists
+     */
+    public static function status($status_shortname)
+    {
+        return self::statuses()->getByShortname($status_shortname);
+    }
 
-	// }}}
-	// {{{ public static function statuses()
+    // }}}
+    // {{{ public static function statuses()
 
-	/**
-	 * Gets the list of defined order statuses
-	 *
-	 * Example usage:
-	 *
-	 * <code>
-	 * foreach (StoreOrderStatusList::statuses() as $status) {
-	 *     echo $status->title, "\n";
-	 * }
-	 * </code>
-	 *
-	 * @return StoreOrderStatusList the list of order statuses.
-	 */
-	public static function statuses()
-	{
-		if (self::$instance === null) {
-			$list_class = SwatDBClassMap::get('StoreOrderStatusList');
-			self::$instance = new $list_class();
-		}
-		return self::$instance;
-	}
+    /**
+     * Gets the list of defined order statuses.
+     *
+     * Example usage:
+     *
+     * <code>
+     * foreach (StoreOrderStatusList::statuses() as $status) {
+     *     echo $status->title, "\n";
+     * }
+     * </code>
+     *
+     * @return StoreOrderStatusList the list of order statuses
+     */
+    public static function statuses()
+    {
+        if (self::$instance === null) {
+            $list_class = SwatDBClassMap::get('StoreOrderStatusList');
+            self::$instance = new $list_class();
+        }
 
-	// }}}
-	// {{{ protected function getDefinedStatuses()
+        return self::$instance;
+    }
 
-	/**
-	 * Gets an array of defined order statuses for this class of list
-	 *
-	 * Subclasses are encoraged to override this method to change the default
-	 * set of order statuses or to provide additional statuses.
-	 *
-	 * @return array an array of {@link StoreOrderStatus} objects representing
-	 *                all defined order statuses for this class of list.
-	 */
-	protected function getDefinedStatuses()
-	{
-		if (self::$defined_statuses === null) {
-			self::$defined_statuses = array();
+    // }}}
+    // {{{ protected function getDefinedStatuses()
 
-			$status_class = SwatDBClassMap::get('StoreOrderStatus');
+    /**
+     * Gets an array of defined order statuses for this class of list.
+     *
+     * Subclasses are encoraged to override this method to change the default
+     * set of order statuses or to provide additional statuses.
+     *
+     * @return array an array of {@link StoreOrderStatus} objects representing
+     *               all defined order statuses for this class of list
+     */
+    protected function getDefinedStatuses()
+    {
+        if (self::$defined_statuses === null) {
+            self::$defined_statuses = [];
 
-			$initilized_status =
-				new $status_class(1, 'initialized', Store::_('Initialized'));
+            $status_class = SwatDBClassMap::get('StoreOrderStatus');
 
-			$authorized_status =
-				new $status_class(2, 'authorized', Store::_('Authorized'));
+            $initilized_status =
+                new $status_class(1, 'initialized', Store::_('Initialized'));
 
-			$billed_status =
-				new $status_class(3, 'billed', Store::_('Billed'));
+            $authorized_status =
+                new $status_class(2, 'authorized', Store::_('Authorized'));
 
-			$shipped_status =
-				new $status_class(4, 'shipped', Store::_('Shipped'));
+            $billed_status =
+                new $status_class(3, 'billed', Store::_('Billed'));
 
-			self::$defined_statuses[] = $initilized_status;
-			self::$defined_statuses[] = $authorized_status;
-			self::$defined_statuses[] = $billed_status;
-			self::$defined_statuses[] = $shipped_status;
-		}
+            $shipped_status =
+                new $status_class(4, 'shipped', Store::_('Shipped'));
 
-		return self::$defined_statuses;
-	}
+            self::$defined_statuses[] = $initilized_status;
+            self::$defined_statuses[] = $authorized_status;
+            self::$defined_statuses[] = $billed_status;
+            self::$defined_statuses[] = $shipped_status;
+        }
 
-	// }}}
-	// {{{ protected function __construct()
+        return self::$defined_statuses;
+    }
 
-	protected function __construct()
-	{
-		parent::__construct();
+    // }}}
+    // {{{ protected function __construct()
 
-		// sort statuses since order statuses need to be iterated in order
-		usort($this->statuses, array('StoreOrderStatus', 'compare'));
-	}
+    protected function __construct()
+    {
+        parent::__construct();
 
-	// }}}
+        // sort statuses since order statuses need to be iterated in order
+        usort($this->statuses, ['StoreOrderStatus', 'compare']);
+    }
+
+    // }}}
 }
-
-?>

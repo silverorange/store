@@ -10,13 +10,10 @@
  * {@link SwatUI::registerHandler() UI handlers} that are specific to the Store
  * package.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
- * @deprecated The parent of this class, {@link SwatUI}, can now be used directly.
+ *
+ * @deprecated the parent of this class, {@link SwatUI}, can now be used directly
+ *
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreUI extends SwatUI
-{
-}
-
-?>
+class StoreUI extends SwatUI {}

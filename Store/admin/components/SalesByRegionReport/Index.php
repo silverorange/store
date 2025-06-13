@@ -3,159 +3,158 @@
 /**
  * Displays sales summaries by year and country/provstate.
  *
- * @package   Store
  * @copyright 2015-2023 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreSalesByRegionReportIndex extends AdminIndex
 {
-	// {{{ protected properties
+    // {{{ protected properties
 
-	/**
-	 * Cache of regions used by getRegions()
-	 *
-	 * @var StoreRegionWrapper
-	 */
-	protected $regions = null;
+    /**
+     * Cache of regions used by getRegions().
+     *
+     * @var StoreRegionWrapper
+     */
+    protected $regions;
 
-	/**
-	 * @var boolean
-	 */
-	protected $show_shipping = false;
+    /**
+     * @var bool
+     */
+    protected $show_shipping = false;
 
-	/**
-	 * @var boolean
-	 */
-	protected $show_tax = false;
+    /**
+     * @var bool
+     */
+    protected $show_tax = false;
 
-	/**
-	 * @var StoreSalesByRegionTaxationStartDate
-	 */
-	protected $taxation_start_date;
+    /**
+     * @var StoreSalesByRegionTaxationStartDate
+     */
+    protected $taxation_start_date;
 
-	// }}}
-	// {{{ protected function getUiXml()
+    // }}}
+    // {{{ protected function getUiXml()
 
-	protected function getUiXml()
-	{
-		return __DIR__.'/index.xml';
-	}
+    protected function getUiXml()
+    {
+        return __DIR__ . '/index.xml';
+    }
 
-	// }}}
+    // }}}
 
-	// init phase
-	// {{{ protected function initInternal()
+    // init phase
+    // {{{ protected function initInternal()
 
-	protected function initInternal()
-	{
-		parent::initInternal();
-		$this->ui->loadFromXML($this->getUiXml());
+    protected function initInternal()
+    {
+        parent::initInternal();
+        $this->ui->loadFromXML($this->getUiXml());
 
-		$this->initTaxationStartDate();
-		$this->ui->getWidget('tax_note_message_display')->add(
-			$this->taxation_start_date->getWarningMessage(),
-			SwatMessageDisplay::DISMISS_OFF
-		);
-	}
+        $this->initTaxationStartDate();
+        $this->ui->getWidget('tax_note_message_display')->add(
+            $this->taxation_start_date->getWarningMessage(),
+            SwatMessageDisplay::DISMISS_OFF
+        );
+    }
 
-	// }}}
-	// {{{ protected function initTaxationStartDate()
+    // }}}
+    // {{{ protected function initTaxationStartDate()
 
-	protected function initTaxationStartDate()
-	{
-		$this->taxation_start_date = new StoreSalesByRegionTaxationStartDate(
-			$this->app
-		);
-	}
+    protected function initTaxationStartDate()
+    {
+        $this->taxation_start_date = new StoreSalesByRegionTaxationStartDate(
+            $this->app
+        );
+    }
 
-	// }}}
+    // }}}
 
-	// build phase
-	// {{{ protected function buildInternal()
+    // build phase
+    // {{{ protected function buildInternal()
 
-	protected function buildInternal()
-	{
-		parent::buildInternal();
+    protected function buildInternal()
+    {
+        parent::buildInternal();
 
-		$view = $this->ui->getWidget('index_view');
-		$view->getColumn('shipping')->visible = $this->show_shipping;
-		$view->getColumn('tax')->visible = $this->show_tax;
-	}
+        $view = $this->ui->getWidget('index_view');
+        $view->getColumn('shipping')->visible = $this->show_shipping;
+        $view->getColumn('tax')->visible = $this->show_tax;
+    }
 
-	// }}}
-	// {{{ protected function getTableModel()
+    // }}}
+    // {{{ protected function getTableModel()
 
-	protected function getTableModel(SwatView $view): ?SwatTableModel
-	{
-		$now = new SwatDate();
-		$now->setTimezone($this->app->default_time_zone);
+    protected function getTableModel(SwatView $view): ?SwatTableModel
+    {
+        $now = new SwatDate();
+        $now->setTimezone($this->app->default_time_zone);
 
-		$first_order_date_string = SwatDB::queryOne(
-			$this->app->db,
-			sprintf(
-				'select min(createdate) from Orders where createdate >= %s',
-				$this->app->db->quote($this->taxation_start_date->getDate(), 'date')
-			)
-		);
+        $first_order_date_string = SwatDB::queryOne(
+            $this->app->db,
+            sprintf(
+                'select min(createdate) from Orders where createdate >= %s',
+                $this->app->db->quote($this->taxation_start_date->getDate(), 'date')
+            )
+        );
 
-		$first_order_date = new SwatDate($first_order_date_string);
-		$first_order_date->setTimezone($this->app->default_time_zone);
+        $first_order_date = new SwatDate($first_order_date_string);
+        $first_order_date->setTimezone($this->app->default_time_zone);
 
-		// create an array of years with default values
-		$years = array();
-		$start_date = clone $now;
-		for (
-			$i = $start_date->getYear();
-			$i >= $first_order_date->getYear();
-			$i--
-		) {
-			$key = $i;
+        // create an array of years with default values
+        $years = [];
+        $start_date = clone $now;
+        for (
+            $i = $start_date->getYear();
+            $i >= $first_order_date->getYear();
+            $i--
+        ) {
+            $key = $i;
 
-			$ds = new SwatDetailsStore();
+            $ds = new SwatDetailsStore();
 
-			$ds->id             = $key;
-			$ds->gross_total    = 0;
-			$ds->shipping_total = 0;
-			$ds->tax_total      = 0;
+            $ds->id = $key;
+            $ds->gross_total = 0;
+            $ds->shipping_total = 0;
+            $ds->tax_total = 0;
 
-			$title_pattern = $this->taxation_start_date->
-				getTitlePatternFromDate($start_date);
+            $title_pattern = $this->taxation_start_date->
+                getTitlePatternFromDate($start_date);
 
-			$ds->title = sprintf(
-				$title_pattern,
-				$start_date->formatLikeIntl(Store::_('YYYY'))
-			);
+            $ds->title = sprintf(
+                $title_pattern,
+                $start_date->formatLikeIntl(Store::_('YYYY'))
+            );
 
-			$years[$key] = $ds;
+            $years[$key] = $ds;
 
-			$start_date->setYear($i - 1);
-		}
+            $start_date->setYear($i - 1);
+        }
 
-		// fill our array with values from the database if the values exist
-		foreach ($this->getYearTotals() as $row) {
-			$key = $row->year;
+        // fill our array with values from the database if the values exist
+        foreach ($this->getYearTotals() as $row) {
+            $key = $row->year;
 
-			$years[$key]->gross_total    = $row->gross_total;
-			$years[$key]->shipping_total = $row->shipping_total;
-			$years[$key]->tax_total      = $row->tax_total;
-		}
+            $years[$key]->gross_total = $row->gross_total;
+            $years[$key]->shipping_total = $row->shipping_total;
+            $years[$key]->tax_total = $row->tax_total;
+        }
 
-		// turn the array into a table model
-		$store = new SwatTableStore();
-		foreach ($years as $year) {
-			$store->add($year);
-		}
+        // turn the array into a table model
+        $store = new SwatTableStore();
+        foreach ($years as $year) {
+            $store->add($year);
+        }
 
-		return $store;
-	}
+        return $store;
+    }
 
-	// }}}
-	// {{{ protected function getYearTotals()
+    // }}}
+    // {{{ protected function getYearTotals()
 
-	protected function getYearTotals()
-	{
-		$sql = sprintf(
-			'select sum(Orders.total) gross_total,
+    protected function getYearTotals()
+    {
+        $sql = sprintf(
+            'select sum(Orders.total) gross_total,
 				sum(Orders.shipping_total) as shipping_total,
 				sum(Orders.tax_total) as tax_total,
 				extract(year from convertTZ(Orders.createdate, %s))
@@ -166,39 +165,37 @@ class StoreSalesByRegionReportIndex extends AdminIndex
 				and Orders.cancel_date is null
 				%s
 			group by year',
-			$this->app->db->quote(
-				$this->app->default_time_zone->getName(),
-				'text'
-			),
-			$this->app->db->quote(
-				$this->taxation_start_date->getDate(),
-				'date'
-			),
-			$this->getInstanceWhereClause()
-		);
+            $this->app->db->quote(
+                $this->app->default_time_zone->getName(),
+                'text'
+            ),
+            $this->app->db->quote(
+                $this->taxation_start_date->getDate(),
+                'date'
+            ),
+            $this->getInstanceWhereClause()
+        );
 
-		return SwatDB::query($this->app->db, $sql);
-	}
+        return SwatDB::query($this->app->db, $sql);
+    }
 
-	// }}}
-	// {{{ protected function getInstanceWhereClause()
+    // }}}
+    // {{{ protected function getInstanceWhereClause()
 
-	protected function getInstanceWhereClause()
-	{
-		if ($this->app->isMultipleInstanceAdmin()) {
-			return '';
-		}
+    protected function getInstanceWhereClause()
+    {
+        if ($this->app->isMultipleInstanceAdmin()) {
+            return '';
+        }
 
-		$instance_id = $this->app->getInstanceId();
+        $instance_id = $this->app->getInstanceId();
 
-		return sprintf(
-			'and Orders.instance %s %s',
-			SwatDB::equalityOperator($instance_id),
-			$this->app->db->quote($instance_id, 'integer')
-		);
-	}
+        return sprintf(
+            'and Orders.instance %s %s',
+            SwatDB::equalityOperator($instance_id),
+            $this->app->db->quote($instance_id, 'integer')
+        );
+    }
 
-	// }}}
+    // }}}
 }
-
-?>
